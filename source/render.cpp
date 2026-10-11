@@ -10,7 +10,7 @@ namespace {
 constexpr int MaxVertices=12000;
 // Shared field/battle calibration against the unchanged original map scale.
 // Original actor-instance scale still needs confirmation in Dolphin.
-constexpr float PaperCharacterScale=.5f;
+constexpr float PaperCharacterScale=.35f;
 constexpr uint32_t Ink=0xff352d29, Paper=0xffdff2fb, Gold=0xff62c7f3, Red=0xff4966d8;
 uint32_t rgb(unsigned r,unsigned g,unsigned b,unsigned a=255) { return C2D_Color32(r,g,b,a); }
 uint32_t shade(uint32_t c,float factor) { return rgb((c&255)*factor,((c>>8)&255)*factor,((c>>16)&255)*factor); }

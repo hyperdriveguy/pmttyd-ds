@@ -690,3 +690,17 @@ Next: preserve runtime scene nodes for original mesh tracks (harbor water/boat,
 plaza hae, west mizu), implement second-layer material rendering, original camera
 framing and event visibility. Door/pipe/interior event links, original English
 story/dialogue, SFX and measured combat remain necessary. Full goal active.
+
+## Character size correction
+
+Reduced the shared paper character scale from 0.5 to 0.35 following the
+reported oversized characters. Heights, widths, paper tilt and shadows are now
+30% smaller across field and battle; original map geometry remains at its
+existing scale. This is a visual calibration, not measured original actor size.
+
+Validation: `make test` passed core and 21 Python tests; `make -j2 all` built
+`ttyd-2ds.3dsx`. `python3 tools/emulator_smoke.py --fresh-save --seconds 4`
+exited successfully. Reviewed `artifacts/azahar/boot.png`: smaller field actors,
+full dual-screen UI, reported 60 fps. Hardware performance is unverified.
+Next: compare character proportions and camera framing against Dolphin.
+Existing unfinished ambient-animation edits remain in the worktree separately.
