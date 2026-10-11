@@ -79,10 +79,11 @@ void saves() {
     CHECK(decodeSave(legacy,restored));CHECK(restored.room==0);CHECK(restored.elevation==0);
     Progress elevated=p;elevated.room=1;elevated.elevation=1.19f;
     CHECK(decodeSave(encodeSave(elevated),restored));CHECK(restored.room==1);CHECK(std::fabs(restored.elevation-1.2f)<.001f);
+    elevated.room=4;CHECK(decodeSave(encodeSave(elevated),restored));CHECK(restored.room==4);
     elevated.room=256;CHECK(!decodeSave(encodeSave(elevated),restored));
     bytes[8]^=1;CHECK(!decodeSave(bytes,restored));
     p.position.x=std::numeric_limits<float>::infinity();CHECK(!decodeSave(encodeSave(p),restored));
-    p.room=4;CHECK(!decodeSave(encodeSave(p),restored));p.room=0;
+    p.room=5;CHECK(!decodeSave(encodeSave(p),restored));p.room=0;
     p.position={2,2};p.hp=11;CHECK(!decodeSave(encodeSave(p),restored));p.hp=7;
     char directory[]="/tmp/ttyd-tests-XXXXXX";CHECK(mkdtemp(directory));std::string path=std::string(directory)+"/progress.bin";
     CHECK(loadSave(path,restored)==LoadResult::Missing);CHECK(writeSave(path,p));CHECK(loadSave(path,restored)==LoadResult::Loaded);
@@ -177,7 +178,7 @@ void collisionRollback() {
 }
 void indexedOriginalCollision() {
     size_t queries=0;
-    for(uint32_t room=0;room<4;++room) {
+    for(uint32_t room=0;room<5;++room) {
         std::string prefix=std::string("romfs/")+roomAsset(room);
         CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));
         std::ifstream walls(prefix+".walls",std::ios::binary),ground(prefix+".ground",std::ios::binary);
@@ -212,7 +213,7 @@ void indexedOriginalCollision() {
 void originalRooms() {
     CHECK(loadWarps("romfs/rooms.bin"));
     std::ifstream file("romfs/rooms.bin",std::ios::binary);uint32_t count=0;file.read(reinterpret_cast<char*>(&count),4);
-    CHECK(count==6);std::vector<RoadWarp> roads(count);file.read(reinterpret_cast<char*>(roads.data()),count*sizeof(RoadWarp));CHECK(file.good());
+    CHECK(count==8);std::vector<RoadWarp> roads(count);file.read(reinterpret_cast<char*>(roads.data()),count*sizeof(RoadWarp));CHECK(file.good());
     for(size_t n=0;n<roads.size();++n) {
         const auto& road=roads[n];std::string prefix=std::string("romfs/")+roomAsset(road.target);
         CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));

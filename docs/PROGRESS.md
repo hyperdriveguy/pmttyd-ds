@@ -418,3 +418,44 @@ geometry should not be broadly hidden based only on appearance. Resolve gor_04
 and interior links from original records; retain atomic room acceptance.
 Original character animations, SFX, English dialogue/story, battle observations
 and physical hardware acceptance are still required. The full goal remains active.
+
+## Overworld continuation: original station road
+
+Packaged original gor_04 station geometry/textures/collision and enabled the
+original reciprocal west n_bero / station s_bero road. Five rooms now have eight
+directed roads. Global distinct-table/reciprocity matching replaces ambiguous
+per-room marker-subset selection: station contains an extra north marker, which
+must not be confused with harbor's table. Station event/train travel is not
+implemented. Preserved room IDs 0–3; new ID4 supports save v2 with registry-based
+validation and a host save roundtrip test. Invalid ID5 remains rejected.
+
+Found and corrected marker-midpoint arrival elevation: station s_bero spans
+Y0–2, so its midpoint caused ground validation failure. Arrival uses original
+marker base height; all eight destinations now pass ground/collision acceptance.
+`make test`: core suite and 17 Python tests passed. `make -j2 all` passed.
+`build-host/core_tests --rooms`: 18,315 indexed/full-scan collision probes and
+eight original room arrivals passed. Azahar station road script completed two
+round trips with saved room IDs asserted and HP7 preserved. Reviewed
+road-station-arrival-0.png: station art and Mario entrance visible, emulator
+reported 60 fps. Train components/static scene show rendering/visibility issues;
+this is not original event-state or hardware acceptance. Initial midpoint build
+failed both host arrival and native station entry; corrected build passed.
+
+Reproduce:
+```sh
+python3 tools/road_fixtures.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/station-road.bin --seconds 4 --input-script tests/azahar_roads.py
+python3 tools/emulator_smoke.py --seconds 4 --input-script tests/azahar_roads.py
+```
+First script also leaves a station checkpoint for restart; second detects room4
+and exercises station->west->station. Restart result is recorded below when
+verified. Next: original station train/map event visibility and original camera
+behavior; doors/pipes/interior connections with event conditions; original
+English story/message playback, full character animation and original SFX.
+The full playable-game objective remains active.
+
+Restart verification completed: updated station script left room4/HP7 checkpoint;
+second invocation without fixture or save reset loaded station, completed two
+station->west->station round trips and exited with room4/HP7 saved. Both scripts
+returned exit0. Physical hardware, train travel, story conditions and original
+station event/visibility fidelity remain unverified.

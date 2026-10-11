@@ -89,3 +89,11 @@ This classification is a rendering adaptation, not recovered original visibility
 event rules. The upstream viewer's runtime flag handling was inspected at
 https://github.com/magcius/noclip.website/blob/master/src/PaperMarioTTYD/render.ts
 for further visibility/event work; no code from that file was copied here.
+
+Rogueport station (`m/gor_04/d`, `m/gor_04/t`) now converts through the same
+original-map pipeline: 41,398 triangles, 50 batches, textures capped at 128.
+No exterior-wall classification matches this room (zero cutaway groups).
+Original `rel/gor.rel` records at 0x4de80 (west n_bero) and 0x5d53c
+(station s_bero) establish the reciprocal road. Station's other geometric
+n_bero marker is not an additional inferred road; train/event travel is unfinished.
+Arrival elevation uses the marker base, not its volume midpoint.

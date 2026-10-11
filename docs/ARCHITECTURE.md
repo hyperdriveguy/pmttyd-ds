@@ -65,3 +65,10 @@ group. Renderer builds per-group bounds and tests camera-to-character segments
 against actual original triangles. Obstructing groups are skipped; an eight-tick
 hold prevents immediate toggling. Collision is unaffected. Battle geometry does
 not use this adaptation. Original event-controlled visibility remains unfinished.
+
+Room ID 4 is Rogueport station (`gor_04`); existing IDs and save v2 layout remain
+stable. Save decode now validates the room registry, avoiding a duplicated
+four-room limit. The offline road-table assignment requires distinct REL tables
+and reciprocal original destinations across all packaged rooms, rejecting zero
+or multiple solutions. This resolves station's north/south marker ambiguity
+without inventing a connection. Eight directed roads connect the five rooms.

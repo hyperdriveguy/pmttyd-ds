@@ -24,7 +24,7 @@ def main():
     scripts=[Path(__file__),ROOT/'tools/iso_assets.py',ROOT/'tools/character_bake.py',ROOT/'tools/map_convert.py',ROOT/'tools/audio_convert.py',ROOT/'tools/room_convert.py']
     fingerprint=hashlib.sha256(b''.join(p.read_bytes() for p in scripts)+str((source.stat().st_size,source.stat().st_mtime_ns)).encode()).hexdigest()
     manifest=OUTPUT/'manifest.json'
-    required=['characters.t3x','sky.t3x','map.vertices','map.batches','rogueport.wav','battle.wav','victory.wav','stage.vertices','stage.batches','map.walls','map.ground','gor_00.vertices','gor_02.vertices','gor_03.vertices','rooms.bin']
+    required=['characters.t3x','sky.t3x','map.vertices','map.batches','rogueport.wav','battle.wav','victory.wav','stage.vertices','stage.batches','map.walls','map.ground','gor_00.vertices','gor_02.vertices','gor_03.vertices','gor_04.vertices','rooms.bin']
     if manifest.exists() and all((OUTPUT/p).exists() for p in required):
         if json.loads(manifest.read_text()).get('fingerprint')==fingerprint:return
     WORK.mkdir(parents=True,exist_ok=True);OUTPUT.mkdir(exist_ok=True)
@@ -61,7 +61,7 @@ def main():
         width=min(128,1<<(w-1).bit_length());height=min(128,1<<(h-1).bit_length())
         image.resize((width,height),Image.Resampling.LANCZOS).save(path);texture(path,OUTPUT/f'map-{index}.t3x')
     rooms={'gor_01':summary}
-    for room in ['gor_00','gor_02','gor_03']:
+    for room in ['gor_00','gor_02','gor_03','gor_04']:
         room_model=asset(f'm/{room}/d',room+'.d');room_tpl=asset(f'm/{room}/t',room+'.tpl')
         info=convert(room_model,WORK/room);rooms[room]=info
         for ext in ['vertices','batches','walls','ground']:shutil.copyfile(WORK/room/f'map.{ext}',OUTPUT/f'{room}.{ext}')
@@ -77,15 +77,31 @@ def main():
     for entry in original_exits:
         if not groups or entry['offset']!=groups[-1][-1]['offset']+60:groups.append([])
         groups[-1].append(entry)
-    order=['gor_01','gor_00','gor_02','gor_03']
-    matched={}
+    order=['gor_01','gor_00','gor_02','gor_03','gor_04']
+    # Solve all tables together: gor_04 has both north/south markers, so
+    # marker subsets alone cannot distinguish its table from the harbor's.
+    # Require distinct tables and original reciprocal links across the pack.
+    import itertools
+    choices=[]
     for name,info in rooms.items():
         names={m['name'] for m in info['exit_markers'] if m['name'] in ('n_bero','s_bero','e_bero','w_bero')}
         candidates=[g for g in groups if {e['name'] for e in g}<=names]
         if candidates:
             size=max(map(len,candidates));candidates=[g for g in candidates if len(g)==size]
-        if len(candidates)!=1:raise ValueError(f'Ambiguous original road table for {name}: {names}')
-        matched[name]=candidates[0]
+        choices.append(candidates)
+    solutions=[]
+    for tables in itertools.product(*choices):
+        if len({g[0]['offset'] for g in tables})!=len(tables):continue
+        assignment=dict(zip(rooms,tables))
+        valid=True
+        for source,table in assignment.items():
+            for entry in table:
+                if entry['target'] not in assignment:continue
+                reverse=next((e for e in assignment[entry['target']] if e['name']==entry['arrival']),None)
+                if not reverse or reverse['target']!=source or reverse['arrival']!=entry['name']:valid=False
+        if valid:solutions.append(assignment)
+    if len(solutions)!=1:raise ValueError(f'Ambiguous original reciprocal room tables: {len(solutions)} solutions')
+    matched=solutions[0]
     import struct
     links=[]
     for source,group in matched.items():
@@ -100,7 +116,7 @@ def main():
             c=center(marker);d=center(dest)
             direction={'n_bero':(0,-1),'s_bero':(0,1),'e_bero':(1,0),'w_bero':(-1,0)}
             dx,dz=direction[entry['arrival']]
-            links.append({'source':source,'exit':entry['name'],'target':target,'arrival':entry['arrival'],'center':c,'spawn':[d[0]-dx*.9,d[1],d[2]-dz*.9],'rel_offset':entry['offset']})
+            links.append({'source':source,'exit':entry['name'],'target':target,'arrival':entry['arrival'],'center':c,'spawn':[d[0]-dx*.9,dest['bounds'][0][1],d[2]-dz*.9],'rel_offset':entry['offset']})
     (WORK/'room-links.json').write_text(json.dumps(links,indent=2))
     with (OUTPUT/'rooms.bin').open('wb') as out:
         out.write(struct.pack('<I',len(links)))

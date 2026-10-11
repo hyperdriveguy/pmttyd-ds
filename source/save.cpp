@@ -25,7 +25,7 @@ bool decodeSave(const SaveBytes& b, Progress& p) {
     if(std::memcmp(b.data(),"PM2D",4) || (get(b,4)!=1 && get(b,4)!=2) || get(b,28)!=checksum(b)) return false;
     Progress out; uint32_t x=get(b,8),z=get(b,12);
     std::memcpy(&out.position.x,&x,4); std::memcpy(&out.position.z,&z,4);
-    if(get(b,16)>10 || get(b,20)>99 || b[24]>1 || b[25]>1 || (get(b,4)==1 && b[26]) || b[26]>3 || (get(b,4)==1 && b[27]) || !std::isfinite(out.position.x) || !std::isfinite(out.position.z) || std::fabs(out.position.x)>100 || std::fabs(out.position.z)>100) return false;
+    if(get(b,16)>10 || get(b,20)>99 || b[24]>1 || b[25]>1 || (get(b,4)==1 && b[26]) || !roomAsset(b[26]) || (get(b,4)==1 && b[27]) || !std::isfinite(out.position.x) || !std::isfinite(out.position.z) || std::fabs(out.position.x)>100 || std::fabs(out.position.z)>100) return false;
     out.room=b[26];out.elevation=int8_t(b[27])/10.f;out.hp=get(b,16); out.mushrooms=get(b,20); out.crumpDefeated=b[24];out.sound=b[25];p=out;return true;
 }
 LoadResult loadSave(const std::string& path,Progress& p) {

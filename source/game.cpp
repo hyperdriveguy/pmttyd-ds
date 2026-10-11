@@ -67,12 +67,12 @@ bool CollisionTransition::load(const char* prefix) {
 }
 void CollisionTransition::commit() {if(staged)committed=true;}
 const char* roomAsset(uint32_t room) {
-    static const char* names[]={"map","gor_00","gor_02","gor_03"};
-    return room<4?names[room]:nullptr;
+    static const char* names[]={"map","gor_00","gor_02","gor_03","gor_04"};
+    return room<5?names[room]:nullptr;
 }
 const char* roomName(uint32_t room) {
-    static const char* names[]={"Rogueport plaza","Rogueport harbor","Rogueport east side","Rogueport west side"};
-    return room<4?names[room]:"Unknown area";
+    static const char* names[]={"Rogueport plaza","Rogueport harbor","Rogueport east side","Rogueport west side","Rogueport station"};
+    return room<5?names[room]:"Unknown area";
 }
 bool wallAtLevel(size_t n,float elevation) {
     return n<walls.size() && (wallLevels.empty() || (wallLevels[n].z>=elevation+.1f && wallLevels[n].x<=elevation+1.2f));

@@ -2,7 +2,7 @@
 
 A native homebrew remake in development. The current slice uses original
 Rogueport geometry/textures, original character idle poses, and original music
-converted locally from your US GameCube ISO. It includes four connected Rogueport outdoor rooms, exploration, dialogue,
+converted locally from your US GameCube ISO. It includes five connected Rogueport outdoor rooms, exploration, dialogue,
 a small Crump battle harness, touch menus and versioned saves.
 
 This is not a finished or fidelity-verified remake. Original skeletal/vertex
@@ -28,8 +28,7 @@ The default is `/home/carson/games/roms/G8ME01.iso`.
 
 The asset pack is cached using converter/source fingerprints. `make clean`
 cleans the 3DS build, retaining expensive local conversions. Original assets and
-built binaries are ignored by source history. This workspace's `.git` directory
-is read-only and is not a functional checkout; no commits have been made.
+built binaries are ignored by source history. Implementation and handoff notes are recorded in incremental Git commits.
 
 ## Controls
 
@@ -77,6 +76,6 @@ message playback and event sequencing are unfinished. No authored replacement
 character dialogue should be used.
 
 Outdoor road exits link the plaza with harbor, east and west rooms. Walk toward
-the original road openings to change rooms; arrival progress is saved. Interior
+the original road openings to change rooms; arrival progress is saved. The west-side road also connects to the station. Interior
 doors, pipes and story-dependent exits are unfinished. See docs/PROGRESS.md for
 current rendering limitations and isolated reciprocal-road verification.
