@@ -107,3 +107,33 @@ leaf centers, excluding the group's top-level siblings. Native conversion now
 retains all collision hierarchy owners (including A_ground_01) and applies
 ordered init bindings to the owner/descendants. Dynamic hit transforms and
 repeat event execution remain outside the current baked init state.
+
+Saved return-hit writer recovered: scanned original DOL text for stw+0x208,
+then inspected marioMoveMain800594a8. At80059714 it reads current floor+0x1e8;
+null skips the latch.80059724 calls hitGetAttr;80059728 tests PPC bit1 (mask
+0x40000000).80059730/80059734 copies that floor to saved-hit+0x208 before
+horizontal movement calculations. Other floors do not clear it. Native now
+remembers the same eligible contact at the start of its movement tick and
+resolves its authored position through the active room's binding map. Original
+jump/contact and transformation behavior remain broader physics work.
+
+Normal ground-query filter: marioSearchGround8008e694 chooses chkfilterVec
+800915e4 except special motion28/Vivian or roll-state cases. The default callback
+first accepts any0x00080080 bit, then rejects bit4 unless0x00800000 is set.
+Later0x80000000/name-dependent handling does not occur in the current five raw
+floor inventories. Native applies the recovered bit4 rule; currently excludes
+two west-room trigger floors. It is not a full partner/transformation/wall filter.
+Ship_Change02's0x8000 is NOT rejected by this normal bit filter.
+
+Actual original-harbor host path right30/diagonal80/down80 crosses Ship_Change02
+after A_yuka_04, then A_mizu water. The last eligible contact therefore yields
+Ship_Change02 automatic return(5.5,.05,-1.9), retaining it while over water.
+Initial test expectation A_yuka_04 was contradicted by that source floor path
+and corrected; do not force a preferred floor or point. This is verification of
+native contact/latch inputs, not an observed original harbor water sequence.
+
+Further water trace: mot_damage initialization calls marioNoUpdateCamPos
+801a8f34 at8013ae90 and npcStopForEvent80043cd8 at8013af5c; completion calls
+marioUpdateCamPos801a8f60 and npcStartForEvent80043bc8. Water recovery must
+freeze the field camera and NPC updates instead of following Mario's airborne
+recovery motion. Existing partner follow/camera does not yet implement this.

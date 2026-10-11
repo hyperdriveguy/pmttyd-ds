@@ -202,6 +202,11 @@ bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact) {
     if(ground.empty()) {height=0;if(contact)*contact={};return true;}
     bool found=false;float best=-1e30f;GroundContact bestContact;
     for(uint32_t n:nearby(groundIndex,p)) {
+        // Original normal-Mario chkfilterVec rejects bit4 unless its special
+        // inclusion bits apply. Name-dependent bit31 cases are not present
+        // in the five currently packaged rooms; transform filters are deferred.
+        const uint32_t flags=ground[n].contact.attributes;
+        if(!(flags&0x00080080) && !(flags&0x00800000) && (flags&4))continue;
         const float* v=ground[n].v;
         if(p.x<std::min({v[0],v[3],v[6]}) || p.x>std::max({v[0],v[3],v[6]}) ||
            p.z<std::min({v[2],v[5],v[8]}) || p.z>std::max({v[2],v[5],v[8]}))continue;
@@ -223,6 +228,7 @@ bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact) {
 void clearCollision() {walls.clear();wallLevels.clear();ground.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
+bool Game::recoveryReturn(ReturnPoint& point) const {return groundReturn(returnContact,point);}
 void Game::restore(const Progress& saved) {
     const Progress p=saved; // Caller may pass this game's own progress.
     *this = Game{};
@@ -268,6 +274,8 @@ const char* Game::prompt() const {
     return "Circle Pad: move   A: jump   X: partner";
 }
 void Game::move(const Input& i) {
+    // Original marioMoveMain remembers the eligible floor before moving.
+    if(groundContact.attributes&0x40000000)returnContact=groundContact;
     float x=i.x, z=i.z, len=std::hypot(x,z);
     if (len > 1) { x/=len; z/=len; }
     Vec2 p = progress.position;

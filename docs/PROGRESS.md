@@ -978,3 +978,49 @@ sequence with authored bindings. Dolphin fall/recovery observation remains
 required for timing/animation acceptance. Original camera/boat visibility,
 layered rendering, English story events, original SFX and broader traversal
 remain essential unfinished work; full objective active.
+
+## Original return-floor selection and normal trigger-floor filtering
+
+Recovered the actual saved-hit+0x208 writer in original marioMoveMain; it
+remembers current floor only if0x40000000 is set, before horizontal movement.
+Added native returnContact/recoveryReturn using that rule. Unbound/water contact
+does not overwrite the remembered owner, and room restoration resets it.
+Source-derived normal-Mario bit4 floor filter now excludes two west trigger
+floors; original geometry/attributes remain packed unchanged. No guessed
+respawn, water damage, camera freeze, animation or HP rule added yet.
+
+A host path expectation initially failed: route crosses Ship_Change02 after
+A_yuka_04, so the latest eligible source return is(5.5,.05,-1.9), not the earlier
+dock point. Corrected that expected original owner; implementation unchanged.
+Regression proves current water floor remains unbound, remembered eligible
+return persists through idle/water, query returns authored XYZ, and a new room
+clears it. Synthetic filter tests cover bit4 rejection and all identified
+inclusion alternatives. Source pointer/ground-filter/camera-freeze evidence
+is recorded in docs/MECHANICS.md.
+
+Validation:
+```sh
+make test
+build-host/core_tests --rooms
+make -j2 all
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/west-road.bin --seconds 4 --input-script tests/azahar_roads.py
+```
+All exited0. Core plus27 Python tests passed; all8 arrivals and18,315 indexed/
+full-scan probes plus new original return-selection/reset scenario passed. Native
+build passed. Azahar west two reciprocal round trips passed after filtering.
+Native harbor stair verification is also run below. Source geometry unchanged;
+no hardware or complete original-mechanics acceptance claim.
+
+Next concrete task: implement source-derived water recovery stages with eligible
+return selection, field camera/NPC freeze, source one-HP/zero-HP behavior and
+original presentation. Need original map fallback when no eligible owner exists,
+jump/ground contact behavior and actual Dolphin timing/animation observation.
+Water remains walkable in the development slice until that state machine is
+implemented. Original story/English messages, SFX, camera/boat visibility,
+layered rendering and broader traversal remain incomplete; full objective active.
+
+Final native harbor solid-dock position/elevation/HP/save and return-to-plaza
+assertions also passed (exit0):
+```sh
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_harbor_stairs.py
+```

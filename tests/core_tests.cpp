@@ -144,6 +144,14 @@ void groundImport() {
     CHECK(!groundAt({8,2},0,h,&contact));CHECK(contact.attributes==0x201 && h==3);
     {std::ofstream file(path,std::ios::binary);uint32_t tagged=0x80000002;file.write(reinterpret_cast<char*>(&tagged),4);}
     CHECK(!loadGround(path));CHECK(groundAt({-3,2},0,h,&contact));CHECK(contact.attributes==0x200 && contact.sourceNode==100);
+    for(uint32_t flags:{4u,0x80004u,0x84u,0x800004u}) {
+        {
+            std::ofstream file(path,std::ios::binary);uint32_t tagged=0x80000001;
+            GroundContact surface{flags,100};file.write(reinterpret_cast<char*>(&tagged),4);
+            file.write(reinterpret_cast<char*>(triangles),36);file.write(reinterpret_cast<char*>(&surface),8);
+        }
+        CHECK(loadGround(path));CHECK(groundAt({-3,2},0,h)==(flags!=4));
+    }
     clearCollision();std::remove(path);
 }
 void visibility() {
@@ -314,6 +322,8 @@ void indexedOriginalCollision() {
             CHECK(walkable(p,level)==free);
             GroundContact expected;
             for(size_t n=0;n<triangles.size();++n) {
+                const auto flags=contacts[n].attributes;
+                if(!(flags&0x80080) && !(flags&0x800000) && (flags&4))continue;
                 auto v=triangles[n];
                 if(p.x<std::min({v[0],v[3],v[6]}) || p.x>std::max({v[0],v[3],v[6]}) || p.z<std::min({v[2],v[5],v[8]}) || p.z>std::max({v[2],v[5],v[8]}))continue;
                 float den=(v[5]-v[8])*(v[0]-v[6])+(v[6]-v[3])*(v[2]-v[8]);if(std::fabs(den)<1e-8f)continue;
@@ -375,7 +385,25 @@ void originalRooms() {
     }
     clearCollision();
 }
+void originalReturnSelection() {
+    CHECK(loadCollision("romfs/gor_00.walls"));CHECK(loadGround("romfs/gor_00.ground"));CHECK(loadGroundReturns("romfs/gor_00.returns"));
+    Game g;Progress p;p.room=1;p.position={0,-5.1f};p.elevation=1.2f;g.restore(p);
+    ReturnPoint point{99,99,99};CHECK(!g.recoveryReturn(point));CHECK(point.x==99);
+    auto walk=[&](float x,float z,int frames) {Input i;i.x=x;i.z=z;for(int n=0;n<frames;++n)g.tick(i);};
+    walk(1,0,30);walk(1,1,80);walk(0,1,80);
+    CHECK(g.groundContact.attributes&0x200);CHECK(!(g.groundContact.attributes&0x40000000));
+    // This path crosses Ship_Change02 after A_yuka_04; the most recent
+    // eligible original owner supplies its authored automatic return center.
+    CHECK(g.returnContact.sourceNode==0xd2a30);
+    CHECK(g.recoveryReturn(point));CHECK(std::fabs(point.x-5.5f)<.001f);
+    CHECK(std::fabs(point.y-.05f)<.001f && std::fabs(point.z+1.9f)<.001f);
+    const auto remembered=g.returnContact.sourceNode;walk(0,0,10);CHECK(g.returnContact.sourceNode==remembered);
+    // Loading a different room resets the map-local remembered hit ID.
+    CHECK(loadCollision("romfs/map.walls"));CHECK(loadGround("romfs/map.ground"));CHECK(loadGroundReturns("romfs/map.returns"));
+    p.room=0;p.position={1,2};p.elevation=0;g.restore(p);CHECK(g.returnContact.sourceNode==0);CHECK(!g.recoveryReturn(point));
+    clearCollision();
+}
 int main(int argc,char**) {
-    try {if(argc>1) {indexedOriginalCollision();originalRooms();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();std::puts("Core scenarios passed");}
+    try {if(argc>1) {indexedOriginalCollision();originalRooms();originalReturnSelection();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

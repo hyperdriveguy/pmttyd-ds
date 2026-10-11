@@ -53,6 +53,8 @@ public:
     Vec2 partner{1.4f,2.5f};
     float groundHeight = 0, partnerHeight = 0;
     GroundContact groundContact,partnerContact;
+    GroundContact returnContact;
+    bool recoveryReturn(ReturnPoint& point) const;
     float cameraZ = 3.5f, cameraHeight = 0;
     float cameraX = 1, jumpHeight = 0, facing = 1, turnScale = 1;
     Scene scene = Scene::Explore;

@@ -179,3 +179,12 @@ room load. This provides return inputs, not the water-damage state machine:
 saved-hit selection, animation, HP penalty/recovery and original effects remain
 unfinished. Init centers are baked; dynamic collision/event mutations need a
 subsequent runtime hierarchy implementation.
+
+Game.returnContact remembers the eligible floor before native horizontal
+movement when return-enabled0x40000000 is set; unbound/water contacts leave it
+unchanged. recoveryReturn queries that source ID in the active room. restore
+resets map-local remembered contact, including across warp/load, avoiding stale
+IDs in another room. This latch does not implement the damage state machine.
+Floor sampling now excludes original bit4 triggers unless inclusion mask
+0x00080080 or0x00800000 applies, matching current normal-Mario ground-filter
+coverage. Roll/Vivian, name-dependent high-bit cases and wall filters remain open.
