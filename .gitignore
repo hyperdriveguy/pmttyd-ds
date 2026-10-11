@@ -18,3 +18,5 @@ romfs/*.walls
 romfs/*.ground
 
 romfs/rooms.bin
+
+romfs/*.uvanim

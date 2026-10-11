@@ -640,3 +640,53 @@ round trips and final station entry; saved room 4/HP 7 verified. Reviewed
 road-station-arrival-0.png: Mario entrance and full bottom status menu visible,
 reported 60 fps. No claim that the remaining locomotive appearance or original
 station story/event behavior is accepted.
+
+## Overworld continuation: native original east material playback
+
+Enabled native texture-zero playback for original east init's mizu/noname/
+ie_01_light clips. Verified init call offsets 0x4d694/0x4d6a8/0x4d6bc are outside
+conditional blocks. Inspected original US DOL evt_map_playanim, mapPlayAnimationLv,
+mapMain and marioStInit: mode1 loops full duration; clock0; default speed1;
+elapsed-ms frame calculation uses framerate field initialized 60 for NTSC
+(VIGetTvFormat0), 50 otherwise. Upstream viewer duration-1 loop shortcut is NOT
+used. Port follows fixed60Hz simulation ticks and resets epoch on room load.
+This does not implement original pause/clock behavior during broader story events.
+
+Original Hermite/step matrices baked per integer frame with original raw-UV
+bindings. New portable UVAN loader rejects invalid format/version/counts,
+nonfinite matrix/UVs, out-of-range/duplicate indices and trailing bytes; output
+remains unchanged on failure. Native updates 369 vertices, flushes contiguous
+cache ranges and streams/disposes animation metadata with rooms. East file
+41,856 bytes; durations999/159/400. All rooms/stage have mandatory valid files,
+empty where no proven material-only clip is enabled. Texture-zero east water
+is animated; original texgen1 water layer remains missing. No mesh clip enabled
+partially: ambient exporter rejects selected clips with mesh tracks.
+
+`make test` passed core plus 21 Python tests. Core now tests UV coordinate
+transforms, full-duration loop boundary, invalid-file atomic recovery.
+`build-host/core_tests --rooms` passed original all 8 arrivals, 18,315 collision
+probes, all room UV metadata imports and three east track loop probes.
+Original animation/visibility verifier scripts passed. Native build passed
+without warnings after correcting an initial indentation warning.
+
+Azahar existing east road script completed two reciprocal round trips with
+saved room IDs asserted. New stationary ambient capture script completed
+east entry, movement away from marker, three captures at 1.5 s spacing and return
+to plaza. Reviewed east-ambient-180: field/status render and reported 60fps,
+sim 0.17/CPU 3.9/GPU 0.5 ms displayed. Transition capture temporarily reported 20fps;
+steady capture reported 60. Partial black repaint artifacts persist in some
+virtual-display screenshots; no pixel assertion or Dolphin side-by-side visual
+acceptance claim. Native runtime update logic/asset imports are verified, but
+original complete material appearance and hardware performance remain unproven.
+
+Reproduce:
+```sh
+make test
+make -j2 all
+build-host/core_tests --rooms
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/east-road.bin --seconds 4 --input-script tests/azahar_ambient.py
+```
+Next: preserve runtime scene nodes for original mesh tracks (harbor water/boat,
+plaza hae, west mizu), implement second-layer material rendering, original camera
+framing and event visibility. Door/pipe/interior event links, original English
+story/dialogue, SFX and measured combat remain necessary. Full goal active.

@@ -151,3 +151,21 @@ function bytes/disassemblies stay ignored in artifacts/reference. Primary
 reference evt_cmd.h was read from jdaster64/ttyd-tot for string conditional
 opcodes; doldecomp/ttyd mapdrv sources inspected but do not implement these
 flag functions. Semantics below derive from the user's original DOL bytes.
+
+East gor_02 now packages mizu/noname/ie_01_light texture-zero ambient tracks
+identified at original init offsets0x4d694/0x4d6a8/0x4d6bc, outside enclosing
+conditional blocks. The source starts each with mode1/clock0. Actual US DOL
+mapPlayAnimationLv0x80029de4 sets loop flag0x4 for mode1 and speed1; mapMain
+0x80026bb8 wraps against the full authored duration (not duration-1). It
+calculates frames from elapsed milliseconds times gp->framerate/1000. US
+marioStInit 0x8006fb3c (symbol range; see local disassembly) writes60 to offset4
+for VIGetTvFormat()==0 and50 otherwise; NTSC US input selects60. Primary
+field reference: doldecomp/ttyd/include/mario/mariost.h (framerate at0x4).
+No original executable implementation is copied into the port.
+
+UVAN tables bake original Hermite/step curves at integer60Hz frames. Binding UVs
+come from inverse original bind texture matrices, preserving existing vertex
+layout and material batching. gor_02.uvanim is41,856 bytes, updates369 vertices
+(135/144/90) in tracks with durations999/159/400. All other room/stage files
+contain valid zero-track headers. Manifest records clip IDs and bound counts.
+East water texgen1 is still missing; do not claim complete water reproduction.

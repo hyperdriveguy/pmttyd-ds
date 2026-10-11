@@ -44,7 +44,7 @@ def wall_segments(collision):
             segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max())))
     return sorted(segments)
 
-def convert(path,output,scale=.1,hidden=(),animation=None,frame=0):
+def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=()):
     raw=Path(path).read_bytes();base=32
     table=32+u(raw,4)+u(raw,8)*4;names=table+u(raw,12)*8
     def string(o):return raw[o:raw.index(b'\0',o)].decode('ascii')
@@ -137,18 +137,45 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0):
         if sibling:walk(base+sibling,parent,visible if name!=scene_name else False,collidable if name!=collision_name else False,depth+1,exterior,exterior_group,suppressed)
     walk(base+u(raw,chunks['information']+4),np.eye(4))
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
-    count=0;batches=[];bounds=[]
+    ambient_names={t['material'] for a in animations if a['name'] in ambient for t in a['material_tracks'] if t['texgen']==0}
+    count=0;batches=[];bounds=[];bindings=defaultdict(list)
     cutaway_ids={node:n+1 for n,node in enumerate(sorted(cutaway_nodes))}
     with (output/'map.vertices').open('wb') as out:
         for mo,group,cull in sorted(vertices,key=lambda x:materials[x[0]]['layer']):
             v=vertices[(mo,group,cull)];mat=materials[mo]
-            for row in v:
+            inverse=np.linalg.inv(mat['uv']) if mat['texture']>=0 and any(n in ambient_names for n in (mat['name'],re.sub('_[vx]','',mat['name']))) else None
+            for index,row in enumerate(v):
+                if inverse is not None:
+                    original=inverse@np.array([row[3],1-row[4],1])
+                    bindings[mo].append((count+index,float(original[0]),float(original[1])))
                 if mat['texture']<0:row[3]=496/512;row[4]=1-240/256
                 out.write(struct.pack('<9f',*row));bounds.append(row[:3])
             batches.append((count,len(v),mat['texture'],batch_flags(mat['layer'],cutaway_ids.get(group,0),cull),*mat['wrap']));count+=len(v)
     with (output/'map.batches').open('wb') as out:
         out.write(struct.pack('<II',len(batches),len(textures)))
         for b in batches:out.write(struct.pack('<IIiIII',*b))
+    runtime_tracks=[]
+    for clip in ambient:
+        matches=[a for a in animations if a['name']==clip]
+        if len(matches)!=1 or matches[0]['tracks']:raise ValueError('Ambient material clip must be unique and mesh-free')
+        entry=matches[0];duration=entry['duration']
+        if duration!=int(duration) or not 0<duration<=4096:raise ValueError('Unsupported ambient frame duration')
+        for track in entry['material_tracks']:
+            if track['texgen']!=0:continue # Multilayer runtime rendering is unfinished.
+            targets=[mo for mo,mat in materials.items() if track['material'] in (mat['name'],re.sub('_[vx]','',mat['name']))]
+            bound=[v for mo in targets for v in bindings[mo]]
+            if not bound:raise ValueError('Ambient material has no geometry binding')
+            frames=[sample_material(track,frame)[:2].flatten().tolist() for frame in range(int(duration))]
+            runtime_tracks.append({'clip':clip,'material':track['material'],'duration':int(duration),'bindings':bound,'frames':frames})
+    used=set()
+    with (output/'map.uvanim').open('wb') as out:
+        out.write(struct.pack('<4sII',b'UVAN',1,len(runtime_tracks)))
+        for track in runtime_tracks:
+            out.write(struct.pack('<II',track['duration'],len(track['bindings'])))
+            for frame in track['frames']:out.write(struct.pack('<6f',*frame))
+            for vertex in track['bindings']:
+                if vertex[0] in used:raise ValueError('Overlapping ambient UV bindings')
+                used.add(vertex[0]);out.write(struct.pack('<Iff',*vertex))
     segments=wall_segments(collision)
     with (output/'map.walls').open('wb') as out:
         out.write(struct.pack('<I',len(segments)|0x80000000))
@@ -167,6 +194,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0):
              'cull_triangles':dict(cull_counts),'cutaway_nodes':[{'id':cutaway_ids[o],'name':name} for o,name in sorted(cutaway_nodes.items())],'exit_markers':markers,'limitations':warnings,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}
     (output/'map.animations.json').write_text(json.dumps(animations,indent=2)+'\n')
     summary['animations']=[{'name':a['name'],'duration':a['duration'],'mesh_tracks':len(a['tracks']),'material_tracks':len(a['material_tracks']),'material_table_offset':a['material_table_offset']} for a in animations]
+    summary['ambient_material_clips']=list(ambient);summary['animated_uv_vertices']=len(used)
     summary['sampled_animation']=animation;summary['sampled_frame']=frame if animation else None
     (output/'map-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     (output/'collision.json').write_text(json.dumps(collision))

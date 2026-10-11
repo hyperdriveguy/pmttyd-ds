@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "save.hpp"
 #include "visibility.hpp"
+#include "uv_animation.hpp"
 #include <cmath>
 #include <algorithm>
 #include <cstdio>
@@ -176,11 +177,38 @@ void collisionRollback() {
     CHECK(walkable({0,2}));CHECK(!walkable({2,2}));CHECK(groundAt({1,2},0,h));
     clearCollision();std::remove((target+".walls").c_str());std::remove((target+".ground").c_str());rmdir(directory);
 }
+void uvAnimation() {
+    UVTrack track;track.frames={{{1,0,0,0,1,0}},{{1,0,.5f,0,1,.25f}},{{2,0,0,0,3,0}}};
+    UVBinding binding{0,.2f,.3f};
+    auto a=animatedUV(track,binding,0),b=animatedUV(track,binding,1),c=animatedUV(track,binding,3);
+    CHECK(std::fabs(a[0]-.2f)<.0001f && std::fabs(a[1]-.7f)<.0001f);
+    CHECK(std::fabs(b[0]-.7f)<.0001f && std::fabs(b[1]-.45f)<.0001f);CHECK(a==c);
+    char filename[]="/tmp/ttyd-uv-XXXXXX";int fd=mkstemp(filename);CHECK(fd>=0);close(fd);
+    auto write=[&](uint32_t version,uint32_t frames,uint32_t vertex,float value,bool extra) {
+        std::ofstream f(filename,std::ios::binary);f.write("UVAN",4);uint32_t count=1,bindings=1;
+        f.write((char*)&version,4);f.write((char*)&count,4);f.write((char*)&frames,4);f.write((char*)&bindings,4);
+        std::array<float,6> matrix{{1,0,value,0,1,0}};f.write((char*)matrix.data(),24);
+        UVBinding item{vertex,.2f,.3f};f.write((char*)&item,sizeof(item));if(extra)f.put('x');
+    };
+    std::vector<UVTrack> loaded;
+    write(1,1,0,0,false);CHECK(loadUVAnimation(filename,1,loaded));CHECK(loaded.size()==1);
+    for(int mode=0;mode<5;++mode) {
+        write(mode==0?2:1,mode==1?0:1,mode==2?1:0,mode==3?std::numeric_limits<float>::quiet_NaN():0,mode==4);
+        CHECK(!loadUVAnimation(filename,1,loaded));CHECK(loaded.size()==1);CHECK(loaded[0].frames.size()==1);
+    }
+    std::remove(filename);
+}
 void indexedOriginalCollision() {
     size_t queries=0;
     for(uint32_t room=0;room<5;++room) {
         std::string prefix=std::string("romfs/")+roomAsset(room);
         CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));
+        std::vector<UVTrack> uv;CHECK(loadUVAnimation((prefix+".uvanim").c_str(),1000000,uv));
+        CHECK(uv.size()==(room==2?3u:0u));
+        for(const auto& track:uv)for(auto binding:track.bindings) {
+            auto first=animatedUV(track,binding,0),loop=animatedUV(track,binding,track.frames.size());
+            CHECK(first==loop);CHECK(std::isfinite(first[0]) && std::isfinite(first[1]));
+        }
         std::ifstream walls(prefix+".walls",std::ios::binary),ground(prefix+".ground",std::ios::binary);
         uint32_t nw=0,ng=0;walls.read(reinterpret_cast<char*>(&nw),4);ground.read(reinterpret_cast<char*>(&ng),4);
         CHECK(nw&0x80000000);nw&=0x7fffffff;
@@ -230,6 +258,6 @@ void originalRooms() {
     clearCollision();
 }
 int main(int argc,char**) {
-    try {if(argc>1) {indexedOriginalCollision();originalRooms();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();visibility();std::puts("Core scenarios passed");}
+    try {if(argc>1) {indexedOriginalCollision();originalRooms();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();visibility();uvAnimation();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

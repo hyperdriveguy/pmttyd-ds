@@ -1,6 +1,7 @@
 #pragma once
 #include "game.hpp"
 #include "visibility.hpp"
+#include "uv_animation.hpp"
 #include <3ds.h>
 #include <citro2d.h>
 #include <citro3d.h>
@@ -35,6 +36,8 @@ private:
         std::vector<Texture> textures;
         Vertex* vertices=nullptr;
         uint32_t vertexCount=0;
+        std::vector<UVTrack> uvTracks;
+        uint64_t animationStart=UINT64_MAX;
     };
     Room plaza,stage;
     Texture sky;

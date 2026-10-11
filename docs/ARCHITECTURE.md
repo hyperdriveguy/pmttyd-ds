@@ -104,3 +104,18 @@ groups at runtime instead of treating this build-time subset as universal.
 Original map flag2 is not a hidden flag: mapDisp branches around clipping work
 when it is clear. Native renderer currently has no analogous per-node frustum
 clipping, so clearing this bit requires no additional mesh suppression.
+
+Runtime material animation: version1 UVAN files hold per-integer-frame affine
+matrices and original pre-bind UV/vertex-index bindings. Portable loader validates
+magic/version/counts/finite values/index bounds/unique bindings/exact EOF and
+only replaces output on success. Original authored duration is the loop period;
+frame is elapsed fixed60Hz ticks modulo duration. Room load resets animation
+epoch; field animation currently follows the simulation clock through battle.
+Original event/pause behavior beyond the identified init clips is unfinished.
+
+Renderer updates only bound UV vertices after synchronized frame begin and
+flushes their contiguous ranges from CPU cache before GPU drawing. Scene
+positions/colors/collision stay unchanged. Room staging owns animation vectors
+with the other resources; rejected imports retain previous scene state.
+East room activates original init's three mesh-free material clips. Mesh
+animations and secondary-texture animation remain unsupported at runtime.

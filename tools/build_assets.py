@@ -24,7 +24,7 @@ def main():
     scripts=[Path(__file__),ROOT/'tools/iso_assets.py',ROOT/'tools/character_bake.py',ROOT/'tools/map_convert.py',ROOT/'tools/map_animation.py',ROOT/'tools/audio_convert.py',ROOT/'tools/room_convert.py']
     fingerprint=hashlib.sha256(b''.join(p.read_bytes() for p in scripts)+str((source.stat().st_size,source.stat().st_mtime_ns)).encode()).hexdigest()
     manifest=OUTPUT/'manifest.json'
-    required=['characters.t3x','sky.t3x','map.vertices','map.batches','rogueport.wav','battle.wav','victory.wav','stage.vertices','stage.batches','map.walls','map.ground','gor_00.vertices','gor_02.vertices','gor_03.vertices','gor_04.vertices','rooms.bin']
+    required=['characters.t3x','sky.t3x','map.vertices','map.batches','rogueport.wav','battle.wav','victory.wav','stage.vertices','stage.batches','map.walls','map.ground','gor_00.vertices','gor_02.vertices','gor_03.vertices','gor_04.vertices','map.uvanim','stage.uvanim','gor_00.uvanim','gor_02.uvanim','gor_03.uvanim','gor_04.uvanim','rooms.bin']
     if manifest.exists() and all((OUTPUT/p).exists() for p in required):
         if json.loads(manifest.read_text()).get('fingerprint')==fingerprint:return
     WORK.mkdir(parents=True,exist_ok=True);OUTPUT.mkdir(exist_ok=True)
@@ -53,7 +53,7 @@ def main():
     sky=asset('b/gor_01.tpl','sky.tpl');convert_tpl(sky,WORK/'sky.png')
     Image.open(WORK/'sky.png').convert('RGB').resize((256,256),Image.Resampling.LANCZOS).save(WORK/'sky-runtime.png');texture(WORK/'sky-runtime.png',OUTPUT/'sky.t3x','rgb565')
     model=asset('m/gor_01/d','gor_01.d');tpl=asset('m/gor_01/t','gor_01.tpl');summary=convert(model,WORK/'map')
-    for filename in ['map.vertices','map.batches','map.walls','map.ground']:shutil.copyfile(WORK/'map'/filename,OUTPUT/filename)
+    for filename in ['map.vertices','map.batches','map.walls','map.ground','map.uvanim']:shutil.copyfile(WORK/'map'/filename,OUTPUT/filename)
     for index,name in enumerate(summary['textures']):
         path=WORK/'map'/f'texture-{index}.png';convert_tpl(tpl,path,index)
         image=Image.open(path).convert('RGBA');w,h=image.size
@@ -66,8 +66,9 @@ def main():
         # Original gor_04 init ELSE for entry != hikousen_return hides these groups.
         # Only ordinary road entries are currently implemented for this room.
         hidden=('gondora_2','hako_1') if room=='gor_04' else ()
-        info=convert(room_model,WORK/room,hidden=hidden);rooms[room]=info
-        for ext in ['vertices','batches','walls','ground']:shutil.copyfile(WORK/room/f'map.{ext}',OUTPUT/f'{room}.{ext}')
+        ambient=('mizu','noname','ie_01_light') if room=='gor_02' else ()
+        info=convert(room_model,WORK/room,hidden=hidden,ambient=ambient);rooms[room]=info
+        for ext in ['vertices','batches','walls','ground','uvanim']:shutil.copyfile(WORK/room/f'map.{ext}',OUTPUT/f'{room}.{ext}')
         for index,name in enumerate(info['textures']):
             path=WORK/room/f'texture-{index}.png';convert_tpl(room_tpl,path,index)
             image=Image.open(path).convert('RGBA');w,h=image.size
@@ -126,7 +127,7 @@ def main():
         for link in links:out.write(struct.pack('<II5f',order.index(link['source']),order.index(link['target']),link['center'][0],link['center'][2],link['spawn'][0],link['spawn'][2],link['spawn'][1]))
     stage_model=asset('m/stg_01/d','stage.d');stage_tpl=asset('m/stg_01/t','stage.tpl')
     stage_summary=convert(stage_model,WORK/'stage',hidden=('stg__MASUKU','stg_kaaten_01_a','stg_kaaten_01_b','switch_dai','switch_mark','switch_osu'))
-    for extension in ['vertices','batches']:shutil.copyfile(WORK/'stage'/f'map.{extension}',OUTPUT/f'stage.{extension}')
+    for extension in ['vertices','batches','uvanim']:shutil.copyfile(WORK/'stage'/f'map.{extension}',OUTPUT/f'stage.{extension}')
     for index,name in enumerate(stage_summary['textures']):
         path=WORK/'stage'/f'texture-{index}.png';convert_tpl(stage_tpl,path,index)
         image=Image.open(path).convert('RGBA');w,h=image.size
