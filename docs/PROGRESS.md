@@ -289,3 +289,20 @@ and original interior/pipe triggers and story conditions before enabling them.
 Native door/pipe animations, original dialogue/event sequencing, character
 animation, SFX and hardware profiling remain incomplete. No full-remake or
 hardware 60 fps acceptance claim is made.
+
+## Character proportion correction
+
+User reported characters very large relative to original maps. Applied one
+shared .5 visual scale to character billboard height/width and matching shadow
+footprints in field and battle. Map geometry, camera framing, source texture
+resolution, actor positions and collision are unchanged. Relative character
+proportions are preserved. This is an explicit visual calibration in response
+to feedback, not a measured original actor-instance scale. Original AnimGroup
+pose bounds alone do not prove game-instance sizing; compare the actual US
+GameCube actors/doorways in Dolphin before claiming exact fidelity.
+
+Validation: `make -j2 all`, `make test` (core + 17 Python tests), and
+`git diff --check` passed. `python3 tools/emulator_smoke.py --seconds 4`
+booted; reviewed artifacts/azahar/boot.png showing Mario smaller beside the
+original plaza building/doorway. Battle sizing uses the same factor but was
+not separately captured in this update.

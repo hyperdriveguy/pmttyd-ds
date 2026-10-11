@@ -7,6 +7,9 @@
 namespace ttyd {
 namespace {
 constexpr int MaxVertices=12000;
+// Shared field/battle calibration against the unchanged original map scale.
+// Original actor-instance scale still needs confirmation in Dolphin.
+constexpr float PaperCharacterScale=.5f;
 constexpr uint32_t Ink=0xff352d29, Paper=0xffdff2fb, Gold=0xff62c7f3, Red=0xff4966d8;
 uint32_t rgb(unsigned r,unsigned g,unsigned b,unsigned a=255) { return C2D_Color32(r,g,b,a); }
 uint32_t shade(uint32_t c,float factor) { return rgb((c&255)*factor,((c>>8)&255)*factor,((c>>16)&255)*factor); }
@@ -114,6 +117,7 @@ void Renderer::box(float x,float z,float w,float d,float h,uint32_t c) {
     quad({x+w,z},{x,z},0,h,shade(c,.74f));
 }
 void Renderer::character(int index,Vec2 p,float h,float w,float face,float lift,float tilt) {
+    h*=PaperCharacterScale;w*=PaperCharacterScale;tilt*=PaperCharacterScale;
     const int cell=(index==0 && marioPose>0)?marioPose:index;
     float left=cell*.25f,right=left+.25f;
     if(face>0) std::swap(left,right);
@@ -124,6 +128,7 @@ void Renderer::character(int index,Vec2 p,float h,float w,float face,float lift,
     vertex(x1+tilt,y1,p.z,right,topV,white);vertex(x0+tilt,y1,p.z,left,topV,white);vertex(x0,y0,p.z,left,bottomV,white);
 }
 void Renderer::shadow(Vec2 p,float r,float floor) {
+    r*=PaperCharacterScale;
     float x0=p.x-r,x1=p.x+r,z0=p.z-r*.45f,z1=p.z+r*.45f;
 
     uint32_t white=0xffffffff;
