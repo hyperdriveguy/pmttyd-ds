@@ -1,0 +1,72 @@
+#pragma once
+#include "game.hpp"
+#include <3ds.h>
+#include <citro2d.h>
+#include <citro3d.h>
+#include <string>
+#include <vector>
+#include <cstdio>
+namespace ttyd {
+struct Metrics { float simulationMs=0, renderMs=0, gpuMs=0, fps=0; int steps=0; uint64_t droppedTicks=0; };
+class Renderer {
+public:
+    bool init();
+    void render(const Game&, const Metrics&, const char* notice, bool audioAvailable);
+    void shutdown();
+private:
+    struct Vertex { float x,y,z,u,v,r,g,b,a; };
+    Vertex* vertices=nullptr;
+    int count=0, transformLoc=0, marioPose=0;
+    shaderProgram_s program{};
+    DVLB_s* shader=nullptr;
+    C3D_RenderTarget* top=nullptr;
+    C3D_RenderTarget* bottom=nullptr;
+    C3D_Tex atlas{};
+    Tex3DS_Texture imported=nullptr;
+    C2D_TextBuf textBuffer=nullptr;
+    struct MapBatch { uint32_t start,count; int32_t texture; uint32_t layer,wrapS,wrapT; };
+    struct Texture { C3D_Tex texture{}; Tex3DS_Texture imported=nullptr; };
+    struct Room {
+        std::vector<MapBatch> batches;
+        std::vector<Texture> textures;
+        Vertex* vertices=nullptr;
+        uint32_t vertexCount=0;
+    };
+    Room plaza,stage;
+    Texture sky;
+    bool loadMap(const char* name,Room& room);
+    void drawMap(bool battle);
+    bool c3dReady=false,c2dReady=false,programReady=false,atlasReady=false;
+    void world(const Game&);
+    void overlay(const Game&);
+    void menu(const Game&,const Metrics&,const char*,bool);
+    void quad(Vec2 a,Vec2 b,float y0,float y1,uint32_t color);
+    void box(float x,float z,float w,float d,float h,uint32_t color);
+    void ground(float x0,float z0,float x1,float z1,float y,uint32_t color);
+    void character(int index,Vec2 p,float height,float width,float facing,float lift=0,float tilt=0);
+    void shadow(Vec2 p,float radius);
+    void vertex(float x,float y,float z,float u,float v,uint32_t color);
+    void text(const char*,float x,float y,float scale,uint32_t color);
+    void panel(float x,float y,float w,float h,uint32_t color);
+    void button(const char*,float x,float y,float w,float h,bool active,bool disabled=false);
+};
+class Audio {
+public:
+    bool init();
+    void play(Sound sound);
+    void update(Scene scene, bool enabled);
+    void shutdown();
+    bool available() const { return ready; }
+private:
+    bool ready=false;
+    struct Clip { int16_t* data=nullptr; uint32_t samples=0; ndspWaveBuf wave{}; };
+    Clip clips[4];
+    FILE* music=nullptr;
+    int musicTrack=-1;
+    uint32_t musicRate=32000, musicChannels=2, musicPosition=0, loopStart=0, loopEnd=0;
+    int16_t* streamData=nullptr;
+    ndspWaveBuf stream[3]{};
+    void switchTrack(int track);
+    void fill(ndspWaveBuf& buffer);
+};
+}

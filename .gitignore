@@ -1,0 +1,16 @@
+build/
+build-host/
+artifacts/
+romfs/*.t3x
+romfs/*.wav
+romfs/manifest.json
+*.elf
+*.3dsx
+*.smdh
+*.map
+__pycache__/
+local-assets/
+romfs/*.vertices
+romfs/*.batches
+romfs/*.loop
+romfs/*.walls
