@@ -233,3 +233,59 @@ The earlier harbor/west runs predated this C2D-only fix. `make test`,
 `make -j2 all` rebuilt successfully. The next agent should verify harbor/west
 bottom-screen presentation and destination restart persistence, then camera and
 foreground occlusion. No original story dialogue has been restored yet.
+
+## Overworld continuation: framing, indexed collision and destination reload
+
+Cameras now follow X and Z plus smoothed floor height. The fixed horizontal
+clamp and fixed depth target were removed: restored/warped rooms initialize
+the camera around the arrival, and exploration follows movement throughout
+room depth. Field eye offset (0,4.8,6.5), target (0,1,-1.4), smoothing .07
+are adaptation values, not measured original camera rails. Harbor arrival
+now centers Mario instead of leaving him at the distant top edge. Foreground
+geometry still needs occlusion handling; this does not solve the original
+scripted camera system or all visibility problems.
+
+Walls and floor triangles now build a two-unit spatial grid per successful
+load. Runtime queries test nearby candidates instead of the entire room.
+Coordinates/reference elevations are validated before cell lookup, oversized
+indexes are rejected and failed indexing keeps the previously loaded data.
+Empty imported wall sets are distinguished from the synthetic host fallback.
+Converter deduplication now preserves distinct wall heights sharing X/Z,
+fixing accidental replacement of lower/upper walls. Python regression coverage
+checks stacked walls. Exported wall/surface counts: plaza 1240/1010, harbor
+748/463, east 1555/878, west 1509/1037.
+
+The touchscreen map now scales each room's original collision footprint into
+its panel, filters walls to Mario's elevation, and displays Mario/Goombella
+markers. It no longer assumes plaza bounds or shows Crump in other rooms.
+Field labels use readable area names instead of internal pack filenames.
+
+Verification:
+- make test: portable core scenarios and 17 Python tests passed.
+- build-host/core_tests --rooms: all six original-data arrivals passed;
+  14,652 indexed collision/floor probes across four rooms matched exhaustive
+  scans at multiple elevations, including cell boundaries.
+- make -j2 all: original packs and native .3dsx rebuilt successfully.
+- Harbor road sequence completed two round trips on the new camera/indexed
+  build, with saved-room assertions. Reviewed harbor arrival capture: centered
+  Mario, complete touch menu, reported 60 fps.
+- West destination persistence sequence asserted room0 -> room3, HP7, exited;
+  a second emulator launch without fixture/reset asserted room3 -> room0, HP7.
+  This verifies destination restore through an actual usable return warp.
+  Touch map capture reviewed in west room: original footprint and markers fit
+  its panel. Bottom-screen menu remains visible after streaming.
+
+Persistence reproduction (isolated test profile only):
+```sh
+python3 tools/road_fixtures.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/west-road.bin --seconds 4 --input-script tests/azahar_persistence.py
+python3 tools/emulator_smoke.py --seconds 4 --input-script tests/azahar_persistence.py
+```
+
+Next concrete work: foreground occlusion / original scene visibility and
+original camera/event data; destination restart checks for harbor elevation
+and east room, failed-load recovery and broader room traversal. Resolve gor_04
+and original interior/pipe triggers and story conditions before enabling them.
+Native door/pipe animations, original dialogue/event sequencing, character
+animation, SFX and hardware profiling remain incomplete. No full-remake or
+hardware 60 fps acceptance claim is made.

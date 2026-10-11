@@ -24,6 +24,18 @@ def topology(command,verts):
         for n in range(1,len(verts)-1):yield [verts[0],verts[n],verts[n+1]]
     else:raise ValueError(f'Unsupported GX primitive {command:#x}')
 
+def wall_segments(collision):
+    segments=set()
+    for tri in collision:
+        a=np.array(tri);normal=np.cross(a[1]-a[0],a[2]-a[0]);length=np.linalg.norm(normal)
+        if length<1e-8 or abs(normal[1])/length>.2:continue
+        points=a[:,[0,2]]
+        p,q=max([(points[x],points[y]) for x,y in [(0,1),(1,2),(0,2)]],key=lambda pair:np.linalg.norm(pair[0]-pair[1]))
+        if np.linalg.norm(p-q)>.01:
+            p,q=sorted([tuple(np.round(p,4)),tuple(np.round(q,4))])
+            segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max())))
+    return sorted(segments)
+
 def convert(path,output,scale=.1,hidden=()):
     raw=Path(path).read_bytes();base=32
     table=32+u(raw,4)+u(raw,8)*4;names=table+u(raw,12)*8
@@ -111,16 +123,10 @@ def convert(path,output,scale=.1,hidden=()):
     with (output/'map.batches').open('wb') as out:
         out.write(struct.pack('<II',len(batches),len(textures)))
         for b in batches:out.write(struct.pack('<IIiIII',*b))
-    segments={}
-    for tri in collision:
-        a=np.array(tri);normal=np.cross(a[1]-a[0],a[2]-a[0]);length=np.linalg.norm(normal)
-        if length<1e-8 or abs(normal[1])/length>.2:continue
-        points=a[:,[0,2]]
-        p,q=max([(points[x],points[y]) for x,y in [(0,1),(1,2),(0,2)]],key=lambda pair:np.linalg.norm(pair[0]-pair[1]))
-        if np.linalg.norm(p-q)>.01:segments[tuple(sorted([tuple(np.round(p,4)),tuple(np.round(q,4))]))]=(float(a[:,1].min()),float(a[:,1].max()))
+    segments=wall_segments(collision)
     with (output/'map.walls').open('wb') as out:
         out.write(struct.pack('<I',len(segments)|0x80000000))
-        for (p,q),(lo,hi) in sorted(segments.items()):out.write(struct.pack('<6f',*p,*q,lo,hi))
+        for segment in segments:out.write(struct.pack('<6f',*segment))
     # Keep walkable collision surfaces, including ramps and elevated platforms.
     ground=[]
     for tri in collision:

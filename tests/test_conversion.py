@@ -5,7 +5,7 @@ import unittest
 import numpy as np
 from audio_convert import decode,nibbles_to_samples
 from character_bake import matrix
-from map_convert import topology
+from map_convert import topology,wall_segments
 class ConversionTests(unittest.TestCase):
     def test_dsp_predictor_zero(self):
         self.assertEqual(list(decode(bytes([0,0x1f])+bytes(6),14,[0]*16))[:3],[1,-1,0])
@@ -23,6 +23,12 @@ class ConversionTests(unittest.TestCase):
         self.assertTrue(np.allclose(matrix(node,0)@np.array([1,1,1,1]),[3,4,5,1]))
     def test_triangle_strip(self):
         self.assertEqual(list(topology(0x98,[0,1,2,3])),[[0,1,2],[2,1,3]])
+    def test_stacked_wall_segments(self):
+        low=[[0,0,0],[2,0,0],[0,1,0]]
+        high=[[0,3,0],[2,3,0],[0,4,0]]
+        segments=wall_segments([low,high,low])
+        self.assertEqual(len(segments),2)
+        self.assertEqual([s[4:] for s in segments],[(0.,1.),(3.,4.)])
     def test_triangle_fan(self):
         self.assertEqual(list(topology(0xa0,[0,1,2,3])),[[0,1,2],[0,2,3]])
 if __name__=='__main__':unittest.main()

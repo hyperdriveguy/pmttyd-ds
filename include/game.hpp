@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <cstdint>
+#include <cstddef>
 #include <vector>
 namespace ttyd {
 constexpr int TickRate = 60;
@@ -32,6 +33,7 @@ struct Input {
 };
 struct RoadWarp { uint32_t source,target; float x,z,spawnX,spawnZ,spawnY; };
 const char* roomAsset(uint32_t room);
+const char* roomName(uint32_t room);
 bool loadWarps(const char* path);
 struct Progress {
     uint32_t room = 0;
@@ -45,6 +47,7 @@ public:
     Progress progress;
     Vec2 partner{1.4f,2.5f};
     float groundHeight = 0, partnerHeight = 0;
+    float cameraZ = 3.5f, cameraHeight = 0;
     float cameraX = 1, jumpHeight = 0, facing = 1, turnScale = 1;
     Scene scene = Scene::Explore;
     Phase phase = Phase::Select;
@@ -79,4 +82,6 @@ bool loadGround(const char* path);
 bool groundAt(Vec2 p, float reference, float& height);
 void clearCollision();
 const std::vector<Rect>& collisionWalls();
+Rect collisionBounds();
+bool wallAtLevel(size_t index,float elevation);
 }

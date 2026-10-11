@@ -73,3 +73,8 @@ target room uint32, exit X/Z, spawn X/Z/Y float32), 28 bytes each. Road IDs
 offsets, marker-derived coordinates and target/arrival identifiers. Wall record
 count high bit now indicates min/max Y following each XZ segment (six floats).
 Unknown story-dependent exits are not activated by this road-only parser.
+
+Wall deduplication includes the original height interval in addition to X/Z,
+so stacked surfaces do not overwrite one another. Floor triangles also supply
+per-room footprint bounds for touch-map scaling; runtime uses a spatial index
+without modifying original geometry.

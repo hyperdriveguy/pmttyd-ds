@@ -3,13 +3,37 @@
 #include <cmath>
 #include <cstdio>
 #include <vector>
+#include <unordered_map>
 namespace ttyd {
 namespace {
 std::vector<RoadWarp> roads;
 std::vector<Rect> walls;
+bool collisionReady=false;
 std::vector<Vec2> wallLevels;
 struct GroundTriangle { float v[9]; };
 std::vector<GroundTriangle> ground;
+using SpatialIndex=std::unordered_map<uint64_t,std::vector<uint32_t>>;
+SpatialIndex wallIndex,groundIndex;
+Rect roomBounds{-9,-4.5f,9,4};
+constexpr float GridSize=2.f;
+uint64_t cellKey(int x,int z) {return (uint64_t(uint32_t(x))<<32)|uint32_t(z);}
+const std::vector<uint32_t>& nearby(const SpatialIndex& index,Vec2 p) {
+    static const std::vector<uint32_t> empty;
+    auto cell=index.find(cellKey(int(std::floor(p.x/GridSize)),int(std::floor(p.z/GridSize))));
+    return cell==index.end()?empty:cell->second;
+}
+bool indexBounds(SpatialIndex& index,uint32_t n,float x0,float z0,float x1,float z1,size_t& references) {
+    if(!std::isfinite(x0) || !std::isfinite(z0) || !std::isfinite(x1) || !std::isfinite(z1) ||
+       std::max({std::fabs(x0),std::fabs(z0),std::fabs(x1),std::fabs(z1)})>4096)return false;
+    int left=std::floor(x0/GridSize),right=std::floor(x1/GridSize);
+    int back=std::floor(z0/GridSize),front=std::floor(z1/GridSize);
+    size_t cells=size_t(right-left+1)*size_t(front-back+1);
+    if(cells>2000000 || references+cells>2000000)return false;
+    references+=cells;
+    for(int x=left;x<=right;++x)for(int z=back;z<=front;++z)index[cellKey(x,z)].push_back(n);
+    return true;
+}
+
 
 float length(Vec2 a, Vec2 b) { return std::hypot(a.x-b.x, a.z-b.z); }
 int menuButton(const Input& i) {
@@ -22,6 +46,14 @@ const char* roomAsset(uint32_t room) {
     static const char* names[]={"map","gor_00","gor_02","gor_03"};
     return room<4?names[room]:nullptr;
 }
+const char* roomName(uint32_t room) {
+    static const char* names[]={"Rogueport plaza","Rogueport harbor","Rogueport east side","Rogueport west side"};
+    return room<4?names[room]:"Unknown area";
+}
+bool wallAtLevel(size_t n,float elevation) {
+    return n<walls.size() && (wallLevels.empty() || (wallLevels[n].z>=elevation+.1f && wallLevels[n].x<=elevation+1.2f));
+}
+Rect collisionBounds() {return roomBounds;}
 bool loadWarps(const char* path) {
     FILE* file=std::fopen(path,"rb");if(!file)return false;
     uint32_t count=0;bool ok=std::fread(&count,4,1,file)==1 && count<=128;
@@ -45,12 +77,12 @@ bool Game::finishWarp() {
 }
 bool walkable(Vec2 p,float elevation) {
     constexpr float r = 0.28f;
-    if (!std::isfinite(p.x) || !std::isfinite(p.z)) return false;
-    if(!walls.empty()) {
+    if (!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(elevation) || std::fabs(p.x)>4096 || std::fabs(p.z)>4096) return false;
+    if(collisionReady) {
         if(ground.empty() && (p.x < -6.7f+r || p.x > 6.7f-r || p.z < -4.5f+r || p.z > 5.8f-r))return false;
-        for(size_t n=0;n<walls.size();++n) {
+        for(uint32_t n:nearby(wallIndex,p)) {
             auto wall=walls[n];
-            if(!wallLevels.empty() && (wallLevels[n].z<elevation+.1f || wallLevels[n].x>elevation+1.2f))continue;
+            if(!wallAtLevel(n,elevation))continue;
             if(p.x < std::min(wall.x0,wall.x1)-r || p.x > std::max(wall.x0,wall.x1)+r || p.z < std::min(wall.z0,wall.z1)-r || p.z > std::max(wall.z0,wall.z1)+r)continue;
             float dx=wall.x1-wall.x0,dz=wall.z1-wall.z0,den=dx*dx+dz*dz;
             if(den<1e-8f)continue;
@@ -69,7 +101,7 @@ bool loadCollision(const char* path) {
     FILE* file=std::fopen(path,"rb");if(!file)return false;
     uint32_t count=0;bool ok=std::fread(&count,4,1,file)==1;
     bool levels=(count&0x80000000)!=0;count&=0x7fffffff;
-    if(!ok || count==0 || count>100000) {std::fclose(file);return false;}
+    if(!ok || count>100000) {std::fclose(file);return false;}
     std::vector<Rect> data(count);std::vector<Vec2> heights(levels?count:0);
     for(uint32_t n=0;n<count;++n) {
         ok=ok && std::fread(&data[n],sizeof(Rect),1,file)==1;
@@ -78,8 +110,13 @@ bool loadCollision(const char* path) {
     ok=ok && std::fgetc(file)==EOF;std::fclose(file);
     for(auto w:data) if(!std::isfinite(w.x0) || !std::isfinite(w.z0) || !std::isfinite(w.x1) || !std::isfinite(w.z1))ok=false;
     for(auto h:heights)if(!std::isfinite(h.x) || !std::isfinite(h.z) || h.x>h.z)ok=false;
-    if(ok)wallLevels.swap(heights);
-    if(ok) walls.swap(data);
+    SpatialIndex next;size_t references=0;
+    for(uint32_t n=0;ok && n<count;++n) {
+        auto w=data[n];
+        ok=indexBounds(next,n,std::min(w.x0,w.x1)-.28f,std::min(w.z0,w.z1)-.28f,
+                       std::max(w.x0,w.x1)+.28f,std::max(w.z0,w.z1)+.28f,references);
+    }
+    if(ok) {wallLevels.swap(heights);walls.swap(data);wallIndex.swap(next);collisionReady=true;}
     return ok;
 }
 bool loadGround(const char* path) {
@@ -89,14 +126,29 @@ bool loadGround(const char* path) {
     if(ok)ok=std::fread(data.data(),sizeof(GroundTriangle),count,file)==count && std::fgetc(file)==EOF;
     std::fclose(file);
     for(const auto& tri:data)for(float v:tri.v)if(!std::isfinite(v))ok=false;
-    if(ok)ground.swap(data);
+    SpatialIndex next;size_t references=0;
+    for(uint32_t n=0;ok && n<count;++n) {
+        auto v=data[n].v;
+        ok=indexBounds(next,n,std::min({v[0],v[3],v[6]}),std::min({v[2],v[5],v[8]}),
+                       std::max({v[0],v[3],v[6]}),std::max({v[2],v[5],v[8]}),references);
+    }
+    if(ok) {
+        const auto v=data.front().v;Rect bounds{v[0],v[2],v[0],v[2]};
+        for(const auto& tri:data)for(int n=0;n<9;n+=3) {
+            bounds.x0=std::min(bounds.x0,tri.v[n]);bounds.x1=std::max(bounds.x1,tri.v[n]);
+            bounds.z0=std::min(bounds.z0,tri.v[n+2]);bounds.z1=std::max(bounds.z1,tri.v[n+2]);
+        }
+        ground.swap(data);groundIndex.swap(next);roomBounds=bounds;
+    }
     return ok;
 }
 bool groundAt(Vec2 p,float reference,float& height) {
+    if(!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(reference) ||
+       std::fabs(p.x)>4096 || std::fabs(p.z)>4096)return false;
     if(ground.empty()) {height=0;return true;}
     bool found=false;float best=-1e30f;
-    for(const auto& tri:ground) {
-        const float* v=tri.v;
+    for(uint32_t n:nearby(groundIndex,p)) {
+        const float* v=ground[n].v;
         if(p.x<std::min({v[0],v[3],v[6]}) || p.x>std::max({v[0],v[3],v[6]}) ||
            p.z<std::min({v[2],v[5],v[8]}) || p.z>std::max({v[2],v[5],v[8]}))continue;
         float den=(v[5]-v[8])*(v[0]-v[6])+(v[6]-v[3])*(v[2]-v[8]);
@@ -111,7 +163,7 @@ bool groundAt(Vec2 p,float reference,float& height) {
     if(found)height=best;
     return found;
 }
-void clearCollision() {walls.clear();wallLevels.clear();ground.clear();}
+void clearCollision() {walls.clear();wallLevels.clear();ground.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
 void Game::restore(const Progress& saved) {
@@ -124,7 +176,7 @@ void Game::restore(const Progress& saved) {
     groundAt(p.position,p.elevation,groundHeight);
     groundAt(partner,groundHeight,partnerHeight);
     followerPath.push_back(partner);followerPath.push_back(p.position);
-    cameraX = std::clamp(p.position.x,-3.5f,3.5f);
+    cameraX=p.position.x;cameraZ=p.position.z;cameraHeight=groundHeight;
 }
 void Game::openDialogue(int kind) {
     scene = Scene::Dialogue; dialogueKind = kind; dialoguePage = 0;
@@ -200,7 +252,9 @@ void Game::move(const Input& i) {
     }
     // Bound the trail if the partner cannot traverse an old segment.
     if(followerPath.size()>512) {partner=p;partnerHeight=groundHeight;followerPath.clear();}
-    cameraX += (std::clamp(p.x,-3.5f,3.5f)-cameraX)*.07f;
+    cameraX+=(p.x-cameraX)*.07f;
+    cameraZ+=(p.z-cameraZ)*.07f;
+    cameraHeight+=(groundHeight-cameraHeight)*.07f;
     if (jumpTick>0) { --jumpTick; jumpHeight=1.1f*std::sin(jumpTick*3.14159265f/36.f); }
     else jumpHeight=0;
 }

@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "save.hpp"
 #include <cmath>
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
@@ -106,6 +107,7 @@ void groundImport() {
     CHECK(write(fd,&count,4)==4);CHECK(write(fd,triangles,sizeof(triangles))==sizeof(triangles));close(fd);
     CHECK(loadGround(path));float h=0;
     CHECK(groundAt({-3,2},0,h));CHECK(std::fabs(h-.125f)<.001f);
+    CHECK(!groundAt({std::numeric_limits<float>::quiet_NaN(),2},0,h));
     CHECK(!groundAt({8,2},0,h));CHECK(!groundAt({0,2},0,h));
     CHECK(groundAt({0,2},.3f,h));CHECK(std::fabs(h-.5f)<.001f);
     CHECK(groundAt({-3,2},3,h));CHECK(h==3);
@@ -113,6 +115,40 @@ void groundImport() {
     Input right;right.x=1;for(int n=0;n<12;++n)g.tick(right);
     CHECK(g.progress.position.x>-2.3f);CHECK(g.groundHeight>.2f);
     clearCollision();std::remove(path);
+}
+void indexedOriginalCollision() {
+    size_t queries=0;
+    for(uint32_t room=0;room<4;++room) {
+        std::string prefix=std::string("romfs/")+roomAsset(room);
+        CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));
+        std::ifstream walls(prefix+".walls",std::ios::binary),ground(prefix+".ground",std::ios::binary);
+        uint32_t nw=0,ng=0;walls.read(reinterpret_cast<char*>(&nw),4);ground.read(reinterpret_cast<char*>(&ng),4);
+        CHECK(nw&0x80000000);nw&=0x7fffffff;
+        std::vector<std::array<float,6>> segments(nw);std::vector<std::array<float,9>> triangles(ng);
+        walls.read(reinterpret_cast<char*>(segments.data()),nw*24);ground.read(reinterpret_cast<char*>(triangles.data()),ng*36);
+        CHECK(walls.good());CHECK(ground.good());
+        for(int x=-18;x<=18;++x)for(int z=-16;z<=16;++z)for(float level:{0.f,1.2f,3.f}) {
+            Vec2 p{x*.5f,z*.5f};bool free=true,found=false;float floor=-1e30f;
+            for(auto w:segments) {
+                if(w[5]<level+.1f || w[4]>level+1.2f)continue;
+                float dx=w[2]-w[0],dz=w[3]-w[1],den=dx*dx+dz*dz;if(den<1e-8f)continue;
+                float t=std::max(0.f,std::min(1.f,((p.x-w[0])*dx+(p.z-w[1])*dz)/den));
+                float a=p.x-w[0]-t*dx,b=p.z-w[1]-t*dz;if(a*a+b*b<.28f*.28f)free=false;
+            }
+            CHECK(walkable(p,level)==free);
+            for(auto v:triangles) {
+                if(p.x<std::min({v[0],v[3],v[6]}) || p.x>std::max({v[0],v[3],v[6]}) || p.z<std::min({v[2],v[5],v[8]}) || p.z>std::max({v[2],v[5],v[8]}))continue;
+                float den=(v[5]-v[8])*(v[0]-v[6])+(v[6]-v[3])*(v[2]-v[8]);if(std::fabs(den)<1e-8f)continue;
+                float a=((v[5]-v[8])*(p.x-v[6])+(v[6]-v[3])*(p.z-v[8]))/den;
+                float b=((v[8]-v[2])*(p.x-v[6])+(v[0]-v[6])*(p.z-v[8]))/den;
+                float y=a*v[1]+b*v[4]+(1-a-b)*v[7];
+                if(a>=-.0001f && b>=-.0001f && a+b<=1.0001f && y<=level+.25f && y>=level-.5f && y>floor){found=true;floor=y;}
+            }
+            float actual=0;CHECK(groundAt(p,level,actual)==found);if(found)CHECK(std::fabs(actual-floor)<.001f);
+            ++queries;
+        }
+    }
+    clearCollision();std::printf("Indexed original collision matched %zu full-scan probes\n",queries);
 }
 void originalRooms() {
     CHECK(loadWarps("romfs/rooms.bin"));
@@ -124,7 +160,9 @@ void originalRooms() {
         Game g;g.progress.room=road.source;g.progress.hp=7;g.warpRequest=n;
         CHECK(g.warpTarget()==road.target);CHECK(g.finishWarp());
         CHECK(g.progress.room==road.target);CHECK(g.progress.hp==7);CHECK(g.warpRequest==-1);
-        CHECK(g.warpCooldown==45);CHECK(g.saveRequested);CHECK(walkable(g.progress.position,g.groundHeight));
+        CHECK(g.warpCooldown==45);CHECK(g.saveRequested);
+        CHECK(g.cameraX==g.progress.position.x);CHECK(g.cameraZ==g.progress.position.z);
+        CHECK(g.cameraHeight==g.groundHeight);CHECK(walkable(g.progress.position,g.groundHeight));
         CHECK(std::fabs(g.progress.position.x-road.spawnX)<.001f);CHECK(std::fabs(g.progress.position.z-road.spawnZ)<.001f);
         CHECK(decodeSave(encodeSave(g.progress),g.progress));
         for(int frame=0;frame<10;++frame)g.tick({});CHECK(g.warpRequest==-1);
@@ -132,6 +170,6 @@ void originalRooms() {
     clearCollision();
 }
 int main(int argc,char**) {
-    try {if(argc>1) {originalRooms();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();std::puts("Core scenarios passed");}
+    try {if(argc>1) {indexedOriginalCollision();originalRooms();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

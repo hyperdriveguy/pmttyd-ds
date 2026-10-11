@@ -138,7 +138,7 @@ void Renderer::world(const Game& g) {
     float cam=battle?0:g.cameraX;
     C3D_Mtx projection,view,transform;
     Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(42),C3D_AspectRatioTop,.1f,80,false);
-    Mtx_LookAt(&view,FVec3_New(cam,battle?2.8f:4.8f+g.groundHeight,battle?5.5f:10),FVec3_New(cam,battle?1.f:1.f+g.groundHeight,-.4f),FVec3_New(0,1,0),false);
+    Mtx_LookAt(&view,FVec3_New(cam,battle?2.8f:4.8f+g.cameraHeight,battle?5.5f:g.cameraZ+6.5f),FVec3_New(cam,battle?1.f:1.f+g.cameraHeight,battle?-.4f:g.cameraZ-1.4f),FVec3_New(0,1,0),false);
     Mtx_Multiply(&transform,&projection,&view);
     // Original room backdrop, drawn without depth writes before the room.
     const float x0=cam-30,x1=cam+30,y0=-12,y1=24,z=-25;
@@ -215,7 +215,7 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
 void Renderer::overlay(const Game& g) {
     panel(8,7,174,28,Paper);
     char line[128];std::snprintf(line,sizeof(line),"Mario  HP %d/10",g.progress.hp);text(line,16,12,.54f,Ink);
-    text(g.scene==Scene::Battle?"BATTLE STAGE":roomAsset(g.progress.room),205,12,.46f,rgb(255,246,222));
+    text(g.scene==Scene::Battle?"BATTLE STAGE":roomName(g.progress.room),205,12,.46f,rgb(255,246,222));
     if(g.scene==Scene::Dialogue) {
         panel(14,163,372,65,Paper);text(g.dialogue(),26,172,.55f,Ink);
         text("A / touch >",308,208,.4f,Ink);
@@ -287,10 +287,19 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
             button(g.progress.sound?"Sound: ON / Y":"Sound: OFF / Y",16,177,288,39,true);
         } else {
             panel(18,93,284,113,rgb(205,183,142));
-            for(auto wall:collisionWalls()) C2D_DrawLine(24+(wall.x0+6.7f)*20,99+(wall.z0+4.5f)*9,rgb(143,103,76),24+(wall.x1+6.7f)*20,99+(wall.z1+4.5f)*9,rgb(143,103,76),1,.5f);
-            C2D_DrawRectSolid(24+(g.progress.position.x+6.7f)*20-3,99+(g.progress.position.z+4.5f)*9-3,.5f,6,6,Red);
-            if(!g.progress.crumpDefeated) C2D_DrawRectSolid(24+(CrumpPosition.x+6.7f)*20-3,99+(CrumpPosition.z+4.5f)*9-3,.5f,6,6,rgb(130,74,140));
-            text("Red: Mario     Purple: Crump",18,207,.38f,Ink);
+            const Rect bounds=collisionBounds();
+            float width=std::max(.1f,bounds.x1-bounds.x0),depth=std::max(.1f,bounds.z1-bounds.z0);
+            float scale=std::min(270.f/width,100.f/depth);
+            float originX=160-(bounds.x0+bounds.x1)*scale*.5f,originZ=149-(bounds.z0+bounds.z1)*scale*.5f;
+            const auto& walls=collisionWalls();
+            for(size_t n=0;n<walls.size();++n) if(wallAtLevel(n,g.groundHeight)) {
+                auto wall=walls[n];
+                C2D_DrawLine(originX+wall.x0*scale,originZ+wall.z0*scale,rgb(143,103,76),originX+wall.x1*scale,originZ+wall.z1*scale,rgb(143,103,76),1,.5f);
+            }
+            C2D_DrawRectSolid(originX+g.progress.position.x*scale-3,originZ+g.progress.position.z*scale-3,.6f,6,6,Red);
+            C2D_DrawRectSolid(originX+g.partner.x*scale-2,originZ+g.partner.z*scale-2,.6f,4,4,Gold);
+            if(g.progress.room==0 && !g.progress.crumpDefeated) C2D_DrawRectSolid(originX+CrumpPosition.x*scale-3,originZ+CrumpPosition.z*scale-3,.6f,6,6,rgb(130,74,140));
+            text(roomName(g.progress.room),18,207,.38f,Ink);
         }
     }
     if(notice && *notice) {panel(10,217,300,20,Paper);text(notice,16,218,.4f,Ink);}
