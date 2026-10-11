@@ -44,7 +44,7 @@ private:
     void box(float x,float z,float w,float d,float h,uint32_t color);
     void ground(float x0,float z0,float x1,float z1,float y,uint32_t color);
     void character(int index,Vec2 p,float height,float width,float facing,float lift=0,float tilt=0);
-    void shadow(Vec2 p,float radius);
+    void shadow(Vec2 p,float radius,float floor=0);
     void vertex(float x,float y,float z,float u,float v,uint32_t color);
     void text(const char*,float x,float y,float scale,uint32_t color);
     void panel(float x,float y,float w,float h,uint32_t color);

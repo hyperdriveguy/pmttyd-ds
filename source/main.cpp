@@ -26,7 +26,7 @@ int main() {
         gfxExit();
         return 1;
     }
-    if(!ttyd::loadCollision("romfs:/map.walls")) {
+    if(!ttyd::loadCollision("romfs:/map.walls") || !ttyd::loadGround("romfs:/map.ground")) {
         renderer.shutdown();romfsExit();gfxExit();return 1;
     }
     ttyd::Audio audio;audio.init();
@@ -35,6 +35,7 @@ int main() {
     mkdir("sdmc:/3ds",0777);mkdir("sdmc:/3ds/ttyd-2ds",0777);
     const auto loaded=ttyd::loadSave(savePath,saved);
     if(loaded==ttyd::LoadResult::Loaded || loaded==ttyd::LoadResult::Recovered) game.restore(saved);
+    if(loaded==ttyd::LoadResult::Missing || loaded==ttyd::LoadResult::Invalid) game.restore(game.progress);
     const char* notice=loaded==ttyd::LoadResult::Recovered?"Recovered backup save":loaded==ttyd::LoadResult::Invalid?"Invalid save; started a new game":!newModel?"New 2DS XL is the performance target":"Development slice / provisional mechanics";
     int noticeTicks=240;
     ttyd::Metrics metrics;

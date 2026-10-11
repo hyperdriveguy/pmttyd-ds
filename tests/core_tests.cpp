@@ -90,7 +90,23 @@ void collisionImport() {
     CHECK(!walkable({7,3}));clearCollision();std::remove(path);
     CHECK(!loadCollision("/does/not/exist"));
 }
+void groundImport() {
+    char path[]="/tmp/ttyd-ground-XXXXXX";int fd=mkstemp(path);CHECK(fd>=0);
+    uint32_t count=2;
+    // Sloping floor, plus a roof that must not pull the actor upward.
+    float triangles[18]={-4,0,1, 4,1,1, -4,0,4, -4,3,1, 4,3,1, -4,3,4};
+    CHECK(write(fd,&count,4)==4);CHECK(write(fd,triangles,sizeof(triangles))==sizeof(triangles));close(fd);
+    CHECK(loadGround(path));float h=0;
+    CHECK(groundAt({-3,2},0,h));CHECK(std::fabs(h-.125f)<.001f);
+    CHECK(!groundAt({8,2},0,h));CHECK(!groundAt({0,2},0,h));
+    CHECK(groundAt({0,2},.3f,h));CHECK(std::fabs(h-.5f)<.001f);
+    CHECK(groundAt({-3,2},3,h));CHECK(h==3);
+    Game g;g.progress.position={-3,2};g.restore(g.progress);CHECK(std::fabs(g.groundHeight-.125f)<.001f);
+    Input right;right.x=1;for(int n=0;n<12;++n)g.tick(right);
+    CHECK(g.progress.position.x>-2.3f);CHECK(g.groundHeight>.2f);
+    clearCollision();std::remove(path);
+}
 int main() {
-    try {movement();dialogueAndTouch();timing();battles();saves();collisionImport();std::puts("Core scenarios passed");}
+    try {movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

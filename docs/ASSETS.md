@@ -58,3 +58,10 @@ Format research used noclip.website (MIT) and vgmstream (ISC); corresponding
 license notices are in third_party. Nisto/musyx-extract was read for format facts;
 its unlicensed source is not incorporated. No Paper Mario decompilation code is
 currently incorporated. Record licenses before adding any external code.
+
+Ground surfaces are exported from the original collision subtree into
+map.ground (little-endian uint32 count, then nine float32 coordinates per
+triangle). Slopes with absolute normalized Y normal >= .65 are retained. This
+is a provisional traversal filter, not an observed original engine threshold.
+Original rel/gor.rel is extracted read-only with provenance for exit/event
+analysis; no original executable code is run by the remake.

@@ -112,11 +112,12 @@ void Renderer::character(int index,Vec2 p,float h,float w,float face,float lift,
     vertex(x0,y0,p.z,left,bottomV,white);vertex(x1,y0,p.z,right,bottomV,white);vertex(x1+tilt,y1,p.z,right,topV,white);
     vertex(x1+tilt,y1,p.z,right,topV,white);vertex(x0+tilt,y1,p.z,left,topV,white);vertex(x0,y0,p.z,left,bottomV,white);
 }
-void Renderer::shadow(Vec2 p,float r) {
+void Renderer::shadow(Vec2 p,float r,float floor) {
     float x0=p.x-r,x1=p.x+r,z0=p.z-r*.45f,z1=p.z+r*.45f;
+
     uint32_t white=0xffffffff;
-    vertex(x0,.012f,z0,0,.5f,white);vertex(x1,.012f,z0,.25f,.5f,white);vertex(x1,.012f,z1,.25f,.25f,white);
-    vertex(x1,.012f,z1,.25f,.25f,white);vertex(x0,.012f,z1,0,.25f,white);vertex(x0,.012f,z0,0,.5f,white);
+    vertex(x0,floor+.012f,z0,0,.5f,white);vertex(x1,floor+.012f,z0,.25f,.5f,white);vertex(x1,floor+.012f,z1,.25f,.25f,white);
+    vertex(x1,floor+.012f,z1,.25f,.25f,white);vertex(x0,floor+.012f,z1,0,.25f,white);vertex(x0,floor+.012f,z0,0,.5f,white);
 }
 void Renderer::world(const Game& g) {
     count=0;
@@ -133,13 +134,13 @@ void Renderer::world(const Game& g) {
     vertex(x0,y0,z,0,0,0xffffffff);vertex(x1,y0,z,1,0,0xffffffff);vertex(x1,y1,z,1,1,0xffffffff);
     vertex(x1,y1,z,1,1,0xffffffff);vertex(x0,y1,z,0,1,0xffffffff);vertex(x0,y0,z,0,0,0xffffffff);
     if(!battle) {
-        shadow(g.progress.position,.55f);shadow(g.partner,.43f);shadow(NpcPosition,.48f);
+        shadow(g.progress.position,.55f,g.groundHeight);shadow(g.partner,.43f,g.partnerHeight);shadow(NpcPosition,.48f);
         if(!g.progress.crumpDefeated) shadow(CrumpPosition,.65f);
         struct Actor { int index;Vec2 p;float h,w,face,lift,tilt; };
         float bob=std::sin(g.ticks*.22f)*.018f;
         std::array<Actor,4> actors{{
-            {0,g.progress.position,1.45f,1.45f*g.turnScale,g.facing,g.jumpHeight,bob},
-            {1,g.partner,1.05f,1.05f,g.facing,0,bob},
+            {0,g.progress.position,1.45f,1.45f*g.turnScale,g.facing,g.groundHeight+g.jumpHeight,bob},
+            {1,g.partner,1.05f,1.05f,g.facing,g.partnerHeight,bob},
             {3,NpcPosition,1.4f,1.4f,1,0,0},
             {2,CrumpPosition,1.9f,1.9f,-1,0,bob}
         }};

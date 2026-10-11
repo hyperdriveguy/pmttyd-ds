@@ -14,3 +14,5 @@ romfs/*.vertices
 romfs/*.batches
 romfs/*.loop
 romfs/*.walls
+
+romfs/*.ground

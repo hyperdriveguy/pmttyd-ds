@@ -90,7 +90,7 @@ occurred. Tools write profiles/captures only beneath project artifacts.
    BattleRules and record measured evidence in docs/MECHANICS.md.
 3. Implement original character animations and direction variants. The converter
    currently applies passed-keyframe deltas but does not interpolate full original
-   animations. Vertex, visibility, texture-matrix and node tracks need full support.
+   animations. Vertex, visibility, texture-matrix and node tracks need full support. Ensure model sizing is correct and faithful.
 4. Finish battle presentation: original area backdrop, opening-curtain animation,
    audience, correct prop visibility and camera. The common stage currently uses
    explicit hidden-node overrides for the mask, closed upper curtain and inactive
@@ -134,3 +134,37 @@ as faithful story reproduction. Original message playback is still unfinished.
 Validation for this update: `make test` passed the core suite and 16 Python
 tests; `make -j2 all` rebuilt the native .3dsx successfully. Emulator dialogue
 playback was not rechecked in this update.
+
+## Overworld continuation: original ground and partner traversal
+
+Implemented original near-horizontal collision triangle export as map.ground,
+packaged in RomFS. Portable groundAt performs barycentric height queries with
+step-height constraints so ramps update actor elevation, missing floors block
+movement and roofs cannot pull actors upward. Actor and shadow rendering use
+player/partner elevation. Goombella follows a bounded path of Mario's travelled
+positions instead of cutting directly toward Mario through obstacles. This is
+still provisional: jump traversal, stairs, falling, dynamic geometry and partner
+recovery need further work. Walls are still flattened and fixed plaza bounds
+remain; collision broad-phase acceleration is not implemented.
+
+Fixed restore when called with the game's own Progress reference. Added host
+coverage for slope heights, inaccessible roofs, missing floor, step constraints
+and self-reference restore. `make test` passed core scenarios and 16 Python
+tests; `make -j2 all` rebuilt the embedded original asset pack and .3dsx.
+
+Read-only extraction of rel/gor.rel and provenance is in local-assets. Indexed
+39 original map/bero string occurrences in rogueport-event-strings.json. This
+is evidence to resolve original exits, not a complete warp table. There are no
+overworld room warps yet. Next concrete task: resolve gor_01 exit/event records
+(including REL relocations), original node trigger positions and destination
+arrival IDs; add native room asset loading and transactional room transitions,
+then test reciprocal warps and save compatibility. Avoid inventing destinations
+or treating original string occurrences alone as a verified connection graph.
+
+The workspace now has a functioning git checkout (git log shows bf9fea8). Older
+statements about a nonfunctional placeholder describe the earlier environment.
+
+Azahar verification: `python3 tools/emulator_smoke.py --seconds 4` booted
+the updated build and restored the existing 6 HP completed-encounter save.
+Capture reviewed at artifacts/azahar/boot.png; foreground wall occlusion
+remains. This boot check does not verify movement, slopes or room transitions.

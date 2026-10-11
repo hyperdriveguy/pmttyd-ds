@@ -116,6 +116,15 @@ def convert(path,output,scale=.1,hidden=()):
     with (output/'map.walls').open('wb') as out:
         out.write(struct.pack('<I',len(segments)))
         for p,q in sorted(segments):out.write(struct.pack('<4f',*p,*q))
+    # Keep walkable collision surfaces, including ramps and elevated platforms.
+    ground=[]
+    for tri in collision:
+        a=np.array(tri);normal=np.cross(a[1]-a[0],a[2]-a[0]);length=np.linalg.norm(normal)
+        if length>1e-8 and abs(normal[1])/length>=.65:
+            ground.append(tri)
+    with (output/'map.ground').open('wb') as out:
+        out.write(struct.pack('<I',len(ground)))
+        for tri in ground:out.write(struct.pack('<9f',*(v for point in tri for v in point)))
     summary={'source':str(path),'scale':scale,'vertices':count,'triangles':count//3,'batches':len(batches),'textures':textures,
              'bounds':[np.min(bounds,axis=0).tolist(),np.max(bounds,axis=0).tolist()],
              'limitations':warnings,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}

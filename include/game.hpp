@@ -39,6 +39,7 @@ class Game {
 public:
     Progress progress;
     Vec2 partner{1.4f,2.5f};
+    float groundHeight = 0, partnerHeight = 0;
     float cameraX = 1, jumpHeight = 0, facing = 1, turnScale = 1;
     Scene scene = Scene::Explore;
     Phase phase = Phase::Select;
@@ -55,6 +56,7 @@ public:
     const char* prompt() const;
     bool near(Vec2 point, float distance = 1.5f) const;
 private:
+    std::vector<Vec2> followerPath;
     int jumpTick = 0, turnTick = 0;
     bool jumpAttempted = false, hammerArmed = false, guardAttempted = false;
     int dialoguePages() const;
@@ -65,6 +67,8 @@ private:
 };
 bool walkable(Vec2 p);
 bool loadCollision(const char* path);
+bool loadGround(const char* path);
+bool groundAt(Vec2 p, float reference, float& height);
 void clearCollision();
 const std::vector<Rect>& collisionWalls();
 }

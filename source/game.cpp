@@ -6,6 +6,9 @@
 namespace ttyd {
 namespace {
 std::vector<Rect> walls;
+struct GroundTriangle { float v[9]; };
+std::vector<GroundTriangle> ground;
+
 float length(Vec2 a, Vec2 b) { return std::hypot(a.x-b.x, a.z-b.z); }
 int menuButton(const Input& i) {
     if (i.touchY >= 44 && i.touchY < 82 && i.touchX >= 8 && i.touchX < 312)
@@ -42,14 +45,47 @@ bool loadCollision(const char* path) {
     if(ok) walls.swap(data);
     return ok;
 }
-void clearCollision() {walls.clear();}
+bool loadGround(const char* path) {
+    FILE* file=std::fopen(path,"rb");if(!file)return false;
+    uint32_t count=0;bool ok=std::fread(&count,4,1,file)==1 && count>0 && count<=100000;
+    std::vector<GroundTriangle> data(ok?count:0);
+    if(ok)ok=std::fread(data.data(),sizeof(GroundTriangle),count,file)==count && std::fgetc(file)==EOF;
+    std::fclose(file);
+    for(const auto& tri:data)for(float v:tri.v)if(!std::isfinite(v))ok=false;
+    if(ok)ground.swap(data);
+    return ok;
+}
+bool groundAt(Vec2 p,float reference,float& height) {
+    if(ground.empty()) {height=0;return true;}
+    bool found=false;float best=-1e30f;
+    for(const auto& tri:ground) {
+        const float* v=tri.v;
+        if(p.x<std::min({v[0],v[3],v[6]}) || p.x>std::max({v[0],v[3],v[6]}) ||
+           p.z<std::min({v[2],v[5],v[8]}) || p.z>std::max({v[2],v[5],v[8]}))continue;
+        float den=(v[5]-v[8])*(v[0]-v[6])+(v[6]-v[3])*(v[2]-v[8]);
+        if(std::fabs(den)<1e-8f)continue;
+        float a=((v[5]-v[8])*(p.x-v[6])+(v[6]-v[3])*(p.z-v[8]))/den;
+        float b=((v[8]-v[2])*(p.x-v[6])+(v[0]-v[6])*(p.z-v[8]))/den;
+        if(a<-.0001f || b<-.0001f || a+b>1.0001f)continue;
+        float y=a*v[1]+b*v[4]+(1-a-b)*v[7];
+        // Stay on the current floor; do not teleport onto roofs above Mario.
+        if(y<=reference+.25f && y>=reference-.5f && y>best) {best=y;found=true;}
+    }
+    if(found)height=best;
+    return found;
+}
+void clearCollision() {walls.clear();ground.clear();}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
-void Game::restore(const Progress& p) {
+void Game::restore(const Progress& saved) {
+    const Progress p=saved; // Caller may pass this game's own progress.
     *this = Game{};
     progress = p;
     partner = {p.position.x-0.8f,p.position.z};
     if (!walkable(partner)) partner = p.position;
+    groundAt(p.position,0,groundHeight);
+    groundAt(partner,groundHeight,partnerHeight);
+    followerPath.push_back(partner);followerPath.push_back(p.position);
     cameraX = std::clamp(p.position.x,-3.5f,3.5f);
 }
 void Game::openDialogue(int kind) {
@@ -89,23 +125,35 @@ void Game::move(const Input& i) {
     if (len > 1) { x/=len; z/=len; }
     Vec2 p = progress.position;
     Vec2 candidate{p.x+x*0.065f,p.z};
-    if (walkable(candidate)) p=candidate;
+    float nextHeight=groundHeight;
+    if (walkable(candidate) && groundAt(candidate,groundHeight,nextHeight)) {p=candidate;groundHeight=nextHeight;}
     candidate={p.x,p.z+z*0.065f};
-    if (walkable(candidate)) p=candidate;
+    if (walkable(candidate) && groundAt(candidate,groundHeight,nextHeight)) {p=candidate;groundHeight=nextHeight;}
     progress.position=p;
     if (std::fabs(x) > .15f && (x>0 ? 1.f : -1.f) != facing) {
         facing = x>0 ? 1.f : -1.f; turnTick=10;
     }
     if (turnTick>0) { --turnTick; turnScale=std::max(.08f,std::fabs(std::cos(turnTick*3.14159265f/10.f))); }
     else turnScale=1;
-    float dist=length(partner,p);
-    if (dist>0.9f) {
-        float speed=std::min(.065f,(dist-.9f)*.12f);
-        Vec2 q{partner.x+(p.x-partner.x)/dist*speed,partner.z};
-        if (walkable(q)) partner=q;
-        q={partner.x,partner.z+(p.z-partner.z)/dist*speed};
-        if (walkable(q)) partner=q;
+    if(followerPath.empty()) {followerPath.push_back(partner);followerPath.push_back(p);}
+    if(length(followerPath.back(),p)>.08f) followerPath.push_back(p);
+    float remaining=length(partner,followerPath.front());
+    for(size_t n=1;n<followerPath.size();++n)remaining+=length(followerPath[n-1],followerPath[n]);
+    if(remaining>.9f) {
+        float budget=std::min(.065f,remaining-.9f);
+        while(budget>0 && !followerPath.empty()) {
+            Vec2 target=followerPath.front();float dist=length(partner,target);
+            if(dist<.001f) {followerPath.erase(followerPath.begin());continue;}
+            float step=std::min(budget,dist);
+            Vec2 q{partner.x+(target.x-partner.x)/dist*step,partner.z+(target.z-partner.z)/dist*step};
+            float h=partnerHeight;
+            if(!walkable(q) || !groundAt(q,partnerHeight,h))break;
+            partner=q;partnerHeight=h;budget-=step;
+            if(step>=dist)followerPath.erase(followerPath.begin());
+        }
     }
+    // Bound the trail if the partner cannot traverse an old segment.
+    if(followerPath.size()>512) {partner=p;partnerHeight=groundHeight;followerPath.clear();}
     cameraX += (std::clamp(p.x,-3.5f,3.5f)-cameraX)*.07f;
     if (jumpTick>0) { --jumpTick; jumpHeight=1.1f*std::sin(jumpTick*3.14159265f/36.f); }
     else jumpHeight=0;
