@@ -201,3 +201,16 @@ drawmode+8,80018ab8 stores hit-entry+4 (null drawmode stores0). hitGetAttr
 inspections substantiate raw static attribute mapping; implementation is native
 and does not link/copy original executable functions. Inspection artifacts stay
 ignored. Effective event mutations remain separate unfinished work.
+
+room_convert.damage_returns now reads original US evt_hit_damage_return_set
+imports (8007458c), validates two-argument USER_FUNC event headers, follows
+self-REL relocations and reads bounded16-byte name-pointer/XYZ tables. It rejects
+missing relocations, nonfinite values and malformed termination. Source call and
+table/entry offsets, ordering, names, coordinates and Y=-1000 auto-position
+markers are preserved. No external symbol CSV is required to build these tables.
+
+Build produces ignored local-assets/damage-return-tables.json and records both
+tables in ignored RomFS manifest provenance. These are metadata for recovery
+implementation; runtime does not yet consume them. Verify with
+`python3 tools/verify_damage_returns.py`. Original function-address/layout evidence
+is retained in mechanics notes; no original executable implementation imported.

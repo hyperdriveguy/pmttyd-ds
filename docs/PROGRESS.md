@@ -875,3 +875,47 @@ assertions, covering east/plaza streaming with tagged floor metadata:
 ```sh
 python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/east-road.bin --seconds 4 --input-script tests/azahar_roads.py
 ```
+
+## Original water-damage trace and authored return-table extraction
+
+Traced original mot_damage, hitGetDamageReturnPos, evt_hit_damage_return_set,
+hitGrpDamageReturnSet, hitDamageReturnSet, hitObjGetPos/Sub and pouchAddHP.
+Detailed addresses/control-flow evidence now in docs/MECHANICS.md. Source
+shows ordinary character-byte0 loses1 HP after landing/recovery counter50;
+zero HP follows a different state. Full timing and observed presentation remain
+unverified. Return selection uses saved hit object+0x208 or source map fallbacks;
+it does not choose an arbitrary nearby point. Initial return binding sets
+0x40000000 on the original hit group/descendants.
+
+Added bounded return-table parser to the asset pipeline, using US DOL import
+address and REL relocation provenance without making the external symbol table
+a build dependency. Two init calls,17 ordered source entries and5 Y=-1000
+automatic-position markers are retained in local ignored JSON and pack manifest.
+Literal harbor return points and sentinel cases are verified against original
+source. Automatic positions are NOT guessed or replaced. East A_ground_01 is
+a hierarchy-only owner absent from the current geometry-owner index: retain full
+hit hierarchy before propagating return bindings. Native water recovery is still
+unimplemented; this step supplies its original rules and authored inputs.
+
+Validation:
+```sh
+python3 tools/verify_damage_returns.py
+make test
+make -j2 all
+build-host/core_tests --rooms
+python3 tools/verify_ground_attributes.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_harbor_stairs.py
+```
+All exited0. Core plus25 Python tests passed, including valid literal/sentinel
+tables, invalid command/missing relocation/nonfinite/truncated/unrelocated
+termination rejection, and unrelated import exclusion. Native pack rebuilt and
+manifest contains2 tables/17 entries. All8 road arrivals,18,315 probes, and3,576
+source floor attributes passed. Final Azahar solid-dock/save/return passed after
+REL helper refactoring. No new gameplay acceptance or hardware performance claim.
+
+Next concrete task: retain original hit hierarchy/leaf centers, apply the
+verified init return-binding mutations, trace saved-hit+0x208 writers and
+implement water damage/recovery using that evidence. Obtain actual Dolphin
+fall/recovery observations before declaring timing/animations accepted. Original
+camera/boat visibility, layered rendering, English story events, SFX and broader
+traversal remain incomplete; full objective active.

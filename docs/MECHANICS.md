@@ -54,3 +54,38 @@ marioMotTbl index31 maps to mot_damage0x8013ae04. This proves a damage-motion
 branch, not full recovery timing, penalty, effects, or safe-return selection.
 Next inspect mot_damage/mot_bottomless and observe falling from harbor in
 Dolphin before reproducing the complete sequence.
+
+Water-damage trace continuation (original US DOL bytes, not emulator observation):
+* mot_damage8013ae04 uses Mario state+0x44 and counter+0x48. Original jump table
+  at8036ed4c maps states0/1/10/11/12/13/14/20/30/31/32 to
+  8013af84/8013affc/8013b028/8013b06c/8013b350/8013b3c4/8013b3e0/
+  8013b438/8013b544/8013b554/8013b5b8.
+* State30 assigns counter50 then falls through into state31 decrement. At
+  expiry8013b564–8013b578, character byte+0x3c==0 calls pouchAddHP(-1), then
+  pouchGetHP is checked against0. A positive HP path assigns state32/counter12,
+  immediately decrements it, and eventually calls marioChgMot(0). Zero HP
+  takes state33 instead. Do NOT substitute a minimum-1-HP penalty.
+* pouchAddHP800d3d3c itself clamps between0 and max HP. These are literal
+  counters and control flow, NOT measured complete recovery frame timings.
+* Return selection at8013b114 checks saved hit pointer+0x208 and uses
+  hitGetDamageReturnPos80013ef0 when present. Otherwise map-specific fallbacks
+  (muj_00/gor_00/gor_04) and an additional saved-vector branch apply. Need trace
+  writers of+0x208 before choosing which floor should be remembered natively.
+* evt_hit_damage_return_set8007458c iterates16-byte name-pointer+XYZ records.
+  Sentinel Y=-1000 calls hitObjGetPos8001449c. hitObjGetPos averages transformed
+  leaf hit-object centers through hitObjGetPosSub800145ec; it is NOT the player
+  position or a guessed bounding box of the whole room. Resolve only after
+  retaining the full original hit hierarchy and leaf centers.
+* hitGrpDamageReturnSet80013efc finds named hit group; hitDamageReturnSet
+  80013fc4 sets attribute0x40000000 and binds the return record to the owner
+  and descendants, preserving owner siblings when initially called with flag0.
+  These init mutations are currently missing from native contact attributes.
+* __init_registers8000539c establishes r2=80427440 and r13=8041cf20, useful for
+  resolving original small-data constants without guessing.
+
+Original init table calls are outside IF/SWITCH blocks at gor_00:0x2f364 and
+gor_02:0x4d6d0 (END_SWITCH is opcode49). Harbor table0x2c594 has5 entries,
+east0x4c9d4 has12; all17 source entries and5 sentinels are retained by extraction.
+Harbor authored A_yuka_03 return=(84,15,220), A_yuka_04=(475,15,-180); units are
+original GameCube units, so native positions would use existing map scale0.1.
+These points do not authorize teleporting from every water tile indiscriminately.

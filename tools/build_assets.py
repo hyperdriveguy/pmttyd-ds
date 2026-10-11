@@ -13,7 +13,7 @@ from iso_assets import extract,convert_tpl,DEFAULT_ISO
 from character_bake import bake
 from map_convert import convert
 from audio_convert import stm,sample_directory
-from room_convert import exits
+from room_convert import exits,damage_returns
 ROOT=Path(__file__).resolve().parents[1]
 OUTPUT=ROOT/'romfs';WORK=ROOT/'local-assets';ISO=os.environ.get('TTYD_ISO',DEFAULT_ISO)
 
@@ -75,7 +75,9 @@ def main():
             image=Image.open(path).convert('RGBA');w,h=image.size
             image.resize((min(128,1<<(w-1).bit_length()),min(128,1<<(h-1).bit_length())),Image.Resampling.LANCZOS).save(path)
             texture(path,OUTPUT/f'{room}-{index}.t3x')
-    original_exits=exits(asset('rel/gor.rel','gor.rel'))
+    room_rel=asset('rel/gor.rel','gor.rel')
+    original_exits=exits(room_rel);return_tables=damage_returns(room_rel)
+    (WORK/'damage-return-tables.json').write_text(json.dumps(return_tables,indent=2)+'\n')
     # Group consecutive original BeroEntry records. Match their exit names to
     # the map's geometric road markers, with reciprocal destinations checked.
     groups=[]
@@ -146,7 +148,7 @@ def main():
     for filename in ['confirm.wav','jump.wav','hit.wav','success.wav']:
         (OUTPUT/filename).unlink(missing_ok=True)
     manifest.write_text(json.dumps({'fingerprint':fingerprint,'source_disc':'G8ME01','assets':records,
-        'characters':poses,'map':summary,'overworld_rooms':rooms,'road_links':links,'battle_stage':stage_summary,'music':music,'sample_bank_entries':len(directory),
+        'characters':poses,'map':summary,'overworld_rooms':rooms,'road_links':links,'damage_return_tables':return_tables,'battle_stage':stage_summary,'music':music,'sample_bank_entries':len(directory),
         'sound_effect_status':'Original banks preserved; macro-to-event mapping not yet implemented. No synthetic replacements.',
         'conversion':'Original character idle poses and Mario jump/hammer textures baked to RGBA8 atlas; static Rogueport geometry; map textures capped at 128px; DSP music decoded losslessly at original rate'},indent=2)+'\n')
     print(f'Built original asset pack: {summary["triangles"]} map triangles, {len(directory)} preserved samples')
