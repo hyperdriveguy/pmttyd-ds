@@ -5,12 +5,15 @@
 #include <sys/stat.h>
 namespace {
 double seconds() { return svcGetSystemTick()/double(SYSCLOCK_ARM11); }
-bool loadRoomCollision(uint32_t room) {
+bool stageRoomCollision(uint32_t room,ttyd::CollisionTransition& transaction) {
     const char* name=ttyd::roomAsset(room);if(!name)return false;
-    char path[96];std::snprintf(path,sizeof(path),"romfs:/%s.walls",name);
-    if(!ttyd::loadCollision(path))return false;
-    std::snprintf(path,sizeof(path),"romfs:/%s.ground",name);
-    return ttyd::loadGround(path);
+    char path[96];std::snprintf(path,sizeof(path),"romfs:/%s",name);
+    return transaction.load(path);
+}
+bool loadRoomCollision(uint32_t room) {
+    ttyd::CollisionTransition transaction;
+    if(!stageRoomCollision(room,transaction))return false;
+    transaction.commit();return true;
 }
 void merge(ttyd::Input& pending,const ttyd::Input& i) {
     pending.x=i.x;pending.z=i.z;pending.jumpHeld=i.jumpHeld;pending.hammerHeld=i.hammerHeld;
@@ -41,13 +44,17 @@ int main() {
     const char* savePath="sdmc:/3ds/ttyd-2ds/progress.bin";
     mkdir("sdmc:/3ds",0777);mkdir("sdmc:/3ds/ttyd-2ds",0777);
     const auto loaded=ttyd::loadSave(savePath,saved);
-    float savedHeight=saved.elevation;
+    float savedHeight=saved.elevation;bool restored=false;
     if(loaded==ttyd::LoadResult::Loaded || loaded==ttyd::LoadResult::Recovered) {
-        if(loadRoomCollision(saved.room) && ttyd::groundAt(saved.position,saved.elevation,savedHeight) && ttyd::walkable(saved.position,savedHeight) && renderer.changeRoom(saved.room))game.restore(saved);
-        else {loadRoomCollision(0);renderer.changeRoom(0);}
+        ttyd::CollisionTransition transaction;
+        if(stageRoomCollision(saved.room,transaction) && ttyd::groundAt(saved.position,saved.elevation,savedHeight) &&
+           ttyd::walkable(saved.position,savedHeight) && (saved.room==0 || renderer.changeRoom(saved.room))) {
+            game.restore(saved);transaction.commit();restored=true;
+        }
     }
-    if(loaded==ttyd::LoadResult::Missing || loaded==ttyd::LoadResult::Invalid) game.restore(game.progress);
-    const char* notice=loaded==ttyd::LoadResult::Recovered?"Recovered backup save":loaded==ttyd::LoadResult::Invalid?"Invalid save; started a new game":!newModel?"New 2DS XL is the performance target":"Development slice / provisional mechanics";
+    if(!restored)game.restore(game.progress);
+    const bool rejected=(loaded==ttyd::LoadResult::Loaded || loaded==ttyd::LoadResult::Recovered) && !restored;
+    const char* notice=rejected?"Saved room unavailable; started in plaza":loaded==ttyd::LoadResult::Recovered?"Recovered backup save":loaded==ttyd::LoadResult::Invalid?"Invalid save; started a new game":!newModel?"New 2DS XL is the performance target":"Development slice / provisional mechanics";
     int noticeTicks=240;
     ttyd::Metrics metrics;
     double previous=seconds(),accumulator=0,window=previous;int frames=0;
@@ -78,15 +85,15 @@ int main() {
         if(accumulator>=1./60) {metrics.droppedTicks+=uint64_t(accumulator*60);accumulator=0;}
         metrics.simulationMs=(seconds()-simulationStart)*1000;
         if(game.warpRequest>=0) {
-            const auto checkpoint=game;
+            ttyd::CollisionTransition transaction;
             // Target ID comes from the original, validated road table.
             ttyd::Game candidate=game;
             // Read target from the fixed record requested by the simulation.
             uint32_t target=game.warpTarget();
-            bool ok=loadRoomCollision(target) && candidate.finishWarp();
+            bool ok=stageRoomCollision(target,transaction) && candidate.finishWarp();
             if(ok)ok=renderer.changeRoom(target);
-            if(ok) {game=std::move(candidate);notice="";noticeTicks=0;}
-            else {loadRoomCollision(checkpoint.progress.room);game.warpRequest=-1;game.warpCooldown=60;notice="Room transition failed";noticeTicks=180;}
+            if(ok) {transaction.commit();game=std::move(candidate);notice="";noticeTicks=0;}
+            else {game.warpRequest=-1;game.warpCooldown=60;notice="Room transition failed";noticeTicks=180;}
             accumulator=0;pending={};previous=seconds();
         }
         if(game.saveRequested) {

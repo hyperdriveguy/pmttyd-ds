@@ -116,6 +116,43 @@ void groundImport() {
     CHECK(g.progress.position.x>-2.3f);CHECK(g.groundHeight>.2f);
     clearCollision();std::remove(path);
 }
+void collisionRollback() {
+    char directory[]="/tmp/ttyd-transition-XXXXXX";CHECK(mkdtemp(directory));
+    std::string source=std::string(directory)+"/source",target=std::string(directory)+"/target";
+    auto writeWalls=[](const std::string& prefix,float x) {
+        std::ofstream file(prefix+".walls",std::ios::binary);uint32_t count=1;Rect wall{x,1,x,3};
+        file.write(reinterpret_cast<char*>(&count),4);file.write(reinterpret_cast<char*>(&wall),sizeof(wall));
+    };
+    auto writeFloor=[](const std::string& prefix) {
+        std::ofstream file(prefix+".ground",std::ios::binary);uint32_t count=2;
+        float triangles[]={-3,0,1, 3,0,1, -3,0,3, 3,0,1, 3,0,3, -3,0,3};
+        file.write(reinterpret_cast<char*>(&count),4);file.write(reinterpret_cast<char*>(triangles),sizeof(triangles));
+    };
+    writeWalls(source,0);writeFloor(source);writeWalls(target,2);
+    {CollisionTransition tx;CHECK(tx.load(source.c_str()));tx.commit();}
+    const Rect originalBounds=collisionBounds();float h=99;
+    CHECK(!walkable({0,2}));CHECK(walkable({2,2}));CHECK(groundAt({1,2},0,h));CHECK(h==0);
+    {std::ofstream bad(target+".ground");bad<<"truncated";}
+    {
+        CollisionTransition tx;CHECK(!tx.load(target.c_str()));tx.commit();
+        // Rollback must work even if the previous room cannot be read again.
+        std::remove((source+".walls").c_str());std::remove((source+".ground").c_str());
+    }
+    CHECK(!walkable({0,2}));CHECK(walkable({2,2}));CHECK(groundAt({1,2},0,h));CHECK(h==0);
+    CHECK(collisionBounds().x0==originalBounds.x0);CHECK(collisionBounds().z1==originalBounds.z1);
+    writeFloor(target);
+    {
+        CollisionTransition tx;CHECK(tx.load(target.c_str()));CHECK(walkable({0,2}));CHECK(!walkable({2,2}));
+        // Model a rejected arrival or graphics load after collision staging succeeds.
+        CHECK(!groundAt({20,2},0,h));
+        {CollisionTransition nested;CHECK(!nested.load((source+"-missing").c_str()));}
+        CHECK(!walkable({2,2}));
+    }
+    CHECK(!walkable({0,2}));CHECK(walkable({2,2}));
+    {CollisionTransition tx;CHECK(tx.load(target.c_str()));tx.commit();}
+    CHECK(walkable({0,2}));CHECK(!walkable({2,2}));CHECK(groundAt({1,2},0,h));
+    clearCollision();std::remove((target+".walls").c_str());std::remove((target+".ground").c_str());rmdir(directory);
+}
 void indexedOriginalCollision() {
     size_t queries=0;
     for(uint32_t room=0;room<4;++room) {
@@ -170,6 +207,6 @@ void originalRooms() {
     clearCollision();
 }
 int main(int argc,char**) {
-    try {if(argc>1) {indexedOriginalCollision();originalRooms();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();std::puts("Core scenarios passed");}
+    try {if(argc>1) {indexedOriginalCollision();originalRooms();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

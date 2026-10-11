@@ -306,3 +306,59 @@ Validation: `make -j2 all`, `make test` (core + 17 Python tests), and
 booted; reviewed artifacts/azahar/boot.png showing Mario smaller beside the
 original plaza building/doorway. Battle sizing uses the same factor but was
 not separately captured in this update.
+
+## Overworld continuation: atomic collision rollback and saved-room recovery
+
+Room collision now stages through an RAII CollisionTransition. Previous walls,
+vertical intervals, floors, spatial indexes and map bounds stay in memory until
+destination collision, arrival and rendering have all succeeded. Failed staging
+or rejected arrival/rendering restores the old data without filesystem access.
+Native warp failure no longer attempts an unchecked disk reload of the source
+room. Startup save restoration also stages collision, rejects unavailable
+positions coherently, initializes the default plaza camera/floor and shows an
+explicit notice. Renderer synchronizes GPU work before disposing partial loads
+on failure as well as before replacing a successfully loaded room.
+
+Host tests cover truncated destination ground, previous room files removed
+before rollback, failed commit, rejected staged arrival/graphics analogue, nested
+rollback, bounds preservation, spatial-query restoration and successful commit.
+`make test` passed core scenarios and 17 Python tests.
+`build-host/core_tests --rooms` passed all six arrivals and 14,652 indexed-vs-full
+scan probes. `make -j2 all` rebuilt the .3dsx; `git diff --check` passed.
+
+Azahar persistence runs confirmed plaza -> harbor and restart harbor -> plaza
+with HP7 preserved, exercising the elevated arrival. East-side persistence
+confirmed plaza -> east with HP7; restart verification follows. Existing west
+restart evidence remains in the preceding entry. No physical hardware tested.
+
+Invalid-room fixture uses a structurally valid room1 save at (50,50), outside
+its floor. Azahar displayed the fallback notice in a coherent plaza scene;
+the script then moved Mario and saved, asserting room0, default HP10 and
+expected plaza coordinates. Capture invalid-room-fallback.png was reviewed.
+This verifies invalid-arrival recovery; it is not a native injected texture-load
+failure test. Foreground wall occlusion is still visible in the plaza capture.
+
+Reproduce saved-room / recovery checks using only isolated test profiles:
+```sh
+python3 tools/road_fixtures.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-road.bin --seconds 4 --input-script tests/azahar_persistence.py
+python3 tools/emulator_smoke.py --seconds 4 --input-script tests/azahar_persistence.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/east-road.bin --seconds 4 --input-script tests/azahar_persistence.py
+python3 tools/emulator_smoke.py --seconds 4 --input-script tests/azahar_persistence.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/invalid-room-road.bin --seconds 4 --input-script tests/azahar_invalid_room.py
+```
+
+Next concrete task: foreground wall/prop occlusion and original visibility
+rules, because Mario can still be obscured at normal plaza positions. Then
+original door/pipe event triggers and room conditions (gor_04 and interiors),
+original English story/dialogue, character animation and original SFX. Preserve
+the shared .5 character correction from user feedback; original actor sizing
+still needs Dolphin measurement. Successful outdoor warps are not proof of
+full story, world rendering or gameplay acceptance. Goal remains active.
+
+Final persistence result: restarted east room -> plaza with HP7 preserved.
+Both harbor and east restart tests completed on this transaction build. The
+final native rebuild includes GPU synchronization before partial-load cleanup;
+normal east persistence succeeded afterward. No GPU failure was deliberately
+injected. All reported source changes and reproducible fixture scripts are
+recorded in the incremental commit for this update.

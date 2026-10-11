@@ -48,3 +48,11 @@ from one cell, then use exact capsule distance/barycentric checks. Original-data
 host probes compare indexed answers to an exhaustive scan. Stacked wall
 segments retain distinct height intervals. The minimap fits original collision
 footprints to its panel and filters walls to the current elevation.
+
+Room collision staging uses CollisionTransition: it retains the previous
+walls, vertical levels, ground triangles, spatial indexes and footprint bounds
+in memory. Its destructor restores the previous state unless the destination
+is fully accepted and committed. Destination collision can therefore be rejected
+for bad files, an invalid arrival or failed rendering without rereading old
+files. Startup save restoration uses the same mechanism. GPU synchronization
+also precedes disposal of partially loaded room rendering on failure.

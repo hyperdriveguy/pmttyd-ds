@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <vector>
 #include <unordered_map>
+#include <string>
 namespace ttyd {
 namespace {
 std::vector<RoadWarp> roads;
@@ -42,6 +43,29 @@ int menuButton(const Input& i) {
     return -1;
 }
 }
+struct CollisionSnapshot {
+    std::vector<Rect> savedWalls;
+    std::vector<Vec2> savedLevels;
+    std::vector<GroundTriangle> savedGround;
+    SpatialIndex savedWallIndex,savedGroundIndex;
+    Rect savedBounds{-9,-4.5f,9,4};
+    bool ready=false;
+    void swapActive() {
+        savedWalls.swap(walls);savedLevels.swap(wallLevels);savedGround.swap(ground);
+        savedWallIndex.swap(wallIndex);savedGroundIndex.swap(groundIndex);
+        std::swap(savedBounds,roomBounds);std::swap(ready,collisionReady);
+    }
+};
+CollisionTransition::CollisionTransition():previous(std::make_unique<CollisionSnapshot>()) {previous->swapActive();}
+CollisionTransition::~CollisionTransition() {if(!committed)previous->swapActive();}
+bool CollisionTransition::load(const char* prefix) {
+    if(committed || !prefix)return false;
+    clearCollision();staged=false;
+    const std::string path(prefix);
+    staged=loadCollision((path+".walls").c_str()) && loadGround((path+".ground").c_str());
+    return staged;
+}
+void CollisionTransition::commit() {if(staged)committed=true;}
 const char* roomAsset(uint32_t room) {
     static const char* names[]={"map","gor_00","gor_02","gor_03"};
     return room<4?names[room]:nullptr;

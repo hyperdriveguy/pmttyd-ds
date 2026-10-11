@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <cstddef>
 #include <vector>
+#include <memory>
 namespace ttyd {
 constexpr int TickRate = 60;
 struct Vec2 { float x = 0, z = 0; };
@@ -75,6 +76,20 @@ private:
     void battle(const Input&);
     void attackDone(int damage);
     void openDialogue(int kind);
+};
+struct CollisionSnapshot;
+// Stages a room's collision; destruction restores the previous data unless committed.
+class CollisionTransition {
+public:
+    CollisionTransition();
+    ~CollisionTransition();
+    CollisionTransition(const CollisionTransition&)=delete;
+    CollisionTransition& operator=(const CollisionTransition&)=delete;
+    bool load(const char* prefix);
+    void commit();
+private:
+    std::unique_ptr<CollisionSnapshot> previous;
+    bool staged=false,committed=false;
 };
 bool walkable(Vec2 p,float elevation=0);
 bool loadCollision(const char* path);

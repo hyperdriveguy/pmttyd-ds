@@ -79,7 +79,7 @@ void Renderer::freeRoom(Room& room) {
 bool Renderer::changeRoom(uint32_t room) {
     const char* name=roomAsset(room);if(!name)return false;
     Room next;
-    if(!loadMap(name,next)) {freeRoom(next);return false;}
+    if(!loadMap(name,next)) {C3D_FrameSync();freeRoom(next);return false;}
     C3D_FrameSync();freeRoom(plaza);plaza=std::move(next);return true;
 }
 void Renderer::drawMap(bool battle) {
