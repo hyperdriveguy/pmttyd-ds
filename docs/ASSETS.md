@@ -65,3 +65,11 @@ triangle). Slopes with absolute normalized Y normal >= .65 are retained. This
 is a provisional traversal filter, not an observed original engine threshold.
 Original rel/gor.rel is extracted read-only with provenance for exit/event
 analysis; no original executable code is run by the remake.
+
+Original overworld packs now include m/gor_00, m/gor_02 and m/gor_03.
+rooms.bin contains a uint32 link count followed by records (source room uint32,
+target room uint32, exit X/Z, spawn X/Z/Y float32), 28 bytes each. Road IDs
+0/1/2/3 map to gor_01/gor_00/gor_02/gor_03. The manifest records original REL
+offsets, marker-derived coordinates and target/arrival identifiers. Wall record
+count high bit now indicates min/max Y following each XZ segment (six floats).
+Unknown story-dependent exits are not activated by this road-only parser.

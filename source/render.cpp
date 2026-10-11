@@ -68,6 +68,17 @@ bool Renderer::loadMap(const char* name,Room& room) {
     }
     return true;
 }
+void Renderer::freeRoom(Room& room) {
+    for(auto& texture:room.textures) if(texture.imported) {Tex3DS_TextureFree(texture.imported);C3D_TexDelete(&texture.texture);}
+    if(room.vertices)linearFree(room.vertices);
+    room=Room{};
+}
+bool Renderer::changeRoom(uint32_t room) {
+    const char* name=roomAsset(room);if(!name)return false;
+    Room next;
+    if(!loadMap(name,next)) {freeRoom(next);return false;}
+    C3D_FrameSync();freeRoom(plaza);plaza=std::move(next);return true;
+}
 void Renderer::drawMap(bool battle) {
     auto& room=battle?stage:plaza;
     auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,room.vertices,sizeof(Vertex),3,0x210);
@@ -127,15 +138,15 @@ void Renderer::world(const Game& g) {
     float cam=battle?0:g.cameraX;
     C3D_Mtx projection,view,transform;
     Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(42),C3D_AspectRatioTop,.1f,80,false);
-    Mtx_LookAt(&view,FVec3_New(cam,battle?2.8f:4.8f,battle?5.5f:10),FVec3_New(cam,1,-.4f),FVec3_New(0,1,0),false);
+    Mtx_LookAt(&view,FVec3_New(cam,battle?2.8f:4.8f+g.groundHeight,battle?5.5f:10),FVec3_New(cam,battle?1.f:1.f+g.groundHeight,-.4f),FVec3_New(0,1,0),false);
     Mtx_Multiply(&transform,&projection,&view);
     // Original room backdrop, drawn without depth writes before the room.
     const float x0=cam-30,x1=cam+30,y0=-12,y1=24,z=-25;
     vertex(x0,y0,z,0,0,0xffffffff);vertex(x1,y0,z,1,0,0xffffffff);vertex(x1,y1,z,1,1,0xffffffff);
     vertex(x1,y1,z,1,1,0xffffffff);vertex(x0,y1,z,0,1,0xffffffff);vertex(x0,y0,z,0,0,0xffffffff);
     if(!battle) {
-        shadow(g.progress.position,.55f,g.groundHeight);shadow(g.partner,.43f,g.partnerHeight);shadow(NpcPosition,.48f);
-        if(!g.progress.crumpDefeated) shadow(CrumpPosition,.65f);
+        shadow(g.progress.position,.55f,g.groundHeight);shadow(g.partner,.43f,g.partnerHeight);if(g.progress.room==0)shadow(NpcPosition,.48f);
+        if(g.progress.room==0 && !g.progress.crumpDefeated) shadow(CrumpPosition,.65f);
         struct Actor { int index;Vec2 p;float h,w,face,lift,tilt; };
         float bob=std::sin(g.ticks*.22f)*.018f;
         std::array<Actor,4> actors{{
@@ -145,7 +156,7 @@ void Renderer::world(const Game& g) {
             {2,CrumpPosition,1.9f,1.9f,-1,0,bob}
         }};
         std::sort(actors.begin(),actors.end(),[](const Actor& a,const Actor& b){return a.p.z<b.p.z;});
-        for(auto a:actors) if(a.index!=2 || !g.progress.crumpDefeated) character(a.index,a.p,a.h,a.w,a.face,a.lift,a.tilt);
+        for(auto a:actors) if((a.index<2 || g.progress.room==0) && (a.index!=2 || !g.progress.crumpDefeated)) character(a.index,a.p,a.h,a.w,a.face,a.lift,a.tilt);
     } else {
         Vec2 mario{-1.7f,0},crump{1.7f,0};float lift=0,tilt=0;
         if(g.phase==Phase::Windup && g.selection==0) {
@@ -204,7 +215,7 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
 void Renderer::overlay(const Game& g) {
     panel(8,7,174,28,Paper);
     char line[128];std::snprintf(line,sizeof(line),"Mario  HP %d/10",g.progress.hp);text(line,16,12,.54f,Ink);
-    text(g.scene==Scene::Battle?"BATTLE STAGE":"ROGUEPORT / prototype",205,12,.46f,rgb(255,246,222));
+    text(g.scene==Scene::Battle?"BATTLE STAGE":roomAsset(g.progress.room),205,12,.46f,rgb(255,246,222));
     if(g.scene==Scene::Dialogue) {
         panel(14,163,372,65,Paper);text(g.dialogue(),26,172,.55f,Ink);
         text("A / touch >",308,208,.4f,Ink);
@@ -294,7 +305,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,0xA6CBD8FF,0);
     C3D_FrameDrawOn(top);world(g);
     C2D_Prepare();C2D_SceneBegin(top);overlay(g);C2D_Flush();
-    C2D_TargetClear(bottom,Paper);C2D_SceneBegin(bottom);menu(g,m,notice,audioAvailable);C2D_Flush();
+    C2D_TargetClear(bottom,Paper);C2D_Prepare();C2D_SceneBegin(bottom);menu(g,m,notice,audioAvailable);C2D_Flush();
     C3D_FrameEnd(0);
 }
 void Renderer::shutdown() {

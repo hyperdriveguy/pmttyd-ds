@@ -30,7 +30,12 @@ struct Input {
     bool left = false, right = false, menuConfirm = false;
     int touchX = -1, touchY = -1; // press edge, never repeated held input
 };
+struct RoadWarp { uint32_t source,target; float x,z,spawnX,spawnZ,spawnY; };
+const char* roomAsset(uint32_t room);
+bool loadWarps(const char* path);
 struct Progress {
+    uint32_t room = 0;
+    float elevation = 0;
     Vec2 position{1, 3.5f};
     int hp = 10, mushrooms = 1;
     bool crumpDefeated = false, sound = true;
@@ -49,6 +54,9 @@ public:
     uint64_t ticks = 0;
     bool actionSuccess = false, guarded = false, saveRequested = false;
     Sound sound = Sound::None;
+    int warpRequest = -1, warpCooldown = 0;
+    bool finishWarp();
+    uint32_t warpTarget() const;
     void tick(const Input& input);
     void restore(const Progress& saved);
     void startBattle();
@@ -65,7 +73,7 @@ private:
     void attackDone(int damage);
     void openDialogue(int kind);
 };
-bool walkable(Vec2 p);
+bool walkable(Vec2 p,float elevation=0);
 bool loadCollision(const char* path);
 bool loadGround(const char* path);
 bool groundAt(Vec2 p, float reference, float& height);

@@ -168,3 +168,68 @@ Azahar verification: `python3 tools/emulator_smoke.py --seconds 4` booted
 the updated build and restored the existing 6 HP completed-encounter save.
 Capture reviewed at artifacts/azahar/boot.png; foreground wall occlusion
 remains. This boot check does not verify movement, slopes or room transitions.
+
+## Overworld continuation: reciprocal Rogueport roads
+
+Original roads now connect gor_01 plaza to gor_00 harbor, gor_02 east side
+and gor_03 west side, in both directions. The asset pipeline parses original
+REL self-relocations and BeroEntry records (0x3c bytes), matches contiguous road
+tables to original map marker names, and rejects ambiguous/nonreciprocal links.
+Geometry markers supply original AUTO-position centers. Native spawn inset .9,
+trigger radius .7 and cooldown 45 ticks are provisional adaptation values.
+Evidence and original record offsets are in local-assets/room-links.json and
+romfs/manifest.json. Original reference layout was inspected at
+https://github.com/jdaster64/ttyd-tot/blob/main/ttyd-tools/rel/include/ttyd/evt_bero.h;
+no code from that header is compiled or copied into the runtime.
+
+Three additional original rooms and texture packs are converted locally.
+Renderer stages a destination room before freeing the previous one, synchronizing
+GPU work before disposal. Main loop stages simulation arrival, validates target
+collision/floor and swaps rendering before committing progress; failed loads
+restore previous collision. Catch-up/input are reset across I/O. Partner follows
+after entering, and transitions save the checkpoint. Only plaza shows the
+provisional NPC/Crump encounter. Interior doors, pipes, story gates and gor_04
+are still unsupported; original cutscenes/door animation/fades are unfinished.
+
+Walls now retain vertical min/max extents (count high bit marks six-float wall
+records); elevated harbor platforms are no longer blocked by lower walls.
+Save version 2 keeps 32 bytes, using byte26 for room and signed byte27 for
+elevation quantized to .1. Version 1 migrates to plaza/elevation0. Structural
+decoding is independent of the currently loaded room; loading validates original
+target collision/ground. Tests cover legacy decoding, elevation and invalid IDs.
+
+Validation: make test passed core scenarios and 16 Python tests;
+`build-host/core_tests --rooms` validated all six arrivals with original room
+collision/ground, HP preservation, checkpoint encoding and cooldown. Azahar
+asserted saved destination IDs on east/plaza round trip and two harbor/plaza
+and two west/plaza round trips. Captures under artifacts/azahar were reviewed.
+Room I/O produces transient frame drops; no hardware benchmark. A rendering
+regression appears after streaming: some bottom-screen panels become black,
+while save feedback remains visible. Additional C2D state reset before the bottom
+screen is under verification; do not claim the rendering is fully accepted.
+
+Reproduce isolated road tests:
+```sh
+python3 tools/road_fixtures.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/east-road.bin --seconds 4 --input-script tests/azahar_roads.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-road.bin --seconds 4 --input-script tests/azahar_roads.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/west-road.bin --seconds 4 --input-script tests/azahar_roads.py
+```
+
+Next: verify/fix Citro2D state after room streaming; expand reciprocal warp
+testing to failed loads and restart in each destination. Improve camera Z and
+foreground occlusion per original camera/event data. Add collision spatial
+indexing and preserve distinct vertical segments sharing X/Z. Resolve original
+interior/pipe triggers, conditions, door visibility and animation before expanding
+connections. Original dialogue/story playback, sound events, full animation and
+hardware validation remain required for the full playable remake.
+
+Final streaming verification: resetting C2D state again before the bottom-screen
+scene fixed the black-panel regression. Repeated the east-side test on the final
+build (two round trips, saved-room assertions passed); reviewed
+road-east-return-1.png with the full status/menu visible at reported 60 fps.
+The earlier harbor/west runs predated this C2D-only fix. `make test`,
+`build-host/core_tests --rooms` and `git diff --check` all passed again.
+`make -j2 all` rebuilt successfully. The next agent should verify harbor/west
+bottom-screen presentation and destination restart persistence, then camera and
+foreground occlusion. No original story dialogue has been restored yet.

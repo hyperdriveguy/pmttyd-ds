@@ -5,6 +5,13 @@
 #include <sys/stat.h>
 namespace {
 double seconds() { return svcGetSystemTick()/double(SYSCLOCK_ARM11); }
+bool loadRoomCollision(uint32_t room) {
+    const char* name=ttyd::roomAsset(room);if(!name)return false;
+    char path[96];std::snprintf(path,sizeof(path),"romfs:/%s.walls",name);
+    if(!ttyd::loadCollision(path))return false;
+    std::snprintf(path,sizeof(path),"romfs:/%s.ground",name);
+    return ttyd::loadGround(path);
+}
 void merge(ttyd::Input& pending,const ttyd::Input& i) {
     pending.x=i.x;pending.z=i.z;pending.jumpHeld=i.jumpHeld;pending.hammerHeld=i.hammerHeld;
     pending.confirm|=i.confirm;pending.cancel|=i.cancel;pending.left|=i.left;pending.right|=i.right;
@@ -26,7 +33,7 @@ int main() {
         gfxExit();
         return 1;
     }
-    if(!ttyd::loadCollision("romfs:/map.walls") || !ttyd::loadGround("romfs:/map.ground")) {
+    if(!loadRoomCollision(0) || !ttyd::loadWarps("romfs:/rooms.bin")) {
         renderer.shutdown();romfsExit();gfxExit();return 1;
     }
     ttyd::Audio audio;audio.init();
@@ -34,7 +41,11 @@ int main() {
     const char* savePath="sdmc:/3ds/ttyd-2ds/progress.bin";
     mkdir("sdmc:/3ds",0777);mkdir("sdmc:/3ds/ttyd-2ds",0777);
     const auto loaded=ttyd::loadSave(savePath,saved);
-    if(loaded==ttyd::LoadResult::Loaded || loaded==ttyd::LoadResult::Recovered) game.restore(saved);
+    float savedHeight=saved.elevation;
+    if(loaded==ttyd::LoadResult::Loaded || loaded==ttyd::LoadResult::Recovered) {
+        if(loadRoomCollision(saved.room) && ttyd::groundAt(saved.position,saved.elevation,savedHeight) && ttyd::walkable(saved.position,savedHeight) && renderer.changeRoom(saved.room))game.restore(saved);
+        else {loadRoomCollision(0);renderer.changeRoom(0);}
+    }
     if(loaded==ttyd::LoadResult::Missing || loaded==ttyd::LoadResult::Invalid) game.restore(game.progress);
     const char* notice=loaded==ttyd::LoadResult::Recovered?"Recovered backup save":loaded==ttyd::LoadResult::Invalid?"Invalid save; started a new game":!newModel?"New 2DS XL is the performance target":"Development slice / provisional mechanics";
     int noticeTicks=240;
@@ -66,6 +77,18 @@ int main() {
         }
         if(accumulator>=1./60) {metrics.droppedTicks+=uint64_t(accumulator*60);accumulator=0;}
         metrics.simulationMs=(seconds()-simulationStart)*1000;
+        if(game.warpRequest>=0) {
+            const auto checkpoint=game;
+            // Target ID comes from the original, validated road table.
+            ttyd::Game candidate=game;
+            // Read target from the fixed record requested by the simulation.
+            uint32_t target=game.warpTarget();
+            bool ok=loadRoomCollision(target) && candidate.finishWarp();
+            if(ok)ok=renderer.changeRoom(target);
+            if(ok) {game=std::move(candidate);notice="";noticeTicks=0;}
+            else {loadRoomCollision(checkpoint.progress.room);game.warpRequest=-1;game.warpCooldown=60;notice="Room transition failed";noticeTicks=180;}
+            accumulator=0;pending={};previous=seconds();
+        }
         if(game.saveRequested) {
             notice=ttyd::writeSave(savePath,game.progress)?"Progress saved":"Save failed; progress kept in memory";
             noticeTicks=180;game.saveRequested=false;

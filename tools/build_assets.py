@@ -13,6 +13,7 @@ from iso_assets import extract,convert_tpl,DEFAULT_ISO
 from character_bake import bake
 from map_convert import convert
 from audio_convert import stm,sample_directory
+from room_convert import exits
 ROOT=Path(__file__).resolve().parents[1]
 OUTPUT=ROOT/'romfs';WORK=ROOT/'local-assets';ISO=os.environ.get('TTYD_ISO',DEFAULT_ISO)
 
@@ -20,10 +21,10 @@ def main():
     tex3ds=shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds'
     source=Path(ISO)
     if not source.is_file():raise SystemExit('Original asset pack requires TTYD_ISO pointing to your GameCube ISO')
-    scripts=[Path(__file__),ROOT/'tools/iso_assets.py',ROOT/'tools/character_bake.py',ROOT/'tools/map_convert.py',ROOT/'tools/audio_convert.py']
+    scripts=[Path(__file__),ROOT/'tools/iso_assets.py',ROOT/'tools/character_bake.py',ROOT/'tools/map_convert.py',ROOT/'tools/audio_convert.py',ROOT/'tools/room_convert.py']
     fingerprint=hashlib.sha256(b''.join(p.read_bytes() for p in scripts)+str((source.stat().st_size,source.stat().st_mtime_ns)).encode()).hexdigest()
     manifest=OUTPUT/'manifest.json'
-    required=['characters.t3x','sky.t3x','map.vertices','map.batches','rogueport.wav','battle.wav','victory.wav','stage.vertices','stage.batches','map.walls','map.ground']
+    required=['characters.t3x','sky.t3x','map.vertices','map.batches','rogueport.wav','battle.wav','victory.wav','stage.vertices','stage.batches','map.walls','map.ground','gor_00.vertices','gor_02.vertices','gor_03.vertices','rooms.bin']
     if manifest.exists() and all((OUTPUT/p).exists() for p in required):
         if json.loads(manifest.read_text()).get('fingerprint')==fingerprint:return
     WORK.mkdir(parents=True,exist_ok=True);OUTPUT.mkdir(exist_ok=True)
@@ -59,6 +60,51 @@ def main():
         # Power-of-two dimensions retain repeating GX texture coordinates.
         width=min(128,1<<(w-1).bit_length());height=min(128,1<<(h-1).bit_length())
         image.resize((width,height),Image.Resampling.LANCZOS).save(path);texture(path,OUTPUT/f'map-{index}.t3x')
+    rooms={'gor_01':summary}
+    for room in ['gor_00','gor_02','gor_03']:
+        room_model=asset(f'm/{room}/d',room+'.d');room_tpl=asset(f'm/{room}/t',room+'.tpl')
+        info=convert(room_model,WORK/room);rooms[room]=info
+        for ext in ['vertices','batches','walls','ground']:shutil.copyfile(WORK/room/f'map.{ext}',OUTPUT/f'{room}.{ext}')
+        for index,name in enumerate(info['textures']):
+            path=WORK/room/f'texture-{index}.png';convert_tpl(room_tpl,path,index)
+            image=Image.open(path).convert('RGBA');w,h=image.size
+            image.resize((min(128,1<<(w-1).bit_length()),min(128,1<<(h-1).bit_length())),Image.Resampling.LANCZOS).save(path)
+            texture(path,OUTPUT/f'{room}-{index}.t3x')
+    original_exits=exits(asset('rel/gor.rel','gor.rel'))
+    # Group consecutive original BeroEntry records. Match their exit names to
+    # the map's geometric road markers, with reciprocal destinations checked.
+    groups=[]
+    for entry in original_exits:
+        if not groups or entry['offset']!=groups[-1][-1]['offset']+60:groups.append([])
+        groups[-1].append(entry)
+    order=['gor_01','gor_00','gor_02','gor_03']
+    matched={}
+    for name,info in rooms.items():
+        names={m['name'] for m in info['exit_markers'] if m['name'] in ('n_bero','s_bero','e_bero','w_bero')}
+        candidates=[g for g in groups if {e['name'] for e in g}<=names]
+        if candidates:
+            size=max(map(len,candidates));candidates=[g for g in candidates if len(g)==size]
+        if len(candidates)!=1:raise ValueError(f'Ambiguous original road table for {name}: {names}')
+        matched[name]=candidates[0]
+    import struct
+    links=[]
+    for source,group in matched.items():
+        for entry in group:
+            target=entry['target']
+            if target not in matched:continue # Not yet packaged, never invent an endpoint.
+            reciprocal=next((e for e in matched[target] if e['name']==entry['arrival']),None)
+            if not reciprocal or reciprocal['target']!=source or reciprocal['arrival']!=entry['name']:raise ValueError('Nonreciprocal road link')
+            marker=next(m for m in rooms[source]['exit_markers'] if m['name']==entry['name'])
+            dest=next(m for m in rooms[target]['exit_markers'] if m['name']==entry['arrival'])
+            center=lambda m:[(a+b)/2 for a,b in zip(*m['bounds'])]
+            c=center(marker);d=center(dest)
+            direction={'n_bero':(0,-1),'s_bero':(0,1),'e_bero':(1,0),'w_bero':(-1,0)}
+            dx,dz=direction[entry['arrival']]
+            links.append({'source':source,'exit':entry['name'],'target':target,'arrival':entry['arrival'],'center':c,'spawn':[d[0]-dx*.9,d[1],d[2]-dz*.9],'rel_offset':entry['offset']})
+    (WORK/'room-links.json').write_text(json.dumps(links,indent=2))
+    with (OUTPUT/'rooms.bin').open('wb') as out:
+        out.write(struct.pack('<I',len(links)))
+        for link in links:out.write(struct.pack('<II5f',order.index(link['source']),order.index(link['target']),link['center'][0],link['center'][2],link['spawn'][0],link['spawn'][2],link['spawn'][1]))
     stage_model=asset('m/stg_01/d','stage.d');stage_tpl=asset('m/stg_01/t','stage.tpl')
     stage_summary=convert(stage_model,WORK/'stage',hidden=('stg__MASUKU','stg_kaaten_01_a','stg_kaaten_01_b','switch_dai','switch_mark','switch_osu'))
     for extension in ['vertices','batches']:shutil.copyfile(WORK/'stage'/f'map.{extension}',OUTPUT/f'stage.{extension}')
@@ -79,7 +125,7 @@ def main():
     for filename in ['confirm.wav','jump.wav','hit.wav','success.wav']:
         (OUTPUT/filename).unlink(missing_ok=True)
     manifest.write_text(json.dumps({'fingerprint':fingerprint,'source_disc':'G8ME01','assets':records,
-        'characters':poses,'map':summary,'battle_stage':stage_summary,'music':music,'sample_bank_entries':len(directory),
+        'characters':poses,'map':summary,'overworld_rooms':rooms,'road_links':links,'battle_stage':stage_summary,'music':music,'sample_bank_entries':len(directory),
         'sound_effect_status':'Original banks preserved; macro-to-event mapping not yet implemented. No synthetic replacements.',
         'conversion':'Original character idle poses and Mario jump/hammer textures baked to RGBA8 atlas; static Rogueport geometry; map textures capped at 128px; DSP music decoded losslessly at original rate'},indent=2)+'\n')
     print(f'Built original asset pack: {summary["triangles"]} map triangles, {len(directory)} preserved samples')

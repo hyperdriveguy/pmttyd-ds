@@ -5,7 +5,9 @@
 #include <vector>
 namespace ttyd {
 namespace {
+std::vector<RoadWarp> roads;
 std::vector<Rect> walls;
+std::vector<Vec2> wallLevels;
 struct GroundTriangle { float v[9]; };
 std::vector<GroundTriangle> ground;
 
@@ -16,12 +18,39 @@ int menuButton(const Input& i) {
     return -1;
 }
 }
-bool walkable(Vec2 p) {
+const char* roomAsset(uint32_t room) {
+    static const char* names[]={"map","gor_00","gor_02","gor_03"};
+    return room<4?names[room]:nullptr;
+}
+bool loadWarps(const char* path) {
+    FILE* file=std::fopen(path,"rb");if(!file)return false;
+    uint32_t count=0;bool ok=std::fread(&count,4,1,file)==1 && count<=128;
+    std::vector<RoadWarp> data(ok?count:0);
+    if(ok)ok=std::fread(data.data(),sizeof(RoadWarp),count,file)==count && std::fgetc(file)==EOF;
+    std::fclose(file);
+    for(const auto& w:data) if(!roomAsset(w.source) || !roomAsset(w.target) ||
+        !std::isfinite(w.x) || !std::isfinite(w.z) || !std::isfinite(w.spawnX) || !std::isfinite(w.spawnZ) || !std::isfinite(w.spawnY))ok=false;
+    if(ok)roads.swap(data);
+    return ok;
+}
+uint32_t Game::warpTarget() const {return warpRequest>=0 && size_t(warpRequest)<roads.size()?roads[warpRequest].target:UINT32_MAX;}
+bool Game::finishWarp() {
+    if(warpRequest<0 || size_t(warpRequest)>=roads.size())return false;
+    const auto& w=roads[warpRequest];float height=w.spawnY;
+    Vec2 arrival{w.spawnX,w.spawnZ};
+    if(!groundAt(arrival,height,height) || !walkable(arrival,height))return false;
+    Progress next=progress;next.room=w.target;next.position=arrival;next.elevation=height;
+    restore(next);groundHeight=height;partner=arrival;partnerHeight=height;
+    followerPath.clear();warpCooldown=45;saveRequested=true;return true;
+}
+bool walkable(Vec2 p,float elevation) {
     constexpr float r = 0.28f;
     if (!std::isfinite(p.x) || !std::isfinite(p.z)) return false;
     if(!walls.empty()) {
-        if(p.x < -6.7f+r || p.x > 6.7f-r || p.z < -4.5f+r || p.z > 5.8f-r)return false;
-        for(auto wall:walls) {
+        if(ground.empty() && (p.x < -6.7f+r || p.x > 6.7f-r || p.z < -4.5f+r || p.z > 5.8f-r))return false;
+        for(size_t n=0;n<walls.size();++n) {
+            auto wall=walls[n];
+            if(!wallLevels.empty() && (wallLevels[n].z<elevation+.1f || wallLevels[n].x>elevation+1.2f))continue;
             if(p.x < std::min(wall.x0,wall.x1)-r || p.x > std::max(wall.x0,wall.x1)+r || p.z < std::min(wall.z0,wall.z1)-r || p.z > std::max(wall.z0,wall.z1)+r)continue;
             float dx=wall.x1-wall.x0,dz=wall.z1-wall.z0,den=dx*dx+dz*dz;
             if(den<1e-8f)continue;
@@ -39,9 +68,17 @@ bool walkable(Vec2 p) {
 bool loadCollision(const char* path) {
     FILE* file=std::fopen(path,"rb");if(!file)return false;
     uint32_t count=0;bool ok=std::fread(&count,4,1,file)==1;
-    if(!ok || count==0 || count>10000) {std::fclose(file);return false;}
-    std::vector<Rect> data(count);ok=std::fread(data.data(),sizeof(Rect),count,file)==count;std::fclose(file);
+    bool levels=(count&0x80000000)!=0;count&=0x7fffffff;
+    if(!ok || count==0 || count>100000) {std::fclose(file);return false;}
+    std::vector<Rect> data(count);std::vector<Vec2> heights(levels?count:0);
+    for(uint32_t n=0;n<count;++n) {
+        ok=ok && std::fread(&data[n],sizeof(Rect),1,file)==1;
+        if(levels)ok=ok && std::fread(&heights[n],sizeof(Vec2),1,file)==1;
+    }
+    ok=ok && std::fgetc(file)==EOF;std::fclose(file);
     for(auto w:data) if(!std::isfinite(w.x0) || !std::isfinite(w.z0) || !std::isfinite(w.x1) || !std::isfinite(w.z1))ok=false;
+    for(auto h:heights)if(!std::isfinite(h.x) || !std::isfinite(h.z) || h.x>h.z)ok=false;
+    if(ok)wallLevels.swap(heights);
     if(ok) walls.swap(data);
     return ok;
 }
@@ -74,7 +111,7 @@ bool groundAt(Vec2 p,float reference,float& height) {
     if(found)height=best;
     return found;
 }
-void clearCollision() {walls.clear();ground.clear();}
+void clearCollision() {walls.clear();wallLevels.clear();ground.clear();}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
 void Game::restore(const Progress& saved) {
@@ -82,8 +119,9 @@ void Game::restore(const Progress& saved) {
     *this = Game{};
     progress = p;
     partner = {p.position.x-0.8f,p.position.z};
-    if (!walkable(partner)) partner = p.position;
-    groundAt(p.position,0,groundHeight);
+    groundHeight=p.elevation;partnerHeight=p.elevation;
+    if (!walkable(partner,p.elevation)) partner = p.position;
+    groundAt(p.position,p.elevation,groundHeight);
     groundAt(partner,groundHeight,partnerHeight);
     followerPath.push_back(partner);followerPath.push_back(p.position);
     cameraX = std::clamp(p.position.x,-3.5f,3.5f);
@@ -116,8 +154,8 @@ const char* Game::prompt() const {
         if (phase == Phase::EnemyWindup) return "Press A just before Crump lands!";
         return actionSuccess ? "Nice!" : "Keep your timing steady.";
     }
-    if (!progress.crumpDefeated && near(CrumpPosition)) return "A: confront Lord Crump";
-    if (near(NpcPosition)) return "A: talk";
+    if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) return "A: confront Lord Crump";
+    if (progress.room==0 && near(NpcPosition)) return "A: talk";
     return "Circle Pad: move   A: jump   X: partner";
 }
 void Game::move(const Input& i) {
@@ -126,10 +164,18 @@ void Game::move(const Input& i) {
     Vec2 p = progress.position;
     Vec2 candidate{p.x+x*0.065f,p.z};
     float nextHeight=groundHeight;
-    if (walkable(candidate) && groundAt(candidate,groundHeight,nextHeight)) {p=candidate;groundHeight=nextHeight;}
+    if (walkable(candidate,groundHeight) && groundAt(candidate,groundHeight,nextHeight)) {p=candidate;groundHeight=nextHeight;}
     candidate={p.x,p.z+z*0.065f};
-    if (walkable(candidate) && groundAt(candidate,groundHeight,nextHeight)) {p=candidate;groundHeight=nextHeight;}
-    progress.position=p;
+    if (walkable(candidate,groundHeight) && groundAt(candidate,groundHeight,nextHeight)) {p=candidate;groundHeight=nextHeight;}
+    progress.position=p;progress.elevation=groundHeight;
+    if(warpCooldown>0)--warpCooldown;
+    if(warpCooldown==0 && warpRequest<0 && len>.15f) {
+        for(size_t n=0;n<roads.size();++n) {
+            const auto& road=roads[n];
+            if(road.source==progress.room && length(p,{road.x,road.z})<.7f &&
+                x*(road.x-p.x)+z*(road.z-p.z)>0) {warpRequest=int(n);break;}
+        }
+    }
     if (std::fabs(x) > .15f && (x>0 ? 1.f : -1.f) != facing) {
         facing = x>0 ? 1.f : -1.f; turnTick=10;
     }
@@ -147,7 +193,7 @@ void Game::move(const Input& i) {
             float step=std::min(budget,dist);
             Vec2 q{partner.x+(target.x-partner.x)/dist*step,partner.z+(target.z-partner.z)/dist*step};
             float h=partnerHeight;
-            if(!walkable(q) || !groundAt(q,partnerHeight,h))break;
+            if(!walkable(q,partnerHeight) || !groundAt(q,partnerHeight,h))break;
             partner=q;partnerHeight=h;budget-=step;
             if(step>=dist)followerPath.erase(followerPath.begin());
         }
@@ -261,8 +307,8 @@ void Game::tick(const Input& i) {
     move(i);
     if (i.cancel) openDialogue(2);
     else if (i.confirm && jumpTick==0) {
-        if (!progress.crumpDefeated && near(CrumpPosition)) openDialogue(1);
-        else if (near(NpcPosition)) openDialogue(0);
+        if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) openDialogue(1);
+        else if (progress.room==0 && near(NpcPosition)) openDialogue(0);
         else { jumpTick=36; sound=Sound::Jump; }
     }
 }

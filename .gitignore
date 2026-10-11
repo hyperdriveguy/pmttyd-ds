@@ -16,3 +16,5 @@ romfs/*.loop
 romfs/*.walls
 
 romfs/*.ground
+
+romfs/rooms.bin

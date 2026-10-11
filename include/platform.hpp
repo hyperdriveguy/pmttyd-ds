@@ -11,6 +11,7 @@ struct Metrics { float simulationMs=0, renderMs=0, gpuMs=0, fps=0; int steps=0; 
 class Renderer {
 public:
     bool init();
+    bool changeRoom(uint32_t room);
     void render(const Game&, const Metrics&, const char* notice, bool audioAvailable);
     void shutdown();
 private:
@@ -35,6 +36,7 @@ private:
     Room plaza,stage;
     Texture sky;
     bool loadMap(const char* name,Room& room);
+    void freeRoom(Room& room);
     void drawMap(bool battle);
     bool c3dReady=false,c2dReady=false,programReady=false,atlasReady=false;
     void world(const Game&);

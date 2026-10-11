@@ -15,6 +15,7 @@ OUT=ROOT/'artifacts/azahar'
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--save-fixture',help='Copy a 32-byte test save into the isolated profile before boot')
     parser.add_argument('--fresh-save',action='store_true',help='Reset only the generated project-local Azahar test save')
     parser.add_argument('--reference-dolphin',action='store_true',help='Capture the original ISO using an isolated Dolphin profile instead')
     parser.add_argument('--seconds',type=int,default=12)
@@ -29,6 +30,12 @@ def main():
     if args.fresh_save and not args.reference_dolphin:
         directory=OUT/'data/azahar-emu/sdmc/3ds/ttyd-2ds'
         for name in ['progress.bin','progress.bin.bak','progress.bin.tmp']:(directory/name).unlink(missing_ok=True)
+    if args.save_fixture:
+        if args.reference_dolphin:raise ValueError('Save fixtures are for the native Azahar build only')
+        fixture=Path(args.save_fixture).read_bytes()
+        if len(fixture)!=32:raise ValueError('Expected a 32-byte project save fixture')
+        directory=OUT/'data/azahar-emu/sdmc/3ds/ttyd-2ds';directory.mkdir(parents=True,exist_ok=True)
+        (directory/'progress.bin').write_bytes(fixture)
     env['QT_QPA_PLATFORM']='xcb' ;env['LIBGL_ALWAYS_SOFTWARE']='1'
     readfd,writefd=os.pipe()
     with (OUT/'xvfb.log').open('w') as xlog,(OUT/'launch.log').open('w') as elog:

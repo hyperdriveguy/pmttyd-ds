@@ -70,9 +70,17 @@ void battles() {
 void saves() {
     Progress p;p.position={2,2};p.crumpDefeated=true;p.hp=7;p.sound=false;
     auto bytes=encodeSave(p);Progress restored;CHECK(decodeSave(bytes,restored));CHECK(restored.hp==7);CHECK(restored.crumpDefeated);CHECK(!restored.sound);
+    // Version 1 plaza saves migrate without losing progress.
+    auto legacy=encodeSave(p);legacy[4]=1;
+    uint32_t sum=2166136261u;for(int n=0;n<28;++n){sum^=legacy[n];sum*=16777619u;}
+    for(int n=0;n<4;++n)legacy[28+n]=(sum>>(8*n))&255;
+    CHECK(decodeSave(legacy,restored));CHECK(restored.room==0);CHECK(restored.elevation==0);
+    Progress elevated=p;elevated.room=1;elevated.elevation=1.19f;
+    CHECK(decodeSave(encodeSave(elevated),restored));CHECK(restored.room==1);CHECK(std::fabs(restored.elevation-1.2f)<.001f);
+    elevated.room=256;CHECK(!decodeSave(encodeSave(elevated),restored));
     bytes[8]^=1;CHECK(!decodeSave(bytes,restored));
     p.position.x=std::numeric_limits<float>::infinity();CHECK(!decodeSave(encodeSave(p),restored));
-    p.position={0,0};CHECK(!decodeSave(encodeSave(p),restored));
+    p.room=4;CHECK(!decodeSave(encodeSave(p),restored));p.room=0;
     p.position={2,2};p.hp=11;CHECK(!decodeSave(encodeSave(p),restored));p.hp=7;
     char directory[]="/tmp/ttyd-tests-XXXXXX";CHECK(mkdtemp(directory));std::string path=std::string(directory)+"/progress.bin";
     CHECK(loadSave(path,restored)==LoadResult::Missing);CHECK(writeSave(path,p));CHECK(loadSave(path,restored)==LoadResult::Loaded);
@@ -106,7 +114,24 @@ void groundImport() {
     CHECK(g.progress.position.x>-2.3f);CHECK(g.groundHeight>.2f);
     clearCollision();std::remove(path);
 }
-int main() {
-    try {movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();std::puts("Core scenarios passed");}
+void originalRooms() {
+    CHECK(loadWarps("romfs/rooms.bin"));
+    std::ifstream file("romfs/rooms.bin",std::ios::binary);uint32_t count=0;file.read(reinterpret_cast<char*>(&count),4);
+    CHECK(count==6);std::vector<RoadWarp> roads(count);file.read(reinterpret_cast<char*>(roads.data()),count*sizeof(RoadWarp));CHECK(file.good());
+    for(size_t n=0;n<roads.size();++n) {
+        const auto& road=roads[n];std::string prefix=std::string("romfs/")+roomAsset(road.target);
+        CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));
+        Game g;g.progress.room=road.source;g.progress.hp=7;g.warpRequest=n;
+        CHECK(g.warpTarget()==road.target);CHECK(g.finishWarp());
+        CHECK(g.progress.room==road.target);CHECK(g.progress.hp==7);CHECK(g.warpRequest==-1);
+        CHECK(g.warpCooldown==45);CHECK(g.saveRequested);CHECK(walkable(g.progress.position,g.groundHeight));
+        CHECK(std::fabs(g.progress.position.x-road.spawnX)<.001f);CHECK(std::fabs(g.progress.position.z-road.spawnZ)<.001f);
+        CHECK(decodeSave(encodeSave(g.progress),g.progress));
+        for(int frame=0;frame<10;++frame)g.tick({});CHECK(g.warpRequest==-1);
+    }
+    clearCollision();
+}
+int main(int argc,char**) {
+    try {if(argc>1) {originalRooms();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

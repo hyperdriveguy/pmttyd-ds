@@ -16,17 +16,17 @@ bool read(const std::string& path, Progress& p) {
 }
 }
 SaveBytes encodeSave(const Progress& p) {
-    SaveBytes b{}; std::memcpy(b.data(),"PM2D",4); put(b,4,1);
+    SaveBytes b{}; if(!roomAsset(p.room) || !std::isfinite(p.elevation) || std::fabs(p.elevation)>12.7f)return b;std::memcpy(b.data(),"PM2D",4); put(b,4,2);
     uint32_t x,z; std::memcpy(&x,&p.position.x,4); std::memcpy(&z,&p.position.z,4);
     put(b,8,x); put(b,12,z); put(b,16,p.hp); put(b,20,p.mushrooms);
-    b[24]=p.crumpDefeated; b[25]=p.sound; put(b,28,checksum(b)); return b;
+    b[24]=p.crumpDefeated; b[25]=p.sound;b[26]=p.room;b[27]=int8_t(std::round(p.elevation*10)); put(b,28,checksum(b)); return b;
 }
 bool decodeSave(const SaveBytes& b, Progress& p) {
-    if(std::memcmp(b.data(),"PM2D",4) || get(b,4)!=1 || get(b,28)!=checksum(b)) return false;
+    if(std::memcmp(b.data(),"PM2D",4) || (get(b,4)!=1 && get(b,4)!=2) || get(b,28)!=checksum(b)) return false;
     Progress out; uint32_t x=get(b,8),z=get(b,12);
     std::memcpy(&out.position.x,&x,4); std::memcpy(&out.position.z,&z,4);
-    if(get(b,16)>10 || get(b,20)>99 || b[24]>1 || b[25]>1 || b[26] || b[27] || !walkable(out.position)) return false;
-    out.hp=get(b,16); out.mushrooms=get(b,20); out.crumpDefeated=b[24];out.sound=b[25];p=out;return true;
+    if(get(b,16)>10 || get(b,20)>99 || b[24]>1 || b[25]>1 || (get(b,4)==1 && b[26]) || b[26]>3 || (get(b,4)==1 && b[27]) || !std::isfinite(out.position.x) || !std::isfinite(out.position.z) || std::fabs(out.position.x)>100 || std::fabs(out.position.z)>100) return false;
+    out.room=b[26];out.elevation=int8_t(b[27])/10.f;out.hp=get(b,16); out.mushrooms=get(b,20); out.crumpDefeated=b[24];out.sound=b[25];p=out;return true;
 }
 LoadResult loadSave(const std::string& path,Progress& p) {
     if(read(path,p)) return LoadResult::Loaded;

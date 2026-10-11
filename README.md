@@ -2,7 +2,7 @@
 
 A native homebrew remake in development. The current slice uses original
 Rogueport geometry/textures, original character idle poses, and original music
-converted locally from your US GameCube ISO. It includes exploration, dialogue,
+converted locally from your US GameCube ISO. It includes four connected Rogueport outdoor rooms, exploration, dialogue,
 a small Crump battle harness, touch menus and versioned saves.
 
 This is not a finished or fidelity-verified remake. Original skeletal/vertex
@@ -75,3 +75,8 @@ Original US English dialogue and faithful story reproduction are required.
 The current dialogue interaction displays explicit development notices; original
 message playback and event sequencing are unfinished. No authored replacement
 character dialogue should be used.
+
+Outdoor road exits link the plaza with harbor, east and west rooms. Walk toward
+the original road openings to change rooms; arrival progress is saved. Interior
+doors, pipes and story-dependent exits are unfinished. See docs/PROGRESS.md for
+current rendering limitations and isolated reciprocal-road verification.

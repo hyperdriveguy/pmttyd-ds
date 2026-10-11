@@ -50,12 +50,13 @@ def convert(path,output,scale=.1,hidden=()):
         if samplers>1:warnings.append({'material':name,'samplers':samplers,'limitation':'Only texture zero currently rendered'})
         materials[o]={'name':name,'color':color,'color_source':raw[o+8],'layer':raw[o+10],'texture':tid,'uv':uvmatrix,'wrap':wrap}
     info=chunks['information'];scene_name=string(base+u(raw,info+8));collision_name=string(base+u(raw,info+12))
-    vertices=defaultdict(list);nodes=[];collision=[]
+    vertices=defaultdict(list);nodes=[];collision=[];markers=[]
     def walk(o,parent,visible=False,collidable=False,depth=0):
         if depth>100:raise ValueError('Invalid map graph')
         name=string(base+u(raw,o));visible=visible or name==scene_name;collidable=collidable or name==collision_name
         values=struct.unpack_from('>9f',raw,o+24);m=parent@trans(values[6:9])@rotate(values[3:6])@np.diag([*values[:3],1])
         nodes.append(name)
+        marker_points=[]
         for part in range(0 if name in hidden else u(raw,o+92)):
             mo=u(raw,o+96+part*8)
             if not mo:continue
@@ -86,10 +87,14 @@ def convert(path,output,scale=.1,hidden=()):
                         # Tex3DS uses bottom-origin texture coordinates.
                         local.append([*p,float(uv[0]),1-float(uv[1]),*color])
                     tris=list(topology(cmd,local))
+                    if name.endswith("_bero"):marker_points.extend(v[:3] for v in local)
                     if visible:
                         for tri in tris:vertices[base+mo].extend(tri)
                     elif collidable:
                         for tri in tris:collision.append([v[:3] for v in tri])
+        if name.endswith('_bero'):
+            points=np.array(marker_points) if marker_points else np.array([(m@np.array([0,0,0,1]))[:3]*scale])
+            markers.append({'name':name,'bounds':[points.min(0).tolist(),points.max(0).tolist()]})
         child=u(raw,o+12);sibling=u(raw,o+16)
         if child:walk(base+child,m,visible,collidable,depth+1)
         if sibling:walk(base+sibling,parent,visible if name!=scene_name else False,collidable if name!=collision_name else False,depth+1)
@@ -106,16 +111,16 @@ def convert(path,output,scale=.1,hidden=()):
     with (output/'map.batches').open('wb') as out:
         out.write(struct.pack('<II',len(batches),len(textures)))
         for b in batches:out.write(struct.pack('<IIiIII',*b))
-    segments=set()
+    segments={}
     for tri in collision:
         a=np.array(tri);normal=np.cross(a[1]-a[0],a[2]-a[0]);length=np.linalg.norm(normal)
-        if length<1e-8 or abs(normal[1])/length>.2 or a[:,1].min()>1.1 or a[:,1].max()<.08:continue
+        if length<1e-8 or abs(normal[1])/length>.2:continue
         points=a[:,[0,2]]
         p,q=max([(points[x],points[y]) for x,y in [(0,1),(1,2),(0,2)]],key=lambda pair:np.linalg.norm(pair[0]-pair[1]))
-        if np.linalg.norm(p-q)>.01:segments.add(tuple(sorted([tuple(np.round(p,4)),tuple(np.round(q,4))])))
+        if np.linalg.norm(p-q)>.01:segments[tuple(sorted([tuple(np.round(p,4)),tuple(np.round(q,4))]))]=(float(a[:,1].min()),float(a[:,1].max()))
     with (output/'map.walls').open('wb') as out:
-        out.write(struct.pack('<I',len(segments)))
-        for p,q in sorted(segments):out.write(struct.pack('<4f',*p,*q))
+        out.write(struct.pack('<I',len(segments)|0x80000000))
+        for (p,q),(lo,hi) in sorted(segments.items()):out.write(struct.pack('<6f',*p,*q,lo,hi))
     # Keep walkable collision surfaces, including ramps and elevated platforms.
     ground=[]
     for tri in collision:
@@ -127,7 +132,7 @@ def convert(path,output,scale=.1,hidden=()):
         for tri in ground:out.write(struct.pack('<9f',*(v for point in tri for v in point)))
     summary={'source':str(path),'scale':scale,'vertices':count,'triangles':count//3,'batches':len(batches),'textures':textures,
              'bounds':[np.min(bounds,axis=0).tolist(),np.max(bounds,axis=0).tolist()],
-             'limitations':warnings,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}
+             'exit_markers':markers,'limitations':warnings,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}
     (output/'map-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     (output/'collision.json').write_text(json.dumps(collision))
     return summary
