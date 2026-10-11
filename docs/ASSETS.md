@@ -120,3 +120,19 @@ Station has shadanki, n_1_door_open/close mesh tracks; train-body mesh animation
 is absent from that table. Its visual defects still require material/scene/event
 inspection. Harbor contains duplicate fune_b animation names; explicit name
 selection rejects ambiguity rather than choosing an arbitrary duplicate.
+
+Material animation tracks are now decoded into local map.animations.json: five
+channels (S/T translation, S/T scale, rotation), centers, texgen index, key times,
+Hermite tangents and step flags. Offline preview binds texgen0 by original
+material names (including _v/_x-normalized aliases). Higher texgens are reported
+as unsupported, not silently accepted. Shared texture_matrix supplies both bind
+and animated texture transforms; no runtime animation is enabled automatically.
+
+Downloaded read-only public US symbol metadata for event inspection from
+https://github.com/jdaster64/ttyd-utils/blob/master/resources/us_symbols.csv
+to ignored artifacts/reference/us_symbols.csv. Upstream repository is GPL-3.0;
+no upstream code or table is copied into native runtime or source history.
+Independently written map_event_inventory.py resolves original REL local/DOL
+relocations, uses externally supplied symbol names/ranges, and inventories the
+original init command stream to ignored local-assets/map-init-events.json.
+It does not execute scripts or evaluate story conditions.

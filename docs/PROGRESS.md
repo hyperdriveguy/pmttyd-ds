@@ -546,3 +546,44 @@ and measured combat; full playable objective remains active.
 
 Final `make -j2 all` completed successfully with animation extraction included in
 the asset fingerprint. No runtime mesh playback has been enabled by this change.
+
+## Overworld continuation: material tracks and original init-call evidence
+
+Implemented original material animation decoding and explicit offline UV frame
+previews, sharing static/animated texture matrix math. Supported texgen0 material
+binding with original names and _v/_x aliases; higher texgens produce a limitation
+record. East mizu animation contains both texgen0 and1 tracks on lambert119, so
+full water fidelity still requires second-layer rendering. Runtime animation
+selection/rates/loop semantics remain unfinished. No default scene animations
+were guessed or automatically activated.
+
+`make test` passed core plus 21 Python tests: original-layout material fixture,
+invalid texgen rejection, independent S/T scale interpolation and matrix/finite
+boundaries. `make -j2 all` passed. `build-host/core_tests --rooms` passed all 8
+arrivals and 18,315 collision probes. `python3 tools/verify_map_animations.py` passed
+63 material samples across 21 tracks plus 54 mesh samples. East water midpoint
+changes 135 UV vertices; west neon_01 midpoint changes 2,010; geometry/colors,
+collision and batches remain identical. Existing 702-vertex station door sample
+also passed. No new emulator or hardware animation acceptance claim.
+
+Added independent read-only map event inventory, using publicly available
+jdaster64/ttyd-utils US symbol CSV (external, ignored). Original REL event headers
+provide argc/opcode; full command order/operands/relocation provenance retained,
+no script interpreter or branch evaluation. Inventoried gor init scripts: harbor
+starts nami/nami_02/hiki_nami; plaza hae; east mizu/noname/ie_01_light; west mizu.
+These calls do not alone prove unconditional activation. Station init has
+evt_mapobj_flag_onoff at 0x6073c with operands (1,0,train_2,2), and S_bero at 0x6051c
+with (1,0,S_bero,2). Determine flag semantics and enclosing conditions before using
+these as rendering defaults. This is concrete evidence for the remaining train
+visibility issue, rather than assuming an absent train mesh clip.
+
+Reproduce after obtaining external public US symbol CSV:
+```sh
+python3 tools/map_event_inventory.py --symbols artifacts/reference/us_symbols.csv --output local-assets/map-init-events.json
+python3 tools/verify_map_animations.py
+python3 tools/map_convert.py local-assets/gor_02.d /tmp/ttyd-water --animation mizu --frame 499.5
+```
+Next: interpret original map flag/animation-call semantics and branch conditions;
+export runtime node/material bindings, enable proven ambient tracks, and repair
+train scene visibility. Continue original camera/door/pipe/interior events and
+English story/dialogue, SFX and measured combat. Full playable objective active.

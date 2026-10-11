@@ -8,7 +8,7 @@ import numpy as np
 from audio_convert import decode,nibbles_to_samples
 from character_bake import matrix
 from map_convert import topology,wall_segments,batch_flags
-from map_animation import interpolate,sample,read_animations
+from map_animation import interpolate,sample,read_animations,sample_material,texture_matrix
 class ConversionTests(unittest.TestCase):
     def test_dsp_predictor_zero(self):
         self.assertEqual(list(decode(bytes([0,0x1f])+bytes(6),14,[0]*16))[:3],[1,-1,0])
@@ -57,11 +57,29 @@ class ConversionTests(unittest.TestCase):
             animation=read_animations(path)[0]
             self.assertEqual(animation['name'],'idle');self.assertEqual(animation['tracks'][0]['node'],'door')
             self.assertTrue(np.allclose(sample(animation['tracks'][0],5)@np.array([0,0,0,1]),[2,0,0,1]))
+            material=bytearray(raw)+bytearray(1088)
+            struct.pack_into('>I',material,208,992)
+            struct.pack_into('>II',material,1024,1,1028)
+            struct.pack_into('>II2fI',material,1060,1768,0,0,0,1)
+            for n,value in enumerate([5,2,2,3,0]):struct.pack_into('>f',material,1084+n*20,value)
+            material[1800:1805]=b'wall\0';path.write_bytes(material)
+            decoded=read_animations(path)[0]['material_tracks'][0]
+            self.assertEqual(decoded['material'],'wall')
+            self.assertTrue(np.allclose(sample_material(decoded,0),[[2,0,5],[0,3,-2],[0,0,1]]))
+            struct.pack_into('>I',material,1064,8);path.write_bytes(material)
+            with self.assertRaises(ValueError):read_animations(path)
             for offset,fmt,value in [(200,'f',float('nan')),(348,'f',0),(412,'f',float('inf')),(432,'I',2),(408,'I',10001)]:
                 broken=bytearray(raw);struct.pack_into('>'+fmt,broken,offset,value);path.write_bytes(broken)
                 with self.assertRaises(ValueError):read_animations(path)
             path.write_bytes(raw[:300])
             with self.assertRaises(ValueError):read_animations(path)
+    def test_material_track_sampling(self):
+        def key(time,values):return {'time':time,'components':[[v,0,0,False] for v in values]}
+        track={'center':[0,0],'frames':[key(0,[0,0,2,3,0]),key(10,[10,4,4,7,0])]}
+        self.assertTrue(np.allclose(sample_material(track,5),[[3,0,5],[0,5,-2],[0,0,1]]))
+        self.assertTrue(np.allclose(texture_matrix(0,0,1,1,0,0,0),np.eye(3)))
+        for value in [float('inf'),float('nan')]:
+            with self.assertRaises(ValueError):texture_matrix(value,0,1,1,0,0,0)
     def test_map_animation_interpolation(self):
         self.assertEqual(interpolate([2,0,0,True],[8,0,0,False],.5,10),2)
         self.assertEqual(interpolate([2,0,0,False],[8,0,0,False],.5,10),5)

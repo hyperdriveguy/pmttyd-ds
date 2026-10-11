@@ -87,3 +87,11 @@ transforms and parent hierarchy before baking. Only visual scene nodes are
 sampled; collision previews stay static. Runtime packs continue to use bind
 poses until original event conditions and node-to-vertex bindings are recovered.
 Original durations do not establish simulation frame rate or loop semantics.
+
+Material preview samples replace the bind texture matrix before applying raw
+GX UV coordinates and Tex3DS V inversion. S and T scales interpolate independently
+(the upstream sampler text has a cross-channel scale typo; this implementation
+uses each original channel). Original keyframes and centers are authoritative;
+loop/rate/activation remain event work. map_event_inventory.py preserves command
+opcodes/order and operand relocation provenance, without flattening branches into
+a default scene state. It requires the separately obtained US symbol table.

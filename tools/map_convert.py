@@ -6,11 +6,12 @@ First-texture materials only; report multilayer materials for fidelity work.
 from pathlib import Path
 import json
 import math
+import re
 import struct
 from collections import defaultdict
 import numpy as np
 from character_bake import u,i,f,trans,rotate
-from map_animation import read_animations,sample
+from map_animation import read_animations,sample,sample_material,texture_matrix
 
 def topology(command,verts):
     mode=command&0xf8
@@ -58,14 +59,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0):
             s=base+u(raw,o+12+(samplers-1)*4);entry=base+u(raw,s)
             tid=textures.index(string(base+u(raw,entry)));wrap=(raw[s+8],raw[s+9])
             v=struct.unpack_from('>7f',raw,o+44+(samplers-1)*28)
-            ts,tt,ss,st,angle,cs,ct=v;angle=math.radians(-angle)
-            a=np.array([[math.cos(angle),-math.sin(angle),0],[math.sin(angle),math.cos(angle),0],[0,0,1]])
-            c=np.array([.5*cs,.5*ct-1])
-            # Faithful texture transform order from the original map format.
-            pre=np.eye(3);pre[:2,2]=np.array([ss,st])*c
-            post=np.eye(3);post[:2,2]=-np.array([ss,st])*c
-            uvmatrix=np.diag([ss,st,1])@post@a@pre
-            uvmatrix[:2,2]+=np.array([ts,-tt])
+            uvmatrix=texture_matrix(*v)
         if samplers>1:warnings.append({'material':name,'samplers':samplers,'limitation':'Only texture zero currently rendered'})
         materials[o]={'name':name,'color':color,'color_source':raw[o+8],'layer':raw[o+10],'texture':tid,'uv':uvmatrix,'wrap':wrap}
     info=chunks['information'];scene_name=string(base+u(raw,info+8));collision_name=string(base+u(raw,info+12))
@@ -74,6 +68,13 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0):
         matches=[a for a in animations if a['name']==animation]
         if len(matches)!=1:raise ValueError(f'Unknown or ambiguous map animation: {animation}')
         selected={t['node']:sample(t,frame) for t in matches[0]['tracks']}
+        for track in matches[0]['material_tracks']:
+            if track['texgen']!=0:
+                warnings.append({'animation':animation,'material':track['material'],'limitation':'Animated texgen beyond texture zero unsupported'})
+                continue
+            targets=[mat for mat in materials.values() if track['material'] in (mat['name'],re.sub('_[vx]','',mat['name']))]
+            if not targets:raise ValueError(f"Animation material not found: {track['material']}")
+            for mat in targets:mat['uv']=sample_material(track,frame)
     vertices=defaultdict(list);nodes=[];collision=[];markers=[];cutaway_nodes={};cull_counts=defaultdict(int)
     def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0):
         if depth>100:raise ValueError('Invalid map graph')
@@ -164,7 +165,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0):
              'bounds':[np.min(bounds,axis=0).tolist(),np.max(bounds,axis=0).tolist()],
              'cull_triangles':dict(cull_counts),'cutaway_nodes':[{'id':cutaway_ids[o],'name':name} for o,name in sorted(cutaway_nodes.items())],'exit_markers':markers,'limitations':warnings,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}
     (output/'map.animations.json').write_text(json.dumps(animations,indent=2)+'\n')
-    summary['animations']=[{'name':a['name'],'duration':a['duration'],'mesh_tracks':len(a['tracks']),'material_table_offset':a['material_table_offset']} for a in animations]
+    summary['animations']=[{'name':a['name'],'duration':a['duration'],'mesh_tracks':len(a['tracks']),'material_tracks':len(a['material_tracks']),'material_table_offset':a['material_table_offset']} for a in animations]
     summary['sampled_animation']=animation;summary['sampled_frame']=frame if animation else None
     (output/'map-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     (output/'collision.json').write_text(json.dumps(collision))
