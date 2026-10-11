@@ -79,7 +79,7 @@ so stacked surfaces do not overwrite one another. Floor triangles also supply
 per-room footprint bounds for touch-map scaling; runtime uses a spatial index
 without modifying original geometry.
 
-Map batches now reserve bits 8+ of their layer word for an exterior-wall
+Map batches now reserve bits 8–23 of their layer word for an exterior-wall
 cutaway group ID (0 means ordinary geometry). Original layer remains in the
 low byte. Group owners are listed as cutaway_nodes in the manifest; S_gai_kabe
 subtrees provide the classification, and drawable descendants inherit an
@@ -97,3 +97,13 @@ Original `rel/gor.rel` records at 0x4de80 (west n_bero) and 0x5d53c
 (station s_bero) establish the reciprocal road. Station's other geometric
 n_bero marker is not an additional inferred road; train/event travel is unfinished.
 Arrival elevation uses the marker base, not its volume midpoint.
+
+Original per-node culling is read from the draw-mode pointer at node+0x58,
+byte+1. Converter retains GX indices 0–3, rejects invalid drawable-node values,
+and records cull_triangles counts. Hierarchy-only nodes can have a null pointer.
+Format reference: noclip.website src/PaperMarioTTYD/world.ts (MIT), already
+used by this converter. No visual guesswork is used to classify mesh sidedness.
+Batches now split by sidedness as well as material/cutaway owner. Geometry
+counts are unchanged; plaza/harbor/east/west/station batches 116/79/111/127/54.
+This does not recover event-controlled visibility, train animation or multilayer
+materials. Those remain necessary for original presentation.

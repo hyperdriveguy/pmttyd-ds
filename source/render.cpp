@@ -63,13 +63,13 @@ bool Renderer::loadMap(const char* name,Room& room) {
     ok=room.vertices && std::fread(room.vertices,1,bytes,f)==size_t(bytes);std::fclose(f);if(!ok)return false;
     for(auto b:room.batches) if(b.start>room.vertexCount || b.count>room.vertexCount-b.start || b.texture<-1 || b.texture>=int32_t(textureCount))return false;
     uint32_t groups=0;
-    for(auto batch:room.batches) {if(batch.count%3 || (batch.layer>>8)>1024)return false;groups=std::max(groups,batch.layer>>8);}
+    for(auto batch:room.batches) {if(batch.count%3 || ((batch.layer>>8)&65535)>1024 || (batch.layer>>26))return false;groups=std::max(groups,(batch.layer>>8)&65535);}
     room.occluders.resize(groups+1);
     for(auto& occluder:room.occluders) {
         float hi=std::numeric_limits<float>::max();occluder.bounds={{hi,hi,hi},{-hi,-hi,-hi}};
     }
     for(uint32_t n=0;n<batchCount;++n) {
-        auto batch=room.batches[n];uint32_t group=batch.layer>>8;if(!group)continue;
+        auto batch=room.batches[n];uint32_t group=(batch.layer>>8)&65535;if(!group)continue;
         auto& occluder=room.occluders[group];occluder.batches.push_back(n);
         for(uint32_t k=batch.start;k<batch.start+batch.count;++k) {
             auto v=room.vertices[k];auto& b=occluder.bounds;
@@ -129,14 +129,18 @@ void Renderer::drawMap(bool battle,const Game& game) {
     auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,room.vertices,sizeof(Vertex),3,0x210);
     const GPU_TEXTURE_WRAP_PARAM wraps[]={GPU_CLAMP_TO_EDGE,GPU_REPEAT,GPU_MIRRORED_REPEAT};
     for(auto batch:room.batches) {
-        uint32_t group=batch.layer>>8;
+        uint32_t group=(batch.layer>>8)&65535;
         if(!battle && group && room.occluders[group].hidden)continue;
         C3D_Tex* texture=batch.texture<0?&atlas:&room.textures[batch.texture].texture;
         C3D_TexSetWrap(texture,wraps[std::min<uint32_t>(batch.wrapS,2)],wraps[std::min<uint32_t>(batch.wrapT,2)]);
         C3D_TexBind(0,texture);
+        // GX winding maps to the opposite PICA enum in this view transform.
+        const GPU_CULLMODE culls[]={GPU_CULL_BACK_CCW,GPU_CULL_FRONT_CCW,GPU_CULL_NONE,GPU_CULL_NONE};
+        C3D_CullFace(culls[(batch.layer>>24)&3]);
         C3D_DepthTest(true,GPU_GREATER,(batch.layer&255)==2?GPU_WRITE_COLOR:GPU_WRITE_ALL);
         C3D_DrawArrays(GPU_TRIANGLES,batch.start,batch.count);
     }
+    C3D_CullFace(GPU_CULL_NONE);
     C3D_DepthTest(true,GPU_GREATER,GPU_WRITE_ALL);
 }
 void Renderer::vertex(float x,float y,float z,float u,float v,uint32_t color) {

@@ -5,7 +5,7 @@ import unittest
 import numpy as np
 from audio_convert import decode,nibbles_to_samples
 from character_bake import matrix
-from map_convert import topology,wall_segments
+from map_convert import topology,wall_segments,batch_flags
 class ConversionTests(unittest.TestCase):
     def test_dsp_predictor_zero(self):
         self.assertEqual(list(decode(bytes([0,0x1f])+bytes(6),14,[0]*16))[:3],[1,-1,0])
@@ -29,6 +29,16 @@ class ConversionTests(unittest.TestCase):
         segments=wall_segments([low,high,low])
         self.assertEqual(len(segments),2)
         self.assertEqual([s[4:] for s in segments],[(0.,1.),(3.,4.)])
+    def test_batch_metadata(self):
+        for layer in [0,2,255]:
+            for group in [0,26,1024,65535]:
+                for cull in range(4):
+                    flags=batch_flags(layer,group,cull)
+                    self.assertEqual(flags&255,layer)
+                    self.assertEqual((flags>>8)&65535,group)
+                    self.assertEqual(flags>>24,cull)
+        for args in [(-1,0,0),(256,0,0),(0,-1,0),(0,65536,0),(0,0,4)]:
+            with self.assertRaises(ValueError):batch_flags(*args)
     def test_triangle_fan(self):
         self.assertEqual(list(topology(0xa0,[0,1,2,3])),[[0,1,2],[0,2,3]])
 if __name__=='__main__':unittest.main()

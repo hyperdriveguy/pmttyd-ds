@@ -59,7 +59,7 @@ also precedes disposal of partially loaded room rendering on failure.
 
 Exterior-wall cutaways use original scene hierarchy under S_gai_kabe nodes.
 The converter batches these meshes by wall group while keeping other geometry
-batched by material. High bits of batch.layer carry the group; the low byte
+batched by material. Bits 8–23 of batch.layer carry the group; the low byte
 remains the original layer. Nested drawable wall pieces inherit an ancestor
 group. Renderer builds per-group bounds and tests camera-to-character segments
 against actual original triangles. Obstructing groups are skipped; an eight-tick
@@ -72,3 +72,11 @@ four-room limit. The offline road-table assignment requires distinct REL tables
 and reciprocal original destinations across all packaged rooms, rejecting zero
 or multiple solutions. This resolves station's north/south marker ambiguity
 without inventing a connection. Eight directed roads connect the five rooms.
+
+Map batch layer bits24–25 preserve the original scene node GX cull index
+(0 front, 1 back, 2/3 none). Material/group/cull form the batching key;
+otherwise differently sided meshes sharing a material would render incorrectly.
+For the current 3DS view transform, GX back maps to GPU_CULL_FRONT_CCW and
+GX front to GPU_CULL_BACK_CCW; direct enum mapping removed the plaza floor
+in the first emulator check. Character/backdrop rendering resets culling to none.
+No original triangles or collision surfaces are dropped during conversion.

@@ -459,3 +459,48 @@ second invocation without fixture or save reset loaded station, completed two
 station->west->station round trips and exited with room4/HP7 saved. Both scripts
 returned exit0. Physical hardware, train travel, story conditions and original
 station event/visibility fidelity remain unverified.
+
+## Overworld continuation: original mesh sidedness
+
+Converted original per-node GX face-culling settings into batch metadata.
+Original drawable nodes use back culling or no culling in the packaged rooms;
+front culling remains supported by the format. Materials now split by sidedness
+as well as cutaway group; unchanged triangles/collision, modestly more batches.
+Metadata packs original layer in low byte, group in bits8–23 and cull index in
+bits24–25. Runtime masks fields separately, rejects unknown high bits and resets
+culling for paper actors/2D rendering. Null draw-mode pointers on hierarchy-only
+world_root nodes are valid (initial strict pointer reading rejected them).
+
+First direct GX/PICA enum mapping removed plaza floor; inspected Azahar capture
+and reversed enum mapping for current view transform. Corrected plaza boot
+shows original ground/building fronts, and the moving/jumping cutaway capture
+sequence completed. Station script completed two round trips plus station save
+on corrected build, asserting room IDs. Reviewed station entrance image: static
+train geometry still has malformed/black components; sidedness does not fix
+original animation/event state, which remains next fidelity work.
+
+Some Xvfb screenshots contain partial black areas in bottom UI. Temporary
+command-buffer probe measured 0.1992 usage, ruling out exhaustion in that plaza
+case; diagnostic code was removed before final build. Fresh boot capture showed
+full bottom UI. A separate isolated station run forcing Qt window resize/repaint
+showed restored menu tabs/status; resize clipped the lower screen in the fixed
+1000x800 capture surface. Evidence points to virtual-display repaint/capture
+behavior, but no broad menu-rendering acceptance claim is made from partial
+captures. Do not silently ignore future reproducible native UI failures.
+
+`make test` passed core and 18 Python tests (batch field isolation and invalid
+metadata boundaries added). `make -j2 all` passed;
+`build-host/core_tests --rooms` passed all eight arrivals and 18,315 probes.
+Reproduce corrected field/station checks with the existing visibility and road
+commands above. Battle-stage verification result follows below.
+Next: original train/map event visibility and animations, original camera rails,
+door/pipe and interior event links, original English message/story playback, SFX
+and measured mechanics. Hardware acceptance still unavailable; goal active.
+
+Final battle check: existing walkthrough returned exit0, reached victory at HP6
+and returned/saved plaza. Reviewed battle-select and battle-turn-5 captures: stage
+floor and curtains retain visible faces, bottom command/result menu fully drawn,
+reported 60fps. Goombella remains partly behind the left curtain, and stage props
+are still static; original scene presentation remains incomplete. No hardware
+performance or observed-original-mechanics claim. Final code contains no temporary
+command-buffer probe.

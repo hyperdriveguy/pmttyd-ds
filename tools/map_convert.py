@@ -24,6 +24,12 @@ def topology(command,verts):
         for n in range(1,len(verts)-1):yield [verts[0],verts[n],verts[n+1]]
     else:raise ValueError(f'Unsupported GX primitive {command:#x}')
 
+def batch_flags(layer,group,cull):
+    """Low byte: layer; bits8–23: cutaway group; bits24–25: GX cull index."""
+    if not 0<=layer<=255 or not 0<=group<=65535 or not 0<=cull<=3:
+        raise ValueError('Invalid map batch metadata')
+    return layer | group<<8 | cull<<24
+
 def wall_segments(collision):
     segments=set()
     for tri in collision:
@@ -62,7 +68,7 @@ def convert(path,output,scale=.1,hidden=()):
         if samplers>1:warnings.append({'material':name,'samplers':samplers,'limitation':'Only texture zero currently rendered'})
         materials[o]={'name':name,'color':color,'color_source':raw[o+8],'layer':raw[o+10],'texture':tid,'uv':uvmatrix,'wrap':wrap}
     info=chunks['information'];scene_name=string(base+u(raw,info+8));collision_name=string(base+u(raw,info+12))
-    vertices=defaultdict(list);nodes=[];collision=[];markers=[];cutaway_nodes={}
+    vertices=defaultdict(list);nodes=[];collision=[];markers=[];cutaway_nodes={};cull_counts=defaultdict(int)
     def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0):
         if depth>100:raise ValueError('Invalid map graph')
         name=string(base+u(raw,o));visible=visible or name==scene_name;collidable=collidable or name==collision_name
@@ -72,6 +78,9 @@ def convert(path,output,scale=.1,hidden=()):
         if node_exterior and not node_group and u(raw,o+92):
             node_group=o;cutaway_nodes[node_group]=name
         nodes.append(name)
+        draw_pointer=u(raw,o+88)
+        cull=raw[base+draw_pointer+1] if draw_pointer else 3
+        if u(raw,o+92) and cull>3:raise ValueError(f'Invalid GX cull index for {name}: {cull}')
         marker_points=[]
         for part in range(0 if name in hidden else u(raw,o+92)):
             mo=u(raw,o+96+part*8)
@@ -107,7 +116,8 @@ def convert(path,output,scale=.1,hidden=()):
                     if visible:
                         for tri in tris:
                             group=node_group if node_exterior else 0
-                            vertices[(base+mo,group)].extend(tri)
+                            vertices[(base+mo,group,cull)].extend(tri)
+                            cull_counts[cull]+=1
                     elif collidable:
                         for tri in tris:collision.append([v[:3] for v in tri])
         if name.endswith('_bero'):
@@ -121,12 +131,12 @@ def convert(path,output,scale=.1,hidden=()):
     count=0;batches=[];bounds=[]
     cutaway_ids={node:n+1 for n,node in enumerate(sorted(cutaway_nodes))}
     with (output/'map.vertices').open('wb') as out:
-        for mo,group in sorted(vertices,key=lambda x:materials[x[0]]['layer']):
-            v=vertices[(mo,group)];mat=materials[mo]
+        for mo,group,cull in sorted(vertices,key=lambda x:materials[x[0]]['layer']):
+            v=vertices[(mo,group,cull)];mat=materials[mo]
             for row in v:
                 if mat['texture']<0:row[3]=496/512;row[4]=1-240/256
                 out.write(struct.pack('<9f',*row));bounds.append(row[:3])
-            batches.append((count,len(v),mat['texture'],mat['layer']|(cutaway_ids.get(group,0)<<8),*mat['wrap']));count+=len(v)
+            batches.append((count,len(v),mat['texture'],batch_flags(mat['layer'],cutaway_ids.get(group,0),cull),*mat['wrap']));count+=len(v)
     with (output/'map.batches').open('wb') as out:
         out.write(struct.pack('<II',len(batches),len(textures)))
         for b in batches:out.write(struct.pack('<IIiIII',*b))
@@ -145,7 +155,7 @@ def convert(path,output,scale=.1,hidden=()):
         for tri in ground:out.write(struct.pack('<9f',*(v for point in tri for v in point)))
     summary={'source':str(path),'scale':scale,'vertices':count,'triangles':count//3,'batches':len(batches),'textures':textures,
              'bounds':[np.min(bounds,axis=0).tolist(),np.max(bounds,axis=0).tolist()],
-             'cutaway_nodes':[{'id':cutaway_ids[o],'name':name} for o,name in sorted(cutaway_nodes.items())],'exit_markers':markers,'limitations':warnings,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}
+             'cull_triangles':dict(cull_counts),'cutaway_nodes':[{'id':cutaway_ids[o],'name':name} for o,name in sorted(cutaway_nodes.items())],'exit_markers':markers,'limitations':warnings,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}
     (output/'map-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     (output/'collision.json').write_text(json.dumps(collision))
     return summary
