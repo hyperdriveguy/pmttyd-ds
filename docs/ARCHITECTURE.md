@@ -117,5 +117,24 @@ Renderer updates only bound UV vertices after synchronized frame begin and
 flushes their contiguous ranges from CPU cache before GPU drawing. Scene
 positions/colors/collision stay unchanged. Room staging owns animation vectors
 with the other resources; rejected imports retain previous scene state.
-East room activates original init's three mesh-free material clips. Mesh
-animations and secondary-texture animation remain unsupported at runtime.
+East room activates original init's three mesh-free material clips. Plaza and
+harbor also load MSAN mesh tracks, as described below. Secondary-texture
+animation remains unsupported at runtime.
+
+Runtime mesh animation: MSAN v1 stores 3x4 world delta matrices per integer
+frame and uint32 vertex indices with original bind XYZ. Conversion retains
+node ancestry and bakes bind*delta composition through each affected owner's
+ancestors, conjugating translations into native map units. Renderer applies
+matrices to immutable bind positions (no accumulated drift) and updates cache
+ranges after synchronized frame begin. UV and mesh tracks share the room epoch.
+Loader shares bounded/finite/unique-index/EOF/atomic checks with UVAN.
+
+Plaza activates hae; harbor activates nami mesh+material and nami_02/hiki_nami
+material tracks. Mixed clips must explicitly enable both channels. Bindings
+absent from visible geometry and unsupported texgens are recorded as
+limitations. Animated collision, event-dependent boat clips, dynamic node
+visibility and moving-wall cutaway bounds are not implemented.
+
+Walking validates collision at both the old and sampled destination elevation.
+This prevents a floor change from leaving an actor inside a wall that did not
+overlap its previous height. Original entrance fixtures cover harbor retreat.

@@ -198,13 +198,30 @@ void uvAnimation() {
     }
     std::remove(filename);
 }
+void meshAnimation() {
+    MeshBinding b{0,1,2,3};MeshTrack track;
+    track.frames={{{1,0,0,0,0,1,0,0,0,0,1,0}},{{0,-1,0,2,1,0,0,3,0,0,2,1}}};
+    CHECK((animatedPosition(track,b,0)==std::array<float,3>{1,2,3}));
+    CHECK((animatedPosition(track,b,1)==std::array<float,3>{0,4,7}));
+    CHECK(animatedPosition(track,b,0)==animatedPosition(track,b,2));
+}
 void indexedOriginalCollision() {
     size_t queries=0;
     for(uint32_t room=0;room<5;++room) {
         std::string prefix=std::string("romfs/")+roomAsset(room);
         CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));
-        std::vector<UVTrack> uv;CHECK(loadUVAnimation((prefix+".uvanim").c_str(),1000000,uv));
-        CHECK(uv.size()==(room==2?3u:0u));
+        std::ifstream vertexFile(prefix+".vertices",std::ios::binary|std::ios::ate);
+        CHECK(vertexFile.good());const auto vertexBytes=vertexFile.tellg();
+        CHECK(vertexBytes>0 && vertexBytes%36==0);const uint32_t vertexCount=vertexBytes/36;
+        std::vector<UVTrack> uv;CHECK(loadUVAnimation((prefix+".uvanim").c_str(),vertexCount,uv));
+        CHECK(uv.size()==(room==2?3u:room==1?4u:0u));
+        std::vector<MeshTrack> mesh;CHECK(loadMeshAnimation((prefix+".meshanim").c_str(),vertexCount,mesh));
+        CHECK(mesh.size()==(room==0?2u:room==1?3u:0u));size_t animated=0;
+        for(const auto& track:mesh)for(auto binding:track.bindings) {
+            auto first=animatedPosition(track,binding,0),loop=animatedPosition(track,binding,track.frames.size());
+            CHECK(first==loop);CHECK(std::isfinite(first[0]) && std::isfinite(first[1]) && std::isfinite(first[2]));++animated;
+        }
+        CHECK(animated==(room==0?12u:room==1?4581u:0u));
         for(const auto& track:uv)for(auto binding:track.bindings) {
             auto first=animatedUV(track,binding,0),loop=animatedUV(track,binding,track.frames.size());
             CHECK(first==loop);CHECK(std::isfinite(first[0]) && std::isfinite(first[1]));
@@ -254,10 +271,21 @@ void originalRooms() {
         CHECK(std::fabs(g.progress.position.x-road.spawnX)<.001f);CHECK(std::fabs(g.progress.position.z-road.spawnZ)<.001f);
         CHECK(decodeSave(encodeSave(g.progress),g.progress));
         for(int frame=0;frame<10;++frame)g.tick({});CHECK(g.warpRequest==-1);
+        if(road.source==0 && road.target==1) {
+            // Harbor's entrance overlaps short posts and lower floor surfaces.
+            // A downward floor change must not place Mario inside their walls.
+            Input down;down.z=1;
+            for(int frame=0;frame<60;++frame) {
+                g.tick(down);CHECK(walkable(g.progress.position,g.groundHeight));
+            }
+            Input up;up.z=-1;
+            for(int frame=0;frame<120 && g.warpRequest<0;++frame)g.tick(up);
+            CHECK(g.warpTarget()==0);
+        }
     }
     clearCollision();
 }
 int main(int argc,char**) {
-    try {if(argc>1) {indexedOriginalCollision();originalRooms();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();visibility();uvAnimation();std::puts("Core scenarios passed");}
+    try {if(argc>1) {indexedOriginalCollision();originalRooms();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();visibility();uvAnimation();meshAnimation();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

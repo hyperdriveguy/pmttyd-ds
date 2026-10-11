@@ -20,3 +20,4 @@ romfs/*.ground
 romfs/rooms.bin
 
 romfs/*.uvanim
+romfs/*.meshanim

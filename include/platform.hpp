@@ -37,6 +37,7 @@ private:
         Vertex* vertices=nullptr;
         uint32_t vertexCount=0;
         std::vector<UVTrack> uvTracks;
+        std::vector<MeshTrack> meshTracks;
         uint64_t animationStart=UINT64_MAX;
     };
     Room plaza,stage;

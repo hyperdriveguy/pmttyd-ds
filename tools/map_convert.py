@@ -44,7 +44,7 @@ def wall_segments(collision):
             segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max())))
     return sorted(segments)
 
-def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=()):
+def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=()):
     raw=Path(path).read_bytes();base=32
     table=32+u(raw,4)+u(raw,8)*4;names=table+u(raw,12)*8
     def string(o):return raw[o:raw.index(b'\0',o)].decode('ascii')
@@ -63,6 +63,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=()):
         if samplers>1:warnings.append({'material':name,'samplers':samplers,'limitation':'Only texture zero currently rendered'})
         materials[o]={'name':name,'color':color,'color_source':raw[o+8],'layer':raw[o+10],'texture':tid,'uv':uvmatrix,'wrap':wrap}
     info=chunks['information'];scene_name=string(base+u(raw,info+8));collision_name=string(base+u(raw,info+12))
+    if animation is not None and (ambient or mesh_ambient):raise ValueError('Preview and runtime animation export are separate')
     animations=read_animations(path);selected={}
     if animation is not None:
         matches=[a for a in animations if a['name']==animation]
@@ -73,13 +74,16 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=()):
                 warnings.append({'animation':animation,'material':track['material'],'limitation':'Animated texgen beyond texture zero unsupported'})
                 continue
             targets=[mat for mat in materials.values() if track['material'] in (mat['name'],re.sub('_[vx]','',mat['name']))]
-            if not targets:raise ValueError(f"Animation material not found: {track['material']}")
+            if not targets:
+                warnings.append({'animation':animation,'material':track['material'],'limitation':'Animation material absent from this map material table'})
+                continue
             for mat in targets:mat['uv']=sample_material(track,frame)
-    vertices=defaultdict(list);nodes=[];collision=[];markers=[];cutaway_nodes={};cull_counts=defaultdict(int)
-    def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0,suppressed=False):
+    vertices=defaultdict(list);nodes=[];collision=[];markers=[];cutaway_nodes={};cull_counts=defaultdict(int);owners=defaultdict(list);node_info={}
+    def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0,suppressed=False,parent_node=None):
         if depth>100:raise ValueError('Invalid map graph')
         name=string(base+u(raw,o));visible=visible or name==scene_name;collidable=collidable or name==collision_name
-        values=struct.unpack_from('>9f',raw,o+24);m=parent@trans(values[6:9])@rotate(values[3:6])@np.diag([*values[:3],1])
+        values=struct.unpack_from('>9f',raw,o+24);local_matrix=trans(values[6:9])@rotate(values[3:6])@np.diag([*values[:3],1]);m=parent@local_matrix
+        node_info[o]={'name':name,'parent':parent_node,'local':local_matrix,'world':m.copy()}
         if visible and name in selected:m=m@selected[name]
         node_exterior=exterior or name.startswith('S_gai_kabe')
         node_group=exterior_group
@@ -126,6 +130,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=()):
                         for tri in tris:
                             group=node_group if node_exterior else 0
                             vertices[(base+mo,group,cull)].extend(tri)
+                            owners[(base+mo,group,cull)].extend([o]*3)
                             cull_counts[cull]+=1
                     elif collidable:
                         for tri in tris:collision.append([v[:3] for v in tri])
@@ -133,18 +138,19 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=()):
             points=np.array(marker_points) if marker_points else np.array([(m@np.array([0,0,0,1]))[:3]*scale])
             markers.append({'name':name,'bounds':[points.min(0).tolist(),points.max(0).tolist()]})
         child=u(raw,o+12);sibling=u(raw,o+16)
-        if child:walk(base+child,m,visible,collidable,depth+1,node_exterior,node_group,node_suppressed)
-        if sibling:walk(base+sibling,parent,visible if name!=scene_name else False,collidable if name!=collision_name else False,depth+1,exterior,exterior_group,suppressed)
+        if child:walk(base+child,m,visible,collidable,depth+1,node_exterior,node_group,node_suppressed,o)
+        if sibling:walk(base+sibling,parent,visible if name!=scene_name else False,collidable if name!=collision_name else False,depth+1,exterior,exterior_group,suppressed,parent_node)
     walk(base+u(raw,chunks['information']+4),np.eye(4))
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
     ambient_names={t['material'] for a in animations if a['name'] in ambient for t in a['material_tracks'] if t['texgen']==0}
-    count=0;batches=[];bounds=[];bindings=defaultdict(list)
+    count=0;batches=[];bounds=[];bindings=defaultdict(list);position_bindings=defaultdict(list)
     cutaway_ids={node:n+1 for n,node in enumerate(sorted(cutaway_nodes))}
     with (output/'map.vertices').open('wb') as out:
         for mo,group,cull in sorted(vertices,key=lambda x:materials[x[0]]['layer']):
             v=vertices[(mo,group,cull)];mat=materials[mo]
             inverse=np.linalg.inv(mat['uv']) if mat['texture']>=0 and any(n in ambient_names for n in (mat['name'],re.sub('_[vx]','',mat['name']))) else None
             for index,row in enumerate(v):
+                position_bindings[owners[(mo,group,cull)][index]].append((count+index,*row[:3]))
                 if inverse is not None:
                     original=inverse@np.array([row[3],1-row[4],1])
                     bindings[mo].append((count+index,float(original[0]),float(original[1])))
@@ -157,14 +163,16 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=()):
     runtime_tracks=[]
     for clip in ambient:
         matches=[a for a in animations if a['name']==clip]
-        if len(matches)!=1 or matches[0]['tracks']:raise ValueError('Ambient material clip must be unique and mesh-free')
+        if len(matches)!=1 or (matches[0]['tracks'] and clip not in mesh_ambient):raise ValueError('Mesh/material clips must enable both channels')
         entry=matches[0];duration=entry['duration']
         if duration!=int(duration) or not 0<duration<=4096:raise ValueError('Unsupported ambient frame duration')
         for track in entry['material_tracks']:
             if track['texgen']!=0:continue # Multilayer runtime rendering is unfinished.
             targets=[mo for mo,mat in materials.items() if track['material'] in (mat['name'],re.sub('_[vx]','',mat['name']))]
             bound=[v for mo in targets for v in bindings[mo]]
-            if not bound:raise ValueError('Ambient material has no geometry binding')
+            if not bound:
+                warnings.append({'animation':clip,'material':track['material'],'limitation':'No texture-zero binding in visible packed geometry'})
+                continue
             frames=[sample_material(track,frame)[:2].flatten().tolist() for frame in range(int(duration))]
             runtime_tracks.append({'clip':clip,'material':track['material'],'duration':int(duration),'bindings':bound,'frames':frames})
     used=set()
@@ -176,6 +184,39 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=()):
             for vertex in track['bindings']:
                 if vertex[0] in used:raise ValueError('Overlapping ambient UV bindings')
                 used.add(vertex[0]);out.write(struct.pack('<Iff',*vertex))
+    mesh_tracks=[];mesh_used=set()
+    for clip in mesh_ambient:
+        matches=[a for a in animations if a['name']==clip]
+        if len(matches)!=1 or (matches[0]['material_tracks'] and clip not in ambient):raise ValueError('Mesh/material clips must enable both channels')
+        entry=matches[0];duration=entry['duration']
+        if duration!=int(duration) or not 0<duration<=4096:raise ValueError('Unsupported mesh duration')
+        track_names={t['node']:t for t in entry['tracks']}
+        if len(track_names)!=len(entry['tracks']):raise ValueError('Duplicate mesh track target')
+        for owner,bound in position_bindings.items():
+            chain=[];node=owner
+            while node is not None:chain.append(node);node=node_info[node]['parent']
+            chain.reverse()
+            if not any(node_info[node]['name'] in track_names for node in chain):continue
+            inverse=np.linalg.inv(node_info[owner]['world']);frames=[]
+            for frame in range(int(duration)):
+                world=np.eye(4)
+                for node in chain:
+                    info=node_info[node];world=world@info['local']
+                    if info['name'] in track_names:world=world@sample(track_names[info['name']],frame)
+                delta=world@inverse
+                # Vertices were scaled to native units; conjugate translation.
+                delta[:3,3]*=scale
+                frames.append(delta[:3].flatten().tolist())
+            for vertex in bound:
+                if vertex[0] in mesh_used:raise ValueError('Overlapping ambient mesh bindings')
+                mesh_used.add(vertex[0])
+            mesh_tracks.append({'owner':node_info[owner]['name'],'duration':int(duration),'frames':frames,'bindings':bound})
+    with (output/'map.meshanim').open('wb') as out:
+        out.write(struct.pack('<4sII',b'MSAN',1,len(mesh_tracks)))
+        for track in mesh_tracks:
+            out.write(struct.pack('<II',track['duration'],len(track['bindings'])))
+            for frame in track['frames']:out.write(struct.pack('<12f',*frame))
+            for vertex in track['bindings']:out.write(struct.pack('<Ifff',*vertex))
     segments=wall_segments(collision)
     with (output/'map.walls').open('wb') as out:
         out.write(struct.pack('<I',len(segments)|0x80000000))
@@ -194,6 +235,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=()):
              'cull_triangles':dict(cull_counts),'cutaway_nodes':[{'id':cutaway_ids[o],'name':name} for o,name in sorted(cutaway_nodes.items())],'exit_markers':markers,'limitations':warnings,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}
     (output/'map.animations.json').write_text(json.dumps(animations,indent=2)+'\n')
     summary['animations']=[{'name':a['name'],'duration':a['duration'],'mesh_tracks':len(a['tracks']),'material_tracks':len(a['material_tracks']),'material_table_offset':a['material_table_offset']} for a in animations]
+    summary['ambient_mesh_clips']=list(mesh_ambient);summary['animated_position_vertices']=len(mesh_used)
     summary['ambient_material_clips']=list(ambient);summary['animated_uv_vertices']=len(used)
     summary['sampled_animation']=animation;summary['sampled_frame']=frame if animation else None
     (output/'map-summary.json').write_text(json.dumps(summary,indent=2)+'\n')

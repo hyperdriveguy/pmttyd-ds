@@ -240,9 +240,9 @@ void Game::move(const Input& i) {
     Vec2 p = progress.position;
     Vec2 candidate{p.x+x*0.065f,p.z};
     float nextHeight=groundHeight;
-    if (walkable(candidate,groundHeight) && groundAt(candidate,groundHeight,nextHeight)) {p=candidate;groundHeight=nextHeight;}
+    if (walkable(candidate,groundHeight) && groundAt(candidate,groundHeight,nextHeight) && walkable(candidate,nextHeight)) {p=candidate;groundHeight=nextHeight;}
     candidate={p.x,p.z+z*0.065f};
-    if (walkable(candidate,groundHeight) && groundAt(candidate,groundHeight,nextHeight)) {p=candidate;groundHeight=nextHeight;}
+    if (walkable(candidate,groundHeight) && groundAt(candidate,groundHeight,nextHeight) && walkable(candidate,nextHeight)) {p=candidate;groundHeight=nextHeight;}
     progress.position=p;progress.elevation=groundHeight;
     if(warpCooldown>0)--warpCooldown;
     if(warpCooldown==0 && warpRequest<0 && len>.15f) {

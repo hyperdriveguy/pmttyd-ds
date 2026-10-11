@@ -704,3 +704,69 @@ exited successfully. Reviewed `artifacts/azahar/boot.png`: smaller field actors,
 full dual-screen UI, reported 60 fps. Hardware performance is unverified.
 Next: compare character proportions and camera framing against Dolphin.
 Existing unfinished ambient-animation edits remain in the worktree separately.
+
+## Native plaza and harbor ambient animation; harbor retreat fix
+
+Completed the prior worktree's MSAN mesh animation path. Plaza original hae
+animates12 vertices across2 owners (399 frames). Harbor original nami animates
+4,581 vertices across3 owners (979 frames), alongside nami/nami_02/hiki_nami
+texture-zero material playback (4 tracks,5,451 UV vertices). Original ancestry
+is retained during conversion and world delta matrices are baked at integer
+frames; native mesh/UV updates share the original full-duration loop epoch.
+No cumulative transform drift; mandatory empty headers packaged for unused
+rooms/stage. Matrices selected once per track before bound-vertex updates.
+
+Native harbor verification initially FAILED return-to-plaza after walking away
+from the marker. Host reproduction proved Mario could change from the entrance
+floor to a lower surface inside a wall, then could not retreat. Walking now
+checks collision at sampled destination elevation as well as previous elevation.
+Added original entrance regression:60 ticks toward harbor, each position stays
+walkable, then retreat requests the plaza warp within120 ticks. Map collision
+data is unchanged. This does not establish complete staircase/prop semantics;
+center harbor entrance is obstructed by original posts and railing.
+
+Verified commands:
+```sh
+python3 tools/verify_mesh_animation.py
+make test
+build-host/core_tests --rooms
+make -j2 all
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-road.bin --seconds 4 --input-script tests/azahar_mesh.py
+```
+Mesh verifier passed five original poses per room (plaza0/1/27/155/398;
+harbor0/1/155/400/978), unchanged collision and batch files. Core plus21 Python
+tests passed; original room checks passed all8 arrivals and18,315 indexed vs
+full-scan collision probes, actual vertex-count animation bounds, loop checks
+and new harbor retreat regression. Native build passed. Final harbor script
+passed entry/HP7/three stationary captures/return-to-plaza assertions after fix.
+Reviewed harbor-mesh-240: full status UI, reported60fps, sim0.20/CPU5.2/GPU0.5ms.
+The current entrance camera obscures the dock/waves; these captures do not prove
+visual wave fidelity. Original sampled mesh math and native loading are verified.
+
+Limits: second texture layers and nami/fune_b_lambert83 missing visible material
+binding remain recorded in manifests. No conditional boat animation, animated
+collision, dynamic visibility or original event/pause behavior added. Physical
+hardware and full original presentation remain unverified.
+Next concrete task: original harbor traversable floor/wall attributes and camera
+framing, then second-layer materials. Continue original English dialogue/story
+playback, SFX, measured combat, doors/pipes/interiors; full objective remains active.
+
+Additional final native road checks passed two reciprocal round trips each for
+east, west and station, with saved room assertions. Station script also entered
+the station for its final checkpoint. `python3 tools/verify_map_visibility.py`
+passed original road-entry314-triangle omission/collision/texture invariants.
+Reproduce:
+```sh
+python3 tools/verify_map_visibility.py
+for route in east west station; do
+  python3 tools/emulator_smoke.py --fresh-save --save-fixture "artifacts/fixtures/$route-road.bin" --seconds 4 --input-script tests/azahar_roads.py
+done
+```
+
+Final `python3 tools/verify_map_animations.py` passed63 material/54 mesh
+finite samples,702 moved station door vertices and prior east/west UV probes.
+Final `python3 tools/emulator_smoke.py --fresh-save --seconds 4 --input-script
+tests/azahar_walkthrough.py` completed the development battle sequence and
+return. Reviewed return-plaza.png: smaller actors/full status UI; saved32-byte
+checkpoint has room0/HP6/victory flag1. This validates stage resource loading and
+return flow, not original battle mechanics or story acceptance.

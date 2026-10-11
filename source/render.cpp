@@ -66,6 +66,8 @@ bool Renderer::loadMap(const char* name,Room& room) {
     for(auto batch:room.batches) {if(batch.count%3 || ((batch.layer>>8)&65535)>1024 || (batch.layer>>26))return false;groups=std::max(groups,(batch.layer>>8)&65535);}
     std::snprintf(path,sizeof(path),"romfs:/%s.uvanim",name);
     if(!loadUVAnimation(path,room.vertexCount,room.uvTracks))return false;
+    std::snprintf(path,sizeof(path),"romfs:/%s.meshanim",name);
+    if(!loadMeshAnimation(path,room.vertexCount,room.meshTracks))return false;
     room.occluders.resize(groups+1);
     for(auto& occluder:room.occluders) {
         float hi=std::numeric_limits<float>::max();occluder.bounds={{hi,hi,hi},{-hi,-hi,-hi}};
@@ -129,9 +131,22 @@ void Renderer::drawMap(bool battle,const Game& game) {
     auto& room=battle?stage:plaza;
     if(!battle)updateCutaways(room,game);
     if(room.animationStart==UINT64_MAX)room.animationStart=game.ticks;
-    for(const auto& track:room.uvTracks) {
+    for(const auto& track:room.meshTracks) {
+        const auto& matrix=track.frames[(game.ticks-room.animationStart)%track.frames.size()];
         for(auto binding:track.bindings) {
-            auto uv=animatedUV(track,binding,game.ticks-room.animationStart);
+            auto p=transformedPosition(matrix,binding);
+            auto& v=room.vertices[binding.vertex];v.x=p[0];v.y=p[1];v.z=p[2];
+        }
+        for(size_t n=0;n<track.bindings.size();) {
+            uint32_t first=track.bindings[n].vertex,last=first;++n;
+            while(n<track.bindings.size() && track.bindings[n].vertex==last+1)last=track.bindings[n++].vertex;
+            GSPGPU_FlushDataCache(room.vertices+first,(last-first+1)*sizeof(Vertex));
+        }
+    }
+    for(const auto& track:room.uvTracks) {
+        const auto& matrix=track.frames[(game.ticks-room.animationStart)%track.frames.size()];
+        for(auto binding:track.bindings) {
+            auto uv=transformedUV(matrix,binding);
             auto& v=room.vertices[binding.vertex];v.u=uv[0];v.v=uv[1];
         }
         // Bindings are contiguous per original material batch. Flush each run,

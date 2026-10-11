@@ -169,3 +169,20 @@ layout and material batching. gor_02.uvanim is41,856 bytes, updates369 vertices
 (135/144/90) in tracks with durations999/159/400. All other room/stage files
 contain valid zero-track headers. Manifest records clip IDs and bound counts.
 East water texgen1 is still missing; do not claim complete water reproduction.
+
+Original ambient mesh packs now include plaza m/gor_01/d hae (duration399,
+2 owner tracks,12 vertices,38,524 bytes) and harbor m/gor_00/d nami
+(duration979,3 owner tracks,4,581 vertices,214,308 bytes). Harbor UVAN enables
+nami/nami_02/hiki_nami (4 bound tracks,5,451 vertices,143,144 bytes). Original
+init playanim calls hae0x3c798 and harbor0x2f31c/0x2f330/0x2f344 are outside
+conditional blocks; loop/clock/NTSC60 semantics follow the prior DOL inspection.
+All rooms and stage package mandatory MSAN headers; unused rooms have zero
+tracks. Original files remain read-only and generated packs remain ignored.
+
+Harbor nami references fune_b_lambert83, absent from this map material table;
+that channel has no visible geometry binding and is recorded in limitations.
+Original two-sampler harbor materials still render texture zero only. Neither
+missing channels nor conditional boat animations are claimed faithful.
+Mesh verifier compares five native baked poses against explicit offline original
+clip samples for both rooms, including ancestor transforms, with unchanged
+collision/batch files. It does not prove original event or camera behavior.
