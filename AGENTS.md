@@ -30,3 +30,5 @@ Extract message text from msg/US in the read-only ISO; retain message IDs and
 control tokens. Do not paraphrase, rewrite, invent dialogue, or replace plot
 scenes with fabricated scenes. Screen reflow and adapted control prompts may
 change presentation only. Development harness notices are not story dialogue.
+
+This project is git versioned. Make incremental commits between working on features and incremental steps.
