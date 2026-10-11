@@ -11,7 +11,8 @@ std::vector<RoadWarp> roads;
 std::vector<Rect> walls;
 bool collisionReady=false;
 std::vector<Vec2> wallLevels;
-struct GroundTriangle { float v[9]; };
+struct GroundTriangle { float v[9];GroundContact contact; };
+static_assert(sizeof(GroundContact)==8,"Ground metadata must contain two uint32 words");
 std::vector<GroundTriangle> ground;
 using SpatialIndex=std::unordered_map<uint64_t,std::vector<uint32_t>>;
 SpatialIndex wallIndex,groundIndex;
@@ -96,7 +97,7 @@ bool Game::finishWarp() {
     Vec2 arrival{w.spawnX,w.spawnZ};
     if(!groundAt(arrival,height,height) || !walkable(arrival,height))return false;
     Progress next=progress;next.room=w.target;next.position=arrival;next.elevation=height;
-    restore(next);groundHeight=height;partner=arrival;partnerHeight=height;
+    restore(next);groundHeight=height;partner=arrival;partnerHeight=height;partnerContact=groundContact;
     followerPath.clear();warpCooldown=45;saveRequested=true;return true;
 }
 bool walkable(Vec2 p,float elevation) {
@@ -145,9 +146,14 @@ bool loadCollision(const char* path) {
 }
 bool loadGround(const char* path) {
     FILE* file=std::fopen(path,"rb");if(!file)return false;
-    uint32_t count=0;bool ok=std::fread(&count,4,1,file)==1 && count>0 && count<=100000;
+    uint32_t count=0;bool ok=std::fread(&count,4,1,file)==1;
+    bool tagged=count&0x80000000;count&=0x7fffffff;ok=ok && count>0 && count<=100000;
     std::vector<GroundTriangle> data(ok?count:0);
-    if(ok)ok=std::fread(data.data(),sizeof(GroundTriangle),count,file)==count && std::fgetc(file)==EOF;
+    for(auto& tri:data) {
+        ok=ok && std::fread(tri.v,sizeof(tri.v),1,file)==1;
+        if(tagged)ok=ok && std::fread(&tri.contact,sizeof(tri.contact),1,file)==1;
+    }
+    ok=ok && std::fgetc(file)==EOF;
     std::fclose(file);
     for(const auto& tri:data)for(float v:tri.v)if(!std::isfinite(v))ok=false;
     SpatialIndex next;size_t references=0;
@@ -166,11 +172,11 @@ bool loadGround(const char* path) {
     }
     return ok;
 }
-bool groundAt(Vec2 p,float reference,float& height) {
+bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact) {
     if(!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(reference) ||
        std::fabs(p.x)>4096 || std::fabs(p.z)>4096)return false;
-    if(ground.empty()) {height=0;return true;}
-    bool found=false;float best=-1e30f;
+    if(ground.empty()) {height=0;if(contact)*contact={};return true;}
+    bool found=false;float best=-1e30f;GroundContact bestContact;
     for(uint32_t n:nearby(groundIndex,p)) {
         const float* v=ground[n].v;
         if(p.x<std::min({v[0],v[3],v[6]}) || p.x>std::max({v[0],v[3],v[6]}) ||
@@ -182,9 +188,9 @@ bool groundAt(Vec2 p,float reference,float& height) {
         if(a<-.0001f || b<-.0001f || a+b>1.0001f)continue;
         float y=a*v[1]+b*v[4]+(1-a-b)*v[7];
         // Stay on the current floor; do not teleport onto roofs above Mario.
-        if(y<=reference+StepHeight && y>=reference-.5f && y>best) {best=y;found=true;}
+        if(y<=reference+StepHeight && y>=reference-.5f && y>best) {best=y;bestContact=ground[n].contact;found=true;}
     }
-    if(found)height=best;
+    if(found) {height=best;if(contact)*contact=bestContact;}
     return found;
 }
 void clearCollision() {walls.clear();wallLevels.clear();ground.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
@@ -197,8 +203,8 @@ void Game::restore(const Progress& saved) {
     partner = {p.position.x-0.8f,p.position.z};
     groundHeight=p.elevation;partnerHeight=p.elevation;
     if (!walkable(partner,p.elevation)) partner = p.position;
-    groundAt(p.position,p.elevation,groundHeight);
-    groundAt(partner,groundHeight,partnerHeight);
+    groundAt(p.position,p.elevation,groundHeight,&groundContact);
+    groundAt(partner,groundHeight,partnerHeight,&partnerContact);
     followerPath.push_back(partner);followerPath.push_back(p.position);
     cameraX=p.position.x;cameraZ=p.position.z;cameraHeight=groundHeight;
 }
@@ -240,9 +246,10 @@ void Game::move(const Input& i) {
     Vec2 p = progress.position;
     Vec2 candidate{p.x+x*0.065f,p.z};
     float nextHeight=groundHeight;
-    if (walkable(candidate,groundHeight) && groundAt(candidate,groundHeight,nextHeight) && walkable(candidate,nextHeight)) {p=candidate;groundHeight=nextHeight;}
+    GroundContact nextContact;
+    if (walkable(candidate,groundHeight) && groundAt(candidate,groundHeight,nextHeight,&nextContact) && walkable(candidate,nextHeight)) {p=candidate;groundHeight=nextHeight;groundContact=nextContact;}
     candidate={p.x,p.z+z*0.065f};
-    if (walkable(candidate,groundHeight) && groundAt(candidate,groundHeight,nextHeight) && walkable(candidate,nextHeight)) {p=candidate;groundHeight=nextHeight;}
+    if (walkable(candidate,groundHeight) && groundAt(candidate,groundHeight,nextHeight,&nextContact) && walkable(candidate,nextHeight)) {p=candidate;groundHeight=nextHeight;groundContact=nextContact;}
     progress.position=p;progress.elevation=groundHeight;
     if(warpCooldown>0)--warpCooldown;
     if(warpCooldown==0 && warpRequest<0 && len>.15f) {
@@ -268,9 +275,9 @@ void Game::move(const Input& i) {
             if(dist<.001f) {followerPath.erase(followerPath.begin());continue;}
             float step=std::min(budget,dist);
             Vec2 q{partner.x+(target.x-partner.x)/dist*step,partner.z+(target.z-partner.z)/dist*step};
-            float h=partnerHeight;
-            if(!walkable(q,partnerHeight) || !groundAt(q,partnerHeight,h) || !walkable(q,h))break;
-            partner=q;partnerHeight=h;budget-=step;
+            float h=partnerHeight;GroundContact contact;
+            if(!walkable(q,partnerHeight) || !groundAt(q,partnerHeight,h,&contact) || !walkable(q,h))break;
+            partner=q;partnerHeight=h;partnerContact=contact;budget-=step;
             if(step>=dist)followerPath.erase(followerPath.begin());
         }
     }

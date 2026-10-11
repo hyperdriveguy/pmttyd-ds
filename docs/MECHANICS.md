@@ -44,3 +44,13 @@ port rule that enables original stair geometry; it has not been measured in
 Dolphin. Solid dock floor at y0.15 is traversed and retraced by host/Azahar
 checks. Original water/fall/recovery behavior and per-node collision attributes
 remain unfinished; do not treat walking on all exported surfaces as accepted.
+
+Original US DOL floor attribute evidence (inspection, not Dolphin observation):
+marioLandOn0x80092c94 gets current floor hitGetAttr at80092de4;80092df4 tests
+PPC bit22 (mask0x200). If set and current motion !=31, it calls
+set_damage_root_ypos0x8013b600 using Mario Y at80092dfc/80092e00 and enters
+motion31 at80092e58–80092e68, with additional state checks in between. Original
+marioMotTbl index31 maps to mot_damage0x8013ae04. This proves a damage-motion
+branch, not full recovery timing, penalty, effects, or safe-return selection.
+Next inspect mot_damage/mot_bottomless and observe falling from harbor in
+Dolphin before reproducing the complete sequence.

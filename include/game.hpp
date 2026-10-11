@@ -9,6 +9,7 @@ constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
 constexpr float StepHeight = .25f;
 struct Vec2 { float x = 0, z = 0; };
+struct GroundContact {uint32_t attributes=0, sourceNode=0;};
 struct Rect { float x0, z0, x1, z1; };
 inline constexpr std::array<Rect, 4> Obstacles{{
     {-9,-4.5f,-4,-1.5f}, {3.5f,-4.5f,9,-1.5f},
@@ -50,6 +51,7 @@ public:
     Progress progress;
     Vec2 partner{1.4f,2.5f};
     float groundHeight = 0, partnerHeight = 0;
+    GroundContact groundContact,partnerContact;
     float cameraZ = 3.5f, cameraHeight = 0;
     float cameraX = 1, jumpHeight = 0, facing = 1, turnScale = 1;
     Scene scene = Scene::Explore;
@@ -96,7 +98,7 @@ private:
 bool walkable(Vec2 p,float elevation=0);
 bool loadCollision(const char* path);
 bool loadGround(const char* path);
-bool groundAt(Vec2 p, float reference, float& height);
+bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr);
 void clearCollision();
 const std::vector<Rect>& collisionWalls();
 Rect collisionBounds();

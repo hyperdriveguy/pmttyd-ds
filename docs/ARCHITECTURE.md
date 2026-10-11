@@ -145,3 +145,19 @@ wall foot clearance; the earlier0.1 wall clearance blocked original harbor
 collision at sampled destination elevation before accepting a floor change.
 Original solid-dock stair descent/ascent is regression-tested. Source collision
 node attributes and original hazard recovery are not yet in runtime packs.
+
+Tagged ground format: high bit of triangle count selects records of9 float32
+coordinates followed by uint32 original attributes and uint32 source-node
+offset (relative to map's data base32). Old36-byte triangle records still load
+with zero metadata. Import validates counts, finite geometry and exact EOF,
+replacing geometry/index/attributes together only on success. GroundContact
+selects the highest supported triangle's attribute and node alongside height;
+queries leave all outputs untouched on a miss. Room snapshots own metadata with
+geometry, so failed staging restores both. Game carries Mario and partner
+contacts through movement, restore and warp; saves reconstruct them from room
+geometry instead of persisting stale node IDs.
+
+These are source attributes, not all effective event-modified attributes. Wall
+attributes, dynamic hitObjAttrOn/Off changes, special surface behavior, and
+water/fall/recovery state remain unfinished. No guessed hazard action is attached
+to the new contact fields.

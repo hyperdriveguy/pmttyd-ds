@@ -818,3 +818,60 @@ Next concrete task: retain original collision-node attributes with geometry and
 recover water/fall recovery semantics, then original harbor camera/framing and
 boat visibility/second-layer materials. Original English dialogue/story events,
 SFX, broader traversal/doors/pipes, and measured combat remain incomplete.
+
+## Original floor attributes retained through native movement
+
+Converter now retains original collision node's drawmode+8 attribute word and
+data-relative source-node ID for each exported floor triangle. Tagged high-bit
+count selects44-byte records (9 floats +2 uint32); untagged36-byte legacy packs
+still load with zero metadata. Coordinate/normal selection and wall geometry
+remain unchanged. Manifest indexes original collision-node names and flags.
+
+Native GroundContact is selected with the same highest supported floor as
+height, then carried through Mario/partner movement, save restoration and warp
+arrival. Contacts are reconstructed from geometry on load, not persisted in
+saves. Import/staging owns attributes with geometry/index and preserves the old
+room on failure. Query misses preserve caller outputs. No guessed water action
+or collision-mask meaning was introduced; wall attributes and event mutations
+remain missing from runtime.
+
+Original DOL inspection establishes `_hitEnt`80018aa8–80018ac0 initializes
+hit-entry+4 from node drawmode+8 (or0 when absent), and hitGetAttr80014310
+returns it. marioLandOn80092de4–80092e98 tests0x200 then enters damage motion31
+under additional state conditions. Original motion table31 points to
+mot_damage8013ae04. Recovery timing/position/HP/effects still require full source
+trace and Dolphin observation. Original DOL bytes were only read/disassembled;
+none executed or linked into native runtime.
+
+Validation:
+```sh
+make test
+build-host/core_tests --rooms
+make -j2 all
+python3 tools/verify_ground_attributes.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_harbor_stairs.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/station-road.bin --seconds 4 --input-script tests/azahar_roads.py
+```
+Core/21 Python tests passed. Legacy zero metadata, tagged floor selection,
+query-miss output preservation, invalid tagged import retention, and failed
+room-transition attribute rollback/commit are tested. All8 original arrivals
+and18,315 collision probes pass; exhaustive floor oracle now also compares
+selected attributes/source IDs. Source verifier passed all3,576 triangle
+attributes across five rooms (1010/463/878/1037/188). Harbor has16 A_mizu floors
+with0x200. Native harbor solid dock/save/return and station two round trips plus
+final checkpoint passed with tagged packs. Original water behavior is incomplete.
+
+Reproduce byte inspections using tools/inspect_dol_function.py, external ignored
+artifacts/reference/us_symbols.csv and ignored ELF outputs, with functions
+`hitGetAttr`, `hitCheckAttr`, `_hitEnt`, and `marioLandOn`. Original motion table
+was inspected read-only from DOL file bytes; no external implementation reused.
+Next concrete task: trace mot_damage/mot_bottomless and observe harbor water
+fall/recovery, then reproduce the original sequence using retained floor flags.
+Continue original camera/boat visibility, layered materials and English story
+events; these remain essential unfinished work.
+
+Final native east check also passed two reciprocal round trips with saved-room
+assertions, covering east/plaza streaming with tagged floor metadata:
+```sh
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/east-road.bin --seconds 4 --input-script tests/azahar_roads.py
+```

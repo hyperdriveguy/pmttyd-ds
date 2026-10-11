@@ -121,6 +121,7 @@ void groundImport() {
     CHECK(write(fd,&count,4)==4);CHECK(write(fd,triangles,sizeof(triangles))==sizeof(triangles));close(fd);
     CHECK(loadGround(path));float h=0;
     CHECK(groundAt({-3,2},0,h));CHECK(std::fabs(h-.125f)<.001f);
+    GroundContact legacy{123,456};CHECK(groundAt({-3,2},0,h,&legacy));CHECK(legacy.attributes==0 && legacy.sourceNode==0);
     CHECK(!groundAt({std::numeric_limits<float>::quiet_NaN(),2},0,h));
     CHECK(!groundAt({8,2},0,h));CHECK(!groundAt({0,2},0,h));
     CHECK(groundAt({0,2},.3f,h));CHECK(std::fabs(h-.5f)<.001f);
@@ -128,6 +129,21 @@ void groundImport() {
     Game g;g.progress.position={-3,2};g.restore(g.progress);CHECK(std::fabs(g.groundHeight-.125f)<.001f);
     Input right;right.x=1;for(int n=0;n<12;++n)g.tick(right);
     CHECK(g.progress.position.x>-2.3f);CHECK(g.groundHeight>.2f);
+    {
+        std::ofstream file(path,std::ios::binary);uint32_t tagged=0x80000002;
+        file.write(reinterpret_cast<char*>(&tagged),4);
+        for(int n=0;n<2;++n) {
+            GroundContact contact{uint32_t(0x200+n),uint32_t(100+n)};
+            file.write(reinterpret_cast<char*>(triangles+n*9),36);
+            file.write(reinterpret_cast<char*>(&contact),8);
+        }
+    }
+    CHECK(loadGround(path));GroundContact contact;
+    CHECK(groundAt({-3,2},0,h,&contact));CHECK(contact.attributes==0x200 && contact.sourceNode==100);
+    CHECK(groundAt({-3,2},3,h,&contact));CHECK(contact.attributes==0x201 && contact.sourceNode==101);
+    CHECK(!groundAt({8,2},0,h,&contact));CHECK(contact.attributes==0x201 && h==3);
+    {std::ofstream file(path,std::ios::binary);uint32_t tagged=0x80000002;file.write(reinterpret_cast<char*>(&tagged),4);}
+    CHECK(!loadGround(path));CHECK(groundAt({-3,2},0,h,&contact));CHECK(contact.attributes==0x200 && contact.sourceNode==100);
     clearCollision();std::remove(path);
 }
 void visibility() {
@@ -158,15 +174,20 @@ void collisionRollback() {
         std::ofstream file(prefix+".walls",std::ios::binary);uint32_t count=1;Rect wall{x,1,x,3};
         file.write(reinterpret_cast<char*>(&count),4);file.write(reinterpret_cast<char*>(&wall),sizeof(wall));
     };
-    auto writeFloor=[](const std::string& prefix) {
-        std::ofstream file(prefix+".ground",std::ios::binary);uint32_t count=2;
+    auto writeFloor=[](const std::string& prefix,uint32_t attributes) {
+        std::ofstream file(prefix+".ground",std::ios::binary);uint32_t count=0x80000002;
         float triangles[]={-3,0,1, 3,0,1, -3,0,3, 3,0,1, 3,0,3, -3,0,3};
-        file.write(reinterpret_cast<char*>(&count),4);file.write(reinterpret_cast<char*>(triangles),sizeof(triangles));
+        file.write(reinterpret_cast<char*>(&count),4);
+        for(int n=0;n<2;++n) {
+            GroundContact contact{attributes,uint32_t(100+n)};
+            file.write(reinterpret_cast<char*>(triangles+n*9),36);file.write(reinterpret_cast<char*>(&contact),8);
+        }
     };
-    writeWalls(source,0);writeFloor(source);writeWalls(target,2);
+    writeWalls(source,0);writeFloor(source,0x200);writeWalls(target,2);
     {CollisionTransition tx;CHECK(tx.load(source.c_str()));tx.commit();}
     const Rect originalBounds=collisionBounds();float h=99;
     CHECK(!walkable({0,2}));CHECK(walkable({2,2}));CHECK(groundAt({1,2},0,h));CHECK(h==0);
+    GroundContact contact;CHECK(groundAt({1,2},0,h,&contact));CHECK(contact.attributes==0x200);
     {std::ofstream bad(target+".ground");bad<<"truncated";}
     {
         CollisionTransition tx;CHECK(!tx.load(target.c_str()));tx.commit();
@@ -174,8 +195,9 @@ void collisionRollback() {
         std::remove((source+".walls").c_str());std::remove((source+".ground").c_str());
     }
     CHECK(!walkable({0,2}));CHECK(walkable({2,2}));CHECK(groundAt({1,2},0,h));CHECK(h==0);
+    CHECK(groundAt({1,2},0,h,&contact));CHECK(contact.attributes==0x200);
     CHECK(collisionBounds().x0==originalBounds.x0);CHECK(collisionBounds().z1==originalBounds.z1);
-    writeFloor(target);
+    writeFloor(target,0x400);
     {
         CollisionTransition tx;CHECK(tx.load(target.c_str()));CHECK(walkable({0,2}));CHECK(!walkable({2,2}));
         // Model a rejected arrival or graphics load after collision staging succeeds.
@@ -186,6 +208,7 @@ void collisionRollback() {
     CHECK(!walkable({0,2}));CHECK(walkable({2,2}));
     {CollisionTransition tx;CHECK(tx.load(target.c_str()));tx.commit();}
     CHECK(walkable({0,2}));CHECK(!walkable({2,2}));CHECK(groundAt({1,2},0,h));
+    CHECK(groundAt({1,2},0,h,&contact));CHECK(contact.attributes==0x400);
     clearCollision();std::remove((target+".walls").c_str());std::remove((target+".ground").c_str());rmdir(directory);
 }
 void uvAnimation() {
@@ -239,9 +262,15 @@ void indexedOriginalCollision() {
         }
         std::ifstream walls(prefix+".walls",std::ios::binary),ground(prefix+".ground",std::ios::binary);
         uint32_t nw=0,ng=0;walls.read(reinterpret_cast<char*>(&nw),4);ground.read(reinterpret_cast<char*>(&ng),4);
+        CHECK(ng&0x80000000);ng&=0x7fffffff;
         CHECK(nw&0x80000000);nw&=0x7fffffff;
         std::vector<std::array<float,6>> segments(nw);std::vector<std::array<float,9>> triangles(ng);
-        walls.read(reinterpret_cast<char*>(segments.data()),nw*24);ground.read(reinterpret_cast<char*>(triangles.data()),ng*36);
+        std::vector<GroundContact> contacts(ng);
+        walls.read(reinterpret_cast<char*>(segments.data()),nw*24);
+        for(uint32_t n=0;n<ng;++n) {
+            ground.read(reinterpret_cast<char*>(triangles[n].data()),36);
+            ground.read(reinterpret_cast<char*>(&contacts[n]),8);
+        }
         CHECK(walls.good());CHECK(ground.good());
         for(int x=-18;x<=18;++x)for(int z=-16;z<=16;++z)for(float level:{0.f,1.2f,3.f}) {
             Vec2 p{x*.5f,z*.5f};bool free=true,found=false;float floor=-1e30f;
@@ -252,15 +281,18 @@ void indexedOriginalCollision() {
                 float a=p.x-w[0]-t*dx,b=p.z-w[1]-t*dz;if(a*a+b*b<.28f*.28f)free=false;
             }
             CHECK(walkable(p,level)==free);
-            for(auto v:triangles) {
+            GroundContact expected;
+            for(size_t n=0;n<triangles.size();++n) {
+                auto v=triangles[n];
                 if(p.x<std::min({v[0],v[3],v[6]}) || p.x>std::max({v[0],v[3],v[6]}) || p.z<std::min({v[2],v[5],v[8]}) || p.z>std::max({v[2],v[5],v[8]}))continue;
                 float den=(v[5]-v[8])*(v[0]-v[6])+(v[6]-v[3])*(v[2]-v[8]);if(std::fabs(den)<1e-8f)continue;
                 float a=((v[5]-v[8])*(p.x-v[6])+(v[6]-v[3])*(p.z-v[8]))/den;
                 float b=((v[8]-v[2])*(p.x-v[6])+(v[0]-v[6])*(p.z-v[8]))/den;
                 float y=a*v[1]+b*v[4]+(1-a-b)*v[7];
-                if(a>=-.0001f && b>=-.0001f && a+b<=1.0001f && y<=level+.25f && y>=level-.5f && y>floor){found=true;floor=y;}
+                if(a>=-.0001f && b>=-.0001f && a+b<=1.0001f && y<=level+.25f && y>=level-.5f && y>floor){found=true;floor=y;expected=contacts[n];}
             }
-            float actual=0;CHECK(groundAt(p,level,actual)==found);if(found)CHECK(std::fabs(actual-floor)<.001f);
+            float actual=0;GroundContact contact;CHECK(groundAt(p,level,actual,&contact)==found);
+            if(found) {CHECK(std::fabs(actual-floor)<.001f);CHECK(contact.attributes==expected.attributes);CHECK(contact.sourceNode==expected.sourceNode);}
             ++queries;
         }
     }
@@ -279,6 +311,8 @@ void originalRooms() {
         CHECK(g.warpCooldown==45);CHECK(g.saveRequested);
         CHECK(g.cameraX==g.progress.position.x);CHECK(g.cameraZ==g.progress.position.z);
         CHECK(g.cameraHeight==g.groundHeight);CHECK(walkable(g.progress.position,g.groundHeight));
+        CHECK(g.groundContact.attributes==g.partnerContact.attributes);
+        CHECK(g.groundContact.sourceNode==g.partnerContact.sourceNode);
         CHECK(std::fabs(g.progress.position.x-road.spawnX)<.001f);CHECK(std::fabs(g.progress.position.z-road.spawnZ)<.001f);
         CHECK(decodeSave(encodeSave(g.progress),g.progress));
         for(int frame=0;frame<10;++frame)g.tick({});CHECK(g.warpRequest==-1);

@@ -186,3 +186,18 @@ missing channels nor conditional boat animations are claimed faithful.
 Mesh verifier compares five native baked poses against explicit offline original
 clip samples for both rooms, including ancestor transforms, with unchanged
 collision/batch files. It does not prove original event or camera behavior.
+
+Floor packs now preserve original drawmode+8 attributes and map-local source-node
+IDs. Independent verify_ground_attributes.py checks all3,576 floor records in
+the five original room files directly against raw extracted node bytes. Counts
+are plaza1010/harbor463/east878/west1037/station188. Harbor A_mizu contributes
+16 floors carrying0x200. Source-node names/attributes are indexed in room
+summaries and runtime manifest; unknown bits are retained unchanged. Geometry
+and normal filtering remain unchanged; tagged records add8 bytes per triangle.
+
+Original US DOL _hitEnt0x8001896c:80018aa8 loads joint+0x58,80018ab4 loads
+drawmode+8,80018ab8 stores hit-entry+4 (null drawmode stores0). hitGetAttr
+0x80014310 reads that word or returns0 for null. These original read-only byte
+inspections substantiate raw static attribute mapping; implementation is native
+and does not link/copy original executable functions. Inspection artifacts stay
+ignored. Effective event mutations remain separate unfinished work.

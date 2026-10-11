@@ -78,7 +78,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
                 warnings.append({'animation':animation,'material':track['material'],'limitation':'Animation material absent from this map material table'})
                 continue
             for mat in targets:mat['uv']=sample_material(track,frame)
-    vertices=defaultdict(list);nodes=[];collision=[];markers=[];cutaway_nodes={};cull_counts=defaultdict(int);owners=defaultdict(list);node_info={}
+    vertices=defaultdict(list);nodes=[];collision=[];collision_meta=[];collision_nodes={};markers=[];cutaway_nodes={};cull_counts=defaultdict(int);owners=defaultdict(list);node_info={}
     def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0,suppressed=False,parent_node=None):
         if depth>100:raise ValueError('Invalid map graph')
         name=string(base+u(raw,o));visible=visible or name==scene_name;collidable=collidable or name==collision_name
@@ -92,6 +92,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
         node_suppressed=suppressed or name in hidden
         nodes.append(name)
         draw_pointer=u(raw,o+88)
+        attributes=u(raw,base+draw_pointer+8) if draw_pointer else 0
         cull=raw[base+draw_pointer+1] if draw_pointer else 3
         if u(raw,o+92) and cull>3:raise ValueError(f'Invalid GX cull index for {name}: {cull}')
         marker_points=[]
@@ -133,7 +134,9 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
                             owners[(base+mo,group,cull)].extend([o]*3)
                             cull_counts[cull]+=1
                     elif collidable:
-                        for tri in tris:collision.append([v[:3] for v in tri])
+                        collision_nodes[o-base]={'name':name,'attributes':attributes}
+                        for tri in tris:
+                            collision.append([v[:3] for v in tri]);collision_meta.append((attributes,o-base))
         if name.endswith('_bero'):
             points=np.array(marker_points) if marker_points else np.array([(m@np.array([0,0,0,1]))[:3]*scale])
             markers.append({'name':name,'bounds':[points.min(0).tolist(),points.max(0).tolist()]})
@@ -223,19 +226,22 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
         for segment in segments:out.write(struct.pack('<6f',*segment))
     # Keep walkable collision surfaces, including ramps and elevated platforms.
     ground=[]
-    for tri in collision:
+    for tri,meta in zip(collision,collision_meta):
         a=np.array(tri);normal=np.cross(a[1]-a[0],a[2]-a[0]);length=np.linalg.norm(normal)
         if length>1e-8 and abs(normal[1])/length>=.65:
-            ground.append(tri)
+            ground.append((tri,meta))
     with (output/'map.ground').open('wb') as out:
-        out.write(struct.pack('<I',len(ground)))
-        for tri in ground:out.write(struct.pack('<9f',*(v for point in tri for v in point)))
+        # Tagged format preserves original node attributes and relative source ID.
+        out.write(struct.pack('<I',len(ground)|0x80000000))
+        for tri,meta in ground:
+            out.write(struct.pack('<9fII',*(v for point in tri for v in point),*meta))
     summary={'source':str(path),'scale':scale,'vertices':count,'triangles':count//3,'batches':len(batches),'textures':textures,
              'bounds':[np.min(bounds,axis=0).tolist(),np.max(bounds,axis=0).tolist()],
              'cull_triangles':dict(cull_counts),'cutaway_nodes':[{'id':cutaway_ids[o],'name':name} for o,name in sorted(cutaway_nodes.items())],'exit_markers':markers,'limitations':warnings,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}
     (output/'map.animations.json').write_text(json.dumps(animations,indent=2)+'\n')
     summary['animations']=[{'name':a['name'],'duration':a['duration'],'mesh_tracks':len(a['tracks']),'material_tracks':len(a['material_tracks']),'material_table_offset':a['material_table_offset']} for a in animations]
     summary['ambient_mesh_clips']=list(mesh_ambient);summary['animated_position_vertices']=len(mesh_used)
+    summary['collision_nodes']=[{'source_node':node,**data} for node,data in sorted(collision_nodes.items())]
     summary['ambient_material_clips']=list(ambient);summary['animated_uv_vertices']=len(used)
     summary['sampled_animation']=animation;summary['sampled_frame']=frame if animation else None
     (output/'map-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
