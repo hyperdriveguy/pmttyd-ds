@@ -161,3 +161,21 @@ These are source attributes, not all effective event-modified attributes. Wall
 attributes, dynamic hitObjAttrOn/Off changes, special surface behavior, and
 water/fall/recovery state remain unfinished. No guessed hazard action is attached
 to the new contact fields.
+
+Collision hierarchy metadata now retains every original hit owner, parent ID,
+part count and transformed original hit center, including hierarchy-only nodes.
+Return resolution averages leaf centers for the original sentinel, applies
+ordered group overrides to descendants only, and converts explicit engine-unit
+coordinates by model scale/10. RPOS v1 runtime files contain magic/version/count
+and source-node uint32 plus3 float32 coordinates per binding. The5 current rooms
+require files (empty where no verified init call applies). Import validates
+finite/ranged positions, unique nonzero node IDs, version/count and exact EOF
+atomically. Collision staging owns the return map with geometry/index data.
+
+GroundContact reports raw source flags plus verified init return-enabled bit
+0x40000000 when bound; groundReturn queries the active-room authored position
+without changing output on a miss. Saves reconstruct these bindings through
+room load. This provides return inputs, not the water-damage state machine:
+saved-hit selection, animation, HP penalty/recovery and original effects remain
+unfinished. Init centers are baked; dynamic collision/event mutations need a
+subsequent runtime hierarchy implementation.

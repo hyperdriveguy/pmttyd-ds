@@ -87,5 +87,23 @@ Original init table calls are outside IF/SWITCH blocks at gor_00:0x2f364 and
 gor_02:0x4d6d0 (END_SWITCH is opcode49). Harbor table0x2c594 has5 entries,
 east0x4c9d4 has12; all17 source entries and5 sentinels are retained by extraction.
 Harbor authored A_yuka_03 return=(84,15,220), A_yuka_04=(475,15,-180); units are
-original GameCube units, so native positions would use existing map scale0.1.
+original GameCube engine units. Later _mapLoad inspection below corrects their
+conversion to native units:0.01, because the original model-to-engine scale is10.
 These points do not authorize teleporting from every water tile indiscriminately.
+
+Original coordinate-space correction: _mapLoad80028f18 at800294dc loads the
+constant from r2-31484=8041f944 (read original DOL float10.0), creates uniform
+PSMTXScale10 at800294ec, and passes that matrix to mapEntry at800294fc and
+hitEntry at80029514. The native renderer/collision currently uses map-file
+model units times0.1; event engine-unit literals therefore use0.1/10=0.01.
+Harbor A_yuka_03 authored(84,15,220) becomes(.84,.15,2.2), A_yuka_04 becomes
+(4.75,.15,-1.8). This fixes the prior incorrect0.1 event-unit assumption before
+any recovery teleport was implemented. Model-space leaf centers already baked
+into native coordinates must NOT receive the extra division.
+
+Original _hitEnt: mesh-owner center=(bboxMin+bboxMax)/2; no-parts owner uses
+local translation at80018af4–80018b08. hitObjGetPosSub averages transformed
+leaf centers, excluding the group's top-level siblings. Native conversion now
+retains all collision hierarchy owners (including A_ground_01) and applies
+ordered init bindings to the owner/descendants. Dynamic hit transforms and
+repeat event execution remain outside the current baked init state.

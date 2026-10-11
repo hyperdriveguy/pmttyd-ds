@@ -17,7 +17,9 @@ def run(env,capture):
     capture('harbor-dock-0');data=save.read_bytes()
     px,pz=struct.unpack_from('<ff',data,8)
     assert data[26]==1 and abs(px)<1 and -3<pz<-1.5,(data[26],px,pz)
-    assert struct.unpack_from('<b',data,27)[0]==2 # Original solid dock floor y=0.15, quantized.
+    # The y=0.15 floor lies on a 0.1 save-quantization midpoint; interpolation
+    # can place it just above/below that midpoint. Both decoded values fit it.
+    assert struct.unpack_from('<b',data,27)[0] in (1,2)
     assert struct.unpack_from('<I',data,16)[0]==7
     time.sleep(2);capture('harbor-dock-120');time.sleep(2);capture('harbor-dock-240')
     hold(['Up'],10/60);hold(['Right'],1);hold(['Left','Up'],50/60);hold(['Left'],.5);hold(['Up'],1)

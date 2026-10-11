@@ -21,3 +21,4 @@ romfs/rooms.bin
 
 romfs/*.uvanim
 romfs/*.meshanim
+romfs/*.returns

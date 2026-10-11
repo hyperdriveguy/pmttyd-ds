@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from room_convert import damage_returns
+from room_convert import damage_returns,resolve_damage_returns
 
 class DamageReturns(unittest.TestCase):
     def fixture(self,y=15):
@@ -33,5 +33,21 @@ class DamageReturns(unittest.TestCase):
         with self.assertRaises(ValueError):self.parse((raw,local,imports))
     def test_other_imports_do_not_create_tables(self):
         raw,local,_=self.fixture();self.assertEqual(self.parse((raw,local,{20:0x80000000})),[])
+    def test_hierarchy_leaf_average_and_ordered_overrides(self):
+        nodes=[{'source_node':1,'name':'A','parent':None,'center':[999,999,999]},
+               {'source_node':2,'name':'left','parent':1,'center':[0,0,0]},
+               {'source_node':3,'name':'branch','parent':1,'center':[999,999,999]},
+               {'source_node':4,'name':'leaf','parent':3,'center':[6,0,0]},
+               {'source_node':5,'name':'sibling','parent':None,'center':[999,999,999]}]
+        entries=[{'node':'A','position':[0,-1000,0],'automatic_position':True},
+                 {'node':'leaf','position':[100,20,30],'automatic_position':False}]
+        resolved,bound=resolve_damage_returns(nodes,entries)
+        self.assertEqual(resolved[0]['resolved_position'],[3,0,0])
+        self.assertEqual(bound[1],[3,0,0]);self.assertEqual(bound[4],[1,.2,.3])
+        self.assertNotIn(5,bound)
+    def test_bad_hierarchy_rejected(self):
+        entries=[{'node':'A','position':[0,-1000,0],'automatic_position':True}]
+        with self.assertRaises(ValueError):resolve_damage_returns([{'source_node':1,'name':'A','parent':9,'center':[0,0,0]}],entries)
+        with self.assertRaises(ValueError):resolve_damage_returns([{'source_node':1,'name':'A','parent':1,'center':[0,0,0]}],entries)
 
 if __name__=='__main__':unittest.main()

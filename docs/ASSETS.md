@@ -214,3 +214,12 @@ tables in ignored RomFS manifest provenance. These are metadata for recovery
 implementation; runtime does not yet consume them. Verify with
 `python3 tools/verify_damage_returns.py`. Original function-address/layout evidence
 is retained in mechanics notes; no original executable implementation imported.
+
+Resolved original init return packs: gor_00 has5 node bindings (92 bytes),
+gor_02 has16 inherited bindings (268 bytes); other room files are12-byte empty
+RPOS headers. Original tables still retain raw positions/sentinels and call
+offsets; manifest additionally records resolved positions and descendant IDs.
+Harbor automatic A_yuka center is approximately(.85,.15,2.2). Literal positions
+now correctly use engine-to-native0.01, substantiated by original _mapLoad's10x
+model matrix. All original collision owners/parents/centers are inventoried,
+not just mesh owners. Source floor geometry/raw attributes remain unchanged.

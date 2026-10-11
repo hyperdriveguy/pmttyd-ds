@@ -93,6 +93,15 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
         nodes.append(name)
         draw_pointer=u(raw,o+88)
         attributes=u(raw,base+draw_pointer+8) if draw_pointer else 0
+        if collidable:
+            # _hitEnt stores bbox midpoint for mesh owners, local translation
+            # for hierarchy-only nodes; hitObjGetPos transforms leaf centers.
+            bbox=struct.unpack_from('>6f',raw,o+60)
+            center=(np.array(bbox[:3])+np.array(bbox[3:]))*.5 if u(raw,o+92) else np.array(values[6:9])
+            world_center=(m@np.array([*center,1]))[:3]*scale
+            collision_nodes[o-base]={'name':name,'attributes':attributes,
+                'parent':parent_node-base if parent_node is not None and name!=collision_name else None,
+                'center':world_center.tolist(),'parts':u(raw,o+92)}
         cull=raw[base+draw_pointer+1] if draw_pointer else 3
         if u(raw,o+92) and cull>3:raise ValueError(f'Invalid GX cull index for {name}: {cull}')
         marker_points=[]
@@ -134,7 +143,6 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
                             owners[(base+mo,group,cull)].extend([o]*3)
                             cull_counts[cull]+=1
                     elif collidable:
-                        collision_nodes[o-base]={'name':name,'attributes':attributes}
                         for tri in tris:
                             collision.append([v[:3] for v in tri]);collision_meta.append((attributes,o-base))
         if name.endswith('_bero'):

@@ -10,6 +10,7 @@ constexpr int TickRate = 60;
 constexpr float StepHeight = .25f;
 struct Vec2 { float x = 0, z = 0; };
 struct GroundContact {uint32_t attributes=0, sourceNode=0;};
+struct ReturnPoint {float x=0,y=0,z=0;};
 struct Rect { float x0, z0, x1, z1; };
 inline constexpr std::array<Rect, 4> Obstacles{{
     {-9,-4.5f,-4,-1.5f}, {3.5f,-4.5f,9,-1.5f},
@@ -98,6 +99,8 @@ private:
 bool walkable(Vec2 p,float elevation=0);
 bool loadCollision(const char* path);
 bool loadGround(const char* path);
+bool loadGroundReturns(const char* path);
+bool groundReturn(const GroundContact&,ReturnPoint& point);
 bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr);
 void clearCollision();
 const std::vector<Rect>& collisionWalls();

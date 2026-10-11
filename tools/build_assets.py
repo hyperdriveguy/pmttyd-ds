@@ -8,12 +8,13 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import struct
 from PIL import Image,ImageDraw
 from iso_assets import extract,convert_tpl,DEFAULT_ISO
 from character_bake import bake
 from map_convert import convert
 from audio_convert import stm,sample_directory
-from room_convert import exits,damage_returns
+from room_convert import exits,damage_returns,resolve_damage_returns
 ROOT=Path(__file__).resolve().parents[1]
 OUTPUT=ROOT/'romfs';WORK=ROOT/'local-assets';ISO=os.environ.get('TTYD_ISO',DEFAULT_ISO)
 
@@ -25,6 +26,7 @@ def main():
     fingerprint=hashlib.sha256(b''.join(p.read_bytes() for p in scripts)+str((source.stat().st_size,source.stat().st_mtime_ns)).encode()).hexdigest()
     manifest=OUTPUT/'manifest.json'
     required=['characters.t3x','sky.t3x','map.vertices','map.batches','rogueport.wav','battle.wav','victory.wav','stage.vertices','stage.batches','map.walls','map.ground','gor_00.vertices','gor_02.vertices','gor_03.vertices','gor_04.vertices','map.uvanim','stage.uvanim','gor_00.uvanim','gor_02.uvanim','gor_03.uvanim','gor_04.uvanim','rooms.bin','map.meshanim','stage.meshanim','gor_00.meshanim','gor_02.meshanim','gor_03.meshanim','gor_04.meshanim']
+    required.extend(prefix+'.returns' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
     if manifest.exists() and all((OUTPUT/p).exists() for p in required):
         if json.loads(manifest.read_text()).get('fingerprint')==fingerprint:return
     WORK.mkdir(parents=True,exist_ok=True);OUTPUT.mkdir(exist_ok=True)
@@ -78,6 +80,17 @@ def main():
     room_rel=asset('rel/gor.rel','gor.rel')
     original_exits=exits(room_rel);return_tables=damage_returns(room_rel)
     (WORK/'damage-return-tables.json').write_text(json.dumps(return_tables,indent=2)+'\n')
+    resolved_returns={}
+    for table in return_tables:
+        room={0x2f364:'gor_00',0x4d6d0:'gor_02'}.get(table['call_offset'])
+        if room is None:raise ValueError('Unreviewed damage-return activation call')
+        resolved,bound=resolve_damage_returns(rooms[room]['collision_nodes'],table['entries'])
+        resolved_returns[room]={'entries':resolved,'bindings':bound}
+    for room,prefix in [('gor_01','map'),('gor_00','gor_00'),('gor_02','gor_02'),('gor_03','gor_03'),('gor_04','gor_04')]:
+        bound=resolved_returns.get(room,{}).get('bindings',{})
+        with (OUTPUT/(prefix+'.returns')).open('wb') as out:
+            out.write(struct.pack('<4sII',b'RPOS',1,len(bound)))
+            for node,point in sorted(bound.items()):out.write(struct.pack('<I3f',node,*point))
     # Group consecutive original BeroEntry records. Match their exit names to
     # the map's geometric road markers, with reciprocal destinations checked.
     groups=[]
@@ -109,7 +122,6 @@ def main():
         if valid:solutions.append(assignment)
     if len(solutions)!=1:raise ValueError(f'Ambiguous original reciprocal room tables: {len(solutions)} solutions')
     matched=solutions[0]
-    import struct
     links=[]
     for source,group in matched.items():
         for entry in group:
@@ -148,7 +160,7 @@ def main():
     for filename in ['confirm.wav','jump.wav','hit.wav','success.wav']:
         (OUTPUT/filename).unlink(missing_ok=True)
     manifest.write_text(json.dumps({'fingerprint':fingerprint,'source_disc':'G8ME01','assets':records,
-        'characters':poses,'map':summary,'overworld_rooms':rooms,'road_links':links,'damage_return_tables':return_tables,'battle_stage':stage_summary,'music':music,'sample_bank_entries':len(directory),
+        'characters':poses,'map':summary,'overworld_rooms':rooms,'road_links':links,'damage_return_tables':return_tables,'resolved_damage_returns':resolved_returns,'battle_stage':stage_summary,'music':music,'sample_bank_entries':len(directory),
         'sound_effect_status':'Original banks preserved; macro-to-event mapping not yet implemented. No synthetic replacements.',
         'conversion':'Original character idle poses and Mario jump/hammer textures baked to RGBA8 atlas; static Rogueport geometry; map textures capped at 128px; DSP music decoded losslessly at original rate'},indent=2)+'\n')
     print(f'Built original asset pack: {summary["triangles"]} map triangles, {len(directory)} preserved samples')

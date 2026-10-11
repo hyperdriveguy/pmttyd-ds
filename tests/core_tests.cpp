@@ -182,12 +182,19 @@ void collisionRollback() {
             GroundContact contact{attributes,uint32_t(100+n)};
             file.write(reinterpret_cast<char*>(triangles+n*9),36);file.write(reinterpret_cast<char*>(&contact),8);
         }
+        std::ofstream returns(prefix+".returns",std::ios::binary);returns.write("RPOS",4);uint32_t version=1,bindings=2;
+        returns.write(reinterpret_cast<char*>(&version),4);returns.write(reinterpret_cast<char*>(&bindings),4);
+        for(uint32_t node=100;node<102;++node) {
+            ReturnPoint point{attributes/512.f,0,2};returns.write(reinterpret_cast<char*>(&node),4);
+            returns.write(reinterpret_cast<char*>(&point),sizeof(point));
+        }
     };
     writeWalls(source,0);writeFloor(source,0x200);writeWalls(target,2);
     {CollisionTransition tx;CHECK(tx.load(source.c_str()));tx.commit();}
     const Rect originalBounds=collisionBounds();float h=99;
     CHECK(!walkable({0,2}));CHECK(walkable({2,2}));CHECK(groundAt({1,2},0,h));CHECK(h==0);
-    GroundContact contact;CHECK(groundAt({1,2},0,h,&contact));CHECK(contact.attributes==0x200);
+    GroundContact contact;CHECK(groundAt({1,2},0,h,&contact));CHECK(contact.attributes==0x40000200);
+    ReturnPoint point;CHECK(groundReturn(contact,point));CHECK(point.x==1);
     {std::ofstream bad(target+".ground");bad<<"truncated";}
     {
         CollisionTransition tx;CHECK(!tx.load(target.c_str()));tx.commit();
@@ -195,8 +202,13 @@ void collisionRollback() {
         std::remove((source+".walls").c_str());std::remove((source+".ground").c_str());
     }
     CHECK(!walkable({0,2}));CHECK(walkable({2,2}));CHECK(groundAt({1,2},0,h));CHECK(h==0);
-    CHECK(groundAt({1,2},0,h,&contact));CHECK(contact.attributes==0x200);
+    CHECK(groundAt({1,2},0,h,&contact));CHECK(contact.attributes==0x40000200);
+    CHECK(groundReturn(contact,point));CHECK(point.x==1);
     CHECK(collisionBounds().x0==originalBounds.x0);CHECK(collisionBounds().z1==originalBounds.z1);
+    writeFloor(target,0x400);
+    {std::ofstream bad(target+".returns");bad<<"bad";}
+    {CollisionTransition tx;CHECK(!tx.load(target.c_str()));}
+    CHECK(groundAt({1,2},0,h,&contact));CHECK(groundReturn(contact,point));CHECK(point.x==1);
     writeFloor(target,0x400);
     {
         CollisionTransition tx;CHECK(tx.load(target.c_str()));CHECK(walkable({0,2}));CHECK(!walkable({2,2}));
@@ -206,10 +218,12 @@ void collisionRollback() {
         CHECK(!walkable({2,2}));
     }
     CHECK(!walkable({0,2}));CHECK(walkable({2,2}));
+    CHECK(groundAt({1,2},0,h,&contact));CHECK(groundReturn(contact,point));CHECK(point.x==1);
     {CollisionTransition tx;CHECK(tx.load(target.c_str()));tx.commit();}
     CHECK(walkable({0,2}));CHECK(!walkable({2,2}));CHECK(groundAt({1,2},0,h));
-    CHECK(groundAt({1,2},0,h,&contact));CHECK(contact.attributes==0x400);
-    clearCollision();std::remove((target+".walls").c_str());std::remove((target+".ground").c_str());rmdir(directory);
+    CHECK(groundAt({1,2},0,h,&contact));CHECK(contact.attributes==0x40000400);
+    CHECK(groundReturn(contact,point));CHECK(point.x==2);
+    clearCollision();std::remove((target+".walls").c_str());std::remove((target+".ground").c_str());std::remove((source+".returns").c_str());std::remove((target+".returns").c_str());rmdir(directory);
 }
 void uvAnimation() {
     UVTrack track;track.frames={{{1,0,0,0,1,0}},{{1,0,.5f,0,1,.25f}},{{2,0,0,0,3,0}}};
@@ -239,11 +253,28 @@ void meshAnimation() {
     CHECK((animatedPosition(track,b,1)==std::array<float,3>{0,4,7}));
     CHECK(animatedPosition(track,b,0)==animatedPosition(track,b,2));
 }
+void returnBindings() {
+    char path[]="/tmp/ttyd-returns-XXXXXX";int fd=mkstemp(path);CHECK(fd>=0);close(fd);
+    auto write=[&](uint32_t version,float x,bool duplicate,bool trailing) {
+        std::ofstream f(path,std::ios::binary);f.write("RPOS",4);uint32_t count=duplicate?2:1,node=100;
+        ReturnPoint point{x,.15f,2.2f};f.write(reinterpret_cast<char*>(&version),4);f.write(reinterpret_cast<char*>(&count),4);
+        for(uint32_t n=0;n<count;++n) {f.write(reinterpret_cast<char*>(&node),4);f.write(reinterpret_cast<char*>(&point),12);}
+        if(trailing)f.put('x');
+    };
+    write(1,.84f,false,false);CHECK(loadGroundReturns(path));GroundContact contact{0,100};ReturnPoint point;
+    CHECK(groundReturn(contact,point));CHECK(point.x==.84f);
+    for(int bad=0;bad<4;++bad) {
+        write(bad==0?2:1,bad==1?std::numeric_limits<float>::quiet_NaN():2,bad==2,bad==3);
+        CHECK(!loadGroundReturns(path));CHECK(groundReturn(contact,point));CHECK(point.x==.84f);
+    }
+    contact.sourceNode=999;CHECK(!groundReturn(contact,point));CHECK(point.x==.84f);
+    std::remove(path);clearCollision();
+}
 void indexedOriginalCollision() {
     size_t queries=0;
     for(uint32_t room=0;room<5;++room) {
         std::string prefix=std::string("romfs/")+roomAsset(room);
-        CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));
+        CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));CHECK(loadGroundReturns((prefix+".returns").c_str()));
         std::ifstream vertexFile(prefix+".vertices",std::ios::binary|std::ios::ate);
         CHECK(vertexFile.good());const auto vertexBytes=vertexFile.tellg();
         CHECK(vertexBytes>0 && vertexBytes%36==0);const uint32_t vertexCount=vertexBytes/36;
@@ -292,7 +323,7 @@ void indexedOriginalCollision() {
                 if(a>=-.0001f && b>=-.0001f && a+b<=1.0001f && y<=level+.25f && y>=level-.5f && y>floor){found=true;floor=y;expected=contacts[n];}
             }
             float actual=0;GroundContact contact;CHECK(groundAt(p,level,actual,&contact)==found);
-            if(found) {CHECK(std::fabs(actual-floor)<.001f);CHECK(contact.attributes==expected.attributes);CHECK(contact.sourceNode==expected.sourceNode);}
+            if(found) {ReturnPoint point;if(groundReturn(expected,point))expected.attributes|=0x40000000;CHECK(std::fabs(actual-floor)<.001f);CHECK(contact.attributes==expected.attributes);CHECK(contact.sourceNode==expected.sourceNode);}
             ++queries;
         }
     }
@@ -304,7 +335,7 @@ void originalRooms() {
     CHECK(count==8);std::vector<RoadWarp> roads(count);file.read(reinterpret_cast<char*>(roads.data()),count*sizeof(RoadWarp));CHECK(file.good());
     for(size_t n=0;n<roads.size();++n) {
         const auto& road=roads[n];std::string prefix=std::string("romfs/")+roomAsset(road.target);
-        CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));
+        CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));CHECK(loadGroundReturns((prefix+".returns").c_str()));
         Game g;g.progress.room=road.source;g.progress.hp=7;g.warpRequest=n;
         CHECK(g.warpTarget()==road.target);CHECK(g.finishWarp());
         CHECK(g.progress.room==road.target);CHECK(g.progress.hp==7);CHECK(g.warpRequest==-1);
@@ -345,6 +376,6 @@ void originalRooms() {
     clearCollision();
 }
 int main(int argc,char**) {
-    try {if(argc>1) {indexedOriginalCollision();originalRooms();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();visibility();uvAnimation();meshAnimation();std::puts("Core scenarios passed");}
+    try {if(argc>1) {indexedOriginalCollision();originalRooms();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

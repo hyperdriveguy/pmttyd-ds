@@ -58,6 +58,35 @@ def damage_returns(path):
         tables.append({'call_offset':site-4,'table_offset':start,'entries':entries})
     return tables
 
+def resolve_damage_returns(nodes,entries,scale=.1):
+    """Apply original ordered group bindings and average leaf hit centers."""
+    by_id={n['source_node']:n for n in nodes};children={node:[] for node in by_id}
+    if len(by_id)!=len(nodes):raise ValueError('Duplicate hit node ID')
+    for node,info in by_id.items():
+        parent=info['parent']
+        if parent is not None:
+            if parent not in by_id:raise ValueError('Missing hit parent')
+            children[parent].append(node)
+    def subtree(node,path=()):
+        if node in path or len(path)>100:raise ValueError('Cyclic hit hierarchy')
+        result=[node]
+        for child in children[node]:result.extend(subtree(child,(*path,node)))
+        return result
+    bindings={};resolved=[]
+    for entry in entries:
+        matches=[node for node,info in by_id.items() if info['name']==entry['node']]
+        if len(matches)!=1:raise ValueError(f"Ambiguous/missing hit group {entry['node']}")
+        # _mapLoad uses a 10x model-to-engine matrix. Event XYZ is already in
+        # engine units, while exported leaf centers include the native scale.
+        group=subtree(matches[0]);point=[v*scale/10 for v in entry['position']]
+        if entry['automatic_position']:
+            leaves=[by_id[node]['center'] for node in group if not children[node]]
+            point=[sum(v[axis] for v in leaves)/len(leaves) for axis in range(3)]
+        if not all(math.isfinite(v) for v in point):raise ValueError('Invalid hit return center')
+        for node in group:bindings[node]=point
+        resolved.append({**entry,'resolved_position':point,'bound_nodes':group})
+    return resolved,bindings
+
 def exits(path):
     raw,ptr=pointers(path)
     def string(o):

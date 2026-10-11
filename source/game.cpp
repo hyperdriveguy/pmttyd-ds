@@ -13,7 +13,9 @@ bool collisionReady=false;
 std::vector<Vec2> wallLevels;
 struct GroundTriangle { float v[9];GroundContact contact; };
 static_assert(sizeof(GroundContact)==8,"Ground metadata must contain two uint32 words");
+static_assert(sizeof(ReturnPoint)==12,"Return position must contain three float32 values");
 std::vector<GroundTriangle> ground;
+std::unordered_map<uint32_t,ReturnPoint> groundReturns;
 using SpatialIndex=std::unordered_map<uint64_t,std::vector<uint32_t>>;
 SpatialIndex wallIndex,groundIndex;
 Rect roomBounds{-9,-4.5f,9,4};
@@ -48,11 +50,13 @@ struct CollisionSnapshot {
     std::vector<Rect> savedWalls;
     std::vector<Vec2> savedLevels;
     std::vector<GroundTriangle> savedGround;
+    std::unordered_map<uint32_t,ReturnPoint> savedReturns;
     SpatialIndex savedWallIndex,savedGroundIndex;
     Rect savedBounds{-9,-4.5f,9,4};
     bool ready=false;
     void swapActive() {
         savedWalls.swap(walls);savedLevels.swap(wallLevels);savedGround.swap(ground);
+        savedReturns.swap(groundReturns);
         savedWallIndex.swap(wallIndex);savedGroundIndex.swap(groundIndex);
         std::swap(savedBounds,roomBounds);std::swap(ready,collisionReady);
     }
@@ -63,7 +67,7 @@ bool CollisionTransition::load(const char* prefix) {
     if(committed || !prefix)return false;
     clearCollision();staged=false;
     const std::string path(prefix);
-    staged=loadCollision((path+".walls").c_str()) && loadGround((path+".ground").c_str());
+    staged=loadCollision((path+".walls").c_str()) && loadGround((path+".ground").c_str()) && loadGroundReturns((path+".returns").c_str());
     return staged;
 }
 void CollisionTransition::commit() {if(staged)committed=true;}
@@ -168,9 +172,29 @@ bool loadGround(const char* path) {
             bounds.x0=std::min(bounds.x0,tri.v[n]);bounds.x1=std::max(bounds.x1,tri.v[n]);
             bounds.z0=std::min(bounds.z0,tri.v[n+2]);bounds.z1=std::max(bounds.z1,tri.v[n+2]);
         }
-        ground.swap(data);groundIndex.swap(next);roomBounds=bounds;
+        ground.swap(data);groundIndex.swap(next);groundReturns.clear();roomBounds=bounds;
     }
     return ok;
+}
+bool loadGroundReturns(const char* path) {
+    FILE* file=std::fopen(path,"rb");if(!file)return false;
+    char magic[4];uint32_t version=0,count=0;
+    bool ok=std::fread(magic,1,4,file)==4 && magic[0]=='R' && magic[1]=='P' && magic[2]=='O' && magic[3]=='S' &&
+        std::fread(&version,4,1,file)==1 && version==1 && std::fread(&count,4,1,file)==1 && count<=100000;
+    std::unordered_map<uint32_t,ReturnPoint> next;
+    for(uint32_t n=0;ok && n<count;++n) {
+        uint32_t node=0;ReturnPoint point;
+        ok=std::fread(&node,4,1,file)==1 && std::fread(&point,sizeof(point),1,file)==1 && node!=0 &&
+            std::isfinite(point.x) && std::isfinite(point.y) && std::isfinite(point.z) &&
+            std::max({std::fabs(point.x),std::fabs(point.y),std::fabs(point.z)})<=4096 && next.emplace(node,point).second;
+    }
+    ok=ok && std::fgetc(file)==EOF;std::fclose(file);
+    if(ok)groundReturns.swap(next);
+    return ok;
+}
+bool groundReturn(const GroundContact& contact,ReturnPoint& point) {
+    auto found=groundReturns.find(contact.sourceNode);if(found==groundReturns.end())return false;
+    point=found->second;return true;
 }
 bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact) {
     if(!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(reference) ||
@@ -190,10 +214,13 @@ bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact) {
         // Stay on the current floor; do not teleport onto roofs above Mario.
         if(y<=reference+StepHeight && y>=reference-.5f && y>best) {best=y;bestContact=ground[n].contact;found=true;}
     }
-    if(found) {height=best;if(contact)*contact=bestContact;}
+    if(found) {
+        if(groundReturns.count(bestContact.sourceNode))bestContact.attributes|=0x40000000;
+        height=best;if(contact)*contact=bestContact;
+    }
     return found;
 }
-void clearCollision() {walls.clear();wallLevels.clear();ground.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
+void clearCollision() {walls.clear();wallLevels.clear();ground.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
 void Game::restore(const Progress& saved) {
