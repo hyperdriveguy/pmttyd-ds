@@ -80,3 +80,10 @@ For the current 3DS view transform, GX back maps to GPU_CULL_FRONT_CCW and
 GX front to GPU_CULL_BACK_CCW; direct enum mapping removed the plaza floor
 in the first emulator check. Character/backdrop rendering resets culling to none.
 No original triangles or collision surfaces are dropped during conversion.
+
+Offline map animation sampling is explicit (`map_convert.py --animation NAME
+--frame FRAME`). Original local bind transforms compose with sampled delta
+transforms and parent hierarchy before baking. Only visual scene nodes are
+sampled; collision previews stay static. Runtime packs continue to use bind
+poses until original event conditions and node-to-vertex bindings are recovered.
+Original durations do not establish simulation frame rate or loop semantics.

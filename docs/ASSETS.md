@@ -107,3 +107,16 @@ Batches now split by sidedness as well as material/cutaway owner. Geometry
 counts are unchanged; plaza/harbor/east/west/station batches 116/79/111/127/54.
 This does not recover event-controlled visibility, train animation or multilayer
 materials. Those remain necessary for original presentation.
+
+Map mesh animation tracks are now preserved in ignored local conversion sidecars
+`local-assets/<room>/map.animations.json` (plaza uses `map`, battle `stage`).
+The original .d source remains authoritative, including the 12 unknown components
+per mesh keyframe not interpreted here. Map summary/manifest lists names, duration,
+mesh-track counts and material-table offsets. Mesh sampling uses original
+translation/rotation offsets, scale divisors, step flags and Hermite tangents.
+Format reference: existing MIT noclip.website/world.ts. Event activation and
+loop modes are not inferred. Material animation tracks are not decoded yet.
+Station has shadanki, n_1_door_open/close mesh tracks; train-body mesh animation
+is absent from that table. Its visual defects still require material/scene/event
+inspection. Harbor contains duplicate fune_b animation names; explicit name
+selection rejects ambiguity rather than choosing an arbitrary duplicate.

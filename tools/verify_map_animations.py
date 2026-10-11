@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+"""Verify locally extracted map tracks and a station door conversion sample."""
+from pathlib import Path
+import tempfile
+import numpy as np
+from map_animation import read_animations,sample
+from map_convert import convert
+ROOT=Path(__file__).resolve().parents[1]
+def main():
+    count=0
+    for name in ['gor_00','gor_01','gor_02','gor_03','gor_04','stage']:
+        animations=read_animations(ROOT/'local-assets'/f'{name}.d')
+        print(name,[(a['name'],len(a['tracks'])) for a in animations])
+        for animation in animations:
+            for track in animation['tracks']:
+                for frame in [track['frames'][0]['time'],animation['duration']/2,track['frames'][-1]['time']]:
+                    assert np.isfinite(sample(track,frame)).all()
+                    count+=1
+    with tempfile.TemporaryDirectory(prefix='ttyd-door-') as work:
+        folders=[Path(work)/str(frame) for frame in [0,23]]
+        for frame,folder in zip([0,23],folders):
+            convert(ROOT/'local-assets/gor_04.d',folder,animation='n_1_door_open',frame=frame)
+        vertices=[np.fromfile(folder/'map.vertices',dtype='<f4').reshape(-1,9) for folder in folders]
+        a,b=vertices;assert a.shape==b.shape;assert np.array_equal(a[:,3:],b[:,3:])
+        changed=np.count_nonzero(np.linalg.norm(a[:,:3]-b[:,:3],axis=1)>1e-5)
+        assert changed==702,f'Unexpected moved door geometry: {changed}'
+        for ext in ['walls','ground','batches']:assert (folders[0]/('map.'+ext)).read_bytes()==(folders[1]/('map.'+ext)).read_bytes()
+    print(f'{count} original track samples finite; {changed} station door vertices moved; UV/color/batches/collision unchanged')
+if __name__=='__main__':main()

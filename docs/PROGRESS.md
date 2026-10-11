@@ -504,3 +504,45 @@ reported 60fps. Goombella remains partly behind the left curtain, and stage prop
 are still static; original scene presentation remains incomplete. No hardware
 performance or observed-original-mechanics claim. Final code contains no temporary
 command-buffer probe.
+
+## Overworld continuation: original map mesh animation extraction
+
+Added bounds/count/finite-validated original map mesh animation reader and
+Hermite/step frame sampler. Conversion writes original mesh tracks into ignored
+local JSON sidecars, records inventories in manifest, and accepts explicit
+--animation/--frame visual previews. Original translation/rotation offsets and
+scale dividers are respected; hierarchy bind*delta transform order follows
+existing format reference. Collision remains static in previews; runtime packs
+remain at bind pose. Original event activation, loop modes and playback are not
+invented. Material animation table offsets are inventoried, not decoded.
+
+Evidence changes the next station task: gor_04 mesh animation table contains
+shadanki and n_1_door_open/close, with remaining entries having no mesh tracks.
+There is no train-body mesh track in this table; the malformed/black locomotive
+needs original material/scene/event inspection rather than an assumed idle clip.
+The door clip targets node tobira. Sampling frames 0/23 changes exactly 702
+vertices; UV/colors, batches, collision wall and ground files remain identical.
+54 finite original samples across 18 tracks in all five maps and battle stage
+passed `python3 tools/verify_map_animations.py`. Duplicate harbor fune_b names
+are preserved and name-based preview rejects ambiguous selection.
+
+`make test` passed core plus 20 Python tests, including real-layout synthetic
+parser fixtures, truncation/count/nonfinite/step/divisor rejection, clamp behavior
+and interpolation. `build-host/core_tests --rooms` passed 18,315 collision probes
+and all 8 original arrivals. Native build result recorded below on completion.
+No runtime animation/emulator/hardware acceptance claim for this offline step.
+
+Reproduce original asset validation after `make all`:
+```sh
+python3 tools/verify_map_animations.py
+python3 tools/map_convert.py local-assets/gor_04.d /tmp/ttyd-door-open --animation n_1_door_open --frame 23
+```
+Next concrete tasks: export original node hierarchy/vertex bindings for runtime
+mesh playback; decode material animation tracks; recover REL door/event
+selection and collision/visibility rules before enabling transitions. Inspect
+train material modes, source vertex colors and node transforms to explain the
+remaining locomotive defects. Continue English dialogue/story, original SFX
+and measured combat; full playable objective remains active.
+
+Final `make -j2 all` completed successfully with animation extraction included in
+the asset fingerprint. No runtime mesh playback has been enabled by this change.

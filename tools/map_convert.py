@@ -10,6 +10,7 @@ import struct
 from collections import defaultdict
 import numpy as np
 from character_bake import u,i,f,trans,rotate
+from map_animation import read_animations,sample
 
 def topology(command,verts):
     mode=command&0xf8
@@ -42,7 +43,7 @@ def wall_segments(collision):
             segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max())))
     return sorted(segments)
 
-def convert(path,output,scale=.1,hidden=()):
+def convert(path,output,scale=.1,hidden=(),animation=None,frame=0):
     raw=Path(path).read_bytes();base=32
     table=32+u(raw,4)+u(raw,8)*4;names=table+u(raw,12)*8
     def string(o):return raw[o:raw.index(b'\0',o)].decode('ascii')
@@ -68,11 +69,17 @@ def convert(path,output,scale=.1,hidden=()):
         if samplers>1:warnings.append({'material':name,'samplers':samplers,'limitation':'Only texture zero currently rendered'})
         materials[o]={'name':name,'color':color,'color_source':raw[o+8],'layer':raw[o+10],'texture':tid,'uv':uvmatrix,'wrap':wrap}
     info=chunks['information'];scene_name=string(base+u(raw,info+8));collision_name=string(base+u(raw,info+12))
+    animations=read_animations(path);selected={}
+    if animation is not None:
+        matches=[a for a in animations if a['name']==animation]
+        if len(matches)!=1:raise ValueError(f'Unknown or ambiguous map animation: {animation}')
+        selected={t['node']:sample(t,frame) for t in matches[0]['tracks']}
     vertices=defaultdict(list);nodes=[];collision=[];markers=[];cutaway_nodes={};cull_counts=defaultdict(int)
     def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0):
         if depth>100:raise ValueError('Invalid map graph')
         name=string(base+u(raw,o));visible=visible or name==scene_name;collidable=collidable or name==collision_name
         values=struct.unpack_from('>9f',raw,o+24);m=parent@trans(values[6:9])@rotate(values[3:6])@np.diag([*values[:3],1])
+        if visible and name in selected:m=m@selected[name]
         node_exterior=exterior or name.startswith('S_gai_kabe')
         node_group=exterior_group
         if node_exterior and not node_group and u(raw,o+92):
@@ -156,9 +163,12 @@ def convert(path,output,scale=.1,hidden=()):
     summary={'source':str(path),'scale':scale,'vertices':count,'triangles':count//3,'batches':len(batches),'textures':textures,
              'bounds':[np.min(bounds,axis=0).tolist(),np.max(bounds,axis=0).tolist()],
              'cull_triangles':dict(cull_counts),'cutaway_nodes':[{'id':cutaway_ids[o],'name':name} for o,name in sorted(cutaway_nodes.items())],'exit_markers':markers,'limitations':warnings,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}
+    (output/'map.animations.json').write_text(json.dumps(animations,indent=2)+'\n')
+    summary['animations']=[{'name':a['name'],'duration':a['duration'],'mesh_tracks':len(a['tracks']),'material_table_offset':a['material_table_offset']} for a in animations]
+    summary['sampled_animation']=animation;summary['sampled_frame']=frame if animation else None
     (output/'map-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     (output/'collision.json').write_text(json.dumps(collision))
     return summary
 if __name__=='__main__':
     import argparse
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('input');p.add_argument('output');a=p.parse_args();print(convert(a.input,a.output))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('input');p.add_argument('output');p.add_argument('--animation');p.add_argument('--frame',type=float,default=0);a=p.parse_args();print(convert(a.input,a.output,animation=a.animation,frame=a.frame))
