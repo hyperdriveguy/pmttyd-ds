@@ -36,3 +36,11 @@ implementation details.
 Touch menus are an adaptation: button access remains available. Timing-meter
 assists, enemy HP display and replacement dialogue are development aids to
 remove or revise after fidelity comparison.
+
+Harbor traversal evidence: source collision stairs contain0.1 native-unit
+risers after the established0.1 map conversion scale. Native wall foot clearance
+is now0.25, matching the prior ground-ascent allowance. This is a provisional
+port rule that enables original stair geometry; it has not been measured in
+Dolphin. Solid dock floor at y0.15 is traversed and retraced by host/Azahar
+checks. Original water/fall/recovery behavior and per-node collision attributes
+remain unfinished; do not treat walking on all exported surfaces as accepted.

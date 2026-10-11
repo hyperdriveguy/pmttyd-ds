@@ -99,7 +99,18 @@ void collisionImport() {
     uint32_t count=1;Rect wall{0,2,0,3.5f};
     CHECK(write(fd,&count,4)==4);CHECK(write(fd,&wall,sizeof(wall))==sizeof(wall));close(fd);
     CHECK(loadCollision(path));CHECK(!walkable({.1f,2.5f}));CHECK(walkable({1,2.5f}));
-    CHECK(!walkable({7,3}));clearCollision();std::remove(path);
+    CHECK(!walkable({7,3}));
+    auto levelWall=[&](float low,float high) {
+        std::ofstream file(path,std::ios::binary);uint32_t tagged=0x80000001;
+        Vec2 levels{low,high};file.write(reinterpret_cast<char*>(&tagged),4);
+        file.write(reinterpret_cast<char*>(&wall),sizeof(wall));file.write(reinterpret_cast<char*>(&levels),sizeof(levels));
+        file.close();CHECK(loadCollision(path));
+    };
+    levelWall(0,.1f);CHECK(walkable({.1f,2.5f},0)); // Original harbor riser height.
+    levelWall(0,.3f);CHECK(!walkable({.1f,2.5f},0)); // Taller obstacle remains solid.
+    CHECK(walkable({.1f,2.5f},.3f));
+    levelWall(1.5f,2);CHECK(walkable({.1f,2.5f},0)); // Overhead geometry.
+    clearCollision();std::remove(path);
     CHECK(!loadCollision("/does/not/exist"));
 }
 void groundImport() {
@@ -235,7 +246,7 @@ void indexedOriginalCollision() {
         for(int x=-18;x<=18;++x)for(int z=-16;z<=16;++z)for(float level:{0.f,1.2f,3.f}) {
             Vec2 p{x*.5f,z*.5f};bool free=true,found=false;float floor=-1e30f;
             for(auto w:segments) {
-                if(w[5]<level+.1f || w[4]>level+1.2f)continue;
+                if(w[5]<level+.25f || w[4]>level+1.2f)continue;
                 float dx=w[2]-w[0],dz=w[3]-w[1],den=dx*dx+dz*dz;if(den<1e-8f)continue;
                 float t=std::max(0.f,std::min(1.f,((p.x-w[0])*dx+(p.z-w[1])*dz)/den));
                 float a=p.x-w[0]-t*dx,b=p.z-w[1]-t*dz;if(a*a+b*b<.28f*.28f)free=false;
@@ -281,6 +292,20 @@ void originalRooms() {
             Input up;up.z=-1;
             for(int frame=0;frame<120 && g.warpRequest<0;++frame)g.tick(up);
             CHECK(g.warpTarget()==0);
+            Game stairs;stairs.progress.room=0;stairs.warpRequest=n;CHECK(stairs.finishWarp());
+            auto walk=[&](float x,float z,int frames) {
+                Input i;i.x=x;i.z=z;
+                for(int frame=0;frame<frames;++frame) {
+                    stairs.tick(i);CHECK(walkable(stairs.progress.position,stairs.groundHeight));
+                    CHECK(walkable(stairs.partner,stairs.partnerHeight));
+                }
+            };
+            walk(1,0,30);walk(1,1,50);walk(-1,0,60);walk(0,1,10);
+            CHECK(std::fabs(stairs.progress.position.x)<1 && stairs.progress.position.z>-2.5f);
+            CHECK(std::fabs(stairs.groundHeight-.15f)<.001f);
+            CHECK(std::fabs(stairs.partnerHeight-.15f)<.001f);
+            walk(0,-1,10);walk(1,0,60);walk(-1,-1,50);walk(-1,0,30);walk(0,-1,60);
+            CHECK(stairs.warpTarget()==0);
         }
     }
     clearCollision();

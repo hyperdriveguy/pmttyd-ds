@@ -770,3 +770,51 @@ tests/azahar_walkthrough.py` completed the development battle sequence and
 return. Reviewed return-plaza.png: smaller actors/full status UI; saved32-byte
 checkpoint has room0/HP6/victory flag1. This validates stage resource loading and
 return flow, not original battle mechanics or story acceptance.
+
+## Harbor staircase traversal
+
+Investigated original harbor geometry instead of deleting collision or moving
+the warp. The entrance stairs have0.1-unit risers. Existing ground sampling
+accepted0.25-unit ascent but wall clearance used0.1, so an actor's projected
+footprint collided with nearby risers during descent. Unified both through
+`StepHeight=0.25` and retained source geometry. This is a provisional native
+allowance, NOT a Dolphin-measured original rule. Partner destination elevation
+now also receives collision validation, as Mario's does.
+
+Host regression follows the original right-hand staircase, crosses onto the
+solid central dock floor at y0.15, checks Mario/partner positions stay walkable
+and both reach that height, then retraces stairs and requests the plaza warp.
+Additional synthetic collision cases ensure0.1 risers clear,0.3 obstacles block
+and overhead walls do not block floor movement. All8 road arrival tests and
+18,315 indexed/full-scan collision probes pass under the new clearance.
+
+Initial traversal probe continued into water-side surfaces at x5.6/z2.4/y-0.1;
+that did NOT prove solid dock traversal. Revised accepted route stays on the
+solid dock, with native saved elevation0.2 (quantized original y0.15) asserted.
+Water/fall/recovery behavior remains unfinished: raw original A_mizu collision
+flags are0x200 at node drawmode+8, A_mizu_kabe0x5. These values were read from
+the user's m/gor_00/d; their runtime semantics have NOT been recovered. Do not
+infer universal hazard semantics from names or the unrelated0x40000000 viewer
+flag. hitGetAttr/hitCheckAttr and Mario motion in original DOL are next evidence
+sources. Current floor packs still lack original per-node attributes.
+
+Validation (all exited0):
+```sh
+make test
+build-host/core_tests --rooms
+make -j2 all
+python3 tools/road_fixtures.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_harbor_stairs.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/station-road.bin --seconds 4 --input-script tests/azahar_roads.py
+```
+Core plus21 Python tests passed. Native harbor script asserted solid dock
+position/elevation/HP7, captured three stationary frames, and returned to plaza.
+Station passed two reciprocal round trips and final station checkpoint. Reviewed
+final harbor-dock-240: full menu, reported60fps; sim0.23/CPU5.1/GPU0.5ms.
+Boat geometry obscures Mario at this central camera position; no original-camera
+or complete harbor visual acceptance claim. Hardware remains unverified.
+
+Next concrete task: retain original collision-node attributes with geometry and
+recover water/fall recovery semantics, then original harbor camera/framing and
+boat visibility/second-layer materials. Original English dialogue/story events,
+SFX, broader traversal/doors/pipes, and measured combat remain incomplete.

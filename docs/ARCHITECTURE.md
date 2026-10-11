@@ -138,3 +138,10 @@ visibility and moving-wall cutaway bounds are not implemented.
 Walking validates collision at both the old and sampled destination elevation.
 This prevents a floor change from leaving an actor inside a wall that did not
 overlap its previous height. Original entrance fixtures cover harbor retreat.
+
+Stair movement uses a shared provisional StepHeight0.25 for ground ascent and
+wall foot clearance; the earlier0.1 wall clearance blocked original harbor
+0.1 risers through the projected actor footprint. Mario and partner validate
+collision at sampled destination elevation before accepting a floor change.
+Original solid-dock stair descent/ascent is regression-tested. Source collision
+node attributes and original hazard recovery are not yet in runtime packs.

@@ -6,6 +6,8 @@
 #include <memory>
 namespace ttyd {
 constexpr int TickRate = 60;
+// Provisional native step allowance; original movement remains to be measured.
+constexpr float StepHeight = .25f;
 struct Vec2 { float x = 0, z = 0; };
 struct Rect { float x0, z0, x1, z1; };
 inline constexpr std::array<Rect, 4> Obstacles{{

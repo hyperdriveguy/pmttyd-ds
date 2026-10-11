@@ -75,7 +75,7 @@ const char* roomName(uint32_t room) {
     return room<5?names[room]:"Unknown area";
 }
 bool wallAtLevel(size_t n,float elevation) {
-    return n<walls.size() && (wallLevels.empty() || (wallLevels[n].z>=elevation+.1f && wallLevels[n].x<=elevation+1.2f));
+    return n<walls.size() && (wallLevels.empty() || (wallLevels[n].z>=elevation+StepHeight && wallLevels[n].x<=elevation+1.2f));
 }
 Rect collisionBounds() {return roomBounds;}
 bool loadWarps(const char* path) {
@@ -182,7 +182,7 @@ bool groundAt(Vec2 p,float reference,float& height) {
         if(a<-.0001f || b<-.0001f || a+b>1.0001f)continue;
         float y=a*v[1]+b*v[4]+(1-a-b)*v[7];
         // Stay on the current floor; do not teleport onto roofs above Mario.
-        if(y<=reference+.25f && y>=reference-.5f && y>best) {best=y;found=true;}
+        if(y<=reference+StepHeight && y>=reference-.5f && y>best) {best=y;found=true;}
     }
     if(found)height=best;
     return found;
@@ -269,7 +269,7 @@ void Game::move(const Input& i) {
             float step=std::min(budget,dist);
             Vec2 q{partner.x+(target.x-partner.x)/dist*step,partner.z+(target.z-partner.z)/dist*step};
             float h=partnerHeight;
-            if(!walkable(q,partnerHeight) || !groundAt(q,partnerHeight,h))break;
+            if(!walkable(q,partnerHeight) || !groundAt(q,partnerHeight,h) || !walkable(q,h))break;
             partner=q;partnerHeight=h;budget-=step;
             if(step>=dist)followerPath.erase(followerPath.begin());
         }
