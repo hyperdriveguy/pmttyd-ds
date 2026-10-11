@@ -76,7 +76,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0):
             if not targets:raise ValueError(f"Animation material not found: {track['material']}")
             for mat in targets:mat['uv']=sample_material(track,frame)
     vertices=defaultdict(list);nodes=[];collision=[];markers=[];cutaway_nodes={};cull_counts=defaultdict(int)
-    def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0):
+    def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0,suppressed=False):
         if depth>100:raise ValueError('Invalid map graph')
         name=string(base+u(raw,o));visible=visible or name==scene_name;collidable=collidable or name==collision_name
         values=struct.unpack_from('>9f',raw,o+24);m=parent@trans(values[6:9])@rotate(values[3:6])@np.diag([*values[:3],1])
@@ -85,12 +85,13 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0):
         node_group=exterior_group
         if node_exterior and not node_group and u(raw,o+92):
             node_group=o;cutaway_nodes[node_group]=name
+        node_suppressed=suppressed or name in hidden
         nodes.append(name)
         draw_pointer=u(raw,o+88)
         cull=raw[base+draw_pointer+1] if draw_pointer else 3
         if u(raw,o+92) and cull>3:raise ValueError(f'Invalid GX cull index for {name}: {cull}')
         marker_points=[]
-        for part in range(0 if name in hidden else u(raw,o+92)):
+        for part in range(u(raw,o+92)):
             mo=u(raw,o+96+part*8)
             if not mo:continue
             mesh=base+u(raw,o+100+part*8);packed=bool(raw[mesh+3])
@@ -121,7 +122,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0):
                         local.append([*p,float(uv[0]),1-float(uv[1]),*color])
                     tris=list(topology(cmd,local))
                     if name.endswith("_bero"):marker_points.extend(v[:3] for v in local)
-                    if visible:
+                    if visible and not node_suppressed:
                         for tri in tris:
                             group=node_group if node_exterior else 0
                             vertices[(base+mo,group,cull)].extend(tri)
@@ -132,8 +133,8 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0):
             points=np.array(marker_points) if marker_points else np.array([(m@np.array([0,0,0,1]))[:3]*scale])
             markers.append({'name':name,'bounds':[points.min(0).tolist(),points.max(0).tolist()]})
         child=u(raw,o+12);sibling=u(raw,o+16)
-        if child:walk(base+child,m,visible,collidable,depth+1,node_exterior,node_group)
-        if sibling:walk(base+sibling,parent,visible if name!=scene_name else False,collidable if name!=collision_name else False,depth+1,exterior,exterior_group)
+        if child:walk(base+child,m,visible,collidable,depth+1,node_exterior,node_group,node_suppressed)
+        if sibling:walk(base+sibling,parent,visible if name!=scene_name else False,collidable if name!=collision_name else False,depth+1,exterior,exterior_group,suppressed)
     walk(base+u(raw,chunks['information']+4),np.eye(4))
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
     count=0;batches=[];bounds=[]

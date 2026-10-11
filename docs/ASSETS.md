@@ -136,3 +136,18 @@ Independently written map_event_inventory.py resolves original REL local/DOL
 relocations, uses externally supplied symbol names/ranges, and inventories the
 original init command stream to ignored local-assets/map-init-events.json.
 It does not execute scripts or evaluate story conditions.
+
+Station road-entry conversion now recursively suppresses gondora_2 and hako_1.
+Original gor_04_init_evt has IF_STR_EQUAL(entry, hikousen_return) at0x604d0,
+ELSE at0x604e4 and END_IF at0x60518; ELSE sets group hidden bit1 at0x604e8
+and0x60500. The currently supported station entry is s_bero, so ELSE applies.
+Both groups are hierarchy-only owners; their314 child triangles are omitted,
+leaving41,084 triangles/54 batches. Original collision is unchanged.
+
+inspect_dol_function.py creates inspection-only ELF files from named functions
+in the read-only US ISO, using external US symbol ranges and llvm-objdump.
+No original executable code is run or linked into the native game. Original
+function bytes/disassemblies stay ignored in artifacts/reference. Primary
+reference evt_cmd.h was read from jdaster64/ttyd-tot for string conditional
+opcodes; doldecomp/ttyd mapdrv sources inspected but do not implement these
+flag functions. Semantics below derive from the user's original DOL bytes.

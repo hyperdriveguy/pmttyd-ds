@@ -454,9 +454,9 @@ behavior; doors/pipes/interior connections with event conditions; original
 English story/message playback, full character animation and original SFX.
 The full playable-game objective remains active.
 
-Restart verification completed: updated station script left room4/HP7 checkpoint;
+Restart verification completed: updated station script left room 4/HP 7 checkpoint;
 second invocation without fixture or save reset loaded station, completed two
-station->west->station round trips and exited with room4/HP7 saved. Both scripts
+station->west->station round trips and exited with room 4/HP 7 saved. Both scripts
 returned exit0. Physical hardware, train travel, story conditions and original
 station event/visibility fidelity remain unverified.
 
@@ -587,3 +587,56 @@ Next: interpret original map flag/animation-call semantics and branch conditions
 export runtime node/material bindings, enable proven ambient tracks, and repair
 train scene visibility. Continue original camera/door/pipe/interior events and
 English story/dialogue, SFX and measured combat. Full playable objective active.
+
+## Overworld continuation: source-derived station visibility
+
+Added read-only DOL function inspection with external US symbols and llvm-objdump
+to resolve map visibility semantics from actual original bytes. Original
+evt_mapobj_flag_onoff 0x80038468: selector0 chooses object flags, selector1 group
+flags; onoff0 calls Off, nonzero On. mapGrpFlagOff 0x8001ecb8 calls mapFlgOff
+0x8001eee8 recursively over group descendants, leaving owner siblings alone.
+mapDisp 0x80024b08 skips nodes with bit0x4000, or flag 0x1 without flag 0x80.
+Bit2 gates clipping calculations at 0x80024c54; when clear, branch to0x8002510c
+still reaches rendering. Therefore train_2's unconditional bit2 clear is NOT
+a hide instruction. Earlier possible train-visibility interpretation is ruled
+out; do not suppress train_2 based on that call.
+
+Verified opcode identities against primary evt_cmd.h: 12 IF_STR_EQUAL,32 ELSE,
+33 END_IF. Original station init branch 0x604d0 compares entername with
+hikousen_return; ELSE 0x604e4 sets group hidden flag 0x1 on gondora_2/hako_1.
+Current station road arrives s_bero, so this branch applies. Implemented those
+original visibility defaults for the packaged ordinary-road slice. Converter
+now suppresses descendants: both group owners have zero own parts, so prior
+leaf-only hiding could not implement this rule. Station now 41,084 triangles
+(314 fewer), 54 batches; collision and texture inventory unchanged. Remaining
+locomotive appearance has not been corrected by this rule or compared with
+Dolphin station footage; original camera/lighting/transforms still need evidence.
+
+`make test` passed core plus 21 Python tests; `make -j2 all` passed.
+`python3 tools/verify_map_visibility.py` passed exact 314-triangle descendant
+suppression and unchanged collision/textures. `build-host/core_tests --rooms`
+passed all 8 arrivals and 18,315 collision probes. Original animation verifier
+still passes 63 material/54 mesh samples and door/water/neon previews.
+Azahar station road result recorded below after terminal completion.
+
+Reproduce source inspection (requires ignored public US symbol CSV):
+```sh
+python3 tools/inspect_dol_function.py evt_mapobj_flag_onoff --symbols artifacts/reference/us_symbols.csv --output artifacts/reference/evt-map-flags.elf
+python3 tools/inspect_dol_function.py mapGrpFlagOff --symbols artifacts/reference/us_symbols.csv --output artifacts/reference/group-flags.elf
+python3 tools/inspect_dol_function.py mapDisp --symbols artifacts/reference/us_symbols.csv --output artifacts/reference/map-display.elf
+python3 tools/verify_map_visibility.py
+```
+Primary opcode reference:
+https://github.com/jdaster64/ttyd-tot/blob/main/ttyd-tools/rel/include/evt_cmd.h
+No original/DOL/decomp executable implementation imported into runtime.
+Next: preserve runtime scene nodes and bindings, prove ambient-animation
+activation/loop semantics, original camera framing, and expand door/pipe/interior
+event conditions. Build-time station subset must be replaced with dynamic
+visibility when implementing hikousen_return. Original story/English messages,
+SFX, measured combat and hardware acceptance remain incomplete; full goal active.
+
+Final native check: station road script returned exit0, completed two reciprocal
+round trips and final station entry; saved room 4/HP 7 verified. Reviewed
+road-station-arrival-0.png: Mario entrance and full bottom status menu visible,
+reported 60 fps. No claim that the remaining locomotive appearance or original
+station story/event behavior is accepted.

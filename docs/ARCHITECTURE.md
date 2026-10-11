@@ -95,3 +95,12 @@ uses each original channel). Original keyframes and centers are authoritative;
 loop/rate/activation remain event work. map_event_inventory.py preserves command
 opcodes/order and operand relocation provenance, without flattening branches into
 a default scene state. It requires the separately obtained US symbol table.
+
+Offline hidden-node selection now suppresses visual descendants recursively,
+without leaking to owner siblings or changing separate collision geometry.
+Station pack uses the original road-entry visibility branch (gondora_2/hako_1
+hidden); future hikousen_return support must retain/restore those geometry
+groups at runtime instead of treating this build-time subset as universal.
+Original map flag2 is not a hidden flag: mapDisp branches around clipping work
+when it is clear. Native renderer currently has no analogous per-node frustum
+clipping, so clearing this bit requires no additional mesh suppression.

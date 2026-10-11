@@ -63,7 +63,10 @@ def main():
     rooms={'gor_01':summary}
     for room in ['gor_00','gor_02','gor_03','gor_04']:
         room_model=asset(f'm/{room}/d',room+'.d');room_tpl=asset(f'm/{room}/t',room+'.tpl')
-        info=convert(room_model,WORK/room);rooms[room]=info
+        # Original gor_04 init ELSE for entry != hikousen_return hides these groups.
+        # Only ordinary road entries are currently implemented for this room.
+        hidden=('gondora_2','hako_1') if room=='gor_04' else ()
+        info=convert(room_model,WORK/room,hidden=hidden);rooms[room]=info
         for ext in ['vertices','batches','walls','ground']:shutil.copyfile(WORK/room/f'map.{ext}',OUTPUT/f'{room}.{ext}')
         for index,name in enumerate(info['textures']):
             path=WORK/room/f'texture-{index}.png';convert_tpl(room_tpl,path,index)
