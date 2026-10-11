@@ -362,3 +362,59 @@ final native rebuild includes GPU synchronization before partial-load cleanup;
 normal east persistence succeeded afterward. No GPU failure was deliberately
 injected. All reported source changes and reproducible fixture scripts are
 recorded in the incremental commit for this update.
+
+## Overworld continuation: exterior-wall cutaways
+
+Implemented rendering cutaways for original exterior-wall S_gai_kabe scene
+subtrees. Walls keep their original geometry/materials/textures; the converter
+separates wall owners into batches, including inherited nested drawable pieces.
+Runtime builds bounding boxes, probes camera-to-Mario foot/head and Goombella
+body segments against original triangles, and skips only obstructing wall
+groups. Eight simulation ticks of hold reduce toggling when a probe leaves an
+edge. Ground, buildings, other props and collision are not removed by this
+mechanism. Battle uses its normal room rendering. This is a handheld visibility
+adaptation, not a measured reconstruction of original event-controlled cutaways.
+Some caps or decorative pieces in separate original nodes may still require
+original visibility rules; interior roofs/props are outside this classification.
+
+Final packs retain original triangle counts: plaza 40,714, harbor 22,922,
+east 33,444, west 34,885. Batch counts are now 104/78/98/115, with
+26/6/14/13 tagged wall groups respectively. Data is recorded in manifest.json.
+New portable visibility helpers use finite, two-sided segment/triangle tests
+and slab bounds tests. Core scenarios cover winding, misses, behind-camera or
+beyond-actor geometry, endpoint contact, parallel/degenerate triangles and
+invalid bounds/NaNs. `make test` passed core scenarios and 17 Python tests;
+`build-host/core_tests --rooms` passed six arrivals and 14,652 collision probes.
+`make -j2 all` rebuilt the packs and native .3dsx.
+
+Azahar fresh plaza boot was reviewed: Mario visible at the default position
+previously obscured by the front wall, while nonblocking walls remain. Field
+visibility sequence captured start, front movement, jump, left and rear movement;
+reviewed front capture with Mario and partner visible and reported 60 fps.
+Those movement captures are manual visual evidence, not pixel assertions.
+The full existing encounter harness sequence reached victory at HP6 and returned
+to the plaza; reviewed battle-select and battle-turn-5 captures at the corrected
+shared character scale. West road script completed two reciprocal round trips,
+asserting saved room IDs and exercising cutaway metadata after room streaming.
+No hardware benchmark or original-story/mechanics acceptance claim.
+
+Removed the leftover authored victory narrative line (plaza safe) in favor of
+an explicit development-encounter notice. Partner display is a neutral status
+label. Battle/victory/defeat now consistently display the battle-stage label.
+Original English dialogue playback and story sequencing remain unfinished.
+
+Reproduce:
+```sh
+python3 tools/emulator_smoke.py --fresh-save --seconds 4 --input-script tests/azahar_visibility.py
+python3 tools/emulator_smoke.py --fresh-save --seconds 4 --input-script tests/azahar_walkthrough.py
+python3 tools/road_fixtures.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/west-road.bin --seconds 4 --input-script tests/azahar_roads.py
+```
+
+Next: reproduce original map initialization visibility from REL event records
+(including apparent helper/trigger geometry now visible near front openings),
+original camera rails, and doors/pipes with their event conditions. Map helper
+geometry should not be broadly hidden based only on appearance. Resolve gor_04
+and interior links from original records; retain atomic room acceptance.
+Original character animations, SFX, English dialogue/story, battle observations
+and physical hardware acceptance are still required. The full goal remains active.

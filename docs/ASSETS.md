@@ -78,3 +78,14 @@ Wall deduplication includes the original height interval in addition to X/Z,
 so stacked surfaces do not overwrite one another. Floor triangles also supply
 per-room footprint bounds for touch-map scaling; runtime uses a spatial index
 without modifying original geometry.
+
+Map batches now reserve bits 8+ of their layer word for an exterior-wall
+cutaway group ID (0 means ordinary geometry). Original layer remains in the
+low byte. Group owners are listed as cutaway_nodes in the manifest; S_gai_kabe
+subtrees provide the classification, and drawable descendants inherit an
+already selected owner. Geometry positions, UVs, colors and textures remain
+original. Group-based batching increases draw calls without duplicating triangles.
+This classification is a rendering adaptation, not recovered original visibility
+event rules. The upstream viewer's runtime flag handling was inspected at
+https://github.com/magcius/noclip.website/blob/master/src/PaperMarioTTYD/render.ts
+for further visibility/event work; no code from that file was copied here.

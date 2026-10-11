@@ -62,11 +62,15 @@ def convert(path,output,scale=.1,hidden=()):
         if samplers>1:warnings.append({'material':name,'samplers':samplers,'limitation':'Only texture zero currently rendered'})
         materials[o]={'name':name,'color':color,'color_source':raw[o+8],'layer':raw[o+10],'texture':tid,'uv':uvmatrix,'wrap':wrap}
     info=chunks['information'];scene_name=string(base+u(raw,info+8));collision_name=string(base+u(raw,info+12))
-    vertices=defaultdict(list);nodes=[];collision=[];markers=[]
-    def walk(o,parent,visible=False,collidable=False,depth=0):
+    vertices=defaultdict(list);nodes=[];collision=[];markers=[];cutaway_nodes={}
+    def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0):
         if depth>100:raise ValueError('Invalid map graph')
         name=string(base+u(raw,o));visible=visible or name==scene_name;collidable=collidable or name==collision_name
         values=struct.unpack_from('>9f',raw,o+24);m=parent@trans(values[6:9])@rotate(values[3:6])@np.diag([*values[:3],1])
+        node_exterior=exterior or name.startswith('S_gai_kabe')
+        node_group=exterior_group
+        if node_exterior and not node_group and u(raw,o+92):
+            node_group=o;cutaway_nodes[node_group]=name
         nodes.append(name)
         marker_points=[]
         for part in range(0 if name in hidden else u(raw,o+92)):
@@ -101,25 +105,28 @@ def convert(path,output,scale=.1,hidden=()):
                     tris=list(topology(cmd,local))
                     if name.endswith("_bero"):marker_points.extend(v[:3] for v in local)
                     if visible:
-                        for tri in tris:vertices[base+mo].extend(tri)
+                        for tri in tris:
+                            group=node_group if node_exterior else 0
+                            vertices[(base+mo,group)].extend(tri)
                     elif collidable:
                         for tri in tris:collision.append([v[:3] for v in tri])
         if name.endswith('_bero'):
             points=np.array(marker_points) if marker_points else np.array([(m@np.array([0,0,0,1]))[:3]*scale])
             markers.append({'name':name,'bounds':[points.min(0).tolist(),points.max(0).tolist()]})
         child=u(raw,o+12);sibling=u(raw,o+16)
-        if child:walk(base+child,m,visible,collidable,depth+1)
-        if sibling:walk(base+sibling,parent,visible if name!=scene_name else False,collidable if name!=collision_name else False,depth+1)
+        if child:walk(base+child,m,visible,collidable,depth+1,node_exterior,node_group)
+        if sibling:walk(base+sibling,parent,visible if name!=scene_name else False,collidable if name!=collision_name else False,depth+1,exterior,exterior_group)
     walk(base+u(raw,chunks['information']+4),np.eye(4))
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
     count=0;batches=[];bounds=[]
+    cutaway_ids={node:n+1 for n,node in enumerate(sorted(cutaway_nodes))}
     with (output/'map.vertices').open('wb') as out:
-        for mo in sorted(vertices,key=lambda x:materials[x]['layer']):
-            v=vertices[mo];mat=materials[mo]
+        for mo,group in sorted(vertices,key=lambda x:materials[x[0]]['layer']):
+            v=vertices[(mo,group)];mat=materials[mo]
             for row in v:
                 if mat['texture']<0:row[3]=496/512;row[4]=1-240/256
                 out.write(struct.pack('<9f',*row));bounds.append(row[:3])
-            batches.append((count,len(v),mat['texture'],mat['layer'],*mat['wrap']));count+=len(v)
+            batches.append((count,len(v),mat['texture'],mat['layer']|(cutaway_ids.get(group,0)<<8),*mat['wrap']));count+=len(v)
     with (output/'map.batches').open('wb') as out:
         out.write(struct.pack('<II',len(batches),len(textures)))
         for b in batches:out.write(struct.pack('<IIiIII',*b))
@@ -138,7 +145,7 @@ def convert(path,output,scale=.1,hidden=()):
         for tri in ground:out.write(struct.pack('<9f',*(v for point in tri for v in point)))
     summary={'source':str(path),'scale':scale,'vertices':count,'triangles':count//3,'batches':len(batches),'textures':textures,
              'bounds':[np.min(bounds,axis=0).tolist(),np.max(bounds,axis=0).tolist()],
-             'exit_markers':markers,'limitations':warnings,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}
+             'cutaway_nodes':[{'id':cutaway_ids[o],'name':name} for o,name in sorted(cutaway_nodes.items())],'exit_markers':markers,'limitations':warnings,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}
     (output/'map-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     (output/'collision.json').write_text(json.dumps(collision))
     return summary

@@ -1,5 +1,6 @@
 #pragma once
 #include "game.hpp"
+#include "visibility.hpp"
 #include <3ds.h>
 #include <citro2d.h>
 #include <citro3d.h>
@@ -27,8 +28,10 @@ private:
     C2D_TextBuf textBuffer=nullptr;
     struct MapBatch { uint32_t start,count; int32_t texture; uint32_t layer,wrapS,wrapT; };
     struct Texture { C3D_Tex texture{}; Tex3DS_Texture imported=nullptr; };
+    struct Occluder {Bounds3 bounds{};std::vector<uint32_t> batches;uint64_t hiddenUntil=0;bool hidden=false;};
     struct Room {
         std::vector<MapBatch> batches;
+        std::vector<Occluder> occluders;
         std::vector<Texture> textures;
         Vertex* vertices=nullptr;
         uint32_t vertexCount=0;
@@ -37,7 +40,8 @@ private:
     Texture sky;
     bool loadMap(const char* name,Room& room);
     void freeRoom(Room& room);
-    void drawMap(bool battle);
+    void drawMap(bool battle,const Game& game);
+    void updateCutaways(Room& room,const Game& game);
     bool c3dReady=false,c2dReady=false,programReady=false,atlasReady=false;
     void world(const Game&);
     void overlay(const Game&);

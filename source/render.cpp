@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <limits>
 namespace ttyd {
 namespace {
 constexpr int MaxVertices=12000;
@@ -61,6 +62,22 @@ bool Renderer::loadMap(const char* name,Room& room) {
     room.vertexCount=bytes/sizeof(Vertex);room.vertices=(Vertex*)linearAlloc(bytes);
     ok=room.vertices && std::fread(room.vertices,1,bytes,f)==size_t(bytes);std::fclose(f);if(!ok)return false;
     for(auto b:room.batches) if(b.start>room.vertexCount || b.count>room.vertexCount-b.start || b.texture<-1 || b.texture>=int32_t(textureCount))return false;
+    uint32_t groups=0;
+    for(auto batch:room.batches) {if(batch.count%3 || (batch.layer>>8)>1024)return false;groups=std::max(groups,batch.layer>>8);}
+    room.occluders.resize(groups+1);
+    for(auto& occluder:room.occluders) {
+        float hi=std::numeric_limits<float>::max();occluder.bounds={{hi,hi,hi},{-hi,-hi,-hi}};
+    }
+    for(uint32_t n=0;n<batchCount;++n) {
+        auto batch=room.batches[n];uint32_t group=batch.layer>>8;if(!group)continue;
+        auto& occluder=room.occluders[group];occluder.batches.push_back(n);
+        for(uint32_t k=batch.start;k<batch.start+batch.count;++k) {
+            auto v=room.vertices[k];auto& b=occluder.bounds;
+            b.min.x=std::min(b.min.x,v.x);b.max.x=std::max(b.max.x,v.x);
+            b.min.y=std::min(b.min.y,v.y);b.max.y=std::max(b.max.y,v.y);
+            b.min.z=std::min(b.min.z,v.z);b.max.z=std::max(b.max.z,v.z);
+        }
+    }
     for(uint32_t n=0;n<textureCount;++n) {
         std::snprintf(path,sizeof(path),"romfs:/%s-%lu.t3x",name,(unsigned long)n);
         auto& slot=room.textures[n];
@@ -82,15 +99,42 @@ bool Renderer::changeRoom(uint32_t room) {
     if(!loadMap(name,next)) {C3D_FrameSync();freeRoom(next);return false;}
     C3D_FrameSync();freeRoom(plaza);plaza=std::move(next);return true;
 }
-void Renderer::drawMap(bool battle) {
+void Renderer::updateCutaways(Room& room,const Game& g) {
+    Point3 eye{g.cameraX,g.cameraHeight+4.8f,g.cameraZ+6.5f};
+    const Point3 targets[]={
+        {g.progress.position.x,g.groundHeight+g.jumpHeight+.12f,g.progress.position.z},
+        {g.progress.position.x,g.groundHeight+g.jumpHeight+.65f,g.progress.position.z},
+        {g.partner.x,g.partnerHeight+.3f,g.partner.z}
+    };
+    for(auto& occluder:room.occluders) {
+        bool blocked=false;
+        for(auto target:targets) {
+            if(blocked || !segmentHitsBounds(eye,target,occluder.bounds))continue;
+            for(auto n:occluder.batches) {
+                auto batch=room.batches[n];
+                for(uint32_t k=batch.start;k<batch.start+batch.count;k+=3) {
+                    auto a=room.vertices[k],b=room.vertices[k+1],c=room.vertices[k+2];
+                    if(segmentHitsTriangle(eye,target,{a.x,a.y,a.z},{b.x,b.y,b.z},{c.x,c.y,c.z})) {blocked=true;break;}
+                }
+                if(blocked)break;
+            }
+        }
+        if(blocked)occluder.hiddenUntil=g.ticks+8;
+        occluder.hidden=blocked || g.ticks<occluder.hiddenUntil;
+    }
+}
+void Renderer::drawMap(bool battle,const Game& game) {
     auto& room=battle?stage:plaza;
+    if(!battle)updateCutaways(room,game);
     auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,room.vertices,sizeof(Vertex),3,0x210);
     const GPU_TEXTURE_WRAP_PARAM wraps[]={GPU_CLAMP_TO_EDGE,GPU_REPEAT,GPU_MIRRORED_REPEAT};
     for(auto batch:room.batches) {
+        uint32_t group=batch.layer>>8;
+        if(!battle && group && room.occluders[group].hidden)continue;
         C3D_Tex* texture=batch.texture<0?&atlas:&room.textures[batch.texture].texture;
         C3D_TexSetWrap(texture,wraps[std::min<uint32_t>(batch.wrapS,2)],wraps[std::min<uint32_t>(batch.wrapT,2)]);
         C3D_TexBind(0,texture);
-        C3D_DepthTest(true,GPU_GREATER,batch.layer==2?GPU_WRITE_COLOR:GPU_WRITE_ALL);
+        C3D_DepthTest(true,GPU_GREATER,(batch.layer&255)==2?GPU_WRITE_COLOR:GPU_WRITE_ALL);
         C3D_DrawArrays(GPU_TRIANGLES,batch.start,batch.count);
     }
     C3D_DepthTest(true,GPU_GREATER,GPU_WRITE_ALL);
@@ -198,7 +242,7 @@ void Renderer::world(const Game& g) {
     C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);
     C3D_TexBind(0,&sky.texture);C3D_DrawArrays(GPU_TRIANGLES,0,6);
     C3D_DepthTest(true,GPU_GREATER,GPU_WRITE_ALL);
-    drawMap(battle);
+    drawMap(battle,g);
     buffers=C3D_GetBufInfo();
     BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
     C3D_TexBind(0,&atlas);
@@ -220,7 +264,7 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
 void Renderer::overlay(const Game& g) {
     panel(8,7,174,28,Paper);
     char line[128];std::snprintf(line,sizeof(line),"Mario  HP %d/10",g.progress.hp);text(line,16,12,.54f,Ink);
-    text(g.scene==Scene::Battle?"BATTLE STAGE":roomName(g.progress.room),205,12,.46f,rgb(255,246,222));
+    text((g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat)?"BATTLE STAGE":roomName(g.progress.room),205,12,.46f,rgb(255,246,222));
     if(g.scene==Scene::Dialogue) {
         panel(14,163,372,65,Paper);text(g.dialogue(),26,172,.55f,Ink);
         text("A / touch >",308,208,.4f,Ink);
@@ -238,13 +282,13 @@ void Renderer::overlay(const Game& g) {
     if(g.scene==Scene::Victory || g.scene==Scene::Defeat) {
         panel(74,87,252,64,Paper);
         text(g.scene==Scene::Victory?"VICTORY!":"TRY AGAIN",96,96,.9f,Ink);
-        text(g.scene==Scene::Victory?"The plaza is safe for now.":"A: retry   B: leave battle",92,128,.43f,Ink);
+        text(g.scene==Scene::Victory?"Development encounter complete.":"A: retry   B: leave battle",92,128,.43f,Ink);
     }
 }
 void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
     panel(6,5,308,32,Ink);text("ROGUEPORT FIELD NOTES",16,11,.59f,Paper);
     if(g.scene==Scene::Battle) {
-        text("Goombella is watching this encounter.",12,49,.44f,Ink);
+        text("Partner: Goombella",12,49,.44f,Ink);
         if(g.phase==Phase::Select) {
             text("Choose an attack",12,76,.63f,Ink);
             button("Jump",8,100,96,58,g.selection==0);

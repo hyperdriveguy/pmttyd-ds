@@ -56,3 +56,12 @@ is fully accepted and committed. Destination collision can therefore be rejected
 for bad files, an invalid arrival or failed rendering without rereading old
 files. Startup save restoration uses the same mechanism. GPU synchronization
 also precedes disposal of partially loaded room rendering on failure.
+
+Exterior-wall cutaways use original scene hierarchy under S_gai_kabe nodes.
+The converter batches these meshes by wall group while keeping other geometry
+batched by material. High bits of batch.layer carry the group; the low byte
+remains the original layer. Nested drawable wall pieces inherit an ancestor
+group. Renderer builds per-group bounds and tests camera-to-character segments
+against actual original triangles. Obstructing groups are skipped; an eight-tick
+hold prevents immediate toggling. Collision is unaffected. Battle geometry does
+not use this adaptation. Original event-controlled visibility remains unfinished.

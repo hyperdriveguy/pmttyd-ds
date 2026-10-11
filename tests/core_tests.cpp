@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "save.hpp"
+#include "visibility.hpp"
 #include <cmath>
 #include <algorithm>
 #include <cstdio>
@@ -116,6 +117,27 @@ void groundImport() {
     CHECK(g.progress.position.x>-2.3f);CHECK(g.groundHeight>.2f);
     clearCollision();std::remove(path);
 }
+void visibility() {
+    Point3 eye{0,1,4},actor{0,1,0};
+    Point3 a{-1,0,2},b{1,0,2},c{0,2,2};
+    CHECK(segmentHitsTriangle(eye,actor,a,b,c));CHECK(segmentHitsTriangle(eye,actor,c,b,a));
+    CHECK(segmentHitsTriangle(actor,eye,a,b,c));
+    CHECK(!segmentHitsTriangle({3,1,4},{3,1,0},a,b,c));
+    CHECK(!segmentHitsTriangle(eye,{0,1,3},a,b,c));
+    CHECK(!segmentHitsTriangle({0,1,2},actor,a,b,c)); // At-camera contact.
+    CHECK(!segmentHitsTriangle(eye,{0,1,2},a,b,c)); // At-actor contact.
+    CHECK(!segmentHitsTriangle({0,1,2},{1,1,2},a,b,c)); // Parallel.
+    CHECK(!segmentHitsTriangle(eye,actor,a,a,a));
+    Bounds3 bounds{{-1,0,2},{1,2,2}};
+    CHECK(segmentHitsBounds(eye,actor,bounds));CHECK(segmentHitsBounds(actor,eye,bounds));
+    CHECK(!segmentHitsBounds(eye,{0,1,3},bounds));
+    CHECK(!segmentHitsBounds({3,1,4},{3,1,0},bounds));
+    CHECK(segmentHitsBounds({0,1,2},{0,1,2},bounds));
+    CHECK(!segmentHitsBounds(eye,actor,{{1,2,3},{0,1,2}}));
+    auto nan=std::numeric_limits<float>::quiet_NaN();
+    CHECK(!segmentHitsBounds({nan,1,4},actor,bounds));
+    CHECK(!segmentHitsTriangle({nan,1,4},actor,a,b,c));
+}
 void collisionRollback() {
     char directory[]="/tmp/ttyd-transition-XXXXXX";CHECK(mkdtemp(directory));
     std::string source=std::string(directory)+"/source",target=std::string(directory)+"/target";
@@ -207,6 +229,6 @@ void originalRooms() {
     clearCollision();
 }
 int main(int argc,char**) {
-    try {if(argc>1) {indexedOriginalCollision();originalRooms();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();std::puts("Core scenarios passed");}
+    try {if(argc>1) {indexedOriginalCollision();originalRooms();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();visibility();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }
