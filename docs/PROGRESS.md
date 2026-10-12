@@ -2610,3 +2610,29 @@ services; state-byte/flag producers and outer turn progression, conclusion/
 rewards and actual death/revival scripts; motion/float/pose services. Continue
 all systems before complete-game requirements. Objective remains active and
 incomplete; original/native trace/rendering comparisons still required.
+
+## 2026-10-12 — Complete local btlseqMove state map
+
+Previous turn progressed withce9b8a0 phase tables/consumption regions. Added
+BATTLE_MOVE_CONTROLLER.md: all15 local states, immediate loop versus explicit
+fallthrough versus outer-call return, optional Majinai event, selector1 fan-out,
+selector0 serial phase events, bookkeeping masks/typed clears, actor handoff,
+kind222 command flags, post-action conclusion/phase-end path, audience and dual
+announcement drain. Recovered SetTotalHitDamage's signed16-to-word write. Phase
+table contract and index now link complete local move coverage. Full action
+controller/services/outer cadence remain open; no complete battle claim.
+
+Validation:320 instruction anchors and prior table/constant/script checks passed
+against read-only US ISO. Evidence135 function fingerprints reproduced exactly.
+Behavior links resolve; git diff --check passed. make test passed core plus36
+Python tests; make all exited0, no rebuild. Workspace started clean; only
+research/provenance/tool metadata edited. Original disassembly/report files
+remain ignored. No original execution/emulator run or profile/save changes.
+ASSETS.md updated. Static checks do not prove callee semantics or dynamic/native
+scheduler equivalence.
+
+Next: complete btlseqAct, command/menu/attack and Majinai services/script,
+audience/announcement internals and external channel/flag writers, outer turn
+progression, conclusion/rewards and death/revival scripts; motion/float/pose
+services. Continue all-system register before complete-game requirements.
+Objective active/incomplete; original/native execution comparisons required.

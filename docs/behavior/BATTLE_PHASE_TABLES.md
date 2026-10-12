@@ -5,7 +5,8 @@ and data. See [baseline](../ORIGINAL_BEHAVIOR.md), [move counts](BATTLE_MOVE_COU
 and [event barriers](BATTLE_WAITS_AND_CONCLUSION.md). No original execution or
 Switch comparison was performed. Extracts/disassembly remain ignored.
 This covers phase table helpers, phase wrapper, and selected actor-selection/
-consumption regions. The full btlseqMove and btlseqAct controllers remain open.
+consumption regions. The complete local btlseqMove map is in
+[move controller](BATTLE_MOVE_CONTROLLER.md); full btlseqAct remains open.
 
 ## Actor table construction (B)
 
@@ -81,8 +82,8 @@ btlseqPhase at0x8011c2b4,size0x9c reads channel4:
 btlseqMove uses channel5−0x05000000 as an unsigned index0..14 through15 words
 at0x80363c8c. Its local loop at0x8011c298 redispatches immediately only when
 its transition flag is nonzero; otherwise it exits. State0 invokes phase-first
-processing, advances channel5 and requests immediate redispatch. Other state's
-complete control flow and actor-event interaction remain a separate recovery.
+processing, advances channel5 and requests immediate redispatch. The other states and actor-event interaction are specified in the
+[move-controller contract](BATTLE_MOVE_CONTROLLER.md).
 The table is fingerprinted; its hash identifies bytes, not semantic coverage.
 
 ## Actor selection region (`0x8011bf34`–`0x8011bfec`, B)

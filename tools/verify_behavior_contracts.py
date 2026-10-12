@@ -13,6 +13,17 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'move_controller': {
+        0x80127434: '7c800734',
+        0x8011bc4c: '2800000e', 0x8011bcfc: '98038ff9',
+        0x8011bd24: '90030160', 0x8011be34: '7c9d012e',
+        0x8011be58: '3bc00001', 0x8011befc: '7c00f838',
+        0x8011bf00: '9003027c', 0x8011c02c: '9be30020',
+        0x8011c06c: '60a50600', 0x8011c094: '540005ea',
+        0x8011c114: '540005a8', 0x8011c184: '54000524',
+        0x8011c208: '5460063f', 0x8011c244: '7c60e379',
+        0x8011c29c: '4082f99c',
+    },
     'phase_tables_and_consumption': {
         0x8011b13c: '40820014', 0x8011b168: '801d0104',
         0x8011b184: '7cbf212e', 0x8011b010: '40810014',

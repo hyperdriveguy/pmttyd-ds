@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 134 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 304 instruction anchors plus those
+now fingerprints 135 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 320 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -55,8 +55,8 @@ Move-count research adds six function fingerprints and a direct DOL reset-call
 inventory, excluding indirect/REL/script callers. Signed-byte narrowing and
 status predicate boundaries are documented explicitly.
 Phase actor/event table research adds eight function fingerprints, the15-entry
-move dispatch-table hash and two position-sort constants. Complete move/action
-controller coverage is explicitly unfinished despite their fingerprints.
+move dispatch-table hash and two position-sort constants. The complete local move-controller state map is now specified; action-controller
+coverage remains partial despite its fingerprint.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,

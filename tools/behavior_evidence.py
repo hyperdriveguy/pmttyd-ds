@@ -31,6 +31,7 @@ FUNCTIONS = (
     'BattleWaitAllActiveEvtEnd_NoBgSetEndWait', 'BattleCheckConcluded',
     'BattleAfterReactionMain', 'BattleAfterReactionRelease',
     'pouchRemoveItem', 'pouchRemoveItemIndex', 'btlevtcmd_ConsumeItemReserve',
+    'BtlUnit_SetTotalHitDamage',
     'btlseqPhase', 'btlseqMove', 'btlseqAct', 'btlseqPhaseFirstProcess',
     'battleSortPhaseMoveTable', 'battleMakePhaseEvtTable',
     'BattlePhaseEndCheck', 'BtlUnit_GetHomePos',
