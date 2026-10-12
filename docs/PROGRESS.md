@@ -1692,3 +1692,45 @@ position/elevation and HP7. Command: `python3 tools/emulator_smoke.py --fresh-sa
 --save-fixture artifacts/fixtures/ceiling-road.bin --seconds 4 --input-script
 tests/azahar_ceiling.py`. This verifies repeat/save stability, not measured
 Dolphin action timing or source camera fidelity.
+
+## 2026-10-12 — Correct falling overhead phase and takeoff clamp
+
+Previous goal turn made verified progress with ascent wall-query orderc4b2fc6.
+This step moves falling head checks before fall derivative integration/search,
+matching original move→overhead→marioFall order. A falling bump installs source
+normal fall derivatives, then performs their first update in the same tick.
+Head ray extension is now separate from actual velocity: falling uses source
+10engine extension, preserves actual velocity contact cutoff. Falling bumps
+bypass saved takeoff-Y minimum; ascent retains it. Apex-to-fall head query also
+uses the non-ascent extension. This fixes missed pre-gravity contacts and upward
+teleports when bumping below the takeoff floor.
+
+Validation: `make test` passed core and29 Python tests. New host cases insert
+overhead geometry at descending head height and assert clamp followed by-.003
+normal fall movement; falling from height1 then bumping below it stays below
+takeoff and lands on lower floor. Actual fast-fall cutoff still rejects contact
+with explicit positive ray extension. Existing low/sloped/one-sided/two-sided
+ceiling, ascent low-wall, lower/higher platform and invalid-pack tests pass.
+`build-host/core_tests --rooms` passed all8 road arrivals,18,315 wall-index probes
+and original water/void/ceiling checks. `make -j2 all` built ttyd-2ds.3dsx;
+`python3 tools/verify_actor_collision.py` passed source move/head/fall calls,
+ray-extension load, fall-flag takeoff bypass and fall-derivative instruction
+sites. Source was read-only. No extracted originals/packs/captures enter Git.
+
+Native ceiling repeat exited0:5 held jumps with landed position/elevation/HP7
+save. Native water script exited0: partial checkpoint protection, original
+return and HP7→6. No native build overlapped emulator execution. Commands:
+```sh
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/ceiling-road.bin --seconds 4 --input-script tests/azahar_ceiling.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_water.py
+```
+These are repeat/recovery checks, not matched Dolphin timing/proportion proof.
+
+Next: source marioChkGnd grounded support/head behavior and marioSearchGround
+normal slope/attribute acceptance; replace generic.11 landing footprint snap
+and legacy grounded.25/.5 band only with traced branches. Preserve distinction
+between predictive marioChkLandon and marioChkGnd2 penetration checks. Floor
+face culling, horizontal push-out/sliding, dynamic support and original contact
+block/SFX events remain incomplete. Original dialogue/story, music/SFX event
+fidelity, animation, camera, interiors and wider content still need work. Full
+goal active; hardware acceptance remains unverified.

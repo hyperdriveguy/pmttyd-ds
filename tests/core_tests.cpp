@@ -73,6 +73,22 @@ void headGeometry() {
     float maxY=0;Input held;held.jumpHeld=true;
     for(int n=0;n<40;++n){g.tick(held);maxY=std::max(maxY,g.groundHeight+g.jumpHeight);}
     CHECK(maxY<=.073f && maxY>.07f);CHECK(!g.airborne() && g.jumpHeight==0);
+    clearCollision();Game falling;falling.progress.room=2;falling.progress.position={-1,2};falling.tick(confirm());
+    float last=0;
+    for(int n=0;n<30;++n) {
+        last=falling.jumpHeight;falling.tick(held);
+        if(falling.jumpHeight<last-.01f)break;
+    }
+    const float before=falling.jumpHeight;CHECK(before>.15f && falling.airborne());
+    // Insert overhead contact at the pre-gravity head height while descending.
+    ceiling(0,1);const float roof=before+.365f;
+    {std::fstream out(path,std::ios::binary|std::ios::in|std::ios::out);
+        for(int offset:{12,24,36}){out.seekp(offset);out.write(reinterpret_cast<const char*>(&roof),4);}}
+    CHECK(loadHead(path));CHECK(!headCollision({-1,2},{1,0},before,-.1001f,root,.1f));
+    const float expected=headClampedRoot(headContactHeight(roof))-.003f;
+    falling.tick(held);CHECK(std::fabs(falling.jumpHeight-expected)<.00001f);
+    for(int n=0;n<40 && falling.airborne();++n)falling.tick({});
+    CHECK(!falling.airborne() && falling.jumpHeight==0);
     clearCollision();std::remove(path);
 }
 void movement() {
@@ -306,6 +322,24 @@ void unequalFloorMotion() {
     Input save;save.menuConfirm=true;fall.tick(save);CHECK(!fall.saveRequested);
     for(int n=0;n<100 && fall.airborne();++n)fall.tick({});
     CHECK(!fall.airborne() && fall.groundHeight==0 && fall.groundContact.sourceNode==2);
+    Game belowTakeoff;belowTakeoff.restore(p);
+    for(int n=0;n<40 && belowTakeoff.groundHeight+belowTakeoff.jumpHeight>.85f;++n)belowTakeoff.tick(right);
+    const float rootY=belowTakeoff.groundHeight+belowTakeoff.jumpHeight;
+    CHECK(belowTakeoff.airborne() && rootY<.85f && rootY>.7f);
+    char headPath[]="/tmp/ttyd-low-fall-head-XXXXXX";int headFd=mkstemp(headPath);CHECK(headFd>=0);
+    uint32_t heads=1,attrs=0,node=999,cull=1;float roof=rootY+.365f;
+    float tri[]={-2,roof,1,3,roof,1,-2,roof,4};
+    CHECK(write(headFd,"HEAD",4)==4);CHECK(write(headFd,&heads,4)==4);CHECK(write(headFd,tri,36)==36);
+    CHECK(write(headFd,&attrs,4)==4);CHECK(write(headFd,&node,4)==4);CHECK(write(headFd,&cull,4)==4);
+    close(headFd);CHECK(loadHead(headPath));belowTakeoff.tick({});
+    const float expected=headClampedRoot(headContactHeight(roof))-.003f;
+    CHECK(std::fabs(belowTakeoff.groundHeight+belowTakeoff.jumpHeight-expected)<.00001f);
+    CHECK(belowTakeoff.groundHeight+belowTakeoff.jumpHeight<rootY); // No teleport to takeoff1.
+    for(int n=0;n<100 && belowTakeoff.airborne();++n)belowTakeoff.tick({});
+    CHECK(!belowTakeoff.airborne() && belowTakeoff.groundHeight==0);std::remove(headPath);
+    // Remove the injected head surface before testing unrelated higher-platform motion.
+    {std::ofstream empty(headPath,std::ios::binary);empty.write("HEAD",4);uint32_t zero=0;empty.write(reinterpret_cast<char*>(&zero),4);}
+    CHECK(loadHead(headPath));std::remove(headPath);
     // A reachable higher platform is acquired on descent, not during takeoff.
     {
         std::ofstream file(path,std::ios::binary);file.write(reinterpret_cast<char*>(&count),4);

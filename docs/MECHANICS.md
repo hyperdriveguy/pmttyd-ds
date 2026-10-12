@@ -486,3 +486,31 @@ native advanceVertical rather than original pre-gravity overhead. Exact source
 fall-search acceptance, slope/attribute branches, floor face culling and ascent
 to falling transition sequence need further work. Grounded overhead checks and
 legacy grounded stepping are unchanged. No Dolphin measurement/hardware claim.
+
+## Falling overhead phase and clamp correction (2026-10-12)
+
+Native falling now follows move, pre-gravity head check, fall derivative update,
+predictive floor selection. marioMain8005b074 calls marioChkOverhead before
+marioFall8005b078; fall derivatives begin80093b54. A falling bump clears jump
+parameters/installs the normal fall tuple before the same tick's fall update.
+The new regression inserts a ceiling at the pre-gravity head height during
+descent: source contact clamps root then normal first fall displacement is-.003
+native. Integrating before head search would miss this contact after downward
+motion. A second regression falls below a higher takeoff floor, bumps overhead,
+and confirms root stays below takeoff rather than teleporting upward.
+
+Original overhead distinguishes ray extension from velocity: when ascent flag
+is clear8008ca4c supplies10engine (.1 native) to the head query, while contact
+acceptance8008c6a8 reads actual actor velocity. Native six-argument headCollision
+uses explicit ray extension with actual-velocity cutoff preserved. Existing
+five-argument query retains extension=velocity for ascent/test callers.
+Overhead takeoff minimum is bypassed when fall flag bit14 is set
+8008cbe4/8008cbe8; native falling bumps now use ceiling clamp directly. Ascent
+retains takeoff minimum until its fall transition. Apex-to-fall ray extension
+also switches to.1 when derivatives enter falling mode. Source sites verified
+by tools/verify_actor_collision.py, not measured Dolphin behavior.
+
+Grounded head check remains absent. Grounded step band, floor slope/attribute/
+face filtering, exact special actor states, contact block events/SFX and party
+physics remain unfinished. The generic.11 floor footprint snap threshold is
+not complete source fall-search acceptance.

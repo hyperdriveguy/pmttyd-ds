@@ -231,12 +231,16 @@ bool loadHead(const char* path) {
     if(ok){head.swap(data);headIndex.swap(next);}return ok;
 }
 bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot) {
+    return headCollision(p,direction,worldY,velocity,clampedRoot,velocity);
+}
+bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot,float rayExtension) {
     const float length=std::hypot(direction.x,direction.z);
     if(!std::isfinite(p.x) || !std::isfinite(p.z) || std::fabs(p.x)>4096 || std::fabs(p.z)>4096 ||
-       !std::isfinite(worldY) || !std::isfinite(velocity) || !std::isfinite(length) || length<1e-6f || velocity<-.1f)return false;
+       !std::isfinite(worldY) || !std::isfinite(velocity) || !std::isfinite(rayExtension) ||
+       !std::isfinite(length) || length<1e-6f || velocity<-.1f)return false;
     const float x=direction.x*HeadProbeRadius/length,z=direction.z*HeadProbeRadius/length;
     const Vec2 offsets[]={{0,0},{x,z},{-z,x},{z,-x},{-x,-z}};
-    const float low=worldY+HeadBodyHeight*.5f,high=low+HeadBodyHeight+velocity;
+    const float low=worldY+HeadBodyHeight*.5f,high=low+HeadBodyHeight+rayExtension;
     for(auto offset:offsets) {
         const Vec2 ray{p.x+offset.x,p.z+offset.z};float nearest=high;bool found=false;
         for(uint32_t n:nearby(headIndex,ray)) {
@@ -365,10 +369,21 @@ void Game::advanceVertical(bool held) {
 bool Game::integrateVertical(bool held,float& previousY) {
     if(!fieldJump.airborne){jumpHeight=0;if(groundHeight<=VoidThreshold)beginVoid();return false;}
     previousY=jumpBase+fieldJump.height;
-    fieldJump.tick(held,false);
     float ceiling=0;
-    if(headCollision(progress.position,moveDirection,jumpBase+fieldJump.height,fieldJump.velocity,ceiling)) {
-        jumpBase=std::max(jumpBase,ceiling);fieldJump.beginFall();
+    if(fieldJump.falling) {
+        // Falling marioMain checks overhead before marioFall updates derivatives.
+        // Without the ascent flag, marioChkOverhead extends its ray by10 engine units.
+        if(headCollision(progress.position,moveDirection,previousY,fieldJump.velocity,ceiling,.1f)) {
+            // Source fall flag bypasses the saved takeoff-Y minimum.
+            jumpBase=ceiling;fieldJump.beginFall();previousY=ceiling;groundContact={};
+        }
+        fieldJump.tick(held,false);jumpHeight=jumpBase+fieldJump.height-groundHeight;
+        return true;
+    }
+    fieldJump.tick(held,false);
+    if(headCollision(progress.position,moveDirection,jumpBase+fieldJump.height,fieldJump.velocity,ceiling,
+                     fieldJump.falling?.1f:fieldJump.velocity)) {
+        jumpBase=fieldJump.falling?ceiling:std::max(jumpBase,ceiling);fieldJump.beginFall();
         groundContact={};jumpHeight=jumpBase-groundHeight;return false;
     }
     jumpHeight=jumpBase+fieldJump.height-groundHeight;

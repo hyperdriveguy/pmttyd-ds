@@ -76,7 +76,12 @@ def main():
                                     (0x8005b004,'4bffea75'),(0x8005b034,'480340b1')]:
             assert read(address)==bytes.fromhex(instruction),hex(address)
         assert read(0x8005b04c)==bytes.fromhex('4bffea2d')
+        assert read(0x8005b074)==bytes.fromhex('48031891')
         assert read(0x8005b078)==bytes.fromhex('48038899')
+        for address,instruction in [(0x8008ca4c,'c02294c4'),(0x8008cbe4,'5460039d'),
+                                    (0x8008cbe8,'408200b4'),(0x8008cce0,'4800744d'),
+                                    (0x80093b54,'c0430084'),(0x80093bd0,'4bffa0a1')]:
+            assert read(address)==bytes.fromhex(instruction),hex(address)
         print('Ordinary ascent: jump, overhead, move; normal falling: move before fall gravity/search')
         threshold=value(0x80420aa8,-2000);respawnOffset=value(0x80420aa4,37)
         probe=value(0x804209c0,300);rise=value(0x804209c4,10);travel=value(0x804209c8,8)
