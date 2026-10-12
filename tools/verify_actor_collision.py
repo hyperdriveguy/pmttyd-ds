@@ -38,4 +38,11 @@ def main():
                                     (0x80087910,'2c000bd1')]:
             assert read(address)==bytes.fromhex(instruction),hex(address)
         print(f'Ordinary walk/dash per tick={walk},{dash}; source stick cap={cap},dash threshold=55')
+        ascent=[value(0x80416110+4*n,v) for n,v in enumerate((8,-.84,.08,-.02))]
+        fall=[value(0x80416120+4*n,v) for n,v in enumerate((-.1,-.2,.024,-.004))]
+        release=value(0x80420a38,-.526)
+        assert read(0x80310250)==bytes.fromhex('8009421c')
+        assert read(0x8009b4dc)==bytes.fromhex('907f0048')
+        assert read(0x8009b660)==bytes.fromhex('901f0044')
+        print(f'Original ordinary jump ascent={ascent},fall={fall},release={release}')
 if __name__=='__main__':main()

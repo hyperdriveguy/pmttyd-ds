@@ -293,3 +293,31 @@ selection changes immediately; this adaptation preserves rates/threshold but is
 not the full original movement state machine. Circle Pad dead zone is still the
 existing18-unit device mapping. The source verifier now checks the speed floats
 and original load/store/threshold sites as well as collision constants.
+
+### Ordinary field jump integration
+
+US marioJumpData80416110 contains ascent(8,-.84,.08,-.02), followed at+16
+by fall(-.1,-.2,.024,-.004); fields are velocity,acceleration,jerk,jerk increment.
+SetJumpPara dispatch for ordinary state3 (80310250) selects8009421c; ordinary
+branch80094280 copies the ascent tuple. marioJump80093db0–80093dec updates
+jerk,then acceleration,then velocity; gravity divisor is1 in Rogueport.
+At rising velocity and counter>=4, released A adds-0.526 (80420a38).
+When velocity crosses zero, marioJump replaces parameters with the fall tuple
+and integrates it once on the transition tick. It adds velocity to world Y at
+80093ff0–80093ffc. Subsequent fall uses marioGetFallSpd80094098: jerk clamps
+nonpositive, terminal velocity-18 clears derivatives. Native units multiply all
+four derivative values and release increment by0.01.
+
+Portable FieldJump now follows this integration/hold rule. On static equal-height
+support, tap lands after21 updates after begin, held after27; four-tick heights
+are0.17882 and0.1946. These are source-derived native tests, not Dolphin timing
+observations. Current game still uses relative support height and simple landing
+clamp; original floor search, ceilings, dynamic support, alternate jump types,
+gravity overrides and airborne horizontal drift remain unfinished.
+Startup detail: mot_jump initializes countdown+0x48=2,phase+0x44=0 and
+increments jump counter+0x50 on the begin frame. Later calls decrement the
+countdown; expiry sets phase10 before jump counter increment. marioJump requires
+phase>=10. FieldJump begins counter1, skips the next update at counter2, and
+first integrates at counter3. Released-A reduction starts at counter4 (second
+integration), not four integrations after launch. This refines the intermediate
+22/26-tick estimates that omitted startup/counter ordering.

@@ -15,7 +15,7 @@ def run(env,capture):
     checkpoint=save.read_bytes();hp=struct.unpack_from('<I',checkpoint,16)[0]
     assert checkpoint[26]==1 and hp in (1,7)
     hold(['Right'],.5);hold(['Right','Down'],80/60);hold(['Down'],.3)
-    hold(['a'],.08);hold(['Down'],.6*(.0225/.065)) # Jump across the low dock edge.
+    hold(['a','Down'],.6*(.0225/.065)) # Move during the shorter source jump.
     capture('water-enter');hold(['x'],.08)
     assert save.read_bytes()==checkpoint,'Recovery must not save an intermediate position'
     time.sleep(1);capture('water-motion');time.sleep(6);capture('water-result')

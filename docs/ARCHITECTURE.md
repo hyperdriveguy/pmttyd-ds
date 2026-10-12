@@ -261,3 +261,12 @@ road rate remains0.025/tick, with original entry/exit distances unchanged.
 Traversal fixtures preserve established map distances by extending directional
 holds after the speed correction. These fixture-time conversions are not game
 rules. Original motion transition delay and airborne drift remain unfinished.
+
+FieldJump replaces the fixed36-tick sine-wave field jump. Portable derivative
+integration retains source ascent/fall tuples and A-release reduction. Game
+uses airborne state for repeat-jump prevention, water entry and road landing
+waits; restoration, battle start and water recovery clear the jump state.
+Both ordinary movement and queued-road waits advance the same integrator.
+Rendering continues to consume jumpHeight. Height remains relative to currently
+queried support and clamps at zero; original world-Y floor/ceiling resolution
+is the next required physics step. Battle animation remains a separate harness.

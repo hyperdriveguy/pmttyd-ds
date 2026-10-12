@@ -296,7 +296,7 @@ bool Game::beginWater() {
     if(!groundAt({target.x,target.z},target.y,floor))return false;
     target.y=floor;
     water.begin({progress.position.x,groundHeight,progress.position.z},{target.x,target.y,target.z});
-    jumpHeight=0;jumpTick=0;warpRequest=-1;saveRequested=false;return true;
+    jumpHeight=0;fieldJump={};warpRequest=-1;saveRequested=false;return true;
 }
 void Game::restore(const Progress& saved) {
     const Progress p=saved; // Caller may pass this game's own progress.
@@ -393,14 +393,13 @@ void Game::move(const Input& i) {
     cameraX+=(p.x-cameraX)*.07f;
     cameraZ+=(p.z-cameraZ)*.07f;
     cameraHeight+=(groundHeight-cameraHeight)*.07f;
-    if (jumpTick>0) { --jumpTick; jumpHeight=1.1f*std::sin(jumpTick*3.14159265f/36.f); }
-    else jumpHeight=0;
+    fieldJump.tick(i.jumpHeld);jumpHeight=fieldJump.height;
 }
 void Game::startBattle() {
     scene=Scene::Battle; phase=Phase::Select; phaseTick=0; selection=0;
     enemyHP=BattleRules::CrumpHP; actionSuccess=false; guarded=false;
     jumpAttempted=false; hammerArmed=false; guardAttempted=false;
-    jumpHeight=0; jumpTick=0;
+    jumpHeight=0; fieldJump={};
 }
 void Game::attackDone(int damage) {
     enemyHP=std::max(0,enemyHP-damage); lastDamage=damage;
@@ -473,7 +472,7 @@ void Game::tick(const Input& i) {
     if(warpRequest>=0) {
         if(size_t(warpRequest)>=roads.size()){cancelRoad();return;}
         // Original road event disables controls and waits for landing first.
-        if(jumpTick>0){--jumpTick;jumpHeight=1.1f*std::sin(jumpTick*3.14159265f/36.f);return;}
+        if(fieldJump.airborne){fieldJump.tick(i.jumpHeld);jumpHeight=fieldJump.height;return;}
         if(!departureDone && !roadMotion.active()) {
             const auto& w=roads[warpRequest];
             const auto reverse=std::find_if(roads.begin(),roads.end(),[&](const auto& r){return r.source==w.target && r.target==w.source;});
@@ -539,12 +538,12 @@ void Game::tick(const Input& i) {
     }
     move(i);
     if(warpRequest>=0)return;
-    if((groundContact.attributes&0x200) && jumpTick==0 && beginWater())return;
+    if((groundContact.attributes&0x200) && !fieldJump.airborne && beginWater())return;
     if (i.cancel) openDialogue(2);
-    else if (i.confirm && jumpTick==0) {
+    else if (i.confirm && !fieldJump.airborne) {
         if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) openDialogue(1);
         else if (progress.room==0 && near(NpcPosition)) openDialogue(0);
-        else { jumpTick=36; sound=Sound::Jump; }
+        else { fieldJump.begin(); sound=Sound::Jump; }
     }
 }
 }

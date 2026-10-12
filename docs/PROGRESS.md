@@ -1348,3 +1348,39 @@ This verifies source-trigger movement reaches existing exits; original sensor
 activation is still provisional. Final host/original-room checks exited0.
 Inspection-only marioJump and mot_jump disassemblies were prepared under
 artifacts/reference for next-session recovery; no new jump constants are claimed.
+
+## Source-derived field jump motion and hold behavior
+
+Replaced36-tick1.1-height sine jump with FieldJump derivative integration from
+ordinary US ascent/fall tuples, gravity1, counter>=4 A-release reduction,
+source apex transition and terminal fall rule. Tap/held jumps now differ;
+static-support tests land at21/27 updates after begin. Same integration advances
+queued road landing waits; restore/battle/water clear it. Rendering and airborne
+wall sampling consume the resulting jumpHeight. Battle harness motion unchanged.
+
+Validation: `make test` passed core and28 Python tests; tap/held four-tick
+heights0.17882/0.1946,21/27-update flat-support landing, all8 road landing gates,
+original water return and18,315 indexed probes passed through
+`build-host/core_tests --rooms`. `make -j2 all` built native `.3dsx`.
+`verify_actor_collision.py` extended to verify original jumpData, release
+constant and ordinary jump dispatch directly from read-only ISO.
+
+Next: recover original floor and ceiling search using world Y (current jump is
+relative to live support), edge falling, airborne horizontal drift, motion-state
+transition delays and swept wall sliding. Source-derived constants do not establish
+full original physics. Original camera/party choreography, story/English dialogue,
+SFX, interiors and broader playable content remain unfinished. Full goal active;
+hardware performance remains unverified.
+Recovered startup ordering too: mot_jump countdown2/phase0, begin counter1,
+next update waits at counter2, first integration counter3. Release reduction
+begins at counter4. This corrects intermediate timing estimates without startup.
+Final source verifier and host/original-room/build commands exited0.
+
+Final native water route exited0 on this startup-aware build:
+`python3 tools/emulator_smoke.py --fresh-save --save-fixture
+artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script
+ tests/azahar_water.py`. Preserved partial-recovery checkpoint, original return
+point and HP7→6. Initial test's separate A pulse followed by a0.3-second pause
+let the shorter jump land before movement; capture showed Mario still on dock,
+HP7. Test now presses A+Down together during the jump. No game timing was
+extended to fit the old test. Updated tests and source evidence committed together.

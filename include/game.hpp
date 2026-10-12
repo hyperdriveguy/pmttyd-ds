@@ -7,6 +7,7 @@
 #include "water_recovery.hpp"
 #include "transition_fade.hpp"
 #include "road_motion.hpp"
+#include "field_jump.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -94,7 +95,8 @@ public:
     bool near(Vec2 point, float distance = 1.5f) const;
 private:
     std::vector<Vec2> followerPath;
-    int jumpTick = 0, turnTick = 0;
+    FieldJump fieldJump;
+    int turnTick = 0;
     bool jumpAttempted = false, hammerArmed = false, guardAttempted = false;
     int dialoguePages() const;
     void move(const Input&);

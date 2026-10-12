@@ -23,6 +23,12 @@ void attack(Game& g,bool success) {
     CHECK(g.phase==Phase::Impact);
 }
 void movement() {
+    FieldJump tapped;tapped.begin();for(int n=0;n<20;++n)tapped.tick(false);
+    CHECK(tapped.airborne);tapped.tick(false);CHECK(!tapped.airborne);
+    FieldJump held;held.begin();for(int n=0;n<4;++n)held.tick(true);
+    CHECK(std::fabs(held.height-.1946f)<.00001f);
+    for(int n=4;n<26;++n)held.tick(true);CHECK(held.airborne);
+    held.tick(true);CHECK(!held.airborne && held.height==0);
     auto displacement=[](float x,float z,int frames) {
         Game g;g.progress.position={-4,2};g.partner=g.progress.position;
         Input i;i.x=x;i.z=z;for(int n=0;n<frames;++n)g.tick(i);
@@ -40,7 +46,7 @@ void movement() {
     CHECK(obstacle.progress.position.z>=.6f+BodyRadius);
     CHECK(!walkable({std::numeric_limits<float>::quiet_NaN(),1}));
     CHECK(!walkable({0,0}));
-    Game jump;jump.progress.position={0,2};jump.tick(confirm());advance(jump,18);CHECK(jump.jumpHeight>.9f);advance(jump,18);CHECK(std::fabs(jump.jumpHeight)<.01f);
+    Game jump;jump.progress.position={0,2};jump.tick(confirm());advance(jump,4);CHECK(std::fabs(jump.jumpHeight-.17882f)<.00001f);advance(jump,17);CHECK(std::fabs(jump.jumpHeight)<.01f);
     Game follow;follow.progress.position={-3,3};follow.partner={-6,3};advance(follow,100);CHECK(follow.partner.x>-4.1f);CHECK(walkable(follow.partner));
 }
 void dialogueAndTouch() {
@@ -453,6 +459,7 @@ void originalRooms() {
         for(int frame=0;frame<60 && departure.warpRequest<0;++frame)departure.tick(toward);
         CHECK(departure.warpRequest>=0);
         const auto origin=departure.progress.position;const float originHeight=departure.groundHeight;
+        departure.tick(blocked);CHECK(departure.progress.position.x==origin.x && departure.progress.position.z==origin.z);
         CHECK(departure.jumpHeight>0);
         for(int frame=0;frame<36 && departure.jumpHeight>0;++frame){
             departure.tick(blocked);
