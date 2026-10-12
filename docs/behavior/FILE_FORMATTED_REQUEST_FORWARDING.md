@@ -103,3 +103,8 @@ save versus no-save and all eight GPR slots,03/02 descriptor prefixes/overflow/
 register pointers,ignored format result and raw backend result propagation.
 Underlying file state/cache/I/O/ownership,format/address/platform domains,TPL
 consumers and original resource/runtime traces remain EVT-01/JUMP-01/DMG-02 work.
+
+[Complete acquisition/cache reuse](FILE_ACQUISITION_AND_REFERENCE_REUSE.md) and
+[archive/DVD request bodies](FILE_ARCHIVE_AND_DVD_ACQUISITION_REQUESTS.md)
+now supply the previously identity-only _fileAlloc contract. fileAsync remains
+open;collection/relocation/platform/source and original execution remain separate.

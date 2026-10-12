@@ -823,3 +823,11 @@ close complete Asyncf/Allocf/direct allocation wrappers and signed-halfword
 reference release. Shared1024-byte filename,original varargs/forwarding order
 and state2 without deallocation are explicit. Underlying resource/I/O/cache/
 collection/TPL/platform/scene and original traces remain open.
+
+ID2 shared-file acquisition delivery (2026-10-12):
+[cache/reference/publication](behavior/FILE_ACQUISITION_AND_REFERENCE_REUSE.md)
+and [archive/DVD requests](behavior/FILE_ARCHIVE_AND_DVD_ACQUISITION_REQUESTS.md)
+close _fileAlloc,arcOpen and five narrow SDK/DVD leaves. Filename-only reuse,
+pending yield,state2/3 count differences,retained available node,live manager
+publication,identical archive retries,holder indirection and deferred close are
+explicit. Async/collection/relocation/TPL/source/platform/original traces remain open.

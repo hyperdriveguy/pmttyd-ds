@@ -19,8 +19,9 @@ generic nonzero entry predicate or shape validation of the pointed data.
 
 No name/type/index/table/owner/context/scene query,callback or service call occurs
 in the body. Pointer/type/null/count domain policy is not inferred beyond these
-three gates. The role of the word at+a0 requires backend evidence;this leaf
-only tests it for zero. It has no specified scalar success/last-owner boolean contract.
+three gates. Its holder role is established separately by
+[acquisition](FILE_ACQUISITION_AND_REFERENCE_REUSE.md);this leaf only tests it
+for zero. It has no specified scalar success/last-owner boolean contract.
 
 ## Signed-halfword decrement,store/reload and state2 only on exact0
 
@@ -96,3 +97,9 @@ collection/scene owners,TPL/texture/model consumers,original platform/address/
 format failure policy and runtime traces remain EVT-01/JUMP-01/DMG-02 requirements.
 These local wrappers and release leaf are delivered;the full resource engine
 and complete-game memory/rendering fidelity remain unproven.
+
+[Complete acquisition](FILE_ACQUISITION_AND_REFERENCE_REUSE.md) now identifies
+F+a0 as a payload-pointer HOLDER:archive F+4 or a smartAlloc header. fileFree
+still only tests the holder address for zero;it does not inspect its word0
+payload. Cache-hit acquisition can reactivate state2 without resetting its count,
+or state3 after resetting count0. Full collection/async producers remain open.

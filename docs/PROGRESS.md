@@ -1,5 +1,28 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2 shared file acquisition and reference reuse
+
+Added two complete local allocation/archive-request contracts and binary verifier.
+_fileAlloc reuses filename-only entries,waits on ac,reactivates state2/3 with
+separate count semantics,and publishes retained available entries through live
+manager reloads. Archive modes1/2 retry identical requests;payload-holder and
+DVD rounded read/deferred-close ownership are explicit. Five narrow leaves are
+fully recovered;underlying nine backend bodies are identity checks only.
+Updated previous release/wrapper links and released only ID2's named lock.
+
+Validation:verify_file_acquisition.py passes16 hashes(seven complete/nine linked),
+281 anchors,two globals/startup spans;repeat JSON files match. Python compilation,
+prior wrapper/effect-driver/general1980 evidence and2438 local links pass.
+make test first hit concurrent camera-interface/test mismatch;after interface
+arrival rerun passes63 CTest/78 Python tests. make all passes. Logs:
+/tmp/id2-filealloc-test.log (resolved failure),/tmp/id2-filealloc-test-rerun.log,
+/tmp/id2-filealloc-build.log. Scoped staged diff whitespace check passes.
+No native/test/asset conversion changes by ID2 and no original runtime execution.
+
+Next:complete fileAsync/_fileGarbage/type-dependent relocation and resource/
+scene consumers;original source/thread/platform/TPL/runtime evidence remains
+open. EVT-01/JUMP-01/DMG-02 partial;full-game requirements remain unfinished.
+
 ## 2026-10-12 — Majinai power query and pouch consumption binding
 
 Added complete portable _majinai_powerup_check,Done and EndCheck contracts.

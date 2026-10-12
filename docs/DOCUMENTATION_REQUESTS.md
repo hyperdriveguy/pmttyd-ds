@@ -18,6 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete partyPreDisp,partyChgPose/Id pending-name/frame/update/transform request graph and used bindings;renderer/animation/resource/source/numeric/original visuals remain separate |
+| Shared file acquisition and cache lookup | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Cache/reference/publication](behavior/FILE_ACQUISITION_AND_REFERENCE_REUSE.md),[archive/DVD requests](behavior/FILE_ARCHIVE_AND_DVD_ACQUISITION_REQUESTS.md):complete _fileAlloc/arcOpen/five leaves,filename-only reuse,pending yield,state2/3 counts,identical archive retries,holder/deferred close/live lists;async/collection/relocation/TPL/platform/source/runtime remain separate |
 | Formatted file requests and file-handle release semantics | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Formatting/forwarding](behavior/FILE_FORMATTED_REQUEST_FORWARDING.md),[release/ownership](behavior/FILE_HANDLE_RELEASE_AND_EFFECT_CACHE_OWNERSHIP.md):complete four local bodies,shared buffer/original varargs/order and signed16 state2 release without deallocation;underlying async/load/cache/TPL/platform/source/runtime remains separate |
 | Slit collision admission helper and camera-direction binding | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Collision](behavior/FIELD_PARTNER_SLIT_COLLISION.md),[camera direction](behavior/FIELD_SIMPLE_CAMERA_DIRECTION.md),[system angle table](behavior/FIELD_SYSTEM_ANGLE_TABLE.md):complete local probe/order/filter/normal-pair/return and two math graphs;backend/source/alias/numeric/original trajectories remain separate |
 | Effect driver update,auto-release and pool initialization | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Driver/cache](behavior/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md),[pool/init/release](behavior/EFFECT_POOL_INITIALIZATION_AND_CONTEXT_RELEASE.md):full local context/active callback loop/cache captures,512 records/heap0/live clear,N64 reset/hard context release/four DOL bindings/US TPL identity;file/TPL/animation/display/scene/platform/source/runtime remains open |
@@ -2229,3 +2230,25 @@ breadcrumb is RESOLVED:rerun61 CTest/78 Python tests passes and make all passes.
 Logs:/tmp/id2-filewrap-test-rerun.log and /tmp/id2-filewrap-build.log. Only ID2's
 wrapper lock released. Underlying fileAsync/_fileAlloc,shared file-manager
 acquisition/collection,source/TPL/platform/scene and original traces remain open.
+
+ID2 shared-file validation breadcrumb (2026-10-12):binary evidence and make all
+pass. make test fails compiling tests/field_camera_tests.cpp because concurrent
+camera interfaces no longer expose adaptedFieldCameraFrame/bottomlessProbeHeight;
+see /tmp/id2-filealloc-test.log. ID2 changes no camera/native/test files. Native
+owner should finish matching fixtures;the documentation lock remains held until
+evidence review and exact gate status are recorded,then only that scope releases.
+
+ID2 shared-file acquisition delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial:
+[Cache/reference/publication](behavior/FILE_ACQUISITION_AND_REFERENCE_REUSE.md)
+and [archive/DVD requests](behavior/FILE_ARCHIVE_AND_DVD_ACQUISITION_REQUESTS.md)
+close _fileAlloc/arcOpen plus five narrow leaves. Filename-only first-match,
+pending ac yield,state3 count reset versus state2 preservation,signed16 wrap,
+retained free-node next/live manager writes,mode1/2 identical retries,archive
+embedded holder versus smart header,unchecked read and deferred-close bit08 are
+explicit. F+a0 holder role reconciled in previous release documentation.
+Sixteen hashes(seven complete/nine linked),281 instruction anchors,two globals/
+startup spans,repeat reports,related/general binary checks pass. make all passes;
+make test rerun63 CTest/78 Python passes after transient camera-interface mismatch
+RESOLVED. Logs:/tmp/id2-filealloc-test.log (historical failure),
+/tmp/id2-filealloc-test-rerun.log and /tmp/id2-filealloc-build.log. Own lock released;
+fileAsync/_fileGarbage/relocation/TPL/source/platform/scene/original traces stay open.
