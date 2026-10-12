@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Partner ceiling query and ray-request wrapper | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used partySearchHead complete four-probe/output graph and hitCheckRoofFilter local ABI wrapper;full filter/backend/terrain/math/domain/EVT-01 and original trajectories remain separate |
+| Partner ceiling query and ray-request wrapper | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Ceiling query](behavior/FIELD_PARTNER_CEILING_QUERY.md),[scalar wrapper](behavior/FIELD_SCALAR_RAY_WRAPPER.md):complete local four-probe/output and hitCheckFilter ABI graph answered;initial wrapper name corrected;full backend/terrain/math/domain/EVT-01 and original trajectories remain open |
 | Map/SDK buffer release and pool initialization provenance | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Map free/battle pool](behavior/MAP_BUFFER_FREE_AND_BATTLE_POOL.md),[five pools/reset](behavior/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md),[SDK free/census](behavior/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md):complete local release/coalescing/bootstrap/bulk reset and50 direct DOL sites;event user-pointer/scene/REL/platform/source/runtime ownership remains open |
 | Partner stay floor/fly post-collision services | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Fly height](behavior/FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md),[ground/motion/support](behavior/FIELD_PARTNER_GROUND_POSTPASS.md):complete local tail and motion/classifier graph answered;selected floor early-return/output evidence;full head/floor/appear/motion/terrain/domain/EVT-01 and original trajectories remain open |
 | Event timestamp producer and main-loop pause/update binding | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Retrace clock](behavior/EVENT_RETRACE_TIME_PUBLICATION.md),[outer/update loop](behavior/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md):complete clock publication prefix/window/raw readers and main/StMain/idle body,scoped refresh/registration;other callback tail/input/scene/platform/domain and measured cadence/original traces remain open |
@@ -1305,3 +1305,19 @@ selected query regions,78 anchors,12 constants,three spans/two lecture imports
 pass;make test35 CTest/63 Python tests and make all pass. Only ID1 scoped lock
 released;complete head/floor/appear and motion/geometry/domain/original traces
 remain open. Original surrounding-dot native correction request remains separate.
+
+
+ID1 partner ceiling/scalar ray delivery (2026-10-12):
+[Ceiling query](behavior/FIELD_PARTNER_CEILING_QUERY.md) and
+[scalar wrapper](behavior/FIELD_SCALAR_RAY_WRAPPER.md) establish four samples,
+first nonnull short-circuit (not nearest across probes),no local distance
+quantization,raw ordered height cap and success/failure writes. Success V is
+sampled X/Z plus captured INPUT Y;failure still writes FOURTH sample X/Z,inputY,
+height0. Both postpasses use local V initialized from P:ground ignores V/height;
+fly uses V.Y but ignores height. Do not substitute intersection-point Y for
+that field. Wrapper is hitCheckFilter8001577c (initial lock name was wrong),
+callback0 for all these rays,point24/normal30 ABI and null-output preservation.
+Four containing identities/three complete bodies,89 anchors,six constants,two
+spans/two lecture imports pass. make test37 CTest/63 Python and make all pass.
+Only ID1 scoped lock released;full backend/floor/source/math/trajectory and
+EVT-01 remain open. The earlier surrounding-dot native correction stays separate.

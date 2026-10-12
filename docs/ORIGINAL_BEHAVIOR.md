@@ -542,3 +542,13 @@ support motion requests. Selected floor-query entry proves early mask return
 can preserve cached outputs. Complete local motion-change/name-classifier leaves
 are specified,including exact25-name resource table;full queries,appearance/
 motion/terrain/domain and original trajectories remain dependencies.
+
+
+[Partner ceiling query](behavior/FIELD_PARTNER_CEILING_QUERY.md) and
+[scalar ray wrapper](behavior/FIELD_SCALAR_RAY_WRAPPER.md) now close local
+four-probe first-success order,raw height cap,success/failure output writes,
+callback/origin/direction/length ABI and ordered point/normal publication. Query
+V.Y is captured input Y,not hit-point Y;fly ignores returned height,and all-null
+still writes fourth sampled X/Z plus height0. Original caller behavior is explicit,
+not replaced with a conventional ceiling solver. Full backend/numeric/source/
+trajectory and remaining floor/motion engines remain open.

@@ -1018,3 +1018,14 @@ not story dialogue. Original ELF/listings and field-partner-postpass-evidence.js
 remain ignored under artifacts/reference/behavior. ISO read-only;no asset
 conversion,original execution,profile/save mutation or original binary/dialogue
 distribution occurred. Full ceiling/floor geometry and runtime domain remain open.
+
+
+Partner ceiling/scalar ray research by ID1 (2026-10-12):
+verify_field_partner_head.py and field_partner_head_evidence.json pin four DOL
+identities (head query,scalar wrapper and sincosf complete;shared backend selected
+callback/result-layout regions only),89 instruction anchors,six constants,two
+zero-template spans and two lecture imports. Actual ground/fly call sites are
+pinned. Inspection ELF/listings and field-partner-head-evidence.json stay ignored
+under artifacts/reference/behavior. ISO remained read-only;no asset conversion,
+original execution,profile/save mutation or original binary/dialogue distribution.
+Full backend geometry/domain/runtime behavior remains separate from identities.

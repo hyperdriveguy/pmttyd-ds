@@ -17,7 +17,8 @@ Compare the current global map string GP+12c against exact resource key las_10
 at0x802f47c8. On equality,copy P position to local V and height P+f0 to local
 h;call partySearchHead0x800c27f8 with(P,&V,&h,f1=P+10c). f1 is the partner
 heading argument,not vertical speed. On any other map,skip this ceiling stage.
-The complete ceiling-query geometry remains a called-service dependency.
+The [ceiling query](FIELD_PARTNER_CEILING_QUERY.md) now specifies its complete
+local probe/output graph;full scene-ray backend remains a dependency.
 
 If that query returns nonnull H,store H at P+140,then compute
 d=R(R(V.y-P+f0)-P.y). If ordered -5>d OR ordered d>=0,write

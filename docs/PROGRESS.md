@@ -7896,3 +7896,36 @@ Next:complete head/floor queries and appear-position,out-of-screen services,
 all homing/fall/jump/fly handlers,state/flag/source/numeric domains and original
 collision/flight/transition observations;native surrounding-dot parity correction.
 Full documentation and complete-game requirements remain incomplete.
+
+
+## 2026-10-12 — ID1 complete partner ceiling query and scalar ray wrapper
+
+Added [ceiling query](behavior/FIELD_PARTNER_CEILING_QUERY.md) and
+[scalar ray wrapper](behavior/FIELD_SCALAR_RAY_WRAPPER.md). Complete local
+head body specifies .3-width four sample offsets,first-success short-circuit,
+raw ordered height cap and all success/failure stores. V is sampled X/Z plus
+captured input Y,not intersection point;all-null still writes fourth sample
+and height0. Actual ground/fly consumption is explicit,including fly ignoring
+height and using preserved inputY. Complete scalar wrapper covers six-float/
+callback/seven-pointer ABI,null-output preservation and ordered length/point/
+normal publication. Corrected initial lock's inferred wrapper name to actual
+hitCheckFilter. Backend hash/anchors close selected regions only,not traversal.
+Updated prior postpass links without changing concurrent native behavior.
+
+Validation:verify_field_partner_head.py passes four containing hashes (three
+complete local bodies,backend selected regions),89 instructions,six constants,
+two zero-template spans and two lecture imports plus actual postpass call sites.
+Repeated metadata byte-identical;Python compilation and prior postpass verifier
+passed. General verifier passed1980 anchors;all1275 behavior links resolved at
+snapshot. Gekko audit passed550 files/76408 instructions/536 paired-single ops,
+zero changes or unknowns. make test passed37 CTest suites and63 Python tests;
+make all succeeded with no rebuild needed. Logs:/tmp/id1-head-test.log and
+/tmp/id1-head-build.log. ISO read-only;no original execution/ceiling trajectory
+measurement,asset conversion,profile/save mutation or original binary/dialogue
+distribution. Only ID1 scoped lock released;concurrent native/ID2 changes kept
+outside this scoped commit.
+
+Next:complete partner floor query,appear-position/out-of-screen services,
+homing/fall/jump/fly handlers and state/source/numeric domains;original ceiling/
+floor/transition traces and native surrounding-dot parity correction. Full-game
+documentation and eventual complete-game requirements remain incomplete.

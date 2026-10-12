@@ -9,7 +9,7 @@ byte test does not require mobility0 specifically. P position is+58/+5c/+60.
 
 ## Query and suppression order
 
-Copy P position to local V and float P+f0 to local h;call partySearchHead
+Copy P position to local V and float P+f0 to local h;call [partySearchHead](FIELD_PARTNER_CEILING_QUERY.md)
 0x800c27f8 with(P,&V,&h,f1=P+10c). Nonnull H overwrites P+140;null leaves
 that field untouched. The local position/height outputs are not published.
 This query happens even when P+0&0x04000000 is SET;only AFTER the query does
