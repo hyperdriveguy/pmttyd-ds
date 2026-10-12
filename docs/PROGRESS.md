@@ -486,6 +486,40 @@ requirements and EVT-01/JUMP-01/DMG-02 remain incomplete.
 
 # Progress and next-session handoff
 
+## 2026-10-12 — Native MarioJumpParam count/write-back
+
+Bound original MarioJumpParam80109c68 to native event/unit/work records and
+existing explicit numeric/distance providers. Actor/integer X/ignored Y/Z/count
+resolution retains original raw Y/destination prefetches;current-work lookup follows
+count resolution. Only zero requested count reads speed after distance. Ordered
+D>60 applies separate rounded subtraction/coefficient/multiply/truncate and word
+addition,before signed lower-bound selection. Result sentinel skips output;raw
+destination sentinel alone does not. No unit motion/speed/count write,min1,fallback
+speed or first-call gate is added. Updated count propagates through native locals
+and existing brother creation rather than freezing original input36.
+
+Evidence:behavior/battle/BATTLE_NATIVE_MARIO_JUMP_PARAMETER_ORDER.md;read-only
+original inspection /tmp/pm-native-mario-jump-param.* remains outside history.
+Numeric/frsqrte/FPSCR/original source and actual motion/stylish/scene/Game execution
+remain open. No original impact tick or tutorial fidelity claim.
+
+Validation:make test86 CTest/90 Python passes;source Jump-flow verifier19 bodies/
+268 commands/5 concurrent blocks/57 anchors passes;final make all passes. Logs:
+/tmp/pm-mario-jump-parameter-event-test.log (initial unrelated effect-deletion main
+link failure;current object later contained main,root cause unproven),
+/tmp/pm-mario-jump-parameter-event-test-retry.log (fixture wrong local token),
+/tmp/pm-mario-jump-parameter-event-test-final.log (all pass). Fixture corrected
+local6 encoding to-29999994. Initial make all passed;later full build encountered
+concurrent Renderer drawMap declaration/definition mismatch (three versus two
+parameters). Other owner completed that change;final make all recheck passes.
+Build logs:/tmp/pm-mario-jump-parameter-event-build.log (transient failure),
+/tmp/pm-mario-jump-parameter-event-build-recheck.log (final pass). Other work kept.
+Tests cover thresholds/automatic/negative/wrap/result-vs-raw sentinel,operand/
+source capture,unit immutability,native byte RAM/local output and brother count
+inheritance. Records and numeric providers authored;no emulator/hardware/scene
+claim. Next:native MarioJumpPosition/source/math/audio/transitive events and
+outer Game. Goal active/incomplete;documentation gaps remain file requests.
+
 ## 2026-10-12 — Native MovePosition and horizontal record integration
 
 Bound original MovePosition8010ca74 to native event/unit/work fields with sentinel

@@ -22,6 +22,7 @@
 #include "battle_move_frame_event.hpp"
 #include "battle_packed_movement_sound.hpp"
 #include "battle_packed_move_position.hpp"
+#include "battle_mario_jump_parameter_event.hpp"
 
 namespace ttyd {
 struct BattleDataChildBackend {
@@ -53,6 +54,7 @@ bool bindBattleMovePositionCallback(EventCallbackRegistry&,BattlePackedMovePosit
 BattlePackedMovementSoundServices nativeBattleMovementSoundServices(EventNativeRuntime&,const BattleSoundPlaybackServices&);
 BattleMoveFrameServices nativeBattleMoveFrameServices(EventNativeRuntime&);
 bool bindBattleGetMoveFrameCallback(EventCallbackRegistry&,EventNativeRuntime&);
+bool bindBattleMarioJumpParameterCallback(EventCallbackRegistry&,EventNativeRuntime&);
 BattlePackedChoiceServices nativeBattleChoiceServices(EventNativeRuntime&);
 BattlePackedSamplingServices nativeBattleSamplingServices(EventNativeRuntime&,void* user=nullptr,uint32_t (*monosiri)(void*,int32_t)=nullptr);
 // Complete native sampler/chooser defaults;Monosiri mask1 requires its provider.

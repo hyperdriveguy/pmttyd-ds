@@ -5,6 +5,7 @@
 #include "event_memory_release.hpp"
 
 namespace ttyd {
+bool bindBattleMarioJumpParameterCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x80109c68,&runtime,[](void* p,EventEntry& e,int32_t) {return packedMarioJumpParameterEvent(e,nativeBattleMoveFrameServices(*static_cast<EventNativeRuntime*>(p)));});}
 BattlePackedMovePositionServices nativeBattleMovePositionServices(EventNativeRuntime& runtime,const BattleSoundPlaybackServices& playback) {
     BattlePackedMovePositionServices s;s.query=nativeBattleMoveFrameServices(runtime);s.sound=nativeBattleMovementSoundServices(runtime,playback);
     s.heading=[](void* p,float a,float b,float c,float d) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.headingFloat);return r.platform.headingFloat(r.platform.user,a,b,c,d);};

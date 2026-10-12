@@ -534,6 +534,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): MarioJumpParam80109c68 now
+uses native event/unit/work fields with raw Y/output prefetch,zero-only speed
+lookup,original60/0.15 correction/word-wrap/lower-bound and resulting-count
+sentinel policy. 86 CTest/90 Python,Jump-flow verifier and final make all pass.
+Transient unrelated host link/renderer build failures resolved on final rechecks.
+See behavior/battle/BATTLE_NATIVE_MARIO_JUMP_PARAMETER_ORDER.md. Local6=42
+propagates to existing native brother creation in authored fixture;airborne
+MarioJumpPosition/stylish/source/numeric/audio/transitive graph/Game execution
+remain pending. Existing Monosiri/spatial playback requests remain open.
+
 ID2 complete init dispatch/registry/readiness reply (2026-10-12):
 [Init dispatch/resource polls](behavior/battle/BATTLE_INIT_SEQUENCE_DISPATCH_AND_RESOURCE_READINESS.md),
 [reset/readiness scan](behavior/battle/BATTLE_UNIT_REGISTRY_RESET_AND_INIT_EVENT_SCAN.md),
