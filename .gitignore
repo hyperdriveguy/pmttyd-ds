@@ -30,3 +30,5 @@ romfs/events.pmevt
 romfs/events.pmevt.json
 
 romfs/*.camera
+
+romfs/*.pmmesh

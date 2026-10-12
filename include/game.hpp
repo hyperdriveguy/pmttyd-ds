@@ -25,6 +25,7 @@
 #include "field_camera_shift.hpp"
 #include "camera_road_state.hpp"
 #include "field_camera_events.hpp"
+#include "mario_presentation.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -133,6 +134,7 @@ public:
     bool fieldCameraViewAdapter=true; // Automatic view; false lets tests/events provide a frame.
     CameraRoadWork cameraRoadWork;
     FieldCameraEvents fieldCameraEvents;
+    MarioPresentation marioPresentation;
     // Basic source camera-event services. Coordinates are engine units;
     // EVT operand/address marshaling remains a separate runtime binding.
     bool setCameraTarget(CameraPoint xyz,float percent,int32_t durationMs,uint8_t curve);
@@ -221,6 +223,7 @@ private:
     bool resolveRoadCallbacks(const RoadWarp& road);
     void rebaseFieldCamera();
     void beginFieldCameraTick();
+    void updateMarioPresentation();
     void publishFieldCameraTarget();
     void cacheFieldScreen();
     void publishFieldCameraCollision(const FieldSupport& support);

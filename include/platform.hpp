@@ -2,6 +2,7 @@
 #include "game.hpp"
 #include "visibility.hpp"
 #include "uv_animation.hpp"
+#include "actor_mesh.hpp"
 #include <3ds.h>
 #include <citro2d.h>
 #include <citro3d.h>
@@ -41,7 +42,8 @@ private:
         uint64_t animationStart=UINT64_MAX;
     };
     Room plaza,stage;
-    Texture sky;
+    Texture sky,characterTextures;
+    ActorMeshPack actorMesh;
     bool loadMap(const char* name,Room& room);
     void freeRoom(Room& room);
     void drawMap(bool battle,const Game& game);
@@ -54,6 +56,7 @@ private:
     void box(float x,float z,float w,float d,float h,uint32_t color);
     void ground(float x0,float z0,float x1,float z1,float y,uint32_t color);
     void character(int index,Vec2 p,float height,float width,float facing,float lift=0,float tilt=0);
+    bool characterModel(const char* pose,Vec2 root,float rootY,float yaw,bool reflectZ);
     void shadow(Vec2 p,float radius,float floor=0);
     void vertex(float x,float y,float z,float u,float v,uint32_t color);
     void text(const char*,float x,float y,float scale,uint32_t color);

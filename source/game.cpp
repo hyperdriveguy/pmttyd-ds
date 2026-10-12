@@ -627,7 +627,8 @@ bool Game::integrateVertical(bool held,float& previousY,bool update) {
 }
 void Game::finishVertical(float worldY) {
     if(fieldJump.falling) {
-        const Vec2 direction=fieldMovement.speed!=0?Vec2{fieldMovement.headingX,fieldMovement.headingZ}:Vec2{facing,0};
+        const float facingAngle=marioPresentation.moveHeading()*3.14159265358979323846f/180.f;
+        const Vec2 direction=fieldMovement.speed!=0?Vec2{fieldMovement.headingX,fieldMovement.headingZ}:Vec2{std::sin(facingAngle),-std::cos(facingAngle)};
         const float offset=fieldMovement.speed!=0?fieldMovement.headingOffsetDegrees*3.14159265358979323846f/180.f:0;
         const Vec2 foot{direction.x*std::cos(offset)+direction.z*std::sin(offset),
                        direction.z*std::cos(offset)-direction.x*std::sin(offset)};
@@ -662,6 +663,7 @@ bool Game::beginVoid() {
     marioCamera.retained.x=water.position[0]*100;marioCamera.retained.z=water.position[2]*100;
     partner={roomRespawn.x,roomRespawn.z};partnerHeight=roomRespawn.y;partnerContact={};
     cameraX=destination.x;cameraZ=destination.z;cameraHeight=floor;
+    fieldMovement.speed=0;
     fieldJump={};fieldJump.motion=33;fieldStep={};fieldVerticalVelocity=0;jumpHeight=0;warpRequest=-1;saveRequested=false;
     return true;
 }
@@ -681,6 +683,7 @@ bool Game::beginWater() {
     target.y=floor;
     water.begin({progress.position.x,groundHeight+jumpHeight,progress.position.z},{target.x,target.y,target.z});
     fieldCameraDisplayFlags|=0x10000; // mot_damage entry retains camera-follow publication.
+    fieldMovement.speed=0;
     jumpHeight=0;fieldJump={};fieldJump.motion=31;fieldStep={};fieldVerticalVelocity=0;warpRequest=-1;saveRequested=false;return true;
 }
 void Game::restore(const Progress& saved) {
@@ -689,7 +692,9 @@ void Game::restore(const Progress& saved) {
     auto cameraEvents=fieldCameraEvents;cameraEvents.roomLoad();
     const auto retainedFrame=fieldCameraFrame;const bool retainedAuthored=fieldCameraAuthored;
     const auto retainedCameraFlags=fieldCameraFlags&~0x10u;
+    const auto retainedPresentation=marioPresentation;
     *this = Game{};
+    marioPresentation.facing=retainedPresentation.facing;marioPresentation.display=retainedPresentation.display;marioPresentation.target=retainedPresentation.target;
     fieldCameraEvents=cameraEvents;fieldCameraFlags=retainedCameraFlags;
     fieldCameraFrame=retainedFrame;fieldCameraAuthored=retainedAuthored;
     fieldCameraSimulationTicks=cameraClock;fieldCameraShift.previousMilliseconds=shiftTimestamp;
@@ -839,10 +844,9 @@ void Game::move(const Input& i,bool launched) {
         fieldJump.enterGround(fieldMovement.speed==0?0:fieldMovement.speed==DashSpeed?2:1,groundHeight);
         if(fieldMovement.speed==0)fieldVerticalVelocity=0; // Idle entry clears jump tuple.
     }
-    // Ordinary head/landing/ground probes use retained travel+1a4 when base
-    // speed+180 is nonzero, otherwise the facing conversion (native flip).
-    // Current-stick drift and combined travel do not rotate those probes.
-    moveDirection=fieldMovement.speed!=0?Vec2{fieldMovement.headingX,fieldMovement.headingZ}:Vec2{facing,0};
+    // Ordinary probes use travel1a4 or source toMovedir(display1ac).
+    const float facingAngle=marioPresentation.moveHeading()*3.14159265358979323846f/180.f;
+    moveDirection=fieldMovement.speed!=0?Vec2{fieldMovement.headingX,fieldMovement.headingZ}:Vec2{std::sin(facingAngle),-std::cos(facingAngle)};
     // Ordinary ascent: jump, overhead, move. Falling keeps move before gravity.
     const bool wasFalling=fieldJump.airborne && fieldJump.falling;
     float previousY=0;const bool verticalReady=!wasFalling && integrateVertical(i.jumpHeld,previousY,!launched);
@@ -852,8 +856,14 @@ void Game::move(const Input& i,bool launched) {
     const auto combined=fieldJump.airborne?
         fieldMovement.airborne(x,z,fieldJump.suppressDrift || fieldJump.ticks==0,fieldJump.hasAirFlags()):
         stepping?fieldMovement.retained():fieldMovement.reduceSlope(grounded);
-    // Direction gain follows air cap and keeps retained travel heading.
+    // Direction gain reads PRE-wrapper retained facing1a0; wrapper metadata
+    // publishes the requested combined heading only afterward.
+    fieldMovement.facingDegrees=marioPresentation.facing;
     const auto travel=fieldMovement.applyMovementRate(combined);
+    float requestedHeading=marioPresentation.moveHeading();
+    if(combined.x!=0 || combined.z!=0)requestedHeading=MarioPresentation::wrap(std::atan2(combined.x,-combined.z)*180/3.14159265358979323846f);
+    const float requestedNorm=std::hypot(combined.x,combined.z)*fieldMovement.movementRate();
+    marioPresentation.wallRequest(requestedNorm*100,requestedHeading,fieldJump.ticks);
     if(len>0){x/=len;z/=len;}
     Vec2 p = progress.position;
     Vec2 candidate{p.x+travel.x,p.z+travel.z};
@@ -884,8 +894,11 @@ void Game::move(const Input& i,bool launched) {
             candidate={actual.x*.01f,actual.z*.01f};
         } else {
             // Staying probes disposable positions and never moves the root.
-            front=searchFieldFrontWall(actual,{moveDirection.x*10,0,moveDirection.z*10},actor,services);
-            if(!front.forward.token)front=searchFieldFrontWall(actual,{facing*10,0,0},actor,services);
+            const float offset=fieldMovement.headingOffsetDegrees*3.14159265358979323846f/180.f;
+            const Vec2 priorTravel{fieldMovement.headingX*std::cos(offset)+fieldMovement.headingZ*std::sin(offset),
+                                   fieldMovement.headingZ*std::cos(offset)-fieldMovement.headingX*std::sin(offset)};
+            front=searchFieldFrontWall(actual,{priorTravel.x*10,0,priorTravel.z*10},actor,services);
+            if(!front.forward.token)front=searchFieldFrontWall(actual,{moveDirection.x*10,0,moveDirection.z*10},actor,services);
             candidate=p;
         }
         if(front.forward.token) {
@@ -1191,7 +1204,13 @@ void Game::battle(const Input& i) {
         else { phase=Phase::Select; phaseTick=0; }
     }
 }
+void Game::updateMarioPresentation() {
+    if(scene==Scene::Explore || scene==Scene::Dialogue)
+        marioPresentation.update(fieldJump.motion,fieldMovement.speed,fieldMovement.headingOffsetDegrees,progress.hp,
+                                 fieldCameraTickMilliseconds(fieldCameraSimulationTicks));
+}
 void Game::tick(const Input& rawInput) {
+    struct PresentationOnExit {Game& game;~PresentationOnExit(){game.updateMarioPresentation();}} presentation{*this};
     Input input=rawInput;const Input& i=input;
     ++ticks;++fieldCameraSimulationTicks; sound=Sound::None;overheadContact=false;
     if(scene==Scene::Explore || scene==Scene::Dialogue)beginFieldCameraTick();

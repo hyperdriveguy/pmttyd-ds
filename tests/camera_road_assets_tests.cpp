@@ -4,6 +4,7 @@
 #include "camera_road_state.hpp"
 #include "camera_road_view.hpp"
 #include "game.hpp"
+#include "actor_mesh.hpp"
 #include <cmath>
 #include <cstring>
 #include <cstdlib>
@@ -151,9 +152,34 @@ void stateCases() {
     const auto before=moving;CHECK(!moving.update(asset,{25,10,0},{25,10,0},1,0));
     CHECK(moving.current.anchor.z==before.current.anchor.z && moving.normalWeight==before.normalWeight);
 }
+void actorPackCases() {
+    auto point=actorMeshPoint({10,-2,3,0,0},{1,2,3},0,false);
+    CHECK(std::fabs(point[0]-1.2f)<.00001f && std::fabs(point[1]-1.96f)<.00001f && std::fabs(point[2]-3.06f)<.00001f);
+    point=actorMeshPoint({10,-2,3,0,0},{1,2,3},90,true);
+    CHECK(std::fabs(point[0]-.94f)<.00001f && std::fabs(point[2]-2.8f)<.00001f); // Z reflection precedes yaw; no X/UV mirror.
+    ActorMeshPack pack;FILE* file=std::tmpfile();CHECK(file);
+    const char magic[8]="PMCHAR1",name[32]="fixture";uint32_t count=1,size=3;
+    const ActorMeshVertex vertices[]={{-1,-2,0,0,0},{1,-2,0,1,0},{0,2,0,.5f,1}};
+    CHECK(std::fwrite(magic,8,1,file)==1 && std::fwrite(&count,4,1,file)==1);
+    CHECK(std::fwrite(name,32,1,file)==1 && std::fwrite(&size,4,1,file)==1 && std::fwrite(vertices,sizeof(vertices),1,file)==1);
+    std::rewind(file);CHECK(pack.read(file));CHECK(pack.pose("fixture") && pack.pose("fixture")->vertices[0].y==-2);
+    CHECK(!pack.pose("unknown"));
+    std::fseek(file,8,SEEK_SET);count=0;CHECK(std::fwrite(&count,4,1,file)==1);
+    std::rewind(file);CHECK(!pack.read(file) && pack.pose("fixture"));
+    std::fclose(file);CHECK(!pack.load("/missing-actor-pack") && pack.pose("fixture"));
+}
 int main(int argc,char**) {
     if(argc>1) {
         CHECK(loadCameraRoadAssets("romfs"));
+        ActorMeshPack mesh;CHECK(mesh.load("romfs/characters.pmmesh"));
+        for(const auto name:{"M_S_1","M_W_1","M_R_1","M_J_1B","M_J_1C","M_S_1R","M_W_1R","M_R_1R","M_J_1BR","M_J_1CR"}) {
+            const auto* pose=mesh.pose(name);CHECK(pose);
+            CHECK(pose->vertices.size()==(name[std::strlen(name)-1]=='R'?186u:306u));
+        }
+        const auto* idle=mesh.pose("M_S_1");float low=1000,high=-1000;
+        for(const auto& v:idle->vertices){low=std::min(low,v.y);high=std::max(high,v.y);}
+        CHECK(std::fabs(low*.02f+.03316393f)<.00001f && std::fabs(high*.02f-.43603596f)<.00001f);
+
         const uint32_t expected[]={11,3,14,14,2};uint32_t total=0,eligible=0,triangles=0,regularTriangles=0;
         for(uint32_t room=0;room<5;++room) {
             const auto* asset=cameraRoadAsset(room);CHECK(asset && asset->collections()[1].count==expected[room]);
@@ -227,7 +253,7 @@ int main(int argc,char**) {
         CHECK(triangles==494 && regularTriangles>400);
         std::cout<<"Original camera assets passed: "<<total<<" authored roads, "<<triangles<<" zone triangles in five rooms\n";return 0;
     }
-    curveCases();zoneCases();stateCases();CameraRoadAsset asset;auto raw=fixture();CHECK(asset.decode(raw));CHECK(asset.bytes()==raw);
+    curveCases();zoneCases();stateCases();actorPackCases();CameraRoadAsset asset;auto raw=fixture();CHECK(asset.decode(raw));CHECK(asset.bytes()==raw);
     CHECK(asset.roadName(0)=="C_fixture" && asset.roadFloat(0,0x58)==42.5f && asset.roadWord(0,0x80)==0x89abcdef);
     CHECK(asset.collections()[8].offset==0xffbf3a10 && asset.collections()[8].count==0);
     CHECK((*asset.lensMetadata())[0]==25);

@@ -7,6 +7,29 @@ using namespace ttyd;
 #define CHECK(x) do {if(!(x)){std::cerr<<__LINE__<<": " #x "\n";std::exit(1);}}while(0)
 bool close(float a,float b){return std::fabs(a-b)<.000001f;}
 int main() {
+    MarioPresentation display;CHECK(display.moveHeading()==270);
+    display.display=180;CHECK(display.moveHeading()==90);display.display=0;
+    display.wallRequest(2,90,0);CHECK(display.facing==90 && display.directionCountdown==14);
+    for(int n=0;n<13;++n)display.wallRequest(2,270,0);
+    CHECK(display.facing==90 && display.directionCountdown==1);display.wallRequest(2,270,0);CHECK(display.facing==270);
+    display.wallRequest(0,0,0);CHECK(display.facing==270 && display.storedSpeed==0);
+    display.wallRequest(3,90,1);CHECK(display.facing==270 && display.storedSpeed==0);
+    display.update(0,0,0,7,16);CHECK(std::strcmp(display.selected,"M_S_1")==0);
+    display.facing=70;display.update(3,1,0,7,33);CHECK(std::strcmp(display.selected,"M_J_1BR")==0);
+    const auto start=display.poseStartMilliseconds;display.update(11,1,0,7,50);CHECK(display.poseStartMilliseconds==start);
+    display.facing=71;display.update(10,1,0,7,66);CHECK(std::strcmp(display.selected,"M_J_1C")==0);
+    display.facing=270;display.display=180;display.target=180;display.turnFlags=0x400;
+    display.turn(1);CHECK(display.target==0 && display.display==153.75f && (display.turnFlags&0x200) && !(display.turnFlags&0x400));
+    for(int n=0;n<100 && display.display!=0;++n)display.turn(1);CHECK(display.display==0);
+    display.facing=90;display.display=201;display.target=180;display.turnFlags=0x500;
+    display.turn(1);CHECK(display.display>180 && (display.turnFlags&0x100));
+    display.turn(1);display.turn(1);display.turn(1);CHECK(display.display<180 && (display.turnFlags&0x100));
+    display.turn(1);CHECK(display.display==180 && !(display.turnFlags&0x100)); // Lower branch clamps one callback later.
+    Game first;clearCollision();first.restore(first.progress);Input right;right.x=1;
+    const auto x=first.progress.position.x;first.tick(right);
+    CHECK(close(first.progress.position.x-x,.026775001f) && close(first.marioPresentation.facing,90));
+    const auto x2=first.progress.position.x;first.tick(right);CHECK(close(first.progress.position.x-x2,.0225f));
+    first.restore(first.progress);CHECK(first.marioPresentation.facing==90 && first.marioPresentation.display!=0);
     FieldJump tapped,held;tapped.begin();held.begin();
     CHECK(tapped.ticks==1 && tapped.height==0);
     tapped.tick(false);held.tick(true);
@@ -36,13 +59,16 @@ int main() {
     m.groundedStick(33,44);CHECK(m.speed==FieldMovement::Walk);
     m.groundedStick(34,44);CHECK(m.speed==FieldMovement::Dash);
     m.groundedStick(-55,0);CHECK(m.speed==FieldMovement::Walk && m.headingX==-1);
-    CHECK(m.movementRate()==1);
-    m.grounded(0,1);CHECK(close(m.movementRate(),1.190000057220459f));
+    CHECK(close(m.movementRate(),1.190000057220459f)); // Fresh facing0 is separate from requested -X travel.
+    m.facingDegrees=270;CHECK(close(m.movementRate(),1));
+    m.grounded(0,1);CHECK(close(m.movementRate(),1)); // Prior-facing rate does not follow this new travel request.
+    m.facingDegrees=180;CHECK(close(m.movementRate(),1.190000057220459f));
     auto depth=m.applyMovementRate(m.airborne(0,1));CHECK(close(depth.z,.026775001f)); // Cap precedes rate.
     auto crossed=m.applyMovementRate(m.airborne(1,0));
     CHECK(close(std::hypot(crossed.x,crossed.z),.026775001f)); // Rate follows retained Z, not drift.
-    m.grounded(1,1);CHECK(close(m.movementRate(),1+.190000057220459f/std::sqrt(2.f)));
-    m.grounded(1,0);m.headingOffsetDegrees=90;CHECK(close(m.movementRate(),1.190000057220459f));
+    m.grounded(1,1);CHECK(close(m.movementRate(),1.190000057220459f));
+    m.facingDegrees=45;CHECK(close(m.movementRate(),1+.190000057220459f/std::sqrt(2.f)));
+    m.grounded(1,0);m.facingDegrees=90;m.headingOffsetDegrees=90;CHECK(close(m.movementRate(),1.190000057220459f));
     m.grounded(0,1);CHECK(close(m.headingX,-1) && close(m.headingZ,0));CHECK(close(m.movementRate(),1.190000057220459f));m.headingOffsetDegrees=0;
     // Previous query angles gate axes independently using overall inclination.
     m.slope.normal(.5f,std::sqrt(.75f),0);CHECK(std::fabs(m.slope.inclination-30)<.00001f);
@@ -129,11 +155,11 @@ int main() {
     before=offscreen.progress.position.x;offscreen.tick(stronger);
     CHECK(close(offscreen.progress.position.x-before,.009f)); // Offscreen tail suppresses next stick drift.
     Game standing;launch(standing,0);before=standing.progress.position.x;standing.tick(stronger);
-    CHECK(close(standing.progress.position.x-before,.002625f));
+    CHECK(close(standing.progress.position.x-before,.00312375f));
     // Current input drift participates in the launch invocation itself.
     Game launchDrift;launchDrift.restore(p);Input launchInput;launchInput.confirm=true;launchInput.x=.5f;
     launchDrift.tick(launchInput);CHECK(launchDrift.airborne() && launchDrift.jumpHeight==0);
-    CHECK(close(launchDrift.progress.position.x-p.position.x,.0113125f));
+    CHECK(close(launchDrift.progress.position.x-p.position.x,.013461875f));
     // Threshold replacement in the same dispatcher call retries the unchanged
     // A trigger and establishes the newly selected speed before jump entry.
     Game threshold;threshold.restore(p);Input weak;weak.x=.5f;threshold.tick(weak);
@@ -151,19 +177,20 @@ int main() {
         Game transition;transition.restore(p);Input start;start.x=prior;transition.tick(start);
         Input launch;launch.x=current;launch.confirm=true;before=transition.progress.position.x;
         transition.tick(launch);
-        const float expected=current==0?0:current==.5f?.0113125f:.0225f;
+        const float raw=current==0?0:current==.5f?.0113125f:.0225f;
+        const float expected=raw*(prior==0?1.190000057220459f:1);
         CHECK(transition.airborne() && transition.jumpHeight==0);
         CHECK(transition.fieldAirMotion().previousMotion==(current==0?0:current==.5f?1:2));
         CHECK(close(transition.progress.position.x-before,expected));
     }
     Game turn;turn.restore(p);turn.tick(weak);Input changed;changed.z=.5f;changed.confirm=true;
     const auto oldPosition=turn.progress.position;turn.tick(changed);
-    CHECK(turn.progress.position.x==oldPosition.x && close(turn.progress.position.z-oldPosition.z,.013461875f));
+    CHECK(turn.progress.position.x==oldPosition.x && close(turn.progress.position.z-oldPosition.z,.0113125f));
     // The field sees published signed bytes and A edges, not stale HID fractions
     // or independently supplied abstract confirm/held bits.
     Game physical;physical.restore(p);Input pad;pad.physicalSnapshot=true;pad.x=.79f;
     before=physical.progress.position.x;physical.tick(pad);
-    CHECK(physical.physicalChannel().analog.mainX==55 && close(physical.progress.position.x-before,.01f));
+    CHECK(physical.physicalChannel().analog.mainX==55 && close(physical.progress.position.x-before,.0119f));
     pad.x=1;pad.physicalButtons=BattleButtonA;before=physical.progress.position.x;physical.tick(pad);
     CHECK(physical.airborne() && close(physical.progress.position.x-before,.0225f));
     pad.confirm=true; // An independently retained HID edge cannot override GP.

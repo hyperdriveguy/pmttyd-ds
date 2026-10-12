@@ -9,7 +9,8 @@ namespace ttyd {
 // Native units are original engine units * .01. The heading/trig service is
 // represented by unit XZ vectors; this is not original numerical ABI emulation.
 struct FieldMovement {
-    float speed=0,headingX=1,headingZ=0;
+    float speed=0,headingX=0,headingZ=-1;
+    float facingDegrees=0; // Prior wall-wrapper facing1a0, distinct from travel1a4.
     float headingOffsetDegrees=0; // marioPreCamera's current camera-produced snapshot.
     FieldSlope slope;
     static constexpr float Walk=.01f,Dash=.0225f,DashStick=55.f/70.f;
@@ -21,11 +22,8 @@ struct FieldMovement {
         return {x*cosine-z*sine,x*sine+z*cosine};
     }
     float movementRate() const {
-        // marioGetMoveRate: u(H)=(sin(H),-cos(H)). Represent its degree trig
-        // service through cached unit travel and the separately owned offset.
-        const float radians=headingOffsetDegrees*3.14159265358979323846f/180.f;
-        const float cosine=std::fma(headingX,std::sin(radians),-headingZ*std::cos(radians));
-        return std::fma(.190000057220459f,std::fabs(cosine),1.f);
+        const float radians=(facingDegrees-headingOffsetDegrees)*3.14159265358979323846f/180.f;
+        return std::fma(.190000057220459f,std::fabs(std::cos(radians)),1.f);
     }
     Displacement applyMovementRate(Displacement travel) const {
         const float rate=movementRate();return {travel.x*rate,travel.z*rate};

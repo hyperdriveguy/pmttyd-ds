@@ -9,9 +9,9 @@
 namespace ttyd {
 namespace {
 constexpr int MaxVertices=12000;
-// Shared field/battle calibration against the unchanged original map scale.
-// Original actor-instance scale still needs confirmation in Dolphin.
-constexpr float PaperCharacterScale=.16f;
+// Provisional legacy billboard/shadow framing for unbound presentation domains.
+// Ordinary Mario uses original model coordinates and the source scalar2.
+constexpr float LegacyPaperCharacterScale=.16f;
 constexpr uint32_t Ink=0xff352d29, Paper=0xffdff2fb, Gold=0xff62c7f3, Red=0xff4966d8;
 uint32_t rgb(unsigned r,unsigned g,unsigned b,unsigned a=255) { return C2D_Color32(r,g,b,a); }
 uint32_t shade(uint32_t c,float factor) { return rgb((c&255)*factor,((c>>8)&255)*factor,((c>>16)&255)*factor); }
@@ -45,6 +45,12 @@ bool Renderer::init() {
     sky.imported=Tex3DS_TextureImportStdio(skyFile,&sky.texture,nullptr,false);std::fclose(skyFile);
     if(!sky.imported)return false;
     C3D_TexSetFilter(&sky.texture,GPU_LINEAR,GPU_LINEAR);
+    if(!actorMesh.load("romfs:/characters.pmmesh"))return false;
+    FILE* characterFile=std::fopen("romfs:/characters-mesh.t3x","rb");if(!characterFile)return false;
+    characterTextures.imported=Tex3DS_TextureImportStdio(characterFile,&characterTextures.texture,nullptr,false);std::fclose(characterFile);
+    if(!characterTextures.imported)return false;
+    C3D_TexSetFilter(&characterTextures.texture,GPU_LINEAR,GPU_LINEAR);
+    C3D_TexSetWrap(&characterTextures.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     return loadMap("map",plaza) && loadMap("stage",stage);
 }
 bool Renderer::loadMap(const char* name,Room& room) {
@@ -198,7 +204,7 @@ void Renderer::box(float x,float z,float w,float d,float h,uint32_t c) {
     quad({x+w,z},{x,z},0,h,shade(c,.74f));
 }
 void Renderer::character(int index,Vec2 p,float h,float w,float face,float lift,float tilt) {
-    h*=PaperCharacterScale;w*=PaperCharacterScale;tilt*=PaperCharacterScale;
+    h*=LegacyPaperCharacterScale;w*=LegacyPaperCharacterScale;tilt*=LegacyPaperCharacterScale;
     const int cell=(index==0 && marioPose>0)?marioPose:index;
     float left=cell*.25f,right=left+.25f;
     if(face>0) std::swap(left,right);
@@ -208,8 +214,16 @@ void Renderer::character(int index,Vec2 p,float h,float w,float face,float lift,
     vertex(x0,y0,p.z,left,bottomV,white);vertex(x1,y0,p.z,right,bottomV,white);vertex(x1+tilt,y1,p.z,right,topV,white);
     vertex(x1+tilt,y1,p.z,right,topV,white);vertex(x0+tilt,y1,p.z,left,topV,white);vertex(x0,y0,p.z,left,bottomV,white);
 }
+bool Renderer::characterModel(const char* name,Vec2 root,float rootY,float yaw,bool reflectZ) {
+    const auto* pose=actorMesh.pose(name);if(!pose || pose->vertices.size()>size_t(MaxVertices-count))return false;
+    for(const auto& v:pose->vertices) {
+        const auto point=actorMeshPoint(v,{root.x,rootY,root.z},yaw,reflectZ);
+        vertex(point[0],point[1],point[2],v.u,v.v,0xffffffff);
+    }
+    return true;
+}
 void Renderer::shadow(Vec2 p,float r,float floor) {
-    r*=PaperCharacterScale;
+    r*=LegacyPaperCharacterScale;
     float x0=p.x-r,x1=p.x+r,z0=p.z-r*.45f,z1=p.z+r*.45f;
 
     uint32_t white=0xffffffff;
@@ -245,7 +259,10 @@ void Renderer::world(const Game& g) {
             {2,CrumpPosition,1.9f,1.9f,-1,0,bob}
         }};
         std::sort(actors.begin(),actors.end(),[](const Actor& a,const Actor& b){return a.p.z<b.p.z;});
-        for(auto a:actors) if((a.index<2 || g.progress.room==0) && (a.index!=2 || !g.progress.crumpDefeated)) character(a.index,a.p,a.h,a.w,a.face,a.lift,a.tilt);
+        for(auto a:actors) if((a.index<2 || g.progress.room==0) && (a.index!=2 || !g.progress.crumpDefeated)) {
+            if(a.index==0 && g.marioPresentation.supported)continue;
+            character(a.index,a.p,a.h,a.w,a.face,a.lift,a.tilt);
+        }
     } else {
         Vec2 mario{-1.7f,0},crump{1.7f,0};float lift=0,tilt=0;
         if(g.phase==Phase::Windup && g.selection==0) {
@@ -267,6 +284,10 @@ void Renderer::world(const Game& g) {
         character(0,mario,1.55f,1.55f,1,lift,tilt);
         character(2,crump,2.1f,2.1f,-1);
     }
+    const int legacyCount=count;
+    if(!battle && g.marioPresentation.supported)
+        characterModel(g.marioPresentation.selected,g.progress.position,g.groundHeight+g.jumpHeight,
+                       g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ());
     C3D_BindProgram(&program);
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);
     AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
@@ -286,7 +307,8 @@ void Renderer::world(const Game& g) {
     buffers=C3D_GetBufInfo();
     BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
     C3D_TexBind(0,&atlas);
-    C3D_DrawArrays(GPU_TRIANGLES,6,count-6);
+    C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
+    if(count>legacyCount){C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,count-legacyCount);}
 }
 void Renderer::text(const char* str,float x,float y,float scale,uint32_t color) {
     C2D_Text t;C2D_TextParse(&t,textBuffer,str);C2D_TextOptimize(&t);
@@ -437,6 +459,7 @@ void Renderer::shutdown() {
         if(room->vertices) linearFree(room->vertices);
     }
     if(sky.imported) {Tex3DS_TextureFree(sky.imported);C3D_TexDelete(&sky.texture);}
+    if(characterTextures.imported) {Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);}
     if(imported) Tex3DS_TextureFree(imported);
     if(atlasReady) C3D_TexDelete(&atlas);
     if(vertices) linearFree(vertices);

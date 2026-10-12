@@ -128,7 +128,7 @@ void headGeometry() {
     Game lowWalk;lowWalk.restore(lowStart);Input lowLaunch=confirm();lowLaunch.x=.5f;
     lowWalk.tick(lowLaunch);CHECK(lowWalk.fieldAirMotion().motion==10 && lowWalk.fieldAirMotion().pendingEntry);
     CHECK(!lowWalk.fieldAirMotion().hasAirFlags() && lowWalk.fieldAirMotion().ticks==1);
-    CHECK(std::fabs(lowWalk.progress.position.x-lowStart.position.x-.0113125f)<.00001f);
+    CHECK(std::fabs(lowWalk.progress.position.x-lowStart.position.x-.013461875f)<.00001f);
     clearCollision();standing.tick({});CHECK(!standing.overheadContact);
     ceiling(0,1);CHECK(loadHead(path));
     Game g;g.progress.room=2;g.progress.position={-1,2};g.tick(confirm());
@@ -209,11 +209,11 @@ void movement() {
         Input i;i.x=x;i.z=z;for(int n=0;n<frames;++n)g.tick(i);
         return Vec2{g.progress.position.x+4,g.progress.position.z-2};
     };
-    CHECK(std::fabs(displacement(DashThreshold,0,1).x-WalkSpeed)<.00001f);
-    CHECK(std::fabs(displacement(DashThreshold+.001f,0,1).x-DashSpeed)<.00001f);
-    CHECK(std::fabs(displacement(1,0,60).x-1.35f)<.0001f);
+    CHECK(std::fabs(displacement(DashThreshold,0,1).x-WalkSpeed*1.190000057220459f)<.00001f);
+    CHECK(std::fabs(displacement(DashThreshold+.001f,0,1).x-DashSpeed*1.190000057220459f)<.00001f);
+    CHECK(std::fabs(displacement(1,0,60).x-1.354275f)<.0001f);
     const auto diagonal=displacement(1,1,1);
-    CHECK(std::fabs(std::hypot(diagonal.x,diagonal.z)-DashSpeed*(1+.190000057220459f/std::sqrt(2.f)))<.00001f);
+    CHECK(std::fabs(std::hypot(diagonal.x,diagonal.z)-DashSpeed*1.190000057220459f)<.00001f);
     CHECK(std::fabs(displacement(0,1,1).z-DashSpeed*1.190000057220459f)<.00001f);
     Game g;Input right;right.x=1;
     advance(g,1);for(int n=0;n<1000;++n)g.tick(right);
