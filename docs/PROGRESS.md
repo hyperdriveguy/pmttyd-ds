@@ -1,5 +1,37 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native battle actor translation and registry queries
+
+Added portable complete BattleTransID selector routing,registry getter/setter
+and Mario/party/system queries. Translation unconditionally reads current battle,
+retains it for scans and preserves raw event owner/actor424/returned unit IDs.
+Only missing party returns-1;missing Mario/system still dereference the returned
+zero address through the memory provider. Getter rejects negative/64+ IDs;setter
+preserves its different signed<64 guard,including wrapped negative-ID writes.
+Queries preserve original kind/flag/belong read order and first admitted slot;
+no HP/status/selected-partner filters are added.
+
+Added native actor-memory adapters and a RunDataEventChild service overload that
+uses these actual recovered helpers against runtime registry bytes. The existing
+explicit-backend overload remains for independently scoped providers/alias tests.
+The original-pack registry integration now uses the actual actor/registry helpers
+instead of fixture selector translation and fixed unit lookup. Unit/table bytes
+are still authored provider data,not an imported original Mario-kind binding.
+
+Validation:make test passes62 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-battle-actor-test.log and /tmp/pm-battle-actor-build.log.
+`build-host/event_callback_registry_tests romfs/events.pmevt` passes the actual
+actor/registry→callback→extracted key7 child path and zero-data continuation.
+Fixtures cover signed boundaries,unconditional read,captured B versus later B2,
+all64 misses,first matches,returned identity versus slot,partner flag read order,
+missing query differences,unfiltered system admission and negative setter alias.
+No source-domain/original-runtime/emulator/hardware fidelity claim.
+
+Next:additional recovered callback families and packed unit/state ownership,
+then execute original Jump and story graphs in Game. Native battle entry/unit
+writers,platform/source/domain/concurrency/FPSCR/full fidelity remain open;goal
+incomplete. Updated EVT-01 documentation-agent breadcrumb.
+
 ## 2026-10-12 — Original-address callback registry and data-child binding
 
 Added `EventCallbackRegistry` with explicit original-address provider bindings,

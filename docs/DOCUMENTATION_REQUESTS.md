@@ -489,6 +489,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): BattleTransID,registry get/
+set and Mario/party/system queries are now implemented with original selectors,
+capture/read order and distinct missing-query/setter policies. Native data-child
+services can use these recovered helpers;the real packed key7 test now does so
+instead of an authored selector/fixed-unit backend.62 CTest/78 Python and make
+all pass. Registry/unit/table data remain authored provider bytes;original unit
+entry/writer/lifetime and full Jump execution are not claimed. Next:additional
+callback families plus packed unit/state ownership. Existing EVT-01/JUMP-01
+source/domain/concurrency/original traces remain open.
+
 Native implementation breadcrumb (2026-10-12): original-address callback
 registry now binds the recovered RunDataEventChild8010a010 to native runtime
 operands/memory/creation/schedule. Real packed key7 child and parent continuation

@@ -28,7 +28,8 @@ int main(int argc,char** argv) {
     auto m=runtime.memoryBinding.services();const auto start=eventSdkInitializeAllocator(0x82000000,0x82100000,1,m);assert(eventSdkCreateHeap(start,0x82100000,m)==0 && memory.writeWord(0x8041e844,0));runtime.gp.refreshRate=60;runtime.initializeContexts();
     assert(memory.registerRam(0x8041eb90,std::vector<uint8_t>(4)) && memory.writeWord(0x8041eb90,0x84000000));
     assert(memory.registerRam(0x84001000,std::vector<uint8_t>(32)) && memory.registerRam(0x84002000,std::vector<uint8_t>(16)) && memory.writeWord(0x84001018,0x84002000) && memory.writeWord(0x84002000,7));
-    auto childServices=nativeBattleDataChildServices(runtime,backend.services());assert(bindBattleDataChildCallback(registry,childServices) && !bindBattleDataChildCallback(registry,childServices) && !registry.contains(0x80107788));
+    assert(memory.registerRam(0x84000000,std::vector<uint8_t>(0x448)) && memory.writeWord(0x84000020+7*4,0x84001000));
+    auto childServices=argc==2?nativeBattleDataChildServices(runtime):nativeBattleDataChildServices(runtime,backend.services());assert(bindBattleDataChildCallback(registry,childServices) && !bindBattleDataChildCallback(registry,childServices) && !registry.contains(0x80107788));
     uint32_t childScript=0x80300100;
     if(argc==2) {EventScriptAssets assets;assert(assets.load(argv[1]) && memory.importScripts(assets));childScript=0x80416bd0;}
     else {
@@ -39,12 +40,12 @@ int main(int argc,char** argv) {
     uint32_t a=0x80300000;emit(runtime,a,91,{int32_t(0x8010a010u),-2,argc==2?7:-50000000});emit(runtime,a,2,{});emit(runtime,a,1,{});assert(memory.writeWord(a,0));
     auto& parent=createRootEvent(runtime.schedule,0x80300000,10,0,runtime.creationServices());parent.owner=7;
     auto tick=[&] {runtime.gp.timestamp+=eventClockRate(243000000);runtime.runManager();};tick();
-    assert(parent.flags&1);assert(backend.translations==1 && backend.lookups==1 && runtime.runtime.nextId==3);
+    assert(parent.flags&1);assert(backend.translations==(argc==2?0u:1u) && backend.lookups==(argc==2?0u:1u) && runtime.runtime.nextId==3);
     if(argc==2)assert(parent.waitingChild==nullptr && runtime.runtime.allocationCount==1);
     else assert(parent.waitingChild && parent.waitingChild->owner==7 && backend.observerCalls==1 && runtime.runtime.allocationCount==2);
     tick();assert(parent.flags==0 && runtime.runtime.allocationCount==0);
     // Found key with value0 dispatches handler2 and continues without a child.
-    assert(memory.writeWord(0x84002004,0));auto& missing=createRootEvent(runtime.schedule,0x80300000,10,0,runtime.creationServices());missing.owner=7;tick();assert(missing.flags==0 && runtime.runtime.nextId==4 && backend.translations==2 && backend.lookups==2);
+    assert(memory.writeWord(0x84002004,0));auto& missing=createRootEvent(runtime.schedule,0x80300000,10,0,runtime.creationServices());missing.owner=7;tick();assert(missing.flags==0 && runtime.runtime.nextId==4 && backend.translations==(argc==2?0u:2u) && backend.lookups==(argc==2?0u:2u));
     assert(registry.unbind(0x8010a010));result=99;assert(!registry.invoke(arbitrary,0x8010a010,0,result) && result==99);
     std::cout<<"native callback registry/data-child execution tests passed\n";
 }
