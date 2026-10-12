@@ -1,5 +1,35 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Complete effect soft/hard release and fog helper correction
+
+Documentation agent ID2 closed effSoftDelete70,effDelete4c and raw Maya free28
+in two detailed contracts plus annotated271-site DOL census. Soft mask02 keeps
+record occupied/name-visible with OR04 and no payload read/free;hard and soft
+fallback free heap3 payload BEFORE flags0,leaving every other record byte stale.
+Maya helper takes raw pointer with no record/null gate. This does not supply
+update/draw/event/scene/audio cleanup or exclusive instance-name ownership.
+
+Corrected earlier fog helper-name error:call80147c80→8005e9c0 is effSoftDelete,
+not effDelete. Timer/address fingerprints were correct;fog forgets its pointer
+after soft request even if allocated/name-visible effect survives. Hard target
+is8005ea30. Exact distinction queued for native owner;ID2 changed no native code.
+
+Validation: verify_effect_deletion.py passes six complete/linked hashes,57
+instructions,SDA span and271 direct sites (30 soft/241 hard). Annotated JSON
+pairs reconcile with pinned set;repeat reports match (/tmp/id2-fxdelete-evidence.json
+and -second.json). Prior fog/SDK heap/general1980 verifiers,Python compile,
+diff-check and2216 local links pass. make test53/53 CTest suites and78 Python
+tests;make all passes. Logs:/tmp/id2-fxdelete-test.log,/tmp/id2-fxdelete-build.log.
+Original listings/ELFs remain /tmp/id2-fxdelete-*;concurrent native/ID1 work preserved.
+
+Own lock released;EVT-01/JUMP-01/DMG-02 remain open. Next recover effect-specific
+04 consumption/main/draw/driver/resource lifetime,raw/scene/REL ownership and
+original frame/exception traces;other record/reset/end/turn/source requests also
+remain. Native original source/registry/address/heap/time/render/audio/message
+binding and original execution still required. Goal active/incomplete;full-game
+fidelity/requirements completion cannot be inferred from static deletion leaves.
+
+
 ## 2026-10-12 — Complete conditional action-state6 root registration
 
 Implemented `battle_attack_registration.cpp` for the complete documented state6

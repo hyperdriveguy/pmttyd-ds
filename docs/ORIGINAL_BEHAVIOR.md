@@ -755,3 +755,10 @@ repeated speed effects,inherited-FPR domains,contact and publication order are
 closed locally. partyFlyMain has only selected caller-tail evidence here;its
 full history writer,called engines/source/math/pose and original trajectories
 remain open. No full-system or complete-game equivalence claim follows.
+
+
+[Effect soft/hard deletion](behavior/EFFECT_SOFT_AND_HARD_DELETION.md) and
+[caller/name/payload lifetime](behavior/EFFECT_DELETE_CALLERS_AND_LIFETIME.md)
+close full release leaves and271 scoped DOL sites (30 soft/241 hard). Corrected
+fog helper name:8005e9c0 is soft OR04 for mask02 records,not unconditional
+hard release. Update/driver/scene/backend/raw/REL and original traces remain open.

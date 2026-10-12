@@ -18,6 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Flying history production,initialization and source bindings | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete partyFlyMain/partyMoveFlyInit,bank/flag/slot/source and used caller bindings;full animation/ability/terrain/source/numeric/original trajectories remain separate |
+| Effect soft/hard deletion and payload-release ownership | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete leaves](behavior/EFFECT_SOFT_AND_HARD_DELETION.md),[caller/name/fog lifetime](behavior/EFFECT_DELETE_CALLERS_AND_LIFETIME.md):soft02→OR04 versus hard heap3 free→flags0,raw Maya pointer,all271 DOL sites and fog-name correction;update/draw/driver/scene/raw/REL/runtime remains open |
 | Majinai effect construction,pool acquisition and map-word publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Constructor/payload](behavior/MAJINAI_EFFECT_CONSTRUCTION.md),[pool/map helpers](behavior/EFFECT_POOL_ACQUISITION_AND_MAP_PUBLICATION.md):full local order,heap3/count reread,partial name clear,exhaustion/no-null guard and map+1e WORD publication;main/draw/delete/resource/platform/source/runtime remains open |
 | Partner flyMain dispatch and flying movement handlers | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Fly dispatch](behavior/FIELD_PARTNER_FLY_DISPATCH.md),[behind-fly](behavior/FIELD_PARTNER_BEHIND_FLY.md),[homing entry](behavior/FIELD_PARTNER_HOMING_FLY_ENTRY_AND_SPEED.md),[history loop](behavior/FIELD_PARTNER_HOMING_FLY_HISTORY_LOOP.md),[collision tail](behavior/FIELD_PARTNER_HOMING_FLY_COLLISION_TAIL.md),[speed writers](behavior/FIELD_PARTNER_FLY_SPEED_WRITERS.md):complete local five-body graph,nine direct-site census;full flying history writer/other motion/pose/terrain/source/numeric/original trajectories remain open |
 | Battle fortune producer and pouch reset/random-selection policy | EVT-01, JUMP-01, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete producer](behavior/BATTLE_FORTUNE_PRODUCER.md),[init/call/RNG accounting](behavior/BATTLE_FORTUNE_INIT_AND_CALL_BINDINGS.md):signed countdown/sticky mode,inline setup-mask20 thresholds,word compare before byte store and two direct bindings;field assignment/save/setup/turn/consumer/runtime remains open |
@@ -1972,3 +1973,27 @@ Five complete hashes plus selected actual partyFlyMain caller tail,869 anchors,
 34 constants,four spans,two imports and nine direct sites validated;53 CTest/
 78 Python tests and3DS build passed. Parent requests remain open for full
 flying history/source/other motion/pose/backend/numeric/runtime composition.
+
+
+ID2 EVT-01/JUMP-01/DMG-02 effect deletion delivery (2026-10-12), partial answer:
+[Complete soft/hard/Maya leaves](behavior/EFFECT_SOFT_AND_HARD_DELETION.md)
+closes null/exact-zero gates,soft numeric02→OR04 with NO payload read/free,
+soft no02 fallback and hard __memFree(3,E.c)→flags0 ONLY,raw Maya pointer free
+without record/null gate. Stale payload/name/count/callback/resource survive;
+record bank/event/audio/map ownership not automatically freed. [Caller/lifetime](behavior/EFFECT_DELETE_CALLERS_AND_LIFETIME.md)
+includes271 annotated/pinned DOL direct sites (30 soft/241 hard) and name-visible
+soft requests versus hard-hidden slot reuse. Own lock released;effect-specific
+04 consumption/update/draw/driver/free cadence,pool/scene/raw/REL/platform and
+original traces remain open.
+
+ID2 correction to prior fog wording:BattleFogEndCheck call80147c80 targets
+8005e9c0 effSoftDelete,not effDelete (hard is8005ea30). Fog clears its own pointer
+AFTER soft request;mask02 record/payload can remain allocated/name-visible.
+Native owner must bind that exact soft service,not unconditional payload free.
+Numeric target/timer body evidence was correct;helper-name interpretation is
+corrected in first-process doc. Majinai ordinary flags3 soft request becomes7;
+its update still needs separate04-consumption evidence. Verifier passes six
+complete/linked hashes,57 anchors,SDA span and271 exact pairs;annotated census
+reconciles;repeat reports equal. Prior fog/heap/general1980 checks pass;make test53
+CTest/78 Python and make all pass;2216 local links resolve. No native/test/asset
+edits by ID2;original ELF/listings remain /tmp/id2-fxdelete-*.
