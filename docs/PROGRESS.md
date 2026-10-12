@@ -9919,3 +9919,52 @@ name-marker consumers,ground homing/behind/beside and source/flag/count/alias/FP
 lifecycle. Obtain matched original slit/roll/following traces and recover one
 complete original playable encounter through persistent outcomes. Full-game
 behavior documentation and final complete-game requirements remain incomplete.
+
+## 2026-10-12 — Native contact camera targets, full straight paths and zones
+
+Implemented incremental native commits `86150f2`, `19c5104` and `93b2817`.
+Ground-search support now retains the actual winning quantized ray contact;
+Mario publishes its engine-unit camera collision triple only for genuine source
+hits. Misses retain that triple, the transient display40000 flag clears in the
+publication tail, and CamMain consumes the prior contact triple with source Y+1.
+The portable source shift work implements signed input accumulation, prior-root
+motion gating, acceleration/neutral behavior and the literal desired-sign clamp
+(including the flag20 negative overshoot corner). Room/restore reset clears its
+listed values while retaining its prior timestamp and the global simulation-clock
+adapter. Shift reads the prior candidate's active/rate fields; the real candidate
+producer still needs the complete road pipeline. Simulation milliseconds are a
+60Hz bridge, not recovered hardware OS-clock equivalence.
+
+The curve module now accepts all44 shipped roads and220 straight-dispatch pairs:
+raw endpoint halfspaces precede source near-normal collapse; infinite chord
+projection/dominant-axis fraction stays unclamped; raw tangent interpolation,
+strict uncapped-distance ties, side/end caps and unwritten result+4 survive.
+All10 exact zero-delta duplicates are evaluated in order using a finite
+output-equivalent fraction adapter, not an invented source register write.
+The zone service scans original records/zones/polygon fans with the actual
+retained look target, version101 disable gates and the distinct zero-zone strict
+height fallback. Sloped planes, winding-dependent coplanar admission, inclusive
+edges, degenerates and later equal-height polygon replacement follow the source
+contract. All494 original triangles are evaluated by optional asset checks.
+Very thin exported slivers expose host-float centroid conditioning; production
+adds no geometric epsilon. SDK/FMA rounding parity remains unverified.
+
+Validation: final `make test` passed60 CTest targets and78 Python tests;
+`make all` built the3DSX. `build-host/camera_road_assets_tests original` passed
+all44 roads/494 triangles; `build-host/core_tests original` passed18315 indexed
+collision probes and all8 source-room arrival regressions. Read-only source
+verifiers passed contact/shift17 spans61 anchors, segment dispatch4 spans35
+anchors/all220 pairs, map lifetime27 spans51 anchors, and zones5 spans33
+anchors/11 derived cases. Isolated Azahar contact+clock smoke passed with
+`tests/azahar_roads.py`; captures are ignored in
+`artifacts/azahar-camera-contact-clock/`. The final zone-build isolated reciprocal-road smoke also passed; captures are
+in ignored `artifacts/azahar-camera-zone/`. No user's emulator profile/save was modified.
+
+Next: bind moving correction and source candidate/destination/origin transitions
+into the rendered eye/at pipeline and feed the prior candidate shift producer.
+Use recovered live lens defaults rather than file lens metadata. Fix actor
+geometry-bake root/scale metadata using the new actor render contract; the current
+cropped Mario thumbnail cannot inherit those bounds blindly. The rendered camera
+remains provisional until this integration is checked. Event camera overrides,
+original numeric parity, authored story/event execution and full-game completion
+remain unfinished; these steps do not complete the overworld or remake.

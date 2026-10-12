@@ -1,5 +1,36 @@
 # Mechanics evidence ledger
 
+## 2026-10-12 — Contact target, shift lifecycle and full authored zone geometry
+
+Native86150f2 binds the genuine winning ground-ray contact to Mario's retained
+camera-collision target; misses retain the value and display40000 is transient.
+Camera consumption precedes current motion and adds one engine unit to contactY.
+Shift work follows OVERWORLD_CAMERA_COLLISION_TARGET_AND_SHIFT.md, including the
+literal desired-sign clamp and flag20 overshoot. Map reset preserves the source
+shift timestamp; a separate global60Hz simulation-clock bridge survives native
+restore. This bridge is an adaptation, not OS/Gekko clock reconstruction. The
+prior road candidate producer remains unbound, so ordinary native secondary
+shift still awaits that pipeline rather than using a current-record substitute.
+
+Native19c5104 extends the earlier19-record solver to all44 shipped finite paths.
+Source near-normal collapse selects straight dispatch for all220 pairs; raw
+halfspaces/output tangents are retained. Exact zero parameter/tangent deltas
+close all10 duplicates for finite incoming fractions, permitting an equivalent
+native fraction0 while preserving point evaluation/ties. Infinite-line host
+projection and sqrt remain numerical adaptations, not original SDK parity.
+Native93b2817 implements the general source zone triangle/caller service,
+including234 nonhorizontal authored triangles, exact-zero/vertical rejection,
+coplanar winding asymmetry and polygon equality replacement. Zone fallback
+height equality remains strict. Optional native tests visit all494 triangles;
+ill-conditioned f32 slivers are checked for safe finite/preserved output without
+asserting a mathematical centroid must survive source strict boundaries. No
+production tolerance or flattened geometry is added. These are static-source
+and native checks; no original Dolphin camera trajectory was observed.
+
+Candidate geometry is now closed for the shipped finite room domain. Moving
+correction, state comparison/blending and final ordinary eye/at binding still
+must replace the provisional renderer before camera fidelity is claimed.
+
 ## 2026-10-12 — Original camera data and straight-path branch
 
 Native2ea1c21 reads immutable big-endian original camera offsets without original

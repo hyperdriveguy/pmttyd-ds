@@ -1473,3 +1473,14 @@ Reuse the original source through the documented asset provider;do not commit
 or distribute the ISO/extracted TPL/compiled packs. Original Nintendo/Intelligent
 Systems data;this project records no redistribution licence or rights transfer.
 See [driver/cache source](behavior/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md).
+
+## 2026-10-12 — Contact/shift and full camera geometry native binding
+
+Native86150f2/19c5104/93b2817 add camera mechanics without changing original
+asset conversion, raw `.camera` bytes, mesh/audio pack formats or source ISO
+access. Existing five original camera files remain ignored local RomFS assets;
+all44 record identities and494 zone triangles stay authored and unflattened.
+No original geometry, texture, dialogue, music or sound bytes were committed.
+Ownership/licensing and local-only use remain as recorded above. The actor render
+contract now records source model scale/root transforms; no actor rebake or
+thumbnail/root conversion is claimed by this step.
