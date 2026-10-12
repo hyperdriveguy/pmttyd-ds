@@ -967,3 +967,21 @@ orthogonal air input, post-cap ordering and native depth displacement. No origin
 measured speed/camera/trig trace is claimed. Terrain angle-record scaling, stair
 retained travel/third-call reentry, support-loss motion10 versus11 and their tuple/
 drift ownership are separate pending contracts and implementation tasks.
+
+## 2026-10-12 — Ordinary authored camera pipeline native binding
+
+Native64008d5 implements OVERWORLD_CAMERA_ROAD_TRANSITIONS.md and
+OVERWORLD_CAMERA_MOVING_SHIFT_CORRECTION.md over all shipped source path/zone
+providers. Original7th-argument correction uses prior destination shift,
+anchor/flags/timestamp, independently queries prior/current shifts, resets
+cap-release weights before budgets and preserves initial direction/index.
+Transition compare ordering, literal easing scale, restart-from-current,
+geometry-only blend writes and metadata completion copies are retained. Global
+simulation-clock milliseconds are an adapter for the two source GP clocks.
+Ordinary camera state feeds rendered eye/at, cutaway eye, heading and screen
+cache with live default lens rather than camera-container metadata. Source
+numerical services, handheld aspect, actor pose backend and event/dolly/lens
+stages remain explicit boundaries. Isolated native captures/host cases prove
+binding and traversal, not original Dolphin trajectory equivalence. The prior
+ledger's unbound candidate/view limitation is superseded by this commit; remaining
+actor root/scale and event camera work must still be completed.

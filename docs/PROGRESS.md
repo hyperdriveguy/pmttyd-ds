@@ -10120,3 +10120,50 @@ following traces. Reconcile pending inventory drafts/generator labels,bind actua
 US story keys/events/speakers/conditions and recover a full original playable
 encounter through persistent outcomes. Full-game documentation and final
 complete-game requirements remain incomplete.
+
+## 2026-10-12 — Authored camera pipeline reaches the native rendered view
+
+Native64008d5 binds candidate production, prior destination/history, moving
+shift correction, source comparison and transition restart/easing to ordinary
+field camera ticks. Previously imported paths/zones now determine rendered
+camera geometry rather than leaving the fixed-view renderer authoritative.
+The prior candidate active/rate producer feeds camShift on the next callback.
+Current/destination/origin metadata follows whole-state copy versus geometry-only
+blend ownership. Cap-release weights reset before movement and increment after
+candidate production. No-zone retained-record fallback and failed target history
+preserve source ownership. Unsupported/nonfinite domains preserve the prior work;
+no generic linear camera clamp substitutes for source candidates.
+
+The renderer, cutaway eye, movement heading and screen-cache frame consume the
+same authored eye/at. Live default lens25/1/32768 engine units is kept separate
+from file25/.01/1000 metadata. Render near/far are scaled to native units;
+handheld aspect is a presentation adaptation, while source gameplay projection
+retains608x480. Portable projection, normalization, acos/trigonometry, Rodrigues
+axis rotation and vector budget decomposition are explicit SDK/Gekko numerical
+adaptations. Event lens/dolly/blending stages are not yet bound; documentation
+was requested from the original documentation agent. Recovery rebase preserves
+an already authored frame rather than replacing it with the old fixed view.
+
+Validation: final make test passed62 CTest targets and78 Python tests; make all
+built3DSX. Original camera tests passed44 roads/494 triangles plus native Game
+candidate/rate/frame/reset assertions; original core passed18315 full-scan
+collision probes/all8 room arrival regressions. New cases check direct first
+candidate display, cost asymmetry/early gates, zero increment on transition
+start, restart from blended geometry, metadata retention, literal easing scale,
+cap-release zero budget, fallback, backwards-clock preservation, source default
+lens, center projection and axis-rotation sign. Source transition verifier passed
+7 spans62 anchors8 derived cases; moving-shift verifier7 spans60 anchors6 cases.
+Isolated Azahar completed both east-road reciprocal traversals using the authored
+view; captures ignored under artifacts/azahar-camera-pipeline/. This smoke
+preceded the final recovery-only frame-retention adjustment; final host/build
+checks cover that build. No original-runtime camera parity or hardware test is
+claimed. Capture review shows the existing cropped actor atlas remains too small
+relative to recovered model geometry; the source camera must not be retuned to
+hide that asset mismatch.
+
+Next: rebake original Mario/partner geometry with source root/padding/scale
+metadata, then correct actor quads/transforms. Bind ordinary dolly/event blending
+from requested docs; replace the fixed bottomless screen-probe helper with the
+source current-frame probe loop once its contract is published. Continue event,
+story, partner and other overworld gaps. The full overworld/remake remains
+unfinished; keep the original objective active.

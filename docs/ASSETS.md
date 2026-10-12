@@ -1502,3 +1502,13 @@ sound/proj/pmario.proj,pool,sdir,samp audio-map pipeline:3218 GameCube identitie
 and RomFS WAV/audio-map.json derivatives remain unstaged. Original rights remain
 with their owners;local analysis/conversion grants no redistribution license.
 Exact build log:/tmp/id1-slit-collision-build.log.
+
+## 2026-10-12 — Authored camera pipeline consumes retained original containers
+
+Native64008d5 uses original camera road/path/zone/lens-metadata identities in
+RomFS to calculate the view. Raw camera conversion and all asset packs remain
+unchanged; no original bytes or compiled artifacts were committed. File lens
+metadata drives the source moving-shift calculation, while live default lens
+remains a separate owner. Capture review identified existing cropped actor atlas
+root/scale loss; no actor rebake is claimed yet. Original licensing/local-only
+provenance remains unchanged.
