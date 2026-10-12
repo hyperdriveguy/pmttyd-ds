@@ -1181,3 +1181,11 @@ close both local request blocks/four pswp queries. Reproduce with
 verify_map_tev_projected.py:233 scoped words/three spans/two imports/six sites.
 Four remaining middle internals/source/GX/capture/lifetime/images and full-game
 requirements stay open;containing TEV hash retains PARTIAL semantic status.
+
+ID2 seven-party snapshot initialization closure (2026-10-12):
+[Reset/raw map](behavior/battle/PARTY_BATTLE_SNAPSHOT_INITIALIZATION_AND_RAW_MAP.md),
+[import/export/lifetime](behavior/battle/PARTY_BATTLE_SNAPSHOT_INIT_IMPORT_AND_LIFETIME.md)
+close seven44-byte records/1.0/ordered fill and typed stores/two-byte gaps;
+link same-record consumers and already recovered initial unit data-table copy.
+3 hashes/34 anchors/2 spans/1 scoped DOL call verified;84 CTest/90 Python/
+make all pass.Later producers/source/save/query/Game/platform/runtime open.

@@ -1,3 +1,25 @@
+## 2026-10-12 — ID2 seven-party battle snapshot initializer
+
+[Complete reset/raw map](behavior/battle/PARTY_BATTLE_SNAPSHOT_INITIALIZATION_AND_RAW_MAP.md)
+and [import/export/lifetime requirements](behavior/battle/PARTY_BATTLE_SNAPSHOT_INIT_IMPORT_AND_LIFETIME.md)
+close BattlePartyInfoWorkInit800f7c20/84.Seven44-byte records,1.0 scalar,
+word24 before fill30,half28/kind increment/half2a,gaps22/23 preserved.
+Same-record import/export and already documented kind.c0→unit18 publication
+are linked;runtime source selection/mutations/readiness remain separate.ID2
+lock released;no native code/tests/assets changed.
+
+Validation:`tools/verify_party_snapshot_initialization.py` twice,identical:
+3 hashes(1 complete/2 linked),34 anchors,2 spans,and complete scoped aligned
+DOL direct-call search(one BattleInit site).Python compilation,existing
+behavior/all-party callback verifiers,own links,and scoped whitespace passed.
+`make test`:84 CTest/90 Python passed.`make all` passed.
+
+Limits:static initializer/scoped caller evidence only.Later snapshot export/
+import invocation domains,switch/turn/end/reset cadence,global/source owner
+changes,pouch/disk persistence,query-event reachability,Game/platform/original
+execution/full-game requirements remain open.Next port-documentation evidence:
+export callers/source-table changes or continue query-event source closure.
+
 ## 2026-10-12 — ID2 remaining six party weapon callbacks
 
 [Complete protocol/Koops exception](behavior/battle/PARTY_WEAPON_CALLBACKS_COMPLETE_SHARED_PROTOCOL.md)
