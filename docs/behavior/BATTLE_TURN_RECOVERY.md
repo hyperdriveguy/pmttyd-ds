@@ -123,8 +123,8 @@ it is not a raw HP decrement. The shadow-guard predicate is specified in
 At0x8011c69c call BattleWaitAllActiveEvtEnd(B). If0, exit and leave sequence
 unchanged. Otherwise call BattleCheckConcluded(B): if nonzero, set channel0=3
 and channel7=0x07000000, then exit. If zero, increment channel3 once and exit,
-without immediate recursive progression. BattleCheckConcluded internals and
-conclusion sequence are not inferred merely from these names.
+without immediate recursive progression. The predicate is specified in [waits and conclusion](BATTLE_WAITS_AND_CONCLUSION.md);
+the downstream conclusion sequence remains open.
 
 BattleWaitAllActiveEvtEnd at0x8011ace8,size0x104 first calls
 BattleWaitAllActiveEvtEnd_NoBgSetEndWait(B). A zero result immediately returns0.
@@ -132,8 +132,9 @@ Otherwise inspect event-ID words at B+0x182b4,0x182c4,0x180fc,0x182c8,0x182c0
 in that order. For each nonzero ID call evtCheckID(0x80036604): if nonzero,
 return0 immediately; otherwise clear that stored word and continue. Return1
 when all are absent/finished. Later fields are not examined or cleared after
-an earlier live event. The initial helper's unit/background wait rules remain
-unrecovered, so this is the exact outer protocol, not complete wait semantics.
+an earlier live event. The initial helper's unit-event cleanup and reaction queue are now specified
+in [waits and conclusion](BATTLE_WAITS_AND_CONCLUSION.md). Queue producers and
+outer controller cadence remain open.
 
 BattleIncSeq(0x800f895c,size0x44) obtains the requested channel through
 BattleGetSeq, adds1 as a word, and calls BattleSetSeq. The getter/setter
@@ -166,3 +167,7 @@ outer turn cadence remain open.
 The recovery and Happy event bodies are now documented in
 [recovery events](BATTLE_RECOVERY_EVENTS.md), with their remaining motion, pose
 and data-binding dependencies kept explicit.
+
+The initial unit barrier, reaction queue and conclusion predicate are now
+specified in [waits and conclusion](BATTLE_WAITS_AND_CONCLUSION.md). Their
+producers and downstream victory/defeat sequences remain open.

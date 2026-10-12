@@ -2505,3 +2505,29 @@ bindings; move reset and remaining unit-event waits/conclusion handling; outer
 turn/phase/action cadence and actual death/revival event scripts. Continue
 full-system coverage before complete-game requirements. Full objective remains
 active/incomplete; original/native execution and rendering comparisons required.
+
+## 2026-10-12 — Unit-event barriers, reaction queue and conclusion predicate
+
+Previous turn progressed with9317c39 recovery event scripts. Added
+BATTLE_WAITS_AND_CONCLUSION.md: full unit-handle scan/cleanup, outer barrier,
+64-pair reaction initialization/insertion/all-match compaction/dispatch,
+missing-unit recursion, allocation failure readiness, four reservation slots
+and consumption before conclusion, three-group configuration scans/result
+writes and final forced-flag predicate. Duplicate unit insertion ignores a
+new key; unit barrier visits all handles despite an earlier live event.
+Queue/configuration/reservation producers and victory/defeat execution remain
+open. Turn recovery's obsolete helper boundaries now link the new contract.
+
+Validation:266 instruction anchors and prior table/constant/script checks passed
+against read-only US ISO. Evidence117 function fingerprints reproduced exactly.
+Behavior links resolve and git diff --check passed. make test passed core plus36
+Python tests; make all exited0, no rebuild. Workspace started clean; only research
+files edited. No runtime code authored, original executable/emulator run, or
+profile/save modification. Extracts/disassembly/reports remain ignored; ASSETS.md
+updated. Static anchors/fingerprints do not prove dynamic equivalence.
+
+Next: queue/configuration/reservation writers and pouchRemoveItem semantics,
+conclusion sequence/rewards, move reset and outer turn/phase/action cadence;
+JumpPosition, float/pose services and actual death/revival scripts. Continue all
+systems before deriving complete-game requirements. Full objective remains
+active/incomplete; original/native traces and rendering comparisons required.

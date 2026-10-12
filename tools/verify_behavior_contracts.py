@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'battle_waits_and_conclusion': {
+        0x8011ac00: '901f029c', 0x8011ac30: '901f02a8',
+        0x8011ac60: '901f02b4', 0x8011ac90: '901f02bc',
+        0x8011acc0: '4bfdcc3d', 0x800f795c: '4bffffa1',
+        0x800f79bc: '38600001', 0x800f7aa0: '4d820020',
+        0x800f7a60: '38e7ffff', 0x800f74f0: '7fdce92e',
+        0x8011aa5c: '901f000c', 0x8011aac8: '546000c7',
+        0x8011ab2c: '5400035b', 0x8011ab80: '2c1e0002',
+        0x8011ab94: '540306b6', 0x8011ab9c: '7c601910',
+    },
     'recovery_event_services': {
         0x80037530: '4bfcdb85', 0x800375dc: '90fe00c4',
         0x80109fc4: '83df0004', 0x8010a074: '4082000c',
