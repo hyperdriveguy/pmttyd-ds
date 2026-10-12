@@ -13,6 +13,14 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'status_presentation': {
+        0x800fc1b0: '540007bd', 0x800fc238: '4182002c',
+        0x800fc268: 'c042ad88', 0x800fc2d0: '480eeca5',
+        0x800fc324: '98c40038', 0x800fcbf8: '4bf61dc9',
+        0x800fcc20: '90040018', 0x800fcc54: '4182012c',
+        0x800fccbc: '7c002800', 0x800fccf4: '38c00000',
+        0x800fcd94: '4802bc59', 0x800fcf3c: '38600001',
+    },
     'status_infliction': {
         0x800fbde8: '7c680774', 0x800fbeb8: '281f001c',
         0x800fbf8c: '54600085', 0x800fc05c: '2c1a0000',
@@ -199,6 +207,12 @@ def verify(iso_path):
             if read(address, len(expected)) != expected:
                 raise ValueError(f'Damage sound binding mismatch {address:#x}')
         print('Nine damage presentation constants and seven sound keys verified')
+        for address, value in {0x804221c8: 300.0, 0x804221cc: 30.0,
+                               0x804221d0: 40.0, 0x804221d4: 20.0,
+                               0x804221d8: 15.0}.items():
+            if struct.unpack('>f', read(address, 4))[0] != value:
+                raise ValueError(f'Status effect constant mismatch {address:#x}')
+        print('Five status effect position constants verified')
         status_tables = {
             0x80364204: [0x7970, 0x792c, 0x7970, 0x7970, 0x7adc,
                          0x7970, 0x7970, 0x7970, 0x7970, 0x7970,
@@ -225,6 +239,8 @@ def verify(iso_path):
         print('All 81 status getter/setter/recovery dispatch targets verified')
         # Fingerprints of the separately inspected case maps, not an execution proof.
         infliction_tables = (
+            (0x8034c7f8, 28, '78ec0d9865ffbf5a197b16a22800f14c27f642873d6061c0e265b67e35cf4a4f'),
+            (0x8034c794, 25, 'c67b16aaef8708d9bc9af9553796fee24ddd20cac8ee56f938843297612dcea9'),
             (0x8034c750, 17, '0df1727cb6b1b471c2b3b04c27d2308c33e6bd20e9a14de0b8e0d9e835173d0c'),
             (0x8034c994, 25, '3e6d231a24a0bd9498fb481225a285aee6fff4a8f1a3b4171ec3dc0cca9636a6'),
             (0x8034c924, 28, 'c12058ae38eb7cc956e7047bf4ce84a67823257e03172a88131b7631a57c2b15'),
@@ -237,7 +253,7 @@ def verify(iso_path):
         for address, count, digest in infliction_tables:
             if hashlib.sha256(read(address, count*4)).hexdigest() != digest:
                 raise ValueError(f'Status infliction table fingerprint mismatch {address:#x}')
-        print('Eight status infliction table fingerprints verified (201 entries)')
+        print('Ten status infliction/presentation table fingerprints verified (254 entries)')
 
 
 if __name__ == '__main__':

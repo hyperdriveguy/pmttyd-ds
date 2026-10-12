@@ -5,8 +5,8 @@ and jump-table inspection; friendly status names are R labels from
 [status storage](BATTLE_STATUS_STORAGE.md). Identity/source boundaries are in
 [ORIGINAL_BEHAVIOR.md](../ORIGINAL_BEHAVIOR.md). No original execution or Switch
 equivalence is claimed. This documents the weapon wrapper/helpers and the
-admission/mutation prefix of BattleSetStatusDamage. Its extensive presentation
-and announcement middle remains to be recovered separately.
+admission/mutation prefix of BattleSetStatusDamage. The remaining local branches are documented in
+[status presentation and completion](BATTLE_STATUS_PRESENTATION.md).
 
 | Routine | US address / size |
 | --- | --- |
@@ -195,9 +195,10 @@ The local setter return then gates a large effects block beginning at
 statuses still active after the call.
 
 This document's detailed application-prefix coverage ends at0x800fc194.
-The remaining0x800fc198–0x800fcf3c includes effect creation/cleanup, announcements,
-sound selection and final return behavior; it has not yet been fully specified
-here. Do not substitute the local setter return for the whole function return
+The remaining effect creation/cleanup, announcements, sound selection and
+completion are specified in [the tail contract](BATTLE_STATUS_PRESENTATION.md).
+After reaching that tail the whole function returns1, including when the setter
+returned0 after cancellation. Do not substitute the local setter return for the whole function return
 when implementing the wrapper's id18 pose update. The numeric setters themselves
 are documented in [BATTLE_STATUS_STORAGE.md](BATTLE_STATUS_STORAGE.md).
 
@@ -211,7 +212,7 @@ Gale Force X adjustment; setters returning0 while result bits are added;
 ascending multi-status application whose earlier state affects later gates.
 
 These are proposed differential cases, not original execution tests. Still
-required: all weapon data bindings, equipment-count semantics, complete
-application presentation/return tail, orchestration callers, status turn
+required: all weapon data bindings, equipment-count semantics, effect/announcement service internals,
+orchestration callers, status turn
 schedule and periodic effects. No full infliction or combat equivalence claim
 follows from the recovered prefix alone.

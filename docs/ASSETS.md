@@ -26,13 +26,15 @@ includes src/include/config and rels under ignored
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
 now fingerprints 84 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 165 instruction anchors plus those
+window tables. Independent verifier checks 177 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
 Status storage research checks all81 getter/setter/recovery jump-table targets.
-Infliction research fingerprints eight additional inspected case tables,
-201 entries total, and documents the application-prefix/presentation boundary.
+Infliction/presentation research fingerprints ten additional inspected case
+tables,254 entries total, and checks five status effect position constants.
+The application tail documents sound-key bindings, payload writes and completion
+semantics; effect and announcement service implementations remain open.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,
