@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'power_general_logarithm': {
+        0x80270274: '4080001c', 0x80270284: 'fc010032',
+        0x80270298: '38a5988e', 0x802702c0: '38a5b67a',
+        0x802702d4: '3ce7fff0', 0x802702dc: '394a0001',
+        0x802702f4: '64a82000', 0x80270320: 'ff820024',
+        0x8027032c: '3d080008', 0x80270340: '90610018',
+        0x8027035c: '90610024', 0x80270368: 'fc8406fa',
+        0x8027038c: 'fffdfb3c', 0x802703b4: 'fd9dffbc',
+        0x802703b8: 'fd3b4afa', 0x802703d0: 'fd9b62fa',
+        0x802703e0: '9061001c', 0x802703fc: 'fc9b027a',
+        0x80270408: '90610044', 0x8027041c: 'fc050032',
+        0x80270420: 'fc06007a', 0x80270430: 'fc03002a',
+        0x80270438: '90610034', 0x8027044c: 'fc010028',
+    },
     'power_large_exponent_path': {
         0x80270164: '40810104', 0x8027016c: '7c071800',
         0x80270180: '4181001c', 0x8027019c: '7c061800',
@@ -1459,6 +1473,15 @@ def verify(iso_path):
         if hashlib.sha256(read(0x80428e30, 48)).hexdigest() != 'f42eb6f1023251a852bb1af6d1e79824f428f6789e4e112203e2e351567fbf25':
             raise ValueError('Power near-one polynomial constants mismatch')
         print('All six power large-exponent polynomial constants verified')
+        for address, length, digest in (
+                (0x80303c48, 48, 'b7be4970ae76e6c5b3032cec045c00a41a333c936a99d6284baee0222886c338'),
+                (0x80428e60, 88, '77ad17ab1d62d8ff775cd8f719880b03d87bd8dbdbd03052b515be989f4ce21b')):
+            if hashlib.sha256(read(address, length)).hexdigest() != digest:
+                raise ValueError(f'Power general-log constants mismatch {address:#x}')
+        if read(0x80428f20, 8).hex() != '4330000080000000':
+            raise ValueError('Power general-log signed conversion bias mismatch')
+        print('Six log table entries, eleven scale/coefficient doubles and signed bias verified')
+
 
 
 

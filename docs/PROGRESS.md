@@ -4178,3 +4178,29 @@ callers and uncovered story/event/field/battle/audio/save/content before complet
 game requirements. Full objective active/incomplete;local branch recovery does
 not establish full power/numerical/layout or complete-game fidelity. Original
 IDs/tokens and story attribution/order/branches/event conditions remain required.
+
+## 2026-10-12 — US power general logarithm
+
+Added POWER_GENERAL_LOGARITHM.md for __ieee754_pow80270268..80270450:
+absolute/subnormal scaling,high-word normalization/reference thresholds,
+synthetic denominator words,ratio compensation,fused Horner polynomial,
+product split and final corrected logarithm high/low pair. Recorded six table
+entries,eleven scale/coefficient words and signed conversion bias;preserved
+separate/fused operations and integer low-word clears. Common exponentiation/
+range/sign tail remains open;no numerical accuracy or original execution claim.
+
+Validation:1428 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO,with two complete table/coefficient hashes and signed bias.
+Fresh289-function reports reproduced byte-for-byte. All505 local behavior links
+resolved;git diff --check passed. make test passed core plus36 Python tests;
+make all exited0 with no rebuild. No original execution/emulator,profile/save
+modification,native implementation,asset conversion or story/message rewrite.
+Original disassembly/reports remain ignored;working tree clean at turn start.
+
+Next: common y/log multiplication,overflow/underflow gates,exponential polynomial,
+exponent reconstruction/sign and dependencies;executed base-five/general power/
+FPSCR and composed scanner/converter comparisons. Continue drawing/string/
+resource/cadence and uncovered story/event/field/battle/audio/save/content
+before complete-game requirements. Full objective active/incomplete;local log
+recovery is not full power/numerical/layout or full-game fidelity. Original data/
+IDs/tokens and story attribution/order/branches/event conditions remain required.
