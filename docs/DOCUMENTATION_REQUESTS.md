@@ -277,6 +277,17 @@ stat trace or collapse current/max/base copies when implementing resources.
 
 ## STATUS-01 — Status lifetime, event binding and turn ownership (open)
 
+Native implementation breadcrumb (2026-10-12): commit7e43c5a implements
+UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md in `source/battle_unit_resources.cpp`,
+with derived cases in `tests/battle_unit_resources_tests.cpp`. Native battle
+start now invokes the recovered status/info clear. Pouch resource callbacks and
+seven partner snapshots have explicit semantic service boundaries; they are not
+yet native save/load, party-switch or turn owners. Existing requests for exact
+export/import caller cadence, snapshot initialization and resource/equipment
+ownership remain open. Preserve direct negative/shared status bytes on import;
+only nonpositive partner HP overrides status27 duration. Do not infer original
+disk-save layout or status lifetime from these portable helpers.
+
 Further ID2 answer:[badge/count import](behavior/UNIT_BADGE_COUNT_IMPORT.md)
 recovers full _EquipItem/BtlUnit_EquipItem,40-byte clear,all200 signed pouch
 slots,exact numeric count maps/mode flags and wrapped multi-item threshold.

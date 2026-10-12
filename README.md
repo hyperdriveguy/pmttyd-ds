@@ -13,6 +13,9 @@ weapon's charge period and difficulty. Guard uses the recovered private-pad
 history checks and difficulty windows. Portable status storage/recovery and
 move-count helpers follow the recovered contracts and feed the damage readers.
 Original status infliction,turn cadence and presentation remain unfinished.
+Portable unit resource import/export and status clearing follow the recovered
+pouch and partner snapshot rules. Native battle start uses status clearing;
+pouch ownership, equipment import and partner switching remain unbound.
 HP/FP damage calculators follow recovered
 modifier ordering,and direct application uses recovered resource/accounting rules.
 Original effect/audio/audience/hit-event handlers remain unbound;the harness's

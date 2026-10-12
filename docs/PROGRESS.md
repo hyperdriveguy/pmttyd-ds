@@ -1,5 +1,22 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Battle-start status clearing binding
+
+Native battle start now calls clearUnitStatus for both semantic units after
+initial kind/resource fixture assignment. This initializes the six status-info
+types to0xff through the recovered helper;the existing construction reset does
+not replace that operation. Pouch imports remain unbound until actual runtime
+pouch, equipment and partner lifetime owners are implemented. Updated README
+and STATUS-01 breadcrumbs with portable implementation paths and remaining
+caller requests. Implementation module commit:7e43c5a.
+
+Validation after binding: make test passed ten CTest suites plus58 Python tests;
+make all rebuilt game.cpp and ttyd-2ds.3dsx successfully. git diff --check passed.
+No emulator run or original execution claim. Documentation agents' in-progress
+Jump motion/numerics/sound and lecture-helper files remain separate. Next:review
+those delivered contracts,implement actual motion/Jump request scheduling and
+bind badge/resource initialization. Full remake remains incomplete.
+
 ## 2026-10-12 — Portable unit clearing and pouch resource lifecycle
 
 Implemented UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md in

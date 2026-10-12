@@ -3,6 +3,7 @@
 #include "field_camera.hpp"
 #include "head_collision.hpp"
 #include "floor_contact.hpp"
+#include "battle_unit_resources.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -639,6 +640,7 @@ void Game::startBattle() {
     playerBattleUnit.baseHp=playerBattleUnit.maxHp=10; // Development player-stat fixture.
     enemyBattleUnit.hp=int16_t(enemyHP); // Boss kind/stats await original unit initialization.
     enemyBattleUnit.baseHp=enemyBattleUnit.maxHp=int16_t(BattleRules::CrumpHP);enemyBattleUnit.belong=1;
+    clearUnitStatus(playerBattleUnit);clearUnitStatus(enemyBattleUnit);
     playerBattlePart={};enemyBattlePart={};pendingDamageRequests.clear();pendingDamageRequests.reserve(32);
     static constexpr int8_t zeros[5]={};
     playerBattlePart.defense=enemyBattlePart.defense=zeros;
