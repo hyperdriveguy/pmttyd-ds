@@ -382,6 +382,20 @@ bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& h
     if(found){height=best;if(contact)*contact=selected;}
     return found;
 }
+bool groundedFootprint(Vec2 p,Vec2 direction,float rootY,float& height,GroundContact* contact) {
+    const float length=std::hypot(direction.x,direction.z);
+    if(!std::isfinite(length) || length<1e-6f)return false;
+    const float x=direction.x*FloorFootRadius/length,z=direction.z*FloorFootRadius/length;
+    const Vec2 offsets[]={{0,0},{x,z},{-z,x},{z,-x},{-x,-z}};
+    bool found=false;float best=-1e30f;GroundContact selected;
+    for(auto offset:offsets) {
+        float floor=0;GroundContact candidate;
+        // Grounded marioChkGnd passes11engine depth and current velocity0.
+        if(groundWithin({p.x+offset.x,p.z+offset.z},rootY-.1101f,rootY+.05f,floor,&candidate) &&
+           floorCandidateReachable(rootY,0,floor) && floor>best){best=floor;selected=candidate;found=true;}
+    }
+    if(found){height=best;if(contact)*contact=selected;}return found;
+}
 void Game::advanceVertical(bool held) {
     float previousY=0;if(integrateVertical(held,previousY))finishVertical(previousY);
 }
@@ -516,20 +530,10 @@ void Game::move(const Input& i) {
         const float y=groundHeight+jumpHeight;
         if(!walkable(candidate,y))return false;
         if(fieldJump.airborne || wasStepping || fieldStep.active()){p=candidate;return true;}
-        float slope=0;
-        if(groundAt(candidate,groundHeight,nextHeight,&nextContact,&slope) && walkable(candidate,nextHeight)) {
-            if(nextHeight-groundHeight>GroundedMaxRise)return false;
-            if(groundedHeightCanSnap(groundHeight,nextHeight)) {
-                if(nextHeight-groundHeight>=.05f) {
-                    return false; // The forward ray after movement starts the stair motion.
-                }
-                p=candidate;groundHeight=nextHeight;groundContact=nextContact;return true;
-            }
-        }
-        if(landingFootprint(candidate,moveDirection,y,0,nextHeight,&nextContact)) {
-            p=candidate;groundHeight=nextHeight;groundContact=nextContact;return true;
-        }
-        p=candidate;jumpBase=y;fieldJump.beginFall();groundContact={};return true;
+        // Keep unwalled tall ledges from being entered before their step query.
+        // Actual support is selected once across all five probes after full XZ movement.
+        if(groundAt(candidate,groundHeight,nextHeight) && nextHeight-groundHeight>=.05f)return false;
+        p=candidate;return true;
     };
     accept(candidate);
     candidate={p.x,p.z+z*speed};
@@ -539,6 +543,13 @@ void Game::move(const Input& i) {
         float height=0,slope=0;
         if(frontStepGround(p,moveDirection,groundHeight,height,slope) && stairRiseAllowed(groundHeight,height,slope)) {
             fieldStep.begin(groundHeight,height);groundContact={};saveRequested=false;
+        }
+    }
+    if(!wasStepping && !fieldStep.active() && !fieldJump.airborne) {
+        if(groundedFootprint(p,moveDirection,groundHeight,nextHeight,&nextContact)) {
+            groundHeight=progress.elevation=nextHeight;groundContact=nextContact;
+        } else {
+            jumpBase=groundHeight;fieldJump.beginFall();groundContact={};
         }
     }
     if(warpCooldown>0)--warpCooldown;

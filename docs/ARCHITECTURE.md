@@ -328,3 +328,10 @@ movement. The raw ray returns height/slope and stairRiseAllowed applies normal
 caller bounds; it can anticipate a ledge before center enters upper surface.
 Candidate acceptance blocks larger rises until this motion starts. The broad
 groundAt loader/validation API remains separate from this forward movement ray.
+
+Main grounded support now uses groundedFootprint after the full horizontal move,
+with the highest accepted result of five rotated7.5engine probes. It updates
+root/contact once; lack of support begins falling. Loader/arrival/partner still
+use broad groundAt, also used by the temporary coarse tall-ledge movement guard.
+The forward stair ray runs before grounded root assignment. Actual root uses
+raw selected height; original rounded floor cache is distinct and not yet stored.

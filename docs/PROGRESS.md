@@ -2255,3 +2255,48 @@ equipment-count semantics and actual death/revival event graphs. Continue the
 full-system behavior register before deriving complete-game requirements. The
 full objective remains active and incomplete; original execution traces and
 end-to-end fidelity comparisons are still required.
+
+## 2026-10-12 — Main five-probe grounded support
+
+Previous turn progressed original forward step trigger03dc212. Added normal
+groundedFootprint: five rotated7.5engine probes, depth11+.01engine, above5
+for ordinary walking/standing velocity0. Source nearest face/slope/candidate
+acceptance precedes selecting highest result across all probes. Game now
+updates support once after full horizontal movement, instead of center-first
+acceptance/fallback; forward stair ray observes old root before support update.
+Missing support starts falling. Broad groundAt remains for entry/partner and
+coarse unwalled tall-ledge guard; it no longer snaps main support via.25/.5 band.
+Removed superseded groundedHeightCanSnap policy and retained source2/11 bounds
+where consumed.
+
+Important source trace: rounded floor height is actor+0x1c4, while actualY
++0x90 receives raw search output at8008fae8. No direct root quantization added.
+A separate original floor cache is still unrepresented. Byte verifier checks
+grounded11/current-v arguments, rounded cache store and raw actualY store.
+
+Validation: `make test` passed core and36 Python tests; added highest-side
+support despite lower center, rotated footprint changing selection, zero-vector
+output retention,4.9engine accepted/5.1engine rejected upward probe reach and
+Game edge-height/contact update. Existing stair anticipation/interpolation,
+blocked tall ledge, fall landing and partial-save guards pass.
+`build-host/core_tests --rooms` passes all8 arrivals,18,315 indexed/full-scan
+probes and original water/void/ceiling checks. `make -j2 all` builds native3dsx;
+`python3 tools/verify_actor_collision.py` passes source arguments/store evidence.
+
+Native harbor traversal/dock-save/return exited0 with HP7; native water route
+exited0 with checkpoint protection, original return and HP7→6. Commands:
+```sh
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_harbor_stairs.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_water.py
+```
+No build overlapped emulator execution. Extracted originals/compiled artifacts
+stay ignored. Separate research files remain outside this feature commit.
+Architecture/mechanics notes record source cache distinction and scope.
+
+Next: grounded head/clearance after movement and exact source contact/cache/
+quantization consumers. Review stair state chaining/XZ rate, nonzero residual
+velocity and source direction rounding; source wall push-out should replace
+the coarse tall-ledge guard. Partner still needs original NPC grounding.
+Dynamic support, block/SFX events, original English story/dialogue, animation,
+camera, interiors and complete playable content remain unfinished. Full goal
+active; hardware/Dolphin fidelity acceptance unverified.

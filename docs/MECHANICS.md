@@ -639,3 +639,31 @@ The query's50degree surface rejection is stricter than raw front output but
 all accepted ordinary steps must already satisfy30degrees. Special transformed
 actor states/force vectors, grounded contact quantization/five-probe ray,
 stair-specific XZ speed and low-ceiling cancellation remain unfinished.
+
+## Active five-probe grounded support (2026-10-12)
+
+Normal marioChkGnd8008f838 passes11engine search depth and current actor
+vertical velocity to marioSearchGround. For ordinary stationary/walking state
+(v=0), native groundedFootprint uses root-.1101 to root+.05. Five rotated
+center/cardinal probes use baseWidth20*.375=7.5engine radius; source nearest
+solid/face/slope filtering precedes vertical candidate acceptance. Highest
+accepted result across ALL probes wins, rather than center-first fallback.
+
+Game now keeps XZ movement separate from support: wall checks/coarse tall-ledge
+guard run during movement; forward stair activation and five-foot selection
+run after full XZ. Selected raw height and contact update once. Missing support
+starts falling. Broad groundAt remains for entry/loader/partner and the coarse
+unwalled-ledge guard; its.25/.5 band no longer snaps main player's root.
+Forward probe still observes pre-support root, preserving source stair order.
+Edge fixture on lower floor now adopts a higher valid side-probe floor even
+when center sees lower ground. Rotated footprint and5engine upward reach are
+tested, alongside existing stairs/drop/landing cases.
+
+Important quantization distinction: source8008f898 writes rounded selected
+height to actor+0x1c4 (floor cache);8008fae4/8008fae8 assign raw search output
+to actual actorY+0x90. Native root remains raw; a separate source floor cache
+is not currently represented. Applying that quantization directly to root
+would be incorrect, especially for negative heights due truncation semantics.
+Byte verifier now proves both stores. Nonzero residual vertical velocities/
+special flags, exact angle rounding, full cache/contact outputs, partner probe
+policy, grounded head checks and source wall push-out remain unfinished.

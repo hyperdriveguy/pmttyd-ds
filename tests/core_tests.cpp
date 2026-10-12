@@ -32,8 +32,6 @@ void headContactRules() {
     step.tick();CHECK(std::fabs(step.height-.03f)<.00001f);
     step.tick();CHECK(std::fabs(step.height-.06f)<.00001f);
     step.tick();CHECK(!step.active() && step.height==.09f);
-    CHECK(groundedHeightCanSnap(0,.11f));CHECK(!groundedHeightCanSnap(0,.111f));
-    CHECK(groundedHeightCanSnap(0,-.019f));CHECK(!groundedHeightCanSnap(0,-.02f));
     const float rad=3.14159265358979323846f/180.f;
     CHECK(floorSlopeAllowed(std::sin(49.9f*rad),std::cos(49.9f*rad),0));
     CHECK(!floorSlopeAllowed(std::sin(50.1f*rad),std::cos(50.1f*rad),0));
@@ -480,6 +478,14 @@ void unequalFloorMotion() {
     Game down;down.restore(p);for(int n=0;n<5;++n)down.tick(right);
     CHECK(down.airborne() && std::fabs(down.groundHeight-.08f)<.00001f);
     for(int n=0;n<100 && down.airborne();++n)down.tick({});CHECK(!down.airborne() && down.groundHeight==0);
+    stepFloor(.02f);CHECK(loadGround(path));float supported=99;GroundContact owner;
+    CHECK(groundedFootprint({.06f,2},{1,0},0,supported,&owner));CHECK(std::fabs(supported-.02f)<.00001f && owner.sourceNode==1);
+    CHECK(groundedFootprint({.06f,2},{1,1},0,supported,&owner));CHECK(supported==0 && owner.sourceNode==2);
+    supported=99;CHECK(!groundedFootprint({.06f,2},{0,0},0,supported));CHECK(supported==99);
+    p.position={.03f,2};p.elevation=0;Game edge;edge.restore(p);CHECK(edge.groundHeight==0);
+    edge.tick({});CHECK(std::fabs(edge.groundHeight-.02f)<.00001f && edge.groundContact.sourceNode==1);
+    stepFloor(.049f);CHECK(loadGround(path));CHECK(groundedFootprint({.06f,2},{1,0},0,supported));CHECK(std::fabs(supported-.049f)<.00001f);
+    stepFloor(.051f);CHECK(loadGround(path));CHECK(groundedFootprint({.06f,2},{1,0},0,supported));CHECK(supported==0);
     clearCollision();std::remove(path);
 }
 void visibility() {

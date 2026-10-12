@@ -5,11 +5,7 @@ constexpr float GroundedMaxRise=.11f,GroundedNearDrop=.02f;
 constexpr float FrontStepDistance=.053f;
 inline bool stairRiseAllowed(float rootY,float floorY,float slope) {
     const float rise=floorY-rootY;
-    return std::isfinite(rise) && std::isfinite(slope) && rise>=.05f && rise<=.11f && slope<=30;
-}
-inline bool groundedHeightCanSnap(float rootY,float floorY) {
-    return std::isfinite(rootY) && std::isfinite(floorY) &&
-        floorY-rootY<=GroundedMaxRise && rootY-floorY<GroundedNearDrop;
+    return std::isfinite(rise) && std::isfinite(slope) && rise>=.05f && rise<=GroundedMaxRise && slope<=30;
 }
 // Ordinary Mario's slope limit is50 degrees; face orientation is handled separately.
 inline float floorSlopeDegrees(float nx,float ny,float nz) {
@@ -23,7 +19,7 @@ inline bool floorSlopeAllowed(float nx,float ny,float nz){return floorSlopeDegre
 inline bool floorCandidateReachable(float rootY,float velocity,float floorY) {
     if(!std::isfinite(rootY) || !std::isfinite(velocity) || !std::isfinite(floorY))return false;
     const float below=rootY-floorY;
-    if(below>=.02f)return below<=std::fabs(velocity);
+    if(below>=GroundedNearDrop)return below<=std::fabs(velocity);
     return std::fabs(below)<=.11f;
 }
 }
