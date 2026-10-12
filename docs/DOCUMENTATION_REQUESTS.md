@@ -386,6 +386,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
 
+Native implementation breadcrumb (2026-10-12): `source/battle_jump_motion.cpp`
+and `tests/battle_jump_motion_tests.cpp` implement the delivered local motion,
+numerics and sound-loader operations with explicit service callbacks. Event
+operands resolve on every invocation,phase1 advances/yields at countdown0,and
+mode1 retains prior baseline. No native second-hit timer was added. Original
+angle/distance/sin/fmod/fctiwz/FPSCR behavior,sound source writers/playback,
+unit position/status owners and VM/request cadence remain necessary bindings.
+Existing requests for original trajectory/input/AC traces remain open.
+
 Further ID2 answer:[MarioJumpPosition motion](behavior/BATTLE_MARIO_JUMP_MOTION.md)
 and [rounded numerical operations](behavior/BATTLE_MARIO_JUMP_NUMERICS.md)
 close801093a8/8c0. All seven arguments resolve as integers on every call;first

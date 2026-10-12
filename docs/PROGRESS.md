@@ -1,5 +1,37 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Portable Mario jump motion and sound-mode loader
+
+Implemented complete local MarioJumpPosition phases1/2/3 in
+include/battle_jump_motion.hpp and source/battle_jump_motion.cpp using delivered
+BATTLE_MARIO_JUMP_MOTION.md and BATTLE_MARIO_JUMP_NUMERICS.md contracts.
+Retains independent visible/baseline/target/delta state;first-call integration,
+zero-count early return,negative-count wrap,raw sentinel heading/distance,
+mode-specific integer/float division,rounded height/phase formulas,strict
+late target-Y clamp,unsnapped X/Z landing,negative-zero/self-subtraction and
+mode1 eligibility route. Event wrapper resolves all seven operands on every
+call with immediate signed-integer coordinate conversion. Local reviseAngle
+uses an explicit original-math service and preserves signed zero/NaN branches.
+
+BATTLE_UNIT_SOUND_MODE.md now has an ordered partial-field byte-record loader,
+including overlapping source/destination,retained gaps,-2 reuse and type maps.
+Motion requests only nonzero loaded word0 at initial baseline position. Unit,
+position,eligibility,heading,distance,sin,fmod,fctiwz and playback are explicit
+services;no synthetic sound or host sqrt equivalence claim. The portable model
+is built for3DS but native attack/VM ownership remains unbound. Original numeric
+services/FPSCR/audio source writers and original trajectories remain open.
+
+Validation:make test passed eleven CTest suites plus58 Python tests;make all
+built ttyd-2ds.elf and ttyd-2ds.3dsx. Motion tests cover first/resumed resolution,
+42-call flight,independent baseline,landing/clamp/count wrap,mode0/2/3/4 shape,
+mode1 retained baseline/eligibility,zero setup,exceptional phase/angle values,
+conditional one-time playback and ordered aliased sound-loader fields. Tests use
+injected deterministic math services;they are derived contract checks,not
+Dolphin measurements. No emulator run for the still-unbound callback. Next:
+implement MarioJumpParam writeback,then original approach/Jump event graph and
+scheduler services;replace provisional native impact timer only with supported
+composition. Full remake remains incomplete.
+
 ## 2026-10-12 — ID2: requested Mario jump motion,numerics and sound mode
 
 Added BATTLE_MARIO_JUMP_MOTION.md with the complete801093a8/8c0 body.
