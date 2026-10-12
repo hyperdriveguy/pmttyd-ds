@@ -4019,3 +4019,30 @@ and uncovered story/event/field/battle/audio/save/content before complete-game
 requirements. Full objective active/incomplete;initial approximation is not
 complete numeric/layout or full-game fidelity. Original IDs/tokens and story
 attribution/order/branches/event conditions remain mandatory reused data.
+
+## 2026-10-12 — US decimal converter infinity boundary
+
+Added DECIMAL_TO_BINARY_INFINITY_BOUNDARY.md for __dec2num infinity-candidate
+branch and shared sign exit:original36-digit/exponent308 record preparation,
+inactive source-tail rounding/parity/carry path,strict first-digit/exponent/
+common-prefix/remaining-nonzero comparison,infinity retention versus maximum-
+finite substitution and continued refinement. Equality does not return infinity
+here. Preserved seed as original reused data and distinguished local boundary
+from measured/correct-rounded universal overflow behavior. General refinement/
+ties and pow remain open. No original execution/FPSCR observation occurred.
+
+Validation:1280 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO;complete boundary seed hash/NUL and maximum-finite fallback
+checked. Fresh285-function reports reproduced byte-for-byte. All477 local
+behavior links resolved;git diff --check passed. make test passed core plus36
+Python tests;make all exited0 with no rebuild. No emulator/profile/save
+modification,native implementation,asset conversion or message/story rewrite.
+Original disassembly/reports remain ignored;working tree clean at turn start.
+
+Next: general candidate decimalization/equality,refinement direction,neighbor
+construction,difference/tie rounding and final selection;pow/numeric dependencies
+and executed record/candidate/boundary/FPSCR corpus. Continue drawing/string
+layout,resource/cadence callers and uncovered story/event/field/battle/audio/
+save/content before complete-game requirements. Full objective active/incomplete;
+no complete numerical/layout or full-game fidelity claim. Original IDs/tokens
+and story attribution/order/branches/event conditions remain mandatory.

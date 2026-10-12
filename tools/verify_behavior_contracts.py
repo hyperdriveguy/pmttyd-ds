@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'decimal_to_binary_infinity_boundary': {
+        0x80265d40: '38000134', 0x80265d50: 'b0010176',
+        0x80265d70: '7c8301ae', 0x80265d74: '2c050024',
+        0x80265d9c: '2c000005', 0x80265dd4: '540007ff',
+        0x80265df4: '28030009', 0x80265e20: 'b0010176',
+        0x80265e34: '88010179', 0x80265e5c: '880101a5',
+        0x80265e70: 'a8010176', 0x80265e78: '7c002000',
+        0x80265e90: '40810008', 0x80265eb8: '7c074040',
+        0x80265ecc: '4080000c', 0x80265ee8: '7c004800',
+        0x80265f0c: '28000000', 0x80265f38: '7c001850',
+        0x80265f44: '40820908', 0x80265f4c: 'c803e3d0',
+        0x8026684c: '880101a0', 0x80266854: '41820010',
+        0x8026685c: 'fc000050', 0x80266864: 'c8210030',
+    },
     'decimal_to_binary_approximation': {
         0x802659f8: '900101a4', 0x80265a54: 'b06101c8',
         0x80265a70: '987f0000', 0x80265ae4: '987f0000',
@@ -1362,6 +1376,12 @@ def verify(iso_path):
         if read(0x80428be0, 24).hex() != '401400000000000043300000000000004330000080000000':
             raise ValueError('Decimal approximation base/bias constants mismatch')
         print('Eight decimal chunk powers and three approximation constants verified')
+        if hashlib.sha256(read(0x80303ac8, 36)).hexdigest() != 'd919e2c8d08e6b560f5ec6798495d6096505c7545339dd17d6c553652d55f407' or read(0x80303aec, 1) != b'\0':
+            raise ValueError('Decimal infinity boundary seed mismatch')
+        if read(0x8041e3d0, 8).hex() != '7fefffffffffffff':
+            raise ValueError('Decimal infinity fallback maximum mismatch')
+        print('Complete decimal infinity boundary seed and maximum-finite fallback verified')
+
 
 
 
