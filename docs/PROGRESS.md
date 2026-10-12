@@ -2195,3 +2195,34 @@ Continue full-system register beyond combat and derive complete-game system
 requirements only once those original contracts are adequately documented.
 Full objective remains active/incomplete; static checks are not original
 execution tests or end-to-end fidelity proof.
+
+## 2026-10-12 — Weapon status parameters and infliction admission
+
+Previous turn progressed via5874375/cc82bc9 status storage/recovery contracts.
+This turn adds BATTLE_STATUS_INFLICTION.md: complete weapon wrapper iteration,
+base duration/strength/rate fields, equipped-badge parameter changes, original
+weapon-pointer Charge cases, ordered removal/immunity gates, susceptibility
+lookup, exact chance arithmetic/RNG draw and mutation/result-bit prefix.
+Application presentation/announcement/return tail from0x800fc198 onward remains
+explicitly outside detailed coverage. No complete status-system claim.
+
+Validation:165 instruction anchors plus previous tables/constants/sound keys
+passed; eight additional inspected infliction table fingerprints cover201
+entries. Evidence report fingerprints84 functions and matched a repeat read.
+Behavior links resolve; git diff --check passed. make test passed core plus36
+Python tests. make all compiled game.cpp, linked and built ttyd-2ds.3dsx,
+exit0 (session77701 completed). Validation was execution-time shared workspace:
+concurrent floor/game/core-test/actor-verifier edits and new Switch research
+tools/tests were present and not staged. No runtime changes authored by this
+research. ISO opened read-only; original extracts/disassemblies/reports remain
+ignored. No original code/emulator executed or user profile/save modified.
+ASSETS.md records updated evidence scope. Fingerprints identify inspected data;
+they do not prove semantic interpretation or dynamic equivalence.
+
+Next: finish BattleSetStatusDamage effect/cleanup/announcement/sound and return
+contracts, then complete BattleCheckDamage orchestration and all status turn
+callers. Resolve weapon identities/data bindings, equipment-count helper,
+periodic effects and actual death/revival event graphs. Continue other systems
+in behavior/README before deriving complete-game requirements. Full objective
+remains active and incomplete; original execution traces and end-to-end fidelity
+checks are still required.
