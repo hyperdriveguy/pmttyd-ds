@@ -1965,3 +1965,39 @@ in docs/behavior/README.md: story/event services, partners, audience/rewards,
 save records, UI, animation/audio and complete content remain incomplete.
 The complete-game requirements document remains gated on that recovery; full
 research objective is active and has not been achieved by these local contracts.
+
+## 2026-10-12 — Counter selection and revival eligibility research
+
+Previous research turn was progress:05c59d3/20ac72e added hit/damage contracts.
+This turn's4568b28 adds detailed BATTLE_COUNTERS.md:48-byte initialization,
+all exclusive/accumulating selector branches, resistance/badge/status gates,
+last-writer classification priority, exact12-entry return mapping and consumer
+half-damage/status/direct-damage/event order. Binary code48 maps to return0
+while retaining a populated counter record; the main caller uses work fields.
+Separately rounded half contributions and the equality-only zero→one fallback
+are explicit. Damage documentation adds complete local revival code-marking
+helper:inventory vs unit item paths, inclusive kind ranges and unchanged failure
+codes. Actual item consumption/HP restoration remains unrecovered.
+
+Validation: read-only US ISO verifier passed95 instruction anchors, both guard
+window tables, accuracy constant and all12 counter jump-table targets.
+Evidence report fingerprints58 functions and repeated identically across two
+reads. Relative links in docs/behavior resolve; git diff --check passed.
+make test passed core plus32 Python tests; make all exited0, nothing to rebuild.
+Checks used shared workspace at execution time, with concurrent runtime edits
+in include/floor_contact.hpp, include/game.hpp, source/game.cpp,
+tests/core_tests.cpp, tools/verify_actor_collision.py and untracked
+include/field_step.hpp. Research did not stage/change those files. No emulator
+or original executable was run, and no profile/save changed. Source ISO opened
+read-only; original extracts/disassemblies remain ignored; ASSETS.md updated.
+Static anchor checks validate cited bytes, not full dynamic equivalence.
+
+Next: full BattleCheckDamage orchestration, BattleDamageDirect application,
+BattleSetStatusDamage and supporting status getters/setters/lifecycle; original
+attack callbacks and data bindings; death/revival event and item handling.
+Counter presentation still needs exact sound/effect bindings. Capture original
+execution for differential tests when contracts and a useful harness permit.
+Continue all remaining systems in docs/behavior/README.md before deriving the
+complete-game requirements document. Full objective remains active/incomplete;
+these local combat contracts do not establish complete battle or full-game
+behavior, story fidelity or New2DS performance acceptance.
