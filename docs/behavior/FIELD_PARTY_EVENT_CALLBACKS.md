@@ -108,9 +108,10 @@ partyChgRunMode captures the requested mode and pointer. If the old byte
 P+0x34 is neither 9 nor 3, copy it into P+0x35. Call the service at
 0x800bcb98 with (P,old mode,new mode), then store the requested mode's low
 byte at P+0x34 and OR bit 8 into the word at P+8. The service call occurs
-**before** those last writes. Its initialization effects, reentrancy, mode
-meaning and downstream update eligibility are not closed here. Do not claim
-run/stop directly starts or stops all related EVT entries.
+**before** those last writes. Its [local initialization](FIELD_PARTY_MODE_INITIALIZATION.md) and
+[partyMain eligibility](FIELD_PARTY_DRIVER_AND_INDEX_OWNERSHIP.md) are now
+specified. Reentrancy,all mode update bodies and scheduler composition remain
+open. Do not claim run/stop directly starts or stops all related EVT entries.
 
 ## Verification and open composition
 

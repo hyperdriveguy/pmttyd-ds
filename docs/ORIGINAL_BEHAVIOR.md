@@ -410,3 +410,11 @@ now establish linked-kind preservation versus clearing,ordered pointer removal/
 release/free,first-free versus secondary-only allocation,pose/init requests and
 primary/secondary coordinate tails. Resource/driver/all-kind/mode/index and
 original-transition composition remain incomplete.
+
+
+[Field party mode initialization](behavior/FIELD_PARTY_MODE_INITIALIZATION.md)
+and [driver/index ownership](behavior/FIELD_PARTY_DRIVER_AND_INDEX_OWNERSHIP.md)
+now specify old-mode dispatch,local cleanup and angle-loop behavior,two-slot
+init,count/reread/update order and the Mario bit gate. BSS placement and zero
+matching direct integer index stores are a scoped census,not complete writer
+or live-state proof. Mode engine/services/teardown and original traces remain open.

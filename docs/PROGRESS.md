@@ -6834,3 +6834,35 @@ Final ID2 run/control validation follow-up:concurrent dispatch test fixture
 appeared before commit. Re-run make test passed26 CTest suites and58 Python
 tests. The earlier missing-fixture failure is resolved;final host validation
 passes. ID2 changed no native file for that resolution.
+
+
+## 2026-10-12 — ID1 party mode initialization and driver/index ownership
+
+Added [mode initialization](behavior/FIELD_PARTY_MODE_INITIALIZATION.md) and
+[driver/index census](behavior/FIELD_PARTY_DRIVER_AND_INDEX_OWNERSHIP.md).
+Complete local old-mode graph distinguishes1/2 slit cleanup,3 kind hook,4
+restore,11/new8 exception and12 flag clear;wrapper order preserves requested
+final mode. Jump parameter clear and rounded revise360 loops are explicit.
+Party init clears two pointers only;partyMain counts enabled objects then
+rereads slots in order and gates driveParty on Mario mask02000000. Ordinary
+stop/run does not clear object enable mask1. Control-index word8041ead0 lies
+in original BSS;zero direct integer stores is a bounded census,not live-value
+or all-writer proof. Linked earlier callback notes to the newly closed bodies.
+
+Validation:verify_field_party_modes.py passed eight whole DOL hashes,44
+instructions,six constants,three data spans,two actual lecture imports,BSS span
+and the seven-slot DOL text direct-store census. Repeated metadata was
+byte-identical;Python compilation and existing callback/lifetime verifiers passed.
+General verifier passed1980 instruction anchors;all909 behavior links resolved.
+Gekko check passed508 listings/70191 instructions/408 paired-single operations
+with zero changes or unknowns. make test passed26 CTest and58 Python tests;
+make all rebuilt ttyd-2ds.3dsx successfully. Original ISO read-only;no original
+execution/emulator observation,asset conversion,profile/save mutation or original
+binary/dialogue distribution. Only ID1 scoped mode/index lock released;
+concurrent native and ID2 changes preserved.
+
+Next:driveParty/global updater and partyMain/partyInit caller cadence;all mode
+update bodies,pose/paper and kind-hook services;alias/REL/index/owner-slot writers;
+complete battle-end/lecture-mode/window/HP immunity teardown and original
+transition observations. Full documentation/remake remain incomplete;complete-
+game requirements remain deferred until sufficient system coverage.

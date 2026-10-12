@@ -853,3 +853,12 @@ ELFs/listings and field-party-lifetime-evidence.json stay ignored under
 artifacts/reference/behavior. General field verifier accepts a manifest and
 checks optional data hashes;existing callback checks retain their scope. No ISO/
 profile/save mutation,original binary/dialogue distribution or rewritten story.
+
+Field party mode research by ID1 (2026-10-12):verify_field_party_modes.py and
+field_party_mode_evidence.json pin eight whole US DOL bodies,44 instructions,
+six constants,three data-span hashes,two used lecture imports and original BSS
+span. The scoped DOL text integer-store census found no direct r13-based stores
+overlapping control-index8041ead0;alias/indexed/floating/REL/bulk writes remain
+excluded. Original ELF/listings and field-party-mode-evidence.json remain ignored
+under artifacts/reference/behavior. No resource conversion,original dialogue
+rewrite,ISO/profile/save mutation,original execution or binary distribution.
