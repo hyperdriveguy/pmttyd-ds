@@ -1,5 +1,27 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2 complete type5 nested relocation and local Set/Clear graph
+
+Added type5 setup/clear contracts and comprehensive Set/Clear binary verifier.
+Root25 fields,captured signed count,64-byte records,root-relative parent links
+and child-relative8 words are explicit. Clear retains absolute child after
+parent conversion,then converts root last with fresh first-field read. Dispatch
+links now cover every local route with flat/type4/type5 bodies;source format/
+consumer/platform/runtime contracts remain separate. Own ID2 lock released.
+
+Validation:verify_file_type5_relocation.py passes two complete bodies/one panic
+identity,842 complete-body instruction anchors,four original tables/diagnostic
+spans;repeat JSON matches. Python compile,prior type4 US source/dispatch/general
+1980 checks and scoped links pass. make test passes71 CTest/78 Python;make all
+passes. Logs:/tmp/id2-type5-test.log,/tmp/id2-type5-build.log. Global2782-link
+snapshot has three unresolved unrelated inventory/tool-tree references. Scoped
+staged whitespace check passes. No native/test/asset extraction/conversion change,
+source enum/full schema inference or original execution/rendering claim.
+
+Next:resource source/type producers and consumers,DVD worker/panic/cache/draw/
+SDK/platform/scene graphs and original runtime traces. All local relocation
+routes supplied;full resource engine and full-game requirements remain incomplete.
+
 ## 2026-10-12 — Packed status getter and native membership callbacks
 
 Added complete packed GetStatus/CheckStatus reads,including signed8 ID narrowing,

@@ -931,3 +931,11 @@ ID2 type4 relocation delivery (2026-10-12):
 nested type4 handlers:signature/panic,root guard,low16/live count,descriptor/data/
 flag ordering and root-last clear. US effect source82 image headers/zero palette
 slots pinned read-only. Type5/consumers/platform/source/original runtime remain open.
+
+ID2 type5 relocation delivery (2026-10-12):
+[nested setup](behavior/file/FILE_TYPE5_NESTED_POINTER_SETUP.md) and
+[nested clear](behavior/file/FILE_TYPE5_NESTED_POINTER_CLEAR.md) close type5:
+root25 fields,captured signed count,64-byte records,root-relative parent links,
+child-relative8 fields,retained child/fresh root clear ordering. With flat/type4
+contracts,all local Set/Clear routes are documented. Formats/consumers/platform/
+source/scene/original traces/full-game requirements remain open.
