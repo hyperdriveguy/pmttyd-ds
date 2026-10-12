@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "wall_geometry.hpp"
 #include "head_collision.hpp"
+#include "floor_contact.hpp"
 #include "save.hpp"
 #include "visibility.hpp"
 #include "uv_animation.hpp"
@@ -24,6 +25,14 @@ void attack(Game& g,bool success) {
     CHECK(g.phase==Phase::Impact);
 }
 void headContactRules() {
+    CHECK(floorCandidateReachable(0,0,-.019f));
+    CHECK(!floorCandidateReachable(0,0,-.02f));
+    CHECK(floorCandidateReachable(0,-.02f,-.02f));
+    CHECK(!floorCandidateReachable(0,-.019f,-.02f));
+    CHECK(floorCandidateReachable(0,-.18f,-.15f));
+    CHECK(!floorCandidateReachable(0,-.18f,-.181f));
+    CHECK(floorCandidateReachable(0,0,.11f));
+    CHECK(!floorCandidateReachable(0,0,.111f));
     CHECK(headAttributesSolid(0));CHECK(!headAttributesSolid(4));
     CHECK(headAttributesSolid(0x00800004));
     CHECK(!headAttributesSolid(0x00080004));CHECK(!headAttributesSolid(0x84));
@@ -380,6 +389,18 @@ void unequalFloorMotion() {
     for(int n=0;n<100 && overlap.airborne();++n)overlap.tick({});
     CHECK(!overlap.airborne() && overlap.groundHeight==0 && overlap.groundContact.sourceNode==2);
     std::remove(wallPath);
+    clearCollision();
+    {std::ofstream file(path,std::ios::binary);file.write(reinterpret_cast<char*>(&count),4);
+        for(int n=0;n<4;++n){float tri[9];std::copy(surfaces[n],surfaces[n]+9,tri);
+            if(n<2)for(int v=1;v<9;v+=3)tri[v]=3.14f;
+            GroundContact owner{0,uint32_t(n<2?1:2)};
+            file.write(reinterpret_cast<char*>(tri),36);file.write(reinterpret_cast<char*>(&owner),8);}}
+    CHECK(loadGround(path));p.position={-.08f,2};p.elevation=3.14f;p.hp=7;
+    Game fast;fast.restore(p);
+    for(int n=0;n<10;++n)fast.tick(right);
+    for(int n=0;n<100 && fast.airborne();++n)fast.tick({});
+    CHECK(!fast.airborne() && fast.groundHeight==0 && fast.groundContact.sourceNode==2);
+    CHECK(!fast.water.active() && fast.progress.hp==7); // Terminal-speed step reaches the lower floor.
     clearCollision();std::remove(path);
 }
 void visibility() {

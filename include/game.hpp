@@ -17,7 +17,7 @@ constexpr float BodyRadius = .1f;
 constexpr float WalkSpeed=.01f, DashSpeed=.0225f;
 // Circle Pad magnitude maps to the original clamped70-unit stick range.
 constexpr float DashThreshold=55.f/70.f;
-constexpr float FloorFootRadius=.075f, FloorSnapDistance=.11f;
+constexpr float FloorFootRadius=.075f;
 constexpr float VoidThreshold=-20.f;
 constexpr float WallLowerRay = .11f, WallUpperRay = .2664f;
 // Original normal road-entry event restores party homing distance50 units.

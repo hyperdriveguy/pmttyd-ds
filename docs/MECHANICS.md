@@ -514,3 +514,26 @@ Grounded head check remains absent. Grounded step band, floor slope/attribute/
 face filtering, exact special actor states, contact block events/SFX and party
 physics remain unfinished. The generic.11 floor footprint snap threshold is
 not complete source fall-search acceptance.
+
+## Normal floor-candidate vertical acceptance (2026-10-12)
+
+Replaced the generic symmetric.11-native footprint threshold with traced
+marioSearchGround8008ef24–8008eff4 branches. Let d=rootY-floorY in native
+units. If d>=.02 (2engine,804208f0), candidate is accepted only when
+d<=abs(current vertical velocity). Otherwise abs(d)<=.11 (11engine,
+804208b4). Below-root candidates at least2engine down may supply distance/angle
+outputs without becoming a selected floor when outside fall reach; native
+currently uses the acceptance decision only. Above-root and very close floors
+use the11engine snap rule. Highest accepted candidate among five probes remains
+selected. This permits terminal-speed18engine landings beyond generic11 while
+avoiding an early snap to an unreachable lower surface. Analytical boundary
+tests and height3.14→0 terminal-speed landing validate the native policy.
+
+Byte verifier checks constant loads/branch sites and underlying source values.
+This is source evidence, not measured Dolphin acceptance. Earlier attribute/
+slope angle rejection branches remain incomplete; existing ground pack still
+uses near-horizontal geometry selection and lacks source face-cull metadata.
+Grounded.25-up/.5-down stepping remains unchanged. Grounded source call may
+use different reach arguments and must not be replaced using this falling
+caller alone. Raw research tool additions in the worktree belong to separate
+work and are not part of this feature.

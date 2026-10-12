@@ -2,6 +2,7 @@
 #include "wall_geometry.hpp"
 #include "field_camera.hpp"
 #include "head_collision.hpp"
+#include "floor_contact.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -358,7 +359,7 @@ bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& h
     for(auto offset:offsets) {
         float floor=0;GroundContact candidate;
         if(landingGround({p.x+offset.x,p.z+offset.z},worldY,velocity,floor,&candidate) &&
-           std::fabs(floor-worldY)<=FloorSnapDistance && floor>best){best=floor;selected=candidate;found=true;}
+           floorCandidateReachable(worldY,velocity,floor) && floor>best){best=floor;selected=candidate;found=true;}
     }
     if(found){height=best;if(contact)*contact=selected;}
     return found;

@@ -52,6 +52,11 @@ def main():
                                     (0x8008f044,'2c1a0005')]:
             assert read(address)==bytes.fromhex(instruction),hex(address)
         depth=value(0x804208ec,.1)
+        value(0x804208f0,2);value(0x804208b4,11)
+        for address,instruction in [(0x8008ef24,'fc02a840'),(0x8008ef30,'c00294b0'),
+                                    (0x8008ef44,'fc009a10'),(0x8008ef4c,'4081002c'),
+                                    (0x8008efd4,'c0029474'),(0x8008efe8,'40820058')]:
+            assert read(address)==bytes.fromhex(instruction),hex(address)
         for address,instruction in [(0x8008f114,'c02294ac'),(0x8008f11c,'c05f007c'),
                                     (0x8008e890,'c2bd0090'),(0x8008f160,'408000d4'),
                                     (0x8008f164,'c00294cc')]:

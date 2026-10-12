@@ -1734,3 +1734,40 @@ face culling, horizontal push-out/sliding, dynamic support and original contact
 block/SFX events remain incomplete. Original dialogue/story, music/SFX event
 fidelity, animation, camera, interiors and wider content still need work. Full
 goal active; hardware acceptance remains unverified.
+
+## 2026-10-12 — Source-derived floor-candidate reach
+
+Previous goal turn made progress correcting falling head phase048ff7a. This
+step replaces symmetric.11 landing footprint selection with original branches:
+floor>=2engine below root must be reachable by abs(vertical velocity); remaining
+near/above candidates use11engine snap. New include/floor_contact.hpp documents
+the source policy, and unused FloorSnapDistance constant is removed. Original
+source verifier now checks2/11 values and branch sites. No grounded stepping,
+geometry export, camera, map warps or render scale changes.
+
+`make test` passed core and32 Python tests (additional research tests appeared
+in user worktree). New host boundaries cover2engine inclusive transition, zero/
+small fall velocity, reachable18engine terminal step and11engine above contact.
+New3.14→0 drop lands on lower floor with HP7 and no void recovery. Existing
+original-room checks passed: all8 arrivals,18,315 indexed wall probes, water/
+void/ceiling. `python3 tools/verify_actor_collision.py` passed source constants
+and branches. `make -j2 all` built native3dsx; final header cleanup build recorded
+below. Source ISO/extracted maps read-only; generated packs remain ignored.
+
+Native water regression exited0 with checkpoint protection, original return
+point and HP7→6: `python3 tools/emulator_smoke.py --fresh-save --save-fixture
+artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script
+tests/azahar_water.py`. Header-only unused constant removal followed this run;
+no behavior changed afterward. No build overlapped emulator execution.
+
+Next: recover normal slope/attribute branches before candidate acceptance,
+source floor culling, grounded marioChkGnd support/head behavior and replace
+legacy.25/.5 stepping. Original distance/angle outputs for rejected candidates
+are not consumed yet. Wall sliding/push-out, dynamic support, original story/
+dialogue/SFX, camera, animation, interiors and full playable content remain
+incomplete. Full goal active; hardware acceptance unverified. Preserve unrelated
+user work in tools/behavior_evidence.py and new research tools/tests; only stage
+explicit feature paths.
+Final header-cleanup `make -j2 all`, `make test` (core+32 Python) and
+`build-host/core_tests --rooms` all exited0. Unrelated user research changes
+remain outside this incremental feature commit.
