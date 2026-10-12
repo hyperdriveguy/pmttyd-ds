@@ -452,6 +452,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Control-service breadcrumb (2026-10-12): `event_controls.cpp` and its suite
+port exact stop/start inlined context pattern,postorder relationships,all/other/
+ID scans,CheckID and priority/type/speed setters. Tests preserve hard0xef,active
+liveness,transitive exclusion and current-pass remaining credits. Next is actual
+control/run/block opcode routing into dispatch,then full operand/branch/data
+providers and original Jump. Existing context/type/pause/source/cycle-domain and
+original multicredit/cancellation traces remain needed;no generic pause refcount
+or immediate suspension was inferred.
+
 Lifecycle breadcrumb (2026-10-12): `event_lifecycle.cpp` ports newly delivered
 complete Delete/DeleteID and Restart contracts,including confirmed8041e860
 counter. Tests cover live descendant order,cancellation copy-back,independent

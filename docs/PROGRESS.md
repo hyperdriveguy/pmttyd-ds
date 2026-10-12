@@ -1,5 +1,36 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Event stop/start traversal,ID scans and setters
+
+Implemented EVENT_STOP_START_RELATIONSHIP_TRAVERSAL.md and control-service leaves
+from EVENT_CONTROL_OPCODES_AND_ID_SCANS.md in event_controls.hpp/cpp. Traversal
+preserves documented compiler-inlined D/G/B/K/S context captures rather than
+reloading GP at every conceptual node,uses child-first/live ascending brother
+scans,and mutates type-matching flags after descendants. Direct inactive entries/
+children still traverse;only slot-scanned attached entries require active1.
+All/other/ID scans retain their distinct pointer/ID gates,repeated visits and
+captured arrays/live capacities;CheckID captures capacity once and returns first
+active match,including stopped/waiting entries. ID controls use hardcoded0xef.
+Setters preserve low8 priority/type and global single speed multiplier without
+resort/run-check/credit changes. No restart,refcount,catch-up or immediate dispatch
+was added by Start. Valid relationship/context domains remain caller obligations.
+
+Validation:make test passed thirty-one CTest suites plus58 Python tests;
+make all rebuilt event_controls and ttyd-2ds.elf/3dsx. Suite covers inline versus
+recursive GP capture,postorder,nonmatching root/matching descendants,inactive
+child versus inactive scanned brother,high masks,preserved flags/time/credit/
+callback/local state,repeat stop then single start,all repeated traversal,other
+pointer exclusion with transitive reach,duplicate IDs/hard0xef/stopped liveness,
+context changes at an inlined boundary and setter narrowing/multiplier. Real
+manager stops an entry during dispatch yet consumes remaining credits,skips next
+visit and resumes without adding skipped lifetime. git diff --check passed.
+No emulator run or original executed pause/context/relationship trace claim.
+Concurrent field and documentation edits remain separate.
+
+Next:wire recovered control and run/block opcodes to dispatcher,then tagged
+operand/branch/arithmetic/data services and original Jump stream binding. Native
+fixed battle timers and full remake/source/scene/asset/trace closure remain open.
+
 ## 2026-10-12 — Event deletion,copy-back and restart preservation
 
 Implemented EVENT_DELETE_AND_COPYBACK.md and EVENT_RESTART_PRESERVATION.md in
