@@ -196,3 +196,23 @@ US branches have contracts,shipped content bindings are covered,and original
 comparisons address observable/timing uncertainties. The final requirements
 will need stable IDs,contract/data-interface traceability and full-game acceptance
 cases. The present assessment and tool do not close those gates.
+
+## Implementation-request follow-up (2026-10-12)
+
+The active handoff and scoped research reservations now live in
+[documentation requests](../DOCUMENTATION_REQUESTS.md). Implementation priority:
+real weapon power/part/dispatch binding,enemy-hit defense and sampling cadence,
+Jump/tutorial ownership,Hammer lifecycle/presentation,then status turn binding.
+These are dependent slices of P0/common combat,not a replacement for full-game
+coverage. Claim a specific subtask in that file before researching it;release
+its lock after validated delivery and retain parent requests as open when
+runtime composition or original comparisons are missing.
+
+Current reproducibility has advanced to351 function fingerprints and1,844
+instruction anchors. The original assessment counts above describe their earlier
+snapshot. [Boss normal attack](HARBOR_BOSS_NORMAL_ATTACK.md) now specifies its
+95-command request stream;[target interfaces](BATTLE_TARGET_EVENT_INTERFACES.md)
+adds seven complete local bodies. Their internal services,missing-target path,
+input/impact cadence and original traces remain open. No full-system row has
+closed and no overall completion percentage is justified. Final complete-game
+requirements remain deferred;asset reuse does not supply these missing contracts.

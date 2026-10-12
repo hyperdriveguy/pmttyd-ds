@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 344 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1804 instruction anchors plus those
+now fingerprints 351 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1844 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -747,3 +747,15 @@ original boss HP5/FP0 data and tutorial getter/DIV/helper-spawn bindings. Large
 entry body coverage is explicitly partial despite whole-body fingerprint. No
 new extraction/asset conversion,ISO write,original execution/native linking or
 dialogue rewrite;artifacts ignored and provenance/rights unchanged.
+
+Additional target/attack research (2026-10-12): seven original DOL wrapper/helper
+fingerprints establish first-attack pointer pairing,body-part ID lookup,signed
+side inversion and sampling interfaces. Forty selected instruction anchors
+include their local contracts and relevant GOTO/CASE_OR/CASE_END regions;the
+latter regions do not constitute complete new VM helper coverage. Direct harbor
+REL import/result/label checks pin the normal-attack request graph and absence
+of label99/END_SWITCH in its95-command span. Fresh report remains ignored at
+artifacts/reference/behavior/evidence.json;fresh event inventory was generated
+read-only into /tmp/pm-boss-normal-attack.json. Original executable bytes/poses/
+sound resources were not converted,linked,committed or distributed. No original
+execution or new licensing rights are inferred from these contracts.

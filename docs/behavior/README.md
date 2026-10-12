@@ -20,6 +20,8 @@ complete gameplay sequences before further general-library edge-case recovery.
 | --- | --- | --- |
 | [US completion/priorities](US_COMPLETION_AND_PRIORITIES.md) | Current completion audit,shipped reference census,registered commands and mechanic-first order | Full event feasibility/original execution and all-system closure |
 | [Field battle entry/return](FIELD_BATTLE_ENTRY_AND_RETURN.md) | Area/index registration,NPC setup/random draws,first-call start and field-result polling | Service/lifetime/result producers and original transitions |
+| [Boss normal attack](HARBOR_BOSS_NORMAL_ATTACK.md) | Full 95-command target/approach/precheck/defense/recovery request graph and missing-label99 boundary | Inner target/movement/input/damage services and original timing |
+| [Target event interfaces](BATTLE_TARGET_EVENT_INTERFACES.md) | Seven complete local wrappers/helpers,mode pair map,part ID,side narrowing and sampling ABI | Candidate cores/mode/flag producers,buffer lifetime and original selection traces |
 | [Unit entry stats/spawn](UNIT_ENTRY_STATS_AND_SPAWN.md) | Entry slot/publication and HP/FP copy,getter ABI,spawn ordering and init ownership;boss HP5 link | Rest of entry/parts,overrides,lifetime and original comparisons |
 | [Action feedback/stage gate](BATTLE_ACTION_FEEDBACK_AND_STAGE_GATE.md) | Declaration counters/cap,success record,initial reset/order and tutorial flag stage-registration suppression | Other writers/audience/init/flag services and original traces |
 | [Harbor boss tutorial events](HARBOR_BOSS_TUTORIAL_EVENTS.md) | Installed init/phase/feedback hooks,priority/latches,death-message order and enemy defense binding | Full stats,feedback writers,flag consumers,attack/reward/defeat and original traces |

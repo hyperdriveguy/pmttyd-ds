@@ -13,6 +13,28 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'boss_target_event_interfaces': {
+        0x8010b444: '4bff36b5', 0x8010b44c: '4801d84d',
+        0x8010b45c: '80a40000', 0x8010b474: '4bf25889',
+        0x800feb34: '41820010', 0x800feb4c: '2c000009',
+        0x800feb5c: '40800024', 0x800feb6c: '7f63db78',
+        0x800feb90: '4bff9b65', 0x800febac: '93fc0000',
+        0x800febb0: '901d0000', 0x80128c9c: '3880ffff',
+        0x80128cb0: '540007ff', 0x80128cbc: '80830000',
+        0x80127458: '7c630774', 0x80127470: '38600001',
+        0x80127478: '38600000', 0x8010ef14: '48018541',
+        0x8010b684: '3b9f0428', 0x8010b6b0: '7c7d0774',
+        0x8010b6c0: '81030068', 0x8010b6cc: '550000c7',
+        0x8010b6d8: '7c090774', 0x8010b6e4: '7c090774',
+        0x8010b6f8: '4bff3ec9', 0x8010b61c: '8084007c',
+        0x8010b628: '4bff35a1', 0x8010b648: '4bf256b5',
+        0x8003178c: '38800000', 0x80031794: '3804001c',
+        0x800317b0: '7cbf002e', 0x800317c4: '907f0014',
+        0x80033c18: '3800ffff', 0x80033c1c: '98050128',
+        0x8003386c: '2c00ffff', 0x8003387c: '98050128',
+        0x800338e4: '98850128', 0x80033c2c: '41820084',
+        0x80033bc4: '7c008670', 0x80033894: '7c008670',
+    },
     'unit_entry_stats_and_spawn': {
         0x80129024: '2c1b0040', 0x8012903c: '38600b34',
         0x8012905c: '4bedc059', 0x8012906c: '4bfcf849',
@@ -1906,6 +1928,29 @@ def verify(iso_path):
             elif imports.get(site) != target:
                 raise ValueError('Tutorial HP getter relocation mismatch')
         print('Boss HP5/FP0 entry inputs,helper spawn and half-HP getter/DIV bindings verified')
+        expected_boss_calls = {
+            0x653e8:0x8010b418,0x653fc:0x8010eed4,0x6540c:0x8010b664,
+            0x65420:0x8010b5e4,0x655e4:0x8010abac,
+            0x656c0:0x80107694,0x656d0:0x8010a78c,
+        }
+        # Original module0 ADDR32 bindings, checked against inspected US callbacks.
+        for site,target in expected_boss_calls.items():
+            if imports.get(site) != target:
+                raise ValueError(f'Boss attack service relocation mismatch {site:#x}')
+        for offset,opcode,args in (
+            (0x65470,4,(99,)),(0x65600,34,(0xfe363c85,)),
+            (0x65608,43,(4,)),(0x6561c,36,(3,)),(0x65640,36,(6,)),
+            (0x65660,36,(2,)),(0x65680,36,(1,)),
+            (0x656a4,3,(90,)),(0x656b4,3,(91,)),(0x656f4,3,(98,)),
+        ):
+            if struct.unpack_from(f'>{len(args)+1}I',harbor,offset) != ((len(args)<<16)|opcode,*args):
+                raise ValueError('Boss attack label/result branch mismatch')
+        from dol_event_inventory import parse_commands
+        normal_attack = parse_commands(harbor[0x653c8:0x6597c],0x653c8,{})
+        labels = [c['operands'][0]['raw'] for c in normal_attack if c['opcode']==3]
+        if len(normal_attack)!=95 or labels!=[90,91,98] or any(c['opcode']==49 for c in normal_attack):
+            raise ValueError('Boss attack command/label/switch census mismatch')
+        print('Boss target/defense/damage call bindings,result labels and missing-label99 census verified')
 
 
 

@@ -5051,3 +5051,44 @@ covers text decoding,not execution or complete original-game equivalence.
 Next: use the corrected inspection pipeline for subsequent US behavior research;
 continue the unfinished boss normal attack/target contracts and broader reachable
 systems before final complete-game requirements.
+
+## 2026-10-12 — Boss attack graph and implementation request priorities
+
+Added BATTLE_TARGET_EVENT_INTERFACES.md and HARBOR_BOSS_NORMAL_ATTACK.md.
+Seven complete local target wrappers/helpers now document first-attack pointer
+pairing,part ID lookup,signed side inversion and candidate-service ABI. The
+first-target callback dereferences its selected unit without a null guard;the
+sampling core remains open. Signed bias narrows twice when weapon flag10000000
+selects inversion;do not replace it with unrestricted signed arithmetic.
+
+The original95-command normal attack stream now has a complete request/branch
+contract:flag2 chooses first-target versus sampling;precheck1 alone requests
+ResultACDefence then CheckDamage flags100. Results2/3/4/6/default skip defense
+and enter shared recovery;avoidance codes40/38/39 remain distinct. Presentation
+retains pose/sound keys,explicit parent and concurrent inline waits,and raw
+float operands. No fixed impact tick or total duration is inferred. No-target
+GOTO99 has no label99 in this span;local GOTO handling does not invent an event
+return. Feasibility/label ownership must be resolved before replacing that path.
+
+Updated DOCUMENTATION_REQUESTS.md with implementation priorities,contract links,
+scoped locks and partial-answer boundaries. Released the validated attack/target
+slice's lock;parent requests remain open. Preserved the separately reserved
+default-power slice and concurrent native damage-application work. Completion
+assessment still records no complete full-system closure;full-game requirements
+remain deferred until sufficient original contracts exist.
+
+Validation:1,844 original instruction anchors and all prior/data checks passed;
+seven attack import targets,result cases,95-command/label census independently
+checked. Fresh351-function reports repeated byte-for-byte;fresh original normal
+attack inventory matched prior report.604 behavior local links resolved;Gekko check covered449 files,64,886 instruction
+rows,362 paired instructions,zero changes/unrecognized. make test passed seven
+host suites(core,TimingA,Hammer,defense,damage,status,damage application) plus58
+Python tests;make all exited0,no rebuild. git diff --check passed. Only explicit
+research/documentation paths staged. No original execution/emulator,ISO/profile/
+save writes,asset conversion,native implementation or story rewrite by this step.
+
+Next:default power and concrete weapon/part inputs;target sampling cores and
+flag/mode producers;JumpPosition/float/camera/audio/inline callback composition;
+main/general/private pad update order and original defense-impact traces;damage/
+death/reward/field result producers. Continue shipped US systems and optional
+content. The documentation and complete-game objective remain incomplete.

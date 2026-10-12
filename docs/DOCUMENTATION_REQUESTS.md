@@ -14,21 +14,20 @@ when the linked contract is validated; a partial answer leaves its parent open.
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Crump normal attack request graph and target wrapper ABI | AC-01, AC-03, DMG-01 | LOCKED, 2026-10-12 | Documentation /root | Validate existing normal-attack and target-interface drafts; excludes target cores and executed timing |
+| Crump normal attack request graph and target wrapper ABI | AC-01, AC-03, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation /root | [Attack graph](behavior/HARBOR_BOSS_NORMAL_ATTACK.md) and [target ABI](behavior/BATTLE_TARGET_EVENT_INTERFACES.md); excludes target cores and executed timing; parent requests remain open |
 | Default weapon power callback and concrete boss operands | DMG-01 | LOCKED, 2026-10-12 | Documentation /root | Recover 0x80189d30, signed widths and selected data bindings; excludes ordinary Mario callback bodies |
+| Ordinary Mario Jump/Hammer power callback bodies and default tables | DMG-01 | LOCKED, 2026-10-12 | Documentation /root (power follow-up) | Recover signed level/index/read order and concrete ordinary weapon tables; excludes hit-count lifetime and executed tutorial values |
 
-## Priority and active documentation locks
+## Implementation priorities
 
-Locks reserve a specific research slice, not the entire request. The owner
-records the slice before work and releases it after contracts and validation
-are committed; other agents may work on unreserved slices. An open request is
-not answered merely because its portable local helper has been implemented.
+Use the scoped lock table above when claiming work. A portable helper alone
+does not answer its full runtime binding request.
 
 | Priority | Request / implementation blocker | State / owner / reserved slice |
 | --- | --- | --- |
-| 1 | DMG-01: real weapon power, part defenses and dispatch/application | Open; next documentation slice is weaponGetPowerDefault and concrete boss/ordinary weapon inputs |
-| 2 | AC-03: enemy hit branch and actual defense sampling boundary | LOCKED by documentation /root, 2026-10-12: harbor normal-attack request graph and target wrapper contracts; validation/indexing in progress |
-| 3 | AC-01: tutorial/ordinary Jump state ownership and impact cadence | Open except the shared enemy-attack slice reserved under AC-03; next recover pad/update and movement callback composition |
+| 1 | DMG-01: real weapon power, part defenses and dispatch/application | Default power/boss operands reserved in lock table above; ordinary Mario callbacks and part/application binding remain open |
+| 2 | AC-03: enemy hit branch and actual defense sampling boundary | Attack graph/target ABI delivered and lock released; pad cadence,global eligibility and execution remain open |
+| 3 | AC-01: tutorial/ordinary Jump state ownership and impact cadence | Shared enemy-attack graph delivered; next recover pad/update and movement callback composition |
 | 4 | AC-02: Hammer lifecycle, result consumers and original audio binding | Open; ordinary weapon period/base difficulty already answered |
 | 5 | STATUS-01: initialization, infliction and turn lifetime | Open; portable storage alone does not establish turn cadence |
 

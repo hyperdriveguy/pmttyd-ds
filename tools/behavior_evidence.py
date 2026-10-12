@@ -15,6 +15,9 @@ from iso_assets import DEFAULT_ISO, inventory
 
 
 FUNCTIONS = (
+    'btlevtcmd_GetFirstAttackTarget', 'btlevtcmd_GetEnemyBelong',
+    'btlevtcmd_SamplingEnemy', 'btlevtcmd_ChoiceSamplingEnemy',
+    'BattleGetFirstAttackUnit', 'BtlUnit_GetBodyPartsId', 'BtlUnit_GetEnemyBelong',
     'BtlUnit_Entry', 'BtlUnit_Spawn', 'btlevtcmd_SpawnUnit',
     'btlevtcmd_GetMaxHp', 'btlevtcmd_GetHp',
     'btlevtcmd_AudienceDeclareACResult', 'BattleActionCommandDeclareACResult',

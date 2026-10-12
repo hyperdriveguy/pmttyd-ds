@@ -68,7 +68,7 @@ python3 tools/inspect_dol_function.py marioStMain --symbols artifacts/reference/
 python3 tools/verify_actor_collision.py
 ```
 
-The report now fingerprints 344 functions, inventories all 119 dispatcher targets,
+The report now fingerprints 351 functions, inventories all 119 dispatcher targets,
 hashes `gor.rel` and all 260 US message files, and lists all REL paths. Direct
 call-site lists are static instruction scans: indirect calls, conditional calls,
 execution counts and branch feasibility are not reconstructed. Fingerprinting a

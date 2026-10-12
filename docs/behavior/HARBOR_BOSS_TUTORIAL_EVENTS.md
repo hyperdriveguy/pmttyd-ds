@@ -146,3 +146,13 @@ conditions,HP/reward/defeat/sequence outcomes and remaining inline/actor/message
 services. Record original gameplay input/state/animation/audio traces. These
 installed scripts identify real tutorial behavior but do not prove the full
 encounter or complete US game equivalent;final requirements remain unfinished.
+
+## Normal attack follow-up
+
+The complete request stream is now documented in
+[boss normal attack](HARBOR_BOSS_NORMAL_ATTACK.md),with
+[target interfaces](BATTLE_TARGET_EVENT_INTERFACES.md). Defense/damage requests
+occur only on precheck result1;other routes proceed through avoidance/common
+recovery. The stream has an unresolved no-target GOTO99 without a local label99.
+These contracts close the script/ABI slice,not the movement/input/damage service
+composition or measured impact timing.
