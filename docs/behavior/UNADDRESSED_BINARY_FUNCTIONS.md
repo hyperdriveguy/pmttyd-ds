@@ -3,7 +3,8 @@
 Static register of reference-binary functions named in `artifacts/reference/`
 that no `docs/behavior/*.md` document mentions. Method: exact plus
 case-insensitive substring search for each `.elf` basename over all 339
-`docs/behavior/*.md` files. Result: **43 names** — 22 in
+`docs/behavior/*.md` files, as of commit `725d65a` (before the first Group
+A/B closers below were written). Result at that audit point: **43 names** — 22 in
 `artifacts/reference/behavior/`, 21 at `artifacts/reference/` top level.
 Every disassembly-only file (including the 7 zero-byte `behavior/*.disasm`
 placeholders listed at the end) is already mentioned somewhere, so the gap is
