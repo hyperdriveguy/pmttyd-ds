@@ -1128,3 +1128,12 @@ close six local bodies:fresh party word/state,disabled-confirm fall-through,
 cancel20/pending order,UI forwarding/live flags/protect Input-owned controls.
 17 hashes/193 anchors/2 keys verified;81 CTest/90 Python/make all pass.
 UI/multi-item/delegate/source/query/Game/platform/original runtime remain open.
+
+ID1 fixed TEV update (2026-10-12):
+[stage programs](behavior/display/MAP_TEV_FIXED_STAGE_PROGRAMS.md) and
+[mode12 binding/evidence](behavior/display/MAP_TEV_MODE12_CALLERS_AND_LITERAL_EVIDENCE.md)
+close eight fixed base blocks/25 rows/150 requests and actual N2/M12 extra-stage
+caller inputs. Reproduce with verify_map_tev_fixed.py:903 scoped words,dispatch,
+two imports/six sites/static literal reconstruction. Time-driven modes8/9,six
+middle branches,GX/source/lifetime/images and whole-system requirements remain
+open;containing TEV identity is deliberately partial semantic evidence.

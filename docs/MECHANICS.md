@@ -1108,3 +1108,11 @@ and four source getter bodies are documented;remaining shader branches and
 actor-shadow ownership/GX/numeric/image behavior remain open. No new Dolphin
 observations or measured shadow/lighting curve. make test80 CTest/90 Python and
 make all pass;these are native validation,not original runtime parity.
+
+ID1 fixed TEV static addendum (2026-10-12):
+[mode12 caller graph](behavior/display/MAP_TEV_MODE12_CALLERS_AND_LITERAL_EVIDENCE.md)
+binds two original renderer/material calls with N2/M12. Fixed modes1..7/12
+now have exact stage tables. No original execution,Dolphin observation,GPU
+arithmetic measurement or image parity added. Static immediate/call inspection
+is not an executed shader oracle. make test81 CTest/90 Python and make all pass;
+source/GX/numeric/lifetime and full-game rendering remain incomplete.

@@ -1723,3 +1723,17 @@ sound/proj/pmario.proj,pool/sdir/samp pipeline:3218 GameCube identities,0 Switch
 5 primary-PCM slice fallback WAVs;ignored catalog/RomFS outputs outside history.
 Exact log:/tmp/id1-tev-build.log. Original rights remain with their owners;
 metadata analysis grants no asset redistribution license.
+
+ID1 fixed TEV source/caller evidence (2026-10-12):US G8ME01 ISO read-only;
+13-mode dispatch803049a0 and actual renderProc/materialProc mode12 preparation/
+call words pinned. No original model/texture/pose/message payload exported.
+Authored a/a_mario mode0 witness remains prior recorded metadata;mode12 is an
+original procedural caller request,not an invented model asset or observed
+frame. Fixed-program manifest contains decoded integer request metadata and
+instruction anchors;inspection ELF/disassembly/report ignored under artifacts/
+reference/behavior. No ID1 conversion,texture scaling,geometry reduction or
+lighting adaptation policy change. make all ran existing sound/proj/pmario.proj,
+pool/sdir/samp pipeline:3218 GameCube identities,0 Switch,5 primary-PCM slice
+fallbacks;ignored catalog/WAV/RomFS outputs outside history. Exact log:
+/tmp/id1-tev-fixed-build.log. Original rights remain with owners;local analysis
+and new evidence code grant no redistribution license for original assets.

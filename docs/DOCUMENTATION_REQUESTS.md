@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Map TEV fixed base modes1..7 and renderer mode12 | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover all fixed literal base request programs and actual renderer mode12 call binding;time-driven modes8/9 and six middle branches/GX/source/runtime remain open |
+| Map TEV fixed base modes1..7 and renderer mode12 | AC-01, AC-03 | VALIDATED scoped fixed programs / lock released, 2026-10-12 | Documentation agent ID 1 | [Stage tables](behavior/display/MAP_TEV_FIXED_STAGE_PROGRAMS.md),[mode12 callers/evidence](behavior/display/MAP_TEV_MODE12_CALLERS_AND_LITERAL_EVIDENCE.md):eight complete literal base programs/25 stage rows/150 requests/two actual mode12 caller argument graphs;time-driven modes8/9 and six middle branches/GX/source/lifetime/runtime remain open |
 | Map TEV ordinary mode0 and shared postlude | AC-01, AC-03 | VALIDATED scoped paths / lock released, 2026-10-12 | Documentation agent ID 1 | [Base/source](behavior/display/MAP_TEV_BASE_MODE_ZERO_AND_SOURCE.md),[constant/character shadow](behavior/display/MAP_TEV_CONSTANT_AND_CHARACTER_SHADOW.md),[callback/counts/gaps](behavior/display/MAP_TEV_FINAL_CALLBACK_AND_OPEN_BRANCHES.md):mode0/fallback/constant/character-shadow/final publication plus four complete shadow leaves;other modes/six middle branches/SDK/GX/source/lifetime/runtime remain open |
 | Animation texture selection and map light/blend/fog helpers | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Objects](behavior/display/ANIMATION_TEXTURE_OBJECT_SETUP.md),[UV matrices](behavior/display/ANIMATION_TEXTURE_COORDINATE_MATRICES.md),[smart data](behavior/display/ANIMATION_SMART_TEXTURE_DATA_PATCH.md),[color/fog](behavior/display/MAP_MATERIAL_LAST_STAGE_COLOR_AND_FOG.md),[light queries](behavior/display/MAP_CHARACTER_LIGHT_QUERIES.md),[selection/channels](behavior/display/MAP_MATERIAL_LIGHT_SELECTION_AND_CHANNELS.md),[types/transforms](behavior/display/MAP_MATERIAL_LIGHT_TYPES_AND_TRANSFORMS.md):fourteen complete local bodies/two-pass textures/source order/sort threshold/color truncation/channel request graph;map TEV/GX/resource/source/lifetime/numeric/runtime remain separate |
 | Animation shape renderer and material request bodies | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/defaults](behavior/display/ANIMATION_SHAPE_RENDER_ENTRY_AND_DEFAULTS.md),[overrides](behavior/display/ANIMATION_RENDER_TEXTURE_OVERRIDE_SELECTION.md),[last-stage](behavior/display/ANIMATION_RENDER_LAST_STAGE_AND_REBIND.md),[arrays/FIFO](behavior/display/ANIMATION_RENDER_ARRAYS_AND_VERTEX_FIFO.md),[source/boundaries](behavior/display/ANIMATION_RENDER_RESOURCE_EXAMPLE_AND_PORT_BOUNDARIES.md):two complete bodies/default/override/material-only versus emission/source metadata;texture/map/GX/SDK/resource/source/lifetime/numeric/runtime remain separate |
@@ -3094,3 +3094,17 @@ sites/source hist pass. make test80 CTest/90 Python,make all pass. Only ID1 lock
 released;other shader modes/source/GX/runtime and complete-game requirements open.
 Native actor-shadow initialization/admission/resource/capture ownership is still
 separate from this documented projected character-shadow material branch.
+
+ID1 fixed TEV delivery (2026-10-12),AC-01/AC-03 partial:two detailed contracts
+in released row specify modes1..7/12,25 complete stage rows/150 exact requests,
+operation/output/color/alpha/order/swap and fixed K stores. Mode5 has four stages,
+first outputs1/2 and third texture2;mode12 differs in alpha routing and is
+explicitly requested with N2 by renderProc8003cf34/materialProc8003dba0 after
+extra-stage setup. Authored Mario draw modes remain0;procedural mode12 is a
+separate caller binding. Checker statically reconstructs literal arguments/
+request order/final count/exit without executing original instructions or GX;
+903 scoped words/dispatch/two imports/six direct sites pass. make test81 CTest/
+90 Python and make all pass. Only ID1 lock released;time-driven base8/9,six
+middle branches,SDK/GX/source/override/pool/resource/lifetime/original images and
+whole-game requirements remain open. Other fixed mode scene execution is not
+claimed merely from executable dispatch presence.

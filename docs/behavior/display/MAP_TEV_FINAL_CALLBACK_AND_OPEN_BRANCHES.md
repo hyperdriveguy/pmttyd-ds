@@ -71,3 +71,10 @@ SDK GXSetTevOp/GPU arithmetic and original frame comparisons. Original asset
 reuse remains necessary but cannot replace these procedural material services.
 The complete-game requirements deliverable remains deferred until broader
 story/gameplay/rendering and all other system closure gates are satisfied.
+
+ID1 fixed-program dependency update (2026-10-12):the earlier open base-mode
+list is superseded locally by [stage tables](MAP_TEV_FIXED_STAGE_PROGRAMS.md)
+and [mode12 bindings](MAP_TEV_MODE12_CALLERS_AND_LITERAL_EVIDENCE.md),which close
+modes1..7/12 as literal request blocks. Time-driven modes8/9 and all six middle
+branch internals,GX/source/lifetime/images remain open. No full-function/system
+closure or actually executed mode1..7 scene is claimed.

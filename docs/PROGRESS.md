@@ -12455,3 +12455,53 @@ remains its scoped snapshot. Final current-state result checked before commit.
 ID1 final TEV link validation:the concurrent party-icon document arrived.
 The two forward references above are RESOLVED;514 Markdown files now check
 with zero broken links. ID1 has not edited the other owner contracts.
+
+## 2026-10-12 — ID1 fixed TEV stages and actual renderer mode12 binding
+
+Added [stage programs](behavior/display/MAP_TEV_FIXED_STAGE_PROGRAMS.md) and
+[mode12 callers/evidence](behavior/display/MAP_TEV_MODE12_CALLERS_AND_LITERAL_EVIDENCE.md).
+Complete eight fixed base blocks(modes1..7/12) specify25 stage rows/150 exact
+GX requests,per-stage order/color/alpha operations/inputs/output IDs/swap and K
+publication. These blocks configure fixed stage counts independently of positive
+N and do not load textures/UV matrices. Mode5 writes outputs1/2 and uses texture2
+with four stages;other modes retain distinct stage1 and final routing. Mode12
+is explicitly requested by renderProc/materialProc with N2/current pose flags/
+model after the documented extra-stage setup. Original authored Mario24 draw
+modes all0 remains a separate source witness,not contradicted by procedural12.
+Only ID1 scoped lock released;parent complete-game requests remain open.
+
+This expands partial mapSetMaterialTev semantics;it does not close the entire
+0x2dbc body. Time-driven base modes8/9 and six middle branch internals remain
+OPEN. Other fixed modes have executable dispatch bindings,not claimed observed
+US scenes. Shared constant/character-shadow/final callback/count semantics remain
+as previously delivered. GX SDK/GPU arithmetic/packing,actual pose/override/
+source flags,lifetime/cache/scene and original pixel composition remain separate.
+
+Validation:verify_map_tev_fixed.py checks containing TEV hash as PARTIAL identity,
+903 scoped reviewed words(891 fixed-program plus12 actual mode12 preparation/
+call words),one original13-mode dispatch span,two US lecture imports and all
+six direct DOL sites. Static allowlisted immediate/call/exit inspection recovers
+eight programs/150 requests and verifies exact literals/order/count against the
+manifest;argument literals are cleared after each call. No original CPU/GX
+execution. Repeated report byte-identical;wrong mode12 alpha,unexpected target,
+missing exit negatives rejected;Python compilation passed. Prior ordinary TEV/
+shadow checker and general1980 anchors pass. Gekko651 listings/96003 instructions/
+914 paired operations,zero changes/unknowns. Initial520-file doc link scan passed;
+final delivery scan recorded separately. No body/request count is game coverage.
+
+make test passed81 CTest suites/90 Python tests;make all rebuilt3DSX successfully.
+Logs:/tmp/id1-tev-fixed-test.log,/tmp/id1-tev-fixed-build.log. Existing3218 GameCube/
+0 Switch/5 primary-PCM fallback audio pipeline ran. No ID1 native code/converter/
+asset adaptation/profile/save mutation or original execution. ISO read-only;
+ELFs/listings/report ignored;ASSETS records table/caller metadata provenance.
+Concurrent native/ID2/reference drafts preserved outside own shared-file hunks.
+
+Next:actual time-driven base8/9 and remaining projected/depth/indirect flags,
+original pose/group/override/resource/actor-shadow initialization/lifetime and
+GX/image comparisons. Continue gameplay/story/event/message reachability and
+persistent encounter closure requested for native implementation. Full-game
+system documentation and final complete-game requirements remain incomplete.
+
+ID1 final fixed-TEV delivery link audit:523 Markdown files checked after
+staging;zero broken links. The520-file pass above is the initial snapshot.
+Only ID1 files/shared hunks staged;other owner changes remain independent.

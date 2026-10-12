@@ -457,3 +457,14 @@ Evidence verifier:tools/verify_map_tev_ordinary.py;303 SCOPED words,one partial
 containing identity/four complete leaves. No full TEV body/system closure claim.
 Ordinary Mario static source witness is prioritized over unbound library paths;
 actual executed source flags and original image comparisons remain necessary.
+
+## ID1 fixed TEV base programs (2026-10-12)
+
+[Stage programs](display/MAP_TEV_FIXED_STAGE_PROGRAMS.md) specify eight complete
+literal base blocks(modes1..7/12),25 rows/150 requests and fixed base stage counts.
+[Mode12 caller/evidence](display/MAP_TEV_MODE12_CALLERS_AND_LITERAL_EVIDENCE.md)
+binds actual N2/M12 renderer/material requests and explains static inspection.
+Verifier:tools/verify_map_tev_fixed.py;903 scoped words,one dispatch span,two
+imports,six direct sites. Modes8/9 and six middle branches,GX/GPU/source/scene/
+lifetime and original images remain open;containing identity is not whole-body
+semantic closure. Original Mario authored mode0 does not replace procedural12.

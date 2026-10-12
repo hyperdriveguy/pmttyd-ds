@@ -361,3 +361,13 @@ imports/six direct sites and80 CTest/90 Python/build pass. This explicitly leave
 other modes1..9/12,six middle branch internals,source/callback/GX/lifetime/images
 open. Whole-system completion remains incomplete;hashing the containing body
 cannot support a complete-game shader or final requirements claim.
+
+ID1 fixed TEV completion update (2026-10-12):
+[eight fixed base programs](../display/MAP_TEV_FIXED_STAGE_PROGRAMS.md) and
+[actual renderer mode12 inputs](../display/MAP_TEV_MODE12_CALLERS_AND_LITERAL_EVIDENCE.md)
+close25 stage rows/150 requests under positive-N dispatch. Static checker903
+scoped words/dispatch/two imports/six sites and81 CTest/90 Python/build pass.
+This leaves time-driven modes8/9,six middle branches,GX/source/scene/lifetime/
+images and broader US gameplay/story closure open. Existing inventory counts
+are historical snapshots;no whole-game percentage or final complete-game
+requirements can be inferred from these local closures.

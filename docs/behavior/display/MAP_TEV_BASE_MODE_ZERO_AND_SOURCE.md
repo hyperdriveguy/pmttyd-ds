@@ -73,3 +73,10 @@ Follow [constant/character-shadow stages](MAP_TEV_CONSTANT_AND_CHARACTER_SHADOW.
 and [final publication/gaps](MAP_TEV_FINAL_CALLBACK_AND_OPEN_BRANCHES.md).
 Full-game requirements need remaining modes,source predicates and GX behavior;
 mode0 closure is useful implementation progress,not the complete shader system.
+
+ID1 fixed-program dependency update (2026-10-12):the earlier open base-mode
+list is superseded locally by [stage tables](MAP_TEV_FIXED_STAGE_PROGRAMS.md)
+and [mode12 bindings](MAP_TEV_MODE12_CALLERS_AND_LITERAL_EVIDENCE.md),which close
+modes1..7/12 as literal request blocks. Time-driven modes8/9 and all six middle
+branch internals,GX/source/lifetime/images remain open. No full-function/system
+closure or actually executed mode1..7 scene is claimed.
