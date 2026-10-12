@@ -18,7 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Map/SDK buffer release and pool initialization provenance | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Map free/battle pool](behavior/MAP_BUFFER_FREE_AND_BATTLE_POOL.md),[five pools/reset](behavior/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md),[SDK free/census](behavior/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md):complete local release/coalescing/bootstrap/bulk reset and50 direct DOL sites;event user-pointer/scene/REL/platform/source/runtime ownership remains open |
-| Partner stay floor/fly post-collision services | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used unk_80150fac/unk_801512e0 complete local post-wall graphs and concrete floor/fly calls;full terrain/backend/motion engines,EVT-01 and original traces remain separate |
+| Partner stay floor/fly post-collision services | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Fly height](behavior/FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md),[ground/motion/support](behavior/FIELD_PARTNER_GROUND_POSTPASS.md):complete local tail and motion/classifier graph answered;selected floor early-return/output evidence;full head/floor/appear/motion/terrain/domain/EVT-01 and original trajectories remain open |
 | Event timestamp producer and main-loop pause/update binding | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Retrace clock](behavior/EVENT_RETRACE_TIME_PUBLICATION.md),[outer/update loop](behavior/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md):complete clock publication prefix/window/raw readers and main/StMain/idle body,scoped refresh/registration;other callback tail/input/scene/platform/domain and measured cadence/original traces remain open |
 | Partner surrounding-wall correction and called search body | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Binding/core/numerics](behavior/FIELD_PARTNER_SURROUNDING_WALL.md):mode1/width override,global view/filter ownership and local two-pass/vector graph answered;corrected dot sign and pre-cap saved vector;full ray/filter/terrain/math/domain/EVT-01 and original traces remain open |
 | Event context initialization,reinitialization and capacity provenance | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Context init/reset](behavior/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md),[SDK heap/callers](behavior/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md):complete Init/ReInit/allocator local policy,two original256-slot arrays,bank/global preservation and four direct DOL bindings;other heap/platform/time/source/scene/domain/original traces remain open;make test32 suites/58 Python tests and make all pass |
@@ -1272,3 +1272,19 @@ stay EVT-01 work. Verifier passes20 linked/complete hashes,205 anchors,two
 spans,50 exact direct sites. make test passes35 CTest suites and63 Python tests;
 make all passed. Previous concurrent surrounding-wall link now resolves;current
 full local link check passes. ID2 changed no native or asset pipeline code.
+
+
+ID1 partner stay postpass delivery (2026-10-12):
+[Fly](behavior/FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md) and
+[ground](behavior/FIELD_PARTNER_GROUND_POSTPASS.md) specify actual mobility==1
+vs all-other tail binding,head-before-suppression asymmetry,ordered [-5,0)
+no-correction interval,captured owner vs fresh admission pointer,floor snap/fall,
+attribute priority and exact25-name support-triggered motion. Floor query can
+return null on P0&02000000 before output reset:retain cached e4/e8 semantics.
+Ground attr0200 discards even with nonzero P4c;zero byte only adds latches.
+partyChgMot uses old-substate3 cleanup and always sets entry marker;no immediate
+recursive fall/jump dispatch. Six identities/four complete local bodies plus
+selected query regions,78 anchors,12 constants,three spans/two lecture imports
+pass;make test35 CTest/63 Python tests and make all pass. Only ID1 scoped lock
+released;complete head/floor/appear and motion/geometry/domain/original traces
+remain open. Original surrounding-dot native correction request remains separate.

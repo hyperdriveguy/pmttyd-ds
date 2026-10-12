@@ -1006,3 +1006,15 @@ behavior. Shared dot admission and pre-cap saved-vector claims corrected from
 original bytes. The supplied ISO stayed read-only;no asset conversion,original
 execution,profile/save mutation or original binary/dialogue distribution occurred.
 Metadata contains identities/selected anchors,not complete original bodies.
+
+
+Partner stay postpass research by ID1 (2026-10-12):
+verify_field_partner_postpass.py with field_partner_postpass_evidence.json checks
+six containing DOL identities (four complete local bodies,two query bodies only
+selected entry/output regions),78 instruction anchors,12 constants,three data
+spans and two lecture imports. Resource evidence pins las_10 and the exact26-word
+named-support pointer table plus25-name containing span;these are resource keys,
+not story dialogue. Original ELF/listings and field-partner-postpass-evidence.json
+remain ignored under artifacts/reference/behavior. ISO read-only;no asset
+conversion,original execution,profile/save mutation or original binary/dialogue
+distribution occurred. Full ceiling/floor geometry and runtime domain remain open.

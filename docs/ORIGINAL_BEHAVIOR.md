@@ -533,3 +533,12 @@ remain open.
 now specify complete local memory construction/release/coalescing/reset and50
 DOL sites. Map and SDK size/null/merge/ownership policies remain distinct;
 scene/REL/alias/platform/domain and original runtime ownership remain open.
+
+
+[Partner fly height postpass](behavior/FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md)
+and [ground postpass](behavior/FIELD_PARTNER_GROUND_POSTPASS.md) now close used
+stay-tail query order,owner-gated height smoothing and floor snap/fall/named-
+support motion requests. Selected floor-query entry proves early mask return
+can preserve cached outputs. Complete local motion-change/name-classifier leaves
+are specified,including exact25-name resource table;full queries,appearance/
+motion/terrain/domain and original trajectories remain dependencies.

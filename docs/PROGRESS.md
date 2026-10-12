@@ -7818,3 +7818,36 @@ preserved. Next:per-event/shared user-pointer/scene/REL ownership and alias/cycl
 capacity/numeric/arena/platform domains;clock/VI/thread/gate/state writers and
 original reset/free/cancellation/Jump/story traces. Complete-game documentation
 and requirements remain incomplete.
+
+
+## 2026-10-12 — ID1 used partner stay floor/fly postpasses
+
+Added [fly height](behavior/FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md) and
+[ground/motion/support](behavior/FIELD_PARTNER_GROUND_POSTPASS.md). Complete
+local stay-tail graphs cover head/floor request order,suppression asymmetry,
+ordered [-5,0) smoothing interval,owner pointer/read admission,direct floor
+snap,discard/latches,fall request and named-support preparation. Complete local
+partyChgMot/classifier include old-substate cleanup,always-set marker and exact
+25-name/null table. Selected floor-query entry proves mask02000000 null return
+before output reset,so cached e4/e8 remain observable. Full head/floor query
+algorithms and appear-position engine remain explicitly open,not inferred from
+fingerprinting their containing bodies.
+
+Validation:verify_field_partner_postpass.py passes six containing DOL hashes
+(four complete local bodies,two selected query regions),78 independently pinned
+instructions,12 constants,three data spans including26 exact table words,and
+two lecture imports. Repeated metadata byte-identical;Python compilation and
+prior surrounding verifier passed. General verifier passed1980 instruction
+anchors;all1257 behavior links resolved at snapshot. Gekko audit passed549
+files/76334 instructions/536 paired-single ops,zero changes or unknowns. make
+test passed35 CTest suites and63 Python tests;make all succeeded with no rebuild
+needed. Logs:/tmp/id1-postpass-test.log and /tmp/id1-postpass-build.log. These
+are native/static checks,no original execution or measured flight/timing evidence.
+ISO stayed read-only;no asset conversion,profile/save mutation or original
+binary/dialogue distribution. Only ID1 scoped lock released;concurrent native/
+ID2 work preserved outside this commit.
+
+Next:complete head/floor queries and appear-position,out-of-screen services,
+all homing/fall/jump/fly handlers,state/flag/source/numeric domains and original
+collision/flight/transition observations;native surrounding-dot parity correction.
+Full documentation and complete-game requirements remain incomplete.
