@@ -128,3 +128,10 @@ damage/domain callbacks,global ID/speed/context writers,packed provider binding
 and original execution remain EVT-01/JUMP-01 requirements. This answers the
 conditional registration parameters and scoped direct registry census;it does
 not prove every reachable Jump caller or the early battle's fidelity.
+
+
+[Complete data-child service/Mario key7](BATTLE_UNIT_DATA_CHILD_CONTINUATION.md)
+now supplies the local dynamic lookup and original803729c8→key7→80416bd0
+source chain. The tiny child still allocates/waits/copies back,and its source
+span plus trailing word is absent from the current three-stream pack. Other
+unit/table writers,dynamic source domains and original execution remain open.

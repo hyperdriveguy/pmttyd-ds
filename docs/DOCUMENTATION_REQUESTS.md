@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Jump unit-data child key7 and continuation service | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete data-child/Mario source](behavior/BATTLE_UNIT_DATA_CHILD_CONTINUATION.md),[all actor selectors/system query](behavior/BATTLE_ACTOR_SELECTOR_TRANSLATION.md):key7→80416bd0 DELETE child,parent wait/post-constructor actor/255,ordered queries closed;extra source span requested,dynamic writers/backend/runtime remain open |
 | Partner placement4 recovery search and failure output | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used partyGetAppearPos4 complete seeded output/table/alias/ray/admission/fallback graph and called fallback writer;pose/NPC/backend/source domains,other motion engines,EVT-01 and original trajectories remain separate |
 | Ordinary Jump root registration and callback-address census | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Conditional root/source binding](behavior/NORMAL_JUMP_ROOT_REGISTRATION.md),[complete scoped registry](behavior/NORMAL_JUMP_CALLBACK_REGISTRY.md):root10/flags0/typeef/context/ID/speed/actor order,three child wrappers,156 direct sites/72 callbacks;requested-enum run-check correction flagged;menu/global/raw/dynamic/source/backend/runtime remains open |
 | SDK descriptor and primary-map live read-order addendum | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Exact live order](behavior/SDK_HEAP_BOOTSTRAP_LIVE_READ_ORDER.md):InitAlloc live count/base/final base with retained original product,CreateHeap post-header size reread,both primary start→end→handle before length publication;native arena/alias/source/runtime remains open |
@@ -1785,3 +1786,30 @@ write/edit those three paths. They are preserved in the commit;history is not
 rewritten. Native uncommitted files and ID2 pending work remain preserved.
 Earlier statement that every concurrent change stayed outside the scoped commit
 must be read with this recorded shared-index exception.
+
+
+ID2 EVT-01/JUMP-01 data-child source delivery (2026-10-12), partial answer:
+[Complete callback/Mario key7](behavior/BATTLE_UNIT_DATA_CHILD_CONTINUATION.md)
+closes full RunDataEventChild8010a010/a0,live actor→translation→unit→key→table
+query order,zero-result2 versus ChildEntry flags0,parent opcode clear BEFORE
+child actor=retained translated I,return255 without parent deletion. Original
+kind80372afc+c0→803729c8,key7→80416bd0 tiny DELETE/terminal script closes
+static Mario source. Tiny child still allocates ID/appends/waits/copies back.
+[Translation/system query](behavior/BATTLE_ACTOR_SELECTOR_TRANSLATION.md)
+closes all signed selectors,unconditional global capture,-3/-5 unchecked null
+versus-4 fallback,and first kind220 query. Old recovery wrapper size9c corrected
+toa0. Own lock released;dynamic unit/table/source/scene/backend/runtime remain open.
+
+Native source owner:current three-stream pack omits child80416bd0 plus original
+trailing word80416bd8 required by constructor label scan. Existing packer with
+FOUR explicit names reproduced /tmp/id2-datachild-jump-with-key7.pmevt:four
+segments,4564 bytes;added80416bd0/12 span matches original byte-for-byte.
+Reproduction command/provenance in linked contract. No additional USER_FUNC
+address is needed for this child;actual data table and VM source binding are.
+Registry/alias/heap/time/original execution remain required;do not stub lookup
+as immediate2. Prior requested-enum run-check correction also remains pending:
+include/event_creation.hpp still describes whole GP18 at this check.
+Verifier passes ten complete/linked hashes,109 anchors,five spans including
+trailing bytes;repeat reports equal;constructor/lifetime/general1980 evidence
+passes. make test50 CTest/78 Python and make all pass;2038 local links resolve.
+ID2 changed no native/test/asset-packer source;original extracts remain /tmp.

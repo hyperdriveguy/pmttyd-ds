@@ -93,7 +93,7 @@ BtlUnit_GetData at0x8012733c,size0x40 scans the same8-byte key/value entries
 from unit+0x18, stopping at key0; matching key returns its word value, missing
 or null table returns0. It assumes a valid unit and a correctly terminated table.
 
-RunDataEventChild at0x8010a010,size0x9c resolves unit/key similarly and calls
+RunDataEventChild at0x8010a010,size0xa0 resolves unit/key similarly and calls
 GetData. Value0 returns2 without creating a child. Otherwise call
 `evtChildEntry(parent,value,0)`, clear parent's opcode byte+0x0a, write translated
 unit ID into child+0x160, and return255. There is no null-allocation check before
@@ -172,3 +172,10 @@ Remaining: motion continuation, numeric float resolution, pose data/animation
 selection and sound services, data-key8 bindings, all other recovery callers,
 unit initialization and event wait/conclusion internals. Full status/game
 requirements still depend on those contracts and execution comparisons.
+
+
+[Complete data-child continuation](BATTLE_UNIT_DATA_CHILD_CONTINUATION.md) now
+supplies exact capture/query/post-constructor stores and static Mario key7
+source;[full actor translation](BATTLE_ACTOR_SELECTOR_TRANSLATION.md) closes
+all signed selectors and system-unit query. The older wrapper size9c was an
+annotation error;the US symbol/body extent is a0. Source/runtime domains remain open.

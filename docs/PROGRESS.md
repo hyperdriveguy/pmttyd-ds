@@ -1,5 +1,38 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Jump unit-data child continuation and original Mario key7 source
+
+Documentation agent ID2 recovered full RunDataEventChild/all actor selectors/
+system-unit query and original kind.c0/table/key7 source in two detailed files.
+Mario key7 selects80416bd0 tiny DELETE/terminal child. It still creates ID,
+initializes priority/global speed,appends/waits and copies back;wrapper's parent
+opcode clear precedes translated actor override and return255 leaves parent alive.
+Queries retain argument/unit/actor while rereading later key/current globals.
+Older recovery callback size9c correctedtoa0. No original execution/native code
+or fabricated callback result was introduced.
+
+Source dependency:current three-stream pack lacks80416bd0/12 (child plus original
+terminal label-scan trailing word). Existing packer with four explicit names
+produced /tmp/id2-datachild-jump-with-key7.pmevt:four segments,4564 bytes,SHA256
+82dd17bd66ff013fa3df32d25134b01d4077f11460bab222d9da0aad4d43790d.
+Added span compared byte-exact with original evidence. Native packer/defaults
+unchanged;reproduction in the contract. Extracted source/compiled pack stays /tmp.
+
+Validation: verify_battle_data_child.py passes ten complete/linked hashes,109
+instructions,five spans including extra trailing word;repeat reports equal
+(/tmp/id2-datachild-evidence.json and -second.json). Constructor/lifetime and
+general1980 evidence pass;Python compile/diff-check and2038 local links pass.
+make test50/50 CTest suites and78 Python tests;make all passes. Exact logs:
+/tmp/id2-datachild-test.log,/tmp/id2-datachild-build.log. Shared changes preserved.
+
+Own lock released and delivery/source dependency recorded in request queue.
+Next native owner binds Mario kind/table/extra script span/actual child lifecycle
+and corrects requested8041e940 run-check source (header still says GP18). Dynamic
+unit/table/scene writers,packed address/heap/clock/numeric/callback backend and
+original traces remain EVT-01/JUMP-01;record/reset/end/turn and broader systems
+remain documentation work. Goal active/incomplete;full-game fidelity unproven.
+
+
 ## 2026-10-12 — Native camera target, heading and screen-cache lifecycle
 
 Native dff51f1 adds portable engine-unit camera/Mario target owners and binds

@@ -681,3 +681,11 @@ conditional default acceleration,damping/clamps,excluded-surface mobility gates,
 placement4 request/facing/exception order,two landing cleanup paths and air2/
 land3 returns. Full placement4/pose/terrain/source/numeric and original trajectories
 remain open;native validation does not supply original-game execution evidence.
+
+
+[Unit-data child continuation](behavior/BATTLE_UNIT_DATA_CHILD_CONTINUATION.md) and
+[actor selector translation](behavior/BATTLE_ACTOR_SELECTOR_TRANSLATION.md)
+close full local wrapper/all sentinels/system query and actual Mario key7
+source→tiny80416bd0 child. No USER_FUNC in that child does not remove its
+ID/append/wait/copy-back lifecycle. Native source pack needs its span/trailing
+word;other dynamic writers/providers/scenes and original execution remain open.
