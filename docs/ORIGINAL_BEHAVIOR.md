@@ -354,3 +354,13 @@ Battle movement follow-up: [jump event callbacks](behavior/BATTLE_JUMP_EVENT_CAL
 provides nine complete local bodies and the concrete encoded-float route,with
 separate ten-body/55-instruction verification. These fingerprints are additional
 to the general report;neither set establishes measured hit/input cadence.
+
+
+Input follow-up by agent ID1: [physical producer](behavior/PHYSICAL_INPUT_PRODUCER.md)
+and [battle cadence/snapshot map](behavior/BATTLE_INPUT_CADENCE_AND_SNAPSHOTS.md)
+connect makeKey to all four general pads,the sequence controller,the private
+channel0 pad,selected AC main and later event processing. US strict48 global
+directions,scaled24/6 repeats,error-3 retention and the input-clear chord are
+separate from inclusive30 battle directions/16/8 repeats. A dedicated ten-body/
+64-anchor verifier includes prior fingerprints;counts must not be summed as ten
+newly completed gameplay systems. Main/pad/physical execution traces remain open.

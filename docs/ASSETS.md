@@ -770,3 +770,15 @@ artifacts/reference/behavior and use corrected Gekko paired-single mnemonics.
 No original executable linking/distribution,asset conversion,ISO/profile/save
 mutation or story/dialogue rewrite. Encoding/behavior facts do not grant rights
 to distribute original resources;existing provenance and rights still apply.
+
+Physical input/cadence research by agent ID1 (2026-10-12) documents six new full
+local bodies and checked ordering/snapshot regions in prior helpers. Original
+DEMOPad is BSS;no live input state was extracted or inferred from initialized
+file bytes. tools/verify_input_cadence_contracts.py pins ten containing bodies
+(including four prior identities),64 instructions,28 direct calls,reset-mask data,
+AC display depth and the event-credit unit. Report remains ignored at
+artifacts/reference/behavior/input-cadence-evidence.json;listing/inspection ELFs
+remain in the same ignored research directory. SDK hardware and actual input
+poll/impact timing remain dependencies. No asset conversion,original execution,
+ISO/profile/save mutation,native linking or original text rewrite. Existing
+original/reference provenance and distribution rights are unchanged.

@@ -17,8 +17,10 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Unit resource/status snapshot export leaf | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Export contract](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete matching writer;export caller cadence and on-disk save semantics remain open |
+| Unit badge/count/bonus import through _EquipItem | STATUS-01, DMG-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Badge import](behavior/UNIT_BADGE_COUNT_IMPORT.md):complete byte maps/flags/reset/scan and scoped setup bindings;inventory equip UI and runtime traces remain open |
 | Unit-entry status clear and pouch resource import | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Initialization contract](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete clear/import/revision,party mapping and partial info-record reset;badge aggregation,snapshot producers and turn/save ownership remain open |
-| Physical key producer and battle pad update order | AC-01, AC-03, AC-02 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover makeKey,BattlePadManager,battleMain and private/general call ordering;excludes full sequence lifecycle,override writers and original traces |
+| Physical key producer and battle pad update order | AC-01, AC-03, AC-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Physical producer](behavior/PHYSICAL_INPUT_PRODUCER.md) and [cadence/snapshots](behavior/BATTLE_INPUT_CADENCE_AND_SNAPSHOTS.md);local edges/repeats/order answered,SDK/pause/other writers/original traces remain open |
 | Unit part defense/attribute construction and Crump source tables | DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Part contract](behavior/UNIT_PART_DEFENSE_AND_LIFETIME.md):pointer copies,boss/Mario zero tables,lookup exceptions and ordered teardown;full unit entry,mutation and executed damage remain open |
 | Battle jump callbacks and concrete Crump float operands | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Jump contract](behavior/BATTLE_JUMP_EVENT_CALLBACKS.md):full local callbacks,used float route and scoped JMP-01..07 acceptance cases;main/pad cadence and original impact traces remain open |
 | Crump normal attack request graph and target wrapper ABI | AC-01, AC-03, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Attack graph](behavior/HARBOR_BOSS_NORMAL_ATTACK.md) and [target ABI](behavior/BATTLE_TARGET_EVENT_INTERFACES.md); excludes target cores and executed timing; parent requests remain open |
@@ -121,6 +123,19 @@ to reproduce the original command's display geometry/animation. Sound requests
 retain `SFX_AC_PI1` and `SFX_AC_PONE1`; no replacement samples are played.
 
 ## AC-03 — Defense callers, pad cadence and eligibility (open)
+
+Input partial answer from agent ID1 (2026-10-12):
+[physical producer](behavior/PHYSICAL_INPUT_PRODUCER.md) closes local DemoPad
+read/copy,error-3 retention,GP physical edges,frame-rate-scaled24/6 repeat counters,
+strict48 direction masks and US input-clear chord. Hardware SDK/polling remains
+open. [battle cadence/snapshots](behavior/BATTLE_INPUT_CADENCE_AND_SNAPSHOTS.md)
+closes general→sequence→private→AC main ordering before later main-chain events,
+private sampling even with no AC main,and the12-byte snapshot write map. The
+current GP press can be included before a later eligible defense event;multiple
+interpreter credits can share that sample. Every-hit private reset remains
+separate from general history. PAD-01..06 give implementable storage/order cases.
+Main frequency/pause,other samplers/resets,override writers,multihit event bindings
+and original execution traces remain open;no fixed impact tick is established.
 
 Movement partial answer from agent ID1 (2026-10-12):
 [jump callbacks](behavior/BATTLE_JUMP_EVENT_CALLBACKS.md) gives full local
@@ -243,6 +258,19 @@ stat trace or collapse current/max/base copies when implementing resources.
 
 ## STATUS-01 — Status lifetime, event binding and turn ownership (open)
 
+Further ID2 answer:[badge/count import](behavior/UNIT_BADGE_COUNT_IMPORT.md)
+recovers full _EquipItem/BtlUnit_EquipItem,40-byte clear,all200 signed pouch
+slots,exact numeric count maps/mode flags and wrapped multi-item threshold.
+Setup uses clear+Mario scan flags3 and clear+partner scan5 before a later
+pouch import;enemy saved/nonsaved held-item branches differ. Concrete Mario
+setup/kind now proves count3 and original part array;items289/290 write the
+power bonus bytes2ff/300. These are also partial DMG-01/AC-03 badge writer
+answers,not initial player equipment or global guard eligibility proof.
+[Snapshot export](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md) identifies
+the matching SetParamToPouch body and exact current-resource/status write order;
+swap/turn/battle-end export cadence and disk-save reconstruction remain open.
+Use EQUIP-01..04 and INIT requirements rather than invented loadout/turn rules.
+
 Partial answer from ID2:
 [status clear and pouch import](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md)
 recovers complete ClearStatus,SetParamFromPouch,ReviseHpFp,party mapper and
@@ -299,6 +327,25 @@ Use native data/requests as test fixtures only;do not treat them as original
 scene/stat/position/audio/turn behavior. Link concrete data/service answers here.
 
 ## Implementation coverage and next work
+
+### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
+
+The implementation now uses the [recovered power callbacks](behavior/BATTLE_WEAPON_POWER_CALLBACKS.md)
+in `source/battle_weapon_power.cpp`. The native harness executes one documented
+Jump hit with level1 supplied as an explicit fixture;successful timing records
+success but no longer fabricates a two-power hit. This is incomplete attack
+sequencing,not a faithful finished Jump or a claim of original starting loadout.
+
+Please recover the complete ordinary Jump event0x80355cf0 control flow:all
+SetParam/flag/difficulty/start/result/get-result/stop branches,per-hit state-bit
+writers,precheck and damage flags,subsequent-hit conditions/count/target-alive
+gates,inline/child motion and wait ownership,bonus/stylish/feedback declaration
+and cleanup. Link existing motion callbacks and original interpreter/pad cadence
+to the actual damage/result invocations. Retain raw event operands and addresses.
+Provide original timing/state traces separately;do not insert the harness's
+impact48/return42 schedule or its temporary one-hit policy into the contract.
+The portable services test invalid signed levels via bounded providers;original
+pouch initialization,upgrade/load/save and bonus-byte writers still need binding.
 
 TimingA portable contract tests are `tests/battle_timing_a_tests.cpp`; native
 integration boundaries are in `tests/core_tests.cpp`'s `timing()` scenarios.

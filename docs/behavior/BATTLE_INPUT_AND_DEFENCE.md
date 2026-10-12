@@ -69,7 +69,9 @@ The new snapshot takes the physical button field's low 16 bits and signed
 main/C-stick coordinates from global input. Analog A/B fields become zero on
 this path. The new pressed/repeat/released low-button masks come from the global
 input producer, not a local recomputation from the physical-button snapshot.
-That producer's sampling/edge rules are a separate contract still to recover.
+Its local sampling/edge/repeat rules are now in
+[physical input producer](PHYSICAL_INPUT_PRODUCER.md);SDK hardware behavior and
+original traces remain open.
 
 The update adds virtual buttons with inclusive thresholds:
 
@@ -97,8 +99,8 @@ and reset the counter (`0x8011a310`–`0x8011a364`).
 
 The comparison uses the whole combined mask. Adding a physical button while
 holding a stick direction changes the mask and restarts this repeat phase.
-The 16/8 delays govern virtual directions; the original global producer remains
-responsible for physical repeat bits. Do not impose this loop on every UI button
+The16/8 delays govern virtual directions;the [global producer](PHYSICAL_INPUT_PRODUCER.md)
+supplies physical repeat bits using frame-rate-scaled24/6 call delays. Do not impose this loop on every UI button
 without inspecting that producer and the particular menu's callers.
 
 `BtlPad_WorkInit` (`0x8011a38c`) zeroes both pad snapshots, all 30 entries in
@@ -226,3 +228,15 @@ Still required: attack-specific action-command implementations, impact/input
 sampling order, tutorial restrictions, override counter writers, all damage
 modifiers, statuses, multi-hit defense reset policy, partner commands, stylish
 actions, audience/bingo/SP consequences and observed timing acceptance.
+
+
+## Caller-order and snapshot follow-up
+
+[Battle input cadence](BATTLE_INPUT_CADENCE_AND_SNAPSHOTS.md) now establishes
+four general updates before the sequence controller,then private channel0 update
+before the selected AC callback,and later main-chain event dispatch. Private
+sampling runs even with no AC main callback. The complete snapshot write map
+identifies trigger bytes6/7,explicit zero bytes8/9,and untouched retained bytes10/
+11. A later eligible script check can include the current producer sample;
+multiple event-credit invocations do not themselves create additional pad samples.
+Original pause/multihit/override/cadence traces and other writers remain open.

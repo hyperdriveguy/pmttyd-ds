@@ -1,5 +1,100 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2: requested badge/count import and snapshot export
+
+Added UNIT_BADGE_COUNT_IMPORT.md with complete _EquipItem/BtlUnit_EquipItem
+contracts:all numeric byte maps,40-byte reset,kind220 exclusion,200 signed
+pouch slots,mode-mask order,per-copy unsigned byte wrap and narrowed2f3/2f4
+threshold. Items289/290 now pin Mario power bonus2ff/300 writers. Scoped
+Btl_UnitSetup callers prove Mario flags3/partner flags5 before later resource/
+status import,distinct enemy held-item branches and current=max writes.
+Original entryunit_mario->unitdata_Mario->count3/part array closes the concrete
+Mario part binding. Remaining setup services/final battle flag scan are explicitly
+partial;whole containing-function hashes do not claim full semantic recovery.
+
+Extended UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md with complete SetParamToPouch:
+Mario writes current HP/FP only;partners write current pouch HP and the exact
+44-byte battle snapshot fields,retaining its two-byte gap. Export caller/switch/
+turn/end/save ownership remains open. Cross-linked earlier power/part/init
+documents and corrected now-resolved producer/count gaps. EQUIP-01..04 provide
+scoped implementation/acceptance requirements. Released only ID2's validated
+badge/export locks in DOCUMENTATION_REQUESTS.md;all parent requests remain open.
+No native code was authored by ID2. Concurrent ID1 input documentation and
+native power/part changes were preserved.
+
+Validation:general verifier passed1,980 instruction anchors (32 new),whole
+import/setup/export fingerprints,Mario setup/kind hashes and concrete three-part
+pointer chain,plus all previous checks. Two fresh368-function evidence reports
+matched byte-for-byte from read-only ISO.651 behavior local links resolved;
+make test passed eight CTest suites and58 Python tests;make all exited0 with
+no rebuild;git diff --check passed. /tmp contains original inspection artifacts/
+reports/logs;none committed. No original execution/emulator,ISO/profile/save
+mutation,asset conversion or story/dialogue rewrite by ID2.
+
+Next:STATUS-01 move/count consumption and concrete infliction/turn owners;
+snapshot export/import callers and partner reentry/reset lifetime;DMG-01 actual
+per-hit AC/counter/status/weapon mutations and damage/reward/field results;
+DMG-02 native service effect/pose/pouch/revival bindings. Initial equipment and
+original input/state/RNG/resource traces remain necessary. Continue request-
+scoped locks with numeric ID2,communicating via DOCUMENTATION_REQUESTS.md.
+Full-system documentation and complete-game requirements remain active/incomplete.
+
+## 2026-10-12 — Original weapon power callbacks in native attacks
+
+Implemented BATTLE_WEAPON_POWER_CALLBACKS.md in include/battle_weapon_power.hpp
+and source/battle_weapon_power.cpp. Default returns the signed weapon word
+unchanged. Mario services capture action-result bit1 before pouch access,read
+signed level,compute the wrapped index with an upper-only clamp,read unsigned
+bonus before the power word and wrap addition. Negative indices are passed to
+an explicit bounded provider rather than clamped to level1. Semantic factories
+retain ordinary Jump1/1,2/2,3/3 and Hammer1/2,2/4,3/6 tables,their documented
+special flags,element0 and nil FP callbacks;boss default uses base1/flags1087.
+These are minimal behavior parameters,not copies of full original weapon assets.
+Portable module incremental commit:33294a0.
+
+Removed the native synthetic power callback and success?2:1 power assignment.
+Native attacks now bind original callbacks to battle state,actor bonus bytes,
+weapon tables and explicit development level1 inputs. The original pouch/loadout/
+upgrade/save owner remains unbound;level1/bonus0 are not claimed measured initial
+state. Calculator special flags now come from the documented weapon parameters.
+Successful TimingA remains distinct from Jump's single-hit power1. Native Jump
+temporarily executes one documented hit;its original subsequent-hit/event flow
+is missing. We no longer hide that gap by doubling one hit. This is incomplete
+attack sequencing,not a faithful complete Jump/tutorial. Hammer's ordinary
+single-hit power follows its table;actual Crump command availability and global
+event/state/impact conditions remain open.
+
+Validation:make test passed8 CTest executables and58 Python tests;make all rebuilt
+ttyd-2ds.3dsx;git diff --check passed. Power tests cover all levels1..3/both bits/
+bonuses0,255,upper clamp,signed negative/zero levels via bounded providers,
+captured state before a mutating pouch getter,bonus-before-word read order,
+signed32 wrap,default0/-1/150 returns,callback ABI and actual HP/FP calculator
+composition. Core timing now checks success flags separately from equal Jump
+power,anti-mash failure explicitly,and five single-hit harness turns for victory;
+Hammer boundaries retain two-power success and the recovered Charge-use flag.
+Existing damage/resource/guard/field/save suites also pass. Derived contract
+tests are not original execution comparisons or full attack equivalence.
+
+Isolated regression commands:python3 tools/emulator_smoke.py --fresh-save
+--seconds4 --input-script tests/azahar_defense.py and the same command with
+tests/azahar_hammer.py. Captures are under artifacts/azahar for manual review;
+reviewed Hammer full-charge/release (Nice/2,Crump3HP),early release (Hit/1,2HP)
+and overrun (Hit/1,1HP),and defense Guard/Mario10HP versus rejected mash/Mario9HP.
+These validate the development adaptation,not original attack timing or starting
+loadout. Existing presentation,hit-event and tutorial limitations remain. Only
+generated test saves were reset;user emulator profile/saves and ISO untouched.
+Git/display escalations were automatically approved. Concurrent documentation
+research/files were preserved and excluded from implementation staging.
+
+Added JUMP-01 to docs/DOCUMENTATION_REQUESTS.md for full ordinary Jump branches,
+per-hit result/damage flags,subsequent-hit/target/count conditions,inline/child/
+wait ownership,feedback/stylish/stop and cleanup. This request deliberately
+excludes substituting the harness's one-hit or48/42 schedule for original flow.
+Next bind the recovered physical/pad cadence documentation arriving from agent1,
+complete original Jump event flow and integrate actual pouch/bonus/part/unit data
+from agent2. Continue original scene/message/VM and service handler integration.
+Full implementation goal remains active/incomplete.
+
 ## 2026-10-12 — ID2: requested status clear and pouch resource initialization
 
 Added UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md. Complete ClearStatus zeros30
@@ -5323,3 +5418,47 @@ services,then original impact/precheck/defense input traces. Coordinate through
 numeric-ID scoped locks in DOCUMENTATION_REQUESTS.md. Continue all reachable US
 systems and optional content;full-game documentation and final requirements
 remain incomplete.
+
+## 2026-10-12 — ID1: physical producer and battle input cadence
+
+Added PHYSICAL_INPUT_PRODUCER.md and BATTLE_INPUT_CADENCE_AND_SNAPSHOTS.md.
+Complete local makeKey/DemoPad read/copy,battle wrapper/engine/pad manager now
+connect GP publication→four general histories→sequence controller→private
+channel0 history→selected AC main→later main-chain event processing. Private pad
+updates even without an AC main callback. The full12-byte snapshot write map
+copies buttons/axes/triggers,zeros8/9,and retains10/11. Physical direction masks
+use strict48 thresholds;battle virtual directions use inclusive30/different bits.
+
+US producer repeats scale24/6 by frameRate/60,with whole-mask change ownership;
+these differ from battle virtual16/8 pad repeats. Raw error-3 retains old held/
+analog data while clearing derived edges/deltas. Original0x1c00 chord clears GP
+input after publication but retains DemoPad;motor requests and last-mode latch
+order documented. Lower SDK polling/clamping/reset services and their timing
+remain open. Battle engine tests its sequence/GP flag gates only after all local
+subsystem calls;no invented whole-battle early pause gate added.
+
+Event execution credits can resume a yielded movement command again in the same
+manager pass without a new physical/battle sample. Current producer input can
+reach a later eligible defense event,subject to actual intermediate reset/writers;
+each-hit private WorkInit and general history remain distinct. Added implementable
+PAD-01..06 requirements and controlled acceptance boundaries. These static
+contracts do not establish fixed tutorial impact ticks or observed input latency.
+
+Validation:dedicated verify_input_cadence_contracts.py passed ten containing-body
+hashes(six new local bodies/four prior identities),64 instructions,28 direct calls
+and three data bindings;two metadata reports matched byte-for-byte. Existing
+jump verifier and general verifier passed.647 behavior local links resolved.
+Gekko check covered465 listings,66,469 instructions,376 paired instructions,
+zero changes/unrecognized. make test passed eight CTest suites plus58 Python
+tests;make all exited0,no rebuild. git diff --check passed. Shared general tooling
+and concurrent native/ID2 badge documentation edits were left unstaged by ID1.
+No original execution/emulator/profile/save mutation,ISO write,asset conversion,
+native implementation or story/dialogue rewrite by this research step.
+
+Updated input/reference/provenance links and request answers;released only ID1's
+physical/battle input slice. AC-01/02/03 remain open for other writers,lifecycle,
+pause/global overrides,multihit graph and original traces. Next ID1 work:actual
+pause/stop/timescale and other sampler/reset caller census,then original input/
+state observations and remaining target/movement/audio composition. Continue
+all reachable US systems and optional content;full-game documentation and final
+complete-game requirements remain incomplete.
