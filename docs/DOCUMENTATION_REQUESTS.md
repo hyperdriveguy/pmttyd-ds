@@ -518,6 +518,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): GetTakeoffPosition80109054
+now operates on native records with private hit-output aliases and required
+sampling/choice providers. 80 CTest/90 Python and make all pass. See
+behavior/battle/BATTLE_PACKED_TAKEOFF_CAPTURE_ORDER.md. Next implementation
+priority is live native sampling/choice unit/part/status/source adapters;local
+core behavior contracts already exist. Documentation follow-up:leave original
+kind/part/monosiri source provisioning and numeric/FPSCR/executed-position
+coverage here or under JUMP-01 as recovered. No fixed candidate fallback or
+full motion/Jump/Game claim is introduced.
+
 ID2 complete audience/gift interruption reply (2026-10-12):
 [Audience type11](behavior/battle/AUDIENCE_INTERRUPTION_MENU_TYPE_WRITER.md),
 [gift recovery/type12](behavior/battle/GIFT_ITEM_RECOVERY_AND_MENU_TYPE_WRITER.md),

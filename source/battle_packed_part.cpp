@@ -35,6 +35,7 @@ void copyPackedPartPosition(uint32_t part,bool absolute,const std::array<uint32_
     assert(s.storeWord);const uint32_t offset=absolute?0x18:0x24;
     for(unsigned i=0;i<3;++i)s.storeWord(s.user,outputs[i],word(s,part+offset+4*i));
 }
+void packedPartWorldPosition(uint32_t part,const std::array<float*,3>& outputs,const BattlePartPositionServices& s) {const auto data=inputs(part,s);for(unsigned i=0;i<3;++i)*outputs[i]=coordinate(i,data,s);}
 std::array<float,3> packedPartWorldPosition(uint32_t part,const BattlePartPositionServices& s) {const auto data=inputs(part,s);std::array<float,3> values;for(unsigned i=0;i<3;++i)values[i]=coordinate(i,data,s);return values;}
 void writePackedPartWorldPosition(uint32_t part,const std::array<uint32_t,3>& outputs,const BattlePartPositionServices& s) {
     const auto data=inputs(part,s);

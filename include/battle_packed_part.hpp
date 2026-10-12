@@ -14,6 +14,7 @@ struct BattlePartPositionServices {
 uint32_t packedUnitPart(uint32_t unit,int32_t part,const EventMemoryServices&);
 uint32_t packedRegistryPart(int32_t unit,int32_t part,const BattleActorServices&);
 void copyPackedPartPosition(uint32_t part,bool absolute,const std::array<uint32_t,3>& outputs,const EventMemoryServices&);
+void packedPartWorldPosition(uint32_t part,const std::array<float*,3>& outputs,const BattlePartPositionServices&);
 std::array<float,3> packedPartWorldPosition(uint32_t part,const BattlePartPositionServices&);
 void writePackedPartWorldPosition(uint32_t part,const std::array<uint32_t,3>& outputs,const BattlePartPositionServices&);
 int32_t packedPartPositionEvent(EventEntry&,const BattlePartPositionServices&);

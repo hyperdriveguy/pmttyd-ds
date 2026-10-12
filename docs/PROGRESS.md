@@ -216,6 +216,34 @@ requirements and EVT-01/JUMP-01/DMG-02 remain incomplete.
 
 # Progress and next-session handoff
 
+## 2026-10-12 — Native takeoff callback and private hit outputs
+
+Added original GetTakeoffPosition80109054 binding over actual event/unit/part/
+work bytes. It retains pre-resolution work for actor/target/candidate lookup,
+keeps fresh work inside hit queries,resolves three inputs before raw outputs,
+retains actor current X,combines requested hit X/Z with actor home Y,and preserves
+candidate shared ignored Y/Z through new private-output hit/world overloads.
+Signed EnemyBelong0/1 mapping,exact sampling masks/null weapon,bias/Q/signed
+count,always-called choice4,closer-X ordered comparison,pointer-identity60/30,
+live signed side offset and three non-skipping integer outputs are implemented.
+
+Sampling/choice are required explicit providers,not fixed candidate or no-sample
+fallbacks. Each invocation owns private semantic storage. Native core/source
+record adapters,original numeric exceptions and motion/Jump/Game remain open.
+Evidence:behavior/battle/BATTLE_PACKED_TAKEOFF_CAPTURE_ORDER.md;read-only original
+inspection /tmp/pm-native-takeoff.* remains outside source history.
+
+Validation:make test passes80 CTest suites/90 Python tests;make all passes.
+Logs:/tmp/pm-packed-takeoff-test.log and /tmp/pm-packed-takeoff-build.log. Tests
+cover mixed sources,fresh/retained work,raw tokens,count high bit,Q and pointer
+branches,tie/NaN,side reread,raw sentinel stores,aliases/nested private buffers
+and actual native byte RAM/registry callback. Providers/records are authored;
+no original runtime/emulator/hardware or full encounter fidelity claim.
+
+Next:live native sampling/choice unit/part/status/kind/source adapters,then
+original motion/events,remaining AC/cost/menu/pose/effect/audio/message services
+and outer battle/Game binding. Full-game goal active/incomplete;other work kept.
+
 ## 2026-10-12 — Native hit-position layers and event callback
 
 Added packed GetHitPos and original event801120a8 binding. It captures signed

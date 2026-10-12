@@ -35,6 +35,9 @@ void hit(uint32_t unit,uint32_t part,const BattlePartPositionServices& s,World w
     }
 }
 }
+void packedHitPosition(uint32_t unit,uint32_t part,const std::array<float*,3>& outputs,const BattlePartPositionServices& s) {
+    hit(unit,part,s,[&] {packedPartWorldPosition(part,outputs,s);},[&](unsigned i) {return *outputs[i];},[&](unsigned i,float v) {*outputs[i]=v;});
+}
 std::array<float,3> packedHitPosition(uint32_t unit,uint32_t part,const BattlePartPositionServices& s) {
     std::array<float,3> values{};
     hit(unit,part,s,[&] {values=packedPartWorldPosition(part,s);},[&](unsigned i) {return values[i];},[&](unsigned i,float v) {values[i]=v;});return values;

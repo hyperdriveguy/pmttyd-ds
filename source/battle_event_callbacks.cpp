@@ -5,6 +5,11 @@
 #include "event_memory_release.hpp"
 
 namespace ttyd {
+BattlePackedTakeoffServices nativeBattleTakeoffServices(EventNativeRuntime& runtime,const BattleTakeoffCoreServices& core) {
+    BattlePackedTakeoffServices s;s.position=nativeBattlePartPositionServices(runtime);s.core=core;
+    s.subtract=[](void* p,float a,float b) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.subtractFloat);return r.platform.subtractFloat(r.platform.user,a,b);};return s;
+}
+bool bindBattleTakeoffCallback(EventCallbackRegistry& registry,BattlePackedTakeoffServices& services) {return registry.bind(0x80109054,&services,[](void* p,EventEntry& e,int32_t) {return packedTakeoffPositionEvent(e,*static_cast<BattlePackedTakeoffServices*>(p));});}
 BattlePartPositionServices nativeBattlePartPositionServices(EventNativeRuntime& runtime) {
     BattlePartPositionServices s;s.unit=nativeBattleUnitEventServices(runtime);s.memory=nativeBattleActorServices(runtime);s.numericUser=&runtime;
     s.fma=[](void* p,float a,float b,float c) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.fmaFloat);return r.platform.fmaFloat(r.platform.user,a,b,c);};
