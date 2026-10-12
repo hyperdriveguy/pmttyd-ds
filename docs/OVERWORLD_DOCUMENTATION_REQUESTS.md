@@ -69,3 +69,37 @@ partial native policies are presented as original functionality:
 
 Keep original US story/message content and conditions intact; no fabricated
 rules/dialogue to close missing contracts. Preserve static/runtime boundaries.
+
+## OW-WALL-01 — Swept directional movement and sliding
+
+Delivered [ordinary wall movement contract](behavior/OVERWORLD_WALL_MOVEMENT.md)
+and `tools/verify_overworld_wall_movement.py`. Static source contract closes
+ordinary forward ray heights/length, closest Qdistance/normal selection, whole-
+vector half tangent, ordered +/-45 side guards with second-pass last-token tail,
+wrapper pass-through/contact/counter ownership, stationary disposable queries,
+and two around-correction passes with view8/2 direction count, ordinary/fall
+correction cap and second-pass dot/half policy. Complete ordinary attribute
+filter, hidden-owner string dependencies and cull1 dot>=0 rejection are pinned.
+
+Important native correction: player movement must no longer use X-then-Z endpoint
+circle rejection. Full source triangle/cull/attribute ray provider is needed;
+legacy `.walls` near-vertical filter is not the original complete query domain.
+Retain original world-unit quantization before adapting geometry scale0.01.
+An adapted host ray/trigonometric/norm service is not proven numerically identical.
+
+Remaining documentation requests:
+
+- Full hitCheckVecFilter/triangle intersection and query traversal ordering,
+  floating-point exceptional boundaries and scene/native registry identity.
+- +14 view flag writers (direction8/2), dynamic NPC hidden-block owner resolution,
+  balloon contact selection and remaining wall-contact counter/field consumers.
+- Vivian/roll/Paper/motion25/26/28, map-specific bypass/stationary stage and
+  dou10_yoko_yari hazard-helper execution/reachability.
+- Original isolated collision traces: oblique walls, approach corners,8/2 view,
+  side guard final-height ownership, falling correction cap, cull/filter edges,
+  and frame-correlated root/contact/position updates.
+
+Verifier reads the US ISO read-only, pins eight containing bodies,45 instruction
+anchors and17 data spans (14 scalar constants/three names). Inspection listings/
+ELFs stay ignored or in/tmp. No native code, assets, emulator profiles or saves
+were changed by this documentation delivery.
