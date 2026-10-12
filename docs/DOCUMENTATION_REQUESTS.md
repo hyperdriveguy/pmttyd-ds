@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Battle jump callbacks and concrete Crump float operands | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover JumpSetting/JumpPosition/JumpContinue and used evtGetFloat literal route; excludes full pad/main-loop cadence and executed impact ticks |
 | Crump normal attack request graph and target wrapper ABI | AC-01, AC-03, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Attack graph](behavior/HARBOR_BOSS_NORMAL_ATTACK.md) and [target ABI](behavior/BATTLE_TARGET_EVENT_INTERFACES.md); excludes target cores and executed timing; parent requests remain open |
 | Default weapon power callback and concrete boss operands | DMG-01 | LOCKED, 2026-10-12 | Documentation /root | Recover 0x80189d30, signed widths and selected data bindings; excludes ordinary Mario callback bodies |
 | Ordinary Mario Jump/Hammer power callback bodies and default tables | DMG-01 | LOCKED, 2026-10-12 | Documentation /root (power follow-up) | Recover signed level/index/read order and concrete ordinary weapon tables; excludes hit-count lifetime and executed tutorial values |
