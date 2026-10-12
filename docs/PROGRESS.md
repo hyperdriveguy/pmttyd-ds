@@ -12122,3 +12122,64 @@ would be wrong. Bind the completed contract when delivered. Continue original
 material/color/normal/lighting/GX services, special/recovery/partner/battle pose
 domains and actual event/story/message orchestration. Ordinary ten-pose playback
 is progress, not completion of the Rogueport slice or full overworld remake.
+
+## 2026-10-12 — ID1 used texture/light/color/fog request contracts
+
+Added seven detailed display contracts:
+[texture objects](behavior/display/ANIMATION_TEXTURE_OBJECT_SETUP.md),
+[coordinate matrices](behavior/display/ANIMATION_TEXTURE_COORDINATE_MATRICES.md),
+[smart data patch](behavior/display/ANIMATION_SMART_TEXTURE_DATA_PATCH.md),
+[color/fog](behavior/display/MAP_MATERIAL_LAST_STAGE_COLOR_AND_FOG.md),
+[light queries](behavior/display/MAP_CHARACTER_LIGHT_QUERIES.md),
+[selection/channels](behavior/display/MAP_MATERIAL_LIGHT_SELECTION_AND_CHANNELS.md),
+[types/transforms](behavior/display/MAP_MATERIAL_LIGHT_TYPES_AND_TRANSFORMS.md).
+Complete local contracts close animSetMaterial_Texture/smartTexObj/map material
+Light/LastStageBlend/Fog plus actual texture/data/query/comparator dependencies.
+These helpers are called by already recovered US render/material/map graphs;
+the ordinary Mario source previously verified one-slot/kind0 usage. No original
+execution or scene/image equivalence claimed. Only ID1 scoped lock released.
+
+Literal behavior includes two complete texture passes,reverse slot selection,
+kind0 loading but all-kind matrix requests,TEXGet double lookup,TLUT0 reuse,
+wrap bits/LOD/header fields,rotation/translation/scale grouping,sy!=0 translation
+gate,coordinate-generator-before-matrix order. Smart second argument is a data
+holder pointer;patch preserves upper11 object bits and original object identity.
+Color uses C2+0 to scale alpha,not C2+3;each admitted stage floors byte product/
+255 independently. Light queries preserve source order at <=8 active records,
+sort only above8,exclude ambient afterward,and write before capacity test.
+Preset replacement/type priority/ZYX rotations/negative2^20 direction offset,
+sticky attenuation,unrecognized-type mask accumulation and final fog/channel
+requests are documented. No original loader/lifetime/GX packing policy invented.
+
+Validation:verify_animation_texture_light.py passes14 complete body hashes,
+1189 reviewed words,11 binary32 constants,eight spans(texture dispatch,light IDs,
+direction seed,fog modes,seed colors,unsigned-byte bias,diagnostic identity),two
+US lecture imports and41 direct reference sites across seven DOL text sections.
+All65536 byte pairs verify the reviewed multiply-high reduction equals floor
+product/255;this is host arithmetic proof,not original game execution. Repeated
+JSON report byte-identical;missing caller,wrong divisor and wrong fog-table-word
+negatives rejected;Python compilation passed. Prior renderer/material and node
+verifiers pass;general verifier1980 anchors. Gekko check646 listings/93051 words/
+914 paired-single operations,zero changed files/unknown instructions. Whole-tree
+link check498 Markdown files initially found one new misnamed link;fixed target,
+then zero broken links. Final link scan recorded after delivery updates.
+
+make test passed78 CTest suites/90 Python tests;make all passed/rebuilt3DSX.
+Logs:/tmp/id1-texture-test.log,/tmp/id1-texture-build.log. Existing3218 GameCube/
+0 Switch/5 primary-PCM slice fallback audio pipeline ran. No ID1 native code,
+asset conversion policy,profile/save mutation or original game execution.
+Original ISO read-only;ELFs/listings/reports ignored;ASSETS records metadata
+provenance. Concurrent native/ID2/reference-gap drafts preserved outside own
+staged hunks;historical validation counts remain scoped snapshots.
+
+Next:actual used mapSetMaterialTev modes/source predicates,normal/GX consumers,
+resource/pose/link/cache/preset/group lifetimes and original numeric/visual
+comparisons. Prioritize actual US gameplay/story/event/message bindings and
+complete encounters through persistent results. No final complete-game system
+requirements or overall completion percentage is defensible yet;whole-system
+closure remains incomplete despite these used local body contracts.
+
+ID1 final delivery link audit (2026-10-12):501 Markdown files checked after
+staging/concurrent new files;zero broken links. The498-file count above is the
+earlier verification snapshot. All staged changes belong to ID1;other owners
+retain their currently unstaged native/battle/reference edits.

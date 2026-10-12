@@ -1059,3 +1059,15 @@ close full builder/two icon leaves:all local paths/partial rows/source arrays/
 late overrides/empty count preservation/scroll/count-address delegation.
 10 hashes/894 anchors/52 spans verified;78 CTest/90 Python/make all pass.
 Party delegate and source/query reachability/Game/platform/runtime remain open.
+
+ID1 used texture/light/color/fog recovery (2026-10-12):contracts start at
+[texture objects](behavior/display/ANIMATION_TEXTURE_OBJECT_SETUP.md),
+[coordinate matrices](behavior/display/ANIMATION_TEXTURE_COORDINATE_MATRICES.md),
+[smart patch](behavior/display/ANIMATION_SMART_TEXTURE_DATA_PATCH.md),
+[color/fog](behavior/display/MAP_MATERIAL_LAST_STAGE_COLOR_AND_FOG.md) and
+[light selection/channels](behavior/display/MAP_MATERIAL_LIGHT_SELECTION_AND_CHANNELS.md).
+Fourteen complete local bodies now define the actual render/material helper
+request graph,including texture/query/comparator leaves. Reproduce with
+verify_animation_texture_light.py:1189 words/11 constants/eight spans/two imports/
+41 direct sites and65536 bounded host integer cases. Called TEV/GX/numeric/source/
+lifetime/runtime and broader whole-game systems remain incomplete.

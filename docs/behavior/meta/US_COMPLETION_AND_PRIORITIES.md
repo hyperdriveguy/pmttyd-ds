@@ -339,3 +339,15 @@ map/GX/SDK/resource/source/lifetime/numeric/original visible outcomes remain ope
 The ordinary single-texture mesh subset does not close complete-game materials.
 Current76 CTest/86 Python/3DS build passed;all-system documentation/final full
 requirements remain incomplete.
+
+ID1 texture/light/color/fog completion update (2026-10-12):seven detailed
+contracts linked in [the display index](../README.md#id1-used-texturelightcolorfog-local-contracts-2026-10-12)
+close fourteen actual render/material helper and source-query local bodies.
+Two-pass texture objects/UV matrices,smart data patch,color/fog,light selection,
+types/transforms/channels now have reproducible binary contracts. Checker1189
+words/11 constants/eight spans/two imports/41 direct sites/65536 host integer
+cases and78 CTest/90 Python/3DS build pass. These counts update this slice only;
+the early assessment inventory above remains a historical snapshot,not a current
+completion denominator. Original TEV/GX/resource/cache/pose/link/source/lifetime/
+numeric/images and US gameplay/story end-to-end systems remain open. Full-game
+documentation remains incomplete;final system requirements remain premature.

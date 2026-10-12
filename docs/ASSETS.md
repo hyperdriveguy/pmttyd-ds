@@ -1694,3 +1694,19 @@ texture,animation or compiled payload was committed or licensed for distribution
 Host/ARM floating-point affine/trig and handheld texture filtering remain adapters;
 original SDK/material/normal/color/GX/lighting/shadow numerical/visual composition
 is not established by these tests.
+
+ID1 texture/light/color/fog provenance (2026-10-12):US G8ME01 disc0 revision0
+ISO opened read-only. Original DOL texture-matrix dispatch80306678,light IDs
+802bfa58,direction seed802bfaa8,fog modes804150c0,seed colors8041f8fc/8041f914,
+conversion bias802c1060 and diagnostic802c10c4 are pinned metadata/hashes.
+Runtime light presets803c9690/96f0/9750 and bank8041e650 are BSS pointers,not
+serialized extracted assets. No image/model/pose/message/diagnostic payload
+exported into tracked files. Local inspection ELFs/listings/report remain ignored
+under artifacts/reference/behavior;14 local body hashes are reproducible against
+the original. Original a/a_mario one-slot/kind0 witness remains as recorded in
+prior delivery,not an observed scene. No ID1 texture scaling,geometry reduction,
+lighting adaptation or music/effect conversion policy change. make all ran
+existing sound/proj/pmario.proj,pool/sdir/samp pipeline:3218 GameCube identities,
+0 Switch,5 primary-PCM slice fallbacks;ignored catalog/WAV/RomFS outputs remain
+outside history. Log:/tmp/id1-texture-build.log. Rights remain with original
+owners;local analysis and reusable code provide no asset redistribution license.

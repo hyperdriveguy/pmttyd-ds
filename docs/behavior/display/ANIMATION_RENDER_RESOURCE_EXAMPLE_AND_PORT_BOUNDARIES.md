@@ -71,3 +71,14 @@ backend/cache/memory,pool/pose/link/resource relocation/source invariants and
 original frame comparisons. These are actionable remaining dependencies,not
 proof that all systems are documented. Final complete-game requirements remain
 premature until these and broader gameplay/story systems are closed.
+
+ID1 dependency closure addendum (2026-10-12):the preceding open-helper list is
+superseded locally by [texture objects](ANIMATION_TEXTURE_OBJECT_SETUP.md),
+[coordinate matrices](ANIMATION_TEXTURE_COORDINATE_MATRICES.md),
+[smart patch](ANIMATION_SMART_TEXTURE_DATA_PATCH.md),
+[color/fog](MAP_MATERIAL_LAST_STAGE_COLOR_AND_FOG.md),
+[light selection/channels](MAP_MATERIAL_LIGHT_SELECTION_AND_CHANNELS.md).
+Complete helper/query/data-patch local request graphs now exist. Their called
+GX/numeric backends,smart holder ownership,map TEV,normal matrix/resource/source/
+lifetime and original frame comparisons remain open. The same-pointer smart
+return clarifies extra-stage nonuse without erasing its object-data mutation.

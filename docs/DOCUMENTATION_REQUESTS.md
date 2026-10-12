@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Animation texture selection and map light/blend/fog helpers | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete animSetMaterial_Texture/smartTexObj/mapSetMaterialLight/LastStageBlend/Fog indices/matrices/channels/color/fog request graph used by render/material;map TEV/GX/SDK/resource/source/lifetime/numeric/runtime remain separate |
+| Animation texture selection and map light/blend/fog helpers | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Objects](behavior/display/ANIMATION_TEXTURE_OBJECT_SETUP.md),[UV matrices](behavior/display/ANIMATION_TEXTURE_COORDINATE_MATRICES.md),[smart data](behavior/display/ANIMATION_SMART_TEXTURE_DATA_PATCH.md),[color/fog](behavior/display/MAP_MATERIAL_LAST_STAGE_COLOR_AND_FOG.md),[light queries](behavior/display/MAP_CHARACTER_LIGHT_QUERIES.md),[selection/channels](behavior/display/MAP_MATERIAL_LIGHT_SELECTION_AND_CHANNELS.md),[types/transforms](behavior/display/MAP_MATERIAL_LIGHT_TYPES_AND_TRANSFORMS.md):fourteen complete local bodies/two-pass textures/source order/sort threshold/color truncation/channel request graph;map TEV/GX/resource/source/lifetime/numeric/runtime remain separate |
 | Animation shape renderer and material request bodies | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/defaults](behavior/display/ANIMATION_SHAPE_RENDER_ENTRY_AND_DEFAULTS.md),[overrides](behavior/display/ANIMATION_RENDER_TEXTURE_OVERRIDE_SELECTION.md),[last-stage](behavior/display/ANIMATION_RENDER_LAST_STAGE_AND_REBIND.md),[arrays/FIFO](behavior/display/ANIMATION_RENDER_ARRAYS_AND_VERTEX_FIFO.md),[source/boundaries](behavior/display/ANIMATION_RENDER_RESOURCE_EXAMPLE_AND_PORT_BOUNDARIES.md):two complete bodies/default/override/material-only versus emission/source metadata;texture/map/GX/SDK/resource/source/lifetime/numeric/runtime remain separate |
 | Animation joint/transform node matrix builders | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Joint](behavior/display/ANIMATION_JOINT_NODE_MATRICES.md),[transform](behavior/display/ANIMATION_TRANSFORM_NODE_MATRICES.md),[stack/affine](behavior/display/ANIMATION_MATRIX_STACK_AND_AFFINE_NUMERICS.md),[rotation](behavior/display/ANIMATION_SDK_AXIS_ROTATION.md),[layout/bindings](behavior/display/ANIMATION_NODE_LAYOUT_AND_USED_BINDINGS.md):two complete builders/seven SDK primitives/two trig wrappers,dispatch/alias/signed-address and original13/29-group metadata;libm/GQR0/FPSCR/resource/render/material/source/runtime remain separate |
 | Animation DrawMtx wrapper and linked-paper selection | AC-01, AC-03 | VALIDATED binary / lock released, 2026-10-12 | Documentation agent ID 1 | [Wrapper](behavior/display/ANIMATION_DRAW_WRAPPER_AND_ADMISSION.md),[buffers/selector](behavior/display/ANIMATION_DRAW_SHARED_BUFFERS_AND_PAPER_SELECTION.md),[paper matrices](behavior/display/ANIMATION_DRAW_PAPER_MATRICES.md),[inner GX/flush](behavior/display/ANIMATION_INNER_DRAW_STATE_AND_BUFFERS.md),[facing](behavior/display/ANIMATION_INNER_DRAW_FACING.md),[groups](behavior/display/ANIMATION_GROUP_TRAVERSAL_AND_REQUESTS.md):five complete local bodies and original Mario draw metadata;render/material/push matrices/GX/SDK/resource/source/runtime remain separate;prior host movement failures resolved by current74-suite run |
@@ -2950,3 +2950,17 @@ make all3DSX pass. Only ID1 lock released;animSetMaterial_Texture/map material/
 smart texture/normal matrix/GX/resource/source/alias/numeric/original visuals open.
 Native mesh should preserve color/normal/UV/pass/override domains and treat its
 ordinary single-texture subset as partial,not complete-game material fidelity.
+
+ID1 texture/light/color/fog delivery (2026-10-12),AC-01/AC-03 partial answer:
+seven detailed contracts in the released row close animSetMaterial_Texture,
+smartTexObj/GXInitTexObjData,TEXGet,map material Light/LastStageBlend/Fog,six
+light/preset/map-selector queries and comparator local bodies. Two texture passes,
+reverse IDs/kind0/TLUT0/wrap/LOD,matrix grouping and unusual sy translation gate,
+holder dereference/same-object data patch,color C2+0 alpha factor/staged floor255,
+source-order <=8 versus sorted >8 query/postwrite capacity,replacement presets,
+type priority/transforms/sticky attenuation/unrecognized-type mask and fog/channel
+order are specified. Fourteen hashes/1189 words/11 constants/eight spans/two
+imports/41 direct DOL sites/65536 host arithmetic cases pass. make test78 CTest/
+90 Python and make all pass. Only ID1 scoped lock released;map TEV/GX/normal/
+resource/pose/link/source/lifetime/numeric/original images remain open. Native
+ordinary geometry/texture subset is not complete-game material fidelity.

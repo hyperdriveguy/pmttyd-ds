@@ -425,3 +425,22 @@ Completion requires covering every shipped reachable system and content mode,
 not merely booting the early Rogueport slice or passing its host tests. The
 current output satisfies neither that full documentation gate nor the final
 requirements gate. Continue the recovery work before marking the goal achieved.
+
+## ID1 used texture/light/color/fog local contracts (2026-10-12)
+
+| Contract | Closed local behavior | Remaining boundary |
+| --- | --- | --- |
+| [Texture objects](display/ANIMATION_TEXTURE_OBJECT_SETUP.md) | Reverse slot/kind0/palette/wrap/LOD/load requests and TEXGet | Relocation/image lifetime/GX/filtering |
+| [Texture coordinates](display/ANIMATION_TEXTURE_COORDINATE_MATRICES.md) | Component gates/grouping/two-pass request order | Libm/GQR0/FPSCR/GX/image parity |
+| [Smart data patch](display/ANIMATION_SMART_TEXTURE_DATA_PATCH.md) | Holder dereference/packed data mutation/same pointer return | Holder/source/cache/object lifetime |
+| [Color and fog](display/MAP_MATERIAL_LAST_STAGE_COLOR_AND_FOG.md) | C2+0 alpha factor/staged floor255/map/camera/fog requests | Group producers/TEV/GX/depth/images |
+| [Light queries](display/MAP_CHARACTER_LIGHT_QUERIES.md) | Presets/banks/source-order threshold/sort comparator/filter/postwrite capacity | Initialization/sorter stability/source domain |
+| [Selection/channels](display/MAP_MATERIAL_LIGHT_SELECTION_AND_CHANNELS.md) | Preset replacement/ambient/sticky attenuation/channel/fog requests | GX/channel retained state/source bindings |
+| [Light types](display/MAP_MATERIAL_LIGHT_TYPES_AND_TRANSFORMS.md) | Type priority/ZYX/view transforms/SDK object requests/ID mask | Numeric/initializer/GX/original visual parity |
+
+Verifier:tools/verify_animation_texture_light.py. Fourteen complete local bodies
+are used dependencies of the existing render/material graph. No whole-system
+completion or original execution is inferred from body/anchor/reference counts.
+Actual mapSetMaterialTev modes,normal/GX/cache/resource/source/lifetime and broader
+US gameplay/story reachability remain open;final complete-game requirements
+still require whole-system closure.

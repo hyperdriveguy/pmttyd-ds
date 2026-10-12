@@ -1,0 +1,6424 @@
+{
+  "schema": 1,
+  "bodies": [
+    {
+      "name": "animSetMaterial_Texture",
+      "address": 2147736828,
+      "size": 1452,
+      "sha256": "a5b658d3d27eaffd9ff07088ac8267a980d401289fac94fc85891a1092458d7c",
+      "scope": "complete local body"
+    },
+    {
+      "name": "smartTexObj",
+      "address": 2147676988,
+      "size": 60,
+      "sha256": "d42bed2a63875890a00f83c829b25874b9b6bf5485393694ceeab0e577a6cdb9",
+      "scope": "complete local body"
+    },
+    {
+      "name": "mapSetMaterialLight",
+      "address": 2147616960,
+      "size": 1404,
+      "sha256": "b03070f583bba5ba458ef0cec0cf05d56c4523d4d910477ba68fcfc3df020cf2",
+      "scope": "complete local body"
+    },
+    {
+      "name": "mapSetMaterialLastStageBlend",
+      "address": 2147620960,
+      "size": 800,
+      "sha256": "1cf95adce62a70d5cdb2d44b49d484367a422ce5bbb0cc76f8182a5659c3434d",
+      "scope": "complete local body"
+    },
+    {
+      "name": "mapSetMaterialFog",
+      "address": 2147620808,
+      "size": 152,
+      "sha256": "07aba15d3293717c4d1b9dfbc80317c52209bf61a3ef466c17584d0784900bb0",
+      "scope": "complete local body"
+    },
+    {
+      "name": "TEXGet",
+      "address": 2147711836,
+      "size": 16,
+      "sha256": "a4ed7f967c9d61e3abda39404ce9c6a992c97aff9115cb753fc4a71006b98575",
+      "scope": "complete local body"
+    },
+    {
+      "name": "GXInitTexObjData",
+      "address": 2150332072,
+      "size": 16,
+      "sha256": "b624c0f574dd7f4969bdb33abca7c75b8cd4e288256979561b737f173bebb6ab",
+      "scope": "complete local body"
+    },
+    {
+      "name": "lightGetPaperCraft",
+      "address": 2147596600,
+      "size": 12,
+      "sha256": "9b2f126813f08be41c0e90333af775baa9fac6101373821726559fd277cb5311",
+      "scope": "complete local body"
+    },
+    {
+      "name": "lightGetPaper",
+      "address": 2147596612,
+      "size": 64,
+      "sha256": "d6f91a8d7106b992957dff5efd0d52e16210f4e955752180a0b028c3d472873c",
+      "scope": "complete local body"
+    },
+    {
+      "name": "lightCheckCharaLight",
+      "address": 2147596676,
+      "size": 108,
+      "sha256": "012f27545f7bb497ff43468871f2c0e415cfaa57f902ce67580ea44f7059bc54",
+      "scope": "complete local body"
+    },
+    {
+      "name": "lightGetCharaAmbient",
+      "address": 2147596784,
+      "size": 112,
+      "sha256": "28692da32196adf18ba30bfed3146da4df43c14e97aeb8a5adcddd9cea0baa4e",
+      "scope": "complete local body"
+    },
+    {
+      "name": "lightGetNearObj",
+      "address": 2147597008,
+      "size": 508,
+      "sha256": "11f63c2cd59b24a146f3724cce464aa8083caf5cb05d633b689bb3ba8096cf31",
+      "scope": "complete local body"
+    },
+    {
+      "name": "mapGetActiveGroup",
+      "address": 2147660848,
+      "size": 8,
+      "sha256": "8cde3e75090d6cab4542985759ac0a3ac3985b9ab38068cc347149845f80cd0f",
+      "scope": "complete local body"
+    },
+    {
+      "name": "lightSort",
+      "address": 2147597516,
+      "size": 44,
+      "sha256": "f5b7638f41d14e027fc5da4d118346d36d5209dac7f35dc1060068ace5c889ba",
+      "scope": "complete local body"
+    }
+  ],
+  "anchors": [
+    {
+      "address": 2147736828,
+      "hex": "9421fe40",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736832,
+      "hex": "7c0802a6",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736836,
+      "hex": "900101c4",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736840,
+      "hex": "dbe101b0",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736844,
+      "hex": "f3e101b8",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736848,
+      "hex": "dbc101a0",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736852,
+      "hex": "f3c101a8",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736856,
+      "hex": "dba10190",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736860,
+      "hex": "f3a10198",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736864,
+      "hex": "db810180",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736868,
+      "hex": "f3810188",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736872,
+      "hex": "db610170",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736876,
+      "hex": "f3610178",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736880,
+      "hex": "db410160",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736884,
+      "hex": "f3410168",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736888,
+      "hex": "db210150",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736892,
+      "hex": "f3210158",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736896,
+      "hex": "be61011c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736900,
+      "hex": "7c781b78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736904,
+      "hex": "7c992378",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736908,
+      "hex": "7cba2b78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736912,
+      "hex": "7cdb3378",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736916,
+      "hex": "7cfc3b78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736920,
+      "hex": "7d1d4378",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736924,
+      "hex": "7d3e4b78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736928,
+      "hex": "3ae00000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736932,
+      "hex": "480002dc",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736936,
+      "hex": "7c77c050",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736940,
+      "hex": "3803ffff",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736944,
+      "hex": "5400103a",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736948,
+      "hex": "7c79002e",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736952,
+      "hex": "1c030018",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736956,
+      "hex": "54631838",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736960,
+      "hex": "7e7a1a14",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736964,
+      "hex": "80f30000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736968,
+      "hex": "7cdb00ae",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736972,
+      "hex": "7e873215",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736976,
+      "hex": "4180000c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736980,
+      "hex": "7c14e000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736984,
+      "hex": "41800050",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736988,
+      "hex": "808d8ea0",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736992,
+      "hex": "3c60802c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147736996,
+      "hex": "386310c4",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737000,
+      "hex": "3a800000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737004,
+      "hex": "81040018",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737008,
+      "hex": "80a40000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737012,
+      "hex": "80880010",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737016,
+      "hex": "80080014",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737020,
+      "hex": "54842036",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737024,
+      "hex": "38840008",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737028,
+      "hex": "54003032",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737032,
+      "hex": "7c85202e",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737036,
+      "hex": "808400a0",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737040,
+      "hex": "80840000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737044,
+      "hex": "80a401ac",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737048,
+      "hex": "38840004",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737052,
+      "hex": "7ca50214",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737056,
+      "hex": "4cc63182",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737060,
+      "hex": "4822c4c5",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737064,
+      "hex": "56803032",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737068,
+      "hex": "82d30004",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737072,
+      "hex": "7c7d0214",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737076,
+      "hex": "80030008",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737080,
+      "hex": "80830004",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737084,
+      "hex": "2c000000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737088,
+      "hex": "4082023c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737092,
+      "hex": "807e0008",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737096,
+      "hex": "7c932378",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737100,
+      "hex": "806300a0",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737104,
+      "hex": "80630000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737108,
+      "hex": "4bff9d49",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737112,
+      "hex": "80030004",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737116,
+      "hex": "28000000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737120,
+      "hex": "41820130",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737124,
+      "hex": "807e0008",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737128,
+      "hex": "7e649b78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737132,
+      "hex": "806300a0",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737136,
+      "hex": "80630000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737140,
+      "hex": "4bff9d29",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737144,
+      "hex": "7c751b78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737148,
+      "hex": "2c160000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737152,
+      "hex": "80830000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737156,
+      "hex": "8264000c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737160,
+      "hex": "82840010",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737164,
+      "hex": "4180002c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737168,
+      "hex": "56c0077b",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737172,
+      "hex": "4182000c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737176,
+      "hex": "3a600002",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737180,
+      "hex": "48000008",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737184,
+      "hex": "56d307fe",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737188,
+      "hex": "56c00739",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737192,
+      "hex": "4182000c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737196,
+      "hex": "3a800002",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737200,
+      "hex": "48000008",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737204,
+      "hex": "56d4fffe",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737208,
+      "hex": "88c40021",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737212,
+      "hex": "38610010",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737216,
+      "hex": "80f50004",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737220,
+      "hex": "88040022",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737224,
+      "hex": "80870008",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737228,
+      "hex": "7ca60050",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737232,
+      "hex": "7c003050",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737236,
+      "hex": "7ca00378",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737240,
+      "hex": "80a70004",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737244,
+      "hex": "a0c70000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737248,
+      "hex": "54160ffe",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737252,
+      "hex": "48279a31",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737256,
+      "hex": "80f50000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737260,
+      "hex": "38000000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737264,
+      "hex": "7e689b78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737268,
+      "hex": "7e89a378",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737272,
+      "hex": "90010008",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737276,
+      "hex": "7ecab378",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737280,
+      "hex": "3861001c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737284,
+      "hex": "80870008",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737288,
+      "hex": "a0a70002",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737292,
+      "hex": "a0c70000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737296,
+      "hex": "80e70004",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737300,
+      "hex": "48279629",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737304,
+      "hex": "80f50000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737308,
+      "hex": "3ca04330",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737312,
+      "hex": "3c60802c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737316,
+      "hex": "90a10100",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737320,
+      "hex": "88c70021",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737324,
+      "hex": "38831060",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737328,
+      "hex": "88070022",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737332,
+      "hex": "3861001c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737336,
+      "hex": "90c10104",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737340,
+      "hex": "38c00000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737344,
+      "hex": "c8440000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737348,
+      "hex": "39000000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737352,
+      "hex": "c8010100",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737356,
+      "hex": "9001010c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737360,
+      "hex": "ec201028",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737364,
+      "hex": "80870014",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737368,
+      "hex": "90a10108",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737372,
+      "hex": "80a70018",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737376,
+      "hex": "c8010108",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737380,
+      "hex": "c067001c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737384,
+      "hex": "ec401028",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737388,
+      "hex": "88e70020",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737392,
+      "hex": "48279615",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737396,
+      "hex": "38610010",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737400,
+      "hex": "38800000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737404,
+      "hex": "482799d1",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737408,
+      "hex": "7ee4bb78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737412,
+      "hex": "3861001c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737416,
+      "hex": "48279939",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737420,
+      "hex": "480000f0",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737424,
+      "hex": "807e0008",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737428,
+      "hex": "7e649b78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737432,
+      "hex": "806300a0",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737436,
+      "hex": "80630000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737440,
+      "hex": "4bff9bfd",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737444,
+      "hex": "7c751b78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737448,
+      "hex": "2c160000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737452,
+      "hex": "80e30000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737456,
+      "hex": "8107000c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737460,
+      "hex": "81270010",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737464,
+      "hex": "4180002c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737468,
+      "hex": "56c0077b",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737472,
+      "hex": "4182000c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737476,
+      "hex": "39000002",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737480,
+      "hex": "48000008",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737484,
+      "hex": "56c807fe",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737488,
+      "hex": "56c00739",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737492,
+      "hex": "4182000c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737496,
+      "hex": "39200002",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737500,
+      "hex": "48000008",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737504,
+      "hex": "56c9fffe",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737508,
+      "hex": "88c70021",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737512,
+      "hex": "3861001c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737516,
+      "hex": "88070022",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737520,
+      "hex": "80870008",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737524,
+      "hex": "7ca60050",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737528,
+      "hex": "7c003050",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737532,
+      "hex": "7ca00378",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737536,
+      "hex": "a0a70002",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737540,
+      "hex": "a0c70000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737544,
+      "hex": "540a0ffe",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737548,
+      "hex": "80e70004",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737552,
+      "hex": "482792e1",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737556,
+      "hex": "80f50000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737560,
+      "hex": "3ca04330",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737564,
+      "hex": "3c60802c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737568,
+      "hex": "90a10108",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737572,
+      "hex": "88c70021",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737576,
+      "hex": "38831060",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737580,
+      "hex": "88070022",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737584,
+      "hex": "3861001c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737588,
+      "hex": "90c1010c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737592,
+      "hex": "38c00000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737596,
+      "hex": "c8440000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737600,
+      "hex": "39000000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737604,
+      "hex": "c8010108",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737608,
+      "hex": "90010104",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737612,
+      "hex": "ec201028",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737616,
+      "hex": "80870014",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737620,
+      "hex": "90a10100",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737624,
+      "hex": "80a70018",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737628,
+      "hex": "c8010100",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737632,
+      "hex": "c067001c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737636,
+      "hex": "ec401028",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737640,
+      "hex": "88e70020",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737644,
+      "hex": "48279519",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737648,
+      "hex": "7ee4bb78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737652,
+      "hex": "3861001c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737656,
+      "hex": "48279849",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737660,
+      "hex": "3af70001",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737664,
+      "hex": "7c17c000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737668,
+      "hex": "4180fd24",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737672,
+      "hex": "3aa00000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737676,
+      "hex": "c3c286e8",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737680,
+      "hex": "c3e286e4",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737684,
+      "hex": "7eb3ab78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737688,
+      "hex": "480001fc",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737692,
+      "hex": "7c75c050",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737696,
+      "hex": "3a800000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737700,
+      "hex": "3803ffff",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737704,
+      "hex": "5400103a",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737708,
+      "hex": "7c19002e",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737712,
+      "hex": "1c000018",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737716,
+      "hex": "7c7b0214",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737720,
+      "hex": "c3230014",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737724,
+      "hex": "c3a3000c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737728,
+      "hex": "fc1ec800",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737732,
+      "hex": "c3830010",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737736,
+      "hex": "c3630004",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737740,
+      "hex": "c3430008",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737744,
+      "hex": "41820068",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737748,
+      "hex": "c0228704",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737752,
+      "hex": "fc60f090",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737756,
+      "hex": "62940001",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737760,
+      "hex": "3861003c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737764,
+      "hex": "fc400890",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737768,
+      "hex": "48260189",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737772,
+      "hex": "fc00c850",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737776,
+      "hex": "c02286ec",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737780,
+      "hex": "386100cc",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737784,
+      "hex": "3880007a",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737788,
+      "hex": "ec210032",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737792,
+      "hex": "4825ff31",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737796,
+      "hex": "3861003c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737800,
+      "hex": "388100cc",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737804,
+      "hex": "38a1009c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737808,
+      "hex": "4825fc95",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737812,
+      "hex": "c0228728",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737816,
+      "hex": "3861003c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737820,
+      "hex": "c06286e8",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737824,
+      "hex": "fc400890",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737828,
+      "hex": "4826014d",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737832,
+      "hex": "3861009c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737836,
+      "hex": "3881003c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737840,
+      "hex": "38a100cc",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737844,
+      "hex": "4825fc71",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737848,
+      "hex": "fc1ed800",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737852,
+      "hex": "40820014",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737856,
+      "hex": "fc1ed000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737860,
+      "hex": "4082000c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737864,
+      "hex": "fc1ee000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737868,
+      "hex": "41820024",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737872,
+      "hex": "c00286e4",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737876,
+      "hex": "fc20d890",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737880,
+      "hex": "c06286e8",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737884,
+      "hex": "62940002",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737888,
+      "hex": "ec00d028",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737892,
+      "hex": "3861009c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737896,
+      "hex": "ec40e028",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737900,
+      "hex": "48260105",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737904,
+      "hex": "fc1fe800",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737908,
+      "hex": "4082000c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737912,
+      "hex": "fc1fe000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737916,
+      "hex": "4182001c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737920,
+      "hex": "fc20e890",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737924,
+      "hex": "c06286e4",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737928,
+      "hex": "fc40e090",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737932,
+      "hex": "62940004",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737936,
+      "hex": "3861006c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737940,
+      "hex": "4826015d",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737944,
+      "hex": "28140007",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737948,
+      "hex": "418100c0",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737952,
+      "hex": "3c608030",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737956,
+      "hex": "5680103a",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737960,
+      "hex": "38636678",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737964,
+      "hex": "7c03002e",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737968,
+      "hex": "7c0903a6",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737972,
+      "hex": "4e800420",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737976,
+      "hex": "7ea3ab78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737980,
+      "hex": "38b50004",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737984,
+      "hex": "38800001",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737988,
+      "hex": "38c0003c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737992,
+      "hex": "38e00000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147737996,
+      "hex": "3900007d",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738000,
+      "hex": "48276c75",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738004,
+      "hex": "480000b8",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738008,
+      "hex": "3be100cc",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738012,
+      "hex": "48000080",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738016,
+      "hex": "3be1009c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738020,
+      "hex": "48000078",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738024,
+      "hex": "386100cc",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738028,
+      "hex": "3881009c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738032,
+      "hex": "38a1003c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738036,
+      "hex": "4825fbb1",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738040,
+      "hex": "3be1003c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738044,
+      "hex": "48000060",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738048,
+      "hex": "3be1006c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738052,
+      "hex": "48000058",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738056,
+      "hex": "386100cc",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738060,
+      "hex": "3881006c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738064,
+      "hex": "38a1003c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738068,
+      "hex": "4825fb91",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738072,
+      "hex": "3be1003c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738076,
+      "hex": "48000040",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738080,
+      "hex": "3861009c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738084,
+      "hex": "3881006c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738088,
+      "hex": "38a1003c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738092,
+      "hex": "4825fb79",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738096,
+      "hex": "3be1003c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738100,
+      "hex": "48000028",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738104,
+      "hex": "386100cc",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738108,
+      "hex": "3881009c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738112,
+      "hex": "38a1003c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738116,
+      "hex": "4825fb61",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738120,
+      "hex": "3861003c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738124,
+      "hex": "3881006c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738128,
+      "hex": "38a1009c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738132,
+      "hex": "4825fb51",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738136,
+      "hex": "3be1009c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738140,
+      "hex": "3a93001e",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738144,
+      "hex": "7ea3ab78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738148,
+      "hex": "7e86a378",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738152,
+      "hex": "38b50004",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738156,
+      "hex": "38800001",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738160,
+      "hex": "38e00000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738164,
+      "hex": "3900007d",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738168,
+      "hex": "48276bcd",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738172,
+      "hex": "7fe3fb78",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738176,
+      "hex": "7e84a378",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738180,
+      "hex": "38a00001",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738184,
+      "hex": "4827c189",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738188,
+      "hex": "3ab50001",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738192,
+      "hex": "3a730003",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738196,
+      "hex": "7c15c000",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738200,
+      "hex": "4180fe04",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738204,
+      "hex": "e3e101b8",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738208,
+      "hex": "cbe101b0",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738212,
+      "hex": "e3c101a8",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738216,
+      "hex": "cbc101a0",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738220,
+      "hex": "e3a10198",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738224,
+      "hex": "cba10190",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738228,
+      "hex": "e3810188",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738232,
+      "hex": "cb810180",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738236,
+      "hex": "e3610178",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738240,
+      "hex": "cb610170",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738244,
+      "hex": "e3410168",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738248,
+      "hex": "cb410160",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738252,
+      "hex": "e3210158",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738256,
+      "hex": "cb210150",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738260,
+      "hex": "ba61011c",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738264,
+      "hex": "800101c4",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738268,
+      "hex": "7c0803a6",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738272,
+      "hex": "382101c0",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147738276,
+      "hex": "4e800020",
+      "purpose": "animSetMaterial_Texture complete reviewed instruction"
+    },
+    {
+      "address": 2147676988,
+      "hex": "9421fff0",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147676992,
+      "hex": "7c0802a6",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147676996,
+      "hex": "28040000",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147677000,
+      "hex": "90010014",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147677004,
+      "hex": "93e1000c",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147677008,
+      "hex": "7c7f1b78",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147677012,
+      "hex": "4182000c",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147677016,
+      "hex": "80840000",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147677020,
+      "hex": "4828834d",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147677024,
+      "hex": "80010014",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147677028,
+      "hex": "7fe3fb78",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147677032,
+      "hex": "83e1000c",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147677036,
+      "hex": "7c0803a6",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147677040,
+      "hex": "38210010",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147677044,
+      "hex": "4e800020",
+      "purpose": "smartTexObj complete reviewed instruction"
+    },
+    {
+      "address": 2147616960,
+      "hex": "9421fea0",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147616964,
+      "hex": "7c0802a6",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147616968,
+      "hex": "90010164",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147616972,
+      "hex": "bee1013c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147616976,
+      "hex": "7c781b78",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147616980,
+      "hex": "571907ff",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147616984,
+      "hex": "7c972378",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147616988,
+      "hex": "3b800000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147616992,
+      "hex": "3b400002",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147616996,
+      "hex": "806284d4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617000,
+      "hex": "800284d8",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617004,
+      "hex": "90610028",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617008,
+      "hex": "90010024",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617012,
+      "hex": "41820010",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617016,
+      "hex": "4bffb04d",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617020,
+      "hex": "90610044",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617024,
+      "hex": "3b800001",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617028,
+      "hex": "571b0739",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617032,
+      "hex": "41820018",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617036,
+      "hex": "4bffb02d",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617040,
+      "hex": "5780103a",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617044,
+      "hex": "38810044",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617048,
+      "hex": "7c64012e",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617052,
+      "hex": "3b9c0001",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617056,
+      "hex": "570006f7",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617060,
+      "hex": "41820018",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617064,
+      "hex": "4bffb01d",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617068,
+      "hex": "5780103a",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617072,
+      "hex": "38810044",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617076,
+      "hex": "7c64012e",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617080,
+      "hex": "3b9c0001",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617084,
+      "hex": "570007bd",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617088,
+      "hex": "41820038",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617092,
+      "hex": "4bffb041",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617096,
+      "hex": "2c030000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617100,
+      "hex": "4182002c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617104,
+      "hex": "2c1c0008",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617108,
+      "hex": "40800024",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617112,
+      "hex": "5780103a",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617116,
+      "hex": "38810044",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617120,
+      "hex": "7ee3bb78",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617124,
+      "hex": "20bc0008",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617128,
+      "hex": "7c840214",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617132,
+      "hex": "38c00080",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617136,
+      "hex": "4bffb161",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617140,
+      "hex": "7f9c1a14",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617144,
+      "hex": "73000019",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617148,
+      "hex": "41820058",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617152,
+      "hex": "2c1c0001",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617156,
+      "hex": "40820038",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617160,
+      "hex": "28190000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617164,
+      "hex": "41820010",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617168,
+      "hex": "800d17b8",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617172,
+      "hex": "90010024",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617176,
+      "hex": "4800003c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617180,
+      "hex": "281b0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617184,
+      "hex": "41820010",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617188,
+      "hex": "800d17b4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617192,
+      "hex": "90010024",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617196,
+      "hex": "48000028",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617200,
+      "hex": "800284dc",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617204,
+      "hex": "90010024",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617208,
+      "hex": "4800001c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617212,
+      "hex": "7ee3bb78",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617216,
+      "hex": "38810044",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617220,
+      "hex": "38a00008",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617224,
+      "hex": "38c00080",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617228,
+      "hex": "4bffb105",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617232,
+      "hex": "7c7c1b78",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617236,
+      "hex": "3c80802c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617240,
+      "hex": "3c60802c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617244,
+      "hex": "3ba4fa58",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617248,
+      "hex": "3bc10044",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617252,
+      "hex": "3be3faa8",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617256,
+      "hex": "3b600000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617260,
+      "hex": "3b200000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617264,
+      "hex": "48000318",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617268,
+      "hex": "809f0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617272,
+      "hex": "807f0004",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617276,
+      "hex": "801f0008",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617280,
+      "hex": "9081002c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617284,
+      "hex": "82fe0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617288,
+      "hex": "90610030",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617292,
+      "hex": "90010034",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617296,
+      "hex": "a0770000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617300,
+      "hex": "546004e7",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617304,
+      "hex": "418200ac",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617308,
+      "hex": "4bfee8c9",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617312,
+      "hex": "3863011c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617316,
+      "hex": "38970024",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617320,
+      "hex": "38a10038",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617324,
+      "hex": "4827dc79",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617328,
+      "hex": "c0210038",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617332,
+      "hex": "386100f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617336,
+      "hex": "c041003c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617340,
+      "hex": "c0610040",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617344,
+      "hex": "48296279",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617348,
+      "hex": "80be0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617352,
+      "hex": "386100f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617356,
+      "hex": "3881001c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617360,
+      "hex": "80050048",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617364,
+      "hex": "9001001c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617368,
+      "hex": "4829628d",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617372,
+      "hex": "809e0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617376,
+      "hex": "a0040000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617380,
+      "hex": "54000673",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617384,
+      "hex": "41820028",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617388,
+      "hex": "c04284f0",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617392,
+      "hex": "386100f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617396,
+      "hex": "c0240050",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617400,
+      "hex": "fc601090",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617404,
+      "hex": "c0828500",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617408,
+      "hex": "fca01090",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617412,
+      "hex": "fcc01090",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617416,
+      "hex": "48295fb5",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617420,
+      "hex": "48000028",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617424,
+      "hex": "c04284f0",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617428,
+      "hex": "386100f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617432,
+      "hex": "c0240050",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617436,
+      "hex": "fc601090",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617440,
+      "hex": "c0840054",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617444,
+      "hex": "c0a40058",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617448,
+      "hex": "c0c4005c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617452,
+      "hex": "48295f91",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617456,
+      "hex": "3b400001",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617460,
+      "hex": "809d0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617464,
+      "hex": "386100f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617468,
+      "hex": "48296235",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617472,
+      "hex": "48000234",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617476,
+      "hex": "546004a5",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617480,
+      "hex": "418200f8",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617484,
+      "hex": "c0228508",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617488,
+      "hex": "386100c4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617492,
+      "hex": "c0170030",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617496,
+      "hex": "38800078",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617500,
+      "hex": "ec210032",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617504,
+      "hex": "4827d511",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617508,
+      "hex": "80be0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617512,
+      "hex": "38610094",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617516,
+      "hex": "c0228508",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617520,
+      "hex": "38800079",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617524,
+      "hex": "c0050034",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617528,
+      "hex": "ec210032",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617532,
+      "hex": "4827d4f5",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617536,
+      "hex": "80be0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617540,
+      "hex": "38610064",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617544,
+      "hex": "c0228508",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617548,
+      "hex": "3880007a",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617552,
+      "hex": "c0050038",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617556,
+      "hex": "ec210032",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617560,
+      "hex": "4827d4d9",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617564,
+      "hex": "38810094",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617568,
+      "hex": "38610064",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617572,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617576,
+      "hex": "4827d23d",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617580,
+      "hex": "388100c4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617584,
+      "hex": "38610094",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617588,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617592,
+      "hex": "4827d22d",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617596,
+      "hex": "3881002c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617600,
+      "hex": "386100c4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617604,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617608,
+      "hex": "4827db5d",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617612,
+      "hex": "3861002c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617616,
+      "hex": "c0228510",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617620,
+      "hex": "7c641b78",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617624,
+      "hex": "4827e071",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617628,
+      "hex": "807e0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617632,
+      "hex": "3881002c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617636,
+      "hex": "38a10038",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617640,
+      "hex": "38630024",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617644,
+      "hex": "4827e015",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617648,
+      "hex": "4bfee775",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617652,
+      "hex": "38810038",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617656,
+      "hex": "3863011c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617660,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617664,
+      "hex": "4827db25",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617668,
+      "hex": "c0210038",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617672,
+      "hex": "386100f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617676,
+      "hex": "c041003c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617680,
+      "hex": "c0610040",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617684,
+      "hex": "48296125",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617688,
+      "hex": "80be0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617692,
+      "hex": "386100f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617696,
+      "hex": "38810018",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617700,
+      "hex": "80050048",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617704,
+      "hex": "90010018",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617708,
+      "hex": "48296139",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617712,
+      "hex": "809d0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617716,
+      "hex": "386100f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617720,
+      "hex": "48296139",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617724,
+      "hex": "48000138",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617728,
+      "hex": "54600463",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617732,
+      "hex": "41820130",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617736,
+      "hex": "4bfee71d",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617740,
+      "hex": "3863011c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617744,
+      "hex": "38970024",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617748,
+      "hex": "38a10038",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617752,
+      "hex": "4827dacd",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617756,
+      "hex": "80be0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617760,
+      "hex": "386100c4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617764,
+      "hex": "c0228508",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617768,
+      "hex": "38800078",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617772,
+      "hex": "c0050030",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617776,
+      "hex": "ec210032",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617780,
+      "hex": "4827d3fd",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617784,
+      "hex": "80be0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617788,
+      "hex": "38610094",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617792,
+      "hex": "c0228508",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617796,
+      "hex": "38800079",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617800,
+      "hex": "c0050034",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617804,
+      "hex": "ec210032",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617808,
+      "hex": "4827d3e1",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617812,
+      "hex": "80be0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617816,
+      "hex": "38610064",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617820,
+      "hex": "c0228508",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617824,
+      "hex": "3880007a",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617828,
+      "hex": "c0050038",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617832,
+      "hex": "ec210032",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617836,
+      "hex": "4827d3c5",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617840,
+      "hex": "38810094",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617844,
+      "hex": "38610064",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617848,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617852,
+      "hex": "4827d129",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617856,
+      "hex": "388100c4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617860,
+      "hex": "38610094",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617864,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617868,
+      "hex": "4827d119",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617872,
+      "hex": "3881002c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617876,
+      "hex": "386100c4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617880,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617884,
+      "hex": "4827da49",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617888,
+      "hex": "4bfee685",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617892,
+      "hex": "3881002c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617896,
+      "hex": "3863011c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617900,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617904,
+      "hex": "4827da89",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617908,
+      "hex": "c0210038",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617912,
+      "hex": "386100f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617916,
+      "hex": "c041003c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617920,
+      "hex": "c0610040",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617924,
+      "hex": "48296035",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617928,
+      "hex": "c021002c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617932,
+      "hex": "386100f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617936,
+      "hex": "c0410030",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617940,
+      "hex": "c0610034",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617944,
+      "hex": "48296031",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617948,
+      "hex": "80be0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617952,
+      "hex": "386100f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617956,
+      "hex": "c00284f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617960,
+      "hex": "38800004",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617964,
+      "hex": "c025004c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617968,
+      "hex": "ec210032",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617972,
+      "hex": "48295da5",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617976,
+      "hex": "c0228514",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617980,
+      "hex": "386100f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617984,
+      "hex": "c04284f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617988,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617992,
+      "hex": "48295f21",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147617996,
+      "hex": "80be0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618000,
+      "hex": "386100f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618004,
+      "hex": "38810014",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618008,
+      "hex": "80050048",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618012,
+      "hex": "90010014",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618016,
+      "hex": "48296005",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618020,
+      "hex": "809d0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618024,
+      "hex": "386100f4",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618028,
+      "hex": "48296005",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618032,
+      "hex": "3b400001",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618036,
+      "hex": "801d0000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618040,
+      "hex": "3bde0004",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618044,
+      "hex": "3bbd0004",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618048,
+      "hex": "3b390001",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618052,
+      "hex": "7f7b0378",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618056,
+      "hex": "7c19e000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618060,
+      "hex": "4180fce8",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618064,
+      "hex": "4bfface1",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618068,
+      "hex": "28030000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618072,
+      "hex": "41820010",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618076,
+      "hex": "80030048",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618080,
+      "hex": "90010134",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618084,
+      "hex": "4800000c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618088,
+      "hex": "80010024",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618092,
+      "hex": "90010134",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618096,
+      "hex": "c02284f0",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618100,
+      "hex": "38810010",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618104,
+      "hex": "80a10134",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618108,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618112,
+      "hex": "80010028",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618116,
+      "hex": "fc400890",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618120,
+      "hex": "fc600890",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618124,
+      "hex": "90a10020",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618128,
+      "hex": "fc800890",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618132,
+      "hex": "90010010",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618136,
+      "hex": "4829829d",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618140,
+      "hex": "38600001",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618144,
+      "hex": "482961dd",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618148,
+      "hex": "80010020",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618152,
+      "hex": "3881000c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618156,
+      "hex": "38600004",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618160,
+      "hex": "9001000c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618164,
+      "hex": "48295ff9",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618168,
+      "hex": "5700077b",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618172,
+      "hex": "41820064",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618176,
+      "hex": "80010028",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618180,
+      "hex": "38810008",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618184,
+      "hex": "38600004",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618188,
+      "hex": "90010008",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618192,
+      "hex": "482960c5",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618196,
+      "hex": "7c1c00d0",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618200,
+      "hex": "7f67db78",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618204,
+      "hex": "7c00e078",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618208,
+      "hex": "7f49d378",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618212,
+      "hex": "54040ffe",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618216,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618220,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618224,
+      "hex": "38c00000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618228,
+      "hex": "39000002",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618232,
+      "hex": "482961c1",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618236,
+      "hex": "38600002",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618240,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618244,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618248,
+      "hex": "38c00000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618252,
+      "hex": "38e00000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618256,
+      "hex": "39000002",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618260,
+      "hex": "39200002",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618264,
+      "hex": "482961a1",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618268,
+      "hex": "4800004c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618272,
+      "hex": "7c1c00d0",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618276,
+      "hex": "7f67db78",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618280,
+      "hex": "7c00e078",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618284,
+      "hex": "7f49d378",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618288,
+      "hex": "54040ffe",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618292,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618296,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618300,
+      "hex": "38c00001",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618304,
+      "hex": "39000002",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618308,
+      "hex": "48296175",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618312,
+      "hex": "38600002",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618316,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618320,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618324,
+      "hex": "38c00001",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618328,
+      "hex": "38e00000",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618332,
+      "hex": "39000002",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618336,
+      "hex": "39200002",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618340,
+      "hex": "48296155",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618344,
+      "hex": "bae1013c",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618348,
+      "hex": "80010164",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618352,
+      "hex": "7c0803a6",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618356,
+      "hex": "38210160",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147618360,
+      "hex": "4e800020",
+      "purpose": "mapSetMaterialLight complete reviewed instruction"
+    },
+    {
+      "address": 2147620960,
+      "hex": "9421ffe0",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147620964,
+      "hex": "7c0802a6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147620968,
+      "hex": "90010024",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147620972,
+      "hex": "54600673",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147620976,
+      "hex": "93e1001c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147620980,
+      "hex": "80ed1744",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147620984,
+      "hex": "80c284bc",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147620988,
+      "hex": "1c0702f4",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147620992,
+      "hex": "80ed1740",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147620996,
+      "hex": "90c1000c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621000,
+      "hex": "7cc70214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621004,
+      "hex": "4182009c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621008,
+      "hex": "8901000c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621012,
+      "hex": "3ce08081",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621016,
+      "hex": "88040000",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621020,
+      "hex": "3be78081",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621024,
+      "hex": "8961000d",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621028,
+      "hex": "7d8801d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621032,
+      "hex": "89440001",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621036,
+      "hex": "89040002",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621040,
+      "hex": "88040003",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621044,
+      "hex": "88e1000f",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621048,
+      "hex": "8921000e",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621052,
+      "hex": "7c0701d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621056,
+      "hex": "7cff6096",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621060,
+      "hex": "7c8b51d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621064,
+      "hex": "7ce76214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621068,
+      "hex": "7cea3e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621072,
+      "hex": "7d0941d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621076,
+      "hex": "554b0ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621080,
+      "hex": "7d4a5a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621084,
+      "hex": "9941000c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621088,
+      "hex": "7d3f2096",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621092,
+      "hex": "7cff4096",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621096,
+      "hex": "7c892214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621100,
+      "hex": "7c893e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621104,
+      "hex": "7ce74214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621108,
+      "hex": "55280ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621112,
+      "hex": "7c9f0096",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621116,
+      "hex": "7d294214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621120,
+      "hex": "7ce73e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621124,
+      "hex": "9921000d",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621128,
+      "hex": "54e80ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621132,
+      "hex": "7c040214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621136,
+      "hex": "7c003e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621140,
+      "hex": "7ce74214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621144,
+      "hex": "54040ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621148,
+      "hex": "98e1000e",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621152,
+      "hex": "7c002214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621156,
+      "hex": "9801000f",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621160,
+      "hex": "88a50000",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621164,
+      "hex": "280500ff",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621168,
+      "hex": "4182002c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621172,
+      "hex": "8801000f",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621176,
+      "hex": "3c808081",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621180,
+      "hex": "38848081",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621184,
+      "hex": "7c0029d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621188,
+      "hex": "7c840096",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621192,
+      "hex": "7c040214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621196,
+      "hex": "7c003e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621200,
+      "hex": "54040ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621204,
+      "hex": "7c002214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621208,
+      "hex": "9801000f",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621212,
+      "hex": "a0060004",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621216,
+      "hex": "540407bd",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621220,
+      "hex": "418200a4",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621224,
+      "hex": "54640529",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621228,
+      "hex": "4082009c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621232,
+      "hex": "88e1000c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621236,
+      "hex": "3c808081",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621240,
+      "hex": "88a60016",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621244,
+      "hex": "39848081",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621248,
+      "hex": "8941000d",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621252,
+      "hex": "7d6729d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621256,
+      "hex": "89260017",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621260,
+      "hex": "8901000e",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621264,
+      "hex": "88e60018",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621268,
+      "hex": "88a1000f",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621272,
+      "hex": "88860019",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621276,
+      "hex": "7ce839d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621280,
+      "hex": "7d0c5896",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621284,
+      "hex": "7d2a49d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621288,
+      "hex": "7d085a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621292,
+      "hex": "7d0a3e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621296,
+      "hex": "7c8521d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621300,
+      "hex": "554b0ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621304,
+      "hex": "7d4a5a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621308,
+      "hex": "9941000c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621312,
+      "hex": "7cac4896",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621316,
+      "hex": "7d0c3896",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621320,
+      "hex": "7ca54a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621324,
+      "hex": "7ca93e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621328,
+      "hex": "7ce83a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621332,
+      "hex": "7cac2096",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621336,
+      "hex": "55280ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621340,
+      "hex": "7ce73e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621344,
+      "hex": "7d294214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621348,
+      "hex": "54e80ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621352,
+      "hex": "9921000d",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621356,
+      "hex": "7c852214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621360,
+      "hex": "7ce74214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621364,
+      "hex": "7c843e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621368,
+      "hex": "98e1000e",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621372,
+      "hex": "54850ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621376,
+      "hex": "7c842a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621380,
+      "hex": "9881000f",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621384,
+      "hex": "5404077b",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621388,
+      "hex": "418200a4",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621392,
+      "hex": "546404e7",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621396,
+      "hex": "4082009c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621400,
+      "hex": "88e1000c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621404,
+      "hex": "3c808081",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621408,
+      "hex": "88a6001a",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621412,
+      "hex": "39848081",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621416,
+      "hex": "8941000d",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621420,
+      "hex": "7d6729d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621424,
+      "hex": "8926001b",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621428,
+      "hex": "8901000e",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621432,
+      "hex": "88e6001c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621436,
+      "hex": "88a1000f",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621440,
+      "hex": "8886001d",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621444,
+      "hex": "7ce839d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621448,
+      "hex": "7d0c5896",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621452,
+      "hex": "7d2a49d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621456,
+      "hex": "7d085a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621460,
+      "hex": "7d0a3e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621464,
+      "hex": "7c8521d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621468,
+      "hex": "554b0ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621472,
+      "hex": "7d4a5a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621476,
+      "hex": "9941000c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621480,
+      "hex": "7cac4896",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621484,
+      "hex": "7d0c3896",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621488,
+      "hex": "7ca54a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621492,
+      "hex": "7ca93e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621496,
+      "hex": "7ce83a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621500,
+      "hex": "7cac2096",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621504,
+      "hex": "55280ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621508,
+      "hex": "7ce73e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621512,
+      "hex": "7d294214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621516,
+      "hex": "54e80ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621520,
+      "hex": "9921000d",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621524,
+      "hex": "7c852214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621528,
+      "hex": "7ce74214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621532,
+      "hex": "7c843e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621536,
+      "hex": "98e1000e",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621540,
+      "hex": "54850ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621544,
+      "hex": "7c842a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621548,
+      "hex": "9881000f",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621552,
+      "hex": "54000739",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621556,
+      "hex": "418200a4",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621560,
+      "hex": "54600529",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621564,
+      "hex": "4082009c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621568,
+      "hex": "8881000c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621572,
+      "hex": "3c608081",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621576,
+      "hex": "8806001e",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621580,
+      "hex": "39438081",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621584,
+      "hex": "8901000d",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621588,
+      "hex": "7d2401d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621592,
+      "hex": "88e6001f",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621596,
+      "hex": "88860020",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621600,
+      "hex": "88060021",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621604,
+      "hex": "88a1000e",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621608,
+      "hex": "8861000f",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621612,
+      "hex": "7c8521d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621616,
+      "hex": "7caa4896",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621620,
+      "hex": "7cc839d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621624,
+      "hex": "7ca54a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621628,
+      "hex": "7ca73e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621632,
+      "hex": "7c0301d6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621636,
+      "hex": "54e80ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621640,
+      "hex": "7ce74214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621644,
+      "hex": "98e1000c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621648,
+      "hex": "7c6a3096",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621652,
+      "hex": "7caa2096",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621656,
+      "hex": "7c633214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621660,
+      "hex": "7c663e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621664,
+      "hex": "7c852214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621668,
+      "hex": "7c6a0096",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621672,
+      "hex": "54c50ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621676,
+      "hex": "7c843e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621680,
+      "hex": "7cc62a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621684,
+      "hex": "54850ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621688,
+      "hex": "98c1000d",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621692,
+      "hex": "7c030214",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621696,
+      "hex": "7c842a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621700,
+      "hex": "7c003e70",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621704,
+      "hex": "9881000e",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621708,
+      "hex": "54030ffe",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621712,
+      "hex": "7c001a14",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621716,
+      "hex": "9801000f",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621720,
+      "hex": "8001000c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621724,
+      "hex": "38810008",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621728,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621732,
+      "hex": "90010008",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621736,
+      "hex": "48297015",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621740,
+      "hex": "80010024",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621744,
+      "hex": "83e1001c",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621748,
+      "hex": "7c0803a6",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621752,
+      "hex": "38210020",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147621756,
+      "hex": "4e800020",
+      "purpose": "mapSetMaterialLastStageBlend complete reviewed instruction"
+    },
+    {
+      "address": 2147620808,
+      "hex": "9421fff0",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620812,
+      "hex": "7c0802a6",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620816,
+      "hex": "90010014",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620820,
+      "hex": "4bfedb11",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620824,
+      "hex": "800d1744",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620828,
+      "hex": "7c651b78",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620832,
+      "hex": "806d1740",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620836,
+      "hex": "1c0002f4",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620840,
+      "hex": "7cc30214",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620844,
+      "hex": "a0060004",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620848,
+      "hex": "540007ff",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620852,
+      "hex": "41820038",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620856,
+      "hex": "80060034",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620860,
+      "hex": "386d81a0",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620864,
+      "hex": "3881000c",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620868,
+      "hex": "9001000c",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620872,
+      "hex": "80060028",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620876,
+      "hex": "c026002c",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620880,
+      "hex": "5400103a",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620884,
+      "hex": "c0460030",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620888,
+      "hex": "7c63002e",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620892,
+      "hex": "c0650030",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620896,
+      "hex": "c0850034",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620900,
+      "hex": "482977d1",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620904,
+      "hex": "48000028",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620908,
+      "hex": "c02284f0",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620912,
+      "hex": "38810008",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620916,
+      "hex": "800284c0",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620920,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620924,
+      "hex": "fc400890",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620928,
+      "hex": "fc600890",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620932,
+      "hex": "90010008",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620936,
+      "hex": "fc800890",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620940,
+      "hex": "482977a9",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620944,
+      "hex": "80010014",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620948,
+      "hex": "7c0803a6",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620952,
+      "hex": "38210010",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147620956,
+      "hex": "4e800020",
+      "purpose": "mapSetMaterialFog complete reviewed instruction"
+    },
+    {
+      "address": 2147711836,
+      "hex": "80630008",
+      "purpose": "TEXGet complete reviewed instruction"
+    },
+    {
+      "address": 2147711840,
+      "hex": "54801838",
+      "purpose": "TEXGet complete reviewed instruction"
+    },
+    {
+      "address": 2147711844,
+      "hex": "7c630214",
+      "purpose": "TEXGet complete reviewed instruction"
+    },
+    {
+      "address": 2147711848,
+      "hex": "4e800020",
+      "purpose": "TEXGet complete reviewed instruction"
+    },
+    {
+      "address": 2150332072,
+      "hex": "8003000c",
+      "purpose": "GXInitTexObjData complete reviewed instruction"
+    },
+    {
+      "address": 2150332076,
+      "hex": "5080dafe",
+      "purpose": "GXInitTexObjData complete reviewed instruction"
+    },
+    {
+      "address": 2150332080,
+      "hex": "9003000c",
+      "purpose": "GXInitTexObjData complete reviewed instruction"
+    },
+    {
+      "address": 2150332084,
+      "hex": "4e800020",
+      "purpose": "GXInitTexObjData complete reviewed instruction"
+    },
+    {
+      "address": 2147596600,
+      "hex": "3c60803d",
+      "purpose": "lightGetPaperCraft complete reviewed instruction"
+    },
+    {
+      "address": 2147596604,
+      "hex": "38639690",
+      "purpose": "lightGetPaperCraft complete reviewed instruction"
+    },
+    {
+      "address": 2147596608,
+      "hex": "4e800020",
+      "purpose": "lightGetPaperCraft complete reviewed instruction"
+    },
+    {
+      "address": 2147596612,
+      "hex": "9421fff0",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596616,
+      "hex": "7c0802a6",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596620,
+      "hex": "90010014",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596624,
+      "hex": "4bff398d",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596628,
+      "hex": "2c030004",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596632,
+      "hex": "40820010",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596636,
+      "hex": "3c60803d",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596640,
+      "hex": "38639750",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596644,
+      "hex": "48000010",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596648,
+      "hex": "2c030006",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596652,
+      "hex": "3c80803d",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596656,
+      "hex": "386496f0",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596660,
+      "hex": "80010014",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596664,
+      "hex": "7c0803a6",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596668,
+      "hex": "38210010",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596672,
+      "hex": "4e800020",
+      "purpose": "lightGetPaper complete reviewed instruction"
+    },
+    {
+      "address": 2147596676,
+      "hex": "9421fff0",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596680,
+      "hex": "7c0802a6",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596684,
+      "hex": "90010014",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596688,
+      "hex": "4800faa1",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596692,
+      "hex": "2c030001",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596696,
+      "hex": "386d1730",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596700,
+      "hex": "40820008",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596704,
+      "hex": "38630008",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596708,
+      "hex": "80030000",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596712,
+      "hex": "80830004",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596716,
+      "hex": "7c0903a6",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596720,
+      "hex": "2c000000",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596724,
+      "hex": "40810028",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596728,
+      "hex": "a0640000",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596732,
+      "hex": "546007ff",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596736,
+      "hex": "41820014",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596740,
+      "hex": "54600631",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596744,
+      "hex": "4182000c",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596748,
+      "hex": "38600001",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596752,
+      "hex": "48000010",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596756,
+      "hex": "38840060",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596760,
+      "hex": "4200ffe0",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596764,
+      "hex": "38600000",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596768,
+      "hex": "80010014",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596772,
+      "hex": "7c0803a6",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596776,
+      "hex": "38210010",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596780,
+      "hex": "4e800020",
+      "purpose": "lightCheckCharaLight complete reviewed instruction"
+    },
+    {
+      "address": 2147596784,
+      "hex": "9421fff0",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596788,
+      "hex": "7c0802a6",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596792,
+      "hex": "90010014",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596796,
+      "hex": "4800fa35",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596800,
+      "hex": "2c030001",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596804,
+      "hex": "386d1730",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596808,
+      "hex": "40820008",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596812,
+      "hex": "38630008",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596816,
+      "hex": "80030000",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596820,
+      "hex": "80630004",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596824,
+      "hex": "7c0903a6",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596828,
+      "hex": "2c000000",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596832,
+      "hex": "4081002c",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596836,
+      "hex": "a0830000",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596840,
+      "hex": "548007ff",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596844,
+      "hex": "41820018",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596848,
+      "hex": "54800631",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596852,
+      "hex": "41820010",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596856,
+      "hex": "54800421",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596860,
+      "hex": "41820008",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596864,
+      "hex": "48000010",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596868,
+      "hex": "38630060",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596872,
+      "hex": "4200ffdc",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596876,
+      "hex": "38600000",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596880,
+      "hex": "80010014",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596884,
+      "hex": "7c0803a6",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596888,
+      "hex": "38210010",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147596892,
+      "hex": "4e800020",
+      "purpose": "lightGetCharaAmbient complete reviewed instruction"
+    },
+    {
+      "address": 2147597008,
+      "hex": "9421fed0",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597012,
+      "hex": "7c0802a6",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597016,
+      "hex": "90010134",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597020,
+      "hex": "bee1010c",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597024,
+      "hex": "7c7b1b78",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597028,
+      "hex": "7c9c2378",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597032,
+      "hex": "7cbd2b78",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597036,
+      "hex": "7cde3378",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597040,
+      "hex": "4800f941",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597044,
+      "hex": "2c030001",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597048,
+      "hex": "3b4d1730",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597052,
+      "hex": "40820008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597056,
+      "hex": "3b5a0008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597060,
+      "hex": "4800f92d",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597064,
+      "hex": "2c030001",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597068,
+      "hex": "386d1730",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597072,
+      "hex": "40820008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597076,
+      "hex": "38630008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597080,
+      "hex": "80030000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597084,
+      "hex": "38800000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597088,
+      "hex": "80630004",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597092,
+      "hex": "7c0903a6",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597096,
+      "hex": "2c000000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597100,
+      "hex": "4081001c",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597104,
+      "hex": "a0030000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597108,
+      "hex": "540007ff",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597112,
+      "hex": "41820008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597116,
+      "hex": "38840001",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597120,
+      "hex": "38630060",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597124,
+      "hex": "4200ffec",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597128,
+      "hex": "2c040008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597132,
+      "hex": "40810070",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597136,
+      "hex": "831a0004",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597140,
+      "hex": "3b210008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597144,
+      "hex": "3be00000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597148,
+      "hex": "3ae00000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597152,
+      "hex": "48000034",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597156,
+      "hex": "a0180000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597160,
+      "hex": "540007ff",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597164,
+      "hex": "41820020",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597168,
+      "hex": "93190000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597172,
+      "hex": "7f63db78",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597176,
+      "hex": "38980024",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597180,
+      "hex": "48283339",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597184,
+      "hex": "d0390004",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597188,
+      "hex": "3b390008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597192,
+      "hex": "3bff0001",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597196,
+      "hex": "3af70001",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597200,
+      "hex": "3b180060",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597204,
+      "hex": "801a0000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597208,
+      "hex": "7c170000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597212,
+      "hex": "4180ffc8",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597216,
+      "hex": "3c608002",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597220,
+      "hex": "7fe4fb78",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597224,
+      "hex": "38c3bccc",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597228,
+      "hex": "38a00008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597232,
+      "hex": "38610008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597236,
+      "hex": "4bfea949",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597240,
+      "hex": "48000044",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597244,
+      "hex": "809a0004",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597248,
+      "hex": "38610008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597252,
+      "hex": "3be00000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597256,
+      "hex": "38a00000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597260,
+      "hex": "48000024",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597264,
+      "hex": "a0040000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597268,
+      "hex": "540007ff",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597272,
+      "hex": "41820010",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597276,
+      "hex": "90830000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597280,
+      "hex": "38630008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597284,
+      "hex": "3bff0001",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597288,
+      "hex": "38a50001",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597292,
+      "hex": "38840060",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597296,
+      "hex": "801a0000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597300,
+      "hex": "7c050000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597304,
+      "hex": "4180ffd8",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597308,
+      "hex": "7f85e378",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597312,
+      "hex": "38810008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597316,
+      "hex": "57c6043e",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597320,
+      "hex": "38600000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597324,
+      "hex": "7fe903a6",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597328,
+      "hex": "281f0000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597332,
+      "hex": "40810040",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597336,
+      "hex": "81040000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597340,
+      "hex": "a0e80000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597344,
+      "hex": "54e00421",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597348,
+      "hex": "40820028",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597352,
+      "hex": "28060000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597356,
+      "hex": "4182000c",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597360,
+      "hex": "7cc03839",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597364,
+      "hex": "41820018",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597368,
+      "hex": "38630001",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597372,
+      "hex": "91050000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597376,
+      "hex": "7c03e800",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597380,
+      "hex": "38a50004",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597384,
+      "hex": "4080000c",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597388,
+      "hex": "38840008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597392,
+      "hex": "4200ffc8",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597396,
+      "hex": "7c03e800",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597400,
+      "hex": "5460103a",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597404,
+      "hex": "7cdc0214",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597408,
+      "hex": "7c83e850",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597412,
+      "hex": "38a00000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597416,
+      "hex": "40800050",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597420,
+      "hex": "5480e8ff",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597424,
+      "hex": "7c0903a6",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597428,
+      "hex": "41820034",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597432,
+      "hex": "90a60000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597436,
+      "hex": "90a60004",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597440,
+      "hex": "90a60008",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597444,
+      "hex": "90a6000c",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597448,
+      "hex": "90a60010",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597452,
+      "hex": "90a60014",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597456,
+      "hex": "90a60018",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597460,
+      "hex": "90a6001c",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597464,
+      "hex": "38c60020",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597468,
+      "hex": "4200ffdc",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597472,
+      "hex": "70840007",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597476,
+      "hex": "41820014",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597480,
+      "hex": "7c8903a6",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597484,
+      "hex": "90a60000",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597488,
+      "hex": "38c60004",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597492,
+      "hex": "4200fff8",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597496,
+      "hex": "bae1010c",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597500,
+      "hex": "80010134",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597504,
+      "hex": "7c0803a6",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597508,
+      "hex": "38210130",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147597512,
+      "hex": "4e800020",
+      "purpose": "lightGetNearObj complete reviewed instruction"
+    },
+    {
+      "address": 2147660848,
+      "hex": "806d1744",
+      "purpose": "mapGetActiveGroup complete reviewed instruction"
+    },
+    {
+      "address": 2147660852,
+      "hex": "4e800020",
+      "purpose": "mapGetActiveGroup complete reviewed instruction"
+    },
+    {
+      "address": 2147597516,
+      "hex": "c0230004",
+      "purpose": "lightSort complete reviewed instruction"
+    },
+    {
+      "address": 2147597520,
+      "hex": "c0040004",
+      "purpose": "lightSort complete reviewed instruction"
+    },
+    {
+      "address": 2147597524,
+      "hex": "fc010040",
+      "purpose": "lightSort complete reviewed instruction"
+    },
+    {
+      "address": 2147597528,
+      "hex": "4081000c",
+      "purpose": "lightSort complete reviewed instruction"
+    },
+    {
+      "address": 2147597532,
+      "hex": "38600001",
+      "purpose": "lightSort complete reviewed instruction"
+    },
+    {
+      "address": 2147597536,
+      "hex": "4e800020",
+      "purpose": "lightSort complete reviewed instruction"
+    },
+    {
+      "address": 2147597540,
+      "hex": "4080000c",
+      "purpose": "lightSort complete reviewed instruction"
+    },
+    {
+      "address": 2147597544,
+      "hex": "3860ffff",
+      "purpose": "lightSort complete reviewed instruction"
+    },
+    {
+      "address": 2147597548,
+      "hex": "4e800020",
+      "purpose": "lightSort complete reviewed instruction"
+    },
+    {
+      "address": 2147597552,
+      "hex": "38600000",
+      "purpose": "lightSort complete reviewed instruction"
+    },
+    {
+      "address": 2147597556,
+      "hex": "4e800020",
+      "purpose": "lightSort complete reviewed instruction"
+    }
+  ],
+  "constants": [
+    {
+      "address": 2151807280,
+      "hex": "00000000"
+    },
+    {
+      "address": 2151807284,
+      "hex": "3f000000"
+    },
+    {
+      "address": 2151807296,
+      "hex": "3f800000"
+    },
+    {
+      "address": 2151807304,
+      "hex": "3c8efa35"
+    },
+    {
+      "address": 2151807312,
+      "hex": "c9800000"
+    },
+    {
+      "address": 2151807316,
+      "hex": "447a0000"
+    },
+    {
+      "address": 2151807780,
+      "hex": "3f800000"
+    },
+    {
+      "address": 2151807784,
+      "hex": "00000000"
+    },
+    {
+      "address": 2151807788,
+      "hex": "3c8efa35"
+    },
+    {
+      "address": 2151807812,
+      "hex": "3f000000"
+    },
+    {
+      "address": 2151807848,
+      "hex": "bf000000"
+    }
+  ],
+  "data": [
+    {
+      "address": 2150655608,
+      "size": 32,
+      "sha256": "621974088a55ccc7461c2083621004a562ffd30760533bd1412e7de786fc279b",
+      "name": "texture matrix dispatch",
+      "words": [
+        2147737976,
+        2147738008,
+        2147738016,
+        2147738024,
+        2147738048,
+        2147738056,
+        2147738080,
+        2147738104
+      ]
+    },
+    {
+      "address": 2150365784,
+      "size": 32,
+      "sha256": "eb16dc8298669760b3971fd087f0e0a4ac083641b2817383857f20ca0989c0f3",
+      "name": "eight light mask IDs",
+      "words": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        128
+      ]
+    },
+    {
+      "address": 2150365864,
+      "size": 12,
+      "sha256": "4c25974396fb752c1ac68d196585032ac12032e870ec358f5663da9275026337",
+      "name": "light seed direction",
+      "words": [
+        0,
+        0,
+        3212836864
+      ]
+    },
+    {
+      "address": 2151764160,
+      "size": 20,
+      "sha256": "2f2d96ab10d1e44bc866491928a43b667b5f026b7abe133d9a5f973d16c31c75",
+      "name": "five fog modes",
+      "words": [
+        2,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "address": 2151807228,
+      "size": 8,
+      "sha256": "12a3ae445661ce5dee78d0650d33362dec29c4f82af05e7e57fb595bbbacf0ca",
+      "name": "blend/fog seed colors",
+      "words": [
+        4294967295,
+        4294967295
+      ]
+    },
+    {
+      "address": 2151807252,
+      "size": 12,
+      "sha256": "668caf0a5325f901d16c2e032fbc8b1ab14a0458aebf9b7b85942027badf0d28",
+      "name": "light seed/default colors",
+      "words": [
+        4294967295,
+        255,
+        255
+      ]
+    },
+    {
+      "address": 2150371424,
+      "size": 8,
+      "sha256": "2b2979f362d94c89fe17a6e01637f14332de063fe7a544bdc5facfc046f4169f",
+      "name": "unsigned byte conversion bias",
+      "words": [
+        1127219200,
+        0
+      ]
+    },
+    {
+      "address": 2150371524,
+      "size": 219,
+      "sha256": "2d0ac696ba952a240485a4f0cea952117407dfa95cdc1fdf9121ae600e142445",
+      "name": "texture diagnostic format"
+    }
+  ],
+  "rel_sha256": "d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a",
+  "rel_imports": [
+    {
+      "file_offset": 300492,
+      "address": 2148445880
+    },
+    {
+      "file_offset": 301400,
+      "address": 2148445808
+    }
+  ],
+  "direct_reference_census": {
+    "text_sections": 7,
+    "targets": [
+      {
+        "address": 2147736828,
+        "name": "animSetMaterial_Texture",
+        "sites": [
+          {
+            "address": 2147732172,
+            "link": true
+          },
+          {
+            "address": 2147735460,
+            "link": true
+          }
+        ]
+      },
+      {
+        "address": 2147676988,
+        "name": "smartTexObj",
+        "sites": [
+          {
+            "address": 2147627444,
+            "link": true
+          },
+          {
+            "address": 2147662624,
+            "link": true
+          },
+          {
+            "address": 2147662908,
+            "link": true
+          },
+          {
+            "address": 2147663044,
+            "link": true
+          },
+          {
+            "address": 2147732452,
+            "link": true
+          },
+          {
+            "address": 2147732752,
+            "link": true
+          },
+          {
+            "address": 2147733032,
+            "link": true
+          },
+          {
+            "address": 2147733492,
+            "link": true
+          },
+          {
+            "address": 2147735740,
+            "link": true
+          },
+          {
+            "address": 2147736040,
+            "link": true
+          },
+          {
+            "address": 2147736212,
+            "link": true
+          },
+          {
+            "address": 2147736672,
+            "link": true
+          },
+          {
+            "address": 2148361196,
+            "link": true
+          },
+          {
+            "address": 2148361684,
+            "link": true
+          },
+          {
+            "address": 2148361924,
+            "link": true
+          },
+          {
+            "address": 2149174848,
+            "link": true
+          },
+          {
+            "address": 2149174868,
+            "link": true
+          }
+        ]
+      },
+      {
+        "address": 2147616960,
+        "name": "mapSetMaterialLight",
+        "sites": [
+          {
+            "address": 2147588544,
+            "link": true
+          },
+          {
+            "address": 2147732100,
+            "link": true
+          },
+          {
+            "address": 2147735388,
+            "link": true
+          },
+          {
+            "address": 2147950588,
+            "link": true
+          }
+        ]
+      },
+      {
+        "address": 2147620960,
+        "name": "mapSetMaterialLastStageBlend",
+        "sites": [
+          {
+            "address": 2147732220,
+            "link": true
+          },
+          {
+            "address": 2147735508,
+            "link": true
+          },
+          {
+            "address": 2147950620,
+            "link": true
+          }
+        ]
+      },
+      {
+        "address": 2147620808,
+        "name": "mapSetMaterialFog",
+        "sites": [
+          {
+            "address": 2147589656,
+            "link": true
+          },
+          {
+            "address": 2147732248,
+            "link": true
+          },
+          {
+            "address": 2147735536,
+            "link": true
+          },
+          {
+            "address": 2148734876,
+            "link": true
+          },
+          {
+            "address": 2148743552,
+            "link": true
+          },
+          {
+            "address": 2149247016,
+            "link": true
+          },
+          {
+            "address": 2149642540,
+            "link": true
+          },
+          {
+            "address": 2149645520,
+            "link": true
+          }
+        ]
+      },
+      {
+        "address": 2147596612,
+        "name": "lightGetPaper",
+        "sites": [
+          {
+            "address": 2147617016,
+            "link": true
+          },
+          {
+            "address": 2147617064,
+            "link": true
+          }
+        ]
+      },
+      {
+        "address": 2147596784,
+        "name": "lightGetCharaAmbient",
+        "sites": [
+          {
+            "address": 2147618064,
+            "link": true
+          }
+        ]
+      },
+      {
+        "address": 2147597008,
+        "name": "lightGetNearObj",
+        "sites": [
+          {
+            "address": 2147617136,
+            "link": true
+          },
+          {
+            "address": 2147617228,
+            "link": true
+          },
+          {
+            "address": 2147633560,
+            "link": true
+          },
+          {
+            "address": 2147633736,
+            "link": true
+          }
+        ]
+      }
+    ]
+  },
+  "color_arithmetic_domain": {
+    "byte_pair_cases": 65536,
+    "divisor": 255,
+    "magic": 2155905153
+  }
+}

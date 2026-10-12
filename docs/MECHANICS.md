@@ -1089,3 +1089,12 @@ boundaries. This is decoder/math agreement, not original Dolphin/Gekko parity.
 Isolated Azahar captures show native running/jumping plus save/traversal checks.
 Low-HP/special/recovery/partner/battle pose ownership,original shadow/material/
 color/normal services and original frame observations remain incomplete.
+
+ID1 static texture/light/color/fog addendum (2026-10-12):fourteen used local
+request/query bodies are specified in the
+[display index](behavior/README.md#id1-used-texturelightcolorfog-local-contracts-2026-10-12).
+No original execution,Dolphin observation,measured pixel/light curve or hardware
+performance was added. Host exhaustive65536 byte-pair proof establishes only
+the decoded integer floor(product/255) reduction. GQR0/FPSCR/libm/GX/resource/
+source lifetimes and original image comparisons remain open. make test78 CTest/
+90 Python and make all pass;native tests/build are not original-runtime oracles.
