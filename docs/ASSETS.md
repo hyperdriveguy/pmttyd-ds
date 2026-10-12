@@ -843,3 +843,13 @@ branches. Original Gekko ELF/listings and field-lecture-callbacks-evidence.json
 remain ignored under artifacts/reference/behavior. Metadata and authored behavior
 only are versioned. No asset conversion,original dialogue rewrite,ISO mutation,
 original execution,emulator profile/save changes or original code distribution.
+
+Field party lifetime research by ID1 (2026-10-12):verify_field_party_lifetime.py
+with field_party_lifetime_evidence.json pins six original DOL bodies,43
+instructions,three numeric constants,five data-span hashes and three actual
+field bindings. Kind1/8 init/hook and ordinary pose-row metadata are pinned;
+no animation asset conversion or resource/playback execution occurred. Original
+ELFs/listings and field-party-lifetime-evidence.json stay ignored under
+artifacts/reference/behavior. General field verifier accepts a manifest and
+checks optional data hashes;existing callback checks retain their scope. No ISO/
+profile/save mutation,original binary/dialogue distribution or rewritten story.

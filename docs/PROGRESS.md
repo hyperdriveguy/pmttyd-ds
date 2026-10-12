@@ -6734,3 +6734,35 @@ EVENT_RUNTIME. Next EVT-01:ID-output inline/brother variants,child-call and othe
 control/deletion opcode closures,remaining initialization/domain/source owners
 and original multicredit/creation/deletion/pause traces. Full-game documentation
 and eventual requirements objective remains active/incomplete.
+
+
+## 2026-10-12 — ID1 field party lifetime and position construction
+
+Added [destruction/saved kind](behavior/FIELD_PARTY_DESTRUCTION_AND_SAVED_KIND.md)
+and [position construction](behavior/FIELD_PARTY_POSITION_CONSTRUCTORS.md)
+from complete US partyKill/partyKill2/partyEntryMain/partyEntryPos/partyEntry2Pos
+and kuribo_init local bodies. Kill preserves a post-hook linked kind;Kill2
+clears it. Both clear the current slot/table pointer before pose release/free.
+Main allocation scans two slots;secondary requires slot1 free. Position wrappers
+specify animation/HP/color/init requests,primary/secondary ordered coordinates,
+mode tails and implicit failure/domain requirements. Kind1/8 records pin their
+init and zero exit hooks. Linked earlier callback docs;full called-driver,
+all-kind,mode/index/resource and original transitions remain incomplete.
+
+Validation:verify_field_party_lifetime.py passed six whole DOL hashes,43
+instructions,three constants,five data-span hashes and three field bindings.
+Repeated metadata was byte-identical;existing field-callback and field-event
+verifiers passed after the reusable verifier gained optional data-span checks.
+Python compilation passed. General verifier passed1980 instruction anchors;
+all876 behavior Markdown links resolved. Gekko check passed499 listings/69785
+instructions/408 paired-single operations with zero changes or unknowns.
+make test passed25 CTest and58 Python tests;make all succeeded with no rebuild.
+Original ISO read-only;no original execution/emulator observation,asset
+conversion,profile/save mutation or original binary/dialogue inclusion in source.
+Only ID1 lifetime lock released;concurrent ID2/native work preserved.
+
+Next:mode initialization/global current-index and owner-slot writers;all-kind
+init/exit hooks and pose/heap/resource lifetime;complete battle-end/lecture-mode/
+window/HP immunity teardown and original lesson transition traces. Full game
+system documentation/remake remain incomplete;complete-game requirements remain
+deferred until adequate coverage.

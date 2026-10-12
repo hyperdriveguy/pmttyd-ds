@@ -14,8 +14,8 @@ from rel_event_inventory import read_bindings
 MANIFEST = Path(__file__).with_name('field_lecture_callback_evidence.json')
 
 
-def verify(iso):
-    expected = json.loads(MANIFEST.read_text())
+def verify(iso, manifest=MANIFEST):
+    expected = json.loads(Path(manifest).read_text())
     info = inventory(iso)
     with Path(iso).open('rb') as disc:
         if disc.read(8) != b'G8ME01\0\0':
@@ -43,6 +43,9 @@ def verify(iso):
         for anchor in expected['anchors']+expected['constants']:
             if read(anchor['address'], len(anchor['hex'])//2).hex() != anchor['hex']:
                 raise ValueError(f"Instruction/constant mismatch: {anchor['address']:#x}")
+        for span in expected.get('data', []):
+            if hashlib.sha256(read(span['address'], span['size'])).hexdigest() != span['sha256']:
+                raise ValueError('Original data span identity mismatch')
         entry = next(e for e in info['files'] if e['path'] == 'rel/gor.rel')
         disc.seek(entry['offset'])
         raw = disc.read(entry['size'])
@@ -55,6 +58,7 @@ def verify(iso):
     return dict(schema=1, scope='Static field intersection and party callback bodies; no original execution',
                 body_checks=len(expected['bodies']), instruction_checks=len(expected['anchors']),
                 constant_checks=len(expected['constants']), import_checks=len(expected['rel_imports']),
+                data_checks=len(expected.get('data', [])),
                 bodies=expected['bodies'], rel_sha256=expected['rel_sha256'])
 
 

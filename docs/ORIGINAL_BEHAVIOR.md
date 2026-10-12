@@ -402,3 +402,11 @@ fields and used encoded LV quantization. [Field party callbacks](behavior/FIELD_
 close raw slot dispatch,first-call previous-kind constructor requests and
 conditional run-mode writes. Party engine lifetimes,full variable namespaces,
 battle teardown and original execution remain incomplete.
+
+
+[Field party destruction](behavior/FIELD_PARTY_DESTRUCTION_AND_SAVED_KIND.md)
+and [position constructors](behavior/FIELD_PARTY_POSITION_CONSTRUCTORS.md)
+now establish linked-kind preservation versus clearing,ordered pointer removal/
+release/free,first-free versus secondary-only allocation,pose/init requests and
+primary/secondary coordinate tails. Resource/driver/all-kind/mode/index and
+original-transition composition remain incomplete.

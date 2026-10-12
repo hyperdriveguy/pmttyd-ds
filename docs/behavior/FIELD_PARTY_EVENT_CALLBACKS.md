@@ -41,7 +41,8 @@ slot would change the original dispatch.
 The preceding wall event's clear(1) at REL 0x49168 therefore invokes
 partyKill2(1) only if M+0x246 is nonnegative. The lecture's kill(0) at
 0x49858 invokes partyKill with signed M+0x245 if nonnegative. The
-partyKill/partyKill2 bodies, saved-kind writes and actual object deletion
+[partyKill/partyKill2 bodies and saved-kind writes](FIELD_PARTY_DESTRUCTION_AND_SAVED_KIND.md)
+are now specified locally;pose release/allocator and actual transition execution
 remain dependencies; these callbacks alone do not establish resource reset
 or the eventual saved partner identity.
 
@@ -83,7 +84,8 @@ the called service** when the current slot is negative and saved byte is
 nonzero. The field event lacks a separate create opcode; that does not imply
 its previous-position callback can only change coordinates. Which saved
 byte kill/transition leaves, and what constructors restore, require their
-actual bodies and original lifetime evidence.
+[constructor/destructor bodies](FIELD_PARTY_POSITION_CONSTRUCTORS.md) and
+original lifetime evidence.
 
 ## Stop/run select a party index through a separate route
 
@@ -121,8 +123,8 @@ imports. Repeatable reports
 live under ignored artifacts/reference/behavior. Binary fingerprints and
 dispatch checks do not prove original party transitions or on-disk saves.
 
-Next: partyKill/partyKill2 saved-kind and pointer lifetimes;partyEntryPos and
-partyEntry2Pos constructor/coordinate/resource behavior;run-mode initialization
+Next:destructor hook/pose/heap internals and constructor all-kind tables/init/
+resource persistence;run-mode initialization
 and global current-index writers;field-to-battle teardown and original lesson
 accept/decline/interruption/reentry traces. None of these local callback closures
 completes all party mechanics, the lecture or the game.

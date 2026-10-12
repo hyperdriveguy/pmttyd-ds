@@ -1,0 +1,271 @@
+{
+  "schema": 1,
+  "bodies": [
+    {
+      "name": "partyKill",
+      "address": 2148263580,
+      "size": 352,
+      "sha256": "ecaee66555273aa04d74de2fd26873da4831c65c80609c96d0454f284161b239"
+    },
+    {
+      "name": "partyKill2",
+      "address": 2148263316,
+      "size": 264,
+      "sha256": "94913544dd411f22d5100e35616c69bc35c1c8bb703d99bea20e4761ea4d415f"
+    },
+    {
+      "name": "partyEntryPos",
+      "address": 2148264012,
+      "size": 540,
+      "sha256": "b9843b83d1730ad47ef177c8d7728da76c54f2a61ba5e83340a237290cb1805d"
+    },
+    {
+      "name": "partyEntry2Pos",
+      "address": 2148259544,
+      "size": 976,
+      "sha256": "9511c85ef7dc878f9664790142d26fd7c8f7894f968a3383a39c4b2579974f44"
+    },
+    {
+      "name": "partyEntryMain",
+      "address": 2148262212,
+      "size": 896,
+      "sha256": "4564325d6f461dbfb4479609ce799ae466e5a158aa8a98451e6a8f2f1a1b8ec4"
+    },
+    {
+      "name": "kuribo_init",
+      "address": 2148290464,
+      "size": 40,
+      "sha256": "8f259e25dee305732c45b5ced819b4bece6a70f2681408b964ca66e348eb4712"
+    }
+  ],
+  "anchors": [
+    {
+      "address": 2148263376,
+      "hex": "4082000c"
+    },
+    {
+      "address": 2148263428,
+      "hex": "88830031"
+    },
+    {
+      "address": 2148263456,
+      "hex": "81830024"
+    },
+    {
+      "address": 2148263476,
+      "hex": "41820010"
+    },
+    {
+      "address": 2148263500,
+      "hex": "98a30247"
+    },
+    {
+      "address": 2148263516,
+      "hex": "989e0245"
+    },
+    {
+      "address": 2148263520,
+      "hex": "7ca3012e"
+    },
+    {
+      "address": 2148263528,
+      "hex": "4bf7cc69"
+    },
+    {
+      "address": 2148263540,
+      "hex": "4bf71a51"
+    },
+    {
+      "address": 2148263692,
+      "hex": "88830031"
+    },
+    {
+      "address": 2148263720,
+      "hex": "81830024"
+    },
+    {
+      "address": 2148263832,
+      "hex": "98030247"
+    },
+    {
+      "address": 2148263860,
+      "hex": "987e0245"
+    },
+    {
+      "address": 2148263872,
+      "hex": "7c83012e"
+    },
+    {
+      "address": 2148263880,
+      "hex": "4bf7cb09"
+    },
+    {
+      "address": 2148263892,
+      "hex": "4bf718f1"
+    },
+    {
+      "address": 2148262248,
+      "hex": "38000002"
+    },
+    {
+      "address": 2148262300,
+      "hex": "7c64012e"
+    },
+    {
+      "address": 2148262436,
+      "hex": "881f0247"
+    },
+    {
+      "address": 2148262452,
+      "hex": "981f0247"
+    },
+    {
+      "address": 2148262492,
+      "hex": "900d1bb4"
+    },
+    {
+      "address": 2148262516,
+      "hex": "901d0004"
+    },
+    {
+      "address": 2148262632,
+      "hex": "4bf83485"
+    },
+    {
+      "address": 2148262784,
+      "hex": "3b80000c"
+    },
+    {
+      "address": 2148263068,
+      "hex": "4e800421"
+    },
+    {
+      "address": 2148264084,
+      "hex": "4bfff8b1"
+    },
+    {
+      "address": 2148264188,
+      "hex": "901e0058"
+    },
+    {
+      "address": 2148264236,
+      "hex": "d01e0110"
+    },
+    {
+      "address": 2148264244,
+      "hex": "d01e010c"
+    },
+    {
+      "address": 2148264492,
+      "hex": "981e0034"
+    },
+    {
+      "address": 2148259620,
+      "hex": "40820028"
+    },
+    {
+      "address": 2148259636,
+      "hex": "907c0004"
+    },
+    {
+      "address": 2148259664,
+      "hex": "2c1f0000"
+    },
+    {
+      "address": 2148259752,
+      "hex": "901e0000"
+    },
+    {
+      "address": 2148259764,
+      "hex": "9b7e0031"
+    },
+    {
+      "address": 2148260348,
+      "hex": "4e800421"
+    },
+    {
+      "address": 2148260360,
+      "hex": "4bfff125"
+    },
+    {
+      "address": 2148260424,
+      "hex": "901e0058"
+    },
+    {
+      "address": 2148260448,
+      "hex": "909e00b8"
+    },
+    {
+      "address": 2148260464,
+      "hex": "d01e0070"
+    },
+    {
+      "address": 2148260472,
+      "hex": "d01e0078"
+    },
+    {
+      "address": 2148290472,
+      "hex": "98830033"
+    },
+    {
+      "address": 2148290496,
+      "hex": "900d1bc0"
+    }
+  ],
+  "constants": [
+    {
+      "address": 2151813632,
+      "hex": "3f800000"
+    },
+    {
+      "address": 2151814532,
+      "hex": "41c00000"
+    },
+    {
+      "address": 2151814536,
+      "hex": "41d00000"
+    }
+  ],
+  "rel_sha256": "d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a",
+  "rel_imports": [
+    {
+      "file_offset": 299372,
+      "address": 2148412832
+    },
+    {
+      "file_offset": 301148,
+      "address": 2148412940
+    },
+    {
+      "file_offset": 301292,
+      "address": 2148413184
+    }
+  ],
+  "data": [
+    {
+      "address": 2150712336,
+      "size": 40,
+      "sha256": "66223e5e99847e374a78c965305df7da505db3794f40503a107dbd8c5e2e0e3c"
+    },
+    {
+      "address": 2150712616,
+      "size": 40,
+      "sha256": "0736c199924450fd0f59d4b42682e20fdd5086e0d8c6920f37fc3a4195aebb9d"
+    },
+    {
+      "address": 2150713156,
+      "size": 60,
+      "sha256": "7a458d068ea5e3d0cb5ba6c6079b3443adf63402ff7ad2d5f39ae775f757e2c7"
+    },
+    {
+      "address": 2150713576,
+      "size": 60,
+      "sha256": "5edca07060f73feb82f7d13141f10e102ca5e19fc5a8821e2071a3f3ecc4ade2"
+    },
+    {
+      "address": 2150412700,
+      "size": 12,
+      "sha256": "e852d0ceaa6a4d8ae6859337b6e3d25a56b1bef05a492d34283afabbdfe4db36"
+    }
+  ]
+}
