@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "wall_geometry.hpp"
 #include "field_camera.hpp"
+#include "camera_road_assets.hpp"
 #include "head_collision.hpp"
 #include "floor_contact.hpp"
 #include "field_ray.hpp"
@@ -565,6 +566,8 @@ FieldSupport searchFieldSupport(Vec2 p,Vec2 direction,float rootY,float velocity
         if(below>=GroundedNearDrop && below>std::fabs(velocity)) {result.delta=below;continue;}
         if(!floorCandidateReachable(rootY,velocity,floor) || floor<=best)continue;
         best=floor;result.found=true;result.height=floor;result.delta=0;result.contact=candidate;
+        const auto q=[](float native){const float engine=native*100.f;return std::trunc(std::fma(engine,1000.f,engine<0?-.5f:.5f))*.00001f;};
+        result.point={q(p.x+offset.x),floor,q(p.z+offset.z)};
     }
     return result;
 }
@@ -628,6 +631,7 @@ void Game::finishVertical(float worldY) {
         const Vec2 foot{direction.x*std::cos(offset)+direction.z*std::sin(offset),
                        direction.z*std::cos(offset)-direction.x*std::sin(offset)};
         const auto support=searchFieldSupport(progress.position,foot,worldY,fieldJump.velocity,fieldMovement.slope,fieldJump.velocity);
+        publishFieldCameraCollision(support);
         groundContact=support.found?support.contact:GroundContact{};
         if(support.found) {
             previousGroundContact={};
@@ -675,7 +679,9 @@ bool Game::beginWater() {
 }
 void Game::restore(const Progress& saved) {
     const Progress p=saved; // Caller may pass this game's own progress.
+    const uint64_t cameraClock=fieldCameraSimulationTicks,shiftTimestamp=fieldCameraShift.previousMilliseconds;
     *this = Game{};
+    fieldCameraSimulationTicks=cameraClock;fieldCameraShift.previousMilliseconds=shiftTimestamp;
     progress = p;
     partner = {p.position.x-0.8f,p.position.z};
     groundHeight=p.elevation;partnerHeight=p.elevation;
@@ -728,25 +734,39 @@ void Game::rebaseFieldCamera() {
     // Harness placement adapter; original map/event camera setup is distinct.
     marioCamera.retained={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
     fieldCamera.point={cameraX*100,cameraHeight*100,cameraZ*100};fieldCameraInitialized=true;
+    if(cameraRoadAsset(progress.room))fieldCameraFlags|=4;
     if(fieldCameraViewAdapter)fieldCameraFrame=adaptedFieldCameraFrame(cameraX,cameraHeight,cameraZ);
 }
 void Game::beginFieldCameraTick() {
     if(!fieldCameraInitialized)rebaseFieldCamera();
     // camMain precedes EVT/Mario: consume LAST MarioCamMain publication.
     fieldCamera.consume(marioCamera,fieldCameraFlags);
+    fieldCameraCollisionTarget={marioCameraCollision.x,marioCameraCollision.y+1,marioCameraCollision.z};
+    const uint64_t now=fieldCameraTickMilliseconds(fieldCameraSimulationTicks);
+    if(fieldCameraFlags&4)fieldCameraShift.update(retainedFieldMainX,
+        {progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100},fieldCameraFlags,
+        fieldCameraCandidateActive?fieldCameraCandidateShiftRate:0,now);
     cameraX=fieldCamera.point.x*.01f;cameraHeight=fieldCamera.point.y*.01f;cameraZ=fieldCamera.point.z*.01f;
     if(fieldCameraViewAdapter)fieldCameraFrame=adaptedFieldCameraFrame(cameraX,cameraHeight,cameraZ);
+    fieldCameraShift.post(now); // camShiftPostMain follows road/view selection, even when shift was skipped.
     fieldMovement.headingOffsetDegrees=cameraHeadingSnapshot(fieldCameraFrame.yaw);
 }
 void Game::publishFieldCameraTarget() {
     marioCamera.publish({progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100},
                         fieldCameraFrame.yaw,fieldCameraDisplayFlags,fieldJump.motion);
+    fieldCameraDisplayFlags&=~0x40000u; // Tail owns the transient flag; retained contact persists.
+}
+void Game::publishFieldCameraCollision(const FieldSupport& support) {
+    if(!support.found || !support.contact.sourceNode)return; // No-pack flat-floor adapter has no source HitObj.
+    marioCameraCollision={support.point.x*100,support.point.y*100,support.point.z*100};
+    fieldCameraDisplayFlags|=0x40000;
 }
 void Game::cacheFieldScreen() {
     fieldScreen=projectCameraRoot({progress.position.x,groundHeight+jumpHeight,progress.position.z},
                                  fieldCameraFrame.view,fieldCameraFrame.projection,fieldCameraFrame.viewport);
 }
 void Game::move(const Input& i,bool launched) {
+    retainedFieldMainX=fieldKeysOff?0:int8_t(std::clamp(i.x,-1.f,1.f)*70);
     roadPassContact={}; // marioMoveMain clears +1f0 before moving OR staying.
     // Original marioMoveMain remembers the eligible floor before moving.
     if(groundContact.attributes&0x40000000)returnContact=groundContact;
@@ -842,6 +862,7 @@ void Game::move(const Input& i,bool launched) {
         // Support and forward queries are ordered owners. The front query uses
         // the still-unsnapped root and resets the slope record even on a miss.
         const auto support=searchFieldSupport(p,footDirection,groundHeight,fieldVerticalVelocity,fieldMovement.slope);
+        publishFieldCameraCollision(support);
         groundContact=support.found?support.contact:GroundContact{};
         if(support.found)groundMetadataHeight=supportMetadataHeight(support.height);
         float height=groundHeight,slope=0;
@@ -1116,8 +1137,9 @@ void Game::battle(const Input& i) {
 }
 void Game::tick(const Input& rawInput) {
     Input input=rawInput;const Input& i=input;
-    ++ticks; sound=Sound::None;overheadContact=false;
+    ++ticks;++fieldCameraSimulationTicks; sound=Sound::None;overheadContact=false;
     if((scene==Scene::Explore || scene==Scene::Dialogue) && !water.active())beginFieldCameraTick();
+    if(arriving || warpRequest>=0)retainedFieldMainX=0; // Source road choreography keys off before Mario input publication.
     if(i.physicalSnapshot) {
         std::array<RawPad,4> raw{};raw[0].buttons=i.physicalButtons;
         auto stick=[](float value) {return std::isfinite(value)?int8_t(std::clamp(value,-1.f,1.f)*70):int8_t(0);};

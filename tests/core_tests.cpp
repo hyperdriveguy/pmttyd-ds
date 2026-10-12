@@ -726,11 +726,22 @@ void unequalFloorMotion() {
     CHECK(std::fabs(lowerNeutral.progress.position.x-lowerReverse.progress.position.x)<.00001f);
     for(int n=0;n<100 && down.airborne();++n)down.tick({});CHECK(!down.airborne() && down.groundHeight==0);
     stepFloor(.02f);CHECK(loadGround(path));float supported=99;GroundContact owner;
+    FieldSlope cameraSlope;
+    const auto peripheral=searchFieldSupport({.06f,2},{1,0},0,0,cameraSlope);
+    CHECK(peripheral.found && std::fabs(peripheral.point.x-(-.015f))<.00001f && peripheral.point.z==2);
+    CHECK(std::fabs(peripheral.point.y-.02f)<.00001f); // Accepted peripheral ray, not root XYZ.
     CHECK(groundedFootprint({.06f,2},{1,0},0,supported,&owner));CHECK(std::fabs(supported-.02f)<.00001f && owner.sourceNode==1);
     CHECK(groundedFootprint({.06f,2},{1,1},0,supported,&owner));CHECK(supported==0 && owner.sourceNode==2);
     supported=99;CHECK(!groundedFootprint({.06f,2},{0,0},0,supported));CHECK(supported==99);
     p.position={.03f,2};p.elevation=0;Game edge;edge.restore(p);CHECK(edge.groundHeight==0);
+    CHECK(edge.marioCameraCollision.x==0 && edge.marioCameraCollision.y==0 && edge.marioCameraCollision.z==0);
     edge.tick({});CHECK(std::fabs(edge.groundHeight-.02f)<.00001f && edge.groundContact.sourceNode==1);
+    CHECK(std::fabs(edge.marioCameraCollision.x-(-4.5f))<.001f && edge.marioCameraCollision.z==200);
+    CHECK(std::fabs(edge.marioCameraCollision.y-2)<.001f && !(edge.fieldCameraDisplayFlags&0x40000));
+    CHECK(edge.fieldCameraCollisionTarget.x==0 && edge.fieldCameraCollisionTarget.y==1); // Camera read preceding contact.
+    edge.tick({});CHECK(std::fabs(edge.fieldCameraCollisionTarget.x-(-4.5f))<.001f && std::fabs(edge.fieldCameraCollisionTarget.y-3)<.001f);
+    const auto contactBeforeMiss=edge.marioCameraCollision;edge.progress.position={4,2};edge.tick({});
+    CHECK(edge.marioCameraCollision.x==contactBeforeMiss.x && edge.marioCameraCollision.y==contactBeforeMiss.y && edge.marioCameraCollision.z==contactBeforeMiss.z);
     stepFloor(.049f);CHECK(loadGround(path));CHECK(groundedFootprint({.06f,2},{1,0},0,supported));CHECK(std::fabs(supported-.049f)<.00001f);
     stepFloor(.051f);CHECK(loadGround(path));CHECK(groundedFootprint({.06f,2},{1,0},0,supported));CHECK(supported==0);
     FieldSlope angles;
@@ -738,6 +749,7 @@ void unequalFloorMotion() {
     CHECK(!lower.found && std::fabs(lower.delta-.03f)<.00001f && lower.height==.03f);
     auto nearDrop=searchFieldSupport({1,2},{1,0},.01f,0,angles);
     CHECK(nearDrop.found && nearDrop.height==0 && nearDrop.delta==0);
+    CHECK(nearDrop.point.x==1 && nearDrop.point.z==2); // Equal-height later feet retain center's winning point.
     supported=99;CHECK(landingFootprint({1,2},{1,0},.0108f,-.01f,supported));CHECK(supported==0);
     auto retainedVertical=searchFieldSupport({1,2},{1,0},.03f,.04f,angles);
     CHECK(retainedVertical.found && retainedVertical.height==0);

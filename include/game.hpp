@@ -22,6 +22,7 @@
 #include "field_wall.hpp"
 #include "field_road.hpp"
 #include "field_camera_state.hpp"
+#include "field_camera_shift.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -47,6 +48,7 @@ struct FieldSupport {
     bool found=false;
     float height=0,delta=-.01f;
     GroundContact contact;
+    CameraPoint point; // Accepted Q1000 ray XYZ in native units, not root XYZ.
 };
 struct ReturnPoint {float x=0,y=0,z=0;};
 struct Rect { float x0, z0, x1, z1; };
@@ -121,6 +123,10 @@ public:
     MarioCameraTarget marioCamera;
     FieldCameraTarget fieldCamera;
     FieldCameraFrame fieldCameraFrame;
+    CameraPoint marioCameraCollision,fieldCameraCollisionTarget; // Source retained f8/fc/100 and camera ac/b0/b4 (engine units).
+    FieldCameraShift fieldCameraShift;
+    bool fieldCameraCandidateActive=false;
+    float fieldCameraCandidateShiftRate=0; // Previous candidate +5c, not current selected road.
     uint32_t fieldCameraFlags=0,fieldCameraDisplayFlags=0;
     bool fieldCameraViewAdapter=true; // Authored camera-road eye/at/FOV solver remains unbound.
     bool fieldAirDampingBypass=false,fieldKeysOff=false;
@@ -206,7 +212,10 @@ private:
     void beginFieldCameraTick();
     void publishFieldCameraTarget();
     void cacheFieldScreen();
+    void publishFieldCameraCollision(const FieldSupport& support);
     bool fieldCameraInitialized=false;
+    int8_t retainedFieldMainX=0;
+    uint64_t fieldCameraSimulationTicks=0; // Process clock bridge survives room/Save restore.
     void finishVertical(float previousY);
     int turnTick = 0;
     std::array<BattlePadWork,4> generalBattlePads;
