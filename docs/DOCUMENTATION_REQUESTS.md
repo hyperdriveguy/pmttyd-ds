@@ -486,6 +486,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): `EventGpAddresses` now maps
+80415fd0 and registered0x13d8-byte GP backing with live04/14/38/3c aliases;
+original saved-switch helpers operate on that backing. Other offsets remain raw
+bytes. Exact registered-base native resolution, fresh zero backing and explicit
+retirement snapshots are port storage policies, not original allocator claims.
+All56 CTest/78 Python checks and make all pass. Next implementation dependency:
+address-space/arena ownership and callback bindings. Please leave additional
+original pointer/allocation/initialization evidence here; existing EVT-01 source,
+concurrency and original-runtime requests remain open.
+
 Shared-runtime breadcrumb (2026-10-12): runtime mapper now shares the actual
 ID/slot banks,counters,speed,requested-level and active WORD with interpreter/
 constructor/manager/lifecycle. Active is uint32,retaining raw nonzero and byte

@@ -4,6 +4,7 @@
 #include "event_script_assets.hpp"
 #include "battle_data_child.hpp"
 #include "event_runtime_addresses.hpp"
+#include "event_gp_addresses.hpp"
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -22,6 +23,7 @@ struct Fixture {
     EventContextAddresses contextAddresses;
     EventScriptAssets scripts;
     EventGlobals gp{0,60,0};
+    EventGpAddresses gpAddresses;
     EventRuntimeGlobals runtime{0,1,1,0};
     EventSchedule schedule;
     EventRuntimeAddresses runtimeAddresses;
@@ -32,18 +34,18 @@ struct Fixture {
     unsigned barriers=0,divisions=0;
     int32_t observedInteger=0;float observedFloat=0;
     static constexpr uint32_t clock=243000000;
-    Fixture():contextAddresses(addresses),runtimeAddresses(runtime,schedule) {assert(addresses.registerEntries(0x10000,entries.data(),256));assert(contextAddresses.registerContext(0x8000,context));}
+    Fixture():contextAddresses(addresses),runtimeAddresses(runtime,schedule) {assert(addresses.registerEntries(0x10000,entries.data(),256));assert(contextAddresses.registerContext(0x8000,context));assert(gpAddresses.registerGp(0x3000,gp));assert(gpAddresses.writeWord(0x80415fd0,0x3000));}
     uint32_t read(uint32_t a) {
-        uint32_t mapped;if(addresses.readWord(a,mapped) || contextAddresses.readWord(a,mapped) || runtimeAddresses.readWord(a,mapped) || scripts.readWord(a,mapped))return mapped;
+        uint32_t mapped;if(addresses.readWord(a,mapped) || contextAddresses.readWord(a,mapped) || runtimeAddresses.readWord(a,mapped) || gpAddresses.readWord(a,mapped) || scripts.readWord(a,mapped))return mapped;
         uint32_t v=0;for(unsigned i=0;i<4;++i)v=v<<8|bytes[a+i];return v;
     }
     void write(uint32_t a,uint32_t v) {
-        if(addresses.writeWord(a,v) || contextAddresses.writeWord(a,v) || runtimeAddresses.writeWord(a,v))return;
+        if(addresses.writeWord(a,v) || contextAddresses.writeWord(a,v) || runtimeAddresses.writeWord(a,v) || gpAddresses.writeWord(a,v))return;
         for(unsigned i=0;i<4;++i)bytes[a+i]=uint8_t(v>>(24-8*i));
     }
     EventCreationServices creation() {
         EventCreationServices s;s.user=this;s.manager.user=this;
-        s.manager.globals=[](void* p) {return &static_cast<Fixture*>(p)->gp;};
+        s.manager.globals=[](void* p) {return static_cast<Fixture*>(p)->gpAddresses.currentGlobals();};
         s.manager.context=[](void* p,bool battle) {assert(!battle);return &static_cast<Fixture*>(p)->context;};
         s.manager.clock=[](void*)->uint32_t {return clock;};
         s.runtime=[](void* p) {return &static_cast<Fixture*>(p)->runtime;};
@@ -54,11 +56,11 @@ struct Fixture {
         EventInterpreterServices s;s.schedule=&schedule;s.creation=creation();s.user=this;s.numericUser=&divisions;
         s.operands.user=this;s.operands.contextAddress=[](void*)->uint32_t {return 0x8000;};
         s.operands.entryAddress=[](void* p,EventEntry& e)->uint32_t {uint32_t a;assert(static_cast<Fixture*>(p)->addresses.addressOf(&e,a));return a;};
-        s.operands.globalAddress=[](void*)->uint32_t {return 0x3000;};
+        s.operands.globalAddress=[](void* p) {return static_cast<Fixture*>(p)->gpAddresses.currentAddress();};
         s.operands.readWord=s.creation.word;
         s.operands.writeWord=[](void* p,uint32_t a,uint32_t v) {static_cast<Fixture*>(p)->write(a,v);};
-        s.operands.readByte=[](void* p,uint32_t a) {auto& f=*static_cast<Fixture*>(p);uint8_t v;if(f.addresses.readByte(a,v) || f.contextAddresses.readByte(a,v) || f.runtimeAddresses.readByte(a,v))return v;return f.bytes[a];};
-        s.operands.writeByte=[](void* p,uint32_t a,uint8_t v) {auto& f=*static_cast<Fixture*>(p);if(!f.addresses.writeByte(a,v) && !f.contextAddresses.writeByte(a,v) && !f.runtimeAddresses.writeByte(a,v))f.bytes[a]=v;};
+        s.operands.readByte=[](void* p,uint32_t a) {auto& f=*static_cast<Fixture*>(p);uint8_t v;if(f.addresses.readByte(a,v) || f.contextAddresses.readByte(a,v) || f.runtimeAddresses.readByte(a,v) || f.gpAddresses.readByte(a,v))return v;return f.bytes[a];};
+        s.operands.writeByte=[](void* p,uint32_t a,uint8_t v) {auto& f=*static_cast<Fixture*>(p);if(!f.addresses.writeByte(a,v) && !f.contextAddresses.writeByte(a,v) && !f.runtimeAddresses.writeByte(a,v) && !f.gpAddresses.writeByte(a,v))f.bytes[a]=v;};
         s.operands.truncate=[](void*,float v) {assert(std::isfinite(v) && double(v)>=-2147483648. && double(v)<2147483648.);return int32_t(v);};
         s.memory.user=this;s.memory.word=s.creation.word;s.memory.storeWord=s.operands.writeWord;s.memory.storeByte=s.operands.writeByte;
         s.memory.half=[](void* p,uint32_t a)->uint16_t {auto& b=static_cast<Fixture*>(p)->bytes;return uint16_t(b[a])<<8|b[a+1];};

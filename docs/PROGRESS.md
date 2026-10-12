@@ -1,5 +1,27 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Shared GP bytes and current-pointer storage
+
+Added `EventGpAddresses`: the original GP pointer cell80415fd0 and registered
+0x13d8-byte GP regions share storage with live refresh-rate04, context-selector14
+and event timestamp38/3c fields. Other bytes retain raw backing, including saved
+switch banks; no field meanings are inferred. Byte/word aliases and GP pointer
+changes are immediately visible to the combined interpreter fixture. Retirement
+can snapshot every byte and preserves the raw current pointer; address reuse
+selects the newly registered object. Registration and zeroed backing are explicit
+native storage policies, not recovered original allocation behavior.
+
+Validation: `make test` passes56 CTest suites and78 Python tests; `make all`
+produces ttyd-2ds.3dsx. Logs: /tmp/pm-gp-address-tests-final.log and
+/tmp/pm-gp-address-builds-final.log. Tests cover the full GP byte extent, live
+field aliases, original saved-switch helpers, two GP banks, pointer mutation,
+retirement snapshots and address reuse. This service is not yet bound to Game.
+
+Next: native address-space/arena ownership and initialization, callback registry,
+and original Jump graph integration. Unregistered/interior GP pointers remain
+raw but cannot resolve to native globals. Original concurrency, invalid-address
+behavior and full-game fidelity remain open; the goal is incomplete.
+
 ## 2026-10-12 — Shared event-runtime original-address cells
 
 Added `event_runtime_addresses.cpp` for ID/slot schedule banks,live count,
