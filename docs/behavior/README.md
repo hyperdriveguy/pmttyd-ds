@@ -15,6 +15,7 @@ This collection is in progress as of 2026-10-12.
 | [Battle input and defense](BATTLE_INPUT_AND_DEFENCE.md) | Original history buffers, virtual directions/repeat, complete local guard decision routine and tables | Caller gates, impact sampling, attacks, full damage/status/turn rules |
 | [Hit precheck](BATTLE_HIT_PRECHECK.md) | Ordered eligibility, per-copy evasion draws, accuracy reductions and return codes | Caller reactions, status lifetimes, stage-effect producer |
 | [Damage calculation](BATTLE_DAMAGE_CALCULATION.md) | Ordered HP/FP callback gates, badge/status/defense arithmetic, result codes and absorption | Weapon callbacks, counters, application, death/revival and turn lifecycle |
+| [Counters](BATTLE_COUNTERS.md) | Complete local selection order, work record, jump-table returns, consumer accumulation/status/direct-damage calls | Other callers, status/application helpers, presentation and full orchestration |
 | [State and inventory](STATE_AND_INVENTORY.md) | Saved-work sizes/accessors, resource setters, capacity and generic item insertion | Full progression, equipment, special items and original save records |
 | [Randomness](RANDOMNESS.md) | rand recurrence and irand draw consumption | Seeding, randf, consumer call order and persistence |
 | [Mechanics ledger](../MECHANICS.md) | Existing US ordinary field movement/collision/recovery/road evidence | Full physics, partners, dynamic events, matched original gameplay |

@@ -165,6 +165,28 @@ The HP power/defense/badge/element pipeline is not repeated for FP. A callback
 can nevertheless implement attack-specific arithmetic, so this does not mean
 badges can never influence an attack's FP outcome.
 
+## Emergency revival code marking (B)
+
+The separate helper `_checkDamageCode_EmergencyRevival`, `0x800fba1c`, length
+`0xc0`, receives `(unit,codePointer)`. It marks eligibility; it does not itself
+consume an item or restore HP. Its complete local decision is:
+
+1. Read signed word kind ID at unit+8. For ID 222, call `pouchCheckItem(151)`.
+   If the result is positive, OR `0x800` into `*codePointer` and return 1;
+   otherwise return 0 (`0x800fba30`–`0x800fba64`).
+2. For kind IDs 224 through 230 inclusive, perform the same pouch check
+   (`0x800fba68`–`0x800fbaa0`).
+3. For all other IDs, compare the word at unit+0x308 with 151. On equality,
+   OR `0x800` into `*codePointer` and return 1; otherwise return 0
+   (`0x800fbaa4`–`0x800fbac4`).
+
+Failure leaves the code unchanged, including any preexisting 0x800 bit. The
+player/partner-ID paths do not fall back to the unit+0x308 check after a failed
+pouch query. There is no current-HP test, null-unit guard, inventory mutation,
+RNG call or actual revival in this helper. Item ID 151 must retain its original
+data binding; the downstream event/item-consumption/HP restoration sequence
+still needs tracing before this can specify the full revival mechanic.
+
 ## Verification obligations and remaining dependencies (P)
 
 Derived cases for a future implementation: stack Double Pain twice and expect

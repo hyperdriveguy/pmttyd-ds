@@ -12,6 +12,19 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'counter': {
+        0x800fa6b0: '909a0028', 0x800fa708: '909a0000',
+        0x800fa924: '901a0010', 0x800faaac: '901a0004',
+        0x800fab44: '901a0018', 0x800fab80: '901a001c',
+        0x800fac28: '38a00030', 0x800fac40: '901f0000',
+        0x800fb7e4: '7c0303d6', 0x800fb93c: '2c000000',
+        0x800fb9c4: '3860fffb', 0x800fb9fc: '3860ffff',
+    },
+    'revival_marker': {
+        0x800fba34: '2c0000de', 0x800fba68: '2c0000e0',
+        0x800fba70: '2c0000e7', 0x800fbaa8: '2c000097',
+        0x800fbab8: '60000800',
+    },
     'hit_precheck': {
         0x800fbb28: '60000008', 0x800fbbdc: '57c002d7',
         0x800fbc08: '2c03005a', 0x800fbc3c: '2c03004b',
@@ -110,6 +123,12 @@ def verify(iso_path):
         if read(0x804221c4, 4) != bytes.fromhex('3f000000'):
             raise ValueError('Accuracy multiplier is not binary32 0.5')
         print('Conditional accuracy multiplier verified: 0.5')
+        expected = (0x800fabac, 0x800fabb4, 0x800fabbc, 0x800fabc4,
+                    0x800fabcc, 0x800fac04, 0x800fabd4, 0x800fabdc,
+                    0x800fabec, 0x800fabe4, 0x800fabf4, 0x800fabfc)
+        if struct.unpack('>12I', read(0x8034c720, 48)) != expected:
+            raise ValueError('Counter classification jump table mismatch')
+        print('All 12 counter classification jump-table targets verified')
 
 
 if __name__ == '__main__':

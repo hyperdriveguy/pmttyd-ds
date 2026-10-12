@@ -25,6 +25,8 @@ FUNCTIONS = (
     'BattleActionCommandSetup', 'BattleCheckDamage', 'BattleDamageDirect',
     'BattlePreCheckDamage', 'BattleCalculateDamage', 'BattleCalculateFpDamage',
     'btlevtcmd_ResultACDefence',
+    'BattleCheckCounter', 'BattleInitCounterPreCheckWork',
+    '_checkDamageCode_EmergencyRevival',
     'swByteGet', 'swByteSet', '_swByteGet', '_swByteSet', 'swGet', 'swSet',
     'swClear', 'swReInit', 'swInit', 'pouchSetHP', 'pouchAddHP', 'pouchSetFP',
     'pouchSetMaxHP', 'pouchSetMaxFP', 'pouchSetPartyHP', 'pouchSetAP',
