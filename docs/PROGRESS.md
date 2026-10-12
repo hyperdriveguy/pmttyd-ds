@@ -2226,3 +2226,32 @@ periodic effects and actual death/revival event graphs. Continue other systems
 in behavior/README before deriving complete-game requirements. Full objective
 remains active and incomplete; original execution traces and end-to-end fidelity
 checks are still required.
+
+## 2026-10-12 — Status application presentation and completion
+
+Commit0eb2aa1 completes local BattleSetStatusDamage control-flow documentation
+with BATTLE_STATUS_PRESENTATION.md. It specifies position corrections, all stamp
+cases and payload bytes, up/down effects, cancellation cleanup, signed result
+announcement gates, unchanged Charge mode, sound bindings and final return.
+Whole-call return1 after admission/chance is distinct from setter success;
+opposite-status cancellation can return1 without an active requested status.
+Infliction contract and behavior index now link this tail. Effect rendering,
+announcement queue internals and lifecycle scheduling are still unrecovered.
+
+Validation:177 instruction anchors, ten infliction/presentation table hashes
+(254 entries), five status position constants and all prior checks passed
+against the read-only US ISO. Evidence report identifies84 functions and the
+unchanged US DOL digest. Behavior links resolve and git diff --check passed.
+make test passed core plus36 Python tests. make all exited0, nothing to rebuild.
+Checks used the shared workspace with concurrent runtime, architecture/mechanics,
+and Switch research changes present; those edits were not staged. No runtime
+change authored, original executable/emulator run, or profile/save modification.
+Extracts/disassembly/report remain ignored; ASSETS.md records evidence scope.
+Static checks do not establish dynamic or visual equivalence.
+
+Next: complete BattleCheckDamage orchestration, status turn callers and periodic
+HP/FP/action effects; recover announcement/effect internals, weapon bindings,
+equipment-count semantics and actual death/revival event graphs. Continue the
+full-system behavior register before deriving complete-game requirements. The
+full objective remains active and incomplete; original execution traces and
+end-to-end fidelity comparisons are still required.
