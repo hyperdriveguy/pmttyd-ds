@@ -328,3 +328,7 @@ add_test(NAME battle_unit_event COMMAND battle_unit_event_tests)
 add_executable(battle_packed_status_tests tests/battle_packed_status_tests.cpp)
 target_link_libraries(battle_packed_status_tests PRIVATE ttyd_core)
 add_test(NAME battle_packed_status COMMAND battle_packed_status_tests)
+
+add_executable(battle_wait_event_tests tests/battle_wait_event_tests.cpp)
+target_link_libraries(battle_wait_event_tests PRIVATE ttyd_core)
+add_test(NAME battle_wait_event COMMAND battle_wait_event_tests)

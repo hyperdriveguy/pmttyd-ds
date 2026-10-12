@@ -1,5 +1,34 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native wait-event replacement and guard polling
+
+Registered StartWaitEvent8010a26c,StopWaitEvent8010a1fc and WaitGuardMove8010a1c8.
+Start's outer null-script gate preserves tracked wait ID;the complete run-wait
+helper instead cancels old290 first and reloads script28c before root creation.
+Actual roots use priority10/flags0;fresh unit.word0 supplies actor BEFORE event ID
+is read/stored into unit290. Stop clears retained unit290 after actual DeleteID,
+even for stale IDs;zero skips both operations. Guard polls current battleef4 bit01
+and returns0 while set,2 otherwise,without fabricated pose/clock completion.
+
+Original read-only-ISO inspection confirms order and guard's complete seven-
+instruction body. Evidence is in behavior/battle/BATTLE_WAIT_EVENT_NATIVE_ORDER.md;
+inspection ELFs remain /tmp outside source history. Native callbacks use actual
+constructor/lifecycle/address services;unit wait-script provenance and outer
+battle/animation ownership remain separate from this local composition.
+
+Validation:make test passes72 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-wait-event-test-final.log and /tmp/pm-wait-event-build-final.log.
+Fixtures pin outer-zero versus helper cancellation,clear-after-delete/script
+reload,actor/ID post-constructor order,root priority/flags/counters,stale ID clear
+and no same-pass flags0 append. Actual dispatcher USER_FUNC blocks repeatedly on
+bit01 then resumes to original event deletion after independent flag clear.
+Unit/script/arena fields are authored test inputs;no measured elapsed wait,
+original runtime/emulator/hardware or complete Jump fidelity claim.
+
+Next:first-attack-target/movement replies,remaining motion/AC/pose/effect/audio/
+message bindings and original unit/outer turn/Game ownership. Full-game goal
+incomplete;concurrent staged documentation reorganization preserved.
+
 ## 2026-10-12 — ID2 complete type5 nested relocation and local Set/Clear graph
 
 Added type5 setup/clear contracts and comprehensive Set/Clear binary verifier.

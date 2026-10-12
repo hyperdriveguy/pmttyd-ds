@@ -503,6 +503,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): Start/StopWaitEvent and
+WaitGuardMove now bind actual root/DeleteID and global bit01 polling.72 CTest/78
+Python and make all pass. See behavior/battle/BATTLE_WAIT_EVENT_NATIVE_ORDER.md
+for retained unit,outer script gate,script reload,actor-before-ID stores,flags0
+and seven-instruction guard contract. Actual dispatcher polling/resumption passes;
+unit wait-script/flag writers,animation/outer timing/full Jump/Game remain open.
+First-attack-target and movement-wrapper requests remain pending;leave further
+source/backend evidence under existing EVT-01/JUMP-01 closure here.
+
 Native implementation / refinement breadcrumb (2026-10-12): packed status
 getter/presence and registered CheckStatus80105f0c/CheckData80109f88 now share
 native event/unit RAM.71 CTest/78 Python and make all pass. Evidence in

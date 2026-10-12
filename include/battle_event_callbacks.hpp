@@ -31,6 +31,9 @@ struct BattleTurnFirstBackend {
 EffectDeletionServices nativeEffectDeletionServices(EventNativeRuntime&);
 BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend&);
 BattleUnitEventServices nativeBattleUnitEventServices(EventNativeRuntime&);
+bool bindBattleStartWaitCallback(EventCallbackRegistry&,EventNativeRuntime&);
+bool bindBattleStopWaitCallback(EventCallbackRegistry&,EventNativeRuntime&);
+bool bindBattleWaitGuardMoveCallback(EventCallbackRegistry&,EventNativeRuntime&);
 bool bindBattleCheckStatusCallback(EventCallbackRegistry&,EventNativeRuntime&);
 bool bindBattleCheckDataCallback(EventCallbackRegistry&,EventNativeRuntime&);
 bool bindBattleGetHpCallback(EventCallbackRegistry&,EventNativeRuntime&);

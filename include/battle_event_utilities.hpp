@@ -6,6 +6,7 @@ struct BattleEventUtilityServices {
     EventMemoryServices memory;
     EventDispatchServices values;
 };
+int32_t battleWaitGuardMove(const BattleEventUtilityServices&);
 int32_t battleFlagQueryEvent(EventEntry&,const BattleEventUtilityServices&);
 int32_t battleFramesToMillisecondsEvent(EventEntry&,const BattleEventUtilityServices&);
 }

@@ -9,6 +9,27 @@ int32_t resolve(EventEntry& e,uint32_t address,const BattleUnitEventServices& s)
 int32_t actor(EventEntry& e,uint32_t args,const BattleUnitEventServices& s) {const int32_t selector=resolve(e,args,s);assert(s.translate);return s.translate(s.user,e,selector);}
 uint32_t unit(uint32_t battle,int32_t id,const BattleUnitEventServices& s) {assert(s.unit);return s.unit(s.user,battle,id);}
 }
+int32_t runBattleUnitWait(uint32_t u,const BattleUnitEventServices& s) {
+    const uint32_t previous=word(s,u+0x290);
+    if(previous!=0) {assert(s.removeEventId && s.memory.storeWord);s.removeEventId(s.user,previous);s.memory.storeWord(s.memory.user,u+0x290,0);}
+    const uint32_t script=word(s,u+0x28c);
+    if(script!=0) {
+        assert(s.createWait && s.memory.storeWord);auto& event=s.createWait(s.user,script,10,0);
+        event.owner=sw(word(s,u));s.memory.storeWord(s.memory.user,u+0x290,event.id);
+    }
+    return 0;
+}
+int32_t battleStartUnitWaitEvent(EventEntry& e,const BattleUnitEventServices& s) {
+    const uint32_t args=e.arguments;const int32_t id=actor(e,args,s);
+    const uint32_t battle=word(s,0x8041eb90),u=unit(battle,id,s);
+    if(word(s,u+0x28c)!=0)runBattleUnitWait(u,s);
+    return 2;
+}
+int32_t battleStopUnitWaitEvent(EventEntry& e,const BattleUnitEventServices& s) {
+    const uint32_t args=e.arguments;const int32_t id=actor(e,args,s);
+    const uint32_t battle=word(s,0x8041eb90),u=unit(battle,id,s),previous=word(s,u+0x290);
+    if(previous!=0) {assert(s.removeEventId && s.memory.storeWord);s.removeEventId(s.user,previous);s.memory.storeWord(s.memory.user,u+0x290,0);}return 2;
+}
 bool battleUnitHasData(uint32_t unit,int32_t key,const EventMemoryServices& s) {
     assert(s.word);uint32_t table=s.word(s.user,unit+0x18);if(!table)return false;
     for(;;table+=8) {const uint32_t candidate=s.word(s.user,table);if(candidate==0)return false;if(candidate==uint32_t(key))return true;}

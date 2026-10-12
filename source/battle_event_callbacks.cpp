@@ -9,8 +9,13 @@ BattleUnitEventServices nativeBattleUnitEventServices(EventNativeRuntime& runtim
     auto values=nativeBattleEventUtilityServices(runtime);s.values=values.values;
     s.translate=[](void* p,EventEntry& e,int32_t selector) {auto& r=*static_cast<EventNativeRuntime*>(p);return translateBattleActor(&e,selector,nativeBattleActorServices(r));};
     s.unit=[](void* p,uint32_t battle,int32_t id) {auto& r=*static_cast<EventNativeRuntime*>(p);return battleRegistryUnit(battle,id,nativeBattleActorServices(r));};
+    s.removeEventId=[](void* p,uint32_t id) {auto& r=*static_cast<EventNativeRuntime*>(p);deleteEventId(id,r.creationServices());};
+    s.createWait=[](void* p,uint32_t script,int32_t priority,uint32_t flags)->EventEntry& {auto& r=*static_cast<EventNativeRuntime*>(p);return createRootEvent(r.schedule,script,priority,flags,r.creationServices());};
     s.checkStatus=[](void* p,uint32_t unit,int32_t id)->int32_t {auto& r=*static_cast<EventNativeRuntime*>(p);return checkPackedBattleStatus(unit,id,nativeBattleActorServices(r))?1:0;};return s;
 }
+bool bindBattleStartWaitCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x8010a26c,&runtime,[](void* p,EventEntry& e,int32_t) {return battleStartUnitWaitEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));});}
+bool bindBattleStopWaitCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x8010a1fc,&runtime,[](void* p,EventEntry& e,int32_t) {return battleStopUnitWaitEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));});}
+bool bindBattleWaitGuardMoveCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x8010a1c8,&runtime,[](void* p,EventEntry&,int32_t) {return battleWaitGuardMove(nativeBattleEventUtilityServices(*static_cast<EventNativeRuntime*>(p)));});}
 bool bindBattleCheckStatusCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x80105f0c,&runtime,[](void* p,EventEntry& e,int32_t) {return battleCheckUnitStatusEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));});}
 bool bindBattleCheckDataCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x80109f88,&runtime,[](void* p,EventEntry& e,int32_t) {return battleCheckUnitDataEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));});}
 bool bindBattleGetHpCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x801101c4,&runtime,[](void* p,EventEntry& e,int32_t) {return battleUnitHpEvent(e,false,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));});}
