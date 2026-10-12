@@ -55,8 +55,9 @@ callback through dispEntry(8,0,400.0-float(s16(layer)),callback,W). windowMain
 does not draw or call display callbacks itself. Rendering may mutate separate
 state, as [selection drawing](MESSAGE_SELECTION_DRAWING.md) demonstrates.
 dispEntry queue borrowing/sort request/dispatch are now covered in
-[display queue](DISPLAY_QUEUE_AND_DISPATCH.md). Sort implementation/ties and
-the outer loop remain open.
+[display queue](DISPLAY_QUEUE_AND_DISPATCH.md), sorting/ties in
+[sort implementation](DISPLAY_SORT_IMPLEMENTATION.md). The outer loop and
+actual caller/tie executions remain open.
 
 ## Palette setup: archive path (B)
 

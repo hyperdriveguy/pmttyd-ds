@@ -3372,3 +3372,33 @@ consumers, actual outer reset/sort/camera dispatch cadence and camera/matrix/GX
 services. Continue real message/story attribution/order/branches/conditions and
 all other uncovered systems before complete-game requirements. Full objective
 active/incomplete; original execution/images comparisons still needed.
+
+## 2026-10-12 — Display sort implementation and equal-key behavior
+
+Previous goal turn made progress through25005b8. Began clean and added
+DISPLAY_SORT_IMPLEMENTATION.md: qqsort comparator write/admission, global scratch,
+fsort small pivot branches and strided sample quickselect, shared asymmetric
+partition and zero-pivot relocation, smaller-side recursion/tie order, tail
+iteration and cycle copying/null markers. Pinned Japanese system.c provides
+complete structural guidance, checked against US branches. Recorded a derived
+three-entry tie reversal[1A,1B,0C]->[0C,1B,1A], not host stable-sort semantics;
+all-equal identity is only a special case. Updated display/window cross-links.
+
+Validation:800 instruction anchors and prior checks passed read-only US ISO.
+Fresh240-function evidence reports matched byte-for-byte. Authored contract
+models checked3549 sort inputs, all5914 cycle permutations of lengths0..7 and
+8072 bit-mask counts (1..3072 plus5000 seeded nonzero32-bit words). Sorting gave
+ascending permutations and the tie example; cycles/bit lengths matched integer
+reference results. These do not execute original instructions/memcpy or prove
+every input/comparator. All local behavior links resolve; git diff --check passed.
+make test passed core plus36 Python tests; make all exited0, no rebuild. Only
+research/provenance/evidence tooling changed. No original execution/emulator run
+or profile/save change; disassemblies/reports remain ignored. Static/model checks
+do not prove actual callback/caller domain, outer sorting/draw cadence, memory
+service behavior or original/native equivalence.
+
+Next: msgWindow_Disp and msgDisp record consumers; actual outer reset/sort/camera
+cadence, matrix/GX/font/icon/copy services and real message/story callers. Continue
+all original attribution/order/branches/conditions and other uncovered systems
+before complete-game requirements. Full objective active/incomplete; original
+execution/images comparisons still needed.

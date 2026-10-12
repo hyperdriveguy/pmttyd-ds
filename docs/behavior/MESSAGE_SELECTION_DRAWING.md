@@ -80,6 +80,6 @@ Differential obligations: exact call order, BSS fog-color source, low8 opacity,
 border/text/cursor geometry, signed target index, fused stored smoothing and
 draw-count dependence, cached D versus freshly loaded handle, opacity-zero
 behavior and icon request values. Remaining: border/text/icon rendering bodies,
-sort implementation/ties and actual invocation count, input/render ordering,
+actual invocation count and sort/tie executions, input/render ordering,
 matched original images/traces and original selection/story callers. Local draw
 contract is established; full UI/dialogue/full-game equivalence remains unproven.

@@ -6,8 +6,9 @@ dispDraw0x80010900,size25c; dispSort0x80010b5c,size34;
 _sort@dispdrv.o0x80010b90,size34; dispEntry0x80010bc4,sizea0;
 dispReInit0x80010c64,sizec; dispInit0x80010c70,size64.
 Pinned Japanese dispdrv.c structurally corroborates these routines; contracts
-below come from US instructions/constants. Sorting helper internals, outer
-camera cadence and executed images remain dependencies. See
+below come from US instructions/constants. Sorting helper internals are now
+covered in [sort implementation](DISPLAY_SORT_IMPLEMENTATION.md); outer camera
+cadence and executed images remain dependencies. See
 [window manager](MESSAGE_WINDOW_MANAGER.md) and [selection drawing](MESSAGE_SELECTION_DRAWING.md).
 
 ## Allocation, records and count-only reset (B)
@@ -76,9 +77,10 @@ Comparator receives pointers to pointer-array elements, dereferences each once,
 loads record keys and uses ordered fcmpo. Return1 for first>second, -1 for
 first<second, otherwise0, including equal keys and unordered comparisons. No
 camera/class/index tie breaker or original registration ordinal. Requested order
-is ascending by transformed key; exact qqsort algorithm, tie permutations,
-scratch/reentrancy and anomalous-key handling require its own contract before
-claiming stable or deterministic equal-key order. No host stable-sort guarantee.
+is ascending by transformed key. Exact qqsort algorithm, tie permutations and
+scratch/reentrancy are now covered in [sort implementation](DISPLAY_SORT_IMPLEMENTATION.md),
+including a three-entry equal-key reversal. Actual caller and anomalous-key
+executions remain open; there is no host stable-sort guarantee.
 
 Window callbacks register camera8,class0,order=400-float(s16(layer)). Their key
 is f32(400000-order), approximately399600+layer. Under the requested ascending
@@ -155,7 +157,7 @@ Differential obligations: NaN admission, eleven offsets/metadata-size discrepanc
 key direction and float rounding, pointer sorting/ties, byte versus full-word
 camera/class values, count-only reset/current pointer, live traversal mutations,
 common/class GX order and inherited settings, callback borrowing, camera4 matrix
-calls, fused depth mapping and clamps. Remaining: qqsort/helper ties, camera/
+calls, fused depth mapping and clamps. Remaining: actual sort/tie execution, camera/
 matrix/GX services, actual reset/sort/draw cadence, message renderer bodies and
 original execution/images/story callers. Full rendering/game equivalence remains
 unproven; the complete-game requirements document is not yet ready.

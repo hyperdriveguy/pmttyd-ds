@@ -13,6 +13,18 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'display_sort_implementation': {
+        0x80006520: '281e0001', 0x8000652c: '90cd1678',
+        0x800065c8: '480000b9', 0x80006604: '4bffeb99',
+        0x80006624: '93960000', 0x80006628: '7c00fb96',
+        0x8000669c: '281a0002', 0x800066c8: '408105b0',
+        0x800066f0: '281a0004', 0x80006710: '281a0028',
+        0x80006754: '4080002c', 0x8000686c: '4182040c',
+        0x8000690c: '7f5a2396', 0x80006998: '40810010',
+        0x80006a2c: '836d1670', 0x80006b88: '83ad1670',
+        0x80006bc8: '7c04e840', 0x80006c18: '40800014',
+        0x80006c6c: '4bfffa15', 0x80006c74: '4181fa24',
+    },
     'display_queue_and_dispatch': {
         0x80010c7c: '38804000', 0x80010c90: '38801000',
         0x80010c68: '900d16f8', 0x80010bcc: '80ed16f0',
