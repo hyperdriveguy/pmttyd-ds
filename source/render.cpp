@@ -337,7 +337,9 @@ void Renderer::world(const Game& g) {
     if(count>actorEnd) {
         // Source LEQUAL maps to GEQUAL in PICA's reversed-depth projection;
         // shadows blend after actors/maps without writing depth.
-        C3D_DepthTest(true,GPU_GEQUAL,GPU_WRITE_COLOR);
+        // Original camera4 callback disables alpha updates before Polygon.
+        const auto writes=polygonShadow?GPU_WRITEMASK(GPU_WRITE_RED|GPU_WRITE_GREEN|GPU_WRITE_BLUE):GPU_WRITE_COLOR;
+        C3D_DepthTest(true,GPU_GEQUAL,writes);
         C3D_TexEnvInit(env);
         if(polygonShadow){C3D_TexEnvSrc(env,C3D_Both,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_REPLACE);}
         else {C3D_TexBind(0,&atlas);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);}
