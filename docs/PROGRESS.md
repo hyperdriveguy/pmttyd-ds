@@ -1,5 +1,29 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Portable action-command script services
+
+Implemented BATTLE_ACTION_COMMAND_CALLBACKS.md and
+BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md in include/battle_action_services.hpp
+and source/battle_action_services.cpp. Shared command fields are referenced,
+not copied. Parameter stores remain observable between operand resolutions;
+sentinel values retain prior fields. Raw setup flags/options/output destinations
+remain distinct. Start requests state100 and conditional help2. Result invokes
+the evaluator but polls the stored pending bit independently of callback return.
+Stored result/count and success-window readers preserve raw destinations. Stop
+calls the installed delete callback before help0 without clearing command data.
+Prize helper preserves low-code30 early return,late unsigned-byte read,wrapped
+arithmetic/clamp,and distinct captured-work versus actor-lookup service reads.
+
+Validation:make test passed twelve CTest suites plus58 Python tests;make all
+built ttyd-2ds.elf and ttyd-2ds.3dsx. New suite covers ordered writes/raw fields,
+callback-return versus pending-bit behavior,readers without evaluation,window
+output,conditional help,delayed/repeated TimingA stop,prize early-code/byte/wrap,
+null actor aliases and work capture/lookup ordering. Initial test literal needed
+signed encoding;3DS int32_t differs from host int,so clamp now explicitly uses
+int32_t. Final tests/build pass. No emulator run for these still-unbound services.
+Next:bind native request adapter,then original Jump graph/VM cadence and help/
+prize/UI producers. Full remake remains incomplete.
+
 ## 2026-10-12 — Mario Jump count preparation and motion composition
 
 Added MarioJumpParam to source/battle_jump_motion.cpp using
