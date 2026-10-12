@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Consolidated packed EventEntry map and address-alias requirements | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete432-byte map](behavior/EVENT_ENTRY_PACKED_LAYOUT.md),[address/alias requirements](behavior/EVENT_ENTRY_ADDRESS_AND_ALIAS_REQUIREMENTS.md):49 spans,388 known-role/44 unknown raw bytes,pointer/typed/context/global and physical alias domains;actual native translator/source/backend/runtime binding remains open |
 | General action-record rule judgment and threshold helpers | DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [All68 general rules](behavior/BATTLE_GENERAL_RULE_JUDGMENT.md),[threshold/end/unit queries](behavior/BATTLE_RULE_THRESHOLD_AND_UNIT_QUERIES.md):complete judge/helper/query bodies,captured/current output ownership,duplicate54/55 and numeric0x02 mask;rule/raw record/reset/save/consumer/end/turn/source/runtime lifecycle remains open |
 | Attack-command event selection and action-record classification | JUMP-01, DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete selector](behavior/BATTLE_ATTACK_EVENT_SELECTION.md),[classifier/data/audience leaves](behavior/BATTLE_WEAPON_ATTACK_CLASSIFICATION.md):three dispatch tables,selection-time counts,event/category/byte write order,signed predicate and helper recapture/fallback closed;general rule/menu/source/category/record reset/runtime ownership remains open |
 | Partner live target direction/activity and front-floor service | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Direction/activity](behavior/FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md),[front-floor](behavior/FIELD_PARTNER_FRONT_FLOOR.md),[status/clearance](behavior/FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md):complete local selector/scalar/ray/output/leaf graphs plus direct DOL clearance census answered;full source/alias/REL/backend/math/EVT-01 and original trajectories remain open |
@@ -1666,3 +1667,24 @@ Negative omitted-caller check rejects. make test47 CTest/78 Python and make all
 pass;audio-map packing provenance recorded in ASSETS. All1446 behavior links
 resolve at snapshot. Only ID1 scoped lock released;full source/alias/REL/backend/
 math/EVT-01 and original target/clearance traces remain open.
+
+
+ID2 EVT-01 packed-entry consolidation delivery (2026-10-12), answer to the
+original1b0 map request:
+[Packed map](behavior/EVENT_ENTRY_PACKED_LAYOUT.md) accounts for all432 bytes
+through49 spans:388 recovered-role bytes and44 unknown raw bytes preserved
+without invented reserved-zero/unused claims. Includes widths/signedness/raw32/
+original pointer words,all stack/local/metadata/continuation fields,adjacent
+context/global banks,constructor/restart/delete/bulk-clear distinctions and
+links to delivered contracts. [Alias/translator requirements](behavior/EVENT_ENTRY_ADDRESS_AND_ALIAS_REQUIREMENTS.md)
+provides physical cross-field examples (LW16→flags,switch-value8→data cursor,
+label pointer16→waiting parent),big-endian partial writes,shared user pointers,
+callback registry/USER_FUNC polling,paired metadata reads and child copy-back.
+Machine-readable tools/event_entry_layout.json matches the document exactly;
+verifier checks byte accounting plus ten existing ISO evidence suites. No native
+packed translator or original-execution equivalence is claimed. This consolidated
+map request is answered and own lock released;NormalJump registration/callback
+source,storage/address/context/heap/time/platform/numeric/scene domains and
+original traces remain EVT-01 work. make test48 CTest/78 Python and make all
+pass;1955 local links resolve;general1980-anchor verifier passes. Repeat map
+JSON reports match;no native/test/asset conversion code changed by ID2.

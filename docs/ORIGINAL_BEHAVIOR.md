@@ -646,3 +646,12 @@ heading input and attribute-mask return. Front-floor miss writes current rootXYZ
 first-ray normal magnitude<45 is not an inclination-degree test. Original
 float60 setter and bounded DOL access/call census are pinned;full source/alias/
 REL/backend/math/domain and original trajectories remain open.
+
+
+[Consolidated packed EventEntry](behavior/EVENT_ENTRY_PACKED_LAYOUT.md) and
+[address/alias requirements](behavior/EVENT_ENTRY_ADDRESS_AND_ALIAS_REQUIREMENTS.md)
+answer the native translator map request:all432 bytes,typed accesses/pointer
+words,44 unknown raw bytes,context/global banks,and local/stack/label/message/
+USER_FUNC alias requirements. Machine-readable layout and ten supporting ISO
+suites are linked;actual native packed translation,source/owner/callback/backend
+binding and original execution remain EVT-01 work.

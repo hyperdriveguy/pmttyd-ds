@@ -1,5 +1,36 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Consolidated packed EventEntry and implementation alias requirements
+
+Documentation agent ID2 answered native EVT-01's explicit1b0-layout request in
+two detailed files plus machine-readable tools/event_entry_layout.json. All432
+bytes are partitioned into49 spans:388 recovered-role and44 unknown raw bytes.
+The map covers width/signedness/original32-bit pointer/raw domains,context/global
+banks and root/descendant/restart/deletion/bulk reset ownership. Alias contract
+pins big-endian partial-word coherence,physical local/stack/label adjacency,
+shared user pointers versus copied locals,message raw/float views/paired reads,
+USER_FUNC registry/polling and callback-visible ordered writes. Unsupported
+source/address domains remain explicit;host semantic struct is not original ABI.
+
+Validation: tools/verify_event_entry_layout.py checks exact document↔JSON field
+agreement,gap-free432-byte/raw44 accounting and runs ten existing original ISO
+evidence suites. Repeat reports match byte-for-byte (/tmp/id2-layout-evidence.json
+and -second.json). General1980-anchor verifier,Python compilation and
+ git diff --check pass. make test passes48/48 CTest suites and78 Python tests;
+make all passes. Logs:/tmp/id2-layout-test.log,/tmp/id2-layout-build.log.
+Snapshot1955 local links resolve. Evidence is static/consolidated;no original
+execution/native translator/asset conversion was performed. Concurrent native
+and ID1 changes remain preserved.
+
+Own lock released and explicit request answered in docs/DOCUMENTATION_REQUESTS.md.
+EVT-01 remains open:next native owner binds coherent packed storage/address
+providers,original NormalJump owner/priority/type/context/registry sources,
+clock/heap/platform/numeric/scene services and original execution comparisons.
+Remaining docs include requested heap-order addendum,record/reset/end/turn/source
+ownership and broader complete-game systems. Goal remains active/incomplete;
+this layout delivery does not prove native ABI compatibility or full game fidelity.
+
+
 ## 2026-10-12 — Original system-level source mask transitions
 
 Added `event_system_level.cpp` for complete marioStSystemLevel/GetSystemLevel

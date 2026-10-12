@@ -1,0 +1,351 @@
+{
+  "schema": 1,
+  "scope": "Delivered local VM/contracts only;unknown spans remain raw,not proven unused by all callbacks",
+  "endianness": "big",
+  "stride": 432,
+  "fields": [
+    {
+      "offset": 0,
+      "size": 8,
+      "name": "lifetime",
+      "access": "u64 as high/low BE words",
+      "contract": "EVENT_MANAGER_COMPLETE_LOOP.md"
+    },
+    {
+      "offset": 8,
+      "size": 1,
+      "name": "flags",
+      "access": "u8 mask",
+      "contract": "EVENT_MANAGER_COMPLETE_LOOP.md"
+    },
+    {
+      "offset": 9,
+      "size": 1,
+      "name": "argumentCount",
+      "access": "u8 narrowed count",
+      "contract": "EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md"
+    },
+    {
+      "offset": 10,
+      "size": 1,
+      "name": "opcode",
+      "access": "u8 cached opcode",
+      "contract": "EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md"
+    },
+    {
+      "offset": 11,
+      "size": 1,
+      "name": "priority",
+      "access": "u8",
+      "contract": "EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md"
+    },
+    {
+      "offset": 12,
+      "size": 1,
+      "name": "type",
+      "access": "u8 mask",
+      "contract": "EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md"
+    },
+    {
+      "offset": 13,
+      "size": 1,
+      "name": "initialized",
+      "access": "u8 zero/nonzero",
+      "contract": "EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md"
+    },
+    {
+      "offset": 14,
+      "size": 1,
+      "name": "loopIndex",
+      "access": "u8 stores / s8 address index",
+      "contract": "EVENT_GOTO_AND_LOOP_OPCODES.md"
+    },
+    {
+      "offset": 15,
+      "size": 1,
+      "name": "switchIndex",
+      "access": "u8 stores / s8 address index",
+      "contract": "EVENT_SWITCH_STACK_AND_CASE_SCANS.md"
+    },
+    {
+      "offset": 16,
+      "size": 4,
+      "name": "raw10",
+      "access": "unknown raw bytes",
+      "contract": "EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md"
+    },
+    {
+      "offset": 20,
+      "size": 4,
+      "name": "nextCommand",
+      "access": "u32 address",
+      "contract": "EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md"
+    },
+    {
+      "offset": 24,
+      "size": 4,
+      "name": "arguments",
+      "access": "u32 address",
+      "contract": "EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md"
+    },
+    {
+      "offset": 28,
+      "size": 16,
+      "name": "labelIds",
+      "access": "16 u8 stores / s8 GOTO reads",
+      "contract": "EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md"
+    },
+    {
+      "offset": 44,
+      "size": 64,
+      "name": "labelAddresses",
+      "access": "16 u32 addresses",
+      "contract": "EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md"
+    },
+    {
+      "offset": 108,
+      "size": 4,
+      "name": "waitingParent",
+      "access": "u32 entry address",
+      "contract": "EVENT_DELETE_AND_COPYBACK.md"
+    },
+    {
+      "offset": 112,
+      "size": 4,
+      "name": "waitingChild",
+      "access": "u32 entry address",
+      "contract": "EVENT_DELETE_AND_COPYBACK.md"
+    },
+    {
+      "offset": 116,
+      "size": 4,
+      "name": "brotherOwner",
+      "access": "u32 entry address",
+      "contract": "EVENT_DELETE_AND_COPYBACK.md"
+    },
+    {
+      "offset": 120,
+      "size": 4,
+      "name": "waitCount",
+      "access": "s32 / raw word",
+      "contract": "EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md"
+    },
+    {
+      "offset": 124,
+      "size": 8,
+      "name": "waitStart",
+      "access": "high/low u32 words",
+      "contract": "EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md"
+    },
+    {
+      "offset": 132,
+      "size": 20,
+      "name": "raw84",
+      "access": "unknown raw bytes",
+      "contract": "EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md"
+    },
+    {
+      "offset": 152,
+      "size": 4,
+      "name": "cachedFunction",
+      "access": "u32 code address",
+      "contract": "EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md"
+    },
+    {
+      "offset": 156,
+      "size": 64,
+      "name": "locals",
+      "access": "16 raw32 words / namespace coercion",
+      "contract": "EVENT_INTEGER_OPERAND_NAMESPACES.md"
+    },
+    {
+      "offset": 220,
+      "size": 12,
+      "name": "localFlags",
+      "access": "3 u32 masks",
+      "contract": "EVENT_INTEGER_OPERAND_NAMESPACES.md"
+    },
+    {
+      "offset": 232,
+      "size": 32,
+      "name": "loopBodies",
+      "access": "8 u32 addresses",
+      "contract": "EVENT_GOTO_AND_LOOP_OPCODES.md"
+    },
+    {
+      "offset": 264,
+      "size": 32,
+      "name": "loopCounts",
+      "access": "8 raw32 operands / signed tests",
+      "contract": "EVENT_GOTO_AND_LOOP_OPCODES.md"
+    },
+    {
+      "offset": 296,
+      "size": 8,
+      "name": "switchStates",
+      "access": "8 u8 stores / s8 reads",
+      "contract": "EVENT_SWITCH_STACK_AND_CASE_SCANS.md"
+    },
+    {
+      "offset": 304,
+      "size": 32,
+      "name": "switchValues",
+      "access": "8 s32 words",
+      "contract": "EVENT_SWITCH_STACK_AND_CASE_SCANS.md"
+    },
+    {
+      "offset": 336,
+      "size": 4,
+      "name": "dataCursor",
+      "access": "u32 address",
+      "contract": "EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md"
+    },
+    {
+      "offset": 340,
+      "size": 4,
+      "name": "userWork",
+      "access": "u32 address",
+      "contract": "EVENT_INTEGER_OPERAND_NAMESPACES.md"
+    },
+    {
+      "offset": 344,
+      "size": 4,
+      "name": "userFlags",
+      "access": "u32 address",
+      "contract": "EVENT_INTEGER_OPERAND_NAMESPACES.md"
+    },
+    {
+      "offset": 348,
+      "size": 4,
+      "name": "id",
+      "access": "u32 identity",
+      "contract": "EVENT_MANAGER_COMPLETE_LOOP.md"
+    },
+    {
+      "offset": 352,
+      "size": 4,
+      "name": "actor",
+      "access": "s32 selector / raw word",
+      "contract": "EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md"
+    },
+    {
+      "offset": 356,
+      "size": 4,
+      "name": "timescale",
+      "access": "IEEE binary32",
+      "contract": "EVENT_MANAGER_COMPLETE_LOOP.md"
+    },
+    {
+      "offset": 360,
+      "size": 4,
+      "name": "credit",
+      "access": "IEEE binary32",
+      "contract": "EVENT_MANAGER_COMPLETE_LOOP.md"
+    },
+    {
+      "offset": 364,
+      "size": 4,
+      "name": "field16c",
+      "access": "raw32 initially -1",
+      "contract": "EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md"
+    },
+    {
+      "offset": 368,
+      "size": 4,
+      "name": "field170",
+      "access": "raw32 / message NPC-address domain",
+      "contract": "MESSAGE_PRINT_EVENTS.md"
+    },
+    {
+      "offset": 372,
+      "size": 4,
+      "name": "raw174",
+      "access": "unknown raw bytes",
+      "contract": "EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md"
+    },
+    {
+      "offset": 376,
+      "size": 4,
+      "name": "messageWindow",
+      "access": "s32 handle / raw32",
+      "contract": "MESSAGE_PRINT_EVENTS.md"
+    },
+    {
+      "offset": 380,
+      "size": 4,
+      "name": "selectionWindow",
+      "access": "s32 handle / raw32",
+      "contract": "MESSAGE_PRINT_EVENTS.md"
+    },
+    {
+      "offset": 384,
+      "size": 4,
+      "name": "messageStyle",
+      "access": "u32 mask / raw32",
+      "contract": "MESSAGE_PRINT_EVENTS.md"
+    },
+    {
+      "offset": 388,
+      "size": 4,
+      "name": "messageX",
+      "access": "binary32 / raw32 copy",
+      "contract": "MESSAGE_PRINT_EVENTS.md"
+    },
+    {
+      "offset": 392,
+      "size": 4,
+      "name": "messageY",
+      "access": "binary32 / raw32 copy",
+      "contract": "MESSAGE_PRINT_EVENTS.md"
+    },
+    {
+      "offset": 396,
+      "size": 4,
+      "name": "messageZ",
+      "access": "binary32 / raw32 copy",
+      "contract": "MESSAGE_PRINT_EVENTS.md"
+    },
+    {
+      "offset": 400,
+      "size": 4,
+      "name": "messageLayer",
+      "access": "raw32 / low signed16 consumer",
+      "contract": "MESSAGE_PRINT_EVENTS.md"
+    },
+    {
+      "offset": 404,
+      "size": 12,
+      "name": "raw194",
+      "access": "unknown raw bytes",
+      "contract": "EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md"
+    },
+    {
+      "offset": 416,
+      "size": 4,
+      "name": "restartScript",
+      "access": "u32 address",
+      "contract": "EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md"
+    },
+    {
+      "offset": 420,
+      "size": 4,
+      "name": "field1a4",
+      "access": "raw32 debug opcode116",
+      "contract": "EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md"
+    },
+    {
+      "offset": 424,
+      "size": 4,
+      "name": "currentCommand",
+      "access": "u32 address",
+      "contract": "EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md"
+    },
+    {
+      "offset": 428,
+      "size": 4,
+      "name": "raw1ac",
+      "access": "unknown raw bytes",
+      "contract": "EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md"
+    }
+  ]
+}
