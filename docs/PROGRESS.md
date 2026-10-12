@@ -1,5 +1,37 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Candidate choice weights,overrides and RNG boundary
+
+Implemented BATTLE_ENEMY_CANDIDATE_CHOICE.md in battle_candidate_choice.hpp/cpp.
+Chooser captures work and emits initial(-1,0),retains actor/first-row bonus,
+reloads signed count/permutation while building74 physical weights,and applies
+all enabled modifiers with separate binary32 operations/fused formulas and
+immediate fctiwz-service truncation. Weapon overrides preserve status/recovery
+short circuits,flag overwrite followed by later item handling,repeated FP/table
+reads and reloaded weapon item. Deterministic scan uses strict signed greater
+and lower physical-row ties;weighted scan retains word sums and R<=0 subtraction
+boundary,including draw0 and possible row74 metadata reads. It does not modify
+buffer/permutation or own/reseed shared RNG. Signed numeric/status/FP/data/RNG
+services stay explicit;invalid weight-index/conversion domains are native asserts,
+not original capacity clamps. Semantic weapon pointer is separate from original
+record byte storage;this is not a packed original pointer ABI.
+
+Validation:make test passed nineteen CTest suites plus58 Python tests;make all
+exited0/no rebuild,with build/battle_candidate_choice.o and ttyd-2ds.3dsx present
+at the current build timestamp. Suite covers empty/negative count outputs,ordered
+aliased row writes,mode4 null-weapon zero RNG use,each modifier and ordered
+intermediate truncations,physical/permutation ties,negative/no-positive weights,
+draw0/prefix/exhausted-row boundaries,zero-sum irand without state consumption,
+recovery/status short circuits,all listed status items,flag1 override continuing
+into FP scaling,repeated FP reads and reloaded/short-circuited ItemData queries.
+git diff --check passed. No emulator run or original runtime/numerical/RNG
+interleaving equivalence claim for these still-unbound choice providers.
+
+Next:implement delivered candidate row construction/admission/occlusion/permutation
+sampler,then compose it and choice with takeoff and actual Jump graph/EVT-01
+scheduler. Native unit/part/source/status/pouch/menu/math/audio ownership and
+original traces remain needed;full remake remains incomplete.
+
 ## 2026-10-12 — Retained selected target and weapon cursor services
 
 Implemented BATTLE_SELECTED_TARGET_AND_WEAPON.md in battle_selection.hpp/cpp.

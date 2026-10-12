@@ -454,6 +454,15 @@ rather than treating a passing command helper as complete original attack timing
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
 
+Candidate-choice breadcrumb (2026-10-12): `battle_candidate_choice.cpp` and
+its suite implement all documented weights/weapon overrides and deterministic/
+weighted final branches. Takeoff mode4/null weapon is tested without RNG draws;
+physical ties and the unusual R<=0 draw boundary are preserved. Numeric,status,
+resource,item data and shared RNG services remain explicit. Sampler implementation
+is next;native full unit/part/row/menu/source-state binding and actual original
+choice/takeoff traces remain requested. EVT-01 remains necessary before replacing
+prototype impact scheduling with original Jump execution.
+
 Selection implementation breadcrumb (2026-10-12): `battle_selection.cpp` and
 its host suite implement signed retained-target/permutation lookup and ordered
 outputs,full cursor table and queried-actor/captured-menu/current-acting-unit
