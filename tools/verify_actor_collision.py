@@ -52,6 +52,14 @@ def main():
                                     (0x8008f044,'2c1a0005')]:
             assert read(address)==bytes.fromhex(instruction),hex(address)
         print(f'Normal floor ray: above=abs(v)+{above},below=abs(v)+{padding},footprint radius={footprint},5 probes')
+        precision=value(0x80420900,100);rootPrecision=value(0x80420904,10)
+        clearance=value(0x804208c4,1);fastFall=value(0x8042090c,-10)
+        for address,instruction in [(0x8008c284,'ec001028'),(0x8008c678,'ec23d03a'),
+                                    (0x8008c6a0,'ec411824'),(0x8008c6d0,'ec01b82a'),
+                                    (0x8008cbb0,'ec23007a'),(0x8008cbd8,'ec010028'),
+                                    (0x800161c4,'28000001'),(0x80016210,'418202e8')]:
+            assert read(address)==bytes.fromhex(instruction),hex(address)
+        print(f'Normal head: radius={(width-half)*half},5 probes,contact precision={precision},root precision={rootPrecision},clearance={clearance},fast-fall cutoff={fastFall}')
         threshold=value(0x80420aa8,-2000);respawnOffset=value(0x80420aa4,37)
         probe=value(0x804209c0,300);rise=value(0x804209c4,10);travel=value(0x804209c8,8)
         assert read(0x80091cf4)==bytes.fromhex('38600032')

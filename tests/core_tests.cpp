@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "wall_geometry.hpp"
+#include "head_collision.hpp"
 #include "save.hpp"
 #include "visibility.hpp"
 #include "uv_animation.hpp"
@@ -22,7 +23,23 @@ void attack(Game& g,bool success) {
     if(success)g.tick(confirm());
     CHECK(g.phase==Phase::Impact);
 }
+void headContactRules() {
+    CHECK(headAttributesSolid(0));CHECK(!headAttributesSolid(4));
+    CHECK(headAttributesSolid(0x00800004));
+    CHECK(!headAttributesSolid(0x00080004));CHECK(!headAttributesSolid(0x84));
+    // Engine-space example: ceiling45, contact45.18, root7.2 after clearance.
+    const float contact=headContactHeight(.45f);
+    CHECK(std::fabs(contact-.4518f)<.00001f);
+    CHECK(!headContactReached(.081f,.01f,contact));
+    CHECK(headContactReached(.082f,.01f,contact));
+    CHECK(headContactReached(.082f,-.1f,contact));
+    CHECK(!headContactReached(.082f,-.1001f,contact));
+    CHECK(!headContactReached(.1f,std::numeric_limits<float>::quiet_NaN(),contact));
+    CHECK(std::fabs(headClampedRoot(contact)-.072f)<.00001f);
+    CHECK(std::fabs(headClampedRoot(-.4518f)-(-.831f))<.00001f);
+}
 void movement() {
+    headContactRules();
     FieldJump tapped;tapped.begin();for(int n=0;n<20;++n)tapped.tick(false);
     CHECK(tapped.airborne);tapped.tick(false);CHECK(!tapped.airborne);
     FieldJump held;held.begin();for(int n=0;n<4;++n)held.tick(true);

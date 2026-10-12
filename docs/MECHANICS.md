@@ -392,3 +392,32 @@ Return prefers a valid original remembered recovery binding, then native room/lo
 entry. Original dynamic fallback selection, reload-enabled/BG branches and exact
 camera/partner choreography remain incomplete; these are adaptations, not claims
 of full source equivalence or Dolphin-observed timing.
+
+## Ordinary head-contact policy (US source, not yet active geometry query)
+
+Read-only DOL tracing: marioSearchHead8008c1a8 and marioChkOverhead8008c904.
+Normal height37/base width20 engine units; five center/rotated probes, radius
+.5*(width-.5)=9.75 engine units (.0975 native). Upward ray starts at rootY+
+half height and has length height+vertical velocity. Collision callback
+chkFilterAttr2 (800916c4), normal marioHitCheck2, accepts !(attrs&4) OR
+(attrs&0x00800000); unlike floor/wall,0x00080080 is not an override.
+
+Search contact Y=trunc(hitY*100+height/2)/100 (engine units). The100 constant
+is80420900, not1000. Normal contact response requires actor vertical velocity
+>=-10 and rootY+height>=rounded contact. Overhead root is
+trunc((contactY-height)*10+.5)/10-1, with truncation toward zero. This means
+ceiling45 gives contact45.18 and root7.2 after clearance. Root may additionally
+clamp to saved takeoffY (+0x120); the separate peak setter800968f0 writes+0x12c.
+On bump source clears jump derivatives, selects falling motion, installs normal
+fall parameters. Sound342 is requested; native SFX mapping remains incomplete.
+
+include/head_collision.hpp isolates verified attributes/contact math. It is
+not wired to gameplay until geometry selection is faithful. Existing ground
+pack preserves attrs/source node and vertices but omits collision cull mode,
+and selects only |normalY|>=.65. Original hitCheckVecFilter800158a4 reads node
+drawmode byte1; mode1 rejects dot(triangle normal,ray direction)>=0
+(800161c4–80016210). Other modes bypass that test. Before integrating, preserve
+this metadata and recover original triangle-normal orientation; do not infer
+ceiling solely from height or floor-pack winding. Sloped/dynamic surfaces and
+transformed Mario branches require further work. Source inspection artifacts
+are ignored; regenerate with tools/inspect_dol_function.py and us_symbols.csv.

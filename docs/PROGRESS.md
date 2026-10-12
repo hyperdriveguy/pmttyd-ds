@@ -1534,3 +1534,30 @@ Next: compare actor/map proportions under matched Dolphin framing, including
 door heights and atlas transparent margins. Resume source ceiling search and
 grounded contact work. Original story/dialogue, sound-effect events, animation,
 camera and broader playable content remain incomplete; remake is not complete.
+
+## 2026-10-12 — Recover ordinary ceiling contact policy
+
+Previous goal turn made verified progress: reduced render scale and committed
+2c4f5df. Continued physics work by reading original head search/overhead, filter
+and triangle-ray routines. Added portable head attribute/contact policy and
+analytical boundary tests (collision override differences, velocity cutoff,
+contact rounding, negative-height truncation). Extended original ISO verifier
+with100/10 precision,1 clearance,-10 velocity cutoff and original instruction
+sites. Corrected an initially mistyped verifier opcode against original bytes;
+final verifier passes. Detailed source locations and missing prerequisites are
+in docs/MECHANICS.md. Runtime still lacks ceilings: helper is not connected yet.
+
+Validation: `make test` passed core and28 Python tests; `make -j2 all` exited0
+(existing native output up to date; new header used only by host tests).
+`python3 tools/verify_actor_collision.py` exited0 against read-only original ISO.
+No runtime/emulator changes or new emulator acceptance claim this step.
+
+Next concrete task: extend collision pack with source drawmode byte1 and verify
+original normal orientation (hitCheckVecFilter, hitEntrySub800186f4,
+_hitEnt8001896c). Converter already reads drawmode for rendering but drops it
+from collision metadata. Build upward-ray query over appropriate triangles,
+five-probe head selection, then integrate post-jump bump/fall with takeoff clamp.
+Verify low ceiling, sloped ceiling, one-sided platform underside and original
+room jump in host/Azahar. Do not reuse floor attribute filter for head rays.
+Grounded slopes, wall sliding, original story/dialogue/SFX/animations and camera
+fidelity remain unfinished. Full goal active; no hardware acceptance.
