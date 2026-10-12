@@ -834,3 +834,12 @@ the read-only resource and must be reused unchanged. Reports lecture-field-entry
 lecture-field-callers and lecture-field-flow-evidence.json remain ignored under
 artifacts/reference/behavior. No conversion,ISO modification,original execution,
 emulator profile/save mutation or executable/asset distribution occurred.
+
+Field lecture callback research by ID1 (2026-10-12):verify_field_lecture_callbacks.py
+and field_lecture_callback_evidence.json pin15 DOL containing bodies,54 selected
+instructions,six constants and10 actual gor imports. Twelve local bodies are
+fully specified;three general variable services close only used local-coordinate
+branches. Original Gekko ELF/listings and field-lecture-callbacks-evidence.json
+remain ignored under artifacts/reference/behavior. Metadata and authored behavior
+only are versioned. No asset conversion,original dialogue rewrite,ISO mutation,
+original execution,emulator profile/save changes or original code distribution.

@@ -6557,3 +6557,37 @@ EVENT_RUNTIME. Next EVT-01 work:root/child/brother/inline constructors,current-
 table append/allocation/initial credit/type/run-check, restart and remaining
 opcode closures;original pause/multicredit/creation/deletion traces. Full-game
 documentation and eventual requirements objective remains active/incomplete.
+
+
+## 2026-10-12 — ID1 field intersection and party callback contracts
+
+Documented [segment/query](behavior/FIELD_SEGMENT_INTERSECTION.md) and
+[party callback](behavior/FIELD_PARTY_EVENT_CALLBACKS.md) local behavior from
+original US DOL bodies and actual gor imports. Closed strict coordinate
+rejection,closed endpoints,rounded fused cross-products,live position offsets
+and used LV encoding at1/1024. Preserved the lecture's Y-copy operand;its
+stationary-position example is a static deduction,not observed gameplay.
+Previous-position resolves encoded coordinates through integer truncation and
+can request creation;updated the earlier field document accordingly. Clear/kill
+nonzero-slot dispatch differs;run is conditional on mode0. Small pointer and
+mode-change bodies now specify ordered local writes;larger constructors,
+destructors,mode-init and saved-kind lifetimes remain open.
+
+Validation:verify_field_lecture_callbacks.py passed15 containing DOL hashes,
+54 selected instructions,six constants and10 actual gor imports. Twelve bodies
+fully specified;three general variable bodies cover only used local branches.
+Repeated metadata was byte-identical;Python compilation and prior field-flow
+verifier passed. General verifier passed1980 instruction anchors;all850 behavior
+Markdown links resolved. Gekko check passed492 listings/68908 instructions/
+396 paired-single operations with zero changes or unknowns. make test passed
+24 CTest and58 Python tests;make all succeeded with no rebuild required.
+No original execution/emulator observation,ISO/profile/save mutation,asset
+conversion or original binary/dialogue inclusion in history. Concurrent native
+and ID2 work preserved;only ID1's scoped field callback lock released.
+
+Next:partyKill/partyKill2 saved-kind/pointer lifetimes and partyEntryPos/
+partyEntry2Pos construction;mode initialization/global-index writers;complete
+battle-end/lecture-mode/window/HP immunity teardown and original lesson traces.
+General variable namespaces,coordinate writers and scheduler composition remain
+separate work. Full game documentation/remake remain incomplete;complete-game
+requirements remain deferred until sufficient system coverage.

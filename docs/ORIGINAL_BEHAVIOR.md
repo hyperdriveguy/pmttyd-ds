@@ -394,3 +394,11 @@ now supplies the wall-event and story10 map-reload callers, crossing-poll
 operands, exact choice branches, setup3 launch and common story11 write. Skipping
 the lesson also advances to11. Field party services, intersection semantics,
 end-controller cleanup and original execution remain incomplete.
+
+
+[Field intersection](behavior/FIELD_SEGMENT_INTERSECTION.md) now supplies the
+closed-endpoint and rounded fused cross-product contract,live Mario position
+fields and used encoded LV quantization. [Field party callbacks](behavior/FIELD_PARTY_EVENT_CALLBACKS.md)
+close raw slot dispatch,first-call previous-kind constructor requests and
+conditional run-mode writes. Party engine lifetimes,full variable namespaces,
+battle teardown and original execution remain incomplete.

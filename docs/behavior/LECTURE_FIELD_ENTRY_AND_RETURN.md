@@ -65,9 +65,10 @@ Under the recovered encoded-float literal route the four literals are
 script waits one frame, copies LV0 to LV3 and **LV1 to LV5**. The latter
 instruction at **0x495ac** copies Y into the slot initially containing Z.
 Preserve this original operand and order. Do not silently replace LV1 with
-LV2. The intersection callback's endpoint policy, axes, numeric rounding and
-its actual observed effect remain open; the literal arguments alone do not
-prove a conventional line-crossing implementation.
+LV2. The [intersection and coordinate contract](FIELD_SEGMENT_INTERSECTION.md)
+now establishes closed-segment endpoint policy, rounded fused cross-products
+and the query's encoded local-coordinate route. Its original observed effect,
+Mario state writers and complete scheduler composition remain open.
 
 After breaking, the script disables Mario input and stops party slot 0. It
 sets shared operand **0xfaa2b580** to 1. A brother gets Mario position,
@@ -125,9 +126,12 @@ no additional victory-result test after the wait.
 
 On return it clears Goombella NPC mask 0x8000, requests
 evt_mario_set_prev_party_pos(0,LV0,LV1,LV2), hides that NPC at (0,-1000,0)
-and prints Professor mac_0_084_07. Do not invent a fresh party creation,
-HP/resource reset, reward, or explicit lecture-mode clearing in this stream.
-The callbacks and transition controller must establish those independently.
+and prints Professor mac_0_084_07. The
+[previous-position callback](FIELD_PARTY_EVENT_CALLBACKS.md) can request party
+creation on its first call when the current slot is negative and its saved
+kind byte is nonzero. The event needs no separate creation opcode for that
+route. Constructor resources and saved-kind lifetimes remain open;do not
+invent an HP/resource reset,reward or explicit lecture-mode clearing here.
 
 Both the skip path and battle-return path converge at **label 100**.
 At **0x49938** they write story **11**, release the camera with (500,11),
@@ -164,8 +168,8 @@ scoped ADDR32 bindings, **22** operand anchors, **four** entry/NPC links and
 artifacts/reference/behavior; original executable bytes and dialogue are not
 included in source history.
 
-Next: recover evt_sub_check_intersect and the coordinate/variable services;
-field party clear/kill/previous-position/run lifetimes; complete battle-end and
+Next: complete variable namespace composition and Mario coordinate writers;
+field party constructor/destructor/previous-kind/run-mode lifetimes; complete battle-end and
 lecture-mode/window/HP immunity teardown; full story flag writers and original
 observations for lesson accepted, declined, interrupted and map reentry.
 These dependencies prevent a claim of complete equivalent lecture execution.
