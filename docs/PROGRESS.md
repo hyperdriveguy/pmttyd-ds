@@ -3123,3 +3123,28 @@ call-site census, replacement/callback bodies, renderer/manager cadence and stor
 attribution/order/branches/conditions. Continue all remaining systems before
 complete-game requirements. Full objective active/incomplete; executed-original
 comparisons needed.
+
+## 2026-10-12 — Finite decimal formatting layout
+
+Previous turn progressed withd4949a0 rounding/preparation. Added
+FORMAT_FINITE_DECIMAL_LAYOUT.md: leading-exponent normalization, post-round g/G
+mode boundaries and alternate precision rewriting, scientific exponent/mantissa
+storage, fixed retention budget/rounding/digit-zero placement, sign policy,
+caller-copy mutations and distinct capacity predicates. Kept fixed admission's
+omission of requested trailing-zero bytes explicit, with derived record shape
+rather than an asserted executed overrun or supported caller. Binary generation
+and hex-float/service/caller contracts remain open.
+
+Validation:624 instruction anchors and prior checks passed read-only US ISO.
+Fresh evidence211 fingerprint report matched the previous repeat report exactly.
+All behavior links resolve; git diff --check passed. make test passed core plus36
+Python tests; make all exited0, no rebuild. Workspace started clean; only research/
+provenance/verifier tooling changed. No original execution/emulator run or profile/
+save changes. Original extracts/reports remain ignored. Static checks do not prove
+generated decimal record invariants, executed output/capacity or native equivalence.
+
+Next: __num2dec binary generation, hex-float output and runtime/wide/memory services;
+actual format/type/count callers, replacement/callback bodies, rendering/manager
+cadence and original story attribution/order/branches/conditions. Continue all
+remaining systems before complete-game requirements. Full objective active/
+incomplete; executed-original comparisons needed.

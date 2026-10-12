@@ -4,8 +4,8 @@ US G8ME01 revision0, recovered2026-10-12. B evidence is static DOL instructions/
 data, not executed numeric output. round_decimal at0x8026b2e4,size12c and the
 entry/preparation stages of float2str at0x8026abc8,size71c are inspected here.
 See [format consumers](FORMAT_OUTPUT_RUNTIME.md), [directive grammar](FORMAT_DIRECTIVE_PARSER.md)
-and [integer conversion](FORMAT_INTEGER_CONVERSION.md). Full decimal/hex-float
-layout and binary-to-decimal generation remain open; no host-libc equivalence
+and [integer conversion](FORMAT_INTEGER_CONVERSION.md). Hex-float layout
+and binary-to-decimal generation remain open; no host-libc equivalence
 or complete floating-format claim is made.
 
 ## Decimal record fields and ownership (B)
@@ -121,15 +121,18 @@ branches bypass ordinary sign-policy prefix and do not infer payload text.
 Ordinary finite formatting later invokes round_decimal in three local routes:
 g/G retention equals requested precision; e/E retention equals precision+1;
 fixed formatting computes retention from the digit/exponent/fraction budget.
-Their precise mode selection, zero placement/capacity and final output construction
-need the next detailed contract. The exponent meaning before/after normalization
+Their mode selection, zero placement/capacity and final construction are specified
+in [finite layout](FORMAT_FINITE_DECIMAL_LAYOUT.md). Exponent meaning before/after normalization
 must not be conflated or treated as a universal fixed-point scale.
 
 ## Remaining obligations (P)
 
-Recover full float2str finite layout and __num2dec generation, hex-float output,
+Recover __num2dec generation, hex-float output,
 runtime numeric conversions and actual message format/type/count callers. Compare
 original special-value sign/case, generated record normalization, exact ties and
 zero-retention count parity before claiming a port's decimal output equivalent.
 Local rounding and preparation contracts are documented; full formatting/story/
 complete-game behavior remains unfinished.
+Finite mode selection, rounding budgets and exact byte construction are now
+specified in [finite layout](FORMAT_FINITE_DECIMAL_LAYOUT.md). Binary generation
+and hex-float output remain open.

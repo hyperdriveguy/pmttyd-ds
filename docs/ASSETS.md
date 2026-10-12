@@ -26,7 +26,7 @@ includes src/include/config and rels under ignored
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
 now fingerprints 211 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 608 instruction anchors plus those
+window tables. Independent verifier checks 624 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -103,8 +103,11 @@ scanf), both dispatch-table hashes and byte-classification hash/mask checks.
 Integer conversion adds two fingerprints and both33-entry dispatch-table hashes;
 the documented prefix/capacity stages are static evidence, not executed outputs.
 Decimal rounding/preparation adds two fingerprints, the original special-value
-string-block hash, sign-comparison zero and case-classification checks. Complete
-finite float layout/binary-to-decimal generation remains unrecovered here.
+string-block hash, sign-comparison zero and case-classification checks.
+Binary-to-decimal generation remains unrecovered here.
+Finite layout research extends the existing float2str fingerprint's prose and
+anchors to local scientific/fixed/general paths. Binary generation, actual call
+ranges and executed layout/capacity behavior still need recovery/comparison.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,
