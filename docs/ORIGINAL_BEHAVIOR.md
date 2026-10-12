@@ -571,3 +571,13 @@ and highest-support cache graph. Slope fields may describe later rejected rays
 rather than retained support;null can preserve outputs or initialize height/
 last-drop depending on entry flag. Full backend/math/domain/field consumers and
 original trajectories remain open.
+
+
+[Partner support appearance](behavior/FIELD_PARTNER_SUPPORT_APPEARANCE.md),
+[vector ray wrapper](behavior/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md) and
+[screen recovery](behavior/FIELD_PARTNER_SCREEN_RECOVERY.md) close complete
+local12-angle sampling/return,asymmetric five-value quantization and control/
+projection-gated bounded candidate recovery. Output is a sampled origin,caller
+ignores failure and overwrites preparedY;screen recovery clears bank0 on both
+flag branches and commits root only at explicit projection acceptance. Full
+placement3/SDK projection/traversal/math/domain and original trajectories remain open.

@@ -46,15 +46,15 @@ This is a direct snap rather than the fly postpass's smoothing.
 
 Next call unk_800cb9bc(G). If it returns0,finish. If it returns1:
 
-1. Request partyGetAppearPos5(P,G,&P+94) at0x800c5794. This helper's full
-   positional calculation remains a dependency;do not invent an appearance
-   or jump destination from its name.
+1. Request [partyGetAppearPos5](FIELD_PARTNER_SUPPORT_APPEARANCE.md)(P,G,&P+94)
+   at0x800c5794. Its complete local search is now recovered;the caller ignores
+   its return,so failure does not gate the following stores/motion request.
 2. OR0x00400000 into P+8.
 3. Copy the current P+5c into P+98 AFTER that helper returns.
 4. Request partyChgMot(P,2),then finish.
 
 The +94 destination points into a multiword local state region. Its later
-consumer and the helper's writes must be bound separately;it is not the
+consumer remains separate;the helper's sampled writes are recovered above. It is not the
 partner root X/Z. The named-support list includes fixed blocks/chests as well
 as stands and switches,so the classifier must not be described as a generic
 moving-platform detector.

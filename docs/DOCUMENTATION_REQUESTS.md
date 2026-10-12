@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Partner support appearance and out-of-screen reset | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used partyGetAppearPos5 and party_force_reset_outofscreen local probe/selection/iteration/root contracts plus called ground-probe/cache-reset leaves;full projection/backend/motion/source/domain/EVT-01 and original trajectories remain separate |
+| Partner support appearance and out-of-screen reset | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Support appearance](behavior/FIELD_PARTNER_SUPPORT_APPEARANCE.md),[vector ray](behavior/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md),[screen recovery](behavior/FIELD_PARTNER_SCREEN_RECOVERY.md):complete local probe/return/caller,projection/control/request/root graph answered;full placement3/projection/backend/motion/source/domain/EVT-01 and original trajectories remain open |
 | Event GP10 readiness/freeze gate producer and disc thread | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Producer](behavior/EVENT_DISC_THREAD_READINESS_GATE.md),[message presentation](behavior/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md),[audio state](behavior/AUDIO_DISC_COVER_STATE_REQUESTS.md):complete disc thread/card/audio/font-routing local bodies,13-status table/scoped startup/four source resources;DVD/OS/render/source/domain/original traces remain open;make test38 suites/63 Python and make all pass |
 | Partner floor query and slope/support publication | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Floor query](behavior/FIELD_PARTNER_FLOOR_QUERY.md),[slope pipeline](behavior/FIELD_PARTNER_FLOOR_SLOPE_NUMERICS.md),[heading](behavior/FIELD_PARTNER_FLOOR_HEADING.md):complete local five-probe/support/cache and numeric/heading graph answered;full backend/filter/math/source/domain/EVT-01 and original trajectories remain open |
 | Partner ceiling query and ray-request wrapper | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Ceiling query](behavior/FIELD_PARTNER_CEILING_QUERY.md),[scalar wrapper](behavior/FIELD_SCALAR_RAY_WRAPPER.md):complete local four-probe/output and hitCheckFilter ABI graph answered;initial wrapper name corrected;full backend/terrain/math/domain/EVT-01 and original trajectories remain open |
@@ -1424,3 +1424,21 @@ the tail fixture callback signature. Fresh make test passes39 CTest suites and
 64 Python tests;exact passing log /tmp/id1-ground-test-final.log. Earlier missing-
 file and callback-mismatch failures are resolved historical runs. make all passed;
 static ground evidence remains green. ID1 changed no native files.
+
+
+ID1 partner appearance/screen recovery delivery (2026-10-12):
+[Appearance](behavior/FIELD_PARTNER_SUPPORT_APPEARANCE.md),
+[vector ray](behavior/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md),
+[screen recovery](behavior/FIELD_PARTNER_SCREEN_RECOVERY.md) specify complete
+local12-angle search,sequential origin persistence,sampled output and null-down
+acceptance;ground ignores failure,overwrites preparedY and requests motion2.
+Vector wrapper quantizes distance+pointXYZ only,normal raw,miss preserves outputs.
+Screen reset gates signed Ctrl/Key bytes,camera4 projection,early placement3
+request and bank0 reset on BOTH flag branches;up to101 moves,five heights plus
+raised74 retry,root commits only on projectedX acceptance. Seven identities/
+six complete local bodies plus selected backend,105 anchors,18 constants,six
+spans/two lecture imports pass;make test40 CTest/68 Python and make all pass.
+Only ID1 scoped lock released;placement3/full projection/backend/motion/domain/
+EVT-01 and original traces remain open. Shared-link snapshot1334 found one
+concurrent ID2 target missing:BATTLE_UNIT_ENTRY_COMPLETE.md→UNIT_BADGE_IMPORT_AND_SETUP.md;
+all new ID1 contract links resolve. ID1 leaves that active ID2 document untouched.

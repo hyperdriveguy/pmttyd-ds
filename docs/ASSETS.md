@@ -1101,3 +1101,15 @@ evidence.json remain ignored under artifacts/reference/behavior. ISO read-only;
 no asset conversion,original execution,profile/save mutation or original binary/
 dialogue distribution. Full scene/trig/angle/frsqrte/platform/source domains
 remain separate from metadata identities.
+
+
+Partner support/screen recovery research by ID1 (2026-10-12):
+verify_field_partner_recovery.py with field_partner_recovery_evidence.json pins
+seven DOL identities (six complete local bodies;shared backend selected result
+regions only),105 instruction anchors,18 constants,six data spans including
+12 exact signed angle words,and two lecture imports. Original appearance/ray/
+reset/projection/control listings/ELFs and field-partner-recovery-evidence.json
+remain ignored under artifacts/reference/behavior. ISO read-only;no original
+execution,asset conversion,profile/save mutation or original binary/dialogue
+distribution. Full projection/scene/placement3/domain services remain separate
+from pinned identities;all reported behavior is static evidence.

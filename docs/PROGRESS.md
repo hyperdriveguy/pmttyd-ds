@@ -8207,3 +8207,40 @@ and64 Python tests (log /tmp/id1-ground-test-final.log). Earlier missing-file
 and callback mismatch failures above are historical/resolved;make all succeeded.
 No native files were changed by ID1. Next recovery proceeds with appear-position/
 out-of-screen and remaining movement/backend/domain/original trajectory work.
+
+
+## 2026-10-12 — ID1 support appearance and out-of-screen recovery
+
+Added [support appearance](behavior/FIELD_PARTNER_SUPPORT_APPEARANCE.md),
+[vector ray wrapper](behavior/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md) and
+[screen recovery](behavior/FIELD_PARTNER_SCREEN_RECOVERY.md). Complete local
+appearance graph covers12 exact angle offsets,persistent horizontal origins,
+first-ray rejection/downward admission,sampled XYZ output and failure preservation.
+Ground caller ignores return,overwrites preparedY and always requests motion2.
+Vector wrapper covers five independent quantizers,raw normals and miss-preserved
+outputs. Complete reset/control/projection local graph specifies bank0 reset on
+both flag branches,distinct screen gates,bounded101-move local candidate search,
+five vertical offsets/conditional raised74 retry and exact root commit order.
+Placement3 and full SDK projection/scene/math/domain remain explicitly open.
+Updated ground contract link/caller dependency;ID1 changed no native policy.
+
+Validation:verify_field_partner_recovery.py passes seven containing DOL hashes
+(six complete local bodies,backend selected regions),105 instructions,18 constants,
+six data spans including12 exact angle words and two lecture imports plus actual
+stay/ground calls. Repeated metadata byte-identical;Python compilation and prior
+footmark/target/filter verifiers passed. General verifier passed1980 anchors.
+Behavior-link snapshot1334 had one concurrent missing ID2 target:
+BATTLE_UNIT_ENTRY_COMPLETE.md→UNIT_BADGE_IMPORT_AND_SETUP.md;all new ID1 links
+resolve. Inbox records that active-document dependency without editing ID2 work.
+Gekko audit passed556 files/77125 instructions/556 paired-single ops,zero changes
+or unknowns. make test passed40 CTest suites and68 Python tests;make all succeeded
+with no rebuild needed. Logs:/tmp/id1-recovery-test.log and
+/tmp/id1-recovery-build.log. ISO read-only;no original execution/trajectory or
+projection measurement,asset conversion,profile/save mutation or original binary/
+dialogue distribution. Only ID1 scoped lock released;concurrent native/ID2 work
+preserved outside this scoped commit.
+
+Next:placement3 output contract,motion2 destination consumers,homing/fall/jump/
+fly handlers,projection/scene/backend/numeric and source domains;original support/
+screen recovery traces. Full-game documentation and complete-game requirements
+remain incomplete.
