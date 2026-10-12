@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Map TEV depth branches0x10000/0x40000 and local closure audit | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete six-route depth/ramp and two-route alternate depth blocks/source getters;verify whole-body reviewed coverage;SDK/GX/source/lifetime/runtime/full-game remain separate |
+| Map TEV depth branches0x10000/0x40000 and local closure audit | AC-01, AC-03 | VALIDATED complete local request graph / lock released, 2026-10-12 | Documentation agent ID 1 | [Depth sources/config](behavior/display/MAP_TEV_DEPTH_SOURCE_QUERIES_AND_CONFIG.md),[six-route10000](behavior/display/MAP_TEV_DEPTH_FLAG10000_PROGRAMS.md),[two-route40000](behavior/display/MAP_TEV_DEPTH_FLAG40000_PROGRAMS.md),[local graph/boundaries](behavior/display/MAP_TEV_LOCAL_REQUEST_GRAPH_AND_BACKEND_BOUNDARIES.md):both depth blocks/seven source leaves/all2927 composed local words close;SDK/GX/source/capture/lifetime/runtime/full-game remain separate |
 | Map TEV terminal color and animated projected texture | AC-01, AC-03 | VALIDATED scoped blocks / lock released, 2026-10-12 | Documentation agent ID 1 | [Color/cosine alpha](behavior/display/MAP_TEV_TERMINAL_COLOR_AND_COSINE_ALPHA.md),[projected pulse texture](behavior/display/MAP_TEV_ANIMATED_PROJECTED_TEXTURE.md):complete masks0x80100000/0x800000 raw captures/two clocks/rounding/byte arithmetic/original texture/matrix/counter/register requests;depth0x10000/0x40000/source/GX/libm/lifetime/runtime open |
 | Map TEV projected texture0x400 and projected shadow0x20000 | AC-01, AC-03 | VALIDATED scoped blocks / lock released, 2026-10-12 | Documentation agent ID 1 | [Two-stage projection](behavior/display/MAP_TEV_FLAG400_TWO_STAGE_PROJECTION.md),[projected shadow/source](behavior/display/MAP_TEV_FLAG20000_PROJECTED_SHADOW.md):complete two request blocks/four source leaves/prior-stage output rewrite/shared swap/register/order/getter captures/counters;four remaining middle branches/GX/source/lifetime/runtime open |
 | Map TEV time-driven base modes8/9 | AC-01, AC-03 | VALIDATED scoped local blocks / lock released, 2026-10-12 | Documentation agent ID 1 | [Pulse/raw clock](behavior/display/MAP_TEV_MODE8_PULSE_AND_RAW_CLOCK.md),[shared scroll/matrices](behavior/display/MAP_TEV_MODE9_SHARED_SCROLL_AND_MATRICES.md),[base closure/gaps](behavior/display/MAP_TEV_BASE_MODE_CLOSURE_AND_REMAINING_WORK.md):complete base8/9 expressions/mutations/request order and startup metadata;actual scene/clock/state initialization/GX/libm and six middle branches remain open |
@@ -3343,3 +3343,33 @@ combination,source SHAf2081e0ed34beac9bca8ad1407175f87b05bc54c8cf2149816dc548f57
 make all rerun passes/log /tmp/id1-tev-terminal-build-rerun.log. Earlier failure
 RESOLVED;ID1 changes no native code. Only ID1 lock released;two depth middle
 branches/Ortho/LookAt/GX/libm/source/lifetime/original images/full-game open.
+
+ID1 depth-TEV validation breadcrumb (2026-10-12):depth/source/static coverage
+checks pass1115 words/eight identities/six spans/all2927 TEV words. make test
+configure fails missing tests/battle_mario_jump_parameter_event_tests.cpp at
+CMakeLists.txt:399;log /tmp/id1-tev-depth-test.log. Native battle target owner
+should finish fixture;ID1 changes no CMake/native/tests and reruns after actual
+file arrival. This does not invalidate the independent binary contracts.
+
+ID1 depth-TEV host rerun breadcrumb (2026-10-12):Jump-parameter fixture arrived,
+SHA2569963a93c4a5b2ea561e8458df55f59dd4cd917f9bcf5d0a85b49c193d9fa032c.
+make test rerun reaches86 suites:85 pass;new battle_mario_jump_parameter_event
+fails tests/battle_mario_jump_parameter_event_tests.cpp:46,invoke address
+80109c68/result2/local6==42/initialized0 assertion. Log:
+/tmp/id1-tev-depth-test-rerun.log. Earlier missing-file configure failure is
+RESOLVED;this is the current native assertion failure. Separate90 Python tests,
+make all3DSX and all depth/coverage evidence pass. ID1 does not edit native/tests.
+
+ID1 complete LOCAL TEV request delivery (2026-10-12),AC-01/AC-03 partial:
+four contracts in released row close final two depth blocks/seven leaves and
+index all local branches. 0x10000 six routes/0x40000 only0/3,previous output
+rewrite/compare op8 versus10/shared swap tables/ramp-depth matrix pairs/resolve
+ordering/counters specified. Depth color returns inverted alpha-scaled RGB/
+alpha0;two initial config records both3. Verifier1115 new words/eight identities/
+six spans/two imports/six sites/65536 byte cases plus full rechecked composed
+2927-word coverage pass;coverage hole/conflict/wrong route negatives reject.
+Native owner changed fixture to SHA4f593c0194c9075b92c530b37b75bb10d062b3c2d7ee36152d2ba1067495a558;
+final make test86 CTest/90 Python PASS/log /tmp/id1-tev-depth-test-final.log.
+Earlier missing file/assertion RESOLVED;make all3DSX pass. Only ID1 lock released.
+This closes mapSetMaterialTev LOCAL REQUEST documentation,not SDK/GX/numeric/
+source/capture/cache/lifetime/US scene/original image or whole-game equivalence.

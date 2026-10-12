@@ -1,0 +1,5765 @@
+{
+  "schema": 1,
+  "rel_sha256": "d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a",
+  "rel_imports": [
+    {
+      "file_offset": 300492,
+      "address": 2148445880
+    },
+    {
+      "file_offset": 301400,
+      "address": 2148445808
+    }
+  ],
+  "direct_reference_census": {
+    "text_sections": 7,
+    "targets": [
+      {
+        "address": 2147621760,
+        "name": "mapSetMaterialTev",
+        "sites": [
+          {
+            "address": 2147619912,
+            "link": true
+          },
+          {
+            "address": 2147732276,
+            "link": true
+          },
+          {
+            "address": 2147733300,
+            "link": true
+          },
+          {
+            "address": 2147735564,
+            "link": true
+          },
+          {
+            "address": 2147736480,
+            "link": true
+          },
+          {
+            "address": 2147950640,
+            "link": true
+          }
+        ]
+      }
+    ]
+  },
+  "bodies": [
+    {
+      "name": "mapSetMaterialTev",
+      "address": 2147621760,
+      "size": 11708,
+      "sha256": "faf566e7e5d1faa2bb0dd9627198d15a618b069af55978746d53f7f4ded6a51a",
+      "scope": "containing identity;complete depth blocks/source query bodies"
+    },
+    {
+      "name": "shadowGetDepthShadowConfig",
+      "address": 2147662672,
+      "size": 28,
+      "sha256": "0411f0331fd836ca7e0daefe49f63b54ded9b2d836dc6ea5b789dbb911673fd2",
+      "scope": "complete local body"
+    },
+    {
+      "name": "shadowGetDepthShadowColor",
+      "address": 2147662700,
+      "size": 148,
+      "sha256": "4566e9b326146c41117b2347b9ec115163bd9fd5066df4aae990d4f1ff48de2d",
+      "scope": "complete local body"
+    },
+    {
+      "name": "shadowGetDepthShadowProjTexMtx",
+      "address": 2147662848,
+      "size": 12,
+      "sha256": "47df8e1e6cecbab1de877e87973b84089164d4f573050657b8adf0bad103b6e3",
+      "scope": "complete local body"
+    },
+    {
+      "name": "shadowGetDepthShadowDepthMtx",
+      "address": 2147662860,
+      "size": 12,
+      "sha256": "7dde636a959c6ff84baa5154ad3b20111d63cf1770cdabafc1eb534ee8ce87ae",
+      "scope": "complete local body"
+    },
+    {
+      "name": "shadowGetDepthShadowTexObj",
+      "address": 2147662872,
+      "size": 64,
+      "sha256": "cea0a250bd579916284c65177842203527f42fd6f5b21ddb80ea55aadd745614",
+      "scope": "complete local body"
+    },
+    {
+      "name": "shadowGetRamp16TexObj",
+      "address": 2147662956,
+      "size": 8,
+      "sha256": "8d47f67df5c41b0f0efb54f5388cb48d91077b399bf8172e983b939b3d203a14",
+      "scope": "complete local body"
+    },
+    {
+      "name": "shadowGetRamp8TexObj",
+      "address": 2147662964,
+      "size": 8,
+      "sha256": "e110eda09d1bc4cc5dfd69b0c122d6d2284b990993a6f387b0ee7f61abe92d59",
+      "scope": "complete local body"
+    }
+  ],
+  "anchors": [
+    {
+      "address": 2147627796,
+      "hex": "57c003df",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627800,
+      "hex": "41820a40",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627804,
+      "hex": "480088fd",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627808,
+      "hex": "28030000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627812,
+      "hex": "41820a34",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627816,
+      "hex": "480088f1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627820,
+      "hex": "7c771b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627824,
+      "hex": "480088dd",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627828,
+      "hex": "7c761b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627832,
+      "hex": "480088c9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627836,
+      "hex": "7c751b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627840,
+      "hex": "4800882d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627844,
+      "hex": "90610054",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627848,
+      "hex": "48008809",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627852,
+      "hex": "8003003c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627856,
+      "hex": "2c000003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627860,
+      "hex": "418204ec",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627864,
+      "hex": "4080001c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627868,
+      "hex": "2c000001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627872,
+      "hex": "418202e0",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627876,
+      "hex": "408003dc",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627880,
+      "hex": "2c000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627884,
+      "hex": "40800018",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627888,
+      "hex": "480009e8",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627892,
+      "hex": "2c000005",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627896,
+      "hex": "418208cc",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627900,
+      "hex": "408009dc",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627904,
+      "hex": "480007ac",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627908,
+      "hex": "3879ffff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627912,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627916,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627920,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627924,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627928,
+      "hex": "39000001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627932,
+      "hex": "4829564d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627936,
+      "hex": "3879ffff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627940,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627944,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627948,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627952,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627956,
+      "hex": "39000001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627960,
+      "hex": "48295699",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627964,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627968,
+      "hex": "7f44d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627972,
+      "hex": "7f65db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627976,
+      "hex": "38c000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627980,
+      "hex": "48295a65",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627984,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627988,
+      "hex": "3880000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627992,
+      "hex": "38a0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147627996,
+      "hex": "38c0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628000,
+      "hex": "38e00008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628004,
+      "hex": "4829557d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628008,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628012,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628016,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628020,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628024,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628028,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628032,
+      "hex": "482955e9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628036,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628040,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628044,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628048,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628052,
+      "hex": "38e00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628056,
+      "hex": "4829558d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628060,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628064,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628068,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628072,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628076,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628080,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628084,
+      "hex": "4829561d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628088,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628092,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628096,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628100,
+      "hex": "48295855",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628104,
+      "hex": "5774103a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628108,
+      "hex": "3a7c0098",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628112,
+      "hex": "7cd3a02e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628116,
+      "hex": "7f43d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628120,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628124,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628128,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628132,
+      "hex": "3900007d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628136,
+      "hex": "4829199d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628140,
+      "hex": "48008809",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628144,
+      "hex": "7f64db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628148,
+      "hex": "4829440d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628152,
+      "hex": "7ec3b378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628156,
+      "hex": "7fe4fb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628160,
+      "hex": "38a1017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628164,
+      "hex": "4827a8e1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628168,
+      "hex": "7c93a02e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628172,
+      "hex": "3861017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628176,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628180,
+      "hex": "48296f3d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628184,
+      "hex": "3a790001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628188,
+      "hex": "3ada0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628192,
+      "hex": "3b7b0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628196,
+      "hex": "38c000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628200,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628204,
+      "hex": "7ec4b378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628208,
+      "hex": "7f65db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628212,
+      "hex": "4829597d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628216,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628220,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628224,
+      "hex": "38a00008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628228,
+      "hex": "38c0000c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628232,
+      "hex": "38e0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628236,
+      "hex": "48295495",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628240,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628244,
+      "hex": "38800008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628248,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628252,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628256,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628260,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628264,
+      "hex": "48295501",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628268,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628272,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628276,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628280,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628284,
+      "hex": "38e00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628288,
+      "hex": "482954a5",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628292,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628296,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628300,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628304,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628308,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628312,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628316,
+      "hex": "48295535",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628320,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628324,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628328,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628332,
+      "hex": "4829576d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628336,
+      "hex": "5774103a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628340,
+      "hex": "3a7c0098",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628344,
+      "hex": "7cd3a02e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628348,
+      "hex": "7ec3b378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628352,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628356,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628360,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628364,
+      "hex": "3900007d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628368,
+      "hex": "482918b5",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628372,
+      "hex": "7ee3bb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628376,
+      "hex": "7f64db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628380,
+      "hex": "48294325",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628384,
+      "hex": "7ea3ab78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628388,
+      "hex": "7fe4fb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628392,
+      "hex": "38a1017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628396,
+      "hex": "4827a7f9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628400,
+      "hex": "7c93a02e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628404,
+      "hex": "3861017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628408,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628412,
+      "hex": "48296e55",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628416,
+      "hex": "3a790002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628420,
+      "hex": "388000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628424,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628428,
+      "hex": "38a000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628432,
+      "hex": "38c000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628436,
+      "hex": "3b7b0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628440,
+      "hex": "3b5a0002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628444,
+      "hex": "48295895",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628448,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628452,
+      "hex": "3880000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628456,
+      "hex": "38a0000e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628460,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628464,
+      "hex": "38e00002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628468,
+      "hex": "482953ad",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628472,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628476,
+      "hex": "38800001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628480,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628484,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628488,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628492,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628496,
+      "hex": "48295419",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628500,
+      "hex": "80010054",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628504,
+      "hex": "38810038",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628508,
+      "hex": "38600001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628512,
+      "hex": "90010038",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628516,
+      "hex": "48295599",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628520,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628524,
+      "hex": "3880000d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628528,
+      "hex": "482955f1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628532,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628536,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628540,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628544,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628548,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628552,
+      "hex": "4829539d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628556,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628560,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628564,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628568,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628572,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628576,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628580,
+      "hex": "4829542d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628584,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628588,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628592,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628596,
+      "hex": "48295665",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628600,
+      "hex": "3b390003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628604,
+      "hex": "4800071c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628608,
+      "hex": "800284a4",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628612,
+      "hex": "38810034",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628616,
+      "hex": "38600002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628620,
+      "hex": "90010034",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628624,
+      "hex": "48295469",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628628,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628632,
+      "hex": "7f44d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628636,
+      "hex": "7f65db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628640,
+      "hex": "38c000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628644,
+      "hex": "482957cd",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628648,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628652,
+      "hex": "3880000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628656,
+      "hex": "38a00008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628660,
+      "hex": "38c00004",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628664,
+      "hex": "38e0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628668,
+      "hex": "482952e5",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628672,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628676,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628680,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628684,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628688,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628692,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628696,
+      "hex": "48295351",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628700,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628704,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628708,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628712,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628716,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628720,
+      "hex": "482952f5",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628724,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628728,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628732,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628736,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628740,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628744,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628748,
+      "hex": "48295385",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628752,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628756,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628760,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628764,
+      "hex": "482955bd",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628768,
+      "hex": "5774103a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628772,
+      "hex": "3a7c0098",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628776,
+      "hex": "7cd3a02e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628780,
+      "hex": "7f43d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628784,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628788,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628792,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628796,
+      "hex": "3900007d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628800,
+      "hex": "48291705",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628804,
+      "hex": "48008571",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628808,
+      "hex": "7f64db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628812,
+      "hex": "48294175",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628816,
+      "hex": "7ec3b378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628820,
+      "hex": "7fe4fb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628824,
+      "hex": "38a1017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628828,
+      "hex": "4827a649",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628832,
+      "hex": "7c93a02e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628836,
+      "hex": "3861017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628840,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628844,
+      "hex": "48296ca5",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628848,
+      "hex": "3b390001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628852,
+      "hex": "3b7b0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628856,
+      "hex": "3b5a0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628860,
+      "hex": "4800061c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628864,
+      "hex": "800284a8",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628868,
+      "hex": "38810030",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628872,
+      "hex": "38600002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628876,
+      "hex": "90010030",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628880,
+      "hex": "48295369",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628884,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628888,
+      "hex": "7f44d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628892,
+      "hex": "7f65db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628896,
+      "hex": "38c000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628900,
+      "hex": "482956cd",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628904,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628908,
+      "hex": "3880000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628912,
+      "hex": "38a00008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628916,
+      "hex": "38c00004",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628920,
+      "hex": "38e0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628924,
+      "hex": "482951e5",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628928,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628932,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628936,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628940,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628944,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628948,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628952,
+      "hex": "48295251",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628956,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628960,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628964,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628968,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628972,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628976,
+      "hex": "482951f5",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628980,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628984,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628988,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628992,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147628996,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629000,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629004,
+      "hex": "48295285",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629008,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629012,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629016,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629020,
+      "hex": "482954bd",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629024,
+      "hex": "5774103a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629028,
+      "hex": "3a7c0098",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629032,
+      "hex": "7cd3a02e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629036,
+      "hex": "7f43d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629040,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629044,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629048,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629052,
+      "hex": "3900007d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629056,
+      "hex": "48291605",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629060,
+      "hex": "7ee3bb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629064,
+      "hex": "7f64db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629068,
+      "hex": "48294075",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629072,
+      "hex": "7ea3ab78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629076,
+      "hex": "7fe4fb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629080,
+      "hex": "38a1017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629084,
+      "hex": "4827a549",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629088,
+      "hex": "7c93a02e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629092,
+      "hex": "3861017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629096,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629100,
+      "hex": "48296ba5",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629104,
+      "hex": "3b390001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629108,
+      "hex": "3b7b0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629112,
+      "hex": "3b5a0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629116,
+      "hex": "4800051c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629120,
+      "hex": "3879ffff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629124,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629128,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629132,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629136,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629140,
+      "hex": "39000001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629144,
+      "hex": "48295191",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629148,
+      "hex": "3879ffff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629152,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629156,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629160,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629164,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629168,
+      "hex": "39000001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629172,
+      "hex": "482951dd",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629176,
+      "hex": "38600001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629180,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629184,
+      "hex": "38a00003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629188,
+      "hex": "38c00002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629192,
+      "hex": "38e00003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629196,
+      "hex": "48295455",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629200,
+      "hex": "38600002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629204,
+      "hex": "38800003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629208,
+      "hex": "38a00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629212,
+      "hex": "38c00002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629216,
+      "hex": "38e00003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629220,
+      "hex": "4829543d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629224,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629228,
+      "hex": "7f44d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629232,
+      "hex": "7f65db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629236,
+      "hex": "38c000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629240,
+      "hex": "48295579",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629244,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629248,
+      "hex": "3880000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629252,
+      "hex": "38a0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629256,
+      "hex": "38c0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629260,
+      "hex": "38e00008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629264,
+      "hex": "48295091",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629268,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629272,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629276,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629280,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629284,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629288,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629292,
+      "hex": "482950fd",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629296,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629300,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629304,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629308,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629312,
+      "hex": "38e00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629316,
+      "hex": "482950a1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629320,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629324,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629328,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629332,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629336,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629340,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629344,
+      "hex": "48295131",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629348,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629352,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629356,
+      "hex": "38a00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629360,
+      "hex": "48295369",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629364,
+      "hex": "5774103a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629368,
+      "hex": "3a7c0098",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629372,
+      "hex": "7cd3a02e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629376,
+      "hex": "7f43d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629380,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629384,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629388,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629392,
+      "hex": "3900007d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629396,
+      "hex": "482914b1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629400,
+      "hex": "48008315",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629404,
+      "hex": "7f64db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629408,
+      "hex": "48293f21",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629412,
+      "hex": "7ec3b378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629416,
+      "hex": "7fe4fb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629420,
+      "hex": "38a1017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629424,
+      "hex": "4827a3f5",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629428,
+      "hex": "7c93a02e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629432,
+      "hex": "3861017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629436,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629440,
+      "hex": "48296a51",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629444,
+      "hex": "3a790001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629448,
+      "hex": "3a9a0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629452,
+      "hex": "3b7b0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629456,
+      "hex": "38c000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629460,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629464,
+      "hex": "7e84a378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629468,
+      "hex": "7f65db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629472,
+      "hex": "48295491",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629476,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629480,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629484,
+      "hex": "38a00008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629488,
+      "hex": "38c0000c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629492,
+      "hex": "38e0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629496,
+      "hex": "48294fa9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629500,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629504,
+      "hex": "3880000a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629508,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629512,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629516,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629520,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629524,
+      "hex": "48295015",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629528,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629532,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629536,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629540,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629544,
+      "hex": "38e00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629548,
+      "hex": "48294fb9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629552,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629556,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629560,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629564,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629568,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629572,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629576,
+      "hex": "48295049",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629580,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629584,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629588,
+      "hex": "38a00002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629592,
+      "hex": "48295281",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629596,
+      "hex": "5776103a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629600,
+      "hex": "3a7c0098",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629604,
+      "hex": "7cd3b02e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629608,
+      "hex": "7e83a378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629612,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629616,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629620,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629624,
+      "hex": "3900007d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629628,
+      "hex": "482913c9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629632,
+      "hex": "7ee3bb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629636,
+      "hex": "7f64db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629640,
+      "hex": "48293e39",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629644,
+      "hex": "7ea3ab78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629648,
+      "hex": "7fe4fb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629652,
+      "hex": "38a1017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629656,
+      "hex": "4827a30d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629660,
+      "hex": "7c93b02e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629664,
+      "hex": "3861017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629668,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629672,
+      "hex": "48296969",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629676,
+      "hex": "3a790002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629680,
+      "hex": "388000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629684,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629688,
+      "hex": "38a000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629692,
+      "hex": "38c00004",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629696,
+      "hex": "3b7b0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629700,
+      "hex": "3b5a0002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629704,
+      "hex": "482953a9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629708,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629712,
+      "hex": "3880000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629716,
+      "hex": "38a0000e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629720,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629724,
+      "hex": "38e00002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629728,
+      "hex": "48294ec1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629732,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629736,
+      "hex": "38800001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629740,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629744,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629748,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629752,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629756,
+      "hex": "48294f2d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629760,
+      "hex": "80010054",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629764,
+      "hex": "3881002c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629768,
+      "hex": "38600001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629772,
+      "hex": "9001002c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629776,
+      "hex": "482950ad",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629780,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629784,
+      "hex": "3880000d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629788,
+      "hex": "48295105",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629792,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629796,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629800,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629804,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629808,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629812,
+      "hex": "48294eb1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629816,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629820,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629824,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629828,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629832,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629836,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629840,
+      "hex": "48294f41",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629844,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629848,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629852,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629856,
+      "hex": "48295179",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629860,
+      "hex": "3b390003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629864,
+      "hex": "48000230",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629868,
+      "hex": "800284ac",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629872,
+      "hex": "38810028",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629876,
+      "hex": "38600002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629880,
+      "hex": "90010028",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629884,
+      "hex": "48294f7d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629888,
+      "hex": "38600001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629892,
+      "hex": "38800003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629896,
+      "hex": "38a00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629900,
+      "hex": "38c00002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629904,
+      "hex": "38e00003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629908,
+      "hex": "4829518d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629912,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629916,
+      "hex": "7f44d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629920,
+      "hex": "7f65db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629924,
+      "hex": "38c000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629928,
+      "hex": "482952c9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629932,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629936,
+      "hex": "3880000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629940,
+      "hex": "38a00008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629944,
+      "hex": "38c00004",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629948,
+      "hex": "38e0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629952,
+      "hex": "48294de1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629956,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629960,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629964,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629968,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629972,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629976,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629980,
+      "hex": "48294e4d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629984,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629988,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629992,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147629996,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630000,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630004,
+      "hex": "48294df1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630008,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630012,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630016,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630020,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630024,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630028,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630032,
+      "hex": "48294e81",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630036,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630040,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630044,
+      "hex": "38a00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630048,
+      "hex": "482950b9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630052,
+      "hex": "5775103a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630056,
+      "hex": "3a7c0098",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630060,
+      "hex": "7cd3a82e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630064,
+      "hex": "7f43d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630068,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630072,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630076,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630080,
+      "hex": "3900007d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630084,
+      "hex": "48291201",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630088,
+      "hex": "48008065",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630092,
+      "hex": "7f64db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630096,
+      "hex": "48293c71",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630100,
+      "hex": "7ec3b378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630104,
+      "hex": "7fe4fb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630108,
+      "hex": "38a1017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630112,
+      "hex": "4827a145",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630116,
+      "hex": "7c93a82e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630120,
+      "hex": "3861017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630124,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630128,
+      "hex": "482967a1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630132,
+      "hex": "3b390001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630136,
+      "hex": "3b7b0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630140,
+      "hex": "3b5a0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630144,
+      "hex": "48000118",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630148,
+      "hex": "800284b0",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630152,
+      "hex": "38810024",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630156,
+      "hex": "38600002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630160,
+      "hex": "90010024",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630164,
+      "hex": "48294e65",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630168,
+      "hex": "38600001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630172,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630176,
+      "hex": "38a00003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630180,
+      "hex": "38c00002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630184,
+      "hex": "38e00003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630188,
+      "hex": "48295075",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630192,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630196,
+      "hex": "7f44d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630200,
+      "hex": "7f65db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630204,
+      "hex": "38c000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630208,
+      "hex": "482951b1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630212,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630216,
+      "hex": "3880000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630220,
+      "hex": "38a00008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630224,
+      "hex": "38c00004",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630228,
+      "hex": "38e0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630232,
+      "hex": "48294cc9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630236,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630240,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630244,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630248,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630252,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630256,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630260,
+      "hex": "48294d35",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630264,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630268,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630272,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630276,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630280,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630284,
+      "hex": "48294cd9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630288,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630292,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630296,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630300,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630304,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630308,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630312,
+      "hex": "48294d69",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630316,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630320,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630324,
+      "hex": "38a00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630328,
+      "hex": "48294fa1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630332,
+      "hex": "5776103a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630336,
+      "hex": "3a7c0098",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630340,
+      "hex": "7cd3b02e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630344,
+      "hex": "7f43d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630348,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630352,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630356,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630360,
+      "hex": "3900007d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630364,
+      "hex": "482910e9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630368,
+      "hex": "7ee3bb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630372,
+      "hex": "7f64db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630376,
+      "hex": "48293b59",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630380,
+      "hex": "7ea3ab78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630384,
+      "hex": "7fe4fb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630388,
+      "hex": "38a1017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630392,
+      "hex": "4827a02d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630396,
+      "hex": "7c93b02e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630400,
+      "hex": "3861017c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630404,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630408,
+      "hex": "48296689",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630412,
+      "hex": "3b390001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630416,
+      "hex": "3b7b0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630420,
+      "hex": "3b5a0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630748,
+      "hex": "57c0035b",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630752,
+      "hex": "4182060c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630756,
+      "hex": "48007d75",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630760,
+      "hex": "28030000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630764,
+      "hex": "41820600",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630768,
+      "hex": "48007d69",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630772,
+      "hex": "7c751b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630776,
+      "hex": "48007d55",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630780,
+      "hex": "7c741b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630784,
+      "hex": "48007d41",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630788,
+      "hex": "7c761b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630792,
+      "hex": "48007ca5",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630796,
+      "hex": "9061004c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630800,
+      "hex": "48007c81",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630804,
+      "hex": "8003003c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630808,
+      "hex": "2c000003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630812,
+      "hex": "418202dc",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630816,
+      "hex": "408005cc",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630820,
+      "hex": "2c000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630824,
+      "hex": "41820008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630828,
+      "hex": "480005c0",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630832,
+      "hex": "3879ffff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630836,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630840,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630844,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630848,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630852,
+      "hex": "39000001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630856,
+      "hex": "48294ae1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630860,
+      "hex": "3879ffff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630864,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630868,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630872,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630876,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630880,
+      "hex": "39000001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630884,
+      "hex": "48294b2d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630888,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630892,
+      "hex": "7f44d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630896,
+      "hex": "7f65db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630900,
+      "hex": "38c000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630904,
+      "hex": "48294ef9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630908,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630912,
+      "hex": "3880000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630916,
+      "hex": "38a0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630920,
+      "hex": "38c0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630924,
+      "hex": "38e00008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630928,
+      "hex": "48294a11",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630932,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630936,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630940,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630944,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630948,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630952,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630956,
+      "hex": "48294a7d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630960,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630964,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630968,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630972,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630976,
+      "hex": "38e00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630980,
+      "hex": "48294a21",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630984,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630988,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630992,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147630996,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631000,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631004,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631008,
+      "hex": "48294ab1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631012,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631016,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631020,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631024,
+      "hex": "48294ce9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631028,
+      "hex": "5777103a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631032,
+      "hex": "3a7c0098",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631036,
+      "hex": "7cd3b82e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631040,
+      "hex": "7f43d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631044,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631048,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631052,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631056,
+      "hex": "3900007d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631060,
+      "hex": "48290e31",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631064,
+      "hex": "48007c9d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631068,
+      "hex": "7f64db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631072,
+      "hex": "482938a1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631076,
+      "hex": "7e83a378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631080,
+      "hex": "7fe4fb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631084,
+      "hex": "38a1011c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631088,
+      "hex": "48279d75",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631092,
+      "hex": "7c93b82e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631096,
+      "hex": "3861011c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631100,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631104,
+      "hex": "482963d1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631108,
+      "hex": "3a790001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631112,
+      "hex": "3a9a0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631116,
+      "hex": "3b7b0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631120,
+      "hex": "38c000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631124,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631128,
+      "hex": "7e84a378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631132,
+      "hex": "7f65db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631136,
+      "hex": "48294e11",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631140,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631144,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631148,
+      "hex": "38a00008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631152,
+      "hex": "38c0000c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631156,
+      "hex": "38e0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631160,
+      "hex": "48294929",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631164,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631168,
+      "hex": "38800008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631172,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631176,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631180,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631184,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631188,
+      "hex": "48294995",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631192,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631196,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631200,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631204,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631208,
+      "hex": "38e00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631212,
+      "hex": "48294939",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631216,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631220,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631224,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631228,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631232,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631236,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631240,
+      "hex": "482949c9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631244,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631248,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631252,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631256,
+      "hex": "48294c01",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631260,
+      "hex": "5777103a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631264,
+      "hex": "3a7c0098",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631268,
+      "hex": "7cd3b82e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631272,
+      "hex": "7e83a378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631276,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631280,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631284,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631288,
+      "hex": "3900007d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631292,
+      "hex": "48290d49",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631296,
+      "hex": "7ea3ab78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631300,
+      "hex": "7f64db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631304,
+      "hex": "482937b9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631308,
+      "hex": "7ec3b378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631312,
+      "hex": "7fe4fb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631316,
+      "hex": "38a1011c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631320,
+      "hex": "48279c8d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631324,
+      "hex": "7c93b82e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631328,
+      "hex": "3861011c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631332,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631336,
+      "hex": "482962e9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631340,
+      "hex": "3a790002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631344,
+      "hex": "388000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631348,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631352,
+      "hex": "38a000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631356,
+      "hex": "38c00004",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631360,
+      "hex": "3b7b0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631364,
+      "hex": "3b5a0002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631368,
+      "hex": "48294d29",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631372,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631376,
+      "hex": "38800002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631380,
+      "hex": "38a0000e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631384,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631388,
+      "hex": "38e0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631392,
+      "hex": "48294841",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631396,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631400,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631404,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631408,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631412,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631416,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631420,
+      "hex": "482948ad",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631424,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631428,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631432,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631436,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631440,
+      "hex": "38e00006",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631444,
+      "hex": "48294851",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631448,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631452,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631456,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631460,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631464,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631468,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631472,
+      "hex": "482948e1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631476,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631480,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631484,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631488,
+      "hex": "48294b19",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631492,
+      "hex": "8001004c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631496,
+      "hex": "3881001c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631500,
+      "hex": "38600001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631504,
+      "hex": "9001001c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631508,
+      "hex": "482949e9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631512,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631516,
+      "hex": "3880000d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631520,
+      "hex": "48294a41",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631524,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631528,
+      "hex": "3880001d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631532,
+      "hex": "48294a91",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631536,
+      "hex": "3b390003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631540,
+      "hex": "480002f8",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631544,
+      "hex": "3879ffff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631548,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631552,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631556,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631560,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631564,
+      "hex": "39000001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631568,
+      "hex": "48294819",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631572,
+      "hex": "3879ffff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631576,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631580,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631584,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631588,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631592,
+      "hex": "39000001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631596,
+      "hex": "48294865",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631600,
+      "hex": "38600001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631604,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631608,
+      "hex": "38a00003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631612,
+      "hex": "38c00002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631616,
+      "hex": "38e00003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631620,
+      "hex": "48294add",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631624,
+      "hex": "38600002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631628,
+      "hex": "38800003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631632,
+      "hex": "38a00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631636,
+      "hex": "38c00002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631640,
+      "hex": "38e00003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631644,
+      "hex": "48294ac5",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631648,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631652,
+      "hex": "7f44d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631656,
+      "hex": "7f65db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631660,
+      "hex": "38c000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631664,
+      "hex": "48294c01",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631668,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631672,
+      "hex": "3880000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631676,
+      "hex": "38a0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631680,
+      "hex": "38c0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631684,
+      "hex": "38e00008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631688,
+      "hex": "48294719",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631692,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631696,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631700,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631704,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631708,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631712,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631716,
+      "hex": "48294785",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631720,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631724,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631728,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631732,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631736,
+      "hex": "38e00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631740,
+      "hex": "48294729",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631744,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631748,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631752,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631756,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631760,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631764,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631768,
+      "hex": "482947b9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631772,
+      "hex": "7f23cb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631776,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631780,
+      "hex": "38a00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631784,
+      "hex": "482949f1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631788,
+      "hex": "5777103a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631792,
+      "hex": "3a7c0098",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631796,
+      "hex": "7cd3b82e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631800,
+      "hex": "7f43d378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631804,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631808,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631812,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631816,
+      "hex": "3900007d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631820,
+      "hex": "48290b39",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631824,
+      "hex": "4800799d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631828,
+      "hex": "7f64db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631832,
+      "hex": "482935a9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631836,
+      "hex": "7e83a378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631840,
+      "hex": "7fe4fb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631844,
+      "hex": "38a1011c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631848,
+      "hex": "48279a7d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631852,
+      "hex": "7c93b82e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631856,
+      "hex": "3861011c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631860,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631864,
+      "hex": "482960d9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631868,
+      "hex": "3a790001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631872,
+      "hex": "3a9a0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631876,
+      "hex": "3b7b0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631880,
+      "hex": "38c000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631884,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631888,
+      "hex": "7e84a378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631892,
+      "hex": "7f65db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631896,
+      "hex": "48294b19",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631900,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631904,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631908,
+      "hex": "38a00008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631912,
+      "hex": "38c0000c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631916,
+      "hex": "38e0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631920,
+      "hex": "48294631",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631924,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631928,
+      "hex": "3880000a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631932,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631936,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631940,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631944,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631948,
+      "hex": "4829469d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631952,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631956,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631960,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631964,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631968,
+      "hex": "38e00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631972,
+      "hex": "48294641",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631976,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631980,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631984,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631988,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631992,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147631996,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632000,
+      "hex": "482946d1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632004,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632008,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632012,
+      "hex": "38a00002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632016,
+      "hex": "48294909",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632020,
+      "hex": "5777103a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632024,
+      "hex": "3a7c0098",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632028,
+      "hex": "7cd3b82e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632032,
+      "hex": "7e83a378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632036,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632040,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632044,
+      "hex": "38e00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632048,
+      "hex": "3900007d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632052,
+      "hex": "48290a51",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632056,
+      "hex": "7ea3ab78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632060,
+      "hex": "7f64db78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632064,
+      "hex": "482934c1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632068,
+      "hex": "7ec3b378",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632072,
+      "hex": "7fe4fb78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632076,
+      "hex": "38a1011c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632080,
+      "hex": "48279995",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632084,
+      "hex": "7c93b82e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632088,
+      "hex": "3861011c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632092,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632096,
+      "hex": "48295ff1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632100,
+      "hex": "3a790002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632104,
+      "hex": "388000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632108,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632112,
+      "hex": "38a000ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632116,
+      "hex": "38c00004",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632120,
+      "hex": "3b7b0001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632124,
+      "hex": "3b5a0002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632128,
+      "hex": "48294a31",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632132,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632136,
+      "hex": "38800002",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632140,
+      "hex": "38a0000e",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632144,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632148,
+      "hex": "38e0000f",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632152,
+      "hex": "48294549",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632156,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632160,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632164,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632168,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632172,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632176,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632180,
+      "hex": "482945b5",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632184,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632188,
+      "hex": "38800007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632192,
+      "hex": "38a00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632196,
+      "hex": "38c00007",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632200,
+      "hex": "38e00006",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632204,
+      "hex": "48294559",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632208,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632212,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632216,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632220,
+      "hex": "38c00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632224,
+      "hex": "38e00001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632228,
+      "hex": "39000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632232,
+      "hex": "482945e9",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632236,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632240,
+      "hex": "38800000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632244,
+      "hex": "38a00000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632248,
+      "hex": "48294821",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632252,
+      "hex": "8001004c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632256,
+      "hex": "38810018",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632260,
+      "hex": "38600001",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632264,
+      "hex": "90010018",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632268,
+      "hex": "482946f1",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632272,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632276,
+      "hex": "3880000d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632280,
+      "hex": "48294749",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632284,
+      "hex": "7e639b78",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632288,
+      "hex": "3880001d",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632292,
+      "hex": "48294799",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147632296,
+      "hex": "3b390003",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662672,
+      "hex": "808d81c8",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662676,
+      "hex": "3c608030",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662680,
+      "hex": "38034a60",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662684,
+      "hex": "80640008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662688,
+      "hex": "1c630048",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662692,
+      "hex": "7c601a14",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662696,
+      "hex": "4e800020",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662700,
+      "hex": "9421fff0",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662704,
+      "hex": "3c608081",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662708,
+      "hex": "38000000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662712,
+      "hex": "80ed81c8",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662716,
+      "hex": "38c38081",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662720,
+      "hex": "9801000b",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662724,
+      "hex": "88870100",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662728,
+      "hex": "89070103",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662732,
+      "hex": "206400ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662736,
+      "hex": "88870101",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662740,
+      "hex": "7ca341d6",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662744,
+      "hex": "88670102",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662748,
+      "hex": "7c062896",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662752,
+      "hex": "7c002a14",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662756,
+      "hex": "7c053e70",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662760,
+      "hex": "200400ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662764,
+      "hex": "7c0041d6",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662768,
+      "hex": "54a40ffe",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662772,
+      "hex": "7c852214",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662776,
+      "hex": "98810008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662780,
+      "hex": "7c860096",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662784,
+      "hex": "7c040214",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662788,
+      "hex": "7c043e70",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662792,
+      "hex": "200300ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662796,
+      "hex": "7c0041d6",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662800,
+      "hex": "54830ffe",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662804,
+      "hex": "7c641a14",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662808,
+      "hex": "98610009",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662812,
+      "hex": "7c660096",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662816,
+      "hex": "7c030214",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662820,
+      "hex": "7c003e70",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662824,
+      "hex": "54030ffe",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662828,
+      "hex": "7c001a14",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662832,
+      "hex": "9801000a",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662836,
+      "hex": "80610008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662840,
+      "hex": "38210010",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662844,
+      "hex": "4e800020",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662848,
+      "hex": "806d81c8",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662852,
+      "hex": "3863007c",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662856,
+      "hex": "4e800020",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662860,
+      "hex": "806d81c8",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662864,
+      "hex": "386300ac",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662868,
+      "hex": "4e800020",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662872,
+      "hex": "9421fff0",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662876,
+      "hex": "7c0802a6",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662880,
+      "hex": "90010014",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662884,
+      "hex": "806d81c8",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662888,
+      "hex": "80030000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662892,
+      "hex": "540007ff",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662896,
+      "hex": "41820014",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662900,
+      "hex": "808300fc",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662904,
+      "hex": "386300dc",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662908,
+      "hex": "48003701",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662912,
+      "hex": "48000008",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662916,
+      "hex": "38600000",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662920,
+      "hex": "80010014",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662924,
+      "hex": "7c0803a6",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662928,
+      "hex": "38210010",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662932,
+      "hex": "4e800020",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662956,
+      "hex": "386d1818",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662960,
+      "hex": "4e800020",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662964,
+      "hex": "386d1838",
+      "purpose": "complete depth block/source leaf reviewed word"
+    },
+    {
+      "address": 2147662968,
+      "hex": "4e800020",
+      "purpose": "complete depth block/source leaf reviewed word"
+    }
+  ],
+  "constants": [],
+  "data": [
+    {
+      "address": 2150365680,
+      "size": 40,
+      "sha256": "6ba6cb35c1def9647f4576a0b7effd2533403fa049affeabb8a7e669ebca489e",
+      "name": "ten projected matrix IDs",
+      "words": [
+        30,
+        33,
+        36,
+        39,
+        42,
+        45,
+        48,
+        51,
+        54,
+        57
+      ]
+    },
+    {
+      "address": 2151807204,
+      "size": 16,
+      "sha256": "eab5bff6e3d02e269f6f461e8b52e920c652b7352da45df56039c795ed128ba1",
+      "name": "depth debug request color seeds",
+      "words": [
+        4278190080,
+        4278190080,
+        4294901760,
+        4294901760
+      ]
+    },
+    {
+      "address": 2151764200,
+      "size": 4,
+      "sha256": "d05a7ca994c9d53d089fd3b1ebfa68f011c1c52234c47efef6cb7e1511292787",
+      "name": "initial depth shadow work pointer",
+      "words": [
+        2151455792
+      ]
+    },
+    {
+      "address": 2150648416,
+      "size": 144,
+      "sha256": "b01f90b7b4e7213c09322f2c3319369f4f1c0a4b8b11dd2033163d94dc731c46",
+      "name": "two original shadow configuration records"
+    },
+    {
+      "address": 2150648476,
+      "size": 4,
+      "sha256": "88185d128d9922e0e6bcd32b07b6c7f20f27968eab447a1d8d1cdf250f79f7d3",
+      "name": "first original config route",
+      "words": [
+        3
+      ]
+    },
+    {
+      "address": 2150648548,
+      "size": 4,
+      "sha256": "88185d128d9922e0e6bcd32b07b6c7f20f27968eab447a1d8d1cdf250f79f7d3",
+      "name": "second original config route",
+      "words": [
+        3
+      ]
+    }
+  ],
+  "reviewed_ranges": [
+    {
+      "start": 2147627796,
+      "end_exclusive": 2147630424
+    },
+    {
+      "start": 2147630748,
+      "end_exclusive": 2147632300
+    }
+  ],
+  "color_arithmetic_domain": {
+    "byte_pair_cases": 65536,
+    "divisor": 255,
+    "magic": 2155905153
+  }
+}

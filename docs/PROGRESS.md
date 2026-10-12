@@ -13114,3 +13114,64 @@ partial shader/local byte/reference/host-validation results.
 ID1 final terminal-TEV link audit:547 Markdown files checked after staging;
 zero broken links. Initial545-file count above is the earlier snapshot. Only
 ID1 files/shared hunks staged;other owners retain their current independent work.
+
+## 2026-10-12 — ID1 final depth TEV routes and complete local request graph
+
+Added [depth queries/config](behavior/display/MAP_TEV_DEPTH_SOURCE_QUERIES_AND_CONFIG.md),
+[six-route10000](behavior/display/MAP_TEV_DEPTH_FLAG10000_PROGRAMS.md),
+[two-route40000](behavior/display/MAP_TEV_DEPTH_FLAG40000_PROGRAMS.md),
+[local graph/boundaries](behavior/display/MAP_TEV_LOCAL_REQUEST_GRAPH_AND_BACKEND_BOUNDARIES.md).
+Both final middle blocks and seven source leaves close locally:double texture
+getters/fresh depth/projection/inverted color/config captures;all six routes
+versus alternate only0/3;previous-stage output rewrite;op8/10/clamp0 comparisons;
+shared swaps/ramp-depth and texture-projection pairs;distinct resolve Color/
+Alpha/KColor/KAlpha request ordering;counter mutations/invalid route skips.
+Depth color is floor((255-RGB)*A/255),output alpha0. Original two config records
+BOTH route3. No original scene/pixel/ramp capture or source initialization assumed.
+Only ID1 scoped lock released;parent full-game requirements remain open.
+
+All local branches of mapSetMaterialTev80021b80/0x2dbc now have detailed REQUEST
+contracts. This is a local documentation milestone,not full original hardware
+shader/runtime/material-system equivalence. SDK/GX register/arithmetic/filter/
+LOD/raster/depth/cache,vector/matrix/libm/FPSCR/GQR0,source flags/config/context/
+clock/callback/ramp/capture/resource/pose/pool/link/alias/bounds/lifetime and
+actual US scene/call cadence/original images remain required. Static Mario0,
+procedural renderer12 and config3 witnesses do not prove all route execution.
+No complete-game percentage or final full-system requirements claimed.
+
+Validation:verify_map_tev_depth.py passes1115 new reviewed words/eight identities
+(one containing TEV/seven complete source queries),six spans(projected IDs,four
+raw debug seeds,initial dswp,144-byte config identity/two route3 words),two US
+lecture imports/six direct sites and65536 host byte arithmetic cases. Rechecks
+ALL six prior/contributing original body/anchor/data manifests,then requires
+all2927 local TEV instruction positions with no conflicting overlaps. Repeat
+JSON byte-identical;missing last instruction,conflicting overlap and wrong
+config route negatives rejected;Python compilation passed. General1980 anchors
+pass;Gekko662 listings/96102 instructions/914 paired ops,zero changes/unknowns.
+Initial555-file links passed;558-file intermediate pass/final audit below.
+Instruction coverage supports manual contracts,not an original execution oracle.
+
+make all3DSX passes/log /tmp/id1-tev-depth-build.log. make test initial configure
+failed missing new Jump-parameter fixture/log /tmp/id1-tev-depth-test.log. File
+arrived(SHA9963a93c4a5b2ea561e8458df55f59dd4cd917f9bcf5d0a85b49c193d9fa032c);
+rerun85/86 passed,new callback assertion failed at fixture line46/log
+/tmp/id1-tev-depth-test-rerun.log. Native owner changed fixture SHA to
+4f593c0194c9075b92c530b37b75bb10d062b3c2d7ee36152d2ba1067495a558;
+AFTER actual state change,final make test PASS86 CTest/90 Python/log
+/tmp/id1-tev-depth-test-final.log. Missing-file and native assertion failures are
+RESOLVED. Independent90 Python tests also passed/log /tmp/id1-tev-depth-python.log.
+ID1 made no CMake/native/test changes. Existing3218 GameCube/0 Switch/5 primary-PCM
+fallback audio pipeline ran;ISO read-only,inspection/report ignored. ASSETS
+records source metadata,without payload export. No original runtime/profile/save
+or ID1 converter/asset adaptation mutation;other owner work remains independent.
+
+Next:actual material/pose/group/source/flag/callback/ramp/clock/capture/resource/
+cache/lifetime producers and numeric/GX/image validation,not unbound library
+edge-case expansion. Continue original US gameplay/story/event/message attribution/
+order/branches/conditions and persistent encounter closure for native requests.
+Full-game documentation/system requirements remain incomplete despite complete
+local TEV request graph. All-system evidence gates must precede final requirements.
+
+ID1 final depth/local-closure link audit:561 Markdown files checked after
+staging,zero broken links. Earlier555/558 counts are verification snapshots.
+Only ID1 delivery files/shared hunks staged;other owners retain independent work.

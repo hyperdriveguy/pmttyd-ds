@@ -409,3 +409,13 @@ two imports/six sites/65536 host integer cases pass. 84 CTest/90 Python/build
 pass after concurrent RGB enum repair. Two depth middle branches0x10000/0x40000
 and source/GX/numeric/cache/lifetime/images,broader gameplay/story and whole-system
 closure remain open;local coverage is not a full-game completion denominator.
+
+ID1 local TEV milestone (2026-10-12):
+[complete local request graph](../display/MAP_TEV_LOCAL_REQUEST_GRAPH_AND_BACKEND_BOUNDARIES.md)
+now includes both final depth branches/seven leaves;original two config records
+both3. Verifier1115 new words/six spans/two imports/six sites/65536 host arithmetic
+cases and all2927 composed original words pass. Final86 CTest/90 Python/build
+pass;earlier native fixture failures resolved. This closes one LOCAL REQUEST
+body's documentation,not SDK/GX/source/capture/lifetime/US runtime/images or a
+full-scope rendering-system row. Whole-game documentation and final complete-game
+requirements remain incomplete;coverage counts are not a game denominator.

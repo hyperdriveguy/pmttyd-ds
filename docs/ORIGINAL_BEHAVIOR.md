@@ -1229,3 +1229,15 @@ close six bodies/carried state arguments/64-slot registry and event scan/
 resource polling/8 fields.17 hashes/209 anchors/5 spans/2 calls verified;
 90 Python/make all pass.Host85/86 pending new Jump fixture line46 assertion;
 no native fixes by ID2.Source/end/query/Game/platform/runtime remain open.
+
+ID1 local TEV closure (2026-10-12):
+[depth sources](behavior/display/MAP_TEV_DEPTH_SOURCE_QUERIES_AND_CONFIG.md),
+[10000 programs](behavior/display/MAP_TEV_DEPTH_FLAG10000_PROGRAMS.md),
+[40000 programs](behavior/display/MAP_TEV_DEPTH_FLAG40000_PROGRAMS.md),
+[whole local graph](behavior/display/MAP_TEV_LOCAL_REQUEST_GRAPH_AND_BACKEND_BOUNDARIES.md)
+complete detailed local mapSetMaterialTev request documentation. Reproduce with
+verify_map_tev_depth.py:1115 new words/seven source leaves/six spans/two imports/
+six sites/65536 integer cases and all2927 composed original TEV words rechecked.
+Original config records both3. Source/GX/SDK/numeric/capture/lifetime/runtime/
+images and broader complete-game system requirements remain open;instruction
+coverage is not an equivalence or reachability oracle.

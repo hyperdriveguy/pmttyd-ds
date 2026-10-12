@@ -1219,3 +1219,13 @@ multiplication floor255 host proof is bounded arithmetic,not original execution.
 No Dolphin trace,measured period/fade/texture image/GPU parity added. 84 CTest/
 90 Python pass;3DS build passes after native owner's RGB enum fix. Two depth
 branches/source/libm/GX/Ortho/LookAt/lifetime/images remain incomplete.
+
+ID1 complete local TEV request addendum (2026-10-12):
+[local graph/boundaries](behavior/display/MAP_TEV_LOCAL_REQUEST_GRAPH_AND_BACKEND_BOUNDARIES.md)
+now indexes all request branches. Depth source returns inverted alpha-scaled
+RGB with alpha0;initial two configs route3. These are static binary/data results,
+not an original capture or scene/clock/GX image comparison. Host65536 byte-product
+proof supports arithmetic only;composed2927-word coverage supports manual local
+review. Final86 CTest/90 Python/make all pass after native fixture changes;
+earlier missing/assertion failures resolved. No ID1 native/test/profile/save
+changes. SDK/source/lifetime/rendering-system/original-runtime closure remains open.

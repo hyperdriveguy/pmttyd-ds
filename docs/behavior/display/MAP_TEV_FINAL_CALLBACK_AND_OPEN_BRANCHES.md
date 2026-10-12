@@ -100,3 +100,13 @@ and [pulse texture](MAP_TEV_ANIMATED_PROJECTED_TEXTURE.md). These masks0x8010000
 0x800000 request blocks now close. Two depth middle internals0x10000/0x40000,
 original source/GX/libm/Ortho/LookAt/cache/lifetime/images remain open;no complete
 shader/system or actually executed scene coverage implied.
+
+ID1 final depth status update (2026-10-12):earlier open-middle branch lists
+are superseded locally by [depth sources](MAP_TEV_DEPTH_SOURCE_QUERIES_AND_CONFIG.md),
+[10000 routes](MAP_TEV_DEPTH_FLAG10000_PROGRAMS.md),
+[40000 routes](MAP_TEV_DEPTH_FLAG40000_PROGRAMS.md) and
+[whole local graph](MAP_TEV_LOCAL_REQUEST_GRAPH_AND_BACKEND_BOUNDARIES.md).
+ALL local TEV request blocks now have contracts;the remaining work is called
+SDK/GX/numeric and source/flag/config/clock/capture/resource/cache/lifetime/
+scene/image validation. This does not close whole rendering or complete-game
+requirements or prove all branches actually executed in the US game.

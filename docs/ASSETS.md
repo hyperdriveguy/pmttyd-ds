@@ -1842,3 +1842,19 @@ owner;rerun3DSX passes/log /tmp/id1-tev-terminal-build-rerun.log. Existing
 sound/proj/pmario.proj,pool/sdir/samp pipeline3218 GameCube/0 Switch/5 primary-PCM
 fallbacks ran. Ignored packs/catalog/WAV/RomFS outside history;original rights
 remain with owners and metadata/new verifier grants no asset redistribution.
+
+ID1 depth-TEV source/config provenance (2026-10-12):US G8ME01 ISO read-only.
+Original config80304a60,144 bytes,SHA256
+b01f90b7b4e7213c09322f2c3319369f4f1c0a4b8b11dd2033163d94dc731c46;two72-byte
+records both route3 at+3c. Initial dswp804150e8→803c9c30,debug colors8041f8e4..
+f0=ff000000/ff000000/ffff0000/ffff0000 and projected matrix IDs pinned metadata.
+Embedded ramp object addresses8041e738/e758 are queried,not exported initialized
+ramp/texture images. Original shadow/ramp constructor/capture/color/matrix/holder/
+resource/cache/lifetime still open. No model/texture/pose/message/shadow payload
+exported. Inspection ELFs/listings/report ignored under artifacts/reference/
+behavior;whole2927-word audit is metadata supporting manually reviewed requests.
+No ID1 converter/art/audio/geometry/lighting policy change. make all passes/log
+/tmp/id1-tev-depth-build.log;existing sound/proj/pmario.proj,pool/sdir/samp pipeline
+3218 GameCube/0 Switch/5 primary-PCM slice fallbacks ran. Ignored catalogs/packs/
+WAV/RomFS outside history;original rights remain with owners,without new asset
+redistribution license from local analysis or verifier code.

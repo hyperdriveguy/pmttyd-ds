@@ -506,3 +506,16 @@ words/11 constants/five spans/two imports/six sites/65536 host integer cases.
 Two depth middle branches0x10000/0x40000,source/GX/libm/Ortho/LookAt/capture/cache/
 lifetime/original images remain open. Hash/count/request closure does not prove
 full original shader/system or whole-game completion.
+
+## ID1 complete local TEV request documentation (2026-10-12)
+
+[Depth source/config](display/MAP_TEV_DEPTH_SOURCE_QUERIES_AND_CONFIG.md),
+[flag10000 routes](display/MAP_TEV_DEPTH_FLAG10000_PROGRAMS.md),
+[flag40000 routes](display/MAP_TEV_DEPTH_FLAG40000_PROGRAMS.md) close final two
+middle blocks/seven queries;original two config records both route3.
+[Whole local graph/boundaries](display/MAP_TEV_LOCAL_REQUEST_GRAPH_AND_BACKEND_BOUNDARIES.md)
+indexes ALL local branches/requests/captures/order/counters. Evidence verifier:
+tools/verify_map_tev_depth.py,1115 new words/six spans/two imports/six sites/
+65536 byte cases plus rechecked six-manifest2927-word coverage with zero holes/
+conflicts. This is complete local REQUEST documentation,not SDK/GX/numeric/
+source/capture/cache/lifetime/US execution/images or whole-system/game completion.
