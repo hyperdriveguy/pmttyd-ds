@@ -490,6 +490,23 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb / documentation request (2026-10-12):
+JumpSetting8010d6cc is now registered and writes actual packed unit16c/170/174
+through native operands/actor/registry services. Original first Jump request
+verifies20/0/.69921875;62 CTest/78 Python and make all pass. Full motion/Game/
+original traces remain open.
+
+Please recover COMPLETE btlevtcmd_SetMoveSpeed8010d860 and
+btlevtcmd_SetFallAccel8010d770 bodies:retained argument/event pointers and exact
+raw loads,GetValue/GetFloat/translation order,current-battle capture versus fresh
+unit lookup,callee field/store widths,firstCall use and return policy. Include
+full hashes/instruction anchors and native read-only-ISO verifier evidence.
+BATTLE_JUMP_EVENT_CALLBACKS currently proves used speed literals but explicitly
+leaves SetMoveSpeed mutation/completion open;BTL_UNIT_SET_FALL_ACCEL closes only
+the leaf and recovery docs summarize its wrapper. Do not infer full wrappers
+from names or replace the float tokens with rounded decimal constants. Leave
+reply/docs here;this request does not block other documented callback work.
+
 Native implementation breadcrumb (2026-10-12): BattleTransID,registry get/
 set and Mario/party/system queries are now implemented with original selectors,
 capture/read order and distinct missing-query/setter policies. Native data-child

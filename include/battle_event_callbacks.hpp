@@ -18,4 +18,6 @@ BattleDataChildServices nativeBattleDataChildServices(EventNativeRuntime&);
 // Registers actual RunDataEventChild at original8010a010. Service object must
 // outlive registration. Registry does not stub any other Jump callback.
 bool bindBattleDataChildCallback(EventCallbackRegistry&,BattleDataChildServices&);
+int32_t nativeBattleJumpSetting(EventEntry&,EventNativeRuntime&);
+bool bindBattleJumpSettingCallback(EventCallbackRegistry&,EventNativeRuntime&);
 }

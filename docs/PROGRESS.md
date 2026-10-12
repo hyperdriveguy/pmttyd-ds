@@ -1,5 +1,29 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native original JumpSetting callback
+
+Registered recovered JumpSetting8010d6cc on the original-address callback
+registry. Its body retains arguments,queries/translates actor,then resolves
+count/speed/gravity in order before fresh battle/unit lookup. It stores only
+unit16c/170/174 and returns2 without a first-call gate,clamp,automatic count/
+speed or position/vertical-increment initialization. Float event tokens use
+actual native operand resolution;their results are stored as binary32 words.
+
+Validation:make test passes62 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-jump-setting-test.log and /tmp/pm-jump-setting-build.log.
+`build-host/event_callback_registry_tests romfs/events.pmevt` passes the existing
+child path and invokes JumpSetting using the actual first original Jump request:
+count20,speed0,gravity0.69921875 (bits3f330000). Authored cases pin negative count,
+2.0/.19921875 tokens,zero preservation,no first-call gate and unchanged neighboring
+vertical-increment word. These are parameter requests,not measured impact frames.
+Packed unit memory remains authored provider storage;full motion/Game unbound.
+
+Documentation request left in EVT-01 for complete SetMoveSpeed8010d860 and
+SetFallAccel8010d770 wrapper raw-argument capture/resolution/lookup/write/return
+order. Existing docs close float literals/fall leaf but do not establish both
+complete wrappers. Next:those wrappers plus other callback families and unit/
+motion providers before original Jump execution. Full-game goal stays incomplete.
+
 ## 2026-10-12 — ID2 formatted resource requests and handle release
 
 Documented complete fileAsyncf/fileAllocf/fileAlloc/fileFree in two linked

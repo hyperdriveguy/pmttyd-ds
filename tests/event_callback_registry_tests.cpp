@@ -27,7 +27,7 @@ int main(int argc,char** argv) {
     assert(memory.registerRam(0x82000000,std::vector<uint8_t>(1024*1024)) && memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) && memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) && memory.registerRam(0x8041e844,std::vector<uint8_t>(4)));
     auto m=runtime.memoryBinding.services();const auto start=eventSdkInitializeAllocator(0x82000000,0x82100000,1,m);assert(eventSdkCreateHeap(start,0x82100000,m)==0 && memory.writeWord(0x8041e844,0));runtime.gp.refreshRate=60;runtime.initializeContexts();
     assert(memory.registerRam(0x8041eb90,std::vector<uint8_t>(4)) && memory.writeWord(0x8041eb90,0x84000000));
-    assert(memory.registerRam(0x84001000,std::vector<uint8_t>(32)) && memory.registerRam(0x84002000,std::vector<uint8_t>(16)) && memory.writeWord(0x84001018,0x84002000) && memory.writeWord(0x84002000,7));
+    assert(memory.registerRam(0x84001000,std::vector<uint8_t>(0x17c)) && memory.registerRam(0x84002000,std::vector<uint8_t>(16)) && memory.writeWord(0x84001018,0x84002000) && memory.writeWord(0x84002000,7));
     assert(memory.registerRam(0x84000000,std::vector<uint8_t>(0x448)) && memory.writeWord(0x84000020+7*4,0x84001000));
     auto childServices=argc==2?nativeBattleDataChildServices(runtime):nativeBattleDataChildServices(runtime,backend.services());assert(bindBattleDataChildCallback(registry,childServices) && !bindBattleDataChildCallback(registry,childServices) && !registry.contains(0x80107788));
     uint32_t childScript=0x80300100;
@@ -46,6 +46,19 @@ int main(int argc,char** argv) {
     tick();assert(parent.flags==0 && runtime.runtime.allocationCount==0);
     // Found key with value0 dispatches handler2 and continues without a child.
     assert(memory.writeWord(0x84002004,0));auto& missing=createRootEvent(runtime.schedule,0x80300000,10,0,runtime.creationServices());missing.owner=7;tick();assert(missing.flags==0 && runtime.runtime.nextId==4 && backend.translations==(argc==2?0u:2u) && backend.lookups==(argc==2?0u:2u));
+    assert(bindBattleJumpSettingCallback(registry,runtime) && !bindBattleJumpSettingCallback(registry,runtime));
+    assert(memory.registerRam(0x80300200,std::vector<uint8_t>(64)));
+    arbitrary.owner=7;arbitrary.arguments=0x80300200;
+    assert(memory.writeWord(arbitrary.arguments,uint32_t(-2)) && memory.writeWord(arbitrary.arguments+4,0xfffffffd) && memory.writeWord(arbitrary.arguments+8,0xf24a8280) && memory.writeWord(arbitrary.arguments+12,0xf24a7b4c));
+    assert(memory.writeWord(0x84001178,0x12345678));
+    assert(registry.invoke(arbitrary,0x8010d6cc,0,result) && result==2);uint32_t word;
+    assert(memory.readWord(0x8400116c,word) && word==0xfffffffd && memory.readWord(0x84001170,word) && word==0x40000000 && memory.readWord(0x84001174,word) && word==0x3e4c0000 && memory.readWord(0x84001178,word) && word==0x12345678);
+    assert(memory.writeWord(arbitrary.arguments+4,0) && memory.writeWord(arbitrary.arguments+8,0) && memory.writeWord(arbitrary.arguments+12,0));
+    assert(registry.invoke(arbitrary,0x8010d6cc,1,result) && result==2 && memory.readWord(0x8400116c,word) && word==0 && memory.readWord(0x84001170,word) && word==0 && memory.readWord(0x84001174,word) && word==0); // No first-call gate or automatic settings.
+    if(argc==2) {
+        arbitrary.arguments=0x80355cf8;
+        assert(registry.invoke(arbitrary,0x8010d6cc,1,result) && result==2 && memory.readWord(0x8400116c,word) && word==20 && memory.readWord(0x84001170,word) && word==0 && memory.readWord(0x84001174,word) && word==0x3f330000); // Actual initial Jump request:0/.69921875.
+    }
     assert(registry.unbind(0x8010a010));result=99;assert(!registry.invoke(arbitrary,0x8010a010,0,result) && result==99);
     std::cout<<"native callback registry/data-child execution tests passed\n";
 }

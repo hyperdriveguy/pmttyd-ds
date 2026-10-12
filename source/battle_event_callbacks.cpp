@@ -1,5 +1,6 @@
 #include "battle_event_callbacks.hpp"
 #include <cassert>
+#include <cstring>
 
 namespace ttyd {
 BattleActorServices nativeBattleActorServices(EventNativeRuntime& runtime) {
@@ -18,6 +19,23 @@ BattleDataChildServices nativeBattleDataChildServices(EventNativeRuntime& runtim
     s.values.user=&runtime;s.values.word=s.creation.word;
     s.values.resolve=[](void* p,EventEntry& e,int32_t operand) {auto& r=*static_cast<EventNativeRuntime*>(p);return getEventValue(e,operand,r.interpreterServices().operands);};
     s.user=backend.user;s.translate=backend.translate;s.currentBattle=backend.currentBattle;s.unit=backend.unit;return s;
+}
+int32_t nativeBattleJumpSetting(EventEntry& e,EventNativeRuntime& runtime) {
+    const uint32_t args=e.arguments;
+    auto operands=runtime.interpreterServices().operands;auto memory=runtime.memoryBinding.services();
+    auto actor=nativeBattleActorServices(runtime);
+    auto raw=[&](uint32_t offset) {const uint32_t v=memory.word(memory.user,args+offset);return v<=0x7fffffff?int32_t(v):int32_t(int64_t(v)-0x100000000LL);};
+    const int32_t id=translateBattleActor(&e,getEventValue(e,raw(0),operands),actor);
+    const int32_t count=getEventValue(e,raw(4),operands);
+    const float speed=getEventFloat(e,raw(8),operands),gravity=getEventFloat(e,raw(12),operands);
+    const uint32_t unit=battleRegistryUnit(currentBattleAddress(actor),id,actor);
+    uint32_t speedBits,gravityBits;std::memcpy(&speedBits,&speed,4);std::memcpy(&gravityBits,&gravity,4);
+    memory.storeWord(memory.user,unit+0x16c,uint32_t(count));
+    memory.storeWord(memory.user,unit+0x170,speedBits);memory.storeWord(memory.user,unit+0x174,gravityBits);
+    return 2;
+}
+bool bindBattleJumpSettingCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {
+    return registry.bind(0x8010d6cc,&runtime,[](void* p,EventEntry& e,int32_t) {return nativeBattleJumpSetting(e,*static_cast<EventNativeRuntime*>(p));});
 }
 bool bindBattleDataChildCallback(EventCallbackRegistry& registry,BattleDataChildServices& services) {
     return registry.bind(0x8010a010,&services,[](void* p,EventEntry& e,int32_t) {return runBattleDataChild(e,*static_cast<BattleDataChildServices*>(p));});
