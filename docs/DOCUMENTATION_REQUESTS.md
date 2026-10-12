@@ -458,6 +458,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Loop-opcode breadcrumb (2026-10-12): `event_loop_opcodes.cpp` now handles4..8.
+Tests cover signed labels/live fallback,raw and variable counts,zero/negative
+threshold policy,callback-mutated index/body,and distinct BREAK/CONTINUE lexical
+headers. A real dispatcher/data loop verifies all iterations before frame yield.
+Final make test passes35 suites/63 Python tests;make all passes. Shared airborne
+fixture failure from13:20 MDT was reconciled by the native overworld session.
+Next:delivered IF/switch and remaining memory/debug handlers,then native context/
+address/numeric services and original Jump. Existing source/domain/runtime and
+invalid-depth/packed-alias closure remains open;no original trace was inferred.
+
 Data-opcode breadcrumb (2026-10-12): `event_data_opcodes.cpp` now handles50..73
 with actual operand/dispatcher integration. Tests retain RHS/query/convert order,
 raw destinations/data, live cursor mutation and sequential IEEE versus indexed

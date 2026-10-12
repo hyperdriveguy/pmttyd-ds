@@ -1,5 +1,32 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original GOTO and loop continuations
+
+Implemented `event_loop_opcodes.cpp` for original4..8. GOTO retains signed8
+label matching, duplicate-first selection, direct negative pointers and live
+argument fallback. DO stores raw counts/body addresses. NEXT distinguishes raw0,
+wrapped literal countdown and live variable decrement/writeback;its selected
+stack offset survives callbacks while zero completion pops the live byte index.
+BREAK skips the closing command/count write;CONTINUE fetches the closing header.
+Both lexical scans retain original nesting,terminal1/delete2 and signed strides.
+Eight semantic body/count slots are cleared by constructors and retained by
+restart. Native invalid-depth/packed-alias behavior remains an explicit domain.
+
+Validation: final `make test` passed35/35 CTest suites and63 Python tests; final
+`make all` passed. Logs:/tmp/pm-event-loop-test-final.log and
+/tmp/pm-event-loop-build-final.log. The earlier full run failed only an airborne
+core fixture during concurrent overworld work;that session reconciled the
+fixture with documented support retention before the successful rerun. Event
+fixtures cover raw/variable/literal0 and negative counts,threshold crossing,
+callback-mutated index/body,lexical scans and a same-dispatch variable-count loop
+executing arithmetic until a frame wait. No emulator run for unbound VM services.
+
+The remake remains incomplete. Next:delivered IF/string/float predicates and
+SWITCH/grouped CASE handlers,remaining memory/user-buffer/debug opcodes,native
+context/bootstrap/address/numeric owners,and original Jump stream/callback
+bindings. Existing EVT-01 source/runtime/alias/domain requests remain open;
+breadcrumbs are in docs/DOCUMENTATION_REQUESTS.md for the documentation agent.
+
 ## 2026-10-12 — Assignment, arithmetic and original data cursor handlers
 
 Implemented `event_data_opcodes.cpp` for original50..73 from the assignment and
