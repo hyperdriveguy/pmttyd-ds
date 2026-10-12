@@ -1,0 +1,171 @@
+{
+  "schema": 1,
+  "scope": "Generic ROAD key-off, independent inline landing wait and ordinary airborne movement composition; static source only",
+  "dol_spans": [
+    {
+      "name": "bero_case_exec_road",
+      "address": 2150685384,
+      "size": 300,
+      "sha256": "24984715438e0612229901c48293c0cbfc951d818896edd0e2f7123c3b2bfbf7"
+    },
+    {
+      "name": "bero_case_init_check",
+      "address": 2150684808,
+      "size": 396,
+      "sha256": "188a756883c10c44790c9075293d123d4c1e3b552710da1fbb6c9ea336cedc35"
+    },
+    {
+      "name": "evt_mario_key_onoff",
+      "address": 2148430964,
+      "size": 100,
+      "sha256": "7b8e06d2aff85b14c07ed4981aaccc7e29601fb7801e03ab77fc36f288a1c06f"
+    },
+    {
+      "name": "marioKeyOff",
+      "address": 2147860980,
+      "size": 40,
+      "sha256": "2355261017e21abec8723a2e8e16dc95e049b5cc11ffae10395adfe72089b442"
+    },
+    {
+      "name": "marioKeyOn",
+      "address": 2147860928,
+      "size": 52,
+      "sha256": "2f7a25677970c4fa4a4ee6740bde4c79382361b5f3f7987e56e2ced532c3f301"
+    },
+    {
+      "name": "evt_mario_wait_landon",
+      "address": 2148417952,
+      "size": 200,
+      "sha256": "eb13e6e57b25d920b50b16b3e8567f4dcd7f6150a611726704d325a872659825"
+    },
+    {
+      "name": "evt_mario_set_force_dir",
+      "address": 2148426288,
+      "size": 144,
+      "sha256": "adeec7797661930a5339a579bd0baec36fe8a0389c180115367141e241b44982"
+    },
+    {
+      "name": "marioUpdateKeyData",
+      "address": 2148097200,
+      "size": 480,
+      "sha256": "db6e3882e60cc9de3b1bc7aef328126769532d7db38c8fde1877f2b342ea0ab0"
+    },
+    {
+      "name": "marioGetStick",
+      "address": 2148096760,
+      "size": 440,
+      "sha256": "a6aba7a06277bc002c9b636e7cdc13e346b2f3a2c50d1ef6cedc01692778c741"
+    },
+    {
+      "name": "marioMain",
+      "address": 2147854304,
+      "size": 2552,
+      "sha256": "e7a4c22dbea9834233df4749dc96a6cf0687886f4792edc7c3fdf2b7331a52b8"
+    },
+    {
+      "name": "marioMove",
+      "address": 2147850872,
+      "size": 3004,
+      "sha256": "2afdc189f931c82460c0a253175016e0b4597bd365f70e36a37af7decae668be"
+    },
+    {
+      "name": "marioMoveMain",
+      "address": 2147849384,
+      "size": 1488,
+      "sha256": "2fb3744cded7847ad0c252487b8f5dfb2977f4d5aa395d0db30e565af06502ab"
+    },
+    {
+      "name": "mot_jump",
+      "address": 2148119680,
+      "size": 520,
+      "sha256": "394fdc33e6fcae45fae7866f5808ea1fa58699aff38428318ebe3a2329587853"
+    },
+    {
+      "name": "mot_fall",
+      "address": 2148118300,
+      "size": 572,
+      "sha256": "8e5bbb5e7348f6d18fb5434813688fba54fd905eca28f5d92f0cc21827bc533a"
+    },
+    {
+      "name": "evt_inline_evt",
+      "address": 2147693676,
+      "size": 348,
+      "sha256": "6654b888d43085e0db5dad6ab6d125caec48434fabc7e6897b1ff2bea4baf613"
+    },
+    {
+      "name": "evt_bero_mapchange",
+      "address": 2147986128,
+      "size": 116,
+      "sha256": "a832a5a4c4194bbebda5c6fed14ea05efc2e09375451b11fc98c13176eba1cb7"
+    },
+    {
+      "name": "evt_bero_exec_onoff",
+      "address": 2147985972,
+      "size": 104,
+      "sha256": "fa1a47efc98af3d6e052762a0021f85bd64df5b09117589eee47fd1af6ea5b9b"
+    },
+    {
+      "name": "evt_bero_1stcheck",
+      "address": 2147978268,
+      "size": 116,
+      "sha256": "b13616cd476924f3ad83f662ff409453b57c466133b6c35237aa976eb8cfda69"
+    },
+    {
+      "name": "evt_wait_msec",
+      "address": 2147702916,
+      "size": 208,
+      "sha256": "9fb1aaaa4601dc4b4b2d4d03e7751f9a69ae6bcbc302c76b2fdfbdd4d11598c8"
+    }
+  ],
+  "dol_anchors": {
+    "2150685384": "0002005b",
+    "2150685396": "0001005e",
+    "2150685404": "0002005b",
+    "2150685436": "0002005b",
+    "2150685448": "0000006b",
+    "2150685476": "0002005b",
+    "2150685488": "0001005b",
+    "2150685496": "0003005b",
+    "2150685536": "0004005b",
+    "2150685588": "0000006d",
+    "2150685592": "0001000a",
+    "2148417968": "800301e8",
+    "2148417988": "28040001",
+    "2148417996": "2c040002",
+    "2148418124": "38600002",
+    "2148418132": "38600000",
+    "2148426336": "40810040",
+    "2148426352": "901f0000",
+    "2148426396": "d01f01a8",
+    "2148097512": "5400073d",
+    "2148097516": "40820010",
+    "2148097536": "987f0252",
+    "2148097540": "987f0253",
+    "2148097580": "b07f024a",
+    "2148097584": "b07f024c",
+    "2147855300": "546007bd",
+    "2147855324": "4803b0d5",
+    "2147855336": "4803af11",
+    "2147855344": "48039a2d",
+    "2147856380": "48038d3d",
+    "2147856388": "4bffea75",
+    "2147856460": "4bffea2d",
+    "2147849496": "540007bd",
+    "2147850008": "c3be0180",
+    "2147850108": "c03e01a4",
+    "2147850136": "efddf07a",
+    "2147850140": "efbdf83a",
+    "2147986032": "7c041b78",
+    "2147986040": "7c041878",
+    "2147986044": "908d1af4",
+    "2147986188": "2c1e0000",
+    "2147986192": "41820014",
+    "2147986208": "4bfb36f9",
+    "2147986216": "38600000",
+    "2150650236": "80032934",
+    "2150650244": "80032944"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": []
+}

@@ -155,7 +155,10 @@ registers cases, clears BeroEXEC bit1 and sets bit0x10000.
 Departure bero_case_init_check invokes custom out at8030d9b0; LW0==1 completes
 its handled route and returns1. bero_case_exec_road temporarily enables input
 then returns on that result at8030dae8–8030daf4, skipping generic departure and
-mapchange. Generic completion clears relevant busy bits in the scripted order.
+mapchange. Generic inline completion sets BeroEXEC0x10000 and clears bit1;
+the parent separately sets bit8 after its150ms wait. The wrapper uses argument0
+to OR and nonzero to AND-clear; see the
+[landing/concurrency addendum](OVERWORLD_ROAD_LANDING_WAIT.md).
 Do not treat no00_custom story5 as a simple permission to jump to gor_01.
 
 The road-local callbacks skip story6/7 custom arrival at story11/12, but this
