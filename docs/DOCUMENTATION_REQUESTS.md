@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Ordinary Jump root registration and callback-address census | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Conditional root/source binding](behavior/NORMAL_JUMP_ROOT_REGISTRATION.md),[complete scoped registry](behavior/NORMAL_JUMP_CALLBACK_REGISTRY.md):root10/flags0/typeef/context/ID/speed/actor order,three child wrappers,156 direct sites/72 callbacks;requested-enum run-check correction flagged;menu/global/raw/dynamic/source/backend/runtime remains open |
 | SDK descriptor and primary-map live read-order addendum | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Exact live order](behavior/SDK_HEAP_BOOTSTRAP_LIVE_READ_ORDER.md):InitAlloc live count/base/final base with retained original product,CreateHeap post-header size reread,both primary start→end→handle before length publication;native arena/alias/source/runtime remains open |
 | Partner fall handler entry,air and landing ownership | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used party_motion_fall complete query-before-integration/flags/damping/failsafe/landing/return graph;called placement/facing/pose/source domains,other handlers,EVT-01 and original trajectories remain separate |
 | Consolidated packed EventEntry map and address-alias requirements | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete432-byte map](behavior/EVENT_ENTRY_PACKED_LAYOUT.md),[address/alias requirements](behavior/EVENT_ENTRY_ADDRESS_AND_ALIAS_REQUIREMENTS.md):49 spans,388 known-role/44 unknown raw bytes,pointer/typed/context/global and physical alias domains;actual native translator/source/backend/runtime binding remains open |
@@ -1708,3 +1709,30 @@ released;this specific order request answered. Native arena/cache/address/alias/
 scene/source and original traces remain EVT-01 requirements. make test48 CTest/
 78 Python and make all pass;1963 local links resolve;general1980 anchors pass.
 No native/test/asset conversion edits by ID2.
+
+
+ID2 EVT-01/JUMP-01 registration/registry delivery (2026-10-12), partial answer:
+[Source/root registration](behavior/NORMAL_JUMP_ROOT_REGISTRATION.md) pins
+ordinary weapon803538a8+b0→80355cf0,selected-event publication and complete
+state6 creation region:root priority10,flags0,typeef,current GP context,global
+pre-increment ID/global speed,actor initially-1 then E.ID→U2a8 followed by
+U0→E160 AFTER label scan/run-check,wait-ID deletion afterward. Flags0 does not
+append a root mid-manager. Three literal16-byte wrappers invoke Jump as opcode94
+child,then delete;child inherits actor/type,priority+1 and current GLOBAL speed.
+[Registry census](behavior/NORMAL_JUMP_CALLBACK_REGISTRY.md) and machine-readable
+ tools/jump_callback_registry.json pin all156 direct USER_FUNC sites/72 addresses
+in three packed streams,all source/function body hashes,127 registration anchors
+and seven spans. Full callback bodies are identities here,not newly closed
+implementations;menu/global writer paths,dynamic data7/transitive sources and
+original runtime remain open. Own scoped lock released;parents remain open.
+
+ID2 urgent native source correction in the same delivery:evtEntryRunCheck80037744
+loads REQUESTED8041e940 directly (r13+1a20),not GP18/marioStGetSystemLevel result.
+Current include/event_creation.hpp says systemLevel is whole GP18 mask;that comment/
+binding must be corrected by native owner. Request3 versus GP low nibble7 is a
+concrete differing case:constructor dispatches StopAll10 from3,while7 matches no
+case. Source enum and getter mask remain separate;root verifier/full listing pin
+this evidence. ID2 changes no concurrent native source. make test50 CTest/78
+Python and make all pass;general1980 anchors/root verifier pass;all72 table rows
+match census;repeat JSON reports equal;1999 local links resolve. Passing host
+fixtures do not establish this source-binding fidelity.

@@ -662,3 +662,12 @@ clarifies retained metadata size versus live descriptor globals,post-header
 descriptor size reread and start→end→handle capture before requested-length
 publication. Bootstrap policy/verifier now include these exact reloads and
 alias acceptance cases;native arena/cache/source/scene/runtime remains open.
+
+
+[Ordinary Jump source/root binding](behavior/NORMAL_JUMP_ROOT_REGISTRATION.md)
+and [callback registry census](behavior/NORMAL_JUMP_CALLBACK_REGISTRY.md) pin
+conditional root10/flags0/typeef/context/ID/speed/post-construction actor order,
+three child wrappers and156 direct sites/72 callbacks for the three packed
+streams. Constructor run-check reads requested8041e940,distinct from GP18 getter
+mask;native source correction is queued. Menu/global/raw/dynamic/domain/backend
+closure and original execution remain EVT-01/JUMP-01 work.

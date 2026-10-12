@@ -1,5 +1,37 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Ordinary Jump root source binding and complete scoped callback census
+
+Documentation agent ID2 delivered conditional default weapon→selected event→
+state6 root registration contract and three literal child wrappers. Root priority
+10/flags0/typeef,current GP context,pre-increment ID/global speed,actor-1 during
+construction then post-return E.ID→U2a8/U0→E160 and wait deletion are explicit.
+Machine-readable registry retains156 direct USER_FUNC caller sites/72 callback
+addresses across three packed streams,body fingerprints and registration evidence.
+No callback success/domain/runtime substitution or original execution was made.
+
+Found source-binding discrepancy:evtEntryRunCheck80037744 reads REQUESTED
+8041e940 directly;include/event_creation.hpp currently describes whole GP18.
+Queued exact correction in docs/DOCUMENTATION_REQUESTS.md for native owner;
+request3/GP low nibble7 differ. ID2 left native source/tests untouched. Full menu/
+global writer/dynamic data7/transitive callback/scene/runtime source remains open.
+
+Validation: verify_jump_source_registry.py passes three original streams,72
+callback body identities,156 exact sites,one containing controller hash,127
+registration instruction anchors and seven spans;repeat JSON reports match.
+All72 documentation rows/counts reconcile with machine census. Root constructor
+verifier and general1980-anchor suite pass;Python compilation/diff-check and1999
+local links pass. make test50/50 CTest suites and78 Python tests;make all passes.
+Logs:/tmp/id2-jumpsource-test.log,/tmp/id2-jumpsource-build.log;reports
+/tmp/id2-jumpsource-evidence.json and -second.json. Listings/inventory remain /tmp.
+
+Own scoped lock released;EVT-01/JUMP-01 remain open. Next native owner corrects
+requested-enum run-check source,binds coherent packed address/storage and actual
+original callbacks;documentation continues menu/global/dynamic/source ownership,
+raw record/reset/end/turn and other domain requests. Goal active/incomplete;
+static callback census does not prove game execution or complete-game fidelity.
+
+
 ## 2026-10-12 — SDK descriptor and primary-map live read-order addendum
 
 Documentation agent ID2 answered explicit EVT-01 reload-order request against

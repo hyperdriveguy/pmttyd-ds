@@ -1,0 +1,1400 @@
+{
+  "schema": 1,
+  "scope": "Three packed source streams direct USER_FUNC sites;literal root/child references and state6 registration;not transitive/domain execution closure",
+  "events": [
+    {
+      "name": "marioAttackEvent_NormalJump",
+      "address": 2150980848,
+      "size": 3852,
+      "sha256": "2858f3f63cfb95dc84eb6ed3b363c530e24200063044f37afd275d3847f9720c"
+    },
+    {
+      "name": "marioAttackEvent_MajinaiPowerUpCheck",
+      "address": 2151035784,
+      "size": 140,
+      "sha256": "3d44dcff79577976ecc7a400be16eb972f8d464479a8b314b8bb22ec8cc661d4"
+    },
+    {
+      "name": "btldefaultevt_SuitoruBadgeEffect",
+      "address": 2150953700,
+      "size": 488,
+      "sha256": "dadf7e175f491ab9e4a12ae63411cd7806df2bd0e73ec2be0a12e0b3ba454179"
+    }
+  ],
+  "callbacks": [
+    {
+      "address": 2147932528,
+      "name": "evt_eff",
+      "size": 2572,
+      "sha256": "0a7b5b58e7d416b4518e3c48e461483d12826a6248009e9b60ab93a8de62fd0f",
+      "sites": [
+        {
+          "event": "btldefaultevt_SuitoruBadgeEffect",
+          "address": 2150953832
+        },
+        {
+          "event": "btldefaultevt_SuitoruBadgeEffect",
+          "address": 2150954072
+        }
+      ]
+    },
+    {
+      "address": 2148549484,
+      "name": "btlevtcmd_InviteApInfoReport",
+      "size": 76,
+      "sha256": "8b24fb2c40947642dbe860a327c4e7ae829d5f95caa353938a427cc648f54f52",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983264
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984368
+        }
+      ]
+    },
+    {
+      "address": 2148549896,
+      "name": "btlevtcmd_snd_voice",
+      "size": 216,
+      "sha256": "0b05d46b342e87120a81c08700119270fb77fa41f39f1ca238e37ad43161c538",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982672
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983552
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984272
+        }
+      ]
+    },
+    {
+      "address": 2148550400,
+      "name": "btlevtcmd_snd_se",
+      "size": 188,
+      "sha256": "ac020e6c003638e1e2ce2068fa8c35911f4e4b75941af476745da9bae20bed38",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982020
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982748
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982984
+        }
+      ]
+    },
+    {
+      "address": 2148553960,
+      "name": "btlevtcmd_WeaponAftereffect",
+      "size": 524,
+      "sha256": "a4e23fc36b5cd6826449ca322c4d9af872f9f8f3df5d2eda5d4ff4e08858e5fa",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983272
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983916
+        }
+      ]
+    },
+    {
+      "address": 2148554728,
+      "name": "btlevtcmd_CommandGetWeaponAddress",
+      "size": 168,
+      "sha256": "29a89f4a5553572157bcc7aa3b846a811d6e99f9c4b5b18f676c9de39eaf08c4",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981084
+        }
+      ]
+    },
+    {
+      "address": 2148554976,
+      "name": "btlevtcmd_GetWeaponActionLv",
+      "size": 72,
+      "sha256": "87257b4e87dc89fc0456326e2daf5c61c4cc8f8aa07e08f895380b5e026db143",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981276
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981656
+        }
+      ]
+    },
+    {
+      "address": 2148555168,
+      "name": "btlevtcmd_PayWeaponCost",
+      "size": 116,
+      "sha256": "b5c1d71536154c1fad345f8a59bfe7dfb8ea946f6c38a1268ace66c643fd20ca",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981128
+        }
+      ]
+    },
+    {
+      "address": 2148559648,
+      "name": "btlevtcmd_AnimeChangePoseType",
+      "size": 152,
+      "sha256": "da3425b3c31597077064eb744ce9c120e69190bcbfda99652707c113e90e70f0",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981456
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981772
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984572
+        }
+      ]
+    },
+    {
+      "address": 2148559800,
+      "name": "btlevtcmd_AnimeChangePose",
+      "size": 136,
+      "sha256": "1547c29634a64925e1850f60b5ef1ddc23638fdd7474b4ac9cac086c740d5591",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982372
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982624
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983012
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983052
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983284
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983928
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984224
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984340
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984536
+        }
+      ]
+    },
+    {
+      "address": 2148560252,
+      "name": "btlevtcmd_ACRGetResult",
+      "size": 128,
+      "sha256": "f63d4a3a813d76f95c48212651fa4098a49c0141caa11dd749b7f50d0066d1de",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982592
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984192
+        }
+      ]
+    },
+    {
+      "address": 2148560380,
+      "name": "btlevtcmd_ACRStart",
+      "size": 184,
+      "sha256": "7eb12e360119f4f6aa1165740bc8289c8abd17206acba76ca464c72f9cb3bb76",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982564
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984164
+        }
+      ]
+    },
+    {
+      "address": 2148560564,
+      "name": "btlevtcmd_ACHelpSet",
+      "size": 60,
+      "sha256": "ddc1ddb584a35f7bbb6ae284f5bb8187493bfbbab6414b319cb284165f00a02e",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150980952
+        }
+      ]
+    },
+    {
+      "address": 2148560624,
+      "name": "btlevtcmd_ac_timing_get_success_frame",
+      "size": 80,
+      "sha256": "63849b652db4b3a96360b91ee771c0752e584d3ad6ae3de10e6b5bbba9a14d87",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983088
+        }
+      ]
+    },
+    {
+      "address": 2148560704,
+      "name": "btlevtcmd_ac_timing_flag_onoff",
+      "size": 96,
+      "sha256": "6339e74b1361639796e60050ddac6dae8335686f8eab9c7f38bd7fefce35297c",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983072
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983120
+        }
+      ]
+    },
+    {
+      "address": 2148560800,
+      "name": "btlevtcmd_ACSuccessEffect",
+      "size": 836,
+      "sha256": "70af9dac90e140fbd392993137fbd0daf82951df21855dae6e9a4a4642a40a7c",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983752
+        }
+      ]
+    },
+    {
+      "address": 2148561636,
+      "name": "btlevtcmd_AudienceDeclareAcrobatResult",
+      "size": 440,
+      "sha256": "d9c604e55d6965ac8558eafcf53cf5129f982b5c699a3ab99ad9cbf62363c741",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982644
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984244
+        }
+      ]
+    },
+    {
+      "address": 2148562076,
+      "name": "btlevtcmd_AudienceDeclareACResult",
+      "size": 172,
+      "sha256": "c20cf2c842b004460f0a56f7594c08c11d4d46878d5a9c599a7be9e0ac31f4df",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983212
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983776
+        }
+      ]
+    },
+    {
+      "address": 2148562248,
+      "name": "btlevtcmd_GetResultCountAC",
+      "size": 52,
+      "sha256": "d22d7c93efd083c0ab04d4d0bd352908851b7b038d88851104548913da542cf4",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983568
+        }
+      ]
+    },
+    {
+      "address": 2148562372,
+      "name": "btlevtcmd_GetResultPrizeLv",
+      "size": 156,
+      "sha256": "6d3c6674c779159d5fdb18e886e613e08187d3d25a2995c47c979db035a0c33a",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983732
+        }
+      ]
+    },
+    {
+      "address": 2148562528,
+      "name": "btlevtcmd_GetResultAC",
+      "size": 52,
+      "sha256": "3a2c76926cdefc97a4eef4118bbab2912529502dc8f4824e41f59ba139a299dc",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983144
+        }
+      ]
+    },
+    {
+      "address": 2148562696,
+      "name": "btlevtcmd_ResultAC",
+      "size": 80,
+      "sha256": "98b506c4515be425bda40a46dc11da265d2e8db8ddbf8fb3efb9217380207ead",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983136
+        }
+      ]
+    },
+    {
+      "address": 2148562776,
+      "name": "btlevtcmd_StopAC",
+      "size": 48,
+      "sha256": "4d7b1e106bdb24f69e8bc557bc99d0c6c23b1f501fc01e222d70b177330724ef",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982964
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983248
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983908
+        }
+      ]
+    },
+    {
+      "address": 2148562824,
+      "name": "btlevtcmd_StartAC",
+      "size": 100,
+      "sha256": "2762fc5508e747fac02e5d8ef87c40f93788ea9bc57ab616f0e40f4423028833",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982148
+        }
+      ]
+    },
+    {
+      "address": 2148562924,
+      "name": "btlevtcmd_SetupAC",
+      "size": 152,
+      "sha256": "46c3ada1b1b0f1dec4d9f1b3276a3bbe14e667125639d177309ffba4b6d80d60",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981308
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981688
+        }
+      ]
+    },
+    {
+      "address": 2148563768,
+      "name": "btlevtcmd_AcSetDifficulty",
+      "size": 128,
+      "sha256": "e2184642be30b9139403c4f2430018aa636e4da54161eefe8faa1e893188c332",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981292
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981672
+        }
+      ]
+    },
+    {
+      "address": 2148569172,
+      "name": "btlevtcmd_GetTakeoffPosition",
+      "size": 852,
+      "sha256": "8526e7e1fe793874d7ab406629c24983cf0ac09ee233cdc280f3b9a539015edb",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981476
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981792
+        }
+      ]
+    },
+    {
+      "address": 2148570024,
+      "name": "btlevtcmd_MarioJumpPosition",
+      "size": 2240,
+      "sha256": "bfe6ed6ef66602af64ebad20435d2f708346d851172f3978391411913a433c40",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982708
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982816
+        }
+      ]
+    },
+    {
+      "address": 2148572264,
+      "name": "btlevtcmd_MarioJumpParam",
+      "size": 412,
+      "sha256": "bf128edee4331114b3d4d4cd147fb2d0bb2580f6ea16f5add0eb11acd6d399d5",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982416
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982788
+        }
+      ]
+    },
+    {
+      "address": 2148573200,
+      "name": "btlevtcmd_RunDataEventChild",
+      "size": 160,
+      "sha256": "b2af79fafad773cfbd9319674aba10dfbecb715552f1be41795693c678ad7ecb",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981144
+        }
+      ]
+    },
+    {
+      "address": 2148573640,
+      "name": "btlevtcmd_WaitGuardMove",
+      "size": 28,
+      "sha256": "f3f7ef1721adccaf9d39732c5004df0ab1cb314f526a08607cf2b783f9202306",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981120
+        }
+      ]
+    },
+    {
+      "address": 2148573804,
+      "name": "btlevtcmd_StartWaitEvent",
+      "size": 100,
+      "sha256": "387f7f1d631b40409d124f07d02f3d6994fbe08a4e0e15376a40dc396241ad04",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984680
+        }
+      ]
+    },
+    {
+      "address": 2148575116,
+      "name": "btlevtcmd_CheckDamage",
+      "size": 256,
+      "sha256": "0893c30a90d378db8a65c39412d130189b0066d92aeabe64a371c90018107771",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983168
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983672
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983840
+        }
+      ]
+    },
+    {
+      "address": 2148576172,
+      "name": "btlevtcmd_PreCheckDamage",
+      "size": 256,
+      "sha256": "66555e5c75118f298471c84b7d74863802ed749b341a4306fa3a3c1f98d7c0e6",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982192
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982228
+        }
+      ]
+    },
+    {
+      "address": 2148576512,
+      "name": "btlevtcmd_AttackDeclare",
+      "size": 172,
+      "sha256": "35691f3ed371f63807062fc054b85bf352f3a16f890d42d3c31490fd57c79dcf",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981100
+        }
+      ]
+    },
+    {
+      "address": 2148578328,
+      "name": "btlevtcmd_GetFirstAttackTarget",
+      "size": 120,
+      "sha256": "91c5eb8d14cc792a697ec3c2414efb5ce1e2c9da4161236bf1a082e74df955f4",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150980900
+        }
+      ]
+    },
+    {
+      "address": 2148578624,
+      "name": "btlevtcmd_GetSelectEnemy",
+      "size": 164,
+      "sha256": "c1f0b52f18463fd0dff03de9285079892f2d86bfd639a8435ae4797913e2f7c2",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981044
+        }
+      ]
+    },
+    {
+      "address": 2148579268,
+      "name": "btlevtcmd_FaceDirectionSub",
+      "size": 152,
+      "sha256": "a030cd088fc59347390c08fe1a317e32940c6ed8a9690c820cf82d28393eea42",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981388
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983368
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983436
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983488
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984012
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984392
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984444
+        }
+      ]
+    },
+    {
+      "address": 2148583616,
+      "name": "btlevtcmd_GetMoveFrame",
+      "size": 436,
+      "sha256": "4a6037f29d16423fc5592085b654c88240f91a96a89300e181913d17296c2fc0",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981556
+        }
+      ]
+    },
+    {
+      "address": 2148584052,
+      "name": "btlevtcmd_MovePosition",
+      "size": 820,
+      "sha256": "af9ff1f74966b242c18629523645afc9ce856b681f94f4942e4fcf71bd7a0c19",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981716
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982060
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984616
+        }
+      ]
+    },
+    {
+      "address": 2148585712,
+      "name": "btlevtcmd_JumpContinue",
+      "size": 280,
+      "sha256": "7f097e6c45e700798a4d490f272ecbd614301cddbf0d6b8cd1afc5154bf7f1e0",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982972
+        }
+      ]
+    },
+    {
+      "address": 2148585992,
+      "name": "btlevtcmd_JumpPosition",
+      "size": 1220,
+      "sha256": "95e8c2ed3148fab609989cd67a56392c571ca158a575f03e9b5eeedf517d8c48",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983388
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983456
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983508
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984308
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984412
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984464
+        }
+      ]
+    },
+    {
+      "address": 2148587212,
+      "name": "btlevtcmd_JumpSetting",
+      "size": 164,
+      "sha256": "a1d72383b900351dfbe1983be1c0311f26c6ae8c858bb71a3a452613c6942bd8",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150980848
+        }
+      ]
+    },
+    {
+      "address": 2148587376,
+      "name": "btlevtcmd_SetFallAccel",
+      "size": 120,
+      "sha256": "7c58dea9e3a0dd8cdf0759c920cc3d0ce17e886c156888c5e074615758c7220f",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983304
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983420
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983948
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984376
+        }
+      ]
+    },
+    {
+      "address": 2148587616,
+      "name": "btlevtcmd_SetMoveSpeed",
+      "size": 120,
+      "sha256": "e3d61e964f4aecca484b470146cf99f57385235959e2b60841e07d3655942a29",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981440
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981756
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984556
+        }
+      ]
+    },
+    {
+      "address": 2148590780,
+      "name": "btlevtcmd_ResetFaceDirection",
+      "size": 112,
+      "sha256": "72a5dcabb7a1f041d462c1be2e5652f7106985a0642e8fab96f9783e64bcb915",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984660
+        }
+      ]
+    },
+    {
+      "address": 2148591016,
+      "name": "btlevtcmd_ChangeFaceDirection",
+      "size": 108,
+      "sha256": "104e3182211866b072302e8667e05a27c26d20d2865b1237e1132adbc631e4bc",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981540
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981856
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982132
+        }
+      ]
+    },
+    {
+      "address": 2148591236,
+      "name": "btlevtcmd_CalculateFaceDirection",
+      "size": 792,
+      "sha256": "9b55dc157bfebad36a84e0ff70f1f62b551ff23592e6d0f3e130668c4cee361b",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981508
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981824
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982100
+        }
+      ]
+    },
+    {
+      "address": 2148592344,
+      "name": "btlevtcmd_GetBodyId",
+      "size": 116,
+      "sha256": "4db02d11941acc2101d49c096b96567f0b342b86d3b942c0bf9402809d576c2c",
+      "sites": [
+        {
+          "event": "btldefaultevt_SuitoruBadgeEffect",
+          "address": 2150953732
+        },
+        {
+          "event": "btldefaultevt_SuitoruBadgeEffect",
+          "address": 2150954016
+        }
+      ]
+    },
+    {
+      "address": 2148594176,
+      "name": "btlevtcmd_StartAvoid",
+      "size": 232,
+      "sha256": "b90f8d58d7b7bf846a85b0278f46fbde83625b1b69a03d87927126d1bf896f0a",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982880
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982912
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982944
+        }
+      ]
+    },
+    {
+      "address": 2148596104,
+      "name": "btlevtcmd_RecoverFp",
+      "size": 148,
+      "sha256": "258f93cac82ed466e78b6fbce35f6dc2b03f1fd0204cbbeb797bd776c8262bf8",
+      "sites": [
+        {
+          "event": "btldefaultevt_SuitoruBadgeEffect",
+          "address": 2150954144
+        }
+      ]
+    },
+    {
+      "address": 2148596252,
+      "name": "btlevtcmd_RecoverHp",
+      "size": 212,
+      "sha256": "213943e5e194954ee654911622774dc6e338ef0cd88df07970768b5912601190",
+      "sites": [
+        {
+          "event": "btldefaultevt_SuitoruBadgeEffect",
+          "address": 2150953904
+        }
+      ]
+    },
+    {
+      "address": 2148605172,
+      "name": "btlevtcmd_GetStatusMg",
+      "size": 108,
+      "sha256": "ec009752bfac06063fbe71a7defc1bb320dc98f675ca3e729258758e855aa938",
+      "sites": [
+        {
+          "event": "btldefaultevt_SuitoruBadgeEffect",
+          "address": 2150953748
+        },
+        {
+          "event": "btldefaultevt_SuitoruBadgeEffect",
+          "address": 2150953972
+        }
+      ]
+    },
+    {
+      "address": 2148605392,
+      "name": "btlevtcmd_GetHeight",
+      "size": 112,
+      "sha256": "90cd998cddd70d9d0fa8cbfd0bdad54004630bcc47b93d24f91eefc8a33b4a23",
+      "sites": [
+        {
+          "event": "btldefaultevt_SuitoruBadgeEffect",
+          "address": 2150953764
+        },
+        {
+          "event": "btldefaultevt_SuitoruBadgeEffect",
+          "address": 2150953988
+        }
+      ]
+    },
+    {
+      "address": 2148606120,
+      "name": "btlevtcmd_GetHitPos",
+      "size": 284,
+      "sha256": "3e457d5ba05522ade7f6c78fd6ea85bef5cc64c7af790c2c14c46faf79f0b983",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982332
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983704
+        }
+      ]
+    },
+    {
+      "address": 2148607224,
+      "name": "btlevtcmd_GetHomePos",
+      "size": 196,
+      "sha256": "debb9a717102b09dff5c07a33f02629838dc304ec87f990ddc7dba3bfb435f8d",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981364
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983344
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983988
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984592
+        }
+      ]
+    },
+    {
+      "address": 2148609432,
+      "name": "btlevtcmd_GetPartsPos",
+      "size": 268,
+      "sha256": "6bd729ff1bbe602dff82134020413527b1cf12e8e12b860e125f6791b3c3c97e",
+      "sites": [
+        {
+          "event": "btldefaultevt_SuitoruBadgeEffect",
+          "address": 2150953792
+        },
+        {
+          "event": "btldefaultevt_SuitoruBadgeEffect",
+          "address": 2150954032
+        }
+      ]
+    },
+    {
+      "address": 2148609996,
+      "name": "btlevtcmd_SetPos",
+      "size": 372,
+      "sha256": "9067de6d13160db21dfb225b5d06fd56192040e01355d247b2291d8650f8f77b",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981408
+        }
+      ]
+    },
+    {
+      "address": 2148611616,
+      "name": "btlevtcmd_GetPos",
+      "size": 232,
+      "sha256": "8c4f0164a56abe8052071dfd801a5ba120c0d3a76961b5e3023ace59efa83359",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981996
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983320
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983964
+        }
+      ]
+    },
+    {
+      "address": 2148612172,
+      "name": "btlevtcmd_check_battleflag",
+      "size": 80,
+      "sha256": "fa413d675aa6da54b0bf62d16727bb23e972a8daa2f8c9f48ba06617a92f4a60",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150980872
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981248
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981336
+        }
+      ]
+    },
+    {
+      "address": 2148612312,
+      "name": "_get_flower_suitoru_point",
+      "size": 120,
+      "sha256": "f60b70076435b457321e828d1e9339677eba71c04da4b2311f7f992a06390912",
+      "sites": [
+        {
+          "event": "btldefaultevt_SuitoruBadgeEffect",
+          "address": 2150953940
+        }
+      ]
+    },
+    {
+      "address": 2148612432,
+      "name": "_get_heart_suitoru_point",
+      "size": 120,
+      "sha256": "b0538ba74312127de3a0590541bc5b8ab33bbce0802a82e2ecbe2bdec53e8a24",
+      "sites": [
+        {
+          "event": "btldefaultevt_SuitoruBadgeEffect",
+          "address": 2150953700
+        }
+      ]
+    },
+    {
+      "address": 2148615700,
+      "name": "_battle_majinai_effect",
+      "size": 176,
+      "sha256": "aaf8c7029dfc17555337f4ec7f9f2cf4b2f1a67e2f0ecae9c56628d4a5cb0483",
+      "sites": [
+        {
+          "event": "marioAttackEvent_MajinaiPowerUpCheck",
+          "address": 2151035860
+        }
+      ]
+    },
+    {
+      "address": 2148615876,
+      "name": "_majinai_powerup_check",
+      "size": 128,
+      "sha256": "c1b92521a186b2ebebc99a180e8b43806aaec01d6ad1a6e8d9759d43922b05f5",
+      "sites": [
+        {
+          "event": "marioAttackEvent_MajinaiPowerUpCheck",
+          "address": 2151035784
+        }
+      ]
+    },
+    {
+      "address": 2148619224,
+      "name": "_jump_star_effect",
+      "size": 432,
+      "sha256": "52a96f18fe594e80e272be9f26e9d8d63428232359547d57bb0b908ff213d2ad",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981980
+        }
+      ]
+    },
+    {
+      "address": 2148710604,
+      "name": "evt_btl_camera_set_moveSpeedLv",
+      "size": 88,
+      "sha256": "0f37dfc6e6512b95c41e3a0966f7223b390922b976289e3ac6f006769c6f6ea4",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981024
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981212
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983596
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983636
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984520
+        }
+      ]
+    },
+    {
+      "address": 2148710932,
+      "name": "evt_btl_camera_set_zoom",
+      "size": 128,
+      "sha256": "44f82d4d1e96fd28f79e2a2352e763f9c2507212a70f5c9c7b743a076f5a8d61",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981008
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981228
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983612
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983652
+        }
+      ]
+    },
+    {
+      "address": 2148711536,
+      "name": "evt_btl_camera_set_homing_unitparts",
+      "size": 456,
+      "sha256": "1bdffa6bf5f7e6c0c1cff377497f5962795769a1e53e4b74e4ba927199c37bb5",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150980980
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981184
+        }
+      ]
+    },
+    {
+      "address": 2148712400,
+      "name": "evt_btl_camera_set_mode",
+      "size": 88,
+      "sha256": "727c3dd79c607ef888e3d934e7d06e8a2456c9ebb8e00a58ba5440e8fe8884db",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150980964
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150981168
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983232
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983824
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983892
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984504
+        }
+      ]
+    },
+    {
+      "address": 2148767896,
+      "name": "evt_audience_acrobat_notry",
+      "size": 36,
+      "sha256": "b11a0a11e6ea1691514c8a5787eee3c5f6a8de91321852a4aa49687dd10f20c8",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150982692
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984292
+        }
+      ]
+    },
+    {
+      "address": 2148768500,
+      "name": "evt_audience_ap_recovery",
+      "size": 8,
+      "sha256": "8286a529f25a748db551e16c92ccf02567e092085eb2f9c47fed829693da3b13",
+      "sites": [
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150983256
+        },
+        {
+          "event": "marioAttackEvent_NormalJump",
+          "address": 2150984360
+        }
+      ]
+    },
+    {
+      "address": 2149236176,
+      "name": "btlevtcmd_AnnounceMessage",
+      "size": 432,
+      "sha256": "224bb8c2ebce59c3887d41f839237f5ccff5d252ac8c86d83a40d0bb5b7c94ed",
+      "sites": [
+        {
+          "event": "marioAttackEvent_MajinaiPowerUpCheck",
+          "address": 2151035880
+        }
+      ]
+    }
+  ],
+  "containing_bodies": [
+    {
+      "name": "btlseqAct",
+      "address": 2148643548,
+      "size": 2220,
+      "sha256": "91a2c4da610cea59151def6dcefe50b6886eed6a261a475edb2ec68207601de4"
+    }
+  ],
+  "registration_anchors": {
+    "8011b5e0": "809e0420",
+    "8011b5e4": "7fc3f378",
+    "8011b5e8": "4bfdd2e5",
+    "8011b5ec": "800302ac",
+    "8011b5f0": "540007ff",
+    "8011b5f4": "40820008",
+    "8011b5f8": "4bfdbfd5",
+    "8011b5fc": "809e0420",
+    "8011b600": "7fc3f378",
+    "8011b604": "4bfdd2c9",
+    "8011b608": "801e0ef4",
+    "8011b60c": "7c7f1b78",
+    "8011b610": "3ba00000",
+    "8011b614": "54000043",
+    "8011b618": "41820040",
+    "8011b61c": "801f0104",
+    "8011b620": "540004a5",
+    "8011b624": "40820034",
+    "8011b628": "807f02ac",
+    "8011b62c": "54600739",
+    "8011b630": "40820028",
+    "8011b634": "546006f7",
+    "8011b638": "40820020",
+    "8011b63c": "3c608035",
+    "8011b640": "3880000a",
+    "8011b644": "3863f234",
+    "8011b648": "38a00000",
+    "8011b64c": "4bf1be61",
+    "8011b650": "7c7d1b78",
+    "8011b654": "48000148",
+    "8011b658": "807f02ac",
+    "8011b65c": "546006f7",
+    "8011b660": "41820024",
+    "8011b664": "807f02a0",
+    "8011b668": "28030000",
+    "8011b66c": "41820130",
+    "8011b670": "3880000a",
+    "8011b674": "38a00000",
+    "8011b678": "4bf1be35",
+    "8011b67c": "7c7d1b78",
+    "8011b680": "4800011c",
+    "8011b684": "546007bd",
+    "8011b688": "4182001c",
+    "8011b68c": "807f02a0",
+    "8011b690": "3880000a",
+    "8011b694": "38a00000",
+    "8011b698": "4bf1be15",
+    "8011b69c": "7c7d1b78",
+    "8011b6a0": "480000fc",
+    "8011b6a4": "7fe3fb78",
+    "8011b6a8": "38800001",
+    "8011b6ac": "4800c169",
+    "8011b6b0": "2c030000",
+    "8011b6b4": "408200e8",
+    "8011b6b8": "7fe3fb78",
+    "8011b6bc": "38800002",
+    "8011b6c0": "4800c155",
+    "8011b6c4": "2c030000",
+    "8011b6c8": "408200d4",
+    "8011b6cc": "7fe3fb78",
+    "8011b6d0": "38800009",
+    "8011b6d4": "4800c141",
+    "8011b6d8": "2c030000",
+    "8011b6dc": "408200c0",
+    "8011b6e0": "7fe3fb78",
+    "8011b6e4": "3880001b",
+    "8011b6e8": "4800c12d",
+    "8011b6ec": "2c030000",
+    "8011b6f0": "41820010",
+    "8011b6f4": "801f0104",
+    "8011b6f8": "540003df",
+    "8011b6fc": "418200a0",
+    "8011b700": "7fe3fb78",
+    "8011b704": "38800006",
+    "8011b708": "4800c10d",
+    "8011b70c": "2c030000",
+    "8011b710": "41820030",
+    "8011b714": "38600064",
+    "8011b718": "4beea689",
+    "8011b71c": "2c030000",
+    "8011b720": "40800020",
+    "8011b724": "3c608035",
+    "8011b728": "3880000a",
+    "8011b72c": "3863e0cc",
+    "8011b730": "38a00000",
+    "8011b734": "4bf1bd79",
+    "8011b738": "7c7d1b78",
+    "8011b73c": "48000060",
+    "8011b740": "7fe3fb78",
+    "8011b744": "38800005",
+    "8011b748": "4800c0cd",
+    "8011b74c": "2c030000",
+    "8011b750": "41820038",
+    "8011b754": "38600064",
+    "8011b758": "4beea649",
+    "8011b75c": "2c030032",
+    "8011b760": "40800028",
+    "8011b764": "801f027c",
+    "8011b768": "3880000a",
+    "8011b76c": "38a00000",
+    "8011b770": "60000010",
+    "8011b774": "901f027c",
+    "8011b778": "807f02a4",
+    "8011b77c": "4bf1bd31",
+    "8011b780": "7c7d1b78",
+    "8011b784": "48000018",
+    "8011b788": "807f02a0",
+    "8011b78c": "3880000a",
+    "8011b790": "38a00000",
+    "8011b794": "4bf1bd19",
+    "8011b798": "7c7d1b78",
+    "8011b79c": "281d0000",
+    "8011b7a0": "4182002c",
+    "8011b7a4": "801d015c",
+    "8011b7a8": "901f02a8",
+    "8011b7ac": "801f0000",
+    "8011b7b0": "901d0160",
+    "8011b7b4": "807f0290",
+    "8011b7b8": "2c030000",
+    "8011b7bc": "41820010",
+    "8011b7c0": "4bf1aea5",
+    "8011b7c4": "38000000",
+    "8011b7c8": "901f0290",
+    "8011b7cc": "7fc3f378",
+    "8011b7d0": "38800006",
+    "8011b7d4": "4bfdd189",
+    "8011b7d8": "4800039c"
+  },
+  "spans": [
+    {
+      "address": 2150971736,
+      "size": 4,
+      "sha256": "0329223d03b77c8a883883d1c20c49f0efa4aaeed476d0a9e1ec1859e9623472"
+    },
+    {
+      "address": 2151771156,
+      "size": 4,
+      "sha256": "0329223d03b77c8a883883d1c20c49f0efa4aaeed476d0a9e1ec1859e9623472"
+    },
+    {
+      "address": 2151771172,
+      "size": 4,
+      "sha256": "0329223d03b77c8a883883d1c20c49f0efa4aaeed476d0a9e1ec1859e9623472"
+    },
+    {
+      "address": 2151771188,
+      "size": 4,
+      "sha256": "0329223d03b77c8a883883d1c20c49f0efa4aaeed476d0a9e1ec1859e9623472"
+    },
+    {
+      "address": 2151771152,
+      "size": 16,
+      "sha256": "88f46e50b34472c41f6064069459d997dfe5c917f38bc495707b520a0b569b43"
+    },
+    {
+      "address": 2151771168,
+      "size": 16,
+      "sha256": "88f46e50b34472c41f6064069459d997dfe5c917f38bc495707b520a0b569b43"
+    },
+    {
+      "address": 2151771184,
+      "size": 16,
+      "sha256": "88f46e50b34472c41f6064069459d997dfe5c917f38bc495707b520a0b569b43"
+    }
+  ]
+}
