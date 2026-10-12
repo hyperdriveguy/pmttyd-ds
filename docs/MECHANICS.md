@@ -1,5 +1,31 @@
 # Mechanics evidence ledger
 
+## 2026-10-12 — Native ordinary airborne/landing binding
+
+Static US contract OVERWORLD_AIRBORNE_AND_LANDING.md, recovered by the
+documentation agent in35f82d8/a4df746/ce29235, supersedes older provisional
+native startup, fall-counter and landing-query notes below. Native97fd570 and
+db71cca separate current/previous motion, pending entry, active jump/fall flags,
+phase/countdown, signed16 motion/peak counters, takeoff height/base and current
+vertical tuple. Apex requests10 late while retaining the jump flag and integrates
+the new fall tuple once; active fall enters next invocation without resetting
+counters or delaying integration on its camera phase. No-contact ascent retains
+its support node until the fall owner clears/queries it. Landing uses the same
+five-foot SearchGround with D=V and V=V, query-owned slope outputs and the.1
+original-unit ray tail; ground's separately rounded metadata is not rewritten
+by landing. LandOn resets counters/ordinary tuple and requests ground motion
+late. Drift mask0x80 clears on landing, damping bypass0x20 persists. Idle entry
+snapshots actual root height into takeoff height. Fall horizontal movement occurs
+before base damping, which therefore changes the next movement invocation.
+
+These are static reconstruction and native regression results, not new Dolphin
+observations. Native default on-screen state and bypass/key/control inputs are
+explicit adapters pending original projection/control owners. Host scaled float,
+geometry/trig/quantization remain numerical adaptations. Full low-ceiling
+ground arbitration and head-query tilt/cone/near-miss rules are now documented
+by ce29235 but remain to be bound; dynamic block/NPC/special state/attribute,
+pose/sound/camera owners and original runtime/hardware comparisons remain open.
+
 See [ORIGINAL_BEHAVIOR.md](ORIGINAL_BEHAVIOR.md) for a subsystem coverage index,
 identified US revision/DOL hash, and new static evidence for sequence ordering,
 event scheduling, command continuation and wait behavior. That reference keeps

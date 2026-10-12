@@ -1,5 +1,83 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Ordinary air phases, landing and fall-base ownership
+
+Previous overworld goal turn made source/test/commit progress;this continuation
+inspected the current shared worktree and README/handoff before changes. Goal
+remains active/incomplete. Native97fd570 and db71cca replace the provisional
+air boolean/counter model with separate current/previous motion, pending entry,
+active jump/fall flags, phase/countdown, signed16 counter/peak counter, takeoff
+root/base snapshot and vertical tuple. Launch is phase0/counter1 without ascent;
+the next manager invocation enters phase10/counter2. Apex integrates the normal
+fall tuple once and requests10 late, retaining jump flags for that same call.
+Fall entry preserves counter/tuple and integrates even with its camera phase0.
+Ceiling-fall entry clears air flags immediately without an extra vertical update
+or counter reset. Air cap is now selected after the ascent/head owners.
+
+No-contact ascent/apex retain current support and its separate previous-node
+snapshot. Active fall reuses five-foot SearchGround with D=V and V=V, including
+its.1-original-unit ray tail, signed candidate outputs and last-query slope
+record. Hit snaps root to Q1000 support, clears previous support and calls the
+late landing owner;miss integrates velocity. Ground's independently rounded
+metadata is retained until its own next writer. Ordinary landing clears the
+tuple/counters, clears drift0x80 and selects pending ground motion while air
+flags/phase await next dispatch. Attribute0x200 local tuple/root exceptions are
+represented, but full water/event routes remain separate. Idle snapshots root
+into takeoff height;surviving launch snapshots the final same-call ground motion.
+
+Fall moves horizontally before its base damping/vertical query, so damping
+affects next horizontal movement. Native default on-screen state and bypass/
+key-control inputs are explicit adapters pending source projection/control
+owners. Portable off-screen policy also sets drift suppression. Damping bypass
+0x20 survives landing;original LandOn masks clear0x80/0x40. Independent takeoff
+base remains unchanged when the retained movement base is damped.
+
+Documentation agent delivered35f82d8/a4df746/ce29235 with
+OVERWORLD_AIRBORNE_AND_LANDING.md and read-only source verifier. During recovery,
+literal decode corrected draft transition-.298 to-.280 original units;
+SearchGround alternate height admission remains literal11 rather thanabs(D);
+ceiling correction is Q10plus-minus1, and wrapping mask decode corrected the
+LandOn clear from0x20 to0x80. Native binding uses the corrected pinned contract.
+
+Validation:
+- Final make test passed36/36 CTest suites and63 Python tests, including evolving
+  concurrent event suites. /tmp/pm-air-tests-final.log. New source-derived
+  fixtures cover apex versus ceiling flags/pending/counters, phase0 fall gravity,
+  retained/peak/signed counter wrap, late landing tuple/flags, idle root snapshot,
+  takeoff base independence, native post-move damping order/off-screen next-call
+  drift suppression, ground-motion launch matrix and landing's near-drop ray tail.
+- Final make all rebuilt native sources,linked elf and built ttyd-2ds.3dsx.
+  /tmp/pm-air-build-final.log.
+- build-host/core_tests original passed18,315 indexed/full-scan collision probes
+  and original-room arrival/return/void/ceiling fixtures;field_wall_tests original
+  passed800 directional rays across five original room meshes.
+- Current tools/verify_overworld_airborne_and_landing.py passed24 containing
+  bodies,170 anchors and18 literals/data spans against read-only G8ME01 ISO.
+- On final db71cca build,isolated Azahar passed ceiling-road.bin with
+  azahar_ceiling.py (five jumps,landed(-6.7,.1),HP7),harbor-arrival-road.bin with
+  azahar_harbor_stairs.py (dock descent/save/return,HP7),and east-road.bin with
+  azahar_roads.py (two reciprocal road pairs). Logs:/tmp/pm-air-ceiling-final.log,
+  /tmp/pm-air-harbor-final.log,/tmp/pm-air-roads.log;captures/test saves remain
+  ignored in artifacts/azahar. User profiles/saves untouched.
+- git diff --check passed on the native changes and current documentation.
+
+These are native/static checks,not original Dolphin gameplay comparisons or
+New2DS XL hardware measurements. Host float/trig/geometry/quantization remain
+adaptations;full command/input/camera/pose/audio/special/dynamic owners are open.
+
+Next native work is now documented by ce29235:bind ordinary low-ceiling ground
+arbitration and head-provider projected-tilt/cone/first-admitted-ray near-miss
+rules. Current head response still always takeoff-clamps/requestsfall, whereas
+the original low-clearance ground request can skip actualroot/tuple/flag writes.
+Do not claim head physics closed because the repeated-jump fixture passes.
+Documentation agent is recovering requested actual Rogueport road triggers/
+conditions and arrival/departure ownership to replace radius.7,dot,cooldown and
+endpoint extrapolation guesses. ID1 owns continuing partner terrain/motion docs;
+native .08-spaced trail/512-point teleport still needs the composed original
+follower. Preserve concurrent event/battle/audio/documentation work in this
+shared worktree. Original dialogue/story and runtime/hardware fidelity remain
+incomplete;do not fabricate closures or call the remake complete.
+
 ## 2026-10-12 — Original SWITCH and grouped CASE state machines
 
 Implemented `event_switch_opcodes.cpp` for34..49 using delivered switch/group

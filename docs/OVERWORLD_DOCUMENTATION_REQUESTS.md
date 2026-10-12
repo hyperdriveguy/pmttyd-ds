@@ -190,5 +190,22 @@ or source-runtime equivalence.
 Requested the documentation agent's next missing ordinary-air contract:
 mot_jump/mot_fall phases and retained signed counter, pending10/11 entry,
 motion3 descent, marioJump/marioFall/marioChkLandon query composition, and
-landing tuple/angle/node ownership. Existing native landing bounds and the
-beginFall counter reset remain provisional until that contract is bound.
+landing tuple/angle/node ownership. Delivered
+[ordinary airborne/landing contract](behavior/OVERWORLD_AIRBORNE_AND_LANDING.md)
+in35f82d8 with a4df746/ce29235 addenda. Native97fd570 and db71cca bind separate
+motion/flags/pending/phase/countdown/counters, retained fall entry, apex versus
+ceiling sequencing, authoritative D=V/V=V landing, query-owned slope writes,
+late ground dispatch and post-move base damping. The old beginFall counter2
+reset and invented landing ray bounds are removed. On-screen/bypass/key-control
+inputs remain explicit native adapters; original projection/control writers
+are not bound. LandOn clears drift mask0x80 and retains damping bypass0x20.
+
+Next native binding: ce29235 now specifies the ordinary low-ceiling branch and
+head-query gates. Current native head response still always applies its
+takeoff clamp and requests fall, while the original low-ceiling local branch
+can request ground motion before the motion3 test and skip actual root/tuple/
+flag writes. The current head provider also lacks original projected-tilt writes,
+inclination rejection and first-admitted-ray near-miss return. Bind these next.
+Dynamic NPC/block classification, special attributes/modes, original numeric
+services, camera/control projection owners and source execution traces remain
+unbound. ID1 owns partner terrain/motion documentation independently.

@@ -1,5 +1,19 @@
 # Original asset pipeline
 
+## Ordinary airborne/landing binding (2026-10-12)
+
+Native97fd570 and db71cca use the US DOL contract in
+docs/behavior/OVERWORLD_AIRBORNE_AND_LANDING.md, recovered in35f82d8 with
+a4df746/ce29235 addenda. tools/verify_overworld_airborne_and_landing.py reads
+/home/carson/games/roms/G8ME01.iso read-only to verify original bodies,
+instruction anchors and literals. Inspection does not mutate the ISO or link
+original executable code. No asset extraction/conversion choice or pack ABI
+changed in this native slice: existing ignored scale.01 original *.ground/
+*.head provide winding/cull/attributes to the shared support service. Returned
+normal/point quantization and host trig/intersection/scaled float arithmetic
+remain adaptations. Original copyrighted assets and compiled/capture outputs
+remain outside source history; this work grants no distribution license.
+
 ## Full loopable audio library (2026-10-12)
 
 `make audio-assets` / `tools/extract_audio.py` reads
