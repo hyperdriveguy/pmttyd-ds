@@ -5,6 +5,12 @@
 #include "event_memory_release.hpp"
 
 namespace ttyd {
+BattlePartPositionServices nativeBattlePartPositionServices(EventNativeRuntime& runtime) {
+    BattlePartPositionServices s;s.unit=nativeBattleUnitEventServices(runtime);s.memory=nativeBattleActorServices(runtime);s.numericUser=&runtime;
+    s.fma=[](void* p,float a,float b,float c) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.fmaFloat);return r.platform.fmaFloat(r.platform.user,a,b,c);};
+    s.add=[](void* p,float a,float b) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.addFloat);return r.platform.addFloat(r.platform.user,a,b);};return s;
+}
+bool bindBattleGetPartsPosCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x80112d98,&runtime,[](void* p,EventEntry& e,int32_t) {return packedPartPositionEvent(e,nativeBattlePartPositionServices(*static_cast<EventNativeRuntime*>(p)));});}
 BattleFirstAttackServices nativeBattleFirstAttackServices(EventNativeRuntime& runtime) {
     BattleFirstAttackServices s;s.memory=nativeBattleActorServices(runtime);s.values=nativeBattleEventUtilityServices(runtime).values;s.user=&runtime;
     s.pair=[](void* p,uint32_t battle,uint32_t* attacker,uint32_t* target) {auto& r=*static_cast<EventNativeRuntime*>(p);return packedFirstAttackPair(battle,attacker,target,nativeBattleActorServices(r));};return s;

@@ -515,6 +515,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): part getter/registry/world
+position and GetPartsPos80112d98 now compose on actual native byte storage.
+78 CTest/90 Python and make all pass. See
+behavior/battle/BATTLE_PACKED_PART_POSITION_CAPTURE_ORDER.md for single-part/
+negative-ID asymmetry,unused initial lookup/fresh second lookup,absolute aliases,
+relative preloads/signed owner189 and explicit numeric providers. Hit scale/
+offset layer,source unit/part writers,full motion/Jump/Game and original runtime
+remain open;leave further source/numeric/backend evidence under EVT-01/JUMP-01.
+
 ID2 weapon-menu Main/target eligibility reply (2026-10-12):
 [Confirmation/light requests](behavior/battle/WEAPON_MENU_MAIN_CONFIRMATION_AND_LIGHT_REQUESTS.md),
 [navigation/cancel/End](behavior/battle/WEAPON_MENU_MAIN_NAVIGATION_CANCELLATION_AND_END.md),

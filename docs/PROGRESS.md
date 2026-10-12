@@ -167,6 +167,35 @@ requirements and EVT-01/JUMP-01/DMG-02 remain incomplete.
 
 # Progress and next-session handoff
 
+## 2026-10-12 — Native part lookup/world-position callback
+
+Implemented original part getter:negative ID selects head,single part accepts
+any nonnegative ID,multi-part matches definition.word0,unchecked nonnegative
+head/definition dereferences remain distinct from null-safe body ID. Added fresh-
+battle registry part helper and GetPartsPos80112d98 binding with its discarded
+initial unit lookup,second current-work lookup,captured raw outputs and integer
+sentinel routing. World query keeps absolute18/1c/20 separate from relative
+owner visible3c/40/44 plus offsets24/28/2c and signed189 direction. Leaf absolute
+copies preserve output/source aliases;relative sources preload before math/stores.
+Native fma/add are explicit required platform providers,not silent host defaults.
+
+Ordering evidence:behavior/battle/BATTLE_PACKED_PART_POSITION_CAPTURE_ORDER.md.
+Original inspected ELFs remain /tmp/pm-native-get-parts-pos.* and
+pm-native-parts-world-pos.* outside history. Source unit114 scale is not added
+here;the separate hit-offset layer owns it. Numeric/FPSCR/full trajectories open.
+
+Validation:make test passes78 CTest suites/90 Python tests;make all passes.
+Logs:/tmp/pm-packed-part-test.log and /tmp/pm-packed-part-build.log. Cases pin
+negative/single/multiple/missing part behavior,mandatory unused initial lookup,
+fresh second work,owner-pointer read on absolute branch,ordered alias copies,
+relative snapshots after provider mutations,signed189 versus scale114,raw output
+skip and native event/registry/unit/part RAM. Records/math providers are authored
+inputs;no original runtime/emulator/hardware or full hit/Jump/Game fidelity claim.
+
+Next:hit-offset/takeoff/native motion and source part/unit ownership,remaining
+AC/cost/pose/effect/audio/message callbacks and original outer turn/Game flow.
+Full-game goal remains active/incomplete;concurrent work preserved.
+
 ## 2026-10-12 — Delivered first-attack pair graph bound natively
 
 Consumed ID2's complete paired selection/getter/event consolidation. Implemented

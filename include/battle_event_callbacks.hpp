@@ -14,6 +14,7 @@
 #include "battle_packed_selection.hpp"
 #include "battle_packed_position.hpp"
 #include "battle_first_attack.hpp"
+#include "battle_packed_part.hpp"
 
 namespace ttyd {
 struct BattleDataChildBackend {
@@ -33,6 +34,8 @@ struct BattleTurnFirstBackend {
 // Defaults implement recovered rule/move/effect services on shared packed bytes.
 EffectDeletionServices nativeEffectDeletionServices(EventNativeRuntime&);
 BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend&);
+BattlePartPositionServices nativeBattlePartPositionServices(EventNativeRuntime&);
+bool bindBattleGetPartsPosCallback(EventCallbackRegistry&,EventNativeRuntime&);
 BattleFirstAttackServices nativeBattleFirstAttackServices(EventNativeRuntime&);
 bool bindBattleFirstAttackTargetCallback(EventCallbackRegistry&,EventNativeRuntime&);
 BattlePackedSelectionServices nativeBattlePackedSelectionServices(EventNativeRuntime&);
