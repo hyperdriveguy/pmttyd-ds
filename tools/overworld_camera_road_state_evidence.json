@@ -1,0 +1,153 @@
+{
+  "schema": 1,
+  "scope": "Camera road input/state/output units, zone admission and final eye/at construction; curve and transition algorithms remain unclosed",
+  "dol_spans": [
+    {
+      "name": "camRoadMain",
+      "address": 2147527496,
+      "size": 1264,
+      "sha256": "b4962497703485b9c713074b9a4bbec1c3e4e295e5502246769bb75483c960fc"
+    },
+    {
+      "name": "calcCamRoad",
+      "address": 2147530444,
+      "size": 3512,
+      "sha256": "30d1765fbf7b91469764903b659dec1c95db1da056d94007ac72c854a32b3fb2"
+    },
+    {
+      "name": "collisionTri_simple",
+      "address": 2147537844,
+      "size": 2880,
+      "sha256": "e3e3e03b6a0e4523a3758af9c14bd8683ec614fb7a7c9202729c84c065deaebc"
+    },
+    {
+      "name": "collisionCurve",
+      "address": 2147533956,
+      "size": 3888,
+      "sha256": "3f2139c8454272ed77be995980b472436e4d332e053bc316181150e723e95610"
+    },
+    {
+      "name": "calcCurrentCamState",
+      "address": 2147540724,
+      "size": 528,
+      "sha256": "0c015f8912b72cd53e101a973b35bbe4a3d2eba1e09905b347a692afc1100566"
+    },
+    {
+      "name": "compareCamRoad",
+      "address": 2147529328,
+      "size": 1116,
+      "sha256": "b5b2fe35d3333c188e6ebbf01a4c59d324d77ebb859d2efdaf1332b52b68a6a0"
+    },
+    {
+      "name": "calcHokanCamRoad",
+      "address": 2147528760,
+      "size": 568,
+      "sha256": "6eefe0cf3ebe39ee42b870eda1a60ec83e6e0f9f0fe6b21b137e68bbe9f3a5a7"
+    },
+    {
+      "name": "cam3dMain",
+      "address": 2147543656,
+      "size": 2156,
+      "sha256": "3f53cc9fb1cd329508cbd04b88663fb664e80ab1ed9df39d0415204d3dfe57f3"
+    },
+    {
+      "name": "PSMTXRotAxisRad",
+      "address": 2150228416,
+      "size": 112,
+      "sha256": "789894aeb53da26ce28254ec1478a0c6a266cac1418c10c269ee0af6a25271b4"
+    },
+    {
+      "name": "__PSMTXRotAxisRadInternal",
+      "address": 2150228240,
+      "size": 176,
+      "sha256": "659610b58bed54ac2a7f1b054f94c3ad0c7072598fa6453966b5d059309cf353"
+    },
+    {
+      "name": "PSMTXMultVec",
+      "address": 2150229668,
+      "size": 84,
+      "sha256": "0e86b49668bd9172bfd1256aa2842a4326032efab48cb6b8df58523a63992e78"
+    },
+    {
+      "name": "Camera authored factor10/pi",
+      "address": 2151806532,
+      "size": 8,
+      "sha256": "179823aae0d2afa6d16b43f16313ca964e1e442119cef4b51917bd68785561b8"
+    },
+    {
+      "name": "Camera degrees180",
+      "address": 2151806568,
+      "size": 4,
+      "sha256": "9cb804aa75da9392cd1764207bff62607ab385f4147a6ebbb10d7dc42102d391"
+    },
+    {
+      "name": "Fallback100 and axis degrees conversion",
+      "address": 2151806616,
+      "size": 8,
+      "sha256": "970ec1aa1288418256cd5a14efd4742ce5884092ab17ae868e4a227dbb2ee8e5"
+    },
+    {
+      "name": "Zone down direction",
+      "address": 2150364516,
+      "size": 12,
+      "sha256": "fa7bef25f8456446f4a0396325ecf87903e5abe8d5fd3b72aac5a49f351888dc"
+    },
+    {
+      "name": "Zone/curve sentinel heights",
+      "address": 2151806588,
+      "size": 8,
+      "sha256": "712d79d6d609bf8e1f77fa15afb01d429ac796dedb423994325d24af2d89385f"
+    }
+  ],
+  "dol_anchors": {
+    "2147527528": "ec210024",
+    "2147527600": "ecc60024",
+    "2147527604": "48000b19",
+    "2147530748": "40820174",
+    "2147530768": "41810160",
+    "2147530780": "40810154",
+    "2147530784": "d0210010",
+    "2147531052": "48001a89",
+    "2147531064": "7f17c378",
+    "2147531220": "48000ab1",
+    "2147531232": "3ae00000",
+    "2147531264": "81c30024",
+    "2147531548": "c34e0024",
+    "2147531508": "d00101b0",
+    "2147531524": "d00101ac",
+    "2147531520": "c30e0058",
+    "2147540692": "4080000c",
+    "2147540704": "d0270000",
+    "2147540708": "38600001",
+    "2147533652": "906f0000",
+    "2147533704": "91cf0024",
+    "2147533708": "d36f0028",
+    "2147533740": "d00f0044",
+    "2147533748": "d00f0048",
+    "2147533756": "d00f004c",
+    "2147540824": "806300e8",
+    "2147540856": "80030008",
+    "2147540864": "40820028",
+    "2147540916": "ec220072",
+    "2147540932": "ef010024",
+    "2147541032": "d07f000c",
+    "2147541044": "d03f0010",
+    "2147541052": "d09f0014",
+    "2147541068": "48290175",
+    "2147541108": "48290631",
+    "2147541124": "d01f0018",
+    "2147541140": "d01f001c",
+    "2147541156": "d01f0020",
+    "2147528660": "48002f21",
+    "2147528676": "d01f0018",
+    "2147528700": "d01f0020",
+    "2147528712": "d01f000c",
+    "2147528736": "d01f0014",
+    "2147544988": "4bffbbad",
+    "2147545380": "d01f000c",
+    "2147545480": "4828f661"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": []
+}

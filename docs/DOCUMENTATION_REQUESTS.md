@@ -19,7 +19,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | --- | --- | --- | --- | --- |
 | Ordinary Jump root registration and callback-address census | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Conditional root/source binding](behavior/NORMAL_JUMP_ROOT_REGISTRATION.md),[complete scoped registry](behavior/NORMAL_JUMP_CALLBACK_REGISTRY.md):root10/flags0/typeef/context/ID/speed/actor order,three child wrappers,156 direct sites/72 callbacks;requested-enum run-check correction flagged;menu/global/raw/dynamic/source/backend/runtime remains open |
 | SDK descriptor and primary-map live read-order addendum | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Exact live order](behavior/SDK_HEAP_BOOTSTRAP_LIVE_READ_ORDER.md):InitAlloc live count/base/final base with retained original product,CreateHeap post-header size reread,both primary start→end→handle before length publication;native arena/alias/source/runtime remains open |
-| Partner fall handler entry,air and landing ownership | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used party_motion_fall complete query-before-integration/flags/damping/failsafe/landing/return graph;called placement/facing/pose/source domains,other handlers,EVT-01 and original trajectories remain separate |
+| Partner fall handler entry,air and landing ownership | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Air](behavior/FIELD_PARTNER_FALL_AIR.md),[landing](behavior/FIELD_PARTNER_FALL_LANDING.md),[facing](behavior/FIELD_PARTNER_FALL_FACING.md):complete local query/default/update/recovery/landing/return and facing graph answered;full placement4/pose/source/numeric/EVT-01 and original trajectories remain open |
 | Consolidated packed EventEntry map and address-alias requirements | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete432-byte map](behavior/EVENT_ENTRY_PACKED_LAYOUT.md),[address/alias requirements](behavior/EVENT_ENTRY_ADDRESS_AND_ALIAS_REQUIREMENTS.md):49 spans,388 known-role/44 unknown raw bytes,pointer/typed/context/global and physical alias domains;actual native translator/source/backend/runtime binding remains open |
 | General action-record rule judgment and threshold helpers | DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [All68 general rules](behavior/BATTLE_GENERAL_RULE_JUDGMENT.md),[threshold/end/unit queries](behavior/BATTLE_RULE_THRESHOLD_AND_UNIT_QUERIES.md):complete judge/helper/query bodies,captured/current output ownership,duplicate54/55 and numeric0x02 mask;rule/raw record/reset/save/consumer/end/turn/source/runtime lifecycle remains open |
 | Attack-command event selection and action-record classification | JUMP-01, DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete selector](behavior/BATTLE_ATTACK_EVENT_SELECTION.md),[classifier/data/audience leaves](behavior/BATTLE_WEAPON_ATTACK_CLASSIFICATION.md):three dispatch tables,selection-time counts,event/category/byte write order,signed predicate and helper recapture/fallback closed;general rule/menu/source/category/record reset/runtime ownership remains open |
@@ -1736,3 +1736,41 @@ this evidence. ID2 changes no concurrent native source. make test50 CTest/78
 Python and make all pass;general1980 anchors/root verifier pass;all72 table rows
 match census;repeat JSON reports equal;1999 local links resolve. Passing host
 fixtures do not establish this source-binding fidelity.
+
+
+ID1 fall validation native gate (2026-10-12):initial make test failed CMake
+missing tests/event_entry_addresses_tests.cpp;fixture arrived,rerun now reaches
+link but fails undefined Game::rebaseFieldCamera/cacheFieldScreen/
+publishFieldCameraTarget/beginFieldCameraTick. make all also fails those same
+four camera methods after compiling native sources. Exact logs:
+/tmp/id1-fall-test.log,/tmp/id1-fall-test-rerun.log,/tmp/id1-fall-build.log.
+ID1 changed no native files;source owner should complete camera definitions.
+Static fall evidence remains green;no original-runtime fidelity claim follows
+from native build status. Existing audio-map pipeline packed five fallbacks;
+provenance will be recorded with the scoped research delivery.
+
+
+ID1 fall validation follow-up (2026-10-12):camera definitions arrived;make
+all rerun passes/rebuilt3DSX (log /tmp/id1-fall-build-rerun.log). Host rerun
+now fails tests/field_movement_tests.cpp:126 because Game::fieldAirOnScreen was
+removed and the fixture still assigns it;log /tmp/id1-fall-test-final.log.
+Camera linker failures above are resolved historical runs. Native fixture owner
+should update the stale on-screen test to the new camera API;ID1 changed no
+native tests. Original static fall evidence remains green.
+
+
+ID1 fall delivery/host validation completion (2026-10-12):
+[Air](behavior/FIELD_PARTNER_FALL_AIR.md),
+[landing](behavior/FIELD_PARTNER_FALL_LANDING.md),
+[facing](behavior/FIELD_PARTNER_FALL_FACING.md) specify floor before integration
+(depth10,drop abs oldV),conditional default-1.4 only with flag20 clear/acc0,
+velocity floor-16,key-gated speed-.2,placement4 request and two distinct landing
+cleanup paths. Return2 air/3 land;walkMain ignores it. Landing precedes integration,
+retains acceleration and chooses0/1 by speed equality;flag20 clear alone adds
+mask2000/footprint cleanup. Full placement4 remains separate. Six complete hashes,
+101 anchors,21 constants,one span/two imports/five dispatches pass. Native fixture
+now updated;make test passes50 CTest/78 Python (log /tmp/id1-fall-test-current.log),
+make all rerun passes/rebuilt3DSX. Missing fixture/camera linker/stale fieldAirOnScreen
+failures above are resolved historical runs. ID1 changed no native files. All1541
+behavior links resolve at snapshot. Only ID1 scoped lock released;full service/
+source/EVT-01 and original trajectories remain open.

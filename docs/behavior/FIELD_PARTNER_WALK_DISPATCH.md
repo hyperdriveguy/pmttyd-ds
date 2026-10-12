@@ -94,6 +94,8 @@ three map IDs and one pose key) and two actual lecture stop/run imports.
 Whole hashes verify local bytes,not all called motion/terrain engines.
 Original listings and metadata reports remain ignored.
 
-Next:homing/jump/fall/behind/upstairs/damage bodies,pose/splash/hit producers,
+The [jump handlers](FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md) and
+[fall handler](FIELD_PARTNER_FALL_AIR.md) now have complete local contracts.
+Next:homing/behind/upstairs/damage bodies,pose/splash/hit producers,
 state writers and original partner movement/hazard traces. This dispatcher
 contract alone cannot reproduce all partner locomotion or the complete game.

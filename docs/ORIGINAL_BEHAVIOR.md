@@ -671,3 +671,13 @@ three child wrappers and156 direct sites/72 callbacks for the three packed
 streams. Constructor run-check reads requested8041e940,distinct from GP18 getter
 mask;native source correction is queued. Menu/global/raw/dynamic/domain/backend
 closure and original execution remain EVT-01/JUMP-01 work.
+
+
+[Fall air](behavior/FIELD_PARTNER_FALL_AIR.md),
+[landing](behavior/FIELD_PARTNER_FALL_LANDING.md) and
+[facing leaves](behavior/FIELD_PARTNER_FALL_FACING.md) close the used complete
+local fall graph:history-before-marker,floor-before-integration using old velocity,
+conditional default acceleration,damping/clamps,excluded-surface mobility gates,
+placement4 request/facing/exception order,two landing cleanup paths and air2/
+land3 returns. Full placement4/pose/terrain/source/numeric and original trajectories
+remain open;native validation does not supply original-game execution evidence.

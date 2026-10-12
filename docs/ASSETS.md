@@ -1309,3 +1309,17 @@ staged; local-assets/ and romfs/ remain ignored. Original Nintendo/Intelligent
 Systems assets retain their copyright; local conversion conveys no right to
 redistribute the original or derivative pack. No music/art substitutions were
 introduced by this road change.
+
+
+Partner fall/facing research by ID1 (2026-10-12):
+verify_field_partner_fall.py with field_partner_fall_evidence.json pins six
+complete local DOL hashes,101 instructions,21 constants,one conversion-bias
+span,two lecture imports and five actual walkMain dispatches. Original ELF/
+listings and field-partner-fall-evidence.json remain ignored under artifacts/
+reference/behavior. make all invoked existing3218-identity/five-fallback PCM
+packing using the same read-only ISO sound/proj and local-assets/audio-map/
+RomFS paths recorded above;asset/config/audio conversion choices were not edited
+by ID1. Local raw/catalog/WAV packs stayed unstaged;original assets retain
+copyright and no redistribution grant. No original execution,ISO/profile/save
+mutation or original binary/dialogue distribution occurred. Initial native link
+failures were unrelated to the verified original instruction evidence.

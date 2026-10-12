@@ -9023,3 +9023,42 @@ Next:fall/homing/fly and pose/audio handlers,all status/scalar/index/clearance/
 source/alias/REL/numeric domains,complete ray backend and original jump/target/
 clearance trajectories. Full-game documentation and complete-game requirements
 remain incomplete.
+
+
+## 2026-10-12 — ID1 complete partner fall entry,air,landing and facing
+
+Added [fall air](behavior/FIELD_PARTNER_FALL_AIR.md),
+[landing](behavior/FIELD_PARTNER_FALL_LANDING.md) and
+[facing](behavior/FIELD_PARTNER_FALL_FACING.md). Complete local fall body
+specifies history-before-marker,floor-before-integration with depth10/old-velocity
+limit,mobility-gated excluded-surface latches,conditional gravity default,-16
+velocity/zero-speed clamps,key gate,below-world placement4/facing/request order,
+1.3-speed front-wall tail,two flag-dependent landing cleanup paths and return2/3.
+Landing retains acceleration and selects0/1 by speed equality;footprint clear
+only in flag20-clear branch. Complete toMovedir/revise360 leaves bind facing+54
+separately from travel+100. Updated walkMain coverage links. Full placement4/
+pose/source/numeric and original trajectories remain explicit dependencies.
+
+Validation:verify_field_partner_fall.py passes six complete DOL hashes,101
+instructions,21 constants,one numeric span,two lecture imports and five actual
+dispatch calls. Repeated metadata byte-identical;Python compilation and prior
+floor/jump/target/footmark verifiers passed. General verifier passed1980 anchors;
+all1541 behavior links resolve at snapshot. Gekko audit passed574 files/79720
+instructions/598 paired-single ops,zero changes or unknowns. Initial make test
+failed missing event_entry_addresses_tests.cpp;after arrival,rerun reached link
+but camera methods were still undefined. make all failed the same four methods.
+Definitions arrived;build rerun passed/rebuilt3DSX. Host rerun then found stale
+fieldAirOnScreen fixture;after native owner updated it,current make test passed
+50 CTest suites and78 Python tests. Those failures are historical/resolved.
+Exact logs:/tmp/id1-fall-test.log,/tmp/id1-fall-test-rerun.log,
+/tmp/id1-fall-test-final.log,/tmp/id1-fall-test-current.log,
+/tmp/id1-fall-build.log,/tmp/id1-fall-build-rerun.log. No native files changed
+by ID1. Build invoked existing3218-identity/five-fallback audio packing;
+read-only ISO/local derivative provenance recorded in ASSETS,outputs unstaged.
+ISO read-only;no original execution/fall measurement,profile/save mutation or
+original binary/dialogue distribution. Only ID1 scoped lock released;
+concurrent native/ID2 changes preserved outside this scoped commit.
+
+Next:placement4 recovery output,homing/fly/behind and pose/audio services,
+all state/index/flag/source/numeric domains and original fall/landing/recovery
+traces. Full-game documentation and complete-game requirements remain incomplete.
