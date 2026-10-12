@@ -1,5 +1,33 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original event memory, user buffers and map allocation
+
+Implemented `event_memory_opcodes.cpp` for74..90 and complete documented local
+map allocation/fill/cache leaves. User-buffer assignment/publication retains
+count/output/root order and replaces pointers without inferred ownership/free.
+Allocator uses best-fit unsigned spans/first ties,mandatory remainder header
+including size0,ordered header writes,then zero-fill and cache/syscall services.
+Fill preserves byte alignment/word bursts and low8 fill;cache retains original
+operand addresses and wrapped CTR behavior. Bitwise raw/resolved RHS,wrapped
+60/1000 conversion,raw-address IEEE/word transfer and double-query namespace
+operations remain distinct. No ordinary host-pointer dereference is substituted.
+
+Validation: `make test` passed38/38 CTest suites and63 Python tests; `make all`
+passed and the ARM memory object/3dsx are newer than source. Logs:
+/tmp/pm-event-memory-test.log and /tmp/pm-event-memory-build.log. Fixtures cover
+aligned/unaligned fill and extents,cache ordering,best-fit/ties/used/no-fit/zero/
+mandatory zero remainder,delayed allocation output/root mutation/replacement,
+all opcode routes/raw captures,negative/wrapped time products,IEEE transfer and
+resolved/double-resolved query effects. Prior IF/SWITCH streams cover actual
+same-dispatch branch/group execution. No emulator run for unbound VM services.
+
+Native memory/heap/cache/platform ownership,wrapped extreme/cycle/alias/numeric
+and original script/runtime domains remain open. Delivered heap bootstrap/free
+contracts remain next binding work;no per-event automatic free was inferred.
+Next:tail/debug opcode routes,context/bootstrap/native address providers,original
+Jump streams/callback owners and runtime comparison. Goal remains incomplete;
+EVT-01 breadcrumbs updated for the documentation agent.
+
 ## 2026-10-12 — Ordinary air phases, landing and fall-base ownership
 
 Previous overworld goal turn made source/test/commit progress;this continuation

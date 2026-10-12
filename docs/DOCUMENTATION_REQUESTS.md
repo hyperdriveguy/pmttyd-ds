@@ -461,6 +461,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Memory-opcode breadcrumb (2026-10-12): `event_memory_opcodes.cpp` handles74..90
+and local map allocation/fill/cache leaves. Tests preserve best-fit/first ties,
+mandatory split/zero remainder,header/fill/cache order,no inferred buffer free,
+count/output/root mutations,wrapped time products and distinct raw-address/
+namespace-double-query routes. make test passes38 suites/63 Python tests;make all
+passes. Native heap/address/cache/platform/extreme/alias/numeric/source ownership
+and original traces remain open. Next:tail/debug routes,delivered heap/context/
+bootstrap bindings and original Jump stream/callback services.
+
 SWITCH-opcode breadcrumb (2026-10-12): `event_switch_opcodes.cpp` handles34..49
 with semantic signed states/values and complete ordinary/group/mask/range routes.
 Tests preserve captured versus live stack/query timing and header scans;actual
