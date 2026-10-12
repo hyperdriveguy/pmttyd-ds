@@ -30,6 +30,7 @@ FUNCTIONS = (
     'btlevtcmd_AnimeChangePoseFromTable', 'btlevtcmd_SetFallAccel',
     'BattleWaitAllActiveEvtEnd_NoBgSetEndWait', 'BattleCheckConcluded',
     'BattleAfterReactionMain', 'BattleAfterReactionRelease',
+    'pouchRemoveItem', 'pouchRemoveItemIndex', 'btlevtcmd_ConsumeItemReserve',
     'BattleConsumeReserveItem', 'BattleAfterReactionEntry',
     'BattleAfterReactionQueueInit', 'btlevtcmd_AfterReactionEntry',
     'BattleTransID', 'btlevtcmd_GetBodyId', 'btlevtcmd_AnimeChangePoseType',

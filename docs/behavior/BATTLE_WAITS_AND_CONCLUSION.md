@@ -97,8 +97,8 @@ at+0x19060,+0x19064,+0x19068,+0x1906c in order. For each nonzero value call
 pouchRemoveItem(value), then clear that slot to0 regardless of the callee's
 return. Zero slots are cleared without a call. Multiple identical values in
 separate slots cause separate calls; there is no deduplication.
-The pouch removal routine's exact inventory search/count policy remains a
-separate dependency. Do not infer that every request successfully removed an
+The exact search/compaction policy is specified in
+[inventory removal](INVENTORY_REMOVAL_AND_RESERVATIONS.md). Do not infer that every request successfully removed an
 item merely because the reservation slot was cleared.
 
 ## Conclusion group configuration and writes (B)

@@ -13,6 +13,14 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'inventory_removal_and_reservations': {
+        0x800d4c60: '2c1d0079', 0x800d4cd0: '2c1d0153',
+        0x800d4d30: '7c1f1b2e', 0x800d4d38: '7c1e1b2e',
+        0x800d4a50: 'a8030000', 0x800d4a70: '7c1d2000',
+        0x8010ae04: '2c0000de', 0x8010ae1c: '1cdd0028',
+        0x8010ae54: '41820024', 0x8010ae68: '93a39060',
+        0x8010aedc: 'ec010024', 0x8010af30: '2c000097',
+    },
     'battle_waits_and_conclusion': {
         0x8011ac00: '901f029c', 0x8011ac30: '901f02a8',
         0x8011ac60: '901f02b4', 0x8011ac90: '901f02bc',
@@ -318,6 +326,10 @@ def verify(iso_path):
             if hashlib.sha256(read(address, size)).hexdigest() != digest:
                 raise ValueError(f'Recovery event script fingerprint mismatch {address:#x}')
         print('Three recovery/Happy event script fingerprints verified')
+        for address, value in {0x804222d8: 100.0, 0x8042228c: 1.0}.items():
+            if read(address, 4) != struct.pack('>f', value):
+                raise ValueError(f'Reservation refund constant mismatch {address:#x}')
+        print('Two reservation refund constants verified')
         status_tables = {
             0x80364204: [0x7970, 0x792c, 0x7970, 0x7970, 0x7adc,
                          0x7970, 0x7970, 0x7970, 0x7970, 0x7970,

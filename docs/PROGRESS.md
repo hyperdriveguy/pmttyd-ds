@@ -2531,3 +2531,30 @@ conclusion sequence/rewards, move reset and outer turn/phase/action cadence;
 JumpPosition, float/pose services and actual death/revival scripts. Continue all
 systems before deriving complete-game requirements. Full objective remains
 active/incomplete; original/native traces and rendering comparisons required.
+
+## 2026-10-12 — Inventory removal, reservation insertion and refunds
+
+Previous turn progressed with729928b barriers/reaction queue. Added
+INVENTORY_REMOVAL_AND_RESERVATIONS.md: complete local pouchRemoveItem and indexed
+variant, array/capacity selection, first-match ordered compaction with badge
+parallel array, unchecked index read order, reservation callback kind/item gates,
+slotwise duplicate/empty checks, independent binary32 refund path and held-item
+151 cleanup. Reservation removal now links exact inventory semantics. The
+reservation writer was located through DOL immediate-operand scan; that scan
+is a candidate locator, not a complete writer/caller census.
+
+Validation:278 instruction anchors and two refund constants plus prior checks
+passed against read-only US ISO. Evidence120 function fingerprints reproduced
+byte-identically. Behavior links resolve and git diff --check passed. make test
+passed core plus36 Python tests; make all exited0, no rebuild. Workspace started
+clean; no runtime code authored, original executable/emulator run or profile/
+save changes. Extracts/disassembly/reports remain ignored; ASSETS.md updated.
+Static checks do not establish dynamic-equivalence or legal-call reachability
+of indexed boundary cases.
+
+Next: all reservation/consumption callers, item execution/cancellation and badge
+parallel-array consumers; queue/configuration producers, conclusion/rewards,
+move reset and outer turn/action cadence; motion/float/pose services and actual
+death/revival event scripts. Continue full-system documentation before complete-
+game requirements. Objective remains active/incomplete; original/native traces
+and rendering comparisons still required.

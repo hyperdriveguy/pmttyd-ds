@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 117 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 266 instruction anchors plus those
+now fingerprints 120 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 278 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -49,6 +49,8 @@ US callbacks/helpers. Script semantics are documented as prose; original bytecod
 remains ignored. Local-work operands and owner fields are preserved separately.
 Battle barrier/queue/conclusion research adds eight helper fingerprints and
 local contracts, including reservation consumption order and group-result writes.
+Inventory removal/reservation research adds three routine fingerprints and two
+refund constants, preserving parallel-array compaction and deferred consumption.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,
