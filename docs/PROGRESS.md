@@ -3256,3 +3256,32 @@ services, original call-site types/counts and floating environment. Continue
 renderer, story and other missing original systems before complete-game
 requirements. Full objective active/incomplete; original execution comparisons
 still needed.
+
+## 2026-10-12 — Unsigned64 quotient and remainder
+
+Previous goal turn made progress through db98d01. Began clean and added
+FORMAT_UNSIGNED64_DIVISION.md: word ABI, leading-zero/bit-length early return,
+word-shift construction, shared restoring loop and XER carry pipeline, signed
+trial rejection, final quotient insertion versus remainder return. Recorded no
+zero-divisor guard and derived zero-divisor outputs, including65 iterations and
+source clearing at a high-bit numerator. Linked recovered arithmetic into integer
+and decimal conversion. Valid finite significand needs<=16 decimal digits,
+refining multiplication scratch to<=52 digits; arbitrary unsigned64 remains<=20.
+
+Validation:712 instruction anchors and all prior checks passed read-only US ISO.
+Fresh222-function evidence reports matched byte-for-byte. Authored word-shift/
+trial-result recurrence matched integer divmod for105350 nonzero-divisor pairs
+(small complete pair domain, power/adjacent boundaries and5000 seeded pairs,
+deduplicated); nine zero-divisor examples were derived. These are contract-model
+checks, not original instruction execution or exhaustive64-bit equivalence.
+All local behavior documentation links resolve; git diff --check passed.
+make test passed core plus36 Python tests; make all exited0, no rebuild. Only
+research/provenance/evidence tooling changed. No original execution/emulator run
+or profile/save change; original disassemblies/reports remain ignored. Static
+checks do not prove executed ABI flags, actual caller domain or native equivalence.
+
+Next: hex-float and remaining wide/memory/formatter services; original format
+caller census, floating environment and message renderer/manager cadence. Continue
+story attribution/order/branches/conditions and other missing original systems
+before complete-game requirements. Full objective active/incomplete; original
+execution comparisons still needed.

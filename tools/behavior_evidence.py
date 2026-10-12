@@ -52,6 +52,7 @@ FUNCTIONS = (
     'round_decimal', 'float2str',
     '__num2dec', '__num2dec_internal', '__timesdec', '__two_exp',
     'frexp', 'ldexp', 'modf', 'copysign', '__cvt_dbl_usll',
+    '__div2u', '__mod2u',
     'btlevtcmd_AnnounceMessage', 'btlevtcmd_AnnounceSetParam',
     'BattlePadCheckTrigger', 'BattlePadMultiCheckTrigger', '_disp@battle_message.o',
     'evt_btl_camera_set_mode', 'evt_btl_camera_set_homing_unit',

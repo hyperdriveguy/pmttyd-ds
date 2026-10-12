@@ -110,7 +110,11 @@ can differ from a host formatter's zero-prefix policy; that difference still nee
 executed comparison before port equivalence is claimed. No resource format is
 rewritten to avoid it.
 
-Remaining: unsigned64 helper details, decimal/hex-float conversion and rounding,
+Unsigned64 quotient/remainder helpers are now covered in
+[division](FORMAT_UNSIGNED64_DIVISION.md); this resolves their nonzero-radix
+arithmetic contract here.
+
+Remaining: decimal/hex-float conversion and rounding,
 wide/memory services, actual message format/type/count call-site census, replacement
 callbacks and execution validation. Both integer converters' local stages and
 tables are documented; full formatting/full-game equivalence remain unfinished.

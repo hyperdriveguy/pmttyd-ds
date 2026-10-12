@@ -123,7 +123,8 @@ cast with a2^64 limit. No hardware integer-conversion instruction or errno store
 
 The generator's positive exact integral double is between1 and2^53-1, so its
 conversion follows an exact shift route and does not hit saturation. Division/
-remainder services used to form integer decimal digits remain to be recovered.
+remainder services used to form integer decimal digits are now covered in
+[division](FORMAT_UNSIGNED64_DIVISION.md).
 
 ## Finite generator deductions and remaining work (B/P)
 
@@ -147,6 +148,6 @@ NaN fractional signed zero, conversion shifts/sign/saturation and finite power
 endpoints. An independent integer bit-position enumeration of109816 normal/
 subnormal exponent and trailing-position classes confirms these three derived
 ranges; it is not an execution of original helper instructions.
-Remaining: unsigned64 division/remainder, hex-float/wide/memory
+Remaining: hex-float/wide/memory
 services, original caller census and execution comparisons. Full formatting,
 story and complete-game equivalence remain unproven.

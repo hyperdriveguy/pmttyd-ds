@@ -5,7 +5,8 @@ DOL: __timesdec at0x80268b68,size278. This establishes the local multiplication
 routine used by [binary decimal entry](FORMAT_BINARY_DECIMAL_ENTRY.md).
 Power generation is covered in [decimal powers](FORMAT_DECIMAL_POWERS.md).
 Binary64 helpers are covered in [numeric services](FORMAT_BINARY_NUMERIC_SERVICES.md);
-unsigned division/remainder and executed formatting remain open. No original
+integer division in [division](FORMAT_UNSIGNED64_DIVISION.md). Executed formatting
+remains open. No original
 code is executed by this investigation.
 
 ## Record domain and writes (B)
@@ -100,7 +101,9 @@ The integer record constructed by __num2dec_internal is at most20 decimal
 digits for a valid unsigned64 value. The power record's count/digit bounds and
 recursive rounding are now covered in [decimal powers](FORMAT_DECIMAL_POWERS.md),
 establishing a combined scratch budget of at most56 digits for valid integer
-records on this path. The use of leading
+records on this path. Recovered significand division further refines the actual
+finite generator budget to52 scratch digits, covered in [division](FORMAT_UNSIGNED64_DIVISION.md).
+The use of leading
 exponents, numeric bytes, retained36-digit rounding and restored sign is now
 established locally; this does not yet establish complete finite conversion.
 
@@ -108,5 +111,5 @@ Differential obligations: coefficient order, carry quotient/remainder, extra
 leading digit/exponent, all scratch-tail tie tests, retained parity, all9 carry
 with unchanged count, absence of trimming/zero normalization, sign0 and final
 caller sign restoration. Original executions and supported caller records are
-still needed. Remaining dependencies include unsigned division/remainder,
-floating environment, hex-float formatting and the original caller corpus.
+still needed. Remaining dependencies include floating environment, hex-float
+formatting and the original caller corpus.

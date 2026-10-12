@@ -5,8 +5,9 @@ __two_exp at0x802673e4,size1784, dispatch at0x803bb1e0 and seed strings below.
 See [binary entry](FORMAT_BINARY_DECIMAL_ENTRY.md) and
 [multiplication](FORMAT_DECIMAL_MULTIPLICATION.md). This establishes the local
 power routine, including its seed-copy rounding distinction. Binary64 helpers
-are covered in [numeric services](FORMAT_BINARY_NUMERIC_SERVICES.md); unsigned
-division/remainder and executed output comparisons still remain.
+are covered in [numeric services](FORMAT_BINARY_NUMERIC_SERVICES.md), and integer
+division in [division](FORMAT_UNSIGNED64_DIVISION.md). Executed output comparisons
+still remain.
 
 ## Dispatch and seed ownership (B)
 
@@ -116,7 +117,9 @@ those count/digit bounds for these records, so induction establishes that power
 records have count1..36 and numeric digits0..9. This resolves the generator's
 normal multiplication scratch budget: integer record<=20 digits plus power
 record<=36, giving at most56 scratch digits. It does not validate arbitrary
-records passed directly to __timesdec.
+records passed directly to __timesdec. The subsequently recovered integer
+division contract refines this significand path to16+36=52 scratch digits;
+see [division](FORMAT_UNSIGNED64_DIVISION.md).
 
 The literal seed exponents and each multiplication exponent are halfword
 stores. Extreme signed32 powers may wrap the exponent; there is no local range
@@ -128,6 +131,6 @@ on digit/count bounds is not a proof of exact power accuracy or shortest output.
 Differential obligations: sparse dispatch and holes, seed identities, ASCII5
 comparison, both truncated seeds, signed odd halving, square-before-correction,
 rounding at each multiplication,42-byte copy and halfword exponent storage.
-Outstanding: unsigned division/remainder, floating environment, original
+Outstanding: floating environment, original
 execution/caller corpus, hex-float and remaining formatting/runtime contracts.
 Full formatting, story and complete-game equivalence are still unproven.

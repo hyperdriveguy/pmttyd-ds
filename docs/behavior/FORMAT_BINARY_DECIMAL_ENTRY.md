@@ -7,7 +7,7 @@ and [finite layout](FORMAT_FINITE_DECIMAL_LAYOUT.md). Numeric multiplication is
 covered in [its contract](FORMAT_DECIMAL_MULTIPLICATION.md), and power generation
 in [decimal powers](FORMAT_DECIMAL_POWERS.md). Binary64 helpers and integer-word
 conversion are covered in [numeric services](FORMAT_BINARY_NUMERIC_SERVICES.md);
-unsigned division/remainder remain open. This
+unsigned quotient/remainder are covered in [division](FORMAT_UNSIGNED64_DIVISION.md). This
 is not a complete binary-to-decimal equivalence claim or executed-output study.
 
 ## Internal record versus public ASCII record (B)
@@ -115,7 +115,9 @@ Create local unsigned numeric decimal record: sign0. If V=0, exponent0,count1,
 numeric digit0. Otherwise repeatedly __mod2u(V,10) then __div2u(V,10), append
 each remainder byte starting at+5 and increase count. Reverse logical digits
 in place using endpoint swaps; exponent=halfword(count-1). Digits remain numeric.
-No digit-count-based allocation or output terminator.
+No digit-count-based allocation or output terminator. The recovered nonzero
+division contract gives digits0..9 and at most16 digits for this significand;
+see [division](FORMAT_UNSIGNED64_DIVISION.md).
 
 Call __timesdec(outputRecord,&integerRecord,&powerRecord) at0x80268b68, then
 overwrite outputRecord.sign with the original raw sign. Multiplication count/
@@ -134,7 +136,7 @@ round_decimal trimming, exponent shifts, low/high mantissa trailing counts,
 helper ordering, numeric integer reversal and final sign overwrite. These are
 derived obligations, not executed conversion traces.
 
-Remaining: unsigned division/remainder edge contracts and floating environment,
+Remaining: floating environment and executed generator comparisons,
 hex-float output and original format/type/count
 call-site corpus. Entry/internal local branches are documented; complete binary
 decimal generation, formatting/story/full-game equivalence remain unfinished.
