@@ -1,5 +1,31 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original system-level source mask transitions
+
+Added `event_system_level.cpp` for complete marioStSystemLevel/GetSystemLevel
+contracts and bound original stop/start-all services. Requested level8041e940
+stays separate from GP18's whole mask. Recognized0..4 preserve high bits;
+1..3 retain two writes and a fresh GP reload before OR. Invalid requests query/
+write nothing. Lower nonzero transitions do not resume previous stop categories;
+request0 starts0xef and leaves0x10-only entries stopped. Runtime globals now
+explicitly document that constructor run-check consumes whole GP mask,not the
+last requested enum. Source/time/system-level behavior remains separate from
+physical-input polling and per-entry speed/credit.
+
+Validation: `make test` passed48/48 CTest suites and78 Python tests; `make all`
+rebuilt ARM modules and3dsx. Logs:/tmp/pm-event-system-test.log and
+/tmp/pm-event-system-build.log. Fixtures cover all transitions/high bits/write
+order/invalids/noninverse stops,0xef exclusion,live GP changes between mask writes,
+requested-versus-effective getter and actual constructor run-check composition.
+Source-derived request2→GP3→run-check type10 behavior is a static/host fixture,
+not an observed original gameplay pause. Previous clock verifier passed9 bodies,
+247 anchors and1 data span;no original runtime/cadence evidence asserted.
+
+Native GP/address/time/window/source owners,entry-layout/callback registration
+and whole original pause/UI/main-loop graph remain open. Next:native storage/
+context/time/service binding and original Jump source execution;EVT-01 requests
+persist. Full remake remains active/incomplete;no emulator run for unbound code.
+
 ## 2026-10-12 — Supplied DSP firmware resolves native audio validation blocker
 
 Used user-provided /home/carson/games/roms/dspfirm.cdc read-only;copied only to

@@ -470,6 +470,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+System-level source breadcrumb (2026-10-12): `event_system_level.cpp` binds
+original requested-level/whole-GP-mask transitions to existing stop/start-all.
+Tests preserve high bits,two writes/live reload,noninverse lowering,0xef/type10
+exclusion and constructor run-check reading WHOLE mask rather than last request.
+make test passes48 suites/78 Python tests;make all passes. Native GP aliases/time/
+window/main/UI/source ownership and original pause traces remain open. Next:
+native storage/context/time and original source/callback binding.Prior packed
+entry-map and Jump registration/census requests remain current dependencies.
+
 Time-prefix breadcrumb (2026-10-12): `event_time_publication.cpp` ports raw
 upper/lower rollover retry,winCheck and the complete admitted-clock prefix.
 Tests preserve live GP/delta/mask groups,low/high writes,signed total-only cap,
