@@ -195,6 +195,12 @@
       "sha256": "7594240c2796f3178ab9789dfcc6ee0bac83805a9f87cd7b6a92d6d1f39f11c7"
     },
     {
+      "name": "Camera source version1.01",
+      "address": 2151806632,
+      "size": 8,
+      "sha256": "0018f63764dfab66829c1457e8c7b165a9416bbaecb83d9a327f95d818a7a849"
+    },
+    {
       "name": "Shift overshoot1 and yaw90",
       "address": 2151828164,
       "size": 8,
@@ -284,7 +290,26 @@
     "2147512620": "480000bc",
     "2147512744": "40820028",
     "2147512792": "40820008",
-    "2147512796": "4800000c"
+    "2147512796": "4800000c",
+    "2147541636": "800300e8",
+    "2147541640": "7c001840",
+    "2147541644": "408000ac",
+    "2147541652": "900300e8",
+    "2147541808": "7c001a14",
+    "2147541812": "90030108",
+    "2147541828": "38630044",
+    "2147541832": "4825f11d",
+    "2147541852": "900301d0",
+    "2147541868": "900301d0",
+    "2147540824": "806300e8",
+    "2147540828": "c0030000",
+    "2147534152": "80a400a4",
+    "2147534168": "80c400a0",
+    "2147534180": "7c030e70",
+    "2147534196": "1ca6000c",
+    "2147534212": "1c00000c",
+    "2147534220": "7cc72a14",
+    "2147534224": "7ce70214"
   },
   "rel_spans": [
     {
@@ -2156,6 +2181,47 @@
         "|MarioSt_CameraRoad|C_minato_l",
         "|MarioSt_CameraRoad|C_kakusi",
         "|MarioSt_CameraRoad|C_umi_02"
+      ],
+      "header_words": {
+        "196": 1,
+        "200": 3,
+        "204": 3,
+        "208": 7,
+        "212": 36,
+        "216": 24,
+        "220": 32,
+        "224": 0,
+        "228": 0,
+        "232": 268,
+        "236": 280,
+        "240": 832,
+        "244": 1144,
+        "248": 1200,
+        "252": 1632,
+        "256": 1920,
+        "260": 4290722320,
+        "264": 4290722320
+      },
+      "magic": "MarioSt_CameraRoadExport",
+      "version": "1.01",
+      "lens_pointer": 268,
+      "lens_sha256": "4a81dc2646afc8585f706834114742e5e32a8103b6b2679e9e735526bc9bd8f0",
+      "road_path_ranges": [
+        {
+          "record_index": 0,
+          "vector_start": 0,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 1,
+          "vector_start": 12,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 2,
+          "vector_start": 24,
+          "combined_vector_count": 12
+        }
       ]
     },
     {
@@ -2177,6 +2243,87 @@
         "|MarioSt_CameraRoad|C_ie_02_f2_",
         "|MarioSt_CameraRoad|C_mae_02",
         "|MarioSt_CameraRoad|C_ie_03_f1_"
+      ],
+      "header_words": {
+        "196": 1,
+        "200": 11,
+        "204": 11,
+        "208": 45,
+        "212": 132,
+        "216": 127,
+        "220": 196,
+        "224": 0,
+        "228": 0,
+        "232": 268,
+        "236": 280,
+        "240": 2304,
+        "244": 3448,
+        "248": 3808,
+        "252": 5392,
+        "256": 6916,
+        "260": 4290722320,
+        "264": 4290722320
+      },
+      "magic": "MarioSt_CameraRoadExport",
+      "version": "1.01",
+      "lens_pointer": 268,
+      "lens_sha256": "4a81dc2646afc8585f706834114742e5e32a8103b6b2679e9e735526bc9bd8f0",
+      "road_path_ranges": [
+        {
+          "record_index": 0,
+          "vector_start": 0,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 1,
+          "vector_start": 12,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 2,
+          "vector_start": 24,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 3,
+          "vector_start": 36,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 4,
+          "vector_start": 48,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 5,
+          "vector_start": 60,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 6,
+          "vector_start": 72,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 7,
+          "vector_start": 84,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 8,
+          "vector_start": 96,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 9,
+          "vector_start": 108,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 10,
+          "vector_start": 120,
+          "combined_vector_count": 12
+        }
       ]
     },
     {
@@ -2201,6 +2348,102 @@
         "|MarioSt_CameraRoad|C_ie03_oku",
         "|MarioSt_CameraRoad|C_ground_mi",
         "|MarioSt_CameraRoad|C_ground_ma"
+      ],
+      "header_words": {
+        "196": 1,
+        "200": 14,
+        "204": 14,
+        "208": 101,
+        "212": 168,
+        "216": 209,
+        "220": 418,
+        "224": 0,
+        "228": 0,
+        "232": 268,
+        "236": 280,
+        "240": 2856,
+        "244": 4312,
+        "248": 5120,
+        "252": 7136,
+        "256": 9644,
+        "260": 4290722320,
+        "264": 4290722320
+      },
+      "magic": "MarioSt_CameraRoadExport",
+      "version": "1.01",
+      "lens_pointer": 268,
+      "lens_sha256": "4a81dc2646afc8585f706834114742e5e32a8103b6b2679e9e735526bc9bd8f0",
+      "road_path_ranges": [
+        {
+          "record_index": 0,
+          "vector_start": 0,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 1,
+          "vector_start": 12,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 2,
+          "vector_start": 24,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 3,
+          "vector_start": 36,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 4,
+          "vector_start": 48,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 5,
+          "vector_start": 60,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 6,
+          "vector_start": 72,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 7,
+          "vector_start": 84,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 8,
+          "vector_start": 96,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 9,
+          "vector_start": 108,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 10,
+          "vector_start": 120,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 11,
+          "vector_start": 132,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 12,
+          "vector_start": 144,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 13,
+          "vector_start": 156,
+          "combined_vector_count": 12
+        }
       ]
     },
     {
@@ -2225,6 +2468,102 @@
         "|MarioSt_CameraRoad|C_ie_02_f1",
         "|MarioSt_CameraRoad|C_san_rozi",
         "|MarioSt_CameraRoad|C_ground_ma"
+      ],
+      "header_words": {
+        "196": 1,
+        "200": 14,
+        "204": 24,
+        "208": 71,
+        "212": 168,
+        "216": 191,
+        "220": 291,
+        "224": 0,
+        "228": 0,
+        "232": 268,
+        "236": 280,
+        "240": 2856,
+        "244": 5352,
+        "248": 5920,
+        "252": 7936,
+        "256": 10228,
+        "260": 4290722320,
+        "264": 4290722320
+      },
+      "magic": "MarioSt_CameraRoadExport",
+      "version": "1.01",
+      "lens_pointer": 268,
+      "lens_sha256": "4a81dc2646afc8585f706834114742e5e32a8103b6b2679e9e735526bc9bd8f0",
+      "road_path_ranges": [
+        {
+          "record_index": 0,
+          "vector_start": 0,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 1,
+          "vector_start": 12,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 2,
+          "vector_start": 24,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 3,
+          "vector_start": 36,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 4,
+          "vector_start": 48,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 5,
+          "vector_start": 60,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 6,
+          "vector_start": 72,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 7,
+          "vector_start": 84,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 8,
+          "vector_start": 96,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 9,
+          "vector_start": 108,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 10,
+          "vector_start": 120,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 11,
+          "vector_start": 132,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 12,
+          "vector_start": 144,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 13,
+          "vector_start": 156,
+          "combined_vector_count": 12
+        }
       ]
     },
     {
@@ -2237,6 +2576,42 @@
       "record_names": [
         "|MarioSt_CameraRoad|C_mae",
         "|MarioSt_CameraRoad|C_hai"
+      ],
+      "header_words": {
+        "196": 1,
+        "200": 2,
+        "204": 2,
+        "208": 2,
+        "212": 24,
+        "216": 9,
+        "220": 9,
+        "224": 0,
+        "228": 0,
+        "232": 268,
+        "236": 280,
+        "240": 648,
+        "244": 856,
+        "248": 872,
+        "252": 1160,
+        "256": 1268,
+        "260": 4290722320,
+        "264": 4290722320
+      },
+      "magic": "MarioSt_CameraRoadExport",
+      "version": "1.01",
+      "lens_pointer": 268,
+      "lens_sha256": "4a81dc2646afc8585f706834114742e5e32a8103b6b2679e9e735526bc9bd8f0",
+      "road_path_ranges": [
+        {
+          "record_index": 0,
+          "vector_start": 0,
+          "combined_vector_count": 12
+        },
+        {
+          "record_index": 1,
+          "vector_start": 12,
+          "combined_vector_count": 12
+        }
       ]
     }
   ],
