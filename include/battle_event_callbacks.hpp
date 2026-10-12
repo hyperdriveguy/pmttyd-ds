@@ -15,6 +15,7 @@
 #include "battle_packed_position.hpp"
 #include "battle_first_attack.hpp"
 #include "battle_packed_part.hpp"
+#include "battle_packed_hit.hpp"
 
 namespace ttyd {
 struct BattleDataChildBackend {
@@ -36,6 +37,7 @@ EffectDeletionServices nativeEffectDeletionServices(EventNativeRuntime&);
 BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend&);
 BattlePartPositionServices nativeBattlePartPositionServices(EventNativeRuntime&);
 bool bindBattleGetPartsPosCallback(EventCallbackRegistry&,EventNativeRuntime&);
+bool bindBattleGetHitPosCallback(EventCallbackRegistry&,EventNativeRuntime&);
 BattleFirstAttackServices nativeBattleFirstAttackServices(EventNativeRuntime&);
 bool bindBattleFirstAttackTargetCallback(EventCallbackRegistry&,EventNativeRuntime&);
 BattlePackedSelectionServices nativeBattlePackedSelectionServices(EventNativeRuntime&);

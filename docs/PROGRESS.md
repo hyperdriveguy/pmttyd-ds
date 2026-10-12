@@ -192,6 +192,32 @@ requirements and EVT-01/JUMP-01/DMG-02 remain incomplete.
 
 # Progress and next-session handoff
 
+## 2026-10-12 — Native hit-position layers and event callback
+
+Added packed GetHitPos and original event801120a8 binding. It captures signed
+explicit-unit belong/current-work side factor before part world query,keeps
+part owner/facing distinct,reloads unit114 six times,and applies both original
+part170..184 offset triplets. X/Y rounded products and Z fused products use
+explicit platform providers. Native direct outputs preserve alias/source-write
+order;event outputs use completed private coordinates,raw sentinels and integer
+truncation. First unit lookup remains retained while part lookup recaptures work.
+
+Evidence:behavior/battle/BATTLE_PACKED_HIT_POSITION_CAPTURE_ORDER.md. Original
+inspection ELFs/disassembly stay /tmp/pm-native-hit-pos.* and hit-event.*.
+The recovered Y coefficient is loaded once from source804226a8. Original
+field writers,PowerPC numeric exceptions/full trajectories and Game binding
+remain open;no placeholder encounter timings or dialogue were changed.
+
+Validation:make test passes79 CTest suites/90 Python tests;make all passes.
+Logs:/tmp/pm-packed-hit-test.log and /tmp/pm-packed-hit-build.log. Cases include
+two independent sign sources,signed negative belong,two layers/live scale reads,
+captured coefficient/sign,shared outputs and offset aliases,rounded X/Y versus
+fused Z,fresh lookup/retained unit and native callback/byte RAM. Authored input
+records and numeric providers are test fixtures;no emulator/hardware fidelity
+claim. Next:takeoff/native motion and original source ownership,remaining
+AC/cost/menu/pose/effect/audio/message callbacks and outer turn/Game composition.
+Full-game goal remains active/incomplete;concurrent work preserved.
+
 ## 2026-10-12 — Native part lookup/world-position callback
 
 Implemented original part getter:negative ID selects head,single part accepts

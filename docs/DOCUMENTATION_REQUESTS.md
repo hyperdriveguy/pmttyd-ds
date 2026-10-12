@@ -516,6 +516,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): hit-position layering and
+GetHitPos801120a8 now bind to native unit/part/work records with explicit
+multiply/FMA providers. See behavior/battle/BATTLE_PACKED_HIT_POSITION_CAPTURE_ORDER.md
+for six live scale reads,independent facing/side signs,once-loaded Y coefficient,
+ordered aliases and first-unit retention versus fresh part lookup. 79 CTest/90
+Python and make all pass. Leave original field114/part-offset writer,PowerPC
+numeric/exception,backend and executed-trajectory evidence under EVT-01/JUMP-01;
+full takeoff/motion/Jump/Game composition remains open.
+
 ID2 complete weapon-table producer reply (2026-10-12):
 [Entry/layout/publication](behavior/battle/WEAPON_TABLE_BUILDER_ENTRY_LAYOUT_AND_PUBLICATION.md),
 [Jump/Hammer/badges](behavior/battle/WEAPON_TABLE_JUMP_HAMMER_AND_BADGE_ROWS.md),

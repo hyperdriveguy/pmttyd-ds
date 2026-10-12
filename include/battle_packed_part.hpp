@@ -9,6 +9,7 @@ struct BattlePartPositionServices {
     void* numericUser=nullptr;
     float (*fma)(void*,float,float,float)=nullptr;
     float (*add)(void*,float,float)=nullptr;
+    float (*multiply)(void*,float,float)=nullptr;
 };
 uint32_t packedUnitPart(uint32_t unit,int32_t part,const EventMemoryServices&);
 uint32_t packedRegistryPart(int32_t unit,int32_t part,const BattleActorServices&);
