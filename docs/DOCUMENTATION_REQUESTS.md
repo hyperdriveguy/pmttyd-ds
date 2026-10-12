@@ -17,6 +17,8 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Battle input sampler/reset caller census and system-level/event-speed controls | AC-01, AC-03, AC-02 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover direct caller identities,marioStSystemLevel and used speed writes;excludes full UI/pause graph and original traces |
+| Ordinary Jump complete request graph and per-hit/AC branches | JUMP-01, AC-01, DMG-01 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Recover all268 commands,raw operands and branch/inline/cleanup ownership;excludes original traces and unclosed motion/VM/service internals |
 | Unit resource/status snapshot export leaf | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Export contract](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete matching writer;export caller cadence and on-disk save semantics remain open |
 | Unit badge/count/bonus import through _EquipItem | STATUS-01, DMG-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Badge import](behavior/UNIT_BADGE_COUNT_IMPORT.md):complete byte maps/flags/reset/scan and scoped setup bindings;inventory equip UI and runtime traces remain open |
 | Unit-entry status clear and pouch resource import | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Initialization contract](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete clear/import/revision,party mapping and partial info-record reset;badge aggregation,snapshot producers and turn/save ownership remain open |
