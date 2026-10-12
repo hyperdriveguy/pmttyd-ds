@@ -1,5 +1,31 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Behavior-doc folder normalization audit
+
+Audited the committed per-subsystem reorganization (76263bb) and closed
+the stale references it left behind. Fixed 20 flat prose paths: 3 in
+docs/ASSETS.md (overworld/), 10 in docs/PROGRESS.md (battle/, binary/,
+unit/) and 7 in docs/DOCUMENTATION_REQUESTS.md (battle/, input/, meta/,
+overworld/). Confirmed docs/behavior root now holds only README.md, the
+AGENTS.md filing directive is in place, and the behavior README folder
+table matches the 19 subsystem folders.
+
+Validation: whole-tree markdown link scan (2,796 links) resolves every
+behavior contract except the intentional forward references to the
+pending binary/REFERENCE_TOOL_TREES.md companion document; false
+positives are repo-relative docs/behavior/README.md mentions and decomp
+snapshot paths (artifacts/reference/decomp-…/behavior/README.md).
+tools/verify_event_entry_layout.py passes all nine ISO evidence suites
+against the folder tree (432-byte map, 49 fields, 388 known-role bytes).
+make test passes 72/72 CTest suites and 78/78 Python tests.
+
+Limitation: REFERENCE_DOL_FUNCTION_SLICES.md/REFERENCE_TOOL_TREES.md
+forward references in binary/ remain open until those companion documents
+are written; parallel session edits to PROGRESS.md and
+DOCUMENTATION_REQUESTS.md were already in the worktree and are committed
+unchanged alongside this audit. Next: finish the pending binary companion
+documents; keep new contracts in subsystem folders per AGENTS.md.
+
 ## 2026-10-12 — ID2 DVD manager open/read/global callback contracts
 
 Added two detailed contracts and binary verifier for complete DVDMgrOpen/Read/

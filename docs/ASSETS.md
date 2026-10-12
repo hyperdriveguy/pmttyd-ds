@@ -133,7 +133,7 @@ linked provenance for source-domain, alias, codec and audit limitations.
 ## Ordinary head-query binding (2026-10-12)
 
 Native31f6cb8 binds the read-only US DOL contract in
-docs/behavior/OVERWORLD_AIRBORNE_AND_LANDING.md with ce29235/9869179/f305f1d
+docs/behavior/overworld/OVERWORLD_AIRBORNE_AND_LANDING.md with ce29235/9869179/f305f1d
 addenda. Its verifier checks26 bodies,185 anchors and19 data spans in
 /home/carson/games/roms/G8ME01.iso without mutation. No asset conversion or
 pack format changed: existing ignored romfs/*.head retains original triangle
@@ -176,7 +176,7 @@ history. No original-game listening or hardware audio equivalence is claimed.
 ## Ordinary airborne/landing binding (2026-10-12)
 
 Native97fd570 and db71cca use the US DOL contract in
-docs/behavior/OVERWORLD_AIRBORNE_AND_LANDING.md, recovered in35f82d8 with
+docs/behavior/overworld/OVERWORLD_AIRBORNE_AND_LANDING.md, recovered in35f82d8 with
 a4df746/ce29235 addenda. tools/verify_overworld_airborne_and_landing.py reads
 /home/carson/games/roms/G8ME01.iso read-only to verify original bodies,
 instruction anchors and literals. Inspection does not mutate the ISO or link
@@ -231,7 +231,7 @@ equivalence or seam-free playback claim is made.
 ## Ordinary support/slopes/upstairs binding (2026-10-12)
 
 Native commit78eb86b implements the bounded US support contract in
-docs/behavior/OVERWORLD_SUPPORT_SLOPES_AND_STEPS.md, with documentation
+docs/behavior/overworld/OVERWORLD_SUPPORT_SLOPES_AND_STEPS.md, with documentation
 addendum b110e63. Its verifier reads /home/carson/games/roms/G8ME01.iso
 read-only:13 DOL bodies,132 instruction anchors,24 data spans. No original
 executable was linked or copied into the port, and no extracted or converted

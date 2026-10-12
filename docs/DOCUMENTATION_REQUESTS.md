@@ -21,10 +21,12 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Animation Main evaluation and linked-paper time/data graph | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/time](behavior/display/ANIMATION_MAIN_ENTRY_AND_TIME.md),[samples](behavior/display/ANIMATION_TIMELINE_SAMPLING.md),[cache](behavior/display/ANIMATION_COMPRESSED_DELTA_CACHE.md),[interpolation](behavior/display/ANIMATION_OUTPUT_INTERPOLATION.md),[facing](behavior/display/ANIMATION_MAIN_CAMERA_FACING.md),[init](behavior/display/ANIMATION_POOL_AND_TANGENT_INITIALIZATION.md):complete Main/init local graphs and original M_Z_1 metadata;resource/pool/draw/copy/clock/helper/libm/platform/source/runtime remain separate |
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
-| File relocation dispatch and supported type routes | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Dispatch/type map](behavior/file/FILE_RELOCATION_TYPE_DISPATCH.md),[eight flat types](behavior/file/FILE_FLAT_POINTER_RELOCATION.md):all11 routes,unsigned guards/ordered arithmetic/retained first/no null preservation;format consumers/platform/source/runtime remain open;prior missing fixture resolved |
-| Type4 texture-palette nested relocation | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Setup](behavior/file/FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_SETUP.md),[clear](behavior/file/FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_CLEAR.md):complete nested type4,signature/panic/low16 live count/pointer-data-flag order/source82 image headers;consumers/platform/source/runtime remain separate;prior missing fixture resolved |
+| Native first-attack target and paired output ownership | EVT-01, JUMP-01 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Prioritize native requested complete GetFirstAttackTarget/BattleGetFirstAttackUnit/called predicate/body-part service capture/setup/scan/output order;source/Game/runtime remain separate |
+| DVD manager dispatch initialization and shutdown | EVT-01, JUMP-01, DMG-02 | DEFERRED / lock released, 2026-10-12 | Documentation agent ID 2 | Deferred after user requested prioritizing documentation needed by native port;listings retained /tmp/id2-dvdmain.disasm,/tmp/id2-dvdinit.disasm,/tmp/id2-dvddelete.disasm;no recovered contract claimed |
 | DVD manager synchronous request and wait protocol | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Slot open/global callback](behavior/file/DVD_MANAGER_SLOT_OPEN_AND_GLOBAL_CALLBACK.md),[read/wait](behavior/file/DVD_MANAGER_SYNCHRONOUS_READ_PROTOCOL.md):complete Open/Read/SetupCallback,256*152 slots/8000 gate/path-1/parameter truncation,request flag rereads/0002 yield/length return/global callback separation;worker/direct SDK I/O/platform/source/runtime remain separate |
 | Type5 nested resource pointer relocation | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Setup](behavior/file/FILE_TYPE5_NESTED_POINTER_SETUP.md),[clear](behavior/file/FILE_TYPE5_NESTED_POINTER_CLEAR.md):complete type5 root25 fields/captured signed count/64-byte records/root-relative parent/child-relative8 fields/order;all local Set/Clear routes linked;source formats/consumers/platform/runtime remain separate |
+| Type4 texture-palette nested relocation | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Setup](behavior/file/FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_SETUP.md),[clear](behavior/file/FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_CLEAR.md):complete nested type4,signature/panic/low16 live count/pointer-data-flag order/source82 image headers;consumers/platform/source/runtime remain separate;prior missing fixture resolved |
+| File relocation dispatch and supported type routes | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Dispatch/type map](behavior/file/FILE_RELOCATION_TYPE_DISPATCH.md),[eight flat types](behavior/file/FILE_FLAT_POINTER_RELOCATION.md):all11 routes,unsigned guards/ordered arithmetic/retained first/no null preservation;format consumers/platform/source/runtime remain open;prior missing fixture resolved |
 | Smart arena initialization and header provisioning | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Initializer](behavior/memory/SMART_ARENA_AND_HEADER_INITIALIZATION.md),[scoped provisioning](behavior/memory/SMART_RESOURCE_PROVISIONING_REQUIREMENTS.md):complete smartInit,heap4 request/double clear,2048*28 headers/live endpoints/flag-counter reset;heap bootstrap/type relocation/platform/source/runtime remain separate |
 | Smart allocation placement and retry/header publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Header/gap placement](behavior/memory/SMART_ALLOCATION_HEADER_AND_GAP_PLACEMENT.md),[retry/failure](behavior/memory/SMART_ALLOCATION_RETRIES_AND_FAILURE_OWNERSHIP.md):complete smartAlloc,first flag/auto3,release-counter sync/reset,header reservation/word alignment/unsigned leading-firstfit/three tail-only retries/no failed-header restoration;arena init/type relocation/platform/source/runtime remain separate |
 | Smart-heap compaction and file-move requests | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Compactor/barriers](behavior/memory/SMART_HEAP_COMPACTION_AND_PENDING_FILES.md),[file move/address requests](behavior/file/FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md):complete two bodies,draw-sync/equal-address bypass/nonworker pending barrier/worker retarget/live holders/gaps/full-arena flush;type relocation/allocator/platform/source/runtime remain separate;prior host camera assertion resolved by current68-suite run |
@@ -172,7 +174,7 @@ these boundaries when answering remaining tutorial stats/event requests.
 Requested by the implementation agent. Implementation is now in
 `include/battle_timing_a.hpp`, `source/battle_timing_a.cpp` and the Jump branch
 of `Game::battle` in `source/game.cpp`. The evaluator follows
-`behavior/BATTLE_TIMING_A_COMMAND.md`. The caller currently uses development
+`behavior/battle/BATTLE_TIMING_A_COMMAND.md`. The caller currently uses development
 impact tick48, difficulty3, ordinary route, and a fresh command/count per attack;
 these choices are not established original Crump behavior.
 
@@ -192,9 +194,9 @@ Please recover:
   persistent event writes for the opening encounter. No invented scene/dialogue.
 
 Provide US revision0 addresses/records and full branch evidence, then observations
-separately. Existing leads: `behavior/BATTLE_ORDINARY_ATTACK_BINDINGS.md`,
-`behavior/BATTLE_ACTION_COMMAND_CALLBACKS.md`,
-`behavior/BATTLE_INPUT_AND_DEFENCE.md`, `behavior/RANDOMNESS.md`.
+separately. Existing leads: `behavior/battle/BATTLE_ORDINARY_ATTACK_BINDINGS.md`,
+`behavior/battle/BATTLE_ACTION_COMMAND_CALLBACKS.md`,
+`behavior/input/BATTLE_INPUT_AND_DEFENCE.md`, `behavior/meta/RANDOMNESS.md`.
 
 ## AC-02 — Ordinary Hammer binding and presentation (open)
 
@@ -593,7 +595,7 @@ EVT-01/JUMP-01/STATUS-01 source/runtime closure and leave replies here.
 Native implementation breadcrumb / read-order refinement (2026-10-12):
 flag query8011384c and frame conversion80103dc0 are now registered. Static
 read-only-ISO inspection shows flag mask/flag reads BEFORE raw output read;
-see behavior/BATTLE_FLAG_AND_FRAME_UTILITY_READ_ORDER.md for hashes/addresses.
+see behavior/battle/BATTLE_FLAG_AND_FRAME_UTILITY_READ_ORDER.md for hashes/addresses.
 Actual packed Jump mask2 request passes. ftomsec uses wrapped signed product
 and fixed60 with late output token.64 CTest/78 Python and make all pass after
 concurrent camera updates settled. Nested sound stream/playback and full graph
@@ -1670,7 +1672,7 @@ ID2 timing validation completion (2026-10-12):make test passes33 CTest suites
 and58 Python tests;make all rebuilt the existing original asset pack and3DSX.
 All ID2 new/updated timing contract links resolve. Repository-wide link check
 currently scans1511 local links and finds one concurrent missing target:
-behavior/OVERWORLD_WALL_MOVEMENT.md→FIELD_PARTNER_SURROUNDING_WALL.md. ID2 leaves
+behavior/overworld/OVERWORLD_WALL_MOVEMENT.md→FIELD_PARTNER_SURROUNDING_WALL.md. ID2 leaves
 that ID1/terrain contract work untouched;this is a shared-document arrival
 dependency,not an original-game evidence failure. Timing/general/manager binary
 verifiers and Python compilation pass. ID2 changed no native or asset tooling.
@@ -2530,6 +2532,12 @@ references remain pending reorganization. Own lock released;types4/5 nested
 handlers/source/format consumers/platform/original runtime/full-game requirements
 stay open. Preserve staged reorganization;ID2 shared handoff remains in worktree.
 
+ID2 relocation host-gate completion (2026-10-12):missing battle_unit_event_tests.cpp
+fixture arrived;make test rerun passes70 CTest suites/78 Python tests. Log:
+/tmp/id2-reloc-test-rerun.log. Earlier configure-failure breadcrumb is RESOLVED.
+Private contracts/verifier commit9ac794c;make all already passed. Types4/5 nested
+handlers remain open. Shared handoff remains separate from staged reorganization.
+
 ID1 Main/init delivery (2026-10-12),AC-01/AC-03 partial answer:
 [Entry/time](behavior/display/ANIMATION_MAIN_ENTRY_AND_TIME.md),
 [sampling](behavior/display/ANIMATION_TIMELINE_SAMPLING.md),
@@ -2553,12 +2561,6 @@ history;this follow-up adds ID1 evidence tool/manifest,numeric notation refineme
 and exact delivery/provenance. Whole-tree link scan has five unrelated forward
 references in pending binary/REFERENCE_FILES_INVENTORY.md;new Main/init links
 resolve. Do not interpret those draft inventory promises as recovered systems.
-
-ID2 relocation host-gate completion (2026-10-12):missing battle_unit_event_tests.cpp
-fixture arrived;make test rerun passes70 CTest suites/78 Python tests. Log:
-/tmp/id2-reloc-test-rerun.log. Earlier configure-failure breadcrumb is RESOLVED.
-Private contracts/verifier commit9ac794c;make all already passed. Types4/5 nested
-handlers remain open. Shared handoff remains separate from staged reorganization.
 
 ID2 type4 validation breadcrumb (2026-10-12):make test cannot configure
 CMakeLists.txt:327 missing tests/battle_packed_status_tests.cpp. Log:
@@ -2620,3 +2622,20 @@ repeat JSON,prior async/acquisition/general1980 checks pass. make test72 CTest/
 All2823 checked local links resolve;prior inventory link breadcrumbs RESOLVED
 in current tree. Own ID2 lock released;worker/init/delete/direct SDK/source/
 platform/scene/original runtime/full-game requirements remain open.
+
+ID1 draw validation failure notification (2026-10-12):make test in
+/tmp/id1-draw-test.log reached72 CTest suites;70 passed,core and field_movement
+failed. core_tests.cpp:131 expects lowWalk X step0.0113125;field_movement_tests.cpp:39
+expects movementRate()==1. Concurrent include/field_movement.hpp now separates
+facingDegrees from travel heading and changes movementRate ownership. ID1 did
+not change native code or these assertions. Native owner should reconcile the
+original-facing contract/tests;ID1 binary draw/address/resource checks pass.
+Will rerun host validation after actual native source/test changes;do not label
+this run green. Build is separately running;Python stage was skipped by make's
+CTest failure. This notification does not reserve native code or request revert.
+
+ID2 priority steering (2026-10-12):user explicitly requested prioritizing
+DOCUMENTATION for functions the native port needs. Defer unrequested deeper
+DVD/SDK recovery;own DVD-dispatch lock released without a completion claim.
+Reserve native EVT-01 GetFirstAttackTarget request first,then pending movement
+wrappers. Continue communication and narrow numeric ID2 locks here.
