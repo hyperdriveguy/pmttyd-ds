@@ -7,7 +7,8 @@ US G8ME01 revision0,recovered2026-10-12. Evidence B: remaining __dec2num regions
 [approximation](DECIMAL_TO_BINARY_APPROXIMATION.md) and
 [internal decimal generator](FORMAT_BINARY_DECIMAL_ENTRY.md).
 These paths complete the local containing body's recovered control flow.
-__minus_dec and pow remain open dependencies;no original execution or complete
+[__minus_dec](DECIMAL_RECORD_SUBTRACTION.md) is recovered separately;pow and
+composed numerical behavior remain open dependencies;no original execution or complete
 correct-rounding/equivalence proof is asserted.
 
 ## Operand map and record comparison (B)
@@ -66,8 +67,9 @@ operand pointers:
 | DU at stack+0xc4 | B (upper neighbor record) | X |
 
 These are subtraction requests by symbol/caller convention,not an established
-exact-arithmetic implementation. Output precision,normalization,borrow,aliasing
-and malformed-domain behavior remain open until the helper is recovered.
+exact-arithmetic implementation. See [subtraction](DECIMAL_RECORD_SUBTRACTION.md) for local precision,normalization,
+borrow,aliasing and malformed-domain flow;exact-distance and composed execution
+accuracy remain unverified.
 Both calls occur before equality;there is no local float-distance subtraction.
 
 Call __equals_dec(DL,DU). If nonzero,test current C's low-word bit0;the high word

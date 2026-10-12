@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 286 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1336 instruction anchors plus those
+now fingerprints 287 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1360 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -623,3 +623,10 @@ record equality/parity ties and asymmetric selection. Local containing-body
 recovery is distinguished from open __minus_dec/pow and execution equivalence.
 No original code execution/linking,asset conversion,message rewrite or license
 change;ignored inspection artifacts remain local.
+
+Decimal subtraction adds __minus_dec fingerprint and24 anchors. Authored
+contracts record complete copy/alignment/borrow/correction/normalization flow,
+including pointer-dependent tail correction and unchecked zero/alias edges.
+No exact-distance/execution equivalence is inferred. Original disassembly/report
+artifacts stay ignored;no native linking,asset conversion,message rewrite or
+license change occurs.

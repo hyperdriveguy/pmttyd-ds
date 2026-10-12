@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'decimal_record_subtraction': {
+        0x80266ddc: '80040000', 0x80266e30: 'b0030028',
+        0x80266e3c: '4d820020', 0x80266e64: '7d080214',
+        0x80266e68: '2c080024', 0x80266e8c: '7ce321ae',
+        0x80266ec4: '7d493a14', 0x80266ed8: '7c083840',
+        0x80266ef4: '4182fff4', 0x80266f18: '98ec0000',
+        0x80266f24: '98ec0001', 0x80267008: '98e60000',
+        0x80267024: '7c094000', 0x80267034: '28070005',
+        0x8026703c: '39400001', 0x8026706c: '40820164',
+        0x80267080: '7cc43214', 0x80267088: '540007ff',
+        0x802670bc: '4182fff4', 0x802671cc: '98060000',
+        0x802671e4: '4182fff4', 0x80267200: 'b0030002',
+        0x80267298: '98030004', 0x802672d0: '98030004',
+    },
     'decimal_neighbor_refinement_and_ties': {
         0x80266158: '7c651814', 0x80266160: '7c040114',
         0x802661ac: '93c10148', 0x802661d4: 'b0610170',

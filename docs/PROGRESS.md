@@ -4100,3 +4100,29 @@ game requirements. Full objective active/incomplete;local converter control
 recovery does not prove complete numeric/layout or full-game fidelity. Original
 data/IDs/tokens and story attribution/order/branches/event conditions remain
 mandatory.
+
+## 2026-10-12 — US decimal record subtraction
+
+Recovered complete __minus_dec0x80266ddc,size4fc. Added detailed
+DECIMAL_RECORD_SUBTRACTION.md:interleaved42-byte copy/aliasing,zero-right shortcut,
+signed alignment target and36 cap,padding/reverse cursors,borrow chain,omitted
+right-tail correction and below-five versus exact-five target pointer distinction,
+unbounded leading normalization and bounded trailing trim. Linked converter
+requests and distinguished literal local flow from exact-distance/correct-rounding
+claims. No original execution/caller invariant or zero-result behavior measured.
+
+Validation:1360 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO. Fresh287-function reports reproduced byte-for-byte. All496
+local behavior links resolved;git diff --check passed. make test passed core
+plus36 Python tests;make all exited0 with no rebuild. No original execution/
+emulator,profile/save modification,native implementation,asset conversion or
+story rewrite. Original ELF/disassembly/reports remain ignored;working tree was
+clean at turn start.
+
+Next: pow/numeric dependencies and composed execution validation for record
+alignment,borrow/omitted tails,zero/alias cases,neighbor distances/ties/FPSCR/final
+bits and actual scanner inputs. Continue drawing/string layout,resource/cadence
+callers and uncovered story/event/field/battle/audio/save/content before complete-
+game requirements. Full goal active/incomplete;static subtraction/converter flow
+is not complete numerical/layout or full-game fidelity. Original data/IDs/tokens
+and story attribution/order/branches/event conditions remain mandatory.
