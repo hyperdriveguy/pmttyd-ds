@@ -1649,3 +1649,46 @@ unrelated edits appeared in include/game.hpp, source/game.cpp, tests/core_tests.
 and tools/verify_actor_collision.py; they were preserved and excluded from the
 research commit. Validation reflects the shared working tree at execution time,
 not an isolated checkout of that commit.
+
+## 2026-10-12 — Correct ascending movement/collision order
+
+Previous goal turn made progress with active static ceiling collisionsccf13ff.
+Source marioMain tracing found ascent must integrate Mario's jump and head
+check BEFORE horizontal movement. Native previously queried walls using prior
+tick Y. Split vertical integration from landing completion; ascent wall rays
+now use current integrated jump height and landing still selects after XZ.
+Normal falling retains move-before-gravity. A new ledge fall begins integration
+next tick. Source source-byte verifier locks down both branches.
+
+Host regression: low wall blocks standing Mario, while first rising integration
+clears it and advances XZ in the same tick. `make test` passes core and29 Python
+tests; `build-host/core_tests --rooms` passes all8 arrivals,18,315 indexed wall
+probes and original water/void/ceiling checks. `make -j2 all` built native3dsx;
+`python3 tools/verify_actor_collision.py` passed original read-only instruction
+checks. Initial regression compilation had a local Input name collision, fixed
+with local scope; final checks passed.
+
+Important source distinction recovered: marioChkGnd2 is not ordinary falling
+landing. Its .1engine fixed-depth/penetration rule must not replace the velocity
+ray from marioChkLandon, which marioFall calls before displacement. Experimental
+fixed-depth change failed existing high-to-low landing test and was removed.
+Final native falling query retains abs(v)+.01 below/abs(v)+5 above engine units.
+Verifier now proves both callers separately; docs/MECHANICS.md records locations.
+
+Final native water route exited0 with checkpoint protection, original return
+and HP7→6 after corrected ascent order. Exact command:
+`python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_water.py`.
+No build overlapped emulator execution. Source extracts/captures remain ignored.
+
+Next concrete task: move falling overhead check before fall gravity/search,
+matching marioMain fall branch; recover marioChkLandon floor selection/acceptance
+branches and source grounded marioChkGnd. Grounded overhead/legacy stepping
+remain unchanged. Exact source flag transitions, slope/face filters, wall
+push-out/sliding and dynamic support are unfinished. Original story/dialogue,
+SFX, animation, camera, interior/story gates and complete playable content still
+require work. Full goal active; hardware performance unverified.
+Final native ceiling repeat exited0:5 held jumps, landed save at fixture
+position/elevation and HP7. Command: `python3 tools/emulator_smoke.py --fresh-save
+--save-fixture artifacts/fixtures/ceiling-road.bin --seconds 4 --input-script
+tests/azahar_ceiling.py`. This verifies repeat/save stability, not measured
+Dolphin action timing or source camera fidelity.

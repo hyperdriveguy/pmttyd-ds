@@ -78,6 +78,17 @@ void headGeometry() {
 void movement() {
     headGeometry();
     headContactRules();
+    { // A low wall blocks standing movement, but must use this tick's new jump Y.
+    char path[]="/tmp/ttyd-air-wall-XXXXXX";int fd=mkstemp(path);CHECK(fd>=0);
+    uint32_t count=0x80000001;Rect wall{-.9f,1,-.9f,3};Vec2 heights{.11f,.16f};
+    CHECK(write(fd,&count,4)==4);CHECK(write(fd,&wall,sizeof(wall))==sizeof(wall));
+    CHECK(write(fd,&heights,sizeof(heights))==sizeof(heights));close(fd);CHECK(loadCollision(path));
+    Progress initial;initial.room=2;initial.position={-1,2};
+    Input right;right.x=1;right.jumpHeld=true;
+    Game standing;standing.restore(initial);standing.tick(right);CHECK(standing.progress.position.x==-1);
+    Game jumping;jumping.restore(initial);jumping.tick(confirm());jumping.tick({});jumping.tick(right);
+    CHECK(jumping.jumpHeight>.07f && jumping.progress.position.x>-.99f);
+    clearCollision();std::remove(path);}
     FieldJump tapped;tapped.begin();for(int n=0;n<20;++n)tapped.tick(false);
     CHECK(tapped.airborne);tapped.tick(false);CHECK(!tapped.airborne);
     FieldJump held;held.begin();for(int n=0;n<4;++n)held.tick(true);

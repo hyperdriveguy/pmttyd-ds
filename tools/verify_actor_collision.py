@@ -51,7 +51,15 @@ def main():
                                     (0x8008e8a4,'ef75a02a'),(0x8008e8ac,'ef54902a'),
                                     (0x8008f044,'2c1a0005')]:
             assert read(address)==bytes.fromhex(instruction),hex(address)
-        print(f'Normal floor ray: above=abs(v)+{above},below=abs(v)+{padding},footprint radius={footprint},5 probes')
+        depth=value(0x804208ec,.1)
+        for address,instruction in [(0x8008f114,'c02294ac'),(0x8008f11c,'c05f007c'),
+                                    (0x8008e890,'c2bd0090'),(0x8008f160,'408000d4'),
+                                    (0x8008f164,'c00294cc')]:
+            assert read(address)==bytes.fromhex(instruction),hex(address)
+        assert read(0x8008dca8)==bytes.fromhex('fc20f890')
+        assert read(0x8008dcb0)==bytes.fromhex('fc40f890')
+        assert read(0x80093bd0)==bytes.fromhex('4bffa0a1')
+        print(f'Falling marioChkLandon: above=abs(v)+{above},below=abs(v)+{padding}; separate marioChkGnd2 depth={depth},acceptance -10<=root-floor<0')
         precision=value(0x80420900,100);rootPrecision=value(0x80420904,10)
         clearance=value(0x804208c4,1);fastFall=value(0x8042090c,-10)
         for address,instruction in [(0x8008c284,'ec001028'),(0x8008c678,'ec23d03a'),
@@ -64,6 +72,12 @@ def main():
                                     (0x800168a8,'7c060378'),(0x8001699c,'48288209'),
                                     (0x800169ac,'482881f9'),(0x800169cc,'482882d9')]:
             assert read(address)==bytes.fromhex(instruction),hex(address)
+        for address,instruction in [(0x8005affc,'48038d3d'),(0x8005b000,'48031905'),
+                                    (0x8005b004,'4bffea75'),(0x8005b034,'480340b1')]:
+            assert read(address)==bytes.fromhex(instruction),hex(address)
+        assert read(0x8005b04c)==bytes.fromhex('4bffea2d')
+        assert read(0x8005b078)==bytes.fromhex('48038899')
+        print('Ordinary ascent: jump, overhead, move; normal falling: move before fall gravity/search')
         threshold=value(0x80420aa8,-2000);respawnOffset=value(0x80420aa4,37)
         probe=value(0x804209c0,300);rise=value(0x804209c4,10);travel=value(0x804209c8,8)
         assert read(0x80091cf4)==bytes.fromhex('38600032')

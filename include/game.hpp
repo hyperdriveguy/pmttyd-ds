@@ -104,6 +104,8 @@ private:
     ReturnPoint roomRespawn{1,0,3.5f};
     bool beginVoid();
     void advanceVertical(bool held);
+    bool integrateVertical(bool held,float& previousY);
+    void finishVertical(float previousY);
     int turnTick = 0;
     bool jumpAttempted = false, hammerArmed = false, guardAttempted = false;
     int dialoguePages() const;
@@ -141,7 +143,7 @@ bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clam
 bool loadGroundReturns(const char* path);
 bool groundReturn(const GroundContact&,ReturnPoint& point);
 bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr);
-// Center floor ray using original normal landing search bounds in world Y.
+// Center falling floor ray (marioChkLandon): abs(v)+.0001 below, abs(v)+.05 above.
 bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
 bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
 void clearCollision();

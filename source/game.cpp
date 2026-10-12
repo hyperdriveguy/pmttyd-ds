@@ -342,6 +342,7 @@ bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact) {
 bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact) {
     if(!std::isfinite(velocity))return false;
     const float reach=std::fabs(velocity);
+    // Falling marioChkLandon passes velocity for both search arguments.
     return groundWithin(p,worldY-reach-.0001f,worldY+reach+.05f,height,contact);
 }
 bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& height,GroundContact* contact) {
@@ -359,14 +360,21 @@ bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& h
     return found;
 }
 void Game::advanceVertical(bool held) {
-    if(!fieldJump.airborne){jumpHeight=0;if(groundHeight<=VoidThreshold)beginVoid();return;}
-    const float worldY=jumpBase+fieldJump.height;
+    float previousY=0;if(integrateVertical(held,previousY))finishVertical(previousY);
+}
+bool Game::integrateVertical(bool held,float& previousY) {
+    if(!fieldJump.airborne){jumpHeight=0;if(groundHeight<=VoidThreshold)beginVoid();return false;}
+    previousY=jumpBase+fieldJump.height;
     fieldJump.tick(held,false);
     float ceiling=0;
     if(headCollision(progress.position,moveDirection,jumpBase+fieldJump.height,fieldJump.velocity,ceiling)) {
         jumpBase=std::max(jumpBase,ceiling);fieldJump.beginFall();
-        groundContact={};jumpHeight=jumpBase-groundHeight;return;
+        groundContact={};jumpHeight=jumpBase-groundHeight;return false;
     }
+    jumpHeight=jumpBase+fieldJump.height-groundHeight;
+    return true;
+}
+void Game::finishVertical(float worldY) {
     float floor=0;GroundContact contact;
     if(fieldJump.falling && landingFootprint(progress.position,moveDirection,worldY,fieldJump.velocity,floor,&contact)) {
         fieldJump={};groundHeight=progress.elevation=floor;groundContact=contact;jumpBase=floor;jumpHeight=0;
@@ -460,6 +468,10 @@ void Game::move(const Input& i) {
     const float speed=len>DashThreshold?DashSpeed:WalkSpeed;
     if(len>0){x/=len;z/=len;}
     if(len>0)moveDirection={x,z};
+    // Ordinary ascent: jump, overhead, move. Falling keeps move before gravity.
+    const bool wasFalling=fieldJump.airborne && fieldJump.falling;
+    float previousY=0;const bool verticalReady=!wasFalling && integrateVertical(i.jumpHeld,previousY);
+    if(water.active())return;
     Vec2 p = progress.position;
     Vec2 candidate{p.x+x*speed,p.z};
     float nextHeight=groundHeight;
@@ -515,7 +527,8 @@ void Game::move(const Input& i) {
     cameraX+=(p.x-cameraX)*.07f;
     cameraZ+=(p.z-cameraZ)*.07f;
     cameraHeight+=(groundHeight-cameraHeight)*.07f;
-    advanceVertical(i.jumpHeld);
+    if(wasFalling)advanceVertical(i.jumpHeld);
+    else if(verticalReady)finishVertical(previousY);
     if(fieldJump.airborne)saveRequested=false;
 }
 void Game::startBattle() {

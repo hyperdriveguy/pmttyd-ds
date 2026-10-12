@@ -455,3 +455,34 @@ host maximum.137), lands without damage/warp. Native repeated jumps check landed
 save/position/HP; capture alone does not measure source timing or original
 Dolphin fidelity. Dynamic collision, transformed actor branches, jump/hammer
 block events, SFX342 and exact falling/takeoff flag variants remain unfinished.
+
+## Source update order and distinct landing callers (2026-10-12)
+
+marioMain8005a7e0 distinguishes ascent from fall. Ascent branch8005affc
+calls marioJump,8005b000 overhead,8005b004 horizontal move; conditional
+marioChkGnd2 follows8005b034. Fall branch8005b04c moves, then overhead
+8005b074, then marioFall8005b078. Native ascent now integrates jump/head
+before XZ wall queries; falling retains XZ before fall gravity. New ledge falls
+start gravity the following tick. Split integrateVertical/finishVertical keeps
+landing selection after XZ, retaining existing search behavior. This fixes
+stale-height wall clearance while rising; analytical low-wall regression blocks
+standing but permits the same movement on the first integrated ascent tick.
+
+Do not confuse marioChkGnd2 with marioChkLandon8008dc70. ChkGnd2 normal
+search passes constant.1engine as first argument (804208ec) and current velocity
+as second; it reads current actorY and accepts -10<=rootY-floorY<0. It skips
+when jump flag is set (8008f100–8008f104), so it is not the normal falling
+landing implementation. Native falling instead corresponds to marioFall's
+ChkLandon call80093bd0, which copies velocity into BOTH search arguments
+8008dca8/8008dcb0. Bounds are therefore abs(v)+.01engine below and abs(v)+5
+above pre-displacement root. ChkLandon is a predictive floor search before
+fall displacement; this remains the native falling ray. The caller distinction
+is now source-byte verified. A fixed small-depth replacement was experimentally
+rejected by high-to-low regression because it skipped the floor; no such
+replacement remains in runtime.
+
+Remaining mismatch: falling overhead still follows derivative integration in
+native advanceVertical rather than original pre-gravity overhead. Exact source
+fall-search acceptance, slope/attribute branches, floor face culling and ascent
+to falling transition sequence need further work. Grounded overhead checks and
+legacy grounded stepping are unchanged. No Dolphin measurement/hardware claim.
