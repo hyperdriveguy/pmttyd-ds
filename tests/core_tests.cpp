@@ -254,6 +254,22 @@ void unequalFloorMotion() {
     for(int n=0;n<8;++n)higher.tick(left);
     for(int n=0;n<100 && higher.airborne();++n)higher.tick({});
     CHECK(!higher.airborne() && std::fabs(higher.groundHeight-.2f)<.0001f && higher.groundContact.sourceNode==1);
+    for(int hp:{7,1}) {
+        p.position={2.99f,2};p.elevation=0;p.hp=hp;
+        Game voided;voided.restore(p);right.jumpHeld=false;
+        for(int n=0;n<20;++n)voided.tick(right);
+        float before=0;
+        for(int n=0;n<400 && !voided.water.active();++n){before=voided.groundHeight+voided.jumpHeight;voided.tick({});}
+        CHECK(voided.water.active() && voided.water.kind==RecoveryKind::Void);
+        CHECK(before>VoidThreshold && before<=VoidThreshold+.181f);
+        CHECK(!voided.airborne() && voided.progress.hp==hp && !voided.saveRequested);
+        Input ignored;ignored.x=-1;ignored.confirm=true;ignored.menuConfirm=true;
+        for(int n=0;n<500 && voided.water.active();++n){voided.tick(ignored);CHECK(!voided.saveRequested);}
+        CHECK(!voided.water.active() && voided.progress.hp==hp-1);
+        CHECK(std::fabs(voided.progress.position.x-p.position.x)<.08f && voided.groundHeight==0);
+        if(hp==1){CHECK(voided.scene==Scene::FieldDefeat);voided.tick(confirm());CHECK(voided.reloadRequested);}
+        else {CHECK(voided.scene==Scene::Explore);CHECK(voided.partner.x==voided.progress.position.x && voided.partnerHeight==0);}
+    }
     // A horizontal overlap must not discard a valid floor and fall through it.
     char wallPath[]="/tmp/ttyd-landing-wall-XXXXXX";int wallFd=mkstemp(wallPath);CHECK(wallFd>=0);
     uint32_t wallCount=0x80000001;Rect wall{.145f,1,.145f,4};Vec2 levels{0,.3f};
@@ -603,7 +619,19 @@ void originalReturnSelection() {
     p.room=0;p.position={1,2};p.elevation=0;g.restore(p);CHECK(g.returnContact.sourceNode==0);CHECK(!g.recoveryReturn(point));
     clearCollision();
 }
+void originalVoidReturn() {
+    CHECK(loadCollision("romfs/map.walls"));CHECK(loadGround("romfs/map.ground"));CHECK(loadGroundReturns("romfs/map.returns"));
+    Progress p;p.position={.35f,6.95f};p.hp=7;p.crumpDefeated=true;
+    float floor=0;CHECK(groundAt(p.position,0,floor) && walkable(p.position,floor));p.elevation=floor;
+    Game g;g.restore(p);Input down;down.z=1;
+    for(int n=0;n<300 && !g.water.active();++n){g.tick(down);CHECK(g.warpRequest==-1);}
+    CHECK(g.water.active() && g.water.kind==RecoveryKind::Void);
+    for(int n=0;n<500 && g.water.active();++n)g.tick({});
+    CHECK(g.scene==Scene::Explore && g.progress.hp==6 && !g.airborne());
+    CHECK(std::hypot(g.progress.position.x-p.position.x,g.progress.position.z-p.position.z)<.08f);
+    CHECK(walkable(g.progress.position,g.groundHeight));clearCollision();
+}
 int main(int argc,char**) {
-    try {if(argc>1) {indexedOriginalCollision();originalRooms();originalReturnSelection();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();unequalFloorMotion();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();waterRecovery();transitionFade();std::puts("Core scenarios passed");}
+    try {if(argc>1) {indexedOriginalCollision();originalRooms();originalReturnSelection();originalVoidReturn();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();unequalFloorMotion();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();waterRecovery();transitionFade();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

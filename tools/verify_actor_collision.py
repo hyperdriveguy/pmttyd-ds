@@ -52,4 +52,9 @@ def main():
                                     (0x8008f044,'2c1a0005')]:
             assert read(address)==bytes.fromhex(instruction),hex(address)
         print(f'Normal floor ray: above=abs(v)+{above},below=abs(v)+{padding},footprint radius={footprint},5 probes')
+        threshold=value(0x80420aa8,-2000);respawnOffset=value(0x80420aa4,37)
+        probe=value(0x804209c0,300);rise=value(0x804209c4,10);travel=value(0x804209c8,8)
+        assert read(0x80091cf4)==bytes.fromhex('38600032')
+        assert read(0x80091d40)==bytes.fromhex('3800000c')
+        print(f'Void threshold={threshold},respawn offset={respawnOffset},screen probe={probe},rise step={rise},travel={travel},landing wait50,injury wait12')
 if __name__=='__main__':main()

@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "wall_geometry.hpp"
+#include "field_camera.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -305,13 +306,30 @@ bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& h
     return found;
 }
 void Game::advanceVertical(bool held) {
-    if(!fieldJump.airborne){jumpHeight=0;return;}
+    if(!fieldJump.airborne){jumpHeight=0;if(groundHeight<=VoidThreshold)beginVoid();return;}
     const float worldY=jumpBase+fieldJump.height;
     fieldJump.tick(held,false);
     float floor=0;GroundContact contact;
     if(fieldJump.falling && landingFootprint(progress.position,moveDirection,worldY,fieldJump.velocity,floor,&contact)) {
         fieldJump={};groundHeight=progress.elevation=floor;groundContact=contact;jumpBase=floor;jumpHeight=0;
-    } else {groundContact={};jumpHeight=jumpBase+fieldJump.height-groundHeight;}
+    } else {
+        groundContact={};jumpHeight=jumpBase+fieldJump.height-groundHeight;
+    }
+    if(groundHeight+jumpHeight<=VoidThreshold)beginVoid();
+}
+bool Game::beginVoid() {
+    ReturnPoint destination=roomRespawn,candidate;
+    float floor=destination.y;
+    if(recoveryReturn(candidate) && groundAt({candidate.x,candidate.z},candidate.y,floor) && walkable({candidate.x,candidate.z},floor))destination={candidate.x,floor,candidate.z};
+    floor=destination.y;
+    if(!groundAt({destination.x,destination.z},floor,floor) || !walkable({destination.x,destination.z},floor))return false;
+    destination.y=floor;
+    water.beginVoid({roomRespawn.x,recoveryTopHeight(floor),roomRespawn.z},{destination.x,floor,destination.z});
+    progress.position={roomRespawn.x,roomRespawn.z};groundHeight=progress.elevation=floor;
+    partner={roomRespawn.x,roomRespawn.z};partnerHeight=roomRespawn.y;partnerContact={};
+    cameraX=destination.x;cameraZ=destination.z;cameraHeight=floor;
+    fieldJump={};jumpHeight=0;warpRequest=-1;saveRequested=false;
+    return true;
 }
 void clearCollision() {walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}
@@ -338,6 +356,7 @@ void Game::restore(const Progress& saved) {
     groundHeight=p.elevation;partnerHeight=p.elevation;
     if (!walkable(partner,p.elevation)) partner = p.position;
     groundAt(p.position,p.elevation,groundHeight,&groundContact);
+    roomRespawn={p.position.x,groundHeight,p.position.z};
     groundAt(partner,groundHeight,partnerHeight,&partnerContact);
     followerPath.push_back(partner);followerPath.push_back(p.position);
     cameraX=p.position.x;cameraZ=p.position.z;cameraHeight=groundHeight;
@@ -545,6 +564,7 @@ void Game::tick(const Input& i) {
             groundAt(progress.position,groundHeight,groundHeight,&groundContact);
         }
         if(event==WaterEvent::Complete) {
+            if(water.kind==RecoveryKind::Void){partner=progress.position;partnerHeight=groundHeight;partnerContact=groundContact;}
             followerPath.clear();followerPath.push_back(partner);followerPath.push_back(progress.position);
         } else if(event==WaterEvent::Dead)scene=Scene::FieldDefeat;
         return; // Original camera and NPC updates stay frozen through recovery.
@@ -583,7 +603,7 @@ void Game::tick(const Input& i) {
         sound=Sound::Confirm;
     }
     move(i);
-    if(warpRequest>=0)return;
+    if(warpRequest>=0 || water.active())return;
     if((groundContact.attributes&0x200) && !fieldJump.airborne && beginWater())return;
     if (i.cancel) openDialogue(2);
     else if (i.confirm && !fieldJump.airborne) {

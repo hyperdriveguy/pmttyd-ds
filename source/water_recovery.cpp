@@ -6,7 +6,10 @@ void WaterRecovery::begin(std::array<float,3> start,std::array<float,3> destinat
     *this=WaterRecovery{};position=start;target=destination;root=start[1];state=0;velocity=-.06f;
 }
 WaterEvent WaterRecovery::tick(int& hp) {
-    if(state==0) {
+    if(state==15) {
+        position[0]+=travelX;position[2]+=travelZ;
+        if(--counter<=0){state=20;fallVelocity=-.001f;fallAcceleration=-.002f;fallJerk=.00024f;fallJerkRate=-.00004f;}
+    } else if(state==0) {
         if(position[1]>=root-1.6f)position[1]+=velocity;
         else {state=1;counter=40;velocity=.003f;}
     } else if(state==1) {
@@ -46,5 +49,11 @@ WaterEvent WaterRecovery::tick(int& hp) {
         }
     } else if(state==32 && --counter<=0) {state=-1;return WaterEvent::Complete;}
     return WaterEvent::None;
+}
+void WaterRecovery::beginVoid(std::array<float,3> start,std::array<float,3> destination) {
+    *this=WaterRecovery{};kind=RecoveryKind::Void;position=start;target=destination;root=start[1];state=15;
+    const float x=target[0]-position[0],z=target[2]-position[2],distance=std::hypot(x,z);
+    counter=std::max(1,int(distance/.08f));
+    if(distance>0){travelX=x*.08f/distance;travelZ=z*.08f/distance;}
 }
 }

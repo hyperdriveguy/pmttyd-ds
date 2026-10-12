@@ -1,5 +1,6 @@
 #include "platform.hpp"
 #include "world_shbin.h"
+#include "field_camera.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -104,10 +105,11 @@ bool Renderer::changeRoom(uint32_t room) {
     C3D_FrameSync();freeRoom(plaza);plaza=std::move(next);return true;
 }
 void Renderer::updateCutaways(Room& room,const Game& g) {
-    Point3 eye{g.cameraX,g.cameraHeight+4.8f,g.cameraZ+6.5f};
+    Point3 eye{g.cameraX,g.cameraHeight+FieldEyeY,g.cameraZ+FieldEyeZ};
+    const float actorY=g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight;
     const Point3 targets[]={
-        {g.progress.position.x,g.groundHeight+g.jumpHeight+.12f,g.progress.position.z},
-        {g.progress.position.x,g.groundHeight+g.jumpHeight+.65f,g.progress.position.z},
+        {g.progress.position.x,actorY+.12f,g.progress.position.z},
+        {g.progress.position.x,actorY+.65f,g.progress.position.z},
         {g.partner.x,g.partnerHeight+.3f,g.partner.z}
     };
     for(auto& occluder:room.occluders) {
@@ -221,8 +223,8 @@ void Renderer::world(const Game& g) {
     if(battle && g.phase==Phase::Windup)marioPose=g.selection==0?1:2;
     float cam=battle?0:g.cameraX;
     C3D_Mtx projection,view,transform;
-    Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(42),C3D_AspectRatioTop,.1f,80,false);
-    Mtx_LookAt(&view,FVec3_New(cam,battle?2.8f:4.8f+g.cameraHeight,battle?5.5f:g.cameraZ+6.5f),FVec3_New(cam,battle?1.f:1.f+g.cameraHeight,battle?-.4f:g.cameraZ-1.4f),FVec3_New(0,1,0),false);
+    Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(FieldFov),C3D_AspectRatioTop,.1f,80,false);
+    Mtx_LookAt(&view,FVec3_New(cam,battle?2.8f:FieldEyeY+g.cameraHeight,battle?5.5f:g.cameraZ+FieldEyeZ),FVec3_New(cam,battle?1.f:FieldAimY+g.cameraHeight,battle?-.4f:g.cameraZ+FieldAimZ),FVec3_New(0,1,0),false);
     Mtx_Multiply(&transform,&projection,&view);
     // Original room backdrop, drawn without depth writes before the room.
     const float x0=cam-30,x1=cam+30,y0=-12,y1=24,z=-25;

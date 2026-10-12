@@ -18,6 +18,7 @@ constexpr float WalkSpeed=.01f, DashSpeed=.0225f;
 // Circle Pad magnitude maps to the original clamped70-unit stick range.
 constexpr float DashThreshold=55.f/70.f;
 constexpr float FloorFootRadius=.075f, FloorSnapDistance=.11f;
+constexpr float VoidThreshold=-20.f;
 constexpr float WallLowerRay = .11f, WallUpperRay = .2664f;
 // Original normal road-entry event restores party homing distance50 units.
 constexpr float PartnerDistance = .5f;
@@ -100,6 +101,8 @@ private:
     FieldJump fieldJump;
     float jumpBase=0;
     Vec2 moveDirection{1,0};
+    ReturnPoint roomRespawn{1,0,3.5f};
+    bool beginVoid();
     void advanceVertical(bool held);
     int turnTick = 0;
     bool jumpAttempted = false, hammerArmed = false, guardAttempted = false;

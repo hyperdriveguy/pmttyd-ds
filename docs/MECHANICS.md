@@ -369,3 +369,26 @@ Save requests and START writes are suppressed while airborne.
 Grounded0.25-up/0.5-down band, ceiling handling, slope filtering, missing-floor
 void recovery, partner physics and shadow placement remain provisional/incomplete.
 The new host unequal-floor cases are behavior tests, not Dolphin observations.
+
+### Bottomless/void detection and return (2026-10-12)
+
+US marioBottomless80096e8c compares world Y against80420aa8=-2000 engine
+units (native-20), inclusive. Source follows optional BG/reload branches, otherwise
+restores stored bottomless spawn and both partners then selects motion34.
+N_marioSetBottomlessRespawnPosOnBeroEntry stores supplied position with37 units
+added to Y (80420aa4). mot_bottomless probes a point300 units above its return
+target, raises that point10 units while onscreen, traverses horizontally at8
+units/tick, then falls using normal fall tuple with-10 per-step cap. On landing,
+wait50 includes same-frame decrement; HP subtract1 follows, with12 injury ticks
+for surviving Mario. Source verifier checks threshold/offset/screen/travel floats
+and landing/injury counter instruction sites.
+
+Native implements threshold, validated return target, offscreen return/travel/drop
+and shared landing/damage/defeat delays. Offscreen probe uses current handheld
+camera geometry (shared with renderer), preserving source300/10 increments.
+Native camera recenters on return target; companion is grounded during the movie
+and regrouped on completion because original NPC gravity is not yet implemented.
+Return prefers a valid original remembered recovery binding, then native room/load
+entry. Original dynamic fallback selection, reload-enabled/BG branches and exact
+camera/partner choreography remain incomplete; these are adaptations, not claims
+of full source equivalence or Dolphin-observed timing.

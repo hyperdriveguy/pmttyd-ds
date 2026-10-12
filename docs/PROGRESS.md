@@ -1467,3 +1467,51 @@ artifacts/fixtures/harbor-last-hp-road.bin --seconds 4 --input-script
 and original entrance position. Final core/28 Python tests, all original-room
 checks and native build exited0. Generated ttyd-2ds.lst is now ignored; user-owned
 AGENTS.md edits remain separate from this feature commit.
+
+## Bound void falls with source-derived return and damage
+
+Recovered marioBottomless/mot_bottomless and respawn setter functions. Native
+world Y<=-20 now starts recovery instead of falling indefinitely when a validated
+return exists. Return chooses valid remembered original recovery binding, then
+room/load entry; HP never resets to entry HP. Camera-aware offscreen probe uses
+source3-unit start/0.1 increments; horizontal motion0.08/tick; normal fall tuple
+with0.1 maximum drop,50 landing ticks,HP-1 and12 injury ticks reuse shared damage
+logic. Controls/saves/road requests stay blocked during recovery. Lethal falls use
+existing checkpoint-preserving defeat/reload. Companion is grounded/regrouped;
+actual recovery height drives renderer cutaways. Framing constants are shared
+with renderer but unchanged. Original reload/BG policies and dynamic return-target
+selection are not complete, nor are exact camera/partner choreography.
+
+Tests passed: `make test` (core plus28 Python tests),
+`build-host/core_tests --rooms` (all8 arrivals,18,315 indexed probes, original water
+and new original-plaza void return), `make -j2 all` and
+`python3 tools/verify_actor_collision.py`. New host scenarios check inclusive
+threshold crossing, nonlethal/lethal returns, ignored input/partial saves, restored
+position/partner and defeat reload request. Source verifier reads original-2000,
+37,300,10,8 constants and50/12 counter instructions directly from ISO.
+
+Native nonlethal void script exited0: checkpoint protected while falling, HP7→6,
+return within0.08 of entry. Reviewed void-return capture; companion hover caused
+by copying source lift without NPC gravity was corrected to grounded presentation.
+Final lethal script exited0 after render correction: checkpoint preserved on death,
+reload at HP1 without healing and original entry position. Commands:
+```sh
+python3 tools/road_fixtures.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/void-road.bin --seconds 4 --input-script tests/azahar_void.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/void-last-hp-road.bin --seconds 4 --input-script tests/azahar_void.py
+```
+Fixture is valid original plaza floor at(.35,6.95), deliberately away from active
+road approach, moving down beyond floor. A temporary host scan located it; durable
+fixture generator and original-room test now reproduce it without the scan.
+All extracted/generated originals and captures remain ignored.
+
+Next: source ceiling search and grounded slope/contact rules; optional original
+bottomless map reload and exact fallback/partner choreography; horizontal push-out
+and sliding; dynamic support. Original story/English dialogue, SFX, camera paths,
+interiors and wider playable content remain incomplete. Full objective active;
+hardware performance remains unverified. Missing/invalid dynamic return anchors
+are not solved by this static slice implementation.
+Final source/host/original-room/build checks exited0 after the rendering and
+companion correction (last header edit was descriptive only). Commit selected
+feature paths only; agent-instruction changes remain in the user's separate
+fe63afb commit. No native build overlapped emulator execution.

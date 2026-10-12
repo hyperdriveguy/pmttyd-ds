@@ -295,3 +295,21 @@ saving in the same tick also cannot persist transient position. Partner still us
 legacy floor stepping; camera/shadow anchor is the last support until landing.
 Original ceiling search, special contact/slope branches, wall depenetration and
 no-floor void recovery remain required. Generated native listing is ignored.
+
+Void recovery: Game captures validated room/load spawn during restore (HP is not
+copied back on recovery). Post-vertical worldY<=-20 calls beginVoid, including a
+landing below threshold. A valid original bound recovery target is preferred;
+otherwise the captured entry position is validated against current collision.
+RecoveryKind distinguishes Water/Void within existing damage-state storage.
+Void adds horizontal phase15 at0.08/tick, then source fall/50-tick landing delay/
+HP loss/12-tick injury flow. Controls, partial saves and queued road requests are
+suppressed; lethal recovery preserves checkpoint and uses FieldDefeat reload.
+
+field_camera.hpp centralizes unchanged handheld framing and computes a centered
+point above the top of its frustum, beginning3 units up and raising0.1 until out.
+Renderer cutaway rays now use the actual recovery Y, matching actor rendering.
+Companion is grounded at respawn then regrouped at return, with original NPC
+choreography pending. No optional original map reload/BG policy is implemented.
+Destination support during cinematic fall remains static rather than full dynamic
+floor search. Source-safe fallback validation assumes the room/load entry still
+exists; dynamic geometry invalidating all return positions remains unfinished.
