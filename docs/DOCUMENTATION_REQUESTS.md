@@ -394,6 +394,12 @@ mode1 retains prior baseline. No native second-hit timer was added. Original
 angle/distance/sin/fmod/fctiwz/FPSCR behavior,sound source writers/playback,
 unit position/status owners and VM/request cadence remain necessary bindings.
 Existing requests for original trajectory/input/AC traces remain open.
+MarioJumpParam is also implemented in the same module,including discarded Y
+resolution,raw count destination,rounded distance correction,wrapped count
+comparison and resulting-count sentinel. Its output composes with motion in the
+host tests. Please supply implementation-ready original numeric helper/FPSCR
+contracts or differential traces for distABf/angleABf/sin/fmod/fctiwz;current
+fingerprints and injected host services do not prove original numerical equality.
 
 Further ID2 answer:[MarioJumpPosition motion](behavior/BATTLE_MARIO_JUMP_MOTION.md)
 and [rounded numerical operations](behavior/BATTLE_MARIO_JUMP_NUMERICS.md)

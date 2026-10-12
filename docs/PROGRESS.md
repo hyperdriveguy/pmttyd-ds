@@ -1,5 +1,28 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Mario Jump count preparation and motion composition
+
+Added MarioJumpParam to source/battle_jump_motion.cpp using
+BATTLE_MARIO_JUMP_PARAMETER.md. Resolves actor/X/discardedY/Z/count in order,
+uses visible X/Z and explicit original distance/conversion services,applies
+separately rounded distance-minus60 times binary32 0.15 correction,wraps the
+candidate addition before signed comparison,and writes the raw count destination
+unless resulting count is-250000000. The leaf does not mutate movement or AC
+fields. Tests compose derived count42 with the existing motion callback (first
+step leaves41),instead of freezing ordinary Jump at36. Motion commit:27b1a0c.
+
+Validation:make test passed eleven CTest suites plus58 Python tests;make all
+rebuilt the motion module and ttyd-2ds.3dsx. Added exact-distance60/100 cases,
+zero-request speed division,word-overflow lower-bound retention,discarded Y and
+resolver/store ordering,sentinel before/after correction,and unit-state retention.
+Updated README/JUMP-01 with implementation coverage and request for original
+math-helper/FPSCR contracts or differential traces. Native harness continues
+using provisional attack schedule pending approach/event/VM binding;no emulator
+run or original numeric-equivalence claim for these service-level changes.
+Next:bind original Jump request graph,approach services and scheduler/callback
+ownership,then compare original per-hit trajectories/input/result traces. Native
+pouch/equipment/partner lifecycle and full story/assets remain incomplete.
+
 ## 2026-10-12 — Portable Mario jump motion and sound-mode loader
 
 Implemented complete local MarioJumpPosition phases1/2/3 in

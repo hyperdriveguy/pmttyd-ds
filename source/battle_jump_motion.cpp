@@ -21,6 +21,10 @@ int32_t decrement(int32_t n) {
     const uint32_t v=static_cast<uint32_t>(n)-1;
     return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);
 }
+int32_t wrappedAdd(int32_t a,int32_t b) {
+    const uint32_t v=static_cast<uint32_t>(a)+static_cast<uint32_t>(b);
+    return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);
+}
 float sine(const JumpMotionServices& s,float angle) {
     assert(s.sin);return static_cast<float>(s.sin(s.user,static_cast<double>(angle)));
 }
@@ -154,5 +158,32 @@ int marioJumpMotionEvent(MarioJumpEvent& e,const std::array<int32_t,7>& operands
     a.mode=event.resolve(event.user,operands[5]);a.soundMode=event.resolve(event.user,operands[6]);
     auto* u=event.unit(event.user,a.actor);assert(u);
     return marioJumpMotion(*u,e,a,firstCall,motion);
+}
+int32_t marioJumpCount(MarioJumpUnit& u,float x,float z,int32_t requested,
+                       const JumpMotionServices& s) {
+    const auto current=get(u,s);assert(s.distance);
+    const float distance=s.distance(s.user,current.x,current.z,x,z);
+    int32_t candidate=requested;
+    if(requested==0) {assert(s.truncate);candidate=s.truncate(s.user,div(distance,u.speed));}
+    if(distance>60.f) {
+        assert(s.truncate);
+        const float extra=mul(sub(distance,60.f),0.15000000596046448f);
+        candidate=wrappedAdd(candidate,s.truncate(s.user,extra));
+    }
+    return requested==0 || candidate>requested?candidate:requested;
+}
+int marioJumpParameterEvent(const std::array<int32_t,5>& operands,
+                            const JumpEventServices& event,const JumpMotionServices& motion) {
+    assert(event.resolve && event.translateActor && event.unit);
+    const int32_t actor=event.translateActor(event.user,event.resolve(event.user,operands[0]));
+    const float x=static_cast<float>(event.resolve(event.user,operands[1]));
+    event.resolve(event.user,operands[2]); // Required read, discarded integer Y.
+    const float z=static_cast<float>(event.resolve(event.user,operands[3]));
+    const int32_t destination=operands[4];
+    const int32_t requested=event.resolve(event.user,destination);
+    auto* u=event.unit(event.user,actor);assert(u);
+    const int32_t count=marioJumpCount(*u,x,z,requested,motion);
+    if(count!=-250000000) {assert(event.store);event.store(event.user,destination,count);}
+    return 2;
 }
 }

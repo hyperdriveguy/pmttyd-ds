@@ -27,6 +27,9 @@ for the documentation agent are in [documentation requests](docs/DOCUMENTATION_R
 Jump currently executes one documented hit;its original follow-up event is still
 unbound. Successful timing is recorded separately from per-hit power. This
 partial harness must not be treated as the original complete Jump/tutorial attack.
+Portable Mario jump motion, distance-adjusted count preparation and sound-mode
+loading now follow recovered local contracts. Their original math/audio services
+and attack event scheduling still require native binding.
 
 This is not a finished or fidelity-verified remake. Original skeletal/vertex
 animations, sound-effect event playback, measured tutorial mechanics and broader

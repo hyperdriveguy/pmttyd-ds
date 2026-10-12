@@ -12,6 +12,8 @@ struct Fixture {
     bool eligible=true,realSine=false;
     int sineCalls=0,getCalls=0,setCalls=0,playCalls=0,eligibilityCalls=0;
     uint32_t played=0;
+    int storeCalls=0;
+    int32_t storedDestination=0,storedCount=0;
     JumpVector soundPosition;
     float destinationX=0;
     std::vector<int> order;
@@ -34,6 +36,7 @@ struct Fixture {
         s.resolve=[](void* p,int32_t operand) {auto& f=*static_cast<Fixture*>(p);f.order.push_back(operand);assert(operand>=0 && operand<7);return f.values[operand];};
         s.translateActor=[](void* p,int32_t actor) {auto& f=*static_cast<Fixture*>(p);f.order.push_back(8);assert(actor==-2);return 7;};
         s.unit=[](void* p,int32_t actor) {auto& f=*static_cast<Fixture*>(p);f.order.push_back(9);assert(actor==7);return &f.unit;};
+        s.store=[](void* p,int32_t destination,int32_t count) {auto& f=*static_cast<Fixture*>(p);++f.storeCalls;f.order.push_back(12);f.storedDestination=destination;f.storedCount=count;};
         return s;
     }
 };
@@ -138,6 +141,33 @@ int main() {
     event.order.clear();event.values[5]=3;
     assert(marioJumpMotionEvent(ev,operands,false,event.events(),event.services())==0);
     assert(event.order==std::vector<int>({0,8,1,2,3,4,5,6,9}));
+
+    Fixture parameter;parameter.distance=60;parameter.unit.speed=5;
+    parameter.unit.visible={12,34,56};parameter.unit.baseline={7,8,9};
+    parameter.unit.remaining=123;parameter.unit.phase=4;
+    assert(marioJumpCount(parameter.unit,100,0,36,parameter.services())==36);
+    parameter.distance=100;
+    assert(marioJumpCount(parameter.unit,100,0,36,parameter.services())==42);
+    assert(marioJumpCount(parameter.unit,100,0,0,parameter.services())==26);
+    assert(marioJumpCount(parameter.unit,100,0,std::numeric_limits<int32_t>::max(),parameter.services())==std::numeric_limits<int32_t>::max());
+    assert(parameter.unit.visible.x==12 && parameter.unit.baseline.x==7);
+    assert(parameter.unit.remaining==123 && parameter.unit.phase==4 && parameter.unit.speed==5);
+    parameter.order.clear();parameter.values[4]=36;parameter.values[2]=999999;
+    const std::array<int32_t,5> paramOperands{{0,1,2,3,4}};
+    assert(marioJumpParameterEvent(paramOperands,parameter.events(),parameter.services())==2);
+    assert(parameter.storedDestination==4 && parameter.storedCount==42 && parameter.storeCalls==1);
+    assert(parameter.order==std::vector<int>({0,8,1,2,3,4,9,11,12}));
+    parameter.distance=60;parameter.values[4]=-250000000;parameter.order.clear();
+    assert(marioJumpParameterEvent(paramOperands,parameter.events(),parameter.services())==2);
+    assert(parameter.storeCalls==1 && parameter.order==std::vector<int>({0,8,1,2,3,4,9,11}));
+    parameter.distance=100;
+    marioJumpParameterEvent(paramOperands,parameter.events(),parameter.services());
+    assert(parameter.storeCalls==2 && parameter.storedCount==-249999994);
+    Fixture composition;MarioJumpEvent composeEvent;
+    auto composed=args(marioJumpCount(composition.unit,100,0,36,composition.services()));
+    assert(composed.count==42);
+    marioJumpMotion(composition.unit,composeEvent,composed,true,composition.services());
+    assert(composition.unit.remaining==41);
 
     // All partial loader modes retain gap bytes and perform ordered alias reads.
     std::array<uint8_t,0x36> source;for(unsigned i=0;i<source.size();++i)source[i]=i+1;

@@ -45,8 +45,13 @@ struct JumpEventServices {
     int32_t (*resolve)(void*,int32_t)=nullptr;
     int32_t (*translateActor)(void*,int32_t)=nullptr;
     MarioJumpUnit* (*unit)(void*,int32_t)=nullptr;
+    void (*store)(void*,int32_t destination,int32_t value)=nullptr;
 };
 // Re-resolves all seven raw operands on every invocation, including resumptions.
 int marioJumpMotionEvent(MarioJumpEvent&,const std::array<int32_t,7>& operands,
                          bool firstCall,const JumpEventServices&,const JumpMotionServices&);
+int32_t marioJumpCount(MarioJumpUnit&,float x,float z,int32_t requested,
+                       const JumpMotionServices&);
+int marioJumpParameterEvent(const std::array<int32_t,5>& operands,
+                            const JumpEventServices&,const JumpMotionServices&);
 }
