@@ -500,7 +500,7 @@ const char* Game::prompt() const {
     if (scene == Scene::Defeat) return "A: retry     B: return to plaza";
     if (scene == Scene::Battle) {
         if (phase == Phase::Select) return "Choose on touch screen / D-pad + A";
-        if (phase == Phase::Windup) return selection == 0 ? "Press A just before the landing!" : "Hold B, then release at the marker!";
+        if (phase == Phase::Windup) return selection == 0 ? "Press A just before the landing!" : "Hold Circle Pad left; release when charged!";
         if (phase == Phase::EnemyWindup) return "Press A just before Crump lands!";
         return actionSuccess ? "Nice!" : "Keep your timing steady.";
     }
@@ -602,8 +602,8 @@ void Game::move(const Input& i) {
 void Game::startBattle() {
     scene=Scene::Battle; phase=Phase::Select; phaseTick=0; selection=0;
     enemyHP=BattleRules::CrumpHP; actionSuccess=false; guarded=false;
-    generalBattleTriggers={};jumpCommand={};
-    hammerArmed=false; guardAttempted=false;
+    generalBattleTriggers={};jumpCommand={};hammerCommand={};
+    guardAttempted=false;
     jumpHeight=0; fieldJump={};fieldStep={};
 }
 void Game::attackDone(int damage) {
@@ -615,7 +615,14 @@ void Game::battle(const Input& i) {
     // One general-pad press-edge sample per simulation tick, before result calls.
     // Physical edge production and tutorial cadence remain adaptation contracts.
     generalBattleTriggers.push(i.confirm ? BattleButtonA : 0);
-    jumpCommand.tick();
+    if(jumpCommand.callbacksLive)jumpCommand.tick();
+    HammerContext hammerInput;
+    hammerInput.setupOptions=1; // Ordinary SetupAC(-2,3,1,0), actor token clear in harness.
+    hammerInput.difficulty=attackDifficulty(3,0,0); // Default weapon byte3, no badge modifiers.
+    // Adapt the Circle Pad's normalized70-unit range to original main-stick X.
+    hammerInput.held=i.x<=-30.f/70.f ? BattleHeldLeft : 0;
+    if(hammerCommand.mainLive && hammerCommand.tick(hammerInput,battleRandom)==0)
+        hammerCommand.mainLive=false;
     if (phase == Phase::Select) {
         if (i.left) selection=(selection+2)%3;
         if (i.right) selection=(selection+1)%3;
@@ -629,11 +636,14 @@ void Game::battle(const Input& i) {
                 lastDamage=0; actionSuccess=false; phase=Phase::Impact; phaseTick=0;
             } else {
                 phase=Phase::Windup; phaseTick=0; actionSuccess=false;
-                hammerArmed=i.hammerHeld;
                 if(selection==0) {
                     // Harness setup: per-attack count reset, ordinary route and
                     // fixed difficulty, pending original script/tutorial binding.
                     jumpCommand={};jumpCommand.tick();jumpCommand.state=100;
+                } else {
+                    // Ordinary default-weapon policy, pending actual Crump event binding.
+                    hammerCommand={};hammerCommand.period=ordinaryHammerPeriod(0x80353de8);
+                    hammerCommand.tick(hammerInput,battleRandom);hammerCommand.state=100;
                 }
             }
             sound=Sound::Confirm;
@@ -650,9 +660,9 @@ void Game::battle(const Input& i) {
                 attackDone(actionSuccess?2:1);
             }
         } else {
-            if (i.hammerHeld) hammerArmed=true;
-            if (i.hammerReleased || phaseTick>=BattleRules::HammerRelease+BattleRules::HammerWindow) {
-                actionSuccess=hammerArmed && i.hammerReleased && std::abs(phaseTick-BattleRules::HammerRelease)<=BattleRules::HammerWindow;
+            if (!hammerCommand.pending()) {
+                actionSuccess=(hammerCommand.result&2)!=0;
+                hammerCommand.stop(); // Harness stop schedule; original event order remains open.
                 attackDone(actionSuccess?2:1);
             }
         }

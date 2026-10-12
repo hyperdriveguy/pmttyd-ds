@@ -110,7 +110,7 @@ int HammerCommand::tick(const HammerContext& context,BattleRandom& random,Hammer
             if(finishCountdown<=0)state=1007;
             break;
         case 1007:
-            callbacksLive=false;
+            mainLive=resultLive=displayLive=deleteLive=false;
             break;
         default:break;
         }

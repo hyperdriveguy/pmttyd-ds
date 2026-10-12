@@ -10,6 +10,7 @@
 #include "field_jump.hpp"
 #include "field_step.hpp"
 #include "battle_timing_a.hpp"
+#include "battle_hammer.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -38,18 +39,17 @@ enum class Scene : uint8_t { Explore, Dialogue, Battle, Victory, Defeat, FieldDe
 enum class Phase : uint8_t { Select, Windup, Impact, EnemyWindup, EnemyImpact };
 enum class Menu : uint8_t { Status, Map, Items, Settings };
 enum class Sound : uint8_t { None, Confirm, Jump, Hit, Success };
-// Encounter scheduling/damage and Hammer/guard windows remain provisional.
-// TimingA's window tables are recovered; its harness difficulty is provisional.
+// Encounter scheduling/damage and guard windows remain provisional.
+// Jump's selected difficulty remains a harness choice. Hammer uses the ordinary
+// default weapon's recovered N4/period25/difficulty3, not a tutorial binding.
 struct BattleRules {
     static constexpr int CrumpHP = 5, CrumpAttack = 1;
     static constexpr int JumpImpact = 48, JumpDifficulty = 3;
-    static constexpr int HammerRelease = 60, HammerWindow = 6;
     static constexpr int EnemyImpact = 54, GuardWindow = 5;
 };
 struct Input {
     float x = 0, z = 0;
     bool confirm = false, cancel = false, jumpHeld = false;
-    bool hammerHeld = false, hammerReleased = false;
     bool left = false, right = false, menuConfirm = false;
     int touchX = -1, touchY = -1; // press edge, never repeated held input
 };
@@ -97,6 +97,7 @@ public:
     void tick(const Input& input);
     void restore(const Progress& saved);
     void startBattle();
+    const HammerCommand& hammerAction() const { return hammerCommand; }
     const char* dialogue() const;
     const char* prompt() const;
     bool near(Vec2 point, float distance = 1.5f) const;
@@ -112,9 +113,10 @@ private:
     bool integrateVertical(bool held,float& previousY);
     void finishVertical(float previousY);
     int turnTick = 0;
-    bool hammerArmed = false, guardAttempted = false;
+    bool guardAttempted = false;
     BattleTriggerHistory generalBattleTriggers;
     TimingACommand jumpCommand;
+    HammerCommand hammerCommand;
     // Explicit development seed; no claim about original seed/load ownership.
     BattleRandom battleRandom{1};
     int dialoguePages() const;

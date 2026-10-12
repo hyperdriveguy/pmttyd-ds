@@ -80,8 +80,9 @@ void soundsAndWaits() {
     command.stop();CHECK(command.state==1005);
     CHECK(command.tick({},random)==1 && command.state==1006 && command.finishCountdown==60);
     for(int n=0;n<59;++n)CHECK(command.tick({},random)==1 && command.state==1006);
-    CHECK(command.tick({},random)==1 && command.state==1007 && command.callbacksLive);
-    CHECK(command.tick({},random)==1 && !command.callbacksLive);
+    CHECK(command.tick({},random)==1 && command.state==1007 && command.mainLive);
+    CHECK(command.tick({},random)==1 && !command.mainLive && !command.resultLive &&
+        !command.displayLive && !command.deleteLive);
     command={};CHECK(command.tick({},random)==1);command.state=100;
     CHECK(command.tick({},random)==1 && command.state==1000 && command.countdown==119);
     for(int n=0;n<118;++n)CHECK(command.tick({},random)==1 && command.state==1000);
@@ -96,7 +97,9 @@ void specialRoutes() {
     CHECK(random.state==1);
     CHECK(command.tick(token,random)==0 && command.result==0 && command.count==0);
     CHECK(command.specialDelay==-1 && random.state==0x41c67ea6 && command.state==1000);
-    CHECK(command.callbacksLive); // Main returned0; manager owns clearing main.
+    CHECK(command.mainLive && command.resultLive && command.displayLive && command.deleteLive);
+    command.mainLive=false; // Manager clears only main after the callback returns0.
+    CHECK(command.resultLive && command.displayLive && command.deleteLive);
     command={};start(command,random);command.forcedCounter=2;
     CHECK(command.tick(left(),random)==1 && command.forcedCounter==1);
     CHECK(command.result==2 && command.state==1004 && command.countdown==0 && command.stage==1);
@@ -133,6 +136,12 @@ void parameters() {
     command.period=-1;CHECK(command.tick({},random)==-1 && command.state==0);
     command.period=0;start(command,random);reachFinal(command,random);
     CHECK(command.tick({},random)==1 && command.state==1004 && command.classification==2);
+    for(int steps=1;steps<=12;++steps) {
+        command={};command.chargeSteps=steps;SoundLog log;
+        start(command,random);reachFinal(command,random,log.sink());
+        CHECK(int(log.keys.size())==steps && log.keys.back()=="SFX_AC_PONE1");
+        CHECK(command.tick({},random)==1 && command.result==2 && command.state==1004);
+    }
 }
 int main() {
     try {releaseBoundaries();soundsAndWaits();specialRoutes();parameters();std::puts("Hammer contract scenarios passed");}

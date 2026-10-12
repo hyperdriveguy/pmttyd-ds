@@ -331,19 +331,31 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
             button("Jump",8,100,96,58,g.selection==0);
             button("Hammer",110,100,96,58,g.selection==1);
             button("Mushroom",212,100,100,58,g.selection==2,g.progress.mushrooms<=0 || g.progress.hp==10);
-            text("Jump: A at landing. Hammer: hold B.",12,174,.44f,Ink);
+            text("Jump: A. Hammer: hold Circle Pad left.",12,174,.44f,Ink);
             text("Mushroom restores 5 HP; uses your turn.",12,192,.42f,Ink);
         } else {
             const bool enemy=g.phase==Phase::EnemyWindup;
             const bool winding=g.phase==Phase::Windup || enemy;
-            const int target=enemy?BattleRules::EnemyImpact:g.selection==0?BattleRules::JumpImpact:BattleRules::HammerRelease;
+            const int target=enemy?BattleRules::EnemyImpact:BattleRules::JumpImpact;
             text(enemy?"GUARD":g.selection==0?"JUMP":"HAMMER",12,80,.82f,Ink);
             panel(14,119,292,28,Ink);
-            float f=winding?std::min(1.f,g.phaseTick/float(target+8)):1;
-            C2D_DrawRectSolid(18,123,.5f,284*f,20,Gold);
-            float marker=18+284*target/float(target+8);
-            C2D_DrawRectSolid(marker-2,118,.5f,4,31,Red);
-            text(enemy?"Press A at the marker.":g.selection==0?"Press A at the marker.":"Hold B, release at the marker.",14,161,.52f,Ink);
+            if(!enemy && g.selection==1) {
+                const auto& hammer=g.hammerAction();
+                const float f=winding?std::clamp((hammer.stage-1)/float(hammer.chargeSteps),0.f,1.f):1.f;
+                C2D_DrawRectSolid(18,123,.5f,284*f,20,Gold);
+                for(int n=1;n<hammer.chargeSteps;++n)
+                    C2D_DrawRectSolid(18+284*n/float(hammer.chargeSteps),122,.5f,2,22,Ink);
+                const bool ready=winding && hammer.stage==hammer.chargeSteps+1 && hammer.countdown>0 &&
+                    hammer.period-hammer.countdown+1<=HammerCommand::releaseAllowance(3);
+                text(!winding?(g.actionSuccess?"Nice!":"Attack finished."):
+                    ready?"Release Circle Pad now!":"Hold Circle Pad left to charge.",14,161,.48f,Ink);
+            } else {
+                float f=winding?std::min(1.f,g.phaseTick/float(target+8)):1;
+                C2D_DrawRectSolid(18,123,.5f,284*f,20,Gold);
+                float marker=18+284*target/float(target+8);
+                C2D_DrawRectSolid(marker-2,118,.5f,4,31,Red);
+                text("Press A at the marker.",14,161,.52f,Ink);
+            }
             text("Timing guide is a prototype assist.",14,190,.43f,Ink);
         }
     } else if(g.scene==Scene::FieldDefeat) {

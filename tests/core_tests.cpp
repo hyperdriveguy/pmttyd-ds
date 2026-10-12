@@ -191,13 +191,30 @@ void timing() {
     Game delayed;delayed.startBattle();delayed.tick(confirm());advance(delayed,40);
     delayed.tick(confirm());CHECK(!delayed.actionSuccess && delayed.phase==Phase::Windup);
     advance(delayed,7);CHECK(delayed.actionSuccess && delayed.lastDamage==2);
-    for(int release:{53,54,60,66}) {
+    // Original ordinary Hammer: enter on tick1, stage5 on81, release82..106.
+    for(int release:{2,80,81,82,100,106,107}) {
         Game g;g.startBattle();g.selection=1;g.tick(confirm());
-        Input held;held.hammerHeld=true;g.tick(held);advance(g,release-2);
-        Input up;up.hammerReleased=true;g.tick(up);
-        CHECK(g.phase==Phase::Impact);CHECK(g.lastDamage==(release>=54?2:1));
+        Input held;held.x=-1;
+        for(int n=1;n<release;++n)g.tick(held);
+        g.tick({});
+        if(release==81) {
+            CHECK(g.phase==Phase::Windup && g.hammerAction().stage==5);
+            g.tick({}); // Stage-advance call cannot evaluate release.
+        }
+        CHECK(g.phase==Phase::Impact);CHECK(g.lastDamage==(release>=81 && release<=106?2:1));
     }
-    Game timeout;timeout.startBattle();timeout.selection=1;timeout.tick(confirm());advance(timeout,66);CHECK(timeout.phase==Phase::Impact);CHECK(timeout.lastDamage==1);
+    Game timeout;timeout.startBattle();timeout.selection=1;timeout.tick(confirm());
+    advance(timeout,119);CHECK(timeout.phase==Phase::Windup);
+    advance(timeout,1);CHECK(timeout.phase==Phase::Impact && timeout.lastDamage==1);
+    for(float x:{-30.f/70.f,-30.f/70.f+.001f,0.f,1.f}) {
+        Game threshold;threshold.startBattle();threshold.selection=1;threshold.tick(confirm());
+        Input held;held.x=x;threshold.tick(held);
+        CHECK(threshold.hammerAction().enteredCharge==(x<=-30.f/70.f));
+    }
+    Game late;late.startBattle();late.selection=1;late.tick(confirm());advance(late,10);
+    Input held;held.x=-1;late.tick(held);CHECK(late.hammerAction().stage==1);
+    for(int n=0;n<80;++n)late.tick(held);
+    late.tick({});CHECK(late.phase==Phase::Impact && late.lastDamage==2);
 }
 void battles() {
     Game g;g.startBattle();

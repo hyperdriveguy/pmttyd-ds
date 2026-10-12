@@ -45,16 +45,20 @@ is in [VM branch rules](behavior/EVENT_INTEGER_BRANCHES.md). This resolves the
 ordinary pointer/period/base-difficulty part of this request. Remaining caller,
 tutorial, display/sound and execution questions below remain open.
 
-The recovered ID3 local behavior is in
-`behavior/BATTLE_HAMMER_STICK_KEEP_LEFT.md`. The current native Hammer branch
-still uses the earlier provisional B-hold/release harness; it is not ID3.
+The recovered ID3 local behavior is implemented in `source/battle_hammer.cpp`,
+with derived contract tests in `tests/battle_hammer_tests.cpp`. The native harness
+now uses held-left input and the ordinary default weapon's N4/T25/difficulty3.
+The former B-hold harness was removed. This is an ordinary command adaptation
+inside a development encounter, not a verified Crump tutorial binding.
 
-Please recover the complete branches selecting N4/T25,30,30,40, weapon level,
-difficulty, suppression/automatic/forced writers, result/damage consumers and
+Please recover suppression/automatic/forced writers, result/damage consumers and
 start/finish/stop ownership, with Crump/tutorial binding separate. Also recover
 display/gauge semantics and the two sound-key macro bindings before original
 charge audio is connected. Original held-left is general pad mask0x40000;
-do not label the current B adaptation as the original input contract.
+The native Circle Pad's normalized70-unit adaptation uses X<=-30/70 inclusively.
+Native charge UI shows actual stages as a development assist; it does not claim
+to reproduce the original command's display geometry/animation. Sound requests
+retain `SFX_AC_PI1` and `SFX_AC_PONE1`; no replacement samples are played.
 
 ## Implementation coverage and next work
 
@@ -64,9 +68,9 @@ The recovered `rand`/`irand` arithmetic has an explicit caller-owned seed. Its
 presence does not establish complete shared RNG or original save/load ownership.
 The harness takes no forced/random routes currently.
 
-Next implementation work: implement the documented local Hammer command with
-platform-independent held-left input and sound requests; use AC-02 answers to
-bind its period/difficulty/presentation to actual scripts. Use AC-01 answers to
+Next implementation work: use AC-02 answers to bind Hammer's cadence/stop/
+damage/presentation to actual scripts and resolve original sound macros.
+Use AC-01 answers to
 replace harness scheduling and connect original tutorial/story events. Defense,
 damage, inventory/event/UI/audio/field systems and all remaining content still
 require implementation/closure work; this request file is not a full-game spec.

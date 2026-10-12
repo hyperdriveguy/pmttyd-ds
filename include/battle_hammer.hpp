@@ -27,7 +27,8 @@ struct HammerCommand {
     int32_t suppression = 0, suppressionLatch = 0;
     int16_t forcedCounter = 0;
     uint32_t mode = 0, result = 0;
-    bool enteredCharge = false, finalSound = false, callbacksLive = true;
+    bool enteredCharge = false, finalSound = false;
+    bool mainLive = true, resultLive = true, displayLive = true, deleteLive = true;
     std::array<uint32_t, 11> scratch{};
     std::array<int32_t, 12> handles{};
     const char* soundRequest = nullptr; // Current invocation's request, if any.

@@ -1,5 +1,74 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native held-left Hammer command
+
+Implemented the recovered US ID3 main/result/delete behavior in
+include/battle_hammer.hpp and source/battle_hammer.cpp, based on
+BATTLE_HAMMER_STICK_KEEP_LEFT.md, BATTLE_HAMMER_WEAPON_BRANCHES.md and the
+command callback/pad contracts. Preserves initialization,120-call entry wait,
+held-left charge,negative-countdown stage advance,release allowance tables,
+retry/overrun/automatic/forced/token/RNG ordering,suppression latch,same-call
+redispatch and60-call finish plus deferred callback cleanup. The forced route
+continues countdown/stage/sound processing before redispatch. Ordinary success
+and overrun do not increment the success count. Main/result/display/delete
+liveness are separate;return0 clears only main in the caller,while1007 clears
+all four. The original1003 busy loop makes no yield or sound-stop request.
+
+Original charge requests retain SFX_AC_PI1/SFX_AC_PONE1 and per-stage handles
+through an injectable platform sink. Native sound macro playback remains unbound;
+no generated tone or arbitrary sample was substituted. Native API rejects N
+outside1..12,negative period and difficulty outside0..6;retail ordinary N4 is
+covered. Original unchecked invalid-memory behavior is not reproduced. Added
+weapon-pointer period selection and original word-wrapped badge-adjusted attack
+difficulty. The ARM int32_t/host int typedef difference exposed a clamp template
+error during the first native build;explicit typing fixed it before final checks.
+Portable implementation incremental commit:90144cf.
+
+Replaced the provisional native B-hold/60-tick release harness with the ordinary
+default weapon policy: N4,T25,base difficulty3,no badges,mode0,setup option1 and
+actor token clear. Circle Pad X<=-30/70 maps to general held-left mask40000;
+B is no longer Hammer input. README and on-screen prompts reflect the control.
+One command call occurs per simulation tick;pending bit gates damage,then the
+harness requests stop. Beginning from its first windup call,stage5 occurs on
+call81 and releases82..106 succeed with this policy;late entry shifts the
+schedule. These are derived native invocation boundaries,not original animation/
+impact measurements. Crump/tutorial weapon/availability/flags/cadence,damage and
+story event bindings remain open. The bottom-screen guide now shows actual four
+charge stages and a release prompt;it is still a development assist,not the
+recovered original display. No original dialogue/story or asset conversions changed.
+
+Validation:final make test passed all3 CTest executables (core,TimingA,Hammer)
+and58 Python tests;make all rebuilt ttyd-2ds.3dsx successfully;git diff --check
+passed. Contract tests exercise seven allowance boundaries across periods25,
+30,40,90,stage-increment release deferral,period0,supported N1..12,120-call wait,
+suppression,original sound request/handle order,automatic/retry/forced/token
+routes,RNG draw timing,difficulty wrap and exact finish cleanup. Core scenarios
+cover native release81 deferral/82 success/106 success/107 overrun,inclusive
+stick threshold,late charge entry and no-input timeout alongside existing Jump,
+item,victory/defeat/save behavior. These are derived tests,not original execution.
+
+Added tests/azahar_hammer.py and ran the isolated capture sequence twice:
+python3 tools/emulator_smoke.py --fresh-save --seconds4 --input-script
+tests/azahar_hammer.py. Reviewed hammer-charged/release/early-release/overrun
+captures under artifacts/azahar: full charge showed the release prompt,release
+displayed Nice/2 and Crump HP3,early release displayed Hit/1 and HP2,overrun
+displayed Hit/1 and HP1. Repeated after fixing the lingering post-attack release
+prompt;updated captures show Nice or Attack finished after resolution. Later
+callback-liveness/setup-context refinements were covered by final host/native
+checks. Wall-clock input holds/manual screenshots are not exact-tick assertions,
+matched original-gameplay evidence or hardware performance validation. Existing
+stage props/animation/camera limitations remain visible.
+
+Updated docs/DOCUMENTATION_REQUESTS.md with implemented Hammer locations and
+remaining AC-02 cadence/damage/tutorial/display/sound requests. Concurrent original
+harbor-opening documentation is arriving;inspect it next rather than inventing
+story sequences. Next implement documented private-pad defense and damage/event
+services,then bind the original opening/tutorial contracts as recovered. Record
+future missing behavior requests in the shared inbox. Full-game goal stays active
+and incomplete. ISO/user emulator profiles/saves untouched;only generated test
+saves were reset. Git/X display escalations were automatically approved. Concurrent
+documentation-agent edits were excluded from native implementation commits.
+
 ## 2026-10-12 — Native US TimingA implementation and documentation requests
 
 Implemented the recovered ordinary Jump ID1 local contract in
