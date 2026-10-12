@@ -532,7 +532,8 @@ void unequalFloorMotion() {
         if(hp==1){CHECK(voided.scene==Scene::FieldDefeat);voided.tick(confirm());CHECK(voided.reloadRequested);}
         else {CHECK(voided.scene==Scene::Explore);CHECK(voided.partner.x==voided.progress.position.x && voided.partnerHeight==0);}
     }
-    // A horizontal overlap must not discard a valid floor and fall through it.
+    // Directional around correction keeps the body clear of this nearby wall;
+    // the corrected position retains the upper ledge's eligible foot support.
     char wallPath[]="/tmp/ttyd-landing-wall-XXXXXX";int wallFd=mkstemp(wallPath);CHECK(wallFd>=0);
     uint32_t wallCount=0x80000001;Rect wall{.145f,1,.145f,4};Vec2 levels{0,.3f};
     CHECK(write(wallFd,&wallCount,4)==4);CHECK(write(wallFd,&wall,16)==16);CHECK(write(wallFd,&levels,8)==8);close(wallFd);
@@ -540,7 +541,8 @@ void unequalFloorMotion() {
     Game overlap;overlap.restore(p);right.jumpHeld=false;
     for(int n=0;n<10;++n)overlap.tick(right);
     for(int n=0;n<100 && overlap.airborne();++n)overlap.tick({});
-    CHECK(!overlap.airborne() && overlap.groundHeight==0 && overlap.groundContact.sourceNode==2);
+    CHECK(!overlap.airborne() && std::fabs(overlap.groundHeight-.2f)<.00001f && overlap.groundContact.sourceNode==1);
+    CHECK(overlap.progress.position.x<.0451f && overlap.progress.position.x>0);
     std::remove(wallPath);
     clearCollision();
     {std::ofstream file(path,std::ios::binary);file.write(reinterpret_cast<char*>(&count),4);

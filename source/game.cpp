@@ -3,6 +3,7 @@
 #include "field_camera.hpp"
 #include "head_collision.hpp"
 #include "floor_contact.hpp"
+#include "field_ray.hpp"
 #include "battle_unit_resources.hpp"
 #include "battle_action_services.hpp"
 #include <algorithm>
@@ -259,6 +260,51 @@ bool loadHead(const char* path) {
             std::max({v[0],v[3],v[6]}),std::max({v[2],v[5],v[8]}),references);
     }
     if(ok){head.swap(data);headIndex.swap(next);}return ok;
+}
+FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float maximum) {
+    // Geometry cache is in native scale. Policy inputs/outputs are engine units.
+    origin={origin.x*.01f,origin.y*.01f,origin.z*.01f};maximum*=.01f;
+    FieldWallHit nearest;nearest.distance=maximum;
+    auto test=[&](std::array<float,9> triangle,uint32_t cull,GroundContact contact,uintptr_t token) {
+        if(!ordinaryWallAttributes(contact.attributes))return;
+        FieldWallHit hit;
+        if(intersectFieldRay(triangle,cull,origin,direction,maximum,hit) &&
+           (!nearest.token || hit.distance<nearest.distance)) {
+            hit.token=token;hit.attributes=contact.attributes;nearest=hit;
+        }
+    };
+    if(!head.empty()) {
+        const float endX=origin.x+direction.x*maximum,endZ=origin.z+direction.z*maximum;
+        const int left=std::floor(std::min(origin.x,endX)/GridSize),right=std::floor(std::max(origin.x,endX)/GridSize);
+        const int back=std::floor(std::min(origin.z,endZ)/GridSize),front=std::floor(std::max(origin.z,endZ)/GridSize);
+        auto testIndex=[&](uint32_t n) {
+            std::array<float,9> triangle;std::copy(head[n].v,head[n].v+9,triangle.begin());
+            test(triangle,head[n].cull,head[n].contact,n+1);
+        };
+        if(left==right && back==front) {
+            for(uint32_t n:nearby(headIndex,{origin.x,origin.z}))testIndex(n);
+        } else {
+            std::vector<uint32_t> candidates;
+            for(int x=left;x<=right;++x)for(int z=back;z<=front;++z) {
+                const auto cell=headIndex.find(cellKey(x,z));
+                if(cell!=headIndex.end())candidates.insert(candidates.end(),cell->second.begin(),cell->second.end());
+            }
+            std::sort(candidates.begin(),candidates.end());candidates.erase(std::unique(candidates.begin(),candidates.end()),candidates.end());
+            for(uint32_t n:candidates)testIndex(n);
+        }
+    } else {
+        // Older host fixture packs have segments/height intervals, without
+        // source cull/winding. Extrusion preserves their explicit double sides.
+        for(size_t n=0;n<walls.size();++n) {
+            const auto contact=n<wallContacts.size()?wallContacts[n]:GroundContact{};
+            if(n<wallTriangles.size()){test(wallTriangles[n],3,contact,n+1);continue;}
+            const auto w=walls[n];const auto h=n<wallLevels.size()?wallLevels[n]:Vec2{-4096,4096};
+            test({w.x0,h.x,w.z0,w.x1,h.x,w.z1,w.x0,h.z,w.z0},3,contact,n+1);
+            test({w.x1,h.x,w.z1,w.x1,h.z,w.z1,w.x0,h.z,w.z0},3,contact,n+1);
+        }
+    }
+    nearest.distance*=100.f;
+    return nearest;
 }
 bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot) {
     return headCollision(p,direction,worldY,velocity,clampedRoot,velocity);
@@ -557,21 +603,62 @@ void Game::move(const Input& i,bool launched) {
     float previousY=0;const bool verticalReady=!wasFalling && integrateVertical(i.jumpHeld,previousY,!launched);
     if(water.active())return;
     Vec2 p = progress.position;
-    Vec2 candidate{p.x+travel.x,p.z};
+    Vec2 candidate{p.x+travel.x,p.z+travel.z};
+    const bool sourceWalls=collisionReady;
+    if(sourceWalls) {
+        FieldWallActor actor;actor.viewFlags=fieldViewFlags;
+        actor.motion=fieldJump.airborne?(fieldJump.falling?10:3):wasStepping?12:
+            fieldMovement.speed==0?0:fieldMovement.speed==DashSpeed?2:1;
+        actor.counter=fieldJump.airborne?int16_t(fieldJump.ticks):0;
+        FieldWallServices services;services.ray=[](void*,FieldWallVector from,FieldWallVector direction,float distance) {
+            return fieldWallRay(from,direction,distance);
+        };
+        FieldWallVector actual{p.x*100,(groundHeight+jumpHeight)*100,p.z*100};
+        const FieldWallVector displacement{travel.x*100,0,travel.z*100};
+        FieldWallMove front;
+        wallContactDistance=10;
+        if(travel.x!=0 || travel.z!=0) {
+            front=searchFieldFrontWall(actual,displacement,actor,services);
+            if(front.forward.token && fieldWallPassThrough(front.forward.attributes,actor)) {
+                actual.x+=displacement.x;actual.z+=displacement.z;
+            } else {
+                actual=front.position;
+                if(front.distanceWritten)wallContactDistance=front.contactDistance*.01f;
+            }
+            // Original wrapper ignores Around's return; its corrected root is
+            // already committed. Dynamic contacts/hazards remain separate owners.
+            correctFieldWallsAround(actual,displacement,0,actor,services);
+            candidate={actual.x*.01f,actual.z*.01f};
+        } else {
+            // Staying probes disposable positions and never moves the root.
+            front=searchFieldFrontWall(actual,{moveDirection.x*10,0,moveDirection.z*10},actor,services);
+            if(!front.forward.token)front=searchFieldFrontWall(actual,{facing*10,0,0},actor,services);
+            candidate=p;
+        }
+        if(front.forward.token) {
+            const size_t n=front.forward.token-1;
+            wallContact=!head.empty()?head[n].contact:n<wallContacts.size()?wallContacts[n]:GroundContact{};
+        }
+    }
     float nextHeight=groundHeight;
     GroundContact nextContact;
     auto accept=[&](Vec2 candidate) {
         const float y=groundHeight+jumpHeight;
-        if(!walkable(candidate,y))return false;
+        if(!sourceWalls && !walkable(candidate,y))return false;
+        if(sourceWalls && ground.empty() &&
+           (candidate.x < -6.7f+BodyRadius || candidate.x > 6.7f-BodyRadius ||
+            candidate.z < -4.5f+BodyRadius || candidate.z > 5.8f-BodyRadius))return false;
         if(fieldJump.airborne || wasStepping || fieldStep.active()){p=candidate;return true;}
         // Keep unwalled tall ledges from being entered before their step query.
         // Actual support is selected once across all five probes after full XZ movement.
         if(groundAt(candidate,groundHeight,nextHeight) && nextHeight-groundHeight>=.05f)return false;
         p=candidate;return true;
     };
-    accept(candidate);
-    candidate={p.x,p.z+travel.z};
-    accept(candidate);
+    if(sourceWalls)accept(candidate);
+    else {
+        // Unconverted development fixtures retain the old placeholder bounds.
+        accept({p.x+travel.x,p.z});accept({p.x,p.z+travel.z});
+    }
     progress.position=p;progress.elevation=groundHeight;
     if(!fieldJump.airborne && !wasStepping) {
         float ceiling=0;

@@ -18,6 +18,7 @@
 #include "physical_input.hpp"
 #include "field_battle.hpp"
 #include "field_movement.hpp"
+#include "field_wall.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -91,6 +92,9 @@ public:
     float groundHeight = 0, partnerHeight = 0;
     bool overheadContact=false;
     GroundContact groundContact,partnerContact;
+    GroundContact wallContact;
+    float wallContactDistance=10; // Source wrapper initial1000, native units*.01.
+    uint32_t fieldViewFlags=0; // Original init clears+14; later view writers unbound.
     GroundContact returnContact;
     WaterRecovery water;
     TransitionFade fade;
@@ -214,4 +218,7 @@ void clearCollision();
 const std::vector<Rect>& collisionWalls();
 Rect collisionBounds();
 bool wallAtLevel(size_t index,float elevation);
+// Uses complete source-winding .head mesh; legacy fixture wall segments are a
+// separate geometry adaptation when a complete mesh is unavailable.
+FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float length);
 }
