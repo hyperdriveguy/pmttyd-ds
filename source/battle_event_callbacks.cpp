@@ -5,6 +5,27 @@
 #include "event_memory_release.hpp"
 
 namespace ttyd {
+BattlePackedChoiceServices nativeBattleChoiceServices(EventNativeRuntime& runtime) {
+    BattlePackedChoiceServices s;s.position=nativeBattlePartPositionServices(runtime);s.user=&runtime;
+    s.status=[](void* p,uint32_t u,int32_t id) {auto& r=*static_cast<EventNativeRuntime*>(p);return int32_t(getPackedBattleStatus(u,id,nativeBattleActorServices(r)).duration);};
+    s.canAct=[](void* p,uint32_t u) {auto& r=*static_cast<EventNativeRuntime*>(p);return packedCanAct(u,nativeBattleActorServices(r));};
+    s.maxFp=[](void* p,uint32_t u) {auto& r=*static_cast<EventNativeRuntime*>(p);return packedUnitFp(u,true,nativeBattleActorServices(r));};
+    s.fp=[](void* p,uint32_t u) {auto& r=*static_cast<EventNativeRuntime*>(p);return packedUnitFp(u,false,nativeBattleActorServices(r));};
+    s.random=[](void* p,int32_t bound) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.irand);return r.platform.irand(r.platform.user,bound);};
+    s.convert=[](void* p,int32_t v) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.signedWordFloat);return r.platform.signedWordFloat(r.platform.user,v);};
+    s.divide=[](void* p,float a,float b) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.divideFloat);return r.platform.divideFloat(r.platform.user,a,b);};
+    s.subtract=[](void* p,float a,float b) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.subtractFloat);return r.platform.subtractFloat(r.platform.user,a,b);};
+    s.negativeMultiplySubtract=[](void* p,float a,float b,float c) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.negativeMultiplySubtractFloat);return r.platform.negativeMultiplySubtractFloat(r.platform.user,a,b,c);};return s;
+}
+BattleTakeoffCoreServices nativeBattleTakeoffCoreServices(BattleTakeoffBackend& backend) {
+    assert(backend.runtime);BattleTakeoffCoreServices s;s.user=&backend;
+    s.sample=[](void* p,BattleCandidateBuffer& b,uint32_t w,int32_t a,int32_t side,uint32_t flags,uint32_t attrs,int32_t bias) {auto& backend=*static_cast<BattleTakeoffBackend*>(p);assert(backend.sample);return backend.sample(backend.user,b,w,a,side,flags,attrs,bias);};
+    s.choose=[](void* p,BattleCandidateBuffer& b,uint32_t flags,int32_t& unit,int32_t& part)->int32_t {
+        auto& backend=*static_cast<BattleTakeoffBackend*>(p);struct Values {int32_t* unit;int32_t* part;} values{&unit,&part};CandidateChoiceOutputs outputs;outputs.user=&values;
+        outputs.write=[](void* p,bool u,int32_t v) {auto& values=*static_cast<Values*>(p);*(u?values.unit:values.part)=v;};
+        choosePackedBattleCandidate(privateBattleCandidateRecords(b),flags,nativeBattleChoiceServices(*backend.runtime),outputs);return 0; // Adapter value is ignored;original has no scalar contract.
+    };return s;
+}
 BattlePackedTakeoffServices nativeBattleTakeoffServices(EventNativeRuntime& runtime,const BattleTakeoffCoreServices& core) {
     BattlePackedTakeoffServices s;s.position=nativeBattlePartPositionServices(runtime);s.core=core;
     s.subtract=[](void* p,float a,float b) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.subtractFloat);return r.platform.subtractFloat(r.platform.user,a,b);};return s;

@@ -288,6 +288,33 @@ requirements and EVT-01/JUMP-01/DMG-02 remain incomplete.
 
 # Progress and next-session handoff
 
+## 2026-10-12 — Native candidate choice and takeoff default provider
+
+Implemented complete candidate chooser over actual unit/kind/status/weapon/item/
+FP bytes and original/private candidate record accessors. All modifiers retain
+intermediate truncation;live count/permutation,post-output bonus reread,ordered
+outputs,weapon/status short circuit/repeated FP queries and current-work capture
+remain distinct. Native CanAct and own/partner FP getter leaves supply defaults.
+Deterministic/weighted74-weight scans preserve physical ties,draw0/prefix and
+row74 behavior. Source constants and explicit numeric/RNG providers stay visible.
+Native Takeoff backend now defaults to this chooser;sampling remains required.
+
+Evidence:behavior/battle/BATTLE_PACKED_CHOICE_SOURCE_ORDER.md. No semantic unit/
+weapon snapshot or fixed candidate fallback;private buffer/weight range checks
+are labeled native provider invariants,not original invalid-domain repairs.
+Original RNG seed/FPSCR/source domains and full Jump/Game remain unfinished.
+
+Validation:make test81 CTest/90 Python;make all passes. Logs:
+/tmp/pm-packed-choice-test.log and /tmp/pm-packed-choice-build.log. Initial 3DS
+build caught int-versus-int32_t callback return type;explicit type fixed and
+final checks pass. Tests cover every modifier/ordered combo,rank coefficients,
+bonus/count/part aliases,CanAct/status branches,FP repeated/fresh-item reads,
+partner owner,weighted boundaries,row74,actual RAM/private buffers and native
+Takeoff default chooser with no RNG. Authored fixtures;no hardware/original
+execution claim. Next:full native sampling and unit/part/kind/monosiri/source
+ownership,then original motion/events/remaining services/outer Game composition.
+Goal remains active/incomplete;concurrent work preserved.
+
 ## 2026-10-12 — Correct original choice coefficients and service identity
 
 Read-only complete chooser disassembly exposed earlier documentation errors:

@@ -17,6 +17,7 @@
 #include "battle_packed_part.hpp"
 #include "battle_packed_hit.hpp"
 #include "battle_packed_takeoff.hpp"
+#include "battle_packed_choice.hpp"
 
 namespace ttyd {
 struct BattleDataChildBackend {
@@ -36,6 +37,14 @@ struct BattleTurnFirstBackend {
 // Defaults implement recovered rule/move/effect services on shared packed bytes.
 EffectDeletionServices nativeEffectDeletionServices(EventNativeRuntime&);
 BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend&);
+struct BattleTakeoffBackend {
+    EventNativeRuntime* runtime=nullptr;
+    void* user=nullptr;
+    int32_t (*sample)(void*,BattleCandidateBuffer&,uint32_t,int32_t,int32_t,uint32_t,uint32_t,int32_t)=nullptr;
+};
+BattlePackedChoiceServices nativeBattleChoiceServices(EventNativeRuntime&);
+// Complete native chooser default;sampling remains an explicit provider.
+BattleTakeoffCoreServices nativeBattleTakeoffCoreServices(BattleTakeoffBackend&);
 BattlePackedTakeoffServices nativeBattleTakeoffServices(EventNativeRuntime&,const BattleTakeoffCoreServices&);
 // Services and runtime must outlive registration. Sampling/choice are required.
 bool bindBattleTakeoffCallback(EventCallbackRegistry&,BattlePackedTakeoffServices&);

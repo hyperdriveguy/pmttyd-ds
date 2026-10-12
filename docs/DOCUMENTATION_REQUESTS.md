@@ -522,6 +522,14 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): complete chooser now operates
+on live native unit/kind/status/weapon/item/FP and raw/private candidate bytes;
+Takeoff backend defaults to this chooser with explicit sampling still required.
+81 CTest/90 Python and make all pass. See
+behavior/battle/BATTLE_PACKED_CHOICE_SOURCE_ORDER.md. Next:full native sampling,
+original source geometry/monosiri ownership and numeric/RNG/executed-position
+coverage under EVT-01/JUMP-01. No full Jump/Game or invalid-domain fidelity claim.
+
 Documentation-agent correction breadcrumb (2026-10-12): original chooser
 800febc8 complete disassembly and verifier constants show mode4 uses0.1+0.4*
 (N-rank),mode8 uses0.5+0.4*rank,and item142 calls CanActStatus8012724c.
