@@ -90,7 +90,7 @@ EventEntry& createRootEvent(EventSchedule& schedule,uint32_t script,int32_t prio
 namespace {
 EventEntry& related(EventSchedule& schedule,EventEntry& source,uint32_t script,uint32_t flags,bool child,const EventCreationServices& s) {
     const auto allocated=allocate(s);auto& e=*allocated.entry;
-    if(child) {source.waitingChild=&e;source.flags|=0x10;}
+    if(child) {source.waitingChild=&e;source.unresolvedLinkMask&=~uint8_t(2);source.flags|=0x10;}
     e={};e.flags=static_cast<uint8_t>(flags|1);
     e.nextCommand=script;e.restartScript=script;e.currentCommand=script;e.opcode=0;
     if(child) {e.waitingParent=&source;e.waitingChild=nullptr;e.brotherOwner=nullptr;}

@@ -477,6 +477,21 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Entry-translator breadcrumb (2026-10-12): `event_entry_addresses.cpp` implements
+new delivered432-byte map with coherent semantic/byte views,all44 unknown bytes,
+raw IEEE/pointer preservation,address-versus-ID relationships and deferred region
+resolution. Combined interpreter fixtures now use it.Native unresolved-link
+DEREFERENCE failure is explicit;raw words are not silently converted to zero.
+Final make test passes50 suites/78 Python tests;make all passes;layout verifier
+passes49 fields and ten ISO evidence suites. Current registered-region lifetime/
+replacement and native loop/label/pointer/FPSCR/source domains remain limitations.
+
+Documentation delivery acknowledged:packed layout/aliases and conditional normal
+Jump registration/72-address direct callback census close the earlier LOCAL map/
+census requests. Full callback implementations/native owner binding and original
+execution remain required.Next:GP/context/heap/time address space,root U0/ID/wait
+binding and actual original function registry,without fabricated callback results.
+
 System-level source breadcrumb (2026-10-12): `event_system_level.cpp` binds
 original requested-level/whole-GP-mask transitions to existing stop/start-all.
 Tests preserve high bits,two writes/live reload,noninverse lowering,0xef/type10

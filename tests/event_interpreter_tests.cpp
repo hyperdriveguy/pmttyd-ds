@@ -1,4 +1,5 @@
 #include "event_interpreter.hpp"
+#include "event_entry_addresses.hpp"
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -12,6 +13,7 @@ int32_t sw(uint32_t v) {return v<=0x7fffffff?int32_t(v):int32_t(int64_t(v)-0x100
 struct Call {uint32_t function;int32_t first;};
 struct Fixture {
     std::array<EventEntry,256> entries{};
+    EventEntryAddresses addresses;
     EventContext context{256,entries.data(),0};
     EventGlobals gp{0,60,0};
     EventRuntimeGlobals runtime{0,1,1,0};
@@ -23,24 +25,13 @@ struct Fixture {
     unsigned barriers=0,divisions=0;
     int32_t observedInteger=0;float observedFloat=0;
     static constexpr uint32_t clock=243000000;
-    EventEntry* translated(uint32_t a,uint32_t& offset) {
-        if(a<0x10000 || a>=0x10000+256*0x1b0)return nullptr;
-        offset=(a-0x10000)%0x1b0;return &entries[(a-0x10000)/0x1b0];
-    }
+    Fixture() {assert(addresses.registerEntries(0x10000,entries.data(),256));}
     uint32_t read(uint32_t a) {
-        uint32_t off=0;if(auto* e=translated(a,off)) {
-            if(off>=0x9c && off<0xdc)return uint32_t(e->locals[(off-0x9c)/4]);
-            if(off>=0xdc && off<0xe8)return e->localFlags[(off-0xdc)/4];
-            if(off==0x150)return e->field150;if(off==0x154)return e->userWork;if(off==0x158)return e->userFlags;
-        }
+        uint32_t mapped;if(addresses.readWord(a,mapped))return mapped;
         uint32_t v=0;for(unsigned i=0;i<4;++i)v=v<<8|bytes[a+i];return v;
     }
     void write(uint32_t a,uint32_t v) {
-        uint32_t off=0;if(auto* e=translated(a,off)) {
-            if(off>=0x9c && off<0xdc) {e->locals[(off-0x9c)/4]=sw(v);return;}
-            if(off>=0xdc && off<0xe8) {e->localFlags[(off-0xdc)/4]=v;return;}
-            if(off==0x150) {e->field150=v;return;}if(off==0x154) {e->userWork=v;return;}if(off==0x158) {e->userFlags=v;return;}
-        }
+        if(addresses.writeWord(a,v))return;
         for(unsigned i=0;i<4;++i)bytes[a+i]=uint8_t(v>>(24-8*i));
     }
     EventCreationServices creation() {
@@ -55,12 +46,12 @@ struct Fixture {
     EventInterpreterServices services() {
         EventInterpreterServices s;s.schedule=&schedule;s.creation=creation();s.user=this;s.numericUser=&divisions;
         s.operands.user=this;s.operands.contextAddress=[](void*)->uint32_t {return 0x8000;};
-        s.operands.entryAddress=[](void* p,EventEntry& e)->uint32_t {auto& f=*static_cast<Fixture*>(p);const auto i=&e-f.entries.data();assert(i>=0 && i<256);return 0x10000+uint32_t(i)*0x1b0;};
+        s.operands.entryAddress=[](void* p,EventEntry& e)->uint32_t {uint32_t a;assert(static_cast<Fixture*>(p)->addresses.addressOf(&e,a));return a;};
         s.operands.globalAddress=[](void*)->uint32_t {return 0x3000;};
         s.operands.readWord=s.creation.word;
         s.operands.writeWord=[](void* p,uint32_t a,uint32_t v) {static_cast<Fixture*>(p)->write(a,v);};
-        s.operands.readByte=[](void* p,uint32_t a) {return static_cast<Fixture*>(p)->bytes[a];};
-        s.operands.writeByte=[](void* p,uint32_t a,uint8_t v) {static_cast<Fixture*>(p)->bytes[a]=v;};
+        s.operands.readByte=[](void* p,uint32_t a) {auto& f=*static_cast<Fixture*>(p);uint8_t v;if(f.addresses.readByte(a,v))return v;return f.bytes[a];};
+        s.operands.writeByte=[](void* p,uint32_t a,uint8_t v) {auto& f=*static_cast<Fixture*>(p);if(!f.addresses.writeByte(a,v))f.bytes[a]=v;};
         s.operands.truncate=[](void*,float v) {assert(std::isfinite(v) && double(v)>=-2147483648. && double(v)<2147483648.);return int32_t(v);};
         s.memory.user=this;s.memory.word=s.creation.word;s.memory.storeWord=s.operands.writeWord;s.memory.storeByte=s.operands.writeByte;
         s.memory.half=[](void* p,uint32_t a)->uint16_t {auto& b=static_cast<Fixture*>(p)->bytes;return uint16_t(b[a])<<8|b[a+1];};

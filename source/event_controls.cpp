@@ -21,13 +21,16 @@ template<class Visitor> void brothers(EventContext& c,EventEntry& owner,Visitor 
 }
 // Body of one compiler-inlined node: descendants use ordinary full invocations.
 void body(EventEntry& e,EventContext& c,uint32_t mask,bool stop,const EventCreationServices& s) {
+    assert(!(e.unresolvedLinkMask&2)); // Unsupported nonzero child address cannot become a null child.
     if(e.waitingChild)visit(*e.waitingChild,mask,stop,s);
     brothers(c,e,[&](EventEntry& b) {visit(b,mask,stop,s);});mutate(e,mask,stop);
 }
 void visit(EventEntry& e,uint32_t mask,bool stop,const EventCreationServices& s) {
     const auto outer=selected(s);
+    assert(!(e.unresolvedLinkMask&2));
     if(e.waitingChild) {
         auto& child=*e.waitingChild;auto& cc=context(s,outer.battle);
+        assert(!(child.unresolvedLinkMask&2));
         auto* grandchild=child.waitingChild;
         if(grandchild) {
             auto& gc=context(s,outer.battle);body(*grandchild,gc,mask,stop,s);
@@ -37,6 +40,7 @@ void visit(EventEntry& e,uint32_t mask,bool stop,const EventCreationServices& s)
     }
     brothers(*outer.context,e,[&](EventEntry& b) {
         const auto inner=selected(s);
+        assert(!(b.unresolvedLinkMask&2));
         auto* child=b.waitingChild;
         if(child) {auto& cc=context(s,inner.battle);body(*child,cc,mask,stop,s);}
         brothers(*inner.context,b,[&](EventEntry& sibling) {const auto other=selected(s);body(sibling,*other.context,mask,stop,s);});

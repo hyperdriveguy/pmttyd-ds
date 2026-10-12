@@ -21,14 +21,16 @@ void copyBack(EventEntry& target,const EventEntry& source) {
 void deleteEvent(EventEntry& e,const EventCreationServices& s) {
     auto& c=currentContext(s);
     if(!(e.flags&1))return;
+    assert(!(e.unresolvedLinkMask&2)); // Unmapped nonzero child is a native address-domain failure.
     if(e.waitingChild)deleteEvent(*e.waitingChild,s);
     auto* entries=c.entries;assert(entries || c.capacity<=0);
     for(int32_t slot=0;slot<c.capacity;++slot) {
         auto& candidate=entries[slot];
         if((candidate.flags&1) && candidate.brotherOwner==&e)deleteEvent(candidate,s);
     }
+    assert(!(e.unresolvedLinkMask&1)); // Preserve raw bits until a dereference needs a mapped entry.
     if(e.waitingParent) {
-        auto& parent=*e.waitingParent;parent.flags&=~uint8_t(0x10);parent.waitingChild=nullptr;copyBack(parent,e);
+        auto& parent=*e.waitingParent;parent.flags&=~uint8_t(0x10);parent.waitingChild=nullptr;parent.unresolvedLinkMask&=~uint8_t(2);copyBack(parent,e);
     }
     e.flags&=~uint8_t(1);e={};--runtime(s).allocationCount;
 }

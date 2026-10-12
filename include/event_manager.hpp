@@ -30,6 +30,9 @@ struct EventEntry {
     std::array<uint8_t,8> switchStates{}; // Original128..12f,signed-byte states.
     std::array<int32_t,8> switchValues{}; // Original130..14c.
     std::array<uint32_t,7> messageFields{}; // Original178..190,retained as raw words.
+    std::array<uint8_t,44> rawBytes{}; // Original unknown spans10,84,174,194,1ac.
+    std::array<uint32_t,3> unresolvedLinkWords{};
+    uint8_t unresolvedLinkMask=0; // Raw nonzero links awaiting address mapping.
 };
 struct EventContext {
     int32_t capacity=0;

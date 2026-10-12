@@ -1,5 +1,42 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Coherent original EventEntry address translator
+
+Implemented `event_entry_addresses.cpp` from newly delivered packed-layout/alias
+contracts. Registered live arrays retain original432-byte stride independently
+of host sizeof/pointer width. Byte/word views update semantic fields immediately,
+retain all44 unknown bytes and IEEE payload bits,and support cross-field/entry
+aliases. Relationship words map to addresses rather than IDs;unmapped nonzero
+words remain raw and can resolve after another array is registered. Native
+lifecycle/stop traversal explicitly rejects unsupported unmapped dereferences,
+and semantic child replacement/copy-back clears obsolete unresolved-link state.
+Known aligned word stores update one field directly;no whole-entry cache/commit.
+
+Combined interpreter fixtures now use this translator instead of bespoke local/
+flag/cursor mapping. Construction/deletion/bulk clear reset opaque bytes;
+restart preserves them. Native registration/read-failure/unaligned/unsupported
+pointer domains are provider policies,not invented original clamps or recovery.
+Existing loop-depth/label-count native domain guards remain separate limitations.
+
+Validation: final `make test` passed50/50 CTest suites and78 Python tests;final
+`make all` passed. Logs:/tmp/pm-entry-address-tests-final.log and
+/tmp/pm-entry-address-builds-final.log. Fixtures cover every432-byte lane,explicit
+header/time/actor/ID/script offsets,partial byte writes,IEEE payloads,unknown/raw
+links/deferred registration,physical namespace/stack/label/message aliases,
+adjacent entries/32-bit end,opaque restart/deletion and slot reuse. Actual
+combined scheduler/child/copy-back/USER_FUNC streams pass with the new mapper.
+Layout verifier passes49 fields/388 known+44 raw bytes and TEN original evidence
+suites;log:/tmp/pm-entry-address-evidence.log. Initial full run briefly collided
+with concurrent camera-helper edits;final full rerun is green. No emulator run.
+
+Layout and conditional Jump root/direct callback census have now been delivered
+as EVENT_ENTRY_PACKED_LAYOUT.md,EVENT_ENTRY_ADDRESS_AND_ALIAS_REQUIREMENTS.md,
+NORMAL_JUMP_ROOT_REGISTRATION.md and NORMAL_JUMP_CALLBACK_REGISTRY.md. Next:
+complete native address-space/context/GP/heap/time owner integration,conditional
+root actor/ID registration and actual72 callback service bindings. Mapped region
+lifetime/free/replacement,unsupported pointer/stack/source/FPSCR domains and
+original execution remain open. The remake goal is active/incomplete.
+
 ## 2026-10-12 — Complete WorkInit snapshot/reset byte clarification
 
 Documentation agent ID2 answered INPUT-01's explicit byteb request with complete
