@@ -1,5 +1,58 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Overworld air movement, startup and field-battle control
+
+Implemented the documented field battle start/resume/return protocol in
+field_battle.hpp/cpp and bound it to native harness control locks. Initial entry
+captures NPC, disables Mario/partner, resets result0 and requests sequence4;
+return admits cleanup only for sequence2 plus any nonzero result, without
+consuming/clearing it. Ordered service tests cover no partner, resumed lookups,
+wrong sequences, result0, negative/noncanonical nonzero results and repeat cleanup.
+Native harness NPC/party tokens and outcome1/-1 remain development fixtures;
+original preparation/post/audio internals, NPC configuration, outcome producers,
+sequence lifetime and story/VM integration remain unbound. Commit8d6bf51.
+
+Requested focused missing movement documentation from the documentation agent,
+who delivered OVERWORLD_MARIO_MOVEMENT.md and its read-only US ISO verifier
+(commits1447844/987bca2). Applied retained base/travel plus current-stick drift
+and dash cap to ordinary scale1/no-badge jump/fall. Neutral input preserves travel;
+walking/full forward air input gives.012625 instead of selecting dash. Corrected
+launch-before-horizontal policy, launch-call overhead query and vertical startup:
+begin represents phase0/counter1; next call phase10/counter2 integrates; release
+shortening begins at counter4. Head/floor probes retain travel heading when base
+is nonzero instead of rotating with current input/combined drift. Zero-base facing
+uses native left/right conversion. Added startup/momentum/drift/cap/reset/native
+integration tests and a ceiling-edge probe-owner regression. Updated ledgers and
+running-jump collision fixtures. Main native movement commit1d2e82a.
+
+Validation: final make test passed25 CTest suites and58 Python tests; make all
+rebuilt ttyd-2ds.elf/3dsx after native changes and final call exited0/no rebuild.
+Final build-host/core_tests original passed original-room arrivals and18,315
+indexed-versus-full-scan collision probes. Movement evidence verifier passed19
+containing bodies,29 instruction anchors,six constants. git diff --check passed.
+Final isolated Azahar run used tools/emulator_smoke.py --save-fixture
+artifacts/fixtures/ceiling-road.bin --seconds4 --input-script
+ tests/azahar_ceiling.py: five repeated jumps landed with HP7 and saved position
+(-6.7,.1) unchanged; exit0 and ceiling/boot captures in artifacts/azahar. Xvfb
+initially failed under sandbox display restrictions; authorized escalation passed.
+An intermediate make test hit another contributor's not-yet-created
+ event_manager_tests.cpp; after it appeared the complete final run passed. A
+separate temporary host rebuild also passed core/movement/original-room checks
+while that unrelated registration was incomplete. No user emulator profile/save
+was touched; project fixture saves/captures remain ignored. No assets/ISO writes,
+original runtime/Dolphin comparisons,story/dialogue rewrites or hardware tests.
+
+Next: docs/OVERWORLD_DOCUMENTATION_REQUESTS.md asks the documentation agent for
+complete jump/idle/threshold arbitration,input adapter,wall deflection/slope rate,
+modifiers/ledge/landing ownership,partner following/abilities,road triggers and
+story gates,interactions and camera. Native vector/hypot math and facing conversion
+remain adaptations; arbitrary native interaction priority,partner history/.08
+sampling/512-point fallback,road.7 trigger/cooldown60 and camera.07 smoothing are
+not recovered original contracts. Implement delivered owners and compare isolated
+original traces before claiming complete overworld fidelity. Original story/event/
+message/audio/animation and full remake remain incomplete. Concurrent native
+battle/event-manager and documentation work was preserved outside these commits.
+
 ## 2026-10-12 — Badge recovery amount and HP/FP event wrappers
 
 Implemented BATTLE_BADGE_RECOVERY_SERVICES.md amount/resource wrappers in

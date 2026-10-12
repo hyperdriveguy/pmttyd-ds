@@ -95,9 +95,10 @@ retained base/heading. The next motion invocation decrements countdown1→0,
 sets phase10, increments counter1→2, and allows first vertical integration.
 The phase gate is explicitly `phase<10` at0x80093d84–38c. Counter+0x50 is
 queried only later at0x80093dfc–e10 to gate released-A shortening at counter>=4;
-there is no counter<3 integration gate in this ordinary body. The existing native
-FieldJump `ticks<3` startup is inconsistent with this local composition and
-requires a separately scoped correction/test. These are manager-invocation
+there is no counter<3 integration gate in this ordinary body. The earlier native
+FieldJump `ticks<3` startup contradicted this local composition; the native
+overworld implementation now removes that gate and tests phase/counter startup.
+These are manager-invocation
 counters, not an observed render-frame latency.
 
 A semantic `begin()` whose counter1 already represents the launch invocation

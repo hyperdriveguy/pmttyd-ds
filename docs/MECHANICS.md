@@ -721,3 +721,12 @@ services; bit-exact numerical behavior is not established. Simultaneous idle/
 threshold/transform jump arbitration, movement-rate/slopes, wall deflection,
 modifiers, physical input conversion and original execution traces remain open.
 No Dolphin observation or art/audio conversion was performed for this change.
+
+Probe orientation is separate from current input and combined displacement:
+nonzero retained base selects travel+1a4; zero selects facing+1ac through
+ toMovedir. Ordinary native probes now keep retained travel during air drift,
+with native left/right facing as their zero-base conversion. The nonzero ground
+heading-offset and special motion19 branches remain unbound. An analytical
+ceiling-edge regression distinguishes retained-right probes from diagonal
+current-stick probes. The documentation verifier now pins19 containing bodies,
+29 anchors and six constants for this local movement/probe scope.
