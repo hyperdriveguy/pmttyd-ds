@@ -3,8 +3,9 @@
 US G8ME01 revision0, recovered2026-10-12. B evidence is static original DOL
 instructions/constants. __num2dec at0x80266884,size1a4 and __num2dec_internal
 at0x80266a28,size3b4 are locally recovered here. See [rounding](FORMAT_DECIMAL_ROUNDING.md)
-and [finite layout](FORMAT_FINITE_DECIMAL_LAYOUT.md). Power-of-two decimal,
-decimal multiplication and runtime numeric helper internals remain open; this
+and [finite layout](FORMAT_FINITE_DECIMAL_LAYOUT.md). Numeric multiplication is
+covered in [its contract](FORMAT_DECIMAL_MULTIPLICATION.md); power-of-two decimal
+and runtime numeric helper internals remain open. This
 is not a complete binary-to-decimal equivalence claim or executed-output study.
 
 ## Internal record versus public ASCII record (B)
@@ -114,8 +115,9 @@ No digit-count-based allocation or output terminator.
 
 Call __timesdec(outputRecord,&integerRecord,&powerRecord) at0x80268b68, then
 overwrite outputRecord.sign with the original raw sign. Multiplication count/
-precision/rounding and __two_exp recursion/table behavior are not recovered by
-their names. All finite output digits/exponent depend on those services; no
+precision/rounding is now covered [separately](FORMAT_DECIMAL_MULTIPLICATION.md);
+__two_exp recursion/table behavior remains open. Neither is inferred from its
+name. All finite output digits/exponent depend on those services; no
 claim of exact shortest decimal, modern dtoa or universal36-digit correctness.
 
 ## Differential obligations and remaining work (P)
@@ -127,7 +129,7 @@ round_decimal trimming, exponent shifts, low/high mantissa trailing counts,
 helper ordering, numeric integer reversal and final sign overwrite. These are
 derived obligations, not executed conversion traces.
 
-Remaining: __two_exp and __timesdec algorithms, frexp/ldexp/modf/unsigned conversion
+Remaining: __two_exp algorithm and power-record invariants, frexp/ldexp/modf/unsigned conversion
 and division edge contracts, hex-float output and original format/type/count
 call-site corpus. Entry/internal local branches are documented; complete binary
 decimal generation, formatting/story/full-game equivalence remain unfinished.

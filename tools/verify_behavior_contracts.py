@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'format_decimal_multiplication': {
+        0x80268b70: '89850004', 0x80268b90: '7fbfea14',
+        0x80268b9c: '98030000', 0x80268b6c: '3ce0cccd',
+        0x80268be0: '7d6a5b78', 0x80268b88: '3927cccd',
+        0x80268cb0: '7d09f016', 0x80268ccc: '9d06ffff',
+        0x80268ce8: 'b0830002', 0x80268cfc: 'b0830002',
+        0x80268d1c: '2c070024', 0x80268d30: '98e30004',
+        0x80268d3c: '28040005', 0x80268d70: '8806ffff',
+        0x80268dc0: 'b0030002', 0x80268dc8: '98050000',
+    },
     'format_binary_decimal_entry': {
         0x8026689c: 'abc30002', 0x802668b0: '41810160',
         0x802668c0: '3bc00024', 0x802668c8: '408100e8',

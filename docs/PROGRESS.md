@@ -3173,3 +3173,27 @@ modf and integer conversion/division contracts; hex-float and remaining formatti
 services. Continue original call-site, renderer, story and other system recovery
 before complete-game requirements. Full objective active/incomplete; executed
 original comparisons still required.
+
+## 2026-10-12 — Numeric decimal multiplication
+
+After b7934cc, added FORMAT_DECIMAL_MULTIPLICATION.md for __timesdec: numeric
+record domain/sign0, coefficient traversal and unsigned quotient/remainder carry,
+scratch order, leading exponent, 36-digit copy, complete discarded-tail tie scan,
+retained parity and count-preserving carry. Recorded lack of trimming/canonical
+zero and unchecked scratch-count domain. Updated binary entry cross-links to
+separate the now-recovered multiplication from open power-generation invariants.
+Examples are static derivations, not executed original traces.
+
+Validation:656 instruction anchors and prior checks passed against read-only US
+ISO, including both halves of the quotient reciprocal constant. Fresh214-function
+evidence reports matched byte-for-byte. All local behavior links resolve; git
+diff --check passed. make test passed core plus36 Python tests; make all exited0,
+no rebuild. Only research/provenance/evidence tooling changed. No original game
+execution/emulator run or profile/save changes; original extracts/reports remain
+ignored. Static verification does not prove valid power records, executed tie
+cases/capacity or original/native equivalence.
+
+Next: __two_exp table/recursion and numeric runtime services, then hex-float,
+remaining formatter services/caller corpus; continue renderer, story and all
+other missing original systems before complete-game requirements. Full objective
+active/incomplete; original execution comparisons still needed.
