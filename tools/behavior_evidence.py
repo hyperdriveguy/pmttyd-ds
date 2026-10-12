@@ -15,6 +15,9 @@ from iso_assets import DEFAULT_ISO, inventory
 
 
 FUNCTIONS = (
+    'btlevtcmd_SetupAC', 'battleAcMain_TimingA', 'battleAcResult_TimingA',
+    'battleAcTimingA_GetSuccessFrame', 'BattlePadCheckRecordTrigger',
+    'BattlePadMultiCheckRecordTrigger',
     'marioStMain', 'seqMain', 'evtGetWork', 'evtmgrMain', 'evtmgrCmd',
     'evt_wait_msec', 'evtChildEntry', 'evtDelete', 'evtGetValue', 'evtSetValue',
     'make_pri_table', 'evtBrotherEntry', 'evtStopAll', 'evtStartAll',

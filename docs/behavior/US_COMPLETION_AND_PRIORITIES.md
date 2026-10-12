@@ -122,8 +122,11 @@ This establishes a retail dispatch path for the following callbacks,despite
 | 20 | battleAcMain_GaugeTiming2 |
 | 21 | battleAcMain_MonosiriTarget |
 
-Table order above is original. ID2 has no entry in this table. None of these20
-main bodies is currently fingerprinted. Registration does not prove every ID
+Table order above is original. ID2 has no entry in this table. At assessment time none of these20 main bodies was fingerprinted. Subsequent
+[ordinary attack bindings](BATTLE_ORDINARY_ATTACK_BINDINGS.md) establish Jump ID1
+and Hammer-core ID3;[TimingA recovery](BATTLE_TIMING_A_COMMAND.md) now fingerprints
+the ID1 main/result/window bodies. The other19 main bodies remain outside the
+fingerprint set. Registration does not prove every ID
 is selected in reachable US content. First resolve SetupAC arguments through
 shipped unit/party/weapon event graphs;then document and execute each selected
 command's inputs,states,tick boundaries,difficulty,result and cleanup. Do not

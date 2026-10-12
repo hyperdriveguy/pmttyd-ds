@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 297 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1532 instruction anchors plus those
+now fingerprints 303 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1564 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -691,3 +691,10 @@ ELFs unchanged. No ISO write,asset conversion,original execution or story edit.
 Encoding facts consulted GNU opcodes and Dolphin primary references;links and
 upstream licenses are in GEKKO_DISASSEMBLY.md. No upstream implementation copied
 or linked;original text/ELFs and metadata repair report remain ignored.
+
+Ordinary attack research adds six function identities,32 anchors,seven TimingA
+threshold/window tables and pointer list,registration/two floats,and independent
+Jump/Hammer-core event hashes/four setup records. dol_event_inventory.py reads
+US ISO DOL data read-only;ignored reports retain raw operands/annotations,not
+dialogue contents. No original code linked/distributed,no asset conversion or
+story rewrite;existing original rights and reference licensing remain unchanged.

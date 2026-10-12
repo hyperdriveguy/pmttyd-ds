@@ -4386,3 +4386,38 @@ Next:continue US opening/Crump shipped event/callback/unit/weapon/SetupAC bindin
 inventory and selected attack mechanics/original timing comparisons per current
 priority register. Use corrected listings for subsequent binary analysis. Full
 behavior/complete-game requirements objective remains active/incomplete.
+
+## 2026-10-12 — US ordinary attack bindings and TimingA mechanic
+
+Added BATTLE_ORDINARY_ATTACK_BINDINGS.md and BATTLE_TIMING_A_COMMAND.md.
+Original DOL Jump stream (268 commands) selects ID1 at80355ebc/80356038;
+Hammer-core stream (387 commands) selects ID3 at8035d994/8035dc28. Checked
+complete stream hashes and exact setup records. Complete SetupAC callback
+resolves operands0/1/3 but passes operand2 raw. New read-only DOL event inventory
+retains raw operands/annotations in ignored reports;no branch execution claim.
+
+Recovered complete TimingA main/result/window helpers and two general pad
+record-trigger wrappers. Documented initialization,state99/100 waiting,1000
+same-call countdown decrement and1002 callback cleanup,seven difficulty tables,
+count-dependent bit1 selection,ordered forced-result/RNG routes and ordinary
+A-trigger/mash/window checks. Distinguishes general battle history+0f44 from
+private AC history+1d34. Ordinary checks count A edges0..19,reject>=2 then search
+0..W-1. No measured impact alignment or Crump/tutorial equivalence is claimed.
+ID3 Hammer main is inspected locally but its contract remains next work.
+
+Validation:1564 instruction anchors and prior checks passed read-only ISO,
+including seven tables/pointers,registration,two floats,two event hashes/four
+setup sites. Fresh303-function and two-event reports repeated byte-for-byte.
+make test passed core plus52 Python tests;make all exited0,no rebuild.
+Gekko listing check clean;git diff --check passed. Three synthetic event-parser
+tests cover raw operands/annotations,truncation and dispatch-domain rejection.
+No original gameplay execution/emulator,ISO/profile/save mutation,native gameplay
+change,asset conversion or dialogue/story rewrite;all original artifacts ignored.
+
+Next:normal Hammer ID3 lifecycle/results;trace Jump SetParam/flags/difficulty/
+state/result and general pad update callers,unit/weapon selectors and surrounding
+script control flow. Resolve opening/Crump REL/tutorial entry and overrides,
+then compare isolated original impact/input/cadence/state traces. Continue full
+US playable/optional systems/content before complete-game requirements. Full
+objective remains active/incomplete;local command recovery is not full combat
+or scene equivalence.

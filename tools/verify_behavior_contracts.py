@@ -13,6 +13,24 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'ordinary_attack_timing_a': {
+        0x8010780c: '4bf29a55', 0x80107838: '4bf29a29',
+        0x8010783c: '839e0008', 0x8010784c: '4bf29a15',
+        0x80107868: '4bff2bf5', 0x8012ab40: '4beda575',
+        0x8012ab64: '907e1c9c', 0x8012ab70: '907e1f50',
+        0x8012ab84: '90640008', 0x8012ab94: '90040008',
+        0x8012aba8: '901e1c9c', 0x8012abb8: '901e1ca0',
+        0x8012aa84: '386d9ef8', 0x8012aa90: '540007bd',
+        0x8012aaa4: '7c050000', 0x8012aabc: '4081000c',
+        0x8012aac4: '4bfffff0', 0x8012a8e8: '540007ff',
+        0x8012a8f8: '540006f7', 0x8012a904: '4bedb49d',
+        0x8012a93c: '88030307', 0x8012a970: '540001cf',
+        0x8012a9a8: '4bfef681', 0x8012a9bc: '2c1d0014',
+        0x8012a9c4: '2c1c0002', 0x8012aa00: '4180ffe4',
+        0x8012aa38: '907f1ce8', 0x8012aa48: '901f1cb4',
+        0x8011a014: '38630f44', 0x8011a03c: '38600000',
+        0x8011a040: '4bffffc9', 0x8011a020: '7c032838',
+    },
     'affine_matrix_services': {
         0x8029e2b0: 'c0021f1c', 0x8029e2b4: 'd0230000',
         0x8029e2b8: 'f0030004', 0x8029e2c0: 'd0430014',
@@ -1555,6 +1573,37 @@ def verify(iso_path):
         if read(0x8042935c, 4) != bytes(4) or read(0x8041e458, 8).hex() != '000000003f800000':
             raise ValueError('Affine matrix zero/unit pair mismatch')
         print('Affine matrix positive zero and Unit01 pair verified')
+        timing_pointers = (0x803644f0, 0x80364528, 0x80364580, 0x803645d8,
+                           0x80364628, 0x80364670, 0x803646b0)
+        if struct.unpack('>7I', read(0x80416e18, 28)) != timing_pointers:
+            raise ValueError('TimingA difficulty pointer table mismatch')
+        timing_tables = (
+            (4,10,5,9,6,8,7,7,8,6,9,5,99999,1),
+            (0,10,1,9,2,8,3,7,4,6,5,5,6,4,7,4,8,3,9,2,99999,1),
+            (0,9,1,8,2,7,3,6,4,5,5,4,6,3,7,2,8,1,9,1,99999,1),
+            (0,8,1,7,2,6,3,5,4,4,5,3,6,2,8,1,9,1,99999,1),
+            (0,7,1,6,2,5,3,4,4,3,5,2,8,1,9,1,99999,1),
+            (0,6,1,5,2,4,3,3,4,2,8,1,9,1,99999,1),
+            (0,5,1,4,2,3,3,2,8,1,9,1,99999,1),
+        )
+        for address, values in zip(timing_pointers, timing_tables):
+            if read(address, len(values)*4) != struct.pack(f'>{len(values)}i', *values):
+                raise ValueError('TimingA threshold/window table mismatch')
+        if read(0x8042271c,4).hex() != 'c3960000' or read(0x80422724,4) != bytes(4):
+            raise ValueError('TimingA initialization floats mismatch')
+        if struct.unpack('>5I',read(0x80364348,20)) != (1,0x8012aae0,0x8012a8c4,0x8012a7cc,0x8012a7c0):
+            raise ValueError('TimingA registration mismatch')
+        for address, size, digest in (
+            (0x80355cf0,0xf0c,'2858f3f63cfb95dc84eb6ed3b363c530e24200063044f37afd275d3847f9720c'),
+            (0x8035d6d4,0x14d4,'a1db1fb43cdc5b0891c083bffb4506211972f85d4444879c77ff94b5b4007aef'),
+        ):
+            if hashlib.sha256(read(address,size)).hexdigest() != digest:
+                raise ValueError('Ordinary attack event stream hash mismatch')
+        for address, command_id in ((0x80355ebc,1),(0x80356038,1),
+                                    (0x8035d994,3),(0x8035dc28,3)):
+            if struct.unpack('>6I',read(address,24)) != (0x5005b,0x801077ec,0xfffffffe,command_id,1,0):
+                raise ValueError('Ordinary attack SetupAC binding mismatch')
+        print('TimingA registration, seven tables, floats and ordinary attack streams/bindings verified')
 
 
 
