@@ -205,3 +205,14 @@ not one physical input or rendering frame. WAIT_MSEC uses the sign-extended
 low-word delta,not an unrestricted64-bit elapsed comparison. Constructors,
 append/initial state,remaining opcodes,time/domain writers and original traces
 remain open under EVT-01.
+
+
+## Root-constructor follow-up (2026-10-12)
+
+[Root/typed constructors](EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md) and
+[label/run-check](EVENT_LABEL_SCAN_AND_ENTRY_RUN_CHECK.md) now close these
+complete local initialization paths. Live append requires manager-active and
+entry flag0x20;it precedes the global all-event stop run-check. Initial credit0
+and current global speed capture are explicit. Constructor capacity/labels have
+no local validation fallback. Child/brother/inline/restart and original traces
+remain EVT-01 dependencies.

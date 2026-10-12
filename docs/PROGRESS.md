@@ -6591,3 +6591,33 @@ battle-end/lecture-mode/window/HP immunity teardown and original lesson traces.
 General variable namespaces,coordinate writers and scheduler composition remain
 separate work. Full game documentation/remake remain incomplete;complete-game
 requirements remain deferred until sufficient system coverage.
+
+### 2026-10-12 — Documentation ID2: root/typed constructor closure
+
+Delivered EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md and
+EVENT_LABEL_SCAN_AND_ENTRY_RUN_CHECK.md for EVT-01 scoped initialization request.
+Complete root/typed bodies specify first-inactive slot scan,allocation counter
+increment/1b0 clear,all explicit fields,low8 flags/type/priority,global speed
+capture/initial credit0,actor/stack sentinels and ID assignment/wrap ordering.
+Full label scan distinguishes terminal opcode1 from delete2,reads first operand
+unconditionally,stores low8 IDs/after-command pointers,and has no effective
+16-label cap. Live append requires BOTH manager-active and flags0x20;run-check
+then invokes all-event stop masks and ignores its argument. No constructor
+immediate dispatch,sort,capacity error or rollback was invented.
+
+Validation: verify_event_root_constructors.py passed five containing-body
+fingerprints (three newly recovered full bodies plus linked stop identities),
+62 instruction anchors,four data/SDA spans. Report/tmp/id2-event-roots-evidence.json.
+Existing seven-body manager verifier passed. make test passed24 CTest suites
+and58 Python tests;make all exited0,no rebuild. Earlier concurrent core:137
+field-movement failure is resolved in current worktree validation. All854 local
+behavior links resolved;git diff --check passed. ID2 made no native/asset/ISO/
+save/emulator-profile edits;inspection ELFs/disassemblies/reports remain/tmp.
+Concurrent native field/recovery and ID1 research preserved and not staged.
+
+Released only ID2's root-constructor lock;linked both contracts in inbox/index/
+EVENT_RUNTIME. EVT-01 remains open at priority0. Next:child/brother/inline full
+constructors,inherited versus reset fields,current-table append/type/run-check,
+restart ownership and remaining opcode closure;original multicredit/context/
+creation/deletion/pause traces. Complete-game documentation and subsequent
+requirements objective remains active/incomplete.

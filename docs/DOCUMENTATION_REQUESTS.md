@@ -18,6 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Field party destruction and position constructors | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover partyKill/partyKill2 saved-kind and pointer lifetime plus partyEntryPos/partyEntry2Pos complete local construction;mode engine,asset/services,EVT-01 and battle teardown remain separate |
+| Root/typed event constructors and label/run-check initialization | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Root/typed constructors](behavior/EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md),[labels/run-check](behavior/EVENT_LABEL_SCAN_AND_ENTRY_RUN_CHECK.md):complete local allocation/init/label scan/conditional append/system-level stop;child/brother/inline/restart/domain and original traces remain open |
 | Lecture field intersection and party callback bodies | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Intersection/coordinates](behavior/FIELD_SEGMENT_INTERSECTION.md),[party callbacks](behavior/FIELD_PARTY_EVENT_CALLBACKS.md):local geometry/query/encoding,raw slot dispatch and first-call constructor route answered;full party engine,variable namespaces,EVT-01 scheduling,battle teardown and original traces remain open |
 | Event manager complete loop,credit/lifetime and wait continuations | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete manager](behavior/EVENT_MANAGER_COMPLETE_LOOP.md),[dispatch/waits](behavior/EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md):complete local time/eligibility/ID/credit/result loop,priority and scoped fetch/wait/USER_FUNC;constructors/append/initial state and original traces remain open |
 | Ordinary attack badge-effect tail and called recovery services | JUMP-01, DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [32-command tail](behavior/BATTLE_ATTACK_BADGE_RECOVERY_TAIL.md),[recovery/geometry](behavior/BATTLE_BADGE_RECOVERY_SERVICES.md),[coercion/effect route](behavior/BATTLE_BADGE_RECOVERY_PRESENTATION.md):complete local graph/wrappers/cores and scoped presentation binding;renderer/VM/domain/source/runtime remain open |
@@ -817,3 +818,21 @@ restart/type/run-check producers,other opcodes and original traces remain open.
 ID2 scoped lock released;EVT-01 stays priority0 and open. make all passed;host
 21/22 CTest failure is the concurrent field-movement assertion noted above;
 58 Python tests passed independently. No full host-pass claim.
+
+
+ID2 EVT-01 root-constructor delivery (2026-10-12), partial answer:
+[root/typed constructors](behavior/EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md) closes
+first-free slot scan,clear/all explicit fields,priority/type/flags narrowing,
+global speed copy/credit0,ID wrap ordering and conditional live append. Only
+manager-active AND entry.flags0x20 appends;no immediate dispatch or resort.
+[labels/run-check](behavior/EVENT_LABEL_SCAN_AND_ENTRY_RUN_CHECK.md) closes
+signed-count label scanning,opcode1 versus2 termination,low8 label writes and
+unused comparison16 (no actual cap). Run-check ignores its entry argument and
+invokes evtStopAll for current global level,after append. Valid free-capacity/
+label/script domains are invariants,not original null/error fallbacks. Verifier
+passes five complete containing-body fingerprints (linked stop identities),62
+anchors,four data spans. Own scoped lock released;EVT-01 remains priority0/open
+for child/brother/inline/restart and original traces. Current make test passes24
+CTest suites and58 Python tests;make all passed. Previous concurrent core:137
+field-movement failure is resolved by current validation;ID2 changed no native
+files for it.
