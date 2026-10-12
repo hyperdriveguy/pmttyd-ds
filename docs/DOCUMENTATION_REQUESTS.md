@@ -37,6 +37,14 @@ separately. Existing leads: `behavior/BATTLE_ORDINARY_ATTACK_BINDINGS.md`,
 
 ## AC-02 — Ordinary Hammer binding and presentation (open)
 
+Partial answer arrived in concurrent documentation commit07bb0f7:
+[weapon branches](behavior/BATTLE_HAMMER_WEAPON_BRANCHES.md) establishes default
+Hammer pointer0x80353de8 -> T25/base difficulty3, the two named pointer cases
+-> T30/base3, and the core's other-weapon branch -> T40. Integer branch support
+is in [VM branch rules](behavior/EVENT_INTEGER_BRANCHES.md). This resolves the
+ordinary pointer/period/base-difficulty part of this request. Remaining caller,
+tutorial, display/sound and execution questions below remain open.
+
 The recovered ID3 local behavior is in
 `behavior/BATTLE_HAMMER_STICK_KEEP_LEFT.md`. The current native Hammer branch
 still uses the earlier provisional B-hold/release harness; it is not ID3.
