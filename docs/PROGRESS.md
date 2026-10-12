@@ -4126,3 +4126,29 @@ callers and uncovered story/event/field/battle/audio/save/content before complet
 game requirements. Full goal active/incomplete;static subtraction/converter flow
 is not complete numerical/layout or full-game fidelity. Original data/IDs/tokens
 and story attribution/order/branches/event conditions remain mandatory.
+
+## 2026-10-12 — US pow entry and special cases
+
+Inspected pow0x80272620,size20 and __ieee754_pow0x8026fe9c,size830 entry
+through8027015c. Added POWER_ENTRY_AND_SPECIAL_CASES.md:direct wrapper delegation,
+y-zero priority,arithmetic NaN propagation,negative-base integer/parity word
+classification,exact y shortcuts,zero/one/infinity base requests and general
+noninteger-negative-base errno33/NaN gate. Documented decimal base-five caller
+intersection without claiming larger-power accuracy. Finite/log/exp/range core
+remains open despite containing-body identity. No original execution/FPSCR study.
+
+Validation:1384 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO,including three power special doubles. Fresh289-function
+reports reproduced byte-for-byte. All498 local behavior links resolved;git diff
+--check passed. make test passed core plus36 Python tests;make all exited0 with
+no rebuild. No original execution/emulator,profile/save modification,native
+implementation,asset conversion or story/message rewrite. ELFs/disassembly/
+reports remain ignored;working tree was clean at turn start.
+
+Next: remaining power large-exponent/logarithm/exponential/range/sign core,
+coefficient bits and helper dependencies;executed pow(5,Q),decimal/scanner/
+record-distance/FPSCR corpus. Continue drawing/string layout,resource/cadence
+callers and uncovered story/event/field/battle/audio/save/content before complete-
+game requirements. Full objective active/incomplete;local special-case recovery
+is not full power/numeric/layout or complete-game fidelity. Original data/IDs/
+tokens and story attribution/order/branches/event conditions remain required.

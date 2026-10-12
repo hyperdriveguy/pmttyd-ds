@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'power_entry_special_cases': {
+        0x8027262c: '4bffd871', 0x8026fef0: '7ce45b79',
+        0x8026ff00: 'c82219d8', 0x8026ff50: 'fc21002a',
+        0x8026ff70: '38800002', 0x8026ff88: '3908fc01',
+        0x8026ffa0: '7c0b4040', 0x8026ffac: '20840002',
+        0x8026ffb4: '280b0000', 0x8026ffd4: '20840002',
+        0x8026fffc: 'fc200028', 0x80270034: 'fc200050',
+        0x80270060: 'fc210024', 0x80270068: 'c8210008',
+        0x80270080: 'fc200032', 0x802700a0: '48002831',
+        0x802700b0: 'fc200210', 0x802700ec: 'fc000824',
+        0x80270110: 'fc000024', 0x80270128: 'fc000050',
+        0x80270140: '7c082379', 0x8027014c: '38000021',
+        0x80270150: '900d1f08', 0x80270154: 'c023e3c8',
+    },
     'decimal_record_subtraction': {
         0x80266ddc: '80040000', 0x80266e30: 'b0030028',
         0x80266e3c: '4d820020', 0x80266e64: '7d080214',
@@ -1427,6 +1441,10 @@ def verify(iso_path):
         if read(0x8041e3d0, 8).hex() != '7fefffffffffffff':
             raise ValueError('Decimal infinity fallback maximum mismatch')
         print('Complete decimal infinity boundary seed and maximum-finite fallback verified')
+        if read(0x80428e18, 24).hex() != '3ff000000000000000000000000000007ff0000000000000':
+            raise ValueError('Power entry special constants mismatch')
+        print('Power entry one/zero/infinity doubles verified')
+
 
 
 
