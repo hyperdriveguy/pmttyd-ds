@@ -361,6 +361,13 @@ bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContac
     // Falling marioChkLandon passes velocity for both search arguments.
     return groundWithin(p,worldY-reach-.0001f,worldY+reach+.05f,height,contact);
 }
+bool frontStepGround(Vec2 p,Vec2 direction,float rootY,float& height,float& slope) {
+    const float length=std::hypot(direction.x,direction.z);
+    if(!std::isfinite(length) || length<1e-6f)return false;
+    const Vec2 forward{p.x+direction.x*FrontStepDistance/length,p.z+direction.z*FrontStepDistance/length};
+    // marioChkFrontStep: origin root+18.5, downward length18.5+11+.1 engine units.
+    return groundWithin(forward,rootY-.111f,rootY+.185f,height,nullptr,&slope);
+}
 bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& height,GroundContact* contact) {
     float length=std::hypot(direction.x,direction.z);
     if(!std::isfinite(length) || length<1e-6f)return false;
@@ -514,8 +521,7 @@ void Game::move(const Input& i) {
             if(nextHeight-groundHeight>GroundedMaxRise)return false;
             if(groundedHeightCanSnap(groundHeight,nextHeight)) {
                 if(nextHeight-groundHeight>=.05f) {
-                    if(slope>30)return false;
-                    fieldStep.begin(groundHeight,nextHeight);p=candidate;groundContact={};saveRequested=false;return true;
+                    return false; // The forward ray after movement starts the stair motion.
                 }
                 p=candidate;groundHeight=nextHeight;groundContact=nextContact;return true;
             }
@@ -529,6 +535,12 @@ void Game::move(const Input& i) {
     candidate={p.x,p.z+z*speed};
     accept(candidate);
     progress.position=p;progress.elevation=groundHeight;
+    if(!wasStepping && !fieldStep.active() && !fieldJump.airborne && len>0) {
+        float height=0,slope=0;
+        if(frontStepGround(p,moveDirection,groundHeight,height,slope) && stairRiseAllowed(groundHeight,height,slope)) {
+            fieldStep.begin(groundHeight,height);groundContact={};saveRequested=false;
+        }
+    }
     if(warpCooldown>0)--warpCooldown;
     if(warpCooldown==0 && warpRequest<0 && len>.15f && !fieldStep.active()) {
         for(size_t n=0;n<roads.size();++n) {

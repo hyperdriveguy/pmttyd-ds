@@ -25,6 +25,9 @@ void attack(Game& g,bool success) {
     CHECK(g.phase==Phase::Impact);
 }
 void headContactRules() {
+    CHECK(stairRiseAllowed(0,.05f,30));CHECK(stairRiseAllowed(0,.11f,0));
+    CHECK(!stairRiseAllowed(0,.049f,0));CHECK(!stairRiseAllowed(0,.111f,0));
+    CHECK(!stairRiseAllowed(0,.08f,30.1f));
     FieldStep step;step.begin(0,.09f);CHECK(step.active());
     step.tick();CHECK(std::fabs(step.height-.03f)<.00001f);
     step.tick();CHECK(std::fabs(step.height-.06f)<.00001f);
@@ -457,6 +460,14 @@ void unequalFloorMotion() {
             GroundContact owner{0,uint32_t(n<2?1:2)};file.write(reinterpret_cast<char*>(tri),36);file.write(reinterpret_cast<char*>(&owner),8);}
     };
     stepFloor(.08f);CHECK(loadGround(path));p.position={.01f,2};p.elevation=0;
+    float forward=99,slope=99;
+    CHECK(frontStepGround({.05f,2},{-1,0},0,forward,slope));CHECK(std::fabs(forward-.08f)<.00001f && slope==0);
+    CHECK(frontStepGround({.054f,2},{-1,0},0,forward,slope));CHECK(forward==0);
+    CHECK(frontStepGround({.05f,2},{1,0},0,forward,slope));CHECK(forward==0);
+    forward=99;slope=99;CHECK(!frontStepGround({.05f,2},{0,0},0,forward,slope));CHECK(forward==99 && slope==99);
+    Progress early=p;early.position={.07f,2};Game anticipate;anticipate.restore(early);left.jumpHeld=false;anticipate.tick(left);
+    CHECK(anticipate.airborne() && anticipate.progress.position.x>0 && anticipate.groundHeight==0);
+    for(int n=0;n<3;++n)anticipate.tick(left);CHECK(!anticipate.airborne() && std::fabs(anticipate.groundHeight-.08f)<.00001f);
     Game stairs;stairs.restore(p);left.jumpHeld=false;stairs.tick(left);
     CHECK(stairs.airborne() && stairs.groundHeight==0);
     stairs.tick(save);CHECK(!stairs.saveRequested && std::fabs(stairs.groundHeight-.08f/3)<.00001f);
@@ -464,6 +475,7 @@ void unequalFloorMotion() {
     stairs.tick({});CHECK(!stairs.airborne() && std::fabs(stairs.groundHeight-.08f)<.00001f);
     stepFloor(.2f);CHECK(loadGround(path));Game tall;tall.restore(p);tall.tick(left);
     CHECK(tall.progress.position.x==p.position.x && tall.groundHeight==0 && !tall.airborne());
+    CHECK(!frontStepGround({.05f,2},{-1,0},0,forward,slope)); // .2 is above half-height ray origin.
     stepFloor(.08f);CHECK(loadGround(path));p.position={-.01f,2};p.elevation=.08f;
     Game down;down.restore(p);for(int n=0;n<5;++n)down.tick(right);
     CHECK(down.airborne() && std::fabs(down.groundHeight-.08f)<.00001f);

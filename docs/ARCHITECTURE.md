@@ -322,3 +322,9 @@ then checks overhead. Restore/scene/recovery resets clear it. Trigger remains
 candidate-based until original forward probe is integrated. Ground query can
 optionally return geometric slope; normal floor filtering and native stair
 selection share it. Room-entry validation remains separate from movement bounds.
+
+FieldStep activation now comes from frontStepGround after ordinary horizontal
+movement. The raw ray returns height/slope and stairRiseAllowed applies normal
+caller bounds; it can anticipate a ledge before center enters upper surface.
+Candidate acceptance blocks larger rises until this motion starts. The broad
+groundAt loader/validation API remains separate from this forward movement ray.

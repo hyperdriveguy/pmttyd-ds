@@ -617,3 +617,25 @@ is unmeasured. Ceiling cancellation followed by floor acquisition still needs
 matched source/geometry testing. Do not describe this as complete grounded
 physics. Host tests cover3 updates, save/jump suppression during rise, blocking
 .2 ledge and falling from.08 ledge after foot support ends.
+
+## Active forward stair probe (2026-10-12)
+
+Replaced candidate-floor stair activation with a query after horizontal move.
+Probe center=p+normalized move direction*.053native (20engine*.265). Downward
+ray begins root+.185 and ends root-.111, from half-height18.5 plus11+.1engine
+reach. It uses existing source attribute/face filtering and nearest-hit policy.
+Ordinary upstairs caller requires5..11engine rise and slope<=30; native starts
+the same3-tick FieldStep from the current root at this stage. Movement does
+not snap into a5engine-or-larger rise before this query. Core anticipation
+fixture begins atx.07 on lower floor, advances topositive x while forward ray
+sees upperx<=0 surface, and enters upstairs before crossing the edge.
+
+Raw frontStepGround exposes height/slope, not original drop-distance/angle
+outputs or all marioChkFrontStep state branches. Applying the caller rise and
+angle checks preserves ordinary stair activation; other consumers remain
+unimplemented. Native direction is normalized floating input, while source
+rounds its movement angle; exact source-angle arithmetic is still pending.
+The query's50degree surface rejection is stricter than raw front output but
+all accepted ordinary steps must already satisfy30degrees. Special transformed
+actor states/force vectors, grounded contact quantization/five-probe ray,
+stair-specific XZ speed and low-ceiling cancellation remain unfinished.

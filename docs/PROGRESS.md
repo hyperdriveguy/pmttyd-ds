@@ -2119,3 +2119,48 @@ coverage register (story, field/forms, partners, economy, save/UI, animation/
 audio and all content) and derive complete-game requirements after recovery.
 Full objective remains active; documentation and end-to-end equivalence are
 incomplete, with static evidence not replacing original execution traces.
+
+## 2026-10-12 — Activate original forward step ray
+
+Previous goal turn progressed bounded grounded motion/FieldStep7857a24.
+Replaced candidate-floor step activation with forward query after horizontal
+movement: normalized direction*.053native, origin root+.185, bottom root-.111.
+This corresponds to source baseWidth20*.265 and halfHeight18.5 downward reach
+18.5+11+.1engine. Source attribute/face/nearest selection is reused; caller
+requires5..11engine rise and<=30degree surface. Direct larger candidate rises
+remain blocked until the forward ray starts the3-tick motion. Probe can now
+anticipate a stair while actor center remains on lower floor. Existing loader
+and room-arrival ground validation remain separate.
+
+Validation: `make test` passed core and32 Python tests initially,36 in final
+repeat after separate research inventory tests appeared. New host tests cover
+forward5.3engine crossing threshold, reverse direction, zero-direction output
+retention, rejecting a surface above18.5engine origin, rise/angle caller bounds
+and early activation fromlowerx.07 before crossingupperx<=0. Existing3-tick
+state/save/jump guards and tall ledge/drop tests pass.
+`build-host/core_tests --rooms` passes all8 arrivals,18,315 index/full-scan
+probes, original water/void/ceiling checks. `make -j2 all` builds native3dsx.
+`python3 tools/verify_actor_collision.py` passes half-height/width multiplier,
+ray-origin/length instruction sites and source constants/caller/motion proof.
+No extracted originals/generated packs are committed.
+
+Native harbor stairs/dock-save/return exited0 with HP7; native east roads
+(two reciprocal trips/arrival saves) exited0. Exact commands:
+```sh
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_harbor_stairs.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/east-road.bin --seconds 4 --input-script tests/azahar_roads.py
+```
+No build overlapped emulator execution. Separate Switch/package research tools
+and tests remain outside this feature commit. Architecture/mechanics notes
+record ordinary caller behavior and limitations. No hardware/Dolphin-fidelity
+acceptance claim from these checks.
+
+Next concrete task: replace main grounded center-first support with original
+five rotated probes at7.5engine radius, source grounded ray reach and selected
+floor quantization. Preserve separate predictive falling/forward ray/arrival
+queries. Complete marioChkFrontStep drop-distance/angle outputs and source
+movement-angle rounding, staircase XZ rate/state chaining and low-ceiling
+cancellation under actual source framing. Wall push-out/sliding, dynamic
+support, grounded overhead, signed normal animation outputs, original story/
+English dialogue/SFX/animations/camera/interiors and full playable content remain
+unfinished. Full goal active; hardware performance unverified.

@@ -2,6 +2,11 @@
 #include <cmath>
 namespace ttyd {
 constexpr float GroundedMaxRise=.11f,GroundedNearDrop=.02f;
+constexpr float FrontStepDistance=.053f;
+inline bool stairRiseAllowed(float rootY,float floorY,float slope) {
+    const float rise=floorY-rootY;
+    return std::isfinite(rise) && std::isfinite(slope) && rise>=.05f && rise<=.11f && slope<=30;
+}
 inline bool groundedHeightCanSnap(float rootY,float floorY) {
     return std::isfinite(rootY) && std::isfinite(floorY) &&
         floorY-rootY<=GroundedMaxRise && rootY-floorY<GroundedNearDrop;

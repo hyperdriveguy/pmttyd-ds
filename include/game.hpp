@@ -146,6 +146,7 @@ bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clam
 bool loadGroundReturns(const char* path);
 bool groundReturn(const GroundContact&,ReturnPoint& point);
 bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr,float* slope=nullptr);
+bool frontStepGround(Vec2 p,Vec2 direction,float rootY,float& height,float& slope);
 // Center falling floor ray (marioChkLandon): abs(v)+.0001 below, abs(v)+.05 above.
 bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
 bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
