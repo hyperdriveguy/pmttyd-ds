@@ -6,6 +6,14 @@ import struct
 import math
 from pathlib import Path
 
+def road_hit(nodes,name):
+    """Source hitObjGetPos identity/center for a named road mesh owner."""
+    matches=[node for node in nodes if node['name']==name]
+    if len(matches)!=1 or matches[0]['parts']<=0:raise ValueError('Missing/ambiguous road hit mesh: '+name)
+    node=matches[0]
+    if not all(math.isfinite(v) for v in node['center']):raise ValueError('Invalid road hit center')
+    return node
+
 def relocations(path):
     raw=Path(path).read_bytes()
     def u(o):return struct.unpack_from('>I',raw,o)[0]

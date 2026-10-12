@@ -3,7 +3,7 @@
 #include <array>
 #include <string>
 namespace ttyd {
-using SaveBytes=std::array<uint8_t,32>;
+using SaveBytes=std::array<uint8_t,40>;
 SaveBytes encodeSave(const Progress& progress);
 bool decodeSave(const SaveBytes& bytes, Progress& progress);
 enum class LoadResult { Missing, Loaded, Recovered, Invalid };

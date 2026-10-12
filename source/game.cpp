@@ -42,6 +42,21 @@ int harnessDamage(DamageUnit& attacker,DamageUnit& defender,DamagePart& part,Dam
     return int(damage);
 }
 std::vector<RoadWarp> roads;
+std::vector<uint32_t> roadAttributeNodes;
+GroundContact runtimeContact(GroundContact contact) {
+    if(std::find(roadAttributeNodes.begin(),roadAttributeNodes.end(),contact.sourceNode)!=roadAttributeNodes.end())
+        contact.attributes|=0x00800000;
+    return contact;
+}
+RoadCallback outCallback(const RoadWarp& road) {
+    return road.source==1 && road.sourceNode==852904?RoadCallback::HarborOut:RoadCallback::None;
+}
+RoadCallback inCallback(const RoadWarp& road) {
+    if(road.target==0 && road.arrivalNode==1382128)return RoadCallback::PartnerArrival;
+    if(road.target==2 && road.arrivalNode==1215808)return RoadCallback::CoinArrival;
+    if(road.target==3)return RoadCallback::DebugArrival;
+    return RoadCallback::None;
+}
 std::vector<Rect> walls;
 bool collisionReady=false;
 std::vector<Vec2> wallLevels;
@@ -92,6 +107,7 @@ struct CollisionSnapshot {
     std::vector<WallTriangle> savedWallTriangles;
     std::vector<GroundTriangle> savedGround;
     std::vector<HeadTriangle> savedHead;
+    std::vector<uint32_t> savedRoadAttributes;
     std::unordered_map<uint32_t,ReturnPoint> savedReturns;
     SpatialIndex savedWallIndex,savedGroundIndex,savedHeadIndex;
     Rect savedBounds{-9,-4.5f,9,4};
@@ -101,6 +117,7 @@ struct CollisionSnapshot {
         savedWallContacts.swap(wallContacts);
         savedWallTriangles.swap(wallTriangles);
         savedHead.swap(head);savedHeadIndex.swap(headIndex);
+        savedRoadAttributes.swap(roadAttributeNodes);
         savedReturns.swap(groundReturns);
         savedWallIndex.swap(wallIndex);savedGroundIndex.swap(groundIndex);
         std::swap(savedBounds,roomBounds);std::swap(ready,collisionReady);
@@ -138,30 +155,52 @@ bool wallAtLevel(size_t n,float elevation) {
 Rect collisionBounds() {return roomBounds;}
 bool loadWarps(const char* path) {
     FILE* file=std::fopen(path,"rb");if(!file)return false;
-    uint32_t count=0;bool ok=std::fread(&count,4,1,file)==1 && count<=128;
+    char magic[4];uint32_t version=0,count=0;
+    bool ok=std::fread(magic,1,4,file)==4 && std::string(magic,4)=="ROAD" &&
+        std::fread(&version,4,1,file)==1 && version==1 && std::fread(&count,4,1,file)==1 && count<=128;
+    static_assert(sizeof(RoadWarp)==48,"Road pack record size");
     std::vector<RoadWarp> data(ok?count:0);
     if(ok)ok=std::fread(data.data(),sizeof(RoadWarp),count,file)==count && std::fgetc(file)==EOF;
     std::fclose(file);
     for(const auto& w:data) if(!roomAsset(w.source) || !roomAsset(w.target) ||
-        !std::isfinite(w.x) || !std::isfinite(w.z) || !std::isfinite(w.spawnX) || !std::isfinite(w.spawnZ) || !std::isfinite(w.spawnY))ok=false;
+        !std::isfinite(w.x) || !std::isfinite(w.z) || !std::isfinite(w.spawnX) || !std::isfinite(w.spawnZ) || !std::isfinite(w.spawnY) ||
+        !std::isfinite(w.centerY) || !w.sourceNode || !w.arrivalNode || w.direction>6 || w.direction%2 || w.arrivalDirection>6 || w.arrivalDirection%2)ok=false;
+    for(const auto& w:data) {
+        if(std::count_if(data.begin(),data.end(),[&](const auto& other){return other.source==w.source && other.sourceNode==w.sourceNode;})!=1 ||
+           std::count_if(data.begin(),data.end(),[&](const auto& other){return other.source==w.target && other.sourceNode==w.arrivalNode && other.target==w.source && other.arrivalNode==w.sourceNode;})!=1)ok=false;
+    }
     if(ok)roads.swap(data);
     return ok;
+}
+void Game::registerRoadCases(bool enabled) {
+    roadCasesEnabled=enabled;roadAttributeNodes.clear();
+    if(enabled)for(const auto& road:roads)if(road.source==progress.room)roadAttributeNodes.push_back(road.sourceNode);
+}
+bool Game::resolveRoadCallbacks(const RoadWarp& road) {
+    roadCallback=outCallback(road);roadPolicy=roadCallbackPolicy(roadCallback,progress.originalStory);
+    if(roadPolicy==RoadPolicy::Generic){roadCallback=inCallback(road);roadPolicy=roadCallbackPolicy(roadCallback,progress.originalStory);}
+    return roadPolicy==RoadPolicy::Generic;
 }
 uint32_t Game::warpTarget() const {return warpRequest>=0 && size_t(warpRequest)<roads.size()?roads[warpRequest].target:UINT32_MAX;}
 bool Game::finishWarp() {
     if(warpRequest<0 || size_t(warpRequest)>=roads.size())return false;
     const auto& w=roads[warpRequest];float height=w.spawnY;
-    const auto reverse=std::find_if(roads.begin(),roads.end(),[&](const auto& r){return r.source==w.target && r.target==w.source;});
+    if(!resolveRoadCallbacks(w))return false;
+    const auto reverse=std::find_if(roads.begin(),roads.end(),[&](const auto& r){return r.source==w.target && r.sourceNode==w.arrivalNode && r.target==w.source;});
     if(reverse==roads.end())return false;
-    const Vec2 start{2*reverse->x-w.spawnX,2*reverse->z-w.spawnZ};
-    Vec2 arrival{w.spawnX,w.spawnZ};
+    float dx=0,dz=0;roadDirection(reverse->direction,dx,dz);
+    const Vec2 start{reverse->x+dx*.3f,reverse->z+dz*.3f};
+    Vec2 arrival{reverse->x-dx*.3f,reverse->z-dz*.3f};
     RoadMotion staged;
     if(!staged.begin({start.x,start.z},{arrival.x,arrival.z}))return false;
-    if(!groundAt(arrival,height,height) || !walkable(arrival,height))return false;
+    if(!roadStartGround(start,reverse->centerY,height))return false;
     Progress next=progress;next.room=w.target;next.position=arrival;next.elevation=height;
-    restore(next);groundHeight=height;partner=arrival;partnerHeight=height;partnerContact=groundContact;
+    const uint32_t systemFlags=fieldSystemFlags;
+    const RoadCallback entryCallback=inCallback(w);
+    restore(next);groundHeight=height;cameraHeight=height;partner=arrival;partnerHeight=height;partnerContact=groundContact;
+    fieldSystemFlags=entryCallback==RoadCallback::DebugArrival?systemFlags&~0x40u:systemFlags;
     arrivalStart=start;arrivalEnd=arrival;
-    followerPath.clear();warpCooldown=0;saveRequested=true;return true;
+    registerRoadCases(false);followerPath.clear();saveRequested=true;return true;
 }
 void Game::beginRoadArrival() {
     roadMotion.begin({arrivalStart.x,arrivalStart.z},{arrivalEnd.x,arrivalEnd.z});
@@ -174,7 +213,7 @@ void Game::cancelRoad() {
         progress.position=departureOrigin;groundHeight=progress.elevation=departureHeight;
         cameraX=departureOrigin.x;cameraZ=departureOrigin.z;cameraHeight=departureHeight;
     }
-    warpRequest=-1;warpCooldown=60;departureDone=false;departurePause=0;roadMotion={};arriving=false;saveRequested=false;
+    warpRequest=-1;departureDone=false;departureParentStarted=false;departurePause=0;roadMotion={};arriving=false;saveRequested=false;
     fade.startIn();
 }
 bool walkable(Vec2 p,float elevation) {
@@ -266,6 +305,7 @@ FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float
     origin={origin.x*.01f,origin.y*.01f,origin.z*.01f};maximum*=.01f;
     FieldWallHit nearest;nearest.distance=maximum;
     auto test=[&](std::array<float,9> triangle,uint32_t cull,GroundContact contact,uintptr_t token) {
+        contact=runtimeContact(contact);
         if(!ordinaryWallAttributes(contact.attributes))return;
         // Current static room meshes contain no named high-bit NPC owners.
         // Such an admitted record needs the original owner-name filter service.
@@ -330,7 +370,7 @@ FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float worldY,float velocity
     for(auto offset:offsets) {
         const Vec2 ray{p.x+offset.x,p.z+offset.z};float nearest=high;const HeadTriangle* selected=nullptr;
         for(uint32_t n:nearby(headIndex,ray)) {
-            const auto& tri=head[n];if(!headAttributesSolid(tri.contact.attributes))continue;
+            const auto& tri=head[n];if(!headAttributesSolid(runtimeContact(tri.contact).attributes))continue;
             const float* v=tri.v;
             // Source normal=(v2-v0) cross (v0-v1), equivalent to standard winding.
             const float normalY=(v[5]-v[2])*(v[6]-v[0])-(v[3]-v[0])*(v[8]-v[2]);
@@ -358,7 +398,7 @@ FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float worldY,float velocity
         const float contact=headContactHeight(nearest);
         result.contact=headContactReached(worldY,velocity,contact);
         result.clearance=result.contact?0:contact-worldY-HeadBodyHeight;
-        if(result.contact){result.correction=headClampedRoot(contact);result.node=selected->contact;}
+        if(result.contact){result.correction=headClampedRoot(contact);result.node=runtimeContact(selected->contact);}
         // First admitted ray returns even for a near miss. Later feet cannot
         // replace it with a closer contact; rejected inclinations can continue.
         return result;
@@ -416,7 +456,7 @@ bool groundReturn(const GroundContact& contact,ReturnPoint& point) {
     point=found->second;return true;
 }
 static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact* contact,float* slope=nullptr,
-                         FieldSlope* record=nullptr,bool rejectSteep=true) {
+                         FieldSlope* record=nullptr,bool rejectSteep=true,bool actorFilter=true) {
     if(!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(low) || !std::isfinite(high) || low>high ||
        std::fabs(p.x)>4096 || std::fabs(p.z)>4096)return false;
     if(ground.empty()) {if(low>0 || high<0)return false;height=0;if(contact)*contact={};if(slope)*slope=0;return true;}
@@ -425,8 +465,8 @@ static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact
         // Original normal-Mario chkfilterVec rejects bit4 unless its special
         // inclusion bits apply. Name-dependent bit31 cases are not present
         // in the five currently packaged rooms; transform filters are deferred.
-        const uint32_t flags=ground[n].contact.attributes;
-        if(!(flags&0x00080080) && !(flags&0x00800000) && (flags&4))continue;
+        const uint32_t flags=runtimeContact(ground[n].contact).attributes;
+        if(actorFilter && !(flags&0x00080080) && !(flags&0x00800000) && (flags&4))continue;
         const float* v=ground[n].v;
         const float normalY=(v[5]-v[2])*(v[6]-v[0])-(v[3]-v[0])*(v[8]-v[2]);
         if(ground[n].cull==1 && normalY<=0)continue; // Downward ray backface.
@@ -438,7 +478,7 @@ static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact
         float b=((v[8]-v[2])*(p.x-v[6])+(v[0]-v[6])*(p.z-v[8]))/den;
         if(a<-.0001f || b<-.0001f || a+b>1.0001f)continue;
         float y=a*v[1]+b*v[4]+(1-a-b)*v[7];
-        if(y<=high && y>=low && y>best) {best=y;bestContact=ground[n].contact;bestTriangle=v;found=true;}
+        if(y<=high && y>=low && y>best) {best=y;bestContact=runtimeContact(ground[n].contact);bestTriangle=v;found=true;}
     }
     if(found) {
         // Original ray selects the nearest solid hit before rejecting its slope.
@@ -474,6 +514,12 @@ bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact,float*
     // Preserve development/no-pack flat-ground behavior for legacy callers.
     if(ground.empty() && std::isfinite(reference))return groundWithin(p,-.5f,StepHeight,height,contact,slope);
     return groundWithin(p,reference-.5f,reference+StepHeight,height,contact,slope);
+}
+bool roadStartGround(Vec2 p,float sourceY,float& height) {
+    if(!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(sourceY))return false;
+    height=sourceY; // Null ray retains the original marker Y.
+    if(!ground.empty())groundWithin(p,sourceY-10000.f,sourceY,height,nullptr,nullptr,nullptr,false,false);
+    return true;
 }
 bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact) {
     if(!std::isfinite(velocity))return false;
@@ -608,7 +654,7 @@ bool Game::beginVoid() {
     fieldJump={};fieldStep={};fieldVerticalVelocity=0;jumpHeight=0;warpRequest=-1;saveRequested=false;
     return true;
 }
-void clearCollision() {walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();head.clear();headIndex.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
+void clearCollision() {roadAttributeNodes.clear();walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();head.clear();headIndex.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
 bool Game::recoveryReturn(ReturnPoint& point) const {return groundReturn(returnContact,point);}
@@ -638,6 +684,7 @@ void Game::restore(const Progress& saved) {
     groundAt(partner,groundHeight,partnerHeight,&partnerContact);
     followerPath.push_back(partner);followerPath.push_back(p.position);
     cameraX=p.position.x;cameraZ=p.position.z;cameraHeight=groundHeight;
+    registerRoadCases(true);
 }
 void Game::openDialogue(int kind) {
     scene = Scene::Dialogue; dialogueKind = kind; dialoguePage = 0;
@@ -675,6 +722,7 @@ const char* Game::prompt() const {
     return "Circle Pad: move   A: jump   X: partner";
 }
 void Game::move(const Input& i,bool launched) {
+    roadPassContact={}; // marioMoveMain clears +1f0 before moving OR staying.
     // Original marioMoveMain remembers the eligible floor before moving.
     if(groundContact.attributes&0x40000000)returnContact=groundContact;
     float x=i.x, z=i.z, len=std::hypot(x,z);
@@ -741,7 +789,8 @@ void Game::move(const Input& i,bool launched) {
         }
         if(front.forward.token) {
             const size_t n=front.forward.token-1;
-            wallContact=!head.empty()?head[n].contact:n<wallContacts.size()?wallContacts[n]:GroundContact{};
+            wallContact=runtimeContact(!head.empty()?head[n].contact:n<wallContacts.size()?wallContacts[n]:GroundContact{});
+            if(fieldWallPassThrough(front.forward.attributes,actor))roadPassContact=wallContact;
         }
     }
     auto accept=[&](Vec2 candidate) {
@@ -781,12 +830,12 @@ void Game::move(const Input& i,bool launched) {
             }
         }
     }
-    if(warpCooldown>0)--warpCooldown;
-    if(warpCooldown==0 && warpRequest<0 && len>.15f && !fieldStep.active()) {
+    if(warpRequest<0 && scene==Scene::Explore) {
         for(size_t n=0;n<roads.size();++n) {
             const auto& road=roads[n];
-            if(road.source==progress.room && length(p,{road.x,road.z})<.7f &&
-                x*(road.x-p.x)+z*(road.z-p.z)>0) {warpRequest=int(n);departureOrigin=p;departureHeight=groundHeight;departureOriginValid=true;saveRequested=false;break;}
+            if(road.source==progress.room && roadContactMatches(roadPassContact.sourceNode,road.sourceNode,roadCasesEnabled,roadAdmission)) {
+                warpRequest=int(n);resolveRoadCallbacks(road);departureOrigin=p;departureHeight=groundHeight;departureOriginValid=true;saveRequested=false;break;
+            }
         }
     }
     if (std::fabs(x) > .15f && (x>0 ? 1.f : -1.f) != facing) {
@@ -1062,29 +1111,36 @@ void Game::tick(const Input& rawInput) {
     if(arriving) {
         fade.tick();const bool finished=roadMotion.tick();
         progress.position={roadMotion.position[0],roadMotion.position[1]};partner=progress.position;
-        if(finished){arriving=false;saveRequested=true;followerPath.clear();followerPath.push_back(partner);}
+        if(finished){arriving=false;registerRoadCases(true);saveRequested=true;followerPath.clear();followerPath.push_back(partner);}
         return;
     }
     if(fade.active()){fade.tick();return;}
     if(warpRequest>=0) {
         if(size_t(warpRequest)>=roads.size()){cancelRoad();return;}
-        // Original road event disables controls and waits for landing first.
-        if(fieldJump.airborne){advanceVertical(i.jumpHeld);return;}
+        if(!resolveRoadCallbacks(roads[warpRequest]))return; // Preserve unresolved/custom original scene ownership.
+        // The original independent inline waits/moves while its parent runs
+        // WAIT150ms + WAIT2frames, then requests mapchange without joining it.
+        // This 60Hz timer/fade bridge is an adapter to that concurrent ownership;
+        // complete EVT credits, key nesting and sequencer remain separate services.
+        if(!departureParentStarted){departureParentStarted=true;departurePause=11;}
+        const bool requestMap=--departurePause==0;
+        // Key-off neutralizes input, not Mario simulation or retained air travel.
+        if(fieldJump.airborne || fieldStep.active() || !groundContact.sourceNode) {
+            move({});if(requestMap)fade.startOut();return;
+        }
         if(!departureDone && !roadMotion.active()) {
             const auto& w=roads[warpRequest];
-            const auto reverse=std::find_if(roads.begin(),roads.end(),[&](const auto& r){return r.source==w.target && r.target==w.source;});
-            if(reverse==roads.end()){cancelRoad();return;}
-            float x=w.x-reverse->spawnX,z=w.z-reverse->spawnZ,d=std::hypot(x,z);
-            if(d<.001f){cancelRoad();return;}
-            if(!roadMotion.begin({progress.position.x,progress.position.z},{w.x+x*1.5f/d,w.z+z*1.5f/d})){cancelRoad();return;}
+            float x=0,z=0;roadDirection(w.direction,x,z);
+            if(!roadMotion.begin({progress.position.x,progress.position.z},{w.x+x*1.5f,w.z+z*1.5f})){cancelRoad();return;}
         }
         if(!departureDone) {
             if(std::fabs(roadMotion.step[0])>.001f)facing=roadMotion.step[0]>0?1:-1;
             turnScale=1;turnTick=0;
-            if(roadMotion.tick()){departureDone=true;departurePause=9;}
+            if(roadMotion.tick())departureDone=true;
             progress.position={roadMotion.position[0],roadMotion.position[1]};
             cameraX+=(progress.position.x-cameraX)*.07f;cameraZ+=(progress.position.z-cameraZ)*.07f;
-        } else if(departurePause>0 && --departurePause==0)fade.startOut();
+        }
+        if(requestMap)fade.startOut();
         return;
     }
     if(scene==Scene::FieldDefeat) {if(i.confirm || (tap && i.touchY>=107 && i.touchY<155))reloadRequested=true;return;}

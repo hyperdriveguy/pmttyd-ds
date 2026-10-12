@@ -15,16 +15,21 @@ OUT=ROOT/'artifacts/azahar'
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--save-fixture',help='Copy a 32-byte test save into the isolated profile before boot')
+    parser.add_argument('--save-fixture',help='Copy a versioned native test save into the isolated profile before boot')
     parser.add_argument('--fresh-save',action='store_true',help='Reset only the generated project-local Azahar test save')
     parser.add_argument('--reference-dolphin',action='store_true',help='Capture the original ISO using an isolated Dolphin profile instead')
     parser.add_argument('--seconds',type=int,default=12)
     parser.add_argument('--input-script',help='Python file with run(env, capture) function; isolated emulator only')
+    parser.add_argument('--output-dir',help='Separate capture/profile directory under project artifacts')
     args=parser.parse_args()
     global OUT
     if args.reference_dolphin:OUT=ROOT/'artifacts/dolphin'
+    if args.output_dir:
+        OUT=Path(args.output_dir).resolve()
+        if (ROOT/'artifacts').resolve() not in OUT.parents:raise ValueError('Smoke output must be under project artifacts')
     OUT.mkdir(parents=True,exist_ok=True)
     env=dict(os.environ)
+    env['PM_PORT_SMOKE_OUTPUT']=str(OUT)
     for key,name in [('XDG_CONFIG_HOME','config'),('XDG_DATA_HOME','data'),('XDG_CACHE_HOME','cache')]:
         directory=OUT/name;directory.mkdir(exist_ok=True);env[key]=str(directory)
     if args.fresh_save and not args.reference_dolphin:
@@ -33,7 +38,7 @@ def main():
     if args.save_fixture:
         if args.reference_dolphin:raise ValueError('Save fixtures are for the native Azahar build only')
         fixture=Path(args.save_fixture).read_bytes()
-        if len(fixture)!=32:raise ValueError('Expected a 32-byte project save fixture')
+        if len(fixture) not in (32,40):raise ValueError('Expected a legacy32-byte or version3 40-byte project save fixture')
         directory=OUT/'data/azahar-emu/sdmc/3ds/ttyd-2ds';directory.mkdir(parents=True,exist_ok=True)
         (directory/'progress.bin').write_bytes(fixture)
     env['QT_QPA_PLATFORM']='xcb' ;env['LIBGL_ALWAYS_SOFTWARE']='1'

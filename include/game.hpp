@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <vector>
 #include <memory>
+#include <optional>
 #include "water_recovery.hpp"
 #include "transition_fade.hpp"
 #include "road_motion.hpp"
@@ -19,6 +20,7 @@
 #include "field_battle.hpp"
 #include "field_movement.hpp"
 #include "field_wall.hpp"
+#include "field_road.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -84,7 +86,12 @@ struct DamageServiceRequest {
     DamageNotice notice{DamageNoticeKind::ActionCount};
     uint32_t code=0;
 };
-struct RoadWarp { uint32_t source,target; float x,z,spawnX,spawnZ,spawnY; };
+struct RoadWarp {
+    uint32_t source,target;
+    float x,z,spawnX,spawnZ,spawnY;
+    uint32_t sourceNode,arrivalNode,direction,arrivalDirection;
+    float centerY;
+};
 const char* roomAsset(uint32_t room);
 const char* roomName(uint32_t room);
 bool loadWarps(const char* path);
@@ -94,6 +101,8 @@ struct Progress {
     Vec2 position{1, 3.5f};
     int hp = 10, mushrooms = 1;
     bool crumpDefeated = false, sound = true;
+    // GSW0 is a full source word. Legacy/new harness state cannot infer it.
+    std::optional<int32_t> originalStory;
 };
 class Game {
 public:
@@ -110,12 +119,18 @@ public:
     bool fieldAirOnScreen=true; // Ordinary on-screen adapter; original projection owner pending.
     bool fieldAirDampingBypass=false,fieldKeysOff=false;
     GroundContact wallContact;
+    GroundContact roadPassContact; // Source +1f0, separate from blocking/front metadata.
     float wallContactDistance=10; // Source wrapper initial1000, native units*.01.
     uint32_t fieldViewFlags=0; // Original init clears+14; later view writers unbound.
     GroundContact returnContact;
     WaterRecovery water;
     TransitionFade fade;
     RoadMotion roadMotion;
+    RoadCaseAdmission roadAdmission;
+    bool roadCasesEnabled=true;
+    RoadPolicy roadPolicy=RoadPolicy::Generic;
+    RoadCallback roadCallback=RoadCallback::None;
+    uint32_t fieldSystemFlags=0; // Native system-word adapter, not saved-story inference.
     bool arriving=false;
     void beginRoadArrival();
     void cancelRoad();
@@ -134,7 +149,7 @@ public:
     uint64_t ticks = 0;
     bool actionSuccess = false, guarded = false, saveRequested = false;
     Sound sound = Sound::None;
-    int warpRequest = -1, warpCooldown = 0;
+    int warpRequest = -1;
     bool finishWarp();
     uint32_t warpTarget() const;
     void tick(const Input& input);
@@ -179,6 +194,8 @@ private:
     bool integrateVertical(bool held,float& previousY,bool update=true);
     FieldHeadQuery queryOverhead(float rootY,float velocity,float extension);
     void dispatchFieldAir();
+    void registerRoadCases(bool enabled);
+    bool resolveRoadCallbacks(const RoadWarp& road);
     void finishVertical(float previousY);
     int turnTick = 0;
     std::array<BattlePadWork,4> generalBattlePads;
@@ -207,6 +224,7 @@ private:
     float departureHeight=0;
     bool departureOriginValid=false;
     bool departureDone=false;
+    bool departureParentStarted=false;
     int departurePause=0;
 };
 struct CollisionSnapshot;
@@ -240,6 +258,7 @@ FieldSupport searchFieldSupport(Vec2 p,Vec2 direction,float rootY,float velocity
 // Center adapter; native marioChkLandon uses the shared five-foot support service.
 bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
 bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
+bool roadStartGround(Vec2 p,float sourceY,float& height);
 void clearCollision();
 const std::vector<Rect>& collisionWalls();
 Rect collisionBounds();

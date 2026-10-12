@@ -14,7 +14,7 @@ from iso_assets import extract,convert_tpl,DEFAULT_ISO
 from character_bake import bake
 from map_convert import convert
 from audio_convert import stm,sample_directory
-from room_convert import exits,damage_returns,resolve_damage_returns
+from room_convert import exits,damage_returns,resolve_damage_returns,road_hit
 ROOT=Path(__file__).resolve().parents[1]
 OUTPUT=ROOT/'romfs';WORK=ROOT/'local-assets';ISO=os.environ.get('TTYD_ISO',DEFAULT_ISO)
 
@@ -130,17 +130,20 @@ def main():
             if target not in matched:continue # Not yet packaged, never invent an endpoint.
             reciprocal=next((e for e in matched[target] if e['name']==entry['arrival']),None)
             if not reciprocal or reciprocal['target']!=source or reciprocal['arrival']!=entry['name']:raise ValueError('Nonreciprocal road link')
-            marker=next(m for m in rooms[source]['exit_markers'] if m['name']==entry['name'])
-            dest=next(m for m in rooms[target]['exit_markers'] if m['name']==entry['arrival'])
-            center=lambda m:[(a+b)/2 for a,b in zip(*m['bounds'])]
-            c=center(marker);d=center(dest)
+            marker=road_hit(rooms[source]['collision_nodes'],entry['name'])
+            dest=road_hit(rooms[target]['collision_nodes'],entry['arrival'])
+            c=marker['center'];d=dest['center']
             direction={'n_bero':(0,-1),'s_bero':(0,1),'e_bero':(1,0),'w_bero':(-1,0)}
             dx,dz=direction[entry['arrival']]
-            links.append({'source':source,'exit':entry['name'],'target':target,'arrival':entry['arrival'],'center':c,'spawn':[d[0]-dx*.3,dest['bounds'][0][1],d[2]-dz*.3],'rel_offset':entry['offset']})
+            headings={'n_bero':0,'e_bero':2,'s_bero':4,'w_bero':6}
+            links.append({'source':source,'exit':entry['name'],'target':target,'arrival':entry['arrival'],
+                'source_node':marker['source_node'],'arrival_node':dest['source_node'],
+                'direction':headings[entry['name']],'arrival_direction':headings[entry['arrival']],
+                'center':c,'spawn':[d[0]-dx*.3,d[1],d[2]-dz*.3],'rel_offset':entry['offset']})
     (WORK/'room-links.json').write_text(json.dumps(links,indent=2))
     with (OUTPUT/'rooms.bin').open('wb') as out:
-        out.write(struct.pack('<I',len(links)))
-        for link in links:out.write(struct.pack('<II5f',order.index(link['source']),order.index(link['target']),link['center'][0],link['center'][2],link['spawn'][0],link['spawn'][2],link['spawn'][1]))
+        out.write(struct.pack('<4sII',b'ROAD',1,len(links)))
+        for link in links:out.write(struct.pack('<II5f4If',order.index(link['source']),order.index(link['target']),link['center'][0],link['center'][2],link['spawn'][0],link['spawn'][2],link['spawn'][1],link['source_node'],link['arrival_node'],link['direction'],link['arrival_direction'],link['center'][1]))
     stage_model=asset('m/stg_01/d','stage.d');stage_tpl=asset('m/stg_01/t','stage.tpl')
     stage_summary=convert(stage_model,WORK/'stage',hidden=('stg__MASUKU','stg_kaaten_01_a','stg_kaaten_01_b','switch_dai','switch_mark','switch_osu'))
     for extension in ['vertices','batches','uvanim','meshanim']:shutil.copyfile(WORK/'stage'/f'map.{extension}',OUTPUT/f'stage.{extension}')

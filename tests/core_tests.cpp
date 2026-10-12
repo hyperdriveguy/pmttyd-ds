@@ -349,11 +349,17 @@ void battles() {
 void saves() {
     Progress p;p.position={2,2};p.crumpDefeated=true;p.hp=7;p.sound=false;
     auto bytes=encodeSave(p);Progress restored;CHECK(decodeSave(bytes,restored));CHECK(restored.hp==7);CHECK(restored.crumpDefeated);CHECK(!restored.sound);
+    CHECK(!restored.originalStory); // Prototype victory is not original GSW0.
+    for(int32_t story:{0,5,6,7,11,-1,std::numeric_limits<int32_t>::min(),std::numeric_limits<int32_t>::max()}) {
+        Progress known=p;known.originalStory=story;
+        CHECK(decodeSave(encodeSave(known),restored));CHECK(restored.originalStory==story);
+    }
     // Version 1 plaza saves migrate without losing progress.
     auto legacy=encodeSave(p);legacy[4]=1;
     uint32_t sum=2166136261u;for(int n=0;n<28;++n){sum^=legacy[n];sum*=16777619u;}
     for(int n=0;n<4;++n)legacy[28+n]=(sum>>(8*n))&255;
     CHECK(decodeSave(legacy,restored));CHECK(restored.room==0);CHECK(restored.elevation==0);
+    CHECK(!restored.originalStory);
     Progress elevated=p;elevated.room=1;elevated.elevation=1.19f;
     CHECK(decodeSave(encodeSave(elevated),restored));CHECK(restored.room==1);CHECK(std::fabs(restored.elevation-1.2f)<.001f);
     elevated.room=4;CHECK(decodeSave(encodeSave(elevated),restored));CHECK(restored.room==4);
@@ -363,12 +369,38 @@ void saves() {
     p.room=5;CHECK(!decodeSave(encodeSave(p),restored));p.room=0;
     p.position={2,2};p.hp=11;CHECK(!decodeSave(encodeSave(p),restored));p.hp=7;
     char directory[]="/tmp/ttyd-tests-XXXXXX";CHECK(mkdtemp(directory));std::string path=std::string(directory)+"/progress.bin";
-    CHECK(loadSave(path,restored)==LoadResult::Missing);CHECK(writeSave(path,p));CHECK(loadSave(path,restored)==LoadResult::Loaded);
+    CHECK(loadSave(path,restored)==LoadResult::Missing);
+    {std::ofstream old(path,std::ios::binary);old.write(reinterpret_cast<const char*>(legacy.data()),32);}
+    CHECK(loadSave(path,restored)==LoadResult::Loaded);CHECK(!restored.originalStory && restored.hp==7);
+    CHECK(writeSave(path,p));CHECK(loadSave(path,restored)==LoadResult::Loaded);
     p.hp=4;CHECK(writeSave(path,p));CHECK(loadSave(path,restored)==LoadResult::Loaded);CHECK(restored.hp==4);
     {std::ofstream corrupt(path);corrupt<<"broken";}
     CHECK(loadSave(path,restored)==LoadResult::Recovered);CHECK(restored.hp==7);
     CHECK(!writeSave(std::string(directory)+"/missing/save",p));
     std::remove(path.c_str());std::remove((path+".bak").c_str());rmdir(directory);
+}
+void roadContracts() {
+    RoadCaseAdmission gate;
+    CHECK(roadContactMatches(123,123,true,gate));
+    CHECK(!roadContactMatches(0,123,true,gate));
+    CHECK(!roadContactMatches(124,123,true,gate));
+    CHECK(!roadContactMatches(123,123,false,gate));
+    gate.systemLevel=1;CHECK(!roadContactMatches(123,123,true,gate));gate.systemLevel=0;
+    gate.window=true;CHECK(!gate.permits());gate.window=false;
+    gate.globalBlocked=true;CHECK(!gate.permits());gate.globalBlocked=false;
+    gate.preventMarioEvent=true;CHECK(!gate.permits());gate.preventMarioEvent=false;
+    gate.caseValid=false;CHECK(!gate.permits());
+    for(auto callback:{RoadCallback::HarborOut,RoadCallback::PartnerArrival,RoadCallback::CoinArrival}) {
+        CHECK(roadCallbackPolicy(callback,std::nullopt)==RoadPolicy::MissingStory);
+        CHECK(roadCallbackPolicy(callback,11)==RoadPolicy::Generic);
+    }
+    CHECK(roadCallbackPolicy(RoadCallback::HarborOut,5)==RoadPolicy::Custom);
+    CHECK(roadCallbackPolicy(RoadCallback::PartnerArrival,6)==RoadPolicy::Custom);
+    CHECK(roadCallbackPolicy(RoadCallback::CoinArrival,7)==RoadPolicy::Custom);
+    CHECK(roadCallbackPolicy(RoadCallback::DebugArrival,std::nullopt)==RoadPolicy::Generic);
+    clearCollision();float h=0;
+    CHECK(roadStartGround({0,0},.123456f,h) && h==.123456f);
+    CHECK(!roadStartGround({0,0},std::numeric_limits<float>::infinity(),h));
 }
 void collisionImport() {
     const WallTriangle ramp{0,0,0, 2,0,0, 0,2,0};
@@ -438,10 +470,14 @@ void groundImport() {
         };
         float h=99;GroundContact contact;
         writeFaces(1);CHECK(loadGround(path));CHECK(groundAt({-.5f,2},0,h,&contact));CHECK(h==0 && contact.sourceNode==1);
+        CHECK(roadStartGround({-.5f,2},-.1f,h) && h==-.1f); // Ray never starts above the marker.
+        CHECK(roadStartGround({-.5f,2},.25f,h) && h==0); // One-sided roof is culled.
         {CollisionTransition rollback;writeFaces(3);CHECK(loadGround(path));CHECK(groundAt({-.5f,2},0,h) && std::fabs(h-.2f)<.000001f);}
         CHECK(groundAt({-.5f,2},0,h) && h==0); // Cull metadata restored by rollback.
         writeFaces(1,true);CHECK(loadGround(path));CHECK(groundAt({-.5f,2},0,h) && std::fabs(h-.2f)<.000001f);
         writeFaces(3);CHECK(loadGround(path));CHECK(groundAt({-.5f,2},0,h) && std::fabs(h-.2f)<.000001f);
+        CHECK(roadStartGround({-.5f,2},.199f,h) && h==0);
+        CHECK(roadStartGround({-.5f,2},.25f,h) && std::fabs(h-.2f)<.000001f);
         writeFaces(9);CHECK(!loadGround(path));CHECK(groundAt({-.5f,2},0,h) && std::fabs(h-.2f)<.000001f);
         CHECK(truncate(path,99)==0);CHECK(!loadGround(path));CHECK(groundAt({-.5f,2},0,h) && std::fabs(h-.2f)<.000001f);
         clearCollision();std::remove(path);
@@ -867,9 +903,9 @@ void transitionFade() {
     CHECK(g.scene==Scene::Explore && g.fade.alpha()==255 && !g.fade.ready());
     g.fade.presented();CHECK(g.fade.ready());
     // A rejected room load reveals the retained scene before controls resume.
-    g.warpRequest=-1;g.warpCooldown=60;g.fade.startIn();
+    g.warpRequest=-1;g.fade.startIn();
     for(int n=0;n<18;++n)g.tick(blocked);
-    CHECK(!g.fade.active() && g.warpCooldown==60 && g.progress.position.x==p.x);
+    CHECK(!g.fade.active() && g.progress.position.x==p.x);
     RoadMotion motion;motion.begin({0,0},{.6f,0});CHECK(motion.remaining==24);
     for(int n=0;n<23;++n){CHECK(!motion.tick());CHECK(std::fabs(motion.position[0]-(n+1)*.025f)<.00001f);}
     CHECK(motion.tick() && motion.position[0]==.6f);
@@ -953,15 +989,26 @@ void indexedOriginalCollision() {
 }
 void originalRooms() {
     CHECK(loadWarps("romfs/rooms.bin"));
-    std::ifstream file("romfs/rooms.bin",std::ios::binary);uint32_t count=0;file.read(reinterpret_cast<char*>(&count),4);
+    std::ifstream file("romfs/rooms.bin",std::ios::binary);char magic[4];uint32_t version=0,count=0;
+    file.read(magic,4);file.read(reinterpret_cast<char*>(&version),4);file.read(reinterpret_cast<char*>(&count),4);
+    CHECK(std::string(magic,4)=="ROAD" && version==1);
     CHECK(count==8);std::vector<RoadWarp> roads(count);file.read(reinterpret_cast<char*>(roads.data()),count*sizeof(RoadWarp));CHECK(file.good());
     for(size_t n=0;n<roads.size();++n) {
         const auto& road=roads[n];std::string prefix=std::string("romfs/")+roomAsset(road.target);
         CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));CHECK(loadGroundReturns((prefix+".returns").c_str()));CHECK(loadHead((prefix+".head").c_str()));
-        Game g;g.progress.room=road.source;g.progress.hp=7;g.warpRequest=n;
+        if(road.source==1 || (road.target==0 && road.arrivalNode==1382128) || road.target==2) {
+            Game unresolved;unresolved.progress.room=road.source;unresolved.warpRequest=n;
+            CHECK(!unresolved.finishWarp());CHECK(unresolved.roadPolicy==RoadPolicy::MissingStory);
+            CHECK(unresolved.progress.room==road.source && unresolved.warpRequest==int(n));
+            unresolved.progress.originalStory=road.source==1?5:road.target==0?6:7;
+            CHECK(!unresolved.finishWarp());CHECK(unresolved.roadPolicy==RoadPolicy::Custom);
+        }
+        Game g;g.progress.room=road.source;g.progress.hp=7;g.progress.originalStory=11;g.warpRequest=n;
+        g.fieldSystemFlags=0x240;
         CHECK(g.warpTarget()==road.target);CHECK(g.finishWarp());
         CHECK(g.progress.room==road.target);CHECK(g.progress.hp==7);CHECK(g.warpRequest==-1);
-        CHECK(g.warpCooldown==0);CHECK(g.saveRequested);
+        CHECK(!g.roadCasesEnabled);CHECK(g.saveRequested);
+        CHECK(g.fieldSystemFlags==(road.target==3?0x200u:0x240u));
         CHECK(g.cameraX==g.progress.position.x);CHECK(g.cameraZ==g.progress.position.z);
         CHECK(g.cameraHeight==g.groundHeight);CHECK(walkable(g.progress.position,g.groundHeight));
         CHECK(g.groundContact.attributes==g.partnerContact.attributes);
@@ -972,27 +1019,27 @@ void originalRooms() {
         CHECK(entry.arriving && !entry.saveRequested && entry.roadMotion.remaining==24);
         Input blocked;blocked.x=1;blocked.confirm=true;blocked.menuConfirm=true;
         for(int frame=0;frame<23;++frame){entry.tick(blocked);CHECK(entry.arriving && !entry.saveRequested);}
-        entry.tick(blocked);CHECK(!entry.arriving && entry.saveRequested && !entry.fade.active());
+        entry.tick(blocked);CHECK(!entry.arriving && entry.saveRequested && !entry.fade.active() && entry.roadCasesEnabled);
         CHECK(entry.progress.position.x==g.progress.position.x && entry.progress.position.z==g.progress.position.z);
         // Walk back toward the reciprocal opening, then simulate a failed load.
         Game departure=entry;
-        Input jump;jump.confirm=true;departure.tick(jump);
         Input toward; toward.x=entry.roadMotion.step[0]<0?1:entry.roadMotion.step[0]>0?-1:0;
         toward.z=entry.roadMotion.step[1]<0?1:entry.roadMotion.step[1]>0?-1:0;
+        {Game probe=entry;for(int n=0;n<50 && probe.warpRequest<0;++n)probe.tick(toward);CHECK(probe.warpTarget()==road.source);}
+        departure.tick(toward);
+        Input jump=toward;jump.confirm=true;jump.jumpHeld=true;departure.tick(jump);
         for(int frame=0;frame<60 && departure.warpRequest<0;++frame)departure.tick(toward);
         CHECK(departure.warpRequest>=0);
         const auto origin=departure.progress.position;const float originHeight=departure.groundHeight;
-        departure.tick(blocked);CHECK(departure.progress.position.x==origin.x && departure.progress.position.z==origin.z);
+        departure.tick(blocked);CHECK(std::hypot(departure.progress.position.x-origin.x,departure.progress.position.z-origin.z)>0);
         CHECK(departure.jumpHeight>0);
-        for(int frame=0;frame<36 && departure.jumpHeight>0;++frame){
+        for(int frame=0;frame<9;++frame){
             departure.tick(blocked);
-            CHECK(departure.progress.position.x==origin.x && departure.progress.position.z==origin.z);
             CHECK(!departure.fade.active() && !departure.roadMotion.active() && !departure.saveRequested);
         }
-        CHECK(departure.jumpHeight==0);
-        for(int frame=0;frame<200 && !departure.fade.active();++frame){departure.tick(blocked);CHECK(!departure.saveRequested);}
-        CHECK(departure.fade.active());CHECK(departure.roadMotion.remaining==0);
-        CHECK(std::hypot(departure.progress.position.x-origin.x,departure.progress.position.z-origin.z)>1.f);
+        departure.tick(blocked);CHECK(!departure.saveRequested);
+        CHECK(departure.fade.active()); // Parent does not join airborne wait or travel.
+        CHECK(std::hypot(departure.progress.position.x-origin.x,departure.progress.position.z-origin.z)>0);
         departure.cancelRoad();
         CHECK(departure.progress.position.x==origin.x && departure.progress.position.z==origin.z);
         CHECK(departure.groundHeight==originHeight && departure.warpRequest==-1);
@@ -1010,7 +1057,7 @@ void originalRooms() {
             // Stepping off the deck now falls to the dock; the upper entrance
             // cannot be reached by walking straight back up the drop.
             CHECK(g.warpRequest==-1 && std::fabs(g.groundHeight-.15f)<.001f);
-            Game stairs;stairs.progress.room=0;stairs.warpRequest=n;CHECK(stairs.finishWarp());
+            Game stairs;stairs.progress.room=0;stairs.progress.originalStory=11;stairs.warpRequest=n;CHECK(stairs.finishWarp());stairs.beginRoadArrival();advance(stairs,24);
             auto walk=[&](float x,float z,int frames) {
                 Input i;i.x=x;i.z=z;
                 for(int frame=0;frame<int(std::ceil(frames*.065f/DashSpeed));++frame) {
@@ -1092,6 +1139,6 @@ void originalHeadJump() {
     CHECK(g.progress.hp==p.hp && g.warpRequest==-1);clearCollision();
 }
 int main(int argc,char**) {
-    try {if(argc>1) {indexedOriginalCollision();originalRooms();originalReturnSelection();originalVoidReturn();originalHeadJump();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();unequalFloorMotion();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();waterRecovery();transitionFade();std::puts("Core scenarios passed");}
+    try {if(argc>1) {indexedOriginalCollision();originalRooms();originalReturnSelection();originalVoidReturn();originalHeadJump();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();roadContracts();collisionImport();groundImport();unequalFloorMotion();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();waterRecovery();transitionFade();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }
