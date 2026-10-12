@@ -1,5 +1,34 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Run/control/block opcode routing and child join
+
+Implemented EVENT_RUN_AND_ID_OUTPUT_VARIANTS.md and control92..112 dispatch
+bindings in event_control_opcodes.hpp/cpp. RUN creates independent root flags0
+without active-pass append,copies fields after run-check,and publishes ID after
+local copies. ID inline/brother capture raw destinations before first-end scans;
+brother-ID deliberately omits150 while plain110 copies it. Child94 resolves script,
+creates flags0 child,clears owner opcode and returns255 without deleting owner.
+Controls preserve integer versus float resolution,setter/stop/start/ID/restart
+semantics,raw CheckID output and no self-delete wrapper repair. Ends109/112 delete
+and return255/0 respectively. Unsupported routing returns optional empty so other
+opcode modules remain required,not no-ops. EventDispatchServices now supports
+explicit float resolution and raw event output services.
+
+Validation:make test passed thirty-two CTest suites plus58 Python tests;
+make all exited0/no rebuild,with ARM control-opcode object/final3dsx timestamps
+following the source edit. New suite covers post-run-check copies,independent
+RUN versus joined child,active append policies,output-local aliases,inline/
+brother metadata/150 differences,raw sentinel ID output,all setter/control
+routes,delete/end/restart return codes and unsupported delegation. Full real
+manager→dispatcher→94→child USER_FUNC→delete/copy-back→parent USER_FUNC path
+keeps parent alive,propagates child locals and resumes its next command on the
+next eligible pass. git diff --check passed. No emulator or original executed
+control/menu/lifecycle trace claim. Concurrent field edits preserved separately.
+
+Next:tagged integer/float namespaces,saved storage and branch/arithmetic/loop/
+switch/data opcodes,then original Jump event stream and native service owners.
+Fixed native battle timers and full remake/story/asset/trace closure remain open.
+
 ## 2026-10-12 — Directional walls, launch input and movement-rate binding
 
 Previous goal turn made concrete native/doc/test/commit progress;this continuation

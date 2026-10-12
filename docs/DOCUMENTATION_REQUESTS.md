@@ -454,6 +454,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Opcode routing breadcrumb (2026-10-12): `event_control_opcodes.cpp` wires
+recovered92..112 run/ID/child/control/block/end paths to lifecycle services.
+Real manager/dispatcher integration exercises joined child copy-back and parent
+resumption;ID outputs occur after local copies and plain/ID brother150 differs.
+Float/output providers are explicit and unsupported routes require other modules.
+Next:delivered operand namespaces and branch/arithmetic/loop/switch/data handlers,
+then original Jump stream and actual native source owners. Existing original
+runtime/context/alias/domain/pause/input/scene traces remain necessary closure.
+
 Control-service breadcrumb (2026-10-12): `event_controls.cpp` and its suite
 port exact stop/start inlined context pattern,postorder relationships,all/other/
 ID scans,CheckID and priority/type/speed setters. Tests preserve hard0xef,active

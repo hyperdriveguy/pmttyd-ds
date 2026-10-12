@@ -11,6 +11,8 @@ struct EventDispatchServices {
     void (*remove)(void*,EventEntry&)=nullptr;
     // All other supported opcode bodies remain explicit handlers, not no-ops.
     int32_t (*handler)(void*,EventEntry&,uint8_t opcode)=nullptr;
+    float (*resolveFloat)(void*,EventEntry&,int32_t rawOperand)=nullptr;
+    void (*store)(void*,EventEntry&,int32_t rawDestination,int32_t)=nullptr;
 };
 int32_t eventWaitFrame(EventEntry&,const EventDispatchServices&);
 int32_t eventWaitMilliseconds(EventEntry&,const EventDispatchServices&);
