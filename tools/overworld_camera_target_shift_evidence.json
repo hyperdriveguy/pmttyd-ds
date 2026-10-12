@@ -1,0 +1,163 @@
+{
+  "schema": 1,
+  "scope": "Ordinary camera retained ground-contact producer and secondary shift leaf/time/caller composition; static source only",
+  "dol_spans": [
+    {
+      "name": "marioInit",
+      "address": 2147857864,
+      "size": 1160,
+      "sha256": "e3976200ee5fc18a245b234f0b88c4095a0de3108c620034b54df1ea545ee6ce"
+    },
+    {
+      "name": "marioReInit",
+      "address": 2147856856,
+      "size": 1008,
+      "sha256": "768a85127d313dcaf6f86c3cbc9b9cc6c42fa3e4f826f72aa494af13ce81f661"
+    },
+    {
+      "name": "marioUpdateCamCollision",
+      "address": 2149224956,
+      "size": 80,
+      "sha256": "53fc8a0238e0840022db0aaaba58007a1ae9ae39bd16bc57964a931752916276"
+    },
+    {
+      "name": "marioSearchGround",
+      "address": 2148066964,
+      "size": 2640,
+      "sha256": "868e271655b02db5fb04dcbbf326bff0165f1827dd959738a9ad74df47064e47"
+    },
+    {
+      "name": "marioCamMain",
+      "address": 2149225036,
+      "size": 320,
+      "sha256": "2aadb797633e067582fad12ad9f1c38c9d877baa3c2abf96a8f54d85eea8001d"
+    },
+    {
+      "name": "cam3dMain",
+      "address": 2147543656,
+      "size": 2156,
+      "sha256": "3f53cc9fb1cd329508cbd04b88663fb664e80ab1ed9df39d0415204d3dfe57f3"
+    },
+    {
+      "name": "camShiftMain",
+      "address": 2148480336,
+      "size": 1064,
+      "sha256": "35bced6722d9c53636ca0c7310695d4c9ccc1366b1961fcb3509f70c88b08d9f"
+    },
+    {
+      "name": "camShiftInit",
+      "address": 2148481400,
+      "size": 100,
+      "sha256": "1da9fceeebd92128d905f716b7324c3523c05b62d694ca54ccab8efb39fe699a"
+    },
+    {
+      "name": "camShiftReset",
+      "address": 2148480208,
+      "size": 100,
+      "sha256": "1da9fceeebd92128d905f716b7324c3523c05b62d694ca54ccab8efb39fe699a"
+    },
+    {
+      "name": "camShiftPostMain",
+      "address": 2148480308,
+      "size": 28,
+      "sha256": "469f7bbe409e68db9bc321878f40be0b8e94150ee2810de9cde7e91e1bab3928"
+    },
+    {
+      "name": "camRoadGetCurrentShiftXRate",
+      "address": 2147527456,
+      "size": 32,
+      "sha256": "6a62b2088e604b09750d4d1ea3b6a9f00e5e5a17f007e65cad0fb8670d1f8927"
+    },
+    {
+      "name": "getV60FPS",
+      "address": 2147506688,
+      "size": 216,
+      "sha256": "c205e9e57b2948b6dbe7544e5a749da5ec67701682b4cec6726d78ce02c03c0c"
+    },
+    {
+      "name": "calcCamRoad",
+      "address": 2147530444,
+      "size": 3512,
+      "sha256": "30d1765fbf7b91469764903b659dec1c95db1da056d94007ac72c854a32b3fb2"
+    },
+    {
+      "name": "camRoadMain",
+      "address": 2147527496,
+      "size": 1264,
+      "sha256": "b4962497703485b9c713074b9a4bbec1c3e4e295e5502246769bb75483c960fc"
+    },
+    {
+      "name": "Shift init and branch constants",
+      "address": 2151817192,
+      "size": 36,
+      "sha256": "562e2cef3a7d0f878df558987a6180a1fdd36212a9ce4ce3058c5e7f4b96cec2"
+    },
+    {
+      "name": "Default absent road shift0",
+      "address": 2151806508,
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "name": "V60 milliseconds and60 constants",
+      "address": 2151806028,
+      "size": 8,
+      "sha256": "f6e320538eaf9ed93c490b06026043ff56a3a5e3e29a44616037d760a1ba2748"
+    }
+  ],
+  "dol_anchors": {
+    "2147857920": "4bfa9ab5",
+    "2147857072": "4bfa9e05",
+    "2149224988": "900300f8",
+    "2149224996": "908300fc",
+    "2149225000": "90030100",
+    "2149225008": "64000004",
+    "2149225324": "54000398",
+    "2148068028": "d0010044",
+    "2148068108": "d0010048",
+    "2148069156": "fc02a840",
+    "2148069184": "40820090",
+    "2148069196": "4081002c",
+    "2148069244": "408100c4",
+    "2148069316": "4811a239",
+    "2148069352": "40820058",
+    "2148069360": "40810050",
+    "2148069432": "4811a1c5",
+    "2147544444": "c00300f8",
+    "2147544464": "ec00082a",
+    "2147544476": "c0030100",
+    "2147544952": "480e45d9",
+    "2147544984": "c0e10008",
+    "2147544988": "4bffbbad",
+    "2147545224": "480e44ad",
+    "2147527460": "80030068",
+    "2147527472": "c02300c4",
+    "2147527480": "c02281ec",
+    "2148480464": "889d0252",
+    "2148480516": "c3c2abbc",
+    "2148480532": "c3c2abc0",
+    "2148480572": "c3c2aba8",
+    "2148480736": "408200f4",
+    "2148480780": "d0030004",
+    "2148480924": "40820038",
+    "2148480964": "d3e30004",
+    "2148481024": "4bf12201",
+    "2148481092": "40820010",
+    "2148481104": "d0430010",
+    "2148481136": "ec2300b2",
+    "2148481156": "fc201090",
+    "2148481192": "fc201090",
+    "2148481232": "41820068",
+    "2148481256": "4bf12119",
+    "2148481348": "d01e0000",
+    "2148480324": "9083001c",
+    "2148480328": "90030018",
+    "2147506760": "4825f091",
+    "2147506788": "4825f075",
+    "2147506868": "ec220072",
+    "2147506872": "ec210024"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": []
+}
