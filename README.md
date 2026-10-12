@@ -62,8 +62,9 @@ azahar ./ttyd-2ds.3dsx
 ```
 
 Audio uses NDSP and requires the launcher-provided DSP component or a locally
-dumped `sdmc:/3ds/dspfirm.cdc`. The isolated Azahar profile currently lacks it;
-boot testing does not verify audible playback.
+dumped `sdmc:/3ds/dspfirm.cdc`. With the supplied local firmware copied into
+the isolated Azahar profile, music/jump output and mute/restore were verified
+by a dedicated audio capture. Hardware and original-runtime fidelity remain open.
 
 Output: `ttyd-2ds.3dsx`, with its RomFS embedded. Copy it to the SD card's
 `/3ds/ttyd-2ds/` directory to use homebrew launcher. CIA packaging is deferred.

@@ -1,5 +1,23 @@
 # Original asset pipeline
 
+## Isolated native audio validation firmware (2026-10-12)
+
+User supplied /home/carson/games/roms/dspfirm.cdc. Read-only source copied to
+ignored artifacts/azahar/data/azahar-emu/sdmc/3ds/dspfirm.cdc;49,756 bytes,
+SHA2568e213f3e71d2e3e45d1169bac6465a70eabeb22b303f1fa6d7679370ffad0f54.
+Source/copy hashes match. No patch/conversion,embedding,source-history addition
+or redistribution occurred;original firmware copyright/licensing remains in
+force. This component is separate from GameCube/Switch game sound assets.
+
+The prior isolated Audio unavailable finding is resolved:Settings shows Audio
+service ready,private-sink PCM capture verifies nonzero music,field jump waveform
+support,digital mute silence and restored output. Capture derivatives/metrics
+stay ignored in artifacts/azahar/audio-verify*. No user emulator profile/saves,
+firmware source or default audio device changed. Dedicated sink was removed.
+No original-game audible equivalence/hardware/all-cue validation is claimed;
+see AUDIO_MAPPING.md and the progress follow-up for exact measurements/logs.
+
+
 ## Sound mapping and GameCube native fallbacks (2026-10-12)
 
 [Audio mapping](AUDIO_MAPPING.md) documents a reproducible catalog of3,218 named

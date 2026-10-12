@@ -1,5 +1,42 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Supplied DSP firmware resolves native audio validation blocker
+
+Used user-provided /home/carson/games/roms/dspfirm.cdc read-only;copied only to
+artifacts/azahar/data/azahar-emu/sdmc/3ds/dspfirm.cdc. Both SHA256 values equal
+8e213f3e71d2e3e45d1169bac6465a70eabeb22b303f1fa6d7679370ffad0f54;
+size49,756 bytes. Firmware is ignored,not embedded/committed/distributed.
+Normal user emulator profile/saves and firmware source were unchanged.
+
+Validation:tools/emulator_smoke.py --fresh-save --seconds4 --input-script
+ tests/azahar_walkthrough.py completed in the isolated profile;Settings shows
+Audio service ready. A focused capture via /tmp/pm-audio-capture.py created a
+private PulseAudio null sink,started parec on ONLY that sink's monitor,routed
+Azahar to it and removed the sink in finally. No default devices changed.
+Final focused Settings captures show Sound OFF and ON. Recorded stereo48kHz
+PCM16 has music RMS3534.17/peak17077,mute RMS/peak0 across75,373 stereo frames,
+restored RMS1460.95/peak7133. Jump sample waveform matching has normalized
+correlation0.49176 after its press. This supports music/field-effect NDSP output
+and mute/restore in Azahar,not original-game mix/timing fidelity or all-cue coverage.
+The initial focused instantaneous touch missed Settings;corrected held touch
+and rerun produced the final verification data. No native code was changed.
+
+Logs:/tmp/pm-audio-dsp-smoke.log,/tmp/pm-audio-dsp-capture.log.
+Artifacts:artifacts/azahar/audio-verify.{wav,pcm},audio-verify-stages.json,
+audio-verify-analysis.json,audio-ready/audio-muted/audio-restored.png.
+Input/capture/analysis scripts:/tmp/pm-audio-input.py,/tmp/pm-audio-capture.py,
+/tmp/pm-audio-analyze.py. Tested3DSX SHA256:
+49061fb77f2b4585517604d7a8d04873c08ec8b1bafca74325c4bfa123c0ed66.
+Previous make test/make all validations stand;this follow-up changes docs only.
+README,AUDIO_MAPPING and ASSETS now record the resolved blocker and provenance.
+
+Next:original message/event/unit audio ownership,full macro/layer/environment
+playback,remaining cue-specific emulator coverage and hardware/Dolphin comparison.
+The initial missing-firmware limitation below is historical/resolved. Original
+story/audio fidelity and the full remake remain incomplete;unrelated concurrent
+work preserved.
+
+
 ## 2026-10-12 — Original retrace event-clock publication prefix
 
 Implemented `event_time_publication.cpp` for rollover-consistent OSGetTime,

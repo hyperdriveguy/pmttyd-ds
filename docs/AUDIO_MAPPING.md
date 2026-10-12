@@ -111,14 +111,37 @@ alignment, Switch note/archive/member indirection, stream sound ID0, category
 routing, guard/result suppression, scene music policy and PCM header rejection.
 `make test` and `make all` are required. The isolated emulator boot/walkthrough
 checks boot integration; it is not an audible comparison or hardware test.
-The 2026-10-12 isolated walkthrough reached Settings and the battle captures,
-but Settings reported Audio unavailable. No `dspfirm.cdc` is present in the
-isolated SDMC. libctru needs a loaded DSP component from
-`sdmc:/3ds/dspfirm.cdc` or a launcher-provided `hb:ndsp` handle, as documented
-by its [NDSP initialization source](https://github.com/devkitPro/libctru/blob/master/libctru/source/ndsp/ndsp.c).
-Consequently actual NDSP initialization/playback remains unverified here.
-Use a locally dumped component in the isolated test SDMC to finish that check;
-no emulator profile, firmware, or saves from the user were modified.
+The initial 2026-10-12 isolated walkthrough reported Audio unavailable because
+its SDMC lacked DSP firmware. That blocker is now resolved using the user-supplied
+`/home/carson/games/roms/dspfirm.cdc`, copied only into
+`artifacts/azahar/data/azahar-emu/sdmc/3ds/dspfirm.cdc`. Source and copy SHA-256:
+`8e213f3e71d2e3e45d1169bac6465a70eabeb22b303f1fa6d7679370ffad0f54`.
+Settings now reports Audio service ready. Firmware is ignored and not embedded
+in the port or committed. libctru's component lookup is documented in its
+[NDSP initialization source](https://github.com/devkitPro/libctru/blob/master/libctru/source/ndsp/ndsp.c).
+
+The firmware-enabled isolated walkthrough completed. A further focused test
+routed only the emulator into a temporary PulseAudio null sink and recorded its
+monitor, then unloaded the sink without changing default audio devices.
+`artifacts/azahar/audio-verify.wav` contains stereo48kHz PCM16 output;
+`audio-verify-stages.json` and `audio-verify-analysis.json` contain capture markers
+and measurements. Settled area music has RMS3534.17 and peak17077;mute has
+RMS/peak0 over75,373 stereo frames;restored music has RMS1460.95 and peak7133.
+A normalized waveform correlation of0.49176 against the resampled packaged jump
+sample peaks after the jump press, supporting field-effect playback in the mix.
+These are emulator output measurements, not original-game timing/mix equivalence.
+The first focused capture's instantaneous mouse click missed Settings;the final
+capture used a held touch press and visually confirmed Sound OFF/ON. Only the
+final focused capture is used for the mute/restore claims.
+
+Logs: `/tmp/pm-audio-dsp-smoke.log`, `/tmp/pm-audio-dsp-capture.log`.
+Focused input/capture/analysis scripts remain `/tmp/pm-audio-input.py`,
+`/tmp/pm-audio-capture.py`, `/tmp/pm-audio-analyze.py`. No native code changed for
+this validation. The tested3DSX SHA-256 is
+`49061fb77f2b4585517604d7a8d04873c08ec8b1bafca74325c4bfa123c0ed66`.
+The user's normal emulator profile, saves, firmware source and default sinks
+were unchanged. Battle-effect variants,all-five-cue coverage,hardware behavior
+and audible comparison with original execution remain unverified.
 
 Next: bind original message/event and unit audio producers; interpret environment
 sequences and complete MusyX/FWSD playback; resolve story-conditioned area/battle
