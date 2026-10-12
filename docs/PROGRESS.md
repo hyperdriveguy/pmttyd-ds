@@ -6271,3 +6271,49 @@ Next:Jump weapon-aftereffect/badge-tail/audience services, stylish eligibility
 source writers and collision ownership, complete EVT-01 scheduling and original
 input/state/motion/audio/presentation traces. Full documentation and eventual
 complete-game requirements objective remains active/incomplete.
+
+## 2026-10-12 — ID1: lecture player transitions and status arbitration
+
+Added LECTURE_PLAYER_ATTACK_FLOW.md and BATTLE_STATUS_WINDOW_ARBITRATION.md.
+Professor keys44/45 bind distinct lecture weapons and197-command Jump/193-command
+Hammer scripts. Selected default-menu construction regions substitute pointers
+under battle masks09000000/0a000000 plus professor ID!=-1;large menu body remains
+partial. Both records retain Mario-level callbacks/six-word power tables,not a
+fabricated constant tutorial power. W2740's proven consumer is status-window
+suppression,separate from those weapon selection masks.
+
+Closed missing mode1→2/5→6 cleanup writers,including their non-success-only
+placement. Jump first-hit feedback reads output0;Hammer reads2;both mode9 maps
+3/1/2→professor work2=1/2/3 after reset. Lecture Jump uses ID1 and actual pedagogical
+A-trigger wait;coordinator01000000 is now a shipped producer of the recovered
+TimingA forced classification3/result2/count route,subject to earlier gates.
+Lecture Hammer uses ID3/literal4/25,mode5 flag2,hold/rehold/release polling and
+explicit setup-event stop/start versus parameter2 suppression. All clocks and
+callback effects remain separate from measured input/render timing.
+
+Four complete window bodies preserve five-field priority and argument0/1/2
+mutation/recompute policy. Lecture2740 blocker cannot be overridden by event-on
+2748. The13-command end stream prints original024 and sets battle20,but does not
+locally clear lecture suppression/Mario HP-skip or export resources/rewards.
+Full end/key dispatch,field restoration,menu availability and original execution
+remain open;partial end requests are not complete teardown.
+
+Validation:verify_lecture_player_flow.py passed seven DOL containing hashes
+(four window/two timing services complete;menu partial),31 instructions,three
+403-command event hashes/counts,three full weapon/table spans,mode/feedback/AC
+bindings and six exact US message/speaker/uniqueness/payload-hash sites. Two reports
+matched byte-for-byte. Helper-role verifier and general1,980-anchor/data checks
+passed. All789 behavior local links resolved. Gekko check covered478 listings,
+67,944 instructions,376 paired instructions,zero changes/unrecognized. make test
+passed18 CTest suites plus58 Python tests;make all exited0,no rebuild. git diff
+--check passed. Only ID1 research/handoff paths staged. No original execution,
+ISO/profile/save mutation,asset conversion,native implementation or story rewrite
+by ID1. Original reports/ELFs/listings remain ignored.
+
+Updated prior mode/helper/TimingA contracts,inbox answers and provenance;released
+only ID1's lecture-player/window lock. Parent requests remain open. Next:complete
+lecture field trigger/end-key/return/persistence and counter dispatch;actual menu
+availability and input/resource/message/audio/animation traces;expand through
+remaining US progression,field/partner/UI/save/chapter/optional systems. Final
+complete-game requirements remain deferred until all systems are well documented.
+The whole objective remains active/incomplete.

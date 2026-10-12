@@ -39,7 +39,7 @@ index;WAIT_MSEC500. Hide status window,request P talk pose T_1/stay S_1,print
 mac_0_b_t2_000 with mode2,argument0,speaker owner-2. Restore status window,
 camera mode0,set battle flag0x01000000,restart Mario wait,then delete the phase
 event. This does not establish the flag's command-menu consumer or a wall-clock
-input-lock duration. Mode1→2 producer lies outside this phase body.
+input-lock duration. Mode1→2 is outside this phase body;the [lecture player Jump cleanup](LECTURE_PLAYER_ATTACK_FLOW.md) now establishes that writer.
 
 ## Mode2 guard-demonstration preparation
 
@@ -67,7 +67,9 @@ CASE4 at0x686e8 requires phase0x04000001. Write **P.work1=5**,stop Mario wait,
 pose M_S_1,hide status,set P T_1/S_1,print mac_0_b_t2_007 as P,restore status.
 Clear battle flag0x01000000,set0x02000000,delete event. This branch does not
 restart Mario's wait locally;do not insert one merely to match other cases.
-Flag consumers and mode5→6 producer remain dependencies. Goombella's shown
+The [lecture player/selection follow-up](LECTURE_PLAYER_ATTACK_FLOW.md) supplies
+the default-weapon masks and Hammer cleanup5→6;other flag/menu consumers remain
+dependencies. Goombella's shown
 injection switch has no case5,so the two known forced A/B injections do not apply
 at that value through that switch;other writers still need recovery.
 
@@ -172,7 +174,7 @@ pose services and message polling remain separate clocks. See
 | 0→1,2→3,4→5,6→7,8→9 | P phase exact guards/table above | Phase producers,service timing,flag consumers and original execution |
 | 3→4 | G attack wrapper after child | Child completion/outcome,unit validity and scheduling |
 | 7→8 | G counter-script tail under exact7 | Counter key dispatch/eligibility and original outcome trace |
-| 1→2,5→6 | Outside this phase body | Player/lecture attack and mode-writer graph |
+| 1→2,5→6 | [Lecture player Jump/Hammer shared cleanup](LECTURE_PLAYER_ATTACK_FLOW.md) | Script runtime/field conditions and original traces |
 | Feedback2/3 | Separate work slots and listed consumers/writers | Player writer results,reset lifetime and per-turn ownership |
 
 Preserve actor IDs,independent slots,early-delete paths and message attribution.
@@ -185,3 +187,14 @@ This closes coordinator and helper request-state slices. Full attack animation/
 input/counter/player scripts,field entry/return,save persistence and full lecture
 runtime remain incomplete. The complete-game requirements document remains
 contingent on all remaining US systems/content being documented and verified.
+
+
+## Player and status follow-up
+
+[Lecture player flow](LECTURE_PLAYER_ATTACK_FLOW.md) now connects mode1/5/9
+to distinct player scripts and first-hit/output feedback writers. Jump uses output
+parameter0,Hammer2;their cleanup mode transitions are not success-only gates.
+[Window arbitration](BATTLE_STATUS_WINDOW_ARBITRATION.md) proves that the
+lecture's2740 blocker outranks event-on2748 requests. Earlier hide/restore wording
+in this request graph describes callback requests,not verified visible windows.
+Full pause/field/end/inner-service and original execution remain open.

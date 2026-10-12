@@ -117,7 +117,8 @@ The [direct damage application](BATTLE_DAMAGE_APPLICATION.md) has a proven
 consumer of unit+0x104 mask0x40000000:skip its HP application block. Effects/
 accounting before that block,FP afterward,audience and hit-event dispatch are
 not all suppressed. Thus do not replace this flag with a universal no-damage/
-no-reaction tutorial mode. The W+0x2740 consumers and teardown/restore owners
+no-reaction tutorial mode. The [status-window reader](BATTLE_STATUS_WINDOW_ARBITRATION.md) now proves
+W+0x2740 suppresses its show decision;other consumers and teardown/restore owners
 remain open. This body is absent from the checked Crump NPC init;sharing a visual
 asset must not enable these lecture writes in the opening encounter.
 
@@ -182,3 +183,10 @@ US message bindings are checked separately in the same tool. Remaining work:
 full lecture/player attack selection,counter dispatch,unit-work producers,
 W+0x2740 lifecycle,field trigger/story and original inputs/resources/messages.
 No original dialogue is paraphrased or invented;reuse msg/US payloads/control tokens.
+
+
+[Lecture player flow](LECTURE_PLAYER_ATTACK_FLOW.md) follows professor data
+keys44/45 to actual weapon substitution and player scripts,including the missing
+1→2/5→6 cleanup writes. Key46 binds the13-command end request stream;it has no
+local lecture-field/HP-skip restoration. Full end/field/lifetime closure remains
+separate from those requests.

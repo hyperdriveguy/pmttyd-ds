@@ -380,3 +380,11 @@ setup indices2/3,spawned kind/ID ownership and the professor's full local phase
 request graph. Exact US messages/speakers/choice branches are pinned to gor_02
 for the lecture;missing player/counter/field/services and original execution
 remain open. These local closures do not complete either the full lecture or game.
+
+
+[Lecture player bindings](behavior/LECTURE_PLAYER_ATTACK_FLOW.md) now supply
+1→2/5→6 cleanup and first-hit/output feedback writers,default weapon table
+substitution and a proven producer of TimingA's01000000 forced-success route.
+[Status-window arbitration](behavior/BATTLE_STATUS_WINDOW_ARBITRATION.md)
+establishes the lecture2740 suppression consumer separately from selection.
+Full menu/teardown/field and original lecture execution remain incomplete.

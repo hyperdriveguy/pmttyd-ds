@@ -132,3 +132,16 @@ single/early/late/multiple presses,success counts,difficulty changes,forced rout
 and countdown boundaries at actual impact/result calls. The opening Crump
 encounter may override these rules;its event/unit/tutorial path still needs
 binding. Full combat/story/game documentation and requirements remain unfinished.
+
+
+## Shipped lecture writer follow-up
+
+The [lecture coordinator](LECTURE_COORDINATOR_MODES.md) writes battle flag
+01000000 in its initial mode0→1 branch and clears it at4→5. Its
+[player Jump script](LECTURE_PLAYER_ATTACK_FLOW.md) uses ID1 and a pedagogical
+A-trigger loop before ResultAC. On the recovered result route,this flag forces
+classification3/result2/count increment before ordinary history evaluation,
+subject to the earlier option/token/automatic branches. This closes one actual
+shipped writer/caller path;it must not be applied to Crump's separate flag1000
+or to all gameplay. Mask1 timing on/off writes1f50 raw and differs from the
+count-window mask2. Current actual fields and original traces remain open.

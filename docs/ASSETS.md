@@ -811,3 +811,16 @@ artifacts/reference/behavior. Temporary REL inspection ELFs/listings remain in
 /tmp;unrelocated targets are distinguished from original import bindings. No
 original execution,ISO/profile/save mutation,asset conversion,executable linking/
 distribution or story rewrite. Existing provenance and rights remain unchanged.
+
+Lecture player/window research by ID1 (2026-10-12):verify_lecture_player_flow.py
+pins seven DOL containing bodies(four window/two timing services complete,large
+menu builder partial),31 instructions,three whole403-command event spans and
+three weapon/professor-table spans. Default-record substitution and mode/feedback/
+AC parameter pointers are checked separately from menu availability/runtime.
+Six exact US keys001/002/008/009/010/024 bind gor_02 payload hashes and original
+speaker operands. No original dialogue rewrite or text extraction into history.
+Ignored report is lecture-player-flow-evidence.json and original event inventory
+lecture-player-events.json under artifacts/reference/behavior;inspection ELFs/
+listings remain ignored. No asset conversion,original execution,ISO/profile/save
+mutation or original executable linking/distribution. Existing rights/provenance
+remain unchanged.
