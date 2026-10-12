@@ -6991,3 +6991,32 @@ and scoped presentation;updated EVT-01 current-delivery summary. Next:remaining
 reachable opcode bodies,numerical/conversion and storage-domain/source/persistence
 ownership,original script/pause/multicredit/creation/deletion traces. Complete-game
 documentation and subsequent requirements objective remains active/incomplete.
+
+### 2026-10-12 — Documentation ID2: GOTO/loops and arithmetic/cursor blocks
+
+Delivered EVENT_GOTO_AND_LOOP_OPCODES.md and
+EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md for EVT-01 reserved opcode slice.
+Complete4..8/NEXT retain pointer/label threshold,first16 signed-byte lookup and
+missing fallback,raw DO count/unconditional first body,deferred variable decrement,
+literal0 and-10000000 routing threshold,lexical BREAK versus CONTINUE and byte
+stack updates. Complete50..64 retain raw/resolved/float SET,RHS-first arithmetic,
+wrapped integer ops,MOD's single/+0.5 conversion before signed remainder,float
+rounding and62..64 cursor advance-before-read with fresh second-lane cursor.
+Corrected negative-counter prose during review to retain threshold-crossing
+behavior,not assume indefinite private literal decrement. No implicit loop yield,
+count snapshot or simplified MOD/data-prefetch was invented.
+
+Validation: verify_event_loop_and_arithmetic.py passed six containing hashes
+(NEXT full,dispatcher scoped,four operand APIs linked),73 anchors and24 spans,
+including20 exact opcode bindings;report/tmp/id2-loop-arithmetic-evidence.json.
+Existing namespace and ordinary Jump flow verifiers passed. make test passed29
+CTest suites and58 Python tests;make all rebuilt concurrent native game target/
+3DSX,exited0. All964 behavior local links resolved;git diff --check passed. No
+native,asset,ISO,save/emulator-profile changes by ID2;inspection/reports remain
+/tmp. Concurrent native and ID1 research preserved and not staged.
+
+Released only ID2's loop/arithmetic lock,linked both contracts in inbox/index/
+runtime. Next EVT-01:remaining predicates/switches,multiword/float data readers,
+other reachable opcodes,numeric/source/domain and original script/pause/input/
+multicredit traces. Full documentation and eventual complete-game requirements
+objective remains active/incomplete.

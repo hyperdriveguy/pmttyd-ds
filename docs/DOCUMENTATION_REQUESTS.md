@@ -17,7 +17,8 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Ordinary field partner movement callbacks modes0/1/2 | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover partyMoveWalk and unk_800ca884 complete local request graphs and actual driver/kind bindings;called terrain/collision/pose engines,operand namespaces and original traces remain separate |
+| Event GOTO/loop and assignment/arithmetic opcode bodies | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [GOTO/loops](behavior/EVENT_GOTO_AND_LOOP_OPCODES.md),[assignment/arithmetic/cursor](behavior/EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md):complete4..8/50..64 and NEXT,raw/resolved/RHS order,count and MOD coercion;other predicates/readers,numeric/domain and original traces remain open |
+| Ordinary field partner movement callbacks modes0/1/2 | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Walk callback](behavior/FIELD_PARTNER_WALK_CALLBACK.md),[history writer/readers](behavior/FIELD_PARTNER_HISTORY_WRITER.md),[mode1 substates](behavior/FIELD_PARTNER_MODE1_SUBSTATES.md):complete local callbacks/history and bindings answered;final walkMain/terrain/collision/pose/source/index/writer engines and original traces remain open |
 | Full event integer/float operand namespaces and storage routing | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Integer APIs](behavior/EVENT_INTEGER_OPERAND_NAMESPACES.md),[float APIs](behavior/EVENT_FLOAT_OPERAND_ROUTING.md),[saved leaves](behavior/EVENT_SAVED_SWITCH_STORAGE.md):complete signed routing/coercion/index/read-write-return and storage leaves;capacity/numeric/source/save/runtime remain open |
 | Field driveParty dispatch and local update order | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Driver dispatch](behavior/FIELD_PARTY_DRIVER_DISPATCH.md),[global countdown/action](behavior/FIELD_PARTY_GLOBAL_COUNTDOWN_AND_ACTION.md):complete local15-mode/pending/destruction/tail and countdown/action requests answered;called mode/collision/animation engines,writers/callers,EVT-01 and original traces remain open |
 | Complete event deletion and stop/start relationship traversal | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Deletion/copy-back](behavior/EVENT_DELETE_AND_COPYBACK.md),[stop/start](behavior/EVENT_STOP_START_RELATIONSHIP_TRAVERSAL.md):complete local recursive/inlined context/scan/type/write policy;other opcodes/namespace/source/domain and original traces remain open |
@@ -950,3 +951,18 @@ bounds or disk write is established. Verifier passes15 full body fingerprints,
 94 anchors and seven constants/SDA spans. Own lock released;other opcode/numeric/
 capacity/source/persistence and original traces remain EVT-01 work. make test
 passes28 CTest suites and58 Python tests;make all passed. ID2 made no native edits.
+
+
+ID2 EVT-01 loop/arithmetic delivery (2026-10-12), partial answer:
+[GOTO/loops](behavior/EVENT_GOTO_AND_LOOP_OPCODES.md) closes4..8/NEXT including
+signed pointer/label gate,first16 signed-byte lookup/missing fallback,raw count
+push,deferred variable decrement,literal0,threshold-10000000 and BREAK/CONTINUE
+lexical/stack distinctions. [assignment/arithmetic/cursor](behavior/EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md)
+closes50..64:SET resolved/raw/float,all RHS-first updates,wrapped arithmetic,
+MOD's signed-to-single/+0.5/fctiwz before remainder,float single operations and
+cursor advance-before-read/output with reload between lanes. No native for-loop
+count snapshot,ordinary integer MOD or implicit iteration yield is original.
+Verifier passes six containing hashes (NEXT full,dispatcher scoped/APIs linked),
+73 anchors and24 spans (20 dispatch targets). Own lock released;other predicates,
+readers/numeric/source/domain and original traces remain EVT-01 work. make test
+passes29 CTest suites and58 Python tests;make all passed. ID2 made no native edits.

@@ -263,3 +263,14 @@ and called switch leaves. Earlier full-namespace partial caveats above are
 superseded for these local bodies. Integer and float routing differ;no common
 family decoder or generic output sentinel is established. Save/disk lifecycle,
 source/capacity/numeric domains,other opcodes and original traces remain open.
+
+
+## GOTO/loop/arithmetic follow-up (2026-10-12)
+
+[GOTO/loops](EVENT_GOTO_AND_LOOP_OPCODES.md) and
+[assignment/arithmetic/cursor](EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md)
+now close4..8 and50..64 blocks plus full NEXT. Raw DO counts can be variable
+operands decremented at NEXT;zero and threshold routing remain distinct. MOD
+has explicit float conversion/+0.5 before signed remainder;data cursors advance
+before reads and reload after output callbacks. Remaining predicates/readers/
+other opcodes,numeric/source/domain and original runtime closure remain open.
