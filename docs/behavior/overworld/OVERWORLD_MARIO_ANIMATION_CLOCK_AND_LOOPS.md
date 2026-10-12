@@ -4,7 +4,7 @@ US G8ME01 revision0, animPoseSetAnim80041170, animPoseSetLocalTime8004130c,
 animPoseMain8003ed2c and original front/rear ordinary asset metadata.
 This is a bounded clock/loop contract, separate from
 [pose request selection](OVERWORLD_MARIO_ORDINARY_POSE_SELECTION.md).
-Full interpolation/update decoding remains open; source bodies are pinned,
+The ordinary sparse update contract is linked below; source bodies are pinned,
 not claimed executed.
 
 ## Clock and restart
@@ -39,6 +39,38 @@ it from the integer-ms current clock (80041314–3c,b8–d4). It also stores the
 result to88/8c and may propagate the startMs to the linked paper pose. Ordinary
 Mario requests set start-frame28=0; special ChgPoseTime provides another value.
 This service does not reinterpret the start-frame argument as milliseconds.
+
+## Ordinary front/rear handle lifetime
+
+Front22c and rear230 are distinct type2 handles with independent retained
+startMs. Ordinary direction conversion does **not** resume the previously used
+handle: when toRearPose/toFrontPose returns a different name, marioRearAnime
+stores name18, zeros start-frame28 and sets pending motion0c bit1000
+(rear80057dbc–ddc; front80057fdc–ffc). An unchanged name or missing conversion
+returns without this queue. The ordinary domain excludes display2 pose locks,
+main80000000 special requests and effect/paper handles.
+
+MarioPreDisp runs RearAnime at800578b4 before MakeDispDir. It tests pending
+bits5000 at800578d8/dc, clears those bits, selects the final front/rear handle,
+and calls SetAnim with **force1** at8005793c–44. SetLocalTime then receives
+start-frame28 at8005798c–b8, followed by Main on the selected handle in the
+same callback. Force1 bypasses the same-animation-index early return
+(8004120c–20), resetting its clock/cache even when this handle already owns
+that animation. Inactive handles are not reset by this selection.
+
+A portable ordinary selected-pose clock must consume the queued restart,
+including when the final name equals the previous callback's final name.
+marioChgPose compares the requested string with **current name18**, including
+its R suffix, via strcmp80058dc0 and the equality return80058dc8. It does
+not compare a separately retained front name. An idle M_S_1 request with
+current M_S_1 does not restart; with current M_S_1R it does queue a restart.
+For example, a motion entry requesting M_W_1 while name18 is M_W_1R queues
+1000; RearAnime converts it back to M_W_1R before display, and the rear
+handle still restarts. Repeating M_W_1R without either request or conversion
+leaves the clock unchanged. Therefore final-name comparison alone is
+insufficient; two retained clocks alone would also incorrectly resume on a
+queued direction switch. This is source ordering, not measured animation
+cadence or a full special-handle service model.
 
 ## Source loop descriptor and asset ranges
 

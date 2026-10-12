@@ -42,6 +42,27 @@ def derived():
     return 15
 
 
+
+def check_clock_restart(evidence):
+    # Literal queue/frame/force operands plus source-ordered request traces.
+    expected={0x80057dbc:'93bf0018',0x80057dc4:'b01f0028',0x80057dd8:'60001000',
+              0x80057fdc:'93bf0018',0x80057fe4:'b01f0028',0x80057ff8:'60001000',
+              0x800578d8:'70605000',0x8005793c:'38a00001',0x8004120c:'2c1a0000',0x80041210:'40820010'}
+    for address,word in expected.items():assert evidence['dol_anchors'][str(address)]==word
+    def trace(old,requests):
+        name=old;queued=False
+        for requested in requests:
+            if requested!=name:name=requested;queued=True
+        return name,queued
+    assert trace('M_W_1',['M_W_1'])==('M_W_1',False)
+    assert trace('M_W_1',['M_W_1R'])==('M_W_1R',True)
+    assert trace('M_W_1R',['M_W_1'])==('M_W_1',True)
+    assert trace('M_W_1R',['M_W_1','M_W_1R'])==('M_W_1R',True)
+    assert trace('M_S_1',['M_S_1'])==('M_S_1',False)
+    assert trace('M_S_1R',['M_S_1','M_S_1R'])==('M_S_1R',True)
+    return 6
+
+
 def check_direction(evidence):
     expected={0x800583e0:.5,0x80058424:290.,0x80058430:250.,0x8005843c:180.,0x80058460:190.,0x80058470:350.,0x80058488:10.,0x80058498:170.,0x800585fc:10.,0x80058614:30.,0x80058644:20.,0x800586cc:170.,0x800586e4:210.,0x80058714:200.}
     for key,record in evidence['direction_literals'].items():
@@ -113,5 +134,5 @@ def check_direction(evidence):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--iso',default=DEFAULT_ISO)
     iso=p.parse_args().iso;e=json.loads(MANIFEST.read_text());result=verify(iso,MANIFEST)
-    result.update(requested_model_poses=check_models(iso,e),derived_cases=derived(),**check_direction(e))
+    result.update(requested_model_poses=check_models(iso,e),derived_cases=derived(),clock_restart_traces=check_clock_restart(e),**check_direction(e))
     print(json.dumps(result,sort_keys=True))

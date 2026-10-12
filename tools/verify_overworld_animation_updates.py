@@ -59,6 +59,7 @@ def animation(raw,name):
 
 def node_delta(value,angle_in,angle_out,q,duration):
     if angle_out<=-89 or angle_out>=89:return 0.
+    if not -89<=angle_in<89:raise ValueError("Partial tangent IN outside initialized source table")
     q2=q*q;q3=q*q2
     tin=math.tan(RAD*angle_in);tout=math.tan(RAD*angle_out)
     return (q3-2*q2+q)*duration*tin + (3*q2-2*q3)*value/16 + (q3-q2)*duration*tout
@@ -105,7 +106,13 @@ def derived():
     assert node_delta(16,0,0,0,4)==0 and node_delta(16,0,0,1,4)==1
     # A byte delta255 is a decrement modulo256; visibility is addition, not assignment.
     assert (5+255)&255==4 and (1+255)&255==0
-    return 9
+    assert -89+89==0 and 88+89==177
+    assert math.isfinite(node_delta(16,-89,0,.5,4))
+    assert node_delta(16,89,-89,.5,4)==0  # OUT gate precedes IN lookup.
+    try:node_delta(16,89,0,.5,4)
+    except ValueError:pass
+    else:raise AssertionError('IN89 indexes beyond the initialized table')
+    return 13
 
 def check_assets(iso,evidence):
     rows={r['path']:r for r in inventory(iso)['files']};poses=0;samples=0

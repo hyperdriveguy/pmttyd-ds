@@ -164,6 +164,9 @@ RAD is **word3c8efa33=.017453288659453392** at8041fbb4; it differs from the
 actor draw wrapper's radians coefficient3c8efa35. Producer800429d0–42a20
 uses integer-to-float conversion, multiplication, double tan and frsp.
 Consumers access table base+(angle+89)*4 at800404dc/e4 and40500/04.
+IN−89 addresses initialized entry0; IN88 addresses entry177. IN89 would
+address entry178 beyond this array. The strict OUT admission is independent:
+OUT−89 skips the partial write before either tangent lookup.
 
 The ten assets' admitted partial IN angles lie within−87..87, so every lookup
 is inside the initialized array. OUT90 records skip before the lookup; they do
