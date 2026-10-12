@@ -459,6 +459,16 @@ rather than treating a passing command helper as complete original attack timing
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
 
+Recovery implementation breadcrumb (2026-10-12): `battle_badge_recovery.cpp`
+and its suite port raw-actor amount queries and resolved HP/FP recovery events.
+Commit8366eb6 corrects shared partner FP recovery's repeated Mario lookup/maximum
+capture. Event wrappers preserve translated-1 early return,discarded part and
+post-resolution HP bookkeeping gate;they do not schedule delayed effects or
+reset retained damage. Body/scale/height/parts/effect wrappers and the original
+child/brother recovery tail remain next. Existing producer/pose/effect/pouch/
+scheduler and executed recovery trace requests remain open through EVT-01,
+STATUS-01 and DMG-02.
+
 Private takeoff binding breadcrumb (2026-10-12): the new composed
 jumpTakeoffPositionEvent overload uses real sampling/choice cores and a local
 CandidateBuffer per invocation. CandidateChoiceOutputs preserves independent

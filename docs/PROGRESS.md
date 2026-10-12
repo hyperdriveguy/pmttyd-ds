@@ -1,5 +1,36 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Badge recovery amount and HP/FP event wrappers
+
+Implemented BATTLE_BADGE_RECOVERY_SERVICES.md amount/resource wrappers in
+battle_badge_recovery.hpp/cpp. Heart/flower queries translate raw actor operands,
+retain captured work/raw outputs,return0 for null actors,and take the signed
+minimum of unsigned hpDrain/fpDrain counts and retained dealtHp without resetting
+that damage accumulator. Resource wrappers capture work before actor resolution,
+return2 immediately for translated-1 without unit/remaining-operand reads,resolve
+then discard part,and resolve amount before testing HP attributes. HP recovery
+heals under attribute40000000 but skips before/after/copy/flag bookkeeping;
+ordinary path preserves all those ordered stores. FP delegates to corrected
+shared-owner recovery and performs no HP bookkeeping. No effects,delays or
+invented availability checks are added;original graph/concurrency still owns them.
+Core correction commit:8366eb6.
+
+Validation:final make test passed twenty-four CTest suites plus58 Python tests;
+make all built badge recovery and ttyd-2ds.elf/3dsx,then rebuilt current concurrent
+field/game edits successfully. New tests cover raw actor/no resolver,null query,
+negative retained-damage minimum,raw sentinel output,translated-1 early return,
+unit lookup using captured work,discarded part resolution,post-resolution
+attribute gate,HP before/after/halfword-copy/flag behavior,partner FP two lookups
+and halfword HP overflow. Initial full run failed the core suite during concurrent
+field-movement edits;current core executable passed after that work's tests were
+updated,and the final full make test/make all rerun passed. Concurrent field paths
+are preserved outside this recovery commit. git diff --check passed. No emulator
+run or original executed recovery/numerical/presentation equivalence claim.
+
+Next:body/scale/height/parts-position and encoded float/effect wrappers,then the
+exact delayed badge recovery child/brother graph through EVT-01 scheduling.
+Native badge/pouch/pose/effect/unit owners and full story/assets remain incomplete.
+
 ## 2026-10-12 — Resource recovery core ordering correction
 
 Updated recoverUnitFp to match the newly delivered badge-recovery contract:
