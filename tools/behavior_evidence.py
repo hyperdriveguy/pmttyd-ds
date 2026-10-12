@@ -15,6 +15,8 @@ from iso_assets import DEFAULT_ISO, inventory
 
 
 FUNCTIONS = (
+    'btlevtcmd_GetWeaponActionLv', 'btlevtcmd_AcSetDifficulty',
+    'btlevtcmd_check_battleflag', 'evt_case_equal', 'evt_if_equal', 'evt_if_not_equal',
     'battleAcMain_StickKeepLeft', 'battleAcResult_StickKeepLeft',
     'battleAcDelete_StickKeepLeft', 'BattlePadCheckNow', 'BattlePadMultiCheckNow',
     'btlevtcmd_AcSetParamAll', 'btlevtcmd_AcSetFlag', 'btlevtcmd_StartAC',

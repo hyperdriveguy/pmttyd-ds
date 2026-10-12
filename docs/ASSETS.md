@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 314 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1612 instruction anchors plus those
+now fingerprints 320 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1652 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -704,3 +704,9 @@ allowances,registration,two display floats/two sound keys and eight parameter/tw
 flag records in previously hashed US Hammer event data. No new extraction or
 asset conversion,ISO write,game execution,native linking or story rewrite.
 Original reports/disassembly remain ignored;existing licensing is unchanged.
+
+Hammer weapon-branch research adds six function identities and40 anchors,used
+VM targets/condition/case operands,three weapon difficulty/event references and
+two wrapper streams. Existing read-only DOL inventory outputs retain raw data
+only locally;no original code/dialogue distributed or linked,no asset conversion.
+Interpretation remains static;public names are annotations and licensing unchanged.

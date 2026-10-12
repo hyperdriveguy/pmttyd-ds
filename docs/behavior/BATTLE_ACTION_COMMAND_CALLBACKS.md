@@ -36,8 +36,8 @@ surrounding paths:
 Each ends three sentinel operands0xf1194d80. Thus the first two stored fields
 supply N4 and period25/30/40 to
 [StickKeepLeft](BATTLE_HAMMER_STICK_KEEP_LEFT.md);the next three zero fields
-include its suppression word. Which branch selects each period still needs
-control-flow/weapon-level recovery. Data-address order alone does not establish
+include its suppression word. The [weapon branches](BATTLE_HAMMER_WEAPON_BRANCHES.md) now establish pointer
+selection for these periods;complete surrounding control flow remains open. Data-address order alone does not establish
 selection. Exact records and complete containing stream are independently checked.
 
 ## Start and blocking result

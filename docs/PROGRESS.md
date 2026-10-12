@@ -4456,3 +4456,39 @@ conditions,then original impact/input/state/cadence traces. Presentation/sound
 services remain separate. Continue all US gameplay/optional-content systems
 before complete-game requirements. Objective remains active/incomplete;two
 command contracts do not establish full combat/story/game fidelity.
+
+## 2026-10-12 — US Hammer weapon branches and used integer VM rules
+
+Added BATTLE_HAMMER_WEAPON_BRANCHES.md and EVENT_INTEGER_BRANCHES.md.
+Resolved actual US weapon-pointer cases:default Hammer period25,ConfuseHammer/
+TsuranukiNaguri annotations period30,other weapons entering this core period40.
+All three identified weapon records have unsigned action-level byte3 and checked
+wrapper event references. Wrappers set local14=0/1 and run the shared core child.
+Mask2 separates GetFirstAttackTarget versus selected-command paths and immediate
+parent versus delayed inline-region setup;complete flag lifetime/inline cadence
+remains open. Complete weapon-level,difficulty and raw-mask boolean callbacks
+recovered. Existing difficulty modifier/clamp is connected to actual weapon data.
+
+Recovered used integer IF equal/not-equal and case-equal bodies plus switch/
+default/pop dispatcher regions. Records variable resolution order,branch scanner
+nesting/pointer destinations,snapshot value,matched-case state0 preventing
+fallthrough/default,and literal opcode1/34/35 scanner distinctions. Scoped to
+supported Hammer blocks;not claimed as a complete VM or event graph interpreter.
+No original execution/timing/story/tutorial equivalence observed.
+
+Validation:1652 instruction anchors and all prior checks passed read-only ISO,
+including eight VM targets,condition/case operands,three weapon difficulty/event
+links and two wrapper streams. Fresh320-function and wrapper inventories repeated
+byte-for-byte. All561 behavior links resolved;Gekko listing check clean;
+git diff --check passed. make test passed core and battle_timing_a host tests plus
+52 Python tests;make all passed. Concurrent native TimingA work was present
+(commit9811fe0 plus ongoing game/header/test edits);research commit stages only
+explicit research/docs paths and preserves that work. No original emulator/
+ISO/profile/save mutation,asset conversion or dialogue/story rewrite by this
+research step;all original inspection artifacts remain ignored.
+
+Next:remaining Hammer parent/inline waits and damage/result/stylish/stop branches,
+menu/unit/weapon consumers,mask2/automatic/forced writers,and opening/Crump
+REL/tutorial binding. Obtain original input/state/animation cadence traces;
+continue all reachable US gameplay/optional content before final complete-game
+requirements. Full objective remains active/incomplete.

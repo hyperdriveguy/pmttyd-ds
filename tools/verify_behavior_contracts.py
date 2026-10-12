@@ -13,6 +13,28 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'hammer_weapon_branch_selection': {
+        0x80105900: '88a3006e', 0x8010590c: '4bf2b3f1',
+        0x80107b58: '4bf29709', 0x80107b68: '4bf296f9',
+        0x80107b7c: '4801d871', 0x80107b9c: '4bff2591',
+        0x80113860: '80c50004', 0x80113864: '80040ef4',
+        0x8011386c: '7c003039', 0x80113878: '4bf1d485',
+        0x80034d4c: '7c1f1800', 0x80034d50: '41820078',
+        0x80034d68: '7c008670', 0x80034d90: '4080001c',
+        0x80034da0: '34a5ffff', 0x80034dbc: '909e0014',
+        0x80034c80: '7c1f1800', 0x80034c84: '40820078',
+        0x80034664: '7fde0774', 0x80034668: '4bffcbf9',
+        0x80034680: '7c000775', 0x80034684: '41810068',
+        0x800346a4: '2c050022', 0x800346d8: '3463ffff',
+        0x800346ec: '7c032000', 0x80034710: '2c050023',
+        0x80034748: '2c050030', 0x80034770: '909f0014',
+        0x8003477c: '98050128', 0x80031b4c: '4bfff715',
+        0x80031b60: '981f000f', 0x80031b78: '7c7f292e',
+        0x80031b7c: '7c9f01ae', 0x80031bc4: '48002a7d',
+        0x80031c30: '7c000775', 0x80031ca4: '7c1f21ae',
+        0x80031d78: '7c9f01ae', 0x80031d84: '981f000f',
+        0x800fa12c: '98a31cbc', 0x800fa154: '98831cbd',
+    },
     'hammer_stick_keep_left': {
         0x8012a1a0: '88030307', 0x8012a1b4: '90781cd4',
         0x8012a1c4: '80181cd0', 0x8012a1fc: '4082049c',
@@ -1647,6 +1669,34 @@ def verify(iso_path):
                                                          0xf1194d80,0xf1194d80,0xf1194d80):
                 raise ValueError('Ordinary Hammer parameter binding mismatch')
         print('Hammer registration, windows, floats, sound keys and script parameter/flag sites verified')
+        branch_dispatch = {24:0x80031a4c,25:0x80031a5c,32:0x80031acc,33:0x80031b38,
+                           34:0x80031b40,36:0x80031bc0,42:0x80031c20,49:0x80031d64}
+        for opcode, target in branch_dispatch.items():
+            if struct.unpack('>I',read(0x80304fd0+opcode*4,4))[0] != target:
+                raise ValueError('Hammer branch VM dispatch mismatch')
+        for site, opcode, operands in (
+            (0x8035d6d4,91,(0x8011384c,0xfe363c80,2)),
+            (0x8035d6e4,25,(0xfe363c80,0)),
+            (0x8035d894,24,(0xfe363c80,0)),
+            (0x8035d9c0,25,(0xfe363c80,0)),
+            (0x8035d8c0,34,(0xfe363c8c,)),(0x8035db54,34,(0xfe363c8c,)),
+            (0x8035d8c8,36,(0x80353de8,)),(0x8035db5c,36,(0x80353de8,)),
+            (0x8035d8f8,36,(0x80354da8,)),(0x8035db8c,36,(0x80354da8,)),
+            (0x8035d928,36,(0x80354ce8,)),(0x8035dbbc,36,(0x80354ce8,)),
+            (0x8035d958,42,()),(0x8035dbec,42,()),
+        ):
+            if struct.unpack(f'>{len(operands)+1}I',read(site,(len(operands)+1)*4)) != (
+                    (len(operands)<<16)|opcode,*operands):
+                raise ValueError('Hammer weapon/flag conditional binding mismatch')
+        for weapon, script in ((0x80353de8,0x80416c40),(0x80354da8,0x80416c40),
+                               (0x80354ce8,0x80416c94)):
+            if read(weapon+0x6e,1) != b'\x03' or struct.unpack('>I',read(weapon+0xb0,4))[0] != script:
+                raise ValueError('Hammer weapon difficulty/event binding mismatch')
+        for script, value in ((0x80416c40,0),(0x80416c94,1)):
+            if struct.unpack('>7I',read(script,28)) != (0x20032,0xfe363c8e,value,
+                    0x1005e,0x8035d6d4,2,1):
+                raise ValueError('Hammer wrapper event binding mismatch')
+        print('Eight VM targets, Hammer flag/weapon branches and three weapon difficulty/script bindings verified')
 
 
 
