@@ -1155,3 +1155,13 @@ supply two complete bodies,current-global rank/typed admissions/reloaded count/
 partial row ownership,and all seven initial key1 chains.12 hashes/200 anchors/
 23 spans verified;82 CTest/90 Python/make all retry pass.Other six callbacks,
 unit provisioning/query/source/Game/platform/original runtime remain open.
+
+ID1 time-driven TEV update (2026-10-12):
+[mode8 pulse](behavior/display/MAP_TEV_MODE8_PULSE_AND_RAW_CLOCK.md),
+[mode9 scroll](behavior/display/MAP_TEV_MODE9_SHARED_SCROLL_AND_MATRICES.md),
+[base closure](behavior/display/MAP_TEV_BASE_MODE_CLOSURE_AND_REMAINING_WORK.md)
+close both base blocks/local startup and expression/mutation/request graph.
+All base dispatch request paths have local contracts;full TEV still lacks six
+middle branch internals/clock/source/lifetime/libm/GX/original images. Reproduce
+with verify_map_tev_time.py:266 scoped words/six constants/four spans/two imports/
+six sites. No original game execution or full system completion implied.

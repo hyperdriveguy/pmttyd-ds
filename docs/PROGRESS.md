@@ -12640,3 +12640,62 @@ system documentation and final complete-game requirements remain incomplete.
 ID1 final fixed-TEV delivery link audit:523 Markdown files checked after
 staging;zero broken links. The520-file pass above is the initial snapshot.
 Only ID1 files/shared hunks staged;other owner changes remain independent.
+
+## 2026-10-12 — ID1 pulse/scroll TEV bases and base-mode closure
+
+Added [mode8 pulse](behavior/display/MAP_TEV_MODE8_PULSE_AND_RAW_CLOCK.md),
+[mode9 scroll](behavior/display/MAP_TEV_MODE9_SHARED_SCROLL_AND_MATRICES.md),
+[base closure/gaps](behavior/display/MAP_TEV_BASE_MODE_CLOSURE_AND_REMAINING_WORK.md).
+Complete two base blocks specify raw GP+1c/low32 doubling/unsigned conversion/
+single angle/double sin/FRSP/fused127 pulse/truncation/byte1-only color-register
+request,and four shared scroll updates/strict one-subtraction/one-addition wrap/
+read order/startup source bits/two translated matrix-before-generator requests/
+three stage rows. No GP tick unit,measured pulse/scroll speed or original pixels
+invented. SBSS2 color source is not treated as a serialized seed palette.
+Only ID1 scoped lock released;parent requests/full-game requirements remain open.
+
+All local base dispatch request paths now have contracts(mode0,fixed1..7/12,
+time-driven8/9,generic10/11/out-of-range,signed N<=0 fallback). This does NOT
+close full mapSetMaterialTev:remaining six middle projected/depth/indirect flag
+blocks,actual source/scene selectors/writers,GP clock/SBSS2 color/phase/increment
+reset/lifetime/caller cadence,GX/libm/FPSCR/cache/numeric/original images remain
+open. Other source modes are static dispatch branches,not claimed witnessed
+US scenes. Mode9 updates shared phases per material call,so per-tick/object-local
+substitution changes behavior absent caller scheduling equivalence evidence.
+
+Validation:verify_map_tev_time.py checks containing TEV identity as PARTIAL
+semantics,266 complete reviewed base8/9 words,six binary32 constants,four spans
+(13-mode dispatch,unsigned double bias,initial four phases/four increments),two
+US lecture imports and six exact direct DOL sites. Repeated JSON byte-identical;
+wrong unsigned bias,wrong startup increment and missing caller negatives rejected;
+Python compilation passed. Prior fixed/ordinary TEV checkers and general1980
+anchors pass. Gekko651 listings/96003 instructions/914 paired operations,zero
+changed/unknown instructions. Initial532-file whole-doc link scan passed;
+final delivery scan recorded separately. Counts are local evidence snapshots.
+
+make test passed82 CTest suites/90 Python tests. make all failed in concurrent
+source/render.cpp:342/343 invalid int→GPU_TEVSRC arguments;log
+/tmp/id1-tev-time-build.log. Source SHA256 at inspection:
+39547ecf474f1fc22c5264c063377577936e5e94fcf97109761011082e000a62.
+Native renderer owner notified in request inbox;ID1 changes no native code and
+will rerun after actual source change. Host log:/tmp/id1-tev-time-test.log.
+Existing3218 GameCube/0 Switch/5 primary-PCM fallback audio pipeline ran before
+compile failure. ISO read-only;ELFs/listings/report ignored. No ID1 converter/
+asset adaptation/profile/save mutation or original execution. ASSETS records
+metadata provenance;concurrent native/ID2/reference drafts preserved separately.
+
+Next:remaining six shader middle branches and actual US pose/material/group/
+texture/clock/source/lifetime/GX/image bindings;native renderer owner finishes
+current enum arguments and verifies build. Continue requested gameplay/story/
+event/message order/branches/conditions and persistent encounter closure.
+Final complete-game system requirements remain premature;all systems are not
+yet sufficiently documented despite complete local TEV base request coverage.
+
+ID1 time-TEV final validation update:the renderer owner replaced three raw0
+TexEnv arguments with GPU_PRIMARY_COLOR;source SHA256 now
+ e2bd560e25b6c43a9f833b7b4a8efdf87d38f1aeaffa9bc2e2f8e0472e2dba70.
+After this verified source change,make all rerun PASSED/built3DSX. Exact log:
+/tmp/id1-tev-time-build-rerun.log. The earlier enum compile failure is RESOLVED;
+82 CTest/90 Python remain the current host validation. ID1 edits no native file.
+Final doc link audit534 Markdown files,zero broken links;initial532 count above
+is the preceding snapshot. No original runtime/image/game completion claimed.

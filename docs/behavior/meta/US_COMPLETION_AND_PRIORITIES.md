@@ -371,3 +371,18 @@ This leaves time-driven modes8/9,six middle branches,GX/source/scene/lifetime/
 images and broader US gameplay/story closure open. Existing inventory counts
 are historical snapshots;no whole-game percentage or final complete-game
 requirements can be inferred from these local closures.
+
+ID1 time-driven TEV completion update (2026-10-12):
+[base closure index](../display/MAP_TEV_BASE_MODE_CLOSURE_AND_REMAINING_WORK.md)
+now links ALL local base dispatch request paths,including complete8/9 blocks.
+Verifier266 scoped words/six constants/four spans/two imports/six sites and82
+CTest/90 Python pass;current3DS build concurrent renderer enum failure tracked
+in PROGRESS. Six middle branches,clock/source/reset/cadence/lifetime/libm/GX/
+original images remain open,as do broader US gameplay/story systems. This is
+local request closure,not full-function semantics or a whole-game percentage.
+Final complete-game requirements remain deferred pending all-system closure.
+
+ID1 time-TEV build resolution:concurrent renderer enum failure above is
+RESOLVED after owner's actual source fix;make all rerun passes. 82 CTest/90
+Python current host gate passes;local base request coverage still leaves six
+middle branches/source/runtime and full-system documentation incomplete.

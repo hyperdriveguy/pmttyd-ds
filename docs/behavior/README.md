@@ -468,3 +468,16 @@ Verifier:tools/verify_map_tev_fixed.py;903 scoped words,one dispatch span,two
 imports,six direct sites. Modes8/9 and six middle branches,GX/GPU/source/scene/
 lifetime and original images remain open;containing identity is not whole-body
 semantic closure. Original Mario authored mode0 does not replace procedural12.
+
+## ID1 time-driven TEV bases and base closure (2026-10-12)
+
+[Mode8 pulse](display/MAP_TEV_MODE8_PULSE_AND_RAW_CLOCK.md) specifies raw GP1c,
+low32 unsigned conversion/single+double-sin/FMA/truncation/byte1 color-register
+request. [Mode9 shared scroll](display/MAP_TEV_MODE9_SHARED_SCROLL_AND_MATRICES.md)
+specifies per-call state mutation/strict single-wrap/two translated matrices/
+three stage rows. [Base closure/gaps](display/MAP_TEV_BASE_MODE_CLOSURE_AND_REMAINING_WORK.md)
+indexes all locally recovered base dispatch paths and remaining dependencies.
+Verifier:tools/verify_map_tev_time.py;266 scoped words/six constants/four spans/
+two imports/six sites. All base REQUEST blocks close locally,not full TEV/system
+semantics. Six middle branches,clock/source/reset/cadence/GX/libm/lifetime/
+original images and actual mode8/9 US scene execution remain open.

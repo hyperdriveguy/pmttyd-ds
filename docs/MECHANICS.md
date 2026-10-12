@@ -1152,3 +1152,17 @@ now have exact stage tables. No original execution,Dolphin observation,GPU
 arithmetic measurement or image parity added. Static immediate/call inspection
 is not an executed shader oracle. make test81 CTest/90 Python and make all pass;
 source/GX/numeric/lifetime and full-game rendering remain incomplete.
+
+ID1 time-driven TEV static addendum (2026-10-12):
+[pulse](behavior/display/MAP_TEV_MODE8_PULSE_AND_RAW_CLOCK.md) consumes raw GP+1c;
+[scroll](behavior/display/MAP_TEV_MODE9_SHARED_SCROLL_AND_MATRICES.md) mutates four
+shared phases on every material call,with strict single-wrap arithmetic. Startup
+bits are metadata,not measured clock cadence/scroll speed or immutable state.
+No original execution,Dolphin observation,pixel comparison or hardware timing
+added. 82 CTest/90 Python pass;3DS build fails concurrent renderer enum arguments
+as recorded in PROGRESS. Source/GX/libm/lifetime/full rendering remain open.
+
+ID1 time-TEV validation resolution:renderer enum failure above is RESOLVED
+by its owner's typed-source change;make all rerun passes (log
+/tmp/id1-tev-time-build-rerun.log). 82 CTest/90 Python pass. These native results
+remain separate from original clock/source/GX/libm/image equivalence.

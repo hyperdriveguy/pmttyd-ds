@@ -81,3 +81,11 @@ invariants and lifetimes,actual used mode1..7 scene bindings,and original frame
 comparisons. Those modes are executable dispatch branches,not claimed witnessed
 by the Mario mode0 resource. Full-system documentation and complete-game final
 requirements remain incomplete pending these and broader gameplay/story closure.
+
+ID1 time-driven base update (2026-10-12):earlier open8/9 local-block status is
+superseded by [pulse](MAP_TEV_MODE8_PULSE_AND_RAW_CLOCK.md),
+[scroll](MAP_TEV_MODE9_SHARED_SCROLL_AND_MATRICES.md) and
+[base closure](MAP_TEV_BASE_MODE_CLOSURE_AND_REMAINING_WORK.md). All local base
+request paths now have contracts;actual clock/phase/color/source/cadence,
+six middle branch internals,GX/libm/lifetime/images remain open. This does not
+prove complete original shader/system behavior or actually executed US scenes.

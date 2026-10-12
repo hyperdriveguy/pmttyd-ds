@@ -1,0 +1,1479 @@
+{
+  "schema": 1,
+  "rel_sha256": "d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a",
+  "rel_imports": [
+    {
+      "file_offset": 300492,
+      "address": 2148445880
+    },
+    {
+      "file_offset": 301400,
+      "address": 2148445808
+    }
+  ],
+  "direct_reference_census": {
+    "text_sections": 7,
+    "targets": [
+      {
+        "address": 2147621760,
+        "name": "mapSetMaterialTev",
+        "sites": [
+          {
+            "address": 2147619912,
+            "link": true
+          },
+          {
+            "address": 2147732276,
+            "link": true
+          },
+          {
+            "address": 2147733300,
+            "link": true
+          },
+          {
+            "address": 2147735564,
+            "link": true
+          },
+          {
+            "address": 2147736480,
+            "link": true
+          },
+          {
+            "address": 2147950640,
+            "link": true
+          }
+        ]
+      }
+    ]
+  },
+  "bodies": [
+    {
+      "name": "mapSetMaterialTev",
+      "address": 2147621760,
+      "size": 11708,
+      "sha256": "faf566e7e5d1faa2bb0dd9627198d15a618b069af55978746d53f7f4ded6a51a",
+      "scope": "containing identity;complete base8/9 blocks only"
+    }
+  ],
+  "anchors": [
+    {
+      "address": 2147625468,
+      "hex": "806d90b0",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625472,
+      "hex": "3c004330",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625476,
+      "hex": "808220e8",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625480,
+      "hex": "8063001c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625484,
+      "hex": "90010240",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625488,
+      "hex": "5460083c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625492,
+      "hex": "c85c02c8",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625496,
+      "hex": "90010244",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625500,
+      "hex": "c0628518",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625504,
+      "hex": "c8210240",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625508,
+      "hex": "c002851c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625512,
+      "hex": "ec211028",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625516,
+      "hex": "90810044",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625520,
+      "hex": "ec230072",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625524,
+      "hex": "ec210024",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625528,
+      "hex": "4824f9d9",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625532,
+      "hex": "fc200818",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625536,
+      "hex": "c0028520",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625540,
+      "hex": "38810048",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625544,
+      "hex": "38600001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625548,
+      "hex": "ec00007a",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625552,
+      "hex": "fc00001e",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625556,
+      "hex": "d8010248",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625560,
+      "hex": "8001024c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625564,
+      "hex": "98010045",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625568,
+      "hex": "80010044",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625572,
+      "hex": "90010048",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625576,
+      "hex": "48296051",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625580,
+      "hex": "38600000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625584,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625588,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625592,
+      "hex": "38c00004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625596,
+      "hex": "482963b5",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625600,
+      "hex": "38600000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625604,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625608,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625612,
+      "hex": "38c00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625616,
+      "hex": "38e00001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625620,
+      "hex": "39000000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625624,
+      "hex": "48295f51",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625628,
+      "hex": "38600000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625632,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625636,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625640,
+      "hex": "38c00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625644,
+      "hex": "38e00001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625648,
+      "hex": "39000000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625652,
+      "hex": "48295f9d",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625656,
+      "hex": "38600000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625660,
+      "hex": "3880000f",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625664,
+      "hex": "38a0000a",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625668,
+      "hex": "38c00008",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625672,
+      "hex": "38e00002",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625676,
+      "hex": "48295e95",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625680,
+      "hex": "38600000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625684,
+      "hex": "38800007",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625688,
+      "hex": "38a00005",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625692,
+      "hex": "38c00004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625696,
+      "hex": "38e00001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625700,
+      "hex": "48295ec1",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625704,
+      "hex": "38600000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625708,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625712,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625716,
+      "hex": "482961a5",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625720,
+      "hex": "3b200001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625724,
+      "hex": "4800044c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625728,
+      "hex": "3c608042",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625732,
+      "hex": "c06d8190",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625736,
+      "hex": "c403e0c0",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625740,
+      "hex": "388d8190",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625744,
+      "hex": "c0428524",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625748,
+      "hex": "ec03002a",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625752,
+      "hex": "c0228528",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625756,
+      "hex": "d00d8190",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625760,
+      "hex": "c00d8190",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625764,
+      "hex": "fc001040",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625768,
+      "hex": "4081000c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625772,
+      "hex": "ec001028",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625776,
+      "hex": "d0040000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625780,
+      "hex": "c0040000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625784,
+      "hex": "fc000840",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625788,
+      "hex": "4080000c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625792,
+      "hex": "ec00102a",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625796,
+      "hex": "d0040000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625800,
+      "hex": "c0640004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625804,
+      "hex": "c4030004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625808,
+      "hex": "ec03002a",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625812,
+      "hex": "d0040004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625816,
+      "hex": "c4040004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625820,
+      "hex": "fc001040",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625824,
+      "hex": "4081000c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625828,
+      "hex": "ec001028",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625832,
+      "hex": "d0040000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625836,
+      "hex": "c0040000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625840,
+      "hex": "fc000840",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625844,
+      "hex": "4080000c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625848,
+      "hex": "ec00102a",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625852,
+      "hex": "d0040000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625856,
+      "hex": "c0640004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625860,
+      "hex": "c4030004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625864,
+      "hex": "ec03002a",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625868,
+      "hex": "d0040004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625872,
+      "hex": "c4040004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625876,
+      "hex": "fc001040",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625880,
+      "hex": "4081000c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625884,
+      "hex": "ec001028",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625888,
+      "hex": "d0040000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625892,
+      "hex": "c0040000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625896,
+      "hex": "fc000840",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625900,
+      "hex": "4080000c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625904,
+      "hex": "ec00102a",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625908,
+      "hex": "d0040000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625912,
+      "hex": "c0640004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625916,
+      "hex": "c0030004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625920,
+      "hex": "ec03002a",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625924,
+      "hex": "d0040004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625928,
+      "hex": "c4040004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625932,
+      "hex": "fc001040",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625936,
+      "hex": "4081000c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625940,
+      "hex": "ec001028",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625944,
+      "hex": "d0040000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625948,
+      "hex": "c0040000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625952,
+      "hex": "fc000840",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625956,
+      "hex": "4080000c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625960,
+      "hex": "ec00102a",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625964,
+      "hex": "d0040000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625968,
+      "hex": "386d8190",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625972,
+      "hex": "c02d8190",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625976,
+      "hex": "c0430004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625980,
+      "hex": "3861020c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625984,
+      "hex": "c06284f0",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625988,
+      "hex": "4827b62d",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625992,
+      "hex": "3861020c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147625996,
+      "hex": "3880001e",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626000,
+      "hex": "38a00001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626004,
+      "hex": "482977bd",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626008,
+      "hex": "38600000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626012,
+      "hex": "38800001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626016,
+      "hex": "38a00004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626020,
+      "hex": "38c0001e",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626024,
+      "hex": "38e00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626028,
+      "hex": "3900007d",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626032,
+      "hex": "482921d5",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626036,
+      "hex": "388d8190",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626040,
+      "hex": "c06284f0",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626044,
+      "hex": "c0240008",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626048,
+      "hex": "3861020c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626052,
+      "hex": "c044000c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626056,
+      "hex": "4827b5e9",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626060,
+      "hex": "3861020c",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626064,
+      "hex": "38800021",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626068,
+      "hex": "38a00001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626072,
+      "hex": "48297779",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626076,
+      "hex": "38600001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626080,
+      "hex": "38800001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626084,
+      "hex": "38a00005",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626088,
+      "hex": "38c00021",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626092,
+      "hex": "38e00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626096,
+      "hex": "3900007d",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626100,
+      "hex": "48292191",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626104,
+      "hex": "38600000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626108,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626112,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626116,
+      "hex": "38c000ff",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626120,
+      "hex": "482961a9",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626124,
+      "hex": "38600000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626128,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626132,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626136,
+      "hex": "38c00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626140,
+      "hex": "38e00001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626144,
+      "hex": "39000000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626148,
+      "hex": "48295d45",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626152,
+      "hex": "38600000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626156,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626160,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626164,
+      "hex": "38c00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626168,
+      "hex": "38e00001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626172,
+      "hex": "39000000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626176,
+      "hex": "48295d91",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626180,
+      "hex": "38600000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626184,
+      "hex": "3880000f",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626188,
+      "hex": "38a0000f",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626192,
+      "hex": "38c0000f",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626196,
+      "hex": "38e00008",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626200,
+      "hex": "48295c89",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626204,
+      "hex": "38600000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626208,
+      "hex": "38800007",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626212,
+      "hex": "38a00007",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626216,
+      "hex": "38c00007",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626220,
+      "hex": "38e00004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626224,
+      "hex": "48295cb5",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626228,
+      "hex": "38600000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626232,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626236,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626240,
+      "hex": "48295f99",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626244,
+      "hex": "38600001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626248,
+      "hex": "38800001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626252,
+      "hex": "38a00001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626256,
+      "hex": "38c000ff",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626260,
+      "hex": "4829611d",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626264,
+      "hex": "38600001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626268,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626272,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626276,
+      "hex": "38c00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626280,
+      "hex": "38e00001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626284,
+      "hex": "39000000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626288,
+      "hex": "48295cb9",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626292,
+      "hex": "38600001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626296,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626300,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626304,
+      "hex": "38c00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626308,
+      "hex": "38e00001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626312,
+      "hex": "39000000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626316,
+      "hex": "48295d05",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626320,
+      "hex": "38600001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626324,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626328,
+      "hex": "38a00008",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626332,
+      "hex": "38c00009",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626336,
+      "hex": "38e0000f",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626340,
+      "hex": "48295bfd",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626344,
+      "hex": "38600001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626348,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626352,
+      "hex": "38a00007",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626356,
+      "hex": "38c00004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626360,
+      "hex": "38e00004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626364,
+      "hex": "48295c29",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626368,
+      "hex": "38600001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626372,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626376,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626380,
+      "hex": "48295f0d",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626384,
+      "hex": "38600002",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626388,
+      "hex": "388000ff",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626392,
+      "hex": "38a000ff",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626396,
+      "hex": "38c00004",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626400,
+      "hex": "48296091",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626404,
+      "hex": "38600002",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626408,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626412,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626416,
+      "hex": "38c00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626420,
+      "hex": "38e00001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626424,
+      "hex": "39000000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626428,
+      "hex": "48295c2d",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626432,
+      "hex": "38600002",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626436,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626440,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626444,
+      "hex": "38c00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626448,
+      "hex": "38e00001",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626452,
+      "hex": "39000000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626456,
+      "hex": "48295c79",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626460,
+      "hex": "38600002",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626464,
+      "hex": "3880000f",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626468,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626472,
+      "hex": "38c0000a",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626476,
+      "hex": "38e0000f",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626480,
+      "hex": "48295b71",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626484,
+      "hex": "38600002",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626488,
+      "hex": "38800007",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626492,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626496,
+      "hex": "38c00005",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626500,
+      "hex": "38e00007",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626504,
+      "hex": "48295b9d",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626508,
+      "hex": "38600002",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626512,
+      "hex": "38800000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626516,
+      "hex": "38a00000",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626520,
+      "hex": "48295e81",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626524,
+      "hex": "3b200003",
+      "purpose": "complete base8/9 reviewed word"
+    },
+    {
+      "address": 2147626528,
+      "hex": "48000128",
+      "purpose": "complete base8/9 reviewed word"
+    }
+  ],
+  "constants": [
+    {
+      "address": 2151807280,
+      "hex": "00000000"
+    },
+    {
+      "address": 2151807320,
+      "hex": "40c90fdb"
+    },
+    {
+      "address": 2151807324,
+      "hex": "43b40000"
+    },
+    {
+      "address": 2151807328,
+      "hex": "42fe0000"
+    },
+    {
+      "address": 2151807332,
+      "hex": "42c80000"
+    },
+    {
+      "address": 2151807336,
+      "hex": "c2c80000"
+    }
+  ],
+  "data": [
+    {
+      "address": 2150648224,
+      "size": 52,
+      "sha256": "e7210f29ded99fdd98a8e144a68319fbd03dc3fc24c2e1d0934d2632c1ce4e20",
+      "words": [
+        2147621848,
+        2147621904,
+        2147622332,
+        2147623188,
+        2147623616,
+        2147624044,
+        2147624612,
+        2147625040,
+        2147625468,
+        2147625728,
+        2147626532,
+        2147626532,
+        2147622760
+      ],
+      "name": "thirteen base mode targets"
+    },
+    {
+      "address": 2150366240,
+      "size": 8,
+      "sha256": "2b2979f362d94c89fe17a6e01637f14332de063fe7a544bdc5facfc046f4169f",
+      "words": [
+        1127219200,
+        0
+      ],
+      "name": "mode8 unsigned conversion bias"
+    },
+    {
+      "address": 2151764144,
+      "size": 16,
+      "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+      "words": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "name": "initial four scroll phases"
+    },
+    {
+      "address": 2151801024,
+      "size": 16,
+      "sha256": "aa86e52c5d1bbcc1f9143bf52ee32ceac3159ef0bcbf01eab09f70b3abd57f0b",
+      "words": [
+        0,
+        3134306072,
+        0,
+        3125917464
+      ],
+      "name": "initial four scroll increments"
+    }
+  ],
+  "reviewed_ranges": [
+    {
+      "start": 2147625468,
+      "end_exclusive": 2147626532
+    }
+  ]
+}

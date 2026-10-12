@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Map TEV time-driven base modes8/9 | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete pulse/scroll local blocks and source constants/state update cadence;actual scene/clock/state initialization/GX/libm and six middle branches remain open |
+| Map TEV time-driven base modes8/9 | AC-01, AC-03 | VALIDATED scoped local blocks / lock released, 2026-10-12 | Documentation agent ID 1 | [Pulse/raw clock](behavior/display/MAP_TEV_MODE8_PULSE_AND_RAW_CLOCK.md),[shared scroll/matrices](behavior/display/MAP_TEV_MODE9_SHARED_SCROLL_AND_MATRICES.md),[base closure/gaps](behavior/display/MAP_TEV_BASE_MODE_CLOSURE_AND_REMAINING_WORK.md):complete base8/9 expressions/mutations/request order and startup metadata;actual scene/clock/state initialization/GX/libm and six middle branches remain open |
 | Map TEV fixed base modes1..7 and renderer mode12 | AC-01, AC-03 | VALIDATED scoped fixed programs / lock released, 2026-10-12 | Documentation agent ID 1 | [Stage tables](behavior/display/MAP_TEV_FIXED_STAGE_PROGRAMS.md),[mode12 callers/evidence](behavior/display/MAP_TEV_MODE12_CALLERS_AND_LITERAL_EVIDENCE.md):eight complete literal base programs/25 stage rows/150 requests/two actual mode12 caller argument graphs;time-driven modes8/9 and six middle branches/GX/source/lifetime/runtime remain open |
 | Map TEV ordinary mode0 and shared postlude | AC-01, AC-03 | VALIDATED scoped paths / lock released, 2026-10-12 | Documentation agent ID 1 | [Base/source](behavior/display/MAP_TEV_BASE_MODE_ZERO_AND_SOURCE.md),[constant/character shadow](behavior/display/MAP_TEV_CONSTANT_AND_CHARACTER_SHADOW.md),[callback/counts/gaps](behavior/display/MAP_TEV_FINAL_CALLBACK_AND_OPEN_BRANCHES.md):mode0/fallback/constant/character-shadow/final publication plus four complete shadow leaves;other modes/six middle branches/SDK/GX/source/lifetime/runtime remain open |
 | Animation texture selection and map light/blend/fog helpers | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Objects](behavior/display/ANIMATION_TEXTURE_OBJECT_SETUP.md),[UV matrices](behavior/display/ANIMATION_TEXTURE_COORDINATE_MATRICES.md),[smart data](behavior/display/ANIMATION_SMART_TEXTURE_DATA_PATCH.md),[color/fog](behavior/display/MAP_MATERIAL_LAST_STAGE_COLOR_AND_FOG.md),[light queries](behavior/display/MAP_CHARACTER_LIGHT_QUERIES.md),[selection/channels](behavior/display/MAP_MATERIAL_LIGHT_SELECTION_AND_CHANNELS.md),[types/transforms](behavior/display/MAP_MATERIAL_LIGHT_TYPES_AND_TRANSFORMS.md):fourteen complete local bodies/two-pass textures/source order/sort threshold/color truncation/channel request graph;map TEV/GX/resource/source/lifetime/numeric/runtime remain separate |
@@ -3151,3 +3151,29 @@ request order/final count/exit without executing original instructions or GX;
 middle branches,SDK/GX/source/override/pool/resource/lifetime/original images and
 whole-game requirements remain open. Other fixed mode scene execution is not
 claimed merely from executable dispatch presence.
+
+ID1 time-TEV validation breadcrumb (2026-10-12):binary pulse/scroll/constant/startup
+checks and make test82 CTest/90 Python pass. make all fails current concurrent
+source/render.cpp:342/343 invalid int→GPU_TEVSRC parameters. Log:
+/tmp/id1-tev-time-build.log;renderer source SHA256 at failure inspection
+39547ecf474f1fc22c5264c063377577936e5e94fcf97109761011082e000a62.
+Native renderer owner should finish its enum-typed arguments,then host/build
+can be revalidated. ID1 changes no native render code or asset policy.
+
+ID1 time-driven TEV delivery (2026-10-12),AC-01/AC-03 partial:three contracts
+in released row close mode8 raw GP1c/low32 double/single/sin/FMA/truncation/byte1
+color-register publication and mode9 four shared phase updates/strict single
+wraps/live increment/matrix-before-generator requests/three TEV rows. Mode9
+mutates per material call;mode8 consumes raw clock without updating it. Startup
+zero phases/increment bits are evidence,not immutable state or measured speed.
+All base dispatch request paths now have local contracts;whole TEV still lacks
+six middle branch internals/source/lifetime/GX/libm/original image closure.
+Verifier266 words/six constants/four spans/two imports/six direct sites passes.
+82 CTest/90 Python pass;3DS build concurrent renderer enum failure recorded
+above. Only ID1 scoped lock released;parent full-game requirements remain open.
+
+ID1 time-TEV build completion:renderer owner changed source hash from39547ecf
+above to e2bd560e25b6c43a9f833b7b4a8efdf87d38f1aeaffa9bc2e2f8e0472e2dba70
+and replaced raw0 arguments with typed GPU_PRIMARY_COLOR. make all rerun PASSES,
+built3DSX;log /tmp/id1-tev-time-build-rerun.log. Prior82 CTest/90 Python pass.
+Earlier compile failure is RESOLVED;ID1 made no native source change.

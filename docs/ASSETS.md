@@ -1766,3 +1766,23 @@ pool/sdir/samp pipeline:3218 GameCube identities,0 Switch,5 primary-PCM slice
 fallbacks;ignored catalog/WAV/RomFS outputs outside history. Exact log:
 /tmp/id1-tev-fixed-build.log. Original rights remain with owners;local analysis
 and new evidence code grant no redistribution license for original assets.
+
+ID1 time-TEV source metadata (2026-10-12):US G8ME01 ISO read-only. DOL dispatch
+803049a0,unsigned bias802bfc20,startup phases804150b0 and increments8041e0c0
+pinned as words/hashes;phase startup all0,increment words00000000/bad1b718/
+00000000/ba51b718. These are runtime state/source metadata,not observed scroll
+speed or immutable material values. Mode8 raw color80429528 is SBSS2,not an
+extracted serialized color asset;its initializer/writers remain open. No model/
+texture/pose/image/message payload exported. Inspection ELF/listing/report
+ignored under artifacts/reference/behavior. No ID1 asset adaptation/converter
+change. make all ran existing sound/proj/pmario.proj,pool/sdir/samp pipeline:
+3218 GameCube identities,0 Switch,5 primary-PCM slice fallbacks,then failed
+concurrent renderer GPU_TEVSRC enum compilation. Log:/tmp/id1-tev-time-build.log;
+no successful3DS build claimed by that run. Ignored catalog/WAV/RomFS outputs
+outside history;original rights remain with owners and no redistribution license
+is supplied by metadata analysis/new verifier code.
+
+ID1 time-TEV build resolution:after native renderer owner's enum fix,make all
+rerun succeeded/built3DSX;log /tmp/id1-tev-time-build-rerun.log. The failed run
+above remains historical evidence,not current build status. Same3218 GameCube/
+0 Switch/5 primary-PCM pipeline;no ID1 conversion or asset-policy change.

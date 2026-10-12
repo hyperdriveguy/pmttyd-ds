@@ -80,3 +80,11 @@ and [mode12 bindings](MAP_TEV_MODE12_CALLERS_AND_LITERAL_EVIDENCE.md),which clos
 modes1..7/12 as literal request blocks. Time-driven modes8/9 and all six middle
 branch internals,GX/source/lifetime/images remain open. No full-function/system
 closure or actually executed mode1..7 scene is claimed.
+
+ID1 time-driven base update (2026-10-12):earlier open8/9 local-block status is
+superseded by [pulse](MAP_TEV_MODE8_PULSE_AND_RAW_CLOCK.md),
+[scroll](MAP_TEV_MODE9_SHARED_SCROLL_AND_MATRICES.md) and
+[base closure](MAP_TEV_BASE_MODE_CLOSURE_AND_REMAINING_WORK.md). All local base
+request paths now have contracts;actual clock/phase/color/source/cadence,
+six middle branch internals,GX/libm/lifetime/images remain open. This does not
+prove complete original shader/system behavior or actually executed US scenes.
