@@ -24,6 +24,7 @@
 #include "field_camera_state.hpp"
 #include "field_camera_shift.hpp"
 #include "camera_road_state.hpp"
+#include "field_camera_events.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -131,6 +132,13 @@ public:
     uint32_t fieldCameraFlags=0,fieldCameraDisplayFlags=0;
     bool fieldCameraViewAdapter=true; // Automatic view; false lets tests/events provide a frame.
     CameraRoadWork cameraRoadWork;
+    FieldCameraEvents fieldCameraEvents;
+    // Basic source camera-event services. Coordinates are engine units;
+    // EVT operand/address marshaling remains a separate runtime binding.
+    bool setCameraTarget(CameraPoint xyz,float percent,int32_t durationMs,uint8_t curve);
+    bool releaseCameraTarget(int32_t durationMs,uint8_t curve);
+    bool setCameraView(CameraPoint eye,CameraPoint at,int32_t durationMs,uint8_t curve);
+    bool releaseCameraView(int32_t durationMs,uint8_t curve);
     bool fieldCameraAuthored=false;
     bool fieldAirDampingBypass=false,fieldKeysOff=false;
     GroundContact wallContact;

@@ -1,6 +1,25 @@
 #pragma once
 #include "camera_road_state.hpp"
 namespace ttyd {
+inline std::optional<FieldCameraFrame> fieldCameraFrameFromView(CameraPoint eye,CameraPoint at,
+                                                               float fov=25,float near=.01f,float far=327.68f) {
+    for(float value:{eye.x,eye.y,eye.z,at.x,at.y,at.z,fov,near,far})if(!std::isfinite(value))return std::nullopt;
+    if(fov<=0 || fov>=180 || near<=0 || far<=near)return std::nullopt;
+    const float dx=eye.x-at.x,dy=eye.y-at.y,dz=eye.z-at.z,length=std::sqrt(dx*dx+dy*dy+dz*dz);
+    const float horizontal=std::hypot(dx,dz);
+    if(length==0 || horizontal==0 || !std::isfinite(length))return std::nullopt;
+    const CameraPoint back{dx/length,dy/length,dz/length},right{dz/horizontal,0,-dx/horizontal};
+    const CameraPoint up{back.y*right.z,back.z*right.x-back.x*right.z,-back.y*right.x};
+    FieldCameraFrame frame;frame.eye=eye;frame.at=at;frame.fov=fov;frame.nearPlane=near;frame.farPlane=far;
+    const auto row=[&](CameraPoint v){return std::array<float,4>{v.x,v.y,v.z,-v.x*eye.x-v.y*eye.y-v.z*eye.z};};
+    frame.view={row(right),row(up),row(back)};
+    const float f=1/std::tan(fov*3.14159265358979323846f/360);
+    frame.projection={f/(608.f/480),0,f,0,-frame.nearPlane/(frame.farPlane-frame.nearPlane),-frame.farPlane*frame.nearPlane/(frame.farPlane-frame.nearPlane)};
+    frame.yaw=std::atan2(at.x-eye.x,eye.z-at.z)*180/3.14159265358979323846f;
+    if(frame.yaw<0)frame.yaw+=360;
+    return frame;
+}
+
 // Portable calcCurrentCamState / look-at / GX perspective adapter. Authored
 // geometry *10 engine *.01 native. SDK rounding and event/dolly remain separate.
 inline std::optional<FieldCameraFrame> cameraRoadFrame(const CameraRoadState& state) {
@@ -18,18 +37,6 @@ inline std::optional<FieldCameraFrame> cameraRoadFrame(const CameraRoadState& st
             eye.z+v.z*co+axis.x*v.y*si+axis.z*dot*(1-co)};
         eye={eye.x*.1f,eye.y*.1f,eye.z*.1f};at={at.x*.1f,at.y*.1f,at.z*.1f};
     }
-    const float dx=eye.x-at.x,dy=eye.y-at.y,dz=eye.z-at.z,length=std::sqrt(dx*dx+dy*dy+dz*dz);
-    const float horizontal=std::hypot(dx,dz);
-    if(length==0 || horizontal==0 || !std::isfinite(length))return std::nullopt;
-    const CameraPoint back{dx/length,dy/length,dz/length},right{dz/horizontal,0,-dx/horizontal};
-    const CameraPoint up{back.y*right.z,back.z*right.x-back.x*right.z,-back.y*right.x};
-    FieldCameraFrame frame;frame.eye=eye;frame.at=at;frame.fov=25;frame.nearPlane=.01f;frame.farPlane=327.68f;
-    const auto row=[&](CameraPoint v){return std::array<float,4>{v.x,v.y,v.z,-v.x*eye.x-v.y*eye.y-v.z*eye.z};};
-    frame.view={row(right),row(up),row(back)};
-    const float f=1/std::tan(25*3.14159265358979323846f/360);
-    frame.projection={f/(608.f/480),0,f,0,-frame.nearPlane/(frame.farPlane-frame.nearPlane),-frame.farPlane*frame.nearPlane/(frame.farPlane-frame.nearPlane)};
-    frame.yaw=std::atan2(at.x-eye.x,eye.z-at.z)*180/3.14159265358979323846f;
-    if(frame.yaw<0)frame.yaw+=360;
-    return frame;
+    return fieldCameraFrameFromView(eye,at);
 }
 }

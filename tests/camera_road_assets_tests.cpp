@@ -206,8 +206,23 @@ int main(int argc,char**) {
         CHECK(game.cameraRoadWork.current.active && game.fieldCameraCandidateActive);
         CHECK(game.fieldCameraCandidateShiftRate==game.cameraRoadWork.candidate.shiftRate);
         CHECK(game.fieldCameraFrame.eye.z!=game.cameraZ+6.5f);
+        const auto roadStamp=game.cameraRoadWork.candidate.milliseconds;
+        CHECK(game.setCameraView({400,100,600},{400,0,0},1000,11));
+        const auto currentEye=game.fieldCameraFrame.eye;
+        game.tick({});CHECK(game.fieldCameraEvents.view.state==3);
+        CHECK(game.cameraRoadWork.candidate.milliseconds==roadStamp); // Preset branch bypasses road/shift-main.
+        CHECK(game.fieldCameraShift.previousMilliseconds>roadStamp); // Post still runs.
+        CHECK(game.fieldCameraFrame.eye.x>currentEye.x && game.fieldCameraFrame.eye.x<4);
+        CHECK(game.setCameraTarget({300,0,100},25,1000,11));
+        const auto targetStart=game.fieldCameraEvents.target.start;
+        game.fieldCameraEvents.nearPlane=2;game.fieldCameraEvents.farPlane=10000;
+        game.fieldCameraFlags|=0x10;const auto retainedView=game.fieldCameraFrame.eye;
         const auto clock=game.fieldCameraShift.previousMilliseconds;game.restore(game.progress);
+        CHECK(!(game.fieldCameraFlags&0x10) && game.fieldCameraEvents.nearPlane==2 && game.fieldCameraEvents.farPlane==10000);
+        CHECK(game.fieldCameraFrame.eye.x==retainedView.x && game.fieldCameraFrame.eye.z==retainedView.z);
         CHECK(!game.cameraRoadWork.current.active && !game.fieldCameraCandidateActive && game.fieldCameraShift.previousMilliseconds==clock);
+        CHECK(game.fieldCameraEvents.target.state==3 && game.fieldCameraEvents.target.start==targetStart && game.fieldCameraEvents.endPercent==25);
+        CHECK(game.fieldCameraEvents.view.state==0 && game.fieldCameraEvents.storedEye.x==400);
         game.tick({});CHECK(game.fieldCameraAuthored);clearCollision();
         CHECK(triangles==494 && regularTriangles>400);
         std::cout<<"Original camera assets passed: "<<total<<" authored roads, "<<triangles<<" zone triangles in five rooms\n";return 0;

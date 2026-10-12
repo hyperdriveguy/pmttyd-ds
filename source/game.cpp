@@ -686,7 +686,12 @@ bool Game::beginWater() {
 void Game::restore(const Progress& saved) {
     const Progress p=saved; // Caller may pass this game's own progress.
     const uint64_t cameraClock=fieldCameraSimulationTicks,shiftTimestamp=fieldCameraShift.previousMilliseconds;
+    auto cameraEvents=fieldCameraEvents;cameraEvents.roomLoad();
+    const auto retainedFrame=fieldCameraFrame;const bool retainedAuthored=fieldCameraAuthored;
+    const auto retainedCameraFlags=fieldCameraFlags&~0x10u;
     *this = Game{};
+    fieldCameraEvents=cameraEvents;fieldCameraFlags=retainedCameraFlags;
+    fieldCameraFrame=retainedFrame;fieldCameraAuthored=retainedAuthored;
     fieldCameraSimulationTicks=cameraClock;fieldCameraShift.previousMilliseconds=shiftTimestamp;
     progress = p;
     partner = {p.position.x-0.8f,p.position.z};
@@ -745,29 +750,60 @@ void Game::rebaseFieldCamera() {
 }
 void Game::beginFieldCameraTick() {
     if(!fieldCameraInitialized)rebaseFieldCamera();
+    if(fieldCameraFlags&2){fieldMovement.headingOffsetDegrees=cameraHeadingSnapshot(fieldCameraFrame.yaw);return;}
     // camMain precedes EVT/Mario: consume LAST MarioCamMain publication.
     fieldCamera.consume(marioCamera,fieldCameraFlags);
     fieldCameraCollisionTarget={marioCameraCollision.x,marioCameraCollision.y+1,marioCameraCollision.z};
     const uint64_t now=fieldCameraTickMilliseconds(fieldCameraSimulationTicks);
+    auto events=fieldCameraEvents;
+    const bool prepared=events.prepare(fieldCamera.point,fieldCameraCollisionTarget,now);
+    const bool roadUsed=prepared && events.view.state!=3 && (fieldCameraFlags&4);
     const float rootY=water.active()?water.position[1]:groundHeight+jumpHeight;
-    if(fieldCameraFlags&4)fieldCameraShift.update(retainedFieldMainX,
+    if(roadUsed)fieldCameraShift.update(retainedFieldMainX,
         {progress.position.x*100,rootY*100,progress.position.z*100},fieldCameraFlags,
         fieldCameraCandidateActive?fieldCameraCandidateShiftRate:0,now);
     cameraX=fieldCamera.point.x*.01f;cameraHeight=fieldCamera.point.y*.01f;cameraZ=fieldCamera.point.z*.01f;
-    if(fieldCameraViewAdapter) {
+    if(fieldCameraViewAdapter && prepared) {
         if(const auto* asset=cameraRoadAsset(progress.room)) {
             auto next=cameraRoadWork;
-            if(next.update(*asset,fieldCamera.point,fieldCameraCollisionTarget,fieldCameraShift.current,now)) {
-                if(const auto frame=cameraRoadFrame(next.current)) {
-                    cameraRoadWork=next;fieldCameraFrame=*frame;fieldCameraAuthored=true;
-                    fieldCameraCandidateActive=next.candidate.active;
-                    fieldCameraCandidateShiftRate=next.candidate.shiftRate;
+            std::optional<FieldCameraFrame> roadFrame;
+            if(roadUsed && next.update(*asset,events.follow,events.look,fieldCameraShift.current,now))roadFrame=cameraRoadFrame(next.current);
+            if(!roadUsed || roadFrame) {
+                CameraPoint eye=events.storedEye,at=events.storedAt;
+                if(roadFrame){eye={roadFrame->eye.x*100,roadFrame->eye.y*100,roadFrame->eye.z*100};at={roadFrame->at.x*100,roadFrame->at.y*100,roadFrame->at.z*100};}
+                CameraPoint finalEye,finalAt;
+                if(events.finish(eye,at,finalEye,finalAt,roadUsed)) {
+                    const auto frame=fieldCameraFrameFromView({finalEye.x*.01f,finalEye.y*.01f,finalEye.z*.01f},
+                        {finalAt.x*.01f,finalAt.y*.01f,finalAt.z*.01f},events.fov,events.nearPlane*.01f,events.farPlane*.01f);
+                    if(frame) {
+                        cameraRoadWork=next;fieldCameraFrame=*frame;fieldCameraAuthored=true;
+                        fieldCameraCandidateActive=next.candidate.active;
+                        fieldCameraCandidateShiftRate=next.candidate.shiftRate;
+                    }
                 }
             }
         } else {fieldCameraFrame=adaptedFieldCameraFrame(cameraX,cameraHeight,cameraZ);fieldCameraAuthored=false;}
     }
-    fieldCameraShift.post(now); // camShiftPostMain follows road/view selection, even when shift was skipped.
+    if(prepared)fieldCameraEvents=events;
+    fieldCameraShift.post(now); // All admitted A branches post, including preset view.
     fieldMovement.headingOffsetDegrees=cameraHeadingSnapshot(fieldCameraFrame.yaw);
+}
+
+bool Game::setCameraTarget(CameraPoint xyz,float percent,int32_t durationMs,uint8_t curve) {
+    return fieldCameraEvents.setTarget(xyz,percent,durationMs,curve,fieldCameraTickMilliseconds(fieldCameraSimulationTicks));
+}
+bool Game::releaseCameraTarget(int32_t durationMs,uint8_t curve) {
+    return fieldCameraEvents.targetOff(durationMs,curve,fieldCameraTickMilliseconds(fieldCameraSimulationTicks));
+}
+bool Game::setCameraView(CameraPoint eye,CameraPoint at,int32_t durationMs,uint8_t curve) {
+    const auto actualEye=fieldCameraFrame.eye,actualAt=fieldCameraFrame.at;
+    return fieldCameraEvents.setView(eye,at,{actualEye.x*100,actualEye.y*100,actualEye.z*100},
+        {actualAt.x*100,actualAt.y*100,actualAt.z*100},durationMs,curve,fieldCameraTickMilliseconds(fieldCameraSimulationTicks));
+}
+bool Game::releaseCameraView(int32_t durationMs,uint8_t curve) {
+    const auto eye=fieldCameraFrame.eye,at=fieldCameraFrame.at;
+    return fieldCameraEvents.viewOff({eye.x*100,eye.y*100,eye.z*100},{at.x*100,at.y*100,at.z*100},
+        durationMs,curve,fieldCameraTickMilliseconds(fieldCameraSimulationTicks));
 }
 void Game::publishFieldCameraTarget() {
     const float rootY=water.active()?water.position[1]:groundHeight+jumpHeight;

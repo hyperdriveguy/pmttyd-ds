@@ -62,8 +62,71 @@ void bottomlessCases() {
     wet.water.state=32;wet.water.counter=1;wet.tick({});
     CHECK(!wet.water.active() && !(wet.fieldCameraDisplayFlags&0x10000));
 }
+void eventCases() {
+    const auto near=[](float a,float b){return std::fabs(a-b)<.001f;};
+    CHECK(cameraInterpolation(99,123,0,4,9)==9);
+    CHECK(!cameraInterpolation(-1,1,10,0,1));CHECK(!cameraInterpolation(99,1,10,0,1));
+    CHECK(cameraInterpolation(0,15,10,0,1)==1.5f); // No source step/output clamp.
+    CHECK(cameraInterpolation(1,5,10,0,1)==.25f);
+    CHECK(cameraInterpolation(2,5,10,0,1)==.125f);
+    CHECK(cameraInterpolation(3,5,10,0,1)==.0625f);
+    CHECK(cameraInterpolation(4,5,10,0,1)==.75f);
+    CHECK(cameraInterpolation(5,5,10,0,1)==.875f);
+    CHECK(cameraInterpolation(6,5,10,0,1)==.9375f);
+    CHECK(near(*cameraInterpolation(7,5,10,0,1),.75f));
+    CHECK(*cameraInterpolation(7,1,4,0,1)>1.5f); // Original overshoot, not clamped ease.
+    CHECK(*cameraInterpolation(8,2,10,0,1)>1);
+    CHECK(cameraInterpolation(9,0,10,0,1)==1);
+    CHECK(*cameraInterpolation(9,2,10,0,1)>1);
+    CHECK(near(*cameraInterpolation(10,5,10,0,-2),-2));
+    CHECK(cameraEventCurve(0,.0000099f)==0); // fctiwz scale truncates, not rounds.
+
+    CHECK(near(*cameraInterpolation(10,0,10,0,-2),0));
+    CHECK(near(*cameraInterpolation(11,5,10,0,1),.5f));
+    CHECK(near(*cameraInterpolation(12,5,10,0,1),.70710678f));
+    CHECK(*cameraInterpolation(13,10,10,0,1)<1); // Approximate source HalfPi endpoint.
+    for(int mode=0;mode<=13;++mode)CHECK(std::isfinite(*cameraInterpolation(mode,3,10,2,5)));
+    CameraBlendTimer timer;timer.state=1;timer.start=100;timer.duration=100;
+    CHECK(timer.update(200) && timer.state==1 && timer.progress==0);
+    CHECK(timer.update(201) && timer.state==0 && timer.progress==0);
+    timer.state=3;CHECK(timer.update(200) && timer.state==3 && timer.progress==1);
+    CHECK(timer.update(201) && timer.state==0 && timer.progress==1);
+    timer.state=2;timer.duration=0;CHECK(timer.update(201) && timer.state==0 && timer.progress==1);
+    timer.state=0;timer.progress=.7f;CHECK(timer.update(202) && timer.progress==.7f);
+    CHECK(!timer.update(99) && timer.progress==.7f);
+    FieldCameraEvents events;CHECK(events.prepare({100,20,300},{100,5,300},0));
+    CHECK(events.follow.y==20 && events.look.y==5 && events.dolly==0);
+    CameraPoint eye,at;CHECK(events.finish({0,100,500},{0,0,0},eye,at));CHECK(eye.z==500 && at.z==0);
+    CHECK(events.setTarget({400,50,600},50,100,11,0));
+    CHECK(events.prepare({900,900,900},{800,800,800},50));
+    CHECK(near(events.follow.x,250) && events.look.x==events.follow.x && near(events.dolly,25));
+    CHECK(events.finish({0,100,500},{0,0,0},eye,at));CHECK(near(eye.z,375) && near(eye.y,75));
+    CHECK(events.finish({0,100,500},{0,0,0},eye,at,false));CHECK(eye.z==500); // No-road branch bypasses dolly.
+    CHECK(events.prepare({900,900,900},{800,800,800},100));CHECK(events.target.state==3 && events.follow.x==400);
+    CHECK(events.prepare({900,900,900},{800,800,800},101));CHECK(events.target.state==0 && events.follow.x==400);
+    CHECK(events.targetOff(100,11,101));CHECK(events.prepare({900,20,900},{800,5,800},201));
+    CHECK(events.target.state==1 && events.follow.x==900 && events.look.x==800 && events.dolly==0);
+    events.dolly=150;CHECK(events.finish({0,0,500},{0,0,0},eye,at));CHECK(eye.z==-250); // No source percent clamp.
+    CHECK(events.setView({400,100,600},{400,0,0},{0,100,500},{0,0,0},100,11,201));
+    CHECK(events.prepare({}, {},251));CHECK(events.finish({999,999,999},{999,999,999},eye,at));
+    CHECK(near(eye.x,200) && near(eye.z,550));
+    CHECK(events.prepare({}, {},302));CHECK(events.view.state==0 && events.view.progress==1);
+    CHECK(events.finish({999,999,999},{999,999,999},eye,at));CHECK(eye.x==400 && eye.z==600); // Updated state switches branch but full stored view retained.
+    events.target.state=3;events.target.start=77;events.target.duration=123;events.target.progress=.5f;
+    events.anchor={1,2,3};events.previousAnchor={4,5,6};events.endPercent=60;events.previousPercent=30;
+    events.roomLoad();CHECK(events.target.state==3 && events.target.start==77 && events.target.duration==123 && events.target.progress==0);
+    CHECK(events.anchor.y==2 && events.previousAnchor.y==5 && events.endPercent==60 && events.previousPercent==30);
+    CHECK(events.view.state==0 && events.view.progress==0 && events.storedEye.x==400);
+    const auto retained=events;CHECK(!events.setTarget({},0,-1,11,0));CHECK(!events.setTarget({},0,100,99,0));CHECK(events.anchor.x==retained.anchor.x && events.target.start==77);
+    clearCollision();Game game;game.restore(game.progress);game.tick({});
+    game.fieldCameraFlags|=2;const auto stamp=game.fieldCameraShift.previousMilliseconds;
+    const auto follow=game.fieldCamera.point;game.marioCamera.retained={999,999,999};game.tick({});
+    CHECK(game.fieldCameraShift.previousMilliseconds==stamp && game.fieldCamera.point.x==follow.x);
+    game.fieldCameraEvents=retained;game.restore(game.progress);
+    CHECK(game.fieldCameraEvents.target.state==3 && game.fieldCameraEvents.target.start==77 && game.fieldCameraEvents.previousAnchor.y==5);
+}
 int main() {
-    shiftCases();bottomlessCases();
+    shiftCases();bottomlessCases();eventCases();
     CameraShift up{0,10,.06f};up.tick();CHECK(close(up.current,.66f));
     CameraShift down{10,0,.03f};down.tick();CHECK(close(down.current,9.67f));
     CameraShift cross{9.99f,10,.06f};cross.tick();CHECK(cross.current==10);
