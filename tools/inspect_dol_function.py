@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Read a named US DOL function into an inspection-only ELF for llvm-objdump.
+Corrects Gekko paired-single mnemonics after LLVM disassembly.
 Never executes original code; outputs must stay outside source history.
 """
 import argparse,csv,struct,subprocess,sys

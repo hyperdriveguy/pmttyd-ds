@@ -4351,3 +4351,38 @@ message/speaker/conditions,then recover selected attack commands and compare
 isolated original timing/state traces. Expand through all US playable/optional
 content before deriving complete-game requirements. Full objective active and
 incomplete;assessment and static reference counts do not satisfy closure.
+
+## 2026-10-12 — Correct GameCube paired-single disassembly
+
+Fixed the requested LLVM mislabels using independent Gekko field decoder
+(tools/gekko_disasm.py),integrated into inspect_dol_function.py. Existing LLVM
+CPU750/vector-feature options did not resolve the mislabels. Decoder handles
+paired arithmetic/comparison/move/merge,quantized immediate/indexed/update
+load/store and dcbz_l,proper D/A/C/B syntax,Rc,W/I and signed12 displacement.
+Reserved/unrecognized paired-space encodings emit .long,not modern operations.
+Added standalone check/repair CLI preserving original prefixes/comments/endings.
+Tooling/tests incremental commit:e4b9816.
+
+Repaired354 instructions in47 ignored original listings after scanning388
+PowerPC listings (61863 instruction rows),including annotated/text copies.
+Every changed instruction's address/bytes/prefix/endings were preserved;all
+unrelated lines unchanged. All386 inspection ELF hashes unchanged. Repair
+report remains ignored. Documented usage/scope/reference/licensing in
+GEKKO_DISASSEMBLY.md;updated prior affine-matrix mislabel warning.
+
+Validation:ten regression tests cover all paired arithmetic families,record/
+comparison/move/merge/cache forms,quantized W/I and displacement bounds,indexed/
+update variants,reserved encodings,known mislabels,comments/CRLF/no-final-newline,
+idempotence,read-only check and binary rejection. make test passed core plus49
+Python tests;make all exited0,no rebuild. Second full listing check:zero needed
+changes,zero unrecognized paired encodings. Fresh PSMTXScale/TransApply/Concat
+inspection reproduced all corrected instruction rows. Existing1532 instruction/
+data/resource checks passed;533 behavior links resolved;git diff --check passed.
+No original execution/emulator,ISO write,profile/save change,native gameplay
+change,asset conversion or story/message rewrite. This fixes inspection text,
+not a claim of executed numerical or gameplay equivalence.
+
+Next:continue US opening/Crump shipped event/callback/unit/weapon/SetupAC binding
+inventory and selected attack mechanics/original timing comparisons per current
+priority register. Use corrected listings for subsequent binary analysis. Full
+behavior/complete-game requirements objective remains active/incomplete.

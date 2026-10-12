@@ -74,6 +74,10 @@ call-site lists are static instruction scans: indirect calls, conditional calls,
 execution counts and branch feasibility are not reconstructed. Fingerprinting a
 function does not mean every branch in it has been documented.
 
+For correct GameCube paired-single mnemonics and existing listing repair,see
+[Gekko disassembly tooling](GEKKO_DISASSEMBLY.md). The inspection command above
+applies that correction automatically.
+
 ## Public reference register
 
 1. [doldecomp/ttyd](https://github.com/doldecomp/ttyd): MIT; consulted revision

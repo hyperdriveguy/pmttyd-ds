@@ -683,3 +683,11 @@ counts,relocation locations and20 command registration entries,not executable
 or dialogue bytes. Its addresses/names derive from the existing GPL-3.0 symbol
 metadata;no upstream implementation or original code is linked or distributed.
 No asset conversion or license change. Static references are not execution proof.
+
+Gekko disassembly correction (2026-10-12):independent tools/gekko_disasm.py
+repairs LLVM paired-single mislabels and is integrated into function inspection.
+354 instruction rows in47 ignored original listings repaired;386 inspection
+ELFs unchanged. No ISO write,asset conversion,original execution or story edit.
+Encoding facts consulted GNU opcodes and Dolphin primary references;links and
+upstream licenses are in GEKKO_DISASSEMBLY.md. No upstream implementation copied
+or linked;original text/ELFs and metadata repair report remain ignored.

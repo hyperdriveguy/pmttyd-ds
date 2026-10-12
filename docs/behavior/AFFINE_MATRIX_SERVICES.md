@@ -16,9 +16,10 @@ pointers,alignment,finite values or matrix type,and none allocates or calls
 another function. There is no local RNG,GX request or explicit FPSCR/GQR change.
 
 Original opcode4 instructions here are Gekko paired-single arithmetic. The
-inspection tool's generic llvm disassembly renders them as newer vector
-instructions or unknown words;those printed mnemonics must not be used as the
-contract. Original words identify ps_muls0/1,ps_madds0/1,ps_sum1 and psq_l/st.
+raw generic LLVM disassembly renders them as newer vector instructions or
+unknown words;those printed mnemonics must not be used as the contract. The
+inspection tool now applies a [Gekko correction](../GEKKO_DISASSEMBLY.md),and
+existing research listings were repaired without changing instruction bytes. Original words identify ps_muls0/1,ps_madds0/1,ps_sum1 and psq_l/st.
 All paired loads/stores here have W=0,I=0:two elements through GQR0. A faithful
 implementation must establish the runtime GQR0 load/store representation before
 assuming these accesses are ordinary float pairs. The finite binary32 formulas
