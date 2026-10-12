@@ -18,7 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Battle input sampler/reset caller census and system-level/event-speed controls | AC-01, AC-03, AC-02 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover direct caller identities,marioStSystemLevel and used speed writes;excludes full UI/pause graph and original traces |
-| Ordinary Jump complete request graph and per-hit/AC branches | JUMP-01, AC-01, DMG-01 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Recover all268 commands,raw operands and branch/inline/cleanup ownership;excludes original traces and unclosed motion/VM/service internals |
+| Ordinary Jump complete request graph and per-hit/AC branches | JUMP-01, AC-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Jump graph](behavior/BATTLE_NORMAL_JUMP_EVENT_FLOW.md),[result/stop](behavior/BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md),[VM/concurrency](behavior/EVENT_JUMP_BRANCHES_AND_CONCURRENCY.md);Mario-specific motion/remaining services and original traces remain open |
 | Unit resource/status snapshot export leaf | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Export contract](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete matching writer;export caller cadence and on-disk save semantics remain open |
 | Unit badge/count/bonus import through _EquipItem | STATUS-01, DMG-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Badge import](behavior/UNIT_BADGE_COUNT_IMPORT.md):complete byte maps/flags/reset/scan and scoped setup bindings;inventory equip UI and runtime traces remain open |
 | Unit-entry status clear and pouch resource import | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Initialization contract](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete clear/import/revision,party mapping and partial info-record reset;badge aggregation,snapshot producers and turn/save ownership remain open |
@@ -331,6 +331,35 @@ scene/stat/position/audio/turn behavior. Link concrete data/service answers here
 ## Implementation coverage and next work
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
+
+Partial answer from ID2 (2026-10-12):
+[complete268-command Jump request graph](behavior/BATTLE_NORMAL_JUMP_EVENT_FLOW.md)
+pins target/cost/setup/approach/precheck/motion/result/damage/feedback/recovery/
+tail branches. Shared AC count is distinct from script local10:count<=1 success
+requests CheckDamage flags20000,wait2,local10++,then repeats label10 without
+new SetupAC/StartAC;count>1 success requests20100 and finishes;failure requests
+100 and declares-1 only when local10==0. Next-pass precheck uses100100. No direct
+target-HP getter or post-damage result gate occurs before repeating. Preserve
+repeated precheck rather than guaranteeing a second damaging hit. Missing target
+reaches actual label99;avoidance skips result/damage and converges on label95.
+
+[Result/count/grade/stop services](behavior/BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md)
+close raw destination readers,raw mask1 update,window output,code30 prize-1/
+unsigned byte1cbd grade clamp,and TimingA's deferred StopAC state1000. The stream
+has no AcSetParamAll/AcSetFlag call and does not write count-window selector2.
+[VM/concurrency](behavior/EVENT_JUMP_BRANCHES_AND_CONCURRENCY.md) pins signed
+comparisons,raw IF mask and four attached brothers versus one independent camera
+inline. Copied stylish locals do not overwrite parent motion values;camera wait10
+does not block the parent. JUMP-EVT/JAC/JVM requirements give scoped acceptance
+cases,not measured impact ticks or a complete executed tutorial.
+
+Remaining blockers:MarioJumpParam0x80109c68/19c and MarioJumpPosition0x801093a8/
+8c0 are distinct from agent1's generic JumpPosition;recover their per-call AC/state/
+motion writes and landing/remaining-count conditions. Also close Takeoff/MoveFrame/
+MovePosition,selected target/cost/power-child/stylish/prize-byte/aftereffect/badge
+tail internals and original tutorial/menu/input/state traces. Do not implement
+the request graph with the native fixed48/42 schedule or copied generic jump
+physics. The parent request remains open for that runtime composition.
 
 The implementation now uses the [recovered power callbacks](behavior/BATTLE_WEAPON_POWER_CALLBACKS.md)
 in `source/battle_weapon_power.cpp`. The native harness executes one documented

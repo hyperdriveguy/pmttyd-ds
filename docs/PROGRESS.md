@@ -1,5 +1,55 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2: requested ordinary Jump graph and result/VM services
+
+Answered JUMP-01's complete request-graph slice in BATTLE_NORMAL_JUMP_EVENT_FLOW.md:
+all268 original commands,first-attack versus selected-weapon target/cost/setup,
+delayed setup using abs(moveFrame-22),precheck masks100/100100,distinct Mario
+motion modes0/3,window/2 wait before evaluator,persistent AC count versus script
+local10 and damage flags20000 (repeat),20100 (final success),100 (failure).
+Repeat has no new SetupAC/StartAC and no direct HP/output-result gate;it runs
+precheck again. Failure declares-1 only at local10==0;avoidance bypasses damage/
+result and takes shared return95. Actual missing target reaches real99,then
+reset face,child badge effect,start wait event and delete. Parent/brother/inline
+presentation and cleanup order retained without fixed impact/return ticks.
+
+Added BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md with complete raw result/count/
+window readers,raw mask option update,prize code30 early-1 versus unsigned1cbd
+grade clamp and delayed TimingA stop. Stop requests delete/state1000;it does
+not immediately clear callbacks. Added EVENT_JUMP_BRANCHES_AND_CONCURRENCY.md
+with signed IF/CASE>=,raw IF mask,full used brother/inline helpers and constructor
+ownership-zeroing region. Four attached brothers copy locals and are cancelled
+with their owner;the camera107 block is an independent event,not a parent wait.
+Only the used constructor region is specified despite whole-body fingerprint.
+JUMP-EVT/JAC/JVM requirements give implementable local acceptance cases.
+
+Released only ID2's validated graph lock and linked partial JUMP-01/AC-01/DMG-01
+answers in DOCUMENTATION_REQUESTS.md. JUMP-01 remains open:MarioJumpPosition
+801093a8/8c0 and MarioJumpParam80109c68/19c,selected-target/cost/power/stylish/
+aftereffect/badge service composition and original state/input traces remain.
+These Mario-specific bodies must not be substituted with generic JumpPosition
+or the native48/42 schedule. Independent ID1 sampler/system-level work and native
+input/power/part changes preserved;ID2 authored no native gameplay code.
+
+Validation:tools/verify_jump_event_flow.py passed17 body fingerprints,38 instruction
+anchors,nine VM dispatch bindings,original268-command/labels10/90/95/99 census,
+five concurrent block pairs and concrete setup/precheck/result/damage/loop/tail
+records. Two fresh metadata reports matched byte-for-byte;fresh original annotated
+Jump inventory matched the established stream hash. General behavior verifier
+passed;generic jump verifier passed10 bodies/55 anchors/nine constants/harbor
+bindings;input verifier passed10 bodies/64 anchors/28 calls/three data bindings.
+make test passed nine CTest suites and58 Python tests;make all exited0,no rebuild;
+673 behavior local links resolved;git diff --check passed. /tmp holds all original
+inspection/inventory/report artifacts. No original execution/emulator,ISO/profile/
+save mutation,asset conversion or dialogue rewrite by ID2.
+
+Next reserve and recover Mario-specific jump parameter/motion/state callbacks,
+then ordinary Jump reachability/target/precheck/hit/feedback/stop composition and
+original traces. Continue STATUS/DMG service/turn/reward/request closure alongside
+ID1's input cadence work. Full-system documentation and complete-game system
+requirements remain active/incomplete;request-stream closure is not full runtime
+or tutorial equivalence.
+
 ## 2026-10-12 — ID2: requested badge/count import and snapshot export
 
 Added UNIT_BADGE_COUNT_IMPORT.md with complete _EquipItem/BtlUnit_EquipItem

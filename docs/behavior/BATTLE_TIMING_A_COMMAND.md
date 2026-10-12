@@ -114,6 +114,12 @@ check. Inputs remain simulation samples rather than rendering-frame events.
 
 ## Remaining mechanic closure
 
+The [ordinary Jump graph](BATTLE_NORMAL_JUMP_EVENT_FLOW.md) now establishes the
+shared-count<=1 repeat path without new setup/start,its20000/20100/100 damage
+requests and [deferred StopAC](BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md). The
+script's literal mask1 timing on/off does not write count-window selector2.
+Mario-specific motion and per-hit original execution remain open.
+
 Six new whole-function fingerprints (including SetupAC),32 instruction anchors,
 seven pointer/threshold tables,two initialization floats,registration and two
 complete attack-stream hashes/four setup sites pin this slice. Reports and

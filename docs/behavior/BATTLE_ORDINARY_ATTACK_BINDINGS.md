@@ -7,6 +7,12 @@ btlevtcmd_SetupAC0x801077ec,size0x98. This resolves concrete retail script
 bindings,not merely callback names or direct-call counts. No original execution,
 full attack control-flow recovery or tutorial equivalence is claimed.
 
+The subsequent [ordinary Jump request graph](BATTLE_NORMAL_JUMP_EVENT_FLOW.md)
+now specifies all268 commands and per-hit/count/result/cleanup branches with
+[local result/stop services](BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md). Mario-
+specific motion/callback composition and original execution remain incomplete;
+the scope limitation above describes this initial binding-only document.
+
 ## Command stream evidence
 
 `tools/dol_event_inventory.py` validates symbol VA/file mapping against original

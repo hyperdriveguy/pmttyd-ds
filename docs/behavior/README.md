@@ -18,6 +18,9 @@ complete gameplay sequences before further general-library edge-case recovery.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Ordinary Jump event flow](BATTLE_NORMAL_JUMP_EVENT_FLOW.md) | All268 request commands/branches,per-hit flags/count loop,first-attack setup,stylish/feedback and cleanup ownership | Mario-specific motion/service internals,per-hit writers,actual tutorial/cadence and original traces |
+| [Jump result/stop services](BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md) | Complete result/count/window/mask/grade wrappers,prize code/byte clamp and deferred TimingA stop | Grade/option/code producers,help UI and actual callers/traces |
+| [Jump VM/concurrency](EVENT_JUMP_BRANCHES_AND_CONCURRENCY.md) | Signed comparison/raw mask bodies,CASE>=,attached brother versus independent inline creation/end rules | Full constructor/other opcode/arithmetic/scheduler/pause behavior and original traces |
 | [Unit badge/count import](UNIT_BADGE_COUNT_IMPORT.md) | Complete import/reset/scan and numeric byte maps,wrapped special thresholds,scoped Mario/partner/enemy setup bindings | Inventory equip/new-game rules,other callers and executed guard/resource comparisons |
 | [Unit status/pouch initialization](UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md) | Complete status clear,pouch resource import/revision,party mapping and partial six-record reset with entry callers | Badge/move/snapshot producers,turn/presentation/save lifetime and original traces |
 | [Unit part defense/lifetime](UNIT_PART_DEFENSE_AND_LIFETIME.md) | Scoped contiguous part construction/pointer copies,Crump/Mario signed source tables,complete part lookup and deletion request order | Remaining entry/vector/heap/pose services,mutation and original actor lifetime traces |
