@@ -3992,3 +3992,30 @@ and uncovered story/event/field/battle/audio/save/content before complete-game
 requirements. Full objective active/incomplete;no complete numeric/layout or
 full-game fidelity claim. Original data,IDs/tokens and story attribution/order/
 branches/event conditions remain mandatory.
+
+## 2026-10-12 — US decimal conversion preparation/approximation
+
+Added detailed DECIMAL_TO_BINARY_APPROXIMATION.md for __dec2num finite
+preparation through candidate classification:full private42-byte copy,unchecked
+ASCII-to-numeric conversion,leading-digit exponent,1..8-digit chunk choice/
+integer accumulation,separate multiply/add and early exit that skips P/Q update,
+pow(5,Q)/division then ldexp scaling and raw-bit class selection. Preserved
+caller-record immutability and distinction between candidate and final result.
+Boundary selection/refinement/final rounding and pow internals remain open;
+no floating accuracy or executed equivalence claim. Linked entry contract/index.
+
+Validation:1256 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO,adding eight chunk powers and three base/bias constants.
+Fresh285-function reports reproduced byte-for-byte. All473 local behavior links
+resolved;git diff --check passed. make test passed core plus36 Python tests;
+make all exited0 with no rebuild. No original execution/emulator,profile/save
+modification,native implementation,asset conversion or story rewriting. Original
+disassembly/reports stay ignored;working tree was clean at turn start.
+
+Next: __dec2num boundary records/comparisons,refinement/ties/final sign/return and
+pow dependencies;executed private-record/candidate/helper/FPSCR/final-bit corpus
+and actual scan inputs. Continue drawing/string layout,resource/cadence callers
+and uncovered story/event/field/battle/audio/save/content before complete-game
+requirements. Full objective active/incomplete;initial approximation is not
+complete numeric/layout or full-game fidelity. Original IDs/tokens and story
+attribution/order/branches/event conditions remain mandatory reused data.

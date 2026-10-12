@@ -13,6 +13,18 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'decimal_to_binary_approximation': {
+        0x802659f8: '900101a4', 0x80265a54: 'b06101c8',
+        0x80265a70: '987f0000', 0x80265ae4: '987f0000',
+        0x80265b24: '3883ffff', 0x80265b2c: 'b08101a2',
+        0x80265b5c: '39400008', 0x80265b78: '1c69000a',
+        0x80265bf8: '7d261a14', 0x80265c18: 'c823fff8',
+        0x80265c20: 'fc220072', 0x80265c28: 'fc01002a',
+        0x80265c34: '41820014', 0x80265c3c: '7feaf850',
+        0x80265c74: '4800c9ad', 0x80265c7c: 'fc200824',
+        0x80265ca4: '4800c97d', 0x80265cb8: '4800c499',
+        0x80265ccc: '54830056', 0x80265d34: '2c000002',
+    },
     'decimal_to_binary_special_values': {
         0x80265810: '88030004', 0x80265824: '40820028',
         0x80265844: '4800c63d', 0x80265850: '2c000049',
@@ -1345,6 +1357,12 @@ def verify(iso_path):
         if hashlib.sha256(read(0x803bb408, 256)).hexdigest() != '00c700f38385659ba060672f86d4a9a5376eadf9ed1cabb1c63290a0fdefe36a':
             raise ValueError('Decimal conversion lowercase table mismatch')
         print('Decimal conversion zero/sign constants and complete lowercase table verified')
+        if read(0x803bb1a0, 64) != struct.pack('>8d', *[10.0**i for i in range(1, 9)]):
+            raise ValueError('Decimal conversion chunk powers mismatch')
+        if read(0x80428be0, 24).hex() != '401400000000000043300000000000004330000080000000':
+            raise ValueError('Decimal approximation base/bias constants mismatch')
+        print('Eight decimal chunk powers and three approximation constants verified')
+
 
 
 

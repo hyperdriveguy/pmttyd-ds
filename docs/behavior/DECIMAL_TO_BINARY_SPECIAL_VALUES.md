@@ -2,8 +2,8 @@
 
 US G8ME01 revision0,recovered2026-10-12. Evidence B: entry0x80265804..0x802659e8
 of __dec2num,size0x1080,original sign constants and classification/lowercase data.
-**Scope:** entry and special shortcuts only. Finite digit conversion/refinement
-at0x802659e8 onward remains open. A whole-function fingerprint identifies the
+**Scope:** entry and special shortcuts only. [Finite preparation/approximation](DECIMAL_TO_BINARY_APPROXIMATION.md) is now
+recovered separately;boundary/refinement/final rounding remains open. A whole-function fingerprint identifies the
 containing routine,not complete recovery/execution. See
 [decimal scan handoff](SCAN_FLOAT_DECIMAL.md),[float entry/special tokens](SCAN_FLOAT_ENTRY_SPECIAL_VALUES.md)
 and [copysign service](FORMAT_BINARY_NUMERIC_SERVICES.md).

@@ -26,7 +26,7 @@ includes src/include/config and rels under ignored
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
 now fingerprints 285 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1236 instruction anchors plus those
+window tables. Independent verifier checks 1256 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -595,3 +595,10 @@ special-record contracts are authored;finite approximation/refinement remains
 open despite whole-body identity. No original code execution/linking,asset
 conversion or message rewrite occurs;local ELF/disassembly/reports stay ignored.
 Original rights/licensing remain unchanged.
+
+Finite decimal preparation/approximation adds20 anchors within existing
+__dec2num identity,eight binary64 chunk powers and three base/bias constants.
+Authored contracts distinguish private record mutation and approximate candidate
+from still-open refinement/final rounding. No original code execution/linking,
+asset conversion or message rewrite;ignored inspection artifacts and original
+rights remain unchanged.
