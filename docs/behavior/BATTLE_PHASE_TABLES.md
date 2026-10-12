@@ -6,7 +6,8 @@ and [event barriers](BATTLE_WAITS_AND_CONCLUSION.md). No original execution or
 Switch comparison was performed. Extracts/disassembly remain ignored.
 This covers phase table helpers, phase wrapper, and selected actor-selection/
 consumption regions. The complete local btlseqMove map is in
-[move controller](BATTLE_MOVE_CONTROLLER.md); full btlseqAct remains open.
+[move controller](BATTLE_MOVE_CONTROLLER.md); the local btlseqAct map is in
+[action controller](BATTLE_ACTION_CONTROLLER.md).
 
 ## Actor table construction (B)
 

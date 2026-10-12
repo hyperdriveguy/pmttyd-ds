@@ -2636,3 +2636,29 @@ audience/announcement internals and external channel/flag writers, outer turn
 progression, conclusion/rewards and death/revival scripts; motion/float/pose
 services. Continue all-system register before complete-game requirements.
 Objective active/incomplete; original/native execution comparisons required.
+
+## 2026-10-12 — Complete local btlseqAct state map
+
+Previous turn progressed withb567a35 move controller. Added
+BATTLE_ACTION_CONTROLLER.md covering all15 local states: kind/status/attribute
+routing, camera/command gates, alternate data-key paths, priority-ordered event
+selection, retained Electric draw and Confuse threshold, wait-event deletion,
+barrier/announcement fallthrough, actor cleanup/count consumption, reserve-item
+consumption, audience/Break Slot gating and explicit post-event+2cc polling.
+Move/phase contracts now link complete local action coverage. Callee/script
+bodies and outer scheduler remain open; local coverage is not full-game fidelity.
+
+Validation:336 instruction anchors plus action15-entry table fingerprint and
+camera2.0 constant, alongside prior checks, passed read-only US ISO. Evidence135
+function fingerprints reproduced byte-identically. Behavior links resolve;
+git diff --check passed. make test passed core plus36 Python tests; make all
+exited0, no rebuild. Workspace started clean; only research/provenance/verifier
+files edited. No original execution/emulator run or profile/save modifications.
+Extracts/disassembly/reports stay ignored; ASSETS.md updated. Static checks do
+not prove call interpretation or native dynamic-equivalence.
+
+Next: command/menu and camera helpers, default/status/action script bodies and
+flag writers, audience/announcement/Break Slot services, outer turn/controller
+cadence, conclusion/rewards and death/revival execution; motion/float/pose
+services. Continue all systems before complete-game requirements. Full objective
+active/incomplete; original/native trace/rendering comparisons required.

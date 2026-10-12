@@ -9,8 +9,9 @@ comparison was performed. Original ELF/disassembly/annotations remain ignored.
 
 This completes the routine's local branch/call/transition order. Callee bodies,
 script content and outer controller scheduling are distinct dependencies.
-Full btlseqAct is still under recovery; do not infer an entire battle scheduler
-from this local state map alone.
+The local btlseqAct map is now specified in
+[action controller](BATTLE_ACTION_CONTROLLER.md); callees and outer scheduling
+remain open.
 
 ## Dispatch, loop and state numbering (B)
 

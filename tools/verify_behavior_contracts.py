@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'action_controller': {
+        0x8011b2fc: '2800000e', 0x8011b33c: '901d0284',
+        0x8011b4e4: '41810690', 0x8011b51c: '5400066e',
+        0x8011b590: '64000400', 0x8011b5cc: '901f02ac',
+        0x8011b668: '28030000', 0x8011b71c: '2c030000',
+        0x8011b75c: '2c030032', 0x8011b7c8: '901f0290',
+        0x8011b7fc: '4807a0c1', 0x8011b888: '54000776',
+        0x8011ba24: '540007b8', 0x8011ba54: '40820010',
+        0x8011bac0: '901f02cc', 0x8011bb70: '4bfdcded',
+    },
     'move_controller': {
         0x80127434: '7c800734',
         0x8011bc4c: '2800000e', 0x8011bcfc: '98038ff9',
@@ -364,6 +374,11 @@ def verify(iso_path):
             if read(address, 4) != struct.pack('>f', value):
                 raise ValueError(f'Phase event sort constant mismatch {address:#x}')
         print('Move dispatch table and two phase event sort constants verified')
+        if hashlib.sha256(read(0x80363c50, 60)).hexdigest() != '3fb24c458339c286f9e7ccbaab490364975128789b059f35458486dad6e5e977':
+            raise ValueError('Action sequence dispatch table mismatch')
+        if read(0x80422584, 4) != struct.pack('>f', 2.0):
+            raise ValueError('Action camera speed threshold mismatch')
+        print('Action dispatch table and camera threshold verified')
         status_tables = {
             0x80364204: [0x7970, 0x792c, 0x7970, 0x7970, 0x7adc,
                          0x7970, 0x7970, 0x7970, 0x7970, 0x7970,
