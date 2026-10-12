@@ -198,3 +198,27 @@ assignment. Confirm full initial-position/entry-event sequence and supporting
 floor/ray behavior before replacing provisional native .9 inset/.7 sensor.
 Road entry event sets party homing distances20 then50 engine units; current
 follow model and entry placement have not yet adopted those event modes.
+
+### Ordinary road scripted travel
+
+Read-only US DOL inspection: `evt_bero_get_info_length` (8007a76c)
+returns default30 engine units for Road type0 length-1, not150.
+`evt_bero_initial_pos` (8030f060) calls `bero_get_position_normal` in
+mode1 with that entry length. Its start is marker center minus30 in the
+inward direction; its endpoint is center plus30. With engine/native scale
+0.01 this is 0.3 outside to0.3 inside, traveling0.6.
+`evt_mario_mov_pos2` (800e5f50), called with FLOAT150 by
+`evt_bero_info_run_road` (8030e97c), uses150 engine units/s divided by
+NTSC60:0.025 native/tick. Tick count truncates(distance+1)/speed and the
+final tick snaps XZ to the endpoint. Ordinary entry takes24 ticks.
+`bero_case_exec_road` (8030dac8) waits for landing, computes mode0
+position with length150 (1.5 native outside), travels at the same rate,
+then waits150ms (9 ticks) before map change. The road-ending party homing
+uses FLOAT50 (0.5 native).
+
+Native implementation now follows these distances and rate. Remaining
+limitations: .7-native trigger radius, fixed support height during scripted
+travel, simplified camera, stationary companion on departure/co-located on
+arrival, omitted first-entry branches and original party choreography.
+Normal collision body dimensions and sensor activation still require source
+recovery; these changes do not establish faithful general movement physics.

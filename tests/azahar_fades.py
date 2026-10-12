@@ -13,7 +13,7 @@ def run(env,capture):
         assert all(sum(picture.convert('RGB').getpixel(p))/3>220 for p in probes)
     x('keydown','Right')
     try:
-        for n in range(12):
+        for n in range(36):
             time.sleep(.04);name=f'fade-{n:02d}';capture(name)
             with Image.open(ROOT/'artifacts/azahar'/f'{name}.png') as picture:
                 samples.append(tuple(sum(picture.convert('RGB').getpixel(p))/3 for p in probes))
@@ -23,7 +23,7 @@ def run(env,capture):
     assert save.read_bytes()[26]==2
     with Image.open(ROOT/'artifacts/azahar/fade-finished.png') as picture:
         assert all(sum(picture.convert('RGB').getpixel(p))/3>220 for p in probes)
-    print('Fade top/bottom brightness samples:',samples)
+    print('Fade top/bottom brightness range:',[(min(s[n] for s in samples),max(s[n] for s in samples)) for n in range(2)])
     for screen in range(2):
         values=[s[screen] for s in samples]
         assert min(values)<20 and any(20<v<200 for v in values),values

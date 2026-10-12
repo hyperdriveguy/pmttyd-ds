@@ -6,10 +6,13 @@
 #include <memory>
 #include "water_recovery.hpp"
 #include "transition_fade.hpp"
+#include "road_motion.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
 constexpr float StepHeight = .25f;
+// Original normal road-entry event restores party homing distance50 units.
+constexpr float PartnerDistance = .5f;
 struct Vec2 { float x = 0, z = 0; };
 struct GroundContact {uint32_t attributes=0, sourceNode=0;};
 struct ReturnPoint {float x=0,y=0,z=0;};
@@ -58,6 +61,10 @@ public:
     GroundContact returnContact;
     WaterRecovery water;
     TransitionFade fade;
+    RoadMotion roadMotion;
+    bool arriving=false;
+    void beginRoadArrival();
+    void cancelRoad();
     bool reloadRequested=false;
     bool recoveryReturn(ReturnPoint& point) const;
     float cameraZ = 3.5f, cameraHeight = 0;
@@ -89,6 +96,12 @@ private:
     void attackDone(int damage);
     void openDialogue(int kind);
     bool beginWater();
+    Vec2 arrivalStart,arrivalEnd;
+    Vec2 departureOrigin;
+    float departureHeight=0;
+    bool departureOriginValid=false;
+    bool departureDone=false;
+    int departurePause=0;
 };
 struct CollisionSnapshot;
 // Stages a room's collision; destruction restores the previous data unless committed.

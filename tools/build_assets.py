@@ -135,7 +135,7 @@ def main():
             c=center(marker);d=center(dest)
             direction={'n_bero':(0,-1),'s_bero':(0,1),'e_bero':(1,0),'w_bero':(-1,0)}
             dx,dz=direction[entry['arrival']]
-            links.append({'source':source,'exit':entry['name'],'target':target,'arrival':entry['arrival'],'center':c,'spawn':[d[0]-dx*.9,dest['bounds'][0][1],d[2]-dz*.9],'rel_offset':entry['offset']})
+            links.append({'source':source,'exit':entry['name'],'target':target,'arrival':entry['arrival'],'center':c,'spawn':[d[0]-dx*.3,dest['bounds'][0][1],d[2]-dz*.3],'rel_offset':entry['offset']})
     (WORK/'room-links.json').write_text(json.dumps(links,indent=2))
     with (OUTPUT/'rooms.bin').open('wb') as out:
         out.write(struct.pack('<I',len(links)))

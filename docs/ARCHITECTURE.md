@@ -212,9 +212,14 @@ prototype jump, matching the source road-event landing gate. Main waits until
 an opaque frame has been submitted before staging collision/returns/rendering.
 Commit starts destination fade-in; failure rolls back room resources and fades
 the retained scene back in. Both handheld screens receive a final C2D overlay.
-START exit during fade preserves the existing checkpoint. Arrival autosave remains
-valid because it records the committed destination, not a partial departure.
+START exit during queued travel, fade or arrival preserves the existing checkpoint.
+Arrival autosave waits until the validated destination endpoint is reached.
 
-This adds the verified default fade component, not full original Bero movie
-choreography. Exit/entry scripted walking, sensor volumes, distances, party
-homing modes and original camera framing still require source/observation work.
+Portable RoadMotion implements the source ordinary-road150-units/second rate
+(0.025 native/tick), integer tick count and final XZ snap. Departure walks to
+1.5 native outside the marker, waits9 ticks, then fades out. Entry walks from
+0.3 outside to0.3 inside during fade-in. finishWarp validates support/collision
+and movement before restoring destination state. Failed staging restores the
+recorded departure position while CollisionTransition restores old room data.
+Original party choreography, sensor volumes, dynamic floor physics and camera
+framing still require source/observation work.

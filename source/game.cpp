@@ -98,11 +98,31 @@ uint32_t Game::warpTarget() const {return warpRequest>=0 && size_t(warpRequest)<
 bool Game::finishWarp() {
     if(warpRequest<0 || size_t(warpRequest)>=roads.size())return false;
     const auto& w=roads[warpRequest];float height=w.spawnY;
+    const auto reverse=std::find_if(roads.begin(),roads.end(),[&](const auto& r){return r.source==w.target && r.target==w.source;});
+    if(reverse==roads.end())return false;
+    const Vec2 start{2*reverse->x-w.spawnX,2*reverse->z-w.spawnZ};
     Vec2 arrival{w.spawnX,w.spawnZ};
+    RoadMotion staged;
+    if(!staged.begin({start.x,start.z},{arrival.x,arrival.z}))return false;
     if(!groundAt(arrival,height,height) || !walkable(arrival,height))return false;
     Progress next=progress;next.room=w.target;next.position=arrival;next.elevation=height;
     restore(next);groundHeight=height;partner=arrival;partnerHeight=height;partnerContact=groundContact;
-    followerPath.clear();warpCooldown=45;saveRequested=true;return true;
+    arrivalStart=start;arrivalEnd=arrival;
+    followerPath.clear();warpCooldown=0;saveRequested=true;return true;
+}
+void Game::beginRoadArrival() {
+    roadMotion.begin({arrivalStart.x,arrivalStart.z},{arrivalEnd.x,arrivalEnd.z});
+    if(std::fabs(roadMotion.step[0])>.001f)facing=roadMotion.step[0]>0?1:-1;
+    turnScale=1;turnTick=0;
+    progress.position=arrivalStart;partner=arrivalStart;arriving=true;saveRequested=false;
+}
+void Game::cancelRoad() {
+    if(departureOriginValid) {
+        progress.position=departureOrigin;groundHeight=progress.elevation=departureHeight;
+        cameraX=departureOrigin.x;cameraZ=departureOrigin.z;cameraHeight=departureHeight;
+    }
+    warpRequest=-1;warpCooldown=60;departureDone=false;departurePause=0;roadMotion={};arriving=false;saveRequested=false;
+    fade.startIn();
 }
 bool walkable(Vec2 p,float elevation) {
     constexpr float r = 0.28f;
@@ -274,7 +294,7 @@ const char* Game::dialogue() const {
 }
 const char* Game::prompt() const {
     if(scene==Scene::FieldDefeat)return "A: load save";
-    if(water.active() || fade.active() || warpRequest>=0)return "";
+    if(water.active() || fade.active() || arriving || warpRequest>=0)return "";
     if (scene == Scene::Dialogue) return "A / touch: next     B: close";
     if (scene == Scene::Victory) return "Crump defeated! A: return to plaza";
     if (scene == Scene::Defeat) return "A: retry     B: return to plaza";
@@ -306,7 +326,7 @@ void Game::move(const Input& i) {
         for(size_t n=0;n<roads.size();++n) {
             const auto& road=roads[n];
             if(road.source==progress.room && length(p,{road.x,road.z})<.7f &&
-                x*(road.x-p.x)+z*(road.z-p.z)>0) {warpRequest=int(n);if(jumpTick==0)fade.startOut();saveRequested=false;break;}
+                x*(road.x-p.x)+z*(road.z-p.z)>0) {warpRequest=int(n);departureOrigin=p;departureHeight=groundHeight;departureOriginValid=true;saveRequested=false;break;}
         }
     }
     if (std::fabs(x) > .15f && (x>0 ? 1.f : -1.f) != facing) {
@@ -318,8 +338,8 @@ void Game::move(const Input& i) {
     if(length(followerPath.back(),p)>.08f) followerPath.push_back(p);
     float remaining=length(partner,followerPath.front());
     for(size_t n=1;n<followerPath.size();++n)remaining+=length(followerPath[n-1],followerPath[n]);
-    if(remaining>.9f) {
-        float budget=std::min(.065f,remaining-.9f);
+    if(remaining>PartnerDistance) {
+        float budget=std::min(.065f,remaining-PartnerDistance);
         while(budget>0 && !followerPath.empty()) {
             Vec2 target=followerPath.front();float dist=length(partner,target);
             if(dist<.001f) {followerPath.erase(followerPath.begin());continue;}
@@ -406,11 +426,32 @@ void Game::battle(const Input& i) {
 void Game::tick(const Input& i) {
     ++ticks; sound=Sound::None;
     const bool tap=i.touchX>=0;
+    if(arriving) {
+        fade.tick();const bool finished=roadMotion.tick();
+        progress.position={roadMotion.position[0],roadMotion.position[1]};partner=progress.position;
+        if(finished){arriving=false;saveRequested=true;followerPath.clear();followerPath.push_back(partner);}
+        return;
+    }
     if(fade.active()){fade.tick();return;}
     if(warpRequest>=0) {
+        if(size_t(warpRequest)>=roads.size()){cancelRoad();return;}
         // Original road event disables controls and waits for landing first.
-        if(jumpTick>0){--jumpTick;jumpHeight=1.1f*std::sin(jumpTick*3.14159265f/36.f);}
-        if(jumpTick==0)fade.startOut();
+        if(jumpTick>0){--jumpTick;jumpHeight=1.1f*std::sin(jumpTick*3.14159265f/36.f);return;}
+        if(!departureDone && !roadMotion.active()) {
+            const auto& w=roads[warpRequest];
+            const auto reverse=std::find_if(roads.begin(),roads.end(),[&](const auto& r){return r.source==w.target && r.target==w.source;});
+            if(reverse==roads.end()){cancelRoad();return;}
+            float x=w.x-reverse->spawnX,z=w.z-reverse->spawnZ,d=std::hypot(x,z);
+            if(d<.001f){cancelRoad();return;}
+            if(!roadMotion.begin({progress.position.x,progress.position.z},{w.x+x*1.5f/d,w.z+z*1.5f/d})){cancelRoad();return;}
+        }
+        if(!departureDone) {
+            if(std::fabs(roadMotion.step[0])>.001f)facing=roadMotion.step[0]>0?1:-1;
+            turnScale=1;turnTick=0;
+            if(roadMotion.tick()){departureDone=true;departurePause=9;}
+            progress.position={roadMotion.position[0],roadMotion.position[1]};
+            cameraX+=(progress.position.x-cameraX)*.07f;cameraZ+=(progress.position.z-cameraZ)*.07f;
+        } else if(departurePause>0 && --departurePause==0)fade.startOut();
         return;
     }
     if(scene==Scene::FieldDefeat) {if(i.confirm || (tap && i.touchY>=107 && i.touchY<155))reloadRequested=true;return;}

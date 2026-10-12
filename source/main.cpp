@@ -92,8 +92,8 @@ int main() {
             uint32_t target=game.warpTarget();
             bool ok=stageRoomCollision(target,transaction) && candidate.finishWarp();
             if(ok)ok=renderer.changeRoom(target);
-            if(ok) {transaction.commit();game=std::move(candidate);game.fade.startIn();notice="";noticeTicks=0;}
-            else {game.warpRequest=-1;game.warpCooldown=60;game.fade.startIn();notice="Room transition failed";noticeTicks=180;}
+            if(ok) {transaction.commit();game=std::move(candidate);game.beginRoadArrival();game.fade.startIn();notice="";noticeTicks=0;}
+            else {game.cancelRoad();notice="Room transition failed";noticeTicks=180;}
             accumulator=0;pending={};previous=seconds();
         }
         if(game.saveRequested) {
@@ -121,6 +121,6 @@ int main() {
         if(now-window>=1) {metrics.fps=frames/(now-window);window=now;frames=0;}
     }
     // A battle is transient; save only the exploration checkpoint.
-    if(game.scene==ttyd::Scene::Explore && !game.water.active() && !game.fade.active()) ttyd::writeSave(savePath,game.progress);
+    if(game.scene==ttyd::Scene::Explore && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0) ttyd::writeSave(savePath,game.progress);
     audio.shutdown();renderer.shutdown();romfsExit();gfxExit();return 0;
 }

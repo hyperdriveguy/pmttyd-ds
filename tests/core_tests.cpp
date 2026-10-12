@@ -310,9 +310,9 @@ void transitionFade() {
     g.warpRequest=-1;g.warpCooldown=60;g.fade.startIn();
     for(int n=0;n<18;++n)g.tick(blocked);
     CHECK(!g.fade.active() && g.warpCooldown==60 && g.progress.position.x==p.x);
-    Game jumping;jumping.tick(confirm());jumping.warpRequest=0;
-    for(int n=0;n<35;++n){jumping.tick(blocked);CHECK(!jumping.fade.active());}
-    jumping.tick(blocked);CHECK(jumping.jumpHeight==0 && jumping.fade.active());
+    RoadMotion motion;motion.begin({0,0},{.6f,0});CHECK(motion.remaining==24);
+    for(int n=0;n<23;++n){CHECK(!motion.tick());CHECK(std::fabs(motion.position[0]-(n+1)*.025f)<.00001f);}
+    CHECK(motion.tick() && motion.position[0]==.6f);
 }
 void indexedOriginalCollision() {
     size_t queries=0;
@@ -385,13 +385,41 @@ void originalRooms() {
         Game g;g.progress.room=road.source;g.progress.hp=7;g.warpRequest=n;
         CHECK(g.warpTarget()==road.target);CHECK(g.finishWarp());
         CHECK(g.progress.room==road.target);CHECK(g.progress.hp==7);CHECK(g.warpRequest==-1);
-        CHECK(g.warpCooldown==45);CHECK(g.saveRequested);
+        CHECK(g.warpCooldown==0);CHECK(g.saveRequested);
         CHECK(g.cameraX==g.progress.position.x);CHECK(g.cameraZ==g.progress.position.z);
         CHECK(g.cameraHeight==g.groundHeight);CHECK(walkable(g.progress.position,g.groundHeight));
         CHECK(g.groundContact.attributes==g.partnerContact.attributes);
         CHECK(g.groundContact.sourceNode==g.partnerContact.sourceNode);
         CHECK(std::fabs(g.progress.position.x-road.spawnX)<.001f);CHECK(std::fabs(g.progress.position.z-road.spawnZ)<.001f);
         CHECK(decodeSave(encodeSave(g.progress),g.progress));
+        Game entry=g;entry.beginRoadArrival();entry.fade.startIn();
+        CHECK(entry.arriving && !entry.saveRequested && entry.roadMotion.remaining==24);
+        Input blocked;blocked.x=1;blocked.confirm=true;blocked.menuConfirm=true;
+        for(int frame=0;frame<23;++frame){entry.tick(blocked);CHECK(entry.arriving && !entry.saveRequested);}
+        entry.tick(blocked);CHECK(!entry.arriving && entry.saveRequested && !entry.fade.active());
+        CHECK(entry.progress.position.x==g.progress.position.x && entry.progress.position.z==g.progress.position.z);
+        // Walk back toward the reciprocal opening, then simulate a failed load.
+        Game departure=entry;
+        Input jump;jump.confirm=true;departure.tick(jump);
+        Input toward; toward.x=entry.roadMotion.step[0]<0?1:entry.roadMotion.step[0]>0?-1:0;
+        toward.z=entry.roadMotion.step[1]<0?1:entry.roadMotion.step[1]>0?-1:0;
+        for(int frame=0;frame<60 && departure.warpRequest<0;++frame)departure.tick(toward);
+        CHECK(departure.warpRequest>=0);
+        const auto origin=departure.progress.position;const float originHeight=departure.groundHeight;
+        CHECK(departure.jumpHeight>0);
+        for(int frame=0;frame<36 && departure.jumpHeight>0;++frame){
+            departure.tick(blocked);
+            CHECK(departure.progress.position.x==origin.x && departure.progress.position.z==origin.z);
+            CHECK(!departure.fade.active() && !departure.roadMotion.active() && !departure.saveRequested);
+        }
+        CHECK(departure.jumpHeight==0);
+        for(int frame=0;frame<200 && !departure.fade.active();++frame){departure.tick(blocked);CHECK(!departure.saveRequested);}
+        CHECK(departure.fade.active());CHECK(departure.roadMotion.remaining==0);
+        CHECK(std::hypot(departure.progress.position.x-origin.x,departure.progress.position.z-origin.z)>1.f);
+        departure.cancelRoad();
+        CHECK(departure.progress.position.x==origin.x && departure.progress.position.z==origin.z);
+        CHECK(departure.groundHeight==originHeight && departure.warpRequest==-1);
+        CHECK(walkable(departure.progress.position,departure.groundHeight));
         for(int frame=0;frame<10;++frame)g.tick({});CHECK(g.warpRequest==-1);
         if(road.source==0 && road.target==1) {
             // Harbor's entrance overlaps short posts and lower floor surfaces.
@@ -407,11 +435,12 @@ void originalRooms() {
             auto walk=[&](float x,float z,int frames) {
                 Input i;i.x=x;i.z=z;
                 for(int frame=0;frame<frames;++frame) {
-                    stairs.tick(i);CHECK(walkable(stairs.progress.position,stairs.groundHeight));
+                    stairs.tick(i);if(stairs.warpRequest>=0)break;
+                    CHECK(walkable(stairs.progress.position,stairs.groundHeight));
                     CHECK(walkable(stairs.partner,stairs.partnerHeight));
                 }
             };
-            walk(1,0,30);walk(1,1,50);walk(-1,0,60);walk(0,1,10);
+            walk(0,1,9);walk(1,0,30);walk(1,1,50);walk(-1,0,60);walk(0,1,10);
             CHECK(std::fabs(stairs.progress.position.x)<1 && stairs.progress.position.z>-2.5f);
             CHECK(std::fabs(stairs.groundHeight-.15f)<.001f);
             CHECK(std::fabs(stairs.partnerHeight-.15f)<.001f);

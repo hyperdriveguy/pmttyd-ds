@@ -1154,3 +1154,46 @@ Next: compare actor/map proportions with Dolphin under matched framing before
 further scale changes. Existing uncommitted road-motion work is separate and
 still needs its own documentation and emulator acceptance; do not assume this
 boot check validates that work.
+
+## Scripted road departure and arrival
+
+Implemented recovered ordinary-road distances/rate (see MECHANICS.md):
+0.3-native inside arrival endpoints,0.6-native entry travel at0.025/tick,
+1.5-native outside departure endpoint and9-tick pre-fade wait. Queued travel
+waits for landing and blocks input/saving. Arrival movement overlaps fade-in;
+saving resumes only at the validated endpoint. Failed staging restores the
+saved departure position and fades the retained room back in. Successful
+transitions no longer use the provisional45-tick cooldown; movement gates them.
+Party following threshold is0.5 after the source road homing value.
+
+Validation: `make test` passed core and27 Python tests;
+`build-host/core_tests --rooms` passed all8 arrivals,24-tick arrival movement,
+all8 failed-load rollback scenarios and18,315 indexed/full-scan probes.
+`make -j2 all` built the native binary in the character-size session with these
+road changes present. Isolated east-road Azahar script passed two round trips:
+`python3 tools/emulator_smoke.py --fresh-save --save-fixture
+artifacts/fixtures/east-road.bin --seconds 4 --input-script tests/azahar_roads.py`.
+Further native room/fade results are recorded below as completed.
+
+Known limitations: original party choreography/camera are incomplete; scripted
+Y uses fixed support height, trigger radius/body dimensions remain provisional.
+Next: verify station/harbor native trips, then recover wall attributes and
+original collision/sensor dimensions. Original dialogue/story, SFX, layered
+materials, doors/interiors and measured battle mechanics remain outstanding.
+Full objective remains active; hardware performance remains unverified.
+
+Additional completed checks: dual-screen fade script exited0, with both paper
+fill probes ranging0→238.67 and intermediate alpha values. Station and harbor
+road scripts each exited0 with two reciprocal trips; station also saved its
+final entry. Station's first run failed the second entry while a concurrent
+native rebuild changed the embedded RomFS binary; captured UI showed graceful
+room-load failure/rollback. Repeated on the finished, unchanged binary passed.
+Do not rebuild the mounted binary during emulator acceptance runs.
+
+Final host checks additionally exercise jumping via input before all8 queued
+roads: no departure movement, fade or save occurs until landing. Final
+`make test`, `build-host/core_tests --rooms`, and `make -j2 all` exited0.
+West road script also exited0 with two reciprocal plaza/west trips. Combined
+with east, harbor and station scripts, all8 directed outdoor roads now have
+native repeated-transition coverage on this implementation. Fixtures used:
+artifacts/fixtures/{east,harbor,station,west}-road.bin; command pattern above.
