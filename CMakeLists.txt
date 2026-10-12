@@ -235,6 +235,7 @@ target_link_libraries(camera_road_assets_tests PRIVATE ttyd_core)
 add_test(NAME camera_road_assets COMMAND camera_road_assets_tests)
 
 target_sources(ttyd_core PRIVATE source/camera_road_curve.cpp)
+target_sources(ttyd_core PRIVATE source/camera_road_zone.cpp)
 
 add_executable(event_context_addresses_tests tests/event_context_addresses_tests.cpp)
 target_link_libraries(event_context_addresses_tests PRIVATE ttyd_core)

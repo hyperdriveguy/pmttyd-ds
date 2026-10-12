@@ -1,5 +1,6 @@
 #include "camera_road_assets.hpp"
 #include "camera_road_curve.hpp"
+#include "camera_road_zone.hpp"
 #include <cmath>
 #include <cstring>
 #include <cstdlib>
@@ -73,10 +74,30 @@ void curveCases() {
     CHECK(out.segmentStartY==10 && out.parameter==2 && out.flags==1);
     CHECK(out.anchor.x==1.995f && out.anchor.z==1 && out.tangent.z==.005f);
 }
+void zoneCases() {
+    const CameraPoint a{0,0,0},b{0,0,2},c{2,0,0};float best=-100000000;
+    CHECK(cameraZoneTriangle({.5f,1,.5f},a,b,c,best) && best==0);
+    CHECK(cameraZoneTriangle({.5f,1,.5f},a,c,b,best) && best==0); // Equal-height replacement, either winding above.
+    CHECK(!cameraZoneTriangle({.5f,0,.5f},a,b,c,best));
+    CHECK(cameraZoneTriangle({.5f,0,.5f},a,c,b,best)); // Coplanar admission is winding-dependent.
+    CHECK(!cameraZoneTriangle({.5f,-1,.5f},a,b,c,best));
+    CHECK(!cameraZoneTriangle({2,1,2},a,b,c,best));
+    CHECK(cameraZoneTriangle({1,1,1},a,b,c,best)); // Inclusive edge.
+    CHECK(!cameraZoneTriangle({0,1,0},a,a,a,best));
+    CHECK(!cameraZoneTriangle({0,1,0},a,{0,1,0},b,best)); // Vertical plane, nonzero 3D normal.
+    CHECK(best==0);
+    CHECK(cameraZoneTriangle({.5f,2,.5f},a,b,{2,2,0},best) && best==.5f);
+    CHECK(!cameraZoneTriangle({.5f,2,.5f},a,b,c,best) && best==.5f);
+    CameraRoadAsset asset;auto raw=fixture();number(raw,0x118+0x8c,2);
+    CHECK(asset.decode(raw));auto selected=selectCameraRoadZone(asset,{0,2,0});
+    CHECK(selected && selected->road==0 && selected->height==2);
+    CHECK(!selectCameraRoadZone(asset,{0,1,0}));
+    put(raw,0x118+0x28,1);CHECK(asset.decode(raw));CHECK(!selectCameraRoadZone(asset,{0,3,0}));
+}
 int main(int argc,char**) {
     if(argc>1) {
         CHECK(loadCameraRoadAssets("romfs"));
-        const uint32_t expected[]={11,3,14,14,2};uint32_t total=0,eligible=0;
+        const uint32_t expected[]={11,3,14,14,2};uint32_t total=0,eligible=0,triangles=0,regularTriangles=0;
         for(uint32_t room=0;room<5;++room) {
             const auto* asset=cameraRoadAsset(room);CHECK(asset && asset->collections()[1].count==expected[room]);
             CHECK(asset->versionCode()==101 && asset->version()=="1.01");
@@ -92,12 +113,34 @@ int main(int argc,char**) {
                 CHECK(output.untouchedWord==0xabcdef12);
             }
             total+=expected[room];
+            for(uint32_t z=0;z<asset->collections()[2].count;++z) {
+                const auto base=*asset->zoneWord(z,0x58),first=*asset->zoneWord(z,0x60),count=*asset->zoneWord(z,0x64);
+                for(uint32_t p=first;p<first+count;++p) {
+                    const auto polygon=*asset->polygon(p);if(polygon[1]<3)continue;
+                    const auto a=*asset->zoneVertex(base+*asset->vertexIndex(polygon[0]));
+                    for(uint32_t i=1;i+1<polygon[1];++i) {
+                        const auto b=*asset->zoneVertex(base+*asset->vertexIndex(polygon[0]+i));
+                        const auto c=*asset->zoneVertex(base+*asset->vertexIndex(polygon[0]+i+1));
+                        ++triangles;const float ny=(b.z-a.z)*(c.x-a.x)-(b.x-a.x)*(c.z-a.z);
+                        float best=-100000000;const CameraPoint centroid{(a.x+b.x+c.x)/3,(a.y+b.y+c.y)/3+1,(a.z+b.z+c.z)/3};
+                        const bool hit=cameraZoneTriangle(centroid,a,b,c,best);
+                        // The exported slivers can be narrower than the f32
+                        // centroid rounding error. This conditioning guard is
+                        // test-only; production retains strict source edges.
+                        const float extent=std::fabs(b.x-a.x)+std::fabs(b.z-a.z)+std::fabs(c.x-a.x)+std::fabs(c.z-a.z);
+                        if(std::fabs(ny)>.00001f*extent*extent){++regularTriangles;CHECK(hit);CHECK(std::fabs(best-(a.y+b.y+c.y)/3)<.001f);}
+                        else if(hit)CHECK(std::isfinite(best));
+                        else CHECK(best==-100000000);
+                    }
+                }
+            }
         }
         CHECK(eligible==44);CHECK(!cameraRoadAsset(5));CHECK(!loadCameraRoadAssets("/missing-camera-directory"));
         CHECK(cameraRoadAsset(0)->collections()[1].count==11);
-        std::cout<<"Original camera assets passed: "<<total<<" authored roads in five rooms\n";return 0;
+        CHECK(triangles==494 && regularTriangles>400);
+        std::cout<<"Original camera assets passed: "<<total<<" authored roads, "<<triangles<<" zone triangles in five rooms\n";return 0;
     }
-    curveCases();CameraRoadAsset asset;auto raw=fixture();CHECK(asset.decode(raw));CHECK(asset.bytes()==raw);
+    curveCases();zoneCases();CameraRoadAsset asset;auto raw=fixture();CHECK(asset.decode(raw));CHECK(asset.bytes()==raw);
     CHECK(asset.roadName(0)=="C_fixture" && asset.roadFloat(0,0x58)==42.5f && asset.roadWord(0,0x80)==0x89abcdef);
     CHECK(asset.collections()[8].offset==0xffbf3a10 && asset.collections()[8].count==0);
     CHECK((*asset.lensMetadata())[0]==25);
