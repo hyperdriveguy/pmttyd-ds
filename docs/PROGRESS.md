@@ -7787,3 +7787,34 @@ Next:native owner applies documented dot/operand correction;full scene/ray
 backend,special filters,floor/fly/homing/fall/jump and state/math domains;
 original collision trajectories and field/battle teardown. Complete-game
 behavior documentation and requirements remain incomplete.
+
+## 2026-10-12 — ID2 map/SDK release,heap bootstrap and pool reset
+
+Added [map free/battle pool](behavior/MAP_BUFFER_FREE_AND_BATTLE_POOL.md),
+[five-pool bootstrap/clear](behavior/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md) and
+[SDK release/census](behavior/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md). Complete
+local map free merges one successor then a linked predecessor with header32
+accounting;SDK allocated unlink/address insertion uses exact physical adjacency
+and total-size addition. Their null/double-free/stale-header policies differ.
+Complete memory init/clear and SDK init/create/destroy/arena leaves pin five
+config records,two-pass fixed/percent assignment,ignored recreated handles,
+primary root inside SDK heap1 and400KiB nested battle reservation. Fifty direct
+DOL sites constrain caller breadcrumbs;full scene/REL/indirect/event-pointer
+ownership is not inferred. Only ID2 scoped lock released;EVT-01 remains open.
+
+Validation:verify_event_heap_release_and_bootstrap.py passed20 complete/linked
+body hashes,205 instruction anchors,two SDA/config spans and all50 branch-shaped
+DOL direct sites,including45 _mapFree callers. Repeated metadata byte-identical;
+Python compilation,general verifier1980 anchors,prior data/memory and context
+verifiers passed. make test passed35 CTest suites and63 Python tests;make all
+rebuilt concurrent native render/save/3DSX successfully. All1559 local
+documentation links resolved;the previous surrounding-wall missing target has
+arrived and is now resolved. git diff --check passed.
+
+Original ISO read-only;no original free/heap/scene execution or ownership trace,
+profile/save mutation,asset pipeline/conversion choice changes or original
+binary/dialogue distribution by ID2. Concurrent native/ID1 files and locks
+preserved. Next:per-event/shared user-pointer/scene/REL ownership and alias/cycle/
+capacity/numeric/arena/platform domains;clock/VI/thread/gate/state writers and
+original reset/free/cancellation/Jump/story traces. Complete-game documentation
+and requirements remain incomplete.

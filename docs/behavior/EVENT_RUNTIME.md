@@ -337,3 +337,15 @@ capacity mutation,heap/scene/clock/platform domains and original traces remain o
 StMain/display requests,33-call ordering and idle tail. Earlier producer scope
 is superseded for these local paths. Hardware clock/VI/thread/gate/state/source
 and measured original input/pause/multicredit cadence remain open.
+
+
+## Complete heap release/bootstrap follow-up (2026-10-12)
+
+[Map free/battle pool](MAP_BUFFER_FREE_AND_BATTLE_POOL.md),
+[pool bootstrap/bulk clear](MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md) and
+[SDK free/direct census](SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md) now close local
+initialization/free/coalescing/reset bodies. Map+32 payload sizing and SDK total
+sizing/free/null rules differ;bulk reset does not invoke per-owner destructors.
+Per-event/scene/REL/indirect ownership,arena/alias/domain/platform and original
+traces remain open. Earlier local free/bootstrap gaps are superseded;automatic
+E154/E158 ownership/free remains unsupported without source lifetime evidence.

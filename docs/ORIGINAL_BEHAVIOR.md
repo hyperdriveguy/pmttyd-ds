@@ -525,3 +525,11 @@ second correction,negative/unordered takes half-add under nontrapping continuati
 Native policy/fixtures were notified via inbox;documentation validation does not
 claim native parity. Full scene/filter/domain/math and original trajectories
 remain open.
+
+
+[Map release/battle pool](behavior/MAP_BUFFER_FREE_AND_BATTLE_POOL.md),
+[five-pool bootstrap/reset](behavior/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md) and
+[SDK free/caller census](behavior/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md)
+now specify complete local memory construction/release/coalescing/reset and50
+DOL sites. Map and SDK size/null/merge/ownership policies remain distinct;
+scene/REL/alias/platform/domain and original runtime ownership remain open.

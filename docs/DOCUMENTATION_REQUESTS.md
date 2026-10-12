@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Map/SDK buffer release and pool initialization provenance | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Map free/battle pool](behavior/MAP_BUFFER_FREE_AND_BATTLE_POOL.md),[five pools/reset](behavior/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md),[SDK free/census](behavior/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md):complete local release/coalescing/bootstrap/bulk reset and50 direct DOL sites;event user-pointer/scene/REL/platform/source/runtime ownership remains open |
 | Partner stay floor/fly post-collision services | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used unk_80150fac/unk_801512e0 complete local post-wall graphs and concrete floor/fly calls;full terrain/backend/motion engines,EVT-01 and original traces remain separate |
 | Event timestamp producer and main-loop pause/update binding | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Retrace clock](behavior/EVENT_RETRACE_TIME_PUBLICATION.md),[outer/update loop](behavior/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md):complete clock publication prefix/window/raw readers and main/StMain/idle body,scoped refresh/registration;other callback tail/input/scene/platform/domain and measured cadence/original traces remain open |
 | Partner surrounding-wall correction and called search body | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Binding/core/numerics](behavior/FIELD_PARTNER_SURROUNDING_WALL.md):mode1/width override,global view/filter ownership and local two-pass/vector graph answered;corrected dot sign and pre-cap saved vector;full ray/filter/terrain/math/domain/EVT-01 and original traces remain open |
@@ -1253,3 +1254,21 @@ Historical missing-file log:/tmp/id1-around-test.log;passing rerun:
 native dot predicate:source/field_wall.cpp still applies when dot>0 and saves
 a capped first push at this check. Exact original acceptance cases are in the
 new contract;native owner review remains required for parity.
+
+
+ID2 EVT-01 heap/release delivery (2026-10-12), partial answer:
+[Map release/battle pool](behavior/MAP_BUFFER_FREE_AND_BATTLE_POOL.md) closes
+successor-then-predecessor merge,header32 accounting,early null/used gates and
+400KiB primary-map reservation/nested root/free order. [Pool bootstrap/reset](behavior/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md)
+closes five original config records,fixed/percentage two-pass assignment,SDK
+creation/destroy/recreation,ignored replacement handles and memClear index1
+primary root rebuilding. [SDK free/census](behavior/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md)
+closes allocated unlink,address-sorted insertion and exact adjacency coalescing,
+with50 direct sites (45 map free). SDK free has no map-style null gate and its
+sizes include headers;do not share generic free/size semantics. No per-event
+ownership/free or complete scene/REL/alias validity is inferred. Own lock
+released;remaining source/ownership/arena/platform/numeric/scene/original traces
+stay EVT-01 work. Verifier passes20 linked/complete hashes,205 anchors,two
+spans,50 exact direct sites. make test passes35 CTest suites and63 Python tests;
+make all passed. Previous concurrent surrounding-wall link now resolves;current
+full local link check passes. ID2 changed no native or asset pipeline code.
