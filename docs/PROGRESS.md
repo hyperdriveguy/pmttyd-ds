@@ -1,5 +1,39 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original map/SDK release and nested battle-pool ownership
+
+Implemented `event_memory_release.cpp` for _mapFree,DLInsert,OSFreeToHeap,
+__memFree and battle nested-pool allocation/free. Map release gates null/unused,
+merges one successor/predecessor with header+32 accounting and preserves removed
+headers. SDK release removes the allocated node,inserts by unsigned address and
+coalesces actual adjacency using total sizes;it adds no null guard. Battle pool
+reserves400KiB in primary map,creates its inner root,and releases the reservation
+through PRIMARY root before clearing only the battle pointer. No per-event/free
+ownership policy,inner teardown,cache flush or payload cleanup was invented.
+Exact read/write ordering checked in read-only ISO /tmp/pm-map-free.disasm,
+/tmp/pm-sdk-insert.disasm and /tmp/pm-sdk-free.disasm;no original code committed.
+
+Validation: standalone -Wall/-Wextra/-Wpedantic host compile/run passed;project
+CMake event_memory_release_tests target built;all19 event CTest suites passed.
+Logs:/tmp/pm-memory-release-target-build.log and
+/tmp/pm-memory-release-event-test.log. ARM event_memory_release.o compiled.
+Fixtures cover null/unused/nonzero used,one/two map merges/unsigned stop/stale
+headers,SDK head/middle/forward/back adjacency and round trip,SDK null request,
+400KiB nested roots/inner lifetime/failure publication,and composed original
+bootstrap→both1b000 context payloads→battle pool→both release families.
+
+Full validation is pending CONCURRENT native road work:make test currently fails
+core_tests references to removed warpCooldown;make all reached app linking and
+failed roadStartGround in Game::finishWarp. Logs:
+/tmp/pm-memory-release-test-final.log and /tmp/pm-memory-release-build.log.
+Own event implementation/tests are independent;no road edits reverted/overwritten.
+Previous bootstrap full run passed43 suites/69 Python tests before these edits.
+
+Next:rerun make test/make all after native road helper/fixtures settle;bind
+native arena/storage/context/address/time services and import original event
+streams/callback registry. Entry-layout/Jump source requests remain open in
+EVT-01. Goal remains active/incomplete;no emulator run for unbound services.
+
 ## 2026-10-12 — Original five-pool memory bootstrap and bulk reconstruction
 
 Implemented `event_memory_bootstrap.cpp` for SDK descriptor initialization,

@@ -467,6 +467,19 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Release-service breadcrumb (2026-10-12): `event_memory_release.cpp` now ports
+map/SDK free/coalescing and400KiB battle nested-pool requests. Tests cover each
+family's distinct null/size/link/merge/lifetime policy and a complete bootstrap→
+context-payload→nested-pool→release composition. All19 event suites pass;ARM
+release object compiles. Full make test/make all currently encounter concurrent
+road edits:core_tests still references removed warpCooldown and app link lacks
+roadStartGround. Logs:/tmp/pm-memory-release-test-final.log and
+/tmp/pm-memory-release-build.log. Native road session should finish helper/
+fixture bindings;event edits do not touch them. Prior full bootstrap validation
+passed43 suites/69 Python tests. Next:full rerun,native storage/context/time/
+address owners and original stream/registry import;prior layout/Jump requests
+remain open. No automatic event-owned buffer release was inferred.
+
 Memory-bootstrap breadcrumb (2026-10-12): `event_memory_bootstrap.cpp` ports
 SDK Init/Create/DestroyHeap and five-pool memInit/memClear,with original primary
 map construction. Tests preserve original configuration,shared percentage
