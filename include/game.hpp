@@ -16,6 +16,7 @@
 #include "battle_damage_application.hpp"
 #include "battle_weapon_power.hpp"
 #include "physical_input.hpp"
+#include "field_battle.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -126,10 +127,20 @@ public:
     const GlobalInputChannel& physicalChannel(size_t i=0) const { assert(i<4);return inputProducer.channels[i]; }
     const BattlePadWork& generalPad(size_t i=0) const {assert(i<4);return generalBattlePads[i];}
     const BattlePadWork& privatePad() const {return actionCommandPad;}
+    const FieldBattleWork& fieldBattleState() const {return fieldBattleWork;}
+    bool fieldControlEnabled() const {return marioFieldControl && partnerFieldControl;}
     const char* dialogue() const;
     const char* prompt() const;
     bool near(Vec2 point, float distance = 1.5f) const;
 private:
+    FieldBattleWork fieldBattleWork;
+    int32_t fieldSequence=2;
+    bool marioFieldControl=true,partnerFieldControl=true;
+    // Recorded requests: original prepare/post/audio internals remain unbound.
+    bool fieldPrepareRequested=false,fieldPostRequested=false,fieldBgmStopRequested=false;
+    uint32_t fieldSoundFlags=0;
+    FieldBattleServices fieldBattleServices();
+    bool returnFromBattle(int32_t harnessResult);
     std::vector<Vec2> followerPath;
     FieldJump fieldJump;
     FieldStep fieldStep;

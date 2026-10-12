@@ -629,7 +629,31 @@ void Game::move(const Input& i) {
     else if(verticalReady)finishVertical(previousY);
     if(airborne())saveRequested=false;
 }
+FieldBattleServices Game::fieldBattleServices() {
+    FieldBattleServices s;s.user=this;
+    s.work=[](void* p)->FieldBattleWork& {return static_cast<Game*>(p)->fieldBattleWork;};
+    // Single NPC/partner development fixtures, not original registry IDs.
+    s.npc=[](void*,int32_t)->uintptr_t {return 1;};
+    s.prepareMario=[](void* p) {static_cast<Game*>(p)->fieldPrepareRequested=true;};
+    s.marioControl=[](void* p,bool enabled) {static_cast<Game*>(p)->marioFieldControl=enabled;};
+    s.partyId=[](void*)->int32_t {return 1;};
+    s.party=[](void*,int32_t)->uintptr_t {return 1;};
+    s.partyControl=[](void* p,uintptr_t,bool enabled) {static_cast<Game*>(p)->partnerFieldControl=enabled;};
+    s.soundFlag=[](void* p,uint32_t mask) {static_cast<Game*>(p)->fieldSoundFlags|=mask;};
+    s.setSequence=[](void* p,int32_t sequence) {static_cast<Game*>(p)->fieldSequence=sequence;};
+    s.sequence=[](void* p)->int32_t {return static_cast<Game*>(p)->fieldSequence;};
+    s.stopBattleBgm=[](void* p) {static_cast<Game*>(p)->fieldBgmStopRequested=true;};
+    s.postMario=[](void* p) {static_cast<Game*>(p)->fieldPostRequested=true;};
+    return s;
+}
+bool Game::returnFromBattle(int32_t harnessResult) {
+    // Development outcome tokens only; original outcome producers are unrecovered.
+    fieldBattleWork.result=harnessResult;fieldSequence=2;
+    return waitFieldBattleEnd(fieldBattleServices())==2;
+}
 void Game::startBattle() {
+    fieldPrepareRequested=fieldPostRequested=fieldBgmStopRequested=false;fieldSoundFlags=0;
+    startFieldBattle(0,true,fieldBattleServices());
     scene=Scene::Battle; phase=Phase::Select; phaseTick=0; selection=0;
     enemyHP=BattleRules::CrumpHP; actionSuccess=false; guarded=false;
     generalBattlePads={};actionCommandPad={};defenseCommand={};jumpCommand={};hammerCommand={};
@@ -885,15 +909,20 @@ void Game::tick(const Input& i) {
     }
     if (scene==Scene::Battle) { battle(i); return; }
     if (scene==Scene::Victory && (i.confirm || tap)) {
+        if(!returnFromBattle(1))return;
         progress.crumpDefeated=true; scene=Scene::Explore; saveRequested=true; menu=Menu::Status;
         return;
     }
     if (scene==Scene::Defeat) {
         if (i.confirm || (tap && i.touchY>=107 && i.touchY<155)) { progress.hp=10; startBattle(); }
-        else if (i.cancel || tap) { progress.hp=10; scene=Scene::Explore; }
+        else if (i.cancel || tap) {
+            if(!returnFromBattle(-1))return;
+            progress.hp=10; scene=Scene::Explore;
+        }
         return;
     }
     if (scene!=Scene::Explore) return;
+    if(!fieldControlEnabled())return;
     int tab=menuButton(i);
     if (tab>=0 && tab<4) { menu=static_cast<Menu>(tab); sound=Sound::Confirm; }
     if (i.left) menu=static_cast<Menu>((static_cast<int>(menu)+3)%4);
