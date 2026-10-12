@@ -7085,3 +7085,30 @@ status/distance/flag/slot invariants;mode1 substates/cloud/fall/shadow/splash
 engines and original partner trajectory/stop/run/hazard traces;complete field/
 battle teardown. Full game documentation/remake remain incomplete;complete-game
 requirements remain deferred until adequate coverage.
+
+## 2026-10-12 — ID2 complete local SWITCH/CASE state machine
+
+Added [switch stack/scanners](behavior/EVENT_SWITCH_STACK_AND_CASE_SCANS.md)
+and [group/mask/range](behavior/EVENT_GROUPED_MASK_AND_RANGE_CASES.md).
+Complete local34..49 and eleven CASE helpers specify actual dispatch ordering,
+resolved/raw pushes,signed8 stack/state storage,all six signed predicates,
+OR/AND success/failure latches,group termination,raw any-bit masks,inclusive
+range queries,DEFAULT/BREAK/END and exact lexical header continuations.
+Verifier checks the table directly rather than assigning opcodes in executable
+function order. Scanners count34/1 but ignore35;case search includes36..47 and
+skips BREAK48. Query/capture/state-read order and same-invocation return2 are
+explicit. Only ID2's scoped switch lock released;EVT-01 stays open.
+
+Validation:verify_event_switch_cases.py passed eleven whole CASE hashes plus
+containing dispatcher hash,267 instruction anchors and16 dispatch entries;
+Python compilation passed. General behavior verifier passed1980 instruction
+anchors;all1186 local documentation links resolved. make test passed30 CTest
+suites and58 Python tests;make all succeeded with no rebuild required.
+`git diff --check` passed. ISO read-only;no original execution/emulator trace,
+asset conversion,profile/save mutation or original binary/dialogue distribution.
+ID2 changed no native files;concurrent ID1/native work preserved.
+
+Next:remaining IF/predicate/data-read/bitwise/other opcode bodies and exact
+numeric/pointer/source/capacity domains;original script composition and group/
+nesting traces,then runtime integration acceptance. Complete-game behavior and
+requirements remain incomplete and must not be presented as finished.

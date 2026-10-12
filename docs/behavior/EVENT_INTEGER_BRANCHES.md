@@ -87,3 +87,13 @@ These rules establish the specific original pointer dispatch and mask2 integer
 branches in Hammer. Other conditional/loop/case variants,jump labels,inline
 ownership/pause and malformed streams remain outside this local contract.
 Original scene/branch execution comparisons are still required.
+
+
+## Complete SWITCH/CASE follow-up (2026-10-12)
+
+[Switch stack/scans](EVENT_SWITCH_STACK_AND_CASE_SCANS.md) and
+[group/mask/range](EVENT_GROUPED_MASK_AND_RANGE_CASES.md) now close34..49 and
+all eleven CASE helpers,including exact group sentinel transitions and actual
+dispatch-table ordering. Earlier partial switch/case scope above is superseded
+for these local bodies. Scans ignore raw35 while counting34/1;case search stops
+36..47 and skips BREAK48. Source/numeric/domain and original traces remain open.

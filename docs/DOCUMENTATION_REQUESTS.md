@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Event SWITCH and complete CASE group state machine | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Switch/scans](behavior/EVENT_SWITCH_STACK_AND_CASE_SCANS.md),[group/mask/range](behavior/EVENT_GROUPED_MASK_AND_RANGE_CASES.md):complete34..49 and eleven CASE bodies,actual table order,signed stack/state/raw-query/order and scanner continuations;IF/data/other opcode domains and original traces remain open |
 | Field partner walkMain executor and local terrain requests | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete walkMain admission/selector/call order and local writes;called movement/terrain/pose helpers,EVT-01 and original traces remain separate |
 | Event GOTO/loop and assignment/arithmetic opcode bodies | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [GOTO/loops](behavior/EVENT_GOTO_AND_LOOP_OPCODES.md),[assignment/arithmetic/cursor](behavior/EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md):complete4..8/50..64 and NEXT,raw/resolved/RHS order,count and MOD coercion;other predicates/readers,numeric/domain and original traces remain open |
 | Ordinary field partner movement callbacks modes0/1/2 | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Walk callback](behavior/FIELD_PARTNER_WALK_CALLBACK.md),[history writer/readers](behavior/FIELD_PARTNER_HISTORY_WRITER.md),[mode1 substates](behavior/FIELD_PARTNER_MODE1_SUBSTATES.md):complete local callbacks/history and bindings answered;final walkMain/terrain/collision/pose/source/index/writer engines and original traces remain open |
@@ -977,3 +978,18 @@ Verifier passes six containing hashes (NEXT full,dispatcher scoped/APIs linked),
 73 anchors and24 spans (20 dispatch targets). Own lock released;other predicates,
 readers/numeric/source/domain and original traces remain EVT-01 work. make test
 passes29 CTest suites and58 Python tests;make all passed. ID2 made no native edits.
+
+
+ID2 EVT-01 switch/case delivery (2026-10-12), partial answer:
+[Switch/stack/scans](behavior/EVENT_SWITCH_STACK_AND_CASE_SCANS.md) closes34..49
+actual dispatch table,raw/resolved pushes,signed stack,state gates and next-header
+scans. [Grouped/mask/range](behavior/EVENT_GROUPED_MASK_AND_RANGE_CASES.md)
+closes OR43/AND44 sentinels,raw any-bit mask45,group end46,inclusive range47,
+BREAK48 and END49. Table order is independently pinned;function address order
+must not supply opcode numbering. Scans count34/1 but ignore raw35;case search
+stops36..47 and skips BREAK48. Queries precede consumed/group gates;mask is raw,
+range loads its second operand after first query. Own lock released;EVT-01 stays
+priority0/open for remaining IF/readers/other opcodes,numeric/source/domain and
+original traces. Verifier passes eleven full CASE and containing dispatcher
+hashes,267 anchors,16 actual dispatch words. make test passes30 CTest suites and
+58 Python tests;make all passed. ID2 changed no native code.

@@ -274,3 +274,13 @@ operands decremented at NEXT;zero and threshold routing remain distinct. MOD
 has explicit float conversion/+0.5 before signed remainder;data cursors advance
 before reads and reload after output callbacks. Remaining predicates/readers/
 other opcodes,numeric/source/domain and original runtime closure remain open.
+
+
+## Complete SWITCH/CASE follow-up (2026-10-12)
+
+[Switch stack/scans](EVENT_SWITCH_STACK_AND_CASE_SCANS.md) and
+[group/mask/range](EVENT_GROUPED_MASK_AND_RANGE_CASES.md) now close34..49 and
+all eleven CASE helpers,including exact group sentinel transitions and actual
+dispatch-table ordering. Earlier partial switch/case scope above is superseded
+for these local bodies. Scans ignore raw35 while counting34/1;case search stops
+36..47 and skips BREAK48. Source/numeric/domain and original traces remain open.

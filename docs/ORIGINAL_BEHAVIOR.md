@@ -433,3 +433,11 @@ collision/animation engines,writers,teardown and original execution remain open.
 initialization/speed arithmetic,two-bank history append/read policy and hazard/
 effect requests. The ring's pre-wrap equality test is preserved. Final executor,
 terrain/ability/source/index/writer services and original trajectories remain open.
+
+
+[Switch stack/scans](behavior/EVENT_SWITCH_STACK_AND_CASE_SCANS.md) and
+[group/mask/range](behavior/EVENT_GROUPED_MASK_AND_RANGE_CASES.md) specify
+complete local34..49/eleven CASE helpers,actual opcode table,signed state and
+stack writes,OR/AND latches,raw any-bit masks,inclusive ranges and lexical
+header continuations. Original script/domain composition and runtime traces
+remain incomplete;remaining VM opcodes are separate EVT-01 requests.
