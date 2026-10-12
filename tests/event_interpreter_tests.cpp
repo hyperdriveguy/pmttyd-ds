@@ -5,6 +5,7 @@
 #include "battle_data_child.hpp"
 #include "event_runtime_addresses.hpp"
 #include "event_gp_addresses.hpp"
+#include "event_address_space.hpp"
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -27,6 +28,7 @@ struct Fixture {
     EventRuntimeGlobals runtime{0,1,1,0};
     EventSchedule schedule;
     EventRuntimeAddresses runtimeAddresses;
+    EventAddressSpace memory;
     std::map<uint32_t,uint8_t> bytes;
     std::vector<Call> calls;
     std::vector<EventDiagnosticCall> diagnostics;
@@ -34,13 +36,13 @@ struct Fixture {
     unsigned barriers=0,divisions=0;
     int32_t observedInteger=0;float observedFloat=0;
     static constexpr uint32_t clock=243000000;
-    Fixture():contextAddresses(addresses),runtimeAddresses(runtime,schedule) {assert(addresses.registerEntries(0x10000,entries.data(),256));assert(contextAddresses.registerContext(0x8000,context));assert(gpAddresses.registerGp(0x3000,gp));assert(gpAddresses.writeWord(0x80415fd0,0x3000));}
+    Fixture():contextAddresses(addresses),runtimeAddresses(runtime,schedule),memory(addresses,contextAddresses,runtimeAddresses,gpAddresses) {assert(addresses.registerEntries(0x10000,entries.data(),256));assert(contextAddresses.registerContext(0x8000,context));assert(gpAddresses.registerGp(0x3000,gp));assert(gpAddresses.writeWord(0x80415fd0,0x3000));}
     uint32_t read(uint32_t a) {
-        uint32_t mapped;if(addresses.readWord(a,mapped) || contextAddresses.readWord(a,mapped) || runtimeAddresses.readWord(a,mapped) || gpAddresses.readWord(a,mapped) || scripts.readWord(a,mapped))return mapped;
+        uint32_t mapped;if(memory.readWord(a,mapped))return mapped;
         uint32_t v=0;for(unsigned i=0;i<4;++i)v=v<<8|bytes[a+i];return v;
     }
     void write(uint32_t a,uint32_t v) {
-        if(addresses.writeWord(a,v) || contextAddresses.writeWord(a,v) || runtimeAddresses.writeWord(a,v) || gpAddresses.writeWord(a,v))return;
+        if(memory.writeWord(a,v))return;
         for(unsigned i=0;i<4;++i)bytes[a+i]=uint8_t(v>>(24-8*i));
     }
     EventCreationServices creation() {
@@ -59,12 +61,12 @@ struct Fixture {
         s.operands.globalAddress=[](void* p) {return static_cast<Fixture*>(p)->gpAddresses.currentAddress();};
         s.operands.readWord=s.creation.word;
         s.operands.writeWord=[](void* p,uint32_t a,uint32_t v) {static_cast<Fixture*>(p)->write(a,v);};
-        s.operands.readByte=[](void* p,uint32_t a) {auto& f=*static_cast<Fixture*>(p);uint8_t v;if(f.addresses.readByte(a,v) || f.contextAddresses.readByte(a,v) || f.runtimeAddresses.readByte(a,v) || f.gpAddresses.readByte(a,v))return v;return f.bytes[a];};
-        s.operands.writeByte=[](void* p,uint32_t a,uint8_t v) {auto& f=*static_cast<Fixture*>(p);if(!f.addresses.writeByte(a,v) && !f.contextAddresses.writeByte(a,v) && !f.runtimeAddresses.writeByte(a,v) && !f.gpAddresses.writeByte(a,v))f.bytes[a]=v;};
+        s.operands.readByte=[](void* p,uint32_t a) {auto& f=*static_cast<Fixture*>(p);uint8_t v;if(f.memory.readByte(a,v))return v;return f.bytes[a];};
+        s.operands.writeByte=[](void* p,uint32_t a,uint8_t v) {auto& f=*static_cast<Fixture*>(p);if(!f.memory.writeByte(a,v))f.bytes[a]=v;};
         s.operands.truncate=[](void*,float v) {assert(std::isfinite(v) && double(v)>=-2147483648. && double(v)<2147483648.);return int32_t(v);};
         s.memory.user=this;s.memory.word=s.creation.word;s.memory.storeWord=s.operands.writeWord;s.memory.storeByte=s.operands.writeByte;
-        s.memory.half=[](void* p,uint32_t a)->uint16_t {auto& b=static_cast<Fixture*>(p)->bytes;return uint16_t(b[a])<<8|b[a+1];};
-        s.memory.storeHalf=[](void* p,uint32_t a,uint16_t v) {auto& b=static_cast<Fixture*>(p)->bytes;b[a]=uint8_t(v>>8);b[a+1]=uint8_t(v);};
+        s.memory.half=[](void* p,uint32_t a)->uint16_t {auto& f=*static_cast<Fixture*>(p);auto reader=f.services().operands.readByte;return uint16_t(reader(p,a))<<8|reader(p,a+1);};
+        s.memory.storeHalf=[](void* p,uint32_t a,uint16_t v) {auto& f=*static_cast<Fixture*>(p);auto writer=f.services().operands.writeByte;writer(p,a,uint8_t(v>>8));writer(p,a+1,uint8_t(v));};
         s.memory.flushBlock=[](void* p,uint32_t a) {static_cast<Fixture*>(p)->flushes.push_back(a);};
         s.memory.systemCall=[](void* p) {++static_cast<Fixture*>(p)->barriers;};
         s.divideWord=[](void* p,int32_t a,int32_t b) {++*static_cast<unsigned*>(p);assert(b!=0 && !(a==std::numeric_limits<int32_t>::min() && b==-1));return a/b;};
@@ -127,7 +129,7 @@ int main(int argc,char** argv) {
     roots.tick();assert(roots.runtime.allocationCount==0 && roots.read(0x3174)==77);
     Fixture dataChild;a=0x90000000;dataChild.emit(a,50,{lw,123});dataChild.emit(a,91,{sw(0x8010a010),-2,7});dataChild.emit(a,9,{1});dataChild.emit(a,2,{});dataChild.end(a);
     const uint32_t childScript=argc==2?0x80416bd0:0x90002000;
-    if(argc==2)assert(dataChild.scripts.load(argv[1]));else {a=childScript;dataChild.emit(a,2,{});dataChild.end(a);} // Authored fixture without original pack dependency.
+    if(argc==2)assert(dataChild.scripts.load(argv[1]) && dataChild.memory.importScripts(dataChild.scripts));else {a=childScript;dataChild.emit(a,2,{});dataChild.end(a);} // Authored fixture without original pack dependency.
     dataChild.write(0x701018,0x702000);dataChild.write(0x702000,7);dataChild.write(0x702004,childScript);dataChild.write(0x702008,0);
     auto& dataParent=createRootEvent(dataChild.schedule,0x90000000,10,0,dataChild.creation());dataParent.owner=7;
     dataChild.tick();assert(dataParent.flags==1 && dataParent.waitingChild==nullptr && dataParent.locals[0]==123 && dataChild.runtime.allocationCount==1 && dataChild.runtime.nextId==3 && dataChild.entries[1].flags==0 && dataChild.calls.size()==1);

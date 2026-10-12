@@ -486,6 +486,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): `EventAddressSpace` combines
+entry/context/runtime/GP bytes with owned RAM. Imported original script segments
+are mutable runtime copies;extracted packs remain unchanged. Halfword adapters
+now share live storage. Real pack byte comparison and actual child execution
+pass,alongside57 CTest/78 Python and make all. Registration order,unsupported
+span rejection and RAM lifetime are explicit native policies. Next:native arena/
+heap ownership and callback service bindings. Existing source/domain/concurrency/
+original-execution requests remain open;no additional local-body closure claimed.
+
 Native implementation breadcrumb (2026-10-12): `EventGpAddresses` now maps
 80415fd0 and registered0x13d8-byte GP backing with live04/14/38/3c aliases;
 original saved-switch helpers operate on that backing. Other offsets remain raw

@@ -1,5 +1,32 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Unified original-address event storage
+
+Added `EventAddressSpace` over entry/context/runtime/GP live mappings and
+explicit owned RAM regions. Byte,halfword and word operations use big-endian
+original addresses,including cross-region aliases. Unsupported spans reject
+before mutation;this is native provider policy,not recovered invalid-address
+behavior. RAM registration rejects currently mapped bytes;owners must register
+live views first and avoid later overlapping registrations.
+
+Script import transactionally copies all pack segments to writable runtime RAM.
+Script writes remain visible to subsequent VM reads without changing extracted
+assets. Retirement snapshots can become raw RAM after detaching native entry
+arrays. The combined interpreter fixture uses the adapter;its halfword services
+now access live mappings rather than bypassing them through sparse fixture RAM.
+
+Validation:make test passes57 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-address-space-test-final.log and /tmp/pm-address-space-build-final.log.
+`build-host/event_address_space_tests romfs/events.pmevt` verifies every imported
+original byte;`build-host/event_interpreter_tests romfs/events.pmevt` passes the
+real child-body path. Tests also use actual two-context initialization/root
+creation,GP/RAM boundaries,halfword aliases,retirement storage,failed multi-span
+writes and all-or-none script import. No emulator/hardware fidelity claim.
+
+Next:native arena/heap owner initialization and callback bindings before Game
+integration. Script/actor/source domains,concurrency,FPSCR and full Jump/story
+execution remain open;the remake goal remains incomplete.
+
 ## 2026-10-12 — Shared GP bytes and current-pointer storage
 
 Added `EventGpAddresses`: the original GP pointer cell80415fd0 and registered
