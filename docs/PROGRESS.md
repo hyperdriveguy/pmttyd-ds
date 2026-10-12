@@ -3046,3 +3046,29 @@ conversion/memory services; replacement/callback bodies and insertion call-site
 census; renderer/manager cadence and original story attribution/order/branches/
 conditions. Continue all remaining systems before complete-game requirements.
 Full objective active/incomplete; executed-original comparisons needed.
+
+## 2026-10-12 — Original printf directive grammar and normalization
+
+Previous turn progressed withf1ccbdc output/varargs. Added FORMAT_DIRECTIVE_PARSER.md:
+complete local repeated flag precedence, dynamic/digit width and509 cap,
+precision-presence/negative-star/word-wrap rules, h/hh/l/ll/L enums, complete
+conversion admission/normalization map and pointer formatting. Preserved unusual
+lc/hhn consumer interactions and argument consumption before later rejection.
+Corrected format-record byte3 from string-only naming to alternate form, including
+its existing length-prefixed string interpretation. Numeric converters remain open.
+
+Validation:576 instruction anchors and prior checks passed read-only US ISO,
+plus both parser dispatch hashes and byte-classification hash/ASCII-digit mask.
+Evidence207 fingerprints reproduced byte-for-byte; qualified printf address/size
+verified explicitly against the report, avoiding scanf's same local symbol name.
+All behavior links resolve; git diff --check passed. make test passed core plus36
+Python tests; make all exited0, no rebuild. Workspace started clean; only research/
+provenance/evidence tooling changed. No original execution/emulator run or profile/
+save changes. Original extracts/reports remain ignored. Static checks do not prove
+executed formatting/call-site validity or original/native equivalence.
+
+Next: integer/decimal/hex-float conversion algorithms and wide/memory services,
+format/type/count caller census, replacement/callback bodies and rendering/manager
+cadence. Continue original story attribution/order/branches/conditions and all
+remaining systems before complete-game requirements. Full objective active/
+incomplete; executed-original comparisons still needed.

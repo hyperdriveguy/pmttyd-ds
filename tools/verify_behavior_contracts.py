@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'format_directive_parser': {
+        0x8026bd08: '40820028', 0x8026bd5c: '98010008',
+        0x8026bd80: '98010009', 0x8026bda4: '98010008',
+        0x8026bde8: '7c0000d0', 0x8026be40: '2c0501fd',
+        0x8026beb4: '9801000a', 0x8026bf3c: '9881000c',
+        0x8026bf6c: '9801000c', 0x8026c000: '98010008',
+        0x8026c050: '90010014', 0x8026c08c: '90010014',
+        0x8026c0e0: '98a1000d', 0x8026c0ec: '90010014',
+        0x8026c104: '9801000c', 0x8026c174: '9801000d',
+    },
     'format_output_runtime': {
         0x8026a0fc: '3f800200', 0x8026a16c: '3880fffe',
         0x8026a180: '7c1921ae', 0x8026a1f8: '7c1f21ae',
@@ -684,6 +694,16 @@ def verify(iso_path):
         if read(0x80303bb0, 1) != b'\0':
             raise ValueError('Narrow printf null-string sentinel mismatch')
         print('Original narrow printf null-string empty sentinel verified')
+        for address, size, digest in (
+            (0x803bb828, 68, '3f3aac0297a56dd9ee4b9f82a984f6b4a85efc1331a53fab9fa8f3ad767fc582'),
+            (0x803bb748, 224, '150ffae003fedaaf0719d2bb07fb25778470f44ec2804d395f77a1afb17001b1'),
+            (0x803bb308, 256, '3f68b34046b422bde15d20ce7e9d8baddc3f8c5ee5f1deb9b9b67612e7b440c8'),
+        ):
+            if hashlib.sha256(read(address, size)).hexdigest() != digest:
+                raise ValueError(f'Printf parse/classification table mismatch: {address:#x}')
+        if [i for i, flags in enumerate(read(0x803bb308, 256)) if flags & 0x10] != list(range(48,58)):
+            raise ValueError('Printf numeric byte classification mismatch')
+        print('Both printf dispatch tables and all numeric byte classifications verified')
 
 
 if __name__ == '__main__':

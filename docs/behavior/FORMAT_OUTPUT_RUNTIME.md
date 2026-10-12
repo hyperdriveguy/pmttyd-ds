@@ -79,14 +79,15 @@ record offsets observed by consumers are:
 | 0 byte | alignment/padding mode:0 trailing spaces,1 leading spaces,2 leading zeros |
 | 1 byte | numeric sign policy, interpreted by conversion helpers |
 | 2 byte | precision-present flag |
-| 3 byte | length-prefixed string flag |
+| 3 byte | alternate form; string consumer uses it for length-prefix handling |
 | 4 byte | length/argument enum |
 | 5 byte | normalized conversion byte |
 | 8 word | field width |
 | c word | precision |
 
-The actual grammar, aliases and enum spellings require parse_format recovery;
-do not equate this record with modern libc by field names alone.
+The grammar, aliases and enum spellings are now recovered in
+[directive parser](FORMAT_DIRECTIVE_PARSER.md). Do not equate this record with
+modern libc by field names alone.
 
 ## Conversion consumers (B)
 

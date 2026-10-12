@@ -47,6 +47,7 @@ FUNCTIONS = (
     'evt_msg_print_battle_party', 'evt_msg_print_add',
     'evt_msg_print_insert', 'evt_msg_print_add_insert',
     'sprintf', 'vsprintf', '__StringWrite', '__pformatter', '__va_arg',
+    'parse_format@MSL_C.PPCEABI.bare.H.a printf.c',
     'btlevtcmd_AnnounceMessage', 'btlevtcmd_AnnounceSetParam',
     'BattlePadCheckTrigger', 'BattlePadMultiCheckTrigger', '_disp@battle_message.o',
     'evt_btl_camera_set_mode', 'evt_btl_camera_set_homing_unit',
