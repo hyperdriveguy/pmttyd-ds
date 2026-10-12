@@ -492,3 +492,11 @@ local dispatcher entry coverage,including WAIT_WHILE/no-ops/debug formatting/
 metadata/unchecked slot probe. Source/address/callback/context/capacity/time/
 heap/numeric/platform domains and original execution remain incomplete;this
 is not a complete executed Jump/story VM or complete-game requirements claim.
+
+
+[Event context init/reset](behavior/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md)
+and [bootstrap SDK heap/direct callers](behavior/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md)
+now establish two initial256-slot arrays,selected-array bulk reset with bank/
+schedule/ID/speed preservation,distinct SDK allocation and four direct DOL
+bindings. Full context/capacity/source/heap/scene/platform/clock domains and
+original reset/transition traces remain open.

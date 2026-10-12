@@ -109,3 +109,14 @@ credit rounding/subtract-before-call;0/-1/1 dispatcher outcomes;multicredit same
 input,live-count changes and no inner revalidation. Complete local manager is
 answered; constructor/restart/context/time writers,all opcode bodies,source
 eligibility policy and original traces remain EVT-01 dependencies.
+
+
+## Complete context initialization follow-up (2026-10-12)
+
+[Init/reset](EVENT_CONTEXT_INITIALIZATION_AND_RESET.md) and
+[SDK heap/direct callers](EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md) now specify
+both original256-slot arrays and full local reset/clear/preservation policy.
+ReInit preserves selected work/flag banks and shared schedule count,clears only
+selected entries and resets shared allocation/active globals without deletion.
+Initial ID1/speed1.0 are DOL data,not writes by those bodies. Source/context/
+capacity mutation,heap/scene/clock/platform domains and original traces remain open.

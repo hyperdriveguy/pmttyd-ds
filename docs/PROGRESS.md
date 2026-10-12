@@ -7479,3 +7479,36 @@ test when native fixture arrives;manager/context/capacity initialization,heap
 free/sharing,source/callback/address translation,clock/pause/input/numeric/FPSCR
 domains and original119-opcode/Jump/story traces. Complete-game documentation
 and requirements remain incomplete.
+
+## 2026-10-12 — ID2 event initialization/reset and SDK allocation provenance
+
+Added [context init/reset](behavior/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md)
+and [bootstrap heap/callers](behavior/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md).
+Complete Init establishes two256*1b0 entry arrays (216KiB payload),separate
+clock snapshots,32-word/three-flag clear extents and shared reset order. ReInit
+bulk-clears selected array only,preserves work/flags/live schedule count/ID/speed,
+resets shared allocation count/manager-active and invokes no-op evt_msg_init.
+It does not perform cancellation copy-back or buffer release. Initialized ID1/
+speed1.0 are DOL data rather than init writes. Complete SDK first-fit allocator/
+wrapper contrasts with map best-fit;four direct DOL call sites pin battle-init
+selector-before-reset and exit reset-before-field-selector/StartAll4 request.
+Only ID2 scoped lock released;remaining source/context/heap/domain/runtime
+requirements stay open and unrelated ID1 work is preserved.
+
+Validation:verify_event_context_initialization.py passed eight whole/linked
+hashes,139 anchors,two static/startup spans and all four branch-shaped direct
+DOL call sites across seven text sections. Repeated metadata byte-identical;
+Python compilation,general behavior verifier1980 anchors and root verifier
+passed;all1483 local documentation links resolved;git diff --check passed.
+Initial make test configured32 suites but failed terrain assertions in core:387
+and field_movement:48. After concurrent native updates,fresh make test passes
+ALL32 CTest suites and58 Python tests. Earlier missing fixture and terrain
+assertions are now resolved,as recorded in inbox. make all rebuilt concurrent
+native game/3DSX successfully. ID2 changed no native/CMake/test code.
+
+Original ISO read-only;no original initialization/heap/scene execution,
+emulator/profile/save mutation,asset conversion or original binary/dialogue
+distribution. Next:clock/GP/pause/input/context producers,capacity/stack/label/
+free-slot/source restrictions;SDK/map heap initialization/free/coalescing/sharing;
+REL/indirect scene/callback/address translation and original reset/cancellation/
+Jump/story traces. Complete-game documentation and requirements remain incomplete.

@@ -54,9 +54,10 @@ compute pointer=array+wrap32(index*0x1b0);read flags8;return pointer if active b
 set,else0. No index/capacity/signed-domain/null/ID/type/stop/inhibition check.
 118 does not consult context.capacity0 before probing up to255. The current
 E's activity is not checked directly;comparison uses the helper's active-only
-returned pointer. A host bounded lookup changes out-of-capacity read behavior;
-original array capacity/source domain must be established before binding this
-path. No “256 allocated active events” claim follows from its loop bound.
+returned pointer. [Init/reset](EVENT_CONTEXT_INITIALIZATION_AND_RESET.md) now
+proves an initial256-slot array in BOTH contexts. Capacity/array mutations and
+source/scene validity remain separate;bounded lookup still differs if those
+invariants cease to hold. The loop does not prove256 simultaneously active events.
 
 ## Debug115 entry,context and direct operand classification
 

@@ -17,7 +17,8 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Event dispatch tail,debug formatter and complete opcode inventory | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Tail/debug](behavior/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md),[all119 coverage](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md):complete113..118/prefix11/no-ops,formatter/slot local bodies and full table;local opcode coverage closed,source/domain/platform/original traces remain open;native test fixture gate pending |
+| Event context initialization,reinitialization and capacity provenance | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Context init/reset](behavior/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md),[SDK heap/callers](behavior/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md):complete Init/ReInit/allocator local policy,two original256-slot arrays,bank/global preservation and four direct DOL bindings;other heap/platform/time/source/scene/domain/original traces remain open;make test32 suites/58 Python tests and make all pass |
+| Event dispatch tail,debug formatter and complete opcode inventory | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Tail/debug](behavior/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md),[all119 coverage](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md):complete113..118/prefix11/no-ops,formatter/slot local bodies and full table;local opcode coverage closed,source/domain/platform/original traces remain open;native fixture/terrain gates resolved,full make test now passes |
 | Partner front-wall query and local position correction | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover partySearchFrontWall full local ray/filter/selection/write/return graph and actual stay arguments;ray backend/surrounding/terrain engines,EVT-01 and original traces remain separate |
 | Event data readers,bitwise,time and memory opcode bodies | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Readers](behavior/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),[bitwise/time/memory](behavior/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md),[buffers/allocator](behavior/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md):complete65..90 and local allocator/fill/cache bodies;indexed signed-word float differs from sequential IEEE load,query/write/ownership order explicit;other VM/domain/source/runtime requests remain open |
 | Partner target-distance and footmark clearing services | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Clear/ID](behavior/FIELD_PARTNER_FOOTMARK_CLEAR_AND_ID.md),[live targets](behavior/FIELD_PARTNER_LIVE_TARGET_DISTANCES.md),[SDK distance](behavior/FIELD_PARTNER_SDK_DISTANCE_NUMERICS.md):complete local selection/reset/ID and paired norm answered;source/history consumer/terrain/numeric environment/domain and original traces remain open |
@@ -1113,3 +1114,40 @@ Verifier passes nine containing/complete/linked hashes,164 anchors,145 spans
 including119 table words and23 templates. Own binary-validated documentation
 lock released;make all passed,58 Python tests passed;full make test awaits the
 missing concurrent native fixture described above. ID2 changed no native files.
+
+
+ID2 native validation follow-up (2026-10-12,context-init research):the previously
+missing event_control_opcodes_tests.cpp now exists;configuration/build succeed.
+Fresh make test runs32 CTest suites:30 pass,including event_control_opcodes;
+core fails tests/core_tests.cpp:387 groundAt({-.5f,2},0,h) expected h≈.2;
+field_movement fails its line48 close(m.slope.inclination,30). Current terrain/
+slope native edits are concurrent;ID2's documentation-only task changes no
+native fixtures/mechanics. Full host gate remains pending for these actual
+assertion failures;this supersedes the older missing-file blocker.
+
+
+ID2 EVT-01 context/init delivery (2026-10-12), partial answer:
+[Init/reset](behavior/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md) closes both
+complete bodies:Init allocates TWO256*1b0 arrays (216KiB payload combined),
+zeros32-word/three-flag banks and resets three scheduling/allocation globals;
+ReInit clears ONLY selected existing array,keeps work/flag banks and live schedule
+count,sets shared allocation count/manager-active0. Neither resets global ID/
+speed,performs entry deletion/copy-back or frees old buffers. Initialized DOL
+ID starts1,speed1.0;those values are not assignments in Init/ReInit.
+[SDK heap/callers](behavior/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md) closes
+__memAlloc/SDK first-fit split/whole-block/zero/cache policy and four direct
+DOL calls. battle_init stores GP14=1 immediately BEFORE reset;battle_exit resets
+BEFORE its explicit GP14=0 and field StartAll4 request. No full caller/REL/scene
+teardown inference. evt_msg_init is a one-instruction no-op. Own binary-validated
+lock released;remaining capacity/context/heap/source/clock/platform/domain and
+original traces stay EVT-01 work. Verifier passes eight hashes,139 anchors,two
+spans and four exact direct call sites;general/root verifiers pass. Native
+missing-file gate is resolved;current full host terrain assertion failures are
+recorded above. ID2 changed no native code.
+
+
+ID2 context validation completion (2026-10-12):concurrent native terrain/fixture
+updates now resolve both assertion failures above. Fresh make test passes32
+CTest suites and58 Python tests;make all rebuilt game/native3DSX successfully.
+Missing-fixture and terrain failures are historical/resolved;ID2 changed no
+native files. Context/init evidence and documentation link checks also pass.
