@@ -45,10 +45,11 @@ OSSetArenaLo stores supplied word at8041e430,with no extra alignment/clamp.
 They do not reserve or clear memory by themselves.
 
 OSInitAlloc(start,end,count):store descriptor BASE=start to8041f070(r13+2150)
-and descriptor COUNT=count to8041f074(r13+2154). Loop signed indices0..<count;
+and descriptor COUNT=count to8041f074(r13+2154). Capture metadata bytes wrap32(ORIGINAL count*12) before these stores.
+Loop signed indices0..<LIVE global count,with base reload on EACH iteration;
 each12-byte descriptor receives size=-1,allocatedHead0,freeHead0 in that write
-order. Compute metadata bytes wrap32(count*12);return usableStart=
-wrap32(start+metadataBytes+31)&0xffffffe0. Store aligned end=end&~31 to8041f07c
+order. After the loop RELOAD global base and return usableStart=
+wrap32(reloadedBase+retainedMetadataBytes+31)&0xffffffe0. Store aligned end=end&~31 to8041f07c
 (r13+215c);store current-heap word8041e428(r13+1508)=-1;store usableStart to
 8041f078(r13+2158). No null/count/extent/multiplication check. Nonpositive count
 skips descriptor loop but still performs arithmetic/global writes.
@@ -56,7 +57,8 @@ skips descriptor loop but still performs arithmetic/global writes.
 OSCreateHeap(start,end):round start UP32 using word+31/mask;round end DOWN32.
 Read descriptor count and base;scan ascending descriptors while signed count>0.
 First descriptor with SIGNED size<0 is available. Store descriptor.size=end-start;
-write free-node header at rounded start:previous0,next0,size=descriptor.size;
+write free-node header at rounded start:previous0,next0,then RELOAD
+descriptor.size and write that to node.size;
 store descriptor.freeHead=start,allocatedHead0;return descriptor index. No extent/
 minimum-header/overlap/range check. No available descriptor returns-1. A negative
 created extent can still mark that descriptor available for a later scan.
@@ -102,8 +104,9 @@ must not be normalized into a hidden corrected-handle write.
 
 Both memInit's index1 second-pass branch and memClear(1) perform:
 
-1. Reload pool1 end and start;requested payload M=wrap32(end-start-32).
-   Store M to8041e818;read stored handle1;request OSAllocFromHeap(handle1,M).
+1. Load pool1 start,then end,then stored handle1 BEFORE any length store.
+   Compute requested payload M=wrap32(end-start-32);store M to8041e818;
+   request OSAllocFromHeap(the captured handle1,M).
 2. If pointer!=0,memset(pointer,0,M),then DCFlushRange(pointer,M).
 3. Reload M;publish pointer to primary root8041e808;write root.next0,
    root.size=wrap32(M-32),root.used16=0. Header writes happen EVEN on null result.
@@ -139,3 +142,9 @@ primary map header sizing/null path,index1 versus other memClear and two unload
 indices. Platform arena/heap/alias/size/handle/scene/source domains and original
 memory/reset traces remain requirements;whole-game memory requirements are not
 closed by these local policies.
+
+
+[Live read/store-order addendum](SDK_HEAP_BOOTSTRAP_LIVE_READ_ORDER.md) supplies
+exact InitAlloc loop/final reloads,CreateHeap post-header size read and both
+primary-map start→end→handle captures. Its alias/observation acceptance cases
+supersede any earlier summary implying snapshot count/base or handle-after-length.

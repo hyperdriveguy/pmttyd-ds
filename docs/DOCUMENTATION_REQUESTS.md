@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| SDK descriptor and primary-map live read-order addendum | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Exact live order](behavior/SDK_HEAP_BOOTSTRAP_LIVE_READ_ORDER.md):InitAlloc live count/base/final base with retained original product,CreateHeap post-header size reread,both primary start→end→handle before length publication;native arena/alias/source/runtime remains open |
 | Partner fall handler entry,air and landing ownership | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used party_motion_fall complete query-before-integration/flags/damping/failsafe/landing/return graph;called placement/facing/pose/source domains,other handlers,EVT-01 and original trajectories remain separate |
 | Consolidated packed EventEntry map and address-alias requirements | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete432-byte map](behavior/EVENT_ENTRY_PACKED_LAYOUT.md),[address/alias requirements](behavior/EVENT_ENTRY_ADDRESS_AND_ALIAS_REQUIREMENTS.md):49 spans,388 known-role/44 unknown raw bytes,pointer/typed/context/global and physical alias domains;actual native translator/source/backend/runtime binding remains open |
 | General action-record rule judgment and threshold helpers | DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [All68 general rules](behavior/BATTLE_GENERAL_RULE_JUDGMENT.md),[threshold/end/unit queries](behavior/BATTLE_RULE_THRESHOLD_AND_UNIT_QUERIES.md):complete judge/helper/query bodies,captured/current output ownership,duplicate54/55 and numeric0x02 mask;rule/raw record/reset/save/consumer/end/turn/source/runtime lifecycle remains open |
@@ -1689,3 +1690,21 @@ source,storage/address/context/heap/time/platform/numeric/scene domains and
 original traces remain EVT-01 work. make test48 CTest/78 Python and make all
 pass;1955 local links resolve;general1980-anchor verifier passes. Repeat map
 JSON reports match;no native/test/asset conversion code changed by ID2.
+
+
+ID2 EVT-01 heap-order addendum delivery (2026-10-12), answer to the explicit
+SDK/primary-map reload request:
+[Live read order](behavior/SDK_HEAP_BOOTSTRAP_LIVE_READ_ORDER.md) pins original
+OSInitAlloc count reload80296670,per-iteration/final base80296654/67c while
+metadata size retains ORIGINAL count*12 captured BEFORE global publication.
+CreateHeap captures count/base once but reloads descriptor.size802966e8 AFTER
+header previous/next stores. Both primary paths capture start→end→handle BEFORE
+length store;old end/start/handle-after-length summary corrected. Local fill/
+flush length differs from final reloaded root-header length. Addendum supplies
+concrete alias/observation cases and preserves no-null-recovery/ignored replacement
+handle policy. Existing bootstrap contract and verifier updated:20 body hashes,
+243 anchors (38 added),two spans,50 direct sites;repeat reports match. Own lock
+released;this specific order request answered. Native arena/cache/address/alias/
+scene/source and original traces remain EVT-01 requirements. make test48 CTest/
+78 Python and make all pass;1963 local links resolve;general1980 anchors pass.
+No native/test/asset conversion edits by ID2.

@@ -1,5 +1,31 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — SDK descriptor and primary-map live read-order addendum
+
+Documentation agent ID2 answered explicit EVT-01 reload-order request against
+fresh read-only original listings /tmp/id2-heaporder-*. Detailed addendum and
+corrected bootstrap contract preserve InitAlloc live count/per-iteration/final
+base versus retained original count*12,CreateHeap captured scan domain but post-
+header descriptor.size reread,and primary start→end→handle captures BEFORE
+length publication. Payload clear/flush retains local length;root header uses
+final reloaded global length. Alias/observer acceptance cases are requirements,
+not original execution observations. No native/test/asset conversion changed.
+
+Validation: heap bootstrap/release verifier passes20 complete/linked hashes,
+243 instruction anchors (38 added),two spans and50 direct DOL sites. Repeat
+JSON outputs match (/tmp/id2-heaporder-evidence.json and -second.json). General
+1980-anchor verifier,Python compilation,git diff --check and1963 local links
+pass. make test48/48 CTest suites and78 Python tests;make all passes. Logs:
+/tmp/id2-heaporder-test.log,/tmp/id2-heaporder-build.log. Concurrent native/ID1
+changes remain preserved;own scope is committed incrementally.
+
+Own lock released and exact request answered in docs/DOCUMENTATION_REQUESTS.md.
+Next documentation:NormalJump registration/owner/callback census,raw record/
+reset/end/turn/source ownership and other requested domains. Native packed storage/
+address,arena/cache/numeric/clock/scene providers and original execution remain
+EVT-01 work. Goal active/incomplete;no full-game requirements completion claimed.
+
+
 ## 2026-10-12 — Native original ROAD contact, placement and concurrent departure
 
 Native commit1d60475 replaces radius/dot/input triggers and the arbitrary60-tick

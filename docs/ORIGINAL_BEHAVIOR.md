@@ -655,3 +655,10 @@ words,44 unknown raw bytes,context/global banks,and local/stack/label/message/
 USER_FUNC alias requirements. Machine-readable layout and ten supporting ISO
 suites are linked;actual native packed translation,source/owner/callback/backend
 binding and original execution remain EVT-01 work.
+
+
+[SDK/primary-map live ordering](behavior/SDK_HEAP_BOOTSTRAP_LIVE_READ_ORDER.md)
+clarifies retained metadata size versus live descriptor globals,post-header
+descriptor size reread and start→end→handle capture before requested-length
+publication. Bootstrap policy/verifier now include these exact reloads and
+alias acceptance cases;native arena/cache/source/scene/runtime remains open.
