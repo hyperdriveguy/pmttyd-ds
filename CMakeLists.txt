@@ -211,3 +211,7 @@ add_test(NAME event_time_publication COMMAND event_time_publication_tests)
 add_executable(event_system_level_tests tests/event_system_level_tests.cpp)
 target_link_libraries(event_system_level_tests PRIVATE ttyd_core)
 add_test(NAME event_system_level COMMAND event_system_level_tests)
+
+add_executable(field_camera_tests tests/field_camera_tests.cpp)
+target_link_libraries(field_camera_tests PRIVATE ttyd_core)
+add_test(NAME field_camera COMMAND field_camera_tests)

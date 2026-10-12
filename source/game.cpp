@@ -199,6 +199,7 @@ bool Game::finishWarp() {
     const RoadCallback entryCallback=inCallback(w);
     restore(next);groundHeight=height;cameraHeight=height;partner=arrival;partnerHeight=height;partnerContact=groundContact;
     fieldSystemFlags=entryCallback==RoadCallback::DebugArrival?systemFlags&~0x40u:systemFlags;
+    rebaseFieldCamera();
     arrivalStart=start;arrivalEnd=arrival;
     registerRoadCases(false);followerPath.clear();saveRequested=true;return true;
 }
@@ -211,7 +212,7 @@ void Game::beginRoadArrival() {
 void Game::cancelRoad() {
     if(departureOriginValid) {
         progress.position=departureOrigin;groundHeight=progress.elevation=departureHeight;
-        cameraX=departureOrigin.x;cameraZ=departureOrigin.z;cameraHeight=departureHeight;
+        cameraX=departureOrigin.x;cameraZ=departureOrigin.z;cameraHeight=departureHeight;rebaseFieldCamera();
     }
     warpRequest=-1;departureDone=false;departureParentStarted=false;departurePause=0;roadMotion={};arriving=false;saveRequested=false;
     fade.startIn();
@@ -602,8 +603,8 @@ bool Game::integrateVertical(bool held,float& previousY,bool update) {
         queryOverhead(previousY,fieldJump.velocity,.1f);
         // This caller has already moved. Base mutation affects the next move,
         // and the updated base selects this call's landing probe orientation.
-        fieldMovement.dampFallBase(fieldAirOnScreen,!marioFieldControl && fieldKeysOff,fieldAirDampingBypass);
-        if(!fieldAirOnScreen && !fieldAirDampingBypass)fieldJump.suppressDrift=true;
+        fieldMovement.dampFallBase(fieldScreen.inScreen(),!marioFieldControl && fieldKeysOff,fieldAirDampingBypass);
+        if(!fieldScreen.inScreen() && !fieldAirDampingBypass)fieldJump.suppressDrift=true;
         fieldJump.integrate(held);jumpHeight=jumpBase+fieldJump.height-groundHeight;
         return true;
     }
@@ -652,6 +653,7 @@ bool Game::beginVoid() {
     partner={roomRespawn.x,roomRespawn.z};partnerHeight=roomRespawn.y;partnerContact={};
     cameraX=destination.x;cameraZ=destination.z;cameraHeight=floor;
     fieldJump={};fieldStep={};fieldVerticalVelocity=0;jumpHeight=0;warpRequest=-1;saveRequested=false;
+    rebaseFieldCamera();
     return true;
 }
 void clearCollision() {roadAttributeNodes.clear();walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();head.clear();headIndex.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
@@ -684,6 +686,7 @@ void Game::restore(const Progress& saved) {
     groundAt(partner,groundHeight,partnerHeight,&partnerContact);
     followerPath.push_back(partner);followerPath.push_back(p.position);
     cameraX=p.position.x;cameraZ=p.position.z;cameraHeight=groundHeight;
+    rebaseFieldCamera();
     registerRoadCases(true);
 }
 void Game::openDialogue(int kind) {
@@ -720,6 +723,28 @@ const char* Game::prompt() const {
     if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) return "A: confront Lord Crump";
     if (progress.room==0 && near(NpcPosition)) return "A: talk";
     return "Circle Pad: move   A: jump   X: partner";
+}
+void Game::rebaseFieldCamera() {
+    // Harness placement adapter; original map/event camera setup is distinct.
+    marioCamera.retained={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
+    fieldCamera.point={cameraX*100,cameraHeight*100,cameraZ*100};fieldCameraInitialized=true;
+    if(fieldCameraViewAdapter)fieldCameraFrame=adaptedFieldCameraFrame(cameraX,cameraHeight,cameraZ);
+}
+void Game::beginFieldCameraTick() {
+    if(!fieldCameraInitialized)rebaseFieldCamera();
+    // camMain precedes EVT/Mario: consume LAST MarioCamMain publication.
+    fieldCamera.consume(marioCamera,fieldCameraFlags);
+    cameraX=fieldCamera.point.x*.01f;cameraHeight=fieldCamera.point.y*.01f;cameraZ=fieldCamera.point.z*.01f;
+    if(fieldCameraViewAdapter)fieldCameraFrame=adaptedFieldCameraFrame(cameraX,cameraHeight,cameraZ);
+    fieldMovement.headingOffsetDegrees=cameraHeadingSnapshot(fieldCameraFrame.yaw);
+}
+void Game::publishFieldCameraTarget() {
+    marioCamera.publish({progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100},
+                        fieldCameraFrame.yaw,fieldCameraDisplayFlags,fieldJump.motion);
+}
+void Game::cacheFieldScreen() {
+    fieldScreen=projectCameraRoot({progress.position.x,groundHeight+jumpHeight,progress.position.z},
+                                 fieldCameraFrame.view,fieldCameraFrame.projection,fieldCameraFrame.viewport);
 }
 void Game::move(const Input& i,bool launched) {
     roadPassContact={}; // marioMoveMain clears +1f0 before moving OR staying.
@@ -830,14 +855,6 @@ void Game::move(const Input& i,bool launched) {
             }
         }
     }
-    if(warpRequest<0 && scene==Scene::Explore) {
-        for(size_t n=0;n<roads.size();++n) {
-            const auto& road=roads[n];
-            if(road.source==progress.room && roadContactMatches(roadPassContact.sourceNode,road.sourceNode,roadCasesEnabled,roadAdmission)) {
-                warpRequest=int(n);resolveRoadCallbacks(road);departureOrigin=p;departureHeight=groundHeight;departureOriginValid=true;saveRequested=false;break;
-            }
-        }
-    }
     if (std::fabs(x) > .15f && (x>0 ? 1.f : -1.f) != facing) {
         facing = x>0 ? 1.f : -1.f; turnTick=10;
     }
@@ -862,16 +879,24 @@ void Game::move(const Input& i,bool launched) {
     }
     // Bound the trail if the partner cannot traverse an old segment.
     if(followerPath.size()>512) {partner=p;partnerHeight=groundHeight;followerPath.clear();}
-    cameraX+=(p.x-cameraX)*.07f;
-    cameraZ+=(p.z-cameraZ)*.07f;
-    cameraHeight+=(groundHeight-cameraHeight)*.07f;
     if(stepping) {
         // Upstairs motion12 also records contact without the jump-only response.
         queryOverhead(groundHeight,fieldStep.velocity,.1f);
     }
+    cacheFieldScreen(); // marioMove wrapper projects root before the falling vertical owner.
     if(wasFalling)advanceVertical(i.jumpHeld,false);
     else if(verticalReady)finishVertical(previousY);
     if(airborne())saveRequested=false;
+    if(!water.active())publishFieldCameraTarget();
+    // Field case manager runs after Mario motion, projection and camera publication.
+    if(warpRequest<0 && scene==Scene::Explore && !water.active()) {
+        for(size_t n=0;n<roads.size();++n) {
+            const auto& road=roads[n];
+            if(road.source==progress.room && roadContactMatches(roadPassContact.sourceNode,road.sourceNode,roadCasesEnabled,roadAdmission)) {
+                warpRequest=int(n);resolveRoadCallbacks(road);departureOrigin=p;departureHeight=groundHeight;departureOriginValid=true;saveRequested=false;break;
+            }
+        }
+    }
 }
 FieldBattleServices Game::fieldBattleServices() {
     FieldBattleServices s;s.user=this;
@@ -1092,6 +1117,7 @@ void Game::battle(const Input& i) {
 void Game::tick(const Input& rawInput) {
     Input input=rawInput;const Input& i=input;
     ++ticks; sound=Sound::None;overheadContact=false;
+    if((scene==Scene::Explore || scene==Scene::Dialogue) && !water.active())beginFieldCameraTick();
     if(i.physicalSnapshot) {
         std::array<RawPad,4> raw{};raw[0].buttons=i.physicalButtons;
         auto stick=[](float value) {return std::isfinite(value)?int8_t(std::clamp(value,-1.f,1.f)*70):int8_t(0);};
@@ -1111,6 +1137,7 @@ void Game::tick(const Input& rawInput) {
     if(arriving) {
         fade.tick();const bool finished=roadMotion.tick();
         progress.position={roadMotion.position[0],roadMotion.position[1]};partner=progress.position;
+        cacheFieldScreen();publishFieldCameraTarget();
         if(finished){arriving=false;registerRoadCases(true);saveRequested=true;followerPath.clear();followerPath.push_back(partner);}
         return;
     }
@@ -1138,7 +1165,7 @@ void Game::tick(const Input& rawInput) {
             turnScale=1;turnTick=0;
             if(roadMotion.tick())departureDone=true;
             progress.position={roadMotion.position[0],roadMotion.position[1]};
-            cameraX+=(progress.position.x-cameraX)*.07f;cameraZ+=(progress.position.z-cameraZ)*.07f;
+            cacheFieldScreen();publishFieldCameraTarget();
         }
         if(requestMap)fade.startOut();
         return;

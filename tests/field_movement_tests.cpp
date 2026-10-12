@@ -43,7 +43,7 @@ int main() {
     CHECK(close(std::hypot(crossed.x,crossed.z),.026775001f)); // Rate follows retained Z, not drift.
     m.grounded(1,1);CHECK(close(m.movementRate(),1+.190000057220459f/std::sqrt(2.f)));
     m.grounded(1,0);m.headingOffsetDegrees=90;CHECK(close(m.movementRate(),1.190000057220459f));
-    m.grounded(0,1);CHECK(close(m.movementRate(),1));m.headingOffsetDegrees=0;
+    m.grounded(0,1);CHECK(close(m.headingX,-1) && close(m.headingZ,0));CHECK(close(m.movementRate(),1.190000057220459f));m.headingOffsetDegrees=0;
     // Previous query angles gate axes independently using overall inclination.
     m.slope.normal(.5f,std::sqrt(.75f),0);CHECK(std::fabs(m.slope.inclination-30)<.00001f);
     CHECK(m.slope.tiltX!=0 && m.slope.tiltZ==0);
@@ -123,7 +123,7 @@ int main() {
     CHECK(close(damping.progress.position.x-before,.00985f)); // Prior damping affects this move.
     Game offscreen;launch(offscreen,.5f);
     while(offscreen.fieldAirMotion().motion==3)offscreen.tick(released);
-    offscreen.fieldAirOnScreen=false;before=offscreen.progress.position.x;offscreen.tick(stronger);
+    offscreen.fieldCameraViewAdapter=false;offscreen.fieldCameraFrame.viewport.x=1000;before=offscreen.progress.position.x;offscreen.tick(stronger);
     CHECK(close(offscreen.progress.position.x-before,.012625f));
     CHECK(close(offscreen.fieldTravel().speed,.009f) && offscreen.fieldAirMotion().suppressDrift);
     before=offscreen.progress.position.x;offscreen.tick(stronger);

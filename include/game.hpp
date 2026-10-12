@@ -21,6 +21,7 @@
 #include "field_movement.hpp"
 #include "field_wall.hpp"
 #include "field_road.hpp"
+#include "field_camera_state.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -116,7 +117,12 @@ public:
     bool fieldHeadNarrowCone=false; // Original separate +4 flag owner remains unbound.
     GroundContact groundContact,partnerContact;
     GroundContact previousGroundContact; // Source +1ec, separate from current support.
-    bool fieldAirOnScreen=true; // Ordinary on-screen adapter; original projection owner pending.
+    CameraScreenCache fieldScreen; // Mario +168/+16c/+170; refreshed after MoveMain.
+    MarioCameraTarget marioCamera;
+    FieldCameraTarget fieldCamera;
+    FieldCameraFrame fieldCameraFrame;
+    uint32_t fieldCameraFlags=0,fieldCameraDisplayFlags=0;
+    bool fieldCameraViewAdapter=true; // Authored camera-road eye/at/FOV solver remains unbound.
     bool fieldAirDampingBypass=false,fieldKeysOff=false;
     GroundContact wallContact;
     GroundContact roadPassContact; // Source +1f0, separate from blocking/front metadata.
@@ -196,6 +202,11 @@ private:
     void dispatchFieldAir();
     void registerRoadCases(bool enabled);
     bool resolveRoadCallbacks(const RoadWarp& road);
+    void rebaseFieldCamera();
+    void beginFieldCameraTick();
+    void publishFieldCameraTarget();
+    void cacheFieldScreen();
+    bool fieldCameraInitialized=false;
     void finishVertical(float previousY);
     int turnTick = 0;
     std::array<BattlePadWork,4> generalBattlePads;

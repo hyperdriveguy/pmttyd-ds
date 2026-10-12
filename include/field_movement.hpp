@@ -10,10 +10,16 @@ namespace ttyd {
 // represented by unit XZ vectors; this is not original numerical ABI emulation.
 struct FieldMovement {
     float speed=0,headingX=1,headingZ=0;
-    float headingOffsetDegrees=0; // Native fixed Z-facing camera; original camera owner pending.
+    float headingOffsetDegrees=0; // marioPreCamera's current camera-produced snapshot.
     FieldSlope slope;
     static constexpr float Walk=.01f,Dash=.0225f,DashStick=55.f/70.f;
     struct Displacement {float x=0,z=0;};
+    Displacement worldStick(float x,float z) const {
+        if(headingOffsetDegrees==0)return {x,z};
+        const float radians=headingOffsetDegrees*3.14159265358979323846f/180.f;
+        const float sine=std::sin(radians),cosine=std::cos(radians);
+        return {x*cosine-z*sine,x*sine+z*cosine};
+    }
     float movementRate() const {
         // marioGetMoveRate: u(H)=(sin(H),-cos(H)). Represent its degree trig
         // service through cached unit travel and the separately owned offset.
@@ -28,7 +34,8 @@ struct FieldMovement {
         const float magnitude=std::hypot(x,z);
         if(magnitude==0){speed=0;return {};}
         speed=magnitude>DashStick?Dash:Walk;
-        headingX=x/magnitude;headingZ=z/magnitude;
+        const auto world=worldStick(x,z);
+        headingX=world.x/magnitude;headingZ=world.z/magnitude;
         return {headingX*speed,headingZ*speed};
     }
     Displacement groundedStick(int8_t x,int8_t z) {
@@ -54,7 +61,7 @@ struct FieldMovement {
         const float magnitude=std::hypot(x,z);
         const float drift=std::min(magnitude,1.f)*70.f*.0000375f;
         Displacement out{headingX*speed,headingZ*speed};
-        if(magnitude>0 && !suppressDrift){out.x+=x/magnitude*drift;out.z+=z/magnitude*drift;}
+        if(magnitude>0 && !suppressDrift){const auto world=worldStick(x,z);out.x+=world.x/magnitude*drift;out.z+=world.z/magnitude*drift;}
         out=reduceSlope(out); // Previous query record, before the air cap.
         const float combined=std::hypot(out.x,out.z);
         if(cap && combined>Dash){out.x*=Dash/combined;out.z*=Dash/combined;}
