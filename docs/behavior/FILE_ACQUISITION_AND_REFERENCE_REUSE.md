@@ -107,3 +107,9 @@ Underlying _fileGarbage/async producer/smart allocator/relocation/TPL/scene
 ownership,source names/type domains,thread scheduler/platform failures and
 original traces remain open under EVT-01/JUMP-01/DMG-02. This body alone cannot
 prove cache eviction,complete resource loading or full-game memory fidelity.
+
+[Async producer](FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md) and
+[completion](FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md) now establish the
+local pending/state3/count0 producer and -3-only state2/type0b path. Their raw
+results and archive live-head publication differ from synchronous acquisition;
+DVD worker/collection/relocation/source/runtime remain separate.

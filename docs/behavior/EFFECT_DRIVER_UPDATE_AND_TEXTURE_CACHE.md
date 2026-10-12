@@ -141,3 +141,10 @@ EVT-01/JUMP-01/DMG-02 work despite full local loop closure.
 close called wrapper/free leaves. fileFree decrements signed reference count/
 marks state2;it does not deallocate payload. Shared filename/varargs and actual
 async/load/collection/TPL/backend/source/runtime requirements remain explicit.
+
+[Complete async request](FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md) confirms
+first DVD-open failure returns-1. This is nonzero under the driver's gate,so
+it still calls fileAllocf and can advance its selector tag after a null result.
+[Completion](FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md) distinguishes
+pending clear,relocation/deferred close and user callback;none is a texture-ready
+boolean supplied by this driver. Full backend/source/runtime remains separate.

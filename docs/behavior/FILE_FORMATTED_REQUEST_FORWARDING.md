@@ -108,3 +108,8 @@ consumers and original resource/runtime traces remain EVT-01/JUMP-01/DMG-02 work
 [archive/DVD request bodies](FILE_ARCHIVE_AND_DVD_ACQUISITION_REQUESTS.md)
 now supply the previously identity-only _fileAlloc contract. fileAsync remains
 open;collection/relocation/platform/source and original execution remain separate.
+
+[Complete async request/cache](FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md)
+and [completion/request leaf](FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md)
+now close fileAsync's local graph. Raw-1 on first DVD-open failure is forwarded
+unchanged;worker/collection/relocation/source/runtime remain separate.

@@ -831,3 +831,11 @@ close _fileAlloc,arcOpen and five narrow SDK/DVD leaves. Filename-only reuse,
 pending yield,state2/3 count differences,retained available node,live manager
 publication,identical archive retries,holder indirection and deferred close are
 explicit. Async/collection/relocation/TPL/source/platform/original traces remain open.
+
+ID2 async-file delivery (2026-10-12):
+[request/cache publication](behavior/FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md)
+and [completion/request state](behavior/FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md)
+close fileAsync,dvdReadDoneCallBack and DVDMgrReadAsync. Raw-1 versus pending0,
+state3/count0 preload,archive live-head versus retained DVD link,-3-only failure,
+signed-byte relocation type,pending-clear/close/live user-callback order and flag
+reread are explicit. Worker/collection/relocation/TPL/source/runtime remain open.

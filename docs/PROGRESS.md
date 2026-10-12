@@ -1,5 +1,27 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2 async file request and completion contracts
+
+Documented complete fileAsync,dvdReadDoneCallBack and DVDMgrReadAsync in two
+linked files. Filename-only preload readiness,state3/count0 and raw-1 return,
+archive live-head versus DVD retained-next publication,second-open unchecked
+boundary and exact-3 completion branch are explicit. Pending clear precedes
+relocation/deferred close/live callback;relocation type is sign-extended byte.
+Request flag updates preserve their separate reread. Effect-driver/wrapper/
+acquisition documentation now links these distinctions. Released own ID2 lock.
+
+Validation:verify_file_async.py passes13 hashes(three complete/ten linked),
+294 anchors,two startup/global spans;repeat JSON reports match. Python compilation,
+prior acquisition/wrapper/driver/general1980 evidence and2473 local links pass.
+make test passes64 CTest suites/78 Python tests;make all passes. Logs:
+/tmp/id2-fileasync-test.log and /tmp/id2-fileasync-build.log. Scoped staged
+whitespace check passes. No native/test/asset conversion changes by ID2 and no
+original runtime execution or measured async timing claim.
+
+Next:recover _fileGarbage/collection and type-dependent relocation,then actual
+DVD worker/platform/source/TPL/scene ownership. Local request/completion bodies
+are implementable;EVT-01/JUMP-01/DMG-02 and full-game requirements remain open.
+
 ## 2026-10-12 — ID2 shared file acquisition and reference reuse
 
 Added two complete local allocation/archive-request contracts and binary verifier.

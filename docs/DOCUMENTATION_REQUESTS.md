@@ -18,6 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete partyPreDisp,partyChgPose/Id pending-name/frame/update/transform request graph and used bindings;renderer/animation/resource/source/numeric/original visuals remain separate |
+| Async file request and completion publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Request/cache](behavior/FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md),[completion/request state](behavior/FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md):complete fileAsync/callback/DVD request leaf,raw-1,state3/count0,archive live-head publication,-3-only failure,signed relocation/pending-clear/deferred-close/live callback;worker/collection/relocation/TPL/platform/source/runtime remain separate |
 | Shared file acquisition and cache lookup | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Cache/reference/publication](behavior/FILE_ACQUISITION_AND_REFERENCE_REUSE.md),[archive/DVD requests](behavior/FILE_ARCHIVE_AND_DVD_ACQUISITION_REQUESTS.md):complete _fileAlloc/arcOpen/five leaves,filename-only reuse,pending yield,state2/3 counts,identical archive retries,holder/deferred close/live lists;async/collection/relocation/TPL/platform/source/runtime remain separate |
 | Formatted file requests and file-handle release semantics | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Formatting/forwarding](behavior/FILE_FORMATTED_REQUEST_FORWARDING.md),[release/ownership](behavior/FILE_HANDLE_RELEASE_AND_EFFECT_CACHE_OWNERSHIP.md):complete four local bodies,shared buffer/original varargs/order and signed16 state2 release without deallocation;underlying async/load/cache/TPL/platform/source/runtime remains separate |
 | Slit collision admission helper and camera-direction binding | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Collision](behavior/FIELD_PARTNER_SLIT_COLLISION.md),[camera direction](behavior/FIELD_SIMPLE_CAMERA_DIRECTION.md),[system angle table](behavior/FIELD_SYSTEM_ANGLE_TABLE.md):complete local probe/order/filter/normal-pair/return and two math graphs;backend/source/alias/numeric/original trajectories remain separate |
@@ -2252,3 +2253,19 @@ make test rerun63 CTest/78 Python passes after transient camera-interface mismat
 RESOLVED. Logs:/tmp/id2-filealloc-test.log (historical failure),
 /tmp/id2-filealloc-test-rerun.log and /tmp/id2-filealloc-build.log. Own lock released;
 fileAsync/_fileGarbage/relocation/TPL/source/platform/scene/original traces stay open.
+
+ID2 async-file delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial answer:
+[Request/cache](behavior/FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md) and
+[completion/request state](behavior/FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md)
+close three complete local bodies. Cache readiness adds no reference;pending
+returns0,first DVD-open failure-1,archive publication uses live head.next AFTER
+selected E.next clear,DVD uses retained NEXT. Callback matches pending+40 without
+state/not-found guards;only-3 marks state2/type0b,all other raw results relocate
+signed-byte type,close and read live user callback after pending clear. Request
+leaf preserves two flag read/modify/store operations. Existing effect driver
+nonzero gate explicitly admits-1 before its separate synchronous allocation.
+Verifier13 hashes(three complete/ten linked),294 anchors,two startup/global spans,
+repeat reports,prior acquisition/wrapper/driver/general1980 checks and2473 local
+links pass. make test64 CTest/78 Python and make all pass. Logs:
+/tmp/id2-fileasync-test.log and /tmp/id2-fileasync-build.log. Only ID2's async
+lock released;worker/_fileGarbage/relocation/TPL/source/scene/platform/runtime open.
