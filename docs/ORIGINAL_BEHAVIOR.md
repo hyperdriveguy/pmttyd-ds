@@ -1071,3 +1071,13 @@ request graph,including texture/query/comparator leaves. Reproduce with
 verify_animation_texture_light.py:1189 words/11 constants/eight spans/two imports/
 41 direct sites and65536 bounded host integer cases. Called TEV/GX/numeric/source/
 lifetime/runtime and broader whole-game systems remain incomplete.
+
+ID2 interruption writer closure (2026-10-12):
+[Audience11](behavior/battle/AUDIENCE_INTERRUPTION_MENU_TYPE_WRITER.md),
+[gift12/recovery](behavior/battle/GIFT_ITEM_RECOVERY_AND_MENU_TYPE_WRITER.md),
+[restore/fields](behavior/battle/MENU_INTERRUPTION_RESTORE_AND_AUDIENCE_FIELDS.md)
+close ten local bodies,captured/global owners,post-shutdown previous type,
+recovery versus generic return,typed bounds/FMA,pending/saved Input ownership.
+20 hashes/243 anchors/3 spans verified;79 CTest/90 Python/make all pass.
+Audience core/present source/confusion/party/query reachability/Game/runtime
+remain open;no global supported cursor or safe fallback invariant claimed.

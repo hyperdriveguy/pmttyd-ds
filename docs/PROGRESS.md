@@ -1,3 +1,27 @@
+## 2026-10-12 — ID2 complete audience/gift type writers and restore
+
+Delivered three implementation contracts:
+[audience11](behavior/battle/AUDIENCE_INTERRUPTION_MENU_TYPE_WRITER.md),
+[gift recovery/type12](behavior/battle/GIFT_ITEM_RECOVERY_AND_MENU_TYPE_WRITER.md),
+[restore/present fields](behavior/battle/MENU_INTERRUPTION_RESTORE_AND_AUDIENCE_FIELDS.md).
+Ten complete local bodies cover captures before service calls,post-shutdown
+previous-type stores,asymmetric item/target bounds,HP/FP gifts returning0 after
+mutation,generic type12/state29/pending1/2,exact FMA effect positioning,AllEnd
+mask,saved-Input equality clearing,and current audience getters/setter.Released
+ID2 lock;no native code/tests/assets changed.
+
+Validation:`tools/verify_menu_interruptions.py` twice,identical:20 hashes
+(10 complete/10 linked),243 instructions,3 spans(startup/bias/5.0).
+Python compilation,existing behavior/Input/menu-domain/ActMenu verifiers,
+own Markdown links,and scoped whitespace passed.`make test`:79 CTest/90
+Python passed.`make all` passed.
+
+Limits:static local evidence only.Audience entity/core admission,present producer/
+event graph,effects/numeric backend,confusion/remaining menu writers,party key1
+callback/query reachability,Game/platform/original execution and full-game
+requirements remain open.Next needed port-function priority:complete confusion
+writer and party table callback/source binding.
+
 ## 2026-10-12 — ID2 complete weapon-table builder and original bindings
 
 Four detailed contracts close MakeSelectWeaponTable80123ec0/0xd50:
