@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'format_binary_decimal_entry': {
+        0x8026689c: 'abc30002', 0x802668b0: '41810160',
+        0x802668c0: '3bc00024', 0x802668c8: '408100e8',
+        0x80266938: '88050004', 0x80266954: '98df0004',
+        0x8026699c: 'b01f0002', 0x802669e8: 'b01f0002',
+        0x80266a50: '54000ffe', 0x80266a70: '987e0005',
+        0x80266b8c: '3800004e', 0x80266c48: '64080010',
+        0x80266cac: '23470035', 0x80266cb8: '4800072d',
+        0x80266dbc: '48001dad', 0x80266dc0: '9bfe0000',
+    },
     'format_finite_decimal_layout': {
         0x8026ae08: 'b081000e', 0x8026ae60: '48000485',
         0x8026ae68: '2c04fffc', 0x8026ae78: '41800050',
@@ -748,6 +758,9 @@ def verify(iso_path):
         if [i for i, flags in enumerate(read(0x803bb308, 256)) if flags & 0x80] != list(range(65,91)):
             raise ValueError('Decimal special-value case classification mismatch')
         print('Decimal special-value string block, zero and uppercase classification verified')
+        if read(0x80428bc8, 8) != bytes(8):
+            raise ValueError('Binary decimal input zero comparison mismatch')
+        print('Binary decimal input zero comparison constant verified')
 
 
 if __name__ == '__main__':

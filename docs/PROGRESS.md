@@ -3148,3 +3148,28 @@ actual format/type/count callers, replacement/callback bodies, rendering/manager
 cadence and original story attribution/order/branches/conditions. Continue all
 remaining systems before complete-game requirements. Full objective active/
 incomplete; executed-original comparisons needed.
+
+## 2026-10-12 — Binary decimal entry and numeric records
+
+Added FORMAT_BINARY_DECIMAL_ENTRY.md for __num2dec and __num2dec_internal:
+numeric versus ASCII record phases, special-value bypass, signed request cap,
+positive-retention ties/carry/padding, exponent conversion, raw sign and signed
+zero, finite mantissa trailing-bit count, helper ordering, integer decimal
+reversal and final sign overwrite. Power-of-two decimal, multiplication and
+runtime numeric helper internals remain explicit dependencies. Conventional
+significand factorization is labeled inference pending those helper contracts.
+
+Validation:640 instruction anchors and prior checks passed against the read-only
+US ISO, including the distinct binary decimal input-zero constant. Two fresh
+213-function fingerprint reports matched byte-for-byte. All local behavior
+documentation links resolve; git diff --check passed. make test passed core plus
+36 Python tests; make all exited0, no rebuild. Only research/provenance/evidence
+tooling changed. No original execution/emulator run or profile/save modification.
+Original extracts/reports remain ignored. Static checks do not establish complete
+binary decimal generation, executed caller behavior or original/native equivalence.
+
+Next: numeric decimal multiplication and power-of-two generation; frexp/ldexp/
+modf and integer conversion/division contracts; hex-float and remaining formatting
+services. Continue original call-site, renderer, story and other system recovery
+before complete-game requirements. Full objective active/incomplete; executed
+original comparisons still required.

@@ -50,6 +50,7 @@ FUNCTIONS = (
     'parse_format@MSL_C.PPCEABI.bare.H.a printf.c',
     'long2str', 'longlong2str',
     'round_decimal', 'float2str',
+    '__num2dec', '__num2dec_internal',
     'btlevtcmd_AnnounceMessage', 'btlevtcmd_AnnounceSetParam',
     'BattlePadCheckTrigger', 'BattlePadMultiCheckTrigger', '_disp@battle_message.o',
     'evt_btl_camera_set_mode', 'evt_btl_camera_set_homing_unit',
