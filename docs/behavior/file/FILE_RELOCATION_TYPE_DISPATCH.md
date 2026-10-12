@@ -6,7 +6,7 @@ Containing-body hashes do not imply all nested handler contracts are complete.
 Verify `python3 tools/verify_file_relocation_dispatch.py`;read
 [complete flat handlers](FILE_FLAT_POINTER_RELOCATION.md) and
 [payload movement](FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md).
-Types4/5 nested handlers,format consumers and original runtime remain open.
+Type5 nested handlers,format consumers and original runtime remain open.
 
 ## Set receives a payload and full type word
 
@@ -37,7 +37,7 @@ by an unsigned native enum cast performed before entry/holder resolution.
 | 1 | 8018a9cc | 8018b064 | Flat25 words14c..1ac |
 | 2 | 8018ab04 | 8018b19c | Flat8 words24..40 |
 | 3 | 8018ab70 | 8018b208 | Flat1 word48 |
-| 4 | 8018ab88 | 8018b220 | Nested/signature route;handler remains open |
+| 4 | 8018ab88 | 8018b220 | [Complete nested/signature handler](FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_SETUP.md) |
 | 5 | 8018ac80 | 8018b320 | Nested graph route;handler remains open |
 | 6 | 8018ae58 | 8018b4f4 | Flat1 word48 |
 | 7 | 8018ae70 | 8018b50c | Flat3 words64..6c |
@@ -75,3 +75,8 @@ Two containing-body hashes,selected dispatch/flat instruction anchors and both
 original tables are checked read-only. No complete nested handler/format schema,
 source-domain,successful relocation/rendering or original execution is claimed.
 Full EVT-01/JUMP-01/DMG-02 resource requirements remain open.
+
+[Type4 setup](FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_SETUP.md) and
+[type4 clear](FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_CLEAR.md) now close that nested
+handler,including source US effect TPL witness. Type5 remains open;complete TPL
+consumers/platform/source/runtime still require their own contracts.
