@@ -59,6 +59,7 @@ private:
     void ground(float x0,float z0,float x1,float z1,float y,uint32_t color);
     void character(int index,Vec2 p,float height,float width,float facing,float lift=0,float tilt=0);
     bool characterModel(const char* pose,float frame,Vec2 root,float rootY,float yaw,bool reflectZ);
+    void marioGroundShadow(const FieldShadowRecord&);
     void shadow(Vec2 p,float radius,float floor=0);
     void vertex(float x,float y,float z,float u,float v,uint32_t color);
     void text(const char*,float x,float y,float scale,uint32_t color);

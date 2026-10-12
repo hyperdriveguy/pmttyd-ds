@@ -25,6 +25,51 @@ struct Fixture {
 FieldWallHit hit(uintptr_t token,float distance,FieldWallVector normal={1,0,0},uint32_t attributes=0) {
     return {token,distance,normal,attributes};
 }
+void shadowCases() {
+    auto record=marioShadowRequest({100,20,300},20,true);
+    CHECK(record.type==0 && close(record.size,13.333333f) && record.color==0x6e000000 && record.height==20);
+    CHECK(marioShadowRequest({},0,true,0x1000).size==0);
+    CHECK(marioShadowRequest({},0,true,1).size==0);
+    CHECK(marioShadowRequest({},0,true,0,0x02000000).size==0);
+    CHECK(marioShadowRequest({0,-2.001f,0},0,false).size==0);
+    CHECK(marioShadowRequest({0,-2,0},0,false).type==2);
+    CHECK(close(marioShadowRequest({0,20,0},0,false).size,11.833333f));
+    CHECK(marioShadowRequest({0,200,0},0,false).size==0);
+    CHECK(fieldShadowAttributeAdmitted(4,0x800) && !fieldShadowAttributeAdmitted(0x80000000,0x800));
+    CHECK(fieldShadowAttributeAdmitted(0x80000000,0));
+    struct Fixture {int calls=0;FieldWallVector p,d;float length=0;FieldShadowHit hit{true,false,{100,19.0004f,300},{0,1,0}};} f;
+    FieldShadowServices services{&f,[](void* user,FieldWallVector p,FieldWallVector d,float length) {
+        auto& fixture=*static_cast<Fixture*>(user);++fixture.calls;fixture.p=p;fixture.d=d;fixture.length=length;return fixture.hit;
+    }};
+    CHECK(prepareFieldShadow(record,services));CHECK(f.calls==1 && f.p.y==21 && f.d.y==-1 && f.length==150);
+    CHECK(record.matrix[7]==20.0004f && fieldShadowPolygonAdmitted(record));
+    CHECK(prepareFieldShadow(record,services) && f.calls==1); // Prepared flag avoids a second query.
+    auto points=fieldShadowPolygon(record);CHECK(close(points[0].z,313.333333f) && close(points[5].z,286.666667f));
+    CHECK(close(points[1].x,88) && close(points[2].x,112));
+    record.flags=1;f.hit.normal={.6f,.8f,0};CHECK(prepareFieldShadow(record,services));
+    CHECK(close(record.matrix[0],-13.333333f*.64f) && close(record.matrix[4],8));
+    record.flags=1;f.hit.normal={0,-1,0};CHECK(prepareFieldShadow(record,services));
+    CHECK(close(record.matrix[7],18.0004f) && close(record.matrix[10],13.333333f)); // Leaf preserves sign.
+    record.flags=1;f.hit.found=false;CHECK(!prepareFieldShadow(record,services) && !(record.flags&2));
+    record.flags=0;CHECK(prepareFieldShadow(record,services) && record.matrix[7]==21.5f);
+    record.type=2;CHECK(!fieldShadowPolygonAdmitted(record));record.type=0;CHECK(!fieldShadowPolygonAdmitted(record,2));
+
+    // Independent shadow ray accepts attr4 and raw hit heights, unlike support/wall queries.
+    char path[]="/tmp/ttyd-shadow-rays-XXXXXX";int fd=mkstemp(path);CHECK(fd>=0);close(fd);
+    auto write=[&](uint32_t attributes,uint32_t cull) {
+        std::ofstream out(path,std::ios::binary);uint32_t count=1;GroundContact owner{attributes,555};
+        std::array<float,9> tri={-1,.123456f,-1,1,.123456f,-1,-1,.123456f,1};
+        out.write("HEAD",4);out.write(reinterpret_cast<char*>(&count),4);out.write(reinterpret_cast<char*>(tri.data()),36);
+        out.write(reinterpret_cast<char*>(&owner),8);out.write(reinterpret_cast<char*>(&cull),4);out.close();CHECK(loadHead(path));
+    };
+    clearCollision();write(4,3);const auto result=fieldShadowRay({-25,100,-25},{0,-1,0},150);
+    CHECK(result.found && close(result.point.y,12.3456f,.00005f) && result.normal.y==1);
+    CHECK(!fieldWallRay({-25,100,-25},{0,-1,0},150).token);
+    CHECK(!fieldShadowRay({-25,200,-25},{0,-1,0},150).found);
+    write(0x80000000,3);const auto unknown=fieldShadowRay({-25,100,-25},{0,-1,0},150);
+    CHECK(!unknown.found && unknown.unresolvedObject);
+    unlink(path);clearCollision();
+}
 int main(int argc,char**) {
     if(argc>1) {
         struct Triangle {std::array<float,9> vertices;GroundContact owner;uint32_t cull;};
@@ -57,10 +102,26 @@ int main(int argc,char**) {
                 const auto actual=fieldWallRay(source,direction,40);
                 CHECK(actual.token==expected.token && actual.attributes==expected.attributes);
                 CHECK(close(actual.distance,expected.distance*100,.0001f));++checked;
+                const FieldWallVector shadowOrigin{(v[0]+v[3]+v[6])/3*100,
+                    (v[1]+v[4]+v[7])/3*100+1,(v[2]+v[5]+v[8])/3*100};
+                const FieldWallVector scaled{shadowOrigin.x*.01f,shadowOrigin.y*.01f,shadowOrigin.z*.01f};
+                FieldWallHit down;down.distance=1.5f;
+                for(const auto& tri:triangles) {
+                    FieldWallHit h;
+                    if(intersectFieldRay(tri.vertices,tri.cull,scaled,{0,-1,0},1.5f,h) && (!down.token || h.distance<down.distance))
+                        {down=h;down.token=1;}
+                }
+                const auto shadow=fieldShadowRay(shadowOrigin,{0,-1,0},150);
+                CHECK(shadow.found==bool(down.token) && !shadow.unresolvedObject);
+                if(shadow.found) {
+                    CHECK(close(shadow.point.y,shadowOrigin.y-down.distance*100,.0001f));
+                    CHECK(close(shadow.normal.x,down.normal.x) && close(shadow.normal.y,down.normal.y) && close(shadow.normal.z,down.normal.z));
+                }
             }
         }
-        clearCollision();std::cout<<checked<<" original-mesh directional rays matched full scan\n";return 0;
+        clearCollision();std::cout<<checked<<" original-mesh directional and shadow rays matched full scan\n";return 0;
     }
+    shadowCases();
     CHECK(close(quantizeFieldWall(1.0004f),1));CHECK(close(quantizeFieldWall(-1.0006f),-1.001f));
     CHECK(close(quantizeFieldWall(.0005f),.001f));CHECK(close(quantizeFieldWall(-.0005f),-.001f));
     FieldWallActor actor;

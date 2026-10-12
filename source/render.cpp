@@ -231,6 +231,13 @@ void Renderer::shadow(Vec2 p,float r,float floor) {
     vertex(x0,floor+.012f,z0,0,.5f,white);vertex(x1,floor+.012f,z0,.25f,.5f,white);vertex(x1,floor+.012f,z1,.25f,.25f,white);
     vertex(x1,floor+.012f,z1,.25f,.25f,white);vertex(x0,floor+.012f,z1,0,.25f,white);vertex(x0,floor+.012f,z0,0,.5f,white);
 }
+void Renderer::marioGroundShadow(const FieldShadowRecord& record) {
+    const auto points=fieldShadowPolygon(record);
+    constexpr int triangles[]={0,1,2,2,1,3,2,3,4,4,3,5}; // Original strip triangulation.
+    for(int index:triangles) {
+        const auto p=points[index];vertex(p.x*.01f,p.y*.01f,p.z*.01f,0,0,record.color);
+    }
+}
 void Renderer::world(const Game& g) {
     count=0;
     bool battle=g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
@@ -249,7 +256,7 @@ void Renderer::world(const Game& g) {
     vertex(x0,y0,z,0,0,0xffffffff);vertex(x1,y0,z,1,0,0xffffffff);vertex(x1,y1,z,1,1,0xffffffff);
     vertex(x1,y1,z,1,1,0xffffffff);vertex(x0,y1,z,0,1,0xffffffff);vertex(x0,y0,z,0,0,0xffffffff);
     if(!battle) {
-        shadow(g.progress.position,.55f,g.groundHeight);shadow(g.partner,.43f,g.partnerHeight);if(g.progress.room==0)shadow(NpcPosition,.48f);
+        shadow(g.partner,.43f,g.partnerHeight);if(g.progress.room==0)shadow(NpcPosition,.48f);
         if(g.progress.room==0 && !g.progress.crumpDefeated) shadow(CrumpPosition,.65f);
         struct Actor { int index;Vec2 p;float h,w,face,lift,tilt; };
         float bob=std::sin(g.ticks*.22f)*.018f;
@@ -261,7 +268,7 @@ void Renderer::world(const Game& g) {
         }};
         std::sort(actors.begin(),actors.end(),[](const Actor& a,const Actor& b){return a.p.z<b.p.z;});
         for(auto a:actors) if((a.index<2 || g.progress.room==0) && (a.index!=2 || !g.progress.crumpDefeated)) {
-            if(a.index==0 && g.marioPresentation.supported)continue;
+            if(a.index==0 && (g.marioPresentation.supported || (g.marioPresentation.displayFlags&1)))continue;
             character(a.index,a.p,a.h,a.w,a.face,a.lift,a.tilt);
         }
     } else {
@@ -286,9 +293,26 @@ void Renderer::world(const Game& g) {
         character(2,crump,2.1f,2.1f,-1);
     }
     const int legacyCount=count;
-    if(!battle && g.marioPresentation.supported)
+    if(!battle && g.marioPresentation.supported && !(g.marioPresentation.displayFlags&1))
         characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,g.groundHeight+g.jumpHeight,
                        g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ());
+    const int actorEnd=count;
+    bool polygonShadow=false;
+    if(!battle) {
+        const float rootY=g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight;
+        auto request=marioShadowRequest({g.progress.position.x*100,rootY*100,g.progress.position.z*100},
+                                       g.groundMetadataHeight*100,g.groundContact.sourceNode!=0,
+                                       g.marioPresentation.displayFlags,uint32_t(g.fieldIdle.mainFlags));
+        if(request.type==0 && request.size!=0) {
+            FieldShadowServices services{nullptr,[](void*,FieldWallVector p,FieldWallVector d,float length){return fieldShadowRay(p,d,length);}};
+            if(prepareFieldShadow(request,services) && fieldShadowPolygonAdmitted(request)) {
+                marioGroundShadow(request);polygonShadow=true;
+            }
+        }
+        // Type2 requests await the original multi-pass volume backend.
+        // The prior ellipse remains an explicit provisional rendering adapter.
+        else if(request.type==2 && request.size!=0)shadow(g.progress.position,.55f,g.groundHeight);
+    }
     C3D_BindProgram(&program);
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);
     AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
@@ -309,7 +333,17 @@ void Renderer::world(const Game& g) {
     BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
     C3D_TexBind(0,&atlas);
     C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
-    if(count>legacyCount){C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,count-legacyCount);}
+    if(actorEnd>legacyCount){C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
+    if(count>actorEnd) {
+        // Source LEQUAL maps to GEQUAL in PICA's reversed-depth projection;
+        // shadows blend after actors/maps without writing depth.
+        C3D_DepthTest(true,GPU_GEQUAL,GPU_WRITE_COLOR);
+        C3D_TexEnvInit(env);
+        if(polygonShadow){C3D_TexEnvSrc(env,C3D_Both,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_REPLACE);}
+        else {C3D_TexBind(0,&atlas);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);}
+        C3D_DrawArrays(GPU_TRIANGLES,actorEnd,count-actorEnd);
+        C3D_DepthTest(true,GPU_GREATER,GPU_WRITE_ALL);
+    }
 }
 void Renderer::text(const char* str,float x,float y,float scale,uint32_t color) {
     C2D_Text t;C2D_TextParse(&t,textBuffer,str);C2D_TextOptimize(&t);

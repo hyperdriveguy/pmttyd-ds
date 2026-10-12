@@ -303,6 +303,29 @@ bool loadHead(const char* path) {
     }
     if(ok){head.swap(data);headIndex.swap(next);}return ok;
 }
+FieldShadowHit fieldShadowRay(FieldWallVector origin,FieldWallVector direction,float maximum) {
+    // Bounded original downward query; geometry service normal is retained raw
+    // from its ray output, without Mario's Q1000/support filters.
+    if(direction.x!=0 || direction.y!=-1 || direction.z!=0 || maximum<0)return {};
+    const auto nativeOrigin=FieldWallVector{origin.x*.01f,origin.y*.01f,origin.z*.01f};
+    FieldShadowHit result;float nearest=maximum*.01f;bool selected=false;
+    auto test=[&](const float* v,uint32_t cull,GroundContact contact) {
+        std::array<float,9> triangle;std::copy(v,v+9,triangle.begin());
+        FieldWallHit hit;
+        if(!intersectFieldRay(triangle,cull,nativeOrigin,direction,nearest,hit) || (selected && hit.distance>=nearest))return;
+        contact=runtimeContact(contact);nearest=hit.distance;selected=true;
+        // Named runtime owners/flags are not in static map packs. A closer
+        // unknown tagged owner prevents a claim that a farther floor won.
+        result.unresolvedObject=(contact.attributes&0x80000000u)!=0;
+        result.found=!result.unresolvedObject;
+        result.point={origin.x,origin.y-hit.distance*100.f,origin.z};result.normal=hit.normal;
+    };
+    if(!head.empty())for(auto n:nearby(headIndex,{nativeOrigin.x,nativeOrigin.z}))
+        test(head[n].v,head[n].cull,head[n].contact);
+    else for(auto n:nearby(groundIndex,{nativeOrigin.x,nativeOrigin.z}))
+        test(ground[n].v,ground[n].cull,ground[n].contact);
+    return result;
+}
 FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float maximum) {
     // Geometry cache is in native scale. Policy inputs/outputs are engine units.
     origin={origin.x*.01f,origin.y*.01f,origin.z*.01f};maximum*=.01f;

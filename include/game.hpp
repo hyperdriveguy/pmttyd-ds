@@ -12,6 +12,7 @@
 #include "field_step.hpp"
 #include "field_idle.hpp"
 #include "field_key.hpp"
+#include "field_shadow.hpp"
 #include "battle_timing_a.hpp"
 #include "battle_hammer.hpp"
 #include "battle_defense.hpp"
@@ -310,4 +311,5 @@ bool wallAtLevel(size_t index,float elevation);
 // Uses complete source-winding .head mesh; legacy fixture wall segments are a
 // separate geometry adaptation when a complete mesh is unavailable.
 FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float length);
+FieldShadowHit fieldShadowRay(FieldWallVector origin,FieldWallVector direction,float length);
 }
