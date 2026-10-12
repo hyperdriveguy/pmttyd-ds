@@ -5876,3 +5876,47 @@ input/eligibility writers;full UI/type/pause graph and original normal/multihit/
 held/A+B traces;remaining target/audio/field/reward composition. Use numeric-ID
 scoped reservations. Full US systems and optional content remain necessary before
 final complete-game requirements;the overall objective is still incomplete.
+
+## 2026-10-12 — ID1: separate helper roles and lecture coordinator modes
+
+Added CHRISTINE_HELPER_ROLES.md and LECTURE_COORDINATOR_MODES.md.
+Crump setup2 spawns NPC kind66d78 via647d8;lecture setup3 selects kind66fe8 via
+60cb0 and weighted/group chain60de8/60ce0. NPC init requests maximum moves0;
+its attack only restarts wait. The different lecture init sets Mario's HP-skip
+attribute40000000/W2740,spawns professor67fb8 and creates reciprocal work0 ID
+links. Selector-6 now connects through the proven W424 setter to that professor.
+Asset reuse must not merge actor kind/state or apply lecture-only input/HP writes
+to Crump's NPC helper. Initial kind10/0 values remain stat-copy inputs,not measured
+final resources.
+
+Complete professor init and200-command phase request graph specifies exact
+0/2/4/6/8/9 work/phase branches,mode writes1/3/5/7/9,explicit rotations/joins/
+brothers,status/camera/flag requests,early deletes and selection0/nonzero paths.
+Its20 message/select/append sites bind16 original US gor_02 keys with exact
+speaker operands/payload hashes. Three complete REL leaves resolve lecture mode,
+ID ownership and defense classifications. Empty classifier case0 does not fall
+through to work3=4;counter7→8 and attack-wrapper3→4 remain different tails.
+Player1→2/5→6 producers,counter dispatch,field selection and full original lecture
+execution remain open. No dialogue was paraphrased,invented or committed.
+
+Validation:verify_lecture_helper_roles.py passed eight full data spans,three REL
+leaf hashes,ten event hashes/counts,23 local/ten service relocations,work writers,
+selector-6 and20 US message/speaker/uniqueness/hash checks. Two reports matched
+byte-for-byte. Existing input/jump and general1,980-anchor/data checks passed.
+149 links in ID1-edited behavior files resolved;whole collection had735 links,
+with one missing target in ID2's in-progress movement-sound draft;no full clean
+collection claim made. Gekko check covered470 listings,66,583 instructions,376
+paired instructions,zero changes/unrecognized. Initial make test/all failed on
+concurrent native action-service narrowing/clamp types;exact inbox notes enabled
+native fixes. Final make test passed12 CTest suites plus58 Python tests;make all
+exited0,no rebuild. git diff --check passed. Only ID1 research/handoff paths
+staged;native and ID2 motion/tooling work preserved. No original execution,
+emulator/profile/save/ISO mutation,asset conversion or native changes by ID1.
+Inspection ELFs/reports stay ignored or in/tmp.
+
+Released only ID1's helper-role lock and linked partial answers in the inbox.
+Next:close missing player/lecture mode producers and W2740/counter consumers;
+actual field trigger/return/story persistence;original input/state/US-message/
+animation/audio comparison traces. Continue remaining reachable US systems and
+optional content before final complete-game requirements. Full objective remains
+active/incomplete;local coordinator closure is not a complete lecture or game.

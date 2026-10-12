@@ -156,3 +156,12 @@ occur only on precheck result1;other routes proceed through avoidance/common
 recovery. The stream has an unresolved no-target GOTO99 without a local label99.
 These contracts close the script/ABI slice,not the movement/input/damage service
 composition or measured impact timing.
+
+
+## Spawned NPC identity follow-up
+
+[Separate helper roles](CHRISTINE_HELPER_ROLES.md) proves entry_npc_christine
+0x647d8 selects kind0x66d78/init0x66ed8. Its attack hook only restarts wait and
+its init requests maximum moves0. This is distinct from lecture kind0x66fe8,
+setup index3 and the injected A/B demonstration graph. Reusing Goombella assets
+must not enable lecture-only scripts or Mario HP-skip writes in Crump's NPC role.

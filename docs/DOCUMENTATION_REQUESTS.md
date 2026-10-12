@@ -17,9 +17,11 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Unit/part hit/world/home positions and movement sound core | JUMP-01, DMG-02 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Recover used position leaves/event wrapper and sound-control/stop record lifecycle;source writers,playback internals and traces remain open |
+| Jump takeoff position,move-frame query and approach MovePosition | JUMP-01, AC-01 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Recover80109054/354,8010c8c0/1b4,8010ca74/334 local arguments/count/sentinel/delta/return rules;helper/domain and execution remain open |
 | Unit sound-mode loader and Mario jump sound record | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Sound-mode contract](behavior/BATTLE_UNIT_SOUND_MODE.md):complete partial-field loader and used type2/-1 request;source writers/macro resources/audio execution remain open |
 | MarioJumpPosition complete local motion modes and AC side effects | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Motion](behavior/BATTLE_MARIO_JUMP_MOTION.md) and [numerics](behavior/BATTLE_MARIO_JUMP_NUMERICS.md):complete local body,all phases/rounded branches;numeric/audio dependencies and original traces remain open |
-| Crump NPC helper identity versus lecture helper modes and hooks | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover separate kind/setup/init/attack bindings and lecture work-mode branches;excludes full lecture/story execution and original traces |
+| Crump NPC helper identity versus lecture helper modes and hooks | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Helper roles](behavior/CHRISTINE_HELPER_ROLES.md) and [coordinator modes](behavior/LECTURE_COORDINATOR_MODES.md);distinct setup/kind/ID/work/message graph answered,player/counter/field lifecycle and original traces remain open |
 | Mario-specific JumpParam preparation and motion dependencies | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Parameter contract](behavior/BATTLE_MARIO_JUMP_PARAMETER.md):complete ordered integer resolution/distance-count writeback;MarioJumpPosition body/numeric execution/traces remain open |
 | Battle input sampler/reset caller census and system-level/event-speed controls | AC-01, AC-03, AC-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Reset owners](behavior/BATTLE_INPUT_RESET_OWNERS.md) and [level/speed controls](behavior/EVENT_SYSTEM_LEVEL_AND_SPEED.md);direct census,local controls and tutorial injection answered,full UI/type/writer/lecture graph and original traces remain open |
 | Ordinary Jump complete request graph and per-hit/AC branches | JUMP-01, AC-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Jump graph](behavior/BATTLE_NORMAL_JUMP_EVENT_FLOW.md),[result/stop](behavior/BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md),[VM/concurrency](behavior/EVENT_JUMP_BRANCHES_AND_CONCURRENCY.md);Mario-specific motion/remaining services and original traces remain open |
@@ -58,6 +60,19 @@ an original contract. Complete-game requirements remain deferred until system
 coverage is adequate.
 
 ## AC-01 — Opening Crump encounter and Jump callers (open)
+
+ID1 helper-role answer (2026-10-12):
+[helper roles](behavior/CHRISTINE_HELPER_ROLES.md) verifies that Crump setup2
+spawns unit_npc_christine0x66d78 through setup0x647d8;its init/attack hooks do
+not select the separate lecture injection/mode routines. Lecture setup3 uses
+kind0x66fe8,spawns professor0x67fb8,and binds selector-6 via W+0x424 to that
+professor. Keep those actor/state roles separate even when assets are reused.
+[coordinator modes](behavior/LECTURE_COORDINATOR_MODES.md) supplies its full local
+phase/init request graph,phase-controlled work3/7 preparation and20 exact US
+message/choice/append sites with speaker bindings in msg/US/gor_02.txt. Mode1→2/
+5→6 player producers,counter dispatch,field selection/lifecycle and original
+traces remain open;the first Crump encounter must not inherit lecture-only Mario
+HP-skip or injected A/B inputs from this different setup.
 
 Partial answer in documentation commit81a2c2b:
 [harbor opening bindings](behavior/STORY_HARBOR_OPENING_BINDINGS.md) pins
@@ -519,3 +534,19 @@ Use AC-01 answers to
 replace harness scheduling and connect original tutorial/story events. Defense,
 damage, inventory/event/UI/audio/field systems and all remaining content still
 require implementation/closure work; this request file is not a full-game spec.
+
+
+ID1 build-validation note (2026-10-12,lecture-helper delivery):initial make test
+fails in tests/battle_action_services_tests.cpp:91 because raw0xfe363c86 narrows
+from unsigned to int in an aggregate;use an explicit signed-word conversion for
+that fixture. make all fails in source/battle_action_services.cpp:61 because
+std::clamp(signedWord(result),0,6) deduces long int versus int on devkitARM;
+explicit int32_t template/bounds preserve the intended signed domain. These are
+concurrent native compile errors;lecture/helper binary checks pass. Re-run both
+commands after correcting them before recording a successful native validation.
+
+
+ID1 build-validation follow-up:the native fixture now uses the signed local-work
+encoding and clamp uses an explicit int32_t domain. Final make test passed all12
+CTest suites plus58 Python tests;make all exited0 with no rebuild. The earlier
+compile failures above are resolved. ID1 changed no native files for those fixes.

@@ -795,3 +795,19 @@ identify these bodies. No original executable linking/distribution,dialogue
 rewrite,asset conversion,ISO/profile/save mutation or original execution. Existing
 rights/provenance remain unchanged;metadata/reference licenses do not grant
 original-resource distribution rights.
+
+Helper-role/coordinator research by ID1 (2026-10-12):the read-only verifier
+verify_lecture_helper_roles.py pins eight full data records,three relocated REL
+leaf bodies,ten event spans/counts,23 local/ten service bindings and concrete
+work/selector writes. Distinct NPC/lecture kinds are preserved even when visual
+assets are reused. Twenty coordinator message/select/append sites bind16 exact
+US keys in msg/US/gor_02.txt (128,972 bytes,SHA-256
+1958e3d22bb27b01332e08b67f279a33f21e0e8a3aba2b947ad8c2a446144f16).
+Payload hashes/speaker operands are metadata;original text/control tokens remain
+in the read-only ISO/local assets and were not paraphrased or committed. Ignored
+reports are christine-helper-events.json,frankli-lecture-coordinator.json,
+lecture-counter-event.json and lecture-helper-roles-evidence.json under
+artifacts/reference/behavior. Temporary REL inspection ELFs/listings remain in
+/tmp;unrelocated targets are distinguished from original import bindings. No
+original execution,ISO/profile/save mutation,asset conversion,executable linking/
+distribution or story rewrite. Existing provenance and rights remain unchanged.

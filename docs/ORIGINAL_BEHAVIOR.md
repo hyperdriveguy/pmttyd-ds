@@ -372,3 +372,11 @@ injection. [System-level/speed controls](behavior/EVENT_SYSTEM_LEVEL_AND_SPEED.m
 closes the local level/type-mask table,getter and per-entry speed multiplier/
 creation policy. Neither converts the static census into an executed pause graph
 or establishes full input writer/restart coverage.
+
+
+[Crump NPC versus lecture roles](behavior/CHRISTINE_HELPER_ROLES.md) and
+[lecture coordinator](behavior/LECTURE_COORDINATOR_MODES.md) now distinguish
+setup indices2/3,spawned kind/ID ownership and the professor's full local phase
+request graph. Exact US messages/speakers/choice branches are pinned to gor_02
+for the lecture;missing player/counter/field/services and original execution
+remain open. These local closures do not complete either the full lecture or game.

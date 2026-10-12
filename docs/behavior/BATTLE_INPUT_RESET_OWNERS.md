@@ -134,8 +134,12 @@ in the same interpreter invocation. This is a scripted tutorial-history writer,
 not evidence of a new physical button sample. Other work values inject neither
 of these masks through the two shown cases.
 
-Actual unit-work producers,selector-6 translation,lecture event selection,
-weapon eligibility and branch reachability remain open. It must not be conflated
+The [helper roles](CHRISTINE_HELPER_ROLES.md) follow-up resolves selector-6
+through the professor ID setter at W+0x424 and distinguishes the Crump NPC kind
+from this lecture kind. [Coordinator modes](LECTURE_COORDINATOR_MODES.md) pins
+the exact phase/work writers of3/7 and related3→4/7→8 tails. Player mode producers,
+full lecture selection/counter dispatch,weapon eligibility and original branch
+execution remain open. It must not be conflated
 with Crump's **normal_attack_event** at0x653c8,whose separate physical-history
 boundary was documented previously. Presence in shipped gor and helper allocation
 are strong leads,but do not establish when every demonstration mode executes.
