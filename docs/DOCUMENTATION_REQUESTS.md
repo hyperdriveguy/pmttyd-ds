@@ -19,6 +19,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | --- | --- | --- | --- | --- |
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete animPoseSetAnim/SetPaperAnim/SetPaperAnimGroup/SetLocalTime/SetLocalTimeRate used by partner pre-display;resource lookup/Main/draw/backend/numeric/lifecycle remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
+| Smart-heap compaction and file-move requests | EVT-01, JUMP-01, DMG-02 | VALIDATED binary / lock released, 2026-10-12 | Documentation agent ID 2 | [Compactor/barriers](behavior/SMART_HEAP_COMPACTION_AND_PENDING_FILES.md),[file move/address requests](behavior/FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md):complete two bodies,draw-sync/equal-address bypass/nonworker pending barrier/worker retarget/live holders/gaps/full-arena flush;type relocation/allocator/platform/source/runtime remain separate;host camera assertion pending |
 | Smart allocation header release and file ownership | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Header release/accounting](behavior/SMART_HEADER_RELEASE_AND_SPACE_ACCOUNTING.md),[automatic tag release](behavior/SMART_AUTOMATIC_TAG_RELEASE.md):complete smartFree/smartAutoFree,4→3 deferral,no heap free,live unlink/gap/free-header/count writes,low16 versus full-word3 passes;allocator/compaction/relocation/platform/source/runtime remain separate |
 | File-cache collection and initialization | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Collection/aging](behavior/FILE_CACHE_COLLECTION_AND_PRELOAD_AGING.md),[pool/init/mode](behavior/FILE_CACHE_POOL_INITIALIZATION.md):complete four bodies,worker flags overwrite,ready-count aging versus pending wait,state2 holder routing/live lists,1024*176 raw pool/17 DOL calls;smart heap/relocation/DVD worker/TPL/platform/source/runtime remain separate |
 | Async file request and completion publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Request/cache](behavior/FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md),[completion/request state](behavior/FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md):complete fileAsync/callback/DVD request leaf,raw-1,state3/count0,archive live-head publication,-3-only failure,signed relocation/pending-clear/deferred-close/live callback;worker/collection/relocation/TPL/platform/source/runtime remain separate |
@@ -2363,3 +2364,26 @@ PROGRESS milestone statements remain unvalidated. The committed
 [message correction](behavior/US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md)
 now explicitly supersedes those linkage/completion claims;source owner should
 trace original event/service calls before native story implementation.
+
+ID2 smart-compaction validation breadcrumb (2026-10-12):original-binary checks
+and make all pass. make test currently fails field_camera_tests.cpp:79 assertion
+close(events.follow.x,250) && events.look.x==events.follow.x && close(events.dolly,25).
+See /tmp/id2-smartgc-test.log. This is a concurrent camera native/fixture issue;
+ID2 changes no camera/native/test files. Native owner should reconcile that
+camera expectation;the compaction evidence is independently passing.
+
+ID2 smart-compaction delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial:
+[Compactor/barriers](behavior/SMART_HEAP_COMPACTION_AND_PENDING_FILES.md) and
+[file moves](behavior/FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md) close two
+full local bodies. Draw-sync precedes manager reads,equal-source bypass skips
+pending inspection,nonworker state3/pending barriers preserve location/gaps,
+worker moves retarget DVD7c. File clear takes ENTRY/setup takes PAYLOAD with
+signed type;live holder publication/state/next/tail and full-arena flush pinned.
+Private contracts/verifier committed42486ae. Ten hashes(two complete/eight
+linked),164 anchors,two startup/global spans,repeat JSON,related/general1980
+checks and2555 local links pass. make all passes;make test66/67 suites passes
+with field_camera assertion79 failing,so its Python stage was not reached.
+Separately78 Python tests pass. Logs:/tmp/id2-smartgc-test.log,
+/tmp/id2-smartgc-build.log,/tmp/id2-smartgc-python.log. Only ID2's documentation
+lock released;camera native owner must resolve its assertion. Allocator/relocation/
+worker/source/platform/scene/original runtime remain open.

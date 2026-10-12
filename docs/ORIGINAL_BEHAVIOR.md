@@ -869,3 +869,11 @@ Renderer/animation/SDK matrix/resource/lifetime/source/numeric/original visual
 composition remains open. Partners/NPCs register now reflects partial local
 coverage,not full-system closure. Unvalidated BTLNO name associations remain
 superseded by the message-resource correction;final game requirements deferred.
+
+ID2 smart compaction delivery (2026-10-12):
+[compactor/pending barriers](behavior/SMART_HEAP_COMPACTION_AND_PENDING_FILES.md)
+and [file payload/address requests](behavior/FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md)
+close smartGarbage/fileGarbageMoveMem. Draw-sync request,equal-address bypass,
+nonworker pending barriers,worker retarget,live holders/next/gaps,tail/full-arena
+flush and separate clear ENTRY/setup PAYLOAD arguments are explicit. Relocation/
+allocator/worker/cache/platform/source/scene/original traces remain open.

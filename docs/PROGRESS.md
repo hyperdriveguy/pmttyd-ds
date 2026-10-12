@@ -1,5 +1,29 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2 smart compaction and file-payload movement
+
+Added two complete local smartGarbage/fileGarbageMoveMem contracts and verifier.
+Draw-sync request,equal-address bypass,nonworker pending barriers,worker retarget,
+leading/previous/tail gaps,live owner/holder/next reads and full-arena flush are
+explicit. File movement separates clear ENTRY from setup PAYLOAD and updates
+current pending DVD destination7c. Release/completion docs link these operations.
+Private scope committed42486ae;own documentation lock released after binary
+validation. Shared handoff remains separate from concurrently staged native work.
+
+Validation:verify_smart_compaction.py passes10 hashes(two complete/eight linked),
+164 anchors,two startup/global spans;repeat JSON matches. Python compilation,
+prior release/collection/async/general1980 evidence and2555 local links pass.
+make all passes. make test passes66/67 CTest suites,with field_camera assertion
+at tests/field_camera_tests.cpp:79 failing;Python stage was not reached there.
+Separately python3 -m unittest discover -s tests -p 'test_*.py' passes78 tests.
+Logs:/tmp/id2-smartgc-test.log,/tmp/id2-smartgc-build.log,/tmp/id2-smartgc-python.log.
+Private scoped whitespace check passes. No native/test/asset conversion changes
+by ID2;no original runtime/performance/source-domain claim.
+
+Next:camera owner resolves its fixture/interface expectation and reruns host
+gate. ID2 proceeds to smartAlloc/arena/type-dependent relocation and worker/
+platform/source/TPL/scene ownership. Full-game requirements remain incomplete.
+
 ## 2026-10-12 — Packed native move-reset provider
 
 Added ResetMoveStatus on original unit20..24 bytes and made it the native
