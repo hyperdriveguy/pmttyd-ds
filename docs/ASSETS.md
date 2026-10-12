@@ -1289,3 +1289,23 @@ ID1 changed no conversion/config/audio code or licensing policy. Original assets
 retain copyright;local derivatives carry no redistribution grant. No original
 execution,ISO/profile/save mutation or original binary/dialogue distribution.
 Global parameter census is direct DOL evidence,not an alias/REL/runtime invariant.
+
+
+## Original ROAD metadata conversion (2026-10-12)
+
+The existing read-only G8ME01 ISO map/REL conversion now resolves the eight
+reciprocal gor_00..gor_04 ROAD names against original collision mesh owners,
+using their transformed local-bounding-box centers (hitObjGetPos), source-node
+identities and AUTO cardinal directions. Vertex-average marker positions are
+retired for this table. local-assets/room-links.json and the asset manifest retain
+source/arrival node IDs, directions, REL offsets and center/spawn coordinates.
+romfs/rooms.bin is a versioned ROAD1 pack:12-byte header plus eight48-byte
+records (396bytes). Target placement performs its actual source-height downward
+query at runtime; manifest spawnY remains marker provenance, not an assumed floor.
+Original triangle winding/cull/draw attributes remain packed unchanged. The
+ROAD registration OR00800000 is a runtime overlay, included in transactional
+collision rollback. No disc bytes, converted assets or compiled packs were
+staged; local-assets/ and romfs/ remain ignored. Original Nintendo/Intelligent
+Systems assets retain their copyright; local conversion conveys no right to
+redistribute the original or derivative pack. No music/art substitutions were
+introduced by this road change.

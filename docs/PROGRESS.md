@@ -1,5 +1,58 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native original ROAD contact, placement and concurrent departure
+
+Native commit1d60475 replaces radius/dot/input triggers and the arbitrary60-tick
+cooldown with source case10 contact identity and gate adapters. Registration
+applies runtime00800000 to named mesh owners without changing packed geometry;
+arrival completion enables cases. ROAD1 records preserve both node identities,
+AUTO cardinal directions and transformed source bbox centers. Mode1 entry uses
+center±30engine units and an unquantized, uncapped-slope NULL-filter downray
+from markerY; misses retain it. Generic movement uses150engine units/s. The
+independent inline landing/movement owner and parent's150ms+2frames map request
+now advance separately. Key-off neutralizes input but retains airborne movement
+and collision; it no longer freezes XZ. Native fade/tick scheduling remains an
+adapter, not full source EVT/time/key nesting/sequencer equivalence.
+
+Native saves migrate32-byte versions1/2 to40-byte version3, retaining existing
+fields and adding optional full signed original GSW0. Unknown source state is
+not inferred from prototype CrumpDefeated. MissingStory and Custom policies hold
+scene-dependent HarborOut5/PartnerArrival6/CoinArrival7 for original event binding;
+legacy/new harness saves cannot use those affected routes as generic shortcuts.
+Explicit generic-road test fixtures supply GSW0=11 only as fixture state. No
+original story/dialogue was fabricated or rewritten. gor_03 debug arrival clears
+system bit40 through a separate native adapter. Failed asset staging still uses
+transactional rollback, including runtime road attributes.
+
+Validation: make test passed48/48 CTest suites and78 Python tests; make all
+built the3dsx. Logs:/tmp/pm-road-tests-final.log,/tmp/pm-road-build-final.log.
+build-host/core_tests original passed18315 indexed/full-scan collision probes
+and all8 original room arrival/grounded+airborne reciprocal/contact checks;
+log:/tmp/pm-road-original-final.log. Dedicated road verifiers passed25 bodies/
+40anchors/14REL spans/83bindings/5maps/10nodes,position17/26,story16/25,and
+landing/keyoff/mapchange19/46; /tmp/pm-road-evidence-final.log. Evidence is static
+read-only ISO recovery, not an original-game timing measurement.
+
+Isolated Azahar east and harbor fixtures each passed2 reciprocal round trips:
+/tmp/pm-road-east-smoke.log and /tmp/pm-road-harbor-smoke.log. Station fixture
+passed2 reciprocal trips plus final outbound trip using1.3-second input holds:
+/tmp/pm-road-station-smoke-long.log,captures artifacts/azahar-road-station-long/.
+The earlier.8-second station run failed its second outbound room assertion;
+a separate initial run lost its project-local save. The runner now accepts
+--output-dir under artifacts and exposes that path to road scripts, so these
+checks can use separate generated profiles. These are native emulator checks,
+not claims of original runtime equivalence;user emulator profiles/saves untouched.
+
+Next: bind original story initialization/persistence and custom ROAD event
+streams, case-event IDs/BeroEXEC/key nesting/time/sequencer services; implement
+source camera lifecycle/projection before unresolved zone/curve selection, then
+partner behavior from delivered documentation. Requested NULL-query active-chain
+and authored-map-to-runtime root-scale verification; converter uses authored*.1,
+mechanics use engine*.01, so their runtime transform relationship must be pinned
+before claiming numeric equivalence. Train/door and unprovided target maps remain
+outside ordinary ROAD handling. Full remake/overworld objective remains active
+and incomplete;no ISO/original/compiled assets staged or distributed.
+
 ## 2026-10-12 — Consolidated packed EventEntry and implementation alias requirements
 
 Documentation agent ID2 answered native EVT-01's explicit1b0-layout request in

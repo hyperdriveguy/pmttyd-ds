@@ -1,5 +1,36 @@
 # Mechanics evidence ledger
 
+## 2026-10-12 — Native ordinary ROAD contact and concurrent departure
+
+ROAD1 metadata replaces the old marker-radius trigger with named collision
+owner IDs. Registered roads apply the source runtime00800000 attribute overlay;
+ordinary MoveMain refreshes its separate pass-through contact on moving and
+staying passes. Case10 admission uses that actual nonnull identity and the
+documented global gate adapter, without an input/radius/dot test or60-tick
+cooldown. Cases enable after arrival completion. Mode1 arrival uses center+30u
+to center-30u and a raw downward query from markerY, retaining markerY on miss;
+it does not add a query-origin offset, apply Mario's attr4 filter, reject slopes
+or quantize the returned Y. Native geometry remains scale.01.
+
+Generic departure's inline waits for ordinary grounded support and moves toward
+center+150u; its parent150ms+2frames continuation requests mapchange independently.
+The native60Hz timer and existing fade bridge preserve this separation but are
+not the complete original EVT credit/clock/key-nesting/sequencer implementation.
+During an airborne wait, input is neutral and ordinary retained travel, gravity,
+head/wall/floor collision continue. Departure does not freeze XZ or wait for
+travel completion before starting the parent timer. The ordinary150units/s
+movement service and final snap remain simulation-tick based.
+
+Original GSW0 is now an optional full signed word in the native version3 save;
+legacy/prototype victory cannot infer it. Unknown story or source callbacks for
+HarborOut5/PartnerArrival6/CoinArrival7 remain explicit MissingStory/Custom
+dependencies and are not silently executed as generic travel. gor_03 debug
+arrival clears system bit40 through an explicit unsaved native adapter. Full
+case-event IDs/BeroEXEC, scene execution, runtime HitObj active flags, authored
+camera zones and original arithmetic equivalence remain unbound. These contracts
+come from the linked docs/behavior road verifiers, not new Dolphin observations.
+
+
 ## 2026-10-12 — Native ordinary head-query and low-ceiling ownership
 
 Native31f6cb8 binds the recovered no-NPC head contract, superseding provisional
