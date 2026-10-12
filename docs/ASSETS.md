@@ -26,7 +26,7 @@ includes src/include/config and rels under ignored
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
 now fingerprints 289 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1428 instruction anchors plus those
+window tables. Independent verifier checks 1460 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -651,3 +651,9 @@ conversion bias. Authored arithmetic preserves fused boundaries and integer
 low-word splits. Common exponentiation/range tail remains open;no accuracy or
 execution equivalence is inferred. Original inspection artifacts stay ignored;
 no executable linking,asset conversion,message rewrite or license change.
+
+Power common-tail research adds32 anchors within existing helper identity and
+full104-byte/thirteen-constant hash. Authored contracts cover complete local
+product/range/reduction/polynomial/scaling/sign sequence;helper and composed
+numerical execution equivalence remain open. No original code linking/execution,
+asset conversion,message rewrite or license change;local artifacts stay ignored.

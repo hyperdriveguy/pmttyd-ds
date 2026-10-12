@@ -4204,3 +4204,29 @@ resource/cadence and uncovered story/event/field/battle/audio/save/content
 before complete-game requirements. Full objective active/incomplete;local log
 recovery is not full power/numerical/layout or full-game fidelity. Original data/
 IDs/tokens and story attribution/order/branches/event conditions remain required.
+
+## 2026-10-12 — US power exponentiation/range tail
+
+Added POWER_EXPONENTIATION_AND_RANGE.md for __ieee754_pow80270450..80270694:
+result sign,split y/log product,raw/exact overflow and underflow gates,arithmetic
+huge/tiny requests,integer bit reduction,fused natural-exponent/polynomial,
+exponent insertion versus ldexp and final sign multiplication. Pinned thirteen
+constant bits and preserved low-word split/fused boundaries. Local pow/helper
+body now documented across contracts;sqrt and composed execution remain open.
+No accuracy/correct-rounding/original FPSCR claim. Linked general-log tail.
+
+Validation:1460 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO,including full104-byte/thirteen-constant hash. Fresh289-
+function reports reproduced byte-for-byte. All510 local behavior links resolved;
+git diff --check passed. make test passed core plus36 Python tests;make all
+exited0 with no rebuild. No original execution/emulator,profile/save modification,
+native implementation,asset conversion or story/message rewrite. Disassembly/
+reports remain ignored;working tree was clean at turn start.
+
+Next: sqrt dependency and executed base-five/general power/FPSCR/returned-bit
+corpus,then composed scanner/converter/distance validation. Continue drawing/
+string/resource/cadence callers and uncovered story/event/field/battle/audio/
+save/content before complete-game requirements. Full objective active/incomplete;
+local power recovery is not complete numerical/layout or full-game fidelity.
+Original data/IDs/tokens and story attribution/order/branches/event conditions
+remain mandatory.

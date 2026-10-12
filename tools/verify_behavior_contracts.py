@@ -13,6 +13,24 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'power_exponentiation_and_range': {
+        0x80270458: '7c001b79', 0x80270460: 'cbe21a78',
+        0x8027047c: '9061003c', 0x8027048c: 'fd83007a',
+        0x802704a4: '7c060000', 0x802704b4: '41820014',
+        0x802704d4: 'fc010040', 0x802704f4: '3803cc00',
+        0x80270508: '7c002b79', 0x80270524: 'fc0c0040',
+        0x8027054c: '54c4657e', 0x80270560: '7c600630',
+        0x80270588: '7c642e30', 0x80270598: '90810028',
+        0x802705a4: '7c6300d0', 0x802705b0: 'fc010028',
+        0x802705e0: '9001002c', 0x8027060c: 'fd693a3a',
+        0x80270620: 'fca629fa', 0x8027062c: 'fca7017a',
+        0x80270630: 'fc0931ba', 0x80270634: 'fc87217a',
+        0x80270638: 'fc67193a', 0x80270650: 'fc431024',
+        0x80270654: 'fc020028', 0x8027065c: 'fc210028',
+        0x80270668: '7c002214', 0x8027066c: '7c00a671',
+        0x80270674: '48001add', 0x80270684: '7c002214',
+        0x80270688: '90010050', 0x80270690: 'fc3f0032',
+    },
     'power_general_logarithm': {
         0x80270274: '4080001c', 0x80270284: 'fc010032',
         0x80270298: '38a5988e', 0x802702c0: '38a5b67a',
@@ -1481,6 +1499,10 @@ def verify(iso_path):
         if read(0x80428f20, 8).hex() != '4330000080000000':
             raise ValueError('Power general-log signed conversion bias mismatch')
         print('Six log table entries, eleven scale/coefficient doubles and signed bias verified')
+        if hashlib.sha256(read(0x80428eb8, 104)).hexdigest() != 'e8622f1b64a989054b1a4f9f9ac119b4ddcc610a6d259de9497624558d9981cf':
+            raise ValueError('Power exponentiation/range constants mismatch')
+        print('All thirteen power exponentiation/range constants verified')
+
 
 
 
