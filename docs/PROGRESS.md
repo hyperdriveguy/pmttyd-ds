@@ -3909,3 +3909,31 @@ event/field/battle/audio/save/content before complete-game requirements. Full
 objective active/incomplete; no complete floating scanner or full-game fidelity
 claim. Original message IDs/control tokens and story attribution/order/branches/
 event conditions remain mandatory reused data.
+
+## 2026-10-12 — US finite decimal floating scan
+
+Added detailed SCAN_FLOAT_DECIMAL.md for the already-fingerprinted __strtold:
+all decimal mantissa/exponent states,20-digit retention and discarded-digit scale,
+leading/trailing zero behavior, decimal-point initializer dependency, exponent
+word wrap/sticky status, acceptance/count/pushback and record normalization.
+Recovered local __dec2num handoff, pre-status zero/infinity exits and post-call
+normal/finite bounds plus acceptance-dependent sign. Exact converter internals
+and all hex states remain open; no executed floating accuracy/equivalence claim.
+Linked the entry/special contract, index and provenance.
+
+Validation:1180 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO, adding initial decimal-point binding and four binary64
+range constants. Fresh284-function reports reproduced byte-for-byte. All455
+local behavior links resolved; git diff --check passed. make test passed core
+plus36 Python tests; make all exited0 with no rebuild. No original execution/
+emulator, profile/save modification, native implementation, asset conversion or
+story rewriting. Original disassembly/reports remain ignored; working tree was
+clean at turn start.
+
+Next: hexadecimal states/bit construction/exits and __dec2num, executed decimal
+records/callback/count/status/sign/rounding corpus and actual icon float arguments.
+Continue drawing/string layout, runtime resource/cadence and uncovered story/
+event/field/battle/audio/save/content before complete-game requirements. Full
+goal active/incomplete; this local decimal contract does not establish complete
+floating scanner, layout or full-game fidelity. Reuse original data and preserve
+message IDs/tokens, attribution/order/branches/event conditions.

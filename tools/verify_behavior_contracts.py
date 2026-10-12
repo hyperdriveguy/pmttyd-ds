@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'scan_float_decimal': {
+        0x8026dbc4: '7c04a800', 0x8026dc64: '3c600001',
+        0x8026dcb0: '39e00008', 0x8026dd0c: '28050014',
+        0x8026dd24: '7c8301ae', 0x8026dd2c: '3b7b0001',
+        0x8026dda0: '28000014', 0x8026ddb4: '4182001c',
+        0x8026ddd0: '3b7bffff', 0x8026de18: '2c000045',
+        0x8026dea8: '90010060', 0x8026dee4: '39e00200',
+        0x8026df60: '1c1c000a', 0x8026df6c: '2c1c7fff',
+        0x8026df78: '90120000', 0x8026e480: '7f9c00d0',
+        0x8026e4ac: '28000030', 0x8026e4d8: '7f9cda14',
+        0x8026e4dc: '2c1c8000', 0x8026e50c: 'c82217d0',
+        0x8026e540: '4bff72c5', 0x8026e568: '90120000',
+        0x8026e590: 'd8010018', 0x8026e5a0: '41820010',
+    },
     'scan_float_entry_special_values': {
         0x8026d7b8: '90120000', 0x8026d7c4: '4e800421',
         0x8026d8b8: '3bbd0001', 0x8026d918: '39c00001',
@@ -1284,6 +1298,14 @@ def verify(iso_path):
         if read(0x8041e3c8, 8).hex() != '7fffffff7f800000':
             raise ValueError('Float scan NaN/infinity source words mismatch')
         print('Float scan initializer, two token bindings and two special source words verified')
+        if read(0x803bb608, 4).hex() != '80303ba8' or read(0x80303ba8, 1) != b'.':
+            raise ValueError('Float scan initial decimal-point binding mismatch')
+        if read(0x80428c10, 8) != bytes(8):
+            raise ValueError('Float scan zero mismatch')
+        if read(0x8041e3d8, 24).hex() != '7ff000000000000000100000000000007fefffffffffffff':
+            raise ValueError('Float scan infinity/normal/finite bounds mismatch')
+        print('Float scan initial decimal point and four binary64 range constants verified')
+
 
 
 

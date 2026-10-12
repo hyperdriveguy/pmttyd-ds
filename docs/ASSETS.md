@@ -26,7 +26,7 @@ includes src/include/config and rels under ignored
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
 now fingerprints 284 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1156 instruction anchors plus those
+window tables. Independent verifier checks 1180 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -575,3 +575,9 @@ whole-body identity is not complete behavioral recovery. Authored contracts
 record callback/width/sign/count and no-unread special exits. No original code
 linking/execution, data conversion, message rewrite or license change occurs;
 local disassemblies/reports remain ignored.
+
+Decimal floating scan adds24 anchors within the already-fingerprinted __strtold,
+initial decimal-point pointer/byte and four binary64 range constants. Authored
+contracts cover retention/scale/exponent/count/handoff and local range/sign exits;
+hex states and __dec2num remain open. Original disassembly/reports stay ignored;
+no executable linking/execution,asset conversion,message rewrite or license change.

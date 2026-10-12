@@ -3,8 +3,8 @@
 US G8ME01 revision0, recovered2026-10-12. Evidence B: __strtold at0x8026d6d0,
 size0x100c, original initializer/token/constants and selected instructions.
 **Coverage boundary:** this document recovers entry, outer gate, leading state,
-infinity and NaN paths. Finite decimal/hexadecimal states and conversion exits
-remain open. A whole-function fingerprint identifies the containing body; it
+infinity and NaN paths. [Finite decimal states/exits](SCAN_FLOAT_DECIMAL.md) are recovered separately;
+hexadecimal states and __dec2num remain open. A whole-function fingerprint identifies the containing body; it
 is not a claim that the entire scanner has been recovered or executed.
 See [scan consumers](SCAN_FORMAT_CONSUMERS.md), [directive grammar](SCAN_DIRECTIVE_PARSER.md)
 and [reader protocol](SCAN_INPUT_RUNTIME.md). No original execution occurred.
