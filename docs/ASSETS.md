@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 207 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 576 instruction anchors plus those
+now fingerprints 209 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 592 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -100,6 +100,8 @@ Format output/ABI research adds five runtime fingerprints and the original narro
 null-string sentinel. No original library implementation is copied into source.
 Directive parser adds one namespace-qualified printf fingerprint (distinct from
 scanf), both dispatch-table hashes and byte-classification hash/mask checks.
+Integer conversion adds two fingerprints and both33-entry dispatch-table hashes;
+the documented prefix/capacity stages are static evidence, not executed outputs.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,

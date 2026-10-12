@@ -3072,3 +3072,28 @@ format/type/count caller census, replacement/callback bodies and rendering/manag
 cadence. Continue original story attribution/order/branches/conditions and all
 remaining systems before complete-game requirements. Full objective active/
 incomplete; executed-original comparisons still needed.
+
+## 2026-10-12 — Original integer text conversion stages
+
+Previous turn progressed withc0e0499 directive parser. Added FORMAT_INTEGER_CONVERSION.md:
+32/64-bit ABI, NUL/reverse storage, zero-precision early return, signed minimum
+modulo negation/unsigned division, base/sign-policy cases, digits/case, alternate
+octal counting, mode2 width-to-precision mutation, literal capacity expression,
+unconditional admitted hex prefixes and final sign order. Caller-copy mutations
+and helper-failure literal-tail behavior remain distinct. Floating/wide/helper
+arithmetic execution and original formatting caller census remain open.
+
+Validation:592 instruction anchors and prior checks passed read-only US ISO,
+plus both33-entry integer dispatch-table hashes. Evidence209 fingerprints
+reproduced byte-for-byte. All behavior links resolve; git diff --check passed.
+make test passed core plus36 Python tests; make all exited0, no rebuild.
+Workspace started clean; only research/provenance/evidence tooling changed.
+No original execution/emulator run or profile/save modification. Original
+extracts/reports remain ignored. Static checks do not prove executed formatting,
+valid caller ranges or original/native equivalence.
+
+Next: decimal/hex-float conversion and rounding, unsigned64 and wide/memory
+services; actual format/type/count caller census, replacement/callback bodies,
+renderer/manager cadence and original story attribution/order/branches/conditions.
+Continue all remaining systems before complete-game requirements. Full objective
+active/incomplete; executed-original comparisons needed.

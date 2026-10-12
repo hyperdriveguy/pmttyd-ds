@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'format_integer_conversion': {
+        0x8026ba64: '98c4ffff', 0x8026ba98: '4182000c',
+        0x8026bad8: '7c6300d0', 0x8026bb14: '7d430396',
+        0x8026bb84: '9c66ffff', 0x8026bbd8: '9065000c',
+        0x8026bbe8: '2c0301fd', 0x8026bc6c: '9c06fffe',
+        0x8026b77c: '9817ffff', 0x8026b7ac: '4182000c',
+        0x8026b810: '7fff0190', 0x8026b860: '4bff93b1',
+        0x8026b878: '4bff9175', 0x8026b970: '2c0001fd',
+        0x8026ba04: '9c1bfffe', 0x8026ba14: '9c1bffff',
+    },
     'format_directive_parser': {
         0x8026bd08: '40820028', 0x8026bd5c: '98010008',
         0x8026bd80: '98010009', 0x8026bda4: '98010008',
@@ -704,6 +714,13 @@ def verify(iso_path):
         if [i for i, flags in enumerate(read(0x803bb308, 256)) if flags & 0x10] != list(range(48,58)):
             raise ValueError('Printf numeric byte classification mismatch')
         print('Both printf dispatch tables and all numeric byte classifications verified')
+        for address, digest in (
+            (0x803bb6c4, '54131bc82867ad75673a4f788ef0481fecc5bb9828eba28f881afbf532f75412'),
+            (0x803bb640, '1f5c6f6e75fe693287d62cd9efc44b668f40cf0371a7f08b54b83aa7c200cc5f'),
+        ):
+            if hashlib.sha256(read(address, 132)).hexdigest() != digest:
+                raise ValueError(f'Integer conversion dispatch mismatch: {address:#x}')
+        print('Both 33-entry integer conversion dispatch tables verified')
 
 
 if __name__ == '__main__':

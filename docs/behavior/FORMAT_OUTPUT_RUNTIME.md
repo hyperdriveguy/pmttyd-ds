@@ -162,3 +162,6 @@ hex-float helper algorithms, wcstombs and memory primitives, actual insertion
 format/type/count call sites and original execution comparisons. Output/varargs/
 consumer local contracts are documented; full formatting/full-game equivalence
 remain unfinished.
+Integer helper stages are now specified in
+[integer conversion](FORMAT_INTEGER_CONVERSION.md); floating/wide helpers and
+executed call-site comparisons remain open.
