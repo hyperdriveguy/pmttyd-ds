@@ -274,7 +274,7 @@ const char* Game::dialogue() const {
 }
 const char* Game::prompt() const {
     if(scene==Scene::FieldDefeat)return "A: load save";
-    if(water.active())return "";
+    if(water.active() || fade.active() || warpRequest>=0)return "";
     if (scene == Scene::Dialogue) return "A / touch: next     B: close";
     if (scene == Scene::Victory) return "Crump defeated! A: return to plaza";
     if (scene == Scene::Defeat) return "A: retry     B: return to plaza";
@@ -306,7 +306,7 @@ void Game::move(const Input& i) {
         for(size_t n=0;n<roads.size();++n) {
             const auto& road=roads[n];
             if(road.source==progress.room && length(p,{road.x,road.z})<.7f &&
-                x*(road.x-p.x)+z*(road.z-p.z)>0) {warpRequest=int(n);break;}
+                x*(road.x-p.x)+z*(road.z-p.z)>0) {warpRequest=int(n);if(jumpTick==0)fade.startOut();saveRequested=false;break;}
         }
     }
     if (std::fabs(x) > .15f && (x>0 ? 1.f : -1.f) != facing) {
@@ -406,6 +406,13 @@ void Game::battle(const Input& i) {
 void Game::tick(const Input& i) {
     ++ticks; sound=Sound::None;
     const bool tap=i.touchX>=0;
+    if(fade.active()){fade.tick();return;}
+    if(warpRequest>=0) {
+        // Original road event disables controls and waits for landing first.
+        if(jumpTick>0){--jumpTick;jumpHeight=1.1f*std::sin(jumpTick*3.14159265f/36.f);}
+        if(jumpTick==0)fade.startOut();
+        return;
+    }
     if(scene==Scene::FieldDefeat) {if(i.confirm || (tap && i.touchY>=107 && i.touchY<155))reloadRequested=true;return;}
     if(water.active()) {
         const auto event=water.tick(progress.hp);
@@ -453,6 +460,7 @@ void Game::tick(const Input& i) {
         sound=Sound::Confirm;
     }
     move(i);
+    if(warpRequest>=0)return;
     if((groundContact.attributes&0x200) && jumpTick==0 && beginWater())return;
     if (i.cancel) openDialogue(2);
     else if (i.confirm && jumpTick==0) {

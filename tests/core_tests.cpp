@@ -291,6 +291,29 @@ void waterRecovery() {
     for(int n=0;n<10;++n)w.tick(hp);CHECK(w.active());CHECK(w.tick(hp)==WaterEvent::Complete && !w.active());
     CHECK(hp==6);w.state=31;w.counter=1;hp=1;CHECK(w.tick(hp)==WaterEvent::Dead && hp==0 && !w.active());
 }
+void transitionFade() {
+    TransitionFade fade;CHECK(!fade.active() && fade.alpha()==0 && !fade.ready());fade.startOut();
+    int previous=0;
+    for(int n=0;n<18;++n) {fade.tick();CHECK(fade.alpha()>=previous);previous=fade.alpha();CHECK(!fade.ready());}
+    CHECK(fade.alpha()==255 && fade.active());fade.tick();CHECK(fade.alpha()==255 && !fade.ready());
+    fade.presented();CHECK(fade.ready());fade.startIn();CHECK(fade.alpha()==255 && !fade.ready());
+    for(int n=0;n<18;++n){fade.tick();CHECK(fade.alpha()<=previous);previous=fade.alpha();}
+    CHECK(!fade.active() && fade.alpha()==0);
+    Game g;g.warpRequest=0;g.fade.startOut();const auto p=g.progress.position;const auto partner=g.partner;
+    Input blocked;blocked.x=1;blocked.confirm=true;blocked.menuConfirm=true;
+    for(int n=0;n<20;++n)g.tick(blocked);
+    CHECK(g.progress.position.x==p.x && g.progress.position.z==p.z);
+    CHECK(g.partner.x==partner.x && g.partner.z==partner.z && !g.saveRequested);
+    CHECK(g.scene==Scene::Explore && g.fade.alpha()==255 && !g.fade.ready());
+    g.fade.presented();CHECK(g.fade.ready());
+    // A rejected room load reveals the retained scene before controls resume.
+    g.warpRequest=-1;g.warpCooldown=60;g.fade.startIn();
+    for(int n=0;n<18;++n)g.tick(blocked);
+    CHECK(!g.fade.active() && g.warpCooldown==60 && g.progress.position.x==p.x);
+    Game jumping;jumping.tick(confirm());jumping.warpRequest=0;
+    for(int n=0;n<35;++n){jumping.tick(blocked);CHECK(!jumping.fade.active());}
+    jumping.tick(blocked);CHECK(jumping.jumpHeight==0 && jumping.fade.active());
+}
 void indexedOriginalCollision() {
     size_t queries=0;
     for(uint32_t room=0;room<5;++room) {
@@ -432,6 +455,6 @@ void originalReturnSelection() {
     clearCollision();
 }
 int main(int argc,char**) {
-    try {if(argc>1) {indexedOriginalCollision();originalRooms();originalReturnSelection();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();waterRecovery();std::puts("Core scenarios passed");}
+    try {if(argc>1) {indexedOriginalCollision();originalRooms();originalReturnSelection();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();waterRecovery();transitionFade();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

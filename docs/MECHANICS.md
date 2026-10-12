@@ -169,3 +169,32 @@ replace it with0.5 at8005a9d8; current Rogueport rooms use1.0. marioResetGravity
 80096988 also writes1.0 (80420a74). Thus the implemented normal fall table
 selection is source-supported for this slice, rather than inferred from zeroed
 initial memory. Special gravity overrides remain out of scope for these rooms.
+
+Road fade source evidence: marioStInit8006fc48/4c/54 sets type9 incoming,
+300ms duration, type10 outgoing; stored gp+0xf8/fc/100/104 and second-group
+copies. seq_mapChangeMain80007d04/08/0c reads outgoing gp type/duration and
+calls fadeEntry; resets default type10/duration300 at80007d34–80007d54.
+Default color at8041f4cc is original RGBA000000ff (black). evt_fade_in80136114–
+128 uses type9 and original black color80422a80. fadeMain jump table8030468c
+case9 points800120b8 and case10 points800121c0, using linear elapsed/duration
+progress with inverse for incoming. Native uses18 fixed60Hz ticks, extending
+black coverage to both 2DS screens. Complete timing/choreography is not yet
+Dolphin-observed.
+
+Road event data: bero_case_exec_road8030dac8 disables controls and calls
+evt_mario_wait_landon at8030db30 before scripted movement. Native now waits
+for its prototype jump to finish before fading/loading. Original exit event
+also performs mov_pos2 travel and150ms wait before mapchange; that movie travel
+is still missing from native transitions.
+
+Further distance evidence for next implementation: bero_get_position_normal
+80079b74 uses source hit-object center when position100000 sentinel is set,
+and source constant30 at80420518 for directional start offset. End offset
+uses30 plus supplied float length; mode1 reverses direction by180 degrees.
+Road exit caller supplies FLOAT150 to both get_position_normal and
+evt_mario_mov_pos2. mov_pos2 divides that rate by gp framerate (150/60=2.5
+engine units/tick, native0.025); tick count uses(distance+1)/rate and final XZ
+assignment. Confirm full initial-position/entry-event sequence and supporting
+floor/ray behavior before replacing provisional native .9 inset/.7 sensor.
+Road entry event sets party homing distances20 then50 engine units; current
+follow model and entry placement have not yet adopted those event modes.

@@ -84,7 +84,7 @@ int main() {
         }
         if(accumulator>=1./60) {metrics.droppedTicks+=uint64_t(accumulator*60);accumulator=0;}
         metrics.simulationMs=(seconds()-simulationStart)*1000;
-        if(game.warpRequest>=0) {
+        if(game.warpRequest>=0 && game.fade.ready()) {
             ttyd::CollisionTransition transaction;
             // Target ID comes from the original, validated road table.
             ttyd::Game candidate=game;
@@ -92,8 +92,8 @@ int main() {
             uint32_t target=game.warpTarget();
             bool ok=stageRoomCollision(target,transaction) && candidate.finishWarp();
             if(ok)ok=renderer.changeRoom(target);
-            if(ok) {transaction.commit();game=std::move(candidate);notice="";noticeTicks=0;}
-            else {game.warpRequest=-1;game.warpCooldown=60;notice="Room transition failed";noticeTicks=180;}
+            if(ok) {transaction.commit();game=std::move(candidate);game.fade.startIn();notice="";noticeTicks=0;}
+            else {game.warpRequest=-1;game.warpCooldown=60;game.fade.startIn();notice="Room transition failed";noticeTicks=180;}
             accumulator=0;pending={};previous=seconds();
         }
         if(game.saveRequested) {
@@ -116,10 +116,11 @@ int main() {
         audio.update(game.scene,game.progress.sound);
         metrics.renderMs=C3D_GetProcessingTime();metrics.gpuMs=C3D_GetDrawingTime();
         renderer.render(game,metrics,noticeTicks>0?notice:"",audio.available());
+        game.fade.presented();
         ++frames;
         if(now-window>=1) {metrics.fps=frames/(now-window);window=now;frames=0;}
     }
     // A battle is transient; save only the exploration checkpoint.
-    if(game.scene==ttyd::Scene::Explore && !game.water.active()) ttyd::writeSave(savePath,game.progress);
+    if(game.scene==ttyd::Scene::Explore && !game.water.active() && !game.fade.active()) ttyd::writeSave(savePath,game.progress);
     audio.shutdown();renderer.shutdown();romfsExit();gfxExit();return 0;
 }

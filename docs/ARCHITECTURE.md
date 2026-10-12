@@ -204,3 +204,17 @@ music/art, NPC event behavior and observed timing remain unverified. Landing
 uses the current static floor provider at the authored point; original full ray
 queries/dynamic collision are still needed. Float scaling can shift exact source
 threshold boundaries; compare complete motion in Dolphin before acceptance.
+
+Road transition fade: portable TransitionFade uses original default300ms at
+NTSC60Hz (18 ticks), black linear out/in. Simulation freezes input, camera and
+follower updates during fade; queued airborne crossings first finish the current
+prototype jump, matching the source road-event landing gate. Main waits until
+an opaque frame has been submitted before staging collision/returns/rendering.
+Commit starts destination fade-in; failure rolls back room resources and fades
+the retained scene back in. Both handheld screens receive a final C2D overlay.
+START exit during fade preserves the existing checkpoint. Arrival autosave remains
+valid because it records the committed destination, not a partial departure.
+
+This adds the verified default fade component, not full original Bero movie
+choreography. Exit/entry scripted walking, sensor volumes, distances, party
+homing modes and original camera framing still require source/observation work.

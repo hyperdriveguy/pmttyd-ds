@@ -1085,3 +1085,53 @@ python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/e
 ```
 Normal gravity1.0 was additionally verified in original marioMain for Rogueport;
 moon-only0.5 overrides do not apply. See mechanics notes for original addresses.
+
+## Default road fades and landing gate
+
+Added original-default300ms black linear fade-out/in to both screens. Queued
+road crossings disable controls and wait for the existing jump to land first.
+Only after an opaque frame is submitted does main stage/load the next room.
+Successful commit fades in the destination; rejected load restores original
+room resources and fades back in. Input/menus/camera/partner movement stay
+frozen during fades. START does not save a partial departure. No original
+assets were changed. Your separate AGENTS.md edit remains outside this feature
+commit.
+
+Verified defaults from original US DOL marioStInit/seq_mapChangeMain/evt_fade_in
+and fadeMain (addresses in mechanics notes): type9 in/type10 out,300ms, black
+RGBA, linear progress. Native18 ticks corresponds NTSC60Hz. Source road-event
+landing gate also recovered. This does not claim original complete transition
+choreography: scripted exit/entry travel and sensor/arrival distances remain
+unfinished/provisional. Rendering proportions and general physics still require
+original-game comparison.
+
+Validation (all final commands exited0):
+```sh
+make test
+build-host/core_tests --rooms
+make -j2 all
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/east-road.bin --seconds 4 --input-script tests/azahar_roads.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/east-road.bin --seconds 4 --input-script tests/azahar_fades.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/station-road.bin --seconds 4 --input-script tests/azahar_roads.py
+```
+Core plus27 Python tests passed; all8 arrivals/18,315 collision probes passed.
+Fade tests cover monotonic out/in, endpoints, no loading before opaque-render
+acknowledgment, blocked controls/saves, failed-load fade-in and airborne landing
+gate. East and station native scripts each passed two reciprocal trips; station
+also entered its final checkpoint. Visual fade script passed partial/black/
+restored paper-fill brightness and destination-room assertions on both screens.
+Final samples for both screens included238.7→159→79.7→0; final fills restored
+above220. Initial probes were panel-border pixels; corrected probes to paper
+fill and reran before claiming that result. Reviewed fade-02 and fade-finished:
+old room dims, new room/status appears; known Xvfb repaint artifacts remain
+possible, so no whole-frame/Dolphin visual-fidelity claim. Hardware unverified.
+
+Next concrete task: implement original scripted road travel and correct initial/
+arrival placement using bero_get_position_normal, evt_bero_initial_pos and
+evt_mario_mov_pos2. Source30-unit offset and FLOAT150 rate/length are now traced;
+DO NOT substitute them directly for all distances without the entry sequence
+and floor/ray checks. Native .7 trigger/.9 inset/45-tick cooldown remain
+provisional. Then recover actual actor collision widths/ground physics and
+compare render proportions/camera in Dolphin. Original English story/dialogue,
+SFX, layered materials, water presentation and broader traversal remain
+incomplete; full expanded objective active.

@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include "water_recovery.hpp"
+#include "transition_fade.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -56,6 +57,7 @@ public:
     GroundContact groundContact,partnerContact;
     GroundContact returnContact;
     WaterRecovery water;
+    TransitionFade fade;
     bool reloadRequested=false;
     bool recoveryReturn(ReturnPoint& point) const;
     float cameraZ = 3.5f, cameraHeight = 0;
