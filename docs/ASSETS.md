@@ -1822,3 +1822,8 @@ shadows and Mario type2 remain provisional. Type2's original60 vertices/five
 lists are now available through the documentation verifier's read-only exporter;
 those original payloads must stay in ignored local-assets or /tmp when imported.
 No air volume asset was silently replaced by the grounded strip.
+
+Ground pass follow-up d8ec56f preserves framebuffer alpha: recovered dispDraw
+80010948–78 disables alpha writes before every camera4 callback, and Polygon
+inherits that state. Native writes only RGB with no depth writes. No asset
+conversion changed. The air-shadow source alpha preparation remains separate.

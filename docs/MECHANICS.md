@@ -1204,3 +1204,9 @@ full display queue/sort, live global color/height writers and original numeric/
 visual comparison remain open. Air type2 still uses the earlier provisional
 ellipse while its original destination-alpha volume backend is unfinished;
 source request math alone does not establish that ellipse as faithful.
+
+Shadow follow-up d8ec56f: source camera4 callback AlphaUpdate0 is retained by
+the grounded pass using native RGB-only writes. This corrects the initial
+color-mask implementation without assuming initial EFB alpha0/255. Air GX
+passes explicitly alter alpha masks; their finite graph is now documented but
+entering frame/camera2 copy/clear state still needs native binding.

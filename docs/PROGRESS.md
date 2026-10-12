@@ -12906,3 +12906,11 @@ Next: bind air-volume geometry/state once entering-alpha ownership is closed,
 then original shadow globals/partners and idle audio services. Continue original
 field callback/partner/NPC/event/story/message orchestration. The active goal
 remains the complete requested overworld functionality, not this local pass.
+
+Grounded shadow follow-up d8ec56f preserves camera4 inherited AlphaUpdate0
+with RGB-only writes. Final make test passed84 CTest targets/90 Python tests
+(/tmp/pm-shadow-alpha-mask-test.log); make all passed
+(/tmp/pm-shadow-alpha-mask-build2.log). The prior Azahar capture precedes this
+alpha-mask-only correction and is not an alpha-buffer oracle. An intermediate
+SDK RGB-mask enum name was replaced with the actual combined channel flags
+before the successful build. No asset/source color geometry changed.
