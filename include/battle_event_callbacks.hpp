@@ -6,6 +6,7 @@
 #include "battle_majinai_query.hpp"
 #include "battle_event_utilities.hpp"
 #include "battle_turn_first.hpp"
+#include "battle_packed_move.hpp"
 
 namespace ttyd {
 struct BattleDataChildBackend {
@@ -18,7 +19,7 @@ struct BattleTurnFirstBackend {
     EventNativeRuntime* runtime=nullptr;
     void* user=nullptr;
     void (*judgeTurnRule)(void*)=nullptr;
-    void (*resetMove)(void*,uint32_t unit)=nullptr;
+    void (*resetMove)(void*,uint32_t unit)=nullptr; // Null selects recovered packed-byte implementation.
     void (*softDelete)(void*,uint32_t effect)=nullptr;
 };
 // Backend and runtime must outlive returned services. Closed local turn body;

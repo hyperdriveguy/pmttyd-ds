@@ -9,7 +9,7 @@ BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend& ba
     s.judgeTurnRule=[](void* p) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);assert(b.judgeTurnRule);b.judgeTurnRule(b.user);};
     s.fortune=[](void* p) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);return battleMajinaiCheck(nativeBattleMajinaiQueryServices(*b.runtime));};
     s.irand=[](void* p,int32_t bound) {auto& r=*static_cast<BattleTurnFirstBackend*>(p)->runtime;assert(r.platform.irand);return r.platform.irand(r.platform.user,bound);};
-    s.resetMove=[](void* p,uint32_t unit) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);assert(b.resetMove);b.resetMove(b.user,unit);};
+    s.resetMove=[](void* p,uint32_t unit) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);if(b.resetMove)b.resetMove(b.user,unit);else resetPackedBattleMoveStatus(unit,nativeBattleActorServices(*b.runtime));};
     s.softDelete=[](void* p,uint32_t effect) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);assert(b.softDelete);b.softDelete(b.user,effect);};return s;
 }
 BattleActorServices nativeBattleActorServices(EventNativeRuntime& runtime) {

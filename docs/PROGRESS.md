@@ -1,5 +1,33 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Packed native move-reset provider
+
+Added ResetMoveStatus on original unit20..24 bytes and made it the native
+turn-first-process adapter's default move-reset provider. Fast/Slow CheckStatus
+cases use documented duration bytes12f/130,including nonzero negative durations;
+other status getter/setter cases are not replaced by this helper. Reset preserves
+base21/counter24,status bytes,ordered Fast then Slow checks,low-byte Fast shift,
+signed Slow threshold/half rules,copy to23 and actual23 reread before zero fallback.
+Explicit backend overrides remain available for separately owned unit views.
+
+Read-only-ISO inspection confirmed GetStatus19/20 each read duration once and
+ResetMoveStatus rereads23 at8012679c. Original inspection ELFs/listings remain
+/tmp/pm-move-get-status.*,pm-move-check-status.* and pm-packed-move-reset.* outside
+source history. No original code was executed or distributed.
+
+Validation:make test passes67 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-packed-move-test.log and /tmp/pm-packed-move-build.log. Fixtures pin
+zero/negative counts,Fast overflow,both statuses,Slow2/4 thresholds,signed counter
+boundaries,preserved source fields,read/store order and live aliases. Native
+turn-start integration now processes a registered unit with Slow,incrementing
+counter3→4 BEFORE reset,admitting one move,computing original priority and clearing
+only requested status mask. Unit records,RNG/rule/effect test providers remain
+authored inputs;the outer turn state machine and Game storage are still unbound.
+
+Next:actual rule judgment/effect deletion providers and remaining turn/Jump
+callback families;movement-wrapper reply remains pending. Full-game goal
+incomplete;no original cadence/emulator/hardware fidelity claim.
+
 ## 2026-10-12 — ID2 smart-header release and automatic tag filtering
 
 Added two full smartFree/smartAutoFree contracts and binary verifier. Exact

@@ -495,6 +495,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): native turn-first-process
+now defaults to recovered original-byte ResetMoveStatus rather than requiring
+an authored reset callback. Fast/Slow duration storage,byte narrowing,signed Slow
+rules,preserved21/24 and23 reread follow documented/inspected bodies.67 CTest/78
+Python and make all pass;native registry unit/Slow counter increment/reset/
+priority/status-clear path is integrated. Other status helper cases,rule/effect
+providers,outer turn/Game storage/source cadence remain separate. Movement-wrapper
+request is still pending;continue existing STATUS-01/DMG-02/EVT-01 closure.
+
 Native implementation breadcrumb (2026-10-12): complete local turn-first-
 process and fog-expiry composition now execute on shared original-address memory.
 Native adapter uses actual fortune/registry/RNG services;judgment,move-reset and

@@ -38,6 +38,10 @@ int main() {
     // unit registry/record writes still retain explicit B supplied by the caller.
     EventNativeRuntime r(0x81000000,{});assert(r.memory.registerRam(0x84000000,std::vector<uint8_t>(0x19000)) && r.memory.registerRam(0x87000000,std::vector<uint8_t>(0x19000)) && r.memory.registerRam(0x86000000,std::vector<uint8_t>(0x5bc)) && r.memory.registerRam(0x8041eb00,std::vector<uint8_t>(4)) && r.memory.registerRam(0x8041eb90,std::vector<uint8_t>(4)));
     assert(r.memory.writeWord(0x8041eb00,0x86000000) && r.memory.writeWord(0x8041eb90,0x87000000) && r.memory.writeHalf(0x84000000,1));
+    assert(r.memory.registerRam(0x85000000,std::vector<uint8_t>(0x300)) && r.memory.registerRam(0x85001000,std::vector<uint8_t>(0x8c)) && r.memory.writeWord(0x84000024,0x85000000) && r.memory.writeWord(0x85000010,0x85001000));
+    assert(r.memory.writeByte(0x85000024,3) && r.memory.writeByte(0x85000130,1) && r.memory.writeByte(0x85001088,5) && r.memory.writeWord(0x85000138,0x01000080));
+    r.platform.irand=[](void*,int32_t bound) {assert(bound==0);return 0;};
     BattleTurnFirstBackend backend{&r,&r,[](void*) {},nullptr,nullptr};battleTurnFirstProcess(0x84000000,nativeBattleTurnFirstServices(backend));uint16_t turn;uint8_t count;assert(r.memory.readHalf(0x84000000,turn) && turn==2 && r.memory.readByte(0x84016f57,count) && count==1);
+    uint8_t moves;uint32_t priority,flags;assert(r.memory.readByte(0x85000022,moves) && moves==1 && r.memory.readByte(0x85000023,moves) && moves==1 && r.memory.readByte(0x85000024,moves) && moves==4 && r.memory.readWord(0x85000028,priority) && priority==5 && r.memory.readWord(0x85000138,flags) && flags==0x80);
     std::cout<<"turn-first-process ordering and fog expiry tests passed\n";
 }
