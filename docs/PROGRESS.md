@@ -1,5 +1,27 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2 requested SetMoveSpeed/SetFallAccel native contracts
+
+Complete two wrappers/two leaves documented in two files,private commit ef07139.
+Retained argument/raw resolution order,translation before float,fresh battle
+lookup after float,no firstCall/-1/null shortcut,leaf-only stfs/completion2 and
+original eight source requests supplied. Corrected prior Majinai f24a7c80 sign:
+encoded value is+0.5,binary32 bits3f000000. No rounded substitute tokens. Native
+EVT-01 request answered for local implementation;own ID2 lock released.
+
+Validation:verify_battle_movement_wrappers.py passes eight hashes(four complete/
+four linked),64 anchors,ten source/startup/coefficient spans,eight requests/six
+literal results;repeat JSON matches. Python compile,float namespace/first-target/
+general1980 checks and all2903 local file links pass. make all passes;make test
+cannot configure missing concurrent tests/battle_packed_position_tests.cpp at
+CMakeLists.txt:341. Separate78 Python tests pass. Logs:/tmp/id2-movewrap-test.log,
+/tmp/id2-movewrap-build.log,/tmp/id2-movewrap-python.log. Private scoped whitespace
+check passes. No native/test/asset changes or original execution/trajectory claim.
+
+Next:native owner supplies fixture/reruns gate and binds recovered wrappers.
+Prioritize next explicit native-port documentation request;source/Game/unit/float
+providers/full Jump and complete-game requirements remain open. SDK work deferred.
+
 ## 2026-10-12 — Native retained target and command-weapon selection
 
 Registered GetSelectEnemy8010b540 and CommandGetWeaponAddress801057e8 using
@@ -55,6 +77,25 @@ source-domain/current Game/original execution fidelity.
 Next:pending native movement-wrapper contracts. Field implementation owner
 reconciles field_movement and reruns host gate. Setup/registry/unit/part writers,
 full Jump/Game/source/runtime and complete-game requirements remain open.
+
+## 2026-10-12 — Overworld speed/fall/landing leaves (10 register rows)
+
+Closed movementSpeed (0/1/2 stick classifier), walkSpeed/dashSpeed (base ×
+bgmode/stick SDA scale × [552] float queries; dash reuses walk base when flag
+bit 11 set), mario_width (+448 slew limiter toward K3 or min-form), bottomlessOn
+([736]=1) and bottomlessPos ([740/744/748]=args; 0x802C3EB4 loads proven dead
+by store order), checkLand 3-way dispatch (matches airborne doc's V routes;
+Roll-vs-"4" nickname discrepancy noted), bero_length float leaf (table
+0x803DC110, -1/else paths into documented evtSetFloat), and the fallSpeed/
+marioGetFallSpd duplicate integrator ([132] clamp/accumulate/reset).
+doc: docs/behavior/overworld/OVERWORLD_SPEED_FALL_LANDING_LEAVES.md, placed
+per the new folder rule; 27/43 rows closed.
+
+Validation: per-body instruction re-checks incl. machine proof of dead-load
+op order and duplicate-body equality; diff --check clean. Docs-only, no make
+rerun. Limitation: SDA values, table contents, bit-11 and +448 meanings open;
+shared 8005e0c0=marioGetPtr grounded. Next: Group C symbol trio, Group E
+hit/fade/map writers, MakeActClassTable/party_flyMain. Full-game incomplete.
 
 ## 2026-10-12 — Behavior-doc folder normalization audit
 
@@ -11478,3 +11519,23 @@ Python stage was again skipped;the independent78-test Python run and earlier
 successful3DS build remain the reported validations. No further repeat without
 source/test/build-state changes;native movement owner should reconcile these
 remaining expectations. ID1 binary/body/address/resource checks remain passing.
+
+Reference-materials inventory (2026-10-12): artifacts/reference was fully
+inventoried read-only (no binaries executed) and documented under
+docs/behavior/binary/: REFERENCE_FILES_INVENTORY.md (census of all8 top-level
+dirs and186 top-level files,6,288 files excl. .git at snapshot;608+ ELF32
+PowerPC DOL slices,768 ELF64 host objects,6 ELF64 executables,101 PE DLLs,
+1 MSI; binary↔explainer mapping, licensing ledger, key-redaction rules),
+REFERENCE_DOL_FUNCTION_SLICES.md (all88 top-level .elf slices paired with
+their .disasm/.txt listings incl.14 unlisted and2 zero-byte placeholders;
+behavior/ corpus at539 slices/546 listings/16 annotated/64 evidence JSON;
+address cross-checks vs us_symbols.csv and evidence.json) and
+REFERENCE_TOOL_TREES.md (pinned commits for the vgmstream7c520e8, hactool
+1d64a83, Citric-Composer7343981, Unsimplifier e2bf56c, switch-libpulsar
+3d3a057 clones; host-build evidence for hactool and vgmstream; Switch NSP
+metadata with title.keys path-only reference). Verified with find/file/stat/
+readelf/cmp/grep plus a scripted140-check suite (address pairs, byte-identical
+copies, git pins, redaction and link checks all pass). Limitation: a parallel
+research session mutates the corpus continuously (behavior/ grew527→539
+slices within the hour), so all counts are timestamped snapshots with refresh
+commands, not immutable facts.
