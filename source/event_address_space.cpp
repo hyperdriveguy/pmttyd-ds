@@ -27,6 +27,26 @@ bool EventAddressSpace::unregisterRam(uint32_t base,std::vector<uint8_t>* bytes)
     }
     return false;
 }
+bool EventAddressSpace::extractRam(uint32_t base,uint32_t size,std::vector<uint8_t>& bytes) {
+    const uint64_t end=uint64_t(base)+size;
+    if(!size || end>0x100000000ULL)return false;
+    for(size_t i=0;i<ram_.size();++i) {
+        const auto& region=ram_[i];const uint64_t limit=uint64_t(region.base)+region.bytes.size();
+        if(base<region.base || end>limit)continue;
+        const auto begin=region.bytes.begin();const size_t offset=base-region.base;
+        std::vector<uint8_t> removed(begin+offset,begin+offset+size);
+        Region left{region.base,std::vector<uint8_t>(begin,begin+offset)};
+        Region right{static_cast<uint32_t>(end),std::vector<uint8_t>(begin+offset+size,region.bytes.end())};
+        if(left.bytes.empty()) {
+            if(right.bytes.empty())ram_.erase(ram_.begin()+i);
+            else ram_[i]=std::move(right);
+        } else {
+            ram_[i]=std::move(left);if(!right.bytes.empty())ram_.push_back(std::move(right));
+        }
+        bytes=std::move(removed);return true;
+    }
+    return false;
+}
 bool EventAddressSpace::importScripts(const EventScriptAssets& scripts) {
     std::vector<Region> imported;
     for(const auto& segment:scripts.segments()) {

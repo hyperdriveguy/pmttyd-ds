@@ -1,5 +1,35 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — SDK-backed native event entry ownership
+
+Added `EventEntryStorage` and RAM-span extraction. Entry allocation calls the
+recovered SDK wrapper,then promotes only its payload into live entry mappings;
+SDK headers and neighboring arena bytes remain owned RAM. Promotion snapshots
+bytes AFTER allocator/cache callbacks. The reusable context-init services route
+both original allocations and additional Init/ReInit clears through shared
+storage. Repeated Init retains older arrays;ReInit preserves other arrays and
+work/flag banks without synthetic Delete/copy-back or cache flush.
+
+Explicit retirement and owner destruction detach native context/relationship
+pointers,restore packed bytes to raw RAM and preserve original tokens. They do
+not free SDK blocks or run original event deletion. SDK free/reset callers must
+retire affected mappings first. Referenced mappers/binding must outlive owner.
+RAM-span splitting and storage/unsupported-domain assertions are native policy.
+
+Validation:make test passes59 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-entry-storage-test-final.log and /tmp/pm-entry-storage-build-final.log.
+New integration exercises actual SDK allocation,two-context Init,selected ReInit,
+repeat Init,original interpreter/root deletion on promoted arrays,live ID/counter
+aliases,headers,raw retirement,SDK reuse,owner destruction and callback writes
+between wrapper clear and promotion. A test initially used arguments18 for ID;
+corrected it to the documented entry ID15c before final checks. The1MiB arena
+and original-address tokens are authored provider test inputs,not source arena
+measurements or a final3DS memory budget. No emulator/hardware claim.
+
+Next:complete native interpreter/service owner,platform cache policy and callback
+registry,then original Jump/story graph integration. Allocation failure/domain,
+source/concurrency/FPSCR and full-game fidelity remain open;goal incomplete.
+
 ## 2026-10-12 — Complete effect driver,texture-cache and pool init/context release
 
 Documentation agent ID2 recovered full effMain170,effInit88,AutoRelease88,

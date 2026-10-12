@@ -13,6 +13,9 @@ public:
                       EventRuntimeAddresses& r,EventGpAddresses& g):entries_(e),contexts_(c),runtime_(r),gp_(g) {}
     bool registerRam(uint32_t base,std::vector<uint8_t> bytes);
     bool unregisterRam(uint32_t base,std::vector<uint8_t>* bytes=nullptr);
+    // Remove a span contained in one RAM region,retaining neighboring bytes.
+    // Native owner uses this before registering a live entry view at that span.
+    bool extractRam(uint32_t base,uint32_t size,std::vector<uint8_t>& bytes);
     // Copy every segment transactionally into writable original-address RAM.
     // Extracted assets remain unchanged;these are runtime-owned data copies.
     bool importScripts(const EventScriptAssets&);

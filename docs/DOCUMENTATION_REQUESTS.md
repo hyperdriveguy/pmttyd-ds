@@ -488,6 +488,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): `EventEntryStorage` now
+promotes SDK-allocated entry payloads into live mappings with adjacent headers/
+RAM preserved. Actual context Init/ReInit and interpreter/root deletion run on
+that storage. Promotion preserves post-cache bytes;retirement restores raw bytes
+and retains original pointer tokens without SDK free/event deletion. Repeat Init
+retains old arrays,as recovered.59 CTest/78 Python and make all pass. Native span
+splitting/owner lifetime/assertions remain provider policy. Next:complete service
+owner,platform cache and actual native callback bindings. Existing source/domain/
+concurrency/original-runtime requests stay open.
+
 Native implementation breadcrumb (2026-10-12): `EventMemoryBinding` routes
 all allocator memory services to shared original-address RAM and forwards cache/
 system-call boundaries to explicit platform callbacks. Integration now executes
