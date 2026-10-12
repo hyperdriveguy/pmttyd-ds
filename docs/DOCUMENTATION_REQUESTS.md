@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Physical key producer and battle pad update order | AC-01, AC-03, AC-02 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover makeKey,BattlePadManager,battleMain and private/general call ordering;excludes full sequence lifecycle,override writers and original traces |
 | Unit part defense/attribute construction and Crump source tables | DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Part contract](behavior/UNIT_PART_DEFENSE_AND_LIFETIME.md):pointer copies,boss/Mario zero tables,lookup exceptions and ordered teardown;full unit entry,mutation and executed damage remain open |
 | Battle jump callbacks and concrete Crump float operands | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Jump contract](behavior/BATTLE_JUMP_EVENT_CALLBACKS.md):full local callbacks,used float route and scoped JMP-01..07 acceptance cases;main/pad cadence and original impact traces remain open |
 | Crump normal attack request graph and target wrapper ABI | AC-01, AC-03, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Attack graph](behavior/HARBOR_BOSS_NORMAL_ATTACK.md) and [target ABI](behavior/BATTLE_TARGET_EVENT_INTERFACES.md); excludes target cores and executed timing; parent requests remain open |
