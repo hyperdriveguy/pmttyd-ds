@@ -313,3 +313,12 @@ choreography pending. No optional original map reload/BG policy is implemented.
 Destination support during cinematic fall remains static rather than full dynamic
 floor search. Source-safe fallback validation assumes the room/load entry still
 exists; dynamic geometry invalidating all return positions remains unfinished.
+
+FieldStep holds ordinary upstairs target/root/velocity and three fixed60Hz
+updates. Game::airborne also treats an active step as transient for saving.
+Game::move advances step root before horizontal movement; ordinary grounded
+acceptance begins steps for qualifying rises, retains movement while active,
+then checks overhead. Restore/scene/recovery resets clear it. Trigger remains
+candidate-based until original forward probe is integrated. Ground query can
+optionally return geometric slope; normal floor filtering and native stair
+selection share it. Room-entry validation remains separate from movement bounds.

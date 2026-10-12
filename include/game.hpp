@@ -8,6 +8,7 @@
 #include "transition_fade.hpp"
 #include "road_motion.hpp"
 #include "field_jump.hpp"
+#include "field_step.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -75,7 +76,7 @@ public:
     void beginRoadArrival();
     void cancelRoad();
     bool reloadRequested=false;
-    bool airborne() const{return fieldJump.airborne;}
+    bool airborne() const{return fieldJump.airborne || fieldStep.active();}
     bool recoveryReturn(ReturnPoint& point) const;
     float cameraZ = 3.5f, cameraHeight = 0;
     float cameraX = 1, jumpHeight = 0, facing = 1, turnScale = 1;
@@ -99,6 +100,7 @@ public:
 private:
     std::vector<Vec2> followerPath;
     FieldJump fieldJump;
+    FieldStep fieldStep;
     float jumpBase=0;
     Vec2 moveDirection{1,0};
     ReturnPoint roomRespawn{1,0,3.5f};
@@ -143,7 +145,7 @@ bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clam
 bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot,float rayExtension);
 bool loadGroundReturns(const char* path);
 bool groundReturn(const GroundContact&,ReturnPoint& point);
-bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr);
+bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr,float* slope=nullptr);
 // Center falling floor ray (marioChkLandon): abs(v)+.0001 below, abs(v)+.05 above.
 bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
 bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& height,GroundContact* contact=nullptr);

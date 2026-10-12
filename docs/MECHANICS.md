@@ -589,3 +589,31 @@ harbor stair traversal pass; they do not establish full Dolphin/hardware fidelit
 Remaining grounded.25/.5 band, original angle lookup arithmetic/special states,
 signed normal/animation outputs, wall push-out/sliding, dynamic contacts and
 original block/SFX events need further work.
+
+## Grounded height bounds and upstairs motion (2026-10-12)
+
+Recovered marioChkFrontStep8008926c, normal caller8008f9e8 and motion12
+entry803100c0→mot_upstairs8009b158. Forward probe distance is base width20
+*.265=5.3engine (.053native); origin root+half height18.5; ray descends through
+that half-height plus11+.1 engine units. Caller accepts rise5..11engine
+inclusive and surface angle<=30 (80420928). mot_upstairs clears jump parameters,
+sets counter3, velocity=(targetY-rootY)/3 and adds velocity on each of3 updates.
+Original source sites/constants are byte-verified. No Dolphin timing capture yet.
+
+Active native movement now blocks center-query rise>.11; drops>=.02 require
+foot support or start falling rather than snapping through the legacy.5 band.
+Rises.05.. .11 on slope<=30 enter FieldStep, which updates actual root height
+over3 simulation ticks. Movement continues with wall queries at interpolated Y;
+head check follows horizontal movement during step and can cancel to falling.
+Saves/warps/jump/interact are guarded during interpolation; lifecycle reset
+clears the state. Smaller rises/near drops still snap. Arrival/loader query
+retains broad groundAt band separately; partner still uses legacy stepping.
+
+Important adaptation: current trigger uses candidate floor under movement,
+not the original forward probe. Full marioChkGnd reach/quantization/distance/
+angle outputs and motion-specific XZ behavior remain incomplete. Step shadow
+and camera follow native root interpolation; original stair pose/choreography
+is unmeasured. Ceiling cancellation followed by floor acquisition still needs
+matched source/geometry testing. Do not describe this as complete grounded
+physics. Host tests cover3 updates, save/jump suppression during rise, blocking
+.2 ledge and falling from.08 ledge after foot support ends.

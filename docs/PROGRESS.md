@@ -2001,3 +2001,49 @@ Continue all remaining systems in docs/behavior/README.md before deriving the
 complete-game requirements document. Full objective remains active/incomplete;
 these local combat contracts do not establish complete battle or full-game
 behavior, story fidelity or New2DS performance acceptance.
+
+## 2026-10-12 — Grounded height limits and three-tick upstairs motion
+
+Previous goal turn progressed source floor facesf268eaf. Recovered original
+front-step query/caller and mot_upstairs motion12. Active movement now blocks
+rise>.11native; drops>=.02 fall once footprint support ends. Qualifying.05.. .11
+rises on surface<=30degrees interpolate root over3 ticks instead of instant
+snap. New FieldStep continues horizontal collision at interpolated Y and checks
+overhead; transient saves/warps/jump/interaction guarded, lifecycle resets clear
+state. Original query width*.265 forward distance, rise5..11/angle30 and three
+counter/equal-displacement instructions are source verified.
+
+Scope limit: current stair trigger samples candidate floor rather than original
+forward point. Full grounded ray reach, quantization and XZ/motion flags are
+not integrated. Room/load groundAt keeps legacy broad band; partner does too.
+The main player height acceptance now bounds that candidate before applying it.
+Original stair pose/shadow/camera and ceiling cancellation/floor reacquisition
+need matched verification. This is further playable physics progress, not final
+source/Dolphin fidelity.
+
+Validation: `make test` passes core and32 Python tests; added exact3-step helper
+and Game interpolation, partial-save/jump guards, blocking.2 ledge and.08 drop
+fall/landing. `build-host/core_tests --rooms` passes all8 arrivals,18,315 indexed
+wall/floor probes and original water/void/ceiling checks. `make -j2 all` builds
+native3dsx; `python3 tools/verify_actor_collision.py` passes original step slope/
+distance, motion-table target,3-count and velocity/division instructions.
+
+Native harbor stair traversal/dock-save/return exited0 with HP7; native water
+route exited0 with partial-checkpoint protection, original return and HP7→6.
+Commands:
+```sh
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_harbor_stairs.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_water.py
+```
+No build overlapped emulator execution. Original binary inspections/packs stay
+ignored; separate untracked research notes are left untouched. Architecture and
+mechanics notes describe state and adaptations. Hardware performance unverified.
+
+Next concrete task: implement original forward step ray at width*.265,
+root+half-height with downward reach half-height+11+.1engine, plus source filter
+and caller step selection; replace candidate trigger. Then main grounded
+marioChkGnd five-probe ray/height quantization and contact outputs, keeping
+entry validation separate. Source move-state XZ rates during stairs and low
+ceiling cancellation need review. Grounded overhead, wall sliding/push-out,
+dynamic support, original story/English dialogue/SFX/camera/animations/interiors
+and complete playable content remain incomplete. Full objective stays active.

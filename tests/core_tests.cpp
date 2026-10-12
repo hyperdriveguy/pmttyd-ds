@@ -25,6 +25,12 @@ void attack(Game& g,bool success) {
     CHECK(g.phase==Phase::Impact);
 }
 void headContactRules() {
+    FieldStep step;step.begin(0,.09f);CHECK(step.active());
+    step.tick();CHECK(std::fabs(step.height-.03f)<.00001f);
+    step.tick();CHECK(std::fabs(step.height-.06f)<.00001f);
+    step.tick();CHECK(!step.active() && step.height==.09f);
+    CHECK(groundedHeightCanSnap(0,.11f));CHECK(!groundedHeightCanSnap(0,.111f));
+    CHECK(groundedHeightCanSnap(0,-.019f));CHECK(!groundedHeightCanSnap(0,-.02f));
     const float rad=3.14159265358979323846f/180.f;
     CHECK(floorSlopeAllowed(std::sin(49.9f*rad),std::cos(49.9f*rad),0));
     CHECK(!floorSlopeAllowed(std::sin(50.1f*rad),std::cos(50.1f*rad),0));
@@ -444,6 +450,24 @@ void unequalFloorMotion() {
     for(int n=0;n<100 && fast.airborne();++n)fast.tick({});
     CHECK(!fast.airborne() && fast.groundHeight==0 && fast.groundContact.sourceNode==2);
     CHECK(!fast.water.active() && fast.progress.hp==7); // Terminal-speed step reaches the lower floor.
+    auto stepFloor=[&](float top) {
+        std::ofstream file(path,std::ios::binary);file.write(reinterpret_cast<char*>(&count),4);
+        for(int n=0;n<4;++n){float tri[9];std::copy(surfaces[n],surfaces[n]+9,tri);
+            if(n<2)for(int v=1;v<9;v+=3)tri[v]=top;
+            GroundContact owner{0,uint32_t(n<2?1:2)};file.write(reinterpret_cast<char*>(tri),36);file.write(reinterpret_cast<char*>(&owner),8);}
+    };
+    stepFloor(.08f);CHECK(loadGround(path));p.position={.01f,2};p.elevation=0;
+    Game stairs;stairs.restore(p);left.jumpHeld=false;stairs.tick(left);
+    CHECK(stairs.airborne() && stairs.groundHeight==0);
+    stairs.tick(save);CHECK(!stairs.saveRequested && std::fabs(stairs.groundHeight-.08f/3)<.00001f);
+    stairs.tick(confirm());CHECK(stairs.airborne() && std::fabs(stairs.groundHeight-.16f/3)<.00001f);
+    stairs.tick({});CHECK(!stairs.airborne() && std::fabs(stairs.groundHeight-.08f)<.00001f);
+    stepFloor(.2f);CHECK(loadGround(path));Game tall;tall.restore(p);tall.tick(left);
+    CHECK(tall.progress.position.x==p.position.x && tall.groundHeight==0 && !tall.airborne());
+    stepFloor(.08f);CHECK(loadGround(path));p.position={-.01f,2};p.elevation=.08f;
+    Game down;down.restore(p);for(int n=0;n<5;++n)down.tick(right);
+    CHECK(down.airborne() && std::fabs(down.groundHeight-.08f)<.00001f);
+    for(int n=0;n<100 && down.airborne();++n)down.tick({});CHECK(!down.airborne() && down.groundHeight==0);
     clearCollision();std::remove(path);
 }
 void visibility() {

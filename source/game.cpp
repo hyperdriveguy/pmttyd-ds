@@ -313,10 +313,10 @@ bool groundReturn(const GroundContact& contact,ReturnPoint& point) {
     auto found=groundReturns.find(contact.sourceNode);if(found==groundReturns.end())return false;
     point=found->second;return true;
 }
-static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact* contact) {
+static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact* contact,float* slope=nullptr) {
     if(!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(low) || !std::isfinite(high) || low>high ||
        std::fabs(p.x)>4096 || std::fabs(p.z)>4096)return false;
-    if(ground.empty()) {if(low>0 || high<0)return false;height=0;if(contact)*contact={};return true;}
+    if(ground.empty()) {if(low>0 || high<0)return false;height=0;if(contact)*contact={};if(slope)*slope=0;return true;}
     bool found=false;float best=-1e30f;GroundContact bestContact;const float* bestTriangle=nullptr;
     for(uint32_t n:nearby(groundIndex,p)) {
         // Original normal-Mario chkfilterVec rejects bit4 unless its special
@@ -342,16 +342,18 @@ static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact
         const auto v=bestTriangle;
         const float ax=v[3]-v[0],ay=v[4]-v[1],az=v[5]-v[2];
         const float bx=v[6]-v[0],by=v[7]-v[1],bz=v[8]-v[2];
-        if(!floorSlopeAllowed(ay*bz-az*by,az*bx-ax*bz,ax*by-ay*bx))return false;
+        const float angle=floorSlopeDegrees(ay*bz-az*by,az*bx-ax*bz,ax*by-ay*bx);
+        if(angle>=50)return false;
+        if(slope)*slope=angle;
         if(groundReturns.count(bestContact.sourceNode))bestContact.attributes|=0x40000000;
         height=best;if(contact)*contact=bestContact;
     }
     return found;
 }
-bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact) {
+bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact,float* slope) {
     // Preserve development/no-pack flat-ground behavior for legacy callers.
-    if(ground.empty() && std::isfinite(reference))return groundWithin(p,-.5f,StepHeight,height,contact);
-    return groundWithin(p,reference-.5f,reference+StepHeight,height,contact);
+    if(ground.empty() && std::isfinite(reference))return groundWithin(p,-.5f,StepHeight,height,contact,slope);
+    return groundWithin(p,reference-.5f,reference+StepHeight,height,contact,slope);
 }
 bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact) {
     if(!std::isfinite(velocity))return false;
@@ -402,7 +404,7 @@ bool Game::integrateVertical(bool held,float& previousY) {
 void Game::finishVertical(float worldY) {
     float floor=0;GroundContact contact;
     if(fieldJump.falling && landingFootprint(progress.position,moveDirection,worldY,fieldJump.velocity,floor,&contact)) {
-        fieldJump={};groundHeight=progress.elevation=floor;groundContact=contact;jumpBase=floor;jumpHeight=0;
+        fieldJump={};fieldStep={};groundHeight=progress.elevation=floor;groundContact=contact;jumpBase=floor;jumpHeight=0;
     } else {
         groundContact={};jumpHeight=jumpBase+fieldJump.height-groundHeight;
     }
@@ -419,7 +421,7 @@ bool Game::beginVoid() {
     progress.position={roomRespawn.x,roomRespawn.z};groundHeight=progress.elevation=floor;
     partner={roomRespawn.x,roomRespawn.z};partnerHeight=roomRespawn.y;partnerContact={};
     cameraX=destination.x;cameraZ=destination.z;cameraHeight=floor;
-    fieldJump={};jumpHeight=0;warpRequest=-1;saveRequested=false;
+    fieldJump={};fieldStep={};jumpHeight=0;warpRequest=-1;saveRequested=false;
     return true;
 }
 void clearCollision() {walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();head.clear();headIndex.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
@@ -437,7 +439,7 @@ bool Game::beginWater() {
     if(!groundAt({target.x,target.z},target.y,floor))return false;
     target.y=floor;
     water.begin({progress.position.x,groundHeight,progress.position.z},{target.x,target.y,target.z});
-    jumpHeight=0;fieldJump={};warpRequest=-1;saveRequested=false;return true;
+    jumpHeight=0;fieldJump={};fieldStep={};warpRequest=-1;saveRequested=false;return true;
 }
 void Game::restore(const Progress& saved) {
     const Progress p=saved; // Caller may pass this game's own progress.
@@ -493,6 +495,8 @@ void Game::move(const Input& i) {
     const float speed=len>DashThreshold?DashSpeed:WalkSpeed;
     if(len>0){x/=len;z/=len;}
     if(len>0)moveDirection={x,z};
+    const bool wasStepping=fieldStep.active();
+    if(wasStepping){fieldStep.tick();groundHeight=fieldStep.height;jumpHeight=0;groundContact={};}
     // Ordinary ascent: jump, overhead, move. Falling keeps move before gravity.
     const bool wasFalling=fieldJump.airborne && fieldJump.falling;
     float previousY=0;const bool verticalReady=!wasFalling && integrateVertical(i.jumpHeld,previousY);
@@ -504,9 +508,17 @@ void Game::move(const Input& i) {
     auto accept=[&](Vec2 candidate) {
         const float y=groundHeight+jumpHeight;
         if(!walkable(candidate,y))return false;
-        if(fieldJump.airborne){p=candidate;return true;}
-        if(groundAt(candidate,groundHeight,nextHeight,&nextContact) && walkable(candidate,nextHeight)) {
-            p=candidate;groundHeight=nextHeight;groundContact=nextContact;return true;
+        if(fieldJump.airborne || wasStepping || fieldStep.active()){p=candidate;return true;}
+        float slope=0;
+        if(groundAt(candidate,groundHeight,nextHeight,&nextContact,&slope) && walkable(candidate,nextHeight)) {
+            if(nextHeight-groundHeight>GroundedMaxRise)return false;
+            if(groundedHeightCanSnap(groundHeight,nextHeight)) {
+                if(nextHeight-groundHeight>=.05f) {
+                    if(slope>30)return false;
+                    fieldStep.begin(groundHeight,nextHeight);p=candidate;groundContact={};saveRequested=false;return true;
+                }
+                p=candidate;groundHeight=nextHeight;groundContact=nextContact;return true;
+            }
         }
         if(landingFootprint(candidate,moveDirection,y,0,nextHeight,&nextContact)) {
             p=candidate;groundHeight=nextHeight;groundContact=nextContact;return true;
@@ -518,7 +530,7 @@ void Game::move(const Input& i) {
     accept(candidate);
     progress.position=p;progress.elevation=groundHeight;
     if(warpCooldown>0)--warpCooldown;
-    if(warpCooldown==0 && warpRequest<0 && len>.15f) {
+    if(warpCooldown==0 && warpRequest<0 && len>.15f && !fieldStep.active()) {
         for(size_t n=0;n<roads.size();++n) {
             const auto& road=roads[n];
             if(road.source==progress.room && length(p,{road.x,road.z})<.7f &&
@@ -552,15 +564,21 @@ void Game::move(const Input& i) {
     cameraX+=(p.x-cameraX)*.07f;
     cameraZ+=(p.z-cameraZ)*.07f;
     cameraHeight+=(groundHeight-cameraHeight)*.07f;
+    if(wasStepping) {
+        float ceiling=0;
+        if(headCollision(p,moveDirection,groundHeight,fieldStep.velocity,ceiling,.1f)) {
+            jumpBase=std::max(fieldStep.start,ceiling);fieldStep={};fieldJump.beginFall();jumpHeight=jumpBase-groundHeight;
+        }
+    }
     if(wasFalling)advanceVertical(i.jumpHeld);
     else if(verticalReady)finishVertical(previousY);
-    if(fieldJump.airborne)saveRequested=false;
+    if(airborne())saveRequested=false;
 }
 void Game::startBattle() {
     scene=Scene::Battle; phase=Phase::Select; phaseTick=0; selection=0;
     enemyHP=BattleRules::CrumpHP; actionSuccess=false; guarded=false;
     jumpAttempted=false; hammerArmed=false; guardAttempted=false;
-    jumpHeight=0; fieldJump={};
+    jumpHeight=0; fieldJump={};fieldStep={};
 }
 void Game::attackDone(int damage) {
     enemyHP=std::max(0,enemyHP-damage); lastDamage=damage;
@@ -699,7 +717,7 @@ void Game::tick(const Input& i) {
         sound=Sound::Confirm;
     }
     move(i);
-    if(warpRequest>=0 || water.active())return;
+    if(warpRequest>=0 || water.active() || fieldStep.active())return;
     if((groundContact.attributes&0x200) && !fieldJump.airborne && beginWater())return;
     if (i.cancel) openDialogue(2);
     else if (i.confirm && !fieldJump.airborne) {
