@@ -470,6 +470,18 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Time-prefix breadcrumb (2026-10-12): `event_time_publication.cpp` ports raw
+upper/lower rollover retry,winCheck and the complete admitted-clock prefix.
+Tests preserve live GP/delta/mask groups,low/high writes,signed total-only cap,
+GP10/window freeze and unconditional baseline/argument publication. A real
+manager+WAIT_MSEC fixture proves no frozen-time catch-up. make test passes47
+suites/78 Python tests;make all passes. Native hardware clock/GP/window/VI/main
+sources and original cadence remain open. Documentation addendum:source reads
+clock800000f8 BEFORE cap GP reload at8006f480/484,and reloads GP again between
+baseline high store and callback argument (f604/608/60c);tests pin both orders.
+Prior layout/Jump registration requests persist.Next:system-level wrappers and
+native storage/time/source registry binding.
+
 Original-script asset breadcrumb (2026-10-12): `pack_event_scripts.py` and
 `event_script_assets.cpp` provide a byte-exact original-address path for ordinary
 Jump and its power-check/badge-tail dependencies. Default hashes/address/sizes

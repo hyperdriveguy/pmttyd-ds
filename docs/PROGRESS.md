@@ -1,5 +1,30 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original retrace event-clock publication prefix
+
+Implemented `event_time_publication.cpp` for rollover-consistent OSGetTime,
+winCheck and complete viPostCallback clock prefix. Raw delta wraps;only total20
+uses its signed cap. Four mask-controlled banks,event38 and field40 retain
+independent admissions/live GP+delta reads. GP10 short-circuits window query.
+Each64-bit write is low before high;raw baseline and callback argument publish
+even when frozen,through separate final GP reloads. No render-frame counter or
+later reset/rumble/audio tail behavior was substituted for the documented prefix.
+
+Validation: `make test` passed47/47 CTest suites and78 Python tests; `make all`
+rebuilt ARM time module and3dsx. Logs:/tmp/pm-event-time-test.log and
+/tmp/pm-event-time-build.log. Fixtures pin rollover retry,all write order,
+signed negative delta/cap/equality/carry,independent masks/field context,window
+null/flags/state/short circuit,live GP/delta mutation and final GP reload.
+Actual manager/millisecond-wait composition verifies frozen raw baseline causes
+no later catch-up. Original time-publication verifier passes;log:
+/tmp/pm-event-time-evidence.log. Read-only listing:/tmp/pm-retrace.disasm.
+
+Native hardware time/clock/window/GP aliases,VI registration/main-update admission,
+entry-layout/registry ownership and original cadence traces remain required.
+Next:system-level source wrappers,native address/context/time binding and original
+Jump source callbacks. Existing EVT-01 requests remain open;goal incomplete.
+No emulator or original execution claim for these authored timing fixtures.
+
 ## 2026-10-12 — Complete general action-record rule judgment and threshold leaves
 
 Documentation agent ID2 recovered complete JudgeRuleKeep/all68 entries plus
