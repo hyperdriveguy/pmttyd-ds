@@ -3737,3 +3737,32 @@ line consumers; actual font/icon loading/cadence callers and executed numeric/
 layout/image comparisons. Continue uncovered story/event/field/battle/audio/
 save/content systems before complete-game requirements. Full goal active/
 incomplete; recovered local contracts do not prove complete-game fidelity.
+
+## 2026-10-12 — US sscanf entry, reader and formatter consumers
+
+Recovered sscanf0x8026c344,sizec4, __StringRead0x8026c408,size90 and complete
+local __sformatter0x8026c498,size9ac. Added SCAN_INPUT_RUNTIME.md and
+SCAN_FORMAT_CONSUMERS.md: varargs ABI and empty-input -1 gate; unsigned reader,
+EOF flag/unread protocol; descriptor-consumer fields, argument acquisition,
+whitespace/literal routes, integer/floating helper requests and storage widths,
+partial c and suppressed c accounting/high-byte difference, s/[ acceptance and
+wide pointer strides, n storage and assignment/success/EOF return separation.
+Linked icon-width dependency without claiming scanf grammar/numeric equivalence.
+
+Validation:1040 instruction anchors and prior tables/constants/font checks passed
+against read-only ISO; complete256-byte classification hash and six whitespace
+codes checked. Fresh278-function reports reproduced byte-for-byte. All415 local
+behavior links resolved; git diff --check passed. make test passed core plus36
+Python tests; make all exited0 with no rebuild. No original execution/emulator,
+profile/save modification, native implementation, asset conversion or message
+rewrite. Original ELFs/disassemblies/reports remain ignored; authored contracts
+and evidence metadata only. Working tree was clean before this increment.
+
+Remaining: scanf-specific parse_format0x8026ce44, numeric __strtoul/__strtoull/
+__strtold and mbtowc internals, actual icon argument corpus and executed callback/
+destination/count comparisons; drawing/string layout consumers and runtime
+resource/cadence callers. Continue uncovered story/event/field/battle/audio/
+save/content systems before complete-game requirements. Full goal active/
+incomplete; static local contracts do not prove complete scanner or full-game
+fidelity. Source text, message IDs/control tokens and story conditions must remain
+faithful reused data.

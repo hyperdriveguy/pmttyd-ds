@@ -85,8 +85,10 @@ and replace a negative result with ID0. A leading '+' or '-' therefore takes the
 name route. The five outputs are ID/name,scale Q,horizontal offset J,auxiliary
 integer Z,advance N. Conversion count is ignored; fields have no local defaults.
 The name output starts at a32-byte stack region and `%s` has no width bound.
-The sscanf service's complete ABI/parser/failed-conversion semantics remain a
-separate dependency; they are not established by the printf contracts.
+See [scan entry](SCAN_INPUT_RUNTIME.md) and
+[consumer behavior](SCAN_FORMAT_CONSUMERS.md) for ABI, destination writes and
+failed conversion counts. Scan grammar/numeric dependencies remain open; the
+printf contracts do not establish them.
 
 Pass low16(ID) to iconGetWidthHight with local halfword width/height outputs.
 Only width I, Q and N affect this routine's advance; height, J and Z are ignored.

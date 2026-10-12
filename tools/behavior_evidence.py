@@ -69,6 +69,7 @@ FUNCTIONS = (
     '_JUTFont_DrawPos', 'kanjiGetWidth', 'HSV2RGB', 'floor',
     'JUTFontSetup', 'JUTFont_CodeToGlyph', 'kanjiSearch', 'hankakuSearch',
     'FontGetMessageWidth', 'FontGetMessageWidthLine', 'iconGetWidthHight', 'TEXGet',
+    'sscanf', '__StringRead', '__sformatter',
     'btlevtcmd_AnnounceMessage', 'btlevtcmd_AnnounceSetParam',
     'BattlePadCheckTrigger', 'BattlePadMultiCheckTrigger', '_disp@battle_message.o',
     'evt_btl_camera_set_mode', 'evt_btl_camera_set_homing_unit',

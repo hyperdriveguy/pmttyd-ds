@@ -13,6 +13,22 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'scan_input_runtime_and_consumers': {
+        0x8026c354: '40860024', 0x8026c380: '3d800200',
+        0x8026c3bc: '41820010', 0x8026c3cc: '3860ffff',
+        0x8026c3dc: '9001006c', 0x8026c3f0: '480000a9',
+        0x8026c434: '88640000', 0x8026c448: '90060004',
+        0x8026c454: '90060000', 0x8026c470: '90060000',
+        0x8026c47c: '90060004', 0x8026c488: '80660004',
+        0x8026c4d8: '5400077d', 0x8026c57c: '7c002000',
+        0x8026c5e4: '4bff816d', 0x8026c5fc: '41820024',
+        0x8026c754: '80010014', 0x8026c804: '92960004',
+        0x8026c98c: 'fc000818', 0x8026c9f8: '3ad60001',
+        0x8026ca58: '3b9c0001', 0x8026cab0: '4082ffbc',
+        0x8026cbdc: '3ad60002', 0x8026cc30: '41820028',
+        0x8026cc98: 'b0160000', 0x8026cde8: '7fa0fe70',
+        0x8026ce20: '4082000c', 0x8026ce24: '3860ffff',
+    },
     'font_message_width_and_icon_dimensions': {
         0x80075530: '38800000', 0x80075580: '4800c5c1',
         0x8007558c: 'a0790000', 0x800755c8: '7c030040',
@@ -1172,6 +1188,13 @@ def verify(iso_path):
                 73, 74, 75, 76, 73, 77, 103, 104, 105, 106, 103, 107):
             raise ValueError('Icon dimensions remapping tables mismatch')
         print('Seven spacing words, three icon bindings and twelve icon remaps verified')
+        scan_ctype = read(0x803bb308, 256)
+        if hashlib.sha256(scan_ctype).hexdigest() != '3f68b34046b422bde15d20ce7e9d8baddc3f8c5ee5f1deb9b9b67612e7b440c8':
+            raise ValueError('Scan classification table mismatch')
+        if [i for i, value in enumerate(scan_ctype) if value & 6] != [9, 10, 11, 12, 13, 32]:
+            raise ValueError('Scan whitespace set mismatch')
+        print('Complete scan classification table and six whitespace bytes verified')
+
 
 
 
