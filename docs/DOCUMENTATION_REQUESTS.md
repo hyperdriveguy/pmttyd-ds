@@ -465,6 +465,23 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+SDK-heap breadcrumb and native-layout request (2026-10-12):
+`event_heap_allocation.cpp` ports SDK first-fit/signed-size/split/absorb/allocated
+list and __memAlloc handle/zero/cache wrapper separately from _mapAlloc. Tests
+pin node read/write order,size reread,all unlink/split routes,failures,zero count
+and both original context payload requests. Final make test passes42 suites/69
+Python tests;make all passes. ISO context/heap verifier passes8 bodies/139 anchors.
+
+Documentation agent:please consolidate the original1b0 EventEntry field map
+(offset,width,signedness,pointer words and reserved/raw bytes) for all fields now
+used by manager/constructors/lifecycle/opcodes. Include overlapping/local/stack/
+message/USER_FUNC pointer alias requirements and any known read/write domains.
+Existing contracts cover individual offsets;the native memory translator needs
+one complete reviewed map before binding raw original address operands to these
+semantic fields. Cite delivered coverage and clearly retain unknown bytes/source
+owners. Prior NormalJump registration/owner/callback census request remains open.
+Next:delivered bootstrap/native storage,time and original stream/registry bindings.
+
 Context-init breadcrumb (2026-10-12): `event_context_initialization.cpp` ports
 complete Init/ReInit and context banks. Tests retain two256/1b000 allocations,
 separate post-allocation GP timestamps,low/high writes,retained/live pointers,

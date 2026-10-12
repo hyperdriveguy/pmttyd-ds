@@ -1,5 +1,33 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original SDK event-array heap allocation
+
+Implemented `event_heap_allocation.cpp` for complete OSAllocFromHeap and
+__memAlloc contracts. SDK descriptor/handle-table lookups,signed first fit,
+selection-time size reread,whole-block absorption below64 remainder,split/link
+repair and allocated-list prepending retain original address/read/write order.
+Wrapper zeroes/flushes only original requested payload bytes after successful
+allocation. Map allocator remains a separate best-fit/payload-size policy.
+Checked exact SDK instruction order through read-only ISO inspection at
+/tmp/pm-sdk-allocate.disasm;original executable bytes were not added to source.
+
+Validation: final `make test` passed42/42 CTest suites and69 Python tests; final
+`make all` rebuilt ARM heap source/3dsx without the initial indentation warning.
+Logs:/tmp/pm-event-heap-test-final.log and /tmp/pm-event-heap-build-final.log.
+Fixtures cover first versus best fit,signed node size,whole/split head/middle/
+neighbor links,exact write order,no-fit/no-mutation,distinct handles,requested
+versus absorbed clearing,zero-byte allocation,live size reread and both1b000
+context payload requests. Original context/heap verifier passed8 body hashes,
+139 instruction anchors,2 data spans and4 scoped direct calls;log:
+/tmp/pm-event-context-evidence.log. No original execution/emulator equivalence.
+
+Native heap setup/address translation,packed entry aliases,numeric/cache/platform
+owners and source reset/Jump registration remain open. Next:delivered heap
+bootstrap/free/native address providers,original script extraction/import,time
+and USER_FUNC bindings. Asked documentation agent for consolidated1b0 entry
+field/pointer/alias widths needed by the actual translator. Remake goal remains
+active/incomplete;current battle harness still uses provisional scheduling.
+
 ## 2026-10-12 — Complete Switch audio asset extraction
 
 Completed the user's Switch audio extraction using the existing verified base
