@@ -7385,3 +7385,34 @@ Next:remaining dispatch tail/debug opcodes and full opcode-coverage inventory;
 heap initialization/free/ownership,source/pointer/numeric/FPSCR/capacity/context/
 time domains and original data/memory/allocation/branch/multicredit traces.
 Complete-game documentation and requirements remain incomplete.
+
+
+## 2026-10-12 — ID1 partner target/footmark and SDK distance contracts
+
+Added [footmark clear/ID](behavior/FIELD_PARTNER_FOOTMARK_CLEAR_AND_ID.md),
+[live target wrappers](behavior/FIELD_PARTNER_LIVE_TARGET_DISTANCES.md) and
+[SDK paired distance](behavior/FIELD_PARTNER_SDK_DISTANCE_NUMERICS.md).
+Complete local bodies separate flag-word ID,bank reset and live-target selection;
+preserve repeated candidate/Mario reads and3D/planar captured-pointer differences.
+SDK distance uses paired accumulation and one single refinement,distinct from
+the direction-query norm. Public Dolphin paired interpreter semantics were
+cross-checked and linked;no emulator code copied into native implementation.
+Source/numeric environment/domain and actual following trajectories remain open.
+
+Validation:verify_field_partner_targets.py passed six whole DOL hashes,55
+instructions,three constants and two actual lecture imports. Repeated metadata
+byte-identical;Python compilation and prior direction/executor verifiers passed.
+General verifier passed1980 instruction anchors;all1052 behavior links resolved.
+Gekko check passed528 files/73097 instructions/439 paired-single operations with
+zero changes or unknowns. Native test source event_controls_tests.cpp arrived;
+make test passed31 CTest and58 Python tests,resolving the previous CMake failure.
+make all succeeded with no rebuild required. Original ISO read-only;no original
+execution/numeric seed measurement,asset conversion,profile/save mutation or
+original binary/dialogue distribution. Only ID1 target/footmark lock released;
+concurrent native and ID2 changes preserved outside this scoped commit.
+
+Next:front-wall/surrounding/floor/fly and homing/fall/jump/behind helpers;
+read-index/source/status/flag/slot/owner writers;planar angle/distance/trig and
+exact Gekko GQR/FPSCR/estimate domain;original trajectories and full field/battle
+teardown. Full documentation/remake remain incomplete;complete-game requirements
+remain deferred until sufficient system coverage.

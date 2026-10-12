@@ -917,3 +917,14 @@ original annotation. Corrected Gekko ELF/listings and field-partner-direction-
 evidence.json remain ignored under artifacts/reference/behavior. No original
 execution,numeric seed measurement,asset conversion,ISO/profile/save mutation,
 original binary/dialogue distribution or rewritten story occurred.
+
+Partner target/footmark research by ID1 (2026-10-12):verify_field_partner_targets.py
+with field_partner_target_evidence.json pins six whole US DOL bodies,55
+instructions,three constants and two lecture imports. Live-target wrappers,
+clear/ID and SDK paired distance are local contracts;source/domain and original
+execution remain separate. Original ELF/listings and field-partner-target-
+evidence.json remain ignored under artifacts/reference/behavior. Dolphin paired
+interpreter source was read as a public operation-semantic cross-check (link in
+SDK distance doc);GPL-2.0-or-later implementation was not copied into native code.
+No asset conversion,original execution,ISO/profile/save mutation or original
+binary/dialogue distribution occurred.
