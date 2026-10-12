@@ -1,0 +1,194 @@
+{
+  "schema": 1,
+  "scope": "Original ordinary actor render scale/model matrix and converter-derived Mario/Goombella frame0 bounds; no original execution",
+  "dol_spans": [
+    {
+      "name": "marioDisp",
+      "address": 2147838944,
+      "size": 1324,
+      "sha256": "aae6fd9c9432988a97365813dfcd5170809359ed5cdb6fe2a3bd44cd683dfd63"
+    },
+    {
+      "name": "marioGetScale",
+      "address": 2147846408,
+      "size": 32,
+      "sha256": "dbe0c74dafc04cf14efcf142e5689bdead34ff33729db43639b11bfd911ac651"
+    },
+    {
+      "name": "marioInit",
+      "address": 2147857864,
+      "size": 1160,
+      "sha256": "e3976200ee5fc18a245b234f0b88c4095a0de3108c620034b54df1ea545ee6ce"
+    },
+    {
+      "name": "marioReInit",
+      "address": 2147856856,
+      "size": 1008,
+      "sha256": "768a85127d313dcaf6f86c3cbc9b9cc6c42fa3e4f826f72aa494af13ce81f661"
+    },
+    {
+      "name": "partyDisp",
+      "address": 2148234896,
+      "size": 1032,
+      "sha256": "d1eaf8156d292c8063dad3c936aded4e645927ef98e4708b7e564c01fb3b5953"
+    },
+    {
+      "name": "partyEntry",
+      "address": 2148264552,
+      "size": 440,
+      "sha256": "7b60eab9d944bb30cd847690a210ace406295d7301f8b0dee76d0096b666f831"
+    },
+    {
+      "name": "partyEntryMain",
+      "address": 2148262212,
+      "size": 896,
+      "sha256": "4564325d6f461dbfb4479609ce799ae466e5a158aa8a98451e6a8f2f1a1b8ec4"
+    },
+    {
+      "name": "animPoseDrawMtx",
+      "address": 2147726552,
+      "size": 1936,
+      "sha256": "d029569d05cea10fa954194e91776e2a15a98cbf5fcd6d294682362c5be332fd"
+    },
+    {
+      "name": "Mario render constants",
+      "address": 2151809024,
+      "size": 28,
+      "sha256": "7fedc908e520cefb1d10d9861445db1f61df628822ebcd5ab52e2d60103c6e18"
+    },
+    {
+      "name": "Partner render constants",
+      "address": 2151813624,
+      "size": 52,
+      "sha256": "a7f8b43480ff2e10dffc9e98ff8e25e6471093ebe0574f440569fc01411d0060"
+    },
+    {
+      "name": "Mario init scale",
+      "address": 2150373720,
+      "size": 12,
+      "sha256": "e852d0ceaa6a4d8ae6859337b6e3d25a56b1bef05a492d34283afabbdfe4db36"
+    },
+    {
+      "name": "Mario reinit scale",
+      "address": 2150373744,
+      "size": 12,
+      "sha256": "e852d0ceaa6a4d8ae6859337b6e3d25a56b1bef05a492d34283afabbdfe4db36"
+    },
+    {
+      "name": "Partner entry scale",
+      "address": 2150412664,
+      "size": 12,
+      "sha256": "e852d0ceaa6a4d8ae6859337b6e3d25a56b1bef05a492d34283afabbdfe4db36"
+    }
+  ],
+  "dol_anchors": {
+    "2147838972": "4182000c",
+    "2147838976": "c0628bc0",
+    "2147838984": "c0628bc4",
+    "2147839004": "ec2100f2",
+    "2147839016": "48247689",
+    "2147839216": "c03f01ac",
+    "2147839244": "fc030040",
+    "2147839272": "40820008",
+    "2147839436": "48246f99",
+    "2147839572": "48246f11",
+    "2147839612": "48246ee9",
+    "2147839624": "ec210028",
+    "2147839664": "48246eb5",
+    "2147839876": "48246de1",
+    "2147839948": "ec63102a",
+    "2147839968": "ec25182a",
+    "2147839984": "ec45202a",
+    "2147839988": "ec63002a",
+    "2147840008": "48246d5d",
+    "2147840148": "8063022c",
+    "2147840160": "4bfe4439",
+    "2147846424": "c0228bc0",
+    "2147846432": "c0228bc4",
+    "2147858244": "906400c8",
+    "2147857544": "901900d0",
+    "2148235060": "4182000c",
+    "2148235064": "c0629db8",
+    "2148235072": "c0629dbc",
+    "2148235104": "481e6b51",
+    "2148235268": "481e6561",
+    "2148235348": "481e6511",
+    "2148235360": "ec210028",
+    "2148235400": "481e64dd",
+    "2148235612": "481e6409",
+    "2148235628": "41820088",
+    "2148235692": "4082000c",
+    "2148235696": "c0a29dbc",
+    "2148235800": "ec45102a",
+    "2148235824": "481e6335",
+    "2148235844": "c0429dc0",
+    "2148264640": "90df0070",
+    "2148264652": "90bf0078",
+    "2148263052": "901d001c",
+    "2147726736": "fc00f800",
+    "2147726740": "4182002c",
+    "2147726760": "48262d09",
+    "2147726776": "482627ad"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "model_files": [
+    {
+      "path": "a/a_mario",
+      "size": 215124,
+      "sha256": "61b585d6b2f1a36551d3b779551a12122f228bf1354ebc5bb44651c58f118293",
+      "animation": "M_Z_1",
+      "derived": {
+        "triangles": 102,
+        "bounds": [
+          [
+            -10.860231860427879,
+            -1.6581966876983643,
+            -1.0
+          ],
+          [
+            7.286043741012255,
+            21.80179786201329,
+            1.0000004221423517
+          ]
+        ],
+        "native_height": 0.46919989099423315,
+        "pixels_per_model_unit": 5.029839190710738,
+        "root_pixel": [
+          72.9887957390047,
+          114.65953731430804
+        ],
+        "native_quad_side": 0.508962593620863
+      }
+    },
+    {
+      "path": "a/c_pkr",
+      "size": 120932,
+      "sha256": "d712df83d7b70b64a90d45551b39ecf7adf277b9572f6931daae7792b52d69e7",
+      "animation": "PKR_Z_1",
+      "derived": {
+        "triangles": 130,
+        "bounds": [
+          [
+            -5.3298211097717285,
+            -0.1352320909500122,
+            -0.3000002716044037
+          ],
+          [
+            8.856460213661194,
+            14.526864051818848,
+            0.5
+          ]
+        ],
+        "native_height": 0.2932419228553772,
+        "pixels_per_model_unit": 8.047962504883447,
+        "root_pixel": [
+          49.80887036182091,
+          121.91165720257732
+        ],
+        "native_quad_side": 0.31809293326684984
+      }
+    }
+  ]
+}
