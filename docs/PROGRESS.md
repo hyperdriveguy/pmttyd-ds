@@ -10318,3 +10318,51 @@ from requested docs; replace the fixed bottomless screen-probe helper with the
 source current-frame probe loop once its contract is published. Continue event,
 story, partner and other overworld gaps. The full overworld/remake remains
 unfinished; keep the original objective active.
+
+## 2026-10-12 — Current-frame bottomless probe and recovery camera publication
+
+Native8ee75c4 replaces the fixed recoveryTopHeight estimate with the source
+mot_bottomless returnXYZ projection loop: start at retained returnY+100 engine,
+raise10 while inclusive source screen bounds admit, take first outside Y.
+Invalid projection/low sentinel domains are unsupported instead of receiving an
+invented fixed top. Keep actual current rootXZ, run horizontal phase0 in the
+entry callback, and retain the literal zero-count/coincident heading behavior.
+The source map/return selection and portable recovery effects remain separate.
+
+Camera manager work now continues during water/bottomless recovery. Current
+water rootY feeds the root consumers; source motion33 permits the ordinary
+camera publisher, whereas29 is the pipe gate. Water motion31 sets display10000,
+retaining follow targets through sink/hold/rise while the camera solver still
+runs. Phase12/14 explicitly adds followDelta=(returnY−captured admission rootY)
+/travelTicks, writes moving rootXZ and retains delta timing until the next
+callback after travel preparation. Source admission height is captured from the
+current root after support/landing writes, not target surface height. Completion
+or zero HP clears10000. Bottomless preserves its incoming flag, writes XZ in
+phase0, and otherwise allows/suppresses ordinary publication by that flag.
+Retained collision target is not replaced with the return marker/root. Removed
+the obsolete original-water camera-freeze assertion; tests now check manager
+clock advancement and source retained follow ownership.
+
+Validation: final make test passed65 CTest targets and78 Python tests; make all
+built3DSX. Original core passed18315 indexed collision probes and all8 source
+room arrival/recovery regressions. Source probe/publication/admission verifier
+passed21 spans97 anchors7 derived classifiers. Host cases cover first-outside
+projection, initial-outside XZ, invalid/sentinel rejection, zero/coincident
+travel, entry travel continuation, next-tick camera consumption, flag-gated
+publication, water follow delta/preparation boundary and unlock. Isolated
+nonlethal void smoke passed under artifacts/azahar-bottomless-camera/ before the
+final water delta/coincident refinement; final lethal void smoke passed under
+artifacts/azahar-bottomless-camera-lethal/, including checkpoint preservation
+and saved-HP reload. Both used isolated profiles and tests/azahar_void.py, which
+now honors PM_PORT_SMOKE_OUTPUT. No user's emulator profile/save was changed.
+Native captures are not original-runtime trajectory or SDK numeric parity.
+
+The documentation agent supplied the remaining ordinary dolly/event-blend
+contract (0fdb4d0) and recovery refinements (1f0e927/ca26106). Fresh blend/dolly
+states are identity, but room-load persistence and authored event bindings still
+need implementation. Original model a/a_mario M_Z_1 was extracted read-only to
+/tmp/pm-mario-root-bake/ for an idle geometry-bake preflight; its102 triangles
+and bounds match the source-derived actor contract. No actor pack/native quad
+conversion was changed yet. Next: carry per-pose model-root metadata into the
+atlas and native actor quads; bind persistent camera blend/dolly services and
+continue other overworld/story/partner gaps. Full objective remains active.

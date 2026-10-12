@@ -1512,3 +1512,14 @@ metadata drives the source moving-shift calculation, while live default lens
 remains a separate owner. Capture review identified existing cropped actor atlas
 root/scale loss; no actor rebake is claimed yet. Original licensing/local-only
 provenance remains unchanged.
+
+## 2026-10-12 — Recovery projection and actor-bake preflight
+
+Native8ee75c4 changes recovery mechanics/camera publication without changing
+RomFS conversions or original pack bytes. Read-only actor preflight extracted
+ISO a/a_mario and a/a_mario- to /tmp/pm-mario-root-bake/a_mario and a_mario.tpl;
+character_bake produced temporary idle.png from M_Z_1 frame0 (102 triangles),
+matching documented model bounds. This scratch bake was inspected only; atlas
+root/scale metadata and native quads still need conversion. Scratch/original
+bytes stay outside Git. Existing source licensing/local-use attribution applies;
+no generated replacement art, music or sounds were introduced.

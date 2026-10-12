@@ -298,8 +298,10 @@ native contact/latch inputs, not an observed original harbor water sequence.
 Further water trace: mot_damage initialization calls marioNoUpdateCamPos
 801a8f34 at8013ae90 and npcStopForEvent80043cd8 at8013af5c; completion calls
 marioUpdateCamPos801a8f60 and npcStartForEvent80043bc8. Water recovery must
-freeze the field camera and NPC updates instead of following Mario's airborne
-recovery motion. Existing partner follow/camera does not yet implement this.
+retain follow publication via display10000 while camMain continues. The older
+camera-freeze inference was incorrect and is superseded by native8ee75c4.
+npcStopForEvent flags selected event NPCs; it does not skip the NPC manager or
+universally stop every actor/partner.
 
 Native water controller now implements ordinary mot_damage stages0/1/10/11/
 12/13/14/20/31/32/33: sink -6 engine units/tick until below root-160, hold40,
@@ -323,8 +325,9 @@ unsupported. Normal water trigger requires current prototype jump to finish.
 Source-derived mechanics pass portable/native checks but are NOT Dolphin-
 observed acceptance. Original water splash/chomp effects, pose sequences, sound
 macros, final landing ray, body widths and exact float/timing boundaries remain
-required fidelity work. Camera/follower positions freeze in controller checks;
-full original NPC event/animation behavior is not yet reproduced.
+required fidelity work. Source retained follow targets and camera-manager
+advancement replace the earlier frozen-camera checks; full original NPC/partner
+event and animation behavior is not yet reproduced.
 
 Normal gravity parameter confirmed: original marioMain8005a944 writes1.0 to
 Mario+0x228 each frame (DOL constant80420008). Only listed moo moon rooms
@@ -985,3 +988,18 @@ stages remain explicit boundaries. Isolated native captures/host cases prove
 binding and traversal, not original Dolphin trajectory equivalence. The prior
 ledger's unbound candidate/view limitation is superseded by this commit; remaining
 actor root/scale and event camera work must still be completed.
+
+## 2026-10-12 — Recovery camera ownership correction
+
+Native8ee75c4 uses OVERWORLD_BOTTOMLESS_SCREEN_START_PROBE.md for ordinary
+returnXYZ/+100/+10 current-frame probing and same-callback horizontal travel.
+Source motions31/33 are water/bottomless;29 is pipe. Camera solver continues
+while display10000 retains or explicitly writes follow targets. Water admission
+captures current rootY into the2b8 adapter; phase12/14 delta uses that value,
+not root velocity/floor. Travel preparation ends the callback before publication.
+Bottomless does not invent10000 and the later ordinary writer obeys its incoming
+flag. Tests verify camera manager advancement rather than unsupported camera
+freeze. Numeric SDK/clock/viewport adapters, exact motion scheduler admission,
+NPC event/partner services, original effects/audio and original traces remain
+separate requirements. No Dolphin observation or full recovery equivalence is
+claimed; the old camera-freeze inference below is corrected.
