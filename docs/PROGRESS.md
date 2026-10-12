@@ -9528,3 +9528,45 @@ Next:used fly/homing/behind motion bodies and other general-writer caller
 bindings,full ray/libm/source/alias/numeric domains,matched original recovery
 traces and a complete original playable encounter through persistent outcomes.
 Full-game documentation and final complete-game requirements remain incomplete.
+
+## 2026-10-12 — ID1 complete local flying executor,behind/homing and speed writers
+
+Added six detailed contracts:[dispatch](behavior/FIELD_PARTNER_FLY_DISPATCH.md),
+[behind](behavior/FIELD_PARTNER_BEHIND_FLY.md),
+[homing entry](behavior/FIELD_PARTNER_HOMING_FLY_ENTRY_AND_SPEED.md),
+[history loop](behavior/FIELD_PARTNER_HOMING_FLY_HISTORY_LOOP.md),
+[collision tail](behavior/FIELD_PARTNER_HOMING_FLY_COLLISION_TAIL.md) and
+[speed writers](behavior/FIELD_PARTNER_FLY_SPEED_WRITERS.md). Complete local
+five-body graph covers selector dispatch,two tail ownership policies,byte countdown,
+entry placement/distance counter,behind movement/completion duplicate requests,
+live/history target distinction,unbounded local record retries,repeated speed
+updates,far recovery,wall-state/height/head/floor/screen tails and early exits.
+Inherited FPR25/FPR26 paths are explicit source-domain dependencies;no defaults
+were fabricated. Full partyFlyMain history writer remains OPEN(selected caller
+tail only),as do called ability/pose/backend/math and source/runtime domains.
+Only ID1 scoped lock released;concurrent native/ID2 changes preserved separately.
+
+Validation:verify_field_partner_flying.py passes six containing hashes(five
+complete local bodies,one selected caller tail),869 instruction anchors,
+34 constants,four spans,two US lecture imports and exact nine linked direct
+sites across seven DOL text sections. Repeated reports byte-identical;omitted-
+caller negative expectation rejected;Python compilation passed. Prior general
+placement/fall/front-wall/live-services/ground/head verifiers passed. Initial
+floor/ceiling verification used nonexistent filenames;correct ground/head commands
+passed. Initial unqualified flyMain inspection rejected duplicate annotations;
+namespace-filtered inspection selected party_move.o,not mot_plane.o.
+General verifier passed1980 anchors;all1702 behavior links resolved at snapshot.
+Gekko audit passed584 files/83372 instructions/638 paired-single ops,zero
+changes or unknowns. make test passed53 CTest suites and78 Python tests;
+make all passed/rebuilt3DSX. Logs:/tmp/id1-flying-test.log and
+/tmp/id1-flying-build.log. Build ran existing3218-identity/five-fallback audio
+pipeline;ASSETS records read-only ISO/local derivative paths and unchanged ID1
+conversion policy,outputs unstaged. No ID1 native implementation edits,original
+execution/trajectory measurement,profile/save mutation or original distribution.
+
+Next:complete flying history writer and its used callback bindings,target-speed/
+height-adjustment source leaves,slit/roll/other motion/pose engines,source/kind/
+flag/alias/FP domains and matched original flying/recovery traces. Recover a full
+original playable encounter through persistent outcomes alongside these inbox
+blockers. Full-game documentation and final complete-game requirements remain
+incomplete.

@@ -18,7 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Majinai effect construction,pool acquisition and map-word publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Constructor/payload](behavior/MAJINAI_EFFECT_CONSTRUCTION.md),[pool/map helpers](behavior/EFFECT_POOL_ACQUISITION_AND_MAP_PUBLICATION.md):full local order,heap3/count reread,partial name clear,exhaustion/no-null guard and map+1e WORD publication;main/draw/delete/resource/platform/source/runtime remains open |
-| Partner flyMain dispatch and flying movement handlers | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover party_move.o flyMain and used motion dispatch/output with flying handler local graphs;terrain/pose/source/numeric domains,other motion engines and original trajectories remain separate |
+| Partner flyMain dispatch and flying movement handlers | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Fly dispatch](behavior/FIELD_PARTNER_FLY_DISPATCH.md),[behind-fly](behavior/FIELD_PARTNER_BEHIND_FLY.md),[homing entry](behavior/FIELD_PARTNER_HOMING_FLY_ENTRY_AND_SPEED.md),[history loop](behavior/FIELD_PARTNER_HOMING_FLY_HISTORY_LOOP.md),[collision tail](behavior/FIELD_PARTNER_HOMING_FLY_COLLISION_TAIL.md),[speed writers](behavior/FIELD_PARTNER_FLY_SPEED_WRITERS.md):complete local five-body graph,nine direct-site census;full flying history writer/other motion/pose/terrain/source/numeric/original trajectories remain open |
 | Battle fortune producer and pouch reset/random-selection policy | EVT-01, JUMP-01, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete producer](behavior/BATTLE_FORTUNE_PRODUCER.md),[init/call/RNG accounting](behavior/BATTLE_FORTUNE_INIT_AND_CALL_BINDINGS.md):signed countdown/sticky mode,inline setup-mask20 thresholds,word compare before byte store and two direct bindings;field assignment/save/setup/turn/consumer/runtime remains open |
 | Jump Majinai power-check child and local result/effect callbacks | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Power graph/consumption](behavior/JUMP_MAJINAI_POWER_CHECK_CHILD.md),[effect/nested sources](behavior/JUMP_MAJINAI_EFFECT_AND_NESTED_SOURCES.md):full14/12/17-command graphs,query/Done/EndCheck/name polling/ftomsec and five original keys;additional spans/three callbacks,fortune producer/render/audio/message/backend/runtime remain open |
 | General partner placement writer and placement4 fallback | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/admission](behavior/FIELD_PARTNER_GENERAL_PLACEMENT.md),[fallback/output](behavior/FIELD_PARTNER_GENERAL_PLACEMENT_FALLBACK.md),[trig/plane leaves](behavior/FIELD_MOVEMENT_TRIG_AND_PLANE_LEAVES.md):complete local writer and used leaves,eight direct caller census;other caller bindings/backend/libm/source/alias/runtime remain open |
@@ -1958,3 +1958,16 @@ numeric/platform and original frame/exception traces remain open. Verifier
 passes five complete/linked hashes,92 anchors,five spans and three direct sites;
 repeat reports equal. Prior caller/heap/general1980 checks pass;make test52 CTest/
 78 Python and make all pass;2156 local links resolve. No native/test/asset edits.
+
+ID1 flying delivery (2026-10-12),AC-01/AC-03 partial answer:
+The linked flyMain@party_move.o,behind_fly,homing_fly and two speed-writer
+contracts now close their complete LOCAL request/update graphs. Selector0/1
+splash/countdown/hazard differs from2/3/6;homing can consume multiple records
+and update speed several times in one call. Special kind domains can read
+inherited FPR25/FPR26:do not fill invented defaults without source proof.
+Behind completion blends floorY on initially-nonnull paths even when H is later
+discarded. Main/ray/height/slot/capture/write ordering is specified in six files.
+Five complete hashes plus selected actual partyFlyMain caller tail,869 anchors,
+34 constants,four spans,two imports and nine direct sites validated;53 CTest/
+78 Python tests and3DS build passed. Parent requests remain open for full
+flying history/source/other motion/pose/backend/numeric/runtime composition.

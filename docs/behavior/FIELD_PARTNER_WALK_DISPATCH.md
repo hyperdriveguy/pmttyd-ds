@@ -99,3 +99,12 @@ The [jump handlers](FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md) and
 Next:homing/behind/upstairs/damage bodies,pose/splash/hit producers,
 state writers and original partner movement/hazard traces. This dispatcher
 contract alone cannot reproduce all partner locomotion or the complete game.
+
+ID1 used flying-handler addendum (2026-10-12):selected nonzero-mobility
+homing and behind routes now have complete local contracts:
+[homing entry](FIELD_PARTNER_HOMING_FLY_ENTRY_AND_SPEED.md),
+[history loop](FIELD_PARTNER_HOMING_FLY_HISTORY_LOOP.md),
+[collision tail](FIELD_PARTNER_HOMING_FLY_COLLISION_TAIL.md),
+[behind-fly](FIELD_PARTNER_BEHIND_FLY.md). Ground homing/behind/continue/beside,
+full source/ability/pose/backend/math and original trajectory domains remain
+separate. Their local closures do not complete all walkMain's called engines.

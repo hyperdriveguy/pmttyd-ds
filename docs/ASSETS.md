@@ -1392,3 +1392,20 @@ artifacts/azahar-camera-assets/. local-assets/,romfs/ and compiled packs were
 not staged. Original assets remain copyrighted by Nintendo/Intelligent Systems;
 local extraction/conversion conveys no right to distribute these assets or packs.
 No ISO or original executable bytes were modified or committed.
+
+ID1 flying behavior/build provenance (2026-10-12):read-only
+/home/carson/games/roms/G8ME01.iso US disc0 revision0 supplied flyMain@
+party_move.o0x800c7ff8,two flying motion handlers/two speed writers and selected
+partyFlyMain caller tail,dispatch0x80315050,map IDs0x802f47b0..0x802f47d0,
+zero-vector/bias/numeric constants. Two flyMain names exist in the annotation
+CSV;inspection used a temporary namespace-filtered /tmp/id1-party-fly-symbols.csv
+rather than choosing Mario's mot_plane.o function. Initial unqualified inspection
+rejected ambiguity and produced an empty ignored listing;no binary was changed.
+Only metadata/analysis was added to source history;original ELF/listing/reports
+remain ignored under artifacts/reference/behavior. No new ID1 art/audio conversion
+or story text was introduced. make all invoked existing sound/proj/pmario.proj,
+pool,sdir,samp audio-map pipeline:3218 GameCube identities,0 Switch,5 primary-PCM
+slice fallbacks. Existing local-assets/audio-map raw/catalog and RomFS WAV/
+audio-map.json derivatives remain unstaged. Original rights remain with their
+owners;local analysis/conversion grants no redistribution license.
+Exact build log:/tmp/id1-flying-build.log.

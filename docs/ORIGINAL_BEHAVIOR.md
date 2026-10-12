@@ -741,3 +741,17 @@ close full local constructor/slot/helper order,payload fields and exact map+1e
 four-byte request. Pool exhaustion has no local null fallback and acquisition
 clears only the first instance-name byte. Update/draw/delete/resources/map/
 heap/platform/source and original effect/frame behavior remain open.
+
+ID1 flying-partner delivery (2026-10-12):
+[executor](behavior/FIELD_PARTNER_FLY_DISPATCH.md),
+[behind-fly](behavior/FIELD_PARTNER_BEHIND_FLY.md),
+[homing entry](behavior/FIELD_PARTNER_HOMING_FLY_ENTRY_AND_SPEED.md),
+[history loop](behavior/FIELD_PARTNER_HOMING_FLY_HISTORY_LOOP.md),
+[collision tail](behavior/FIELD_PARTNER_HOMING_FLY_COLLISION_TAIL.md) and
+[speed writers](behavior/FIELD_PARTNER_FLY_SPEED_WRITERS.md) specify complete
+local flying dispatch/two handlers/two scalar writers. Exact selector/tail
+ownership,entry placement,countdown versus history,live versus record distance,
+repeated speed effects,inherited-FPR domains,contact and publication order are
+closed locally. partyFlyMain has only selected caller-tail evidence here;its
+full history writer,called engines/source/math/pose and original trajectories
+remain open. No full-system or complete-game equivalence claim follows.

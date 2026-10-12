@@ -237,3 +237,15 @@ For this recovered field chain,next resolve used movement handlers and remaining
 backend/source domains,then compare original recovery trajectories. Switch
 comparison and incidental library edge cases do not replace that US evidence.
 Final complete-game requirements remain premature.
+
+ID1 flying coverage update (2026-10-12):
+[used flying executor](FIELD_PARTNER_FLY_DISPATCH.md),
+[behind](FIELD_PARTNER_BEHIND_FLY.md) and
+[homing](FIELD_PARTNER_HOMING_FLY_ENTRY_AND_SPEED.md) now have complete local
+request graphs with two speed writers. The verifier pins nine actual direct
+sites;original execution,full flying history and source/FP/terrain/pose domains
+remain open. Current listing audit584 files/83372 instructions/638 paired-single
+ops is clean;this is disassembly integrity,not gameplay completion. No full-system
+closure or complete original playable encounter is established. Continue inbox
+blockers and shipped US caller/source composition;final complete-game requirements
+remain premature.
