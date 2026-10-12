@@ -220,3 +220,8 @@ add_test(NAME field_camera COMMAND field_camera_tests)
 add_executable(event_entry_addresses_tests tests/event_entry_addresses_tests.cpp)
 target_link_libraries(event_entry_addresses_tests PRIVATE ttyd_core)
 add_test(NAME event_entry_addresses COMMAND event_entry_addresses_tests)
+
+target_sources(ttyd_core PRIVATE source/camera_road_assets.cpp)
+add_executable(camera_road_assets_tests tests/camera_road_assets_tests.cpp)
+target_link_libraries(camera_road_assets_tests PRIVATE ttyd_core)
+add_test(NAME camera_road_assets COMMAND camera_road_assets_tests)

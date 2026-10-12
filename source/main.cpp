@@ -1,3 +1,4 @@
+#include "camera_road_assets.hpp"
 #include "platform.hpp"
 #include "save.hpp"
 #include <algorithm>
@@ -38,7 +39,7 @@ int main() {
         gfxExit();
         return 1;
     }
-    if(!loadRoomCollision(0) || !ttyd::loadWarps("romfs:/rooms.bin")) {
+    if(!loadRoomCollision(0) || !ttyd::loadWarps("romfs:/rooms.bin") || !ttyd::loadCameraRoadAssets("romfs:")) {
         renderer.shutdown();romfsExit();gfxExit();return 1;
     }
     ttyd::Audio audio;audio.init();

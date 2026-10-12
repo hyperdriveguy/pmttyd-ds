@@ -28,6 +28,7 @@ def main():
     required=['characters.t3x','sky.t3x','map.vertices','map.batches','rogueport.wav','battle.wav','victory.wav','stage.vertices','stage.batches','map.walls','map.ground','gor_00.vertices','gor_02.vertices','gor_03.vertices','gor_04.vertices','map.uvanim','stage.uvanim','gor_00.uvanim','gor_02.uvanim','gor_03.uvanim','gor_04.uvanim','rooms.bin','map.meshanim','stage.meshanim','gor_00.meshanim','gor_02.meshanim','gor_03.meshanim','gor_04.meshanim']
     required.extend(prefix+'.returns' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
     required.extend(prefix+'.head' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
+    required.extend(prefix+'.camera' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
     if manifest.exists() and all((OUTPUT/p).exists() for p in required):
         if json.loads(manifest.read_text()).get('fingerprint')==fingerprint:return
     WORK.mkdir(parents=True,exist_ok=True);OUTPUT.mkdir(exist_ok=True)
@@ -55,6 +56,7 @@ def main():
     atlas.save(WORK/'characters.png');texture(WORK/'characters.png',OUTPUT/'characters.t3x')
     sky=asset('b/gor_01.tpl','sky.tpl');convert_tpl(sky,WORK/'sky.png')
     Image.open(WORK/'sky.png').convert('RGB').resize((256,256),Image.Resampling.LANCZOS).save(WORK/'sky-runtime.png');texture(WORK/'sky-runtime.png',OUTPUT/'sky.t3x','rgb565')
+    camera=asset('m/gor_01/c','gor_01.c');shutil.copyfile(camera,OUTPUT/'map.camera')
     model=asset('m/gor_01/d','gor_01.d');tpl=asset('m/gor_01/t','gor_01.tpl');summary=convert(model,WORK/'map',mesh_ambient=('hae',))
     for filename in ['map.vertices','map.batches','map.walls','map.ground','map.head','map.uvanim','map.meshanim']:shutil.copyfile(WORK/'map'/filename,OUTPUT/filename)
     for index,name in enumerate(summary['textures']):
@@ -65,6 +67,7 @@ def main():
         image.resize((width,height),Image.Resampling.LANCZOS).save(path);texture(path,OUTPUT/f'map-{index}.t3x')
     rooms={'gor_01':summary}
     for room in ['gor_00','gor_02','gor_03','gor_04']:
+        camera=asset(f'm/{room}/c',room+'.c');shutil.copyfile(camera,OUTPUT/(room+'.camera'))
         room_model=asset(f'm/{room}/d',room+'.d');room_tpl=asset(f'm/{room}/t',room+'.tpl')
         # Original gor_04 init ELSE for entry != hikousen_return hides these groups.
         # Only ordinary road entries are currently implemented for this room.
@@ -164,7 +167,7 @@ def main():
     for filename in ['confirm.wav','jump.wav','hit.wav','success.wav']:
         (OUTPUT/filename).unlink(missing_ok=True)
     manifest.write_text(json.dumps({'fingerprint':fingerprint,'source_disc':'G8ME01','assets':records,
-        'characters':poses,'map':summary,'overworld_rooms':rooms,'road_links':links,'damage_return_tables':return_tables,'resolved_damage_returns':resolved_returns,'battle_stage':stage_summary,'music':music,'sample_bank_entries':len(directory),
+        'characters':poses,'map':summary,'overworld_rooms':rooms,'road_links':links,'camera_containers':{'map':'m/gor_01/c',**{room:'m/'+room+'/c' for room in ['gor_00','gor_02','gor_03','gor_04']}},'damage_return_tables':return_tables,'resolved_damage_returns':resolved_returns,'battle_stage':stage_summary,'music':music,'sample_bank_entries':len(directory),
         'sound_effect_status':'Original banks preserved; macro-to-event mapping not yet implemented. No synthetic replacements.',
         'conversion':'Original character idle poses and Mario jump/hammer textures baked to RGBA8 atlas; static Rogueport geometry; map textures capped at 128px; DSP music decoded losslessly at original rate'},indent=2)+'\n')
     print(f'Built original asset pack: {summary["triangles"]} map triangles, {len(directory)} preserved samples')
