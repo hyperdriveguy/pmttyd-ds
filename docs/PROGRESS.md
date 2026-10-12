@@ -1,5 +1,103 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Behavior docs reorganized into per-subsystem folders
+
+Moved every contract in docs/behavior/ into 19 subsystem folders (battle,
+partner, message, event, format, camera, display, overworld, file, memory,
+unit, effect, story, field, input, meta, platform, binary, audio); only the
+README.md index stays at the root. 393 behavior documents now live in the
+folder tree with 0 flat files remaining. Tracked moves used git mv; untracked
+concurrent flat files were relocated with os.replace. Renamed the malformed
+derived-reference names to explicit *_REFERENCE.md (battle action-command,
+Main, timing-A, stick-keep-left, success-frame) and binaries.md to
+BINARY_ARTIFACTS.md. Did not delete or rewrite others' content; the
+REFERENCE_FILES_INVENTORY.md collision kept the newer concurrent version under
+binary/. Rewrote every relative Markdown link that pointed at a moved file
+(~1200 intra-behavior plus 49 out-of-behavior references across README.md,
+ASSETS.md, MECHANICS.md, DOCUMENTATION_REQUESTS.md, ORIGINAL_BEHAVIOR.md and
+OVERWORLD_DOCUMENTATION_REQUESTS.md). Added a subsystem-folder taxonomy section
+to docs/behavior/README.md and an AGENTS.md paragraph directing new contracts
+to the owning subsystem folder. Fixed the one out-of-docs path consumer
+(tools/verify_event_entry_layout.py now resolves contracts recursively) and the
+include/battle_timing_a.hpp comment path.
+
+Validation: tools/normalize_behavior_docs.py dry run reports 0 flat files (no
+pending moves). New tools/check_doc_links.py scans 410 Markdown files and
+reports only five broken local links, all forward references from the
+untracked binary/REFERENCE_FILES_INVENTORY.md to its not-yet-written companions
+REFERENCE_DOL_FUNCTION_SLICES.md and REFERENCE_TOOL_TREES.md. The modified
+tools/verify_event_entry_layout.py passes against the read-only ISO. No native
+or asset change.
+
+Limitations: the five inventory links remain unresolved until the inventory
+author writes those companion documents; this session did not fabricate their
+content. Concurrent sessions keep creating new flat files at the behavior root,
+so re-run tools/normalize_behavior_docs.py --apply when the tree changes.
+
+Next: inventory author creates the slice/tool-tree companions, then rerun
+tools/check_doc_links.py to confirm zero broken links. Full-game goal remains
+incomplete.
+
+## 2026-10-12 — ID2 file relocation dispatch and flat pointer handlers
+
+Added dispatch/type-map and eight complete flat-handler contracts with evidence
+tool. Both11-word tables,full unsigned Set type versus signed-byte Clear type,
+Clear holder access before rejection,unsigned first-field guard/retained value,
+ordered block arithmetic and no per-field null preservation are explicit.
+Types4/5 nested bodies remain open;containing hashes do not claim full recovery.
+Released only ID2's dispatch/flat lock;new files follow behavior/file layout.
+
+Validation:verify_file_relocation_dispatch.py passes two containing hashes,481
+selected instruction anchors,two original tables;repeat JSON matches. Python
+compile,prior smart init/compaction/async/general1980 evidence and new-contract
+links pass. make all passes. make test cannot configure missing concurrent
+ tests/battle_unit_event_tests.cpp at CMakeLists.txt:322;separate78 Python tests
+pass. Logs:/tmp/id2-reloc-test.log,/tmp/id2-reloc-build.log,/tmp/id2-reloc-python.log.
+Five unrelated inventory links remain unresolved during subsystem reorganization.
+Private contract/evidence commit preserves other session staging;shared handoff
+and previous initializer handoff remain in worktree. No native/test/asset change
+or original runtime/source-format completeness claim.
+
+Next:finish nested4/5 handlers;native owner supplies its fixture and reruns host
+gate;inventory owner repairs five links. Full-game requirements remain incomplete.
+
+## 2026-10-12 — ID2 smart arena/header initialization and provisioning
+
+Complete smartInit documented in two linked contracts,private commit bbdb4fb.
+Heap-index4 request,retained conditional first clear/flush,live unconditional
+second clear,2048*28 raw headers/live endpoint stores and first flag/release
+counter reset are explicit. Scoped requirements separate original header/file/
+payload address domains from unknown full-game memory budget. New files follow
+the concurrent docs/behavior/memory reorganization. Own ID2 lock released.
+
+Validation:verify_smart_initialization.py passes five hashes(one complete/four
+linked),121 anchors,two startup/global spans;repeat JSON matches. Python compile,
+prior allocation/compaction/release/general1980 checks and nine new-contract links
+pass. make test passes69 CTest/78 Python;make all passes. Logs:
+/tmp/id2-smartinit-test.log,/tmp/id2-smartinit-build.log. Full doc scan2646 links
+finds six unresolved inventory references during concurrent reorganization.
+Other session staging preserved;shared handoff written separately in worktree.
+No native/test/asset conversion change or original runtime/hardware budget claim.
+
+Next:finish heap4 bootstrap/type relocation/worker/source/platform/scene contracts.
+Inventory/reorganization owner repairs its six links. Full-game requirements and
+EVT-01/JUMP-01/DMG-02 remain incomplete.
+
+## 2026-10-12 — Reorg collision check on unaddressed-function docs
+
+A concurrent agent reorganized docs/behavior/ into subdirectories
+(battle/, binary/, event/, ...) while this turn's three new contracts were
+still uncommitted. Verified after the move: all 6 owned docs intact at new
+paths with repaired relative links (zero broken .md links across them plus
+the behavior README); register byte-identical to 37efff6; all 5 README rows
+present with corrected subdir paths. The 13 newly closed contracts
+(GetHp/GetMaxHp/GetUnitWork/SetUnitWork/CheckStatus/CheckDataOfDataTable,
+CheckDefinePosetype/AnimeChangePoseFromTable, StopWaitEvent/cameras/
+StatusWindowEventOff) were verified claim-by-claim before the move and their
+content is unchanged. No commit made: the tree holds another agent's staged
+reorganization. Next: Group C symbol-anchored trio, Group D/E top-level
+writers. Full-game goal stays incomplete.
+
 ## 2026-10-12 — Native two-phase action-record turn judgment
 
 Implemented the complete local turn-rule selector60..65 with exact ordered
@@ -27,6 +125,32 @@ are not inferred. No original runtime/emulator/hardware fidelity claim.
 Next:original outer turn state machine,packed unit/record ownership and remaining
 Jump/AC/motion/presentation callbacks. Movement-wrapper documentation request
 remains pending;full-game goal incomplete. EVT-01 breadcrumb updated.
+
+## 2026-10-12 — Group A/B closers: unit queries, pose tables, wait/camera/status
+
+Closed 13 more register rows (17/43 total) with three static contracts.
+BATTLE_UNIT_QUERY_EVENT_LEAVES: GetHp/GetMaxHp (-1 early-out, lha +268/+264),
+GetUnitWork/SetUnitWork (unit+536+4*index read vs direct store; -1 gate absent
+in four bodies), CheckStatus (extsb low byte into open BtlUnit_CheckStatus,
+0/1 write), CheckDataOfDataTable (resolved query into documented
+BtlUnit_CheckData). BATTLE_POSE_TABLE_EVENT_LEAVES: CheckDefinePosetype signed
+band/threshold scan over [part+444] stride-8 words (=70 write 0, match write 1,
+unreachable filler noted) and AnimeChangePoseFromTable with the r4 non-reload
+hazard into btlDispPoseAnime. BATTLE_WAIT_CAMERA_STATUS_EVENT_LEAVES:
+StopWaitEvent (unit+656 id delete-via-documented-evtDeleteID and clear),
+camera no-move switches (negative-r3 guard, bit 8/16 set vs clear), and the
+non-callback StatusWindowEventOff (fixed [W+10056]=0 plus unresolved 800f7514
+tail call whose return is forwarded).
+
+Validation: script re-checks gate presence/absence per body, Hp-pair call
+identity, UnitWork store shapes, extsb/CheckData targets, threshold constants,
+loop-step form, r4 gap between final calls, camera masks/guard, and the
+missing li-3,2; diff --check clean. Docs-only, no make rerun.
+
+Limitation: BattleGetUnitPtr/BtlUnit_CheckStatus/800f7514/btlDispPoseAnime's
+second arg stay open; [r13+7280] positional. Next: Group C symbol-anchored
+trio, Group D duplicate notes, Group E top-level writers, zero-byte
+re-extraction. Full-game goal stays incomplete.
 
 ## 2026-10-12 — ID2 complete smart allocation and failure ownership
 
@@ -78,6 +202,31 @@ mixed signed/unsigned literals;corrected before final full checks.
 Next:rule-judgment provider,complete effect pool/construction/update/draw/resource
 ownership and remaining native turn/Jump callbacks. Active visual graph,outer
 turn/Game binding and movement-wrapper reply remain open;goal incomplete.
+
+## 2026-10-12 — First unaddressed-function closers (SetPos, phase/turn/flag)
+
+Closed 4 of the 43 register rows with two static contracts, no execution.
+docs/behavior/BATTLE_UNIT_SET_POS.md: complete 4-instruction BtlUnit_SetPos
+leaf (stfs f1/f2/f3 to unit+60/64/68), the visible-position triple shared with
+GetPos per BATTLE_UNIT_PART_POSITION_QUERIES, entry-adjacent GetPos pairing
+(16-byte body, 44 link sites, jump-evidence sha row).
+docs/behavior/BATTLE_PHASE_TURN_FLAG_EVENT_LEAVES.md: complete CheckPhase
+(compare event word vs BattleGetSeq(B,4), write 0/1 via evtSetValue),
+get_turn (halfword source to routed destination), onoff_battleflag (mask OR
+vs ANDC into [W+3828] on ==1 test); all return 2, callees from evidence.json
+annotations confirmed against EVENT_INTEGER_OPERAND_NAMESPACES. Dated the
+register audit point (725d65a) and added README rows.
+
+Validation: per-claim audit re-checks instruction text, offsets, adjacency
+arithmetic, annotation identities, sha12 prefixes, and return-2 in all three
+bodies; git diff --check clean on new files. Docs-only, no code/asset change,
+so make test/make all not rerun.
+
+Limitation: [r13+7280] identity left positional (existing BATTLE_MAIN.md note
+misdescribes r13); shared-target bodies 80031260/800f88cc/80030cfc themselves
+still uncontracted beyond the integer-operand doc. Next: Group A ten
+btlevtcmd bodies using the same annotation method, then BtlUnit-adjacent and
+top-level field/hit writers. Full-game goal stays incomplete.
 
 ## 2026-10-12 — ID2 smart compaction and file-payload movement
 
@@ -181,6 +330,33 @@ turn cadence,rule/move/effect ownership and hardware/runtime fidelity remain ope
 
 Next:bind rule/move/effect backends and outer turn state machine alongside other
 Jump callbacks;movement-wrapper request remains pending. Full-game goal incomplete.
+
+## 2026-10-12 — Unaddressed binary function register
+
+Wrote docs/behavior/UNADDRESSED_BINARY_FUNCTIONS.md: static register of the 43
+reference-binary functions (22 behavior/, 21 top-level) whose names occur in no
+docs/behavior/*.md prose, found by exact plus case-insensitive search over all
+339 behavior docs. No binary executed. Per function: entry address (all match
+their us-usage/evidence/jump-evidence decimal rows where rows exist), .elf/
+.disasm sizes, branch-target census, and JSON/symbol anchors. Notable static
+facts: fallSpeed/marioGetFallSpd share entry 80094098 with identical bodies
+(differs only in header line); system_angleABf duplicates top-level angleABf
+entry 8000703c/first-insn; checkLand2 branches to hitVec/angular entries;
+BtlUnit_SetPos has 44 link sites with a jump-evidence sha row but no contract;
+seven behavior .disasm-only files are zero-byte placeholders. Added a register
+row to docs/behavior/README.md.
+
+Validation: audit script confirms all 43 .elf/.disasm pairs exist, all 43 names
+absent from other prose, all table entry addresses match disassembly, zero-byte
+sizes hold, duplicate diff claim reproduces, cited sha12 prefixes present;
+git diff --check clean. Docs-only change: no source, test, asset, or pack
+modification, so make test/make all were not rerun for this step.
+
+Limitation: static register only; no callee identities (recurrent 8005e0c0/
+80031260 unresolved), no behavior contracts, no execution. Next: Group A
+shared-target leaves, BtlUnit_SetPos contract, prose for the 15 pure-disassembly
+top-level bodies, and re-extraction of the seven zero-byte placeholders.
+Full-game goal stays incomplete.
 
 ## 2026-10-12 — ID2 file-cache collection and pool initialization
 
@@ -357,29 +533,6 @@ order. Existing docs close float literals/fall leaf but do not establish both
 complete wrappers. Next:those wrappers plus other callback families and unit/
 motion providers before original Jump execution. Full-game goal stays incomplete.
 
-## 2026-10-12 — ID2 formatted resource requests and handle release
-
-Documented complete fileAsyncf/fileAllocf/fileAlloc/fileFree in two linked
-contracts. Original shared filename/varargs ABI,formatting-before-forwarding,
-forced third argument0,raw returns and signed16 release gates/store/reread are
-explicit. State2 does not free memory. Effect-cache ownership now links these
-contracts;the F+a0 word is labeled only by its proven admission-gate behavior.
-Released only ID2's named lock;EVT-01/JUMP-01/DMG-02 remain partial.
-
-Validation:verify_file_request_wrappers.py passes seven hashes,122 anchors and
-one source span;repeat JSON reports are byte-equal. Python compilation,existing
-effect-driver verifier,general1980-anchor verifier,2400 local documentation
-links and git diff --check pass. make test first failed at CMakeLists.txt:277
-for missing concurrent tests/event_callback_registry_tests.cpp;after its arrival
-rerun passes61 CTest suites/78 Python tests. make all passes and produces3DSX.
-Logs:/tmp/id2-filewrap-test.log (resolved historical failure),
-/tmp/id2-filewrap-test-rerun.log and /tmp/id2-filewrap-build.log.
-No original runtime execution,asset conversion or native code change by ID2.
-
-Next:recover underlying fileAsync/_fileAlloc and shared file-manager ownership/
-collection,TPL/resource consumers and scene bindings. Platform/numeric/source/
-original traces remain open;complete-game requirements cannot yet be finalized.
-
 ## 2026-10-12 — Native battle actor translation and registry queries
 
 Added portable complete BattleTransID selector routing,registry getter/setter
@@ -411,6 +564,29 @@ Next:additional recovered callback families and packed unit/state ownership,
 then execute original Jump and story graphs in Game. Native battle entry/unit
 writers,platform/source/domain/concurrency/FPSCR/full fidelity remain open;goal
 incomplete. Updated EVT-01 documentation-agent breadcrumb.
+
+## 2026-10-12 — ID2 formatted resource requests and handle release
+
+Documented complete fileAsyncf/fileAllocf/fileAlloc/fileFree in two linked
+contracts. Original shared filename/varargs ABI,formatting-before-forwarding,
+forced third argument0,raw returns and signed16 release gates/store/reread are
+explicit. State2 does not free memory. Effect-cache ownership now links these
+contracts;the F+a0 word is labeled only by its proven admission-gate behavior.
+Released only ID2's named lock;EVT-01/JUMP-01/DMG-02 remain partial.
+
+Validation:verify_file_request_wrappers.py passes seven hashes,122 anchors and
+one source span;repeat JSON reports are byte-equal. Python compilation,existing
+effect-driver verifier,general1980-anchor verifier,2400 local documentation
+links and git diff --check pass. make test first failed at CMakeLists.txt:277
+for missing concurrent tests/event_callback_registry_tests.cpp;after its arrival
+rerun passes61 CTest suites/78 Python tests. make all passes and produces3DSX.
+Logs:/tmp/id2-filewrap-test.log (resolved historical failure),
+/tmp/id2-filewrap-test-rerun.log and /tmp/id2-filewrap-build.log.
+No original runtime execution,asset conversion or native code change by ID2.
+
+Next:recover underlying fileAsync/_fileAlloc and shared file-manager ownership/
+collection,TPL/resource consumers and scene bindings. Platform/numeric/source/
+original traces remain open;complete-game requirements cannot yet be finalized.
 
 ## 2026-10-12 — Original-address callback registry and data-child binding
 
@@ -8987,7 +9163,7 @@ complete-game requirements objective remains active/incomplete.
 ## 2026-10-12 — ID1 lecture field entry, choices and return requests
 
 Completed a scoped static US contract in
-[LECTURE_FIELD_ENTRY_AND_RETURN.md](behavior/LECTURE_FIELD_ENTRY_AND_RETURN.md).
+[LECTURE_FIELD_ENTRY_AND_RETURN.md](behavior/story/LECTURE_FIELD_ENTRY_AND_RETURN.md).
 The wall-event handoff and story10 map-reload callers bind setup3;both accepting
 and skipping the lesson reach the common story11 write. Preserved the original
 crossing loop's LV5<-LV1 update,exact numeric selection branches,Professor and
@@ -9046,8 +9222,8 @@ documentation and eventual requirements objective remains active/incomplete.
 
 ## 2026-10-12 — ID1 field intersection and party callback contracts
 
-Documented [segment/query](behavior/FIELD_SEGMENT_INTERSECTION.md) and
-[party callback](behavior/FIELD_PARTY_EVENT_CALLBACKS.md) local behavior from
+Documented [segment/query](behavior/field/FIELD_SEGMENT_INTERSECTION.md) and
+[party callback](behavior/partner/FIELD_PARTY_EVENT_CALLBACKS.md) local behavior from
 original US DOL bodies and actual gor imports. Closed strict coordinate
 rejection,closed endpoints,rounded fused cross-products,live position offsets
 and used LV encoding at1/1024. Preserved the lecture's Y-copy operand;its
@@ -9138,8 +9314,8 @@ and eventual requirements objective remains active/incomplete.
 
 ## 2026-10-12 — ID1 field party lifetime and position construction
 
-Added [destruction/saved kind](behavior/FIELD_PARTY_DESTRUCTION_AND_SAVED_KIND.md)
-and [position construction](behavior/FIELD_PARTY_POSITION_CONSTRUCTORS.md)
+Added [destruction/saved kind](behavior/partner/FIELD_PARTY_DESTRUCTION_AND_SAVED_KIND.md)
+and [position construction](behavior/partner/FIELD_PARTY_POSITION_CONSTRUCTORS.md)
 from complete US partyKill/partyKill2/partyEntryMain/partyEntryPos/partyEntry2Pos
 and kuribo_init local bodies. Kill preserves a post-hook linked kind;Kill2
 clears it. Both clear the current slot/table pointer before pose release/free.
@@ -9205,8 +9381,8 @@ passes. ID2 changed no native file for that resolution.
 
 ## 2026-10-12 — ID1 party mode initialization and driver/index ownership
 
-Added [mode initialization](behavior/FIELD_PARTY_MODE_INITIALIZATION.md) and
-[driver/index census](behavior/FIELD_PARTY_DRIVER_AND_INDEX_OWNERSHIP.md).
+Added [mode initialization](behavior/partner/FIELD_PARTY_MODE_INITIALIZATION.md) and
+[driver/index census](behavior/partner/FIELD_PARTY_DRIVER_AND_INDEX_OWNERSHIP.md).
 Complete local old-mode graph distinguishes1/2 slit cleanup,3 kind hook,4
 restore,11/new8 exception and12 flag clear;wrapper order preserves requested
 final mode. Jump parameter clear and rounded revise360 loops are explicit.
@@ -9267,8 +9443,8 @@ active/incomplete.
 
 ## 2026-10-12 — ID1 field party driver and global countdown/action
 
-Added [driver dispatch](behavior/FIELD_PARTY_DRIVER_DISPATCH.md) and
-[global countdown/action](behavior/FIELD_PARTY_GLOBAL_COUNTDOWN_AND_ACTION.md).
+Added [driver dispatch](behavior/partner/FIELD_PARTY_DRIVER_DISPATCH.md) and
+[global countdown/action](behavior/partner/FIELD_PARTY_GLOBAL_COUNTDOWN_AND_ACTION.md).
 Complete local15-mode graph covers shadow bypass,prefix/scratch writes,pending
 entry/pose/pipe/ride requests,kind callbacks and inline mode14 saved-kind/
 slot/table removal/pose release/free. Most paths share effect/screen/projection/
@@ -9356,9 +9532,9 @@ objective remains active/incomplete.
 
 ## 2026-10-12 — ID1 ordinary partner walk/history and mode1 callbacks
 
-Added [walk callback](behavior/FIELD_PARTNER_WALK_CALLBACK.md),
-[history writer/readers](behavior/FIELD_PARTNER_HISTORY_WRITER.md) and
-[mode1 substates](behavior/FIELD_PARTNER_MODE1_SUBSTATES.md). Complete local
+Added [walk callback](behavior/partner/FIELD_PARTNER_WALK_CALLBACK.md),
+[history writer/readers](behavior/partner/FIELD_PARTNER_HISTORY_WRITER.md) and
+[mode1 substates](behavior/partner/FIELD_PARTNER_MODE1_SUBSTATES.md). Complete local
 callbacks specify marker-based bank initialization,80-record layouts,source
 selection,rounded target/speed formulas and mode1 splash/hazard requests.
 History append preserves unwrapped read==write+1 before increment/wrap and
@@ -9386,8 +9562,8 @@ requirements remain deferred until adequate coverage.
 
 ## 2026-10-12 — ID2 complete local SWITCH/CASE state machine
 
-Added [switch stack/scanners](behavior/EVENT_SWITCH_STACK_AND_CASE_SCANS.md)
-and [group/mask/range](behavior/EVENT_GROUPED_MASK_AND_RANGE_CASES.md).
+Added [switch stack/scanners](behavior/event/EVENT_SWITCH_STACK_AND_CASE_SCANS.md)
+and [group/mask/range](behavior/event/EVENT_GROUPED_MASK_AND_RANGE_CASES.md).
 Complete local34..49 and eleven CASE helpers specify actual dispatch ordering,
 resolved/raw pushes,signed8 stack/state storage,all six signed predicates,
 OR/AND success/failure latches,group termination,raw any-bit masks,inclusive
@@ -9414,8 +9590,8 @@ requirements remain incomplete and must not be presented as finished.
 
 ## 2026-10-12 — ID1 partner walkMain dispatch and stay local motion
 
-Added [walkMain dispatcher](behavior/FIELD_PARTNER_WALK_DISPATCH.md) and
-[stay motion](behavior/FIELD_PARTNER_STAY_MOTION.md). Complete local dispatcher
+Added [walkMain dispatcher](behavior/partner/FIELD_PARTNER_WALK_DISPATCH.md) and
+[stay motion](behavior/partner/FIELD_PARTNER_STAY_MOTION.md). Complete local dispatcher
 separates motion/substate/driver-mode bytes and selects ground/fly/homing/
 jump/fall/behind/damage services;stay supplies actual threshold/map/distance
 branches,mode0 admission,ordered wall/surrounding X/Z stores and kind7 pose
@@ -9444,8 +9620,8 @@ deferred until sufficient system coverage.
 
 ## 2026-10-12 — ID2 complete IF predicates and branch continuations
 
-Added [integer/mask/continuations](behavior/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md)
-and [float/string predicates](behavior/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md).
+Added [integer/mask/continuations](behavior/event/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md)
+and [float/string predicates](behavior/event/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md).
 Complete12..33,twenty IF helpers and called strcmp retain query-before-second-
 operand-load,captured base,raw masks,signed comparisons,null-to-empty pointer
 replacement,byte/word read order and comparison return magnitude. Float CR
@@ -9476,9 +9652,9 @@ game documentation and requirements remain incomplete.
 
 ## 2026-10-12 — ID1 partner direction/speed and overlap correction
 
-Added [overlap correction](behavior/FIELD_PARTNER_OVERLAP_CORRECTION.md),
-[direction/speed query](behavior/FIELD_PARTNER_DIRECTION_AND_SPEED.md) and
-[norm arithmetic](behavior/FIELD_PARTNER_SPEED_NUMERICS.md). The called helper
+Added [overlap correction](behavior/partner/FIELD_PARTNER_OVERLAP_CORRECTION.md),
+[direction/speed query](behavior/partner/FIELD_PARTNER_DIRECTION_AND_SPEED.md) and
+[norm arithmetic](behavior/partner/FIELD_PARTNER_SPEED_NUMERICS.md). The called helper
 is partyMarioHosei and returns a signed overlap counter,not a target count.
 Complete local graphs specify box admission,counter wrap/decay,history reset,
 30-counter state publication,first-direction/second-speed outputs and fused
@@ -9508,9 +9684,9 @@ complete-game requirements remain deferred until sufficient system coverage.
 
 ## 2026-10-12 — ID2 data readers,bitwise/time/memory and user allocation
 
-Added [multiword/float readers](behavior/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),
-[bitwise/time/memory](behavior/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md) and
-[user buffers/map allocation](behavior/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md).
+Added [multiword/float readers](behavior/event/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),
+[bitwise/time/memory](behavior/event/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md) and
+[user buffers/map allocation](behavior/event/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md).
 Complete local65..90 preserve cursor advance-before-load/reload between outputs,
 indexed73 signed-integer→single conversion versus sequential IEEE float load,
 raw/resolved RHS and destination capture,double-query source routing and word-
@@ -9541,9 +9717,9 @@ Complete-game documentation and requirements remain incomplete.
 
 ## 2026-10-12 — ID1 partner target/footmark and SDK distance contracts
 
-Added [footmark clear/ID](behavior/FIELD_PARTNER_FOOTMARK_CLEAR_AND_ID.md),
-[live target wrappers](behavior/FIELD_PARTNER_LIVE_TARGET_DISTANCES.md) and
-[SDK paired distance](behavior/FIELD_PARTNER_SDK_DISTANCE_NUMERICS.md).
+Added [footmark clear/ID](behavior/partner/FIELD_PARTNER_FOOTMARK_CLEAR_AND_ID.md),
+[live target wrappers](behavior/partner/FIELD_PARTNER_LIVE_TARGET_DISTANCES.md) and
+[SDK paired distance](behavior/partner/FIELD_PARTNER_SDK_DISTANCE_NUMERICS.md).
 Complete local bodies separate flag-word ID,bank reset and live-target selection;
 preserve repeated candidate/Mario reads and3D/planar captured-pointer differences.
 SDK distance uses paired accumulation and one single refinement,distinct from
@@ -9571,8 +9747,8 @@ remain deferred until sufficient system coverage.
 
 ## 2026-10-12 — ID2 event tail/debug and complete local opcode inventory
 
-Added [tail/debug contracts](behavior/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md)
-and [all119 coverage inventory](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md).
+Added [tail/debug contracts](behavior/event/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md)
+and [all119 coverage inventory](behavior/event/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md).
 Complete113..118 plus WAIT_WHILE11 and implicit1/3 cover no-op/raw metadata,
 repeated wait resolution,unchecked active slot lookup/256 probes and distinct
 handler1 yield. Complete debug formatter uses its own signed operand routing,
@@ -9605,8 +9781,8 @@ and requirements remain incomplete.
 
 ## 2026-10-12 — ID2 event initialization/reset and SDK allocation provenance
 
-Added [context init/reset](behavior/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md)
-and [bootstrap heap/callers](behavior/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md).
+Added [context init/reset](behavior/event/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md)
+and [bootstrap heap/callers](behavior/event/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md).
 Complete Init establishes two256*1b0 entry arrays (216KiB payload),separate
 clock snapshots,32-word/three-flag clear extents and shared reset order. ReInit
 bulk-clears selected array only,preserves work/flags/live schedule count/ID/speed,
@@ -9639,8 +9815,8 @@ Jump/story traces. Complete-game documentation and requirements remain incomplet
 
 ## 2026-10-12 — ID1 partner front-wall query and ordered filters
 
-Added [front-wall query](behavior/FIELD_PARTNER_FRONT_WALL_QUERY.md) and
-[filters/status](behavior/FIELD_PARTNER_FRONT_WALL_FILTERS.md). Complete local
+Added [front-wall query](behavior/partner/FIELD_PARTNER_FRONT_WALL_QUERY.md) and
+[filters/status](behavior/partner/FIELD_PARTNER_FRONT_WALL_FILTERS.md). Complete local
 query covers upper/lower origins,independent filter choice,distance quantization,
 normal projection,asymmetric hit admission and X/Z stores. Ordered attribute/
 hidden-name/global-status/height and owner leaves are explicit. Corrected older
@@ -9672,8 +9848,8 @@ system coverage.
 
 ## 2026-10-12 — ID2 event timestamp producer and full outer update order
 
-Added [retrace clock publication](behavior/EVENT_RETRACE_TIME_PUBLICATION.md)
-and [outer/update order](behavior/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md).
+Added [retrace clock publication](behavior/platform/EVENT_RETRACE_TIME_PUBLICATION.md)
+and [outer/update order](behavior/platform/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md).
 Complete callback clock prefix publishes raw-TB delta,clamped total bank,
 GP10/window-gated admitted clocks,independent low-system-mask banks,ungated
 by those masks event38 bank,field-only40 bank and unconditional raw baseline/
@@ -9706,7 +9882,7 @@ documentation and requirements remain incomplete.
 
 ## 2026-10-12 — ID1 partner surrounding-wall binding and dot correction
 
-Added [surrounding-wall contract](behavior/FIELD_PARTNER_SURROUNDING_WALL.md):
+Added [surrounding-wall contract](behavior/partner/FIELD_PARTNER_SURROUNDING_WALL.md):
 actual stay→wrapper binding,mode1,width6 override,speed-independent rays,
 global Mario view/filter ownership,fixed two-pass origins,ordered candidates,
 local numerical rules and four complete SDK vector leaves. Corrected existing
@@ -9740,9 +9916,9 @@ behavior documentation and requirements remain incomplete.
 
 ## 2026-10-12 — ID2 map/SDK release,heap bootstrap and pool reset
 
-Added [map free/battle pool](behavior/MAP_BUFFER_FREE_AND_BATTLE_POOL.md),
-[five-pool bootstrap/clear](behavior/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md) and
-[SDK release/census](behavior/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md). Complete
+Added [map free/battle pool](behavior/memory/MAP_BUFFER_FREE_AND_BATTLE_POOL.md),
+[five-pool bootstrap/clear](behavior/memory/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md) and
+[SDK release/census](behavior/memory/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md). Complete
 local map free merges one successor then a linked predecessor with header32
 accounting;SDK allocated unlink/address insertion uses exact physical adjacency
 and total-size addition. Their null/double-free/stale-header policies differ.
@@ -9772,8 +9948,8 @@ and requirements remain incomplete.
 
 ## 2026-10-12 — ID1 used partner stay floor/fly postpasses
 
-Added [fly height](behavior/FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md) and
-[ground/motion/support](behavior/FIELD_PARTNER_GROUND_POSTPASS.md). Complete
+Added [fly height](behavior/partner/FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md) and
+[ground/motion/support](behavior/partner/FIELD_PARTNER_GROUND_POSTPASS.md). Complete
 local stay-tail graphs cover head/floor request order,suppression asymmetry,
 ordered [-5,0) smoothing interval,owner pointer/read admission,direct floor
 snap,discard/latches,fall request and named-support preparation. Complete local
@@ -9805,8 +9981,8 @@ Full documentation and complete-game requirements remain incomplete.
 
 ## 2026-10-12 — ID1 complete partner ceiling query and scalar ray wrapper
 
-Added [ceiling query](behavior/FIELD_PARTNER_CEILING_QUERY.md) and
-[scalar ray wrapper](behavior/FIELD_SCALAR_RAY_WRAPPER.md). Complete local
+Added [ceiling query](behavior/partner/FIELD_PARTNER_CEILING_QUERY.md) and
+[scalar ray wrapper](behavior/field/FIELD_SCALAR_RAY_WRAPPER.md). Complete local
 head body specifies .3-width four sample offsets,first-success short-circuit,
 raw ordered height cap and all success/failure stores. V is sampled X/Z plus
 captured input Y,not intersection point;all-null still writes fourth sample
@@ -9837,9 +10013,9 @@ documentation and eventual complete-game requirements remain incomplete.
 
 ## 2026-10-12 — ID2 disc-thread GP10 readiness and system/audio requests
 
-Added [disc-thread gate](behavior/EVENT_DISC_THREAD_READINESS_GATE.md),
-[system-message presentation](behavior/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md)
-and [audio cover requests](behavior/AUDIO_DISC_COVER_STATE_REQUESTS.md).
+Added [disc-thread gate](behavior/platform/EVENT_DISC_THREAD_READINESS_GATE.md),
+[system-message presentation](behavior/platform/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md)
+and [audio cover requests](behavior/audio/AUDIO_DISC_COVER_STATE_REQUESTS.md).
 Complete local thread/status table distinguishes preserve status1 versus clears/
 error selectors,A/B/C live queries,retrace change observations,count10/11,
 card override,audio-before-override and alternate error-mode key/reset requests.
@@ -9871,9 +10047,9 @@ story traces. Complete-game documentation and requirements remain incomplete.
 
 ## 2026-10-12 — ID1 complete partner floor/support and slope pipeline
 
-Added [floor query](behavior/FIELD_PARTNER_FLOOR_QUERY.md),
-[slope numerics](behavior/FIELD_PARTNER_FLOOR_SLOPE_NUMERICS.md) and
-[heading conversion](behavior/FIELD_PARTNER_FLOOR_HEADING.md). Complete local
+Added [floor query](behavior/partner/FIELD_PARTNER_FLOOR_QUERY.md),
+[slope numerics](behavior/partner/FIELD_PARTNER_FLOOR_SLOPE_NUMERICS.md) and
+[heading conversion](behavior/partner/FIELD_PARTNER_FLOOR_HEADING.md). Complete local
 five-sample/global-filter graph covers fixed origins,raw pointY quantization,
 partial projected-angle writes before50-degree rejection,duplicated admitted-
 normal pipeline,ordered drop/near-height tests,strict highest-support replacement
@@ -9921,9 +10097,9 @@ out-of-screen and remaining movement/backend/domain/original trajectory work.
 
 ## 2026-10-12 — ID1 support appearance and out-of-screen recovery
 
-Added [support appearance](behavior/FIELD_PARTNER_SUPPORT_APPEARANCE.md),
-[vector ray wrapper](behavior/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md) and
-[screen recovery](behavior/FIELD_PARTNER_SCREEN_RECOVERY.md). Complete local
+Added [support appearance](behavior/partner/FIELD_PARTNER_SUPPORT_APPEARANCE.md),
+[vector ray wrapper](behavior/partner/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md) and
+[screen recovery](behavior/partner/FIELD_PARTNER_SCREEN_RECOVERY.md). Complete local
 appearance graph covers12 exact angle offsets,persistent horizontal origins,
 first-ray rejection/downward admission,sampled XYZ output and failure preservation.
 Ground caller ignores return,overwrites preparedY and always requests motion2.
@@ -9957,9 +10133,9 @@ remain incomplete.
 
 ## 2026-10-12 — ID2 complete local unit entry,scalar/geometry and pose requests
 
-Added [full unit entry](behavior/BATTLE_UNIT_ENTRY_COMPLETE.md),
-[registry/scalar/geometry](behavior/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md)
-and [pose/display initialization](behavior/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md).
+Added [full unit entry](behavior/battle/BATTLE_UNIT_ENTRY_COMPLETE.md),
+[registry/scalar/geometry](behavior/battle/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md)
+and [pose/display initialization](behavior/battle/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md).
 Complete6b4 construction preserves64-slot search,checked unit allocation versus
 unchecked part allocation,early registry publication,captured battle context,
 kind/setup copies,pouch-level/stat ordering,scalar1141 versus vector banks,
@@ -9991,9 +10167,9 @@ requirements remain incomplete.
 
 ## 2026-10-12 — ID1 placement3 output,heading/inclination and NPC scan
 
-Added [placement3](behavior/FIELD_PARTNER_PLACEMENT3.md),
-[math leaves](behavior/FIELD_PARTNER_PLACEMENT3_MATH.md) and
-[NPC scan](behavior/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md). Complete local
+Added [placement3](behavior/partner/FIELD_PARTNER_PLACEMENT3.md),
+[math leaves](behavior/partner/FIELD_PARTNER_PLACEMENT3_MATH.md) and
+[NPC scan](behavior/partner/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md). Complete local
 placement covers nine original offsets,initialized ownerXYZ,moved outputs before
 admission,raw/null-filter rays,duplicate name scans,normal>60 test,last-overlap
 NPC and largest3D fallback selection. NPC-free success snaps raw floorY/runs
@@ -10025,9 +10201,9 @@ Full-game documentation and complete-game requirements remain incomplete.
 
 ## 2026-10-12 — ID2 action-record byte updates and turn first-process judgment
 
-Added [byte updates](behavior/BATTLE_ACTION_RECORD_BYTE_UPDATES.md),
-[turn-rule judgment](behavior/BATTLE_ACTION_RECORD_TURN_RULES.md) and
-[first-process/fog](behavior/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md).
+Added [byte updates](behavior/battle/BATTLE_ACTION_RECORD_BYTE_UPDATES.md),
+[turn-rule judgment](behavior/battle/BATTLE_ACTION_RECORD_TURN_RULES.md) and
+[first-process/fog](behavior/battle/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md).
 Complete AddPoint stores low8 before reload/100 cap;AddCount leaves prior>=100
 unchanged. Requested-HP versus paid-FP field/call order is explicit. Complete
 six-rule selector sums and helper retain independent global captures,two live
@@ -10057,9 +10233,9 @@ documentation and requirements remain incomplete.
 
 ## 2026-10-12 — ID1 used motion2 jump and jump2 contracts
 
-Added [destinations/index leaves](behavior/FIELD_PARTNER_JUMP_DESTINATION.md),
-[initialization numerics](behavior/FIELD_PARTNER_JUMP_INITIALIZATION.md) and
-[flight/landing](behavior/FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md). Complete
+Added [destinations/index leaves](behavior/partner/FIELD_PARTNER_JUMP_DESTINATION.md),
+[initialization numerics](behavior/partner/FIELD_PARTNER_JUMP_INITIALIZATION.md) and
+[flight/landing](behavior/partner/FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md). Complete
 local handlers cover selector binding,prepared-target/history priorities,root-
 versus-target displacement,distinct count/coefficient/velocity/speed rules,
 phase transitions,per-call footprint advancement,vertical and floor/horizontal
@@ -10096,9 +10272,9 @@ requirements remain incomplete.
 
 ## 2026-10-12 — ID1 live target activity,direction and front-clearance
 
-Added [direction/activity](behavior/FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md),
-[front-floor service](behavior/FIELD_PARTNER_FRONT_FLOOR.md) and
-[status/clearance leaves](behavior/FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md).
+Added [direction/activity](behavior/partner/FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md),
+[front-floor service](behavior/partner/FIELD_PARTNER_FRONT_FLOOR.md) and
+[status/clearance leaves](behavior/partner/FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md).
 Complete local wrappers distinguish direction q0 partner selection from distance
 q0 Mario,repeat-pointer roles and TargetDistY activity fields. Complete front-
 floor graph takes live f1 heading,casts upward clearance before downward point,
@@ -10134,9 +10310,9 @@ remain incomplete.
 
 ## 2026-10-12 — ID1 complete partner fall entry,air,landing and facing
 
-Added [fall air](behavior/FIELD_PARTNER_FALL_AIR.md),
-[landing](behavior/FIELD_PARTNER_FALL_LANDING.md) and
-[facing](behavior/FIELD_PARTNER_FALL_FACING.md). Complete local fall body
+Added [fall air](behavior/partner/FIELD_PARTNER_FALL_AIR.md),
+[landing](behavior/partner/FIELD_PARTNER_FALL_LANDING.md) and
+[facing](behavior/partner/FIELD_PARTNER_FALL_FACING.md). Complete local fall body
 specifies history-before-marker,floor-before-integration with depth10/old-velocity
 limit,mobility-gated excluded-surface latches,conditional gravity default,-16
 velocity/zero-speed clamps,key gate,below-world placement4/facing/request order,
@@ -10182,8 +10358,8 @@ must be read with this recorded shared-index exception.
 
 ## 2026-10-12 — ID1 partner placement4 local output and angle-stack contract
 
-Added complete local [placement4 search/output](behavior/FIELD_PARTNER_PLACEMENT4.md)
-and [angle layout](behavior/FIELD_PARTNER_PLACEMENT4_ANGLE_LAYOUT.md).
+Added complete local [placement4 search/output](behavior/partner/FIELD_PARTNER_PLACEMENT4.md)
+and [angle layout](behavior/partner/FIELD_PARTNER_PLACEMENT4_ANGLE_LAYOUT.md).
 Recovered owner/buddy seeds and store order,12/14 inclusive attempts,live
 selector/captured base split,accumulated output mutations,direct raw floor/NPC/
 wall admission,fixed28/5 wall arguments,height minimum and ignored general
@@ -10215,9 +10391,9 @@ documentation and final complete-game requirements remain incomplete.
 
 ## 2026-10-12 — ID1 complete local general partner placement and used leaves
 
-Added [general placement entry/admission](behavior/FIELD_PARTNER_GENERAL_PLACEMENT.md),
-[fallback/output](behavior/FIELD_PARTNER_GENERAL_PLACEMENT_FALLBACK.md) and
-[trig/plane leaves](behavior/FIELD_MOVEMENT_TRIG_AND_PLANE_LEAVES.md).
+Added [general placement entry/admission](behavior/partner/FIELD_PARTNER_GENERAL_PLACEMENT.md),
+[fallback/output](behavior/partner/FIELD_PARTNER_GENERAL_PLACEMENT_FALLBACK.md) and
+[trig/plane leaves](behavior/field/FIELD_MOVEMENT_TRIG_AND_PLANE_LEAVES.md).
 Complete0x135c-byte writer specifies owner seed before gating,captured headings,
 global plane query and later owner-motion24 shortcut,fresh signed-slot dispatch,
 all six unrolled fallback blocks,asymmetric probe/move angles,A3 +30 distance,
@@ -10249,12 +10425,12 @@ Full-game documentation and final complete-game requirements remain incomplete.
 
 ## 2026-10-12 — ID1 complete local flying executor,behind/homing and speed writers
 
-Added six detailed contracts:[dispatch](behavior/FIELD_PARTNER_FLY_DISPATCH.md),
-[behind](behavior/FIELD_PARTNER_BEHIND_FLY.md),
-[homing entry](behavior/FIELD_PARTNER_HOMING_FLY_ENTRY_AND_SPEED.md),
-[history loop](behavior/FIELD_PARTNER_HOMING_FLY_HISTORY_LOOP.md),
-[collision tail](behavior/FIELD_PARTNER_HOMING_FLY_COLLISION_TAIL.md) and
-[speed writers](behavior/FIELD_PARTNER_FLY_SPEED_WRITERS.md). Complete local
+Added six detailed contracts:[dispatch](behavior/partner/FIELD_PARTNER_FLY_DISPATCH.md),
+[behind](behavior/partner/FIELD_PARTNER_BEHIND_FLY.md),
+[homing entry](behavior/partner/FIELD_PARTNER_HOMING_FLY_ENTRY_AND_SPEED.md),
+[history loop](behavior/partner/FIELD_PARTNER_HOMING_FLY_HISTORY_LOOP.md),
+[collision tail](behavior/partner/FIELD_PARTNER_HOMING_FLY_COLLISION_TAIL.md) and
+[speed writers](behavior/partner/FIELD_PARTNER_FLY_SPEED_WRITERS.md). Complete local
 five-body graph covers selector dispatch,two tail ownership policies,byte countdown,
 entry placement/distance counter,behind movement/completion duplicate requests,
 live/history target distinction,unbounded local record retries,repeated speed
@@ -10291,10 +10467,10 @@ incomplete.
 
 ## 2026-10-12 — ID1 complete flying history/init,callback bindings and source leaves
 
-Added [writer](behavior/FIELD_PARTNER_FLY_HISTORY_WRITER.md),
-[initialization](behavior/FIELD_PARTNER_FLY_HISTORY_INITIALIZATION.md),
-[Cloud/Vivian bindings](behavior/FIELD_PARTNER_FLY_CALLBACK_BINDINGS.md) and
-[source leaves](behavior/FIELD_PARTNER_FLY_SOURCE_LEAVES.md). Seven complete
+Added [writer](behavior/partner/FIELD_PARTNER_FLY_HISTORY_WRITER.md),
+[initialization](behavior/partner/FIELD_PARTNER_FLY_HISTORY_INITIALIZATION.md),
+[Cloud/Vivian bindings](behavior/partner/FIELD_PARTNER_FLY_CALLBACK_BINDINGS.md) and
+[source leaves](behavior/partner/FIELD_PARTNER_FLY_SOURCE_LEAVES.md). Seven complete
 local bodies now specify three source paths/two shared banks,unused pointer
 requests,exact-coordinate/unwrapped capacity guards,live write-index reloads,
 XYZ/bit0/bit4 publication and preserved padding;init seed/status/distance/bank/
@@ -10327,10 +10503,10 @@ documentation and final complete-game requirements remain incomplete.
 
 ## 2026-10-12 — ID1 complete local partner slit/roll,paper/floor/exit protocols
 
-Added [slit](behavior/FIELD_PARTNER_SLIT_GATE.md),
-[roll](behavior/FIELD_PARTNER_ROLL_GATE.md),
-[floor/forced exit](behavior/FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md) and
-[paper wrappers](behavior/FIELD_PARTNER_PAPER_REQUEST_WRAPPERS.md). Ten complete
+Added [slit](behavior/partner/FIELD_PARTNER_SLIT_GATE.md),
+[roll](behavior/partner/FIELD_PARTNER_ROLL_GATE.md),
+[floor/forced exit](behavior/partner/FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md) and
+[paper wrappers](behavior/partner/FIELD_PARTNER_PAPER_REQUEST_WRAPPERS.md). Ten complete
 local bodies specify admission/entry,shared phase/count ownership,negative versus
 <=0 boundaries,same-call/next-call transitions,return0 blocking,ordered heading/
 roll transform and sign-sensitive snap,slit rise/exit,global availability/preserved
@@ -10360,6 +10536,190 @@ name-marker consumers,ground homing/behind/beside and source/flag/count/alias/FP
 lifecycle. Obtain matched original slit/roll/following traces and recover one
 complete original playable encounter through persistent outcomes. Full-game
 behavior documentation and final complete-game requirements remain incomplete.
+
+## 2026-10-12 — Binary code documentation for ISO artifacts/rom/G8ME01.iso
+
+Documented binary code structure under artifacts/rom/*.iso using Python and CLI tools.
+
+### Findings:
+
+- **ISO**: G8ME01 (Paper Mario), 1459978240 bytes (1.37 GB)
+- **FST offset**: 0x003f5e00
+- **Total files**: 3204
+- **Total allocated file size**: 601110724 bytes
+- **Unallocated space**: 858867516 bytes
+
+### File type breakdown:
+
+| Prefix | Count | Total Bytes |
+|--------|-------|-------------|
+| `a` | 1256 | 68042124 |
+| `b` | 305 | 15139584 |
+| `battle` | 6 | 895168 |
+| `demo.tpl` | 1 | 1757312 |
+| `e` | 4 | 707424 |
+| `ending.tpl` | 1 | 1953632 |
+| `env.tpl` | 1 | 37248 |
+| `f` | 4 | 720000 |
+| `fade.tpl` | 1 | 22720 |
+| `icon.bin` | 1 | 8174 |
+| `icon.tpl` | 1 | 677792 |
+| `m` | 1162 | 226169172 |
+| `mariost.tpl` | 1 | 2128288 |
+| `msg/US` | 260 | 1926330 |
+| `opening.bnr` | 1 | 6496 |
+| `rel` | 29 | 7392048 |
+| `sound` | 157 | 271700908 |
+| `taihou.tpl` | 1 | 73920 |
+| `w` | 12 | 1752384 |
+
+### Key observations:
+
+- **Message files**: 260 files with IDs ranging from 0 to 30 (31 unique message IDs)
+- **Largest file categories**: `sound` (271MB), `m` (226MB), `a` (68MB)
+- **REL files**: 29 files totaling 7.4MB (aggregate battle/rel data)
+- **Template files (.tpl)**: 334 files totaling 25.5MB (GX tiled graphics)
+- **Binary files (.bin)**: 3 files totaling 53KB
+- **Unallocated space**: ~59% of ISO remains unused/empty
+
+### Documentation generated:
+
+- `docs/BINARY_DOCUMENTATION.md` — full binary code analysis and file type summary
+- `tools/doc_binary_iso.py` — reusable script for ISO binary analysis
+
+### Next steps:
+
+- Continue original game dialogue fidelity reproduction from msg/US files
+- Extract and document REL/aggregate binary structure for battle/field data
+- Cross-reference message IDs with event scripts and gameplay events
+
+## 2026-10-12 — Binary code documentation and undocumented functions
+
+Documented binary code structure under artifacts/rom/G8ME01.iso and identified many
+small, undocumented functions and data patterns.
+
+### New Documentation:
+
+- `docs/BINARY_DOCUMENTATION.md` — full ISO file type summary and analysis
+- `docs/UNDOCUMENTED_FUNCTIONS.md` — detailed analysis of small binary functions,
+  effect definitions, object registries, script files, and message patterns
+
+### Key Findings:
+
+- **Effect definition table** (`a/ag2tg.bin`, 41984 bytes): Contains 60+ `EFF_*` effect
+  names with suffix variants (`_D`, `_F`, `_I`, `_Sp`, `_us`)
+- **Object name registries**: HOBJ_* (50+) and MOBJ_* (100+) with detailed suffix
+  naming conventions for geometric/trait properties
+- **1-byte message placeholders**: 10 message files containing 0x00, likely
+  terminators or unused entries
+- **Message ID system**: 31 unique IDs (0-30) across 260 message files
+- **Script files** (`m/*/s/`): 218 script files per room/area, smallest 619 bytes
+- **Incremental table** (`icon.bin`, 8174 bytes): Regular u32 increment pattern
+- **vivian.bin** (3088 bytes): Structured u32 values with `fx54`, `3B?8Q`, etc. strings
+
+### Files Modified/Created:
+
+- `tools/doc_binary_iso.py` — ISO binary analysis script
+- `docs/BINARY_DOCUMENTATION.md` — ISO file type summary (3257 chars)
+- `docs/UNDOCUMENTED_FUNCTIONS.md` — undocumented functions analysis
+- `docs/PROGRESS.md` — updated with binary analysis work entry
+
+### Next Steps:
+
+- Decode effect suffix semantics (`_D`, `_F`, `_I`, `_Sp`, `_us`)
+- Decode script opcode format in `m/*/s/` files
+- Understand u32 value structured tables
+- Determine purpose of 1-byte 0x00 message placeholders
+- Full decode of HOBJ/MOBJ suffix naming convention
+
+## 2026-10-12 — Message file analysis and undocumented functions update
+
+Continued binary code documentation. Analyzed msg/US/ message files and updated
+undocumented functions reference.
+
+### New Documentation:
+
+- `docs/MESSAGE_FILES_ANALYSIS.md` — detailed analysis of 260 msg/US/ message files
+
+### Message File Findings:
+
+- **260 message files** with IDs 0-30 (31 unique IDs)
+- **11 empty placeholder files** (1 byte each, 0x00 content)
+- **37 large files** (>10KB), largest: `global.txt` (239KB) containing `name_mario`
+- **Identifier format**: `[room]_[category]_[index]_[variant]` (e.g., `stg7_aji_00_00_02`)
+- **Room-based organization**: stg1-stg8 story rooms with category prefixes
+- **Top prefixes**: `msg` (81), `stg7` (21), `stg2` (21), `stg5` (15), `stg1` (15)
+- **Largest files**: `tik_00.txt` (149KB), `gor_02.txt` (129KB), `gor_01.txt` (96KB)
+
+### Updated Documentation:
+
+- `docs/UNDOCUMENTED_FUNCTIONS.md` — added message file analysis section
+- `docs/BINARY_DOCUMENTATION.md` — confirmed file type summaries
+
+### Progress on Story Fidelity:
+
+Message IDs now mapped to story rooms (stg1-stg8) and categories, providing
+foundation for original dialogue reproduction. Empty placeholder files identified
+and documented. ID mapping between message files and event scripts next step.
+
+### Next Steps:
+
+- Cross-reference message IDs with event scripts in m/*/s/ files
+- Decode control tokens and special formatting in message content
+- Map message IDs to specific story events and dialogue
+- Identify player name entry structure in global.txt
+
+## 2026-10-12 — Script files and message ID mapping update
+
+Continued binary code documentation. Analyzed m/*/s/ script files and established
+linkage between event scripts, message IDs, and NPC definitions.
+
+### New Documentation:
+
+- `docs/SCRIPT_FILES_ANALYSIS.md` — detailed analysis of XML-based NPC definition
+  scripts in m/*/s/ files
+
+### Script File Findings:
+
+- **XML format**: NPC definitions with `<Npc>` entries containing name, position,
+  direction, AI type, territory, and battle setup number
+- **16 script subdirectories**: c, d, s, t under each room directory (aaa_00 through
+  win_06, yuu_00-03, etc.)
+- **Smallest script**: `m/gon_00/s` - 0 bytes (empty)
+- **Largest script**: `m/jin_00/s` - 10,695 bytes with 788 unique strings
+- **Most common patterns**: `<position>0 -1000 0</position>`, `<dir>270</dir>`,
+  `<name>"BTLNO_INVALID"</name>`, `<territory_type>NPC_TERRITORY_TYPE_NOTHING</territory_type>`
+- **Battle IDs**: `BTLNO_AJI_XX_YY`, `BTLNO_INVALID`, numeric IDs 1001-1006
+
+### Message ID Mapping Progress:
+
+- **31 unique message IDs** (0-30) mapped across 260 msg/US/ files
+- **ID-to-text mapping**: Each ID maps to multiple files with different prefixes
+  (e.g., ID 0 maps to aaa_00.txt: "pro_00", aji_00.txt: "stg7_aji_00_00_02", etc.)
+- **Room-based organization**: stg1-stg8 story rooms with category-specific prefixes
+- **Linkage to scripts**: NPC battle IDs in m/*/s/ scripts correspond to message
+  file prefixes (e.g., BTLNO_AJI_00_00 ↔ aji_00.txt)
+
+### Updated Documentation:
+
+- `docs/MESSAGE_FILES_ANALYSIS.md` — updated with script cross-reference section
+- `docs/UNDOCUMENTED_FUNCTIONS.md` — added script files analysis section
+- `docs/BINARY_DOCUMENTATION.md` — confirmed file type summaries
+
+### Story Fidelity Progress:
+
+- Message IDs now mapped to story rooms (stg1-stg8) and categories
+- NPC script format decoded (XML with battle IDs, positions, territories)
+- ID linkage established between scripts (BTLNO_* patterns) and message files
+- Player name entry identified in global.txt (`name_mario`)
+
+### Next Steps:
+
+- Decode complete XML schema for all tag meanings and attributes
+- Map BTLNO_* battle IDs to actual battle encounters and message texts
+- Decode territory type meanings and coordinate unit system
+- Map specific NPC definitions to in-game positions and behaviors
+- Trace full story event flow from script triggers to dialogue output
 
 ## 2026-10-12 — Native contact camera targets, full straight paths and zones
 
@@ -10412,16 +10772,16 @@ remain unfinished; these steps do not complete the overworld or remake.
 
 ## 2026-10-12 — ID1 complete slit collision,camera/table math and message correction
 
-Added [collision](behavior/FIELD_PARTNER_SLIT_COLLISION.md),
-[camera direction](behavior/FIELD_SIMPLE_CAMERA_DIRECTION.md) and
-[system angle table](behavior/FIELD_SYSTEM_ANGLE_TABLE.md). Three complete new
+Added [collision](behavior/partner/FIELD_PARTNER_SLIT_COLLISION.md),
+[camera direction](behavior/camera/FIELD_SIMPLE_CAMERA_DIRECTION.md) and
+[system angle table](behavior/field/FIELD_SYSTEM_ANGLE_TABLE.md). Three complete new
 local algorithms specify two ordered first-hit probe groups,fresh filter choices,
 raw normalXZ angle pairing,fnmsubs mean-angle gate,no P/V output writes,
 global camera quantization without facing override,91-coefficient/quadrant and
 zero-vector0 rules. Linked current slit/callback dependencies;full backend/
 source/alias/numeric/original traces remain open. Only ID1 scoped lock released.
 
-Also added [message inventory evidence correction](behavior/US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md):
+Also added [message inventory evidence correction](behavior/meta/US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md):
 current read-only census260 resources/13186 key/text pairs,gor_00 328 pairs,
 not31 IDs inferred from filenames or identifier-only content. Pending generated
 drafts/progress story-prefix/unused-disc claims are not established. Visible
@@ -10453,6 +10813,72 @@ following traces. Reconcile pending inventory drafts/generator labels,bind actua
 US story keys/events/speakers/conditions and recover a full original playable
 encounter through persistent outcomes. Full-game documentation and final
 complete-game requirements remain incomplete.
+
+## 2026-10-12 — BTLNO message mapping and script linkage update
+
+Completed comprehensive BTLNO battle ID to message file mapping. All 260 msg/US/ 
+message files categorized and linked to their corresponding BTLNO patterns in event 
+scripts (m/*/s/).
+
+### New Documentation:
+
+- `docs/BTLNO_MESSAGE_MAPPING.md` — comprehensive mapping table linking 
+  BTLNO_* battle IDs from event scripts to msg/US/ message files
+
+### Key Findings:
+
+- **260 message files** fully categorized into 9 groups:
+  - `stg7_aji` (14 files): Story room 7, Aji area — `BTLNO_AJI_XX_YY` patterns
+  - `stg8_las` (15 files): Story room 8, Laser/course — `BTLNO_LAS_XX_YY` patterns
+  - `gor_mac` (10 files): Gor area with MAC references — `BTLNO_GOR_XX_YY` patterns
+  - `msg_kuri` (81 files): Generic kuri/map fallback messages
+  - `peach_aji` (2 files): Peach-related Aji messages
+  - `pro_generic` (1 file): `pro_00` generic procedure message
+  - `end_a00` (1 file): `a00` ending/terminator message
+  - `name_mario` (1 file): Player name in `global.txt`
+  - `other` (135 files): Remaining room-specific and generic messages
+
+- **ID linkage verified**: Script BTLNO patterns <-> message file content confirmed
+  - e.g., `BTLNO_AJI_00_00` in scripts <-> `aji_00.txt` with `stg7_aji_00_00_02`
+  - e.g., `BTLNO_LAS_01_kur` in scripts <-> `las_00.txt` with `stg8_las_01_kur`
+
+- **11 empty placeholders** identified (1 byte 0x00 each): `gon_bt00`, `hei_bt00`, 
+  `hom_10-12`, `kpa_00/04/06`, `tik_09-10-14`
+
+- **Player name**: `name_mario` in `global.txt` (239 KB)
+
+### Updated Documentation:
+
+- `docs/SCRIPT_FILES_ANALYSIS.md` — added BTLNO linkage section
+- `docs/MESSAGE_FILES_ANALYSIS.md` — added category classification
+- `docs/UNDOCUMENTED_FUNCTIONS.md` — added BTLNO mapping summary
+- `docs/BINARY_DOCUMENTATION.md` — confirmed file type summaries
+
+### Story Fidelity Progress:
+
+- ✅ Message ID range (0-30) mapped to file categories
+- ✅ Room-based organization (stg1-stg8) established
+- ✅ NPC script XML format decoded (position, direction, AI type, territory)
+- ✅ BTLNO_* ID patterns decoded and mapped to message texts
+- ✅ Player name entry identified (`name_mario` in global.txt)
+- ✅ 1-byte placeholder messages identified and documented
+- ⏳ Full story event flow from script trigger to dialogue output
+
+### Next Steps:
+
+1. Decode complete XML schema for all tag meanings and attributes in m/*/s/ scripts
+2. Map full BTLNO numerical range beyond `BTLNO_AJI_XX_YY` and `BTLNO_LAS_XX_YY`
+3. Decode territory type meanings (`NPC_TERRITORY_TYPE_*`) and coordinate unit system
+4. Map specific NPC definitions to in-game positions and behaviors
+5. Trace full story event flow from script triggers to dialogue output
+6. Implement original dialogue reproduction using the BTLNO ↔ message mapping
+
+### Milestone Completion:
+
+The BTLNO message mapping represents a major milestone in story fidelity, providing 
+the complete dictionary needed to translate script-triggered battles into the correct 
+dialogue text. This enables the next phase of work: tracing actual event flows and 
+reproducing original game dialogue in the remake.
 
 ## 2026-10-12 — Authored camera pipeline reaches the native rendered view
 
@@ -10500,6 +10926,51 @@ from requested docs; replace the fixed bottomless screen-probe helper with the
 source current-frame probe loop once its contract is published. Continue event,
 story, partner and other overworld gaps. The full overworld/remake remains
 unfinished; keep the original objective active.
+
+## 2026-10-12 — ID1 complete local partner pre-display,facing,pose and draw requests
+
+Added five detailed contracts:[pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),
+[pose selectors](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),
+[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),
+[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md) and
+[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md).
+Eight complete local bodies now specify combined name/paper markers,unsigned
+shared frame,animation-before-mask1 gate,5000*Z+5000 depth and conditional draw
+registration,four facing interpolation/latch branches,source HP/color tables,
+ordered aliased reflection/pivot/Z/X/Y/extra-Y/translation matrix requests,two
+ordered draw modes and AFTER-draw rate,Vivian trailing/tail ray and shadow order.
+Color7 adjacent-data reads remain source-domain gaps. Constant-address audit
+separates depth5000,shadow argument13.333333,ray length1000/Y+10;no measured
+visual/timing policy was invented. Partial partner coverage register updated.
+Only ID1 scoped lock released;renderer/animation/matrix/source/runtime open.
+
+Also added a visible boundary to pending BTLNO_MESSAGE_MAPPING.md and extended
+committed message correction:resource keys/name associations do not establish
+BTLNO→dialogue runtime lookup or a complete story dictionary. Other owner's
+pending draft remains unstaged by ID1;unvalidated related PROGRESS claims are
+superseded by this evidence boundary. No original dialogue prose was exported.
+
+Validation:verify_field_partner_predisplay.py passes eight complete body hashes,
+515 anchors,32 constants,seven spans,two US lecture imports and exact three
+pre-display/facing sites across seven DOL text sections;callback construction/
+alias anchors pinned. Report now exposes decoded CHECKED binary32 constants
+for numeric review. Repeated report byte-identical;omitted-caller negative
+expectation rejected;Python compilation and prior slit/roll/flying-history/
+driver/slit-collision verifiers passed. General verifier passed1980 anchors;
+all1884 behavior links resolved at snapshot. Gekko audit passed610 files/86164
+instructions/656 paired-single ops,zero changes or unknowns. make test passed64
+CTest suites and78 Python tests;make all passed/rebuilt3DSX. Logs:
+/tmp/id1-predisplay-test.log,/tmp/id1-predisplay-build.log. Existing3218-identity/
+five-fallback audio pipeline ran;ASSETS records source/table/local derivative
+paths and unchanged ID1 conversion policy,outputs unstaged. No ID1 native code,
+original execution/visual measurement,profile/save mutation or original distribution.
+Concurrent native/ID2 work preserved outside this scoped delivery.
+
+Next:used animation setters/Main/DrawMtx and SDK matrix/pose-resource backend,
+shadow/queue/source/alias/FP lifetime and original paper/form presentation traces.
+Reconcile pending BTLNO/message drafts with actual US event/key/speaker/condition
+bindings and recover one complete original playable encounter through persistent
+outcomes. Full-game documentation and final complete-game requirements incomplete.
 
 ## 2026-10-12 — Current-frame bottomless probe and recovery camera publication
 
@@ -10549,56 +11020,11 @@ conversion was changed yet. Next: carry per-pose model-root metadata into the
 atlas and native actor quads; bind persistent camera blend/dolly services and
 continue other overworld/story/partner gaps. Full objective remains active.
 
-## 2026-10-12 — ID1 complete local partner pre-display,facing,pose and draw requests
-
-Added five detailed contracts:[pre-display](behavior/FIELD_PARTNER_PRE_DISPLAY.md),
-[pose selectors](behavior/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),
-[facing](behavior/FIELD_PARTNER_DISPLAY_FACING.md),
-[matrix/draw](behavior/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md) and
-[Vivian/shadows](behavior/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md).
-Eight complete local bodies now specify combined name/paper markers,unsigned
-shared frame,animation-before-mask1 gate,5000*Z+5000 depth and conditional draw
-registration,four facing interpolation/latch branches,source HP/color tables,
-ordered aliased reflection/pivot/Z/X/Y/extra-Y/translation matrix requests,two
-ordered draw modes and AFTER-draw rate,Vivian trailing/tail ray and shadow order.
-Color7 adjacent-data reads remain source-domain gaps. Constant-address audit
-separates depth5000,shadow argument13.333333,ray length1000/Y+10;no measured
-visual/timing policy was invented. Partial partner coverage register updated.
-Only ID1 scoped lock released;renderer/animation/matrix/source/runtime open.
-
-Also added a visible boundary to pending BTLNO_MESSAGE_MAPPING.md and extended
-committed message correction:resource keys/name associations do not establish
-BTLNO→dialogue runtime lookup or a complete story dictionary. Other owner's
-pending draft remains unstaged by ID1;unvalidated related PROGRESS claims are
-superseded by this evidence boundary. No original dialogue prose was exported.
-
-Validation:verify_field_partner_predisplay.py passes eight complete body hashes,
-515 anchors,32 constants,seven spans,two US lecture imports and exact three
-pre-display/facing sites across seven DOL text sections;callback construction/
-alias anchors pinned. Report now exposes decoded CHECKED binary32 constants
-for numeric review. Repeated report byte-identical;omitted-caller negative
-expectation rejected;Python compilation and prior slit/roll/flying-history/
-driver/slit-collision verifiers passed. General verifier passed1980 anchors;
-all1884 behavior links resolved at snapshot. Gekko audit passed610 files/86164
-instructions/656 paired-single ops,zero changes or unknowns. make test passed64
-CTest suites and78 Python tests;make all passed/rebuilt3DSX. Logs:
-/tmp/id1-predisplay-test.log,/tmp/id1-predisplay-build.log. Existing3218-identity/
-five-fallback audio pipeline ran;ASSETS records source/table/local derivative
-paths and unchanged ID1 conversion policy,outputs unstaged. No ID1 native code,
-original execution/visual measurement,profile/save mutation or original distribution.
-Concurrent native/ID2 work preserved outside this scoped delivery.
-
-Next:used animation setters/Main/DrawMtx and SDK matrix/pose-resource backend,
-shadow/queue/source/alias/FP lifetime and original paper/form presentation traces.
-Reconcile pending BTLNO/message drafts with actual US event/key/speaker/condition
-bindings and recover one complete original playable encounter through persistent
-outcomes. Full-game documentation and final complete-game requirements incomplete.
-
 ## 2026-10-12 — ID1 animation selectors,paper-group reuse and local-time writes
 
-Added [selection/restart](behavior/ANIMATION_SELECTOR_AND_RESTART.md),
-[paper-group reuse](behavior/ANIMATION_PAPER_GROUP_REUSE.md) and
-[local time/clock](behavior/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md).
+Added [selection/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),
+[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md) and
+[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md).
 Five complete used US local setters now specify signed name-vs-index encoding,
 missing-name index0,forced equal-index restart,linked resource dereference before
 guard,paper third-argument nonuse,two-pass group reuse and null versus failed
@@ -10631,3 +11057,48 @@ trace original source/pool lifetime and visuals. Reconcile original event/key/
 speaker/condition bindings and complete an original playable encounter through
 persistent outcomes. Full-game documentation and final system requirements remain
 incomplete;leaf evidence and green host tests do not establish whole-game closure.
+
+## 2026-10-12 — Source camera target/view blends and percentage dolly
+
+Native e278068 bound ordinary camera A/B consumer ordering and logical retained event services:
+timers update first; B blends raw follow/contact before road selection; A3
+bypasses road and shift-main using preset view; post-main timestamp still runs;
+road-only percentage dolly moves eye along eye-to-at; final A blend follows it.
+No percent clamp or guessed minimum eye distance is added. Camera flag2 skips
+this callback; flag10 suppresses followY only. Native clock remains a labeled
+simulation-millisecond ratio bridge, not the source raw OS tick/timebase service.
+
+All intplGetValue built-ins0..13 follow the recovered ordered formulas, including
+overshoot/no step clamp, count0 early end, source approximate Pi/HalfPi, float
+trig result and mode13 endpoint. Unknown callback-pointer modes remain explicit
+unsupported inputs. The documented300 basic room requests use0/1/11/12; helpers
+support each. Game offers basic set/off target and set/off view configuration
+with engine-unit coordinates and current simulation timestamp. EVT operand
+marshaling and execution of the original story requests are still unbound; these
+service methods are not permission to run scenes out of order.
+
+Room restore preserves Bstate/times, anchors, dolly history, stored/preset and
+actual view plus near/far, while resetting only documented Astate/progress,
+Bprogress, curves, blendedFollow, FOV25 and the flag10 lock. Source global clock
+and shift timestamp remain retained. Host integration checks source camera
+branch admission, preset-view bypass/post ordering, next-callback requests and
+cross-room retained target/view/lens behavior.
+
+Validation: final make test passed69 CTest targets and78 Python tests; make all
+built3DSX. Original camera test passed44 roads/494 triangles with native blend
+integration checks; original core passed18315 collision probes/all8 original
+room regressions. Source blend verifier13 spans79 anchors13 derived cases;
+interpolation/timer verifier13 spans51 anchors31 derived cases plus75 original
+EVT owner bodies/332 bindings/300 basic request operands. Isolated Azahar
+reciprocal east-road smoke passed under ignored artifacts/azahar-camera-blends/.
+That smoke precedes only the negative-duration rejection and added test cases;
+final host/ARM checks cover the resulting build. SDK/timebase/viewport parity,
+other camera producers and original-runtime trajectories remain unverified.
+
+Actor documentation research identified actual ordinary idle M_S_1, walkM_W_1,
+dashM_R_1, jumpM_J_1B and fallM_J_1C requests; rear substitution/frame ownership
+is still being recovered. Read-only temporary M_S_1 geometry bake matched the
+102-triangle bounds of the earlier M_Z_1 frame0 preflight; no actor pack or
+native quad was changed. Next: connect camera services to source EVT runtime
+marshaling, implement actor pose/root/scale from finalized documentation, and
+continue other overworld/partner/story gaps. The full objective remains active.

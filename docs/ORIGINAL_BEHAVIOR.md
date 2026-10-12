@@ -159,7 +159,7 @@ battle event state must not be flattened into one undifferentiated context.
   millisecond conversion; do not silently replace it with a raw 500-ms comparison.
 - Stores the new timestamp and calls priority-table construction at
   `0x800369cc`. The verified exchange-sort and nonstable tie behavior are now
-  detailed in [EVENT_RUNTIME.md](behavior/EVENT_RUNTIME.md).
+  detailed in [EVENT_RUNTIME.md](behavior/event/EVENT_RUNTIME.md).
 - Locates entries using stride `0x1b0`, requires active bit 1 and a matching
   recorded event ID, and skips flags masked by `0x92` (`0x800369e0`–`0x80036a10`).
   The ID comparison prevents a recycled slot automatically inheriting the old
@@ -227,7 +227,7 @@ indicator; restarting a movement/message callback each tick would be incorrect.
 `0x80036f78`, which is included in the scheduler's skip mask. US local-variable
 inheritance, copy-back on deletion, brother ownership, priority sorting and
 selected stop semantics are now documented in
-[EVENT_RUNTIME.md](behavior/EVENT_RUNTIME.md). Restart, complete pause ownership
+[EVENT_RUNTIME.md](behavior/event/EVENT_RUNTIME.md). Restart, complete pause ownership
 and the remaining opcode/service contracts are still open. Do not implement
 every child as detached fire-and-forget work.
 
@@ -242,7 +242,7 @@ status notes; an old paragraph saying ceilings are missing is historical.
 | Coordinates | `_mapLoad` applies model scale 10. Native model scale .1 implies original engine literals × .01 | Preserve distinct coordinate spaces for dynamic transforms |
 | Ordinary movement | Walk/dash rates 1/2.25 original units per tick; stick cap 70, dash threshold 55 | State hysteresis, drift, transformations, follower physics |
 | Jump | Ascent tuple `(8,-.84,.08,-.02)`, fall `(-.1,-.2,.024,-.004)`; jerk→acceleration→velocity order; release adjustment -.526 | Special states, gravity variants and observed input timing |
-| Jump startup | Launch phase0/counter1; next call phase10/counter2 integrates; release reduction from counter4; [verified phase gate](behavior/OVERWORLD_MARIO_MOVEMENT.md) supersedes earlier counter3 interpretation | Compare matched Dolphin inputs |
+| Jump startup | Launch phase0/counter1; next call phase10/counter2 integrates; release reduction from counter4; [verified phase gate](behavior/overworld/OVERWORLD_MARIO_MOVEMENT.md) supersedes earlier counter3 interpretation | Compare matched Dolphin inputs |
 | Body/walls | Width 20, height 37; ordinary wall clearance 10; rays at 11 and about 26.64 | Push-out, sliding, dynamic walls |
 | Floor queries | Five probes, footprint radius 7.5; velocity-dependent ray bounds | Full slope/contact acceptance, walking beneath ceilings |
 | Head queries | Separate attribute filter and cull rule; five probes; original rounding and clearance | Special forms, block effects and dynamic geometry |
@@ -295,7 +295,7 @@ requires concrete B/O evidence before it can become a fidelity claim.
 | Action commands | No measured original timing windows | Per-move start/impact/input sampling, early/late/mash rules, guard/superguard and difficulty modifiers |
 | Statuses/badges/items | Public research leads only | Stacking/order, immunities, duration decrement, equipment and inventory constraints |
 | Rewards/progression | Prototype victory is not retail evidence | Star Points, coins/drops, level-up, partner/ability and story unlocks |
-| RNG | rand/irand arithmetic and draw rules in [RANDOMNESS.md](behavior/RANDOMNESS.md) | Seeding, other generators, seed persistence and consumption order per random action |
+| RNG | rand/irand arithmetic and draw rules in [RANDOMNESS.md](behavior/meta/RANDOMNESS.md) | Seeding, other generators, seed persistence and consumption order per random action |
 | Save/load | Native versioned checkpoint format only | Original persistent switches, inventory/party/stats, validation, slot operations and failure behavior |
 | Input/pause/UI | Input construction precedes listed pass calls | Held/edge/repeat rules, lock masks, pause clocks, message/menu overlap |
 | Field | Detailed ordinary static movement evidence | Grounded slopes, walls, dynamic collision, all transformations and partner abilities |
@@ -331,7 +331,7 @@ it as a deliberate variant with its own acceptance trace.
 
 ## Next research slices
 
-The [US completion assessment](behavior/US_COMPLETION_AND_PRIORITIES.md)
+The [US completion assessment](behavior/meta/US_COMPLETION_AND_PRIORITIES.md)
 supersedes the ordering below. Start from shipped opening/Crump event bindings,
 resolve actually selected attack commands and record gameplay traces;defer
 unbound generic library edge cases. The US usage audit distinguishes direct
@@ -350,14 +350,14 @@ references,callback/data candidates and shipped REL imports from execution.
    functions/branches rather than treating an available symbol as a specification.
 
 
-Battle movement follow-up: [jump event callbacks](behavior/BATTLE_JUMP_EVENT_CALLBACKS.md)
+Battle movement follow-up: [jump event callbacks](behavior/battle/BATTLE_JUMP_EVENT_CALLBACKS.md)
 provides nine complete local bodies and the concrete encoded-float route,with
 separate ten-body/55-instruction verification. These fingerprints are additional
 to the general report;neither set establishes measured hit/input cadence.
 
 
-Input follow-up by agent ID1: [physical producer](behavior/PHYSICAL_INPUT_PRODUCER.md)
-and [battle cadence/snapshot map](behavior/BATTLE_INPUT_CADENCE_AND_SNAPSHOTS.md)
+Input follow-up by agent ID1: [physical producer](behavior/input/PHYSICAL_INPUT_PRODUCER.md)
+and [battle cadence/snapshot map](behavior/input/BATTLE_INPUT_CADENCE_AND_SNAPSHOTS.md)
 connect makeKey to all four general pads,the sequence controller,the private
 channel0 pad,selected AC main and later event processing. US strict48 global
 directions,scaled24/6 repeats,error-3 retention and the input-clear chord are
@@ -366,158 +366,158 @@ separate from inclusive30 battle directions/16/8 repeats. A dedicated ten-body/
 newly completed gameplay systems. Main/pad/physical execution traces remain open.
 
 
-[Input reset ownership](behavior/BATTLE_INPUT_RESET_OWNERS.md) identifies the
+[Input reset ownership](behavior/input/BATTLE_INPUT_RESET_OWNERS.md) identifies the
 known direct update/reset routes and a script-selected raw trigger-history
-injection. [System-level/speed controls](behavior/EVENT_SYSTEM_LEVEL_AND_SPEED.md)
+injection. [System-level/speed controls](behavior/event/EVENT_SYSTEM_LEVEL_AND_SPEED.md)
 closes the local level/type-mask table,getter and per-entry speed multiplier/
 creation policy. Neither converts the static census into an executed pause graph
 or establishes full input writer/restart coverage.
 
 
-[Crump NPC versus lecture roles](behavior/CHRISTINE_HELPER_ROLES.md) and
-[lecture coordinator](behavior/LECTURE_COORDINATOR_MODES.md) now distinguish
+[Crump NPC versus lecture roles](behavior/story/CHRISTINE_HELPER_ROLES.md) and
+[lecture coordinator](behavior/story/LECTURE_COORDINATOR_MODES.md) now distinguish
 setup indices2/3,spawned kind/ID ownership and the professor's full local phase
 request graph. Exact US messages/speakers/choice branches are pinned to gor_02
 for the lecture;missing player/counter/field/services and original execution
 remain open. These local closures do not complete either the full lecture or game.
 
 
-[Lecture player bindings](behavior/LECTURE_PLAYER_ATTACK_FLOW.md) now supply
+[Lecture player bindings](behavior/story/LECTURE_PLAYER_ATTACK_FLOW.md) now supply
 1→2/5→6 cleanup and first-hit/output feedback writers,default weapon table
 substitution and a proven producer of TimingA's01000000 forced-success route.
-[Status-window arbitration](behavior/BATTLE_STATUS_WINDOW_ARBITRATION.md)
+[Status-window arbitration](behavior/battle/BATTLE_STATUS_WINDOW_ARBITRATION.md)
 establishes the lecture2740 suppression consumer separately from selection.
 Full menu/teardown/field and original lecture execution remain incomplete.
 
-[Lecture field entry and return](behavior/LECTURE_FIELD_ENTRY_AND_RETURN.md)
+[Lecture field entry and return](behavior/story/LECTURE_FIELD_ENTRY_AND_RETURN.md)
 now supplies the wall-event and story10 map-reload callers, crossing-poll
 operands, exact choice branches, setup3 launch and common story11 write. Skipping
 the lesson also advances to11. Field party services, intersection semantics,
 end-controller cleanup and original execution remain incomplete.
 
 
-[Field intersection](behavior/FIELD_SEGMENT_INTERSECTION.md) now supplies the
+[Field intersection](behavior/field/FIELD_SEGMENT_INTERSECTION.md) now supplies the
 closed-endpoint and rounded fused cross-product contract,live Mario position
-fields and used encoded LV quantization. [Field party callbacks](behavior/FIELD_PARTY_EVENT_CALLBACKS.md)
+fields and used encoded LV quantization. [Field party callbacks](behavior/partner/FIELD_PARTY_EVENT_CALLBACKS.md)
 close raw slot dispatch,first-call previous-kind constructor requests and
 conditional run-mode writes. Party engine lifetimes,full variable namespaces,
 battle teardown and original execution remain incomplete.
 
 
-[Field party destruction](behavior/FIELD_PARTY_DESTRUCTION_AND_SAVED_KIND.md)
-and [position constructors](behavior/FIELD_PARTY_POSITION_CONSTRUCTORS.md)
+[Field party destruction](behavior/partner/FIELD_PARTY_DESTRUCTION_AND_SAVED_KIND.md)
+and [position constructors](behavior/partner/FIELD_PARTY_POSITION_CONSTRUCTORS.md)
 now establish linked-kind preservation versus clearing,ordered pointer removal/
 release/free,first-free versus secondary-only allocation,pose/init requests and
 primary/secondary coordinate tails. Resource/driver/all-kind/mode/index and
 original-transition composition remain incomplete.
 
 
-[Field party mode initialization](behavior/FIELD_PARTY_MODE_INITIALIZATION.md)
-and [driver/index ownership](behavior/FIELD_PARTY_DRIVER_AND_INDEX_OWNERSHIP.md)
+[Field party mode initialization](behavior/partner/FIELD_PARTY_MODE_INITIALIZATION.md)
+and [driver/index ownership](behavior/partner/FIELD_PARTY_DRIVER_AND_INDEX_OWNERSHIP.md)
 now specify old-mode dispatch,local cleanup and angle-loop behavior,two-slot
 init,count/reread/update order and the Mario bit gate. BSS placement and zero
 matching direct integer index stores are a scoped census,not complete writer
 or live-state proof. Mode engine/services/teardown and original traces remain open.
 
 
-[Field party driver](behavior/FIELD_PARTY_DRIVER_DISPATCH.md) supplies all15
+[Field party driver](behavior/partner/FIELD_PARTY_DRIVER_DISPATCH.md) supplies all15
 local mode branches,pending setup,mode14 destruction and effect/screen/presentation
-tail. [Global countdown/action](behavior/FIELD_PARTY_GLOBAL_COUNTDOWN_AND_ACTION.md)
+tail. [Global countdown/action](behavior/partner/FIELD_PARTY_GLOBAL_COUNTDOWN_AND_ACTION.md)
 connects signed byte expiry to primary mode0/1/2→3 requests. Called ability/mode/
 collision/animation engines,writers,teardown and original execution remain open.
 
 
-[Ordinary partner walk](behavior/FIELD_PARTNER_WALK_CALLBACK.md),
-[follower history](behavior/FIELD_PARTNER_HISTORY_WRITER.md) and
-[mode1 substates](behavior/FIELD_PARTNER_MODE1_SUBSTATES.md) now specify local
+[Ordinary partner walk](behavior/partner/FIELD_PARTNER_WALK_CALLBACK.md),
+[follower history](behavior/partner/FIELD_PARTNER_HISTORY_WRITER.md) and
+[mode1 substates](behavior/partner/FIELD_PARTNER_MODE1_SUBSTATES.md) now specify local
 initialization/speed arithmetic,two-bank history append/read policy and hazard/
 effect requests. The ring's pre-wrap equality test is preserved. Final executor,
 terrain/ability/source/index/writer services and original trajectories remain open.
 
 
-[Switch stack/scans](behavior/EVENT_SWITCH_STACK_AND_CASE_SCANS.md) and
-[group/mask/range](behavior/EVENT_GROUPED_MASK_AND_RANGE_CASES.md) specify
+[Switch stack/scans](behavior/event/EVENT_SWITCH_STACK_AND_CASE_SCANS.md) and
+[group/mask/range](behavior/event/EVENT_GROUPED_MASK_AND_RANGE_CASES.md) specify
 complete local34..49/eleven CASE helpers,actual opcode table,signed state and
 stack writes,OR/AND latches,raw any-bit masks,inclusive ranges and lexical
 header continuations. Original script/domain composition and runtime traces
 remain incomplete;remaining VM opcodes are separate EVT-01 requests.
 
 
-[Partner walkMain dispatch](behavior/FIELD_PARTNER_WALK_DISPATCH.md) and
-[stay motion](behavior/FIELD_PARTNER_STAY_MOTION.md) now specify motion/substate
+[Partner walkMain dispatch](behavior/partner/FIELD_PARTNER_WALK_DISPATCH.md) and
+[stay motion](behavior/partner/FIELD_PARTNER_STAY_MOTION.md) now specify motion/substate
 selection,threshold/map and distance branches,mode0 admission,ordered collision
 X/Z stores and kind7 pose requests. The mode0 guard does not skip all correction
 or terminal work. Called terrain/motion/geometry/ability bodies,domain/state
 writers and original trajectories remain open.
 
 
-[Integer/mask IF and scans](behavior/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md)
-and [float/string IF](behavior/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md) specify
+[Integer/mask IF and scans](behavior/event/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md)
+and [float/string IF](behavior/event/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md) specify
 complete12..33 and twenty local predicates plus strcmp. Ordered queries,raw
 masks,null replacement,CR-based unordered acceptance and scan-consumed markers
 are explicit. Other VM opcodes,numeric/pointer/source domains and original
 branch traces remain open.
 
 
-[Partner overlap correction](behavior/FIELD_PARTNER_OVERLAP_CORRECTION.md),
-[direction/speed query](behavior/FIELD_PARTNER_DIRECTION_AND_SPEED.md) and
-[speed numerics](behavior/FIELD_PARTNER_SPEED_NUMERICS.md) now supply signed
+[Partner overlap correction](behavior/partner/FIELD_PARTNER_OVERLAP_CORRECTION.md),
+[direction/speed query](behavior/partner/FIELD_PARTNER_DIRECTION_AND_SPEED.md) and
+[speed numerics](behavior/partner/FIELD_PARTNER_SPEED_NUMERICS.md) now supply signed
 counter/state/history side effects,first-direction/second-speed output order,
 fused vector/norm composition and three double estimate refinements. The stay
 queries cannot be coalesced as pure reads. Numeric/source/terrain/domain and
 original trajectory evidence remain open.
 
 
-[Multiword/float data](behavior/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),
-[bitwise/time/memory](behavior/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md) and
-[user-buffer allocation](behavior/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md)
+[Multiword/float data](behavior/event/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),
+[bitwise/time/memory](behavior/event/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md) and
+[user-buffer allocation](behavior/event/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md)
 specify complete local65..90,including indexed signed-integer float conversion,
 raw versus repeated operand queries,word-wrap time products and best-fit/split/
 zero/cache/publication order. Heap/pointer/numeric/source/capacity domains and
 original runtime traces remain open.
 
 
-[Partner footmark clear/ID](behavior/FIELD_PARTNER_FOOTMARK_CLEAR_AND_ID.md),
-[live target distances](behavior/FIELD_PARTNER_LIVE_TARGET_DISTANCES.md) and
-[SDK distance](behavior/FIELD_PARTNER_SDK_DISTANCE_NUMERICS.md) now distinguish
+[Partner footmark clear/ID](behavior/partner/FIELD_PARTNER_FOOTMARK_CLEAR_AND_ID.md),
+[live target distances](behavior/partner/FIELD_PARTNER_LIVE_TARGET_DISTANCES.md) and
+[SDK distance](behavior/partner/FIELD_PARTNER_SDK_DISTANCE_NUMERICS.md) now distinguish
 flag-word ID from other bank predicates,record reset from target selection,and
 repeated Mario/partner pointer reads. Paired accumulation and one single norm
 refinement differ from the direction query. Source/numeric environment/domain
 and original trajectory/output evidence remain open.
 
 
-[Event tail/debug](behavior/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md) and
-[all119 opcode coverage](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md) close
+[Event tail/debug](behavior/event/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md) and
+[all119 opcode coverage](behavior/event/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md) close
 local dispatcher entry coverage,including WAIT_WHILE/no-ops/debug formatting/
 metadata/unchecked slot probe. Source/address/callback/context/capacity/time/
 heap/numeric/platform domains and original execution remain incomplete;this
 is not a complete executed Jump/story VM or complete-game requirements claim.
 
 
-[Event context init/reset](behavior/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md)
-and [bootstrap SDK heap/direct callers](behavior/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md)
+[Partner front-wall query](behavior/partner/FIELD_PARTNER_FRONT_WALL_QUERY.md) and
+[filters/status](behavior/partner/FIELD_PARTNER_FRONT_WALL_FILTERS.md) now specify
+ordered rays,quantized distance,half-tangent correction and asymmetric hit/null
+returns. Backend result anchors correct the earlier swapped ABI labels:point+24,
+normal+30. Full backend/traversal/mesh/domain and original collision traces remain open.
+
+
+[Event context init/reset](behavior/event/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md)
+and [bootstrap SDK heap/direct callers](behavior/event/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md)
 now establish two initial256-slot arrays,selected-array bulk reset with bank/
 schedule/ID/speed preservation,distinct SDK allocation and four direct DOL
 bindings. Full context/capacity/source/heap/scene/platform/clock domains and
 original reset/transition traces remain open.
 
 
-[Partner front-wall query](behavior/FIELD_PARTNER_FRONT_WALL_QUERY.md) and
-[filters/status](behavior/FIELD_PARTNER_FRONT_WALL_FILTERS.md) now specify
-ordered rays,quantized distance,half-tangent correction and asymmetric hit/null
-returns. Backend result anchors correct the earlier swapped ABI labels:point+24,
-normal+30. Full backend/traversal/mesh/domain and original collision traces remain open.
-
-
-[Retrace clock](behavior/EVENT_RETRACE_TIME_PUBLICATION.md) and
-[outer/update order](behavior/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md) now
+[Retrace clock](behavior/platform/EVENT_RETRACE_TIME_PUBLICATION.md) and
+[outer/update order](behavior/platform/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md) now
 bind event timestamp accumulation to raw time-base deltas with GP10/window
 freeze and unconditional baseline updates. Complete main/StMain requests pin
 input-before-battle-before-event ordering and separate render/profile intervals.
 Hardware/gate/scene/numeric domains and original measured cadence remain open.
 
 
-[Partner surrounding-wall binding](behavior/FIELD_PARTNER_SURROUNDING_WALL.md)
+[Partner surrounding-wall binding](behavior/partner/FIELD_PARTNER_SURROUNDING_WALL.md)
 closes the used mode1 wrapper,global view/filter ownership,zero-speed correction,
 fixed pass origins and local SDK vector numerics. Corrected the older shared
 wall contract:save the UNCLAMPED first vector before cap;ordered dot>=0 skips
@@ -527,16 +527,16 @@ claim native parity. Full scene/filter/domain/math and original trajectories
 remain open.
 
 
-[Map release/battle pool](behavior/MAP_BUFFER_FREE_AND_BATTLE_POOL.md),
-[five-pool bootstrap/reset](behavior/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md) and
-[SDK free/caller census](behavior/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md)
+[Map release/battle pool](behavior/memory/MAP_BUFFER_FREE_AND_BATTLE_POOL.md),
+[five-pool bootstrap/reset](behavior/memory/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md) and
+[SDK free/caller census](behavior/memory/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md)
 now specify complete local memory construction/release/coalescing/reset and50
 DOL sites. Map and SDK size/null/merge/ownership policies remain distinct;
 scene/REL/alias/platform/domain and original runtime ownership remain open.
 
 
-[Partner fly height postpass](behavior/FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md)
-and [ground postpass](behavior/FIELD_PARTNER_GROUND_POSTPASS.md) now close used
+[Partner fly height postpass](behavior/partner/FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md)
+and [ground postpass](behavior/partner/FIELD_PARTNER_GROUND_POSTPASS.md) now close used
 stay-tail query order,owner-gated height smoothing and floor snap/fall/named-
 support motion requests. Selected floor-query entry proves early mask return
 can preserve cached outputs. Complete local motion-change/name-classifier leaves
@@ -544,8 +544,8 @@ are specified,including exact25-name resource table;full queries,appearance/
 motion/terrain/domain and original trajectories remain dependencies.
 
 
-[Partner ceiling query](behavior/FIELD_PARTNER_CEILING_QUERY.md) and
-[scalar ray wrapper](behavior/FIELD_SCALAR_RAY_WRAPPER.md) now close local
+[Partner ceiling query](behavior/partner/FIELD_PARTNER_CEILING_QUERY.md) and
+[scalar ray wrapper](behavior/field/FIELD_SCALAR_RAY_WRAPPER.md) now close local
 four-probe first-success order,raw height cap,success/failure output writes,
 callback/origin/direction/length ABI and ordered point/normal publication. Query
 V.Y is captured input Y,not hit-point Y;fly ignores returned height,and all-null
@@ -554,17 +554,17 @@ not replaced with a conventional ceiling solver. Full backend/numeric/source/
 trajectory and remaining floor/motion engines remain open.
 
 
-[Disc-thread readiness gate](behavior/EVENT_DISC_THREAD_READINESS_GATE.md),
-[system-message presentation](behavior/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md)
-and [audio cover-state requests](behavior/AUDIO_DISC_COVER_STATE_REQUESTS.md)
+[Disc-thread readiness gate](behavior/platform/EVENT_DISC_THREAD_READINESS_GATE.md),
+[system-message presentation](behavior/platform/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md)
+and [audio cover-state requests](behavior/audio/AUDIO_DISC_COVER_STATE_REQUESTS.md)
 now bind GP10 freeze to exact status/retrace/card/thread behavior and an alternate
 input/render request path. Original notice bytes/pointers and local audio state
 are pinned;SDK/ROM-font/render/playback/source/domain and original traces remain open.
 
 
-[Partner floor query](behavior/FIELD_PARTNER_FLOOR_QUERY.md),
-[slope pipeline](behavior/FIELD_PARTNER_FLOOR_SLOPE_NUMERICS.md) and
-[heading adjustment](behavior/FIELD_PARTNER_FLOOR_HEADING.md) close the used
+[Partner floor query](behavior/partner/FIELD_PARTNER_FLOOR_QUERY.md),
+[slope pipeline](behavior/partner/FIELD_PARTNER_FLOOR_SLOPE_NUMERICS.md) and
+[heading adjustment](behavior/partner/FIELD_PARTNER_FLOOR_HEADING.md) close the used
 five-sample/global-filter/order,pointY quantization,50-degree partial-angle
 rejection,duplicated admitted-slope requests,ordered drop/near-height admission
 and highest-support cache graph. Slope fields may describe later rejected rays
@@ -573,9 +573,17 @@ last-drop depending on entry flag. Full backend/math/domain/field consumers and
 original trajectories remain open.
 
 
-[Partner support appearance](behavior/FIELD_PARTNER_SUPPORT_APPEARANCE.md),
-[vector ray wrapper](behavior/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md) and
-[screen recovery](behavior/FIELD_PARTNER_SCREEN_RECOVERY.md) close complete
+[Complete battle unit entry](behavior/battle/BATTLE_UNIT_ENTRY_COMPLETE.md),
+[registry/scalar/geometry](behavior/battle/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md)
+and [pose/display initialization](behavior/battle/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md)
+now specify full local construction/publication/stat/resource/event order and
+listed getters/setters/pose helpers. Borrowed source/kind/content/lifetime and
+resource/render/turn/platform domains and original execution remain open.
+
+
+[Partner support appearance](behavior/partner/FIELD_PARTNER_SUPPORT_APPEARANCE.md),
+[vector ray wrapper](behavior/partner/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md) and
+[screen recovery](behavior/partner/FIELD_PARTNER_SCREEN_RECOVERY.md) close complete
 local12-angle sampling/return,asymmetric five-value quantization and control/
 projection-gated bounded candidate recovery. Output is a sampled origin,caller
 ignores failure and overwrites preparedY;screen recovery clears bank0 on both
@@ -583,17 +591,9 @@ flag branches and commits root only at explicit projection acceptance. Full
 placement3/SDK projection/traversal/math/domain and original trajectories remain open.
 
 
-[Complete battle unit entry](behavior/BATTLE_UNIT_ENTRY_COMPLETE.md),
-[registry/scalar/geometry](behavior/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md)
-and [pose/display initialization](behavior/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md)
-now specify full local construction/publication/stat/resource/event order and
-listed getters/setters/pose helpers. Borrowed source/kind/content/lifetime and
-resource/render/turn/platform domains and original execution remain open.
-
-
-[Placement3](behavior/FIELD_PARTNER_PLACEMENT3.md),
-[local math](behavior/FIELD_PARTNER_PLACEMENT3_MATH.md) and
-[NPC scan](behavior/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md) close complete local
+[Placement3](behavior/partner/FIELD_PARTNER_PLACEMENT3.md),
+[local math](behavior/partner/FIELD_PARTNER_PLACEMENT3_MATH.md) and
+[NPC scan](behavior/partner/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md) close complete local
 nine-angle/raw-ray/name/normal/NPC/fallback/output behavior. Output is initialized
 before search and can remain changed on return0;screen reset still copies it.
 NPC scan returns last strict horizontal match,not nearest,and placement maximizes
@@ -602,17 +602,17 @@ fallback preserves ownerY and skips around. Full scene/NPC/source/numeric/runtim
 and remaining partner motion engines remain open.
 
 
-[Action-record byte updates](behavior/BATTLE_ACTION_RECORD_BYTE_UPDATES.md),
-[turn-rule judgment](behavior/BATTLE_ACTION_RECORD_TURN_RULES.md) and
-[first-process preparation](behavior/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md)
+[Action-record byte updates](behavior/battle/BATTLE_ACTION_RECORD_BYTE_UPDATES.md),
+[turn-rule judgment](behavior/battle/BATTLE_ACTION_RECORD_TURN_RULES.md) and
+[first-process preparation](behavior/battle/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md)
 now specify exact byte-store/cap,rule sum/status-write,judge/counter/RNG/unit/fog
 ordering. General challenge/action/reset/save/turn/source/backend ownership
 and original executed traces remain open.
 
 
-[Jump destinations](behavior/FIELD_PARTNER_JUMP_DESTINATION.md),
-[initialization](behavior/FIELD_PARTNER_JUMP_INITIALIZATION.md) and
-[flight/landing](behavior/FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md) close both
+[Jump destinations](behavior/partner/FIELD_PARTNER_JUMP_DESTINATION.md),
+[initialization](behavior/partner/FIELD_PARTNER_JUMP_INITIALIZATION.md) and
+[flight/landing](behavior/partner/FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md) close both
 used motion2 handler graphs,main target/history priorities,distinct numeric
 preparation and floor/horizontal/exception ordering. Counts at+24 are stored
 preparation parameters,not local flight countdowns. Main flagged scratch movement
@@ -621,25 +621,25 @@ remain distinct. Full target/front-floor/pose/audio/source/numeric and original
 trajectories remain open.
 
 
-[Attack-command event selection](behavior/BATTLE_ATTACK_EVENT_SELECTION.md) and
-[weapon classification/data leaves](behavior/BATTLE_WEAPON_ATTACK_CLASSIFICATION.md)
+[Attack-command event selection](behavior/battle/BATTLE_ATTACK_EVENT_SELECTION.md) and
+[weapon classification/data leaves](behavior/battle/BATTLE_WEAPON_ATTACK_CLASSIFICATION.md)
 close the complete local selector and called predicate/audience/data graph.
 Counters update at selection before execution;fallback event does not replace
 retained weapon classification. Complete menu/event/audience/source/record reset
 ownership,general rule judgment and original executed traces remain open.
 
 
-[General action-record judgment](behavior/BATTLE_GENERAL_RULE_JUDGMENT.md) and
-[threshold/end/unit-query contracts](behavior/BATTLE_RULE_THRESHOLD_AND_UNIT_QUERIES.md)
+[General action-record judgment](behavior/battle/BATTLE_GENERAL_RULE_JUDGMENT.md) and
+[threshold/end/unit-query contracts](behavior/battle/BATTLE_RULE_THRESHOLD_AND_UNIT_QUERIES.md)
 close all68 local rules and helpers,including signed scalar thresholds without
 255 bypass,captured-versus-current output owners,duplicate54/55 inputs and
 end-helper numeric mask0x02. Descriptor/raw record/reset/save/status consumer
 ownership,full end/turn/scene scheduling and original traces remain open.
 
 
-[Live direction/activity](behavior/FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md),
-[front-floor](behavior/FIELD_PARTNER_FRONT_FLOOR.md) and
-[status/clearance writer](behavior/FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md)
+[Live direction/activity](behavior/partner/FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md),
+[front-floor](behavior/partner/FIELD_PARTNER_FRONT_FLOOR.md) and
+[status/clearance writer](behavior/partner/FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md)
 close local direction q0 partner admission,repeated pointer roles,TargetDistY
 activity scalar,guarded status codes,upward-clearance/downward-output sequence,
 heading input and attribute-mask return. Front-floor miss writes current rootXYZ;
@@ -648,8 +648,8 @@ float60 setter and bounded DOL access/call census are pinned;full source/alias/
 REL/backend/math/domain and original trajectories remain open.
 
 
-[Consolidated packed EventEntry](behavior/EVENT_ENTRY_PACKED_LAYOUT.md) and
-[address/alias requirements](behavior/EVENT_ENTRY_ADDRESS_AND_ALIAS_REQUIREMENTS.md)
+[Consolidated packed EventEntry](behavior/event/EVENT_ENTRY_PACKED_LAYOUT.md) and
+[address/alias requirements](behavior/event/EVENT_ENTRY_ADDRESS_AND_ALIAS_REQUIREMENTS.md)
 answer the native translator map request:all432 bytes,typed accesses/pointer
 words,44 unknown raw bytes,context/global banks,and local/stack/label/message/
 USER_FUNC alias requirements. Machine-readable layout and ten supporting ISO
@@ -657,15 +657,15 @@ suites are linked;actual native packed translation,source/owner/callback/backend
 binding and original execution remain EVT-01 work.
 
 
-[SDK/primary-map live ordering](behavior/SDK_HEAP_BOOTSTRAP_LIVE_READ_ORDER.md)
+[SDK/primary-map live ordering](behavior/memory/SDK_HEAP_BOOTSTRAP_LIVE_READ_ORDER.md)
 clarifies retained metadata size versus live descriptor globals,post-header
 descriptor size reread and start→end→handle capture before requested-length
 publication. Bootstrap policy/verifier now include these exact reloads and
 alias acceptance cases;native arena/cache/source/scene/runtime remains open.
 
 
-[Ordinary Jump source/root binding](behavior/NORMAL_JUMP_ROOT_REGISTRATION.md)
-and [callback registry census](behavior/NORMAL_JUMP_CALLBACK_REGISTRY.md) pin
+[Ordinary Jump source/root binding](behavior/battle/NORMAL_JUMP_ROOT_REGISTRATION.md)
+and [callback registry census](behavior/battle/NORMAL_JUMP_CALLBACK_REGISTRY.md) pin
 conditional root10/flags0/typeef/context/ID/speed/post-construction actor order,
 three child wrappers and156 direct sites/72 callbacks for the three packed
 streams. Constructor run-check reads requested8041e940,distinct from GP18 getter
@@ -673,9 +673,9 @@ mask;native source correction is queued. Menu/global/raw/dynamic/domain/backend
 closure and original execution remain EVT-01/JUMP-01 work.
 
 
-[Fall air](behavior/FIELD_PARTNER_FALL_AIR.md),
-[landing](behavior/FIELD_PARTNER_FALL_LANDING.md) and
-[facing leaves](behavior/FIELD_PARTNER_FALL_FACING.md) close the used complete
+[Fall air](behavior/partner/FIELD_PARTNER_FALL_AIR.md),
+[landing](behavior/partner/FIELD_PARTNER_FALL_LANDING.md) and
+[facing leaves](behavior/partner/FIELD_PARTNER_FALL_FACING.md) close the used complete
 local fall graph:history-before-marker,floor-before-integration using old velocity,
 conditional default acceleration,damping/clamps,excluded-surface mobility gates,
 placement4 request/facing/exception order,two landing cleanup paths and air2/
@@ -683,23 +683,23 @@ land3 returns. Full placement4/pose/terrain/source/numeric and original trajecto
 remain open;native validation does not supply original-game execution evidence.
 
 
-[Unit-data child continuation](behavior/BATTLE_UNIT_DATA_CHILD_CONTINUATION.md) and
-[actor selector translation](behavior/BATTLE_ACTOR_SELECTOR_TRANSLATION.md)
+[Unit-data child continuation](behavior/battle/BATTLE_UNIT_DATA_CHILD_CONTINUATION.md) and
+[actor selector translation](behavior/battle/BATTLE_ACTOR_SELECTOR_TRANSLATION.md)
 close full local wrapper/all sentinels/system query and actual Mario key7
 source→tiny80416bd0 child. No USER_FUNC in that child does not remove its
 ID/append/wait/copy-back lifecycle. Native source pack needs its span/trailing
 word;other dynamic writers/providers/scenes and original execution remain open.
 
 
-[Complete battle-pad reset](behavior/BATTLE_PAD_RESET_AND_RAW_PRESERVATION.md)
+[Complete battle-pad reset](behavior/battle/BATTLE_PAD_RESET_AND_RAW_PRESERVATION.md)
 clarifies snapshot0..a clear versus byteb preservation,all124 preserved bytes
 and interleaved history stores. Prior whole-snapshot-zero wording is corrected;
 update's full prior copy and current trailing preservation remain distinct.
 SDK/physical/caller/pause/source and original sampling traces remain open.
 
 ID1 placement4 recovery addendum (2026-10-12):the used fall caller now links
-[complete placement4 local search/output](behavior/FIELD_PARTNER_PLACEMENT4.md)
-and [copied angle/adjacent-stack layout](behavior/FIELD_PARTNER_PLACEMENT4_ANGLE_LAYOUT.md).
+[complete placement4 local search/output](behavior/partner/FIELD_PARTNER_PLACEMENT4.md)
+and [copied angle/adjacent-stack layout](behavior/partner/FIELD_PARTNER_PLACEMENT4_ANGLE_LAYOUT.md).
 Local output accumulates across rejected moved attempts;final offsets can read
 adjacent arrays or the reused query header. Exhaustion requests general
 partyGetAppearPos,ignores its return and returns0 after optional owner-height
@@ -707,17 +707,25 @@ adjustment. The general fallback engine remains open;this is not complete
 end-to-end placement or original-runtime equivalence.
 
 
-[Jump Majinai power child](behavior/JUMP_MAJINAI_POWER_CHECK_CHILD.md) and
-[effect/nested source contracts](behavior/JUMP_MAJINAI_EFFECT_AND_NESTED_SOURCES.md)
+[Jump Majinai power child](behavior/battle/JUMP_MAJINAI_POWER_CHECK_CHILD.md) and
+[effect/nested source contracts](behavior/battle/JUMP_MAJINAI_EFFECT_AND_NESTED_SOURCES.md)
 close14-command query/consumption graph,global name-based effect polling,
 complete12-command jump child and17-command independent five-key sound root.
 Additional source spans/callbacks,fortune producer,render/audio/message/backend
 ownership and original execution remain EVT-01/JUMP-01/DMG-02 work.
 
+
+[Battle fortune producer](behavior/battle/BATTLE_FORTUNE_PRODUCER.md) and
+[pouch initializer/caller/RNG accounting](behavior/battle/BATTLE_FORTUNE_INIT_AND_CALL_BINDINGS.md)
+close full local countdown/mode policy,upgrade-only signed request compare and
+two direct DOL bindings. Remaining/countdown/mode use distinct byte domains;
+modulo RNG thresholds and intermediate stores stay exact. Field assignment/
+setup/pouch/save/turn/other consumers and original execution remain open.
+
 ID1 general partner placement delivery (2026-10-12):
-[entry/primary/admission](behavior/FIELD_PARTNER_GENERAL_PLACEMENT.md),
-[fallback/output](behavior/FIELD_PARTNER_GENERAL_PLACEMENT_FALLBACK.md) and
-[used trig/plane leaves](behavior/FIELD_MOVEMENT_TRIG_AND_PLANE_LEAVES.md)
+[entry/primary/admission](behavior/partner/FIELD_PARTNER_GENERAL_PLACEMENT.md),
+[fallback/output](behavior/partner/FIELD_PARTNER_GENERAL_PLACEMENT_FALLBACK.md) and
+[used trig/plane leaves](behavior/field/FIELD_MOVEMENT_TRIG_AND_PLANE_LEAVES.md)
 close the local partyGetAppearPos writer previously left open by placement4.
 Fresh signed-slot dispatch,owner reseeds,plane shortcut,asymmetric probe/move
 angles,positive single-slot third displacement,raw floor/length gate and ordered
@@ -727,28 +735,27 @@ Earlier addendum's open general-local-writer status is superseded by this delive
 full-system closure and final complete-game requirements remain incomplete.
 
 
-[Battle fortune producer](behavior/BATTLE_FORTUNE_PRODUCER.md) and
-[pouch initializer/caller/RNG accounting](behavior/BATTLE_FORTUNE_INIT_AND_CALL_BINDINGS.md)
-close full local countdown/mode policy,upgrade-only signed request compare and
-two direct DOL bindings. Remaining/countdown/mode use distinct byte domains;
-modulo RNG thresholds and intermediate stores stay exact. Field assignment/
-setup/pouch/save/turn/other consumers and original execution remain open.
-
-
-[Majinai effect construction](behavior/MAJINAI_EFFECT_CONSTRUCTION.md) and
-[pool acquisition/map publication](behavior/EFFECT_POOL_ACQUISITION_AND_MAP_PUBLICATION.md)
+[Majinai effect construction](behavior/effect/MAJINAI_EFFECT_CONSTRUCTION.md) and
+[pool acquisition/map publication](behavior/effect/EFFECT_POOL_ACQUISITION_AND_MAP_PUBLICATION.md)
 close full local constructor/slot/helper order,payload fields and exact map+1e
 four-byte request. Pool exhaustion has no local null fallback and acquisition
 clears only the first instance-name byte. Update/draw/delete/resources/map/
 heap/platform/source and original effect/frame behavior remain open.
 
+
+[Effect soft/hard deletion](behavior/effect/EFFECT_SOFT_AND_HARD_DELETION.md) and
+[caller/name/payload lifetime](behavior/effect/EFFECT_DELETE_CALLERS_AND_LIFETIME.md)
+close full release leaves and271 scoped DOL sites (30 soft/241 hard). Corrected
+fog helper name:8005e9c0 is soft OR04 for mask02 records,not unconditional
+hard release. Update/driver/scene/backend/raw/REL and original traces remain open.
+
 ID1 flying-partner delivery (2026-10-12):
-[executor](behavior/FIELD_PARTNER_FLY_DISPATCH.md),
-[behind-fly](behavior/FIELD_PARTNER_BEHIND_FLY.md),
-[homing entry](behavior/FIELD_PARTNER_HOMING_FLY_ENTRY_AND_SPEED.md),
-[history loop](behavior/FIELD_PARTNER_HOMING_FLY_HISTORY_LOOP.md),
-[collision tail](behavior/FIELD_PARTNER_HOMING_FLY_COLLISION_TAIL.md) and
-[speed writers](behavior/FIELD_PARTNER_FLY_SPEED_WRITERS.md) specify complete
+[executor](behavior/partner/FIELD_PARTNER_FLY_DISPATCH.md),
+[behind-fly](behavior/partner/FIELD_PARTNER_BEHIND_FLY.md),
+[homing entry](behavior/partner/FIELD_PARTNER_HOMING_FLY_ENTRY_AND_SPEED.md),
+[history loop](behavior/partner/FIELD_PARTNER_HOMING_FLY_HISTORY_LOOP.md),
+[collision tail](behavior/partner/FIELD_PARTNER_HOMING_FLY_COLLISION_TAIL.md) and
+[speed writers](behavior/partner/FIELD_PARTNER_FLY_SPEED_WRITERS.md) specify complete
 local flying dispatch/two handlers/two scalar writers. Exact selector/tail
 ownership,entry placement,countdown versus history,live versus record distance,
 repeated speed effects,inherited-FPR domains,contact and publication order are
@@ -756,18 +763,11 @@ closed locally. partyFlyMain has only selected caller-tail evidence here;its
 full history writer,called engines/source/math/pose and original trajectories
 remain open. No full-system or complete-game equivalence claim follows.
 
-
-[Effect soft/hard deletion](behavior/EFFECT_SOFT_AND_HARD_DELETION.md) and
-[caller/name/payload lifetime](behavior/EFFECT_DELETE_CALLERS_AND_LIFETIME.md)
-close full release leaves and271 scoped DOL sites (30 soft/241 hard). Corrected
-fog helper name:8005e9c0 is soft OR04 for mask02 records,not unconditional
-hard release. Update/driver/scene/backend/raw/REL and original traces remain open.
-
 ID1 flying record/source delivery (2026-10-12):
-[history writer](behavior/FIELD_PARTNER_FLY_HISTORY_WRITER.md),
-[initializer](behavior/FIELD_PARTNER_FLY_HISTORY_INITIALIZATION.md),
-[callback bindings](behavior/FIELD_PARTNER_FLY_CALLBACK_BINDINGS.md) and
-[source leaves](behavior/FIELD_PARTNER_FLY_SOURCE_LEAVES.md) close seven
+[history writer](behavior/partner/FIELD_PARTNER_FLY_HISTORY_WRITER.md),
+[initializer](behavior/partner/FIELD_PARTNER_FLY_HISTORY_INITIALIZATION.md),
+[callback bindings](behavior/partner/FIELD_PARTNER_FLY_CALLBACK_BINDINGS.md) and
+[source leaves](behavior/partner/FIELD_PARTNER_FLY_SOURCE_LEAVES.md) close seven
 complete local bodies and concrete kind5/6 +8 records. Earlier selected-tail-only
 partyFlyMain coverage is superseded by this local writer recovery. Slot versus
 flag bank selection,unused/repeated pointer requests,unwrapped capacity guards,
@@ -777,17 +777,17 @@ pose/ability/terrain/original trajectories remain open;full-game documentation
 and final complete-game requirements remain incomplete.
 
 
-[Majinai update/cleanup](behavior/MAJINAI_EFFECT_UPDATE_STATE_MACHINE.md) and
-[draw/pose scalar/material requests](behavior/MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md)
+[Majinai update/cleanup](behavior/effect/MAJINAI_EFFECT_UPDATE_STATE_MACHINE.md) and
+[draw/pose scalar/material requests](behavior/effect/MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md)
 close complete local Main/Disp,four phases/soft04 cleanup,map/material state,
 exact progress thresholds/fused particle request and three draw passes. Resource/
 pose/matrix/display/driver/scene/platform and original visual/frame traces remain open.
 
 ID1 paper-form gate delivery (2026-10-12):
-[slit state machine](behavior/FIELD_PARTNER_SLIT_GATE.md),
-[roll state machine](behavior/FIELD_PARTNER_ROLL_GATE.md),
-[slit-floor/forced exit](behavior/FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md)
-and [paper wrappers](behavior/FIELD_PARTNER_PAPER_REQUEST_WRAPPERS.md) close ten
+[slit state machine](behavior/partner/FIELD_PARTNER_SLIT_GATE.md),
+[roll state machine](behavior/partner/FIELD_PARTNER_ROLL_GATE.md),
+[slit-floor/forced exit](behavior/partner/FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md)
+and [paper wrappers](behavior/partner/FIELD_PARTNER_PAPER_REQUEST_WRAPPERS.md) close ten
 complete local bodies and22 direct used bindings. Count/phase/return ownership,
 ordered headings,sign-sensitive roll exit snap,rootY slit rise,0x3c0 cleanup,
 global availability/output and guarded paper handle/name release are explicit.
@@ -795,73 +795,66 @@ Collision helper,underlying animation/resource/matrix and source/alias/numeric/
 original-runtime domains remain open. Full-game requirements remain premature.
 
 
-[Effect driver/texture cache](behavior/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md)
-and [pool/init/context release](behavior/EFFECT_POOL_INITIALIZATION_AND_CONTEXT_RELEASE.md)
+[Effect driver/texture cache](behavior/effect/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md)
+and [pool/init/context release](behavior/effect/EFFECT_POOL_INITIALIZATION_AND_CONTEXT_RELEASE.md)
 close full local traversal/cache/init/auto-release,512-record source capacity,
 four exact direct bindings and effect→animation→event teardown requests. US
 effect texture file identity is recorded;file/TPL/pose/display/platform/scene/
 source and original update/resource/frame traces remain open.
 
-ID1 slit collision/math delivery (2026-10-12):
-[slit collision](behavior/FIELD_PARTNER_SLIT_COLLISION.md),
-[simple camera direction](behavior/FIELD_SIMPLE_CAMERA_DIRECTION.md) and
-[system angle table](behavior/FIELD_SYSTEM_ANGLE_TABLE.md) close three new local
-algorithms. Six maximum ordered/filtered probes,first-hit side ownership,raw
-normalXZ arithmetic-average gate,no output correction,camera quantization and
-91-coefficient quadrant/zero-vector rules are explicit. Existing filter contracts
-are reused;full backend/source/numeric/original-runtime domains remain open.
 
-[US message inventory correction](behavior/US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md)
-rechecks260 resources/13186 actual key/text pairs. Newly generated filename-ID/
-identifier-only/story-prefix claims do not supersede recovered loader/lookup
-contracts or establish dialogue/story coverage. Final full-game requirements
-remain premature.
-
-[Formatted file forwarding](behavior/FILE_FORMATTED_REQUEST_FORWARDING.md) and
-[handle release/cache ownership](behavior/FILE_HANDLE_RELEASE_AND_EFFECT_CACHE_OWNERSHIP.md)
+[Formatted file forwarding](behavior/file/FILE_FORMATTED_REQUEST_FORWARDING.md) and
+[handle release/cache ownership](behavior/file/FILE_HANDLE_RELEASE_AND_EFFECT_CACHE_OWNERSHIP.md)
 close complete Asyncf/Allocf/direct allocation wrappers and signed-halfword
 reference release. Shared1024-byte filename,original varargs/forwarding order
 and state2 without deallocation are explicit. Underlying resource/I/O/cache/
 collection/TPL/platform/scene and original traces remain open.
 
+ID1 slit collision/math delivery (2026-10-12):
+[slit collision](behavior/partner/FIELD_PARTNER_SLIT_COLLISION.md),
+[simple camera direction](behavior/camera/FIELD_SIMPLE_CAMERA_DIRECTION.md) and
+[system angle table](behavior/field/FIELD_SYSTEM_ANGLE_TABLE.md) close three new local
+algorithms. Six maximum ordered/filtered probes,first-hit side ownership,raw
+normalXZ arithmetic-average gate,no output correction,camera quantization and
+91-coefficient quadrant/zero-vector rules are explicit. Existing filter contracts
+are reused;full backend/source/numeric/original-runtime domains remain open.
+
+[US message inventory correction](behavior/meta/US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md)
+rechecks260 resources/13186 actual key/text pairs. Newly generated filename-ID/
+identifier-only/story-prefix claims do not supersede recovered loader/lookup
+contracts or establish dialogue/story coverage. Final full-game requirements
+remain premature.
+
 ID2 shared-file acquisition delivery (2026-10-12):
-[cache/reference/publication](behavior/FILE_ACQUISITION_AND_REFERENCE_REUSE.md)
-and [archive/DVD requests](behavior/FILE_ARCHIVE_AND_DVD_ACQUISITION_REQUESTS.md)
+[cache/reference/publication](behavior/file/FILE_ACQUISITION_AND_REFERENCE_REUSE.md)
+and [archive/DVD requests](behavior/file/FILE_ARCHIVE_AND_DVD_ACQUISITION_REQUESTS.md)
 close _fileAlloc,arcOpen and five narrow SDK/DVD leaves. Filename-only reuse,
 pending yield,state2/3 count differences,retained available node,live manager
 publication,identical archive retries,holder indirection and deferred close are
 explicit. Async/collection/relocation/TPL/source/platform/original traces remain open.
 
 ID2 async-file delivery (2026-10-12):
-[request/cache publication](behavior/FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md)
-and [completion/request state](behavior/FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md)
+[request/cache publication](behavior/file/FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md)
+and [completion/request state](behavior/file/FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md)
 close fileAsync,dvdReadDoneCallBack and DVDMgrReadAsync. Raw-1 versus pending0,
 state3/count0 preload,archive live-head versus retained DVD link,-3-only failure,
 signed-byte relocation type,pending-clear/close/live user-callback order and flag
 reread are explicit. Worker/collection/relocation/TPL/source/runtime remain open.
 
 ID2 file collection/init delivery (2026-10-12):
-[preload aging/collection](behavior/FILE_CACHE_COLLECTION_AND_PRELOAD_AGING.md)
-and [pool/init/mode](behavior/FILE_CACHE_POOL_INITIALIZATION.md) close four local
+[preload aging/collection](behavior/file/FILE_CACHE_COLLECTION_AND_PRELOAD_AGING.md)
+and [pool/init/mode](behavior/file/FILE_CACHE_POOL_INITIALIZATION.md) close four local
 bodies. Mode0 worker flags overwrite,mode1 initially-pending wait without aging,
 signed count<=-2,state2 collection/holder routing/live unlink/retained traversal,
 1024*176 heap0 clear/link and17 direct DOL sites are explicit. Smart heap/worker/
 relocation/TPL/source/platform/scene/original traces remain open.
 
-ID2 smart release delivery (2026-10-12):
-[header release/accounting](behavior/SMART_HEADER_RELEASE_AND_SPACE_ACCOUNTING.md)
-and [automatic tag release](behavior/SMART_AUTOMATIC_TAG_RELEASE.md) close
-smartFree/smartAutoFree. Tag4→3 deferral,no heap deallocation,live unlink/space/
-free-list/count updates,stale payload and low16 first-pass versus full-word3
-second-pass policy are explicit. Allocation/compaction/relocation/tag/source/
-scene/platform/original traces remain open.
-
 ID1 partner presentation delivery (2026-10-12):
-[pre-display](behavior/FIELD_PARTNER_PRE_DISPLAY.md),
-[pose selection](behavior/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),
-[facing](behavior/FIELD_PARTNER_DISPLAY_FACING.md),
-[matrix/draw requests](behavior/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md) and
-[Vivian/shadows](behavior/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md)
+[pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),
+[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),
+[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),
+[matrix/draw requests](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md) and
+[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md)
 close eight complete local bodies. Pending name/paper markers,frame setup,
 animation-before-render gate,depth/registration,trailing rays/shadow source,
 ordered aliased transforms,two draw calls and post-draw rate are specified.
@@ -870,18 +863,26 @@ composition remains open. Partners/NPCs register now reflects partial local
 coverage,not full-system closure. Unvalidated BTLNO name associations remain
 superseded by the message-resource correction;final game requirements deferred.
 
+ID2 smart release delivery (2026-10-12):
+[header release/accounting](behavior/memory/SMART_HEADER_RELEASE_AND_SPACE_ACCOUNTING.md)
+and [automatic tag release](behavior/memory/SMART_AUTOMATIC_TAG_RELEASE.md) close
+smartFree/smartAutoFree. Tag4→3 deferral,no heap deallocation,live unlink/space/
+free-list/count updates,stale payload and low16 first-pass versus full-word3
+second-pass policy are explicit. Allocation/compaction/relocation/tag/source/
+scene/platform/original traces remain open.
+
 ID2 smart compaction delivery (2026-10-12):
-[compactor/pending barriers](behavior/SMART_HEAP_COMPACTION_AND_PENDING_FILES.md)
-and [file payload/address requests](behavior/FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md)
+[compactor/pending barriers](behavior/memory/SMART_HEAP_COMPACTION_AND_PENDING_FILES.md)
+and [file payload/address requests](behavior/file/FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md)
 close smartGarbage/fileGarbageMoveMem. Draw-sync request,equal-address bypass,
 nonworker pending barriers,worker retarget,live holders/next/gaps,tail/full-arena
 flush and separate clear ENTRY/setup PAYLOAD arguments are explicit. Relocation/
 allocator/worker/cache/platform/source/scene/original traces remain open.
 
 ID1 animation setter closure (2026-10-12):
-[selector/restart](behavior/ANIMATION_SELECTOR_AND_RESTART.md),
-[paper-group reuse](behavior/ANIMATION_PAPER_GROUP_REUSE.md),
-[local time/clock](behavior/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md)
+[selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),
+[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),
+[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md)
 close five complete used local service bodies. Signed selector encoding,forced
 restart,group reuse/failure,shared/linked timestamp publication and rate writes
 are implementation contracts;clock/conversion/resource/Main/draw/lifecycle/
@@ -889,9 +890,24 @@ original visual domains remain open. 299 direct DOL sites are references,not
 an original runtime census or complete animation system.
 
 ID2 smart allocation delivery (2026-10-12):
-[header/gap placement](behavior/SMART_ALLOCATION_HEADER_AND_GAP_PLACEMENT.md)
-and [retry/failure ownership](behavior/SMART_ALLOCATION_RETRIES_AND_FAILURE_OWNERSHIP.md)
+[header/gap placement](behavior/memory/SMART_ALLOCATION_HEADER_AND_GAP_PLACEMENT.md)
+and [retry/failure ownership](behavior/memory/SMART_ALLOCATION_RETRIES_AND_FAILURE_OWNERSHIP.md)
 close smartAlloc. First flag/auto3,release-counter sync/reset,unguarded header
 reservation,word-wrap alignment,leading/first-fit gaps,three tail-only retries
 and failure without header restoration are explicit. e018 stock-count wording
 is corrected. Arena/relocation/worker/platform/source/runtime remain open.
+
+ID2 smart initialization delivery (2026-10-12):
+[arena/header initializer](behavior/memory/SMART_ARENA_AND_HEADER_INITIALIZATION.md)
+and [scoped provisioning requirements](behavior/memory/SMART_RESOURCE_PROVISIONING_REQUIREMENTS.md)
+close smartInit. Heap-index4 request,conditional first/unconditional second
+clear,2048*28 header links/live endpoints and flag/counter reset are explicit.
+Full-game RAM/requirements and heap/platform/source/runtime remain open.
+
+ID2 relocation dispatch/flat delivery (2026-10-12):
+[dispatch/type map](behavior/file/FILE_RELOCATION_TYPE_DISPATCH.md) and
+[flat pointer handlers](behavior/file/FILE_FLAT_POINTER_RELOCATION.md) supply
+all11 routes and eight complete flat Set/Clear blocks. Clear resolves holder
+before type rejection;unsigned first-field guards,retained first value,ordered
+uniform arithmetic and no null preservation are explicit. Nested4/5 handlers,
+source formats/consumers/platform/original runtime remain open.

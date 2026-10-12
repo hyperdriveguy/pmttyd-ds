@@ -31,7 +31,7 @@ struct TimingAContext {
 };
 
 // Local US ID1 callback contract; presentation, script cadence and impact
-// alignment belong to callers. See docs/behavior/BATTLE_TIMING_A_COMMAND.md.
+// alignment belong to callers. See docs/behavior/battle/BATTLE_TIMING_A_COMMAND.md.
 struct TimingACommand {
     int32_t state = 0, count = 0, classification = 0, finishCountdown = 0;
     uint32_t result = 0, flags = 0;

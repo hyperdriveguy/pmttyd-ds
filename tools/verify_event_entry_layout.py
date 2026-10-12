@@ -25,6 +25,17 @@ SUITES = (
 )
 
 
+def _behavior_contract(root,name):
+    """Locate a behavior contract by basename in the subsystem folder tree."""
+    direct=root/'docs/behavior'/name
+    if direct.is_file():
+        return direct
+    matches=list((root/'docs/behavior').rglob(name))
+    if len(matches)!=1:
+        raise ValueError(f'Expected exactly one behavior contract named {name}, found {len(matches)}')
+    return matches[0]
+
+
 def verify(iso):
     root=Path(__file__).resolve().parent.parent
     layout=json.loads((root/'tools/event_entry_layout.json').read_text())
@@ -40,11 +51,11 @@ def verify(iso):
         next_offset+=field['size']
         if field['access']=='unknown raw bytes':
             raw_bytes+=field['size']
-        if not (root/'docs/behavior'/field['contract']).is_file():
+        if not _behavior_contract(root,field['contract']).is_file():
             raise ValueError(f'Missing evidence contract: {field["contract"]}')
     if next_offset!=layout['stride'] or raw_bytes!=44:
         raise ValueError('Entry extent/raw span accounting differs')
-    document=(root/'docs/behavior/EVENT_ENTRY_PACKED_LAYOUT.md').read_text()
+    document=_behavior_contract(root,'EVENT_ENTRY_PACKED_LAYOUT.md').read_text()
     rows=re.findall(r'^\| ([0-9a-f]{3}(?:\.\.[0-9a-f]{3})?) \| (\d+) \| ([^|]+) \| ([^|]+) \|',document,re.MULTILINE)
     expected=[]
     for field in layout['fields']:

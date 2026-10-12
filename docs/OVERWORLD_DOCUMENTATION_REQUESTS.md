@@ -7,7 +7,7 @@ ownership or full-game completion claim is made.
 
 ## OW-MOVE-01 — Ordinary Mario movement state and current input
 
-Partial answer: [ordinary movement contract](behavior/OVERWORLD_MARIO_MOVEMENT.md).
+Partial answer: [ordinary movement contract](behavior/overworld/OVERWORLD_MARIO_MOVEMENT.md).
 Read-only US ISO pins sixteen containing bodies, eighteen instruction anchors and
 six constants through `tools/verify_overworld_mario_movement.py`. Delivered exact
 ordinary key→stick-query→motion→movement ordering, same-call motion dispatch,
@@ -72,7 +72,7 @@ rules/dialogue to close missing contracts. Preserve static/runtime boundaries.
 
 ## OW-WALL-01 — Swept directional movement and sliding
 
-Delivered [ordinary wall movement contract](behavior/OVERWORLD_WALL_MOVEMENT.md)
+Delivered [ordinary wall movement contract](behavior/overworld/OVERWORLD_WALL_MOVEMENT.md)
 and `tools/verify_overworld_wall_movement.py`. Static source contract closes
 ordinary forward ray heights/length, closest Qdistance/normal selection, whole-
 vector half tangent, ordered +/-45 side guards with second-pass last-token tail,
@@ -120,7 +120,7 @@ by the overworld session;no field code was changed by the event session.
 
 ### OW-MOVE-01 plain simultaneous-input closure
 
-Delivered [ordinary motion arbitration](behavior/OVERWORLD_MOTION_ARBITRATION.md)
+Delivered [ordinary motion arbitration](behavior/overworld/OVERWORLD_MOTION_ARBITRATION.md)
 and `tools/verify_overworld_motion_arbitration.py`:20 containing bodies,94
 instruction anchors,15 data spans including original motion main/post rows.
 The previous local pending-jump-overwrite question is closed in the bounded
@@ -149,9 +149,9 @@ movement remains separate; this slice makes no partner ownership claims.
 
 ## OW-SUPPORT-01 — Direction rate, slope record, support and stairs
 
-Delivered [direction movement rate](behavior/OVERWORLD_DIRECTION_MOVEMENT_RATE.md)
+Delivered [direction movement rate](behavior/overworld/OVERWORLD_DIRECTION_MOVEMENT_RATE.md)
 with its6-body/27-anchor/eight-constant verifier, and
-[support/slopes/upstairs contract](behavior/OVERWORLD_SUPPORT_SLOPES_AND_STEPS.md)
+[support/slopes/upstairs contract](behavior/overworld/OVERWORLD_SUPPORT_SLOPES_AND_STEPS.md)
 with13-body/132-anchor/24-span verifier after the back-face normal and
 partial-angle-write addendum. Both inspect US ISO read-only.
 
@@ -191,7 +191,7 @@ Requested the documentation agent's next missing ordinary-air contract:
 mot_jump/mot_fall phases and retained signed counter, pending10/11 entry,
 motion3 descent, marioJump/marioFall/marioChkLandon query composition, and
 landing tuple/angle/node ownership. Delivered
-[ordinary airborne/landing contract](behavior/OVERWORLD_AIRBORNE_AND_LANDING.md)
+[ordinary airborne/landing contract](behavior/overworld/OVERWORLD_AIRBORNE_AND_LANDING.md)
 in35f82d8 with a4df746/ce29235 addenda. Native97fd570 and db71cca bind separate
 motion/flags/pending/phase/countdown/counters, retained fall entry, apex versus
 ceiling sequencing, authoritative D=V/V=V landing, query-owned slope writes,
@@ -208,7 +208,7 @@ admission, preserving root/tuple/flags/counter on that path. Next manager dispat
 owns ground entry; walk/dash retain tuple/counter and the front-step counter gate.
 The head X copy is an identity in this domain; the leaf only writes local Y.
 
-Next native binding: [Rogueport roads](behavior/OVERWORLD_ROGUEPORT_ROADS.md),
+Next native binding: [Rogueport roads](behavior/overworld/OVERWORLD_ROGUEPORT_ROADS.md),
 delivered2f88fc4. Exact node contacts and source registration attribute overlays
 must replace radius/dot/cooldown guesses; preserve documented story callbacks
 and distinguish the station north train door from an ordinary road. Camera

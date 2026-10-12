@@ -38,6 +38,33 @@ No original-game audible equivalence/hardware/all-cue validation is claimed;
 see AUDIO_MAPPING.md and the progress follow-up for exact measurements/logs.
 
 
+## Original event script assets (2026-10-12)
+
+`make event-assets` reads /home/carson/games/roms/G8ME01.iso read-only and uses
+ignored artifacts/reference/us_symbols.csv to verify original DOL address/file
+mapping. tools/pack_event_scripts.py pins the three default streams:
+ordinary Jump80355cf0/f0c,power-check child80363388/8c,and badge tail8034f2e4/1e8.
+Their314 commands/raw operands remain big-endian and unmodified. Four original
+bytes AFTER each symbol are retained because label construction reads the
+terminal operand unconditionally. Matching overlap/adjacent intervals are merged;
+no inferred zero padding,dialogue generation or control-token rewriting occurs.
+
+Ignored outputs:local-assets/events/jump.pmevt(.json),and
+romfs/events.pmevt(.json) from the Make target. Both packs are4540 bytes with
+SHA2565429b0beab40e4af68725a87c0ee8b2f73df9fe67986d55affcc7eb9d7042c70.
+PMEVT001 is a port container with sorted original-address ranges and canonical
+file extents. Native event_script_assets.cpp reads original bytes/words;addresses
+are never cast to host pointers. Manifest retains per-stream/segment hashes,
+addresses,annotations,source identity and explicit extraction limits. Pack and
+manifest stay outside source history;local3dsx embeds the RomFS data.
+
+Original Nintendo/Intelligent Systems game data;no redistribution rights granted.
+The ISO remains unchanged and untracked. Parser/reader/tooling is authored port
+code;no original executable function or ISO was committed. Default source hashes
+match supplied US revision0;Jump/badge match their behavior verifier fingerprints.
+This is asset import,not proof of original callback registration/entry owners or
+executed gameplay. Native storage/registry/time/FPSCR/heap services remain next.
+
 ## Sound mapping and GameCube native fallbacks (2026-10-12)
 
 [Audio mapping](AUDIO_MAPPING.md) documents a reproducible catalog of3,218 named
@@ -74,33 +101,6 @@ implementation was copied/compiled. NintendoWare sources/licenses remain as
 recorded in switch/AUDIO_ASSETS.md. All source inputs were read-only;the automated
 emulator used only the project-local isolated profile and test saves.
 
-
-## Original event script assets (2026-10-12)
-
-`make event-assets` reads /home/carson/games/roms/G8ME01.iso read-only and uses
-ignored artifacts/reference/us_symbols.csv to verify original DOL address/file
-mapping. tools/pack_event_scripts.py pins the three default streams:
-ordinary Jump80355cf0/f0c,power-check child80363388/8c,and badge tail8034f2e4/1e8.
-Their314 commands/raw operands remain big-endian and unmodified. Four original
-bytes AFTER each symbol are retained because label construction reads the
-terminal operand unconditionally. Matching overlap/adjacent intervals are merged;
-no inferred zero padding,dialogue generation or control-token rewriting occurs.
-
-Ignored outputs:local-assets/events/jump.pmevt(.json),and
-romfs/events.pmevt(.json) from the Make target. Both packs are4540 bytes with
-SHA2565429b0beab40e4af68725a87c0ee8b2f73df9fe67986d55affcc7eb9d7042c70.
-PMEVT001 is a port container with sorted original-address ranges and canonical
-file extents. Native event_script_assets.cpp reads original bytes/words;addresses
-are never cast to host pointers. Manifest retains per-stream/segment hashes,
-addresses,annotations,source identity and explicit extraction limits. Pack and
-manifest stay outside source history;local3dsx embeds the RomFS data.
-
-Original Nintendo/Intelligent Systems game data;no redistribution rights granted.
-The ISO remains unchanged and untracked. Parser/reader/tooling is authored port
-code;no original executable function or ISO was committed. Default source hashes
-match supplied US revision0;Jump/badge match their behavior verifier fingerprints.
-This is asset import,not proof of original callback registration/entry owners or
-executed gameplay. Native storage/registry/time/FPSCR/heap services remain next.
 
 ## Switch 1.0.0 audio extraction (2026-10-12)
 
@@ -1221,7 +1221,7 @@ Full backend geometry/domain/runtime behavior remains separate from identities.
 ## US-default disc-thread system-message resources (ID2,2026-10-12)
 
 Read-only source:/home/carson/games/roms/G8ME01.iso,US G8ME01 disc0/revision0.
-[Presentation contract](behavior/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md)
+[Presentation contract](behavior/platform/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md)
 records original DOL language table slot1 and codes10..13 at virtual803019a0,
 803019f8,80301a3c,80301aac;ISO offsets31eca0,31ecf8,31ed3c,31edac;lengths
 87/67/109/123 bytes including NUL. Exact source SHA256 values are in that contract
@@ -1472,7 +1472,7 @@ was performed;native TPL indexing/palette/filter/resource consumers remain open.
 Reuse the original source through the documented asset provider;do not commit
 or distribute the ISO/extracted TPL/compiled packs. Original Nintendo/Intelligent
 Systems data;this project records no redistribution licence or rights transfer.
-See [driver/cache source](behavior/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md).
+See [driver/cache source](behavior/effect/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md).
 
 ## 2026-10-12 — Contact/shift and full camera geometry native binding
 
@@ -1513,17 +1513,6 @@ remains a separate owner. Capture review identified existing cropped actor atlas
 root/scale loss; no actor rebake is claimed yet. Original licensing/local-only
 provenance remains unchanged.
 
-## 2026-10-12 — Recovery projection and actor-bake preflight
-
-Native8ee75c4 changes recovery mechanics/camera publication without changing
-RomFS conversions or original pack bytes. Read-only actor preflight extracted
-ISO a/a_mario and a/a_mario- to /tmp/pm-mario-root-bake/a_mario and a_mario.tpl;
-character_bake produced temporary idle.png from M_Z_1 frame0 (102 triangles),
-matching documented model bounds. This scratch bake was inspected only; atlas
-root/scale metadata and native quads still need conversion. Scratch/original
-bytes stay outside Git. Existing source licensing/local-use attribution applies;
-no generated replacement art, music or sounds were introduced.
-
 ID1 partner pre-display/pose/draw evidence/build provenance (2026-10-12):
 read-only /home/carson/games/roms/G8ME01.iso US disc0 revision0 supplied complete
 local pre-display/draw/facing/pose and HP/color/Vivian-tail predicate bodies.
@@ -1541,6 +1530,17 @@ and RomFS WAV/audio-map.json derivatives remain unstaged. Original rights remain
 with their owners;local analysis/conversion grants no redistribution license.
 Exact build log:/tmp/id1-predisplay-build.log.
 
+## 2026-10-12 — Recovery projection and actor-bake preflight
+
+Native8ee75c4 changes recovery mechanics/camera publication without changing
+RomFS conversions or original pack bytes. Read-only actor preflight extracted
+ISO a/a_mario and a/a_mario- to /tmp/pm-mario-root-bake/a_mario and a_mario.tpl;
+character_bake produced temporary idle.png from M_Z_1 frame0 (102 triangles),
+matching documented model bounds. This scratch bake was inspected only; atlas
+root/scale metadata and native quads still need conversion. Scratch/original
+bytes stay outside Git. Existing source licensing/local-use attribution applies;
+no generated replacement art, music or sounds were introduced.
+
 ID1 animation setter evidence/build provenance (2026-10-12):US G8ME01 ISO
 opened read-only. Five original local bodies and their299 direct DOL references
 are pinned as metadata. Original binary32 zero0x8041fb28 and factor
@@ -1554,3 +1554,15 @@ fallbacks. Existing local-assets/audio-map raw/catalog and RomFS WAV/audio-map.j
 outputs unstaged;no ID1 conversion policy change. Original rights remain with
 owners;local analysis grants no redistribution license. Exact log:
 /tmp/id1-animation-build.log.
+
+## 2026-10-12 — Camera event services and ordinary actor pose preflight
+
+Nativee278068 adds camera blend/dolly/interpolation services without changing
+original asset conversion or RomFS pack bytes. Documentation identified ordinary
+Mario idle as M_S_1; an additional read-only preflight using the scratch
+/tmp/pm-mario-root-bake/a_mario +a_mario.tpl produced ordinary-idle.png from that
+pose's frame0. Bounds/102 triangles match the previous M_Z_1 scratch geometry,
+but those names are distinct pose requests and must not be substituted. Front/
+rear pose and frame ownership research continues before atlas/root conversion.
+No original scratch images/models, converted packs or compiled output were
+committed; existing local-only ownership/licensing remains unchanged.

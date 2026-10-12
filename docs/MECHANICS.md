@@ -858,7 +858,7 @@ untraced. This corrects the existing GameCube-native prototype comparison.
 
 ## Ordinary air momentum and corrected jump startup (2026-10-12)
 
-The [overworld movement contract](behavior/OVERWORLD_MARIO_MOVEMENT.md) supersedes
+The [overworld movement contract](behavior/overworld/OVERWORLD_MARIO_MOVEMENT.md) supersedes
 this ledger's earlier first-integration-at-counter3 interpretation. mot_jump's
 launch call decrements countdown2 to1 and records counter1 with phase0; the next
 call enters phase10/counter2. marioJump gates on phase<10, not counter<3. Released
@@ -1003,3 +1003,20 @@ freeze. Numeric SDK/clock/viewport adapters, exact motion scheduler admission,
 NPC event/partner services, original effects/audio and original traces remain
 separate requirements. No Dolphin observation or full recovery equivalence is
 claimed; the old camera-freeze inference below is corrected.
+
+## 2026-10-12 — Ordinary camera event consumer and retained load state
+
+Nativee278068 binds source targetB-before-road, percentage-dolly-after-road and
+viewA-after-dolly ordering from camera/OVERWORLD_CAMERA_DOLLY_AND_EVENT_BLENDS.md.
+Source preset stateA3 skips shift-main/road but posts afterward; flags2 skips the
+whole callback. Strict timer crossing and source intpl built-ins0..13 preserve
+ordered formulas/no generic clamp/approximate endpoints. Unknown callback modes
+are unsupported, not linear fallbacks. Basic set/off target/view methods snapshot
+the actual source logical inputs and use the native simulation-ms bridge. Source
+raw OS ticks, pause gates and durationLow/timebase arithmetic remain unbound;
+these ms ratios are numerical/time-service adaptations rather than parity.
+Room loads retain Bstate/anchors/times/dolly, stored/preset/actual views and live
+near/far, reset documented curves/progress/FOV25 and clearflag10. Actual original
+EVT operand marshaling, story request execution, other camera producers and
+SDK/Gekko view/projection parity remain required. Native tests prove service
+ordering/state lifetime and ordinary traversal, not original scene equivalence.

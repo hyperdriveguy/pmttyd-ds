@@ -18,93 +18,95 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Animation Main evaluation and linked-paper time/data graph | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover animPoseMain entry/time/link/cache/sample/deformation ordering used by partner/Mario;resource/pool/draw/SDK/platform/source/runtime remain separate |
-| Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
-| Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
-| Smart-heap compaction and file-move requests | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Compactor/barriers](behavior/SMART_HEAP_COMPACTION_AND_PENDING_FILES.md),[file move/address requests](behavior/FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md):complete two bodies,draw-sync/equal-address bypass/nonworker pending barrier/worker retarget/live holders/gaps/full-arena flush;type relocation/allocator/platform/source/runtime remain separate;prior host camera assertion resolved by current68-suite run |
-| Smart allocation placement and retry/header publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Header/gap placement](behavior/SMART_ALLOCATION_HEADER_AND_GAP_PLACEMENT.md),[retry/failure](behavior/SMART_ALLOCATION_RETRIES_AND_FAILURE_OWNERSHIP.md):complete smartAlloc,first flag/auto3,release-counter sync/reset,header reservation/word alignment/unsigned leading-firstfit/three tail-only retries/no failed-header restoration;arena init/type relocation/platform/source/runtime remain separate |
-| Smart allocation header release and file ownership | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Header release/accounting](behavior/SMART_HEADER_RELEASE_AND_SPACE_ACCOUNTING.md),[automatic tag release](behavior/SMART_AUTOMATIC_TAG_RELEASE.md):complete smartFree/smartAutoFree,4→3 deferral,no heap free,live unlink/gap/free-header/count writes,low16 versus full-word3 passes;allocator/compaction/relocation/platform/source/runtime remain separate |
-| File-cache collection and initialization | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Collection/aging](behavior/FILE_CACHE_COLLECTION_AND_PRELOAD_AGING.md),[pool/init/mode](behavior/FILE_CACHE_POOL_INITIALIZATION.md):complete four bodies,worker flags overwrite,ready-count aging versus pending wait,state2 holder routing/live lists,1024*176 raw pool/17 DOL calls;smart heap/relocation/DVD worker/TPL/platform/source/runtime remain separate |
-| Async file request and completion publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Request/cache](behavior/FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md),[completion/request state](behavior/FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md):complete fileAsync/callback/DVD request leaf,raw-1,state3/count0,archive live-head publication,-3-only failure,signed relocation/pending-clear/deferred-close/live callback;worker/collection/relocation/TPL/platform/source/runtime remain separate |
-| Shared file acquisition and cache lookup | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Cache/reference/publication](behavior/FILE_ACQUISITION_AND_REFERENCE_REUSE.md),[archive/DVD requests](behavior/FILE_ARCHIVE_AND_DVD_ACQUISITION_REQUESTS.md):complete _fileAlloc/arcOpen/five leaves,filename-only reuse,pending yield,state2/3 counts,identical archive retries,holder/deferred close/live lists;async/collection/relocation/TPL/platform/source/runtime remain separate |
-| Formatted file requests and file-handle release semantics | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Formatting/forwarding](behavior/FILE_FORMATTED_REQUEST_FORWARDING.md),[release/ownership](behavior/FILE_HANDLE_RELEASE_AND_EFFECT_CACHE_OWNERSHIP.md):complete four local bodies,shared buffer/original varargs/order and signed16 state2 release without deallocation;underlying async/load/cache/TPL/platform/source/runtime remains separate |
-| Slit collision admission helper and camera-direction binding | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Collision](behavior/FIELD_PARTNER_SLIT_COLLISION.md),[camera direction](behavior/FIELD_SIMPLE_CAMERA_DIRECTION.md),[system angle table](behavior/FIELD_SYSTEM_ANGLE_TABLE.md):complete local probe/order/filter/normal-pair/return and two math graphs;backend/source/alias/numeric/original trajectories remain separate |
-| Effect driver update,auto-release and pool initialization | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Driver/cache](behavior/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md),[pool/init/release](behavior/EFFECT_POOL_INITIALIZATION_AND_CONTEXT_RELEASE.md):full local context/active callback loop/cache captures,512 records/heap0/live clear,N64 reset/hard context release/four DOL bindings/US TPL identity;file/TPL/animation/display/scene/platform/source/runtime remains open |
-| Partner slit and roll gates,slit-floor and forced-exit bindings | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Slit](behavior/FIELD_PARTNER_SLIT_GATE.md),[roll](behavior/FIELD_PARTNER_ROLL_GATE.md),[floor/forced exit](behavior/FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md),[paper wrappers](behavior/FIELD_PARTNER_PAPER_REQUEST_WRAPPERS.md):ten complete local bodies,return/count/phase/mask/resource/handle graph and22 direct sites;collision helper/animation/source/terrain/numeric/original trajectories remain separate |
-| Majinai effect update,soft-request consumption and draw requests | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Main/cleanup](behavior/MAJINAI_EFFECT_UPDATE_STATE_MACHINE.md),[Disp/pose leaves](behavior/MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md):complete local four-phase/soft04/map/material/alpha/fused particle/three-pass graph and leaves;animation/resource/matrix/display/driver/platform/source/runtime remains open |
-| Flying history production,initialization and source bindings | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Writer](behavior/FIELD_PARTNER_FLY_HISTORY_WRITER.md),[initializer](behavior/FIELD_PARTNER_FLY_HISTORY_INITIALIZATION.md),[Cloud/Vivian callbacks](behavior/FIELD_PARTNER_FLY_CALLBACK_BINDINGS.md),[source leaves](behavior/FIELD_PARTNER_FLY_SOURCE_LEAVES.md):seven complete local bodies,kind5/6 binding records,four actual writer/init sites;animation/ability/terrain/source/alias/numeric/original trajectories remain separate |
-| Effect soft/hard deletion and payload-release ownership | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete leaves](behavior/EFFECT_SOFT_AND_HARD_DELETION.md),[caller/name/fog lifetime](behavior/EFFECT_DELETE_CALLERS_AND_LIFETIME.md):soft02→OR04 versus hard heap3 free→flags0,raw Maya pointer,all271 DOL sites and fog-name correction;update/draw/driver/scene/raw/REL/runtime remains open |
-| Majinai effect construction,pool acquisition and map-word publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Constructor/payload](behavior/MAJINAI_EFFECT_CONSTRUCTION.md),[pool/map helpers](behavior/EFFECT_POOL_ACQUISITION_AND_MAP_PUBLICATION.md):full local order,heap3/count reread,partial name clear,exhaustion/no-null guard and map+1e WORD publication;main/draw/delete/resource/platform/source/runtime remains open |
-| Partner flyMain dispatch and flying movement handlers | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Fly dispatch](behavior/FIELD_PARTNER_FLY_DISPATCH.md),[behind-fly](behavior/FIELD_PARTNER_BEHIND_FLY.md),[homing entry](behavior/FIELD_PARTNER_HOMING_FLY_ENTRY_AND_SPEED.md),[history loop](behavior/FIELD_PARTNER_HOMING_FLY_HISTORY_LOOP.md),[collision tail](behavior/FIELD_PARTNER_HOMING_FLY_COLLISION_TAIL.md),[speed writers](behavior/FIELD_PARTNER_FLY_SPEED_WRITERS.md):complete local five-body graph,nine direct-site census;flying writer/init now [delivered](behavior/FIELD_PARTNER_FLY_HISTORY_WRITER.md);other motion/pose/terrain/source/numeric/original trajectories remain open |
-| Battle fortune producer and pouch reset/random-selection policy | EVT-01, JUMP-01, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete producer](behavior/BATTLE_FORTUNE_PRODUCER.md),[init/call/RNG accounting](behavior/BATTLE_FORTUNE_INIT_AND_CALL_BINDINGS.md):signed countdown/sticky mode,inline setup-mask20 thresholds,word compare before byte store and two direct bindings;field assignment/save/setup/turn/consumer/runtime remains open |
-| Jump Majinai power-check child and local result/effect callbacks | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Power graph/consumption](behavior/JUMP_MAJINAI_POWER_CHECK_CHILD.md),[effect/nested sources](behavior/JUMP_MAJINAI_EFFECT_AND_NESTED_SOURCES.md):full14/12/17-command graphs,query/Done/EndCheck/name polling/ftomsec and five original keys;additional spans/three callbacks,fortune producer/render/audio/message/backend/runtime remain open |
-| General partner placement writer and placement4 fallback | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/admission](behavior/FIELD_PARTNER_GENERAL_PLACEMENT.md),[fallback/output](behavior/FIELD_PARTNER_GENERAL_PLACEMENT_FALLBACK.md),[trig/plane leaves](behavior/FIELD_MOVEMENT_TRIG_AND_PLANE_LEAVES.md):complete local writer and used leaves,eight direct caller census;other caller bindings/backend/libm/source/alias/runtime remain open |
-| WorkInit exact snapshot clear and preserved-byte map | INPUT-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete reset/raw map](behavior/BATTLE_PAD_RESET_AND_RAW_PRESERVATION.md):snapshot0..a clear/b preserved,release/raw-tail preservation,interleaved history/phase store order and updater prior-copy distinction;physical polling/SDK/source/runtime remains open |
-| Jump unit-data child key7 and continuation service | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete data-child/Mario source](behavior/BATTLE_UNIT_DATA_CHILD_CONTINUATION.md),[all actor selectors/system query](behavior/BATTLE_ACTOR_SELECTOR_TRANSLATION.md):key7→80416bd0 DELETE child,parent wait/post-constructor actor/255,ordered queries closed;extra source span requested,dynamic writers/backend/runtime remain open |
-| Partner placement4 recovery search and failure output | AC-01, AC-03 | VALIDATED local body / lock released, 2026-10-12 | Documentation agent ID 1 | [Search/output](behavior/FIELD_PARTNER_PLACEMENT4.md),[exact angle/stack layout](behavior/FIELD_PARTNER_PLACEMENT4_ANGLE_LAYOUT.md):complete local seeded/accumulating/ray/admission/exhaustion-request graph;general writer local graph now [delivered](behavior/FIELD_PARTNER_GENERAL_PLACEMENT.md);backend/source/alias/numeric/original traces remain separate |
-| Ordinary Jump root registration and callback-address census | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Conditional root/source binding](behavior/NORMAL_JUMP_ROOT_REGISTRATION.md),[complete scoped registry](behavior/NORMAL_JUMP_CALLBACK_REGISTRY.md):root10/flags0/typeef/context/ID/speed/actor order,three child wrappers,156 direct sites/72 callbacks;requested-enum run-check correction flagged;menu/global/raw/dynamic/source/backend/runtime remains open |
-| SDK descriptor and primary-map live read-order addendum | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Exact live order](behavior/SDK_HEAP_BOOTSTRAP_LIVE_READ_ORDER.md):InitAlloc live count/base/final base with retained original product,CreateHeap post-header size reread,both primary start→end→handle before length publication;native arena/alias/source/runtime remains open |
-| Partner fall handler entry,air and landing ownership | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Air](behavior/FIELD_PARTNER_FALL_AIR.md),[landing](behavior/FIELD_PARTNER_FALL_LANDING.md),[facing](behavior/FIELD_PARTNER_FALL_FACING.md):complete local query/default/update/recovery/landing/return and facing graph answered;full placement4/pose/source/numeric/EVT-01 and original trajectories remain open |
-| Consolidated packed EventEntry map and address-alias requirements | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete432-byte map](behavior/EVENT_ENTRY_PACKED_LAYOUT.md),[address/alias requirements](behavior/EVENT_ENTRY_ADDRESS_AND_ALIAS_REQUIREMENTS.md):49 spans,388 known-role/44 unknown raw bytes,pointer/typed/context/global and physical alias domains;actual native translator/source/backend/runtime binding remains open |
-| General action-record rule judgment and threshold helpers | DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [All68 general rules](behavior/BATTLE_GENERAL_RULE_JUDGMENT.md),[threshold/end/unit queries](behavior/BATTLE_RULE_THRESHOLD_AND_UNIT_QUERIES.md):complete judge/helper/query bodies,captured/current output ownership,duplicate54/55 and numeric0x02 mask;rule/raw record/reset/save/consumer/end/turn/source/runtime lifecycle remains open |
-| Attack-command event selection and action-record classification | JUMP-01, DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete selector](behavior/BATTLE_ATTACK_EVENT_SELECTION.md),[classifier/data/audience leaves](behavior/BATTLE_WEAPON_ATTACK_CLASSIFICATION.md):three dispatch tables,selection-time counts,event/category/byte write order,signed predicate and helper recapture/fallback closed;general rule/menu/source/category/record reset/runtime ownership remains open |
-| Partner live target direction/activity and front-floor service | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Direction/activity](behavior/FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md),[front-floor](behavior/FIELD_PARTNER_FRONT_FLOOR.md),[status/clearance](behavior/FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md):complete local selector/scalar/ray/output/leaf graphs plus direct DOL clearance census answered;full source/alias/REL/backend/math/EVT-01 and original trajectories remain open |
-| Action-record saturation/storage and turn-rule judgment | DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Byte updates](behavior/BATTLE_ACTION_RECORD_BYTE_UPDATES.md),[turn rules](behavior/BATTLE_ACTION_RECORD_TURN_RULES.md),[first process](behavior/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md):complete helpers/six-rule sums/two-phase writes/full first-process and fog/status leaves,34 DOL sites;general judge/action/reset/source/turn/scene/runtime ownership remains open |
-| Partner motion2 jump destination,flight and landing handlers | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Destinations](behavior/FIELD_PARTNER_JUMP_DESTINATION.md),[init](behavior/FIELD_PARTNER_JUMP_INITIALIZATION.md),[flight/landing](behavior/FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md):complete local both-handler/index/landing-request graphs answered;full target/front-floor/pose/audio/numeric/source/EVT-01 and original trajectories remain open |
-| Partner placement3 screen-reset output contract | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Placement3](behavior/FIELD_PARTNER_PLACEMENT3.md),[math](behavior/FIELD_PARTNER_PLACEMENT3_MATH.md),[NPC scan](behavior/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md):complete local nine-angle/raw/classification/fallback/output and heading/normal/NPC graph answered;full backend/NPC/source/numeric/EVT-01 and original trajectories remain open |
-| Complete battle unit entry,body/height/belong and geometry initialization | DMG-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Full entry](behavior/BATTLE_UNIT_ENTRY_COMPLETE.md),[registry/scalar/geometry](behavior/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md),[pose/display](behavior/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md):complete local Entry and listed helpers,early registry/check asymmetry,pouch/event order and borrowed field144 producer;resource/kind/content/lifetime/turn/source/runtime engines remain open |
-| Partner support appearance and out-of-screen reset | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Support appearance](behavior/FIELD_PARTNER_SUPPORT_APPEARANCE.md),[vector ray](behavior/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md),[screen recovery](behavior/FIELD_PARTNER_SCREEN_RECOVERY.md):complete local probe/return/caller,projection/control/request/root graph answered;full placement3/projection/backend/motion/source/domain/EVT-01 and original trajectories remain open |
-| Event GP10 readiness/freeze gate producer and disc thread | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Producer](behavior/EVENT_DISC_THREAD_READINESS_GATE.md),[message presentation](behavior/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md),[audio state](behavior/AUDIO_DISC_COVER_STATE_REQUESTS.md):complete disc thread/card/audio/font-routing local bodies,13-status table/scoped startup/four source resources;DVD/OS/render/source/domain/original traces remain open;make test38 suites/63 Python and make all pass |
-| Partner floor query and slope/support publication | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Floor query](behavior/FIELD_PARTNER_FLOOR_QUERY.md),[slope pipeline](behavior/FIELD_PARTNER_FLOOR_SLOPE_NUMERICS.md),[heading](behavior/FIELD_PARTNER_FLOOR_HEADING.md):complete local five-probe/support/cache and numeric/heading graph answered;full backend/filter/math/source/domain/EVT-01 and original trajectories remain open |
-| Partner ceiling query and ray-request wrapper | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Ceiling query](behavior/FIELD_PARTNER_CEILING_QUERY.md),[scalar wrapper](behavior/FIELD_SCALAR_RAY_WRAPPER.md):complete local four-probe/output and hitCheckFilter ABI graph answered;initial wrapper name corrected;full backend/terrain/math/domain/EVT-01 and original trajectories remain open |
-| Map/SDK buffer release and pool initialization provenance | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Map free/battle pool](behavior/MAP_BUFFER_FREE_AND_BATTLE_POOL.md),[five pools/reset](behavior/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md),[SDK free/census](behavior/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md):complete local release/coalescing/bootstrap/bulk reset and50 direct DOL sites;event user-pointer/scene/REL/platform/source/runtime ownership remains open |
-| Partner stay floor/fly post-collision services | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Fly height](behavior/FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md),[ground/motion/support](behavior/FIELD_PARTNER_GROUND_POSTPASS.md):complete local tail and motion/classifier graph answered;selected floor early-return/output evidence;full head/floor/appear/motion/terrain/domain/EVT-01 and original trajectories remain open |
-| Event timestamp producer and main-loop pause/update binding | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Retrace clock](behavior/EVENT_RETRACE_TIME_PUBLICATION.md),[outer/update loop](behavior/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md):complete clock publication prefix/window/raw readers and main/StMain/idle body,scoped refresh/registration;other callback tail/input/scene/platform/domain and measured cadence/original traces remain open |
-| Partner surrounding-wall correction and called search body | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Binding/core/numerics](behavior/FIELD_PARTNER_SURROUNDING_WALL.md):mode1/width override,global view/filter ownership and local two-pass/vector graph answered;corrected dot sign and pre-cap saved vector;full ray/filter/terrain/math/domain/EVT-01 and original traces remain open |
-| Event context initialization,reinitialization and capacity provenance | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Context init/reset](behavior/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md),[SDK heap/callers](behavior/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md):complete Init/ReInit/allocator local policy,two original256-slot arrays,bank/global preservation and four direct DOL bindings;other heap/platform/time/source/scene/domain/original traces remain open;make test32 suites/58 Python tests and make all pass |
-| Event dispatch tail,debug formatter and complete opcode inventory | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Tail/debug](behavior/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md),[all119 coverage](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md):complete113..118/prefix11/no-ops,formatter/slot local bodies and full table;local opcode coverage closed,source/domain/platform/original traces remain open;native fixture/terrain gates resolved,full make test now passes |
-| Partner front-wall query and local position correction | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Query](behavior/FIELD_PARTNER_FRONT_WALL_QUERY.md),[filters/status](behavior/FIELD_PARTNER_FRONT_WALL_FILTERS.md):complete local ray/quantization/projection/return and mask/name/status/height answered;corrected point+24/normal+30 ABI;full ray backend/surrounding/mesh/domain and original traces remain open |
-| Event data readers,bitwise,time and memory opcode bodies | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Readers](behavior/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),[bitwise/time/memory](behavior/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md),[buffers/allocator](behavior/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md):complete65..90 and local allocator/fill/cache bodies;indexed signed-word float differs from sequential IEEE load,query/write/ownership order explicit;other VM/domain/source/runtime requests remain open |
-| Partner target-distance and footmark clearing services | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Clear/ID](behavior/FIELD_PARTNER_FOOTMARK_CLEAR_AND_ID.md),[live targets](behavior/FIELD_PARTNER_LIVE_TARGET_DISTANCES.md),[SDK distance](behavior/FIELD_PARTNER_SDK_DISTANCE_NUMERICS.md):complete local selection/reset/ID and paired norm answered;source/history consumer/terrain/numeric environment/domain and original traces remain open |
-| Complete event IF predicates and ELSE/END lexical continuation | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Integer/mask/scans](behavior/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md),[float/string](behavior/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md):complete12..33,twenty helpers and strcmp,operand order,raw masks,NaN CR tests and consumed-marker scans;data/other opcode domains and original traces remain open |
-| Partner direction/speed composition and overlap correction | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Correction](behavior/FIELD_PARTNER_OVERLAP_CORRECTION.md),[query](behavior/FIELD_PARTNER_DIRECTION_AND_SPEED.md),[norm](behavior/FIELD_PARTNER_SPEED_NUMERICS.md):complete local box/counter/reset/state/output/numeric requests answered;called angle/trig/status/terrain services,numeric/domain,writers and original traces remain open |
-| Event SWITCH and complete CASE group state machine | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Switch/scans](behavior/EVENT_SWITCH_STACK_AND_CASE_SCANS.md),[group/mask/range](behavior/EVENT_GROUPED_MASK_AND_RANGE_CASES.md):complete34..49 and eleven CASE bodies,actual table order,signed stack/state/raw-query/order and scanner continuations;IF/data/other opcode domains and original traces remain open |
-| Field partner walkMain executor and local terrain requests | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [walkMain dispatch](behavior/FIELD_PARTNER_WALK_DISPATCH.md),[stay local graph](behavior/FIELD_PARTNER_STAY_MOTION.md):complete selectors/threshold/mode/distance/collision/pose request order answered;called homing/movement/terrain/pose engines,domain/writers,EVT-01 and original traces remain open |
-| Event GOTO/loop and assignment/arithmetic opcode bodies | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [GOTO/loops](behavior/EVENT_GOTO_AND_LOOP_OPCODES.md),[assignment/arithmetic/cursor](behavior/EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md):complete4..8/50..64 and NEXT,raw/resolved/RHS order,count and MOD coercion;other predicates/readers,numeric/domain and original traces remain open |
-| Ordinary field partner movement callbacks modes0/1/2 | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Walk callback](behavior/FIELD_PARTNER_WALK_CALLBACK.md),[history writer/readers](behavior/FIELD_PARTNER_HISTORY_WRITER.md),[mode1 substates](behavior/FIELD_PARTNER_MODE1_SUBSTATES.md):complete local callbacks/history and bindings answered;final walkMain/terrain/collision/pose/source/index/writer engines and original traces remain open |
-| Full event integer/float operand namespaces and storage routing | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Integer APIs](behavior/EVENT_INTEGER_OPERAND_NAMESPACES.md),[float APIs](behavior/EVENT_FLOAT_OPERAND_ROUTING.md),[saved leaves](behavior/EVENT_SAVED_SWITCH_STORAGE.md):complete signed routing/coercion/index/read-write-return and storage leaves;capacity/numeric/source/save/runtime remain open |
-| Field driveParty dispatch and local update order | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Driver dispatch](behavior/FIELD_PARTY_DRIVER_DISPATCH.md),[global countdown/action](behavior/FIELD_PARTY_GLOBAL_COUNTDOWN_AND_ACTION.md):complete local15-mode/pending/destruction/tail and countdown/action requests answered;called mode/collision/animation engines,writers/callers,EVT-01 and original traces remain open |
-| Complete event deletion and stop/start relationship traversal | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Deletion/copy-back](behavior/EVENT_DELETE_AND_COPYBACK.md),[stop/start](behavior/EVENT_STOP_START_RELATIONSHIP_TRAVERSAL.md):complete local recursive/inlined context/scan/type/write policy;other opcodes/namespace/source/domain and original traces remain open |
-| Field party mode initialization and current-index ownership | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Mode initialization](behavior/FIELD_PARTY_MODE_INITIALIZATION.md),[driver/index](behavior/FIELD_PARTY_DRIVER_AND_INDEX_OWNERSHIP.md):complete local transition/init/eligibility and scoped direct-index census answered;all mode update/services/callers,alias/REL/index/slot writers,battle teardown and original traces remain open |
-| Event run/ID-output concurrency and control opcode wrappers | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Run/ID variants](behavior/EVENT_RUN_AND_ID_OUTPUT_VARIANTS.md),[controls/ID scans](behavior/EVENT_CONTROL_OPCODES_AND_ID_SCANS.md):complete92/93/108/111,94..106 wrappers,setters and Other/ID/Check scans;deep stop/start/delete,other opcodes/domain and original traces remain open |
-| Child/brother constructors and restart complete local state | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Descendants/107/110](behavior/EVENT_CHILD_BROTHER_AND_INLINE_CONSTRUCTION.md),[restart](behavior/EVENT_RESTART_PRESERVATION.md):complete local copy/reset/ownership/append/order and plain inline/brother paths;ID variants,remaining controls/domain and original traces remain open |
-| Field party destruction and position constructors | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Destruction/saved kind](behavior/FIELD_PARTY_DESTRUCTION_AND_SAVED_KIND.md),[position constructors](behavior/FIELD_PARTY_POSITION_CONSTRUCTORS.md):complete local Kill/Kill2/main/position/secondary and kind1/8 init answered;all-kind/pose/heap/resource/mode/index invariants,battle teardown and original traces remain open |
-| Root/typed event constructors and label/run-check initialization | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Root/typed constructors](behavior/EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md),[labels/run-check](behavior/EVENT_LABEL_SCAN_AND_ENTRY_RUN_CHECK.md):complete local allocation/init/label scan/conditional append/system-level stop;child/brother/inline/restart/domain and original traces remain open |
-| Lecture field intersection and party callback bodies | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Intersection/coordinates](behavior/FIELD_SEGMENT_INTERSECTION.md),[party callbacks](behavior/FIELD_PARTY_EVENT_CALLBACKS.md):local geometry/query/encoding,raw slot dispatch and first-call constructor route answered;full party engine,variable namespaces,EVT-01 scheduling,battle teardown and original traces remain open |
-| Event manager complete loop,credit/lifetime and wait continuations | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete manager](behavior/EVENT_MANAGER_COMPLETE_LOOP.md),[dispatch/waits](behavior/EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md):complete local time/eligibility/ID/credit/result loop,priority and scoped fetch/wait/USER_FUNC;constructors/append/initial state and original traces remain open |
-| Ordinary attack badge-effect tail and called recovery services | JUMP-01, DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [32-command tail](behavior/BATTLE_ATTACK_BADGE_RECOVERY_TAIL.md),[recovery/geometry](behavior/BATTLE_BADGE_RECOVERY_SERVICES.md),[coercion/effect route](behavior/BATTLE_BADGE_RECOVERY_PRESENTATION.md):complete local graph/wrappers/cores and scoped presentation binding;renderer/VM/domain/source/runtime remain open |
-| Lecture field trigger,story conditions and return requests | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Field entry/return](behavior/LECTURE_FIELD_ENTRY_AND_RETURN.md):wall/reload story10 callers,crossing operands,choices,setup3 and common story11 exit answered;intersection/party/persistent services,battle-end controller and original traces remain open |
-| Weapon aftereffect callback and ordinary Jump operands | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Dispatch](behavior/BATTLE_WEAPON_AFTEREFFECT_DISPATCH.md),[stage leaves](behavior/BATTLE_STAGE_AFTEREFFECT_REQUESTS.md):complete local weighted/forced RNG and destruction/nozzle/frame/object ownership;queued event bodies,source/domain and original traces remain open |
-| Stylish start/main/result and ordinary Jump timing bindings | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Timing/results](behavior/BATTLE_STYLISH_TIMING_AND_RESULTS.md),[icon](behavior/BATTLE_STYLISH_TIMING_ICON.md):complete local start/poll/input/output/queue/draw and four ordinary callers;source/scheduler/audience/display/assets/original traces remain open |
-| Enemy candidate choice and sampling cores | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Sampling](behavior/BATTLE_ENEMY_CANDIDATE_SAMPLING.md),[choice/RNG](behavior/BATTLE_ENEMY_CANDIDATE_CHOICE.md):complete local admission/geometry/compaction/sort/weights/mode4/draw semantics;source/helper/domain/seed/interleaving and original traces remain open |
-| Ordinary selected target,weapon-address and weapon-cost services | JUMP-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Selection/weapon](behavior/BATTLE_SELECTED_TARGET_AND_WEAPON.md),[cost/payment](behavior/BATTLE_WEAPON_COST_AND_PAYMENT.md):complete local bodies/cursor dispatch/shared FP/AP/action-record arithmetic;menu/selection producers,numeric extremes and original traces remain open |
-| Lecture player attack bindings,mode/feedback transitions and end requests | AC-01, AC-02, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Player flow](behavior/LECTURE_PLAYER_ATTACK_FLOW.md) and [window arbitration](behavior/BATTLE_STATUS_WINDOW_ARBITRATION.md);default weapon masks,1→2/5→6 and feedback writers/end requests answered,full menu/end/field/runtime traces remain open |
-| Unit/part hit/world/home positions and movement sound core | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Position queries](behavior/BATTLE_UNIT_PART_POSITION_QUERIES.md),[movement sound](behavior/BATTLE_MOVEMENT_SOUND_CONTROL.md);source writers,playback internals and original traces remain open |
-| Jump takeoff position,move-frame query and approach MovePosition | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Takeoff](behavior/BATTLE_JUMP_TAKEOFF_POSITION.md),[query/movement](behavior/BATTLE_MOVE_FRAME_AND_POSITION.md):complete local bodies;candidate/numeric/helper/domain and execution remain open |
-| Unit sound-mode loader and Mario jump sound record | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Sound-mode contract](behavior/BATTLE_UNIT_SOUND_MODE.md):complete partial-field loader and used type2/-1 request;source writers/macro resources/audio execution remain open |
-| MarioJumpPosition complete local motion modes and AC side effects | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Motion](behavior/BATTLE_MARIO_JUMP_MOTION.md) and [numerics](behavior/BATTLE_MARIO_JUMP_NUMERICS.md):complete local body,all phases/rounded branches;numeric/audio dependencies and original traces remain open |
-| Crump NPC helper identity versus lecture helper modes and hooks | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Helper roles](behavior/CHRISTINE_HELPER_ROLES.md) and [coordinator modes](behavior/LECTURE_COORDINATOR_MODES.md);distinct setup/kind/ID/work/message graph answered,player/counter/field lifecycle and original traces remain open |
-| Mario-specific JumpParam preparation and motion dependencies | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Parameter contract](behavior/BATTLE_MARIO_JUMP_PARAMETER.md):complete ordered integer resolution/distance-count writeback;Mario motion now linked separately,numeric/domain/execution traces remain open |
-| Battle input sampler/reset caller census and system-level/event-speed controls | AC-01, AC-03, AC-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Reset owners](behavior/BATTLE_INPUT_RESET_OWNERS.md) and [level/speed controls](behavior/EVENT_SYSTEM_LEVEL_AND_SPEED.md);direct census,local controls and tutorial injection answered,full UI/type/writer/lecture graph and original traces remain open |
-| Ordinary Jump complete request graph and per-hit/AC branches | JUMP-01, AC-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Jump graph](behavior/BATTLE_NORMAL_JUMP_EVENT_FLOW.md),[result/stop](behavior/BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md),[VM/concurrency](behavior/EVENT_JUMP_BRANCHES_AND_CONCURRENCY.md);local motion/preparation now linked separately,candidate/audio/cost/stylish/source composition and original traces remain open |
-| Unit resource/status snapshot export leaf | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Export contract](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete matching writer;export caller cadence and on-disk save semantics remain open |
-| Unit badge/count/bonus import through _EquipItem | STATUS-01, DMG-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Badge import](behavior/UNIT_BADGE_COUNT_IMPORT.md):complete byte maps/flags/reset/scan and scoped setup bindings;inventory equip UI and runtime traces remain open |
-| Unit-entry status clear and pouch resource import | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Initialization contract](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete clear/import/revision,party mapping and partial info-record reset;badge aggregation,snapshot producers and turn/save ownership remain open |
-| Physical key producer and battle pad update order | AC-01, AC-03, AC-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Physical producer](behavior/PHYSICAL_INPUT_PRODUCER.md) and [cadence/snapshots](behavior/BATTLE_INPUT_CADENCE_AND_SNAPSHOTS.md);local edges/repeats/order answered,SDK/pause/other writers/original traces remain open |
-| Unit part defense/attribute construction and Crump source tables | DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Part contract](behavior/UNIT_PART_DEFENSE_AND_LIFETIME.md):pointer copies,boss/Mario zero tables,lookup exceptions and ordered teardown;full unit entry,mutation and executed damage remain open |
-| Battle jump callbacks and concrete Crump float operands | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Jump contract](behavior/BATTLE_JUMP_EVENT_CALLBACKS.md):full local callbacks,used float route and scoped JMP-01..07 acceptance cases;main/pad cadence and original impact traces remain open |
-| Crump normal attack request graph and target wrapper ABI | AC-01, AC-03, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Attack graph](behavior/HARBOR_BOSS_NORMAL_ATTACK.md) and [target ABI](behavior/BATTLE_TARGET_EVENT_INTERFACES.md); excludes target cores and executed timing; parent requests remain open |
-| Default weapon power callback and concrete boss operands | DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Power contract](behavior/BATTLE_WEAPON_POWER_CALLBACKS.md):full default body,boss base1 and nil FP pointer;final modified damage remains open |
-| Ordinary Mario Jump/Hammer power callback bodies and default tables | DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Power contract](behavior/BATTLE_WEAPON_POWER_CALLBACKS.md):signed level,index/read order,two ordinary tables;hit-count/level/bonus/AC producers remain open |
+| Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
+| Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
+| File relocation dispatch and supported type routes | EVT-01, JUMP-01, DMG-02 | VALIDATED binary / lock released, 2026-10-12 | Documentation agent ID 2 | [Dispatch/type map](behavior/file/FILE_RELOCATION_TYPE_DISPATCH.md),[eight flat types](behavior/file/FILE_FLAT_POINTER_RELOCATION.md):all11 routes,unsigned guards/ordered arithmetic/retained first/no null preservation;types4/5 nested handlers/platform/source/runtime remain open;host missing fixture recorded |
+| Smart arena initialization and header provisioning | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Initializer](behavior/memory/SMART_ARENA_AND_HEADER_INITIALIZATION.md),[scoped provisioning](behavior/memory/SMART_RESOURCE_PROVISIONING_REQUIREMENTS.md):complete smartInit,heap4 request/double clear,2048*28 headers/live endpoints/flag-counter reset;heap bootstrap/type relocation/platform/source/runtime remain separate |
+| Smart allocation placement and retry/header publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Header/gap placement](behavior/memory/SMART_ALLOCATION_HEADER_AND_GAP_PLACEMENT.md),[retry/failure](behavior/memory/SMART_ALLOCATION_RETRIES_AND_FAILURE_OWNERSHIP.md):complete smartAlloc,first flag/auto3,release-counter sync/reset,header reservation/word alignment/unsigned leading-firstfit/three tail-only retries/no failed-header restoration;arena init/type relocation/platform/source/runtime remain separate |
+| Smart-heap compaction and file-move requests | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Compactor/barriers](behavior/memory/SMART_HEAP_COMPACTION_AND_PENDING_FILES.md),[file move/address requests](behavior/file/FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md):complete two bodies,draw-sync/equal-address bypass/nonworker pending barrier/worker retarget/live holders/gaps/full-arena flush;type relocation/allocator/platform/source/runtime remain separate;prior host camera assertion resolved by current68-suite run |
+| Smart allocation header release and file ownership | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Header release/accounting](behavior/memory/SMART_HEADER_RELEASE_AND_SPACE_ACCOUNTING.md),[automatic tag release](behavior/memory/SMART_AUTOMATIC_TAG_RELEASE.md):complete smartFree/smartAutoFree,4→3 deferral,no heap free,live unlink/gap/free-header/count writes,low16 versus full-word3 passes;allocator/compaction/relocation/platform/source/runtime remain separate |
+| File-cache collection and initialization | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Collection/aging](behavior/file/FILE_CACHE_COLLECTION_AND_PRELOAD_AGING.md),[pool/init/mode](behavior/file/FILE_CACHE_POOL_INITIALIZATION.md):complete four bodies,worker flags overwrite,ready-count aging versus pending wait,state2 holder routing/live lists,1024*176 raw pool/17 DOL calls;smart heap/relocation/DVD worker/TPL/platform/source/runtime remain separate |
+| Async file request and completion publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Request/cache](behavior/file/FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md),[completion/request state](behavior/file/FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md):complete fileAsync/callback/DVD request leaf,raw-1,state3/count0,archive live-head publication,-3-only failure,signed relocation/pending-clear/deferred-close/live callback;worker/collection/relocation/TPL/platform/source/runtime remain separate |
+| Shared file acquisition and cache lookup | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Cache/reference/publication](behavior/file/FILE_ACQUISITION_AND_REFERENCE_REUSE.md),[archive/DVD requests](behavior/file/FILE_ARCHIVE_AND_DVD_ACQUISITION_REQUESTS.md):complete _fileAlloc/arcOpen/five leaves,filename-only reuse,pending yield,state2/3 counts,identical archive retries,holder/deferred close/live lists;async/collection/relocation/TPL/platform/source/runtime remain separate |
+| Formatted file requests and file-handle release semantics | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Formatting/forwarding](behavior/file/FILE_FORMATTED_REQUEST_FORWARDING.md),[release/ownership](behavior/file/FILE_HANDLE_RELEASE_AND_EFFECT_CACHE_OWNERSHIP.md):complete four local bodies,shared buffer/original varargs/order and signed16 state2 release without deallocation;underlying async/load/cache/TPL/platform/source/runtime remains separate |
+| Slit collision admission helper and camera-direction binding | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Collision](behavior/partner/FIELD_PARTNER_SLIT_COLLISION.md),[camera direction](behavior/camera/FIELD_SIMPLE_CAMERA_DIRECTION.md),[system angle table](behavior/field/FIELD_SYSTEM_ANGLE_TABLE.md):complete local probe/order/filter/normal-pair/return and two math graphs;backend/source/alias/numeric/original trajectories remain separate |
+| Effect driver update,auto-release and pool initialization | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Driver/cache](behavior/effect/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md),[pool/init/release](behavior/effect/EFFECT_POOL_INITIALIZATION_AND_CONTEXT_RELEASE.md):full local context/active callback loop/cache captures,512 records/heap0/live clear,N64 reset/hard context release/four DOL bindings/US TPL identity;file/TPL/animation/display/scene/platform/source/runtime remains open |
+| Partner slit and roll gates,slit-floor and forced-exit bindings | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Slit](behavior/partner/FIELD_PARTNER_SLIT_GATE.md),[roll](behavior/partner/FIELD_PARTNER_ROLL_GATE.md),[floor/forced exit](behavior/partner/FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md),[paper wrappers](behavior/partner/FIELD_PARTNER_PAPER_REQUEST_WRAPPERS.md):ten complete local bodies,return/count/phase/mask/resource/handle graph and22 direct sites;collision helper/animation/source/terrain/numeric/original trajectories remain separate |
+| Majinai effect update,soft-request consumption and draw requests | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Main/cleanup](behavior/effect/MAJINAI_EFFECT_UPDATE_STATE_MACHINE.md),[Disp/pose leaves](behavior/effect/MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md):complete local four-phase/soft04/map/material/alpha/fused particle/three-pass graph and leaves;animation/resource/matrix/display/driver/platform/source/runtime remains open |
+| Flying history production,initialization and source bindings | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Writer](behavior/partner/FIELD_PARTNER_FLY_HISTORY_WRITER.md),[initializer](behavior/partner/FIELD_PARTNER_FLY_HISTORY_INITIALIZATION.md),[Cloud/Vivian callbacks](behavior/partner/FIELD_PARTNER_FLY_CALLBACK_BINDINGS.md),[source leaves](behavior/partner/FIELD_PARTNER_FLY_SOURCE_LEAVES.md):seven complete local bodies,kind5/6 binding records,four actual writer/init sites;animation/ability/terrain/source/alias/numeric/original trajectories remain separate |
+| Effect soft/hard deletion and payload-release ownership | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete leaves](behavior/effect/EFFECT_SOFT_AND_HARD_DELETION.md),[caller/name/fog lifetime](behavior/effect/EFFECT_DELETE_CALLERS_AND_LIFETIME.md):soft02→OR04 versus hard heap3 free→flags0,raw Maya pointer,all271 DOL sites and fog-name correction;update/draw/driver/scene/raw/REL/runtime remains open |
+| Majinai effect construction,pool acquisition and map-word publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Constructor/payload](behavior/effect/MAJINAI_EFFECT_CONSTRUCTION.md),[pool/map helpers](behavior/effect/EFFECT_POOL_ACQUISITION_AND_MAP_PUBLICATION.md):full local order,heap3/count reread,partial name clear,exhaustion/no-null guard and map+1e WORD publication;main/draw/delete/resource/platform/source/runtime remains open |
+| Partner flyMain dispatch and flying movement handlers | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Fly dispatch](behavior/partner/FIELD_PARTNER_FLY_DISPATCH.md),[behind-fly](behavior/partner/FIELD_PARTNER_BEHIND_FLY.md),[homing entry](behavior/partner/FIELD_PARTNER_HOMING_FLY_ENTRY_AND_SPEED.md),[history loop](behavior/partner/FIELD_PARTNER_HOMING_FLY_HISTORY_LOOP.md),[collision tail](behavior/partner/FIELD_PARTNER_HOMING_FLY_COLLISION_TAIL.md),[speed writers](behavior/partner/FIELD_PARTNER_FLY_SPEED_WRITERS.md):complete local five-body graph,nine direct-site census;flying writer/init now [delivered](behavior/partner/FIELD_PARTNER_FLY_HISTORY_WRITER.md);other motion/pose/terrain/source/numeric/original trajectories remain open |
+| Battle fortune producer and pouch reset/random-selection policy | EVT-01, JUMP-01, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete producer](behavior/battle/BATTLE_FORTUNE_PRODUCER.md),[init/call/RNG accounting](behavior/battle/BATTLE_FORTUNE_INIT_AND_CALL_BINDINGS.md):signed countdown/sticky mode,inline setup-mask20 thresholds,word compare before byte store and two direct bindings;field assignment/save/setup/turn/consumer/runtime remains open |
+| General partner placement writer and placement4 fallback | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/admission](behavior/partner/FIELD_PARTNER_GENERAL_PLACEMENT.md),[fallback/output](behavior/partner/FIELD_PARTNER_GENERAL_PLACEMENT_FALLBACK.md),[trig/plane leaves](behavior/field/FIELD_MOVEMENT_TRIG_AND_PLANE_LEAVES.md):complete local writer and used leaves,eight direct caller census;other caller bindings/backend/libm/source/alias/runtime remain open |
+| Jump Majinai power-check child and local result/effect callbacks | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Power graph/consumption](behavior/battle/JUMP_MAJINAI_POWER_CHECK_CHILD.md),[effect/nested sources](behavior/battle/JUMP_MAJINAI_EFFECT_AND_NESTED_SOURCES.md):full14/12/17-command graphs,query/Done/EndCheck/name polling/ftomsec and five original keys;additional spans/three callbacks,fortune producer/render/audio/message/backend/runtime remain open |
+| WorkInit exact snapshot clear and preserved-byte map | INPUT-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete reset/raw map](behavior/battle/BATTLE_PAD_RESET_AND_RAW_PRESERVATION.md):snapshot0..a clear/b preserved,release/raw-tail preservation,interleaved history/phase store order and updater prior-copy distinction;physical polling/SDK/source/runtime remains open |
+| Partner placement4 recovery search and failure output | AC-01, AC-03 | VALIDATED local body / lock released, 2026-10-12 | Documentation agent ID 1 | [Search/output](behavior/partner/FIELD_PARTNER_PLACEMENT4.md),[exact angle/stack layout](behavior/partner/FIELD_PARTNER_PLACEMENT4_ANGLE_LAYOUT.md):complete local seeded/accumulating/ray/admission/exhaustion-request graph;general writer local graph now [delivered](behavior/partner/FIELD_PARTNER_GENERAL_PLACEMENT.md);backend/source/alias/numeric/original traces remain separate |
+| Jump unit-data child key7 and continuation service | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete data-child/Mario source](behavior/battle/BATTLE_UNIT_DATA_CHILD_CONTINUATION.md),[all actor selectors/system query](behavior/battle/BATTLE_ACTOR_SELECTOR_TRANSLATION.md):key7→80416bd0 DELETE child,parent wait/post-constructor actor/255,ordered queries closed;extra source span requested,dynamic writers/backend/runtime remain open |
+| Ordinary Jump root registration and callback-address census | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Conditional root/source binding](behavior/battle/NORMAL_JUMP_ROOT_REGISTRATION.md),[complete scoped registry](behavior/battle/NORMAL_JUMP_CALLBACK_REGISTRY.md):root10/flags0/typeef/context/ID/speed/actor order,three child wrappers,156 direct sites/72 callbacks;requested-enum run-check correction flagged;menu/global/raw/dynamic/source/backend/runtime remains open |
+| SDK descriptor and primary-map live read-order addendum | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Exact live order](behavior/memory/SDK_HEAP_BOOTSTRAP_LIVE_READ_ORDER.md):InitAlloc live count/base/final base with retained original product,CreateHeap post-header size reread,both primary start→end→handle before length publication;native arena/alias/source/runtime remains open |
+| Partner fall handler entry,air and landing ownership | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Air](behavior/partner/FIELD_PARTNER_FALL_AIR.md),[landing](behavior/partner/FIELD_PARTNER_FALL_LANDING.md),[facing](behavior/partner/FIELD_PARTNER_FALL_FACING.md):complete local query/default/update/recovery/landing/return and facing graph answered;full placement4/pose/source/numeric/EVT-01 and original trajectories remain open |
+| Consolidated packed EventEntry map and address-alias requirements | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete432-byte map](behavior/event/EVENT_ENTRY_PACKED_LAYOUT.md),[address/alias requirements](behavior/event/EVENT_ENTRY_ADDRESS_AND_ALIAS_REQUIREMENTS.md):49 spans,388 known-role/44 unknown raw bytes,pointer/typed/context/global and physical alias domains;actual native translator/source/backend/runtime binding remains open |
+| General action-record rule judgment and threshold helpers | DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [All68 general rules](behavior/battle/BATTLE_GENERAL_RULE_JUDGMENT.md),[threshold/end/unit queries](behavior/battle/BATTLE_RULE_THRESHOLD_AND_UNIT_QUERIES.md):complete judge/helper/query bodies,captured/current output ownership,duplicate54/55 and numeric0x02 mask;rule/raw record/reset/save/consumer/end/turn/source/runtime lifecycle remains open |
+| Partner live target direction/activity and front-floor service | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Direction/activity](behavior/partner/FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md),[front-floor](behavior/partner/FIELD_PARTNER_FRONT_FLOOR.md),[status/clearance](behavior/partner/FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md):complete local selector/scalar/ray/output/leaf graphs plus direct DOL clearance census answered;full source/alias/REL/backend/math/EVT-01 and original trajectories remain open |
+| Attack-command event selection and action-record classification | JUMP-01, DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete selector](behavior/battle/BATTLE_ATTACK_EVENT_SELECTION.md),[classifier/data/audience leaves](behavior/battle/BATTLE_WEAPON_ATTACK_CLASSIFICATION.md):three dispatch tables,selection-time counts,event/category/byte write order,signed predicate and helper recapture/fallback closed;general rule/menu/source/category/record reset/runtime ownership remains open |
+| Partner motion2 jump destination,flight and landing handlers | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Destinations](behavior/partner/FIELD_PARTNER_JUMP_DESTINATION.md),[init](behavior/partner/FIELD_PARTNER_JUMP_INITIALIZATION.md),[flight/landing](behavior/partner/FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md):complete local both-handler/index/landing-request graphs answered;full target/front-floor/pose/audio/numeric/source/EVT-01 and original trajectories remain open |
+| Action-record saturation/storage and turn-rule judgment | DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Byte updates](behavior/battle/BATTLE_ACTION_RECORD_BYTE_UPDATES.md),[turn rules](behavior/battle/BATTLE_ACTION_RECORD_TURN_RULES.md),[first process](behavior/battle/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md):complete helpers/six-rule sums/two-phase writes/full first-process and fog/status leaves,34 DOL sites;general judge/action/reset/source/turn/scene/runtime ownership remains open |
+| Partner placement3 screen-reset output contract | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Placement3](behavior/partner/FIELD_PARTNER_PLACEMENT3.md),[math](behavior/partner/FIELD_PARTNER_PLACEMENT3_MATH.md),[NPC scan](behavior/partner/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md):complete local nine-angle/raw/classification/fallback/output and heading/normal/NPC graph answered;full backend/NPC/source/numeric/EVT-01 and original trajectories remain open |
+| Partner support appearance and out-of-screen reset | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Support appearance](behavior/partner/FIELD_PARTNER_SUPPORT_APPEARANCE.md),[vector ray](behavior/partner/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md),[screen recovery](behavior/partner/FIELD_PARTNER_SCREEN_RECOVERY.md):complete local probe/return/caller,projection/control/request/root graph answered;full placement3/projection/backend/motion/source/domain/EVT-01 and original trajectories remain open |
+| Complete battle unit entry,body/height/belong and geometry initialization | DMG-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Full entry](behavior/battle/BATTLE_UNIT_ENTRY_COMPLETE.md),[registry/scalar/geometry](behavior/battle/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md),[pose/display](behavior/battle/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md):complete local Entry and listed helpers,early registry/check asymmetry,pouch/event order and borrowed field144 producer;resource/kind/content/lifetime/turn/source/runtime engines remain open |
+| Partner floor query and slope/support publication | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Floor query](behavior/partner/FIELD_PARTNER_FLOOR_QUERY.md),[slope pipeline](behavior/partner/FIELD_PARTNER_FLOOR_SLOPE_NUMERICS.md),[heading](behavior/partner/FIELD_PARTNER_FLOOR_HEADING.md):complete local five-probe/support/cache and numeric/heading graph answered;full backend/filter/math/source/domain/EVT-01 and original trajectories remain open |
+| Partner ceiling query and ray-request wrapper | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Ceiling query](behavior/partner/FIELD_PARTNER_CEILING_QUERY.md),[scalar wrapper](behavior/field/FIELD_SCALAR_RAY_WRAPPER.md):complete local four-probe/output and hitCheckFilter ABI graph answered;initial wrapper name corrected;full backend/terrain/math/domain/EVT-01 and original trajectories remain open |
+| Event GP10 readiness/freeze gate producer and disc thread | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Producer](behavior/platform/EVENT_DISC_THREAD_READINESS_GATE.md),[message presentation](behavior/platform/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md),[audio state](behavior/audio/AUDIO_DISC_COVER_STATE_REQUESTS.md):complete disc thread/card/audio/font-routing local bodies,13-status table/scoped startup/four source resources;DVD/OS/render/source/domain/original traces remain open;make test38 suites/63 Python and make all pass |
+| Partner stay floor/fly post-collision services | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Fly height](behavior/partner/FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md),[ground/motion/support](behavior/partner/FIELD_PARTNER_GROUND_POSTPASS.md):complete local tail and motion/classifier graph answered;selected floor early-return/output evidence;full head/floor/appear/motion/terrain/domain/EVT-01 and original trajectories remain open |
+| Map/SDK buffer release and pool initialization provenance | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Map free/battle pool](behavior/memory/MAP_BUFFER_FREE_AND_BATTLE_POOL.md),[five pools/reset](behavior/memory/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md),[SDK free/census](behavior/memory/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md):complete local release/coalescing/bootstrap/bulk reset and50 direct DOL sites;event user-pointer/scene/REL/platform/source/runtime ownership remains open |
+| Partner surrounding-wall correction and called search body | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Binding/core/numerics](behavior/partner/FIELD_PARTNER_SURROUNDING_WALL.md):mode1/width override,global view/filter ownership and local two-pass/vector graph answered;corrected dot sign and pre-cap saved vector;full ray/filter/terrain/math/domain/EVT-01 and original traces remain open |
+| Event timestamp producer and main-loop pause/update binding | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Retrace clock](behavior/platform/EVENT_RETRACE_TIME_PUBLICATION.md),[outer/update loop](behavior/platform/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md):complete clock publication prefix/window/raw readers and main/StMain/idle body,scoped refresh/registration;other callback tail/input/scene/platform/domain and measured cadence/original traces remain open |
+| Event context initialization,reinitialization and capacity provenance | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Context init/reset](behavior/event/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md),[SDK heap/callers](behavior/event/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md):complete Init/ReInit/allocator local policy,two original256-slot arrays,bank/global preservation and four direct DOL bindings;other heap/platform/time/source/scene/domain/original traces remain open;make test32 suites/58 Python tests and make all pass |
+| Partner front-wall query and local position correction | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Query](behavior/partner/FIELD_PARTNER_FRONT_WALL_QUERY.md),[filters/status](behavior/partner/FIELD_PARTNER_FRONT_WALL_FILTERS.md):complete local ray/quantization/projection/return and mask/name/status/height answered;corrected point+24/normal+30 ABI;full ray backend/surrounding/mesh/domain and original traces remain open |
+| Event dispatch tail,debug formatter and complete opcode inventory | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Tail/debug](behavior/event/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md),[all119 coverage](behavior/event/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md):complete113..118/prefix11/no-ops,formatter/slot local bodies and full table;local opcode coverage closed,source/domain/platform/original traces remain open;native fixture/terrain gates resolved,full make test now passes |
+| Partner target-distance and footmark clearing services | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Clear/ID](behavior/partner/FIELD_PARTNER_FOOTMARK_CLEAR_AND_ID.md),[live targets](behavior/partner/FIELD_PARTNER_LIVE_TARGET_DISTANCES.md),[SDK distance](behavior/partner/FIELD_PARTNER_SDK_DISTANCE_NUMERICS.md):complete local selection/reset/ID and paired norm answered;source/history consumer/terrain/numeric environment/domain and original traces remain open |
+| Event data readers,bitwise,time and memory opcode bodies | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Readers](behavior/event/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),[bitwise/time/memory](behavior/event/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md),[buffers/allocator](behavior/event/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md):complete65..90 and local allocator/fill/cache bodies;indexed signed-word float differs from sequential IEEE load,query/write/ownership order explicit;other VM/domain/source/runtime requests remain open |
+| Partner direction/speed composition and overlap correction | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Correction](behavior/partner/FIELD_PARTNER_OVERLAP_CORRECTION.md),[query](behavior/partner/FIELD_PARTNER_DIRECTION_AND_SPEED.md),[norm](behavior/partner/FIELD_PARTNER_SPEED_NUMERICS.md):complete local box/counter/reset/state/output/numeric requests answered;called angle/trig/status/terrain services,numeric/domain,writers and original traces remain open |
+| Complete event IF predicates and ELSE/END lexical continuation | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Integer/mask/scans](behavior/event/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md),[float/string](behavior/event/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md):complete12..33,twenty helpers and strcmp,operand order,raw masks,NaN CR tests and consumed-marker scans;data/other opcode domains and original traces remain open |
+| Field partner walkMain executor and local terrain requests | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [walkMain dispatch](behavior/partner/FIELD_PARTNER_WALK_DISPATCH.md),[stay local graph](behavior/partner/FIELD_PARTNER_STAY_MOTION.md):complete selectors/threshold/mode/distance/collision/pose request order answered;called homing/movement/terrain/pose engines,domain/writers,EVT-01 and original traces remain open |
+| Event SWITCH and complete CASE group state machine | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Switch/scans](behavior/event/EVENT_SWITCH_STACK_AND_CASE_SCANS.md),[group/mask/range](behavior/event/EVENT_GROUPED_MASK_AND_RANGE_CASES.md):complete34..49 and eleven CASE bodies,actual table order,signed stack/state/raw-query/order and scanner continuations;IF/data/other opcode domains and original traces remain open |
+| Event GOTO/loop and assignment/arithmetic opcode bodies | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [GOTO/loops](behavior/event/EVENT_GOTO_AND_LOOP_OPCODES.md),[assignment/arithmetic/cursor](behavior/event/EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md):complete4..8/50..64 and NEXT,raw/resolved/RHS order,count and MOD coercion;other predicates/readers,numeric/domain and original traces remain open |
+| Ordinary field partner movement callbacks modes0/1/2 | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Walk callback](behavior/partner/FIELD_PARTNER_WALK_CALLBACK.md),[history writer/readers](behavior/partner/FIELD_PARTNER_HISTORY_WRITER.md),[mode1 substates](behavior/partner/FIELD_PARTNER_MODE1_SUBSTATES.md):complete local callbacks/history and bindings answered;final walkMain/terrain/collision/pose/source/index/writer engines and original traces remain open |
+| Full event integer/float operand namespaces and storage routing | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Integer APIs](behavior/event/EVENT_INTEGER_OPERAND_NAMESPACES.md),[float APIs](behavior/event/EVENT_FLOAT_OPERAND_ROUTING.md),[saved leaves](behavior/event/EVENT_SAVED_SWITCH_STORAGE.md):complete signed routing/coercion/index/read-write-return and storage leaves;capacity/numeric/source/save/runtime remain open |
+| Field driveParty dispatch and local update order | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Driver dispatch](behavior/partner/FIELD_PARTY_DRIVER_DISPATCH.md),[global countdown/action](behavior/partner/FIELD_PARTY_GLOBAL_COUNTDOWN_AND_ACTION.md):complete local15-mode/pending/destruction/tail and countdown/action requests answered;called mode/collision/animation engines,writers/callers,EVT-01 and original traces remain open |
+| Complete event deletion and stop/start relationship traversal | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Deletion/copy-back](behavior/event/EVENT_DELETE_AND_COPYBACK.md),[stop/start](behavior/event/EVENT_STOP_START_RELATIONSHIP_TRAVERSAL.md):complete local recursive/inlined context/scan/type/write policy;other opcodes/namespace/source/domain and original traces remain open |
+| Field party mode initialization and current-index ownership | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Mode initialization](behavior/partner/FIELD_PARTY_MODE_INITIALIZATION.md),[driver/index](behavior/partner/FIELD_PARTY_DRIVER_AND_INDEX_OWNERSHIP.md):complete local transition/init/eligibility and scoped direct-index census answered;all mode update/services/callers,alias/REL/index/slot writers,battle teardown and original traces remain open |
+| Event run/ID-output concurrency and control opcode wrappers | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Run/ID variants](behavior/event/EVENT_RUN_AND_ID_OUTPUT_VARIANTS.md),[controls/ID scans](behavior/event/EVENT_CONTROL_OPCODES_AND_ID_SCANS.md):complete92/93/108/111,94..106 wrappers,setters and Other/ID/Check scans;deep stop/start/delete,other opcodes/domain and original traces remain open |
+| Child/brother constructors and restart complete local state | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Descendants/107/110](behavior/event/EVENT_CHILD_BROTHER_AND_INLINE_CONSTRUCTION.md),[restart](behavior/event/EVENT_RESTART_PRESERVATION.md):complete local copy/reset/ownership/append/order and plain inline/brother paths;ID variants,remaining controls/domain and original traces remain open |
+| Field party destruction and position constructors | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Destruction/saved kind](behavior/partner/FIELD_PARTY_DESTRUCTION_AND_SAVED_KIND.md),[position constructors](behavior/partner/FIELD_PARTY_POSITION_CONSTRUCTORS.md):complete local Kill/Kill2/main/position/secondary and kind1/8 init answered;all-kind/pose/heap/resource/mode/index invariants,battle teardown and original traces remain open |
+| Root/typed event constructors and label/run-check initialization | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Root/typed constructors](behavior/event/EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md),[labels/run-check](behavior/event/EVENT_LABEL_SCAN_AND_ENTRY_RUN_CHECK.md):complete local allocation/init/label scan/conditional append/system-level stop;child/brother/inline/restart/domain and original traces remain open |
+| Lecture field intersection and party callback bodies | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Intersection/coordinates](behavior/field/FIELD_SEGMENT_INTERSECTION.md),[party callbacks](behavior/partner/FIELD_PARTY_EVENT_CALLBACKS.md):local geometry/query/encoding,raw slot dispatch and first-call constructor route answered;full party engine,variable namespaces,EVT-01 scheduling,battle teardown and original traces remain open |
+| Event manager complete loop,credit/lifetime and wait continuations | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete manager](behavior/event/EVENT_MANAGER_COMPLETE_LOOP.md),[dispatch/waits](behavior/event/EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md):complete local time/eligibility/ID/credit/result loop,priority and scoped fetch/wait/USER_FUNC;constructors/append/initial state and original traces remain open |
+| Ordinary attack badge-effect tail and called recovery services | JUMP-01, DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [32-command tail](behavior/battle/BATTLE_ATTACK_BADGE_RECOVERY_TAIL.md),[recovery/geometry](behavior/battle/BATTLE_BADGE_RECOVERY_SERVICES.md),[coercion/effect route](behavior/battle/BATTLE_BADGE_RECOVERY_PRESENTATION.md):complete local graph/wrappers/cores and scoped presentation binding;renderer/VM/domain/source/runtime remain open |
+| Lecture field trigger,story conditions and return requests | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Field entry/return](behavior/story/LECTURE_FIELD_ENTRY_AND_RETURN.md):wall/reload story10 callers,crossing operands,choices,setup3 and common story11 exit answered;intersection/party/persistent services,battle-end controller and original traces remain open |
+| Weapon aftereffect callback and ordinary Jump operands | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Dispatch](behavior/battle/BATTLE_WEAPON_AFTEREFFECT_DISPATCH.md),[stage leaves](behavior/battle/BATTLE_STAGE_AFTEREFFECT_REQUESTS.md):complete local weighted/forced RNG and destruction/nozzle/frame/object ownership;queued event bodies,source/domain and original traces remain open |
+| Stylish start/main/result and ordinary Jump timing bindings | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Timing/results](behavior/battle/BATTLE_STYLISH_TIMING_AND_RESULTS.md),[icon](behavior/battle/BATTLE_STYLISH_TIMING_ICON.md):complete local start/poll/input/output/queue/draw and four ordinary callers;source/scheduler/audience/display/assets/original traces remain open |
+| Enemy candidate choice and sampling cores | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Sampling](behavior/battle/BATTLE_ENEMY_CANDIDATE_SAMPLING.md),[choice/RNG](behavior/battle/BATTLE_ENEMY_CANDIDATE_CHOICE.md):complete local admission/geometry/compaction/sort/weights/mode4/draw semantics;source/helper/domain/seed/interleaving and original traces remain open |
+| Ordinary selected target,weapon-address and weapon-cost services | JUMP-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Selection/weapon](behavior/battle/BATTLE_SELECTED_TARGET_AND_WEAPON.md),[cost/payment](behavior/battle/BATTLE_WEAPON_COST_AND_PAYMENT.md):complete local bodies/cursor dispatch/shared FP/AP/action-record arithmetic;menu/selection producers,numeric extremes and original traces remain open |
+| Lecture player attack bindings,mode/feedback transitions and end requests | AC-01, AC-02, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Player flow](behavior/story/LECTURE_PLAYER_ATTACK_FLOW.md) and [window arbitration](behavior/battle/BATTLE_STATUS_WINDOW_ARBITRATION.md);default weapon masks,1→2/5→6 and feedback writers/end requests answered,full menu/end/field/runtime traces remain open |
+| Unit/part hit/world/home positions and movement sound core | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Position queries](behavior/battle/BATTLE_UNIT_PART_POSITION_QUERIES.md),[movement sound](behavior/battle/BATTLE_MOVEMENT_SOUND_CONTROL.md);source writers,playback internals and original traces remain open |
+| Jump takeoff position,move-frame query and approach MovePosition | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Takeoff](behavior/battle/BATTLE_JUMP_TAKEOFF_POSITION.md),[query/movement](behavior/battle/BATTLE_MOVE_FRAME_AND_POSITION.md):complete local bodies;candidate/numeric/helper/domain and execution remain open |
+| Unit sound-mode loader and Mario jump sound record | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Sound-mode contract](behavior/battle/BATTLE_UNIT_SOUND_MODE.md):complete partial-field loader and used type2/-1 request;source writers/macro resources/audio execution remain open |
+| MarioJumpPosition complete local motion modes and AC side effects | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Motion](behavior/battle/BATTLE_MARIO_JUMP_MOTION.md) and [numerics](behavior/battle/BATTLE_MARIO_JUMP_NUMERICS.md):complete local body,all phases/rounded branches;numeric/audio dependencies and original traces remain open |
+| Crump NPC helper identity versus lecture helper modes and hooks | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Helper roles](behavior/story/CHRISTINE_HELPER_ROLES.md) and [coordinator modes](behavior/story/LECTURE_COORDINATOR_MODES.md);distinct setup/kind/ID/work/message graph answered,player/counter/field lifecycle and original traces remain open |
+| Mario-specific JumpParam preparation and motion dependencies | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Parameter contract](behavior/battle/BATTLE_MARIO_JUMP_PARAMETER.md):complete ordered integer resolution/distance-count writeback;Mario motion now linked separately,numeric/domain/execution traces remain open |
+| Battle input sampler/reset caller census and system-level/event-speed controls | AC-01, AC-03, AC-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Reset owners](behavior/input/BATTLE_INPUT_RESET_OWNERS.md) and [level/speed controls](behavior/event/EVENT_SYSTEM_LEVEL_AND_SPEED.md);direct census,local controls and tutorial injection answered,full UI/type/writer/lecture graph and original traces remain open |
+| Ordinary Jump complete request graph and per-hit/AC branches | JUMP-01, AC-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Jump graph](behavior/battle/BATTLE_NORMAL_JUMP_EVENT_FLOW.md),[result/stop](behavior/battle/BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md),[VM/concurrency](behavior/event/EVENT_JUMP_BRANCHES_AND_CONCURRENCY.md);local motion/preparation now linked separately,candidate/audio/cost/stylish/source composition and original traces remain open |
+| Unit resource/status snapshot export leaf | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Export contract](behavior/unit/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete matching writer;export caller cadence and on-disk save semantics remain open |
+| Unit badge/count/bonus import through _EquipItem | STATUS-01, DMG-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Badge import](behavior/unit/UNIT_BADGE_COUNT_IMPORT.md):complete byte maps/flags/reset/scan and scoped setup bindings;inventory equip UI and runtime traces remain open |
+| Unit-entry status clear and pouch resource import | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Initialization contract](behavior/unit/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete clear/import/revision,party mapping and partial info-record reset;badge aggregation,snapshot producers and turn/save ownership remain open |
+| Physical key producer and battle pad update order | AC-01, AC-03, AC-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Physical producer](behavior/input/PHYSICAL_INPUT_PRODUCER.md) and [cadence/snapshots](behavior/input/BATTLE_INPUT_CADENCE_AND_SNAPSHOTS.md);local edges/repeats/order answered,SDK/pause/other writers/original traces remain open |
+| Unit part defense/attribute construction and Crump source tables | DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Part contract](behavior/unit/UNIT_PART_DEFENSE_AND_LIFETIME.md):pointer copies,boss/Mario zero tables,lookup exceptions and ordered teardown;full unit entry,mutation and executed damage remain open |
+| Battle jump callbacks and concrete Crump float operands | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Jump contract](behavior/battle/BATTLE_JUMP_EVENT_CALLBACKS.md):full local callbacks,used float route and scoped JMP-01..07 acceptance cases;main/pad cadence and original impact traces remain open |
+| Crump normal attack request graph and target wrapper ABI | AC-01, AC-03, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Attack graph](behavior/story/HARBOR_BOSS_NORMAL_ATTACK.md) and [target ABI](behavior/battle/BATTLE_TARGET_EVENT_INTERFACES.md); excludes target cores and executed timing; parent requests remain open |
+| Default weapon power callback and concrete boss operands | DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Power contract](behavior/battle/BATTLE_WEAPON_POWER_CALLBACKS.md):full default body,boss base1 and nil FP pointer;final modified damage remains open |
+| Ordinary Mario Jump/Hammer power callback bodies and default tables | DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Power contract](behavior/battle/BATTLE_WEAPON_POWER_CALLBACKS.md):signed level,index/read order,two ordinary tables;hit-count/level/bonus/AC producers remain open |
 
 ID1 validation follow-up: ID2 renamed the Mario part-record local to avoid
 shadowing the DOL base. The general verifier now passes after that correction;
@@ -134,12 +136,12 @@ coverage is adequate.
 ## AC-01 — Opening Crump encounter and Jump callers (open)
 
 ID1 helper-role answer (2026-10-12):
-[helper roles](behavior/CHRISTINE_HELPER_ROLES.md) verifies that Crump setup2
+[helper roles](behavior/story/CHRISTINE_HELPER_ROLES.md) verifies that Crump setup2
 spawns unit_npc_christine0x66d78 through setup0x647d8;its init/attack hooks do
 not select the separate lecture injection/mode routines. Lecture setup3 uses
 kind0x66fe8,spawns professor0x67fb8,and binds selector-6 via W+0x424 to that
 professor. Keep those actor/state roles separate even when assets are reused.
-[coordinator modes](behavior/LECTURE_COORDINATOR_MODES.md) supplies its full local
+[coordinator modes](behavior/story/LECTURE_COORDINATOR_MODES.md) supplies its full local
 phase/init request graph,phase-controlled work3/7 preparation and20 exact US
 message/choice/append sites with speaker bindings in msg/US/gor_02.txt. Mode1→2/
 5→6 player producers,counter dispatch,field selection/lifecycle and original
@@ -147,7 +149,7 @@ traces remain open;the first Crump encounter must not inherit lecture-only Mario
 HP-skip or injected A/B inputs from this different setup.
 
 Partial answer in documentation commit81a2c2b:
-[harbor opening bindings](behavior/STORY_HARBOR_OPENING_BINDINGS.md) pins
+[harbor opening bindings](behavior/story/STORY_HARBOR_OPENING_BINDINGS.md) pins
 gor.rel entry/story resume values2..6,seven event spans,actor keys/placement,
 20 message call sites and the beforebattle NPC literal2/start/wait boundary.
 It explicitly leaves battle configuration,complete scene conditions and service/
@@ -155,10 +157,10 @@ cadence/persistence semantics open. Native harness dialogue remains development
 notices;the inventory must not be substituted for a complete story event graph.
 
 Further partial evidence has arrived in
-[field battle entry/return](behavior/FIELD_BATTLE_ENTRY_AND_RETURN.md) and
-[harbor configuration](behavior/HARBOR_TUTORIAL_CONFIGURATION.md): literal2
+[field battle entry/return](behavior/field/FIELD_BATTLE_ENTRY_AND_RETURN.md) and
+[harbor configuration](behavior/story/HARBOR_TUTORIAL_CONFIGURATION.md): literal2
 selects gor setup record0x60eb8,one weighted group/unit and unit_boss_kanbu1.
-The subsequent [entry/stats contract](behavior/UNIT_ENTRY_STATS_AND_SPAWN.md)
+The subsequent [entry/stats contract](behavior/unit/UNIT_ENTRY_STATS_AND_SPAWN.md)
 connects kind HP5/FP0 to runtime stores;later overrides remain open. The local field-return wait accepts sequence2 plus
 any nonzero result;actual victory/loss/escape producers remain open. Preserve
 these boundaries when answering remaining tutorial stats/event requests.
@@ -193,22 +195,22 @@ separately. Existing leads: `behavior/BATTLE_ORDINARY_ATTACK_BINDINGS.md`,
 ## AC-02 — Ordinary Hammer binding and presentation (open)
 
 ID1 lecture-only answer (2026-10-12):
-[lecture player flow](behavior/LECTURE_PLAYER_ATTACK_FLOW.md) pins ID3 params
+[lecture player flow](behavior/story/LECTURE_PLAYER_ATTACK_FLOW.md) pins ID3 params
 4/25 and mode5 flag2,hold/rehold/release teaching loops,STOP/START of setup-event
 ID versus parameter2 suppression,output2→professor work2 and cleanup5→6. These
 are a different script/weapon binding from ordinary Hammer;do not assign period40
 merely because the lecture pointer differs from default. Jump lecture ID1 and
 cleanup1→2/default menu masks are documented alongside it. Its coordinator sets
 01000000,a proven TimingA forced-success writer,without establishing that field
-in Crump's opening encounter. [Status arbitration](behavior/BATTLE_STATUS_WINDOW_ARBITRATION.md)
+in Crump's opening encounter. [Status arbitration](behavior/battle/BATTLE_STATUS_WINDOW_ARBITRATION.md)
 closes2740 suppression and event-on precedence;it is separate from attack
 selection. Full field/menu/end/services and original execution remain open.
 
 Partial answer arrived in concurrent documentation commit07bb0f7:
-[weapon branches](behavior/BATTLE_HAMMER_WEAPON_BRANCHES.md) establishes default
+[weapon branches](behavior/battle/BATTLE_HAMMER_WEAPON_BRANCHES.md) establishes default
 Hammer pointer0x80353de8 -> T25/base difficulty3, the two named pointer cases
 -> T30/base3, and the core's other-weapon branch -> T40. Integer branch support
-is in [VM branch rules](behavior/EVENT_INTEGER_BRANCHES.md). This resolves the
+is in [VM branch rules](behavior/event/EVENT_INTEGER_BRANCHES.md). This resolves the
 ordinary pointer/period/base-difficulty part of this request. Remaining caller,
 tutorial, display/sound and execution questions below remain open.
 
@@ -230,14 +232,14 @@ retain `SFX_AC_PI1` and `SFX_AC_PONE1`; no replacement samples are played.
 ## AC-03 — Defense callers, pad cadence and eligibility (open)
 
 Further partial answer from ID1 (2026-10-12):
-[reset ownership](behavior/BATTLE_INPUT_RESET_OWNERS.md) finds two direct DOL
+[reset ownership](behavior/input/BATTLE_INPUT_RESET_OWNERS.md) finds two direct DOL
 samplers,four WorkInit callers and one gor tutorial-helper import. The helper
 resets private history then injects raw0x100/0x200 at index0 when the selected
 lecture script's work value is3/7,before defense/damage requests. Its preliminary
 result4 does not bypass the checker,which clears that result. Full lecture
 selection,selector-6/work producers,weapon eligibility and original traces remain
 open;do not replace Crump's ordinary attack input with demonstration injection.
-[system controls](behavior/EVENT_SYSTEM_LEVEL_AND_SPEED.md) closes the local
+[system controls](behavior/event/EVENT_SYSTEM_LEVEL_AND_SPEED.md) closes the local
 level0..4 event-mask table,getter returning the whole GP mask,and speed setter/
 creation regions. Nonzero lower levels do not automatically resume older stops;
 mask0xef excludes0x10. Caller UI/type/speed ownership remains open. These answers
@@ -245,10 +247,10 @@ supply implementable reset/control semantics without a fabricated whole-game
 pause flag or fixed impact schedule.
 
 Input partial answer from agent ID1 (2026-10-12):
-[physical producer](behavior/PHYSICAL_INPUT_PRODUCER.md) closes local DemoPad
+[physical producer](behavior/input/PHYSICAL_INPUT_PRODUCER.md) closes local DemoPad
 read/copy,error-3 retention,GP physical edges,frame-rate-scaled24/6 repeat counters,
 strict48 direction masks and US input-clear chord. Hardware SDK/polling remains
-open. [battle cadence/snapshots](behavior/BATTLE_INPUT_CADENCE_AND_SNAPSHOTS.md)
+open. [battle cadence/snapshots](behavior/input/BATTLE_INPUT_CADENCE_AND_SNAPSHOTS.md)
 closes general→sequence→private→AC main ordering before later main-chain events,
 private sampling even with no AC main,and the12-byte snapshot write map. The
 current GP press can be included before a later eligible defense event;multiple
@@ -258,7 +260,7 @@ Main frequency/pause,other samplers/resets,override writers,multihit event bindi
 and original execution traces remain open;no fixed impact tick is established.
 
 Movement partial answer from agent ID1 (2026-10-12):
-[jump callbacks](behavior/BATTLE_JUMP_EVENT_CALLBACKS.md) gives full local
+[jump callbacks](behavior/battle/BATTLE_JUMP_EVENT_CALLBACKS.md) gives full local
 JumpSetting/JumpPosition/JumpContinue contracts and the concrete float route.
 JumpPosition integrates in its first call,blocks on remaining positive count,
 and yields on landing;precheck is reached in a subsequent interpreter invocation.
@@ -270,26 +272,26 @@ schedule is inferred. Main/private/general pad order,pause,execution credits and
 original input traces remain open;do not treat the local callback as closing them.
 
 Further partial answer (2026-10-12):
-[boss normal attack](behavior/HARBOR_BOSS_NORMAL_ATTACK.md) documents all95
+[boss normal attack](behavior/story/HARBOR_BOSS_NORMAL_ATTACK.md) documents all95
 commands. Precheck result1 alone requests defense then CheckDamage flags0x100;
 results2/3/4/6 and default skip defense and converge on common recovery. The
 parent reaches precheck after the JumpPosition callback,with an earlier concurrent
 pose event;no fixed impact tick is established. Preserve avoidance codes38/39/40.
-[target interfaces](behavior/BATTLE_TARGET_EVENT_INTERFACES.md) documents the
+[target interfaces](behavior/battle/BATTLE_TARGET_EVENT_INTERFACES.md) documents the
 seven local target helpers/wrappers,including mode pair selection and signed
 sampling bias;candidate selection cores and initial flag/mode writers remain
 open. No-target GOTO99 has no local label99 and must not be fabricated as a
 successful return. This answers the local attack branch/ABI slice only;request
 stays open for sampling cadence,global eligibility and executed traces.
 
-Partial answer now in [boss tutorial events](behavior/HARBOR_BOSS_TUTORIAL_EVENTS.md):
+Partial answer now in [boss tutorial events](behavior/story/HARBOR_BOSS_TUTORIAL_EVENTS.md):
 normal attack's ResultACDefence call is at gor.rel0x656bc,CheckDamage at0x656cc
 uses flags0x100,and weapon_kanbu1_attack0x64718 has byte+0x13=1. This resolves
 the local enemy weapon byte gate,not battle flag0x1000/global tutorial input/
 status/guard-possibility gates or the impact schedule. Full dispatch integration
 is still required before changing the harness's B/superguard eligibility.
 
-The local [defense and pad contract](behavior/BATTLE_INPUT_AND_DEFENCE.md) is
+The local [defense and pad contract](behavior/input/BATTLE_INPUT_AND_DEFENCE.md) is
 implemented in `source/battle_defense.cpp`, tested in
 `tests/battle_defense_tests.cpp` and connected at the harness enemy impact in
 `Game::battle`. General and private pads are separate;both currently receive
@@ -315,7 +317,7 @@ counter and cannot accidentally duplicate or reset its consumption.
 ## DMG-01 — Weapon power, unit stats and damage dispatch binding (open)
 
 Further partial answer from ID2:
-[part defense and lifetime](behavior/UNIT_PART_DEFENSE_AND_LIFETIME.md) pins
+[part defense and lifetime](behavior/unit/UNIT_PART_DEFENSE_AND_LIFETIME.md) pins
 unsigned count*0x500 block allocation,0x4c source stride,linked nodes,attribute/
 counter copies and retained defense pointers. Crump count1/part1 binds two
 five-byte zero tables;Mario's three annotated records share two zero tables,
@@ -328,7 +330,7 @@ unit entry,mutation/table lifetime,heap/pose services and original traces keep
 DMG-01 open.
 
 Partial answer from documentation agent ID2:
-[weapon power callbacks](behavior/BATTLE_WEAPON_POWER_CALLBACKS.md) recovers
+[weapon power callbacks](behavior/battle/BATTLE_WEAPON_POWER_CALLBACKS.md) recovers
 the complete default and Mario Jump/Hammer bodies,shared pouch pointer and
 ordinary weapon callback/table/event bindings. Boss weapon+20 is signed word1,
 with nil FP callback. Mario captures battle1cb8 mask0x2,reads signed pouch level98/
@@ -340,7 +342,7 @@ bonus0 or AC state without their initialization/caller evidence. PWR-01..04
 provide implementable local requirements and derived acceptance cases. Unit/part
 defense creation,state producers,weapon lifetime and original traces remain open.
 
-The [HP/FP calculators and revival marker](behavior/BATTLE_DAMAGE_CALCULATION.md)
+The [HP/FP calculators and revival marker](behavior/battle/BATTLE_DAMAGE_CALCULATION.md)
 are implemented in `source/battle_damage.cpp`,tested by
 `tests/battle_damage_tests.cpp`. Native attacks now call the HP calculator and
 retain the original-form result code. Their callback/stat fixture still supplies
@@ -370,7 +372,7 @@ event scripts remain unbound and must not be replaced by an invented revival.
 Please link recovered callback/unit/application contracts here as they arrive.
 
 Partial stat answer arrived in
-[entry/stats/spawn](behavior/UNIT_ENTRY_STATS_AND_SPAWN.md):entry publishes the
+[entry/stats/spawn](behavior/unit/UNIT_ENTRY_STATS_AND_SPAWN.md):entry publishes the
 allocated unit before init,then copies signed kind HP/FP into three independent
 fields each. The checked boss receives HP5/FP0 at those stores;later overrides
 and the rest of unit entry remain open. Do not treat that as a measured starting
@@ -389,7 +391,7 @@ ownership remain open. Preserve direct negative/shared status bytes on import;
 only nonpositive partner HP overrides status27 duration. Do not infer original
 disk-save layout or status lifetime from these portable helpers.
 
-Further ID2 answer:[badge/count import](behavior/UNIT_BADGE_COUNT_IMPORT.md)
+Further ID2 answer:[badge/count import](behavior/unit/UNIT_BADGE_COUNT_IMPORT.md)
 recovers full _EquipItem/BtlUnit_EquipItem,40-byte clear,all200 signed pouch
 slots,exact numeric count maps/mode flags and wrapped multi-item threshold.
 Setup uses clear+Mario scan flags3 and clear+partner scan5 before a later
@@ -397,13 +399,13 @@ pouch import;enemy saved/nonsaved held-item branches differ. Concrete Mario
 setup/kind now proves count3 and original part array;items289/290 write the
 power bonus bytes2ff/300. These are also partial DMG-01/AC-03 badge writer
 answers,not initial player equipment or global guard eligibility proof.
-[Snapshot export](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md) identifies
+[Snapshot export](behavior/unit/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md) identifies
 the matching SetParamToPouch body and exact current-resource/status write order;
 swap/turn/battle-end export cadence and disk-save reconstruction remain open.
 Use EQUIP-01..04 and INIT requirements rather than invented loadout/turn rules.
 
 Partial answer from ID2:
-[status clear and pouch import](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md)
+[status clear and pouch import](behavior/unit/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md)
 recovers complete ClearStatus,SetParamFromPouch,ReviseHpFp,party mapper and
 status-info initializer with original entry callers. Clear zeros30 status bytes
 then clears Charge through its setter;the six info records retain each word+8.
@@ -417,7 +419,7 @@ provide scoped requirements/cases. Badge aggregation,move init,snapshot writers,
 infliction/periodic/turn/presentation/save lifetime and original traces remain
 open. This is also a partial DMG-01 answer for later HP/FP override ownership.
 
-Local [storage/recovery](behavior/BATTLE_STATUS_STORAGE.md),[move-count helpers](behavior/BATTLE_MOVE_COUNTS.md)
+Local [storage/recovery](behavior/battle/BATTLE_STATUS_STORAGE.md),[move-count helpers](behavior/battle/BATTLE_MOVE_COUNTS.md)
 and guard/action predicates are implemented in `source/battle_status.cpp`,with
 tests in `tests/battle_status_tests.cpp`. Damage integration uses the actual
 Check/Get storage contract rather than an always-absent reader. These services
@@ -437,20 +439,20 @@ Do not use portable test fixtures or prototype turn timing as original evidence.
 
 ## DMG-02 — Direct application service internals and native bindings (open)
 
-Partial ID2 answer:[unit/part position queries](behavior/BATTLE_UNIT_PART_POSITION_QUERIES.md)
+Partial ID2 answer:[unit/part position queries](behavior/battle/BATTLE_UNIT_PART_POSITION_QUERIES.md)
 close home,part offset/world and scaled hit leaves,BattleGetUnitPartsPtr and the
 event HitPos wrapper. Absolute part flag10000000 differs from owner-position
 plus offset;relative X uses owner189,while scaled hit X uses captured side-table
 factor. Two offset triplets scale through unit114 with ordered fused operations;
 event outputs truncate to signed integer with raw destination sentinel checks.
 No source writer/actual original scene coordinate is inferred from the leaf.
-[Movement sound core](behavior/BATTLE_MOVEMENT_SOUND_CONTROL.md) closes retained
+[Movement sound core](behavior/battle/BATTLE_MOVEMENT_SOUND_CONTROL.md) closes retained
 voice/periodic alternation/stop and identifies only record18 as retained handle;
 keys0/4 are playback inputs. Original kind sounds,source writers,field144 schema,
 height/belong/action-record/audience/revival/VM/resource helpers and execution
 traces remain open. POS/MOVE-SE requirements provide scoped implementation cases.
 
-The local [direct application](behavior/BATTLE_DAMAGE_APPLICATION.md) is now
+The local [direct application](behavior/battle/BATTLE_DAMAGE_APPLICATION.md) is now
 implemented and tested,including shared partner FP,Pity Flower/Sleep RNG order,
 sound/effect request precedence,narrowing/suppression/accounting,lethal-code
 marking and final hit-event request. The native adapter records latest-hit
@@ -930,7 +932,7 @@ Current delivered coverage:the complete local manager/priority loop,root/typed/
 child/brother constructors,restart,plain/ID run and concurrency variants,wait/
 USER_FUNC continuations,control wrappers,setters,full deletion/stop/start and
 integer/float operand routing/saved RAM leaves are now linked in the scoped delivery table and EVENT_RUNTIME
-follow-ups. These answer those parts of the original request below. [Complete opcode coverage](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md)
+follow-ups. These answer those parts of the original request below. [Complete opcode coverage](behavior/event/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md)
 now maps all119 table entries to recovered local contracts,including tail/debug
 and WAIT_WHILE. Remaining closure is numeric/storage/context/time/source/domain
 initialization,address/callback translation,heap ownership and original pause/
@@ -1077,17 +1079,17 @@ and motion helpers remain unbound to native original scripts pending EVT-01,
 unit/part/position owners and numeric services. Do not infer native impact timing
 from the derived query21/motion20 example or regenerate samples as replacements.
 
-Further ID2 answer:[Takeoff](behavior/BATTLE_JUMP_TAKEOFF_POSITION.md) closes
+Further ID2 answer:[Takeoff](behavior/battle/BATTLE_JUMP_TAKEOFF_POSITION.md) closes
 the mixed target-hit X/Z + actor-home Y output,private null-weapon candidate
 sample masks/choice4,signed count gate,closer-X tie rule and pointer/return/side
 offset branches. Candidate cores/RNG/validity remain service dependencies.
-[GetMoveFrame/MovePosition](behavior/BATTLE_MOVE_FRAME_AND_POSITION.md) close
+[GetMoveFrame/MovePosition](behavior/battle/BATTLE_MOVE_FRAME_AND_POSITION.md) close
 ceil-like query versus floor-and-speed-adjusted motion counts,raw/float argument
 differences,first-call integration,horizontal-only baseline and final XYZ snap/
 yield. Query fallback speed does not mutate/repair unit speed. Actual ordinary
 calls are automatic movement,type0/-1 and query speed0;abs(query-22) is retained.
-[Position queries](behavior/BATTLE_UNIT_PART_POSITION_QUERIES.md) and
-[movement sound](behavior/BATTLE_MOVEMENT_SOUND_CONTROL.md) close called local
+[Position queries](behavior/battle/BATTLE_UNIT_PART_POSITION_QUERIES.md) and
+[movement sound](behavior/battle/BATTLE_MOVEMENT_SOUND_CONTROL.md) close called local
 geometry/core/wrappers and their ordered count/retained voice/stop interfaces.
 TAKEOFF/MOVE/POS/MOVE-SE requirements give acceptance cases. These complete
 local callbacks do not close candidate/math/audio/source/domain/scheduling
@@ -1108,8 +1110,8 @@ host tests. Please supply implementation-ready original numeric helper/FPSCR
 contracts or differential traces for distABf/angleABf/sin/fmod/fctiwz;current
 fingerprints and injected host services do not prove original numerical equality.
 
-Further ID2 answer:[MarioJumpPosition motion](behavior/BATTLE_MARIO_JUMP_MOTION.md)
-and [rounded numerical operations](behavior/BATTLE_MARIO_JUMP_NUMERICS.md)
+Further ID2 answer:[MarioJumpPosition motion](behavior/battle/BATTLE_MARIO_JUMP_MOTION.md)
+and [rounded numerical operations](behavior/battle/BATTLE_MARIO_JUMP_NUMERICS.md)
 close801093a8/8c0. All seven arguments resolve as integers on every call;first
 ordinary setup falls through into its first integration. Modes0/3 both use
 phase1,but use floating versus integer360/n and phase coefficients0.53/0.8.
@@ -1121,7 +1123,7 @@ option stores or pad-history calls in this body. Original ResultAC remains later
 in the script,after its window/2 wait. MJP-MOTION/MJP-NUM requirements provide
 implementation cases without invented rendering-frame/impact ticks.
 
-[Sound-mode loader](behavior/BATTLE_UNIT_SOUND_MODE.md) closes the local record
+[Sound-mode loader](behavior/battle/BATTLE_UNIT_SOUND_MODE.md) closes the local record
 schema,type2/-1 source words and conditional setup playback request. Word18c
 is playback input,not proved an allocated voice handle. Body-local sound return
 is ignored;source writers,__psndSFXOn resources/voice lifetime and audio traces
@@ -1130,7 +1132,7 @@ selected-target/cost/stylish/aftereffect/badge-tail services,original reachabili
 domain/numeric/input/state traces. Generic and Mario local motion contracts do
 not by themselves close those services or the original encounter/game.
 
-Further ID2 answer:[MarioJumpParam](behavior/BATTLE_MARIO_JUMP_PARAMETER.md)
+Further ID2 answer:[MarioJumpParam](behavior/battle/BATTLE_MARIO_JUMP_PARAMETER.md)
 closes80109c68/19c. It resolves X/Z via evtGetValue as signed integers,resolves
 but discards Y,reads visible current X/Z and requests distABf. Requested count36
 is a minimum candidate,not fixed:when distance>60,add truncated binary32
@@ -1143,7 +1145,7 @@ only if36 remains36. MJP-PARAM-01..04 give scoped acceptance cases. The distance
 helper's frsqrte/FPSCR fidelity,MarioJumpPosition and original traces remain open.
 
 Partial answer from ID2 (2026-10-12):
-[complete268-command Jump request graph](behavior/BATTLE_NORMAL_JUMP_EVENT_FLOW.md)
+[complete268-command Jump request graph](behavior/battle/BATTLE_NORMAL_JUMP_EVENT_FLOW.md)
 pins target/cost/setup/approach/precheck/motion/result/damage/feedback/recovery/
 tail branches. Shared AC count is distinct from script local10:count<=1 success
 requests CheckDamage flags20000,wait2,local10++,then repeats label10 without
@@ -1153,11 +1155,11 @@ target-HP getter or post-damage result gate occurs before repeating. Preserve
 repeated precheck rather than guaranteeing a second damaging hit. Missing target
 reaches actual label99;avoidance skips result/damage and converges on label95.
 
-[Result/count/grade/stop services](behavior/BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md)
+[Result/count/grade/stop services](behavior/battle/BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md)
 close raw destination readers,raw mask1 update,window output,code30 prize-1/
 unsigned byte1cbd grade clamp,and TimingA's deferred StopAC state1000. The stream
 has no AcSetParamAll/AcSetFlag call and does not write count-window selector2.
-[VM/concurrency](behavior/EVENT_JUMP_BRANCHES_AND_CONCURRENCY.md) pins signed
+[VM/concurrency](behavior/event/EVENT_JUMP_BRANCHES_AND_CONCURRENCY.md) pins signed
 comparisons,raw IF mask and four attached brothers versus one independent camera
 inline. Copied stylish locals do not overwrite parent motion values;camera wait10
 does not block the parent. JUMP-EVT/JAC/JVM requirements give scoped acceptance
@@ -1172,7 +1174,7 @@ tail internals and original tutorial/menu/input/state traces. Do not implement
 the request graph with the native fixed48/42 schedule or copied generic jump
 physics. The parent request remains open for that runtime composition.
 
-The implementation now uses the [recovered power callbacks](behavior/BATTLE_WEAPON_POWER_CALLBACKS.md)
+The implementation now uses the [recovered power callbacks](behavior/battle/BATTLE_WEAPON_POWER_CALLBACKS.md)
 in `source/battle_weapon_power.cpp`. The native harness executes one documented
 Jump hit with level1 supplied as an explicit fixture;successful timing records
 success but no longer fabricates a two-power hit. This is incomplete attack
@@ -1223,11 +1225,11 @@ compile failures above are resolved. ID1 changed no native files for those fixes
 
 
 ID2 selection/cost delivery (2026-10-12), JUMP-01/DMG-01 partial answer:
-[selection and weapon](behavior/BATTLE_SELECTED_TARGET_AND_WEAPON.md) specifies
+[selection and weapon](behavior/battle/BATTLE_SELECTED_TARGET_AND_WEAPON.md) specifies
 retained signed target/permutation reads and output callback order, player versus
 held-item weapon lookup and all15 cursor dispatch entries. Unsupported cursor
 types leave output untouched; do not supply a fabricated default Jump weapon.
-[cost and payment](behavior/BATTLE_WEAPON_COST_AND_PAYMENT.md) supplies every
+[cost and payment](behavior/battle/BATTLE_WEAPON_COST_AND_PAYMENT.md) supplies every
 FP scaling class/reduction/cap, shared Mario FP lookup and low16 stores, separate
 affordability query, ordered unchecked payment, pouch AP narrowing/clamps and
 byte-before-cap action-record helpers. Zero FP cost still counts an action.
@@ -1240,10 +1242,10 @@ released; parent requests and other owners' locks remain open.
 
 
 ID2 candidate service delivery (2026-10-12), JUMP-01/DMG-02 partial answer:
-[sampling](behavior/BATTLE_ENEMY_CANDIDATE_SAMPLING.md) closes all local passes,
+[sampling](behavior/battle/BATTLE_ENEMY_CANDIDATE_SAMPLING.md) closes all local passes,
 metadata/partial row writes, signed count and capacity invariants, side-mask swap
 return, geometry and permutation sorting. Return Q is the swap indicator, not
-nonempty/count. [choice/RNG](behavior/BATTLE_ENEMY_CANDIDATE_CHOICE.md) closes
+nonempty/count. [choice/RNG](behavior/battle/BATTLE_ENEMY_CANDIDATE_CHOICE.md) closes
 (-1,0) output initialization, ordered weights and weapon overrides, deterministic
 physical-index ties and weighted subtraction boundaries. Takeoff mode4/null
 weapon consumes no RNG. irand/rand leaves specify shared LCG and zero-bound
@@ -1262,13 +1264,13 @@ finish that in-progress test file and re-run before recording a host pass.
 
 
 ID2 stylish delivery (2026-10-12), JUMP-01/AC-01 partial answer:
-[timing/results](behavior/BATTLE_STYLISH_TIMING_AND_RESULTS.md) specifies the
+[timing/results](behavior/battle/BATTLE_STYLISH_TIMING_AND_RESULTS.md) specifies the
 shared W271c..2734 record, first-call initialization plus same-call t1 polling,
 exclusive lower/inclusive upper success, opening history rejection, autoInput,
 no-input timeout and ordered result outputs. Both ordinary brothers pass history
 count0; timing is callback invocations, not rendering frames. Main return0
 repeats/yields,1 completes/yields;GetResult returns2 and does not poll/reset.
-[icon](behavior/BATTLE_STYLISH_TIMING_ICON.md) closes local eligibility and
+[icon](behavior/battle/BATTLE_STYLISH_TIMING_ICON.md) closes local eligibility and
 baseline depth queue versus visible draw requests, icon0xa2 and original scale.
 Audience services/source writers/scheduler/display internals/assets and original
 execution remain open. Standalone verify_stylish_timing.py passes13 containing
@@ -1282,11 +1284,11 @@ failure above is resolved;ID2 changed no native source/build registration.
 
 
 ID2 aftereffect delivery (2026-10-12), JUMP-01/DMG-02 partial answer:
-[dispatch](behavior/BATTLE_WEAPON_AFTEREFFECT_DISPATCH.md) closes every local
+[dispatch](behavior/battle/BATTLE_WEAPON_AFTEREFFECT_DISPATCH.md) closes every local
 weighted/chance/force decision and exact RNG/read/call order,with nine actual
 Jump/Hammer chance bytes and both ordinary Jump callers. Aftereffect dispatches
 stage hazards,not a generic status/resource cleanup. Zero chances still consume
-mandatory draws. [stage leaves](behavior/BATTLE_STAGE_AFTEREFFECT_REQUESTS.md)
+mandatory draws. [stage leaves](behavior/battle/BATTLE_STAGE_AFTEREFFECT_REQUESTS.md)
 closes A1/B shared replacement,A2 ignored handle, nozzle weighted/type/liveness
 helpers and frame/object gating/registration. Nozzle and fall constructors have
 explicit unguarded event-ID reads;do not invent local rollback/fallback policy.
@@ -1298,12 +1300,12 @@ callers. ID2 lock released;parent requests/other owners remain open.
 
 
 ID2 badge-tail delivery (2026-10-12), JUMP-01/DMG-02/STATUS-01 partial answer:
-[32-command tail](behavior/BATTLE_ATTACK_BADGE_RECOVERY_TAIL.md) closes both
+[32-command tail](behavior/battle/BATTLE_ATTACK_BADGE_RECOVERY_TAIL.md) closes both
 copied-local brothers, sequential HP/FP >=1 gates, effects, brother120/owner125
-waits and resource writes/delete. [recovery/geometry](behavior/BATTLE_BADGE_RECOVERY_SERVICES.md)
+waits and resource writes/delete. [recovery/geometry](behavior/battle/BATTLE_BADGE_RECOVERY_SERVICES.md)
 closes raw-actor point readers signed min(badgeByte,damageWord), resource wrappers
 (including resolved but ignored part), HP bookkeeping attribute and geometry
-outputs. [coercion/effect route](behavior/BATTLE_BADGE_RECOVERY_PRESENTATION.md)
+outputs. [coercion/effect route](behavior/battle/BATTLE_BADGE_RECOVERY_PRESENTATION.md)
 closes scoped1024 float encoding/MULF then INTEGER ADD and recovery effect catalog/
 argument binding. Do not use unquantized host floating placement or detached
 recovery timers. Full renderer/audio, VM/source/delayed-validity and original
@@ -1322,12 +1324,12 @@ the fixture/behavior mismatch and re-run before claiming a full host pass.
 
 
 ID2 EVT-01 manager delivery (2026-10-12), partial answer:
-[complete manager](behavior/EVENT_MANAGER_COMPLETE_LOOP.md) closes context,
+[complete manager](behavior/event/EVENT_MANAGER_COMPLETE_LOOP.md) closes context,
 raw64-bit tick delta/clamp/substitution, unstable unsigned-priority exchange,
 active/live-ID/0x92 eligibility, lifetime once per visit and single-rounded
 credit add/subtract-before-dispatch. Dispatcher0 can run again under remaining
 credit;1 aborts the whole manager,-1 ends only that entry. The count is live.
-[dispatch/waits](behavior/EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md) closes fetch,
+[dispatch/waits](behavior/event/EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md) closes fetch,
 common handler outcomes,exact first-call waits/cached USER_FUNC,frame decrement
 and msec sign-extended LOW lifetime difference/unsigned division. No fixed one-
 physical-frame policy follows from yield. Standalone verifier passes seven
@@ -1340,11 +1342,11 @@ ID2 scoped lock released;EVT-01 stays priority0 and open. make all passed;host
 
 
 ID2 EVT-01 root-constructor delivery (2026-10-12), partial answer:
-[root/typed constructors](behavior/EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md) closes
+[root/typed constructors](behavior/event/EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md) closes
 first-free slot scan,clear/all explicit fields,priority/type/flags narrowing,
 global speed copy/credit0,ID wrap ordering and conditional live append. Only
 manager-active AND entry.flags0x20 appends;no immediate dispatch or resort.
-[labels/run-check](behavior/EVENT_LABEL_SCAN_AND_ENTRY_RUN_CHECK.md) closes
+[labels/run-check](behavior/event/EVENT_LABEL_SCAN_AND_ENTRY_RUN_CHECK.md) closes
 signed-count label scanning,opcode1 versus2 termination,low8 label writes and
 unused comparison16 (no actual cap). Run-check ignores its entry argument and
 invokes evtStopAll for current global level,after append. Valid free-capacity/
@@ -1358,12 +1360,12 @@ files for it.
 
 
 ID2 EVT-01 descendant/restart delivery (2026-10-12), partial answer:
-[descendants/107/110](behavior/EVENT_CHILD_BROTHER_AND_INLINE_CONSTRUCTION.md)
+[descendants/107/110](behavior/event/EVENT_CHILD_BROTHER_AND_INLINE_CONSTRUCTION.md)
 closes full child/brother inherited/reset maps,parent waiting versus owner-only
 links,priority narrowing,global speed/credit0,labels and active-manager append.
 Child/brother append has no root flag0x20 gate. It specifies zero-ID/run-check
 order differences,post-constructor wrapper recopies,brother150 versus inline
-message metadata and independent inline ownership. [restart](behavior/EVENT_RESTART_PRESERVATION.md)
+message metadata and independent inline ownership. [restart](behavior/event/EVENT_RESTART_PRESERVATION.md)
 closes exact stores/label rebuild/preserved locals,ID/links/flags/timers and global
 speed reset without append/cancel. First-call leftovers reset at subsequent
 fetch,not restart itself. Standalone verifier passes seven complete containing
@@ -1381,10 +1383,10 @@ file and re-run before recording a full host pass;ID2 changed no native files.
 
 
 ID2 EVT-01 run/control delivery (2026-10-12), partial answer:
-[run/ID variants](behavior/EVENT_RUN_AND_ID_OUTPUT_VARIANTS.md) closes independent
+[run/ID variants](behavior/event/EVENT_RUN_AND_ID_OUTPUT_VARIANTS.md) closes independent
 92/93 roots with flags0/no same-pass append, copied fields and ID publication;
 108/111 end scanners/output order and brother111's omitted150 copy.
-[controls/ID scans](behavior/EVENT_CONTROL_OPCODES_AND_ID_SCANS.md) closes94..106
+[controls/ID scans](behavior/event/EVENT_CONTROL_OPCODES_AND_ID_SCANS.md) closes94..106
 wrappers,child255 yield WITHOUT owner deletion,setter rounding/narrowing,
 Other-pointer exclusion,all-match stop/start IDs with maskef and first-match
 active CheckID. Raw output is distinct from resolved input. Verifier passes16
@@ -1401,10 +1403,10 @@ configuration failure above is resolved. ID2 changed no native files for it.
 
 
 ID2 EVT-01 lifetime delivery (2026-10-12), partial answer:
-[deletion/copy-back](behavior/EVENT_DELETE_AND_COPYBACK.md) closes active gate,
+[deletion/copy-back](behavior/event/EVENT_DELETE_AND_COPYBACK.md) closes active gate,
 child-before-brother recursion,live slot scans,parent copy-back even on ancestor
 cancellation,paired metadata,active clear/memset/counter order and all-match
-DeleteID. [stop/start](behavior/EVENT_STOP_START_RELATIONSHIP_TRAVERSAL.md)
+DeleteID. [stop/start](behavior/event/EVENT_STOP_START_RELATIONSHIP_TRAVERSAL.md)
 closes full descendant-before-mask behavior and original compiler-inline context
 capture policy,All wrappers and same-pass credit implications. No host rollback/
 immediate suspend/refcount behavior is original. Verifier passes six full body
@@ -1415,8 +1417,8 @@ tests;make all passed. No native changes by ID2.
 
 
 ID2 EVT-01 operand namespace delivery (2026-10-12), partial answer:
-[integer APIs](behavior/EVENT_INTEGER_OPERAND_NAMESPACES.md),[float APIs](behavior/EVENT_FLOAT_OPERAND_ROUTING.md)
-and [saved leaves](behavior/EVENT_SAVED_SWITCH_STORAGE.md) close all four local
+[integer APIs](behavior/event/EVENT_INTEGER_OPERAND_NAMESPACES.md),[float APIs](behavior/event/EVENT_FLOAT_OPERAND_ROUTING.md)
+and [saved leaves](behavior/event/EVENT_SAVED_SWITCH_STORAGE.md) close all four local
 reader/setter bodies,GetWork and ten called switch leaves. Signed exact routing
 bands differ by API;float APIs must not share an integer-family decoder. Fetched-
 word lower-bound coercion also differs. Setters'old-word/old-boolean/raw-value/
@@ -1429,10 +1431,10 @@ passes28 CTest suites and58 Python tests;make all passed. ID2 made no native edi
 
 
 ID2 EVT-01 loop/arithmetic delivery (2026-10-12), partial answer:
-[GOTO/loops](behavior/EVENT_GOTO_AND_LOOP_OPCODES.md) closes4..8/NEXT including
+[GOTO/loops](behavior/event/EVENT_GOTO_AND_LOOP_OPCODES.md) closes4..8/NEXT including
 signed pointer/label gate,first16 signed-byte lookup/missing fallback,raw count
 push,deferred variable decrement,literal0,threshold-10000000 and BREAK/CONTINUE
-lexical/stack distinctions. [assignment/arithmetic/cursor](behavior/EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md)
+lexical/stack distinctions. [assignment/arithmetic/cursor](behavior/event/EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md)
 closes50..64:SET resolved/raw/float,all RHS-first updates,wrapped arithmetic,
 MOD's signed-to-single/+0.5/fctiwz before remainder,float single operations and
 cursor advance-before-read/output with reload between lanes. No native for-loop
@@ -1444,9 +1446,9 @@ passes29 CTest suites and58 Python tests;make all passed. ID2 made no native edi
 
 
 ID2 EVT-01 switch/case delivery (2026-10-12), partial answer:
-[Switch/stack/scans](behavior/EVENT_SWITCH_STACK_AND_CASE_SCANS.md) closes34..49
+[Switch/stack/scans](behavior/event/EVENT_SWITCH_STACK_AND_CASE_SCANS.md) closes34..49
 actual dispatch table,raw/resolved pushes,signed stack,state gates and next-header
-scans. [Grouped/mask/range](behavior/EVENT_GROUPED_MASK_AND_RANGE_CASES.md)
+scans. [Grouped/mask/range](behavior/event/EVENT_GROUPED_MASK_AND_RANGE_CASES.md)
 closes OR43/AND44 sentinels,raw any-bit mask45,group end46,inclusive range47,
 BREAK48 and END49. Table order is independently pinned;function address order
 must not supply opcode numbering. Scans count34/1 but ignore raw35;case search
@@ -1459,8 +1461,8 @@ hashes,267 anchors,16 actual dispatch words. make test passes30 CTest suites and
 
 
 ID2 EVT-01 predicate delivery (2026-10-12), partial answer:
-[Integer/mask/continuations](behavior/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md)
-and [float/string](behavior/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md) close12..33,
+[Integer/mask/continuations](behavior/event/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md)
+and [float/string](behavior/event/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md) close12..33,
 all twenty IF helpers and full strcmp. Operand0 is resolved first;operand1 is
 loaded afterward from captured base. Masks are raw,strings resolve both/null→
 empty,and float NaN acceptance follows exact CR negation (all except equality
@@ -1474,8 +1476,8 @@ source/pointer/domain and original traces remain EVT-01 work. make test passes30
 CTest suites and58 Python tests;make all passed. ID2 made no native edits.
 
 ID2 reply to EVT-01 deletion-counter breadcrumb (2026-10-12):
-The already delivered [deletion](behavior/EVENT_DELETE_AND_COPYBACK.md) step5 and
-[root constructor](behavior/EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md) allocation
+The already delivered [deletion](behavior/event/EVENT_DELETE_AND_COPYBACK.md) step5 and
+[root constructor](behavior/event/EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md) allocation
 step identify the SAME global word8041e860 = r13(8041cf20)+1940. evtDelete loads
 at800368a4,decrements at800368a8 and stores at800368ac after memset. Constructor
 store anchors8003752c/800372a4 use900d1940;increment precedes memset. This is
@@ -1495,12 +1497,12 @@ binary verifiers and Gekko audit passed. Source log:/tmp/id1-partner-dir-test.lo
 
 
 ID2 EVT-01 data/memory delivery (2026-10-12), partial answer:
-[Readers](behavior/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md) closes65..73,
+[Readers](behavior/event/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md) closes65..73,
 all cursor lane/query/load/output ordering;73 is indexed SIGNED integer→single
-float,not IEEE indexed load. [Bitwise/time/memory](behavior/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md)
+float,not IEEE indexed load. [Bitwise/time/memory](behavior/event/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md)
 closes77..90,raw/resolved RHS,captured/delayed destinations,wrapped products
 before signed60/1000 division and raw-address versus one/two-query API routing.
-[User buffers/allocator](behavior/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md)
+[User buffers/allocator](behavior/event/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md)
 closes74..76 and complete local best-fit/split/zero/cache/publish path:failure0
 is published,old E154 not freed locally,zero remainder header still written.
 No host pointer decoder,length check or automatic per-entry heap ownership is
@@ -1528,13 +1530,13 @@ binary verification passes;full host gate remains pending until fixture arrives.
 
 
 ID2 EVT-01 tail/inventory delivery (2026-10-12), partial answer:
-[Tail/debug](behavior/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md) closes113..118,
+[Tail/debug](behavior/event/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md) closes113..118,
 WAIT_WHILE11 and implicit1/3 runtime no-ops.118 queries active slots0..255 with
 fresh GP context per helper then handler1 regardless of found/not-found;no
 capacity gate.115 formats into shared scratch only,uses independent signed
 routing/raw-mask values and exact UW/GSW/LSW hex argument anomalies. All23
 original diagnostic templates and formatter CR6 inputs are explicit.
-[Coverage inventory](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md) maps
+[Coverage inventory](behavior/event/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md) maps
 EVERY119 actual target to recovered contracts. Generic missing local opcode
 bodies are now closed;EVT-01 stays priority0/open for source/address/callback/
 context/capacity/time/heap/numeric domains and original execution acceptance.
@@ -1542,6 +1544,16 @@ Verifier passes nine containing/complete/linked hashes,164 anchors,145 spans
 including119 table words and23 templates. Own binary-validated documentation
 lock released;make all passed,58 Python tests passed;full make test awaits the
 missing concurrent native fixture described above. ID2 changed no native files.
+
+
+ID1 ray ABI correction (2026-10-12):OVERWORLD_WALL_MOVEMENT.md had the
+HitQuery output labels reversed. Original backend computes origin+scaled
+ray into query+0x24 at80016454/58;triangle normal is copied/normalized into
+query+0x30 at80016474..80 and80016530..68. Normal=+30,hit point=+24.
+Partner caller reads+30 normal for its projection. Corrected the doc;native
+high-level ray provider should be checked against this ABI,without swapping
+already correctly named native vector fields. Full backend/numeric traversal
+remains separate. ID1 verifier pins these result-layout anchors.
 
 
 ID2 native validation follow-up (2026-10-12,context-init research):the previously
@@ -1555,14 +1567,14 @@ assertion failures;this supersedes the older missing-file blocker.
 
 
 ID2 EVT-01 context/init delivery (2026-10-12), partial answer:
-[Init/reset](behavior/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md) closes both
+[Init/reset](behavior/event/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md) closes both
 complete bodies:Init allocates TWO256*1b0 arrays (216KiB payload combined),
 zeros32-word/three-flag banks and resets three scheduling/allocation globals;
 ReInit clears ONLY selected existing array,keeps work/flag banks and live schedule
 count,sets shared allocation count/manager-active0. Neither resets global ID/
 speed,performs entry deletion/copy-back or frees old buffers. Initialized DOL
 ID starts1,speed1.0;those values are not assignments in Init/ReInit.
-[SDK heap/callers](behavior/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md) closes
+[SDK heap/callers](behavior/event/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md) closes
 __memAlloc/SDK first-fit split/whole-block/zero/cache policy and four direct
 DOL calls. battle_init stores GP14=1 immediately BEFORE reset;battle_exit resets
 BEFORE its explicit GP14=0 and field StartAll4 request. No full caller/REL/scene
@@ -1581,25 +1593,28 @@ Missing-fixture and terrain failures are historical/resolved;ID2 changed no
 native files. Context/init evidence and documentation link checks also pass.
 
 
-ID1 ray ABI correction (2026-10-12):OVERWORLD_WALL_MOVEMENT.md had the
-HitQuery output labels reversed. Original backend computes origin+scaled
-ray into query+0x24 at80016454/58;triangle normal is copied/normalized into
-query+0x30 at80016474..80 and80016530..68. Normal=+30,hit point=+24.
-Partner caller reads+30 normal for its projection. Corrected the doc;native
-high-level ray provider should be checked against this ABI,without swapping
-already correctly named native vector fields. Full backend/numeric traversal
-remains separate. ID1 verifier pins these result-layout anchors.
+ID1 urgent surrounding-wall correction (2026-10-12):original marioChkWallAround
+800891e0 fcmpo;800891e4 cror2,1,2;800891e8 bf2 makes ordered dot>=0
+SKIP second correction;negative/unordered applies half second push (if FP
+exceptions permit continuation). PSVECDotProduct8029ec84 confirms an ordinary
+positive dot,not a negated dot. First vector copied to stack54 at80088db4–bc
+BEFORE cap at80088dd8;dot uses this UNCLAMPED copy. Existing wall doc corrected.
+Native source/field_wall.cpp currently tests >0 to apply,and field_wall_tests
+expect same-direction second push to move -2.5→-7 and reverse push to stay-2.5;
+these two outcomes must reverse for original parity. Native owner should update
+policy/fixtures;ID1 does not edit concurrent native files. Detailed partner binding
+and pinned evidence follow under the ID1 lock.
 
 
 ID2 EVT-01 time/update delivery (2026-10-12), partial answer:
-[Retrace clock](behavior/EVENT_RETRACE_TIME_PUBLICATION.md) supplies actual
+[Retrace clock](behavior/platform/EVENT_RETRACE_TIME_PUBLICATION.md) supplies actual
 GP38/3c producer:OSGetTime raw-TB delta,GP10/window gate,unconditional raw-baseline
 publication,masked auxiliary clock banks,event bank independent of low system
 mask,and field-only40 bank. Freeze discards later catch-up ticks because baseline
 continues updating. Window null/1000/state0 or>=200 does not freeze;nonzero<200
 including negatives does. Scoped bootstrap zero-bank/VI refresh0→60 else50/
 post-retrace registration and full raw reader are pinned;hardware rate unmeasured.
-[Outer loop](behavior/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md) closes main,
+[Outer loop](behavior/platform/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md) closes main,
 StMain/display local requests and all33 calls:makeKey,battleMain,evtmgrMain order,
 readiness yield barrier,raw profile intervals and complete idle channel/time/
 sequence/flag request. Original action commands remain simulation-tick owned;
@@ -1619,21 +1634,8 @@ dependency,not an original-game evidence failure. Timing/general/manager binary
 verifiers and Python compilation pass. ID2 changed no native or asset tooling.
 
 
-ID1 urgent surrounding-wall correction (2026-10-12):original marioChkWallAround
-800891e0 fcmpo;800891e4 cror2,1,2;800891e8 bf2 makes ordered dot>=0
-SKIP second correction;negative/unordered applies half second push (if FP
-exceptions permit continuation). PSVECDotProduct8029ec84 confirms an ordinary
-positive dot,not a negated dot. First vector copied to stack54 at80088db4–bc
-BEFORE cap at80088dd8;dot uses this UNCLAMPED copy. Existing wall doc corrected.
-Native source/field_wall.cpp currently tests >0 to apply,and field_wall_tests
-expect same-direction second push to move -2.5→-7 and reverse push to stay-2.5;
-these two outcomes must reverse for original parity. Native owner should update
-policy/fixtures;ID1 does not edit concurrent native files. Detailed partner binding
-and pinned evidence follow under the ID1 lock.
-
-
 ID1 surrounding-wall delivery and validation (2026-10-12):
-[Binding/core/numerics](behavior/FIELD_PARTNER_SURROUNDING_WALL.md) now exists;
+[Binding/core/numerics](behavior/partner/FIELD_PARTNER_SURROUNDING_WALL.md) now exists;
 the concurrent missing-link notice is resolved. Seven complete local hashes,
 83 instructions,13 constants,five spans and two lecture imports pass. Native
 owner still needs the exact reversed dot-admission fixture updates above and
@@ -1655,12 +1657,12 @@ new contract;native owner review remains required for parity.
 
 
 ID2 EVT-01 heap/release delivery (2026-10-12), partial answer:
-[Map release/battle pool](behavior/MAP_BUFFER_FREE_AND_BATTLE_POOL.md) closes
+[Map release/battle pool](behavior/memory/MAP_BUFFER_FREE_AND_BATTLE_POOL.md) closes
 successor-then-predecessor merge,header32 accounting,early null/used gates and
-400KiB primary-map reservation/nested root/free order. [Pool bootstrap/reset](behavior/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md)
+400KiB primary-map reservation/nested root/free order. [Pool bootstrap/reset](behavior/memory/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md)
 closes five original config records,fixed/percentage two-pass assignment,SDK
 creation/destroy/recreation,ignored replacement handles and memClear index1
-primary root rebuilding. [SDK free/census](behavior/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md)
+primary root rebuilding. [SDK free/census](behavior/memory/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md)
 closes allocated unlink,address-sorted insertion and exact adjacency coalescing,
 with50 direct sites (45 map free). SDK free has no map-style null gate and its
 sizes include headers;do not share generic free/size semantics. No per-event
@@ -1673,8 +1675,8 @@ full local link check passes. ID2 changed no native or asset pipeline code.
 
 
 ID1 partner stay postpass delivery (2026-10-12):
-[Fly](behavior/FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md) and
-[ground](behavior/FIELD_PARTNER_GROUND_POSTPASS.md) specify actual mobility==1
+[Fly](behavior/partner/FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md) and
+[ground](behavior/partner/FIELD_PARTNER_GROUND_POSTPASS.md) specify actual mobility==1
 vs all-other tail binding,head-before-suppression asymmetry,ordered [-5,0)
 no-correction interval,captured owner vs fresh admission pointer,floor snap/fall,
 attribute priority and exact25-name support-triggered motion. Floor query can
@@ -1689,8 +1691,8 @@ remain open. Original surrounding-dot native correction request remains separate
 
 
 ID1 partner ceiling/scalar ray delivery (2026-10-12):
-[Ceiling query](behavior/FIELD_PARTNER_CEILING_QUERY.md) and
-[scalar wrapper](behavior/FIELD_SCALAR_RAY_WRAPPER.md) establish four samples,
+[Ceiling query](behavior/partner/FIELD_PARTNER_CEILING_QUERY.md) and
+[scalar wrapper](behavior/field/FIELD_SCALAR_RAY_WRAPPER.md) establish four samples,
 first nonnull short-circuit (not nearest across probes),no local distance
 quantization,raw ordered height cap and success/failure writes. Success V is
 sampled X/Z plus captured INPUT Y;failure still writes FOURTH sample X/Z,inputY,
@@ -1713,13 +1715,13 @@ pass;full host gate remains pending until the named fixture is available.
 
 
 ID2 EVT-01 readiness delivery (2026-10-12), partial answer:
-[Disc thread](behavior/EVENT_DISC_THREAD_READINESS_GATE.md) closes GP10 producer,
+[Disc thread](behavior/platform/EVENT_DISC_THREAD_READINESS_GATE.md) closes GP10 producer,
 all13 numeric statuses (1 preserves gate),A/B/C query order,retrace-change counting,
 count10/11 boundary,card override and alternate input/reset requests. [System
-presentation](behavior/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md) closes local
+presentation](behavior/platform/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md) closes local
 ROM-font routing/init,width/projection/color/request ordering and four exact
 US-default DOL resources. V changes from selector to pointer during rendering;
-status1 retains it,with no automatic repair. [Audio cover state](behavior/AUDIO_DISC_COVER_STATE_REQUESTS.md)
+status1 retains it,with no automatic repair. [Audio cover state](behavior/audio/AUDIO_DISC_COVER_STATE_REQUESTS.md)
 closes installed/open/close and three-record local state predicate;downstream
 stream pause/resume is not inferred. Scoped thread startup/GP10 consumers and
 13-status table are pinned. Verifier passes11 containing/whole hashes,184 anchors,
@@ -1738,9 +1740,9 @@ and source resource hashes pass. Only original domain/runtime gates remain open.
 
 
 ID1 partner floor query delivery (2026-10-12):
-[Query](behavior/FIELD_PARTNER_FLOOR_QUERY.md),
-[slope numerics](behavior/FIELD_PARTNER_FLOOR_SLOPE_NUMERICS.md) and
-[heading](behavior/FIELD_PARTNER_FLOOR_HEADING.md) specify complete local
+[Query](behavior/partner/FIELD_PARTNER_FLOOR_QUERY.md),
+[slope numerics](behavior/partner/FIELD_PARTNER_FLOOR_SLOPE_NUMERICS.md) and
+[heading](behavior/partner/FIELD_PARTNER_FLOOR_HEADING.md) specify complete local
 five-ray/global-filter,pointY quantization and highest-support admission.
 Projected angles are written BEFORE steep>=50 rejection;admitted candidate
 executes the pipeline AGAIN and publishes inclination before vertical acceptance.
@@ -1771,10 +1773,31 @@ file and callback-mismatch failures are resolved historical runs. make all passe
 static ground evidence remains green. ID1 changed no native files.
 
 
+ID2 DMG-01/DMG-02 unit-entry delivery (2026-10-12), partial answer:
+[Full Entry](behavior/battle/BATTLE_UNIT_ENTRY_COMPLETE.md) closes complete local6b4
+identity/geometry/resource-call order:64-slot first free,checked unit allocation,
+early registry publication,unchecked part allocation/zero-count path,kind/setup
+copies,pouch overrides,gauge-before-import,body first versus cached last,display/
+special-kind allocation and final asynchronous init script with actor/event IDs.
+[Registry/scalar/geometry](behavior/battle/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md)
+closes registry bounds asymmetry,U8 GetBelong versus S8 consumers/enemy mapping,
+S16 height/body lookup,all called vector setters/angle wrapper and HpGaugeInit.
+Direct damage explicitly extsb AFTER the U8 getter;its wording is clarified,
+without changing recovered zero-test behavior. [Pose/display](behavior/battle/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md)
+closes fallback-first category lookup versus bounded28-record display lookup,
+borrowed tables/names,copy/resource-entry order and effect/icon init leaves.
+Field114 initializes1,vector scale separate;field144 is borrowed kind.b0 pointer,
+its pointed schema/lifetime/other writers still open. Whole local entry gap is
+closed;kind/resource/pose/render/status/turn/source/domain and original traces
+keep parents open. Own lock released;verifier passes33 containing/complete/linked
+hashes,441 anchors,11 spans. make test passes40 CTest suites and64 Python tests;
+make all passed. ID2 changed no native or asset conversion code.
+
+
 ID1 partner appearance/screen recovery delivery (2026-10-12):
-[Appearance](behavior/FIELD_PARTNER_SUPPORT_APPEARANCE.md),
-[vector ray](behavior/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md),
-[screen recovery](behavior/FIELD_PARTNER_SCREEN_RECOVERY.md) specify complete
+[Appearance](behavior/partner/FIELD_PARTNER_SUPPORT_APPEARANCE.md),
+[vector ray](behavior/partner/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md),
+[screen recovery](behavior/partner/FIELD_PARTNER_SCREEN_RECOVERY.md) specify complete
 local12-angle search,sequential origin persistence,sampled output and null-down
 acceptance;ground ignores failure,overwrites preparedY and requests motion2.
 Vector wrapper quantizes distance+pointXYZ only,normal raw,miss preserves outputs.
@@ -1789,31 +1812,10 @@ concurrent ID2 target missing:BATTLE_UNIT_ENTRY_COMPLETE.md→UNIT_BADGE_IMPORT_
 all new ID1 contract links resolve. ID1 leaves that active ID2 document untouched.
 
 
-ID2 DMG-01/DMG-02 unit-entry delivery (2026-10-12), partial answer:
-[Full Entry](behavior/BATTLE_UNIT_ENTRY_COMPLETE.md) closes complete local6b4
-identity/geometry/resource-call order:64-slot first free,checked unit allocation,
-early registry publication,unchecked part allocation/zero-count path,kind/setup
-copies,pouch overrides,gauge-before-import,body first versus cached last,display/
-special-kind allocation and final asynchronous init script with actor/event IDs.
-[Registry/scalar/geometry](behavior/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md)
-closes registry bounds asymmetry,U8 GetBelong versus S8 consumers/enemy mapping,
-S16 height/body lookup,all called vector setters/angle wrapper and HpGaugeInit.
-Direct damage explicitly extsb AFTER the U8 getter;its wording is clarified,
-without changing recovered zero-test behavior. [Pose/display](behavior/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md)
-closes fallback-first category lookup versus bounded28-record display lookup,
-borrowed tables/names,copy/resource-entry order and effect/icon init leaves.
-Field114 initializes1,vector scale separate;field144 is borrowed kind.b0 pointer,
-its pointed schema/lifetime/other writers still open. Whole local entry gap is
-closed;kind/resource/pose/render/status/turn/source/domain and original traces
-keep parents open. Own lock released;verifier passes33 containing/complete/linked
-hashes,441 anchors,11 spans. make test passes40 CTest suites and64 Python tests;
-make all passed. ID2 changed no native or asset conversion code.
-
-
 ID1 placement3 output contract delivery (2026-10-12):
-[Placement](behavior/FIELD_PARTNER_PLACEMENT3.md),
-[math](behavior/FIELD_PARTNER_PLACEMENT3_MATH.md),
-[NPC scan](behavior/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md) close initialized-
+[Placement](behavior/partner/FIELD_PARTNER_PLACEMENT3.md),
+[math](behavior/partner/FIELD_PARTNER_PLACEMENT3_MATH.md),
+[NPC scan](behavior/partner/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md) close initialized-
 output plus possible moved output on return0,nine-angle direct/null-filter rays,
 duplicate named scans,strict>60 inclination rejection and separate success paths.
 NPC scan returns LAST active horizontal d<radius record despite computing unused
@@ -1828,13 +1830,13 @@ scene/NPC/numeric/caller/EVT-01 and original trajectories remain open.
 
 
 ID2 DMG-02/STATUS-01 record/turn delivery (2026-10-12), partial answer:
-[Byte updates](behavior/BATTLE_ACTION_RECORD_BYTE_UPDATES.md) closes AddPoint's
+[Byte updates](behavior/battle/BATTLE_ACTION_RECORD_BYTE_UPDATES.md) closes AddPoint's
 store-low8/reload/THEN100 cap and AddCount's>=100 no-write guard,requested-HP
 versus paid-FP caller order/fields and34 direct DOL calls. Wide saturation would
-be wrong:100+200→44;prior count255 stays255. [Turn rules](behavior/BATTLE_ACTION_RECORD_TURN_RULES.md)
+be wrong:100+200→44;prior count255 stays255. [Turn rules](behavior/battle/BATTLE_ACTION_RECORD_TURN_RULES.md)
 closes60..65 exact sum/read orders and helper's live global recapture/two threshold
 phases/status2→6/bit2-preservation policy;255 threshold bypass independent.
-[First process](behavior/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md) closes complete
+[First process](behavior/battle/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md) closes complete
 caller:judge BEFORE turn-half increment/count-byte update;all64 nonnull units,
 unit24 increment before Slow reset,RNG/retained-kind priority loads and status
 mask clear,global fog timer/conditional deletion with ignored result. No once-
@@ -1847,9 +1849,9 @@ passed. ID2 changed no native/test/asset conversion code.
 
 
 ID1 motion2 jump/jump2 delivery (2026-10-12):
-[Destination](behavior/FIELD_PARTNER_JUMP_DESTINATION.md),
-[init](behavior/FIELD_PARTNER_JUMP_INITIALIZATION.md),
-[flight/landing](behavior/FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md) close both
+[Destination](behavior/partner/FIELD_PARTNER_JUMP_DESTINATION.md),
+[init](behavior/partner/FIELD_PARTNER_JUMP_INITIALIZATION.md),
+[flight/landing](behavior/partner/FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md) close both
 complete local handlers. Selector1 uses main jump,2/3/6 jump2;target-preserve
 00400000 belongs to main init. Count+24 is NOT decremented locally. Main
 short-history branch adds displacement from TARGET;long branch from ROOT.
@@ -1866,11 +1868,11 @@ Only ID1 scoped lock released;full service/source/EVT-01 and original traces ope
 
 
 ID2 JUMP-01/DMG-02/STATUS-01 attack-selector delivery (2026-10-12), partial answer:
-[Selection](behavior/BATTLE_ATTACK_EVENT_SELECTION.md) closes full5b4 body,
+[Selection](behavior/battle/BATTLE_ATTACK_EVENT_SELECTION.md) closes full5b4 body,
 14 outer/nine subcommand/seven count dispatch entries,selection-time records,
 kind222 versus every-other split,retained weapon versus null-event fallback,
 exact8036aa84 exemption and output-write order. ChangeParty reads FIXED80354208
-within UltraHammerFinish,not an inferred global flag. [Classification/leaves](behavior/BATTLE_WEAPON_ATTACK_CLASSIFICATION.md)
+within UltraHammerFinish,not an inferred global flag. [Classification/leaves](behavior/battle/BATTLE_WEAPON_ATTACK_CLASSIFICATION.md)
 closes full signed short-circuit predicate,borrowed zero-sentinel data lookup,
 audience global recapture and actual fallback80373d00 (named symbol+4),
 present-word1 versus other scripts. No event execution/cost/damage is inferred
@@ -1883,10 +1885,10 @@ ID2 changed no native/test/asset conversion code.
 
 
 ID2 DMG-02/STATUS-01 general-rule delivery (2026-10-12), partial answer:
-[All68 rules](behavior/BATTLE_GENERAL_RULE_JUDGMENT.md) closes full7f0 judge,
+[All68 rules](behavior/battle/BATTLE_GENERAL_RULE_JUDGMENT.md) closes full7f0 judge,
 unconditional Mario→partner searches,all byte/HP sums/read orders,rule54/55
 repeated4b/4d,direct58/59 and66/67 branches,scalar capturedP write versus end-
-helper currentP2 writes. [Threshold/end/query leaves](behavior/BATTLE_RULE_THRESHOLD_AND_UNIT_QUERIES.md)
+helper currentP2 writes. [Threshold/end/query leaves](behavior/battle/BATTLE_RULE_THRESHOLD_AND_UNIT_QUERIES.md)
 closes signed no_use/use short-circuit compares WITHOUT255 bypass,complete
 end two-phase status graph and first-match unit selectors. End/turn helper
 bodies are byte-identical;call cadence is not inferred. Clarified prior “bit2”
@@ -1901,9 +1903,9 @@ ID2 changed no native/test/asset conversion code.
 
 
 ID1 live target/front-floor delivery (2026-10-12):
-[Direction/activity](behavior/FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md),
-[front-floor](behavior/FIELD_PARTNER_FRONT_FLOOR.md),
-[status/clearance](behavior/FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md) close
+[Direction/activity](behavior/partner/FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md),
+[front-floor](behavior/partner/FIELD_PARTNER_FRONT_FLOOR.md),
+[status/clearance](behavior/partner/FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md) close
 local q0 direction partner admission versus distance's Mario shortcut;TargetDistY
 returns activity fields rather than coordinate difference. Front-floor takes the
 live f1 heading from prior TargetDir,casts three UPWARD rays then downward300,
@@ -1921,12 +1923,12 @@ math/EVT-01 and original target/clearance traces remain open.
 
 ID2 EVT-01 packed-entry consolidation delivery (2026-10-12), answer to the
 original1b0 map request:
-[Packed map](behavior/EVENT_ENTRY_PACKED_LAYOUT.md) accounts for all432 bytes
+[Packed map](behavior/event/EVENT_ENTRY_PACKED_LAYOUT.md) accounts for all432 bytes
 through49 spans:388 recovered-role bytes and44 unknown raw bytes preserved
 without invented reserved-zero/unused claims. Includes widths/signedness/raw32/
 original pointer words,all stack/local/metadata/continuation fields,adjacent
 context/global banks,constructor/restart/delete/bulk-clear distinctions and
-links to delivered contracts. [Alias/translator requirements](behavior/EVENT_ENTRY_ADDRESS_AND_ALIAS_REQUIREMENTS.md)
+links to delivered contracts. [Alias/translator requirements](behavior/event/EVENT_ENTRY_ADDRESS_AND_ALIAS_REQUIREMENTS.md)
 provides physical cross-field examples (LW16→flags,switch-value8→data cursor,
 label pointer16→waiting parent),big-endian partial writes,shared user pointers,
 callback registry/USER_FUNC polling,paired metadata reads and child copy-back.
@@ -1942,7 +1944,7 @@ JSON reports match;no native/test/asset conversion code changed by ID2.
 
 ID2 EVT-01 heap-order addendum delivery (2026-10-12), answer to the explicit
 SDK/primary-map reload request:
-[Live read order](behavior/SDK_HEAP_BOOTSTRAP_LIVE_READ_ORDER.md) pins original
+[Live read order](behavior/memory/SDK_HEAP_BOOTSTRAP_LIVE_READ_ORDER.md) pins original
 OSInitAlloc count reload80296670,per-iteration/final base80296654/67c while
 metadata size retains ORIGINAL count*12 captured BEFORE global publication.
 CreateHeap captures count/base once but reloads descriptor.size802966e8 AFTER
@@ -1956,33 +1958,6 @@ released;this specific order request answered. Native arena/cache/address/alias/
 scene/source and original traces remain EVT-01 requirements. make test48 CTest/
 78 Python and make all pass;1963 local links resolve;general1980 anchors pass.
 No native/test/asset conversion edits by ID2.
-
-
-ID2 EVT-01/JUMP-01 registration/registry delivery (2026-10-12), partial answer:
-[Source/root registration](behavior/NORMAL_JUMP_ROOT_REGISTRATION.md) pins
-ordinary weapon803538a8+b0→80355cf0,selected-event publication and complete
-state6 creation region:root priority10,flags0,typeef,current GP context,global
-pre-increment ID/global speed,actor initially-1 then E.ID→U2a8 followed by
-U0→E160 AFTER label scan/run-check,wait-ID deletion afterward. Flags0 does not
-append a root mid-manager. Three literal16-byte wrappers invoke Jump as opcode94
-child,then delete;child inherits actor/type,priority+1 and current GLOBAL speed.
-[Registry census](behavior/NORMAL_JUMP_CALLBACK_REGISTRY.md) and machine-readable
- tools/jump_callback_registry.json pin all156 direct USER_FUNC sites/72 addresses
-in three packed streams,all source/function body hashes,127 registration anchors
-and seven spans. Full callback bodies are identities here,not newly closed
-implementations;menu/global writer paths,dynamic data7/transitive sources and
-original runtime remain open. Own scoped lock released;parents remain open.
-
-ID2 urgent native source correction in the same delivery:evtEntryRunCheck80037744
-loads REQUESTED8041e940 directly (r13+1a20),not GP18/marioStGetSystemLevel result.
-Current include/event_creation.hpp says systemLevel is whole GP18 mask;that comment/
-binding must be corrected by native owner. Request3 versus GP low nibble7 is a
-concrete differing case:constructor dispatches StopAll10 from3,while7 matches no
-case. Source enum and getter mask remain separate;root verifier/full listing pin
-this evidence. ID2 changes no concurrent native source. make test50 CTest/78
-Python and make all pass;general1980 anchors/root verifier pass;all72 table rows
-match census;repeat JSON reports equal;1999 local links resolve. Passing host
-fixtures do not establish this source-binding fidelity.
 
 
 ID1 fall validation native gate (2026-10-12):initial make test failed CMake
@@ -2006,10 +1981,37 @@ should update the stale on-screen test to the new camera API;ID1 changed no
 native tests. Original static fall evidence remains green.
 
 
+ID2 EVT-01/JUMP-01 registration/registry delivery (2026-10-12), partial answer:
+[Source/root registration](behavior/battle/NORMAL_JUMP_ROOT_REGISTRATION.md) pins
+ordinary weapon803538a8+b0→80355cf0,selected-event publication and complete
+state6 creation region:root priority10,flags0,typeef,current GP context,global
+pre-increment ID/global speed,actor initially-1 then E.ID→U2a8 followed by
+U0→E160 AFTER label scan/run-check,wait-ID deletion afterward. Flags0 does not
+append a root mid-manager. Three literal16-byte wrappers invoke Jump as opcode94
+child,then delete;child inherits actor/type,priority+1 and current GLOBAL speed.
+[Registry census](behavior/battle/NORMAL_JUMP_CALLBACK_REGISTRY.md) and machine-readable
+ tools/jump_callback_registry.json pin all156 direct USER_FUNC sites/72 addresses
+in three packed streams,all source/function body hashes,127 registration anchors
+and seven spans. Full callback bodies are identities here,not newly closed
+implementations;menu/global writer paths,dynamic data7/transitive sources and
+original runtime remain open. Own scoped lock released;parents remain open.
+
+ID2 urgent native source correction in the same delivery:evtEntryRunCheck80037744
+loads REQUESTED8041e940 directly (r13+1a20),not GP18/marioStGetSystemLevel result.
+Current include/event_creation.hpp says systemLevel is whole GP18 mask;that comment/
+binding must be corrected by native owner. Request3 versus GP low nibble7 is a
+concrete differing case:constructor dispatches StopAll10 from3,while7 matches no
+case. Source enum and getter mask remain separate;root verifier/full listing pin
+this evidence. ID2 changes no concurrent native source. make test50 CTest/78
+Python and make all pass;general1980 anchors/root verifier pass;all72 table rows
+match census;repeat JSON reports equal;1999 local links resolve. Passing host
+fixtures do not establish this source-binding fidelity.
+
+
 ID1 fall delivery/host validation completion (2026-10-12):
-[Air](behavior/FIELD_PARTNER_FALL_AIR.md),
-[landing](behavior/FIELD_PARTNER_FALL_LANDING.md),
-[facing](behavior/FIELD_PARTNER_FALL_FACING.md) specify floor before integration
+[Air](behavior/partner/FIELD_PARTNER_FALL_AIR.md),
+[landing](behavior/partner/FIELD_PARTNER_FALL_LANDING.md),
+[facing](behavior/partner/FIELD_PARTNER_FALL_FACING.md) specify floor before integration
 (depth10,drop abs oldV),conditional default-1.4 only with flag20 clear/acc0,
 velocity floor-16,key-gated speed-.2,placement4 request and two distinct landing
 cleanup paths. Return2 air/3 land;walkMain ignores it. Landing precedes integration,
@@ -2034,13 +2036,13 @@ must be read with this recorded shared-index exception.
 
 
 ID2 EVT-01/JUMP-01 data-child source delivery (2026-10-12), partial answer:
-[Complete callback/Mario key7](behavior/BATTLE_UNIT_DATA_CHILD_CONTINUATION.md)
+[Complete callback/Mario key7](behavior/battle/BATTLE_UNIT_DATA_CHILD_CONTINUATION.md)
 closes full RunDataEventChild8010a010/a0,live actor→translation→unit→key→table
 query order,zero-result2 versus ChildEntry flags0,parent opcode clear BEFORE
 child actor=retained translated I,return255 without parent deletion. Original
 kind80372afc+c0→803729c8,key7→80416bd0 tiny DELETE/terminal script closes
 static Mario source. Tiny child still allocates ID/appends/waits/copies back.
-[Translation/system query](behavior/BATTLE_ACTOR_SELECTOR_TRANSLATION.md)
+[Translation/system query](behavior/battle/BATTLE_ACTOR_SELECTOR_TRANSLATION.md)
 closes all signed selectors,unconditional global capture,-3/-5 unchecked null
 versus-4 fallback,and first kind220 query. Old recovery wrapper size9c corrected
 toa0. Own lock released;dynamic unit/table/source/scene/backend/runtime remain open.
@@ -2061,7 +2063,7 @@ ID2 changed no native/test/asset-packer source;original extracts remain /tmp.
 
 
 ID2 INPUT-01 WorkInit clarification delivery (2026-10-12), exact map answered:
-[Reset/raw preservation](behavior/BATTLE_PAD_RESET_AND_RAW_PRESERVATION.md)
+[Reset/raw preservation](behavior/battle/BATTLE_PAD_RESET_AND_RAW_PRESERVATION.md)
 closes complete8011a38c/b0 body:two snapshot loops store halfword0 and bytes2..a,
 NO byteb store;all90 history words clear in index-interleaved18→90→108 order;
 repeat bytes1f8/1f9 clear. Preserves currentb/priorb independently,entire120-byte
@@ -2079,11 +2081,11 @@ resolve;general1980 anchors pass. No native/test/asset edits by ID2.
 
 
 ID2 EVT-01/JUMP-01/DMG-02 Majinai-child delivery (2026-10-12), partial answer:
-[Power-check graph/state](behavior/JUMP_MAJINAI_POWER_CHECK_CHILD.md) closes all
+[Power-check graph/state](behavior/battle/JUMP_MAJINAI_POWER_CHECK_CHILD.md) closes all
 14 commands and complete query/Done/EndCheck:pouch5ba exact1,output before
 capturedB18ff9=1,query-false NO flag clear,byte count decrement/wrap (0→255),
 unconditional5b9ff/5ba0,EndCheck00400000 OR only count0. Current pouch/battle
-captures remain independent. [Effect/nested graphs](behavior/JUMP_MAJINAI_EFFECT_AND_NESTED_SOURCES.md)
+captures remain independent. [Effect/nested graphs](behavior/battle/JUMP_MAJINAI_EFFECT_AND_NESTED_SOURCES.md)
 closes unused actor operand/Mario query,constant vector(0,10,0),E78 gate and
 ANY global same-name mjef_coinup polling,first-match/name-copy helpers;complete
 12-command status-gated jump and17-command independent five-key sound root.
@@ -2107,13 +2109,13 @@ source edits by ID2;original extracts/packs stay /tmp.
 
 
 ID2 EVT-01/JUMP-01/STATUS-01 fortune producer delivery (2026-10-12), partial answer:
-[BattleMajinaiCheck](behavior/BATTLE_FORTUNE_PRODUCER.md) closes full150 body:
+[BattleMajinaiCheck](behavior/battle/BATTLE_FORTUNE_PRODUCER.md) closes full150 body:
 count0 preserves stale mode/countdown;negative S8 countdown precedes mode query,
 clears mode,draws irand5 and publishesR+6→reload→minus1 (final5..9);nonnegative
 active mode returns raw/no draw;mode0 decrements/reloads signed countdown before
 ready reset/selection. Setup pointer pathB2738→descriptor.c→flags4 mask20 picks
 INLINE45/90 or30/60/80 thresholds with ONE irand100;final mode reload returned.
-[Init/call/RNG policy](behavior/BATTLE_FORTUNE_INIT_AND_CALL_BINDINGS.md) closes
+[Init/call/RNG policy](behavior/battle/BATTLE_FORTUNE_INIT_AND_CALL_BINDINGS.md) closes
 pouch initializer/wrapper:old U8 count SIGNED-compared to full request,old>=N
 no writes,otherwise low8 store then separate pointer reloads forff/0. N256 can
 write0;do not replace with saturating/max-U8 reset. Scoped DOL census exactly
@@ -2128,12 +2130,12 @@ pass;2118 local links resolve. No native/test/asset conversion code changed by I
 
 
 ID2 EVT-01/JUMP-01/DMG-02 Majinai construction delivery (2026-10-12), partial answer:
-[Full constructor](behavior/MAJINAI_EFFECT_CONSTRUCTION.md) closes effMajinaiEntry
+[Full constructor](behavior/effect/MAJINAI_EFFECT_CONSTRUCTION.md) closes effMajinaiEntry
 f4:pool record before heap allocation,borrowed Majinai resource/count1/reload,
 heap3/count<<5 request,returned payload pointer,update callback/flags before
 payload,all eight32-byte initial fields,then mapGetWork and WORDffffffff at
 map+1e. It is a four-byte request,not an inferred halfword/aligned field.
-[Acquisition/map helper](behavior/EFFECT_POOL_ACQUISITION_AND_MAP_PUBLICATION.md)
+[Acquisition/map helper](behavior/effect/EFFECT_POOL_ACQUISITION_AND_MAP_PUBLICATION.md)
 closes full effEntry/mapGetWork:captured signed pool count/array,EXACT0 free,
 exhaustion one-past initialization/no null return,flags1 before GP14 normalization,
 partial fields/name first-byte clear with15 tail bytes preserved;independent
@@ -2161,11 +2163,11 @@ flying history/source/other motion/pose/backend/numeric/runtime composition.
 
 
 ID2 EVT-01/JUMP-01/DMG-02 effect deletion delivery (2026-10-12), partial answer:
-[Complete soft/hard/Maya leaves](behavior/EFFECT_SOFT_AND_HARD_DELETION.md)
+[Complete soft/hard/Maya leaves](behavior/effect/EFFECT_SOFT_AND_HARD_DELETION.md)
 closes null/exact-zero gates,soft numeric02→OR04 with NO payload read/free,
 soft no02 fallback and hard __memFree(3,E.c)→flags0 ONLY,raw Maya pointer free
 without record/null gate. Stale payload/name/count/callback/resource survive;
-record bank/event/audio/map ownership not automatically freed. [Caller/lifetime](behavior/EFFECT_DELETE_CALLERS_AND_LIFETIME.md)
+record bank/event/audio/map ownership not automatically freed. [Caller/lifetime](behavior/effect/EFFECT_DELETE_CALLERS_AND_LIFETIME.md)
 includes271 annotated/pinned DOL direct sites (30 soft/241 hard) and name-visible
 soft requests versus hard-hidden slot reuse. Own lock released;effect-specific
 04 consumption/update/draw/driver/free cadence,pool/scene/raw/REL/platform and
@@ -2198,14 +2200,14 @@ source/alias/index/flag/kind/FP/pose/ability/backend/runtime parent gaps remain.
 
 
 ID2 EVT-01/JUMP-01/DMG-02 Majinai Main/Disp delivery (2026-10-12), partial answer:
-[Complete Main](behavior/MAJINAI_EFFECT_UPDATE_STATE_MACHINE.md) closes394 body:
+[Complete Main](behavior/effect/MAJINAI_EFFECT_UPDATE_STATE_MACHINE.md) closes394 body:
 soft04 clear→pose release→map08 clear→hard delete without phase3 restoration;
 four phases with async MOBJ_EFF_majinai/A_1 setup,word map grayscale ±5/clamps,
 current-GP field five poses versus battle Mario-body one,exact progress3f6e147b
 (~.93)/1.0 ordered gates,fused55*scale+Y and45*scale Stardust request,live phase
 increment/no same-call redispatch,alpha255→0 queued then-5 cleanup on52nd phase3
 CALL (not observed frames),early-coordinate depth snapshot and queue omissions.
-[Complete Disp/leaves](behavior/MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md) closes
+[Complete Disp/leaves](behavior/effect/MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md) closes
 12c draw:-1 guard,translation*camera-relative Y rotation*uniform scale alias
 requests,On840/white-low8alpha/PoseMain/three pass1/2/3 draws with float0/10,
 full raw pose On/Off/LoopTimes/Colour and camera pointer-table leaves. Backend
@@ -2230,14 +2232,14 @@ collision helper/animation/resource/source/alias/numeric/runtime composition.
 
 
 ID2 EVT-01/JUMP-01/DMG-02 effect driver/init/release delivery (2026-10-12), partial answer:
-[Driver/cache](behavior/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md) closes
+[Driver/cache](behavior/effect/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md) closes
 full effMain170:captured signed count/array but per-record current GP14/exact
 context0/1,active01,nonnull callback/ignored result,ascending live slots and
 same-pass later allocation;NO local GP18/time/credit scaling. Cache runs AFTER
 callbacks,independent manager/GP/prefix/root async/sync/tag captures,async0 retry
 versus alloc0 still tag publication. Exact seven prefix pointers/root ./format
 and read-only e/us/effect_us.tpl size106880/hash are pinned;provenance in ASSETS.
-[Init/release](behavior/EFFECT_POOL_INITIALIZATION_AND_CONTEXT_RELEASE.md)
+[Init/release](behavior/effect/EFFECT_POOL_INITIALIZATION_AND_CONTEXT_RELEASE.md)
 closes512*40 heap0 request/live array clear/multiple manager reloads,no old-state
 free,N64 independent8-byte reset,active01/exact context hard heap3 payload free
 without effect callbacks/pose/map/event cleanup. Four DOL direct sites and
@@ -2249,6 +2251,22 @@ DOL sites and US texture FST fingerprint;repeat reports equal. Prior delete/
 outer-order/general1980 checks pass;make test58 CTest/78 Python and make all
 pass;2373 local links resolve. No native/test/asset conversion code changed by ID2;
 texture only hashed read-only;original listings/ELFs stay /tmp/id2-fxdriver-*.
+
+ID1 slit-collision validation breadcrumb (2026-10-12):new original-binary
+checks pass;make test currently fails CMakeLists.txt:272 because concurrent
+native target references missing tests/event_native_runtime_tests.cpp. Exact
+log:/tmp/id1-slit-collision-test.log. ID1 did not modify CMake/native tests;
+continue source-owner integration,then rerun the host gate. This is separate
+from binary evidence and not a full-goal blocker.
+
+
+ID2 file-wrapper validation breadcrumb (2026-10-12):make test currently cannot
+configure because CMakeLists.txt:277 references missing
+ tests/event_callback_registry_tests.cpp. Exact log:/tmp/id2-filewrap-test.log.
+This is a concurrent native fixture dependency;ID2 changes no CMake/native/test
+files. make all succeeded (/tmp/id2-filewrap-build.log). File-wrapper/driver/
+general binary evidence and2400 local links pass;full host gate remains pending
+until the named fixture is available.
 
 ID1 slit collision/math delivery (2026-10-12),AC-01/AC-03 partial answer:
 Complete local unk_800c2010 probes center/plus/minus until first hit on each
@@ -2263,7 +2281,7 @@ breadcrumb is RESOLVED after file arrival:rerun60 CTest/78 Python passes;3DS
 build passes. Only ID1 collision lock released;parent backend/source/runtime open.
 
 ID1 generated-inventory correction breadcrumb (2026-10-12):
-[Authoritative loader/census correction](behavior/US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md)
+[Authoritative loader/census correction](behavior/meta/US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md)
 supersedes unvalidated identifier-only/31-numeric-ID/story-prefix claims in new
 BINARY_DOCUMENTATION.md,MESSAGE_FILES_ANALYSIS.md and related PROGRESS entries.
 Current read-only schema3 census is260 resources/13186 complete key/text pairs;
@@ -2274,17 +2292,9 @@ Visible banners added to the two pending drafts;those drafts/tool remain unstage
 by ID1. Source owner should reconcile them against recovered loader/event evidence
 and fix generator labels;do not use these guesses to implement story dialogue.
 
-ID2 file-wrapper validation breadcrumb (2026-10-12):make test currently cannot
-configure because CMakeLists.txt:277 references missing
- tests/event_callback_registry_tests.cpp. Exact log:/tmp/id2-filewrap-test.log.
-This is a concurrent native fixture dependency;ID2 changes no CMake/native/test
-files. make all succeeded (/tmp/id2-filewrap-build.log). File-wrapper/driver/
-general binary evidence and2400 local links pass;full host gate remains pending
-until the named fixture is available.
-
 ID2 file-wrapper delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial answer:
-[Formatted requests](behavior/FILE_FORMATTED_REQUEST_FORWARDING.md) close
-fileAsyncf/fileAllocf/fileAlloc;[handle release](behavior/FILE_HANDLE_RELEASE_AND_EFFECT_CACHE_OWNERSHIP.md)
+[Formatted requests](behavior/file/FILE_FORMATTED_REQUEST_FORWARDING.md) close
+fileAsyncf/fileAllocf/fileAlloc;[handle release](behavior/file/FILE_HANDLE_RELEASE_AND_EFFECT_CACHE_OWNERSHIP.md)
 closes fileFree and effect-cache ownership. Shared1024-byte filename,original
 varargs saves/descriptor,ignored vsprintf result,direct _fileAlloc forwarding and
 signed16 store/reread/exact0→state2 are explicit. No deallocation occurs;the
@@ -2304,8 +2314,8 @@ owner should finish matching fixtures;the documentation lock remains held until
 evidence review and exact gate status are recorded,then only that scope releases.
 
 ID2 shared-file acquisition delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial:
-[Cache/reference/publication](behavior/FILE_ACQUISITION_AND_REFERENCE_REUSE.md)
-and [archive/DVD requests](behavior/FILE_ARCHIVE_AND_DVD_ACQUISITION_REQUESTS.md)
+[Cache/reference/publication](behavior/file/FILE_ACQUISITION_AND_REFERENCE_REUSE.md)
+and [archive/DVD requests](behavior/file/FILE_ARCHIVE_AND_DVD_ACQUISITION_REQUESTS.md)
 close _fileAlloc/arcOpen plus five narrow leaves. Filename-only first-match,
 pending ac yield,state3 count reset versus state2 preservation,signed16 wrap,
 retained free-node next/live manager writes,mode1/2 identical retries,archive
@@ -2319,8 +2329,8 @@ RESOLVED. Logs:/tmp/id2-filealloc-test.log (historical failure),
 fileAsync/_fileGarbage/relocation/TPL/source/platform/scene/original traces stay open.
 
 ID2 async-file delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial answer:
-[Request/cache](behavior/FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md) and
-[completion/request state](behavior/FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md)
+[Request/cache](behavior/file/FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md) and
+[completion/request state](behavior/file/FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md)
 close three complete local bodies. Cache readiness adds no reference;pending
 returns0,first DVD-open failure-1,archive publication uses live head.next AFTER
 selected E.next clear,DVD uses retained NEXT. Callback matches pending+40 without
@@ -2333,36 +2343,6 @@ repeat reports,prior acquisition/wrapper/driver/general1980 checks and2473 local
 links pass. make test64 CTest/78 Python and make all pass. Logs:
 /tmp/id2-fileasync-test.log and /tmp/id2-fileasync-build.log. Only ID2's async
 lock released;worker/_fileGarbage/relocation/TPL/source/scene/platform/runtime open.
-
-ID2 file collection/init delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial:
-[Collection/aging](behavior/FILE_CACHE_COLLECTION_AND_PRELOAD_AGING.md) and
-[pool/init/mode](behavior/FILE_CACHE_POOL_INITIALIZATION.md) close _fileGarbage,
-fileInit,setter and current-thread leaf. Mode0 worker OVERWRITES pending flags08;
-mode1 initially pending wait skips aging,initially ready count stores/rereads
-signed16 and retires<=-2. State2 pass marks0 then routes embedded holder skip
-versus smartFree(header),live unlink/retained traversal/available append and
-stale raw fields. Init heap0 180224 bytes yields1024*176 records,128 eight-store
-iterations,temporary one-past link and live tail termination. No old-pool free.
-Verifier11 hashes(four complete/seven linked),189 anchors,two startup/global
-spans,all17 DOL direct collection/init/setter sites,repeat JSON,related/general
-1980 checks and2493 local links pass. make test65 CTest/78 Python,make all pass;
-logs /tmp/id2-filegc-test.log and /tmp/id2-filegc-build.log. Own ID2 lock released;
-smart heap/relocation/DVD worker/source/platform/TPL/scene/original traces stay open.
-
-ID2 smart-release delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial:
-[Header release/accounting](behavior/SMART_HEADER_RELEASE_AND_SPACE_ACCOUNTING.md)
-and [automatic release](behavior/SMART_AUTOMATIC_TAG_RELEASE.md) close two full
-local bodies. Header tag4 only changes to3;other tags unlink/update reusable
-space/recycle metadata with stale payload pointer and no heap deallocation.
-Collector file-entry recycle remains independent of deferred smart header.
-Automatic first pass compares low16 input to byte tag;only FULL input3 starts
-second pass marking tag4→3,without same-call removal. Exact live rereads/free
-chain/count and raw alias requirements are supplied for implementation.
-Verifier seven hashes(two complete/five linked),126 anchors,two startup/global
-spans and repeat reports pass;collection/async/acquisition/general1980 checks
-and2539 local links pass. make test66 CTest/78 Python and make all pass;logs:
-/tmp/id2-smartfree-test.log,/tmp/id2-smartfree-build.log. Only ID2 lock released;
-allocator/compaction/tag producers/relocation/source/scene/platform/runtime open.
 
 ID1 partner presentation delivery (2026-10-12),AC-01/AC-03 partial answer:
 Complete pre-display/pose-name-ID/facing/draw and three source leaves close local
@@ -2381,9 +2361,39 @@ added to pending BTLNO_MESSAGE_MAPPING.md,which remains unstaged by ID1.
 Its Message Text column holds resource keys;string/prefix association is NOT
 proof of runtime BTLNO→dialogue lookup or a complete story dictionary. Related
 PROGRESS milestone statements remain unvalidated. The committed
-[message correction](behavior/US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md)
+[message correction](behavior/meta/US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md)
 now explicitly supersedes those linkage/completion claims;source owner should
 trace original event/service calls before native story implementation.
+
+ID2 file collection/init delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial:
+[Collection/aging](behavior/file/FILE_CACHE_COLLECTION_AND_PRELOAD_AGING.md) and
+[pool/init/mode](behavior/file/FILE_CACHE_POOL_INITIALIZATION.md) close _fileGarbage,
+fileInit,setter and current-thread leaf. Mode0 worker OVERWRITES pending flags08;
+mode1 initially pending wait skips aging,initially ready count stores/rereads
+signed16 and retires<=-2. State2 pass marks0 then routes embedded holder skip
+versus smartFree(header),live unlink/retained traversal/available append and
+stale raw fields. Init heap0 180224 bytes yields1024*176 records,128 eight-store
+iterations,temporary one-past link and live tail termination. No old-pool free.
+Verifier11 hashes(four complete/seven linked),189 anchors,two startup/global
+spans,all17 DOL direct collection/init/setter sites,repeat JSON,related/general
+1980 checks and2493 local links pass. make test65 CTest/78 Python,make all pass;
+logs /tmp/id2-filegc-test.log and /tmp/id2-filegc-build.log. Own ID2 lock released;
+smart heap/relocation/DVD worker/source/platform/TPL/scene/original traces stay open.
+
+ID2 smart-release delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial:
+[Header release/accounting](behavior/memory/SMART_HEADER_RELEASE_AND_SPACE_ACCOUNTING.md)
+and [automatic release](behavior/memory/SMART_AUTOMATIC_TAG_RELEASE.md) close two full
+local bodies. Header tag4 only changes to3;other tags unlink/update reusable
+space/recycle metadata with stale payload pointer and no heap deallocation.
+Collector file-entry recycle remains independent of deferred smart header.
+Automatic first pass compares low16 input to byte tag;only FULL input3 starts
+second pass marking tag4→3,without same-call removal. Exact live rereads/free
+chain/count and raw alias requirements are supplied for implementation.
+Verifier seven hashes(two complete/five linked),126 anchors,two startup/global
+spans and repeat reports pass;collection/async/acquisition/general1980 checks
+and2539 local links pass. make test66 CTest/78 Python and make all pass;logs:
+/tmp/id2-smartfree-test.log,/tmp/id2-smartfree-build.log. Only ID2 lock released;
+allocator/compaction/tag producers/relocation/source/scene/platform/runtime open.
 
 ID2 smart-compaction validation breadcrumb (2026-10-12):original-binary checks
 and make all pass. make test currently fails field_camera_tests.cpp:79 assertion
@@ -2393,8 +2403,8 @@ ID2 changes no camera/native/test files. Native owner should reconcile that
 camera expectation;the compaction evidence is independently passing.
 
 ID2 smart-compaction delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial:
-[Compactor/barriers](behavior/SMART_HEAP_COMPACTION_AND_PENDING_FILES.md) and
-[file moves](behavior/FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md) close two
+[Compactor/barriers](behavior/memory/SMART_HEAP_COMPACTION_AND_PENDING_FILES.md) and
+[file moves](behavior/file/FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md) close two
 full local bodies. Draw-sync precedes manager reads,equal-source bypass skips
 pending inspection,nonworker state3/pending barriers preserve location/gaps,
 worker moves retarget DVD7c. File clear takes ENTRY/setup takes PAYLOAD with
@@ -2409,9 +2419,9 @@ lock released;camera native owner must resolve its assertion. Allocator/relocati
 worker/source/platform/scene/original runtime remain open.
 
 ID1 animation setter delivery (2026-10-12),AC-01/AC-03 partial answer:
-[Selector/restart](behavior/ANIMATION_SELECTOR_AND_RESTART.md),
-[paper-group reuse](behavior/ANIMATION_PAPER_GROUP_REUSE.md),
-[local time/clock](behavior/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md)
+[Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),
+[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),
+[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md)
 close five complete used local setters. Negative signed selector means string;
 nonnegative means index,missing names map0;ordinary force1 restarts same index;
 paper third argument ignored. Group null/failure differ;first same-mode scan then
@@ -2424,8 +2434,8 @@ US runtime frequency. Only ID1 lock released;Main/draw/resource/clock/helper/
 source/lifetime/numeric/original visuals remain open.
 
 ID2 smart-allocation delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial:
-[Header/gap placement](behavior/SMART_ALLOCATION_HEADER_AND_GAP_PLACEMENT.md)
-and [retry/failure](behavior/SMART_ALLOCATION_RETRIES_AND_FAILURE_OWNERSHIP.md)
+[Header/gap placement](behavior/memory/SMART_ALLOCATION_HEADER_AND_GAP_PLACEMENT.md)
+and [retry/failure](behavior/memory/SMART_ALLOCATION_RETRIES_AND_FAILURE_OWNERSHIP.md)
 close full smartAlloc. First flag→auto3,nonzero e018 draw-sync→reset0,unguarded
 available-header reserve,word-wrap32 alignment/low8 tag,leading unsigned priority
 then first-fit used gaps,three compaction/collection1/collection0 tail-only
@@ -2437,3 +2447,43 @@ spans,repeat reports,prior compaction/release/collection/general1980 checks and
 /tmp/id2-smartalloc-test.log,/tmp/id2-smartalloc-build.log. Prior compaction's
 field_camera assertion79 is RESOLVED in current host run. Own allocation lock
 released;arena/relocation/worker/source/platform/scene/original traces remain open.
+
+ID2 smart initialization delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial:
+[Initializer](behavior/memory/SMART_ARENA_AND_HEADER_INITIALIZATION.md) and
+[scoped provisioning](behavior/memory/SMART_RESOURCE_PROVISIONING_REQUIREMENTS.md)
+close smartInit;private commit bbdb4fb. Heap4 start/end/handle order,retained
+first conditional clear/flush versus live unconditional second clear,2048*28
+headers,256 eight-header link groups/live termination and flag/counter reset
+are explicit. Allocation0 still reaches later unconditional clear. Provisioning
+requirements separate header/file pools from unknown full-game RAM/workload.
+Five hashes(one complete/four linked),121 anchors,two startup/global spans,
+repeat JSON,prior allocation/compaction/release/general1980 checks pass.
+make test69 CTest/78 Python and make all pass;logs /tmp/id2-smartinit-test.log,
+/tmp/id2-smartinit-build.log. Nine new-contract links resolve. Full scan2646 links
+finds six unresolved references in REFERENCE_FILES_INVENTORY.md during another
+session's staged subsystem reorganization;ID2 preserves that staging and records
+shared handoff in worktree. Only ID2 lock released. Bootstrap/relocation/worker/
+platform/source/scene/original runtime and full-game requirements stay open.
+
+ID2 relocation validation breadcrumb (2026-10-12):make test currently cannot
+configure CMakeLists.txt:322 because tests/battle_unit_event_tests.cpp is missing.
+Log:/tmp/id2-reloc-test.log. New relocation/related binary evidence passes;ID2
+changes no CMake/native/test files. Native target owner should finish that fixture,
+then host gate can rerun. Inventory owner still has five unresolved binary
+inventory links after subsystem reorganization;new relocation links resolve.
+
+ID2 relocation dispatch/flat delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial:
+[Dispatch/type map](behavior/file/FILE_RELOCATION_TYPE_DISPATCH.md) and
+[flat handlers](behavior/file/FILE_FLAT_POINTER_RELOCATION.md) supply all11
+routes and eight complete flat type handlers,not complete nested4/5 bodies.
+Set accepts full unsigned0..10;Clear sign-extends entry type and reads holder
+payload before rejection. First unsigned field alone guards whole block;
+retained first value then ordered word add/subtract,no per-field null handling.
+Two containing hashes,481 selected anchors,two11-word tables,repeat JSON,
+prior smart init/compaction/async/general1980 checks pass. make all passes;
+make test configure fails missing tests/battle_unit_event_tests.cpp;separate78
+Python tests pass. Logs:/tmp/id2-reloc-test.log,/tmp/id2-reloc-build.log,
+/tmp/id2-reloc-python.log. New-contract links resolve;five unrelated inventory
+references remain pending reorganization. Own lock released;types4/5 nested
+handlers/source/format consumers/platform/original runtime/full-game requirements
+stay open. Preserve staged reorganization;ID2 shared handoff remains in worktree.

@@ -10,6 +10,12 @@ Open /home/carson/games/roms/G8ME01.iso read-only. Keep extracted assets and
 compiled packs outside source history. Do not distribute or commit the ISO.
 Record asset paths, conversion choices and licensing in docs/ASSETS.md.
 
+Behavior contracts live under docs/behavior/ in per-subsystem folders (battle/,
+event/, field/, partner/, message/, format/ and others; see
+docs/behavior/README.md). Add new contracts to the folder their subsystem owns,
+keep links relative to that location, and do not leave new files at the
+docs/behavior root. Only the README.md index stays at that root.
+
 Separate host-testable mechanics from 3DS services. Keep action-command timing
 in simulation ticks, not rendering frames. Do not describe provisional constants
 as measured behavior. Record Dolphin observations in docs/MECHANICS.md.
