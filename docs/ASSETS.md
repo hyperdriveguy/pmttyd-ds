@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 179 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 456 instruction anchors plus those
+now fingerprints 186 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 472 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -83,6 +83,8 @@ original scroll binary32 coefficient and seven paper pose/group bindings.
 Timing contracts are derived from clock arithmetic, not measured gameplay.
 Window lifecycle adds12 service/event fingerprints and default/small geometry
 constants; original pool/heap failure behavior and caller identity remain open.
+Selection adds seven input/window/event fingerprints, display-order constant
+and original direct-input identity. Input repeat cadence remains unmeasured.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,

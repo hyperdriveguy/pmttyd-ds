@@ -161,3 +161,5 @@ event print creation/identity/callback producers, wait-state inputs, allocator
 rounding/failure and embedded-pose cleanup, pool update/delete ordering and all
 story script attribution/order/conditions. The lifecycle helpers are locally
 documented; full dialogue and complete-game behavior remain unfinished.
+Selection state/input/result and manager deletion helpers are now recovered in
+[selection](MESSAGE_SELECTION.md); general/clear main and renderer remain open.

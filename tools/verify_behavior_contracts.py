@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'message_selection': {
+        0x8007ff60: '48003fd5', 0x8007ffa8: '2c0000ff',
+        0x8008002c: '4182000c', 0x800800a8: '4080000c',
+        0x800800e8: '4180000c', 0x80080138: '418200c4',
+        0x80080154: '9804f243', 0x800801cc: '540007fa',
+        0x80080230: '38600008', 0x800d2100: '907d017c',
+        0x800d2114: '93c30000', 0x800d214c: '901d009c',
+        0x8007fa78: '4082000c', 0x8007faf0: 'b01f0002',
+        0x80005fa0: '80631388', 0x80005fc8: '80631398',
+    },
     'message_window_lifecycle': {
         0x8007fb4c: '38a00048', 0x8007fb74: '3860ffff',
         0x8007ad60: '540307bc', 0x800816fc: '4bfae9f5',
@@ -577,6 +587,11 @@ def verify(iso_path):
         if read(0x80420660, 20).hex() != 'c38c000043610000440c0000433000003f666666':
             raise ValueError('Message window geometry constants mismatch')
         print('Four default window geometry floats and small-window multiplier verified')
+        if read(0x8042061c, 4).hex() != '43c80000':
+            raise ValueError('Selection display-order base mismatch')
+        if read(0x802cc71c, 7) != b'DIRECT\0':
+            raise ValueError('Direct selection identity mismatch')
+        print('Selection display-order base and direct identity verified')
 
 
 if __name__ == '__main__':

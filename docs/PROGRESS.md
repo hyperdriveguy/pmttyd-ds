@@ -2890,3 +2890,30 @@ and renderer; message event print/identity/callback producers and substitution;
 allocator/embedded-pose ownership, font/icon/sound services. Continue story
 attribution/order/conditions and all remaining battle/camera/input/field/content/
 save systems before complete-game requirements. Full objective active/incomplete.
+
+## 2026-10-12 — Selection window input and event result lifetime
+
+Previous turn progressed with49af82c lifecycle. Added MESSAGE_SELECTION.md:
+unconditional playback before selection state dispatch, strict opening clamp,
+extra zero-opacity closing invocation, trigger wrap versus repeat endpoint guards,
+independent opposite-direction blocks/net movement sound, cancel-before-confirm
+including disabled-cancel precedence, signed cancel results, display registration,
+first-call direct/key identity creation, saved +17c window index and signed local
+work0 result before deletion. Recovered the three literal input snapshot readers
+and both guarded-ID/unguarded-pointer window deletion helpers. Renderer, input
+repeat producers/cadence and story caller/branch mapping remain explicitly open.
+
+Validation:472 instruction anchors and prior checks passed read-only US ISO,
+plus selection display-order base and original direct-input identity.
+Evidence186 function fingerprints reproduced byte-for-byte. All behavior links
+resolve; git diff --check passed. make test passed core plus36 Python tests;
+make all exited0, no rebuild. Workspace started clean; only research/provenance/
+evidence tooling changed. No original execution/emulator run or profile/save
+changes. Original extracts and evidence reports remain ignored. Static checks
+do not establish actual navigation cadence/highlighting or native equivalence.
+
+Next: general/clear message window states and wait/input transitions; selection/
+message renderer, event print callback/identity/substitution producers; clock and
+input snapshot cadence, font/icon/pose/NPC/audio dependencies. Continue story
+attribution/order/conditions and all remaining systems before complete-game
+requirements. Full objective active/incomplete; executed comparisons needed.

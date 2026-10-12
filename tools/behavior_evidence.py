@@ -38,6 +38,8 @@ FUNCTIONS = (
     'msgWindow_Entry', 'msgWindow_Delete', 'msgWindow_Add',
     'msgWindow_Continue', 'msgWindow_Repeat', 'msgWindow_ForceClose',
     'evt_msg_close', 'evt_msg_repeat', 'evt_msg_continue',
+    'selectWindow_Main', 'evt_msg_select', 'keyGetDirTrg',
+    'keyGetButtonRep', 'keyGetDirRep', 'windowDeleteID', 'windowDelete',
     'btlevtcmd_AnnounceMessage', 'btlevtcmd_AnnounceSetParam',
     'BattlePadCheckTrigger', 'BattlePadMultiCheckTrigger', '_disp@battle_message.o',
     'evt_btl_camera_set_mode', 'evt_btl_camera_set_homing_unit',
