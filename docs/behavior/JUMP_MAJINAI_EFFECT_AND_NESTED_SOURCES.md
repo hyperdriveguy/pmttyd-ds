@@ -165,3 +165,10 @@ spans. Adjacent parent/jump ranges share the identical overlap word and merge;
 no rewriting occurs. This source artifact stays outside history;the native
 packer defaults are unchanged. Packaging does not supply a bound registry,
 fortune producer,effect/audio/announcement backend or original execution proof.
+
+
+[Complete Majinai constructor](MAJINAI_EFFECT_CONSTRUCTION.md) and
+[pool/map publication](EFFECT_POOL_ACQUISITION_AND_MAP_PUBLICATION.md) now
+close its called construction/acquisition/map helper requests,32-byte payload
+fields,heap3 and exact map+1e word write. Update/draw/delete/resource/platform
+engines and original lifetime/frame behavior remain open.

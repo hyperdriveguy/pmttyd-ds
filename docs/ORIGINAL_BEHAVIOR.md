@@ -733,3 +733,11 @@ close full local countdown/mode policy,upgrade-only signed request compare and
 two direct DOL bindings. Remaining/countdown/mode use distinct byte domains;
 modulo RNG thresholds and intermediate stores stay exact. Field assignment/
 setup/pouch/save/turn/other consumers and original execution remain open.
+
+
+[Majinai effect construction](behavior/MAJINAI_EFFECT_CONSTRUCTION.md) and
+[pool acquisition/map publication](behavior/EFFECT_POOL_ACQUISITION_AND_MAP_PUBLICATION.md)
+close full local constructor/slot/helper order,payload fields and exact map+1e
+four-byte request. Pool exhaustion has no local null fallback and acquisition
+clears only the first instance-name byte. Update/draw/delete/resources/map/
+heap/platform/source and original effect/frame behavior remain open.

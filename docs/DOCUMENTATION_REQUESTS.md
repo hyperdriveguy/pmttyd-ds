@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Majinai effect construction,pool acquisition and map-word publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Constructor/payload](behavior/MAJINAI_EFFECT_CONSTRUCTION.md),[pool/map helpers](behavior/EFFECT_POOL_ACQUISITION_AND_MAP_PUBLICATION.md):full local order,heap3/count reread,partial name clear,exhaustion/no-null guard and map+1e WORD publication;main/draw/delete/resource/platform/source/runtime remains open |
 | Partner flyMain dispatch and flying movement handlers | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover party_move.o flyMain and used motion dispatch/output with flying handler local graphs;terrain/pose/source/numeric domains,other motion engines and original trajectories remain separate |
 | Battle fortune producer and pouch reset/random-selection policy | EVT-01, JUMP-01, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete producer](behavior/BATTLE_FORTUNE_PRODUCER.md),[init/call/RNG accounting](behavior/BATTLE_FORTUNE_INIT_AND_CALL_BINDINGS.md):signed countdown/sticky mode,inline setup-mask20 thresholds,word compare before byte store and two direct bindings;field assignment/save/setup/turn/consumer/runtime remains open |
 | Jump Majinai power-check child and local result/effect callbacks | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Power graph/consumption](behavior/JUMP_MAJINAI_POWER_CHECK_CHILD.md),[effect/nested sources](behavior/JUMP_MAJINAI_EFFECT_AND_NESTED_SOURCES.md):full14/12/17-command graphs,query/Done/EndCheck/name polling/ftomsec and five original keys;additional spans/three callbacks,fortune producer/render/audio/message/backend/runtime remain open |
@@ -1926,3 +1927,23 @@ open. Verifier passes eight complete/linked hashes,108 anchors,SDA span and two
 exact direct sites;repeat reports equal;enumerated32768-output counts reconcile.
 Prior child/turn/general1980 checks pass;make test52 CTest/78 Python and make all
 pass;2118 local links resolve. No native/test/asset conversion code changed by ID2.
+
+
+ID2 EVT-01/JUMP-01/DMG-02 Majinai construction delivery (2026-10-12), partial answer:
+[Full constructor](behavior/MAJINAI_EFFECT_CONSTRUCTION.md) closes effMajinaiEntry
+f4:pool record before heap allocation,borrowed Majinai resource/count1/reload,
+heap3/count<<5 request,returned payload pointer,update callback/flags before
+payload,all eight32-byte initial fields,then mapGetWork and WORDffffffff at
+map+1e. It is a four-byte request,not an inferred halfword/aligned field.
+[Acquisition/map helper](behavior/EFFECT_POOL_ACQUISITION_AND_MAP_PUBLICATION.md)
+closes full effEntry/mapGetWork:captured signed pool count/array,EXACT0 free,
+exhaustion one-past initialization/no null return,flags1 before GP14 normalization,
+partial fields/name first-byte clear with15 tail bytes preserved;independent
+map index-before-base/stride2f4/wrap. No automatic allocator failure rollback,
+instance/resource-name conflation or lifetime semantics invented. Three exact
+DOL constructor callers pinned;field/generic callers beyond annotations open.
+Own lock released;effect main/draw/delete/resources,pool/map/heap/scene/source/
+numeric/platform and original frame/exception traces remain open. Verifier
+passes five complete/linked hashes,92 anchors,five spans and three direct sites;
+repeat reports equal. Prior caller/heap/general1980 checks pass;make test52 CTest/
+78 Python and make all pass;2156 local links resolve. No native/test/asset edits.

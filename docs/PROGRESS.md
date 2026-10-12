@@ -1,5 +1,33 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Complete Majinai effect construction and pool/map publication
+
+Documentation agent ID2 closed effMajinaiEntry f4,effEntry68,mapGetWork14 in
+two detailed contracts. Preserved early pool record publication,count1 reread/
+heap3 allocation,callback/flag before payload,all eight ordinary32-byte stores,
+and exact four-byteffffffff request at map+1e after payload. Pool acquisition
+uses exact0 flags,has one-past exhaustion/no null fallback,and clears only first
+name byte (15 tail bytes survive). Map index-before-base/stride756 uses its own
+globals,not GP14. Resource Majinai pointer and instance name remain distinct.
+Update/draw/delete/resource/numeric/platform behavior is not inferred. Original
+ELF/listings remain /tmp/id2-fxentry-*;no native/test/asset conversion changed.
+
+Validation: verify_majinai_effect_construction.py passes five complete/linked
+hashes,92 instructions,five data/SDA spans and exact three-site DOL census.
+Repeat reports match (/tmp/id2-fxentry-evidence.json and -second.json). Prior
+Majinai caller/SDK heap/general1980 checks,Python compilation,diff-check and
+2156 local links pass. make test52/52 CTest suites and78 Python tests;make all
+passes. Logs:/tmp/id2-fxentry-test.log,/tmp/id2-fxentry-build.log. Concurrent
+native/ID1 changes preserved;own scope committed incrementally.
+
+Own lock released;EVT-01/JUMP-01/DMG-02 remain open. Next documentation recovers
+effect update/draw/delete/payload lifetime and resource request owners,full
+pool/map/heap/scene domains,fortune/raw record/reset/end/turn and other requests.
+Native original script/registry/address/numeric/clock/render/audio/message
+services and original effect/frame/exception traces remain required. Goal
+active/incomplete;complete game/effect fidelity cannot yet be claimed.
+
+
 ## 2026-10-12 — Correct requested-level binding for constructor run-check
 
 Documentation agent's fresh8011b5e0..b7d8 source audit identified a mistake in
