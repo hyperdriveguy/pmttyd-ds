@@ -37,6 +37,9 @@ class ConversionTests(unittest.TestCase):
         segments=wall_segments([tri,tri],[(0,10),(4,20)])
         self.assertEqual(len(segments),2)
         self.assertEqual([s[6:] for s in segments],[(0,10),(4,20)])
+        detailed=wall_segments([tri],[(4,20)],with_triangles=True)
+        self.assertEqual(detailed[0][6:8],(4,20))
+        self.assertEqual(detailed[0][8:],tuple(v for point in tri for v in point))
         with self.assertRaises(ValueError):wall_segments([tri],[])
     def test_batch_metadata(self):
         for layer in [0,2,255]:

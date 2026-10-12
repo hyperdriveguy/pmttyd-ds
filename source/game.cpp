@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "wall_geometry.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -12,6 +13,7 @@ std::vector<Rect> walls;
 bool collisionReady=false;
 std::vector<Vec2> wallLevels;
 std::vector<GroundContact> wallContacts;
+std::vector<WallTriangle> wallTriangles;
 struct GroundTriangle { float v[9];GroundContact contact; };
 static_assert(sizeof(GroundContact)==8,"Ground metadata must contain two uint32 words");
 static_assert(sizeof(ReturnPoint)==12,"Return position must contain three float32 values");
@@ -51,6 +53,7 @@ struct CollisionSnapshot {
     std::vector<Rect> savedWalls;
     std::vector<Vec2> savedLevels;
     std::vector<GroundContact> savedWallContacts;
+    std::vector<WallTriangle> savedWallTriangles;
     std::vector<GroundTriangle> savedGround;
     std::unordered_map<uint32_t,ReturnPoint> savedReturns;
     SpatialIndex savedWallIndex,savedGroundIndex;
@@ -59,6 +62,7 @@ struct CollisionSnapshot {
     void swapActive() {
         savedWalls.swap(walls);savedLevels.swap(wallLevels);savedGround.swap(ground);
         savedWallContacts.swap(wallContacts);
+        savedWallTriangles.swap(wallTriangles);
         savedReturns.swap(groundReturns);
         savedWallIndex.swap(wallIndex);savedGroundIndex.swap(groundIndex);
         std::swap(savedBounds,roomBounds);std::swap(ready,collisionReady);
@@ -143,6 +147,11 @@ bool walkable(Vec2 p,float elevation) {
         for(uint32_t n:nearby(wallIndex,p)) {
             auto wall=walls[n];
             if(!wallAtLevel(n,elevation))continue;
+            if(!wallTriangles.empty()) {
+                if(wallSliceBlocks(wallTriangles[n],elevation+WallLowerRay,p.x,p.z,r) ||
+                   wallSliceBlocks(wallTriangles[n],elevation+WallUpperRay,p.x,p.z,r))return false;
+                continue;
+            }
             if(p.x < std::min(wall.x0,wall.x1)-r || p.x > std::max(wall.x0,wall.x1)+r || p.z < std::min(wall.z0,wall.z1)-r || p.z > std::max(wall.z0,wall.z1)+r)continue;
             float dx=wall.x1-wall.x0,dz=wall.z1-wall.z0,den=dx*dx+dz*dz;
             if(den<1e-8f)continue;
@@ -160,26 +169,39 @@ bool walkable(Vec2 p,float elevation) {
 bool loadCollision(const char* path) {
     FILE* file=std::fopen(path,"rb");if(!file)return false;
     uint32_t count=0;bool ok=std::fread(&count,4,1,file)==1;
-    bool levels=(count&0x80000000)!=0,tagged=(count&0x40000000)!=0;count&=0x3fffffff;
-    if(tagged && !levels){std::fclose(file);return false;}
+    bool levels=(count&0x80000000)!=0,tagged=(count&0x40000000)!=0,triangles=(count&0x20000000)!=0;count&=0x1fffffff;
+    if((tagged && !levels) || (triangles && !tagged)){std::fclose(file);return false;}
     if(!ok || count>100000) {std::fclose(file);return false;}
     std::vector<Rect> data(count);std::vector<Vec2> heights(levels?count:0);
     std::vector<GroundContact> contacts(tagged?count:0);
+    std::vector<WallTriangle> geometry(triangles?count:0);
     for(uint32_t n=0;n<count;++n) {
         ok=ok && std::fread(&data[n],sizeof(Rect),1,file)==1;
         if(levels)ok=ok && std::fread(&heights[n],sizeof(Vec2),1,file)==1;
         if(tagged)ok=ok && std::fread(&contacts[n],sizeof(GroundContact),1,file)==1;
+        if(triangles)ok=ok && std::fread(geometry[n].data(),sizeof(WallTriangle),1,file)==1;
     }
     ok=ok && std::fgetc(file)==EOF;std::fclose(file);
     for(auto w:data) if(!std::isfinite(w.x0) || !std::isfinite(w.z0) || !std::isfinite(w.x1) || !std::isfinite(w.z1))ok=false;
     for(auto h:heights)if(!std::isfinite(h.x) || !std::isfinite(h.z) || h.x>h.z)ok=false;
+    for(auto tri:geometry)for(float value:tri)if(!std::isfinite(value) || std::fabs(value)>4096)ok=false;
+    for(uint32_t n=0;triangles && n<count;++n) {
+        const auto& v=geometry[n];
+        if(heights[n].x!=std::min({v[1],v[4],v[7]}) || heights[n].z!=std::max({v[1],v[4],v[7]}))ok=false;
+    }
     SpatialIndex next;size_t references=0;
     for(uint32_t n=0;ok && n<count;++n) {
         auto w=data[n];
+        if(triangles) {
+            const auto& v=geometry[n];
+            ok=indexBounds(next,n,std::min({v[0],v[3],v[6]})-BodyRadius,std::min({v[2],v[5],v[8]})-BodyRadius,
+                std::max({v[0],v[3],v[6]})+BodyRadius,std::max({v[2],v[5],v[8]})+BodyRadius,references);
+            continue;
+        }
         ok=indexBounds(next,n,std::min(w.x0,w.x1)-BodyRadius,std::min(w.z0,w.z1)-BodyRadius,
                        std::max(w.x0,w.x1)+BodyRadius,std::max(w.z0,w.z1)+BodyRadius,references);
     }
-    if(ok) {wallLevels.swap(heights);wallContacts.swap(contacts);walls.swap(data);wallIndex.swap(next);collisionReady=true;}
+    if(ok) {wallLevels.swap(heights);wallContacts.swap(contacts);wallTriangles.swap(geometry);walls.swap(data);wallIndex.swap(next);collisionReady=true;}
     return ok;
 }
 bool loadGround(const char* path) {
@@ -259,7 +281,7 @@ bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact) {
     }
     return found;
 }
-void clearCollision() {walls.clear();wallLevels.clear();wallContacts.clear();ground.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
+void clearCollision() {walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
 bool Game::recoveryReturn(ReturnPoint& point) const {return groundReturn(returnContact,point);}

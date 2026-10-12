@@ -259,3 +259,15 @@ sample tables remain incomplete. XZ segments still summarize each triangle's
 full min/maxY, which can overestimate collision at sloped edges. Native floor
 step/query allowance0.25 and prototype jump trajectory remain provisional.
 Partner shares this normal-Mario proxy rather than its own recovered collision.
+
+### Wall triangle slices
+
+Replaced native min/max-height rectangle approximation with horizontal slices
+through each retained original wall triangle at the recovered normal-Mario ray
+heights. This removes collision in empty triangular bbox regions and retains
+actual sloped edges and vertex endpoints. Source triangle positions are preserved
+through conversion instead of deduplicating different triangles by their longest
+XZ segment. This is a geometry correction within the current clearance query;
+it does not reproduce original swept direction rays, backface policy, contact
+normal sliding or dynamic meshes. Angled wall selection still uses the existing
+near-vertical normal threshold and needs separate original-ray coverage work.

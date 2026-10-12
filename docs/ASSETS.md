@@ -231,3 +231,12 @@ attribute edits. `python3 tools/verify_wall_attributes.py` independently compare
 all5,264 records against source bytes across gor_01/00/02/03/04. No bit31
 special-case owners occur in these packs. Collision mesh extraction remains
 approximate planar wall segmentation; original flags now control solidity.
+
+Wall packs now additionally retain all9 triangle coordinates, unrounded, after
+the geometry/attribute prefix:68 bytes per record, count tag0xe0000000.
+Distinct triangles belonging to the same owner are no longer collapsed merely
+because their projected segment and min/max heights match. Five rooms export
+7,830 retained triangles;92 records are non-solid under normal-Mario flags.
+`verify_wall_attributes.py` validates the new layout and original owner flags.
+The existing wall selection threshold(abs(normalY)/length<=0.2) is unchanged;
+coverage of other angled surfaces and dynamic hit meshes remains unfinished.

@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "wall_geometry.hpp"
 #include "save.hpp"
 #include "visibility.hpp"
 #include "uv_animation.hpp"
@@ -95,6 +96,12 @@ void saves() {
     std::remove(path.c_str());std::remove((path+".bak").c_str());rmdir(directory);
 }
 void collisionImport() {
+    const WallTriangle ramp{0,0,0, 2,0,0, 0,2,0};
+    CHECK(wallSliceBlocks(ramp,1,.5f,.05f,.1f));
+    CHECK(!wallSliceBlocks(ramp,1,1.5f,.05f,.1f)); // Empty upper-right bbox region.
+    CHECK(wallSliceBlocks(ramp,0,1.5f,.05f,.1f));
+    CHECK(wallSliceBlocks(ramp,2,0,.05f,.1f)); // Single vertex.
+    CHECK(!wallSliceBlocks(ramp,2.1f,0,.05f,.1f));
     char path[]="/tmp/ttyd-walls-XXXXXX";int fd=mkstemp(path);CHECK(fd>=0);
     uint32_t count=1;Rect wall{0,2,0,3.5f};
     CHECK(write(fd,&count,4)==4);CHECK(write(fd,&wall,sizeof(wall))==sizeof(wall));close(fd);
@@ -122,7 +129,21 @@ void collisionImport() {
         {CollisionTransition rollback;levelWall(0,2);CHECK(!walkable({.05f,2.5f},0));}
         CHECK(walkable({.05f,2.5f},0)==(flags==4));
     }
-    // Incomplete owner metadata must not replace the last valid collision pack.
+    {
+        std::ofstream file(path,std::ios::binary);uint32_t header=0xe0000001;
+        Vec2 levels{0,2};GroundContact contact{0,123};WallTriangle tri{0,0,2,0,0,3.5f,0,2,2};
+        file.write(reinterpret_cast<char*>(&header),4);file.write(reinterpret_cast<char*>(&wall),sizeof(wall));
+        file.write(reinterpret_cast<char*>(&levels),sizeof(levels));file.write(reinterpret_cast<char*>(&contact),sizeof(contact));
+        file.write(reinterpret_cast<char*>(tri.data()),sizeof(tri));file.close();
+        CHECK(loadCollision(path));CHECK(walkable({.05f,3.3f},1));CHECK(!walkable({.05f,2.5f},1));
+        std::ifstream original(path,std::ios::binary);std::string packed{std::istreambuf_iterator<char>(original),std::istreambuf_iterator<char>()};
+        {CollisionTransition rollback;levelWall(0,2);CHECK(!walkable({.05f,3.3f},1));}
+        CHECK(walkable({.05f,3.3f},1)); // Triangle geometry restored with the room.
+        {std::ofstream restore(path,std::ios::binary);restore.write(packed.data(),packed.size());}
+    }
+    {std::fstream file(path,std::ios::binary|std::ios::in|std::ios::out);float wrongHeight=.5f;file.seekp(20);file.write(reinterpret_cast<char*>(&wrongHeight),4);}
+    CHECK(!loadCollision(path));CHECK(walkable({.05f,3.3f},1));
+    // Incomplete triangle metadata must not replace the last valid collision pack.
     CHECK(truncate(path,35)==0);CHECK(!loadCollision(path));CHECK(!walkable({.05f,2.5f},0));
     clearCollision();std::remove(path);
     CHECK(!loadCollision("/does/not/exist"));
@@ -352,11 +373,12 @@ void indexedOriginalCollision() {
         std::ifstream walls(prefix+".walls",std::ios::binary),ground(prefix+".ground",std::ios::binary);
         uint32_t nw=0,ng=0;walls.read(reinterpret_cast<char*>(&nw),4);ground.read(reinterpret_cast<char*>(&ng),4);
         CHECK(ng&0x80000000);ng&=0x7fffffff;
-        CHECK((nw&0xc0000000)==0xc0000000);nw&=0x3fffffff;
+        CHECK((nw&0xe0000000)==0xe0000000);nw&=0x1fffffff;
         std::vector<std::array<float,6>> segments(nw);std::vector<std::array<float,9>> triangles(ng);
         std::vector<GroundContact> contacts(ng);
         std::vector<GroundContact> wallContacts(nw);
-        for(uint32_t n=0;n<nw;++n){walls.read(reinterpret_cast<char*>(segments[n].data()),24);walls.read(reinterpret_cast<char*>(&wallContacts[n]),8);}
+        std::vector<WallTriangle> wallGeometry(nw);
+        for(uint32_t n=0;n<nw;++n){walls.read(reinterpret_cast<char*>(segments[n].data()),24);walls.read(reinterpret_cast<char*>(&wallContacts[n]),8);walls.read(reinterpret_cast<char*>(wallGeometry[n].data()),36);}
         for(uint32_t n=0;n<ng;++n) {
             ground.read(reinterpret_cast<char*>(triangles[n].data()),36);
             ground.read(reinterpret_cast<char*>(&contacts[n]),8);
@@ -368,9 +390,8 @@ void indexedOriginalCollision() {
                 auto w=segments[n];auto flags=wallContacts[n].attributes;
                 if(!(flags&0x00080080) && !(flags&0x00800000) && (flags&4))continue;
                 if(!((w[4]<=level+.11f && w[5]>=level+.11f) || (w[4]<=level+.2664f && w[5]>=level+.2664f)))continue;
-                float dx=w[2]-w[0],dz=w[3]-w[1],den=dx*dx+dz*dz;if(den<1e-8f)continue;
-                float t=std::max(0.f,std::min(1.f,((p.x-w[0])*dx+(p.z-w[1])*dz)/den));
-                float a=p.x-w[0]-t*dx,b=p.z-w[1]-t*dz;if(a*a+b*b<.1f*.1f)free=false;
+                if(wallSliceBlocks(wallGeometry[n],level+.11f,p.x,p.z,.1f) ||
+                   wallSliceBlocks(wallGeometry[n],level+.2664f,p.x,p.z,.1f))free=false;
             }
             CHECK(walkable(p,level)==free);
             GroundContact expected;

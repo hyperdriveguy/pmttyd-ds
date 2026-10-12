@@ -1275,3 +1275,40 @@ that transient read until the completed room0 checkpoint or the existing bounded
 timeout. Final `make test`, original-room checks, source verifier and native
 build exited0. An inspection-only `artifacts/reference/marioMove.disasm` was
 prepared for next-session walking/floor work; no speed conclusion is established.
+
+## Preserve wall triangles and resolve exact height slices
+
+Implemented portable wall-plane intersection/clearance against retained original
+triangle geometry, replacing full-height projected-segment blocking for new
+packs. Removes false walls in empty triangular bounding regions. New68-byte
+records preserve9 source-transformed coordinates, owner attributes and legacy
+summary geometry. Distinct triangles sharing a projected summary no longer
+collapse. Index bounds include all vertices; geometry survives room rollback.
+Malformed/truncated geometry or inconsistent Y bounds cannot replace valid data.
+Older wall formats remain loadable.
+
+Validation: `make test` passed core and28 Python tests; analytical cases cover
+sloped cutoffs, height-plane edges, a vertex-only slice, above-triangle clearance,
+actual loader queries, rollback and malformed bounds/truncation. Converter fixture
+checks original coordinate retention. `build-host/core_tests --rooms` passed all8
+arrivals/airborne gates/rollback and18,315 indexed/full-scan probes. Full scan
+uses the same triangle-slice primitive (it verifies indexing, not an independent
+geometric algorithm); analytical tests separately verify the primitive.
+`python3 tools/verify_wall_attributes.py` passed all7,830 triangle records against
+original owner flags: gor_01=1920,gor_00=1068,gor_02=2232,gor_03=2277,
+gor_04=333;92 non-solid records. This verifies attributes/source IDs, not an
+independent original-coordinate extraction. `make -j2 all` rebuilt the RomFS
+and native binary successfully. Native harbor water jump/return script exited0
+with original return destination and HP7→6; launched with harbor-arrival-road.bin,
+--seconds4,--fresh-save and tests/azahar_water.py as in prior entries.
+
+Next: recover swept direction rays, sliding/contact response, coverage of angled
+surfaces, floor search and original speed/jump parameters. Near-vertical wall
+selection threshold remains0.2, minimap draws summary segments, dynamic hit meshes
+and transformed-Mario cases remain incomplete. Original camera/party choreography,
+story/dialogue, SFX and broader playability remain outstanding. Full objective
+active; hardware performance remains unverified.
+Final native harbor stairs/dock-save/return test also exited0 with HP7 on the
+finished build: `python3 tools/emulator_smoke.py --fresh-save --save-fixture
+artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script
+ tests/azahar_harbor_stairs.py`. No native rebuild overlapped emulator execution.

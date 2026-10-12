@@ -32,7 +32,7 @@ def batch_flags(layer,group,cull):
         raise ValueError('Invalid map batch metadata')
     return layer | group<<8 | cull<<24
 
-def wall_segments(collision,metadata=None):
+def wall_segments(collision,metadata=None,with_triangles=False):
     if metadata is not None and len(metadata)!=len(collision):raise ValueError('Wall metadata count mismatch')
     segments=set()
     for index,tri in enumerate(collision):
@@ -43,7 +43,8 @@ def wall_segments(collision,metadata=None):
         if np.linalg.norm(p-q)>.01:
             p,q=sorted([tuple(np.round(p,4)),tuple(np.round(q,4))])
             tag=tuple(metadata[index]) if metadata is not None else ()
-            segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max()),*tag))
+            geometry=tuple(a.flatten()) if with_triangles else ()
+            segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max()),*tag,*geometry))
     return sorted(segments)
 
 def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=()):
@@ -230,10 +231,10 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
             out.write(struct.pack('<II',track['duration'],len(track['bindings'])))
             for frame in track['frames']:out.write(struct.pack('<12f',*frame))
             for vertex in track['bindings']:out.write(struct.pack('<Ifff',*vertex))
-    segments=wall_segments(collision,collision_meta)
+    segments=wall_segments(collision,collision_meta,with_triangles=True)
     with (output/'map.walls').open('wb') as out:
-        out.write(struct.pack('<I',len(segments)|0xc0000000))
-        for segment in segments:out.write(struct.pack('<6fII',*segment))
+        out.write(struct.pack('<I',len(segments)|0xe0000000))
+        for segment in segments:out.write(struct.pack('<6fII9f',*segment))
     # Keep walkable collision surfaces, including ramps and elevated platforms.
     ground=[]
     for tri,meta in zip(collision,collision_meta):

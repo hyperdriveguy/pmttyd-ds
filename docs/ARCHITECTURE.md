@@ -242,3 +242,13 @@ support height plus current jumpHeight for wall tests while querying floors
 separately. Floor step allowance remains0.25. Segment distance/interval geometry
 is still a proxy for original swept rays and triangles; transformed-Mario and
 partner-specific collision remain outstanding.
+
+Wall triangle geometry supersedes the interval/longest-segment collision proxy.
+Count bit29 now indicates9 additional float32 original transformed triangle
+coordinates after each32-byte record (68 bytes total; flags0xe0000000).
+Legacy formats still load. New queries intersect each retained triangle with
+both normal-Mario height planes, then test clearance against the resulting XZ
+segment or vertex. Spatial bounds use all three vertices. Height intervals are
+validated against triangle extrema and used only for early rejection. Actual
+triangle arrays participate in collision rollback/clear. Minimap still draws the
+summary segment. Original swept direction rays and contact sliding are deferred.
