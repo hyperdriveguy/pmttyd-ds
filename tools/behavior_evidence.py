@@ -15,6 +15,8 @@ from iso_assets import DEFAULT_ISO, inventory
 
 
 FUNCTIONS = (
+    'BtlUnit_Entry', 'BtlUnit_Spawn', 'btlevtcmd_SpawnUnit',
+    'btlevtcmd_GetMaxHp', 'btlevtcmd_GetHp',
     'btlevtcmd_AudienceDeclareACResult', 'BattleActionCommandDeclareACResult',
     'BattleStage_ObjectFallCheck', 'BattleInit',
     'btlevtcmd_GetUnitWork', 'btlevtcmd_SetUnitWork', 'btlevtcmd_CheckPhase',

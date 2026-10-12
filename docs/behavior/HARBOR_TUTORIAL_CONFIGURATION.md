@@ -57,9 +57,10 @@ The kind record points to model identifier btl_un_kanbu1 at0x1e1f8 and has:
 | +0xbc | 0x64808 init_event |
 | +0xc0 | 0x646b4 data_table |
 
-Raw first halfword at kind+8 is5. This initial data observation is **not yet a
-closed HP contract**:unit allocation/stat-copy/init scripts and field overrides
-must establish how the runtime uses it. Keep the prototype's tutorial behavior
+Raw first halfword at kind+8 is5. The [entry/stat-copy contract](UNIT_ENTRY_STATS_AND_SPAWN.md)
+now confirms HP5 initialization into runtime current/max fields and the tutorial
+getter/DIV threshold2. Later initialization/field overrides and original runtime
+observations still need closure. Keep the prototype's tutorial behavior
 provisional until those consumers are connected. Model/type labels alone do not
 prove attack availability,invulnerability,damage,action timing or defeat policy.
 

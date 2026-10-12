@@ -4923,3 +4923,39 @@ battle1000 gates,then original tutorial input/state/RNG/audio/animation traces.
 Continue all reachable US systems and optional content before final complete-
 game requirements. Full objective active/incomplete;local writer/gate closure
 does not prove a faithful complete encounter or full game.
+
+## 2026-10-12 — Original unit HP/FP entry and tutorial spawn ABI
+
+Added UNIT_ENTRY_STATS_AND_SPAWN.md. Recovered the BtlUnit_Entry slot/allocation/
+publication,HP/FP copy and init-registration regions,plus complete spawn helper/
+callback and current/max HP callbacks. Entry publishes the0xb34-byte unit before
+later initialization;kind signed HP+8 copies to runtime10a/108/10c,FP+a to110/
+10e/112. Harbor kind5/0 now connected to original HP5/FP0 writes. Getter maximum
+108/current10c and original signed DIV establish half-HP threshold2 when max5
+is unmodified. This is static source/data behavior,not measured tutorial HP or
+proof of no later overrides;rest of large entry/parts remains explicitly partial.
+
+Getters translate actor-1 to completion without destination write. Spawn callback
+resolves setup but passes flags raw,writes-1 on null or integer unit ID on success.
+Flags2/1 insert forward/backward into a separate64-word ordering array;flag2
+wins and flags0 does no extra insertion. Tutorial helper uses flags0,retains
+spawned ID as message speaker work0. Entry init event registration priority10/
+flags0 sets event owner160 and stores handle288;does not synchronously execute
+whole init script. Fingerprinting containing body is not complete entry coverage.
+
+Validation:1804 instruction anchors and prior checks passed read-only ISO;
+original kind HP5/FP0 and helper/GetMaxHp/GetHp/DIV bindings independently pinned.
+Fresh344-function reports repeated byte-for-byte;588 behavior links resolved;
+Gekko listing check clean;git diff --check passed. make test passed six host
+suites(core,TimingA,Hammer,defense,damage,status) plus58 Python tests;make all
+exited0,no rebuild. Concurrent gameplay/damage/header/test edits preserved;only
+explicit research paths staged. No original execution/emulator,ISO/profile/save
+mutation,native implementation,asset conversion or story/dialogue rewrite by
+this step. Inspection ELFs/disassembly/reports remain ignored.
+
+Next:remaining unit entry/part/resource/status and HP/pouch/bonus overrides,
+SpawnUnit helper kind/lifetime,full boss normal attack and damage/reward/death/
+result consumers,then original tutorial state/input/timing traces. Continue all
+reachable US systems and optional content before complete-game requirements.
+Full objective active/incomplete;stat copy and spawn/owner links do not prove
+complete unit mechanics,faithful tutorial execution or full game.

@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 339 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1772 instruction anchors plus those
+now fingerprints 344 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1804 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -741,3 +741,9 @@ quarter/half/signed bias and four ordinary attack declaration records. Connects
 REL tutorial readers to DOL declaration counts and one proven battle flag
 consumer. No original execution,ISO/profile write,asset conversion,executable
 linking/distribution or story rewrite;all original artifacts remain ignored.
+
+Unit entry/stat/spawn research adds five containing-body identities and32 anchors,
+original boss HP5/FP0 data and tutorial getter/DIV/helper-spawn bindings. Large
+entry body coverage is explicitly partial despite whole-body fingerprint. No
+new extraction/asset conversion,ISO write,original execution/native linking or
+dialogue rewrite;artifacts ignored and provenance/rights unchanged.

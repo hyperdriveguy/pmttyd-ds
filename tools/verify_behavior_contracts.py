@@ -13,6 +13,24 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'unit_entry_stats_and_spawn': {
+        0x80129024: '2c1b0040', 0x8012903c: '38600b34',
+        0x8012905c: '4bedc059', 0x8012906c: '4bfcf849',
+        0x8012907c: '901e0010', 0x80129248: 'a8a50008',
+        0x8012924c: 'b0be010a', 0x80129254: 'b0be0108',
+        0x80129260: 'b0be010c', 0x80129268: 'a8a5000a',
+        0x80129274: 'b0be010e', 0x80129280: 'b0be0112',
+        0x80129644: '806300bc', 0x80129658: '4bf0de55',
+        0x80129660: '90030160', 0x80129668: '901e0288',
+        0x80110104: '2c04ffff', 0x8011011c: 'a8a30108',
+        0x801101fc: '2c04ffff', 0x80110214: 'a8a3010c',
+        0x801133dc: '4bf1de85', 0x801133e0: '809f0008',
+        0x801133e4: '4801593d', 0x80113408: '80a30000',
+        0x80128d38: '480002a9', 0x80128d48: '57c007bd',
+        0x80128d58: '98660020', 0x80128d88: '7cbf212e',
+        0x80128d9c: '57c007ff', 0x80128db0: '386000fc',
+        0x80128de8: '3863fffc', 0x80031ed4: '7ca3f3d6',
+    },
     'action_feedback_and_stage_gate': {
         0x801074bc: '4bf29da5', 0x801074cc: '4bf29d95',
         0x801074d8: '2c05ffff', 0x801074e0: '88646f58',
@@ -1877,6 +1895,17 @@ def verify(iso_path):
             if struct.unpack('>4I',read(address,16)) != (0x3005b,0x8010749c,0xfe363c8c,result):
                 raise ValueError('Ordinary attack declaration binding mismatch')
         print('AC declaration scale/bias and four ordinary attack declaration sites verified')
+        if struct.unpack_from('>2h',harbor,0x645c8+8) != (5,0):
+            raise ValueError('Harbor boss kind HP/FP input mismatch')
+        if struct.unpack('>I',read(0x80304fd0+56*4,4))[0] != 0x80031eb0:
+            raise ValueError('Tutorial integer DIV handler mismatch')
+        for site,target in ((0x64874,0x647d8),(0x64bd0,0x801100cc),(0x64bec,0x801101c4)):
+            if site == 0x64874:
+                if local.get(site,{}).get('file_offset') != target:
+                    raise ValueError('Tutorial helper spawn relocation mismatch')
+            elif imports.get(site) != target:
+                raise ValueError('Tutorial HP getter relocation mismatch')
+        print('Boss HP5/FP0 entry inputs,helper spawn and half-HP getter/DIV bindings verified')
 
 
 
