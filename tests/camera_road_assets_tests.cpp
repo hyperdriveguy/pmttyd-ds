@@ -1,6 +1,9 @@
 #include "camera_road_assets.hpp"
 #include "camera_road_curve.hpp"
 #include "camera_road_zone.hpp"
+#include "camera_road_state.hpp"
+#include "camera_road_view.hpp"
+#include "game.hpp"
 #include <cmath>
 #include <cstring>
 #include <cstdlib>
@@ -94,6 +97,60 @@ void zoneCases() {
     CHECK(!selectCameraRoadZone(asset,{0,1,0}));
     put(raw,0x118+0x28,1);CHECK(asset.decode(raw));CHECK(!selectCameraRoadZone(asset,{0,3,0}));
 }
+void stateCases() {
+    auto raw=straightFixture();raw.insert(raw.begin()+0x1d0,184,0);
+    put(raw,0,raw.size());put(raw,0xc8,2);put(raw,0xf8,0x288);
+    std::memcpy(raw.data()+0x1d0,raw.data()+0x118,184);
+    number(raw,0x118+0x58,10);number(raw,0x1d0+0x58,20);
+    number(raw,0x1d0+0x8c,2);number(raw,0x118+0x7c,100);number(raw,0x1d0+0x7c,100);
+    CameraRoadAsset asset;CHECK(asset.decode(raw));CameraRoadWork work;
+    auto inactive=cameraRoadFrame(work.current);CHECK(inactive && inactive->eye.y==10 && inactive->eye.z==10 && inactive->fov==25);
+    CameraRoadState viewState;viewState.active=true;viewState.anchor={20,3,0};viewState.direction={0,0,1};viewState.distance=50;
+    auto frame=cameraRoadFrame(viewState);CHECK(frame && frame->eye.x==2 && frame->eye.z==5 && frame->at.x==2 && frame->at.z==0 && frame->yaw==0);
+    auto screen=projectCameraRoot(frame->at,frame->view,frame->projection,frame->viewport);
+    CHECK(screen.valid && screen.x==304 && screen.y==240);
+    CHECK(frame->nearPlane==.01f && frame->farPlane==327.68f);
+    viewState.secondary=90;frame=cameraRoadFrame(viewState);
+    CHECK(frame && std::fabs(frame->at.y+4.7f)<.0001f && std::fabs(frame->at.z-5)<.0001f);
+    viewState.secondary=0;viewState.direction={1,0,0};frame=cameraRoadFrame(viewState);
+    CHECK(frame && frame->yaw==270);
+    CHECK(work.update(asset,{25,10,0},{25,10,0},0,16));
+    CHECK(work.current.active && work.current.road==0 && !work.transitioning);
+    CHECK(work.current.anchor.x==2.5f && work.current.anchor.y==1 && work.current.distance==10);
+    CHECK(work.current.milliseconds==16 && work.current.shiftRate==100);
+    CHECK(work.update(asset,{25,30,0},{25,30,0},0,33));
+    CHECK(work.transitioning && work.progress==0 && work.current.road==0);
+    CHECK(work.origin.road==0 && work.destination.road==1 && work.changeMask==1);
+    CHECK(std::fabs(work.rate-1.f/30)<.000001f && work.anchorBlend);
+    CHECK(work.update(asset,{25,30,0},{25,30,0},0,50));
+    CHECK(work.progress>0 && work.current.distance>10 && work.current.distance<20 && work.current.road==0);
+    CHECK(work.update(asset,{25,10,0},{25,10,0},0,66));
+    CHECK(work.transitioning && work.progress==0 && work.origin.distance>10 && work.origin.distance<20);
+    CHECK(work.origin.road==0 && work.destination.road==0); // Restart from displayed geometry, not old origin.
+    CHECK(work.update(asset,{25,10,0},{25,10,0},0,2000));
+    CHECK(!work.transitioning && work.current.distance==10 && work.current.milliseconds==2000);
+    float rate=77;auto a=work.current,b=a;b.anchor.x+=100;b.distance+=100;
+    CHECK(compareCameraRoad(asset,a,b,rate)==0 && rate==77); // Same-record early gate ignores geometry.
+    b.zone=false;CHECK(compareCameraRoad(asset,a,b,rate)==2 && rate==1.f/90);
+    b=a;b.road=1;CHECK(compareCameraRoad(asset,a,b,rate)==0); // Mask alone cannot trigger tiny cost.
+    b.distance=20;CHECK(compareCameraRoad(asset,a,b,rate)==1 && std::fabs(rate-1.f/30)<.000001f);
+    b.active=false;rate=77;CHECK(compareCameraRoad(asset,a,b,rate)==0 && rate==77);
+    CameraRoadState blended=a;blended.flags=123;blended.milliseconds=999;
+    b=a;b.anchor.x=4;b.direction={0,0,-1};b.distance=30;
+    blendCameraRoad(true,a,b,blended,.5f);
+    CHECK(blended.road==a.road && blended.flags==123 && blended.milliseconds==999);
+    CHECK(blended.distance>20 && blended.distance<20.001f); // Literal easing scale exceeds .5.
+    blendCameraRoad(false,a,b,blended,0);CHECK(blended.anchor.x==4);
+    CameraRoadWork moving;CHECK(moving.update(asset,{25,10,20},{25,10,20},0,16));
+    CHECK(moving.destination.flags==2 && moving.destination.anchor.z==1);
+    CHECK(moving.update(asset,{25,10,0},{25,10,0},1,33));
+    CHECK(moving.candidate.flags==0 && moving.normalWeight==.008f && moving.candidate.anchor.z==1);
+    CHECK(moving.candidate.segment==2 && moving.candidate.shift==1);
+    CHECK(moving.update(asset,{25,10,0},{25,-10,0},1,50));
+    CHECK(!moving.candidate.zone && moving.candidate.anchor.x==2.5f && moving.candidate.anchor.z==0);
+    const auto before=moving;CHECK(!moving.update(asset,{25,10,0},{25,10,0},1,0));
+    CHECK(moving.current.anchor.z==before.current.anchor.z && moving.normalWeight==before.normalWeight);
+}
 int main(int argc,char**) {
     if(argc>1) {
         CHECK(loadCameraRoadAssets("romfs"));
@@ -111,6 +168,12 @@ int main(int argc,char**) {
                 CHECK(solveStraightCameraPath(*asset,n,point,output)==CameraPathStatus::Found);
                 CHECK(output.flags==0 && std::fabs(output.anchor.x-point.x)<.0001f && std::fabs(output.anchor.z-point.z)<.0001f);
                 CHECK(output.untouchedWord==0xabcdef12);
+            }
+            CameraRoadWork originalWork;
+            for(uint32_t n=0;n<expected[room];++n) {
+                const auto point=*asset->pathVector(*asset->roadWord(n,0xa0)+2);
+                CHECK(originalWork.update(*asset,{point.x*10,(point.y+100)*10,point.z*10},
+                                          {point.x*10,(point.y+100)*10,point.z*10},1,(n+1)*17));
             }
             total+=expected[room];
             for(uint32_t z=0;z<asset->collections()[2].count;++z) {
@@ -137,10 +200,19 @@ int main(int argc,char**) {
         }
         CHECK(eligible==44);CHECK(!cameraRoadAsset(5));CHECK(!loadCameraRoadAssets("/missing-camera-directory"));
         CHECK(cameraRoadAsset(0)->collections()[1].count==11);
+        CHECK(loadCollision("romfs/map.walls") && loadGround("romfs/map.ground"));
+        Game game;game.restore(game.progress);game.tick({});game.tick({});
+        CHECK(game.fieldCameraAuthored && game.fieldCameraFrame.fov==25);
+        CHECK(game.cameraRoadWork.current.active && game.fieldCameraCandidateActive);
+        CHECK(game.fieldCameraCandidateShiftRate==game.cameraRoadWork.candidate.shiftRate);
+        CHECK(game.fieldCameraFrame.eye.z!=game.cameraZ+6.5f);
+        const auto clock=game.fieldCameraShift.previousMilliseconds;game.restore(game.progress);
+        CHECK(!game.cameraRoadWork.current.active && !game.fieldCameraCandidateActive && game.fieldCameraShift.previousMilliseconds==clock);
+        game.tick({});CHECK(game.fieldCameraAuthored);clearCollision();
         CHECK(triangles==494 && regularTriangles>400);
         std::cout<<"Original camera assets passed: "<<total<<" authored roads, "<<triangles<<" zone triangles in five rooms\n";return 0;
     }
-    curveCases();zoneCases();CameraRoadAsset asset;auto raw=fixture();CHECK(asset.decode(raw));CHECK(asset.bytes()==raw);
+    curveCases();zoneCases();stateCases();CameraRoadAsset asset;auto raw=fixture();CHECK(asset.decode(raw));CHECK(asset.bytes()==raw);
     CHECK(asset.roadName(0)=="C_fixture" && asset.roadFloat(0,0x58)==42.5f && asset.roadWord(0,0x80)==0x89abcdef);
     CHECK(asset.collections()[8].offset==0xffbf3a10 && asset.collections()[8].count==0);
     CHECK((*asset.lensMetadata())[0]==25);

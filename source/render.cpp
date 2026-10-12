@@ -105,7 +105,7 @@ bool Renderer::changeRoom(uint32_t room) {
     C3D_FrameSync();freeRoom(plaza);plaza=std::move(next);return true;
 }
 void Renderer::updateCutaways(Room& room,const Game& g) {
-    Point3 eye{g.cameraX,g.cameraHeight+FieldEyeY,g.cameraZ+FieldEyeZ};
+    Point3 eye{g.fieldCameraFrame.eye.x,g.fieldCameraFrame.eye.y,g.fieldCameraFrame.eye.z};
     const float actorY=g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight;
     const Point3 targets[]={
         {g.progress.position.x,actorY+.12f,g.progress.position.z},
@@ -223,8 +223,11 @@ void Renderer::world(const Game& g) {
     if(battle && g.phase==Phase::Windup)marioPose=g.selection==0?1:2;
     float cam=battle?0:g.cameraX;
     C3D_Mtx projection,view,transform;
-    Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(FieldFov),C3D_AspectRatioTop,.1f,80,false);
-    Mtx_LookAt(&view,FVec3_New(cam,battle?2.8f:FieldEyeY+g.cameraHeight,battle?5.5f:g.cameraZ+FieldEyeZ),FVec3_New(cam,battle?1.f:FieldAimY+g.cameraHeight,battle?-.4f:g.cameraZ+FieldAimZ),FVec3_New(0,1,0),false);
+    const auto& frame=g.fieldCameraFrame;
+    // The handheld viewport adapts source aspect; camera eye/at/lens and
+    // gameplay screen cache retain their original owners.
+    Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(battle?FieldFov:frame.fov),C3D_AspectRatioTop,battle?.1f:frame.nearPlane,battle?80:frame.farPlane,false);
+    Mtx_LookAt(&view,FVec3_New(battle?cam:frame.eye.x,battle?2.8f:frame.eye.y,battle?5.5f:frame.eye.z),FVec3_New(battle?cam:frame.at.x,battle?1.f:frame.at.y,battle?-.4f:frame.at.z),FVec3_New(0,1,0),false);
     Mtx_Multiply(&transform,&projection,&view);
     // Original room backdrop, drawn without depth writes before the room.
     const float x0=cam-30,x1=cam+30,y0=-12,y1=24,z=-25;

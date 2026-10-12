@@ -10,7 +10,7 @@ inline FieldCameraFrame adaptedFieldCameraFrame(float x,float y,float z) {
     const float by=FieldEyeY-FieldAimY,bz=FieldEyeZ-FieldAimZ;
     const float length=std::hypot(by,bz),uy=bz/length,uz=-by/length;
     const float ey=y+FieldEyeY,ez=z+FieldEyeZ;
-    FieldCameraFrame frame;
+    FieldCameraFrame frame;frame.eye={x,ey,ez};frame.at={x,y+FieldAimY,z+FieldAimZ};
     frame.view={{{1,0,0,-x},{0,uy,uz,-uy*ey-uz*ez},{0,by/length,bz/length,-(by*ey+bz*ez)/length}}};
     const float f=1/std::tan(FieldFov*3.14159265358979323846f/360.f);
     constexpr float near=.1f,far=80;

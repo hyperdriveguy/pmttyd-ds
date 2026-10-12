@@ -1,3 +1,4 @@
+#include "camera_road_view.hpp"
 #include "game.hpp"
 #include "wall_geometry.hpp"
 #include "field_camera.hpp"
@@ -735,7 +736,7 @@ void Game::rebaseFieldCamera() {
     marioCamera.retained={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
     fieldCamera.point={cameraX*100,cameraHeight*100,cameraZ*100};fieldCameraInitialized=true;
     if(cameraRoadAsset(progress.room))fieldCameraFlags|=4;
-    if(fieldCameraViewAdapter)fieldCameraFrame=adaptedFieldCameraFrame(cameraX,cameraHeight,cameraZ);
+    if(fieldCameraViewAdapter && !fieldCameraAuthored)fieldCameraFrame=adaptedFieldCameraFrame(cameraX,cameraHeight,cameraZ);
 }
 void Game::beginFieldCameraTick() {
     if(!fieldCameraInitialized)rebaseFieldCamera();
@@ -747,7 +748,18 @@ void Game::beginFieldCameraTick() {
         {progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100},fieldCameraFlags,
         fieldCameraCandidateActive?fieldCameraCandidateShiftRate:0,now);
     cameraX=fieldCamera.point.x*.01f;cameraHeight=fieldCamera.point.y*.01f;cameraZ=fieldCamera.point.z*.01f;
-    if(fieldCameraViewAdapter)fieldCameraFrame=adaptedFieldCameraFrame(cameraX,cameraHeight,cameraZ);
+    if(fieldCameraViewAdapter) {
+        if(const auto* asset=cameraRoadAsset(progress.room)) {
+            auto next=cameraRoadWork;
+            if(next.update(*asset,fieldCamera.point,fieldCameraCollisionTarget,fieldCameraShift.current,now)) {
+                if(const auto frame=cameraRoadFrame(next.current)) {
+                    cameraRoadWork=next;fieldCameraFrame=*frame;fieldCameraAuthored=true;
+                    fieldCameraCandidateActive=next.candidate.active;
+                    fieldCameraCandidateShiftRate=next.candidate.shiftRate;
+                }
+            }
+        } else {fieldCameraFrame=adaptedFieldCameraFrame(cameraX,cameraHeight,cameraZ);fieldCameraAuthored=false;}
+    }
     fieldCameraShift.post(now); // camShiftPostMain follows road/view selection, even when shift was skipped.
     fieldMovement.headingOffsetDegrees=cameraHeadingSnapshot(fieldCameraFrame.yaw);
 }

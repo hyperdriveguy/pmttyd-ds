@@ -23,6 +23,7 @@
 #include "field_road.hpp"
 #include "field_camera_state.hpp"
 #include "field_camera_shift.hpp"
+#include "camera_road_state.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -128,7 +129,9 @@ public:
     bool fieldCameraCandidateActive=false;
     float fieldCameraCandidateShiftRate=0; // Previous candidate +5c, not current selected road.
     uint32_t fieldCameraFlags=0,fieldCameraDisplayFlags=0;
-    bool fieldCameraViewAdapter=true; // Authored camera-road eye/at/FOV solver remains unbound.
+    bool fieldCameraViewAdapter=true; // Automatic view; false lets tests/events provide a frame.
+    CameraRoadWork cameraRoadWork;
+    bool fieldCameraAuthored=false;
     bool fieldAirDampingBypass=false,fieldKeysOff=false;
     GroundContact wallContact;
     GroundContact roadPassContact; // Source +1f0, separate from blocking/front metadata.

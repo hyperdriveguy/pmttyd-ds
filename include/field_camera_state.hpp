@@ -63,6 +63,8 @@ struct FieldCameraFrame {
     CameraProjection projection{};
     CameraViewport viewport;
     float yaw=0;
+    CameraPoint eye,at; // Native units for the rendering backend.
+    float fov=42,nearPlane=.1f,farPlane=80;
 };
 inline CameraScreenCache projectCameraRoot(CameraPoint root,const CameraView& view,
                                           const CameraProjection& p,const CameraViewport& viewport={}) {
