@@ -115,7 +115,9 @@ Calls are in this exact order. Two glyph requests occur. Color index0 resets
 through the font service; it is not restoration of a saved prior color. There
 is no local multiplication of these literal color words by window alpha and
 no explicit prior edge/rainbow state snapshot. Final appearance/alpha/index
-mapping remain font/GX obligations. All paths rejoin the exposed-record loop
+mapping is now covered in [font state](FONT_DRAW_STATE.md), including index0's
+palette and effective alpha. Inner glyph/GX appearance remains open.
+All paths rejoin the exposed-record loop
 without changing its key-result candidate.
 
 ## Local coverage and remaining evidence (B/P)

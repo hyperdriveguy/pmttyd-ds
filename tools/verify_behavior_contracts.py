@@ -13,6 +13,24 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'font_draw_state': {
+        0x80077748: '90ad1a90', 0x80077750: '900d1a98',
+        0x8007775c: 'd02d1a90', 0x8007776c: '806d1a8c',
+        0x800777a4: '7c0501d6', 0x800777cc: '482412ed',
+        0x80077804: '90ed1a8c', 0x80077820: '98030003',
+        0x80077854: '386d90f0', 0x80077878: '90ed1a8c',
+        0x800778c4: '4823d7c1', 0x800778cc: '48241701',
+        0x800778f0: '4823d795', 0x80077918: '48241519',
+        0x80077984: '806d1b04', 0x8007798c: '38630640',
+        0x800779b4: '48242a1d', 0x800779d0: '4823d435',
+        0x800779f4: '482415d9', 0x80077a18: '482415b5',
+        0x80077a2c: '48241405', 0x80077a94: '48240f11',
+        0x80077aac: '900d1a84', 0x80077ab8: '900d1a84',
+        0x80077acc: '5467063e', 0x80077afc: '986d1a88',
+        0x80077b10: '900d1a84', 0x80077b14: '914d1a8c',
+        0x80077b38: '4bffd0c5', 0x80077b70: '392000ff',
+        0x80077ba8: '992d1a88', 0x80077bc8: '4bffd035',
+    },
     'message_glyph_effects': {
         0x800839f8: '54a007ff', 0x80083a08: '547afc7e',
         0x80083a18: '4bf82389', 0x80083a5c: '4bf82345',
@@ -1024,6 +1042,13 @@ def verify(iso_path):
         if read(0x802c3348, 8).hex() != '4330000000000000':
             raise ValueError('Message dynamic half-width conversion bias mismatch')
         print('Eight glyph literals, all five scale vectors and unsigned conversion bias verified')
+        if read(0x80416010, 12).hex() != '1e1414ffdcdcdcffb47814ff':
+            raise ValueError('Original font color palette mismatch')
+        if read(0x802c2b6c, 12) != struct.pack('>3f', 1.0, 1.0, 1.0):
+            raise ValueError('Font draw-start scale template mismatch')
+        if read(0x80420438, 4).hex() != '3c800000' or read(0x804203e4, 4).hex() != '3f800000':
+            raise ValueError('Font noise texture-matrix constants mismatch')
+        print('Three font palette colors, default scale and noise matrix constants verified')
 
 
 if __name__ == '__main__':

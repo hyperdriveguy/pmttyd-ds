@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 246 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 864 instruction anchors plus those
+now fingerprints 260 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 896 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -159,6 +159,10 @@ Glyph effects extend the existing msgDisp fingerprint's recovered local coverage
 with priority/RNG/clock/matrix/font requests and draw-time record relaxation.
 Effect literals and all five scale-vector templates are independently verified;
 numeric/trig/font helper implementations and executed images remain open.
+Font state adds fourteen fingerprints, original three-color palette/default-scale
+and noise texture-matrix constants. Original window palette object50 is a request
+binding; no descriptor/image conversion or replacement noise asset is generated.
+Byte-alpha arithmetic checks are authored derivations, not original execution.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,

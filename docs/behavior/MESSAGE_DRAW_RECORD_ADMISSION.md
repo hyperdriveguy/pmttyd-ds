@@ -94,7 +94,9 @@ f1=R.float[14],f2=R.float[10]). Reissue FontDrawStart_alpha(original alphaWord),
 then FontDrawColor(savedWordPointer), and continue. No local visibility/history/
 window-opacity gate, fade multiplication, key-result mutation or pose free.
 Font/animation helpers may mutate shared state; these calls restore requested
-font alpha/color, not a proven full GX/font-state snapshot. The same pose can
+font alpha/color, not a proven full GX/font-state snapshot. Direct font-start
+scale/edge/color resets and mutable color arguments are now established in
+[font state](FONT_DRAW_STATE.md). The same pose can
 be advanced on repeated draws because animPoseMain is inside the draw path.
 
 ## Icon clipping, request and color restoration (B)

@@ -3489,3 +3489,31 @@ conversion and trig/matrix helpers; actual outer reset/sort/camera cadence and
 message/story callers. Continue original attribution/order/branches/conditions
 and all other uncovered systems before complete-game requirements. Full objective
 active/incomplete; original execution/image/seed comparisons still needed.
+
+## 2026-10-12 — Shared font draw state
+
+Previous goal turn made progress through afcc859. Began clean and added
+FONT_DRAW_STATE.md for fourteen state helpers: global scale/raw-color/alpha/edge,
+mutable color-pointer alpha composition, palette indexing, local Color_ versus
+caller mutation, start resets and delegated JUT setup, exact noise/rainbow GX
+request order and differing off-reset scope. Recorded original texture object50
+and1/64 matrix request; no substitute noise asset. Updated message-effect/admission
+links. Glyph/JUT/GX raster bodies and asset descriptor binding remain open.
+
+Validation:896 instruction anchors and prior checks passed read-only US ISO,
+including three palette words, default scale and noise-matrix constants.
+Fresh260-function evidence reports matched byte-for-byte. An authored signed-
+reciprocal interpretation matched floor(A*G/255) for all65536 byte pairs; this
+is a derivation check, not original instruction execution. All local behavior
+links resolve; git diff --check passed. make test passed core plus36 Python tests;
+make all exited0, no rebuild. Only research/provenance/evidence tooling changed.
+No original execution/emulator run or profile/save modification; original
+inspection/report artifacts remain ignored. Static checks do not prove delegated
+font/GX behavior, texture50 image binding, current-state writers/cadence, executed
+images or original/native equivalence.
+
+Next: JUTFont_DrawStart and FontDrawCode/Mtx primitives, glyph/width/texture data
+and descriptor50, signed64 clock/trig/matrix services and actual outer draw/story
+callers. Continue original attribution/order/branches/conditions and all other
+uncovered systems before complete-game requirements. Full objective active/
+incomplete; original execution/image/seed comparisons still needed.
