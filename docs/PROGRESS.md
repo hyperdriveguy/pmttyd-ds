@@ -1,5 +1,33 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native two-phase action-record turn judgment
+
+Implemented the complete local turn-rule selector60..65 with exact ordered
+unsigned counter-byte sums and separate global battle/descriptor recapture in
+_check_turn_count_0_turn. The helper performs both original threshold phases
+with fresh counter/threshold/status reads,independent255 admission,equality and
+numeric mask02 preservation,then returns the final raw status byte. Ignored
+rules do not read counters or mutate status;wrapper has no invented bool result.
+
+Native turn-first-process now defaults to recovered packed rule judgment as it
+already does for move reset and fog deletion. Explicit backend overrides remain
+for separately owned providers. Source global owner can differ from the explicit
+turn argument;no equality guard or cached combined record snapshot is added.
+
+Validation:make test passes69 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-turn-rule-test-final.log and /tmp/pm-turn-rule-build-final.log.
+Fixtures cover ignored selectors,six exact load orders and each selected field,
+zero/nonzero sums,equality/255 thresholds,two-phase2→6/1→1 writes,mask02 versus04,
+status high bits,phase rereads and wrapper/helper owner changes. Native turn
+integration exercises default rule/move providers and verifies judgment uses
+prior count5 before AddCount publishes6. Records/arena/RNG remain authored
+provider inputs;source descriptor/counter writers and outer turn/Game frequency
+are not inferred. No original runtime/emulator/hardware fidelity claim.
+
+Next:original outer turn state machine,packed unit/record ownership and remaining
+Jump/AC/motion/presentation callbacks. Movement-wrapper documentation request
+remains pending;full-game goal incomplete. EVT-01 breadcrumb updated.
+
 ## 2026-10-12 — ID2 complete smart allocation and failure ownership
 
 Added two detailed smartAlloc contracts and verifier. First-flag auto3 and

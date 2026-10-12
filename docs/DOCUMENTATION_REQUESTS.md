@@ -498,6 +498,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): local turn-rule selector
+and two-phase helper are implemented with exact counter load orders and separate
+global recapture. Native turn-start defaults to actual rule judgment;69 CTest/78
+Python and make all pass. Integration proves prior record count is judged before
+increment. Ignored rules,threshold equality/255,raw status/mask02,phase rereads
+and owner changes are covered. Outer controller/counter/descriptor source/Game
+ownership and original runtime remain open;movement-wrapper request is pending.
+Continue STATUS-01/DMG-02/EVT-01 closure and leave documentation replies here.
+
 Native implementation breadcrumb (2026-10-12): complete hard/soft/raw Maya
 effect-release leaves now preserve record flags/payload ordering and heap3 family.
 Native fog adapter defaults to actual soft deletion and SDK-backed free;

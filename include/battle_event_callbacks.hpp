@@ -8,6 +8,7 @@
 #include "battle_turn_first.hpp"
 #include "battle_packed_move.hpp"
 #include "effect_deletion.hpp"
+#include "battle_turn_rule.hpp"
 
 namespace ttyd {
 struct BattleDataChildBackend {
@@ -19,12 +20,12 @@ struct BattleDataChildBackend {
 struct BattleTurnFirstBackend {
     EventNativeRuntime* runtime=nullptr;
     void* user=nullptr;
-    void (*judgeTurnRule)(void*)=nullptr;
+    void (*judgeTurnRule)(void*)=nullptr; // Null selects recovered packed rule judgment.
     void (*resetMove)(void*,uint32_t unit)=nullptr; // Null selects recovered packed-byte implementation.
     void (*softDelete)(void*,uint32_t effect)=nullptr; // Null selects recovered record/heap3 implementation.
 };
 // Backend and runtime must outlive returned services. Closed local turn body;
-// rule/move/effect providers retain their separate original ownership.
+// Defaults implement recovered rule/move/effect services on shared packed bytes.
 EffectDeletionServices nativeEffectDeletionServices(EventNativeRuntime&);
 BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend&);
 BattleActorServices nativeBattleActorServices(EventNativeRuntime&);

@@ -11,7 +11,7 @@ EffectDeletionServices nativeEffectDeletionServices(EventNativeRuntime& runtime)
 BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend& backend) {
     assert(backend.runtime);BattleTurnFirstServices s;s.user=&backend;s.memory=backend.runtime->memoryBinding.services();
     s.byte=[](void* p,uint32_t a) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);auto actors=nativeBattleActorServices(*b.runtime);return actors.byte(actors.user,a);};
-    s.judgeTurnRule=[](void* p) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);assert(b.judgeTurnRule);b.judgeTurnRule(b.user);};
+    s.judgeTurnRule=[](void* p) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);if(b.judgeTurnRule)b.judgeTurnRule(b.user);else judgeBattleTurnRule(nativeBattleActorServices(*b.runtime));};
     s.fortune=[](void* p) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);return battleMajinaiCheck(nativeBattleMajinaiQueryServices(*b.runtime));};
     s.irand=[](void* p,int32_t bound) {auto& r=*static_cast<BattleTurnFirstBackend*>(p)->runtime;assert(r.platform.irand);return r.platform.irand(r.platform.user,bound);};
     s.resetMove=[](void* p,uint32_t unit) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);if(b.resetMove)b.resetMove(b.user,unit);else resetPackedBattleMoveStatus(unit,nativeBattleActorServices(*b.runtime));};
