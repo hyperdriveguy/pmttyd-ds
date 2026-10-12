@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'message_window_states': {
+        0x80080c98: '9004f250', 0x80080cdc: '9003f254',
+        0x80080dc8: '408105f8', 0x80080dd8: 'b01f0000',
+        0x80080e68: '4bffec59', 0x80080f68: 'b01f0002',
+        0x80080fec: 'b01d000a', 0x80081030: '9004f03c',
+        0x80081048: '9004f03c', 0x8008109c: '60000040',
+        0x80081134: 'ec03007c', 0x80081170: 'b01f0000',
+        0x80081204: 'ec03007a', 0x80081264: '901d0004',
+        0x800812a8: 'b01f0000', 0x80081340: '9005f03c',
+        0x80080988: 'b01f0000', 0x800809d0: 'b01f0002',
+        0x80080a2c: '38c000c8', 0x80080a60: '41820164',
+        0x80080aa4: '901f0020', 0x80080b28: 'b01f0000',
+        0x80080b3c: '4bffef85', 0x80080bc0: 'b0bf0006',
+    },
     'message_selection': {
         0x8007ff60: '48003fd5', 0x8007ffa8: '2c0000ff',
         0x8008002c: '4182000c', 0x800800a8: '4080000c',
@@ -592,6 +606,18 @@ def verify(iso_path):
         if read(0x802cc71c, 7) != b'DIRECT\0':
             raise ValueError('Direct selection identity mismatch')
         print('Selection display-order base and direct identity verified')
+        window_states = (0x800813c0, 0x80080ef4, 0x800813c0, 0x80080fac,
+                         0x800813c0, 0x80080d04, 0x80080d50, 0x80080e08,
+                         0x80080e58, 0x800810a8, 0x80081178, 0x80081278)
+        if struct.unpack('>12I', read(0x8030f5d0, 48)) != window_states:
+            raise ValueError('General message window state dispatch mismatch')
+        sound_pairs = (22,23,26,27,32,33,28,29,32,33,28,29,
+                       24,25,34,35,36,37,38,39,30,31,-1,-1)
+        if struct.unpack('>24i', read(0x8030f540, 96)) != sound_pairs:
+            raise ValueError('General message window sound table mismatch')
+        if read(0x8042065c, 4).hex() != '3f19999a':
+            raise ValueError('Message history scroll coefficient mismatch')
+        print('All 12 general window state targets, 24 sound bindings and history coefficient verified')
 
 
 if __name__ == '__main__':

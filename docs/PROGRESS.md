@@ -2865,6 +2865,31 @@ NPC/sound dependencies. Continue full story attribution/order/conditions and
 remaining battle/camera/input/field/content/save systems before complete-game
 requirements. Full objective active/incomplete; executed comparisons needed.
 
+## 2026-10-12 — General/clear message states and history controls
+
+Previous turn progressed withba1d207 selection. Added MESSAGE_WINDOW_STATES.md:
+all12 general dispatch targets, talk countdown before dispatch, type-indexed
+opening/closing sounds, integer elapsed fade/narrowing, retained stop-state
+poll completion, wait-state resume/acceleration gating, history count-2 entry,
+signed target scroll and ordered navigation. Recovered separate clear-state
+behavior, playback during opening, no local wait input and forced-versus-terminal
+closing timestamp differences. Renderer and event/callback producers remain open.
+
+Validation:496 instruction anchors and prior checks passed read-only US ISO,
+plus all12 general dispatch targets,24 sound table values and history binary32
+coefficient. Evidence188 fingerprints reproduced byte-for-byte. All behavior
+links resolve; git diff --check passed. make test passed core plus36 Python tests;
+make all exited0, no rebuild. Workspace started clean; only research/provenance/
+evidence tooling changed. No original execution/emulator run or profile/save
+changes. Original extracts/reports remain ignored. Static checks do not prove
+measured fades/history/input cadence, presentation or original/native equivalence.
+
+Next: message/selection/key-wait rendering and manager scheduling; event print
+identity/callback/substitution producers; pose/font/icon/audio services and clock/
+input numeric dependencies. Continue full story attribution/order/conditions and
+all remaining systems before complete-game requirements. Objective remains
+active/incomplete; executed-original comparisons needed.
+
 ## 2026-10-12 — Message window creation and lifecycle controls
 
 Previous turn progressed with2f17da5 playback. Added MESSAGE_WINDOW_LIFECYCLE.md:
