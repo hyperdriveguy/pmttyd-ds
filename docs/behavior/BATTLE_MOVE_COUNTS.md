@@ -126,3 +126,7 @@ Remaining: count consumption and+20/+23/+24 producers/consumers, outer turn
 cadence, kind priority bindings, all indirect callers, first-process effect
 services and actor/menu scheduling. Local move predicates do not establish
 complete turn/action equivalence or complete-game requirements.
+
+Phase membership/sorts and selected action-count consumption regions are now
+specified in [phase tables](BATTLE_PHASE_TABLES.md). Their full controller
+entry/state schedule remains open.

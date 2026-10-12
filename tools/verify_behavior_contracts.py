@@ -13,6 +13,15 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'phase_tables_and_consumption': {
+        0x8011b13c: '40820014', 0x8011b168: '801d0104',
+        0x8011b184: '7cbf212e', 0x8011b010: '40810014',
+        0x8011b08c: '40800014', 0x8011ae60: '937c0000',
+        0x8011aef8: '40810024', 0x8011bf94: '41820014',
+        0x8011bfa4: '981f0020', 0x8011b920: '38600001',
+        0x8011b964: '981f0022', 0x8011b9a0: '981f0024',
+        0x8011bbd8: '40810014', 0x8011c2e8: '4182000c',
+    },
     'move_counts_and_eligibility': {
         0x80126710: '981f0022', 0x80126730: '2c000002',
         0x8012675c: '5463083c', 0x80126790: '981f0020',
@@ -338,6 +347,12 @@ def verify(iso_path):
             if read(address, 4) != struct.pack('>f', value):
                 raise ValueError(f'Reservation refund constant mismatch {address:#x}')
         print('Two reservation refund constants verified')
+        if hashlib.sha256(read(0x80363c8c, 60)).hexdigest() != '9679486ada681e3679c69be1a2eb0cbed6b9478c33a88284755ad90ed7dd40a4':
+            raise ValueError('Move sequence dispatch table mismatch')
+        for address, value in {0x80422568: 0.0, 0x80422580: 1000.0}.items():
+            if read(address, 4) != struct.pack('>f', value):
+                raise ValueError(f'Phase event sort constant mismatch {address:#x}')
+        print('Move dispatch table and two phase event sort constants verified')
         status_tables = {
             0x80364204: [0x7970, 0x792c, 0x7970, 0x7970, 0x7adc,
                          0x7970, 0x7970, 0x7970, 0x7970, 0x7970,

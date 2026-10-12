@@ -2584,3 +2584,29 @@ ordering and outer phase/action scheduler; queue/configuration/item lifecycle
 callers, conclusion/rewards and actual death/revival scripts; motion/float/pose
 services. Continue all systems before complete-game requirements. Objective
 active/incomplete; original/native execution/rendering comparisons still needed.
+
+## 2026-10-12 — Phase tables, actor ordering and count consumption regions
+
+Previous turn progressed with14dddc1 move reset. Added BATTLE_PHASE_TABLES.md:
+complete local phase-first table construction, stable absolute-home-X then
+priority sort, separate slot/side-key phase-event table, phase wrapper and
+phase-end predicate. Documented selected btlseqMove actor-selection and
+btlseqAct count-consumption regions, including state normalization, one-use
+count bypass, forced exhaustion and+24 reset/preserve flag. The full move/act
+controllers remain explicitly outside detailed coverage despite fingerprinting.
+This adds evidence toward Slow cadence without assuming all state producers.
+
+Validation:304 instruction anchors plus15-entry move table hash, two phase-sort
+constants and all prior checks passed read-only US ISO. Evidence134 function
+fingerprints matched a repeat byte-identically. Behavior links resolve; git diff
+--check passed. make test passed core plus36 Python tests; make all exited0,
+no rebuild. Workspace started clean; only research/provenance/tools edited.
+No original execution/emulator run or profile/save modification. Original
+extracts/disassembly/reports remain ignored; ASSETS.md updated. Static identity
+and local checks do not prove full scheduler or native dynamic equivalence.
+
+Next: complete btlseqMove/btlseqAct state maps, command/attack and phase-event
+services; state-byte/flag producers and outer turn progression, conclusion/
+rewards and actual death/revival scripts; motion/float/pose services. Continue
+all systems before complete-game requirements. Objective remains active and
+incomplete; original/native trace/rendering comparisons still required.
