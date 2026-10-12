@@ -1,5 +1,29 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Portable approach query and MovePosition
+
+Implemented BATTLE_MOVE_FRAME_AND_POSITION.md in battle_move_position.hpp/cpp.
+GetMoveFrame resolves discardedY and float speed separately,uses local signed-
+zero fallbacks without changing unit speed,preserves fused residual/positive
+increment/word wrap/exact-zero minimum,and skips only raw sentinel destinations.
+MovePosition resolves integer XYZ/count/sound arguments on every invocation,
+initializes once,uses its own automatic truncated count/speed residual adjustment,
+loads the selected sound record,integrates on the first call and snaps all visible
+axes at signed n<=0. BaselineY stays independent. Shared horizontal helper
+performs both sin/cos requests before ordered separate-product X/Z writes,
+including aliased destinations. Sound control/end remain explicit service hooks.
+
+Validation:make test passed thirteen CTest suites plus58 Python tests;make all
+built ttyd-2ds.elf and ttyd-2ds.3dsx. Derived tests cover query21 versus movement20
+atD101/S5,zero/negative/overflow/NaN count paths,speed fallback versus movement's
+unrepaired zero speed,sentinel output versus computed value,resolver order,
+first/resumed integration,full terminal snap with retained baseline,negative n,
+sound-request order,raw sentinel coordinates and trig-call/alias write order.
+No emulator run for still-unbound event services;no original numerical/FPSCR/
+trajectory equivalence claim. Sentinel correction commit:24baff7. Next:implement
+new movement sound core,then bind takeoff/approach/original Jump graph and event
+scheduler. Original numeric/audio/unit/pouch/story ownership remains incomplete.
+
 ## 2026-10-12 — Mario movement-baseline sentinel correction
 
 Review of the delivered approach contract exposed a MarioJumpPosition bug:
