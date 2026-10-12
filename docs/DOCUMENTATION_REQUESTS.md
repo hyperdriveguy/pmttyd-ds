@@ -457,6 +457,14 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Data-opcode breadcrumb (2026-10-12): `event_data_opcodes.cpp` now handles50..73
+with actual operand/dispatcher integration. Tests retain RHS/query/convert order,
+raw destinations/data, live cursor mutation and sequential IEEE versus indexed
+signed-word floats. Original divw/fctiwz domains remain required provider services.
+Next:delivered loops/predicates/switch and remaining memory families,then native
+context/address/source owners and original Jump. Existing runtime traces remain
+necessary;this helper does not claim original script execution or full VM closure.
+
 Operand-service breadcrumb (2026-10-12): `event_operands.cpp` ports complete
 integer/float namespaces and saved leaves. Tests cover asymmetric routing,
 encoded boundaries, word/byte switches, signed flag addressing and old/GP/query

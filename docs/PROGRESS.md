@@ -1,5 +1,27 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Assignment, arithmetic and original data cursor handlers
+
+Implemented `event_data_opcodes.cpp` for original50..73 from the assignment and
+multiword/float reader documentation. Raw destinations, RHS-before-LHS queries,
+wrapped integer arithmetic, MOD's separate+0.5 conversions, single float results
+and setter quantization remain distinct. Data lanes advance before source reads,
+reload live cursors between outputs and retain the captured argument base.
+Indexed73 converts a signed word to a number; sequential69..72 load IEEE bits.
+Division and float-to-word conversion require explicit original numeric services.
+
+Validation: `make test` passed34/34 CTest suites and63 Python tests; `make all`
+passed. The ARM data-opcode object and3dsx are newer than the added source. Logs:
+/tmp/pm-event-data-test.log and /tmp/pm-event-data-build.log. New fixtures cover
+raw/resolved assignment, overflow, signed division, MOD conversion side effects,
+float rounding/quantization, cursor/output mutation, all reader lane counts,
+negative indexed offsets and a complete dispatcher/operand/wait command stream.
+
+Native script/address/cursor sources and original numeric domains remain unbound;
+this is not an executed original Jump or story graph. Next:delivered GOTO/loop,
+IF/switch and remaining memory opcode bodies, then native runtime/context and
+original Jump callback/stream owners. Existing EVT-01 requests remain open.
+
 ## 2026-10-12 — Extracted and converted loopable original audio
 
 Completed the requested local audio extraction/conversion from read-only
