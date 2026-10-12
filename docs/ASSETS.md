@@ -881,3 +881,13 @@ attribute query,not final terrain/movement engines. Reports and corrected Gekko
 ELF/listings remain ignored under artifacts/reference/behavior. No asset
 conversion,original execution,ISO/profile/save mutation,original binary/dialogue
 distribution or rewritten story.
+
+Partner walk executor research by ID1 (2026-10-12):verify_field_partner_executor.py
+with field_partner_executor_evidence.json pins two complete US local bodies,66
+instructions,nine numeric constants,five data-span hashes and two actual lecture
+imports. Eight substate dispatch words are explicit address metadata. Map keys
+aji_02/aji_05/aji_12 and pose keyPCH_A2_1 identify original resource spans;
+no story payload is rewritten or copied. Corrected Gekko ELF/listings and
+field-partner-executor-evidence.json remain ignored under artifacts/reference/
+behavior. No asset conversion,original execution,ISO/profile/save mutation or
+original binary/dialogue distribution occurred.

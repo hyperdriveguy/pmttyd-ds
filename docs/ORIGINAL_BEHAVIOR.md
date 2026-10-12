@@ -441,3 +441,11 @@ complete local34..49/eleven CASE helpers,actual opcode table,signed state and
 stack writes,OR/AND latches,raw any-bit masks,inclusive ranges and lexical
 header continuations. Original script/domain composition and runtime traces
 remain incomplete;remaining VM opcodes are separate EVT-01 requests.
+
+
+[Partner walkMain dispatch](behavior/FIELD_PARTNER_WALK_DISPATCH.md) and
+[stay motion](behavior/FIELD_PARTNER_STAY_MOTION.md) now specify motion/substate
+selection,threshold/map and distance branches,mode0 admission,ordered collision
+X/Z stores and kind7 pose requests. The mode0 guard does not skip all correction
+or terminal work. Called terrain/motion/geometry/ability bodies,domain/state
+writers and original trajectories remain open.

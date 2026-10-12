@@ -80,8 +80,10 @@ Their names do not mean they return an integer record ID.
 partyWalkMain always ends by requesting **walkMain(P)** at0x800c8568,
 including when an append guard rejects. It does not itself integrate P's
 position or call the full terrain/pose engines beyond those requests.
-Those larger movement semantics remain open;an80-record history alone is
-not a complete equivalent follower implementation.
+The [walkMain dispatcher](FIELD_PARTNER_WALK_DISPATCH.md) and
+[stay local graph](FIELD_PARTNER_STAY_MOTION.md) are now specified. Other
+selected motion and called terrain/geometry services remain open;an80-record
+history alone is not a complete equivalent follower implementation.
 
 ## Verification and remaining work
 

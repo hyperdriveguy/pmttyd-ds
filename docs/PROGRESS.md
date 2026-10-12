@@ -7112,3 +7112,34 @@ Next:remaining IF/predicate/data-read/bitwise/other opcode bodies and exact
 numeric/pointer/source/capacity domains;original script composition and group/
 nesting traces,then runtime integration acceptance. Complete-game behavior and
 requirements remain incomplete and must not be presented as finished.
+
+
+## 2026-10-12 — ID1 partner walkMain dispatch and stay local motion
+
+Added [walkMain dispatcher](behavior/FIELD_PARTNER_WALK_DISPATCH.md) and
+[stay motion](behavior/FIELD_PARTNER_STAY_MOTION.md). Complete local dispatcher
+separates motion/substate/driver-mode bytes and selects ground/fly/homing/
+jump/fall/behind/damage services;stay supplies actual threshold/map/distance
+branches,mode0 admission,ordered wall/surrounding X/Z stores and kind7 pose
+cycle. Mode0 does not skip all correction;special owner-state return occurs
+before its distance guard. Out-of-classification floating threshold paths retain
+the original incoming-register dependency;no fallback constant was invented.
+Called geometry/direction/terrain/pose and other motion bodies remain open.
+
+Validation:verify_field_partner_executor.py passed two whole DOL hashes,66
+instructions,nine constants,five data spans/eight explicit substate targets and
+two lecture imports. Repeated metadata byte-identical;Python compilation and
+prior following verifier passed. General verifier passed1980 instruction
+anchors;all991 behavior links resolved. Gekko check passed520 files/72569
+instructions/420 paired-single operations with zero changes or unknowns.
+make test passed30 CTest and58 Python tests;make all succeeded with no rebuild.
+Original ISO read-only;no original execution/emulator observation,asset
+conversion,profile/save mutation or original binary/dialogue distribution.
+Only ID1 scoped executor/stay lock released;concurrent native and ID2 edits
+preserved outside this scoped commit.
+
+Next:partyGetMoveDirSpd and target/footmark helpers;front-wall/surrounding/
+floor/fly correction and homing/fall/jump/behind bodies;state/flag/index/owner
+writers and original trajectories/stop/run traces;complete field/battle teardown.
+Full documentation/remake remain incomplete;complete-game requirements remain
+deferred until sufficient system coverage.
