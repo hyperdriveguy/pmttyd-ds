@@ -1,0 +1,871 @@
+{
+  "schema": 1,
+  "scope": "Static US Rogueport road records, case contact and event request bindings; no execution claim",
+  "dol_spans": [
+    {
+      "name": "hitObjGetPos",
+      "address": 2147566748,
+      "size": 336,
+      "sha256": "0b02378d97e66736eb780b9f4f291575ea16a34fe27cf6506f571dbfe5bb4f1d"
+    },
+    {
+      "name": "hitObjAttrOn",
+      "address": 2147579920,
+      "size": 212,
+      "sha256": "43a2c3ee2e593027fb3c9f12b009a8383e5621dc94c4756a7208bef01a4cdc6c"
+    },
+    {
+      "name": "marioCaseEventValidChk",
+      "address": 2147863128,
+      "size": 64,
+      "sha256": "9b588c1b9053a34a67cddb617ae4e2f3d6ffd83993924a419495cba93b8d243b"
+    },
+    {
+      "name": "caseMain",
+      "address": 2147935724,
+      "size": 1568,
+      "sha256": "682b063da30f3d801958c3a4865d0be444b1d036ca0751e5512d0b1194912e80"
+    },
+    {
+      "name": "caseEntry",
+      "address": 2147937320,
+      "size": 256,
+      "sha256": "5daf5e5e9ccf59c9c31a5559aab17b61d0f5a99942afd7b340cddc5303ec392c"
+    },
+    {
+      "name": "evt_run_case_evt_bero",
+      "address": 2147942452,
+      "size": 220,
+      "sha256": "42ab43e2717243deab1be85db3bbd38fe7105a7829b2da6d74a33290c44d52c4"
+    },
+    {
+      "name": "evt_hitobj_attr_onoff",
+      "address": 2147959588,
+      "size": 168,
+      "sha256": "19d389e54da31d5ab2ba13ec526ef81431a0b7377b42844785de59896763e6b8"
+    },
+    {
+      "name": "evt_bero_1stcheck",
+      "address": 2147978268,
+      "size": 116,
+      "sha256": "b13616cd476924f3ad83f662ff409453b57c466133b6c35237aa976eb8cfda69"
+    },
+    {
+      "name": "bero_get_position_normal",
+      "address": 2147982196,
+      "size": 784,
+      "sha256": "6468a15285ba60d9d738a6e69870c6a6442f7003619fb05107f1a5ff9dd841ef"
+    },
+    {
+      "name": "evt_bero_get_info_num",
+      "address": 2147982980,
+      "size": 516,
+      "sha256": "e857e45b75ef3344a2d8cd8a19eec58ffcb68aa7b7766213edadff1aec4f129b"
+    },
+    {
+      "name": "evt_bero_get_into_info",
+      "address": 2147983892,
+      "size": 760,
+      "sha256": "2fa9a6b29c0319722477ce685a070c3fb2d2154df6d0fdbfe2ee5ca18505d651"
+    },
+    {
+      "name": "evt_bero_get_info",
+      "address": 2147984652,
+      "size": 256,
+      "sha256": "bcdf80ce9404618a80e5e550dbc53dff42c732a89f27d791e729d4819db5936e"
+    },
+    {
+      "name": "evt_bero_get_info_length",
+      "address": 2147985260,
+      "size": 244,
+      "sha256": "f994aab2cde19a139ac56777f55c147678862d05eb2da7b90c14e20ee8dcbe56"
+    },
+    {
+      "name": "marioCheckWall",
+      "address": 2148054928,
+      "size": 684,
+      "sha256": "381f8e9a74830a8b439e1cff534438b6e5307c674d30455ab2c16c6a18bb1d30"
+    },
+    {
+      "name": "evt_mario_mov_pos2",
+      "address": 2148425552,
+      "size": 384,
+      "sha256": "46a943846e957cde37abe848ca4c7ee371ba4a9049ca151a5e5d720db3ef88d2"
+    },
+    {
+      "name": "bero_case_init_check",
+      "address": 2150684808,
+      "size": 396,
+      "sha256": "188a756883c10c44790c9075293d123d4c1e3b552710da1fbb6c9ea336cedc35"
+    },
+    {
+      "name": "bero_case_exec_road",
+      "address": 2150685384,
+      "size": 300,
+      "sha256": "24984715438e0612229901c48293c0cbfc951d818896edd0e2f7123c3b2bfbf7"
+    },
+    {
+      "name": "bero_case_entry",
+      "address": 2150688264,
+      "size": 400,
+      "sha256": "ae7a9047e05ef618ad6e43a8702b4343d272ad16328466caa34575d51a6f786d"
+    },
+    {
+      "name": "bero_case_entry_sub",
+      "address": 2150688664,
+      "size": 284,
+      "sha256": "6fd7f8bd6b14ac5d2f1191f65ebaad7f1c72200dfb5c33803d767de625510b1e"
+    },
+    {
+      "name": "bero_case_switch_on",
+      "address": 2150688948,
+      "size": 76,
+      "sha256": "9b673def2593b67664535c1ccde47e97e041f532aa97fa942e69f78d59d8596e"
+    },
+    {
+      "name": "bero_case_switch_off",
+      "address": 2150689024,
+      "size": 124,
+      "sha256": "79dfe181460c2ca3667846bd497ee7bed0bba3ceb7837169a0fe74fe33c10d94"
+    },
+    {
+      "name": "evt_bero_info_run_road",
+      "address": 2150689148,
+      "size": 164,
+      "sha256": "cc74e265d19590786f77723c42f094073474b0614c31428c91331c4ec853e978"
+    },
+    {
+      "name": "evt_bero_info_run",
+      "address": 2150689916,
+      "size": 996,
+      "sha256": "bb92a499be0384713a44616f99f5e3f725f2cf507b3132126bb1e71b521f4a59"
+    },
+    {
+      "name": "evt_bero_initial_pos",
+      "address": 2150690912,
+      "size": 632,
+      "sha256": "214cdff31534df948655149d8ba53441124be40ce6b980d353dee0b48952c519"
+    },
+    {
+      "name": "evt_bero_mario_enter",
+      "address": 2150691544,
+      "size": 380,
+      "sha256": "83e3a29ef4e0a0454d88668cb8164bf2153b7043f6945c648894729bfc806a80"
+    }
+  ],
+  "dol_anchors": {
+    "2147935772": "82ff01f0",
+    "2147935796": "408205c4",
+    "2147935808": "408205b8",
+    "2147935824": "408205a8",
+    "2147935836": "4082059c",
+    "2147935848": "41820590",
+    "2147936576": "28170000",
+    "2147936580": "418201f4",
+    "2147936588": "4bfa59dd",
+    "2147936596": "481feb11",
+    "2147936604": "408201dc",
+    "2147936616": "b01d0000",
+    "2147937140": "4bfc7a91",
+    "2147937168": "40820044",
+    "2147937184": "4bfc890d",
+    "2147937232": "4bfd5109",
+    "2147937240": "540007fa",
+    "2147942564": "63658000",
+    "2147942608": "90010060",
+    "2147942620": "4bffeb4d",
+    "2147959672": "4082001c",
+    "2147959692": "4bfa3485",
+    "2147983308": "2c00ffff",
+    "2147983384": "3800000a",
+    "2147983388": "901d00c4",
+    "2147983204": "481f34c1",
+    "2147983240": "937d00b0",
+    "2147982468": "4bf9a819",
+    "2147982564": "ec42002a",
+    "2147982616": "ec03113c",
+    "2147982676": "ec6510fc",
+    "2147982712": "4bf9ba05",
+    "2147982728": "d0010028",
+    "2147982784": "ec1e00fa",
+    "2147982828": "ec1e007a",
+    "2150679008": "8006e6dc8006e70c8006e7488006e7788006e7e48006e8388006e87c8006e8bc8006e7b48006e8fc8006e9408006e9708006e9a08006e9e48006ea148006ea508006ea9c8006eb0c8006eacc",
+    "2150378536": "804204c0804204c4804204c8804204cc804204d0804204d4804204d8804204dc",
+    "2151810240": "6e5f00006e655f00655f000073655f00735f000073775f00775f00006e775f00",
+    "2151810328": "41f00000",
+    "2150379596": "7379735f303100"
+  },
+  "rel_spans": [
+    {
+      "name": "no00_custom",
+      "namespace": "gor_00.o",
+      "offset": 134164,
+      "size": 192,
+      "sha256": "06403fc9cddfbf067ebe01cce009a8e319fc829496f9cbce16ffd872c9a0d969"
+    },
+    {
+      "name": "bero_entry_data",
+      "namespace": "gor_00.o",
+      "offset": 134356,
+      "size": 120,
+      "sha256": "8abdf2f7798ced1ecb8bf513a4f42cedea58837db72a78f3639db514eeccd028"
+    },
+    {
+      "name": "gor_00_init_evt",
+      "namespace": "gor_00.o",
+      "offset": 192516,
+      "size": 2160,
+      "sha256": "feca019e68a4b78036ea454dee444be4287f18b1b2f3c322d82b232190a68496"
+    },
+    {
+      "name": "christine_nakama_before",
+      "namespace": "gor_01.o",
+      "offset": 218288,
+      "size": 72,
+      "sha256": "d65cd85830e8958ec93bcfcfdaf643efefecb72df77573d1f068aef0221c1b98"
+    },
+    {
+      "name": "bero_entry_data",
+      "namespace": "gor_01.o",
+      "offset": 218360,
+      "size": 240,
+      "sha256": "8480bba1bfcd6e2feda8190f9556720eb40d41601416b1389516b607ee517de1"
+    },
+    {
+      "name": "gor_01_init_evt",
+      "namespace": "gor_01.o",
+      "offset": 246272,
+      "size": 2192,
+      "sha256": "aa2fada48b78e1eb7d6eddd114e1bd875e6dc7744a8d2590bb7cf588db1acb7e"
+    },
+    {
+      "name": "gor_02_event_00",
+      "namespace": "gor_02.o",
+      "offset": 257380,
+      "size": 72,
+      "sha256": "1b165a7e961db7cb05826afa26d7bebd5b8a01366b69d7a874659b5711c9786b"
+    },
+    {
+      "name": "bero_entry_data",
+      "namespace": "gor_02.o",
+      "offset": 257572,
+      "size": 180,
+      "sha256": "71e1e77ab7c95066ee31b2738768ee2fdc902b48634b7b1e27d70e1c4e891e7e"
+    },
+    {
+      "name": "gor_02_init_evt",
+      "namespace": "gor_02.o",
+      "offset": 316756,
+      "size": 2172,
+      "sha256": "649d12889da97f2b7b29aa59f59f58671dfb916195160127f594df927e84109e"
+    },
+    {
+      "name": "debug_event",
+      "namespace": "gor_03.o",
+      "offset": 319008,
+      "size": 64,
+      "sha256": "16b310bb7e72acc8508068d6eb0209a7173e68280a18cb66ccfd1881916d94a2"
+    },
+    {
+      "name": "bero_entry_data",
+      "namespace": "gor_03.o",
+      "offset": 319104,
+      "size": 360,
+      "sha256": "084217db37c95fea5cdb3aae412d1c889dc7f48f106324ca500067b013e2f07c"
+    },
+    {
+      "name": "gor_03_init_evt",
+      "namespace": "gor_03.o",
+      "offset": 369528,
+      "size": 2724,
+      "sha256": "bb0a5d4f1232e2575d56f2bc93ee4e81cd25570eb188e506985375329afe89b0"
+    },
+    {
+      "name": "bero_entry_data",
+      "namespace": "gor_04.o",
+      "offset": 382268,
+      "size": 300,
+      "sha256": "b2e8150dff886b0ebee8e409fba4d409007334626886af5b5b1728dcc6f26516"
+    },
+    {
+      "name": "gor_04_init_evt",
+      "namespace": "gor_04.o",
+      "offset": 394080,
+      "size": 1020,
+      "sha256": "ecbbbaf3e8646707713081d99e822be7a3dc7c5c18b723ba729062aa9592fab7"
+    }
+  ],
+  "rel_bindings": {
+    "134356": {
+      "kind": "self",
+      "section": 4,
+      "addend": 636,
+      "offset": 81276
+    },
+    "134392": {
+      "kind": "self",
+      "section": 5,
+      "addend": 2956,
+      "offset": 134164
+    },
+    "134396": {
+      "kind": "self",
+      "section": 4,
+      "addend": 644,
+      "offset": 81284
+    },
+    "134400": {
+      "kind": "self",
+      "section": 4,
+      "addend": 652,
+      "offset": 81292
+    },
+    "193084": {
+      "kind": "self",
+      "section": 5,
+      "addend": 3148,
+      "offset": 134356
+    },
+    "218336": {
+      "kind": "self",
+      "section": 5,
+      "addend": 95184,
+      "offset": 226392
+    },
+    "218360": {
+      "kind": "self",
+      "section": 4,
+      "addend": 11892,
+      "offset": 92532
+    },
+    "218400": {
+      "kind": "self",
+      "section": 4,
+      "addend": 11900,
+      "offset": 92540
+    },
+    "218404": {
+      "kind": "self",
+      "section": 4,
+      "addend": 8276,
+      "offset": 88916
+    },
+    "218420": {
+      "kind": "self",
+      "section": 4,
+      "addend": 8276,
+      "offset": 88916
+    },
+    "218460": {
+      "kind": "self",
+      "section": 4,
+      "addend": 11908,
+      "offset": 92548
+    },
+    "218464": {
+      "kind": "self",
+      "section": 4,
+      "addend": 11892,
+      "offset": 92532
+    },
+    "218480": {
+      "kind": "self",
+      "section": 4,
+      "addend": 11916,
+      "offset": 92556
+    },
+    "218508": {
+      "kind": "self",
+      "section": 5,
+      "addend": 87080,
+      "offset": 218288
+    },
+    "218520": {
+      "kind": "self",
+      "section": 4,
+      "addend": 11924,
+      "offset": 92564
+    },
+    "218524": {
+      "kind": "self",
+      "section": 4,
+      "addend": 11932,
+      "offset": 92572
+    },
+    "246712": {
+      "kind": "self",
+      "section": 5,
+      "addend": 87152,
+      "offset": 218360
+    },
+    "257428": {
+      "kind": "self",
+      "section": 5,
+      "addend": 163356,
+      "offset": 294564
+    },
+    "257572": {
+      "kind": "self",
+      "section": 4,
+      "addend": 18852,
+      "offset": 99492
+    },
+    "257600": {
+      "kind": "self",
+      "section": 5,
+      "addend": 126172,
+      "offset": 257380
+    },
+    "257612": {
+      "kind": "self",
+      "section": 4,
+      "addend": 18860,
+      "offset": 99500
+    },
+    "257616": {
+      "kind": "self",
+      "section": 4,
+      "addend": 18868,
+      "offset": 99508
+    },
+    "257632": {
+      "kind": "self",
+      "section": 4,
+      "addend": 18876,
+      "offset": 99516
+    },
+    "257668": {
+      "kind": "self",
+      "section": 5,
+      "addend": 126244,
+      "offset": 257452
+    },
+    "257672": {
+      "kind": "self",
+      "section": 4,
+      "addend": 18884,
+      "offset": 99524
+    },
+    "257676": {
+      "kind": "self",
+      "section": 4,
+      "addend": 18892,
+      "offset": 99532
+    },
+    "316916": {
+      "kind": "self",
+      "section": 5,
+      "addend": 126364,
+      "offset": 257572
+    },
+    "319104": {
+      "kind": "self",
+      "section": 4,
+      "addend": 28336,
+      "offset": 108976
+    },
+    "319132": {
+      "kind": "self",
+      "section": 5,
+      "addend": 187800,
+      "offset": 319008
+    },
+    "319144": {
+      "kind": "self",
+      "section": 4,
+      "addend": 28344,
+      "offset": 108984
+    },
+    "319148": {
+      "kind": "self",
+      "section": 4,
+      "addend": 28352,
+      "offset": 108992
+    },
+    "319164": {
+      "kind": "self",
+      "section": 4,
+      "addend": 28360,
+      "offset": 109000
+    },
+    "319192": {
+      "kind": "self",
+      "section": 5,
+      "addend": 187800,
+      "offset": 319008
+    },
+    "319204": {
+      "kind": "self",
+      "section": 4,
+      "addend": 28368,
+      "offset": 109008
+    },
+    "319208": {
+      "kind": "self",
+      "section": 4,
+      "addend": 28376,
+      "offset": 109016
+    },
+    "319224": {
+      "kind": "self",
+      "section": 4,
+      "addend": 28384,
+      "offset": 109024
+    },
+    "319252": {
+      "kind": "self",
+      "section": 5,
+      "addend": 187800,
+      "offset": 319008
+    },
+    "319264": {
+      "kind": "self",
+      "section": 4,
+      "addend": 28392,
+      "offset": 109032
+    },
+    "319268": {
+      "kind": "self",
+      "section": 4,
+      "addend": 28400,
+      "offset": 109040
+    },
+    "319284": {
+      "kind": "self",
+      "section": 4,
+      "addend": 28352,
+      "offset": 108992
+    },
+    "319312": {
+      "kind": "self",
+      "section": 5,
+      "addend": 187800,
+      "offset": 319008
+    },
+    "319320": {
+      "kind": "self",
+      "section": 5,
+      "addend": 187864,
+      "offset": 319072
+    },
+    "319324": {
+      "kind": "self",
+      "section": 4,
+      "addend": 28392,
+      "offset": 109032
+    },
+    "319344": {
+      "kind": "self",
+      "section": 4,
+      "addend": 28408,
+      "offset": 109048
+    },
+    "319384": {
+      "kind": "self",
+      "section": 4,
+      "addend": 28420,
+      "offset": 109060
+    },
+    "319388": {
+      "kind": "self",
+      "section": 4,
+      "addend": 28428,
+      "offset": 109068
+    },
+    "369644": {
+      "kind": "self",
+      "section": 5,
+      "addend": 187896,
+      "offset": 319104
+    },
+    "382268": {
+      "kind": "self",
+      "section": 4,
+      "addend": 39648,
+      "offset": 120288
+    },
+    "382308": {
+      "kind": "self",
+      "section": 4,
+      "addend": 39656,
+      "offset": 120296
+    },
+    "382312": {
+      "kind": "self",
+      "section": 4,
+      "addend": 39356,
+      "offset": 119996
+    },
+    "382328": {
+      "kind": "self",
+      "section": 4,
+      "addend": 39664,
+      "offset": 120304
+    },
+    "382372": {
+      "kind": "self",
+      "section": 4,
+      "addend": 39672,
+      "offset": 120312
+    },
+    "382388": {
+      "kind": "self",
+      "section": 4,
+      "addend": 39672,
+      "offset": 120312
+    },
+    "382432": {
+      "kind": "self",
+      "section": 4,
+      "addend": 39664,
+      "offset": 120304
+    },
+    "382448": {
+      "kind": "self",
+      "section": 4,
+      "addend": 39356,
+      "offset": 119996
+    },
+    "382488": {
+      "kind": "self",
+      "section": 4,
+      "addend": 39684,
+      "offset": 120324
+    },
+    "382492": {
+      "kind": "self",
+      "section": 4,
+      "addend": 39648,
+      "offset": 120288
+    },
+    "382500": {
+      "kind": "self",
+      "section": 4,
+      "addend": 39696,
+      "offset": 120336
+    },
+    "382504": {
+      "kind": "self",
+      "section": 4,
+      "addend": 39712,
+      "offset": 120352
+    },
+    "394232": {
+      "kind": "self",
+      "section": 5,
+      "addend": 251060,
+      "offset": 382268
+    },
+    "394256": {
+      "kind": "self",
+      "section": 5,
+      "addend": 254108,
+      "offset": 385316
+    },
+    "134180": {
+      "kind": "dol",
+      "address": 2148417952
+    },
+    "134188": {
+      "kind": "dol",
+      "address": 2148431416
+    },
+    "134204": {
+      "kind": "dol",
+      "address": 2148430964
+    },
+    "134216": {
+      "kind": "dol",
+      "address": 2148430328
+    },
+    "134252": {
+      "kind": "dol",
+      "address": 2148425552
+    },
+    "134272": {
+      "kind": "dol",
+      "address": 2148431272
+    },
+    "134288": {
+      "kind": "dol",
+      "address": 2148448880
+    },
+    "193092": {
+      "kind": "dol",
+      "address": 2147984652
+    },
+    "193100": {
+      "kind": "dol",
+      "address": 2150689916
+    },
+    "218324": {
+      "kind": "dol",
+      "address": 2148430964
+    },
+    "246720": {
+      "kind": "dol",
+      "address": 2147984652
+    },
+    "246728": {
+      "kind": "dol",
+      "address": 2150689916
+    },
+    "257416": {
+      "kind": "dol",
+      "address": 2148430964
+    },
+    "316924": {
+      "kind": "dol",
+      "address": 2147984652
+    },
+    "316932": {
+      "kind": "dol",
+      "address": 2150689916
+    },
+    "319012": {
+      "kind": "dol",
+      "address": 2147831612
+    },
+    "319036": {
+      "kind": "dol",
+      "address": 2147831512
+    },
+    "369652": {
+      "kind": "dol",
+      "address": 2147984652
+    },
+    "369660": {
+      "kind": "dol",
+      "address": 2150689916
+    },
+    "369668": {
+      "kind": "dol",
+      "address": 2147959588
+    },
+    "394240": {
+      "kind": "dol",
+      "address": 2147984652
+    },
+    "394248": {
+      "kind": "dol",
+      "address": 2150689916
+    }
+  },
+  "maps": [
+    {
+      "path": "m/gor_00/d",
+      "size": 1039618,
+      "sha256": "d942568687b82ede86c7ea5aab0a3aea6c0df23b538257fde8ae1632bd13089b",
+      "nodes": [
+        {
+          "name": "n_bero",
+          "source_node": 852904,
+          "attributes": 4,
+          "cull": 1,
+          "node_header_sha256": "4fe8ed8baa9bd46bf6b24ac351da92d1b3dabe0a8eacf23e93da871ba14b6d0e",
+          "draw_header_sha256": "2334f6004df36cabb85160b3f9997b7447b23ad511f6ab3710d82c68f1fb8e11"
+        }
+      ]
+    },
+    {
+      "path": "m/gor_01/d",
+      "size": 1735066,
+      "sha256": "917611146a7fe059ac5d070c5139b9be739a7de6d94e8745589d6ae4ad39af93",
+      "nodes": [
+        {
+          "name": "w_bero",
+          "source_node": 1381808,
+          "attributes": 5,
+          "cull": 1,
+          "node_header_sha256": "0150c3af2872144d2ea696f532ed90964432206b86aabb9b1d83ff72bd8f64b4",
+          "draw_header_sha256": "ce7ac566941f929993f568a263b9e1900dd4edb2752b0d721a07ee700a4f969a"
+        },
+        {
+          "name": "s_bero",
+          "source_node": 1382128,
+          "attributes": 5,
+          "cull": 1,
+          "node_header_sha256": "243c4613ea7b9b131f6943fe48e59a6b06e57d64d5399d62009120f47600af96",
+          "draw_header_sha256": "ce7ac566941f929993f568a263b9e1900dd4edb2752b0d721a07ee700a4f969a"
+        },
+        {
+          "name": "e_bero",
+          "source_node": 1382336,
+          "attributes": 5,
+          "cull": 1,
+          "node_header_sha256": "d4bf4b24af5c5efa95b474d9589fc7e35afd7038426fd86964bf35b67cb5cfd0",
+          "draw_header_sha256": "ce7ac566941f929993f568a263b9e1900dd4edb2752b0d721a07ee700a4f969a"
+        }
+      ]
+    },
+    {
+      "path": "m/gor_02/d",
+      "size": 1513698,
+      "sha256": "d738bff28f92ed2a2d0658fb836b0a6e91b915a32553897b47032febe2f62353",
+      "nodes": [
+        {
+          "name": "w_bero",
+          "source_node": 1215808,
+          "attributes": 5,
+          "cull": 1,
+          "node_header_sha256": "289fc8b8420835bcfe502c9465bdc1967c648120830cb9bdb5f7ed5e71654999",
+          "draw_header_sha256": "ce7ac566941f929993f568a263b9e1900dd4edb2752b0d721a07ee700a4f969a"
+        }
+      ]
+    },
+    {
+      "path": "m/gor_03/d",
+      "size": 1569330,
+      "sha256": "a97c93de8fca4d05b2a1daa58dfdaf4751ad5e139a446641f49c0b070b58740d",
+      "nodes": [
+        {
+          "name": "e_bero",
+          "source_node": 1262296,
+          "attributes": 5,
+          "cull": 1,
+          "node_header_sha256": "8e537cace1ee0a8e9930d0fd08608ad583917ef292263abb78baddb2386ae46f",
+          "draw_header_sha256": "ce7ac566941f929993f568a263b9e1900dd4edb2752b0d721a07ee700a4f969a"
+        },
+        {
+          "name": "n_bero",
+          "source_node": 1262400,
+          "attributes": 5,
+          "cull": 1,
+          "node_header_sha256": "f1fff1ed5ce074de4d88984a22ac6c9cd75b6d0f3cd0be0f871a35d3438a5770",
+          "draw_header_sha256": "ce7ac566941f929993f568a263b9e1900dd4edb2752b0d721a07ee700a4f969a"
+        },
+        {
+          "name": "s_bero",
+          "source_node": 1262504,
+          "attributes": 4,
+          "cull": 1,
+          "node_header_sha256": "638f792127d9cd12be9032f466cbbc05d2044133d58bc7b79eea898b489004a6",
+          "draw_header_sha256": "2334f6004df36cabb85160b3f9997b7447b23ad511f6ab3710d82c68f1fb8e11"
+        }
+      ]
+    },
+    {
+      "path": "m/gor_04/d",
+      "size": 1449678,
+      "sha256": "802b167e2deabff496a075660f0b3746ae31d9f72c20d790d3c2061e7e1be3ab",
+      "nodes": [
+        {
+          "name": "n_bero",
+          "source_node": 1179856,
+          "attributes": 0,
+          "cull": 1,
+          "node_header_sha256": "982c7f9678e2a4a0525b4441c9944123f6333029100d8fcdf5b78fb11b6df671",
+          "draw_header_sha256": "028e2518bd2b8b19b650bf2ed80b5dbb7105936e582dd82fff99215313d09295"
+        },
+        {
+          "name": "s_bero",
+          "source_node": 1179960,
+          "attributes": 5,
+          "cull": 1,
+          "node_header_sha256": "4f1169f8871bbf1c1acbf7195e21b3fc7324bc55b24f92155c3644b133bb1592",
+          "draw_header_sha256": "ce7ac566941f929993f568a263b9e1900dd4edb2752b0d721a07ee700a4f969a"
+        }
+      ]
+    }
+  ]
+}
