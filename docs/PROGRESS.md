@@ -4046,3 +4046,30 @@ layout,resource/cadence callers and uncovered story/event/field/battle/audio/
 save/content before complete-game requirements. Full objective active/incomplete;
 no complete numerical/layout or full-game fidelity claim. Original IDs/tokens
 and story attribution/order/branches/event conditions remain mandatory.
+
+## 2026-10-12 — US decimal equality and refinement admission
+
+Recovered complete __equals_dec0x802672d8,size10c;added detailed
+DECIMAL_RECORD_EQUALITY_AND_REFINEMENT_ENTRY.md. Covers first-byte zero shortcuts,
+sign-ignored exponent/digit equality and trailing-zero remainder; __dec2num
+candidate decimalization through already-recovered __num2dec_internal,equality
+fast exit,inlined initial magnitude direction and raw-word first upward neighbor/
+infinity early exit. Later up/down search,differences/ties/final selection remain
+open;no complete numeric or original execution equivalence claim.
+
+Validation:1304 instruction anchors and existing tables/constants/resource
+checks passed read-only ISO. Fresh286-function reports reproduced byte-for-byte.
+All482 local behavior links resolved;git diff --check passed. make test passed
+core plus36 Python tests;make all exited0 with no rebuild. No original execution/
+emulator,profile/save modification,native implementation,asset conversion or
+story/message rewrite. Inspection ELF/disassembly/reports remain ignored;working
+tree was clean at turn start.
+
+Next: remainder of upward/downward neighbor search,operand-specific comparisons,
+difference helpers,tie/parity rounding and final selection;pow dependencies and
+executed generated-record/neighbor/FPSCR corpus. Continue drawing/string layout,
+resource/cadence and uncovered story/event/field/battle/audio/save/content
+systems before complete-game requirements. Full objective active/incomplete;
+local equality/admission does not establish complete numerical/layout or full-
+game fidelity. Original data,IDs/tokens and story attribution/order/branches/
+event conditions remain mandatory.

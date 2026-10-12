@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'decimal_equality_and_refinement_entry': {
+        0x802672d8: '88a30005', 0x802672ec: '5403d97e',
+        0x8026730c: 'a8a30002', 0x80267318: '408200c4',
+        0x8026732c: '40810008', 0x80267350: '7c050040',
+        0x80267368: '7c093800', 0x80267388: '28000000',
+        0x802673bc: '28000000', 0x802673d4: '38600001',
+        0x80265f5c: '48000acd', 0x80265f68: '48001371',
+        0x80265f70: '408208dc', 0x80265f74: '8801014d',
+        0x80265fb8: '7c002000', 0x80265ff8: '7c074040',
+        0x80266048: '88040005', 0x80266078: '7c001850',
+        0x80266084: '41820470', 0x802660a4: '7c862014',
+        0x802660a8: '7c651914', 0x802660f8: '38000002',
+        0x80266134: '48000718', 0x8026613c: '480008ed',
+    },
     'decimal_to_binary_infinity_boundary': {
         0x80265d40: '38000134', 0x80265d50: 'b0010176',
         0x80265d70: '7c8301ae', 0x80265d74: '2c050024',
