@@ -81,6 +81,13 @@ Bank WAVs are named `pmario-<four-digit-hex-ID>.wav` in `pcm/samples/`;
 only the 212 looped samples have loop sidecars. These are original sample
 sources; MusyX macros and game event playback still require implementation.
 
+The separate Switch 1.0.0 audio library is generated with
+`python3 tools/switch_audio.py` from the verified extracted
+`local-assets/switch/romfs/`. Its raw resources, PCM16 WAVs and loop sidecars
+stay in ignored `local-assets/switch/audio/`; current native audio selection
+remains GameCube-based. Decoder setup, asset coverage and provenance are in
+[Switch audio assets](docs/switch/AUDIO_ASSETS.md).
+
 ## Controls
 
 | 3DS control | Function | Azahar default keyboard |

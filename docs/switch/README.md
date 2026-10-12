@@ -16,6 +16,8 @@ must not be presented as verified Switch behavior.
   exact offsets; distinguishes stored numbers from untraced update equations.
 - [Published behavior and version boundaries](VERSION_DIFFERENCES.md): Nintendo's
   feature descriptions and patch-specific changes, separate from binary proof.
+- [Extracted audio assets](AUDIO_ASSETS.md): complete stream/bank-wave library,
+  source names/IDs/loops, decoder reproduction and runtime playback limitations.
 
 ## Evidence rules
 

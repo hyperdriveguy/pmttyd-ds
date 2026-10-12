@@ -1,5 +1,40 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Complete Switch audio asset extraction
+
+Completed the user's Switch audio extraction using the existing verified base
+1.0.0 RomFS read-only. Added `tools/switch_audio.py` and authored fixtures.
+Ignored `local-assets/switch/audio/` holds all 670 original sound-tree files,
+594 structured bank/control/group extracts, 577 PCM16 music tracks and 9,691
+bank samples, with original paths/IDs/rates/channels and loop sidecars. WAVs
+sum to 11,385,943,684 bytes. Sources sum to 1,941,989,744 bytes. All 62 global
+wave-archive records and all external streams are covered; archive inventory
+retains all 10,256 sound records. Raw sound/data/vibration and user-managed group
+resources are preserved. Group-local ID conflicts remain separate variants.
+Current native audio continues to use GameCube assets.
+
+Validation: full decode reached all 10,268 assets and per-file checks passed.
+The final vgmstream informational `-V` command returned 1 despite valid JSON,
+interrupting manifest creation; corrected handling and `--verify-existing`
+completed source-metadata/data-length/hash audit and manifest without re-decoding.
+Separate audit verified every WAV format/full length/frame count/hash/sidecar,
+all 9,691 original FWAV rate/channel/count/loop header fields, all 670 source
+and copied-resource hashes, all archive IDs and all output paths. Music loops:
+421 looped/156 nonlooped; bank waves:807 looped/8,884 nonlooped. All 22,453
+library files are ignored and none tracked. Final `make test` passed41/41 CTest
+suites and69 Python tests (/tmp/pm-switch-audio-tests-final.log); `make all`
+passed (/tmp/pm-switch-audio-build-final.log). `git diff --check` passed.
+Implementation commits00cef06 and6656cc3; concurrent native/docs edits preserved.
+Decoder source/build/licenses and reference snapshots remain ignored; full
+provenance/reproduction is in docs/switch/AUDIO_ASSETS.md. No original executable
+was linked, and no NSP/source/key/profile/save mutation or emulator run occurred.
+
+Next: resolve FWSD wave-event layering and actual event playback/mixing/pitch/
+envelope/transition policies; compare audible seams/runtime behavior if later
+requested. Existing-WAV audits check structure/hashes/source metadata, not fresh
+PCM decoding differentials. Extraction is complete; original-runtime audio
+fidelity, native Switch-asset integration and the full remake remain open.
+
 ## 2026-10-12 — Original event context initialization/reset services
 
 Added context work/flag banks and raw unwritten94 word,plus complete documented

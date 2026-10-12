@@ -1,5 +1,33 @@
 # Original asset pipeline
 
+## Switch 1.0.0 audio extraction (2026-10-12)
+
+Completed the separate Switch audio library from the verified read-only
+`local-assets/switch/romfs/` extraction of the supplied base NSP. Ignored
+`local-assets/switch/audio/` preserves all 670 sound-tree files and 594 structured
+bank/control/group extracts, and contains PCM16 WAVs for all 577 Opus streams
+and 9,691 DSP bank waves. The full library is separate from GameCube assets and
+native RomFS. [Switch audio provenance](switch/AUDIO_ASSETS.md) records paths,
+source package identity, conversion choices, decoder build and licensing.
+
+Manifest and archive inventory retain all 10,256 sound names/IDs, all 62 global
+wave-archive records, source hashes/spans and external loop metadata. Group-local
+file-ID conflicts are preserved as contextual variants rather than overwriting
+global resources. WAVs preserve source rates/channels; 421 music tracks and
+807 bank waves have native-format loop sidecars. PCM files total
+11,385,943,684 bytes; source sound-tree files total 1,941,989,744 bytes.
+Verified all 10,268 WAV formats/full lengths/hashes/loops, original FWAV header
+fields for all 9,691 waves, and all 670 original/copied source hashes. All 22,453
+library files remain ignored and no originals are tracked.
+
+Decoder: external vgmstream r2117, commit7c520e8f9b078dfde2f84f1b5bcbad0c6c415806,
+ISC with existing matching third_party notice. libpulsar MIT and Citric Composer
+snapshots supplied format facts only; no implementation copied. Existing original
+copyright and no-redistribution rights remain unchanged. No NSP/key/firmware,
+source RomFS, emulator profile/save or native audio selection was modified.
+These are decoded assets, not faithful runtime mixes/event playback; see the
+linked provenance for source-domain, alias, codec and audit limitations.
+
 ## Ordinary head-query binding (2026-10-12)
 
 Native31f6cb8 binds the read-only US DOL contract in
