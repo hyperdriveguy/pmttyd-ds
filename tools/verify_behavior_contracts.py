@@ -12,6 +12,14 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'status_storage': {
+        0x80127864: '881e02f7', 0x801278d0: '2c000000',
+        0x80127950: '981e0118', 0x801279d4: '480001d9',
+        0x80127a40: '987e0123', 0x80127be8: '98070119',
+        0x80127c38: '98070122', 0x80127df4: '98070129',
+        0x80127dfc: '7c600775', 0x80127e18: '2c000063',
+        0x80127e9c: '98070130', 0x80128108: '540004e7',
+    },
     'battle_event_dispatch': {
         0x8012985c: '28000028', 0x80129878: '3880002e',
         0x8012989c: '80bc02b0', 0x801298f0: '806302b4',
@@ -182,6 +190,30 @@ def verify(iso_path):
             if read(address, len(expected)) != expected:
                 raise ValueError(f'Damage sound binding mismatch {address:#x}')
         print('Nine damage presentation constants and seven sound keys verified')
+        status_tables = {
+            0x80364204: [0x7970, 0x792c, 0x7970, 0x7970, 0x7adc,
+                         0x7970, 0x7970, 0x7970, 0x7970, 0x7970,
+                         0x79f4, 0x79f4, 0x7a68, 0x7a68, 0x7adc,
+                         0x7adc, 0x7b40, 0x7b40, 0x7970, 0x7970,
+                         0x7970, 0x7970, 0x7970, 0x7adc, 0x7adc],
+            0x80364268: [0x7e2c, 0x7be0, 0x7bf0, 0x7bf8, 0x7c00,
+                         0x7c0c, 0x7c14, 0x7c1c, 0x7c24, 0x7c48,
+                         0x7c6c, 0x7c6c, 0x7cd4, 0x7d08, 0x7d3c,
+                         0x7d3c, 0x7dec, 0x7e4c, 0x7e54, 0x7e84,
+                         0x7ec4, 0x7e5c, 0x7e7c, 0x7f04, 0x7f10,
+                         0x7f20, 0x7f20, 0x7f1c],
+            0x803642d8: [0x8080, 0x7f60, 0x7f6c, 0x7f78, 0x7f84,
+                         0x7f90, 0x7f9c, 0x7fa8, 0x7fb4, 0x7fc0,
+                         0x7fcc, 0x7fe4, 0x7ffc, 0x8014, 0x802c,
+                         0x8044, 0x8074, 0x808c, 0x8098, 0x805c,
+                         0x8068, 0x80a4, 0x80b0, 0x80bc, 0x80c8,
+                         0x80dc, 0x80dc, 0x80d4],
+        }
+        for address, offsets in status_tables.items():
+            expected = tuple(0x80120000 + offset for offset in offsets)
+            if struct.unpack(f'>{len(offsets)}I', read(address, len(offsets)*4)) != expected:
+                raise ValueError(f'Status dispatch table mismatch {address:#x}')
+        print('All 81 status getter/setter/recovery dispatch targets verified')
 
 
 if __name__ == '__main__':

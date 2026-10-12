@@ -213,7 +213,8 @@ then call `BtlUnit_CheckRecoveryStatus(D,1)`. Afterwards obtain unit position/
 height and spawn `effFukidashiEntry` with the same parameters as above, but
 y=`positionY+trunc(height/2)` (signed division toward zero). The status helper's
 outcome is not tested before that effect. This is the recovery request path;
-actual status lifetime/clearing still requires that helper's contract.
+the [status recovery contract](BATTLE_STATUS_STORAGE.md) now specifies local
+clearing and the HP/Instant Kill gates; its turn callers remain unresolved.
 
 Draw order is all eligible Pity Flower copies first, then this optional Sleep
 draw. Neither is gated on measured HP/FP loss. See [RANDOMNESS.md](RANDOMNESS.md)
