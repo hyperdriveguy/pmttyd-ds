@@ -336,3 +336,44 @@ independent original-coordinate fidelity. Counts remain4,946 records,237,408
 bytes total record payload;1,867 are one-sided downward backfaces now rejected
 by floor queries. Only current room is active except transactional staging.
 Hardware memory/performance unverified.
+
+## Switch 1.0.0 static research (2026-10-12)
+
+The user selected the Switch remake as the mechanics reference and subsequently
+restricted work to static analysis. Original GameCube conversions and their
+licensing/provenance above remain separate. No Switch asset was converted into
+or linked into the native 3DS runtime by this research.
+
+Read-only source:
+`/home/carson/games/roms/Paper Mario The Thousand-Year Door [BASE][0100ECD018EBE000][US][v0].nsp`.
+SHA256 `04fba23ab27de88276d2a04eaf69619cd09044acb41de62c1cb2f89a8de110e4`;
+CNMT application0100ecd018ebe000/version0, NACP1.0.0. Detailed member identity,
+content checks and reproduction are in [Switch baseline](switch/BINARY_BASELINE.md).
+
+Local extraction paths (all ignored):
+
+- `local-assets/switch/nca/`: original PFS0 members, including private ticket.
+- `local-assets/switch/exefs/`, `romfs/`, `meta/`, `control/`, `other/`:
+  decrypted archive sections; no original input overwritten.
+- `local-assets/switch/decoded/`: selected Zstandard-expanded data ELFs and
+  uncompressed main NSO; `main.elf` is an inspection-only segment wrapper.
+- `artifacts/reference/switch/`: hashes, table/relocation reports, integrity logs,
+  disassembly and an isolated private key mapping. Keys are never published.
+- `artifacts/reference/hactool/` and `Unsimplifier/`: pinned public source tools;
+  exact revisions/licenses in the baseline document. No public editor UI or
+  arbitrary mod was used to mutate the reference game.
+
+Original game code, text, models, music and other assets remain the property of
+their rights holders; possession and extraction do not grant a redistribution
+license. Do not commit/distribute the NSP, extracted originals, keys, firmware
+or complete story text. Research commits contain prose, independently authored
+inspection tools and tests, not game payloads. hactool is ISC; Unsimplifier is
+Unlicense. Public layout labels are distinguished from verified native semantics.
+
+The user's local prod.keys was used for read-only decryption. The supplied
+ title.keys lacked the game's rights entry; the archive's own common ticket
+provided an isolated mapping. Original key files were not altered. Before the
+static-only instruction, isolated Ryujinx files/captures were written under
+`artifacts/ryujinx/`; no gameplay was reached and the normal user profile/saves
+were not changed. Firmware.23.0.1.zip was supplied, but successful installation
+was not established. No firmware is required for continued static recovery.

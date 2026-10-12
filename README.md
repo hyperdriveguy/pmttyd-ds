@@ -9,6 +9,14 @@ This is not a finished or fidelity-verified remake. Original skeletal/vertex
 animations, sound-effect event playback, measured tutorial mechanics and broader
 story content are still incomplete. Hardware performance has not been tested.
 
+## Switch mechanics research
+
+The active documentation reference is now the supplied Switch remake **1.0.0**.
+See the [Switch research collection](docs/switch/README.md) for verified binary
+identity, combat/field data, native contracts and remaining gaps. Current research
+is **static analysis only**. The prototype and earlier behavior contracts remain
+GameCube-based; they are not verified Switch implementations.
+
 ## Build and run
 
 Installed dependencies: devkitARM, libctru, citro3d, citro2d, tex3ds and picasso.

@@ -1,5 +1,9 @@
 # Complete-game behavior documentation work register
 
+**Version scope:** This directory documents the GameCube US binary. Current
+Switch 1.0.0 research lives in [the separate Switch collection](../switch/README.md).
+Do not import these contracts as established Switch behavior.
+
 Objective: thoroughly document behavior not established by available
 decompilation, then produce a system requirements document for the **complete
 game**, assuming original models, textures, messages, sound and other data are

@@ -2375,3 +2375,79 @@ recovery event body, move reset, unit-event wait/conclusion helpers, outer
 turn/phase cadence and actual death/revival scripts. Continue full-system
 register before deriving complete-game requirements. Objective remains active
 and incomplete; original/native trace and rendering comparisons still needed.
+
+## 2026-10-12 — Switch 1.0.0 baseline and static mechanics research
+
+User changed this research goal's reference from GameCube to the supplied
+Switch NSP, then instructed **static analysis only for now**. Honor that limit:
+no further emulator launch/capture or firmware work. Native prototype development
+and GameCube contracts remain separate; do not relabel their constants as Switch
+findings. New entry point is docs/switch/README.md, linked from README and the
+GameCube behavior index.
+
+Confirmed package SHA25604fba23ab27de88276d2a04eaf69619cd09044acb41de62c1cb2f89a8de110e4,
+application0100ecd018ebe000, CNMT version0, NACP1.0.0 and main NSO build
+78f37bb55d015be3b368ec22af595455f1544dc1000000000000000000000000.
+PFS0 has6 entries/5,456,787,792bytes. Decrypted using user-supplied local keys;
+title.keys lacked this game's rights ID, resolved privately from the package's
+common ticket. Original package/key files unchanged. hactool archive signature,
+PFS0 and RomFS hash checks report GOOD; all3 CNMT content hashes/sizes match the
+PFS0 inventory. First unmatched-key attempt reported corrupted sections and is
+explicitly superseded, not misreported as success.
+
+Extracted9,959 RomFS files, including1,246 script files,1,582 compressed data
+ELFs and47 msg/US_English_Final resources. Added docs/switch/BINARY_BASELINE.md,
+BATTLE_PARAMETERS.md, FIELD_PARAMETERS.md and VERSION_DIFFERENCES.md. Documents
+separate binary values, reviewed native contracts, publisher descriptions and
+unknowns. Nintendo1.0.1 fixes are not treated as behavior of the supplied1.0.0.
+No story dialogue copied into source or invented.
+
+Recovered661 ordered rows:360 battle parameters,18 player states,30 jumps,
+197 Mario and56 partner action commands. Preserve26 null battle IDs and repeated
+names. Row layout/pointer relocation verification does not imply runtime semantic
+completion. Concrete native main queries779ff0/77a180 select seven defense/counter
+values using clamp(3+unit168c-unit1688,0,6), scan64 slots for the first object
+matching words68==4/6c==0, and return float0 if none. Other context cleanup side
+effects and invalid-state assumptions documented. Equal modifiers select16 and3;
+neither is claimed measured rendered frames. Partial update7225c4 loads these
+rows and subtracts a runtime binary32 decrement from timers, disproving a basis
+for blindly assuming decrement1. Modifier writers, timer clock and full input/
+impact/reset gates remain unrecovered.
+
+Tools switch_package_inventory.py/switch_table_evidence.py and4 PFS0 tests were
+already present in commit dfc276e after the interrupted first part of this work.
+Added switch_nso_evidence.py to validate the reviewed build,11 instruction anchors,
+3 code-range hashes and generate the inspection ELF. Public tool snapshots pinned:
+hactool1d64a83450e025622f3468c28fc4164dad2c5ef6 (ISC),
+Unsimplifiere2bf56c22ae527560602a9b063bccb1bf03dac16 (Unlicense).
+Assets/provenance recorded in ASSETS.md. All extracts/decompressed originals,
+reports, source snapshots and disassembly remain ignored under local-assets and
+artifacts; native runtime unchanged by this research.
+
+Validation: make test passed the portable core and36 Python tests; make all
+exited0/up to date. Table report regenerated identically with cmp. Native report
+regenerated identically with cmp;11 anchors and3 range fingerprints pass.
+git diff --check passed. These validate tooling and the current shared worktree,
+not gameplay equivalence, complete mechanics, an isolated checkout or hardware.
+
+Before static-only steering, isolated Ryujinx1.3.3 showed RYU-0002 firmware missing
+and later RYU-0001 keys-not-found during installer attempts. No game execution was
+obtained. User supplied Firmware.23.0.1.zip but successful installation was not
+established. Normal user profile/saves unchanged. No emulator launched after the
+static-only correction; a scoped cleanup check found no remaining research
+Ryujinx process. Do not keep troubleshooting firmware under this instruction.
+
+Next static work:
+1. Trace main7225c4's timer decrement producer (+4a78 via pointer slotf0c0f0),
+   input production and full impact-check candidate723bd8. Recover modifier1688/
+   168c writers and script registration names; then document bounded defense
+   algorithm instead of assigning frame/second durations prematurely.
+2. Trace player/jump table consumers to recover units, clock, integrator, release,
+   mode gates and collision order. Do not substitute GameCube motion equations.
+3. Obtain/recover a compatible Switch script-bytecode decoder and native API
+   registry; inventory story/service calls. Ascend is a discovery lead, not an
+   installed/validated decoder. Preserve MSBT labels, tokens, order and speakers;
+   Switch English path is msg/US_English_Final, not GameCube msg/US.
+4. Continue damage/status/turns, audience/RNG, inventory/save/UI/audio/graphics,
+   partners, all chapters/interludes and optional content. Current register lists
+   gaps; the full documentation goal is active and not complete.
