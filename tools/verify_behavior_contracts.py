@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'affine_matrix_services': {
+        0x8029e2b0: 'c0021f1c', 0x8029e2b4: 'd0230000',
+        0x8029e2b8: 'f0030004', 0x8029e2c0: 'd0430014',
+        0x8029e2c8: 'f0030020', 0x8029e2cc: 'd0630028',
+        0x8029e264: 'e0830000', 0x8029e268: 'fc200818',
+        0x8029e280: 'f0840000', 0x8029e284: '10a12956',
+        0x8029e288: 'e0c30010', 0x8029e290: '10e239d6',
+        0x8029e294: 'e1230020', 0x8029e29c: '11034216',
+        0x8029dd80: '38c6e458', 0x8029dd98: 'e3e60000',
+        0x8029dd8c: '11860018', 0x8029ddac: '1188601e',
+        0x8029ddd0: '118a605c', 0x8029ddcc: 'e0a30028',
+        0x8029dde0: 'f1850000', 0x8029dde8: '11bf685e',
+        0x8029de18: '101f015e', 0x8029de20: 'f0050028',
+    },
     'font_string_pitch_drawing': {
         0x8007706c: 'c3fa0000', 0x80077080: '48227231',
         0x80077094: '4800aaad', 0x800770d4: '4800a9cd',
@@ -1538,6 +1552,9 @@ def verify(iso_path):
         if read(0x8042041c, 4) != struct.pack('>f', 0.5) or read(0x80420430, 4) != struct.pack('>f', -1.0):
             raise ValueError('String pitch half/default constants mismatch')
         print('Two scalar vector templates and half/default pitch verified')
+        if read(0x8042935c, 4) != bytes(4) or read(0x8041e458, 8).hex() != '000000003f800000':
+            raise ValueError('Affine matrix zero/unit pair mismatch')
+        print('Affine matrix positive zero and Unit01 pair verified')
 
 
 

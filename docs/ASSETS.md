@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 294 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1508 instruction anchors plus those
+now fingerprints 297 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1532 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -669,3 +669,10 @@ wrapper templates and half/default pitch constants. Authored contracts preserve
 byte/tag versus LF behavior,matrix requests,pitch/advance and outline/raw-color
 restoration with known inner RNG counts. No original execution/linking,asset
 conversion,message rewrite or license change;inspection artifacts remain ignored.
+
+Affine matrix research adds three US helper identities and24 instruction anchors,
+with positive-zero and Unit01 constant words checked read-only. Paired-single
+instruction semantics were cross-checked against Dolphin's public GPL-2.0-or-later
+interpreter source;no interpreter implementation was copied or linked. The
+behavior document cites that reference and distinguishes original words from
+emulator interpretation. Original ELFs/disassembly/reports remain ignored.

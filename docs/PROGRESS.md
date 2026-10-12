@@ -4282,3 +4282,30 @@ remains needed. Continue uncovered story/event/field/battle/audio/save/content
 before complete-game requirements. Full objective active/incomplete;local string
 wrapper coverage is not complete text/layout or full-game fidelity. Original
 IDs/tokens and story attribution/order/branches/event conditions remain required.
+
+## 2026-10-12 — US affine matrix drawing services
+
+Recovered complete PSMTXScale0x8029e2b0,size28,PSMTXTransApply0x8029e264,
+size4c and PSMTXConcat0x8029dd64,sizecc. Added AFFINE_MATRIX_SERVICES.md:
+row-major ABI,paired-single lane/arithmetic interpretation,scale write order,
+translation frsp/add and late reads,exact in-place versus partial overlap,
+concatenation fused order/all-input capture/output pair order and Unit01 special-
+value consequences. Linked pitch caller. Public Dolphin interpreter is explicitly
+reference evidence,not original execution;no implementation copied or linked.
+GQR0/FPSCR and actual returned matrix/raster behavior remain unmeasured.
+
+Validation:1532 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO,including matrix positive zero and Unit01 pair. Fresh297-
+function reports reproduced byte-for-byte. All527 local behavior links resolved;
+git diff --check passed. make test passed core plus36 Python tests;make all
+exited0 with no rebuild. No original execution/emulator,profile/save modification,
+native implementation,asset conversion or story/message rewrite. Original ELF/
+disassembly/reports remain ignored;working tree clean at turn start.
+
+Next: string matrix/center/shake/message callers,remaining camera/GX/vector
+services and executed matrix/GQR0/FPSCR/positions/images/RNG corpus;composed
+numerical comparisons remain needed. Continue uncovered story/event/field/
+battle/audio/save/content before complete-game requirements. Full objective
+active/incomplete;three helper contracts do not establish full rendering/game
+fidelity. Original data/IDs/tokens and story attribution/order/branches/event
+conditions remain required.

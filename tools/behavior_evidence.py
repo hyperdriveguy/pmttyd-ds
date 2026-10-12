@@ -66,6 +66,7 @@ FUNCTIONS = (
     'FontDrawRainbowColorOff', 'FontDrawRainbowColor', 'FontDrawEdgeOff',
     'FontDrawEdge', 'FontDrawStart_alpha', 'FontDrawStart',
     'FontDrawCode', 'FontDrawCodeMtx', 'JUTFont_DrawStart',
+    'PSMTXScale', 'PSMTXTransApply', 'PSMTXConcat',
     'FontDrawStringVecPitch', 'FontDrawStringPitch', 'FontDrawString',
     '_JUTFont_DrawPos', 'kanjiGetWidth', 'HSV2RGB', 'floor',
     'JUTFontSetup', 'JUTFont_CodeToGlyph', 'kanjiSearch', 'hankakuSearch',

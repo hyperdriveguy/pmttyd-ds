@@ -70,8 +70,9 @@ ordinary finite domain,not a caller-specific text block or screen.
 
 Use PSMTXTransApply(initialScale,localMatrix,translationX,vector.y,vector.z),
 then PSMTXConcat(camera+0x11c,localMatrix,localMatrix),then GXLoadPosMtxImm(...,0).
-These are helper requests and in-place output order;matrix service/raster
-execution remains separate evidence. No GXSetCurrentMtx call appears locally.
+These are helper requests and in-place output order;see the recovered
+[affine matrix services](AFFINE_MATRIX_SERVICES.md). Raster execution remains
+separate evidence. No GXSetCurrentMtx call appears locally.
 The inner glyph requests use local offsets below,so the vector translation is
 not narrowed to s16 before this caller's matrix path.
 
