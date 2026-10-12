@@ -7,8 +7,9 @@ constexpr uint32_t BattleButtonB = 0x200;
 struct BattlePadSnapshot {
     uint16_t buttons = 0;
     int8_t mainX = 0, mainY = 0, subX = 0, subY = 0;
-    uint8_t analogA = 0, analogB = 0;
+    uint8_t leftTrigger=0,rightTrigger=0,analogA=0,analogB=0,retainedA=0,retainedB=0;
 };
+static_assert(sizeof(BattlePadSnapshot)==12,"Battle snapshot must retain all twelve semantic bytes");
 struct BattlePadSample {
     BattlePadSnapshot snapshot;
     // Already sampled producer masks; physical edges/repeat are not derived here.

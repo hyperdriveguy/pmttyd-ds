@@ -30,11 +30,15 @@ bool pressedWithin(const BattlePadWork& pad,uint32_t mask,int window) {
 }
 }
 void BattlePadWork::init() {
+    const auto currentTail=current.retainedB,previousTail=previous.retainedB;
     current={};previous={};triggers={};repeats={};held={};
+    // Original WorkInit writes bytes0..a, but does not write byteb.
+    current.retainedB=currentTail;previous.retainedB=previousTail;
     repeatPhase=repeatCounter=0;
 }
 void BattlePadWork::update(const BattlePadSample& input) {
     previous=current;current=input.snapshot;current.analogA=current.analogB=0;
+    current.retainedA=previous.retainedA;current.retainedB=previous.retainedB;
     const uint32_t now=current.buttons|virtualButtons(current);
     const uint32_t before=held.entries[0];
     const uint32_t virtualPress=now&~before&0xffff0000u;
