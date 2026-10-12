@@ -3795,3 +3795,31 @@ field/battle/audio/save/content systems before complete-game requirements.
 Full objective active/incomplete; static parser/consumer contracts alone do not
 prove complete scanner, layout or full-game fidelity. Original data, message
 IDs/control tokens and story attribution/order/branches must remain preserved.
+
+## 2026-10-12 — US unsigned32 scan helper
+
+Recovered __strtoul0x8026eae8,size378. Added detailed SCAN_INTEGER32.md:
+callback/output ABI, independent magnitude/count/sign/overflow, entry base/width
+gates and unconditional invalid-entry unread, leading whitespace outside field
+width, sign and zero/hex-prefix states, base inference, ASCII digit/letter
+routing, quotient/product/add overflow checks with sticky flag and wrapped
+magnitude, lookahead/width/EOF stops and consumed-count/unread order. Recorded
+exact branch-derived partial-prefix/width/overflow examples without claiming
+executed results or host/public strtoul equivalence. Linked scan consumers/index.
+
+Validation:1084 instruction anchors and prior tables/constants/font checks
+passed read-only ISO. Added complete17-entry state-table and256-byte uppercase
+hashes. Fresh280-function reports reproduced byte-for-byte. All430 local behavior
+links resolved; git diff --check passed. make test passed core plus36 Python
+tests; make all exited0 with no rebuild. No original execution/emulator,
+profile/save modification, native code/asset conversion or story rewriting.
+ELF/disassembly/reports remain ignored; authored research/evidence tooling only.
+Working tree was clean before this increment.
+
+Next: __strtoull, __strtold and mbtowc dependencies, actual icon argument corpus
+and executed callback/output/count comparisons; drawing/string layout and
+runtime resource/cadence callers. Continue uncovered story/event/field/battle/
+audio/save/content systems before complete-game requirements. Full objective
+active/incomplete; this local helper does not establish complete scanner/layout
+or full-game fidelity. Original message IDs/tokens, attribution/order/branches
+and event conditions remain required.

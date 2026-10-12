@@ -13,6 +13,18 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'scan_integer32': {
+        0x8026eb2c: '90090000', 0x8026eb48: '2c160001',
+        0x8026eb84: '7f40eb96', 0x8026eba0: '7c03002e',
+        0x8026ebe0: '3af70001', 0x8026ec40: '90150000',
+        0x8026ec6c: '3b200004', 0x8026ecac: '3ba00010',
+        0x8026ecd8: '3ba00008', 0x8026ecfc: '7f40eb96',
+        0x8026ed1c: '7c04e800', 0x8026eda4: '3883ffc9',
+        0x8026eda8: '7c1bd040', 0x8026edb8: '7f7be9d6',
+        0x8026edc0: '7c040040', 0x8026edd8: '7f7b2214',
+        0x8026edf8: '7c1fb000', 0x8026ee10: '73200034',
+        0x8026ee30: '90140000', 0x8026ee44: '4e800421',
+    },
     'scan_directive_parser': {
         0x8026ce60: '84063bd8', 0x8026ceb4: '98a1000b',
         0x8026cefc: '98010008', 0x8026cf14: '540006f7',
@@ -1215,6 +1227,12 @@ def verify(iso_path):
         if [i for i, value in enumerate(scan_ctype) if value & 0x10] != list(range(48, 58)):
             raise ValueError('Scan parser width digit set mismatch')
         print('Scan parser forty-byte initializer, 52 dispatch targets and width digit set verified')
+        if hashlib.sha256(read(0x803bb984, 68)).hexdigest() != '2cb2839e143d25885858f16c5fa246db6b57d4f4dc197e885cc478e9ba02040d':
+            raise ValueError('Unsigned32 scan state table mismatch')
+        if hashlib.sha256(read(0x803bb508, 256)).hexdigest() != '8985a5a84f72643f92031c52cc557992ad6b42f7975223ea98bea822c7665294':
+            raise ValueError('Scan uppercase table mismatch')
+        print('All seventeen unsigned32 scan states and complete uppercase table verified')
+
 
 
 
