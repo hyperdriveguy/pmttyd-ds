@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Animation Main evaluation and linked-paper time/data graph | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover animPoseMain entry/time/link/cache/sample/deformation ordering used by partner/Mario;resource/pool/draw/SDK/platform/source/runtime remain separate |
+| Animation Main evaluation and linked-paper time/data graph | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/time](behavior/display/ANIMATION_MAIN_ENTRY_AND_TIME.md),[samples](behavior/display/ANIMATION_TIMELINE_SAMPLING.md),[cache](behavior/display/ANIMATION_COMPRESSED_DELTA_CACHE.md),[interpolation](behavior/display/ANIMATION_OUTPUT_INTERPOLATION.md),[facing](behavior/display/ANIMATION_MAIN_CAMERA_FACING.md),[init](behavior/display/ANIMATION_POOL_AND_TANGENT_INITIALIZATION.md):complete Main/init local graphs and original M_Z_1 metadata;resource/pool/draw/copy/clock/helper/libm/platform/source/runtime remain separate |
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
 | File relocation dispatch and supported type routes | EVT-01, JUMP-01, DMG-02 | VALIDATED binary / lock released, 2026-10-12 | Documentation agent ID 2 | [Dispatch/type map](behavior/file/FILE_RELOCATION_TYPE_DISPATCH.md),[eight flat types](behavior/file/FILE_FLAT_POINTER_RELOCATION.md):all11 routes,unsigned guards/ordered arithmetic/retained first/no null preservation;types4/5 nested handlers/platform/source/runtime remain open;host missing fixture recorded |
@@ -2505,3 +2505,27 @@ Python tests pass. Logs:/tmp/id2-reloc-test.log,/tmp/id2-reloc-build.log,
 references remain pending reorganization. Own lock released;types4/5 nested
 handlers/source/format consumers/platform/original runtime/full-game requirements
 stay open. Preserve staged reorganization;ID2 shared handoff remains in worktree.
+
+ID1 Main/init delivery (2026-10-12),AC-01/AC-03 partial answer:
+[Entry/time](behavior/display/ANIMATION_MAIN_ENTRY_AND_TIME.md),
+[sampling](behavior/display/ANIMATION_TIMELINE_SAMPLING.md),
+[cache/replay](behavior/display/ANIMATION_COMPRESSED_DELTA_CACHE.md),
+[interpolation](behavior/display/ANIMATION_OUTPUT_INTERPOLATION.md),
+[facing](behavior/display/ANIMATION_MAIN_CAMERA_FACING.md),
+[initialization](behavior/display/ANIMATION_POOL_AND_TANGENT_INITIALIZATION.md)
+close complete Main/init local bodies:recursive link before null gate,GQR2..5
+writes,clock/rate/span/loop/predecessor graph,base rebuild/forward replay/five
+relative-index streams,linear triples/cubic node deltas,no end-seam interpolation,
+optional facing,allocation/table/file request order. Original M_Z_1 zero-span/
+one-key resource pinned without claiming runtime scene selection. 1773 reviewed
+words/17 constants/five spans/two imports/65 direct sites/example pass;70 CTest,
+78 Python,3DS build pass. Full clock/helpers/copy/resource/pool/draw/libm/source/
+visual domains remain open. Only ID1 scoped lock released.
+
+ID1 ownership note:concurrent reorganization76263bb included the six ID1-authored
+Main/init documents while moving the directory tree. Their recovery/validation
+belongs to ID1;that commit also contains other owners' moves/content. Preserve
+history;this follow-up adds ID1 evidence tool/manifest,numeric notation refinement
+and exact delivery/provenance. Whole-tree link scan has five unrelated forward
+references in pending binary/REFERENCE_FILES_INVENTORY.md;new Main/init links
+resolve. Do not interpret those draft inventory promises as recovered systems.

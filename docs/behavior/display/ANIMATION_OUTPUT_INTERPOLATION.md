@@ -5,7 +5,9 @@ local80040084..80040540. Notation from
 [entry/time](ANIMATION_MAIN_ENTRY_AND_TIME.md),
 [sampling](ANIMATION_TIMELINE_SAMPLING.md) and
 [cache replay](ANIMATION_COMPRESSED_DELTA_CACHE.md). Round32 R() and single fused
-F(a,b,c) retain original arithmetic/store rounding. No original execution.
+F(a,b,c) denotes original fmadds;N(a,b,c) denotes original fnmsubs
+(negated fused multiply-subtract). Retain instruction-specific signed-zero
+semantics and original arithmetic/store rounding. No original execution.
 
 ## Current versus successor admission
 
@@ -55,7 +57,7 @@ Literal operation order for admitted entry:
 
 ```
 t3 = R(t*t2)
-h10 = R(t + F(-2,t2,t3))
+h10 = R(t + N(2,t2,t3))
 h01 = F(-2,t3,R(3*t2))
 m0 = R(h*Ta)
 x = R(h10*m0)
@@ -68,7 +70,7 @@ out = R(currentOutput+x)
 ```
 
 At800404d8 `fnmsubs(2,t2,t3)` yields t3−2*t2 in one single fused subtraction;
-the notation above states that operation via F(-2,...). Original contraction,
+the notation above preserves that instruction via N(2,...). Original contraction,
 FPSCR,signed-zero/exception and denormal behavior remains a numeric dependency.
 This is an additive cubic delta with authored angular tangents. No local modulo
 angle,normalization,epsilon,coefficient clamp or linear fallback exists.

@@ -75,3 +75,10 @@ ID1 backend dependency update (2026-10-12):the used ordinary/paper
 local contracts. Force1 restarts equal ordinary indices;paper's third argument
 is ignored locally. Explicit frame setup adjusts/copies timestamps rather than
 storing a frame counter. Main/resource/clock/helper/source/original visuals remain open.
+
+ID1 Main dependency update (2026-10-12):
+[complete local Main entry/time](../display/ANIMATION_MAIN_ENTRY_AND_TIME.md)
+links sampling/cache/interpolation/facing and initialization contracts. It can
+recurse into linked IDs before its null-data gate;zero-span and end-seam behavior
+are explicit. This closes the local consumer graph,not its resource/draw/clock/
+helper/pool/source/lifetime/original visible composition.

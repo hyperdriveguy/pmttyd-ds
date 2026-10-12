@@ -11128,3 +11128,55 @@ is still being recovered. Read-only temporary M_S_1 geometry bake matched the
 native quad was changed. Next: connect camera services to source EVT runtime
 marshaling, implement actor pose/root/scale from finalized documentation, and
 continue other overworld/partner/story gaps. The full objective remains active.
+
+## 2026-10-12 — ID1 complete local animation Main and initialization contracts
+
+Recovered complete animPoseMain0x8003ed2c/1940 and animInit0x80042854/274.
+Six detailed files in behavior/display specify
+[entry/time](behavior/display/ANIMATION_MAIN_ENTRY_AND_TIME.md),
+[sampling](behavior/display/ANIMATION_TIMELINE_SAMPLING.md),
+[compressed cache](behavior/display/ANIMATION_COMPRESSED_DELTA_CACHE.md),
+[interpolation](behavior/display/ANIMATION_OUTPUT_INTERPOLATION.md),
+[facing](behavior/display/ANIMATION_MAIN_CAMERA_FACING.md) and
+[init](behavior/display/ANIMATION_POOL_AND_TANGENT_INITIALIZATION.md).
+Local graph covers linked recursion BEFORE null animation guard,captured output
+pointers,GQR2..5 writes/signed8 scalar loads,clock/rate/loop/zero-span and two
+predecessor scans,unguarded index domains,five base buffers and cumulative
+relative-index streams,rebuild/forward/same-key cache dispatch,linear triples,
+additive cubic node channels with original fnmsubs/fmadds order,tangent range
+asymmetry,no fractional end-seam output,current-key byte/texture channels,
+post-output cache/facing writes. Initializer specifies counts/allocations/partial
+clear/runtime tan178-word writer and original Vivian/ag2tg file requests.
+Only ID1 scoped lock released;called services/source/lifetime/runtime remain open.
+
+Original a/a_mario SHA/size/name/index/layout metadata independently reread:
+M_Z_1 index0,control0/0/0,single time0 key with23 position and2 node entries;
+this is a concrete original-data zero-span example,not observed scene selection,
+loaded-pointer state or original animated geometry execution. No original pose/
+texture/dialogue payload exported into tracked files.
+
+Validation:verify_animation_main.py passes two complete body hashes,1773 reviewed
+words,17 constants,five data spans,two US lecture imports,65 exact DOL direct
+sites and one original serialized resource example. Repeated report byte-identical;
+omitted-caller and incorrect-resource-span negatives rejected;Python compilation
+passed. Prior selector and pre-display verifiers passed;general verifier passed
+1980 anchors. Gekko audit passed617 files/88360 instructions/773 paired-single
+ops,zero changes/unknowns. Behavior link scan2039 links at snapshot:all links
+from new contracts resolve;five unresolved forward references belong to the
+separate pending binary/REFERENCE_FILES_INVENTORY.md companions. No whole-tree
+clean-link claim. make test passed70 CTest suites/78 Python tests;make all
+passed/rebuilt3DSX. Logs:/tmp/id1-animation-main-test.log and
+/tmp/id1-animation-main-build.log. Existing3218 GameCube/0 Switch/5 primary-PCM
+fallback audio pipeline ran;ASSETS records unchanged conversion policy/ignored
+outputs. No ID1 native/profile/save mutation or original execution/visual measure.
+
+Provenance:concurrent76263bb directory reorganization committed these six
+ID1-authored docs together with other owners' moves/content. This ID1 follow-up
+adds evidence tooling/manifest and exact delivery validation;no history rewrite.
+New layout honored. Preserve concurrent native/ID2/unvalidated inventory work.
+
+Next:used DrawMtx/group/material and SDK matrix consumption,loaded-resource
+relocation/pose entry/global-output/link lifetime,clock/helper/copy/libm numeric
+closure and original animation traces. Recover actual US story/event/message
+speaker/branch/condition bindings and a complete encounter through persistent
+outcomes. All-system documentation and final complete-game requirements incomplete.

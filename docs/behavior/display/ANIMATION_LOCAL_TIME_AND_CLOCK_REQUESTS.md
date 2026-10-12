@@ -80,3 +80,9 @@ Review cases:T0 still resets timestamps;T nonzero computes single-scaled U
 before conversion;borrow crosses high word;linked−1 skips;linked flag2 skips;
 linked alias retains ordered writes;rate setter touches only+44. These are
 source-derived acceptance requirements,not original execution results.
+
+ID1 evaluation dependency update (2026-10-12):
+[Main time](ANIMATION_MAIN_ENTRY_AND_TIME.md) now specifies subtraction from the
+shared timestamp,original unsigned64 conversion,60/1000 single conversion and
+rate multiplication,then links complete local sampling/replay/interpolation.
+Clock/helper numeric/source and resource/draw/runtime composition remain open.

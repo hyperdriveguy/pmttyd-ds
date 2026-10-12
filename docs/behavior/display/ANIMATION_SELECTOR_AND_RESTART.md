@@ -83,3 +83,9 @@ not a clean success path. These are static acceptance cases,not executed tests.
 423 reviewed instruction words,two constants,two initial global-pointer spans,
 two US lecture imports and299 direct DOL sites. Initial pointer hashes do not
 prove live state. Numeric helper/resource/Main/source/runtime behavior stays open.
+
+ID1 Main dependency update (2026-10-12):
+[Main](ANIMATION_MAIN_ENTRY_AND_TIME.md) now has complete local entry/time/link/
+sampling/cache/interpolation/facing coverage. The paper setter's admitted linked
+Main request follows that local graph;pool/resource/clock/helper/copy/draw/source/
+lifetime/original visual composition remains open.

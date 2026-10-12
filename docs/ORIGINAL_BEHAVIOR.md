@@ -911,3 +911,16 @@ all11 routes and eight complete flat Set/Clear blocks. Clear resolves holder
 before type rejection;unsigned first-field guards,retained first value,ordered
 uniform arithmetic and no null preservation are explicit. Nested4/5 handlers,
 source formats/consumers/platform/original runtime remain open.
+
+ID1 animation Main/init local closure (2026-10-12):
+[entry/time](behavior/display/ANIMATION_MAIN_ENTRY_AND_TIME.md),
+[samples](behavior/display/ANIMATION_TIMELINE_SAMPLING.md),
+[cache](behavior/display/ANIMATION_COMPRESSED_DELTA_CACHE.md),
+[interpolation](behavior/display/ANIMATION_OUTPUT_INTERPOLATION.md),
+[facing](behavior/display/ANIMATION_MAIN_CAMERA_FACING.md),
+[init](behavior/display/ANIMATION_POOL_AND_TANGENT_INITIALIZATION.md)
+cover complete local graphs and an original M_Z_1 serialized example. These
+services are referenced by original partner/Mario pre-display,draw and paper
+selectors;65 direct DOL sites are static references,not runtime frequency.
+Resource/pool/relocation/copy/clock/helper/libm/draw/source/lifetime/original
+visual domains remain open. No final whole-game requirements justified yet.

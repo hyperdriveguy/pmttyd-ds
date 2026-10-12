@@ -302,3 +302,15 @@ now covered by [selection](../display/ANIMATION_SELECTOR_AND_RESTART.md),
 clock/helper/source/numeric/original visuals remain open. Static299-call census
 is not game completion or original reachability/frequency. Full-game system
 requirements remain premature until these and other system/story gaps close.
+
+ID1 animation evaluator/init update (2026-10-12):six display contracts now close
+Main/init local graphs:
+[entry/time](../display/ANIMATION_MAIN_ENTRY_AND_TIME.md),
+[sampling](../display/ANIMATION_TIMELINE_SAMPLING.md),
+[cache](../display/ANIMATION_COMPRESSED_DELTA_CACHE.md),
+[interpolation](../display/ANIMATION_OUTPUT_INTERPOLATION.md),
+[facing](../display/ANIMATION_MAIN_CAMERA_FACING.md),
+[init](../display/ANIMATION_POOL_AND_TANGENT_INITIALIZATION.md).
+Original M_Z_1 metadata is checked;loaded-resource/draw/clock/helper/copy/libm/
+source/lifetime/original visual composition remains open. Complete-game system
+requirements still require remaining system/story closure,not static call counts.
