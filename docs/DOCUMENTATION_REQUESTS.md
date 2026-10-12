@@ -22,7 +22,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Animation Main evaluation and linked-paper time/data graph | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/time](behavior/display/ANIMATION_MAIN_ENTRY_AND_TIME.md),[samples](behavior/display/ANIMATION_TIMELINE_SAMPLING.md),[cache](behavior/display/ANIMATION_COMPRESSED_DELTA_CACHE.md),[interpolation](behavior/display/ANIMATION_OUTPUT_INTERPOLATION.md),[facing](behavior/display/ANIMATION_MAIN_CAMERA_FACING.md),[init](behavior/display/ANIMATION_POOL_AND_TANGENT_INITIALIZATION.md):complete Main/init local graphs and original M_Z_1 metadata;resource/pool/draw/copy/clock/helper/libm/platform/source/runtime remain separate |
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
-| Native first-attack target and paired output ownership | EVT-01, JUMP-01 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Prioritize native requested complete GetFirstAttackTarget/BattleGetFirstAttackUnit/called predicate/body-part service capture/setup/scan/output order;source/Game/runtime remain separate |
+| Native first-attack target and paired output ownership | EVT-01, JUMP-01 | VALIDATED binary / lock released, 2026-10-12 | Documentation agent ID 2 | [Pair/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md),[event/body part](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md):seven complete local bodies,captured B/raw outputs/mode pairs/slot63 miss/kind predicate/body-before-ID/write order/source part witness;source/Game/runtime separate;host field_movement failure recorded |
 | DVD manager dispatch initialization and shutdown | EVT-01, JUMP-01, DMG-02 | DEFERRED / lock released, 2026-10-12 | Documentation agent ID 2 | Deferred after user requested prioritizing documentation needed by native port;listings retained /tmp/id2-dvdmain.disasm,/tmp/id2-dvdinit.disasm,/tmp/id2-dvddelete.disasm;no recovered contract claimed |
 | DVD manager synchronous request and wait protocol | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Slot open/global callback](behavior/file/DVD_MANAGER_SLOT_OPEN_AND_GLOBAL_CALLBACK.md),[read/wait](behavior/file/DVD_MANAGER_SYNCHRONOUS_READ_PROTOCOL.md):complete Open/Read/SetupCallback,256*152 slots/8000 gate/path-1/parameter truncation,request flag rereads/0002 yield/length return/global callback separation;worker/direct SDK I/O/platform/source/runtime remain separate |
 | Type5 nested resource pointer relocation | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Setup](behavior/file/FILE_TYPE5_NESTED_POINTER_SETUP.md),[clear](behavior/file/FILE_TYPE5_NESTED_POINTER_CLEAR.md):complete type5 root25 fields/captured signed count/64-byte records/root-relative parent/child-relative8 fields/order;all local Set/Clear routes linked;source formats/consumers/platform/runtime remain separate |
@@ -506,6 +506,17 @@ Do not invent extra samples for script invocations or suppress inactive private
 sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
+
+ID2 native first-attack documentation reply (2026-10-12):
+[Pair/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md) and
+[event/body output](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md)
+answer the requested COMPLETE local GetFirstAttackTarget/BattleGetFirstAttackUnit/
+800f86f4/GetBodyPartsId consolidation. All seven called query bodies,captured
+battle/raw output order,setup mode ranges/paired stores/last-slot miss,helper raw
+return,Mario/Party null/kind policies and body-before-id/two-setter order supplied.
+Crump/Mario initial part1 source witness is reused;setup/registry/current source
+invariants are explicitly unproven,not invented safe fallback. Short overview
+marked superseded. Movement-wrapper request remains the next priority per user.
 
 Native implementation breadcrumb (2026-10-12): Start/StopWaitEvent and
 WaitGuardMove now bind actual root/DeleteID and global bit01 polling.72 CTest/78
@@ -2680,3 +2691,23 @@ Python stage was again skipped;the independent78-test Python run and earlier
 successful3DS build remain the reported validations. No further repeat without
 source/test/build-state changes;native movement owner should reconcile these
 remaining expectations. ID1 binary/body/address/resource checks remain passing.
+
+ID2 first-attack validation breadcrumb (2026-10-12):new seven-body evidence/
+general checks/all2878 links and make all pass. make test passes71/73 suites;
+core and field_movement fail in concurrent field changes. Exact failures/log:
+/tmp/id2-firsttarget-test.log. ID2 changes no native/test files. Native field owner
+should reconcile its fixtures/implementation;first-attack documentation evidence
+is independently passing. Parent source/Game/runtime requirements remain open.
+
+ID2 first-attack delivery/validation (2026-10-12):user prioritizes documentation
+needed by native port. Own deeper DVD-dispatch scope deferred/lock released;
+native requested first-attack local graph delivered and own lock released.
+Verifier eight hashes(seven complete/one setter identity),185 anchors,one startup
+span,repeat JSON/general1980/initial part source checks and all2878 local links
+pass. make all passes;make test first71/73 with core/field_movement failures,
+rerun72/73 with core RESOLVED and field_movement still failing in concurrent
+native field changes. Separate78 Python tests pass. Logs:
+/tmp/id2-firsttarget-test.log,/tmp/id2-firsttarget-test-rerun.log,
+/tmp/id2-firsttarget-build.log,/tmp/id2-firsttarget-python.log. ID2 changes no
+native/test files. Field owner resolves its fixture;source/Game/original traces
+remain open. Next documentation:pending native movement wrappers.

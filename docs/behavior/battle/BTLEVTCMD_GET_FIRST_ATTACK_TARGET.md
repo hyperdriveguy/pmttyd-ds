@@ -1,5 +1,10 @@
 # btlevtcmd_GetFirstAttackTarget
 
+Implementation contract: [complete capture/output order](FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md)
+and [paired selection/getters](FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md) supersede
+the generic first-enemy interpretation below. Setup mode selects the target role;
+scan miss does not synthesize0 and event null target is unchecked.
+
 **Address:** `0x8010b418`  
 **Size:** 120 bytes (30 instructions)  
 **Evidence class:** B (inspected bytes/control flow in US binary)

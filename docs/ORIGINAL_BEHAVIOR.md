@@ -960,3 +960,11 @@ binary-derived modeling/tangent addresses are checked;previous803e tangent
 locations corrected to803d. Original SDK/push/render/material/GX/resource/source/
 lifetime/numeric/visual composition remains open. Host movement failures are
 recorded separately;neither static coverage nor host green would prove full game.
+
+ID2 native-port first-attack delivery (2026-10-12):
+[paired selector/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md)
+and [event/body-part order](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md)
+close seven complete local bodies requested by native EVT-01. Captured battle/raw
+output order,setup modes/paired outputs/last-slot miss,getter kind/null policies,
+body-before-id/setters and initial part source witness are explicit. Deeper DVD
+work deferred per user priority;source/Game/original runtime remain open.

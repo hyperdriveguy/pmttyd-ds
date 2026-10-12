@@ -1,5 +1,29 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2 priority shift and native first-attack contracts
+
+User clarified prioritizing DOCUMENTATION for functions needed by native port.
+Deferred deeper DVD Main/init/delete recovery and released that unfinished scope
+without a completion claim. Prioritized native EVT-01 GetFirstAttackTarget request.
+Two consolidated contracts close seven local selector/getter/body/event bodies:
+captured battle/raw output order,paired setup modes,last-slot miss,null/kind
+predicate,body-before-ID/write order and concrete initial part1 source witness.
+Short first-enemy overview marked superseded;own first-attack lock released.
+
+Validation:verify_first_attack_target.py passes eight hashes(seven complete/one
+setter linked),185 anchors,one startup span;repeat JSON matches. Python compile,
+general1980/initial part checks and all2878 local file links pass. make all passes.
+make test first71/73 fails core and field_movement;after field fixture edits,
+rerun72/73 passes core but field_movement still fails. Separate78 Python tests
+pass. Logs:/tmp/id2-firsttarget-test.log,/tmp/id2-firsttarget-test-rerun.log,
+/tmp/id2-firsttarget-build.log,/tmp/id2-firsttarget-python.log. Scoped staged
+whitespace check passes. ID2 changes no native/test/asset files and claims no
+source-domain/current Game/original execution fidelity.
+
+Next:pending native movement-wrapper contracts. Field implementation owner
+reconciles field_movement and reruns host gate. Setup/registry/unit/part writers,
+full Jump/Game/source/runtime and complete-game requirements remain open.
+
 ## 2026-10-12 — Behavior-doc folder normalization audit
 
 Audited the committed per-subsystem reorganization (76263bb) and closed

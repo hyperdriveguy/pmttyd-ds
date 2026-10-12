@@ -40,8 +40,8 @@ not checked for null. The complete local mode map is:
 
 The two writes occur in attacker-then-target order. Aliased output pointers
 therefore retain the target write. No local random draw, body-part lookup,
-HP/status filter or fallback search occurs after the scan. The Mario/partner
-getter implementations and the mode pointer's producer remain dependencies;
+HP/status filter or fallback search occurs after the scan. The [complete getter/capture graph](FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md)
+now supplies the Mario/partner implementations;the mode pointer's producer remains open;
 this body alone does not establish which mode the harbor encounter enters.
 The helper at 0x800f86f4 is BattleGetPartnerPtr, distinct from the larger
 BattleGetPartyPtr at 0x800f8728.
@@ -133,3 +133,11 @@ Next recover BattleSamplingEnemy/inner core, BattleChoiceSamplingEnemy, mode and
 side producers, registry/part creation and target buffer resets. Record original
 normal/first-attack/no-target and partner-target traces with seed state and exact
 unit/part IDs before claiming complete target equivalence.
+
+Native first-attack request consolidation (ID2,2026-10-12):
+[paired helper/getters](FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md) and
+[event/body-part order](FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md) close all
+seven local bodies and exact capture/output ABI requested by native EVT-01.
+Raw helper return is the last Mario/Partner getter result;paired output roles,
+slot63 miss retention and event null boundary must be preserved. Source/Game/
+setup/unit writers and original traces remain open.
