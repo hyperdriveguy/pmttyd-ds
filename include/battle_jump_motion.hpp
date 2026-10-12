@@ -33,7 +33,10 @@ struct JumpMotionServices {
     JumpVector (*getPosition)(void*,MarioJumpUnit&)=nullptr;
     void (*setPosition)(void*,MarioJumpUnit&,JumpVector)=nullptr;
     void (*playSound)(void*,uint32_t,JumpVector)=nullptr;
+    double (*cos)(void*,double)=nullptr;
 };
+void setMoveCurrentPosition(MarioJumpUnit&,JumpVector);
+void setMoveTargetPosition(MarioJumpUnit&,JumpVector);
 // Source/destination may overlap; ordered partial writes are intentional.
 void loadUnitSoundMode(int32_t type,int32_t mode,const uint8_t* source,uint8_t* destination);
 float reviseJumpAngle(float,const JumpMotionServices&);
@@ -46,6 +49,7 @@ struct JumpEventServices {
     int32_t (*translateActor)(void*,int32_t)=nullptr;
     MarioJumpUnit* (*unit)(void*,int32_t)=nullptr;
     void (*store)(void*,int32_t destination,int32_t value)=nullptr;
+    float (*resolveFloat)(void*,int32_t)=nullptr;
 };
 // Re-resolves all seven raw operands on every invocation, including resumptions.
 int marioJumpMotionEvent(MarioJumpEvent&,const std::array<int32_t,7>& operands,

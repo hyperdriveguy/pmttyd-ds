@@ -1,5 +1,22 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Mario movement-baseline sentinel correction
+
+Review of the delivered approach contract exposed a MarioJumpPosition bug:
+its SetMoveCurrentPos was represented as whole-vector assignment. It now uses
+the original per-axis binary32 sentinel rule,retaining prior baseline axes when
+visible coordinates equal-250000000. Heading/distance/direction still use the
+raw visible position temporaries,not the sentinel-preserved baseline. Target
+setter now shares the same explicit helper. Added a derived test with all three
+visible axes equal sentinel and retained prior baseline. New optional cos and
+float-resolver service slots support the next recovered approach implementation.
+
+Validation:make test passed twelve CTest suites plus58 Python tests;make all
+rebuilt motion and ttyd-2ds.3dsx. No emulator run for this unbound service path.
+Original math,FPSCR and movement/event ownership remain open. Next:GetMoveFrame
+query and MovePosition approach;retain their distinct count policies and sound
+callbacks. Full remake remains incomplete.
+
 ## 2026-10-12 — Native command-service request binding
 
 Native event adapter now uses StartAC/ResultAC/StopAC portable services for Jump

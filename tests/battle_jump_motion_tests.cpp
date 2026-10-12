@@ -85,6 +85,11 @@ int main() {
     assert(sentinel.destinationX==-250000000 && sentinel.unit.target.x==10);
     assert(sentinel.unit.baseline.x==5 && sentinel.unit.direction==-1);
     assert(sentinel.unit.visible.y==20 && sentinel.setCalls==2); // strict Y clamp, oldN2.
+    Fixture retained;retained.unit.visible={-250000000,-250000000,-250000000};
+    retained.unit.baseline={7,8,9};MarioJumpEvent retainedEvent;
+    marioJumpMotion(retained.unit,retainedEvent,args(2),true,retained.services());
+    assert(retained.unit.baseline.x==53.5f && retained.unit.baseline.y==4 && retained.unit.baseline.z==4.5f);
+    assert(retained.unit.direction==1); // Direction still compares raw visible X.
     Fixture strict;strict.unit.delta={1,0,2};strict.unit.target.y=10;
     strict.unit.height=0;strict.unit.remaining=3;MarioJumpEvent er;er.phase=1;
     assert(marioJumpMotion(strict.unit,er,args(3),false,strict.services())==0);

@@ -70,6 +70,16 @@ float reviseJumpAngle(float input,const JumpMotionServices& s) {
     if(result<0.f) {result=add(result,360.f);if(result>=360.f)result=0.f;}
     return result;
 }
+void setMoveCurrentPosition(MarioJumpUnit& u,JumpVector p) {
+    if(p.x!=-250000000.f)u.baseline.x=p.x;
+    if(p.y!=-250000000.f)u.baseline.y=p.y;
+    if(p.z!=-250000000.f)u.baseline.z=p.z;
+}
+void setMoveTargetPosition(MarioJumpUnit& u,JumpVector p) {
+    if(p.x!=-250000000.f)u.target.x=p.x;
+    if(p.y!=-250000000.f)u.target.y=p.y;
+    if(p.z!=-250000000.f)u.target.z=p.z;
+}
 int marioJumpMotion(MarioJumpUnit& u,MarioJumpEvent& e,const MarioJumpArguments& a,
                     bool firstCall,const JumpMotionServices& s) {
     const JumpVector input{a.x,a.y,a.z};
@@ -77,14 +87,12 @@ int marioJumpMotion(MarioJumpUnit& u,MarioJumpEvent& e,const MarioJumpArguments&
         e.phase=1;
         if(a.mode==1)e.phase=2;
         else {
-            if(a.x!=-250000000)u.target.x=input.x;
-            if(a.y!=-250000000)u.target.y=input.y;
-            if(a.z!=-250000000)u.target.z=input.z;
-            u.baseline=get(u,s);
+            setMoveTargetPosition(u,input);
+            const auto current=get(u,s);setMoveCurrentPosition(u,current);
             assert(s.heading && s.distance);
-            u.heading=s.heading(s.user,u.baseline.x,u.baseline.z,input.x,input.z);
-            u.distance=s.distance(s.user,u.baseline.x,u.baseline.z,input.x,input.z);
-            const float dx=sub(input.x,u.baseline.x);
+            u.heading=s.heading(s.user,current.x,current.z,input.x,input.z);
+            u.distance=s.distance(s.user,current.x,current.z,input.x,input.z);
+            const float dx=sub(input.x,current.x);
             if(dx>0)u.direction=1;else if(dx<0)u.direction=-1;
             u.remaining=a.count;
             if(u.remaining==0) {
