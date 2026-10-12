@@ -928,3 +928,13 @@ interpreter source was read as a public operation-semantic cross-check (link in
 SDK distance doc);GPL-2.0-or-later implementation was not copied into native code.
 No asset conversion,original execution,ISO/profile/save mutation or original
 binary/dialogue distribution occurred.
+
+Partner front-wall research by ID1 (2026-10-12):verify_field_partner_front_wall.py
+with field_partner_front_wall_evidence.json pins eight containing DOL hashes;
+seven local bodies complete,the backend only selected layout/filter regions.
+It checks62 instructions,16 constants,four data-span hashes and two lecture
+imports. Original normal/point ABI was corrected from concrete backend stores;
+hidden-block keys remain exact identifiers and hashed spans. Original ELF/listings
+and field-partner-front-wall-evidence.json stay ignored under artifacts/reference/
+behavior. No asset conversion,original execution,ISO/profile/save mutation or
+original binary/dialogue distribution occurred.

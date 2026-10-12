@@ -112,7 +112,8 @@ Request partyGetMoveDirSpd again,then
 **unk_800c27c0(P,&position,speed,direction,P+0xf4,P+0xf0)**. Store the resulting
 position X/Z again. These are ordered service calls using floating outputs;
 the direction/correction local bodies are now linked;called trig/geometry,
-wall and surrounding-correction bodies remain open.
+the [front-wall local body/filters](FIELD_PARTNER_FRONT_WALL_QUERY.md) are
+now specified;full ray backend and surrounding correction remain open.
 
 If P+0x32 is exactly1,request unk_80150fac(P) and return. Any other value
 requests unk_801512e0(P),then party_force_reset_outofscreen(P)0x8014b1a8,

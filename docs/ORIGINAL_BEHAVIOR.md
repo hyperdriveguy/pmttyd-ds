@@ -500,3 +500,10 @@ now establish two initial256-slot arrays,selected-array bulk reset with bank/
 schedule/ID/speed preservation,distinct SDK allocation and four direct DOL
 bindings. Full context/capacity/source/heap/scene/platform/clock domains and
 original reset/transition traces remain open.
+
+
+[Partner front-wall query](behavior/FIELD_PARTNER_FRONT_WALL_QUERY.md) and
+[filters/status](behavior/FIELD_PARTNER_FRONT_WALL_FILTERS.md) now specify
+ordered rays,quantized distance,half-tangent correction and asymmetric hit/null
+returns. Backend result anchors correct the earlier swapped ABI labels:point+24,
+normal+30. Full backend/traversal/mesh/domain and original collision traces remain open.

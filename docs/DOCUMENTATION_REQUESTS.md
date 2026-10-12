@@ -19,7 +19,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | --- | --- | --- | --- | --- |
 | Event context initialization,reinitialization and capacity provenance | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Context init/reset](behavior/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md),[SDK heap/callers](behavior/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md):complete Init/ReInit/allocator local policy,two original256-slot arrays,bank/global preservation and four direct DOL bindings;other heap/platform/time/source/scene/domain/original traces remain open;make test32 suites/58 Python tests and make all pass |
 | Event dispatch tail,debug formatter and complete opcode inventory | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Tail/debug](behavior/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md),[all119 coverage](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md):complete113..118/prefix11/no-ops,formatter/slot local bodies and full table;local opcode coverage closed,source/domain/platform/original traces remain open;native fixture/terrain gates resolved,full make test now passes |
-| Partner front-wall query and local position correction | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover partySearchFrontWall full local ray/filter/selection/write/return graph and actual stay arguments;ray backend/surrounding/terrain engines,EVT-01 and original traces remain separate |
+| Partner front-wall query and local position correction | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Query](behavior/FIELD_PARTNER_FRONT_WALL_QUERY.md),[filters/status](behavior/FIELD_PARTNER_FRONT_WALL_FILTERS.md):complete local ray/quantization/projection/return and mask/name/status/height answered;corrected point+24/normal+30 ABI;full ray backend/surrounding/mesh/domain and original traces remain open |
 | Event data readers,bitwise,time and memory opcode bodies | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Readers](behavior/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),[bitwise/time/memory](behavior/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md),[buffers/allocator](behavior/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md):complete65..90 and local allocator/fill/cache bodies;indexed signed-word float differs from sequential IEEE load,query/write/ownership order explicit;other VM/domain/source/runtime requests remain open |
 | Partner target-distance and footmark clearing services | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Clear/ID](behavior/FIELD_PARTNER_FOOTMARK_CLEAR_AND_ID.md),[live targets](behavior/FIELD_PARTNER_LIVE_TARGET_DISTANCES.md),[SDK distance](behavior/FIELD_PARTNER_SDK_DISTANCE_NUMERICS.md):complete local selection/reset/ID and paired norm answered;source/history consumer/terrain/numeric environment/domain and original traces remain open |
 | Complete event IF predicates and ELSE/END lexical continuation | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Integer/mask/scans](behavior/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md),[float/string](behavior/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md):complete12..33,twenty helpers and strcmp,operand order,raw masks,NaN CR tests and consumed-marker scans;data/other opcode domains and original traces remain open |
@@ -1151,3 +1151,13 @@ updates now resolve both assertion failures above. Fresh make test passes32
 CTest suites and58 Python tests;make all rebuilt game/native3DSX successfully.
 Missing-fixture and terrain failures are historical/resolved;ID2 changed no
 native files. Context/init evidence and documentation link checks also pass.
+
+
+ID1 ray ABI correction (2026-10-12):OVERWORLD_WALL_MOVEMENT.md had the
+HitQuery output labels reversed. Original backend computes origin+scaled
+ray into query+0x24 at80016454/58;triangle normal is copied/normalized into
+query+0x30 at80016474..80 and80016530..68. Normal=+30,hit point=+24.
+Partner caller reads+30 normal for its projection. Corrected the doc;native
+high-level ray provider should be checked against this ABI,without swapping
+already correctly named native vector fields. Full backend/numeric traversal
+remains separate. ID1 verifier pins these result-layout anchors.

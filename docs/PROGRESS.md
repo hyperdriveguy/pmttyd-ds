@@ -7512,3 +7512,37 @@ distribution. Next:clock/GP/pause/input/context producers,capacity/stack/label/
 free-slot/source restrictions;SDK/map heap initialization/free/coalescing/sharing;
 REL/indirect scene/callback/address translation and original reset/cancellation/
 Jump/story traces. Complete-game documentation and requirements remain incomplete.
+
+
+## 2026-10-12 — ID1 partner front-wall query and ordered filters
+
+Added [front-wall query](behavior/FIELD_PARTNER_FRONT_WALL_QUERY.md) and
+[filters/status](behavior/FIELD_PARTNER_FRONT_WALL_FILTERS.md). Complete local
+query covers upper/lower origins,independent filter choice,distance quantization,
+normal projection,asymmetric hit admission and X/Z stores. Ordered attribute/
+hidden-name/global-status/height and owner leaves are explicit. Corrected older
+OVERWORLD_WALL_MOVEMENT labels from selected original backend stores:hit point
+is query+24,normal+30. Inbox breadcrumb requests native provider ABI review;
+no already-correct native vector fields swapped by ID1. Full ray backend is
+fingerprinted but only selected result-layout/filter regions documented here.
+
+Validation:verify_field_partner_front_wall.py passed eight containing DOL
+hashes(seven local bodies complete,backend selected regions),62 instruction
+anchors,16 constants,four data spans and two lecture imports. Repeated metadata
+byte-identical;Python compilation and prior executor verifier passed. General
+verifier passed1980 instruction anchors;all1208 behavior links resolved at the
+check. Gekko audit passed536 files/74519 instructions/455 paired-single ops,
+zero changes or unknowns. Initial make test failed core_tests.cpp:609
+stepJump.jumpHeight>0 during concurrent native edits;after its new assertions/
+state arrived,rerun passed32 CTest and58 Python tests. make all succeeded with
+no rebuild required. Exact logs:/tmp/id1-front-wall-test.log and
+/tmp/id1-front-wall-test-rerun.log. Original ISO read-only;no original execution/
+emulator observation,asset conversion,profile/save mutation or original binary/
+dialogue distribution. Only ID1 scoped front-wall lock released;concurrent
+native/ID2 changes preserved outside this scoped commit.
+
+Next:surrounding/floor/fly and full ray backend/traversal/mesh numerics;
+homing/fall/jump/behind services and source/owner/flag/index domains;original
+collision trajectories and complete field/battle teardown. Full documentation/
+remake remain incomplete;complete-game requirements deferred until sufficient
+system coverage.

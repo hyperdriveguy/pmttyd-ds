@@ -1,0 +1,410 @@
+{
+  "schema": 1,
+  "bodies": [
+    {
+      "name": "partySearchFrontWall",
+      "address": 2148281344,
+      "size": 1384,
+      "sha256": "4e1882197e4cd24f9bd4883cc04ae499e947bd874642ca9a54b665bf1c870aee",
+      "scope": "complete local body"
+    },
+    {
+      "name": "chkfilter",
+      "address": 2148289180,
+      "size": 228,
+      "sha256": "73c76973d5cb2c003469c89fe1fa15b37a1f98dc74a9e69038969d36e74968ca",
+      "scope": "complete local body"
+    },
+    {
+      "name": "chkfilterYoshi",
+      "address": 2148288944,
+      "size": 236,
+      "sha256": "689d8eb0356b7c266d95a91039a18554779b41afc3bcb2a805fa82f4a1abded1",
+      "scope": "complete local body"
+    },
+    {
+      "name": "chkfilterNokotaro",
+      "address": 2148288716,
+      "size": 228,
+      "sha256": "314236eb9e3d7c20ef4eb999063a3b56ea174d39e2c9fda828d1d24f0a05b9fd",
+      "scope": "complete local body"
+    },
+    {
+      "name": "partyGetHeight",
+      "address": 2148263108,
+      "size": 48,
+      "sha256": "df964b90a1ae526f27d3f4886d4f822269ade53123265f2006d673000c590ddb",
+      "scope": "complete local body"
+    },
+    {
+      "name": "yoshiGetStatus",
+      "address": 2148232852,
+      "size": 204,
+      "sha256": "9f977b0acf091022019c028c4c87b811ee777612345767eafd3c395d5159258c",
+      "scope": "complete local body"
+    },
+    {
+      "name": "mobjHitObjPtrToPtr",
+      "address": 2147874756,
+      "size": 28,
+      "sha256": "28e7ebf72f2330d315665c2a3093488d42a8f6a7fced3dd06ecd190ab7a96195",
+      "scope": "complete local body"
+    },
+    {
+      "name": "hitCheckVecFilter",
+      "address": 2147571876,
+      "size": 3332,
+      "sha256": "b15fb470ab90907c5637b54cf7421c5a049182abc5f58e6473370e24d2e0904c",
+      "scope": "backend result-layout/filter regions only"
+    }
+  ],
+  "anchors": [
+    {
+      "address": 2148281428,
+      "hex": "4bf43239"
+    },
+    {
+      "address": 2148281448,
+      "hex": "c022a0d8"
+    },
+    {
+      "address": 2148281460,
+      "hex": "efe0f07a"
+    },
+    {
+      "address": 2148281468,
+      "hex": "4bffb849"
+    },
+    {
+      "address": 2148281596,
+      "hex": "4bff4199"
+    },
+    {
+      "address": 2148281616,
+      "hex": "388449b0"
+    },
+    {
+      "address": 2148281660,
+      "hex": "388448cc"
+    },
+    {
+      "address": 2148281680,
+      "hex": "38844a9c"
+    },
+    {
+      "address": 2148281744,
+      "hex": "ec65007a"
+    },
+    {
+      "address": 2148281760,
+      "hex": "fc80181e"
+    },
+    {
+      "address": 2148281804,
+      "hex": "efa02824"
+    },
+    {
+      "address": 2148281816,
+      "hex": "d3be00ec"
+    },
+    {
+      "address": 2148281876,
+      "hex": "ec82007a"
+    },
+    {
+      "address": 2148281884,
+      "hex": "ec44107c"
+    },
+    {
+      "address": 2148281888,
+      "hex": "ec2429bc"
+    },
+    {
+      "address": 2148281896,
+      "hex": "d01f0000"
+    },
+    {
+      "address": 2148281908,
+      "hex": "d01f0008"
+    },
+    {
+      "address": 2148281944,
+      "hex": "c022a0dc"
+    },
+    {
+      "address": 2148282028,
+      "hex": "4bff3fe9"
+    },
+    {
+      "address": 2148282244,
+      "hex": "efe02824"
+    },
+    {
+      "address": 2148282284,
+      "hex": "fc201834"
+    },
+    {
+      "address": 2148282304,
+      "hex": "fc03103c"
+    },
+    {
+      "address": 2148282320,
+      "hex": "fc03103c"
+    },
+    {
+      "address": 2148282336,
+      "hex": "fc03103c"
+    },
+    {
+      "address": 2148282504,
+      "hex": "4bf43fb5"
+    },
+    {
+      "address": 2148282520,
+      "hex": "4082006c"
+    },
+    {
+      "address": 2148282524,
+      "hex": "d3fe00ec"
+    },
+    {
+      "address": 2148282528,
+      "hex": "7f83e378"
+    },
+    {
+      "address": 2148282608,
+      "hex": "d01f0000"
+    },
+    {
+      "address": 2148282620,
+      "hex": "d01f0008"
+    },
+    {
+      "address": 2148282636,
+      "hex": "d01e00ec"
+    },
+    {
+      "address": 2148282648,
+      "hex": "ec1e007a"
+    },
+    {
+      "address": 2148282664,
+      "hex": "ec1e007a"
+    },
+    {
+      "address": 2148289228,
+      "hex": "38030080"
+    },
+    {
+      "address": 2148289260,
+      "hex": "4182000c"
+    },
+    {
+      "address": 2148289272,
+      "hex": "54800001"
+    },
+    {
+      "address": 2148289304,
+      "hex": "387f0015"
+    },
+    {
+      "address": 2148289364,
+      "hex": "4bf9ac71"
+    },
+    {
+      "address": 2148289016,
+      "hex": "4182000c"
+    },
+    {
+      "address": 2148289032,
+      "hex": "4182000c"
+    },
+    {
+      "address": 2148288764,
+      "hex": "38030005"
+    },
+    {
+      "address": 2148288772,
+      "hex": "4182000c"
+    },
+    {
+      "address": 2148289300,
+      "hex": "389e0130"
+    },
+    {
+      "address": 2148289324,
+      "hex": "389e0148"
+    },
+    {
+      "address": 2148289344,
+      "hex": "389e0160"
+    },
+    {
+      "address": 2148263140,
+      "hex": "ec21002a"
+    },
+    {
+      "address": 2148232904,
+      "hex": "4082000c"
+    },
+    {
+      "address": 2148232936,
+      "hex": "38800001"
+    },
+    {
+      "address": 2148232960,
+      "hex": "38800002"
+    },
+    {
+      "address": 2148233008,
+      "hex": "38800003"
+    },
+    {
+      "address": 2148233032,
+      "hex": "38800004"
+    },
+    {
+      "address": 2147874768,
+      "hex": "806300d0"
+    },
+    {
+      "address": 2147574868,
+      "hex": "38ba0024"
+    },
+    {
+      "address": 2147574872,
+      "hex": "48288729"
+    },
+    {
+      "address": 2147574900,
+      "hex": "907a0030"
+    },
+    {
+      "address": 2147574912,
+      "hex": "901a0038"
+    },
+    {
+      "address": 2147575088,
+      "hex": "482886b5"
+    },
+    {
+      "address": 2147575108,
+      "hex": "901a0024"
+    },
+    {
+      "address": 2147575120,
+      "hex": "901a002c"
+    },
+    {
+      "address": 2147575132,
+      "hex": "909a0030"
+    },
+    {
+      "address": 2147575144,
+      "hex": "901a0038"
+    },
+    {
+      "address": 2148866936,
+      "hex": "4bf71089"
+    }
+  ],
+  "constants": [
+    {
+      "address": 2151814424,
+      "hex": "40c00000"
+    },
+    {
+      "address": 2151814404,
+      "hex": "3f000000"
+    },
+    {
+      "address": 2151814440,
+      "hex": "3f400000"
+    },
+    {
+      "address": 2151814408,
+      "hex": "00000000"
+    },
+    {
+      "address": 2151814444,
+      "hex": "bf000000"
+    },
+    {
+      "address": 2151814448,
+      "hex": "447a0000"
+    },
+    {
+      "address": 2151814452,
+      "hex": "41300000"
+    },
+    {
+      "address": 2151814428,
+      "hex": "3f800000"
+    },
+    {
+      "address": 2151814456,
+      "hex": "42340000"
+    },
+    {
+      "address": 2151814460,
+      "hex": "bf800000"
+    },
+    {
+      "address": 2151813844,
+      "hex": "41940000"
+    },
+    {
+      "address": 2150414456,
+      "hex": "4330000080000000"
+    },
+    {
+      "address": 2150414464,
+      "hex": "3fe0000000000000"
+    },
+    {
+      "address": 2150414472,
+      "hex": "4008000000000000"
+    },
+    {
+      "address": 2150414480,
+      "hex": "0000000000000000"
+    },
+    {
+      "address": 2151801800,
+      "hex": "7fffffff"
+    }
+  ],
+  "data": [
+    {
+      "address": 2150414312,
+      "size": 12,
+      "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b"
+    },
+    {
+      "address": 2150414496,
+      "size": 23,
+      "sha256": "0cb24ec640ef0b0319f8c084552ee48e7c01f58cc969c5744b675fc9a850861b"
+    },
+    {
+      "address": 2150414520,
+      "size": 22,
+      "sha256": "91a104819d9919fb7d3e4033eaee691f5717f142b549a08dac04b805fa4c4b88"
+    },
+    {
+      "address": 2150414544,
+      "size": 24,
+      "sha256": "8507dd22f233073b400ac016489fa53d526af361dc6e38635752e122ba3c7e46"
+    }
+  ],
+  "rel_sha256": "d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a",
+  "rel_imports": [
+    {
+      "file_offset": 300492,
+      "address": 2148445880
+    },
+    {
+      "file_offset": 301400,
+      "address": 2148445808
+    }
+  ]
+}

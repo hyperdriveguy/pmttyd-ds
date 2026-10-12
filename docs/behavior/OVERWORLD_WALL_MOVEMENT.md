@@ -32,7 +32,11 @@ forward height and falling motions affect the around-pass correction cap.
 ## Ray provider and filter boundary
 
 Original HitQuery input origin is record+0xc, direction+0x18, maximum length+0x3c;
-output normal+0x24 and hit point+0x30 accompany rewritten distance+0x3c.
+output hit point+0x24 and normal+0x30 accompany rewritten distance+0x3c.
+ID1 corrected these previously reversed labels2026-10-12:the backend computes
+origin plus scaled direction into+0x24 at0x80016454/58,and copies/normalizes
+the triangle normal into+0x30 at0x80016474..80/0x80016530..68.
+[Partner ray contract](FIELD_PARTNER_FRONT_WALL_QUERY.md) pins these anchors.
 `hitCheckVecFilter`0x800158a4 returns the retained node token. It calls the filter
 on each candidate node; return0 rejects, nonzero admits (0x80016190–198).
 The general oblique ray path performs triangle geometry checks and strict nearer
