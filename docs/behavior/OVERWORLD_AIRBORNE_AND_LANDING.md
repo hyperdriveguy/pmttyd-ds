@@ -172,6 +172,24 @@ from804208e4 loaded8008c2b0 and stored8008c2c0; all-ray miss leaves it at -1.
 Do not reset it to0, quantize head normals using the foot-search policy, or
 clear the slope record merely because this query begins.
 
+Ordinary position-output alias: marioSearchHead captures position pointer in
+r26 at8008c228 and clearance pointer in r27 at8008c22c. It never writes
+positionX+0 or positionZ+8. Contact writes only positionY+4 at8008c6e0; near-miss
+writes only clearance at8008c6c4/8008c700 and leaves position XYZ unchanged.
+The separate Paper branch also writes only Y at8008c638. Consequently ordinary
+marioChkOverhead's rootX copy8008ca80–8008ca84 is an identity copy, not a hidden
+horizontal correction. Do not move root XZ to an offset probe's ray hit point.
+
+After a low-ceiling pending WALK1/DASH2 request, ordinary mot_walk80087994 and
+mot_dash8008763c pending entry consume bit0 and clear airflags0x000f0000
+(80087a64–80087a74 and8008770c–8008771c), but neither whole local callback
+clears vertical tuple+7c/+80/+84/+88 or signed counter+50. These are retained
+until another documented owner writes them. Thus the next ordinary ground
+query can see nonzero vertical input and the FrontStep counter==0 gate can
+still suppress stair admission. This differs from pending idle, whose entry
+explicitly clears tuple/counter and snapshots takeoff position. External
+pose/special-motion services remain excluded from this local no-clear claim.
+
 ## Fall entry, phase and counter preservation
 
 mot_fall8009af1c pending entry consumes bit0, clears jump flag, sets fall flag,
