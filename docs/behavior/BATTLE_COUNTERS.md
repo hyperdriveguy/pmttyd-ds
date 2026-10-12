@@ -4,7 +4,8 @@ US G8ME01 revision 0, recovered 2026-10-12. Identity and B/R/P evidence classes
 are in [ORIGINAL_BEHAVIOR.md](../ORIGINAL_BEHAVIOR.md). B means the original US
 instructions and data, R public naming annotations, P proposed verification.
 This document establishes local counter selection plus its consumer tail, not
-complete battle orchestration. No original gameplay capture was made.
+[complete local orchestration](BATTLE_DAMAGE_ORCHESTRATION.md). No original
+gameplay capture was made.
 
 The pinned [public damage source](https://github.com/doldecomp/ttyd/blob/62131fc31866f85a12e4817a8dc37f0c25eb5f8c/src/battle/battle_damage.c)
 contains only the start of `BattleCheckDamage`. The recovered routines are
@@ -123,11 +124,12 @@ and later work+24. Other callers still require inspection.
 ## Consumer tail in BattleCheckDamage (B)
 
 The caller creates a fresh work record at stack+0x54. Before reaching the
-selector it has a separate superguard path; that path is outside this contract.
+selector it has a separate superguard path, specified in the orchestration
+contract.
 After selection, work+00 decides whether to enter the ordinary defender damage
 path at `0x800fb2c0` or skip to `0x800fb7ac`. The HP-calculator return is held
 in register 22, initialized to zero before these branches. The ordinary path's
-complete control flow remains a separate recovery task.
+complete control flow is specified in the orchestration contract.
 
 At `0x800fb7ac`, increment attacker word +0x280 and copy its low byte to
 defender +0x273. This happens even if work+24 is zero. If work+24 is zero,
@@ -146,7 +148,7 @@ return the caller's current result, without the counter work below. Otherwise:
    each localResult starts at zero and is not subsequently consumed here.
    P is the original defender part pointer, even though A is the recipient.
    These are requests, not proof the status successfully applies: the status
-   routine's immunities/rate/stacking semantics remain a dependency.
+   routine's [immunities/rate/stacking semantics](BATTLE_STATUS_INFLICTION.md) apply.
 3. If work+28 equals zero, set it to 1 (`0x800fb938`). This is an equality
    check, **not** a general clamp to at least one; a negative value stays negative.
 4. If signed byte A+0x0c equals zero, invoke
@@ -154,11 +156,12 @@ return the caller's current result, without the counter work below. Otherwise:
 5. If work+18 is nonzero, obtain defender/part hit position, spawn
    `effBombEntry`, play the referenced 3D sound and call `BattleFogForceStop`
    (`0x800fb95c`–`0x800fb9a4`). Position/effect parameters and sound binding
-   require the presentation contract; this flag is not only numeric damage.
+   are specified in the orchestration contract; this flag also drives presentation.
 6. Stop the action command, set action-command help display type to zero,
    then call `BattleDamageDirect(-5,A,null,work+28,0,work+24,0,1)`
    (`0x800fb9a8`–`0x800fb9d8`). The direct application routine's handling of
-   negative damage, HP caps, death and event flags is not established here.
+   negative damage, HP caps, death and event flags is specified in
+   [direct application](BATTLE_DAMAGE_APPLICATION.md).
 7. If work+2c is nonzero, clear D+0x274 and call
    `BattleRunHitEvent(D,work+2c)` (`0x800fb9dc`–`0x800fb9f8`). Return −1.
 

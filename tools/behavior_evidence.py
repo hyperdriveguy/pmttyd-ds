@@ -23,6 +23,7 @@ FUNCTIONS = (
     'BattleActionCommandResetDefenceResult', 'BattleACPadCheckRecordTrigger',
     'BtlPad_WorkInit', 'BtlPad_WorkUpdate', 'BattleActionCommandManager',
     'BattleActionCommandSetup', 'BattleCheckDamage', 'BattleDamageDirect',
+    'BattleCheckPikkyoro', 'BtlUnit_GetACPossibility', 'BtlUnit_CheckStatusFlag',
     'BattlePreCheckDamage', 'BattleCalculateDamage', 'BattleCalculateFpDamage',
     'btlevtcmd_ResultACDefence',
     'BattleCheckCounter', 'BattleInitCounterPreCheckWork',

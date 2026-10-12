@@ -13,6 +13,23 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'damage_orchestration': {
+        0x800fb0a4: '2c030005', 0x800fb104: '64000008',
+        0x800fb138: '2c000001', 0x800fb20c: '4802e6c5',
+        0x800fb364: '2c030003', 0x800fb448: '3bc00001',
+        0x800fb4b0: 'b01b0260', 0x800fb4b8: '54e0035b',
+        0x800fb5b4: '6000001d', 0x800fb630: '2c030000',
+        0x800fb720: '4bf0a681', 0x800fb73c: '5400039d',
+        0x800fb794: '39400001', 0x800fb7a8: '4082fb18',
+        0x800fb7bc: '981b0273', 0x800fb9d8: '480025fd',
+    },
+    'guard_eligibility_and_selection': {
+        0x801273a8: '2c0000df', 0x801273f4: '3880001b',
+        0x8012741c: '5403d97e', 0x80127800: '80030138',
+        0x800fde94: '54000529', 0x800fdea0: '806363f4',
+        0x800fdf30: '4bf07e71', 0x800fdf4c: '7c601851',
+        0x800fdf8c: '67ff0100', 0x800fdfb8: '93fe0000',
+    },
     'status_presentation': {
         0x800fc1b0: '540007bd', 0x800fc238: '4182002c',
         0x800fc268: 'c042ad88', 0x800fc2d0: '480eeca5',
@@ -213,6 +230,20 @@ def verify(iso_path):
             if struct.unpack('>f', read(address, 4))[0] != value:
                 raise ValueError(f'Status effect constant mismatch {address:#x}')
         print('Five status effect position constants verified')
+        for address, value in {0x804221b0: 60.0, 0x804221b4: 45.0,
+                               0x804221b8: 10.0, 0x804221bc: 0.75,
+                               0x804221c0: 1.0}.items():
+            if struct.unpack('>f', read(address, 4))[0] != value:
+                raise ValueError(f'Orchestration effect constant mismatch {address:#x}')
+        for address, name in {0x802ee064: 'SFX_SYSTEM_GREAT1',
+                              0x802ee078: 'SFX_SYSTEM_NICE1',
+                              0x802ee08c: 'SFX_BTL_THUNDERS_ATTACK4'}.items():
+            expected = name.encode('ascii') + b'\0'
+            if read(address, len(expected)) != expected:
+                raise ValueError(f'Orchestration sound binding mismatch {address:#x}')
+        if read(0x802ee050, 20) != bytes(20):
+            raise ValueError('Pikkyoro candidate initializer mismatch')
+        print('Orchestration: five floats, three sound keys and candidate initializer verified')
         status_tables = {
             0x80364204: [0x7970, 0x792c, 0x7970, 0x7970, 0x7adc,
                          0x7970, 0x7970, 0x7970, 0x7970, 0x7970,
