@@ -994,3 +994,15 @@ hidden-block keys remain exact identifiers and hashed spans. Original ELF/listin
 and field-partner-front-wall-evidence.json stay ignored under artifacts/reference/
 behavior. No asset conversion,original execution,ISO/profile/save mutation or
 original binary/dialogue distribution occurred.
+
+
+Partner surrounding-wall research by ID1 (2026-10-12):
+verify_field_partner_around.py and field_partner_around_evidence.json pin seven
+complete local US DOL bodies,83 instructions,13 constants,five data-span hashes
+and two lecture imports. Bodies are the actual partner wrapper,shared surrounding
+core,global view leaf and four SDK vector leaves. Original listings/ELFs and
+field-partner-around-evidence.json remain ignored under artifacts/reference/
+behavior. Shared dot admission and pre-cap saved-vector claims corrected from
+original bytes. The supplied ISO stayed read-only;no asset conversion,original
+execution,profile/save mutation or original binary/dialogue distribution occurred.
+Metadata contains identities/selected anchors,not complete original bodies.

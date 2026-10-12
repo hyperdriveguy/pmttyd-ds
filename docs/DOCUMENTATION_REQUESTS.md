@@ -18,7 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Event timestamp producer and main-loop pause/update binding | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Retrace clock](behavior/EVENT_RETRACE_TIME_PUBLICATION.md),[outer/update loop](behavior/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md):complete clock publication prefix/window/raw readers and main/StMain/idle body,scoped refresh/registration;other callback tail/input/scene/platform/domain and measured cadence/original traces remain open |
-| Partner surrounding-wall correction and called search body | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover unk_800c27c0 wrapper and called surrounding search complete local ray/order/position contract;full ray backend/terrain/motion engines,EVT-01 and original traces remain separate |
+| Partner surrounding-wall correction and called search body | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Binding/core/numerics](behavior/FIELD_PARTNER_SURROUNDING_WALL.md):mode1/width override,global view/filter ownership and local two-pass/vector graph answered;corrected dot sign and pre-cap saved vector;full ray/filter/terrain/math/domain/EVT-01 and original traces remain open |
 | Event context initialization,reinitialization and capacity provenance | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Context init/reset](behavior/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md),[SDK heap/callers](behavior/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md):complete Init/ReInit/allocator local policy,two original256-slot arrays,bank/global preservation and four direct DOL bindings;other heap/platform/time/source/scene/domain/original traces remain open;make test32 suites/58 Python tests and make all pass |
 | Event dispatch tail,debug formatter and complete opcode inventory | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Tail/debug](behavior/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md),[all119 coverage](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md):complete113..118/prefix11/no-ops,formatter/slot local bodies and full table;local opcode coverage closed,source/domain/platform/original traces remain open;native fixture/terrain gates resolved,full make test now passes |
 | Partner front-wall query and local position correction | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Query](behavior/FIELD_PARTNER_FRONT_WALL_QUERY.md),[filters/status](behavior/FIELD_PARTNER_FRONT_WALL_FILTERS.md):complete local ray/quantization/projection/return and mask/name/status/height answered;corrected point+24/normal+30 ABI;full ray backend/surrounding/mesh/domain and original traces remain open |
@@ -1207,3 +1207,38 @@ behavior/OVERWORLD_WALL_MOVEMENT.md→FIELD_PARTNER_SURROUNDING_WALL.md. ID2 lea
 that ID1/terrain contract work untouched;this is a shared-document arrival
 dependency,not an original-game evidence failure. Timing/general/manager binary
 verifiers and Python compilation pass. ID2 changed no native or asset tooling.
+
+
+ID1 urgent surrounding-wall correction (2026-10-12):original marioChkWallAround
+800891e0 fcmpo;800891e4 cror2,1,2;800891e8 bf2 makes ordered dot>=0
+SKIP second correction;negative/unordered applies half second push (if FP
+exceptions permit continuation). PSVECDotProduct8029ec84 confirms an ordinary
+positive dot,not a negated dot. First vector copied to stack54 at80088db4–bc
+BEFORE cap at80088dd8;dot uses this UNCLAMPED copy. Existing wall doc corrected.
+Native source/field_wall.cpp currently tests >0 to apply,and field_wall_tests
+expect same-direction second push to move -2.5→-7 and reverse push to stay-2.5;
+these two outcomes must reverse for original parity. Native owner should update
+policy/fixtures;ID1 does not edit concurrent native files. Detailed partner binding
+and pinned evidence follow under the ID1 lock.
+
+
+ID1 surrounding-wall delivery and validation (2026-10-12):
+[Binding/core/numerics](behavior/FIELD_PARTNER_SURROUNDING_WALL.md) now exists;
+the concurrent missing-link notice is resolved. Seven complete local hashes,
+83 instructions,13 constants,five spans and two lecture imports pass. Native
+owner still needs the exact reversed dot-admission fixture updates above and
+uncapped first-vector operand. make all succeeded/rebuilt3DSX;initial make test
+failed CMakeLists.txt:142 missing tests/event_data_opcodes_tests.cpp during
+concurrent native work (exact log /tmp/id1-around-test.log). This missing-file
+failure is separate from ID1's binary checks. Only ID1 scoped lock released;
+full terrain/numeric/EVT-01 and original traces remain open.
+
+
+ID1 surrounding-wall host validation completion (2026-10-12):the missing
+concurrent native tests/event_data_opcodes_tests.cpp fixture arrived. Rerun
+make test now passes34 CTest suites and63 Python tests;make all succeeded.
+Historical missing-file log:/tmp/id1-around-test.log;passing rerun:
+/tmp/id1-around-test-rerun.log. Passing tests do not resolve the reversed
+native dot predicate:source/field_wall.cpp still applies when dot>0 and saves
+a capped first push at this check. Exact original acceptance cases are in the
+new contract;native owner review remains required for parity.

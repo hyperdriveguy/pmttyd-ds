@@ -7725,3 +7725,38 @@ window/state/system-mask producers and publication/interrupt domains;callback
 reset tail,SDK/map heap free/sharing,source/REL/callback/address translation and
 original input/pause/idle/retrace/multicredit/Jump/story traces. Complete-game
 documentation and requirements remain incomplete.
+
+
+## 2026-10-12 — ID1 partner surrounding-wall binding and dot correction
+
+Added [surrounding-wall contract](behavior/FIELD_PARTNER_SURROUNDING_WALL.md):
+actual stay→wrapper binding,mode1,width6 override,speed-independent rays,
+global Mario view/filter ownership,fixed two-pass origins,ordered candidates,
+local numerical rules and four complete SDK vector leaves. Corrected existing
+OVERWORLD_WALL_MOVEMENT claims from the original US body:the first vector is
+saved UNCLAMPED before cap,and ordered dot>=0 SKIPS the second correction;
+negative/unordered takes half-add under nontrapping continuation. Inbox gives
+native owner concrete same/opposite-direction fixtures;native code was not
+edited by ID1 and still had the reversed predicate/capped dot operand at check.
+
+Validation:verify_field_partner_around.py passed seven complete body hashes,
+83 instruction anchors,13 constants,five data spans and two lecture imports.
+Repeated metadata byte-identical;Python compilation,prior front-wall verifier
+and existing wall verifier passed. General verifier passed1980 instruction
+anchors. All1237 behavior links resolved at the snapshot;new contract also
+resolves ID2's historical concurrent missing-target notice. Gekko audit passed
+543 files/75201 instructions/496 paired-single ops,zero changes or unknowns.
+Initial make test failed CMakeLists.txt:142 because concurrent native source
+referenced absent tests/event_data_opcodes_tests.cpp;after it arrived,rerun
+passed34 CTest suites and63 Python tests. make all succeeded/rebuilt3DSX.
+Exact logs:/tmp/id1-around-test.log,/tmp/id1-around-test-rerun.log and
+/tmp/id1-around-build.log. Passing native tests are not an original execution
+oracle or proof of corrected surrounding-wall parity. ISO remained read-only;
+no original execution,asset conversion,profile/save mutation or original
+binary/dialogue distribution. Only ID1 scoped lock released;concurrent native/
+ID2 changes remain outside this scoped work.
+
+Next:native owner applies documented dot/operand correction;full scene/ray
+backend,special filters,floor/fly/homing/fall/jump and state/math domains;
+original collision trajectories and field/battle teardown. Complete-game
+behavior documentation and requirements remain incomplete.

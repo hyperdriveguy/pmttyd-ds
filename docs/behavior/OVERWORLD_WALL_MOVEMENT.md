@@ -182,15 +182,21 @@ Start correction V at zero. For each retained blocker add
 origin stays fixed across all angles in this pass; do not query from each partial
 correction. If no angle retained a blocker, return0 and do not move root.
 
-Otherwise save first correction, cap its norm to K=max(1,.125*W). With mode0 and
+Otherwise save the UNCLAMPED first correction, then cap its norm to K=max(1,.125*W). With mode0 and
 motion10 or11, K=max(1,.25*W); mode!=0 retains .125 regardless of falling motion.
-Scale V when norm>K, then add first capped V to actual root. Save that capped
-first V separately. Query a SECOND identical directional pass, captured from
+Scale V when norm>K, then add first capped V to actual root. The separate saved
+first V remains unclamped (copy at0x80088db4–bc,scale at0x80088dd8).
+Query a SECOND identical directional pass, captured from
 this newly corrected root, with a fresh zero correction accumulator.
 
 If no second blockers exist, return1. Otherwise compute dot(savedFirstV,secondV).
-If dot<=0 return1 without second correction. If dot>0, scale second V by.5,
-add it to actual root, return1 (0x800891d8–214). There is no second magnitude cap.
+If ordered dot>=0 return1 without second correction. Otherwise (negative or
+unordered,assuming floating-point exceptions permit continuation),scale second
+V by.5,add it to actual root,return1 (0x800891d8–214). The comparison is
+`fcmpo; cror 2,1,2; bf 2`,which tests greater OR equal before skipping.
+There is no second magnitude cap. Earlier versions reversed this predicate
+and incorrectly described the saved first V as capped;see the
+[partner binding and numeric contract](FIELD_PARTNER_SURROUNDING_WALL.md).
 Do not mistake return1 for a request to reject/revert the already applied root.
 
 ## Remaining boundaries

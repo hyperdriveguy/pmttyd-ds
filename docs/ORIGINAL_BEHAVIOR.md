@@ -515,3 +515,13 @@ bind event timestamp accumulation to raw time-base deltas with GP10/window
 freeze and unconditional baseline updates. Complete main/StMain requests pin
 input-before-battle-before-event ordering and separate render/profile intervals.
 Hardware/gate/scene/numeric domains and original measured cadence remain open.
+
+
+[Partner surrounding-wall binding](behavior/FIELD_PARTNER_SURROUNDING_WALL.md)
+closes the used mode1 wrapper,global view/filter ownership,zero-speed correction,
+fixed pass origins and local SDK vector numerics. Corrected the older shared
+wall contract:save the UNCLAMPED first vector before cap;ordered dot>=0 skips
+second correction,negative/unordered takes half-add under nontrapping continuation.
+Native policy/fixtures were notified via inbox;documentation validation does not
+claim native parity. Full scene/filter/domain/math and original trajectories
+remain open.

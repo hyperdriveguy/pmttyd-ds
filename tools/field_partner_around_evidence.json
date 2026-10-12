@@ -1,0 +1,500 @@
+{
+  "schema": 1,
+  "bodies": [
+    {
+      "name": "unk_800c27c0",
+      "address": 2148280256,
+      "size": 56,
+      "sha256": "08b13d21a7da43717319c47675820063dd26e73156951f33a2dcd14857bb1564",
+      "scope": "complete local body"
+    },
+    {
+      "name": "marioChkWallAround",
+      "address": 2148042960,
+      "size": 2460,
+      "sha256": "9c8ca1abc4669f95986c2fe9e7c6d24a4d8a56be648bebcc7d9f1b465d3d0b2e",
+      "scope": "complete local body"
+    },
+    {
+      "name": "kpaGetStageViewType",
+      "address": 2149576376,
+      "size": 48,
+      "sha256": "5b65b91d65b06db3bf988fe1c9d6183ce50b89e20aa6e42af59eb44ad7cc49f8",
+      "scope": "complete local body"
+    },
+    {
+      "name": "PSVECDotProduct",
+      "address": 2150231172,
+      "size": 32,
+      "sha256": "21d8847b36690065b014ea06619a08a1815c763f2e5e75d3f9a10ec905142ff0",
+      "scope": "complete local body"
+    },
+    {
+      "name": "PSVECMag",
+      "address": 2150231104,
+      "size": 68,
+      "sha256": "b165a1f99a21988eb652fe9612f37b2d141b54ecd27361521ff19d1a45771931",
+      "scope": "complete local body"
+    },
+    {
+      "name": "PSVECScale",
+      "address": 2150230984,
+      "size": 28,
+      "sha256": "e0fbf8bbb6f184d7b21d322b68975adca6dc652510963c83c95b9ceb63e0671d",
+      "scope": "complete local body"
+    },
+    {
+      "name": "PSVECAdd",
+      "address": 2150230912,
+      "size": 36,
+      "sha256": "c7b35d4075874e063982faa1d7d086e5d5ec4d70aed2b56c619b5e440e18e1ab",
+      "scope": "complete local body"
+    }
+  ],
+  "anchors": [
+    {
+      "address": 2148280268,
+      "hex": "80030000"
+    },
+    {
+      "address": 2148280272,
+      "hex": "540004e7"
+    },
+    {
+      "address": 2148280276,
+      "hex": "41820008"
+    },
+    {
+      "address": 2148280280,
+      "hex": "c062a0d8"
+    },
+    {
+      "address": 2148280284,
+      "hex": "7c832378"
+    },
+    {
+      "address": 2148280288,
+      "hex": "38800001"
+    },
+    {
+      "address": 2148280292,
+      "hex": "4bfc60ed"
+    },
+    {
+      "address": 2148043040,
+      "hex": "ff001090"
+    },
+    {
+      "address": 2148043048,
+      "hex": "ff201890"
+    },
+    {
+      "address": 2148043056,
+      "hex": "ff402090"
+    },
+    {
+      "address": 2148043068,
+      "hex": "3b600008"
+    },
+    {
+      "address": 2148043076,
+      "hex": "48176575"
+    },
+    {
+      "address": 2148043088,
+      "hex": "3b600002"
+    },
+    {
+      "address": 2148043148,
+      "hex": "ef620824"
+    },
+    {
+      "address": 2148043172,
+      "hex": "efe10672"
+    },
+    {
+      "address": 2148043180,
+      "hex": "ec1a0028"
+    },
+    {
+      "address": 2148043196,
+      "hex": "ec01002a"
+    },
+    {
+      "address": 2148043204,
+      "hex": "ec23102a"
+    },
+    {
+      "address": 2148043276,
+      "hex": "4bf7d481"
+    },
+    {
+      "address": 2148043384,
+      "hex": "2800001c"
+    },
+    {
+      "address": 2148043420,
+      "hex": "540001cf"
+    },
+    {
+      "address": 2148043460,
+      "hex": "4bf8cde1"
+    },
+    {
+      "address": 2148043528,
+      "hex": "ec02007a"
+    },
+    {
+      "address": 2148043536,
+      "hex": "fc00001e"
+    },
+    {
+      "address": 2148043564,
+      "hex": "efa01024"
+    },
+    {
+      "address": 2148043992,
+      "hex": "fc1de040"
+    },
+    {
+      "address": 2148043996,
+      "hex": "40810020"
+    },
+    {
+      "address": 2148044048,
+      "hex": "ec20f02a"
+    },
+    {
+      "address": 2148044056,
+      "hex": "ec1fe828"
+    },
+    {
+      "address": 2148044084,
+      "hex": "ec4410fa"
+    },
+    {
+      "address": 2148044088,
+      "hex": "ec0100fa"
+    },
+    {
+      "address": 2148044100,
+      "hex": "efded82a"
+    },
+    {
+      "address": 2148044136,
+      "hex": "2c150000"
+    },
+    {
+      "address": 2148044140,
+      "hex": "ef800672"
+    },
+    {
+      "address": 2148044144,
+      "hex": "40820024"
+    },
+    {
+      "address": 2148044152,
+      "hex": "a003002e"
+    },
+    {
+      "address": 2148044176,
+      "hex": "ef800672"
+    },
+    {
+      "address": 2148044188,
+      "hex": "40800008"
+    },
+    {
+      "address": 2148044212,
+      "hex": "90a10054"
+    },
+    {
+      "address": 2148044216,
+      "hex": "90810058"
+    },
+    {
+      "address": 2148044220,
+      "hex": "9001005c"
+    },
+    {
+      "address": 2148044224,
+      "hex": "48215e81"
+    },
+    {
+      "address": 2148044232,
+      "hex": "40810014"
+    },
+    {
+      "address": 2148044236,
+      "hex": "ec3c0824"
+    },
+    {
+      "address": 2148044248,
+      "hex": "48215df1"
+    },
+    {
+      "address": 2148044264,
+      "hex": "48215d99"
+    },
+    {
+      "address": 2148044380,
+      "hex": "90810060"
+    },
+    {
+      "address": 2148044384,
+      "hex": "90610064"
+    },
+    {
+      "address": 2148044388,
+      "hex": "90010068"
+    },
+    {
+      "address": 2148045252,
+      "hex": "4082000c"
+    },
+    {
+      "address": 2148045264,
+      "hex": "38610054"
+    },
+    {
+      "address": 2148045268,
+      "hex": "38810060"
+    },
+    {
+      "address": 2148045272,
+      "hex": "48215aad"
+    },
+    {
+      "address": 2148045280,
+      "hex": "fc010040"
+    },
+    {
+      "address": 2148045284,
+      "hex": "4c411382"
+    },
+    {
+      "address": 2148045288,
+      "hex": "4082000c"
+    },
+    {
+      "address": 2148045292,
+      "hex": "38600001"
+    },
+    {
+      "address": 2148045304,
+      "hex": "c022948c"
+    },
+    {
+      "address": 2148045312,
+      "hex": "482159c9"
+    },
+    {
+      "address": 2148045328,
+      "hex": "48215971"
+    },
+    {
+      "address": 2149576392,
+      "hex": "80030014"
+    },
+    {
+      "address": 2149576396,
+      "hex": "540007fe"
+    },
+    {
+      "address": 2149576400,
+      "hex": "7c000034"
+    },
+    {
+      "address": 2149576404,
+      "hex": "5403d97e"
+    },
+    {
+      "address": 2150231172,
+      "hex": "e0430004"
+    },
+    {
+      "address": 2150231180,
+      "hex": "104200f2"
+    },
+    {
+      "address": 2150231192,
+      "hex": "1065113a"
+    },
+    {
+      "address": 2150231196,
+      "hex": "10231094"
+    },
+    {
+      "address": 2150231112,
+      "hex": "10000032"
+    },
+    {
+      "address": 2150231124,
+      "hex": "1021007a"
+    },
+    {
+      "address": 2150231128,
+      "hex": "10210014"
+    },
+    {
+      "address": 2150231136,
+      "hex": "41820020"
+    },
+    {
+      "address": 2150231140,
+      "hex": "fc000834"
+    },
+    {
+      "address": 2150231156,
+      "hex": "ec42187c"
+    },
+    {
+      "address": 2150230992,
+      "hex": "10000058"
+    },
+    {
+      "address": 2150231004,
+      "hex": "f0048008"
+    },
+    {
+      "address": 2150230920,
+      "hex": "10c2202a"
+    },
+    {
+      "address": 2150230944,
+      "hex": "4e800020"
+    },
+    {
+      "address": 2148867020,
+      "hex": "c07c00f4"
+    },
+    {
+      "address": 2148867024,
+      "hex": "c09c00f0"
+    },
+    {
+      "address": 2148867028,
+      "hex": "4bf70bed"
+    },
+    {
+      "address": 2148867036,
+      "hex": "d01c0058"
+    },
+    {
+      "address": 2148867044,
+      "hex": "d01c0060"
+    }
+  ],
+  "constants": [
+    {
+      "address": 2151814424,
+      "hex": "40c00000"
+    },
+    {
+      "address": 2151811240,
+      "hex": "447a0000"
+    },
+    {
+      "address": 2151811244,
+      "hex": "00000000"
+    },
+    {
+      "address": 2151811252,
+      "hex": "41300000"
+    },
+    {
+      "address": 2151811268,
+      "hex": "3f800000"
+    },
+    {
+      "address": 2151811272,
+      "hex": "43b40000"
+    },
+    {
+      "address": 2151811276,
+      "hex": "3f000000"
+    },
+    {
+      "address": 2151811280,
+      "hex": "bf000000"
+    },
+    {
+      "address": 2151811284,
+      "hex": "43340000"
+    },
+    {
+      "address": 2151811288,
+      "hex": "3e000000"
+    },
+    {
+      "address": 2151811292,
+      "hex": "3e800000"
+    },
+    {
+      "address": 2151846804,
+      "hex": "3f000000"
+    },
+    {
+      "address": 2151846808,
+      "hex": "40400000"
+    }
+  ],
+  "data": [
+    {
+      "address": 2150382864,
+      "size": 12,
+      "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "words": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "address": 2150382876,
+      "size": 12,
+      "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "words": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "address": 2150382888,
+      "size": 12,
+      "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "words": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "address": 2150382900,
+      "size": 12,
+      "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "words": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "address": 2150382952,
+      "size": 8,
+      "sha256": "07af8387624cf8f36152797d2f561246f21237d1d22b5c13006eacfa6f475e43"
+    }
+  ],
+  "rel_sha256": "d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a",
+  "rel_imports": [
+    {
+      "file_offset": 300492,
+      "address": 2148445880
+    },
+    {
+      "file_offset": 301400,
+      "address": 2148445808
+    }
+  ]
+}
