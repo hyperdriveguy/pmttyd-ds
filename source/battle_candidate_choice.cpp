@@ -29,7 +29,7 @@ void chooseBattleCandidate(BattleCandidateBuffer& b,uint32_t flags,const Candida
     if(byte(b,0xa6c)<=0)return;
     assert(s.unit);auto* actor=s.unit(s.user,work,word(b,0xab8));assert(actor);
     const int32_t first=byte(b,0xa6d);emit(b,first,output);
-    std::array<int32_t,74> weights{};assert(first>=0 && first<74);weights[first]=10;
+    std::array<int32_t,74> weights{};const int32_t bonus=byte(b,0xa6d);assert(bonus>=0 && bonus<74);weights[bonus]=10;
     auto update=[&](int32_t& weight,float value) {assert(s.truncate);weight=s.truncate(s.user,value);};
     for(int32_t rank=0;rank<byte(b,0xa6c);++rank) {
         const int32_t index=byte(b,0xa6d+rank);assert(index>=0 && index<74);
@@ -37,8 +37,8 @@ void chooseBattleCandidate(BattleCandidateBuffer& b,uint32_t flags,const Candida
         auto& weight=weights[index];weight=add(weight,100);
         if((flags&1) && u->kind==222)update(weight,mul(1.5f,static_cast<float>(weight)));
         if((flags&2) && u->kind>=224 && u->kind<=230)update(weight,mul(1.5f,static_cast<float>(weight)));
-        if(flags&4)update(weight,mul(static_cast<float>(weight),plus(.4000000059604645f,mul(.10000000149011612f,static_cast<float>(byte(b,0xa6c)-rank)))));
-        if(flags&8)update(weight,mul(plus(.5f,mul(.10000000149011612f,static_cast<float>(rank))),static_cast<float>(weight)));
+        if(flags&4)update(weight,mul(static_cast<float>(weight),plus(.10000000149011612f,mul(.4000000059604645f,static_cast<float>(byte(b,0xa6c)-rank)))));
+        if(flags&8)update(weight,mul(plus(.5f,mul(.4000000059604645f,static_cast<float>(rank))),static_cast<float>(weight)));
         if((flags&0x10) && actor->belong==u->belong)update(weight,mul(1.5f,static_cast<float>(weight)));
         if((flags&0x20) && actor->belong!=u->belong && u->belong!=2)update(weight,mul(1.5f,static_cast<float>(weight)));
         if(flags&0x100)update(weight,mul(minus(2.f,divide(static_cast<float>(u->hp),static_cast<float>(u->maxHp))),static_cast<float>(weight)));
@@ -51,7 +51,7 @@ void chooseBattleCandidate(BattleCandidateBuffer& b,uint32_t flags,const Candida
         const int32_t item=b.weapon->itemId;bool override=false;
         switch(item) {
         case 0:continue;
-        case 142:assert(s.canRecover);override=!s.canRecover(s.user,*u) || status(s,*u,10);break;
+        case 142:assert(s.canAct);override=!s.canAct(s.user,*u) || status(s,*u,10);break;
         case 146:override=status(s,*u,11);break;
         case 147:override=status(s,*u,15);break;
         case 143:override=status(s,*u,14);break;

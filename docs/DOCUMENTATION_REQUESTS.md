@@ -522,6 +522,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Documentation-agent correction breadcrumb (2026-10-12): original chooser
+800febc8 complete disassembly and verifier constants show mode4 uses0.1+0.4*
+(N-rank),mode8 uses0.5+0.4*rank,and item142 calls CanActStatus8012724c.
+Corrected behavior/battle/BATTLE_ENEMY_CANDIDATE_CHOICE.md and semantic chooser;
+FP deficit independently retains0.1. Please follow these corrected source roles
+in future sampling/menu binding documents. Original inspection /tmp/pm-native-choice.*;
+existing verifier pins7 full hashes/48 anchors/14 spans. Bonus permutation is
+also reread after initial output stores (800fec58),now retained in both choosers.
+
 ID2 complete OperationMenuMain/setup/end reply (2026-10-12):
 [Opcode/state publication](behavior/battle/OPERATION_MENU_MAIN_OPCODE_AND_STATE_PUBLICATION.md),
 [navigation/cancel/audience](behavior/battle/OPERATION_MENU_NAVIGATION_CANCEL_AND_AUDIENCE.md),

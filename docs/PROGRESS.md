@@ -288,6 +288,22 @@ requirements and EVT-01/JUMP-01/DMG-02 remain incomplete.
 
 # Progress and next-session handoff
 
+## 2026-10-12 — Correct original choice coefficients and service identity
+
+Read-only complete chooser disassembly exposed earlier documentation errors:
+mode4 is0.1+0.4*(count-rank),mode8 is0.5+0.4*rank,and item142 calls
+CanActStatus8012724c rather than recovery-step80127890. Corrected behavioral
+contract,semantic code/service name and regression expectations. Also retained
+second first-permutation read after initial output writes for bonus ownership.
+Original verification:7 complete hashes/48 anchors/14 spans pass;inspection stays
+/tmp/pm-native-choice.*. Two-row regressions now pin99/50 versus55/90 and
+bonus-owner mutation. No source binary/assets committed or execution claim.
+
+Validation:make test initially80 CTest/90 Python;integrated final81 CTest/90
+Python and make all pass with following native chooser. Final logs:
+/tmp/pm-packed-choice-test.log and /tmp/pm-packed-choice-build.log. Full-game
+and Jump/Game binding incomplete;next native sampling/source ownership.
+
 ## 2026-10-12 — Native takeoff callback and private hit outputs
 
 Added original GetTakeoffPosition80109054 binding over actual event/unit/part/

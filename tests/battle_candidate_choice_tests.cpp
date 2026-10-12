@@ -14,7 +14,7 @@ struct Fixture {
     std::vector<int32_t> outputs,conversions,statusCalls;std::vector<int> calls;
     std::map<uint32_t,uint8_t> itemData;std::vector<uint32_t> itemReads;
     std::map<int,bool> statuses;int work=1,randomCalls=0;int32_t draw=0,bound=0;
-    bool forceDraw=true,forceZero=false,recover=true,mutatePart=false,mutateItem=false;
+    bool forceDraw=true,forceZero=false,recover=true,mutatePart=false,mutateItem=false,mutatePermutation=false;
     int maxCalls=0,fpCalls=0;BattleRandom rng{1};
     Fixture() {
         actor.kind=222;candidate.kind=222;candidate.belong=1;candidate.hp=5;candidate.maxHp=10;
@@ -26,13 +26,14 @@ struct Fixture {
         CandidateChoiceServices s;s.user=this;
         s.captureWork=[](void* p)->void* {auto& f=*static_cast<Fixture*>(p);f.calls.push_back(1);return &f.work;};
         s.output=[](void* p,bool unit,int32_t value) {auto& f=*static_cast<Fixture*>(p);f.calls.push_back(unit?2:3);f.outputs.push_back(value);
-            if(f.mutatePart && unit && value==10)half(f.buffer,6+36*3,99);};
+            if(f.mutatePart && unit && value==10)half(f.buffer,6+36*3,99);
+            if(f.mutatePermutation && unit && value==10)f.buffer.bytes[0xa6d]=2;};
         s.unit=[](void* p,void* work,int32_t id) {auto& f=*static_cast<Fixture*>(p);assert(work==&f.work);f.calls.push_back(4);return id==7?&f.actor:id==10?&f.candidate:&f.second;};
         s.truncate=[](void* p,float value)->int32_t {auto& f=*static_cast<Fixture*>(p);assert(std::isfinite(value) && double(value)>=-2147483648.0 && double(value)<2147483648.0);
             const int32_t result=f.forceZero?0:static_cast<int32_t>(value);f.conversions.push_back(result);return result;};
         s.random=[](void* p,int32_t bound)->int32_t {auto& f=*static_cast<Fixture*>(p);++f.randomCalls;f.bound=bound;return f.forceDraw?f.draw:f.rng.bounded(bound);};
         s.status=[](void* p,DamageUnit&,int32_t id) {auto& f=*static_cast<Fixture*>(p);f.statusCalls.push_back(id);return f.statuses[id];};
-        s.canRecover=[](void* p,DamageUnit&) {auto& f=*static_cast<Fixture*>(p);f.calls.push_back(5);return f.recover;};
+        s.canAct=[](void* p,DamageUnit&) {auto& f=*static_cast<Fixture*>(p);f.calls.push_back(5);return f.recover;};
         s.danger=[](void*,DamageUnit&)->uint8_t {return 5;};
         s.itemByte=[](void* p,uint32_t address) {auto& f=*static_cast<Fixture*>(p);f.itemReads.push_back(address);assert(f.itemData.count(address));return f.itemData[address];};
         s.maxFp=[](void* p,DamageUnit&)->int32_t {auto& f=*static_cast<Fixture*>(p);++f.maxCalls;f.calls.push_back(6);return 20;};
@@ -51,8 +52,10 @@ int main() {
         assert(empty.outputs==std::vector<int32_t>({-1,0}) && empty.calls==std::vector<int>({1,2,3}) && empty.randomCalls==0);
     }
     Fixture ordinary;ordinary.two();const auto untouched=ordinary.buffer.bytes;ordinary.run(4);
-    assert(ordinary.chosen()==10 && ordinary.conversions==std::vector<int32_t>({66,50}));
+    assert(ordinary.chosen()==10 && ordinary.conversions==std::vector<int32_t>({99,50}));
     assert(ordinary.randomCalls==0 && ordinary.rng.state==1 && ordinary.buffer.bytes==untouched);
+    Fixture rankReverse;rankReverse.two();rankReverse.run(8);assert(rankReverse.conversions==std::vector<int32_t>({55,90}) && rankReverse.chosen()==11);
+    Fixture bonus;bonus.two();bonus.mutatePermutation=true;bonus.run();assert(bonus.chosen()==11);
     Fixture alias;alias.mutatePart=true;alias.run();assert(alias.outputs==std::vector<int32_t>({-1,0,10,99,10,99}));
     for(auto entry:std::map<uint32_t,int32_t>{{1,165},{4,55},{8,55},{0x20,165},{0x100,165},{0x200,165},{0x400,137},{0x800,137},{0x1000,165}}) {
         Fixture f;f.run(entry.first);assert(f.conversions==std::vector<int32_t>({entry.second}));

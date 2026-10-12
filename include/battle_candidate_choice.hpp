@@ -16,7 +16,7 @@ struct CandidateChoiceServices {
     int32_t (*truncate)(void*,float)=nullptr;
     int32_t (*random)(void*,int32_t bound)=nullptr;
     bool (*status)(void*,DamageUnit&,int32_t)=nullptr;
-    bool (*canRecover)(void*,DamageUnit&)=nullptr;
+    bool (*canAct)(void*,DamageUnit&)=nullptr;
     uint8_t (*danger)(void*,DamageUnit&)=nullptr;
     uint8_t (*itemByte)(void*,uint32_t originalAddress)=nullptr;
     int32_t (*maxFp)(void*,DamageUnit&)=nullptr;

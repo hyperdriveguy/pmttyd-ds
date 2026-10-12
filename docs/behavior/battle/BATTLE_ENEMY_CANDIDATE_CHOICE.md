@@ -37,8 +37,8 @@ C0.05=0.05000000074505806. Each table result undergoes fctiwz immediately.
 | --- | --- |
 | 0x1 | If signed kind222: single(1.5*float(w)) |
 | 0x2 | If signed kind224..230: single(1.5*float(w)) |
-| 0x4 | single(float(w)*single(C0.4+single(C0.1*float(N-i)))) |
-| 0x8 | single(single(0.5+single(C0.1*float(i)))*float(w)) |
+| 0x4 | single(float(w)*single(C0.1+single(C0.4*float(N-i)))) |
+| 0x8 | single(single(0.5+single(C0.4*float(i)))*float(w)) |
 | 0x10 | If actor/candidate signed belong bytes equal: single(1.5*float(w)) |
 | 0x20 | If belongs differ AND candidate belong!=2: single(1.5*float(w)) |
 | 0x100 | single(single(2.0-single(float(H)/float(M)))*float(w)) |
@@ -63,7 +63,7 @@ condition is already established:
 | Item | Override weight1 when |
 | --- | --- |
 | 0 | Never; jump directly to next candidate |
-| 142 | CheckRecoveryStatus(candidate)==0 OR GetStatus(candidate,10)!=0 |
+| 142 | CanActStatus(candidate)==0 OR GetStatus(candidate,10)!=0 |
 | 146 | GetStatus(candidate,11)!=0 |
 | 147 | GetStatus(candidate,15)!=0 |
 | 143 | GetStatus(candidate,14)!=0 |
@@ -128,3 +128,20 @@ followed by later weapon modification, repeated FP/table queries, deterministic
 mode4 with zero RNG consumption, draw0/prefix boundary, zero-sum no consumption
 and LCG word wrap. These complete local contracts do not establish selection
 UI producers, valid target/domain limits, battle cadence or original traces.
+
+
+## Native implementation correction (2026-10-12)
+
+Read-only original inspection and the existing verifier constant map correct
+three prose labels above:mode4 is C0.1+C0.4*(N-i),mode8 is0.5+C0.4*i,and
+item142 calls BtlUnit_CanActStatus8012724c,not recovery-step80127890.
+Mode4 loads804221f8/C0.4 at800feddc before multiplying at800fedf0,and
+804221f4/C0.1 at800fede8 before adding at800fedfc.Mode8 uses804221f8 at
+800fee44 then804221fc/0.5 at800fee50.Item142 calls8012724c at800ff1e8.
+The FP deficit branch independently loads804221f4/C0.1 at800ff438;
+its existing FMA coefficient above remains correct.No original execution
+claim:tools/verify_enemy_candidate_sampling.py checks the7 complete hashes,
+48 anchors and14 constant spans.Read-only ELF/disassembly remain
+/tmp/pm-native-choice.* outside history.The semantic chooser and its service
+name now match those original requests;two-candidate mode4 weights99/50 and
+mode8 weights55/90 distinguish the former reversed coefficients.
