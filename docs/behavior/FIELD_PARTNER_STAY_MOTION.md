@@ -3,8 +3,8 @@
 US G8ME01 disc0 revision0, ID1, recovered 2026-10-12. Evidence B: complete
 party_motion_stay at0x8015164c,size0x6b4. This documents every local branch
 and ordered request;called footprint/geometry/collision/pose engines remain
-dependencies. M is owner P+0x160;footmark ID q comes from
-partyGetFootmarkId(P). No original trajectory/timing is claimed.
+dependencies. M is owner P+0x160;[footmark ID q](FIELD_PARTNER_FOOTMARK_CLEAR_AND_ID.md)
+comes from (P+0 word>>2)&1. No original trajectory/timing is claimed.
 
 This handler is selected by [walkMain](FIELD_PARTNER_WALK_DISPATCH.md)
 selector0/substate0 or selector1/substate0. The driver mode P+0x34 is
@@ -70,8 +70,9 @@ or owner state is31,32,16 or17. Otherwise:
   partyGetTargetDist(q,P.x,P.z),whose result is unused on this route.
 * Nonzero mobility:compute angleABf(P.x,P.z,M.x,M.z),request movePos on
   stack X/Z with **R(0.5*P+0xf4)** and that angle,then retain distABf of
-  the adjusted X/Z versus owner X/Z as d. The geometry helper internals and
-  their rounding are separate contracts.
+  the adjusted X/Z versus owner X/Z as d. The [live target wrappers](FIELD_PARTNER_LIVE_TARGET_DISTANCES.md) are
+  now specified;planar geometry/angle helper internals and rounding remain
+  separate contracts.
 
 If marioChkSlitThrouh is nonzero,continue without testing d;otherwise require
 ordered d>=T. Then require marioChkDeepSleep==0. If admitted,request

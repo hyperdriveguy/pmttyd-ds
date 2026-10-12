@@ -475,3 +475,12 @@ specify complete local65..90,including indexed signed-integer float conversion,
 raw versus repeated operand queries,word-wrap time products and best-fit/split/
 zero/cache/publication order. Heap/pointer/numeric/source/capacity domains and
 original runtime traces remain open.
+
+
+[Partner footmark clear/ID](behavior/FIELD_PARTNER_FOOTMARK_CLEAR_AND_ID.md),
+[live target distances](behavior/FIELD_PARTNER_LIVE_TARGET_DISTANCES.md) and
+[SDK distance](behavior/FIELD_PARTNER_SDK_DISTANCE_NUMERICS.md) now distinguish
+flag-word ID from other bank predicates,record reset from target selection,and
+repeated Mario/partner pointer reads. Paired accumulation and one single norm
+refinement differ from the direction query. Source/numeric environment/domain
+and original trajectory/output evidence remain open.

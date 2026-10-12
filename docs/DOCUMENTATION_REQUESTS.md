@@ -18,7 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Event data readers,bitwise,time and memory opcode bodies | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Readers](behavior/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),[bitwise/time/memory](behavior/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md),[buffers/allocator](behavior/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md):complete65..90 and local allocator/fill/cache bodies;indexed signed-word float differs from sequential IEEE load,query/write/ownership order explicit;other VM/domain/source/runtime requests remain open |
-| Partner target-distance and footmark clearing services | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover target-distance3D/planar,footmark clear/clear2 and ID complete local record/index/numeric behavior;source/history consumer/terrain/EVT-01 and original traces remain separate |
+| Partner target-distance and footmark clearing services | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Clear/ID](behavior/FIELD_PARTNER_FOOTMARK_CLEAR_AND_ID.md),[live targets](behavior/FIELD_PARTNER_LIVE_TARGET_DISTANCES.md),[SDK distance](behavior/FIELD_PARTNER_SDK_DISTANCE_NUMERICS.md):complete local selection/reset/ID and paired norm answered;source/history consumer/terrain/numeric environment/domain and original traces remain open |
 | Complete event IF predicates and ELSE/END lexical continuation | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Integer/mask/scans](behavior/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md),[float/string](behavior/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md):complete12..33,twenty helpers and strcmp,operand order,raw masks,NaN CR tests and consumed-marker scans;data/other opcode domains and original traces remain open |
 | Partner direction/speed composition and overlap correction | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Correction](behavior/FIELD_PARTNER_OVERLAP_CORRECTION.md),[query](behavior/FIELD_PARTNER_DIRECTION_AND_SPEED.md),[norm](behavior/FIELD_PARTNER_SPEED_NUMERICS.md):complete local box/counter/reset/state/output/numeric requests answered;called angle/trig/status/terrain services,numeric/domain,writers and original traces remain open |
 | Event SWITCH and complete CASE group state machine | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Switch/scans](behavior/EVENT_SWITCH_STACK_AND_CASE_SCANS.md),[group/mask/range](behavior/EVENT_GROUPED_MASK_AND_RANGE_CASES.md):complete34..49 and eleven CASE bodies,actual table order,signed stack/state/raw-query/order and scanner continuations;IF/data/other opcode domains and original traces remain open |
@@ -1069,3 +1069,9 @@ truncation formulas (host arithmetic check,no original execution). Own lock
 released;remaining VM blocks,heap/source/pointer/numeric/context/capacity domains
 and original traces remain EVT-01 work. make test passes31 CTest suites and58
 Python tests;make all passed. ID2 made no native edits.
+
+
+ID1 native-validation follow-up (2026-10-12):tests/event_controls_tests.cpp
+is now present. make test passes31 CTest and58 Python tests;the prior missing-
+source CMake failure is resolved. Original binary/documentation evidence was not
+contradicted by that transient native worktree state.
