@@ -1241,3 +1241,11 @@ six sites/65536 integer cases and all2927 composed original TEV words rechecked.
 Original config records both3. Source/GX/SDK/numeric/capture/lifetime/runtime/
 images and broader complete-game system requirements remain open;instruction
 coverage is not an equivalence or reachability oracle.
+
+ID2 battle parent dispatch closure (2026-10-12):
+[Main order](behavior/battle/BATTLE_MAIN_SERVICE_ORDER_AND_FINAL_STATE_CHECK.md),
+[manager/hook](behavior/battle/BATTLE_SEQUENCE_MANAGER_BANKS_AND_OUTER_HOOK.md)
+close three bodies,independent captured owners/late state/one-bank dispatch/
+service order/outer completion flag.20 hashes/117 anchors/1 span/2 calls
+verified;86 CTest/90 Python/make all pass.Prior Jump fixture gate resolved.
+Field/callee/end/query/Game/platform/original runtime remain open.

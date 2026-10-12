@@ -1,3 +1,26 @@
+## 2026-10-12 — ID2 parent BattleMain/manager/outer hook closure
+
+[Main service order/final state](behavior/battle/BATTLE_MAIN_SERVICE_ORDER_AND_FINAL_STATE_CHECK.md)
+and [manager banks/outer hook](behavior/battle/BATTLE_SEQUENCE_MANAGER_BANKS_AND_OUTER_HOOK.md)
+close uppercase Main800f8e28/dc,manager8011f1ec/b0,and lowercase hook800f904c/48.
+Independent global captures,ordered11-service phase before completion,raw
+system-word masks/fresh second bank read,one captured manager bank/init then
+pinch despite bank writes,handler-result ignoring,outer null guard/retained
+completion flag documented.ID2 lock released;no native implementation edits.
+
+Validation:`tools/verify_battle_main_dispatch.py` twice,identical:20 hashes
+(3 complete/17 linked),117 instructions,1 startup span,2 exact direct DOL
+sites.Python compilation,existing behavior/init verifiers,own links,and scoped
+whitespace passed.`make test`:86 CTest/90 Python passed.`make all` passed.
+Prior init-dispatch85/86 host gate RESOLVED by current Jump fixture pass;
+exact /tmp/id2-main-test.log.Prior failures below are historical,not current.
+
+Limits:static local parent chain only.Callee signatures/resources/field cadence,
+pinch/first-act/turn/end internals,outer hook scheduling,source/global ownership,
+query-event reachability,Game/platform/original runtime/full-game requirements
+remain open.Next needed port evidence:outer scheduling/end import/source/query
+domains;no per-render-frame cadence or whole battle completion inferred.
+
 ## 2026-10-12 — ID2 complete init dispatch and registry/readiness protocol
 
 Three implementation contracts close six complete local bodies:
