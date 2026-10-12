@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "scope": "US DOL aligned direct bl/bla only;no event/REL/indirect/runtime/reachability census",
+  "sites": [
+    {
+      "address": "0x80105848",
+      "target": "0x8012021c",
+      "owner": "btlevtcmd_CommandGetWeaponAddress",
+      "instruction": "4801a9d5"
+    },
+    {
+      "address": "0x801058b0",
+      "target": "0x8012021c",
+      "owner": "btlevtcmd_CommandGetWeaponActionLv",
+      "instruction": "4801a96d"
+    },
+    {
+      "address": "0x80105974",
+      "target": "0x8012021c",
+      "owner": "btlevtcmd_CommandPayWeaponCost",
+      "instruction": "4801a8a9"
+    },
+    {
+      "address": "0x8010a724",
+      "target": "0x8012021c",
+      "owner": "btlevtcmd_CommandCheckDamage",
+      "instruction": "48015af9"
+    },
+    {
+      "address": "0x8010a938",
+      "target": "0x8012021c",
+      "owner": "btlevtcmd_CommandPreCheckCounter",
+      "instruction": "480158e5"
+    },
+    {
+      "address": "0x8010ab44",
+      "target": "0x8012021c",
+      "owner": "btlevtcmd_CommandPreCheckDamage",
+      "instruction": "480156d9"
+    },
+    {
+      "address": "0x8011f7f0",
+      "target": "0x80123ec0",
+      "owner": "BattleSetConfuseAct",
+      "instruction": "480046d1"
+    },
+    {
+      "address": "0x8011f8e0",
+      "target": "0x80123210",
+      "owner": "BattleSetConfuseAct",
+      "instruction": "48003931"
+    },
+    {
+      "address": "0x80121dc8",
+      "target": "0x80123210",
+      "owner": "BattleCommandDisplay_WeaponSelectMenuMain",
+      "instruction": "48001449"
+    },
+    {
+      "address": "0x80122088",
+      "target": "0x80123ec0",
+      "owner": "BattleCommandDisplay_WeaponSelectMenuSetup",
+      "instruction": "48001e39"
+    },
+    {
+      "address": "0x801223ec",
+      "target": "0x80123ec0",
+      "owner": "BattleCommandDisplay_ActMenuMain",
+      "instruction": "48001ad5"
+    },
+    {
+      "address": "0x80122bc8",
+      "target": "0x80123210",
+      "owner": "BattleCommandInput",
+      "instruction": "48000649"
+    },
+    {
+      "address": "0x80122c14",
+      "target": "0x80122068",
+      "owner": "BattleCommandInput",
+      "instruction": "4bfff455"
+    },
+    {
+      "address": "0x80122c24",
+      "target": "0x80122068",
+      "owner": "BattleCommandInput",
+      "instruction": "4bfff445"
+    },
+    {
+      "address": "0x80122c34",
+      "target": "0x80122068",
+      "owner": "BattleCommandInput",
+      "instruction": "4bfff435"
+    },
+    {
+      "address": "0x80123248",
+      "target": "0x80123ec0",
+      "owner": "_btlcmd_SelectWeaponDecide",
+      "instruction": "48000c79"
+    }
+  ]
+}

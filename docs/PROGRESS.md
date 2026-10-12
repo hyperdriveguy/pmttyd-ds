@@ -1,5 +1,27 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2 native menu setup/decision and scoped cursor domains
+
+Prioritized newest native query-domain request. Added two complete setup/decision
+functions and scoped original type12 writer/state0 previous-type restore/Input
+same-frame initialized cursor reuse,plus16-site DOL census. Complete setup's
+private stack slot remains uninitialized for unsupported type;Input's reused
+SP08 must not be substituted as a fallback. Decision's captured actor/live
+sampling/reset/first-different-last-same preference rules supplied for porting.
+Broader menu/query source reachability remains open;own narrow ID2 lock released.
+
+Validation:verify_weapon_menu_domains.py passes15 hashes(two complete/thirteen
+linked),234 anchors,two startup/Input-state table spans,16 complete direct DOL
+call sites;repeat JSON matches. Python compile,prior selection/general1980
+checks and all2971 local file links pass. make test passes75 CTest/86 Python;
+make all passes. Logs:/tmp/id2-menutype-test.log,/tmp/id2-menutype-build.log.
+Scoped staged whitespace check passes. No native/test/asset change or full
+input/class/gift/confusion/source reachability/original execution claim.
+
+Next:ActMenuMain/MakeActClassTable type writers and query-specific event/menu
+reachability before Game binding. Continue native requested port-function docs;
+source/platform/runtime/full-game requirements remain incomplete.
+
 ## 2026-10-12 — Delivered movement setters bound to native unit fields
 
 Consumed ID2's complete movement-wrapper/source-token delivery and registered

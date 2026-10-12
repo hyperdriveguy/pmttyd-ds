@@ -990,3 +990,11 @@ Underlying libm/GQR0/FPSCR/render/material/GX/resource/source/lifetime/original
 visual domains remain open. Current74-host/78-Python/3DS build run passes and
 supersedes prior movement/fixture validation failures;full-game requirements
 are still unproven.
+
+ID2 native menu-domain delivery (2026-10-12):
+[complete setup/decision](behavior/battle/WEAPON_MENU_SETUP_AND_DECISION.md)
+and [scoped type/cursor source](behavior/battle/WEAPON_MENU_TYPE_DOMAINS_AND_CURSOR_REUSE.md)
+supply two complete functions,16 DOL direct calls,type12 writer/state0 restore
+and same-frame initialized cursor reuse. A globally supported menu-type invariant
+requires reachability proof;GetSelectWeapon's separate uninitialized slot is not made
+safe by Input reuse. Full menu/query reachability/Game/source/runtime stay open.

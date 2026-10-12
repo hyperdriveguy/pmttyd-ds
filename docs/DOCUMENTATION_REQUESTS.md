@@ -24,6 +24,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
 | Native first-attack target and paired output ownership | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Pair/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md),[event/body part](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md):seven complete local bodies,captured B/raw outputs/mode pairs/slot63 miss/kind predicate/body-before-ID/write order/source part witness;source/Game/runtime separate;prior field_movement failure resolved by current74-suite run |
+| Native weapon-menu setup decision and caller domains | EVT-01, JUMP-01 | VALIDATED scoped / lock released, 2026-10-12 | Documentation agent ID 2 | [Setup/decision](behavior/battle/WEAPON_MENU_SETUP_AND_DECISION.md),[type/cursor sources](behavior/battle/WEAPON_MENU_TYPE_DOMAINS_AND_CURSOR_REUSE.md):two complete functions/16 DOL calls/scoped type12 writer/state0 restore/Input initialized cursor reuse;broader menu writers/query reachability/Game/runtime remain open |
 | Native SetMoveSpeed and SetFallAccel wrappers | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete order](behavior/battle/BATTLE_MOVEMENT_SETTER_EVENT_ORDER.md),[source tokens](behavior/battle/BATTLE_MOVEMENT_WRAPPER_SOURCE_TOKENS.md):four complete bodies/retained args/translation→float→fresh B/unchecked-1/leaves/completion2/eight requests;Majinai+0.5 correction;source/Game/runtime separate;prior missing fixture resolved |
 | DVD manager dispatch initialization and shutdown | EVT-01, JUMP-01, DMG-02 | DEFERRED / lock released, 2026-10-12 | Documentation agent ID 2 | Deferred after user requested prioritizing documentation needed by native port;listings retained /tmp/id2-dvdmain.disasm,/tmp/id2-dvdinit.disasm,/tmp/id2-dvddelete.disasm;no recovered contract claimed |
 | DVD manager synchronous request and wait protocol | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Slot open/global callback](behavior/file/DVD_MANAGER_SLOT_OPEN_AND_GLOBAL_CALLBACK.md),[read/wait](behavior/file/DVD_MANAGER_SYNCHRONOUS_READ_PROTOCOL.md):complete Open/Read/SetupCallback,256*152 slots/8000 gate/path-1/parameter truncation,request flag rereads/0002 yield/length return/global callback separation;worker/direct SDK I/O/platform/source/runtime remain separate |
@@ -508,6 +509,19 @@ Do not invent extra samples for script invocations or suppress inactive private
 sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
+
+ID2 menu-domain documentation reply (2026-10-12),partial source answer:
+[Complete setup/decision](behavior/battle/WEAPON_MENU_SETUP_AND_DECISION.md) and
+[type/cursor source evidence](behavior/battle/WEAPON_MENU_TYPE_DOMAINS_AND_CURSOR_REUSE.md)
+supply complete WeaponSelectMenuSetup/SelectWeaponDecide for porting. Source
+contains explicit type12 write/saved previous type;Input state0 conditionally
+restores11/12. Same Input invocation initializes SP08 with type14 cursor before
+later state11 query/read of that SAME word. This is concrete unchanged-output
+reuse,not a fallback for GetSelectWeapon's DIFFERENT uninitialized stack slot.
+Six direct selected-weapon query callbacks/16 total DOL sites pinned. Full class/
+input/gift/confusion/query-event reachability is still REQUIRED before Game
+binding;global supported-type and safe query-specific invariants are unproven.
+Next source priority:ActMenuMain/MakeActClassTable writers and query call domains.
 
 Native implementation acknowledgement (2026-10-12): consumed ID2's complete
 movement setter/source-token delivery. SetMoveSpeed8010d860/SetFallAccel8010d770
@@ -2800,3 +2814,11 @@ actual builder sites/seven derived addresses/original resource example pass.
 make test74 CTest/78 Python and make all3DSX pass;prior movement/fixture failures
 are resolved in this current run. Only ID1 lock released;libm/GQR0/FPSCR/
 render/material/GX/resource/source/lifetime/original visuals remain open.
+
+ID2 menu setup/domain validation (2026-10-12):15 hashes(two complete/thirteen
+linked),234 instruction anchors,two startup/Input-state table spans,all16 direct
+DOL call sites,repeat JSON,prior selection/general1980 checks pass. make test75
+CTest/86 Python and make all pass;logs /tmp/id2-menutype-test.log,
+/tmp/id2-menutype-build.log. All2971 checked local links resolve. Only scoped ID2
+lock released;native source-domain request remains partial pending full type/
+class/menu/event reachability. No native/test/assets or original runtime claim.
