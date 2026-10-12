@@ -104,3 +104,13 @@ BattleSamplingEnemy/Choice core semantics,unit-part/world/scale/source writers,
 translated ID feasibility,original RNG/input/position traces and full scene
 composition. ISO is read-only;original inspection artifacts remain under /tmp
 or ignored paths. No original scene timing or complete game is claimed.
+
+
+## Candidate core follow-up (2026-10-12)
+
+[Sampling](BATTLE_ENEMY_CANDIDATE_SAMPLING.md) and
+[choice](BATTLE_ENEMY_CANDIDATE_CHOICE.md) now close the local core obligations
+listed above. Q records the actor side-mask swap. The chooser initializes unit
+-1/part0; takeoff mode4 chooses by deterministic weights with no RNG. Capacity
+is not locally enforced; valid source counts remain an invariant. Helper/source/
+numeric/domain ownership and original execution remain open.

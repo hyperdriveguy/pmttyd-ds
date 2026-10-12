@@ -1,5 +1,40 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Retained selected target and weapon cursor services
+
+Implemented BATTLE_SELECTED_TARGET_AND_WEAPON.md in battle_selection.hpp/cpp.
+Retained target output preserves signed count/cursor/permutation/row arithmetic,
+raw destinations,and the part-ID read after the first output callback. Negative
+count produces two ordered-1 writes without sampling. Command weapon captures
+work before resolution but actor lookup reloads current work. Mario/partners
+read captured menu/type while the cursor helper unconditionally fetches the
+current acting unit;types5/14 use that unit's kind,not the queried actor's kind.
+Other kinds use wrapped held-item ItemData weapon-pointer arithmetic. Cursor
+mapping preserves all documented branches and untouched output on unsupported
+modes. Unsupported selected-weapon domains return optional invalid status as an
+explicit host boundary,not an invented original return or default weapon.
+
+Original address arithmetic uses unsigned32 tokens with provider-owned byte/
+halfword/word access;no original RAM address is dereferenced natively or copied
+as an executable. Native menu/selection producers and original asset-to-record
+mapping still need binding. Services never resample or perform eligibility checks.
+
+Validation:final make test passed eighteen CTest suites plus58 Python tests;
+make all built ttyd-2ds.elf/3dsx,then exited0/no rebuild after final extra test.
+New suite covers count0/-1/-128,negative cursor/permutation indices,signed IDs,
+part-ID mutation between ordered aliased output writes,all cursor table modes,
+unchanged invalid cursor,types5/14 kind branches,captured versus current work,
+queried actor versus distinct acting-unit kind,wrapped negative row/held-item
+addresses,zero weapon pointers and raw sentinel weapon output destinations.
+git diff --check passed. No emulator run for these still-unbound native menu
+records or claim of original UI/runtime equivalence.
+
+Next:implement newly delivered candidate sampling/choice contracts,then compose
+original Jump graph through EVT-01 scheduler/dispatcher services and real shared
+unit/menu/pouch owners. Elevated EVT-01 visibility in the documentation inbox:
+fixed native attack timers remain provisional until actual scheduling is bound.
+Original UI/equipment/pose/audio/math and full story/assets remain incomplete.
+
 ## 2026-10-12 — Weapon costs,affordability and ordered payment
 
 Implemented BATTLE_WEAPON_COST_AND_PAYMENT.md in battle_weapon_cost.hpp/cpp.
@@ -6144,3 +6179,32 @@ command-menu/selection producers,cost-check call cadence,numeric extremes,
 Jump stylish/aftereffect/badge tails and original execution traces. ID1's lecture
 player/mode/teardown reservation remains independent. Complete-game system
 requirements remain deferred pending adequate system coverage;goal incomplete.
+
+### 2026-10-12 — Documentation ID2: candidate sampling and choice cores
+
+Delivered BATTLE_ENEMY_CANDIDATE_SAMPLING.md and
+BATTLE_ENEMY_CANDIDATE_CHOICE.md for requested Takeoff/JUMP-01/DMG-02
+sampling dependencies. Complete local wrapper/update/core contracts specify
+partial buffer/geometry writes, all ordered admission masks, four compaction
+passes, lane/X occlusion, count narrowing and permutation tie sorting. Complete
+chooser covers initialized outputs, all ordered weights and weapon overrides,
+deterministic physical-index maximum, weighted draw boundaries and shared
+irand/rand LCG leaves. Actual Takeoff mode4/null weapon is deterministic with
+no RNG use; sampler Q is side-mask swap rather than count/nonempty. Original
+capacity is not enforced. No native timing or invented target fallback added.
+
+Validation: verify_enemy_candidate_sampling.py passed seven complete body
+fingerprints,48 instruction anchors and14 constants/SDA initialization spans;
+report/tmp/id2-sampling-evidence.json. Existing13-body preparation and16-body
+selection/payment verifiers passed. make test passed18 CTest suites and58
+Python tests;make all exited0,no rebuild. All771 local behavior-document links
+resolved;git diff --check passed. No native code, ISO, asset, emulator profile or
+save mutations by ID2;inspection ELFs/disassemblies and reports remain in/tmp.
+Concurrent native selection and ID1 lecture research preserved.
+
+Released only ID2's candidate-service lock,linked both contracts in the inbox
+and behavior index,and added the Takeoff core follow-up. Parent requests remain
+open. Next:source/helper/numeric/domain validity and RNG seed/interleaving;
+Jump stylish/aftereffect/badge-tail services;original input/target/state/motion/
+audio execution traces. EVT-01 scheduling and ID1 lecture work remain separate.
+Full documentation/system-requirements objective remains active and incomplete.

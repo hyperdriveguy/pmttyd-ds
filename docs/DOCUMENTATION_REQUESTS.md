@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Enemy candidate choice and sampling cores | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Sampling](behavior/BATTLE_ENEMY_CANDIDATE_SAMPLING.md),[choice/RNG](behavior/BATTLE_ENEMY_CANDIDATE_CHOICE.md):complete local admission/geometry/compaction/sort/weights/mode4/draw semantics;source/helper/domain/seed/interleaving and original traces remain open |
 | Ordinary selected target,weapon-address and weapon-cost services | JUMP-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Selection/weapon](behavior/BATTLE_SELECTED_TARGET_AND_WEAPON.md),[cost/payment](behavior/BATTLE_WEAPON_COST_AND_PAYMENT.md):complete local bodies/cursor dispatch/shared FP/AP/action-record arithmetic;menu/selection producers,numeric extremes and original traces remain open |
 | Lecture player attack bindings,missing mode transitions and teardown | AC-01, AC-02, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover Jump/Hammer lecture request graphs,1→2/5→6 producers,W2740 selection and lecture-end writes;excludes original runtime traces |
 | Unit/part hit/world/home positions and movement sound core | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Position queries](behavior/BATTLE_UNIT_PART_POSITION_QUERIES.md),[movement sound](behavior/BATTLE_MOVEMENT_SOUND_CONTROL.md);source writers,playback internals and original traces remain open |
@@ -49,6 +50,7 @@ does not answer its full runtime binding request.
 
 | Priority | Request / implementation blocker | State / owner / reserved slice |
 | --- | --- | --- |
+| 0 | EVT-01: complete native event scheduling and continuation | Open; needed to replace provisional Jump timers with the recovered graph; request below specifies remaining complete local contracts |
 | 1 | DMG-01: real weapon power, part defenses and dispatch/application | Power bodies/operands and scoped part construction/table/lifetime delivered by ID2;level/bonus/AC producers,mutation and application binding remain open |
 | 2 | AC-03: enemy hit branch and actual defense sampling boundary | Attack graph/target ABI delivered and lock released; pad cadence,global eligibility and execution remain open |
 | 3 | AC-01: tutorial/ordinary Jump state ownership and impact cadence | Shared enemy-attack graph delivered; next recover pad/update and movement callback composition |
@@ -439,6 +441,16 @@ rather than treating a passing command helper as complete original attack timing
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
 
+Selection implementation breadcrumb (2026-10-12): `battle_selection.cpp` and
+its host suite implement signed retained-target/permutation lookup and ordered
+outputs,full cursor table and queried-actor/captured-menu/current-acting-unit
+ownership. Address providers retain wrapped unsigned32 arithmetic;unsupported
+cursor selection reports explicit native invalid status without fallback weapon.
+Native original menu entry/cursor/type/target producers remain requested;these
+helpers do not infer eligibility or resample. Newly delivered candidate sampling/
+choice contracts are next,followed by original Jump graph scheduling. EVT-01
+remains the critical native impact-timer replacement dependency.
+
 Cost implementation breadcrumb (2026-10-12): `battle_weapon_cost.cpp` and its
 host suite implement delivered scaling,reduction,affordability,payment and byte/
 pouch arithmetic. Payment tests reuse the existing shared partner FP owner service
@@ -644,3 +656,18 @@ cadence or original execution. `tools/verify_weapon_selection_cost.py` passes
 16 complete body fingerprints,11 anchors,two constants,15 cursor targets,two
 ordinary weapon checks and three ordinary Jump service calls. Own scoped lock
 released; parent requests and other owners' locks remain open.
+
+
+ID2 candidate service delivery (2026-10-12), JUMP-01/DMG-02 partial answer:
+[sampling](behavior/BATTLE_ENEMY_CANDIDATE_SAMPLING.md) closes all local passes,
+metadata/partial row writes, signed count and capacity invariants, side-mask swap
+return, geometry and permutation sorting. Return Q is the swap indicator, not
+nonempty/count. [choice/RNG](behavior/BATTLE_ENEMY_CANDIDATE_CHOICE.md) closes
+(-1,0) output initialization, ordered weights and weapon overrides, deterministic
+physical-index ties and weighted subtraction boundaries. Takeoff mode4/null
+weapon consumes no RNG. irand/rand leaves specify shared LCG and zero-bound
+no-consumption; seed writers/interleaving and original traces remain open. No
+nearest-target or bounded-capacity fallback is established. The standalone
+verify_enemy_candidate_sampling.py passes seven complete body fingerprints,
+48 anchors and14 constants, including SDA initialization. Own lock released;
+lecture/event-scheduler reservations and parent requests remain independent/open.
