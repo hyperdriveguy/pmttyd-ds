@@ -725,3 +725,11 @@ failure outputs are specified. Eight actual DOL direct caller sites are pinned;
 other full caller bindings,backend/libm/source/alias/original traces remain open.
 Earlier addendum's open general-local-writer status is superseded by this delivery;
 full-system closure and final complete-game requirements remain incomplete.
+
+
+[Battle fortune producer](behavior/BATTLE_FORTUNE_PRODUCER.md) and
+[pouch initializer/caller/RNG accounting](behavior/BATTLE_FORTUNE_INIT_AND_CALL_BINDINGS.md)
+close full local countdown/mode policy,upgrade-only signed request compare and
+two direct DOL bindings. Remaining/countdown/mode use distinct byte domains;
+modulo RNG thresholds and intermediate stores stay exact. Field assignment/
+setup/pouch/save/turn/other consumers and original execution remain open.

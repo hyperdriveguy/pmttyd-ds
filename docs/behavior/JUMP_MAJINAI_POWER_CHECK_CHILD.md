@@ -120,3 +120,9 @@ This closes local query/consumption and complete selected graph. Full fortune
 producer BattleMajinaiCheck,pouch save/reset/writer lifetime,effect constructor/
 update/deletion backend,announcement/message services,nested callback domains,
 script address provider and original execution remain EVT-01/JUMP-01/DMG-02.
+
+
+[Complete BattleMajinaiCheck](BATTLE_FORTUNE_PRODUCER.md) now supplies countdown/
+mode activation,and [pouch initializer/caller/RNG budget](BATTLE_FORTUNE_INIT_AND_CALL_BINDINGS.md)
+closes its used local initialization/source leaves. Full field assignment/
+setup/pouch/save/turn/backend and original activation traces remain open.

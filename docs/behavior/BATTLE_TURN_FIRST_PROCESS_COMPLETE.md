@@ -80,3 +80,10 @@ zero/nonzero RNG consumption,truncSigned half,raw mask getter/clear;global fog
 recapture,exact0 with preserved pointer,positive1 expiry/nonnull deletion,
 negative/wrapped timer and ignored result. Full general rule/controller/action/
 fortune/effect/source/turn/scene/runtime ownership remains STATUS-01/DMG-02 work.
+
+
+[Complete fortune producer](BATTLE_FORTUNE_PRODUCER.md) and
+[initializer/call/RNG policy](BATTLE_FORTUNE_INIT_AND_CALL_BINDINGS.md) now close
+the local MajinaiCheck requested after the signed halfword increment>=2.
+Countdown/mode/count remain distinct from battle16f57;full field assignment/
+setup flag/pouch/save/turn/source and original execution remain open.

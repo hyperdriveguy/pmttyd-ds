@@ -1,5 +1,32 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Complete battle fortune producer and pouch initializer
+
+Documentation agent ID2 closed BattleMajinaiCheck150,pouchMajinaiInit30 and its
+30-byte event wrapper in two detailed contracts. Preserved signed countdown/
+negative-before-mode priority,intermediateR+6/reread/decrement stores,sticky raw
+mode,setup mask20 inline thresholds and one conditional irand5/100 draw. Init
+compares oldU8 to signed full request before low8 store;its three pouch captures
+remain distinct. No count clamp/false-mode flag clear or invented field payment.
+Original direct bindings connect wrapper→init and prior signed turn>=2→Check.
+
+Validation: verify_battle_fortune_producer.py passes eight complete/linked hashes,
+108 instruction anchors,SDA span and exact two-site DOL census. Repeat reports
+match (/tmp/id2-fortune-evidence.json and -second.json). Conditional RNG preimage
+counts reconcile with exhaustive32768-output enumeration;not observed rates.
+Prior child/turn/general1980 evidence,Python compilation,diff-check and2118
+local links pass. make test52/52 CTest suites and78 Python tests;make all passes.
+Logs:/tmp/id2-fortune-test.log,/tmp/id2-fortune-build.log. Original ELF/listings
+remain /tmp/id2-fortune-*;no native/test/asset edits;shared work preserved.
+
+Own scoped lock released in request queue;EVT-01/JUMP-01/STATUS-01 remain open.
+Next documentation closes field assignment/REL/script operands,pouch/save/raw
+writers,setup flag source and other mode consumers/full turn/scene ownership.
+Native script/registry/address/heap/clock/effect/audio/message services and
+original activation/RNG/timing traces remain required. Goal active/incomplete;
+full-game requirements/fidelity cannot be claimed from these local helpers.
+
+
 ## 2026-10-12 — Mapped event-array retirement and address reuse
 
 Added unregisterEntries to the entry translator. Native owners detach a live

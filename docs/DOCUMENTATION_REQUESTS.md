@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Battle fortune producer and pouch reset/random-selection policy | EVT-01, JUMP-01, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete producer](behavior/BATTLE_FORTUNE_PRODUCER.md),[init/call/RNG accounting](behavior/BATTLE_FORTUNE_INIT_AND_CALL_BINDINGS.md):signed countdown/sticky mode,inline setup-mask20 thresholds,word compare before byte store and two direct bindings;field assignment/save/setup/turn/consumer/runtime remains open |
 | Jump Majinai power-check child and local result/effect callbacks | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Power graph/consumption](behavior/JUMP_MAJINAI_POWER_CHECK_CHILD.md),[effect/nested sources](behavior/JUMP_MAJINAI_EFFECT_AND_NESTED_SOURCES.md):full14/12/17-command graphs,query/Done/EndCheck/name polling/ftomsec and five original keys;additional spans/three callbacks,fortune producer/render/audio/message/backend/runtime remain open |
 | General partner placement writer and placement4 fallback | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/admission](behavior/FIELD_PARTNER_GENERAL_PLACEMENT.md),[fallback/output](behavior/FIELD_PARTNER_GENERAL_PLACEMENT_FALLBACK.md),[trig/plane leaves](behavior/FIELD_MOVEMENT_TRIG_AND_PLANE_LEAVES.md):complete local writer and used leaves,eight direct caller census;other caller bindings/backend/libm/source/alias/runtime remain open |
 | WorkInit exact snapshot clear and preserved-byte map | INPUT-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete reset/raw map](behavior/BATTLE_PAD_RESET_AND_RAW_PRESERVATION.md):snapshot0..a clear/b preserved,release/raw-tail preservation,interleaved history/phase store order and updater prior-copy distinction;physical polling/SDK/source/runtime remains open |
@@ -1885,3 +1886,24 @@ linked hashes,240 anchors,nine spans,three full event+trailing hashes;repeat
 reports equal. General1980/root-run/prior registry checks pass;make test51 CTest/
 78 Python and make all pass;2091 local links resolve. No native/test/asset-packer
 source edits by ID2;original extracts/packs stay /tmp.
+
+
+ID2 EVT-01/JUMP-01/STATUS-01 fortune producer delivery (2026-10-12), partial answer:
+[BattleMajinaiCheck](behavior/BATTLE_FORTUNE_PRODUCER.md) closes full150 body:
+count0 preserves stale mode/countdown;negative S8 countdown precedes mode query,
+clears mode,draws irand5 and publishesR+6→reload→minus1 (final5..9);nonnegative
+active mode returns raw/no draw;mode0 decrements/reloads signed countdown before
+ready reset/selection. Setup pointer pathB2738→descriptor.c→flags4 mask20 picks
+INLINE45/90 or30/60/80 thresholds with ONE irand100;final mode reload returned.
+[Init/call/RNG policy](behavior/BATTLE_FORTUNE_INIT_AND_CALL_BINDINGS.md) closes
+pouch initializer/wrapper:old U8 count SIGNED-compared to full request,old>=N
+no writes,otherwise low8 store then separate pointer reloads forff/0. N256 can
+write0;do not replace with saturating/max-U8 reset. Scoped DOL census exactly
+wrapper800f08c4→init and first-process8011b21c→Check after signed turn>=2.
+Derived modulo counts are explicitly conditional enumeration,not measured rates.
+Own lock released;full field transaction/REL/script operands,pouch/save/raw writers,
+setup descriptor/flags,other mode consumers/turn/scene and original traces remain
+open. Verifier passes eight complete/linked hashes,108 anchors,SDA span and two
+exact direct sites;repeat reports equal;enumerated32768-output counts reconcile.
+Prior child/turn/general1980 checks pass;make test52 CTest/78 Python and make all
+pass;2118 local links resolve. No native/test/asset conversion code changed by ID2.
