@@ -86,3 +86,11 @@ No serialized group payload is exported. Full source graph/visibility/node/link/
 stack/callback lifetime,SDK push matrices,render/material/GX/Vivian and original
 geometry remain open. The current native idle bake is not full original traversal
 or fractional animation;these contracts must guide those implementations.
+
+ID1 node builder dependency update (2026-10-12):
+[joint](ANIMATION_JOINT_NODE_MATRICES.md) and
+[transform](ANIMATION_TRANSFORM_NODE_MATRICES.md) now close complete local node
+push bodies;[SDK stack/affine](ANIMATION_MATRIX_STACK_AND_AFFINE_NUMERICS.md)
+and [rotation](ANIMATION_SDK_AXIS_ROTATION.md) close their local primitive calls.
+Source13/29 node kinds are checked. Full libm/GQR0/FPSCR/render/material/GX/
+resource/source/lifetime/original visual composition remains open.

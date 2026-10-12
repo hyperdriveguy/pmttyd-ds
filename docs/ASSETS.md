@@ -1598,3 +1598,18 @@ make all ran existing sound/proj/pmario.proj,pool/sdir/samp pipeline:3218 GameCu
 RomFS WAV/audio-map.json outputs unstaged. No ID1 conversion policy change;
 original rights remain with owners and local analysis grants no redistribution
 license. Exact log:/tmp/id1-draw-build.log.
+
+ID1 node matrix/SDK evidence/build provenance (2026-10-12):US G8ME01 ISO
+opened read-only. Original a/a_mario identity from preceding Main/draw contracts
+rechecked;13 joint/29 transform groups,1008 node floats,root/max index984 are
+serialized metadata,not exported node/model payload or observed gameplay.
+Original16/8 dispatch tables80306698/803066d8 and affine pair8041e458 are
+hash/word pinned;modeling stack803d8e70 derived from signed-low producers,
+available symbol extent600 hex=32 matrices. Runtime stack/GQR/FPSCR not measured.
+ELFs/listings/report remain ignored under artifacts/reference/behavior.
+make all ran existing sound/proj/pmario.proj,pool/sdir/samp pipeline:3218 GameCube
+identities,0 Switch,5 primary-PCM slice fallbacks;local-assets/audio-map raw/catalog
+and RomFS WAV/audio-map.json outputs unstaged. No ID1 art/audio/mesh conversion
+policy change. Existing bake/mesh node formula reconciliation documented for
+native owner. Original rights remain with owners;local analysis grants no
+redistribution license. Exact log:/tmp/id1-node-build.log.

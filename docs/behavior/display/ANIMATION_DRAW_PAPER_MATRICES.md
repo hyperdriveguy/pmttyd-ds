@@ -67,3 +67,10 @@ cleanup. Distinct flags on parent and linked record govern different routes.
 `verify_animation_draw.py` checks literal transform operands/order/constants.
 Original SDK alias/FPSCR,model-stack capacities,override consumers/pool lifetime,
 geometry/material/GX and original paper visuals remain open.
+
+ID1 matrix SDK dependency update (2026-10-12):
+[affine/stack](ANIMATION_MATRIX_STACK_AND_AFFINE_NUMERICS.md) and
+[rotation](ANIMATION_SDK_AXIS_ROTATION.md) now specify complete local called
+Copy/Concat/Scale/Trans/RotRad bodies,including alias snapshots/store order.
+Override consumers/source/lifetime,GQR0/FPSCR/libm/render/material/GX/original
+paper visuals remain open;numeric equivalence is not established by host matrices.

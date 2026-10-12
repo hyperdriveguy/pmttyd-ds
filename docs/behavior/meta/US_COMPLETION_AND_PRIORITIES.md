@@ -322,3 +322,11 @@ push matrix/render/material/GX/resource/source/lifetime/numeric/original visuals
 remain open. Two concurrent native movement host assertions failed (PROGRESS);
 standalone binary/Python/build validation passed. No full-system/whole-game
 requirements completion is established by this partial presentation closure.
+
+ID1 node matrix update (2026-10-12):complete builders/SDK local graphs now
+linked in [layout/bindings](../display/ANIMATION_NODE_LAYOUT_AND_USED_BINDINGS.md),
+with source13/29 joint/transform groups and four actual caller sites. Generic
+native bake formula needs branch/source reconciliation;original libm/GQR0/FPSCR/
+render/material/GX/resource/source/lifetime/visual composition remains open.
+Current74 CTest/78 Python/3DS build passes supersede previous movement failures;
+neither those checks nor leaf closure proves complete-game requirements.

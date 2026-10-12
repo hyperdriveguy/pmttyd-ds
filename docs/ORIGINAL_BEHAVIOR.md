@@ -976,3 +976,17 @@ close SetMoveSpeed/SetFallAccel and leaves requested by native EVT-01. Retained
 arguments,GetValue→translation→GetFloat→fresh battle/lookup,leaf-only stores,
 unchecked-1/null and completion2 pinned. Eight source requests prove exact bits;
 Majinai f24a7c80 sign corrected to+0.5. Source/Game/runtime remain open.
+
+ID1 node-builder/SDK local closure (2026-10-12):
+[joint](behavior/display/ANIMATION_JOINT_NODE_MATRICES.md),
+[transform](behavior/display/ANIMATION_TRANSFORM_NODE_MATRICES.md),
+[stack/affine](behavior/display/ANIMATION_MATRIX_STACK_AND_AFFINE_NUMERICS.md),
+[rotation](behavior/display/ANIMATION_SDK_AXIS_ROTATION.md),
+[layout/used bindings](behavior/display/ANIMATION_NODE_LAYOUT_AND_USED_BINDINGS.md)
+close both node builders and seven matrix/two trig-wrapper local bodies. Four
+actual traversal call sites and original Mario13/29 node-kind source metadata
+are checked. Current generic bake formula is not full original node behavior.
+Underlying libm/GQR0/FPSCR/render/material/GX/resource/source/lifetime/original
+visual domains remain open. Current74-host/78-Python/3DS build run passes and
+supersedes prior movement/fixture validation failures;full-game requirements
+are still unproven.

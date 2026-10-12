@@ -11572,3 +11572,56 @@ copies, git pins, redaction and link checks all pass). Limitation: a parallel
 research session mutates the corpus continuously (behavior/ grew527→539
 slices within the hour), so all counts are timestamped snapshots with refresh
 commands, not immutable facts.
+
+## 2026-10-12 — ID1 node matrix builders,called affine/rotation primitives
+
+Added [joint](behavior/display/ANIMATION_JOINT_NODE_MATRICES.md),
+[transform](behavior/display/ANIMATION_TRANSFORM_NODE_MATRICES.md),
+[stack/affine](behavior/display/ANIMATION_MATRIX_STACK_AND_AFFINE_NUMERICS.md),
+[rotation](behavior/display/ANIMATION_SDK_AXIS_ROTATION.md) and
+[layout/bindings](behavior/display/ANIMATION_NODE_LAYOUT_AND_USED_BINDINGS.md).
+Complete two-builder local graphs now specify captured fields,literal asymmetric
+joint Z scale gates/all-axis parent-zero fallback,six ordered rotations versus
+transform-only primary triple,pivot/offset admission,16/8 dispatch grouping,
+level/pointer publication and final world concat. Seven called SDK primitive
+bodies and two trig wrappers close pair snapshot/alias/FMA/store order,constant
+writers,axis case folding/invalid-axis no-store,and sinf-before-cosf rounding
+requests. No host double/NumPy matrix formula is declared numerically original.
+The original stack extent32 matrices is a symbol bound,not an enforced guard.
+
+Original read-only a/a_mario metadata verifies13 joint/29 transform groups,
+1008 node floats,root/max float index984. Its node data selects both actual
+builder types. Existing character_bake generic matrix helper (also imported by
+character_mesh) differs in secondary/pivot/parent-gate and sibling conventions;
+concrete reconciliation request left in the inbox. No ID1 native/asset-tool fix
+or new generated art/pose data. Full resource/source/lifetime/GQR0/FPSCR/libm/
+render/material/GX and original numeric/visual composition remains open.
+Only ID1 scoped lock released;parent complete-game requests remain open.
+
+Validation:verify_animation_node_matrices.py passes11 complete body hashes,
+861 reviewed words,six binary32 constants,three spans (16/8 dispatch tables,
+affine0/1 pair),two US lecture imports,four exact used builder sites across seven
+DOL text sections,seven derived signed-low addresses and original resource/
+name/pass/root/node-kind metadata. SDK-wide caller counts are excluded from
+this scoped consumer census. Repeated report byte-identical;missing builder
+site,wrong joint histogram and unsigned-low stack negatives rejected;Python
+compilation passed. Prior draw/Main verifiers pass;general verifier1980 anchors;
+Gekko audit631 files/90556 instructions/900 paired-single ops,zero changes or
+unknowns. Documentation checker462 Markdown files at snapshot,zero broken links.
+
+make test passed74 CTest suites and78 Python tests;make all passed/rebuilt3DSX.
+Logs:/tmp/id1-node-test.log,/tmp/id1-node-build.log. Prior core/field_movement
+and camera fixture failures recorded in the previous delivery are RESOLVED by
+this current full run after native owner changed sources/tests. No ID1 native
+assertion edits. Existing3218 GameCube/0 Switch/5 primary-PCM slice fallback
+pipeline ran;ASSETS records unchanged ID1 conversion policy/ignored outputs.
+No original game execution,visual measurement or emulator profile/save mutation.
+Concurrent native/ID2/inventory work preserved outside this scoped delivery.
+
+Next:used renderProc/materialProc geometry/material/GX consumers,resource/link/
+pool/cache/source invariants and original animated visual/numeric traces. Native
+mesh/runtime should bind actual node kinds/gates/parent traversal instead of
+assuming the generic bake formula completes animation. Recover actual US story/
+event/message attribution/order/branches/conditions and complete encounters
+through persistent outcomes. Full-game documentation/final system requirements
+remain incomplete;local matrix closure is not complete-game coverage.

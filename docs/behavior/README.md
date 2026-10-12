@@ -49,6 +49,11 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Joint node matrix](display/ANIMATION_JOINT_NODE_MATRICES.md) | Complete scale asymmetry/parent fallback/six rotations/16 routes | Node/source/stack/FPSCR/libm/render/runtime |
+| [Transform node matrix](display/ANIMATION_TRANSFORM_NODE_MATRICES.md) | Complete primary-only rotation/pivot-offset gates/8 routes | Resource/source/numeric/alias/render/runtime |
+| [Matrix stack/affine](display/ANIMATION_MATRIX_STACK_AND_AFFINE_NUMERICS.md) | Complete push publication/Concat snapshot/FMA/copy/writer store order | GQR0/FPSCR/memory/stack/source/visual domains |
+| [SDK axis rotation](display/ANIMATION_SDK_AXIS_ROTATION.md) | Complete trig wrapper order/case-fold/matrix layout/invalid-axis stores | Original sin/cos/GQR0/FPSCR/numeric domains |
+| [Node layout and used bindings](display/ANIMATION_NODE_LAYOUT_AND_USED_BINDINGS.md) | Used four-site census/original13 joint29 transform metadata/native conversion request | Loaded source/lifetime/render/material/original visuals |
 | [Draw wrapper/admission](display/ANIMATION_DRAW_WRAPPER_AND_ADMISSION.md) | Complete parent/link/filter/context/cleanup request order | Resource/link/inner backend/source/runtime |
 | [Draw shared ring/paper selector](display/ANIMATION_DRAW_SHARED_BUFFERS_AND_PAPER_SELECTION.md) | Complete ring/oversize/index/stamp/reset/Main requests | Pool/clock/source/alias/lifetime |
 | [Paper draw matrices](display/ANIMATION_DRAW_PAPER_MATRICES.md) | Complete prepass/override/world matrix requests | SDK alias/numeric/override consumers/source |
