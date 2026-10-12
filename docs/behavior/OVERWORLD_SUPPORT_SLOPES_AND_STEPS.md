@@ -143,10 +143,35 @@ The source uses separate products/adds/FMA and original square-root construction
 this displayed map identifies dependencies, not host numerical equivalence.
 Signed projected angles use fixed+.5; negative values can round toward0 differently
 from symmetric rounding. incl is the angle helper's float, not Q100plus.
-SearchGround updates these fields for processed ray normals before deciding
-vertical admission; it can leave the record from a later rejected/nonwinning
+SearchGround writes the projected fields+21c/+220/+224 before its50-degree
+cone rejection (8008ebe4/8008ebe8/8008ec4c precede8008ed34–8008ed48).
+It writes overall+218 only AFTER surviving that cone, at8008ef20, before
+vertical admission. A steep rejected ray can therefore overwrite projected
+fields while leaving overall+218 from an earlier survivor or the initial0; it can leave the record from a later rejected/nonwinning
 ray. FrontStep then resets/overwrites that record on the normal ground path.
 Do not simply attach winning-floor normals to these shared fields at pass end.
+
+## Returned floor-normal orientation
+
+The downward ray owner returns a normalized normal facing against the ray,
+including double-sided cull3 triangles hit from their back side. It does not
+unconditionally return the source winding normal. HitQuery+24 is the hit point;
++30 is the returned normal. SearchGround uses those outputs separately.
+
+In hitCheckVecFilter800158a4's optimized direction(0,-1,0) path,
+80015b34–80015b54 computes signed plane distance
+`p=dot(windingNormal,origin-triangleOrigin)` in f31. The double-sided path
+permits either winding. At80015d20/80015d4c/80015d50, ordered p>=0 takes the
+copy at80015d54–80015d68; negative p instead calls PSVECScale(normal,-1,
+query+30) at80015d70–80015d7c. Thus a valid downward back-side hit flips a
+downward winding normal upward before slope construction. Final80016528–80016568
+normalizes the saved nearest-hit normal with PSVECNormalize8029ebe4 and returns
+it in+30. General oblique rays use the same signed-plane-distance orientation
+at80016460–80016494. Keep face admission and returned-normal orientation as
+separate operations; cull1 downward rays reject normalY<=0 at80015b20–80015b30.
+
+This is a source-derived orientation contract, not a claim that a host cross
+product, intersection routine, or normalization matches Gekko arithmetic.
 
 ## Slope-vector reduction before the direction-rate service
 
