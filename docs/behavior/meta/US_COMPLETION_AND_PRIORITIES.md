@@ -386,3 +386,17 @@ ID1 time-TEV build resolution:concurrent renderer enum failure above is
 RESOLVED after owner's actual source fix;make all rerun passes. 82 CTest/90
 Python current host gate passes;local base request coverage still leaves six
 middle branches/source/runtime and full-system documentation incomplete.
+
+ID1 projected-TEV update (2026-10-12):
+[two-stage0x400](../display/MAP_TEV_FLAG400_TWO_STAGE_PROJECTION.md) and
+[projected-shadow0x20000](../display/MAP_TEV_FLAG20000_PROJECTED_SHADOW.md)
+close two middle blocks/four complete pswp source leaves. Evidence233 scoped
+words/three spans/two imports/six sites passes;build and90 Python pass;host
+configure missing concurrent fixture tracked in PROGRESS. Four middle internals
+0x10000/0x40000/0x80100000/0x800000,source/GX/capture/lifetime/images and broader
+US gameplay/story closure remain open. Complete-game requirements still await
+all-system closure;identity/counts are not game completion.
+
+ID1 projected-TEV host resolution:missing concurrent fixture above is
+RESOLVED after actual file arrival;84 CTest/90 Python rerun and make all pass.
+Four middle internals/source/GX/runtime and all-system completion remain open.

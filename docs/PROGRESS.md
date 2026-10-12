@@ -12751,3 +12751,56 @@ After this verified source change,make all rerun PASSED/built3DSX. Exact log:
 82 CTest/90 Python remain the current host validation. ID1 edits no native file.
 Final doc link audit534 Markdown files,zero broken links;initial532 count above
 is the preceding snapshot. No original runtime/image/game completion claimed.
+
+## 2026-10-12 — ID1 projected texture and projected-shadow TEV stages
+
+Added [flag0x400](behavior/display/MAP_TEV_FLAG400_TWO_STAGE_PROJECTION.md),
+[flag0x20000](behavior/display/MAP_TEV_FLAG20000_PROJECTED_SHADOW.md).
+Complete two local blocks and four pswp leaves close prior-stage output rewrite,
+global projection matrix/embedded smart holder patch,two-stage routing/shared
+swap-table3/TEV register2 raw seed000000ff,projected-shadow double getter/
+retained second object/captured matrix/color/ignored config query/request order/
+KColor1 selectors and counters. Query-derived config pointer is ignored locally
+but live work+8 read retained. pswp source and prior cswp character-shadow are
+separate states. No original captured shadow image or actor admission assumed.
+Only ID1 scoped lock released;parent complete-game requirements remain open.
+
+Full TEV semantic closure remains incomplete:four middle branch internals
+0x10000,0x40000,0x80100000(any),0x800000 plus source/scene selectors/flags,
+global projection/pswp/config/callback initialization/cache/resource/pose/link/
+lifetime,GX/SDK/numeric/original images. Base request contracts and now two
+middle blocks do not prove full shader/capture/system/US runtime execution.
+
+Validation:verify_map_tev_projected.py checksfive identities(one containing TEV
+PARTIAL semantic body/four complete pswp query leaves),233 reviewed words,
+three spans(ten projected matrix IDs,register2 seed,initial pswp pointer),two
+US lecture imports,six exact direct DOL sites. Repeat JSON byte-identical;
+wrong register seed,substituting cswp initial pointer for pswp,and missing caller
+negatives rejected;Python compilation passed. Prior time/fixed TEV checkers and
+general1980 anchors pass. Gekko655 listings/96032 instructions/914 paired ops,
+zero changed/unknown instructions. Initial539-file whole-doc link scan passed;
+final delivery scan recorded separately. Evidence counts are scoped snapshots.
+
+make all3DSX passes;log /tmp/id1-tev-proj-build.log. make test configure fails
+missing concurrent tests/battle_packed_movement_sound_tests.cpp at CMakeLists.txt
+389;log /tmp/id1-tev-proj-test.log. Separate90 Python tests pass/log
+/tmp/id1-tev-proj-python.log. Native battle target owner notified in inbox;ID1
+has not edited native/CMake/tests and reruns only after fixture actually arrives.
+Existing3218 GameCube/0 Switch/5 primary-PCM fallback audio pipeline ran. ISO
+read-only;inspection ELF/listing/report ignored;no original execution or ID1
+native/converter/asset adaptation/profile/save mutation. ASSETS records source
+metadata;concurrent native/ID2/reference documents preserved outside own hunks.
+
+Next:remaining four middle branches/source/GX/original shader images and actual
+US gameplay/story/event/message order/branches/conditions/persistent encounter
+closure. Native owner finishes fixture/revalidates host gate. Complete-game
+system documentation/final requirements remain incomplete;no game completion
+percentage inferred from local byte/call/contract counts.
+
+ID1 projected-TEV final validation update:the movement-sound fixture arrived
+(SHA256 c200a5800f3222ee2db8593d4e5be3caad807eda898d3258917caa1d5f7caaf3).
+After this verified source-state change,make test rerun PASSED84 CTest suites/
+90 Python tests. Exact log:/tmp/id1-tev-proj-test-rerun.log. Earlier missing-file
+configure failure is RESOLVED;make all3DSX and binary/source checks pass.
+Final link audit540 Markdown files,zero broken links;539 was initial snapshot.
+ID1 made no native/CMake/test change;only own delivery files/shared hunks staged.

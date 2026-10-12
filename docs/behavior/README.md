@@ -481,3 +481,16 @@ Verifier:tools/verify_map_tev_time.py;266 scoped words/six constants/four spans/
 two imports/six sites. All base REQUEST blocks close locally,not full TEV/system
 semantics. Six middle branches,clock/source/reset/cadence/GX/libm/lifetime/
 original images and actual mode8/9 US scene execution remain open.
+
+## ID1 projected middle TEV blocks (2026-10-12)
+
+[Flag0x400 projection](display/MAP_TEV_FLAG400_TWO_STAGE_PROJECTION.md) closes
+preceding-stage output1 rewrite,global matrix/smart image patch/two stages,
+shared swap table/register2 and counter publication.
+[Flag0x20000 projected shadow](display/MAP_TEV_FLAG20000_PROJECTED_SHADOW.md)
+closes double texture capture/live matrix/color/ignored config query/exact
+stage/generator/texture/matrix/KColor order and four pswp source leaves.
+Verifier:tools/verify_map_tev_projected.py;233 scoped words/three spans/two imports/
+six sites. Four middle branch internals0x10000/0x40000/0x80100000/0x800000 remain
+open,alongside source/GX/lifetime/US scene/original images. Full TEV body identity
+is not complete semantic or whole-system evidence.

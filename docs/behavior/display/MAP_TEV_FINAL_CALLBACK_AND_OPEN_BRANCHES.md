@@ -86,3 +86,10 @@ superseded by [pulse](MAP_TEV_MODE8_PULSE_AND_RAW_CLOCK.md),
 request paths now have contracts;actual clock/phase/color/source/cadence,
 six middle branch internals,GX/libm/lifetime/images remain open. This does not
 prove complete original shader/system behavior or actually executed US scenes.
+
+ID1 projected-middle status update (2026-10-12):the earlier six-open-middle
+list is superseded locally by [0x400 projection](MAP_TEV_FLAG400_TWO_STAGE_PROJECTION.md)
+and [0x20000 projected shadow](MAP_TEV_FLAG20000_PROJECTED_SHADOW.md). These
+blocks/four pswp query leaves now close as local request semantics. Four other
+middle internals0x10000/0x40000/0x80100000/0x800000,source/GX/capture/lifetime/
+original images remain open;no full TEV/system or actually executed scene claim.

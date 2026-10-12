@@ -1786,3 +1786,16 @@ ID1 time-TEV build resolution:after native renderer owner's enum fix,make all
 rerun succeeded/built3DSX;log /tmp/id1-tev-time-build-rerun.log. The failed run
 above remains historical evidence,not current build status. Same3218 GameCube/
 0 Switch/5 primary-PCM pipeline;no ID1 conversion or asset-policy change.
+
+ID1 projected-TEV metadata provenance (2026-10-12):US G8ME01 ISO read-only.
+Ten matrix IDs802bf9f0,register2 raw seed8041f8e0=000000ff and initial pswp
+804150e4→803c9d34 pinned as words/hashes. Runtime global projection matrix
+8041e680,holder slot8041e6b0 and embedded object8041e6b4 are SBSS source fields,
+not extracted texture/matrix assets. pswp embedded data patch/matrix/color/config
+initialization/capture/lifetime remain separate. No original model/texture/pose/
+shadow image/message payload exported. ELF/listings/report ignored under
+artifacts/reference/behavior. No ID1 converter/texture scale/geometry/lighting/
+audio policy change. make all passes/log /tmp/id1-tev-proj-build.log;existing
+sound/proj/pmario.proj,pool/sdir/samp pipeline3218 GameCube/0 Switch/5 primary-PCM
+slice fallbacks ran. Ignored catalog/WAV/RomFS outputs outside history;original
+rights remain with owners and local analysis grants no asset redistribution.

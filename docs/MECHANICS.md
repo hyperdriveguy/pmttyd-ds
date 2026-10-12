@@ -1166,3 +1166,17 @@ ID1 time-TEV validation resolution:renderer enum failure above is RESOLVED
 by its owner's typed-source change;make all rerun passes (log
 /tmp/id1-tev-time-build-rerun.log). 82 CTest/90 Python pass. These native results
 remain separate from original clock/source/GX/libm/image equivalence.
+
+ID1 projected-TEV static addendum (2026-10-12):
+[flag0x400](behavior/display/MAP_TEV_FLAG400_TWO_STAGE_PROJECTION.md) rewrites
+preceding-stage output and adds two stages;
+[flag0x20000](behavior/display/MAP_TEV_FLAG20000_PROJECTED_SHADOW.md) retains a
+second live texture getter result and ignores config scalar return. Complete
+local request/query behavior is static deduction,not a Dolphin/GX/image or
+actor-shadow runtime observation. make all/separate90 Python pass;make test
+configure missing concurrent fixture recorded in PROGRESS. Four remaining
+middle branches/source/lifetime/GX/full rendering remain open.
+
+ID1 projected-TEV host resolution:fixture arrived;make test rerun passes84
+CTest/90 Python,log /tmp/id1-tev-proj-test-rerun.log. Earlier configure failure
+above is RESOLVED. make all passes;no original execution/image parity implied.

@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Map TEV projected texture0x400 and projected shadow0x20000 | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete two-stage projection and shadow-stage request blocks/four queried shadow leaves/counter and prior-stage mutation;remaining middle branches/GX/source/runtime open |
+| Map TEV projected texture0x400 and projected shadow0x20000 | AC-01, AC-03 | VALIDATED scoped blocks / lock released, 2026-10-12 | Documentation agent ID 1 | [Two-stage projection](behavior/display/MAP_TEV_FLAG400_TWO_STAGE_PROJECTION.md),[projected shadow/source](behavior/display/MAP_TEV_FLAG20000_PROJECTED_SHADOW.md):complete two request blocks/four source leaves/prior-stage output rewrite/shared swap/register/order/getter captures/counters;four remaining middle branches/GX/source/lifetime/runtime open |
 | Map TEV time-driven base modes8/9 | AC-01, AC-03 | VALIDATED scoped local blocks / lock released, 2026-10-12 | Documentation agent ID 1 | [Pulse/raw clock](behavior/display/MAP_TEV_MODE8_PULSE_AND_RAW_CLOCK.md),[shared scroll/matrices](behavior/display/MAP_TEV_MODE9_SHARED_SCROLL_AND_MATRICES.md),[base closure/gaps](behavior/display/MAP_TEV_BASE_MODE_CLOSURE_AND_REMAINING_WORK.md):complete base8/9 expressions/mutations/request order and startup metadata;actual scene/clock/state initialization/GX/libm and six middle branches remain open |
 | Map TEV fixed base modes1..7 and renderer mode12 | AC-01, AC-03 | VALIDATED scoped fixed programs / lock released, 2026-10-12 | Documentation agent ID 1 | [Stage tables](behavior/display/MAP_TEV_FIXED_STAGE_PROGRAMS.md),[mode12 callers/evidence](behavior/display/MAP_TEV_MODE12_CALLERS_AND_LITERAL_EVIDENCE.md):eight complete literal base programs/25 stage rows/150 requests/two actual mode12 caller argument graphs;time-driven modes8/9 and six middle branches/GX/source/lifetime/runtime remain open |
 | Map TEV ordinary mode0 and shared postlude | AC-01, AC-03 | VALIDATED scoped paths / lock released, 2026-10-12 | Documentation agent ID 1 | [Base/source](behavior/display/MAP_TEV_BASE_MODE_ZERO_AND_SOURCE.md),[constant/character shadow](behavior/display/MAP_TEV_CONSTANT_AND_CHARACTER_SHADOW.md),[callback/counts/gaps](behavior/display/MAP_TEV_FINAL_CALLBACK_AND_OPEN_BRANCHES.md):mode0/fallback/constant/character-shadow/final publication plus four complete shadow leaves;other modes/six middle branches/SDK/GX/source/lifetime/runtime remain open |
@@ -3200,3 +3200,27 @@ above to e2bd560e25b6c43a9f833b7b4a8efdf87d38f1aeaffa9bc2e2f8e0472e2dba70
 and replaced raw0 arguments with typed GPU_PRIMARY_COLOR. make all rerun PASSES,
 built3DSX;log /tmp/id1-tev-time-build-rerun.log. Prior82 CTest/90 Python pass.
 Earlier compile failure is RESOLVED;ID1 made no native source change.
+
+ID1 projected-TEV validation breadcrumb (2026-10-12):233-word/five-identity/
+three-span/projected-source and prior TEV/general checks pass;make all3DSX pass.
+make test configure fails missing tests/battle_packed_movement_sound_tests.cpp,
+CMakeLists.txt:389. Log:/tmp/id1-tev-proj-test.log. Native battle target owner
+should finish its fixture;ID1 has not changed CMake/native/tests and will rerun
+after the file actually arrives.
+
+ID1 projected-TEV delivery (2026-10-12),AC-01/AC-03 partial:two detailed
+contracts in released row close flags0x400/0x20000 and four pswp query leaves.
+0x400 rewrites preceding stage output1 then projected stage/swap3/shared swap
+-table3/TEV register2 seed000000ff/resolve stage;K+2,B/C+1. 0x20000 double
+texture getter/retained second pointer/live matrix/color/ignored config return,
+request order/KColor1 selectors and K/B/C+1. cswp/pswp states stay distinct.
+Containing body remains PARTIAL semantics;four middle internals/GX/source/
+lifetime/original images remain open. Verifier233 words/three spans/two imports/
+six direct sites passes;make all passes/separate90 Python tests pass;host gate
+configure missing fixture recorded above. Only ID1 scoped lock released.
+
+ID1 projected-TEV host completion:missing movement-sound fixture arrived,
+SHA256 c200a5800f3222ee2db8593d4e5be3caad807eda898d3258917caa1d5f7caaf3.
+After that actual state change,make test rerun PASSES84 CTest/90 Python;log
+/tmp/id1-tev-proj-test-rerun.log. Earlier configure failure is RESOLVED. make all
+and all projected/static checks pass. ID1 changes no native/CMake/tests.

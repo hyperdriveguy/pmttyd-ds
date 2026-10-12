@@ -1173,3 +1173,11 @@ close six remaining local bodies alongside Christine/rank query.Five normalized
 complete programs match;Koops first two icons literal344/345;source order/keys
 pinned.12 hashes/1296 anchors/71 spans/5 comparisons verified;83 CTest/90
 Python/make all pass.Unit provisioning/event/query/Game/platform/runtime open.
+
+ID1 projected-TEV recovery (2026-10-12):
+[two-stage projection](behavior/display/MAP_TEV_FLAG400_TWO_STAGE_PROJECTION.md)
+and [projected shadow/query leaves](behavior/display/MAP_TEV_FLAG20000_PROJECTED_SHADOW.md)
+close both local request blocks/four pswp queries. Reproduce with
+verify_map_tev_projected.py:233 scoped words/three spans/two imports/six sites.
+Four remaining middle internals/source/GX/capture/lifetime/images and full-game
+requirements stay open;containing TEV hash retains PARTIAL semantic status.
