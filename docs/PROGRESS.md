@@ -85,8 +85,9 @@ anchors and all previous checks,including four whole-body hashes,two whole
 ordinary weapon hashes,six-word tables,event/FP pointers,boss weapon hash/base1
 and its callback relocation. Two fresh355-function behavior_evidence reports
 matched byte-for-byte using read-only ISO.610 behavior local links resolved.
-make test passed seven CTest suites and58 Python tests;make all exited0 with
-no rebuild;git diff --check passed. /tmp holds inspection ELFs/reports/logs;
+make test passed seven CTest suites and58 Python tests;final make all exited0,
+recompiling audio/game/main/render/save and rebuilding ttyd-2ds.3dsx after
+concurrent native edits;git diff --check passed. /tmp holds inspection ELFs/reports/logs;
 none are staged. No original execution,emulator/profile/save changes,ISO write,
 asset conversion or story/dialogue rewrite occurred in this documentation step.
 
@@ -5202,3 +5203,48 @@ Validation: reviewed lock ownership and git diff --check passed. Documentation-
 only change;no tests/build rerun or ISO/native/profile/save changes. Concurrent
 native game/header/test edits preserved. Next:use ID1 for this agent's future
 scoped reservations and continue prioritized original US behavior contracts.
+
+## 2026-10-12 — ID1: battle jump callbacks and Crump count boundaries
+
+Added BATTLE_JUMP_EVENT_CALLBACKS.md:complete JumpSetting/JumpPosition/
+JumpContinue,move-current/target/visible accessors,horizontal integration and
+floor-height local bodies. Used evtGetFloat literal routes are documented;
+containing whole-body fingerprint is not full resolver coverage. Original
+encoded0xf24a7b4c yields0.19921875,not exact0.2. Actual initial jump settings are
+count0/speed2/acceleration0.19921875;count0 preserves an existing stored count,
+deriving from distance/speed only when it is also0. Recovery counts20/10/10
+include requested10 overriding the final setting15.
+
+JumpPosition integrates on initialization and every resumed call;remaining
+positive count blocks,completion snaps visible target then yields result1.
+Automatic derived count0 returns2 after initialization without integration,
+sound setup or target snap. Visible/current/target remain distinct. JumpContinue
+copies visible→current initially,retains velocity/speed/heading,integrates then
+finishes only below the stage-derived floor;exact equality blocks. Added scoped
+JMP-01..07 implementation requirements and derived acceptance cases,with original
+comparison obligations kept separate from controlled finite tests.
+
+Dedicated tools/verify_battle_jump_contracts.py avoids editing ID2's concurrently
+reserved general tooling. Ten containing-body hashes,55 instruction anchors,nine
+constants,nine harbor imports and original settings/count operands pass read-only
+ISO. Three jump metadata reports match byte-for-byte. General verifier initially
+hit ID2's in-progress part-loop base-name collision;inbox note identified it,ID2
+renamed the local,and final general checks passed1,916 anchors/data checks.
+Fresh general report has359 function fingerprints;the separate jump report adds
+ten bodies without silently changing general counts.619 behavior links resolved.
+Gekko check covered459 listings,65,705 instructions,376 paired instructions,
+zero changes/unrecognized. make test passed seven CTest suites plus58 Python
+tests;make all exited0,no rebuild. git diff --check passed.
+
+Updated attack-reference links,asset provenance and request inbox;released only
+ID1's validated jump slice. AC-01/03 remain open for original cadence/eligibility/
+execution. Preserved ID2's part reservation and concurrent native changes. No
+original execution/emulator/profile/save mutation,ISO write,asset conversion,
+native implementation or story/dialogue rewrite by this research step.
+
+Next ID1 priorities:general/private/global input and battle/event update order,
+execution-credit/pause ownership,approach/hit-position and angle/dist/audio/stage
+services,then original impact/precheck/defense input traces. Coordinate through
+numeric-ID scoped locks in DOCUMENTATION_REQUESTS.md. Continue all reachable US
+systems and optional content;full-game documentation and final requirements
+remain incomplete.

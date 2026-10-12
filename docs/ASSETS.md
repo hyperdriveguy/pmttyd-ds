@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 351 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1844 instruction anchors plus those
+now fingerprints 359 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1916 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -759,3 +759,14 @@ artifacts/reference/behavior/evidence.json;fresh event inventory was generated
 read-only into /tmp/pm-boss-normal-attack.json. Original executable bytes/poses/
 sound resources were not converted,linked,committed or distributed. No original
 execution or new licensing rights are inferred from these contracts.
+
+Battle jump research by agent ID1 (2026-10-12) uses a separate read-only verifier,
+tools/verify_battle_jump_contracts.py,while general research tooling is shared
+with agent ID2. Its ignored battle-jump-evidence.json records ten body identities,
+55 instructions,nine initialized constants and concrete harbor jump imports/
+operands. Nine local bodies are documented completely;evtGetFloat is documented
+only for used literal routes. Inspection ELF/disassembly artifacts remain under
+artifacts/reference/behavior and use corrected Gekko paired-single mnemonics.
+No original executable linking/distribution,asset conversion,ISO/profile/save
+mutation or story/dialogue rewrite. Encoding/behavior facts do not grant rights
+to distribute original resources;existing provenance and rights still apply.

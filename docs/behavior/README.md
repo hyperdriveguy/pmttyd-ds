@@ -18,9 +18,11 @@ complete gameplay sequences before further general-library edge-case recovery.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Unit part defense/lifetime](UNIT_PART_DEFENSE_AND_LIFETIME.md) | Scoped contiguous part construction/pointer copies,Crump/Mario signed source tables,complete part lookup and deletion request order | Remaining entry/vector/heap/pose services,mutation and original actor lifetime traces |
 | [Weapon power callbacks](BATTLE_WEAPON_POWER_CALLBACKS.md) | Complete default/Mario Jump/Hammer power bodies,signed level/index/bonus ordering,ordinary six-word tables and boss base1 | Level/bonus/AC producers,weapon lifetime,unit/part construction and executed hit totals |
 | [US completion/priorities](US_COMPLETION_AND_PRIORITIES.md) | Current completion audit,shipped reference census,registered commands and mechanic-first order | Full event feasibility/original execution and all-system closure |
 | [Field battle entry/return](FIELD_BATTLE_ENTRY_AND_RETURN.md) | Area/index registration,NPC setup/random draws,first-call start and field-result polling | Service/lifetime/result producers and original transitions |
+| [Battle jump callbacks](BATTLE_JUMP_EVENT_CALLBACKS.md) | JumpSetting/Position/Continue,integer target resolution,first-call integration,strict floor completion,storage and actual Crump count overrides | Main/pad/event cadence,angle/dist/trig/audio/stage producers and original hit ticks |
 | [Boss normal attack](HARBOR_BOSS_NORMAL_ATTACK.md) | Full 95-command target/approach/precheck/defense/recovery request graph and missing-label99 boundary | Inner target/movement/input/damage services and original timing |
 | [Target event interfaces](BATTLE_TARGET_EVENT_INTERFACES.md) | Seven complete local wrappers/helpers,mode pair map,part ID,side narrowing and sampling ABI | Candidate cores/mode/flag producers,buffer lifetime and original selection traces |
 | [Unit entry stats/spawn](UNIT_ENTRY_STATS_AND_SPAWN.md) | Entry slot/publication and HP/FP copy,getter ABI,spawn ordering and init ownership;boss HP5 link | Rest of entry/parts,overrides,lifetime and original comparisons |

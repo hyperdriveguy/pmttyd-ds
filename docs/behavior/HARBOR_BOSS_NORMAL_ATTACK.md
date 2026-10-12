@@ -77,11 +77,13 @@ Its pose/wait operations are concurrent event work, not automatically an extra
 reached after the event dispatcher advances past the preceding callback;
 those callbacks' polling/completion semantics still determine elapsed ticks.
 
-Encoded float operands above are retained as raw event words. Their numeric
-values require the original evtGetFloat mapping and callback argument policy;
-they are not direct IEEE binary32 bit patterns to reinterpret blindly. Likewise
-literal JumpPosition arguments 0 and -1 have not been renamed as a fixed duration
-or landing signal. Recover the callbacks before calculating an impact schedule.
+The follow-up [jump callback contract](BATTLE_JUMP_EVENT_CALLBACKS.md) resolves
+the concrete encoded floats:initial JumpSetting is (count0,speed2,acceleration
+0.19921875). JumpPosition's operand0 count preserves the stored count and derives
+one from distance/speed when that stored value is also0;the last operand-1 is
+resolved as sound mode. These are event words,not IEEE bits. Initial integration
+occurs in the first callback call;landing result1 yields before the next command.
+This still does not supply measured impact ticks or main/private pad cadence.
 
 ## Precheck branch map and defense boundary
 
@@ -159,8 +161,11 @@ rather than interpreting both sentinel words as literal audio parameters.
 
 The second jump uses the retained temporary position values from the preceding
 GetPos/FaceDirection operations; do not insert another target-position query.
-The parent waits 25,15,10 and the inline waits 10,7 are script literals, not a
-measured total attack duration. Inline audio, movement and dispatcher cadence
+The [jump callback follow-up](BATTLE_JUMP_EVENT_CALLBACKS.md) establishes that
+the last JumpPosition requested count10 overrides its JumpSetting count15.
+JumpContinue retains the prior jump velocity and finishes only when Y is strictly
+below the stage-derived floor. The parent waits 25,15,10 and the inline waits
+10,7 are script literals, not a measured total attack duration. Inline audio, movement and dispatcher cadence
 must remain separate until their lifetime and blocking behavior are established.
 No fresh hit-precheck/defense/damage request follows label 98 in this stream.
 

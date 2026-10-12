@@ -17,10 +17,16 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Battle jump callbacks and concrete Crump float operands | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover JumpSetting/JumpPosition/JumpContinue and used evtGetFloat literal route; excludes full pad/main-loop cadence and executed impact ticks |
+| Unit part defense/attribute construction and Crump source tables | DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Part contract](behavior/UNIT_PART_DEFENSE_AND_LIFETIME.md):pointer copies,boss/Mario zero tables,lookup exceptions and ordered teardown;full unit entry,mutation and executed damage remain open |
+| Battle jump callbacks and concrete Crump float operands | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Jump contract](behavior/BATTLE_JUMP_EVENT_CALLBACKS.md):full local callbacks,used float route and scoped JMP-01..07 acceptance cases;main/pad cadence and original impact traces remain open |
 | Crump normal attack request graph and target wrapper ABI | AC-01, AC-03, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Attack graph](behavior/HARBOR_BOSS_NORMAL_ATTACK.md) and [target ABI](behavior/BATTLE_TARGET_EVENT_INTERFACES.md); excludes target cores and executed timing; parent requests remain open |
 | Default weapon power callback and concrete boss operands | DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Power contract](behavior/BATTLE_WEAPON_POWER_CALLBACKS.md):full default body,boss base1 and nil FP pointer;final modified damage remains open |
 | Ordinary Mario Jump/Hammer power callback bodies and default tables | DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Power contract](behavior/BATTLE_WEAPON_POWER_CALLBACKS.md):signed level,index/read order,two ordinary tables;hit-count/level/bonus/AC producers remain open |
+
+ID1 validation follow-up: ID2 renamed the Mario part-record local to avoid
+shadowing the DOL base. The general verifier now passes after that correction;
+ID1's separate jump verifier also passes. The earlier tooling failure did not
+contradict original-game evidence.
 
 ## Implementation priorities
 
@@ -29,7 +35,7 @@ does not answer its full runtime binding request.
 
 | Priority | Request / implementation blocker | State / owner / reserved slice |
 | --- | --- | --- |
-| 1 | DMG-01: real weapon power, part defenses and dispatch/application | Default/Mario power bodies and ordinary/boss operands delivered by ID2;part construction,level/bonus/AC producers and application binding remain open |
+| 1 | DMG-01: real weapon power, part defenses and dispatch/application | Power bodies/operands and scoped part construction/table/lifetime delivered by ID2;level/bonus/AC producers,mutation and application binding remain open |
 | 2 | AC-03: enemy hit branch and actual defense sampling boundary | Attack graph/target ABI delivered and lock released; pad cadence,global eligibility and execution remain open |
 | 3 | AC-01: tutorial/ordinary Jump state ownership and impact cadence | Shared enemy-attack graph delivered; next recover pad/update and movement callback composition |
 | 4 | AC-02: Hammer lifecycle, result consumers and original audio binding | Open; ordinary weapon period/base difficulty already answered |
@@ -114,6 +120,18 @@ retain `SFX_AC_PI1` and `SFX_AC_PONE1`; no replacement samples are played.
 
 ## AC-03 — Defense callers, pad cadence and eligibility (open)
 
+Movement partial answer from agent ID1 (2026-10-12):
+[jump callbacks](behavior/BATTLE_JUMP_EVENT_CALLBACKS.md) gives full local
+JumpSetting/JumpPosition/JumpContinue contracts and the concrete float route.
+JumpPosition integrates in its first call,blocks on remaining positive count,
+and yields on landing;precheck is reached in a subsequent interpreter invocation.
+The initial automatic count0 early return is a separate immediate-advance route.
+Concrete initial settings are count0/speed2/acceleration0.19921875;recovery counts
+20/10/10 include a requested10 overriding stored15. JumpContinue retains prior
+velocity and blocks at exact floor equality. No rendering-frame or fixed-impact
+schedule is inferred. Main/private/general pad order,pause,execution credits and
+original input traces remain open;do not treat the local callback as closing them.
+
 Further partial answer (2026-10-12):
 [boss normal attack](behavior/HARBOR_BOSS_NORMAL_ATTACK.md) documents all95
 commands. Precheck result1 alone requests defense then CheckDamage flags0x100;
@@ -158,6 +176,19 @@ Recover caller ownership so future forced commands bind one shared battle
 counter and cannot accidentally duplicate or reset its consumption.
 
 ## DMG-01 — Weapon power, unit stats and damage dispatch binding (open)
+
+Further partial answer from ID2:
+[part defense and lifetime](behavior/UNIT_PART_DEFENSE_AND_LIFETIME.md) pins
+unsigned count*0x500 block allocation,0x4c source stride,linked nodes,attribute/
+counter copies and retained defense pointers. Crump count1/part1 binds two
+five-byte zero tables;Mario's three annotated records share two zero tables,
+but its actual count/caller needs binding. Single-part lookup accepts any
+nonnegative ID;multiple-part lookup matches source ID. Unit deletion releases
+poses,block and unit before clearing the registry;original source tables are
+not freed here. PART-01..04 specify local acceptance cases. No allocation-null/
+zero-count guard or atomic unregister-first behavior is invented. Remaining
+unit entry,mutation/table lifetime,heap/pose services and original traces keep
+DMG-01 open.
 
 Partial answer from documentation agent ID2:
 [weapon power callbacks](behavior/BATTLE_WEAPON_POWER_CALLBACKS.md) recovers

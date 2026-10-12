@@ -68,7 +68,7 @@ python3 tools/inspect_dol_function.py marioStMain --symbols artifacts/reference/
 python3 tools/verify_actor_collision.py
 ```
 
-The report now fingerprints 351 functions, inventories all 119 dispatcher targets,
+The report now fingerprints 359 functions, inventories all 119 dispatcher targets,
 hashes `gor.rel` and all 260 US message files, and lists all REL paths. Direct
 call-site lists are static instruction scans: indirect calls, conditional calls,
 execution counts and branch feasibility are not reconstructed. Fingerprinting a
@@ -348,3 +348,9 @@ references,callback/data candidates and shipped REL imports from execution.
 4. Extend the same procedure to persistent state, RNG, audio callbacks, camera,
    animations, partner abilities and the remaining module census. Track unresolved
    functions/branches rather than treating an available symbol as a specification.
+
+
+Battle movement follow-up: [jump event callbacks](behavior/BATTLE_JUMP_EVENT_CALLBACKS.md)
+provides nine complete local bodies and the concrete encoded-float route,with
+separate ten-body/55-instruction verification. These fingerprints are additional
+to the general report;neither set establishes measured hit/input cadence.
