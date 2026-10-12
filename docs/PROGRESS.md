@@ -5092,3 +5092,16 @@ flag/mode producers;JumpPosition/float/camera/audio/inline callback composition;
 main/general/private pad update order and original defense-impact traces;damage/
 death/reward/field result producers. Continue shipped US systems and optional
 content. The documentation and complete-game objective remain incomplete.
+
+## 2026-10-12 — Numeric ownership for documentation locks
+
+User assigned this documentation agent ID1. Updated DOCUMENTATION_REQUESTS.md
+so new locks require a user-assigned numeric agent ID rather than /root alone;
+recorded ID1 on this agent's delivered Crump attack/target slice. Other existing
+power-research reservations retain their owners pending identification;this
+change does not claim or release another agent's work.
+
+Validation: reviewed lock ownership and git diff --check passed. Documentation-
+only change;no tests/build rerun or ISO/native/profile/save changes. Concurrent
+native game/header/test edits preserved. Next:use ID1 for this agent's future
+scoped reservations and continue prioritized original US behavior contracts.

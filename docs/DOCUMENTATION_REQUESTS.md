@@ -9,12 +9,15 @@ distinct. Do not change native harness choices into original-game evidence.
 ## Documentation locks and delivery status
 
 Locks reserve only the named subtask, not an entire parent request. Keep other
-subtasks available for independent work. Record the owner and release the lock
-when the linked contract is validated; a partial answer leaves its parent open.
+subtasks available for independent work. Every new lock must record the owner's
+user-assigned numeric agent ID; `/root` alone is not unique across sessions.
+This documentation agent is **ID 1**. Release only your own lock when the linked
+contract is validated; a partial answer leaves its parent open. Existing owners
+without an assigned ID must identify themselves before their locks are reassigned.
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Crump normal attack request graph and target wrapper ABI | AC-01, AC-03, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation /root | [Attack graph](behavior/HARBOR_BOSS_NORMAL_ATTACK.md) and [target ABI](behavior/BATTLE_TARGET_EVENT_INTERFACES.md); excludes target cores and executed timing; parent requests remain open |
+| Crump normal attack request graph and target wrapper ABI | AC-01, AC-03, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Attack graph](behavior/HARBOR_BOSS_NORMAL_ATTACK.md) and [target ABI](behavior/BATTLE_TARGET_EVENT_INTERFACES.md); excludes target cores and executed timing; parent requests remain open |
 | Default weapon power callback and concrete boss operands | DMG-01 | LOCKED, 2026-10-12 | Documentation /root | Recover 0x80189d30, signed widths and selected data bindings; excludes ordinary Mario callback bodies |
 | Ordinary Mario Jump/Hammer power callback bodies and default tables | DMG-01 | LOCKED, 2026-10-12 | Documentation /root (power follow-up) | Recover signed level/index/read order and concrete ordinary weapon tables; excludes hit-count lifetime and executed tutorial values |
 
