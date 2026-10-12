@@ -130,3 +130,13 @@ complete turn/action equivalence or complete-game requirements.
 Phase membership/sorts and selected action-count consumption regions are now
 specified in [phase tables](BATTLE_PHASE_TABLES.md). Their full controller
 entry/state schedule remains open.
+
+
+## Complete action-record/first-process follow-up (2026-10-12)
+
+[Byte accounting](BATTLE_ACTION_RECORD_BYTE_UPDATES.md),
+[turn-rule sums/status writes](BATTLE_ACTION_RECORD_TURN_RULES.md) and
+[first-process/fog requests](BATTLE_TURN_FIRST_PROCESS_COMPLETE.md) now close
+local record helpers,judgment-before-counter order and64-slot preparation.
+AddPoint narrows before its cap;count/halfword/unit-byte rules differ. General
+rule/action/reset/persistence/source/turn/backend and original traces remain open.

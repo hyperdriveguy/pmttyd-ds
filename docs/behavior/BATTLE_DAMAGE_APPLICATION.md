@@ -205,7 +205,10 @@ invariant rather than inventing an independent partner FP pool.
 For H>0, kind222 calls `BtlActRec_AddCount(battle+0x16f3e)` then
 `BtlActRec_AddPoint(battle+0x16f3c,U8(H))`. Kinds224–230 instead use +0x16f3f
 and +0x16f3d. These helper calls use requested H even if HP was suppressed or
-lower than H. Helpers' saturation/persistence semantics remain to recover.
+lower than H. [Complete byte helpers](BATTLE_ACTION_RECORD_BYTE_UPDATES.md)
+now close storage/order:AddPoint stores low8 BEFORE its100 cap;AddCount leaves
+an existing byte>=100 unchanged. Original record reset/source/persistence and
+turn/general-rule ownership remain separate.
 
 If R is nonzero, either H>0 or Q>0, and `BtlUnit_CheckStatus(D,1)` succeeds,
 draw `irand(100)`. For draw<50, write byte1 to D+0x118 and byte100 to D+0x119,
@@ -268,3 +271,13 @@ unit/part resolution invariants, hit-position semantics, effect/audio internals,
 action-record helpers, audience state, all hit-event handlers and complete
 damage orchestration. Do not report the full battle system complete from this
 application contract alone.
+
+
+## Complete action-record/first-process follow-up (2026-10-12)
+
+[Byte accounting](BATTLE_ACTION_RECORD_BYTE_UPDATES.md),
+[turn-rule sums/status writes](BATTLE_ACTION_RECORD_TURN_RULES.md) and
+[first-process/fog requests](BATTLE_TURN_FIRST_PROCESS_COMPLETE.md) now close
+local record helpers,judgment-before-counter order and64-slot preparation.
+AddPoint narrows before its cap;count/halfword/unit-byte rules differ. General
+rule/action/reset/persistence/source/turn/backend and original traces remain open.

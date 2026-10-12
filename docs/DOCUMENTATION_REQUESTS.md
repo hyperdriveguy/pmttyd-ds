@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Action-record saturation/storage and turn-rule judgment | DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Byte updates](behavior/BATTLE_ACTION_RECORD_BYTE_UPDATES.md),[turn rules](behavior/BATTLE_ACTION_RECORD_TURN_RULES.md),[first process](behavior/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md):complete helpers/six-rule sums/two-phase writes/full first-process and fog/status leaves,34 DOL sites;general judge/action/reset/source/turn/scene/runtime ownership remains open |
 | Partner motion2 jump destination,flight and landing handlers | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used party_motion_jump/jump2 complete phase/destination/numeric/update/landing graphs;called target/history/pose/sound/source domains,other motion engines,EVT-01 and original trajectories remain separate |
 | Partner placement3 screen-reset output contract | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Placement3](behavior/FIELD_PARTNER_PLACEMENT3.md),[math](behavior/FIELD_PARTNER_PLACEMENT3_MATH.md),[NPC scan](behavior/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md):complete local nine-angle/raw/classification/fallback/output and heading/normal/NPC graph answered;full backend/NPC/source/numeric/EVT-01 and original trajectories remain open |
 | Complete battle unit entry,body/height/belong and geometry initialization | DMG-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Full entry](behavior/BATTLE_UNIT_ENTRY_COMPLETE.md),[registry/scalar/geometry](behavior/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md),[pose/display](behavior/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md):complete local Entry and listed helpers,early registry/check asymmetry,pouch/event order and borrowed field144 producer;resource/kind/content/lifetime/turn/source/runtime engines remain open |
@@ -1525,3 +1526,22 @@ Six identities/five complete local bodies plus backend selected regions,108 anch
 and make all pass. All1356 behavior links resolve at snapshot,including the prior
 concurrent ID2 missing-target report. Only ID1 scoped lock released;full source/
 scene/NPC/numeric/caller/EVT-01 and original trajectories remain open.
+
+
+ID2 DMG-02/STATUS-01 record/turn delivery (2026-10-12), partial answer:
+[Byte updates](behavior/BATTLE_ACTION_RECORD_BYTE_UPDATES.md) closes AddPoint's
+store-low8/reload/THEN100 cap and AddCount's>=100 no-write guard,requested-HP
+versus paid-FP caller order/fields and34 direct DOL calls. Wide saturation would
+be wrong:100+200→44;prior count255 stays255. [Turn rules](behavior/BATTLE_ACTION_RECORD_TURN_RULES.md)
+closes60..65 exact sum/read orders and helper's live global recapture/two threshold
+phases/status2→6/bit2-preservation policy;255 threshold bypass independent.
+[First process](behavior/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md) closes complete
+caller:judge BEFORE turn-half increment/count-byte update;all64 nonnull units,
+unit24 increment before Slow reset,RNG/retained-kind priority loads and status
+mask clear,global fog timer/conditional deletion with ignored result. No once-
+per-turn frequency or generic record reset is inferred. Own lock released;
+general rule judge,attack-command classification,raw writers/reset/persistence/
+fortune/effect/turn/source domains and original traces remain open. Verifier
+passes12 containing/complete/linked hashes,203 anchors,SDA span and34 exact
+DOL direct sites. make test passes43 CTest suites and69 Python tests;make all
+passed. ID2 changed no native/test/asset conversion code.

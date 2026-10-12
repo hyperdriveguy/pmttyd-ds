@@ -8501,3 +8501,34 @@ released;concurrent native/ID2 work preserved outside this scoped commit.
 Next:motion2 destination/landing consumers,homing/fall/jump/fly handlers,all
 placement/NPC/camera/scene/source/numeric domains and original recovery traces.
 Full-game documentation and complete-game requirements remain incomplete.
+
+## 2026-10-12 — ID2 action-record byte updates and turn first-process judgment
+
+Added [byte updates](behavior/BATTLE_ACTION_RECORD_BYTE_UPDATES.md),
+[turn-rule judgment](behavior/BATTLE_ACTION_RECORD_TURN_RULES.md) and
+[first-process/fog](behavior/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md).
+Complete AddPoint stores low8 before reload/100 cap;AddCount leaves prior>=100
+unchanged. Requested-HP versus paid-FP field/call order is explicit. Complete
+six-rule selector sums and helper retain independent global captures,two live
+threshold phases,255 bypass,status2→6 and bit2-preservation order. Complete
+first-process calls judge before explicit halfword/count increment,prepares all
+64 nonnull units with byte24-before-Slow/RNG/kind/priority/status order,then
+requests globally captured fog expiry while ignoring its result. General rule
+judge,attack classification and actual controller frequency stay separate.
+Only ID2 scoped lock released;parent DMG-02/STATUS-01 source/runtime work remains.
+
+Validation:verify_battle_action_records.py passed12 complete/linked/containing
+hashes,203 anchors,SDA setup and all34 branch-shaped direct DOL sites. Repeated
+metadata byte-identical;Python compilation,general verifier1980 anchors and
+prior full-entry verifier passed. make test passed43 CTest suites and69 Python
+tests;make all rebuilt concurrent native audio/game/main/render/save/3DSX and
+passed. All1772 local documentation links resolved;git diff --check passed.
+These are static/native checks,no original record/rule/turn/RNG/fog observation.
+
+ISO read-only;no original execution/asset conversion,profile/save mutation,
+native/test changes or original binary/dialogue distribution by ID2. Inspection
+ELF/listings remain /tmp/id2-record-*. Concurrent files/staging/locks preserved.
+Next:general rule judge and attack-command record classification;counter/rule/
+threshold/init/reset/save/scene/turn writers,fortune/effect/alias/numeric/RNG
+source domains and original damage/payment/challenge/turn traces. Complete-game
+documentation and requirements remain incomplete.

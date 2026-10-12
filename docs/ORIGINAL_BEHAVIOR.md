@@ -600,3 +600,11 @@ NPC scan returns last strict horizontal match,not nearest,and placement maximize
 its recorded3D fallback distances. NPC-free success snaps floorY and runs around;
 fallback preserves ownerY and skips around. Full scene/NPC/source/numeric/runtime
 and remaining partner motion engines remain open.
+
+
+[Action-record byte updates](behavior/BATTLE_ACTION_RECORD_BYTE_UPDATES.md),
+[turn-rule judgment](behavior/BATTLE_ACTION_RECORD_TURN_RULES.md) and
+[first-process preparation](behavior/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md)
+now specify exact byte-store/cap,rule sum/status-write,judge/counter/RNG/unit/fog
+ordering. General challenge/action/reset/save/turn/source/backend ownership
+and original executed traces remain open.
