@@ -24,10 +24,10 @@ void attack(Game& g,bool success) {
 void movement() {
     Game g;Input right;right.x=1;
     advance(g,1);for(int n=0;n<1000;++n)g.tick(right);
-    CHECK(walkable(g.progress.position));CHECK(g.progress.position.x<=8.72f);
+    CHECK(walkable(g.progress.position));CHECK(g.progress.position.x<=9.f-BodyRadius);
     Game obstacle;obstacle.progress.position={0,1.2f};Input north;north.z=-1;
     for(int n=0;n<120;++n)obstacle.tick(north);
-    CHECK(obstacle.progress.position.z>=.88f);
+    CHECK(obstacle.progress.position.z>=.6f+BodyRadius);
     CHECK(!walkable({std::numeric_limits<float>::quiet_NaN(),1}));
     CHECK(!walkable({0,0}));
     Game jump;jump.progress.position={0,2};jump.tick(confirm());advance(jump,18);CHECK(jump.jumpHeight>.9f);advance(jump,18);CHECK(std::fabs(jump.jumpHeight)<.01f);
@@ -98,7 +98,7 @@ void collisionImport() {
     char path[]="/tmp/ttyd-walls-XXXXXX";int fd=mkstemp(path);CHECK(fd>=0);
     uint32_t count=1;Rect wall{0,2,0,3.5f};
     CHECK(write(fd,&count,4)==4);CHECK(write(fd,&wall,sizeof(wall))==sizeof(wall));close(fd);
-    CHECK(loadCollision(path));CHECK(!walkable({.1f,2.5f}));CHECK(walkable({1,2.5f}));
+    CHECK(loadCollision(path));CHECK(!walkable({.05f,2.5f}));CHECK(walkable({1,2.5f}));
     CHECK(!walkable({7,3}));
     auto levelWall=[&](float low,float high) {
         std::ofstream file(path,std::ios::binary);uint32_t tagged=0x80000001;
@@ -106,21 +106,24 @@ void collisionImport() {
         file.write(reinterpret_cast<char*>(&wall),sizeof(wall));file.write(reinterpret_cast<char*>(&levels),sizeof(levels));
         file.close();CHECK(loadCollision(path));
     };
-    levelWall(0,.1f);CHECK(walkable({.1f,2.5f},0)); // Original harbor riser height.
-    levelWall(0,.3f);CHECK(!walkable({.1f,2.5f},0)); // Taller obstacle remains solid.
-    CHECK(walkable({.1f,2.5f},.3f));
-    levelWall(1.5f,2);CHECK(walkable({.1f,2.5f},0)); // Overhead geometry.
+    levelWall(0,.1f);CHECK(walkable({.05f,2.5f},0)); // Original harbor riser height.
+    levelWall(0,.3f);CHECK(!walkable({.05f,2.5f},0)); // Taller obstacle remains solid.
+    CHECK(!walkable({.099f,2.5f},0));CHECK(walkable({.101f,2.5f},0));
+    CHECK(walkable({.05f,2.5f},.3f));
+    levelWall(.18f,.22f);CHECK(walkable({.05f,2.5f},0)); // Between the original rays.
+    levelWall(.26f,.28f);CHECK(!walkable({.05f,2.5f},0)); // Upper ray only.
+    levelWall(1.5f,2);CHECK(walkable({.05f,2.5f},0)); // Overhead geometry.
     for(uint32_t flags:{0u,4u,0x84u,0x80004u,0x800004u}) {
         std::ofstream file(path,std::ios::binary);uint32_t tagged=0xc0000001;
         Vec2 levels{0,2};GroundContact contact{flags,123};
         file.write(reinterpret_cast<char*>(&tagged),4);file.write(reinterpret_cast<char*>(&wall),sizeof(wall));
         file.write(reinterpret_cast<char*>(&levels),sizeof(levels));file.write(reinterpret_cast<char*>(&contact),sizeof(contact));file.close();
-        CHECK(loadCollision(path));CHECK(walkable({.1f,2.5f},0)==(flags==4));
-        {CollisionTransition rollback;levelWall(0,2);CHECK(!walkable({.1f,2.5f},0));}
-        CHECK(walkable({.1f,2.5f},0)==(flags==4));
+        CHECK(loadCollision(path));CHECK(walkable({.05f,2.5f},0)==(flags==4));
+        {CollisionTransition rollback;levelWall(0,2);CHECK(!walkable({.05f,2.5f},0));}
+        CHECK(walkable({.05f,2.5f},0)==(flags==4));
     }
     // Incomplete owner metadata must not replace the last valid collision pack.
-    CHECK(truncate(path,35)==0);CHECK(!loadCollision(path));CHECK(!walkable({.1f,2.5f},0));
+    CHECK(truncate(path,35)==0);CHECK(!loadCollision(path));CHECK(!walkable({.05f,2.5f},0));
     clearCollision();std::remove(path);
     CHECK(!loadCollision("/does/not/exist"));
 }
@@ -364,10 +367,10 @@ void indexedOriginalCollision() {
             for(size_t n=0;n<segments.size();++n) {
                 auto w=segments[n];auto flags=wallContacts[n].attributes;
                 if(!(flags&0x00080080) && !(flags&0x00800000) && (flags&4))continue;
-                if(w[5]<level+.25f || w[4]>level+1.2f)continue;
+                if(!((w[4]<=level+.11f && w[5]>=level+.11f) || (w[4]<=level+.2664f && w[5]>=level+.2664f)))continue;
                 float dx=w[2]-w[0],dz=w[3]-w[1],den=dx*dx+dz*dz;if(den<1e-8f)continue;
                 float t=std::max(0.f,std::min(1.f,((p.x-w[0])*dx+(p.z-w[1])*dz)/den));
-                float a=p.x-w[0]-t*dx,b=p.z-w[1]-t*dz;if(a*a+b*b<.28f*.28f)free=false;
+                float a=p.x-w[0]-t*dx,b=p.z-w[1]-t*dz;if(a*a+b*b<.1f*.1f)free=false;
             }
             CHECK(walkable(p,level)==free);
             GroundContact expected;
@@ -468,8 +471,10 @@ void originalReturnSelection() {
     CHECK(loadCollision("romfs/gor_00.walls"));CHECK(loadGround("romfs/gor_00.ground"));CHECK(loadGroundReturns("romfs/gor_00.returns"));
     Game g;Progress p;p.room=1;p.position={0,-5.1f};p.elevation=1.2f;g.restore(p);
     ReturnPoint point{99,99,99};CHECK(!g.recoveryReturn(point));CHECK(point.x==99);
-    auto walk=[&](float x,float z,int frames) {Input i;i.x=x;i.z=z;for(int n=0;n<frames;++n)g.tick(i);};
+    auto walk=[&](float x,float z,int frames) {Input i;i.x=x;i.z=z;for(int n=0;n<frames && !g.water.active();++n)g.tick(i);};
     walk(1,0,30);walk(1,1,80);walk(0,1,80);
+    CHECK(!g.water.active());CHECK(g.returnContact.sourceNode==0xd2a30);
+    g.tick(confirm());walk(0,1,60); // Jump over the low edge using airborne wall rays.
     CHECK(g.groundContact.attributes&0x200);CHECK(!(g.groundContact.attributes&0x40000000));
     // This path crosses Ship_Change02 after A_yuka_04; the most recent
     // eligible original owner supplies its authored automatic return center.

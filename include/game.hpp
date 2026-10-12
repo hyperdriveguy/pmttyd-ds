@@ -11,6 +11,9 @@ namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
 constexpr float StepHeight = .25f;
+// Original normal-Mario searchFrontWall: half20-unit width and two ray heights.
+constexpr float BodyRadius = .1f;
+constexpr float WallLowerRay = .11f, WallUpperRay = .2664f;
 // Original normal road-entry event restores party homing distance50 units.
 constexpr float PartnerDistance = .5f;
 struct Vec2 { float x = 0, z = 0; };

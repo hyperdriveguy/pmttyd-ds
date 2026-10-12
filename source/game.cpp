@@ -87,7 +87,11 @@ bool wallAtLevel(size_t n,float elevation) {
         const auto flags=wallContacts[n].attributes;
         if(!(flags&0x00080080) && !(flags&0x00800000) && (flags&4))return false;
     }
-    return n<walls.size() && (wallLevels.empty() || (wallLevels[n].z>=elevation+StepHeight && wallLevels[n].x<=elevation+1.2f));
+    if(n>=walls.size())return false;
+    if(wallLevels.empty())return true;
+    const auto height=wallLevels[n];
+    return (height.x<=elevation+WallLowerRay && height.z>=elevation+WallLowerRay) ||
+           (height.x<=elevation+WallUpperRay && height.z>=elevation+WallUpperRay);
 }
 Rect collisionBounds() {return roomBounds;}
 bool loadWarps(const char* path) {
@@ -132,7 +136,7 @@ void Game::cancelRoad() {
     fade.startIn();
 }
 bool walkable(Vec2 p,float elevation) {
-    constexpr float r = 0.28f;
+    constexpr float r = BodyRadius;
     if (!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(elevation) || std::fabs(p.x)>4096 || std::fabs(p.z)>4096) return false;
     if(collisionReady) {
         if(ground.empty() && (p.x < -6.7f+r || p.x > 6.7f-r || p.z < -4.5f+r || p.z > 5.8f-r))return false;
@@ -172,8 +176,8 @@ bool loadCollision(const char* path) {
     SpatialIndex next;size_t references=0;
     for(uint32_t n=0;ok && n<count;++n) {
         auto w=data[n];
-        ok=indexBounds(next,n,std::min(w.x0,w.x1)-.28f,std::min(w.z0,w.z1)-.28f,
-                       std::max(w.x0,w.x1)+.28f,std::max(w.z0,w.z1)+.28f,references);
+        ok=indexBounds(next,n,std::min(w.x0,w.x1)-BodyRadius,std::min(w.z0,w.z1)-BodyRadius,
+                       std::max(w.x0,w.x1)+BodyRadius,std::max(w.z0,w.z1)+BodyRadius,references);
     }
     if(ok) {wallLevels.swap(heights);wallContacts.swap(contacts);walls.swap(data);wallIndex.swap(next);collisionReady=true;}
     return ok;
@@ -327,9 +331,9 @@ void Game::move(const Input& i) {
     Vec2 candidate{p.x+x*0.065f,p.z};
     float nextHeight=groundHeight;
     GroundContact nextContact;
-    if (walkable(candidate,groundHeight) && groundAt(candidate,groundHeight,nextHeight,&nextContact) && walkable(candidate,nextHeight)) {p=candidate;groundHeight=nextHeight;groundContact=nextContact;}
+    if (walkable(candidate,groundHeight+jumpHeight) && groundAt(candidate,groundHeight,nextHeight,&nextContact) && walkable(candidate,nextHeight+jumpHeight)) {p=candidate;groundHeight=nextHeight;groundContact=nextContact;}
     candidate={p.x,p.z+z*0.065f};
-    if (walkable(candidate,groundHeight) && groundAt(candidate,groundHeight,nextHeight,&nextContact) && walkable(candidate,nextHeight)) {p=candidate;groundHeight=nextHeight;groundContact=nextContact;}
+    if (walkable(candidate,groundHeight+jumpHeight) && groundAt(candidate,groundHeight,nextHeight,&nextContact) && walkable(candidate,nextHeight+jumpHeight)) {p=candidate;groundHeight=nextHeight;groundContact=nextContact;}
     progress.position=p;progress.elevation=groundHeight;
     if(warpCooldown>0)--warpCooldown;
     if(warpCooldown==0 && warpRequest<0 && len>.15f) {

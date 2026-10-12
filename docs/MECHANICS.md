@@ -236,3 +236,26 @@ original drawmode bytes, and asserts no bit31 cases exist in these five packs.
 It finds81 rejected records among5,264 records. Other transformation callbacks,
 name-dependent high-bit cases, runtime event flag changes, swept triangle/body
 collision and original body dimensions remain unfinished.
+
+### Normal wall clearance and sampling heights
+
+`marioInit`8005b72c/734/774 stores original width20,height37,current width20
+(engine units). Original constants80420088=20,804200c0=37.
+`marioHitCheckWidth`800916f0 restores current width to base width for ordinary
+Mario. `marioCheckWall`8008b88c passes current width as f3 to
+`searchFrontWall`8008a2f0. That helper retains f3 asf26 and multiplies it by
+0.5 at8008a544: ordinary forward clearance is10 engine units, not20 or28.
+It adds movement distance to this clearance at8008a558.
+The ordinary grounded branch8008a4dc–8008a4f4 uses two Y offsets:
+8042092c=26.6400013 and804208b4=11. Native scale0.01 gives clearance0.1
+and ray heights0.2664/0.11. Nominal height37 is not itself the wall-ray height.
+`python3 tools/verify_actor_collision.py` independently reads these constants
+and key instruction sites from the read-only ISO (no original code execution).
+
+Native queries now use that clearance and the two height samples, including
+jumpHeight when testing Mario's airborne wall clearance. Original force/ray
+movement, triangle intersections, contact-normal sliding and other Mario-state
+sample tables remain incomplete. XZ segments still summarize each triangle's
+full min/maxY, which can overestimate collision at sloped edges. Native floor
+step/query allowance0.25 and prototype jump trajectory remain provisional.
+Partner shares this normal-Mario proxy rather than its own recovered collision.

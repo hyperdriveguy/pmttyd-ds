@@ -233,3 +233,12 @@ owners of overlapping geometry. WallContacts participates in clear, successful
 load replacement and CollisionTransition snapshot/rollback. Query/minimap
 wallAtLevel applies the ordinary-Mario bit4 exclusion/inclusion overrides before
 height tests. Malformed/truncated metadata preserves the previous valid pack.
+
+Normal-Mario collision calibration supersedes prior0.28 radius/1.2 body-height
+wall tests. BodyRadius=0.1; wallAtLevel tests the source two sample heights0.11
+and0.2664 separately instead of treating the whole vertical interval as solid.
+The spatial index expands segment bounds by BodyRadius. Mario movement uses
+support height plus current jumpHeight for wall tests while querying floors
+separately. Floor step allowance remains0.25. Segment distance/interval geometry
+is still a proxy for original swept rays and triangles; transformed-Mario and
+partner-specific collision remain outstanding.

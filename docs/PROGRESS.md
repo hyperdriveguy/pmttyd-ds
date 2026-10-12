@@ -1235,3 +1235,43 @@ Native water-return regression also exited0 using the same fixture and
 return destination accepted, partial-recovery save suppressed. Final host,
 original-room and unchanged native build checks exited0. Native tests verify
 these scenarios; they do not establish complete original physics fidelity.
+
+## Recover normal actor collision clearance and wall rays
+
+Read-only source trace recovered normal width20,height37,half-width10 and
+wall-ray heights11/26.64 engine units. Added reproducible source verifier
+`tools/verify_actor_collision.py` (constant and instruction-site checks).
+Changed normal collision clearance0.28→0.1 native; replaced1.2-high interval
+wall blocking with separate0.11/0.2664 ray-height samples. Grid expansion follows
+that clearance. Airborne Mario now queries walls using his raised position;
+floor height queries remain separate. Nominal height37 was not substituted for
+the source wall-ray table. Existing visual scale0.24 remains unchanged.
+
+Validation: `python3 tools/verify_actor_collision.py` exited0; `make test`
+passed core and28 Python tests; `build-host/core_tests --rooms` passed18,315
+indexed/exhaustive probes and all8 arrivals, landing gates and rollback checks.
+Host tests cover radius boundaries, walls between samples, upper-ray-only walls,
+low/overhead obstacles, dock-edge jump and original water return owner selection.
+Water route now stops at water entry instead of silently advancing recovery
+while holding movement; it explicitly jumps over the newly detected dock edge.
+`make -j2 all` built native `.3dsx` successfully.
+
+Native water script exited0:
+`python3 tools/emulator_smoke.py --fresh-save --save-fixture
+artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script
+ tests/azahar_water.py`.
+It jumps across the low edge, preserves partial-recovery checkpoint, returns
+to original Ship_Change02 destination and saves HP6 from HP7.
+
+Next: replace wall height interval/segment proxies with actual triangle/ray
+geometry and sliding; recover floor search, jump kinematics and ordinary walk
+speed. Sensor activation/camera/party choreography, original story/dialogue,
+SFX, interiors and broader playability remain incomplete. Full goal active;
+no hardware performance or complete original-physics fidelity claim.
+Native ordinary harbor descent/dock save/return also exited0 with HP7 using
+`tests/azahar_harbor_stairs.py` and the same fixture/launch options. Initial run
+caught FileNotFoundError inside the save replacement window; polling now retries
+that transient read until the completed room0 checkpoint or the existing bounded
+timeout. Final `make test`, original-room checks, source verifier and native
+build exited0. An inspection-only `artifacts/reference/marioMove.disasm` was
+prepared for next-session walking/floor work; no speed conclusion is established.

@@ -25,7 +25,11 @@ def run(env,capture):
     hold(['Up'],10/60);hold(['Right'],1);hold(['Left','Up'],50/60);hold(['Left'],.5);hold(['Up'],1)
     # Source scripted departure/fade/arrival now precedes the checkpoint write.
     deadline=time.monotonic()+6
-    while save.read_bytes()[26]!=0 and time.monotonic()<deadline:time.sleep(.1)
-    capture('harbor-stairs-return');assert save.read_bytes()[26]==0
-    assert struct.unpack_from('<I',save.read_bytes(),16)[0]==7
+    while time.monotonic()<deadline:
+        try:data=save.read_bytes()
+        except FileNotFoundError:time.sleep(.1);continue # Atomic replacement window.
+        if data[26]==0:break
+        time.sleep(.1)
+    capture('harbor-stairs-return');assert data[26]==0
+    assert struct.unpack_from('<I',data,16)[0]==7
     hold(['m'],.08)
