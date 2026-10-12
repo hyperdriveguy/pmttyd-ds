@@ -1220,3 +1220,12 @@ close both scoped Btl_UnitSetup import paths and entire local caller:static
 sources/fresh root/typed live loops/repeated imports/positions/equipment mask.
 8 hashes/190 anchors/5 spans verified;85 CTest/90 Python/make all pass.
 Entry/services/invocation/end/source/query/Game/platform/runtime remain open.
+
+ID2 complete battle initialization dispatch delivery (2026-10-12):
+[Dispatch](behavior/battle/BATTLE_INIT_SEQUENCE_DISPATCH_AND_RESOURCE_READINESS.md),
+[reset/readiness](behavior/battle/BATTLE_UNIT_REGISTRY_RESET_AND_INIT_EVENT_SCAN.md),
+[sequence fields](behavior/battle/BATTLE_SEQUENCE_FIELDS_AND_INIT_SOURCE_BINDINGS.md)
+close six bodies/carried state arguments/64-slot registry and event scan/
+resource polling/8 fields.17 hashes/209 anchors/5 spans/2 calls verified;
+90 Python/make all pass.Host85/86 pending new Jump fixture line46 assertion;
+no native fixes by ID2.Source/end/query/Game/platform/runtime remain open.

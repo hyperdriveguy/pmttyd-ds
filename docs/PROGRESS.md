@@ -1,3 +1,30 @@
+## 2026-10-12 — ID2 complete init dispatch and registry/readiness protocol
+
+Three implementation contracts close six complete local bodies:
+[dispatch/resources](behavior/battle/BATTLE_INIT_SEQUENCE_DISPATCH_AND_RESOURCE_READINESS.md),
+[registry/reset/readiness](behavior/battle/BATTLE_UNIT_REGISTRY_RESET_AND_INIT_EVENT_SCAN.md),
+[sequence leaves/source](behavior/battle/BATTLE_SEQUENCE_FIELDS_AND_INIT_SOURCE_BINDINGS.md).
+State0 fall-through/carried third setter arguments,setup then later readiness,
+64 full-slot checks/completed-ID clears,ordered effect polls,window transitions,
+upper-only signed registry setter and8 sequence fields documented.ID2 local
+lock released;parent/source/lifetime requests remain open.No native edits.
+
+Validation:`tools/verify_battle_initialization_dispatch.py` twice,identical:
+17 hashes(6 complete/11 linked),209 anchors,5 spans,2 exact direct DOL calls.
+Python compilation,existing behavior/unit setup/snapshot verifiers,own links,
+and scoped whitespace passed.90 Python tests passed separately.`make all`
+passed.First host86-suite failed effect_deletion(Not Run) and new Jump event
+fixture;retry passed85/86,effect_deletion resolved,but
+battle_mario_jump_parameter_event_tests.cpp:46 still asserts invoke80109c68/
+result2/locals6==42/initialized0.Exact /tmp/id2-initdispatch-test.log and
+/tmp/id2-initdispatch-test-retry.log.Native owner notified;host gate pending.
+
+Limits:static local bodies/scoped sources only.Services/resource/event execution,
+parent scheduler/end reimport/source/global ownership,query-event reachability,
+Game/platform/original runtime/full-game requirements remain open.Next port
+evidence:those source/scheduler/end domains;native owner must resolve new
+Jump fixture before reporting a fully green current host gate.
+
 ## 2026-10-12 — ID2 complete Btl_UnitSetup provisioning/import caller
 
 [Startup actors/imports](behavior/battle/BATTLE_UNIT_SETUP_ACTORS_AND_REPEATED_IMPORTS.md)
