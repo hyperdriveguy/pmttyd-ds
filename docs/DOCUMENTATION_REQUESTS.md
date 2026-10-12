@@ -18,7 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Lecture field trigger,story conditions and return requests | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover gor kurihakase_lecture callers,setup3/start/wait/return and exact US message/selection/persistent bindings;excludes complete battle-end controller and original traces |
-| Weapon aftereffect callback and ordinary Jump operands | JUMP-01, DMG-02 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Recover WeaponAftereffect local flag branches/resource/status services and actual weapon/caller bindings;excludes lecture flow,audience internals and original traces |
+| Weapon aftereffect callback and ordinary Jump operands | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Dispatch](behavior/BATTLE_WEAPON_AFTEREFFECT_DISPATCH.md),[stage leaves](behavior/BATTLE_STAGE_AFTEREFFECT_REQUESTS.md):complete local weighted/forced RNG and destruction/nozzle/frame/object ownership;queued event bodies,source/domain and original traces remain open |
 | Stylish start/main/result and ordinary Jump timing bindings | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Timing/results](behavior/BATTLE_STYLISH_TIMING_AND_RESULTS.md),[icon](behavior/BATTLE_STYLISH_TIMING_ICON.md):complete local start/poll/input/output/queue/draw and four ordinary callers;source/scheduler/audience/display/assets/original traces remain open |
 | Enemy candidate choice and sampling cores | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Sampling](behavior/BATTLE_ENEMY_CANDIDATE_SAMPLING.md),[choice/RNG](behavior/BATTLE_ENEMY_CANDIDATE_CHOICE.md):complete local admission/geometry/compaction/sort/weights/mode4/draw semantics;source/helper/domain/seed/interleaving and original traces remain open |
 | Ordinary selected target,weapon-address and weapon-cost services | JUMP-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Selection/weapon](behavior/BATTLE_SELECTED_TARGET_AND_WEAPON.md),[cost/payment](behavior/BATTLE_WEAPON_COST_AND_PAYMENT.md):complete local bodies/cursor dispatch/shared FP/AP/action-record arithmetic;menu/selection producers,numeric extremes and original traces remain open |
@@ -722,3 +722,19 @@ ID1's lecture scope remain open.
 ID2 validation follow-up:the concurrent candidate-choice test file now exists.
 Re-run make test passed19 CTest suites and58 Python tests. Initial missing-file
 failure above is resolved;ID2 changed no native source/build registration.
+
+
+ID2 aftereffect delivery (2026-10-12), JUMP-01/DMG-02 partial answer:
+[dispatch](behavior/BATTLE_WEAPON_AFTEREFFECT_DISPATCH.md) closes every local
+weighted/chance/force decision and exact RNG/read/call order,with nine actual
+Jump/Hammer chance bytes and both ordinary Jump callers. Aftereffect dispatches
+stage hazards,not a generic status/resource cleanup. Zero chances still consume
+mandatory draws. [stage leaves](behavior/BATTLE_STAGE_AFTEREFFECT_REQUESTS.md)
+closes A1/B shared replacement,A2 ignored handle, nozzle weighted/type/liveness
+helpers and frame/object gating/registration. Nozzle and fall constructors have
+explicit unguarded event-ID reads;do not invent local rollback/fallback policy.
+Frame sets stage0x20 before the subsequent object test;opening boss flag0x1000
+suppresses object registration. Queued event bodies,stage/source/allocator domain,
+seed interleaving and executed hazards remain open. Standalone verifier passes
+13 complete body fingerprints,56 anchors,seven data spans and two ordinary
+callers. ID2 lock released;parent requests/other owners remain open.

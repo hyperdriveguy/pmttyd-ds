@@ -237,3 +237,13 @@ ACRGetResult/BattleAcrobat obligations above. Boundaries use a separate shared
 invocation counter; first start polls t1, lower is excluded, upper included,
 and both ordinary callers supply history count0. Original event scheduling,
 source writers,audience feedback and rendered/runtime traces remain open.
+
+
+## Weapon aftereffect follow-up (2026-10-12)
+
+[Dispatch](BATTLE_WEAPON_AFTEREFFECT_DISPATCH.md) and
+[stage request leaves](BATTLE_STAGE_AFTEREFFECT_REQUESTS.md) now close local
+WeaponAftereffect and called hazard checks above. Exact weighted/forced decisions,
+RNG consumption and stage event ownership are specified; queued event execution,
+source/domain/seed ownership and original hazards remain open. This callback
+is not a status/resource cleanup substitute;the separate badge tail is still open.

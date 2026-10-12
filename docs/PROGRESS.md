@@ -6317,3 +6317,32 @@ availability and input/resource/message/audio/animation traces;expand through
 remaining US progression,field/partner/UI/save/chapter/optional systems. Final
 complete-game requirements remain deferred until all systems are well documented.
 The whole objective remains active/incomplete.
+
+### 2026-10-12 — Documentation ID2: weapon aftereffect and stage requests
+
+Delivered BATTLE_WEAPON_AFTEREFFECT_DISPATCH.md and
+BATTLE_STAGE_AFTEREFFECT_REQUESTS.md for reserved JUMP-01/DMG-02 service scope.
+Complete local callback specifies four-weight selection,force/inhibition/B
+restoration, all mandatory/conditional random draws,ordered stage calls and
+nine original Jump/Hammer chance bytes. Jump initial draw is mandatory despite
+zero destruction weights;Hammer sum106 is not normalized100. Complete called
+leaves/helpers cover A1/B shared replacement versus A2 ignored handle, nozzle
+weighted direction/type selection and liveness, frame flag-before-registration
+and object tutorial gate. Actual Jump serialized sites80356668/803568ec are verified. No status/resource cleanup,allocator rollback or native
+fixed hazard timer was invented. Queued script internals remain open.
+
+Validation: verify_weapon_aftereffect.py passed13 complete body fingerprints,
+56 instruction anchors,seven original weapon/default-event data spans and two
+ordinary callers;report/tmp/id2-aftereffect-evidence.json. Existing13-body
+stylish and19-body/268-command Jump graph verifiers passed. make test passed19
+CTest suites and58 Python tests;make all exited0,no rebuild. All801 local links
+in then-current behavior docs resolved;git diff --check passed. ID2 made no
+native,asset,ISO,save or emulator/profile changes;inspection ELFs/disassemblies
+and reports remain in/tmp. Concurrent native candidate and ID1 lecture work
+preserved and not staged by ID2.
+
+Released only ID2's aftereffect lock and linked contracts in inbox/index/Jump
+graph. Next:queued stage hazard execution/source/domain/seed interleaving;
+Jump badge-effect tail and audience services;complete EVT-01 scheduling and
+original input/state/trajectory/audio/hazard traces. Complete-game requirements
+remain deferred until adequate system coverage;full objective stays incomplete.
