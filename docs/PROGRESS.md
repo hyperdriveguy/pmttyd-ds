@@ -6866,3 +6866,33 @@ update bodies,pose/paper and kind-hook services;alias/REL/index/owner-slot write
 complete battle-end/lecture-mode/window/HP immunity teardown and original
 transition observations. Full documentation/remake remain incomplete;complete-
 game requirements remain deferred until sufficient system coverage.
+
+### 2026-10-12 — Documentation ID2: complete event lifetime services
+
+Delivered EVENT_DELETE_AND_COPYBACK.md and
+EVENT_STOP_START_RELATIONSHIP_TRAVERSAL.md for EVT-01 reserved lifetime scope.
+Complete Delete/DeleteID cover active gate,child-before-brother traversal,
+context/live scans,parent copy-back even on ancestor cancellation,paired metadata,
+clear/memset/allocation counter order and all-match IDs. Complete Stop/Start/All
+retain descendant-before-type-mask policy,active scan versus unguarded direct
+child distinction and precise compiler-inline/recursive context captures.
+Start/Stop differ only in seven flag mutations;no refcount/restart/local rollback
+or immediate dispatcher suspension was introduced. Updated EVT-01 inbox's
+current-delivery summary so historical partial requests do not hide answered
+local manager/constructor/lifetime obligations.
+
+Validation: verify_event_lifetime_services.py passed six full body fingerprints,
+70 instruction anchors,SDA span and all245 paired Stop/Start instructions with
+seven expected flag mutation differences. Report/tmp/id2-event-lifetime-evidence.json.
+Existing run/control and manager verifiers passed. make test passed26 CTest
+suites and58 Python tests;make all rebuilt concurrent native files and3DSX,
+exited0. All913 then-current behavior local links resolved;git diff --check
+passed. ID2 made no native,asset,ISO,save or emulator-profile edits;inspection/
+reports remain/tmp. Concurrent native and ID1 research preserved and not staged.
+
+Released only ID2's lifetime lock,linked both documents in inbox/index/runtime.
+Next EVT-01:other reachable opcodes and full variable namespaces,source/context/
+time/domain initialization and original pause/multicredit/creation/deletion
+traces. Requested Jump/audience/numeric/source composition remains separate.
+Whole documentation and eventual complete-game requirements objective remains
+active/incomplete.

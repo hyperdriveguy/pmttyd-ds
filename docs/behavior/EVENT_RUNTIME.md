@@ -240,3 +240,15 @@ closes94..106 wrappers,setters and Other/ID/Check local scans. Child94 returns
 terminal handler255 without deleting its waiting owner;it ends that credit loop.
 Full stop/start/delete traversal,other opcodes/domains and original runtime
 traces remain open under EVT-01.
+
+
+## Complete deletion/stop/start follow-up (2026-10-12)
+
+[Deletion](EVENT_DELETE_AND_COPYBACK.md) and
+[stop/start traversal](EVENT_STOP_START_RELATIONSHIP_TRAVERSAL.md) now close
+those complete local bodies,including context/scan captures,child-before-brother
+postorder,parent copy-back and all field/clear/count writes. Stop/Start traverse
+before each type mask and differ only in seven flag-mutation instructions.
+Ancestor cancellation preserves copy-back;independent inline ownership remains
+separate. No immediate host suspension or rollback follows from these services.
+Remaining opcode/namespace/source/domain and original runtime closure stays open.

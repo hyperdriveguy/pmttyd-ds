@@ -18,6 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Field driveParty dispatch and local update order | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete driveParty mode dispatch/local update/pose requests and partyMain global updater;called mode/collision/animation engines,EVT-01 and original traces remain separate |
+| Complete event deletion and stop/start relationship traversal | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Deletion/copy-back](behavior/EVENT_DELETE_AND_COPYBACK.md),[stop/start](behavior/EVENT_STOP_START_RELATIONSHIP_TRAVERSAL.md):complete local recursive/inlined context/scan/type/write policy;other opcodes/namespace/source/domain and original traces remain open |
 | Field party mode initialization and current-index ownership | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Mode initialization](behavior/FIELD_PARTY_MODE_INITIALIZATION.md),[driver/index](behavior/FIELD_PARTY_DRIVER_AND_INDEX_OWNERSHIP.md):complete local transition/init/eligibility and scoped direct-index census answered;all mode update/services/callers,alias/REL/index/slot writers,battle teardown and original traces remain open |
 | Event run/ID-output concurrency and control opcode wrappers | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Run/ID variants](behavior/EVENT_RUN_AND_ID_OUTPUT_VARIANTS.md),[controls/ID scans](behavior/EVENT_CONTROL_OPCODES_AND_ID_SCANS.md):complete92/93/108/111,94..106 wrappers,setters and Other/ID/Check scans;deep stop/start/delete,other opcodes/domain and original traces remain open |
 | Child/brother constructors and restart complete local state | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Descendants/107/110](behavior/EVENT_CHILD_BROTHER_AND_INLINE_CONSTRUCTION.md),[restart](behavior/EVENT_RESTART_PRESERVATION.md):complete local copy/reset/ownership/append/order and plain inline/brother paths;ID variants,remaining controls/domain and original traces remain open |
@@ -441,6 +442,15 @@ Do not invent extra samples for script invocations or suppress inactive private
 sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
+
+Current delivered coverage:the complete local manager/priority loop,root/typed/
+child/brother constructors,restart,plain/ID run and concurrency variants,wait/
+USER_FUNC continuations,control wrappers,setters and full deletion/stop/start
+lifetime bodies are now linked in the scoped delivery table and EVENT_RUNTIME
+follow-ups. These answer those parts of the original request below. Remaining
+closure includes other reachable opcode/variable namespace bodies,context/time/
+source/domain initialization and original pause/multicredit/creation/deletion
+traces. A portable manager test pass is not a complete executed Jump/story VM.
 
 Dispatcher implementation breadcrumb (2026-10-12): `event_dispatch.cpp`
 and its suite implement delivered fetch/common tails,WAIT_FRAME,WAIT_MSEC and
@@ -903,3 +913,17 @@ claim until that fixture is present and checked.
 ID2 control validation follow-up:the concurrent dispatch fixture now exists.
 Fresh make test passes26 CTest suites and58 Python tests;the missing-file
 configuration failure above is resolved. ID2 changed no native files for it.
+
+
+ID2 EVT-01 lifetime delivery (2026-10-12), partial answer:
+[deletion/copy-back](behavior/EVENT_DELETE_AND_COPYBACK.md) closes active gate,
+child-before-brother recursion,live slot scans,parent copy-back even on ancestor
+cancellation,paired metadata,active clear/memset/counter order and all-match
+DeleteID. [stop/start](behavior/EVENT_STOP_START_RELATIONSHIP_TRAVERSAL.md)
+closes full descendant-before-mask behavior and original compiler-inline context
+capture policy,All wrappers and same-pass credit implications. No host rollback/
+immediate suspend/refcount behavior is original. Verifier passes six full body
+fingerprints,70 anchors,SDA span and paired245-instruction comparison:only seven
+flag mutations differ between Stop/Start. Own lock released;other EVT-01 scope
+and ID1 reservations remain open. make test passes26 CTest suites and58 Python
+tests;make all passed. No native changes by ID2.
