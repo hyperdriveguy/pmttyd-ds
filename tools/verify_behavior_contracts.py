@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'message_window_drawing': {
+        0x800802a0: '80022140', 0x800802c8: '2803000b',
+        0x800802f4: '548006f7', 0x80080320: '4bf8e4c9',
+        0x800803a0: 'ec4300bc', 0x80080420: '2c0000ff',
+        0x80080494: 'd01d000c', 0x8008049c: '54000739',
+        0x8008059c: '208000f0', 0x800805b4: '388001e0',
+        0x800805ec: '48002df5', 0x80080600: 'fcc02890',
+        0x80080798: '4bffd1fd', 0x80080898: '48239dad',
+        0x800808b4: 'b00d1b10', 0x80080904: '4bfbbb4d',
+        0x8000f2f4: '7c63002e', 0x8026488c: '40980028',
+        0x8026489c: 'fc412028', 0x802648b0: '3c638000',
+        0x80006d24: 'ec1de028', 0x80006d28: 'ec1f0032',
+        0x80006d2c: 'ec00f024', 0x80006d30: 'ec3c002a',
+    },
     'display_sort_implementation': {
         0x80006520: '281e0001', 0x8000652c: '90cd1678',
         0x800065c8: '480000b9', 0x80006604: '4bffeb99',
@@ -944,6 +958,22 @@ def verify(iso_path):
             if read(address, 4).hex() != expected:
                 raise ValueError(f'Display depth/state constant mismatch {address:#x}')
         print('All eleven display offsets/dispatch targets and five depth/state floats verified')
+        window_draw_targets = (0x800802e8, 0x800802e8, 0x80080680, 0x80080780,
+                               0x80080680, 0x80080888, 0x800802e8, 0x80080700,
+                               0x800802e8, 0x800802e8, 0x80080680, 0x80080814)
+        if struct.unpack('>12I', read(0x8030f5a0, 48)) != window_draw_targets:
+            raise ValueError('Message window draw type targets mismatch')
+        geometry = (0.5, 10.0, 240.0, 36.0, 62.0, 80.0, 60.0, 28.0,
+                    6.0, 8.0, 50.0, 52.0, 31.0, 180.0, 5.0)
+        if read(0x80420620, 60) != struct.pack('>15f', *geometry):
+            raise ValueError('Message window geometry/indicator floats mismatch')
+        if read(0x8030434c, 4).hex() != '80006d24':
+            raise ValueError('Message window mode0 interpolation target mismatch')
+        if read(0x80303a20, 24) != struct.pack('>3d', 0.0, 4294967296.0, 2147483648.0):
+            raise ValueError('Unsigned32 clipping conversion constants mismatch')
+        if read(0x804160b0, 4).hex() != '8041ea3c':
+            raise ValueError('Message indicator work pointer initializer mismatch')
+        print('All twelve window draw targets, fifteen floats, mode0, clipping constants and indicator binding verified')
 
 
 if __name__ == '__main__':

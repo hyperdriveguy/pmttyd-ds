@@ -3402,3 +3402,32 @@ cadence, matrix/GX/font/icon/copy services and real message/story callers. Conti
 all original attribution/order/branches/conditions and other uncovered systems
 before complete-game requirements. Full objective active/incomplete; original
 execution/images comparisons still needed.
+
+## 2026-10-12 — General message-window drawing
+
+Previous goal turn made progress through247b864. Began clean and added
+MESSAGE_WINDOW_DRAWING.md for full local msgWindow_Disp: twelve type routes,
+current-camera getter, raw/projected anchors, mode0 interpolation arithmetic,
+fused geometry, type1 draw-time stored position changes, exactly255 text gates,
+direct text at any opacity, clipping/conversion order, common camera-scissor
+restoration and retained-return indicator/pose update. Also recovered the local
+unsigned32 clipping converter, including NaN/saturation, and linked the existing
+hoshi_2/HOS_C_1 initialization binding. Border/text/projection/pose service bodies
+and indicator result semantics remain open. Updated lifecycle/state cross-links.
+
+Validation:824 instruction anchors and prior checks passed read-only US ISO.
+Verified all twelve type targets, fifteen geometry/indicator floats, mode0 target,
+three unsigned32 conversion constants and original msgw pointer initializer.
+Fresh243-function evidence reports matched byte-for-byte. All local behavior links
+resolve; git diff --check passed. make test passed core plus36 Python tests;
+make all exited0, no rebuild. Only research/provenance/evidence tooling changed.
+No original execution/emulator run or profile/save modification; original
+inspection/report artifacts remain ignored. Static verification does not prove
+actual current-camera/caller domain, projection/service arithmetic, indicator
+semantics, executed scissor/images or original/native equivalence.
+
+Next: msgDisp record consumers/return values and msgDispKeyWait_render; border/
+font/icon/pose/GX/projected-camera services, actual outer reset/sort/camera cadence
+and real story callers. Continue original attribution/order/branches/conditions
+and other uncovered systems before complete-game requirements. Full objective
+active/incomplete; original execution/images comparisons still needed.

@@ -190,7 +190,9 @@ versus terminal close timestamps. These are derived obligations, not traces.
 
 Pool update traversal is now covered in [window manager](MESSAGE_WINDOW_MANAGER.md),
 selection draw geometry/cursor mutation in [selection drawing](MESSAGE_SELECTION_DRAWING.md).
-Remaining: outer/display manager cadence, renderer and key-wait indicator,
+General border/text/scissor/indicator request paths are now covered in
+[window drawing](MESSAGE_WINDOW_DRAWING.md).
+Remaining: actual outer/display cadence, inner renderer and indicator semantics,
 event print/callback/identity/substitution producers, pose services and clock/
 input snapshots/numeric helper details; original story attribution/order/branches/
 conditions and all other systems. Local general/clear main branches are now

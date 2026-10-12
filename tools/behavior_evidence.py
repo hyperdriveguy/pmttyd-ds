@@ -59,6 +59,7 @@ FUNCTIONS = (
     'dispGetCurWork', 'dispCalcZ', 'dispDraw', 'dispSort',
     '_sort@dispdrv.o', 'dispEntry', 'dispReInit', 'dispInit',
     'qqsort', 'fsort',
+    'msgWindow_Disp', 'camGetCurPtr', '__cvt_fp2unsigned',
     'btlevtcmd_AnnounceMessage', 'btlevtcmd_AnnounceSetParam',
     'BattlePadCheckTrigger', 'BattlePadMultiCheckTrigger', '_disp@battle_message.o',
     'evt_btl_camera_set_mode', 'evt_btl_camera_set_homing_unit',

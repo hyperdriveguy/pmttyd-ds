@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 240 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 800 instruction anchors plus those
+now fingerprints 243 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 824 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -146,6 +146,10 @@ complete structural guide checked against original US partition/cycle branches;
 no upstream implementation is compiled into the prototype. Authored model reports
 for3549 sorting cases,5914 cycle permutations and8072 bit-loop counts remain
 ignored and are not original execution evidence.
+General window drawing adds three fingerprints, twelve type targets, fifteen
+geometry/indicator floats, mode0 interpolation target and unsigned32 conversion
+constants. Cursor pose pointer binding is recorded; original renderer/animation
+services and visual assets are not copied into the native runtime in this step.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,

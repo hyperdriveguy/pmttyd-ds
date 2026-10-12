@@ -169,3 +169,5 @@ specified in [window states](MESSAGE_WINDOW_STATES.md); rendering and manager
 outer/display cadence remain open. Pool update order and texture setup are now
 covered in [window manager](MESSAGE_WINDOW_MANAGER.md); selection draw geometry
 and cursor mutation in [selection drawing](MESSAGE_SELECTION_DRAWING.md).
+General border/text/scissor/indicator requests are now covered in
+[window drawing](MESSAGE_WINDOW_DRAWING.md); inner services/cadence remain open.
