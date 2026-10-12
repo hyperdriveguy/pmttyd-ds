@@ -608,3 +608,14 @@ and remaining partner motion engines remain open.
 now specify exact byte-store/cap,rule sum/status-write,judge/counter/RNG/unit/fog
 ordering. General challenge/action/reset/save/turn/source/backend ownership
 and original executed traces remain open.
+
+
+[Jump destinations](behavior/FIELD_PARTNER_JUMP_DESTINATION.md),
+[initialization](behavior/FIELD_PARTNER_JUMP_INITIALIZATION.md) and
+[flight/landing](behavior/FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md) close both
+used motion2 handler graphs,main target/history priorities,distinct numeric
+preparation and floor/horizontal/exception ordering. Counts at+24 are stored
+preparation parameters,not local flight countdowns. Main flagged scratch movement
+has no published X/Z;main landing0/marker versus jump2 distance-selected0/1
+remain distinct. Full target/front-floor/pose/audio/source/numeric and original
+trajectories remain open.

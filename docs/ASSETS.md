@@ -1169,3 +1169,25 @@ ELF/listings and field-partner-placement3-evidence.json stay ignored under
 artifacts/reference/behavior. ISO remained read-only;no asset conversion,original
 execution,profile/save mutation or original binary/dialogue distribution. NPC/
 scene/numeric/source and original trajectory domains remain separate.
+
+
+Partner motion2 jump research by ID1 (2026-10-12):
+verify_field_partner_jump.py with field_partner_jump_evidence.json pins six
+complete local DOL identities,136 instructions,17 constants,two data spans,
+two lecture imports and four actual walkMain dispatch calls. Original handler/
+index/landing ELF/listings and field-partner-jump-evidence.json stay ignored
+under artifacts/reference/behavior. IDs0927/0928 are original takeoff/landing
+sound REQUESTS;full pose/audio playback is not inferred or newly authored here.
+
+ID1's required make all invoked the concurrently edited existing audio-map
+pipeline:3218 GameCube/0 Switch identities and five slice primary-sample WAV
+fallbacks. Inputs were read-only sound/proj/pmario.proj/pool/sdir/samp from the
+supplied ISO;raw/csv/json catalogs are local-assets/audio-map,packed outputs
+romfs/*.wav and romfs/audio-map.json,using existing config/audio_bindings.json.
+No conversion choices/config/audio code were changed by ID1. The pipeline's
+current choices preserve catalog loop metadata but remove one-shot loop sidecars;
+macro modulation/child voices are not rendered by those primary-sample fallbacks.
+Original assets retain copyright;local derivative use grants no redistribution
+rights. Catalogs/raw/audio packs were left unstaged outside this scoped research
+commit. No original execution,ISO/profile/save mutation or original binary/dialogue
+distribution occurred;this build-triggered conversion is explicitly recorded.

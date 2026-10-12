@@ -8566,3 +8566,42 @@ Next:general rule judge and attack-command record classification;counter/rule/
 threshold/init/reset/save/scene/turn writers,fortune/effect/alias/numeric/RNG
 source domains and original damage/payment/challenge/turn traces. Complete-game
 documentation and requirements remain incomplete.
+
+
+## 2026-10-12 — ID1 used motion2 jump and jump2 contracts
+
+Added [destinations/index leaves](behavior/FIELD_PARTNER_JUMP_DESTINATION.md),
+[initialization numerics](behavior/FIELD_PARTNER_JUMP_INITIALIZATION.md) and
+[flight/landing](behavior/FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md). Complete
+local handlers cover selector binding,prepared-target/history priorities,root-
+versus-target displacement,distinct count/coefficient/velocity/speed rules,
+phase transitions,per-call footprint advancement,vertical and floor/horizontal
+ordering,landing attributes/flags/substates and exceptional root reset. Stored
+count+24 is not decremented locally;no measured flight duration is claimed.
+Main scratch-flag branch has no published X/Z and uninitialized scratch inputs;
+jump2 has no corresponding bypass. Complete index and landing-request leaves
+are specified;full target/front-floor/pose/audio/source/numeric services remain
+open. ID1 did not change concurrent native policy.
+
+Validation:verify_field_partner_jump.py passes six complete local DOL hashes,
+136 independent instructions,17 constants,two spans,two lecture imports and
+four actual walkMain dispatch bindings. Repeated metadata byte-identical;Python
+compilation and prior floor/front/target verifiers passed. General verifier
+passed1980 anchors;all1400 behavior links resolve at snapshot. Gekko audit passed
+566 files/78477 instructions/582 paired-single ops,zero changes or unknowns.
+make test passed44 CTest suites and72 Python tests. Initial make all failed
+Audio::play(Sound) vs play(const Game&) during concurrent native edits;after its
+owner updated source signature,rerun passed/rebuilt3DSX. Exact logs:
+/tmp/id1-jump-test.log,/tmp/id1-jump-build.log,/tmp/id1-jump-build-rerun.log.
+Build invoked existing3218-identity/five-primary-sample audio-map packing;
+read-only ISO sound/proj inputs,local raw/catalog and RomFS WAV paths,existing
+conversion/loop/macro limitations and original licensing are recorded in ASSETS.
+No audio conversion choices or code changed by ID1;outputs left unstaged.
+ISO remained read-only;no original execution/ballistic measurement,profile/save
+mutation or original binary/dialogue distribution. Only ID1 scoped lock released;
+concurrent native/ID2 work preserved outside this research commit.
+
+Next:complete live target-dir/Y/getFrontFloor and pose/audio service bindings,
+fall/homing/fly handlers,all state/index/source/numeric domains and original
+jump/landing trajectories. Full-game documentation and complete-game
+requirements remain incomplete.

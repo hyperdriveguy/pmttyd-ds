@@ -18,7 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Action-record saturation/storage and turn-rule judgment | DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Byte updates](behavior/BATTLE_ACTION_RECORD_BYTE_UPDATES.md),[turn rules](behavior/BATTLE_ACTION_RECORD_TURN_RULES.md),[first process](behavior/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md):complete helpers/six-rule sums/two-phase writes/full first-process and fog/status leaves,34 DOL sites;general judge/action/reset/source/turn/scene/runtime ownership remains open |
-| Partner motion2 jump destination,flight and landing handlers | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used party_motion_jump/jump2 complete phase/destination/numeric/update/landing graphs;called target/history/pose/sound/source domains,other motion engines,EVT-01 and original trajectories remain separate |
+| Partner motion2 jump destination,flight and landing handlers | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Destinations](behavior/FIELD_PARTNER_JUMP_DESTINATION.md),[init](behavior/FIELD_PARTNER_JUMP_INITIALIZATION.md),[flight/landing](behavior/FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md):complete local both-handler/index/landing-request graphs answered;full target/front-floor/pose/audio/numeric/source/EVT-01 and original trajectories remain open |
 | Partner placement3 screen-reset output contract | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Placement3](behavior/FIELD_PARTNER_PLACEMENT3.md),[math](behavior/FIELD_PARTNER_PLACEMENT3_MATH.md),[NPC scan](behavior/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md):complete local nine-angle/raw/classification/fallback/output and heading/normal/NPC graph answered;full backend/NPC/source/numeric/EVT-01 and original trajectories remain open |
 | Complete battle unit entry,body/height/belong and geometry initialization | DMG-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Full entry](behavior/BATTLE_UNIT_ENTRY_COMPLETE.md),[registry/scalar/geometry](behavior/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md),[pose/display](behavior/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md):complete local Entry and listed helpers,early registry/check asymmetry,pouch/event order and borrowed field144 producer;resource/kind/content/lifetime/turn/source/runtime engines remain open |
 | Partner support appearance and out-of-screen reset | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Support appearance](behavior/FIELD_PARTNER_SUPPORT_APPEARANCE.md),[vector ray](behavior/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md),[screen recovery](behavior/FIELD_PARTNER_SCREEN_RECOVERY.md):complete local probe/return/caller,projection/control/request/root graph answered;full placement3/projection/backend/motion/source/domain/EVT-01 and original trajectories remain open |
@@ -1558,3 +1558,22 @@ fortune/effect/turn/source domains and original traces remain open. Verifier
 passes12 containing/complete/linked hashes,203 anchors,SDA span and34 exact
 DOL direct sites. make test passes43 CTest suites and69 Python tests;make all
 passed. ID2 changed no native/test/asset conversion code.
+
+
+ID1 motion2 jump/jump2 delivery (2026-10-12):
+[Destination](behavior/FIELD_PARTNER_JUMP_DESTINATION.md),
+[init](behavior/FIELD_PARTNER_JUMP_INITIALIZATION.md),
+[flight/landing](behavior/FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md) close both
+complete local handlers. Selector1 uses main jump,2/3/6 jump2;target-preserve
+00400000 belongs to main init. Count+24 is NOT decremented locally. Main
+short-history branch adds displacement from TARGET;long branch from ROOT.
+Main floor-before-horizontal and early -2000 gate differ from jump2 horizontal-
+before-floor/final gate;main scratch flag01000000 does not publish rootXZ.
+Main landing0/00800000 vs jump2 distance<5→0 else1/no marker are explicit.
+Six complete identities,136 anchors,17 constants,two spans/two lecture imports
+and four dispatch sites pass;make test44 CTest/72 Python pass. Initial make all
+failed source/audio.cpp:18 Audio::play(Sound) vs platform.hpp:66 play(const Game&)
+during concurrent native edits;exact log /tmp/id1-jump-build.log. Native owner
+subsequently updated that signature;rerun passed/rebuilt3DSX (log /tmp/id1-jump-build-rerun.log). Build invoked existing
+3218-identity/five-fallback audio map packing;provenance recorded in ASSETS.
+Only ID1 scoped lock released;full service/source/EVT-01 and original traces open.
