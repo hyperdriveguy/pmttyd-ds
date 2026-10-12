@@ -31,6 +31,9 @@ FUNCTIONS = (
     'BattleWaitAllActiveEvtEnd_NoBgSetEndWait', 'BattleCheckConcluded',
     'BattleAfterReactionMain', 'BattleAfterReactionRelease',
     'pouchRemoveItem', 'pouchRemoveItemIndex', 'btlevtcmd_ConsumeItemReserve',
+    'btlseqTurnFirstProcess',
+    'BtlUnit_ResetMoveStatus', 'BtlUnit_CanActStatus', 'BtlUnit_CanGuardStatus',
+    'btlevtcmd_SetMaxMoveCount', 'btlevtcmd_CheckActStatus',
     'BattleConsumeReserveItem', 'BattleAfterReactionEntry',
     'BattleAfterReactionQueueInit', 'btlevtcmd_AfterReactionEntry',
     'BattleTransID', 'btlevtcmd_GetBodyId', 'btlevtcmd_AnimeChangePoseType',
@@ -131,6 +134,7 @@ def report(iso_path, symbols_path):
                                   direct_branch_link_sites=calls))
 
         recovery_branches = []
+        move_reset_branches = []
         for section in sections:
             if section['kind'] != 'text':
                 continue
@@ -146,6 +150,8 @@ def report(iso_path, symbols_path):
                 target = (displacement if word & 2 else site + displacement) & 0xffffffff
                 if target == 0x80127890:
                     recovery_branches.append(dict(site=site, link=bool(word & 1)))
+                if target == 0x801266d4:
+                    move_reset_branches.append(dict(site=site, link=bool(word & 1)))
 
         # US dispatch address recovered from evtmgrCmd's table load.
         dispatch = [struct.unpack('>I', at_va(0x80304fd0 + i * 4, 4))[0]
@@ -170,6 +176,7 @@ def report(iso_path, symbols_path):
                      bss_size=struct.unpack_from('>I', dol_header, 0xdc)[0],
                      sections=sections),
             recovery_direct_branches=recovery_branches,
+            move_reset_direct_branches=move_reset_branches,
             symbols_sha256=hashlib.sha256(symbol_bytes).hexdigest(),
             functions=functions, event_dispatch_address=0x80304fd0,
             event_dispatch_targets=dispatch, assets=assets,

@@ -131,9 +131,9 @@ be positive to select this cancellation branch.
 
 `_CheckMoveCount`: if unit word+0x27c has0x1000, do nothing. Otherwise, if
 signed byte+0x23 is positive and equals signed byte+0x22, call the helper at
-`BtlUnit_ResetMoveStatus` at `0x801266d4` with the unit. The downstream move-count recalculation remains a
-dependency; this document records its exact invocation gate rather than
-assuming that Fast always grants an immediate action.
+`BtlUnit_ResetMoveStatus` at `0x801266d4` with the unit. The downstream recalculation is specified in
+[move counts](BATTLE_MOVE_COUNTS.md); action scheduling and consumption remain
+separate dependencies.
 
 ## Recovery step eligibility (B)
 
@@ -201,3 +201,6 @@ tests or proof of a complete status system.
 The ordered turn-controller recovery passes are now specified in
 [turn recovery](BATTLE_TURN_RECOVERY.md). Outer turn cadence and periodic effect
 phases still require separate recovery.
+
+Move reset, max-count mutation and action eligibility are now specified in
+[move counts](BATTLE_MOVE_COUNTS.md); count consumption and outer cadence remain open.

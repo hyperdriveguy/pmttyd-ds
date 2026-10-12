@@ -2558,3 +2558,29 @@ move reset and outer turn/action cadence; motion/float/pose services and actual
 death/revival event scripts. Continue full-system documentation before complete-
 game requirements. Objective remains active/incomplete; original/native traces
 and rendering comparisons still required.
+
+## 2026-10-12 — Move-count reset and action/guard predicates
+
+Previous goal turn progressed withf448f56 inventory/reservation contracts. Added
+BATTLE_MOVE_COUNTS.md: Fast byte doubling/narrowing, Slow signed division and
+low-count thresholds, reset snapshots/zero fallback, conditional setter reset,
+max-count callback without reset, act/guard predicates and turn-first reset/
+priority caller segment. DOL direct-call inventory identifies three reset sites.
+Turn-first increments+24 before resetting all nonnull units; other+24/count
+writers and outer cadence remain unrecovered. Null CanActStatus returns1 by
+helper composition, without claiming a missing unit can act in the controller.
+
+Validation:290 instruction anchors plus all prior checks passed read-only US ISO.
+Evidence126 function fingerprints reproduced byte-identically; three direct
+reset link sites checked. Behavior links resolve; git diff --check passed.
+make test passed core plus36 Python tests; make all exited0, nothing to rebuild.
+Workspace started clean; only research/tool metadata changed. No original code
+execution/emulator run or profile/save modifications. Extracts/disassembly/reports
+remain ignored; ASSETS.md updated. Static identity/anchors do not prove a native
+implementation equivalent or establish complete Slow turn cadence.
+
+Next: count consumption and+20/+23/+24 writers/consumers, full turn-first service
+ordering and outer phase/action scheduler; queue/configuration/item lifecycle
+callers, conclusion/rewards and actual death/revival scripts; motion/float/pose
+services. Continue all systems before complete-game requirements. Objective
+active/incomplete; original/native execution/rendering comparisons still needed.

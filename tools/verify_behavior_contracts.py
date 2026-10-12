@@ -13,6 +13,14 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'move_counts_and_eligibility': {
+        0x80126710: '981f0022', 0x80126730: '2c000002',
+        0x8012675c: '5463083c', 0x80126790: '981f0020',
+        0x801267a0: '7c000775', 0x8011b25c: '981c0024',
+        0x8011b298: '7c002850', 0x8010fd18: '2c04ffff',
+        0x8010fd40: '987f0021', 0x8010fd58: '40810008',
+        0x8012729c: '3880001b', 0x801272e8: '4bffff65',
+    },
     'inventory_removal_and_reservations': {
         0x800d4c60: '2c1d0079', 0x800d4cd0: '2c1d0153',
         0x800d4d30: '7c1f1b2e', 0x800d4d38: '7c1e1b2e',
