@@ -330,3 +330,12 @@ native bake formula needs branch/source reconciliation;original libm/GQR0/FPSCR/
 render/material/GX/resource/source/lifetime/visual composition remains open.
 Current74 CTest/78 Python/3DS build passes supersede previous movement failures;
 neither those checks nor leaf closure proves complete-game requirements.
+
+ID1 shape/render material update (2026-10-12):complete local renderProc/
+materialProc contracts begin at
+[entry/defaults](../display/ANIMATION_SHAPE_RENDER_ENTRY_AND_DEFAULTS.md),
+with actual three DOL sites and original Mario source metadata. Called texture/
+map/GX/SDK/resource/source/lifetime/numeric/original visible outcomes remain open.
+The ordinary single-texture mesh subset does not close complete-game materials.
+Current76 CTest/86 Python/3DS build passed;all-system documentation/final full
+requirements remain incomplete.

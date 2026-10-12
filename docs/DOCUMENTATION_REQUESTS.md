@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Animation shape renderer and material request bodies | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete renderProc/materialProc capture/matrix/array/index/FIFO/texture/lighting/TEV request order and original Mario shape/draw source;SDK/effect/texture consumers/source/lifetime/numeric/runtime remain separate |
+| Animation shape renderer and material request bodies | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/defaults](behavior/display/ANIMATION_SHAPE_RENDER_ENTRY_AND_DEFAULTS.md),[overrides](behavior/display/ANIMATION_RENDER_TEXTURE_OVERRIDE_SELECTION.md),[last-stage](behavior/display/ANIMATION_RENDER_LAST_STAGE_AND_REBIND.md),[arrays/FIFO](behavior/display/ANIMATION_RENDER_ARRAYS_AND_VERTEX_FIFO.md),[source/boundaries](behavior/display/ANIMATION_RENDER_RESOURCE_EXAMPLE_AND_PORT_BOUNDARIES.md):two complete bodies/default/override/material-only versus emission/source metadata;texture/map/GX/SDK/resource/source/lifetime/numeric/runtime remain separate |
 | Animation joint/transform node matrix builders | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Joint](behavior/display/ANIMATION_JOINT_NODE_MATRICES.md),[transform](behavior/display/ANIMATION_TRANSFORM_NODE_MATRICES.md),[stack/affine](behavior/display/ANIMATION_MATRIX_STACK_AND_AFFINE_NUMERICS.md),[rotation](behavior/display/ANIMATION_SDK_AXIS_ROTATION.md),[layout/bindings](behavior/display/ANIMATION_NODE_LAYOUT_AND_USED_BINDINGS.md):two complete builders/seven SDK primitives/two trig wrappers,dispatch/alias/signed-address and original13/29-group metadata;libm/GQR0/FPSCR/resource/render/material/source/runtime remain separate |
 | Animation DrawMtx wrapper and linked-paper selection | AC-01, AC-03 | VALIDATED binary / lock released, 2026-10-12 | Documentation agent ID 1 | [Wrapper](behavior/display/ANIMATION_DRAW_WRAPPER_AND_ADMISSION.md),[buffers/selector](behavior/display/ANIMATION_DRAW_SHARED_BUFFERS_AND_PAPER_SELECTION.md),[paper matrices](behavior/display/ANIMATION_DRAW_PAPER_MATRICES.md),[inner GX/flush](behavior/display/ANIMATION_INNER_DRAW_STATE_AND_BUFFERS.md),[facing](behavior/display/ANIMATION_INNER_DRAW_FACING.md),[groups](behavior/display/ANIMATION_GROUP_TRAVERSAL_AND_REQUESTS.md):five complete local bodies and original Mario draw metadata;render/material/push matrices/GX/SDK/resource/source/runtime remain separate;prior host movement failures resolved by current74-suite run |
 | Animation Main evaluation and linked-paper time/data graph | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/time](behavior/display/ANIMATION_MAIN_ENTRY_AND_TIME.md),[samples](behavior/display/ANIMATION_TIMELINE_SAMPLING.md),[cache](behavior/display/ANIMATION_COMPRESSED_DELTA_CACHE.md),[interpolation](behavior/display/ANIMATION_OUTPUT_INTERPOLATION.md),[facing](behavior/display/ANIMATION_MAIN_CAMERA_FACING.md),[init](behavior/display/ANIMATION_POOL_AND_TANGENT_INITIALIZATION.md):complete Main/init local graphs and original M_Z_1 metadata;resource/pool/draw/copy/clock/helper/libm/platform/source/runtime remain separate |
@@ -2831,3 +2831,19 @@ CTest/86 Python and make all pass;logs /tmp/id2-menutype-test.log,
 /tmp/id2-menutype-build.log. All2971 checked local links resolve. Only scoped ID2
 lock released;native source-domain request remains partial pending full type/
 class/menu/event reachability. No native/test/assets or original runtime claim.
+
+ID1 shape/render material delivery (2026-10-12),AC-01/AC-03 partial answer:
+five linked display contracts close renderProc/materialProc local request bodies.
+Second integer arg ignored;matrix/GX setup before shape filter;captured shape
+versus current draw/pose/resource offsets;raw e4/P4 guards;default origin/light/
+texture/blend/fog/TEV order;kind1 precedence even NULL override;render-only alpha
+adjustment;extra-stage smart return nonuse and fresh kind1 rebind;16-bit fan
+FIFO index streams and reversed signed coordinate selectors are specified.
+Original Mario24 shapes/draws,150 type0 textures,70 source calls/297 indices/
+157 ALL-CALL fan triangles are metadata BEFORE visibility,not the102-triangle
+idle fixture or an observed frame. Two hashes/1310 words/five spans/two imports/
+three actual DOL sites/resource checks pass. make test76 CTest/86 Python and
+make all3DSX pass. Only ID1 lock released;animSetMaterial_Texture/map material/
+smart texture/normal matrix/GX/resource/source/alias/numeric/original visuals open.
+Native mesh should preserve color/normal/UV/pass/override domains and treat its
+ordinary single-texture subset as partial,not complete-game material fidelity.

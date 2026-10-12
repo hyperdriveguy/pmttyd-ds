@@ -75,3 +75,10 @@ Detailed [joint](ANIMATION_JOINT_NODE_MATRICES.md),
 Original libm/FPSCR/GQR0,loaded resource/stack source invariants and render/
 material/GX/original visuals remain separate. Final complete-game requirements
 cannot be inferred from this isolated local closure.
+
+ID1 geometry consumer update (2026-10-12):
+[renderer/material contracts](ANIMATION_SHAPE_RENDER_ENTRY_AND_DEFAULTS.md)
+now specify downstream local shape/default/override/indexed fan requests.
+Original Mario all-call157 fan triangles are pre-visibility metadata,not a
+rendered idle count. Source node/buffer/material/GX/SDK/lifetime/original visual
+composition remains open even with these local consumers documented.

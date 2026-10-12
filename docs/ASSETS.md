@@ -1649,3 +1649,19 @@ Geometry remains frame0; sparse animation updates are now documented but their
 native clock/evaluator/geometry binding is unfinished. Original normals, colors,
 material/GX/render callbacks, shadow geometry and complete display domains are
 still separate requirements.
+
+ID1 render/material source/build provenance (2026-10-12):US G8ME01 ISO opened
+read-only;original a/a_mario identity/hash from earlier Main/draw contracts
+rechecked. Serialized metadata:24 shapes(mode0,cull index3),24 single-texture/
+coordinate0 draws,150 kind0 textures,70 raw call records/297 vertices/157 potential
+fan triangles across ALL calls before visibility. No observed frame count or
+original model/texture/pose/dialogue payload exported. Original cull table
+80415dc8,zero lighting seeds802c1030/103c,diagnostic format802c1078 and initial
+work pointer80415dc0 pinned as metadata;ELFs/listings/report ignored under
+artifacts/reference/behavior. make all ran existing sound/proj/pmario.proj,
+pool/sdir/samp pipeline:3218 GameCube identities,0 Switch,5 primary-PCM slice
+fallbacks;local-assets/audio-map raw/catalog and RomFS WAV/audio-map.json outputs
+unstaged. No ID1 art/audio/mesh conversion policy change. Original rights remain
+with owners;local analysis grants no redistribution license. Exact log:
+/tmp/id1-render-build.log. Native ordinary mesh subset remains distinct from
+complete original materials/lighting/vertex-color/multi-coordinate/TEV behavior.

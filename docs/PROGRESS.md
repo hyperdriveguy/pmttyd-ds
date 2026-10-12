@@ -11758,3 +11758,62 @@ changes and tangent-hold behavior. Reconcile original render/material/color/
 normal/shadow services and remaining special/low-HP/recovery/partner domains.
 Continue original event/story/message binding and full overworld lifecycle;
 the Rogueport slice and frame0 ordinary mesh are not a completed remake.
+
+## 2026-10-12 — ID1 complete local shape renderer and material-only requests
+
+Added five detailed display contracts:
+[entry/defaults](behavior/display/ANIMATION_SHAPE_RENDER_ENTRY_AND_DEFAULTS.md),
+[override selection](behavior/display/ANIMATION_RENDER_TEXTURE_OVERRIDE_SELECTION.md),
+[last-stage/rebind](behavior/display/ANIMATION_RENDER_LAST_STAGE_AND_REBIND.md),
+[arrays/FIFO](behavior/display/ANIMATION_RENDER_ARRAYS_AND_VERTEX_FIFO.md),
+[source/port boundaries](behavior/display/ANIMATION_RENDER_RESOURCE_EXAMPLE_AND_PORT_BOUNDARIES.md).
+Two complete local bodies now specify ignored second argument,early shape−1,
+view/model/normal GX setup before admission,shape pass/alpha/cull filters,
+default lighting/texture/last-stage/fog/TEV requests,first-kind priority/null
+matching,render-only alpha-input difference,extra-stage smart return nonuse,
+fresh rebind,shape versus draw/current buffer captures,descriptor/format/array
+requests,low16 counts and indexed triangle-fan FIFO order/single-versus-multiple
+UV streams. Material-only body performs state requests without local vertices.
+No full called shader/texture/GX backend or original image parity claimed.
+Only ID1 scoped lock released;parent whole-game requests remain open.
+
+Original read-only a/a_mario metadata verified:24 shapes(mode0,cull3),24 draws
+(one texture,coordinate selector0),150 texture-data entries(kind0),70 call
+records totaling297 low16 vertices and157 fan triangles across ALL source calls.
+This is BEFORE visibility/scene/animation admission,not an original frame count
+or replacement for native102-triangle idle bake. Kind1/2/multitexture paths are
+binary contracts without a witnessed Mario resource example. No original asset/
+pose/message payload exported into tracked files;ASSETS records local provenance.
+
+Validation:verify_animation_render_material.py passes two complete body hashes,
+1310 reviewed words,five original spans(initial work pointer,cull table,two
+origin vectors,diagnostic format),two US lecture imports,three exact direct DOL
+sites and original resource identity/name/shape/draw/call/texture metadata.
+Repeated report byte-identical;missing caller,wrong texture kind and substituting
+102 rendered triangles for157 raw-source triangles negatives rejected;Python
+compilation passed. Prior node/draw/Main verifiers pass;general verifier1980
+anchors;Gekko audit633 files/91866 instructions/900 paired-single ops,zero
+changes/unknowns. Link scan473 Markdown files initially found four fresh
+PROGRESS links with erroneous docs/ prefix;targets exist and exact paths fixed.
+New contract links resolved;final whole-tree link check recorded after staging.
+
+make test passed76 CTest suites/86 Python tests;make all passed/rebuilt3DSX.
+Logs:/tmp/id1-render-test.log,/tmp/id1-render-build.log. Existing3218 GameCube/
+0 Switch/5 primary-PCM slice fallback audio pipeline ran;ASSETS records unchanged
+ID1 conversion policy/ignored outputs. No ID1 native code/asset policy/profile/
+save mutation or original execution/visual observation. Concurrent native/ID2/
+reference census changes preserved;only the four broken path targets corrected.
+
+Next:actual animSetMaterial_Texture/map Light/LastStageBlend/Fog/Tev and smart
+texture/PSMTXInvXpose/MultVec/backend consumers,resource/pose/link/source/alias
+lifetime and original visual/numeric traces. Recover remaining US gameplay/
+story/event/message attribution/order/branches/conditions and complete encounters
+through persistent outcomes. Full-system documentation and final complete-game
+requirements remain incomplete;source/body/caller counts are not whole-game coverage.
+
+ID1 final link validation (2026-10-12):after staging,check_doc_links.py scanned
+474 Markdown files and found zero broken links. The four corrected targets were
+in another owner's currently unstaged69-line PROGRESS preface;ID1 preserved
+that content and fixed its working-tree targets without staging the whole
+preface. The ID1 delivery footer/evidence files are staged separately;original
+source-gap census ownership remains with its author.

@@ -49,6 +49,11 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Shape entry/defaults](display/ANIMATION_SHAPE_RENDER_ENTRY_AND_DEFAULTS.md) | Complete two-body matrix/pass/cull/default request order | Texture/map/GX/SDK/source/lifetime/runtime |
+| [Texture override scans](display/ANIMATION_RENDER_TEXTURE_OVERRIDE_SELECTION.md) | Complete reversed slot/index fallback/kind priority/null/alpha differences | Override/resource/texture object/coordinate/GX/source |
+| [Last-stage/rebind](display/ANIMATION_RENDER_LAST_STAGE_AND_REBIND.md) | Complete smart return nonuse/state/extra-stage/fresh rebind order | Smart texture/map TEV/GX/matrix/source/lifetime |
+| [Arrays/vertex FIFO](display/ANIMATION_RENDER_ARRAYS_AND_VERTEX_FIFO.md) | Complete captures/arrays/formats/low16 fan/index/multiple-UV emission | GX/cache/resource/numeric/original geometry |
+| [Render source/boundaries](display/ANIMATION_RENDER_RESOURCE_EXAMPLE_AND_PORT_BOUNDARIES.md) | Original24 shapes/draws/150 kind0 descriptors/70 raw fans/three caller sites | Visibility/source/other resource paths/backend/original frames |
 | [Joint node matrix](display/ANIMATION_JOINT_NODE_MATRICES.md) | Complete scale asymmetry/parent fallback/six rotations/16 routes | Node/source/stack/FPSCR/libm/render/runtime |
 | [Transform node matrix](display/ANIMATION_TRANSFORM_NODE_MATRICES.md) | Complete primary-only rotation/pivot-offset gates/8 routes | Resource/source/numeric/alias/render/runtime |
 | [Matrix stack/affine](display/ANIMATION_MATRIX_STACK_AND_AFFINE_NUMERICS.md) | Complete push publication/Concat snapshot/FMA/copy/writer store order | GQR0/FPSCR/memory/stack/source/visual domains |

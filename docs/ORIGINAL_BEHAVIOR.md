@@ -998,3 +998,16 @@ supply two complete functions,16 DOL direct calls,type12 writer/state0 restore
 and same-frame initialized cursor reuse. A globally supported menu-type invariant
 requires reachability proof;GetSelectWeapon's separate uninitialized slot is not made
 safe by Input reuse. Full menu/query reachability/Game/source/runtime stay open.
+
+ID1 shape renderer/material local closure (2026-10-12):
+[entry/defaults](behavior/display/ANIMATION_SHAPE_RENDER_ENTRY_AND_DEFAULTS.md),
+[overrides](behavior/display/ANIMATION_RENDER_TEXTURE_OVERRIDE_SELECTION.md),
+[last-stage](behavior/display/ANIMATION_RENDER_LAST_STAGE_AND_REBIND.md),
+[arrays/FIFO](behavior/display/ANIMATION_RENDER_ARRAYS_AND_VERTEX_FIFO.md),
+[source/boundaries](behavior/display/ANIMATION_RENDER_RESOURCE_EXAMPLE_AND_PORT_BOUNDARIES.md)
+close two complete local request bodies with three original DOL bindings.
+Original Mario ordinary single-texture/all-kind0 metadata is checked;raw157
+all-call fan triangles are not a frame image or native102-triangle idle result.
+Texture/map/GX/SDK/resource/source/lifetime/numeric/original visual composition
+remains open. Current76-host/86-Python/3DS build passes;full-game requirements
+are still unproven.

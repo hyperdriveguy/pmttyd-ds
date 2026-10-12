@@ -94,3 +94,10 @@ push bodies;[SDK stack/affine](ANIMATION_MATRIX_STACK_AND_AFFINE_NUMERICS.md)
 and [rotation](ANIMATION_SDK_AXIS_ROTATION.md) close their local primitive calls.
 Source13/29 node kinds are checked. Full libm/GQR0/FPSCR/render/material/GX/
 resource/source/lifetime/original visual composition remains open.
+
+ID1 render/material dependency update (2026-10-12):
+[render/material entry](ANIMATION_SHAPE_RENDER_ENTRY_AND_DEFAULTS.md) links
+complete local defaults/overrides/last-stage and indexed fan emission contracts.
+Both callees ignore their second incoming key-index argument locally. Material
+requests differ from ordinary renderer alpha-input/emission work. Called shader/
+texture/GX/normal-matrix/source/lifetime/original visuals remain open.
