@@ -1,5 +1,28 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original IF predicates and string memory comparison
+
+Implemented `event_if_opcodes.cpp` for all12..33 from the complete IF contracts.
+Integer,raw-mask,string and float routes preserve captured argument base,left
+value and post-query second operand/live scan start. Float20..23 retain CR
+negations that accept unordered values. False scans consume ELSE/END markers;
+ELSE scans ignore ELSE markers,with original low16 opcode/signed16 stride and
+terminal1 rules. String comparison ports original alignment-dependent byte/word
+loads,unsigned bytes,word mismatch return signs and8041fa2c null replacement.
+
+Validation: `make test` passed36/36 CTest suites and63 Python tests; `make all`
+compiled the ARM IF module and rebuilt3dsx. Logs:/tmp/pm-event-if-test.log and
+/tmp/pm-event-if-build.log. Fixtures cover all predicates,NaN on either side,
+zeros/infinities,signed extrema,raw masks,mutating query/base/next-pointer order,
+lexical nesting/signed strides/all string alignment pairs/exact load extent,and
+both branches through real dispatcher/assignment/wait integration.
+
+Native address/string allocations,original FPSCR exception behavior and source
+script/runtime traces remain open. No story text or original assets were changed.
+Next:SWITCH/grouped CASE,remaining memory/debug families,native runtime/context/
+address/numeric owners and original Jump stream/callback bindings. Remake goal
+remains active and incomplete;EVT-01 documentation breadcrumbs updated.
+
 ## 2026-10-12 — Original GOTO and loop continuations
 
 Implemented `event_loop_opcodes.cpp` for original4..8. GOTO retains signed8
