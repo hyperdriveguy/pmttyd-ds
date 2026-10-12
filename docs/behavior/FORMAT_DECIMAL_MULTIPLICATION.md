@@ -3,8 +3,9 @@
 US G8ME01 revision0, recovered2026-10-12. B evidence is the original static
 DOL: __timesdec at0x80268b68,size278. This establishes the local multiplication
 routine used by [binary decimal entry](FORMAT_BINARY_DECIMAL_ENTRY.md).
-Power generation, numeric helper edge behavior and executed formatting remain
-open. No original code is executed by this investigation.
+Power generation is covered in [decimal powers](FORMAT_DECIMAL_POWERS.md).
+Numeric helper edge behavior and executed formatting remain open. No original
+code is executed by this investigation.
 
 ## Record domain and writes (B)
 
@@ -95,8 +96,10 @@ validation. Do not infer a general memory-safe multiplication API from its
 normal generator call path.
 
 The integer record constructed by __num2dec_internal is at most20 decimal
-digits for a valid unsigned64 value. The power record's actual count/exponent/
-rounding invariant still requires recovery of __two_exp. The use of leading
+digits for a valid unsigned64 value. The power record's count/digit bounds and
+recursive rounding are now covered in [decimal powers](FORMAT_DECIMAL_POWERS.md),
+establishing a combined scratch budget of at most56 digits for valid integer
+records on this path. The use of leading
 exponents, numeric bytes, retained36-digit rounding and restored sign is now
 established locally; this does not yet establish complete finite conversion.
 
@@ -104,5 +107,5 @@ Differential obligations: coefficient order, carry quotient/remainder, extra
 leading digit/exponent, all scratch-tail tie tests, retained parity, all9 carry
 with unchanged count, absence of trimming/zero normalization, sign0 and final
 caller sign restoration. Original executions and supported caller records are
-still needed. Remaining dependencies include power-of-two generation, runtime
+still needed. Remaining dependencies include finite-input power range, runtime
 numeric helpers, hex-float formatting and the original caller corpus.

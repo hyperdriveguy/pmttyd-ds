@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'format_decimal_powers': {
+        0x80267400: '381e0040', 0x80267404: '28000048',
+        0x80267418: '7c03002e', 0x80267454: '3863ffd0',
+        0x80267484: '2c000005', 0x8026749c: '2c000030',
+        0x802674b8: '88030004', 0x80267580: '2c000005',
+        0x802688c0: '57c00ffe', 0x802688cc: '7c040e70',
+        0x802688d0: '4bffeb15', 0x802688e0: '48000289',
+        0x802688e4: '57c007ff', 0x80268940: 'a01f0028',
+        0x80268a4c: '3800ffff', 0x80268b4c: '4800001d',
+    },
     'format_decimal_multiplication': {
         0x80268b70: '89850004', 0x80268b90: '7fbfea14',
         0x80268b9c: '98030000', 0x80268b6c: '3ce0cccd',
@@ -771,6 +781,47 @@ def verify(iso_path):
         if read(0x80428bc8, 8) != bytes(8):
             raise ValueError('Binary decimal input zero comparison mismatch')
         print('Binary decimal input zero comparison constant verified')
+        if hashlib.sha256(read(0x803bb1e0, 73*4)).hexdigest() != '6d5835dcd3c80b379397f8d1135dec0da162fc4ba1c06934035067bf3c6fde3a':
+            raise ValueError('Decimal power dispatch table mismatch')
+        if hashlib.sha256(read(0x80303aed, 184)).hexdigest() != '23b8d26c7706848ea89bd4178d3757c176d7834f220eb76dbcc849f21c3530d4':
+            raise ValueError('Decimal power seed block mismatch')
+        seeds = (
+            (-64, 0x80267424, -20, 37),
+            (-53, 0x80267520, -16, 83),
+            (-32, 0x8026761c, -10, 122),
+            (-16, 0x80267718, -5, 146),
+            (-8, 0x80267814, -3, 159),
+            (-7, 0x80267910, -3, 166),
+            (-6, 0x80267a0c, -2, 172),
+            (-5, 0x80267b08, -2, 178),
+            (-4, 0x80267c04, -2, 183),
+            (-3, 0x80267d00, -1, 187),
+            (-2, 0x80267dfc, -1, 191),
+            (-1, 0x80267ef8, -1, 194),
+            (0, 0x80267ff4, 0, 196),
+            (1, 0x802680ec, 0, 198),
+            (2, 0x802681e4, 0, 200),
+            (3, 0x802682dc, 0, 202),
+            (4, 0x802683d4, 1, 204),
+            (5, 0x802684d0, 1, 207),
+            (6, 0x802685cc, 1, 210),
+            (7, 0x802686c8, 2, 213),
+            (8, 0x802687c4, 2, 217),
+        )
+        targets = dict((power, target) for power, target, _, _ in seeds)
+        if struct.unpack('>73I', read(0x803bb1e0, 73*4)) != tuple(targets.get(power, 0x802688c0) for power in range(-64, 9)):
+            raise ValueError('Decimal power sparse dispatch mismatch')
+        for power, target, exponent, offset in seeds:
+            small = 0 <= power <= 3
+            expected = (0x38800000 if small else 0x38000000) | (exponent & 0xffff)
+            if read(target, 4) != struct.pack('>I', expected):
+                raise ValueError(f'Decimal power exponent binding mismatch {power}')
+            if read(target + (16 if small else 24), 4) != struct.pack('>I', 0x38a30000 | offset):
+                raise ValueError(f'Decimal power string binding mismatch {power}')
+            digits = str(2**power if power >= 0 else 5**(-power)).encode('ascii') + b'\0'
+            if read(0x80303ac8 + offset, len(digits)) != digits:
+                raise ValueError(f'Decimal power exact source digits mismatch {power}')
+        print('All 73 decimal power targets, 21 seed bindings and seed block verified')
 
 
 if __name__ == '__main__':

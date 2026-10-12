@@ -3197,3 +3197,33 @@ Next: __two_exp table/recursion and numeric runtime services, then hex-float,
 remaining formatter services/caller corpus; continue renderer, story and all
 other missing original systems before complete-game requirements. Full objective
 active/incomplete; original execution comparisons still needed.
+
+## 2026-10-12 — Decimal powers of two
+
+Previous goal turn made progress through b7934cc and480f34c. This turn began
+clean and added FORMAT_DECIMAL_POWERS.md for __two_exp:73-entry sparse dispatch,
+21 literal seed bindings, numeric record copy, original signed ASCII-byte versus
+numeric5 comparison, both long-seed increments, identical seed-copy bodies,
+signed halving, recursive square/odd correction,42-byte copy and per-step rounding.
+Recovered power digit/count bounds establish normal combined multiplication
+scratch<=56 digits, conditional on a valid integer record. Updated entry and
+multiplication dependencies; numeric services/caller power range remain open.
+The-53 seed's discarded ASCII '2' still increments; this static consequence is
+explicitly distinguished from an executed-original trace or modern nearest seed.
+
+Validation:672 instruction anchors and all prior checks passed read-only US ISO.
+Independent verifier checks all73 targets,21 exponent/string bindings, mathematical
+source digit identities and184-byte seed-only block hash. Inspected all21 seed
+copy/round instruction bodies: identical after common-epilogue branch normalization.
+Fresh215-function evidence reports matched byte-for-byte. All247 local behavior
+links resolve; git diff --check passed. make test passed core plus36 Python tests;
+make all exited0, no rebuild. Only research/provenance/evidence tooling changed.
+No original execution/emulator run or profile/save change; original instruction/
+seed inspection outputs remain ignored. Static checks do not prove executed
+accuracy, original caller domain or full conversion/native equivalence.
+
+Next: frexp/ldexp/modf and unsigned-double/integer division services to resolve
+finite conversion power range; hex-float, remaining formatter services and actual
+caller corpus. Continue renderer, story and other uncovered original systems
+before complete-game requirements. Full objective active/incomplete; original
+execution comparisons still needed.
