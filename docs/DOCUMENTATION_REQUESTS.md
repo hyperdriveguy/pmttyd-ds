@@ -1774,3 +1774,13 @@ make all rerun passes/rebuilt3DSX. Missing fixture/camera linker/stale fieldAirO
 failures above are resolved historical runs. ID1 changed no native files. All1541
 behavior links resolve at snapshot. Only ID1 scoped lock released;full service/
 source/EVT-01 and original trajectories remain open.
+
+
+ID1 commit provenance correction (2026-10-12):shared Git index changed after
+staged-stat review. Commit8664e85 contains ID1 fall work AND concurrent
+OVERWORLD_CAMERA_ROAD_STATE.md,overworld_camera_road_state_evidence.json and
+verify_overworld_camera_road_state.py staged by another owner. ID1 did not
+write/edit those three paths. They are preserved in the commit;history is not
+rewritten. Native uncommitted files and ID2 pending work remain preserved.
+Earlier statement that every concurrent change stayed outside the scoped commit
+must be read with this recorded shared-index exception.
