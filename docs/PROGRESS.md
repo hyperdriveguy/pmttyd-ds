@@ -3616,3 +3616,40 @@ signed64 clock/trig/matrix services and story callers. Continue all uncovered
 story/event/field/battle/audio/save/content systems before complete-game
 requirements. Full documentation objective remains active/incomplete; no
 complete-game or standalone numeric execution equivalence is claimed.
+
+## 2026-10-12 — US font resource setup and code mapping
+
+Recovered JUTFontSetup0x80075004,size2f8, JUTFont_CodeToGlyph0x80074e90,size174,
+kanjiSearch0x800758e4,size20 and hankakuSearch0x80075904,size24. Added detailed
+FONT_RESOURCE_SETUP.md and FONT_CODE_MAPPING.md: lazy nonnull guard, low16
+selector table, chosen /f path versus seven /font probes, aligned allocation/
+read/publish order, last INF1/GLY1 descriptors, texture/LOD requests, first WID1
+and ordered width writes; first matching MAP1, all four types, sparse-search
+inclusive upper bound, replacement semantics and byte/halfword wrappers.
+
+Read all three BFN resources in-place without exporting payloads. Recorded
+block/grid/dimension metadata and full-file hashes. US/EU space maps to glyph0;
+0x8140 falls back to glyph0, so setup's width7 write is replaced by width9.
+Japanese0x8140 maps to0x5d. These are static code/data deductions, not executed
+font observations. Original /font path resolution, load/caller/error behavior,
+text stream decoding and GX raster appearance remain open.
+
+Validation:988 instruction anchors and prior tables/constants passed read-only
+ISO; added seven name pointers, five path/name bindings and three complete BFN
+hashes. Fresh271-function reports matched byte-for-byte. All390 local behavior
+links resolved; git diff --check passed. make test passed core plus36 Python
+tests; make all exited0 with no rebuild. Results describe the workspace when
+checked, not subsequent concurrent changes. No original execution/emulator,
+profile/save modification, font conversion or native implementation work.
+Original ELFs/disassemblies/font metadata/reports stay ignored.
+
+Unrelated unstaged docs/ARCHITECTURE.md, docs/MECHANICS.md, include/game.hpp,
+include/head_collision.hpp, source/game.cpp, tests/core_tests.cpp and
+tools/verify_actor_collision.py were preserved and excluded from this commit.
+
+Next: width/line/string layout and byte-stream decoding consumers, real selector/
+load/cadence callers and DVD service contracts; executed width/mapping/texture
+comparisons and GX raster data. Continue uncovered story/event/field/battle/
+audio/save/content systems before complete-game requirements. Full objective
+remains active/incomplete; local contracts do not prove complete dialogue or
+full-game equivalence.

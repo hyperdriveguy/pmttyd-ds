@@ -8,11 +8,25 @@ import argparse
 import hashlib
 import struct
 from pathlib import Path
-from iso_assets import DEFAULT_ISO
+from iso_assets import DEFAULT_ISO, inventory
 
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'font_resource_setup_and_mapping': {
+        0x80075020: '408202c8', 0x80075028: '572013ba',
+        0x80075058: '480cfe31', 0x800750b4: '7c1b1800',
+        0x800750d0: '2c1a0007', 0x800750e0: '54040034',
+        0x800750f0: '908d1a58', 0x80075170: '90ed1a80',
+        0x80075178: '90ed1a7c', 0x800751b8: '482420f9',
+        0x800751e0: '48242365', 0x80075264: '98040001',
+        0x80075268: '38638140', 0x800752e4: '98030001',
+        0x80074ea8: 'a0e50012', 0x80074edc: '41810110',
+        0x80074f0c: '7c051850', 0x80074f48: '1c6000bc',
+        0x80074f88: 'a0e30010', 0x80074f90: 'a0a6000e',
+        0x80074fc8: 'a0e30012', 0x80074fe4: '4080ffbc',
+        0x800758f0: '4bfff5a1', 0x8007590c: '5463063e',
+    },
     'hsv_color_conversion': {
         0x80075344: '881f0000', 0x80075378: 'ec4300b2',
         0x80075388: 'ec220072', 0x80075398: 'ef810024',
@@ -1107,6 +1121,33 @@ def verify(iso_path):
         if read(0x804290a8, 16).hex() != '7e37e43c8800759c0000000000000000':
             raise ValueError('Floor arithmetic probe constants mismatch')
         print('HSV normalization and floor huge/zero constants verified')
+        if read(0x80416038, 28) != struct.pack('>7I',
+                0x802c2b30, 0x802c2b44, 0x802c2b58, 0x802c2b58,
+                0x802c2b58, 0x802c2b58, 0x802c2b44):
+            raise ValueError('Font setup locale-name pointers mismatch')
+        for address, value in ((0x802c2b30, b'papermarioset_JPN'),
+                               (0x802c2b44, b'papermarioset_US'),
+                               (0x802c2b58, b'papermarioset_EU'),
+                               (0x802c2ba0, b'%s/f/%s.bfn'),
+                               (0x802c2bac, b'%s/font/%s.bfn')):
+            if read(address, len(value)+1) != value+b'\0':
+                raise ValueError(f'Font setup name/path binding mismatch {address:#x}')
+        expected_fonts = {
+            'f/papermarioset_US.bfn': (66560, 'bb9cf410e5d916a1268ff503fc4f1ad7e8630b381cd781958eb0be32abb56b45'),
+            'f/papermarioset_EU.bfn': (66560, '2dfefe0bcdb0c64d2a57ea7f3609113f5891b0242b5f5fec436fe0a0c20e9061'),
+            'f/papermarioset_JPN.bfn': (264896, '0718ca2b91d263d1c3121f20ca8073f111c7f8c8dac8496bdd3e5d6d9b297543'),
+        }
+        font_files = {item['path']: item for item in inventory(iso_path)['files']
+                      if item['path'].endswith('.bfn')}
+        if set(font_files) != set(expected_fonts):
+            raise ValueError('Original font file inventory mismatch')
+        for name, (size, digest) in expected_fonts.items():
+            item = font_files[name]
+            disc.seek(item['offset']); data = disc.read(item['size'])
+            if len(data) != size or hashlib.sha256(data).hexdigest() != digest:
+                raise ValueError(f'Original font data mismatch {name}')
+        print('Seven font-name pointers, five bindings and three original BFN resources verified')
+
 
 
 if __name__ == '__main__':

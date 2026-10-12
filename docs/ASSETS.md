@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 267 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 964 instruction anchors plus those
+now fingerprints 271 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 988 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -513,3 +513,13 @@ floor's binary64 1e300/zero probe. Authored contracts describe byte order,
 single-precision/fused operation boundaries and exponent/mantissa branches;
 no original executable is linked, distributed or executed. Local disassemblies
 and reports remain ignored; no asset conversion or licensing change occurs.
+
+Font setup/mapping research adds four US function fingerprints and24 anchors,
+seven original basename pointers and five name/path bindings. Read-only complete
+BFN hash checks cover f/papermarioset_US.bfn(66560 bytes),
+f/papermarioset_EU.bfn(66560) and f/papermarioset_JPN.bfn(264896). Local descriptor
+metadata is ignored artifacts/reference/behavior/font-data.json; no font payload
+was exported or converted by this step. Authored contracts record source paths,
+block/texture dimensions and setup's two ordered width mutations, including the
+US/EU fallback alias. No asset redistribution, license change or executable
+linking occurs; original fonts remain subject to original rights.

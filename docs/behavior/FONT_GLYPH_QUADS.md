@@ -5,8 +5,9 @@ _JUTFont_DrawPos0x80074720,size4dc and kanjiGetWidth0x8007586c,size78.
 See [glyph wrappers/setup](FONT_GLYPH_REQUESTS_AND_SETUP.md),
 [font state](FONT_DRAW_STATE.md), [message effects](MESSAGE_GLYPH_EFFECTS.md)
 and [RNG](RANDOMNESS.md). [HSV2RGB](HSV_COLOR_CONVERSION.md) is recovered
-separately. Font loading/encoding/page ownership and GX/matrix service behavior
-remain separate. No executed image equivalence here.
+separately. [Resource setup](FONT_RESOURCE_SETUP.md) and
+[code mapping](FONT_CODE_MAPPING.md) now cover local loading requests and mapping;
+encoding consumers, runtime ownership and GX/matrix services remain separate. No executed image equivalence here.
 
 ## Shared WID1 search and width byte (B)
 
