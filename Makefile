@@ -167,7 +167,10 @@ ifneq ($(ROMFS),)
 	export _3DSXFLAGS += --romfs=$(CURDIR)/$(ROMFS)
 endif
 
-.PHONY: all clean assets-ready test inventory
+.PHONY: all clean assets-ready audio-assets test inventory
+
+audio-assets:
+	@python3 tools/extract_audio.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 
 test:
 	@cmake -S . -B build-host -DCMAKE_CXX_COMPILER=/usr/bin/g++
