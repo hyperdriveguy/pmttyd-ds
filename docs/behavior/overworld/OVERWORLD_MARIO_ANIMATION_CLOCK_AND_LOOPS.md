@@ -78,20 +78,19 @@ loop selection, update streams, caching and interpolation.
 
 ## Boundary for animated asset baking
 
-The complete animPoseMain body contains position/normal/texture/visibility/
-node update decoding and interpolation. Their stream type/rate/segment blend
-semantics beyond the clock and key-index selection above are **not fully
-reconstructed here**. Full body hashes prevent source drift but are not a
-proof of recovered algorithms. The provided decomp's animPoseMain is empty;
-its struct comments are not authoritative interpolation evidence.
+[The sparse update/interpolation contract](OVERWORLD_MARIO_ANIMATION_SPARSE_UPDATES.md)
+now closes position/node interpolation, stepped texture state and source
+instant-tangent admission for these ten ordinary front/rear poses. Other
+special/effect/external animation domains remain open. The provided decomp's
+animPoseMain is empty; its struct comments are not authoritative evidence.
+Full body hashes alone do not establish algorithm closure.
 
 Current tools/character_bake.py applies cumulative deltas at passed keyframes
 and explicitly defers interpolation. Its nonzero-frame geometry is therefore
 not a verified original fractional pose evaluator. Frame0 pose geometry can be
 used with that converter limitation, preserving named model root/visibility,
-but a multi-frame atlas must not be described as original animation fidelity
-until source interpolation is bound or a clearly labeled approximation is
-accepted. Noclip's AnimGroup.ts is a separate useful format/math reference,
+but a multi-frame atlas must bind the recovered interpolation or clearly label
+its sampling approximation before claiming animation fidelity. Noclip's AnimGroup.ts is a separate useful format/math reference,
 not a replacement for shipped caller/update semantics.
 
 Verify with the pose selector verifier. Its raw loop/key times and finite clock/

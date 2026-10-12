@@ -1,0 +1,248 @@
+{
+  "schema": 1,
+  "scope": "Ordinary ten Mario front/rear pose sparse update decoding and interpolation/instant-node gate; host numerical adaptation, source-only",
+  "dol_spans": [
+    {
+      "name": "animPoseMain",
+      "address": 2147740972,
+      "size": 6464,
+      "sha256": "9083ebe5e58f3c2bd56914adfa318296291b5ca0ddc779d2bca7e6e3cbeebd26"
+    },
+    {
+      "name": "animInit",
+      "address": 2147756116,
+      "size": 628,
+      "sha256": "08704a43980c73cabe9050bcea810daf766548b2117112da055ece626916c203"
+    },
+    {
+      "name": "animPoseSetAnim",
+      "address": 2147750256,
+      "size": 380,
+      "sha256": "50eb5f2d85826255dde8679786dd13b2e4fa0dc50eb07cbb3c43f087f66b4541"
+    },
+    {
+      "name": "animPoseSetLocalTime",
+      "address": 2147750668,
+      "size": 288,
+      "sha256": "3c4eb403dddabb527071382c8ddc65752e129277802a9ed1cc76cdfebd842542"
+    },
+    {
+      "name": "animPose_AllocBuffer",
+      "address": 2147753696,
+      "size": 2364,
+      "sha256": "f32a10201d60574cc2c59b3b42ef12b12f537cc4819c9cc3da29ee3e8a00fb2e"
+    },
+    {
+      "name": "Hermite2",
+      "address": 2151807844,
+      "size": 4,
+      "sha256": "c31425b44a7ed682a3356bf6820141e1584a15c43b6d6793f552e5d4621586f7"
+    },
+    {
+      "name": "Hermite negative2",
+      "address": 2151807896,
+      "size": 4,
+      "sha256": "60f2e332c71bcda81951ea38d3c52d4a9b1a2056b334f99001f41c588afd0892"
+    },
+    {
+      "name": "Sixteenth Hermite3 tangent-degree coefficient",
+      "address": 2151807916,
+      "size": 12,
+      "sha256": "7e490050327e66f7a3873fd34bf76adba709859814752371c3d1d2d83faf408f"
+    }
+  ],
+  "dol_anchors": {
+    "2147741076": "7c72e3a6",
+    "2147741088": "7c73e3a6",
+    "2147741100": "7c74e3a6",
+    "2147741112": "7c75e3a6",
+    "2147741628": "901f0028",
+    "2147741640": "901f002c",
+    "2147741732": "4180000c",
+    "2147741764": "901f0038",
+    "2147741844": "901f002c",
+    "2147741872": "ec210028",
+    "2147741916": "fc000800",
+    "2147741932": "ec020824",
+    "2147741952": "7c04c800",
+    "2147741980": "41820f54",
+    "2147741988": "4182000c",
+    "2147741996": "408107e4",
+    "2147742040": "4bfc64dd",
+    "2147742088": "4bfc6015",
+    "2147742112": "4bfc6495",
+    "2147742136": "4bfc647d",
+    "2147742244": "e025c001",
+    "2147742260": "ec02007a",
+    "2147743024": "7ce72a14",
+    "2147743032": "7c050214",
+    "2147743036": "98070000",
+    "2147743336": "e025c001",
+    "2147743344": "ec02007a",
+    "2147743688": "88a70000",
+    "2147743696": "98070000",
+    "2147743708": "ec01002a",
+    "2147744000": "3ab5002c",
+    "2147745908": "fc00f840",
+    "2147745920": "d01f0040",
+    "2147745952": "4bfc5595",
+    "2147746000": "4bfc5565",
+    "2147746044": "80140008",
+    "2147746144": "ec0107ba",
+    "2147746900": "efc10028",
+    "2147746976": "2c060059",
+    "2147746988": "40800084",
+    "2147746992": "2c06ffa7",
+    "2147746996": "4081007c",
+    "2147747032": "ec203a3c",
+    "2147747044": "c0040164",
+    "2147747064": "ec1e0032",
+    "2147747076": "c0a40164",
+    "2147747080": "ec6419fa",
+    "2147747084": "ec4201b2",
+    "2147747104": "ec0300ba",
+    "2147747108": "ec04007a",
+    "2147747112": "ec06002a",
+    "2147747116": "d0150000",
+    "2147747120": "3a940004",
+    "2147747128": "933f003c",
+    "2147747132": "d3ff0040",
+    "2147747144": "41820100",
+    "2147756496": "c3c28774",
+    "2147756524": "381dffa7",
+    "2147756548": "ec3e0032",
+    "2147756552": "4822fae1",
+    "2147756556": "fc000818",
+    "2147756564": "2c1d00b2",
+    "2147756568": "d01e0000"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "models": [
+    {
+      "path": "a/a_mario",
+      "size": 215124,
+      "sha256": "61b585d6b2f1a36551d3b779551a12122f228bf1354ebc5bb44651c58f118293",
+      "animations": [
+        {
+          "name": "M_S_1",
+          "stats": {
+            "position": 1983,
+            "normal": 0,
+            "texture": 12,
+            "visibility": 0,
+            "node": 344,
+            "instant_node": 24
+          }
+        },
+        {
+          "name": "M_W_1",
+          "stats": {
+            "position": 2433,
+            "normal": 0,
+            "texture": 0,
+            "visibility": 0,
+            "node": 230,
+            "instant_node": 0
+          }
+        },
+        {
+          "name": "M_R_1",
+          "stats": {
+            "position": 2564,
+            "normal": 0,
+            "texture": 0,
+            "visibility": 0,
+            "node": 242,
+            "instant_node": 0
+          }
+        },
+        {
+          "name": "M_J_1B",
+          "stats": {
+            "position": 186,
+            "normal": 0,
+            "texture": 1,
+            "visibility": 0,
+            "node": 53,
+            "instant_node": 0
+          }
+        },
+        {
+          "name": "M_J_1C",
+          "stats": {
+            "position": 95,
+            "normal": 0,
+            "texture": 0,
+            "visibility": 0,
+            "node": 49,
+            "instant_node": 0
+          }
+        }
+      ]
+    },
+    {
+      "path": "a/a_mario_r",
+      "size": 80784,
+      "sha256": "02a70dfe8cf7bb614441eb71aee597099d93cd5673cb8a43dcf01bdf09099119",
+      "animations": [
+        {
+          "name": "M_S_1R",
+          "stats": {
+            "position": 755,
+            "normal": 0,
+            "texture": 6,
+            "visibility": 0,
+            "node": 146,
+            "instant_node": 24
+          }
+        },
+        {
+          "name": "M_W_1R",
+          "stats": {
+            "position": 1254,
+            "normal": 0,
+            "texture": 6,
+            "visibility": 0,
+            "node": 225,
+            "instant_node": 0
+          }
+        },
+        {
+          "name": "M_R_1R",
+          "stats": {
+            "position": 1409,
+            "normal": 0,
+            "texture": 6,
+            "visibility": 0,
+            "node": 273,
+            "instant_node": 0
+          }
+        },
+        {
+          "name": "M_J_1BR",
+          "stats": {
+            "position": 51,
+            "normal": 0,
+            "texture": 1,
+            "visibility": 0,
+            "node": 39,
+            "instant_node": 0
+          }
+        },
+        {
+          "name": "M_J_1CR",
+          "stats": {
+            "position": 52,
+            "normal": 0,
+            "texture": 1,
+            "visibility": 0,
+            "node": 47,
+            "instant_node": 0
+          }
+        }
+      ]
+    }
+  ]
+}
