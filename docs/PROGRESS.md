@@ -1,3 +1,28 @@
+## 2026-10-12 — ID2 operation and party table producers
+
+Four detailed contracts close operation table801238b8/448,party table80123360/
+1c4,party icon80123524/c4,and CanActStatus8012724c/90:
+[entry/optional/publication](behavior/battle/OPERATION_TABLE_ENTRY_PARTIAL_ROWS_AND_PUBLICATION.md),
+[charge/Defend/Escape](behavior/battle/OPERATION_TABLE_CHARGE_DEFEND_ESCAPE_AND_KEYS.md),
+[party production](behavior/battle/PARTY_SELECTION_TABLE_PRODUCTION_AND_CAPTURE.md),
+[icon/status](behavior/battle/PARTY_ICON_SOURCE_AND_CAN_ACT_STATUS.md).
+Partial rows,party-table side effect/disabled counted rows,optional admissions,
+mandatory Defend/Escape,ignored ChangeParty CanAct versus Escape use,ordered
+cost/enable/setup,retained/current other HP,last occupied selection,and actual
+producer0..7 versus icon1..8 source scans documented.ID2 lock released.
+
+Validation:`tools/verify_operation_party_tables.py` twice,identical:16 hashes
+(4 complete/12 linked),472 instructions,32 source spans.Python compilation,
+existing behavior/confusion/ActMenu/builder verifiers,own links,and scoped
+whitespace passed.`make test`:80 CTest/90 Python passed.`make all` passed.
+No native code/tests or original asset packs changed.
+
+Limits:static local evidence only.Menu setup/Main/selected opcode and party
+writer,party key1 weapon callbacks/dynamic source,query-event reachability,
+Game/platform/original execution/full-game requirements remain open.Next
+needed port-function priority:OperationMenuMain and party menu writers,then
+party weapon delegate/source bindings.
+
 ## 2026-10-12 — ID2 complete confusion action selector
 
 Three contracts close full BattleSetConfuseAct8011f62c/0x610:

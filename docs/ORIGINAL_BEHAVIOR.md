@@ -1100,3 +1100,13 @@ specify complete scoped request blocks and four shadow getters. Original Mario
 containing identity/four complete leaves,303 scoped words,three spans,two imports,
 six direct sites/source histogram. Other modes/six middle branch internals/GX/
 source/lifetime/images and whole-game requirements remain open.
+
+ID2 operation/party producer closure (2026-10-12):
+[Entry/rows](behavior/battle/OPERATION_TABLE_ENTRY_PARTIAL_ROWS_AND_PUBLICATION.md),
+[charge/mandatory](behavior/battle/OPERATION_TABLE_CHARGE_DEFEND_ESCAPE_AND_KEYS.md),
+[party production](behavior/battle/PARTY_SELECTION_TABLE_PRODUCTION_AND_CAPTURE.md),
+[icon/status](behavior/battle/PARTY_ICON_SOURCE_AND_CAN_ACT_STATUS.md)
+close four bodies:partial descriptors/disabled counted parties/optional+mandatory
+operations/ordered setup-cost-current HP/cursor publication/different scan bounds.
+16 hashes/472 anchors/32 spans verified;80 CTest/90 Python/make all pass.
+Menu/delegate/source/query/Game/platform/original runtime remain open.
