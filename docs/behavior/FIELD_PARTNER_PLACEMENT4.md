@@ -5,8 +5,9 @@ partyGetAppearPos4 at0x800c59ec,size0x860. The used
 [fall recovery](FIELD_PARTNER_FALL_AIR.md) calls it at0x8014cdb8 with
 (P,&P+58),ignores its return,then adds37 to the current rootY. The output
 aliases the live root in this actual caller. No original execution or recovery
-trajectory has been measured. The general fallback partyGetAppearPos remains
-an explicitly open called engine;its name does not establish its output policy.
+trajectory has been measured. The general fallback now has a
+[complete local writer contract](FIELD_PARTNER_GENERAL_PLACEMENT.md);called
+backend/libm/source/runtime domains remain open.
 
 ## Captured inputs and initial output
 
@@ -86,9 +87,10 @@ After index exceeds the captured limit,request partyGetAppearPos(P,V)
 at0x800c61e0,target0x800c6c9c. Ignore that function's return. Apply the SAME
 P+32==1 and ordered V.y<M+90 replacement with M+90+5,then return integer0
 unconditionally. Zero means this local search exhausted,not unchanged output,
-not invalid V and not necessarily failure of the general fallback. Its full
-0x135c-byte engine/output contract remains to be recovered before closing the
-exhaustion path's end-to-end behavior.
+not invalid V and not necessarily failure of the general fallback. Its
+[complete local fallback/output contract](FIELD_PARTNER_GENERAL_PLACEMENT_FALLBACK.md)
+reseeds V and has its own0/1 result;backend/source/original-runtime evidence
+is still needed to close the composed path's end-to-end behavior.
 
 Fall ignores this integer result,uses the then-current rootY+37,and proceeds
 with its documented motion reset and horizontal tail. No immutable initial root

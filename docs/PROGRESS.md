@@ -9308,3 +9308,37 @@ Next:general placement fallback writer,used homing/fly/behind handlers and
 pose/audio/backend/source/alias/numeric domains;original recovery trajectories
 and a complete original playable encounter remain needed. Full-game behavior
 documentation and final complete-game requirements remain incomplete.
+
+## 2026-10-12 — ID1 complete local general partner placement and used leaves
+
+Added [general placement entry/admission](behavior/FIELD_PARTNER_GENERAL_PLACEMENT.md),
+[fallback/output](behavior/FIELD_PARTNER_GENERAL_PLACEMENT_FALLBACK.md) and
+[trig/plane leaves](behavior/FIELD_MOVEMENT_TRIG_AND_PLANE_LEAVES.md).
+Complete0x135c-byte writer specifies owner seed before gating,captured headings,
+global plane query and later owner-motion24 shortcut,fresh signed-slot dispatch,
+all six unrolled fallback blocks,asymmetric probe/move angles,A3 +30 distance,
+B1 pre-probe reseed,attribute/name/current-length<=100 admission,raw floorY and
+failure output. Closed local movePos/sincosf degree conversion/libm request/
+rounding/fused/store order and complete plane query/global pointer leaves.
+Updated current placement4/fall/index/assessment dependency links;historical
+partial-delivery records remain historical. Only ID1 scoped lock released.
+
+Validation:verify_field_partner_general_placement.py passes nine containing
+hashes(eight complete local bodies,one selected placement4 caller),198 anchors,
+18 constants,three spans,two US lecture imports and exact eight direct linked
+caller sites across all seven DOL text sections. Repeated report byte-identical;
+omitted-caller negative expectation rejected;Python compilation passed. Prior
+placement4/fall/placement3 verifiers passed. General verifier passed1980 anchors;
+all1628 behavior links resolved at snapshot. Gekko audit passed578 files/81556
+instructions/618 paired-single operations,zero corrections or unknowns.
+make test passed52 CTest suites and78 Python tests;make all passed/rebuilt3DSX.
+Logs:/tmp/id1-general-placement-test.log and /tmp/id1-general-placement-build.log.
+Build ran existing3218-identity/five-fallback audio pipeline;ASSETS records
+source/local derivative paths and unchanged ID1 conversion policy,outputs unstaged.
+No native implementation edits by ID1. ISO read-only;no original execution,
+measurement,emulator profile/save mutation or original binary/dialogue distribution.
+
+Next:used fly/homing/behind motion bodies and other general-writer caller
+bindings,full ray/libm/source/alias/numeric domains,matched original recovery
+traces and a complete original playable encounter through persistent outcomes.
+Full-game documentation and final complete-game requirements remain incomplete.

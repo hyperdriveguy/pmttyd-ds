@@ -6,7 +6,7 @@
       "address": 2148293100,
       "size": 2144,
       "sha256": "23d9a4d6906ff6c67e35eec93c74c27560cf6c77d7041efe30f0bc11d482bd7b",
-      "scope": "complete local body; called general fallback remains open"
+      "scope": "complete local body; general fallback locally documented separately"
     },
     {
       "name": "party_motion_fall",

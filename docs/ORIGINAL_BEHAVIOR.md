@@ -713,3 +713,15 @@ close14-command query/consumption graph,global name-based effect polling,
 complete12-command jump child and17-command independent five-key sound root.
 Additional source spans/callbacks,fortune producer,render/audio/message/backend
 ownership and original execution remain EVT-01/JUMP-01/DMG-02 work.
+
+ID1 general partner placement delivery (2026-10-12):
+[entry/primary/admission](behavior/FIELD_PARTNER_GENERAL_PLACEMENT.md),
+[fallback/output](behavior/FIELD_PARTNER_GENERAL_PLACEMENT_FALLBACK.md) and
+[used trig/plane leaves](behavior/FIELD_MOVEMENT_TRIG_AND_PLANE_LEAVES.md)
+close the local partyGetAppearPos writer previously left open by placement4.
+Fresh signed-slot dispatch,owner reseeds,plane shortcut,asymmetric probe/move
+angles,positive single-slot third displacement,raw floor/length gate and ordered
+failure outputs are specified. Eight actual DOL direct caller sites are pinned;
+other full caller bindings,backend/libm/source/alias/original traces remain open.
+Earlier addendum's open general-local-writer status is superseded by this delivery;
+full-system closure and final complete-game requirements remain incomplete.

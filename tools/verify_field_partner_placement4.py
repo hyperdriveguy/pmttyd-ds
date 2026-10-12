@@ -79,7 +79,7 @@ def main():
         parser.error('Cannot overwrite original ISO or pinned manifest')
     result = verify(args.iso, MANIFEST)
     result['angle_provenance_checks'] = verify_layout(args.iso, json.loads(MANIFEST.read_text()))
-    result['scope'] = 'Static complete placement4 local graph and copied-angle layout; fallback engine/backend/source/runtime remain open'
+    result['scope'] = 'Static complete placement4 local graph and copied-angle layout; called backend/libm/source/runtime remain open'
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(result, indent=2)+'\n')

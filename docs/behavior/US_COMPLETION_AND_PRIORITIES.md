@@ -226,12 +226,14 @@ including the used fall→[placement4](FIELD_PARTNER_PLACEMENT4.md) call and its
 listing audit covers575 files/80256 instructions/608 paired-single operations
 with no pending corrections;the general contract verifier covers1980 anchors.
 Neither count measures gameplay completion. Local partner recovery still depends
-on the open general fallback engine and original-runtime/source-domain evidence.
+on called backend/libm and original-runtime/source-domain evidence. The general
+fallback now has a [complete local writer contract](FIELD_PARTNER_GENERAL_PLACEMENT.md)
+and [output/retry specification](FIELD_PARTNER_GENERAL_PLACEMENT_FALLBACK.md).
 
 The full objective remains incomplete:no full-system closure or matched complete
 original playable encounter is established. Prioritize shipped US call chains,
 request-inbox blockers and an original encounter's story/event/persistence path.
-For this recovered field chain,next resolve the called general placement writer
-and used movement handlers,then compare original recovery trajectories. Switch
+For this recovered field chain,next resolve used movement handlers and remaining
+backend/source domains,then compare original recovery trajectories. Switch
 comparison and incidental library edge cases do not replace that US evidence.
 Final complete-game requirements remain premature.
