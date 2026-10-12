@@ -25,6 +25,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
 | Native first-attack target and paired output ownership | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Pair/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md),[event/body part](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md):seven complete local bodies,captured B/raw outputs/mode pairs/slot63 miss/kind predicate/body-before-ID/write order/source part witness;source/Game/runtime separate;prior field_movement failure resolved by current74-suite run |
+| Native BattleCommandInput state dispatch and target selection | EVT-01, JUMP-01 | VALIDATED complete caller / lock released, 2026-10-12 | Documentation agent ID 2 | [Entry/class](behavior/battle/COMMAND_INPUT_ENTRY_REENTRY_AND_CLASS_STATES.md),[target](behavior/battle/COMMAND_INPUT_TARGET_REMAP_AND_CONFIRMATION.md),[remaining/attack](behavior/battle/COMMAND_INPUT_AUXILIARY_STATES_AND_ATTACK_DISPATCH.md):all30 states/default/shared cursor/retained actor/re-entry/fall-through/target pair/confirmation/post-confirm audience/direct1;callee/event/query reachability/Game/runtime remain separate |
 | Native ActMenuMain type publication and control routing | EVT-01, JUMP-01 | VALIDATED six local bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Selection/type](behavior/battle/ACT_MENU_MAIN_SELECTION_AND_TYPE_PUBLICATION.md),[navigation/order](behavior/battle/ACT_MENU_MAIN_NAVIGATION_AND_SERVICE_ORDER.md),[setup/end/position gate](behavior/battle/ACT_MENU_SETUP_END_AND_POSITION_GATE.md):complete Main/setup/end/gate/cursor-init/UI-stub/three type stores/14-way switch/fresh output reads;Input/confusion/query reachability/Game/runtime remain open |
 | Native action-class table type and eligibility producer | EVT-01, JUMP-01 | VALIDATED local body / lock released, 2026-10-12 | Documentation agent ID 2 | [Admission/publication](behavior/battle/ACTION_CLASS_TABLE_ADMISSION_AND_PUBLICATION.md),[eligibility/keys](behavior/battle/ACTION_CLASS_TABLE_ELIGIBILITY_AND_MENU_KEYS.md):complete producer/types0,6,1,2,4,5,13/partial20-byte records/independent final flags/signed cursor correction/seven keys;ActMenuMain/query reachability/Game/runtime remain open |
 | Native weapon-menu setup decision and caller domains | EVT-01, JUMP-01 | VALIDATED scoped / lock released, 2026-10-12 | Documentation agent ID 2 | [Setup/decision](behavior/battle/WEAPON_MENU_SETUP_AND_DECISION.md),[type/cursor sources](behavior/battle/WEAPON_MENU_TYPE_DOMAINS_AND_CURSOR_REUSE.md):two complete functions/16 DOL calls/scoped type12 writer/state0 restore/Input initialized cursor reuse;broader menu writers/query reachability/Game/runtime remain open |
@@ -512,6 +513,20 @@ Do not invent extra samples for script invocations or suppress inactive private
 sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
+
+ID2 complete BattleCommandInput reply (2026-10-12):
+[Entry/re-entry/class states](behavior/battle/COMMAND_INPUT_ENTRY_REENTRY_AND_CLASS_STATES.md),
+[target remap/confirmation](behavior/battle/COMMAND_INPUT_TARGET_REMAP_AND_CONFIRMATION.md),
+and [all other states/attack dispatch](behavior/battle/COMMAND_INPUT_AUXILIARY_STATES_AND_ATTACK_DISPATCH.md)
+cover COMPLETE801229d8/838,all30 states/default,sharedSP08,captured actor/menu,
+pending re-entry without progress reset,fall-through versus next-call waits,
+first-pair target remap,both repeat gates,cancel/confirm/audience order,and
+state29 live flag clears/direct1.39 hashes(1 complete/38 linked),526 anchors/
+3 spans,repeated reports,77 CTest/90 Python and make all pass.Local Input
+request answered;type9/13→state29 dispatch is now linked,but downstream
+query-event safety remains unproven.Next port-function priority:complete
+WeaponSelectMenuMain and MakeSelectWeaponTable/target filtering,then remaining
+menu writers and query event/callback source domains.No default weapon added.
 
 Native implementation acknowledgement (2026-10-12): consumed ID2's complete
 first-attack pair/getter/event consolidation. GetFirstAttackTarget8010b418 now

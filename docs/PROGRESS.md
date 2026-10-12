@@ -1,3 +1,28 @@
+## 2026-10-12 — ID2 complete BattleCommandInput state contract
+
+Delivered three implementation contracts for complete Input801229d8/0x838:
+[entry/re-entry/class](behavior/battle/COMMAND_INPUT_ENTRY_REENTRY_AND_CLASS_STATES.md),
+[target remap/confirmation](behavior/battle/COMMAND_INPUT_TARGET_REMAP_AND_CONFIRMATION.md),
+[remaining states/attack dispatch](behavior/battle/COMMAND_INPUT_AUXILIARY_STATES_AND_ATTACK_DISPATCH.md).
+All30 table entries/default,retained B/U/M/shared cursor,pending versus progress
+re-entry,fall-through versus deferred transitions,event ID waits,signed first-pair
+remap,both target directions,cancel/confirm/post-confirm audience,and state29
+flag clears/direct1 covered.Released ID2 lock;parent requests remain open.
+
+Validation:`tools/verify_command_input.py` twice with identical reports:39
+hashes(1 complete/38 linked services),526 instruction anchors,3 spans(full
+state table/SDA startup/original cursor sound).Python compilation,existing
+behavior/weapon-domain/class-table/ActMenu verifiers,local Markdown file links,
+and scoped whitespace passed.`make test`:77 CTest/90 Python passed.
+`make all` passed.No native implementation or tests changed.
+
+Limits:static binary caller evidence only.Callee menu/weapon-table/target/
+gift/audience/confusion/source/query-event domains,original execution,platform
+services and Game remain separate.Next requested port-function priority:
+WeaponSelectMenuMain and MakeSelectWeaponTable/target filtering;then remaining
+writers and query-specific source reachability.Full-game requirements remain
+pending wider system coverage,not proven by these local control contracts.
+
 ## 2026-10-12 — ID2 ActMenuMain type writers and setup/position gate
 
 Continued requested port-function documentation with three detailed contracts:

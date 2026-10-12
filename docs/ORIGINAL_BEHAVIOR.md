@@ -1030,3 +1030,13 @@ switch,live class count,post-service cursor rereads,nine partial cursor resets,
 ordered Mario/Party gate,and result independent of mutation.24 hashes/472
 anchors/3 spans,77 CTest/86 Python/make all passed.Input/confusion/query
 reachability/Game/services/runtime remain open.
+
+ID2 complete command Input delivery (2026-10-12):
+[Entry/class/re-entry](behavior/battle/COMMAND_INPUT_ENTRY_REENTRY_AND_CLASS_STATES.md),
+[target](behavior/battle/COMMAND_INPUT_TARGET_REMAP_AND_CONFIRMATION.md),
+[remaining/attack](behavior/battle/COMMAND_INPUT_AUXILIARY_STATES_AND_ATTACK_DISPATCH.md)
+close complete BattleCommandInput801229d8/838:30 states/default,retained
+actor/menu/shared cursor,pending/progress loops,fall-through/waits,paired target
+remap,independent directions,confirmation/audience order,and state29 live clears.
+39 hashes/526 anchors/3 spans verified;77 CTest/90 Python/make all pass.
+Callee/source/query reachability/Game/platform/original execution remain open.
