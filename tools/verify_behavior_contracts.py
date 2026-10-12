@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'format_decimal_rounding': {
+        0x8026b2f4: 'b0030002', 0x8026b300: '98030005',
+        0x8026b310: '4c800020', 0x8026b34c: '4182ffec',
+        0x8026b358: '8808ffff', 0x8026b35c: '540507fe',
+        0x8026b3b8: '3884ffff', 0x8026b3f0: 'b0a30002',
+        0x8026b404: '4182fee8', 0x8026b408: '98830004',
+        0x8026abe0: '2c0001fd', 0x8026ac1c: 'b001000a',
+        0x8026ac20: '4bffbc65', 0x8026ac48: 'b001000e',
+        0x8026ac90: 'b001000e', 0x8026ad44: '7c000775',
+    },
     'format_integer_conversion': {
         0x8026ba64: '98c4ffff', 0x8026ba98: '4182000c',
         0x8026bad8: '7c6300d0', 0x8026bb14: '7d430396',
@@ -721,6 +731,13 @@ def verify(iso_path):
             if hashlib.sha256(read(address, 132)).hexdigest() != digest:
                 raise ValueError(f'Integer conversion dispatch mismatch: {address:#x}')
         print('Both 33-entry integer conversion dispatch tables verified')
+        if hashlib.sha256(read(0x80303bb0, 37)).hexdigest() != 'b207c048891c45c199b7e38027f85130f244a71bef9c7816709c200b91864949':
+            raise ValueError('Decimal special-value strings mismatch')
+        if read(0x80428c00, 8) != bytes(8):
+            raise ValueError('Decimal infinity sign comparison zero mismatch')
+        if [i for i, flags in enumerate(read(0x803bb308, 256)) if flags & 0x80] != list(range(65,91)):
+            raise ValueError('Decimal special-value case classification mismatch')
+        print('Decimal special-value string block, zero and uppercase classification verified')
 
 
 if __name__ == '__main__':

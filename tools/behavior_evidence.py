@@ -49,6 +49,7 @@ FUNCTIONS = (
     'sprintf', 'vsprintf', '__StringWrite', '__pformatter', '__va_arg',
     'parse_format@MSL_C.PPCEABI.bare.H.a printf.c',
     'long2str', 'longlong2str',
+    'round_decimal', 'float2str',
     'btlevtcmd_AnnounceMessage', 'btlevtcmd_AnnounceSetParam',
     'BattlePadCheckTrigger', 'BattlePadMultiCheckTrigger', '_disp@battle_message.o',
     'evt_btl_camera_set_mode', 'evt_btl_camera_set_homing_unit',

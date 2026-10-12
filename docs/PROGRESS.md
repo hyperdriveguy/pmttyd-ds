@@ -3097,3 +3097,29 @@ services; actual format/type/count caller census, replacement/callback bodies,
 renderer/manager cadence and original story attribution/order/branches/conditions.
 Continue all remaining systems before complete-game requirements. Full objective
 active/incomplete; executed-original comparisons needed.
+
+## 2026-10-12 — Decimal record rounding and preparation
+
+Previous turn progressed withc66da66 integer conversion. Added FORMAT_DECIMAL_ROUNDING.md:
+record ownership/count/ASCII digits, negative/no-op retention gates, discarded-tail
+ties, zero-retention count-byte parity, carry propagation/logical trimming,
+canonical zero/exponent wrap and sign retention. Recorded float2str entry cap,
+32-digit generation request, trailing-zero preparation and original signed/case
+infinity/NaN string routes. Full finite layout and binary decimal generation
+remain explicit gaps; derived record examples are not executed original tests.
+
+Validation:608 instruction anchors and prior checks passed read-only US ISO,
+plus special-value string-block hash, binary64 sign-comparison zero and uppercase
+classification. Evidence211 fingerprints reproduced byte-for-byte. All behavior
+links resolve; git diff --check passed. make test passed core plus36 Python tests;
+make all exited0, no rebuild. Workspace started clean; only research/provenance/
+evidence tooling changed. No original execution/emulator run or profile/save
+changes. Original extracts/reports remain ignored. Static checks do not prove
+binary decimal generation, executed tie cases or original/native equivalence.
+
+Next: finite float2str layout/mode selection/capacity, __num2dec generation and
+hex-float output, runtime helper/wide/memory contracts; actual format/type/count
+call-site census, replacement/callback bodies, renderer/manager cadence and story
+attribution/order/branches/conditions. Continue all remaining systems before
+complete-game requirements. Full objective active/incomplete; executed-original
+comparisons needed.
