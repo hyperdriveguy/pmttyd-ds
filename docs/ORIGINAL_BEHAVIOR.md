@@ -484,3 +484,11 @@ flag-word ID from other bank predicates,record reset from target selection,and
 repeated Mario/partner pointer reads. Paired accumulation and one single norm
 refinement differ from the direction query. Source/numeric environment/domain
 and original trajectory/output evidence remain open.
+
+
+[Event tail/debug](behavior/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md) and
+[all119 opcode coverage](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md) close
+local dispatcher entry coverage,including WAIT_WHILE/no-ops/debug formatting/
+metadata/unchecked slot probe. Source/address/callback/context/capacity/time/
+heap/numeric/platform domains and original execution remain incomplete;this
+is not a complete executed Jump/story VM or complete-game requirements claim.

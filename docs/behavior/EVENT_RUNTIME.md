@@ -306,3 +306,13 @@ and original execution remain open.
 integer data to single precision,while sequential floats use IEEE `lfs`. Query,
 raw operand,cursor write and publication order remain explicit. Heap/source/
 pointer/numeric/capacity domains,other VM blocks and original traces remain open.
+
+
+## Complete local opcode coverage follow-up (2026-10-12)
+
+[Tail/debug](EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md) closes113..118,
+WAIT_WHILE11 and implicit1/3 no-ops. [All119 coverage](EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md)
+links every actual dispatcher target to recovered local contracts. Earlier
+“other opcode bodies” partial scope is superseded for this local dispatcher
+and linked command helpers. Source/address/callback/platform/numeric/context/
+capacity/time/heap domains and original execution remain EVT-01 requirements.

@@ -89,3 +89,13 @@ call;MSEC zero bypass and low-word wrap/sign/division;handler0 retained callback
 termination;marker reset on fetch and cached function resolution once. Complete
 scheduler integration still requires constructor/append/initial-state policy,
 remaining opcode consumers and original runtime traces.
+
+
+## Complete local opcode coverage follow-up (2026-10-12)
+
+[Tail/debug](EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md) closes113..118,
+WAIT_WHILE11 and implicit1/3 no-ops. [All119 coverage](EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md)
+links every actual dispatcher target to recovered local contracts. Earlier
+“other opcode bodies” partial scope is superseded for this local dispatcher
+and linked command helpers. Source/address/callback/platform/numeric/context/
+capacity/time/heap domains and original execution remain EVT-01 requirements.

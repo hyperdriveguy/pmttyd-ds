@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Event dispatch tail,debug formatter and complete opcode inventory | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Tail/debug](behavior/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md),[all119 coverage](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md):complete113..118/prefix11/no-ops,formatter/slot local bodies and full table;local opcode coverage closed,source/domain/platform/original traces remain open;native test fixture gate pending |
 | Partner front-wall query and local position correction | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover partySearchFrontWall full local ray/filter/selection/write/return graph and actual stay arguments;ray backend/surrounding/terrain engines,EVT-01 and original traces remain separate |
 | Event data readers,bitwise,time and memory opcode bodies | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Readers](behavior/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),[bitwise/time/memory](behavior/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md),[buffers/allocator](behavior/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md):complete65..90 and local allocator/fill/cache bodies;indexed signed-word float differs from sequential IEEE load,query/write/ownership order explicit;other VM/domain/source/runtime requests remain open |
 | Partner target-distance and footmark clearing services | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Clear/ID](behavior/FIELD_PARTNER_FOOTMARK_CLEAR_AND_ID.md),[live targets](behavior/FIELD_PARTNER_LIVE_TARGET_DISTANCES.md),[SDK distance](behavior/FIELD_PARTNER_SDK_DISTANCE_NUMERICS.md):complete local selection/reset/ID and paired norm answered;source/history consumer/terrain/numeric environment/domain and original traces remain open |
@@ -491,10 +492,12 @@ Current delivered coverage:the complete local manager/priority loop,root/typed/
 child/brother constructors,restart,plain/ID run and concurrency variants,wait/
 USER_FUNC continuations,control wrappers,setters,full deletion/stop/start and
 integer/float operand routing/saved RAM leaves are now linked in the scoped delivery table and EVENT_RUNTIME
-follow-ups. These answer those parts of the original request below. Remaining
-closure includes other reachable opcode bodies,numeric/storage/context/time/
-source/domain initialization and original pause/multicredit/creation/deletion
-traces. A portable manager test pass is not a complete executed Jump/story VM.
+follow-ups. These answer those parts of the original request below. [Complete opcode coverage](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md)
+now maps all119 table entries to recovered local contracts,including tail/debug
+and WAIT_WHILE. Remaining closure is numeric/storage/context/time/source/domain
+initialization,address/callback translation,heap ownership and original pause/
+multicredit/creation/deletion/Jump/story traces. A portable manager test pass
+is not a complete executed Jump/story VM.
 
 Dispatcher implementation breadcrumb (2026-10-12): `event_dispatch.cpp`
 and its suite implement delivered fetch/common tails,WAIT_FRAME,WAIT_MSEC and
@@ -1076,3 +1079,28 @@ ID1 native-validation follow-up (2026-10-12):tests/event_controls_tests.cpp
 is now present. make test passes31 CTest and58 Python tests;the prior missing-
 source CMake failure is resolved. Original binary/documentation evidence was not
 contradicted by that transient native worktree state.
+
+
+ID2 native validation breadcrumb (2026-10-12):current make test cannot configure
+because CMakeLists.txt:132 references missing tests/event_control_opcodes_tests.cpp.
+make all rebuilt event_control_opcodes/event_dispatch and3DSX successfully.
+This is a concurrent native fixture arrival dependency;ID2 is changing no
+native/CMake/test files under documentation-only scope. Tail/opcode inventory
+binary verification passes;full host gate remains pending until fixture arrives.
+
+
+ID2 EVT-01 tail/inventory delivery (2026-10-12), partial answer:
+[Tail/debug](behavior/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md) closes113..118,
+WAIT_WHILE11 and implicit1/3 runtime no-ops.118 queries active slots0..255 with
+fresh GP context per helper then handler1 regardless of found/not-found;no
+capacity gate.115 formats into shared scratch only,uses independent signed
+routing/raw-mask values and exact UW/GSW/LSW hex argument anomalies. All23
+original diagnostic templates and formatter CR6 inputs are explicit.
+[Coverage inventory](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md) maps
+EVERY119 actual target to recovered contracts. Generic missing local opcode
+bodies are now closed;EVT-01 stays priority0/open for source/address/callback/
+context/capacity/time/heap/numeric domains and original execution acceptance.
+Verifier passes nine containing/complete/linked hashes,164 anchors,145 spans
+including119 table words and23 templates. Own binary-validated documentation
+lock released;make all passed,58 Python tests passed;full make test awaits the
+missing concurrent native fixture described above. ID2 changed no native files.

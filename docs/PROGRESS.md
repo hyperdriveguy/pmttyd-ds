@@ -7416,3 +7416,37 @@ read-index/source/status/flag/slot/owner writers;planar angle/distance/trig and
 exact Gekko GQR/FPSCR/estimate domain;original trajectories and full field/battle
 teardown. Full documentation/remake remain incomplete;complete-game requirements
 remain deferred until sufficient system coverage.
+
+## 2026-10-12 — ID2 event tail/debug and complete local opcode inventory
+
+Added [tail/debug contracts](behavior/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md)
+and [all119 coverage inventory](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md).
+Complete113..118 plus WAIT_WHILE11 and implicit1/3 cover no-op/raw metadata,
+repeated wait resolution,unchecked active slot lookup/256 probes and distinct
+handler1 yield. Complete debug formatter uses its own signed operand routing,
+raw flag intersections,exact23 templates,CR6 varargs and original UW/GSW/LSW
+hex argument anomalies;it formats shared scratch without local screen output.
+All119 actual table targets map to reviewed local contracts. Generic “other
+local opcode bodies” blocker is now closed;EVT-01 remains open for full source/
+address/callback/platform/domain/runtime binding. Only ID2's binary-validated
+scoped documentation lock released;native full host gate remains pending.
+
+Validation:verify_event_dispatch_tail.py passed nine containing/complete/linked
+hashes,164 anchors,145 spans including119 table words and23 NUL-terminated
+formats. Repeated reports byte-identical;Python compilation passed. All119
+inventory rows match actual pinned targets and linked contracts. General
+behavior verifier passed1980 anchors;IF and data/memory verifiers passed;
+all1446 local documentation links resolved;git diff --check passed. make all
+rebuilt concurrent event_control_opcodes/event_dispatch/native3DSX successfully.
+make test cannot configure:CMakeLists.txt:132 references missing
+`tests/event_control_opcodes_tests.cpp`. Fixture still absent at final check;
+58 Python tests passed independently. Exact failure is communicated in inbox;
+ID2 changed no native/CMake/test files to repair concurrent implementation work.
+
+Original ISO read-only;no original execution/emulator observation,asset
+conversion,profile/save mutation or original binary/dialogue distribution.
+Concurrent ID1/native files and reservations preserved. Next:retry full host
+test when native fixture arrives;manager/context/capacity initialization,heap
+free/sharing,source/callback/address translation,clock/pause/input/numeric/FPSCR
+domains and original119-opcode/Jump/story traces. Complete-game documentation
+and requirements remain incomplete.
