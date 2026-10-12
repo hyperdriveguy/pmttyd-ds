@@ -80,8 +80,12 @@ flags10000/20000 clear, motion!=25), marioUpdateCam:
    Mario.ec=rootX+sideShift*sin(yaw-90), Mario.f4=rootZ-sideShift*cos(yaw-90),
    Mario.f0=rootY+drawOffset9c+verticalShift. Mario+64 becomes depthShift.
 
-Display flag10000 suppresses writing those target fields; flag20000 selects a
-separate XZ/depth composition, not the bounded ordinary formula. Ship motion25
+The three shift approaches execute **before** testing display flag10000
+(801a9100–108). Thus10000 suppresses target ec/f0/f4 and depth64 writes only;
+it does not suppress current shifts13c/144/14c. With10000clear and20000set,
+the alternate branch adds both side and depth along u(yaw-90) to rootXZ,
+writes ec/f4 and depth64, and **preserves retained f0** (no vertical write).
+With both flags clear the ordinary formula writes ec/f0/f4 and depth64. Ship motion25
 has an extra vertical term. These are display flags at Mario+4, separate from
 main Mario+0 flags used in airborne damping.
 
@@ -115,6 +119,20 @@ in Mario+19c at801a9418. Its exact sign-aware rounding is already pinned in
 movement-rate documentation. This field is a camera-produced heading offset;
 ordinary Rogueport is not proved to have constant zero offset.
 
+The system.o angleABf8000703c receives(eyeX,eyeZ,atX,atZ), computes
+Delta=(atX-eyeX,atZ-eyeZ) and returns compass degrees0=-Z,90=+X,
+180=+Z,270=-X. Therefore equal eyeX/atX and eyeZ>atZ gives exactly0,
+consistent with a bounded fixed-view adapter pointing toward-Z. CoincidentXZ
+also returns0 at80007124–2c. General headings use the original ratio/table
+algorithm at803041e0 plus quadrant branches, not an unrestricted libmatan2
+call; native vector/trig evaluation remains a numerical adaptation.
+
+Motion29 in marioCamMain skips **only** marioUpdateCam at801a926c–274;
+execution continues at801a9278 through zoom and remaining tail owners.
+It is not a blanket disable of camera4's manager update or all player camera
+services. A plain native domain can leave special29/zoom handling unsupported,
+but must label that boundary rather than changing this source gate.
+
 marioMove80059a78 invokes marioMoveMain at80059ab8, then projects the resulting
 current rootXYZ. It obtains camera4, sets GX projection from camera+15c/type+19c,
 reads GXGetProjectionv and GXGetViewportv, and calls GXProject with camera+11c
@@ -137,6 +155,16 @@ SZ = farDepth + invW*clipZ*(farDepth-nearDepth)
 ```
 
 The leaf does not reject negative W or clipped coordinates; it computes them.
+C_MTXPerspective8029e7e8 builds the source perspective matrix with
+K=cot(FOVdegrees*pi/360), m00=K/aspect, m11=K,
+`m22=-near/(far-near)`, `m23=-(far*near)/(far-near)`,
+`m32=-1`, `m33=0`; all other entries are zero. Consequently the default GX
+projection-vector p5/p6 coefficients have those same negative signs. This is
+the source GX depth convention; default viewport depth0..1 yields near0/far1
+through the GXProject expression above. The source computes an intermediate
+single1/(far-near), then multiplies for m22/m23; matching algebra does not
+establish identical instruction rounding.
+
 Separate multiply/add single-precision instructions and the actual GX snapshots
 matter to exact original numerics. Native matrix/trig/viewport services remain
 numerical adaptations; finite-domain algebra alone is not bitwise equivalence.
