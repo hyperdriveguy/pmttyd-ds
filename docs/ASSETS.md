@@ -1,5 +1,46 @@
 # Original asset pipeline
 
+## Full loopable audio library (2026-10-12)
+
+`make audio-assets` / `tools/extract_audio.py` reads
+`/home/carson/games/roms/G8ME01.iso` read-only. The completed local library is
+under ignored `local-assets/audio/`, separate from the current RomFS pack:
+
+- `raw/sound/stream/*.stm`: all146 original streams with extraction provenance.
+- `raw/sound/proj/pmario.{sdir,samp,pool,proj,etbl,slib}`: six original MusyX
+  resources. `sample-directory.json` preserves all1,247 indexed sample IDs,
+  offsets, coefficients, rates, counts and loop bounds.
+- `pcm/streams/<original-stem>.wav`:146 PCM16 tracks, retaining source32,000Hz
+  and mono/stereo channels. All146 STM headers enable looping.
+- `pcm/samples/pmario-<four-digit-hex-ID>.wav`:212 mono looped bank samples,
+  retaining original rates and exact IDs. Nonlooped samples remain available
+  in the preserved bank and can be converted with `tools/audio_convert.py`.
+- `<file>.wav.loop`: two little-endian uint32 PCM frame indices `[start,end)`;
+  indices apply before playback resampling, count frames rather than individual
+  stereo samples, and preserve the intro before repeating the loop region.
+- `manifest.json`:152 source records with ISO paths/offsets/sizes/SHA-256,
+  358 output records with formats/loops/PCM hashes, and converter fingerprints.
+
+Conversion uses the existing DSP ADPCM decoder; no normalization, resampling,
+crossfade, generated tones or inferred event names. STM inclusive nibble ends
+become exclusive PCM frame ends and are capped at source sample count, following
+the existing converter. MusyX uses source start+length; lengths0/1 are nonloops.
+Every output was checked for WAV format, full data length, frame count, valid
+loop bounds and exact sidecar bytes. A separate post-conversion pass verified all
+358 outputs/hashes and152 raw hashes. Rogueport, battle and victory PCM/loops
+match the existing RomFS files byte-for-byte. PCM WAV payload files total
+903,557,248 bytes; original resources total271,317,240 bytes. The full library
+is not embedded into the3DS executable; the early slice retains three tracks.
+
+These are local original-game derivatives with original copyright and no new
+redistribution rights. ISO, raw files, WAVs, sidecars, indexes and manifests stay
+ignored; only authored tools/tests/docs are committed. Existing vgmstream ISC
+format-reference notices and MusyX research provenance above/below still apply;
+no new third-party implementation was copied or linked. MusyX macro/envelope/
+pitch/event rendering remains unbound. PCM repetition has not been audibly
+compared with original ADPCM loop-history execution; no Dolphin/hardware audio
+equivalence or seam-free playback claim is made.
+
 ## Ordinary support/slopes/upstairs binding (2026-10-12)
 
 Native commit78eb86b implements the bounded US support contract in

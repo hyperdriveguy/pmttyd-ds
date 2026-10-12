@@ -1,5 +1,39 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Extracted and converted loopable original audio
+
+Completed the requested local audio extraction/conversion from read-only
+`/home/carson/games/roms/G8ME01.iso`. Ignored `local-assets/audio/` now holds all146
+original STM streams, all six pmario MusyX bank resources,146 PCM16 music WAVs
+and212 looped sample WAVs, each with native-compatible `.wav.loop` frame bounds.
+The1,247-entry bank directory and358-output manifest retain source IDs/paths,
+rates/channels/loops/hashes and original copyright provenance. PCM files total
+903,557,248 bytes; raw resources total271,317,240 bytes. Full library is outside
+RomFS/source history; current native slice continues to package three tracks.
+
+Added `tools/extract_audio.py` and `make audio-assets` for reproducible conversion.
+Shared converter now emits MusyX loop sidecars, reports actual loop flags,
+removes stale sidecars for nonloops, rejects invalid bounds/channel loop flags
+and protects sources against overwrite. Authored fixtures cover stereo sample
+order, intro/loop frame intervals, nonloop/single-sample policy, truncated data,
+invalid metadata, missing IDs and source preservation. Incremental implementation
+commit61b98a2; concurrent event/field/documentation work preserved separately.
+
+Validation: batch command exited0 with146 streams/212 samples. Separate audit
+verified all358 WAV formats/full lengths/frame counts/SHA-256/sidecar bounds and
+all152 extracted-resource hashes. Rogueport/battle/victory match existing RomFS
+PCM and loop sidecars byte-for-byte. `make test` passed33 CTest suites plus63
+Python tests; `make all` exited0 and repackaged3dsx. `git diff --check` passed.
+No emulator/hardware listening run, user profile/save write or ISO mutation.
+
+Limitations/next: bind original stream IDs/event conditions and MusyX macros,
+envelopes/pitch/voices before using bank samples as faithful game effects. Compare
+original ADPCM loop-history playback/audible seams in an isolated original-game
+session; PCM region repetition alone is not that verification. Nonlooped bank
+samples remain preserved/indexed and individually convertible. Choose only needed
+assets for RomFS instead of embedding the full903MB PCM library. Original story,
+audio event scheduling, full-game fidelity and remake completion remain open.
+
 ## 2026-10-12 — Original event operand namespaces
 
 Implemented `event_operands.cpp` from the complete integer, float and saved-switch

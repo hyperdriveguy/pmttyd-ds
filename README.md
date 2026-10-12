@@ -70,6 +70,14 @@ The asset pack is cached using converter/source fingerprints. `make clean`
 cleans the 3DS build, retaining expensive local conversions. Original assets and
 built binaries are ignored by source history. Implementation and handoff notes are recorded in incremental Git commits.
 
+`make audio-assets` extracts all original music streams and the MusyX bank,
+then converts the streams and looped bank samples into the ignored
+`local-assets/audio/pcm/` library. Original rates/channels and loop intervals
+are retained in PCM16 WAVs with `.wav.loop` sidecars; the library manifest records
+source paths, hashes and sample IDs. An alternate ISO can be supplied with
+`TTYD_ISO=/path/to/G8ME01.iso make audio-assets`. The full library stays outside
+RomFS; the current slice still packages its three selected music tracks.
+
 ## Controls
 
 | 3DS control | Function | Azahar default keyboard |
