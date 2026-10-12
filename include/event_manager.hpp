@@ -10,6 +10,10 @@ struct EventEntry {
     uint8_t flags=0,priority=0;
     uint32_t id=0;
     float timescale=0,credit=0;
+    uint8_t opcode=0,argumentCount=0,initialized=0;
+    uint32_t nextCommand=0,currentCommand=0,arguments=0,cachedFunction=0;
+    int32_t waitCount=0;
+    uint64_t waitStart=0;
 };
 struct EventContext {
     int32_t capacity=0;

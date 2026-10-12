@@ -441,6 +441,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Dispatcher implementation breadcrumb (2026-10-12): `event_dispatch.cpp`
+and its suite implement delivered fetch/common tails,WAIT_FRAME,WAIT_MSEC and
+USER_FUNC continuations. Manager integration verifies multiple credits share
+one caller sample and do not advance MSEC lifetime between polls. Other opcodes
+remain explicit handlers;native function/address/value/scene providers and
+constructor/control/ownership bindings are not inferred. Next:delivered root/
+child/brother/inline constructors,label/run checks,deletion/restart and controls,
+then remaining tagged operand/branch bodies and original Jump services. Preserve
+existing original runtime/pause/cancellation/credit trace requests.
+
 Manager implementation breadcrumb (2026-10-12): `event_manager.cpp` and
 its host suite now port the delivered complete manager loop/priority table.
 Explicit GP/context/clock/dispatch providers preserve captured versus table

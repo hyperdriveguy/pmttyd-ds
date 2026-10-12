@@ -1,5 +1,38 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Event fetch,wait and USER_FUNC continuations
+
+Implemented EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md in event_dispatch.hpp/cpp.
+EventEntry now retains semantic opcode/argument count/marker,command/argument
+address tokens,cached function and shared wait fields. Fetch preserves signed
+high16 count,low8 opcode/count,wrapped next pointer and marker reset. Common
+handler tails distinguish retained yield,complete/yield,same-invocation advance,
+entry termination and manager abort. Unknown opcode>118 follows original default2
+advance;all other unsupported opcode bodies require explicit handlers. No
+instruction budget,extra synthetic tick or function/operand snapshot was added.
+USER_FUNC resolves/caches once,decrements byte argument count and advances its
+argument pointer;resumptions pass firstCall0 even for callback phase marker3.
+Frame wait uses exact-zero/post-decrement word rules. Millisecond wait captures
+lifetime before resolver calls,uses low-word signed delta then unsigned64 division,
+ignores saved high on polls,and preserves original quotient/sign/carry formula.
+
+Validation:final make test passed twenty-six CTest suites plus58 Python tests;
+make all exited0/no rebuild. ARM event_dispatch.o and final3dsx timestamps follow
+the source edit. Tests cover waits0/1/3/negative/INT_MIN,mutated operands without
+re-resolution,cached function/live callback args,non1 phase markers,all handler
+result classes,unknown high opcode,signed negative fetch count,marker reset,
+MSEC zero/no-clock,captured lifetime before mutation,low-word wrap/ignored high,
+negative elapsed unsigned-division behavior and negative wait word. Real manager
+integration uses two credits on one caller sample and proves MSEC lifetime stays
+constant between polls in a visit. git diff --check passed. No emulator run,
+original execution/pause/numeric trace claim or complete native interpreter claim.
+Manager implementation commit:b31c899.
+
+Next:delivered constructors,label scans,run-check and child/brother/inline/delete/
+restart/control ownership,then remaining tagged values/opcodes and actual Jump
+stream/service binding. Native fixed battle timers and full remake remain
+incomplete;recovery presentation helpers remain pending.
+
 ## 2026-10-12 — Original event manager loop and scheduling table
 
 Implemented EVENT_MANAGER_COMPLETE_LOOP.md in event_manager.hpp/cpp. Manager
