@@ -279,3 +279,19 @@ The primitive uses existing indexed triangles and original attribute/return
 metadata. It is not yet called by Game: world-Y state, five-position footprint
 sampling and contact acceptance must be integrated together to avoid treating a
 raw intersection as a landing. Current relative-support jump is still provisional.
+
+World-height integration supersedes relative-support-only jumping. Game retains
+jumpBase and unbounded FieldJump displacement, so groundHeight+jumpHeight renders
+actual world Y through jumps/falls. FieldJump's default base clamp remains for
+standalone tests; Game disables it and resolves landing through landingFootprint.
+Footprint caches no contacts:5 indexed center/rotated ray queries select the
+highest eligible generic candidate. Landing resets derivatives and updates support,
+progress elevation and source contact. Airborne movement checks walls at actual Y
+and no longer requires a supporting triangle at every XZ step. Loss of grounded
+support starts beginFall; queued roads advance the same landing path.
+
+Menu saves clear while airborne and START preserves the checkpoint; jumping and
+saving in the same tick also cannot persist transient position. Partner still uses
+legacy floor stepping; camera/shadow anchor is the last support until landing.
+Original ceiling search, special contact/slope branches, wall depenetration and
+no-floor void recovery remain required. Generated native listing is ignored.

@@ -346,3 +346,26 @@ original attributes/return bindings. This is prerequisite geometry work, not
 integration of the original floor state machine. Game still uses legacy support
 queries and relative jump height. Next integrate world Y, all five probes and
 source candidate/contact acceptance, then edge falling and ceiling resolution.
+
+### World-height landing integration and unsupported edges
+
+Game now keeps takeoff world Y independent of later support, advances the source
+jump/fall derivatives without clamping to the takeoff plane, and queries the floor
+from the pre-displacement world Y. Accepted contact snaps to that floor; missed
+contact clears the current floor ID and continues vertical displacement. Footprint
+uses center plus four rotated offsets at normal radius0.075. Highest candidate
+within the recovered generic11-engine-unit snap distance is selected. Orientation
+uses the current native movement direction; original angle/slope adjustment and
+special attribute branches are not fully reproduced.
+
+Grounded movement retains legacy support stepping. When that query misses,
+footprint support is checked; loss of all support starts the original fall tuple
+instead of rejecting XZ movement. This lets Mario drop from the harbor entrance
+onto its lower dock; walking back into the vertical drop cannot recover the upper
+road, so stairs are required. A valid floor contact is not discarded merely because
+horizontal wall clearance fails; original wall push-out/sliding remains necessary.
+Save requests and START writes are suppressed while airborne.
+
+Grounded0.25-up/0.5-down band, ceiling handling, slope filtering, missing-floor
+void recovery, partner physics and shadow placement remain provisional/incomplete.
+The new host unequal-floor cases are behavior tests, not Dolphin observations.

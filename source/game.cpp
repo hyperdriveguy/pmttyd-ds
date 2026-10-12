@@ -290,6 +290,29 @@ bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContac
     const float reach=std::fabs(velocity);
     return groundWithin(p,worldY-reach-.0001f,worldY+reach+.05f,height,contact);
 }
+bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& height,GroundContact* contact) {
+    float length=std::hypot(direction.x,direction.z);
+    if(!std::isfinite(length) || length<1e-6f)return false;
+    const float x=direction.x*FloorFootRadius/length,z=direction.z*FloorFootRadius/length;
+    const Vec2 offsets[]={{0,0},{x,z},{-z,x},{z,-x},{-x,-z}};
+    bool found=false;float best=-1e30f;GroundContact selected;
+    for(auto offset:offsets) {
+        float floor=0;GroundContact candidate;
+        if(landingGround({p.x+offset.x,p.z+offset.z},worldY,velocity,floor,&candidate) &&
+           std::fabs(floor-worldY)<=FloorSnapDistance && floor>best){best=floor;selected=candidate;found=true;}
+    }
+    if(found){height=best;if(contact)*contact=selected;}
+    return found;
+}
+void Game::advanceVertical(bool held) {
+    if(!fieldJump.airborne){jumpHeight=0;return;}
+    const float worldY=jumpBase+fieldJump.height;
+    fieldJump.tick(held,false);
+    float floor=0;GroundContact contact;
+    if(fieldJump.falling && landingFootprint(progress.position,moveDirection,worldY,fieldJump.velocity,floor,&contact)) {
+        fieldJump={};groundHeight=progress.elevation=floor;groundContact=contact;jumpBase=floor;jumpHeight=0;
+    } else {groundContact={};jumpHeight=jumpBase+fieldJump.height-groundHeight;}
+}
 void clearCollision() {walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
@@ -359,13 +382,26 @@ void Game::move(const Input& i) {
     float x=i.x, z=i.z, len=std::hypot(x,z);
     const float speed=len>DashThreshold?DashSpeed:WalkSpeed;
     if(len>0){x/=len;z/=len;}
+    if(len>0)moveDirection={x,z};
     Vec2 p = progress.position;
     Vec2 candidate{p.x+x*speed,p.z};
     float nextHeight=groundHeight;
     GroundContact nextContact;
-    if (walkable(candidate,groundHeight+jumpHeight) && groundAt(candidate,groundHeight,nextHeight,&nextContact) && walkable(candidate,nextHeight+jumpHeight)) {p=candidate;groundHeight=nextHeight;groundContact=nextContact;}
+    auto accept=[&](Vec2 candidate) {
+        const float y=groundHeight+jumpHeight;
+        if(!walkable(candidate,y))return false;
+        if(fieldJump.airborne){p=candidate;return true;}
+        if(groundAt(candidate,groundHeight,nextHeight,&nextContact) && walkable(candidate,nextHeight)) {
+            p=candidate;groundHeight=nextHeight;groundContact=nextContact;return true;
+        }
+        if(landingFootprint(candidate,moveDirection,y,0,nextHeight,&nextContact)) {
+            p=candidate;groundHeight=nextHeight;groundContact=nextContact;return true;
+        }
+        p=candidate;jumpBase=y;fieldJump.beginFall();groundContact={};return true;
+    };
+    accept(candidate);
     candidate={p.x,p.z+z*speed};
-    if (walkable(candidate,groundHeight+jumpHeight) && groundAt(candidate,groundHeight,nextHeight,&nextContact) && walkable(candidate,nextHeight+jumpHeight)) {p=candidate;groundHeight=nextHeight;groundContact=nextContact;}
+    accept(candidate);
     progress.position=p;progress.elevation=groundHeight;
     if(warpCooldown>0)--warpCooldown;
     if(warpCooldown==0 && warpRequest<0 && len>.15f) {
@@ -402,7 +438,8 @@ void Game::move(const Input& i) {
     cameraX+=(p.x-cameraX)*.07f;
     cameraZ+=(p.z-cameraZ)*.07f;
     cameraHeight+=(groundHeight-cameraHeight)*.07f;
-    fieldJump.tick(i.jumpHeld);jumpHeight=fieldJump.height;
+    advanceVertical(i.jumpHeld);
+    if(fieldJump.airborne)saveRequested=false;
 }
 void Game::startBattle() {
     scene=Scene::Battle; phase=Phase::Select; phaseTick=0; selection=0;
@@ -481,7 +518,7 @@ void Game::tick(const Input& i) {
     if(warpRequest>=0) {
         if(size_t(warpRequest)>=roads.size()){cancelRoad();return;}
         // Original road event disables controls and waits for landing first.
-        if(fieldJump.airborne){fieldJump.tick(i.jumpHeld);jumpHeight=fieldJump.height;return;}
+        if(fieldJump.airborne){advanceVertical(i.jumpHeld);return;}
         if(!departureDone && !roadMotion.active()) {
             const auto& w=roads[warpRequest];
             const auto reverse=std::find_if(roads.begin(),roads.end(),[&](const auto& r){return r.source==w.target && r.target==w.source;});
@@ -552,7 +589,7 @@ void Game::tick(const Input& i) {
     else if (i.confirm && !fieldJump.airborne) {
         if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) openDialogue(1);
         else if (progress.room==0 && near(NpcPosition)) openDialogue(0);
-        else { fieldJump.begin(); sound=Sound::Jump; }
+        else { jumpBase=groundHeight;fieldJump.begin();saveRequested=false;sound=Sound::Jump; }
     }
 }
 }

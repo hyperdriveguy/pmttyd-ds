@@ -212,6 +212,60 @@ void groundImport() {
     }
     clearCollision();std::remove(path);
 }
+void unequalFloorMotion() {
+    char path[]="/tmp/ttyd-unequal-floor-XXXXXX";int fd=mkstemp(path);CHECK(fd>=0);
+    uint32_t count=0x80000004;
+    const float surfaces[4][9]={{-2,1,1,0,1,1,-2,1,4},{0,1,1,0,1,4,-2,1,4},
+        {0,0,1,3,0,1,0,0,4},{3,0,1,3,0,4,0,0,4}};
+    CHECK(write(fd,&count,4)==4);
+    for(int n=0;n<4;++n){GroundContact contact{0,uint32_t(n<2?1:2)};CHECK(write(fd,surfaces[n],36)==36);CHECK(write(fd,&contact,8)==8);}
+    close(fd);CHECK(loadGround(path));
+    float floor=99;GroundContact support;
+    CHECK(landingFootprint({.06f,2},{1,0},1,0,floor,&support));CHECK(floor==1 && support.sourceNode==1);
+    CHECK(!landingFootprint({.06f,2},{1,1},1,0,floor)); // Rotated footprint has crossed the edge.
+    CHECK(!landingFootprint({.08f,2},{1,0},1,0,floor));
+    CHECK(!landingFootprint({0,2},{0,0},1,0,floor));
+    Progress p;p.room=2;p.position={-.08f,2};p.elevation=1;
+    Game jump;jump.restore(p);jump.tick(confirm());Input right;right.x=1;right.jumpHeld=true;
+    for(int n=0;n<8;++n)jump.tick(right);
+    CHECK(jump.progress.position.x>.075f && jump.airborne());
+    CHECK(jump.groundHeight+jump.jumpHeight>1.3f); // World height does not fall with support.
+    CHECK(jump.groundContact.sourceNode==0);
+    for(int n=0;n<12;++n)jump.tick(right);
+    for(int n=0;n<100 && jump.airborne();++n)jump.tick({});
+    CHECK(!jump.airborne() && jump.groundHeight==0 && jump.groundContact.sourceNode==2);
+    Game fall;fall.restore(p);right.jumpHeld=false;
+    for(int n=0;n<10;++n)fall.tick(right);
+    CHECK(fall.airborne() && fall.groundHeight+fall.jumpHeight<1 && fall.groundContact.sourceNode==0);
+    Input save;save.menuConfirm=true;fall.tick(save);CHECK(!fall.saveRequested);
+    for(int n=0;n<100 && fall.airborne();++n)fall.tick({});
+    CHECK(!fall.airborne() && fall.groundHeight==0 && fall.groundContact.sourceNode==2);
+    // A reachable higher platform is acquired on descent, not during takeoff.
+    {
+        std::ofstream file(path,std::ios::binary);file.write(reinterpret_cast<char*>(&count),4);
+        for(int n=0;n<4;++n){float triangle[9];std::copy(surfaces[n],surfaces[n]+9,triangle);
+            if(n<2)for(int vertex=1;vertex<9;vertex+=3)triangle[vertex]=.2f;
+            GroundContact contact{0,uint32_t(n<2?1:2)};file.write(reinterpret_cast<char*>(triangle),36);file.write(reinterpret_cast<char*>(&contact),8);}
+    }
+    CHECK(loadGround(path));p.position={.08f,2};p.elevation=0;
+    Game higher;higher.restore(p);higher.tick(confirm());Input left;left.x=-1;left.jumpHeld=true;
+    for(int n=0;n<8;++n)higher.tick(left);
+    CHECK(higher.airborne() && higher.groundHeight==0 && higher.jumpHeight>.3f);
+    for(int n=0;n<8;++n)higher.tick(left);
+    for(int n=0;n<100 && higher.airborne();++n)higher.tick({});
+    CHECK(!higher.airborne() && std::fabs(higher.groundHeight-.2f)<.0001f && higher.groundContact.sourceNode==1);
+    // A horizontal overlap must not discard a valid floor and fall through it.
+    char wallPath[]="/tmp/ttyd-landing-wall-XXXXXX";int wallFd=mkstemp(wallPath);CHECK(wallFd>=0);
+    uint32_t wallCount=0x80000001;Rect wall{.145f,1,.145f,4};Vec2 levels{0,.3f};
+    CHECK(write(wallFd,&wallCount,4)==4);CHECK(write(wallFd,&wall,16)==16);CHECK(write(wallFd,&levels,8)==8);close(wallFd);
+    CHECK(loadCollision(wallPath));p.position={-.08f,2};p.elevation=.2f;
+    Game overlap;overlap.restore(p);right.jumpHeld=false;
+    for(int n=0;n<10;++n)overlap.tick(right);
+    for(int n=0;n<100 && overlap.airborne();++n)overlap.tick({});
+    CHECK(!overlap.airborne() && overlap.groundHeight==0 && overlap.groundContact.sourceNode==2);
+    std::remove(wallPath);
+    clearCollision();std::remove(path);
+}
 void visibility() {
     Point3 eye{0,1,4},actor{0,1,0};
     Point3 a{-1,0,2},b{1,0,2},c{0,2,2};
@@ -492,7 +546,9 @@ void originalRooms() {
             }
             Input up;up.z=-1;
             for(int frame=0;frame<120 && g.warpRequest<0;++frame)g.tick(up);
-            CHECK(g.warpTarget()==0);
+            // Stepping off the deck now falls to the dock; the upper entrance
+            // cannot be reached by walking straight back up the drop.
+            CHECK(g.warpRequest==-1 && std::fabs(g.groundHeight-.15f)<.001f);
             Game stairs;stairs.progress.room=0;stairs.warpRequest=n;CHECK(stairs.finishWarp());
             auto walk=[&](float x,float z,int frames) {
                 Input i;i.x=x;i.z=z;
@@ -518,8 +574,8 @@ void originalReturnSelection() {
     ReturnPoint point{99,99,99};CHECK(!g.recoveryReturn(point));CHECK(point.x==99);
     auto walk=[&](float x,float z,int frames) {Input i;i.x=x;i.z=z;for(int n=0;n<int(std::ceil(frames*.065f/DashSpeed)) && !g.water.active();++n)g.tick(i);};
     walk(1,0,30);walk(1,1,80);walk(0,1,80);
-    CHECK(!g.water.active());CHECK(g.returnContact.sourceNode==0xd2a30);
-    g.tick(confirm());walk(0,1,60); // Jump over the low edge using airborne wall rays.
+    CHECK(g.returnContact.sourceNode==0xd2a30);
+    if(!g.water.active()){g.tick(confirm());walk(0,1,60);} // Fall or jump into the original water floor.
     CHECK(g.groundContact.attributes&0x200);CHECK(!(g.groundContact.attributes&0x40000000));
     // This path crosses Ship_Change02 after A_yuka_04; the most recent
     // eligible original owner supplies its authored automatic return center.
@@ -548,6 +604,6 @@ void originalReturnSelection() {
     clearCollision();
 }
 int main(int argc,char**) {
-    try {if(argc>1) {indexedOriginalCollision();originalRooms();originalReturnSelection();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();waterRecovery();transitionFade();std::puts("Core scenarios passed");}
+    try {if(argc>1) {indexedOriginalCollision();originalRooms();originalReturnSelection();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();unequalFloorMotion();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();waterRecovery();transitionFade();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

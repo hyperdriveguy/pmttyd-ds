@@ -17,6 +17,7 @@ constexpr float BodyRadius = .1f;
 constexpr float WalkSpeed=.01f, DashSpeed=.0225f;
 // Circle Pad magnitude maps to the original clamped70-unit stick range.
 constexpr float DashThreshold=55.f/70.f;
+constexpr float FloorFootRadius=.075f, FloorSnapDistance=.11f;
 constexpr float WallLowerRay = .11f, WallUpperRay = .2664f;
 // Original normal road-entry event restores party homing distance50 units.
 constexpr float PartnerDistance = .5f;
@@ -73,6 +74,7 @@ public:
     void beginRoadArrival();
     void cancelRoad();
     bool reloadRequested=false;
+    bool airborne() const{return fieldJump.airborne;}
     bool recoveryReturn(ReturnPoint& point) const;
     float cameraZ = 3.5f, cameraHeight = 0;
     float cameraX = 1, jumpHeight = 0, facing = 1, turnScale = 1;
@@ -96,6 +98,9 @@ public:
 private:
     std::vector<Vec2> followerPath;
     FieldJump fieldJump;
+    float jumpBase=0;
+    Vec2 moveDirection{1,0};
+    void advanceVertical(bool held);
     int turnTick = 0;
     bool jumpAttempted = false, hammerArmed = false, guardAttempted = false;
     int dialoguePages() const;
@@ -133,6 +138,7 @@ bool groundReturn(const GroundContact&,ReturnPoint& point);
 bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr);
 // Center floor ray using original normal landing search bounds in world Y.
 bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
+bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
 void clearCollision();
 const std::vector<Rect>& collisionWalls();
 Rect collisionBounds();

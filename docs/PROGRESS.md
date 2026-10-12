@@ -1417,3 +1417,53 @@ response. Original story/English dialogue, SFX, camera/party movies, interiors
 and broader content remain incomplete. Full goal active; no complete physics or
 hardware-performance claim. Source recovery and query foundation are progress;
 world-height gameplay behavior remains unfinished.
+
+## Integrate world Y, five-point landing and edge falling
+
+Mario now preserves takeoff world height through air movement and can land on a
+higher or lower floor instead of shifting the whole jump with support. Game uses
+source derivative motion without base-plane clamping, queries from pre-displacement
+world Y, snaps accepted contact and clears lost contact IDs. Added oriented center
+plus4 footprint rays (radius0.075), generic0.11 snap-distance/highest-candidate
+selection. Grounded query loss checks footprint support then begins falling instead
+of blocking movement at an unsupported edge. Original remembered return contact is
+retained for water recovery. Airborne saves/START writes are suppressed.
+
+Verification: `make test` passed core/28 Python tests. New scenarios prove jump
+world height across a1-unit drop, landing below takeoff, jumping onto a0.2-higher
+platform only during descent, rotated footprint edge coverage, lost contact IDs,
+edge fall and blocked transient saves. Floor acceptance survives horizontal overlap
+instead of falling through a valid floor (horizontal resolution remains incomplete).
+`build-host/core_tests --rooms` passed all8 arrivals/landing gates/rollback and
+18,315 indexed probes. `make -j2 all` built native `.3dsx`; source verifier passed.
+The old straight harbor ledge return assertion depended on movement blocking at
+the drop: it now checks the lower dock and inability to walk straight up the1.05
+height change. The separate stair route still verifies correct return to plaza.
+
+Native water route exited0 with partial-checkpoint protection, original return
+point and HP7→6. Native stair/dock-save/return repeat exited0 with HP7. An earlier
+stair run was interrupted; its handle was missing and no Azahar/python process
+remained, so its terminal result was not inferred from captures. Repeat command:
+`python3 tools/emulator_smoke.py --fresh-save --save-fixture
+artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script
+ tests/azahar_harbor_stairs.py`.
+Water uses the same fixture/options with tests/azahar_water.py. Final east-road
+script exited0 with two round trips, using east-road.bin and tests/azahar_roads.py.
+Native code later centralized identical floor constants; final build/host checks
+are recorded below, with no behavioral constant change.
+
+Limitations requiring next work: original slope/attribute acceptance branches and
+angle mapping remain simplified; grounded support still uses legacy0.25/0.5 band;
+no ceilings, no-floor void recovery, or wall push-out/sliding. Unsupported space
+without a lower floor can fall indefinitely. Partner stays on legacy stepping;
+shadow/camera remain at last support during a drop. Source void recovery and
+ceiling search are the next concrete physics tasks before stabilization. Original
+story/English dialogue, SFX, camera/party movies, interiors and broader game content
+remain incomplete. Full objective active; hardware performance unverified.
+Final native lethal-water/reload regression exited0 on the centralized-constant
+build: `python3 tools/emulator_smoke.py --fresh-save --save-fixture
+artifacts/fixtures/harbor-last-hp-road.bin --seconds 4 --input-script
+ tests/azahar_water.py`. Game over preserved checkpoint; reload retained HP1
+and original entrance position. Final core/28 Python tests, all original-room
+checks and native build exited0. Generated ttyd-2ds.lst is now ignored; user-owned
+AGENTS.md edits remain separate from this feature commit.
