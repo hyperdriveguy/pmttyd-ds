@@ -1207,3 +1207,8 @@ ID exchange/mixed home/global floor/retained modes and export null policies.
 14 hashes/127 anchors/2 spans/7 direct sites verified;90 Python/make all pass.
 Host CMake gate pending missing native move-position fixture;no native edits.
 Setup/end/source/save/query/Game/platform/original runtime remain open.
+
+ID2 snapshot caller validation follow-up (2026-10-12):native fixture arrived;
+make test retry85 CTest/90 Python passed.Prior missing-file host configuration
+gate is resolved;ad1a934 local contracts remain complete.Scope/source/query/
+Game/platform/original runtime boundaries are unchanged.

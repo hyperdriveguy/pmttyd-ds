@@ -1,3 +1,12 @@
+## 2026-10-12 — ID2 snapshot caller host gate resolved
+
+Native tests/battle_packed_move_position_tests.cpp became available after the
+local documentation checkpoint ad1a934.Reran `make test`:85 CTest/90 Python
+passed;exact /tmp/id2-switch-test-retry.log.Prior missing-source configuration
+failure below is historical,resolved by current native fixture.No native edits
+by ID2;binary evidence/make all/own link checks already passed.Source/switch/
+export cadence/query/Game/runtime/full-game requirements remain open.
+
 ## 2026-10-12 — ID2 party-switch and field snapshot export callers
 
 [Complete switch/home/export order](behavior/battle/PARTY_SWITCH_SPAWN_HOME_AND_SNAPSHOT_EXPORT.md)
