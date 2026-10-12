@@ -6,6 +6,10 @@ for a native port or strongly equivalent reimplementation. This is a partial
 specification, not a claim that the whole game has been reverse engineered.
 The current native slice is not an oracle for the original.
 
+Continue with the [detailed system documents and coverage register](behavior/README.md).
+They extend this baseline with US defense/input behavior, event ownership and
+priority semantics, saved work/inventory mutations and RNG arithmetic.
+
 ## Evidence and scope
 
 Use these evidence classes in subsequent additions:
@@ -64,7 +68,7 @@ python3 tools/inspect_dol_function.py marioStMain --symbols artifacts/reference/
 python3 tools/verify_actor_collision.py
 ```
 
-The report fingerprints ten functions, inventories all 119 dispatcher targets,
+The report now fingerprints 51 functions, inventories all 119 dispatcher targets,
 hashes `gor.rel` and all 260 US message files, and lists all REL paths. Direct
 call-site lists are static instruction scans: indirect calls, conditional calls,
 execution counts and branch feasibility are not reconstructed. Fingerprinting a
@@ -150,7 +154,8 @@ battle event state must not be flattened into one undifferentiated context.
   At 60 this is 16 ms, not an exact 1/60 second. The comparison occurs after
   millisecond conversion; do not silently replace it with a raw 500-ms comparison.
 - Stores the new timestamp and calls priority-table construction at
-  `0x800369cc`. Priority sorting and ties still need separate US verification.
+  `0x800369cc`. The verified exchange-sort and nonstable tie behavior are now
+  detailed in [EVENT_RUNTIME.md](behavior/EVENT_RUNTIME.md).
 - Locates entries using stride `0x1b0`, requires active bit 1 and a matching
   recorded event ID, and skips flags masked by `0x92` (`0x800369e0`–`0x80036a10`).
   The ID comparison prevents a recycled slot automatically inheriting the old
@@ -215,10 +220,12 @@ above. P: portable wrappers need persistent per-command state and a first-call
 indicator; restarting a movement/message callback each tick would be incorrect.
 
 `evtChildEntry` (`0x80036eec`) sets the parent's wait bit `0x10` at
-`0x80036f78`, which is included in the scheduler's skip mask. The public source
-describes local-variable inheritance and copy-back during deletion, but the full
-US child/brother lifecycle, priority behavior and cancellation semantics remain
-an open contract. Do not implement every child as detached fire-and-forget work.
+`0x80036f78`, which is included in the scheduler's skip mask. US local-variable
+inheritance, copy-back on deletion, brother ownership, priority sorting and
+selected stop semantics are now documented in
+[EVENT_RUNTIME.md](behavior/EVENT_RUNTIME.md). Restart, complete pause ownership
+and the remaining opcode/service contracts are still open. Do not implement
+every child as detached fire-and-forget work.
 
 ## Existing recovered field behavior (B; no new O claims)
 
@@ -284,7 +291,7 @@ requires concrete B/O evidence before it can become a fidelity claim.
 | Action commands | No measured original timing windows | Per-move start/impact/input sampling, early/late/mash rules, guard/superguard and difficulty modifiers |
 | Statuses/badges/items | Public research leads only | Stacking/order, immunities, duration decrement, equipment and inventory constraints |
 | Rewards/progression | Prototype victory is not retail evidence | Star Points, coins/drops, level-up, partner/ability and story unlocks |
-| RNG | No verified seed/update/call-site contract here | Algorithm, seed persistence and consumption order per random action |
+| RNG | rand/irand arithmetic and draw rules in [RANDOMNESS.md](behavior/RANDOMNESS.md) | Seeding, other generators, seed persistence and consumption order per random action |
 | Save/load | Native versioned checkpoint format only | Original persistent switches, inventory/party/stats, validation, slot operations and failure behavior |
 | Input/pause/UI | Input construction precedes listed pass calls | Held/edge/repeat rules, lock masks, pause clocks, message/menu overlap |
 | Field | Detailed ordinary static movement evidence | Grounded slopes, walls, dynamic collision, all transformations and partner abilities |
@@ -320,8 +327,8 @@ it as a deliberate variant with its own acceptance trace.
 
 ## Next research slices
 
-1. Close the event foundation: priority ordering, all variable namespaces,
-   child/brother copy-back/cancellation and pause flags, then a host interpreter
+1. Close the event foundation: all variable namespaces, restart, full pause
+   lifecycle and remaining opcode/service contracts, then a host interpreter
    verified with short isolated original traces.
 2. Recover the opening harbor/Crump event graph from original REL data and its
    DOL callbacks; bind exact US message IDs and switches before enabling story.

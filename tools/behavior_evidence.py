@@ -17,6 +17,17 @@ from iso_assets import DEFAULT_ISO, inventory
 FUNCTIONS = (
     'marioStMain', 'seqMain', 'evtGetWork', 'evtmgrMain', 'evtmgrCmd',
     'evt_wait_msec', 'evtChildEntry', 'evtDelete', 'evtGetValue', 'evtSetValue',
+    'make_pri_table', 'evtBrotherEntry', 'evtStopAll', 'evtStartAll',
+    'evtStop', 'evtStart', 'evtRestart',
+    'BattleActionCommandCheckDefence', 'BattleActionCommandSetDifficulty',
+    'BattleActionCommandResetDefenceResult', 'BattleACPadCheckRecordTrigger',
+    'BtlPad_WorkInit', 'BtlPad_WorkUpdate', 'BattleActionCommandManager',
+    'BattleActionCommandSetup', 'BattleCheckDamage', 'BattleDamageDirect',
+    'swByteGet', 'swByteSet', '_swByteGet', '_swByteSet', 'swGet', 'swSet',
+    'swClear', 'swReInit', 'swInit', 'pouchSetHP', 'pouchAddHP', 'pouchSetFP',
+    'pouchSetMaxHP', 'pouchSetMaxFP', 'pouchSetPartyHP', 'pouchSetAP',
+    'pouchAddAP', 'pouchSetCoin', 'pouchAddCoin', 'pouchGetEmptyHaveItemCnt',
+    'pouchGetItem', 'pouchGetEmptyKeepItemCnt', 'rand', 'irand',
 )
 
 
@@ -114,6 +125,8 @@ def report(iso_path, symbols_path):
             symbols_sha256=hashlib.sha256(symbol_bytes).hexdigest(),
             functions=functions, event_dispatch_address=0x80304fd0,
             event_dispatch_targets=dispatch, assets=assets,
+            defence_window_tables={hex(a): list(at_va(a, 7))
+                                   for a in (0x802ee018, 0x802ee020)},
             rel_paths=[x['path'] for x in info['files'] if x['path'].endswith('.rel')])
 
 
