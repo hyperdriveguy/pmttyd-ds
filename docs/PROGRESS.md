@@ -1561,3 +1561,50 @@ Verify low ceiling, sloped ceiling, one-sided platform underside and original
 room jump in host/Azahar. Do not reuse floor attribute filter for head rays.
 Grounded slopes, wall sliding, original story/dialogue/SFX/animations and camera
 fidelity remain unfinished. Full goal active; no hardware acceptance.
+
+## 2026-10-12 — Integrate source-derived static ceiling collisions
+
+Previous goal turn made progress with source head-policy helpers (e5172f6).
+This step adds complete per-room HEAD mesh/index with raw source cull metadata
+and source collision strip order. Closer packed/unpacked hitCalcVtxPosition
+trace corrected the initial assumption that render/collision winding match:
+source swaps the even strip pair in the opposite direction to GX rendering.
+Conversion tests and original instruction verifier now lock down this difference.
+Runtime performs five rotated upward probes after jump integration, uses original
+head-specific attribute filter, source face rejection and verified rounded
+contact/clearance, then restarts normal falling at clamped root. New head mesh
+loads with room resources, participates in rollback and clears on room release.
+Original graphics/scale0.16, roads and existing floor/wall packs are unchanged.
+
+Validation: `make test` passed core and29 Python tests. Host analytical scenarios
+exercise low/sloped/one-sided/two-sided ceilings, rotated footprint, rejected
+attributes, invalid pack retention, rollback and bump/landing without damage.
+`build-host/core_tests --rooms` passed all8 road arrivals,18,315 wall index probes,
+original water/void regressions and new original plaza ceiling jump.
+`make -j2 all` regenerated locally converted packs and built ttyd-2ds.3dsx; final
+repeat up to date. `python3 tools/verify_head_mesh.py` validated12,259 triangles'
+source owner/attribute/cull metadata; `python3 tools/verify_actor_collision.py`
+passed constants and parity/cross instruction sites. These verify metadata/
+instruction evidence, not independent converted positions or Dolphin behavior.
+
+Native boot smoke exited0. New repeated-ceiling script exited0 after5 held jumps,
+landing/save at original position/elevation and HP7. Reviewed ceiling-jump
+capture; source timing/proportions remain unmeasured. Native east road script
+exited0 with two reciprocal trips after adding mandatory head resource loading.
+Commands:
+```sh
+python3 tools/road_fixtures.py
+python3 tools/emulator_smoke.py --fresh-save --seconds 4
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/ceiling-road.bin --seconds 4 --input-script tests/azahar_ceiling.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/east-road.bin --seconds 4 --input-script tests/azahar_roads.py
+```
+No native compilation overlapped emulator execution (final make was up to date).
+All original extracts/packs/captures remain ignored. Head fixture plaza(-6.7,.1)
+was located by temporary host scan; durable fixture/test now reproduces it.
+
+Next: recover grounded slope/contact and head-clearance behavior when walking
+under low geometry, original takeoff/fall flag variants, wall push-out/sliding
+and dynamic collision/block events. Ceiling source SFX342 is not yet mapped.
+Compare jumps/camera/proportions in Dolphin; character calibration still0.16.
+Original dialogue/story, animation, SFX, interiors and complete content remain
+incomplete. Full objective active; hardware performance/acceptance unverified.

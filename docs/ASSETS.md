@@ -240,3 +240,19 @@ because their projected segment and min/max heights match. Five rooms export
 `verify_wall_attributes.py` validates the new layout and original owner flags.
 The existing wall selection threshold(abs(normalY)/length<=0.2) is unchanged;
 coverage of other angled surfaces and dynamic hit meshes remains unfinished.
+
+## Complete static head collision mesh
+
+Offline conversion emits .head for map/gor_00/gor_02/gor_03/gor_04 from original
+m/<room>/d. Format HEAD magic+uint32count; each48-byte little-endian record is
+9float32 vertices, uint32attributes, uint32sourceNode(relative to map base32),
+uint32drawmodeByte1. Source hitCalcVtxPosition strip winding is preserved
+separately from render triangles; every collision strip triple is retained,
+including steep/vertical surfaces and degenerates. Conversion does not filter
+by floor slope. Same original-ISO provenance, no replacement artwork/code.
+Packs stay ignored in RomFS/local-assets; no ISO/runtime original extraction.
+verify_head_mesh.py validates every record owner/attribute/cull against original
+read-only node bytes; it does not independently validate converted positions.
+Room triangle counts3153/1604/3450/3504/548 (12,259 total). Largest geometry
+vector168,192 bytes plus spatial-index overhead; only current room is active
+except temporary staging/rollback. Hardware memory/performance unverified.

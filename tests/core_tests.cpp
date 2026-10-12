@@ -38,7 +38,45 @@ void headContactRules() {
     CHECK(std::fabs(headClampedRoot(contact)-.072f)<.00001f);
     CHECK(std::fabs(headClampedRoot(-.4518f)-(-.831f))<.00001f);
 }
+void headGeometry() {
+    clearCollision();char path[]="/tmp/ttyd-head-XXXXXX";int fd=mkstemp(path);CHECK(fd>=0);close(fd);
+    auto ceiling=[&](uint32_t flags,uint32_t cull,bool reverse=false) {
+        float tri[9]={-2,.45f,1,2,.45f,1,-2,.45f,4};
+        if(reverse)for(int n=0;n<3;++n)std::swap(tri[3+n],tri[6+n]);
+        std::ofstream out(path,std::ios::binary);uint32_t count=1,node=100;
+        out.write("HEAD",4);out.write(reinterpret_cast<char*>(&count),4);out.write(reinterpret_cast<char*>(tri),36);
+        out.write(reinterpret_cast<char*>(&flags),4);out.write(reinterpret_cast<char*>(&node),4);out.write(reinterpret_cast<char*>(&cull),4);
+    };
+    float root=99;ceiling(0,1);CHECK(loadHead(path));
+    CHECK(!headCollision({-1,2},{1,0},.081f,.01f,root));CHECK(root==99);
+    CHECK(headCollision({-1,2},{1,0},.082f,.01f,root));CHECK(std::fabs(root-.072f)<.00001f);
+    CHECK(headCollision({-2.08f,2},{1,0},.1f,.01f,root)); // Center misses; forward probe hits.
+    CHECK(!headCollision({-2.08f,2},{1,1},.1f,.01f,root)); // Rotated footprint misses.
+    CHECK(!headCollision({3,2},{1,0},.1f,.01f,root));
+    ceiling(0,1,true);CHECK(loadHead(path));CHECK(!headCollision({-1,2},{1,0},.1f,.01f,root));
+    ceiling(0,3,true);CHECK(loadHead(path));CHECK(headCollision({-1,2},{1,0},.1f,.01f,root));
+    for(uint32_t flags:{4u,0x84u,0x80004u,0x800004u}) {
+        ceiling(flags,3);CHECK(loadHead(path));
+        CHECK(headCollision({-1,2},{1,0},.1f,.01f,root)==(flags==0x800004u));
+    }
+    ceiling(0,1);CHECK(loadHead(path));CHECK(truncate(path,47)==0);CHECK(!loadHead(path));
+    CHECK(headCollision({-1,2},{1,0},.1f,.01f,root)); // Failed pack preserves geometry.
+    {CollisionTransition rollback;clearCollision();CHECK(!headCollision({-1,2},{1,0},.1f,.01f,root));}
+    CHECK(headCollision({-1,2},{1,0},.1f,.01f,root));
+    ceiling(0,1);
+    {std::fstream out(path,std::ios::binary|std::ios::in|std::ios::out);float high=.65f;
+        out.seekp(24);out.write(reinterpret_cast<char*>(&high),4);}
+    CHECK(loadHead(path));CHECK(headCollision({-1,2},{1,0},.14f,.01f,root));
+    CHECK(std::fabs(root-.122f)<.00001f); // Analytical sloped-plane center intersection.
+    ceiling(0,1);CHECK(loadHead(path));
+    Game g;g.progress.room=2;g.progress.position={-1,2};g.tick(confirm());
+    float maxY=0;Input held;held.jumpHeld=true;
+    for(int n=0;n<40;++n){g.tick(held);maxY=std::max(maxY,g.groundHeight+g.jumpHeight);}
+    CHECK(maxY<=.073f && maxY>.07f);CHECK(!g.airborne() && g.jumpHeight==0);
+    clearCollision();std::remove(path);
+}
 void movement() {
+    headGeometry();
     headContactRules();
     FieldJump tapped;tapped.begin();for(int n=0;n<20;++n)tapped.tick(false);
     CHECK(tapped.airborne);tapped.tick(false);CHECK(!tapped.airborne);
@@ -328,6 +366,8 @@ void collisionRollback() {
         file.write(reinterpret_cast<char*>(&count),4);file.write(reinterpret_cast<char*>(&wall),sizeof(wall));
     };
     auto writeFloor=[](const std::string& prefix,uint32_t attributes) {
+        std::ofstream head(prefix+".head",std::ios::binary);head.write("HEAD",4);uint32_t empty=0;
+        head.write(reinterpret_cast<char*>(&empty),4);
         std::ofstream file(prefix+".ground",std::ios::binary);uint32_t count=0x80000002;
         float triangles[]={-3,0,1, 3,0,1, -3,0,3, 3,0,1, 3,0,3, -3,0,3};
         file.write(reinterpret_cast<char*>(&count),4);
@@ -376,7 +416,7 @@ void collisionRollback() {
     CHECK(walkable({0,2}));CHECK(!walkable({2,2}));CHECK(groundAt({1,2},0,h));
     CHECK(groundAt({1,2},0,h,&contact));CHECK(contact.attributes==0x40000400);
     CHECK(groundReturn(contact,point));CHECK(point.x==2);
-    clearCollision();std::remove((target+".walls").c_str());std::remove((target+".ground").c_str());std::remove((source+".returns").c_str());std::remove((target+".returns").c_str());rmdir(directory);
+    clearCollision();std::remove((target+".walls").c_str());std::remove((target+".ground").c_str());std::remove((source+".returns").c_str());std::remove((target+".returns").c_str());std::remove((source+".head").c_str());std::remove((target+".head").c_str());rmdir(directory);
 }
 void uvAnimation() {
     UVTrack track;track.frames={{{1,0,0,0,1,0}},{{1,0,.5f,0,1,.25f}},{{2,0,0,0,3,0}}};
@@ -463,7 +503,7 @@ void indexedOriginalCollision() {
     size_t queries=0;
     for(uint32_t room=0;room<5;++room) {
         std::string prefix=std::string("romfs/")+roomAsset(room);
-        CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));CHECK(loadGroundReturns((prefix+".returns").c_str()));
+        CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));CHECK(loadGroundReturns((prefix+".returns").c_str()));CHECK(loadHead((prefix+".head").c_str()));
         std::ifstream vertexFile(prefix+".vertices",std::ios::binary|std::ios::ate);
         CHECK(vertexFile.good());const auto vertexBytes=vertexFile.tellg();
         CHECK(vertexBytes>0 && vertexBytes%36==0);const uint32_t vertexCount=vertexBytes/36;
@@ -529,7 +569,7 @@ void originalRooms() {
     CHECK(count==8);std::vector<RoadWarp> roads(count);file.read(reinterpret_cast<char*>(roads.data()),count*sizeof(RoadWarp));CHECK(file.good());
     for(size_t n=0;n<roads.size();++n) {
         const auto& road=roads[n];std::string prefix=std::string("romfs/")+roomAsset(road.target);
-        CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));CHECK(loadGroundReturns((prefix+".returns").c_str()));
+        CHECK(loadCollision((prefix+".walls").c_str()));CHECK(loadGround((prefix+".ground").c_str()));CHECK(loadGroundReturns((prefix+".returns").c_str()));CHECK(loadHead((prefix+".head").c_str()));
         Game g;g.progress.room=road.source;g.progress.hp=7;g.warpRequest=n;
         CHECK(g.warpTarget()==road.target);CHECK(g.finishWarp());
         CHECK(g.progress.room==road.target);CHECK(g.progress.hp==7);CHECK(g.warpRequest==-1);
@@ -602,7 +642,7 @@ void originalRooms() {
     clearCollision();
 }
 void originalReturnSelection() {
-    CHECK(loadCollision("romfs/gor_00.walls"));CHECK(loadGround("romfs/gor_00.ground"));CHECK(loadGroundReturns("romfs/gor_00.returns"));
+    CHECK(loadCollision("romfs/gor_00.walls"));CHECK(loadGround("romfs/gor_00.ground"));CHECK(loadGroundReturns("romfs/gor_00.returns"));CHECK(loadHead("romfs/gor_00.head"));
     Game g;Progress p;p.room=1;p.position={0,-5.1f};p.elevation=1.2f;g.restore(p);
     ReturnPoint point{99,99,99};CHECK(!g.recoveryReturn(point));CHECK(point.x==99);
     auto walk=[&](float x,float z,int frames) {Input i;i.x=x;i.z=z;for(int n=0;n<int(std::ceil(frames*.065f/DashSpeed)) && !g.water.active();++n)g.tick(i);};
@@ -632,12 +672,12 @@ void originalReturnSelection() {
     CHECK(dead.scene==Scene::FieldDefeat && dead.progress.hp==0 && !dead.saveRequested);
     dead.tick(confirm());CHECK(dead.reloadRequested && dead.progress.hp==0);
     // Loading a different room resets the map-local remembered hit ID.
-    CHECK(loadCollision("romfs/map.walls"));CHECK(loadGround("romfs/map.ground"));CHECK(loadGroundReturns("romfs/map.returns"));
+    CHECK(loadCollision("romfs/map.walls"));CHECK(loadGround("romfs/map.ground"));CHECK(loadGroundReturns("romfs/map.returns"));CHECK(loadHead("romfs/map.head"));
     p.room=0;p.position={1,2};p.elevation=0;g.restore(p);CHECK(g.returnContact.sourceNode==0);CHECK(!g.recoveryReturn(point));
     clearCollision();
 }
 void originalVoidReturn() {
-    CHECK(loadCollision("romfs/map.walls"));CHECK(loadGround("romfs/map.ground"));CHECK(loadGroundReturns("romfs/map.returns"));
+    CHECK(loadCollision("romfs/map.walls"));CHECK(loadGround("romfs/map.ground"));CHECK(loadGroundReturns("romfs/map.returns"));CHECK(loadHead("romfs/map.head"));
     Progress p;p.position={.35f,6.95f};p.hp=7;p.crumpDefeated=true;
     float floor=0;CHECK(groundAt(p.position,0,floor) && walkable(p.position,floor));p.elevation=floor;
     Game g;g.restore(p);Input down;down.z=1;
@@ -648,7 +688,15 @@ void originalVoidReturn() {
     CHECK(std::hypot(g.progress.position.x-p.position.x,g.progress.position.z-p.position.z)<.08f);
     CHECK(walkable(g.progress.position,g.groundHeight));clearCollision();
 }
+void originalHeadJump() {
+    clearCollision();CollisionTransition tx;CHECK(tx.load("romfs/map"));tx.commit();
+    Progress p;p.position={-6.7f,.1f};p.crumpDefeated=true;
+    Game g;g.restore(p);g.tick(confirm());Input held;held.jumpHeld=true;float peak=0;
+    for(int n=0;n<45;++n){g.tick(held);peak=std::max(peak,g.jumpHeight);}
+    CHECK(peak>.12f && peak<.15f);CHECK(!g.airborne() && g.jumpHeight==0);
+    CHECK(g.progress.hp==p.hp && g.warpRequest==-1);clearCollision();
+}
 int main(int argc,char**) {
-    try {if(argc>1) {indexedOriginalCollision();originalRooms();originalReturnSelection();originalVoidReturn();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();unequalFloorMotion();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();waterRecovery();transitionFade();std::puts("Core scenarios passed");}
+    try {if(argc>1) {indexedOriginalCollision();originalRooms();originalReturnSelection();originalVoidReturn();originalHeadJump();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();unequalFloorMotion();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();waterRecovery();transitionFade();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

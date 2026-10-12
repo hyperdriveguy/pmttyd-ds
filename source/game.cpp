@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "wall_geometry.hpp"
 #include "field_camera.hpp"
+#include "head_collision.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -19,9 +20,12 @@ struct GroundTriangle { float v[9];GroundContact contact; };
 static_assert(sizeof(GroundContact)==8,"Ground metadata must contain two uint32 words");
 static_assert(sizeof(ReturnPoint)==12,"Return position must contain three float32 values");
 std::vector<GroundTriangle> ground;
+struct HeadTriangle {float v[9];GroundContact contact;uint32_t cull;};
+static_assert(sizeof(HeadTriangle)==48,"Head pack record size");
+std::vector<HeadTriangle> head;
 std::unordered_map<uint32_t,ReturnPoint> groundReturns;
 using SpatialIndex=std::unordered_map<uint64_t,std::vector<uint32_t>>;
-SpatialIndex wallIndex,groundIndex;
+SpatialIndex wallIndex,groundIndex,headIndex;
 Rect roomBounds{-9,-4.5f,9,4};
 constexpr float GridSize=2.f;
 uint64_t cellKey(int x,int z) {return (uint64_t(uint32_t(x))<<32)|uint32_t(z);}
@@ -56,14 +60,16 @@ struct CollisionSnapshot {
     std::vector<GroundContact> savedWallContacts;
     std::vector<WallTriangle> savedWallTriangles;
     std::vector<GroundTriangle> savedGround;
+    std::vector<HeadTriangle> savedHead;
     std::unordered_map<uint32_t,ReturnPoint> savedReturns;
-    SpatialIndex savedWallIndex,savedGroundIndex;
+    SpatialIndex savedWallIndex,savedGroundIndex,savedHeadIndex;
     Rect savedBounds{-9,-4.5f,9,4};
     bool ready=false;
     void swapActive() {
         savedWalls.swap(walls);savedLevels.swap(wallLevels);savedGround.swap(ground);
         savedWallContacts.swap(wallContacts);
         savedWallTriangles.swap(wallTriangles);
+        savedHead.swap(head);savedHeadIndex.swap(headIndex);
         savedReturns.swap(groundReturns);
         savedWallIndex.swap(wallIndex);savedGroundIndex.swap(groundIndex);
         std::swap(savedBounds,roomBounds);std::swap(ready,collisionReady);
@@ -75,7 +81,7 @@ bool CollisionTransition::load(const char* prefix) {
     if(committed || !prefix)return false;
     clearCollision();staged=false;
     const std::string path(prefix);
-    staged=loadCollision((path+".walls").c_str()) && loadGround((path+".ground").c_str()) && loadGroundReturns((path+".returns").c_str());
+    staged=loadCollision((path+".walls").c_str()) && loadGround((path+".ground").c_str()) && loadGroundReturns((path+".returns").c_str()) && loadHead((path+".head").c_str());
     return staged;
 }
 void CollisionTransition::commit() {if(staged)committed=true;}
@@ -205,6 +211,53 @@ bool loadCollision(const char* path) {
     if(ok) {wallLevels.swap(heights);wallContacts.swap(contacts);wallTriangles.swap(geometry);walls.swap(data);wallIndex.swap(next);collisionReady=true;}
     return ok;
 }
+bool loadHead(const char* path) {
+    FILE* file=std::fopen(path,"rb");if(!file)return false;
+    char magic[4];uint32_t count=0;
+    bool ok=std::fread(magic,4,1,file)==1 && std::string(magic,4)=="HEAD" && std::fread(&count,4,1,file)==1 && count<=100000;
+    std::vector<HeadTriangle> data(ok?count:0);
+    for(auto& tri:data) {
+        ok=ok && std::fread(&tri,48,1,file)==1;
+        for(float v:tri.v)if(!std::isfinite(v))ok=false;
+        if(tri.cull>3)ok=false;
+    }
+    ok=ok && std::fgetc(file)==EOF;std::fclose(file);
+    SpatialIndex next;size_t references=0;
+    for(uint32_t n=0;ok && n<count;++n) {
+        const auto v=data[n].v;
+        ok=indexBounds(next,n,std::min({v[0],v[3],v[6]}),std::min({v[2],v[5],v[8]}),
+            std::max({v[0],v[3],v[6]}),std::max({v[2],v[5],v[8]}),references);
+    }
+    if(ok){head.swap(data);headIndex.swap(next);}return ok;
+}
+bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot) {
+    const float length=std::hypot(direction.x,direction.z);
+    if(!std::isfinite(p.x) || !std::isfinite(p.z) || std::fabs(p.x)>4096 || std::fabs(p.z)>4096 ||
+       !std::isfinite(worldY) || !std::isfinite(velocity) || !std::isfinite(length) || length<1e-6f || velocity<-.1f)return false;
+    const float x=direction.x*HeadProbeRadius/length,z=direction.z*HeadProbeRadius/length;
+    const Vec2 offsets[]={{0,0},{x,z},{-z,x},{z,-x},{-x,-z}};
+    const float low=worldY+HeadBodyHeight*.5f,high=low+HeadBodyHeight+velocity;
+    for(auto offset:offsets) {
+        const Vec2 ray{p.x+offset.x,p.z+offset.z};float nearest=high;bool found=false;
+        for(uint32_t n:nearby(headIndex,ray)) {
+            const auto& tri=head[n];if(!headAttributesSolid(tri.contact.attributes))continue;
+            const float* v=tri.v;
+            // Source normal=(v2-v0) cross (v0-v1), equivalent to standard winding.
+            const float normalY=(v[5]-v[2])*(v[6]-v[0])-(v[3]-v[0])*(v[8]-v[2]);
+            if(tri.cull==1 && normalY>=0)continue;
+            float den=(v[5]-v[8])*(v[0]-v[6])+(v[6]-v[3])*(v[2]-v[8]);
+            if(std::fabs(den)<1e-8f)continue;
+            float a=((v[5]-v[8])*(ray.x-v[6])+(v[6]-v[3])*(ray.z-v[8]))/den;
+            float b=((v[8]-v[2])*(ray.x-v[6])+(v[0]-v[6])*(ray.z-v[8]))/den;
+            if(a<0 || b<0 || a+b>1)continue;
+            float y=a*v[1]+b*v[4]+(1-a-b)*v[7];
+            if(y>=low && y<=nearest){nearest=y;found=true;}
+        }
+        const float contact=headContactHeight(nearest);
+        if(found && headContactReached(worldY,velocity,contact)){clampedRoot=headClampedRoot(contact);return true;}
+    }
+    return false;
+}
 bool loadGround(const char* path) {
     FILE* file=std::fopen(path,"rb");if(!file)return false;
     uint32_t count=0;bool ok=std::fread(&count,4,1,file)==1;
@@ -309,6 +362,11 @@ void Game::advanceVertical(bool held) {
     if(!fieldJump.airborne){jumpHeight=0;if(groundHeight<=VoidThreshold)beginVoid();return;}
     const float worldY=jumpBase+fieldJump.height;
     fieldJump.tick(held,false);
+    float ceiling=0;
+    if(headCollision(progress.position,moveDirection,jumpBase+fieldJump.height,fieldJump.velocity,ceiling)) {
+        jumpBase=std::max(jumpBase,ceiling);fieldJump.beginFall();
+        groundContact={};jumpHeight=jumpBase-groundHeight;return;
+    }
     float floor=0;GroundContact contact;
     if(fieldJump.falling && landingFootprint(progress.position,moveDirection,worldY,fieldJump.velocity,floor,&contact)) {
         fieldJump={};groundHeight=progress.elevation=floor;groundContact=contact;jumpBase=floor;jumpHeight=0;
@@ -331,7 +389,7 @@ bool Game::beginVoid() {
     fieldJump={};jumpHeight=0;warpRequest=-1;saveRequested=false;
     return true;
 }
-void clearCollision() {walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
+void clearCollision() {walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();head.clear();headIndex.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
 bool Game::recoveryReturn(ReturnPoint& point) const {return groundReturn(returnContact,point);}

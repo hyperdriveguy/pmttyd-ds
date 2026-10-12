@@ -136,6 +136,8 @@ private:
 bool walkable(Vec2 p,float elevation=0);
 bool loadCollision(const char* path);
 bool loadGround(const char* path);
+bool loadHead(const char* path);
+bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot);
 bool loadGroundReturns(const char* path);
 bool groundReturn(const GroundContact&,ReturnPoint& point);
 bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr);

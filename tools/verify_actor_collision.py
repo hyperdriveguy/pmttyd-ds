@@ -60,6 +60,10 @@ def main():
                                     (0x800161c4,'28000001'),(0x80016210,'418202e8')]:
             assert read(address)==bytes.fromhex(instruction),hex(address)
         print(f'Normal head: radius={(width-half)*half},5 probes,contact precision={precision},root precision={rootPrecision},clearance={clearance},fast-fall cutoff={fastFall}')
+        for address,instruction in [(0x8001684c,'562007fe'),(0x80016890,'7d254b78'),
+                                    (0x800168a8,'7c060378'),(0x8001699c,'48288209'),
+                                    (0x800169ac,'482881f9'),(0x800169cc,'482882d9')]:
+            assert read(address)==bytes.fromhex(instruction),hex(address)
         threshold=value(0x80420aa8,-2000);respawnOffset=value(0x80420aa4,37)
         probe=value(0x804209c0,300);rise=value(0x804209c4,10);travel=value(0x804209c8,8)
         assert read(0x80091cf4)==bytes.fromhex('38600032')

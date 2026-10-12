@@ -421,3 +421,30 @@ this metadata and recover original triangle-normal orientation; do not infer
 ceiling solely from height or floor-pack winding. Sloped/dynamic surfaces and
 transformed Mario branches require further work. Source inspection artifacts
 are ignored; regenerate with tools/inspect_dol_function.py and us_symbols.csv.
+
+## Active static ceiling queries (2026-10-12)
+
+The previous head-policy section is now integrated for ordinary field jumping.
+Closer tracing of hitCalcVtxPosition800165a8 recovered the collision-specific
+strip order: even triple(n,n+2,n+1), odd(n,n+1,n+2). This is opposite GX render
+winding; hit_topology preserves source order separately. Source edge construction
+80016990–800169cc computes(v2-v0) cross(v0-v1), equivalent to standard cross
+for these collision triples. Parity/swaps/cross call bytes are checked in the
+actor verifier. Previous floor/wall packs keep their existing geometry policy.
+
+New complete per-room .head pack retains all source strip triangles, attributes,
+source node and original drawmode byte1. No normalY slope threshold is applied.
+Upward query uses lowest intersected plane from root+height/2 to that origin+
+height+velocity; mode1 culls normal dot upward>=0. Five center/rotated probes
+use source9.75 radius and original head-specific filter. A reached contact
+uses verified rounding/clearance, preserves takeoff minimum, resets to normal
+fall parameters. Source ordinary check runs after jump integration; native
+does likewise. Head geometry/index participate in transactional room rollback.
+
+Host analytical tests cover low/sloped ceiling, one-sided winding, two-sided
+underside, footprint rotation, source filter differences and corrupted pack.
+Original plaza(-6.7,.1) fixture limits held jump to .12–.15 native units (observed
+host maximum.137), lands without damage/warp. Native repeated jumps check landed
+save/position/HP; capture alone does not measure source timing or original
+Dolphin fidelity. Dynamic collision, transformed actor branches, jump/hammer
+block events, SFX342 and exact falling/takeoff flag variants remain unfinished.

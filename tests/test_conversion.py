@@ -7,7 +7,7 @@ import struct
 import numpy as np
 from audio_convert import decode,nibbles_to_samples
 from character_bake import matrix
-from map_convert import topology,wall_segments,batch_flags
+from map_convert import topology,hit_topology,wall_segments,batch_flags
 from map_animation import interpolate,sample,read_animations,sample_material,texture_matrix
 class ConversionTests(unittest.TestCase):
     def test_dsp_predictor_zero(self):
@@ -26,6 +26,9 @@ class ConversionTests(unittest.TestCase):
         self.assertTrue(np.allclose(matrix(node,0)@np.array([1,1,1,1]),[3,4,5,1]))
     def test_triangle_strip(self):
         self.assertEqual(list(topology(0x98,[0,1,2,3])),[[0,1,2],[2,1,3]])
+    def test_original_hit_strip(self):
+        self.assertEqual(list(hit_topology([0,1,2,3])),[[0,2,1],[1,2,3]])
+        self.assertEqual(list(hit_topology([0,1])),[])
     def test_stacked_wall_segments(self):
         low=[[0,0,0],[2,0,0],[0,1,0]]
         high=[[0,3,0],[2,3,0],[0,4,0]]

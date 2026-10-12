@@ -32,6 +32,11 @@ def batch_flags(layer,group,cull):
         raise ValueError('Invalid map batch metadata')
     return layer | group<<8 | cull<<24
 
+def hit_topology(verts):
+    """hitCalcVtxPosition uses strip triples with opposite winding to GX rendering."""
+    for n in range(len(verts)-2):
+        yield [verts[n],verts[n+2-(n%2)],verts[n+1+(n%2)]]
+
 def wall_segments(collision,metadata=None,with_triangles=False):
     if metadata is not None and len(metadata)!=len(collision):raise ValueError('Wall metadata count mismatch')
     segments=set()
@@ -81,7 +86,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
                 warnings.append({'animation':animation,'material':track['material'],'limitation':'Animation material absent from this map material table'})
                 continue
             for mat in targets:mat['uv']=sample_material(track,frame)
-    vertices=defaultdict(list);nodes=[];collision=[];collision_meta=[];collision_nodes={};markers=[];cutaway_nodes={};cull_counts=defaultdict(int);owners=defaultdict(list);node_info={}
+    vertices=defaultdict(list);nodes=[];collision=[];collision_meta=[];head_geometry=[];collision_nodes={};markers=[];cutaway_nodes={};cull_counts=defaultdict(int);owners=defaultdict(list);node_info={}
     def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0,suppressed=False,parent_node=None):
         if depth>100:raise ValueError('Invalid map graph')
         name=string(base+u(raw,o));visible=visible or name==scene_name;collidable=collidable or name==collision_name
@@ -148,6 +153,8 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
                     elif collidable:
                         for tri in tris:
                             collision.append([v[:3] for v in tri]);collision_meta.append((attributes,o-base))
+                        for tri in hit_topology(local):
+                            head_geometry.append(([v[:3] for v in tri],(attributes,o-base),cull))
         if name.endswith('_bero'):
             points=np.array(marker_points) if marker_points else np.array([(m@np.array([0,0,0,1]))[:3]*scale])
             markers.append({'name':name,'bounds':[points.min(0).tolist(),points.max(0).tolist()]})
@@ -231,6 +238,11 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
             out.write(struct.pack('<II',track['duration'],len(track['bindings'])))
             for frame in track['frames']:out.write(struct.pack('<12f',*frame))
             for vertex in track['bindings']:out.write(struct.pack('<Ifff',*vertex))
+    # Complete static collision mesh for upward head rays, without slope filtering.
+    with (output/'map.head').open('wb') as out:
+        out.write(struct.pack('<4sI',b'HEAD',len(head_geometry)))
+        for tri,meta,cull in head_geometry:
+            out.write(struct.pack('<9fIII',*(v for point in tri for v in point),*meta,cull))
     segments=wall_segments(collision,collision_meta,with_triangles=True)
     with (output/'map.walls').open('wb') as out:
         out.write(struct.pack('<I',len(segments)|0xe0000000))
