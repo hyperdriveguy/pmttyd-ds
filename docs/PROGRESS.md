@@ -4663,3 +4663,40 @@ battle_start/wait_battle_end and actual gor battle configuration2/unit/tutorial
 script bindings;close scene conditions,locks/persistent namespace and original
 timing comparisons,then expand all reachable US chapters/optional mechanics
 before complete-game requirements.
+
+## 2026-10-12 — Harbor configuration and field/battle transition contracts
+
+Added FIELD_BATTLE_ENTRY_AND_RETURN.md and HARBOR_TUTORIAL_CONFIGURATION.md.
+Recovered ten complete DOL bodies:three NPC event callbacks,NPC set/setup,
+field-battle pointer/result accessors and area lookup/registration. Documents
+44-byte numeric setup indexing,current area prefix,200-byte information clear/
+associated-NPC copy,audience/weighted group/item draws,encoded saved-switch
+selection,first-call battle transition and sequence2/nonzero-result return gate.
+Original start callback reads a second operand despite this scene supplying one;
+next command header1005b is resolved then ignored by field pointer getter.
+No invented extra scene argument or victory-only interpretation.
+
+Verified gor prolog HA/LO/call relocations install area gor's setup/number tables;
+literal index2 selects REL60eb8. Its single weight50 group60c90 selects one
+unit setup60c60,kind unit_boss_kanbu1 at645c8,init_event64808 and original stage/
+music/data bindings. Unit's DOL item table has eight zero bytes. Known local
+setup chain consumes17 irand calls (16 audience plus one group,zero item draws),
+not a full encounter seed/cadence claim. Raw kind halfword+8=5 remains a data
+observation until runtime stat/init consumers establish HP/override behavior.
+
+Validation:1700 instruction anchors and prior checks pass read-only ISO;
+seven whole configuration/prolog spans,setup/group/kind chain,prolog partial-
+address/call relocations and zero item table checked. Fresh330-function evidence
+reports repeat byte-for-byte;571 behavior links resolve;Gekko listing check
+clean;git diff --check passed. make test passed core,battle_timing_a,battle_hammer,
+battle_defense plus58 Python tests;make all exited0,no rebuild. Concurrent native/
+README/documentation-request changes preserved;only explicit research paths
+staged. No original execution/emulator,ISO/profile/save mutation,asset conversion,
+native implementation or story/dialogue rewrite by this step. Artifacts ignored.
+
+Next:original gor unit_boss_kanbu1 init_event/data_table/parts and stat-entry
+consumers,tutorial command/forced-result/availability/reward/result writers,
+sequence/Mario/party/audio lifetime and full original scene/input/RNG traces.
+Continue all reachable US systems/optional content before complete-game
+requirements. Full objective remains active/incomplete;config pointers/local
+transition contracts do not establish faithful completed tutorial or full game.

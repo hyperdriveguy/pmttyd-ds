@@ -15,6 +15,9 @@ from iso_assets import DEFAULT_ISO, inventory
 
 
 FUNCTIONS = (
+    'evt_npc_set_battle_info', 'evt_npc_battle_start', 'evt_npc_wait_battle_end',
+    'npcSetBattleInfo', 'npcSetupBattleInfo', 'fbatGetPointer',
+    'BattleInformationSetResult', 'BattleInformationGetResult', 'areaDataPtr', 'relSetBtlAddr',
     'btlevtcmd_GetWeaponActionLv', 'btlevtcmd_AcSetDifficulty',
     'btlevtcmd_check_battleflag', 'evt_case_equal', 'evt_if_equal', 'evt_if_not_equal',
     'battleAcMain_StickKeepLeft', 'battleAcResult_StickKeepLeft',

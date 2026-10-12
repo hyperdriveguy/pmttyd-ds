@@ -13,6 +13,32 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'field_battle_entry_return': {
+        0x8004f0ac: '4bfe21b5', 0x8004f0bc: '4bfe21a5',
+        0x8004f0d8: '4bff4ca9', 0x8004ef78: '809f0004',
+        0x8004ef88: '4bff9315', 0x8004efa8: '907f0008',
+        0x8004efd0: '480c5539', 0x8004efdc: '38600004',
+        0x8004efe8: '4bfdf231', 0x8004eff4: '38600002',
+        0x8004eef4: '2c030002', 0x8004ef08: '480c55f9',
+        0x8004ef10: '4082000c', 0x8004ef34: '4808cd91',
+        0x800482a0: '80630168', 0x80114508: '90830010',
+        0x80114500: '80630010', 0x80043da8: '48000068',
+        0x80043db8: '8885012c', 0x80043ddc: '80830008',
+        0x80043df4: '38840220', 0x80043e08: '38840044',
+        0x80043e14: '48000065', 0x80043e20: '38800019',
+        0x80043ea0: '4bfc1215', 0x80043eb0: '4bfc1205',
+        0x80043ecc: '901f00ac', 0x80043f0c: '4bfc1e95',
+        0x80043f28: '7c7f01ae', 0x80043f5c: '907f00c0',
+        0x80043f84: '48041931', 0x80043f90: '837e0010',
+        0x80043f98: '837e0014', 0x80043fd0: '4181fff0',
+        0x80043fdc: '4bfc1dc5', 0x80043ff8: '901f0018',
+        0x80044034: '833a002c', 0x80044054: 'a8850004',
+        0x80044074: '4bfc1d2d', 0x80044088: '901b001c',
+        0x80044094: '4800000c', 0x800440d0: '88030012',
+        0x800440dc: '64001000', 0x8003906c: '93430008',
+        0x80039070: '9363000c', 0x80039210: '80030008',
+        0x80039234: '48234231', 0x80039248: '80630008',
+    },
     'hammer_weapon_branch_selection': {
         0x80105900: '88a3006e', 0x8010590c: '4bf2b3f1',
         0x80107b58: '4bf29709', 0x80107b68: '4bf296f9',
@@ -1723,6 +1749,56 @@ def verify(iso_path):
         if hashlib.sha256(read_resource('msg/US/gor_00.txt')).hexdigest() != 'bd39efb45105781a403ca5e889ba8e9fb8dbaaaf0b2bd60af6955e38073acdcc':
             raise ValueError('Original harbor US messages mismatch')
         print('Harbor REL, seven event spans and original US message resource verified')
+        for offset,size,digest in (
+            (0x5e4,264,'31e20845a9d8df8a3708ef9d4ea02caebc55e42d65eafb527a67314a0004d210'),
+            (0x60eb8,68,'4cf44fc2945a4f0df0264aa6e8a106ee3d30671b26942ddc9c58719413530315'),
+            (0x60dd0,24,'d0ba2a1f974f2831ccc0e7f9a13e7ff217c1a199ce7d3774bdd922741e184e53'),
+            (0x60c90,32,'490b0ff985647f92f3dee5183acced938dd6edf8f841edf182b144f0f8eeb19b'),
+            (0x60c60,48,'f513e136be5105e8cc69c34dee087e268c00cf381038fa2469839e0ecccc79bb'),
+            (0x645c8,196,'64edb101493007b232b299534da18ae53d8ec72ebd2e0b20497768f3de90d486'),
+            (0x6100c,56,'13f7bca0d46a97016b6ec84957ac965cc4a139d28a32e29b4029697076b97007'),
+        ):
+            if hashlib.sha256(harbor[offset:offset+size]).hexdigest() != digest:
+                raise ValueError('Harbor battle configuration span mismatch')
+        from rel_event_inventory import read_bindings
+        local,imports,_ = read_bindings(harbor)
+        expected_local = {0x60eb8:0x1dbfc,0x60ebc:0x1dc10,0x60ecc:0x60dd0,
+                          0x60ef8:0x1dc18,0x60dd4:0x60c90,0x60dd8:0x608f8,
+                          0x60c94:0x60c60,0x60c60:0x645c8}
+        for site,target in expected_local.items():
+            if local.get(site,{}).get('file_offset') != target:
+                raise ValueError('Harbor battle relocation chain mismatch')
+        if imports.get(0x60c8c) != 0x80417920 or read(0x80417920,8) != bytes(8):
+            raise ValueError('Harbor unit zero drop table mismatch')
+        if struct.unpack_from('>I',harbor,0x60dd0)[0] != 50 or struct.unpack_from('>I',harbor,0x60c90)[0] != 1:
+            raise ValueError('Harbor group weight/count mismatch')
+        section_count,section_table = struct.unpack_from('>II',harbor,0xc)
+        section_offsets = [struct.unpack_from('>I',harbor,section_table+i*8)[0]&~3
+                           for i in range(section_count)]
+        imp,imp_size = struct.unpack_from('>II',harbor,0x28)
+        prolog_bindings = {}
+        for j in range(imp,imp+imp_size,8):
+            module,stream = struct.unpack_from('>II',harbor,j)
+            section,offset = None,0
+            while True:
+                delta,kind,target,addend = struct.unpack_from('>HBBI',harbor,stream)
+                stream += 8
+                if kind == 203: break
+                if kind == 202: section,offset = target,0; continue
+                offset += delta
+                site = section_offsets[section]+offset
+                if 0x6bc <= site < 0x6d8:
+                    prolog_bindings[site] = (module,kind,target,addend)
+        if prolog_bindings != {
+                0x6be:(9,6,4,0x260),0x6ca:(9,4,4,0x260),
+                0x6c2:(9,6,5,0x40da8),0x6ce:(9,4,5,0x40da8),
+                0x6c6:(9,6,5,0x40f84),0x6d2:(9,4,5,0x40f84),
+                0x6d4:(0,10,2,0x80038fd8)}:
+            raise ValueError('Harbor prolog battle table registration mismatch')
+        area_key = section_offsets[4]+0x260
+        if harbor[area_key:area_key+4] != b'gor\0':
+            raise ValueError('Harbor registration area key mismatch')
+        print('Seven harbor configuration spans and setup/group/unit/prolog relocation chains verified')
 
 
 

@@ -143,9 +143,9 @@ is committed here.
 Beforebattle0x269dc requests evt_npc_set_battle_info(actor0x14b40,literal2),then
 0x269ec requests evt_npc_battle_start(actor0x14b40),then0x269f8 waits through
 evt_npc_wait_battle_end. Following this are camera,Mario/actor pose/position and
-facing requests,story write5,and the afterbattle child. The callback operand2
-is concrete;its table index/pointer semantics,unit/weapon data,loss/escape handling
-and tutorial overrides must be recovered from the callbacks and configuration.
+facing requests,story write5,and the afterbattle child. The callback operand2 is concrete;[entry/setup recovery](FIELD_BATTLE_ENTRY_AND_RETURN.md)
+now establishes its numeric index and [the one-unit configuration](HARBOR_TUTORIAL_CONFIGURATION.md).
+Unit/weapon runtime data,loss/escape handling and tutorial overrides remain open.
 Do not import provisional prototype HP/damage or ordinary Hammer availability.
 
 Other motion/camera/input/sound/wait/inline/crowd commands in these spans are

@@ -19,6 +19,8 @@ complete gameplay sequences before further general-library edge-case recovery.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [US completion/priorities](US_COMPLETION_AND_PRIORITIES.md) | Current completion audit,shipped reference census,registered commands and mechanic-first order | Full event feasibility/original execution and all-system closure |
+| [Field battle entry/return](FIELD_BATTLE_ENTRY_AND_RETURN.md) | Area/index registration,NPC setup/random draws,first-call start and field-result polling | Service/lifetime/result producers and original transitions |
+| [Harbor tutorial configuration](HARBOR_TUTORIAL_CONFIGURATION.md) | Prolog/index2 binding,single group/unit,kind/init pointers and17 known setup draws | Tutorial scripts,stat/runtime overrides,rewards and original traces |
 | [Harbor opening bindings](STORY_HARBOR_OPENING_BINDINGS.md) | Seven original REL spans,story-state entry/write graph,actor setup,20 message/speaker references and battle boundary | Complete scene/event/service conditions,tutorial config and original traces |
 | [Original baseline](../ORIGINAL_BEHAVIOR.md) | Disc/DOL identity, evidence rules, subsystem order, basic waits/callback continuations, initial complete-game scope | Most systems beyond the initial recovered contracts |
 | [Event runtime](EVENT_RUNTIME.md) | Priority/tie order, child/brother relationships, deletion/copy-back, selected stop behavior | Every opcode/variable type, service callbacks, restart/pause lifecycle |

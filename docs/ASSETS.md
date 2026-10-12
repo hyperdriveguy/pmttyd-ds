@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 320 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1652 instruction anchors plus those
+now fingerprints 330 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1700 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -720,3 +720,10 @@ text/token payload hashes without exporting dialogue. Only IDs/offsets/actor
 bindings/authored behavior notes committed. No asset conversion,original code
 linking/distribution or licensing change;symbol annotations retain existing
 reference provenance. Full original story/transcript/conditions still incomplete.
+
+Field/NPC battle research adds ten function identities and48 anchors;seven
+harbor configuration/prolog spans and actual setup/group/unit relocation chain
+plus zero DOL item table are checked. No new extraction/asset conversion,ISO
+write,emulator execution,native linking or story edit. Registration pointers and
+unit stat interpretations remain bounded by documented consumers;original files
+retain existing rights and all inspection artifacts stay ignored.
