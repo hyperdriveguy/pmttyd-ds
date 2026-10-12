@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Lecture field trigger,story conditions and return requests | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover gor kurihakase_lecture callers,setup3/start/wait/return and exact US message/selection/persistent bindings;excludes complete battle-end controller and original traces |
 | Weapon aftereffect callback and ordinary Jump operands | JUMP-01, DMG-02 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Recover WeaponAftereffect local flag branches/resource/status services and actual weapon/caller bindings;excludes lecture flow,audience internals and original traces |
 | Stylish start/main/result and ordinary Jump timing bindings | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Timing/results](behavior/BATTLE_STYLISH_TIMING_AND_RESULTS.md),[icon](behavior/BATTLE_STYLISH_TIMING_ICON.md):complete local start/poll/input/output/queue/draw and four ordinary callers;source/scheduler/audience/display/assets/original traces remain open |
 | Enemy candidate choice and sampling cores | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Sampling](behavior/BATTLE_ENEMY_CANDIDATE_SAMPLING.md),[choice/RNG](behavior/BATTLE_ENEMY_CANDIDATE_CHOICE.md):complete local admission/geometry/compaction/sort/weights/mode4/draw semantics;source/helper/domain/seed/interleaving and original traces remain open |
