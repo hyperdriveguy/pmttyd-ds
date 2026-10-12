@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'announcement_messages': {
+        0x801abe54: '907d0078', 0x801abe60: 'b39e8c8e',
+        0x801abeb4: '480be205', 0x801abeec: '4bf25479',
+        0x801abf1c: '4be64ca9', 0x801abf4c: '901d0078',
+        0x801abf5c: '901d0078', 0x801abf68: '5c6307fe',
+        0x801abc54: '90640004', 0x8011a054: '1c6301fc',
+        0x8011a064: '7c032038', 0x801abce8: '5460fc7e',
+        0x801abd14: '1c60001d', 0x801abd48: 'efff0828',
+        0x801abda4: '3884ffe3', 0x801abda8: '4beca225',
+    },
     'camera_requests': {
         0x8012c044: '41800054', 0x8012c048: '909f2760',
         0x8012c070: '4bfff2cd', 0x8012c090: '540006f2',
@@ -417,6 +427,13 @@ def verify(iso_path):
         if read(0x8042273c, 4) != struct.pack('>f', 0.0):
             raise ValueError('Camera mode reset zoom constant mismatch')
         print('Camera mode reset zoom constant verified')
+        for address, value in {0x80424bbc: 10.0, 0x80424bc0: -29.0,
+                               0x80424bc4: 3.0, 0x80424bc8: 900.0}.items():
+            if read(address, 4) != struct.pack('>f', value):
+                raise ValueError(f'Announcement draw constant mismatch {address:#x}')
+        if read(0x80424bb8, 4) != bytes.fromhex('ffffffff'):
+            raise ValueError('Announcement window color mismatch')
+        print('Four announcement floats and window color word verified')
         status_tables = {
             0x80364204: [0x7970, 0x792c, 0x7970, 0x7970, 0x7adc,
                          0x7970, 0x7970, 0x7970, 0x7970, 0x7970,

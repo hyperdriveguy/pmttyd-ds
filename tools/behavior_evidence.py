@@ -31,6 +31,8 @@ FUNCTIONS = (
     'BattleWaitAllActiveEvtEnd_NoBgSetEndWait', 'BattleCheckConcluded',
     'BattleAfterReactionMain', 'BattleAfterReactionRelease',
     'pouchRemoveItem', 'pouchRemoveItemIndex', 'btlevtcmd_ConsumeItemReserve',
+    'btlevtcmd_AnnounceMessage', 'btlevtcmd_AnnounceSetParam',
+    'BattlePadCheckTrigger', 'BattlePadMultiCheckTrigger', '_disp@battle_message.o',
     'evt_btl_camera_set_mode', 'evt_btl_camera_set_homing_unit',
     'evt_btl_camera_set_moveSpeedLv', 'evt_btl_camera_set_zoom',
     'btl_camera_set_mode', 'btl_camera_set_moveSpeedLv', 'btl_camera_set_zoom',
@@ -118,8 +120,10 @@ def report(iso_path, symbols_path):
 
         functions = []
         for name in FUNCTIONS:
+            symbol_name, separator, symbol_namespace = name.partition('@')
             matches = [r for r in rows if r['area'] == '_main'
-                       and r['sec_type'] == 'text' and r['name'] == name]
+                       and r['sec_type'] == 'text' and r['name'] == symbol_name
+                       and (not separator or r['namespace'] == symbol_namespace)]
             if len(matches) != 1:
                 raise ValueError(f'Expected unique text symbol: {name}')
             row = matches[0]

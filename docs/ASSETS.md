@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 152 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 364 instruction anchors plus those
+now fingerprints 157 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 380 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -65,6 +65,9 @@ identities, mode8 interpolation target/constants and original zero-gravity
 message-ID binding. No original dialogue or bytecode extract is committed.
 Camera request research adds ten callback/setter fingerprints and the mode-reset
 zoom constant, preserving independent priority gates and homing vector sources.
+Announcement research adds five service/draw fingerprints, four floats and
+window color. Duplicate local symbols use an explicit namespace qualifier in
+the metadata tool; original dialogue/text buffers remain uncommitted.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,

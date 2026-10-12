@@ -160,3 +160,7 @@ requirements, while full battle/game equivalence remains unfinished.
 The four zero-gravity camera callbacks and their setters are now specified in
 [camera requests](BATTLE_CAMERA_REQUESTS.md); camera update modes and message
 callback semantics remain open.
+
+AnnounceMessage timer/input/shared-text behavior is now specified in
+[announcement messages](BATTLE_ANNOUNCEMENT_MESSAGES.md), with original text
+lookup/control and rendering dependencies still open.

@@ -2712,3 +2712,31 @@ priority/vector producers, full CommandInput; audience/announcement services,
 outer battle/turn progression, conclusion/rewards and death/revival events;
 motion/float/pose services. Continue all systems before complete-game requirements.
 Full objective active/incomplete; original/native execution comparisons needed.
+
+## 2026-10-12 — Battle announcement timer, shared text and draw callback
+
+Previous turn progressed with5a231ae camera requests. Added
+BATTLE_ANNOUNCEMENT_MESSAGES.md: five resolved operands, first-call-only text/
+position/timer initialization, mode1 original item-name branches, unchecked
+parameter setter, per-invocation display registration, mode2 trigger gate,
+post-decrement word/yield protocol and local draw geometry. Per-event timer and
+shared global text/position ownership remain distinct. Added namespace-qualified
+symbol selection in evidence tooling to identify battle_message.o's local _disp.
+Original story text is not copied or rewritten; lookup/control semantics remain
+open, along with unknown substitution helper and renderer/display-list lifetime.
+
+Validation:380 instruction anchors, four announcement floats/window-color word
+and prior checks passed read-only US ISO. Evidence157 fingerprints reproduced
+exactly; qualified draw address/size checked explicitly. Behavior links resolve;
+git diff --check passed. make test passed core plus36 Python tests; make all
+exited0, no rebuild. Workspace started clean; only research/provenance/evidence
+files changed. No original execution/emulator run or profile/save modification.
+Original extracts/disassembly/reports stay ignored; ASSETS.md updated. Static
+checks do not prove actual message timing, text rendering or native equivalence.
+
+Next: msgSearch resources/fallback/encoding and exact US control-token service,
+substitution helper, font/window/display lifetime, announcement parameters and
+caller census; camera modes/producers, full command input, outer battle/turn
+cadence and conclusion/reward/death/revival events. Continue all systems before
+complete-game requirements. Objective active/incomplete; original/native traces
+and rendering comparisons needed.
