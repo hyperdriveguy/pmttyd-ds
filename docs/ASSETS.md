@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 164 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 408 instruction anchors plus those
+now fingerprints 165 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 424 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -75,6 +75,9 @@ No dialogue extracts or encoding normalization are committed.
 Parser research adds msgAnalize/msgInit fingerprints, two command/format block
 hashes, layout constants and original key-wait pose bindings. Prose records local
 display record construction; original parser code and message text stay ignored.
+Embedded-object research adds msgIconStr2ID, all18 US name/ID bindings and
+geometry constants. Census schema2 adds selected control argument shapes without
+exporting dialogue or annotation text; code-generated/non-US input remains open.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,

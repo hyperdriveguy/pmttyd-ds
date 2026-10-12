@@ -29,6 +29,7 @@ def inspect_resource(data):
     seen = set()
     duplicate_keys = []
     tokens = {}
+    control_shapes = {}
     for i in range(0, len(strings) - 1, 2):
         key_offset, key = strings[i]
         text_offset, text = strings[i+1]
@@ -36,8 +37,20 @@ def inspect_resource(data):
             duplicate_keys.append(key.hex())
         seen.add(key)
         for raw in re.findall(rb'<([^<>]*)>', text):
-            token = raw.split(b' ', 1)[0].decode('ascii', errors='backslashreplace')
+            name, _, arguments = raw.partition(b' ')
+            token = name.decode('ascii', errors='backslashreplace')
             tokens[token] = tokens.get(token, 0) + 1
+            if name in (b'select', b'icon', b'anim', b'paper', b'/paper', b'r'):
+                fields = arguments.split()
+                shape = ','.join('integer' if re.fullmatch(rb'[+-]?\d+', x)
+                                 else 'format_placeholder' if x == b'%d'
+                                 else 'other' for x in fields)
+                counts = control_shapes.setdefault(token, {})
+                counts[shape] = counts.get(shape, 0) + 1
+            elif name.startswith(b'R') or name.startswith(b'/r'):
+                prefix = 'R_prefix' if name.startswith(b'R') else '/r_prefix'
+                counts = control_shapes.setdefault(prefix, {})
+                counts['occurrences'] = counts.get('occurrences', 0) + 1
         pairs.append(dict(key_hex=key.hex(), key_offset=key_offset,
                           text_offset=text_offset, text_size=len(text),
                           text_sha256=hashlib.sha256(text).hexdigest()))
@@ -46,7 +59,10 @@ def inspect_resource(data):
                 trailing_nonzero_bytes=sum(x != 0 for x in data[offset+1:]),
                 duplicate_key_hex=duplicate_keys,
                 high_byte_count=sum(x >= 128 for x in data[:offset]),
-                token_lexeme_counts=dict(sorted(tokens.items())), pairs=pairs)
+                token_lexeme_counts=dict(sorted(tokens.items())),
+                selected_control_shapes={k: dict(sorted(v.items()))
+                                         for k, v in sorted(control_shapes.items())},
+                pairs=pairs)
 
 
 def report(iso):
@@ -65,7 +81,7 @@ def report(iso):
             resources.append(dict(path=entry['path'], iso_offset=entry['offset'],
                                   size=len(data), sha256=hashlib.sha256(data).hexdigest(),
                                   **inspect_resource(data)))
-    return dict(schema=1, evidence='static US resource census; no original execution',
+    return dict(schema=2, evidence='static US resource census; no original execution',
                 resource_count=len(resources),
                 pair_count=sum(x['pair_count'] for x in resources),
                 resources=resources)

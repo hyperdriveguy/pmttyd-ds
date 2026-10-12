@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'message_embedded_objects': {
+        0x80081a78: '281e0012', 0x80081a80: '3860ffff',
+        0x80082ad4: '41800034', 0x80082ba0: '9001003c',
+        0x80082c34: 'ec02007a', 0x80082c78: 'ec02007c',
+        0x80082cbc: '38650028', 0x80082cf0: '3860ffd0',
+        0x80082e50: '80660020', 0x80082e94: '48000008',
+        0x80082f20: '901c000c', 0x80082ff0: '28002f72',
+        0x8008301c: '4182edc4', 0x80083078: 'c0010058',
+        0x80083178: 'c0010054', 0x800831dc: '907c000c',
+    },
     'message_parser_records': {
         0x80081d08: '1cc00018', 0x80081ddc: '901e0038',
         0x80081f70: 'b01c0004', 0x80081fa4: 'b003f244',
@@ -510,6 +520,24 @@ def verify(iso_path):
             if read(address, len(expected)) != expected:
                 raise ValueError(f'Message parser/initialization constant mismatch {address:#x}')
         print('Two message command/format blocks, layout constants and initial pose bindings verified')
+        if hashlib.sha256(read(0x8030f4b0, 18*8)).hexdigest() != '2f51040f4f8359292bff898b99ed4d38af3e67b048e38ac21e206b80dacc9c78':
+            raise ValueError('US message icon table mismatch')
+        names = ('PAD_A', 'PAD_B', 'STICK_LEFT', 'STICK', 'AC_ON',
+                 'BUTTON_L', 'BUTTON_R', 'HM', 'PAD_X', 'PAD_X_ON',
+                 'PAD_Y', 'PAD_Y_ON', 'PAD_Z_OFF', 'PAD_ST_OFF', 'black_key',
+                 'ANM_PAD_A', 'ANM_STICK_RIGHT', 'ANM_PAD_START')
+        ids = (0x6c, 0x6e, 0x80, 0x81, 0x9d, 0x86, 0x88, 0x1a7,
+               0x70, 0x71, 0x72, 0x73, 0x8a, 0x8c, 0x138, 0x20e, 0x20f, 0x210)
+        for i, (name, icon_id) in enumerate(zip(names, ids)):
+            pointer, actual_id = struct.unpack('>2I', read(0x8030f4b0+8*i, 8))
+            if actual_id != icon_id or read(pointer, len(name)+1) != name.encode()+b'\0':
+                raise ValueError(f'US icon binding mismatch: {name}')
+        for address, expected in ((0x80420620, '3f000000'),
+                                  (0x80420768, '3f0ccccd40800000'),
+                                  (0x80420654, '43340000')):
+            if read(address, len(expected)//2).hex() != expected:
+                raise ValueError(f'Embedded object constant mismatch {address:#x}')
+        print('All 18 US message icon bindings and embedded-object constants verified')
 
 
 if __name__ == '__main__':

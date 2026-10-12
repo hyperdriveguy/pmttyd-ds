@@ -2802,3 +2802,38 @@ msgMain record consumption and window/key/audio/pose lifetimes; resolve select
 format ABI against original resource data. Continue story attribution/order/
 conditions and remaining camera/input/outer battle/field/content/save systems
 before complete-game requirements. Full objective active/incomplete.
+
+## 2026-10-12 — Embedded message objects and original control shapes
+
+Previous turn progressed withcc0a578 parser records. Added
+MESSAGE_EMBEDDED_OBJECTS.md: all18 US icon name/ID bindings, numeric/name/HM
+routing, fused icon geometry and independent advance, animation pose setup
+including global-versus-new callback ID, paper NPC records and annotation
+anchor/gates/centering/halfword rules. Literal one-byte-versus0x2f72 comparison
+makes the apparent closing annotation gate unreachable. Local msgAnalize
+branches are now covered across two files; services/consumers remain incomplete.
+
+Census schema2 now records selected control argument shapes. US resources have
+394 icon tags, five anim tags and280 select tags, each select with four lexical
+fields:278 all-integer, two containing a %d placeholder. No paper/r/R-prefix
+lexemes were found in this bounded US scan. This narrows ordinary resource
+selection shape without asserting substituted runtime values, library failure
+behavior or absence of generated/non-US inputs. Dialogue remains reused data.
+
+Validation:424 instruction anchors and prior checks passed read-only US ISO,
+plus original icon table hash/all18 string-ID bindings and geometry constants.
+Corrected a mistyped icon-advance anchor to inspected0x80082cbc before passing.
+Evidence165 fingerprints and census schema2 each reproduced byte-for-byte;
+aggregate resource counts/shapes were independently asserted. Eight synthetic
+control-shape categories and all behavior links passed. make test passed core
+plus36 Python tests; make all exited0, no rebuild; git diff --check passed.
+Workspace started clean; only research/provenance/evidence tooling changed.
+No original execution/emulator run or profile/save changes. Original code/data
+extracts and evidence reports remain ignored. Static anchors do not prove visual
+geometry, pose lifetime or original/native behavior equivalence.
+
+Next: msgMain record playback and window/key/audio/pose lifetimes; font glyph
+mapping/width data and icon dimensions; substitution callers for selection
+placeholders. Continue story attribution/order/conditions and the remaining
+battle/camera/input/field/content/save systems before complete-game requirements.
+Full objective remains active/incomplete; executed-original comparisons needed.

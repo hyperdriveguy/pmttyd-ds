@@ -182,11 +182,11 @@ grammar until original call data and library/ABI behavior have been traced.
 
 ## Remaining record paths and validation obligations (P)
 
-The same routine also handles icon, anim, paper, /paper, r and an R-prefixed
-annotation path. Their geometry, pose/NPC ownership and annotation text placement
-need a separate detailed contract; they are not ordinary ignored commands.
-The `/r`-like byte comparison needs literal instruction review rather than an
-assumed conventional closing-tag grammar. No complete-parser claim is made yet.
+The remaining icon, anim, paper, /paper, r and R-prefixed annotation branches
+are specified in [embedded objects](MESSAGE_EMBEDDED_OBJECTS.md), including
+literal unreachable closing comparison and the US selection argument census.
+Together these files cover local msgAnalize branches; library behavior,
+record consumers and full dialogue execution remain separate work.
 
 Differential cases: append with nonzero initial count; startup type 3/8 color;
 terminal opcode outside counted records; US high bytes and classification/lookup signedness;
