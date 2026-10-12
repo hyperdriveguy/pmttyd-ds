@@ -1,5 +1,73 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Ordinary support, slope and upstairs binding
+
+Overworld goal remains active and incomplete. Native commit78eb86b binds the
+ordinary domain of OVERWORLD_SUPPORT_SLOPES_AND_STEPS.md. Foot support now runs
+before front-step admission while the actual root remains unsnapped. Selected
+node, raw support height, separately rounded metadata height, ordered signed
+delta and query-owned slope angles have separate storage/outputs. Forward
+queries reset/overwrite the slope record even on failure; steep foot rejects
+write projected tilts without replacing the previous overall inclination.
+Previous angles reduce each enabled movement axis before the air cap and
+direction gain. The undocumented center-rise XZ veto was removed.
+
+Known lower-floor loss selects11 and suppresses current-stick drift; all-miss
+loss selects10 and admits it. Upstairs begins on the following invocation,
+retains support node/base/travel across its first two rises, and immediately
+dispatches current input/new A on the third rise before horizontal movement
+and resumed ground queries. Vertical velocity persists into walk/dash support
+queries after completion; idle clears it. Three additions are retained without
+an invented final target snap. Native phase/counter abstractions outside this
+bounded controller slice remain provisional.
+
+Asked the documentation agent to resolve double-sided downward-ray orientation
+and steep-query write ordering before finalizing the native choices. Delivered
+addendum/verifier commit b110e63 establishes that downward and general ray back
+hits orient their normals toward the origin before normalization, and pins the
+partial slope writes. Native finite-ray and floor providers now orient normals
+accordingly. No source executable code or asset format was copied/changed.
+
+Exact validation on the committed native source:
+- make test:32/32 CTest suites and58 Python tests passed. New fixtures cover
+  independent slope-axis gates before cap,10/11 drift, signed metadata rounding,
+  steep query partial writes/front admission, near-drop/lower-floor/all-miss
+  support, later rejected-probe delta with retained winning node, first-two
+  stair travel/node retention, third-call current input/A and post-stair
+  retained velocity versus idle clearing. Log:/tmp/pm-support-tests-final.log.
+- make all rebuilt game.cpp,linked ttyd-2ds.elf and built ttyd-2ds.3dsx.
+  Log:/tmp/pm-support-build-final.log.
+- build-host/core_tests original passed18,315 indexed/full-scan collision
+  probes and original-room arrival/return/void/ceiling fixtures.
+- build-host/field_wall_tests original passed800 directional rays against
+  independent full-scan queries across five original room meshes.
+- python3 tools/verify_overworld_support_and_steps.py passed13 DOL bodies,
+  132 anchors and24 constants/data spans against the read-only original ISO.
+- Isolated Azahar passed harbor-arrival-road.bin with azahar_harbor_stairs.py
+  (dock descent/save/return,HP7);ceiling-road.bin with azahar_ceiling.py
+  (five jumps,landed checkpoint(-6.7,.1),HP7);east-road.bin with azahar_roads.py
+  (two reciprocal plaza/east-road pairs). Logs:/tmp/pm-support-harbor.log,
+  /tmp/pm-support-ceiling.log,/tmp/pm-support-roads.log. Captures and test saves
+  remain ignored under artifacts/azahar;the user's profile/saves were untouched.
+- git diff --check passed for this change before commit.
+
+These are native regression/static-evidence checks,not Dolphin original-game
+runtime comparisons or New2DS XL hardware measurements. Host trig/intersection,
+scaled float/quantization and spatial traversal remain adaptations. Camera yaw,
+full input eligibility/poses/attributes,hazards,dynamic geometry/root matrices,
+sound/animation/story owners and actual original traces remain open.
+
+Next:documentation agent is recovering the requested ordinary airborne and
+landing contract (mot_jump/mot_fall phase/counter ownership,pending10/11 entry,
+motion3 descent,marioJump/marioFall/marioChkLandon query composition and landing
+tuple/node/angle writes). Bind that before claiming ordinary air physics closed;
+the current landing bounds,fall counter reset and descent-motion collapse are
+still partial. Then replace the provisional partner .08-spaced path/512-point
+teleport with the composed documented original follower owners;ID1 continues
+partner terrain/motion recovery. Road radius/cooldown/endpoints,camera tracking,
+original interaction/story/event ownership also require recovered contracts.
+Preserve concurrent event/battle/documentation changes in the shared worktree.
+
 ## 2026-10-12 — Run/control/block opcode routing and child join
 
 Implemented EVENT_RUN_AND_ID_OUTPUT_VARIANTS.md and control92..112 dispatch

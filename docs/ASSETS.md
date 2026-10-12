@@ -1,5 +1,20 @@
 # Original asset pipeline
 
+## Ordinary support/slopes/upstairs binding (2026-10-12)
+
+Native commit78eb86b implements the bounded US support contract in
+docs/behavior/OVERWORLD_SUPPORT_SLOPES_AND_STEPS.md, with documentation
+addendum b110e63. Its verifier reads /home/carson/games/roms/G8ME01.iso
+read-only:13 DOL bodies,132 instruction anchors,24 data spans. No original
+executable was linked or copied into the port, and no extracted or converted
+asset format changed. Existing ignored romfs/*.ground and *.head retain
+original source winding/cull/attributes at scale.01; native ray hits orient
+back-facing normals toward their origin before support-angle interpretation.
+Host trig, geometry intersections and scaled arithmetic are numerical
+adaptations, not original SDK execution. ISO/converted packs retain original
+copyright and remain outside source history; this work grants no distribution
+license. Emulator captures and isolated saves remain ignored in artifacts/azahar.
+
 ## Behavior research provenance (2026-10-12)
 
 `tools/behavior_evidence.py` inventories the read-only ISO and hashes its DOL

@@ -152,7 +152,8 @@ movement remains separate; this slice makes no partner ownership claims.
 Delivered [direction movement rate](behavior/OVERWORLD_DIRECTION_MOVEMENT_RATE.md)
 with its6-body/27-anchor/eight-constant verifier, and
 [support/slopes/upstairs contract](behavior/OVERWORLD_SUPPORT_SLOPES_AND_STEPS.md)
-with11-body/111-anchor/22-span verifier. Both inspect US ISO read-only.
+with13-body/132-anchor/24-span verifier after the back-face normal and
+partial-angle-write addendum. Both inspect US ISO read-only.
 
 marioGetMoveRate is camera-relative directional gain1+.190000057*abs(cos),
 following air cap; it does not read floor slope. MarioPreCamera publishes offset
@@ -172,3 +173,22 @@ attributes/force/root matrices, special modes/poses/sounds/hazards, and isolated
 source execution traces. Partner ownership remains independent under ID1.
 No native source, assets, emulator profile/save or original ISO mutations by
 this documentation slice; inspection artifacts stay ignored or in/tmp.
+
+### Native support binding (2026-10-12)
+
+Commit78eb86b binds ordinary five-foot support before front-step admission,
+separate root/support metadata, last-query slope writes including steep-reject
+partial writes, previous-angle axis reduction before air cap/direction gain,
+recognized-lower-floor11 drift suppression and all-miss10 drift, and deferred
+three-rise upstairs with retained first-two travel/current third-call input/A.
+Upstairs retains its support node and vertical velocity; idle clears that
+velocity. The undocumented center-rise XZ veto was removed. Back-facing ray
+normals now orient toward their origin, including the downward floor service.
+Host math/intersection/traversal remain adaptations; this is not full physics
+or source-runtime equivalence.
+
+Requested the documentation agent's next missing ordinary-air contract:
+mot_jump/mot_fall phases and retained signed counter, pending10/11 entry,
+motion3 descent, marioJump/marioFall/marioChkLandon query composition, and
+landing tuple/angle/node ownership. Existing native landing bounds and the
+beginFall counter reset remain provisional until that contract is bound.
