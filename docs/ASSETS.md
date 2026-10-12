@@ -1724,6 +1724,35 @@ sound/proj/pmario.proj,pool/sdir/samp pipeline:3218 GameCube identities,0 Switch
 Exact log:/tmp/id1-tev-build.log. Original rights remain with their owners;
 metadata analysis grants no asset redistribution license.
 
+
+## 2026-10-12 — Low-HP and long-idle original pose sources
+
+Native778add7 extends the local pack to15 poses/425552 bytes and45 original
+texture cells. Front a/a_mario adds M_S_3,M_I_S,M_I_Y; effect a/e_mario adds
+M_I_5 and M_N_5A. The effect model's header+44 declares a_mario and uses the
+original a/a_mario- TPL; there is no a/e_mario- file. The converter guards that
+header declaration, records the effect model's read-only extraction provenance
+and each pose's actual texture source. Source38e0298 verifies the original
+shared binding. This corrects an intermediate attempted nonexistent asset path,
+not an invented replacement texture. No new rear S3/I_S/Y model was fabricated.
+
+Ignored local-assets/e_mario, original front/rear extracts, mesh PNGs, manifest,
+romfs/characters.pmanim/characters.pmmesh/characters-mesh.t3x and native binaries
+remain outside source history. Both effect poses have102 triangles after
+source fan triangulation in the visible converted mesh; their ordinary single-coordinate/kind0
+texture domain uses the existing source hierarchy/sparse evaluator. Atlas cells
+retain the previous124px+2px border conversion. Additional models share TPL
+IDs/cells through their declared texture source; no new generated artwork or
+sampled-frame substitute was introduced. Original art rights and local-only
+conversion policy are unchanged; no redistribution license is implied.
+
+Independent reference samples now cover190 poses/texture boundaries across15
+loaded animations with max model error6.79493e-06. Model/pose agreement does not
+close original libm/Gekko/material/color/normal/lighting/GX/shadow composition.
+Idle sound IDs are source service requests only; no arbitrary samples or tones
+were assigned. Original macro/handle/envelope and cue371 alias ownership remain
+open pending the requested audio evidence.
+
 ID1 fixed TEV source/caller evidence (2026-10-12):US G8ME01 ISO read-only;
 13-mode dispatch803049a0 and actual renderProc/materialProc mode12 preparation/
 call words pinned. No original model/texture/pose/message payload exported.

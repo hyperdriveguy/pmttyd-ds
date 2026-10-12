@@ -12481,6 +12481,62 @@ ID1 final TEV link validation:the concurrent party-icon document arrived.
 The two forward references above are RESOLVED;514 Markdown files now check
 with zero broken links. ID1 has not edited the other owner contracts.
 
+
+## 2026-10-12 — Low-HP and healthy long-idle native controller
+
+Completed778add7: FieldIdleWork reproduces ordinary entry/live HP refresh,
+strict signed counters, low-HP breathing requests and healthy phase0..4
+scheduling. FieldKeyServices implements the recovered ordered eligibility
+predicate with two conditional ship calls and partner-specific guards.
+Native ordinary idle now selects original front S3/I_S/I_Y and effect I_5/N_5A,
+including source queued current-name comparisons, display flags, direction snap
+and SetLocalTime frame quantization. The old immediate HP threshold/legacy
+billboard fallback is removed for these idle domains. Effects use original
+read-only a/e_mario with its declared shared a/a_mario- textures, yielding15
+poses/45 atlas cells/425552-byte local animation pack. Source documents4cc6521
+and38e0298 were requested from and delivered by the existing documentation agent.
+
+Exact validation: make test passed81 CTest targets and90 Python tests
+(/tmp/pm-idle-final-test.log); make all rebuilt the native3DSX successfully,
+without new warnings (/tmp/pm-idle-native-build2.log).190 independent original
+animation reference samples passed with max model error6.79493e-06, plus44
+camera roads/494 zones and all15 frame0 mesh comparisons
+(/tmp/pm-idle-final-reference.log). Core original checks passed18315 full-scan
+collision comparisons and room arrivals (/tmp/pm-idle-native-original.log).
+Source idle verifier passed25spans/419anchors/6poses/42samples/19key cases/
+16derived cases (/tmp/pm-idle-final-source.log). Scoped whitespace checks passed.
+Host cases cover entry/HP0,61st-call refresh,breathing/reset,exact long-idle
+count boundaries,phase guards,null/active partner gates,stateful ship calls,
+source direction snap/start frames and native transitions back to movement.
+
+Isolated low-HP west fixture capture exited0 at HP2 with original S3 visible:
+artifacts/azahar-low-hp-idle/boot.png, /tmp/pm-idle-low-hp-smoke.log. Native
+long-idle-window run exited0 with boot,ten transition-window captures,sleep,
+resume-run and resume-idle images in artifacts/azahar-long-idle-window
+(/tmp/pm-idle-long-window.log); transition5 and sleep were inspected. Initial
+fixed wall-clock labels did not account for startup/fade time; the corrected
+script captures a window, while source simulation boundaries are asserted by
+host tests. Captures prove native rendering/lifecycle, not original-runtime
+phase measurement or visual/numeric parity. No user emulator profiles or saves
+were changed; test fixtures and generated original payloads remain ignored.
+Incremental smoke/phase regression committed after the controller feature.
+
+Remaining limits: native partner/status/party/pouch and rate/time inputs are
+harness adapters. The surviving-idle post-tick bridge does not yet invoke the
+full original interim callback/command/event dispatcher. Source idle sound IDs
+are recorded, not falsely played as arbitrary PCM: macro/handle/envelope and
+positional services remain unbound. Requested those dependencies from the doc
+agent; cue371 alias needs particular care and must not be assigned catalog FX0
+sample56 without evidence. Original material/color/normal/shadow and broader
+special/recovery/partner/NPC/event/story domains remain incomplete.
+
+Next: bind the delivered grounded shadow strip/query/normal matrix contract
+7f016a6, replacing the provisional Mario ellipse in its supported type0 domain;
+original airborne type2 volume/GX backend remains separate. Complete idle sound
+macro/control/handle bindings once documentation arrives, then continue actual
+source field controller and original event/story/message ownership. This idle
+slice does not complete overworld functionality or the remake.
+
 ## 2026-10-12 — ID1 fixed TEV stages and actual renderer mode12 binding
 
 Added [stage programs](behavior/display/MAP_TEV_FIXED_STAGE_PROGRAMS.md) and

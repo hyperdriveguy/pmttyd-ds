@@ -1109,6 +1109,42 @@ actor-shadow ownership/GX/numeric/image behavior remain open. No new Dolphin
 observations or measured shadow/lighting curve. make test80 CTest/90 Python and
 make all pass;these are native validation,not original runtime parity.
 
+
+## 2026-10-12 — Source ordinary idle and key service ownership
+
+Native778add7 binds OVERWORLD_MARIO_LOW_HP_IDLE.md: entry HP0 requests I_S;
+lowHP<=5 with admitted key requests front-only S3; exact I_Y is retained rather
+than scheduled. Signed refresh counter increments and admits live HP refresh
+only after >sysMsec2Frame(1000). Low-HP entry and refresh differ at HP0; healthy
+phase0 recovery resets the refresh counter, with source current-name request
+comparison and subsequent rear conversion. Breathing counters request225/226
+without an invented animation restart when counter/start-frame resets alone.
+Display4 is preserved by ChgPose and does not suppress the actual display turn;
+display100 does. These flags are distinct from input/key ownership.
+
+Healthy idle phase0 reaches1 after3000 ordinary60Hz callbacks, then the next
+callback requests effect I_5 and falls through to phase2 count49. Phase2/3
+strict negative boundaries select normal S1 and later effect N_5A. Phase4 keeps
+source independent sleep/sound counters and cancellation/HP rereads. Neither
+I_Y nor a fabricated yawn/rear asset is scheduled. AdjustMoveDir snaps literal
+display90..270 to180, otherwise0, then publishes source quantized facing/travel
+and display/target. Event requests preserve start frame; ordinary requests and
+rear-name writers reset it. SetLocalTime's frame-to-integer-ms conversion is
+used only on a queued upload; a counter reset alone does not restart the clock.
+
+Portable FieldKeyServices preserves ordered party lookup, sequence/input byte,
+two conditional ship calls, roll/slit admission, null-partner early return,
+Christine/Bobbery/Yoshi/partner flags+motion and held-item gates. Native current
+follower/party/status inputs remain explicitly editable harness adapters; these
+are not recovered original initialized values or complete partner ability
+bindings. Live progress HP is the current native pouch adapter. The post-tick
+surviving-idle callback bridge still does not execute every original interim
+callback/command/NPC/event admission; tests cover its current ordinary slice.
+Original idle sound IDs are retained in fieldIdleSounds, with macro playback,
+handles/cancellation and source positional arguments awaiting separate binding.
+The source motion dispatcher/service/story lifecycle remains required beyond
+this local controller. No original Dolphin or hardware observation is claimed.
+
 ID1 fixed TEV static addendum (2026-10-12):
 [mode12 caller graph](behavior/display/MAP_TEV_MODE12_CALLERS_AND_LITERAL_EVIDENCE.md)
 binds two original renderer/material calls with N2/M12. Fixed modes1..7/12
