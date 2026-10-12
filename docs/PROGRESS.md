@@ -12856,3 +12856,53 @@ After this verified source-state change,make test rerun PASSED84 CTest suites/
 configure failure is RESOLVED;make all3DSX and binary/source checks pass.
 Final link audit540 Markdown files,zero broken links;539 was initial snapshot.
 ID1 made no native/CMake/test change;only own delivery files/shared hunks staged.
+
+
+## 2026-10-12 — Original grounded Mario shadow bound natively
+
+Completed357a656: ordinary Mario type0 now uses the original six-point strip,
+size/color, fresh independent downray and literal hit-normal matrix. Native
+rendering appends its untextured alpha pass after maps/actors, uses reversed-
+depth GEQUAL and writes color without depth. Retained support-pointer admission
+replaces movement-state guessing; source display/main suppression and null-
+support type2 size rules are retained. Hidden display1 also suppresses Mario's
+actor rendering. Attr4/raw hit height/filter tests distinguish this query from
+support/wall probes. Unknown tagged runtime object ownership is explicit.
+The source original mesh query agrees with independent full scans in all five
+rooms; no shadow image/generator or original asset payload was committed.
+
+Exact validation: make test passed83 CTest targets and90 Python tests
+(/tmp/pm-shadow-test3.log); make all rebuilt3DSX successfully
+(/tmp/pm-shadow-build3.log).800 original directional rays and800 shadow downrays
+matched full scans (/tmp/pm-shadow-original-rays.log). Source shadow verifier
+passed24spans/200anchors/sixvertices/13cases (/tmp/pm-shadow-source.log).
+Core original checks passed18315 collision comparisons and room arrivals
+(/tmp/pm-shadow-original-core.log);190 animation samples plus44 camera roads/
+494 zones and15 pose comparisons remained green
+(/tmp/pm-shadow-original-models.log). Scoped diff whitespace checks passed.
+Intermediate build enum-argument error was corrected before the passing build;
+concurrent missing battle CMake test arrived before the final full-suite run.
+
+Isolated Azahar west-fixture movement/jump/landing/saved-position run exited0,
+with boot/run/idle/jump/landed captures under artifacts/azahar-mario-ground-shadow
+(/tmp/pm-shadow-smoke.log). Landed image inspected. User profile/saves untouched;
+no hardware or original Dolphin frame/trajectory/raster comparison was made.
+Previous session idle handoff additions were separately committed83d8d7a after
+shared documentation staging cleared; parallel code/research work preserved.
+
+Remaining: type2 ellipse is explicitly provisional, and partner/NPC/battle
+shadow domains remain incomplete. The documentation agent delivered full air
+volume state/data graph; it requires alpha-only OR, opposite-cull zero overwrite
+and destination-alpha RGB blending per record. Requested original entering EFB
+alpha/pixel-format/write/clear ownership before native backend implementation;
+current native RGBA8 target/alpha state cannot be assumed equivalent. Full
+source scheduler/global shadow writers and tagged object services remain open.
+Idle sound cue/handle/bank contract cc13aa9 was delivered: native IDs still await
+actual macro/envelope/control/handle playback, with cue371 unresolved rather
+than arbitrarily assigned FX0/sample56. Full field services/event/story coverage
+is not established by this grounded shadow slice.
+
+Next: bind air-volume geometry/state once entering-alpha ownership is closed,
+then original shadow globals/partners and idle audio services. Continue original
+field callback/partner/NPC/event/story/message orchestration. The active goal
+remains the complete requested overworld functionality, not this local pass.

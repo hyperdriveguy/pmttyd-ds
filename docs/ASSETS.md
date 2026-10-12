@@ -1799,3 +1799,26 @@ audio policy change. make all passes/log /tmp/id1-tev-proj-build.log;existing
 sound/proj/pmario.proj,pool/sdir/samp pipeline3218 GameCube/0 Switch/5 primary-PCM
 slice fallbacks ran. Ignored catalog/WAV/RomFS outputs outside history;original
 rights remain with owners and local analysis grants no asset redistribution.
+
+
+## 2026-10-12 — Original grounded shadow geometry
+
+Native357a656 uses the six literal positions from testKagePosArray80304b00,
+verified against the read-only US DOL by verify_overworld_mario_shadow.py.
+The original indexed strip becomes four triangles in the native untextured
+pass. The initialized source material is black/alpha110; no shadow bitmap or
+new generated art is needed for ordinary type0. Size13.333333, query origin
+rootY+1/length150, height20 and returned-hit-normal matrix follow the recovered
+source contract. Existing .head original collision packs supply the fresh query.
+No original ISO, geometry export or compiled assets were added to source history.
+Small source numeric geometry/parameter metadata is represented in the portable
+implementation; original art/source rights and local-only pack policy remain.
+
+PICA maps source LEQUAL to GEQUAL under the existing reversed-depth projection,
+uses source-alpha blending, color writes without depth writes and an untextured
+primary-color pass after the existing map/actor passes. This is a backend/unit/
+floating-point adaptation, not a measured GX image match. Partner/NPC/battle
+shadows and Mario type2 remain provisional. Type2's original60 vertices/five
+lists are now available through the documentation verifier's read-only exporter;
+those original payloads must stay in ignored local-assets or /tmp when imported.
+No air volume asset was silently replaced by the grounded strip.

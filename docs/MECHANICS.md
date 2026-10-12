@@ -1180,3 +1180,27 @@ middle branches/source/lifetime/GX/full rendering remain open.
 ID1 projected-TEV host resolution:fixture arrived;make test rerun passes84
 CTest/90 Python,log /tmp/id1-tev-proj-test-rerun.log. Earlier configure failure
 above is RESOLVED. make all passes;no original execution/image parity implied.
+
+
+## 2026-10-12 — Grounded Mario shadow request and projection
+
+Native357a656 binds OVERWORLD_MARIO_SHADOW_REQUEST_AND_GROUND_POLYGON.md.
+Ordinary type0 admission uses retained support pointer1e8, not airborne motion.
+Display1/1000 or main02000000 suppress the request; null support selects type2
+with the source height attenuation/minimum rules. Ground projection performs a
+fresh shadow-filtered downray instead of copying Mario support point/normal.
+Static map attr4 is admitted, source cull is retained and returned point/normal
+are not Q1000-rounded or renormalized by the shadow leaf. Tagged runtime object
+flags remain a dependency: a nearer unresolved owner prevents claiming that a
+farther map floor won. Existing supported original map packs contain no such
+high-bit owners; named runtime providers remain unbound.
+
+Preparation retains the literal3x4 matrix, hitP+normal offset and prepared-bit
+lifetime. Bypass flag/type3 helper retains the source rootY+1.5 route. The source
+six-point strip/four triangles draws black alpha110 with no texture/depth writes.
+Hidden display1 now also prevents field Mario's actor draw. Native single-record
+render ordering and float/ray/PICA depth/TEV mapping are stated adapters; source
+full display queue/sort, live global color/height writers and original numeric/
+visual comparison remain open. Air type2 still uses the earlier provisional
+ellipse while its original destination-alpha volume backend is unfinished;
+source request math alone does not establish that ellipse as faithful.
