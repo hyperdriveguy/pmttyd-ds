@@ -5,6 +5,7 @@ Node branches/traversal: recovered US contracts in docs/behavior/display.
 This preserves original layered geometry/textures, rather than redrawing art.
 """
 from pathlib import Path
+import math
 import struct
 import numpy as np
 from PIL import Image
@@ -14,6 +15,19 @@ from character_node import node_matrix
 def u(raw,o):return struct.unpack_from('>I',raw,o)[0]
 def i(raw,o):return struct.unpack_from('>i',raw,o)[0]
 def f(raw,o):return struct.unpack_from('>f',raw,o)[0]
+# Map conversion imports these generic helpers. Character nodes use the
+# separate recovered joint/transform branches below.
+def trans(v):
+    m=np.eye(4);m[:3,3]=v;return m
+
+def rotate(values):
+    x,y,z=np.deg2rad(values)
+    sx,cx=math.sin(x),math.cos(x);sy,cy=math.sin(y),math.cos(y);sz,cz=math.sin(z),math.cos(z)
+    rx=np.array([[1,0,0,0],[0,cx,-sx,0],[0,sx,cx,0],[0,0,0,1]])
+    ry=np.array([[cy,0,sy,0],[0,1,0,0],[-sy,0,cy,0],[0,0,0,1]])
+    rz=np.array([[cz,-sz,0,0],[sz,cz,0,0],[0,0,1,0],[0,0,0,1]])
+    return rz@ry@rx
+
 def matrix(node,index,parent=-1,joint=False):
     return node_matrix(node[index:index+24],joint,
                        node[parent+3:parent+6] if parent>=0 else (1,1,1))
