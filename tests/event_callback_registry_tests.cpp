@@ -69,6 +69,15 @@ int main(int argc,char** argv) {
     if(argc==2) {
         auto& power=createRootEvent(runtime.schedule,0x80363388,10,0,runtime.creationServices());tick();assert(power.flags==0 && runtime.runtime.allocationCount==0); // Real power-check graph mode0 skips presentation and deletes.
     }
+    assert(bindBattleFlagQueryCallback(registry,runtime) && bindBattleFramesToMillisecondsCallback(registry,runtime));
+    auto& utility=runtime.field.entries[0];utility.arguments=0x80300200;
+    assert(memory.writeWord(utility.arguments,uint32_t(-30000000)) && memory.writeWord(utility.arguments+4,2) && memory.writeWord(0x84000ef4,2));
+    assert(registry.invoke(utility,0x8011384c,0,result) && result==2 && utility.locals[0]==1);
+    assert(memory.writeWord(utility.arguments,29) && memory.writeWord(utility.arguments+4,uint32_t(-29999999)));
+    assert(registry.invoke(utility,0x80103dc0,1,result) && result==2 && utility.locals[1]==483);
+    if(argc==2) {
+        utility.arguments=0x80355d10;assert(registry.invoke(utility,0x8011384c,1,result) && result==2 && utility.locals[0]==1); // Actual Jump mask2 request.
+    }
     assert(registry.unbind(0x8010a010));result=99;assert(!registry.invoke(arbitrary,0x8010a010,0,result) && result==99);
     std::cout<<"native callback registry/data-child execution tests passed\n";
 }

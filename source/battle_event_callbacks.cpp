@@ -20,6 +20,17 @@ BattleDataChildServices nativeBattleDataChildServices(EventNativeRuntime& runtim
     s.values.resolve=[](void* p,EventEntry& e,int32_t operand) {auto& r=*static_cast<EventNativeRuntime*>(p);return getEventValue(e,operand,r.interpreterServices().operands);};
     s.user=backend.user;s.translate=backend.translate;s.currentBattle=backend.currentBattle;s.unit=backend.unit;return s;
 }
+BattleEventUtilityServices nativeBattleEventUtilityServices(EventNativeRuntime& runtime) {
+    BattleEventUtilityServices s;s.memory=runtime.memoryBinding.services();s.values.user=&runtime;
+    s.values.resolve=[](void* p,EventEntry& e,int32_t input) {auto& r=*static_cast<EventNativeRuntime*>(p);return getEventValue(e,input,r.interpreterServices().operands);};
+    s.values.store=[](void* p,EventEntry& e,int32_t output,int32_t value) {auto& r=*static_cast<EventNativeRuntime*>(p);setEventValue(e,output,value,r.interpreterServices().operands);};return s;
+}
+bool bindBattleFlagQueryCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {
+    return registry.bind(0x8011384c,&runtime,[](void* p,EventEntry& e,int32_t) {return battleFlagQueryEvent(e,nativeBattleEventUtilityServices(*static_cast<EventNativeRuntime*>(p)));});
+}
+bool bindBattleFramesToMillisecondsCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {
+    return registry.bind(0x80103dc0,&runtime,[](void* p,EventEntry& e,int32_t) {return battleFramesToMillisecondsEvent(e,nativeBattleEventUtilityServices(*static_cast<EventNativeRuntime*>(p)));});
+}
 BattleMajinaiQueryServices nativeBattleMajinaiQueryServices(EventNativeRuntime& runtime) {
     BattleMajinaiQueryServices s;s.memory=runtime.memoryBinding.services();
     auto actors=nativeBattleActorServices(runtime);s.user=actors.user;s.byte=actors.byte;

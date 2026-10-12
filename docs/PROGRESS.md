@@ -1,5 +1,32 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Battle flag gate and frame conversion callbacks
+
+Added portable/native original-address bindings for check_battleflag8011384c
+and ftomsec80103dc0. Flag query captures A/B,reads RAW mask,flag word,then RAW
+output and stores boolean. Original read-only-ISO inspection refined the prior
+operand-listing summary;the exact read-order evidence is in
+behavior/BATTLE_FLAG_AND_FRAME_UTILITY_READ_ORDER.md. Frame conversion resolves
+input once,multiplies with word wrap,reads late RAW output and signed-divides
+by fixed60;it does not substitute GP refresh/render/OS cadence. Both return2
+without a first-call gate. Original ELFs remain in /tmp,outside source history.
+
+Validation:make test passes64 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-battle-utilities-test-passed.log and
+/tmp/pm-battle-utilities-build-final.log. Scoped utility/registry tests and
+`build-host/event_callback_registry_tests romfs/events.pmevt` pass,including
+actual packed Jump's mask2 request. Cases cover exact read-order aliases,raw
+namespace-looking masks,late output tokens,five documented sound-frame values,
+negative input and wrapped signed boundaries. The nested original sound stream
+is not yet packed/executed here;complete audio/macro services remain unbound.
+
+Earlier full attempts hit transient concurrent camera test/interface mismatches;
+final rerun passed after their updates. A new test's LW1 token was corrected
+from LW(-1) to-29999999 before final validation. No emulator/hardware or original
+runtime fidelity claim. Next:movement-wrapper reply and other callback families,
+packed unit/motion/AC/effect/audio/message services before full Jump/Game binding.
+Full-game goal stays incomplete;EVT-01 breadcrumb records the ordering refinement.
+
 ## 2026-10-12 — ID2 async file request and completion contracts
 
 Documented complete fileAsync,dvdReadDoneCallBack and DVDMgrReadAsync in two

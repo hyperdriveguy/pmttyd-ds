@@ -492,6 +492,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb / read-order refinement (2026-10-12):
+flag query8011384c and frame conversion80103dc0 are now registered. Static
+read-only-ISO inspection shows flag mask/flag reads BEFORE raw output read;
+see behavior/BATTLE_FLAG_AND_FRAME_UTILITY_READ_ORDER.md for hashes/addresses.
+Actual packed Jump mask2 request passes. ftomsec uses wrapped signed product
+and fixed60 with late output token.64 CTest/78 Python and make all pass after
+concurrent camera updates settled. Nested sound stream/playback and full graph
+remain unbound. SetMoveSpeed/SetFallAccel request remains pending;continue
+existing EVT-01/JUMP-01 source/domain/platform/runtime closure independently.
+
 Native implementation breadcrumb (2026-10-12): registered Majinai query
 801146c4 now executes recovered output/flag/Done/EndCheck order with separate
 battle/pouch reads and byte wrap/reread/reset behavior. Original packed power-
