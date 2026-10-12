@@ -1,0 +1,108 @@
+{
+  "schema": 1,
+  "scope": "US DOL aligned direct bl/bla sites only;no REL/indirect/raw pointers/runtime counts",
+  "sites": [
+    {
+      "address": "0x8002f7c4",
+      "target": "0x8018a6e4",
+      "owner": "smartAlloc",
+      "instruction": "4815af21"
+    },
+    {
+      "address": "0x8002f7d0",
+      "target": "0x8018a6e4",
+      "owner": "smartAlloc",
+      "instruction": "4815af15"
+    },
+    {
+      "address": "0x80039d4c",
+      "target": "0x80189d38",
+      "owner": "animGroupBaseAsync",
+      "instruction": "4814ffed"
+    },
+    {
+      "address": "0x80039d58",
+      "target": "0x80189d38",
+      "owner": "animGroupBaseAsync",
+      "instruction": "4814ffe1"
+    },
+    {
+      "address": "0x80039d64",
+      "target": "0x80189d38",
+      "owner": "animGroupBaseAsync",
+      "instruction": "4814ffd5"
+    },
+    {
+      "address": "0x80041524",
+      "target": "0x80189d38",
+      "owner": "animEffectAsync",
+      "instruction": "48148815"
+    },
+    {
+      "address": "0x80041530",
+      "target": "0x80189d38",
+      "owner": "animEffectAsync",
+      "instruction": "48148809"
+    },
+    {
+      "address": "0x8004153c",
+      "target": "0x80189d38",
+      "owner": "animEffectAsync",
+      "instruction": "481487fd"
+    },
+    {
+      "address": "0x800417b4",
+      "target": "0x80189d38",
+      "owner": "animPoseEntry",
+      "instruction": "48148585"
+    },
+    {
+      "address": "0x800417c0",
+      "target": "0x80189d38",
+      "owner": "animPoseEntry",
+      "instruction": "48148579"
+    },
+    {
+      "address": "0x800417cc",
+      "target": "0x80189d38",
+      "owner": "animPoseEntry",
+      "instruction": "4814856d"
+    },
+    {
+      "address": "0x80042a7c",
+      "target": "0x80189d38",
+      "owner": "animInit",
+      "instruction": "481472bd"
+    },
+    {
+      "address": "0x8006fdac",
+      "target": "0x8018b6c0",
+      "owner": "marioStInit",
+      "instruction": "4811b915"
+    },
+    {
+      "address": "0x80189dec",
+      "target": "0x8018a6e4",
+      "owner": "fileAsync",
+      "instruction": "480008f9"
+    },
+    {
+      "address": "0x80189e04",
+      "target": "0x8018a6e4",
+      "owner": "fileAsync",
+      "instruction": "480008e1"
+    },
+    {
+      "address": "0x8018a360",
+      "target": "0x8018a6e4",
+      "owner": "_fileAlloc",
+      "instruction": "48000385"
+    },
+    {
+      "address": "0x8018a378",
+      "target": "0x8018a6e4",
+      "owner": "_fileAlloc",
+      "instruction": "4800036d"
+    }
+  ]
+}

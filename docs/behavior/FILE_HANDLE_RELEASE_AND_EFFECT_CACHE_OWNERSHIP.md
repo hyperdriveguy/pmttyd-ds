@@ -103,3 +103,8 @@ F+a0 as a payload-pointer HOLDER:archive F+4 or a smartAlloc header. fileFree
 still only tests the holder address for zero;it does not inspect its word0
 payload. Cache-hit acquisition can reactivate state2 without resetting its count,
 or state3 after resetting count0. Full collection/async producers remain open.
+
+[Complete collector](FILE_CACHE_COLLECTION_AND_PRELOAD_AGING.md) now supplies
+state2→state0 removal,embedded-holder skip versus smartFree(header),and stale
+raw entry preservation. Release remains a separate refcount/state operation;
+collection mode/thread/pending and actual smart-heap lifetime matter.

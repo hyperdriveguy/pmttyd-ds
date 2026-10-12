@@ -18,6 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete partyPreDisp,partyChgPose/Id pending-name/frame/update/transform request graph and used bindings;renderer/animation/resource/source/numeric/original visuals remain separate |
+| File-cache collection and initialization | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Collection/aging](behavior/FILE_CACHE_COLLECTION_AND_PRELOAD_AGING.md),[pool/init/mode](behavior/FILE_CACHE_POOL_INITIALIZATION.md):complete four bodies,worker flags overwrite,ready-count aging versus pending wait,state2 holder routing/live lists,1024*176 raw pool/17 DOL calls;smart heap/relocation/DVD worker/TPL/platform/source/runtime remain separate |
 | Async file request and completion publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Request/cache](behavior/FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md),[completion/request state](behavior/FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md):complete fileAsync/callback/DVD request leaf,raw-1,state3/count0,archive live-head publication,-3-only failure,signed relocation/pending-clear/deferred-close/live callback;worker/collection/relocation/TPL/platform/source/runtime remain separate |
 | Shared file acquisition and cache lookup | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Cache/reference/publication](behavior/FILE_ACQUISITION_AND_REFERENCE_REUSE.md),[archive/DVD requests](behavior/FILE_ARCHIVE_AND_DVD_ACQUISITION_REQUESTS.md):complete _fileAlloc/arcOpen/five leaves,filename-only reuse,pending yield,state2/3 counts,identical archive retries,holder/deferred close/live lists;async/collection/relocation/TPL/platform/source/runtime remain separate |
 | Formatted file requests and file-handle release semantics | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Formatting/forwarding](behavior/FILE_FORMATTED_REQUEST_FORWARDING.md),[release/ownership](behavior/FILE_HANDLE_RELEASE_AND_EFFECT_CACHE_OWNERSHIP.md):complete four local bodies,shared buffer/original varargs/order and signed16 state2 release without deallocation;underlying async/load/cache/TPL/platform/source/runtime remains separate |
@@ -2290,3 +2291,18 @@ repeat reports,prior acquisition/wrapper/driver/general1980 checks and2473 local
 links pass. make test64 CTest/78 Python and make all pass. Logs:
 /tmp/id2-fileasync-test.log and /tmp/id2-fileasync-build.log. Only ID2's async
 lock released;worker/_fileGarbage/relocation/TPL/source/scene/platform/runtime open.
+
+ID2 file collection/init delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial:
+[Collection/aging](behavior/FILE_CACHE_COLLECTION_AND_PRELOAD_AGING.md) and
+[pool/init/mode](behavior/FILE_CACHE_POOL_INITIALIZATION.md) close _fileGarbage,
+fileInit,setter and current-thread leaf. Mode0 worker OVERWRITES pending flags08;
+mode1 initially pending wait skips aging,initially ready count stores/rereads
+signed16 and retires<=-2. State2 pass marks0 then routes embedded holder skip
+versus smartFree(header),live unlink/retained traversal/available append and
+stale raw fields. Init heap0 180224 bytes yields1024*176 records,128 eight-store
+iterations,temporary one-past link and live tail termination. No old-pool free.
+Verifier11 hashes(four complete/seven linked),189 anchors,two startup/global
+spans,all17 DOL direct collection/init/setter sites,repeat JSON,related/general
+1980 checks and2493 local links pass. make test65 CTest/78 Python,make all pass;
+logs /tmp/id2-filegc-test.log and /tmp/id2-filegc-build.log. Own ID2 lock released;
+smart heap/relocation/DVD worker/source/platform/TPL/scene/original traces stay open.

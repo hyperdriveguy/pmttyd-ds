@@ -839,3 +839,11 @@ close fileAsync,dvdReadDoneCallBack and DVDMgrReadAsync. Raw-1 versus pending0,
 state3/count0 preload,archive live-head versus retained DVD link,-3-only failure,
 signed-byte relocation type,pending-clear/close/live user-callback order and flag
 reread are explicit. Worker/collection/relocation/TPL/source/runtime remain open.
+
+ID2 file collection/init delivery (2026-10-12):
+[preload aging/collection](behavior/FILE_CACHE_COLLECTION_AND_PRELOAD_AGING.md)
+and [pool/init/mode](behavior/FILE_CACHE_POOL_INITIALIZATION.md) close four local
+bodies. Mode0 worker flags overwrite,mode1 initially-pending wait without aging,
+signed count<=-2,state2 collection/holder routing/live unlink/retained traversal,
+1024*176 heap0 clear/link and17 direct DOL sites are explicit. Smart heap/worker/
+relocation/TPL/source/platform/scene/original traces remain open.

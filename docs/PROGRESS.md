@@ -1,5 +1,27 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2 file-cache collection and pool initialization
+
+Added two detailed contracts for complete _fileGarbage/fileInit/archive-mode
+setter/current-thread leaf and a17-site DOL census. Mode0 worker flag overwrite,
+mode1 initially-pending wait without aging,signed16 ready-count threshold,state2
+holder release routing and live unlink/retained traversal are explicit. Pool
+initialization clears180224 heap0 bytes and links1024*176 records with a separate
+live tail termination. Release/acquisition docs now link these local producers.
+Released only ID2's collection lock;underlying backend domains remain open.
+
+Validation:verify_file_collection.py passes11 hashes(four complete/seven linked),
+189 instruction anchors,two startup/global spans and17 direct DOL sites;repeat
+JSON matches. Python compilation,prior async/acquisition/wrapper/general1980
+checks and2493 local links pass. make test passes65 CTest suites/78 Python tests;
+make all passes. Logs:/tmp/id2-filegc-test.log,/tmp/id2-filegc-build.log.
+Scoped staged whitespace check passes. No native/test/asset conversion changes
+by ID2;no original runtime/thread/cadence/hardware budget claim.
+
+Next:recover smart heap and type-dependent relocation,then DVD worker/platform/
+source/TPL/scene ownership. Full-game requirements and EVT-01/JUMP-01/DMG-02
+remain incomplete;pool size alone is not the complete game's RAM requirement.
+
 ## 2026-10-12 — Complete fortune producer and count initializer
 
 Implemented recovered BattleMajinaiCheck and pouchMajinaiInit plus registered

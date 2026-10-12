@@ -113,3 +113,9 @@ prove cache eviction,complete resource loading or full-game memory fidelity.
 local pending/state3/count0 producer and -3-only state2/type0b path. Their raw
 results and archive live-head publication differ from synchronous acquisition;
 DVD worker/collection/relocation/source/runtime remain separate.
+
+[Collection/aging](FILE_CACHE_COLLECTION_AND_PRELOAD_AGING.md) and
+[1024-entry initialization](FILE_CACHE_POOL_INITIALIZATION.md) now close the
+local available-pool producers. Mode1 ages initially ready preloads to-2;
+mode0 force-retires state3 with worker-sensitive pending handling. Smart heap/
+relocation/platform/source/scene/runtime remain separate.
