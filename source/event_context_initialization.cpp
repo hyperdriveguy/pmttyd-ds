@@ -10,7 +10,7 @@ void timestamp(EventContext& c,EventGlobals& gp,const EventContextInitialization
 }
 void initialize(EventContext& c,const EventContextInitializationServices& s) {
     c.capacity=256;assert(s.allocate);auto* allocated=s.allocate(s.user,0,0x1b000);
-    c.entries=allocated;timestamp(c,globals(s),s);
+    c.entries=allocated;c.entriesUnresolved=false;timestamp(c,globals(s),s);
     assert(s.clearEntries && s.clearBank);s.clearEntries(s.user,allocated,static_cast<uint32_t>(c.capacity)*0x1b0u);
     s.clearBank(s.user,c,false);s.clearBank(s.user,c,true);
 }

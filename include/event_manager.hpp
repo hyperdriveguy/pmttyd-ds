@@ -41,6 +41,8 @@ struct EventContext {
     std::array<int32_t,32> work{}; // Original context+4..83.
     std::array<uint32_t,3> flags{}; // Original context+84..8f.
     uint32_t field94=0; // Raw word,unwritten by Init/ReInit.
+    uint32_t unresolvedEntriesWord=0;
+    bool entriesUnresolved=false; // Nonzero original array address not yet mapped.
 };
 struct EventGlobals {
     int32_t battleContext=0,refreshRate=0;

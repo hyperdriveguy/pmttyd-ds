@@ -11,7 +11,7 @@ Allocation allocate(const EventCreationServices& s) {
     assert(s.manager.globals && s.manager.context);
     auto* gp=s.manager.globals(s.manager.user);assert(gp);
     auto* context=s.manager.context(s.manager.user,gp->battleContext!=0);assert(context && context->entries);
-    const int32_t capacity=context->capacity;auto* entries=context->entries;int32_t slot=0;
+    const int32_t capacity=context->capacity;auto* entries=context->entries;assert(entries || capacity<=0);int32_t slot=0;
     while(slot<capacity && (entries[slot].flags&1))++slot;
     assert(slot>=0 && slot<capacity);auto* chosen=&entries[slot];
     ++runtime(s).allocationCount;return {chosen,slot};

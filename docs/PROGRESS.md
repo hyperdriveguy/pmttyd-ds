@@ -1,5 +1,32 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Coherent context address view and array lifetime binding
+
+Added `event_context_addresses.cpp` for complete original160-byte context views:
+signed capacity,32 raw work words,three flag words,array address,unknown94 and
+high/low timestamp. Byte writes update semantic fields immediately;global
+namespace aliases reach neighboring capacity/array fields without isolated-bank
+clamps. Nonzero unmapped array words retain bits. Native owners detach context
+array references before entry retirement,then resolve them after replacement;
+IDs are independent. Init clears obsolete unresolved-array state on pointer
+publication;root allocation rejects unsupported missing positive-capacity storage
+as a native domain requirement,without pretending original null recovery.
+Combined interpreter fixtures now use both context and entry address translators.
+
+Validation: final `make test` passed52/52 CTest suites and78 Python tests;final
+`make all` passed. Logs:/tmp/pm-context-address-tests-complete.log and
+/tmp/pm-context-address-builds-complete.log. Fixtures pin all160 bytes,partial
+work writes,signed capacity/raw94/time pairs,interior array pointers,retirement/
+replacement,unmapped words,global namespace physical aliases,adjacent contexts
+and actual scheduler/USER_FUNC/copy-back streams. Initial indentation warnings
+were corrected before final builds. No original execution/emulator claim.
+
+Next:native backing arena/GP/shared schedule/runtime-cell ownership,source clock
+and initialization services,conditional Jump root actor/ID/wait-event binding,
+and actual72-address callback registry. Entry/context mapping lifecycle remains
+explicit caller policy;scene/free/source/unsupported address/FPSCR/stack/label
+and measured original traces remain open. Goal remains active/incomplete.
+
 ## 2026-10-12 — Original camera containers and bounded path solver
 
 Commit2ea1c21 imports all five authentic m/gor_00..04/c files into ignored

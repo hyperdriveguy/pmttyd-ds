@@ -481,6 +481,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Context-address breadcrumb (2026-10-12): `event_context_addresses.cpp` supplies
+coherent complete160-byte views and original array words,including native
+retirement/replacement ordering. Tests preserve global work/flag aliases into
+capacity/array fields,unknown94,timestamp halves,unmapped raw pointers and
+adjacent-context accesses. Combined interpreter fixtures use both real context/
+entry mappers. Final make test passes52 suites/78 Python tests;make all passes.
+Next:GP/shared globals/backing arena/initialization ownership,source clock and
+conditional Jump root/callback bindings.Scene/free/source/invalid-address/
+FPSCR/stack/label/original traces remain explicit closure requirements.
+
 Mapped-lifetime breadcrumb (2026-10-12): entry translator can retire a region
 before native host release,return432-byte-per-entry snapshots and preserve
 incoming original relationship words. Same-address registration resolves new

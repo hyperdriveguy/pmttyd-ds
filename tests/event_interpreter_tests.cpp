@@ -1,5 +1,6 @@
 #include "event_interpreter.hpp"
 #include "event_entry_addresses.hpp"
+#include "event_context_addresses.hpp"
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -15,6 +16,7 @@ struct Fixture {
     std::array<EventEntry,256> entries{};
     EventEntryAddresses addresses;
     EventContext context{256,entries.data(),0};
+    EventContextAddresses contextAddresses;
     EventGlobals gp{0,60,0};
     EventRuntimeGlobals runtime{0,1,1,0};
     EventSchedule schedule;
@@ -25,13 +27,13 @@ struct Fixture {
     unsigned barriers=0,divisions=0;
     int32_t observedInteger=0;float observedFloat=0;
     static constexpr uint32_t clock=243000000;
-    Fixture() {assert(addresses.registerEntries(0x10000,entries.data(),256));}
+    Fixture():contextAddresses(addresses) {assert(addresses.registerEntries(0x10000,entries.data(),256));assert(contextAddresses.registerContext(0x8000,context));}
     uint32_t read(uint32_t a) {
-        uint32_t mapped;if(addresses.readWord(a,mapped))return mapped;
+        uint32_t mapped;if(addresses.readWord(a,mapped) || contextAddresses.readWord(a,mapped))return mapped;
         uint32_t v=0;for(unsigned i=0;i<4;++i)v=v<<8|bytes[a+i];return v;
     }
     void write(uint32_t a,uint32_t v) {
-        if(addresses.writeWord(a,v))return;
+        if(addresses.writeWord(a,v) || contextAddresses.writeWord(a,v))return;
         for(unsigned i=0;i<4;++i)bytes[a+i]=uint8_t(v>>(24-8*i));
     }
     EventCreationServices creation() {
@@ -50,8 +52,8 @@ struct Fixture {
         s.operands.globalAddress=[](void*)->uint32_t {return 0x3000;};
         s.operands.readWord=s.creation.word;
         s.operands.writeWord=[](void* p,uint32_t a,uint32_t v) {static_cast<Fixture*>(p)->write(a,v);};
-        s.operands.readByte=[](void* p,uint32_t a) {auto& f=*static_cast<Fixture*>(p);uint8_t v;if(f.addresses.readByte(a,v))return v;return f.bytes[a];};
-        s.operands.writeByte=[](void* p,uint32_t a,uint8_t v) {auto& f=*static_cast<Fixture*>(p);if(!f.addresses.writeByte(a,v))f.bytes[a]=v;};
+        s.operands.readByte=[](void* p,uint32_t a) {auto& f=*static_cast<Fixture*>(p);uint8_t v;if(f.addresses.readByte(a,v) || f.contextAddresses.readByte(a,v))return v;return f.bytes[a];};
+        s.operands.writeByte=[](void* p,uint32_t a,uint8_t v) {auto& f=*static_cast<Fixture*>(p);if(!f.addresses.writeByte(a,v) && !f.contextAddresses.writeByte(a,v))f.bytes[a]=v;};
         s.operands.truncate=[](void*,float v) {assert(std::isfinite(v) && double(v)>=-2147483648. && double(v)<2147483648.);return int32_t(v);};
         s.memory.user=this;s.memory.word=s.creation.word;s.memory.storeWord=s.operands.writeWord;s.memory.storeByte=s.operands.writeByte;
         s.memory.half=[](void* p,uint32_t a)->uint16_t {auto& b=static_cast<Fixture*>(p)->bytes;return uint16_t(b[a])<<8|b[a+1];};
