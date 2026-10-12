@@ -58,6 +58,22 @@ remains active until next mot_fall entry. This same call adds the new V to rootY
 at80093ff0–80093ffc; the normal caller continues overhead then horizontal
 movement, with no marioFall landing query on that call.
 
+## Support retention during no-contact ascent and apex
+
+mot_jump copies current support+1e8 to previous support+1ec without clearing
+current support. Neither marioJump nor ordinary no-hit marioChkOverhead clears
++1e8 locally. Even when signed counter>5 makes marioMain call marioChkGnd2,
+8008f100–8008f104 returns immediately when jumpflag0x00010000 is set. Thus
+ordinary no-contact ascent AND the apex pending10 call retain current support;
+clearing it on every ascent tick is unsupported. This bounded local retention
+ends when marioFall clears+1e8 at80093ae0 before its new landing query.
+
+Ordinary idle pending entry does not zero takeoffY+120: mot_stay800a6c50 copies
+current actual position+8c/+90/+94 to+11c/+120/+124 at800a6d38–800a6d4c.
+In particular800a6d44 snapshots actual rootY into+120. It clears vertical tuple,
+counter+50, countdown+48 and phase+44 at800a6ce0–800a6cf4. Preserve that root
+snapshot independently of clearing jump integration state.
+
 ## Ordinary ceiling response differs from the apex
 
 marioChkOverhead8008c904 ordinary hit retains current motion3 until its
