@@ -168,3 +168,7 @@ Remaining: Happy event bodies and sounds, display-field semantics, full effect
 rendering, unit initialization of FP probability fields/maxima, outer turn
 counter/cadence, unit-event wait/conclusion internals and content bindings.
 Local recovery requests are specified; complete turn/game equivalence is not.
+
+The recovery and Happy event bodies are now documented in
+[recovery events](BATTLE_RECOVERY_EVENTS.md), with their remaining motion, pose
+and data-binding dependencies kept explicit.

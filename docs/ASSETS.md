@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 96 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 236 instruction anchors plus those
+now fingerprints 109 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 250 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -44,6 +44,9 @@ Periodic damage research fingerprints Burn effect scheduling and shadow guard,
 with four binary32 effect constants checked directly against the ISO.
 Regeneration research adds HP recovery helper identity and the small original
 regeneration wait-event encoding check; no event-script extracts are committed.
+Recovery-event research fingerprints three complete script spans and13 additional
+US callbacks/helpers. Script semantics are documented as prose; original bytecode
+remains ignored. Local-work operands and owner fields are preserved separately.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,

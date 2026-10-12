@@ -162,3 +162,7 @@ HP/FP regeneration and other remaining turn phases are still open.
 Status HP/FP regeneration and Happy badge phases are now specified in
 [regeneration](BATTLE_REGENERATION.md); their event/effect dependencies and
 outer turn cadence remain open.
+
+The recovery and Happy event bodies are now documented in
+[recovery events](BATTLE_RECOVERY_EVENTS.md), with their remaining motion, pose
+and data-binding dependencies kept explicit.

@@ -2477,3 +2477,31 @@ field consumers, remaining turn initialization/counters, unit-event waits and
 conclusion/phase handling, move reset and actual death/revival scripts. Continue
 full-system coverage before complete-game requirements. Full objective remains
 active/incomplete; original/native execution and rendering comparisons needed.
+
+## 2026-10-12 — Recovery/Happy event bodies and service operands
+
+Previous turn progressed with9977046 regeneration phases. Added
+BATTLE_RECOVERY_EVENTS.md: all local branches/calls in status recovery and
+Happy Heart/Flower scripts, data-key8 override/null-value behavior, fallback
+wait cancellation/pose/jump/start ordering, Happy pose support/status gates and
+60-count wait. Recovered13 additional wrapper/helper contracts, including
+special unit-ID translation, raw signed-byte status operand, pose-table support
+scan and data/child dispatch. Fresh entry local0 differs from bound owner: LW10
+and LW3 queries are preserved, not rewritten to self. Encoded fall acceleration
+is retained exactly; public fixed-point interpretation is explicitly R evidence.
+Motion, float coercion, actual pose/sound and key8 bindings remain open.
+
+Validation:250 instruction anchors plus three script-span hashes and prior
+data checks passed against read-only US ISO. Report109 function fingerprints
+matched a repeat byte for byte. Behavior links resolve; git diff --check passed.
+make test passed core plus36 Python tests; make all exited0, nothing to rebuild.
+No runtime changes, original execution/emulator run, or profile/save changes.
+Only research/provenance/tools edited; original scripts/disassembly remain
+ignored. ASSETS.md records scope. Hashes prove byte identity, not interpretation
+or dynamic equivalence of a replacement.
+
+Next: JumpPosition and float resolution, pose/sound implementations, data-key8
+bindings; move reset and remaining unit-event waits/conclusion handling; outer
+turn/phase/action cadence and actual death/revival event scripts. Continue
+full-system coverage before complete-game requirements. Full objective remains
+active/incomplete; original/native execution and rendering comparisons required.

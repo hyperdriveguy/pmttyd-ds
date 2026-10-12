@@ -13,6 +13,15 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'recovery_event_services': {
+        0x80037530: '4bfcdb85', 0x800375dc: '90fe00c4',
+        0x80109fc4: '83df0004', 0x8010a074: '4082000c',
+        0x8010a090: '981d000a', 0x8010a094: '93e30160',
+        0x8010a250: '901f0290', 0x8010a2b4: '4801f42d',
+        0x80105f4c: '7c1e0774', 0x80106370: '4080000c',
+        0x801063b8: '7c003800', 0x80106528: '4bffabcd',
+        0x80125434: '80630160', 0x8012816c: 'd0230174',
+    },
     'turn_regeneration': {
         0x8011dbb8: '54000043', 0x8011dbc8: '901c0208',
         0x8011dbf4: '60000001', 0x8011dc38: '38630005',
@@ -294,6 +303,11 @@ def verify(iso_path):
         if hashlib.sha256(read(0x80416bc0, 16)).hexdigest() != '7cb2b9d5e89d7f24419e079a349f2238cc7f6ec5d506892b0e7db744db0742a4':
             raise ValueError('Regeneration wait event mismatch')
         print('Regeneration wait event encoding verified')
+        recovery_event_scripts = ((2150971140, 192, '8a00f3d9dd134fad1fcc56c5f314556116efc10e7e8fe18095f82822e4595a6a'), (2150963772, 212, 'cd1e1b388eb4deb749c6287b09731885aa9d3ed6424a4210cab6259b44fe0a3b'), (2150963984, 212, '22d36fc11de505e490dba830f8bebfc64d14b95f935383e94a2a29f88d710716'))
+        for address, size, digest in recovery_event_scripts:
+            if hashlib.sha256(read(address, size)).hexdigest() != digest:
+                raise ValueError(f'Recovery event script fingerprint mismatch {address:#x}')
+        print('Three recovery/Happy event script fingerprints verified')
         status_tables = {
             0x80364204: [0x7970, 0x792c, 0x7970, 0x7970, 0x7adc,
                          0x7970, 0x7970, 0x7970, 0x7970, 0x7970,
