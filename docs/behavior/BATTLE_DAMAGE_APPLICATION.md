@@ -71,7 +71,7 @@ numeric values, not inferred effect meanings:
 If H is nonzero and D+0x104 lacks `0x00400000`, emit HP damage-star type0
 with amount H. If Q is nonzero, emit FP damage-star type1 with amount Q.
 There is no corresponding HP-star suppression test for the FP star. Position
-and remaining float parameters depend on signed `BtlUnit_GetBelong(D)`:
+and remaining float parameters depend on `S8(BtlUnit_GetBelong(D))` (the getter returns U8;this caller explicitly sign-extends):
 
 | Belong / star | Position | Fourth / fifth float |
 | --- | --- | --- |

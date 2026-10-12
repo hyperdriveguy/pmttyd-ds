@@ -4,14 +4,17 @@ US G8ME01 revision0,recovered2026-10-12. Evidence B:original stat/allocation/ini
 regions of BtlUnit_Entry0x80128fe0,size0x6b4;complete BtlUnit_Spawn0x80128d20,
 size0xe8;btlevtcmd_SpawnUnit0x801133bc,size0x74;GetMaxHp0x801100cc,size0x78
 and GetHp0x801101c4,size0x78 (getter names have btlevtcmd_ prefix).
-The whole entry function is fingerprinted but **not fully documented**:the
-intervening actor/part/geometry/resource initialization remains open. No original
-execution or end-to-end tutorial equivalence is claimed.
+[Complete local entry](BATTLE_UNIT_ENTRY_COMPLETE.md),
+[registry/scalars/geometry](BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md)
+and [pose/display requests](BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md) now
+close the full local entry and listed helper bodies. This earlier stat/spawn
+slice remains useful for concrete tutorial bindings. No original execution or
+end-to-end tutorial equivalence is claimed.
 
-The [part defense/lifetime contract](UNIT_PART_DEFENSE_AND_LIFETIME.md) now
-closes the scoped part allocation/table/flag region,lookup and ordered deletion
-requests. Remaining actor/geometry/resource services still prevent whole entry
-closure;the containing function fingerprint is not proof of full coverage.
+The [part defense/lifetime contract](UNIT_PART_DEFENSE_AND_LIFETIME.md) closes
+part allocation/table/flag region,lookup and deletion. Resource/render/pose
+engines,source domains/lifetimes and actual unit readiness remain external
+requirements;body fingerprints alone do not establish those runtime bindings.
 
 The [status/pouch initialization contract](UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md)
 now closes entry's ClearStatus and later SetParamFromPouch calls. Mario/partner

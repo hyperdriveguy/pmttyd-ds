@@ -8244,3 +8244,36 @@ Next:placement3 output contract,motion2 destination consumers,homing/fall/jump/
 fly handlers,projection/scene/backend/numeric and source domains;original support/
 screen recovery traces. Full-game documentation and complete-game requirements
 remain incomplete.
+
+## 2026-10-12 — ID2 complete local unit entry,scalar/geometry and pose requests
+
+Added [full unit entry](behavior/BATTLE_UNIT_ENTRY_COMPLETE.md),
+[registry/scalar/geometry](behavior/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md)
+and [pose/display initialization](behavior/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md).
+Complete6b4 construction preserves64-slot search,checked unit allocation versus
+unchecked part allocation,early registry publication,captured battle context,
+kind/setup copies,pouch-level/stat ordering,scalar1141 versus vector banks,
+height/belong widths,body-first lookup versus last cached ID,pose/display calls,
+special kind208 allocation and final asynchronous init script/actor/event ID.
+Complete listed geometry/gauge/pose/display/registry/scalar leaves retain
+sentinels,normalization,fallback-first and bounded-table distinctions. GetBelong
+isU8;direct damage explicitly narrows via extsb,so wording was clarified while
+preserving recovered zero-test behavior. Field144's borrowed kind.b0 producer
+is now explicit;pointed schema/lifetime/other writers remain open. Only ID2
+scoped lock released;parent DMG-01/DMG-02 source/backend/runtime work stays open.
+
+Validation:verify_battle_unit_entry_complete.py passed33 complete/linked/
+containing hashes,441 anchors and11 numeric/startup spans;repeated metadata
+byte-identical;Python compilation passed. General behavior verifier1980 anchors
+and prior readiness verifier passed. make test passed40 CTest suites and64
+Python tests;make all succeeded without rebuild. All1688 local documentation
+links resolved after correcting the badge-import link filename;git diff --check
+passed. These are static/native checks,no original construction/damage/pose trace.
+
+ISO read-only;no original execution/asset conversion,profile/save mutation,
+native/test changes or original binary/dialogue distribution by ID2. Inspection
+ELF/listings remain /tmp/id2-unit-*. Concurrent work/locks/staging preserved.
+Next:concrete kind/pose/borrowed pointer144 data/schema/lifetime and dynamic114/
+belong/height/resource writers;pose/model/renderer/status/turn source bindings,
+original spawn/stats/damage/death/Jump traces. Complete-game documentation and
+requirements remain incomplete.

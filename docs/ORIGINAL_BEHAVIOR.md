@@ -581,3 +581,11 @@ projection-gated bounded candidate recovery. Output is a sampled origin,caller
 ignores failure and overwrites preparedY;screen recovery clears bank0 on both
 flag branches and commits root only at explicit projection acceptance. Full
 placement3/SDK projection/traversal/math/domain and original trajectories remain open.
+
+
+[Complete battle unit entry](behavior/BATTLE_UNIT_ENTRY_COMPLETE.md),
+[registry/scalar/geometry](behavior/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md)
+and [pose/display initialization](behavior/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md)
+now specify full local construction/publication/stat/resource/event order and
+listed getters/setters/pose helpers. Borrowed source/kind/content/lifetime and
+resource/render/turn/platform domains and original execution remain open.

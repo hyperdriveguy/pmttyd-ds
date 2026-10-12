@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Complete battle unit entry,body/height/belong and geometry initialization | DMG-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Full entry](behavior/BATTLE_UNIT_ENTRY_COMPLETE.md),[registry/scalar/geometry](behavior/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md),[pose/display](behavior/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md):complete local Entry and listed helpers,early registry/check asymmetry,pouch/event order and borrowed field144 producer;resource/kind/content/lifetime/turn/source/runtime engines remain open |
 | Partner support appearance and out-of-screen reset | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Support appearance](behavior/FIELD_PARTNER_SUPPORT_APPEARANCE.md),[vector ray](behavior/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md),[screen recovery](behavior/FIELD_PARTNER_SCREEN_RECOVERY.md):complete local probe/return/caller,projection/control/request/root graph answered;full placement3/projection/backend/motion/source/domain/EVT-01 and original trajectories remain open |
 | Event GP10 readiness/freeze gate producer and disc thread | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Producer](behavior/EVENT_DISC_THREAD_READINESS_GATE.md),[message presentation](behavior/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md),[audio state](behavior/AUDIO_DISC_COVER_STATE_REQUESTS.md):complete disc thread/card/audio/font-routing local bodies,13-status table/scoped startup/four source resources;DVD/OS/render/source/domain/original traces remain open;make test38 suites/63 Python and make all pass |
 | Partner floor query and slope/support publication | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Floor query](behavior/FIELD_PARTNER_FLOOR_QUERY.md),[slope pipeline](behavior/FIELD_PARTNER_FLOOR_SLOPE_NUMERICS.md),[heading](behavior/FIELD_PARTNER_FLOOR_HEADING.md):complete local five-probe/support/cache and numeric/heading graph answered;full backend/filter/math/source/domain/EVT-01 and original trajectories remain open |
@@ -1442,3 +1443,24 @@ Only ID1 scoped lock released;placement3/full projection/backend/motion/domain/
 EVT-01 and original traces remain open. Shared-link snapshot1334 found one
 concurrent ID2 target missing:BATTLE_UNIT_ENTRY_COMPLETE.md→UNIT_BADGE_IMPORT_AND_SETUP.md;
 all new ID1 contract links resolve. ID1 leaves that active ID2 document untouched.
+
+
+ID2 DMG-01/DMG-02 unit-entry delivery (2026-10-12), partial answer:
+[Full Entry](behavior/BATTLE_UNIT_ENTRY_COMPLETE.md) closes complete local6b4
+identity/geometry/resource-call order:64-slot first free,checked unit allocation,
+early registry publication,unchecked part allocation/zero-count path,kind/setup
+copies,pouch overrides,gauge-before-import,body first versus cached last,display/
+special-kind allocation and final asynchronous init script with actor/event IDs.
+[Registry/scalar/geometry](behavior/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md)
+closes registry bounds asymmetry,U8 GetBelong versus S8 consumers/enemy mapping,
+S16 height/body lookup,all called vector setters/angle wrapper and HpGaugeInit.
+Direct damage explicitly extsb AFTER the U8 getter;its wording is clarified,
+without changing recovered zero-test behavior. [Pose/display](behavior/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md)
+closes fallback-first category lookup versus bounded28-record display lookup,
+borrowed tables/names,copy/resource-entry order and effect/icon init leaves.
+Field114 initializes1,vector scale separate;field144 is borrowed kind.b0 pointer,
+its pointed schema/lifetime/other writers still open. Whole local entry gap is
+closed;kind/resource/pose/render/status/turn/source/domain and original traces
+keep parents open. Own lock released;verifier passes33 containing/complete/linked
+hashes,441 anchors,11 spans. make test passes40 CTest suites and64 Python tests;
+make all passed. ID2 changed no native or asset conversion code.

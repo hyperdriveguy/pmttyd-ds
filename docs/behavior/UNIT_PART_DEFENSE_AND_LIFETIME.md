@@ -7,8 +7,11 @@ BattleAlloc0x800f8934/0x28 and BattleFree0x800f8908/0x2c; original DOL Mario
 part data and shipped gor.rel Crump kind/part/table relocations.
 
 This closes the scoped DMG-01 part allocation/defense/lifetime request.
-**Whole unit entry remains partial.** Pose/vector services, allocator internals,
-all mutation writers and original execution are not established here. The
+[Whole local unit entry](BATTLE_UNIT_ENTRY_COMPLETE.md) and its
+[geometry/scalar](BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md) and
+[pose/display](BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md) follow-ups now
+close those local regions. All mutation/source/lifetime writers,resource/render
+engines and original execution remain separate requirements. The
 [entry/stat/spawn contract](UNIT_ENTRY_STATS_AND_SPAWN.md) already identifies
 unit publication before parts and later asynchronous init registration.
 
