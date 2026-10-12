@@ -29,7 +29,8 @@ continuation. The local h output and local X/Z are never published. A null
 head result does not clear P+140. The new Y,if written,feeds the later floor
 query in this same call.
 
-Always next request partySearchGround0x800c3bcc with(P,f1=10.0,f2=0.0),retaining
+Always next request [partySearchGround](FIELD_PARTNER_FLOOR_QUERY.md)
+0x800c3bcc with(P,f1=10.0,f2=0.0),retaining
 its returned hit G. These are exact float arguments;their internal ray meaning
 is left to the full query contract. If G is nonnull,call hitGetAttr(G). Attribute
 0x00000800 requests partyChgMoveMode(P,13) and RETURNS immediately,skipping

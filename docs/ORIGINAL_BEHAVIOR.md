@@ -560,3 +560,14 @@ and [audio cover-state requests](behavior/AUDIO_DISC_COVER_STATE_REQUESTS.md)
 now bind GP10 freeze to exact status/retrace/card/thread behavior and an alternate
 input/render request path. Original notice bytes/pointers and local audio state
 are pinned;SDK/ROM-font/render/playback/source/domain and original traces remain open.
+
+
+[Partner floor query](behavior/FIELD_PARTNER_FLOOR_QUERY.md),
+[slope pipeline](behavior/FIELD_PARTNER_FLOOR_SLOPE_NUMERICS.md) and
+[heading adjustment](behavior/FIELD_PARTNER_FLOOR_HEADING.md) close the used
+five-sample/global-filter/order,pointY quantization,50-degree partial-angle
+rejection,duplicated admitted-slope requests,ordered drop/near-height admission
+and highest-support cache graph. Slope fields may describe later rejected rays
+rather than retained support;null can preserve outputs or initialize height/
+last-drop depending on entry flag. Full backend/math/domain/field consumers and
+original trajectories remain open.

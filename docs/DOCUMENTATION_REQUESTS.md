@@ -18,7 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Event GP10 readiness/freeze gate producer and disc thread | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Producer](behavior/EVENT_DISC_THREAD_READINESS_GATE.md),[message presentation](behavior/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md),[audio state](behavior/AUDIO_DISC_COVER_STATE_REQUESTS.md):complete disc thread/card/audio/font-routing local bodies,13-status table/scoped startup/four source resources;DVD/OS/render/source/domain/original traces remain open;make test38 suites/63 Python and make all pass |
-| Partner floor query and slope/support publication | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used partySearchGround complete five-probe/order/slope/admission/cache graph and called heading adjustment leaf;full backend/filter/math/source/domain/EVT-01 and original trajectories remain separate |
+| Partner floor query and slope/support publication | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Floor query](behavior/FIELD_PARTNER_FLOOR_QUERY.md),[slope pipeline](behavior/FIELD_PARTNER_FLOOR_SLOPE_NUMERICS.md),[heading](behavior/FIELD_PARTNER_FLOOR_HEADING.md):complete local five-probe/support/cache and numeric/heading graph answered;full backend/filter/math/source/domain/EVT-01 and original trajectories remain open |
 | Partner ceiling query and ray-request wrapper | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Ceiling query](behavior/FIELD_PARTNER_CEILING_QUERY.md),[scalar wrapper](behavior/FIELD_SCALAR_RAY_WRAPPER.md):complete local four-probe/output and hitCheckFilter ABI graph answered;initial wrapper name corrected;full backend/terrain/math/domain/EVT-01 and original trajectories remain open |
 | Map/SDK buffer release and pool initialization provenance | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Map free/battle pool](behavior/MAP_BUFFER_FREE_AND_BATTLE_POOL.md),[five pools/reset](behavior/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md),[SDK free/census](behavior/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md):complete local release/coalescing/bootstrap/bulk reset and50 direct DOL sites;event user-pointer/scene/REL/platform/source/runtime ownership remains open |
 | Partner stay floor/fly post-collision services | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Fly height](behavior/FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md),[ground/motion/support](behavior/FIELD_PARTNER_GROUND_POSTPASS.md):complete local tail and motion/classifier graph answered;selected floor early-return/output evidence;full head/floor/appear/motion/terrain/domain/EVT-01 and original trajectories remain open |
@@ -461,6 +461,15 @@ Do not invent extra samples for script invocations or suppress inactive private
 sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
+
+Tail-opcode breadcrumb (2026-10-12): `event_tail_opcodes.cpp` covers1/3/11 and
+113..118,evtGetPtr semantic array domain,and full debug classifier/call arguments.
+Original sprintf/string sink remains an explicit formatter service. Tests pin
+all thresholds/template/CR6/hex anomalies,raw flags,context/GP order,live polling
+and active-only256 slot probe/yield. make test passes39 suites/64 Python tests;
+make all passes. Next:combine interpreter services,then native context/bootstrap/
+address/numeric/formatter owners and original Jump. Packed/extreme/source/runtime
+and scratch-consumer traces remain existing EVT-01 closure requirements.
 
 Memory-opcode breadcrumb (2026-10-12): `event_memory_opcodes.cpp` handles74..90
 and local map allocation/fill/cache leaves. Tests preserve best-fit/first ties,
@@ -1365,3 +1374,30 @@ arrived. Fresh make test passes38 CTest suites and63 Python tests;the missing-
 fixture failure above is resolved. make all passes;current1618 local links all
 resolve. ID2 changes no native/test code;readiness/time/general evidence checks
 and source resource hashes pass. Only original domain/runtime gates remain open.
+
+
+ID1 partner floor query delivery (2026-10-12):
+[Query](behavior/FIELD_PARTNER_FLOOR_QUERY.md),
+[slope numerics](behavior/FIELD_PARTNER_FLOOR_SLOPE_NUMERICS.md) and
+[heading](behavior/FIELD_PARTNER_FLOOR_HEADING.md) specify complete local
+five-ray/global-filter,pointY quantization and highest-support admission.
+Projected angles are written BEFORE steep>=50 rejection;admitted candidate
+executes the pipeline AGAIN and publishes inclination before vertical acceptance.
+Last slope metadata can differ from retained support. Below-root drop>=2 uses
+abs(dropLimit);other candidates use inclusive11. Excessive drops overwrite e8
+in ray order,not min/max;any final support clears e8. Early flag02000000 bypasses
+all output initialization. Four identities/three complete local bodies plus
+selected backend,100 anchors,28 constants,four spans/two lecture imports pass.
+Initial make test failed CMakeLists.txt:167 missing tests/event_tail_opcodes_tests.cpp
+during concurrent native work (log /tmp/id1-ground-test.log);make all passed.
+Only ID1 scoped lock released;full backend/math/source/domain/EVT-01 and original
+floor/slope/transition traces remain open.
+
+
+ID1 floor-query host gate update (2026-10-12):missing native tail fixture
+arrived. Rerun make test now reaches compilation but fails
+ tests/event_tail_opcodes_tests.cpp:31:entryAddress lambda accepts only(void*)
+while current service type is uint32_t(*)(void*,EventEntry&). Exact log:
+/tmp/id1-ground-test-rerun.log. Native owner should align this fixture signature;
+ID1 did not edit concurrent native files. Static floor evidence still passes;
+this is a host validation failure,not an original-game evidence failure.

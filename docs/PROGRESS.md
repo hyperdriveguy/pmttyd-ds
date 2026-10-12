@@ -1,5 +1,30 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Remaining event tail routes and diagnostic call preparation
+
+Implemented `event_tail_opcodes.cpp` for runtime1/3/11/113..118 and the complete
+local debug-register classification/call preparation. WAIT_WHILE resolves each
+poll and only zero continues. Actual no-op routes query nothing;116 stores raw
+metadata.118 independently selects GP/context for each active-only pointer probe,
+ignores live capacity and yields after a match or256 probes. Diagnostics retain
+context-before-argument order,saved GP reloads,raw flag intersections,direct/
+stored float boundaries,template addresses/CR6 and UW/GSW/LSW hex vararg anomalies.
+The required formatter owns original sprintf semantics and shared scratch output;
+no invented screen/log emission is supplied.
+
+Validation: `make test` passed39/39 CTest suites and64 Python tests; `make all`
+passed with current ARM tail object and3dsx. Logs:/tmp/pm-event-tail-test.log and
+/tmp/pm-event-tail-build.log. Fixtures cover every tail route,all signed diagnostic
+boundaries/normal families/hex/float/integer values,bit31 raw masks,captured/live
+context mutation,slot activity/context switches/unbounded-by-capacity probes,and
+real dispatcher polling→slot yield→delete. A fixture callback signature typo was
+corrected before the successful complete run. No emulator run for unbound services.
+
+Native packed pointer/array/address domains,FPSCR,sprintf/runtime scratch consumers
+and original traces remain open. Next:one combined interpreter service path,
+native context/bootstrap/storage and original Jump stream/callback binding.
+The full remake remains incomplete;EVT-01 documentation breadcrumbs updated.
+
 ## 2026-10-12 — Complete original SFX sample library
 
 Completed the user's follow-up to extract GameCube sound effects. Previous
@@ -8100,3 +8125,45 @@ Concurrent work/locks preserved. Next:other GP10/window/gate/state writers,
 VI/OS/media/ROM-font/font-layout/projection/playback backend,source transitions/
 selector/alias/interrupt domains and original freeze/recovery/input/audio/Jump/
 story traces. Complete-game documentation and requirements remain incomplete.
+
+
+## 2026-10-12 — ID1 complete partner floor/support and slope pipeline
+
+Added [floor query](behavior/FIELD_PARTNER_FLOOR_QUERY.md),
+[slope numerics](behavior/FIELD_PARTNER_FLOOR_SLOPE_NUMERICS.md) and
+[heading conversion](behavior/FIELD_PARTNER_FLOOR_HEADING.md). Complete local
+five-sample/global-filter graph covers fixed origins,raw pointY quantization,
+partial projected-angle writes before50-degree rejection,duplicated admitted-
+normal pipeline,ordered drop/near-height tests,strict highest-support replacement
+and cache outputs. Metadata can come from a later rejected sample;selected
+support resets a later excessive-drop e8 write. Complete heading/height leaves
+and exact numerical constants are pinned;full backend/library/platform/domain
+and original trajectories remain open. Prior postpass links now point to the
+floor contract. No concurrent native policy was changed by ID1.
+
+Validation:verify_field_partner_ground.py passes four containing hashes (three
+complete local bodies,backend selected regions),100 instruction anchors,28
+constants,four vector/numeric spans and two lecture imports plus actual postpass
+calls. Repeated metadata byte-identical;Python compilation,prior front-wall
+filter/height and postpass verifiers passed. General verifier passed1980 anchors;
+all1304 behavior links resolved at snapshot. Gekko audit passed551 files/76486
+instructions/536 paired-single ops,zero changes or unknowns. make all succeeded
+with no rebuild needed. make test failed CMakeLists.txt:167 missing concurrent
+native tests/event_tail_opcodes_tests.cpp;no host-pass claim for that run.
+Exact logs:/tmp/id1-ground-test.log and /tmp/id1-ground-build.log. ISO read-only;
+no original execution/slope trajectory measurement,asset conversion,profile/save
+mutation or original binary/dialogue distribution. Only ID1 scoped lock released;
+concurrent native/ID2 work preserved outside this scoped commit.
+
+Next:recheck native host tests when the missing fixture arrives;appear-position/
+out-of-screen services,homing/fall/jump/fly handlers,state/cache/flag/source and
+numeric domains;original support/flight/transition observations and full ray
+backend. Full-game documentation and complete-game requirements remain incomplete.
+
+
+ID1 floor-query validation follow-up:the missing native tail fixture arrived,
+so make test was rerun. It now fails compilation at tests/event_tail_opcodes_tests.cpp:31:
+entryAddress lambda has(void*) but service expects(void*,EventEntry&). Exact
+rerun log:/tmp/id1-ground-test-rerun.log. No passing host-test claim. Inbox
+records the concrete native fixture mismatch;ID1 leaves concurrent native code
+untouched and continues original behavior recovery.

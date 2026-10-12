@@ -1089,3 +1089,15 @@ selected instruction/data anchors are source-versioned. SDK console-ROM font
 texture/encoding is a separate runtime source,not proved present in this ISO;
 font realization/reuse licensing remains unresolved and no bitmap conversion
 was invented. Story dialogue continues to use exact msg/US IDs/control tokens.
+
+
+Partner floor/slope/heading research by ID1 (2026-10-12):
+verify_field_partner_ground.py and field_partner_ground_evidence.json pin four
+DOL identities (floor query,heading adjustment and height leaf complete;shared
+backend selected result-layout/filter regions only),100 instructions,28 exact
+constants,four vector/numeric spans and two lecture imports. Actual stay
+postpass calls are pinned. Original ELF/listings and field-partner-ground-
+evidence.json remain ignored under artifacts/reference/behavior. ISO read-only;
+no asset conversion,original execution,profile/save mutation or original binary/
+dialogue distribution. Full scene/trig/angle/frsqrte/platform/source domains
+remain separate from metadata identities.

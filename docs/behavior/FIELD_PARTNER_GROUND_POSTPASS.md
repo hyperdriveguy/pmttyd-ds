@@ -17,7 +17,8 @@ that mask suppress the remaining floor/motion path. This differs from the
 [fly postpass](FIELD_PARTNER_FLY_HEIGHT_POSTPASS.md),where that mask exits
 before either query,and head probing is map-specific.
 
-If not suppressed,clear P+0 mask0x80,then request partySearchGround0x800c3bcc
+If not suppressed,clear P+0 mask0x80,then request
+[partySearchGround](FIELD_PARTNER_FLOOR_QUERY.md)0x800c3bcc
 with(P,f1=15.0,f2=-15.0). On nonnull G,call hitGetAttr(G),retaining attributes
 A. If A&0x200 is set,discard G regardless of signed byte P+4c. When that
 byte is exactly0,also OR0x01000000 into P+8 and0x02000000 into P+0. Nonzero
