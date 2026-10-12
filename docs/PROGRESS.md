@@ -2164,3 +2164,34 @@ cancellation under actual source framing. Wall push-out/sliding, dynamic
 support, grounded overhead, signed normal animation outputs, original story/
 English dialogue/SFX/animations/camera/interiors and full playable content remain
 unfinished. Full goal active; hardware performance unverified.
+
+## 2026-10-12 — Status storage and explicit recovery-step research
+
+Previous turn progressed with b897a67/a6a19cd event dispatch contracts. This
+turn adds BATTLE_STATUS_STORAGE.md: complete local getter/setter cases for
+IDs0–27, shared signed fields, badge-only Electric presence, Burn/Freeze and
+Defense cancellation, size/attack replacement, Charge narrowing-before-clamp,
+Fast/Slow move-count gate, all recovery-step groups and HP/Instant Kill gates.
+Direct-damage Sleep recovery now links to its verified local clearing outcome.
+Recovery is specified as an explicit helper call, not assumed once per turn.
+Infliction rates/immunity and complete turn scheduling remain unrecovered.
+
+Validation:153 instruction anchors and all81 status dispatch targets passed
+against read-only US ISO, alongside previous tables/constants/sound keys.
+Evidence now fingerprints79 functions and reproduced identically across reads.
+Behavior relative links resolve; git diff --check passed. make test passed
+core plus36 Python tests; make all exited0, nothing to rebuild. This validates
+execution-time shared workspace, not an isolated commit: unrelated runtime,
+architecture/mechanics documentation and Switch inventory/tools/tests edits
+were present and left unstaged. No native runtime behavior changed in this
+research. Original helper ELF/disassembly/report files stay ignored; no
+original executable/emulator run or profile/save change. ASSETS.md updated.
+
+Next: BattleSetStatusDamage and weapon status parameter/rate helpers, complete
+BattleCheckDamage orchestration, recovery-call schedule and periodic status
+HP/FP/action effects. Recover actual unit death/revival event graphs and item
+consumption. _CheckMoveCount's downstream BtlUnit_ResetMoveStatus remains open.
+Continue full-system register beyond combat and derive complete-game system
+requirements only once those original contracts are adequately documented.
+Full objective remains active/incomplete; static checks are not original
+execution tests or end-to-end fidelity proof.
