@@ -3701,3 +3701,39 @@ wall push-out/sliding, contact owner/cache outputs, direction rounding, stair
 XZ/chaining, partner grounding and special states remain incomplete. Original
 English story/dialogue, SFX/animations/camera/interiors and full playable content
 still require work. Full goal active; hardware/complete fidelity unverified.
+
+## 2026-10-12 — US message-width scanner and icon dimensions
+
+Recovered FontGetMessageWidthLine0x8007554c,size320 and its null-output wrapper
+FontGetMessageWidth0x80075528,size24, iconGetWidthHight0x8001a19c,size100 and
+TEXGet0x80037b5c,size10. Added detailed FONT_MESSAGE_WIDTH.md and
+ICON_DIMENSIONS.md: lead-byte/halfword versus single-byte routes, LF count,
+wrapping glyph/max width, final spacing subtraction, first-WID1 lookup,
+command/R-prefix/LF suppression and impossible byte-versus0x2f72 branch;
+icon argument routing and fused arithmetic, ready gates, locale remaps,
+binary offset directory, output alias/order and both-zero original-ID TPL
+fallback. Linked the embedded-object contract and evidence index.
+
+The draft initially inherited the pinned Japanese source's two-entry spacing
+array. US CSV size and read-only bytes instead establish seven entries
+4,2,2,2,2,2,2; corrected the draft before commit and verify all seven words.
+No original execution or dynamic width/icon observation was performed. Scanf
+conversion semantics, loading/relocation, runtime configuration/callers and
+actual rendered/layout equivalence remain open. Story text was not rewritten.
+
+Validation:1012 instruction anchors and prior tables/constants/resource hashes
+passed read-only ISO, with seven spacing words, three icon/scanf bindings and
+all twelve remap halfwords. Fresh275-function evidence reports reproduced
+byte-for-byte. All403 local behavior links resolved; git diff --check passed.
+make test passed core plus36 Python tests; make all exited0 with no rebuild.
+No original execution/emulator run, profile/save modification, native code
+change, asset conversion or payload export by this research step. Local
+inspection ELFs/disassemblies/reports remain ignored.
+
+At turn start the prior unrelated native/collision work was already committed
+as398b4e0; this increment changes only authored research/provenance/evidence
+files. Next: original scanf services for icon arguments and drawing string/
+line consumers; actual font/icon loading/cadence callers and executed numeric/
+layout/image comparisons. Continue uncovered story/event/field/battle/audio/
+save/content systems before complete-game requirements. Full goal active/
+incomplete; recovered local contracts do not prove complete-game fidelity.

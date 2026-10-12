@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 271 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 988 instruction anchors plus those
+now fingerprints 275 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1012 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -523,3 +523,11 @@ was exported or converted by this step. Authored contracts record source paths,
 block/texture dimensions and setup's two ordered width mutations, including the
 US/EU fallback alias. No asset redistribution, license change or executable
 linking occurs; original fonts remain subject to original rights.
+
+Message-width/icon-dimension research adds four US function fingerprints and24
+anchors. Checks pin all seven US character-spacing words (the pinned Japanese
+source declares a shorter table), three icon name/scanf bindings and twelve
+halfword remaps. Authored contracts cover byte scanning, wrapping/max width,
+LF suppression/count, fused icon arithmetic and directory/TPL dimension lookup.
+No original code or icon payload is exported/linked, no conversion or asset
+license change occurs; inspection ELFs/disassemblies/reports remain ignored.

@@ -57,7 +57,8 @@ Other named/numeric inputs append a record:
 
 - +0=full parsed/resolved ID, +4=opcode 0xfff8.
 - Pass low 16 bits of ID to iconGetWidthHight(0x8001a19c), obtaining unsigned
-  halfword width w and height h. Its atlas/range/failure contract remains open.
+  halfword width w and height h. See [dimension lookup](ICON_DIMENSIONS.md) for
+  directory/remap/fallback and unchecked-readiness behavior; atlas loading remains open.
 - +6=halfword(trunc(float(X)+J+0.5*w*Q)). The binary performs `0.5*w` first,
   then a single-precision fused multiply/add with Q and X, then adds J.
 - +8=halfword(trunc(float(Y)-h*Q)), with a single-precision fused operation.

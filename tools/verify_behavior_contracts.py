@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'font_message_width_and_icon_dimensions': {
+        0x80075530: '38800000', 0x80075580: '4800c5c1',
+        0x8007558c: 'a0790000', 0x800755c8: '7c030040',
+        0x800755d8: '3b7b0001', 0x800755f0: '4800c4b1',
+        0x80075650: '481f6cf5', 0x80075684: '4800c399',
+        0x80075708: 'ec0300ba', 0x80075714: 'fc00001e',
+        0x80075730: '41820038', 0x8007573c: '28002f72',
+        0x80075750: '3b390001', 0x8007576c: '2804ffff',
+        0x800757f8: '7c63202e', 0x80075800: '541c043e',
+        0x80075840: '7c00e850', 0x80075850: 'b37a0000',
+        0x8001a1d8: '38600000', 0x8001a228: '54600bfc',
+        0x8001a230: 'a0030002', 0x8001a25c: '40820028',
+        0x8001a264: '54a4043e', 0x80037b60: '54801838',
+    },
     'font_resource_setup_and_mapping': {
         0x80075020: '408202c8', 0x80075028: '572013ba',
         0x80075058: '480cfe31', 0x800750b4: '7c1b1800',
@@ -1147,6 +1161,18 @@ def verify(iso_path):
             if len(data) != size or hashlib.sha256(data).hexdigest() != digest:
                 raise ValueError(f'Original font data mismatch {name}')
         print('Seven font-name pointers, five bindings and three original BFN resources verified')
+        if read(0x8041601c, 28) != struct.pack('>7i', 4, 2, 2, 2, 2, 2, 2):
+            raise ValueError('Font width character-spacing table mismatch')
+        for address, value in ((0x80420408, b'icon'),
+                               (0x802c2bbc, b'%d%f%d%d%d'),
+                               (0x802c2bc8, b'%s%f%d%d%d')):
+            if read(address, len(value)+1) != value+b'\0':
+                raise ValueError(f'Font width icon binding mismatch {address:#x}')
+        if read(0x80415040, 24) != struct.pack('>12H',
+                73, 74, 75, 76, 73, 77, 103, 104, 105, 106, 103, 107):
+            raise ValueError('Icon dimensions remapping tables mismatch')
+        print('Seven spacing words, three icon bindings and twelve icon remaps verified')
+
 
 
 
