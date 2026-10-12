@@ -1081,3 +1081,12 @@ recovery versus generic return,typed bounds/FMA,pending/saved Input ownership.
 20 hashes/243 anchors/3 spans verified;79 CTest/90 Python/make all pass.
 Audience core/present source/confusion/party/query reachability/Game/runtime
 remain open;no global supported cursor or safe fallback invariant claimed.
+
+ID2 complete confusion selector delivery (2026-10-12):
+[Class/type](behavior/battle/CONFUSION_CLASS_SELECTION_AND_MENU_TYPE_WRITE.md),
+[weapon/target](behavior/battle/CONFUSION_WEAPON_SELECTION_AND_TARGET_POLICY.md),
+[operations/party](behavior/battle/CONFUSION_OPERATIONS_PARTY_AND_EVENT_OUTPUTS.md)
+close full selector:four low-byte candidate lists/original RNG/fresh type and
+weapon rechecks/nine operation cases/script-null results/type13 local flustered.
+9 hashes/388 anchors/5 spans verified;80 CTest/90 Python/make all pass.
+Producer/source/query/event/Game/platform/runtime remain open.

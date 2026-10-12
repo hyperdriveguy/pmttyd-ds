@@ -26,6 +26,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
 | Native first-attack target and paired output ownership | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Pair/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md),[event/body part](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md):seven complete local bodies,captured B/raw outputs/mode pairs/slot63 miss/kind predicate/body-before-ID/write order/source part witness;source/Game/runtime separate;prior field_movement failure resolved by current74-suite run |
+| Native complete confusion menu type and action selector | EVT-01, JUMP-01 | VALIDATED complete selector / lock released, 2026-10-12 | Documentation agent ID 2 | [Class/type](behavior/battle/CONFUSION_CLASS_SELECTION_AND_MENU_TYPE_WRITE.md),[weapon](behavior/battle/CONFUSION_WEAPON_SELECTION_AND_TARGET_POLICY.md),[operations/party](behavior/battle/CONFUSION_OPERATIONS_PARTY_AND_EVENT_OUTPUTS.md):four low-byte lists/RNG/fresh rechecks/type13→flustered/nine operation cases/null-versus-script outputs;producer/source/query/event/Game/runtime remain separate |
 | Native audience/gift interruption type writers and restore helper | EVT-01, JUMP-01 | VALIDATED ten local bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Audience11](behavior/battle/AUDIENCE_INTERRUPTION_MENU_TYPE_WRITER.md),[gift12/recovery](behavior/battle/GIFT_ITEM_RECOVERY_AND_MENU_TYPE_WRITER.md),[restore/fields](behavior/battle/MENU_INTERRUPTION_RESTORE_AND_AUDIENCE_FIELDS.md):captured global B/post-shutdown previous type/typed gift admission/FMA/pending/saved Input/getter ownership;audience core/source/query reachability/Game/runtime separate |
 | Native complete MakeSelectWeaponTable producer and source bindings | EVT-01, JUMP-01 | VALIDATED complete caller / lock released, 2026-10-12 | Documentation agent ID 2 | [Entry/layout](behavior/battle/WEAPON_TABLE_BUILDER_ENTRY_LAYOUT_AND_PUBLICATION.md),[Jump/Hammer/badges](behavior/battle/WEAPON_TABLE_JUMP_HAMMER_AND_BADGE_ROWS.md),[inventory/Special/party](behavior/battle/WEAPON_TABLE_ITEM_SPECIAL_AND_PARTY_ROUTES.md),[sources/icons](behavior/battle/WEAPON_TABLE_SOURCE_BINDINGS_AND_ICON_LEAVES.md):full builder/two icon leaves/17 source records/partial descriptors/late overrides/empty count preservation;party delegate/query reachability/source/Game/runtime remain separate |
 | Native WeaponSelectMenuMain confirmation and target eligibility | EVT-01, JUMP-01 | VALIDATED seven local bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Confirmation](behavior/battle/WEAPON_MENU_MAIN_CONFIRMATION_AND_LIGHT_REQUESTS.md),[navigation/End](behavior/battle/WEAPON_MENU_MAIN_NAVIGATION_CANCELLATION_AND_END.md),[count/update](behavior/battle/WEAPON_MENU_TARGET_COUNT_AND_ELIGIBILITY_UPDATE.md):complete Main/End/private sampling/count/captured row-update/UI-light stubs/fresh cursor/request order;full builder/query reachability/source/Game/runtime remain separate |
@@ -517,6 +518,21 @@ Do not invent extra samples for script invocations or suppress inactive private
 sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
+
+ID2 complete confusion selector reply (2026-10-12):
+[Class/type publication](behavior/battle/CONFUSION_CLASS_SELECTION_AND_MENU_TYPE_WRITE.md),
+[weapon/target policy](behavior/battle/CONFUSION_WEAPON_SELECTION_AND_TARGET_POLICY.md),
+[operations/party/event outputs](behavior/battle/CONFUSION_OPERATIONS_PARTY_AND_EVENT_OUTPUTS.md)
+close full BattleSetConfuseAct8011f62c/610:retained actor/entry mutations,four
+captured-count/low-byte halfword lists,original irand calls,fresh type/row reads,
+weapon rebuild/rechecks,target byte draw,nine operation cases,existing party
+rows,and script-address/null results.Fixed fallback is803532b0 flustered,
+NOT Wait;empty weapon/party candidate lists return0.Type13 can be published
+then returns flustered locally.9 hashes(1 complete/8 linked),388 anchors/5
+spans/repeat reports,80 CTest/90 Python/make all pass.ID2 lock released.
+No native code/tests changed.Operation producer/party key1 source and callback,
+returned-event/query reachability remain open.Next priority:those producer and
+source bindings,plus remaining menu writers;do not infer global query safety.
 
 Native implementation breadcrumb (2026-10-12): GetTakeoffPosition80109054
 now operates on native records with private hit-output aliases and required

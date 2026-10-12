@@ -1,3 +1,27 @@
+## 2026-10-12 — ID2 complete confusion action selector
+
+Three contracts close full BattleSetConfuseAct8011f62c/0x610:
+[class/type](behavior/battle/CONFUSION_CLASS_SELECTION_AND_MENU_TYPE_WRITE.md),
+[weapon/target](behavior/battle/CONFUSION_WEAPON_SELECTION_AND_TARGET_POLICY.md),
+[operation/party/event outputs](behavior/battle/CONFUSION_OPERATIONS_PARTY_AND_EVENT_OUTPUTS.md).
+Retained actor/admission mutations,four captured-count/low-byte candidate lists,
+original irand order,fresh selected type/enable reads,weapon rebuild/rechecks,
+target draw,nine operation cases,existing party rows,and literal script/null
+results supplied.Fallback803532b0 is flustered;empty weapon/party lists return0.
+Type13 can be written before a local flustered return.ID2 lock released.
+
+Validation:`tools/verify_confusion_action.py` twice,identical:9 hashes
+(1 complete/8 service identities),388 instructions,5 spans(operation table/
+four charge pointer words).Python compilation,existing behavior/builder/menu/
+interruption verifiers,own Markdown links,and scoped whitespace passed.
+`make test`:80 CTest/90 Python passed.`make all` passed.No native edits.
+
+Limits:static caller evidence only.Operation producer/party table and key1
+callback/source bindings,callee RNG,event construction/query reachability,
+remaining menu writers,Game/platform/original execution/full-game requirements
+remain open.Next port-function priority:producer/source bindings and remaining
+type writers.Local type filtering is not proof of global supported cursors.
+
 ## 2026-10-12 — ID2 complete audience/gift type writers and restore
 
 Delivered three implementation contracts:
