@@ -488,6 +488,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): `EventNativeRuntime` now
+owns both contexts and all shared event memory/services. Init/ReInit,root creation
+and original key7 child execution pass through actual SDK-backed arrays. Queries
+reload GP/context and explicit platform providers own clock,numeric,USER_FUNC,
+diagnostics and cache boundaries.60 CTest/78 Python and make all pass. Native
+address/arena/provider policies remain explicit;Game/full Jump unbound. Next:
+original-address native callback registry plus battle/unit/motion/action/effect/
+presentation services. Existing source/domain/FPSCR/concurrency/original execution
+requests remain open;please leave additional callback evidence here.
+
 Native implementation breadcrumb (2026-10-12): `EventEntryStorage` now
 promotes SDK-allocated entry payloads into live mappings with adjacent headers/
 RAM preserved. Actual context Init/ReInit and interpreter/root deletion run on

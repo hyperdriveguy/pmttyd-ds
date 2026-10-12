@@ -1,5 +1,32 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Shared native event service owner
+
+Added `EventNativeRuntime` owning both original context mappings,GP storage,
+shared runtime/schedule,address space,memory binding and SDK-backed entry owner.
+It exposes recovered manager/creation/interpreter/Init/ReInit services together.
+Operand queries select CURRENT GP context on each access;GP root swaps and saved
+banks share the same bytes. ID1/speed1 defaults follow initialized original words.
+GP address,RAM/arena provisioning and initial refresh/time are explicit provider
+inputs. Clock,fctiwz/division,USER_FUNC,diagnostics and cache boundaries forward
+to required platform callbacks rather than silently synthesizing behavior.
+
+Validation:make test passes60 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-native-runtime-test.log and /tmp/pm-native-runtime-build.log.
+`build-host/event_native_runtime_tests romfs/events.pmevt` passes extracted
+key7 child-body execution using actual SDK allocation,constructor and manager.
+Authored integration covers field/battle bank selection,USER_FUNC first-call/
+continuation,wait/deletion,live counters and ID words,independent numeric provider
+callbacks,GP pointer swap,saved-switch storage and selected ReInit preservation.
+The fixture arena/callbacks are authored provider inputs;they do not prove source
+arena,FPSCR,hardware or full Jump behavior. Service copies retain their runtime
+owner by pointer;runtime must outlive users. This owner is not yet bound to Game.
+
+Next:original-address callback registry and native battle/unit/motion/action/
+presentation providers,then execute the original Jump graph and story events.
+Platform cache/clock,FPSCR,source/domain/concurrency and full-game fidelity remain
+open;goal incomplete. Preserve concurrent field/camera/documentation work.
+
 ## 2026-10-12 — SDK-backed native event entry ownership
 
 Added `EventEntryStorage` and RAM-span extraction. Entry allocation calls the
