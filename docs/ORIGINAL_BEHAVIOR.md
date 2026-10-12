@@ -1049,3 +1049,13 @@ supply seven complete local bodies,typed private sampling,captured row count,
 confirmation/boundary/request/fresh cursor/result ownership.20 hashes/344
 anchors/2 keys verified;78 CTest/90 Python/make all pass after resolved initial
 host link failure.Full builder/source/query reachability/Game/runtime remain open.
+
+ID2 full weapon-table producer closure (2026-10-12):
+[Entry/layout](behavior/battle/WEAPON_TABLE_BUILDER_ENTRY_LAYOUT_AND_PUBLICATION.md),
+[ordinary/badges](behavior/battle/WEAPON_TABLE_JUMP_HAMMER_AND_BADGE_ROWS.md),
+[inventory/Special/party](behavior/battle/WEAPON_TABLE_ITEM_SPECIAL_AND_PARTY_ROUTES.md),
+[sources/icons](behavior/battle/WEAPON_TABLE_SOURCE_BINDINGS_AND_ICON_LEAVES.md)
+close full builder/two icon leaves:all local paths/partial rows/source arrays/
+late overrides/empty count preservation/scroll/count-address delegation.
+10 hashes/894 anchors/52 spans verified;78 CTest/90 Python/make all pass.
+Party delegate and source/query reachability/Game/platform/runtime remain open.

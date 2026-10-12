@@ -1,3 +1,28 @@
+## 2026-10-12 — ID2 complete weapon-table builder and original bindings
+
+Four detailed contracts close MakeSelectWeaponTable80123ec0/0xd50:
+[entry/layout/publication](behavior/battle/WEAPON_TABLE_BUILDER_ENTRY_LAYOUT_AND_PUBLICATION.md),
+[ordinary/badge rows](behavior/battle/WEAPON_TABLE_JUMP_HAMMER_AND_BADGE_ROWS.md),
+[inventory/Special/party](behavior/battle/WEAPON_TABLE_ITEM_SPECIAL_AND_PARTY_ROUTES.md),
+[sources/icon leaves](behavior/battle/WEAPON_TABLE_SOURCE_BINDINGS_AND_ICON_LEAVES.md).
+All local paths/partial28-byte rows,independent level reads,fresh icon pouch,
+late first-row overrides,ordered badge sources,inventory substitute/dummy row,
+captured Special mask/live pointers,party indirect/count address,empty-result
+old count preservation,signed index/scroll,and late update covered.ID2 released
+its narrow lock;no native code/tests or original asset packs changed.
+
+Validation:`tools/verify_weapon_table_builder.py` twice,identical:10 body hashes
+(3 complete/7 linked),894 instructions,52 spans(SDA/badge arrays/17 full
+ItemData records/16 weapon heads/15 keys/Special table).Python compilation,
+existing behavior/menu/Input verifiers,own Markdown file links,and scoped
+whitespace passed.`make test`:78 CTest/90 Python passed.`make all` passed.
+
+Limits:static local evidence only;weapon heads are not full action definitions.
+Party unit-data key1 callback body/source binding,dynamic provisioning,remaining
+menu/audience/gift/confusion writers,query-event reachability,Game/platform/
+original execution and full-game system requirements remain open.Next needed
+port-function priority:party table callback and remaining type writers.
+
 ## 2026-10-12 — ID2 weapon-menu Main and target eligibility
 
 Three detailed implementation contracts close seven complete local bodies:
