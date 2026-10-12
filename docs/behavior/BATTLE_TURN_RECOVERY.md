@@ -115,7 +115,8 @@ This branch does not create subsetevt_status_recovery or play the generic
 recovery sound. It uses the same one-versus-two sequence increment rule.
 The one-damage request goes through full direct-damage handling, so clamping,
 bookkeeping, Sleep interruption and lethal event handling follow that routine;
-it is not a raw HP decrement. Shadow-guard helper internals remain a dependency.
+it is not a raw HP decrement. The shadow-guard predicate is specified in
+[periodic damage](BATTLE_PERIODIC_DAMAGE.md).
 
 ## Shared event wait boundary (B)
 
@@ -154,3 +155,6 @@ entry/reset cadence, generic recovery event body, move-reset and shadow-guard
 helpers, initial unit-event wait helper, conclusion handling and phase/action
 controller. A dispatch table or call inventory alone does not establish all
 turn behavior. Complete-game requirements remain dependent on those contracts.
+
+Poison and Burn phases are now specified in [periodic damage](BATTLE_PERIODIC_DAMAGE.md);
+HP/FP regeneration and other remaining turn phases are still open.

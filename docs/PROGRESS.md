@@ -2350,3 +2350,28 @@ handling. Recover outer turn/phase cadence and actual death/revival event bodies
 Continue all other systems in behavior/README before complete-game requirements.
 Full objective active/incomplete; static fingerprints do not prove original/native
 runtime or rendering equivalence.
+
+## 2026-10-12 — Periodic Poison/Burn requests and delayed Burn effects
+
+Previous goal turn progressed witheff4d81 recovery scheduling. Added
+BATTLE_PERIODIC_DAMAGE.md for turn states06..09: Poison slot scan and signed
+strength damage, Burn presence/registration/polling/substate waits, complete
+local Burn effect state machine and shadow-guard predicate. Burn does not
+recheck HP/status at final damage; protection is checked after deleting the
+effect. Fresh registration requires62 helper invocations absent external changes,
+not a measured62-frame claim. HP/FP regeneration remains next recovery work.
+
+Validation:222 instruction anchors and four added Burn binary32 constants plus
+all prior checks passed against read-only US ISO. Evidence report95 function
+fingerprints reproduced byte-identically. Behavior links resolve; git diff
+--check passed. make test passed core plus36 Python tests; make all exited0,
+nothing to rebuild. No runtime code changes, original execution/emulator run,
+or profile/save modifications. Concurrent Switch docs/tools were left unstaged.
+Original extracts/disassemblies/reports remain ignored; ASSETS.md updated.
+Checks establish static identity/anchors, not executed-original equivalence.
+
+Next: periodic HP/FP regeneration, sinfd numeric contract and effect internals,
+recovery event body, move reset, unit-event wait/conclusion helpers, outer
+turn/phase cadence and actual death/revival scripts. Continue full-system
+register before deriving complete-game requirements. Objective remains active
+and incomplete; original/native trace and rendering comparisons still needed.

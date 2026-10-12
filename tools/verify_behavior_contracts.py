@@ -13,6 +13,13 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'periodic_damage': {
+        0x8011d90c: '7cc60774', 0x8011d918: '39000117',
+        0x8011da14: 'b01f0002', 0x8011daf8: '418208dc',
+        0x80195e04: 'b01f0338', 0x80195e9c: 'ec02007a',
+        0x80195eb0: '2c00003c', 0x80195f00: '39000118',
+        0x80195f40: 'b083033a', 0x80125d20: '2c0000e4',
+    },
     'turn_recovery': {
         0x8011c538: '2800004d', 0x8011c744: '90030160',
         0x8011c750: '2c190040', 0x8011c7a4: '48001c30', 0x8011cc80: '3900011a',
@@ -270,6 +277,11 @@ def verify(iso_path):
         if read(0x8042256c, 4) != struct.pack('>f', 1.0):
             raise ValueError('Freeze expiry effect scale mismatch')
         print('Turn recovery: dispatch hash, 23 calls, two sounds and scale verified')
+        for address, value in {0x80424728: 1.0, 0x8042472c: 5.0,
+                               0x80424730: 0.4, 0x80424734: 1.6}.items():
+            if read(address, 4) != struct.pack('>f', value):
+                raise ValueError(f'Burn effect constant mismatch {address:#x}')
+        print('Four Burn effect constants verified')
         status_tables = {
             0x80364204: [0x7970, 0x792c, 0x7970, 0x7970, 0x7adc,
                          0x7970, 0x7970, 0x7970, 0x7970, 0x7970,
