@@ -35,6 +35,11 @@ constexpr float WallLowerRay = .11f, WallUpperRay = .2664f;
 constexpr float PartnerDistance = .5f;
 struct Vec2 { float x = 0, z = 0; };
 struct GroundContact {uint32_t attributes=0, sourceNode=0;};
+struct FieldSupport {
+    bool found=false;
+    float height=0,delta=-.01f;
+    GroundContact contact;
+};
 struct ReturnPoint {float x=0,y=0,z=0;};
 struct Rect { float x0, z0, x1, z1; };
 inline constexpr std::array<Rect, 4> Obstacles{{
@@ -90,6 +95,7 @@ public:
     Progress progress;
     Vec2 partner{1.4f,2.5f};
     float groundHeight = 0, partnerHeight = 0;
+    float groundMetadataHeight=0; // Source +1c4; distinct from actual rootY.
     bool overheadContact=false;
     GroundContact groundContact,partnerContact;
     GroundContact wallContact;
@@ -150,6 +156,7 @@ private:
     FieldJump fieldJump;
     FieldMovement fieldMovement;
     FieldStep fieldStep;
+    float fieldVerticalVelocity=0;
     float jumpBase=0;
     Vec2 moveDirection{1,0};
     ReturnPoint roomRespawn{1,0,3.5f};
@@ -211,6 +218,7 @@ bool groundReturn(const GroundContact&,ReturnPoint& point);
 bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr,float* slope=nullptr);
 bool frontStepGround(Vec2 p,Vec2 direction,float rootY,float& height,float& slope);
 bool groundedFootprint(Vec2 p,Vec2 direction,float rootY,float& height,GroundContact* contact=nullptr);
+FieldSupport searchFieldSupport(Vec2 p,Vec2 direction,float rootY,float velocity,FieldSlope& slope);
 // Center falling floor ray (marioChkLandon): abs(v)+.0001 below, abs(v)+.05 above.
 bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
 bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& height,GroundContact* contact=nullptr);

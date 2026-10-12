@@ -37,7 +37,7 @@ void headContactRules() {
     const float rad=3.14159265358979323846f/180.f;
     CHECK(floorSlopeAllowed(std::sin(49.9f*rad),std::cos(49.9f*rad),0));
     CHECK(!floorSlopeAllowed(std::sin(50.1f*rad),std::cos(50.1f*rad),0));
-    CHECK(floorSlopeAllowed(0,-1,0)); // Slope only; face culling is separate.
+    CHECK(!floorSlopeAllowed(0,-1,0)); // Original angle uses signed normalY.
     CHECK(!floorSlopeAllowed(0,0,0));CHECK(!floorSlopeAllowed(1,0,0));
     CHECK(floorCandidateReachable(0,0,-.019f));
     CHECK(!floorCandidateReachable(0,0,-.02f));
@@ -400,6 +400,13 @@ void groundImport() {
             {std::ofstream file(slopes,std::ios::binary);file.write(reinterpret_cast<char*>(&count),4);file.write(reinterpret_cast<char*>(tri),36);}
             CHECK(loadGround(slopes));float h=99;
             CHECK(groundAt({-.5f,2},-.5f*slope,h)==(angle<50));
+            FieldSlope record;
+            const auto support=searchFieldSupport({-.5f,2},{1,0},-.5f*slope,0,record);
+            CHECK(record.tiltX!=0 && record.tiltZ==0);
+            if(angle>50)CHECK(!support.found && record.inclination==0);
+            float forward=0,frontAngle=0;
+            CHECK(frontStepGround({-.5f,2},{1,0},-.5f*slope,forward,frontAngle));
+            CHECK(frontAngle>49); // Front has no foot query's 50-degree cone gate.
         }
         // A steep nearest surface rejects the ray; a lower floor must not win instead.
         float tris[]={-1,-1.53205f,1,1,1.93205f,1,-1,-1.53205f,4,
@@ -582,14 +589,44 @@ void unequalFloorMotion() {
     stairs.tick(save);CHECK(stairs.overheadContact && !stairs.saveRequested && std::fabs(stairs.groundHeight-.08f/3)<.00001f);
     stairs.tick(confirm());CHECK(stairs.airborne() && std::fabs(stairs.groundHeight-.16f/3)<.00001f);
     stairs.tick({});CHECK(!stairs.airborne() && std::fabs(stairs.groundHeight-.08f)<.00001f);
+    // First two rises retain the admitted travel even on release/reversal.
+    Game retain;retain.restore(p);retain.tick(left);const float entryX=retain.progress.position.x;
+    const auto entryOwner=retain.groundContact.sourceNode;
+    retain.tick({});CHECK(std::fabs(retain.progress.position.x-entryX+.0225f)<.00001f);
+    CHECK(retain.groundContact.sourceNode==entryOwner);
+    Input reverse;reverse.x=1;reverse.confirm=true;
+    const float secondX=retain.progress.position.x;retain.tick(reverse);
+    CHECK(std::fabs(retain.progress.position.x-secondX+.0225f)<.00001f && retain.airborne());
+    const float thirdX=retain.progress.position.x;retain.tick(right);
+    CHECK(!retain.airborne() && retain.progress.position.x>thirdX); // Third call reclassifies input.
     {std::ofstream empty(stairHead,std::ios::binary);empty.write("HEAD",4);uint32_t zero=0;empty.write(reinterpret_cast<char*>(&zero),4);}
     CHECK(loadHead(stairHead));std::remove(stairHead);
+    Game stepJump;stepJump.restore(p);stepJump.tick(left);stepJump.tick(confirm());stepJump.tick(confirm());
+    CHECK(std::fabs(stepJump.groundHeight-.16f/3)<.00001f);
+    stepJump.tick(confirm());CHECK(stepJump.airborne() && stepJump.jumpHeight==0);
+    stepJump.tick({});CHECK(stepJump.jumpHeight>0); // Third-call A entered jump, rather than another stair.
+    stepFloor(.09f);CHECK(loadGround(path));Game walkOff;walkOff.restore(p);walkOff.tick(left);
+    walkOff.tick(left);walkOff.tick(left);walkOff.tick(left);
+    CHECK(!walkOff.airborne() && std::fabs(walkOff.groundHeight-.09f)<.00001f);
+    Game idleOff=walkOff;
+    // Isolate the retained +7c owner with a replacement support surface. This
+    // is a controller fixture, not a claim about original moving platforms.
+    {std::ofstream file(path,std::ios::binary);file.write(reinterpret_cast<char*>(&count),4);
+        for(int n=0;n<4;++n){float tri[9];std::copy(surfaces[n],surfaces[n]+9,tri);
+            for(int v=1;v<9;v+=3)tri[v]=.065f;
+            GroundContact owner{0,uint32_t(n+1)};file.write(reinterpret_cast<char*>(tri),36);file.write(reinterpret_cast<char*>(&owner),8);}}
+    CHECK(loadGround(path));walkOff.tick(left);idleOff.tick({});
+    CHECK(!walkOff.airborne() && std::fabs(walkOff.groundHeight-.065f)<.00001f);
+    CHECK(idleOff.airborne()); // Idle entry clears vertical velocity; walk entry retains .03.
     stepFloor(.2f);CHECK(loadGround(path));Game tall;tall.restore(p);tall.tick(left);
-    CHECK(tall.progress.position.x==p.position.x && tall.groundHeight==0 && !tall.airborne());
+    CHECK(tall.progress.position.x<p.position.x && tall.groundHeight==0 && !tall.airborne());
+    // This fixture has no tall-ledge wall: do not invent a center-height XZ veto.
     CHECK(!frontStepGround({.05f,2},{-1,0},0,forward,slope)); // .2 is above half-height ray origin.
     stepFloor(.08f);CHECK(loadGround(path));p.position={-.01f,2};p.elevation=.08f;
     Game down;down.restore(p);for(int n=0;n<5;++n)down.tick(right);
     CHECK(down.airborne() && std::fabs(down.groundHeight-.08f)<.00001f);
+    Game lowerNeutral=down,lowerReverse=down;lowerNeutral.tick({});lowerReverse.tick(left);
+    CHECK(std::fabs(lowerNeutral.progress.position.x-lowerReverse.progress.position.x)<.00001f);
     for(int n=0;n<100 && down.airborne();++n)down.tick({});CHECK(!down.airborne() && down.groundHeight==0);
     stepFloor(.02f);CHECK(loadGround(path));float supported=99;GroundContact owner;
     CHECK(groundedFootprint({.06f,2},{1,0},0,supported,&owner));CHECK(std::fabs(supported-.02f)<.00001f && owner.sourceNode==1);
@@ -599,6 +636,18 @@ void unequalFloorMotion() {
     edge.tick({});CHECK(std::fabs(edge.groundHeight-.02f)<.00001f && edge.groundContact.sourceNode==1);
     stepFloor(.049f);CHECK(loadGround(path));CHECK(groundedFootprint({.06f,2},{1,0},0,supported));CHECK(std::fabs(supported-.049f)<.00001f);
     stepFloor(.051f);CHECK(loadGround(path));CHECK(groundedFootprint({.06f,2},{1,0},0,supported));CHECK(supported==0);
+    FieldSlope angles;
+    auto lower=searchFieldSupport({1,2},{1,0},.03f,0,angles);
+    CHECK(!lower.found && std::fabs(lower.delta-.03f)<.00001f && lower.height==.03f);
+    auto nearDrop=searchFieldSupport({1,2},{1,0},.01f,0,angles);
+    CHECK(nearDrop.found && nearDrop.height==0 && nearDrop.delta==0);
+    auto retainedVertical=searchFieldSupport({1,2},{1,0},.03f,.04f,angles);
+    CHECK(retainedVertical.found && retainedVertical.height==0);
+    auto miss=searchFieldSupport({4,2},{1,0},.03f,0,angles);
+    CHECK(!miss.found && miss.delta<0 && angles.inclination==0);
+    auto independentDelta=searchFieldSupport({-.01f,2},{1,0},.051f,0,angles);
+    CHECK(independentDelta.found && std::fabs(independentDelta.height-.051f)<.00001f);
+    CHECK(independentDelta.delta>0); // Later rejected lower probe writes delta without replacing winning node.
     clearCollision();std::remove(path);
 }
 void visibility() {

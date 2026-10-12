@@ -29,7 +29,10 @@ inline bool intersectFieldRay(const std::array<float,9>& v,uint32_t cull,
     const float length=std::sqrt(normal.x*normal.x+normal.y*normal.y+normal.z*normal.z);
     if(length==0 || !std::isfinite(length))return false;
     hit.distance=distance;
-    hit.normal={normal.x/length,normal.y/length,normal.z/length};
+    // Source general and axis ray paths orient a back hit toward its origin
+    // before normalization (80016460–94; downward80015d20–7c).
+    const float orientedLength=dot>0?-length:length;
+    hit.normal={normal.x/orientedLength,normal.y/orientedLength,normal.z/orientedLength};
     return true;
 }
 inline bool ordinaryWallAttributes(uint32_t flags) {

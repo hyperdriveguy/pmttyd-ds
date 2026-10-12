@@ -3,6 +3,25 @@
 namespace ttyd {
 constexpr float GroundedMaxRise=.11f,GroundedNearDrop=.02f;
 constexpr float FrontStepDistance=.053f;
+// Native representations of the separately owned +218/+21c/+224 angles.
+// Host atan2/cos are adaptations, not the original SDK numerical service.
+struct FieldSlope {
+    float inclination=0,tiltZ=0,tiltX=0;
+    void normal(float nx,float ny,float nz) {
+        constexpr float degrees=57.295779513f;
+        auto projected=[&](float component) {
+            float angle=std::atan2(component,-ny)*degrees;
+            if(angle<0)angle+=360;
+            return std::trunc(std::fma(100.f,angle-180.f,.5f))/100.f;
+        };
+        inclination=std::atan2(std::hypot(nx,nz),ny)*degrees;
+        tiltZ=projected(nz);tiltX=projected(nx);
+    }
+};
+inline float supportMetadataHeight(float height) {
+    // +1c4 rounds in original engine units before conversion to native units.
+    return std::trunc(std::fma(100.f,height*100.f,.5f))*.0001f;
+}
 inline bool stairRiseAllowed(float rootY,float floorY,float slope) {
     const float rise=floorY-rootY;
     return std::isfinite(rise) && std::isfinite(slope) && rise>=.05f && rise<=GroundedMaxRise && slope<=30;
@@ -12,7 +31,7 @@ inline float floorSlopeDegrees(float nx,float ny,float nz) {
     if(!std::isfinite(nx) || !std::isfinite(ny) || !std::isfinite(nz))return 90;
     const float horizontal=std::hypot(nx,nz);
     if(horizontal<1e-8f && std::fabs(ny)<1e-8f)return 90;
-    return std::atan2(horizontal,std::fabs(ny))*57.295779513f;
+    return std::atan2(horizontal,ny)*57.295779513f;
 }
 inline bool floorSlopeAllowed(float nx,float ny,float nz){return floorSlopeDegrees(nx,ny,nz)<50;}
 // Normal marioSearchGround candidate branches8008ef24–8008eff4, native scale.01.

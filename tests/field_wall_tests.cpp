@@ -132,6 +132,7 @@ int main(int argc,char**) {
         CHECK(intersectFieldRay(triangle,1,{1,0,0},{-1,0,0},1,result));CHECK(result.distance==1 && result.normal.x==1);
         CHECK(!intersectFieldRay(triangle,1,{-1,0,0},{1,0,0},2,result));
         CHECK(intersectFieldRay(triangle,3,{-1,0,0},{1,0,0},2,result));
+        CHECK(result.normal.x==-1); // Double-sided back hit faces ray origin.
         CHECK(!intersectFieldRay(triangle,3,{1,0,0},{0,0,1},2,result));
         CHECK(!intersectFieldRay(triangle,3,{1,0,0},{-1,0,0},.99f,result));
         triangle={-1,1,-1,1,-1,-1,-1,1,1};

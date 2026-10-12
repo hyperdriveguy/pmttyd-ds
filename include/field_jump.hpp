@@ -4,9 +4,9 @@ namespace ttyd {
 // Ordinary Mario's original jumpData, at native engine-unit scale0.01.
 struct FieldJump {
     float height=0,velocity=0,acceleration=0,jerk=0,jerkRate=0;
-    int ticks=0;bool airborne=false,falling=false;
-    void begin(){height=0;velocity=.08f;acceleration=-.0084f;jerk=.0008f;jerkRate=-.0002f;ticks=1;airborne=true;falling=false;}
-    void beginFall(){height=0;velocity=-.001f;acceleration=-.002f;jerk=.00024f;jerkRate=-.00004f;ticks=2;airborne=true;falling=true;}
+    int ticks=0;bool airborne=false,falling=false,knownLowerFloor=false;
+    void begin(){height=0;velocity=.08f;acceleration=-.0084f;jerk=.0008f;jerkRate=-.0002f;ticks=1;airborne=true;falling=false;knownLowerFloor=false;}
+    void beginFall(bool known=false){height=0;velocity=-.001f;acceleration=-.002f;jerk=.00024f;jerkRate=-.00004f;ticks=2;airborne=true;falling=true;knownLowerFloor=known;}
     void tick(bool held,bool clampToBase=true) {
         if(!airborne)return;
         ++ticks;

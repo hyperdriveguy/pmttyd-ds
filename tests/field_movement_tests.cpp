@@ -44,6 +44,23 @@ int main() {
     m.grounded(1,1);CHECK(close(m.movementRate(),1+.190000057220459f/std::sqrt(2.f)));
     m.grounded(1,0);m.headingOffsetDegrees=90;CHECK(close(m.movementRate(),1.190000057220459f));
     m.grounded(0,1);CHECK(close(m.movementRate(),1));m.headingOffsetDegrees=0;
+    // Previous query angles gate axes independently using overall inclination.
+    m.slope.normal(.5f,std::sqrt(.75f),0);CHECK(std::fabs(m.slope.inclination-30)<.00001f);
+    CHECK(m.slope.tiltX!=0 && m.slope.tiltZ==0);
+    auto slopeTravel=m.reduceSlope({.01f,.01f});
+    CHECK(close(slopeTravel.x,.01f*std::sqrt(.75f)) && close(slopeTravel.z,.01f));
+    m.slope.normal(0,std::sqrt(.75f),.5f);slopeTravel=m.reduceSlope({.01f,.01f});
+    CHECK(close(slopeTravel.x,.01f) && close(slopeTravel.z,.01f*std::sqrt(.75f)));
+    m.slope.normal(.5f,std::sqrt(.5f),.5f);m.grounded(1,0);
+    auto cappedAfterSlope=m.airborne(1,0);
+    CHECK(close(cappedAfterSlope.x,(.0225f+.002625f)*std::sqrt(.5f)));
+    m.slope={};m.grounded(.5f,0);
+    CHECK(close(m.airborne(-1,0,true).x,.01f)); // Motion11 suppresses drift.
+    CHECK(close(m.airborne(-1,0,false).x,.007375f)); // Motion10 admits it.
+    FieldJump known;known.beginFall(true);CHECK(known.knownLowerFloor);
+    known.begin();CHECK(!known.knownLowerFloor);
+    CHECK(close(supportMetadataHeight(.012345f),.0123f));
+    CHECK(close(supportMetadataHeight(-.012345f),-.0122f)); // Fixed +.5, not symmetric rounding.
     clearCollision();Progress p;p.room=2;p.position={-4,2};
     auto launch=[&](Game& g,float x) {
         g.restore(p);Input i;i.x=x;g.tick(i);i.confirm=true;i.jumpHeld=true;g.tick(i);CHECK(g.airborne());

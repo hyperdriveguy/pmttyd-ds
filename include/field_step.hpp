@@ -7,6 +7,6 @@ struct FieldStep {
     int remaining=0;
     bool active() const{return remaining>0;}
     void begin(float from,float to){start=height=from;target=to;velocity=(to-from)/3;remaining=3;}
-    void tick(){if(active()){height+=velocity;if(--remaining==0)height=target;}}
+    void tick(){if(active()){height+=velocity;--remaining;}}
 };
 }
