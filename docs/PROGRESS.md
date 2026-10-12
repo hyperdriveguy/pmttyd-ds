@@ -1,3 +1,28 @@
+## 2026-10-12 — ID2 multi-item mode menu and cancellation closure
+
+Four contracts close seven local producer/control/lifecycle bodies:
+[mode table/sources](behavior/battle/MULTI_ITEM_TABLE_MODE_FIELDS_AND_SOURCE_BINDINGS.md),
+[Main](behavior/battle/MULTI_ITEM_MENU_MAIN_SELECTION_AND_NAVIGATION.md),
+[setup/end/Input](behavior/battle/MULTI_ITEM_MENU_SETUP_END_AND_INPUT_BINDINGS.md),
+[cancel check/display](behavior/battle/MULTI_ITEM_CANCEL_CHECK_CONTROL_AND_DISPLAY_REQUEST.md).
+Plain-row reason preservation,independent capabilities/actor presentation,
+raw enable/low8 WORD cost,current rereads,M550/state5,reason/cancel/audience,
+separate two-entry cursor,M551/state29 versus6,and display-after-decision
+covered.ID2 lock released;no native code/tests/assets changed.
+
+Validation:`tools/verify_multi_item_menu.py` twice,identical:21 hashes
+(7 complete/14 linked),477 instructions,18 spans.Python compilation,existing
+behavior/Input/interruption/weapon-menu verifiers,own links,and scoped whitespace
+passed.First make test81/82 failed packed-sampling address assertion;exact
+/tmp/id2-multi-test.log.Separate Python90 passed;make test retry passed82
+CTest/90 Python(/tmp/id2-multi-test-retry.log).Prior failure resolved by current
+state,root cause not inferred.`make all` passed.
+
+Limits:static local evidence only.UI Init/End/cancel display,party key1 weapon
+delegate/source,dynamic capabilities/whole multi-item events,query reachability,
+Game/platform/original execution/full-game requirements remain open.Next
+port-function priority:party weapon callback/source and query-event domains.
+
 ## 2026-10-12 — ID2 party/protect menu lifecycle and selection writes
 
 Three detailed contracts close six local bodies:

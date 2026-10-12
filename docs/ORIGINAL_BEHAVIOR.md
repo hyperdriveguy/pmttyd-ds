@@ -1137,3 +1137,13 @@ caller inputs. Reproduce with verify_map_tev_fixed.py:903 scoped words,dispatch,
 two imports/six sites/static literal reconstruction. Time-driven modes8/9,six
 middle branches,GX/source/lifetime/images and whole-system requirements remain
 open;containing TEV identity is deliberately partial semantic evidence.
+
+ID2 complete multi-item menu/cancellation delivery (2026-10-12):
+[Mode producer](behavior/battle/MULTI_ITEM_TABLE_MODE_FIELDS_AND_SOURCE_BINDINGS.md),
+[Main](behavior/battle/MULTI_ITEM_MENU_MAIN_SELECTION_AND_NAVIGATION.md),
+[lifecycle](behavior/battle/MULTI_ITEM_MENU_SETUP_END_AND_INPUT_BINDINGS.md),
+[cancel check](behavior/battle/MULTI_ITEM_CANCEL_CHECK_CONTROL_AND_DISPLAY_REQUEST.md)
+close seven bodies,partial modes/source bindings,current enable/low8 WORD cost,
+mode/state/cancel-completion/display request order.21 hashes/477 anchors/18
+spans,82 CTest/90 Python/make all pass after resolved initial sampling assertion.
+UI/delegate/source/query/Game/platform/original runtime remain open.
