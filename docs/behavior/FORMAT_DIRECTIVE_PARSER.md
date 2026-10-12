@@ -132,8 +132,9 @@ each length/conversion admission combination, p normalization retaining presence
 e/g explicit zero precision, alternate s length prefix, lc/hhn consumer behavior
 and literal-tail fallback. These are derived obligations, not executed traces.
 
-Remaining: integer/decimal/hex-float helper digit/precision/sign/prefix/rounding,
-wide conversion and memory services, actual insertion type/count/format call-site
+Numeric helper stages are now covered in [integer conversion](FORMAT_INTEGER_CONVERSION.md),
+[decimal layout](FORMAT_FINITE_DECIMAL_LAYOUT.md) and [hex-float](FORMAT_HEXADECIMAL_FLOAT.md).
+Remaining: wide conversion and memory services, actual insertion type/count/format call-site
 census and original execution comparisons. The local directive parser and both
 dispatch tables are documented; full formatting/full-game equivalence remains
 unfinished.

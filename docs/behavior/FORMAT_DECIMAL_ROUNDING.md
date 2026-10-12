@@ -4,8 +4,9 @@ US G8ME01 revision0, recovered2026-10-12. B evidence is static DOL instructions/
 data, not executed numeric output. round_decimal at0x8026b2e4,size12c and the
 entry/preparation stages of float2str at0x8026abc8,size71c are inspected here.
 See [format consumers](FORMAT_OUTPUT_RUNTIME.md), [directive grammar](FORMAT_DIRECTIVE_PARSER.md)
-and [integer conversion](FORMAT_INTEGER_CONVERSION.md). Hex-float layout
-and binary-to-decimal generation remain open; no host-libc equivalence
+and [integer conversion](FORMAT_INTEGER_CONVERSION.md). Hex-float layout and
+binary generation are covered [separately](FORMAT_HEXADECIMAL_FLOAT.md) and in
+[binary entry](FORMAT_BINARY_DECIMAL_ENTRY.md); no host-libc equivalence
 or complete floating-format claim is made.
 
 ## Decimal record fields and ownership (B)
@@ -102,7 +103,8 @@ float2str receives bufferEnd, formatRecord and double in f1. If signed precision
 word>509, return null before decimal generation. No local lower-bound check.
 Set decimal-generation control byte0=0 and signed-halfword+2=32, then call
 __num2dec at0x80266884 with(control,decimalRecord) and the double. Generator
-algorithms, exact32-digit request semantics and record invariants remain open.
+algorithms, exact32-digit request semantics and record invariants are now covered
+in [binary entry](FORMAT_BINARY_DECIMAL_ENTRY.md) and its linked helper contracts.
 
 Trim trailing ASCII zeros from the generated decimal while count>1. Each trimmed
 digit decrements byte count and increments exponent with halfword storage.
@@ -127,12 +129,12 @@ must not be conflated or treated as a universal fixed-point scale.
 
 ## Remaining obligations (P)
 
-Recover __num2dec generation, hex-float output,
-runtime numeric conversions and actual message format/type/count callers. Compare
+Recover remaining wide/memory services, floating environment and actual message
+format/type/count callers. Compare
 original special-value sign/case, generated record normalization, exact ties and
 zero-retention count parity before claiming a port's decimal output equivalent.
 Local rounding and preparation contracts are documented; full formatting/story/
 complete-game behavior remains unfinished.
 Finite mode selection, rounding budgets and exact byte construction are now
 specified in [finite layout](FORMAT_FINITE_DECIMAL_LAYOUT.md). Binary generation
-and hex-float output remain open.
+and hex-float local contracts are linked above; executed comparisons remain open.

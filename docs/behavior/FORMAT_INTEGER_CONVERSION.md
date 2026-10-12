@@ -114,7 +114,8 @@ Unsigned64 quotient/remainder helpers are now covered in
 [division](FORMAT_UNSIGNED64_DIVISION.md); this resolves their nonzero-radix
 arithmetic contract here.
 
-Remaining: decimal/hex-float conversion and rounding,
-wide/memory services, actual message format/type/count call-site census, replacement
+Decimal/hex-float local stages are covered in [finite layout](FORMAT_FINITE_DECIMAL_LAYOUT.md)
+and [hex-float](FORMAT_HEXADECIMAL_FLOAT.md), with linked generator/rounding contracts.
+Remaining: wide/memory services, actual message format/type/count call-site census, replacement
 callbacks and execution validation. Both integer converters' local stages and
 tables are documented; full formatting/full-game equivalence remain unfinished.

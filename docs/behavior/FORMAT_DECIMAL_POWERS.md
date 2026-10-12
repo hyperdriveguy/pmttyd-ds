@@ -132,5 +132,6 @@ Differential obligations: sparse dispatch and holes, seed identities, ASCII5
 comparison, both truncated seeds, signed odd halving, square-before-correction,
 rounding at each multiplication,42-byte copy and halfword exponent storage.
 Outstanding: floating environment, original
-execution/caller corpus, hex-float and remaining formatting/runtime contracts.
+execution/caller corpus and remaining formatting/runtime contracts. Hex-float
+local construction is now covered in [hex-float](FORMAT_HEXADECIMAL_FLOAT.md).
 Full formatting, story and complete-game equivalence are still unproven.

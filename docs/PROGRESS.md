@@ -3285,3 +3285,32 @@ caller census, floating environment and message renderer/manager cadence. Contin
 story attribution/order/branches/conditions and other missing original systems
 before complete-game requirements. Full objective active/incomplete; original
 execution comparisons still needed.
+
+## 2026-10-12 — Hexadecimal float construction
+
+Previous goal turn made progress through ba057ec. Began clean and added
+FORMAT_HEXADECIMAL_FLOAT.md for full local double2hex: signed precision cap,
+decimal-generator special recognition, raw special-value signs/case, signed
+integer exponent suffix, raw fraction nibble order/truncation, fixed leading1,
+zero/subnormal construction, alternate point, value sign and output displacement.
+Recorded precision>13's actual stack-address formula, initialized control bytes
+versus padding/other locals and maximal stack+263 read address at precision509.
+Examples/address consequences are derived, not executed originals or supported
+caller/overrun claims. Updated prior formatter documents and index to link the
+now-recovered local numeric stages and remove stale recovery gaps.
+
+Validation:728 instruction anchors and all prior checks passed read-only US ISO;
+special strings reuse the previously verified original block. Fresh223-function
+evidence reports matched byte-for-byte. All293 local behavior documentation links
+resolve; git diff --check passed. make test passed core plus36 Python tests;
+make all exited0, no rebuild. Only research/provenance/evidence tooling changed.
+No original execution/emulator run or profile/save changes; original disassemblies/
+reports remain ignored. Static evidence does not establish original caller domain,
+executed stack reads/output accuracy or original/native equivalence.
+
+Next: return to message rendering/manager cadence and record consumers, while
+retaining wide/memory services, real insertion format/type/count callers and
+floating environment as open formatter dependencies. Continue original story
+attribution/order/branches/conditions and other uncovered systems before
+complete-game requirements. Full objective active/incomplete; original execution
+comparisons still needed.

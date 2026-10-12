@@ -104,7 +104,8 @@ modern libc by field names alone.
 
 Numeric helpers return a start pointer into a local buffer; length
 is endPointer-start. Null helper result takes fallback, not a universal empty
-numeric output. Numeric digit/precision/rounding behavior remains unrecovered here.
+numeric output. Numeric digit/precision/rounding behavior is specified in the
+separate integer, decimal and [hex-float](FORMAT_HEXADECIMAL_FLOAT.md) contracts.
 Unknown/invalid normalized conversions and helper failure take fallback below;
 raw pointer formats may be normalized upstream, so this dispatch alone does not
 establish whether a raw format is accepted.
@@ -157,11 +158,11 @@ literal-tail fallback/early termination, callback zero/nonzero semantics,
 clipped sink count versus formatter total, final NUL placement and failure R=-1.
 These are static-derived obligations, not executed library comparisons.
 
-Remaining: parse_format grammar/width/precision consumption, integer and decimal/
-hex-float helper algorithms, wcstombs and memory primitives, actual insertion
+Grammar is now covered in [the parser](FORMAT_DIRECTIVE_PARSER.md), integer
+helpers in [integer conversion](FORMAT_INTEGER_CONVERSION.md), decimal in
+[rounding](FORMAT_DECIMAL_ROUNDING.md)/[finite layout](FORMAT_FINITE_DECIMAL_LAYOUT.md)
+and its linked generator contracts, and hex in [hex-float](FORMAT_HEXADECIMAL_FLOAT.md).
+Remaining: wcstombs and memory primitives, actual insertion
 format/type/count call sites and original execution comparisons. Output/varargs/
 consumer local contracts are documented; full formatting/full-game equivalence
 remain unfinished.
-Integer helper stages are now specified in
-[integer conversion](FORMAT_INTEGER_CONVERSION.md); floating/wide helpers and
-executed call-site comparisons remain open.

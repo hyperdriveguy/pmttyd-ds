@@ -148,6 +148,7 @@ NaN fractional signed zero, conversion shifts/sign/saturation and finite power
 endpoints. An independent integer bit-position enumeration of109816 normal/
 subnormal exponent and trailing-position classes confirms these three derived
 ranges; it is not an execution of original helper instructions.
-Remaining: hex-float/wide/memory
+Hex-float local construction is now covered in [hex-float](FORMAT_HEXADECIMAL_FLOAT.md).
+Remaining: wide/memory
 services, original caller census and execution comparisons. Full formatting,
 story and complete-game equivalence remain unproven.

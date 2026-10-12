@@ -111,5 +111,5 @@ Differential obligations: coefficient order, carry quotient/remainder, extra
 leading digit/exponent, all scratch-tail tie tests, retained parity, all9 carry
 with unchanged count, absence of trimming/zero normalization, sign0 and final
 caller sign restoration. Original executions and supported caller records are
-still needed. Remaining dependencies include floating environment, hex-float
-formatting and the original caller corpus.
+still needed. Hex-float construction is now covered in [hex-float](FORMAT_HEXADECIMAL_FLOAT.md).
+Remaining dependencies include floating environment and the original caller corpus.

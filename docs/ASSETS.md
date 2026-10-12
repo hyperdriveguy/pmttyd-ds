@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 222 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 712 instruction anchors plus those
+now fingerprints 223 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 728 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -104,16 +104,16 @@ Integer conversion adds two fingerprints and both33-entry dispatch-table hashes;
 the documented prefix/capacity stages are static evidence, not executed outputs.
 Decimal rounding/preparation adds two fingerprints, the original special-value
 string-block hash, sign-comparison zero and case-classification checks.
-Binary-to-decimal generation remains unrecovered here.
+Binary-to-decimal generation is covered by the subsequent entry/helper research.
 Finite layout research extends the existing float2str fingerprint's prose and
-anchors to local scientific/fixed/general paths. Binary generation, actual call
-ranges and executed layout/capacity behavior still need recovery/comparison.
+anchors to local scientific/fixed/general paths. Actual call ranges and executed
+layout/capacity behavior still need recovery/comparison.
 Binary decimal entry adds two fingerprints and its separate input-zero constant;
 numeric/ASCII phases and generator request boundaries are documented. Runtime
-numeric services and actual caller ranges remain explicit dependencies.
+floating environment and actual caller ranges remain explicit dependencies.
 Numeric decimal multiplication adds one fingerprint and local convolution,
-scratch, 36-digit retention and rounding contracts. Numeric runtime/caller
-invariants remain unrecovered; no original helper body is
+scratch, 36-digit retention and rounding contracts. Actual caller domains and
+executed numeric behavior remain unverified; no original helper body is
 incorporated into the native runtime.
 Decimal power research adds one fingerprint, the73-entry dispatch identity and
 184-byte seed-only block identity; the21 seed bindings are independently checked.
@@ -127,6 +127,10 @@ executed-original observations. No upstream numeric implementation is copied.
 Unsigned64 quotient/remainder add two fingerprints and local restoring-loop
 contracts. An authored recurrence check and zero-divisor derivations remain
 ignored metadata, explicitly separate from original instruction execution.
+Hexadecimal float research adds one fingerprint; special strings reuse the
+already verified original block. Documentation preserves raw exponent/fraction,
+truncation and extended-precision stack-address calculations. No original
+formatter body is compiled into the prototype or distributed as source.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,

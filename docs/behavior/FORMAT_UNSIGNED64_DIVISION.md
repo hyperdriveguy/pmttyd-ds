@@ -123,6 +123,7 @@ pair. Metadata reports remain ignored with the original inspection outputs.
 Differential obligations: zero/high-word count branches, equal-width early-test
 distinction, shift32/64, carry initialization and pending quotient insertion,
 signed trial rejection, unsigned high-bit operands and zero-divisor65-loop case.
-Remaining: original executions/caller corpus, hex-float/wide/memory services and
+Hex-float construction is now covered in [hex-float](FORMAT_HEXADECIMAL_FLOAT.md).
+Remaining: original executions/caller corpus, wide/memory services and
 floating environment. Full formatting, story and complete-game equivalence are
 still unproven.

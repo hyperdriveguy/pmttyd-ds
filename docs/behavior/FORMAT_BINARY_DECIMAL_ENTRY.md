@@ -137,6 +137,7 @@ helper ordering, numeric integer reversal and final sign overwrite. These are
 derived obligations, not executed conversion traces.
 
 Remaining: floating environment and executed generator comparisons,
-hex-float output and original format/type/count
+original format/type/count
 call-site corpus. Entry/internal local branches are documented; complete binary
-decimal generation, formatting/story/full-game equivalence remain unfinished.
+decimal generation execution, formatting/story/full-game equivalence remain unfinished.
+Hex-float local construction is now covered in [hex-float](FORMAT_HEXADECIMAL_FLOAT.md).

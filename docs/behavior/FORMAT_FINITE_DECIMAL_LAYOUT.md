@@ -126,8 +126,8 @@ Entry rejects signed P>509 before decimal generation. Scientific uses P+suffix
 displacement; fixed uses Q+M after rounding. These checks are distinct and may
 precede additional stored bytes. No destination length, heap resize or general
 error recovery exists locally. Buffer sign comes from generated record, preserving
-possible signed zero if the generator provides it. Actual generator sign behavior
-must still be recovered; do not infer it merely from the formatting consumer.
+signed zero from the generator. Actual generator sign behavior is now covered
+in [binary entry](FORMAT_BINARY_DECIMAL_ENTRY.md), independently of this consumer.
 
 ## Differential obligations and remaining work (P)
 
@@ -138,8 +138,10 @@ zero fill, literal integer-position loop, conditional decimal point, sign policy
 precision-copy mutations and all three capacity tests. These are derived cases,
 not executed formatting outputs or measured gameplay.
 
-Remaining: __num2dec binary-to-decimal generation/record invariants, hex-float
-layout, runtime helpers/wide/memory primitives and original format/type/count
+Binary generation/record invariants are now covered in
+[binary entry](FORMAT_BINARY_DECIMAL_ENTRY.md) and its linked helpers; hex layout
+in [hex-float](FORMAT_HEXADECIMAL_FLOAT.md).
+Remaining: floating environment, wide/memory primitives and original format/type/count
 call-site corpus. Local finite float2str layout plus preparation/rounding is
 documented across these files; full formatting/story/full-game equivalence
 remains unfinished.
