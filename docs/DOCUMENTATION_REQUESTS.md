@@ -19,7 +19,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | --- | --- | --- | --- | --- |
 | General action-record rule judgment and threshold helpers | DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [All68 general rules](behavior/BATTLE_GENERAL_RULE_JUDGMENT.md),[threshold/end/unit queries](behavior/BATTLE_RULE_THRESHOLD_AND_UNIT_QUERIES.md):complete judge/helper/query bodies,captured/current output ownership,duplicate54/55 and numeric0x02 mask;rule/raw record/reset/save/consumer/end/turn/source/runtime lifecycle remains open |
 | Attack-command event selection and action-record classification | JUMP-01, DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete selector](behavior/BATTLE_ATTACK_EVENT_SELECTION.md),[classifier/data/audience leaves](behavior/BATTLE_WEAPON_ATTACK_CLASSIFICATION.md):three dispatch tables,selection-time counts,event/category/byte write order,signed predicate and helper recapture/fallback closed;general rule/menu/source/category/record reset/runtime ownership remains open |
-| Partner live target direction/activity and front-floor service | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used partyGetTargetDir/partyGetTargetDistY and getFrontFloor complete selector/reread/scalar/ray/output contracts;global rise/target/backend/math/source domains,other motion engines,EVT-01 and original trajectories remain separate |
+| Partner live target direction/activity and front-floor service | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Direction/activity](behavior/FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md),[front-floor](behavior/FIELD_PARTNER_FRONT_FLOOR.md),[status/clearance](behavior/FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md):complete local selector/scalar/ray/output/leaf graphs plus direct DOL clearance census answered;full source/alias/REL/backend/math/EVT-01 and original trajectories remain open |
 | Action-record saturation/storage and turn-rule judgment | DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Byte updates](behavior/BATTLE_ACTION_RECORD_BYTE_UPDATES.md),[turn rules](behavior/BATTLE_ACTION_RECORD_TURN_RULES.md),[first process](behavior/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md):complete helpers/six-rule sums/two-phase writes/full first-process and fog/status leaves,34 DOL sites;general judge/action/reset/source/turn/scene/runtime ownership remains open |
 | Partner motion2 jump destination,flight and landing handlers | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Destinations](behavior/FIELD_PARTNER_JUMP_DESTINATION.md),[init](behavior/FIELD_PARTNER_JUMP_INITIALIZATION.md),[flight/landing](behavior/FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md):complete local both-handler/index/landing-request graphs answered;full target/front-floor/pose/audio/numeric/source/EVT-01 and original trajectories remain open |
 | Partner placement3 screen-reset output contract | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Placement3](behavior/FIELD_PARTNER_PLACEMENT3.md),[math](behavior/FIELD_PARTNER_PLACEMENT3_MATH.md),[NPC scan](behavior/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md):complete local nine-angle/raw/classification/fallback/output and heading/normal/NPC graph answered;full backend/NPC/source/numeric/EVT-01 and original trajectories remain open |
@@ -1638,3 +1638,22 @@ Verifier passes eight complete/linked hashes,390 anchors,two spans,60 exact
 DOL calls;all68 documented entry addresses reconcile with original table.
 make test46 CTest/78 Python and make all pass;1860 local links resolve.
 ID2 changed no native/test/asset conversion code.
+
+
+ID1 live target/front-floor delivery (2026-10-12):
+[Direction/activity](behavior/FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md),
+[front-floor](behavior/FIELD_PARTNER_FRONT_FLOOR.md),
+[status/clearance](behavior/FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md) close
+local q0 direction partner admission versus distance's Mario shortcut;TargetDistY
+returns activity fields rather than coordinate difference. Front-floor takes the
+live f1 heading from prior TargetDir,casts three UPWARD rays then downward300,
+uses horizontal normal magnitude<45 (not angle),writes current rootXYZ on miss,
+quantized pointXYZ on hit and returns ATTRIBUTES (success attr0 also returns0).
+Jump caller dependency/heading notes updated. Guarded kind2/flag/code20..21
+status3 and float60 SDA setter/one ReInit tail call pinned. Eight identities/
+six complete bodies plus selected backend/reinit,98 anchors,16 constants,three
+spans/two imports pass;recomputed census matches eight loads/one store/one call.
+Negative omitted-caller check rejects. make test47 CTest/78 Python and make all
+pass;audio-map packing provenance recorded in ASSETS. All1446 behavior links
+resolve at snapshot. Only ID1 scoped lock released;full source/alias/REL/backend/
+math/EVT-01 and original target/clearance traces remain open.

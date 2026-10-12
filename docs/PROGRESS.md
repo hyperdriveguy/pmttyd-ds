@@ -8817,3 +8817,41 @@ Next:complete live target-dir/Y/getFrontFloor and pose/audio service bindings,
 fall/homing/fly handlers,all state/index/source/numeric domains and original
 jump/landing trajectories. Full-game documentation and complete-game
 requirements remain incomplete.
+
+
+## 2026-10-12 — ID1 live target activity,direction and front-clearance
+
+Added [direction/activity](behavior/FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md),
+[front-floor service](behavior/FIELD_PARTNER_FRONT_FLOOR.md) and
+[status/clearance leaves](behavior/FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md).
+Complete local wrappers distinguish direction q0 partner selection from distance
+q0 Mario,repeat-pointer roles and TargetDistY activity fields. Complete front-
+floor graph takes live f1 heading,casts upward clearance before downward point,
+tests horizontal normal magnitude<45,writes fallback/current-root or quantized
+point XYZ and returns attributes rather than boolean success. Corrected previous
+jump caller dependency/heading notes. Complete status classifier and float60
+setter plus exact direct DOL access/call census specify bounded provenance;
+backend/reinit are only selected regions,full lifecycle/domain remains open.
+No concurrent native policy was changed by ID1.
+
+Validation:verify_field_partner_live_services.py passes eight containing hashes
+(six complete local bodies,two selected),98 instructions,16 constants,three
+spans and two lecture imports plus actual jump calls. Full seven-text-section
+scoped census matches eight direct float loads,one direct store and one linked
+setter call;negative omitted-caller expectation rejects. Repeated metadata
+byte-identical;Python compilation and prior jump/target/SDK verifiers passed.
+General verifier passed1980 anchors;all1446 behavior links resolve at snapshot.
+Gekko audit passed572 files/79399 instructions/596 paired-single ops,zero changes
+or unknowns. make test passed47 CTest suites and78 Python tests;make all passed/
+rebuilt3DSX. Logs:/tmp/id1-live-services-test.log and
+/tmp/id1-live-services-build.log. Build invoked existing3218-identity/five-PCM
+fallback audio-map pipeline;read-only source/local derivative paths and unchanged
+ID1 conversion policy are recorded in ASSETS. Outputs left unstaged. ISO stayed
+read-only;no original execution/target/clearance measurement,profile/save mutation
+or original binary/dialogue distribution. Only ID1 scoped lock released;
+concurrent native/ID2 work preserved outside this scoped commit.
+
+Next:fall/homing/fly and pose/audio handlers,all status/scalar/index/clearance/
+source/alias/REL/numeric domains,complete ray backend and original jump/target/
+clearance trajectories. Full-game documentation and complete-game requirements
+remain incomplete.

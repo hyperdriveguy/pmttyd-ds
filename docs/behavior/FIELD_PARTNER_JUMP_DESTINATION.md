@@ -44,11 +44,12 @@ Start local T from current P+94/+98/+9c. Apply this priority order:
 ### Equal-index route
 
 Request partyGetTargetDist(q,P.x,P.z). If ordered distance>R(2*M+1b8),request
-partyGetTargetDir(q,P.x,P.z),retain its angle,then getFrontFloor(P,&localFloor)
+partyGetTargetDir(q,P.x,P.z),retain its angle,then
+[getFrontFloor](FIELD_PARTNER_FRONT_FLOOR.md)(P,&localFloor,heading=f1 angle)
 at0x8014b638. Add10 to that output Y,put this Y in T,reset T.X/Z to current
 P root and move by R(original .6*P+f4) along the retained angle. There is no
-local check of getFrontFloor's return before reading its output;the full
-called output/domain contract remains open. If the distance condition did not
+local check of its attribute-mask return. The complete local service writes XYZ
+on ordinary miss/hit paths;full resource/source/numeric domains remain open. If the distance condition did not
 admit,retain the originally copied T. Publish T to P+94/+98/+9c on either
 outcome,then go to common initialization.
 
@@ -69,8 +70,9 @@ sincosf of that result. Preserve the separate helper request and FP ordering.
   not from root. Do not silently turn it into a conventional clamped approach.
 
 Publish the new T to P+94/+98/+9c. If ordered L<C,request partyNextReadId(q)
-before common initialization. The Y-query result is used only as an equality
-gate here;its complete live-target selection remains a called dependency.
+before common initialization. The [activity scalar](FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md) is used only
+as an equality gate here;the misnamed Y query does not measure a coordinate
+difference. Its source-field domains remain open.
 NaN does not compare equal to0. Ordered comparisons preserve their actual
 unordered branches under nontrapping continuation.
 

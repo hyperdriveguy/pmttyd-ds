@@ -1273,3 +1273,19 @@ Original assets retain copyright;local derivative use grants no redistribution
 rights. Catalogs/raw/audio packs were left unstaged outside this scoped research
 commit. No original execution,ISO/profile/save mutation or original binary/dialogue
 distribution occurred;this build-triggered conversion is explicitly recorded.
+
+
+Partner live direction/activity/front-clearance research by ID1 (2026-10-12):
+verify_field_partner_live_services.py with field_partner_live_services_evidence.json
+pins eight DOL identities (six complete local bodies;backend/reinit selected
+regions),98 instructions,16 constants,three numeric/vector spans,two lecture
+imports and exact DOL census of nine SDA accesses/one linked setter call.
+Original ELF/listings and field-partner-live-services-evidence.json remain ignored
+under artifacts/reference/behavior. make all again invoked the existing audio-
+map pipeline:3218 GameCube/0 Switch sound identities and five PCM fallbacks,
+using the read-only ISO sound/proj paths and local-assets/audio-map/RomFS paths
+recorded in the preceding motion2 provenance entry. Outputs remained unstaged;
+ID1 changed no conversion/config/audio code or licensing policy. Original assets
+retain copyright;local derivatives carry no redistribution grant. No original
+execution,ISO/profile/save mutation or original binary/dialogue distribution.
+Global parameter census is direct DOL evidence,not an alias/REL/runtime invariant.

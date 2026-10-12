@@ -635,3 +635,14 @@ close all68 local rules and helpers,including signed scalar thresholds without
 255 bypass,captured-versus-current output owners,duplicate54/55 inputs and
 end-helper numeric mask0x02. Descriptor/raw record/reset/save/status consumer
 ownership,full end/turn/scene scheduling and original traces remain open.
+
+
+[Live direction/activity](behavior/FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md),
+[front-floor](behavior/FIELD_PARTNER_FRONT_FLOOR.md) and
+[status/clearance writer](behavior/FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md)
+close local direction q0 partner admission,repeated pointer roles,TargetDistY
+activity scalar,guarded status codes,upward-clearance/downward-output sequence,
+heading input and attribute-mask return. Front-floor miss writes current rootXYZ;
+first-ray normal magnitude<45 is not an inclination-degree test. Original
+float60 setter and bounded DOL access/call census are pinned;full source/alias/
+REL/backend/math/domain and original trajectories remain open.
