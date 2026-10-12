@@ -89,7 +89,7 @@ The12-command nested script is:
 CheckActStatus's normalized output comes from the complete
 [CanActStatus contract](BATTLE_MOVE_COUNTS.md),not a plain HP>0 test. Skipping
 jump does not skip the containing power child's later announcement/wait.
-Encoded fall parameter decodes to binary32-0.5 under the delivered float reader;
+Encoded fall parameter decodes to binary32+0.5 under the delivered float reader;
 retain raw encoding and callback semantics rather than treating it as a new
 measured gravity. JumpPosition uses the already recovered local motion state;
 its count30/option-1 are requests,not a measured animation/render duration.
@@ -186,3 +186,9 @@ supplies effect-specific soft cleanup and normal fade/lifetime;
 [Disp/pose requests](../effect/MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md) supplies full
 local draw sequence. Actual driver/animation/resource/matrix/render/scene
 services and original timing/visual traces remain open.
+
+ID2 native-wrapper token correction (2026-10-12):rawf24a7c80 is signed-229999488;
+adding230000000 yields512,then multiplying binary32 1/1024 gives+0.5,bits3f000000.
+Earlier minus sign was incorrect. [Complete wrapper/source-token contract](BATTLE_MOVEMENT_WRAPPER_SOURCE_TOKENS.md)
+and verify_battle_movement_wrappers.py pin the original request and this result;
+no original runtime trajectory or activation is claimed.
