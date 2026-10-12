@@ -454,8 +454,11 @@ bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact,float*
 bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact) {
     if(!std::isfinite(velocity))return false;
     const float reach=std::fabs(velocity);
-    // Falling marioChkLandon passes velocity for both search arguments.
-    return groundWithin(p,worldY-reach-.0001f,worldY+reach+.05f,height,contact);
+    // Center-only legacy query adapter. The native actor uses all five probes.
+    FieldSlope slope;float floor=0;GroundContact selected;
+    if(!groundWithin(p,worldY-reach-.001f,worldY+reach+.05f,floor,&selected,nullptr,&slope) ||
+       !floorCandidateReachable(worldY,velocity,floor))return false;
+    height=floor;if(contact)*contact=selected;return true;
 }
 static bool queryFrontStep(Vec2 p,Vec2 direction,float rootY,float& height,float& slope,FieldSlope* record) {
     if(record)*record={};
@@ -473,29 +476,19 @@ bool frontStepGround(Vec2 p,Vec2 direction,float rootY,float& height,float& slop
     FieldSlope record;return queryFrontStep(p,direction,rootY,height,slope,&record);
 }
 bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& height,GroundContact* contact) {
-    float length=std::hypot(direction.x,direction.z);
-    if(!std::isfinite(length) || length<1e-6f)return false;
-    const float x=direction.x*FloorFootRadius/length,z=direction.z*FloorFootRadius/length;
-    const Vec2 offsets[]={{0,0},{x,z},{-z,x},{z,-x},{-x,-z}};
-    bool found=false;float best=-1e30f;GroundContact selected;
-    for(auto offset:offsets) {
-        float floor=0;GroundContact candidate;
-        if(landingGround({p.x+offset.x,p.z+offset.z},worldY,velocity,floor,&candidate) &&
-           floorCandidateReachable(worldY,velocity,floor) && floor>best){best=floor;selected=candidate;found=true;}
-    }
-    if(found){height=best;if(contact)*contact=selected;}
-    return found;
+    FieldSlope slope;const auto result=searchFieldSupport(p,direction,worldY,velocity,slope,velocity);
+    if(result.found){height=result.height;if(contact)*contact=result.contact;}return result.found;
 }
-FieldSupport searchFieldSupport(Vec2 p,Vec2 direction,float rootY,float velocity,FieldSlope& slope) {
+FieldSupport searchFieldSupport(Vec2 p,Vec2 direction,float rootY,float velocity,FieldSlope& slope,float depth) {
     slope={};FieldSupport result;result.height=rootY;
     const float length=std::hypot(direction.x,direction.z);
-    if(!std::isfinite(length) || length<1e-6f || !std::isfinite(velocity))return result;
+    if(!std::isfinite(length) || length<1e-6f || !std::isfinite(velocity) || !std::isfinite(depth))return result;
     const float x=direction.x*FloorFootRadius/length,z=direction.z*FloorFootRadius/length;
     const Vec2 offsets[]={{0,0},{x,z},{-z,x},{z,-x},{-x,-z}};
     float best=-100.f; // Original -10000-unit sentinel.
     for(auto offset:offsets) {
         float floor=0;GroundContact candidate;
-        if(!groundWithin({p.x+offset.x,p.z+offset.z},rootY-.111f,rootY+.05f+std::fabs(velocity),
+        if(!groundWithin({p.x+offset.x,p.z+offset.z},rootY-std::fabs(depth)-.001f,rootY+.05f+std::fabs(velocity),
                          floor,&candidate,nullptr,&slope))continue;
         const float below=rootY-floor;
         if(below>=GroundedNearDrop && below>std::fabs(velocity)) {result.delta=below;continue;}
@@ -508,7 +501,8 @@ bool groundedFootprint(Vec2 p,Vec2 direction,float rootY,float& height,GroundCon
     FieldSlope slope;const auto result=searchFieldSupport(p,direction,rootY,0,slope);
     if(result.found){height=result.height;if(contact)*contact=result.contact;}return result.found;
 }
-void Game::advanceVertical(bool held) {
+void Game::advanceVertical(bool held,bool dispatch) {
+    if(dispatch)fieldJump.dispatch(jumpBase+fieldJump.height);
     float previousY=0;if(integrateVertical(held,previousY))finishVertical(previousY);
 }
 bool Game::integrateVertical(bool held,float& previousY,bool update) {
@@ -520,26 +514,41 @@ bool Game::integrateVertical(bool held,float& previousY,bool update) {
         // Without the ascent flag, marioChkOverhead extends its ray by10 engine units.
         // Source motion10 records the query but bypasses jump-only response.
         overheadContact=headCollision(progress.position,moveDirection,previousY,fieldJump.velocity,ceiling,.1f);
-        fieldJump.tick(held,false);jumpHeight=jumpBase+fieldJump.height-groundHeight;
+        // This caller has already moved. Base mutation affects the next move,
+        // and the updated base selects this call's landing probe orientation.
+        fieldMovement.dampFallBase(fieldAirOnScreen,!marioFieldControl && fieldKeysOff,fieldAirDampingBypass);
+        if(!fieldAirOnScreen && !fieldAirDampingBypass)fieldJump.suppressDrift=true;
+        fieldJump.integrate(held);jumpHeight=jumpBase+fieldJump.height-groundHeight;
         return true;
     }
-    if(update)fieldJump.tick(held,false);
+    if(update)fieldJump.integrate(held);
     overheadContact=headCollision(progress.position,moveDirection,jumpBase+fieldJump.height,fieldJump.velocity,ceiling,
-                                  fieldJump.falling?.1f:fieldJump.velocity);
-    if(overheadContact && headMotionResponds(fieldJump.falling?10:3)) {
-        jumpBase=std::max(jumpBase,ceiling);fieldJump.beginFall();
-        groundContact={};jumpHeight=jumpBase-groundHeight;return false;
+                                  fieldJump.jumping?fieldJump.velocity:.1f);
+    if(overheadContact && headMotionResponds(fieldJump.motion)) {
+        jumpBase=std::max(fieldJump.takeoffY,ceiling);fieldJump.ceilingFall();
+        jumpHeight=jumpBase-groundHeight;return false;
     }
     jumpHeight=jumpBase+fieldJump.height-groundHeight;
     return true;
 }
 void Game::finishVertical(float worldY) {
-    float floor=0;GroundContact contact;
-    if(fieldJump.falling && landingFootprint(progress.position,moveDirection,worldY,fieldJump.velocity,floor,&contact)) {
-        fieldJump={};fieldStep={};fieldVerticalVelocity=0;groundHeight=progress.elevation=floor;groundContact=contact;jumpBase=floor;jumpHeight=0;
-    } else {
-        groundContact={};jumpHeight=jumpBase+fieldJump.height-groundHeight;
+    if(fieldJump.falling) {
+        const Vec2 direction=fieldMovement.speed!=0?Vec2{fieldMovement.headingX,fieldMovement.headingZ}:Vec2{facing,0};
+        const float offset=fieldMovement.speed!=0?fieldMovement.headingOffsetDegrees*3.14159265358979323846f/180.f:0;
+        const Vec2 foot{direction.x*std::cos(offset)+direction.z*std::sin(offset),
+                       direction.z*std::cos(offset)-direction.x*std::sin(offset)};
+        const auto support=searchFieldSupport(progress.position,foot,worldY,fieldJump.velocity,fieldMovement.slope,fieldJump.velocity);
+        groundContact=support.found?support.contact:GroundContact{};
+        if(support.found) {
+            previousGroundContact={};
+            const bool retain=(support.contact.attributes&0x200)!=0;
+            const float floor=retain?worldY+fieldJump.velocity:support.height;
+            fieldVerticalVelocity=retain?fieldJump.velocity:0;
+            fieldJump.land(fieldInputMagnitude>0,retain);fieldStep={};
+            groundHeight=progress.elevation=jumpBase=floor;jumpHeight=0;
+        }
     }
+    if(fieldJump.airborne)jumpHeight=jumpBase+fieldJump.height-groundHeight;
     if(groundHeight+jumpHeight<=VoidThreshold)beginVoid();
 }
 bool Game::beginVoid() {
@@ -626,23 +635,18 @@ void Game::move(const Input& i,bool launched) {
     // Original marioMoveMain remembers the eligible floor before moving.
     if(groundContact.attributes&0x40000000)returnContact=groundContact;
     float x=i.x, z=i.z, len=std::hypot(x,z);
+    fieldInputMagnitude=len;
     // Airborne motion retains takeoff travel and adds current-stick drift;
     // release does not replace retained travel with zero or a fresh walk rate.
     const auto& axes=inputProducer.channels[0].analog;
     const bool stepping=fieldStep.active();
-    FieldMovement::Displacement combined;
-    if(fieldJump.airborne)combined=fieldMovement.airborne(x,z,fieldJump.knownLowerFloor);
-    else if(stepping)combined=fieldMovement.retained();
-    else {
-        combined=i.physicalSnapshot?fieldMovement.groundedStick(axes.mainX,int8_t(-axes.mainY)):
+    FieldMovement::Displacement grounded;
+    if(!fieldJump.airborne && !stepping) {
+        grounded=i.physicalSnapshot?fieldMovement.groundedStick(axes.mainX,int8_t(-axes.mainY)):
             fieldMovement.grounded(x,z);
-        combined=fieldMovement.reduceSlope(combined);
+        fieldJump.enterGround(fieldMovement.speed==0?0:fieldMovement.speed==DashSpeed?2:1,groundHeight);
         if(fieldMovement.speed==0)fieldVerticalVelocity=0; // Idle entry clears jump tuple.
     }
-    // The original directional rate follows the air cap and uses retained
-    // travel heading, rather than the combined current-stick drift direction.
-    const auto travel=fieldMovement.applyMovementRate(combined);
-    if(len>0){x/=len;z/=len;}
     // Ordinary head/landing/ground probes use retained travel+1a4 when base
     // speed+180 is nonzero, otherwise the facing conversion (native flip).
     // Current-stick drift and combined travel do not rotate those probes.
@@ -651,12 +655,20 @@ void Game::move(const Input& i,bool launched) {
     const bool wasFalling=fieldJump.airborne && fieldJump.falling;
     float previousY=0;const bool verticalReady=!wasFalling && integrateVertical(i.jumpHeld,previousY,!launched);
     if(water.active())return;
+    // Ascent overhead can clear air flags before marioMove. Recompute the cap
+    // from the flags after that owner, rather than before the vertical pass.
+    const auto combined=fieldJump.airborne?
+        fieldMovement.airborne(x,z,fieldJump.suppressDrift || fieldJump.ticks==0,fieldJump.hasAirFlags()):
+        stepping?fieldMovement.retained():fieldMovement.reduceSlope(grounded);
+    // Direction gain follows air cap and keeps retained travel heading.
+    const auto travel=fieldMovement.applyMovementRate(combined);
+    if(len>0){x/=len;z/=len;}
     Vec2 p = progress.position;
     Vec2 candidate{p.x+travel.x,p.z+travel.z};
     const bool sourceWalls=collisionReady;
     if(sourceWalls) {
         FieldWallActor actor;actor.viewFlags=fieldViewFlags;
-        actor.motion=fieldJump.airborne?(fieldJump.falling?(fieldJump.knownLowerFloor?11:10):3):stepping?12:
+        actor.motion=fieldJump.airborne?fieldJump.motion:stepping?12:
             fieldMovement.speed==0?0:fieldMovement.speed==DashSpeed?2:1;
         actor.counter=fieldJump.airborne?int16_t(fieldJump.ticks):0;
         FieldWallServices services;services.ray=[](void*,FieldWallVector from,FieldWallVector direction,float distance) {
@@ -767,7 +779,7 @@ void Game::move(const Input& i,bool launched) {
         // Upstairs motion12 also records contact without the jump-only response.
         overheadContact=headCollision(p,moveDirection,groundHeight,fieldStep.velocity,ceiling,.1f);
     }
-    if(wasFalling)advanceVertical(i.jumpHeld);
+    if(wasFalling)advanceVertical(i.jumpHeld,false);
     else if(verticalReady)finishVertical(previousY);
     if(airborne())saveRequested=false;
 }
@@ -1093,6 +1105,7 @@ void Game::tick(const Input& rawInput) {
     // Upstairs entry and its three rises precede this invocation's movement.
     // Completion immediately dispatches current ground input/A; earlier edges
     // remain unbuffered. Retain the vertical tuple independently of countdown.
+    if(fieldJump.airborne)fieldJump.dispatch(jumpBase+fieldJump.height);
     if(fieldStep.active()) {
         fieldStep.tick();fieldVerticalVelocity=fieldStep.velocity;
         groundHeight=progress.elevation=fieldStep.height;jumpHeight=0;
@@ -1104,7 +1117,8 @@ void Game::tick(const Input& rawInput) {
             const auto& axes=inputProducer.channels[0].analog;
             fieldMovement.groundedStick(axes.mainX,int8_t(-axes.mainY));
         } else fieldMovement.grounded(i.x,i.z);
-        jumpBase=groundHeight;fieldJump.begin();saveRequested=false;sound=Sound::Jump;
+        previousGroundContact=groundContact;
+        jumpBase=groundHeight;fieldJump.begin(groundHeight,fieldMovement.speed);saveRequested=false;sound=Sound::Jump;
     }
     move(i,launched);
     if(warpRequest>=0 || water.active() || fieldStep.active())return;

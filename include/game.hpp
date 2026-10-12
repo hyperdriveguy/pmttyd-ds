@@ -98,6 +98,9 @@ public:
     float groundMetadataHeight=0; // Source +1c4; distinct from actual rootY.
     bool overheadContact=false;
     GroundContact groundContact,partnerContact;
+    GroundContact previousGroundContact; // Source +1ec, separate from current support.
+    bool fieldAirOnScreen=true; // Ordinary on-screen adapter; original projection owner pending.
+    bool fieldAirDampingBypass=false,fieldKeysOff=false;
     GroundContact wallContact;
     float wallContactDistance=10; // Source wrapper initial1000, native units*.01.
     uint32_t fieldViewFlags=0; // Original init clears+14; later view writers unbound.
@@ -110,6 +113,8 @@ public:
     void cancelRoad();
     bool reloadRequested=false;
     bool airborne() const{return fieldJump.airborne || fieldStep.active();}
+    const FieldJump& fieldAirMotion() const{return fieldJump;}
+    const FieldMovement& fieldTravel() const{return fieldMovement;}
     bool recoveryReturn(ReturnPoint& point) const;
     float cameraZ = 3.5f, cameraHeight = 0;
     float cameraX = 1, jumpHeight = 0, facing = 1, turnScale = 1;
@@ -157,11 +162,12 @@ private:
     FieldMovement fieldMovement;
     FieldStep fieldStep;
     float fieldVerticalVelocity=0;
+    float fieldInputMagnitude=0;
     float jumpBase=0;
     Vec2 moveDirection{1,0};
     ReturnPoint roomRespawn{1,0,3.5f};
     bool beginVoid();
-    void advanceVertical(bool held);
+    void advanceVertical(bool held,bool dispatch=true);
     bool integrateVertical(bool held,float& previousY,bool update=true);
     void finishVertical(float previousY);
     int turnTick = 0;
@@ -218,7 +224,7 @@ bool groundReturn(const GroundContact&,ReturnPoint& point);
 bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr,float* slope=nullptr);
 bool frontStepGround(Vec2 p,Vec2 direction,float rootY,float& height,float& slope);
 bool groundedFootprint(Vec2 p,Vec2 direction,float rootY,float& height,GroundContact* contact=nullptr);
-FieldSupport searchFieldSupport(Vec2 p,Vec2 direction,float rootY,float velocity,FieldSlope& slope);
+FieldSupport searchFieldSupport(Vec2 p,Vec2 direction,float rootY,float velocity,FieldSlope& slope,float depth=.11f);
 // Center falling floor ray (marioChkLandon): abs(v)+.0001 below, abs(v)+.05 above.
 bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
 bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& height,GroundContact* contact=nullptr);

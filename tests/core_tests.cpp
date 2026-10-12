@@ -430,6 +430,8 @@ void groundImport() {
     // A falling world-Y ray finds support within this step, not a distant roof.
     GroundContact landing;
     CHECK(landingGround({-3,2},.2f,-.08f,h,&landing));CHECK(std::fabs(h-.125f)<.001f);
+    CHECK(landingGround({-3,2},.1358f,-.01f,h));CHECK(std::fabs(h-.125f)<.00001f);
+    // SearchGround's .1-engine-unit ray tail admits this sub-two-unit drop.
     h=99;landing={123,456};CHECK(!landingGround({-3,2},.3f,-.08f,h,&landing));
     CHECK(h==99 && landing.sourceNode==456);
     CHECK(landingGround({-3,2},2.95f,0,h));CHECK(h==3);
@@ -482,10 +484,15 @@ void unequalFloorMotion() {
     for(int n=0;n<8;++n)jump.tick(right);
     CHECK(jump.progress.position.x>.075f && jump.airborne());
     CHECK(jump.groundHeight+jump.jumpHeight>1.3f); // World height does not fall with support.
-    CHECK(jump.groundContact.sourceNode==0);
+    CHECK(jump.groundContact.sourceNode==1 && jump.previousGroundContact.sourceNode==1);
+    // Jump/apex retains support; the active fall owner clears it before querying.
     for(int n=0;n<12;++n)jump.tick(right);
     for(int n=0;n<100 && jump.airborne();++n)jump.tick({});
     CHECK(!jump.airborne() && jump.groundHeight==0 && jump.groundContact.sourceNode==2);
+    CHECK(jump.previousGroundContact.sourceNode==0 && jump.groundMetadataHeight==1);
+    CHECK(jump.fieldAirMotion().pendingEntry && jump.fieldAirMotion().falling);
+    CHECK(jump.fieldAirMotion().ticks==0 && jump.fieldAirMotion().velocity==0);
+    jump.tick({});CHECK(!jump.fieldAirMotion().hasAirFlags() && jump.fieldAirMotion().takeoffY==0);
     Game fall;fall.restore(p);right.jumpHeld=false;
     for(int n=0;n<10;++n)fall.tick(right);
     CHECK(fall.airborne() && fall.groundHeight+fall.jumpHeight<1 && fall.groundContact.sourceNode==0);
@@ -641,6 +648,7 @@ void unequalFloorMotion() {
     CHECK(!lower.found && std::fabs(lower.delta-.03f)<.00001f && lower.height==.03f);
     auto nearDrop=searchFieldSupport({1,2},{1,0},.01f,0,angles);
     CHECK(nearDrop.found && nearDrop.height==0 && nearDrop.delta==0);
+    supported=99;CHECK(landingFootprint({1,2},{1,0},.0108f,-.01f,supported));CHECK(supported==0);
     auto retainedVertical=searchFieldSupport({1,2},{1,0},.03f,.04f,angles);
     CHECK(retainedVertical.found && retainedVertical.height==0);
     auto miss=searchFieldSupport({4,2},{1,0},.03f,0,angles);

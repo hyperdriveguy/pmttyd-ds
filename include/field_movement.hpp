@@ -45,14 +45,19 @@ struct FieldMovement {
         return out;
     }
     Displacement retained() const {return reduceSlope({headingX*speed,headingZ*speed});}
-    Displacement airborne(float x,float z,bool suppressDrift=false) const {
+    void dampFallBase(bool onScreen,bool controlsOff=false,bool bypass=false) {
+        if(bypass)return;
+        if(!onScreen)speed=std::fma(.10000000149011612f,-speed,speed);
+        else if(!controlsOff)speed=std::max(0.f,std::fma(.009999999776482582f,-.005f-speed,speed));
+    }
+    Displacement airborne(float x,float z,bool suppressDrift=false,bool cap=true) const {
         const float magnitude=std::hypot(x,z);
         const float drift=std::min(magnitude,1.f)*70.f*.0000375f;
         Displacement out{headingX*speed,headingZ*speed};
         if(magnitude>0 && !suppressDrift){out.x+=x/magnitude*drift;out.z+=z/magnitude*drift;}
         out=reduceSlope(out); // Previous query record, before the air cap.
         const float combined=std::hypot(out.x,out.z);
-        if(combined>Dash){out.x*=Dash/combined;out.z*=Dash/combined;}
+        if(cap && combined>Dash){out.x*=Dash/combined;out.z*=Dash/combined;}
         return out;
     }
 };

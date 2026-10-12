@@ -61,6 +61,41 @@ int main() {
     known.begin();CHECK(!known.knownLowerFloor);
     CHECK(close(supportMetadataHeight(.012345f),.0123f));
     CHECK(close(supportMetadataHeight(-.012345f),-.0122f)); // Fixed +.5, not symmetric rounding.
+    FieldJump apex;apex.begin(1);
+    CHECK(apex.phase==0 && apex.countdown==1 && apex.ticks==1 && apex.jumping);
+    while(apex.motion==3)apex.tick(true,false);
+    CHECK(apex.motion==10 && apex.pendingEntry && apex.jumping && !apex.falling);
+    CHECK(apex.previousMotion==3);
+    CHECK(apex.peakTicks==apex.ticks && close(apex.velocity,-.0028f));
+    const int peak=apex.peakTicks;const float apexHeight=apex.height;
+    apex.dispatch(1+apexHeight);
+    CHECK(apex.falling && !apex.jumping && !apex.pendingEntry && apex.ticks==peak+1);
+    CHECK(apex.peakTicks==peak && apex.phase==0); // Above takeoff; camera phase doesn't gate gravity.
+    apex.integrate(true);CHECK(apex.height<apexHeight && apex.phase==0);
+    FieldJump ledge;ledge.ticks=7;ledge.peakTicks=3;ledge.countdown=4;ledge.beginFall(true);
+    CHECK(ledge.pendingEntry && !ledge.hasAirFlags() && ledge.ticks==7);
+    ledge.dispatch(1);CHECK(ledge.ticks==8 && ledge.peakTicks==3 && ledge.countdown==4);
+    CHECK(ledge.phase==0 && ledge.falling && ledge.suppressDrift);
+    ledge.integrate(false);CHECK(close(ledge.velocity,-.003f));
+    FieldJump ceiling;ceiling.begin();ceiling.tick(true,false);const int bumpCount=ceiling.ticks;
+    ceiling.ceilingFall();CHECK(ceiling.pendingEntry && ceiling.motion==10 && !ceiling.hasAirFlags());
+    CHECK(ceiling.ticks==bumpCount && ceiling.height==0 && close(ceiling.velocity,-.001f));
+    ceiling.dispatch();CHECK(ceiling.falling && ceiling.ticks==bumpCount+1);
+    const int landingPhase=ceiling.phase,landingCountdown=ceiling.countdown;
+    ceiling.land(true);CHECK(!ceiling.airborne && ceiling.pendingEntry && ceiling.falling && ceiling.motion==1);
+    CHECK(ceiling.ticks==0 && ceiling.peakTicks==0 && ceiling.velocity==0);
+    CHECK(ceiling.phase==landingPhase && ceiling.countdown==landingCountdown);
+    ceiling.enterGround(1);CHECK(!ceiling.hasAirFlags() && !ceiling.pendingEntry);
+    ceiling.beginFall();ceiling.dispatch();ceiling.integrate(false);const float waterV=ceiling.velocity;
+    ceiling.land(false,true);CHECK(ceiling.velocity==waterV);
+    ceiling.enterGround(0,2);CHECK(ceiling.velocity==0 && ceiling.takeoffY==2 && ceiling.phase==0);
+    ledge.ticks=32767;ledge.dispatch(1);CHECK(ledge.ticks==-32768);
+    m.slope={};m.grounded(1,0);
+    m.dampFallBase(true);CHECK(close(m.speed,.022225f));
+    const float retainedSpeed=m.speed;m.dampFallBase(true,true);CHECK(m.speed==retainedSpeed);
+    m.dampFallBase(false);CHECK(close(m.speed,retainedSpeed*.9f));
+    m.dampFallBase(false,false,true);CHECK(close(m.speed,retainedSpeed*.9f));
+    m.grounded(1,0);CHECK(close(m.airborne(1,0,false,false).x,.025125f)); // Cleared air flags bypass cap.
     clearCollision();Progress p;p.room=2;p.position={-4,2};
     auto launch=[&](Game& g,float x) {
         g.restore(p);Input i;i.x=x;g.tick(i);i.confirm=true;i.jumpHeld=true;g.tick(i);CHECK(g.airborne());
@@ -74,6 +109,24 @@ int main() {
     CHECK(close(walk.progress.position.x-before,.012625f));
     Game dash;launch(dash,1);before=dash.progress.position.x;dash.tick(released);
     CHECK(close(dash.progress.position.x-before,.0225f));
+    Game damping;launch(damping,.5f);
+    while(damping.fieldAirMotion().motion==3)damping.tick(released);
+    CHECK(damping.fieldAirMotion().pendingEntry && damping.fieldAirMotion().jumping);
+    const int apexCount=damping.fieldAirMotion().ticks;
+    before=damping.progress.position.x;damping.tick(released);
+    CHECK(close(damping.progress.position.x-before,.01f)); // Movement precedes this tick's damping.
+    CHECK(close(damping.fieldTravel().speed,.00985f));
+    CHECK(damping.fieldAirMotion().ticks==apexCount+1 && damping.fieldAirMotion().peakTicks==apexCount);
+    CHECK(close(damping.fieldAirMotion().takeoffSpeed,.01f)); // Snapshot is independent of damped base.
+    before=damping.progress.position.x;damping.tick(released);
+    CHECK(close(damping.progress.position.x-before,.00985f)); // Prior damping affects this move.
+    Game offscreen;launch(offscreen,.5f);
+    while(offscreen.fieldAirMotion().motion==3)offscreen.tick(released);
+    offscreen.fieldAirOnScreen=false;before=offscreen.progress.position.x;offscreen.tick(stronger);
+    CHECK(close(offscreen.progress.position.x-before,.012625f));
+    CHECK(close(offscreen.fieldTravel().speed,.009f) && offscreen.fieldAirMotion().suppressDrift);
+    before=offscreen.progress.position.x;offscreen.tick(stronger);
+    CHECK(close(offscreen.progress.position.x-before,.009f)); // Offscreen tail suppresses next stick drift.
     Game standing;launch(standing,0);before=standing.progress.position.x;standing.tick(stronger);
     CHECK(close(standing.progress.position.x-before,.002625f));
     // Current input drift participates in the launch invocation itself.
