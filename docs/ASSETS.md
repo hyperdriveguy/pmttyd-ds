@@ -824,3 +824,13 @@ lecture-player-events.json under artifacts/reference/behavior;inspection ELFs/
 listings remain ignored. No asset conversion,original execution,ISO/profile/save
 mutation or original executable linking/distribution. Existing rights/provenance
 remain unchanged.
+
+Lecture field research by ID1 (2026-10-12): tools/verify_lecture_field_flow.py
+and its lecture_field_evidence.json manifest pin four original gor event spans,
+346 commands,332 scoped ADDR32 relocations,22 operands,four entry/NPC links and
+11 message sites in msg/US/gor_02.txt. Only identifiers,offsets,operands and
+payload hashes enter source history;original dialogue/control tokens remain in
+the read-only resource and must be reused unchanged. Reports lecture-field-entry,
+lecture-field-callers and lecture-field-flow-evidence.json remain ignored under
+artifacts/reference/behavior. No conversion,ISO modification,original execution,
+emulator profile/save mutation or executable/asset distribution occurred.

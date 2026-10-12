@@ -1,0 +1,320 @@
+{
+  "schema": 1,
+  "rel_sha256": "d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a",
+  "message_sha256": "1958e3d22bb27b01332e08b67f279a33f21e0e8a3aba2b947ad8c2a446144f16",
+  "events": [
+    {
+      "name": "kurihakase_lecture",
+      "file_offset": 300284,
+      "size": 1144,
+      "sha256": "003b2e23e35704e67e1beec34309e6237930c437125b86e274d17334db1e1ef3",
+      "commands": 75
+    },
+    {
+      "name": "kurihakase_init",
+      "file_offset": 266440,
+      "size": 536,
+      "sha256": "a26c1eef65e0b5f0af20d91e9bfd7099f4ffd9c0f2996d60b244226f3a6d59ae",
+      "commands": 37
+    },
+    {
+      "name": "kurihakase_wall_remove",
+      "file_offset": 299256,
+      "size": 1028,
+      "sha256": "404b1eb72ecc96d2ca959766a1f5375ce09f81e7bffeeb2fe135f223aa49550c",
+      "commands": 63
+    },
+    {
+      "name": "gor_02_init_evt",
+      "file_offset": 316756,
+      "size": 2172,
+      "sha256": "649d12889da97f2b7b29aa59f59f58671dfb916195160127f594df927e84109e",
+      "commands": 171
+    }
+  ],
+  "binding_count": 332,
+  "bindings_sha256": "f4d350b724658cec74abaf094f476b5cd15c9fffd630f11c3c76ef177f4191f5",
+  "anchors": [
+    {
+      "file_offset": 300260,
+      "description": "wall story10",
+      "words": [
+        4124967296,
+        10
+      ]
+    },
+    {
+      "file_offset": 318360,
+      "description": "reload story10",
+      "words": [
+        4124967296,
+        10
+      ]
+    },
+    {
+      "file_offset": 300312,
+      "description": "initial previous X",
+      "words": [
+        4264967299,
+        4264967296
+      ]
+    },
+    {
+      "file_offset": 300336,
+      "description": "initial previous Z",
+      "words": [
+        4264967301,
+        4264967298
+      ]
+    },
+    {
+      "file_offset": 300384,
+      "description": "intersection arguments",
+      "words": [
+        4264967296,
+        4264967298,
+        4264967299,
+        4264967301,
+        4064660096,
+        4065223296,
+        4064762496,
+        4065223296,
+        4264967302
+      ]
+    },
+    {
+      "file_offset": 300424,
+      "description": "intersection equality",
+      "words": [
+        4264967302,
+        1
+      ]
+    },
+    {
+      "file_offset": 300444,
+      "description": "loop wait",
+      "words": [
+        1
+      ]
+    },
+    {
+      "file_offset": 300464,
+      "description": "original previous slot copies Y",
+      "words": [
+        4264967301,
+        4264967297
+      ]
+    },
+    {
+      "file_offset": 300504,
+      "description": "scratch set",
+      "words": [
+        4204967296,
+        1
+      ]
+    },
+    {
+      "file_offset": 300652,
+      "description": "scratch clear",
+      "words": [
+        4204967296,
+        0
+      ]
+    },
+    {
+      "file_offset": 300720,
+      "description": "scratch wait",
+      "words": [
+        4204967296
+      ]
+    },
+    {
+      "file_offset": 300900,
+      "description": "choice1 equality",
+      "words": [
+        4264967296,
+        1
+      ]
+    },
+    {
+      "file_offset": 300912,
+      "description": "choice1 battle label",
+      "words": [
+        50
+      ]
+    },
+    {
+      "file_offset": 300956,
+      "description": "choice2 equality",
+      "words": [
+        4264967296,
+        0
+      ]
+    },
+    {
+      "file_offset": 300968,
+      "description": "choice2 battle label",
+      "words": [
+        50
+      ]
+    },
+    {
+      "file_offset": 300996,
+      "description": "skip common label",
+      "words": [
+        100
+      ]
+    },
+    {
+      "file_offset": 301244,
+      "description": "battle index",
+      "words": [
+        3
+      ]
+    },
+    {
+      "file_offset": 301296,
+      "description": "previous party position",
+      "words": [
+        0,
+        4264967296,
+        4264967297,
+        4264967298
+      ]
+    },
+    {
+      "file_offset": 301372,
+      "description": "common story11",
+      "words": [
+        4124967296,
+        11
+      ]
+    },
+    {
+      "file_offset": 301416,
+      "description": "common input enable",
+      "words": [
+        1
+      ]
+    },
+    {
+      "file_offset": 266576,
+      "description": "professor flag guard",
+      "words": [
+        4164968503,
+        0
+      ]
+    },
+    {
+      "file_offset": 266644,
+      "description": "later hide range",
+      "words": [
+        11,
+        17
+      ]
+    }
+  ],
+  "local_links": [
+    [
+      300272,
+      300284
+    ],
+    [
+      318372,
+      300284
+    ],
+    [
+      282624,
+      266440
+    ],
+    [
+      282632,
+      266976
+    ]
+  ],
+  "messages": [
+    {
+      "file_offset": 299472,
+      "key": "mac_0_083",
+      "form": "print",
+      "service": 2148345932,
+      "text_sha256": "27ad6c1debe79f252e25e13f35a35e7946810d40c3423ac761ca48b0d1803961",
+      "speaker_offset": 100924
+    },
+    {
+      "file_offset": 300164,
+      "key": "mac_0_084",
+      "form": "print",
+      "service": 2148345932,
+      "text_sha256": "5c1d99c4f1736bb5d6ecd8c86e72f919789242a8b6ca402f7c28fa4fd8883daa",
+      "speaker_offset": 100924
+    },
+    {
+      "file_offset": 300692,
+      "key": "mac_0_084_01",
+      "form": "print",
+      "service": 2148345932,
+      "text_sha256": "ec26282826b569c08a16fcf515246368d2ee6e0a549d31cca57d974862129e28",
+      "speaker_offset": 100924
+    },
+    {
+      "file_offset": 300856,
+      "key": "mac_0_084_02",
+      "form": "print",
+      "service": 2148345932,
+      "text_sha256": "800bce2c8feb0adba5a9ab1be42187608519abbafbaa399ea422e9a1c2229031",
+      "speaker_offset": 100924
+    },
+    {
+      "file_offset": 300880,
+      "key": "mac_0_084_02_yesno",
+      "form": "select",
+      "service": 2148343952,
+      "text_sha256": "d291b7ca1248840d1e7cc2e68b5029432f023cc1641caaf2feb4d9b05e1836d8"
+    },
+    {
+      "file_offset": 300920,
+      "key": "mac_0_084_03",
+      "form": "append",
+      "service": 2148344772,
+      "text_sha256": "4943387638d417ec791b7ff2a41662d24534ce57e1311a55411c92d93ff8db82"
+    },
+    {
+      "file_offset": 300936,
+      "key": "mac_0_084_03_yesno",
+      "form": "select",
+      "service": 2148343952,
+      "text_sha256": "2de8509fcd91ae65e98714edbfaaabed3a6553869fe3672c697e7c0c5c2e8413"
+    },
+    {
+      "file_offset": 300976,
+      "key": "mac_0_084_04",
+      "form": "append",
+      "service": 2148344772,
+      "text_sha256": "9cb8753894548fc4d7835f06d8d336170d38f44773be2c11071078652df79ab4"
+    },
+    {
+      "file_offset": 301008,
+      "key": "mac_0_084_05",
+      "form": "append",
+      "service": 2148344772,
+      "text_sha256": "a6712a93f8f6588f2581ad176745245ce6de85b2947604e5d12e2834721ecb53"
+    },
+    {
+      "file_offset": 301208,
+      "key": "mac_0_084_06",
+      "form": "print",
+      "service": 2148345932,
+      "text_sha256": "0ce6bb1eb2468ee7a6f7992452a07c4cb22864082013b52b9e4b38103e9010fb",
+      "speaker_offset": 106436
+    },
+    {
+      "file_offset": 301336,
+      "key": "mac_0_084_07",
+      "form": "print",
+      "service": 2148345932,
+      "text_sha256": "22271d0a5920bf375927b9bbfc902aaa047d82a740c0ac97b5e7e8f5430d6b0b",
+      "speaker_offset": 100924
+    }
+  ]
+}

@@ -388,3 +388,9 @@ substitution and a proven producer of TimingA's01000000 forced-success route.
 [Status-window arbitration](behavior/BATTLE_STATUS_WINDOW_ARBITRATION.md)
 establishes the lecture2740 suppression consumer separately from selection.
 Full menu/teardown/field and original lecture execution remain incomplete.
+
+[Lecture field entry and return](behavior/LECTURE_FIELD_ENTRY_AND_RETURN.md)
+now supplies the wall-event and story10 map-reload callers, crossing-poll
+operands, exact choice branches, setup3 launch and common story11 write. Skipping
+the lesson also advances to11. Field party services, intersection semantics,
+end-controller cleanup and original execution remain incomplete.

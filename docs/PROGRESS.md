@@ -6416,3 +6416,32 @@ Jump graph. Next requests: audience feedback/prize/source writers, complete
 EVT-01 scheduling and numerical/domain contracts, stage queued event execution,
 original input/state/motion/audio traces. Whole documentation and eventual
 complete-game requirements objective remains active/incomplete.
+
+
+## 2026-10-12 — ID1 lecture field entry, choices and return requests
+
+Completed a scoped static US contract in
+[LECTURE_FIELD_ENTRY_AND_RETURN.md](behavior/LECTURE_FIELD_ENTRY_AND_RETURN.md).
+The wall-event handoff and story10 map-reload callers bind setup3;both accepting
+and skipping the lesson reach the common story11 write. Preserved the original
+crossing loop's LV5<-LV1 update,exact numeric selection branches,Professor and
+Goombella US speaker bindings,NPC/party conversion order and post-wait requests.
+Professor init positions/flag guard are explicit;all-chapter talk is not closed.
+
+Validation:verify_lecture_field_flow.py passed four whole event spans/346
+commands,332 scoped ADDR32 bindings,22 operand anchors,four entry/NPC links and
+11 exact US message payload/service/speaker sites. Repeated metadata report was
+byte-identical;Python compilation passed. General behavior verification passed
+1980 instruction anchors;all826 behavior Markdown links resolved at this check.
+Gekko check passed478 listings/67944 instructions/376 paired-single operations,
+zero changes or unknowns. make test passed20 CTest and58 Python tests;make all
+built ttyd-2ds.3dsx successfully. Concurrent native and ID2 changes preserved.
+No original gameplay/emulator execution,ISO/profile/save mutation or original
+binary/dialogue inclusion in history occurred;the ISO was opened read-only.
+
+Released only ID1's lecture field lock. Next:intersection callback and encoded
+variable namespace;field party clear/kill/previous-position/run lifetime;complete
+battle-end and lecture-mode/window/HP immunity teardown;flag writers and original
+accepted/declined/interrupted/reentry observations. Full game documentation and
+remake remain incomplete;complete-game requirements remain deferred until system
+coverage is sufficient.
