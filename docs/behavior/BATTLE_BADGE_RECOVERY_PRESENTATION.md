@@ -83,3 +83,10 @@ still allowing the event's later recovery;optional name0 bypass. Full variable
 namespace/numerical extremes,effect renderer/assets/audio,display lifecycle and
 original execution traces remain open. These request bindings must not be
 replaced with generated tones/art or fabricated story text.
+
+
+Complete [integer namespace](EVENT_INTEGER_OPERAND_NAMESPACES.md),
+[float namespace](EVENT_FLOAT_OPERAND_ROUTING.md) and
+[saved storage](EVENT_SAVED_SWITCH_STORAGE.md) contracts now extend the scoped
+local-coercion descriptions above. Full renderer/audio and numerical/source/
+persistence/original execution dependencies remain open.

@@ -22,6 +22,9 @@ complete gameplay sequences before further general-library edge-case recovery.
 | [MoveFrame/MovePosition](BATTLE_MOVE_FRAME_AND_POSITION.md) | Complete count-query versus velocity-adjusted motion,first-call integration,XYZ snap/yield and actual callers | Numeric/source/sound/scheduler composition and original timing |
 | [Unit/part position queries](BATTLE_UNIT_PART_POSITION_QUERIES.md) | Complete home/offset/world/scaled hit leaves,registry-part helper and event integer/sentinel wrapper | Actual source/scale/world/lifetime writers and original damage/position traces |
 | [Movement sound control](BATTLE_MOVEMENT_SOUND_CONTROL.md) | Complete retained voice/position,alternating signed periods and stop/core wrappers | Sound trigger/playback/resources/source lifetime and original audio traces |
+| [Integer operand namespaces](EVENT_INTEGER_OPERAND_NAMESPACES.md) | Full signed tag routing,storage and integer read/write/return semantics | Storage/source/numeric domains,persistence and original traces |
+| [Float operand routing](EVENT_FLOAT_OPERAND_ROUTING.md) | Full API-asymmetric bands,quantized words,flag truth and old-value return | Numeric/storage domains and original execution |
+| [Saved switch leaves](EVENT_SAVED_SWITCH_STORAGE.md) | Complete RAM byte/flag leaves,GSW0 word exception and GP reload | Save/source/capacity lifecycle and original traces |
 | [Event deletion and copy-back](EVENT_DELETE_AND_COPYBACK.md) | Complete child-first/brother scan,parent copy-back,clear/counter and DeleteID scan | Opcode/domain/source lifetime and original traces |
 | [Stop/start traversal](EVENT_STOP_START_RELATIONSHIP_TRAVERSAL.md) | Complete descendant-first type masks,inlined context captures and All scans | Pause/UI/domain/source and original runtime traces |
 | [Run and ID-output variants](EVENT_RUN_AND_ID_OUTPUT_VARIANTS.md) | Complete92/93/108/111 copy/order/ownership and output semantics | Lifetime/control/domain and original traces |

@@ -18,6 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Ordinary field partner movement callbacks modes0/1/2 | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover partyMoveWalk and unk_800ca884 complete local request graphs and actual driver/kind bindings;called terrain/collision/pose engines,operand namespaces and original traces remain separate |
+| Full event integer/float operand namespaces and storage routing | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Integer APIs](behavior/EVENT_INTEGER_OPERAND_NAMESPACES.md),[float APIs](behavior/EVENT_FLOAT_OPERAND_ROUTING.md),[saved leaves](behavior/EVENT_SAVED_SWITCH_STORAGE.md):complete signed routing/coercion/index/read-write-return and storage leaves;capacity/numeric/source/save/runtime remain open |
 | Field driveParty dispatch and local update order | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Driver dispatch](behavior/FIELD_PARTY_DRIVER_DISPATCH.md),[global countdown/action](behavior/FIELD_PARTY_GLOBAL_COUNTDOWN_AND_ACTION.md):complete local15-mode/pending/destruction/tail and countdown/action requests answered;called mode/collision/animation engines,writers/callers,EVT-01 and original traces remain open |
 | Complete event deletion and stop/start relationship traversal | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Deletion/copy-back](behavior/EVENT_DELETE_AND_COPYBACK.md),[stop/start](behavior/EVENT_STOP_START_RELATIONSHIP_TRAVERSAL.md):complete local recursive/inlined context/scan/type/write policy;other opcodes/namespace/source/domain and original traces remain open |
 | Field party mode initialization and current-index ownership | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Mode initialization](behavior/FIELD_PARTY_MODE_INITIALIZATION.md),[driver/index](behavior/FIELD_PARTY_DRIVER_AND_INDEX_OWNERSHIP.md):complete local transition/init/eligibility and scoped direct-index census answered;all mode update/services/callers,alias/REL/index/slot writers,battle teardown and original traces remain open |
@@ -453,10 +454,10 @@ binding and full tagged opcode/value providers remain next before native Jump.
 
 Current delivered coverage:the complete local manager/priority loop,root/typed/
 child/brother constructors,restart,plain/ID run and concurrency variants,wait/
-USER_FUNC continuations,control wrappers,setters and full deletion/stop/start
-lifetime bodies are now linked in the scoped delivery table and EVENT_RUNTIME
+USER_FUNC continuations,control wrappers,setters,full deletion/stop/start and
+integer/float operand routing/saved RAM leaves are now linked in the scoped delivery table and EVENT_RUNTIME
 follow-ups. These answer those parts of the original request below. Remaining
-closure includes other reachable opcode/variable namespace bodies,context/time/
+closure includes other reachable opcode bodies,numeric/storage/context/time/
 source/domain initialization and original pause/multicredit/creation/deletion
 traces. A portable manager test pass is not a complete executed Jump/story VM.
 
@@ -935,3 +936,17 @@ fingerprints,70 anchors,SDA span and paired245-instruction comparison:only seven
 flag mutations differ between Stop/Start. Own lock released;other EVT-01 scope
 and ID1 reservations remain open. make test passes26 CTest suites and58 Python
 tests;make all passed. No native changes by ID2.
+
+
+ID2 EVT-01 operand namespace delivery (2026-10-12), partial answer:
+[integer APIs](behavior/EVENT_INTEGER_OPERAND_NAMESPACES.md),[float APIs](behavior/EVENT_FLOAT_OPERAND_ROUTING.md)
+and [saved leaves](behavior/EVENT_SAVED_SWITCH_STORAGE.md) close all four local
+reader/setter bodies,GetWork and ten called switch leaves. Signed exact routing
+bands differ by API;float APIs must not share an integer-family decoder. Fetched-
+word lower-bound coercion also differs. Setters'old-word/old-boolean/raw-value/
+float return policies and read-before-store are explicit. GSW0 uses GP174 WORD,
+nonzero indices GP578 bytes;LSW0 is a byte. No automatic output sentinel,namespace
+bounds or disk write is established. Verifier passes15 full body fingerprints,
+94 anchors and seven constants/SDA spans. Own lock released;other opcode/numeric/
+capacity/source/persistence and original traces remain EVT-01 work. make test
+passes28 CTest suites and58 Python tests;make all passed. ID2 made no native edits.

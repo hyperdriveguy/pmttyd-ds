@@ -252,3 +252,14 @@ before each type mask and differ only in seven flag-mutation instructions.
 Ancestor cancellation preserves copy-back;independent inline ownership remains
 separate. No immediate host suspension or rollback follows from these services.
 Remaining opcode/namespace/source/domain and original runtime closure stays open.
+
+
+## Complete operand namespace follow-up (2026-10-12)
+
+[Integer](EVENT_INTEGER_OPERAND_NAMESPACES.md),[float](EVENT_FLOAT_OPERAND_ROUTING.md)
+and [saved storage](EVENT_SAVED_SWITCH_STORAGE.md) now close full GetValue/
+SetValue/GetFloat/SetFloat signed ranges,storage routing,coercion/order/return
+and called switch leaves. Earlier full-namespace partial caveats above are
+superseded for these local bodies. Integer and float routing differ;no common
+family decoder or generic output sentinel is established. Save/disk lifecycle,
+source/capacity/numeric domains,other opcodes and original traces remain open.

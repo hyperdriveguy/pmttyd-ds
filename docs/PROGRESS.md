@@ -6963,3 +6963,31 @@ mode/collision/effect/pose/projection services;countdown/input-off/flag and slot
 index writers;complete field/battle teardown and original transition traces.
 Full system documentation/remake remain incomplete;complete-game requirements
 remain deferred until adequate coverage.
+
+### 2026-10-12 — Documentation ID2: full operand namespace bodies
+
+Delivered EVENT_INTEGER_OPERAND_NAMESPACES.md,EVENT_FLOAT_OPERAND_ROUTING.md
+and EVENT_SAVED_SWITCH_STORAGE.md for EVT-01 scoped namespace request.
+Complete four APIs plus context getter and ten saved RAM leaves specify signed
+bands/bases,indexed storage,flag quotient/remainder/PPC shift,numeric coercion,
+read/store/return policy and context/GP capture. Integer versus float bands are
+asymmetric:float APIs omit UF/saved-flag branches,and SetFloat broad GF routing
+covers integer saved namespaces. No shared semantic tag decoder was invented.
+GSW0 has separate full-word GP174 storage;nonzero bytes and LSW differ. Setter
+old-word/old-bool/raw-value/float returns and1024 encoding are explicit. No array
+bounds/null/output sentinel or on-disk persistence inference. Earlier scoped
+badge presentation now links the full namespace contracts.
+
+Validation: verify_event_operand_namespaces.py passed15 complete body hashes,
+94 instruction anchors,seven numeric/SDA spans;report/tmp/id2-namespace-evidence.json.
+Existing lifetime and badge-tail evidence checks passed. make test passed28
+CTest suites and58 Python tests;make all exited0,no rebuild. All942 then-current
+behavior local links resolved;git diff --check passed. ID2 made no native,asset,
+ISO,save/emulator-profile mutations;inspection/report artifacts remain/tmp.
+Concurrent native creation/field and ID1 research preserved and not staged.
+
+Released only ID2's namespace lock,linked three contracts in inbox/index/runtime
+and scoped presentation;updated EVT-01 current-delivery summary. Next:remaining
+reachable opcode bodies,numerical/conversion and storage-domain/source/persistence
+ownership,original script/pause/multicredit/creation/deletion traces. Complete-game
+documentation and subsequent requirements objective remains active/incomplete.
