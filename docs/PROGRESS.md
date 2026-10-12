@@ -1,5 +1,34 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native effect deletion and fog payload ownership
+
+Implemented recovered hard deletion,soft deletion and raw Maya payload release.
+Null/inactive records return before payload reads;soft mask02 writes retained
+flags|04 without free. Other active records free heap3 payload before clearing
+ONLY record.flags;stale payload/name/count/callback/resource bytes survive.
+Soft fallback uses retained flag tests rather than rereading flags. Raw Maya
+release forwards its input unconditionally,including0,without record lookup.
+
+Native effect services use actual shared-memory SDK heap free. Fog/turn-first
+adapter now defaults to recovered soft deletion while allowing explicitly owned
+backend overrides. No fade duration,update completion,automatic record/payload
+clear or platform null-free recovery is invented. Native address/allocator valid
+input policy remains separate from original unchecked payload behavior.
+
+Validation:make test passes68 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-effect-deletion-test-final.log and
+/tmp/pm-effect-deletion-build-final.log. Fixtures cover null/exact-zero/bit0-absent
+flags,02/04 combinations,repeated deferred stores,no deferred payload read,
+heap3 exact arguments,zero payload forwarding,flags-after-free aliases and all
+other record bytes preserved. Native fog→soft request→hard SDK free→address
+reuse and immediate soft/raw Maya releases pass against actual byte RAM/heap3
+services. Arena/records/cache are authored provider inputs. Initial test table
+mixed signed/unsigned literals;corrected before final full checks.
+
+Next:rule-judgment provider,complete effect pool/construction/update/draw/resource
+ownership and remaining native turn/Jump callbacks. Active visual graph,outer
+turn/Game binding and movement-wrapper reply remain open;goal incomplete.
+
 ## 2026-10-12 — ID2 smart compaction and file-payload movement
 
 Added two complete local smartGarbage/fileGarbageMoveMem contracts and verifier.

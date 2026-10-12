@@ -1,8 +1,13 @@
 #include "battle_event_callbacks.hpp"
 #include <cassert>
 #include <cstring>
+#include "event_memory_release.hpp"
 
 namespace ttyd {
+EffectDeletionServices nativeEffectDeletionServices(EventNativeRuntime& runtime) {
+    EffectDeletionServices s;s.memory=runtime.memoryBinding.services();s.user=&runtime;
+    s.freeHeap=[](void* p,int32_t heap,uint32_t payload) {eventHeapFree(heap,payload,static_cast<EventNativeRuntime*>(p)->memoryBinding.services());};return s;
+}
 BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend& backend) {
     assert(backend.runtime);BattleTurnFirstServices s;s.user=&backend;s.memory=backend.runtime->memoryBinding.services();
     s.byte=[](void* p,uint32_t a) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);auto actors=nativeBattleActorServices(*b.runtime);return actors.byte(actors.user,a);};
@@ -10,7 +15,7 @@ BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend& ba
     s.fortune=[](void* p) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);return battleMajinaiCheck(nativeBattleMajinaiQueryServices(*b.runtime));};
     s.irand=[](void* p,int32_t bound) {auto& r=*static_cast<BattleTurnFirstBackend*>(p)->runtime;assert(r.platform.irand);return r.platform.irand(r.platform.user,bound);};
     s.resetMove=[](void* p,uint32_t unit) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);if(b.resetMove)b.resetMove(b.user,unit);else resetPackedBattleMoveStatus(unit,nativeBattleActorServices(*b.runtime));};
-    s.softDelete=[](void* p,uint32_t effect) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);assert(b.softDelete);b.softDelete(b.user,effect);};return s;
+    s.softDelete=[](void* p,uint32_t effect) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);if(b.softDelete)b.softDelete(b.user,effect);else softDeleteEffect(effect,nativeEffectDeletionServices(*b.runtime));};return s;
 }
 BattleActorServices nativeBattleActorServices(EventNativeRuntime& runtime) {
     BattleActorServices s;s.memory=runtime.memoryBinding.services();s.user=&runtime;

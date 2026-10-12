@@ -496,6 +496,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): complete hard/soft/raw Maya
+effect-release leaves now preserve record flags/payload ordering and heap3 family.
+Native fog adapter defaults to actual soft deletion and SDK-backed free;
+68 CTest/78 Python and make all pass. Deferred02→OR04 records retain allocation;
+hard/immediate paths release payload then clear only flags. Native fog/deferred/
+hard free/reuse path is integrated. Effect update/resource/render/record-payload
+source ownership,rule/outer turn/Game and original traces remain open;movement-
+wrapper request remains pending. Continue EVT-01/DMG-02 closure via docs.
+
 Native implementation breadcrumb (2026-10-12): native turn-first-process
 now defaults to recovered original-byte ResetMoveStatus rather than requiring
 an authored reset callback. Fast/Slow duration storage,byte narrowing,signed Slow
