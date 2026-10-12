@@ -70,6 +70,7 @@ FUNCTIONS = (
     'JUTFontSetup', 'JUTFont_CodeToGlyph', 'kanjiSearch', 'hankakuSearch',
     'FontGetMessageWidth', 'FontGetMessageWidthLine', 'iconGetWidthHight', 'TEXGet',
     'sscanf', '__StringRead', '__sformatter',
+    'parse_format@MSL_C.PPCEABI.bare.H.a scanf.c',
     'btlevtcmd_AnnounceMessage', 'btlevtcmd_AnnounceSetParam',
     'BattlePadCheckTrigger', 'BattlePadMultiCheckTrigger', '_disp@battle_message.o',
     'evt_btl_camera_set_mode', 'evt_btl_camera_set_homing_unit',

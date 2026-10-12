@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 278 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1040 instruction anchors plus those
+now fingerprints 279 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1064 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -539,3 +539,11 @@ contracts cover ABI, EOF/pushback, counters, output storage and string loops;
 scanf grammar/numeric/multibyte internals are explicitly open. No original code
 is executed, compiled or exported into source history; local ELF/disassembly/
 metadata reports remain ignored. No message/asset conversion or license change.
+
+Scanf-specific parse_format adds one namespace-qualified US fingerprint and24
+anchors. Read-only checks pin its40-byte initializer, all52 dispatch targets via
+a complete table hash and ten width-digit classification codes. Authored grammar
+covers suppression, wrapped widths, storage selectors and acceptance bitmaps;
+no original parser implementation/format payload is copied into source. Its ELF,
+filtered symbol CSV and disassembly stay ignored. No asset conversion, original
+execution or license change occurs.

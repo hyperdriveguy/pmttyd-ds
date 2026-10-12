@@ -4,7 +4,8 @@ US G8ME01 revision0, recovered2026-10-12. Evidence B: __sformatter at
 0x8026c498,size0x9ac, inspected original DOL instructions and classification
 bytes. See [entry/string reader](SCAN_INPUT_RUNTIME.md),
 [shared varargs](FORMAT_OUTPUT_RUNTIME.md) and [icon callers](FONT_MESSAGE_WIDTH.md).
-This covers the complete local consumer body; directive grammar and numeric/
+This covers the complete local consumer body.
+[Directive grammar](SCAN_DIRECTIVE_PARSER.md) is recovered separately; numeric/
 multibyte helper internals remain dependencies. No original execution occurred.
 
 ## Interface, counters and descriptor (B)
@@ -27,8 +28,9 @@ then uses its returned format continuation. The consumed descriptor fields are:
 | 4 word | Remaining field width, decremented by character/string loops |
 | 8..0x27 | 256-bit acceptance bitmap used by s/[ loops |
 
-The original parser's validation, aliases, default widths and bitmap construction
-must be recovered before treating arbitrary format text as this descriptor.
+The [directive parser](SCAN_DIRECTIVE_PARSER.md) establishes validation, aliases,
+default widths and bitmap construction; compose its exact rules with these
+consumers before interpreting arbitrary format text.
 For nonsuppressed conversions other than '%', request __va_arg class1 and load
 a destination pointer from the returned slot **before** checking reader status
 or dispatch validity. Suppressed and '%' routes use destination=null. Except
@@ -162,8 +164,8 @@ loop and final return. A complete hash pins classification bytes. These are
 static checks, not an executed scanf corpus. Local inspection artifacts remain
 ignored; no original routine is compiled into the port.
 
-Next recover scanf-specific parse_format, __strtoul/__strtoull/__strtold and
-mbtowc. Compare actual icon argument strings and boundary formats, including
+The [scanf-specific parser](SCAN_DIRECTIVE_PARSER.md) is now recovered. Next
+recover __strtoul/__strtoull/__strtold and mbtowc. Compare actual icon argument strings and boundary formats, including
 suppression/partial reads, high-byte literals/0xff, EOF unread, n, storage
 selectors and wide-pointer increments. Only after those dependencies and original
 callers are verified can parsing/layout equivalence be claimed. Original story

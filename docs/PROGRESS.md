@@ -3766,3 +3766,32 @@ save/content systems before complete-game requirements. Full goal active/
 incomplete; static local contracts do not prove complete scanner or full-game
 fidelity. Source text, message IDs/control tokens and story conditions must remain
 faithful reused data.
+
+## 2026-10-12 — US scanf directive grammar
+
+Recovered scanf-specific parse_format0x8026ce44,size548; added namespace-qualified
+fingerprint separate from printf's same-name parser. Added detailed
+SCAN_DIRECTIVE_PARSER.md:40-byte defaults, immediate percent shortcut,
+suppression, decimal width accumulation without cap and with word wrap/zero
+rejection, six parsed length selectors,52-slot conversion routing/validation,
+p normalization, s acceptance bitmap, scanset first-bracket/complement handling,
+signed-byte ranges and descriptor/continuation returns. Updated scan dependency
+links/index without equating this service to host scanf.
+
+Validation:1064 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO. Added all40 initializer bytes, full52-target dispatch hash
+and ten digit classification codes. Fresh279-function reports reproduced
+byte-for-byte. All424 local behavior links resolved; git diff --check passed.
+make test passed core plus36 Python tests; make all exited0 with no rebuild.
+No original execution/emulator, profile/save modification, native implementation,
+asset conversion or story/message rewriting. Local filtered symbol CSV, ELF,
+disassembly and reports remain ignored; authored prose/evidence tooling only.
+Working tree was clean at turn start.
+
+Next: __strtoul/__strtoull/__strtold and mbtowc dependencies; executed descriptor/
+bitmap/continuation and actual icon argument comparisons; drawing string/line
+consumers and runtime resource/cadence callers. Continue uncovered story/event/
+field/battle/audio/save/content systems before complete-game requirements.
+Full objective active/incomplete; static parser/consumer contracts alone do not
+prove complete scanner, layout or full-game fidelity. Original data, message
+IDs/control tokens and story attribution/order/branches must remain preserved.

@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'scan_directive_parser': {
+        0x8026ce60: '84063bd8', 0x8026ceb4: '98a1000b',
+        0x8026cefc: '98010008', 0x8026cf14: '540006f7',
+        0x8026cf28: '1c00000a', 0x8026cf50: '2c090000',
+        0x8026cfb8: '98010009', 0x8026cfec: '98c1000a',
+        0x8026d030: '9801000a', 0x8026d040: '9801000a',
+        0x8026d064: '28000033', 0x8026d078: '7c05002e',
+        0x8026d088: '28000006', 0x8026d0d0: '9801000a',
+        0x8026d0e4: '9801000b', 0x8026d0fc: '9801000a',
+        0x8026d180: '98a10011', 0x8026d184: '98010014',
+        0x8026d1e4: '60000020', 0x8026d21c: '7ca939ae',
+        0x8026d260: '7c0a6000', 0x8026d268: '8d430003',
+        0x8026d298: '9801000b', 0x8026d2b8: '7c0000f8',
+    },
     'scan_input_runtime_and_consumers': {
         0x8026c354: '40860024', 0x8026c380: '3d800200',
         0x8026c3bc: '41820010', 0x8026c3cc: '3860ffff',
@@ -1194,6 +1208,14 @@ def verify(iso_path):
         if [i for i, value in enumerate(scan_ctype) if value & 6] != [9, 10, 11, 12, 13, 32]:
             raise ValueError('Scan whitespace set mismatch')
         print('Complete scan classification table and six whitespace bytes verified')
+        if read(0x80303bd8, 40) != struct.pack('>10I', 0, 0x7fffffff, *([0]*8)):
+            raise ValueError('Scan parser descriptor initializer mismatch')
+        if hashlib.sha256(read(0x803bb870, 208)).hexdigest() != '7b40b0dba567e3d59f4d21f7e611b4aae5aa04c0e820e6da0ce0be577a4907d5':
+            raise ValueError('Scan parser dispatch table mismatch')
+        if [i for i, value in enumerate(scan_ctype) if value & 0x10] != list(range(48, 58)):
+            raise ValueError('Scan parser width digit set mismatch')
+        print('Scan parser forty-byte initializer, 52 dispatch targets and width digit set verified')
+
 
 
 

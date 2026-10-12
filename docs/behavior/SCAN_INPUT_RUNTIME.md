@@ -63,7 +63,8 @@ the native game. No source message text was rewritten or exported by this step.
 
 Validate empty/null input, high bytes, NUL, unread after EOF versus after a real
 byte, repeated unread and a caller-provided callback/context through original
-execution. Recover scanf's directive parser and numeric/multibyte converters;
+execution. Compose with the recovered [directive parser](SCAN_DIRECTIVE_PARSER.md) and
+recover numeric/multibyte converters;
 compare destination writes and return values for the actual original argument
 corpus. The runtime contracts do not establish complete icon/dialogue or game
 fidelity, and do not assert Switch scanner behavior.
