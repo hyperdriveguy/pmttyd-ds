@@ -11,6 +11,26 @@
 #include <string>
 namespace ttyd {
 namespace {
+// Development weapon/stat fixture until the original callback catalog and
+// tutorial unit initialization are bound. Calculator ordering itself is recovered.
+int32_t harnessPower(DamageUnit*,DamageWeapon& weapon,DamageUnit&,DamagePart&) {
+    return *static_cast<const int*>(weapon.callbackData);
+}
+bool harnessNoStatus(void*,const DamageUnit&,int) {return false;}
+int8_t harnessNoStrength(void*,const DamageUnit&,int) {return 0;}
+int harnessDamage(int attackerHp,int defenderHp,int power,uint32_t flags,bool actionSuccess,uint32_t& code) {
+    DamageUnit attacker,defender;attacker.hp=int16_t(attackerHp);defender.hp=int16_t(defenderHp);
+    constexpr int8_t zeros[5]={};
+    DamagePart part;part.defense=zeros;part.defenseAttributes=zeros;
+    DamageWeapon weapon;weapon.hpPower=harnessPower;weapon.callbackData=&power;
+    DamageBattleState battle;battle.actionResult=actionSuccess?2:0;
+    const DamageStatusServices statuses{nullptr,harnessNoStatus,harnessNoStrength};
+    const int32_t damage=calculateHpDamage(&attacker,defender,part,weapon,code,flags,battle,statuses);
+    // HP and FP share the result-code location. This fixture has no FP callback;
+    // original nonzero FP/resource ownership will be bound with the weapon catalog.
+    calculateFpDamage(&attacker,defender,part,weapon,code,flags,battle);
+    return int(damage);
+}
 std::vector<RoadWarp> roads;
 std::vector<Rect> walls;
 bool collisionReady=false;
@@ -604,9 +624,11 @@ void Game::startBattle() {
     scene=Scene::Battle; phase=Phase::Select; phaseTick=0; selection=0;
     enemyHP=BattleRules::CrumpHP; actionSuccess=false; guarded=false;
     generalBattlePad={};actionCommandPad={};defenseCommand={};jumpCommand={};hammerCommand={};
+    lastDamageCode=0;
     jumpHeight=0; fieldJump={};fieldStep={};
 }
-void Game::attackDone(int damage) {
+void Game::attackDone(int power) {
+    const int damage=harnessDamage(progress.hp,enemyHP,power,0,actionSuccess,lastDamageCode);
     enemyHP=std::max(0,enemyHP-damage); lastDamage=damage;
     phase=Phase::Impact; phaseTick=0;
     sound=actionSuccess ? Sound::Success : Sound::Hit;
@@ -641,7 +663,7 @@ void Game::battle(const Input& i) {
             if (selection==2) {
                 if (progress.mushrooms<=0 || progress.hp==10) { sound=Sound::Confirm; return; }
                 --progress.mushrooms; progress.hp=std::min(10,progress.hp+5);
-                lastDamage=0; actionSuccess=false; phase=Phase::Impact; phaseTick=0;
+                lastDamage=0;lastDamageCode=0; actionSuccess=false; phase=Phase::Impact; phaseTick=0;
             } else {
                 phase=Phase::Windup; phaseTick=0; actionSuccess=false;
                 if(selection==0) {
@@ -682,7 +704,10 @@ void Game::battle(const Input& i) {
             DefenseContext context;context.hp=int16_t(progress.hp);
             // Harness weapon gate0: do not invent tutorial superguard eligibility.
             guarded=defenseCommand.evaluate(actionCommandPad,context)==4;
-            lastDamage=std::max(0,BattleRules::CrumpAttack-(guarded?1:0));
+            // The recovered normal enemy event requests CheckDamage(flags0x100).
+            // Guard flag selection here is still a harness dispatch adaptation.
+            lastDamage=harnessDamage(enemyHP,progress.hp,BattleRules::CrumpAttack,
+                0x100|(guarded?0x40000:0),false,lastDamageCode);
             progress.hp=std::max(0,progress.hp-lastDamage);
             phase=Phase::EnemyImpact; phaseTick=0; sound=guarded?Sound::Success:Sound::Hit;
         }

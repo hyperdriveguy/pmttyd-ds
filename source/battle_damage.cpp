@@ -111,4 +111,13 @@ int32_t calculateFpDamage(DamageUnit* attacker,DamageUnit& defender,DamagePart& 
     if(damage>0 && (code&255)==30)code=(code&0xffffff00)|23;
     return damage;
 }
+int markEmergencyRevival(const DamageUnit& unit,uint32_t& code,const RevivalInventoryServices& inventory) {
+    bool eligible;
+    if(unit.kind==222 || (unit.kind>=224 && unit.kind<=230)) {
+        assert(inventory.itemCount);
+        eligible=inventory.itemCount(inventory.user,151)>0;
+    } else eligible=unit.heldItem==151;
+    if(!eligible)return 0;
+    code|=0x800;return 1;
+}
 } // namespace ttyd

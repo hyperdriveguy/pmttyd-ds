@@ -55,6 +55,9 @@ void callbacksAndGates() {
     f.a.badges.allOrNothing=0;f.d.flags=0;f.b.actionResult=0;
     f.mutation=[](Fixture& f) {f.a.badges.allOrNothing=1;f.w.specialFlags=5;};
     CHECK(f.hp(code)==0 && code==30 && !(f.a.flags&8)); // Second gate skips charge modifier.
+    f.a.badges.allOrNothing=0;f.defense[0]=-2;
+    CHECK(f.hp(code)==2 && code==23 && !(f.a.flags&8)); // Second gate still executes defense.
+    f.defense[0]=0;
     f.a.badges.allOrNothing=0;f.w.specialFlags=0;
     f.mutation=[](Fixture& f) {f.w.specialFlags=4;f.w.element=1;f.d.badges.defendPlus=2;};
     CHECK(f.hp(code)==5 && code==23 && (f.a.flags&8)); // Reload flags/defender; cache element.
@@ -125,6 +128,9 @@ void damageTailAndFp() {
     CHECK(counters.hp(code,0x40000)==0); // No general minimum1 after guard.
     Fixture element;element.w.element=1;element.d.badges.icePower=2;element.d.badges.pDownDUp=1;
     CHECK(element.hp(code)==4);
+    Fixture vulnerability;vulnerability.hpPower=0;vulnerability.d.badges.pUpDDown=1;
+    CHECK(vulnerability.hp(code)==1 && code==23); // Defender vulnerability after power's clamp.
+    Fixture uncapped;uncapped.hpPower=150;CHECK(uncapped.hp(code)==150); // Calculator has no99 cap.
     Fixture flags;CHECK(flags.hp(code,0x100)==7 && code==(0x100|23|0x10000));
     flags.d.attributes=0x100;CHECK(flags.hp(code,0x100)==7 && code==(0x100|23));
     flags.w.specialFlags=0x8000;CHECK(flags.hp(code,0x100)==7 && code==(0x100|23|0x10000));
@@ -141,7 +147,31 @@ void damageTailAndFp() {
     wrap.d.badges={};wrap.defense[0]=-1;
     CHECK(wrap.hp(code)==0); // INT_MAX - (-1) wraps before clamp.
 }
+void revivalMarker() {
+    struct Inventory {
+        int32_t count=0;int calls=0;
+        static int32_t query(void* user,int32_t item) {
+            CHECK(item==151);auto& inventory=*static_cast<Inventory*>(user);
+            ++inventory.calls;return inventory.count;
+        }
+    } inventory;
+    const RevivalInventoryServices services{&inventory,Inventory::query};
+    DamageUnit unit;unit.heldItem=151;unit.hp=-1;
+    for(int kind:{221,222,223,224,230,231}) {
+        unit.kind=kind;const bool pouch=kind==222 || (kind>=224 && kind<=230);
+        inventory.count=0;inventory.calls=0;uint32_t code=30;
+        CHECK(markEmergencyRevival(unit,code,services)==(pouch?0:1));
+        CHECK(code==(pouch?30u:30u|0x800));CHECK(inventory.calls==(pouch?1:0));
+        inventory.count=1;inventory.calls=0;code=0x100;
+        CHECK(markEmergencyRevival(unit,code,services)==1 && code==0x900);
+        CHECK(inventory.count==1 && inventory.calls==(pouch?1:0) && unit.hp==-1);
+    }
+    unit.kind=222;inventory.count=-1;uint32_t code=0x800;
+    CHECK(markEmergencyRevival(unit,code,services)==0 && code==0x800); // No held-item fallback.
+    unit.kind=223;unit.heldItem=0;inventory.count=1;
+    CHECK(markEmergencyRevival(unit,code,services)==0 && code==0x800); // No pouch on nonplayer path.
+}
 int main() {
-    try {callbacksAndGates();attackerModifiers();defensesAndAttributes();damageTailAndFp();std::puts("Damage calculator contract scenarios passed");}
+    try {callbacksAndGates();attackerModifiers();defensesAndAttributes();damageTailAndFp();revivalMarker();std::puts("Damage calculator contract scenarios passed");}
     catch(const std::exception& e) {std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

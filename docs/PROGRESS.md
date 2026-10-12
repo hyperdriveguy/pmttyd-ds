@@ -1,5 +1,80 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native ordered HP/FP calculators and revival marker
+
+Implemented docs/behavior/BATTLE_DAMAGE_CALCULATION.md in
+include/battle_damage.hpp/source/battle_damage.cpp. Typed semantic unit/part/
+weapon/battle inputs retain signed fields,byte badge counts,callback interfaces
+and explicit Check/GetStatus reader services. This is not original packed ABI
+or complete unit/status storage. HP calculation preserves pre-callback default
+code/element,callback mutations,repeated All or Nothing gate,ordered attacker/
+defender modifiers and intermediate clamps,Charge flag mutation,element code
+ORs,guard/drain/counter/badge reductions,linear Double Pain,counted Last Stand,
+defense attributes and zero/nonzero/absorption result codes. Signed32 arithmetic
+wraps explicitly;there is no invented minimum1 or99 calculator cap. FP keeps
+the HP absorption gate,distinct All or Nothing bypass behavior,one guarded
+callback/clamp and low-byte code rewrite without copying the HP pipeline.
+Portable calculator commit:138ed7c.
+
+Added the documented emergency-revival marker:kind222/224..230 query pouch
+item151;other kinds use the unit's held-item word. Success ORs800;failure leaves
+the code unchanged. No held-item fallback after a failed pouch query,no HP
+eligibility check,item consumption,healing or revival event is invented.
+Inventory remains an explicit service boundary. This local marker does not
+implement actual death/revival handling.
+
+Native player and enemy harness attacks now call HP then FP with one shared
+result-code word;Game::damageCode exposes that transient code for validation.
+The stat/weapon fixture still provides provisional powers1/2,zero defense/no
+statuses and no FP callback. Resource application is still the harness's bounded
+HP update,not the full BattleDamageDirect/effect/accounting/event pipeline.
+Enemy calculation receives documented normal-attack flags100 plus the harness's
+guard dispatch flag40000. Original tutorial unit/weapon power,global eligibility,
+counter/precheck/hit/reward/death event binding remains unfinished. No story,
+dialogue,original asset or sound was changed or converted.
+
+Validation:make test passed5 CTest executables (core,TimingA,Hammer,defense/pad,
+damage) and58 Python tests;make all rebuilt ttyd-2ds.3dsx;git diff --check passed.
+The new calculator scenarios exercise callback argument/order/mutation gates,
+entry versus post-callback All or Nothing behavior (including negative defense
+after the second gate),danger/peril equality,badge/status modifier gates and
+intermediate clamps,burn element caching,mode/guard/defense flags,negative defense,
+all five element codes/default,absorption including zero and FP suppression,
+attribute1/2/4 behavior,linear Double Pain and Last Stand,counter minimum followed
+by guard-zero,raw flag ORs/FP code preservation,signed wrap and uncapped150 damage.
+Revival tests check kind endpoints,pouch/held-item ownership,unchanged failure
+flags/no fallback,negative pouch result and nonconsuming/nonhealing behavior.
+Core scenarios now assert original-form attack/guarded/unguarded calculation
+codes alongside existing timing/damage/field/save scenarios. Derived contract
+tests are not original execution comparisons or complete battle acceptance.
+
+Isolated regression command:
+python3 tools/emulator_smoke.py --fresh-save --seconds4 --input-script
+tests/azahar_defense.py. Reviewed defense-single showing Guard and Mario10HP,
+Crump4HP;defense-mash showing Hit taken and Mario9HP,Crump3HP after calculator
+integration. These manual wall-clock screenshots check the native adaptation,
+not original impact timing or full-game fidelity. The final explicit nil-FP
+invocation was covered by final host/native builds;it returns0 without changing
+the shared HP code. Existing stage/camera/animation limitations remain. No user
+emulator profile/save or ISO write;only generated test save reset. Sandbox Git/
+display escalations were automatically approved.
+
+Added DMG-01 in docs/DOCUMENTATION_REQUESTS.md for weaponGetPowerDefault,
+ordinary Mario callbacks,tutorial kind/stat-copy/part tables,hit-counter lifetime,
+damage/application/reward/defeat/FP/inventory/status bindings. Linked incoming
+HARBOR_BOSS_TUTORIAL_EVENTS/BATTLE_TUTORIAL_STATE_SERVICES as partial AC-03
+answers:the normal boss weapon local byte gate is1,CheckDamage uses flags100,
+but flag1000 consumers/impact/full dispatch remain open. Do not claim this makes
+the prototype a faithful opening scene or enable a guessed superguard outcome.
+
+Next:implement documented status storage/presence and direct damage application
+with resource ownership plus ordered presentation/event service boundaries;
+replace explicit fixture powers/stats as DMG-01 answers arrive. Implement the
+original tutorial/unit/event/message graph from full recovered conditions,not
+message IDs alone. Record additional missing service requests in the inbox.
+The full implementation goal stays active/incomplete. Concurrent documentation
+agent edits were preserved and excluded from implementation commits.
+
 ## 2026-10-12 — Native defense checks and separate battle pads
 
 Implemented the documented US BtlPad_WorkUpdate/WorkInit and defense result

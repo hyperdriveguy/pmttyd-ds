@@ -12,7 +12,7 @@ struct DamageUnit {
     int32_t kind=0, extraDefense=0, attackSequence=0;
     int16_t hp=0, damageSequence=0;
     uint8_t danger=0, peril=0;
-    uint32_t attributes=0, flags=0, statusFlags=0;
+    uint32_t attributes=0, flags=0, statusFlags=0, heldItem=0;
     DamageBadges badges;
     void* statusData=nullptr;
 };
@@ -50,4 +50,10 @@ int32_t calculateHpDamage(DamageUnit*, DamageUnit&, DamagePart&, DamageWeapon&,
                           const DamageStatusServices&);
 int32_t calculateFpDamage(DamageUnit*, DamageUnit&, DamagePart&, DamageWeapon&,
                           uint32_t& code, uint32_t flags, DamageBattleState&);
+struct RevivalInventoryServices {
+    void* user=nullptr;
+    int32_t (*itemCount)(void*, int32_t)=nullptr;
+};
+// Marks only; no HP check, consumption, healing or event execution.
+int markEmergencyRevival(const DamageUnit&,uint32_t& code,const RevivalInventoryServices&);
 }

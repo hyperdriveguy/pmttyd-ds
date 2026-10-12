@@ -12,6 +12,7 @@
 #include "battle_timing_a.hpp"
 #include "battle_hammer.hpp"
 #include "battle_defense.hpp"
+#include "battle_damage.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -101,6 +102,7 @@ public:
     void startBattle();
     const HammerCommand& hammerAction() const { return hammerCommand; }
     int defenseResult() const { return defenseCommand.result; }
+    uint32_t damageCode() const { return lastDamageCode; }
     const char* dialogue() const;
     const char* prompt() const;
     bool near(Vec2 point, float distance = 1.5f) const;
@@ -118,6 +120,7 @@ private:
     int turnTick = 0;
     BattlePadWork generalBattlePad, actionCommandPad;
     DefenseCommand defenseCommand;
+    uint32_t lastDamageCode=0;
     TimingACommand jumpCommand;
     HammerCommand hammerCommand;
     // Explicit development seed; no claim about original seed/load ownership.
@@ -125,7 +128,7 @@ private:
     int dialoguePages() const;
     void move(const Input&);
     void battle(const Input&);
-    void attackDone(int damage);
+    void attackDone(int power);
     void openDialogue(int kind);
     bool beginWater();
     Vec2 arrivalStart,arrivalEnd;
