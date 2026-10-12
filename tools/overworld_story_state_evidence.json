@@ -1,0 +1,132 @@
+{
+  "schema": 1,
+  "scope": "Original GSW0 initialization, GP save-slot copy ownership and no00 custom field-control leaves; static source only",
+  "dol_spans": [
+    {
+      "name": "swInit",
+      "address": 2148030848,
+      "size": 120,
+      "sha256": "dab476e1048507d6de0e8791ed9ec45b2b41c64dc4900816d83fcdb24bff638c"
+    },
+    {
+      "name": "swReInit",
+      "address": 2148030780,
+      "size": 68,
+      "sha256": "5668dfa3c789d93cdbde2ff3dae05f29b697f960c077836a3830d3fb71a2f1ae"
+    },
+    {
+      "name": "swByteGet",
+      "address": 2148030508,
+      "size": 36,
+      "sha256": "3636c058f262a6dbbc9376acc145c21db6654a8a7040d27a49b17e61a96f31b9"
+    },
+    {
+      "name": "swByteSet",
+      "address": 2148030544,
+      "size": 36,
+      "sha256": "64a3448bb937ea56ff3ce7601593c806241afbe6f1c0b8ec768d5ad7309ef0cd"
+    },
+    {
+      "name": "cardWrite",
+      "address": 2148212348,
+      "size": 748,
+      "sha256": "1a84c4d27ed1e0ce1f5cf88bab91b433ce8f5c586c52b452f7b2be501a8c9932"
+    },
+    {
+      "name": "cardCopy2Main",
+      "address": 2148213640,
+      "size": 384,
+      "sha256": "1bc04d795911d3ec4f44787d2557df345e791a8ed9cc4b7b42909362a4b59694"
+    },
+    {
+      "name": "continueGame",
+      "address": 2148481500,
+      "size": 1360,
+      "sha256": "82027fb86eeec2e0e26ed5a77f2db42473951eb558315be101a2f8547a6e706a"
+    },
+    {
+      "name": "evt_mario_key_onoff",
+      "address": 2148430964,
+      "size": 100,
+      "sha256": "7b8e06d2aff85b14c07ed4981aaccc7e29601fb7801e03ab77fc36f288a1c06f"
+    },
+    {
+      "name": "marioKeyOff",
+      "address": 2147860980,
+      "size": 40,
+      "sha256": "2355261017e21abec8723a2e8e16dc95e049b5cc11ffae10395adfe72089b442"
+    },
+    {
+      "name": "marioKeyOn",
+      "address": 2147860928,
+      "size": 52,
+      "sha256": "2f7a25677970c4fa4a4ee6740bde4c79382361b5f3f7987e56e2ced532c3f301"
+    },
+    {
+      "name": "partyKeyOff",
+      "address": 2148234888,
+      "size": 4,
+      "sha256": "f332ea5b5437103cbb6f1508679da89eec9288ad775c96c439a17fccabe3de8e"
+    },
+    {
+      "name": "partyKeyOn",
+      "address": 2148234892,
+      "size": 4,
+      "sha256": "f332ea5b5437103cbb6f1508679da89eec9288ad775c96c439a17fccabe3de8e"
+    },
+    {
+      "name": "evt_mario_flag_onoff",
+      "address": 2148431416,
+      "size": 144,
+      "sha256": "7b8872291ea911eba9b61ebf0e7da2f9dc917932717a5705ef75c00547de55ba"
+    },
+    {
+      "name": "evt_mario_dispflag_onoff",
+      "address": 2148431272,
+      "size": 144,
+      "sha256": "351e7196c21a8558c902586ab0aaa97c8d0aca949e55a351a4c7bac7e6335291"
+    },
+    {
+      "name": "evt_party_dispflg_onoff",
+      "address": 2148448880,
+      "size": 164,
+      "sha256": "a6291ad8a143348743971272f7f773db4ffaeb04bf5412e60e651dc1a27a76b9"
+    },
+    {
+      "name": "continueGame GSW4 dispatch table",
+      "address": 2150942248,
+      "size": 100,
+      "sha256": "67adf9afc2cba64ecfa0fe76638f04b752700122a1dd88c2531cacdc7a21ffaf"
+    }
+  ],
+  "dol_anchors": {
+    "2148030940": "806d90b0",
+    "2148030944": "38000000",
+    "2148030948": "90030174",
+    "2148212632": "38a013d8",
+    "2148212644": "387f0008",
+    "2148212728": "808d90b0",
+    "2148212732": "4bf531a1",
+    "2148213648": "54647022",
+    "2148213660": "3b242000",
+    "2148213676": "38a013d8",
+    "2148213704": "38990008",
+    "2148213720": "4bf52dc5",
+    "2148481532": "4bfbe98d",
+    "2148481652": "4bf91db9",
+    "2148481656": "28030018",
+    "2148481672": "3864c628",
+    "2148482764": "4bf91ab5",
+    "2148482776": "4bf91979",
+    "2147860996": "88640039",
+    "2147861004": "98040039",
+    "2147860940": "98040039",
+    "2147860952": "40820010",
+    "2147860964": "90040000",
+    "2148448936": "4bfd370d",
+    "2148448988": "901f0004"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": []
+}
