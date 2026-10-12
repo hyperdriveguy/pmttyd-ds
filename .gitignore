@@ -28,3 +28,5 @@ romfs/*.head
 romfs/audio-map.json
 romfs/events.pmevt
 romfs/events.pmevt.json
+
+romfs/*.camera
