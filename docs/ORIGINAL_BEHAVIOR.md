@@ -1147,3 +1147,11 @@ close seven bodies,partial modes/source bindings,current enable/low8 WORD cost,
 mode/state/cancel-completion/display request order.21 hashes/477 anchors/18
 spans,82 CTest/90 Python/make all pass after resolved initial sampling assertion.
 UI/delegate/source/query/Game/platform/original runtime remain open.
+
+ID2 Goombella party-delegate/source closure (2026-10-12):
+[Callback/tech query](behavior/battle/GOOMBELLA_WEAPON_TABLE_CALLBACK_AND_TECH_LEVEL.md),
+[seven source bindings](behavior/battle/PARTY_WEAPON_CALLBACK_KEY1_SOURCE_BINDINGS.md)
+supply two complete bodies,current-global rank/typed admissions/reloaded count/
+partial row ownership,and all seven initial key1 chains.12 hashes/200 anchors/
+23 spans verified;82 CTest/90 Python/make all retry pass.Other six callbacks,
+unit provisioning/query/source/Game/platform/original runtime remain open.

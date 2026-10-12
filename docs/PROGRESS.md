@@ -1,3 +1,25 @@
+## 2026-10-12 — ID2 Goombella weapon-table delegate and seven source chains
+
+Two detailed contracts supply
+[complete callback/tech-level query](behavior/battle/GOOMBELLA_WEAPON_TABLE_CALLBACK_AND_TECH_LEVEL.md)
+and [seven key1 bindings](behavior/battle/PARTY_WEAPON_CALLBACK_KEY1_SOURCE_BINDINGS.md).
+Current-global party owner/kind translation/fresh pouch rank,captured signed
+level,negative/default admissions,four fixed weapons,reloaded mutable count/
+row pointers,reason preservation,exact name/icon/store order and raw return
+covered.All seven DOL unit-definition/data-table/key1 bindings pinned.ID2
+lock released;other six callback bodies are identities only.No native edits.
+
+Validation:`tools/verify_party_weapon_callback.py` twice,identical:12 hashes
+(2 complete/10 linked),200 instruction anchors,23 source spans.Python
+compilation,existing behavior/builder/Input verifiers,own links,and scoped
+whitespace passed.`make test`:82 CTest/90 Python passed.First `make all` failed render.cpp:343 int0 to GPU_TEVSRC;log /tmp/id2-partytech-all.log.Retry passed(/tmp/id2-partytech-all-retry.log);initial failure resolved.No native edits by ID2.
+
+Limits:static scoped evidence only;other six callbacks,unit/table provisioning,
+full party weapon/events,query reachability,Game/platform/original runtime/
+full-game requirements remain open.Next needed port-function priority:recover
+other six callback bodies and compare their source/order differences;then
+query-specific event domains.No whole-party closure claimed from name/size.
+
 ## 2026-10-12 — ID2 multi-item mode menu and cancellation closure
 
 Four contracts close seven local producer/control/lifecycle bodies:

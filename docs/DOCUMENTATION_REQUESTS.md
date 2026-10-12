@@ -28,6 +28,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
 | Native first-attack target and paired output ownership | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Pair/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md),[event/body part](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md):seven complete local bodies,captured B/raw outputs/mode pairs/slot63 miss/kind predicate/body-before-ID/write order/source part witness;source/Game/runtime separate;prior field_movement failure resolved by current74-suite run |
+| Native Goombella weapon-table callback and seven party key1 bindings | EVT-01, JUMP-01 | VALIDATED scoped callback/source / lock released, 2026-10-12 | Documentation agent ID 2 | [Callback/tech level](behavior/battle/GOOMBELLA_WEAPON_TABLE_CALLBACK_AND_TECH_LEVEL.md),[seven bindings](behavior/battle/PARTY_WEAPON_CALLBACK_KEY1_SOURCE_BINDINGS.md):complete Christine/current-global signed rank/repeated count reads/partial rows/four keys;other six callback semantics/unit provisioning/query/source/Game/runtime open |
 | Native multi-item mode menu and cancellation check | EVT-01, JUMP-01 | VALIDATED seven local bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Producer](behavior/battle/MULTI_ITEM_TABLE_MODE_FIELDS_AND_SOURCE_BINDINGS.md),[Main](behavior/battle/MULTI_ITEM_MENU_MAIN_SELECTION_AND_NAVIGATION.md),[lifecycle](behavior/battle/MULTI_ITEM_MENU_SETUP_END_AND_INPUT_BINDINGS.md),[cancel](behavior/battle/MULTI_ITEM_CANCEL_CHECK_CONTROL_AND_DISPLAY_REQUEST.md):partial mode rows/current enable/low8 cost/source records/M550/state routes/cancel cursor/M551/display request;UI/event/delegate/query/source/Game/runtime separate |
 | Native party selection and protect-partner menu lifecycle | EVT-01, JUMP-01 | VALIDATED six local bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Party selection](behavior/battle/PARTY_MENU_MAIN_SELECTION_AND_PENDING_BEHAVIOR.md),[navigation](behavior/battle/PARTY_MENU_NAVIGATION_CANCEL_AND_AUDIENCE.md),[lifecycle/Input](behavior/battle/PARTY_PROTECT_MENU_SETUP_END_AND_INPUT_BINDINGS.md):fresh M54c/state29/disabled-confirm fall-through/cancel20/pending order/live flags/protect no ID store;UI/delegate/source/query reachability/Game/runtime separate |
 | Native operation menu opcode publication and setup/end | EVT-01, JUMP-01 | VALIDATED four local bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Opcode/state](behavior/battle/OPERATION_MENU_MAIN_OPCODE_AND_STATE_PUBLICATION.md),[navigation](behavior/battle/OPERATION_MENU_NAVIGATION_CANCEL_AND_AUDIENCE.md),[setup/end](behavior/battle/OPERATION_MENU_SETUP_END_AND_FLAG_OWNERSHIP.md):fresh opcode/state routing/return despite mutation/pending order/boundary controls/live flags;party/delegate/query/source/Game/runtime separate |
@@ -524,6 +525,19 @@ Do not invent extra samples for script invocations or suppress inactive private
 sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
+
+ID2 Goombella weapon callback/source reply (2026-10-12):
+[Complete callback/tech query](behavior/battle/GOOMBELLA_WEAPON_TABLE_CALLBACK_AND_TECH_LEVEL.md)
+and [seven key1 chains](behavior/battle/PARTY_WEAPON_CALLBACK_KEY1_SOURCE_BINDINGS.md)
+recover Christine __makeTechMenuFunc80189634/2dc and partyGetTechLv80140e60/44.
+Current-global Party→kind translation→fresh pouch level,captured signed rank,
+four fixed source rows,repeated mutable-count reads,reason preservation,direct
+weapon-key lookup,append/raw return distinctions supplied.Seven original
+unit+0xc0/table/key1 chains pinned;other six bodies identities only,NOT complete
+semantics.12 hashes(2 complete/10 linked),200 anchors/23 spans/repeat reports,
+82 CTest/90 Python/make all retry pass.ID2 lock released;no native edits.Next priority:
+remaining six party callbacks and explicit source/order differences,then query
+callback/event reachability.Unit provisioning/Game/runtime remain open.
 
 Native implementation breadcrumb / documentation request (2026-10-12):
 full sampling and default native takeoff sampling+choice are implemented;82 CTest/
