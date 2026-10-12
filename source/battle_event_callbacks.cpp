@@ -1,9 +1,16 @@
 #include "battle_event_callbacks.hpp"
 #include <cassert>
 #include <cstring>
+#include <cstdlib>
 #include "event_memory_release.hpp"
 
 namespace ttyd {
+BattlePackedSelectionServices nativeBattlePackedSelectionServices(EventNativeRuntime& runtime) {
+    BattlePackedSelectionServices s;s.memory=nativeBattleActorServices(runtime);s.values=nativeBattleEventUtilityServices(runtime).values;s.user=&runtime;
+    s.translate=[](void* p,EventEntry& e,int32_t selector) {auto& r=*static_cast<EventNativeRuntime*>(p);return translateBattleActor(&e,selector,nativeBattleActorServices(r));};return s;
+}
+bool bindBattleSelectedTargetCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x8010b540,&runtime,[](void* p,EventEntry& e,int32_t) {return packedSelectedTargetEvent(e,nativeBattlePackedSelectionServices(*static_cast<EventNativeRuntime*>(p)));});}
+bool bindBattleCommandWeaponCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x801057e8,&runtime,[](void* p,EventEntry& e,int32_t) {const auto result=packedCommandWeaponEvent(e,nativeBattlePackedSelectionServices(*static_cast<EventNativeRuntime*>(p)));if(!result)std::abort();return *result;});}
 BattleUnitEventServices nativeBattleUnitEventServices(EventNativeRuntime& runtime) {
     BattleUnitEventServices s;s.memory=runtime.memoryBinding.services();s.user=&runtime;
     auto values=nativeBattleEventUtilityServices(runtime);s.values=values.values;

@@ -1,5 +1,37 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native retained target and command-weapon selection
+
+Registered GetSelectEnemy8010b540 and CommandGetWeaponAddress801057e8 using
+shared native selection/menu/unit bytes. Target query preserves signed count/
+cursor/permutation/halfwords,captures both RAW outputs before stores and reads
+part only AFTER the unit output callback. Original inspection confirms count
+read BEFORE output-token loads. Weapon query retains original battle/menu,
+captures output after actor resolution but before translation,and freshly selects
+unit/current actor as each helper requires. Cursor modes preserve original
+untouched-output cases and only read actor kind for5/14. Other kinds use wrapped
+held-item ItemData address;zero weapon pointer remains a value,not fallback.
+Unsupported cursor states are explicit native optional/termination policy.
+
+Ordering evidence is in behavior/battle/BATTLE_PACKED_SELECTION_CAPTURE_ORDER.md;
+read-only original inspection ELFs remain /tmp outside history. Menu/ItemData/
+unit writers,source valid-cursor domains and Game binding are still open.
+
+Validation:own packed-selection test,existing battle_selection and
+ event_callback_registry tests pass;78 Python tests pass independently. make all
+passes (/tmp/pm-packed-selection-build.log). Full make test final attempt reports
+72/73 CTests passing;field_movement fails at its physical input/walk-distance
+fixture during concurrent field edits (/tmp/pm-packed-selection-test-last.log).
+Earlier full attempts also failed core;that failure resolved in the later run.
+No field changes overwritten. The selection tests cover exact order/aliases,
+signed rows,cursor domain/kind cases,captured-menu/current-unit split,wrapped
+held item and actual native registry/event outputs. Provider data are authored;
+no original runtime/emulator/hardware or full attack fidelity claim.
+
+Next:rerun full test after field owner resolves its fixture;first-attack-target/
+movement/menu-domain replies,remaining motion/AC/cost/presentation callbacks and
+original unit/outer turn/Game integration. Full-game goal stays incomplete.
+
 ## 2026-10-12 — ID2 priority shift and native first-attack contracts
 
 User clarified prioritizing DOCUMENTATION for functions needed by native port.

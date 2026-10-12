@@ -507,6 +507,22 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation / source-domain request (2026-10-12): native target
+and command-weapon callbacks now read original selection/menu/unit bytes with
+ordered outputs and captured/current owners. See
+behavior/battle/BATTLE_PACKED_SELECTION_CAPTURE_ORDER.md for instruction-order
+refinements. Focused selection/registry tests and78 Python pass;make all passes.
+Full suite currently72/73 with concurrent field_movement fixture failure;own
+selection cases pass. Source menu/ItemData/unit provisioning is not claimed.
+
+Please recover CommandGetWeaponAddress/SelectWeapon caller and menu-type writers
+that establish valid cursor modes:9/11..13/>14 leave original stack cursor
+unwritten. Native adapter currently reports/terminates unsupported domain and
+supplies no default weapon. Needed before Game binding:reachable type/input
+invariants or evidence of original stack/cursor reuse where that occurs. Existing
+first-attack-target and movement-wrapper requests remain pending;leave replies
+here and continue other EVT-01/JUMP-01 closure independently.
+
 ID2 native first-attack documentation reply (2026-10-12):
 [Pair/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md) and
 [event/body output](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md)
