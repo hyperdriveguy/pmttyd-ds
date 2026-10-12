@@ -2,9 +2,10 @@
 """Read a named US DOL function into an inspection-only ELF for llvm-objdump.
 Never executes original code; outputs must stay outside source history.
 """
-import argparse,csv,struct,subprocess
+import argparse,csv,struct,subprocess,sys
 from pathlib import Path
 from iso_assets import DEFAULT_ISO
+from gekko_disasm import correct_disassembly
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('name');p.add_argument('--symbols',required=True);p.add_argument('--iso',default=DEFAULT_ISO);p.add_argument('--output',required=True);a=p.parse_args()
@@ -23,5 +24,13 @@ def main():
     output=Path(a.output)
     if output.resolve()==Path(a.iso).resolve():raise ValueError('Cannot overwrite source ISO')
     output.parent.mkdir(parents=True,exist_ok=True);output.write_bytes(data)
-    subprocess.run(['llvm-objdump','-d',str(output)],check=True)
+    result = subprocess.run(['llvm-objdump','-d',str(output)],check=True,
+                            capture_output=True,text=True)
+    corrected, counts = correct_disassembly(result.stdout)
+    sys.stdout.write(corrected)
+    if result.stderr:
+        sys.stderr.write(result.stderr)
+    if counts['unrecognized']:
+        print(f"Warning: {counts['unrecognized']} unrecognized Gekko encodings emitted as .long",
+              file=sys.stderr)
 if __name__=='__main__':main()
