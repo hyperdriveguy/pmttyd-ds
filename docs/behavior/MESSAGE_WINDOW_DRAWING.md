@@ -148,8 +148,9 @@ Compare type routing, anchor copy versus projection, signed opacity interpolatio
 without clamp, fused center/edge arithmetic, exactly255 text gates, type1 stored
 position mutation and discarded text return, direct text at low opacity, signed
 versus unsigned clipping conversion/order, camera rectangle restoration, candidate
-R retention, active halfword and per-draw pose update. Remaining: normal msgDisp
-glyph effects, border/GX/projection/animation services, current-camera and
+R retention, active halfword and per-draw pose update. Normal msgDisp effects
+are now covered in [glyph effects](MESSAGE_GLYPH_EFFECTS.md).
+Remaining: border/GX/projection/animation services, current-camera and
 active producers/pose lifetime, original draw/caller cadence and matched images/story
 conditions. Local callback/conversion paths are established; complete dialogue/
 rendering/game equivalence remains unproven.

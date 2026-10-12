@@ -64,6 +64,14 @@ irand(10) still predicts 8.
 
 ## What remains to establish full-game randomness
 
+Original message rendering has confirmed shared-RNG consumers: each admitted
+dynamic+shake or standalone shake glyph calls irand(10000) twice, X then Y,
+while history/skipped glyphs bypass those draws. See [glyph effects](MESSAGE_GLYPH_EFFECTS.md).
+Rendering frequency is therefore an original observable dependency for these
+paths; isolating visual randomness into a new independent generator would change
+the established behavior. Actual draw cadence and other renderer consumers
+remain to be recovered before a full replay policy can be specified.
+
 This arithmetic is sufficient to implement these two routines, but not to
 reproduce the game's complete random behavior. Still required:
 

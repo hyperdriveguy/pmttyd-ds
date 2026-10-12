@@ -190,7 +190,8 @@ record consumers and full dialogue execution remain separate work.
 Local clock/schedule advancement and opcode consumers are now documented in
 [message playback](MESSAGE_PLAYBACK.md). Render prefix/controls/history and
 embedded objects are covered in [draw admission](MESSAGE_DRAW_RECORD_ADMISSION.md);
-normal glyph effects, inner services and caller contracts remain open.
+normal effects in [glyph effects](MESSAGE_GLYPH_EFFECTS.md). Inner services and
+caller contracts remain open.
 
 Differential cases: append with nonzero initial count; startup type 3/8 color;
 terminal opcode outside counted records; US high bytes and classification/lookup signedness;

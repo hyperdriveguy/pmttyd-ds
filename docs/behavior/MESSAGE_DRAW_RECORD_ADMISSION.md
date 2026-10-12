@@ -5,7 +5,8 @@ msgDisp0x800833e0,sizeb54; msgDispKeyWait_render0x80083360,size80;
 animGetPtr0x80042f30,size8. This document recovers msgDisp's iteration/return,
 control dispatch, history visibility and pose/icon paths, plus the indicator
 render callback. Normal glyph effect branches after admission remain a separate
-recovery step; this is not a complete msgDisp/font/raster contract. See
+recovery step, now covered in [glyph effects](MESSAGE_GLYPH_EFFECTS.md). Together
+these establish local msgDisp branches, not complete font/raster behavior. See
 [parser](MESSAGE_PARSER_RECORDS.md), [objects](MESSAGE_EMBEDDED_OBJECTS.md),
 [playback](MESSAGE_PLAYBACK.md) and [window drawing](MESSAGE_WINDOW_DRAWING.md).
 
@@ -125,10 +126,9 @@ call FontDrawScaleVec with(R.float[10],1,1); otherwise FontDrawScale(R.float[10]
 Call FontDrawCode(code,drawX,drawY), then FontDrawColor_(), then continue.
 
 When historyEmphasis==0, remaining dynamic/shake/wave/selection/normal glyph
-branches execute at0x800839f4 onward. They include draw-time RNG, clock-based
-motion, matrix/font state and a stored scale mutation, and are deliberately not
-claimed recovered by this document. Preserve this boundary when reimplementing;
-the admission/return contract alone is not full glyph presentation behavior.
+branches execute at0x800839f4 onward, specified in [glyph effects](MESSAGE_GLYPH_EFFECTS.md).
+They include draw-time RNG, clock-based motion, matrix/font state and a stored
+factor mutation. The admission/return contract alone is not full glyph presentation behavior.
 
 ## Indicator render callback (B)
 
@@ -150,7 +150,7 @@ Differential obligations: exposed live prefix versus parsed count/schedules,
 terminal cancellation, signed/unsigned key match, pre-history control effects,
 history boundary/strictness/fade bytes, pose/history bypass and draw-time updates,
 icon clip equality/composed alpha/color restore, glyph threshold/emphasis and
-indicator GX/work stores. Remaining: normal glyph effects, font/icon/matrix/pose
+indicator GX/work stores. Remaining: font/icon/matrix/pose
 services, callback field meaning, actual draw cadence and original image/story
 caller comparisons. Full message rendering/dialogue/game equivalence remains
 unproven; no dialogue text or story sequencing is changed here.

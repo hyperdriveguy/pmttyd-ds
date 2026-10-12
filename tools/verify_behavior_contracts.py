@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'message_glyph_effects': {
+        0x800839f8: '54a007ff', 0x80083a08: '547afc7e',
+        0x80083a18: '4bf82389', 0x80083a5c: '4bf82345',
+        0x80083b48: '4bff38f1', 0x80083b60: 'd01e0014',
+        0x80083b74: '4bf8222d', 0x80083bb8: '4bf821e9',
+        0x80083c84: '7c030016', 0x80083ca0: '481e0e39',
+        0x80083cb4: 'ef620078', 0x80083ce4: 'efc0f07c',
+        0x80083d54: '7c800030', 0x80083e48: '4bff374d',
+        0x80083e74: '4bff3721', 0x80083e84: '4bff39c1',
+    },
     'message_draw_record_admission': {
         0x80083434: '3bdf003c', 0x80083478: '38600000',
         0x80083484: 'a81e0006', 0x80083490: '3b800001',
@@ -1002,6 +1012,18 @@ def verify(iso_path):
         if read(0x802c32e8, 12) != struct.pack('>3f', 0.0, 1.0, 1.0):
             raise ValueError('Message emphasis scale vector template mismatch')
         print('All twelve draw controls, pose/icon/glyph floats and emphasis color/vector bindings verified')
+        glyph_constants = {0x8042076c: '40800000', 0x80420780: '41400000',
+                           0x80420784: 'c1400000', 0x80420788: '3c23d70a',
+                           0x8042078c: '3ca3d70a', 0x80420790: '404ccccd',
+                           0x804205e4: '00000050', 0x804205e8: 'ffffffff'}
+        for address, expected in glyph_constants.items():
+            if read(address, 4).hex() != expected:
+                raise ValueError(f'Message glyph effect literal mismatch {address:#x}')
+        if read(0x802c32e8, 60) != struct.pack('>15f', *((0.0, 1.0, 1.0)*5)):
+            raise ValueError('Message glyph scale-vector templates mismatch')
+        if read(0x802c3348, 8).hex() != '4330000000000000':
+            raise ValueError('Message dynamic half-width conversion bias mismatch')
+        print('Eight glyph literals, all five scale vectors and unsigned conversion bias verified')
 
 
 if __name__ == '__main__':

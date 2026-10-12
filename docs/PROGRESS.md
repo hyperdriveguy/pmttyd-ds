@@ -3460,3 +3460,32 @@ services and actual outer cadence/story callers. Continue original attribution/
 order/branches/conditions and all other uncovered systems before complete-game
 requirements. Full objective active/incomplete; original execution/images
 comparisons still needed.
+
+## 2026-10-12 — Normal message glyph effects
+
+Previous goal turn made progress through c898247. Began clean and added
+MESSAGE_GLYPH_EFFECTS.md: normal glyph priority gates, two-draw one-sided shake,
+dynamic width/matrix requests and stored factor relaxation, clock/divisor/numeric
+helper order, fused phase/trig motion and selection two-draw/color/edge/rainbow/
+index-reset sequence. Together with admission document, local msgDisp branches
+are covered; inner services remain explicit dependencies. Updated prior coverage
+links and RNG ledger to record original render-dependent shared RNG consumption.
+No helper time unit is described as measured milliseconds/ticks.
+
+Validation:864 instruction anchors and prior checks passed read-only US ISO,
+including eight effect/color literals, five scale-vector templates and unsigned
+conversion bias. Initial vector check failed because of a mistaken fifth-template
+expectation; independent re-read confirmed all five(0,1,1), corrected the verifier
+and full re-run passed. Existing246-function fingerprint coverage is unchanged;
+two fresh reports matched byte-for-byte. All local behavior links resolve;
+git diff --check passed. make test passed core plus36 Python tests; make all
+exited0, no rebuild. Only research/provenance/evidence tooling changed. No original
+execution/emulator run or profile/save modification; original inspection/report
+artifacts remain ignored. Static checks do not prove numerical helper/trig/font/
+matrix behavior, actual cadence/seeding, executed images or native equivalence.
+
+Next: font glyph draw/state services and tables, signed64 clock division/float
+conversion and trig/matrix helpers; actual outer reset/sort/camera cadence and
+message/story callers. Continue original attribution/order/branches/conditions
+and all other uncovered systems before complete-game requirements. Full objective
+active/incomplete; original execution/image/seed comparisons still needed.
