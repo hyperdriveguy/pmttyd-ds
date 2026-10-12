@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 330 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1700 instruction anchors plus those
+now fingerprints 335 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1724 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -727,3 +727,11 @@ plus zero DOL item table are checked. No new extraction/asset conversion,ISO
 write,emulator execution,native linking or story edit. Registration pointers and
 unit stat interpretations remain bounded by documented consumers;original files
 retain existing rights and all inspection artifacts stay ignored.
+
+Harbor boss tutorial research adds five DOL state-service identities/24 anchors,
+seven whole event spans and two60-byte REL feedback helper hashes/relocations,
+plus exact six US message-key uniqueness and enemy defense/power bindings. REL
+inspection ELFs/listings are ignored and use file offsets explicitly;raw branch
+targets are unrelocated,annotated with original relocation destinations. No
+original executable linking/distribution,ISO write,asset conversion or story
+rewrite;existing original/reference provenance and rights remain unchanged.

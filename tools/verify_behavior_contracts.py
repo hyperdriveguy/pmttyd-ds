@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'harbor_tutorial_phase_services': {
+        0x8010f7c0: '4bf21aa1', 0x8010f7d0: '48015c1d',
+        0x8010f7e0: '4bf21a81', 0x8010f7f0: '4bf21a71',
+        0x8010f800: '4bfe90cd', 0x8010f810: '93e40218',
+        0x8010f844: '4bf21a1d', 0x8010f854: '48015b99',
+        0x8010f864: '4bf219fd', 0x8010f86c: '83bd0008',
+        0x8010f888: '80a40218', 0x8010f890: '4bf2146d',
+        0x80113710: '38800004', 0x8011372c: '83c50004',
+        0x80113730: '4bfe5271', 0x80113734: '7c1e1840',
+        0x80113748: '4bf1d5b5', 0x8011375c: '4bf1d5a1',
+        0x801137d0: 'a8a50000', 0x801137d4: '4bf1d529',
+        0x80113804: '4bf1da5d', 0x80113808: '2c030001',
+        0x8011381c: '7c001b78', 0x8011382c: '7c001878',
+    },
     'field_battle_entry_return': {
         0x8004f0ac: '4bfe21b5', 0x8004f0bc: '4bfe21a5',
         0x8004f0d8: '4bff4ca9', 0x8004ef78: '809f0004',
@@ -1777,6 +1791,7 @@ def verify(iso_path):
                            for i in range(section_count)]
         imp,imp_size = struct.unpack_from('>II',harbor,0x28)
         prolog_bindings = {}
+        tutorial_helper_bindings = {}
         for j in range(imp,imp+imp_size,8):
             module,stream = struct.unpack_from('>II',harbor,j)
             section,offset = None,0
@@ -1787,6 +1802,8 @@ def verify(iso_path):
                 if kind == 202: section,offset = target,0; continue
                 offset += delta
                 site = section_offsets[section]+offset
+                if site in (0xa532,0xa53a,0xa54c,0xa56e,0xa576,0xa588):
+                    tutorial_helper_bindings[site] = (module,kind,addend)
                 if 0x6bc <= site < 0x6d8:
                     prolog_bindings[site] = (module,kind,target,addend)
         if prolog_bindings != {
@@ -1799,6 +1816,34 @@ def verify(iso_path):
         if harbor[area_key:area_key+4] != b'gor\0':
             raise ValueError('Harbor registration area key mismatch')
         print('Seven harbor configuration spans and setup/group/unit/prolog relocation chains verified')
+        for offset,size,digest in (
+            (0xa528,60,'1d066968cbfbae065f2998eaa7fe7167c35740db54459ee39fc2532b264c433e'),
+            (0xa564,60,'c84e9cdee8223eb8c5acb83b261420f3816b7fdb3d233b21470bf378617fd385'),
+            (0x64808,328,'25a8b59dcd5b1f974c852a9cf33597adf28be7152a7831297620483cbf753d28'),
+            (0x64950,1128,'51287cf09226ca2a1cb598e3f5c243eaa7e597d58b44b6fbba76bb1b4f3d4140'),
+            (0x64db8,40,'f59a6bfb7c00767c28083d3812e89e8a081a3c9e96ec8e55de2e2537ee1a04ba'),
+            (0x64de0,96,'47e8564501181e8e228135b7c2faef4fa8c40507d3ded8432c11692994ea8416'),
+            (0x64e40,24,'14bb860655a0fa243d510f0c64ef87508cce5f9fac9524eada619e21c22af21e'),
+            (0x64e58,1104,'57dd705b76f1a416227bf466da2384e67a14f8bf088bd9f078f360027ee27136'),
+            (0x653c8,1460,'1ac3f7e075a9f37d216d9d2504590e0fd2bf071533d55f059b88cb36d0adceba'),
+        ):
+            if hashlib.sha256(harbor[offset:offset+size]).hexdigest() != digest:
+                raise ValueError('Harbor boss hook/helper span mismatch')
+        if local.get(0x646c0,{}).get('file_offset') != 0x64e58 or imports.get(0x646b8) != 0x80416b38:
+            raise ValueError('Harbor boss data table callback mismatch')
+        from message_resource_evidence import inspect_resource
+        us_messages = inspect_resource(read_resource('msg/US/gor_00.txt'))
+        for i in range(6):
+            key = f'mac_0_b_t1_{i:03d}'.encode().hex()
+            if sum(pair['key_hex']==key for pair in us_messages['pairs']) != 1:
+                raise ValueError('Harbor tutorial message identity/uniqueness mismatch')
+        if tutorial_helper_bindings != {
+                0xa532:(0,6,0x8041eb90),0xa53a:(0,4,0x8041eb90),0xa54c:(0,10,0x80030cfc),
+                0xa56e:(0,6,0x8041eb90),0xa576:(0,4,0x8041eb90),0xa588:(0,10,0x80030cfc)}:
+            raise ValueError('Tutorial REL helper global/output relocation mismatch')
+        if harbor[0x64718+0x13] != 1 or imports.get(0x64718+0x1c) != 0x80189d30:
+            raise ValueError('Tutorial enemy weapon defense/power binding mismatch')
+        print('Seven boss event spans,two relocated REL helpers,data hook,weapon gate and six exact US tutorial IDs verified')
 
 
 

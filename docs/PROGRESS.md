@@ -4771,3 +4771,43 @@ sequence/Mario/party/audio lifetime and full original scene/input/RNG traces.
 Continue all reachable US systems/optional content before complete-game
 requirements. Full objective remains active/incomplete;config pointers/local
 transition contracts do not establish faithful completed tutorial or full game.
+
+## 2026-10-12 — Harbor boss tutorial event and feedback contracts
+
+Added HARBOR_BOSS_TUTORIAL_EVENTS.md and BATTLE_TUTORIAL_STATE_SERVICES.md.
+Original boss init installs wait/attack/damage/confusion/phase hooks,sets battle
+flag1000,spawns the helper actor and stores its unit ID in work0,zeros feedback
+latches1/2/3 and configures movement sounds. Seven original hook/event spans
+(18/84/5/11/3/75/95 commands) hash-checked;phase/death tutorial message guards
+and actor IDs recovered. Exact six US mac_0_b_t1_000..005 IDs preserved;no
+paraphrase/transcript. Half-HP lesson003 deletes phase event before success001/
+failure002,which have independent once-latches and can both execute otherwise.
+Initial lesson000 gated by turn1/exact phase04000001;feedback phase04000003.
+
+Recovered complete unit-work read/write,exact CheckPhase bank4 comparison,turn
+halfword read and resolved operation/raw-mask flag update. Two60-byte original
+REL helpers read battle-wide unsigned bytes16f58/16f59 through checked HA/LO
+and evtSetValue REL24 bindings,not the current move result. Inspection ELFs use
+file offsets and label raw branch targets unrelocated. Boss data key49 points
+to dead_event;dummy key48 and enemy defense gate+13=1/default power callback
+verified. Local superguard gate pass does not establish global tutorial policy.
+Attack/death hooks and reward/message/deletion requests documented with open
+service/condition boundaries;no runtime stats/defeat equivalence claim.
+
+Validation:1724 instruction anchors and all prior resource/configuration checks
+passed read-only ISO. Fresh335-function and six-event reports repeated byte-for-
+byte;all six tutorial keys uniquely match original US payload metadata;578
+behavior links resolved;git diff --check passed. Initial make test hit a transient
+concurrent missing tests/battle_damage_tests.cpp target;after file creation,
+make test passed core,TimingA,Hammer,defense,damage host tests plus58 Python
+tests;make all exited0,no rebuild. Separate native damage/CMake edits preserved,
+only explicit research paths staged. No original gameplay execution/emulator,
+ISO/profile/save writes,native implementation,asset conversion or story rewrite
+by this step. Original inspections/reports remain ignored.
+
+Next:feedback byte writers/reset,battle flag1000 consumers,unit allocation/stat-
+copy/SpawnUnit/part state and full normal attack/defense/forced/reward/result
+paths;original tutorial input/state/animation/audio traces and chapter coverage.
+Continue all reachable US mechanics/optional content before complete-game
+requirements. Full objective active/incomplete;installed tutorial graph is not
+an executed faithful completed encounter or full game.

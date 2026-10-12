@@ -77,7 +77,8 @@ kind and number-table spans,plus setup→group→kind relocations and zero DOL i
 table. The containing REL hash remains the identified original US binary.
 Original data/code/reports stay ignored;no unit script or dialogue is rewritten.
 
-Next:recover init_event0x64808,data_table0x646b4 and part/unit lifecycle consumers;
+The [boss tutorial event contracts](HARBOR_BOSS_TUTORIAL_EVENTS.md) now recover
+init/phase and data hooks. Next:part/unit lifecycle and stat-copy consumers;
 resolve actual tutorial event/command gates,stats/attack/reward/forced-result
 writers and original win/loss/reload timing. Close actor/field sequence handoff
 and message conditions before implementing a faithful opening encounter. Full
