@@ -4,8 +4,9 @@ US G8ME01 revision0, recovered2026-10-12. B evidence is original static DOL:
 _JUTFont_DrawPos0x80074720,size4dc and kanjiGetWidth0x8007586c,size78.
 See [glyph wrappers/setup](FONT_GLYPH_REQUESTS_AND_SETUP.md),
 [font state](FONT_DRAW_STATE.md), [message effects](MESSAGE_GLYPH_EFFECTS.md)
-and [RNG](RANDOMNESS.md). Font loading/encoding/page ownership, HSV2RGB and
-GX/matrix service behavior remain separate. No executed image equivalence here.
+and [RNG](RANDOMNESS.md). [HSV2RGB](HSV_COLOR_CONVERSION.md) is recovered
+separately. Font loading/encoding/page ownership and GX/matrix service behavior
+remain separate. No executed image equivalence here.
 
 ## Shared WID1 search and width byte (B)
 
@@ -81,7 +82,8 @@ Read global work word+0x1c. phase=rotateLeft(word,1)&0x1fe, equivalent to
 frame clock. Set hueBase=low8(XL-phase). Build HSV word from original0x00aaffff,
 replacing byte0 for each vertex with the hue below. Call HSV2RGB0x800752fc on
 a local copy and write its returned word as four
-big-endian RGBA bytes. HSV conversion details remain unrecovered here.
+big-endian RGBA bytes. See [the conversion contract](HSV_COLOR_CONVERSION.md) for
+normalization, sector selection, fused arithmetic and truncation.
 
 Each vertex writes to FIFO address0xcc008000: three halfwords for position,
 four individual color bytes, two halfwords for texture coordinates0, then two
@@ -120,6 +122,6 @@ Differential obligations: first matching inclusive WID1, null lookup behavior,
 unsigned width/offset bytes, signed grid division, inactive page quotient,
 float/truncation/narrowing stages, two unconditional draws, hue phase, four FIFO
 vertex/color/UV orders and asymmetric UV1. Remaining: actual font block/glyph/
-page data and loading, HSV conversion, FIFO/GX interpretation, word+1c producer,
+page data and loading, executed HSV conversion, FIFO/GX interpretation, word+1c producer,
 outer draw cadence and matched original image/seed/story traces. These local
 bodies are established; full font/dialogue/complete-game equivalence is unproven.

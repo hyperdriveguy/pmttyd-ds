@@ -3584,3 +3584,35 @@ tests/core_tests.cpp and tools/verify_actor_collision.py. They were not authored
 staged or modified by this research step. The make test/make all results above
 record the state when those checks ran, not validation of subsequent concurrent
 native/collision changes. Preserve that work.
+
+## 2026-10-12 — US HSV conversion and binary64 floor contract
+
+Recovered HSV2RGB0x800752fc,size22c and floor0x80271f7c,size148 from the
+read-only US DOL. Added detailed HSV_COLOR_CONVERSION.md and
+FLOOR_NUMERIC_SERVICE.md: pointer-only four-byte input, input preservation,
+alpha copy, packed return, division-by256 hue endpoint, fused single-precision
+subtraction, six sector assignments and truncation; floor exponent/mantissa
+regions, signed zero, negative carries, huge-plus-input probes and special-value
+arithmetic. Linked the glyph contract and index and recorded provenance.
+These are static contracts and exact-case derivations, not original execution.
+
+Validation:964 instruction anchors and existing tables/constants checks passed
+against the read-only ISO, including added HSV255/360/60 and floor1e300/zero
+constants. Fresh267-function reports reproduced byte-for-byte. All378 local
+behavior links resolved; git diff --check passed. make test passed core plus36
+Python tests; make all exited0 with no rebuild. Those results describe the
+workspace at the time of validation, not later concurrent native changes.
+No original execution/emulator run, profile/save modification, asset conversion
+or native implementation change by this research step. Reports/disassemblies
+remain ignored; only authored contracts and evidence metadata are committed.
+
+Unrelated unstaged work in include/game.hpp, include/head_collision.hpp,
+source/game.cpp, tests/core_tests.cpp, tools/verify_actor_collision.py and now
+docs/ARCHITECTURE.md/docs/MECHANICS.md was preserved and excluded from staging.
+
+Next: font loading/setup/encoding, actual glyph/page data and texture descriptor50;
+original FPSCR and executed hue/RGBA comparisons, GX raster/image evidence;
+signed64 clock/trig/matrix services and story callers. Continue all uncovered
+story/event/field/battle/audio/save/content systems before complete-game
+requirements. Full documentation objective remains active/incomplete; no
+complete-game or standalone numeric execution equivalence is claimed.

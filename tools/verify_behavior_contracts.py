@@ -13,6 +13,22 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'hsv_color_conversion': {
+        0x80075344: '881f0000', 0x80075378: 'ec4300b2',
+        0x80075388: 'ec220072', 0x80075398: 'ef810024',
+        0x800753a4: 'ef621824', 0x800753b0: '481fcbcd',
+        0x800753d4: '548007ff', 0x800753e4: 'ec5c0028',
+        0x800753f0: 'ec401028', 0x80075400: 'ec1b00bc',
+        0x8007549c: '881f0003', 0x800754b0: 'fc40101e',
+        0x800754d4: '98810008', 0x800754e0: '80610008',
+    },
+    'floor_numeric_service': {
+        0x80271f90: '38e3fc01', 0x80271fac: 'fc22082a',
+        0x80271fd8: '3ca0bff0', 0x80271fec: '7c043e30',
+        0x80272020: '7ca50214', 0x80272038: '2c070400',
+        0x80272040: 'fc21082a', 0x80272050: '7c640430',
+        0x8027209c: '7c003040', 0x802720ac: '7cc62078',
+    },
     'font_glyph_quads': {
         0x80074774: '5464043e', 0x80074794: 'a0c80008',
         0x800747b8: '7ce83a14', 0x800747d8: '8ae70001',
@@ -1086,6 +1102,11 @@ def verify(iso_path):
         if read(0x802c2b90, 16).hex() != '43300000000000004330000080000000':
             raise ValueError('Font quad integer conversion biases mismatch')
         print('Font quad HSV word, two-unit inset and conversion biases verified')
+        if read(0x804203fc, 12) != struct.pack('>3f', 255.0, 360.0, 60.0):
+            raise ValueError('HSV normalization constants mismatch')
+        if read(0x804290a8, 16).hex() != '7e37e43c8800759c0000000000000000':
+            raise ValueError('Floor arithmetic probe constants mismatch')
+        print('HSV normalization and floor huge/zero constants verified')
 
 
 if __name__ == '__main__':

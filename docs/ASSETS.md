@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 265 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 940 instruction anchors plus those
+now fingerprints 267 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 964 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -506,3 +506,10 @@ static-only instruction, isolated Ryujinx files/captures were written under
 `artifacts/ryujinx/`; no gameplay was reached and the normal user profile/saves
 were not changed. Firmware.23.0.1.zip was supplied, but successful installation
 was not established. No firmware is required for continued static recovery.
+
+HSV conversion and its floor dependency add two US fingerprints and24 instruction
+anchors. Read-only checks cover255/360/60 binary32 normalization constants and
+floor's binary64 1e300/zero probe. Authored contracts describe byte order,
+single-precision/fused operation boundaries and exponent/mantissa branches;
+no original executable is linked, distributed or executed. Local disassemblies
+and reports remain ignored; no asset conversion or licensing change occurs.
