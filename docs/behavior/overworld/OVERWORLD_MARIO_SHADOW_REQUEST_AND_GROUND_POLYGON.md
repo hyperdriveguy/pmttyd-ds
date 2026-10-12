@@ -126,6 +126,11 @@ ordering must be preserved or labeled when drawing this on Citro3D.
 
 ## Air volume / other backend boundary
 
+[The finite air-shadow GX graph](OVERWORLD_MARIO_AIR_SHADOW_GX_GRAPH.md) now
+closes ordinary type2 request order, opacity admission and full indexed-data
+import. The original/PICA raster backend remains separate; the following body
+identity overview does not imply raster closure.
+
 Type2 is admitted by cylinderShadowDraw only with prepared flag2, camera match
 and size!=0 (8002bfc8–ff4). It uses the same Collision matrix then three GX
 passes with stencil-like color/blend/depth/cull requests. Source `vertex_tbl`
