@@ -1,5 +1,56 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native camera target, heading and screen-cache lifecycle
+
+Native dff51f1 adds portable engine-unit camera/Mario target owners and binds
+camera-before-Mario consumption of the previous retained target. Source default
+Y-follow.2 uses root+1 engine-unit target; X/Z use direct retained writes rather
+than uniform.07 smoothing. Side/vertical/depth shifts approach with source±1
+overshoot and .03/.06/.06 reset rates, clamping crossed targets. Display10000
+suppresses target/depth writes after shift updates;20000 uses alternate XZ/depth
+while retaining Y. Motion29 skips this target owner; ship25's extra vertical
+composition remains explicitly unsupported. Heading uses sign-aware Q1000/wrap,
+and current stick/drift rotates into world axes with the camera heading before
+retained-direction movement-rate evaluation.
+
+Mario Move now projects the current root into signed cached SX/SY/SZ with finite
+truncation toward zero. Fall consumes the refreshed cache before its current Y
+integration; source bounds0..600/0..535 ignore depth and permit negative-W
+projection. This replaces the constant fieldAirOnScreen Boolean. The field case
+manager follows motion/projection/late camera publication. Recovery still freezes
+camera updates; native placement/rollback explicitly rebase retained history.
+
+The existing fixed42-degree view remains an explicitly named fallback adapter,
+not source camera-road eye/at. It constructs a portable view/GX perspective
+snapshot and source608x480 viewport for the policy consumer. A supplied frame can
+replace this adapter; authored road/curve/transition/event/lens services still
+need native binding. No invented camera clamps or imported metadata-lens rewrite
+was added. Original matrix/trig/lookup/alias/numeric equivalence is not claimed.
+
+Validation: make test passed50/50 CTest suites and78 Python tests; make all built
+the3dsx. Logs:/tmp/pm-camera-test-final.log,/tmp/pm-camera-build-final.log.
+build-host/core_tests original passed18315 indexed/full-scan probes and all8
+room arrival/grounded+airborne road regressions;/tmp/pm-camera-original.log.
+New camera fixtures cover retained-tick ordering,overshoot/rate clamps,display
+flags,Y freeze,heading rotation,negative-W/truncation/invalid conversion,bounds,
+native supplied frames and cached Move Y before falling integration. Fall drift
+fixtures now inject an actual offscreen projection rather than a Boolean.
+Isolated ceiling jumps/landed checkpoint and2 east reciprocal trips passed:
+/tmp/pm-camera-ceiling-smoke.log and /tmp/pm-camera-roads-smoke.log,captures
+artifacts/azahar-camera-ceiling/ and artifacts/azahar-camera-roads/. User emulator
+profiles/saves unchanged;these are native checks,not original gameplay traces.
+
+Documentation recovery closes the preceding root-scale uncertainty: _mapLoad
+multiplies authored map coordinates by10 for both map and hit entries, so converter
+*.1 and mechanics engine*.01 agree (5d86268,NULL-ray verifier15spans47anchors).
+Camera leaf verifier now passes38DOLspans53anchors75EVTowners332requests5camera
+containers;/tmp/pm-camera-evidence.log. Camera state/flat-zone interface is delivered
+in OVERWORLD_CAMERA_ROAD_STATE.md;full collisionCurve/state transitions remain
+under documentation-agent recovery. No original assets or executable bodies
+committed/distributed. Next: complete and bind authored camera curve/zone/state
+and event/lens owners, then native source partner behavior and unresolved ROAD
+story/case/EVT lifecycle. Full overworld/remake goal remains active/incomplete.
+
 ## 2026-10-12 — Ordinary Jump root source binding and complete scoped callback census
 
 Documentation agent ID2 delivered conditional default weapon→selected event→

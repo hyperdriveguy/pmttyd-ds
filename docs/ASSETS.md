@@ -1323,3 +1323,17 @@ by ID1. Local raw/catalog/WAV packs stayed unstaged;original assets retain
 copyright and no redistribution grant. No original execution,ISO/profile/save
 mutation or original binary/dialogue distribution occurred. Initial native link
 failures were unrelated to the verified original instruction evidence.
+
+
+## Camera lifecycle evidence and unchanged visual assets (2026-10-12)
+
+Camera commit dff51f1 changes portable target/heading/projection ownership only;
+no map/art/audio conversion choices or asset pack ABI changed. Original camera
+containers remain read-only source evidence,not newly compiled camera-road data.
+The original map/hit loader's parent scale10 confirms current authored-map*.1
+conversion corresponds to engine*.01 native mechanics (5d86268). Source evidence
+verifiers read G8ME01.iso read-only;no original executable/assets or generated
+captures were staged. Isolated camera captures remain under ignored
+artifacts/azahar-camera-ceiling/ and artifacts/azahar-camera-roads/. Original
+assets retain Nintendo/Intelligent Systems copyright;local derivative use grants
+no redistribution license. Camera-road view/curve/lens binding remains unfinished.

@@ -1,5 +1,26 @@
 # Mechanics evidence ledger
 
+## 2026-10-12 — Native camera retained targets and screen-cache policy
+
+Native dff51f1 binds the closed ordinary camera target prefix from
+OVERWORLD_CAMERA_LIFECYCLE_AND_PROJECTION.md: camera reads the preceding Mario
+publication before current motion, separate engine-unit shifts/follow and direct
+XZ target writes replace uniform native.07 smoothing. Source display10000 shifts
+still approach while target writes are suppressed;20000 alternate XZ/depth retains
+Y. Motion29 skips target update;ship25 vertical ownership remains unsupported.
+Current input/drift uses the camera-produced Q1000 heading snapshot. Cached signed
+SX/SY/SZ refresh after MoveMain, before Fall integrates current Y; truncation,
+negative-W evaluation and inclusive0..600/0..535 cutoff replace always-on-screen.
+
+The frame provider remains explicitly provisional: fixed native eye/at/FOV42,
+portable look matrix/GX vector and608x480 policy viewport. Source road solver,
+transitions,events,lens and original SDK/trig/numerical equivalence remain open.
+The cache owner can consume a supplied frame once those native services are bound.
+Recovery freezes/rebase history remain harness integration points. Validation is
+source-derived host fixtures/native emulator behavior,not new Dolphin observations.
+Authored geometry*.1 versus engine*.01 is now reconciled by recovered map/hit
+parent scale10;the earlier uncertainty was not evidence of a geometry mismatch.
+
 ## 2026-10-12 — Native ordinary ROAD contact and concurrent departure
 
 ROAD1 metadata replaces the old marker-radius trigger with named collision
