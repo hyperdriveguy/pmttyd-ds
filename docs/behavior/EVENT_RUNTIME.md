@@ -229,3 +229,14 @@ Copied locals remain distinct from shared user pointers;restart preserves locals
 relationships and ID,does not cancel children or append,and fetch later resets
 first-call continuation. ID-output variants and remaining opcode/deletion/domain/
 source/runtime closure remain open under EVT-01.
+
+
+## Run/ID/control follow-up (2026-10-12)
+
+[Run/ID variants](EVENT_RUN_AND_ID_OUTPUT_VARIANTS.md) closes92/93/108/111;
+ID-returning brother111 omits plain110's150 copy. Independent RUN roots use
+flags0 and do not append in the current manager pass. [Controls/ID scans](EVENT_CONTROL_OPCODES_AND_ID_SCANS.md)
+closes94..106 wrappers,setters and Other/ID/Check local scans. Child94 returns
+terminal handler255 without deleting its waiting owner;it ends that credit loop.
+Full stop/start/delete traversal,other opcodes/domains and original runtime
+traces remain open under EVT-01.

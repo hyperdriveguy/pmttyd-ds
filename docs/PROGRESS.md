@@ -6766,3 +6766,38 @@ init/exit hooks and pose/heap/resource lifetime;complete battle-end/lecture-mode
 window/HP immunity teardown and original lesson transition traces. Full game
 system documentation/remake remain incomplete;complete-game requirements remain
 deferred until adequate coverage.
+
+### 2026-10-12 — Documentation ID2: run/ID variants and event controls
+
+Delivered EVENT_RUN_AND_ID_OUTPUT_VARIANTS.md and
+EVENT_CONTROL_OPCODES_AND_ID_SCANS.md. Complete92/93/108/111 helpers specify
+independent run flags0/no same-pass append,post-constructor copies,raw ID output
+and first-end scanners;brother111 omits plain110's150 copy. Scoped94..106
+blocks specify child255 yield without owner deletion,restart/setters/stop/start/
+check calls and outputs. Complete setter and Other/ID/Check leaves retain global
+speed multiply/credit preservation,pointer exclusion,all-match ID maskef and
+first-match active liveness,live versus captured capacity. No immediate child
+recursion,ID-as-slot,per-ID eligibility bypass or invented cancellation policy.
+
+Validation: verify_event_run_and_controls.py passed16 containing fingerprints
+(four helpers,eight leaves,scoped dispatcher and three linked constructors),72
+anchors,25 data/dispatch spans;report/tmp/id2-event-controls-evidence.json.
+Existing descendant and manager verifiers passed. make all built concurrent
+event modules and3DSX,exited0. make test configuration failed at CMakeLists.txt:103
+because concurrent registration referenced missing tests/event_dispatch_tests.cpp;
+CTest/Python phases were not reached by make test. Independent Python suite
+passed58 tests. Inbox records the native fixture dependency;no full host-pass
+claim. All889 behavior local links resolved;git diff --check passed. No native,
+asset,ISO,save/emulator-profile changes by ID2;inspection/report artifacts/tmp.
+Concurrent native dispatcher and ID1 research preserved and not staged by ID2.
+
+Released only ID2's run/control lock,linked contracts in inbox/index/EVENT_RUNTIME.
+EVT-01 remains open:deep stop/start/delete traversal,other opcode/namespace/
+source/domain initialization and original pause/creation/deletion/multicredit
+traces. Whole documentation and eventual complete-game requirements objective
+remains active/incomplete.
+
+Final ID2 run/control validation follow-up:concurrent dispatch test fixture
+appeared before commit. Re-run make test passed26 CTest suites and58 Python
+tests. The earlier missing-fixture failure is resolved;final host validation
+passes. ID2 changed no native file for that resolution.

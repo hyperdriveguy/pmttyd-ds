@@ -18,6 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Field party mode initialization and current-index ownership | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover N__partyChgRunMode local state transition requests,partyInit/partyMain and direct current-index writer census;all mode update bodies,EVT-01 and battle teardown remain separate |
+| Event run/ID-output concurrency and control opcode wrappers | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Run/ID variants](behavior/EVENT_RUN_AND_ID_OUTPUT_VARIANTS.md),[controls/ID scans](behavior/EVENT_CONTROL_OPCODES_AND_ID_SCANS.md):complete92/93/108/111,94..106 wrappers,setters and Other/ID/Check scans;deep stop/start/delete,other opcodes/domain and original traces remain open |
 | Child/brother constructors and restart complete local state | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Descendants/107/110](behavior/EVENT_CHILD_BROTHER_AND_INLINE_CONSTRUCTION.md),[restart](behavior/EVENT_RESTART_PRESERVATION.md):complete local copy/reset/ownership/append/order and plain inline/brother paths;ID variants,remaining controls/domain and original traces remain open |
 | Field party destruction and position constructors | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Destruction/saved kind](behavior/FIELD_PARTY_DESTRUCTION_AND_SAVED_KIND.md),[position constructors](behavior/FIELD_PARTY_POSITION_CONSTRUCTORS.md):complete local Kill/Kill2/main/position/secondary and kind1/8 init answered;all-kind/pose/heap/resource/mode/index invariants,battle teardown and original traces remain open |
 | Root/typed event constructors and label/run-check initialization | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Root/typed constructors](behavior/EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md),[labels/run-check](behavior/EVENT_LABEL_SCAN_AND_ENTRY_RUN_CHECK.md):complete local allocation/init/label scan/conditional append/system-level stop;child/brother/inline/restart/domain and original traces remain open |
@@ -864,3 +865,30 @@ fingerprints,81 anchors,five spans;plain107/110 recovered,ID variants108/111 and
 other child/control/deletion opcode contracts remain open. Own lock released;
 EVT-01 stays open. make test passes25 CTest suites and58 Python tests;make all
 passed. No native changes by ID2.
+
+
+ID2 control-wrapper validation note (2026-10-12):make test currently stops at
+CMakeLists.txt:103 because concurrent native registration references missing
+`tests/event_dispatch_tests.cpp`. CTest/Python checks were not reached by that
+command. make all and new16-body control verifier pass. Please finish the test
+file and re-run before recording a full host pass;ID2 changed no native files.
+
+
+ID2 EVT-01 run/control delivery (2026-10-12), partial answer:
+[run/ID variants](behavior/EVENT_RUN_AND_ID_OUTPUT_VARIANTS.md) closes independent
+92/93 roots with flags0/no same-pass append, copied fields and ID publication;
+108/111 end scanners/output order and brother111's omitted150 copy.
+[controls/ID scans](behavior/EVENT_CONTROL_OPCODES_AND_ID_SCANS.md) closes94..106
+wrappers,child255 yield WITHOUT owner deletion,setter rounding/narrowing,
+Other-pointer exclusion,all-match stop/start IDs with maskef and first-match
+active CheckID. Raw output is distinct from resolved input. Verifier passes16
+containing fingerprints (dispatcher scoped/constructors linked),72 anchors and
+25 data/dispatch spans. Own lock released;EVT-01 remains priority0/open for deep
+stop/start/delete traversal,remaining opcode/namespace/source/domain policies
+and original traces. make all passed;make test's missing concurrent dispatch
+fixture is noted above;58 Python tests passed independently. No full host-pass
+claim until that fixture is present and checked.
+
+ID2 control validation follow-up:the concurrent dispatch fixture now exists.
+Fresh make test passes26 CTest suites and58 Python tests;the missing-file
+configuration failure above is resolved. ID2 changed no native files for it.
