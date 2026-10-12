@@ -1429,3 +1429,17 @@ slice fallbacks. Existing local-assets/audio-map raw/catalog and RomFS WAV/
 audio-map.json derivatives remain unstaged. Original rights remain with their
 owners;local analysis/conversion grants no redistribution license.
 Exact build log:/tmp/id1-flying-build.log.
+
+ID1 flying history/source/build provenance (2026-10-12):read-only
+/home/carson/games/roms/G8ME01.iso US disc0 revision0 supplied complete
+partyFlyMain/partyMoveFlyInit,Cloud/Vivian ordinary callbacks,three source leaves
+and kind5/6 forty-byte records at0x803144b0/0x803144d8. Only addresses,hashes,
+constant/word metadata and analysis were added to source history;original ELF/
+listing/report remain ignored under artifacts/reference/behavior. Shared history
+buffers are runtime/BSS state,not extracted art or invented source assets.
+No original dialogue or new ID1 conversion policy was introduced. make all ran
+existing sound/proj/pmario.proj,pool,sdir,samp audio-map pipeline:3218 GameCube
+identities,0 Switch,5 primary-PCM slice fallbacks. Existing local-assets/audio-map
+raw/catalog and RomFS WAV/audio-map.json derivatives remain unstaged. Original
+rights remain with their owners;local analysis/conversion grants no redistribution
+license. Exact build log:/tmp/id1-fly-history-build.log.

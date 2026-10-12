@@ -83,6 +83,8 @@ these initial captures except for explicitly rewritten locals;no measured
 one-record-per-tick or render-frame cadence is established.
 
 The flying verifier pins this complete body,all local gates/requests/stores,
-exact constants and map identities. Target-speed service,full history-pointer/
-record writers,slit/roll,FP-register/source/kind/flag/alias domains and original
-execution remain dependencies even with all static checks passing.
+exact constants and map identities. The
+[target-speed/history-pointer leaves](FIELD_PARTNER_FLY_SOURCE_LEAVES.md) and
+[flying record writer](FIELD_PARTNER_FLY_HISTORY_WRITER.md) now have complete
+local contracts. Slit/roll,source/index/FP-register/kind/flag/alias domains and
+original execution remain dependencies even with all static checks passing.

@@ -762,3 +762,16 @@ remain open. No full-system or complete-game equivalence claim follows.
 close full release leaves and271 scoped DOL sites (30 soft/241 hard). Corrected
 fog helper name:8005e9c0 is soft OR04 for mask02 records,not unconditional
 hard release. Update/driver/scene/backend/raw/REL and original traces remain open.
+
+ID1 flying record/source delivery (2026-10-12):
+[history writer](behavior/FIELD_PARTNER_FLY_HISTORY_WRITER.md),
+[initializer](behavior/FIELD_PARTNER_FLY_HISTORY_INITIALIZATION.md),
+[callback bindings](behavior/FIELD_PARTNER_FLY_CALLBACK_BINDINGS.md) and
+[source leaves](behavior/FIELD_PARTNER_FLY_SOURCE_LEAVES.md) close seven
+complete local bodies and concrete kind5/6 +8 records. Earlier selected-tail-only
+partyFlyMain coverage is superseded by this local writer recovery. Slot versus
+flag bank selection,unused/repeated pointer requests,unwrapped capacity guards,
+flag preservation,transient selector order,post-motion offsets/trailing and live
+speed/absolute-Y source choices are explicit. Full lifecycle/source/alias/math/
+pose/ability/terrain/original trajectories remain open;full-game documentation
+and final complete-game requirements remain incomplete.

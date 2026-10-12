@@ -49,6 +49,7 @@ In particular,the following selectors remain distinct:
 | This footmark ID |P+0 mask4 |
 | Callback/query history initialization bank |P+0 mask8 |
 | partyWalkMain history write bank |Signed slot byte P+0x2f==0 versus otherwise |
+| [partyFlyMain write bank](FIELD_PARTNER_FLY_HISTORY_WRITER.md) |Signed slot0→bank0;nonzero slot+nonnull fixed party0→bank1;null→bank0 |
 
 The constructors establish these combinations for their normal roles,but
 arbitrary object states or alternate allocation domains are not validated by

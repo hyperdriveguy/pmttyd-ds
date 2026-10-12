@@ -5,7 +5,10 @@ flyMain@party_move.o at0x800c7ff8,size0x570. This is distinct from
 flyMain@mot_plane.o at0x8009c9b8. The original symbols contain both names;
 inspection used a temporary namespace-filtered copy of the annotation CSV.
 Actual partyFlyMain calls this body with P at0x800c8eac. Only that caller's
-selected tail is included here,not its complete flying-history writer.
+selected tail is pinned by the earlier flying verifier. Its
+[complete local history writer](FIELD_PARTNER_FLY_HISTORY_WRITER.md) and
+[initializer/callback bindings](FIELD_PARTNER_FLY_CALLBACK_BINDINGS.md) are now
+documented separately.
 
 Unsigned selector P+3b dispatches0,1,2,3,6. Every other value returns without
 local motion,angle-copy,splash/countdown or hazard work. Unsigned motion P+36

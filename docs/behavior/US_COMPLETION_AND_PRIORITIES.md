@@ -249,3 +249,14 @@ ops is clean;this is disassembly integrity,not gameplay completion. No full-syst
 closure or complete original playable encounter is established. Continue inbox
 blockers and shipped US caller/source composition;final complete-game requirements
 remain premature.
+
+ID1 flying history/source update (2026-10-12):
+[complete writer](FIELD_PARTNER_FLY_HISTORY_WRITER.md),
+[initializer](FIELD_PARTNER_FLY_HISTORY_INITIALIZATION.md),
+[actual Cloud/Vivian callback bindings](FIELD_PARTNER_FLY_CALLBACK_BINDINGS.md)
+and [source leaves](FIELD_PARTNER_FLY_SOURCE_LEAVES.md) now close their local
+contracts. Kind5/6 records and four direct init/writer call sites establish
+shipped US bindings;they do not establish runtime frequency or all source domains.
+Current listing audit590 files/83916 instructions/640 paired-single operations
+is clean. Broader pose/ability/terrain/source/numeric/original trace and complete
+encounter gaps remain;no full-system closure or final requirements gate is met.

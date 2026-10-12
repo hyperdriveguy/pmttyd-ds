@@ -9634,3 +9634,39 @@ flag/alias/FP domains and matched original flying/recovery traces. Recover a ful
 original playable encounter through persistent outcomes alongside these inbox
 blockers. Full-game documentation and final complete-game requirements remain
 incomplete.
+
+## 2026-10-12 — ID1 complete flying history/init,callback bindings and source leaves
+
+Added [writer](behavior/FIELD_PARTNER_FLY_HISTORY_WRITER.md),
+[initialization](behavior/FIELD_PARTNER_FLY_HISTORY_INITIALIZATION.md),
+[Cloud/Vivian bindings](behavior/FIELD_PARTNER_FLY_CALLBACK_BINDINGS.md) and
+[source leaves](behavior/FIELD_PARTNER_FLY_SOURCE_LEAVES.md). Seven complete
+local bodies now specify three source paths/two shared banks,unused pointer
+requests,exact-coordinate/unwrapped capacity guards,live write-index reloads,
+XYZ/bit0/bit4 publication and preserved padding;init seed/status/distance/bank/
+selector2 early return and overwritten transient selectors;Cloud gate/phase/
+offset and Vivian trailing/coincident-angle request order. Three source leaves
+close direct read-record pointer,single owner/buddy speed amount and repeated
+live absolute-Y error. Updated current flying/homing dependency links;historical
+selected-tail/open status remains historical. Only ID1 scoped lock released.
+
+Validation:verify_field_partner_fly_history.py passes seven complete body hashes,
+467 anchors,ten constants,two kind-record spans,two US lecture imports and
+four actual direct writer/init sites across all seven DOL text sections.
+Repeated report byte-identical;omitted-caller negative expectation rejected;
+Python compilation passed. Prior flying/follow/target/live-services verifiers
+passed. General verifier passed1980 anchors;all1747 behavior links resolved
+at snapshot. Gekko audit passed590 files/83916 instructions/640 paired-single
+operations,zero changes or unknowns. make test passed54 CTest suites and78
+Python tests;make all passed/rebuilt3DSX. Logs:/tmp/id1-fly-history-test.log
+and /tmp/id1-fly-history-build.log. Existing3218-identity/five-fallback audio
+pipeline ran;ASSETS records source/local derivative paths and unchanged ID1
+conversion policy,outputs unstaged. No ID1 native implementation edits,original
+execution/trajectory measurement,profile/save mutation or original distribution.
+Concurrent native/ID2 changes preserved outside this scoped delivery.
+
+Next:used slit/roll/ground homing/behind/beside and pose/offset/trailing consumers,
+full owner/slot/bank/index/flag/kind/alias/FP source domains and original following/
+recovery trajectories. Continue inbox implementation blockers and recover one
+full original playable encounter through persistent outcomes. Full-game behavior
+documentation and final complete-game requirements remain incomplete.

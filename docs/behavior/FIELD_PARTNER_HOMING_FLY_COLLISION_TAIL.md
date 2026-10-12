@@ -81,8 +81,8 @@ publication. No floor-type admission test uses the ignored attribute result.
 
 Otherwise increment P+4e's UNSIGNED loaded byte by1 and store low byte,
 without a saturation guard. Request unk_800ccb34(q,current rootY). Its result
-is not yet documented here;use that returned scalar,not an invented vertical
-measurement. If ordered result>=1 AND ordered abs(R(M.y-rootY))>=10:
+now has a [complete absolute-live-Y source contract](FIELD_PARTNER_FLY_SOURCE_LEAVES.md);
+use its ordered source reads and returned scalar. If ordered result>=1 AND ordered abs(R(M.y-rootY))>=10:
 
 1. Blend rootY toward R(10+M.y) with delta then0.1 single FMA.
 2. Publish V.x then V.z to root.
