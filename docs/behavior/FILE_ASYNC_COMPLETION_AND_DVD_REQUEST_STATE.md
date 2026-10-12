@@ -108,3 +108,8 @@ smart allocator/relocation/type0b collection and actual source failure domains,
 TPL/animation/scene integration and original traces remain unimplemented
 requirements. These complete local bodies do not prove that original assets
 loaded or that a full async backend exists.
+
+[File-payload movement](FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md) now supplies
+local retargeting of pending D7c after a move. [Compaction](SMART_HEAP_COMPACTION_AND_PENDING_FILES.md)
+blocks address-different pending preloads on nonworker threads,while permitting
+worker movement. Actual worker capture/read/cache/platform execution remains open.

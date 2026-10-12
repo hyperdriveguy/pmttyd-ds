@@ -106,3 +106,9 @@ distinct identities;do not replace the holder with its word0 payload.
 Allocation/compaction/tag producers,arena provisioning,relocation/DVD worker/
 source/lifecycle/TPL and original runtime remain EVT-01/JUMP-01/DMG-02 work.
 These complete release operations do not prove a complete memory manager.
+
+[Complete compaction](SMART_HEAP_COMPACTION_AND_PENDING_FILES.md) now supplies
+leading/predecessor/tail gap recomputation and moving payload requests. Headers
+retain identity;[file moves](FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md) update
+live holders and retarget pending DVD destinations. Allocation/relocation/source/
+platform execution remain separate.
