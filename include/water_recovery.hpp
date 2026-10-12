@@ -11,6 +11,7 @@ struct WaterRecovery {
     std::array<float,3> position{},target{};
     float root=0,velocity=0,fallVelocity=0,fallAcceleration=0,fallJerk=0,fallJerkRate=0;
     float travelX=0,travelZ=0;
+    float followDelta=0; // mot_damage2c0: (returnY - captured admission rootY) / travelTicks.
     bool active() const {return state>=0 && state!=33;}
     void begin(std::array<float,3> start,std::array<float,3> destination);
     void beginVoid(std::array<float,3> start,std::array<float,3> destination);

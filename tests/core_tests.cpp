@@ -1103,11 +1103,16 @@ void originalReturnSelection() {
     CHECK(g.recoveryReturn(point));CHECK(std::fabs(point.x-5.5f)<.001f);
     CHECK(std::fabs(point.y-.05f)<.001f && std::fabs(point.z+1.9f)<.001f);
     const auto remembered=g.returnContact.sourceNode;CHECK(g.water.active());
-    const auto camera=std::array<float,3>{g.cameraX,g.cameraHeight,g.cameraZ};const auto partner=g.partner;
+    const auto partner=g.partner;
     const int before=g.progress.hp;
     for(int n=0;g.water.active() && n<500;++n) {
+        const auto stamp=g.fieldCameraShift.previousMilliseconds;
+        const auto follows=g.marioCamera.retained;const auto state=g.water.state;
         Input ignored;ignored.x=1;ignored.confirm=true;ignored.menuConfirm=true;g.tick(ignored);
-        CHECK(g.cameraX==camera[0] && g.cameraHeight==camera[1] && g.cameraZ==camera[2]);
+        CHECK(g.fieldCameraShift.previousMilliseconds>stamp); // Manager runs despite retained follow lock.
+        if(state==0 || state==1 || state==10 || state==11) {
+            CHECK(g.marioCamera.retained.x==follows.x && g.marioCamera.retained.y==follows.y && g.marioCamera.retained.z==follows.z);
+        }
         CHECK(g.partner.x==partner.x && g.partner.z==partner.z);CHECK(!g.saveRequested);
     }
     CHECK(!g.water.active() && g.progress.hp==before-1 && g.scene==Scene::Explore);

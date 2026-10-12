@@ -9,7 +9,8 @@ def run(env,capture):
     x('windowfocus',x('search','--onlyvisible','--class','azahar').splitlines()[-1])
     def hold(key,seconds):
         x('keydown',key);time.sleep(seconds);x('keyup',key);time.sleep(.3)
-    save=ROOT/'artifacts/azahar/data/azahar-emu/sdmc/3ds/ttyd-2ds/progress.bin'
+    output=Path(env.get('PM_PORT_SMOKE_OUTPUT',ROOT/'artifacts/azahar'))
+    save=output/'data/azahar-emu/sdmc/3ds/ttyd-2ds/progress.bin'
     checkpoint=save.read_bytes();hp=struct.unpack_from('<I',checkpoint,16)[0]
     assert checkpoint[26]==0 and hp in (1,7)
     hold('Down',.5);capture('void-falling');hold('x',.08)

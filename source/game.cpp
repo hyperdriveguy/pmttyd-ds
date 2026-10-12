@@ -653,12 +653,16 @@ bool Game::beginVoid() {
     floor=destination.y;
     if(!groundAt({destination.x,destination.z},floor,floor) || !walkable({destination.x,destination.z},floor))return false;
     destination.y=floor;
-    water.beginVoid({roomRespawn.x,recoveryTopHeight(floor),roomRespawn.z},{destination.x,floor,destination.z});
-    progress.position={roomRespawn.x,roomRespawn.z};groundHeight=progress.elevation=floor;
+    const auto height=bottomlessProbeHeight({destination.x,floor,destination.z},fieldCameraFrame);
+    if(!height)return false;
+    water.beginVoid({progress.position.x,*height,progress.position.z},{destination.x,floor,destination.z});
+    // Entry continues into phase0 in this same Mario callback.
+    water.tick(progress.hp);
+    progress.position={water.position[0],water.position[2]};groundHeight=progress.elevation=floor;
+    marioCamera.retained.x=water.position[0]*100;marioCamera.retained.z=water.position[2]*100;
     partner={roomRespawn.x,roomRespawn.z};partnerHeight=roomRespawn.y;partnerContact={};
     cameraX=destination.x;cameraZ=destination.z;cameraHeight=floor;
-    fieldJump={};fieldStep={};fieldVerticalVelocity=0;jumpHeight=0;warpRequest=-1;saveRequested=false;
-    rebaseFieldCamera();
+    fieldJump={};fieldJump.motion=33;fieldStep={};fieldVerticalVelocity=0;jumpHeight=0;warpRequest=-1;saveRequested=false;
     return true;
 }
 void clearCollision() {roadAttributeNodes.clear();walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();head.clear();headIndex.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
@@ -675,8 +679,9 @@ bool Game::beginWater() {
     float floor=target.y;
     if(!groundAt({target.x,target.z},target.y,floor))return false;
     target.y=floor;
-    water.begin({progress.position.x,groundHeight,progress.position.z},{target.x,target.y,target.z});
-    jumpHeight=0;fieldJump={};fieldStep={};fieldVerticalVelocity=0;warpRequest=-1;saveRequested=false;return true;
+    water.begin({progress.position.x,groundHeight+jumpHeight,progress.position.z},{target.x,target.y,target.z});
+    fieldCameraDisplayFlags|=0x10000; // mot_damage entry retains camera-follow publication.
+    jumpHeight=0;fieldJump={};fieldJump.motion=31;fieldStep={};fieldVerticalVelocity=0;warpRequest=-1;saveRequested=false;return true;
 }
 void Game::restore(const Progress& saved) {
     const Progress p=saved; // Caller may pass this game's own progress.
@@ -744,8 +749,9 @@ void Game::beginFieldCameraTick() {
     fieldCamera.consume(marioCamera,fieldCameraFlags);
     fieldCameraCollisionTarget={marioCameraCollision.x,marioCameraCollision.y+1,marioCameraCollision.z};
     const uint64_t now=fieldCameraTickMilliseconds(fieldCameraSimulationTicks);
+    const float rootY=water.active()?water.position[1]:groundHeight+jumpHeight;
     if(fieldCameraFlags&4)fieldCameraShift.update(retainedFieldMainX,
-        {progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100},fieldCameraFlags,
+        {progress.position.x*100,rootY*100,progress.position.z*100},fieldCameraFlags,
         fieldCameraCandidateActive?fieldCameraCandidateShiftRate:0,now);
     cameraX=fieldCamera.point.x*.01f;cameraHeight=fieldCamera.point.y*.01f;cameraZ=fieldCamera.point.z*.01f;
     if(fieldCameraViewAdapter) {
@@ -764,7 +770,8 @@ void Game::beginFieldCameraTick() {
     fieldMovement.headingOffsetDegrees=cameraHeadingSnapshot(fieldCameraFrame.yaw);
 }
 void Game::publishFieldCameraTarget() {
-    marioCamera.publish({progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100},
+    const float rootY=water.active()?water.position[1]:groundHeight+jumpHeight;
+    marioCamera.publish({progress.position.x*100,rootY*100,progress.position.z*100},
                         fieldCameraFrame.yaw,fieldCameraDisplayFlags,fieldJump.motion);
     fieldCameraDisplayFlags&=~0x40000u; // Tail owns the transient flag; retained contact persists.
 }
@@ -774,7 +781,8 @@ void Game::publishFieldCameraCollision(const FieldSupport& support) {
     fieldCameraDisplayFlags|=0x40000;
 }
 void Game::cacheFieldScreen() {
-    fieldScreen=projectCameraRoot({progress.position.x,groundHeight+jumpHeight,progress.position.z},
+    const float rootY=water.active()?water.position[1]:groundHeight+jumpHeight;
+    fieldScreen=projectCameraRoot({progress.position.x,rootY,progress.position.z},
                                  fieldCameraFrame.view,fieldCameraFrame.projection,fieldCameraFrame.viewport);
 }
 void Game::move(const Input& i,bool launched) {
@@ -1150,7 +1158,7 @@ void Game::battle(const Input& i) {
 void Game::tick(const Input& rawInput) {
     Input input=rawInput;const Input& i=input;
     ++ticks;++fieldCameraSimulationTicks; sound=Sound::None;overheadContact=false;
-    if((scene==Scene::Explore || scene==Scene::Dialogue) && !water.active())beginFieldCameraTick();
+    if(scene==Scene::Explore || scene==Scene::Dialogue)beginFieldCameraTick();
     if(arriving || warpRequest>=0)retainedFieldMainX=0; // Source road choreography keys off before Mario input publication.
     if(i.physicalSnapshot) {
         std::array<RawPad,4> raw{};raw[0].buttons=i.physicalButtons;
@@ -1206,8 +1214,14 @@ void Game::tick(const Input& rawInput) {
     }
     if(scene==Scene::FieldDefeat) {if(i.confirm || (tap && i.touchY>=107 && i.touchY<155))reloadRequested=true;return;}
     if(water.active()) {
+        retainedFieldMainX=fieldKeysOff?0:int8_t(std::clamp(i.x,-1.f,1.f)*70);
+        const bool bottomlessTravel=water.kind==RecoveryKind::Void && water.state==15;
+        const bool waterFollow=water.kind==RecoveryKind::Water && (water.state==12 || water.state==14);
         const auto event=water.tick(progress.hp);
         progress.position={water.position[0],water.position[2]};
+        if(waterFollow)marioCamera.retained.y+=water.followDelta*100;
+        if(bottomlessTravel || waterFollow){marioCamera.retained.x=water.position[0]*100;marioCamera.retained.z=water.position[2]*100;}
+        cacheFieldScreen();
         if(event==WaterEvent::Landed || event==WaterEvent::Complete || event==WaterEvent::Dead) {
             groundHeight=water.position[1];progress.elevation=groundHeight;
             groundAt(progress.position,groundHeight,groundHeight,&groundContact);
@@ -1216,7 +1230,9 @@ void Game::tick(const Input& rawInput) {
             if(water.kind==RecoveryKind::Void){partner=progress.position;partnerHeight=groundHeight;partnerContact=groundContact;}
             followerPath.clear();followerPath.push_back(partner);followerPath.push_back(progress.position);
         } else if(event==WaterEvent::Dead)scene=Scene::FieldDefeat;
-        return; // Original camera and NPC updates stay frozen through recovery.
+        if(event==WaterEvent::Complete || event==WaterEvent::Dead)fieldCameraDisplayFlags&=~0x10000u;
+        publishFieldCameraTarget();
+        return; // Motion publication and partner/NPC lifecycle remain separate owners.
     }
     if (scene==Scene::Dialogue) {
         if (i.cancel || (tap && i.touchY>=168)) scene=Scene::Explore;

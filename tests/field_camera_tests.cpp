@@ -1,4 +1,5 @@
 #include "field_camera_state.hpp"
+#include "field_camera.hpp"
 #include "game.hpp"
 #include <cmath>
 #include <cstdlib>
@@ -29,8 +30,40 @@ void shiftCases() {
     const auto unchanged=cap;cap.post(16);CHECK(!cap.update(1,{2,0,0},0,1000,15));CHECK(cap.current==unchanged.current && cap.previousRootX==unchanged.previousRootX);
     cap.post(99);cap.reset();CHECK(cap.previousMilliseconds==99 && cap.current==0 && cap.limit==300 && cap.incrementCap==3);
 }
+void bottomlessCases() {
+    auto frame=adaptedFieldCameraFrame(0,0,0);
+    const auto height=bottomlessProbeHeight({0,0,0},frame);CHECK(height);
+    auto outside=projectCameraRoot({0,*height,0},frame.view,frame.projection,frame.viewport);
+    auto inside=projectCameraRoot({0,*height-.1f,0},frame.view,frame.projection,frame.viewport);
+    CHECK(!outside.inScreen() && inside.inScreen());
+    const auto side=bottomlessProbeHeight({100,0,0},frame);CHECK(side && *side==1); // Initial outside needs no increments.
+    CHECK(!bottomlessProbeHeight({0,-20.01f,0},frame));
+    FieldCameraFrame invalid;CHECK(!bottomlessProbeHeight({0,0,0},invalid));
+    WaterRecovery recovery;recovery.beginVoid({0,2,0},{.03f,0,0});
+    CHECK(recovery.counter==0 && recovery.position[0]==0);int hp=7;recovery.tick(hp);
+    CHECK(recovery.position[0]==.08f && recovery.state==20 && hp==7);
+    recovery.beginVoid({0,2,0},{0,0,0});recovery.tick(hp);
+    CHECK(recovery.position[2]==-.08f && recovery.state==20);
+    clearCollision();Game game;game.restore(game.progress);
+    game.water.beginVoid({0,2,0},{.8f,0,0});game.fieldCameraDisplayFlags=0x10000;game.marioCamera.retained={123,0,456};
+    game.tick({});CHECK(close(game.fieldCamera.point.x,123.01f));
+    CHECK(close(game.marioCamera.retained.x,8) && close(game.marioCamera.retained.z,0));
+    game.tick({});CHECK(close(game.fieldCamera.point.x,8.01f));
+    CHECK(game.fieldCameraShift.previousMilliseconds==33);
+    game.fieldCameraDisplayFlags=0;game.tick({});
+    CHECK(close(game.marioCamera.retained.y,game.water.position[1]*100)); // An unlocked recovery permits the ordinary writer.
+    CHECK(game.marioCamera.retained.y!=0);
+    Game wet;wet.restore(wet.progress);wet.fieldCameraDisplayFlags=0x10000;
+    wet.water.begin({0,.4f,0},{0,.1f,0});wet.marioCamera.retained={100,70,200};
+    wet.water.state=11;wet.water.position[1]=5.4f;wet.water.velocity=.1f;
+    wet.tick({});CHECK(wet.water.state==14 && wet.water.counter==10);
+    CHECK(close(wet.water.followDelta,-.03f) && wet.marioCamera.retained.y==70);
+    wet.tick({});CHECK(close(wet.marioCamera.retained.y,67) && wet.marioCamera.retained.x==0 && wet.marioCamera.retained.z==0);
+    wet.water.state=32;wet.water.counter=1;wet.tick({});
+    CHECK(!wet.water.active() && !(wet.fieldCameraDisplayFlags&0x10000));
+}
 int main() {
-    shiftCases();
+    shiftCases();bottomlessCases();
     CameraShift up{0,10,.06f};up.tick();CHECK(close(up.current,.66f));
     CameraShift down{10,0,.03f};down.tick();CHECK(close(down.current,9.67f));
     CameraShift cross{9.99f,10,.06f};cross.tick();CHECK(cross.current==10);

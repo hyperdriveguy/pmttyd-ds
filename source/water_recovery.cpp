@@ -22,6 +22,7 @@ WaterEvent WaterRecovery::tick(int& hp) {
             counter=int(distance/.08f);
             if(distance>0){travelX=.08f*(target[0]-position[0])/distance;travelZ=.08f*(target[2]-position[2])/distance;}
             state=12;if(counter==0){state=14;counter=10;}
+            followDelta=(target[1]-root)/counter;
         }
     } else if(state==12 || state==14) {
         if(state==12 && counter>0) {
@@ -53,7 +54,8 @@ WaterEvent WaterRecovery::tick(int& hp) {
 void WaterRecovery::beginVoid(std::array<float,3> start,std::array<float,3> destination) {
     *this=WaterRecovery{};kind=RecoveryKind::Void;position=start;target=destination;root=start[1];state=15;
     const float x=target[0]-position[0],z=target[2]-position[2],distance=std::hypot(x,z);
-    counter=std::max(1,int(distance/.08f));
+    counter=int(distance/.08f);
     if(distance>0){travelX=x*.08f/distance;travelZ=z*.08f/distance;}
+    else travelZ=-.08f; // Source coincident angleABf returns heading0 (-Z); phase0 still moves.
 }
 }
