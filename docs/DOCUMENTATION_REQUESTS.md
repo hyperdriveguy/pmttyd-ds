@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Map TEV ordinary mode0 and shared postlude | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover actual Mario/map mode0 TEV request graph and shared shadow/projected-coordinate flags;other TEV modes/GX/source/runtime remain open |
+| Map TEV ordinary mode0 and shared postlude | AC-01, AC-03 | VALIDATED scoped paths / lock released, 2026-10-12 | Documentation agent ID 1 | [Base/source](behavior/display/MAP_TEV_BASE_MODE_ZERO_AND_SOURCE.md),[constant/character shadow](behavior/display/MAP_TEV_CONSTANT_AND_CHARACTER_SHADOW.md),[callback/counts/gaps](behavior/display/MAP_TEV_FINAL_CALLBACK_AND_OPEN_BRANCHES.md):mode0/fallback/constant/character-shadow/final publication plus four complete shadow leaves;other modes/six middle branches/SDK/GX/source/lifetime/runtime remain open |
 | Animation texture selection and map light/blend/fog helpers | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Objects](behavior/display/ANIMATION_TEXTURE_OBJECT_SETUP.md),[UV matrices](behavior/display/ANIMATION_TEXTURE_COORDINATE_MATRICES.md),[smart data](behavior/display/ANIMATION_SMART_TEXTURE_DATA_PATCH.md),[color/fog](behavior/display/MAP_MATERIAL_LAST_STAGE_COLOR_AND_FOG.md),[light queries](behavior/display/MAP_CHARACTER_LIGHT_QUERIES.md),[selection/channels](behavior/display/MAP_MATERIAL_LIGHT_SELECTION_AND_CHANNELS.md),[types/transforms](behavior/display/MAP_MATERIAL_LIGHT_TYPES_AND_TRANSFORMS.md):fourteen complete local bodies/two-pass textures/source order/sort threshold/color truncation/channel request graph;map TEV/GX/resource/source/lifetime/numeric/runtime remain separate |
 | Animation shape renderer and material request bodies | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/defaults](behavior/display/ANIMATION_SHAPE_RENDER_ENTRY_AND_DEFAULTS.md),[overrides](behavior/display/ANIMATION_RENDER_TEXTURE_OVERRIDE_SELECTION.md),[last-stage](behavior/display/ANIMATION_RENDER_LAST_STAGE_AND_REBIND.md),[arrays/FIFO](behavior/display/ANIMATION_RENDER_ARRAYS_AND_VERTEX_FIFO.md),[source/boundaries](behavior/display/ANIMATION_RENDER_RESOURCE_EXAMPLE_AND_PORT_BOUNDARIES.md):two complete bodies/default/override/material-only versus emission/source metadata;texture/map/GX/SDK/resource/source/lifetime/numeric/runtime remain separate |
 | Animation joint/transform node matrix builders | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Joint](behavior/display/ANIMATION_JOINT_NODE_MATRICES.md),[transform](behavior/display/ANIMATION_TRANSFORM_NODE_MATRICES.md),[stack/affine](behavior/display/ANIMATION_MATRIX_STACK_AND_AFFINE_NUMERICS.md),[rotation](behavior/display/ANIMATION_SDK_AXIS_ROTATION.md),[layout/bindings](behavior/display/ANIMATION_NODE_LAYOUT_AND_USED_BINDINGS.md):two complete builders/seven SDK primitives/two trig wrappers,dispatch/alias/signed-address and original13/29-group metadata;libm/GQR0/FPSCR/resource/render/material/source/runtime remain separate |
@@ -3015,3 +3015,19 @@ imports/41 direct DOL sites/65536 host arithmetic cases pass. make test78 CTest/
 90 Python and make all pass. Only ID1 scoped lock released;map TEV/GX/normal/
 resource/pose/link/source/lifetime/numeric/original images remain open. Native
 ordinary geometry/texture subset is not complete-game material fidelity.
+
+ID1 ordinary TEV/character-shadow delivery (2026-10-12),AC-01/AC-03 partial:
+three detailed display contracts in released row. Original a/a_mario24 draws
+ALL mode0 (all one texture previously checked) binds actual source to base
+request path. Complete mode0/generic/no-texture/constant/character-shadow/final
+callback/count blocks and four shadow getter local bodies are specified.
+Projection and texture admission differ;texture getter invoked twice;smart
+holder patch applies to embedded shadow object;callback nil still resets its
+indirect publication field,then only K/C/I reload. Six middle branch masks/
+skip destinations and all13 base dispatch targets pinned as OPEN internals.
+Containing TEV hash is not whole-body semantic completion. Five identities
+(one partial/four complete),303 scoped words,three spans,two imports,six direct
+sites/source hist pass. make test80 CTest/90 Python,make all pass. Only ID1 lock
+released;other shader modes/source/GX/runtime and complete-game requirements open.
+Native actor-shadow initialization/admission/resource/capture ownership is still
+separate from this documented projected character-shadow material branch.

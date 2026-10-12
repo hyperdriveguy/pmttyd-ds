@@ -1710,3 +1710,16 @@ existing sound/proj/pmario.proj,pool/sdir/samp pipeline:3218 GameCube identities
 0 Switch,5 primary-PCM slice fallbacks;ignored catalog/WAV/RomFS outputs remain
 outside history. Log:/tmp/id1-texture-build.log. Rights remain with original
 owners;local analysis and reusable code provide no asset redistribution license.
+
+ID1 ordinary TEV/character-shadow metadata provenance (2026-10-12):US G8ME01
+ISO read-only;original a/a_mario215124-byte identity rechecked,24 serialized
+draw+8 mode values all0. No original model/texture/pose/message bytes exported
+into source. DOL13-mode dispatch803049a0,ten projected matrix IDs802bf9f0 and
+initial cswp pointer804150e0→803c9e38 are pinned words/hashes,not captured shadow
+images. Runtime shadow texture/color/matrix/holder fields require lifecycle
+recovery. Inspection ELFs/listings/report ignored under artifacts/reference/
+behavior. No ID1 art/audio/converter adaptation change. make all ran existing
+sound/proj/pmario.proj,pool/sdir/samp pipeline:3218 GameCube identities,0 Switch,
+5 primary-PCM slice fallback WAVs;ignored catalog/RomFS outputs outside history.
+Exact log:/tmp/id1-tev-build.log. Original rights remain with their owners;
+metadata analysis grants no asset redistribution license.

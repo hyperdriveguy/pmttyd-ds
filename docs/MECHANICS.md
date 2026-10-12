@@ -1098,3 +1098,13 @@ performance was added. Host exhaustive65536 byte-pair proof establishes only
 the decoded integer floor(product/255) reduction. GQR0/FPSCR/libm/GX/resource/
 source lifetimes and original image comparisons remain open. make test78 CTest/
 90 Python and make all pass;native tests/build are not original-runtime oracles.
+
+ID1 ordinary TEV/character-shadow evidence (2026-10-12):original Mario source
+24 draw records all select mode0;see
+[base/source](behavior/display/MAP_TEV_BASE_MODE_ZERO_AND_SOURCE.md).
+This is static source metadata,not an original frame or pose-flag execution
+observation. Scoped base/constant/character-shadow/callback/count request blocks
+and four source getter bodies are documented;remaining shader branches and
+actor-shadow ownership/GX/numeric/image behavior remain open. No new Dolphin
+observations or measured shadow/lighting curve. make test80 CTest/90 Python and
+make all pass;these are native validation,not original runtime parity.

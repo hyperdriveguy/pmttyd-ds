@@ -12285,3 +12285,60 @@ ID1 final delivery link audit (2026-10-12):501 Markdown files checked after
 staging/concurrent new files;zero broken links. The498-file count above is the
 earlier verification snapshot. All staged changes belong to ID1;other owners
 retain their currently unstaged native/battle/reference edits.
+
+## 2026-10-12 — ID1 ordinary mode0 TEV and character-shadow material path
+
+Added [base/source](behavior/display/MAP_TEV_BASE_MODE_ZERO_AND_SOURCE.md),
+[constant/character-shadow](behavior/display/MAP_TEV_CONSTANT_AND_CHARACTER_SHADOW.md),
+[callback/counts/gaps](behavior/display/MAP_TEV_FINAL_CALLBACK_AND_OPEN_BRANCHES.md).
+Original read-only a/a_mario24 draw records ALL word+8 mode0;previous one-slot
+witness remains. Static used source binding motivates this actual shader path.
+Complete local blocks specify signed N fallback/unsigned mode dispatch/mode0,
+generic and no-texture base requests,constant stage suppression,character-shadow
+projection versus texture guards/double getter/captured color/matrix requests,
+final group callback record/nil indirect reset/selective reload/low8 count order.
+Four complete shadow getter bodies specify live work fields/embedded smart patch.
+No original pixels/execution or complete actor-shadow ownership claimed.
+
+This is SCOPED TEV semantics,not full mapSetMaterialTev0x2dbc completion. Thirteen
+base dispatch targets and six unrecovered middle branch tests/skip destinations
+are pinned;internals remain open. Complete documented ordinary path requires
+N>0,mode0,F&0x80970400==0;actual pose/source flag writers are not thereby proven.
+F4 optionally admits character-shadow,F0x10000000 suppresses constant stage,
+F0x0f000000 admits final callback. Other modes1..9/12 and all six middle blocks
+remain next shader work. Only ID1 scoped lock released;parent requests remain open.
+
+Validation:verify_map_tev_ordinary.py passesfive identities(one containing TEV
+body with partial reviewed semantics/four complete shadow leaves),303 scoped
+instruction words,three spans(13-mode dispatch,10 matrix IDs,initial shadow work
+pointer),two US lecture imports,six exact direct sites and original Mario
+identity/24-draw mode histogram. Repeated JSON byte-identical;missing caller and
+wrong source mode negatives rejected;Python compilation passed. Prior texture/
+light verifier and general1980 anchors pass. Gekko651 listings/96003 instructions/
+914 paired operations,zero changes/unknowns. Link scan509 Markdown files all
+resolve at initial verification;final delivery scan recorded separately.
+
+make test80 CTest suites/90 Python tests passed;make all3DSX passed. Logs:
+/tmp/id1-tev-test.log,/tmp/id1-tev-build.log. Existing3218 GameCube/0 Switch/
+5 primary-PCM slice fallback audio pipeline ran. No ID1 native code/assets/
+conversion policy/emulator profile/save mutation or original execution. ISO
+read-only;ELFs/listings/report ignored;ASSETS records metadata/source ownership.
+Concurrent native/battle/reference documents preserved outside own staged hunks.
+
+Next:remaining actual US shader modes/flags/source/GX/actor-shadow/resource/
+cache/lifetime/original frame traces,alongside native-requested gameplay/story/
+event/message and persistent encounter closure. Full-game documentation remains
+incomplete;final complete-game system requirements and completion percentage
+remain unsupported by current whole-system evidence.
+
+ID1 TEV delivery link audit (2026-10-12):513 Markdown files checked after
+delivery updates. All new ID1 contract links resolve;two foreign draft links
+in OPERATION_TABLE_ENTRY_PARTIAL_ROWS_AND_PUBLICATION and
+PARTY_SELECTION_TABLE_PRODUCTION_AND_CAPTURE target not-yet-present
+PARTY_ICON_SOURCE_AND_CAN_ACT_STATUS.md. These concurrent ID2 forward references
+are recorded without altering their owner documents;509-file earlier pass
+remains its scoped snapshot. Final current-state result checked before commit.
+
+ID1 final TEV link validation:the concurrent party-icon document arrived.
+The two forward references above are RESOLVED;514 Markdown files now check
+with zero broken links. ID1 has not edited the other owner contracts.

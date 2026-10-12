@@ -1090,3 +1090,13 @@ close full selector:four low-byte candidate lists/original RNG/fresh type and
 weapon rechecks/nine operation cases/script-null results/type13 local flustered.
 9 hashes/388 anchors/5 spans verified;80 CTest/90 Python/make all pass.
 Producer/source/query/event/Game/platform/runtime remain open.
+
+ID1 ordinary US TEV update (2026-10-12):
+[base/source](behavior/display/MAP_TEV_BASE_MODE_ZERO_AND_SOURCE.md),
+[constant/character shadow](behavior/display/MAP_TEV_CONSTANT_AND_CHARACTER_SHADOW.md),
+[final callback/gaps](behavior/display/MAP_TEV_FINAL_CALLBACK_AND_OPEN_BRANCHES.md)
+specify complete scoped request blocks and four shadow getters. Original Mario
+24 draw records all mode0. Reproduce with verify_map_tev_ordinary.py:one partial
+containing identity/four complete leaves,303 scoped words,three spans,two imports,
+six direct sites/source histogram. Other modes/six middle branch internals/GX/
+source/lifetime/images and whole-game requirements remain open.

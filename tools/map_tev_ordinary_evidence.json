@@ -1,0 +1,1704 @@
+{
+  "schema": 1,
+  "bodies": [
+    {
+      "name": "mapSetMaterialTev",
+      "address": 2147621760,
+      "size": 11708,
+      "sha256": "faf566e7e5d1faa2bb0dd9627198d15a618b069af55978746d53f7f4ded6a51a",
+      "scope": "containing body identity;mode0/fallback/constant/character-shadow/final blocks only"
+    },
+    {
+      "name": "shadowGetCharShadowProjection",
+      "address": 2147662972,
+      "size": 12,
+      "sha256": "c827414459f649c424f0c5b8bf5d7673b73f860459fc8cf969bc8b8fa09a8e70",
+      "scope": "complete local body"
+    },
+    {
+      "name": "shadowGetCharShadowColor",
+      "address": 2147662984,
+      "size": 12,
+      "sha256": "2137e3962aeb05075c78f3be8f985fa447431c6a3818169b0d6a5c4347e86254",
+      "scope": "complete local body"
+    },
+    {
+      "name": "shadowGetCharShadowProjTexMtx",
+      "address": 2147662996,
+      "size": 12,
+      "sha256": "5ce31652337c77c9bc53d771b1349c886e395df70eaf6fe472ea00fe12027f60",
+      "scope": "complete local body"
+    },
+    {
+      "name": "shadowGetCharShadowTexObj",
+      "address": 2147663008,
+      "size": 64,
+      "sha256": "34320f70587e06f20ac6775d73225e23df1ad8eb51c18d565daa8ade876bbcd7",
+      "scope": "complete local body"
+    }
+  ],
+  "anchors": [
+    {
+      "address": 2147621760,
+      "hex": "9421fd70",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621764,
+      "hex": "7c0802a6",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621768,
+      "hex": "2c030000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621772,
+      "hex": "3ce0802c",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621776,
+      "hex": "90010294",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621780,
+      "hex": "be61025c",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621784,
+      "hex": "7c9d2378",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621788,
+      "hex": "7cbe2b78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621792,
+      "hex": "7cdf3378",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621796,
+      "hex": "7c7b1b78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621800,
+      "hex": "7c7a1b78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621804,
+      "hex": "3b87f958",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621808,
+      "hex": "3b000000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621812,
+      "hex": "40811304",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621816,
+      "hex": "281d000c",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621820,
+      "hex": "41811268",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621824,
+      "hex": "3c608030",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621828,
+      "hex": "57a0103a",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621832,
+      "hex": "386349a0",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621836,
+      "hex": "7c03002e",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621840,
+      "hex": "7c0903a6",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621844,
+      "hex": "4e800420",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621848,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621852,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621856,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621860,
+      "hex": "38c00004",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621864,
+      "hex": "48297249",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621868,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621872,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621876,
+      "hex": "48296ce1",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621880,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621884,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621888,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621892,
+      "hex": "48297095",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621896,
+      "hex": "3b200001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147621900,
+      "hex": "4800133c",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626532,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626536,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626540,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626544,
+      "hex": "38c00004",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626548,
+      "hex": "48295ffd",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626552,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626556,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626560,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626564,
+      "hex": "38c00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626568,
+      "hex": "38e00001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626572,
+      "hex": "39000000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626576,
+      "hex": "48295b99",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626580,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626584,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626588,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626592,
+      "hex": "38c00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626596,
+      "hex": "38e00001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626600,
+      "hex": "39000000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626604,
+      "hex": "48295be5",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626608,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626612,
+      "hex": "3880000f",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626616,
+      "hex": "38a0000a",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626620,
+      "hex": "38c00008",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626624,
+      "hex": "38e0000f",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626628,
+      "hex": "48295add",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626632,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626636,
+      "hex": "38800007",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626640,
+      "hex": "38a00005",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626644,
+      "hex": "38c00004",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626648,
+      "hex": "38e00007",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626652,
+      "hex": "48295b09",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626656,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626660,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626664,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626668,
+      "hex": "48295ded",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626672,
+      "hex": "3b200001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626676,
+      "hex": "48000094",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626680,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626684,
+      "hex": "388000ff",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626688,
+      "hex": "38a000ff",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626692,
+      "hex": "38c00004",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626696,
+      "hex": "48295f69",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626700,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626704,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626708,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626712,
+      "hex": "38c00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626716,
+      "hex": "38e00001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626720,
+      "hex": "39000000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626724,
+      "hex": "48295b05",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626728,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626732,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626736,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626740,
+      "hex": "38c00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626744,
+      "hex": "38e00001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626748,
+      "hex": "39000000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626752,
+      "hex": "48295b51",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626756,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626760,
+      "hex": "3880000f",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626764,
+      "hex": "38a0000f",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626768,
+      "hex": "38c0000f",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626772,
+      "hex": "38e0000a",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626776,
+      "hex": "48295a49",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626780,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626784,
+      "hex": "38800007",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626788,
+      "hex": "38a00007",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626792,
+      "hex": "38c00007",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626796,
+      "hex": "38e00005",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626800,
+      "hex": "48295a75",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626804,
+      "hex": "38600000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626808,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626812,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626816,
+      "hex": "48295d59",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626820,
+      "hex": "3b200001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626824,
+      "hex": "57c000c7",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626828,
+      "hex": "408200ac",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626832,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626836,
+      "hex": "3880000c",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626840,
+      "hex": "48295c89",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626844,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626848,
+      "hex": "3880001c",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626852,
+      "hex": "48295cd9",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626856,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626860,
+      "hex": "388000ff",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626864,
+      "hex": "38a000ff",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626868,
+      "hex": "38c000ff",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626872,
+      "hex": "48295eb9",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626876,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626880,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626884,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626888,
+      "hex": "38c00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626892,
+      "hex": "38e00001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626896,
+      "hex": "39000000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626900,
+      "hex": "48295a55",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626904,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626908,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626912,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626916,
+      "hex": "38c00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626920,
+      "hex": "38e00001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626924,
+      "hex": "39000000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626928,
+      "hex": "48295aa1",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626932,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626936,
+      "hex": "3880000f",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626940,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626944,
+      "hex": "38c0000e",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626948,
+      "hex": "38e0000f",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626952,
+      "hex": "48295999",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626956,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626960,
+      "hex": "38800007",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626964,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626968,
+      "hex": "38c00006",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626972,
+      "hex": "38e00007",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626976,
+      "hex": "482959c5",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626980,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626984,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626988,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626992,
+      "hex": "48295ca9",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147626996,
+      "hex": "3b390001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627000,
+      "hex": "57c0077b",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627004,
+      "hex": "4182012c",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627008,
+      "hex": "48008c7d",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627012,
+      "hex": "2c030000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627016,
+      "hex": "41820120",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627020,
+      "hex": "48008c95",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627024,
+      "hex": "28030000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627028,
+      "hex": "41820114",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627032,
+      "hex": "48008c71",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627036,
+      "hex": "90610058",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627040,
+      "hex": "48008c75",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627044,
+      "hex": "7fe4fb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627048,
+      "hex": "38a101dc",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627052,
+      "hex": "4827ad39",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627056,
+      "hex": "5774103a",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627060,
+      "hex": "3abc0098",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627064,
+      "hex": "7cd5a02e",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627068,
+      "hex": "7f43d378",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627072,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627076,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627080,
+      "hex": "38e00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627084,
+      "hex": "3900007d",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627088,
+      "hex": "48291db5",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627092,
+      "hex": "7c95a02e",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627096,
+      "hex": "386101dc",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627100,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627104,
+      "hex": "48297371",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627108,
+      "hex": "48008c3d",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627112,
+      "hex": "7f64db78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627116,
+      "hex": "48294815",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627120,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627124,
+      "hex": "7f44d378",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627128,
+      "hex": "7f65db78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627132,
+      "hex": "38c000ff",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627136,
+      "hex": "48295db1",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627140,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627144,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627148,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627152,
+      "hex": "38c00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627156,
+      "hex": "38e00001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627160,
+      "hex": "39000000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627164,
+      "hex": "4829594d",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627168,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627172,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627176,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627180,
+      "hex": "38c00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627184,
+      "hex": "38e00001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627188,
+      "hex": "39000000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627192,
+      "hex": "48295999",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627196,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627200,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627204,
+      "hex": "38a0000e",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627208,
+      "hex": "38c00008",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627212,
+      "hex": "38e0000f",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627216,
+      "hex": "48295891",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627220,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627224,
+      "hex": "38800007",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627228,
+      "hex": "38a00007",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627232,
+      "hex": "38c00007",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627236,
+      "hex": "38e00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627240,
+      "hex": "482958bd",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627244,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627248,
+      "hex": "38800000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627252,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627256,
+      "hex": "48295ba1",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627260,
+      "hex": "80010058",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627264,
+      "hex": "38810040",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627268,
+      "hex": "38600001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627272,
+      "hex": "90010040",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627276,
+      "hex": "48295a71",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627280,
+      "hex": "7f23cb78",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627284,
+      "hex": "3880000d",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627288,
+      "hex": "48295ac9",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627292,
+      "hex": "3b390001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627296,
+      "hex": "3b7b0001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627300,
+      "hex": "3b5a0001",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627304,
+      "hex": "57c0056b",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627308,
+      "hex": "418201e8",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627796,
+      "hex": "57c003df",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147627800,
+      "hex": "41820a40",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147630424,
+      "hex": "57c0039d",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147630428,
+      "hex": "41820140",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147630748,
+      "hex": "57c0035b",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147630752,
+      "hex": "4182060c",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147632300,
+      "hex": "77c08010",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147632304,
+      "hex": "418201a4",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147632724,
+      "hex": "57c00211",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147632728,
+      "hex": "41820250",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633320,
+      "hex": "57c0010f",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633324,
+      "hex": "41820064",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633328,
+      "hex": "806d1744",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633332,
+      "hex": "38c00000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633336,
+      "hex": "80ed174c",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633340,
+      "hex": "540055ba",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633344,
+      "hex": "1c8302f4",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633348,
+      "hex": "93e10084",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633352,
+      "hex": "80ad1740",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633356,
+      "hex": "38610080",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633360,
+      "hex": "90e10080",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633364,
+      "hex": "38840110",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633368,
+      "hex": "93a10088",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633372,
+      "hex": "7c040214",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633376,
+      "hex": "9321008c",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633380,
+      "hex": "93610090",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633384,
+      "hex": "93410094",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633388,
+      "hex": "90c10098",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633392,
+      "hex": "7d85002e",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633396,
+      "hex": "280c0000",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633400,
+      "hex": "4182000c",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633404,
+      "hex": "7d8903a6",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633408,
+      "hex": "4e800421",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633412,
+      "hex": "8321008c",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633416,
+      "hex": "83410094",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633420,
+      "hex": "83010098",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633424,
+      "hex": "5743063e",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633428,
+      "hex": "48290771",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633432,
+      "hex": "5723063e",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633436,
+      "hex": "482946b1",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633440,
+      "hex": "5703063e",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633444,
+      "hex": "48293e89",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633448,
+      "hex": "ba61025c",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633452,
+      "hex": "80010294",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633456,
+      "hex": "7c0803a6",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633460,
+      "hex": "38210290",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147633464,
+      "hex": "4e800020",
+      "purpose": "mapSetMaterialTev scoped reviewed instruction"
+    },
+    {
+      "address": 2147662972,
+      "hex": "806d81c0",
+      "purpose": "shadowGetCharShadowProjection scoped reviewed instruction"
+    },
+    {
+      "address": 2147662976,
+      "hex": "8063010c",
+      "purpose": "shadowGetCharShadowProjection scoped reviewed instruction"
+    },
+    {
+      "address": 2147662980,
+      "hex": "4e800020",
+      "purpose": "shadowGetCharShadowProjection scoped reviewed instruction"
+    },
+    {
+      "address": 2147662984,
+      "hex": "806d81c0",
+      "purpose": "shadowGetCharShadowColor scoped reviewed instruction"
+    },
+    {
+      "address": 2147662988,
+      "hex": "80630100",
+      "purpose": "shadowGetCharShadowColor scoped reviewed instruction"
+    },
+    {
+      "address": 2147662992,
+      "hex": "4e800020",
+      "purpose": "shadowGetCharShadowColor scoped reviewed instruction"
+    },
+    {
+      "address": 2147662996,
+      "hex": "806d81c0",
+      "purpose": "shadowGetCharShadowProjTexMtx scoped reviewed instruction"
+    },
+    {
+      "address": 2147663000,
+      "hex": "3863007c",
+      "purpose": "shadowGetCharShadowProjTexMtx scoped reviewed instruction"
+    },
+    {
+      "address": 2147663004,
+      "hex": "4e800020",
+      "purpose": "shadowGetCharShadowProjTexMtx scoped reviewed instruction"
+    },
+    {
+      "address": 2147663008,
+      "hex": "9421fff0",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663012,
+      "hex": "7c0802a6",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663016,
+      "hex": "90010014",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663020,
+      "hex": "806d81c0",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663024,
+      "hex": "80030000",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663028,
+      "hex": "540007ff",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663032,
+      "hex": "41820014",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663036,
+      "hex": "808300fc",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663040,
+      "hex": "386300dc",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663044,
+      "hex": "48003679",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663048,
+      "hex": "48000008",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663052,
+      "hex": "38600000",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663056,
+      "hex": "80010014",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663060,
+      "hex": "7c0803a6",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663064,
+      "hex": "38210010",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    },
+    {
+      "address": 2147663068,
+      "hex": "4e800020",
+      "purpose": "shadowGetCharShadowTexObj scoped reviewed instruction"
+    }
+  ],
+  "constants": [],
+  "data": [
+    {
+      "address": 2150648224,
+      "size": 52,
+      "sha256": "e7210f29ded99fdd98a8e144a68319fbd03dc3fc24c2e1d0934d2632c1ce4e20",
+      "words": [
+        2147621848,
+        2147621904,
+        2147622332,
+        2147623188,
+        2147623616,
+        2147624044,
+        2147624612,
+        2147625040,
+        2147625468,
+        2147625728,
+        2147626532,
+        2147626532,
+        2147622760
+      ],
+      "name": "thirteen base mode targets"
+    },
+    {
+      "address": 2150365680,
+      "size": 40,
+      "sha256": "6ba6cb35c1def9647f4576a0b7effd2533403fa049affeabb8a7e669ebca489e",
+      "words": [
+        30,
+        33,
+        36,
+        39,
+        42,
+        45,
+        48,
+        51,
+        54,
+        57
+      ],
+      "name": "ten projected texture matrix IDs"
+    },
+    {
+      "address": 2151764192,
+      "size": 4,
+      "sha256": "b84d7b1f13056b8e9c0fdf555f5073c977c30077097f2af15a4e5eb3351712ec",
+      "words": [
+        2151456312
+      ],
+      "name": "initial shadow work pointer"
+    }
+  ],
+  "rel_sha256": "d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a",
+  "rel_imports": [
+    {
+      "file_offset": 300492,
+      "address": 2148445880
+    },
+    {
+      "file_offset": 301400,
+      "address": 2148445808
+    }
+  ],
+  "direct_reference_census": {
+    "text_sections": 7,
+    "targets": [
+      {
+        "address": 2147621760,
+        "name": "mapSetMaterialTev",
+        "sites": [
+          {
+            "address": 2147619912,
+            "link": true
+          },
+          {
+            "address": 2147732276,
+            "link": true
+          },
+          {
+            "address": 2147733300,
+            "link": true
+          },
+          {
+            "address": 2147735564,
+            "link": true
+          },
+          {
+            "address": 2147736480,
+            "link": true
+          },
+          {
+            "address": 2147950640,
+            "link": true
+          }
+        ]
+      }
+    ]
+  },
+  "reviewed_ranges": [
+    {
+      "start": 2147621760,
+      "end_exclusive": 2147621904
+    },
+    {
+      "start": 2147626532,
+      "end_exclusive": 2147627304
+    },
+    {
+      "start": 2147633320,
+      "end_exclusive": 2147633468
+    },
+    {
+      "start": 2147627304,
+      "end_exclusive": 2147627312
+    },
+    {
+      "start": 2147627796,
+      "end_exclusive": 2147627804
+    },
+    {
+      "start": 2147630424,
+      "end_exclusive": 2147630432
+    },
+    {
+      "start": 2147630748,
+      "end_exclusive": 2147630756
+    },
+    {
+      "start": 2147632300,
+      "end_exclusive": 2147632308
+    },
+    {
+      "start": 2147632724,
+      "end_exclusive": 2147632732
+    }
+  ],
+  "source_example": {
+    "path": "a/a_mario",
+    "size": 215124,
+    "sha256": "61b585d6b2f1a36551d3b779551a12122f228bf1354ebc5bb44651c58f118293",
+    "draw_count": 24,
+    "tev_mode_histogram": [
+      {
+        "value": 0,
+        "count": 24
+      }
+    ]
+  }
+}

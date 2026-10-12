@@ -444,3 +444,16 @@ completion or original execution is inferred from body/anchor/reference counts.
 Actual mapSetMaterialTev modes,normal/GX/cache/resource/source/lifetime and broader
 US gameplay/story reachability remain open;final complete-game requirements
 still require whole-system closure.
+
+## ID1 ordinary TEV and character-shadow paths (2026-10-12)
+
+| Contract | Closed local scope | Open boundary |
+| --- | --- | --- |
+| [Base/source](display/MAP_TEV_BASE_MODE_ZERO_AND_SOURCE.md) | Mode0/generic/no-texture requests,13-target dispatch and actual24-draw Mario mode0 witness | Other base modes1..9/12,GXSetTevOp backend,flag producers |
+| [Constant/character shadow](display/MAP_TEV_CONSTANT_AND_CHARACTER_SHADOW.md) | Exact request order/counters and four complete source getter bodies | Shadow initialization/capture/actor ownership,GX/cache/lifetime/images |
+| [Final callback/gaps](display/MAP_TEV_FINAL_CALLBACK_AND_OPEN_BRANCHES.md) | Seven-word callback record/nil indirect reset/selective reload/count truncation;remaining masks/destinations | Six middle branch internals,callback body/source/valid counts |
+
+Evidence verifier:tools/verify_map_tev_ordinary.py;303 SCOPED words,one partial
+containing identity/four complete leaves. No full TEV body/system closure claim.
+Ordinary Mario static source witness is prioritized over unbound library paths;
+actual executed source flags and original image comparisons remain necessary.
