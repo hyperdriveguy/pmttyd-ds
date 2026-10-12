@@ -15,6 +15,7 @@
 #include "battle_damage.hpp"
 #include "battle_damage_application.hpp"
 #include "battle_weapon_power.hpp"
+#include "physical_input.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -55,6 +56,7 @@ struct Input {
     float x = 0, z = 0;
     bool confirm = false, cancel = false, jumpHeld = false;
     bool cancelHeld = false, confirmReleased = false, cancelReleased = false;
+    bool physicalSnapshot=false;uint16_t physicalButtons=0;
     bool left = false, right = false, menuConfirm = false;
     int touchX = -1, touchY = -1; // press edge, never repeated held input
 };
@@ -119,6 +121,9 @@ public:
     const DamageUnit& playerBattleState() const { return playerBattleUnit; }
     const DamageUnit& enemyBattleState() const { return enemyBattleUnit; }
     const std::vector<DamageServiceRequest>& damageRequests() const { return pendingDamageRequests; }
+    const GlobalInputChannel& physicalChannel(size_t i=0) const { assert(i<4);return inputProducer.channels[i]; }
+    const BattlePadWork& generalPad(size_t i=0) const {assert(i<4);return generalBattlePads[i];}
+    const BattlePadWork& privatePad() const {return actionCommandPad;}
     const char* dialogue() const;
     const char* prompt() const;
     bool near(Vec2 point, float distance = 1.5f) const;
@@ -134,7 +139,9 @@ private:
     bool integrateVertical(bool held,float& previousY);
     void finishVertical(float previousY);
     int turnTick = 0;
-    BattlePadWork generalBattlePad, actionCommandPad;
+    std::array<BattlePadWork,4> generalBattlePads;
+    BattlePadWork actionCommandPad;
+    PhysicalInputProducer inputProducer;
     DefenseCommand defenseCommand;
     uint32_t lastDamageCode=0;
     DamageUnit playerBattleUnit, enemyBattleUnit;

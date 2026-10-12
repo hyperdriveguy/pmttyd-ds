@@ -20,6 +20,7 @@ void merge(ttyd::Input& pending,const ttyd::Input& i) {
     pending.confirm|=i.confirm;pending.cancel|=i.cancel;pending.left|=i.left;pending.right|=i.right;
     pending.menuConfirm|=i.menuConfirm;
     pending.confirmReleased|=i.confirmReleased;pending.cancelReleased|=i.cancelReleased;
+    pending.physicalSnapshot=i.physicalSnapshot;pending.physicalButtons=i.physicalButtons;
     if(i.touchX>=0) {pending.touchX=i.touchX;pending.touchY=i.touchY;}
 }
 }
@@ -75,12 +76,17 @@ int main() {
         i.left=down&KEY_DLEFT;i.right=down&KEY_DRIGHT;i.menuConfirm=down&KEY_Y;
         i.jumpHeld=held&KEY_A;
         i.cancelHeld=held&KEY_B;i.confirmReleased=up&KEY_A;i.cancelReleased=up&KEY_B;
+        i.physicalSnapshot=true;
+        i.physicalButtons=((held&KEY_A)?0x100:0)|((held&KEY_B)?0x200:0)|((held&KEY_X)?0x400:0)|
+            ((held&KEY_Y)?0x800:0)|((held&KEY_START)?0x1000:0)|((held&KEY_L)?0x40:0)|((held&KEY_R)?0x20:0)|
+            ((held&KEY_DLEFT)?1:0)|((held&KEY_DRIGHT)?2:0)|((held&KEY_DDOWN)?4:0)|((held&KEY_DUP)?8:0);
         if(down&KEY_TOUCH) {touchPosition touch;hidTouchRead(&touch);i.touchX=touch.px;i.touchY=touch.py;}
         merge(pending,i);
         const double simulationStart=seconds();metrics.steps=0;
         while(accumulator>=1./60 && metrics.steps<5) {
             game.tick(pending);++metrics.steps;accumulator-=1./60;
             pending={};pending.x=i.x;pending.z=i.z;pending.jumpHeld=i.jumpHeld;pending.cancelHeld=i.cancelHeld;
+            pending.physicalSnapshot=i.physicalSnapshot;pending.physicalButtons=i.physicalButtons;
             if(game.progress.sound) audio.play(game.sound);
             if(noticeTicks>0)--noticeTicks;
         }

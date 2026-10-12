@@ -171,6 +171,25 @@ void dialogueAndTouch() {
     Input y;y.menuConfirm=true;tabs.tick(y);CHECK(!tabs.progress.sound);CHECK(tabs.saveRequested);
 }
 void timing() {
+    // Native level snapshots use the physical producer; abstract scenarios below
+    // inject already-produced GP edges directly.
+    Game physical;physical.startBattle();Input raw;raw.physicalSnapshot=true;
+    raw.physicalButtons=BattleButtonB;physical.tick(raw);
+    CHECK(physical.phase==Phase::Select && physical.hammerAction().state==0);
+    CHECK(physical.privatePad().triggers.entries[0]==BattleButtonB);
+    CHECK(physical.generalPad().triggers.entries[0]==BattleButtonB && physical.generalPad(3).held.entries[0]==0);
+    physical.tick(raw);CHECK(physical.privatePad().triggers.entries[0]==0 && physical.privatePad().triggers.entries[1]==BattleButtonB);
+    raw.physicalButtons=0;physical.tick(raw);raw.physicalButtons=BattleButtonA;raw.confirm=true;
+    physical.tick(raw);CHECK(physical.phase==Phase::Windup && physical.privatePad().triggers.entries[0]==BattleButtonA);
+    raw.confirm=false;raw.physicalButtons=0;for(int n=0;n<40;++n)physical.tick(raw);
+    raw.physicalButtons=BattleButtonA;physical.tick(raw);
+    raw.physicalButtons=0;for(int n=0;n<7;++n)physical.tick(raw);
+    CHECK(physical.actionSuccess && physical.lastDamage==1);
+    Game continuity;Input continuityHeld;continuityHeld.physicalSnapshot=true;continuityHeld.physicalButtons=BattleButtonA;
+    continuity.tick(continuityHeld);continuity.startBattle();continuity.tick(continuityHeld);
+    CHECK(continuity.physicalChannel().pressed==0 && continuity.phase==Phase::Select);
+    Game ignoredItem;ignoredItem.startBattle();ignoredItem.selection=2;ignoredItem.tick(confirm());
+    CHECK(ignoredItem.phase==Phase::Select && ignoredItem.privatePad().triggers.entries[0]==BattleButtonA);
     for(int frame:{1,28,29,40,41,42,43,47,48}) {
         Game g;g.startBattle();g.tick(confirm());advance(g,frame-1);g.tick(confirm());
         advance(g,BattleRules::JumpImpact-frame);

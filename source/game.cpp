@@ -630,7 +630,9 @@ void Game::move(const Input& i) {
 void Game::startBattle() {
     scene=Scene::Battle; phase=Phase::Select; phaseTick=0; selection=0;
     enemyHP=BattleRules::CrumpHP; actionSuccess=false; guarded=false;
-    generalBattlePad={};actionCommandPad={};defenseCommand={};jumpCommand={};hammerCommand={};
+    generalBattlePads={};actionCommandPad={};defenseCommand={};jumpCommand={};hammerCommand={};
+    jumpCommand.callbacksLive=false;
+    hammerCommand.mainLive=hammerCommand.resultLive=hammerCommand.displayLive=hammerCommand.deleteLive=false;
     lastDamageCode=0;
     playerBattleUnit={};enemyBattleUnit={};
     playerBattleUnit.kind=222;playerBattleUnit.hp=int16_t(progress.hp);
@@ -692,59 +694,69 @@ void Game::applyBattleDamage(bool enemyTarget,int32_t hp,int32_t fp,uint32_t cod
     progress.hp=playerBattleUnit.hp;enemyHP=enemyBattleUnit.hp;
 }
 void Game::battle(const Input& i) {
-    // One general-pad press-edge sample per simulation tick, before result calls.
-    // Physical edge production and tutorial cadence remain adaptation contracts.
-    BattlePadSample padInput;
-    padInput.pressed=(i.confirm?BattleButtonA:0)|(i.cancel?BattleButtonB:0);
-    padInput.snapshot.buttons=(i.jumpHeld?BattleButtonA:0)|(i.cancelHeld?BattleButtonB:0);
-    padInput.released=(i.confirmReleased?BattleButtonA:0)|(i.cancelReleased?BattleButtonB:0);
+    BattlePadSample padInput=inputProducer.channels[0].battleSample();
     auto stick=[](float value) {return std::isfinite(value)?int8_t(std::clamp(value,-1.f,1.f)*70):int8_t(0);};
-    padInput.snapshot.mainX=stick(i.x);padInput.snapshot.mainY=stick(-i.z);
-    // General and private pad cadence is a native caller choice pending original
-    // loop tracing; ownership/reset behavior is independently documented.
-    generalBattlePad.update(padInput);actionCommandPad.update(padInput);
-    if(jumpCommand.callbacksLive)jumpCommand.tick();
+    if(!i.physicalSnapshot) {
+        // Abstract callers supply already-produced logical edges (host scenarios).
+        padInput.pressed=(i.confirm?BattleButtonA:0)|(i.cancel?BattleButtonB:0);
+        padInput.snapshot.buttons=(i.jumpHeld?BattleButtonA:0)|(i.cancelHeld?BattleButtonB:0);
+        padInput.released=(i.confirmReleased?BattleButtonA:0)|(i.cancelReleased?BattleButtonB:0);
+        padInput.snapshot.mainX=stick(i.x);padInput.snapshot.mainY=stick(-i.z);padInput.repeat=0;
+    }
+    for(size_t channel=0;channel<4;++channel)
+        generalBattlePads[channel].update(channel==0?padInput:inputProducer.channels[channel].battleSample());
     HammerContext hammerInput;
     hammerInput.setupOptions=1; // Ordinary SetupAC(-2,3,1,0), actor token clear in harness.
     hammerInput.difficulty=attackDifficulty(3,0,0); // Default weapon byte3, no badge modifiers.
     // Adapt the Circle Pad's normalized70-unit range to original main-stick X.
-    hammerInput.held=generalBattlePad.held.entries[0];
-    if(hammerCommand.mainLive && hammerCommand.tick(hammerInput,battleRandom)==0)
-        hammerCommand.mainLive=false;
-    if (phase == Phase::Select) {
+    hammerInput.held=generalBattlePads[0].held.entries[0];
+    const bool selecting=phase==Phase::Select;
+    bool startCommand=false;
+    // Harness sequence adapter runs between general and private pad updates.
+    if (selecting) {
         if (i.left) selection=(selection+2)%3;
         if (i.right) selection=(selection+1)%3;
         int touch=-1;
         if (i.touchY>=100 && i.touchY<158 && i.touchX>=8 && i.touchX<312) touch=(i.touchX-8)/102;
         if (touch>=0 && touch<3) selection=touch;
-        if (i.confirm || touch>=0) {
+        const bool confirmInput=i.physicalSnapshot?(inputProducer.channels[0].pressed&BattleButtonA)!=0:i.confirm;
+        if (confirmInput || touch>=0) {
             if (selection==2) {
-                if (progress.mushrooms<=0 || progress.hp==10) { sound=Sound::Confirm; return; }
-                --progress.mushrooms; progress.hp=std::min(10,progress.hp+5);
-                playerBattleUnit.hp=int16_t(progress.hp);
-                lastDamage=0;lastDamageCode=0; actionSuccess=false; phase=Phase::Impact; phaseTick=0;
+                if (progress.mushrooms<=0 || progress.hp==10) { sound=Sound::Confirm; }
+                else {
+                    --progress.mushrooms; progress.hp=std::min(10,progress.hp+5);
+                    playerBattleUnit.hp=int16_t(progress.hp);
+                    lastDamage=0;lastDamageCode=0; actionSuccess=false; phase=Phase::Impact; phaseTick=0;
+                }
             } else {
                 phase=Phase::Windup; phaseTick=0; actionSuccess=false;
                 if(selection==0) {
                     // Harness setup: per-attack count reset, ordinary route and
                     // fixed difficulty, pending original script/tutorial binding.
-                    jumpCommand={};jumpCommand.tick();jumpCommand.state=100;
+                    jumpCommand={};
                 } else {
                     // Ordinary default-weapon policy, pending actual Crump event binding.
                     hammerCommand={};hammerCommand.period=ordinaryHammerPeriod(0x80353de8);
-                    hammerCommand.tick(hammerInput,battleRandom);hammerCommand.state=100;
                 }
+                startCommand=true;
             }
             sound=Sound::Confirm;
         }
-        return;
     }
+    // Original private manager samples even when its AC main is inactive.
+    actionCommandPad.update(padInput);
+    if(jumpCommand.callbacksLive)jumpCommand.tick();
+    if(hammerCommand.mainLive && hammerCommand.tick(hammerInput,battleRandom)==0)
+        hammerCommand.mainLive=false;
+    // Later event adapter requests StartAC after initialization in this pass.
+    if(startCommand) {if(selection==0)jumpCommand.state=100;else hammerCommand.state=100;}
+    if(selecting)return;
     ++phaseTick;
     if (phase==Phase::Windup) {
         if (selection==0) {
             if (phaseTick>=BattleRules::JumpImpact) {
                 TimingAContext context;context.difficulty=BattleRules::JumpDifficulty;
-                actionSuccess=(jumpCommand.evaluate(generalBattlePad.triggers,context,battleRandom)&2)!=0;
+                actionSuccess=(jumpCommand.evaluate(generalBattlePads[0].triggers,context,battleRandom)&2)!=0;
                 jumpCommand.state=1000; // Harness finish scheduling, not recovered event binding.
                 attackDone(); // One documented hit; follow-up Jump event remains unbound.
             }
@@ -779,6 +791,12 @@ void Game::battle(const Input& i) {
 }
 void Game::tick(const Input& i) {
     ++ticks; sound=Sound::None;overheadContact=false;
+    if(i.physicalSnapshot) {
+        std::array<RawPad,4> raw{};raw[0].buttons=i.physicalButtons;
+        auto stick=[](float value) {return std::isfinite(value)?int8_t(std::clamp(value,-1.f,1.f)*70):int8_t(0);};
+        raw[0].mainX=stick(i.x);raw[0].mainY=stick(-i.z);
+        inputProducer.update(raw,TickRate,false); // Native polling/errors/C-stick/motors remain adapters.
+    }
     const bool tap=i.touchX>=0;
     if(arriving) {
         fade.tick();const bool finished=roadMotion.tick();

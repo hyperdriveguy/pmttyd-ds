@@ -6,7 +6,9 @@ converted locally from your US GameCube ISO. It includes five connected Roguepor
 a small Crump battle harness, touch menus and versioned saves.
 
 The Jump harness now uses the recovered US TimingA history checks and difficulty
-tables. Hammer uses the recovered held-left command with the ordinary default
+tables. Native physical input and battle pad ownership/update order follow the
+recovered local contracts;original polling,pause and event scheduling remain open.
+Hammer uses the recovered held-left command with the ordinary default
 weapon's charge period and difficulty. Guard uses the recovered private-pad
 history checks and difficulty windows. Portable status storage/recovery and
 move-count helpers follow the recovered contracts and feed the damage readers.

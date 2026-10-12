@@ -1,5 +1,67 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native physical input and battle sampling order
+
+Implemented PHYSICAL_INPUT_PRODUCER.md in include/physical_input.hpp and
+source/physical_input.cpp:raw/DemoPad/GP ownership,error-3 retained sample,
+signed strict48 direction thresholds,button/direction edges and axis deltas,
+four-channel error counts/reset masks,scaled24/6 repeats,whole-mask add/remove
+reset,input-clear chord,analog publication,forced/change-only motor requests
+and ready flag. PADRead/Clamp values are explicit caller inputs;hardware behavior
+is not fabricated. Optional reset/motor services run at their documented request
+positions. Portable implementation commit:04bde4e.
+
+Battle snapshots now retain12 semantic bytes,copy L/R trigger bytes,zero analog
+A/B and preserve trailing bytes on update. WorkInit's inspected stores clear
+bytes0..a but not b;the implementation retains old byteb in both snapshots and
+still leaves the release array untouched. Asked INPUT-01 to clarify the older
+whole-snapshot summary and independently pin this byte map. Native construction/
+battle allocation starts these bytes at zero;this is not packed PowerPC ABI.
+
+Native HID held masks project to original button bits. The physical producer
+updates before scene processing and persists across battle start,so held A does
+not generate another physical edge merely because battle pads were initialized.
+Native catch-up carries held snapshots and uses the producer once per simulation
+tick. Abstract host callers can still supply already-produced logical GP masks.
+Rate60,zero unused channels,C-stick/trigger/error/motor limitations and poll timing
+are native adaptation inputs,not original hardware/connection observations.
+
+Native battle ordering now follows the recovered general pads→sequence adapter→
+private pad/AC main→later event adapter. All four general buffers update;private
+sampling continues with inactive commands and when an item selection is rejected.
+Commands initialize in the manager before the harness's later StartAC request.
+Original sequence/controller/display registration and event-credit loop remain
+unbound;we do not synthesize extra pad samples for multiple script invocations.
+The harness retains provisional impact/return scheduling,not a complete original
+battle main or tutorial. Original story,assets,music and sounds were unchanged.
+
+Validation:make test passed9 CTest executables and58 Python tests;make all rebuilt
+ttyd-2ds.3dsx;git diff --check passed. Producer tests cover all strict48 boundaries,
+error-3 snapshot retention,other-error copy,signed axis deltas,press/hold/release,
+repeat24/30 at60 and scaled50/30,mask add/remove,zero countdown,error counts/
+reset-before-GP publication,chord versus retained DemoPad,motor gates/latches and
+snapshot trigger/analog/trailing-byte behavior. Core tests add native physical
+level timing,held continuity into battle,inactive private sampling,four-channel
+separation and rejected-item sampling,plus all prior mechanics. A reused local
+test variable name caused one compile failure;renamed it before final successful
+host/native validation. Derived tests are not original executed comparisons.
+
+Final isolated regression command:
+python3 tools/emulator_smoke.py --fresh-save --seconds 4 --input-script tests/azahar_defense.py
+Reviewed defense-single showing Guard/Mario10HP/Crump4HP and defense-mash showing
+Hit taken/Mario9HP/Crump3HP after the final rebuilt integration. Earlier captures
+preceded the last inactive-callback/test changes;the final rerun is the reviewed
+validation above. Manual captures do not establish original polling/latency/
+impact cadence or hardware performance. Only generated test save reset;user
+profiles/saves and ISO untouched. Git/display escalations automatically approved.
+
+INPUT-01 in docs/DOCUMENTATION_REQUESTS.md records byte-map clarification and
+remaining native/hardware,pause,frame-rate/control,chord/motor and event/display
+bindings. Next consume the incoming Mario Jump motion and normal event-flow
+contracts,complete JUMP-01 follow-up ownership,bind actual pouch/badge/part/unit
+data and original event/message/tutorial handlers. Full implementation goal
+remains active/incomplete;concurrent documentation edits were preserved.
+
 ## 2026-10-12 — ID2: requested Mario-specific jump parameter preparation
 
 Added BATTLE_MARIO_JUMP_PARAMETER.md with the complete80109c68/19c body.
