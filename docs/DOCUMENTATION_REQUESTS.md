@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| General action-record rule judgment and threshold helpers | DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [All68 general rules](behavior/BATTLE_GENERAL_RULE_JUDGMENT.md),[threshold/end/unit queries](behavior/BATTLE_RULE_THRESHOLD_AND_UNIT_QUERIES.md):complete judge/helper/query bodies,captured/current output ownership,duplicate54/55 and numeric0x02 mask;rule/raw record/reset/save/consumer/end/turn/source/runtime lifecycle remains open |
 | Attack-command event selection and action-record classification | JUMP-01, DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete selector](behavior/BATTLE_ATTACK_EVENT_SELECTION.md),[classifier/data/audience leaves](behavior/BATTLE_WEAPON_ATTACK_CLASSIFICATION.md):three dispatch tables,selection-time counts,event/category/byte write order,signed predicate and helper recapture/fallback closed;general rule/menu/source/category/record reset/runtime ownership remains open |
 | Partner live target direction/activity and front-floor service | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used partyGetTargetDir/partyGetTargetDistY and getFrontFloor complete selector/reread/scalar/ray/output contracts;global rise/target/backend/math/source domains,other motion engines,EVT-01 and original trajectories remain separate |
 | Action-record saturation/storage and turn-rule judgment | DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Byte updates](behavior/BATTLE_ACTION_RECORD_BYTE_UPDATES.md),[turn rules](behavior/BATTLE_ACTION_RECORD_TURN_RULES.md),[first process](behavior/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md):complete helpers/six-rule sums/two-phase writes/full first-process and fog/status leaves,34 DOL sites;general judge/action/reset/source/turn/scene/runtime ownership remains open |
@@ -1606,4 +1607,22 @@ consumers,raw record/reset/save/turn/audience/backend and original traces remain
 open. Verifier passes11 complete/linked hashes,301 anchors,eight spans and seven
 exact DOL calls;prior record/cursor/general verifiers pass. make test passes46
 CTest suites and77 Python tests;make all passed;1825 local links resolved.
+ID2 changed no native/test/asset conversion code.
+
+
+ID2 DMG-02/STATUS-01 general-rule delivery (2026-10-12), partial answer:
+[All68 rules](behavior/BATTLE_GENERAL_RULE_JUDGMENT.md) closes full7f0 judge,
+unconditional Mario→partner searches,all byte/HP sums/read orders,rule54/55
+repeated4b/4d,direct58/59 and66/67 branches,scalar capturedP write versus end-
+helper currentP2 writes. [Threshold/end/query leaves](behavior/BATTLE_RULE_THRESHOLD_AND_UNIT_QUERIES.md)
+closes signed no_use/use short-circuit compares WITHOUT255 bypass,complete
+end two-phase status graph and first-match unit selectors. End/turn helper
+bodies are byte-identical;call cadence is not inferred. Clarified prior “bit2”
+wording to NUMERIC0x02 (zero-based index1),not0x04;prior status2/6 survives
+nonzero phase2 when phase1 excluded,but status4 becomes1. Own lock released;
+raw record initialization/writers/reset/save,descriptor/threshold/status consumers,
+full btlseqEnd/scene/turn/source/domain and original traces remain open.
+Verifier passes eight complete/linked hashes,390 anchors,two spans,60 exact
+DOL calls;all68 documented entry addresses reconcile with original table.
+make test46 CTest/78 Python and make all pass;1860 local links resolve.
 ID2 changed no native/test/asset conversion code.

@@ -627,3 +627,11 @@ close the complete local selector and called predicate/audience/data graph.
 Counters update at selection before execution;fallback event does not replace
 retained weapon classification. Complete menu/event/audience/source/record reset
 ownership,general rule judgment and original executed traces remain open.
+
+
+[General action-record judgment](behavior/BATTLE_GENERAL_RULE_JUDGMENT.md) and
+[threshold/end/unit-query contracts](behavior/BATTLE_RULE_THRESHOLD_AND_UNIT_QUERIES.md)
+close all68 local rules and helpers,including signed scalar thresholds without
+255 bypass,captured-versus-current output owners,duplicate54/55 inputs and
+end-helper numeric mask0x02. Descriptor/raw record/reset/save/status consumer
+ownership,full end/turn/scene scheduling and original traces remain open.

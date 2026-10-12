@@ -91,3 +91,10 @@ large,wrap-before-cap,first-store/reload/second-store distinction;requestedH and
 kind guards,H256/low byte,captured battle pointer,cost reverse call order;turn
 byte distinct from halfword/unit byte;all34 exact direct sites. No original
 runtime/resource/turn equivalence is claimed by host arithmetic fixtures alone.
+
+
+[Complete general rule judgment](BATTLE_GENERAL_RULE_JUDGMENT.md) now supplies
+all68 table entries and their full threshold/end-helper dependencies. Combined
+record sums stay word-wide,rule54/55 repeat4b/4d,and scalar versus end helpers
+use different output owners. Raw record initialization/reset/persistence and
+full end/turn/source/runtime lifecycle remain open.

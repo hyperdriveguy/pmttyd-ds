@@ -7,7 +7,9 @@ _check_turn_count_0_turn8018ee94/88. Read
 [first-process order](BATTLE_TURN_FIRST_PROCESS_COMPLETE.md).
 Verify:`python3 tools/verify_battle_action_records.py`.
 Static original DOL behavior;no interpreted rule-name/success-label/gameplay trace.
-The separate general JudgeRuleKeep8018ef8c/7f0 remains a different request.
+The separate [general JudgeRuleKeep](BATTLE_GENERAL_RULE_JUDGMENT.md) is now
+complete locally;its threshold/end helper and unit-query contracts are in
+[rule thresholds](BATTLE_RULE_THRESHOLD_AND_UNIT_QUERIES.md).
 
 ## Selector and captured sum source
 
@@ -35,7 +37,7 @@ narrowing of the completed sum. Maximum18*255 fits the ordinary word domain.
 Rules60/61 sums are disjoint and62 combines their fields,but its actual load
 order differs from concatenating two cached sums. Rules63/64 combine into65
 with another actual load order. No action-record clear/increment occurs here;
-these are reads. Counter source meanings/general rule mappings remain open.
+these are reads. Full semantic rule labels and counter source ownership remain open.
 The helper decides only exact sum0 versus nonzero,not an action-count threshold.
 
 ## Helper reselects global battle and rule descriptor
@@ -57,7 +59,7 @@ Then perform phase2,including NEW reads:
 
 1. Reload T from same retained B2+16f57;read L2=U8(P2+1a).
 2. If (T<=L2 OR L2==255) AND X==0,store status19=6.
-3. If that admission holds and X!=0,read CURRENT status19. If bit2 is SET,
+3. If that admission holds and X!=0,read CURRENT status19. If (status19 & 0x02)!=0,
    leave it untouched;otherwise write1.
 4. Outside admission leave status unchanged.
 
@@ -67,8 +69,8 @@ unless a listed overwrite happens. Both phases execute;phase2 can overwrite
 phase1's2 with6 on a zero sum.255 bypass applies independently per threshold.
 T=threshold is admitted,not strict less. No signed counter/threshold compare.
 
-For X!=0,phase1's write1 clears bit2 before phase2 tests it. Thus preserving an
-incoming bit2 on phase2 is possible only when phase1 did NOT overwrite it (or
+For X!=0,phase1's write1 clears mask0x02 before phase2 tests it. Thus preserving an
+incoming mask0x02 on phase2 is possible only when phase1 did NOT overwrite it (or
 external source/alias change);do not snapshot the incoming status once and
 apply both phases privately. Incoming other bits survive only on no-write paths.
 No scalar clamp,save,unit mutation,rule notification/event creation/RNG here.
@@ -83,7 +85,14 @@ rule-descriptor/threshold/counter writers and call frequency remain separate.
 
 Acceptance:ignored rule0/59/66/255 versus six handled selections;all exact load
 orders/sums/source capture;helper global recapture;threshold equality/255,
-independent phase rereads,X0/nonzero,write2→6,phase1 write1 before bit2 test,
-phase2 preserve incoming bit2 only on relevant path,raw status return;prior-turn
-counter ordering. General judge,end-of-turn checks,action selection/reset/save/
-scene/source domains and original challenge/turn/damage traces remain open.
+independent phase rereads,X0/nonzero,write2→6,phase1 write1 before mask0x02 test,
+phase2 preserve incoming mask0x02 only on relevant path,raw status return;prior-turn
+counter ordering. General/end/selection local bodies are linked separately;full reset/save/
+scene/source and caller lifecycle domains and original challenge/turn/damage traces remain open.
+
+
+Mask clarification (ID2):numeric0x02,zero-based bit index1,comes from
+rlwinm0,0,0,30,30. Prior phrasing “bit2” meant this mask;it must not be
+implemented as0x04. Nonzero X with phase1 excluded/phase2 admitted preserves
+status2/6 but overwrites status4 with1. General rule judgment is linked above;
+full source/caller/lifecycle and original traces remain open.

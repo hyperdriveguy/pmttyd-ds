@@ -1,5 +1,35 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Complete general action-record rule judgment and threshold leaves
+
+Documentation agent ID2 recovered complete JudgeRuleKeep/all68 entries plus
+no_use/use/end helpers and both initial unit queries in two detailed contracts.
+Judge always searches Mario then partner before reading rule;partner result is
+unused. Signed scalar thresholds have no255 bypass and return for capturedP
+write;end helper recapturesP2 and writes there with no caller copy-back. Rules
+54/55 duplicate4b/4d inputs;58/59 direct unsigned compares and66/67 distinct
+last-byte sums remain exact. Clarified prior turn doc's “bit2” to numeric0x02
+(zero-based bit1);0x04 would be wrong. Full end/turn helper bodies are identical.
+Original static listings/ELFs remain /tmp/id2-general-*. No native code,asset
+conversion or original execution was performed.
+
+Validation: tools/verify_battle_general_rules.py passes eight complete/linked
+hashes,390 instruction anchors,two spans and60 exact direct DOL calls. Repeat
+JSON outputs byte-equal (/tmp/id2-general-evidence.json and -second.json).
+All68 documented dispatch addresses independently match the original table.
+General1980-anchor,record and selector verifiers pass;Python compilation and
+ git diff --check pass. make test passes46/46 CTest suites and78 Python tests;
+make all passes. Exact logs:/tmp/id2-general-test.log,/tmp/id2-general-build.log.
+Snapshot1860 local documentation links resolve. Concurrent native/ID1 work remains
+preserved;own documentation-only changes are committed incrementally.
+
+ID2 lock released in docs/DOCUMENTATION_REQUESTS.md;DMG-02/STATUS-01 parents
+remain open. Next recover raw record initialization/writers/reset/persistence,
+descriptor/threshold/status consumers and full btlseqEnd/turn/scene ownership;
+EVT-01 packed entry/source/backend services and original execution remain required.
+Goal remains active/incomplete;complete-game requirements remain unproven.
+
+
 ## 2026-10-12 — Sound-use catalog and native GameCube primary-sample playback
 
 Added tools/audio_map.py,config/audio_bindings.json and docs/AUDIO_MAPPING.md.
