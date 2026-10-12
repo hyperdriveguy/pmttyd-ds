@@ -855,3 +855,17 @@ smartFree/smartAutoFree. Tag4→3 deferral,no heap deallocation,live unlink/spac
 free-list/count updates,stale payload and low16 first-pass versus full-word3
 second-pass policy are explicit. Allocation/compaction/relocation/tag/source/
 scene/platform/original traces remain open.
+
+ID1 partner presentation delivery (2026-10-12):
+[pre-display](behavior/FIELD_PARTNER_PRE_DISPLAY.md),
+[pose selection](behavior/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),
+[facing](behavior/FIELD_PARTNER_DISPLAY_FACING.md),
+[matrix/draw requests](behavior/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md) and
+[Vivian/shadows](behavior/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md)
+close eight complete local bodies. Pending name/paper markers,frame setup,
+animation-before-render gate,depth/registration,trailing rays/shadow source,
+ordered aliased transforms,two draw calls and post-draw rate are specified.
+Renderer/animation/SDK matrix/resource/lifetime/source/numeric/original visual
+composition remains open. Partners/NPCs register now reflects partial local
+coverage,not full-system closure. Unvalidated BTLNO name associations remain
+superseded by the message-resource correction;final game requirements deferred.

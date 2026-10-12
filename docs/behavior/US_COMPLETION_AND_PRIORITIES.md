@@ -281,3 +281,16 @@ remain open. [Message inventory correction](US_MESSAGE_INVENTORY_EVIDENCE_CORREC
 rechecks260 resources/13186 key/text pairs;new filename-number/story-prefix guesses
 are not authoritative completion or dialogue evidence. No full-system/encounter
 closure establishes the final complete-game requirements gate.
+
+ID1 partner presentation update (2026-10-12):
+[pre-display](FIELD_PARTNER_PRE_DISPLAY.md),
+[pose selection](FIELD_PARTNER_POSE_REQUEST_SELECTION.md),
+[facing](FIELD_PARTNER_DISPLAY_FACING.md),
+[matrix/draw](FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md) and
+[Vivian/shadows](FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md) now close
+local eight-body graphs;the register correctly marks partial partner coverage.
+Animation/GX/matrix/shadow/queue/source/numeric/original visual domains remain open.
+Listing audit610 files/86164 instructions/656 paired-single ops is clean.
+Unvalidated BTLNO string-name mapping/completion claims remain superseded by
+[message evidence correction](US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md).
+No complete system/original encounter establishes final game requirements.

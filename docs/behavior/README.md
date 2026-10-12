@@ -104,6 +104,11 @@ complete gameplay sequences before further general-library edge-case recovery.
 | [Partner live direction/activity](FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md) | Complete live direction q0/repeated-pointer and TargetDistY scalar rules | Target/scalar/status/source/angle domains and original outputs |
 | [Partner front-floor service](FIELD_PARTNER_FRONT_FLOOR.md) | Complete upward-clearance/downward-query,heading,quantized output and attribute return | Shared backend/clearance/math/source domains and original trajectories |
 | [Partner status/clearance leaves](FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md) | Guarded status-code table,float60 setter and exact direct DOL access/call census | Code/flag/BSS/alias/REL/lifecycle/source domains and original state traces |
+| [Partner pre-display](FIELD_PARTNER_PRE_DISPLAY.md) | Complete name/paper/frame/update/render gate/depth/registration order | Animation/camera/queue/source/numeric/original visual domains |
+| [Partner pose selectors](FIELD_PARTNER_POSE_REQUEST_SELECTION.md) | Complete name/HP-remap/table/adjacent-color request and two source leaves | Pouch/kind/index/name/resource/lifecycle domains |
+| [Partner facing](FIELD_PARTNER_DISPLAY_FACING.md) | Complete selection,four interpolation/latch branches and live stores | Flag/target/alias/FP domains and original turning |
+| [Partner matrix and draw](FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md) | Complete enable census,ordered aliased transforms,two passes/post-draw rate | SDK matrix/animation/GX/source/runtime backend |
+| [Vivian tail/shadow requests](FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md) | Complete trailing/tail predicate/ray/shadow order | Pose/shadow/queue/source/FP/original visual domains |
 | [Slit collision membership](FIELD_PARTNER_SLIT_COLLISION.md) | Complete ordered probe/filter/raw-normal angle-pair/boolean graph,no local output correction | Full backend/source/alias/math/FP/original collision domains |
 | [Simple camera direction](FIELD_SIMPLE_CAMERA_DIRECTION.md) | Complete global camera-only quantizer/wrap,without facing override | Global/source/exception/numeric domains |
 | [System angle table](FIELD_SYSTEM_ANGLE_TABLE.md) | Complete ratio/index/coefficient/quadrant/zero-vector graph | Original table reuse/source/index/FP domains and host parity |
@@ -320,7 +325,7 @@ runtime semantics, resource lifetime and event bindings still require recovery.
 | Event VM and services | Partial | All shipped opcodes, tagged operands, scheduling/lifecycle and every reachable service's effects |
 | Story and quests | Not recovered | All original event graphs, prerequisites, branches, message/speaker/control-token bindings and persistent writes |
 | Field movement/forms | Partial | Every motion/form, slopes/walls/ceilings, hazards, collision flags, interactions and moving geometry |
-| Partners/NPCs | Not recovered | Following/path/AI rules, field abilities, scripts, recruitment/upgrades and partner-specific collision |
+| Partners/NPCs | Partial local following/history/forms/queries/presentation;NPC/ability systems open | Remaining motion/AI/abilities/scripts,recruitment/upgrades,source/lifetime/backend domains and original trajectories |
 | Maps/transitions | Partial | All entrance types, dynamic objects, loading/REL lifetime, story gates, interior and scripted travel |
 | Combat/turn engine | Partial defense, precheck, HP/FP calculators, counter selection and direct application | Unit/part/weapon lifecycle, target/turn ordering, callbacks, status application, hit-event execution, loss/escape/win |
 | Action commands | Partial input/defense | Every attack/special/stylish command's timing, difficulty, input state, scoring and effects |

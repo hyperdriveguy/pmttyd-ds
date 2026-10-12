@@ -10417,3 +10417,48 @@ and bounds match the source-derived actor contract. No actor pack/native quad
 conversion was changed yet. Next: carry per-pose model-root metadata into the
 atlas and native actor quads; bind persistent camera blend/dolly services and
 continue other overworld/story/partner gaps. Full objective remains active.
+
+## 2026-10-12 — ID1 complete local partner pre-display,facing,pose and draw requests
+
+Added five detailed contracts:[pre-display](behavior/FIELD_PARTNER_PRE_DISPLAY.md),
+[pose selectors](behavior/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),
+[facing](behavior/FIELD_PARTNER_DISPLAY_FACING.md),
+[matrix/draw](behavior/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md) and
+[Vivian/shadows](behavior/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md).
+Eight complete local bodies now specify combined name/paper markers,unsigned
+shared frame,animation-before-mask1 gate,5000*Z+5000 depth and conditional draw
+registration,four facing interpolation/latch branches,source HP/color tables,
+ordered aliased reflection/pivot/Z/X/Y/extra-Y/translation matrix requests,two
+ordered draw modes and AFTER-draw rate,Vivian trailing/tail ray and shadow order.
+Color7 adjacent-data reads remain source-domain gaps. Constant-address audit
+separates depth5000,shadow argument13.333333,ray length1000/Y+10;no measured
+visual/timing policy was invented. Partial partner coverage register updated.
+Only ID1 scoped lock released;renderer/animation/matrix/source/runtime open.
+
+Also added a visible boundary to pending BTLNO_MESSAGE_MAPPING.md and extended
+committed message correction:resource keys/name associations do not establish
+BTLNO→dialogue runtime lookup or a complete story dictionary. Other owner's
+pending draft remains unstaged by ID1;unvalidated related PROGRESS claims are
+superseded by this evidence boundary. No original dialogue prose was exported.
+
+Validation:verify_field_partner_predisplay.py passes eight complete body hashes,
+515 anchors,32 constants,seven spans,two US lecture imports and exact three
+pre-display/facing sites across seven DOL text sections;callback construction/
+alias anchors pinned. Report now exposes decoded CHECKED binary32 constants
+for numeric review. Repeated report byte-identical;omitted-caller negative
+expectation rejected;Python compilation and prior slit/roll/flying-history/
+driver/slit-collision verifiers passed. General verifier passed1980 anchors;
+all1884 behavior links resolved at snapshot. Gekko audit passed610 files/86164
+instructions/656 paired-single ops,zero changes or unknowns. make test passed64
+CTest suites and78 Python tests;make all passed/rebuilt3DSX. Logs:
+/tmp/id1-predisplay-test.log,/tmp/id1-predisplay-build.log. Existing3218-identity/
+five-fallback audio pipeline ran;ASSETS records source/table/local derivative
+paths and unchanged ID1 conversion policy,outputs unstaged. No ID1 native code,
+original execution/visual measurement,profile/save mutation or original distribution.
+Concurrent native/ID2 work preserved outside this scoped delivery.
+
+Next:used animation setters/Main/DrawMtx and SDK matrix/pose-resource backend,
+shadow/queue/source/alias/FP lifetime and original paper/form presentation traces.
+Reconcile pending BTLNO/message drafts with actual US event/key/speaker/condition
+bindings and recover one complete original playable encounter through persistent
+outcomes. Full-game documentation and final complete-game requirements incomplete.

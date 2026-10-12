@@ -45,3 +45,12 @@ Use the existing schema3 message census for key/text metadata and the original
 loader's actual resource/lookup lifetime when implementing message playback.
 Full event order,speaker attribution,branches/persistence and original runtime
 still require story contracts;13,186 pairs do not establish complete story fidelity.
+
+ID1 follow-up (2026-10-12):the pending BTLNO_MESSAGE_MAPPING.md and related
+PROGRESS “complete dictionary/ID linkage verified” claims are also superseded.
+Its Message Text column contains resource KEY strings. Filename/prefix/string
+co-occurrence does not establish a runtime battle-ID→message-key/file/text lookup,
+correct speaker,branch,scene order or all story content. A visible boundary was
+added to that pending draft,which remains unstaged by ID1. Recover original event
+and service call bindings before implementing that proposed dictionary;no such
+complete lookup is proved by the inventory method described there.

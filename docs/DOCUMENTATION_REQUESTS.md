@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete partyPreDisp,partyChgPose/Id pending-name/frame/update/transform request graph and used bindings;renderer/animation/resource/source/numeric/original visuals remain separate |
+| Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
 | Smart allocation header release and file ownership | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Header release/accounting](behavior/SMART_HEADER_RELEASE_AND_SPACE_ACCOUNTING.md),[automatic tag release](behavior/SMART_AUTOMATIC_TAG_RELEASE.md):complete smartFree/smartAutoFree,4→3 deferral,no heap free,live unlink/gap/free-header/count writes,low16 versus full-word3 passes;allocator/compaction/relocation/platform/source/runtime remain separate |
 | File-cache collection and initialization | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Collection/aging](behavior/FILE_CACHE_COLLECTION_AND_PRELOAD_AGING.md),[pool/init/mode](behavior/FILE_CACHE_POOL_INITIALIZATION.md):complete four bodies,worker flags overwrite,ready-count aging versus pending wait,state2 holder routing/live lists,1024*176 raw pool/17 DOL calls;smart heap/relocation/DVD worker/TPL/platform/source/runtime remain separate |
 | Async file request and completion publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Request/cache](behavior/FILE_ASYNC_REQUEST_AND_CACHE_PUBLICATION.md),[completion/request state](behavior/FILE_ASYNC_COMPLETION_AND_DVD_REQUEST_STATE.md):complete fileAsync/callback/DVD request leaf,raw-1,state3/count0,archive live-head publication,-3-only failure,signed relocation/pending-clear/deferred-close/live callback;worker/collection/relocation/TPL/platform/source/runtime remain separate |
@@ -2332,3 +2332,24 @@ spans and repeat reports pass;collection/async/acquisition/general1980 checks
 and2539 local links pass. make test66 CTest/78 Python and make all pass;logs:
 /tmp/id2-smartfree-test.log,/tmp/id2-smartfree-build.log. Only ID2 lock released;
 allocator/compaction/tag producers/relocation/source/scene/platform/runtime open.
+
+ID1 partner presentation delivery (2026-10-12),AC-01/AC-03 partial answer:
+Complete pre-display/pose-name-ID/facing/draw and three source leaves close local
+marker0x6000 consumption,combined animation reset,shared unsigned frame20,
+always animPoseMain before mask1 gate,sort-depth5000*Z+5000 and conditional
+registration,Vivian tail/size/source/shadow order. Draw matrix uses aliased B as
+second input/output with exact reflection/pivot/Z/X/Y/extra-Y/translation order,
+mode2 then1 draw requests,time-rate write AFTER draws. Pose source has HP remap,
+dot/color table and unguarded adjacent color7 reads;no defaults were fabricated.
+Eight complete hashes,515 anchors,32 decoded constants,seven spans,two imports
+and three direct pre-display/facing sites pass;64 CTest/78 Python/3DS build pass.
+Only ID1 lock released;backend/source/queue/matrix/FP/original visuals remain open.
+
+ID1 BTLNO draft correction follow-up (2026-10-12):visible evidence boundary
+added to pending BTLNO_MESSAGE_MAPPING.md,which remains unstaged by ID1.
+Its Message Text column holds resource keys;string/prefix association is NOT
+proof of runtime BTLNO→dialogue lookup or a complete story dictionary. Related
+PROGRESS milestone statements remain unvalidated. The committed
+[message correction](behavior/US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md)
+now explicitly supersedes those linkage/completion claims;source owner should
+trace original event/service calls before native story implementation.

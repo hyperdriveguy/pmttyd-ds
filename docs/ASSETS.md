@@ -1523,3 +1523,20 @@ matching documented model bounds. This scratch bake was inspected only; atlas
 root/scale metadata and native quads still need conversion. Scratch/original
 bytes stay outside Git. Existing source licensing/local-use attribution applies;
 no generated replacement art, music or sounds were introduced.
+
+ID1 partner pre-display/pose/draw evidence/build provenance (2026-10-12):
+read-only /home/carson/games/roms/G8ME01.iso US disc0 revision0 supplied complete
+local pre-display/draw/facing/pose and HP/color/Vivian-tail predicate bodies.
+Original pose-name tables0x80314708(1200 bytes),0x80314bb8(480),
+0x80314d98(420) and adjacent color7 access span0x80314f3c(60) are pinned by
+hash/address;no eighth color row or replacement pose string was invented.
+Original matrices/pose names remain reused local data;underlying anim/GX/frame
+services are not implemented by these docs. Map resource ID bom_01 at0x802f89b0,
+ray vector,bias and32 binary32 constants are metadata,not story dialogue.
+Original ELF/listing/report remain ignored under artifacts/reference/behavior.
+No new ID1 art/audio conversion policy was introduced. make all ran existing
+sound/proj/pmario.proj,pool,sdir,samp audio-map pipeline:3218 GameCube identities,
+0 Switch,5 primary-PCM slice fallbacks. Existing local-assets/audio-map raw/catalog
+and RomFS WAV/audio-map.json derivatives remain unstaged. Original rights remain
+with their owners;local analysis/conversion grants no redistribution license.
+Exact build log:/tmp/id1-predisplay-build.log.

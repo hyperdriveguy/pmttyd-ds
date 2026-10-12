@@ -151,3 +151,10 @@ complete local gate/heading/paper/flag/pose request graph. Its P+4 cleanup is
 mask0x3c0 and it preserves phase/count/global floor data. PaperOff's guarded
 handle ownership applies;this closure does not complete ride/pose/backend/source
 or original mode11 trajectories.
+
+ID1 presentation dependency update (2026-10-12):both early/common
+[partyPreDisp](FIELD_PARTNER_PRE_DISPLAY.md) calls now have a complete local
+marker/frame/animation/depth/registration/shadow contract. Its registered
+[partyDisp](FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md) has complete local
+transform and draw-request ordering. These closures do not complete animation,
+GX/material/camera/queue/source/FP lifetime or original visible trajectories.

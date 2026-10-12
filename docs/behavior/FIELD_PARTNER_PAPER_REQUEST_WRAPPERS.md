@@ -33,8 +33,9 @@ If P+4 mask2 SET,return with no comparison/publication. Otherwise load existing
 P+1c. Nonnull old name requests strcmp(old,new);equality returns without reset.
 Null old name or inequality stores the NEW borrowed pointer to P+1c,clears
 halfword P+20,and ORs0x4000 into P+8. No animation-engine call occurs here.
-This is a pending name/phase marker protocol;full later marker consumption and
-animation-frame progression remain open. No owned copy/free of the name occurs.
+This is a pending name/phase marker protocol;
+[pre-display](FIELD_PARTNER_PRE_DISPLAY.md) now specifies local marker consumption
+and shared frame setup. Full animation-frame/backend cadence remains open. No owned copy/free of the name occurs.
 
 ## PaperOff(P) has a two-part admission guard
 
