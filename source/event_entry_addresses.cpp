@@ -46,6 +46,22 @@ bool EventEntryAddresses::addressOf(const EventEntry* e,uint32_t& address) const
     for(const auto& r:regions_)for(uint32_t i=0;i<r.count;++i)if(e==r.entries+i) {address=r.base+i*stride;return true;}
     return false;
 }
+bool EventEntryAddresses::unregisterEntries(uint32_t base,std::vector<uint8_t>* bytes) {
+    size_t index=0;while(index<regions_.size() && regions_[index].base!=base)++index;
+    if(index==regions_.size())return false;
+    const auto retiring=regions_[index];std::vector<uint8_t> snapshot;
+    if(bytes) {
+        snapshot.resize(static_cast<size_t>(uint64_t(retiring.count)*stride));
+        for(size_t i=0;i<snapshot.size();++i)if(!readByte(base+static_cast<uint32_t>(i),snapshot[i]))return false;
+    }
+    for(const auto& r:regions_)for(uint32_t i=0;i<r.count;++i) {
+        auto& e=r.entries[i];
+        for(unsigned j=0;j<3;++j)if(auto* p=link(e,j))for(uint32_t slot=0;slot<retiring.count;++slot)if(p==retiring.entries+slot) {
+            e.unresolvedLinkWords[j]=base+slot*stride;e.unresolvedLinkMask|=uint8_t(1u<<j);link(e,j)=nullptr;break;
+        }
+    }
+    regions_.erase(regions_.begin()+index);if(bytes)*bytes=std::move(snapshot);return true;
+}
 EventEntry* EventEntryAddresses::entryAt(uint32_t address) const {auto p=find(address);return p.offset==0?p.entry:nullptr;}
 bool EventEntryAddresses::linksResolved(const EventEntry& e) const {
     for(unsigned i=0;i<3;++i) {auto* p=i==0?e.waitingParent:i==1?e.waitingChild:e.brotherOwner;uint32_t word;if(p) {if(!addressOf(p,word))return false;}else if(e.unresolvedLinkMask&(1u<<i))return false;}

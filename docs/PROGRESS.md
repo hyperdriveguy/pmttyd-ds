@@ -1,5 +1,26 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Mapped event-array retirement and address reuse
+
+Added unregisterEntries to the entry translator. Native owners detach a live
+array BEFORE releasing/replacing host storage;incoming parent/child/brother
+relationships retain original words as unresolved links. Optional snapshot
+captures all original bytes for backing memory. Re-registering the same address
+resolves those words to new host objects regardless of changed IDs. Unknown
+base/read failure preserves mappings/output;no implicit deletion/free/copy-back
+or stale-identity validation was inferred from registry lifetime management.
+
+Validation before context translator addition:make test passed51 CTest suites
+and78 Python tests;make all rebuilt ARM mapper/3dsx. Logs:
+/tmp/pm-entry-lifetime-test.log and /tmp/pm-entry-lifetime-build.log. Fixtures pin
+retired byte snapshot,unknown-base no mutation,raw incoming address preservation,
+removed reverse lookup and new-object/different-ID resolution.
+
+This is native mapping lifecycle policy,not a recovered allocator/free owner.
+Next:context byte mapping,GP/schedule/runtime/backing arena and actual Jump
+root/callback binding. Source free/scene ownership and invalid address/FPSCR/
+stack/label domains remain open;remake goal remains active/incomplete.
+
 ## 2026-10-12 — Complete Jump Majinai child and nested presentation requests
 
 Documentation agent ID2 closed14-command power child,full query/Done/EndCheck,

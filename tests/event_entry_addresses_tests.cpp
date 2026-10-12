@@ -26,6 +26,14 @@ int main() {
     e.waitingChild=&entries[2];assert(map.readWord(base+0x70,w) && w==base+2*0x1b0);
     assert(map.writeWord(base+0x6c,0x90000000) && map.readWord(base+0x6c,w) && w==0x90000000 && !map.linksResolved(e));
     EventEntry later;assert(map.registerEntries(0x90000000,&later,1) && e.waitingParent==&later && map.linksResolved(e));
+    later.id=7;later.flags=1;later.rawBytes[0]=0xab;assert(map.writeWord(base+0x74,0x90000000));
+    std::vector<uint8_t> saved{99};assert(!map.unregisterEntries(0x12345678,&saved) && saved==std::vector<uint8_t>({99}));
+    assert(map.unregisterEntries(0x90000000,&saved) && saved.size()==0x1b0 && saved[0x10]==0xab && saved[0x15f]==7);
+    assert(e.waitingParent==nullptr && e.brotherOwner==nullptr && !map.linksResolved(e));
+    assert(map.readWord(base+0x6c,w) && w==0x90000000 && map.readWord(base+0x74,w) && w==0x90000000);
+    uint32_t retiredAddress=123;assert(!map.addressOf(&later,retiredAddress) && retiredAddress==123 && map.entryAt(0x90000000)==nullptr);
+    EventEntry replacement;replacement.id=1234;assert(map.registerEntries(0x90000000,&replacement,1));
+    assert(e.waitingParent==&replacement && e.brotherOwner==&replacement && map.linksResolved(e) && e.waitingParent->id==1234);
     struct Alias {uint32_t offset;};
     for(uint32_t offset:{0x98u,0xdcu,0xe8u,0xe4u,0x104u,0x108u,0x128u,0x12cu,0x130u,0x150u,0x2cu})assert(map.writeWord(base+offset,0x12345678) && map.readWord(base+offset,w) && w==0x12345678);
     assert(e.cachedFunction==0x12345678 && e.localFlags[0]==0x12345678 && e.loopBodies[0]==0x12345678 && e.loopCounts[0]==0x12345678 && e.switchStates[0]==0x12 && e.switchValues[0]==0x12345678 && e.field150==0x12345678 && e.labelAddresses[0]==0x12345678);

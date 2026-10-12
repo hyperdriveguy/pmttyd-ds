@@ -479,6 +479,14 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Mapped-lifetime breadcrumb (2026-10-12): entry translator can retire a region
+before native host release,return432-byte-per-entry snapshots and preserve
+incoming original relationship words. Same-address registration resolves new
+host objects independently of IDs. Prior full validation passed51 suites/78
+Python tests and make all.Native owner still supplies free/replacement order;
+no automatic allocator/event teardown was inferred.Next:context/GP/backing arena,
+Jump root and actual registry bindings. Source/domain/runtime traces remain open.
+
 Entry-translator breadcrumb (2026-10-12): `event_entry_addresses.cpp` implements
 new delivered432-byte map with coherent semantic/byte views,all44 unknown bytes,
 raw IEEE/pointer preservation,address-versus-ID relationships and deferred region
