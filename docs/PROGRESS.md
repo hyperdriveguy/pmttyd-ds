@@ -1,5 +1,37 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native command-service request binding
+
+Native event adapter now uses StartAC/ResultAC/StopAC portable services for Jump
+and Hammer instead of direct state/evaluation/pending checks. Callback pointers
+follow the installed command's live flags;shared fields stay referenced.
+Start requests state100 after the manager initializer,and Jump requests help2
+unless actor statusFlags10 suppresses it. Result invokes evaluator then polls
+stored pending bit;Stop invokes deletion then help0. lastActionHelpRequest records
+requests for the still-unbound original help UI. Harness operand resolver handles
+only its literals;this is not the original tagged event interpreter. Existing
+impact/return schedules,temporary one-hit Jump policy and full original script
+request order remain provisional. Portable service commit:717da56.
+
+Validation:final make test passed twelve CTest suites plus58 Python tests;
+make all rebuilt ttyd-2ds.elf/3dsx. Core assertions cover native Jump start help2/
+state100 and completed result/stop help0/state1000 with callbacks still live.
+A new assertion initially used a nonexistent getter;corrected to explicit new
+jumpAction accessor and reran all checks. Isolated emulator command
+`python3 tools/emulator_smoke.py --fresh-save --seconds 4 --input-script tests/azahar_hammer.py`
+exited0;reviewed Hammer screenshots show charged release Nice2/CrumpHP3,
+early release Hit1/HP2,and overrun Hit1/HP1. These broad wall-time screenshots
+are not tick assertions,original equivalence evidence or hardware measurements.
+No user emulator profile/save modification. git diff --check passed.
+
+EVT-01 requests complete scheduler/dispatch/constructor/continuation semantics
+needed before native original Jump request scheduling. Existing math/audio,
+approach/position,unit/pouch/equipment and lecture/tutorial requests remain open.
+Concurrent documentation-agent locks/drafts preserved. Next:implement recovered
+scheduler and original Jump graph,then bind approach/position/math/audio/feedback
+services and compare original per-hit input/trajectory traces. Full-game story,
+assets and native resource lifecycle remain incomplete;goal remains active.
+
 ## 2026-10-12 — Portable action-command script services
 
 Implemented BATTLE_ACTION_COMMAND_CALLBACKS.md and

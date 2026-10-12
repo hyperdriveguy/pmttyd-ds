@@ -4,6 +4,7 @@
 #include "head_collision.hpp"
 #include "floor_contact.hpp"
 #include "battle_unit_resources.hpp"
+#include "battle_action_services.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -635,6 +636,7 @@ void Game::startBattle() {
     jumpCommand.callbacksLive=false;
     hammerCommand.mainLive=hammerCommand.resultLive=hammerCommand.displayLive=hammerCommand.deleteLive=false;
     lastDamageCode=0;
+    lastActionHelpRequest=0;
     playerBattleUnit={};enemyBattleUnit={};
     playerBattleUnit.kind=222;playerBattleUnit.hp=int16_t(progress.hp);
     playerBattleUnit.baseHp=playerBattleUnit.maxHp=10; // Development player-stat fixture.
@@ -751,21 +753,49 @@ void Game::battle(const Input& i) {
     if(hammerCommand.mainLive && hammerCommand.tick(hammerInput,battleRandom)==0)
         hammerCommand.mainLive=false;
     // Later event adapter requests StartAC after initialization in this pass.
-    if(startCommand) {if(selection==0)jumpCommand.state=100;else hammerCommand.state=100;}
+    struct EventCommandContext {
+        TimingACommand* jump;HammerCommand* hammer;
+        const BattleTriggerHistory* history;BattleRandom* random;int* help;
+    } commandContext{&jumpCommand,&hammerCommand,&generalBattlePads[0].triggers,&battleRandom,&lastActionHelpRequest};
+    ActionCommandView command;
+    command.user=&commandContext;command.actorFlags=&playerBattleUnit.statusFlags;
+    command.help=[](void* user,int32_t type) {*static_cast<EventCommandContext*>(user)->help=type;};
+    if(selection==0) {
+        command.state=&jumpCommand.state;command.result=&jumpCommand.result;command.count=&jumpCommand.count;
+        command.timingOptions=&jumpCommand.flags;
+        if(jumpCommand.callbacksLive) {
+            command.evaluate=[](void* user)->int32_t {
+                auto& c=*static_cast<EventCommandContext*>(user);
+                TimingAContext context;context.difficulty=BattleRules::JumpDifficulty;
+                return static_cast<int32_t>(c.jump->evaluate(*c.history,context,*c.random));
+            };
+            command.remove=[](void* user) {static_cast<EventCommandContext*>(user)->jump->state=1000;};
+        }
+    } else {
+        command.state=&hammerCommand.state;command.result=&hammerCommand.result;command.count=&hammerCommand.count;
+        if(hammerCommand.resultLive)command.evaluate=[](void* user)->int32_t {
+            return static_cast<int32_t>(static_cast<EventCommandContext*>(user)->hammer->result);
+        };
+        if(hammerCommand.deleteLive)command.remove=[](void* user) {static_cast<EventCommandContext*>(user)->hammer->stop();};
+    }
+    ActionValueServices eventValues;
+    eventValues.resolve=[](void*,int32_t literal)->int32_t {return literal;}; // Harness literal adapter, not original tagged VM.
+    if(startCommand)startActionCommand(command,selection==0?1:0,eventValues);
     if(selecting)return;
     ++phaseTick;
     if (phase==Phase::Windup) {
         if (selection==0) {
             if (phaseTick>=BattleRules::JumpImpact) {
-                TimingAContext context;context.difficulty=BattleRules::JumpDifficulty;
-                actionSuccess=(jumpCommand.evaluate(generalBattlePads[0].triggers,context,battleRandom)&2)!=0;
-                jumpCommand.state=1000; // Harness finish scheduling, not recovered event binding.
-                attackDone(); // One documented hit; follow-up Jump event remains unbound.
+                if(resultActionCommandEvent(command)==2) {
+                    actionSuccess=(jumpCommand.result&2)!=0;
+                    stopActionCommandEvent(command); // Harness call site, original graph still unbound.
+                    attackDone(); // One documented hit; follow-up Jump event remains unbound.
+                }
             }
         } else {
-            if (!hammerCommand.pending()) {
+            if (resultActionCommandEvent(command)==2) {
                 actionSuccess=(hammerCommand.result&2)!=0;
-                hammerCommand.stop(); // Harness stop schedule; original event order remains open.
+                stopActionCommandEvent(command); // Harness call site; original event order remains open.
                 attackDone();
             }
         }

@@ -181,10 +181,12 @@ void timing() {
     physical.tick(raw);CHECK(physical.privatePad().triggers.entries[0]==0 && physical.privatePad().triggers.entries[1]==BattleButtonB);
     raw.physicalButtons=0;physical.tick(raw);raw.physicalButtons=BattleButtonA;raw.confirm=true;
     physical.tick(raw);CHECK(physical.phase==Phase::Windup && physical.privatePad().triggers.entries[0]==BattleButtonA);
+    CHECK(physical.actionHelpRequest()==2 && physical.jumpAction().state==100);
     raw.confirm=false;raw.physicalButtons=0;for(int n=0;n<40;++n)physical.tick(raw);
     raw.physicalButtons=BattleButtonA;physical.tick(raw);
     raw.physicalButtons=0;for(int n=0;n<7;++n)physical.tick(raw);
     CHECK(physical.actionSuccess && physical.lastDamage==1);
+    CHECK(physical.actionHelpRequest()==0 && physical.jumpAction().state==1000 && physical.jumpAction().callbacksLive);
     Game continuity;Input continuityHeld;continuityHeld.physicalSnapshot=true;continuityHeld.physicalButtons=BattleButtonA;
     continuity.tick(continuityHeld);continuity.startBattle();continuity.tick(continuityHeld);
     CHECK(continuity.physicalChannel().pressed==0 && continuity.phase==Phase::Select);

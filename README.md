@@ -30,6 +30,8 @@ partial harness must not be treated as the original complete Jump/tutorial attac
 Portable Mario jump motion, distance-adjusted count preparation and sound-mode
 loading now follow recovered local contracts. Their original math/audio services
 and attack event scheduling still require native binding.
+Native StartAC, ResultAC and StopAC use the recovered command-service protocol;
+original help UI and prize-byte producers remain unbound.
 
 This is not a finished or fidelity-verified remake. Original skeletal/vertex
 animations, sound-effect event playback, measured tutorial mechanics and broader

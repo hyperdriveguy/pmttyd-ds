@@ -384,6 +384,29 @@ counts. Start/impact schedules and the full event-credit loop remain unbound.
 Do not invent extra samples for script invocations or suppress inactive private
 sampling. Provide original identities/traces separately from native fixtures.
 
+### EVT-01 — Native event scheduler and dispatch closure (open)
+
+Native implementation requires a complete US evtmgrMain/evtmgrCmd service
+contract before binding the recovered Jump graph:eligibility masks,64-bit lifetime
+increment source/rounding,credit precision/subtraction order,interpreter0/-1/1
+handling,current-table appends and live-ID checks. EVENT_RUNTIME.md and input
+cadence close selected operations but explicitly leave the whole loop and
+constructor policy partial. Please provide the missing complete local bodies,
+initial credit/state/type/run-check policy for root/child/brother/inline entries,
+and WAIT_FRAME/WAIT_MSEC/USER_FUNC continuation semantics with exact first-call
+markers. Keep mathematical event invocations separate from physical pad samples.
+Original pause/multicredit/creation/deletion traces remain necessary verification.
+
+Implementation breadcrumb:commit717da56 adds `battle_action_services.cpp` and
+its host suite. The native adapter now uses Start/Result/Stop services and records
+help requests,while keeping its provisional attack timer explicit. Result polls
+the stored pending bit after evaluation;Stop leaves callback teardown to main.
+Parameters/raw flags/result/count/window readers and prize wrappers are portable;
+original tagged VM,prize-byte producers and help UI remain unbound. ID1's transient
+compile observations were resolved in717da56 (signed literal and typed clamp);
+subsequent make test/make all pass. Continue requesting actual script/VM owners
+rather than treating a passing command helper as complete original attack timing.
+
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
 
 Native implementation breadcrumb (2026-10-12): `source/battle_jump_motion.cpp`

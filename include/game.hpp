@@ -116,7 +116,9 @@ public:
     void restore(const Progress& saved);
     void startBattle();
     const HammerCommand& hammerAction() const { return hammerCommand; }
+    const TimingACommand& jumpAction() const {return jumpCommand;}
     int defenseResult() const { return defenseCommand.result; }
+    int actionHelpRequest() const {return lastActionHelpRequest;}
     uint32_t damageCode() const { return lastDamageCode; }
     const DamageUnit& playerBattleState() const { return playerBattleUnit; }
     const DamageUnit& enemyBattleState() const { return enemyBattleUnit; }
@@ -144,6 +146,7 @@ private:
     PhysicalInputProducer inputProducer;
     DefenseCommand defenseCommand;
     uint32_t lastDamageCode=0;
+    int lastActionHelpRequest=0; // Records service requests; original help UI remains unbound.
     DamageUnit playerBattleUnit, enemyBattleUnit;
     DamagePart playerBattlePart, enemyBattlePart;
     uint8_t jumpLevelFixture=1,hammerLevelFixture=1; // Pouch/loadout initialization is not yet bound.
