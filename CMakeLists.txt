@@ -294,3 +294,7 @@ add_test(NAME battle_majinai_query COMMAND battle_majinai_query_tests)
 add_executable(battle_event_utilities_tests tests/battle_event_utilities_tests.cpp)
 target_link_libraries(battle_event_utilities_tests PRIVATE ttyd_core)
 add_test(NAME battle_event_utilities COMMAND battle_event_utilities_tests)
+
+add_executable(battle_fortune_tests tests/battle_fortune_tests.cpp)
+target_link_libraries(battle_fortune_tests PRIVATE ttyd_core)
+add_test(NAME battle_fortune COMMAND battle_fortune_tests)

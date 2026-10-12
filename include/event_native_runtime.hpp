@@ -12,6 +12,7 @@ struct EventNativePlatform {
     void (*format)(void*,const EventDiagnosticCall&)=nullptr;
     void (*flushBlock)(void*,uint32_t)=nullptr;
     void (*systemCall)(void*)=nullptr;
+    int32_t (*irand)(void*,int32_t bound)=nullptr;
 };
 // Shared native storage/service owner. GP address and RAM/arena provisioning are
 // explicit port policy. Platform callbacks are required at their call boundaries;

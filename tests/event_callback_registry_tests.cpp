@@ -78,6 +78,14 @@ int main(int argc,char** argv) {
     if(argc==2) {
         utility.arguments=0x80355d10;assert(registry.invoke(utility,0x8011384c,1,result) && result==2 && utility.locals[0]==1); // Actual Jump mask2 request.
     }
+    assert(bindPouchMajinaiSetCallback(registry,runtime));
+    utility.arguments=0x80300200;assert(memory.writeWord(utility.arguments,2));
+    assert(registry.invoke(utility,0x800f08ac,0,result) && result==2 && memory.readByte(0x850005b8,flag) && flag==2 && memory.readByte(0x850005b9,flag) && flag==255);
+    assert(memory.registerRam(0x84002738,std::vector<uint8_t>(4)) && memory.writeWord(0x84002738,0x86000000) && memory.registerRam(0x86000000,std::vector<uint8_t>(16)) && memory.writeWord(0x8600000c,0x86001000) && memory.registerRam(0x86001000,std::vector<uint8_t>(8)));
+    runtime.platform.irand=[](void*,int32_t bound) {assert(bound==100);return 0;}; // Explicit injected provider,not a source seed claim.
+    assert(memory.writeByte(0x850005b9,1) && battleMajinaiCheck(nativeBattleMajinaiQueryServices(runtime))==1);
+    utility.arguments=0x80300200;assert(memory.writeWord(utility.arguments,uint32_t(-30000000)));
+    assert(registry.invoke(utility,0x801146c4,1,result) && utility.locals[0]==1 && memory.readByte(0x850005b8,flag) && flag==1 && memory.readByte(0x850005ba,flag) && flag==0);
     assert(registry.unbind(0x8010a010));result=99;assert(!registry.invoke(arbitrary,0x8010a010,0,result) && result==99);
     std::cout<<"native callback registry/data-child execution tests passed\n";
 }

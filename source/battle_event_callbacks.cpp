@@ -34,10 +34,15 @@ bool bindBattleFramesToMillisecondsCallback(EventCallbackRegistry& registry,Even
 BattleMajinaiQueryServices nativeBattleMajinaiQueryServices(EventNativeRuntime& runtime) {
     BattleMajinaiQueryServices s;s.memory=runtime.memoryBinding.services();
     auto actors=nativeBattleActorServices(runtime);s.user=actors.user;s.byte=actors.byte;
+    s.irand=[](void* p,int32_t bound) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.irand);return r.platform.irand(r.platform.user,bound);};
+    s.values.resolve=[](void* p,EventEntry& e,int32_t raw) {auto& r=*static_cast<EventNativeRuntime*>(p);return getEventValue(e,raw,r.interpreterServices().operands);};
     s.values.user=&runtime;s.values.store=[](void* p,EventEntry& e,int32_t output,int32_t value) {auto& r=*static_cast<EventNativeRuntime*>(p);setEventValue(e,output,value,r.interpreterServices().operands);};return s;
 }
 bool bindBattleMajinaiQueryCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {
     return registry.bind(0x801146c4,&runtime,[](void* p,EventEntry& e,int32_t) {return battleMajinaiPowerQuery(e,nativeBattleMajinaiQueryServices(*static_cast<EventNativeRuntime*>(p)));});
+}
+bool bindPouchMajinaiSetCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {
+    return registry.bind(0x800f08ac,&runtime,[](void* p,EventEntry& e,int32_t) {return pouchMajinaiSetEvent(e,nativeBattleMajinaiQueryServices(*static_cast<EventNativeRuntime*>(p)));});
 }
 int32_t nativeBattleJumpSetting(EventEntry& e,EventNativeRuntime& runtime) {
     const uint32_t args=e.arguments;

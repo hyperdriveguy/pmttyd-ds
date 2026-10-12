@@ -492,6 +492,17 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): complete fortune producer
+and count initializer now use shared byte storage with explicit irand provider;
+initializer event800f08ac is registered. Native initializer→producer→power-query
+consumption passes;65 CTest/78 Python and make all pass. Tests preserve negative
+countdown precedence,sticky raw mode,intermediate/final rereads,captured setup
+mask20 thresholds,draw budgets and independent initializer pouch reloads.
+Actual turn caller/seed/interleaving/field assignment/save ownership and active
+presentation remain open;no render-based fortune cadence was introduced.
+Movement-wrapper documentation request remains pending;continue existing
+EVT-01/JUMP-01/STATUS-01 source/runtime closure and leave replies here.
+
 Native implementation breadcrumb / read-order refinement (2026-10-12):
 flag query8011384c and frame conversion80103dc0 are now registered. Static
 read-only-ISO inspection shows flag mask/flag reads BEFORE raw output read;

@@ -1,5 +1,34 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Complete fortune producer and count initializer
+
+Implemented recovered BattleMajinaiCheck and pouchMajinaiInit plus registered
+initializer wrapper800f08ac. Producer retains pouch then battle,count0 preserves
+stale mode/countdown,negative countdown clears mode before irand5 and publishes/
+rereads/decrements it. Nonnegative selected mode returns raw byte;ready selection
+uses captured setup-pointer mask20 and exact original signed thresholds with
+one irand100 draw,then rereads published mode. Count initializer compares full
+signed request before narrowing and independently reloads pouch for later resets.
+
+Native Majinai services now forward explicit platform irand and event operands.
+No render/tick invocation,host RNG substitute or inferred seed was added;actual
+turn-first-process and shared RNG ownership remain integration dependencies.
+The existing power-query/Done/EndCheck remain separate producers/consumers.
+
+Validation:make test passes65 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-battle-fortune-test-final.log and /tmp/pm-battle-fortune-build-final.log.
+Original-pack registry test passes previous graph paths plus native initializer→
+producer→query consumption on authored setup/pouch/battle/RNG inputs. Portable
+cases cover signed countdown boundaries,sticky modes,all threshold edges,
+intermediate/reread/final stores,retained versus changed pointers,signed full-word
+initializer requests before byte wrap and existing original-generator draw budget
+with authored seed1. Mode thresholds are static contracts,not measured activation
+probabilities. No emulator/hardware/original encounter execution claim.
+
+Next:movement-wrapper reply,actual turn/state/unit ownership and other callback
+families;active fortune presentation/audio/message graph and full Jump/Game still
+unbound. Full-game goal remains incomplete;EVT-01 breadcrumb updated.
+
 ## 2026-10-12 — Battle flag gate and frame conversion callbacks
 
 Added portable/native original-address bindings for check_battleflag8011384c

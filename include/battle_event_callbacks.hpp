@@ -24,6 +24,7 @@ int32_t nativeBattleJumpSetting(EventEntry&,EventNativeRuntime&);
 bool bindBattleJumpSettingCallback(EventCallbackRegistry&,EventNativeRuntime&);
 BattleMajinaiQueryServices nativeBattleMajinaiQueryServices(EventNativeRuntime&);
 bool bindBattleMajinaiQueryCallback(EventCallbackRegistry&,EventNativeRuntime&);
+bool bindPouchMajinaiSetCallback(EventCallbackRegistry&,EventNativeRuntime&);
 BattleEventUtilityServices nativeBattleEventUtilityServices(EventNativeRuntime&);
 bool bindBattleFlagQueryCallback(EventCallbackRegistry&,EventNativeRuntime&);
 bool bindBattleFramesToMillisecondsCallback(EventCallbackRegistry&,EventNativeRuntime&);
