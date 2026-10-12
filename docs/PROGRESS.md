@@ -1,5 +1,28 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2 formatted resource requests and handle release
+
+Documented complete fileAsyncf/fileAllocf/fileAlloc/fileFree in two linked
+contracts. Original shared filename/varargs ABI,formatting-before-forwarding,
+forced third argument0,raw returns and signed16 release gates/store/reread are
+explicit. State2 does not free memory. Effect-cache ownership now links these
+contracts;the F+a0 word is labeled only by its proven admission-gate behavior.
+Released only ID2's named lock;EVT-01/JUMP-01/DMG-02 remain partial.
+
+Validation:verify_file_request_wrappers.py passes seven hashes,122 anchors and
+one source span;repeat JSON reports are byte-equal. Python compilation,existing
+effect-driver verifier,general1980-anchor verifier,2400 local documentation
+links and git diff --check pass. make test first failed at CMakeLists.txt:277
+for missing concurrent tests/event_callback_registry_tests.cpp;after its arrival
+rerun passes61 CTest suites/78 Python tests. make all passes and produces3DSX.
+Logs:/tmp/id2-filewrap-test.log (resolved historical failure),
+/tmp/id2-filewrap-test-rerun.log and /tmp/id2-filewrap-build.log.
+No original runtime execution,asset conversion or native code change by ID2.
+
+Next:recover underlying fileAsync/_fileAlloc and shared file-manager ownership/
+collection,TPL/resource consumers and scene bindings. Platform/numeric/source/
+original traces remain open;complete-game requirements cannot yet be finalized.
+
 ## 2026-10-12 — Native battle actor translation and registry queries
 
 Added portable complete BattleTransID selector routing,registry getter/setter

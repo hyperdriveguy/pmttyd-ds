@@ -816,3 +816,10 @@ rechecks260 resources/13186 actual key/text pairs. Newly generated filename-ID/
 identifier-only/story-prefix claims do not supersede recovered loader/lookup
 contracts or establish dialogue/story coverage. Final full-game requirements
 remain premature.
+
+[Formatted file forwarding](behavior/FILE_FORMATTED_REQUEST_FORWARDING.md) and
+[handle release/cache ownership](behavior/FILE_HANDLE_RELEASE_AND_EFFECT_CACHE_OWNERSHIP.md)
+close complete Asyncf/Allocf/direct allocation wrappers and signed-halfword
+reference release. Shared1024-byte filename,original varargs/forwarding order
+and state2 without deallocation are explicit. Underlying resource/I/O/cache/
+collection/TPL/platform/scene and original traces remain open.

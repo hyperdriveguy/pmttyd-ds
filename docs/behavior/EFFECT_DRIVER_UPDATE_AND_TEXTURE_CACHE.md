@@ -134,3 +134,10 @@ cache comparison after callbacks,free/manager reload,each async/sync/tag capture
 async0 retry versus alloc0 accepted tag,all seven path prefixes and raw index
 arithmetic. Driver/resource/platform/scene/numeric and original traces remain
 EVT-01/JUMP-01/DMG-02 work despite full local loop closure.
+
+
+[Complete formatted forwarding](FILE_FORMATTED_REQUEST_FORWARDING.md) and
+[file-handle release](FILE_HANDLE_RELEASE_AND_EFFECT_CACHE_OWNERSHIP.md) now
+close called wrapper/free leaves. fileFree decrements signed reference count/
+marks state2;it does not deallocate payload. Shared filename/varargs and actual
+async/load/collection/TPL/backend/source/runtime requirements remain explicit.

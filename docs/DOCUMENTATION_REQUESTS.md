@@ -18,6 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete partyPreDisp,partyChgPose/Id pending-name/frame/update/transform request graph and used bindings;renderer/animation/resource/source/numeric/original visuals remain separate |
+| Formatted file requests and file-handle release semantics | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Formatting/forwarding](behavior/FILE_FORMATTED_REQUEST_FORWARDING.md),[release/ownership](behavior/FILE_HANDLE_RELEASE_AND_EFFECT_CACHE_OWNERSHIP.md):complete four local bodies,shared buffer/original varargs/order and signed16 state2 release without deallocation;underlying async/load/cache/TPL/platform/source/runtime remains separate |
 | Slit collision admission helper and camera-direction binding | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Collision](behavior/FIELD_PARTNER_SLIT_COLLISION.md),[camera direction](behavior/FIELD_SIMPLE_CAMERA_DIRECTION.md),[system angle table](behavior/FIELD_SYSTEM_ANGLE_TABLE.md):complete local probe/order/filter/normal-pair/return and two math graphs;backend/source/alias/numeric/original trajectories remain separate |
 | Effect driver update,auto-release and pool initialization | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Driver/cache](behavior/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md),[pool/init/release](behavior/EFFECT_POOL_INITIALIZATION_AND_CONTEXT_RELEASE.md):full local context/active callback loop/cache captures,512 records/heap0/live clear,N64 reset/hard context release/four DOL bindings/US TPL identity;file/TPL/animation/display/scene/platform/source/runtime remains open |
 | Partner slit and roll gates,slit-floor and forced-exit bindings | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Slit](behavior/FIELD_PARTNER_SLIT_GATE.md),[roll](behavior/FIELD_PARTNER_ROLL_GATE.md),[floor/forced exit](behavior/FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md),[paper wrappers](behavior/FIELD_PARTNER_PAPER_REQUEST_WRAPPERS.md):ten complete local bodies,return/count/phase/mask/resource/handle graph and22 direct sites;collision helper/animation/source/terrain/numeric/original trajectories remain separate |
@@ -2179,3 +2180,25 @@ scene order and unused-disc interpretation are not proven by inventory counts.
 Visible banners added to the two pending drafts;those drafts/tool remain unstaged
 by ID1. Source owner should reconcile them against recovered loader/event evidence
 and fix generator labels;do not use these guesses to implement story dialogue.
+
+ID2 file-wrapper validation breadcrumb (2026-10-12):make test currently cannot
+configure because CMakeLists.txt:277 references missing
+ tests/event_callback_registry_tests.cpp. Exact log:/tmp/id2-filewrap-test.log.
+This is a concurrent native fixture dependency;ID2 changes no CMake/native/test
+files. make all succeeded (/tmp/id2-filewrap-build.log). File-wrapper/driver/
+general binary evidence and2400 local links pass;full host gate remains pending
+until the named fixture is available.
+
+ID2 file-wrapper delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial answer:
+[Formatted requests](behavior/FILE_FORMATTED_REQUEST_FORWARDING.md) close
+fileAsyncf/fileAllocf/fileAlloc;[handle release](behavior/FILE_HANDLE_RELEASE_AND_EFFECT_CACHE_OWNERSHIP.md)
+closes fileFree and effect-cache ownership. Shared1024-byte filename,original
+varargs saves/descriptor,ignored vsprintf result,direct _fileAlloc forwarding and
+signed16 store/reread/exact0→state2 are explicit. No deallocation occurs;the
+word at F+a0 is a zero/nonzero admission gate,whose backend role remains open.
+Seven linked/complete hashes,122 instruction anchors and one source span pass;
+repeat JSON reports match. Earlier missing event_callback_registry_tests.cpp
+breadcrumb is RESOLVED:rerun61 CTest/78 Python tests passes and make all passes.
+Logs:/tmp/id2-filewrap-test-rerun.log and /tmp/id2-filewrap-build.log. Only ID2's
+wrapper lock released. Underlying fileAsync/_fileAlloc,shared file-manager
+acquisition/collection,source/TPL/platform/scene and original traces remain open.
