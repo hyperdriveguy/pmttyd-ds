@@ -156,3 +156,7 @@ script callers, display-offset renderer/pose reset, camera callbacks/vector
 producers, announcement message/control handling, full CommandInput and library
 square-root behavior. The local script/service contracts add implementation
 requirements, while full battle/game equivalence remains unfinished.
+
+The four zero-gravity camera callbacks and their setters are now specified in
+[camera requests](BATTLE_CAMERA_REQUESTS.md); camera update modes and message
+callback semantics remain open.

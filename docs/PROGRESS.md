@@ -2688,3 +2688,27 @@ CommandInput, display/pose services, interpolation modes and library numeric
 contracts; outer battle/turn cadence, audience/announcement and conclusion/
 reward/death/revival events. Continue all systems before complete-game system
 requirements. Objective active/incomplete; original/native traces still needed.
+
+## 2026-10-12 — Camera request wrappers and setter semantics
+
+Previous turn progressed with18dc31c default action scripts. Added
+BATTLE_CAMERA_REQUESTS.md: mode/speed/zoom/homing callbacks, signed admission
+threshold, mode reset and independently gated axis-reset calls, invalid speed
+fallback, event zoom truncation versus direct float setter, first home versus
+second hit-position cache, ignored first homing operand and−1 preserving second
+target. Derived zero-gravity request outcomes retain these differences. Main
+camera modes, producers and rendering remain explicitly open.
+
+Validation:364 instruction anchors, mode-reset0.0 constant and prior checks
+passed read-only US ISO. Evidence152 function fingerprints reproduced exactly.
+Behavior links resolve; git diff --check passed. make test passed core plus36
+Python tests; make all exited0, no rebuild. Workspace started clean; only research,
+provenance and evidence tooling edited. No original execution/emulator run or
+profile/save changes. Extracts/disassembly/reports remain ignored; ASSETS.md
+updated. Static evidence does not establish actual camera shots or native fidelity.
+
+Next: original message callback/control service, main camera update modes and
+priority/vector producers, full CommandInput; audience/announcement services,
+outer battle/turn progression, conclusion/rewards and death/revival events;
+motion/float/pose services. Continue all systems before complete-game requirements.
+Full objective active/incomplete; original/native execution comparisons needed.

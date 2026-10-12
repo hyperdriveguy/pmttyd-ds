@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'camera_requests': {
+        0x8012c044: '41800054', 0x8012c048: '909f2760',
+        0x8012c070: '4bfff2cd', 0x8012c090: '540006f2',
+        0x8012b350: '40820014', 0x8012b2c8: '60000008',
+        0x8012b248: '54000734', 0x8012b974: '4181000c',
+        0x8012b98c: 'b005277e', 0x8012ba44: 'fc00081e',
+        0x8012bac4: 'd0242778', 0x8012be88: '907f2764',
+        0x8012bed8: '2c1cffff', 0x8012bf18: '418200a0',
+        0x8012bf28: '907f2768', 0x8012bf64: '4bffca89',
+    },
     'default_action_services': {
         0x8005617c: '93bc00c8', 0x80056190: '907c00d8',
         0x800560c8: 'fc00081e', 0x800560f8: '901f00a0',
@@ -404,6 +414,9 @@ def verify(iso_path):
         if read(0x802ee8e0, len(key)) != key:
             raise ValueError('Zero-gravity message binding mismatch')
         print('Two default scripts, five floats, mode8 target and message ID verified')
+        if read(0x8042273c, 4) != struct.pack('>f', 0.0):
+            raise ValueError('Camera mode reset zoom constant mismatch')
+        print('Camera mode reset zoom constant verified')
         status_tables = {
             0x80364204: [0x7970, 0x792c, 0x7970, 0x7970, 0x7adc,
                          0x7970, 0x7970, 0x7970, 0x7970, 0x7970,
