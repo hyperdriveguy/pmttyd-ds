@@ -1,5 +1,33 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Portable unit clearing and pouch resource lifecycle
+
+Implemented UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md in
+include/battle_unit_resources.hpp and source/battle_unit_resources.cpp.
+Status clearing retains move/badge/flag state and each info record's last word.
+Mario import/revision preserves separate current/base/max HP and FP, signed
+halfword narrowing before upper-only caps, and independent pouch requests.
+Partner mapping, kind rereads, HP-only revision, direct thirty-byte snapshot
+restoration and nonpositive-HP status27 override follow the recovered body.
+Export writes current resources and partner snapshots while retaining snapshot
+gap bytes; other-kind import/export remains a service-requesting no-op, while
+direct revision applies both count bytes. These are semantic runtime records,
+not packed original ABI or original disk saves.
+
+Validation: make test passed ten CTest suites plus58 Python tests; make all built
+ttyd-2ds.elf and ttyd-2ds.3dsx. New tests cover partial info clearing, signed
+resource overflow/negative values, separate pouch pointers and mutation between
+requests, partner mapping/kind rereads, dead/alive snapshot import, direct byte
+roundtrip, retained gaps, Mario current-only export and enemy no-op/revision.
+The initial roundtrip assertion incorrectly expected dead reentry to preserve
+status27; corrected the expectation to its documented duration1 override.
+No emulator run for these still-unbound resource services. Native player stats,
+pouch/loadout ownership, unit spawning and switch/turn/export callers remain
+fixtures or unbound. Jump motion drafts arrived during implementation; numerical
+and sound companion contracts are pending. Next: bind recovered badge import,
+then unit setup to its owners; implement the original Jump motion/request graph
+and event cadence rather than inventing a second-hit timer. Goal remains active.
+
 ## 2026-10-12 — Native physical input and battle sampling order
 
 Implemented PHYSICAL_INPUT_PRODUCER.md in include/physical_input.hpp and

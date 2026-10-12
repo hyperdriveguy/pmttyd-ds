@@ -17,6 +17,9 @@ struct DamageUnit : BattleStatusUnit {
     uint32_t attributes=0, heldItem=0;
     DamageBadges badges;
     int16_t baseHp=0,maxHp=0,baseFp=0,maxFp=0,fp=0;
+    uint8_t hpPlusCount=0,fpPlusCount=0;
+    float snapshotValue=0;
+    uint16_t snapshot13c=0,snapshot13e=0;
     int32_t dealtHp=0,requestedHp=0,requestedFp=0,consumedFp=0;
     int32_t hpBefore=0,hpAfter=0,pattern=0;
     uint8_t lastHp=0,lastFp=0,lastConsumedFp=0,enemyAudienceByte=0,pattern25Gate=0;

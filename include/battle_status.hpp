@@ -4,6 +4,10 @@
 #include <cassert>
 
 namespace ttyd {
+struct StatusChangeInfo {
+    uint8_t type=0, duration=0, strength=0, extra=0;
+    uint32_t value=0, retained=0;
+};
 // Semantic unit fields shared by status, movement eligibility and damage.
 // Status bytes retain original offsets118..135; this is not a packed unit ABI.
 struct BattleStatusUnit {
@@ -14,6 +18,7 @@ struct BattleStatusUnit {
     int8_t belong=0;
     uint8_t zapTap=0;
     uint32_t flags=0, statusFlags=0;
+    std::array<StatusChangeInfo,6> statusChangeInfo{};
     uint8_t& statusByte(unsigned offset) {assert(offset>=0x118 && offset<=0x135);return statusBytes[offset-0x118];}
     uint8_t statusByte(unsigned offset) const {assert(offset>=0x118 && offset<=0x135);return statusBytes[offset-0x118];}
 };
