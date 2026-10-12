@@ -146,3 +146,29 @@ Still requested: SDK/input signed quantization and deadzone, eligibility/contact
 NPC/talk/system/force/pose/action/transform/badge/Jabara special graph, root locks,
 source execution traces and numerical/math services. Documentation ID1's partner
 movement remains separate; this slice makes no partner ownership claims.
+
+## OW-SUPPORT-01 — Direction rate, slope record, support and stairs
+
+Delivered [direction movement rate](behavior/OVERWORLD_DIRECTION_MOVEMENT_RATE.md)
+with its6-body/27-anchor/eight-constant verifier, and
+[support/slopes/upstairs contract](behavior/OVERWORLD_SUPPORT_SLOPES_AND_STEPS.md)
+with11-body/111-anchor/22-span verifier. Both inspect US ISO read-only.
+
+marioGetMoveRate is camera-relative directional gain1+.190000057*abs(cos),
+following air cap; it does not read floor slope. MarioPreCamera publishes offset
+from camera4 yaw before input. Native camera0/unit-vector rate remains an explicit
+slice/numerical adaptation, not proof of original Rogueport yaw.
+
+Recovered separate previous-angle vector reduction, query-owned slope angles,
+feet-before-front sequencing, metadata/root rounding separation and deferred
+upstairs target/entry. Recognized>=2engine-unit lower floor can select fall11
+(drift suppressed) while all-ray miss selects10. Upstairs first two rises retain
+travel; third dispatches current input/newA and resumes ground queries. Vertical
+velocity remains retained after completion unless another owner clears it.
+
+Remaining requested dependencies: exact original triangle/math/traversal/aliasing
+and exceptional delta domains, SDK/camera/vertical writers, dynamic surfaces/
+attributes/force/root matrices, special modes/poses/sounds/hazards, and isolated
+source execution traces. Partner ownership remains independent under ID1.
+No native source, assets, emulator profile/save or original ISO mutations by
+this documentation slice; inspection artifacts stay ignored or in/tmp.
