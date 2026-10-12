@@ -52,7 +52,7 @@ struct EventSchedule {
     std::array<int32_t,256> slots{};
     std::array<uint32_t,256> ids{};
     int32_t count=0;
-    bool managerActive=false;
+    uint32_t managerActive=0; // Original shared word;retain nonzero/raw byte aliases.
 };
 struct EventManagerServices {
     void* user=nullptr;

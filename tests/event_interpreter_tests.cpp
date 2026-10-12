@@ -3,6 +3,7 @@
 #include "event_context_addresses.hpp"
 #include "event_script_assets.hpp"
 #include "battle_data_child.hpp"
+#include "event_runtime_addresses.hpp"
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -23,6 +24,7 @@ struct Fixture {
     EventGlobals gp{0,60,0};
     EventRuntimeGlobals runtime{0,1,1,0};
     EventSchedule schedule;
+    EventRuntimeAddresses runtimeAddresses;
     std::map<uint32_t,uint8_t> bytes;
     std::vector<Call> calls;
     std::vector<EventDiagnosticCall> diagnostics;
@@ -30,13 +32,13 @@ struct Fixture {
     unsigned barriers=0,divisions=0;
     int32_t observedInteger=0;float observedFloat=0;
     static constexpr uint32_t clock=243000000;
-    Fixture():contextAddresses(addresses) {assert(addresses.registerEntries(0x10000,entries.data(),256));assert(contextAddresses.registerContext(0x8000,context));}
+    Fixture():contextAddresses(addresses),runtimeAddresses(runtime,schedule) {assert(addresses.registerEntries(0x10000,entries.data(),256));assert(contextAddresses.registerContext(0x8000,context));}
     uint32_t read(uint32_t a) {
-        uint32_t mapped;if(addresses.readWord(a,mapped) || contextAddresses.readWord(a,mapped) || scripts.readWord(a,mapped))return mapped;
+        uint32_t mapped;if(addresses.readWord(a,mapped) || contextAddresses.readWord(a,mapped) || runtimeAddresses.readWord(a,mapped) || scripts.readWord(a,mapped))return mapped;
         uint32_t v=0;for(unsigned i=0;i<4;++i)v=v<<8|bytes[a+i];return v;
     }
     void write(uint32_t a,uint32_t v) {
-        if(addresses.writeWord(a,v) || contextAddresses.writeWord(a,v))return;
+        if(addresses.writeWord(a,v) || contextAddresses.writeWord(a,v) || runtimeAddresses.writeWord(a,v))return;
         for(unsigned i=0;i<4;++i)bytes[a+i]=uint8_t(v>>(24-8*i));
     }
     EventCreationServices creation() {
@@ -55,8 +57,8 @@ struct Fixture {
         s.operands.globalAddress=[](void*)->uint32_t {return 0x3000;};
         s.operands.readWord=s.creation.word;
         s.operands.writeWord=[](void* p,uint32_t a,uint32_t v) {static_cast<Fixture*>(p)->write(a,v);};
-        s.operands.readByte=[](void* p,uint32_t a) {auto& f=*static_cast<Fixture*>(p);uint8_t v;if(f.addresses.readByte(a,v) || f.contextAddresses.readByte(a,v))return v;return f.bytes[a];};
-        s.operands.writeByte=[](void* p,uint32_t a,uint8_t v) {auto& f=*static_cast<Fixture*>(p);if(!f.addresses.writeByte(a,v) && !f.contextAddresses.writeByte(a,v))f.bytes[a]=v;};
+        s.operands.readByte=[](void* p,uint32_t a) {auto& f=*static_cast<Fixture*>(p);uint8_t v;if(f.addresses.readByte(a,v) || f.contextAddresses.readByte(a,v) || f.runtimeAddresses.readByte(a,v))return v;return f.bytes[a];};
+        s.operands.writeByte=[](void* p,uint32_t a,uint8_t v) {auto& f=*static_cast<Fixture*>(p);if(!f.addresses.writeByte(a,v) && !f.contextAddresses.writeByte(a,v) && !f.runtimeAddresses.writeByte(a,v))f.bytes[a]=v;};
         s.operands.truncate=[](void*,float v) {assert(std::isfinite(v) && double(v)>=-2147483648. && double(v)<2147483648.);return int32_t(v);};
         s.memory.user=this;s.memory.word=s.creation.word;s.memory.storeWord=s.operands.writeWord;s.memory.storeByte=s.operands.writeByte;
         s.memory.half=[](void* p,uint32_t a)->uint16_t {auto& b=static_cast<Fixture*>(p)->bytes;return uint16_t(b[a])<<8|b[a+1];};
@@ -97,6 +99,7 @@ int main(int argc,char** argv) {
     assert(parent.flags&0x10);assert(parent.waitingChild==&child && child.waitingParent==&parent && child.priority==11);
     assert(parent.locals[0]==0 && parent.locals[1]==3 && child.locals[1]==7 && parent.locals[3]==lw+7 && parent.locals[4]==3);
     assert(parent.locals[7]==0 && f.divisions==2); // Distinct divw and fctiwz service owners.
+    assert(f.read(0x8041e860)==2 && f.read(0x804151e8)==3 && f.read(0x8041e858)==0 && f.read(0x8041e85c)==2); // Core writes visible through original shared addresses.
     assert(parent.userWork==0x600020 && child.userWork==parent.userWork && f.read(0x600020)==42 && f.read(0x3174)==11);
     assert(f.runtime.allocationCount==2 && f.schedule.count==2 && f.calls.size()==1 && f.calls[0].first==1 && f.calls[0].function==0x80001300);
     assert(f.flushes==std::vector<uint32_t>({0x600020}) && f.barriers==1);

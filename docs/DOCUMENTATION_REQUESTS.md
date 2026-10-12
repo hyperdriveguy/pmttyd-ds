@@ -486,6 +486,13 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Shared-runtime breadcrumb (2026-10-12): runtime mapper now shares the actual
+ID/slot banks,counters,speed,requested-level and active WORD with interpreter/
+constructor/manager/lifecycle. Active is uint32,retaining raw nonzero and byte
+aliases. Full validation before GP step:55 suites/78 Python tests;make all passes.
+Next:GP/backing arena/initialization/native ownership and actual callback registry.
+No source/execution closure was inferred from storage coherence.
+
 Data-child breadcrumb (2026-10-12): `battle_data_child.cpp` ports complete
 RunDataEventChild/BtlUnit_GetData with delayed key/table lookup and actual child
 255 continuation. Default pack now includes80416bd0+four ORIGINAL trailing

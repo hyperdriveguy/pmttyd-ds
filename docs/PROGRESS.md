@@ -1,5 +1,26 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Shared event-runtime original-address cells
+
+Added `event_runtime_addresses.cpp` for ID/slot schedule banks,live count,
+manager-active,allocation count,event ID,speed and requested-level8041e940.
+Byte/word access is coherent with the actual runtime/schedule objects;IEEE
+speed payloads and signed slot/count bits remain raw. Manager-active is now a
+uint32 word rather than bool,so nonzero/partial-word aliases are not silently
+normalized to1. Existing manager writes1/0 and tests nonzero as before.
+Combined interpreter fixtures use this shared mapper for actual ctor/manager/
+lifecycle counter and bank writes instead of disconnected backing cells.
+
+Validation before GP addition:make test passes55 CTest suites/78 Python tests;
+make all passes.Logs:/tmp/pm-runtime-address-tests-final.log and
+/tmp/pm-runtime-address-builds-final.log. Fixtures pin all256 schedule lanes,
+partial byte writes,adjacent banks,signed values,IEEE bits,raw active words,
+requested-level getter and actual manager/child shared-counter visibility.
+
+Next:GP byte view,backing arena/owner initialization and native function registry.
+Source ownership/concurrency/alignment/invalid-index/FPSCR/original execution
+remain open;the remake goal remains active/incomplete.
+
 ## 2026-10-12 — Complete Majinai update/cleanup and draw/pose requests
 
 Documentation agent ID2 closed Main394/Disp12c and raw pose material/loop/colour/
