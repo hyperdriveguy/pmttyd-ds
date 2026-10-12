@@ -72,12 +72,13 @@ external-motion flag path. Same-call dispatcher repetition applies ordinary
 idle→walk/dash entries before that call's horizontal movement; there is no
 ordinary startup displacement delay inferred from entry-only speed writes.
 
-Jump requests occur before some later transform/threshold logic in grounded
-bodies. The walk call at0x80087c04 and idle call at0x800a7120 do not immediately
-return based on the jump helper result. A later motion request can replace a
-pending jump. Complete simultaneous jump+threshold-change/idle-start arbitration
-requires the full called-service/flag graph and original trace; do not assume a
-simple universal priority based solely on these local sites.
+Jump requests occur before later transform/threshold logic in grounded bodies.
+The [plain arbitration contract](OVERWORLD_MOTION_ARBITRATION.md) now closes
+ordinary no-special simultaneous input: later threshold/idle requests can replace
+pending jump, but same-call dispatcher repetition retains A trigger and retries
+the jump in the new ground callback. Establish current ground base/travel before
+surviving jump entry. Special action/pose/contact/flag domains and original traces
+remain open; this local closure is not a universal priority rule.
 
 ## Stable-motion jump entry and startup
 

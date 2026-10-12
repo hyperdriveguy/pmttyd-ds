@@ -117,3 +117,32 @@ current full make test passes29 CTest suites,including core and field_wall,
 plus58 Python tests. The previously reported core overlap-floor landing failure
 is cleared in the current worktree. Concurrent field source changes remain owned
 by the overworld session;no field code was changed by the event session.
+
+### OW-MOVE-01 plain simultaneous-input closure
+
+Delivered [ordinary motion arbitration](behavior/OVERWORLD_MOTION_ARBITRATION.md)
+and `tools/verify_overworld_motion_arbitration.py`:20 containing bodies,94
+instruction anchors,15 data spans including original motion main/post rows.
+The previous local pending-jump-overwrite question is closed in the bounded
+plain0/1/2 domain: repeated dispatcher callbacks retry the unchanged A trigger,
+so current ground0/1/2.25 base and current nonzero input heading are established
+before surviving jump. Nine source-derived callback paths are supplied, including
+neutral stop and both threshold crossings. Maximum four callbacks is a derived
+domain bound, not an invented original dispatcher clamp.
+
+Ordinary late landing selects pending idle0 or walk1; it does not universally
+enter land13. Next manager invocation re-queries input before entry; prior
+airborne A trigger is not locally replayed. Fall entry preserves retainedbase/
+travel and signed counter, while jump entry resets and increments counter1.
+Separate land13 leaf and exposed phase tails remain distinguished.
+
+Native launch correction can classify current ground input before begin, discard
+grounded displacement, then run air policy with established speed/direction.
+Standing analog.5→original magnitude35 plus A gives base1+drift.13125, hence
+.0113125 native displacement; drift-only expected.0013125 was a provisional
+native fixture. Original runtime/numerical equivalence remains unclaimed.
+
+Still requested: SDK/input signed quantization and deadzone, eligibility/contact/
+NPC/talk/system/force/pose/action/transform/badge/Jabara special graph, root locks,
+source execution traces and numerical/math services. Documentation ID1's partner
+movement remains separate; this slice makes no partner ownership claims.
