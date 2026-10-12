@@ -710,3 +710,13 @@ VM targets/condition/case operands,three weapon difficulty/event references and
 two wrapper streams. Existing read-only DOL inventory outputs retain raw data
 only locally;no original code/dialogue distributed or linked,no asset conversion.
 Interpretation remains static;public names are annotations and licensing unchanged.
+
+Harbor story binding research reads rel/gor.rel directly from the read-only ISO
+through rel_event_inventory.py,without writing an extracted module. Local reports
+retain raw commands,self/module0 ADDR32 bindings,foreign/BSS identities and
+resource identifiers;no loaded VA inference or event execution. Seven span hashes
+and original msg/US/gor_00.txt identity checked;fresh message census preserves
+text/token payload hashes without exporting dialogue. Only IDs/offsets/actor
+bindings/authored behavior notes committed. No asset conversion,original code
+linking/distribution or licensing change;symbol annotations retain existing
+reference provenance. Full original story/transcript/conditions still incomplete.

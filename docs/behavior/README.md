@@ -19,6 +19,7 @@ complete gameplay sequences before further general-library edge-case recovery.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [US completion/priorities](US_COMPLETION_AND_PRIORITIES.md) | Current completion audit,shipped reference census,registered commands and mechanic-first order | Full event feasibility/original execution and all-system closure |
+| [Harbor opening bindings](STORY_HARBOR_OPENING_BINDINGS.md) | Seven original REL spans,story-state entry/write graph,actor setup,20 message/speaker references and battle boundary | Complete scene/event/service conditions,tutorial config and original traces |
 | [Original baseline](../ORIGINAL_BEHAVIOR.md) | Disc/DOL identity, evidence rules, subsystem order, basic waits/callback continuations, initial complete-game scope | Most systems beyond the initial recovered contracts |
 | [Event runtime](EVENT_RUNTIME.md) | Priority/tie order, child/brother relationships, deletion/copy-back, selected stop behavior | Every opcode/variable type, service callbacks, restart/pause lifecycle |
 | [Ordinary attack bindings](BATTLE_ORDINARY_ATTACK_BINDINGS.md) | US Jump ID1/Hammer core ID3 setup sites,raw/resolved wrapper ABI and event stream identities | Full branches,unit/weapon/tutorial selection and timing |

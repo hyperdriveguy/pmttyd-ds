@@ -4556,3 +4556,41 @@ menu/unit/weapon consumers,mask2/automatic/forced writers,and opening/Crump
 REL/tutorial binding. Obtain original input/state/animation cadence traces;
 continue all reachable US gameplay/optional content before final complete-game
 requirements. Full objective remains active/incomplete.
+
+## 2026-10-12 — Original US harbor opening story bindings
+
+Added STORY_HARBOR_OPENING_BINDINGS.md and generic read-only REL event inventory.
+Reads shipped gor.rel directly from ISO without extracted module writes;bounded
+section/import/ADDR32/event parsing preserves raw operands,self/module0 targets,
+foreign module identities and BSS/one-past identities without dereferencing them
+as file data. External names remain annotations. Six synthetic tests cover local/
+DOL/foreign/BSS/one-past binding,invalid bounds/streams,duplicates and input
+immutability. Original records remain ignored.
+
+Recovered seven original harbor event spans (918 commands),story operand
+f5de0180 case2..5 resume entry requests,writes3/4/5/6,actor initialization and
+setup coordinates/flags,20 exact mac_0_014..033 message calls with original
+speaker-key offsets,and beforebattle set-info literal2/start/wait boundary.
+No dialogue paraphrase/transcript written;fresh US resource census retains full
+payload/token hashes/offsets and confirms all20 IDs uniquely exist in gor_00.
+Battle configuration operand semantics,unit/tutorial overrides,full conditions/
+inline scheduling/input/camera/audio and original scene execution remain open.
+
+Validation:gor REL and seven whole event spans plus US gor_00 message resource
+hashes verified directly in ISO. Two complete event reports byte-identical;
+fresh message census260 resources/13186 pairs;20 target IDs each match once.
+Prior1652 instruction/data checks pass;563 behavior links resolve;Gekko listing
+check clean;git diff --check passed. Initial make test hit transient concurrent
+native Input/core_tests Hammer interface mismatch (hammerHeld/hammerReleased);
+research tools separately passed. After concurrent updates settled,make test
+passed core,battle_timing_a,battle_hammer plus58 Python tests;make all passed
+with no rebuild. Separate native/README/documentation-request edits preserved;
+research commit stages only explicit research/docs paths.
+
+No original gameplay execution/emulator/profile/save mutation,ISO write,new
+asset conversion,original code linking/distribution or story rewrite by this
+step. Full objective active/incomplete. Next:recover evt_npc_set_battle_info/
+battle_start/wait_battle_end and actual gor battle configuration2/unit/tutorial
+script bindings;close scene conditions,locks/persistent namespace and original
+timing comparisons,then expand all reachable US chapters/optional mechanics
+before complete-game requirements.

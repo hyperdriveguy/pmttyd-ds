@@ -1697,6 +1697,32 @@ def verify(iso_path):
                     0x1005e,0x8035d6d4,2,1):
                 raise ValueError('Hammer wrapper event binding mismatch')
         print('Eight VM targets, Hammer flag/weapon branches and three weapon difficulty/script bindings verified')
+        shipped = {e['path']:e for e in inventory(iso_path)['files']}
+        def read_resource(path):
+            entry = shipped[path]
+            disc.seek(entry['offset'])
+            data = disc.read(entry['size'])
+            if len(data) != entry['size']:
+                raise ValueError('Truncated original resource')
+            return data
+        harbor = read_resource('rel/gor.rel')
+        if hashlib.sha256(harbor).hexdigest() != 'd4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a':
+            raise ValueError('Harbor original REL identity mismatch')
+        harbor_events = (
+            (0x2f004,0x870,'feca019e68a4b78036ea454dee444be4287f18b1b2f3c322d82b232190a68496'),
+            (0x25290,0xe8,'0443f63f525befc9a3ca3a4455910ff1a5d0511c0ccbf4bf80183c62ed3d0734'),
+            (0x25378,0x148,'55ef94f13cf89ef3a5995dbeff73567a51acceea8a2e71e2792f634199225a16'),
+            (0x254c0,0x948,'6679b66c1735f1f541ff22f8aca1e155282a7463006212d5f353c29606bcce6d'),
+            (0x25e08,0x594,'03bdec7420754bb222ed5d83b7d1f2057de879a1187e7ae00a11a75f9d2497c0'),
+            (0x2639c,0x830,'4cc7e8fba986105d05f73b8c21bea7c79e4b69e1fae556f88f4920f77fd97bef'),
+            (0x26e84,0x12c4,'c055f9af15c96521318b2359e11a89664dafcca92556a9daefa6716ea531d5e7'),
+        )
+        for offset,size,digest in harbor_events:
+            if hashlib.sha256(harbor[offset:offset+size]).hexdigest() != digest:
+                raise ValueError('Harbor event span hash mismatch')
+        if hashlib.sha256(read_resource('msg/US/gor_00.txt')).hexdigest() != 'bd39efb45105781a403ca5e889ba8e9fb8dbaaaf0b2bd60af6955e38073acdcc':
+            raise ValueError('Original harbor US messages mismatch')
+        print('Harbor REL, seven event spans and original US message resource verified')
 
 
 
