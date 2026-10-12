@@ -18,6 +18,7 @@ complete gameplay sequences before further general-library edge-case recovery.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Unit status/pouch initialization](UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md) | Complete status clear,pouch resource import/revision,party mapping and partial six-record reset with entry callers | Badge/move/snapshot producers,turn/presentation/save lifetime and original traces |
 | [Unit part defense/lifetime](UNIT_PART_DEFENSE_AND_LIFETIME.md) | Scoped contiguous part construction/pointer copies,Crump/Mario signed source tables,complete part lookup and deletion request order | Remaining entry/vector/heap/pose services,mutation and original actor lifetime traces |
 | [Weapon power callbacks](BATTLE_WEAPON_POWER_CALLBACKS.md) | Complete default/Mario Jump/Hammer power bodies,signed level/index/bonus ordering,ordinary six-word tables and boss base1 | Level/bonus/AC producers,weapon lifetime,unit/part construction and executed hit totals |
 | [US completion/priorities](US_COMPLETION_AND_PRIORITIES.md) | Current completion audit,shipped reference census,registered commands and mechanic-first order | Full event feasibility/original execution and all-system closure |

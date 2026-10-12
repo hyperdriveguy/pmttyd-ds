@@ -13,6 +13,24 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'unit_status_clear_and_pouch_import': {
+        0x80127b64: '38a0001e', 0x80127b74: '387f0118',
+        0x80127b78: '4bedd53d', 0x80127b80: '38800010',
+        0x80127b88: '38c0ff9d', 0x80127b8c: '48000021',
+        0x80127b94: '4806e1a1', 0x80195d38: '38000006',
+        0x80195d3c: '39230ae8', 0x80195d5c: '3884000c',
+        0x80195d60: '990a0000', 0x80195d70: '906a0004',
+        0x80129330: '4bffe829', 0x80129634: '4bffdb01',
+        0x8012714c: '4bfaed65', 0x80127158: '2c0000de',
+        0x80127168: 'b01f010c', 0x80127170: 'b01f0112',
+        0x80127190: '4bfd12b5', 0x80127194: '1c83000e',
+        0x801271bc: '1c63002c', 0x801271c4: '38c662a0',
+        0x801271d4: 'd01f0114', 0x801271dc: '907f0138',
+        0x80127200: 'a0040008', 0x80127204: 'b0050008',
+        0x80127220: '41810018', 0x80127228: '3880001b',
+        0x80127018: '881f02f1', 0x80127034: '881f02f2',
+        0x801270b4: 'b01f010c', 0x80127054: '40810008',
+    },
     'unit_part_defense_construction': {
         0x8012939c: '880300b4', 0x801293a0: '1f800500',
         0x801293ac: '4bfcf589', 0x801293bc: '4bedbcf9',
@@ -2042,6 +2060,16 @@ def verify(iso_path):
             if struct.unpack('>I',read(part_record,4))[0] != index+1 or struct.unpack('>4I',read(part_record+0x38,16)) != (0x80417ba0,0x80417ba8,flags,0):
                 raise ValueError('Mario part ID/table/flags binding mismatch')
         print('Unit part construction/lifetime,boss part1 and Mario three-part signed defense bindings verified')
+        for address,size,digest in (
+            (0x80127134,0x118,'623f0b252e57adcaca4899666da787283a8a92a548231c29fa14c7ca343a0d3f'),
+            (0x80127b58,0x54,'f78ede5ff372b7d96da81e1d7d9e20739b76a0bdf838b2315094082f8af2d8bf'),
+            (0x80126fe8,0x14c,'a98b8dede9f6418dc7cb5cf0adb9d1c87a4b00251a54a2579db1cdc5a1792c35'),
+            (0x800f8444,0xf4,'b7f23d4e0a11af27bdd70a13edddc6d364afc8cbf66a7c051edcdd1a9fed67dd'),
+            (0x80195d34,0x48,'276ae75f8cfe57227b8810bef14b85a6e5e2b8f0898899d1a0e51b7a8a5c7749'),
+        ):
+            if hashlib.sha256(read(address,size)).hexdigest() != digest:
+                raise ValueError(f'Unit status/pouch import fingerprint mismatch {address:#x}')
+        print('Complete status clear,pouch import,resource revision,party mapping and six-record feedback init bodies verified')
 
 
 

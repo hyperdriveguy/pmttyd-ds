@@ -1,5 +1,39 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2: requested status clear and pouch resource initialization
+
+Added UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md. Complete ClearStatus zeros30
+status bytes,clears Charge through SetStatus(16,1,-99),then resets six info
+records while retaining each word+8. Complete SetParamFromPouch/ReviseHpFp
+preserve separate base/max/current resources,signed16 narrowing/upper-only caps,
+unsigned HP/FP count bonuses and ordered repeated pouch reads. Mario imports
+current70/74 with base8e/90;partners map kind224..230 to nonsequential pouch
+indices1,2,4,5,6,3,7 and revise HP only. Partner entry then directly restores
+30 status bytes and related fields from battle162a0+44*(kind-224),overwriting
+the earlier clear,and requests Instant Kill duration1 for nonpositive HP.
+Other-kind import is locally no-op after reads;direct resource revision still
+has its HP/FP path. Snapshot producer/save lifetime and badge aggregation remain
+open. INIT-01..04 make this scoped answer implementable without invented turn rules.
+
+Pinned original entry calls ClearStatus29330 and SetParamFromPouch29634;
+linked partial STATUS-01/DMG-01 answer and released only ID2's validated lock.
+Independent ID1 physical-key/pad-order lock and implementation edits preserved.
+No native implementation was authored by ID2 in this step.
+
+Validation:general verifier passed1,948 instruction anchors (32 new),five new
+whole-body hashes and all prior contracts. Two fresh364-function evidence
+reports repeated byte-for-byte from read-only ISO.626 behavior local links
+resolved;make test passed eight CTest suites including concurrent weapon-power
+implementation and58 Python tests;make all exited0 with no rebuild;git diff
+--check passed. Inspection ELFs/reports/logs remain under /tmp;no original
+execution/emulator,ISO/profile/save mutation,asset conversion or dialogue rewrite.
+
+Next:STATUS-01/DMG-01 badge/count/bonus and move initialization,snapshot producer/
+partner switch lifetime,concrete Mario kind/count binding;per-hit AC/turn/infliction/
+periodic and damage/reward/field-return graph. Full-system documentation and
+complete-game requirements remain unfinished;scoped local closure is not a
+finished faithful encounter or complete-game specification.
+
 ## 2026-10-12 — ID2: requested unit-part defense and lifetime contracts
 
 Added docs/behavior/UNIT_PART_DEFENSE_AND_LIFETIME.md with the scoped original

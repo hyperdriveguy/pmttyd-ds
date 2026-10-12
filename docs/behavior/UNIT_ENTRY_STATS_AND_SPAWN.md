@@ -13,6 +13,11 @@ closes the scoped part allocation/table/flag region,lookup and ordered deletion
 requests. Remaining actor/geometry/resource services still prevent whole entry
 closure;the containing function fingerprint is not proof of full coverage.
 
+The [status/pouch initialization contract](UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md)
+now closes entry's ClearStatus and later SetParamFromPouch calls. Mario/partner
+HP/FP and partner status snapshot overrides are explicit;badge/move/snapshot
+producers and other entry services remain open.
+
 ## Entry slot, publication and kind pointer
 
 BtlUnit_Entry receives a setup-record pointer S. Read shared BattleWork W and

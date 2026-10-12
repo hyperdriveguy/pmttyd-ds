@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Unit-entry status clear and pouch resource import | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Initialization contract](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete clear/import/revision,party mapping and partial info-record reset;badge aggregation,snapshot producers and turn/save ownership remain open |
 | Physical key producer and battle pad update order | AC-01, AC-03, AC-02 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover makeKey,BattlePadManager,battleMain and private/general call ordering;excludes full sequence lifecycle,override writers and original traces |
 | Unit part defense/attribute construction and Crump source tables | DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Part contract](behavior/UNIT_PART_DEFENSE_AND_LIFETIME.md):pointer copies,boss/Mario zero tables,lookup exceptions and ordered teardown;full unit entry,mutation and executed damage remain open |
 | Battle jump callbacks and concrete Crump float operands | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Jump contract](behavior/BATTLE_JUMP_EVENT_CALLBACKS.md):full local callbacks,used float route and scoped JMP-01..07 acceptance cases;main/pad cadence and original impact traces remain open |
@@ -241,6 +242,21 @@ and the rest of unit entry remain open. Do not treat that as a measured starting
 stat trace or collapse current/max/base copies when implementing resources.
 
 ## STATUS-01 — Status lifetime, event binding and turn ownership (open)
+
+Partial answer from ID2:
+[status clear and pouch import](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md)
+recovers complete ClearStatus,SetParamFromPouch,ReviseHpFp,party mapper and
+status-info initializer with original entry callers. Clear zeros30 status bytes
+then clears Charge through its setter;the six info records retain each word+8.
+Mario imports current pouch HP/FP and revises separate base/max copies using
+unsigned count bytes2f1/2f2. Partners use the nonsequential party mapping,revise
+HP only,restore30 status bytes and related fields from battle snapshot162a0+
+44*(kind-224),then set ID27 duration1 for HP<=0. Imported statuses bypass setters;
+the prior entry clear is not proof of a clean partner state. Other-kind import
+does no resource writes,but direct revision still updates HP/FP maxima. INIT-01..04
+provide scoped requirements/cases. Badge aggregation,move init,snapshot writers,
+infliction/periodic/turn/presentation/save lifetime and original traces remain
+open. This is also a partial DMG-01 answer for later HP/FP override ownership.
 
 Local [storage/recovery](behavior/BATTLE_STATUS_STORAGE.md),[move-count helpers](behavior/BATTLE_MOVE_COUNTS.md)
 and guard/action predicates are implemented in `source/battle_status.cpp`,with
