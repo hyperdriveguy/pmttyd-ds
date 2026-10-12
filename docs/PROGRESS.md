@@ -5512,3 +5512,51 @@ pause/stop/timescale and other sampler/reset caller census,then original input/
 state observations and remaining target/movement/audio composition. Continue
 all reachable US systems and optional content;full-game documentation and final
 complete-game requirements remain incomplete.
+
+## 2026-10-12 — ID1: input reset owners,system levels and tutorial injection
+
+Added BATTLE_INPUT_RESET_OWNERS.md and EVENT_SYSTEM_LEVEL_AND_SPEED.md.
+The static sampler census confirms two direct DOL WorkUpdate sites and no
+module0 REL sampler imports. WorkInit has four direct DOL calls and one gor
+REL24 import. Complete BattlePadInit/AC manager init/reset-result bodies preserve
+general/private ownership,callback clearing and result/reset store order.
+The gor _config_key_record helper is now fully specified with original HA/LO/
+REL24 bindings:write result4,reset private pad,inject operand0 raw at latest
+trigger history,return2. The subsequent defense checker clears the preliminary
+result;history injection supplies the concrete input,not a checker bypass.
+
+Two shipped lecture_zutsuki_attack_event calls inject A100/B200 under work
+cases3/7 before adjacent defense/damage requests. Its162-command whole hash and
+selected branch/import slice are pinned;full lecture graph,selector-6/work
+producers,weapon eligibility and reachability remain open. This must not be
+substituted for Crump's separate normal-attack physical input route.
+
+Complete marioStSystemLevel/getter and evtSetSpeed now distinguish requested
+level,GP18 mask,selected-context event stop bits,global multiplier,per-entry speed
+and existing credits. Levels0..4 give exact start/stop masks;lower nonzero levels
+need not resume older stops,EF excludes10,and getter returns the full GP mask.
+Root/child/brother speed initialization reads global M rather than parent speed.
+Zero speed and stopped-event lifetime suppression have different contracts.
+No direct r13-relative stfs writer of M was found in DOL text;this is not proof
+of no pointer/indexed/REL/bulk writers or a constant runtime multiplier.
+
+Validation:input_ownership_audit.py passed six DOL body hashes,30 instruction
+anchors,two data bindings,one REL helper hash/global/reset relocations,lecture
+hash and selected case/mask/defense/damage bindings. Two final metadata reports
+matched byte-for-byte. Existing input/jump verifiers and general1,980-anchor/
+data checks passed.145 links in ID1-edited behavior files resolved. The whole
+collection check encountered ID2's concurrently drafted Mario-parameter link
+before its destination existed;no full-collection clean-link claim made here.
+Gekko check covered470 listings,66,583 instructions,376 paired instructions,
+zero changes/unrecognized. make test passed nine CTest suites plus58 Python
+tests;make all exited0,no rebuild. git diff --check passed. Only ID1 research/
+handoff paths staged;concurrent native and ID2 motion work preserved. No
+original execution/emulator/profile/save mutation,ISO write,asset conversion,
+native implementation or story/dialogue rewrite by ID1. Reports/listings ignored.
+
+Updated inbox/reference/provenance links and released only ID1's validated lock.
+AC-01/02/03 stay open. Next:lecture/helper mode selection and actual tutorial
+input/eligibility writers;full UI/type/pause graph and original normal/multihit/
+held/A+B traces;remaining target/audio/field/reward composition. Use numeric-ID
+scoped reservations. Full US systems and optional content remain necessary before
+final complete-game requirements;the overall objective is still incomplete.

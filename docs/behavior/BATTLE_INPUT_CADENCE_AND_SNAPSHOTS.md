@@ -191,3 +191,14 @@ containing-body hashes,64 selected instructions,28 direct calls and three data
 bindings. Four hashes repeat previously covered helpers and are not new semantic
 completion units. seq_battleMain was inspected as a discovery aid;its larger
 lifecycle is not covered by the local cadence contract.
+
+
+## Sampler/reset and control follow-up
+
+[Input reset owners](BATTLE_INPUT_RESET_OWNERS.md) now supplies the complete
+static direct sampler/WorkInit census and a shipped tutorial helper that can
+inject private trigger history between main-chain samples. Preserve that explicit
+writer rather than deriving every press solely from physical held transitions.
+[System-level/event speed](EVENT_SYSTEM_LEVEL_AND_SPEED.md) supplies the local
+requested-level/type-mask table and speed initialization;neither closes all
+pause/UI callers or original multihit cadence.

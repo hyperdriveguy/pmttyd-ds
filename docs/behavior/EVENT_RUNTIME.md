@@ -153,8 +153,10 @@ does not let that timer simply continue on an unrelated host wall clock.
 
 `evtRestart` has been fingerprinted and disassembled but its reset/preservation
 contract is not yet fully documented. Do not conflate start/unpause with restart.
-Likewise the complete `_mariostSystemLevel` transitions and mask ownership remain
-open. Those are required to reproduce menus, cutscenes and battle interruption.
+The [system-level/speed follow-up](EVENT_SYSTEM_LEVEL_AND_SPEED.md) now documents
+the full local level transition table,getter mask and speed initialization policy.
+Caller request/type ownership and complete UI/pause sequences remain open;those
+are still required to reproduce menus,cutscenes and battle interruption.
 
 ## Variable namespaces and persistence boundary
 

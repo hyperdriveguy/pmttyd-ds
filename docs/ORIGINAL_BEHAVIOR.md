@@ -364,3 +364,11 @@ directions,scaled24/6 repeats,error-3 retention and the input-clear chord are
 separate from inclusive30 battle directions/16/8 repeats. A dedicated ten-body/
 64-anchor verifier includes prior fingerprints;counts must not be summed as ten
 newly completed gameplay systems. Main/pad/physical execution traces remain open.
+
+
+[Input reset ownership](behavior/BATTLE_INPUT_RESET_OWNERS.md) identifies the
+known direct update/reset routes and a script-selected raw trigger-history
+injection. [System-level/speed controls](behavior/EVENT_SYSTEM_LEVEL_AND_SPEED.md)
+closes the local level/type-mask table,getter and per-entry speed multiplier/
+creation policy. Neither converts the static census into an executed pause graph
+or establishes full input writer/restart coverage.

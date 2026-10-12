@@ -118,8 +118,8 @@ The defense routine uses battle work's dedicated action-command pad at
 
 It uses mask `0x100` (A) and `0x200` (B). The same entry with both A and B
 counts as **two** occurrences in the anti-mashing scan. Held masks and repeat
-masks are not used by this routine. The exact battle-loop placement of pad
-updates relative to attack impact still needs tracing; history indices are not
+masks are not used by this routine. The [battle-loop placement](BATTLE_INPUT_CADENCE_AND_SNAPSHOTS.md) is now checked
+for the direct main chain;actual impact and reset/caller lifetimes still need tracing; history indices are not
 automatically equivalent to video frames or a symmetric window around impact.
 
 Defense difficulty is `clamp(3 + byte(unit+0x306) - byte(unit+0x305), 0, 6)`.
@@ -240,3 +240,12 @@ identifies trigger bytes6/7,explicit zero bytes8/9,and untouched retained bytes1
 11. A later eligible script check can include the current producer sample;
 multiple event-credit invocations do not themselves create additional pad samples.
 Original pause/multihit/override/cadence traces and other writers remain open.
+
+
+[Reset owners/tutorial injection](BATTLE_INPUT_RESET_OWNERS.md) now identifies
+the two direct DOL samplers,four direct WorkInit callers,and the shipped gor
+lecture helper which resets private history then injects raw A/B press masks.
+This is separate from physical sampling;its prewritten result4 is cleared by the
+checker before history evaluation. The lecture selection/work/weapon graph and
+original execution remain open. [System controls](EVENT_SYSTEM_LEVEL_AND_SPEED.md)
+distinguish event-type stops from speed/credit changes and GP input sampling.

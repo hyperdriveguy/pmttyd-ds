@@ -17,7 +17,8 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Battle input sampler/reset caller census and system-level/event-speed controls | AC-01, AC-03, AC-02 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover direct caller identities,marioStSystemLevel and used speed writes;excludes full UI/pause graph and original traces |
+| Mario-specific JumpParam preparation and motion dependencies | JUMP-01, AC-01 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Recover complete MarioJumpParam80109c68/19c and its concrete ordinary arguments;MarioJumpPosition body/traces remain separate pending work |
+| Battle input sampler/reset caller census and system-level/event-speed controls | AC-01, AC-03, AC-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Reset owners](behavior/BATTLE_INPUT_RESET_OWNERS.md) and [level/speed controls](behavior/EVENT_SYSTEM_LEVEL_AND_SPEED.md);direct census,local controls and tutorial injection answered,full UI/type/writer/lecture graph and original traces remain open |
 | Ordinary Jump complete request graph and per-hit/AC branches | JUMP-01, AC-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Jump graph](behavior/BATTLE_NORMAL_JUMP_EVENT_FLOW.md),[result/stop](behavior/BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md),[VM/concurrency](behavior/EVENT_JUMP_BRANCHES_AND_CONCURRENCY.md);Mario-specific motion/remaining services and original traces remain open |
 | Unit resource/status snapshot export leaf | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Export contract](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete matching writer;export caller cadence and on-disk save semantics remain open |
 | Unit badge/count/bonus import through _EquipItem | STATUS-01, DMG-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Badge import](behavior/UNIT_BADGE_COUNT_IMPORT.md):complete byte maps/flags/reset/scan and scoped setup bindings;inventory equip UI and runtime traces remain open |
@@ -125,6 +126,21 @@ to reproduce the original command's display geometry/animation. Sound requests
 retain `SFX_AC_PI1` and `SFX_AC_PONE1`; no replacement samples are played.
 
 ## AC-03 — Defense callers, pad cadence and eligibility (open)
+
+Further partial answer from ID1 (2026-10-12):
+[reset ownership](behavior/BATTLE_INPUT_RESET_OWNERS.md) finds two direct DOL
+samplers,four WorkInit callers and one gor tutorial-helper import. The helper
+resets private history then injects raw0x100/0x200 at index0 when the selected
+lecture script's work value is3/7,before defense/damage requests. Its preliminary
+result4 does not bypass the checker,which clears that result. Full lecture
+selection,selector-6/work producers,weapon eligibility and original traces remain
+open;do not replace Crump's ordinary attack input with demonstration injection.
+[system controls](behavior/EVENT_SYSTEM_LEVEL_AND_SPEED.md) closes the local
+level0..4 event-mask table,getter returning the whole GP mask,and speed setter/
+creation regions. Nonzero lower levels do not automatically resume older stops;
+mask0xef excludes0x10. Caller UI/type/speed ownership remains open. These answers
+supply implementable reset/control semantics without a fabricated whole-game
+pause flag or fixed impact schedule.
 
 Input partial answer from agent ID1 (2026-10-12):
 [physical producer](behavior/PHYSICAL_INPUT_PRODUCER.md) closes local DemoPad
@@ -329,6 +345,30 @@ Use native data/requests as test fixtures only;do not treat them as original
 scene/stat/position/audio/turn behavior. Link concrete data/service answers here.
 
 ## Implementation coverage and next work
+
+### INPUT-01 — Remaining native adaptation and WorkInit byte clarification (open)
+
+Implemented the physical producer and12-byte battle snapshots in
+`source/physical_input.cpp`/`source/battle_defense.cpp`. Native battle now follows
+general pads→sequence adapter→private pad/AC main→later event adapter. Four
+general buffers and the independent private buffer retain ownership;physical
+state persists across scene/battle initialization. Abstract host callers may
+still inject already-produced logical GP masks rather than raw levels.
+
+Please clarify the older WorkInit summary:original listing0x8011a3d0..3f4 clears
+snapshot bytes0..a but has no byteb store. Implementation preserves each old
+byteb on WorkInit and both trailing bytes on update,while clearing bytea on init.
+Pin that exact map in the contract/verifier before describing full-snapshot
+clearing. The native snapshot bytes start zero via construction/battle allocation.
+
+Remaining:PADRead/Clamp/Reset service behavior and supported errors;GP frame-rate
+parameter/writers,motor/control/chord ownership,pause/physical poll boundaries,
+native C-stick/trigger mapping and sequence/display/event registration. Native
+uses one input projection per simulation tick,rate60,zero unused channels and no
+motor service;these are adaptation inputs,not observed GC polling or connection
+counts. Start/impact schedules and the full event-credit loop remain unbound.
+Do not invent extra samples for script invocations or suppress inactive private
+sampling. Provide original identities/traces separately from native fixtures.
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
 

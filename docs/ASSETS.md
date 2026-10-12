@@ -782,3 +782,16 @@ remain in the same ignored research directory. SDK hardware and actual input
 poll/impact timing remain dependencies. No asset conversion,original execution,
 ISO/profile/save mutation,native linking or original text rewrite. Existing
 original/reference provenance and distribution rights are unchanged.
+
+Input ownership/control research by ID1 (2026-10-12):input_ownership_audit.py
+reuses the read-only shipped-reference census and adds containing-owner labels,
+six small DOL body checks,30 selected instructions,two data checks and the gor
+_config_key_record helper hash/HA/LO/REL24 bindings. One162-command lecture event
+hash and its selected injection cases/defense imports are verified;full event
+semantics remain open. Ignored report is artifacts/reference/behavior/
+input-ownership-audit.json;temporary unrelocated REL inspection ELFs/listings and
+lecture inventory are in /tmp. REL file offsets,not provisional loaded addresses,
+identify these bodies. No original executable linking/distribution,dialogue
+rewrite,asset conversion,ISO/profile/save mutation or original execution. Existing
+rights/provenance remain unchanged;metadata/reference licenses do not grant
+original-resource distribution rights.
