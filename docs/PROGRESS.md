@@ -1,5 +1,44 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Candidate sampling and choice composition
+
+Implemented BATTLE_ENEMY_CANDIDATE_SAMPLING.md in battle_candidate_sampling.hpp/
+cpp. Sampling retains metadata and distinct swap-Q,constructs registry/linked
+part rows with independent hit/base/sort coordinates,bias/forward/lane fields,
+and retains unused padding. Ordered A/C admission compacts whole rows,re-fetches
+units/parts,preserves repeated information lookup and self exception;later
+same-unit part dominance and occlusion operate on retained rows with actor-data
+pointer exception. Only permutation is exchange-sorted using wrapped keys and
+positive versus nonpositive equal-key rules. Update uses retained metadata
+without repeating the entry swap. High-bit admission sets signed count-1 while
+leaving selection/rows/permutation. Native record/link/numeric asserts are valid-
+domain boundaries,not invented original74-row capacity enforcement. Providers
+retain actual unit/status/part/geometry/info ownership;weapon pointer is semantic.
+
+Read-only US ISO inspection with inspect_dol_function.py resolved one ambiguous
+reset order:800ff94c writes selection0 after construction,800ff950 publishes initial
+count,then800ff954 reloads it. Listings/ELF remain /tmp/pm-sampling-order.*;no ISO
+write or original data commit. Requested documentation-agent confirmation/pinning
+in the inbox;this is static evidence,not Dolphin/runtime observation.
+
+Validation:final make test passed twenty CTest suites plus58 Python tests;
+make all rebuilt sampler and ttyd-2ds.elf/3dsx without warnings,then exited0/no
+rebuild after final integration tests. Initial misleading-indentation warnings
+were corrected and checks rerun. Tests cover swap/no-swap Q and update ownership,
+high-bit retention,signed row geometry/bias/padding/forward cap,all A admission
+classes and C attribute checks,information lookup repetitions,status27/part skips,
+ordered compaction,same-unit dominance after earlier removal,normal/reversed/lane/
+equal-X occlusion,actor pointer exception,biased permutation and equal-key tie
+order. Real sampler output composes with chooser using exact takeoff masks,null
+weapon and mode4;it selects registry2/part1 without any supplied RNG service.
+git diff --check passed. No emulator run for unbound registry/source/event paths
+or original execution/numerical/domain equivalence claim.
+
+Next:connect sample/choice to the takeoff wrapper through a private per-invocation
+buffer,then bind original Jump graph and EVT-01 scheduler with real unit/menu/
+pouch/math/audio owners. Native harness's fixed timers and one-hit Jump remain
+provisional. Full remake,story/assets and original trace comparison remain open.
+
 ## 2026-10-12 — Candidate choice weights,overrides and RNG boundary
 
 Implemented BATTLE_ENEMY_CANDIDATE_CHOICE.md in battle_candidate_choice.hpp/cpp.

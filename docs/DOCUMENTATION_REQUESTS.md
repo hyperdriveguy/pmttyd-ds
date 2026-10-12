@@ -456,6 +456,19 @@ rather than treating a passing command helper as complete original attack timing
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
 
+Sampling implementation breadcrumb (2026-10-12): `battle_candidate_sampling.cpp`
+and its suite implement delivered row geometry,ordered A/C compaction,part
+suppression,occlusion and permutation ordering. Tests compose actual sampler with
+chooser under takeoff's exact masks/null weapon/mode4,without RNG service. Native
+registry/status/part/source/geometry/information/numeric providers and original
+execution/domain traces remain unbound. Next is a private-buffer takeoff adapter,
+then original Jump graph/EVT-01 scheduling rather than a fixed impact timer.
+Read-only body inspection observed selection reset at800ff94c after construction,
+initial count store800ff950 and signed reload800ff954;please pin that mutation
+order in the sampler contract/verification anchors. Inspection artifacts remain
+under /tmp. Continue existing requests for original source/mutation/pause/input/
+position/RNG traces and actual native owners.
+
 Candidate-choice breadcrumb (2026-10-12): `battle_candidate_choice.cpp` and
 its suite implement all documented weights/weapon overrides and deterministic/
 weighted final branches. Takeoff mode4/null weapon is tested without RNG draws;
