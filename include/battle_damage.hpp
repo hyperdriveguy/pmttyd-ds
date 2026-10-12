@@ -7,14 +7,23 @@ namespace ttyd {
 struct DamageBadges {
     uint8_t powerPlus=0, pUpDDown=0, allOrNothing=0, megaRush=0, powerRush=0;
     uint8_t pDownDUp=0, doublePain=0, lastStand=0, defendPlus=0, damageDodge=0;
-    uint8_t hpDrain=0, fpDrain=0, icePower=0;
+    uint8_t hpDrain=0, fpDrain=0, icePower=0, pityFlower=0;
 };
+struct DamagePart;
 struct DamageUnit : BattleStatusUnit {
     int32_t extraDefense=0, attackSequence=0;
     int16_t damageSequence=0;
     uint8_t danger=0, peril=0;
     uint32_t attributes=0, heldItem=0;
     DamageBadges badges;
+    int16_t baseHp=0,maxHp=0,baseFp=0,maxFp=0,fp=0;
+    int32_t dealtHp=0,requestedHp=0,requestedFp=0,consumedFp=0;
+    int32_t hpBefore=0,hpAfter=0,pattern=0;
+    uint8_t lastHp=0,lastFp=0,lastConsumedFp=0,enemyAudienceByte=0,pattern25Gate=0;
+    uint16_t damageFlags=0,field200=0,field202=0,field204=0,field206=0;
+    float recoveryHeightFactor=0;
+    DamagePart* lastPart=nullptr;
+    std::array<const char*,4> damageSounds{}; // Original kind9c/a0/a4/a8 bindings.
 };
 struct DamagePart {
     uint32_t attributes=0;
