@@ -1926,3 +1926,42 @@ signed contact normals/animation, wall sliding/push-out, dynamic supports/block
 events and SFX remain incomplete. Original story/English dialogue, camera,
 animations, interiors and complete playable content still require work. Full
 objective remains active; no completion claim.
+
+## 2026-10-12 — Original hit precheck and HP/FP calculation contracts
+
+Research commit 05c59d3 adds docs/behavior/BATTLE_HIT_PRECHECK.md and
+BATTLE_DAMAGE_CALCULATION.md. They document US branch order, numeric flags,
+signed loads, conditional clamps, callback gates, result codes and explicit
+unresolved dependencies. Precheck includes ordered per-copy evasion RNG draws,
+accuracy reductions and early-exit side effects. HP/FP contracts distinguish
+All or Nothing bypass behavior, absorption, modifier order, linear Double Pain
+stacking and Last Stand integer division. Defense documentation now records the
+confirmed btlevtcmd_ResultACDefence event entry without claiming attack impact
+timing. Public names are annotations; US original bytes establish these local
+contracts. No Switch-version equivalence or original execution was measured.
+
+Evidence tooling now fingerprints 55 functions. Static verifier checks 78
+instruction anchors, both seven-entry guard tables and binary32 accuracy
+multiplier 0.5 at US RAM0x804221c4. tools/behavior_evidence.py rerun was identical
+to its saved JSON across two reads. All docs/behavior relative links resolve;
+git diff --check passed. make test passed the core test and32 Python tests;
+make all exited0 with nothing to rebuild. These are checks of execution-time
+shared-workspace state, not isolated checkout validation: concurrent runtime
+edits in include/floor_contact.hpp, source/game.cpp, tests/core_tests.cpp and
+tools/verify_actor_collision.py were present and were not staged by research.
+No emulator launched, profile/save modified, or runtime behavior implemented by
+this research step. ISO stayed read-only; extracted ELF/disassembly and reports
+remain ignored. Provenance and licensing recorded in ASSETS.md.
+
+Next research: recover BattleCheckCounter (0x800fa678), BattleCheckDamage
+(0x800fb01c), BattleDamageDirect (0x800fdfd4), status application and emergency
+revival into separate contracts; connect all callers and original weapon data.
+Ignored annotated disassemblies for these and the status routines are available
+under artifacts/reference/behavior but are not substitutes for reviewed docs.
+Trace hit-counter reset lifetimes, battle mode/accuracy-effect producers and
+weapon callbacks before claiming a complete combat contract. Add original
+execution traces for differential validation. Continue the full-system register
+in docs/behavior/README.md: story/event services, partners, audience/rewards,
+save records, UI, animation/audio and complete content remain incomplete.
+The complete-game requirements document remains gated on that recovery; full
+research objective is active and has not been achieved by these local contracts.
