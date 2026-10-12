@@ -5,8 +5,9 @@ instructions/constants. __num2dec at0x80266884,size1a4 and __num2dec_internal
 at0x80266a28,size3b4 are locally recovered here. See [rounding](FORMAT_DECIMAL_ROUNDING.md)
 and [finite layout](FORMAT_FINITE_DECIMAL_LAYOUT.md). Numeric multiplication is
 covered in [its contract](FORMAT_DECIMAL_MULTIPLICATION.md), and power generation
-in [decimal powers](FORMAT_DECIMAL_POWERS.md). Runtime numeric helper internals
-remain open. This
+in [decimal powers](FORMAT_DECIMAL_POWERS.md). Binary64 helpers and integer-word
+conversion are covered in [numeric services](FORMAT_BINARY_NUMERIC_SERVICES.md);
+unsigned division/remainder remain open. This
 is not a complete binary-to-decimal equivalence claim or executed-output study.
 
 ## Internal record versus public ASCII record (B)
@@ -86,8 +87,9 @@ Sign of NaN later controls the formatter's original -NAN/-nan string route.
 
 If raw sign is nonzero, negate f1 and store positive double bits. Call frexp
 at0x802720c4 with pointer to a local exponent word; retain returned double M
-and that word H. Full frexp normalization/subnormal/edge semantics still need
-their own contract; this document establishes the caller's operations.
+and that word H. Full frexp normalization/subnormal/edge semantics are now
+covered in [numeric services](FORMAT_BINARY_NUMERIC_SERVICES.md); this document
+establishes the caller's operations.
 
 Inspect low word of M's stored double. If nonzero, count its trailing zero bits
 with iterative low-mask tests/shifts. If low word is zero, inspect high word OR
@@ -101,10 +103,11 @@ with M and L, then modf at0x80272314 with a local integral-double output.
 Pass that stored integral double to __cvt_dbl_usll at0x80264fc4, retaining high/
 low words as unsigned integer V. Returned fractional result of modf is unused.
 
-Under the conventional frexp/ldexp contracts this is the significand-integer
-times power-of-two factorization V*2^(H-L); that interpretation is an inference
-pending those helper contracts/execution. Exact call order, arguments and stored
-integral result are established binary behavior here.
+Together with the recovered [numeric services](FORMAT_BINARY_NUMERIC_SERVICES.md),
+this gives the significand-integer times power-of-two factorization V*2^(H-L),
+with positive odd V<=2^53-1 and power H-L in[-1074,1023]. These are derived
+binary64 invariants, not executed-original traces. Exact call order, arguments
+and stored integral result are established binary behavior here.
 
 ## Integer decimal record and multiplication (B)
 
@@ -131,7 +134,7 @@ round_decimal trimming, exponent shifts, low/high mantissa trailing counts,
 helper ordering, numeric integer reversal and final sign overwrite. These are
 derived obligations, not executed conversion traces.
 
-Remaining: finite-input power range, frexp/ldexp/modf/unsigned conversion
-and division edge contracts, hex-float output and original format/type/count
+Remaining: unsigned division/remainder edge contracts and floating environment,
+hex-float output and original format/type/count
 call-site corpus. Entry/internal local branches are documented; complete binary
 decimal generation, formatting/story/full-game equivalence remain unfinished.

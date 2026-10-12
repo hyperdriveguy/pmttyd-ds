@@ -4,8 +4,9 @@ US G8ME01 revision0, recovered2026-10-12. B evidence is static original DOL
 __two_exp at0x802673e4,size1784, dispatch at0x803bb1e0 and seed strings below.
 See [binary entry](FORMAT_BINARY_DECIMAL_ENTRY.md) and
 [multiplication](FORMAT_DECIMAL_MULTIPLICATION.md). This establishes the local
-power routine, including its seed-copy rounding distinction. Numeric runtime
-helpers and executed output comparisons still remain.
+power routine, including its seed-copy rounding distinction. Binary64 helpers
+are covered in [numeric services](FORMAT_BINARY_NUMERIC_SERVICES.md); unsigned
+division/remainder and executed output comparisons still remain.
 
 ## Dispatch and seed ownership (B)
 
@@ -120,12 +121,13 @@ records passed directly to __timesdec.
 The literal seed exponents and each multiplication exponent are halfword
 stores. Extreme signed32 powers may wrap the exponent; there is no local range
 error, saturation or caller validation. The original finite-double caller's
-power range still depends on frexp/ldexp/mantissa helper contracts. Induction
+power range is now derived as[-1074,1023] in [numeric services](FORMAT_BINARY_NUMERIC_SERVICES.md),
+so extreme standalone exponent wrap is excluded on that path. Induction
 on digit/count bounds is not a proof of exact power accuracy or shortest output.
 
 Differential obligations: sparse dispatch and holes, seed identities, ASCII5
 comparison, both truncated seeds, signed odd halving, square-before-correction,
 rounding at each multiplication,42-byte copy and halfword exponent storage.
-Outstanding: binary numeric services and finite-input power range, original
+Outstanding: unsigned division/remainder, floating environment, original
 execution/caller corpus, hex-float and remaining formatting/runtime contracts.
 Full formatting, story and complete-game equivalence are still unproven.

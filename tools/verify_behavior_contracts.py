@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'format_binary_numeric_services': {
+        0x802720d8: '90830000', 0x8027210c: '3800ffca',
+        0x80272130: '64003fe0', 0x8027213c: '3804fc02',
+        0x802721d8: '4081012c', 0x80272218: '38043cb0',
+        0x80272230: '3884ffca', 0x80272258: '7c841a14',
+        0x8027225c: '2c0407fe', 0x8027229c: '2c04ffca',
+        0x802722a8: '3804c350', 0x80272300: 'fc210032',
+        0x80271e94: '5060007e', 0x80272328: '38e4fc01',
+        0x80272358: '7c043e30', 0x802723a0: '2c070033',
+        0x802723b8: 'd8230000', 0x802723cc: '7c840430',
+        0x80264fd8: '280503ff', 0x80264ff4: '64630010',
+        0x80264ff8: '38a5fbcd', 0x8026502c: '2c05000a',
+        0x80265048: '3c607fff', 0x80265084: '7c630190',
+    },
     'format_decimal_powers': {
         0x80267400: '381e0040', 0x80267404: '28000048',
         0x80267418: '7c03002e', 0x80267454: '3863ffd0',
@@ -822,6 +836,18 @@ def verify(iso_path):
             if read(0x80303ac8 + offset, len(digits)) != digits:
                 raise ValueError(f'Decimal power exact source digits mismatch {power}')
         print('All 73 decimal power targets, 21 seed bindings and seed block verified')
+        numeric_constants = {
+            0x804290b8: '4350000000000000',
+            0x804290c0: '0000000000000000',
+            0x804290c8: '4350000000000000',
+            0x804290d0: '01a56e1fc2f8f359',
+            0x804290d8: '7e37e43c8800759c',
+            0x804290e0: '3c90000000000000',
+        }
+        for address, expected in numeric_constants.items():
+            if read(address, 8).hex() != expected:
+                raise ValueError(f'Binary numeric service constant mismatch {address:#x}')
+        print('Six binary64 normalization/scaling constants verified')
 
 
 if __name__ == '__main__':

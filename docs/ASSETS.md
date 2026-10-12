@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 215 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 672 instruction anchors plus those
+now fingerprints 220 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 696 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -120,6 +120,10 @@ Decimal power research adds one fingerprint, the73-entry dispatch identity and
 Original numeric strings/instructions remain in the ignored read-only research
 outputs. Contracts record the original ASCII comparison and recursive rounding;
 no original numeric service is compiled into the prototype.
+Binary numeric services add five fingerprints and six binary64 constants.
+Contracts retain raw special-value/signed-zero branches, scaling arithmetic and
+word-conversion saturation; derived finite generator power bounds are not
+executed-original observations. No upstream numeric implementation is copied.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,

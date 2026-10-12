@@ -3227,3 +3227,32 @@ finite conversion power range; hex-float, remaining formatter services and actua
 caller corpus. Continue renderer, story and other uncovered original systems
 before complete-game requirements. Full objective active/incomplete; original
 execution comparisons still needed.
+
+## 2026-10-12 — Binary64 services and finite generator bounds
+
+Previous goal turn made progress through8e2c774. Began clean and added
+FORMAT_BINARY_NUMERIC_SERVICES.md: full local frexp/ldexp/modf/copysign and
+__cvt_dbl_usll contracts. Recorded subnormal normalization, exponent writes,
+wrapped scale gates and floating overflow/underflow operations, integral masks,
+raw signed-zero fractional return for NaN/infinity, and converter signed-range
+saturation despite symbol naming. Recovered helpers establish positive odd
+significand<=2^53-1 and finite generator power[-1074,1023]. Updated prior entry/
+power/multiplication dependencies. Floating environment and division remain open.
+
+Validation:696 instruction anchors and all prior checks passed read-only US ISO,
+including six binary64 normalization/scaling constants. Fresh220-function evidence
+reports matched byte-for-byte. Independent integer bit-position enumeration of
+109816 normal/subnormal exponent/trailing-position classes confirmed exponent
+[-1073,1024], width[1,53], power[-1074,1023]; this is a derived-domain check, not
+an original execution or exhaustive input trace. All local behavior links resolve;
+git diff --check passed. make test passed core plus36 Python tests; make all
+exited0, no rebuild. Only research/provenance/evidence tooling changed. No original
+execution/emulator run or profile/save modification. Original disassemblies and
+reports remain ignored. Static evidence does not establish FPSCR policy, executed
+special cases/output accuracy or original/native equivalence.
+
+Next: unsigned64 division/remainder, hex-float and remaining wide/memory/format
+services, original call-site types/counts and floating environment. Continue
+renderer, story and other missing original systems before complete-game
+requirements. Full objective active/incomplete; original execution comparisons
+still needed.
