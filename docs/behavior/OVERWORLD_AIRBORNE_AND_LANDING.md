@@ -87,8 +87,36 @@ The proposed root correction at8008cb94–8008cbdc is
 not symmetric rounding. If fall flag is clear and this is below takeoffY+120,
 8008cbec–8008cbfc clamps it to takeoffY; the subsequent ordinary low-clearance
 branch can request idle/walk/dash via marioChgStayMotion or base/previous-motion
-comparison BEFORE testing motion3. This low-clearance arbitration is a distinct
-domain; do not force all such hits through the still-motion3 response.
+comparison BEFORE testing motion3. For ordinary no-NPC motion3, root-lock clear, mainflag0x01000000 clear and
+marioChkSlitEnd==0, the bounded low-clearance arbitration is:
+
+- It runs only when fallflag is clear and proposed correctedY<takeoffY, strictly.
+  Equality skips it. The local proposedY becomes takeoffY at8008cbfc.
+- If base+180==0, current motion3 calls marioChgStayMotion80094e48 at8008cc54.
+  That owner requests pending IDLE0, changes current motion immediately and
+  invokes the previous motion's post callback; it does not enter idle main.
+  Ordinary motion3 has no post callback in the shipped dispatch table.
+- If base!=0, desired motion is2 when base>walk threshold+184, else1. At
+  8008cc74–8008cc7c it compares desired with PREVIOUS motion+30. If equal,
+  there is no request and motion3 survives. If different,8008cc98 requests
+  pending desired ground motion through marioChgMot8009455c.
+- Motion changed to0/1/2 fails the following current-motion3/6 test at
+  8008cc9c–8008ccac. It skips the tuple clear, airflag clear, fall request,
+  fall parameter load AND actual rootY writer. The clamped proposedY is only
+  returned in f1 at8008cd80; normal jump caller8005b000 ignores that result.
+  Consequently the just-integrated actual rootY remains until its next owner,
+  rather than universally being clamped by this head callback.
+- If current motion3 survives (notably desired==previous motion), the normal
+  ceiling-fall response below runs and writes the clamped proposedY to root.
+
+Both low-clearance routes leave signed counters, phase/countdown, and current
+support node unchanged locally. The ground-request route also retains current
+vertical tuple and jumpflag for the rest of this call; next pending idle/walk/dash
+entry owns their clearing according to ground arbitration. Normal late
+marioChkGnd2 still exits while jumpflag is set. In the no-NPC bounded domain,
+base0/previous idle produces pending0 without immediate fall; retained walk/dash
+matching previous motion produces pending10 and the ordinary fall tuple.
+These are source-derived control-flow cases, not observed render timing.
 
 For the surviving motion3 hit,8008ccbc calls marioClearJumpPara800943a8;
 8008ccc4 clears ALL main airflags0x000f0000 immediately;8008ccdc requests
@@ -100,6 +128,39 @@ but now with airflags clear. Next dispatch enters mot_fall and sets its fallflag
 This differs from apex pending10, which retains jumpflag and has already
 integrated the new fall tuple. Do not immediately run an extra fall callback,
 reset counter2, or infer the airborne movement policy solely from pending10.
+
+## Ordinary head query and service gates
+
+For normal nontransformed, non-Paper motion3, marioChkOverhead passes a local
+copy of current position, local bodyHeight+1bc, and f1=current vertical V when
+jumpflag is set; otherwise f1=literal10 (8008ca18–8008ca78). Special motion8
+returns early; motion20 uses its extra front query; mainflag0x01000000 routes
+through roll search; char2 uses its own service. Normal query is
+marioSearchHead8008c1a8. It returns head node stored+1f8, local point/height
+results; current rootX is copied back at8008ca80–8008ca84. RootY is not copied
+back generically.
+
+marioSearchHead uses radius.5*(baseWidth-.5), heading retained travel when
+base!=0 else converted facing, five center/rotated cardinal offsets in the
+source order, upward origin rootY+.5*bodyHeight, ray length bodyHeight+passedV.
+It invokes marioHitCheck2/chkFilterAttr2 via8009054c. Source face/cull admission
+precedes this leaf's normal angle gate. It processes probes in order, not a
+highest/lowest winner across all five: the first nonrejected triangle yields a
+contact or near-miss return. Ordinary normal inclination in inclusive[50,130]
+is rejected at8008c5a0–8008c5c4; main+4 flag0x01000000 changes these endpoints
+to[75,105]. Those projected normals write slope+21c/+220/+224 at8008c440,
+8008c444,8008c49c before normal rejection; this head leaf does not write+218.
+
+For an admitted ray, contactY=trunc(fma(100,rayPointY,bodyHeight/2))/100
+at8008c668–8008c6a4 (literal100 at80420900, bias is half-height). Contact node
+is returned only if actual V>=-10 AND rootY+bodyHeight>=contactY
+(8008c6a8–8008c6ec). On contact it writes local pointY=contactY and local
+height output0. Otherwise it returns null with signed clearance
+contactY-rootY-bodyHeight. This response uses ACTUAL V+7c even if the caller
+passed literal10 for ray length. The hit owner sets contactflag0x08000000;
+no-hit near clearance in[0,5] also sets it, otherwise clears it
+(8008ccf0–8008cd38). Full node/NPC side effects and special branches remain
+outside this no-NPC contract.
 
 ## Fall entry, phase and counter preservation
 
@@ -189,8 +250,12 @@ writer: keep landing support/slope/height outputs separate from ground metadata.
 
 marioLandOn80092c94 reads support attributes. If attr0x200 clear, it zeros the
 entire tuple at80092cc4–80092cd4, on the actual landing call. If set, it retains
-that tuple. It clears mainbits0x40/0x20 and zeros signed counters+50/+52 at
-80092cd8–80092cf8. It does not universally enter motion13, clear phase/countdown,
+that tuple. It clears mainbits0x80/0x40 and zeros signed counters+50/+52 at
+80092cd8–80092cf8. The exact masks are rlwinm25,23 at80092ce0, which clears
+PPC bit24=0x80, and rlwinm26,24 at80092cec, which clears PPC bit25=0x40.
+Mainflag0x20 is PPC bit26 and survives BOTH masks. A portable fall-damping
+bypass mapped to that flag must not reset merely because marioLandOn ran;
+its original writer remains a separate dependency. It does not universally enter motion13, clear phase/countdown,
 replace base/travel or immediately dispatch the new ground callback.
 
 Its ordinary route selects late pending WALK1 when current magnitude+194>0
