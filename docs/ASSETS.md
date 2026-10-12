@@ -1858,3 +1858,26 @@ No ID1 converter/art/audio/geometry/lighting policy change. make all passes/log
 3218 GameCube/0 Switch/5 primary-PCM slice fallbacks ran. Ignored catalogs/packs/
 WAV/RomFS outside history;original rights remain with owners,without new asset
 redistribution license from local analysis or verifier code.
+
+Original airborne Mario shadow pack (2026-10-12): `tools/shadow_pack.py` reads
+US G8ME01 revision0 DOL from `/home/carson/games/roms/G8ME01.iso` read-only.
+Ignored `romfs/shadows.pmshadow` is1096 bytes:60 original XYZ binary32 positions,
+two three-entry RGBA palettes and five indexed fans/strips. Positions80304ce0
+(720 bytes), palettes80415140/80415160 (12 each), lists80304b60/4ba0/4be0/4c20/4c60
+(64 each) retain original words/endpoints and position/color index order.
+`romfs/manifest.json` records eight source span hashes and conversion metadata.
+The pack converts big-endian floats to little-endian without geometry reduction,
+ring rescaling or regenerated angles. Source bytes and compiled pack stay outside
+Git; original game assets remain copyrighted by their owners, with no grant of
+redistribution from this converter or documentation.
+
+Native drawing expands original fans/strips into triangles with retained winding
+and applies the original collision-derived3x4 matrix at engine scale0.01. It
+uses three ordered passes per record: alpha-only OR/back cull, alpha-only zero/
+front cull, RGB-only destination-alpha blend/back cull; sourceLEQUAL maps to
+PICA GEQUAL. Original ordinary non-AA framebuffer is RGBA6/Z24; native uses
+RGBA8/depth24, so six-bit quantization, TEV/raster/blend rounding and hardware
+pixel equivalence remain unverified. Source alpha0 clear and RGB-only ordinary
+scene writes are now bound, with opaque→shadow→translucent stage order.
+This supersedes the provisional Mario type2 ellipse; partner/NPC/battle
+shadows and nonordinary/cube/camera1 cache paths remain adapters.

@@ -13198,3 +13198,49 @@ local TEV request graph. All-system evidence gates must precede final requiremen
 ID1 final depth/local-closure link audit:561 Markdown files checked after
 staging,zero broken links. Earlier555/558 counts are verification snapshots.
 Only ID1 delivery files/shared hunks staged;other owners retain independent work.
+
+2026-10-12 overworld original airborne shadow backend:
+Implementation e1257d8 imports the original60 positions/two palettes/five lists
+from the read-only ISO into ignored1096-byte `romfs/shadows.pmshadow`. Native
+uses original finite list-admission math, fan/strip winding and fresh downward
+collision matrix, replacing Mario type2's provisional ellipse. Source per-record
+alpha-OR→zero-alpha backfaces→destination-alpha RGB blend, masks/no-depth-write/
+culls and AlphaCompareAlways are bound. Normal field framebuffer clears RGBA0;
+ordinary scene draws preserve alpha. Map opaque layers precede shadows and
+translucent layer2 follows them; animation/cutaway update still runs once.
+Documentation agent supplied air graph3c54240 and framebuffer1254252 on request.
+
+Validation: initial `make test` passed86 CTest suites/90 Python tests
+(`/tmp/pm-air-test.log`); `make all` rebuilt3DSX successfully
+(`/tmp/pm-air-build.log`, `/tmp/pm-air-build-final.log`). Host tests cover
+list admission/reset/no-decay/guards, index color lookup/affine transforms,
+fan/strip winding, actual local pack counts and truncated-file rollback.
+`build-host/field_wall_tests original` passes800 original-mesh directional and
+800 shadow downward ray comparisons; added native jump lifecycle confirms
+15 volume ticks plus grounded polygon ticks and landed Explore state.
+Air source verifier passes11 spans/364 anchors/32GX sites/17cases; framebuffer
+verifier passes22 spans/110 anchors/12cases and complete SDK call census
+(`/tmp/pm-air-source.log`, `/tmp/pm-air-framebuffer.log`).
+
+Isolated Azahar west fixture run with10-second startup passed movement/jump/
+landing/save assertions; images under `artifacts/azahar-mario-air-shadow-ready`
+(`/tmp/pm-air-smoke-ready.log`). Descending jump capture inspected. First run
+with2-second startup failed saved-X assertion because input preceded boot;
+captures confirmed0FPS/black during jump, then normal startup. No user emulator
+profile or saves touched. Later full-suite rerun encountered a concurrently
+edited battle_jump_motion assertion; final verification status follows below.
+
+Limits: RGBA8/native float and shader/raster arithmetic adapt originalRGBA6/
+Gekko/GX; no original-runtime EFB pixel oracle or handheld hardware capture.
+Only ordinary Mario camera4/cylinder defaults are bound; runtime high-bit
+collision object flags, cube/camera1 caches, partner/NPC shadows and original
+field callback/resource ownership remain open. Next: requested authoritative
+water/void/pipe pose dispatch documentation, then original effect poses and
+recovery lifecycle binding; original sound macro execution and actual US
+story/event/dialogue conditions remain required. Full remake is incomplete.
+
+Air shadow final check: full `make test` rerun passes86 CTest suites/90 Python
+tests (`/tmp/pm-air-test-settled.log`); concurrent battle assertion is resolved.
+Original-mesh jump/ray test passes15 airborne volume ticks. Original payload
+pack is confirmed ignored byGit. Isolated startup-corrected smoke passes.
+Final native `make all` also passes (`/tmp/pm-air-build-settled.log`).

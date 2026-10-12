@@ -156,7 +156,22 @@ int main(int argc,char**) {
                 }
             }
         }
-        clearCollision();std::cout<<checked<<" original-mesh directional and shadow rays matched full scan\n";return 0;
+        clearCollision();CollisionTransition room;CHECK(room.load("romfs/map"));room.commit();
+        Progress initial;initial.position={-5.05f,.5f};Game game;game.restore(initial);game.tick({});
+        Input jump;jump.confirm=jump.jumpHeld=true;game.tick(jump);jump.confirm=false;
+        int volumes=0,polygons=0;
+        for(int tick=0;tick<90;++tick) {
+            game.tick(jump);const float rootY=game.groundHeight+game.jumpHeight;
+            auto request=marioShadowRequest({game.progress.position.x*100,rootY*100,game.progress.position.z*100},
+                                           game.groundMetadataHeight*100,game.groundContact.sourceNode!=0);
+            FieldShadowServices services{nullptr,[](void*,FieldWallVector p,FieldWallVector d,float length){return fieldShadowRay(p,d,length);}};
+            if(prepareFieldShadow(request,services)) {
+                if(fieldShadowPolygonAdmitted(request))++polygons;
+                if(!fieldAirShadowVertices(geometry,request,fieldAirShadowPlan(request)).empty())++volumes;
+            }
+        }
+        CHECK(volumes>0 && polygons>0 && game.jumpHeight==0 && game.scene==Scene::Explore);
+        clearCollision();std::cout<<checked<<" original-mesh directional and shadow rays matched full scan; "<<volumes<<" airborne volume ticks\n";return 0;
     }
     shadowCases();airShadowCases();
     CHECK(close(quantizeFieldWall(1.0004f),1));CHECK(close(quantizeFieldWall(-1.0006f),-1.001f));

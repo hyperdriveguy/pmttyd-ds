@@ -34,3 +34,5 @@ romfs/*.camera
 romfs/*.pmmesh
 
 romfs/*.pmanim
+
+romfs/*.pmshadow
