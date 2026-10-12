@@ -16,16 +16,19 @@ float minus(float a,float b) {return a-b;}
 float divide(float a,float b) {return a/b;}
 bool status(const CandidateChoiceServices& s,DamageUnit& u,int id) {assert(s.status);return s.status(s.user,u,id);}
 uint8_t itemByte(const CandidateChoiceServices& s,int32_t item,unsigned offset) {assert(s.itemByte);return s.itemByte(s.user,0x803108a8u+40u*static_cast<uint32_t>(item)+offset);}
-void emit(BattleCandidateBuffer& b,int32_t index,const CandidateChoiceServices& s) {
-    const unsigned offset=row(index);s.output(s.user,true,half(b,offset));s.output(s.user,false,half(b,offset+2));
+void emit(BattleCandidateBuffer& b,int32_t index,CandidateChoiceOutputs output) {
+    const unsigned offset=row(index);output.write(output.user,true,half(b,offset));output.write(output.user,false,half(b,offset+2));
 }
 }
 void chooseBattleCandidate(BattleCandidateBuffer& b,uint32_t flags,const CandidateChoiceServices& s) {
-    assert(s.captureWork && s.output);void* work=s.captureWork(s.user);
-    s.output(s.user,true,-1);s.output(s.user,false,0);
+    chooseBattleCandidate(b,flags,s,{s.user,s.output});
+}
+void chooseBattleCandidate(BattleCandidateBuffer& b,uint32_t flags,const CandidateChoiceServices& s,CandidateChoiceOutputs output) {
+    assert(s.captureWork && output.write);void* work=s.captureWork(s.user);
+    output.write(output.user,true,-1);output.write(output.user,false,0);
     if(byte(b,0xa6c)<=0)return;
     assert(s.unit);auto* actor=s.unit(s.user,work,word(b,0xab8));assert(actor);
-    const int32_t first=byte(b,0xa6d);emit(b,first,s);
+    const int32_t first=byte(b,0xa6d);emit(b,first,output);
     std::array<int32_t,74> weights{};assert(first>=0 && first<74);weights[first]=10;
     auto update=[&](int32_t& weight,float value) {assert(s.truncate);weight=s.truncate(s.user,value);};
     for(int32_t rank=0;rank<byte(b,0xa6c);++rank) {
@@ -85,6 +88,6 @@ void chooseBattleCandidate(BattleCandidateBuffer& b,uint32_t flags,const Candida
             draw=add(draw,signedWord(0u-static_cast<uint32_t>(weights[selected])));if(draw<=0)break;
         }
     }
-    emit(b,selected,s);
+    emit(b,selected,output);
 }
 }

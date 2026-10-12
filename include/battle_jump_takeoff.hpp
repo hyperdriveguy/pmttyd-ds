@@ -1,5 +1,6 @@
 #pragma once
 #include "battle_position.hpp"
+#include "battle_candidate_sampling.hpp"
 
 namespace ttyd {
 // Private semantic sample, not the shared attack-selection buffer or packed ABI.
@@ -22,4 +23,10 @@ struct TakeoffServices {
 };
 int jumpTakeoffPositionEvent(const std::array<int32_t,6>& operands,const TakeoffServices&,
                              const BattleHitPositionServices&);
+// Composes recovered sampling/choice with one stack-owned buffer per invocation.
+// TakeoffServices.sample/choose are unused in this binding; other service users
+// stay independent. Nested invocations cannot replace the parent's candidates.
+int jumpTakeoffPositionEvent(const std::array<int32_t,6>& operands,const TakeoffServices&,
+                             const BattleHitPositionServices&,const CandidateSamplingServices&,
+                             const CandidateChoiceServices&);
 }

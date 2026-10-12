@@ -1,5 +1,35 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Private takeoff sampler/chooser binding
+
+Connected recovered sampler and chooser to jumpTakeoffPositionEvent through an
+explicit overload. Each invocation owns its CandidateBuffer on its stack;the
+existing injected sample/choose API remains available. Shared takeoff logic
+preserves original input/service/output order. CandidateChoiceOutputs separates
+output destination ownership from math/registry/status service context,so local
+chosen-ID sinks do not replace the original callbacks' user state. After choice,
+the wrapper rereads private signed count before its branch. Exact takeoff masks,
+null weapon,mode4 and independent work captures flow through the recovered cores.
+Fresh native buffer initialization is not evidence of original stack padding;
+valid recovered paths consume initialized fields only.
+
+Validation before concurrent field-battle drafts:make test passed twenty-one
+CTest suites plus58 Python tests;make all exited0/no rebuild. Source/object/build
+timestamps confirm takeoff and choice ARM objects were rebuilt after the edits
+and ttyd-2ds.3dsx was linked afterward. Integration suite uses real row construction,
+admission,occlusion,permutation,weight selection and hit positions to check full
+outputs50/7/40,swapped-Q negative offset,empty count with/without Q,and nesting.
+A nested invocation chooses a different row and emits160/7/40,then outer output
+remains50/7/40;shared candidate bytes remain unchanged. No choice-output or RNG
+hooks are supplied to the composed binding. Existing injected-wrapper and chooser
+suites still pass. git diff --check passed. No emulator run or original executed
+position/numerical/pause trace claim. Concurrent field entry code/docs/test drafts
+arrived after validation and are preserved outside this targeting commit.
+
+Next:bind actual registry/part/source/menu/pouch/math/audio owners and original
+Jump graph through EVT-01 scheduler. ID2 now holds the scheduler recovery lock.
+Native provisional battle timer/one-hit Jump and full remake remain incomplete.
+
 ## 2026-10-12 — Candidate sampling and choice composition
 
 Implemented BATTLE_ENEMY_CANDIDATE_SAMPLING.md in battle_candidate_sampling.hpp/

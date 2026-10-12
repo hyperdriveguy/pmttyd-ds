@@ -22,7 +22,12 @@ struct CandidateChoiceServices {
     int32_t (*maxFp)(void*,DamageUnit&)=nullptr;
     int32_t (*fp)(void*,DamageUnit&)=nullptr;
 };
+struct CandidateChoiceOutputs {
+    void* user=nullptr;
+    void (*write)(void*,bool unitOutput,int32_t)=nullptr;
+};
 // Valid weight indices/permutations and conversion domains are caller/service
 // invariants. Native asserts report invalid domains rather than inventing clamps.
 void chooseBattleCandidate(BattleCandidateBuffer&,uint32_t flags,const CandidateChoiceServices&);
+void chooseBattleCandidate(BattleCandidateBuffer&,uint32_t flags,const CandidateChoiceServices&,CandidateChoiceOutputs);
 }

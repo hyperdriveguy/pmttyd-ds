@@ -459,6 +459,16 @@ rather than treating a passing command helper as complete original attack timing
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
 
+Private takeoff binding breadcrumb (2026-10-12): the new composed
+jumpTakeoffPositionEvent overload uses real sampling/choice cores and a local
+CandidateBuffer per invocation. CandidateChoiceOutputs preserves independent
+service context while routing local unit/part destinations. Integration tests
+cover geometry/filter/sort/choice/full coordinate output and nested calls with
+different selections;outer candidates survive inner sampling. No native fixed
+takeoff policy or RNG service was supplied. Registry/source/math/audio/scene
+bindings and original execution remain open. EVT-01 scheduler recovery is now
+reserved by ID2 and remains the original Jump timer replacement dependency.
+
 Sampling implementation breadcrumb (2026-10-12): `battle_candidate_sampling.cpp`
 and its suite implement delivered row geometry,ordered A/C compaction,part
 suppression,occlusion and permutation ordering. Tests compose actual sampler with
