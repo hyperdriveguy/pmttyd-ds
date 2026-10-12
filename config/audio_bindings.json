@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "effects": [
+    {"clip": "confirm", "gamecube_name": "SFX_CURSOR_OK1", "trigger": "current harness Confirm request; UI selection/interaction"},
+    {"clip": "jump", "gamecube_name": "SFX_MARIO_JUMP1", "trigger": "accepted field jump takeoff; primary sample fallback uses audible gain despite original muted entry"},
+    {"clip": "hit", "gamecube_name": "SFX_MARIO_DAMAGE1", "trigger": "current harness generic impact; enemy-specific hits remain ambiguous"},
+    {"clip": "success", "gamecube_name": "SFX_AC_OK1", "trigger": "player action-command success; primary voice only"},
+    {"clip": "guard", "gamecube_name": "SFX_MARIO_GUARD1", "trigger": "guarded enemy impact; separate from action-command success"}
+  ],
+  "music": [
+    {"clip": "rogueport", "source": "sound/stream/stg_gor1_32k.stm", "trigger": "current five outdoor Rogueport rooms; retain through dialogue; story overrides remain unbound"},
+    {"clip": "battle", "source": "sound/stream/btl_zak1_32k.stm", "trigger": "current Crump battle harness; specific original tutorial selection remains unverified"},
+    {"clip": "victory", "source": "sound/stream/btl_win1_32k.stm", "trigger": "victory entry; one-shot when source has no loop"},
+    {"clip": null, "source": null, "trigger": "Defeat/FieldDefeat: stop current music; original game-over scheduling remains unbound"}
+  ]
+}
