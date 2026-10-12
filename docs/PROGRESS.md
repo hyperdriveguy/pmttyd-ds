@@ -1,5 +1,32 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Complete attack-command selection and action-record classification
+
+Documentation agent ID2 closed complete _btlcmd_SetAttackEvent and local weapon
+classifier/data/audience leaves. Two detailed contracts preserve all three tables,
+selection-time bookkeeping,output store order,kind222/every-other split,retained
+weapon after event fallback,and exact special-weapon pointer exemption. Predicate
+uses signed positive pairs/negative triples and ordered short circuits. Data lookup
+is borrowed/first-match/zero-sentinel;audience recaptures global owner and fallback
+is80373d00 (named script+4). ChangeParty's fixed80354208 read is documented without
+inventing a semantic flag. Original ELF/listings remain /tmp/id2-select-*. No
+original execution, native implementation or asset conversion was performed.
+
+Validation: new verifier passes11 complete/linked body hashes,301 anchors,eight
+spans and seven exact DOL direct calls;repeat JSON outputs match byte-for-byte
+(/tmp/id2-selection-evidence.json and -second.json). General1980-anchor,prior
+record and cursor verifiers pass;Python compilation and git diff --check pass.
+make test passes46/46 CTest suites and77 Python tests;make all passes. Exact logs:
+/tmp/id2-selection-test.log and /tmp/id2-selection-build.log. Snapshot1825 local
+documentation links all resolve. Shared native/ID1 changes were preserved.
+
+ID2 scoped lock released with links in docs/DOCUMENTATION_REQUESTS.md;parents
+JUMP-01/DMG-02/STATUS-01 remain open. Next recover general BtlActRec_JudgeRuleKeep,
+record raw writers/reset/persistence and command/category consumer ownership;
+original menu/source/VM/audience/turn/backend/executed traces remain required.
+Goal remains active/incomplete;no full-game requirements completion is claimed.
+
+
 ## 2026-10-12 — Original map/SDK release and nested battle-pool ownership
 
 Implemented `event_memory_release.cpp` for _mapFree,DLInsert,OSFreeToHeap,

@@ -619,3 +619,11 @@ preparation parameters,not local flight countdowns. Main flagged scratch movemen
 has no published X/Z;main landing0/marker versus jump2 distance-selected0/1
 remain distinct. Full target/front-floor/pose/audio/source/numeric and original
 trajectories remain open.
+
+
+[Attack-command event selection](behavior/BATTLE_ATTACK_EVENT_SELECTION.md) and
+[weapon classification/data leaves](behavior/BATTLE_WEAPON_ATTACK_CLASSIFICATION.md)
+close the complete local selector and called predicate/audience/data graph.
+Counters update at selection before execution;fallback event does not replace
+retained weapon classification. Complete menu/event/audience/source/record reset
+ownership,general rule judgment and original executed traces remain open.

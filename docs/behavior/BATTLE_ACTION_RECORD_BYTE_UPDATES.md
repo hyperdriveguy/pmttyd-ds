@@ -74,7 +74,9 @@ Verifier scans aligned linked-branch words in all seven DOL text sections for
 AddPoint,AddCount and JudgeTurnRuleKeep:four DamageDirect calls,24 count calls
 in _btlcmd_SetAttackEvent,two first-process calls (judge/count) and four payment
 calls,34 total. The attack command containing body is fingerprinted ONLY as a
-linked identity;its selection/classification branches are not recovered here.
+linked identity;its full selection/classification branches are now supplied in
+[attack-event selection](BATTLE_ATTACK_EVENT_SELECTION.md) and
+[weapon classification/data leaves](BATTLE_WEAPON_ATTACK_CLASSIFICATION.md).
 REL/indirect callers/raw writes/record initialization/reset/save consumers are
 not included by this scoped census. User-supplied original ISO is read-only.
 

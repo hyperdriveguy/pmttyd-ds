@@ -82,3 +82,9 @@ lookup, ordered callbacks with aliases, Mario/partner command lookup versus
 other-kind held-item lookup, both kind branches for types5/14, and untouched
 cursor output for9/11..13/out-of-range. An adapter may report an invalid state,
 but such a report is a host policy, not an original default weapon.
+
+
+[Complete attack-event selection](BATTLE_ATTACK_EVENT_SELECTION.md) now supplies
+the command consumer's event/category/byte writes,three dispatch tables,retained
+weapon fallback and record branches. This cursor contract remains its shared
+lookup dependency;full menu producers and original execution remain open.

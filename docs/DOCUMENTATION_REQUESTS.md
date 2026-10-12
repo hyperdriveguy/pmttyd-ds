@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Attack-command event selection and action-record classification | JUMP-01, DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete selector](behavior/BATTLE_ATTACK_EVENT_SELECTION.md),[classifier/data/audience leaves](behavior/BATTLE_WEAPON_ATTACK_CLASSIFICATION.md):three dispatch tables,selection-time counts,event/category/byte write order,signed predicate and helper recapture/fallback closed;general rule/menu/source/category/record reset/runtime ownership remains open |
 | Partner live target direction/activity and front-floor service | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used partyGetTargetDir/partyGetTargetDistY and getFrontFloor complete selector/reread/scalar/ray/output contracts;global rise/target/backend/math/source domains,other motion engines,EVT-01 and original trajectories remain separate |
 | Action-record saturation/storage and turn-rule judgment | DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Byte updates](behavior/BATTLE_ACTION_RECORD_BYTE_UPDATES.md),[turn rules](behavior/BATTLE_ACTION_RECORD_TURN_RULES.md),[first process](behavior/BATTLE_TURN_FIRST_PROCESS_COMPLETE.md):complete helpers/six-rule sums/two-phase writes/full first-process and fog/status leaves,34 DOL sites;general judge/action/reset/source/turn/scene/runtime ownership remains open |
 | Partner motion2 jump destination,flight and landing handlers | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Destinations](behavior/FIELD_PARTNER_JUMP_DESTINATION.md),[init](behavior/FIELD_PARTNER_JUMP_INITIALIZATION.md),[flight/landing](behavior/FIELD_PARTNER_JUMP_FLIGHT_AND_LANDING.md):complete local both-handler/index/landing-request graphs answered;full target/front-floor/pose/audio/numeric/source/EVT-01 and original trajectories remain open |
@@ -1578,3 +1579,20 @@ during concurrent native edits;exact log /tmp/id1-jump-build.log. Native owner
 subsequently updated that signature;rerun passed/rebuilt3DSX (log /tmp/id1-jump-build-rerun.log). Build invoked existing
 3218-identity/five-fallback audio map packing;provenance recorded in ASSETS.
 Only ID1 scoped lock released;full service/source/EVT-01 and original traces open.
+
+
+ID2 JUMP-01/DMG-02/STATUS-01 attack-selector delivery (2026-10-12), partial answer:
+[Selection](behavior/BATTLE_ATTACK_EVENT_SELECTION.md) closes full5b4 body,
+14 outer/nine subcommand/seven count dispatch entries,selection-time records,
+kind222 versus every-other split,retained weapon versus null-event fallback,
+exact8036aa84 exemption and output-write order. ChangeParty reads FIXED80354208
+within UltraHammerFinish,not an inferred global flag. [Classification/leaves](behavior/BATTLE_WEAPON_ATTACK_CLASSIFICATION.md)
+closes full signed short-circuit predicate,borrowed zero-sentinel data lookup,
+audience global recapture and actual fallback80373d00 (named symbol+4),
+present-word1 versus other scripts. No event execution/cost/damage is inferred
+from selecting/counting. Own lock released;general rule judge,menu/source/category
+consumers,raw record/reset/save/turn/audience/backend and original traces remain
+open. Verifier passes11 complete/linked hashes,301 anchors,eight spans and seven
+exact DOL calls;prior record/cursor/general verifiers pass. make test passes46
+CTest suites and77 Python tests;make all passed;1825 local links resolved.
+ID2 changed no native/test/asset conversion code.
