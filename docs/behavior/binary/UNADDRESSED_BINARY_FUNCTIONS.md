@@ -181,3 +181,44 @@ no instructions and cannot support contracts until re-extracted.
 3. The 15 pure-disassembly top-level bodies need prose contracts from scratch;
    `hitVec` (839 lines) and `checkLand2` (452 lines) are the largest.
 4. Re-extract the seven zero-byte placeholders before citing them as evidence.
+
+## Closures recorded 2026-10-12 (late session)
+
+Recorded by the documentation pass that produced
+[stick angle/magnitude](../overworld/MARIO_STICK_ANGLE_AND_MAGNITUDE.md),
+[jump parameter installation](../overworld/MARIO_SET_JUMP_PARAMETERS.md) and
+[peak-Y publisher](../overworld/MARIO_PEAK_Y_PUBLISHER.md). The 43 rows above
+are unchanged; these are additional rows found by re-running the
+reference-versus-decompilation census, not a rewrite of the register.
+
+Method note for later closers: the r2 small-data base **is** recoverable. The
+US `__init_registers` at `0x8000539c` sets `r2 = 0x80427440` and
+`r13 = 0x8041cf20`, and the DOL section map at `0x20300` translates those RAM
+addresses to ISO byte ranges. Any `lfs f, disp(2)` therefore resolves to a
+readable word in the read-only ISO, so "SDA values are not recoverable" is not
+a justified limitation. Resolved examples: `r2-27100` = `70.0` (`0x80420A64`),
+`r2-27096` = `360.0`, `r2-27516` = `1.0`, `r2-27360` = `18.0`,
+`r2-27300` = `6.0`, `r2-27276` = `1.0`, `r2-27572` = `0.5`.
+`rlwinm` masks with `MB == ME == k` select the bit whose LSB index is
+`31 - k`; `MB > ME` wraps (for example `rlwinm 0,0,0,30,28` clears bit 2). With
+that convention the walk/dash and `marioHitCheckWidth` gates test mask
+`0x00100000`, i.e. `MARIO_FLAG_PAPER_MODE` (1<<20) from the pinned header, so
+the "0x00100000 is distinct from the Paper-mode 0x00200000 bit" note in
+[the speed/fall leaves](../overworld/OVERWORLD_SPEED_FALL_LANDING_LEAVES.md) is
+a missed identity, and the `0x00200000` paper-mode value used in
+[ordinary overworld movement](../overworld/OVERWORLD_MARIO_MOVEMENT.md) disagrees
+with both the header enum and the binary. Use these conventions when closing the
+remaining rows.
+
+Closed by this pass (no decompiled definition in the pinned snapshot):
+
+| Listing | Symbol | Entry | Contract |
+| --- | --- | --- | --- |
+| `getStick` | `marioGetStick` | 80095af8 | [Stick angle/magnitude](../overworld/MARIO_STICK_ANGLE_AND_MAGNITUDE.md) |
+| `setJump` | `marioSetJumpPara` | 800941bc | [Jump parameter installation](../overworld/MARIO_SET_JUMP_PARAMETERS.md) |
+| `peakY` | `marioSetPeakYpos` | 800968f0 | [Peak-Y publisher](../overworld/MARIO_PEAK_Y_PUBLISHER.md) |
+
+`landOn` (`marioLandOn`, 80092c94) and `searchHead` (`marioSearchHead`,
+8008c1a8) remain open: both are partially described inside the airborne and
+bottomless contracts but have no dedicated body contract and no snapshot
+definition.

@@ -1011,3 +1011,12 @@ all-call fan triangles are not a frame image or native102-triangle idle result.
 Texture/map/GX/SDK/resource/source/lifetime/numeric/original visual composition
 remains open. Current76-host/86-Python/3DS build passes;full-game requirements
 are still unproven.
+
+ID2 native action-class producer delivery (2026-10-12):
+[Admission/publication](behavior/battle/ACTION_CLASS_TABLE_ADMISSION_AND_PUBLICATION.md)
+and [eligibility/keys](behavior/battle/ACTION_CLASS_TABLE_ELIGIBILITY_AND_MENU_KEYS.md)
+close complete _btlcmd_MakeActClassTable:ordered types0/6/1/2/4/5/13,partial
+20-byte records,disabled counted rows,independent Operations/Lecture flag reads,
+retained cursor and signed correction,seven original keys/icons.4 hashes,
+366 anchors/7 spans verified;76 CTest/86 Python and make all pass.ActMenuMain
+publication/query reachability/Game/source/runtime remain open.

@@ -92,3 +92,11 @@ branches and original event/menu/unit/source domains. A global valid-type
 claim requires proving the explicit12 path unreachable or irrelevant to each
 query;safe query-specific reachability remains unproven. Source/native fixtures/platform/Game/original
 traces and complete-game requirements remain open under EVT-01/JUMP-01.
+
+## Delivered class-table producer continuation
+
+[Complete admission/publication](ACTION_CLASS_TABLE_ADMISSION_AND_PUBLICATION.md)
+and [eligibility/keys](ACTION_CLASS_TABLE_ELIGIBILITY_AND_MENU_KEYS.md) now
+recover _btlcmd_MakeActClassTable80124dc8/5b8,including class type13 and
+independent final flag reads.This closes local record production;ActMenuMain
+type publication and query-specific reachability remain open.

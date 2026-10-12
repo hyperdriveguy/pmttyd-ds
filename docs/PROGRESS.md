@@ -1,3 +1,96 @@
+## 2026-10-12 — ID2 native action-class table producer documentation
+
+Prioritized requested native port functions;closed the complete static
+`_btlcmd_MakeActClassTable` body80124dc8/0x5b8 in two detailed contracts:
+[admission/storage/publication](behavior/battle/ACTION_CLASS_TABLE_ADMISSION_AND_PUBLICATION.md)
+and [eligibility/original keys](behavior/battle/ACTION_CLASS_TABLE_ELIGIBILITY_AND_MENU_KEYS.md).
+Retained B/U/P/D/class cursor,ordered kind reads,type0/6/1/2/4/5/13 records,
+disabled-row counting,partial writes,typed checks,original message keys/icons,
+independent Operations/Lecture flag reads,and negative index preservation supplied.
+A single final if/else would lose both/neither emission under changing flags.
+Released ID2's narrow lock;EVT-01/JUMP-01 remain open.
+
+Validation:`tools/verify_action_class_table.py` passed twice with identical
+reports:4 body hashes(1 complete/3 service identities),366 instruction anchors,
+7 original key spans.Python compilation,existing behavior/menu verifiers,
+local Markdown file links,and scoped whitespace passed.`make test`:76 CTest
+and86 Python tests passed.`make all` passed.No native code or tests changed.
+
+Limitations:static binary evidence only.No full message/pouch/asset lifetime,
+menu setup/ActMenuMain/confusion/Input closure,query-event reachability,Game
+binding,or original execution claim.Next ID2 priority:ActMenuMain's actual
+class-type stores and their source-domain relationship to selected-weapon
+queries.Full-game system requirements remain pending wider system coverage.
+
+## 2026-10-12 — Reference/decompilation gap census and three recovered bodies
+
+Added `tools/reference_source_gap.py`, which pairs every nonempty
+`artifacts/reference/**/*.disasm` listing with the pinned decompilation
+snapshot's definitions. It matches the listing basename *and* the canonical
+`us_symbols.csv` symbol resolved from the listing entry address, so extraction
+aliases no longer read as gaps: `walkSpeed`/`dashSpeed` resolve to
+`marioGetWalkSpd`/`marioGetDashSpd` (both defined in `src/motion/mot_walk.c`)
+and `BtlUnit_SetPos` resolves to `src/battle/battle_unit.c`. Census: 607
+reference listings, 242 with a snapshot definition, 365 without. A matching
+definition name is not a US-equivalence claim, and an absent definition is not
+a claim of unrecovered semantics; both caveats are printed in the report.
+
+Recovered three complete bodies with no snapshot definition and no earlier
+prose contract, from the read-only ISO only:
+
+- `marioGetStick` (80095af8, mario_sbr.o) in
+  [stick angle/magnitude](behavior/overworld/MARIO_STICK_ANGLE_AND_MAGNITUDE.md).
+  Forced-movement (mask 0x0020) substitutes retained travel +0x1A4 and base
+  speed +0x180 for both outputs; otherwise BG_MODE (0x02000000) with
+  `kpaGetStageViewType() != 0` and riding Yoshi (`yoshiGetStatus() == 2`) each
+  zero the vertical axis, `distABf` supplies a magnitude clamped at 70.0
+  (constant 0x80420A64), `angleABf` supplies a bearing that falls back to the
+  current view direction +0x1A0 when the stick is centered, and the result is
+  offset by +0x19C and wrapped by the revise360 pair. Single caller:
+  `marioMain`+0x408 at 8005abe8, writing +0x198/+0x194.
+- `marioSetJumpPara` (800941bc, mario_motion.o) in
+  [jump parameter installation](behavior/overworld/MARIO_SET_JUMP_PARAMETERS.md).
+  A 23-entry motion jump table at 0x80310250 selects table A (2.5, -0.1, 0.02,
+  -0.01), the fixed JUMP_NPC tuple (1.0, -0.039, -0.01, -0.003), table B
+  (8.0, -0.84, 0.08, -0.02) with a `MARIO_TRIG_FLAG_SET_JUMP_PARAMS` /
+  `MARIO_FLAG_PRE_BATTLE_PHYSICS` scale gate, or nothing; a playerGravity != 1.0
+  override then writes (2.0, -0.003, 0.029, -0.003) or (2.7, -0.002, 0.016,
+  -0.002) for FORCE_RESET; the shared tail calls `kpaSetJumpPara` when the
+  motion is not JUMP_3 and `characterId == 2`. Six direct call sites.
+- `marioSetPeakYpos` (800968f0, mario_sbr.o) in
+  [peak-Y publisher](behavior/overworld/MARIO_PEAK_Y_PUBLISHER.md): the
+  complete body is one unconditional copy of `position.y` (+0x90) into the
+  unnamed slot +0x12C, with all ten direct callers named.
+
+Method recorded for later closers in
+[binary/UNADDRESSED_BINARY_FUNCTIONS.md](behavior/binary/UNADDRESSED_BINARY_FUNCTIONS.md):
+the US `__init_registers` (8000539c) sets r2=0x80427440 and r13=0x8041cf20, so
+every `lfs f, disp(2)` resolves to a readable word through the DOL section map
+at 0x20300; the earlier "SDA values are not recoverable" limitation is not
+justified. Also recorded the mask convention: `rlwinm` with MB == ME == k
+selects LSB bit 31-k and MB > ME wraps. With that convention the walk/dash and
+`marioHitCheckWidth` gates test mask 0x00100000, which is
+`MARIO_FLAG_PAPER_MODE` (1<<20) per the pinned header enum, so the earlier
+"0x00100000 is distinct from the Paper-mode 0x00200000 bit" note is a missed
+identity and the 0x00200000 paper-mode value in the movement prose disagrees
+with both the header and the binary. Flagged only; another agent owns those
+files.
+
+`tools/inspect_dol_function.py` gained an inspection-only `--address/--length`
+mode so caller bodies can be disassembled without a symbol hit; no original
+code is executed and outputs stay outside source history.
+
+Validation: `make test` passes 75 CTest suites/86 Python tests and `make all`
+passes; logs `/tmp/pm-gap-test2.log`, `/tmp/pm-gap-build.log`. One earlier
+`make test` run failed on an unrelated transient `character_bake` import while
+another agent edited that file; the rerun passed. No native/test/asset changes
+by this pass, so no runtime, cadence, emulator or original-execution claim.
+
+Next: `marioLandOn` (80092c94, 805 lines) and `marioSearchHead` (8008c1a8, 385
+lines) still have no dedicated body contract; the remaining Group A battle
+leaves and the shared 80031260/800f88cc/80030cfc callees are also open. Full-game
+requirements and EVT-01/JUMP-01/DMG-02 remain incomplete.
+
 # Progress and next-session handoff
 
 ## 2026-10-12 — Native SetPos and body-definition ID
