@@ -1,5 +1,41 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2: requested Mario-specific jump parameter preparation
+
+Added BATTLE_MARIO_JUMP_PARAMETER.md with the complete80109c68/19c body.
+Actor resolves/translates,coordinates use signed integer evtGetValue rather
+than evtGetFloat,Y resolves but is discarded,raw operand4 doubles as count
+destination. Visible X/Z feed original distABf. Nonzero requested count starts
+the candidate;zero uses truncated binary32 distance/current speed. Ordered D>60
+adds truncated binary32(0x3e19999a*(D-60)) with signed word wrap,then preserves
+the signed maximum with the nonzero requested count. Result sentinel-250000000
+suppresses destination write;no unit motion/AC field is directly written.
+
+Ordinary request36 can increase,so it is not fixed impact duration. Subsequent
+stylish brother copies the parameter output;its8/20/32 operands require count
+remaining36,whereas a derived42 gives11/23/38. Updated graph/inbox boundaries
+and released only ID2's validated parameter lock. MJP-PARAM-01..04 provide
+implementation cases. MarioJumpPosition801093a8/8c0 still needs full recovery;
+original distABf frsqrte/FPSCR and execution/domain traces remain dependencies.
+No generic jump or prototype timing substituted for that missing body.
+
+Validation:extended standalone verifier passed19 body fingerprints,57 anchors
+(19 new),three original parameter constants and all268-command/caller/census
+checks. Original r2 startup lis/ori pinned0x80427440 before deriving60/0.15
+constant addresses. Two fresh metadata reports repeated byte-for-byte;692
+behavior local links resolved at validation. make test passed nine CTest suites
+and58 Python tests;make all rebuilt ttyd-2ds.3dsx after concurrent native edits;
+git diff --check passed. ID2 staged only documentation/verifier paths. Original
+inspections/reports stayed under /tmp;no original execution/emulator,ISO/profile/
+save write,asset conversion,story rewrite or native implementation by ID2.
+
+Next:JUMP-01 complete MarioJumpPosition modes0/3,first/resumed-call numerical
+integration,remaining count/landing/block/yield and AC work side effects;then
+Takeoff/MoveFrame/MovePosition and branch/cadence composition/original traces.
+Continue other request-scoped DMG/STATUS service/turn/reward work with numeric
+ID2 locks and inbox communication. Full documentation/complete-game requirements
+objective remains active/incomplete.
+
 ## 2026-10-12 — ID2: requested ordinary Jump graph and result/VM services
 
 Answered JUMP-01's complete request-graph slice in BATTLE_NORMAL_JUMP_EVENT_FLOW.md:

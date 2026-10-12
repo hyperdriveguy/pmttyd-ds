@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Mario-specific JumpParam preparation and motion dependencies | JUMP-01, AC-01 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Recover complete MarioJumpParam80109c68/19c and its concrete ordinary arguments;MarioJumpPosition body/traces remain separate pending work |
+| Mario-specific JumpParam preparation and motion dependencies | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Parameter contract](behavior/BATTLE_MARIO_JUMP_PARAMETER.md):complete ordered integer resolution/distance-count writeback;MarioJumpPosition body/numeric execution/traces remain open |
 | Battle input sampler/reset caller census and system-level/event-speed controls | AC-01, AC-03, AC-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Reset owners](behavior/BATTLE_INPUT_RESET_OWNERS.md) and [level/speed controls](behavior/EVENT_SYSTEM_LEVEL_AND_SPEED.md);direct census,local controls and tutorial injection answered,full UI/type/writer/lecture graph and original traces remain open |
 | Ordinary Jump complete request graph and per-hit/AC branches | JUMP-01, AC-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Jump graph](behavior/BATTLE_NORMAL_JUMP_EVENT_FLOW.md),[result/stop](behavior/BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md),[VM/concurrency](behavior/EVENT_JUMP_BRANCHES_AND_CONCURRENCY.md);Mario-specific motion/remaining services and original traces remain open |
 | Unit resource/status snapshot export leaf | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Export contract](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete matching writer;export caller cadence and on-disk save semantics remain open |
@@ -372,6 +372,18 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
 
+Further ID2 answer:[MarioJumpParam](behavior/BATTLE_MARIO_JUMP_PARAMETER.md)
+closes80109c68/19c. It resolves X/Z via evtGetValue as signed integers,resolves
+but discards Y,reads visible current X/Z and requests distABf. Requested count36
+is a minimum candidate,not fixed:when distance>60,add truncated binary32
+0.15000000596046448*(D-60),then preserve signed maximum with original request.
+Zero request starts from truncated distance/current speed. Write the chosen count
+back through the raw operand except when resulting value is sentinel-250000000.
+No unit remaining-count/speed/position/AC state field is written by this body.
+The subsequent stylish brother copies the **updated** count,so8/20/32 applies
+only if36 remains36. MJP-PARAM-01..04 give scoped acceptance cases. The distance
+helper's frsqrte/FPSCR fidelity,MarioJumpPosition and original traces remain open.
+
 Partial answer from ID2 (2026-10-12):
 [complete268-command Jump request graph](behavior/BATTLE_NORMAL_JUMP_EVENT_FLOW.md)
 pins target/cost/setup/approach/precheck/motion/result/damage/feedback/recovery/
@@ -393,9 +405,10 @@ inline. Copied stylish locals do not overwrite parent motion values;camera wait1
 does not block the parent. JUMP-EVT/JAC/JVM requirements give scoped acceptance
 cases,not measured impact ticks or a complete executed tutorial.
 
-Remaining blockers:MarioJumpParam0x80109c68/19c and MarioJumpPosition0x801093a8/
-8c0 are distinct from agent1's generic JumpPosition;recover their per-call AC/state/
-motion writes and landing/remaining-count conditions. Also close Takeoff/MoveFrame/
+MarioJumpParam is now answered by the newer linked contract above. Remaining
+blocker:MarioJumpPosition0x801093a8/8c0 is distinct from agent1's generic
+JumpPosition;recover its per-call AC/state/motion writes and landing/remaining-
+count conditions. Also close Takeoff/MoveFrame/
 MovePosition,selected target/cost/power-child/stylish/prize-byte/aftereffect/badge
 tail internals and original tutorial/menu/input/state traces. Do not implement
 the request graph with the native fixed48/42 schedule or copied generic jump

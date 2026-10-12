@@ -13,6 +13,9 @@ from dol_event_inventory import parse_commands
 from iso_assets import DEFAULT_ISO
 
 BODIES = {
+    'btlevtcmd_MarioJumpParam': (0x80109c68,0x19c,'bf128edee4331114b3d4d4cd147fb2d0bb2580f6ea16f5add0eb11acd6d399d5'),
+    # Distance helper identity only; frsqrte/FPSCR execution remains a dependency.
+    'distABf': (0x8000722c,0xfc,'39b4215c799e9ba6f7d722334bd2fe0dab2b24c06514aedabc28c2adecd85165'),
     'btlevtcmd_GetResultCountAC': (0x80107548,0x34,'d22d7c93efd083c0ab04d4d0bd352908851b7b038d88851104548913da542cf4'),
     'btlevtcmd_GetResultAC': (0x80107660,0x34,'3a2c76926cdefc97a4eef4118bbab2912529502dc8f4824e41f59ba139a299dc'),
     'btlevtcmd_GetResultPrizeLv': (0x801075c4,0x9c,'6d3c6674c779159d5fdb18e886e613e08187d3d25a2995c47c979db035a0c33a'),
@@ -33,6 +36,13 @@ BODIES = {
     'evtEntryType': (0x80037220,0x28c,'28903071b0be6475f0a7c4f8db025adddf01389815b655f0e565120b1be61e8d'),
 }
 ANCHORS = {
+    0x80109ca4:'4801b749',0x80109cb4:'4bf275ad',0x80109ce4:'4bf2757d',
+    0x80109cf0:'4bf27571',0x80109d10:'839d0010',0x80109d20:'4bf27541',
+    0x80109d48:'4801ef35',0x80109d5c:'4befd4d1',0x80109d60:'2c1d0000',
+    0x80109d74:'ec010024',0x80109d78:'fc00001e',0x80109d8c:'40810020',
+    0x80109d98:'ec010032',0x80109da8:'7c630214',0x80109db8:'40810008',
+    0x80109dc4:'28004d80',0x80109dd8:'4bf26f25',
+    0x80005418:'3c408042',0x8000541c:'60427440',
     0x80107560:'80a51cb4',0x80107678:'80a51cb8',
     0x80106f60:'809f0004',0x80106f70:'7c002378',0x80106f80:'7c002078',
     0x80106f10:'48023b55',0x80107768:'4bff2cb9',0x80107770:'4810f19d',
@@ -79,6 +89,10 @@ def verify(iso):
         for address,word in ANCHORS.items():
             if read(address,4).hex()!=word:
                 raise ValueError(f'Instruction mismatch: {address:#x}')
+        for address,value in {0x804222d0:'3e19999a',0x804222d4:'42700000',
+                              0x802ee608:'4330000080000000'}.items():
+            if read(address,len(value)//2).hex()!=value:
+                raise ValueError('MarioJumpParam numerical constant mismatch')
         for opcode,target in {27:0x80031a7c,28:0x80031a8c,29:0x80031a9c,
                               31:0x80031abc,41:0x80031c10,107:0x80032934,
                               109:0x80032944,110:0x80032964,112:0x80032984}.items():

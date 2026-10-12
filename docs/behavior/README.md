@@ -18,6 +18,7 @@ complete gameplay sequences before further general-library edge-case recovery.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Mario Jump parameter](BATTLE_MARIO_JUMP_PARAMETER.md) | Complete integer coordinate resolution,distance correction,raw count writeback and updated stylish caller operands | MarioJumpPosition body,original numeric execution and caller/timing traces |
 | [Ordinary Jump event flow](BATTLE_NORMAL_JUMP_EVENT_FLOW.md) | All268 request commands/branches,per-hit flags/count loop,first-attack setup,stylish/feedback and cleanup ownership | Mario-specific motion/service internals,per-hit writers,actual tutorial/cadence and original traces |
 | [Jump result/stop services](BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md) | Complete result/count/window/mask/grade wrappers,prize code/byte clamp and deferred TimingA stop | Grade/option/code producers,help UI and actual callers/traces |
 | [Jump VM/concurrency](EVENT_JUMP_BRANCHES_AND_CONCURRENCY.md) | Signed comparison/raw mask bodies,CASE>=,attached brother versus independent inline creation/end rules | Full constructor/other opcode/arithmetic/scheduler/pause behavior and original traces |

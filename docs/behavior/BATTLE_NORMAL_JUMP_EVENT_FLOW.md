@@ -101,7 +101,10 @@ Mario-specific callback0x801093a8;do not substitute it or infer impact36.
 
 The subsequent-pass brother waits3,computes L0=L6/2-3,L1=L0-7,L2=L0+5,
 then L0=L6-4,and requests ACRStart(-2,L1,L2,L0,0),ACRGetResult(L6,L7).
-With the copied36,the request operands derive to8,20,32. CASE>=2 of returned
+If [MarioJumpParam](BATTLE_MARIO_JUMP_PARAMETER.md) leaves L6=36,the copied
+count derives request operands8,20,32. Distance correction can increase it;
+preserve the updated count in parent motion and copied stylish formulas.
+CASE>=2 of returned
 L6 requests pose`M_A_5`,AudienceDeclareAcrobatResult(L12,1,-60,-25,0),
 snd_voice(-2,1);default requests evt_audience_acrobat_notry. The brother's
 result L6 does not change parent motion L6. Stylish callback timing/result
@@ -201,15 +204,17 @@ ownership from the four attached brothers.
 | JUMP-EVT-05 | Preserve feedback,aftereffect/AP and common cleanup branches | Failure declares-1 only at L10==0;repeat success declares computed grade;final success does not duplicate it;label99 always child badge then wait-event request |
 
 tools/verify_jump_event_flow.py pins the original stream,268-command/label/
-concurrency census,concrete precheck/damage/setup/result/loop records,17 service/
-VM fingerprints and38 instruction anchors. The constructor fingerprint specifies
+concurrency census,concrete precheck/damage/setup/result/loop records,and now
+19 service/VM/distance fingerprints plus57 instruction anchors after parameter
+recovery. The constructor fingerprint specifies
 only the used ownership region;it does not close full allocation/label setup.
 Reproduce a fresh annotated inventory with tools/dol_event_inventory.py using
 marioAttackEvent_NormalJump and the US symbol index. Artifacts stay ignored or
 under /tmp;ISO reads are read-only.
 
-This answers JUMP-01's **complete request-graph** portion. Remaining:MarioJumpParam/
-MarioJumpPosition/Takeoff/MoveFrame/MovePosition internals;exact floating/event
+This answers JUMP-01's **complete request-graph** portion. The
+[MarioJumpParam contract](BATTLE_MARIO_JUMP_PARAMETER.md) now closes parameter
+preparation;remaining:MarioJumpPosition/Takeoff/MoveFrame/MovePosition internals;exact floating/event
 arithmetic and progress at motion completion;GetSelectEnemy/cost/data-child/
 power-check/stylish/prize-byte/aftereffect/badge-tail service bodies;AC result/option
 writers and original tutorial weapon/menu gates. Original input/state/RNG/hit/
