@@ -31,7 +31,8 @@ def parse_commands(data, address, names):
 
 
 def inventory_events(iso, symbols, selections):
-    rows = list(csv.DictReader(Path(symbols).open()))
+    with Path(symbols).open() as source:
+        rows = list(csv.DictReader(source))
     names = {int(r['ram_addr'], 16): r['name'] for r in rows if r['area'] == '_main' and r['ram_addr']}
     selected = []
     for selection in selections:

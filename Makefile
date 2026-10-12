@@ -172,6 +172,10 @@ endif
 audio-map:
 	@python3 tools/audio_map.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)" --switch local-assets/switch/audio
 
+.PHONY: event-assets
+event-assets:
+	@python3 tools/pack_event_scripts.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)" --output romfs/events.pmevt
+
 audio-assets:
 	@python3 tools/extract_audio.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 

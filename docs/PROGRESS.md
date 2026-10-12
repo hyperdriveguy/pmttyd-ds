@@ -1,5 +1,40 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original event script pack and native address reader
+
+Added `tools/pack_event_scripts.py`, `make event-assets` and
+`event_script_assets.cpp`. The read-only US ISO supplies ordinary Jump3852 bytes/
+268 commands,power-check child140 bytes/14 commands and badge tail488 bytes/
+32 commands. Each retains four ORIGINAL trailing bytes for constructor terminal
+label-scan reads. Original big-endian words/addresses remain unchanged;overlapping/
+adjacent source intervals merge consistently. Default streams pin address,size
+and SHA-256. PMEVT001 is an explicit native asset container;reader validates its
+extents and reads original-address bytes/words without host reinterpretation.
+A failed load retains the last valid pack. Fixed the reused symbol inventory's
+unclosed-file warning. No story text or plot event was invented/rewritten.
+
+Ignored local-assets/events/jump.pmevt and romfs/events.pmevt are4540 bytes,
+SHA2565429b0beab40e4af68725a87c0ee8b2f73df9fe67986d55affcc7eb9d7042c70.
+JSON sidecars retain command operands/annotations,source spans/hashes,conversion
+and no-redistribution provenance;docs/ASSETS.md records the pipeline. Compiled
+3dsx includes the ignored RomFS pack;no ISO/original bytes added to Git.
+
+Validation: final `make test` passed46/46 CTest suites and78 Python tests;
+`make event-assets` and `make all` passed;actual native reader host check reads
+all268 original Jump commands and its trailing word from both extracted/RomFS
+packs. Logs:/tmp/pm-event-assets-tests-complete.log,
+/tmp/pm-event-assets-pack.log,/tmp/pm-event-assets-build-complete.log and
+/tmp/pm-event-assets-romfs.log. Fixtures cover source protection/identity/mapping/
+trailing word/pinned dependency rejection,interval merge and raw tags,endian/
+unaligned/adjacent/32-bit-edge reads,bad extents and failed-load retention.
+The concurrent road helper/fixtures have settled:full validation is green again.
+
+Original stream EXECUTION is still unbound. Native entry-layout/address/context/
+heap/time owners and callback/source registry are next;requests remain open in
+EVT-01. No generated callback success,synthetic story or emulator runtime claim
+was substituted. Goal remains active/incomplete;current battle harness is still
+provisional pending those original source/service bindings.
+
 ## 2026-10-12 — Complete attack-command selection and action-record classification
 
 Documentation agent ID2 closed complete _btlcmd_SetAttackEvent and local weapon

@@ -469,6 +469,17 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Original-script asset breadcrumb (2026-10-12): `pack_event_scripts.py` and
+`event_script_assets.cpp` provide a byte-exact original-address path for ordinary
+Jump and its power-check/badge-tail dependencies. Default hashes/address/sizes
+are pinned;the four original trailing label-scan bytes are retained. make
+ event-assets packages4540-byte ignored RomFS pack;actual reader verifies268
+Jump commands and trailing read. Final full make test passes46 suites/78 Python
+tests;make all passes,so earlier concurrent road validation issues are resolved.
+No original stream execution/callback/source success is claimed. Next:native
+layout/address/context/heap/time and original owner/function registry bindings.
+Prior consolidated-entry-layout and NormalJump source requests remain open.
+
 Release-service breadcrumb (2026-10-12): `event_memory_release.cpp` now ports
 map/SDK free/coalescing and400KiB battle nested-pool requests. Tests cover each
 family's distinct null/size/link/merge/lifetime policy and a complete bootstrap→

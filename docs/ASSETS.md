@@ -1,5 +1,32 @@
 # Original asset pipeline
 
+## Original event script assets (2026-10-12)
+
+`make event-assets` reads /home/carson/games/roms/G8ME01.iso read-only and uses
+ignored artifacts/reference/us_symbols.csv to verify original DOL address/file
+mapping. tools/pack_event_scripts.py pins the three default streams:
+ordinary Jump80355cf0/f0c,power-check child80363388/8c,and badge tail8034f2e4/1e8.
+Their314 commands/raw operands remain big-endian and unmodified. Four original
+bytes AFTER each symbol are retained because label construction reads the
+terminal operand unconditionally. Matching overlap/adjacent intervals are merged;
+no inferred zero padding,dialogue generation or control-token rewriting occurs.
+
+Ignored outputs:local-assets/events/jump.pmevt(.json),and
+romfs/events.pmevt(.json) from the Make target. Both packs are4540 bytes with
+SHA2565429b0beab40e4af68725a87c0ee8b2f73df9fe67986d55affcc7eb9d7042c70.
+PMEVT001 is a port container with sorted original-address ranges and canonical
+file extents. Native event_script_assets.cpp reads original bytes/words;addresses
+are never cast to host pointers. Manifest retains per-stream/segment hashes,
+addresses,annotations,source identity and explicit extraction limits. Pack and
+manifest stay outside source history;local3dsx embeds the RomFS data.
+
+Original Nintendo/Intelligent Systems game data;no redistribution rights granted.
+The ISO remains unchanged and untracked. Parser/reader/tooling is authored port
+code;no original executable function or ISO was committed. Default source hashes
+match supplied US revision0;Jump/badge match their behavior verifier fingerprints.
+This is asset import,not proof of original callback registration/entry owners or
+executed gameplay. Native storage/registry/time/FPSCR/heap services remain next.
+
 ## Switch 1.0.0 audio extraction (2026-10-12)
 
 Completed the separate Switch audio library from the verified read-only
