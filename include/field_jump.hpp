@@ -39,6 +39,7 @@ struct FieldJump {
     }
     void land(bool moving,bool retainTuple=false) {
         if(!retainTuple)clearTuple();
+        suppressDrift=false; // marioLandOn clears main0x80; air flags await dispatch.
         ticks=peakTicks=0;height=0;previousMotion=motion;motion=moving?1:0;
         pendingEntry=true;airborne=false; // Flags/phase await ground dispatch.
     }

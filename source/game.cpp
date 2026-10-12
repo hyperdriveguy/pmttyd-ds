@@ -1117,6 +1117,9 @@ void Game::tick(const Input& rawInput) {
             const auto& axes=inputProducer.channels[0].analog;
             fieldMovement.groundedStick(axes.mainX,int8_t(-axes.mainY));
         } else fieldMovement.grounded(i.x,i.z);
+        // Same-call ground arbitration established this motion before the
+        // surviving jump request; +30 must snapshot that final ground owner.
+        fieldJump.enterGround(fieldMovement.speed==0?0:fieldMovement.speed==DashSpeed?2:1,groundHeight);
         previousGroundContact=groundContact;
         jumpBase=groundHeight;fieldJump.begin(groundHeight,fieldMovement.speed);saveRequested=false;sound=Sound::Jump;
     }

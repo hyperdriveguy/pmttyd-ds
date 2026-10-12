@@ -90,6 +90,7 @@ int main() {
     ceiling.land(false,true);CHECK(ceiling.velocity==waterV);
     ceiling.enterGround(0,2);CHECK(ceiling.velocity==0 && ceiling.takeoffY==2 && ceiling.phase==0);
     ledge.ticks=32767;ledge.dispatch(1);CHECK(ledge.ticks==-32768);
+    ledge.land(true);CHECK(!ledge.suppressDrift && ledge.falling && ledge.pendingEntry);
     m.slope={};m.grounded(1,0);
     m.dampFallBase(true);CHECK(close(m.speed,.022225f));
     const float retainedSpeed=m.speed;m.dampFallBase(true,true);CHECK(m.speed==retainedSpeed);
@@ -152,6 +153,7 @@ int main() {
         transition.tick(launch);
         const float expected=current==0?0:current==.5f?.0113125f:.0225f;
         CHECK(transition.airborne() && transition.jumpHeight==0);
+        CHECK(transition.fieldAirMotion().previousMotion==(current==0?0:current==.5f?1:2));
         CHECK(close(transition.progress.position.x-before,expected));
     }
     Game turn;turn.restore(p);turn.tick(weak);Input changed;changed.z=.5f;changed.confirm=true;
