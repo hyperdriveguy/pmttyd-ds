@@ -17,7 +17,7 @@ bool collisionReady=false;
 std::vector<Vec2> wallLevels;
 std::vector<GroundContact> wallContacts;
 std::vector<WallTriangle> wallTriangles;
-struct GroundTriangle { float v[9];GroundContact contact; };
+struct GroundTriangle { float v[9];GroundContact contact;uint32_t cull=3; };
 static_assert(sizeof(GroundContact)==8,"Ground metadata must contain two uint32 words");
 static_assert(sizeof(ReturnPoint)==12,"Return position must contain three float32 values");
 std::vector<GroundTriangle> ground;
@@ -266,11 +266,13 @@ bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clam
 bool loadGround(const char* path) {
     FILE* file=std::fopen(path,"rb");if(!file)return false;
     uint32_t count=0;bool ok=std::fread(&count,4,1,file)==1;
-    bool tagged=count&0x80000000;count&=0x7fffffff;ok=ok && count>0 && count<=100000;
+    bool tagged=count&0x80000000,faced=count&0x40000000;
+    count&=0x3fffffff;ok=ok && (!faced || tagged) && count>0 && count<=100000;
     std::vector<GroundTriangle> data(ok?count:0);
     for(auto& tri:data) {
         ok=ok && std::fread(tri.v,sizeof(tri.v),1,file)==1;
         if(tagged)ok=ok && std::fread(&tri.contact,sizeof(tri.contact),1,file)==1;
+        if(faced)ok=ok && std::fread(&tri.cull,4,1,file)==1 && tri.cull<=3;
     }
     ok=ok && std::fgetc(file)==EOF;
     std::fclose(file);
@@ -323,6 +325,8 @@ static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact
         const uint32_t flags=ground[n].contact.attributes;
         if(!(flags&0x00080080) && !(flags&0x00800000) && (flags&4))continue;
         const float* v=ground[n].v;
+        const float normalY=(v[5]-v[2])*(v[6]-v[0])-(v[3]-v[0])*(v[8]-v[2]);
+        if(ground[n].cull==1 && normalY<=0)continue; // Downward ray backface.
         if(p.x<std::min({v[0],v[3],v[6]}) || p.x>std::max({v[0],v[3],v[6]}) ||
            p.z<std::min({v[2],v[5],v[8]}) || p.z>std::max({v[2],v[5],v[8]}))continue;
         float den=(v[5]-v[8])*(v[0]-v[6])+(v[6]-v[3])*(v[2]-v[8]);

@@ -566,3 +566,26 @@ Next floor format must preserve original cull byte and collision winding.
 Use source hit_topology/head_geometry ordering, not render topology; mode1
 rejects downward ray when normalY<=0. Other modes are two-sided and source
 orients the hit normal. Grounded stepping and slope animation remain unfinished.
+
+## Active downward face culling (2026-10-12)
+
+New .ground records preserve source hit_topology winding and source drawmode
+byte1. hitCheckVecFilter tests mode==1 and rejects dot(normal,ray)>=0. For
+downward rays this is normalY<=0; native rejects these triangles BEFORE nearest
+solid-hit selection. Modes0/2/3 are treated as two-sided, matching the source
+mode1 condition. The slope helper uses absolute normalY, equivalent to the
+slope of a two-sided hit oriented upward; it does not expose signed contact
+normal for animations yet. Floor/head meshes now share original strip ordering
+while render geometry retains GX ordering.
+
+Analytical tests cover one-sided upper underside passing through to lower
+front-facing floor, reversed upper winding becoming solid, two-sided upper
+face acceptance, invalid cull/truncated pack retention and rollback carrying
+cull metadata. Legacy packs remain two-sided for compatibility. Original
+full-scan floor oracle includes face rejection before selecting nearest plane
+then independent slope cone selection. Both original-room checks and native
+harbor stair traversal pass; they do not establish full Dolphin/hardware fidelity.
+
+Remaining grounded.25/.5 band, original angle lookup arithmetic/special states,
+signed normal/animation outputs, wall push-out/sliding, dynamic contacts and
+original block/SFX events need further work.

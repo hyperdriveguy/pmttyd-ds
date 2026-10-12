@@ -261,6 +261,28 @@ void collisionImport() {
 }
 void groundImport() {
     {
+        char path[]="/tmp/ttyd-floor-faces-XXXXXX";int fd=mkstemp(path);CHECK(fd>=0);close(fd);
+        auto writeFaces=[&](uint32_t roofCull,bool reverse=false) {
+            float floor[]={-1,0,1,-1,0,4,1,0,1};
+            float roof[]={-1,.2f,1,1,.2f,1,-1,.2f,4};
+            if(reverse)for(int n=0;n<3;++n)std::swap(roof[3+n],roof[6+n]);
+            std::ofstream out(path,std::ios::binary);uint32_t count=0xc0000002,front=1;
+            out.write(reinterpret_cast<char*>(&count),4);
+            GroundContact low{0,1},high{0,2};
+            out.write(reinterpret_cast<char*>(floor),36);out.write(reinterpret_cast<char*>(&low),8);out.write(reinterpret_cast<char*>(&front),4);
+            out.write(reinterpret_cast<char*>(roof),36);out.write(reinterpret_cast<char*>(&high),8);out.write(reinterpret_cast<char*>(&roofCull),4);
+        };
+        float h=99;GroundContact contact;
+        writeFaces(1);CHECK(loadGround(path));CHECK(groundAt({-.5f,2},0,h,&contact));CHECK(h==0 && contact.sourceNode==1);
+        {CollisionTransition rollback;writeFaces(3);CHECK(loadGround(path));CHECK(groundAt({-.5f,2},0,h) && std::fabs(h-.2f)<.000001f);}
+        CHECK(groundAt({-.5f,2},0,h) && h==0); // Cull metadata restored by rollback.
+        writeFaces(1,true);CHECK(loadGround(path));CHECK(groundAt({-.5f,2},0,h) && std::fabs(h-.2f)<.000001f);
+        writeFaces(3);CHECK(loadGround(path));CHECK(groundAt({-.5f,2},0,h) && std::fabs(h-.2f)<.000001f);
+        writeFaces(9);CHECK(!loadGround(path));CHECK(groundAt({-.5f,2},0,h) && std::fabs(h-.2f)<.000001f);
+        CHECK(truncate(path,99)==0);CHECK(!loadGround(path));CHECK(groundAt({-.5f,2},0,h) && std::fabs(h-.2f)<.000001f);
+        clearCollision();std::remove(path);
+    }
+    {
         char slopes[]="/tmp/ttyd-slopes-XXXXXX";int fd=mkstemp(slopes);CHECK(fd>=0);close(fd);
         for(float angle:{49.7f,50.1f}) {
             float slope=std::tan(angle*3.14159265358979323846f/180.f);
@@ -609,16 +631,18 @@ void indexedOriginalCollision() {
         }
         std::ifstream walls(prefix+".walls",std::ios::binary),ground(prefix+".ground",std::ios::binary);
         uint32_t nw=0,ng=0;walls.read(reinterpret_cast<char*>(&nw),4);ground.read(reinterpret_cast<char*>(&ng),4);
-        CHECK(ng&0x80000000);ng&=0x7fffffff;
+        CHECK((ng&0xc0000000)==0xc0000000);ng&=0x3fffffff;
         CHECK((nw&0xe0000000)==0xe0000000);nw&=0x1fffffff;
         std::vector<std::array<float,6>> segments(nw);std::vector<std::array<float,9>> triangles(ng);
         std::vector<GroundContact> contacts(ng);
+        std::vector<uint32_t> floorCulls(ng);
         std::vector<GroundContact> wallContacts(nw);
         std::vector<WallTriangle> wallGeometry(nw);
         for(uint32_t n=0;n<nw;++n){walls.read(reinterpret_cast<char*>(segments[n].data()),24);walls.read(reinterpret_cast<char*>(&wallContacts[n]),8);walls.read(reinterpret_cast<char*>(wallGeometry[n].data()),36);}
         for(uint32_t n=0;n<ng;++n) {
             ground.read(reinterpret_cast<char*>(triangles[n].data()),36);
             ground.read(reinterpret_cast<char*>(&contacts[n]),8);
+            ground.read(reinterpret_cast<char*>(&floorCulls[n]),4);
         }
         CHECK(walls.good());CHECK(ground.good());
         for(int x=-18;x<=18;++x)for(int z=-16;z<=16;++z)for(float level:{0.f,1.2f,3.f}) {
@@ -636,6 +660,8 @@ void indexedOriginalCollision() {
                 const auto flags=contacts[n].attributes;
                 if(!(flags&0x80080) && !(flags&0x800000) && (flags&4))continue;
                 auto v=triangles[n];
+                float ny=(v[5]-v[2])*(v[6]-v[0])-(v[3]-v[0])*(v[8]-v[2]);
+                if(floorCulls[n]==1 && ny<=0)continue;
                 if(p.x<std::min({v[0],v[3],v[6]}) || p.x>std::max({v[0],v[3],v[6]}) || p.z<std::min({v[2],v[5],v[8]}) || p.z>std::max({v[2],v[5],v[8]}))continue;
                 float den=(v[5]-v[8])*(v[0]-v[6])+(v[6]-v[3])*(v[2]-v[8]);if(std::fabs(den)<1e-8f)continue;
                 float a=((v[5]-v[8])*(p.x-v[6])+(v[6]-v[3])*(p.z-v[8]))/den;

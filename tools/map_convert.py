@@ -249,17 +249,17 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
         for segment in segments:out.write(struct.pack('<6fII9f',*segment))
     # Keep walkable collision surfaces, including ramps and elevated platforms.
     ground=[]
-    for tri,meta in zip(collision,collision_meta):
+    for tri,meta,cull in head_geometry:
         a=np.array(tri);normal=np.cross(a[1]-a[0],a[2]-a[0]);length=np.linalg.norm(normal)
         # Retain projected surfaces; runtime applies source slope selection after
         # nearest-hit selection, rather than silently discarding steep blockers.
         if length>1e-8 and abs(normal[1])/length>1e-6:
-            ground.append((tri,meta))
+            ground.append((tri,meta,cull))
     with (output/'map.ground').open('wb') as out:
         # Tagged format preserves original node attributes and relative source ID.
-        out.write(struct.pack('<I',len(ground)|0x80000000))
-        for tri,meta in ground:
-            out.write(struct.pack('<9fII',*(v for point in tri for v in point),*meta))
+        out.write(struct.pack('<I',len(ground)|0xc0000000))
+        for tri,meta,cull in ground:
+            out.write(struct.pack('<9fIII',*(v for point in tri for v in point),*meta,cull))
     summary={'source':str(path),'scale':scale,'vertices':count,'triangles':count//3,'batches':len(batches),'textures':textures,
              'bounds':[np.min(bounds,axis=0).tolist(),np.max(bounds,axis=0).tolist()],
              'cull_triangles':dict(cull_counts),'cutaway_nodes':[{'id':cutaway_ids[o],'name':name} for o,name in sorted(cutaway_nodes.items())],'exit_markers':markers,'limitations':warnings,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}

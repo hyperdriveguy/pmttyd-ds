@@ -299,3 +299,23 @@ format; source cull/winding metadata is not added yet. New floor counts
 Ground vector payload217,624 bytes across all packs, plus runtime struct/index
 overhead; room-specific loading still applies. No art/music conversion change.
 Original-derived packs remain ignored; hardware performance unverified.
+
+## Source-facing floor pack (2026-10-12)
+
+map/gor_00/gor_02/gor_03/gor_04.ground now use header bits31+30 followed by
+48-byte little-endian records:9float32 vertices, uint32attributes, uint32source
+node relative to map base32, uint32drawmode byte1. Geometry comes from the
+same source hit_topology strip order as the complete head mesh, not GX render
+triangles. Preserve all nondegenerate projected surfaces; source slope/cull
+selection happens at runtime. Legacy untagged36-byte and bit31-tagged44-byte
+packs remain readable as two-sided, with their prior winding unchanged.
+
+Source is locally converted m/<room>/d from read-only US G8ME01 ISO; no external
+code/art/license dependency introduced. ISO/originals/packs remain ignored and
+are not distributed or required at runtime. Node attributes and drawmode are
+checked against original raw node bytes by verify_ground_attributes.py; source
+strip order follows hitCalcVtxPosition evidence. This verifier does not prove
+independent original-coordinate fidelity. Counts remain4,946 records,237,408
+bytes total record payload;1,867 are one-sided downward backfaces now rejected
+by floor queries. Only current room is active except transactional staging.
+Hardware memory/performance unverified.

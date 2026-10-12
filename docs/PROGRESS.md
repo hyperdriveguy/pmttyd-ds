@@ -1881,3 +1881,48 @@ marioChkGnd/head rules and replace legacy.25/.5 stepping. Source angleABf lookup
 arithmetic, special states, wall push-out/sliding, dynamic supports, original
 dialogue/story/SFX/animations/camera/interiors and full content remain incomplete.
 Full goal active; hardware acceptance unverified.
+
+## 2026-10-12 — Source floor winding and downward face culling
+
+Previous goal turn made progress with runtime slope filter0b2f479. Floor export
+now uses original hit_topology ordering (same as head geometry) and includes
+raw source drawmode byte1. New header bits31+30 /48-byte records preserve
+attributes/source node/cull. Loader supports legacy36/44-byte packs as two-sided;
+invalid cull modes and truncated metadata preserve previous room. Cull travels
+with GroundTriangle through snapshots/rollback. Downward source mode1 backfaces
+(normalY<=0) are rejected before nearest hit; modes0/2/3 are two-sided. Original
+1,867 downward backfaces across five rooms no longer act as candidate floors.
+No render/camera/character-scale change.
+
+Validation: `make test` passed core and32 Python tests. New analytical cases
+verify culled upper underside allows lower floor, reversed upper winding is
+solid, two-sided faces remain solid, invalid/truncated packs retain geometry,
+rollback restores cull metadata. A new assertion initially used exact float
+equality for interpolated.2 height; changed to numeric tolerance, final tests
+passed. `build-host/core_tests --rooms` passed18,315 full-scan/index comparisons,
+all8 arrivals and original water/void/ceiling checks. Oracle now reads face
+metadata and rejects backfaces before nearest/slope selection.
+`make -j2 all` regenerated source-facing floor packs and built ttyd-2ds.3dsx.
+`python3 tools/verify_ground_attributes.py` verifies all4,946 records' source
+attributes/cull/node bytes, reporting1,867 backfaces. Actor source instruction
+verifier passes. These checks do not independently prove transformed source
+positions or complete original behavior. ASSETS.md records pack/provenance and
+legacy behavior; prior separate research commits remain intact.
+
+Native harbor stairs exited0 (dock traversal/save, HP7, return to plaza). Native
+east roads exited0 (two reciprocal trips, arrival saves). Exact commands:
+```sh
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_harbor_stairs.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/east-road.bin --seconds 4 --input-script tests/azahar_roads.py
+```
+No build overlapped emulator execution. All original extracts/generated packs
+remain ignored. Physical New2DS performance/acceptance remains unverified.
+
+Next: recover grounded marioChkGnd reach arguments and support acceptance,
+including upstream stair/step correction before changing legacy.25/.5 band.
+Keep loader/arrival validation distinct from active grounded movement queries.
+Grounded overhead still absent; original lookup angle arithmetic/special states,
+signed contact normals/animation, wall sliding/push-out, dynamic supports/block
+events and SFX remain incomplete. Original story/English dialogue, camera,
+animations, interiors and complete playable content still require work. Full
+objective remains active; no completion claim.
