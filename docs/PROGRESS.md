@@ -3937,3 +3937,31 @@ event/field/battle/audio/save/content before complete-game requirements. Full
 goal active/incomplete; this local decimal contract does not establish complete
 floating scanner, layout or full-game fidelity. Reuse original data and preserve
 message IDs/tokens, attribution/order/branches/event conditions.
+
+## 2026-10-12 — US hexadecimal floating scan
+
+Added detailed SCAN_FLOAT_HEXADECIMAL.md for all local hex __strtold regions:
+prefix/init boundary, dual states, leading zeros,15 nibble slots including an
+adjacent-stack byte outside returned eight-byte scratch, capacity/truncation,
+exponent unread/reread and signed16 wrap with wrong decimal-register range test,
+raw-zero versus nonzero exits, logical normalization, exponent bit insertion,
+packing-counter count rewrite and range/sign rules. Recorded uninitialized
+short-prefix scratch and conditional normalization nontermination deductions;
+original denormal/FPSCR/caller execution is explicitly unverified. Linked prior
+entry/decimal contracts; __dec2num remains an open dependency.
+
+Validation:1212 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO; all22 hex-digit classifications added. Fresh284-function
+reports reproduced byte-for-byte. All462 local behavior links resolved; git diff
+--check passed. make test passed core plus36 Python tests; make all exited0 with
+no rebuild. No original execution/emulator, profile/save modification, native
+implementation, asset conversion or story rewrite. Local disassembly/reports
+remain ignored; working tree was clean at turn start.
+
+Next: __dec2num and numerical dependencies, executed callback/raw-bit/count/
+status/FPSCR comparisons for finite/hex/special cases and actual icon arguments;
+then drawing/string layout, resource/cadence callers and uncovered story/event/
+field/battle/audio/save/content systems before complete-game requirements.
+Full objective active/incomplete; local __strtold recovery is not executable
+numeric/layout or full-game equivalence. Original IDs/tokens and story
+attribution/order/branches/event conditions remain required reused data.

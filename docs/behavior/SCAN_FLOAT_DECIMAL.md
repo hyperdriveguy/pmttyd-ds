@@ -4,8 +4,8 @@ US G8ME01 revision0, recovered2026-10-12. Evidence B: decimal regions of
 __strtold0x8026d6d0,size0x100c and original constants. See
 [entry/special values](SCAN_FLOAT_ENTRY_SPECIAL_VALUES.md),
 [scan consumers](SCAN_FORMAT_CONSUMERS.md) and [directive grammar](SCAN_DIRECTIVE_PARSER.md).
-This recovers the decimal state machine and its local exit policy. Hexadecimal
-states and __dec2num internals remain open. No original execution, floating
+This recovers the decimal state machine and its local exit policy. [Hexadecimal states](SCAN_FLOAT_HEXADECIMAL.md) are recovered separately;
+__dec2num internals remain open. No original execution, floating
 accuracy measurement or host conversion equivalence is claimed.
 
 ## State, record and decimal-point dependency (B)

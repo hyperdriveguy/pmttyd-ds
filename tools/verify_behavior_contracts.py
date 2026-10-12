@@ -13,6 +13,24 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'scan_float_hexadecimal': {
+        0x8026e010: '3b200002', 0x8026e038: '9801001f',
+        0x8026e07c: '3be00004', 0x8026e094: '540006b5',
+        0x8026e0d4: '2c190011', 0x8026e0e8: '3af70001',
+        0x8026e12c: '54a02536', 0x8026e164: '7cba01ae',
+        0x8026e1c8: '2c190011', 0x8026e254: '7cba01ae',
+        0x8026e2b8: '2c000050', 0x8026e2f8: '3b180001',
+        0x8026e304: '90010058', 0x8026e324: '4e800421',
+        0x8026e328: '3b18ffff', 0x8026e384: '3be00080',
+        0x8026e3d4: '2c1c7fff', 0x8026e3e0: '7c160734',
+        0x8026e5d8: '7c160734', 0x8026e5e4: '3ad60001',
+        0x8026e5ec: '5480f87e', 0x8026e5f8: '5083f800',
+        0x8026e608: '2c000010', 0x8026e60c: '4082ffd4',
+        0x8026e618: '5405103a', 0x8026e62c: '7c160734',
+        0x8026e63c: '50642036', 0x8026e654: '90030000',
+        0x8026e674: 'd8210018', 0x8026e6b0: '60008000',
+        0x8026e6b4: 'b0010018', 0x8026e6c0: 'd8010018',
+    },
     'scan_float_decimal': {
         0x8026dbc4: '7c04a800', 0x8026dc64: '3c600001',
         0x8026dcb0: '39e00008', 0x8026dd0c: '28050014',
@@ -1305,6 +1323,10 @@ def verify(iso_path):
         if read(0x8041e3d8, 24).hex() != '7ff000000000000000100000000000007fefffffffffffff':
             raise ValueError('Float scan infinity/normal/finite bounds mismatch')
         print('Float scan initial decimal point and four binary64 range constants verified')
+        if [i for i, value in enumerate(scan_ctype) if value & 0x20] != list(range(48, 58))+list(range(65, 71))+list(range(97, 103)):
+            raise ValueError('Float scan hexadecimal digit set mismatch')
+        print('All twenty-two hexadecimal scan digit codes verified')
+
 
 
 
