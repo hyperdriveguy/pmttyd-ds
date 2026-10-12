@@ -163,14 +163,20 @@ REFERENCE_DOL_FUNCTION_SLICES.md and REFERENCE_TOOL_TREES.md. The modified
 tools/verify_event_entry_layout.py passes against the read-only ISO. No native
 or asset change.
 
-Limitations: the five inventory links remain unresolved until the inventory
-author writes those companion documents; this session did not fabricate their
-content. Concurrent sessions keep creating new flat files at the behavior root,
-so re-run tools/normalize_behavior_docs.py --apply when the tree changes.
+Limitations: the five inventory links stay unresolved in this commit until the
+inventory author writes those companion documents; this session did not
+fabricate their content. Concurrent sessions keep creating new flat files at the
+behavior root, so re-run tools/normalize_behavior_docs.py --apply when the tree
+changes.
 
-Next: inventory author creates the slice/tool-tree companions, then rerun
-tools/check_doc_links.py to confirm zero broken links. Full-game goal remains
-incomplete.
+Follow-up (same day): the inventory author delivered
+binary/REFERENCE_DOL_FUNCTION_SLICES.md and binary/REFERENCE_TOOL_TREES.md, so
+tools/check_doc_links.py now scans 448 Markdown files and reports 0 broken local
+links. Normalizer dry run still reports 0 flat files. The link graph is fully
+consistent; no further reorganization work is owed.
+
+Next: continue the native/behavior remake work; re-run the normalizer and link
+checker if the behavior root changes. Full-game goal remains incomplete.
 
 ## 2026-10-12 — ID2 file relocation dispatch and flat pointer handlers
 
@@ -344,11 +350,11 @@ turn/Game binding and movement-wrapper reply remain open;goal incomplete.
 ## 2026-10-12 — First unaddressed-function closers (SetPos, phase/turn/flag)
 
 Closed 4 of the 43 register rows with two static contracts, no execution.
-docs/behavior/BATTLE_UNIT_SET_POS.md: complete 4-instruction BtlUnit_SetPos
+docs/behavior/battle/BATTLE_UNIT_SET_POS.md: complete 4-instruction BtlUnit_SetPos
 leaf (stfs f1/f2/f3 to unit+60/64/68), the visible-position triple shared with
 GetPos per BATTLE_UNIT_PART_POSITION_QUERIES, entry-adjacent GetPos pairing
 (16-byte body, 44 link sites, jump-evidence sha row).
-docs/behavior/BATTLE_PHASE_TURN_FLAG_EVENT_LEAVES.md: complete CheckPhase
+docs/behavior/battle/BATTLE_PHASE_TURN_FLAG_EVENT_LEAVES.md: complete CheckPhase
 (compare event word vs BattleGetSeq(B,4), write 0/1 via evtSetValue),
 get_turn (halfword source to routed destination), onoff_battleflag (mask OR
 vs ANDC into [W+3828] on ==1 test); all return 2, callees from evidence.json
@@ -471,7 +477,7 @@ Jump callbacks;movement-wrapper request remains pending. Full-game goal incomple
 
 ## 2026-10-12 — Unaddressed binary function register
 
-Wrote docs/behavior/UNADDRESSED_BINARY_FUNCTIONS.md: static register of the 43
+Wrote docs/behavior/binary/UNADDRESSED_BINARY_FUNCTIONS.md: static register of the 43
 reference-binary functions (22 behavior/, 21 top-level) whose names occur in no
 docs/behavior/*.md prose, found by exact plus case-insensitive search over all
 339 behavior docs. No binary executed. Per function: entry address (all match
@@ -553,7 +559,7 @@ Added portable/native original-address bindings for check_battleflag8011384c
 and ftomsec80103dc0. Flag query captures A/B,reads RAW mask,flag word,then RAW
 output and stores boolean. Original read-only-ISO inspection refined the prior
 operand-listing summary;the exact read-order evidence is in
-behavior/BATTLE_FLAG_AND_FRAME_UTILITY_READ_ORDER.md. Frame conversion resolves
+behavior/battle/BATTLE_FLAG_AND_FRAME_UTILITY_READ_ORDER.md. Frame conversion resolves
 input once,multiplies with word wrap,reads late RAW output and signed-divides
 by fixed60;it does not substitute GP refresh/render/OS cadence. Both return2
 without a first-call gate. Original ELFs remain in /tmp,outside source history.
@@ -3679,7 +3685,7 @@ finished faithful encounter or complete-game specification.
 
 ## 2026-10-12 — ID2: requested unit-part defense and lifetime contracts
 
-Added docs/behavior/UNIT_PART_DEFENSE_AND_LIFETIME.md with the scoped original
+Added docs/behavior/unit/UNIT_PART_DEFENSE_AND_LIFETIME.md with the scoped original
 unit-entry part allocation/copy region and complete GetPartsPtr/Delete/BattleAlloc/
 BattleFree request contracts. Count is unsigned;parts use one cleared count*500
 block with500 runtime stride and4c source stride. Defense/attribute pointers are
@@ -3720,7 +3726,7 @@ documented;the overall objective remains active/incomplete.
 
 ## 2026-10-12 — Native direct damage and shared FP resource application
 
-Implemented docs/behavior/BATTLE_DAMAGE_APPLICATION.md in
+Implemented docs/behavior/battle/BATTLE_DAMAGE_APPLICATION.md in
 include/battle_damage_application.hpp/source/battle_damage_application.cpp.
 Preserves attacker lookup/-5 sentinel,requested HP clamp99 and attacker
 accumulator,part/pattern preparation,ordered original effect and sound requests,
@@ -3782,7 +3788,7 @@ tutorial/turn orchestration. Full implementation goal remains active/incomplete.
 ## 2026-10-12 — ID2: requested default/Mario weapon power contracts
 
 Answered the two ID2 power subtasks of DMG-01 in
-docs/behavior/BATTLE_WEAPON_POWER_CALLBACKS.md. The complete default body
+docs/behavior/battle/BATTLE_WEAPON_POWER_CALLBACKS.md. The complete default body
 returns weapon signed word20 unchanged;the original boss weapon binds it and
 supplies base1 with no FP callback. Complete Mario Jump/Hammer callbacks capture
 battle1cb8 mask2 before pouch access,read signed level98/99,form upper-only
@@ -3818,7 +3824,7 @@ remains active/incomplete;this scoped callback answer does not close all systems
 
 ## 2026-10-12 — Native status storage/recovery and move helpers
 
-Implemented docs/behavior/BATTLE_STATUS_STORAGE.md and the required local
+Implemented docs/behavior/battle/BATTLE_STATUS_STORAGE.md and the required local
 move helpers from BATTLE_MOVE_COUNTS.md in include/battle_status.hpp and
 source/battle_status.cpp. Shared semantic unit state retains original status
 byte offsets118..135,move bytes20..24,HP,kind/belong,Zap Tap and unit/status flags;
@@ -3888,7 +3894,7 @@ remains active/incomplete;local status services do not make the game complete.
 
 ## 2026-10-12 — Native ordered HP/FP calculators and revival marker
 
-Implemented docs/behavior/BATTLE_DAMAGE_CALCULATION.md in
+Implemented docs/behavior/battle/BATTLE_DAMAGE_CALCULATION.md in
 include/battle_damage.hpp/source/battle_damage.cpp. Typed semantic unit/part/
 weapon/battle inputs retain signed fields,byte badge counts,callback interfaces
 and explicit Check/GetStatus reader services. This is not original packed ABI
@@ -6094,7 +6100,7 @@ objective remains active; no completion claim.
 
 ## 2026-10-12 — Original hit precheck and HP/FP calculation contracts
 
-Research commit 05c59d3 adds docs/behavior/BATTLE_HIT_PRECHECK.md and
+Research commit 05c59d3 adds docs/behavior/battle/BATTLE_HIT_PRECHECK.md and
 BATTLE_DAMAGE_CALCULATION.md. They document US branch order, numeric flags,
 signed loads, conditional clamps, callback gates, result codes and explicit
 unresolved dependencies. Precheck includes ordered per-copy evasion RNG draws,
