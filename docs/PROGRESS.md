@@ -1,5 +1,39 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — RunDataEventChild and original Mario key7 child asset
+
+Implemented `battle_data_child.cpp` for complete RunDataEventChild and borrowed
+BtlUnit_GetData lookup. Selector resolution/translation precede current-battle/
+unit lookup;key resolves afterward from retained argument base;unit18 table
+loads only then. First matching key value wins (including0),key0 terminates,
+null table returns0. Nonzero script creates flags0 waiting child,clears parent
+opcode,overwrites child actor with retained translated ID and returns255 without
+parent deletion. Missing data returns2 without local opcode/state changes.
+No kind222→table shortcut or synchronous child completion was invented.
+
+Expanded original pack with subset_attack_ready_jump_event80416bd0/8 plus FOUR
+original bytes at80416bd8. Four-stream pack now4564 bytes,SHA256
+82dd17bd66ff013fa3df32d25134b01d4077f11460bab222d9da0aad4d43790d;
+raw source child hash is pinned by delivered contract. docs/ASSETS.md records
+updated paths/provenance. Original bytes/ISO remain ignored and unchanged.
+
+Validation: final make test passes54 CTest suites/78 Python tests;make event-assets
+and make all pass. Logs:/tmp/pm-data-child-test-final.log,
+/tmp/pm-data-child-pack.log and /tmp/pm-data-child-build-final.log. Independent
+fixtures pin query order/argument/work/table mutation,actor overwrite after
+constructor run-check,zero/null/duplicate/terminator branches and actual child
+append/inheritance. Combined manager/interpreter fixture runs the REAL extracted
+tiny child,including allocation/ID increment/same-pass delete/copy-back and later
+parent resumption. Log:/tmp/pm-data-child-original.log. Reader also verifies268
+original Jump commands and tiny child's original trailing word. ISO verifier
+passes10 body identities/109 anchors/5 spans;log:/tmp/pm-data-child-evidence.log.
+
+Unit/kind/table ownership in the integration fixture is authored;this does not
+prove original Mario source import or full Jump execution. Next:native GP/arena/
+unit/controller ownership and actual72-address callback registry,including
+remaining power-check/effect/cost/position/status/audio/audience services and
+original execution comparison. Goal active/incomplete;no emulator/hardware claim.
+
 ## 2026-10-12 — Complete effect soft/hard release and fog helper correction
 
 Documentation agent ID2 closed effSoftDelete70,effDelete4c and raw Maya free28

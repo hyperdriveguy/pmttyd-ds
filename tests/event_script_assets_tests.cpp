@@ -14,6 +14,7 @@ int main(int argc,char** argv) {
         while(p<0x80355cf0+0xf0c) {assert(original.readWord(p,w));const uint32_t count=w>>16,op=w&0xffff;assert(count<=255 && op<=118);p+=4+4*count;++commands;}
         assert(p==0x80355cf0+0xf0c && commands==268 && original.readWord(p,w)); // Real terminal scan trailing word.
         assert(original.readWord(0x80355cf0,w) && w==0x0005005b);
+        assert(original.readWord(0x80416bd0,w) && w==2 && original.readWord(0x80416bd4,w) && w==1 && original.readWord(0x80416bd8,w));
         std::cout<<"original Jump asset reader passed268 commands and trailing read\n";return 0;
     }
     char path[]="/tmp/pm-event-scripts-XXXXXX";const int fd=mkstemp(path);assert(fd>=0);close(fd);

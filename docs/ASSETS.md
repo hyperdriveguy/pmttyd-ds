@@ -1,5 +1,25 @@
 # Original asset pipeline
 
+## Original Mario data-child pack extension (2026-10-12)
+
+`make event-assets` now includes subset_attack_ready_jump_event@battle_event_subset.o
+at original80416bd0,size8,SHA2561e9fcd4ca7e6723c4a822c370faad68aa89031573b2376d87e4cc3c6626ede61.
+Its DELETE2/terminal1 words and four ORIGINAL trailing bytes at80416bd8 remain
+byte-exact. The tiny event has real constructor/deletion/ID/copy-back effects;
+no zero padding or callback-completion replacement was generated.
+
+Current four-stream ignored local-assets/events/jump.pmevt and romfs/events.pmevt
+(with JSON sidecars) are4564 bytes,SHA256
+82dd17bd66ff013fa3df32d25134b01d4077f11460bab222d9da0aad4d43790d.
+Prior4540-byte three-stream fingerprint below is historical/superseded. All316
+command words/raw operands,original addresses and scanner extents are retained.
+No new USER_FUNC site is added by this child;direct original callback census
+remains72 addresses for the original three main streams. Native reader and
+manager integration verify the actual extracted child without claiming actual
+Mario kind/table import or complete Jump runtime. Original Nintendo/Intelligent
+Systems copyright/no redistribution rights and read-only ISO/source-history
+exclusion remain unchanged.
+
 ## Isolated native audio validation firmware (2026-10-12)
 
 User supplied /home/carson/games/roms/dspfirm.cdc. Read-only source copied to

@@ -1,6 +1,8 @@
 #include "event_interpreter.hpp"
 #include "event_entry_addresses.hpp"
 #include "event_context_addresses.hpp"
+#include "event_script_assets.hpp"
+#include "battle_data_child.hpp"
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -17,6 +19,7 @@ struct Fixture {
     EventEntryAddresses addresses;
     EventContext context{256,entries.data(),0};
     EventContextAddresses contextAddresses;
+    EventScriptAssets scripts;
     EventGlobals gp{0,60,0};
     EventRuntimeGlobals runtime{0,1,1,0};
     EventSchedule schedule;
@@ -29,7 +32,7 @@ struct Fixture {
     static constexpr uint32_t clock=243000000;
     Fixture():contextAddresses(addresses) {assert(addresses.registerEntries(0x10000,entries.data(),256));assert(contextAddresses.registerContext(0x8000,context));}
     uint32_t read(uint32_t a) {
-        uint32_t mapped;if(addresses.readWord(a,mapped) || contextAddresses.readWord(a,mapped))return mapped;
+        uint32_t mapped;if(addresses.readWord(a,mapped) || contextAddresses.readWord(a,mapped) || scripts.readWord(a,mapped))return mapped;
         uint32_t v=0;for(unsigned i=0;i<4;++i)v=v<<8|bytes[a+i];return v;
     }
     void write(uint32_t a,uint32_t v) {
@@ -63,6 +66,12 @@ struct Fixture {
         s.divideWord=[](void* p,int32_t a,int32_t b) {++*static_cast<unsigned*>(p);assert(b!=0 && !(a==std::numeric_limits<int32_t>::min() && b==-1));return a/b;};
         s.format=[](void* p,const EventDiagnosticCall& d) {static_cast<Fixture*>(p)->diagnostics.push_back(d);};
         s.call=[](void* p,EventEntry& e,uint32_t function,int32_t first) {auto& f=*static_cast<Fixture*>(p);f.calls.push_back({function,first});
+            if(function==0x8010a010) {
+                auto interpreter=f.services();BattleDataChildServices child;child.user=&f;child.schedule=&f.schedule;child.creation=f.creation();child.memory=interpreter.memory;
+                child.values.user=&f;child.values.word=f.creation().word;child.values.resolve=[](void* p,EventEntry& e,int32_t op) {auto& f=*static_cast<Fixture*>(p);return getEventValue(e,op,f.services().operands);};
+                child.translate=[](void*,EventEntry& e,int32_t selector) {assert(selector==-2);return e.owner;};child.currentBattle=[](void*)->uint32_t {return 0x700000;};child.unit=[](void*,uint32_t b,int32_t id)->uint32_t {assert(b==0x700000 && id==7);return 0x701000;};
+                return runBattleDataChild(e,child);
+            }
             if(function==0x80001300)return first?0:2;
             assert(function==0x80001200);const auto s=f.services();f.observedInteger=getEventValue(e,sw(f.read(e.arguments)),s.operands);f.observedFloat=getEventFloat(e,lw+2,s.operands);return 2;
         };return s;
@@ -72,7 +81,7 @@ struct Fixture {
     void tick() {gp.timestamp+=eventClockRate(clock);runEventInterpreterManager(services());}
 };
 }
-int main() {
+int main(int argc,char** argv) {
     Fixture f;uint32_t a=0x90000000;
     f.emit(a,50,{lw,3});f.emit(a,5,{lw});f.emit(a,53,{lw+1,1});f.emit(a,6,{});
     f.emit(a,50,{lw+7,9});f.emit(a,56,{lw+7,2});f.emit(a,57,{lw+7,2});
@@ -111,5 +120,12 @@ int main() {
     a=0x90002000;roots.emit(a,50,{-170000000,77});roots.emit(a,2,{});roots.end(a);
     auto& root=createRootEvent(roots.schedule,0x90000000,10,0,roots.creation());roots.tick();assert(root.locals[0]==2 && roots.entries[1].flags==1 && roots.read(0x3174)==0 && roots.schedule.count==1);
     roots.tick();assert(roots.runtime.allocationCount==0 && roots.read(0x3174)==77);
+    Fixture dataChild;a=0x90000000;dataChild.emit(a,50,{lw,123});dataChild.emit(a,91,{sw(0x8010a010),-2,7});dataChild.emit(a,9,{1});dataChild.emit(a,2,{});dataChild.end(a);
+    const uint32_t childScript=argc==2?0x80416bd0:0x90002000;
+    if(argc==2)assert(dataChild.scripts.load(argv[1]));else {a=childScript;dataChild.emit(a,2,{});dataChild.end(a);} // Authored fixture without original pack dependency.
+    dataChild.write(0x701018,0x702000);dataChild.write(0x702000,7);dataChild.write(0x702004,childScript);dataChild.write(0x702008,0);
+    auto& dataParent=createRootEvent(dataChild.schedule,0x90000000,10,0,dataChild.creation());dataParent.owner=7;
+    dataChild.tick();assert(dataParent.flags==1 && dataParent.waitingChild==nullptr && dataParent.locals[0]==123 && dataChild.runtime.allocationCount==1 && dataChild.runtime.nextId==3 && dataChild.entries[1].flags==0 && dataChild.calls.size()==1);
+    dataChild.tick();assert(dataParent.flags==1 && dataParent.opcode==0);dataChild.tick();assert(dataChild.runtime.allocationCount==0 && dataParent.flags==0);
     std::cout<<"combined event interpreter tests passed\n";
 }

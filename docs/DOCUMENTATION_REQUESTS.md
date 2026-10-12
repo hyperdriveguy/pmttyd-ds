@@ -484,6 +484,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Data-child breadcrumb (2026-10-12): `battle_data_child.cpp` ports complete
+RunDataEventChild/BtlUnit_GetData with delayed key/table lookup and actual child
+255 continuation. Default pack now includes80416bd0+four ORIGINAL trailing
+bytes;four streams/4564 bytes. Real extracted tiny child executes through manager,
+interpreter,lifecycle and copy-back in host integration. Final make test passes54
+suites/78 Python tests;make all passes;ISO verifier passes10 bodies/109 anchors.
+Kind/table/unit ownership fixture is authored,not source import or complete
+Jump execution.Next:native ownership/registry and remaining original callback
+services,with no immediate-completion substitute for queued children.
+
 Action-registration breadcrumb (2026-10-12): `battle_attack_registration.cpp`
 ports FULL state6 local gates/root10/flags0/post-ID→actor→wait-delete/channel6
 ordering. Real constructor/lifecycle fixtures pin global context/speed/no live

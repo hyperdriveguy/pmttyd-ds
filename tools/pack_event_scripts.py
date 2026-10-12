@@ -15,11 +15,13 @@ from iso_assets import DEFAULT_ISO
 MAGIC = b'PMEVT001'
 DEFAULT_EVENTS = ['marioAttackEvent_NormalJump@battle_mario.o',
                   'marioAttackEvent_MajinaiPowerUpCheck@battle_mario.o',
-                  'btldefaultevt_SuitoruBadgeEffect@battle_event_default.o']
+                  'btldefaultevt_SuitoruBadgeEffect@battle_event_default.o',
+                  'subset_attack_ready_jump_event@battle_event_subset.o']
 PINNED_EVENTS = {
     'marioAttackEvent_NormalJump': (0x80355cf0, 0xf0c, '2858f3f63cfb95dc84eb6ed3b363c530e24200063044f37afd275d3847f9720c'),
     'marioAttackEvent_MajinaiPowerUpCheck': (0x80363388, 0x8c, '3d44dcff79577976ecc7a400be16eb972f8d464479a8b314b8bb22ec8cc661d4'),
     'btldefaultevt_SuitoruBadgeEffect': (0x8034f2e4, 0x1e8, 'dadf7e175f491ab9e4a12ae63411cd7806df2bd0e73ec2be0a12e0b3ba454179'),
+    'subset_attack_ready_jump_event': (0x80416bd0, 8, '1e9fcd4ca7e6723c4a822c370faad68aa89031573b2376d87e4cc3c6626ede61'),
 }
 
 
