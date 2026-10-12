@@ -334,8 +334,8 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
             text("Jump: A. Hammer: hold Circle Pad left.",12,174,.44f,Ink);
             text("Mushroom restores 5 HP; uses your turn.",12,192,.42f,Ink);
         } else {
-            const bool enemy=g.phase==Phase::EnemyWindup;
-            const bool winding=g.phase==Phase::Windup || enemy;
+            const bool enemy=g.phase==Phase::EnemyWindup || g.phase==Phase::EnemyImpact;
+            const bool winding=g.phase==Phase::Windup || g.phase==Phase::EnemyWindup;
             const int target=enemy?BattleRules::EnemyImpact:BattleRules::JumpImpact;
             text(enemy?"GUARD":g.selection==0?"JUMP":"HAMMER",12,80,.82f,Ink);
             panel(14,119,292,28,Ink);
@@ -354,7 +354,8 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
                 C2D_DrawRectSolid(18,123,.5f,284*f,20,Gold);
                 float marker=18+284*target/float(target+8);
                 C2D_DrawRectSolid(marker-2,118,.5f,4,31,Red);
-                text("Press A at the marker.",14,161,.52f,Ink);
+                text(winding?"Press A at the marker.":enemy?(g.guarded?"Guard!":"Hit taken."):
+                    (g.actionSuccess?"Nice!":"Attack finished."),14,161,.52f,Ink);
             }
             text("Timing guide is a prototype assist.",14,190,.43f,Ink);
         }

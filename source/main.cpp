@@ -16,9 +16,10 @@ bool loadRoomCollision(uint32_t room) {
     transaction.commit();return true;
 }
 void merge(ttyd::Input& pending,const ttyd::Input& i) {
-    pending.x=i.x;pending.z=i.z;pending.jumpHeld=i.jumpHeld;
+    pending.x=i.x;pending.z=i.z;pending.jumpHeld=i.jumpHeld;pending.cancelHeld=i.cancelHeld;
     pending.confirm|=i.confirm;pending.cancel|=i.cancel;pending.left|=i.left;pending.right|=i.right;
     pending.menuConfirm|=i.menuConfirm;
+    pending.confirmReleased|=i.confirmReleased;pending.cancelReleased|=i.cancelReleased;
     if(i.touchX>=0) {pending.touchX=i.touchX;pending.touchY=i.touchY;}
 }
 }
@@ -64,7 +65,7 @@ int main() {
         // Resume/menu interruptions must not cause seconds of battle advancement.
         if(delta>.25) {accumulator=0;pending={};delta=1./60;}
         accumulator+=delta;
-        hidScanInput();uint32_t down=hidKeysDown(),held=hidKeysHeld();
+        hidScanInput();uint32_t down=hidKeysDown(),held=hidKeysHeld(),up=hidKeysUp();
         if(down&KEY_START) break;
         ttyd::Input i;circlePosition circle;hidCircleRead(&circle);
         i.x=std::abs(circle.dx)>18?circle.dx/156.f:0;
@@ -73,12 +74,13 @@ int main() {
         if(game.scene!=ttyd::Scene::Explore) i.cancel=down&KEY_B;
         i.left=down&KEY_DLEFT;i.right=down&KEY_DRIGHT;i.menuConfirm=down&KEY_Y;
         i.jumpHeld=held&KEY_A;
+        i.cancelHeld=held&KEY_B;i.confirmReleased=up&KEY_A;i.cancelReleased=up&KEY_B;
         if(down&KEY_TOUCH) {touchPosition touch;hidTouchRead(&touch);i.touchX=touch.px;i.touchY=touch.py;}
         merge(pending,i);
         const double simulationStart=seconds();metrics.steps=0;
         while(accumulator>=1./60 && metrics.steps<5) {
             game.tick(pending);++metrics.steps;accumulator-=1./60;
-            pending={};pending.x=i.x;pending.z=i.z;pending.jumpHeld=i.jumpHeld;
+            pending={};pending.x=i.x;pending.z=i.z;pending.jumpHeld=i.jumpHeld;pending.cancelHeld=i.cancelHeld;
             if(game.progress.sound) audio.play(game.sound);
             if(noticeTicks>0)--noticeTicks;
         }

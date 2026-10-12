@@ -502,6 +502,7 @@ const char* Game::prompt() const {
         if (phase == Phase::Select) return "Choose on touch screen / D-pad + A";
         if (phase == Phase::Windup) return selection == 0 ? "Press A just before the landing!" : "Hold Circle Pad left; release when charged!";
         if (phase == Phase::EnemyWindup) return "Press A just before Crump lands!";
+        if (phase == Phase::EnemyImpact) return guarded ? "Guard!" : "Hit taken.";
         return actionSuccess ? "Nice!" : "Keep your timing steady.";
     }
     if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) return "A: confront Lord Crump";
@@ -602,8 +603,7 @@ void Game::move(const Input& i) {
 void Game::startBattle() {
     scene=Scene::Battle; phase=Phase::Select; phaseTick=0; selection=0;
     enemyHP=BattleRules::CrumpHP; actionSuccess=false; guarded=false;
-    generalBattleTriggers={};jumpCommand={};hammerCommand={};
-    guardAttempted=false;
+    generalBattlePad={};actionCommandPad={};defenseCommand={};jumpCommand={};hammerCommand={};
     jumpHeight=0; fieldJump={};fieldStep={};
 }
 void Game::attackDone(int damage) {
@@ -614,13 +614,21 @@ void Game::attackDone(int damage) {
 void Game::battle(const Input& i) {
     // One general-pad press-edge sample per simulation tick, before result calls.
     // Physical edge production and tutorial cadence remain adaptation contracts.
-    generalBattleTriggers.push(i.confirm ? BattleButtonA : 0);
+    BattlePadSample padInput;
+    padInput.pressed=(i.confirm?BattleButtonA:0)|(i.cancel?BattleButtonB:0);
+    padInput.snapshot.buttons=(i.jumpHeld?BattleButtonA:0)|(i.cancelHeld?BattleButtonB:0);
+    padInput.released=(i.confirmReleased?BattleButtonA:0)|(i.cancelReleased?BattleButtonB:0);
+    auto stick=[](float value) {return std::isfinite(value)?int8_t(std::clamp(value,-1.f,1.f)*70):int8_t(0);};
+    padInput.snapshot.mainX=stick(i.x);padInput.snapshot.mainY=stick(-i.z);
+    // General and private pad cadence is a native caller choice pending original
+    // loop tracing; ownership/reset behavior is independently documented.
+    generalBattlePad.update(padInput);actionCommandPad.update(padInput);
     if(jumpCommand.callbacksLive)jumpCommand.tick();
     HammerContext hammerInput;
     hammerInput.setupOptions=1; // Ordinary SetupAC(-2,3,1,0), actor token clear in harness.
     hammerInput.difficulty=attackDifficulty(3,0,0); // Default weapon byte3, no badge modifiers.
     // Adapt the Circle Pad's normalized70-unit range to original main-stick X.
-    hammerInput.held=i.x<=-30.f/70.f ? BattleHeldLeft : 0;
+    hammerInput.held=generalBattlePad.held.entries[0];
     if(hammerCommand.mainLive && hammerCommand.tick(hammerInput,battleRandom)==0)
         hammerCommand.mainLive=false;
     if (phase == Phase::Select) {
@@ -655,7 +663,7 @@ void Game::battle(const Input& i) {
         if (selection==0) {
             if (phaseTick>=BattleRules::JumpImpact) {
                 TimingAContext context;context.difficulty=BattleRules::JumpDifficulty;
-                actionSuccess=(jumpCommand.evaluate(generalBattleTriggers,context,battleRandom)&2)!=0;
+                actionSuccess=(jumpCommand.evaluate(generalBattlePad.triggers,context,battleRandom)&2)!=0;
                 jumpCommand.state=1000; // Harness finish scheduling, not recovered event binding.
                 attackDone(actionSuccess?2:1);
             }
@@ -668,14 +676,13 @@ void Game::battle(const Input& i) {
         }
     } else if (phase==Phase::Impact && phaseTick>=42) {
         if (enemyHP==0) { scene=Scene::Victory; sound=Sound::Success; }
-        else { phase=Phase::EnemyWindup; phaseTick=0; guarded=false; guardAttempted=false; }
+        else { phase=Phase::EnemyWindup; phaseTick=0; guarded=false; }
     } else if (phase==Phase::EnemyWindup) {
-        if (i.confirm && !guardAttempted) {
-            guardAttempted=true;
-            guarded=phaseTick>=BattleRules::EnemyImpact-BattleRules::GuardWindow && phaseTick<=BattleRules::EnemyImpact;
-        }
         if (phaseTick>=BattleRules::EnemyImpact) {
-            lastDamage=guarded?0:BattleRules::CrumpAttack;
+            DefenseContext context;context.hp=int16_t(progress.hp);
+            // Harness weapon gate0: do not invent tutorial superguard eligibility.
+            guarded=defenseCommand.evaluate(actionCommandPad,context)==4;
+            lastDamage=std::max(0,BattleRules::CrumpAttack-(guarded?1:0));
             progress.hp=std::max(0,progress.hp-lastDamage);
             phase=Phase::EnemyImpact; phaseTick=0; sound=guarded?Sound::Success:Sound::Hit;
         }

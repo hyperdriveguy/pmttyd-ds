@@ -8,6 +8,23 @@ distinct. Do not change native harness choices into original-game evidence.
 
 ## AC-01 — Opening Crump encounter and Jump callers (open)
 
+Partial answer in documentation commit81a2c2b:
+[harbor opening bindings](behavior/STORY_HARBOR_OPENING_BINDINGS.md) pins
+gor.rel entry/story resume values2..6,seven event spans,actor keys/placement,
+20 message call sites and the beforebattle NPC literal2/start/wait boundary.
+It explicitly leaves battle configuration,complete scene conditions and service/
+cadence/persistence semantics open. Native harness dialogue remains development
+notices;the inventory must not be substituted for a complete story event graph.
+
+Further partial evidence has arrived in
+[field battle entry/return](behavior/FIELD_BATTLE_ENTRY_AND_RETURN.md) and
+[harbor configuration](behavior/HARBOR_TUTORIAL_CONFIGURATION.md): literal2
+selects gor setup record0x60eb8,one weighted group/unit and unit_boss_kanbu1.
+The kind's raw halfword5 remains explicitly unclosed as HP until stat-copy/init
+consumers are recovered. The local field-return wait accepts sequence2 plus
+any nonzero result;actual victory/loss/escape producers remain open. Preserve
+these boundaries when answering remaining tutorial stats/event requests.
+
 Requested by the implementation agent. Implementation is now in
 `include/battle_timing_a.hpp`, `source/battle_timing_a.cpp` and the Jump branch
 of `Game::battle` in `source/game.cpp`. The evaluator follows
@@ -60,13 +77,41 @@ Native charge UI shows actual stages as a development assist; it does not claim
 to reproduce the original command's display geometry/animation. Sound requests
 retain `SFX_AC_PI1` and `SFX_AC_PONE1`; no replacement samples are played.
 
+## AC-03 — Defense callers, pad cadence and eligibility (open)
+
+The local [defense and pad contract](behavior/BATTLE_INPUT_AND_DEFENCE.md) is
+implemented in `source/battle_defense.cpp`, tested in
+`tests/battle_defense_tests.cpp` and connected at the harness enemy impact in
+`Game::battle`. General and private pads are separate;both currently receive
+one adapted native sample per simulation tick before callbacks. Private pad
+WorkInit preserves the release array and clears all other modeled state after
+every defense check. Native guard result is evaluated at impact,not first press.
+
+Please recover the original global physical edge/repeat producer,complete
+12-byte snapshot field bindings,main/battle/AC pad update order and pause cadence,
+private/general channel routing and defense call sites for Crump and ordinary
+enemy attacks. Identify the argument+0x13 weapon gate,unit modifier/automatic
+and override-counter writers,guard-possibility/status gates and damage dispatch
+bindings needed at each hit. Include multihit/newly sampled-input rules and an
+original single/mash/A+B/held/early/late trace. The harness uses gate0,no badges/
+automatic/override and provisional enemy impact54/one-damage attack;these must
+not become original tutorial evidence. Result5 routes are implemented locally,
+but the harness does not infer superguard eligibility or reflection effects.
+Both Hammer and defense use original BattleWork+0x1d18. Their portable local
+work currently owns separate test counters;native harness counters stay zero.
+Recover caller ownership so future forced commands bind one shared battle
+counter and cannot accidentally duplicate or reset its consumption.
+
 ## Implementation coverage and next work
 
 TimingA portable contract tests are `tests/battle_timing_a_tests.cpp`; native
 integration boundaries are in `tests/core_tests.cpp`'s `timing()` scenarios.
 The recovered `rand`/`irand` arithmetic has an explicit caller-owned seed. Its
 presence does not establish complete shared RNG or original save/load ownership.
-The harness takes no forced/random routes currently.
+The harness takes no forced/random routes currently. Battle pad snapshots are
+semantic native state,not a claim of original packed ABI compatibility;unknown
+snapshot fields still need their own contract. Pad repeat16/8 and inclusive
+main/C-stick thresholds are tested independently of UI/global physical repeats.
 
 Next implementation work: use AC-02 answers to bind Hammer's cadence/stop/
 damage/presentation to actual scripts and resolve original sound macros.

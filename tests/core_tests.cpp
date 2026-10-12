@@ -215,6 +215,30 @@ void timing() {
     Input held;held.x=-1;late.tick(held);CHECK(late.hammerAction().stage==1);
     for(int n=0;n<80;++n)late.tick(held);
     late.tick({});CHECK(late.phase==Phase::Impact && late.lastDamage==2);
+    auto enemyTurn=[](Game& g) {g.startBattle();attack(g,false);advance(g,42);CHECK(g.phase==Phase::EnemyWindup);};
+    for(int frame:{1,39,40,46,47,53,54}) {
+        Game g;enemyTurn(g);advance(g,frame-1);g.tick(confirm());
+        advance(g,BattleRules::EnemyImpact-frame);
+        CHECK(g.phase==Phase::EnemyImpact && g.guarded==(frame>=47));
+        CHECK(g.progress.hp==(frame>=47?10:9));
+        CHECK(g.defenseResult()==(frame>=47?4:frame>=40?1:2));
+    }
+    for(int first:{1,39,40,47}) {
+        Game g;enemyTurn(g);advance(g,first-1);g.tick(confirm());
+        advance(g,53-first);g.tick(confirm());
+        CHECK(g.guarded==(first<40) && g.defenseResult()==(first<40?4:1));
+    }
+    Game simultaneous;enemyTurn(simultaneous);advance(simultaneous,53);
+    Input both=confirm();both.cancel=true;simultaneous.tick(both);
+    CHECK(!simultaneous.guarded && simultaneous.defenseResult()==1);
+    Game bOnly;enemyTurn(bOnly);advance(bOnly,53);Input b;b.cancel=true;bOnly.tick(b);
+    CHECK(!bOnly.guarded && bOnly.defenseResult()==1); // Gate0 in this harness.
+    Game level;enemyTurn(level);Input aHeld;aHeld.jumpHeld=true;
+    for(int n=0;n<54;++n)level.tick(aHeld);
+    CHECK(!level.guarded && level.defenseResult()==2); // Held A is not a press edge.
+    Game guardPending;enemyTurn(guardPending);advance(guardPending,46);guardPending.tick(confirm());
+    CHECK(!guardPending.guarded && guardPending.defenseResult()==0);
+    advance(guardPending,7);CHECK(guardPending.guarded && guardPending.defenseResult()==4);
 }
 void battles() {
     Game g;g.startBattle();

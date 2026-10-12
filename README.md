@@ -7,8 +7,9 @@ a small Crump battle harness, touch menus and versioned saves.
 
 The Jump harness now uses the recovered US TimingA history checks and difficulty
 tables. Hammer uses the recovered held-left command with the ordinary default
-weapon's charge period and difficulty. Jump impact scheduling, guard and the
-encounter's original tutorial/event binding remain provisional. Open requests
+weapon's charge period and difficulty. Guard uses the recovered private-pad
+history checks and difficulty windows. Impact scheduling, damage and the
+encounter's original tutorial/weapon eligibility binding remain provisional. Open requests
 for the documentation agent are in [documentation requests](docs/DOCUMENTATION_REQUESTS.md).
 
 This is not a finished or fidelity-verified remake. Original skeletal/vertex
@@ -71,6 +72,7 @@ python3 tools/iso_assets.py inventory --output artifacts/iso-inventory.json
 python3 tools/emulator_smoke.py --seconds 8
 python3 tools/emulator_smoke.py --fresh-save --seconds 5 --input-script tests/azahar_walkthrough.py
 python3 tools/emulator_smoke.py --fresh-save --seconds 4 --input-script tests/azahar_hammer.py
+python3 tools/emulator_smoke.py --fresh-save --seconds 4 --input-script tests/azahar_defense.py
 python3 tools/emulator_smoke.py --reference-dolphin --seconds 12
 ```
 

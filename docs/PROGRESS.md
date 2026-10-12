@@ -1,5 +1,76 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native defense checks and separate battle pads
+
+Implemented the documented US BtlPad_WorkUpdate/WorkInit and defense result
+contract in include/battle_defense.hpp/source/battle_defense.cpp. Portable pad
+work retains current/prior semantic snapshots,30-entry trigger/repeat/held
+histories,unshifted release array and byte repeat phase/counter. Preserves
+inclusive main/C-stick thresholds,virtual edges,producer-supplied physical
+edges/repeats,whole-mask change reset,16/8 virtual repeat delays,analogA/B zeroing
+and WorkInit's release-array retention. This is semantic state,not original
+packed ABI or a closed global physical input producer. Unknown snapshot fields
+and native physical repeat/C-stick binding remain outside this implementation.
+
+Defense preserves independent badge-derived clamp/windows,HP/weapon-byte gate,
+override/automatic/B-window order,15-entry A+B anti-mash count (simultaneous A/B
+counts twice),normal A-result/absence classification and unconditional private
+pad reset on every return. Local result1/2/4/5 is stored and returned;normal auto
+does not force guard when the superguard gate is ineligible. Separate general
+and private pad ownership is explicit. Portable module commit:55d4d75.
+
+Native battle now samples both pads per simulation tick before callbacks,reads
+general held-left for Hammer and general triggers for TimingA,and calls defense
+at the harness enemy impact. Removed provisional first-press guard latching and
+five-tick window. At no-badge difficulty3,one A edge at index7 succeeds,at8 fails;
+two edges in0..14 reject,while an older edge at15 does not reject a newer edge.
+Held A is not a trigger. Native A/B held/release data is carried across catch-up
+ticks while edges are consumed once. Circle Pad floats are clamped to70 units
+and truncated to signed stick coordinates;this adaptation is not an original
+input measurement. Field movement/save layout is unchanged.
+
+The current harness uses weapon gate0,no badge/automatic/override values,
+provisional enemy impact54 and attack1. Guard reduces that harness damage by1;
+the complete damage dispatcher and tutorial eligibility are still unbound.
+Do not claim Crump superguard availability or reflection from the portable
+result5 path. On-screen feedback now identifies GUARD and Guard/Hit taken during
+enemy impact instead of showing the preceding Jump/Hammer prompt. Original
+story/dialogue,assets and sounds were not rewritten or converted.
+
+Validation:make test passed4 CTest executables (core,TimingA,Hammer,defense/pad)
+and58 Python tests;make all rebuilt ttyd-2ds.3dsx successfully;git diff --check
+passed. New module tests cover all seven A/B windows over30 history positions,
+eligibility/HP/automatic/override precedence,combined presses and14/15 boundary,
+general/private isolation,all return resets/release retention,producer-mask
+preservation,30-entry shift,all eight virtual direction threshold/release pairs
+and16/8 repeat/physical-change reset. Core scenarios cover native impact47/54
+success,46 failure,39/40 mash span boundary,simultaneous A/B,B gate rejection,
+held-A absence and delayed evaluation,plus existing action/save/field scenarios.
+These are derived contract tests;no original execution equivalence is asserted.
+
+Added tests/azahar_defense.py;isolated Azahar command:
+python3 tools/emulator_smoke.py --fresh-save --seconds4 --input-script
+tests/azahar_defense.py. First single-press capture showed GUARD and HP10/10;
+the initial mash capture did not establish the outcome. Adjusted mash hold/
+capture timing;reviewed repeated defense-mash and defense-mash-after showing
+Ouch and HP9/10. Final UI capture rerun reviewed: defense-single shows GUARD/
+Guard and HP10/10;defense-mash shows GUARD/Hit taken and HP9/10.
+Manual wall-clock inputs/screenshots are not exact-tick assertions or original
+gameplay comparisons. Stage props/character animation/camera limitations remain.
+Only generated test saves were reset;user emulator profile/saves and ISO remain
+untouched. Git/display sandbox escalations were automatically approved.
+
+Added AC-03 to docs/DOCUMENTATION_REQUESTS.md for original physical producer,
+snapshot fields,private/general cadence,defense call sites,Crump weapon gate,
+shared+1d18 counter ownership and damage/multihit/eligibility bindings. Linked
+incoming harbor opening/configuration/field-return evidence as partial AC-01
+answers. Raw kind halfword5 is not yet a closed HP contract;field-return nonzero
+result gate is not proof of loss/victory behavior. Next implement documented
+damage/application and event services and connect the tutorial/unit consumers
+as recovered. Do not replace story scenes with message lists. Full implementation
+goal remains active/incomplete. Concurrent documentation edits were preserved
+and excluded from implementation commits.
+
 ## 2026-10-12 — Native held-left Hammer command
 
 Implemented the recovered US ID3 main/result/delete behavior in
