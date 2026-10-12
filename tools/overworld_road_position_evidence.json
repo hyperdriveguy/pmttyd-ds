@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "scope": "Bero placement floor query, hit-object leaf/descendant centers and ordinary front-contact reset ownership; static original source only",
+  "dol_spans": [
+    {
+      "name": "bero_get_position_normal",
+      "address": 2147982196,
+      "size": 784,
+      "sha256": "6468a15285ba60d9d738a6e69870c6a6442f7003619fb05107f1a5ff9dd841ef"
+    },
+    {
+      "name": "hitObjGetPos",
+      "address": 2147566748,
+      "size": 336,
+      "sha256": "0b02378d97e66736eb780b9f4f291575ea16a34fe27cf6506f571dbfe5bb4f1d"
+    },
+    {
+      "name": "hitObjGetPosSub",
+      "address": 2147567084,
+      "size": 1388,
+      "sha256": "5bfa993e19a0e8135f651149ba9f309ee3ebb867cf9fffe91649d90855b2ae83"
+    },
+    {
+      "name": "_hitEnt",
+      "address": 2147584364,
+      "size": 1164,
+      "sha256": "972ae5ae81e2207327f34c7d1a39f6d708bc740e03b6afa2c9e375b2e2f2e7b0"
+    },
+    {
+      "name": "hitCheckFilter",
+      "address": 2147571580,
+      "size": 296,
+      "sha256": "2449ccf33696b3a35d43431dc373741cc46c2836adf11e5cf8d4a4174388e10a"
+    },
+    {
+      "name": "hitCheckVecFilter",
+      "address": 2147571876,
+      "size": 3332,
+      "sha256": "b15fb470ab90907c5637b54cf7421c5a049182abc5f58e6473370e24d2e0904c"
+    },
+    {
+      "name": "marioMoveMain",
+      "address": 2147849384,
+      "size": 1488,
+      "sha256": "2fb3744cded7847ad0c252487b8f5dfb2977f4d5aa395d0db30e565af06502ab"
+    },
+    {
+      "name": "marioCheckWall",
+      "address": 2148054928,
+      "size": 684,
+      "sha256": "381f8e9a74830a8b439e1cff534438b6e5307c674d30455ab2c16c6a18bb1d30"
+    },
+    {
+      "name": "marioSearchFrontWall_staying",
+      "address": 2148054232,
+      "size": 696,
+      "sha256": "5996749270c064224b2f1c2dc615ff9dac44a3cc5317e2b9f65c5739d776631c"
+    },
+    {
+      "name": "caseMain",
+      "address": 2147935724,
+      "size": 1568,
+      "sha256": "682b063da30f3d801958c3a4865d0be444b1d036ca0751e5512d0b1194912e80"
+    },
+    {
+      "name": "PSMTXMultVec",
+      "address": 2150229668,
+      "size": 84,
+      "sha256": "0e86b49668bd9172bfd1256aa2842a4326032efab48cb6b8df58523a63992e78"
+    },
+    {
+      "name": "PSVECAdd",
+      "address": 2150230912,
+      "size": 36,
+      "sha256": "c7b35d4075874e063982faa1d7d086e5d5ec4d70aed2b56c619b5e440e18e1ab"
+    },
+    {
+      "name": "PSVECScale",
+      "address": 2150230984,
+      "size": 28,
+      "sha256": "e0fbf8bbb6f184d7b21d322b68975adca6dc652510963c83c95b9ceb63e0671d"
+    },
+    {
+      "name": "Bero two-pi/360/zero",
+      "address": 2151810272,
+      "size": 12,
+      "sha256": "ee8618bed30cacd36e690581c225379be6b7642fa2e48f2f755dfd1c53268711"
+    },
+    {
+      "name": "Bero downward direction/length/octant/180/radius",
+      "address": 2151810312,
+      "size": 20,
+      "sha256": "516dbba817b8407369e8f327593d4be698efa40c550d2144f2b183b8d628f66d"
+    },
+    {
+      "name": "hit unit,negativeunit,half",
+      "address": 2151807044,
+      "size": 12,
+      "sha256": "edfac4ff77d16798afd8deda16a3b0782af2c01c9fc0ad0266af12f8530c705e"
+    },
+    {
+      "name": "hit center zero templates",
+      "address": 2150365172,
+      "size": 24,
+      "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+    }
+  ],
+  "dol_anchors": {
+    "2147982460": "4082000c",
+    "2147982468": "4bf9a819",
+    "2147982548": "ec410032",
+    "2147982680": "c0410028",
+    "2147982708": "38600000",
+    "2147982712": "4bf9ba05",
+    "2147982720": "4182000c",
+    "2147982728": "d0010028",
+    "2147571792": "38600000",
+    "2147571812": "d0190000",
+    "2147572460": "28000001",
+    "2147572524": "4c401382",
+    "2147572528": "418202b0",
+    "2147584732": "482860a5",
+    "2147584748": "482860dd",
+    "2147584792": "48285b8d",
+    "2147567768": "48289e0d",
+    "2147567784": "4828a2d9",
+    "2147567796": "901e0000",
+    "2147567056": "ec220024",
+    "2147567060": "4828a5f5",
+    "2147849448": "4182002c",
+    "2147849484": "901e01f0",
+    "2147849488": "901e01f4",
+    "2148055316": "93df01f0",
+    "2148055476": "93df01f0"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": []
+}
