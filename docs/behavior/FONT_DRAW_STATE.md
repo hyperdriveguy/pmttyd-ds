@@ -2,8 +2,9 @@
 
 US G8ME01 revision0, recovered2026-10-12. B evidence is static original DOL
 and original initializers. The14 local font state helpers below are recovered;
-JUTFont_DrawStart, FontDrawCode/Mtx and inner GX/font raster services remain
-separate. See [draw admission](MESSAGE_DRAW_RECORD_ADMISSION.md),
+JUTFont_DrawStart and FontDrawCode/Mtx local requests are now covered in
+[glyph/setup requests](FONT_GLYPH_REQUESTS_AND_SETUP.md); inner GX/font raster
+services remain separate. See [draw admission](MESSAGE_DRAW_RECORD_ADMISSION.md),
 [glyph effects](MESSAGE_GLYPH_EFFECTS.md) and [window manager](MESSAGE_WINDOW_MANAGER.md).
 No original glyph/texture assets or implementation bodies are copied into source.
 
@@ -68,8 +69,10 @@ No full-message state save, allocation or local validation.
 FontDrawStart(),0x80077b4c,size90, performs the same direct state resets with
 G=255 and a separately generated local palette color, then calls that same
 JUTFont service. The local entry bodies do not themselves call NoiseOff or
-RainbowColorOff; delegated JUT/GX initialization must be recovered before
-claiming which previous GPU effects survive or reset. Scale/color/edge stores
+RainbowColorOff. Delegated JUT initialization is now covered in
+[glyph/setup requests](FONT_GLYPH_REQUESTS_AND_SETUP.md): active texture-generator/
+TEV-stage counts reset to1; saved prior state is not restored. Inner GX effects
+remain open. Scale/color/edge stores
 above are established independently of those service effects.
 
 msgDisp's initial start and pose/icon restart calls therefore reset raw color,
@@ -136,7 +139,7 @@ saved-color-only restore after embedded objects, effect call order, different
 off-helper scope and index50 readiness. The reciprocal interpretation was
 independently checked over all65536 byte pairs, not by executing original code.
 
-Remaining: JUTFont_DrawStart and glyph Code/Mtx consumption, font glyph/width/
+Remaining: inner glyph geometry/page/vertex consumption, font glyph/width/
 texture tables, edge/color/alpha/scale raster effects, GX/matrix service bodies,
 palette/current-state writers, descriptor50 binding, outer cadence and matched
 original images/story callers. These14 helper bodies are locally established;

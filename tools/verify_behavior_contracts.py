@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'font_glyph_requests_and_setup': {
+        0x800775c0: 'c02d1a90', 0x800775ec: '48226c79',
+        0x80077600: '48226765', 0x80077464: '48226901',
+        0x80077470: '48242e8d', 0x80077484: '418200e8',
+        0x800774b8: '90ed1a8c', 0x800774e4: '3880fffe',
+        0x80077518: '38a00002', 0x80077540: '90ed1a8c',
+        0x80077578: '4bffd1a9', 0x80077714: '4bffd00d',
+        0x80074c20: '48243c61', 0x80074c70: '4823f8b1',
+        0x80074ca0: '4823ef69', 0x80074d20: '48242259',
+        0x80074d30: '48240355', 0x80074d44: '48243d75',
+        0x80074d4c: '48244281', 0x80074dd4: '48242aad',
+        0x80074de4: '4082001c', 0x80074e20: '482455b1',
+        0x80074e48: '482454b5', 0x80074e5c: '80022138',
+    },
     'font_draw_state': {
         0x80077748: '90ad1a90', 0x80077750: '900d1a98',
         0x8007775c: 'd02d1a90', 0x8007776c: '806d1a8c',
@@ -1049,6 +1063,12 @@ def verify(iso_path):
         if read(0x80420438, 4).hex() != '3c800000' or read(0x804203e4, 4).hex() != '3f800000':
             raise ValueError('Font noise texture-matrix constants mismatch')
         print('Three font palette colors, default scale and noise matrix constants verified')
+        texture_mode_floats = {0x804203ec: '3b000000', 0x804203f0: '3a800000',
+                              0x804203f4: '3b800000', 0x804203f8: '00000000'}
+        for address, expected in texture_mode_floats.items():
+            if read(address, 4).hex() != expected:
+                raise ValueError(f'Font setup texture mode constant mismatch {address:#x}')
+        print('Font setup texture-matrix modes and zero verified')
 
 
 if __name__ == '__main__':

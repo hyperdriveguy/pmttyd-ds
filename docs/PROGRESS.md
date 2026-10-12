@@ -3517,3 +3517,31 @@ and descriptor50, signed64 clock/trig/matrix services and actual outer draw/stor
 callers. Continue original attribution/order/branches/conditions and all other
 uncovered systems before complete-game requirements. Full objective active/
 incomplete; original execution/image/seed comparisons still needed.
+
+## 2026-10-12 — Font glyph requests and delegated GX setup
+
+Previous goal turn made progress through b46e73f. Began clean and added
+FONT_GLYPH_REQUESTS_AND_SETUP.md for FontDrawCode/CodeMtx and JUTFont_DrawStart:
+ordinary scale/translation/current-camera requests, caller-matrix in-place output,
+shared nonzero edge branch with four offset draws then center, raw-color/effective
+alpha restoration versus inherited no-edge GX color, full delegated GX setup
+order/arguments, static font texture object and word+16c texture-matrix mode.
+Updated font state to resolve delegated active stage/generator reset scope while
+retaining unknown inner GX/raster behavior and saved-state differences.
+
+Validation:920 instruction anchors and prior checks passed against read-only US
+ISO, including original1/512,1/1024,1/256 and zero constants. Fresh263-function
+evidence reports matched byte-for-byte. All local behavior links resolve;
+git diff --check passed. make test passed core plus36 Python tests; make all
+exited0, no rebuild. Only research/provenance/evidence tooling changed. No original
+execution/emulator run or profile/save modification; original disassemblies/
+reports remain ignored. Static verification does not prove inner glyph geometry/
+page vertices, concat/GX numerics, state producers/cadence, executed images or
+original/native equivalence.
+
+Next: _JUTFont_DrawPos glyph geometry/page lookup/vertices, font loading/width/
+glyph texture data and descriptor50, signed64 clock/trig/matrix services and
+actual outer draw/story callers. Continue original attribution/order/branches/
+conditions and all other uncovered systems before complete-game requirements.
+Full objective active/incomplete; original execution/image/seed comparisons
+still needed.

@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 260 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 896 instruction anchors plus those
+now fingerprints 263 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 920 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -163,6 +163,10 @@ Font state adds fourteen fingerprints, original three-color palette/default-scal
 and noise texture-matrix constants. Original window palette object50 is a request
 binding; no descriptor/image conversion or replacement noise asset is generated.
 Byte-alpha arithmetic checks are authored derivations, not original execution.
+Font glyph/setup requests add three fingerprints and original texture-matrix
+mode constants. Static font texture object0x8041e97c is a request binding;
+its glyph/page/image ownership is still unrecovered. No font assets or original
+raster implementation are added to native code/source history in this step.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,
