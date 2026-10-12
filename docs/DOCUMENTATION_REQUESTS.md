@@ -438,6 +438,17 @@ rather than treating a passing command helper as complete original attack timing
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
 
+Native position breadcrumb (2026-10-12): `source/battle_position.cpp` and
+`tests/battle_position_tests.cpp` now implement home/visible/part world/hit leaves,
+linked part lookup and integer GetHitPos event outputs. Semantic views preserve
+owner-supplied storage and scale/output aliasing;native coordinates remain
+unbound. Takeoff wrapper is next. Please recover BattleSamplingEnemy and
+BattleChoiceSamplingEnemy core admission,capacity/count/return/output initialization,
+mode4 and RNG policy requested by BATTLE_JUMP_TAKEOFF_POSITION.md;do not substitute
+nearest displayed target for the original private sampling buffer. Source scale/
+facing/part-world/pose writers and actual original target/takeoff traces remain
+requested through JUMP-01/DMG-02.
+
 Implementation breadcrumb (2026-10-12): `battle_move_position.cpp` now ports
 GetMoveFrame/MovePosition,including distinct count/speed policies and the raw
 query-output sentinel. Commit24baff7 fixes MarioJumpPosition's baseline setter

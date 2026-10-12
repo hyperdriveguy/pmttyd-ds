@@ -1,5 +1,35 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Unit and part position services
+
+Implemented BATTLE_UNIT_PART_POSITION_QUERIES.md in battle_position.hpp/cpp.
+Semantic views point at owner-supplied home/visible/scale/facing/belong fields,
+so motion and resource owners need not have copied position state. Ordered leaf
+getters preserve output/source aliasing. World position distinguishes absolute
+parts from relative offsets using owner189;hit position captures its separate
+side factor and applies both scaled offset layers with scale rereads per axis,
+rounded X/Y products and fused Z products. Linked part lookup preserves negative
+head selection and single-part nonmatching-ID behavior. Event wrapper keeps
+separate unit/registry requests,raw sentinel outputs,integer truncation and
+ordered writes. No native Crump coordinate fixture was promoted to original data.
+
+Validation:make test passed fifteen CTest suites plus58 Python tests;make all
+built ttyd-2ds.elf/3dsx,then exited0 with no rebuild after the final extra test.
+Tests cover home versus visible sources,ordered aliased getters,absolute/relative
+world positions,distinct facing/side factors,explicit hit unit versus part owner,
+scale/output alias rereads,fused Z versus separately rounded X/Y (8193 versus8192),
+linked/single-part lookup,negative fractional integer outputs,skipped and aliased
+raw destinations,and original Jump's integer hitZ+5 input preparation.
+git diff --check passed. No emulator run for these still-unbound position paths,
+original trajectory/FPSCR comparison or complete-game claim.
+
+Next:implement delivered takeoff wrapper with explicit private sampling/choice
+services,then bind original approach/Jump graph and scheduler. Candidate admission,
+chooser/RNG/count outputs,unit/part source writers,pose/scale lifetime and executed
+positions remain pending documentation/trace dependencies. Native damage/effect
+coordinates and original script/scene ownership still need binding. Full remake
+and goal remain incomplete.
+
 ## 2026-10-12 — Movement sound control and approach composition
 
 Implemented BATTLE_MOVEMENT_SOUND_CONTROL.md in battle_movement_sound.hpp/cpp.
