@@ -179,3 +179,10 @@ engines and original lifetime/frame behavior remain open.
 shared release leaves. Soft deletion keeps mask02 records name-visible after
 OR04;hard deletion clears only flags after heap3 free. Effect-specific update/
 04 consumption and render/frame/source ownership remain open.
+
+
+[Complete Main/04 consumption](MAJINAI_EFFECT_UPDATE_STATE_MACHINE.md) now
+supplies effect-specific soft cleanup and normal fade/lifetime;
+[Disp/pose requests](MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md) supplies full
+local draw sequence. Actual driver/animation/resource/matrix/render/scene
+services and original timing/visual traces remain open.

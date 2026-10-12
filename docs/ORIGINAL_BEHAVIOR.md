@@ -775,3 +775,10 @@ flag preservation,transient selector order,post-motion offsets/trailing and live
 speed/absolute-Y source choices are explicit. Full lifecycle/source/alias/math/
 pose/ability/terrain/original trajectories remain open;full-game documentation
 and final complete-game requirements remain incomplete.
+
+
+[Majinai update/cleanup](behavior/MAJINAI_EFFECT_UPDATE_STATE_MACHINE.md) and
+[draw/pose scalar/material requests](behavior/MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md)
+close complete local Main/Disp,four phases/soft04 cleanup,map/material state,
+exact progress thresholds/fused particle request and three draw passes. Resource/
+pose/matrix/display/driver/scene/platform and original visual/frame traces remain open.

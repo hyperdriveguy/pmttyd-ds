@@ -1,5 +1,33 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Complete Majinai update/cleanup and draw/pose requests
+
+Documentation agent ID2 closed Main394/Disp12c and raw pose material/loop/colour/
+camera leaves in two detailed contracts. Four-phase graph preserves async resource
+admission,live phase increments,no immediate redispatch,map ±5 word colour writes/
+flag08,current-GP actor material routes,exact~.93/1.0 ordered gates,fused particle
+request and signed alpha expiry. Soft04 path differs from normal phase3 cleanup;
+52 phase3 calls are derived,not measured frames. Draw preserves matrix order/
+alias,camera-relative rotation,white-low8alpha,PoseMain and three exact passes.
+Resource/pose/matrix/display/driver bodies are identities rather than closed
+engines. Original ELF/listings remain /tmp/id2-fxmain-*;no native/test/asset edits.
+
+Prior pending effect-deletion handoff committed b5799e4 after other-agent staging
+cleared. New validation: verify_majinai_effect_update.py passes26 complete/linked
+hashes,338 instruction anchors,five data/SDA/resource spans;repeat reports equal
+(/tmp/id2-fxmain-evidence.json and -second.json). Prior constructor/delete/general
+1980 checks,Python compilation,diff-check and2314 local links pass. make test
+56/56 CTest suites and78 Python tests;make all passes. Logs:/tmp/id2-fxmain-test.log
+and /tmp/id2-fxmain-build.log. Concurrent native/ID1 changes preserved.
+
+Own Main/Disp lock released;EVT-01/JUMP-01/DMG-02 remain open. Next documentation
+recovers actual animation/resource/matrix/display/driver/particle/scene source
+owners and lifetime/clock/numeric policy,plus record/reset/end/turn and other
+requests. Native original registry/address/heap/render/audio/message binding
+and original visual/frame/exception traces remain required. Goal active/incomplete;
+full effect/game fidelity and complete-game requirements cannot yet be claimed.
+
+
 ## 2026-10-12 — RunDataEventChild and original Mario key7 child asset
 
 Implemented `battle_data_child.cpp` for complete RunDataEventChild and borrowed

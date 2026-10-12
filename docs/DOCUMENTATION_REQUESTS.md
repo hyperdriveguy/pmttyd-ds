@@ -18,6 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Partner slit and roll gates,slit-floor and forced-exit bindings | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete party_slit/party_roll and used slit-floor/forced-off leaves,caller/state/output graphs;pose/animation/source/terrain/numeric/original trajectories remain separate |
+| Majinai effect update,soft-request consumption and draw requests | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Main/cleanup](behavior/MAJINAI_EFFECT_UPDATE_STATE_MACHINE.md),[Disp/pose leaves](behavior/MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md):complete local four-phase/soft04/map/material/alpha/fused particle/three-pass graph and leaves;animation/resource/matrix/display/driver/platform/source/runtime remains open |
 | Flying history production,initialization and source bindings | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Writer](behavior/FIELD_PARTNER_FLY_HISTORY_WRITER.md),[initializer](behavior/FIELD_PARTNER_FLY_HISTORY_INITIALIZATION.md),[Cloud/Vivian callbacks](behavior/FIELD_PARTNER_FLY_CALLBACK_BINDINGS.md),[source leaves](behavior/FIELD_PARTNER_FLY_SOURCE_LEAVES.md):seven complete local bodies,kind5/6 binding records,four actual writer/init sites;animation/ability/terrain/source/alias/numeric/original trajectories remain separate |
 | Effect soft/hard deletion and payload-release ownership | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete leaves](behavior/EFFECT_SOFT_AND_HARD_DELETION.md),[caller/name/fog lifetime](behavior/EFFECT_DELETE_CALLERS_AND_LIFETIME.md):soft02→OR04 versus hard heap3 free→flags0,raw Maya pointer,all271 DOL sites and fog-name correction;update/draw/driver/scene/raw/REL/runtime remains open |
 | Majinai effect construction,pool acquisition and map-word publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Constructor/payload](behavior/MAJINAI_EFFECT_CONSTRUCTION.md),[pool/map helpers](behavior/EFFECT_POOL_ACQUISITION_AND_MAP_PUBLICATION.md):full local order,heap3/count reread,partial name clear,exhaustion/no-null guard and map+1e WORD publication;main/draw/delete/resource/platform/source/runtime remains open |
@@ -2021,3 +2022,23 @@ pass;absolute Y error has repeated global/buddy roles. Seven complete hashes,
 467 anchors,ten constants,two kind spans,two imports and four actual caller
 sites pass;54 CTest/78 Python tests and3DS build pass. Only ID1 lock released;
 source/alias/index/flag/kind/FP/pose/ability/backend/runtime parent gaps remain.
+
+
+ID2 EVT-01/JUMP-01/DMG-02 Majinai Main/Disp delivery (2026-10-12), partial answer:
+[Complete Main](behavior/MAJINAI_EFFECT_UPDATE_STATE_MACHINE.md) closes394 body:
+soft04 clear→pose release→map08 clear→hard delete without phase3 restoration;
+four phases with async MOBJ_EFF_majinai/A_1 setup,word map grayscale ±5/clamps,
+current-GP field five poses versus battle Mario-body one,exact progress3f6e147b
+(~.93)/1.0 ordered gates,fused55*scale+Y and45*scale Stardust request,live phase
+increment/no same-call redispatch,alpha255→0 queued then-5 cleanup on52nd phase3
+CALL (not observed frames),early-coordinate depth snapshot and queue omissions.
+[Complete Disp/leaves](behavior/MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md) closes
+12c draw:-1 guard,translation*camera-relative Y rotation*uniform scale alias
+requests,On840/white-low8alpha/PoseMain/three pass1/2/3 draws with float0/10,
+full raw pose On/Off/LoopTimes/Colour and camera pointer-table leaves. Backend
+identities are linked,not newly recovered engines. Own lock released;animation/
+resource/matrix/display/driver/particle/scene/FPSCR/alignment/source and original
+visual/frame traces remain open. Verifier passes26 complete/linked hashes,338
+anchors,five spans;repeat reports equal. Prior construction/delete/general1980
+checks pass;make test56 CTest/78 Python and make all pass;2314 local links resolve.
+No native/test/asset conversion code changed by ID2;original listings remain /tmp.

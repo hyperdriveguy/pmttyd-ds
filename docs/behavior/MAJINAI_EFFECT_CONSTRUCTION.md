@@ -101,3 +101,10 @@ original constants/string identities,map-work query after payload and exact
 four-byte+1e publication,retained E return,null and exhausted-domain requests.
 Effect main/draw/delete/resources,global driver/map/pool/heap/source ownership,
 numeric/platform exception policy and original effect/frame traces remain open.
+
+
+[Complete update state machine](MAJINAI_EFFECT_UPDATE_STATE_MACHINE.md) and
+[draw/material requests](MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md) now establish
+state18,alpha14,pose1c and scale10 local consumers,soft04 cleanup and normal
+phase progression. Source driver/resource/pose/render/matrix/numeric/platform
+and original runtime remain open.
