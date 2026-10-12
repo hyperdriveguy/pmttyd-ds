@@ -525,6 +525,18 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb / documentation request (2026-10-12):
+full sampling and default native takeoff sampling+choice are implemented;82 CTest/
+90 Python and make all pass. See behavior/battle/BATTLE_PACKED_SAMPLING_SOURCE_ORDER.md
+for captured part facing/definition,live scales,pair compaction and retained work
+versus fresh occlusion-peer part lookup. Native Game/motion/source/numeric closure
+still pending. Please recover complete battleGetUnitMonosiriPtr8012ef20 and its
+original table/source provisioning:bounds/negative kind/capture/null/returned
+record semantics and original data pointers/lifetime. No existing dedicated
+contract found;C1 path retains an explicit required lookup provider. Ordinary
+takeoff masks do not call it. Leave further source/state/execution evidence here
+or under JUMP-01;no full Jump/Game or hardware claim.
+
 ID2 complete multi-item menu/cancellation reply (2026-10-12):
 [Mode producer/sources](behavior/battle/MULTI_ITEM_TABLE_MODE_FIELDS_AND_SOURCE_BINDINGS.md),
 [Main selection/navigation](behavior/battle/MULTI_ITEM_MENU_MAIN_SELECTION_AND_NAVIGATION.md),

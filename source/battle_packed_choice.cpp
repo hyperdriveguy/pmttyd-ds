@@ -19,7 +19,10 @@ BattleCandidateRecords privateBattleCandidateRecords(BattleCandidateBuffer& b) {
     BattleCandidateRecords r;r.bytes.user=&b;r.bytes.memory.user=&b;
     r.bytes.byte=[](void* p,uint32_t o) {auto& b=*static_cast<BattleCandidateBuffer*>(p);assert(o<b.bytes.size());return b.bytes[o];};
     r.bytes.memory.half=[](void* p,uint32_t o) {auto& b=*static_cast<BattleCandidateBuffer*>(p);assert(uint64_t(o)+2<=b.bytes.size());return uint16_t(uint16_t(b.bytes[o])<<8|b.bytes[o+1]);};
-    r.bytes.memory.word=[](void* p,uint32_t o) {auto& b=*static_cast<BattleCandidateBuffer*>(p);assert(uint64_t(o)+4<=b.bytes.size());return uint32_t(b.bytes[o])<<24|uint32_t(b.bytes[o+1])<<16|uint32_t(b.bytes[o+2])<<8|b.bytes[o+3];};return r;
+    r.bytes.memory.word=[](void* p,uint32_t o) {auto& b=*static_cast<BattleCandidateBuffer*>(p);assert(uint64_t(o)+4<=b.bytes.size());return uint32_t(b.bytes[o])<<24|uint32_t(b.bytes[o+1])<<16|uint32_t(b.bytes[o+2])<<8|b.bytes[o+3];};
+    r.bytes.memory.storeWord=[](void* p,uint32_t o,uint32_t v) {auto& b=*static_cast<BattleCandidateBuffer*>(p);assert(uint64_t(o)+4<=b.bytes.size());b.bytes[o]=v>>24;b.bytes[o+1]=v>>16;b.bytes[o+2]=v>>8;b.bytes[o+3]=v;};
+    r.bytes.memory.storeHalf=[](void* p,uint32_t o,uint16_t v) {auto& b=*static_cast<BattleCandidateBuffer*>(p);assert(uint64_t(o)+2<=b.bytes.size());b.bytes[o]=v>>8;b.bytes[o+1]=v;};
+    r.bytes.memory.storeByte=[](void* p,uint32_t o,uint8_t v) {auto& b=*static_cast<BattleCandidateBuffer*>(p);assert(o<b.bytes.size());b.bytes[o]=v;};return r;
 }
 int32_t packedUnitFp(uint32_t unit,bool maximum,const BattleActorServices& s) {
     const int32_t kind=sw(word(s,unit+8));const uint32_t battle=currentBattleAddress(s),offset=maximum?0x10e:0x112;

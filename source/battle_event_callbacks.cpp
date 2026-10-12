@@ -17,9 +17,10 @@ BattlePackedChoiceServices nativeBattleChoiceServices(EventNativeRuntime& runtim
     s.subtract=[](void* p,float a,float b) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.subtractFloat);return r.platform.subtractFloat(r.platform.user,a,b);};
     s.negativeMultiplySubtract=[](void* p,float a,float b,float c) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.negativeMultiplySubtractFloat);return r.platform.negativeMultiplySubtractFloat(r.platform.user,a,b,c);};return s;
 }
+BattlePackedSamplingServices nativeBattleSamplingServices(EventNativeRuntime& runtime,void* user,uint32_t (*monosiri)(void*,int32_t)) {BattlePackedSamplingServices s;s.common=nativeBattleChoiceServices(runtime);s.user=user;s.monosiri=monosiri;return s;}
 BattleTakeoffCoreServices nativeBattleTakeoffCoreServices(BattleTakeoffBackend& backend) {
     assert(backend.runtime);BattleTakeoffCoreServices s;s.user=&backend;
-    s.sample=[](void* p,BattleCandidateBuffer& b,uint32_t w,int32_t a,int32_t side,uint32_t flags,uint32_t attrs,int32_t bias) {auto& backend=*static_cast<BattleTakeoffBackend*>(p);assert(backend.sample);return backend.sample(backend.user,b,w,a,side,flags,attrs,bias);};
+    s.sample=[](void* p,BattleCandidateBuffer& b,uint32_t w,int32_t a,int32_t side,uint32_t flags,uint32_t attrs,int32_t bias) {auto& backend=*static_cast<BattleTakeoffBackend*>(p);if(backend.sample)return backend.sample(backend.user,b,w,a,side,flags,attrs,bias);return samplePackedBattleCandidates(privateBattleCandidateRecords(b),w,a,side,flags,attrs,bias,nativeBattleSamplingServices(*backend.runtime,backend.user,backend.monosiri));};
     s.choose=[](void* p,BattleCandidateBuffer& b,uint32_t flags,int32_t& unit,int32_t& part)->int32_t {
         auto& backend=*static_cast<BattleTakeoffBackend*>(p);struct Values {int32_t* unit;int32_t* part;} values{&unit,&part};CandidateChoiceOutputs outputs;outputs.user=&values;
         outputs.write=[](void* p,bool u,int32_t v) {auto& values=*static_cast<Values*>(p);*(u?values.unit:values.part)=v;};

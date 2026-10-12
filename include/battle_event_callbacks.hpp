@@ -18,6 +18,7 @@
 #include "battle_packed_hit.hpp"
 #include "battle_packed_takeoff.hpp"
 #include "battle_packed_choice.hpp"
+#include "battle_packed_sampling.hpp"
 
 namespace ttyd {
 struct BattleDataChildBackend {
@@ -40,10 +41,12 @@ BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend&);
 struct BattleTakeoffBackend {
     EventNativeRuntime* runtime=nullptr;
     void* user=nullptr;
-    int32_t (*sample)(void*,BattleCandidateBuffer&,uint32_t,int32_t,int32_t,uint32_t,uint32_t,int32_t)=nullptr;
+    int32_t (*sample)(void*,BattleCandidateBuffer&,uint32_t,int32_t,int32_t,uint32_t,uint32_t,int32_t)=nullptr; // Null selects native sampler.
+    uint32_t (*monosiri)(void*,int32_t kind)=nullptr;
 };
 BattlePackedChoiceServices nativeBattleChoiceServices(EventNativeRuntime&);
-// Complete native chooser default;sampling remains an explicit provider.
+BattlePackedSamplingServices nativeBattleSamplingServices(EventNativeRuntime&,void* user=nullptr,uint32_t (*monosiri)(void*,int32_t)=nullptr);
+// Complete native sampler/chooser defaults;Monosiri mask1 requires its provider.
 BattleTakeoffCoreServices nativeBattleTakeoffCoreServices(BattleTakeoffBackend&);
 BattlePackedTakeoffServices nativeBattleTakeoffServices(EventNativeRuntime&,const BattleTakeoffCoreServices&);
 // Services and runtime must outlive registration. Sampling/choice are required.

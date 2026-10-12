@@ -335,6 +335,38 @@ requirements and EVT-01/JUMP-01/DMG-02 remain incomplete.
 
 # Progress and next-session handoff
 
+## 2026-10-12 — Native sampling and default takeoff composition
+
+Implemented full sampling entry/update/core and forward-level helper over native
+unit/kind/part/status and raw/private candidate records. Metadata preserves
+ordered side-mask stores/rereads/Q;core captures A before work,keeps high-bit
+countff early path,scans original64 units/count-owned parts and constructs distinct
+hit/sort/bias/lane fields. Geometry captures facing/definition before world query
+and rereads scale per operation. Every A/C filter,same-unit suppression,occlusion,
+word-pair compaction and permutation exchange branch now uses live native reads.
+Takeoff backend defaults to native sampling AND choice;no fixed candidate fallback.
+Monosiri C1 lookup still requires explicit provider/documentation (not used by
+ordinary takeoff masks). Source/numeric/scene domains remain open.
+
+Evidence:behavior/battle/BATTLE_PACKED_SAMPLING_SOURCE_ORDER.md. Original inspected
+ELFs/disassembly stay /tmp/pm-native-sampling.*,sampling-entry.*,forward.* outside
+history. Private accessor bounds are native provider invariants,not original
+capacity guards or invalid-stack-write fidelity. No dialogue/timing rewrite.
+
+Validation:make test82 CTest/90 Python;make all passes. Original ISO verifier
+passes7 complete bodies/48 instruction anchors/14 constant spans. Logs:
+/tmp/pm-packed-sampling-test.log and /tmp/pm-packed-sampling-build.log. Initial
+fixtures had incorrect hand-calculated Y/Z expectations and omitted hit constant
+804226a8;corrected fixtures,then all checks pass. Tests cover all reject masks,
+metadata/Q/high-bit skips,status27,geometry/padding,Monosiri queries,compaction,
+occlusion/lanes/body/equal-key sorting,captured facing/live scale,raw native buffers
+and actual takeoff callback with both default cores over native records. Authored
+inputs/numeric providers;no original-runtime/emulator/hardware/full-scene claim.
+
+Next:original source ownership/Monosiri documentation,complete native motion and
+transitive Jump/event/services,outer battle/Game binding and original validation.
+Full-game goal active/incomplete;concurrent work preserved.
+
 ## 2026-10-12 — Native candidate choice and takeoff default provider
 
 Implemented complete candidate chooser over actual unit/kind/status/weapon/item/
