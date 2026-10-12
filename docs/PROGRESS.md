@@ -1,5 +1,36 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Complete conditional action-state6 root registration
+
+Implemented `battle_attack_registration.cpp` for the complete documented state6
+region. It fetches actor twice around optional window-off,retains the second
+unit,then preserves zero-gravity/category/status/Electric/Confuse ordering and
+RNG consumption. Roots use priority10/flags0 through the recovered constructor.
+Post-constructor E.ID writes actor2a8 BEFORE fresh U0 binds E.owner;only then
+nonzero wait ID is deleted/cleared. Every path advances channel6,including
+suppression/null creation. No HP check,fallback script,synchronous execution or
+fixed delay was invented. The complete action controller's other states remain
+separate work;conditional Jump selection and full native source owners remain open.
+
+Validation: final make test passes53 CTest suites/78 Python tests;final make all
+passes. Logs:/tmp/pm-attack-registration-test-final.log and
+/tmp/pm-attack-registration-build-final.log. Fixtures cover real root constructor/
+wait deletion/flags0 no live append/global speed,actor/window/context recapture,
+post-ID-store identity mutation,short-circuit statuses/attribute exemptions,
+category checked-versus-unchecked null,qualifying Electric draw,Confuse threshold/
+flag preservation,creation-null and channel advancement. Negative RNG fixture
+preserves the original branch;it is not claimed reachable with original irand.
+ISO registry verifier passes72 callback identities/156 sites/127 registration
+anchors/7 spans;log:/tmp/pm-attack-registration-evidence.log. Read-only listing:
+/tmp/pm-action-registration.disasm. Initial full build briefly hit concurrent
+camera declaration work;standalone fixture passed and final full rerun is green.
+
+Next:native GP/arena/unit/controller ownership and actual function registry;
+port delivered RunDataEventChild/Mario key7 and add missing80416bd0 tiny child
+span/trailing word to the original pack. Original stream execution,full controller/
+menu/effect/pose/audio/source/domain/FPSCR/runtime fidelity remains unfinished.
+Goal active/incomplete;no emulator run for unbound callback/backend services.
+
 ## 2026-10-12 — Complete Majinai effect construction and pool/map publication
 
 Documentation agent ID2 closed effMajinaiEntry f4,effEntry68,mapGetWork14 in

@@ -482,6 +482,17 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Action-registration breadcrumb (2026-10-12): `battle_attack_registration.cpp`
+ports FULL state6 local gates/root10/flags0/post-ID→actor→wait-delete/channel6
+ordering. Real constructor/lifecycle fixtures pin global context/speed/no live
+append and actor recapture;status/RNG routes remain original. Final make test
+passes53 suites/78 Python tests;make all passes;source verifier passes72 callback
+identities/156 sites/127 anchors. Other action states/native unit/menu/GP/arena/
+registry and original execution remain open.Next:delivered RunDataEventChild and
+Mario key7 binding,missing80416bd0+original trailing word in pack,then actual
+native owners/callback implementations. Earlier constructor-level binding error
+is corrected to requested8041e940,not GP18.
+
 Run-check source correction (2026-10-12): native header/fixture now consume
 requested8041e940 via getRequestedEventSystemLevel,as original80037744 proves.
 Whole GP18 remains the distinct getter/clock mask. Earlier whole-mask constructor
