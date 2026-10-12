@@ -14,6 +14,18 @@ struct EventEntry {
     uint32_t nextCommand=0,currentCommand=0,arguments=0,cachedFunction=0;
     int32_t waitCount=0;
     uint64_t waitStart=0;
+    uint32_t restartScript=0,field1a4=0,field170=0,field150=0;
+    int32_t owner=0,field16c=0;
+    uint8_t type=0,loopIndex=0,switchIndex=0;
+    EventEntry* waitingParent=nullptr;
+    EventEntry* waitingChild=nullptr;
+    EventEntry* brotherOwner=nullptr;
+    uint32_t userWork=0,userFlags=0;
+    std::array<int32_t,16> locals{};
+    std::array<uint32_t,3> localFlags{};
+    std::array<uint8_t,16> labelIds{};
+    std::array<uint32_t,16> labelAddresses{};
+    std::array<uint32_t,7> messageFields{}; // Original178..190,retained as raw words.
 };
 struct EventContext {
     int32_t capacity=0;

@@ -443,6 +443,13 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Constructor breadcrumb (2026-10-12): `event_creation.cpp` ports delivered
+root/typed constructors,label scans and run-check with original append/ID order.
+Native free capacity and16-label domain assertions are explicit boundaries;
+please retain capacity/label-domain provenance and original constructor/creation/
+pause traces as open obligations. Child/brother/inline/deletion/restart/control
+binding and full tagged opcode/value providers remain next before native Jump.
+
 Current delivered coverage:the complete local manager/priority loop,root/typed/
 child/brother constructors,restart,plain/ID run and concurrency variants,wait/
 USER_FUNC continuations,control wrappers,setters and full deletion/stop/start

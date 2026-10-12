@@ -1,5 +1,40 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Root event construction,label scanning and run-check
+
+Implemented EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md and
+EVENT_LABEL_SCAN_AND_ENTRY_RUN_CHECK.md in event_creation.hpp/cpp. EventEntry
+now carries constructor/ownership/local/label/message fields semantically.
+Constructor scans first inactive slot,increments allocation before clearing,
+initializes retained script/type/priority/owner/stack/speed/credit/local/label
+state,assigns pre-increment ID and performs final zero-ID repair only after
+run-check. Label scan uses low16 opcode,signed count,raw low8 label IDs and
+unconditional first-operand reads,including terminal1;opcode2 does not terminate
+scan. Append follows label scan,reads live entry flags/ID and does not sort.
+Run-check issues current-context StopAll by system level,affecting existing events
+and never implicitly resuming. Native free-slot/16-label/script-domain assertions
+are boundaries,not original allocation failure or label overflow repair.
+
+Validation:make test ran27 CTest suites;26 passed,including new event_creation,
+manager/dispatcher and all battle suites. The core suite currently fails
+`tests/core_tests.cpp:543 !overlap.airborne() && overlap.groundHeight==0 &&
+overlap.groundContact.sourceNode==2` during concurrent field-wall/ray changes.
+Repeated full run retained that failure. Recorded it in the overworld inbox;
+those active field source edits remain separate from this constructor commit.
+Ran Python checks independently after CTest stopped make test:58 tests passed.
+make all rebuilt constructor/event/game objects and ttyd-2ds.elf/3dsx,then exited0
+with no rebuild after extra integration tests. git diff --check passed.
+
+Constructor tests cover dirty inactive reset,ascending allocation,narrowed flags/
+type/priority,zero locals/links/cache/credit,speed capture,terminal operand read,
+labels after opcode2,raw duplicate IDs/all16 slots/low16 distinction,append gates,
+post-scan changed flags/ID,all run levels,existing-event stop,independent context,
+ID wrap and retained0. Real manager creates a priority255 root during dispatch;
+its fractional initial credit delays execution until next pass. No emulator or
+original runtime/pause/capacity trace claim. Next:child/brother/inline/delete/
+restart/control ownership,tagged values/remaining opcodes,then original Jump.
+Full remake and native timer replacement remain incomplete.
+
 ## 2026-10-12 — Event fetch,wait and USER_FUNC continuations
 
 Implemented EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md in event_dispatch.hpp/cpp.

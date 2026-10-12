@@ -103,3 +103,11 @@ Verifier reads the US ISO read-only, pins eight containing bodies,45 instruction
 anchors and17 data spans (14 scalar constants/three names). Inspection listings/
 ELFs stay ignored or in/tmp. No native code, assets, emulator profiles or saves
 were changed by this documentation delivery.
+
+Cross-session validation breadcrumb (2026-10-12,event constructor session):
+current make test fails the core overlap-floor landing assertion at
+`tests/core_tests.cpp:543` during field-wall/ray integration;expected grounded
+height0/sourceNode2. New event_creation and all other CTest suites pass.
+Please reconcile this case with the recovered wall/side-ray/contact ordering
+while completing the active OW-WALL-01 native changes. No field code was changed
+by the constructor session. Exact failure is also recorded in docs/PROGRESS.md.
