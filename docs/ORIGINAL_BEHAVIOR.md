@@ -939,3 +939,11 @@ root25 fields,captured signed count,64-byte records,root-relative parent links,
 child-relative8 fields,retained child/fresh root clear ordering. With flat/type4
 contracts,all local Set/Clear routes are documented. Formats/consumers/platform/
 source/scene/original traces/full-game requirements remain open.
+
+ID2 DVD request delivery (2026-10-12):
+[slot open/global callback](behavior/file/DVD_MANAGER_SLOT_OPEN_AND_GLOBAL_CALLBACK.md)
+and [synchronous wait](behavior/file/DVD_MANAGER_SYNCHRONOUS_READ_PROTOCOL.md)
+close Open/Read/SetupCallback. First256-slot8000 admission,path-1 gate,ordered
+clear/name/LOW8-LOW16 parameters/occupied-before-open,0002 yield and length-word
+return/global callback separation are explicit. Worker/SDK/source/platform/
+scene/original traces/full-game requirements remain open.

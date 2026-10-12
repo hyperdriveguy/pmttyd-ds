@@ -23,6 +23,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
 | File relocation dispatch and supported type routes | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Dispatch/type map](behavior/file/FILE_RELOCATION_TYPE_DISPATCH.md),[eight flat types](behavior/file/FILE_FLAT_POINTER_RELOCATION.md):all11 routes,unsigned guards/ordered arithmetic/retained first/no null preservation;format consumers/platform/source/runtime remain open;prior missing fixture resolved |
 | Type4 texture-palette nested relocation | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Setup](behavior/file/FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_SETUP.md),[clear](behavior/file/FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_CLEAR.md):complete nested type4,signature/panic/low16 live count/pointer-data-flag order/source82 image headers;consumers/platform/source/runtime remain separate;prior missing fixture resolved |
+| DVD manager synchronous request and wait protocol | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Slot open/global callback](behavior/file/DVD_MANAGER_SLOT_OPEN_AND_GLOBAL_CALLBACK.md),[read/wait](behavior/file/DVD_MANAGER_SYNCHRONOUS_READ_PROTOCOL.md):complete Open/Read/SetupCallback,256*152 slots/8000 gate/path-1/parameter truncation,request flag rereads/0002 yield/length return/global callback separation;worker/direct SDK I/O/platform/source/runtime remain separate |
 | Type5 nested resource pointer relocation | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Setup](behavior/file/FILE_TYPE5_NESTED_POINTER_SETUP.md),[clear](behavior/file/FILE_TYPE5_NESTED_POINTER_CLEAR.md):complete type5 root25 fields/captured signed count/64-byte records/root-relative parent/child-relative8 fields/order;all local Set/Clear routes linked;source formats/consumers/platform/runtime remain separate |
 | Smart arena initialization and header provisioning | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Initializer](behavior/memory/SMART_ARENA_AND_HEADER_INITIALIZATION.md),[scoped provisioning](behavior/memory/SMART_RESOURCE_PROVISIONING_REQUIREMENTS.md):complete smartInit,heap4 request/double clear,2048*28 headers/live endpoints/flag-counter reset;heap bootstrap/type relocation/platform/source/runtime remain separate |
 | Smart allocation placement and retry/header publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Header/gap placement](behavior/memory/SMART_ALLOCATION_HEADER_AND_GAP_PLACEMENT.md),[retry/failure](behavior/memory/SMART_ALLOCATION_RETRIES_AND_FAILURE_OWNERSHIP.md):complete smartAlloc,first flag/auto3,release-counter sync/reset,header reservation/word alignment/unsigned leading-firstfit/three tail-only retries/no failed-header restoration;arena init/type relocation/platform/source/runtime remain separate |
@@ -2604,3 +2605,18 @@ make test71 CTest/78 Python and make all pass;logs /tmp/id2-type5-test.log,
 unresolved inventory/reference-tool-tree links owned by their source session.
 Only ID2 lock released;source formats/consumers/platform/worker/scene/original
 runtime/full-game requirements stay open.
+
+ID2 DVD manager request delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial:
+[Open/global callback](behavior/file/DVD_MANAGER_SLOT_OPEN_AND_GLOBAL_CALLBACK.md)
+and [synchronous read](behavior/file/DVD_MANAGER_SYNCHRONOUS_READ_PROTOCOL.md)
+close three complete bodies. Open path-1 only,first256-slot8000 selection,
+152-byte clear/name copy,LOW8 A→halfword/LOW16 C,occupied-before-SDK-open and
+zero-result reset are explicit. Read publishes words/two flag RMW pairs,clears
+per-request callback,wakes only on0002 and returns CURRENT length D74,not a read
+result count. SetupCallback writes GLOBAL8041ebf4;worker/consumer remains open.
+Verifier nine hashes(three complete/six linked),133 anchors,one startup span,
+repeat JSON,prior async/acquisition/general1980 checks pass. make test72 CTest/
+78 Python and make all pass;logs /tmp/id2-dvdread-test.log,/tmp/id2-dvdread-build.log.
+All2823 checked local links resolve;prior inventory link breadcrumbs RESOLVED
+in current tree. Own ID2 lock released;worker/init/delete/direct SDK/source/
+platform/scene/original runtime/full-game requirements remain open.

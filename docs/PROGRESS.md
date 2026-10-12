@@ -1,5 +1,26 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2 DVD manager open/read/global callback contracts
+
+Added two detailed contracts and binary verifier for complete DVDMgrOpen/Read/
+SetupCallback. First256-slot8000 admission,path-1-only check,152-byte slot clear,
+parameter truncation/occupied-before-open and failure reset are explicit. Read
+publishes request words/two flag rereads,clears local callback,yields on0002 and
+returns current length word74. Global callback setter is a distinct address.
+Acquisition documentation links those local bodies;own ID2 lock released.
+
+Validation:verify_dvd_manager_requests.py passes nine hashes(three complete/six
+linked),133 anchors,one startup span;repeat JSON matches. Python compilation,
+prior async/acquisition/general1980 checks and all2823 local file links pass.
+Earlier inventory missing references are RESOLVED in current tree. make test
+passes72 CTest/78 Python;make all passes. Logs:/tmp/id2-dvdread-test.log,
+/tmp/id2-dvdread-build.log. Scoped staged whitespace check passes. No native/test/
+asset extraction/conversion change or original disc/thread/timing execution claim.
+
+Next:DVDMgrMain/init/delete,SDK path/open/read/error/callback consumers and
+worker/platform/source/scene evidence. Full resource engine/game requirements
+and EVT-01/JUMP-01/DMG-02 remain incomplete.
+
 ## 2026-10-12 — Native wait-event replacement and guard polling
 
 Registered StartWaitEvent8010a26c,StopWaitEvent8010a1fc and WaitGuardMove8010a1c8.

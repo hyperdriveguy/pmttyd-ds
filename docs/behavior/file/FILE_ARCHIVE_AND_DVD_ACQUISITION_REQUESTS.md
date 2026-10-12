@@ -105,3 +105,9 @@ handles until separately recovered collection consumers allow reclamation.
 Original platform,source provisioning,relocation,async,eviction/scene and full
 resource rendering remain open;these local request contracts are implementable
 without inventing their missing backend behavior.
+
+[Complete slot open](DVD_MANAGER_SLOT_OPEN_AND_GLOBAL_CALLBACK.md) and
+[synchronous wait](DVD_MANAGER_SYNCHRONOUS_READ_PROTOCOL.md) now close those
+local DVD manager bodies. Read waits on0002 and returns current D74;its caller
+still ignores that return before publication. Worker/direct SDK I/O/source/
+platform execution remain separate.
