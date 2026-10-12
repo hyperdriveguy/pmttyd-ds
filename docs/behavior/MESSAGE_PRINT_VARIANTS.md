@@ -133,3 +133,6 @@ data/caller census, placement producers in story graphs, partner/battle service
 invariants, static key-buffer ownership, rendering/manager/input cadence and
 original story attribution/order/branches/conditions. These eight local variants
 and setters are documented; full dialogue/full-game equivalence remain unfinished.
+Insertion count, format routing and transient output consumption are now recovered
+in [insert formatting](MESSAGE_INSERT_FORMATTING.md); printf library behavior,
+other replacement helpers and original call-site types/conditions remain open.

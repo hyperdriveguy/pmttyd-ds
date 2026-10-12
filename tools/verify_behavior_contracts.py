@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'message_insert_formatting': {
+        0x800d2484: '7c058670', 0x800d2488: '3b45fffb',
+        0x800d24e8: '907c0000', 0x800d2500: '418200bc',
+        0x800d252c: '41820090', 0x800d2554: '4cc63182',
+        0x800d25cc: '63a50001', 0x800d25d0: '38c10018',
+        0x800d2274: '7c058670', 0x800d2278: '3b85fffd',
+        0x800d22cc: '418200c8', 0x800d22f8: '41820090',
+        0x800d237c: '81010014', 0x800d238c: '38610018',
+        0x800d2390: '4bfaf22d', 0x800d23a0: '4182000c',
+    },
     'message_print_variants': {
         0x800d1f14: '3863f204', 0x800d1f54: '907f0190',
         0x800d1f98: '64008000', 0x800d1fe8: '64006000',

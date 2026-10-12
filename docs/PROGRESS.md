@@ -2993,3 +2993,31 @@ caller census and character mappings; renderer/key-wait indicator/manager cadenc
 and service dependencies. Continue full story attribution/order/branches/conditions
 and all remaining systems before complete-game requirements. Full objective
 active/incomplete; executed-original comparisons still needed.
+
+## 2026-10-12 — Insert formatting callbacks and percent lexeme census
+
+Previous turn progressed withaa1e5d4 variants. Added MESSAGE_INSERT_FORMATTING.md:
+signed encoded insertion count, fixed/resumed operand resolution, one-through-four
+word-register sprintf dispatch, raw/key format source, unchecked transient output,
+no zero-count copy path, forced-direct new-window identity and first-call-only
+append consumer. Original printf ABI/call-site types remain explicitly open.
+No general token replacement behavior is inferred from these wrappers.
+
+Census schema3 adds per-pair/aggregate printf-like metadata:93 US pairs/119 matches,
+including one prose-like percent match. Lexical counts are not formatting-call
+or story execution evidence; no dialogue/format text is rewritten or exported.
+
+Validation:544 instruction anchors and prior checks passed read-only US ISO.
+Evidence201 fingerprints and census schema3 each reproduced byte-for-byte.
+Six synthetic lexical categories, complete US aggregate counts and all behavior
+links passed; git diff --check passed. make test passed core plus36 Python tests;
+make all exited0, no rebuild. Workspace started clean; only research/provenance/
+evidence tooling changed. No original execution/emulator run or profile/save
+changes. Original extracts/reports remain ignored. Static checks do not prove
+printf/library equivalence, valid insertion callers or native dialogue behavior.
+
+Next: remaining locale/replacement helpers/callback bodies and original sprintf
+library route; insert format/type/count call-site census; renderer/manager cadence
+and service dependencies. Continue original story attribution/order/branches/
+conditions and all remaining systems before complete-game requirements. Full
+objective active/incomplete; executed-original comparisons still needed.

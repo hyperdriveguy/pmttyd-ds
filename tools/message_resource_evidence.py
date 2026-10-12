@@ -11,6 +11,10 @@ import re
 from pathlib import Path
 from iso_assets import DEFAULT_ISO, inventory
 
+# Lexical census only: percent text can be literal prose or an inactive resource.
+# This is not the original sprintf parser or evidence of a formatting call site.
+FORMAT_LEXEME = re.compile(rb'%(?:[-+ #0]*\d*(?:\.\d+)?(?:hh|ll|[hlLjzt])?[diuoxXfFeEgGaAcspn%])')
+
 
 def inspect_resource(data):
     strings = []
@@ -30,6 +34,7 @@ def inspect_resource(data):
     duplicate_keys = []
     tokens = {}
     control_shapes = {}
+    formats = {}
     for i in range(0, len(strings) - 1, 2):
         key_offset, key = strings[i]
         text_offset, text = strings[i+1]
@@ -51,9 +56,13 @@ def inspect_resource(data):
                 prefix = 'R_prefix' if name.startswith(b'R') else '/r_prefix'
                 counts = control_shapes.setdefault(prefix, {})
                 counts['occurrences'] = counts.get('occurrences', 0) + 1
+        format_lexemes = [x.decode('ascii') for x in FORMAT_LEXEME.findall(text)]
+        for lexeme in format_lexemes:
+            formats[lexeme] = formats.get(lexeme, 0) + 1
         pairs.append(dict(key_hex=key.hex(), key_offset=key_offset,
                           text_offset=text_offset, text_size=len(text),
-                          text_sha256=hashlib.sha256(text).hexdigest()))
+                          text_sha256=hashlib.sha256(text).hexdigest(),
+                          printf_like_lexeme_count=len(format_lexemes)))
     return dict(string_count=len(strings), pair_count=len(pairs),
                 unmatched_key=bool(len(strings) % 2), terminator_offset=offset,
                 trailing_nonzero_bytes=sum(x != 0 for x in data[offset+1:]),
@@ -62,6 +71,7 @@ def inspect_resource(data):
                 token_lexeme_counts=dict(sorted(tokens.items())),
                 selected_control_shapes={k: dict(sorted(v.items()))
                                          for k, v in sorted(control_shapes.items())},
+                printf_like_lexeme_counts=dict(sorted(formats.items())),
                 pairs=pairs)
 
 
@@ -81,7 +91,7 @@ def report(iso):
             resources.append(dict(path=entry['path'], iso_offset=entry['offset'],
                                   size=len(data), sha256=hashlib.sha256(data).hexdigest(),
                                   **inspect_resource(data)))
-    return dict(schema=2, evidence='static US resource census; no original execution',
+    return dict(schema=3, evidence='static US resource census; no original execution',
                 resource_count=len(resources),
                 pair_count=sum(x['pair_count'] for x in resources),
                 resources=resources)

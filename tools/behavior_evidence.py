@@ -45,6 +45,7 @@ FUNCTIONS = (
     'evt_msg_npc', 'evt_msg_pri', 'evt_msg_toge', 'evt_msg_togelr',
     'evt_msg_print_party', 'evt_msg_print_party_add',
     'evt_msg_print_battle_party', 'evt_msg_print_add',
+    'evt_msg_print_insert', 'evt_msg_print_add_insert',
     'btlevtcmd_AnnounceMessage', 'btlevtcmd_AnnounceSetParam',
     'BattlePadCheckTrigger', 'BattlePadMultiCheckTrigger', '_disp@battle_message.o',
     'evt_btl_camera_set_mode', 'evt_btl_camera_set_homing_unit',
