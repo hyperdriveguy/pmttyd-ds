@@ -162,6 +162,16 @@ no-hit near clearance in[0,5] also sets it, otherwise clears it
 (8008ccf0–8008cd38). Full node/NPC side effects and special branches remain
 outside this no-NPC contract.
 
+Head-search miss/raw-output clarification: entry does not reset projected
+angles. Only processed ray normals write+21c/+220/+224; all probes missing
+preserve the prior slope record. Ray normal components load directly from
+marioHitCheck2 at8008c3c0–8008c3c8 and feed100*n angle construction at
+8008c3dc/8008c3e4, without Q1000 rounding. The ray point is likewise raw before
+the separate contactY Q100 calculation. The initial clearance output is -1.0
+from804208e4 loaded8008c2b0 and stored8008c2c0; all-ray miss leaves it at -1.
+Do not reset it to0, quantize head normals using the foot-search policy, or
+clear the slope record merely because this query begins.
+
 ## Fall entry, phase and counter preservation
 
 mot_fall8009af1c pending entry consumes bit0, clears jump flag, sets fall flag,
