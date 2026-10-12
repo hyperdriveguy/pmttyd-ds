@@ -2084,3 +2084,38 @@ The full-system register remains open for story/events, partners, field forms,
 save/UI, assets/animation/audio and complete content. Derive the complete-game
 requirements only after those contracts are documented. Full objective remains
 active; no complete-game or complete-battle equivalence claim.
+
+## 2026-10-12 — Battle reaction event dispatch research
+
+Previous goal turn progressed with41f6e27/8de16ad direct damage contracts.
+Commit b897a67 adds BATTLE_EVENT_DISPATCH.md: normal/direct hit dispatch,
+low-code40 data-key46 gate, eight-byte terminated data lookup, ordered four-slot
+cancellation, null-script distinctions, wait/phase event differences, same-pass
+scheduler insertion and raw-vs-resolved service operands. Full stored damage
+code, low-byte getter and any-bit mask test are distinguished. Public header
+US offset mismatch is explicitly recorded. These contracts connect damage
+application to scheduling without claiming death/revival script bodies are
+recovered. No runtime code changed by this research.
+
+Validation:141 static instruction anchors and previously documented tables/
+constants/sound keys passed against read-only US ISO. Evidence report contains
+74 function fingerprints and reproduced identically across two reads. All
+behavior relative links resolve; git diff --check passed. make test passed
+core plus36 Python tests at execution time; make all exited0, up to date.
+Concurrent runtime and Switch-research changes were present and not staged:
+include/floor_contact.hpp, include/game.hpp, source/game.cpp,
+tests/core_tests.cpp, tools/verify_actor_collision.py, and new Switch tools/tests.
+Other concurrent docs/ARCHITECTURE.md and docs/MECHANICS.md edits were also left
+unstaged. Thus validation describes shared workspace, not an isolated commit.
+No emulator/original code executed; profile/saves unchanged. Original extracts
+and disassembly remain ignored. Provenance/fingerprint counts updated in ASSETS.
+
+Next: recover complete BattleCheckDamage orchestration and status application/
+recovery/turn lifecycle. Enumerate actual damage-script installations, relocated
+script/data bindings and reachable death/revival bodies; inspect turn-controller
+wait/ID ownership before claiming event lifetime equivalence. Constructor
+capacity handling and remaining event services stay open. Continue full-system
+coverage register (story, field/forms, partners, economy, save/UI, animation/
+audio and all content) and derive complete-game requirements after recovery.
+Full objective remains active; documentation and end-to-end equivalence are
+incomplete, with static evidence not replacing original execution traces.
