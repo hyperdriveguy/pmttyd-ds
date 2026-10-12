@@ -13,6 +13,15 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'turn_regeneration': {
+        0x8011dbb8: '54000043', 0x8011dbc8: '901c0208',
+        0x8011dbf4: '60000001', 0x8011dc38: '38630005',
+        0x8011dd64: '48008df5', 0x8011dee0: '7c0403d6',
+        0x8011dee8: '23400021', 0x8011df18: 'b01c010c',
+        0x8011e018: '480003bc', 0x8011e08c: 'a89a0112',
+        0x8011e094: 'a81a010e', 0x8011e098: '7c0403d6',
+        0x8011e0d0: '48008a89', 0x80126bf4: 'b003010c',
+    },
     'periodic_damage': {
         0x8011d90c: '7cc60774', 0x8011d918: '39000117',
         0x8011da14: 'b01f0002', 0x8011daf8: '418208dc',
@@ -282,6 +291,9 @@ def verify(iso_path):
             if read(address, 4) != struct.pack('>f', value):
                 raise ValueError(f'Burn effect constant mismatch {address:#x}')
         print('Four Burn effect constants verified')
+        if hashlib.sha256(read(0x80416bc0, 16)).hexdigest() != '7cb2b9d5e89d7f24419e079a349f2238cc7f6ec5d506892b0e7db744db0742a4':
+            raise ValueError('Regeneration wait event mismatch')
+        print('Regeneration wait event encoding verified')
         status_tables = {
             0x80364204: [0x7970, 0x792c, 0x7970, 0x7970, 0x7adc,
                          0x7970, 0x7970, 0x7970, 0x7970, 0x7970,

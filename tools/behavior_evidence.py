@@ -24,7 +24,7 @@ FUNCTIONS = (
     'BtlPad_WorkInit', 'BtlPad_WorkUpdate', 'BattleActionCommandManager',
     'BattleActionCommandSetup', 'BattleCheckDamage', 'BattleDamageDirect',
     'BSE_TurnFirstProcessEffectMain', 'BSE_TurnFirstProcessEffectEntry',
-    'BtlUnit_CheckShadowGuard',
+    'BtlUnit_CheckShadowGuard', 'BtlUnit_RecoverHp',
     'btlseqTurn', 'BattleWaitAllActiveEvtEnd',
     'BattleIncSeq', 'BattleGetSeq', 'BattleSetSeq',
     'BattleCheckPikkyoro', 'BtlUnit_GetACPossibility', 'BtlUnit_CheckStatusFlag',

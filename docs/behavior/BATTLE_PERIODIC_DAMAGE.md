@@ -146,3 +146,7 @@ Still open: sinfd numeric contract, Fire effect rendering/lifetime, turn driver
 cadence, Poison/Burn-specific event scripts, shared event waits/conclusion
 internals and periodic HP/FP regeneration. These contracts specify local
 periodic damage behavior, not complete status or turn equivalence.
+
+Status HP/FP regeneration and Happy badge phases are now specified in
+[regeneration](BATTLE_REGENERATION.md); their event/effect dependencies and
+outer turn cadence remain open.

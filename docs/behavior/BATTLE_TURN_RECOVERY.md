@@ -158,3 +158,7 @@ turn behavior. Complete-game requirements remain dependent on those contracts.
 
 Poison and Burn phases are now specified in [periodic damage](BATTLE_PERIODIC_DAMAGE.md);
 HP/FP regeneration and other remaining turn phases are still open.
+
+Status HP/FP regeneration and Happy badge phases are now specified in
+[regeneration](BATTLE_REGENERATION.md); their event/effect dependencies and
+outer turn cadence remain open.

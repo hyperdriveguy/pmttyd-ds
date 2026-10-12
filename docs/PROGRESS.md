@@ -2451,3 +2451,29 @@ Next static work:
 4. Continue damage/status/turns, audience/RNG, inventory/save/UI/audio/graphics,
    partners, all chapters/interludes and optional content. Current register lists
    gaps; the full documentation goal is active and not complete.
+
+## 2026-10-12 — HP/FP regeneration and Happy badge phases
+
+Previous goal turn progressed with36d17dc Poison/Burn contracts. Added
+BATTLE_REGENERATION.md covering states0a..11: status23/24 recovery, HP display
+bookkeeping attribute gate, shared FP destination, requested-amount effects,
+regeneration wait event, Happy Heart/Flower per-copy draws, integer-divide-first
+thresholds, local Flower probability inputs versus resolved FP owner, signed16
+narrowing/capping and changed-phase wait differences. Recovered RecoverHp helper.
+Happy Heart defers its wait; Flower/status regeneration recurse immediately.
+
+Validation:236 instruction anchors, regeneration event fingerprint and prior
+data checks passed against read-only US ISO. Evidence96 function fingerprints
+matched a repeat byte for byte. Behavior links resolve; git diff --check passed.
+make test passed core plus36 Python tests; make all exited0, no rebuild. Final
+verifier rerun passed after representing the tiny event as a hash rather than
+embedding its complete bytecode. No original executable/emulator run or profile/
+save changes; no native runtime code authored. Concurrent Switch baseline was
+committed separately asfc91c72. Original extracts/disassembly remain ignored;
+ASSETS.md updated. Static evidence is not dynamic-equivalence proof.
+
+Next: Happy/recovery event bodies and associated sound/pose callbacks, display
+field consumers, remaining turn initialization/counters, unit-event waits and
+conclusion/phase handling, move reset and actual death/revival scripts. Continue
+full-system coverage before complete-game requirements. Full objective remains
+active/incomplete; original/native execution and rendering comparisons needed.
