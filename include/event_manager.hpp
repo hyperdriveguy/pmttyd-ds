@@ -27,6 +27,8 @@ struct EventEntry {
     std::array<uint32_t,16> labelAddresses{};
     std::array<uint32_t,8> loopBodies{}; // Original e8..104,valid stack domain0..7.
     std::array<int32_t,8> loopCounts{}; // Original108..124;raw count operands.
+    std::array<uint8_t,8> switchStates{}; // Original128..12f,signed-byte states.
+    std::array<int32_t,8> switchValues{}; // Original130..14c.
     std::array<uint32_t,7> messageFields{}; // Original178..190,retained as raw words.
 };
 struct EventContext {

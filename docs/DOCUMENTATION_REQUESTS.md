@@ -460,6 +460,14 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+SWITCH-opcode breadcrumb (2026-10-12): `event_switch_opcodes.cpp` handles34..49
+with semantic signed states/values and complete ordinary/group/mask/range routes.
+Tests preserve captured versus live stack/query timing and header scans;actual
+OR/AND success/failure dispatcher streams converge through END_SWITCH and wait.
+make test passes37 suites/63 Python tests;make all passes. Native packed/invalid-
+depth/source/group/runtime domains remain open. Next:delivered memory/buffer and
+tail/debug routes,then native runtime sources and original Jump binding.
+
 IF-opcode breadcrumb (2026-10-12): `event_if_opcodes.cpp` handles12..33 and the
 full alignment-dependent strcmp body. Tests preserve unordered CR branch results,
 query/argument/live-next mutation,raw masks,consumed scan markers and exact string

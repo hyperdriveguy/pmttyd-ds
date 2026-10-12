@@ -1,5 +1,27 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original SWITCH and grouped CASE state machines
+
+Implemented `event_switch_opcodes.cpp` for34..49 using delivered switch/group
+contracts. Eight signed-byte states and signed-word values distinguish ordinary
+search/consumed,OR success-1 and AND failure-2. Queries precede state gates and
+retain the selected stack offset. BETWEEN reloads its second operand after the
+first query;FLAG uses raw any-bit masks. Resolved/raw push capture indices at
+original different times. END clears state before pop and retains the value.
+Scanners stop on headers,ignore raw35,count34/terminal1,and skip BREAK48.
+
+Validation: `make test` passed37/37 CTest suites and63 Python tests; `make all`
+rebuilt the ARM modules and3dsx. Logs:/tmp/pm-event-switch-test.log and
+/tmp/pm-event-switch-build.log. Fixtures cover all table routes,signed comparisons,
+mutated index/state/value/query ordering,unexpected group states,raw masks,
+inclusive/reversed ranges,nested/raw/terminal scans,signed strides and real
+OR/AND success/failure streams through dispatcher/assignment/END/wait.
+
+Native packed alias/invalid-depth and original source/group/runtime domains
+remain open. Next:memory/user-buffer and tail/debug handlers,then native context/
+bootstrap/address/numeric services and original Jump stream/callback binding.
+The remake is incomplete;EVT-01 breadcrumbs retain remaining documentation needs.
+
 ## 2026-10-12 — Original IF predicates and string memory comparison
 
 Implemented `event_if_opcodes.cpp` for all12..33 from the complete IF contracts.
