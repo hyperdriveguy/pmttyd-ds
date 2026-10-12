@@ -1,5 +1,38 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Event deletion,copy-back and restart preservation
+
+Implemented EVENT_DELETE_AND_COPYBACK.md and EVENT_RESTART_PRESERVATION.md in
+event_lifecycle.hpp/cpp. Delete captures context before active gate,deletes
+waiting child before captured-array ascending live brother scan,reloads parent,
+clears its wait/child link and copies local/flag/message words before active clear/
+semantic entry reset and8041e860 decrement. Child cancellation can propagate
+new grandchild locals upward;brother locals do not copy back and independent
+inline entries survive owner deletion. DeleteID removes every live exact match,
+retains schedule arrays/count and rereads captured-context capacity each test.
+Restart preserves locals/flags/ownership/ID/user/timers/callback/old marker while
+resetting script/opcode,speed/credit,lifetime,label tables and run-check. The
+intermediate speed1.0 is observable before global speed capture;fetch later resets
+old callback state. No immediate parent execution or implicit resource/audio
+cleanup was added;valid ownership/context domains remain required.
+
+Validation:final make test passed thirty CTest suites plus58 Python tests;
+make all built event_lifecycle and ttyd-2ds.elf/3dsx,then exited0/no rebuild after
+extra integration tests. Suite covers inactive preservation,child-before-live-
+brother order,cancellation copy-back,independent inline survival,parent inactive/
+link mismatch behavior,no copied user/owner/ID/speed fields,duplicate-ID scans,
+count underflow,stale schedule retention,restart reset/preserved fields/global
+speed observation,all-event run-check and preserved marker until real fetch.
+Manager integration deletes a child then resumes parent either later in the same
+pass or next pass depending on schedule position;no recursive parent dispatch.
+git diff --check passed. No emulator run or original executed lifecycle/capacity/
+packed alias/pause trace claim. Concurrent field/docs edits preserved separately.
+
+Next:stop/start relationship traversal and control opcode binding,then remaining
+tagged values/branches/arithmetic and original Jump stream/service integration.
+Native fixed battle timers and full story/assets/source-owner/trace closure remain
+incomplete;goal remains active.
+
 ## 2026-10-12 — Child,brother and independent inline construction
 
 Implemented EVENT_CHILD_BROTHER_AND_INLINE_CONSTRUCTION.md in event_creation.

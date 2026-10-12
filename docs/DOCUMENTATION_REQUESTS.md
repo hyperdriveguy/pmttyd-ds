@@ -449,6 +449,14 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Lifecycle breadcrumb (2026-10-12): `event_lifecycle.cpp` ports newly delivered
+complete Delete/DeleteID and Restart contracts,including confirmed8041e860
+counter. Tests cover live descendant order,cancellation copy-back,independent
+inline lifetime,duplicate IDs,stale schedules,restart preservation and parent
+resumption through the real manager. Prior deletion-counter request is answered;
+stop/start/control binding and full original graph/value/source/pause traces
+remain next. No helper claims packed original aliasing or malformed-cycle repair.
+
 Descendant breadcrumb (2026-10-12): event_creation now ports child/brother
 constructors and107/110 block wrappers,including active-manager unconditional
 append,child wait links,global speed,inherited/reset metadata,distinct zero-ID/
