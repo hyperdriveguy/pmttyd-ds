@@ -1,0 +1,743 @@
+{
+  "schema": 1,
+  "scope": "Authored Rogueport camera near-normal straight dispatch and bounded duplicate dependency; static source metadata",
+  "dol_spans": [
+    {
+      "name": "collisionCurve",
+      "address": 2147533956,
+      "size": 3888,
+      "sha256": "3f2139c8454272ed77be995980b472436e4d332e053bc316181150e723e95610"
+    },
+    {
+      "name": "calcCamRoad",
+      "address": 2147530444,
+      "size": 3512,
+      "sha256": "30d1765fbf7b91469764903b659dec1c95db1da056d94007ac72c854a32b3fb2"
+    },
+    {
+      "name": "Parameter-bound merge and dispatch epsilon",
+      "address": 2150364568,
+      "size": 16,
+      "sha256": "e81b57dd147f139143e6ec91711aee3c861cf7f503185d46f04b84db6a31bb0f"
+    },
+    {
+      "name": "Source pi and averaging half",
+      "address": 2151806536,
+      "size": 12,
+      "sha256": "cc2dfecf73141b1b943090df058ee7739f7e2826a592c3183f22e4c3cc37e3e7"
+    }
+  ],
+  "dol_anchors": {
+    "2147534512": "41800c48",
+    "2147534540": "41800c2c",
+    "2147534576": "40800030",
+    "2147534592": "40800020",
+    "2147534608": "ec820072",
+    "2147534612": "eca20032",
+    "2147534616": "fc402090",
+    "2147534620": "fc602890",
+    "2147534624": "fc022000",
+    "2147534636": "418207f8",
+    "2147536676": "c01e0008",
+    "2147536724": "40810024",
+    "2147536804": "c08281ec",
+    "2147536808": "fd202a10",
+    "2147536828": "4081001c",
+    "2147536840": "ef862824",
+    "2147536864": "4182000c",
+    "2147536872": "ef803024",
+    "2147536908": "ec1c523a",
+    "2147537144": "41820200",
+    "2147537152": "d0210020",
+    "2147537188": "40800018",
+    "2147537260": "ec0100ba",
+    "2147537280": "ec0100bc",
+    "2147537304": "d0110020",
+    "2147537352": "40800018",
+    "2147537424": "ec0100ba",
+    "2147537444": "ec0100bc",
+    "2147537464": "c01a0008",
+    "2147537504": "40800024",
+    "2147537540": "fc01d040",
+    "2147537612": "ec1c103a",
+    "2147537636": "ec1c083a",
+    "2147537644": "d3110008",
+    "2147537652": "92510028"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "camera_files": [
+    {
+      "path": "m/gor_00/c",
+      "size": 2048,
+      "sha256": "3d6f746ec51b1ba3165ba67aee2ca1fe17deb2d11a8fda9d3181a72356246d0c",
+      "records": [
+        {
+          "index": 0,
+          "offset": 280,
+          "name": "|MarioSt_CameraRoad|C_minato_l",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 1,
+          "offset": 464,
+          "name": "|MarioSt_CameraRoad|C_kakusi",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [
+            2
+          ],
+          "bounded_cardinal_duplicate": true
+        },
+        {
+          "index": 2,
+          "offset": 648,
+          "name": "|MarioSt_CameraRoad|C_umi_02",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        }
+      ]
+    },
+    {
+      "path": "m/gor_01/c",
+      "size": 7700,
+      "sha256": "173e43d28c5b557f7c47686c043e64c2ec0ebe61b29e12882b61b19262611757",
+      "records": [
+        {
+          "index": 0,
+          "offset": 280,
+          "name": "|MarioSt_CameraRoad|C_mae",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 1,
+          "offset": 464,
+          "name": "|MarioSt_CameraRoad|C_oku",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 2,
+          "offset": 648,
+          "name": "|MarioSt_CameraRoad|C_ie_01",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [
+            2
+          ],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 3,
+          "offset": 832,
+          "name": "|MarioSt_CameraRoad|C_ie_03_f1",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 4,
+          "offset": 1016,
+          "name": "|MarioSt_CameraRoad|C_ie_03_f2",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 5,
+          "offset": 1200,
+          "name": "|MarioSt_CameraRoad|Cc_ie_04",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [
+            2
+          ],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 6,
+          "offset": 1384,
+          "name": "|MarioSt_CameraRoad|C_ie_02_f1",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 7,
+          "offset": 1568,
+          "name": "|MarioSt_CameraRoad|C_ie_02_f2",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 8,
+          "offset": 1752,
+          "name": "|MarioSt_CameraRoad|C_ie_02_f2_",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 9,
+          "offset": 1936,
+          "name": "|MarioSt_CameraRoad|C_mae_02",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 10,
+          "offset": 2120,
+          "name": "|MarioSt_CameraRoad|C_ie_03_f1_",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        }
+      ]
+    },
+    {
+      "path": "m/gor_02/c",
+      "size": 11316,
+      "sha256": "ccf70290b06daa8d965b03e3796df9cf846c8f88c71651ac61aa3831f7aae41f",
+      "records": [
+        {
+          "index": 0,
+          "offset": 280,
+          "name": "|MarioSt_CameraRoad|C_ground_ma",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 1,
+          "offset": 464,
+          "name": "|MarioSt_CameraRoad|C_ground_ok",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 2,
+          "offset": 648,
+          "name": "|MarioSt_CameraRoad|C_ue",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 3,
+          "offset": 832,
+          "name": "|MarioSt_CameraRoad|C_ie06",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 4,
+          "offset": 1016,
+          "name": "|MarioSt_CameraRoad|C_ie01",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [
+            2
+          ],
+          "bounded_cardinal_duplicate": true
+        },
+        {
+          "index": 5,
+          "offset": 1200,
+          "name": "|MarioSt_CameraRoad|C_ie02",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [
+            2
+          ],
+          "bounded_cardinal_duplicate": true
+        },
+        {
+          "index": 6,
+          "offset": 1384,
+          "name": "|MarioSt_CameraRoad|C_ie03_mae",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [
+            2
+          ],
+          "bounded_cardinal_duplicate": true
+        },
+        {
+          "index": 7,
+          "offset": 1568,
+          "name": "|MarioSt_CameraRoad|C_ie04",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [
+            2
+          ],
+          "bounded_cardinal_duplicate": true
+        },
+        {
+          "index": 8,
+          "offset": 1752,
+          "name": "|MarioSt_CameraRoad|C_ie05",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 9,
+          "offset": 1936,
+          "name": "|MarioSt_CameraRoad|C_ground_ok",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 10,
+          "offset": 2120,
+          "name": "|MarioSt_CameraRoad|C_ie04_ura",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [
+            2
+          ],
+          "bounded_cardinal_duplicate": true
+        },
+        {
+          "index": 11,
+          "offset": 2304,
+          "name": "|MarioSt_CameraRoad|C_ie03_oku",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [
+            2
+          ],
+          "bounded_cardinal_duplicate": true
+        },
+        {
+          "index": 12,
+          "offset": 2488,
+          "name": "|MarioSt_CameraRoad|C_ground_mi",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 13,
+          "offset": 2672,
+          "name": "|MarioSt_CameraRoad|C_ground_ma",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        }
+      ]
+    },
+    {
+      "path": "m/gor_03/c",
+      "size": 11392,
+      "sha256": "a0b2e3a1faa40d87f67d49bdd6917722b20aa480f969b3a42203b366060977af",
+      "records": [
+        {
+          "index": 0,
+          "offset": 280,
+          "name": "|MarioSt_CameraRoad|C_ground_ok",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 1,
+          "offset": 464,
+          "name": "|MarioSt_CameraRoad|curve7",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [
+            2
+          ],
+          "bounded_cardinal_duplicate": true
+        },
+        {
+          "index": 2,
+          "offset": 648,
+          "name": "|MarioSt_CameraRoad|C_ie_02_f2",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 3,
+          "offset": 832,
+          "name": "|MarioSt_CameraRoad|C_ie_03_f1",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 4,
+          "offset": 1016,
+          "name": "|MarioSt_CameraRoad|C_ie_03_f2",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 5,
+          "offset": 1200,
+          "name": "|MarioSt_CameraRoad|C_ie_03_kai",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 6,
+          "offset": 1384,
+          "name": "|MarioSt_CameraRoad|C_ie_04_f1",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 7,
+          "offset": 1568,
+          "name": "|MarioSt_CameraRoad|C_ie_04_f2",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 8,
+          "offset": 1752,
+          "name": "|MarioSt_CameraRoad|C_ie_04_kai",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 9,
+          "offset": 1936,
+          "name": "|MarioSt_CameraRoad|C_ie_01",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 10,
+          "offset": 2120,
+          "name": "|MarioSt_CameraRoad|C_uraniwa",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 11,
+          "offset": 2304,
+          "name": "|MarioSt_CameraRoad|C_ie_02_f1",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 12,
+          "offset": 2488,
+          "name": "|MarioSt_CameraRoad|C_san_rozi",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 13,
+          "offset": 2672,
+          "name": "|MarioSt_CameraRoad|C_ground_ma",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        }
+      ]
+    },
+    {
+      "path": "m/gor_04/c",
+      "size": 1304,
+      "sha256": "9c6e9cfde7fd0986d25604dcb8eccef220f34bb431cbe21fd349f1d2b01a9c8b",
+      "records": [
+        {
+          "index": 0,
+          "offset": 280,
+          "name": "|MarioSt_CameraRoad|C_mae",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        },
+        {
+          "index": 1,
+          "offset": 464,
+          "name": "|MarioSt_CameraRoad|C_hai",
+          "collapsed_pairs": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "duplicate_pairs": [],
+          "bounded_cardinal_duplicate": false
+        }
+      ]
+    }
+  ]
+}

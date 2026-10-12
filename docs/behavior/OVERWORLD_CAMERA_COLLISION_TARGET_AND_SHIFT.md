@@ -120,6 +120,13 @@ current GP+38/+3c. Read R=camRoadGetCurrentShiftXRate first.
    Otherwise leave C unchanged and clear B=0; E is not cleared here.
 6. Return C through outputFloat* at800f393c–944.
 
+The clamp literally branches on **T**, loaded at800f3904 and compared to0 at
+800f3908; the negative path compares C<T at3914–1c, nonnegative path C>T at
+3928–30. It does not branch on direction or delta. Consequently camera20 with
+T0,C>0,B1 can clamp to0 early for an elapsed multiplier.96, yet preserve a
+negative overshoot for multiplier1.02. These16/17ms examples are derived finite
+source-branch consequences, not an observed original frame trace.
+
 The source increment cap applies before getV60FPS. A neutral-input callback
 can preserve an already displaced C; it does not automatically approach zero.
 Only the camera0x20 path sets T=0 and continues integrating toward it. The
