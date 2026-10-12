@@ -37,10 +37,12 @@ Each result is reduced modulo3 through signed reciprocal multiplication using
 are0,1,2, added to X/Y by separately rounded fadds. No subtraction to center
 them at-1..1, independent-axis seed or rejection sampling.
 
-irand consumes one rand for each nonzero bound, so these routes consume exactly
-two original RNG draws per admitted shaking glyph per draw invocation. History
+irand consumes one rand for each nonzero bound, so these routes consume two
+explicit outer RNG draws per admitted shaking glyph per draw invocation. History
 emphasis/skips, reserved controls/icons/poses, wave/selected/plain glyph branches
-do not take these calls. There is no opacity-zero suppression here. Repeated
+do not take these outer calls. The subsequently recovered [inner quad](FONT_GLYPH_QUADS.md)
+also calls irand64 twice per quad unconditionally, including nonshaking glyphs;
+outer shake counts are not whole-renderer totals. There is no opacity-zero suppression here. Repeated
 draws can change shared RNG progression; optional/native rendering cadence must
 not be assumed independent of gameplay randomness.
 

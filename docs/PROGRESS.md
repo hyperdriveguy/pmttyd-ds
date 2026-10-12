@@ -3545,3 +3545,35 @@ actual outer draw/story callers. Continue original attribution/order/branches/
 conditions and all other uncovered systems before complete-game requirements.
 Full objective active/incomplete; original execution/image/seed comparisons
 still needed.
+
+## 2026-10-12 — Inner font glyph quads and mandatory RNG
+
+Previous goal turn made progress through38471f5. Began clean and added
+FONT_GLYPH_QUADS.md for _JUTFont_DrawPos and kanjiGetWidth: first inclusive WID1
+lookup/null path, unsigned width/offset bytes, active descriptor/signed grid,
+float/truncation/narrowing stages, mandatory two irand64 calls, hue requests and
+all four FIFO position/color/UV orders. Recorded asymmetric bottom UV1 subtraction
+versus addition and lack of local texture page switching. HSV2RGB entry was
+inspected to establish pointer-only input; its full conversion remains open.
+
+Crucial correction: nonshaking inner glyph quads also consume shared RNG even
+with noise off. Updated outer-effect document and RNG ledger: shaking's two
+irand10000 calls are additional to two irand64 per inner quad; plain/outlined
+wrappers issue one/five quads and normal selected glyphs six. These are recovered
+call-path counts, not a complete renderer/full-game RNG census or measured rate.
+
+Validation:940 instruction anchors and prior checks passed read-only US ISO,
+including HSV word, two-unit inset and signed/unsigned conversion biases.
+Fresh265-function evidence reports matched byte-for-byte. All local behavior
+links resolve; git diff --check passed. make test passed core plus36 Python tests;
+make all exited0, no rebuild. Only research/provenance/evidence tooling changed.
+No original execution/emulator run or profile/save modification; disassemblies/
+reports remain ignored. Static checks do not prove actual font data/page coverage,
+HSV/GX/FIFO interpretation, clock/seeding/cadence, executed pixels or native
+image/seed equivalence.
+
+Next: font loading/setup/encoding and glyph/page data, HSV2RGB conversion and
+texture descriptor50; signed64 clock/trig/matrix services, actual outer draw/
+story callers. Continue original attribution/order/branches/conditions and all
+other uncovered systems before complete-game requirements. Full objective active/
+incomplete; original execution/image/seed comparisons still needed.

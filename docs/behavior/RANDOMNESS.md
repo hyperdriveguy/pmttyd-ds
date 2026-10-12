@@ -66,7 +66,11 @@ irand(10) still predicts 8.
 
 Original message rendering has confirmed shared-RNG consumers: each admitted
 dynamic+shake or standalone shake glyph calls irand(10000) twice, X then Y,
-while history/skipped glyphs bypass those draws. See [glyph effects](MESSAGE_GLYPH_EFFECTS.md).
+while history/skipped glyphs bypass those outer draws. See [glyph effects](MESSAGE_GLYPH_EFFECTS.md).
+The [inner font quad](FONT_GLYPH_QUADS.md) additionally calls irand64 twice even
+with noise off. A plain/outlined wrapper issues one/five quads; a normal selected
+glyph issues six. These additional calls correct the earlier incomplete outer-
+effect-only count. All remaining font/icon/pose/effect consumers still need census.
 Rendering frequency is therefore an original observable dependency for these
 paths; isolating visual randomness into a new independent generator would change
 the established behavior. Actual draw cadence and other renderer consumers

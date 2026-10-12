@@ -4,8 +4,9 @@ US G8ME01 revision0, recovered2026-10-12. B evidence is static original DOL:
 FontDrawCode0x80077594,size1a8; FontDrawCodeMtx0x80077438,size15c;
 JUTFont_DrawStart0x80074bfc,size294. See [font state](FONT_DRAW_STATE.md),
 [glyph effects](MESSAGE_GLYPH_EFFECTS.md) and [window drawing](MESSAGE_WINDOW_DRAWING.md).
-This establishes all local request paths; inner _JUTFont_DrawPos, glyph/texture
-tables and GX/matrix numerical/raster services remain separate dependencies.
+This establishes all local request paths; inner _JUTFont_DrawPos is now covered
+in [glyph quads](FONT_GLYPH_QUADS.md). Glyph/texture tables and GX/matrix
+numerical/raster services remain separate dependencies.
 No original execution or complete font rendering equivalence is claimed.
 
 ## Ordinary glyph's scale and camera matrix (B)
@@ -63,7 +64,8 @@ history TEV override; the center is reissued from saved raw CPU color.
 
 Offsets are integer request coordinates, not measured screen-pixel outlines;
 matrix scaling and inner glyph geometry determine final displacement. The full
-glyph word is forwarded; narrowing/fallback behavior belongs to _JUTFont_DrawPos.
+glyph word is forwarded; low16 narrowing/WID1 lookup is now covered in
+[glyph quads](FONT_GLYPH_QUADS.md).
 Return behavior of that service is not used for branch decisions.
 
 ## JUT draw-start common setup and order (B)
@@ -124,7 +126,8 @@ Differential obligations: ordinary versus caller-owned matrix, concat order/
 in-place output, inherited no-edge color, four edge-offset order plus center,
 raw-color versus GPU override restoration, repeated alpha reads, complete setup
 call order, vertex attributes, static texture object, word+16c branch and fog
-color source. Remaining: _JUTFont_DrawPos geometry/page lookup/vertices, font
+color source. Inner glyph attributes/vertices are now covered in
+[glyph quads](FONT_GLYPH_QUADS.md). Remaining: font
 loading/width/glyph data, GX/matrix bodies, state producers/cadence and matched
 original images/story callers. These three local bodies are established; full
 font rendering/dialogue/complete-game equivalence remains unproven.

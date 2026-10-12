@@ -13,6 +13,18 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'font_glyph_quads': {
+        0x80074774: '5464043e', 0x80074794: 'a0c80008',
+        0x800747b8: '7ce83a14', 0x800747d8: '8ae70001',
+        0x800747f8: '7f2cb3d6', 0x80074810: '7d595bd6',
+        0x8007489c: 'efc410fa', 0x800748b8: '482411b5',
+        0x800748c0: '4bf914e1', 0x800748cc: '4bf914d5',
+        0x8007491c: '54030dfc', 0x80074930: 'b3458000',
+        0x80074980: '4800097d', 0x80074a88: 'ec00e028',
+        0x80074b38: 'ec00e02a', 0x80074bbc: '9ae48000',
+        0x80075878: '5463043e', 0x800758c4: '7c651a14',
+        0x800758d8: '38600000', 0x800758dc: '88630001',
+    },
     'font_glyph_requests_and_setup': {
         0x800775c0: 'c02d1a90', 0x800775ec: '48226c79',
         0x80077600: '48226765', 0x80077464: '48226901',
@@ -1069,6 +1081,11 @@ def verify(iso_path):
             if read(address, 4).hex() != expected:
                 raise ValueError(f'Font setup texture mode constant mismatch {address:#x}')
         print('Font setup texture-matrix modes and zero verified')
+        if read(0x804203e0, 4).hex() != '00aaffff' or read(0x804203e8, 4).hex() != '40000000':
+            raise ValueError('Font quad HSV/two-unit constants mismatch')
+        if read(0x802c2b90, 16).hex() != '43300000000000004330000080000000':
+            raise ValueError('Font quad integer conversion biases mismatch')
+        print('Font quad HSV word, two-unit inset and conversion biases verified')
 
 
 if __name__ == '__main__':

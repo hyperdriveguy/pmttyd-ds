@@ -139,7 +139,8 @@ saved-color-only restore after embedded objects, effect call order, different
 off-helper scope and index50 readiness. The reciprocal interpretation was
 independently checked over all65536 byte pairs, not by executing original code.
 
-Remaining: inner glyph geometry/page/vertex consumption, font glyph/width/
+Inner glyph geometry/grid/vertex requests are now covered in
+[glyph quads](FONT_GLYPH_QUADS.md). Remaining: font glyph/width/
 texture tables, edge/color/alpha/scale raster effects, GX/matrix service bodies,
 palette/current-state writers, descriptor50 binding, outer cadence and matched
 original images/story callers. These14 helper bodies are locally established;
