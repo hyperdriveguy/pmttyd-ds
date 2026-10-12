@@ -1,5 +1,35 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original Jump takeoff-position wrapper
+
+Implemented BATTLE_JUMP_TAKEOFF_POSITION.md in battle_jump_takeoff.hpp/cpp.
+Captures shared work before ordered input resolution;gets actor currentX and
+homeY,requested target hitXZ,then requests a private sample with null weapon,
+exact masks01001240/01000000,signed narrowed enemy side and wrapped negated bias.
+Chooser mode4 always runs;its return is ignored and positive signed sample count
+alone selects candidate processing. Closest-X comparison preserves ties/unordered
+cases,part pointer identity selects60/30,and a fresh signed side byte controls
+the sampled-return offset. Y/Z stay tied to actor home/requested target. All three
+raw output destinations are converted/stored in order,including sentinels/aliases.
+Private candidate/count/output initialization remains a sampling-service
+obligation;there is no fabricated nearest-target policy or shared attack buffer.
+
+Validation:final make test passed sixteen CTest suites plus58 Python tests;
+make all built takeoff and ttyd-2ds.elf/3dsx,then exited0 without rebuild after
+final tests. Suite covers request/resolution/work-capture order,literal sampling
+arguments,positive/zero/negative sample counts,ignored chooser return,closest/
+tie/farther/unordered X,pointer-equal offsets,reversed sampled return,signed byte
+narrowing/wrap and side rereads,no-skip/aliased outputs,and takeoff integer outputs
+composed with the existing approach query. Initial test expected22 calls for the
+nonpositive branch;corrected to the observed/documented20 (candidate queries are
+omitted),then reran all checks. git diff --check passed. No emulator run for this
+still-unbound service-level path or original position/RNG/timing equivalence claim.
+
+Next:recover/bind sampling and choice core services,original event scheduler and
+Jump graph,then connect actual shared unit/part/scale/math/audio ownership.
+Existing JUMP-01/DMG-02/EVT-01 requests remain necessary. Native harness still uses
+its provisional schedule and one-hit policy;full remake remains incomplete.
+
 ## 2026-10-12 — Unit and part position services
 
 Implemented BATTLE_UNIT_PART_POSITION_QUERIES.md in battle_position.hpp/cpp.

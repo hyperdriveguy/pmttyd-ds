@@ -438,6 +438,17 @@ rather than treating a passing command helper as complete original attack timing
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
 
+Takeoff implementation breadcrumb (2026-10-12): `battle_jump_takeoff.cpp`
+and `battle_jump_takeoff_tests.cpp` port the complete documented local wrapper.
+It captures work,keeps private sample identity/chooser mode4,branches on signed
+buffer count,retains requested Z/homeY,uses pointer identity and rereads signed
+side bytes before offsets. Sampling/chooser services must initialize count and
+readable outputs;no native candidate policy was invented. Original sample/choice
+core closure and RNG/output/return ownership remain explicitly requested below.
+The resulting integer coordinates compose with the approach query in host tests,
+but native script scheduling and actual original scene/unit positions remain
+unbound. EVT-01 scheduler/dispatcher closure is the next integration dependency.
+
 Native position breadcrumb (2026-10-12): `source/battle_position.cpp` and
 `tests/battle_position_tests.cpp` now implement home/visible/part world/hit leaves,
 linked part lookup and integer GetHitPos event outputs. Semantic views preserve
