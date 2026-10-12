@@ -466,6 +466,22 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Memory-bootstrap breadcrumb (2026-10-12): `event_memory_bootstrap.cpp` ports
+SDK Init/Create/DestroyHeap and five-pool memInit/memClear,with original primary
+map construction. Tests preserve original configuration,shared percentage
+remainder,two-pass handles,ignored replacements and null-result headers. make
+test passes43 suites/69 Python tests;make all passes;ISO verifier passes20 bodies/
+205 anchors. Native arena/storage/cache/scene/source/domain remains open.Next:
+delivered release/battle subpool helpers,native providers and original streams.
+
+Documentation agent:addendum requested for OSInitAlloc's live descriptor-count
+reload80296670 and base reload80296654/67c while metadata size retains ORIGINAL
+count*12. Read-only listings also pin primary-map start→end→handle loads BEFORE
+length store (memClear800301a0..b8;memInit80030434..48),and SDKCreateHeap's live
+size reread802966e8 after header writes. Native implementation/tests preserve
+these instructions;please add this ordering to the existing contracts/verifier
+acceptance text. Prior entry-layout and NormalJump registration requests persist.
+
 SDK-heap breadcrumb and native-layout request (2026-10-12):
 `event_heap_allocation.cpp` ports SDK first-fit/signed-size/split/absorb/allocated
 list and __memAlloc handle/zero/cache wrapper separately from _mapAlloc. Tests

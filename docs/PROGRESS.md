@@ -1,5 +1,35 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original five-pool memory bootstrap and bulk reconstruction
+
+Implemented `event_memory_bootstrap.cpp` for SDK descriptor initialization,
+Create/DestroyHeap,memInit and memClear. Original address tables/configuration,
+fixed-first then same-remainder unsigned64 percentage assignment,two creation
+passes,arena reservation and ignored second/replacement handles remain explicit.
+Primary map root consumes SDK pool1,zeroes/flushes requested payload and writes
+its header even on null result. Bulk reconstruction introduces no per-event/
+allocation teardown or automatic user-pointer invalidation.
+
+Read-only ISO listings in /tmp/pm-sdk-init.disasm,/tmp/pm-sdk-create.disasm,
+/tmp/pm-mem-init.disasm and /tmp/pm-mem-clear.disasm resolved exact live SDK
+base/count reloads and primary start/end/handle order. Original executable bytes
+remain outside source history. Requested documentation addendum for these details.
+
+Validation: `make test` passed43/43 CTest suites and69 Python tests; `make all`
+rebuilt ARM bootstrap/3dsx. Logs:/tmp/pm-memory-bootstrap-test.log and
+/tmp/pm-memory-bootstrap-build.log. Fixtures pin descriptor/store order,live count
+with retained metadata size,alignment/negative extents,first-free descriptors,
+all five original config records,primary root sizing/cache,shared percentages,
+ignored replacement handles and null/header requests. Original heap bootstrap/
+release verifier passes20 bodies,205 anchors,2 data spans and50 scoped direct
+calls;log:/tmp/pm-memory-bootstrap-evidence.log. Static source evidence only.
+
+Native arena/address/cache policy,entry-layout translator,free/scene/user-pointer
+ownership,time/original Jump source and function registry remain open. Next:
+delivered map/SDK release and battle subpool bodies,native storage/bootstrap/
+context service binding and original script extraction/import. Full remake goal
+remains active/incomplete;no emulator run for unbound services.
+
 ## 2026-10-12 — Original SDK event-array heap allocation
 
 Implemented `event_heap_allocation.cpp` for complete OSAllocFromHeap and
