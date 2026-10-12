@@ -1,14 +1,20 @@
 """Audio fixtures contain authored DSP data, never original game assets."""
 from pathlib import Path
+import contextlib
+import hashlib
+import io
+import json
 import struct
 import sys
 import tempfile
 import unittest
+from unittest import mock
 import wave
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
 from audio_convert import stm, sample, sample_directory
 from extract_audio import verify_pcm
+import extract_audio
 
 
 def stream_fixture(enabled=True):
@@ -30,6 +36,40 @@ def bank_fixture(length=10):
 
 
 class AudioAssetTests(unittest.TestCase):
+    def test_full_bank_batch_and_corrupt_music_cache(self):
+        # A synthetic disc exercises complete bank conversion and cache repair.
+        with tempfile.TemporaryDirectory() as directory:
+            iso = Path(directory) / 'disc.iso'; output = Path(directory) / 'audio'
+            stream_name = 'sound/stream/test.stm'
+            bank = bank_fixture(0)
+            data = {stream_name: stream_fixture()}
+            for suffix in extract_audio.BANK_SUFFIXES:
+                data['sound/proj/pmario.' + suffix] = bytes(bank) if suffix == 'sdir' else bytes(8)
+
+            def acquire(iso, name, target):
+                target.parent.mkdir(parents=True, exist_ok=True); target.write_bytes(data[name])
+                Path(str(target) + '.provenance.json').write_text(json.dumps({
+                    'source_path': name, 'sha256': hashlib.sha256(data[name]).hexdigest()}))
+
+            with mock.patch.object(extract_audio, 'inventory', return_value={
+                    'disc_id': 'G8ME01', 'files': [{'path': stream_name}]}), \
+                    mock.patch.object(extract_audio, 'extract', side_effect=acquire), \
+                    mock.patch.object(extract_audio, 'stm', wraps=stm) as convert, \
+                    contextlib.redirect_stdout(io.StringIO()):
+                extract_audio.build(iso, output)
+                manifest = json.loads((output / 'manifest.json').read_text())
+                self.assertEqual(manifest['converted_sample_count'], 1)
+                self.assertEqual(manifest['nonlooped_sample_count'], 1)
+                self.assertEqual(manifest['looped_sample_count'], 0)
+                self.assertEqual(len(manifest['audio']), 2)
+                self.assertFalse((output / 'pcm/samples/pmario-002a.wav.loop').exists())
+                extract_audio.build(iso, output)
+                self.assertEqual(convert.call_count, 1)
+                pcm = output / 'pcm/streams/test.wav'
+                raw = bytearray(pcm.read_bytes()); raw[-1] ^= 1; pcm.write_bytes(raw)
+                extract_audio.build(iso, output)
+                self.assertEqual(convert.call_count, 2)
+
     def test_stereo_loop_and_sample_order(self):
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / 'source.stm'; pcm = Path(directory) / 'out.wav'

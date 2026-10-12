@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Extract original ISO audio read-only and convert a local loopable PCM library.
+"""Extract original ISO audio read-only and convert music and every bank sample.
 
 WAVs use the port's 44-byte PCM16 header and separate .wav.loop files containing
 two little-endian uint32 PCM frame indices [start, end). Nothing is resampled,
@@ -51,6 +51,12 @@ def build(iso, output):
         raise ValueError('This pipeline requires the US G8ME01 disc')
     output.mkdir(parents=True, exist_ok=True)
     records, sources = [], []
+    previous = {}
+    manifest_path = output / 'manifest.json'
+    decoder_hash = digest(ROOT / 'tools/audio_convert.py')
+    if manifest_path.exists():
+        previous = json.loads(manifest_path.read_text())
+    cached = {r['source']: r for r in previous.get('audio', []) if r['source'].endswith('.stm')}
 
     def acquire(name):
         target = output / 'raw' / name
@@ -70,8 +76,17 @@ def build(iso, output):
     for index, item in enumerate(streams, 1):
         raw, provenance = acquire(item['path'])
         pcm = output / 'pcm' / 'streams' / (raw.stem + '.wav')
-        record_pcm(pcm, stm(raw, pcm), provenance)
-        print(f'Stream {index}/{len(streams)}: {raw.stem}', flush=True)
+        record = cached.get(item['path'])
+        reuse = False
+        if (record and previous.get('converter_sha256', {}).get('audio_convert.py') == decoder_hash
+                and record['source_sha256'] == provenance['sha256'] and pcm.is_file()):
+            try:
+                verify_pcm(pcm, record)
+                reuse = digest(pcm) == record['pcm_sha256']
+            except (OSError, ValueError, struct.error, wave.Error):
+                pass
+        record_pcm(pcm, dict(record) if reuse else stm(raw, pcm), provenance)
+        print(f'Stream {index}/{len(streams)}: {raw.stem}' + (' (verified cache)' if reuse else ''), flush=True)
 
     banks = {}
     for suffix in BANK_SUFFIXES:
@@ -82,23 +97,25 @@ def build(iso, output):
         raise ValueError('Duplicate sample IDs; refusing ambiguous output names')
     bank = banks['samp'][0].read_bytes()
     looped = [s for s in directory if s['loop'][1] - s['loop'][0] > 1]
-    for entry in looped:
+    for entry in directory:
         pcm = output / 'pcm' / 'samples' / f"pmario-{entry['id']:04x}.wav"
         metadata = convert_sample(entry, bank, pcm)
         metadata['directory_sha256'] = banks['sdir'][1]['sha256']
         record_pcm(pcm, metadata, banks['samp'][1])
     (output / 'sample-directory.json').write_text(json.dumps(directory, indent=2) + '\n')
     manifest = {
-        'schema': 1, 'source_disc': info['disc_id'], 'iso': str(iso),
+        'schema': 2, 'source_disc': info['disc_id'], 'iso': str(iso),
         'converter_sha256': {p.name: digest(p) for p in (Path(__file__), ROOT / 'tools/audio_convert.py', ROOT / 'tools/iso_assets.py')},
         'loop_units': 'PCM frames; start inclusive, end exclusive; before source-rate resampling',
         'license': 'Original game assets retain original copyright; local derivatives only, no redistribution license granted',
-        'stream_count': len(streams), 'sample_bank_count': len(directory), 'looped_sample_count': len(looped),
+        'stream_count': len(streams), 'sample_bank_count': len(directory), 'converted_sample_count': len(directory),
+        'looped_sample_count': len(looped), 'nonlooped_sample_count': len(directory) - len(looped),
         'sources': sources, 'audio': records,
         'limitations': 'MusyX macros, envelopes, pitch and game event bindings are not rendered. PCM repeats the decoded region; original ADPCM loop-history execution and audible seams have not been compared.'
     }
     (output / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
-    print(f"Converted and verified {len(streams)} streams and {len(looped)} looped samples -> {output}", flush=True)
+    print(f"Converted and verified {len(streams)} streams and all {len(directory)} bank samples "
+          f"({len(looped)} looped, {len(directory) - len(looped)} nonlooped) -> {output}", flush=True)
 
 
 if __name__ == '__main__':
