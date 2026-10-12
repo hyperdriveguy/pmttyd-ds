@@ -1759,6 +1759,12 @@ remaining system and requirements-document completion gate. Reused assets do not
 remove the need to recover their runtime semantics. Do not mark the full goal
 complete based on this first system set or the prototype's green tests.
 
+Shared-workspace note: after validation, unrelated edits appeared in
+source/game.cpp, tests/core_tests.cpp, tools/map_convert.py and
+tools/verify_ground_attributes.py. They were preserved and excluded from the
+research/handoff commits. Test/build results above describe execution-time state;
+they do not certify those later edits or an isolated checkout.
+
 ## 2026-10-12 — Correct falling overhead phase and takeoff clamp
 
 Previous goal turn made verified progress with ascent wall-query orderc4b2fc6.
