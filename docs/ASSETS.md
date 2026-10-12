@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 303 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1564 instruction anchors plus those
+now fingerprints 314 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1612 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -698,3 +698,9 @@ Jump/Hammer-core event hashes/four setup records. dol_event_inventory.py reads
 US ISO DOL data read-only;ignored reports retain raw operands/annotations,not
 dialogue contents. No original code linked/distributed,no asset conversion or
 story rewrite;existing original rights and reference licensing remain unchanged.
+
+Hammer ID3 research adds eleven function identities and48 anchors,seven release
+allowances,registration,two display floats/two sound keys and eight parameter/two
+flag records in previously hashed US Hammer event data. No new extraction or
+asset conversion,ISO write,game execution,native linking or story rewrite.
+Original reports/disassembly remain ignored;existing licensing is unchanged.

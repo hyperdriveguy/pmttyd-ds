@@ -13,6 +13,32 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'hammer_stick_keep_left': {
+        0x8012a1a0: '88030307', 0x8012a1b4: '90781cd4',
+        0x8012a1c4: '80181cd0', 0x8012a1fc: '4082049c',
+        0x8012a280: '4bedae35', 0x8012a2a4: '90bc0020',
+        0x8012a2c8: '7c7d012e', 0x8012a2e4: '907d0000',
+        0x8012a2f0: '548007ff', 0x8012a318: '90181c98',
+        0x8012a32c: '4bedba75', 0x8012a364: '4bfefc7d',
+        0x8012a370: 'a8181d18', 0x8012a388: '3403ffff',
+        0x8012a3c0: '909d0000', 0x8012a3e4: 'b0181d18',
+        0x8012a408: '2c000000', 0x8012a424: '90181cec',
+        0x8012a438: '4180004c', 0x8012a454: '90181cf0',
+        0x8012a4b0: '4bfaf40d', 0x8012a4d8: '4bfaf3e5',
+        0x8012a4ec: '901d0000', 0x8012a4f8: '4bfefae9',
+        0x8012a520: '4182001c', 0x8012a548: '7ee40050',
+        0x8012a554: '386d9ed8', 0x8012a560: '4081001c',
+        0x8012a594: '418200fc', 0x8012a60c: '90781cb8',
+        0x8012a634: '42000000', 0x8012a63c: '90181c9c',
+        0x8012a64c: '907d0008', 0x8012a66c: '41810024',
+        0x8012a68c: '90181cac', 0x8012a694: '4082fb5c',
+        0x8012a174: '80631cb8', 0x80129fc4: '90031c9c',
+        0x80119fd0: '38031034', 0x80119ff4: '4bffffd5',
+        0x80107a94: '4bf297cd', 0x80107aa8: '7c7e012e',
+        0x80107ab4: '2c1c0008', 0x80107ae4: '90041cc4',
+        0x801077b0: '4bff2ca1', 0x80107728: '540007ff',
+        0x800fa590: '4e800421', 0x800fa454: '90031c9c',
+    },
     'ordinary_attack_timing_a': {
         0x8010780c: '4bf29a55', 0x80107838: '4bf29a29',
         0x8010783c: '839e0008', 0x8010784c: '4bf29a15',
@@ -1604,6 +1630,23 @@ def verify(iso_path):
             if struct.unpack('>6I',read(address,24)) != (0x5005b,0x801077ec,0xfffffffe,command_id,1,0):
                 raise ValueError('Ordinary attack SetupAC binding mismatch')
         print('TimingA registration, seven tables, floats and ordinary attack streams/bindings verified')
+        if struct.unpack('>7i',read(0x80416df8,28)) != (80,70,60,40,20,10,5):
+            raise ValueError('StickKeepLeft release windows mismatch')
+        if struct.unpack('>5I',read(0x80364370,20)) != (3,0x8012a17c,0x8012a174,0x80129fcc,0x80129fc0):
+            raise ValueError('StickKeepLeft registration mismatch')
+        if read(0x80422700,4).hex() != 'c3960000' or read(0x80422708,4) != bytes(4):
+            raise ValueError('StickKeepLeft initialization floats mismatch')
+        if read(0x802f01a8,25) != b'SFX_AC_PI1\0\0SFX_AC_PONE1\0':
+            raise ValueError('StickKeepLeft charge sound keys mismatch')
+        for address in (0x8035d988,0x8035dc1c):
+            if struct.unpack('>3I',read(address,12)) != (0x2005b,0x80107ad4,0):
+                raise ValueError('Ordinary Hammer flag binding mismatch')
+        for address, period in ((0x8035d8d0,25),(0x8035d900,30),(0x8035d930,30),(0x8035d95c,40),
+                                (0x8035db64,25),(0x8035db94,30),(0x8035dbc4,30),(0x8035dbf0,40)):
+            if struct.unpack('>10I',read(address,40)) != (0x9005b,0x80107a64,4,period,0,0,0,
+                                                         0xf1194d80,0xf1194d80,0xf1194d80):
+                raise ValueError('Ordinary Hammer parameter binding mismatch')
+        print('Hammer registration, windows, floats, sound keys and script parameter/flag sites verified')
 
 
 

@@ -4421,3 +4421,38 @@ then compare isolated original impact/input/cadence/state traces. Continue full
 US playable/optional systems/content before complete-game requirements. Full
 objective remains active/incomplete;local command recovery is not full combat
 or scene equivalence.
+
+## 2026-10-12 — US ordinary Hammer command and callback protocol
+
+Added BATTLE_HAMMER_STICK_KEEP_LEFT.md and BATTLE_ACTION_COMMAND_CALLBACKS.md.
+Recovered complete ID3 main/result/delete,held-pad wrappers,eight-parameter/raw-
+flag setters,start and result wrappers/services. Documented suppression/automatic
+captures,initialization,120-call wait,held-left charge,negative-countdown stage
+advance,sound handle requests,release/stage/difficulty rules,forced routes,
+same-call redispatch,1004 external wait and deferred finish cleanup. General
+held-left mask40000 is distinct from private AC trigger history. Seven release
+allowances80/70/60/40/20/10/5 verified;actual eligible span also depends on period.
+
+Original Hammer-core sites set mode0,N4,period25/30/30/40,zero suppression and
+three trailing sentinel operands. Resolved parameter sentinel preserves prior
+field;flag setter takes raw whole word. Result event polls stored pending bit,
+discards callback register return and blocks until main clears it. No animation
+impact or tutorial equivalence measured;branch selection and force writers open.
+Main normal paths do not locally increment result count. Finish state1005 sets
+60 without decrement,unlike TimingA;1003's local busy loop is not a frame wait
+or sound-stop request. Updated registered-command coverage to two main bodies.
+
+Validation:1612 instruction anchors and all prior checks passed read-only ISO;
+new registration,seven allowances,two floats/two sound keys,eight parameter/two
+flag records checked. Fresh314-function reports repeated byte-for-byte. All553
+behavior links resolved;Gekko disassembly check clean;git diff --check passed.
+make test passed core plus52 Python tests;make all exited0,no rebuild. No original
+execution/emulator,ISO/profile/save mutation,native gameplay changes,asset
+conversion or story/message rewrite. Original listings/reports remain ignored.
+
+Next:full ordinary attack event branches and unit/weapon/difficulty/output/
+automatic/forced/suppression writers;opening/Crump REL/tutorial selection and
+conditions,then original impact/input/state/cadence traces. Presentation/sound
+services remain separate. Continue all US gameplay/optional-content systems
+before complete-game requirements. Objective remains active/incomplete;two
+command contracts do not establish full combat/story/game fidelity.

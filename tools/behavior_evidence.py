@@ -15,6 +15,10 @@ from iso_assets import DEFAULT_ISO, inventory
 
 
 FUNCTIONS = (
+    'battleAcMain_StickKeepLeft', 'battleAcResult_StickKeepLeft',
+    'battleAcDelete_StickKeepLeft', 'BattlePadCheckNow', 'BattlePadMultiCheckNow',
+    'btlevtcmd_AcSetParamAll', 'btlevtcmd_AcSetFlag', 'btlevtcmd_StartAC',
+    'btlevtcmd_ResultAC', 'BattleActionCommandStart', 'BattleActionCommandResult',
     'btlevtcmd_SetupAC', 'battleAcMain_TimingA', 'battleAcResult_TimingA',
     'battleAcTimingA_GetSuccessFrame', 'BattlePadCheckRecordTrigger',
     'BattlePadMultiCheckRecordTrigger',

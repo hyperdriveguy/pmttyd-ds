@@ -35,7 +35,7 @@ Each record begins word0x0005005b,callback0x801077ec. Thus ordinary Jump's
 identified setup sites select ID1,while ordinary Hammer core's select ID3.
 These are branch-local sites,not proof that each executes on every attack.
 The original registration table routes ID1 to battleAcMain_TimingA and ID3
-to battleAcMain_StickKeepLeft. See [TimingA](BATTLE_TIMING_A_COMMAND.md) and
+to battleAcMain_StickKeepLeft. See [TimingA](BATTLE_TIMING_A_COMMAND.md),[Hammer ID3](BATTLE_HAMMER_STICK_KEEP_LEFT.md) and
 [registration/priorities](US_COMPLETION_AND_PRIORITIES.md).
 
 ## Setup callback: resolved and raw operands
