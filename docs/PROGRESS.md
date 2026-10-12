@@ -5029,3 +5029,25 @@ result consumers,then original tutorial state/input/timing traces. Continue all
 reachable US systems and optional content before complete-game requirements.
 Full objective active/incomplete;stat copy and spawn/owner links do not prove
 complete unit mechanics,faithful tutorial execution or full game.
+
+## 2026-10-12 — Rechecked GameCube paired-single disassembly repair
+
+Verified the requested listing repair is already implemented in commits e4b9816
+and 5837be7. tools/gekko_disasm.py decodes Gekko opcode4 and quantized memory
+opcodes56/57/60/61 from the displayed original instruction words;the DOL
+inspection pipeline applies it automatically after LLVM disassembly. Reserved
+encodings remain explicit .long words instead of newer PowerPC operations.
+Existing repair previously corrected354 instruction rows across47 listings.
+
+Current validation: all449 PowerPC listings under artifacts/reference checked,
+64,886 instruction rows and362 paired-single instructions;zero corrections
+needed and zero unrecognized paired encodings. Fresh read-only ISO inspection
+of PSMTXScale into /tmp emitted four correct psq_st instructions and passed the
+same check. make test passed all six host suites and58 Python tests;make all
+exited0 with no rebuild. No binary/listing/ISO mutation was necessary this turn.
+Existing in-progress behavior tooling edits were preserved. This verification
+covers text decoding,not execution or complete original-game equivalence.
+
+Next: use the corrected inspection pipeline for subsequent US behavior research;
+continue the unfinished boss normal attack/target contracts and broader reachable
+systems before final complete-game requirements.
