@@ -120,3 +120,13 @@ ReInit preserves selected work/flag banks and shared schedule count,clears only
 selected entries and resets shared allocation/active globals without deletion.
 Initial ID1/speed1.0 are DOL data,not writes by those bodies. Source/context/
 capacity mutation,heap/scene/clock/platform domains and original traces remain open.
+
+
+## Timestamp producer and outer-loop follow-up (2026-10-12)
+
+[Retrace clock publication](EVENT_RETRACE_TIME_PUBLICATION.md) now closes GP38/
+3c's local raw-time producer,window/GP10 freeze and baseline/mask behavior;
+[outer/update loop](GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md) closes main,
+StMain/display requests,33-call ordering and idle tail. Earlier producer scope
+is superseded for these local paths. Hardware clock/VI/thread/gate/state/source
+and measured original input/pause/multicredit cadence remain open.

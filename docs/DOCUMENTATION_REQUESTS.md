@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Event timestamp producer and main-loop pause/update binding | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Retrace clock](behavior/EVENT_RETRACE_TIME_PUBLICATION.md),[outer/update loop](behavior/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md):complete clock publication prefix/window/raw readers and main/StMain/idle body,scoped refresh/registration;other callback tail/input/scene/platform/domain and measured cadence/original traces remain open |
 | Partner surrounding-wall correction and called search body | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover unk_800c27c0 wrapper and called surrounding search complete local ray/order/position contract;full ray backend/terrain/motion engines,EVT-01 and original traces remain separate |
 | Event context initialization,reinitialization and capacity provenance | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Context init/reset](behavior/EVENT_CONTEXT_INITIALIZATION_AND_RESET.md),[SDK heap/callers](behavior/EVENT_BOOTSTRAP_HEAP_AND_RESET_CALLERS.md):complete Init/ReInit/allocator local policy,two original256-slot arrays,bank/global preservation and four direct DOL bindings;other heap/platform/time/source/scene/domain/original traces remain open;make test32 suites/58 Python tests and make all pass |
 | Event dispatch tail,debug formatter and complete opcode inventory | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Tail/debug](behavior/EVENT_DISPATCH_TAIL_AND_DEBUG_FORMATTING.md),[all119 coverage](behavior/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md):complete113..118/prefix11/no-ops,formatter/slot local bodies and full table;local opcode coverage closed,source/domain/platform/original traces remain open;native fixture/terrain gates resolved,full make test now passes |
@@ -1170,3 +1171,31 @@ Partner caller reads+30 normal for its projection. Corrected the doc;native
 high-level ray provider should be checked against this ABI,without swapping
 already correctly named native vector fields. Full backend/numeric traversal
 remains separate. ID1 verifier pins these result-layout anchors.
+
+
+ID2 EVT-01 time/update delivery (2026-10-12), partial answer:
+[Retrace clock](behavior/EVENT_RETRACE_TIME_PUBLICATION.md) supplies actual
+GP38/3c producer:OSGetTime raw-TB delta,GP10/window gate,unconditional raw-baseline
+publication,masked auxiliary clock banks,event bank independent of low system
+mask,and field-only40 bank. Freeze discards later catch-up ticks because baseline
+continues updating. Window null/1000/state0 or>=200 does not freeze;nonzero<200
+including negatives does. Scoped bootstrap zero-bank/VI refresh0→60 else50/
+post-retrace registration and full raw reader are pinned;hardware rate unmeasured.
+[Outer loop](behavior/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md) closes main,
+StMain/display local requests and all33 calls:makeKey,battleMain,evtmgrMain order,
+readiness yield barrier,raw profile intervals and complete idle channel/time/
+sequence/flag request. Original action commands remain simulation-tick owned;
+render/profile callbacks are not their timing source by inference. Verifier
+passes nine containing/complete hashes,247 anchors and SDA startup span. Own
+binary-validated lock released;VI/thread/clock/window/GP/gate/context/source/
+numeric and original input/pause/retrace/multicredit traces remain EVT-01 work.
+
+
+ID2 timing validation completion (2026-10-12):make test passes33 CTest suites
+and58 Python tests;make all rebuilt the existing original asset pack and3DSX.
+All ID2 new/updated timing contract links resolve. Repository-wide link check
+currently scans1511 local links and finds one concurrent missing target:
+behavior/OVERWORLD_WALL_MOVEMENT.md→FIELD_PARTNER_SURROUNDING_WALL.md. ID2 leaves
+that ID1/terrain contract work untouched;this is a shared-document arrival
+dependency,not an original-game evidence failure. Timing/general/manager binary
+verifiers and Python compilation pass. ID2 changed no native or asset tooling.

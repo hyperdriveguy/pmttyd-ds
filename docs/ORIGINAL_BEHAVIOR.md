@@ -507,3 +507,11 @@ original reset/transition traces remain open.
 ordered rays,quantized distance,half-tangent correction and asymmetric hit/null
 returns. Backend result anchors correct the earlier swapped ABI labels:point+24,
 normal+30. Full backend/traversal/mesh/domain and original collision traces remain open.
+
+
+[Retrace clock](behavior/EVENT_RETRACE_TIME_PUBLICATION.md) and
+[outer/update order](behavior/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md) now
+bind event timestamp accumulation to raw time-base deltas with GP10/window
+freeze and unconditional baseline updates. Complete main/StMain requests pin
+input-before-battle-before-event ordering and separate render/profile intervals.
+Hardware/gate/scene/numeric domains and original measured cadence remain open.

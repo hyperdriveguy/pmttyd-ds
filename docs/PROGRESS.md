@@ -7636,3 +7636,36 @@ homing/fall/jump/behind services and source/owner/flag/index domains;original
 collision trajectories and complete field/battle teardown. Full documentation/
 remake remain incomplete;complete-game requirements deferred until sufficient
 system coverage.
+
+## 2026-10-12 — ID2 event timestamp producer and full outer update order
+
+Added [retrace clock publication](behavior/EVENT_RETRACE_TIME_PUBLICATION.md)
+and [outer/update order](behavior/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md).
+Complete callback clock prefix publishes raw-TB delta,clamped total bank,
+GP10/window-gated admitted clocks,independent low-system-mask banks,ungated
+by those masks event38 bank,field-only40 bank and unconditional raw baseline/
+callback argument stores. Freeze prevents later tick catch-up. Complete raw
+reader/window predicate and scoped bootstrap zero-bank/refresh0→60 else50/VI
+registration are pinned. Complete main/StMain/display local bodies fix initial
+update,33-call order,input-before-battle-before-event,profiling words,readiness
+yield and idle channel/time/sequence/flag tail. Callback reset/button/rumble/
+audio tail,hardware cadence and called subsystem bodies remain separate.
+Only ID2 scoped lock released;EVT-01 integration/source/domain/traces stay open.
+
+Validation:verify_event_time_publication.py passed nine complete/containing
+hashes,247 anchors and SDA setup span;repeated metadata byte-identical;
+Python compilation,general verifier1980 anchors and manager verifier passed.
+make test passed33 CTest suites and58 Python tests. make all rebuilt the existing
+original asset pack (40714 map triangles,1247 preserved samples) and3DSX;
+compiled packs remain outside source history. New/updated timing contract links
+all resolve. Repository-wide scan1511 local links found one concurrent missing
+FIELD_PARTNER_SURROUNDING_WALL.md link from OVERWORLD_WALL_MOVEMENT.md;inbox
+records the exact dependency. git diff --check passed. ID2 changed no native,
+asset pipeline,conversion choices,profile or saves. ISO remained read-only;
+no original execution/cadence measurement or binary/dialogue distribution.
+
+Next:resolve shared contract link on arrival;hardware clock/VI/thread/GP10/
+window/state/system-mask producers and publication/interrupt domains;callback
+reset tail,SDK/map heap free/sharing,source/REL/callback/address translation and
+original input/pause/idle/retrace/multicredit/Jump/story traces. Complete-game
+documentation and requirements remain incomplete.
