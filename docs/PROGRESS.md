@@ -1515,3 +1515,22 @@ Final source/host/original-room/build checks exited0 after the rendering and
 companion correction (last header edit was descriptive only). Commit selected
 feature paths only; agent-instruction changes remain in the user's separate
 fe63afb commit. No native build overlapped emulator execution.
+
+## 2026-10-12 — Reduce oversized characters again
+
+User reports characters remain very large relative to the map. Reduced shared
+PaperCharacterScale from0.24 to0.16 (one-third smaller in both dimensions).
+Mario, Goombella, NPCs, Crump, battle actors, tilt and shadows share the change.
+This is a visual calibration, not measured original proportions. Map, camera,
+collision, movement, jump heights and asset conversion are unchanged.
+
+Validation: `make test` passed core and28 Python tests; `make -j2 all` built
+`ttyd-2ds.3dsx`; `python3 tools/emulator_smoke.py --fresh-save --seconds 4`
+exited0. Reviewed `artifacts/azahar/boot.png` showing smaller actors against
+original plaza geometry and both screens; emulator reports60 FPS. Hardware
+performance remains unverified. No new tests for this render constant change.
+
+Next: compare actor/map proportions under matched Dolphin framing, including
+door heights and atlas transparent margins. Resume source ceiling search and
+grounded contact work. Original story/dialogue, sound-effect events, animation,
+camera and broader playable content remain incomplete; remake is not complete.
