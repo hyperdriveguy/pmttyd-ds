@@ -6,6 +6,38 @@ is the request inbox; please add links to recovered contracts and mark requests
 answered here. Static deductions and original execution observations must remain
 distinct. Do not change native harness choices into original-game evidence.
 
+## Documentation locks and delivery status
+
+Locks reserve only the named subtask, not an entire parent request. Keep other
+subtasks available for independent work. Record the owner and release the lock
+when the linked contract is validated; a partial answer leaves its parent open.
+
+| Subtask | Parent | Status | Owner | Deliverable / boundary |
+| --- | --- | --- | --- | --- |
+| Crump normal attack request graph and target wrapper ABI | AC-01, AC-03, DMG-01 | LOCKED, 2026-10-12 | Documentation /root | Validate existing normal-attack and target-interface drafts; excludes target cores and executed timing |
+| Default weapon power callback and concrete boss operands | DMG-01 | LOCKED, 2026-10-12 | Documentation /root | Recover 0x80189d30, signed widths and selected data bindings; excludes ordinary Mario callback bodies |
+
+## Priority and active documentation locks
+
+Locks reserve a specific research slice, not the entire request. The owner
+records the slice before work and releases it after contracts and validation
+are committed; other agents may work on unreserved slices. An open request is
+not answered merely because its portable local helper has been implemented.
+
+| Priority | Request / implementation blocker | State / owner / reserved slice |
+| --- | --- | --- |
+| 1 | DMG-01: real weapon power, part defenses and dispatch/application | Open; next documentation slice is weaponGetPowerDefault and concrete boss/ordinary weapon inputs |
+| 2 | AC-03: enemy hit branch and actual defense sampling boundary | LOCKED by documentation /root, 2026-10-12: harbor normal-attack request graph and target wrapper contracts; validation/indexing in progress |
+| 3 | AC-01: tutorial/ordinary Jump state ownership and impact cadence | Open except the shared enemy-attack slice reserved under AC-03; next recover pad/update and movement callback composition |
+| 4 | AC-02: Hammer lifecycle, result consumers and original audio binding | Open; ordinary weapon period/base difficulty already answered |
+| 5 | STATUS-01: initialization, infliction and turn lifetime | Open; portable storage alone does not establish turn cadence |
+
+The ordering serves the early original encounter's implementation. It does not
+remove the full game's field, partner, story, inventory, save, audio, rendering
+and optional-content obligations. Do not insert provisional native timing into
+an original contract. Complete-game requirements remain deferred until system
+coverage is adequate.
+
 ## AC-01 — Opening Crump encounter and Jump callers (open)
 
 Partial answer in documentation commit81a2c2b:
@@ -20,8 +52,8 @@ Further partial evidence has arrived in
 [field battle entry/return](behavior/FIELD_BATTLE_ENTRY_AND_RETURN.md) and
 [harbor configuration](behavior/HARBOR_TUTORIAL_CONFIGURATION.md): literal2
 selects gor setup record0x60eb8,one weighted group/unit and unit_boss_kanbu1.
-The kind's raw halfword5 remains explicitly unclosed as HP until stat-copy/init
-consumers are recovered. The local field-return wait accepts sequence2 plus
+The subsequent [entry/stats contract](behavior/UNIT_ENTRY_STATS_AND_SPAWN.md)
+connects kind HP5/FP0 to runtime stores;later overrides remain open. The local field-return wait accepts sequence2 plus
 any nonzero result;actual victory/loss/escape producers remain open. Preserve
 these boundaries when answering remaining tutorial stats/event requests.
 
@@ -78,6 +110,19 @@ to reproduce the original command's display geometry/animation. Sound requests
 retain `SFX_AC_PI1` and `SFX_AC_PONE1`; no replacement samples are played.
 
 ## AC-03 — Defense callers, pad cadence and eligibility (open)
+
+Further partial answer (2026-10-12):
+[boss normal attack](behavior/HARBOR_BOSS_NORMAL_ATTACK.md) documents all95
+commands. Precheck result1 alone requests defense then CheckDamage flags0x100;
+results2/3/4/6 and default skip defense and converge on common recovery. The
+parent reaches precheck after the JumpPosition callback,with an earlier concurrent
+pose event;no fixed impact tick is established. Preserve avoidance codes38/39/40.
+[target interfaces](behavior/BATTLE_TARGET_EVENT_INTERFACES.md) documents the
+seven local target helpers/wrappers,including mode pair selection and signed
+sampling bias;candidate selection cores and initial flag/mode writers remain
+open. No-target GOTO99 has no local label99 and must not be fabricated as a
+successful return. This answers the local attack branch/ABI slice only;request
+stays open for sampling cadence,global eligibility and executed traces.
 
 Partial answer now in [boss tutorial events](behavior/HARBOR_BOSS_TUTORIAL_EVENTS.md):
 normal attack's ResultACDefence call is at gor.rel0x656bc,CheckDamage at0x656cc
