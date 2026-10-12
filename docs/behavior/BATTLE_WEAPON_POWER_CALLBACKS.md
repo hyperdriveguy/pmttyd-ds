@@ -129,6 +129,11 @@ unit+0x2ff/+0x300 initialization/badge writers; AC state-bit producers at each
 hit; unit/part defense construction; damage flags, counter/precheck/application,
 death/revival/reward/field return. DMG-01 remains partially open.
 
+The [badge import/setup contract](UNIT_BADGE_COUNT_IMPORT.md) now identifies
+numeric items289/290 as the mode-gated bonus2ff/300 writers and the concrete
+initial badge-import calls. Initial equipment,other writers and per-hit AC state
+remain open;the earlier callback boundaries still apply.
+
 ## Reproduction and evidence retention
 
 Use tools/inspect_dol_function.py with the four named symbols above,

@@ -104,8 +104,10 @@ Mario's annotated DOL array unitpartsdata_Mario at0x80372a18 has three0x4c-byte
 records, IDs1,2,3. Their attributes are9,0x13010000,0x13010000 respectively;
 all three counter-attribute words are0. All three records point to shared
 defense0x80417ba0 and defense-attribute0x80417ba8, each five zero bytes. The
-array itself does not establish that a specific actor construction uses all
-three: Mario kind/count and actual entry callers remain a separate binding.
+array alone does not establish the actor's count. The subsequent
+[badge/setup contract](UNIT_BADGE_COUNT_IMPORT.md) now pins entryunit_mario to
+unitdata_Mario with count3 and this array,establishing the concrete initial
+Mario construction. Later mutations and executed runtime state remain open.
 
 The [damage calculator](BATTLE_DAMAGE_CALCULATION.md) reads signed bytes from
 the runtime table pointers indexed by cached element, then applies badges,

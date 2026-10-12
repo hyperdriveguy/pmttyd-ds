@@ -123,8 +123,9 @@ After revision, SetParamFromPouch **rereads unit kind**, forms battle snapshot
 Snapshot bytes+0x22/+0x23 are not copied by this body. Status restoration copies
 bytes directly;it does not call setters for each imported effect. Thus byte119,
 negative durations,shared sign pairs and other retained combinations are not
-normalized by status setter rules on this route. The snapshot's producer,valid
-state and battle/field/save lifetime remain open;it is **BattleWork memory**,not
+normalized by status setter rules on this route. The matching export leaf below
+now identifies one writer;valid state and caller/battle/field/save lifetime
+remain open. It is **BattleWork memory**,not
 established original on-disk save data. Entry's earlier clear can be overwritten
 by this partner restore.
 
@@ -146,6 +147,29 @@ FP=base FP+5*U8(2f2),narrow and upper-cap current FP. It leaves base copies
 unchanged and has no lower clamp. Do not make the import no-op imply revision
 no-op or omit this callable enemy resource behavior.
 
+## Matching export leaf and unresolved caller lifetime
+
+BtlUnit_SetParamToPouch0x80126f00/0xe8 is now fully recovered alongside badge
+setup research. Capture BattleWork,call pouchGetPtr,read kind U+8. Kind222 copies
+signed current HP10c to pouch70,then signed current FP112 to pouch74. No maxima,
+status,clamp,resource setter or snapshot write occurs in this Mario branch.
+
+Kinds224..230 call BattleTransPartyId,write signed current HP10c to pouch+
+14*translatedIndex+6,then **reread kind** and form the same44-byte BattleWork
+snapshot B used by import. Copy binary32 U114 to B0,then word U138 to B24,
+then exactly30 bytes U118..135 to B4..21 (seven words and a halfword),then
+halfwords U13c/13e to B28/2a. Snapshot gap22/23 remains untouched. No partner
+FP write or status normalization occurs. Other kinds only perform entry reads
+and return with no local writes. Unit/pouch pointers are not null-checked.
+
+This identifies **one concrete snapshot writer**,so the import producer is no
+longer entirely unnamed. It does not establish which switching/turn/battle-end
+callers invoke export,when BattleWork snapshots reset,or how disk saves capture
+pouch/battle memory. Aliasing/service order must remain explicit. Add paired
+host cases for Mario current-only export,partner direct status-byte roundtrip
+with gap retention,and enemy no-op;original reentry/lifetime traces are still
+required. Do not label this function an original disk-save implementation.
+
 ## Scoped implementation requirements
 
 | ID | Requirement | Derived acceptance cases |
@@ -156,8 +180,9 @@ no-op or omit this callable enemy resource behavior.
 | INIT-04 | Keep import and revision dispatch distinct | Other-kind import has no writes;direct other-kind revision applies both count bytes and upper caps |
 
 These are derived host-verification obligations,not original executed traces.
-Unclosed STATUS-01/DMG-01 work:badge/count/bonus initialization,move-count writers,
-snapshot producer and switch/reload lifetime,status infliction/recovery/periodic
+The [badge/setup contract](UNIT_BADGE_COUNT_IMPORT.md) now closes one concrete
+badge/count/bonus import path. Unclosed STATUS-01/DMG-01 work:other count writers,
+move-count writers,snapshot caller and switch/reload lifetime,status infliction/recovery/periodic
 controllers,all pointer/flag mutations and per-hit AC state. Original live/lethal
 partner entry,swap/reentry,negative-status and multi-turn traces remain required.
 

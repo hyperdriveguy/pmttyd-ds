@@ -15,6 +15,7 @@ from iso_assets import DEFAULT_ISO, inventory
 
 
 FUNCTIONS = (
+    '_EquipItem', 'BtlUnit_EquipItem', 'Btl_UnitSetup', 'BtlUnit_SetParamToPouch',
     'BtlUnit_SetParamFromPouch', 'BtlUnit_ClearStatus', 'BtlUnit_ReviseHpFp',
     'BattleTransPartyId', 'BattleStatusChangeInfoWorkInit',
     'BtlUnit_GetPartsPtr', 'BtlUnit_Delete', 'BattleAlloc', 'BattleFree',

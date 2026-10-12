@@ -13,6 +13,24 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'unit_badge_import_and_setup': {
+        0x800f7ca4: '2c050000', 0x800f7cf4: '5486077b',
+        0x800f7fe4: '548007bd', 0x800f822c: '2c000000',
+        0x800f8244: '980302f3', 0x800f824c: '28000002',
+        0x800f825c: '4c820020', 0x800f8264: '980302f4',
+        0x800f8294: '980302ff', 0x800f82ac: '98030300',
+        0x800f82cc: '980302f3', 0x800f82ec: '980302f4',
+        0x800f82f4: '2c000000', 0x800f8304: '2c05014b',
+        0x800f8338: '4bfddb79', 0x800f8350: '38000028',
+        0x800f8360: '380402e0', 0x800f8374: '2c0000dc',
+        0x800f837c: '57a0077d', 0x800f8388: '57bd003c',
+        0x800f8398: '7cbe02ae', 0x800f83ac: '2c1c00c8',
+        0x800f83cc: '4802ec1d', 0x800f8b10: '38800003',
+        0x800f8b24: '38800003', 0x800f8ba4: '38800005',
+        0x800f8c14: '38800001', 0x800f8c44: 'b01f010c',
+        0x800f8c4c: 'b01f0112', 0x80126f30: 'b01e0070',
+        0x80126f38: 'b01e0074', 0x80126f84: '38c662a0',
+    },
     'unit_status_clear_and_pouch_import': {
         0x80127b64: '38a0001e', 0x80127b74: '387f0118',
         0x80127b78: '4bedd53d', 0x80127b80: '38800010',
@@ -2070,6 +2088,19 @@ def verify(iso_path):
             if hashlib.sha256(read(address,size)).hexdigest() != digest:
                 raise ValueError(f'Unit status/pouch import fingerprint mismatch {address:#x}')
         print('Complete status clear,pouch import,resource revision,party mapping and six-record feedback init bodies verified')
+        for address,size,digest in (
+            (0x800f7ca4,0x678,'4a8ac26effdc970b757ca4d5918379bbd034a52adbae9f871b8c4280ab3272d8'),
+            (0x800f831c,0xc8,'7aae8fadca55ab82af1fe42d237ad1e48df32046c404f9da1be67b3a5b416131'),
+            (0x800f8aac,0x2f8,'7629c39a04c07b612a1f7bf3d23e61a46bf187e422a4279a31f6d8eea9dc8844'),
+            (0x80126f00,0xe8,'0b7d7a71d5dd144db53ce9ff66bb1bfd52b4583e2c2b5bce505e150240cf4597'),
+            (0x80416a50,0x30,'f89e53f4c9b12daf926b69f924483ab9396e72d6bff419b092a6cc5023af0366'),
+            (0x80372afc,0xc4,'8370d262b79fb844dfbbce28ee30dbaae189fdc3a18eba6d1a07bc16489a8737'),
+        ):
+            if hashlib.sha256(read(address,size)).hexdigest() != digest:
+                raise ValueError(f'Unit badge/setup/export fingerprint mismatch {address:#x}')
+        if struct.unpack('>I',read(0x80416a50,4))[0] != 0x80372afc or read(0x80372afc+0xb4,1) != b'\x03' or struct.unpack('>I',read(0x80372afc+0xb8,4))[0] != 0x80372a18:
+            raise ValueError('Concrete Mario setup/kind/three-part binding mismatch')
+        print('Badge/count import bodies,setup caller flags,Mario three-part binding and partner snapshot export verified')
 
 
 
