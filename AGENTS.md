@@ -32,3 +32,5 @@ scenes with fabricated scenes. Screen reflow and adapted control prompts may
 change presentation only. Development harness notices are not story dialogue.
 
 This project is git versioned. Make incremental commits between working on features and incremental steps.
+
+When running out of tokens, give the human user handoff next steps as well.
