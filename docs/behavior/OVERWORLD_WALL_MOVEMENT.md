@@ -3,7 +3,7 @@
 US G8ME01 disc0 revision0, recovered2026-10-12 from read-only local ISO.
 Static local behavior, not original execution, measured movement or numerical
 comparison. Verify with `python3 tools/verify_overworld_wall_movement.py`:
-eight containing bodies,45 instruction anchors,14 scalar constants and three
+nine containing bodies,48 instruction anchors,14 scalar constants and three
 original filter strings. Fingerprints of hitCheckVecFilter and initialization
 pin containing evidence, not a complete recovery of those large bodies.
 
@@ -200,3 +200,13 @@ ordered side-tail behavior, quantization near boundaries, cull/attribute rules,
 forward vs around heights,8/2 directions, fall cap and two-pass position ownership.
 Keep legacy endpoint circles for unrelated eligibility queries only if their
 provisional behavior is clearly separated from original player displacement.
+
+## Original heading convention
+
+The called `sincosf`0x80005e8c outputs X=sin(H*pi/180) first, then
+Z=-cos(H*pi/180): sine request0x80005ec4/store0x80005ed0, cosine request
+0x80005ed4, explicit negation0x80005edc/store0x80005ee0. Thus rotating an
+existing XZ unit direction by positive a for H+a gives
+`(x*cos(a)-z*sin(a), x*sin(a)+z*cos(a))`. Use this convention for side guards,
+around directions and opposite rays. It is not the positive-cosine convention.
+Original trigonometric services still remain numerical-equivalence dependencies.
