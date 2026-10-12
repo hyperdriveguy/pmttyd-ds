@@ -1,5 +1,35 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Turn first-process composition and fog expiry
+
+Implemented complete local turn-first-process sequence with explicit battle
+argument:rule judgment,signed halfword increment/store/reread and fortune>=2,
+ordered18ff4/18ff0 clears,capped record count,64 registry slots,unit24 byte wrap
+before move reset,retained kind pointer and post-RNG signed priority/span reads,
+wrapped unit28 priority and raw status-mask clear. Fog independently recaptures
+current battle,preserves pointer for timer0,reloads decremented timer and requests
+SOFT deletion before captured pointer clear on nonpositive expiry. Negative/
+wrapped timers are not clamped or converted into native deadlines.
+
+Native services connect actual shared memory/registry/fortune/RNG;rule judgment,
+move reset and effect soft-deletion remain explicit required backend providers.
+No outer turn frequency or render-loop invocation is inferred;this service is
+not yet called by Game's original turn-controller binding. Status flag leaves
+retain their different null-read/clear policies.
+
+Validation:make test passes66 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-turn-first-test.log and /tmp/pm-turn-first-build.log. Fixtures pin
+halfword wrap versus count cap,global judgment before mutations,fortune gate,
+clear order,unit24 before reset,retained kind/post-RNG priority reads,signed span/
+half arithmetic,status mask preservation,global fog recapture,zero/positive/
+negative/wrapped timer and provider alias writes. Native adapter test exercises
+explicit B differing from global fortune/fog owner with actual fortune count0
+path. Backend records and callbacks are authored provider inputs;original outer
+turn cadence,rule/move/effect ownership and hardware/runtime fidelity remain open.
+
+Next:bind rule/move/effect backends and outer turn state machine alongside other
+Jump callbacks;movement-wrapper request remains pending. Full-game goal incomplete.
+
 ## 2026-10-12 — ID2 file-cache collection and pool initialization
 
 Added two detailed contracts for complete _fileGarbage/fileInit/archive-mode

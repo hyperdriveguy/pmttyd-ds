@@ -5,6 +5,7 @@
 #include "battle_actor.hpp"
 #include "battle_majinai_query.hpp"
 #include "battle_event_utilities.hpp"
+#include "battle_turn_first.hpp"
 
 namespace ttyd {
 struct BattleDataChildBackend {
@@ -13,6 +14,16 @@ struct BattleDataChildBackend {
     uint32_t (*currentBattle)(void*)=nullptr;
     uint32_t (*unit)(void*,uint32_t battle,int32_t id)=nullptr;
 };
+struct BattleTurnFirstBackend {
+    EventNativeRuntime* runtime=nullptr;
+    void* user=nullptr;
+    void (*judgeTurnRule)(void*)=nullptr;
+    void (*resetMove)(void*,uint32_t unit)=nullptr;
+    void (*softDelete)(void*,uint32_t effect)=nullptr;
+};
+// Backend and runtime must outlive returned services. Closed local turn body;
+// rule/move/effect providers retain their separate original ownership.
+BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend&);
 BattleActorServices nativeBattleActorServices(EventNativeRuntime&);
 BattleDataChildServices nativeBattleDataChildServices(EventNativeRuntime&,const BattleDataChildBackend&);
 // Complete recovered actor translation and registry queries on runtime bytes.

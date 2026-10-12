@@ -493,6 +493,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): complete local turn-first-
+process and fog-expiry composition now execute on shared original-address memory.
+Native adapter uses actual fortune/registry/RNG services;judgment,move-reset and
+soft-effect deletion retain explicit required backend providers.66 CTest/78 Python
+and make all pass. Halfword gate,record clears/cap,64-slot unit loop,retained kind/
+post-RNG priority reads,status mask and global fog expiry semantics are covered.
+Outer turn cadence/controller and rule/move/effect source ownership are not
+claimed;no render-loop call was introduced. Movement-wrapper request remains
+pending;existing STATUS-01/DMG-02/EVT-01 source/runtime requirements stay open.
+
 Native implementation breadcrumb (2026-10-12): complete fortune producer
 and count initializer now use shared byte storage with explicit irand provider;
 initializer event800f08ac is registered. Native initializer→producer→power-query
