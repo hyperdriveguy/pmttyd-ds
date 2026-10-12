@@ -32,7 +32,7 @@ are not set by this function. Do not replace this with a blanket work clear.
 
 ## Runtime tangent table
 
-Fill178 binary32 words beginning0x803e9580. For i=0..177,signed angle=i−89;
+Fill178 binary32 words beginning0x803d9580. For i=0..177,signed angle=i−89;
 convert integer through double bias0x802c1070=0x4330000080000000,subtract via
 fsubs,and fmuls original factor0x3c8efa33=0.017453288659453392.
 Request tan0x802724e8 with that single-rounded input,frsp the return and store
@@ -40,7 +40,7 @@ at tableBase+4*i. Iterate in ascending order;no copied static tangent asset.
 This factor differs from some other game subsystems' nearby degree constants.
 Do not silently reuse a mathematically exact/shared pi factor.
 
-The zero-angle address is tableBase+89*4=0x803e96e4. Main's cubic node channel
+The zero-angle address is tableBase+89*4=0x803d96e4. Main's cubic node channel
 uses signed byte tangent indices around that address,valid generated angles
 −89..88. Its byte3 guard admits only−88..88;byte2 is unguarded.
 Table storage is runtime/BSS and cannot be pinned as original DOL initialized
@@ -72,3 +72,9 @@ file strings),two US lecture imports and65 direct DOL sites. The original
 M_Z_1 serialized resource example is separately hash/metadata checked. Initial
 pointer spans are not live state. All heap/file/copy/libm/platform/resource
 services and source/reentry/lifetime/visual domains remain incomplete.
+
+ID1 address correction/consumer update (2026-10-12):binary lis/addi producers
+are now checked by verify_animation_draw.py,including signed low9580. Correct
+runtime tangent base803d9580 and zero row803d96e4 supersede prior803e addresses.
+[Draw ring](ANIMATION_DRAW_SHARED_BUFFERS_AND_PAPER_SELECTION.md) now closes
+local consumers of capacity/cursor/alternate outputs;source/lifetime remains open.

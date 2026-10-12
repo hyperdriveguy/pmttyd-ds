@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Animation DrawMtx wrapper and linked-paper selection | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete animPoseDrawMtx/_animPoseDrawMtx/evalProc/dispProc/mapTestXLU mode/link/ring/GX/facing/traversal requests;group matrix builders/render/material/resource/SDK/source/runtime remain separate |
+| Animation DrawMtx wrapper and linked-paper selection | AC-01, AC-03 | VALIDATED binary / lock released, 2026-10-12 | Documentation agent ID 1 | [Wrapper](behavior/display/ANIMATION_DRAW_WRAPPER_AND_ADMISSION.md),[buffers/selector](behavior/display/ANIMATION_DRAW_SHARED_BUFFERS_AND_PAPER_SELECTION.md),[paper matrices](behavior/display/ANIMATION_DRAW_PAPER_MATRICES.md),[inner GX/flush](behavior/display/ANIMATION_INNER_DRAW_STATE_AND_BUFFERS.md),[facing](behavior/display/ANIMATION_INNER_DRAW_FACING.md),[groups](behavior/display/ANIMATION_GROUP_TRAVERSAL_AND_REQUESTS.md):five complete local bodies and original Mario draw metadata;render/material/push matrices/GX/SDK/resource/source/runtime remain separate;host movement assertions pending |
 | Animation Main evaluation and linked-paper time/data graph | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/time](behavior/display/ANIMATION_MAIN_ENTRY_AND_TIME.md),[samples](behavior/display/ANIMATION_TIMELINE_SAMPLING.md),[cache](behavior/display/ANIMATION_COMPRESSED_DELTA_CACHE.md),[interpolation](behavior/display/ANIMATION_OUTPUT_INTERPOLATION.md),[facing](behavior/display/ANIMATION_MAIN_CAMERA_FACING.md),[init](behavior/display/ANIMATION_POOL_AND_TANGENT_INITIALIZATION.md):complete Main/init local graphs and original M_Z_1 metadata;resource/pool/draw/copy/clock/helper/libm/platform/source/runtime remain separate |
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
@@ -2639,3 +2639,43 @@ DOCUMENTATION for functions the native port needs. Defer unrequested deeper
 DVD/SDK recovery;own DVD-dispatch lock released without a completion claim.
 Reserve native EVT-01 GetFirstAttackTarget request first,then pending movement
 wrappers. Continue communication and narrow numeric ID2 locks here.
+
+ID1 draw delivery (2026-10-12),AC-01/AC-03 partial answer:the six display
+contracts linked in the released row close wrapper/inner/eval/disp/mapTestXLU
+local graphs. Linked paper index/time feeds ordinary linked Main;ring/oversize
+and cleanup differences explicit. Original pass/resource admission precedes
+translucency forcing;GX callback and built-in states differ. Captured indices/
+fraction survive late Main;group signed-nonzero visibility/current-parent sibling
+arguments,cache requests,special Vivian branch and ordinary callback/render
+requests are specified. No original SDK/render/material/runtime parity claimed.
+Five hashes/1396 words/20 constants/five spans/two imports/148 direct sites,
+original Mario mask1/root metadata and three derived addresses pass. Only ID1
+lock released;70/72 host tests passed with the above two movement failures,
+independent78 Python tests and3DS build passed. Logs in PROGRESS.
+
+ID1 numeric correction:signed lis/addi low half places original tangent table
+at803d9580 and zero-angle row803d96e4,not prior803e addresses. Corrected earlier
+Main interpolation/init docs and ASSETS. New verifier recomputes original
+Main/init tangent and modeling-stack producers from binary words;wrong unsigned-
+low expectation is rejected. Native implementations should use corrected locations.
+
+ID1 host rerun update (2026-10-12):after actual edits to
+native tests/field_movement_tests.cpp,make test was rerun. It stopped during
+camera_road_assets_tests linking with undefined reference to main,BEFORE CTest/
+Python;exact log /tmp/id1-draw-test-rerun.log. No claim that the original two
+movement failures are resolved or still reproduced by this interrupted run.
+Independent78 Python tests,3DS build and binary draw/address/resource checks
+passed as recorded. Native/shared-build owner should finish the fixture/build
+updates before another full test run;ID1 did not edit native/test files.
+
+ID1 final host validation update (2026-10-12):the camera fixture object now
+contains main (nm/read-only object inspection confirmed an actual shared-build
+state change),so make test was run again. It reached73 CTest suites:71 passed,
+core_tests.cpp:131 still failed the0.0113125 lowWalk X assertion;
+field_movement_tests.cpp:158 now failed standing X step0.002625 (the original
+line39 rate assertion was changed by native owner). The earlier camera linking
+failure is resolved for this run. Exact log /tmp/id1-draw-test-final.log.
+Python stage was again skipped;the independent78-test Python run and earlier
+successful3DS build remain the reported validations. No further repeat without
+source/test/build-state changes;native movement owner should reconcile these
+remaining expectations. ID1 binary/body/address/resource checks remain passing.

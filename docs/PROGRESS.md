@@ -11345,3 +11345,80 @@ relocation/pose entry/global-output/link lifetime,clock/helper/copy/libm numeric
 closure and original animation traces. Recover actual US story/event/message
 speaker/branch/condition bindings and a complete encounter through persistent
 outcomes. All-system documentation and final complete-game requirements incomplete.
+
+## 2026-10-12 — ID1 complete local draw wrapper,inner and group traversal
+
+Added six detailed contracts in behavior/display:
+[wrapper/admission](behavior/display/ANIMATION_DRAW_WRAPPER_AND_ADMISSION.md),
+[buffers/paper selection](behavior/display/ANIMATION_DRAW_SHARED_BUFFERS_AND_PAPER_SELECTION.md),
+[paper matrices](behavior/display/ANIMATION_DRAW_PAPER_MATRICES.md),
+[inner state/flush](behavior/display/ANIMATION_INNER_DRAW_STATE_AND_BUFFERS.md),
+[facing](behavior/display/ANIMATION_INNER_DRAW_FACING.md),
+[group traversal](behavior/display/ANIMATION_GROUP_TRAVERSAL_AND_REQUESTS.md).
+Five complete used US local bodies now cover linked selection/ordinary cache
+reset/paper timestamp transfer,conditional shared-ring publication,pre-filter
+matrix prepass,override/world matrix order,resource mask1 mode2 exception,
+translucency leaf/effective GX pass and callback/built-in request differences,
+per-invocation facing/rotation/reflection/smoothing,late Main with retained
+sample captures,ordered flush/context/traversal,nonzero signed visibility,
+current-group parent argument for child AND sibling,cache stores,ordinary
+callback/render and special material/vivihimo/nine-basis blend requests.
+Only ID1 scoped lock released;called push/render/material/GX/SDK/resource/source/
+lifetime/numeric/original visual composition remains open.
+
+Corrected my previous tangent-table addresses:lis803e plus signed low9580 gives
+803d9580;zero row803d96e4,end803d9848. Updated earlier interpolation/init and
+ASSETS. Modeling stack803d8e70 is similarly derived. New checker pins both
+producer instruction words and recomputes signed-low arithmetic;negative wrong
+803e expectation rejected. No runtime/BSS payload or alternate table invented.
+
+Validation:verify_animation_draw.py passes five complete body hashes,1396 words,
+20 constants,five data spans,two US lecture imports,148 exact direct DOL sites,
+original a/a_mario hash/name/pass-mask/group-root metadata and three derived
+addresses. Repeated report byte-identical;missing caller,wrong original root
+and unsigned-low address negatives rejected;Python compilation passed. Prior
+Main/selector/pre-display verifiers pass;general verifier passed1980 anchors.
+Gekko audit622 files/89756 instructions/789 paired-single ops,zero changes or
+unknowns. All2126 behavior links resolved at snapshot,including prior pending
+inventory forward links (other owner supplied companions).
+
+make test FAILED:70/72 CTest passed;core_tests.cpp:131 lowWalk step0.0113125
+and field_movement_tests.cpp:39 movementRate()==1 failed while concurrent native
+include/field_movement.hpp changed facing/travel ownership. Exact log:
+/tmp/id1-draw-test.log. ID1 did not change native source/assertions;failure
+communicated in DOCUMENTATION_REQUESTS. make stopped before Python stage;
+independent python3 -m unittest discover -s tests -p test_*.py passed78 tests,
+/tmp/id1-draw-python-tests.log. make all passed/rebuilt3DSX,log
+/tmp/id1-draw-build.log. Existing3218 GameCube/0 Switch/5 primary-PCM slice
+fallback audio pipeline ran;ASSETS records sources/ignored outputs and unchanged
+conversion policy. No original execution/visual measurements or emulator profile/
+save mutation by ID1. Concurrent native/ID2/inventory work preserved.
+
+Next:recover actual pushGXModelMtx node builders,renderProc/materialProc/GX and
+resource/link/pool source/lifetime domains;original visual/numeric traces.
+Native owner should reconcile the two movement expectations with its original
+facing implementation,then rerun host validation. Recover actual US story/event/
+message attribution/order/branches/conditions and complete encounters through
+persistent outcomes. Full-game documentation and final system requirements
+remain incomplete;binary hashes/link counts are not complete-game coverage.
+
+ID1 host rerun update (2026-10-12):after actual edits to
+native tests/field_movement_tests.cpp,make test was rerun. It stopped during
+camera_road_assets_tests linking with undefined reference to main,BEFORE CTest/
+Python;exact log /tmp/id1-draw-test-rerun.log. No claim that the original two
+movement failures are resolved or still reproduced by this interrupted run.
+Independent78 Python tests,3DS build and binary draw/address/resource checks
+passed as recorded. Native/shared-build owner should finish the fixture/build
+updates before another full test run;ID1 did not edit native/test files.
+
+ID1 final host validation update (2026-10-12):the camera fixture object now
+contains main (nm/read-only object inspection confirmed an actual shared-build
+state change),so make test was run again. It reached73 CTest suites:71 passed,
+core_tests.cpp:131 still failed the0.0113125 lowWalk X assertion;
+field_movement_tests.cpp:158 now failed standing X step0.002625 (the original
+line39 rate assertion was changed by native owner). The earlier camera linking
+failure is resolved for this run. Exact log /tmp/id1-draw-test-final.log.
+Python stage was again skipped;the independent78-test Python run and earlier
+successful3DS build remain the reported validations. No further repeat without
+source/test/build-state changes;native movement owner should reconcile these
+remaining expectations. ID1 binary/body/address/resource checks remain passing.

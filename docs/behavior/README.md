@@ -49,6 +49,12 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Draw wrapper/admission](display/ANIMATION_DRAW_WRAPPER_AND_ADMISSION.md) | Complete parent/link/filter/context/cleanup request order | Resource/link/inner backend/source/runtime |
+| [Draw shared ring/paper selector](display/ANIMATION_DRAW_SHARED_BUFFERS_AND_PAPER_SELECTION.md) | Complete ring/oversize/index/stamp/reset/Main requests | Pool/clock/source/alias/lifetime |
+| [Paper draw matrices](display/ANIMATION_DRAW_PAPER_MATRICES.md) | Complete prepass/override/world matrix requests | SDK alias/numeric/override consumers/source |
+| [Inner GX/flush](display/ANIMATION_INNER_DRAW_STATE_AND_BUFFERS.md) | Complete admission/translucency/GX callback/flush/retained traversal requests | GX/render/material/cache/resource/runtime |
+| [Inner facing](display/ANIMATION_INNER_DRAW_FACING.md) | Complete camera rereads/smoothing/rotation/reflection request order | Camera/libm/SDK/flags/numeric/visuals |
+| [Group traversal](display/ANIMATION_GROUP_TRAVERSAL_AND_REQUESTS.md) | Complete visibility/node push/cache/child/sibling/special/ordinary requests | Node matrix/render/material/Vivian/pool/lifetime/runtime |
 | [Animation Main entry/time](display/ANIMATION_MAIN_ENTRY_AND_TIME.md) | Complete captures,linked recursion/GQR/null gate and time/span/loop stores | Resource/pool/clock/helper/platform/source/runtime |
 | [Animation samples](display/ANIMATION_TIMELINE_SAMPLING.md) | Complete continuous/discrete scans,predecessors/fraction and original M_Z_1 metadata | Loaded-pointer/count/time domains and original traces |
 | [Animation delta cache](display/ANIMATION_COMPRESSED_DELTA_CACHE.md) | Complete base/rebuild/forward/same-key and five compressed relative-index streams | Copy/alias/capacity/resource/FPSCR/consumers |

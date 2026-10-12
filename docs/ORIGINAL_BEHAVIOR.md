@@ -947,3 +947,16 @@ close Open/Read/SetupCallback. First256-slot8000 admission,path-1 gate,ordered
 clear/name/LOW8-LOW16 parameters/occupied-before-open,0002 yield and length-word
 return/global callback separation are explicit. Worker/SDK/source/platform/
 scene/original traces/full-game requirements remain open.
+
+ID1 draw local closure (2026-10-12):
+[wrapper](behavior/display/ANIMATION_DRAW_WRAPPER_AND_ADMISSION.md),
+[buffers/selector](behavior/display/ANIMATION_DRAW_SHARED_BUFFERS_AND_PAPER_SELECTION.md),
+[paper matrices](behavior/display/ANIMATION_DRAW_PAPER_MATRICES.md),
+[inner state](behavior/display/ANIMATION_INNER_DRAW_STATE_AND_BUFFERS.md),
+[facing](behavior/display/ANIMATION_INNER_DRAW_FACING.md),
+[groups](behavior/display/ANIMATION_GROUP_TRAVERSAL_AND_REQUESTS.md)
+close five complete used local bodies. Original Mario pass/root metadata and
+binary-derived modeling/tangent addresses are checked;previous803e tangent
+locations corrected to803d. Original SDK/push/render/material/GX/resource/source/
+lifetime/numeric/visual composition remains open. Host movement failures are
+recorded separately;neither static coverage nor host green would prove full game.

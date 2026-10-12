@@ -90,3 +90,10 @@ clock/pool/recursion invariants,FPSCR or original trajectories. Main's local
 [cache replay](ANIMATION_COMPRESSED_DELTA_CACHE.md),
 [interpolation](ANIMATION_OUTPUT_INTERPOLATION.md) and
 [optional facing tail](ANIMATION_MAIN_CAMERA_FACING.md) are covered separately.
+
+ID1 draw consumer update (2026-10-12):
+[draw wrapper](ANIMATION_DRAW_WRAPPER_AND_ADMISSION.md) links complete local
+linked selector/ring/time transfer,inner late Main/captured samples and traversal.
+Main's source/evaluation closure does not replace these distinct draw captures.
+Tangent consumer/init addresses corrected to803d9580/803d96e4;derived producer
+checks live in verify_animation_draw.py. Backend/resource/source/runtime remain open.

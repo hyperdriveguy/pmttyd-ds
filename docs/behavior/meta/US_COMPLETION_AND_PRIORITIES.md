@@ -314,3 +314,11 @@ Main/init local graphs:
 Original M_Z_1 metadata is checked;loaded-resource/draw/clock/helper/copy/libm/
 source/lifetime/original visual composition remains open. Complete-game system
 requirements still require remaining system/story closure,not static call counts.
+
+ID1 draw update (2026-10-12):wrapper/inner/eval/disp/translucency local bodies
+are now linked from [draw admission](../display/ANIMATION_DRAW_WRAPPER_AND_ADMISSION.md).
+Original pass/root metadata and signed-low tangent/modeling addresses checked;
+push matrix/render/material/GX/resource/source/lifetime/numeric/original visuals
+remain open. Two concurrent native movement host assertions failed (PROGRESS);
+standalone binary/Python/build validation passed. No full-system/whole-game
+requirements completion is established by this partial presentation closure.

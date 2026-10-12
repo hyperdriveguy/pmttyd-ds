@@ -75,3 +75,10 @@ animPoseSetLocalTimeRate(current P+c,0.75)0x8004142c;clear requests1.0.
 Do not apply that rate locally before animation update/drawing or invent elapsed-
 render-time scaling. Subsequent rate/frame ownership remains a backend/cadence
 contract. Static checks do not establish original frame order or visible parity.
+
+ID1 draw backend update (2026-10-12):
+[wrapper](../display/ANIMATION_DRAW_WRAPPER_AND_ADMISSION.md) links complete
+local paper selector/ring/override and inner GX/facing/flush/group traversal.
+Pass2 has a resource mask1 exception;effective GX pass may become3 after original
+admission,while traversal still receives original pass. Host idle images do not
+close original SDK/render/material/resource/source/lifetime/visual composition.

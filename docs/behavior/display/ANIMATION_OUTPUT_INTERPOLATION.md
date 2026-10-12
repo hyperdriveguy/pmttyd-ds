@@ -49,7 +49,7 @@ Set t2=R(t*t),then for each entry:
 2. If b>=89 OR b<=−89,skip ALL cubic update for this entry. Keep copied output.
 3. Otherwise load signed byte1 d through GQR4;sign-extend byte2 as tangent a.
    There is NO analogous range guard for a.
-4. Read Ta,Tb from runtime table at0x803e96e4+4*a/b.
+4. Read Ta,Tb from runtime table at0x803d96e4+4*a/b.
    [Initialization](ANIMATION_POOL_AND_TANGENT_INITIALIZATION.md) fills signed
    angle range−89..88;out-of-range a can read adjacent data,not a clamped tangent.
 
