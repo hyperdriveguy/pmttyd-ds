@@ -23,10 +23,10 @@ Projection/camera/viewport numeric and rendering-state ownership remain called
 services;do not bind camera0 by convenience. Recovery ignores SZ throughout.
 
 Next request planar distABf(M0.x,M0.z,P.x,P.z). If ordered distance<20 AND
-SY>800,request partyGetAppearPos3(P,&candidate),ignore its return,copy candidate
-XYZ directly to P root and finish. That called placement algorithm remains
-unclosed here;its output guarantees and failure domain must be established
-before assuming that an unchecked copy always has valid coordinates.
+SY>800,request [partyGetAppearPos3](FIELD_PARTNER_PLACEMENT3.md)(P,&candidate),
+ignore its return,copy candidate XYZ directly to P root and finish. Its complete
+local contract now proves ownerXYZ initialization before search and possible
+output mutation even on return0;valid pointer/resource/numeric domains remain open.
 
 Otherwise return without further work if ordered -100<=SX<=700 AND SY<=650.
 These tests have no lower SY or SZ/depth bound. Unordered comparisons do not
@@ -115,6 +115,6 @@ before exhaustion,null floor owner-Y fallback,attr0x200 retaining prior Y,
 five offset attempts,raised74 retry and miss/excluded-hit preservation. These
 are static fixtures,not measured screen recovery or emulator observations.
 
-Next:placement3 output contract,full projection/camera/viewport state and math,
+Next:all placement3 callers/consumers,full projection/camera/viewport state and math,
 hit/source/flag/width/counter domains,all callers and original off-screen
 trajectories;full field/game documentation and requirements remain incomplete.

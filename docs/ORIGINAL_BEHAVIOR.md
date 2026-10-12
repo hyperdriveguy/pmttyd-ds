@@ -589,3 +589,14 @@ and [pose/display initialization](behavior/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALI
 now specify full local construction/publication/stat/resource/event order and
 listed getters/setters/pose helpers. Borrowed source/kind/content/lifetime and
 resource/render/turn/platform domains and original execution remain open.
+
+
+[Placement3](behavior/FIELD_PARTNER_PLACEMENT3.md),
+[local math](behavior/FIELD_PARTNER_PLACEMENT3_MATH.md) and
+[NPC scan](behavior/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md) close complete local
+nine-angle/raw-ray/name/normal/NPC/fallback/output behavior. Output is initialized
+before search and can remain changed on return0;screen reset still copies it.
+NPC scan returns last strict horizontal match,not nearest,and placement maximizes
+its recorded3D fallback distances. NPC-free success snaps floorY and runs around;
+fallback preserves ownerY and skips around. Full scene/NPC/source/numeric/runtime
+and remaining partner motion engines remain open.

@@ -1157,3 +1157,15 @@ remain ignored under artifacts/reference/behavior. ISO read-only;no original
 execution,asset conversion,profile/save mutation or original binary/dialogue
 distribution. Full projection/scene/placement3/domain services remain separate
 from pinned identities;all reported behavior is static evidence.
+
+
+Partner placement3/math/NPC research by ID1 (2026-10-12):
+verify_field_partner_placement3.py and field_partner_placement3_evidence.json pin
+six DOL identities (five complete local bodies;shared backend selected result
+regions only),108 instructions,22 constants,nine data spans including nine exact
+signed angle words and the existing named-support pointer/name identities,and
+two lecture imports. Actual screen-reset caller is pinned. Original inspection
+ELF/listings and field-partner-placement3-evidence.json stay ignored under
+artifacts/reference/behavior. ISO remained read-only;no asset conversion,original
+execution,profile/save mutation or original binary/dialogue distribution. NPC/
+scene/numeric/source and original trajectory domains remain separate.

@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Partner placement3 screen-reset output contract | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used partyGetAppearPos3 complete nine-angle/query/classification/NPC/fallback/output graph plus heading and normal-inclination leaves;full NPC/backend/math/source/domain/EVT-01 and original trajectories remain separate |
+| Partner placement3 screen-reset output contract | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Placement3](behavior/FIELD_PARTNER_PLACEMENT3.md),[math](behavior/FIELD_PARTNER_PLACEMENT3_MATH.md),[NPC scan](behavior/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md):complete local nine-angle/raw/classification/fallback/output and heading/normal/NPC graph answered;full backend/NPC/source/numeric/EVT-01 and original trajectories remain open |
 | Complete battle unit entry,body/height/belong and geometry initialization | DMG-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Full entry](behavior/BATTLE_UNIT_ENTRY_COMPLETE.md),[registry/scalar/geometry](behavior/BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md),[pose/display](behavior/BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md):complete local Entry and listed helpers,early registry/check asymmetry,pouch/event order and borrowed field144 producer;resource/kind/content/lifetime/turn/source/runtime engines remain open |
 | Partner support appearance and out-of-screen reset | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Support appearance](behavior/FIELD_PARTNER_SUPPORT_APPEARANCE.md),[vector ray](behavior/FIELD_PARTNER_VECTOR_RAY_WRAPPER.md),[screen recovery](behavior/FIELD_PARTNER_SCREEN_RECOVERY.md):complete local probe/return/caller,projection/control/request/root graph answered;full placement3/projection/backend/motion/source/domain/EVT-01 and original trajectories remain open |
 | Event GP10 readiness/freeze gate producer and disc thread | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Producer](behavior/EVENT_DISC_THREAD_READINESS_GATE.md),[message presentation](behavior/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md),[audio state](behavior/AUDIO_DISC_COVER_STATE_REQUESTS.md):complete disc thread/card/audio/font-routing local bodies,13-status table/scoped startup/four source resources;DVD/OS/render/source/domain/original traces remain open;make test38 suites/63 Python and make all pass |
@@ -1491,3 +1491,20 @@ closed;kind/resource/pose/render/status/turn/source/domain and original traces
 keep parents open. Own lock released;verifier passes33 containing/complete/linked
 hashes,441 anchors,11 spans. make test passes40 CTest suites and64 Python tests;
 make all passed. ID2 changed no native or asset conversion code.
+
+
+ID1 placement3 output contract delivery (2026-10-12):
+[Placement](behavior/FIELD_PARTNER_PLACEMENT3.md),
+[math](behavior/FIELD_PARTNER_PLACEMENT3_MATH.md),
+[NPC scan](behavior/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md) close initialized-
+output plus possible moved output on return0,nine-angle direct/null-filter rays,
+duplicate named scans,strict>60 inclination rejection and separate success paths.
+NPC scan returns LAST active horizontal d<radius record despite computing unused
+3D intermediate;placement records largest3D distance with duplicate SDK requests.
+NPC-free success raw floorY/around;fallback ownerY/no around. Screen-reset ignore-
+return/root copy is now locally explained,not treated as uninitialized by default.
+Six identities/five complete local bodies plus backend selected regions,108 anchors,
+22 constants,nine spans/two lecture imports pass. make test42 CTest/69 Python
+and make all pass. All1356 behavior links resolve at snapshot,including the prior
+concurrent ID2 missing-target report. Only ID1 scoped lock released;full source/
+scene/NPC/numeric/caller/EVT-01 and original trajectories remain open.

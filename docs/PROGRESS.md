@@ -8436,3 +8436,38 @@ Next:concrete kind/pose/borrowed pointer144 data/schema/lifetime and dynamic114/
 belong/height/resource writers;pose/model/renderer/status/turn source bindings,
 original spawn/stats/damage/death/Jump traces. Complete-game documentation and
 requirements remain incomplete.
+
+
+## 2026-10-12 — ID1 placement3 output,heading/inclination and NPC scan
+
+Added [placement3](behavior/FIELD_PARTNER_PLACEMENT3.md),
+[math leaves](behavior/FIELD_PARTNER_PLACEMENT3_MATH.md) and
+[NPC scan](behavior/FIELD_NPC_HORIZONTAL_OVERLAP_SCAN.md). Complete local
+placement covers nine original offsets,initialized ownerXYZ,moved outputs before
+admission,raw/null-filter rays,duplicate name scans,normal>60 test,last-overlap
+NPC and largest3D fallback selection. NPC-free success snaps raw floorY/runs
+around;fallback keeps ownerY/skips around. Return0 need not preserve original
+output. Screen recovery's unchecked root copy now has an explicit initialized-
+output contract rather than an assumed uninitialized buffer. Complete local
+global-facing/camera/offset heading,three-double normal norm and NPC pool/count/
+stride/active/horizontal scan are specified;full scene/source/numeric/lifecycle
+and original trajectory domains remain open. Updated screen contract only;
+ID1 changed no native policy.
+
+Validation:verify_field_partner_placement3.py passes six containing DOL hashes
+(five complete local bodies,backend selected regions),108 instructions,22
+constants,nine numeric/vector/table spans and two lecture imports plus actual
+screen-reset call. Repeated metadata byte-identical;Python compilation,prior
+surrounding/postpass and target/SDK distance verifiers passed. General verifier
+passed1980 anchors;all1356 behavior links resolve at snapshot,including the
+prior concurrent missing ID2 target. Gekko audit passed560 files/77725 instructions/
+578 paired-single ops,zero changes or unknowns. make test passed42 CTest suites
+and69 Python tests;make all succeeded with no rebuild needed. Exact logs:
+/tmp/id1-placement-test.log and /tmp/id1-placement-build.log. ISO read-only;
+no original execution/proximity/trajectory measurement,asset conversion,profile/
+save mutation or original binary/dialogue distribution. Only ID1 scoped lock
+released;concurrent native/ID2 work preserved outside this scoped commit.
+
+Next:motion2 destination/landing consumers,homing/fall/jump/fly handlers,all
+placement/NPC/camera/scene/source/numeric domains and original recovery traces.
+Full-game documentation and complete-game requirements remain incomplete.
