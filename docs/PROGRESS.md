@@ -1693,6 +1693,72 @@ position/elevation and HP7. Command: `python3 tools/emulator_smoke.py --fresh-sa
 tests/azahar_ceiling.py`. This verifies repeat/save stability, not measured
 Dolphin action timing or source camera fidelity.
 
+## 2026-10-12 — Detailed undecompiled-behavior research, first system set
+
+Previous research turn made progress: original behavior baseline and reproducible
+binary identity were committed. Current user goal is broader: thoroughly document
+behavior not established by decompilation in multiple detailed files, then derive
+complete-game system requirements assuming original data reuse. Goal remains
+active; this step does not claim all systems documented or create a prematurely
+complete requirements document. Native runtime was not changed in this step.
+
+Added docs/behavior/README.md as the full-scope coverage/completion register and
+four detailed files: EVENT_RUNTIME.md, BATTLE_INPUT_AND_DEFENCE.md,
+STATE_AND_INVENTORY.md and RANDOMNESS.md. Original baseline links to the detail
+and updates now-resolved priority/copy-back/RNG findings. Commit ef962d6 records
+this system set, independent audit/verifier tools and three tooling tests.
+
+Downloaded pinned MIT public doldecomp/ttyd source/config/REL research snapshot
+62131fc31866f85a12e4817a8dc37f0c25eb5f8c into ignored artifacts/reference.
+New AST-only coverage audit found 427 configured game-category objects: 421
+NonMatching and 6 Matching declarations, 134 with source and 293 without.
+These are configuration/source-presence counts, not verified matching functions
+or a behavior-completion percentage. The public baseline is Japan; US original
+bytes remain authoritative. No private external source or Switch code used.
+
+New concrete US findings: defense checker is only a stub in public source;
+original checks difficulty-dependent A/B history windows (default 8/3 entries),
+15-entry A/B anti-mash count, eligibility/override branches and input-history
+reset on every return. Public history-shift loop disagrees with US instructions.
+Source defense caller gates and video-frame alignment remain unknown. Event
+priority uses an unstable exchange sort (equal-priority order can reverse);
+child creation appends to an active pass, child deletion copies locals back,
+owner deletion recursively removes children/attached brothers. Saved-work index0
+is a word while ordinary work entries are bytes; resource setters have different
+lower-clamp rules; item insertion preserves ordered arrays and can mutate badge
+seen flags before capacity failure. rand/irand arithmetic and zero-bound no-draw
+behavior recovered. Detailed addresses, limits and derived examples are in docs.
+
+Validation: make test passed portable core and 32 Python tests (three new audit
+tests distinguish declaration from source presence, prove upstream config is not
+executed, and reject escaping paths/unsupported config). make all exited0 with
+native output up to date. verify_behavior_contracts.py passed 56 selected original
+instruction anchors and both seven-entry defense tables. Expanded binary report
+reproduced exactly with 51 function fingerprints; AST audit report also reproduced
+exactly. All local links in baseline/new docs resolved; git diff --check passed.
+These static checks do not execute original routines or establish gameplay
+equivalence. No new Dolphin/Azahar/hardware validation performed. All downloaded
+source and original inspection binaries/disassembly remain ignored.
+
+Reproduce:
+```sh
+python3 tools/decomp_coverage.py --snapshot artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c --output artifacts/reference/behavior/decomp-coverage.json
+python3 tools/behavior_evidence.py --symbols artifacts/reference/us_symbols.csv --output artifacts/reference/behavior/evidence.json
+python3 tools/verify_behavior_contracts.py
+make test
+make all
+```
+
+Next research: trace defense checker callers/override writers and complete
+BattleCheckDamage (800fb01c), BattleSetStatusDamage (800fbed8), and battle turn/
+action-command lifecycles; recover VM operand namespaces/all opcodes and original
+harbor story graph. Then inventory persistent-state writers and original save
+records; extend to UI/message interpreter, audio, camera/animation, all partners,
+chapters, side content and minigames. Detailed full-scope register lists every
+remaining system and requirements-document completion gate. Reused assets do not
+remove the need to recover their runtime semantics. Do not mark the full goal
+complete based on this first system set or the prototype's green tests.
+
 ## 2026-10-12 — Correct falling overhead phase and takeoff clamp
 
 Previous goal turn made verified progress with ascent wall-query orderc4b2fc6.
