@@ -37,7 +37,9 @@ drive is then suppressed by the flag. The counted set and driven set are not
 necessarily identical because the body rereads pointers/flags and the Mario
 gate at different times. It does not capture a fixed list of object snapshots,
 count rendered frames or locally manipulate simulation credit/EVT speed.
-Global updater and driveParty internals remain open.
+[Global updater](FIELD_PARTY_GLOBAL_COUNTDOWN_AND_ACTION.md) and
+[driveParty local dispatch](FIELD_PARTY_DRIVER_DISPATCH.md) are now specified;
+their called ability/mode/effect/collision/presentation engines remain open.
 
 ## Control-index word and bounds of the census
 
@@ -76,7 +78,6 @@ bindings,original BSS containment and the scoped census. The metadata report
 records scanned section address/size and zero matching stores;it contains no
 original executable bytes. Gekko inspection artifacts remain ignored.
 
-Next:partyInit/partyMain caller cadence,global updater,driveParty and mode
-dispatch;alias/REL/current-index and owner-slot writer census;startup BSS clear,
+Next:partyInit/partyMain caller cadence and driver-called mode/ability/services;alias/REL/current-index and owner-slot writer census;startup BSS clear,
 field/battle resource/party teardown and original update/transition traces.
 These remaining dependencies prevent full party-system or game completion.

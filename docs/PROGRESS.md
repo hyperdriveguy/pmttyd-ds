@@ -6931,3 +6931,35 @@ time/domain initialization and original pause/multicredit/creation/deletion
 traces. Requested Jump/audience/numeric/source composition remains separate.
 Whole documentation and eventual complete-game requirements objective remains
 active/incomplete.
+
+
+## 2026-10-12 — ID1 field party driver and global countdown/action
+
+Added [driver dispatch](behavior/FIELD_PARTY_DRIVER_DISPATCH.md) and
+[global countdown/action](behavior/FIELD_PARTY_GLOBAL_COUNTDOWN_AND_ACTION.md).
+Complete local15-mode graph covers shadow bypass,prefix/scratch writes,pending
+entry/pose/pipe/ride requests,kind callbacks and inline mode14 saved-kind/
+slot/table removal/pose release/free. Most paths share effect/screen/projection/
+presentation requests;mode0 still calls kind record+8. Global updater specifies
+mask/key-off cancellation,unsigned decrement/signed byte expiry and primary
+mode0/1/2→3 action request. Called service bodies,writers and original runtime
+remain separate;no button meaning,measured duration or executed effect invented.
+
+Validation:verify_field_party_drive.py passed four whole DOL hashes,58
+instructions,one zero constant,four data-span hashes with15 explicit dispatch
+words,and two actual lecture callback imports. Repeated metadata byte-identical;
+Python compilation and field callback/mode/lifetime verifiers passed after the
+reusable checker gained optional explicit data-word binding validation. General
+verifier passed1980 instruction anchors;all933 behavior links resolved. Gekko
+check passed512 listings/70718 instructions/410 paired-single operations,zero
+changes or unknowns. make test passed28 CTest and58 Python tests;make all
+succeeded with no rebuild required. Original ISO read-only;no original execution/
+emulator observation,asset conversion,profile/save mutation or original binary/
+dialogue inclusion in history. Only ID1's scoped driver lock released;concurrent
+native and ID2 changes preserved.
+
+Next:actual mode0 kind callback and mode1 following/entry engines;kind abilities,
+mode/collision/effect/pose/projection services;countdown/input-off/flag and slot/
+index writers;complete field/battle teardown and original transition traces.
+Full system documentation/remake remain incomplete;complete-game requirements
+remain deferred until adequate coverage.

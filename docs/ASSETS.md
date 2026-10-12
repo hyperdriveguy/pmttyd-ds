@@ -862,3 +862,13 @@ overlapping control-index8041ead0;alias/indexed/floating/REL/bulk writes remain
 excluded. Original ELF/listings and field-party-mode-evidence.json remain ignored
 under artifacts/reference/behavior. No resource conversion,original dialogue
 rewrite,ISO/profile/save mutation,original execution or binary distribution.
+
+Field driver research by ID1 (2026-10-12):verify_field_party_drive.py with
+field_party_drive_evidence.json pins four whole DOL bodies,58 instructions,one
+numeric constant,four data-span hashes and two used lecture imports. The15-word
+mode table is additionally checked as explicit address metadata;the reusable
+field verifier now validates optional data words. Kind1/8 records and four
+vectors are hashed,not copied as asset payloads. Original ELF/listings and
+field-party-drive-evidence.json remain ignored under artifacts/reference/behavior.
+No asset conversion,original execution,ISO/profile/save mutation,original
+binary/dialogue distribution or rewritten story occurred.

@@ -44,8 +44,12 @@ def verify(iso, manifest=MANIFEST):
             if read(anchor['address'], len(anchor['hex'])//2).hex() != anchor['hex']:
                 raise ValueError(f"Instruction/constant mismatch: {anchor['address']:#x}")
         for span in expected.get('data', []):
-            if hashlib.sha256(read(span['address'], span['size'])).hexdigest() != span['sha256']:
+            data = read(span['address'], span['size'])
+            if hashlib.sha256(data).hexdigest() != span['sha256']:
                 raise ValueError('Original data span identity mismatch')
+            if 'words' in span and (len(data) != 4*len(span['words']) or
+                                    list(struct.unpack('>'+str(len(span['words']))+'I', data)) != span['words']):
+                raise ValueError('Original data word/dispatch binding mismatch')
         entry = next(e for e in info['files'] if e['path'] == 'rel/gor.rel')
         disc.seek(entry['offset'])
         raw = disc.read(entry['size'])

@@ -418,3 +418,10 @@ now specify old-mode dispatch,local cleanup and angle-loop behavior,two-slot
 init,count/reread/update order and the Mario bit gate. BSS placement and zero
 matching direct integer index stores are a scoped census,not complete writer
 or live-state proof. Mode engine/services/teardown and original traces remain open.
+
+
+[Field party driver](behavior/FIELD_PARTY_DRIVER_DISPATCH.md) supplies all15
+local mode branches,pending setup,mode14 destruction and effect/screen/presentation
+tail. [Global countdown/action](behavior/FIELD_PARTY_GLOBAL_COUNTDOWN_AND_ACTION.md)
+connects signed byte expiry to primary mode0/1/2→3 requests. Called ability/mode/
+collision/animation engines,writers,teardown and original execution remain open.
