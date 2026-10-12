@@ -10,6 +10,7 @@
 #include "effect_deletion.hpp"
 #include "battle_turn_rule.hpp"
 #include "battle_unit_event.hpp"
+#include "battle_packed_status.hpp"
 
 namespace ttyd {
 struct BattleDataChildBackend {
@@ -30,6 +31,8 @@ struct BattleTurnFirstBackend {
 EffectDeletionServices nativeEffectDeletionServices(EventNativeRuntime&);
 BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend&);
 BattleUnitEventServices nativeBattleUnitEventServices(EventNativeRuntime&);
+bool bindBattleCheckStatusCallback(EventCallbackRegistry&,EventNativeRuntime&);
+bool bindBattleCheckDataCallback(EventCallbackRegistry&,EventNativeRuntime&);
 bool bindBattleGetHpCallback(EventCallbackRegistry&,EventNativeRuntime&);
 bool bindBattleGetMaxHpCallback(EventCallbackRegistry&,EventNativeRuntime&);
 bool bindBattleGetUnitWorkCallback(EventCallbackRegistry&,EventNativeRuntime&);

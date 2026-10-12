@@ -502,6 +502,17 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation / refinement breadcrumb (2026-10-12): packed status
+getter/presence and registered CheckStatus80105f0c/CheckData80109f88 now share
+native event/unit RAM.71 CTest/78 Python and make all pass. Evidence in
+behavior/battle/BATTLE_UNIT_PRESENCE_CAPTURE_ORDER.md refines wrapper output/
+lookup/key order and strength-first gated status reads. Membership accepts keys
+with zero values and treats key0 as terminator;it is not GetData!=0. Complete
+BATTLE_STATUS_STORAGE closes used GetStatus/CheckStatus locals despite the newer
+unit-query summary calling that dependency open. Source writers/lifetimes/full
+Game and original traces remain open;first-attack-target and movement-wrapper
+requests remain pending. Leave further source/callback evidence here.
+
 Native implementation / documentation request (2026-10-12): HP/maxHP and
 unit-work get/set leaves are registered;70 CTest/78 Python and make all pass.
 Read-only original inspection corrects the shared-pipeline summary's capture

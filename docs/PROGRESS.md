@@ -1,5 +1,35 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Packed status getter and native membership callbacks
+
+Added complete packed GetStatus/CheckStatus reads,including signed8 ID narrowing,
+all stored cases,shared signed-strength gating,Electric/Zap Tap fallback and
+optional original-address byte outputs computed before ordered aliasing stores.
+Added original CheckStatus80105f0c and CheckDataOfDataTable80109f88 native registry
+bindings. Status ID remains RAW signed-low8;data output is captured after unit
+lookup but before separate key resolution. Data membership scans keys only;
+zero-valued entries remain present and key0 terminates before comparison.
+No unit-work/data/actor clamp or invented event-layer null/-1 recovery is added.
+
+Original read-only-ISO inspection refines the unit-query pipeline summary and
+confirms strength-first gated getter reads. Evidence/ordering notes are in
+behavior/battle/BATTLE_UNIT_PRESENCE_CAPTURE_ORDER.md;original ELFs remain /tmp,
+not source history. Semantic status setters/recovery and packed unit ownership
+remain separate services;Game's whole lifecycle is not claimed bound.
+
+Validation:make test passes71 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-packed-status-test.log and /tmp/pm-packed-status-build.log. Fixtures
+cover stored/default/narrowed IDs,nonzero negative durations,sign-pair boundaries,
+Zaptap versus duration/null predicate,optional/aliased output bytes,raw status
+normalization,captured/late data outputs,post-key table mutation,terminator and
+zero-value membership. Actual native event/registry/unit RAM executes both new
+original-address bindings. Records/providers remain authored test inputs;no
+original runtime/emulator/hardware or full attack fidelity claim.
+
+Next:first-attack-target and movement-wrapper documentation replies,other
+motion/AC/effect/message callbacks and source unit/turn/Game ownership. Full-game
+goal stays active/incomplete;concurrent documentation reorganization preserved.
+
 ## 2026-10-12 — ID2 complete nested type4 texture-palette relocation
 
 Complete type4 Set/Clear documented in two linked files;private commit66b533e.

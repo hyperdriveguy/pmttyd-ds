@@ -9,6 +9,22 @@ int32_t resolve(EventEntry& e,uint32_t address,const BattleUnitEventServices& s)
 int32_t actor(EventEntry& e,uint32_t args,const BattleUnitEventServices& s) {const int32_t selector=resolve(e,args,s);assert(s.translate);return s.translate(s.user,e,selector);}
 uint32_t unit(uint32_t battle,int32_t id,const BattleUnitEventServices& s) {assert(s.unit);return s.unit(s.user,battle,id);}
 }
+bool battleUnitHasData(uint32_t unit,int32_t key,const EventMemoryServices& s) {
+    assert(s.word);uint32_t table=s.word(s.user,unit+0x18);if(!table)return false;
+    for(;;table+=8) {const uint32_t candidate=s.word(s.user,table);if(candidate==0)return false;if(candidate==uint32_t(key))return true;}
+}
+int32_t battleCheckUnitDataEvent(EventEntry& e,const BattleUnitEventServices& s) {
+    const uint32_t args=e.arguments;const int32_t id=actor(e,args,s);
+    const uint32_t battle=word(s,0x8041eb90),u=unit(battle,id,s);
+    const int32_t output=sw(word(s,args+4)),key=resolve(e,args+8,s);
+    const bool present=battleUnitHasData(u,key,s.memory);assert(s.values.store);s.values.store(s.values.user,e,output,present?1:0);return 2;
+}
+int32_t battleCheckUnitStatusEvent(EventEntry& e,const BattleUnitEventServices& s) {
+    const uint32_t args=e.arguments;const int32_t id=actor(e,args,s);
+    const uint8_t raw=uint8_t(word(s,args+4));const int32_t status=raw<128?int32_t(raw):int32_t(raw)-256,output=sw(word(s,args+8));
+    const uint32_t battle=word(s,0x8041eb90),u=unit(battle,id,s);assert(s.checkStatus);
+    const int32_t present=s.checkStatus(s.user,u,status);assert(s.values.store);s.values.store(s.values.user,e,output,present!=0?1:0);return 2;
+}
 int32_t battleUnitHpEvent(EventEntry& e,bool maximum,const BattleUnitEventServices& s) {
     const uint32_t args=e.arguments,battle=word(s,0x8041eb90);
     const int32_t id=actor(e,args,s);if(id==-1)return 2;
