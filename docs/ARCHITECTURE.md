@@ -270,3 +270,12 @@ Both ordinary movement and queued-road waits advance the same integrator.
 Rendering continues to consume jumpHeight. Height remains relative to currently
 queried support and clamps at zero; original world-Y floor/ceiling resolution
 is the next required physics step. Battle animation remains a separate harness.
+
+Floor queries now share groundWithin(lowY,highY). Existing groundAt preserves its
+legacy support band and no-pack flat-ground behavior. New landingGround provides
+only the source world-Y center probe using abs(vertical velocity) and native
+0.05/0.0001 ray margins. Failed queries leave height/contact outputs intact.
+The primitive uses existing indexed triangles and original attribute/return
+metadata. It is not yet called by Game: world-Y state, five-position footprint
+sampling and contact acceptance must be integrated together to avoid treating a
+raw intersection as a landing. Current relative-support jump is still provisional.

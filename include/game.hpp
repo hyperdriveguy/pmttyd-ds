@@ -131,6 +131,8 @@ bool loadGround(const char* path);
 bool loadGroundReturns(const char* path);
 bool groundReturn(const GroundContact&,ReturnPoint& point);
 bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr);
+// Center floor ray using original normal landing search bounds in world Y.
+bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
 void clearCollision();
 const std::vector<Rect>& collisionWalls();
 Rect collisionBounds();

@@ -45,4 +45,11 @@ def main():
         assert read(0x8009b4dc)==bytes.fromhex('907f0048')
         assert read(0x8009b660)==bytes.fromhex('901f0044')
         print(f'Original ordinary jump ascent={ascent},fall={fall},release={release}')
+        padding=value(0x80420964,.01);above=value(0x804208c0,5)
+        footprint=value(0x80420978,.375)*width
+        for address,instruction in [(0x8008e798,'ee52102a'),(0x8008e7a4,'ee82082a'),
+                                    (0x8008e8a4,'ef75a02a'),(0x8008e8ac,'ef54902a'),
+                                    (0x8008f044,'2c1a0005')]:
+            assert read(address)==bytes.fromhex(instruction),hex(address)
+        print(f'Normal floor ray: above=abs(v)+{above},below=abs(v)+{padding},footprint radius={footprint},5 probes')
 if __name__=='__main__':main()

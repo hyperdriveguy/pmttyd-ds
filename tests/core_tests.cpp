@@ -176,6 +176,14 @@ void groundImport() {
     CHECK(!groundAt({8,2},0,h));CHECK(!groundAt({0,2},0,h));
     CHECK(groundAt({0,2},.3f,h));CHECK(std::fabs(h-.5f)<.001f);
     CHECK(groundAt({-3,2},3,h));CHECK(h==3);
+    // A falling world-Y ray finds support within this step, not a distant roof.
+    GroundContact landing;
+    CHECK(landingGround({-3,2},.2f,-.08f,h,&landing));CHECK(std::fabs(h-.125f)<.001f);
+    h=99;landing={123,456};CHECK(!landingGround({-3,2},.3f,-.08f,h,&landing));
+    CHECK(h==99 && landing.sourceNode==456);
+    CHECK(landingGround({-3,2},2.95f,0,h));CHECK(h==3);
+    CHECK(!landingGround({-3,2},2.94f,0,h));
+    CHECK(!landingGround({-3,2},.2f,std::numeric_limits<float>::quiet_NaN(),h));
     Game g;g.progress.position={-3,2};g.restore(g.progress);CHECK(std::fabs(g.groundHeight-.125f)<.001f);
     Input right;right.x=1;for(int n=0;n<35;++n)g.tick(right);
     CHECK(g.progress.position.x>-2.3f);CHECK(g.groundHeight>.2f);

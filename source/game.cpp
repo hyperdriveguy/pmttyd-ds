@@ -252,10 +252,10 @@ bool groundReturn(const GroundContact& contact,ReturnPoint& point) {
     auto found=groundReturns.find(contact.sourceNode);if(found==groundReturns.end())return false;
     point=found->second;return true;
 }
-bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact) {
-    if(!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(reference) ||
+static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact* contact) {
+    if(!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(low) || !std::isfinite(high) || low>high ||
        std::fabs(p.x)>4096 || std::fabs(p.z)>4096)return false;
-    if(ground.empty()) {height=0;if(contact)*contact={};return true;}
+    if(ground.empty()) {if(low>0 || high<0)return false;height=0;if(contact)*contact={};return true;}
     bool found=false;float best=-1e30f;GroundContact bestContact;
     for(uint32_t n:nearby(groundIndex,p)) {
         // Original normal-Mario chkfilterVec rejects bit4 unless its special
@@ -272,14 +272,23 @@ bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact) {
         float b=((v[8]-v[2])*(p.x-v[6])+(v[0]-v[6])*(p.z-v[8]))/den;
         if(a<-.0001f || b<-.0001f || a+b>1.0001f)continue;
         float y=a*v[1]+b*v[4]+(1-a-b)*v[7];
-        // Stay on the current floor; do not teleport onto roofs above Mario.
-        if(y<=reference+StepHeight && y>=reference-.5f && y>best) {best=y;bestContact=ground[n].contact;found=true;}
+        if(y<=high && y>=low && y>best) {best=y;bestContact=ground[n].contact;found=true;}
     }
     if(found) {
         if(groundReturns.count(bestContact.sourceNode))bestContact.attributes|=0x40000000;
         height=best;if(contact)*contact=bestContact;
     }
     return found;
+}
+bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact) {
+    // Preserve development/no-pack flat-ground behavior for legacy callers.
+    if(ground.empty() && std::isfinite(reference))return groundWithin(p,-.5f,StepHeight,height,contact);
+    return groundWithin(p,reference-.5f,reference+StepHeight,height,contact);
+}
+bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact) {
+    if(!std::isfinite(velocity))return false;
+    const float reach=std::fabs(velocity);
+    return groundWithin(p,worldY-reach-.0001f,worldY+reach+.05f,height,contact);
 }
 void clearCollision() {walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}

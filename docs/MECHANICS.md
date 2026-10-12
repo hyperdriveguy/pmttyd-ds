@@ -321,3 +321,28 @@ phase>=10. FieldJump begins counter1, skips the next update at counter2, and
 first integrates at counter3. Released-A reduction starts at counter4 (second
 integration), not four integrations after launch. This refines the intermediate
 22/26-tick estimates that omitted startup/counter ordering.
+
+### Landing floor ray and world-height update order
+
+US `marioFall`800939dc–80093a14 calls marioChkLandon with current vertical
+velocity, stores the returned floor/contact and snaps world Y when a hit exists;
+otherwise it adds velocity to world Y. Another ordinary fall branch calls at
+80093bd0 and has attribute-dependent acceptance; preserve that branch when
+integrating, rather than snapping every candidate. marioChkLandon8008dc70
+forwards the velocity as both scalar bounds to marioSearchGround8008e694.
+At8008e780–8008e7a4, the ray extends abs(v)+0.01 down and abs(v)+5 up
+(engine units), with constants80420964/804208c0. Origin Y is worldY+up
+(8008e8a4), ray length is up+down (8008e8ac). Native center bounds are
+worldY-abs(v)-0.0001 through worldY+abs(v)+0.05.
+
+Normal routine probes five positions (loop termination8008f044): center then
+four rotated offsets, radius0.375*base width (80420978=0.375), normally7.5
+engine units or0.075 native. Floor selection also includes slope and snap-distance
+logic; a returned raw triangle intersection is not automatically a complete
+landing decision. Original normal vs transformed filters differ.
+
+Added landingGround center-ray primitive with these source bounds and preserved
+original attributes/return bindings. This is prerequisite geometry work, not
+integration of the original floor state machine. Game still uses legacy support
+queries and relative jump height. Next integrate world Y, all five probes and
+source candidate/contact acceptance, then edge falling and ceiling resolution.

@@ -1384,3 +1384,36 @@ point and HP7→6. Initial test's separate A pulse followed by a0.3-second pause
 let the shorter jump land before movement; capture showed Mario still on dock,
 HP7. Test now presses A+Down together during the jump. No game timing was
 extended to fit the old test. Updated tests and source evidence committed together.
+
+## Recover landing rays and add world-Y floor query primitive
+
+Traced marioFall→marioChkLandon→marioSearchGround. Verified velocity-dependent
+center ray: worldY-abs(v)-0.0001 through worldY+abs(v)+0.05 in native units.
+Recovered five-probe footprint and ordinary radius0.075, plus source update
+order: query before applying fall displacement, then snap accepted floor or add
+velocity when no contact exists. Source acceptance also uses slope/attributes;
+do not substitute raw intersection success for the entire landing state machine.
+
+Implemented landingGround center primitive through a shared bounded ground query;
+legacy groundAt behavior preserved. Tests verify descending support detection,
+rejecting a distant roof, exact stationary upper bound, missed-query output
+preservation and invalid velocities. Extended read-only source verifier with ray
+constants, arithmetic instruction sites and five-probe loop bound. Source
+inspection artifacts checkLand/checkLand2/marioFall/landOn now exist under
+artifacts/reference for continuation.
+
+Validation: `make test` passed core and28 Python tests;
+`build-host/core_tests --rooms` passed all8 arrivals/landing gates/rollback and
+18,315 indexed probes; `make -j2 all` built native `.3dsx`.
+`python3 tools/verify_actor_collision.py` exited0:5/0.01 engine-unit margins,
+7.5-engine-unit normal footprint radius and5 probes verified against ISO.
+No new emulator acceptance claim: Game has not switched to this primitive.
+
+Next concrete implementation: preserve Mario world Y independently of support;
+implement original five-probe orientation and candidate acceptance, use the ray
+before fall displacement, clear lost floor contacts, and test jumping between
+unequal floors and walking off edges. Then ceiling search and airborne horizontal
+response. Original story/English dialogue, SFX, camera/party movies, interiors
+and broader content remain incomplete. Full goal active; no complete physics or
+hardware-performance claim. Source recovery and query foundation are progress;
+world-height gameplay behavior remains unfinished.
