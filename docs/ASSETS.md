@@ -1372,8 +1372,8 @@ Exact build log:/tmp/id1-general-placement-build.log.
 Camera import2ea1c21 reads /home/carson/games/roms/G8ME01.iso read-only and
 extracts m/gor_01/c to local-assets/gor_01.c and romfs/map.camera;
 m/gor_00/c,m/gor_02/c,m/gor_03/c,m/gor_04/c go to corresponding
-local-assets/gor_XX.c and romfs/gor_XX.camera. Sizes2048/7700/11316/11392/1304
-bytes preserve3/11/14/14/2 records. All five packed files match their ISO
+local-assets/gor_XX.c and romfs/gor_XX.camera. File sizes/record counts are gor_00:2048/3,gor_01:7700/11,gor_02:11316/14,
+gor_03:11392/14,and gor_04:1304/2. All five packed files match their ISO
 extents byte-for-byte. Per-file .provenance.json records original disc path,
 FST offset,size and hash;romfs/manifest.json retains those extraction records
 and camera_containers source-path mappings. No geometry/field endian conversion
