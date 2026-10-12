@@ -3344,3 +3344,31 @@ callers. Formatter wide/memory/caller/floating-environment dependencies remain
 open. Continue original story attribution/order/branches/conditions and all
 other uncovered systems before complete-game requirements. Full objective active/
 incomplete; original execution comparisons still needed.
+
+## 2026-10-12 — Display queue and per-camera dispatch
+
+Previous goal turn made progress through8985d33. Began clean and added
+DISPLAY_QUEUE_AND_DISPATCH.md: buffer/record ownership, NaN registration gate,
+class-dependent keys, count-only reset, sort wrapper/comparator, live camera
+traversal and callback borrowing/current pointer, complete GX request map and
+fused position-derived order helper. Recovered all eleven offset floats despite
+US metadata declaring only ten. Pinned Japanese source corroborates the retail
+eleventh element; US reads establish it. Updated window/selection cross-links.
+qqsort outer body was inspected locally to locate its sorting dependency, but
+its internal sorting/tie and permutation contract remains unfinished here.
+
+Validation:780 instruction anchors and prior checks passed read-only US ISO,
+including all eleven offset floats, eleven GX dispatch targets and five depth/
+common-state constants. Fresh238-function evidence reports matched byte-for-byte.
+All local behavior links resolve; git diff --check passed. make test passed core
+plus36 Python tests; make all exited0, no rebuild. Only research/provenance/
+evidence tooling changed. No original execution/emulator run or profile/save
+modification; original disassemblies/reports remain ignored. Static evidence does
+not establish equal-key draw order, outer camera/reset cadence, service numerical
+behavior, actual callback mutations/lifetimes or original/native equivalence.
+
+Next: qqsort internal sorting/permutation/ties, msgWindow_Disp and msgDisp record
+consumers, actual outer reset/sort/camera dispatch cadence and camera/matrix/GX
+services. Continue real message/story attribution/order/branches/conditions and
+all other uncovered systems before complete-game requirements. Full objective
+active/incomplete; original execution/images comparisons still needed.

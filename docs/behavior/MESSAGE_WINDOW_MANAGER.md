@@ -54,7 +54,9 @@ General/clear/selection main callbacks decide whether to register their display
 callback through dispEntry(8,0,400.0-float(s16(layer)),callback,W). windowMain
 does not draw or call display callbacks itself. Rendering may mutate separate
 state, as [selection drawing](MESSAGE_SELECTION_DRAWING.md) demonstrates.
-dispEntry queue ownership/sorting/dispatch and the outer loop remain open.
+dispEntry queue borrowing/sort request/dispatch are now covered in
+[display queue](DISPLAY_QUEUE_AND_DISPATCH.md). Sort implementation/ties and
+the outer loop remain open.
 
 ## Palette setup: archive path (B)
 
@@ -107,6 +109,6 @@ Compare partial init versus entry memset, reinit without delete callbacks,
 slot order and same-pass mutations, update versus draw registration, both setup
 paths' completion-word difference, rounded asynchronous size, ignored read status,
 unchecked descriptor count and lookup arithmetic. Remaining: outer/display
-cadence and queue lifetime, full message/selection rendering, allocator/archive/
+cadence and actual queue lifetimes, full message/selection rendering, allocator/archive/
 DVD/palette services, actual reset/loading callers and original story conditions.
 No original execution or complete dialogue/full-game equivalence is claimed.

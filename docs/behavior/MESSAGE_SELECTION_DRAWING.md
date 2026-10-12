@@ -5,7 +5,8 @@ selectWindow_Disp at0x8007fdf4,size148, constants at0x804205fc..0x80420618 and
 integer-conversion bias at0x802c3340. See [selection state/input](MESSAGE_SELECTION.md),
 [window manager](MESSAGE_WINDOW_MANAGER.md) and [lifecycle](MESSAGE_WINDOW_LIFECYCLE.md).
 This covers the local callback; inner border/text/icon services and display
-dispatch cadence remain open. No original draw output is captured here.
+dispatch cadence remain open; local dispatch is now covered in
+[display queue](DISPLAY_QUEUE_AND_DISPATCH.md). No original draw output is captured here.
 
 ## Callback arguments and admission (B)
 
@@ -79,6 +80,6 @@ Differential obligations: exact call order, BSS fog-color source, low8 opacity,
 border/text/cursor geometry, signed target index, fused stored smoothing and
 draw-count dependence, cached D versus freshly loaded handle, opacity-zero
 behavior and icon request values. Remaining: border/text/icon rendering bodies,
-display sorting/dispatch and actual invocation count, input/render ordering,
+sort implementation/ties and actual invocation count, input/render ordering,
 matched original images/traces and original selection/story callers. Local draw
 contract is established; full UI/dialogue/full-game equivalence remains unproven.

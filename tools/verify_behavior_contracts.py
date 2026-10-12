@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'display_queue_and_dispatch': {
+        0x80010c7c: '38804000', 0x80010c90: '38801000',
+        0x80010c68: '900d16f8', 0x80010bcc: '80ed16f0',
+        0x80010bd8: '4c820020', 0x80010bdc: '98670000',
+        0x80010c24: 'ec01002a', 0x80010c3c: 'ec000828',
+        0x80010c50: '7ce3012e', 0x80010c5c: '900d16f8',
+        0x80010b7c: '4bff5981', 0x80010ba0: 'fc010040',
+        0x80010938: '7c00e000', 0x80010984: '482a9c55',
+        0x8001098c: '2800000a', 0x80010b10: '93ad16fc',
+        0x80010b24: '4e800421', 0x80010b30: '800d16f8',
+        0x80010864: '806d16fc', 0x80010884: '38600004',
+        0x800108bc: 'ec22107a', 0x800108e8: 'ec210032',
+        0x80010a58: '38600006', 0x80010ad4: '38a00005',
+    },
     'message_window_manager': {
         0x8007fa0c: '540007ff', 0x8007fa14: '819f003c',
         0x8007fa28: '4e800421', 0x8007fa34: '2c1e0007',
@@ -903,6 +917,21 @@ def verify(iso_path):
         if read(0x802c3340, 8).hex() != '4330000080000000':
             raise ValueError('Selection draw integer conversion bias mismatch')
         print('Two window palette paths, selection RGBA/seven floats and integer bias verified')
+        if hashlib.sha256(read(0x80414fd8, 44)).hexdigest() != '6896b81a7c17509282798e073ccd6e508a923408b0f9d09f63255696dea3e763':
+            raise ValueError('Eleven display offset floats mismatch')
+        display_targets = (0x800109ac, 0x80010a3c, 0x80010acc, 0x800109f4,
+                           0x80010a84, 0x80010acc, 0x80010b10, 0x80010b10,
+                           0x80010b10, 0x80010acc, 0x80010acc)
+        if struct.unpack('>11I', read(0x80304460, 44)) != display_targets:
+            raise ValueError('Display GX class dispatch mismatch')
+        for address, expected in {0x8041f760: '459c4000',
+                                  0x8041f764: '00000000',
+                                  0x8041f768: '461c4000',
+                                  0x8041f76c: 'bf800000',
+                                  0x8041f770: '3f800000'}.items():
+            if read(address, 4).hex() != expected:
+                raise ValueError(f'Display depth/state constant mismatch {address:#x}')
+        print('All eleven display offsets/dispatch targets and five depth/state floats verified')
 
 
 if __name__ == '__main__':

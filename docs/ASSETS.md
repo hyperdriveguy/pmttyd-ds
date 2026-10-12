@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 230 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 756 instruction anchors plus those
+now fingerprints 238 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 780 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -136,6 +136,11 @@ font/msgWindow.tpl and %s/f/msgWindow.tpl, and selection color/geometry/smoothin
 constants. Public Japanese windowdrv.c supplies structural corroboration; US
 static instructions establish the contracts. No palette/GX objects are extracted
 or converted in this step, and no original renderer is compiled into the prototype.
+Display queue/dispatch adds eight fingerprints (namespace-qualified comparator),
+all eleven offset floats despite the symbol's undersized annotation, eleven GX
+dispatch targets and five depth/common-state constants. Japanese source provides
+structural corroboration; original US instructions/tables establish the contracts.
+Sorting internals and outer rendering cadence remain separate dependencies.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,
