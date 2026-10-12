@@ -1,5 +1,46 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2: requested unit-part defense and lifetime contracts
+
+Added docs/behavior/UNIT_PART_DEFENSE_AND_LIFETIME.md with the scoped original
+unit-entry part allocation/copy region and complete GetPartsPtr/Delete/BattleAlloc/
+BattleFree request contracts. Count is unsigned;parts use one cleared count*500
+block with500 runtime stride and4c source stride. Defense/attribute pointers are
+retained from source records rather than copied arrays;attributes/counter words
+are independent. Crump count1/part1 binds two signed five-byte zero tables;
+Mario's three annotated records share separate zero tables and retain their
+distinct flags. Its actual kind/count entry still needs binding.
+
+Single-part lookup returns the head for any nonnegative ID without matching;
+negative ID returns head before dereference;multi-part traversal matches the
+first source ID or returns null. Entry's saved body ID is last flagged part,
+whereas the body helper finds the first. Part allocation has no local null/
+zero-count pre-loop guard. Deletion retains event/ordering/status/custom/pose
+service request order,one block/unit free and final registry clear;source tables
+are not locally freed. PART-01..04 define portable acceptance cases and required
+runtime boundaries without inventing invalid-input or unregister-first behavior.
+
+Released only ID2's validated part lock in DOCUMENTATION_REQUESTS.md and linked
+the answer. Native code and ID1's jump contract/lock were preserved. Parent
+DMG-01 remains open for all mutation/state/service/runtime composition evidence.
+
+Validation:general verifier passed40 new anchors and prior checks,part-region
+and complete helper/delete/allocator hashes,Mario array/table values and Crump
+count/part/defense relocation bindings. Two fresh359-function evidence reports
+matched byte-for-byte from read-only ISO.621 behavior local links resolved.
+make test passed seven CTest suites and58 Python tests;make all exited0 with
+no rebuild;git diff --check passed. Initial verifier failure was a local variable
+shadowing the DOL read offset;renamed it to part_record and reran successfully.
+ID1 recorded that tooling breadcrumb in the shared request inbox. No original
+execution/emulator,ISO/profile/save writes,asset conversion,native implementation
+or story rewrite by ID2;inspection/report artifacts remain under /tmp.
+
+Next:DMG-01/STATUS-01 unit parameter/pouch/badge/status initialization and concrete
+Mario entry binding;per-hit AC/count/bonus/pointer mutation and full target/
+damage/death/reward/field-return ownership. ID1's movement callback research
+remains independent. Keep full-game requirements deferred until all systems are
+documented;the overall objective remains active/incomplete.
+
 ## 2026-10-12 — Native direct damage and shared FP resource application
 
 Implemented docs/behavior/BATTLE_DAMAGE_APPLICATION.md in

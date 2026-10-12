@@ -13,6 +13,28 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'unit_part_defense_construction': {
+        0x8012939c: '880300b4', 0x801293a0: '1f800500',
+        0x801293ac: '4bfcf589', 0x801293bc: '4bedbcf9',
+        0x801293c0: '93be0014', 0x801293d0: '838300b8',
+        0x801293d4: '939d0004', 0x801293d8: '93dd04ec',
+        0x801293e0: '80030040', 0x801293e4: '901d01ac',
+        0x801293ec: '80030044', 0x801293f0: '901d01b0',
+        0x80129408: '901e02d4', 0x8012941c: '80840038',
+        0x80129428: '909d01b4', 0x80129430: '8084003c',
+        0x80129434: '909d01b8', 0x801294f4: '377bffff',
+        0x80129568: '807c0048', 0x8012956c: '907d01bc',
+        0x80129598: '40810018', 0x801295a0: '3bbd0500',
+        0x801295a4: '93a30000', 0x801295a8: '3b9c004c',
+        0x801295b0: '909d0000', 0x80128cd8: '2c040000',
+        0x80128ce0: '4d800020', 0x80128ce4: '80030000',
+        0x80128cf0: '4e800020', 0x80128d00: '7c002000',
+        0x80128f60: '837d0014', 0x80128f80: '2c03ffff',
+        0x80128f90: '4bf17a99', 0x80128f98: '4bf12339',
+        0x80128fac: '4bfcf95d', 0x80128fb4: '4bfcf955',
+        0x80128fc4: '4bfcf8f1', 0x80128fc8: '38600001',
+        0x800f8944: '806d18ec', 0x800f8918: '4182000c',
+    },
     'ordinary_weapon_power_callbacks': {
         0x80189d30: '80640020', 0x80189d34: '4e800020',
         0x80189cc8: '80ad1c70', 0x80189ccc: '80051cb8',
@@ -1992,6 +2014,34 @@ def verify(iso_path):
         if struct.unpack_from('>i',harbor,0x64718+0x20)[0] != 1 or harbor[0x64718+0x40:0x64718+0x44] != bytes(4):
             raise ValueError('Boss default HP power/FP callback mismatch')
         print('Default/Mario power bodies,ordinary six-word tables,event/FP bindings and boss power1 verified')
+        for address,size,digest in (
+            (0x80129398,0x220,'d8919964fb5de1dbad54c6ed619e31e21b6f24a7ed710d171b1b80b8f49e7c96'),
+            (0x80128cd8,0x40,'48999a2b5a78150fbf21f4023e22a2819aa6126a8a6adc06f7e179104a778539'),
+            (0x80128e08,0x1d8,'dcf0011c5970316a0d02e44d209cc911c55b0108df29a349c8e77473c7aaf6f1'),
+            (0x800f8934,0x28,'5225f27b27e3e163d13c50a2bca3b38c4667e379e2c66eb8527316b279d81492'),
+            (0x800f8908,0x2c,'4513c22a59f470372e6b7fe43710f4dc607a88f21d53631b14dcb90dac3ada4d'),
+            (0x80372a18,0xe4,'5c2be804bdf205de79be12bca3ed85f371e0e958bb260b2aaeecc3adb5b3ec67'),
+        ):
+            if hashlib.sha256(read(address,size)).hexdigest() != digest:
+                raise ValueError(f'Unit part construction/lifetime fingerprint mismatch {address:#x}')
+        if harbor[0x645c8+0xb4] != 1 or local.get(0x645c8+0xb8,{}).get('file_offset') != 0x646cc:
+            raise ValueError('Boss part count/kind array binding mismatch')
+        for site,target in ((0x646cc+0x38,0x6468c),(0x646cc+0x3c,0x64694)):
+            if local.get(site,{}).get('file_offset') != target:
+                raise ValueError('Boss defense/attribute relocation mismatch')
+        if struct.unpack_from('>i',harbor,0x646cc)[0] != 1 or struct.unpack_from('>2I',harbor,0x646cc+0x40) != (9,0):
+            raise ValueError('Boss part ID/attribute/counter mismatch')
+        for offset in (0x6468c,0x64694):
+            if harbor[offset:offset+5] != bytes(5):
+                raise ValueError('Boss signed defense table mismatch')
+        for address in (0x80417ba0,0x80417ba8):
+            if read(address,5) != bytes(5):
+                raise ValueError('Mario signed defense table mismatch')
+        for index,flags in enumerate((9,0x13010000,0x13010000)):
+            part_record=0x80372a18+index*0x4c
+            if struct.unpack('>I',read(part_record,4))[0] != index+1 or struct.unpack('>4I',read(part_record+0x38,16)) != (0x80417ba0,0x80417ba8,flags,0):
+                raise ValueError('Mario part ID/table/flags binding mismatch')
+        print('Unit part construction/lifetime,boss part1 and Mario three-part signed defense bindings verified')
 
 
 

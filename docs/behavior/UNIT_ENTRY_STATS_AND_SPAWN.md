@@ -8,6 +8,11 @@ The whole entry function is fingerprinted but **not fully documented**:the
 intervening actor/part/geometry/resource initialization remains open. No original
 execution or end-to-end tutorial equivalence is claimed.
 
+The [part defense/lifetime contract](UNIT_PART_DEFENSE_AND_LIFETIME.md) now
+closes the scoped part allocation/table/flag region,lookup and ordered deletion
+requests. Remaining actor/geometry/resource services still prevent whole entry
+closure;the containing function fingerprint is not proof of full coverage.
+
 ## Entry slot, publication and kind pointer
 
 BtlUnit_Entry receives a setup-record pointer S. Read shared BattleWork W and

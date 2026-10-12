@@ -15,6 +15,7 @@ from iso_assets import DEFAULT_ISO, inventory
 
 
 FUNCTIONS = (
+    'BtlUnit_GetPartsPtr', 'BtlUnit_Delete', 'BattleAlloc', 'BattleFree',
     'weaponGetPowerDefault', 'weaponGetPowerFromMarioJumpLv',
     'weaponGetPowerFromMarioHammerLv', 'pouchGetPtr',
     'btlevtcmd_GetFirstAttackTarget', 'btlevtcmd_GetEnemyBelong',
