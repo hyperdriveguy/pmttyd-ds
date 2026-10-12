@@ -1,5 +1,33 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Movement sound control and approach composition
+
+Implemented BATTLE_MOVEMENT_SOUND_CONTROL.md in battle_movement_sound.hpp/cpp.
+The complete local core distinguishes empty records,single-key retained voices
+and periodic alternation. Single-key trigger returns are stored even when-1,
+then fresh unit/part geometry feeds the position request. Periodic triggers
+retain signed-halfword countdown/wrap/parity/reset behavior and ignore returned
+handles. Unit wrapper performs its own position read before core's potential
+second read;end requests Off before assigning handle-1 and leaves keys/counters.
+Adapter composes these services with the recovered MovePosition callback.
+Original trigger/position/off and geometry bindings are explicit service hooks.
+
+Validation:make test passed fourteen CTest suites plus58 Python tests;make all
+built ttyd-2ds.elf and ttyd-2ds.3dsx. Sound suite covers empty no-op,retained voice
+trigger/fresh-position/stop order,failed-handle update/retrigger,part geometry,
+period2 three-call expiry,negative disable,zero selected key,32767/65535 counter
+wrap,ignored periodic handles and actual loader→blocked move control→terminal
+snap/end composition. git diff --check passed. No emulator run for these still-
+unbound callback services or claim of original audio/trajectory/FPSCR equality.
+No generated samples,source asset changes or user profile/save modifications.
+
+Updated README and JUMP-01 with implementation paths and explicit pending
+BtlUnit_snd_se_pos/psndSFX_pos/Off,bank/macro/source-writer and executed-trace
+requests. Documentation-agent research commits preserved. Next:bind takeoff/
+unit/part hit-position services,original event scheduler and Jump request graph;
+replace the native timer only with supported composition. Native math/audio,
+pouch/equipment/partner lifecycle and full story/assets remain incomplete.
+
 ## 2026-10-12 — ID2: requested Jump preparation,positions and movement sound
 
 Added BATTLE_MOVE_FRAME_AND_POSITION.md with complete query/movement bodies.

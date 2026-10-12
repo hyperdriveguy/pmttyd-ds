@@ -32,6 +32,8 @@ loading now follow recovered local contracts. Their original math/audio services
 and attack event scheduling still require native binding.
 Native StartAC, ResultAC and StopAC use the recovered command-service protocol;
 original help UI and prize-byte producers remain unbound.
+Portable approach queries, movement and movement-sound counters follow their
+recovered contracts; native script and audio ownership still require binding.
 
 This is not a finished or fidelity-verified remake. Original skeletal/vertex
 animations, sound-effect event playback, measured tutorial mechanics and broader

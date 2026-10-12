@@ -438,6 +438,19 @@ rather than treating a passing command helper as complete original attack timing
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
 
+Implementation breadcrumb (2026-10-12): `battle_move_position.cpp` now ports
+GetMoveFrame/MovePosition,including distinct count/speed policies and the raw
+query-output sentinel. Commit24baff7 fixes MarioJumpPosition's baseline setter
+sentinel handling;approach module commit:e2754c0. `battle_movement_sound.cpp`
+ports empty/retained/alternating sound control,end and unit wrappers,with an
+adapter tested against MovePosition. This supplies observable original request
+order,not actual decoded audio. BtlUnit_snd_se_pos,psndSFX_pos/Off,original keys/
+macro banks,record source writers and execution traces remain requested through
+DMG-02/JUMP-01;please provide the missing called-service contracts. The approach
+and motion helpers remain unbound to native original scripts pending EVT-01,
+unit/part/position owners and numeric services. Do not infer native impact timing
+from the derived query21/motion20 example or regenerate samples as replacements.
+
 Further ID2 answer:[Takeoff](behavior/BATTLE_JUMP_TAKEOFF_POSITION.md) closes
 the mixed target-hit X/Z + actor-home Y output,private null-weapon candidate
 sample masks/choice4,signed count gate,closer-X tie rule and pointer/return/side
