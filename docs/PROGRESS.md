@@ -1,6 +1,6 @@
 # Progress and next-session handoff
 
-Updated 2026-10-11 (America/Boise). This is a working native development slice,
+Updated 2026-10-12 (America/Boise). This is a working native development slice,
 not a completed remake or fidelity-verified port.
 
 ## User decisions
@@ -1608,3 +1608,44 @@ and dynamic collision/block events. Ceiling source SFX342 is not yet mapped.
 Compare jumps/camera/proportions in Dolphin; character calibration still0.16.
 Original dialogue/story, animation, SFX, interiors and complete content remain
 incomplete. Full objective active; hardware performance/acceptance unverified.
+
+## 2026-10-12 — Original behavior documentation and binary evidence
+
+User requested original code behavior documentation suitable for a port or
+strongly equivalent reimplementation. Added docs/ORIGINAL_BEHAVIOR.md: evidence
+classes, exact US baseline fingerprints, public reference provenance, original
+sequence/subsystem ordering, event context/scheduling/continuation and wait
+semantics, field behavior index, story contract, subsystem coverage gaps and
+an equivalence-validation procedure. This is a partial specification, not full
+game recovery. Switch is an explicitly separate future reference; no Switch
+code or behavior was analyzed. Accessible private evidence was the supplied
+local ISO and existing project artifacts; no private external sources used.
+
+New tools/behavior_evidence.py reads the ISO only as rb and emits metadata to
+ignored artifacts/reference/behavior/evidence.json. Identified US G8ME01 disc 0
+revision 0, 3,204 files, 29 RELs, 260 US message files. Report fingerprints ten
+DOL functions, all 119 event dispatcher targets, the DOL span, gor.rel and US
+message files. It also records direct branch-link sites; this is not a complete
+call graph or execution trace. Public doldecomp/ttyd MIT source revision
+62131fc31866f85a12e4817a8dc37f0c25eb5f8c targets Japan; selected findings were
+independently checked in the US binary. Source/ELFs/disassembly stay ignored;
+no original code or dialogue was added to source history or native runtime.
+
+Validation completed: make test passed portable core and 29 Python tests;
+make all exited 0 with native output up to date; verify_actor_collision.py
+passed; git diff --check passed. New report was generated and independently
+regenerated identically; checked expected DOL hash and opcode 2/9/10/91 targets.
+Temporary altered-symbol fixture proved mismatched file/RAM mapping rejection;
+CLI input-overwrite test proved nonzero exit and unchanged input. These latter
+checks were session Python assertions, not new persistent unit tests. No new
+Dolphin or Azahar execution was performed, and no original gameplay observations
+or hardware claims were added. Commit 7d216de records research/tool changes.
+
+Next: close US priority/tie, variable-namespace, pause, child/brother lifecycle
+contracts; recover opening harbor/Crump event graph and exact US message bindings;
+recover tutorial battle/action-command data and compare controlled Dolphin traces.
+Continue field fidelity work described above independently. During this session,
+unrelated edits appeared in include/game.hpp, source/game.cpp, tests/core_tests.cpp
+and tools/verify_actor_collision.py; they were preserved and excluded from the
+research commit. Validation reflects the shared working tree at execution time,
+not an isolated checkout of that commit.
