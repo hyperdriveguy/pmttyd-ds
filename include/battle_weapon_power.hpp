@@ -6,11 +6,11 @@ struct WeaponPowerServices {
     void* user=nullptr;
     uint32_t (*actionResult)(void*)=nullptr;
     uint8_t (*pouchLevel)(void*,MarioPowerKind)=nullptr;
-    uint8_t (*bonus)(void*,MarioPowerKind)=nullptr;
+    uint8_t (*bonus)(void*,const DamageUnit&,MarioPowerKind)=nullptr;
     int32_t (*powerWord)(void*,int32_t)=nullptr;
 };
 // Negative indices reach the caller's bounded provider; no invented lower clamp.
-int32_t marioWeaponPower(MarioPowerKind,const WeaponPowerServices&);
+int32_t marioWeaponPower(const DamageUnit&,MarioPowerKind,const WeaponPowerServices&);
 int32_t defaultWeaponPower(DamageUnit*,DamageWeapon&,DamageUnit&,DamagePart&);
 int32_t jumpWeaponPower(DamageUnit*,DamageWeapon&,DamageUnit&,DamagePart&);
 int32_t hammerWeaponPower(DamageUnit*,DamageWeapon&,DamageUnit&,DamagePart&);

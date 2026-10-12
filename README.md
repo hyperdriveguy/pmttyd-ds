@@ -14,9 +14,14 @@ Original status infliction,turn cadence and presentation remain unfinished.
 HP/FP damage calculators follow recovered
 modifier ordering,and direct application uses recovered resource/accounting rules.
 Original effect/audio/audience/hit-event handlers remain unbound;the harness's
-weapon powers/stats,impact scheduling and original
+weapon power callbacks now use recovered US tables. Player levels/bonuses,stats,
+impact scheduling and original
 tutorial/event/eligibility binding remain provisional. Open requests
 for the documentation agent are in [documentation requests](docs/DOCUMENTATION_REQUESTS.md).
+
+Jump currently executes one documented hit;its original follow-up event is still
+unbound. Successful timing is recorded separately from per-hit power. This
+partial harness must not be treated as the original complete Jump/tutorial attack.
 
 This is not a finished or fidelity-verified remake. Original skeletal/vertex
 animations, sound-effect event playback, measured tutorial mechanics and broader

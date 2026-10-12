@@ -174,7 +174,7 @@ void timing() {
     for(int frame:{1,28,29,40,41,42,43,47,48}) {
         Game g;g.startBattle();g.tick(confirm());advance(g,frame-1);g.tick(confirm());
         advance(g,BattleRules::JumpImpact-frame);
-        CHECK(g.lastDamage==(frame>=41?2:1));
+        CHECK(g.lastDamage==1 && g.actionSuccess==(frame>=41));
         CHECK(g.damageCode()==23);
         CHECK(g.enemyBattleState().hp==g.enemyHP && g.playerBattleState().hp==g.progress.hp);
         CHECK(g.enemyBattleState().requestedHp==g.lastDamage && g.playerBattleState().dealtHp==g.lastDamage);
@@ -184,17 +184,17 @@ void timing() {
     for(int first:{29,30,41,47}) {
         Game mash;mash.startBattle();mash.tick(confirm());advance(mash,first-1);
         mash.tick(confirm());advance(mash,47-first);mash.tick(confirm());
-        CHECK(mash.lastDamage==1);
+        CHECK(mash.lastDamage==1 && !mash.actionSuccess);
     }
     // An older edge lies outside the mash scan and cannot poison a later valid edge.
     for(int first:{1,28}) {
         Game old;old.startBattle();old.tick(confirm());advance(old,first-1);
-        old.tick(confirm());advance(old,47-first);old.tick(confirm());CHECK(old.lastDamage==2);
+        old.tick(confirm());advance(old,47-first);old.tick(confirm());CHECK(old.lastDamage==1 && old.actionSuccess);
     }
     // Success is evaluated at impact, not latched on the first in-window edge.
     Game delayed;delayed.startBattle();delayed.tick(confirm());advance(delayed,40);
     delayed.tick(confirm());CHECK(!delayed.actionSuccess && delayed.phase==Phase::Windup);
-    advance(delayed,7);CHECK(delayed.actionSuccess && delayed.lastDamage==2);
+    advance(delayed,7);CHECK(delayed.actionSuccess && delayed.lastDamage==1);
     // Original ordinary Hammer: enter on tick1, stage5 on81, release82..106.
     for(int release:{2,80,81,82,100,106,107}) {
         Game g;g.startBattle();g.selection=1;g.tick(confirm());
@@ -206,6 +206,7 @@ void timing() {
             g.tick({}); // Stage-advance call cannot evaluate release.
         }
         CHECK(g.phase==Phase::Impact);CHECK(g.lastDamage==(release>=81 && release<=106?2:1));
+        CHECK(g.playerBattleState().flags&8); // Recovered ordinary weapon Charge-use flag gate.
     }
     Game timeout;timeout.startBattle();timeout.selection=1;timeout.tick(confirm());
     advance(timeout,119);CHECK(timeout.phase==Phase::Windup);
@@ -249,9 +250,9 @@ void timing() {
 }
 void battles() {
     Game g;g.startBattle();
-    for(int turn=0;turn<3;++turn) {
+    for(int turn=0;turn<5;++turn) {
         attack(g,true);advance(g,42);
-        if(turn==2)break;
+        if(turn==4)break;
         CHECK(g.phase==Phase::EnemyWindup);advance(g,53);g.tick(confirm());CHECK(g.guarded);CHECK(g.progress.hp==10);advance(g,36);
     }
     CHECK(g.scene==Scene::Victory);g.tick(confirm());CHECK(g.scene==Scene::Explore);CHECK(g.progress.crumpDefeated);CHECK(g.saveRequested);

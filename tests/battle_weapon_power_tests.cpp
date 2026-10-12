@@ -8,22 +8,22 @@ using namespace ttyd;
 #define CHECK(x) do {if(!(x))throw std::runtime_error(std::string(__FILE__)+":"+std::to_string(__LINE__)+" " #x);} while(0)
 struct Fixture {
     uint32_t result=0;uint8_t level=1,bonus=0;int32_t index=99,prefixWord=-7;
-    DamageWeapon weapon=ordinaryJumpWeapon();std::vector<int> order;
-    bool mutate=false;MarioPowerKind expected=MarioPowerKind::Jump;
+    DamageUnit actor;DamageWeapon weapon=ordinaryJumpWeapon();std::vector<int> order;
+    bool mutate=false;MarioPowerKind expected=MarioPowerKind::Jump;const DamageUnit* bonusActor=nullptr;
     static uint32_t resultRead(void* user) {auto& f=*static_cast<Fixture*>(user);f.order.push_back(1);return f.result;}
     static uint8_t levelRead(void* user,MarioPowerKind kind) {
         auto& f=*static_cast<Fixture*>(user);CHECK(kind==f.expected);f.order.push_back(2);
         if(f.mutate){f.result^=2;f.bonus=255;}return f.level;
     }
-    static uint8_t bonusRead(void* user,MarioPowerKind kind) {
-        auto& f=*static_cast<Fixture*>(user);CHECK(kind==f.expected);f.order.push_back(3);return f.bonus;
+    static uint8_t bonusRead(void* user,const DamageUnit& actor,MarioPowerKind kind) {
+        auto& f=*static_cast<Fixture*>(user);CHECK(kind==f.expected);f.bonusActor=&actor;f.order.push_back(3);return f.bonus;
     }
     static int32_t wordRead(void* user,int32_t index) {
         auto& f=*static_cast<Fixture*>(user);f.order.push_back(4);f.index=index;
         return index<0?f.prefixWord:f.weapon.powerWords[size_t(index)];
     }
     WeaponPowerServices services() {return {this,resultRead,levelRead,bonusRead,wordRead};}
-    int32_t power() {auto value=marioWeaponPower(expected,services());CHECK((order==std::vector<int>{1,2,3,4}));order.clear();return value;}
+    int32_t power() {auto value=marioWeaponPower(actor,expected,services());CHECK((order==std::vector<int>{1,2,3,4}));order.clear();return value;}
 };
 void tables() {
     for(auto kind:{MarioPowerKind::Jump,MarioPowerKind::Hammer})for(int level=1;level<=4;++level)
@@ -51,6 +51,7 @@ void orderAndAbi() {
     CHECK(boss.specialFlags==0x1087 && boss.fpPower==nullptr);
     Fixture callback;auto services=callback.services();callback.weapon.callbackData=&services;
     CHECK(callback.weapon.hpPower(&actor,callback.weapon,defender,part)==1);
+    CHECK(callback.bonusActor==&actor); // Callback bonus ownership follows its actual actor argument.
     CHECK((callback.order==std::vector<int>{1,2,3,4}));
     constexpr int8_t zeros[5]={};part.defense=zeros;part.defenseAttributes=zeros;
     actor.hp=defender.hp=10;DamageBattleState battle;uint32_t code;

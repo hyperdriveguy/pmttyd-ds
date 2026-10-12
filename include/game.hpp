@@ -14,6 +14,7 @@
 #include "battle_defense.hpp"
 #include "battle_damage.hpp"
 #include "battle_damage_application.hpp"
+#include "battle_weapon_power.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -46,7 +47,7 @@ enum class Sound : uint8_t { None, Confirm, Jump, Hit, Success };
 // Jump's selected difficulty remains a harness choice. Hammer uses the ordinary
 // default weapon's recovered N4/period25/difficulty3, not a tutorial binding.
 struct BattleRules {
-    static constexpr int CrumpHP = 5, CrumpAttack = 1;
+    static constexpr int CrumpHP = 5;
     static constexpr int JumpImpact = 48, JumpDifficulty = 3;
     static constexpr int EnemyImpact = 54;
 };
@@ -138,6 +139,7 @@ private:
     uint32_t lastDamageCode=0;
     DamageUnit playerBattleUnit, enemyBattleUnit;
     DamagePart playerBattlePart, enemyBattlePart;
+    uint8_t jumpLevelFixture=1,hammerLevelFixture=1; // Pouch/loadout initialization is not yet bound.
     std::vector<DamageServiceRequest> pendingDamageRequests;
     TimingACommand jumpCommand;
     HammerCommand hammerCommand;
@@ -146,7 +148,7 @@ private:
     int dialoguePages() const;
     void move(const Input&);
     void battle(const Input&);
-    void attackDone(int power);
+    void attackDone();
     void applyBattleDamage(bool enemyTarget,int32_t hp,int32_t fp,uint32_t code);
     void openDialogue(int kind);
     bool beginWater();

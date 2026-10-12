@@ -9,16 +9,28 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <cassert>
 namespace ttyd {
 namespace {
-// Development weapon/stat fixture until the original callback catalog and
-// tutorial unit initialization are bound. Calculator ordering itself is recovered.
-int32_t harnessPower(DamageUnit*,DamageWeapon& weapon,DamageUnit&,DamagePart&) {
-    return *static_cast<const int*>(weapon.callbackData);
-}
-int harnessDamage(DamageUnit& attacker,DamageUnit& defender,DamagePart& part,int power,uint32_t flags,bool actionSuccess,uint32_t& code) {
-    DamageWeapon weapon;weapon.hpPower=harnessPower;weapon.callbackData=&power;
-    DamageBattleState battle;battle.actionResult=actionSuccess?2:0;
+// Original callback parameters; loadout, mode and full event-state ownership
+// still use explicitly identified harness inputs until their owners are bound.
+int harnessDamage(DamageUnit& attacker,DamageUnit& defender,DamagePart& part,DamageWeapon weapon,
+                  uint32_t flags,uint32_t actionResult,uint8_t jumpLevel,uint8_t hammerLevel,uint32_t& code) {
+    DamageBattleState battle;battle.actionResult=actionResult;
+    struct Context {DamageBattleState* battle;DamageWeapon* weapon;uint8_t jump,hammer;}
+        context{&battle,&weapon,jumpLevel,hammerLevel};
+    WeaponPowerServices power;power.user=&context;
+    power.actionResult=[](void* user) {return static_cast<Context*>(user)->battle->actionResult;};
+    power.pouchLevel=[](void* user,MarioPowerKind kind) {
+        auto& c=*static_cast<Context*>(user);return kind==MarioPowerKind::Jump?c.jump:c.hammer;
+    };
+    power.bonus=[](void*,const DamageUnit& actor,MarioPowerKind kind) {
+        return kind==MarioPowerKind::Jump?actor.jumpPowerBonus:actor.hammerPowerBonus;
+    };
+    power.powerWord=[](void* user,int32_t index) {
+        assert(index>=0 && index<6);return static_cast<Context*>(user)->weapon->powerWords[size_t(index)];
+    };
+    weapon.callbackData=&power;
     const auto statuses=storedDamageStatusServices();
     const int32_t damage=calculateHpDamage(&attacker,defender,part,weapon,code,flags,battle,statuses);
     // HP and FP share the result-code location. This fixture has no FP callback;
@@ -631,9 +643,12 @@ void Game::startBattle() {
     playerBattlePart.defenseAttributes=enemyBattlePart.defenseAttributes=zeros;
     jumpHeight=0; fieldJump={};fieldStep={};
 }
-void Game::attackDone(int power) {
+void Game::attackDone() {
     playerBattleUnit.hp=int16_t(progress.hp);enemyBattleUnit.hp=int16_t(enemyHP);
-    const int damage=harnessDamage(playerBattleUnit,enemyBattleUnit,enemyBattlePart,power,0,actionSuccess,lastDamageCode);
+    auto weapon=selection==0?ordinaryJumpWeapon():ordinaryHammerWeapon();
+    const uint32_t result=selection==0?jumpCommand.result:hammerCommand.result;
+    const int damage=harnessDamage(playerBattleUnit,enemyBattleUnit,enemyBattlePart,weapon,0,result,
+        jumpLevelFixture,hammerLevelFixture,lastDamageCode);
     applyBattleDamage(true,damage,0,lastDamageCode);
     phase=Phase::Impact; phaseTick=0;
     sound=actionSuccess ? Sound::Success : Sound::Hit;
@@ -731,13 +746,13 @@ void Game::battle(const Input& i) {
                 TimingAContext context;context.difficulty=BattleRules::JumpDifficulty;
                 actionSuccess=(jumpCommand.evaluate(generalBattlePad.triggers,context,battleRandom)&2)!=0;
                 jumpCommand.state=1000; // Harness finish scheduling, not recovered event binding.
-                attackDone(actionSuccess?2:1);
+                attackDone(); // One documented hit; follow-up Jump event remains unbound.
             }
         } else {
             if (!hammerCommand.pending()) {
                 actionSuccess=(hammerCommand.result&2)!=0;
                 hammerCommand.stop(); // Harness stop schedule; original event order remains open.
-                attackDone(actionSuccess?2:1);
+                attackDone();
             }
         }
     } else if (phase==Phase::Impact && phaseTick>=42) {
@@ -752,8 +767,8 @@ void Game::battle(const Input& i) {
             // The recovered normal enemy event requests CheckDamage(flags0x100).
             // Guard flag selection here is still a harness dispatch adaptation.
             playerBattleUnit.hp=int16_t(progress.hp);enemyBattleUnit.hp=int16_t(enemyHP);
-            lastDamage=harnessDamage(enemyBattleUnit,playerBattleUnit,playerBattlePart,BattleRules::CrumpAttack,
-                0x100|(guarded?0x40000:0),false,lastDamageCode);
+            lastDamage=harnessDamage(enemyBattleUnit,playerBattleUnit,playerBattlePart,harborBossWeapon(),
+                0x100|(guarded?0x40000:0),0,jumpLevelFixture,hammerLevelFixture,lastDamageCode);
             applyBattleDamage(false,lastDamage,0,lastDamageCode);
             phase=Phase::EnemyImpact; phaseTick=0; sound=guarded?Sound::Success:Sound::Hit;
         }
