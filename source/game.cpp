@@ -11,6 +11,7 @@ std::vector<RoadWarp> roads;
 std::vector<Rect> walls;
 bool collisionReady=false;
 std::vector<Vec2> wallLevels;
+std::vector<GroundContact> wallContacts;
 struct GroundTriangle { float v[9];GroundContact contact; };
 static_assert(sizeof(GroundContact)==8,"Ground metadata must contain two uint32 words");
 static_assert(sizeof(ReturnPoint)==12,"Return position must contain three float32 values");
@@ -49,6 +50,7 @@ int menuButton(const Input& i) {
 struct CollisionSnapshot {
     std::vector<Rect> savedWalls;
     std::vector<Vec2> savedLevels;
+    std::vector<GroundContact> savedWallContacts;
     std::vector<GroundTriangle> savedGround;
     std::unordered_map<uint32_t,ReturnPoint> savedReturns;
     SpatialIndex savedWallIndex,savedGroundIndex;
@@ -56,6 +58,7 @@ struct CollisionSnapshot {
     bool ready=false;
     void swapActive() {
         savedWalls.swap(walls);savedLevels.swap(wallLevels);savedGround.swap(ground);
+        savedWallContacts.swap(wallContacts);
         savedReturns.swap(groundReturns);
         savedWallIndex.swap(wallIndex);savedGroundIndex.swap(groundIndex);
         std::swap(savedBounds,roomBounds);std::swap(ready,collisionReady);
@@ -80,6 +83,10 @@ const char* roomName(uint32_t room) {
     return room<5?names[room]:"Unknown area";
 }
 bool wallAtLevel(size_t n,float elevation) {
+    if(n<wallContacts.size()) {
+        const auto flags=wallContacts[n].attributes;
+        if(!(flags&0x00080080) && !(flags&0x00800000) && (flags&4))return false;
+    }
     return n<walls.size() && (wallLevels.empty() || (wallLevels[n].z>=elevation+StepHeight && wallLevels[n].x<=elevation+1.2f));
 }
 Rect collisionBounds() {return roomBounds;}
@@ -149,12 +156,15 @@ bool walkable(Vec2 p,float elevation) {
 bool loadCollision(const char* path) {
     FILE* file=std::fopen(path,"rb");if(!file)return false;
     uint32_t count=0;bool ok=std::fread(&count,4,1,file)==1;
-    bool levels=(count&0x80000000)!=0;count&=0x7fffffff;
+    bool levels=(count&0x80000000)!=0,tagged=(count&0x40000000)!=0;count&=0x3fffffff;
+    if(tagged && !levels){std::fclose(file);return false;}
     if(!ok || count>100000) {std::fclose(file);return false;}
     std::vector<Rect> data(count);std::vector<Vec2> heights(levels?count:0);
+    std::vector<GroundContact> contacts(tagged?count:0);
     for(uint32_t n=0;n<count;++n) {
         ok=ok && std::fread(&data[n],sizeof(Rect),1,file)==1;
         if(levels)ok=ok && std::fread(&heights[n],sizeof(Vec2),1,file)==1;
+        if(tagged)ok=ok && std::fread(&contacts[n],sizeof(GroundContact),1,file)==1;
     }
     ok=ok && std::fgetc(file)==EOF;std::fclose(file);
     for(auto w:data) if(!std::isfinite(w.x0) || !std::isfinite(w.z0) || !std::isfinite(w.x1) || !std::isfinite(w.z1))ok=false;
@@ -165,7 +175,7 @@ bool loadCollision(const char* path) {
         ok=indexBounds(next,n,std::min(w.x0,w.x1)-.28f,std::min(w.z0,w.z1)-.28f,
                        std::max(w.x0,w.x1)+.28f,std::max(w.z0,w.z1)+.28f,references);
     }
-    if(ok) {wallLevels.swap(heights);walls.swap(data);wallIndex.swap(next);collisionReady=true;}
+    if(ok) {wallLevels.swap(heights);wallContacts.swap(contacts);walls.swap(data);wallIndex.swap(next);collisionReady=true;}
     return ok;
 }
 bool loadGround(const char* path) {
@@ -245,7 +255,7 @@ bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact) {
     }
     return found;
 }
-void clearCollision() {walls.clear();wallLevels.clear();ground.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
+void clearCollision() {walls.clear();wallLevels.clear();wallContacts.clear();ground.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
 bool Game::recoveryReturn(ReturnPoint& point) const {return groundReturn(returnContact,point);}

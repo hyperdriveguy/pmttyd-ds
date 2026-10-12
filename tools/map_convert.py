@@ -32,16 +32,18 @@ def batch_flags(layer,group,cull):
         raise ValueError('Invalid map batch metadata')
     return layer | group<<8 | cull<<24
 
-def wall_segments(collision):
+def wall_segments(collision,metadata=None):
+    if metadata is not None and len(metadata)!=len(collision):raise ValueError('Wall metadata count mismatch')
     segments=set()
-    for tri in collision:
+    for index,tri in enumerate(collision):
         a=np.array(tri);normal=np.cross(a[1]-a[0],a[2]-a[0]);length=np.linalg.norm(normal)
         if length<1e-8 or abs(normal[1])/length>.2:continue
         points=a[:,[0,2]]
         p,q=max([(points[x],points[y]) for x,y in [(0,1),(1,2),(0,2)]],key=lambda pair:np.linalg.norm(pair[0]-pair[1]))
         if np.linalg.norm(p-q)>.01:
             p,q=sorted([tuple(np.round(p,4)),tuple(np.round(q,4))])
-            segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max())))
+            tag=tuple(metadata[index]) if metadata is not None else ()
+            segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max()),*tag))
     return sorted(segments)
 
 def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=()):
@@ -228,10 +230,10 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
             out.write(struct.pack('<II',track['duration'],len(track['bindings'])))
             for frame in track['frames']:out.write(struct.pack('<12f',*frame))
             for vertex in track['bindings']:out.write(struct.pack('<Ifff',*vertex))
-    segments=wall_segments(collision)
+    segments=wall_segments(collision,collision_meta)
     with (output/'map.walls').open('wb') as out:
-        out.write(struct.pack('<I',len(segments)|0x80000000))
-        for segment in segments:out.write(struct.pack('<6f',*segment))
+        out.write(struct.pack('<I',len(segments)|0xc0000000))
+        for segment in segments:out.write(struct.pack('<6fII',*segment))
     # Keep walkable collision surfaces, including ramps and elevated platforms.
     ground=[]
     for tri,meta in zip(collision,collision_meta):

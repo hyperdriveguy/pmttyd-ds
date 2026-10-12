@@ -187,7 +187,8 @@ resets map-local remembered contact, including across warp/load, avoiding stale
 IDs in another room. This latch does not implement the damage state machine.
 Floor sampling now excludes original bit4 triggers unless inclusion mask
 0x00080080 or0x00800000 applies, matching current normal-Mario ground-filter
-coverage. Roll/Vivian, name-dependent high-bit cases and wall filters remain open.
+coverage. Roll/Vivian and name-dependent high-bit cases remain open; normal
+wall filtering is now implemented as documented below.
 
 WaterRecovery is portable fixed-tick motion using original mot_damage state
 numbers/parameters and native engine-to-world0.01. Game starts it on grounded
@@ -223,3 +224,12 @@ and movement before restoring destination state. Failed staging restores the
 recorded departure position while CollisionTransition restores old room data.
 Original party choreography, sensor volumes, dynamic floor physics and camera
 framing still require source/observation work.
+
+Wall packs now use count bits31/30 for height/owner metadata respectively.
+New records are32 bytes: six float32 values (XZ segment endpoints,minY,maxY)
+and two uint32 values (original flags,relative source node). Legacy16-byte and
+24-byte records still load with zero attributes. Deduplication retains distinct
+owners of overlapping geometry. WallContacts participates in clear, successful
+load replacement and CollisionTransition snapshot/rollback. Query/minimap
+wallAtLevel applies the ordinary-Mario bit4 exclusion/inclusion overrides before
+height tests. Malformed/truncated metadata preserves the previous valid pack.

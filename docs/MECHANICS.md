@@ -222,3 +222,17 @@ travel, simplified camera, stationary companion on departure/co-located on
 arrival, omitted first-entry branches and original party choreography.
 Normal collision body dimensions and sensor activation still require source
 recovery; these changes do not establish faithful general movement physics.
+
+### Normal-Mario wall attribute filtering
+
+US DOL `marioHitCheck` (80090e80; callback setup80090f8c–80090f98)
+passes `chkfilterVec` (800915e4) to its ordinary wall checks.
+The callback first accepts attributes with mask0x00080080, then rejects
+bit0x4 unless bit0x00800000 is set. This is the same ordinary-Mario attribute
+rule already applied to floors. Native wall packs now retain flags/source owner
+IDs and apply this rule at query time rather than making sensor walls solid.
+`tools/verify_wall_attributes.py` compares every exported record directly to
+original drawmode bytes, and asserts no bit31 cases exist in these five packs.
+It finds81 rejected records among5,264 records. Other transformation callbacks,
+name-dependent high-bit cases, runtime event flag changes, swept triangle/body
+collision and original body dimensions remain unfinished.

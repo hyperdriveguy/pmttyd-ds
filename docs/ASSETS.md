@@ -223,3 +223,11 @@ Harbor automatic A_yuka center is approximately(.85,.15,2.2). Literal positions
 now correctly use engine-to-native0.01, substantiated by original _mapLoad's10x
 model matrix. All original collision owners/parents/centers are inventoried,
 not just mesh owners. Source floor geometry/raw attributes remain unchanged.
+
+Original wall collision attributes are now preserved alongside geometry in
+32-byte records (six floats,two uint32 words); tagged count uses0xc0000000.
+Source-owner IDs and flags come from original node/drawmode records, with no
+attribute edits. `python3 tools/verify_wall_attributes.py` independently compares
+all5,264 records against source bytes across gor_01/00/02/03/04. No bit31
+special-case owners occur in these packs. Collision mesh extraction remains
+approximate planar wall segmentation; original flags now control solidity.

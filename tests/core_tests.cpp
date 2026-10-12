@@ -110,6 +110,17 @@ void collisionImport() {
     levelWall(0,.3f);CHECK(!walkable({.1f,2.5f},0)); // Taller obstacle remains solid.
     CHECK(walkable({.1f,2.5f},.3f));
     levelWall(1.5f,2);CHECK(walkable({.1f,2.5f},0)); // Overhead geometry.
+    for(uint32_t flags:{0u,4u,0x84u,0x80004u,0x800004u}) {
+        std::ofstream file(path,std::ios::binary);uint32_t tagged=0xc0000001;
+        Vec2 levels{0,2};GroundContact contact{flags,123};
+        file.write(reinterpret_cast<char*>(&tagged),4);file.write(reinterpret_cast<char*>(&wall),sizeof(wall));
+        file.write(reinterpret_cast<char*>(&levels),sizeof(levels));file.write(reinterpret_cast<char*>(&contact),sizeof(contact));file.close();
+        CHECK(loadCollision(path));CHECK(walkable({.1f,2.5f},0)==(flags==4));
+        {CollisionTransition rollback;levelWall(0,2);CHECK(!walkable({.1f,2.5f},0));}
+        CHECK(walkable({.1f,2.5f},0)==(flags==4));
+    }
+    // Incomplete owner metadata must not replace the last valid collision pack.
+    CHECK(truncate(path,35)==0);CHECK(!loadCollision(path));CHECK(!walkable({.1f,2.5f},0));
     clearCollision();std::remove(path);
     CHECK(!loadCollision("/does/not/exist"));
 }
@@ -338,10 +349,11 @@ void indexedOriginalCollision() {
         std::ifstream walls(prefix+".walls",std::ios::binary),ground(prefix+".ground",std::ios::binary);
         uint32_t nw=0,ng=0;walls.read(reinterpret_cast<char*>(&nw),4);ground.read(reinterpret_cast<char*>(&ng),4);
         CHECK(ng&0x80000000);ng&=0x7fffffff;
-        CHECK(nw&0x80000000);nw&=0x7fffffff;
+        CHECK((nw&0xc0000000)==0xc0000000);nw&=0x3fffffff;
         std::vector<std::array<float,6>> segments(nw);std::vector<std::array<float,9>> triangles(ng);
         std::vector<GroundContact> contacts(ng);
-        walls.read(reinterpret_cast<char*>(segments.data()),nw*24);
+        std::vector<GroundContact> wallContacts(nw);
+        for(uint32_t n=0;n<nw;++n){walls.read(reinterpret_cast<char*>(segments[n].data()),24);walls.read(reinterpret_cast<char*>(&wallContacts[n]),8);}
         for(uint32_t n=0;n<ng;++n) {
             ground.read(reinterpret_cast<char*>(triangles[n].data()),36);
             ground.read(reinterpret_cast<char*>(&contacts[n]),8);
@@ -349,7 +361,9 @@ void indexedOriginalCollision() {
         CHECK(walls.good());CHECK(ground.good());
         for(int x=-18;x<=18;++x)for(int z=-16;z<=16;++z)for(float level:{0.f,1.2f,3.f}) {
             Vec2 p{x*.5f,z*.5f};bool free=true,found=false;float floor=-1e30f;
-            for(auto w:segments) {
+            for(size_t n=0;n<segments.size();++n) {
+                auto w=segments[n];auto flags=wallContacts[n].attributes;
+                if(!(flags&0x00080080) && !(flags&0x00800000) && (flags&4))continue;
                 if(w[5]<level+.25f || w[4]>level+1.2f)continue;
                 float dx=w[2]-w[0],dz=w[3]-w[1],den=dx*dx+dz*dz;if(den<1e-8f)continue;
                 float t=std::max(0.f,std::min(1.f,((p.x-w[0])*dx+(p.z-w[1])*dz)/den));

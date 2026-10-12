@@ -1197,3 +1197,41 @@ West road script also exited0 with two reciprocal plaza/west trips. Combined
 with east, harbor and station scripts, all8 directed outdoor roads now have
 native repeated-transition coverage on this implementation. Fixtures used:
 artifacts/fixtures/{east,harbor,station,west}-road.bin; command pattern above.
+
+## Preserve original wall collision attributes
+
+Implemented ordinary-Mario wall filtering from original US `marioHitCheck` /
+`chkfilterVec`. Converter retains source-node IDs and raw attributes in32-byte
+wall records; runtime excludes bit4 sensor walls unless original inclusion masks
+apply. Overlapping walls with distinct owners retain separate records. Added
+metadata to collision snapshot/rollback and legacy-pack loading with zero flags.
+Truncated metadata cannot replace valid collision data. No collision radius,
+body height or step-height calibration changed in this step.
+
+Verification completed:
+- `make test`: core scenarios and28 Python tests passed, including inclusion
+  overrides, rejected sensors, owner deduplication, malformed data and rollback.
+- `python3 tools/verify_wall_attributes.py`: all5,264 wall records match original
+  node bytes;81 non-solid records across five rooms; no bit31 cases present.
+- `python3 tools/verify_ground_attributes.py`: all3,576 floor records match.
+- `build-host/core_tests --rooms`:18,315 indexed/exhaustive probes, all8 road
+  arrivals, airborne waits and failed-load rollback passed with regenerated packs.
+- `make -j2 all`: rebuilt assets and native `.3dsx` successfully.
+- Native harbor stairs/dock/return passed on updated binary:
+  `python3 tools/emulator_smoke.py --fresh-save --save-fixture
+  artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script
+  tests/azahar_harbor_stairs.py`. Initial test stopped mid-black fade with the
+  old fixed wait; now polls completed arrival checkpoint with a6-second timeout.
+  The rerun exited0 and preserved HP7.
+
+Next: recover actual normal-Mario collision width/height semantics from
+marioHitCheckWidth and wall-ray helpers before replacing provisional .28 radius,
+1.2 height and .25 step threshold. Recover original sensor activation and
+camera/party choreography. Wall segmentation, transformed-Mario callbacks,
+runtime event collision-flag changes, original story/dialogue, SFX and broader
+playability remain incomplete. Full objective active; hardware unverified.
+Native water-return regression also exited0 using the same fixture and
+`--input-script tests/azahar_water.py`: checkpoint HP7→6, original harbor
+return destination accepted, partial-recovery save suppressed. Final host,
+original-room and unchanged native build checks exited0. Native tests verify
+these scenarios; they do not establish complete original physics fidelity.
