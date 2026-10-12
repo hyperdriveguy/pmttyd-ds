@@ -217,7 +217,10 @@ under /tmp;ISO reads are read-only.
 This answers JUMP-01's **complete request-graph** portion. The
 [MarioJumpParam contract](BATTLE_MARIO_JUMP_PARAMETER.md) now closes parameter
 preparation and [MarioJumpPosition](BATTLE_MARIO_JUMP_MOTION.md) now closes
-the local flight;remaining:Takeoff/MoveFrame/MovePosition internals;exact floating/event
+the local flight. [Takeoff](BATTLE_JUMP_TAKEOFF_POSITION.md) and
+[MoveFrame/MovePosition](BATTLE_MOVE_FRAME_AND_POSITION.md) now close those
+local preparation bodies;remaining:their candidate/math/audio/domain services,
+exact floating/event
 arithmetic and progress at motion completion;GetSelectEnemy/cost/data-child/
 power-check/stylish/prize-byte/aftereffect/badge-tail service bodies;AC result/option
 writers and original tutorial weapon/menu gates. Original input/state/RNG/hit/

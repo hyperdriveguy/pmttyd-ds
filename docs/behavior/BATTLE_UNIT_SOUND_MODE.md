@@ -20,6 +20,11 @@ Retain this ordering and each later source load/store;source/destination aliasin
 is not handled by a temporary whole-record copy. Field names beyond their actual
 use require producer/consumer closure;do not infer duration/pitch/handle units.
 
+The subsequent [movement sound core contract](BATTLE_MOVEMENT_SOUND_CONTROL.md)
+now identifies initial/remaining/alternating counters and retained voice word18
+through concrete readers/writers. Sound source/key/macro/audio meanings remain
+unclosed;loader dispatch and partial-field behavior below are unchanged.
+
 ## Mode-1: load by type
 
 Mode-1 selects the following source fields:

@@ -18,14 +18,14 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Lecture player attack bindings,missing mode transitions and teardown | AC-01, AC-02, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover Jump/Hammer lecture request graphs,1→2/5→6 producers,W2740 selection and lecture-end writes;excludes original runtime traces |
-| Unit/part hit/world/home positions and movement sound core | JUMP-01, DMG-02 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Recover used position leaves/event wrapper and sound-control/stop record lifecycle;source writers,playback internals and traces remain open |
-| Jump takeoff position,move-frame query and approach MovePosition | JUMP-01, AC-01 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Recover80109054/354,8010c8c0/1b4,8010ca74/334 local arguments/count/sentinel/delta/return rules;helper/domain and execution remain open |
+| Unit/part hit/world/home positions and movement sound core | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Position queries](behavior/BATTLE_UNIT_PART_POSITION_QUERIES.md),[movement sound](behavior/BATTLE_MOVEMENT_SOUND_CONTROL.md);source writers,playback internals and original traces remain open |
+| Jump takeoff position,move-frame query and approach MovePosition | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Takeoff](behavior/BATTLE_JUMP_TAKEOFF_POSITION.md),[query/movement](behavior/BATTLE_MOVE_FRAME_AND_POSITION.md):complete local bodies;candidate/numeric/helper/domain and execution remain open |
 | Unit sound-mode loader and Mario jump sound record | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Sound-mode contract](behavior/BATTLE_UNIT_SOUND_MODE.md):complete partial-field loader and used type2/-1 request;source writers/macro resources/audio execution remain open |
 | MarioJumpPosition complete local motion modes and AC side effects | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Motion](behavior/BATTLE_MARIO_JUMP_MOTION.md) and [numerics](behavior/BATTLE_MARIO_JUMP_NUMERICS.md):complete local body,all phases/rounded branches;numeric/audio dependencies and original traces remain open |
 | Crump NPC helper identity versus lecture helper modes and hooks | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Helper roles](behavior/CHRISTINE_HELPER_ROLES.md) and [coordinator modes](behavior/LECTURE_COORDINATOR_MODES.md);distinct setup/kind/ID/work/message graph answered,player/counter/field lifecycle and original traces remain open |
-| Mario-specific JumpParam preparation and motion dependencies | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Parameter contract](behavior/BATTLE_MARIO_JUMP_PARAMETER.md):complete ordered integer resolution/distance-count writeback;MarioJumpPosition body/numeric execution/traces remain open |
+| Mario-specific JumpParam preparation and motion dependencies | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Parameter contract](behavior/BATTLE_MARIO_JUMP_PARAMETER.md):complete ordered integer resolution/distance-count writeback;Mario motion now linked separately,numeric/domain/execution traces remain open |
 | Battle input sampler/reset caller census and system-level/event-speed controls | AC-01, AC-03, AC-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Reset owners](behavior/BATTLE_INPUT_RESET_OWNERS.md) and [level/speed controls](behavior/EVENT_SYSTEM_LEVEL_AND_SPEED.md);direct census,local controls and tutorial injection answered,full UI/type/writer/lecture graph and original traces remain open |
-| Ordinary Jump complete request graph and per-hit/AC branches | JUMP-01, AC-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Jump graph](behavior/BATTLE_NORMAL_JUMP_EVENT_FLOW.md),[result/stop](behavior/BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md),[VM/concurrency](behavior/EVENT_JUMP_BRANCHES_AND_CONCURRENCY.md);Mario-specific motion/remaining services and original traces remain open |
+| Ordinary Jump complete request graph and per-hit/AC branches | JUMP-01, AC-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Jump graph](behavior/BATTLE_NORMAL_JUMP_EVENT_FLOW.md),[result/stop](behavior/BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md),[VM/concurrency](behavior/EVENT_JUMP_BRANCHES_AND_CONCURRENCY.md);local motion/preparation now linked separately,candidate/audio/cost/stylish/source composition and original traces remain open |
 | Unit resource/status snapshot export leaf | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Export contract](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete matching writer;export caller cadence and on-disk save semantics remain open |
 | Unit badge/count/bonus import through _EquipItem | STATUS-01, DMG-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Badge import](behavior/UNIT_BADGE_COUNT_IMPORT.md):complete byte maps/flags/reset/scan and scoped setup bindings;inventory equip UI and runtime traces remain open |
 | Unit-entry status clear and pouch resource import | STATUS-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Initialization contract](behavior/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md):complete clear/import/revision,party mapping and partial info-record reset;badge aggregation,snapshot producers and turn/save ownership remain open |
@@ -354,6 +354,19 @@ Do not use portable test fixtures or prototype turn timing as original evidence.
 
 ## DMG-02 — Direct application service internals and native bindings (open)
 
+Partial ID2 answer:[unit/part position queries](behavior/BATTLE_UNIT_PART_POSITION_QUERIES.md)
+close home,part offset/world and scaled hit leaves,BattleGetUnitPartsPtr and the
+event HitPos wrapper. Absolute part flag10000000 differs from owner-position
+plus offset;relative X uses owner189,while scaled hit X uses captured side-table
+factor. Two offset triplets scale through unit114 with ordered fused operations;
+event outputs truncate to signed integer with raw destination sentinel checks.
+No source writer/actual original scene coordinate is inferred from the leaf.
+[Movement sound core](behavior/BATTLE_MOVEMENT_SOUND_CONTROL.md) closes retained
+voice/periodic alternation/stop and identifies only record18 as retained handle;
+keys0/4 are playback inputs. Original kind sounds,source writers,field144 schema,
+height/belong/action-record/audience/revival/VM/resource helpers and execution
+traces remain open. POS/MOVE-SE requirements provide scoped implementation cases.
+
 The local [direct application](behavior/BATTLE_DAMAGE_APPLICATION.md) is now
 implemented and tested,including shared partner FP,Pity Flower/Sleep RNG order,
 sound/effect request precedence,narrowing/suppression/accounting,lethal-code
@@ -424,6 +437,22 @@ subsequent make test/make all pass. Continue requesting actual script/VM owners
 rather than treating a passing command helper as complete original attack timing.
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
+
+Further ID2 answer:[Takeoff](behavior/BATTLE_JUMP_TAKEOFF_POSITION.md) closes
+the mixed target-hit X/Z + actor-home Y output,private null-weapon candidate
+sample masks/choice4,signed count gate,closer-X tie rule and pointer/return/side
+offset branches. Candidate cores/RNG/validity remain service dependencies.
+[GetMoveFrame/MovePosition](behavior/BATTLE_MOVE_FRAME_AND_POSITION.md) close
+ceil-like query versus floor-and-speed-adjusted motion counts,raw/float argument
+differences,first-call integration,horizontal-only baseline and final XYZ snap/
+yield. Query fallback speed does not mutate/repair unit speed. Actual ordinary
+calls are automatic movement,type0/-1 and query speed0;abs(query-22) is retained.
+[Position queries](behavior/BATTLE_UNIT_PART_POSITION_QUERIES.md) and
+[movement sound](behavior/BATTLE_MOVEMENT_SOUND_CONTROL.md) close called local
+geometry/core/wrappers and their ordered count/retained voice/stop interfaces.
+TAKEOFF/MOVE/POS/MOVE-SE requirements give acceptance cases. These complete
+local callbacks do not close candidate/math/audio/source/domain/scheduling
+dependencies,selected target/cost/stylish/aftereffect/badge tail or original traces.
 
 Native implementation breadcrumb (2026-10-12): `source/battle_jump_motion.cpp`
 and `tests/battle_jump_motion_tests.cpp` implement the delivered local motion,
@@ -497,8 +526,9 @@ cases,not measured impact ticks or a complete executed tutorial.
 
 MarioJumpParam and MarioJumpPosition are now answered by the newer linked
 contracts above,with numeric/audio/execution dependencies still explicit.
-Remaining preparation dependencies:Takeoff/MoveFrame/
-MovePosition,selected target/cost/power-child/stylish/prize-byte/aftereffect/badge
+Takeoff/MoveFrame/MovePosition local bodies are now answered by the newer linked
+contracts above;remaining their candidate/math/audio/domain service composition,
+selected target/cost/power-child/stylish/prize-byte/aftereffect/badge
 tail internals and original tutorial/menu/input/state traces. Do not implement
 the request graph with the native fixed48/42 schedule or copied generic jump
 physics. The parent request remains open for that runtime composition.

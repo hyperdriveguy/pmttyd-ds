@@ -18,6 +18,10 @@ complete gameplay sequences before further general-library edge-case recovery.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Jump takeoff position](BATTLE_JUMP_TAKEOFF_POSITION.md) | Complete mixed coordinate/sample/closest-X/side-offset/output contract and two actual callers | Candidate cores/RNG/domain/source geometry and original position traces |
+| [MoveFrame/MovePosition](BATTLE_MOVE_FRAME_AND_POSITION.md) | Complete count-query versus velocity-adjusted motion,first-call integration,XYZ snap/yield and actual callers | Numeric/source/sound/scheduler composition and original timing |
+| [Unit/part position queries](BATTLE_UNIT_PART_POSITION_QUERIES.md) | Complete home/offset/world/scaled hit leaves,registry-part helper and event integer/sentinel wrapper | Actual source/scale/world/lifetime writers and original damage/position traces |
+| [Movement sound control](BATTLE_MOVEMENT_SOUND_CONTROL.md) | Complete retained voice/position,alternating signed periods and stop/core wrappers | Sound trigger/playback/resources/source lifetime and original audio traces |
 | [Mario jump motion](BATTLE_MARIO_JUMP_MOTION.md) | Complete local first/resumed-call phases,baseline/visible integration,zero/exact-count landing and sound/AC request ownership | Numeric/audio helper/domain/caller composition and original trajectory/input traces |
 | [Mario jump numerics](BATTLE_MARIO_JUMP_NUMERICS.md) | Ordered single/double/fused formulas,mode division/height/phase branches,constants and complete local reviseAngle wrapper | Original sin/fmod/angle/distance/FPSCR execution and composed comparisons |
 | [Unit sound-mode loader](BATTLE_UNIT_SOUND_MODE.md) | Complete type/mode partial record initialization,retained gaps and concrete Mario setup playback input | Source/key/macro/voice writers,playback core/resources and original audio traces |

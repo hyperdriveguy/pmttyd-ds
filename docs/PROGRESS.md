@@ -1,5 +1,55 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2: requested Jump preparation,positions and movement sound
+
+Added BATTLE_MOVE_FRAME_AND_POSITION.md with complete query/movement bodies.
+Query resolves integer X/Z,ignored Y,float speed and raw destination;zero speed
+uses unit speed then local1 fallback. Its fused residual gives a ceiling-like
+estimate,exact-zero count1 and no unit mutation. MovePosition resolves integer
+XYZ/count/sound on every call,uses truncated automatic count/exact-zero1 and
+speed adjustment,integrates on first call,horizontal baseline only,then snaps
+all targetXYZ and returns1 for n<=0. Query and motion counts differ;first-attack
+abs(query-22) delay remains its original script rule,not a fixed timing claim.
+
+Added BATTLE_JUMP_TAKEOFF_POSITION.md with complete mixed target-hit X/Z plus
+actor-home Y output,private null-weapon candidate sampling/choice4,signed count,
+closer-X tie rule,part-pointer/return/sign offsets and ordered integer outputs.
+Candidate core/RNG/validity remain unclosed;no guessed deterministic selection.
+Added BATTLE_UNIT_PART_POSITION_QUERIES.md with complete home/offset/world/
+scaled-hit leaves,registry-part helper and event integer/raw-sentinel wrapper.
+Relative part X uses owner189;scaled hit X uses captured side byte,with two
+ordered triplets through unit114. Source/world/scale/lifetime writers remain open.
+
+Added BATTLE_MOVEMENT_SOUND_CONTROL.md with complete retained voice/position
+route,alternating signed16 period/parity route and stop wrappers. Only record18
+retains a trigger return;keys0/4 are inputs. Movement invokes normal sound only
+while blocked and ends retained voice after final snap. Original trigger/resource/
+macro/audio internals remain open. MOVE/TAKEOFF/POS/MOVE-SE requirement cases
+are implementable local contracts,not original executed motion/audio traces.
+
+Linked partial JUMP-01/DMG-02 answers and released only ID2's validated preparation/
+geometry/sound locks. Updated old local-motion dependency summaries to prevent
+duplicate recovery;independent ID1 lecture-player work and native motion/resource/
+action-service work preserved. ID2 authored no native gameplay implementation.
+
+Validation:tools/verify_jump_preparation.py passed13 whole-body fingerprints,
+68 instruction anchors,five constants and six concrete ordinary caller records;
+two fresh metadata reports repeated byte-for-byte. Mario motion verifier passed
+five bodies/76 anchors/20 constants;Jump graph verifier passed19 bodies/57 anchors/
+all268 requests/census;general verifier passed prior contracts. make test passed
+13 CTest suites including concurrent movement/action/motion implementation and
+58 Python tests;make all exited0,no rebuild;744 behavior local links resolved;
+git diff --check passed. /tmp holds all original inspections/reports;none staged.
+No original execution/emulator,ISO/profile/save mutation,asset conversion or
+dialogue rewrite by ID2. Only explicit documentation/verifier paths committed.
+
+Next:JUMP-01 selected-target/weapon/cost/power-child/stylish/prize-byte/aftereffect/
+badge-tail internals and candidate/math/audio/source/domain composition;DMG-02
+height/belong/action-record/audience/revival/resource bindings and STATUS turn/
+snapshot callers. Original input/state/RNG/position/audio/scene comparisons
+remain necessary. Full-system documentation and complete-game requirements
+remain active/incomplete;completed local contracts do not close all requests.
+
 ## 2026-10-12 — Portable approach query and MovePosition
 
 Implemented BATTLE_MOVE_FRAME_AND_POSITION.md in battle_move_position.hpp/cpp.
