@@ -9220,3 +9220,36 @@ write/edit those three paths. They are preserved in the commit;history is not
 rewritten. Native uncommitted files and ID2 pending work remain preserved.
 Earlier statement that every concurrent change stayed outside the scoped commit
 must be read with this recorded shared-index exception.
+
+## 2026-10-12 — ID1 partner placement4 local output and angle-stack contract
+
+Added complete local [placement4 search/output](behavior/FIELD_PARTNER_PLACEMENT4.md)
+and [angle layout](behavior/FIELD_PARTNER_PLACEMENT4_ANGLE_LAYOUT.md).
+Recovered owner/buddy seeds and store order,12/14 inclusive attempts,live
+selector/captured base split,accumulated output mutations,direct raw floor/NPC/
+wall admission,fixed28/5 wall arguments,height minimum and ignored general
+fallback return. Final offsets read adjacent arrays or the reused query header;
+no extra constant angle was invented. Actual fall output aliases the live root.
+Only the local body and fallback request are delivered:general partyGetAppearPos
+writer remains OPEN despite the broader initial lock wording. Released only ID1
+lock with that limitation explicit;other owners' work remains untouched.
+
+Validation:verify_field_partner_placement4.py passes two containing hashes
+(one complete local placement4,one selected fall caller scope),88 instructions,
+eight constants,six spans,two imports and59 reconstructed angle word sources.
+Repeated report byte-identical;wrong-source negative check rejected;Python
+compilation passed. Prior fall,placement3 and around verifiers passed. An initial
+around verifier command used a nonexistent filename;corrected invocation passed.
+General verifier passed1980 anchors;all1598 behavior links resolved at snapshot.
+Gekko audit passed575 files/80256 instructions/608 paired-single operations,
+zero changes or unknowns. make test passed51 CTest suites and78 Python tests;
+make all passed/rebuilt3DSX. Logs:/tmp/id1-placement4-test.log and
+/tmp/id1-placement4-build.log. Existing3218-identity/five-fallback audio pipeline
+ran;ASSETS records paths/conversion/license limits,derivatives left unstaged.
+ISO stayed read-only;no original execution,profile/save changes or distributed
+original binary/dialogue/assets. ID1 made no native implementation edits.
+
+Next:general placement fallback writer,used homing/fly/behind handlers and
+pose/audio/backend/source/alias/numeric domains;original recovery trajectories
+and a complete original playable encounter remain needed. Full-game behavior
+documentation and final complete-game requirements remain incomplete.

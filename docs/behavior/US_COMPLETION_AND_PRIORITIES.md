@@ -216,3 +216,22 @@ adds seven complete local bodies. Their internal services,missing-target path,
 input/impact cadence and original traces remain open. No full-system row has
 closed and no overall completion percentage is justified. Final complete-game
 requirements remain deferred;asset reuse does not supply these missing contracts.
+
+## ID1 completion reassessment after used partner recovery work
+
+2026-10-12 update:the table above retains its explicitly historical assessment
+counts. Subsequent contracts close more local battle/event/field functions,
+including the used fall→[placement4](FIELD_PARTNER_PLACEMENT4.md) call and its
+[angle/output alias rules](FIELD_PARTNER_PLACEMENT4_ANGLE_LAYOUT.md). Current
+listing audit covers575 files/80256 instructions/608 paired-single operations
+with no pending corrections;the general contract verifier covers1980 anchors.
+Neither count measures gameplay completion. Local partner recovery still depends
+on the open general fallback engine and original-runtime/source-domain evidence.
+
+The full objective remains incomplete:no full-system closure or matched complete
+original playable encounter is established. Prioritize shipped US call chains,
+request-inbox blockers and an original encounter's story/event/persistence path.
+For this recovered field chain,next resolve the called general placement writer
+and used movement handlers,then compare original recovery trajectories. Switch
+comparison and incidental library edge cases do not replace that US evidence.
+Final complete-game requirements remain premature.

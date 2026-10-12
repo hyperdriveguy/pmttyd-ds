@@ -696,3 +696,12 @@ clarifies snapshot0..a clear versus byteb preservation,all124 preserved bytes
 and interleaved history stores. Prior whole-snapshot-zero wording is corrected;
 update's full prior copy and current trailing preservation remain distinct.
 SDK/physical/caller/pause/source and original sampling traces remain open.
+
+ID1 placement4 recovery addendum (2026-10-12):the used fall caller now links
+[complete placement4 local search/output](behavior/FIELD_PARTNER_PLACEMENT4.md)
+and [copied angle/adjacent-stack layout](behavior/FIELD_PARTNER_PLACEMENT4_ANGLE_LAYOUT.md).
+Local output accumulates across rejected moved attempts;final offsets can read
+adjacent arrays or the reused query header. Exhaustion requests general
+partyGetAppearPos,ignores its return and returns0 after optional owner-height
+adjustment. The general fallback engine remains open;this is not complete
+end-to-end placement or original-runtime equivalence.

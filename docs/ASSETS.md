@@ -1337,3 +1337,17 @@ captures were staged. Isolated camera captures remain under ignored
 artifacts/azahar-camera-ceiling/ and artifacts/azahar-camera-roads/. Original
 assets retain Nintendo/Intelligent Systems copyright;local derivative use grants
 no redistribution license. Camera-road view/curve/lens binding remains unfinished.
+
+ID1 placement4 evidence/build provenance (2026-10-12):read-only
+/home/carson/games/roms/G8ME01.iso US disc0 revision0 supplied the DOL
+partyGetAppearPos4 and selected fall caller instructions,angle data
+0x802cc430..0x802cc51c,query templates,bias,map identifier and existing named
+support table. Only addresses/hashes/constants/analysis metadata were added to
+source history;original ELF/disassembly/report remain ignored under
+artifacts/reference/behavior. No story text extraction or new conversion policy
+was introduced. make all invoked the existing sound/proj/pmario.proj,pool,sdir,
+samp audio-map pipeline:3218 GameCube identities,0 Switch,5 slice primary-PCM
+fallbacks packed. Existing local-assets/audio-map raw/catalog outputs and RomFS
+WAV/audio-map.json derivatives remain unstaged. Original copyright/ownership
+remains with its owners;local possession grants no redistribution license.
+Exact build log:/tmp/id1-placement4-build.log.

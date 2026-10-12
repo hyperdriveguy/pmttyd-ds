@@ -70,8 +70,9 @@ revise360(R(180+toMovedir(M+1b0))) through the
 [complete local leaves](FIELD_PARTNER_FALL_FACING.md). Then request
 partyGetAppearPos4(P,&P+58) at0x800c59ec,IGNORE its return,add37 to the current
 rootY after its writes,and request partyChgMot(P,0). Clear P+0 mask0x02000000
-after that request. The full placement4 search/output contract remains open;
-do not substitute captured owner XYZ or assume a success-only write. The root
+after that request. The [complete local placement4 search/output](FIELD_PARTNER_PLACEMENT4.md)
+mutates this live root across attempts;its general fallback engine remains open.
+Do not substitute captured owner XYZ or assume a success-only write. The root
 buffer already has values,including the prior -2001 store.
 
 Continue into the horizontal tail even after this recovery request. Exact
