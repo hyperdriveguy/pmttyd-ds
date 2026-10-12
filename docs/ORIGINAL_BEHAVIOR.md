@@ -1212,3 +1212,11 @@ ID2 snapshot caller validation follow-up (2026-10-12):native fixture arrived;
 make test retry85 CTest/90 Python passed.Prior missing-file host configuration
 gate is resolved;ad1a934 local contracts remain complete.Scope/source/query/
 Game/platform/original runtime boundaries are unchanged.
+
+ID2 complete setup import/provisioning caller delivery (2026-10-12):
+[Actors/imports](behavior/battle/BATTLE_UNIT_SETUP_ACTORS_AND_REPEATED_IMPORTS.md),
+[opponents/equipment](behavior/battle/BATTLE_UNIT_SETUP_OPPONENT_LOOP_AND_EQUIPMENT_MASK.md)
+close both scoped Btl_UnitSetup import paths and entire local caller:static
+sources/fresh root/typed live loops/repeated imports/positions/equipment mask.
+8 hashes/190 anchors/5 spans verified;85 CTest/90 Python/make all pass.
+Entry/services/invocation/end/source/query/Game/platform/runtime remain open.

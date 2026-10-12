@@ -1,3 +1,25 @@
+## 2026-10-12 — ID2 complete Btl_UnitSetup provisioning/import caller
+
+[Startup actors/imports](behavior/battle/BATTLE_UNIT_SETUP_ACTORS_AND_REPEATED_IMPORTS.md)
+and [opponent/equipment tail](behavior/battle/BATTLE_UNIT_SETUP_OPPONENT_LOOP_AND_EQUIPMENT_MASK.md)
+close full800f8aac/2f8.Captured D/G/pouch versus fresh party root,partial startup
+writes,two fixed entries/repeated explicit imports,nonzero-only party gate,
+original-140/5 positions,live opponent count/signed byte source readback,
+branch-specific equipment/override flags,resource copies,acting-ID reset,and
+200-slot nonmonotonic equipment-mask switch supplied.ID2 lock released.
+No native code/tests/assets changed.
+
+Validation:`tools/verify_battle_unit_setup.py` twice,identical:8 hashes
+(1 complete/7 linked),190 instructions,5 spans(startup/fixed and party setups/
+coordinate constants/12-entry mask table).Python compilation,existing behavior/
+switch/snapshot verifiers,own links,and scoped whitespace passed.`make test`:
+85 CTest/90 Python passed.`make all` passed.
+
+Limits:static caller evidence only.Entry/equipment/render/resource services,
+actual setup invocation/end reimport and later source/global mutations,
+query-event reachability,Game/platform/original runtime/full-game requirements
+remain open.Next needed port evidence:those invocation/end/query domains.
+
 ## 2026-10-12 — ID2 snapshot caller host gate resolved
 
 Native tests/battle_packed_move_position_tests.cpp became available after the
