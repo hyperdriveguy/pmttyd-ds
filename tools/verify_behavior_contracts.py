@@ -13,6 +13,24 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'ordinary_weapon_power_callbacks': {
+        0x80189d30: '80640020', 0x80189d34: '4e800020',
+        0x80189cc8: '80ad1c70', 0x80189ccc: '80051cb8',
+        0x80189cd0: '541ffffe', 0x80189cd4: '4bf4c1dd',
+        0x80189cd8: '88030098', 0x80189cdc: '7c030774',
+        0x80189ce0: '3803ffff', 0x80189ce4: '5400083c',
+        0x80189cec: '2c000006', 0x80189cf0: '41800008',
+        0x80189cf4: '38000005', 0x80189cf8: '889d02ff',
+        0x80189d08: '80630020', 0x80189d10: '7c632214',
+        0x80189c50: '80ad1c70', 0x80189c54: '80051cb8',
+        0x80189c58: '541ffffe', 0x80189c5c: '4bf4c255',
+        0x80189c60: '88030099', 0x80189c64: '7c030774',
+        0x80189c68: '3803ffff', 0x80189c6c: '5400083c',
+        0x80189c74: '2c000006', 0x80189c78: '41800008',
+        0x80189c7c: '38000005', 0x80189c80: '889d0300',
+        0x80189c90: '80630020', 0x80189c98: '7c632214',
+        0x800d5eb0: '806d1be0', 0x800d5eb4: '4e800020',
+    },
     'boss_target_event_interfaces': {
         0x8010b444: '4bff36b5', 0x8010b44c: '4801d84d',
         0x8010b45c: '80a40000', 0x8010b474: '4bf25889',
@@ -1951,6 +1969,29 @@ def verify(iso_path):
         if len(normal_attack)!=95 or labels!=[90,91,98] or any(c['opcode']==49 for c in normal_attack):
             raise ValueError('Boss attack command/label/switch census mismatch')
         print('Boss target/defense/damage call bindings,result labels and missing-label99 census verified')
+        for address,size,digest in (
+            (0x80189d30,8,'2ae6c01e72c3431ae378ee0ded3bf0a534d1c6f3efdf12bc70d05689ea869d52'),
+            (0x80189cb0,0x78,'e0c0184e7f6831d23db280bec6accd8913c3d3efa279e5bd4286f5ade45a44a8'),
+            (0x80189c38,0x78,'c8b58763d15d05d850a9052e0b4c002a0f8a3990f2c88e3717adfea84926de1a'),
+            (0x800d5eb0,8,'dbcd2f415efe4aa4e5684ee546cf73d97cc641b5a0290f1b46b14ab606786537'),
+            (0x803538a8,0xc0,'f60b156b26f892f6d8ea90846bc06edb4f6023833b37380dbe1b28e130810e3c'),
+            (0x80353de8,0xc0,'eff0775050243d3d51dcc107c1cb479e20e086baa19a2cfdc07030d5e02b303a'),
+        ):
+            if hashlib.sha256(read(address,size)).hexdigest() != digest:
+                raise ValueError(f'Weapon power body/data fingerprint mismatch {address:#x}')
+        for weapon,callback,powers,script in (
+            (0x803538a8,0x80189cb0,(1,1,2,2,3,3),0x80355cf0),
+            (0x80353de8,0x80189c38,(1,2,2,4,3,6),0x80416c40),
+        ):
+            if struct.unpack('>7I',read(weapon+0x1c,28)) != (callback,*powers):
+                raise ValueError('Ordinary weapon callback/power table mismatch')
+            if read(weapon+0x40,4) != bytes(4) or struct.unpack('>I',read(weapon+0xb0,4))[0] != script:
+                raise ValueError('Ordinary weapon FP callback/event mismatch')
+        if hashlib.sha256(harbor[0x64718:0x647d8]).hexdigest() != '7f79c4dc9f5d5f9421089587f4af73bc907ae01c37217155b9991728d26b78bd':
+            raise ValueError('Boss ordinary weapon data fingerprint mismatch')
+        if struct.unpack_from('>i',harbor,0x64718+0x20)[0] != 1 or harbor[0x64718+0x40:0x64718+0x44] != bytes(4):
+            raise ValueError('Boss default HP power/FP callback mismatch')
+        print('Default/Mario power bodies,ordinary six-word tables,event/FP bindings and boss power1 verified')
 
 
 

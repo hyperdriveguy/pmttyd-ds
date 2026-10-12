@@ -18,6 +18,7 @@ complete gameplay sequences before further general-library edge-case recovery.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Weapon power callbacks](BATTLE_WEAPON_POWER_CALLBACKS.md) | Complete default/Mario Jump/Hammer power bodies,signed level/index/bonus ordering,ordinary six-word tables and boss base1 | Level/bonus/AC producers,weapon lifetime,unit/part construction and executed hit totals |
 | [US completion/priorities](US_COMPLETION_AND_PRIORITIES.md) | Current completion audit,shipped reference census,registered commands and mechanic-first order | Full event feasibility/original execution and all-system closure |
 | [Field battle entry/return](FIELD_BATTLE_ENTRY_AND_RETURN.md) | Area/index registration,NPC setup/random draws,first-call start and field-result polling | Service/lifetime/result producers and original transitions |
 | [Boss normal attack](HARBOR_BOSS_NORMAL_ATTACK.md) | Full 95-command target/approach/precheck/defense/recovery request graph and missing-label99 boundary | Inner target/movement/input/damage services and original timing |

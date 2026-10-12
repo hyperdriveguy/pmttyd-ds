@@ -15,6 +15,8 @@ from iso_assets import DEFAULT_ISO, inventory
 
 
 FUNCTIONS = (
+    'weaponGetPowerDefault', 'weaponGetPowerFromMarioJumpLv',
+    'weaponGetPowerFromMarioHammerLv', 'pouchGetPtr',
     'btlevtcmd_GetFirstAttackTarget', 'btlevtcmd_GetEnemyBelong',
     'btlevtcmd_SamplingEnemy', 'btlevtcmd_ChoiceSamplingEnemy',
     'BattleGetFirstAttackUnit', 'BtlUnit_GetBodyPartsId', 'BtlUnit_GetEnemyBelong',

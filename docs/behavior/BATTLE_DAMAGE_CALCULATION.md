@@ -20,6 +20,9 @@ part, weapon, writable result-code pointer, and flags passed by value. They
 return signed damage. HP calculation initializes `*outCode`; FP calculation
 reads and may modify it. Neither calculator itself subtracts defender HP/FP.
 Callbacks can have effects of their own and must be recovered separately.
+The [default and ordinary Mario callbacks](BATTLE_WEAPON_POWER_CALLBACKS.md)
+now establish their complete local power behavior and concrete ordinary/boss
+tables;initialization,state producers and per-hit callers remain separate.
 
 The global battle pointer is loaded from r13+`0x1c70`. Offsets below are relative
 to the stated object; all table indices and masks come from the instructions.

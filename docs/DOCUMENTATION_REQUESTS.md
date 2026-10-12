@@ -11,7 +11,7 @@ distinct. Do not change native harness choices into original-game evidence.
 Locks reserve only the named subtask, not an entire parent request. Keep other
 subtasks available for independent work. Every new lock must record the owner's
 user-assigned numeric agent ID; `/root` alone is not unique across sessions.
-This documentation agent is **ID 1**. Release only your own lock when the linked
+Current documentation owners are **ID 1** and **ID 2**. Release only your own lock when the linked
 contract is validated; a partial answer leaves its parent open. Existing owners
 without an assigned ID must identify themselves before their locks are reassigned.
 
@@ -19,8 +19,8 @@ without an assigned ID must identify themselves before their locks are reassigne
 | --- | --- | --- | --- | --- |
 | Battle jump callbacks and concrete Crump float operands | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover JumpSetting/JumpPosition/JumpContinue and used evtGetFloat literal route; excludes full pad/main-loop cadence and executed impact ticks |
 | Crump normal attack request graph and target wrapper ABI | AC-01, AC-03, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Attack graph](behavior/HARBOR_BOSS_NORMAL_ATTACK.md) and [target ABI](behavior/BATTLE_TARGET_EVENT_INTERFACES.md); excludes target cores and executed timing; parent requests remain open |
-| Default weapon power callback and concrete boss operands | DMG-01 | LOCKED, 2026-10-12 | Documentation /root | Recover 0x80189d30, signed widths and selected data bindings; excludes ordinary Mario callback bodies |
-| Ordinary Mario Jump/Hammer power callback bodies and default tables | DMG-01 | LOCKED, 2026-10-12 | Documentation /root (power follow-up) | Recover signed level/index/read order and concrete ordinary weapon tables; excludes hit-count lifetime and executed tutorial values |
+| Default weapon power callback and concrete boss operands | DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Power contract](behavior/BATTLE_WEAPON_POWER_CALLBACKS.md):full default body,boss base1 and nil FP pointer;final modified damage remains open |
+| Ordinary Mario Jump/Hammer power callback bodies and default tables | DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Power contract](behavior/BATTLE_WEAPON_POWER_CALLBACKS.md):signed level,index/read order,two ordinary tables;hit-count/level/bonus/AC producers remain open |
 
 ## Implementation priorities
 
@@ -29,7 +29,7 @@ does not answer its full runtime binding request.
 
 | Priority | Request / implementation blocker | State / owner / reserved slice |
 | --- | --- | --- |
-| 1 | DMG-01: real weapon power, part defenses and dispatch/application | Default power/boss operands reserved in lock table above; ordinary Mario callbacks and part/application binding remain open |
+| 1 | DMG-01: real weapon power, part defenses and dispatch/application | Default/Mario power bodies and ordinary/boss operands delivered by ID2;part construction,level/bonus/AC producers and application binding remain open |
 | 2 | AC-03: enemy hit branch and actual defense sampling boundary | Attack graph/target ABI delivered and lock released; pad cadence,global eligibility and execution remain open |
 | 3 | AC-01: tutorial/ordinary Jump state ownership and impact cadence | Shared enemy-attack graph delivered; next recover pad/update and movement callback composition |
 | 4 | AC-02: Hammer lifecycle, result consumers and original audio binding | Open; ordinary weapon period/base difficulty already answered |
@@ -159,12 +159,30 @@ counter and cannot accidentally duplicate or reset its consumption.
 
 ## DMG-01 — Weapon power, unit stats and damage dispatch binding (open)
 
+Partial answer from documentation agent ID2:
+[weapon power callbacks](behavior/BATTLE_WEAPON_POWER_CALLBACKS.md) recovers
+the complete default and Mario Jump/Hammer bodies,shared pouch pointer and
+ordinary weapon callback/table/event bindings. Boss weapon+20 is signed word1,
+with nil FP callback. Mario captures battle1cb8 mask0x2,reads signed pouch level98/
+99,upper-clamps index2*(level-1)+bit to5 and adds unsigned unit bonus2ff/300.
+There is no lower index clamp. Ordinary Jump pairs1/1,2/2,3/3 do not establish
+total multihit damage;Hammer pairs1/2,2/4,3/6 are local powers before modifiers.
+Preserve actual weapon data and ordered reads;do not assume tutorial level1,
+bonus0 or AC state without their initialization/caller evidence. PWR-01..04
+provide implementable local requirements and derived acceptance cases. Unit/part
+defense creation,state producers,weapon lifetime and original traces remain open.
+
 The [HP/FP calculators and revival marker](behavior/BATTLE_DAMAGE_CALCULATION.md)
 are implemented in `source/battle_damage.cpp`,tested by
 `tests/battle_damage_tests.cpp`. Native attacks now call the HP calculator and
 retain the original-form result code. Their callback/stat fixture still supplies
 development powers1/2,zero defense/no statuses and provisional actor resources.
 The local calculator is separate from resource application/death/revival events.
+Resource application is now implemented in `source/battle_damage_application.cpp`
+and used by native attacks. Its service interface preserves ordered effect/sound/
+audience/hit-event requests;the harness records the latest hit's requests without
+executing original presentation or hit scripts. This trace is not an active VM
+queue. Native resource caps/parts/positions/kind sounds remain fixture bindings.
 
 Please recover the original weaponGetPowerDefault0x80189d30 body and its concrete
 weapon+0x20/etc inputs,ordinary Mario Jump/Hammer callbacks and their arguments,
@@ -209,6 +227,28 @@ move/periodic/controller documents provide contracts but not the whole original
 runtime graph. Include original multi-turn traces (Slow/Fast,negative durations,
 Charge consumption,wakeup on lethal/live damage) and actor save/reload lifetime.
 Do not use portable test fixtures or prototype turn timing as original evidence.
+
+## DMG-02 — Direct application service internals and native bindings (open)
+
+The local [direct application](behavior/BATTLE_DAMAGE_APPLICATION.md) is now
+implemented and tested,including shared partner FP,Pity Flower/Sleep RNG order,
+sound/effect request precedence,narrowing/suppression/accounting,lethal-code
+marking and final hit-event request. The native adapter records latest-hit
+requests and uses the resource mutations;original effect/audio/VM execution is
+pending. No replacement effects/samples or revival scenes were invented.
+
+Please recover complete BodyPartsId/GetPartsPtr,GetHitPos/GetPos/GetHeight/
+GetBelong and field114/pointer144+10 schemas/lifetimes;concrete boss/Mario/partner
+part attributes,kind9c/a0/a4/a8 sound pointers and original effect/macro resources.
+Pin action-record AddCount/AddPoint saturation/storage and audience helper state/
+RNG effects,hit-event dispatch inputs and all reachable death/revival/recovery
+scripts,shared FP owner lookup/update reconstruction and pouch/item151 consumption.
+Confirm exact numerical/rounding and position-query/service request order with
+original traces,including suppression,zero/absorption,simultaneous HP/FP,Pity at
+full FP,wakeup on lethal/Instant Kill and pattern25 gates. The current interface
+treats belong as resolved semantic unit state;its original getter needs closure.
+Use native data/requests as test fixtures only;do not treat them as original
+scene/stat/position/audio/turn behavior. Link concrete data/service answers here.
 
 ## Implementation coverage and next work
 

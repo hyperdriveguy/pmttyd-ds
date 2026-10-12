@@ -1,5 +1,41 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2: requested default/Mario weapon power contracts
+
+Answered the two ID2 power subtasks of DMG-01 in
+docs/behavior/BATTLE_WEAPON_POWER_CALLBACKS.md. The complete default body
+returns weapon signed word20 unchanged;the original boss weapon binds it and
+supplies base1 with no FP callback. Complete Mario Jump/Hammer callbacks capture
+battle1cb8 mask2 before pouch access,read signed level98/99,form upper-only
+clamped six-word index and add unsigned unit bonus2ff/300. Concrete ordinary
+tables are Jump1,1,2,2,3,3 and Hammer1,2,2,4,3,6;these are powers before damage
+modifiers,not attack totals or an executed tutorial loadout. Invalid low levels
+retain negative indices;do not silently insert a lower clamp. Added scoped
+implementation requirements PWR-01..04 and derived acceptance cases.
+
+DOCUMENTATION_REQUESTS.md now identifies my locks/deliveries as agent ID2,
+releases only my validated power locks,and links the answer with exact remaining
+dependencies. Agent ID1's movement lock and delivered attack graph were
+preserved. No native implementation files were changed by ID2. Existing native
+damage-application integration and independent documentation work remain separate.
+
+Validation:python3 tools/verify_behavior_contracts.py passed32 new instruction
+anchors and all previous checks,including four whole-body hashes,two whole
+ordinary weapon hashes,six-word tables,event/FP pointers,boss weapon hash/base1
+and its callback relocation. Two fresh355-function behavior_evidence reports
+matched byte-for-byte using read-only ISO.610 behavior local links resolved.
+make test passed seven CTest suites and58 Python tests;make all exited0 with
+no rebuild;git diff --check passed. /tmp holds inspection ELFs/reports/logs;
+none are staged. No original execution,emulator/profile/save changes,ISO write,
+asset conversion or story/dialogue rewrite occurred in this documentation step.
+
+Next DMG-01 tasks:unit/part defense construction and original defense/attribute
+tables;unit bonus and pouch level initialization/upgrades/reload;per-hit AC-bit
+and count ownership;weapon mutation lifetime;precheck/damage/application/death/
+reward/field-return composition and original traces. AC/STATUS parent requests
+remain open. The full documentation and complete-game requirements objective
+remains active/incomplete;this scoped callback answer does not close all systems.
+
 ## 2026-10-12 — Native status storage/recovery and move helpers
 
 Implemented docs/behavior/BATTLE_STATUS_STORAGE.md and the required local
