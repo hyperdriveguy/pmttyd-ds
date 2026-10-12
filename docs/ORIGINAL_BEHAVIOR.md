@@ -968,3 +968,11 @@ close seven complete local bodies requested by native EVT-01. Captured battle/ra
 output order,setup modes/paired outputs/last-slot miss,getter kind/null policies,
 body-before-id/setters and initial part source witness are explicit. Deeper DVD
 work deferred per user priority;source/Game/original runtime remain open.
+
+ID2 native movement-wrapper delivery (2026-10-12):
+[complete setter order](behavior/battle/BATTLE_MOVEMENT_SETTER_EVENT_ORDER.md)
+and [original source tokens](behavior/battle/BATTLE_MOVEMENT_WRAPPER_SOURCE_TOKENS.md)
+close SetMoveSpeed/SetFallAccel and leaves requested by native EVT-01. Retained
+arguments,GetValue→translation→GetFloat→fresh battle/lookup,leaf-only stores,
+unchecked-1/null and completion2 pinned. Eight source requests prove exact bits;
+Majinai f24a7c80 sign corrected to+0.5. Source/Game/runtime remain open.

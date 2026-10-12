@@ -22,6 +22,11 @@ Next:native owner supplies fixture/reruns gate and binds recovered wrappers.
 Prioritize next explicit native-port documentation request;source/Game/unit/float
 providers/full Jump and complete-game requirements remain open. SDK work deferred.
 
+Host completion:fixture arrived;make test rerun passes74 CTest/78 Python tests
+(/tmp/id2-movewrap-test-rerun.log). Missing fixture and earlier first-attack
+core/field_movement failures are RESOLVED in current tree. Shared ID2 reply and
+handoff now prepared for scoped commit;source/Game/runtime remain open.
+
 ## 2026-10-12 — Native retained target and command-weapon selection
 
 Registered GetSelectEnemy8010b540 and CommandGetWeaponAddress801057e8 using
