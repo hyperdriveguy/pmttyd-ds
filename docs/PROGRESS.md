@@ -7020,3 +7020,34 @@ runtime. Next EVT-01:remaining predicates/switches,multiword/float data readers,
 other reachable opcodes,numeric/source/domain and original script/pause/input/
 multicredit traces. Full documentation and eventual complete-game requirements
 objective remains active/incomplete.
+
+
+## 2026-10-12 — ID1 ordinary partner walk/history and mode1 callbacks
+
+Added [walk callback](behavior/FIELD_PARTNER_WALK_CALLBACK.md),
+[history writer/readers](behavior/FIELD_PARTNER_HISTORY_WRITER.md) and
+[mode1 substates](behavior/FIELD_PARTNER_MODE1_SUBSTATES.md). Complete local
+callbacks specify marker-based bank initialization,80-record layouts,source
+selection,rounded target/speed formulas and mode1 splash/hazard requests.
+History append preserves unwrapped read==write+1 before increment/wrap and
+flag/coordinate comparison order. Slot-based writer bank selection differs
+from flag-based initialization;valid-state invariants remain open. The local
+unreachable cached-substate3 test is recorded without inventing an executed
+cleanup path. Final walkMain movement/terrain and called abilities remain open.
+
+Validation:verify_field_party_follow.py passed seven whole DOL hashes,66
+instructions,ten constants,two kind-record hashes and two actual lecture imports.
+Repeated metadata byte-identical;Python compilation and previous driver verifier
+passed. General verifier passed1980 instruction anchors;all962 behavior links
+resolved. Gekko check passed517 listings/71477 instructions/410 paired-single
+operations,zero changes or unknowns. make test passed29 CTest and58 Python
+tests;make all succeeded with no rebuild required. Original ISO read-only;no
+original execution/emulator observation,asset conversion,profile/save mutation
+or original binary/dialogue distribution. Only ID1's movement callback lock
+released;concurrent native and ID2 edits preserved outside the scoped commit.
+
+Next:final walkMain and read-index/path/terrain/pose services;source getters,
+status/distance/flag/slot invariants;mode1 substates/cloud/fall/shadow/splash
+engines and original partner trajectory/stop/run/hazard traces;complete field/
+battle teardown. Full game documentation/remake remain incomplete;complete-game
+requirements remain deferred until adequate coverage.

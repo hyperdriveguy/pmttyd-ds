@@ -56,7 +56,9 @@ No such G check applies to modes4..8,10 or14.
 
 Indirect callbacks at+8,+0x0c,+0x14 are **not null-guarded** here. Kind1
 and8 records bind+8 to partyMoveWalk,+0x0c to kuribo_use and+0x14 to
-kuribo_bye. These pinned bindings do not establish those complete body semantics.
+kuribo_bye. The [ordinary walk callback](FIELD_PARTNER_WALK_CALLBACK.md) and
+[mode1 substate dispatcher](FIELD_PARTNER_MODE1_SUBSTATES.md) now specify their
+local graphs;called final movement/ability bodies remain dependencies.
 In particular,field stop changes mode to0 but **mode0 still calls record+8**;
 do not implement it as an unconditional skip of all party work.
 

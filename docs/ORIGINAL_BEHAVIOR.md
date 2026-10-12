@@ -425,3 +425,11 @@ local mode branches,pending setup,mode14 destruction and effect/screen/presentat
 tail. [Global countdown/action](behavior/FIELD_PARTY_GLOBAL_COUNTDOWN_AND_ACTION.md)
 connects signed byte expiry to primary mode0/1/2→3 requests. Called ability/mode/
 collision/animation engines,writers,teardown and original execution remain open.
+
+
+[Ordinary partner walk](behavior/FIELD_PARTNER_WALK_CALLBACK.md),
+[follower history](behavior/FIELD_PARTNER_HISTORY_WRITER.md) and
+[mode1 substates](behavior/FIELD_PARTNER_MODE1_SUBSTATES.md) now specify local
+initialization/speed arithmetic,two-bank history append/read policy and hazard/
+effect requests. The ring's pre-wrap equality test is preserved. Final executor,
+terrain/ability/source/index/writer services and original trajectories remain open.

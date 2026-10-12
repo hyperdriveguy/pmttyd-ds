@@ -872,3 +872,12 @@ vectors are hashed,not copied as asset payloads. Original ELF/listings and
 field-party-drive-evidence.json remain ignored under artifacts/reference/behavior.
 No asset conversion,original execution,ISO/profile/save mutation,original
 binary/dialogue distribution or rewritten story occurred.
+
+Ordinary partner movement research by ID1 (2026-10-12):verify_field_party_follow.py
+and field_party_follow_evidence.json pin seven whole US DOL bodies,66 selected
+instructions,ten numeric constants,two kind-record data hashes and two lecture
+imports. Authored documents specify callbacks/history/read helpers and hit
+attribute query,not final terrain/movement engines. Reports and corrected Gekko
+ELF/listings remain ignored under artifacts/reference/behavior. No asset
+conversion,original execution,ISO/profile/save mutation,original binary/dialogue
+distribution or rewritten story.
