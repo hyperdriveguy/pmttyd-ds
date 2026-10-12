@@ -4886,3 +4886,40 @@ paths;original tutorial input/state/animation/audio traces and chapter coverage.
 Continue all reachable US mechanics/optional content before complete-game
 requirements. Full objective active/incomplete;installed tutorial graph is not
 an executed faithful completed encounter or full game.
+
+## 2026-10-12 — Tutorial feedback writers/reset and stage-fall gate
+
+Added BATTLE_ACTION_FEEDBACK_AND_STAGE_GATE.md and linked prior tutorial
+contracts. Recovered complete event/inner declaration,stage-fall registration
+check and BattleInit. Declaration resolves weapon/result,exact-1 increments
+failure16f59;every other value increments success16f58. Counts stop incrementing
+at200;last-classification19074 updated independently. No actor filter/current-move
+reader or local first-call gate. Four actual Jump/Hammer declaration sites pinned;
+failure branches pass-1. Inner success stores weapon,quarter*grade+half fused
+multiplier and original weapon bytes before audience-good request;bad path
+requests audience-bad. Audience effects/other count resets remain open.
+
+BattleInit allocates/publishes/clears19098-byte work,covering feedback counters,
+then performs ordered initializer/sequence/field stores including clearing battle
+flags before unit/party/stage/audience/break-slot init. One proven battle1000
+consumer returns0 without registering stage-fall event or clearing old handle;
+clear-bit route registers script803771bc,priority10 and stores returned event
+word15c at work182c8. Same-mask GP/audience flags are not this battle flag.
+This does not establish command-menu or guard restrictions. Direct displacement
+scan was a discovery aid,not complete bulk/indexed/REL writer/consumer coverage.
+
+Validation:1772 instruction anchors and prior checks passed read-only ISO,
+including original quarter/half/signed bias and four declaration records.
+Fresh339-function reports repeated byte-for-byte;584 behavior links resolved;
+Gekko listing check clean;git diff --check passed. make test passed core,TimingA,
+Hammer,defense,damage plus58 Python tests;make all exited0,no rebuild. Separate
+native work preserved;working tree at validation contained only research edits.
+No original gameplay execution/emulator,ISO/profile/save writes,native
+implementation,asset conversion or story/dialogue rewrite. Artifacts ignored.
+
+Next:unit allocation/stat-copy/part/SpawnUnit and actual boss attack/HP/defeat/
+reward consumers;audience good/bad services,counter lifetimes and remaining
+battle1000 gates,then original tutorial input/state/RNG/audio/animation traces.
+Continue all reachable US systems and optional content before final complete-
+game requirements. Full objective active/incomplete;local writer/gate closure
+does not prove a faithful complete encounter or full game.

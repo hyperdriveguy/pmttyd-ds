@@ -15,6 +15,8 @@ from iso_assets import DEFAULT_ISO, inventory
 
 
 FUNCTIONS = (
+    'btlevtcmd_AudienceDeclareACResult', 'BattleActionCommandDeclareACResult',
+    'BattleStage_ObjectFallCheck', 'BattleInit',
     'btlevtcmd_GetUnitWork', 'btlevtcmd_SetUnitWork', 'btlevtcmd_CheckPhase',
     'btlevtcmd_get_turn', 'btlevtcmd_onoff_battleflag',
     'evt_npc_set_battle_info', 'evt_npc_battle_start', 'evt_npc_wait_battle_end',

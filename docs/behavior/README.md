@@ -20,6 +20,7 @@ complete gameplay sequences before further general-library edge-case recovery.
 | --- | --- | --- |
 | [US completion/priorities](US_COMPLETION_AND_PRIORITIES.md) | Current completion audit,shipped reference census,registered commands and mechanic-first order | Full event feasibility/original execution and all-system closure |
 | [Field battle entry/return](FIELD_BATTLE_ENTRY_AND_RETURN.md) | Area/index registration,NPC setup/random draws,first-call start and field-result polling | Service/lifetime/result producers and original transitions |
+| [Action feedback/stage gate](BATTLE_ACTION_FEEDBACK_AND_STAGE_GATE.md) | Declaration counters/cap,success record,initial reset/order and tutorial flag stage-registration suppression | Other writers/audience/init/flag services and original traces |
 | [Harbor boss tutorial events](HARBOR_BOSS_TUTORIAL_EVENTS.md) | Installed init/phase/feedback hooks,priority/latches,death-message order and enemy defense binding | Full stats,feedback writers,flag consumers,attack/reward/defeat and original traces |
 | [Tutorial state services](BATTLE_TUTORIAL_STATE_SERVICES.md) | Unit-work slots,exact phase/turn checks,raw-mask flags and two relocated feedback-byte readers | Producers/lifetimes,counter semantics and original comparisons |
 | [Harbor tutorial configuration](HARBOR_TUTORIAL_CONFIGURATION.md) | Prolog/index2 binding,single group/unit,kind/init pointers and17 known setup draws | Tutorial scripts,stat/runtime overrides,rewards and original traces |

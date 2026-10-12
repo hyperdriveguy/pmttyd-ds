@@ -13,6 +13,32 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'action_feedback_and_stage_gate': {
+        0x801074bc: '4bf29da5', 0x801074cc: '4bf29d95',
+        0x801074d8: '2c05ffff', 0x801074e0: '88646f58',
+        0x801074e4: '280300c8', 0x801074f0: '98046f58',
+        0x801074fc: '98039074', 0x80107504: '88646f59',
+        0x80107508: '280300c8', 0x80107514: '98046f59',
+        0x80107520: '98039074', 0x8010752c: '4bff2fc5',
+        0x800fa4f8: '2c05ffff', 0x800fa510: '480a5161',
+        0x800fa518: '6ca38000', 0x800fa540: 'ec211028',
+        0x800fa544: '90868ffc', 0x800fa548: 'ec03007a',
+        0x800fa54c: 'd0069000', 0x800fa550: '88040019',
+        0x800fa558: '8804001a', 0x800fa560: '480a51a9',
+        0x80147658: '80030ef4', 0x80147660: '540004e7',
+        0x80147668: '38600000', 0x80147678: '386371bc',
+        0x80147680: '4beefe2d', 0x80147688: '901f82c8',
+        0x800f8f1c: '38649098', 0x800f8f20: '4bfffa15',
+        0x800f8f28: '906d1c70', 0x800f8f38: '4bf0c17d',
+        0x800f8f44: '90039070', 0x800f8f4c: '93df2738',
+        0x800f8f50: '4802153d', 0x800f8f54: '4811d9b5',
+        0x800f8f58: '480b12d1', 0x800f8f60: '480016cd',
+        0x800f8f64: '4bffeb8d', 0x800f8f68: '4809cb2d',
+        0x800f8f6c: '4800a18d', 0x800f8f7c: '4bfffa8d',
+        0x800f8f8c: '4bfffa7d', 0x800f8fa4: '38639060',
+        0x800f9000: 'b01f0000', 0x800f900c: '901f0ef4',
+        0x800f9020: '480af3d9', 0x800f9024: '4810c059',
+    },
     'harbor_tutorial_phase_services': {
         0x8010f7c0: '4bf21aa1', 0x8010f7d0: '48015c1d',
         0x8010f7e0: '4bf21a81', 0x8010f7f0: '4bf21a71',
@@ -1844,6 +1870,13 @@ def verify(iso_path):
         if harbor[0x64718+0x13] != 1 or imports.get(0x64718+0x1c) != 0x80189d30:
             raise ValueError('Tutorial enemy weapon defense/power binding mismatch')
         print('Seven boss event spans,two relocated REL helpers,data hook,weapon gate and six exact US tutorial IDs verified')
+        if read(0x804221a0,8) != struct.pack('>2f',0.5,0.25) or read(0x802ee048,8).hex() != '4330000080000000':
+            raise ValueError('AC declaration multiplier/bias mismatch')
+        for address,result in ((0x8035662c,0xffffffff),(0x80356860,0xfe363c86),
+                               (0x8035e29c,0xffffffff),(0x8035e340,0xfe363c86)):
+            if struct.unpack('>4I',read(address,16)) != (0x3005b,0x8010749c,0xfe363c8c,result):
+                raise ValueError('Ordinary attack declaration binding mismatch')
+        print('AC declaration scale/bias and four ordinary attack declaration sites verified')
 
 
 

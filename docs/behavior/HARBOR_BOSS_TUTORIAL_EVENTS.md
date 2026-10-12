@@ -73,8 +73,8 @@ bytes are nonzero and latches unset. Every feedback print is mode2,argument0 and
 speaker local3 (the unit ID stored at work0).
 
 Do not trigger feedback solely from a port's last attack result. Original REL
-helpers read bytes+0x16f58/+0x16f59 of shared battle state;their writers and reset
-cadence remain unresolved. The latch prevents repetition after that path's
+helpers read bytes+0x16f58/+0x16f59 of shared battle state;the [declaration writer/reset contract](BATTLE_ACTION_FEEDBACK_AND_STAGE_GATE.md)
+now links them to capped declaration counts;complete reset cadence remains open. The latch prevents repetition after that path's
 message but does not identify how battle-wide bytes are accumulated.
 
 ## Small attack, damage and wait hook streams

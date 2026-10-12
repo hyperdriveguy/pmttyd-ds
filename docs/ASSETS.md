@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 335 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1724 instruction anchors plus those
+now fingerprints 339 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1772 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -735,3 +735,9 @@ inspection ELFs/listings are ignored and use file offsets explicitly;raw branch
 targets are unrelocated,annotated with original relocation destinations. No
 original executable linking/distribution,ISO write,asset conversion or story
 rewrite;existing original/reference provenance and rights remain unchanged.
+
+Feedback writer/stage-gate research adds four identities/48 anchors,original
+quarter/half/signed bias and four ordinary attack declaration records. Connects
+REL tutorial readers to DOL declaration counts and one proven battle flag
+consumer. No original execution,ISO/profile write,asset conversion,executable
+linking/distribution or story rewrite;all original artifacts remain ignored.

@@ -54,8 +54,9 @@ Their ADDR16_HA/LO relocations load shared pointer0x8041eb90;their REL24 call
 relocations target evtSetValue0x80030cfc. Inspection-only ELFs use file offsets
 as display addresses;raw unrelocated branch targets are annotated accordingly
 and are not runtime VAs. Two full helper hashes and relocation identities pin
-this interpretation. Counter writers/reset/overflow and whether values aggregate
-multiple moves remain open. The script only tests each byte for nonzero.
+this interpretation. The [declaration writer and initialization reset](BATTLE_ACTION_FEEDBACK_AND_STAGE_GATE.md)
+now establish capped declaration counts. Other reset/copy writers and complete
+lifetime remain open. The script only tests each byte for nonzero.
 
 Five new function fingerprints/24 anchors and original REL hashes/bindings
 validate these local services. No executable/data linking or dialogue rewriting
