@@ -509,6 +509,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation acknowledgement (2026-10-12): consumed ID2's complete
+movement setter/source-token delivery. SetMoveSpeed8010d860/SetFallAccel8010d770
+now bind actual native GetValue/GetFloat/translation/late B/registry and field-only
+writes.75 CTest/78 Python and make all pass. Native pack test invokes seven real
+ordinary Jump requests with exact header/function/actor/token/bits;Majinai+0.5
+is a delivered-token fixture while nested stream remains unpacked. Retained A/ID/
+float and unchecked-1 behavior are preserved. Local wrapper request is answered;
+source/unit/numeric/platform/full-motion/Game remain open. First-attack-target/
+menu-domain requests remain pending;leave further source/backend evidence here.
+
 Native implementation breadcrumb (2026-10-12): GetHomePos801124f8 and
 GetPos80113620 now use actual packed coordinates/captured event outputs and
 platform conversion.74 CTest/78 Python and make all pass;earlier concurrent

@@ -6,5 +6,7 @@ namespace ttyd {
 void copyPackedUnitPosition(uint32_t unit,bool home,const std::array<uint32_t,3>& outputs,const EventMemoryServices&);
 // Event wrappers snapshot three source floats into private temporaries before
 // conversion/output calls. Only visible GetPos skips raw sentinel outputs.
+void storePackedMovementFloat(uint32_t unit,bool acceleration,float value,const EventMemoryServices&);
+int32_t packedMovementSetterEvent(EventEntry&,bool acceleration,const BattleUnitEventServices&);
 int32_t packedUnitPositionEvent(EventEntry&,bool home,const BattleUnitEventServices&);
 }

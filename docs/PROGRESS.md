@@ -1,5 +1,31 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Delivered movement setters bound to native unit fields
+
+Consumed ID2's complete movement-wrapper/source-token delivery and registered
+SetMoveSpeed8010d860 and SetFallAccel8010d770. Both retain original argument
+pointer,resolve/translate actor before loading/resolving float,then freshly read
+battle and lookup retained ID. Float survives lookup changes;leaf writes only
+unit170 or174 and returns2 without firstCall/range/sign/zero/sentinel/null/-1
+gates. Native GetFloat uses actual event routing,not raw IEEE token reinterpretation.
+Majinai f24a7c80 is correctly+0.5 as the delivered correction establishes.
+
+Validation:make test passes75 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-movement-setter-test-final.log and
+/tmp/pm-movement-setter-build-final.log. `build-host/battle_movement_setter_tests
+romfs/events.pmevt` verifies all seven original ordinary-Jump16-byte requests
+(header/function/actor/token) through native registry/operands and exact stored
+bits. The eighth Majinai token runs as a contract-derived native fixture;its
+nested stream is not in current pack. Tests preserve retained A/ID/float versus
+provider mutations,late B,translated-1 unchecked store,opposite field bytes,zero
+and ignored firstCall. Records/providers remain authored inputs;no original
+runtime/emulator/hardware or full motion/Game fidelity claim.
+
+Next:packed motion/unit ownership,remaining target/AC/cost/pose/effect/audio/
+message bindings and original outer turn/Game integration. First-attack-target
+and menu-domain requests remain open. Movement-wrapper body request is answered;
+its source/platform/numeric/full-graph boundaries remain. Goal incomplete.
+
 ## 2026-10-12 — Native home/visible position query bindings
 
 Registered GetHomePos801124f8 and GetPos80113620 using packed unit/event memory.
