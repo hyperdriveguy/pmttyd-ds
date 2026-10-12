@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'scan_float_entry_special_values': {
+        0x8026d7b8: '90120000', 0x8026d7c4: '4e800421',
+        0x8026d8b8: '3bbd0001', 0x8026d918: '39c00001',
+        0x8026d940: '9001005c', 0x8026d964: '39e04000',
+        0x8026d98c: '39e02000', 0x8026d9f4: '2c130008',
+        0x8026da2c: '2c130003', 0x8026da38: '40820040',
+        0x8026da70: '90030000', 0x8026da74: '48000c54',
+        0x8026db00: '2c140003', 0x8026db10: '2c140004',
+        0x8026db48: '2c130020', 0x8026db68: '2c040029',
+        0x8026db78: '3a730001', 0x8026db88: 'c003e3c8',
+        0x8026dbb4: '90030000', 0x8026dbb8: '48000b10',
+        0x8026e418: '7c1e0000', 0x8026e428: '55e004e9',
+        0x8026e430: '71ef0e2c', 0x8026e468: '4e800421',
+    },
     'multibyte_conversion': {
         0x80269a7c: '7c9d2379', 0x80269a88: '28050000',
         0x80269aa0: '480000dd', 0x80269aa4: '2c030000',
@@ -1263,6 +1277,14 @@ def verify(iso_path):
         if hashlib.sha256(read(0x803bb940, 68)).hexdigest() != 'e32e4c11896c665caff75135f8cf7f254507b20eff6bc7dbf048a455736a77e8':
             raise ValueError('Unsigned64 scan state table mismatch')
         print('All seventeen unsigned64 scan state targets verified')
+        if read(0x80303c00, 42) != bytes(42):
+            raise ValueError('Float scan decimal initializer mismatch')
+        if read(0x80303c2c, 9) != b'INFINITY\0' or read(0x80428c08, 5) != b'NAN(\0':
+            raise ValueError('Float scan special token bindings mismatch')
+        if read(0x8041e3c8, 8).hex() != '7fffffff7f800000':
+            raise ValueError('Float scan NaN/infinity source words mismatch')
+        print('Float scan initializer, two token bindings and two special source words verified')
+
 
 
 

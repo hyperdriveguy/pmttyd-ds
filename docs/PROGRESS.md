@@ -3879,3 +3879,33 @@ story/event/field/battle/audio/save/content systems before complete-game
 requirements. Full goal active/incomplete; static library contracts alone do not
 prove complete scanner/layout or full-game fidelity. Original message IDs/tokens
 and story attribution/order/branches/conditions remain mandatory reused data.
+
+## 2026-10-12 — US floating scan entry and special values
+
+Inspected __strtold0x8026d6d0,size100c. Added detailed
+SCAN_FLOAT_ENTRY_SPECIAL_VALUES.md for entry, outer gate, leading state and
+INF/INFINITY/NAN paths: initial read before width validation, whitespace/sign
+state, repeated-sign boolean/count effect, token loops without inner width gate,
+payload character/bound/closing rules and successful early returns without
+pushback. Recorded special source floats and limits on inferred NaN payload/
+FPSCR. Explicitly left all finite decimal/hex states and conversion exits open;
+whole-function fingerprint denotes identity, not complete behavior recovery.
+Linked scan consumer and evidence index/provenance.
+
+Validation:1156 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO, including42-byte zero initializer, two token strings and
+two special source words. Fresh284-function reports reproduced byte-for-byte.
+All450 local behavior links resolved; git diff --check passed. make test passed
+core plus36 Python tests; make all exited0 with no rebuild. No original execution/
+emulator, profile/save modification, native implementation, asset conversion or
+story rewrite. Inspection ELF/disassembly/report outputs remain ignored; working
+tree was clean before this authored research increment.
+
+Next: remaining finite __strtold states, decimal record/digit/exponent accumulation,
+hexadecimal mantissa/exponent bit construction, __dec2num and sign/range exits;
+executed callbacks/count/status/FPSCR and original icon float argument corpus.
+Continue drawing/string layout, runtime resource/cadence and uncovered story/
+event/field/battle/audio/save/content before complete-game requirements. Full
+objective active/incomplete; no complete floating scanner or full-game fidelity
+claim. Original message IDs/control tokens and story attribution/order/branches/
+event conditions remain mandatory reused data.

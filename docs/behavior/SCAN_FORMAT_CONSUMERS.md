@@ -95,7 +95,9 @@ Count0 exits; otherwise C+=count. Selector0 performs frsp then stfs; selectors5
 and6 store the returned f1 double. Other selectors do no local store. Nonnull
 destination still increments A, and B increments in every successful route.
 Thus default f output is a float destination write, not a promoted double.
-Numeric parsing/rounding/NaN/overflow/FPSCR behavior remains unverified here.
+See [float entry/special values](SCAN_FLOAT_ENTRY_SPECIAL_VALUES.md) for
+recovered special-token callback/count behavior. Finite parsing/rounding,
+range exits and executed FPSCR behavior remain open.
 
 ## Character conversion c (B)
 
