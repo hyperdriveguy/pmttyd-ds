@@ -92,7 +92,9 @@ setting up the next pass. For defaults, pass1 alpha shader combines record
 alpha255 with vertex palette alpha; pass2 outputs zero alpha; pass3 global
 black RGB darkens through the retained destination-alpha mask. The complete
 result also depends on the entering framebuffer alpha/depth and original GX
-pixel format/precision. No alpha-clear or framebuffer allocation occurs in
+pixel format/precision. [The ordinary framebuffer owner](OVERWORLD_FIELD_FRAMEBUFFER_ALPHA.md)
+now closes the bounded normal alpha0/RGBA6/depth and opaque-before-shadow
+input state; custom scenes and exact raster precision remain separate. No alpha-clear or framebuffer allocation occurs in
 these two bodies. Do not assume entering alpha0 or255 without its owner.
 
 ## Literal opacity and list-admission math
