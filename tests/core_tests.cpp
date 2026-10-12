@@ -23,6 +23,15 @@ void attack(Game& g,bool success) {
     CHECK(g.phase==Phase::Impact);
 }
 void movement() {
+    auto displacement=[](float x,float z,int frames) {
+        Game g;g.progress.position={-4,2};g.partner=g.progress.position;
+        Input i;i.x=x;i.z=z;for(int n=0;n<frames;++n)g.tick(i);
+        return Vec2{g.progress.position.x+4,g.progress.position.z-2};
+    };
+    CHECK(std::fabs(displacement(DashThreshold,0,1).x-WalkSpeed)<.00001f);
+    CHECK(std::fabs(displacement(DashThreshold+.001f,0,1).x-DashSpeed)<.00001f);
+    CHECK(std::fabs(displacement(1,0,60).x-1.35f)<.0001f);
+    const auto diagonal=displacement(1,1,1);CHECK(std::fabs(std::hypot(diagonal.x,diagonal.z)-DashSpeed)<.00001f);
     Game g;Input right;right.x=1;
     advance(g,1);for(int n=0;n<1000;++n)g.tick(right);
     CHECK(walkable(g.progress.position));CHECK(g.progress.position.x<=9.f-BodyRadius);
@@ -162,7 +171,7 @@ void groundImport() {
     CHECK(groundAt({0,2},.3f,h));CHECK(std::fabs(h-.5f)<.001f);
     CHECK(groundAt({-3,2},3,h));CHECK(h==3);
     Game g;g.progress.position={-3,2};g.restore(g.progress);CHECK(std::fabs(g.groundHeight-.125f)<.001f);
-    Input right;right.x=1;for(int n=0;n<12;++n)g.tick(right);
+    Input right;right.x=1;for(int n=0;n<35;++n)g.tick(right);
     CHECK(g.progress.position.x>-2.3f);CHECK(g.groundHeight>.2f);
     {
         std::ofstream file(path,std::ios::binary);uint32_t tagged=0x80000002;
@@ -472,7 +481,7 @@ void originalRooms() {
             Game stairs;stairs.progress.room=0;stairs.warpRequest=n;CHECK(stairs.finishWarp());
             auto walk=[&](float x,float z,int frames) {
                 Input i;i.x=x;i.z=z;
-                for(int frame=0;frame<frames;++frame) {
+                for(int frame=0;frame<int(std::ceil(frames*.065f/DashSpeed));++frame) {
                     stairs.tick(i);if(stairs.warpRequest>=0)break;
                     CHECK(walkable(stairs.progress.position,stairs.groundHeight));
                     CHECK(walkable(stairs.partner,stairs.partnerHeight));
@@ -492,7 +501,7 @@ void originalReturnSelection() {
     CHECK(loadCollision("romfs/gor_00.walls"));CHECK(loadGround("romfs/gor_00.ground"));CHECK(loadGroundReturns("romfs/gor_00.returns"));
     Game g;Progress p;p.room=1;p.position={0,-5.1f};p.elevation=1.2f;g.restore(p);
     ReturnPoint point{99,99,99};CHECK(!g.recoveryReturn(point));CHECK(point.x==99);
-    auto walk=[&](float x,float z,int frames) {Input i;i.x=x;i.z=z;for(int n=0;n<frames && !g.water.active();++n)g.tick(i);};
+    auto walk=[&](float x,float z,int frames) {Input i;i.x=x;i.z=z;for(int n=0;n<int(std::ceil(frames*.065f/DashSpeed)) && !g.water.active();++n)g.tick(i);};
     walk(1,0,30);walk(1,1,80);walk(0,1,80);
     CHECK(!g.water.active());CHECK(g.returnContact.sourceNode==0xd2a30);
     g.tick(confirm());walk(0,1,60); // Jump over the low edge using airborne wall rays.

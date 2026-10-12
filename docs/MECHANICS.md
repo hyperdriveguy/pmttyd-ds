@@ -271,3 +271,25 @@ XZ segment. This is a geometry correction within the current clearance query;
 it does not reproduce original swept direction rays, backface policy, contact
 normal sliding or dynamic meshes. Angled wall selection still uses the existing
 near-vertical normal threshold and needs separate original-ray coverage work.
+
+### Ordinary movement rates
+
+US `marioInit`8005b6e0–8005b6f0 stores walk1.0 (80420008) and ordinary
+Mario dash2.25 (804200b8) at offsets184/188. The alternate character branch
+uses dash2.0; it is not the current Mario target. `mot_walk`80087aa4 loads
+walk speed; `mot_dash`800877c4 loads dash speed and stores the adjusted speed
+at180. `marioMoveMain`80059718 loads180 before ordinary wall/movement
+resolution. Source forced/air movement also has stick-dependent drift branches;
+those are not reproduced by this rate correction.
+`N_marioGetMovementSpeed` / mot_dash use raw stick X²+Y²>3025 (55²) to
+classify dash; equal55 is walk. `marioGetStick` caps magnitude at70 (80420a64).
+Native Circle Pad normalized magnitude maps onto that70-unit range, selecting
+walk at<=55/70 and dash above it. Native rates are0.01 and0.0225 per60Hz tick;
+input direction is normalized so diagonal travel does not increase speed.
+
+Original motion-state delay/hysteresis, airborne drift, special slow status,
+moon/transform rules and partner-specific movement remain unfinished. Native
+selection changes immediately; this adaptation preserves rates/threshold but is
+not the full original movement state machine. Circle Pad dead zone is still the
+existing18-unit device mapping. The source verifier now checks the speed floats
+and original load/store/threshold sites as well as collision constants.

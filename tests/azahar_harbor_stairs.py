@@ -9,7 +9,9 @@ def run(env,capture):
         return subprocess.check_output(['xdotool',*args],env=env,text=True,stderr=subprocess.DEVNULL).strip()
     x('windowfocus',x('search','--onlyvisible','--class','azahar').splitlines()[-1])
     def hold(keys,seconds):
-        x('keydown',*keys);time.sleep(seconds);x('keyup',*keys);time.sleep(1)
+        # Preserve the established route distances after replacing prototype .065 speed.
+        travel=seconds*(.065/.0225) if any(key in ('Up','Down','Left','Right') for key in keys) else seconds
+        x('keydown',*keys);time.sleep(travel);x('keyup',*keys);time.sleep(1)
     save=ROOT/'artifacts/azahar/data/azahar-emu/sdmc/3ds/ttyd-2ds/progress.bin'
     assert save.read_bytes()[26]==1
     hold(['Right'],.5);hold(['Right','Down'],50/60);hold(['Left'],1);hold(['Down'],10/60)

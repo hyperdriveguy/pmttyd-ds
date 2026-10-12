@@ -13,6 +13,9 @@ constexpr int TickRate = 60;
 constexpr float StepHeight = .25f;
 // Original normal-Mario searchFrontWall: half20-unit width and two ray heights.
 constexpr float BodyRadius = .1f;
+constexpr float WalkSpeed=.01f, DashSpeed=.0225f;
+// Circle Pad magnitude maps to the original clamped70-unit stick range.
+constexpr float DashThreshold=55.f/70.f;
 constexpr float WallLowerRay = .11f, WallUpperRay = .2664f;
 // Original normal road-entry event restores party homing distance50 units.
 constexpr float PartnerDistance = .5f;

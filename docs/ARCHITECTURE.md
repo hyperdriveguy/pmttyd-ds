@@ -252,3 +252,12 @@ segment or vertex. Spatial bounds use all three vertices. Height intervals are
 validated against triangle extrema and used only for early rejection. Actual
 triangle arrays participate in collision rollback/clear. Minimap still draws the
 summary segment. Original swept direction rays and contact sliding are deferred.
+
+Ordinary movement now uses source WalkSpeed0.01 and DashSpeed0.0225 per fixed
+60Hz tick, replacing0.065. Circle Pad magnitude chooses the source walk/dash
+threshold55/70; direction is normalized independently. Follower path budget now
+uses DashSpeed (partner-specific catch-up logic remains provisional). Scripted
+road rate remains0.025/tick, with original entry/exit distances unchanged.
+Traversal fixtures preserve established map distances by extending directional
+holds after the speed correction. These fixture-time conversions are not game
+rules. Original motion transition delay and airborne drift remain unfinished.

@@ -1312,3 +1312,39 @@ Final native harbor stairs/dock-save/return test also exited0 with HP7 on the
 finished build: `python3 tools/emulator_smoke.py --fresh-save --save-fixture
 artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script
  tests/azahar_harbor_stairs.py`. No native rebuild overlapped emulator execution.
+
+## Source-derived ordinary walking and dash distances
+
+Recovered ordinary rates from marioInit,mot_walk,mot_dash and marioMoveMain:
+walk1.0 and dash2.25 engine units/tick (native0.01/0.0225). Replaced provisional
+0.065 speed. Direction normalizes independently of magnitude; walk/dash selection
+uses original55-unit threshold mapped to source70-unit stick cap. Full stick now
+travels1.35 native units per second rather than3.9. Road scripted speed remains
+0.025 and original distance rules remain unchanged. Follower budget follows
+DashSpeed, while partner-specific source movement remains unfinished.
+
+Extended source verifier checks speed floats, initialization stores, motion loads
+and55² threshold. Host tests prove threshold boundary,60-tick distance and diagonal
+normalization. Preserved stair/water fixture distances by extending directional
+holds; .065 remains only as a legacy fixture-distance conversion, never runtime
+movement. Incline test now walks far enough at corrected speed to reach its same
+height assertions. `make test` passed core/28 Python tests;
+`build-host/core_tests --rooms` passed all8 arrivals, airborne gates/rollback and
+18,315 collision probes; `make -j2 all` rebuilt native binary successfully;
+`python3 tools/verify_actor_collision.py` exited0 with walk1,dash2.25,cap70.
+Native water route/jump/return script exited0 with HP7→6 at corrected speed.
+Launch: harbor-arrival-road.bin,--fresh-save,--seconds4,tests/azahar_water.py.
+
+Next: recover original walk/dash state transition delays, source jump/gravity and
+airborne drift, plus swept wall/sliding response and floor search. Current Circle
+Pad dead zone and partner catch-up are provisional. Original camera/party movies,
+story/English dialogue, SFX and interiors remain incomplete; full goal active.
+Hardware performance and complete original-movement fidelity remain unverified.
+Native harbor stairs/dock-save/return exited0 with HP7 using the same fixture and
+`tests/azahar_harbor_stairs.py`. Native east-road script passed two round trips:
+`python3 tools/emulator_smoke.py --fresh-save --save-fixture
+artifacts/fixtures/east-road.bin --seconds 4 --input-script tests/azahar_roads.py`.
+This verifies source-trigger movement reaches existing exits; original sensor
+activation is still provisional. Final host/original-room checks exited0.
+Inspection-only marioJump and mot_jump disassemblies were prepared under
+artifacts/reference for next-session recovery; no new jump constants are claimed.

@@ -348,13 +348,14 @@ void Game::move(const Input& i) {
     // Original marioMoveMain remembers the eligible floor before moving.
     if(groundContact.attributes&0x40000000)returnContact=groundContact;
     float x=i.x, z=i.z, len=std::hypot(x,z);
-    if (len > 1) { x/=len; z/=len; }
+    const float speed=len>DashThreshold?DashSpeed:WalkSpeed;
+    if(len>0){x/=len;z/=len;}
     Vec2 p = progress.position;
-    Vec2 candidate{p.x+x*0.065f,p.z};
+    Vec2 candidate{p.x+x*speed,p.z};
     float nextHeight=groundHeight;
     GroundContact nextContact;
     if (walkable(candidate,groundHeight+jumpHeight) && groundAt(candidate,groundHeight,nextHeight,&nextContact) && walkable(candidate,nextHeight+jumpHeight)) {p=candidate;groundHeight=nextHeight;groundContact=nextContact;}
-    candidate={p.x,p.z+z*0.065f};
+    candidate={p.x,p.z+z*speed};
     if (walkable(candidate,groundHeight+jumpHeight) && groundAt(candidate,groundHeight,nextHeight,&nextContact) && walkable(candidate,nextHeight+jumpHeight)) {p=candidate;groundHeight=nextHeight;groundContact=nextContact;}
     progress.position=p;progress.elevation=groundHeight;
     if(warpCooldown>0)--warpCooldown;
@@ -375,7 +376,7 @@ void Game::move(const Input& i) {
     float remaining=length(partner,followerPath.front());
     for(size_t n=1;n<followerPath.size();++n)remaining+=length(followerPath[n-1],followerPath[n]);
     if(remaining>PartnerDistance) {
-        float budget=std::min(.065f,remaining-PartnerDistance);
+        float budget=std::min(DashSpeed,remaining-PartnerDistance);
         while(budget>0 && !followerPath.empty()) {
             Vec2 target=followerPath.front();float dist=length(partner,target);
             if(dist<.001f) {followerPath.erase(followerPath.begin());continue;}

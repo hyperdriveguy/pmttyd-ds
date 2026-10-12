@@ -24,6 +24,8 @@ def main():
         width=value(0x80420088,20);height=value(0x804200c0,37)
         half=value(0x804208cc,.5);lower=value(0x804208b4,11)
         upper=value(0x8042092c,26.64)
+        walk=value(0x80420008,1);dash=value(0x804200b8,2.25)
+        cap=value(0x80420a64,70)
         for address,instruction in [(0x8005b72c,'d02301b8'),(0x8005b734,'d00301bc'),
                                     (0x8005b774,'d02301c0'),(0x8008b88c,'c07f01c0'),
                                     (0x8008a544,'efe006b2'),(0x8008a4ec,'d0210048'),
@@ -31,4 +33,9 @@ def main():
             assert read(address)==bytes.fromhex(instruction),hex(address)
         print(f'Original normal collision: width={width},height={height},half-width={width*half},wall rays={lower},{upper}')
         print(f'Native scale .01: clearance={width*half*.01},wall rays={lower*.01:.6f},{upper*.01:.6f}')
+        for address,instruction in [(0x8005b6e8,'d0230184'),(0x8005b6f0,'d0030188'),
+                                    (0x800877c4,'c3e30188'),(0x80087aa4,'c3e30184'),
+                                    (0x80087910,'2c000bd1')]:
+            assert read(address)==bytes.fromhex(instruction),hex(address)
+        print(f'Ordinary walk/dash per tick={walk},{dash}; source stick cap={cap},dash threshold=55')
 if __name__=='__main__':main()
