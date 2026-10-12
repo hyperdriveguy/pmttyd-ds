@@ -69,6 +69,8 @@ void idleCases() {
     game.fieldIdle.count=2999;game.tick({});CHECK(game.fieldIdle.phase==1);
     game.tick({});CHECK(game.fieldIdle.phase==2 && game.fieldIdle.count==49 && !std::strcmp(game.marioPresentation.selected,"M_I_5"));
     CHECK(game.marioPresentation.displayFlags&0x10000000);
+    game.fieldIdle.phase=3;game.fieldIdle.count=0;game.tick({});
+    CHECK(game.fieldIdle.phase==4 && !std::strcmp(game.marioPresentation.selected,"M_N_5A"));
     Input moving;moving.x=1;game.tick(moving);CHECK(!std::strcmp(game.marioPresentation.selected,"M_R_1") && !(game.marioPresentation.displayFlags&0x10000000));
 }
 int main() {
