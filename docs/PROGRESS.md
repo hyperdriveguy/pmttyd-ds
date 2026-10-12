@@ -1,5 +1,63 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Sound-use catalog and native GameCube primary-sample playback
+
+Added tools/audio_map.py,config/audio_bindings.json and docs/AUDIO_MAPPING.md.
+Full ignored local-assets/audio-map/catalog.{json,csv} maps3,218 named US
+GameCube BGM/SFX entries and all10,256 Switch sound records with original IDs,
+source aliases,table hashes/parameters and dependency indirection. Included all
+1,247 GameCube sample IDs;all2,808 catalog direct macro/sample references resolve.
+Switch's9,679 wave-note dependencies and577 stream records have existing PCM;
+28 entries retain group-local conflict metadata. Categories are name-derived
+implementation hints;original story conditions,event order and owners remain
+unbound. Unknown/indirect/layered GameCube objects are retained,not renamed to
+invented triggers. No original executable is linked or executed by conversion.
+
+make all packs five original GameCube primary-sample effects:Confirm/field jump/
+generic hit/action success/guard. Tick requests now reach NDSP channels2–6;
+guard selects its own sample and Victory suppresses the extra success cue.
+Muted audio clears active voices/music;dialogue retains area music and defeat
+stops it. Outdoor music corrected from CSN-table stg_gor1_32k to GOR-table
+stg_gor2_32k. Source loops/intro remain intact,including win1's actual whole-file
+loop;nonlooping files now finish. Native catalog uses local-assets/audio-map/
+native so ordinary builds preserve the full Switch mapping. RomFS/indexes/WAVs
+and read-only extracts are ignored. ISO,original dialogue/PCM and packs were
+not committed. Provenance/conversion/rights are recorded in docs/ASSETS.md.
+
+Validation:
+- make test passed46/46 CTest suites and77 Python tests;log
+  /tmp/pm-audio-map-tests-final.log. New authored tests cover FX/object/sample
+  separation,group variants,macro opcode alignment,FWSD note/archive/member
+  indirection and soundID0 stream lookup,scene/guard routing and malformed PCM.
+  Concurrent dol_event_inventory fixtures emitted ResourceWarnings;tests passed.
+- make all succeeded;log /tmp/pm-audio-map-build-final.log. Packed eight PCM WAVs
+  are nonempty/complete,source rates/channels preserved;Rogueport PCM hash
+  exactly matches the previously decoded stg_gor2 library WAV.
+- make audio-map completed full two-platform mapping;log
+  /tmp/pm-audio-catalog-final.log. Independent path/ID/PCM/ignore audit is
+  /tmp/pm-audio-map-audit.log. git diff --check passed at validation snapshot.
+- Initial unprivileged smoke failed at Xvfb display-socket creation. Retried with
+  approved display access:python3 tools/emulator_smoke.py --fresh-save --seconds4
+  --input-script tests/azahar_walkthrough.py booted/captured;log
+  /tmp/pm-audio-map-smoke-final.log. Settings capture reports Audio unavailable.
+  Isolated SDMC lacks dspfirm.cdc;libctru needs a loaded DSP component. Asked user
+  for an existing local dumped component path to finish playback verification.
+  No user emulator profile/firmware/saves were changed. Boot success is not
+  audible playback verification or a battle acceptance claim.
+
+Implementation commits9486492 and8f285cb. Unrelated concurrent native/event/
+documentation edits are preserved. These fallbacks omit macro pitch/envelope/
+child voices,reverb/spatialization and original voice-priority policy. Jump uses
+an explicit audible gain despite the muted original table entry;generic impacts
+remain provisional. No Dolphin listening,hardware test or audio-fidelity claim.
+
+Next:use a locally dumped DSP component in the isolated test SDMC and verify
+actual NDSP output;bind original message tokens/speakers/event conditions and
+unit-owned movement/hit/result producers;implement environment sequences and
+full MusyX/FWSD playback;compare transitions/loops/mix against original execution.
+The early slice and full remake remain incomplete.
+
+
 ## 2026-10-12 — Original event script pack and native address reader
 
 Added `tools/pack_event_scripts.py`, `make event-assets` and

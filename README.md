@@ -36,7 +36,7 @@ Portable approach queries, movement and movement-sound counters follow their
 recovered contracts; native script and audio ownership still require binding.
 
 This is not a finished or fidelity-verified remake. Original skeletal/vertex
-animations, sound-effect event playback, measured tutorial mechanics and broader
+animations, complete sound-effect event playback, measured tutorial mechanics and broader
 story content are still incomplete. Hardware performance has not been tested.
 
 ## Mechanics research
@@ -61,6 +61,10 @@ make test
 azahar ./ttyd-2ds.3dsx
 ```
 
+Audio uses NDSP and requires the launcher-provided DSP component or a locally
+dumped `sdmc:/3ds/dspfirm.cdc`. The isolated Azahar profile currently lacks it;
+boot testing does not verify audible playback.
+
 Output: `ttyd-2ds.3dsx`, with its RomFS embedded. Copy it to the SD card's
 `/3ds/ttyd-2ds/` directory to use homebrew launcher. CIA packaging is deferred.
 An alternative ISO location can be supplied as `TTYD_ISO=/path/to/G8ME01.iso make`.
@@ -80,6 +84,12 @@ RomFS; the current slice still packages its three selected music tracks.
 Bank WAVs are named `pmario-<four-digit-hex-ID>.wav` in `pcm/samples/`;
 only the 212 looped samples have loop sidecars. These are original sample
 sources; MusyX macros and game event playback still require implementation.
+
+`make audio-map` creates a searchable catalog of 3,218 named GameCube entries
+and all 10,256 Switch sound records with wave dependencies. `make all` packages
+five original GameCube primary-sample effects alongside the corrected Rogueport,
+battle and victory music. Complete macro/event playback remains unfinished.
+See [audio mappings and trigger guidance](docs/AUDIO_MAPPING.md).
 
 The separate Switch 1.0.0 audio library is generated with
 `python3 tools/switch_audio.py` from the verified extracted

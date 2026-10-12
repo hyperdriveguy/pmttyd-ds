@@ -1,5 +1,42 @@
 # Original asset pipeline
 
+## Sound mapping and GameCube native fallbacks (2026-10-12)
+
+[Audio mapping](AUDIO_MAPPING.md) documents a reproducible catalog of3,218 named
+US revision0 GameCube BGM/SFX entries,1,247 sample directory IDs and10,256 Switch
+sound records. Original DOL table hashes/addresses/flags/parameters and exact
+stream aliases are retained;FX→group/object→direct macro/sample and Switch
+sound→FWSD note→wave archive/member dependencies are separate identifiers.
+9,679 Switch wave references and577 stream references resolve to existing PCM;
+28 records expose conflicting group-local variants. Name-derived categories do
+not establish original story conditions,event order or ownership.
+
+Sources:read-only /home/carson/games/roms/G8ME01.iso sound/proj/pmario.{proj,pool,
+sdir,samp},DOL sound tables and selected sound/stream files;existing Switch
+local-assets/switch/audio library. Full raw/catalog/CSV/PCM outputs stay ignored
+in local-assets/audio-map/. Native-only conversion uses its separate native/
+subdirectory and ignored romfs/audio-map.json and five effect WAVs. Authored
+config/audio_bindings.json and tools/audio_map.py contain no original PCM/code.
+
+Fallback PCM is decoded at original rates/channels,without normalization or
+resampling. One-shot effects omit sidecars while retaining source-loop metadata
+in catalog. Primary samples do not render macro pitch/envelope/child voices,
+reverb/spatialization or original voice-priority rules. Field jump deliberately
+uses audible fallback gain despite its zero-volume original entry. Outdoor
+Rogueport now uses the original GOR-table stream stg_gor2_32k rather than the
+CSN-table stg_gor1_32k. Win1's original whole-file loop is retained;nonlooping
+source files are no longer forcibly repeated. Complete original event binding,
+hardware/Dolphin audible comparisons and native NDSP playback validation remain
+open. Isolated Azahar lacks a DSP component and reports Audio unavailable.
+
+Original assets retain original copyright;local conversion grants no
+redistribution rights. No ISO,original banks,PCM,dialogue or compiled packs are
+committed. GCMusyXTools is a primary STARTSAMPLE layout reference;no external
+implementation was copied/compiled. NintendoWare sources/licenses remain as
+recorded in switch/AUDIO_ASSETS.md. All source inputs were read-only;the automated
+emulator used only the project-local isolated profile and test saves.
+
+
 ## Original event script assets (2026-10-12)
 
 `make event-assets` reads /home/carson/games/roms/G8ME01.iso read-only and uses
