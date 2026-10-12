@@ -1,0 +1,1361 @@
+{
+  "schema": 1,
+  "scope": "Aligned linked direct branches in seven DOL text sections only;not caller semantics/REL/raw writes/execution",
+  "sites": [
+    {
+      "site": 2147829472,
+      "target": 2147871168,
+      "caller": "evt_sub_get_coin"
+    },
+    {
+      "site": 2147906484,
+      "target": 2147871168,
+      "caller": "mobj_recovery_blk"
+    },
+    {
+      "site": 2147927792,
+      "target": 2147871280,
+      "caller": "evt_eff_delete_ptr"
+    },
+    {
+      "site": 2147927840,
+      "target": 2147871168,
+      "caller": "evt_eff_softdelete_ptr"
+    },
+    {
+      "site": 2147927892,
+      "target": 2147871280,
+      "caller": "evt_eff_delete"
+    },
+    {
+      "site": 2147927944,
+      "target": 2147871168,
+      "caller": "evt_eff_softdelete"
+    },
+    {
+      "site": 2148151632,
+      "target": 2147871280,
+      "caller": "mot_ship"
+    },
+    {
+      "site": 2148184496,
+      "target": 2147871168,
+      "caller": "itemseq_Bound"
+    },
+    {
+      "site": 2148187200,
+      "target": 2147871168,
+      "caller": "itemseq_GetItem"
+    },
+    {
+      "site": 2148189136,
+      "target": 2147871168,
+      "caller": "itemseq_GetItem"
+    },
+    {
+      "site": 2148189436,
+      "target": 2147871168,
+      "caller": "itemseq_GetItem"
+    },
+    {
+      "site": 2148189600,
+      "target": 2147871168,
+      "caller": "itemseq_GetItem"
+    },
+    {
+      "site": 2148189832,
+      "target": 2147871168,
+      "caller": "itemseq_GetItem"
+    },
+    {
+      "site": 2148190720,
+      "target": 2147871168,
+      "caller": "itemseq_GetItem"
+    },
+    {
+      "site": 2148194208,
+      "target": 2147871168,
+      "caller": "itemDelete"
+    },
+    {
+      "site": 2148194956,
+      "target": 2147871168,
+      "caller": "itemEntry"
+    },
+    {
+      "site": 2148195224,
+      "target": 2147871168,
+      "caller": "itemEntry"
+    },
+    {
+      "site": 2148197420,
+      "target": 2147871168,
+      "caller": "itemMain"
+    },
+    {
+      "site": 2148233188,
+      "target": 2147871280,
+      "caller": "L_sweatMain"
+    },
+    {
+      "site": 2148473860,
+      "target": 2147871280,
+      "caller": "unk_800f1ac8"
+    },
+    {
+      "site": 2148518904,
+      "target": 2147871168,
+      "caller": "BattleSetStatusDamage"
+    },
+    {
+      "site": 2148613300,
+      "target": 2147871280,
+      "caller": "_backfire"
+    },
+    {
+      "site": 2148616512,
+      "target": 2147871280,
+      "caller": "_mario_fire_ball_controll"
+    },
+    {
+      "site": 2148724816,
+      "target": 2147871280,
+      "caller": "marioBalloonMain"
+    },
+    {
+      "site": 2148725640,
+      "target": 2147871280,
+      "caller": "marioBalloonMain"
+    },
+    {
+      "site": 2148725884,
+      "target": 2147871280,
+      "caller": "marioBalloonMain"
+    },
+    {
+      "site": 2148725968,
+      "target": 2147871280,
+      "caller": "marioBalloonOff"
+    },
+    {
+      "site": 2148741012,
+      "target": 2147871280,
+      "caller": "effFukidashiMain"
+    },
+    {
+      "site": 2148741268,
+      "target": 2147871280,
+      "caller": "effFukidashiMain"
+    },
+    {
+      "site": 2148741340,
+      "target": 2147871280,
+      "caller": "effFukidashiMain"
+    },
+    {
+      "site": 2148747004,
+      "target": 2147871280,
+      "caller": "effKemuri2Main"
+    },
+    {
+      "site": 2148747972,
+      "target": 2147871280,
+      "caller": "effKemuriMain"
+    },
+    {
+      "site": 2148789336,
+      "target": 2147871280,
+      "caller": "effDamageStarMain"
+    },
+    {
+      "site": 2148795308,
+      "target": 2147871280,
+      "caller": "effMugiKemuri2Main"
+    },
+    {
+      "site": 2148795892,
+      "target": 2147871280,
+      "caller": "effMugiKemuri2Main"
+    },
+    {
+      "site": 2148796148,
+      "target": 2147871280,
+      "caller": "effMugiKemuriMain"
+    },
+    {
+      "site": 2148796612,
+      "target": 2147871280,
+      "caller": "effMugiKemuriMain"
+    },
+    {
+      "site": 2148805188,
+      "target": 2147871280,
+      "caller": "effRecoveryMain2"
+    },
+    {
+      "site": 2148807132,
+      "target": 2147871280,
+      "caller": "effRecoveryMain"
+    },
+    {
+      "site": 2148809760,
+      "target": 2147871280,
+      "caller": "effMissStarMain"
+    },
+    {
+      "site": 2148812544,
+      "target": 2147871280,
+      "caller": "acrobatMain"
+    },
+    {
+      "site": 2148813132,
+      "target": 2147871280,
+      "caller": "effNiceMain"
+    },
+    {
+      "site": 2148813428,
+      "target": 2147871280,
+      "caller": "effNiceMain"
+    },
+    {
+      "site": 2148826120,
+      "target": 2147871168,
+      "caller": "BattleFogForceStop"
+    },
+    {
+      "site": 2148826240,
+      "target": 2147871168,
+      "caller": "BattleFogEndCheck"
+    },
+    {
+      "site": 2149018572,
+      "target": 2147871168,
+      "caller": "winLogExit"
+    },
+    {
+      "site": 2149084780,
+      "target": 2147871168,
+      "caller": "cloud_exit"
+    },
+    {
+      "site": 2149087408,
+      "target": 2147871168,
+      "caller": "N_cloud_use"
+    },
+    {
+      "site": 2149087944,
+      "target": 2147871168,
+      "caller": "cloud_use"
+    },
+    {
+      "site": 2149093240,
+      "target": 2147871168,
+      "caller": "_tsuranuki_effect_control"
+    },
+    {
+      "site": 2149107012,
+      "target": 2147871280,
+      "caller": "effFireSmokeMain"
+    },
+    {
+      "site": 2149115432,
+      "target": 2147871280,
+      "caller": "effFireMain"
+    },
+    {
+      "site": 2149135332,
+      "target": 2147871280,
+      "caller": "effSparkMain"
+    },
+    {
+      "site": 2149138228,
+      "target": 2147871280,
+      "caller": "effUpdownMain"
+    },
+    {
+      "site": 2149140368,
+      "target": 2147871280,
+      "caller": "effChargeMain"
+    },
+    {
+      "site": 2149143200,
+      "target": 2147871280,
+      "caller": "effTogeFlushMain"
+    },
+    {
+      "site": 2149146316,
+      "target": 2147871280,
+      "caller": "BSE_TurnFirstProcessEffectMain"
+    },
+    {
+      "site": 2149146764,
+      "target": 2147871168,
+      "caller": "BSE_FreezeDelete"
+    },
+    {
+      "site": 2149147168,
+      "target": 2147871280,
+      "caller": "BSE_FireDelete"
+    },
+    {
+      "site": 2149147532,
+      "target": 2147871280,
+      "caller": "BSE_BiribiriDelete"
+    },
+    {
+      "site": 2149147928,
+      "target": 2147871280,
+      "caller": "BSE_SleepDelete"
+    },
+    {
+      "site": 2149150032,
+      "target": 2147871280,
+      "caller": "effIceMain"
+    },
+    {
+      "site": 2149150064,
+      "target": 2147871280,
+      "caller": "effIceMain"
+    },
+    {
+      "site": 2149153616,
+      "target": 2147871280,
+      "caller": "effBombMain"
+    },
+    {
+      "site": 2149238072,
+      "target": 2147871280,
+      "caller": "effWhirlwindMain"
+    },
+    {
+      "site": 2149241204,
+      "target": 2147871280,
+      "caller": "effAkariChargeMain"
+    },
+    {
+      "site": 2149243812,
+      "target": 2147871280,
+      "caller": "effAkariPoseMain"
+    },
+    {
+      "site": 2149246500,
+      "target": 2147871280,
+      "caller": "effAkariSflushMain"
+    },
+    {
+      "site": 2149247724,
+      "target": 2147871280,
+      "caller": "effBalloonHeihoMain"
+    },
+    {
+      "site": 2149250056,
+      "target": 2147871280,
+      "caller": "effBalloonMain"
+    },
+    {
+      "site": 2149251896,
+      "target": 2147871280,
+      "caller": "effBlowMain"
+    },
+    {
+      "site": 2149255384,
+      "target": 2147871280,
+      "caller": "effBombMain"
+    },
+    {
+      "site": 2149257824,
+      "target": 2147871280,
+      "caller": "effBomheiMain"
+    },
+    {
+      "site": 2149265180,
+      "target": 2147871280,
+      "caller": "effBreathFireMain"
+    },
+    {
+      "site": 2149268204,
+      "target": 2147871280,
+      "caller": "effBrokenBarrierMain"
+    },
+    {
+      "site": 2149271936,
+      "target": 2147871280,
+      "caller": "effBushMain"
+    },
+    {
+      "site": 2149274024,
+      "target": 2147871280,
+      "caller": "effButterflyMain"
+    },
+    {
+      "site": 2149277792,
+      "target": 2147871280,
+      "caller": "effCloudMain"
+    },
+    {
+      "site": 2149280184,
+      "target": 2147871280,
+      "caller": "effCoinMain"
+    },
+    {
+      "site": 2149281896,
+      "target": 2147871280,
+      "caller": "effConfettiMain"
+    },
+    {
+      "site": 2149285620,
+      "target": 2147871280,
+      "caller": "effCoolLeafMain"
+    },
+    {
+      "site": 2149289824,
+      "target": 2147871280,
+      "caller": "effCrystalMain"
+    },
+    {
+      "site": 2149292616,
+      "target": 2147871280,
+      "caller": "effDogabonAttackMain"
+    },
+    {
+      "site": 2149297068,
+      "target": 2147871280,
+      "caller": "effExpBomMain"
+    },
+    {
+      "site": 2149299904,
+      "target": 2147871280,
+      "caller": "effExplosionMain"
+    },
+    {
+      "site": 2149301624,
+      "target": 2147871280,
+      "caller": "effFallLeafMain"
+    },
+    {
+      "site": 2149304788,
+      "target": 2147871280,
+      "caller": "effFireDustMain"
+    },
+    {
+      "site": 2149308080,
+      "target": 2147871280,
+      "caller": "effFireRingMain"
+    },
+    {
+      "site": 2149310268,
+      "target": 2147871280,
+      "caller": "effFireSparkMain"
+    },
+    {
+      "site": 2149313996,
+      "target": 2147871280,
+      "caller": "effFireFlowerMain"
+    },
+    {
+      "site": 2149317120,
+      "target": 2147871280,
+      "caller": "effFireworksMain"
+    },
+    {
+      "site": 2149326824,
+      "target": 2147871280,
+      "caller": "effFlameMain"
+    },
+    {
+      "site": 2149329828,
+      "target": 2147871280,
+      "caller": "effFlowerMain"
+    },
+    {
+      "site": 2149332224,
+      "target": 2147871280,
+      "caller": "effFreezeMain"
+    },
+    {
+      "site": 2149332232,
+      "target": 2147871280,
+      "caller": "effFreezeMain"
+    },
+    {
+      "site": 2149334984,
+      "target": 2147871280,
+      "caller": "effGarekiMain"
+    },
+    {
+      "site": 2149337732,
+      "target": 2147871280,
+      "caller": "effGlassMain"
+    },
+    {
+      "site": 2149341624,
+      "target": 2147871280,
+      "caller": "effHagetakaFlushMain"
+    },
+    {
+      "site": 2149343820,
+      "target": 2147871280,
+      "caller": "effHitMain"
+    },
+    {
+      "site": 2149345720,
+      "target": 2147871280,
+      "caller": "effHokoriMain"
+    },
+    {
+      "site": 2149348572,
+      "target": 2147871280,
+      "caller": "effHolographyMain"
+    },
+    {
+      "site": 2149351416,
+      "target": 2147871280,
+      "caller": "effHoraoSpellMain"
+    },
+    {
+      "site": 2149352784,
+      "target": 2147871280,
+      "caller": "effIceMain"
+    },
+    {
+      "site": 2149357024,
+      "target": 2147871280,
+      "caller": "effKamekiTornadeMain"
+    },
+    {
+      "site": 2149360056,
+      "target": 2147871280,
+      "caller": "effKemuri1Main"
+    },
+    {
+      "site": 2149360488,
+      "target": 2147871280,
+      "caller": "effKemuri1Main"
+    },
+    {
+      "site": 2149363924,
+      "target": 2147871280,
+      "caller": "effKemuri2Main"
+    },
+    {
+      "site": 2149365716,
+      "target": 2147871280,
+      "caller": "effKemuri3Main"
+    },
+    {
+      "site": 2149367600,
+      "target": 2147871280,
+      "caller": "effKemuri4Main"
+    },
+    {
+      "site": 2149369356,
+      "target": 2147871280,
+      "caller": "effKemuri5Main"
+    },
+    {
+      "site": 2149371332,
+      "target": 2147871280,
+      "caller": "effKemuri6Main"
+    },
+    {
+      "site": 2149372800,
+      "target": 2147871280,
+      "caller": "effKemuri7Main"
+    },
+    {
+      "site": 2149375396,
+      "target": 2147871280,
+      "caller": "effKemuri8Main"
+    },
+    {
+      "site": 2149377956,
+      "target": 2147871280,
+      "caller": "effKemuri9Main"
+    },
+    {
+      "site": 2149380576,
+      "target": 2147871280,
+      "caller": "effKemuri10Main"
+    },
+    {
+      "site": 2149384684,
+      "target": 2147871280,
+      "caller": "effKemuri11Main"
+    },
+    {
+      "site": 2149388488,
+      "target": 2147871280,
+      "caller": "effKemuri12Main"
+    },
+    {
+      "site": 2149389672,
+      "target": 2147871280,
+      "caller": "effKumokumoChipMain"
+    },
+    {
+      "site": 2149394592,
+      "target": 2147871280,
+      "caller": "effKumokumoMain"
+    },
+    {
+      "site": 2149399912,
+      "target": 2147871280,
+      "caller": "effLensflareMain"
+    },
+    {
+      "site": 2149403872,
+      "target": 2147871280,
+      "caller": "effMagic1Main"
+    },
+    {
+      "site": 2149407892,
+      "target": 2147871280,
+      "caller": "effMagic2Main"
+    },
+    {
+      "site": 2149409868,
+      "target": 2147871280,
+      "caller": "effMagic3Main"
+    },
+    {
+      "site": 2149413628,
+      "target": 2147871280,
+      "caller": "effMagicHoraoMain"
+    },
+    {
+      "site": 2149416708,
+      "target": 2147871280,
+      "caller": "effOnpuMain"
+    },
+    {
+      "site": 2149419184,
+      "target": 2147871280,
+      "caller": "effOpukuJetwMain"
+    },
+    {
+      "site": 2149421084,
+      "target": 2147871280,
+      "caller": "effOpukuJetwrainMain"
+    },
+    {
+      "site": 2149424188,
+      "target": 2147871280,
+      "caller": "effOpukuWcurtainMain"
+    },
+    {
+      "site": 2149427352,
+      "target": 2147871280,
+      "caller": "effOpukuWgunMain"
+    },
+    {
+      "site": 2149431516,
+      "target": 2147871280,
+      "caller": "effOpukuWprotectMain"
+    },
+    {
+      "site": 2149434700,
+      "target": 2147871280,
+      "caller": "effPacknBfireMain"
+    },
+    {
+      "site": 2149437892,
+      "target": 2147871280,
+      "caller": "effPeachDustMain"
+    },
+    {
+      "site": 2149439860,
+      "target": 2147871280,
+      "caller": "effPikkyoloMain"
+    },
+    {
+      "site": 2149442608,
+      "target": 2147871280,
+      "caller": "effPokopiPchargeMain"
+    },
+    {
+      "site": 2149446172,
+      "target": 2147871280,
+      "caller": "effPokopiPipoMain"
+    },
+    {
+      "site": 2149449940,
+      "target": 2147871280,
+      "caller": "effPokopiThunderMain"
+    },
+    {
+      "site": 2149453352,
+      "target": 2147871280,
+      "caller": "effPturnMain"
+    },
+    {
+      "site": 2149456176,
+      "target": 2147871280,
+      "caller": "effRadiationMain"
+    },
+    {
+      "site": 2149459284,
+      "target": 2147871280,
+      "caller": "effRappaMain"
+    },
+    {
+      "site": 2149462436,
+      "target": 2147871280,
+      "caller": "effRecoverHeartMain"
+    },
+    {
+      "site": 2149465728,
+      "target": 2147871280,
+      "caller": "effReleaseMain"
+    },
+    {
+      "site": 2149468740,
+      "target": 2147871280,
+      "caller": "effRippleMain"
+    },
+    {
+      "site": 2149470944,
+      "target": 2147871280,
+      "caller": "effRotHammerFailMain"
+    },
+    {
+      "site": 2149472216,
+      "target": 2147871280,
+      "caller": "effRotHammerSuccessMain"
+    },
+    {
+      "site": 2149474244,
+      "target": 2147871280,
+      "caller": "effRubbleMain"
+    },
+    {
+      "site": 2149477836,
+      "target": 2147871280,
+      "caller": "effShockMain"
+    },
+    {
+      "site": 2149479440,
+      "target": 2147871280,
+      "caller": "effSmallStarMain"
+    },
+    {
+      "site": 2149483108,
+      "target": 2147871280,
+      "caller": "effSnowMain"
+    },
+    {
+      "site": 2149484840,
+      "target": 2147871280,
+      "caller": "effSnowfallMain"
+    },
+    {
+      "site": 2149486864,
+      "target": 2147871280,
+      "caller": "effSnowmanMain"
+    },
+    {
+      "site": 2149491940,
+      "target": 2147871280,
+      "caller": "effSstarMain"
+    },
+    {
+      "site": 2149494192,
+      "target": 2147871280,
+      "caller": "effStampMain"
+    },
+    {
+      "site": 2149498108,
+      "target": 2147871280,
+      "caller": "effStarPowerMain"
+    },
+    {
+      "site": 2149500848,
+      "target": 2147871280,
+      "caller": "effStardust2Main"
+    },
+    {
+      "site": 2149501904,
+      "target": 2147871280,
+      "caller": "effStardust2Main"
+    },
+    {
+      "site": 2149504752,
+      "target": 2147871280,
+      "caller": "effStardustMain"
+    },
+    {
+      "site": 2149505504,
+      "target": 2147871280,
+      "caller": "effStardustMain"
+    },
+    {
+      "site": 2149508060,
+      "target": 2147871280,
+      "caller": "effStoneSmokeMain"
+    },
+    {
+      "site": 2149510412,
+      "target": 2147871280,
+      "caller": "effSunlightMain"
+    },
+    {
+      "site": 2149512588,
+      "target": 2147871280,
+      "caller": "effSweatMain"
+    },
+    {
+      "site": 2149515136,
+      "target": 2147871280,
+      "caller": "effThruHammerMain"
+    },
+    {
+      "site": 2149523580,
+      "target": 2147871280,
+      "caller": "effThunderMain"
+    },
+    {
+      "site": 2149523604,
+      "target": 2147871280,
+      "caller": "effThunderMain"
+    },
+    {
+      "site": 2149523620,
+      "target": 2147871280,
+      "caller": "effThunderMain"
+    },
+    {
+      "site": 2149523652,
+      "target": 2147871280,
+      "caller": "effThunderMain"
+    },
+    {
+      "site": 2149525856,
+      "target": 2147871280,
+      "caller": "effThunderflareMain"
+    },
+    {
+      "site": 2149528888,
+      "target": 2147871280,
+      "caller": "effTimestampMain"
+    },
+    {
+      "site": 2149531976,
+      "target": 2147871280,
+      "caller": "effVaporMain"
+    },
+    {
+      "site": 2149533472,
+      "target": 2147871280,
+      "caller": "effWangFlushMain"
+    },
+    {
+      "site": 2149536668,
+      "target": 2147871280,
+      "caller": "effWaterDamageMain"
+    },
+    {
+      "site": 2149543172,
+      "target": 2147871280,
+      "caller": "effSnowDustMain"
+    },
+    {
+      "site": 2149568716,
+      "target": 2147871168,
+      "caller": "kpaFireMain"
+    },
+    {
+      "site": 2149568812,
+      "target": 2147871168,
+      "caller": "unk_801fd110"
+    },
+    {
+      "site": 2149582172,
+      "target": 2147871280,
+      "caller": "effCoinFukidashiMain"
+    },
+    {
+      "site": 2149625852,
+      "target": 2147871280,
+      "caller": "effStarPointMain"
+    },
+    {
+      "site": 2149628660,
+      "target": 2147871280,
+      "caller": "effPuniBalloonMain"
+    },
+    {
+      "site": 2149631080,
+      "target": 2147871280,
+      "caller": "effPeachFukidashiMain"
+    },
+    {
+      "site": 2149637680,
+      "target": 2147871280,
+      "caller": "effKemuTestMain"
+    },
+    {
+      "site": 2149649060,
+      "target": 2147871168,
+      "caller": "effStarStoneMain"
+    },
+    {
+      "site": 2149649088,
+      "target": 2147871280,
+      "caller": "effStarStoneMain"
+    },
+    {
+      "site": 2149655124,
+      "target": 2147871280,
+      "caller": "effItemGetMain"
+    },
+    {
+      "site": 2149655588,
+      "target": 2147871280,
+      "caller": "effItemGetMain"
+    },
+    {
+      "site": 2149669768,
+      "target": 2147871168,
+      "caller": "btlseqEnd"
+    },
+    {
+      "site": 2149693132,
+      "target": 2147871280,
+      "caller": "effPointGetMain"
+    },
+    {
+      "site": 2149703812,
+      "target": 2147871280,
+      "caller": "effFallMain"
+    },
+    {
+      "site": 2149705888,
+      "target": 2147871280,
+      "caller": "effFallMain"
+    },
+    {
+      "site": 2149709096,
+      "target": 2147871280,
+      "caller": "effFallMain"
+    },
+    {
+      "site": 2149712376,
+      "target": 2147871280,
+      "caller": "effLevelupMain"
+    },
+    {
+      "site": 2149714552,
+      "target": 2147871280,
+      "caller": "effBreakMain"
+    },
+    {
+      "site": 2149717388,
+      "target": 2147871280,
+      "caller": "effMObjBrokenMain"
+    },
+    {
+      "site": 2149718088,
+      "target": 2147871280,
+      "caller": "effMObjBrokenMain"
+    },
+    {
+      "site": 2149720444,
+      "target": 2147871280,
+      "caller": "effMahojinMain"
+    },
+    {
+      "site": 2149725524,
+      "target": 2147871280,
+      "caller": "effNozleMain"
+    },
+    {
+      "site": 2149727304,
+      "target": 2147871280,
+      "caller": "effMizutamaMain"
+    },
+    {
+      "site": 2149732104,
+      "target": 2147871280,
+      "caller": "effMiniGameMain"
+    },
+    {
+      "site": 2149732136,
+      "target": 2147871280,
+      "caller": "effMiniGameMain"
+    },
+    {
+      "site": 2149736848,
+      "target": 2147871280,
+      "caller": "effSplashMain"
+    },
+    {
+      "site": 2149739640,
+      "target": 2147871280,
+      "caller": "effTreasureMapMain"
+    },
+    {
+      "site": 2149743472,
+      "target": 2147871280,
+      "caller": "effKissMain"
+    },
+    {
+      "site": 2149749264,
+      "target": 2147871280,
+      "caller": "effFunemizuMain"
+    },
+    {
+      "site": 2149755416,
+      "target": 2147871280,
+      "caller": "effMistMain"
+    },
+    {
+      "site": 2149758232,
+      "target": 2147871280,
+      "caller": "effTeresaMain"
+    },
+    {
+      "site": 2149758300,
+      "target": 2147871280,
+      "caller": "effTeresaMain"
+    },
+    {
+      "site": 2149775992,
+      "target": 2147871280,
+      "caller": "end_bakugame"
+    },
+    {
+      "site": 2149776000,
+      "target": 2147871280,
+      "caller": "end_bakugame"
+    },
+    {
+      "site": 2149782276,
+      "target": 2147871280,
+      "caller": "scissor_end"
+    },
+    {
+      "site": 2149782284,
+      "target": 2147871280,
+      "caller": "scissor_end"
+    },
+    {
+      "site": 2149794704,
+      "target": 2147871280,
+      "caller": "zubastar_end"
+    },
+    {
+      "site": 2149794712,
+      "target": 2147871280,
+      "caller": "zubastar_end"
+    },
+    {
+      "site": 2149811916,
+      "target": 2147871280,
+      "caller": "effSheepMain"
+    },
+    {
+      "site": 2149812820,
+      "target": 2147871280,
+      "caller": "effSheepMain"
+    },
+    {
+      "site": 2149815200,
+      "target": 2147871280,
+      "caller": "effBattenMain"
+    },
+    {
+      "site": 2149815692,
+      "target": 2147871280,
+      "caller": "effBattenMain"
+    },
+    {
+      "site": 2149846996,
+      "target": 2147871280,
+      "caller": "effNanigaMain"
+    },
+    {
+      "site": 2149848004,
+      "target": 2147871280,
+      "caller": "effNanigaMain"
+    },
+    {
+      "site": 2149850656,
+      "target": 2147871280,
+      "caller": "effSandarsMain"
+    },
+    {
+      "site": 2149850700,
+      "target": 2147871280,
+      "caller": "effSandarsMain"
+    },
+    {
+      "site": 2149850976,
+      "target": 2147871280,
+      "caller": "effSandarsMain"
+    },
+    {
+      "site": 2149851132,
+      "target": 2147871280,
+      "caller": "effSandarsMain"
+    },
+    {
+      "site": 2149852424,
+      "target": 2147871280,
+      "caller": "effRankupMain"
+    },
+    {
+      "site": 2149852588,
+      "target": 2147871280,
+      "caller": "effRankupMain"
+    },
+    {
+      "site": 2149853420,
+      "target": 2147871280,
+      "caller": "effIrekaeruMain"
+    },
+    {
+      "site": 2149853584,
+      "target": 2147871280,
+      "caller": "effIrekaeruMain"
+    },
+    {
+      "site": 2149856972,
+      "target": 2147871280,
+      "caller": "effScanningMain"
+    },
+    {
+      "site": 2149857120,
+      "target": 2147871280,
+      "caller": "effScanningMain"
+    },
+    {
+      "site": 2149858488,
+      "target": 2147871280,
+      "caller": "effToikiMain"
+    },
+    {
+      "site": 2149860612,
+      "target": 2147871280,
+      "caller": "effMist2Main"
+    },
+    {
+      "site": 2149863464,
+      "target": 2147871280,
+      "caller": "effParticleMain"
+    },
+    {
+      "site": 2149869512,
+      "target": 2147871280,
+      "caller": "end_genki"
+    },
+    {
+      "site": 2149869520,
+      "target": 2147871280,
+      "caller": "end_genki"
+    },
+    {
+      "site": 2149869576,
+      "target": 2147871280,
+      "caller": "end_genki"
+    },
+    {
+      "site": 2149869584,
+      "target": 2147871280,
+      "caller": "end_genki"
+    },
+    {
+      "site": 2149869612,
+      "target": 2147871280,
+      "caller": "end_genki"
+    },
+    {
+      "site": 2149869620,
+      "target": 2147871280,
+      "caller": "end_genki"
+    },
+    {
+      "site": 2149869660,
+      "target": 2147871280,
+      "caller": "end_genki"
+    },
+    {
+      "site": 2149869668,
+      "target": 2147871280,
+      "caller": "end_genki"
+    },
+    {
+      "site": 2149869676,
+      "target": 2147871280,
+      "caller": "end_genki"
+    },
+    {
+      "site": 2149883752,
+      "target": 2147871280,
+      "caller": "end_deka"
+    },
+    {
+      "site": 2149883760,
+      "target": 2147871280,
+      "caller": "end_deka"
+    },
+    {
+      "site": 2149893380,
+      "target": 2147871280,
+      "caller": "effIbukiMain"
+    },
+    {
+      "site": 2149899000,
+      "target": 2147871280,
+      "caller": "end_muki"
+    },
+    {
+      "site": 2149899008,
+      "target": 2147871280,
+      "caller": "end_muki"
+    },
+    {
+      "site": 2149899028,
+      "target": 2147871280,
+      "caller": "end_muki"
+    },
+    {
+      "site": 2149908756,
+      "target": 2147871280,
+      "caller": "end_suki"
+    },
+    {
+      "site": 2149908764,
+      "target": 2147871280,
+      "caller": "end_suki"
+    },
+    {
+      "site": 2149929520,
+      "target": 2147871280,
+      "caller": "effMahornMain"
+    },
+    {
+      "site": 2149931228,
+      "target": 2147871280,
+      "caller": "effSpiritMain"
+    },
+    {
+      "site": 2149931676,
+      "target": 2147871280,
+      "caller": "effSpiritMain"
+    },
+    {
+      "site": 2149934068,
+      "target": 2147871280,
+      "caller": "effIndirectMain"
+    },
+    {
+      "site": 2149935128,
+      "target": 2147871280,
+      "caller": "effSyuryouMain"
+    },
+    {
+      "site": 2149935344,
+      "target": 2147871280,
+      "caller": "effSyuryouMain"
+    },
+    {
+      "site": 2149936300,
+      "target": 2147871280,
+      "caller": "effUranokoMain"
+    },
+    {
+      "site": 2149937488,
+      "target": 2147871280,
+      "caller": "effHibashiraMain"
+    },
+    {
+      "site": 2149942012,
+      "target": 2147871280,
+      "caller": "effLaserMain"
+    },
+    {
+      "site": 2149942384,
+      "target": 2147871280,
+      "caller": "effLaserMain"
+    },
+    {
+      "site": 2149943740,
+      "target": 2147871280,
+      "caller": "effMachinegunMain"
+    },
+    {
+      "site": 2149944456,
+      "target": 2147871280,
+      "caller": "effLasMonMain"
+    },
+    {
+      "site": 2149946376,
+      "target": 2147871280,
+      "caller": "effSleepMain"
+    },
+    {
+      "site": 2149948112,
+      "target": 2147871280,
+      "caller": "effEnergyMain"
+    },
+    {
+      "site": 2149949628,
+      "target": 2147871280,
+      "caller": "effNokotarouMain"
+    },
+    {
+      "site": 2149950660,
+      "target": 2147871280,
+      "caller": "effQueenMain"
+    },
+    {
+      "site": 2149951680,
+      "target": 2147871280,
+      "caller": "effQueen2Main"
+    },
+    {
+      "site": 2149951688,
+      "target": 2147871280,
+      "caller": "effQueen2Main"
+    },
+    {
+      "site": 2149952192,
+      "target": 2147871168,
+      "caller": "effQueen2Main"
+    },
+    {
+      "site": 2149952200,
+      "target": 2147871280,
+      "caller": "effQueen2Main"
+    },
+    {
+      "site": 2149954312,
+      "target": 2147871168,
+      "caller": "effGonbabaBreathMain"
+    },
+    {
+      "site": 2149954384,
+      "target": 2147871280,
+      "caller": "effGonbabaBreathMain"
+    },
+    {
+      "site": 2149959340,
+      "target": 2147871280,
+      "caller": "effMajinaiMain"
+    },
+    {
+      "site": 2149959992,
+      "target": 2147871280,
+      "caller": "effMajinaiMain"
+    },
+    {
+      "site": 2149962628,
+      "target": 2147871280,
+      "caller": "effMahorn2Main"
+    },
+    {
+      "site": 2149964816,
+      "target": 2147871280,
+      "caller": "effUltraHammerMain"
+    }
+  ]
+}

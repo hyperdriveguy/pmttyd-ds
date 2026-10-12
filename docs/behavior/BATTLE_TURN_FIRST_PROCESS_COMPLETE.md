@@ -62,7 +62,7 @@ Independently load global battle B2. Read SIGNED WORD timer B2+182b8.
 If EXACT0,return1 WITHOUT pointer read/delete;an existing nonnull effect pointer
 is not cleaned up by that zero-timer path. Otherwise decrement timer with word
 wrap and store;RELOAD timer. If signed new value>0,return0. If <=0,read pointer
-B2+182bc;nonnull→effDelete8005e9c0,then store pointer0;null→skip request/store.
+B2+182bc;nonnull→effSoftDelete8005e9c0,then store pointer0;null→skip request/store.
 Return1. No timer normalization-to0,renderer callback,scene heap free or unit
 status mutation beyond that effect request. Effect backend/ownership remains
 separate. Incoming negative timers stay negative after ordinary decrement and
@@ -70,7 +70,7 @@ return1 until word wrap;minimum signed value decrements to max positive and
 can take return0. These domains are not silently clamped into a native deadline.
 
 The controller always ignores this result,so local0/1 does not become a turn
-state transition here. Source timer/pointer writers,effDelete implementation,
+state transition here. Source timer/pointer writers,effect update/driver ownership,
 frame/turn applicability and original fog visuals remain required.
 
 Acceptance:global judgment before explicit counter increments,two cleared word
@@ -87,3 +87,11 @@ fortune/effect/source/turn/scene/runtime ownership remains STATUS-01/DMG-02 work
 the local MajinaiCheck requested after the signed halfword increment>=2.
 Countdown/mode/count remain distinct from battle16f57;full field assignment/
 setup flag/pouch/save/turn/source and original execution remain open.
+
+
+[Complete effect deletion leaves](EFFECT_SOFT_AND_HARD_DELETION.md) and
+[caller/lifetime correction](EFFECT_DELETE_CALLERS_AND_LIFETIME.md) clarify that
+the fog target8005e9c0 is SOFT deletion. Mask02 records only receive OR04 before
+fog clears its pointer;hard payload release is8005ea30. Earlier helper-name
+wording was incorrect;timer/address evidence is unchanged. Full backend/scene/
+update/source and original traces remain open.

@@ -172,3 +172,10 @@ fortune producer,effect/audio/announcement backend or original execution proof.
 close its called construction/acquisition/map helper requests,32-byte payload
 fields,heap3 and exact map+1e word write. Update/draw/delete/resource/platform
 engines and original lifetime/frame behavior remain open.
+
+
+[Complete soft/hard deletion](EFFECT_SOFT_AND_HARD_DELETION.md) and
+[caller/name lifetime](EFFECT_DELETE_CALLERS_AND_LIFETIME.md) now pin the
+shared release leaves. Soft deletion keeps mask02 records name-visible after
+OR04;hard deletion clears only flags after heap3 free. Effect-specific update/
+04 consumption and render/frame/source ownership remain open.
