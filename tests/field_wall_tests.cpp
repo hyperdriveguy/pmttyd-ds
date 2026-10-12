@@ -1,4 +1,5 @@
 #include "field_wall.hpp"
+#include "field_air_shadow.hpp"
 #include "field_ray.hpp"
 #include "game.hpp"
 #include <cmath>
@@ -70,8 +71,44 @@ void shadowCases() {
     CHECK(!unknown.found && unknown.unresolvedObject);
     unlink(path);clearCollision();
 }
+void airShadowCases() {
+    FieldShadowRecord r;r.type=2;r.size=13;r.flags=3;
+    CHECK(fieldAirShadowPlan(r).lists==std::vector<uint8_t>({3,4,1,2}));
+    r.alpha=0; // TEV alpha does not affect list admission.
+    CHECK(fieldAirShadowPlan(r).lists.size()==4);
+    r.opacity=0;CHECK(fieldAirShadowPlan(r).lists.empty());
+    r.flags|=4;CHECK(fieldAirShadowPlan(r).noDecay && fieldAirShadowPlan(r).lists==std::vector<uint8_t>({0,1,2}));
+    r.flags=3;r.opacity=1;r.decay=0;CHECK(fieldAirShadowPlan(r).lists==std::vector<uint8_t>({3,1,2}));
+    r.decay=1;CHECK(fieldAirShadowPlan(r).lists==std::vector<uint8_t>({4,1,2}));
+    r.decay=.4f;r.innerOpacity=10;CHECK(fieldAirShadowPlan(r).lists==std::vector<uint8_t>({3,1,2}));
+    r.type=0;CHECK(fieldAirShadowPlan(r).lists.empty());r.type=2;
+    r.flags=1;CHECK(fieldAirShadowPlan(r).lists.empty());r.flags=3;
+    r.camera=1;CHECK(fieldAirShadowPlan(r).lists.empty());r.camera=4;
+    r.size=0;CHECK(fieldAirShadowPlan(r).lists.empty());r.size=13;
+    // Synthetic indexed fixtures independently check fan/strip winding,
+    // color-index lookup and all three affine rows without source payload.
+    FieldShadowGeometry g;g.loaded=true;r.matrix={{2,0,0,10,0,3,0,20,0,0,4,30}};
+    for(size_t i=0;i<60;++i)g.positions[i]={float(i),float(i+1),float(i+2)};
+    g.palettes[0][0]={{1,2,3,110}};g.palettes[0][1]={{4,5,6,0}};g.palettes[0][2]={{7,8,9,22}};
+    g.lists[0]={0xa0,{{0,0},{1,1},{2,2},{3,0}}};
+    g.lists[1]={0x98,{{0,0},{1,1},{2,2},{3,0}}};
+    auto mesh=fieldAirShadowVertices(g,r,{{0,1},false});CHECK(mesh.size()==12);
+    CHECK(mesh[0].point.x==10 && mesh[0].point.y==23 && mesh[0].point.z==38);
+    CHECK(mesh[3].point.x==10 && mesh[4].point.x==14 && mesh[5].point.x==16);
+    CHECK(mesh[9].point.x==14 && mesh[10].point.x==12 && mesh[11].point.x==16);
+    CHECK(mesh[1].color[3]==0 && mesh[2].color[3]==22);
+    CHECK(fieldAirShadowVertices(FieldShadowGeometry{},r,{{0},false}).empty());
+}
 int main(int argc,char**) {
     if(argc>1) {
+        FieldShadowGeometry geometry;CHECK(geometry.load("romfs/shadows.pmshadow"));
+        FieldShadowRecord record;record.type=2;record.size=13;record.flags=3;
+        CHECK(fieldAirShadowVertices(geometry,record,fieldAirShadowPlan(record)).size()==252);
+        record.flags=7;CHECK(fieldAirShadowVertices(geometry,record,fieldAirShadowPlan(record)).size()==168);
+        CHECK(geometry.positions[16].y==-1 && geometry.palettes[0][2][3]==22);
+        CHECK(geometry.palettes[1][1][3]==110);
+        FILE* truncated=tmpfile();CHECK(truncated);fwrite("PMSHDW1",8,1,truncated);rewind(truncated);
+        CHECK(!geometry.read(truncated) && geometry.loaded && geometry.positions[16].y==-1);fclose(truncated);
         struct Triangle {std::array<float,9> vertices;GroundContact owner;uint32_t cull;};
         static_assert(sizeof(Triangle)==48,"Original converted triangle record");
         int checked=0;
@@ -121,7 +158,7 @@ int main(int argc,char**) {
         }
         clearCollision();std::cout<<checked<<" original-mesh directional and shadow rays matched full scan\n";return 0;
     }
-    shadowCases();
+    shadowCases();airShadowCases();
     CHECK(close(quantizeFieldWall(1.0004f),1));CHECK(close(quantizeFieldWall(-1.0006f),-1.001f));
     CHECK(close(quantizeFieldWall(.0005f),.001f));CHECK(close(quantizeFieldWall(-.0005f),-.001f));
     FieldWallActor actor;

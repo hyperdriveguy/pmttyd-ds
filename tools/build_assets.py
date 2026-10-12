@@ -13,6 +13,7 @@ from PIL import Image,ImageDraw
 from iso_assets import extract,convert_tpl,DEFAULT_ISO
 from character_bake import bake
 from character_mesh import compile_mesh
+from shadow_pack import compile_shadow
 from map_convert import convert
 from audio_convert import stm,sample_directory
 from room_convert import exits,damage_returns,resolve_damage_returns,road_hit
@@ -23,10 +24,10 @@ def main():
     tex3ds=shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds'
     source=Path(ISO)
     if not source.is_file():raise SystemExit('Original asset pack requires TTYD_ISO pointing to your GameCube ISO')
-    scripts=[Path(__file__),ROOT/'tools/iso_assets.py',ROOT/'tools/character_bake.py',ROOT/'tools/character_node.py',ROOT/'tools/character_mesh.py',ROOT/'tools/character_animation_data.py',ROOT/'tools/character_animation_pack.py',ROOT/'tools/map_convert.py',ROOT/'tools/map_animation.py',ROOT/'tools/audio_convert.py',ROOT/'tools/room_convert.py']
+    scripts=[Path(__file__),ROOT/'tools/iso_assets.py',ROOT/'tools/character_bake.py',ROOT/'tools/character_node.py',ROOT/'tools/character_mesh.py',ROOT/'tools/shadow_pack.py',ROOT/'tools/verify_overworld_mario_air_shadow.py',ROOT/'tools/character_animation_data.py',ROOT/'tools/character_animation_pack.py',ROOT/'tools/map_convert.py',ROOT/'tools/map_animation.py',ROOT/'tools/audio_convert.py',ROOT/'tools/room_convert.py']
     fingerprint=hashlib.sha256(b''.join(p.read_bytes() for p in scripts)+str((source.stat().st_size,source.stat().st_mtime_ns)).encode()).hexdigest()
     manifest=OUTPUT/'manifest.json'
-    required=['characters.pmanim','characters.pmmesh','characters-mesh.t3x','characters.t3x','sky.t3x','map.vertices','map.batches','rogueport.wav','battle.wav','victory.wav','stage.vertices','stage.batches','map.walls','map.ground','gor_00.vertices','gor_02.vertices','gor_03.vertices','gor_04.vertices','map.uvanim','stage.uvanim','gor_00.uvanim','gor_02.uvanim','gor_03.uvanim','gor_04.uvanim','rooms.bin','map.meshanim','stage.meshanim','gor_00.meshanim','gor_02.meshanim','gor_03.meshanim','gor_04.meshanim']
+    required=['shadows.pmshadow','characters.pmanim','characters.pmmesh','characters-mesh.t3x','characters.t3x','sky.t3x','map.vertices','map.batches','rogueport.wav','battle.wav','victory.wav','stage.vertices','stage.batches','map.walls','map.ground','gor_00.vertices','gor_02.vertices','gor_03.vertices','gor_04.vertices','map.uvanim','stage.uvanim','gor_00.uvanim','gor_02.uvanim','gor_03.uvanim','gor_04.uvanim','rooms.bin','map.meshanim','stage.meshanim','gor_00.meshanim','gor_02.meshanim','gor_03.meshanim','gor_04.meshanim']
     required.extend(prefix+'.returns' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
     required.extend(prefix+'.head' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
     required.extend(prefix+'.camera' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
@@ -39,6 +40,7 @@ def main():
         records.append(json.loads(output.with_suffix(output.suffix+'.provenance.json').read_text()));return output
     def texture(image,output,fmt='rgba8'):
         subprocess.run([tex3ds,'-f',fmt,'-z','auto','-o',str(output),str(image)],check=True,stdout=subprocess.DEVNULL)
+    shadow_metadata=compile_shadow(ISO,OUTPUT/'shadows.pmshadow')
     mario=asset('a/a_mario-','a_mario.tpl');convert_tpl(mario,WORK/'mario-original.png',0)
     mario_model=asset('a/a_mario','a_mario')
     rear_model=asset('a/a_mario_r','a_mario_r');rear_tpl=asset('a/a_mario_r-','a_mario_r.tpl')
@@ -178,7 +180,7 @@ def main():
     for filename in ['confirm.wav','jump.wav','hit.wav','success.wav']:
         (OUTPUT/filename).unlink(missing_ok=True)
     manifest.write_text(json.dumps({'fingerprint':fingerprint,'source_disc':'G8ME01','assets':records,
-        'characters':poses,'character_mesh':character_mesh,'map':summary,'overworld_rooms':rooms,'road_links':links,'camera_containers':{'map':'m/gor_01/c',**{room:'m/'+room+'/c' for room in ['gor_00','gor_02','gor_03','gor_04']}},'damage_return_tables':return_tables,'resolved_damage_returns':resolved_returns,'battle_stage':stage_summary,'music':music,'sample_bank_entries':len(directory),
+        'shadow_geometry':shadow_metadata,'characters':poses,'character_mesh':character_mesh,'map':summary,'overworld_rooms':rooms,'road_links':links,'camera_containers':{'map':'m/gor_01/c',**{room:'m/'+room+'/c' for room in ['gor_00','gor_02','gor_03','gor_04']}},'damage_return_tables':return_tables,'resolved_damage_returns':resolved_returns,'battle_stage':stage_summary,'music':music,'sample_bank_entries':len(directory),
         'sound_effect_status':'Original banks preserved; macro-to-event mapping not yet implemented. No synthetic replacements.',
         'conversion':'Original character idle poses and Mario jump/hammer textures baked to RGBA8 atlas; static Rogueport geometry; map textures capped at 128px; DSP music decoded losslessly at original rate'},indent=2)+'\n')
     print(f'Built original asset pack: {summary["triangles"]} map triangles, {len(directory)} preserved samples')

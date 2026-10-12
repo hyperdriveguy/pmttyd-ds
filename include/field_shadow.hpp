@@ -8,6 +8,8 @@ struct FieldShadowRecord {
     uint32_t flags=1,color=0x6e000000u; // Native packed RGBA: black,alpha110.
     FieldWallVector root;
     float size=0,height=20;
+    float opacity=1,innerOpacity=.2f,decay=.4f;
+    uint8_t alpha=255;
     std::array<float,12> matrix{};
 };
 inline FieldShadowRecord marioShadowRequest(FieldWallVector root,float retainedGround,bool support,

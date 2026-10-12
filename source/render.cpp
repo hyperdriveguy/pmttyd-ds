@@ -9,6 +9,8 @@
 namespace ttyd {
 namespace {
 constexpr int MaxVertices=12000;
+constexpr auto FieldRGB=GPU_WRITEMASK(GPU_WRITE_RED|GPU_WRITE_GREEN|GPU_WRITE_BLUE);
+constexpr auto FieldRGBDepth=GPU_WRITEMASK(FieldRGB|GPU_WRITE_DEPTH);
 // Provisional legacy billboard/shadow framing for unbound presentation domains.
 // Ordinary Mario uses original model coordinates and the source scalar2.
 constexpr float LegacyPaperCharacterScale=.16f;
@@ -46,6 +48,7 @@ bool Renderer::init() {
     if(!sky.imported)return false;
     C3D_TexSetFilter(&sky.texture,GPU_LINEAR,GPU_LINEAR);
     if(!actorAnimations.load("romfs:/characters.pmanim"))return false;
+    if(!shadowGeometry.load("romfs:/shadows.pmshadow"))return false;
     FILE* characterFile=std::fopen("romfs:/characters-mesh.t3x","rb");if(!characterFile)return false;
     characterTextures.imported=Tex3DS_TextureImportStdio(characterFile,&characterTextures.texture,nullptr,false);std::fclose(characterFile);
     if(!characterTextures.imported)return false;
@@ -135,39 +138,42 @@ void Renderer::updateCutaways(Room& room,const Game& g) {
         occluder.hidden=blocked || g.ticks<occluder.hiddenUntil;
     }
 }
-void Renderer::drawMap(bool battle,const Game& game) {
+void Renderer::drawMap(bool battle,const Game& game,bool translucent) {
     auto& room=battle?stage:plaza;
-    if(!battle)updateCutaways(room,game);
-    if(room.animationStart==UINT64_MAX)room.animationStart=game.ticks;
-    for(const auto& track:room.meshTracks) {
-        const auto& matrix=track.frames[(game.ticks-room.animationStart)%track.frames.size()];
-        for(auto binding:track.bindings) {
-            auto p=transformedPosition(matrix,binding);
-            auto& v=room.vertices[binding.vertex];v.x=p[0];v.y=p[1];v.z=p[2];
+    if(!battle && !translucent)updateCutaways(room,game);
+    if(!translucent) {
+        if(room.animationStart==UINT64_MAX)room.animationStart=game.ticks;
+        for(const auto& track:room.meshTracks) {
+            const auto& matrix=track.frames[(game.ticks-room.animationStart)%track.frames.size()];
+            for(auto binding:track.bindings) {
+                auto p=transformedPosition(matrix,binding);
+                auto& v=room.vertices[binding.vertex];v.x=p[0];v.y=p[1];v.z=p[2];
+            }
+            for(size_t n=0;n<track.bindings.size();) {
+                uint32_t first=track.bindings[n].vertex,last=first;++n;
+                while(n<track.bindings.size() && track.bindings[n].vertex==last+1)last=track.bindings[n++].vertex;
+                GSPGPU_FlushDataCache(room.vertices+first,(last-first+1)*sizeof(Vertex));
+            }
         }
-        for(size_t n=0;n<track.bindings.size();) {
-            uint32_t first=track.bindings[n].vertex,last=first;++n;
-            while(n<track.bindings.size() && track.bindings[n].vertex==last+1)last=track.bindings[n++].vertex;
-            GSPGPU_FlushDataCache(room.vertices+first,(last-first+1)*sizeof(Vertex));
-        }
-    }
-    for(const auto& track:room.uvTracks) {
-        const auto& matrix=track.frames[(game.ticks-room.animationStart)%track.frames.size()];
-        for(auto binding:track.bindings) {
-            auto uv=transformedUV(matrix,binding);
-            auto& v=room.vertices[binding.vertex];v.u=uv[0];v.v=uv[1];
-        }
-        // Bindings are contiguous per original material batch. Flush each run,
-        // keeping cache maintenance proportional to animated geometry.
-        for(size_t n=0;n<track.bindings.size();) {
-            uint32_t first=track.bindings[n].vertex,last=first;++n;
-            while(n<track.bindings.size() && track.bindings[n].vertex==last+1)last=track.bindings[n++].vertex;
-            GSPGPU_FlushDataCache(room.vertices+first,(last-first+1)*sizeof(Vertex));
+        for(const auto& track:room.uvTracks) {
+            const auto& matrix=track.frames[(game.ticks-room.animationStart)%track.frames.size()];
+            for(auto binding:track.bindings) {
+                auto uv=transformedUV(matrix,binding);
+                auto& v=room.vertices[binding.vertex];v.u=uv[0];v.v=uv[1];
+            }
+            // Bindings are contiguous per original material batch. Flush each run,
+            // keeping cache maintenance proportional to animated geometry.
+            for(size_t n=0;n<track.bindings.size();) {
+                uint32_t first=track.bindings[n].vertex,last=first;++n;
+                while(n<track.bindings.size() && track.bindings[n].vertex==last+1)last=track.bindings[n++].vertex;
+                GSPGPU_FlushDataCache(room.vertices+first,(last-first+1)*sizeof(Vertex));
+            }
         }
     }
     auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,room.vertices,sizeof(Vertex),3,0x210);
     const GPU_TEXTURE_WRAP_PARAM wraps[]={GPU_CLAMP_TO_EDGE,GPU_REPEAT,GPU_MIRRORED_REPEAT};
     for(auto batch:room.batches) {
+        if(!battle && ((batch.layer&255)==2)!=translucent)continue;
         uint32_t group=(batch.layer>>8)&65535;
         if(!battle && group && room.occluders[group].hidden)continue;
         C3D_Tex* texture=batch.texture<0?&atlas:&room.textures[batch.texture].texture;
@@ -176,11 +182,11 @@ void Renderer::drawMap(bool battle,const Game& game) {
         // GX winding maps to the opposite PICA enum in this view transform.
         const GPU_CULLMODE culls[]={GPU_CULL_BACK_CCW,GPU_CULL_FRONT_CCW,GPU_CULL_NONE,GPU_CULL_NONE};
         C3D_CullFace(culls[(batch.layer>>24)&3]);
-        C3D_DepthTest(true,GPU_GREATER,(batch.layer&255)==2?GPU_WRITE_COLOR:GPU_WRITE_ALL);
+        C3D_DepthTest(true,GPU_GREATER,(batch.layer&255)==2?(battle?GPU_WRITE_COLOR:FieldRGB):(battle?GPU_WRITE_ALL:FieldRGBDepth));
         C3D_DrawArrays(GPU_TRIANGLES,batch.start,batch.count);
     }
     C3D_CullFace(GPU_CULL_NONE);
-    C3D_DepthTest(true,GPU_GREATER,GPU_WRITE_ALL);
+    C3D_DepthTest(true,GPU_GREATER,battle?GPU_WRITE_ALL:FieldRGBDepth);
 }
 void Renderer::vertex(float x,float y,float z,float u,float v,uint32_t color) {
     if(count>=MaxVertices) return;
@@ -237,6 +243,20 @@ void Renderer::marioGroundShadow(const FieldShadowRecord& record) {
     for(int index:triangles) {
         const auto p=points[index];vertex(p.x*.01f,p.y*.01f,p.z*.01f,0,0,record.color);
     }
+}
+int Renderer::marioAirShadow(const FieldShadowRecord& record) {
+    const auto mesh=fieldAirShadowVertices(shadowGeometry,record,fieldAirShadowPlan(record));
+    if(mesh.empty() || mesh.size()*3>size_t(MaxVertices-count))return 0;
+    // Source pass1 vertex material, pass2 constant zero, pass3 global material.
+    // CPU material selection adapts the common untextured GX TEV program.
+    for(int pass=0;pass<3;++pass)for(const auto& v:mesh) {
+        uint32_t color=0;
+        if(pass==0)color=rgb(v.color[0],v.color[1],v.color[2],v.color[3]);
+        if(pass==2)color=record.color;
+        vertex(v.point.x*.01f,v.point.y*.01f,v.point.z*.01f,0,0,color);
+        if(pass==0)vertices[count-1].a*=record.alpha/255.f;
+    }
+    return int(mesh.size());
 }
 void Renderer::world(const Game& g) {
     count=0;
@@ -297,55 +317,73 @@ void Renderer::world(const Game& g) {
         characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,g.groundHeight+g.jumpHeight,
                        g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ());
     const int actorEnd=count;
-    bool polygonShadow=false;
+    bool polygonShadow=false;int airShadowCount=0;
     if(!battle) {
         const float rootY=g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight;
         auto request=marioShadowRequest({g.progress.position.x*100,rootY*100,g.progress.position.z*100},
                                        g.groundMetadataHeight*100,g.groundContact.sourceNode!=0,
                                        g.marioPresentation.displayFlags,uint32_t(g.fieldIdle.mainFlags));
-        if(request.type==0 && request.size!=0) {
-            FieldShadowServices services{nullptr,[](void*,FieldWallVector p,FieldWallVector d,float length){return fieldShadowRay(p,d,length);}};
-            if(prepareFieldShadow(request,services) && fieldShadowPolygonAdmitted(request)) {
-                marioGroundShadow(request);polygonShadow=true;
-            }
+        FieldShadowServices services{nullptr,[](void*,FieldWallVector p,FieldWallVector d,float length){return fieldShadowRay(p,d,length);}};
+        if(prepareFieldShadow(request,services)) {
+            if(fieldShadowPolygonAdmitted(request)){marioGroundShadow(request);polygonShadow=true;}
+            else airShadowCount=marioAirShadow(request);
         }
-        // Type2 requests await the original multi-pass volume backend.
-        // The prior ellipse remains an explicit provisional rendering adapter.
-        else if(request.type==2 && request.size!=0)shadow(g.progress.position,.55f,g.groundHeight);
     }
+
     C3D_BindProgram(&program);
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);
     AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
     auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
     C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&transform);
     C3D_CullFace(GPU_CULL_NONE);
-    C3D_DepthTest(true,GPU_GREATER,GPU_WRITE_ALL);
+    C3D_DepthTest(true,GPU_GREATER,battle?GPU_WRITE_ALL:FieldRGBDepth);
     C3D_AlphaTest(true,GPU_GREATER,8);
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
     C3D_TexBind(0,&atlas);
     for(int n=0;n<6;++n) C3D_TexEnvInit(C3D_GetTexEnv(n));
     auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
-    C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);
+    C3D_DepthTest(false,GPU_ALWAYS,battle?GPU_WRITE_COLOR:FieldRGB);
     C3D_TexBind(0,&sky.texture);C3D_DrawArrays(GPU_TRIANGLES,0,6);
-    C3D_DepthTest(true,GPU_GREATER,GPU_WRITE_ALL);
+    C3D_DepthTest(true,GPU_GREATER,battle?GPU_WRITE_ALL:FieldRGBDepth);
     drawMap(battle,g);
     buffers=C3D_GetBufInfo();
     BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
     C3D_TexBind(0,&atlas);
     C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
     if(actorEnd>legacyCount){C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
-    if(count>actorEnd) {
-        // Source LEQUAL maps to GEQUAL in PICA's reversed-depth projection;
-        // shadows blend after actors/maps without writing depth.
-        // Original camera4 callback disables alpha updates before Polygon.
-        const auto writes=polygonShadow?GPU_WRITEMASK(GPU_WRITE_RED|GPU_WRITE_GREEN|GPU_WRITE_BLUE):GPU_WRITE_COLOR;
-        C3D_DepthTest(true,GPU_GEQUAL,writes);
+    if(polygonShadow || airShadowCount) {
         C3D_TexEnvInit(env);
-        if(polygonShadow){C3D_TexEnvSrc(env,C3D_Both,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_REPLACE);}
-        else {C3D_TexBind(0,&atlas);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);}
-        C3D_DrawArrays(GPU_TRIANGLES,actorEnd,count-actorEnd);
-        C3D_DepthTest(true,GPU_GREATER,GPU_WRITE_ALL);
+        C3D_TexEnvSrc(env,C3D_Both,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);
+        C3D_TexEnvFunc(env,C3D_Both,GPU_REPLACE);
+        C3D_AlphaTest(false,GPU_ALWAYS,0);
+        if(polygonShadow) {
+            C3D_DepthTest(true,GPU_GEQUAL,FieldRGB);
+            C3D_DrawArrays(GPU_TRIANGLES,actorEnd,count-actorEnd);
+        } else {
+            // Source LEQUAL becomes GEQUAL with the reversed native projection.
+            // Preserve each record's alpha OR, front-face zero, RGB mask blend.
+            C3D_DepthTest(true,GPU_GEQUAL,GPU_WRITE_ALPHA);
+            C3D_CullFace(GPU_CULL_FRONT_CCW);
+            C3D_ColorLogicOp(GPU_LOGICOP_OR);
+            C3D_DrawArrays(GPU_TRIANGLES,actorEnd,airShadowCount);
+            C3D_CullFace(GPU_CULL_BACK_CCW);
+            C3D_ColorLogicOp(GPU_LOGICOP_COPY);
+            C3D_DrawArrays(GPU_TRIANGLES,actorEnd+airShadowCount,airShadowCount);
+            C3D_CullFace(GPU_CULL_FRONT_CCW);
+            C3D_DepthTest(true,GPU_GEQUAL,FieldRGB);
+            C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_DST_ALPHA,GPU_ONE_MINUS_DST_ALPHA,GPU_ONE,GPU_ZERO);
+            C3D_DrawArrays(GPU_TRIANGLES,actorEnd+airShadowCount*2,airShadowCount);
+        }
+        C3D_CullFace(GPU_CULL_NONE);
+        C3D_AlphaTest(true,GPU_GREATER,8);
+        C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
+        C3D_DepthTest(true,GPU_GREATER,FieldRGBDepth);
+        C3D_TexEnvInit(env);
+        C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);
+        C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
     }
+    // Original stage400000 opaques,500000 shadows,600000 translucent.
+    if(!battle)drawMap(false,g,true);
 }
 void Renderer::text(const char* str,float x,float y,float scale,uint32_t color) {
     C2D_Text t;C2D_TextParse(&t,textBuffer,str);C2D_TextOptimize(&t);
@@ -478,7 +516,8 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
 void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
     C2D_TextBufClear(textBuffer);
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-    C3D_RenderTargetClear(top,C3D_CLEAR_ALL,0xA6CBD8FF,0);
+    const bool battle=g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
+    C3D_RenderTargetClear(top,C3D_CLEAR_ALL,battle?0xA6CBD8FF:0,0);
     C3D_FrameDrawOn(top);world(g);
     C2D_Prepare();C2D_SceneBegin(top);overlay(g);
     if(g.fade.alpha())C2D_DrawRectSolid(0,0,.99f,400,240,C2D_Color32(0,0,0,g.fade.alpha()));
