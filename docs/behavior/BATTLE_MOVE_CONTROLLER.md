@@ -190,3 +190,10 @@ services, audience/announcement internals, flag/item bindings, all external
 channel writers, outer invocation cadence and victory/defeat/reward execution.
 Local move-controller coverage is complete; full battle/game behavior remains
 unfinished and requires original/native execution comparisons.
+
+
+[Complete Done/EndCheck leaves](JUMP_MAJINAI_POWER_CHECK_CHILD.md) now supply
+byte decrement/reread/unconditional5b9/5ba reset and captured battle flag OR
+only for count0. [Effect/name services](JUMP_MAJINAI_EFFECT_AND_NESTED_SOURCES.md)
+close the shared effect wrapper;defence-script/fortune producer and full source/
+backend/runtime domains remain separate.

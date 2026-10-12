@@ -705,3 +705,11 @@ adjacent arrays or the reused query header. Exhaustion requests general
 partyGetAppearPos,ignores its return and returns0 after optional owner-height
 adjustment. The general fallback engine remains open;this is not complete
 end-to-end placement or original-runtime equivalence.
+
+
+[Jump Majinai power child](behavior/JUMP_MAJINAI_POWER_CHECK_CHILD.md) and
+[effect/nested source contracts](behavior/JUMP_MAJINAI_EFFECT_AND_NESTED_SOURCES.md)
+close14-command query/consumption graph,global name-based effect polling,
+complete12-command jump child and17-command independent five-key sound root.
+Additional source spans/callbacks,fortune producer,render/audio/message/backend
+ownership and original execution remain EVT-01/JUMP-01/DMG-02 work.

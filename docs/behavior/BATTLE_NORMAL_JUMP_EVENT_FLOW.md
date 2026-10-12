@@ -258,3 +258,10 @@ SuitoruBadgeEffect graph/amount/resource/geometry obligations and scoped recover
 effect request. Jump's waiting-child call is80356be0. Owner125/brother120 waits
 and sequential amount queries remain separate scheduling rules;full renderer/
 VM/source/domain and original execution are still dependencies.
+
+
+[Complete Majinai power-check child](JUMP_MAJINAI_POWER_CHECK_CHILD.md) now
+supplies its query/consumption/flag graph;[effect/nested sources](JUMP_MAJINAI_EFFECT_AND_NESTED_SOURCES.md)
+closes selected effect-name polling,jump and independent five-key audio request
+streams. Their source spans/additional callbacks still need native binding;
+fortune/effect/audio/message/backend and original execution remain open.

@@ -1,5 +1,39 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Complete Jump Majinai child and nested presentation requests
+
+Documentation agent ID2 closed14-command power child,full query/Done/EndCheck,
+effect wrapper/name services/ftomsec,and nested12-command jump/17-command sound
+root in two detailed files. False query preserves battle flag;true writes output
+before capturedB flag and independent pouch/battle consumption calls. Count0
+wraps255,mode resets unconditionally,end OR only count0. Effect ignores script
+actor/calls Mario query unused,uses constant(0,10,0) and waits for ANY matching
+name rather than retained pointer. Independent root preserves five original
+SFX keys and nominal conversion without claimed wall-clock playback. Message
+ID/request is preserved;no invented dialogue/presentation/runtime behavior.
+
+Additional source/registry dependencies queued:MajinaiJump and sound root plus
+trailing scanner words,three additional callback addresses. Existing packer
+reproduced six-source /tmp/id2-majinai-jump-six-sources.pmevt:6 events,5 segments,
+5020 bytes,SHA256ed911bc8cb183d68dfb4e0f2f19a83f47640db4d94c640e4198fe712e3127a0e.
+All three selected Majinai+trailing ranges match ISO evidence. Native defaults/
+source bindings unchanged;original ELF/listings/inventory/packs remain /tmp.
+
+Validation: verify_jump_majinai_child.py passes15 complete/linked hashes,240
+instruction anchors,nine data spans and three full event+trailing hashes.
+Repeat reports match (/tmp/id2-majinai-evidence.json and -second.json).
+General1980-anchor,prior Jump registry and event run/control verifiers pass;
+Python compilation,diff-check and2091 local links pass. make test51/51 CTest
+suites and78 Python tests;make all passes. Exact logs:/tmp/id2-majinai-test.log
+and /tmp/id2-majinai-build.log. Concurrent native/ID1 work preserved.
+
+Own scoped lock released;EVT-01/JUMP-01/DMG-02 remain open. Next native owner
+binds added sources/actual callbacks and original effect/audio/message/pose
+backends;documentation continues fortune producer/pouch/raw record/reset/end/
+turn/source domains and remaining requests. No native/test/asset converter code
+changed;static source checks do not prove original execution. Goal active/incomplete.
+
+
 ## 2026-10-12 — Coherent original EventEntry address translator
 
 Implemented `event_entry_addresses.cpp` from newly delivered packed-layout/alias

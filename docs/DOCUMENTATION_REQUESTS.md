@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Jump Majinai power-check child and local result/effect callbacks | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Power graph/consumption](behavior/JUMP_MAJINAI_POWER_CHECK_CHILD.md),[effect/nested sources](behavior/JUMP_MAJINAI_EFFECT_AND_NESTED_SOURCES.md):full14/12/17-command graphs,query/Done/EndCheck/name polling/ftomsec and five original keys;additional spans/three callbacks,fortune producer/render/audio/message/backend/runtime remain open |
 | General partner placement writer and placement4 fallback | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete partyGetAppearPos local dispatch/search/output/alias graph used by placement4 exhaustion;backend/pose/source/numeric domains and original trajectories remain separate |
 | WorkInit exact snapshot clear and preserved-byte map | INPUT-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete reset/raw map](behavior/BATTLE_PAD_RESET_AND_RAW_PRESERVATION.md):snapshot0..a clear/b preserved,release/raw-tail preservation,interleaved history/phase store order and updater prior-copy distinction;physical polling/SDK/source/runtime remains open |
 | Jump unit-data child key7 and continuation service | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete data-child/Mario source](behavior/BATTLE_UNIT_DATA_CHILD_CONTINUATION.md),[all actor selectors/system query](behavior/BATTLE_ACTOR_SELECTOR_TRANSLATION.md):key7→80416bd0 DELETE child,parent wait/post-constructor actor/255,ordered queries closed;extra source span requested,dynamic writers/backend/runtime remain open |
@@ -1848,3 +1849,31 @@ frame-rate/caller/original input/impact traces stay open. Evidence verifier now
 passes11 hashes,154 anchors (90 added),28 direct calls,three data checks;repeat
 reports equal. make test50 CTest/78 Python and make all pass;2048 local links
 resolve;general1980 anchors pass. No native/test/asset edits by ID2.
+
+
+ID2 EVT-01/JUMP-01/DMG-02 Majinai-child delivery (2026-10-12), partial answer:
+[Power-check graph/state](behavior/JUMP_MAJINAI_POWER_CHECK_CHILD.md) closes all
+14 commands and complete query/Done/EndCheck:pouch5ba exact1,output before
+capturedB18ff9=1,query-false NO flag clear,byte count decrement/wrap (0→255),
+unconditional5b9ff/5ba0,EndCheck00400000 OR only count0. Current pouch/battle
+captures remain independent. [Effect/nested graphs](behavior/JUMP_MAJINAI_EFFECT_AND_NESTED_SOURCES.md)
+closes unused actor operand/Mario query,constant vector(0,10,0),E78 gate and
+ANY global same-name mjef_coinup polling,first-match/name-copy helpers;complete
+12-command status-gated jump and17-command independent five-key sound root.
+ftomsec uses wrapped*1000/SIGNED hardcoded60,not GP refresh;WAIT_MSEC remains
+lifetime-owned. Original message ID btl_msg_mj_power_up and request preserved.
+Own lock released;fortune producer/pouch writers,effect/audio/message/announcement/
+pose/source/backend and original execution remain open.
+
+Native source/registry dependency:pack must add MajinaiJump80363414/ac and
+sound80306874/10c plus trailing words,in addition to previously requested key7
+child. Six explicit source names reproduced /tmp/id2-majinai-jump-six-sources.pmevt:
+6 events/5 merged segments/5020 bytes;all three Majinai ranges byte-exact.
+Nested graphs add three callback identities beyond prior72:80103dc0 ftomsec,
+80105cb4 CheckActStatus,801521dc evt_snd_sfxon_3d;extra identities are pinned,
+full audio/backend policy remains unbound. Do not replace name wait,independent
+root or tiny/animated child with immediate success. Verifier passes15 whole/
+linked hashes,240 anchors,nine spans,three full event+trailing hashes;repeat
+reports equal. General1980/root-run/prior registry checks pass;make test51 CTest/
+78 Python and make all pass;2091 local links resolve. No native/test/asset-packer
+source edits by ID2;original extracts/packs stay /tmp.
