@@ -25,6 +25,11 @@ void attack(Game& g,bool success) {
     CHECK(g.phase==Phase::Impact);
 }
 void headContactRules() {
+    const float rad=3.14159265358979323846f/180.f;
+    CHECK(floorSlopeAllowed(std::sin(49.9f*rad),std::cos(49.9f*rad),0));
+    CHECK(!floorSlopeAllowed(std::sin(50.1f*rad),std::cos(50.1f*rad),0));
+    CHECK(floorSlopeAllowed(0,-1,0)); // Slope only; face culling is separate.
+    CHECK(!floorSlopeAllowed(0,0,0));CHECK(!floorSlopeAllowed(1,0,0));
     CHECK(floorCandidateReachable(0,0,-.019f));
     CHECK(!floorCandidateReachable(0,0,-.02f));
     CHECK(floorCandidateReachable(0,-.02f,-.02f));
@@ -255,6 +260,22 @@ void collisionImport() {
     CHECK(!loadCollision("/does/not/exist"));
 }
 void groundImport() {
+    {
+        char slopes[]="/tmp/ttyd-slopes-XXXXXX";int fd=mkstemp(slopes);CHECK(fd>=0);close(fd);
+        for(float angle:{49.7f,50.1f}) {
+            float slope=std::tan(angle*3.14159265358979323846f/180.f);
+            float tri[]={-1,-slope,1,1,slope,1,-1,-slope,4};uint32_t count=1;
+            {std::ofstream file(slopes,std::ios::binary);file.write(reinterpret_cast<char*>(&count),4);file.write(reinterpret_cast<char*>(tri),36);}
+            CHECK(loadGround(slopes));float h=99;
+            CHECK(groundAt({-.5f,2},-.5f*slope,h)==(angle<50));
+        }
+        // A steep nearest surface rejects the ray; a lower floor must not win instead.
+        float tris[]={-1,-1.53205f,1,1,1.93205f,1,-1,-1.53205f,4,
+            -1,0,1,1,0,1,-1,0,4};uint32_t count=2;
+        {std::ofstream file(slopes,std::ios::binary);file.write(reinterpret_cast<char*>(&count),4);file.write(reinterpret_cast<char*>(tris),72);}
+        CHECK(loadGround(slopes));float h=99;CHECK(!groundAt({0,1.5f},0,h));CHECK(h==99);
+        clearCollision();std::remove(slopes);
+    }
     char path[]="/tmp/ttyd-ground-XXXXXX";int fd=mkstemp(path);CHECK(fd>=0);
     uint32_t count=2;
     // Sloping floor, plus a roof that must not pull the actor upward.
@@ -610,7 +631,7 @@ void indexedOriginalCollision() {
                    wallSliceBlocks(wallGeometry[n],level+.2664f,p.x,p.z,.1f))free=false;
             }
             CHECK(walkable(p,level)==free);
-            GroundContact expected;
+            GroundContact expected;size_t selected=0;
             for(size_t n=0;n<triangles.size();++n) {
                 const auto flags=contacts[n].attributes;
                 if(!(flags&0x80080) && !(flags&0x800000) && (flags&4))continue;
@@ -620,7 +641,16 @@ void indexedOriginalCollision() {
                 float a=((v[5]-v[8])*(p.x-v[6])+(v[6]-v[3])*(p.z-v[8]))/den;
                 float b=((v[8]-v[2])*(p.x-v[6])+(v[0]-v[6])*(p.z-v[8]))/den;
                 float y=a*v[1]+b*v[4]+(1-a-b)*v[7];
-                if(a>=-.0001f && b>=-.0001f && a+b<=1.0001f && y<=level+.25f && y>=level-.5f && y>floor){found=true;floor=y;expected=contacts[n];}
+                if(a>=-.0001f && b>=-.0001f && a+b<=1.0001f && y<=level+.25f && y>=level-.5f && y>floor){found=true;floor=y;expected=contacts[n];selected=n;}
+            }
+            if(found) {
+                const auto& v=triangles[selected];
+                double ax=v[3]-v[0],ay=v[4]-v[1],az=v[5]-v[2];
+                double bx=v[6]-v[0],by=v[7]-v[1],bz=v[8]-v[2];
+                double nx=ay*bz-az*by,ny=az*bx-ax*bz,nz=ax*by-ay*bx;
+                // Independent normal-cone comparison, not the runtime atan2 helper.
+                double cosine=std::cos(50*3.14159265358979323846/180);
+                found=ny*ny>cosine*cosine*(nx*nx+ny*ny+nz*nz);
             }
             float actual=0;GroundContact contact;CHECK(groundAt(p,level,actual,&contact)==found);
             if(found) {ReturnPoint point;if(groundReturn(expected,point))expected.attributes|=0x40000000;CHECK(std::fabs(actual-floor)<.001f);CHECK(contact.attributes==expected.attributes);CHECK(contact.sourceNode==expected.sourceNode);}

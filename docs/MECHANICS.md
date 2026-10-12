@@ -537,3 +537,32 @@ Grounded.25-up/.5-down stepping remains unchanged. Grounded source call may
 use different reach arguments and must not be replaced using this falling
 caller alone. Raw research tool additions in the worktree belong to separate
 work and are not part of this feature.
+
+## Ordinary floor slope filter (2026-10-12)
+
+Source marioSearchGround8008eb60 loads50degrees from80420954; special flag/
+motion16 paths load75 from80420950. Ordinary native Mario now rejects the
+nearest solid floor plane with slope>=50, before candidate vertical acceptance.
+Original8008ed34 compares angle to limit and8008ed40 clears the hit pointer
+when it reaches/exceeds limit. The current implementation uses atan2(horizontal
+normal length,abs(normalY)); face orientation is deliberately separate pending
+source cull metadata in the floor pack. It does not implement75degree special
+actor states. Source angleABf8000703c uses a lookup-based angle calculation;
+native standard atan2 can differ near the exact boundary. Do not claim bit-exact
+source angle arithmetic. Source call computes angle from(horizontal normal,
+-negative normalY); the downward ray's oriented hit normal matters.
+
+Offline floor export no longer discards normals with |normalY|/length<.65.
+That cutoff was stricter than the50degree limit and removed49.5–50degree
+surfaces. All nondegenerate projected surfaces with ratio>1e-6 now survive
+conversion; runtime chooses nearest solid ray hit then checks its slope.
+Consequently steep geometry can block a query instead of allowing a lower
+plane to win. Core tests cover49.7degree import,50.1degree rejection and steep
+over-flat masking. Original full-scan oracle independently compares normal
+cone via squared cosine, not the runtime atan2 helper. This proves query/index
+consistency on the original packs, not original face culling or Dolphin fidelity.
+
+Next floor format must preserve original cull byte and collision winding.
+Use source hit_topology/head_geometry ordering, not render topology; mode1
+rejects downward ray when normalY<=0. Other modes are two-sided and source
+orients the hit normal. Grounded stepping and slope animation remain unfinished.

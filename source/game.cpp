@@ -315,7 +315,7 @@ static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact
     if(!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(low) || !std::isfinite(high) || low>high ||
        std::fabs(p.x)>4096 || std::fabs(p.z)>4096)return false;
     if(ground.empty()) {if(low>0 || high<0)return false;height=0;if(contact)*contact={};return true;}
-    bool found=false;float best=-1e30f;GroundContact bestContact;
+    bool found=false;float best=-1e30f;GroundContact bestContact;const float* bestTriangle=nullptr;
     for(uint32_t n:nearby(groundIndex,p)) {
         // Original normal-Mario chkfilterVec rejects bit4 unless its special
         // inclusion bits apply. Name-dependent bit31 cases are not present
@@ -331,9 +331,14 @@ static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact
         float b=((v[8]-v[2])*(p.x-v[6])+(v[0]-v[6])*(p.z-v[8]))/den;
         if(a<-.0001f || b<-.0001f || a+b>1.0001f)continue;
         float y=a*v[1]+b*v[4]+(1-a-b)*v[7];
-        if(y<=high && y>=low && y>best) {best=y;bestContact=ground[n].contact;found=true;}
+        if(y<=high && y>=low && y>best) {best=y;bestContact=ground[n].contact;bestTriangle=v;found=true;}
     }
     if(found) {
+        // Original ray selects the nearest solid hit before rejecting its slope.
+        const auto v=bestTriangle;
+        const float ax=v[3]-v[0],ay=v[4]-v[1],az=v[5]-v[2];
+        const float bx=v[6]-v[0],by=v[7]-v[1],bz=v[8]-v[2];
+        if(!floorSlopeAllowed(ay*bz-az*by,az*bx-ax*bz,ax*by-ay*bx))return false;
         if(groundReturns.count(bestContact.sourceNode))bestContact.attributes|=0x40000000;
         height=best;if(contact)*contact=bestContact;
     }

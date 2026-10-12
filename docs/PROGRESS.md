@@ -1771,3 +1771,41 @@ explicit feature paths.
 Final header-cleanup `make -j2 all`, `make test` (core+32 Python) and
 `build-host/core_tests --rooms` all exited0. Unrelated user research changes
 remain outside this incremental feature commit.
+
+## 2026-10-12 — Runtime ordinary slope acceptance
+
+Previous turn made progress with source floor-reach branchescf633ee. Original
+marioSearchGround normal slope threshold is50degrees; special states use75.
+Added normal slope rejection after nearest solid plane selection. Removed
+converter.65 normal-ratio cutoff, which incorrectly removed some valid near50
+slopes; preserve all projected nondegenerate planes, including steep blockers.
+Legacy ground format/face orientation remain unchanged. Native uses atan2
+rather than source angleABf lookup arithmetic; boundary bit-exactness is not
+established. Constants/load/comparison/reset instructions are read-only verified.
+
+`make test` passed core and32 Python tests. Added49.7degree accepted import,
+50.1degree rejection, vertical/degenerate normal and steep-over-flat masking.
+Original-room full-scan oracle now independently applies squared-cosine cone
+comparison after nearest-hit selection; initial stale oracle failed as expected
+for newly rejected steep planes, updated against the intended rule.
+`build-host/core_tests --rooms` passed18,315 indexed wall/floor probe cases,
+all8 arrivals and original water/void/ceiling tests. `make -j2 all` regenerated
+original-derived packs and built ttyd-2ds.3dsx. `python3 tools/verify_actor_collision.py`
+and `python3 tools/verify_ground_attributes.py` passed50/75 source constants/
+branch sites and all4,946 floor attributes/source nodes. Full-scan comparison
+proves index/query consistency, not original collision fidelity.
+
+Native harbor stairs script exited0: dock traversal/save at original elevation,
+HP7 preserved, return to plaza. Exact command:
+`python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_harbor_stairs.py`.
+No build overlapped emulator execution. Source inputs read-only; all extracts,
+generated geometry and captures stay ignored. Unrelated user research work
+remains separate. No character-scale/camera/road-policy changes.
+
+Next: add source cull byte and hit_topology winding to floor pack (new record
+version with legacy compatibility), reject one-sided downward backfaces before
+nearest hit selection and orient two-sided normals. Then recover grounded
+marioChkGnd/head rules and replace legacy.25/.5 stepping. Source angleABf lookup
+arithmetic, special states, wall push-out/sliding, dynamic supports, original
+dialogue/story/SFX/animations/camera/interiors and full content remain incomplete.
+Full goal active; hardware acceptance unverified.

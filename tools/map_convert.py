@@ -251,7 +251,9 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
     ground=[]
     for tri,meta in zip(collision,collision_meta):
         a=np.array(tri);normal=np.cross(a[1]-a[0],a[2]-a[0]);length=np.linalg.norm(normal)
-        if length>1e-8 and abs(normal[1])/length>=.65:
+        # Retain projected surfaces; runtime applies source slope selection after
+        # nearest-hit selection, rather than silently discarding steep blockers.
+        if length>1e-8 and abs(normal[1])/length>1e-6:
             ground.append((tri,meta))
     with (output/'map.ground').open('wb') as out:
         # Tagged format preserves original node attributes and relative source ID.

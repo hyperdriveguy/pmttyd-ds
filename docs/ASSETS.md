@@ -276,3 +276,15 @@ read-only node bytes; it does not independently validate converted positions.
 Room triangle counts3153/1604/3450/3504/548 (12,259 total). Largest geometry
 vector168,192 bytes plus spatial-index overhead; only current room is active
 except temporary staging/rollback. Hardware memory/performance unverified.
+
+## Floor slope selection moved to runtime
+
+Floor converter keeps all nondegenerate triangles with nonzero XZ projection
+(|normalY|/length>1e-6), replacing.65 cutoff. Native nearest-hit query then
+rejects ordinary slopes>=50degrees. This preserves valid near-limit slopes
+and steep nearest blockers. Pack remains tagged44-byte attributes/source-node
+format; source cull/winding metadata is not added yet. New floor counts
+1337/792/1285/1332/200 (4,946 total), verified original attributes/source IDs.
+Ground vector payload217,624 bytes across all packs, plus runtime struct/index
+overhead; room-specific loading still applies. No art/music conversion change.
+Original-derived packs remain ignored; hardware performance unverified.
