@@ -103,7 +103,7 @@ The16/8 delays govern virtual directions;the [global producer](PHYSICAL_INPUT_PR
 supplies physical repeat bits using frame-rate-scaled24/6 call delays. Do not impose this loop on every UI button
 without inspecting that producer and the particular menu's callers.
 
-`BtlPad_WorkInit` (`0x8011a38c`) zeroes both pad snapshots, all 30 entries in
+`BtlPad_WorkInit` (`0x8011a38c`) clears bytes0..a of each pad snapshot (preserving byteb),all30 entries in
 each of the three shifted arrays, and the repeat phase/counter. It does **not**
 clear the release array in the inspected instruction range. This difference
 should be retained in analysis even if an implementation initializes all memory
@@ -249,3 +249,9 @@ This is separate from physical sampling;its prewritten result4 is cleared by the
 checker before history evaluation. The lecture selection/work/weapon graph and
 original execution remain open. [System controls](EVENT_SYSTEM_LEVEL_AND_SPEED.md)
 distinguish event-type stops from speed/credit changes and GP input sampling.
+
+
+[Complete reset/raw preservation](BATTLE_PAD_RESET_AND_RAW_PRESERVATION.md)
+answers INPUT-01:384 bytes cleared/124 preserved per1fc pad,including distinct
+snapshot byteb,release bank and two raw tail bytes. Exact stores and update
+copy behavior supersede any earlier full-snapshot-zero wording.

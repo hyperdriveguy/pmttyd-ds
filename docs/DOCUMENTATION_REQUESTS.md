@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| WorkInit exact snapshot clear and preserved-byte map | INPUT-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete reset/raw map](behavior/BATTLE_PAD_RESET_AND_RAW_PRESERVATION.md):snapshot0..a clear/b preserved,release/raw-tail preservation,interleaved history/phase store order and updater prior-copy distinction;physical polling/SDK/source/runtime remains open |
 | Jump unit-data child key7 and continuation service | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete data-child/Mario source](behavior/BATTLE_UNIT_DATA_CHILD_CONTINUATION.md),[all actor selectors/system query](behavior/BATTLE_ACTOR_SELECTOR_TRANSLATION.md):key7→80416bd0 DELETE child,parent wait/post-constructor actor/255,ordered queries closed;extra source span requested,dynamic writers/backend/runtime remain open |
 | Partner placement4 recovery search and failure output | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used partyGetAppearPos4 complete seeded output/table/alias/ray/admission/fallback graph and called fallback writer;pose/NPC/backend/source domains,other motion engines,EVT-01 and original trajectories remain separate |
 | Ordinary Jump root registration and callback-address census | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Conditional root/source binding](behavior/NORMAL_JUMP_ROOT_REGISTRATION.md),[complete scoped registry](behavior/NORMAL_JUMP_CALLBACK_REGISTRY.md):root10/flags0/typeef/context/ID/speed/actor order,three child wrappers,156 direct sites/72 callbacks;requested-enum run-check correction flagged;menu/global/raw/dynamic/source/backend/runtime remains open |
@@ -1813,3 +1814,21 @@ Verifier passes ten complete/linked hashes,109 anchors,five spans including
 trailing bytes;repeat reports equal;constructor/lifetime/general1980 evidence
 passes. make test50 CTest/78 Python and make all pass;2038 local links resolve.
 ID2 changed no native/test/asset-packer source;original extracts remain /tmp.
+
+
+ID2 INPUT-01 WorkInit clarification delivery (2026-10-12), exact map answered:
+[Reset/raw preservation](behavior/BATTLE_PAD_RESET_AND_RAW_PRESERVATION.md)
+closes complete8011a38c/b0 body:two snapshot loops store halfword0 and bytes2..a,
+NO byteb store;all90 history words clear in index-interleaved18→90→108 order;
+repeat bytes1f8/1f9 clear. Preserves currentb/priorb independently,entire120-byte
+release bank and raw1fa/1fb;384 cleared/124 preserved within1fc stride. Update
+retains currenta/b while three word copies move old currenta/b into prior.
+Older “zeroes both snapshots” and ambiguous untouched-byte initialization wording
+corrected in defense/cadence docs. Fresh allocation zeroing is separate evidence.
+Native reported byteb-preserving init/bytea clear agrees with the local contract;
+no native packed ABI/hardware/cadence proof inferred. Own lock released;specific
+byte request answered. Remaining INPUT-01 SDK/physical/error/pause/control/motor/
+frame-rate/caller/original input/impact traces stay open. Evidence verifier now
+passes11 hashes,154 anchors (90 added),28 direct calls,three data checks;repeat
+reports equal. make test50 CTest/78 Python and make all pass;2048 local links
+resolve;general1980 anchors pass. No native/test/asset edits by ID2.

@@ -1,5 +1,32 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Complete WorkInit snapshot/reset byte clarification
+
+Documentation agent ID2 answered INPUT-01's explicit byteb request with complete
+8011a38c/b0 instruction recovery. WorkInit clears each snapshot0..a and preserves
+b independently;clears90 history words in index-interleaved bank order and two
+repeat bytes;preserves full release bank and raw tail1fa/1fb. Exact1fc partition:
+384 bytes cleared,124 preserved. WorkUpdate retains currenta/b but copies old
+current bytes into prior through three word stores. Corrected older whole-
+snapshot-zero/untouched-byte initialization wording in defense/cadence docs.
+Original listings remain /tmp/id2-padclear-*. No native/source asset changed.
+
+Validation: existing input verifier now pins11 body hashes,154 anchors (90 added),
+28 direct call checks and three data bindings. Repeat JSON outputs match
+(/tmp/id2-padclear-evidence.json and -second.json). General1980-anchor verifier,
+Python compilation,diff-check and2048 local links pass. make test50/50 CTest
+suites and78 Python tests;make all passes. Exact logs:/tmp/id2-padclear-test.log
+and /tmp/id2-padclear-build.log. Shared native/ID1 work preserved.
+
+Own lock released;byte clarification answered in docs/DOCUMENTATION_REQUESTS.md.
+INPUT-01 remains open for SDK/controller errors/reconnect/frame-rate/control/
+motor/pause/physical poll owners and original sample/impact traces. Next documentation
+continues actual event callback/domain/source bindings,record/reset/end/turn
+ownership and other requests. Prior Jump extra-child source and requested-enum
+run-check/native packed services remain integration requirements. Goal stays
+active/incomplete;no original runtime or full-game fidelity claim.
+
+
 ## 2026-10-12 — Jump unit-data child continuation and original Mario key7 source
 
 Documentation agent ID2 recovered full RunDataEventChild/all actor selectors/

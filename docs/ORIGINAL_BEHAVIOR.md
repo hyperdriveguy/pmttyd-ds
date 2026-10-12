@@ -689,3 +689,10 @@ close full local wrapper/all sentinels/system query and actual Mario key7
 source→tiny80416bd0 child. No USER_FUNC in that child does not remove its
 ID/append/wait/copy-back lifecycle. Native source pack needs its span/trailing
 word;other dynamic writers/providers/scenes and original execution remain open.
+
+
+[Complete battle-pad reset](behavior/BATTLE_PAD_RESET_AND_RAW_PRESERVATION.md)
+clarifies snapshot0..a clear versus byteb preservation,all124 preserved bytes
+and interleaved history stores. Prior whole-snapshot-zero wording is corrected;
+update's full prior copy and current trailing preservation remain distinct.
+SDK/physical/caller/pause/source and original sampling traces remain open.

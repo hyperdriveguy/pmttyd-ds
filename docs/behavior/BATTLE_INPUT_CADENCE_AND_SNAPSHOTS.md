@@ -125,8 +125,8 @@ reads GP and writes current fields as follows:
 
 Axis interpretation is signed where virtual directions compare them; trigger
 bytes are retained bit-for-bit. The12-byte stride does not imply12 newly supplied
-bytes or a freshly copied hardware error field. WorkInit's earlier zeroing can
-initialize the untouched bytes,but that is a separate operation. Do not invent
+bytes or a freshly copied hardware error field. WorkInit explicitly clears bytea but PRESERVES byteb in each snapshot.
+Fresh object/allocation zeroing is separate from either local body. Do not invent
 error metadata for them or discard retained values during every update.
 
 Physical new/repeat/released masks come from GP+0x1338/+0x1348/+0x1368+4*c;
@@ -202,3 +202,9 @@ writer rather than deriving every press solely from physical held transitions.
 [System-level/event speed](EVENT_SYSTEM_LEVEL_AND_SPEED.md) supplies the local
 requested-level/type-mask table and speed initialization;neither closes all
 pause/UI callers or original multihit cadence.
+
+
+[Complete WorkInit byte map](BATTLE_PAD_RESET_AND_RAW_PRESERVATION.md) now pins
+the two snapshot loops,interleaved90-word clear,repeat-byte reset and all124
+preserved bytes,including raw tail. INPUT-01's byte clarification is answered;
+SDK/physical/caller/original sampling domains remain separate.
