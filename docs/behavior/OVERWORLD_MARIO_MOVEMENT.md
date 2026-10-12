@@ -8,8 +8,8 @@ no conveyor/additive displacement, and ordinary eligible input. Named special
 branches below remain separate dependencies, not default behavior.
 
 Reproduce fingerprints and ordering anchors with
-`python3 tools/verify_overworld_mario_movement.py`. The verifier pins sixteen
-containing bodies, eighteen instruction anchors and six constants. A containing
+`python3 tools/verify_overworld_mario_movement.py`. The verifier pins nineteen
+containing bodies, twenty-nine instruction anchors and six constants. A containing
 body fingerprint does not imply complete recovery of every branch in that body.
 Inspection-only ELF/listings are `/tmp/overworld-*.elf`/`.txt` and existing ignored
 `artifacts/reference/marioMain.disasm`/`marioMoveMain.disasm`.
@@ -158,3 +158,21 @@ full idle/jump/transform arbitration before claiming complete field equivalence.
 Runtime observations remain needed for ordinary launch, release/reversal,
 walk→dash+jump boundary, landing and ledge loss. Requests are tracked in
 [the dedicated overworld documentation inbox](../OVERWORLD_DOCUMENTATION_REQUESTS.md).
+
+## Five-probe orientation clarification
+
+The search probes preserve a different heading from combined XZ displacement.
+`marioSearchHead` tests base+0x180!=0 (0x8008c240–248): nonzero selects retained
+travel+0x1a4 (0x8008c24c), while zero selects facing+0x1ac through `toMovedir`
+(0x8008c254–258). `marioChkLandon2` uses the same nonzero-base/travel versus
+zero-base/facing selection at0x8008ce7c–cea4 before constructing its five probes.
+`marioSearchGround` also tests base+0x180; the nonzero path reads travel+0x1a4,
+subtracts heading offset+0x19c, then calls `revise360` (0x8008e7b4–7cc). Zero uses
+facing+0x1ac through `toMovedir` (0x8008e7d4–7d8). Motion19 instead reads+0x1b4.
+
+In ordinary nonzero-base air travel with heading offset0, head/landing/ground
+footprints therefore keep retained travel direction even when current stick or
+combined movement points elsewhere. The native probe-direction owner should
+remain separate from current input and the air helper's combined displacement.
+Facing conversion, heading offset and motion19 are separate owners; this local
+branch recovery does not establish their producers or full collision equivalence.
