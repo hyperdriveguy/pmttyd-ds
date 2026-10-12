@@ -51,12 +51,27 @@ void curveCases() {
     const auto previous=out;
     CHECK(solveStraightCameraPath(asset,0,{-1,0,0},out)==CameraPathStatus::NoHit);
     CHECK(out.parameter==previous.parameter && out.untouchedWord==previous.untouchedWord);
-    auto duplicate=straightFixture();number(duplicate,0x1d0+12,0);CHECK(asset.decode(duplicate));
-    CHECK(!supportsStraightCameraPath(asset,0));
+    auto duplicate=straightFixture();number(duplicate,0x1d0+3*12,2);
+    number(duplicate,0x1d0+9*12+4,2);CHECK(asset.decode(duplicate));
+    CHECK(supportsStraightCameraPath(asset,0));
+    CHECK(solveStraightCameraPath(asset,0,{2,0,0},out)==CameraPathStatus::Found);
+    CHECK(out.segment==1 && out.flags==0); // Duplicate retains earlier equal-distance winner.
+    number(duplicate,0x1d0+9*12+4,3);CHECK(asset.decode(duplicate));
+    CHECK(!supportsStraightCameraPath(asset,0)); // Fraction-dependent zero chord is outside the finite proof.
     CHECK(solveStraightCameraPath(asset,0,{2,0,0},out)==CameraPathStatus::Unsupported);
     CHECK(out.parameter==previous.parameter);
     auto curved=straightFixture();number(curved,0x1d0+7*12+8,.25f);CHECK(asset.decode(curved));
     CHECK(!supportsStraightCameraPath(asset,0));
+    auto near=straightFixture();number(near,0x1d0+9*12+8,.005f);CHECK(asset.decode(near));
+    CHECK(supportsStraightCameraPath(asset,0));
+    CHECK(solveStraightCameraPath(asset,0,{2.5f,0,.25f},out)==CameraPathStatus::Found);
+    CHECK(out.parameter==2.5f && out.tangent.z==.0025f && out.anchor.z==.25f);
+    auto skew=straightFixture();
+    for(int n=0;n<6;++n)number(skew,0x1d0+(6+n)*12+8,.005f);
+    CHECK(asset.decode(skew));CHECK(supportsStraightCameraPath(asset,0));
+    CHECK(solveStraightCameraPath(asset,0,{-.001f,0,1},out)==CameraPathStatus::Found);
+    CHECK(out.segmentStartY==10 && out.parameter==2 && out.flags==1);
+    CHECK(out.anchor.x==1.995f && out.anchor.z==1 && out.tangent.z==.005f);
 }
 int main(int argc,char**) {
     if(argc>1) {
@@ -73,12 +88,12 @@ int main(int argc,char**) {
                 ++eligible;const auto start=*asset->roadWord(n,0xa0);const auto point=*asset->pathVector(start+2);
                 CameraCurveOutput output;output.untouchedWord=0xabcdef12;
                 CHECK(solveStraightCameraPath(*asset,n,point,output)==CameraPathStatus::Found);
-                CHECK(output.flags==0 && output.segment==1 && output.anchor.x==point.x && output.anchor.z==point.z);
+                CHECK(output.flags==0 && std::fabs(output.anchor.x-point.x)<.0001f && std::fabs(output.anchor.z-point.z)<.0001f);
                 CHECK(output.untouchedWord==0xabcdef12);
             }
             total+=expected[room];
         }
-        CHECK(eligible==19);CHECK(!cameraRoadAsset(5));CHECK(!loadCameraRoadAssets("/missing-camera-directory"));
+        CHECK(eligible==44);CHECK(!cameraRoadAsset(5));CHECK(!loadCameraRoadAssets("/missing-camera-directory"));
         CHECK(cameraRoadAsset(0)->collections()[1].count==11);
         std::cout<<"Original camera assets passed: "<<total<<" authored roads in five rooms\n";return 0;
     }
