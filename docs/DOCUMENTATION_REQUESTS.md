@@ -487,6 +487,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): `EventMemoryBinding` routes
+all allocator memory services to shared original-address RAM and forwards cache/
+system-call boundaries to explicit platform callbacks. Integration now executes
+original five-pool configuration,SDK context-sized allocation/reuse,map/battle
+subpool allocation/free and reset together on actual owned byte storage.
+58 CTest/78 Python checks and make all pass. Test arena/address/cache callbacks
+are authored native-provider inputs;source runtime/arena/platform evidence is
+not claimed. Next:entry-span promotion with SDK headers preserved and actual
+context-init/native callback ownership. Existing EVT-01 requests remain open.
+
 Native implementation breadcrumb (2026-10-12): `EventAddressSpace` combines
 entry/context/runtime/GP bytes with owned RAM. Imported original script segments
 are mutable runtime copies;extracted packs remain unchanged. Halfword adapters

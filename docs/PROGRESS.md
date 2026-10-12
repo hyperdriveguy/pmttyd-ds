@@ -1,5 +1,30 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Event allocator services on shared RAM
+
+Added `EventMemoryBinding` to bind recovered memory/allocator services directly
+to `EventAddressSpace`. Word/halfword/byte operations now have a reusable native
+provider;original-address cache-block and system-call boundaries go through
+explicit platform callbacks. Unsupported storage asserts as native domain policy.
+The binding retains its owner by pointer and must outlive the returned services.
+No original address is converted into a host pointer or silently ignored cache
+operation. Platform cache behavior itself is still unbound.
+
+Validation:make test passes58 CTest suites/78 Python tests;make all produces
+3DSX. Logs:/tmp/pm-memory-binding-test.log and /tmp/pm-memory-binding-build.log.
+The new integration test runs actual five-pool initialization with the original
+7300/3472/224/128KiB and100%-remainder configuration on shared owned RAM,then
+context-sized SDK allocations,first-fit reuse/clear,unaligned halfword aliases,
+primary map allocation/free,battle map subpool allocation/free and heap reset.
+Cache block counts/barriers remain observable through supplied test callbacks.
+The12MiB arena at82000000 is authored test-provider policy,not a measured source
+arena or proposed final3DS memory budget. No emulator/hardware validation claim.
+
+Next:promote allocated original RAM spans into semantic entry storage while
+preserving neighboring SDK headers;bind actual context initialization,platform
+cache and native function registry before Game integration. Original source/
+concurrency/FPSCR/full Jump/story execution remain open;goal incomplete.
+
 ## 2026-10-12 — Unified original-address event storage
 
 Added `EventAddressSpace` over entry/context/runtime/GP live mappings and
