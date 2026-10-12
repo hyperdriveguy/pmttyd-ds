@@ -1198,3 +1198,12 @@ close masks0x80100000/0x800000 local graphs. Verify_map_tev_terminal.py reproduc
 cases. Original texture identity is hashed without payload export. Two depth
 middle branches/source/GX/SDK/libm/lifetime/images remain open;containing body
 identity remains PARTIAL semantics. Full-game final requirements are premature.
+
+ID2 switch/field snapshot caller closure (2026-10-12):
+[Switch/home/export](behavior/battle/PARTY_SWITCH_SPAWN_HOME_AND_SNAPSHOT_EXPORT.md),
+[field/census](behavior/battle/PARTY_FIELD_EXPORT_AND_SNAPSHOT_CALL_DOMAINS.md)
+close four bodies,selected-kind setup chain,NEW spawn before OLD export,
+ID exchange/mixed home/global floor/retained modes and export null policies.
+14 hashes/127 anchors/2 spans/7 direct sites verified;90 Python/make all pass.
+Host CMake gate pending missing native move-position fixture;no native edits.
+Setup/end/source/save/query/Game/platform/original runtime remain open.

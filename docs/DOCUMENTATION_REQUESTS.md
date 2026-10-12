@@ -30,6 +30,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
 | Native first-attack target and paired output ownership | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Pair/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md),[event/body part](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md):seven complete local bodies,captured B/raw outputs/mode pairs/slot63 miss/kind predicate/body-before-ID/write order/source part witness;source/Game/runtime separate;prior field_movement failure resolved by current74-suite run |
+| Native party switch and field export snapshot caller ownership | EVT-01, JUMP-01 | VALIDATED local bodies / lock released;host gate pending fixture, 2026-10-12 | Documentation agent ID 2 | [Switch/home/export](behavior/battle/PARTY_SWITCH_SPAWN_HOME_AND_SNAPSHOT_EXPORT.md),[field/census](behavior/battle/PARTY_FIELD_EXPORT_AND_SNAPSHOT_CALL_DOMAINS.md):selected-kind source/NEW spawn before OLD export/ID list/current-global floor/retained home/mode copies/7 calls;setup/end/source/save/query lifetime separate;native missing fixture reported |
 | Native seven-party battle snapshot initialization | EVT-01, JUMP-01 | VALIDATED complete initializer / lock released, 2026-10-12 | Documentation agent ID 2 | [Reset/map](behavior/battle/PARTY_BATTLE_SNAPSHOT_INITIALIZATION_AND_RAW_MAP.md),[import/lifetime](behavior/battle/PARTY_BATTLE_SNAPSHOT_INIT_IMPORT_AND_LIFETIME.md):seven44-byte records/1.0/ordered30-byte fill/two preserved gaps/caller/import-export binding;later producers/save/source/runtime separate |
 | Native remaining six party weapon-table callbacks | EVT-01, JUMP-01 | VALIDATED all seven local callbacks / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete protocol/Koops](behavior/battle/PARTY_WEAPON_CALLBACKS_COMPLETE_SHARED_PROTOCOL.md),[28 weapons](behavior/battle/PARTY_WEAPON_CALLBACKS_WEAPON_SOURCE_MAP.md):five normalized183-instruction bodies/Koops181 literal icons/retained rank/repeated count/source order;unit provisioning/action scripts/query/source/Game/runtime separate |
 | Native Goombella weapon-table callback and seven party key1 bindings | EVT-01, JUMP-01 | VALIDATED scoped callback/source / lock released, 2026-10-12 | Documentation agent ID 2 | [Callback/tech level](behavior/battle/GOOMBELLA_WEAPON_TABLE_CALLBACK_AND_TECH_LEVEL.md),[seven bindings](behavior/battle/PARTY_WEAPON_CALLBACK_KEY1_SOURCE_BINDINGS.md):complete Christine/current-global signed rank/repeated count reads/partial rows/four keys;other six callback semantics/unit provisioning/query/source/Game/runtime open |
@@ -529,6 +530,20 @@ Do not invent extra samples for script invocations or suppress inactive private
 sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
+
+ID2 party switch/field export caller reply (2026-10-12):
+[Complete switch/home/export order](behavior/battle/PARTY_SWITCH_SPAWN_HOME_AND_SNAPSHOT_EXPORT.md)
+and [field wrapper/seven call domains](behavior/battle/PARTY_FIELD_EXPORT_AND_SNAPSHOT_CALL_DOMAINS.md)
+close four local bodies.Selected kind→seven48-byte setup→spawn source pinned.
+OLD lookup before admission,NEW spawn before OLD export,64-ID-list exchange,
+old X/Z+new Y/global-floor request,mode/acting-ID copies,post-export old flag8,
+Mario unconditional versus party guarded export supplied.14 hashes(4 complete/
+10 linked),127 anchors/2 spans/7 exact direct calls/repeat reports/own links pass.
+90 Python/make all pass.Host make test currently stops at configuration:missing
+new tests/battle_packed_move_position_tests.cpp(CMake394,/tmp/id2-switch-test.log).
+No native edits by ID2;full host gate remains pending native fixture completion.
+ID2 local-body lock released;parent request open.Next evidence:Btl_UnitSetup
+import paths/end caller domains/source mutations/query-event reachability.
 
 Native implementation breadcrumb / documentation request (2026-10-12):
 ordered native LoadSeMode and movement sound core/unit/end now compose on actual

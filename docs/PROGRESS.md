@@ -1,3 +1,29 @@
+## 2026-10-12 — ID2 party-switch and field snapshot export callers
+
+[Complete switch/home/export order](behavior/battle/PARTY_SWITCH_SPAWN_HOME_AND_SNAPSHOT_EXPORT.md)
+and [field wrapper/call domains](behavior/battle/PARTY_FIELD_EXPORT_AND_SNAPSHOT_CALL_DOMAINS.md)
+close four local bodies:BattleChangeParty,field export,home getter/setter.
+Selected-kind seven setup-source chain,unchecked OLD lookup before admission,
+NEW spawn before OLD export,64-word ID exchange,old X/Z+new Y/global-floor
+request,acting/mode copies,old flag8/counter copies,and unconditional Mario/
+guarded party export supplied.Scoped3 export/4 import DOL sites pinned.ID2
+local lock released;parent lifecycle/source requests remain open.No native edits.
+
+Validation:`tools/verify_party_switch_snapshot_callers.py` twice,identical:
+14 hashes(4 complete/10 linked),127 instructions,2 spans,7 exact aligned
+DOL calls.Python compilation,existing behavior/snapshot/all-party verifiers,
+own links,and scoped whitespace passed.90 Python tests passed separately.
+`make all` passed.`make test` stopped at CMake configuration:missing newly
+referenced tests/battle_packed_move_position_tests.cpp(CMakeLists394);exact
+/tmp/id2-switch-test.log.No CTest pass count claimed this turn.Native owner
+notified in inbox;full host gate pending fixture completion,not repaired by ID2.
+
+Limits:static local evidence only.Btl_UnitSetup/end import paths,actual switch/
+export invocation scheduling,later source/unit/global mutations,save/disk,
+query-event reachability,Game/platform/original runtime/full-game requirements
+remain open.Next port evidence:those import/source/query domains;rerun host
+gate when native fixture exists.
+
 ## 2026-10-12 — ID2 seven-party battle snapshot initializer
 
 [Complete reset/raw map](behavior/battle/PARTY_BATTLE_SNAPSHOT_INITIALIZATION_AND_RAW_MAP.md)
