@@ -21,8 +21,8 @@ void emit(const DamageApplicationServices& s,DamageEffectKind kind,DamagePositio
 void sound(const DamageApplicationServices& s,const char* key,DamagePosition p) {
     assert(s.sound);s.sound(s.user,key,p);
 }
-void notice(const DamageApplicationServices& s,DamageUnit& unit,DamageNoticeKind kind,int32_t value=0) {
-    assert(s.notice);s.notice(s.user,unit,{kind,value});
+void notice(const DamageApplicationServices& s,DamageUnit& unit,DamageNoticeKind kind,int32_t value=0,uint32_t field=0) {
+    assert(s.notice);s.notice(s.user,unit,{kind,value,field});
 }
 }
 DamageUnit* findMarioResourceOwner(const DamageApplicationServices& s) {
@@ -112,7 +112,9 @@ void applyDirectDamage(int32_t attackerId,DamageUnit& d,DamagePart* part,int32_t
         d.consumedFp=add(d.consumedFp,byte(d.lastConsumedFp));
     }
     if(hp>0 && (d.kind==222 || (d.kind>=224 && d.kind<=230))) {
-        notice(s,d,DamageNoticeKind::ActionCount);notice(s,d,DamageNoticeKind::ActionPoint,uint8_t(hp));
+        const bool mario=d.kind==222;
+        notice(s,d,DamageNoticeKind::ActionCount,0,mario?0x16f3e:0x16f3f);
+        notice(s,d,DamageNoticeKind::ActionPoint,uint8_t(hp),mario?0x16f3c:0x16f3d);
     }
     if(sleepRecovery && (hp>0 || fp>0) && checkStatus(&d,1) && random.bounded(100)<50) {
         d.statusByte(0x118)=1;d.statusByte(0x119)=100;checkRecoveryStatus(&d,1);

@@ -16,9 +16,7 @@ namespace {
 int32_t harnessPower(DamageUnit*,DamageWeapon& weapon,DamageUnit&,DamagePart&) {
     return *static_cast<const int*>(weapon.callbackData);
 }
-int harnessDamage(DamageUnit& attacker,DamageUnit& defender,int power,uint32_t flags,bool actionSuccess,uint32_t& code) {
-    constexpr int8_t zeros[5]={};
-    DamagePart part;part.defense=zeros;part.defenseAttributes=zeros;
+int harnessDamage(DamageUnit& attacker,DamageUnit& defender,DamagePart& part,int power,uint32_t flags,bool actionSuccess,uint32_t& code) {
     DamageWeapon weapon;weapon.hpPower=harnessPower;weapon.callbackData=&power;
     DamageBattleState battle;battle.actionResult=actionSuccess?2:0;
     const auto statuses=storedDamageStatusServices();
@@ -624,16 +622,59 @@ void Game::startBattle() {
     lastDamageCode=0;
     playerBattleUnit={};enemyBattleUnit={};
     playerBattleUnit.kind=222;playerBattleUnit.hp=int16_t(progress.hp);
+    playerBattleUnit.baseHp=playerBattleUnit.maxHp=10; // Development player-stat fixture.
     enemyBattleUnit.hp=int16_t(enemyHP); // Boss kind/stats await original unit initialization.
+    enemyBattleUnit.baseHp=enemyBattleUnit.maxHp=int16_t(BattleRules::CrumpHP);enemyBattleUnit.belong=1;
+    playerBattlePart={};enemyBattlePart={};pendingDamageRequests.clear();pendingDamageRequests.reserve(32);
+    static constexpr int8_t zeros[5]={};
+    playerBattlePart.defense=enemyBattlePart.defense=zeros;
+    playerBattlePart.defenseAttributes=enemyBattlePart.defenseAttributes=zeros;
     jumpHeight=0; fieldJump={};fieldStep={};
 }
 void Game::attackDone(int power) {
     playerBattleUnit.hp=int16_t(progress.hp);enemyBattleUnit.hp=int16_t(enemyHP);
-    const int damage=harnessDamage(playerBattleUnit,enemyBattleUnit,power,0,actionSuccess,lastDamageCode);
-    enemyHP=std::max(0,enemyHP-damage); lastDamage=damage;
-    enemyBattleUnit.hp=int16_t(enemyHP);
+    const int damage=harnessDamage(playerBattleUnit,enemyBattleUnit,enemyBattlePart,power,0,actionSuccess,lastDamageCode);
+    applyBattleDamage(true,damage,0,lastDamageCode);
     phase=Phase::Impact; phaseTick=0;
     sound=actionSuccess ? Sound::Success : Sound::Hit;
+}
+void Game::applyBattleDamage(bool enemyTarget,int32_t hp,int32_t fp,uint32_t code) {
+    struct Context {
+        DamageUnit* player;DamageUnit* enemy;DamageUnit* target;
+        DamagePart* part;std::vector<DamageServiceRequest>* requests;
+    } context{&playerBattleUnit,&enemyBattleUnit,enemyTarget?&enemyBattleUnit:&playerBattleUnit,
+        enemyTarget?&enemyBattlePart:&playerBattlePart,&pendingDamageRequests};
+    pendingDamageRequests.clear();
+    DamageApplicationServices services;services.user=&context;
+    // Fixed harness slots; original registry/part/position bindings are still open.
+    services.getUnit=[](void* user,int32_t id)->DamageUnit* {
+        auto& c=*static_cast<Context*>(user);return id==0?c.player:id==1?c.enemy:nullptr;
+    };
+    services.bodyPart=[](void* user,DamageUnit&)->DamagePart* {return static_cast<Context*>(user)->part;};
+    services.hitPosition=[](void*,DamageUnit&,DamagePart&)->DamagePosition {return {};};
+    services.unitPosition=[](void*,DamageUnit&)->DamagePosition {return {};};
+    services.height=[](void*,DamageUnit&)->int32_t {return 0;};
+    services.effect=[](void* user,const DamageEffect& effect) {
+        auto& c=*static_cast<Context*>(user);DamageServiceRequest request;
+        request.unit=c.target;request.effect=effect;c.requests->push_back(request);
+    };
+    services.sound=[](void* user,const char* key,DamagePosition position) {
+        auto& c=*static_cast<Context*>(user);DamageServiceRequest request;
+        request.kind=DamageServiceRequest::Kind::Sound;request.unit=c.target;
+        request.soundKey=key;request.position=position;c.requests->push_back(request);
+    };
+    services.notice=[](void* user,DamageUnit& unit,DamageNotice notice) {
+        auto& c=*static_cast<Context*>(user);DamageServiceRequest request;
+        request.kind=DamageServiceRequest::Kind::Notice;request.unit=&unit;request.notice=notice;c.requests->push_back(request);
+    };
+    services.hitEvent=[](void* user,DamageUnit& unit,uint32_t code) {
+        auto& c=*static_cast<Context*>(user);DamageServiceRequest request;
+        request.kind=DamageServiceRequest::Kind::HitEvent;request.unit=&unit;request.code=code;c.requests->push_back(request);
+    };
+    services.inventory={nullptr,[](void*,int32_t)->int32_t {return 0;}}; // No revival item in harness fixture.
+    applyDirectDamage(enemyTarget?0:1,*context.target,context.part,hp,fp,code,0,1,battleRandom,services);
+    lastDamage=context.target->lastHp<128?context.target->lastHp:int(context.target->lastHp)-256;
+    progress.hp=playerBattleUnit.hp;enemyHP=enemyBattleUnit.hp;
 }
 void Game::battle(const Input& i) {
     // One general-pad press-edge sample per simulation tick, before result calls.
@@ -711,10 +752,9 @@ void Game::battle(const Input& i) {
             // The recovered normal enemy event requests CheckDamage(flags0x100).
             // Guard flag selection here is still a harness dispatch adaptation.
             playerBattleUnit.hp=int16_t(progress.hp);enemyBattleUnit.hp=int16_t(enemyHP);
-            lastDamage=harnessDamage(enemyBattleUnit,playerBattleUnit,BattleRules::CrumpAttack,
+            lastDamage=harnessDamage(enemyBattleUnit,playerBattleUnit,playerBattlePart,BattleRules::CrumpAttack,
                 0x100|(guarded?0x40000:0),false,lastDamageCode);
-            progress.hp=std::max(0,progress.hp-lastDamage);
-            playerBattleUnit.hp=int16_t(progress.hp);
+            applyBattleDamage(false,lastDamage,0,lastDamageCode);
             phase=Phase::EnemyImpact; phaseTick=0; sound=guarded?Sound::Success:Sound::Hit;
         }
     } else if (phase==Phase::EnemyImpact && phaseTick>=36) {

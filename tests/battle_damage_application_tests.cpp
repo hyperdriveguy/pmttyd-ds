@@ -108,6 +108,9 @@ void randomAndWake() {
     }
     Fixture noWake;noWake.random.state=seedFor(50,50);setStatus(noWake.d,1,3,0);noWake.apply(1,0,23,0,1);
     CHECK(noWake.d.statusByte(0x118)==3);
+    Fixture instant;instant.random.state=seedFor(49,49);setStatus(instant.d,1,3,0);setStatus(instant.d,27,1,0);
+    instant.apply(1,0,23,0,1);CHECK(instant.d.statusByte(0x118)==1 && instant.d.statusByte(0x119)==100);
+    CHECK(instant.effects.back().kind==DamageEffectKind::Fukidashi);
     Fixture both;both.random.state=seedFor(29,29,49,49);const auto start=both.random.state;
     both.d.badges.pityFlower=1;setStatus(both.d,1,3,0);both.apply(1,1,23,0,1);
     BattleRandom two(start);two.bounded(100);two.bounded(100);
@@ -115,6 +118,9 @@ void randomAndWake() {
     Fixture suppressed;suppressed.d.attributes=0x40000000;suppressed.d.badges.pityFlower=1;
     suppressed.random.state=seedFor(29,29);const auto before=suppressed.random.state;suppressed.apply(1);
     CHECK(suppressed.random.state!=before && suppressed.d.hp==10);
+    Fixture absorption;absorption.d.badges.pityFlower=2;const auto initial=absorption.random.state;
+    absorption.apply(1,0,0x2000|23);CHECK(absorption.random.state==initial && absorption.d.hp==9);
+    CHECK(absorption.effects.size()==1 && absorption.effects[0].kind==DamageEffectKind::Recovery);
 }
 void lethalAndEvents() {
     for(int kind:{1,215,216,222,223,224,230,231}) {
@@ -135,6 +141,7 @@ void lethalAndEvents() {
     Fixture suppressed; suppressed.d.kind=222;suppressed.d.attributes=0x40000000;suppressed.apply(3);
     CHECK(suppressed.d.hp==10 && suppressed.notices.size()==3);
     CHECK(suppressed.notices[0].kind==DamageNoticeKind::ActionCount && suppressed.notices[1].value==3);
+    CHECK(suppressed.notices[0].fieldOffset==0x16f3e && suppressed.notices[1].fieldOffset==0x16f3c);
     CHECK(suppressed.notices[2].kind==DamageNoticeKind::MarioBigDamage && suppressed.notices[2].value==3);
 }
 int main() {

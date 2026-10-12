@@ -12,7 +12,7 @@ struct DamageEffect {
     std::array<float,2> floats{};
 };
 enum class DamageNoticeKind {ActionCount,ActionPoint,MarioBigDamage,PartyDown,KillEnemy,FinalAttack};
-struct DamageNotice {DamageNoticeKind kind;int32_t value=0;};
+struct DamageNotice {DamageNoticeKind kind;int32_t value=0;uint32_t fieldOffset=0;};
 struct DamageApplicationServices {
     void* user=nullptr;
     DamageUnit* (*getUnit)(void*,int32_t)=nullptr;

@@ -13,6 +13,7 @@
 #include "battle_hammer.hpp"
 #include "battle_defense.hpp"
 #include "battle_damage.hpp"
+#include "battle_damage_application.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -55,6 +56,17 @@ struct Input {
     bool cancelHeld = false, confirmReleased = false, cancelReleased = false;
     bool left = false, right = false, menuConfirm = false;
     int touchX = -1, touchY = -1; // press edge, never repeated held input
+};
+// Latest hit's original service requests, recorded for unbound presentation/VM
+// integration. This trace is not an executing or automatically drained event queue.
+struct DamageServiceRequest {
+    enum class Kind {Effect,Sound,Notice,HitEvent} kind=Kind::Effect;
+    DamageUnit* unit=nullptr;
+    DamageEffect effect{DamageEffectKind::Hit,{}};
+    DamagePosition position;
+    const char* soundKey=nullptr;
+    DamageNotice notice{DamageNoticeKind::ActionCount};
+    uint32_t code=0;
 };
 struct RoadWarp { uint32_t source,target; float x,z,spawnX,spawnZ,spawnY; };
 const char* roomAsset(uint32_t room);
@@ -105,6 +117,7 @@ public:
     uint32_t damageCode() const { return lastDamageCode; }
     const DamageUnit& playerBattleState() const { return playerBattleUnit; }
     const DamageUnit& enemyBattleState() const { return enemyBattleUnit; }
+    const std::vector<DamageServiceRequest>& damageRequests() const { return pendingDamageRequests; }
     const char* dialogue() const;
     const char* prompt() const;
     bool near(Vec2 point, float distance = 1.5f) const;
@@ -124,6 +137,8 @@ private:
     DefenseCommand defenseCommand;
     uint32_t lastDamageCode=0;
     DamageUnit playerBattleUnit, enemyBattleUnit;
+    DamagePart playerBattlePart, enemyBattlePart;
+    std::vector<DamageServiceRequest> pendingDamageRequests;
     TimingACommand jumpCommand;
     HammerCommand hammerCommand;
     // Explicit development seed; no claim about original seed/load ownership.
@@ -132,6 +147,7 @@ private:
     void move(const Input&);
     void battle(const Input&);
     void attackDone(int power);
+    void applyBattleDamage(bool enemyTarget,int32_t hp,int32_t fp,uint32_t code);
     void openDialogue(int kind);
     bool beginWater();
     Vec2 arrivalStart,arrivalEnd;

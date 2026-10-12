@@ -1,5 +1,66 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native direct damage and shared FP resource application
+
+Implemented docs/behavior/BATTLE_DAMAGE_APPLICATION.md in
+include/battle_damage_application.hpp/source/battle_damage_application.cpp.
+Preserves attacker lookup/-5 sentinel,requested HP clamp99 and attacker
+accumulator,part/pattern preparation,ordered original effect and sound requests,
+Pity Flower before FP subtraction,byte/halfword accounting and suppression,
+HP before/after/caps,shared partner FP owner,action-record requests,Sleep wake
+roll/field writes,recovery/audience order,lethal code/pattern/revival marking and
+final hit-event request. Resource words wrap/narrow explicitly. FP helpers scan64
+slots for first Mario kind222/belong0 and preserve the valid-owner invariant;
+no independent partner FP pool is invented. Service internals remain unbound.
+Portable module incremental commit:648dfb4.
+
+DamageUnit retains separate base/max/current resources,requested/consumed
+accounting,HP snapshots,narrow amount/flag fields,last-part/pattern and kind
+sound/service inputs. This is a semantic model,not full unit-entry ABI. Native
+attacks use direct application instead of hand-written HP subtraction and display
+the clamped requested HP amount. Calculator/application share stable owned body
+parts;progress/enemy HP synchronize from mutated units. Fixture caps remain
+player10/boss5 with pending loadout/entry overrides;position/height fixture0,
+unresolved kind sounds,revival item-count fixture0 and reaction pattern fixture0.
+
+The native adapter records each latest hit's ordered effect,sound,audience/action
+record and hit-event requests. It does not execute original effects,MusyX macros,
+audience handlers or hit scripts,and is not an active VM queue. No synthesized
+audio or fabricated story/revival scene was added. Harness victory/defeat/
+controller flow remains provisional;original script/scene binding is unfinished.
+
+Validation:make test passed7 CTest executables and58 Python tests;make all rebuilt
+ttyd-2ds.3dsx;git diff --check passed. Application tests cover clamp/overkill/
+healing/halfword wrap,HP suppression with effects/accounting/FP updates,field/
+flag writes,FP128/256/negative byte distinctions,shared FP owner and recovery
+cap/negative/wrap,element effects/star positions/code25 sound difference,
+override priority/original-pattern suppression,Pity29/30 and Sleep49/50 draws,
+full-FP-before-incoming loss,suppressed-HP Pity draws,lethal/Instant Kill wakeup,
+absorption's flag/sign distinction,lethal kind endpoints,pattern25 gate,revival
+mark without healing/consumption,action-record offsets and final event order.
+Core checks requested/dealt amounts,HP mirrors and final recorded requests along
+with prior action/guard/field/save scenarios. These are derived contract tests,
+not original executed comparisons or whole-damage-system acceptance.
+
+Isolated regression:python3 tools/emulator_smoke.py --fresh-save --seconds4
+--input-script tests/azahar_defense.py. Reviewed defense-single with Guard/Mario
+10HP/Crump4HP and defense-mash with Hit taken/Mario9HP/Crump3HP after resource
+application. Original effects,sounds/hit scripts,FP gameplay,tutorial timing and
+hardware remain unverified;stage/camera/animation limitations remain visible.
+Only generated test save reset;user emulator profiles/saves and ISO untouched.
+Git/display escalations automatically approved;concurrent documentation preserved.
+
+Added DMG-02 in docs/DOCUMENTATION_REQUESTS.md for body/position/height/belong
+helpers,field114/pointer144+10 schemas,concrete parts/sounds/effects,action-record/
+audience semantics and hit/death/revival/FP runtime bindings. New
+BATTLE_WEAPON_POWER_CALLBACKS.md arrived and answers default/Mario callbacks and
+tables:ordinary Jump's successful single-hit callback does not double power.
+Next replace fixture callbacks with those contracts and bind Jump's separate
+subsequent-hit/event lifecycle;do not carry its current aggregated two-damage
+harness behavior into a claimed faithful attack. Bind incoming unit stat/part
+data and direct-application service handlers;continue original event/message/
+tutorial/turn orchestration. Full implementation goal remains active/incomplete.
+
 ## 2026-10-12 — ID2: requested default/Mario weapon power contracts
 
 Answered the two ID2 power subtasks of DMG-01 in

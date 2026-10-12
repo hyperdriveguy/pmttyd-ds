@@ -177,6 +177,8 @@ void timing() {
         CHECK(g.lastDamage==(frame>=41?2:1));
         CHECK(g.damageCode()==23);
         CHECK(g.enemyBattleState().hp==g.enemyHP && g.playerBattleState().hp==g.progress.hp);
+        CHECK(g.enemyBattleState().requestedHp==g.lastDamage && g.playerBattleState().dealtHp==g.lastDamage);
+        CHECK(!g.damageRequests().empty() && g.damageRequests().back().kind==DamageServiceRequest::Kind::HitEvent);
     }
     // TimingA rejects two edges within the latest20 samples, even with one on impact.
     for(int first:{29,30,41,47}) {
@@ -226,6 +228,7 @@ void timing() {
         CHECK(g.defenseResult()==(frame>=47?4:frame>=40?1:2));
         CHECK(g.damageCode()==(frame>=47?(0x40100|30):(0x10100|23)));
         CHECK(g.playerBattleState().hp==g.progress.hp);
+        CHECK(g.playerBattleState().requestedHp==g.lastDamage);
     }
     for(int first:{1,39,40,47}) {
         Game g;enemyTurn(g);advance(g,first-1);g.tick(confirm());
