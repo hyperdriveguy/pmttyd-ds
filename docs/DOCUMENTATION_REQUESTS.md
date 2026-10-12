@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Stylish start/main/result and ordinary Jump timing bindings | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Timing/results](behavior/BATTLE_STYLISH_TIMING_AND_RESULTS.md),[icon](behavior/BATTLE_STYLISH_TIMING_ICON.md):complete local start/poll/input/output/queue/draw and four ordinary callers;source/scheduler/audience/display/assets/original traces remain open |
 | Enemy candidate choice and sampling cores | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Sampling](behavior/BATTLE_ENEMY_CANDIDATE_SAMPLING.md),[choice/RNG](behavior/BATTLE_ENEMY_CANDIDATE_CHOICE.md):complete local admission/geometry/compaction/sort/weights/mode4/draw semantics;source/helper/domain/seed/interleaving and original traces remain open |
 | Ordinary selected target,weapon-address and weapon-cost services | JUMP-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Selection/weapon](behavior/BATTLE_SELECTED_TARGET_AND_WEAPON.md),[cost/payment](behavior/BATTLE_WEAPON_COST_AND_PAYMENT.md):complete local bodies/cursor dispatch/shared FP/AP/action-record arithmetic;menu/selection producers,numeric extremes and original traces remain open |
 | Lecture player attack bindings,missing mode transitions and teardown | AC-01, AC-02, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover Jump/Hammer lecture request graphs,1→2/5→6 producers,W2740 selection and lecture-end writes;excludes original runtime traces |
@@ -123,6 +124,18 @@ separately. Existing leads: `behavior/BATTLE_ORDINARY_ATTACK_BINDINGS.md`,
 `behavior/BATTLE_INPUT_AND_DEFENCE.md`, `behavior/RANDOMNESS.md`.
 
 ## AC-02 — Ordinary Hammer binding and presentation (open)
+
+ID1 lecture-only answer (2026-10-12):
+[lecture player flow](behavior/LECTURE_PLAYER_ATTACK_FLOW.md) pins ID3 params
+4/25 and mode5 flag2,hold/rehold/release teaching loops,STOP/START of setup-event
+ID versus parameter2 suppression,output2→professor work2 and cleanup5→6. These
+are a different script/weapon binding from ordinary Hammer;do not assign period40
+merely because the lecture pointer differs from default. Jump lecture ID1 and
+cleanup1→2/default menu masks are documented alongside it. Its coordinator sets
+01000000,a proven TimingA forced-success writer,without establishing that field
+in Crump's opening encounter. [Status arbitration](behavior/BATTLE_STATUS_WINDOW_ARBITRATION.md)
+closes2740 suppression and event-on precedence;it is separate from attack
+selection. Full field/menu/end/services and original execution remain open.
 
 Partial answer arrived in concurrent documentation commit07bb0f7:
 [weapon branches](behavior/BATTLE_HAMMER_WEAPON_BRANCHES.md) establishes default
@@ -671,3 +684,30 @@ nearest-target or bounded-capacity fallback is established. The standalone
 verify_enemy_candidate_sampling.py passes seven complete body fingerprints,
 48 anchors and14 constants, including SDA initialization. Own lock released;
 lecture/event-scheduler reservations and parent requests remain independent/open.
+
+
+ID2 ongoing stylish validation note (2026-10-12):new13-body stylish verifier,
+existing Jump/candidate verifiers and make all passed. make test currently fails
+at CMakeLists.txt:71 because concurrent native registration references missing
+`tests/battle_candidate_choice_tests.cpp`;ID2 made no native changes. Please
+finish that in-progress test file and re-run before recording a host pass.
+
+
+ID2 stylish delivery (2026-10-12), JUMP-01/AC-01 partial answer:
+[timing/results](behavior/BATTLE_STYLISH_TIMING_AND_RESULTS.md) specifies the
+shared W271c..2734 record, first-call initialization plus same-call t1 polling,
+exclusive lower/inclusive upper success, opening history rejection, autoInput,
+no-input timeout and ordered result outputs. Both ordinary brothers pass history
+count0; timing is callback invocations, not rendering frames. Main return0
+repeats/yields,1 completes/yields;GetResult returns2 and does not poll/reset.
+[icon](behavior/BATTLE_STYLISH_TIMING_ICON.md) closes local eligibility and
+baseline depth queue versus visible draw requests, icon0xa2 and original scale.
+Audience services/source writers/scheduler/display internals/assets and original
+execution remain open. Standalone verify_stylish_timing.py passes13 containing
+body fingerprints (dispatcher recovery scoped),48 anchors,five constant/dispatch
+spans and four ordinary call bindings. ID2 lock released; parent requests and
+ID1's lecture scope remain open.
+
+ID2 validation follow-up:the concurrent candidate-choice test file now exists.
+Re-run make test passed19 CTest suites and58 Python tests. Initial missing-file
+failure above is resolved;ID2 changed no native source/build registration.

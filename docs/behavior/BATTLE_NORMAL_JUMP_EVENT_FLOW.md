@@ -227,3 +227,13 @@ writers and original tutorial weapon/menu gates. Original input/state/RNG/hit/
 animation/audio traces must validate branch feasibility and actual cadence.
 The reused original data and recovered graph cannot justify the harness's
 impact48/return42 schedule or make the complete game/encounter finished.
+
+
+## Stylish service follow-up (2026-10-12)
+
+[Timing/results](BATTLE_STYLISH_TIMING_AND_RESULTS.md) and
+[icon requests](BATTLE_STYLISH_TIMING_ICON.md) now close the local ACRStart/
+ACRGetResult/BattleAcrobat obligations above. Boundaries use a separate shared
+invocation counter; first start polls t1, lower is excluded, upper included,
+and both ordinary callers supply history count0. Original event scheduling,
+source writers,audience feedback and rendered/runtime traces remain open.

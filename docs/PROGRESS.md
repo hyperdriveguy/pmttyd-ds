@@ -6208,3 +6208,34 @@ open. Next:source/helper/numeric/domain validity and RNG seed/interleaving;
 Jump stylish/aftereffect/badge-tail services;original input/target/state/motion/
 audio execution traces. EVT-01 scheduling and ID1 lecture work remain separate.
 Full documentation/system-requirements objective remains active and incomplete.
+
+### 2026-10-12 — Documentation ID2: stylish timing and icon contracts
+
+Delivered BATTLE_STYLISH_TIMING_AND_RESULTS.md and BATTLE_STYLISH_TIMING_ICON.md
+for the reserved JUMP-01/AC-01 service slice. Complete local start/main/readers
+cover shared record, first-call resolution/initialization plus same-call t1,
+exclusive lower/inclusive upper success, opening history rejection, automatic
+eligibility, timeout/terminal/repeated invocation and raw destination sentinel/
+aliasing. Ordinary Jump has two exact ACRStart/GetResult pairs and history0.
+Scoped USER_FUNC dispatcher sites establish0 repeat/yield versus1 complete/yield.
+Local presentation contract separates baseline queue depth from visible draw
+positions, height and original icon0xa2/scale/alpha requests. No audience service
+internals, original execution or fixed render/impact timing claim.
+
+Validation: verify_stylish_timing.py passed13 containing body fingerprints,
+48 instruction anchors,five constant/dispatch spans and four ordinary callers;
+dispatcher fingerprint does not imply full dispatcher recovery. Report at
+/tmp/id2-stylish-evidence.json. Existing19-body Jump flow and seven-body candidate
+checks passed. make all built concurrent candidate-choice/native target,exited0.
+Initial make test failed because concurrent CMake registration referenced a
+missing candidate-choice test;after its file appeared,re-run passed19 CTest
+suites and58 Python tests. All789 then-current behavior links resolved;git diff
+--check passed. ID2 made no native changes;preserved native and ID1 lecture work.
+ISO stays read-only;inspection ELFs/disassemblies/reports in/tmp,no assets/saves/
+emulator/profile mutations.
+
+Released only ID2's stylish lock and linked contracts in inbox/index/Jump graph.
+Next:Jump weapon-aftereffect/badge-tail/audience services, stylish eligibility
+source writers and collision ownership, complete EVT-01 scheduling and original
+input/state/motion/audio/presentation traces. Full documentation and eventual
+complete-game requirements objective remains active/incomplete.
