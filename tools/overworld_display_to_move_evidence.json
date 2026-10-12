@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "scope": "Mario toMovedir ordinary/main00100000 finite heading conversion and ordinary standing/head/ground callers; source-only",
+  "dol_spans": [
+    {
+      "name": "toMovedir",
+      "address": 2148099068,
+      "size": 360,
+      "sha256": "b37511a5f9773438c171ff4f0f343e0d4a31c4233f8e0d481348b9faaacd5820"
+    },
+    {
+      "name": "marioMoveMain",
+      "address": 2147849384,
+      "size": 1488,
+      "sha256": "2fb3744cded7847ad0c252487b8f5dfb2977f4d5aa395d0db30e565af06502ab"
+    },
+    {
+      "name": "marioSearchFrontWall_staying",
+      "address": 2148054232,
+      "size": 696,
+      "sha256": "5996749270c064224b2f1c2dc615ff9dac44a3cc5317e2b9f65c5739d776631c"
+    },
+    {
+      "name": "marioSearchGround",
+      "address": 2148066964,
+      "size": 2640,
+      "sha256": "868e271655b02db5fb04dcbbf326bff0165f1827dd959738a9ad74df47064e47"
+    },
+    {
+      "name": "marioSearchHead",
+      "address": 2148057512,
+      "size": 1516,
+      "sha256": "4d287ba6c08c8dd5b8bf5ba4754f64ae6ea782acc826e36c9d1b7b0a4e0ffe8b"
+    },
+    {
+      "name": "marioChkFrontStep",
+      "address": 2148045420,
+      "size": 1536,
+      "sha256": "3b8b8c577e03600f569c3cbdc37b6cebff9d6a1709c2e30d20148fd187f068bf"
+    },
+    {
+      "name": "Heading helper literal block",
+      "address": 2151811680,
+      "size": 56,
+      "sha256": "1a0c6013ae2a2eba0facd4ba29550b5ee7023732e7f237e6afd13a212b3e8ee0"
+    }
+  ],
+  "dol_anchors": {
+    "2148099100": "540002d7",
+    "2148099112": "c04301ac",
+    "2148099136": "c3e29620",
+    "2148099168": "c3e29630",
+    "2148099220": "4182fff4",
+    "2148099236": "4082000c",
+    "2148099256": "c023019c",
+    "2148099260": "ec40f828",
+    "2148099268": "ec22082a",
+    "2148099280": "4082000c",
+    "2148099284": "c0029648",
+    "2148099292": "c002964c",
+    "2148099312": "ec04007a",
+    "2148099324": "fc40001e",
+    "2148099356": "efe22024",
+    "2148099372": "4180fff8",
+    "2148099396": "4182fff4",
+    "2147850540": "c03e01ac",
+    "2147850544": "4803cacd",
+    "2148054412": "c03f01ac",
+    "2148054416": "4800ae6d",
+    "2148054568": "c03f01ac",
+    "2148054572": "4800add1",
+    "2148067264": "c03d01a4",
+    "2148067276": "48007d99",
+    "2148067284": "c03d01ac",
+    "2148067288": "48007c25",
+    "2148067300": "48007c19",
+    "2148057676": "c03f01a4",
+    "2148057684": "c03f01ac",
+    "2148057688": "4800a1a5",
+    "2148045596": "c03f01ac",
+    "2148045600": "4800d0dd"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": []
+}
