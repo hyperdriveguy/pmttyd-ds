@@ -9741,3 +9741,39 @@ full owner/slot/bank/index/flag/kind/alias/FP source domains and original follow
 recovery trajectories. Continue inbox implementation blockers and recover one
 full original playable encounter through persistent outcomes. Full-game behavior
 documentation and final complete-game requirements remain incomplete.
+
+## 2026-10-12 — ID1 complete local partner slit/roll,paper/floor/exit protocols
+
+Added [slit](behavior/FIELD_PARTNER_SLIT_GATE.md),
+[roll](behavior/FIELD_PARTNER_ROLL_GATE.md),
+[floor/forced exit](behavior/FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md) and
+[paper wrappers](behavior/FIELD_PARTNER_PAPER_REQUEST_WRAPPERS.md). Ten complete
+local bodies specify admission/entry,shared phase/count ownership,negative versus
+<=0 boundaries,same-call/next-call transitions,return0 blocking,ordered heading/
+roll transform and sign-sensitive snap,slit rise/exit,global availability/preserved
+output and forced-off cleanup. Decoded cleanup mask0x3c0 includes40/80.
+PaperOn handle replacement/group selection and PaperOff flag+name admission are
+explicit;no guaranteed-release or measured-duration policy was invented. Current
+homing/driver dependency links updated. Only ID1 scoped lock released.
+
+Validation:verify_field_partner_slit_roll.py passes ten complete containing
+hashes,482 instruction anchors,18 constants,four spans,two US lecture imports
+and exact22 direct linked sites across seven DOL text sections. Repeated report
+byte-identical;omitted-caller negative expectation rejected;Python compilation
+passed. Prior flying/flying-history/driver verifiers passed. Initial driver command
+used a nonexistent filename;correct verify_field_party_drive.py passed.
+General verifier passed1980 anchors;all1790 behavior links resolved at snapshot.
+Gekko audit passed599 files/84667 instructions/640 paired-single operations,
+zero changes or unknowns. make test passed56 CTest suites and78 Python tests;
+make all passed/rebuilt3DSX. Logs:/tmp/id1-slit-roll-test.log and
+/tmp/id1-slit-roll-build.log. Existing3218-identity/five-fallback audio pipeline
+ran;ASSETS records source/resource/local derivative paths and unchanged ID1
+conversion policy,outputs unstaged. No ID1 native implementation edits,original
+execution/form-duration measurement,profile/save mutation or original distribution.
+Concurrent native/ID2 work preserved outside this scoped delivery.
+
+Next:used collision helper0x800c2010,paper animation/pose backend and transform/
+name-marker consumers,ground homing/behind/beside and source/flag/count/alias/FP
+lifecycle. Obtain matched original slit/roll/following traces and recover one
+complete original playable encounter through persistent outcomes. Full-game
+behavior documentation and final complete-game requirements remain incomplete.

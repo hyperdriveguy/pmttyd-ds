@@ -782,3 +782,14 @@ and final complete-game requirements remain incomplete.
 close complete local Main/Disp,four phases/soft04 cleanup,map/material state,
 exact progress thresholds/fused particle request and three draw passes. Resource/
 pose/matrix/display/driver/scene/platform and original visual/frame traces remain open.
+
+ID1 paper-form gate delivery (2026-10-12):
+[slit state machine](behavior/FIELD_PARTNER_SLIT_GATE.md),
+[roll state machine](behavior/FIELD_PARTNER_ROLL_GATE.md),
+[slit-floor/forced exit](behavior/FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md)
+and [paper wrappers](behavior/FIELD_PARTNER_PAPER_REQUEST_WRAPPERS.md) close ten
+complete local bodies and22 direct used bindings. Count/phase/return ownership,
+ordered headings,sign-sensitive roll exit snap,rootY slit rise,0x3c0 cleanup,
+global availability/output and guarded paper handle/name release are explicit.
+Collision helper,underlying animation/resource/matrix and source/alias/numeric/
+original-runtime domains remain open. Full-game requirements remain premature.

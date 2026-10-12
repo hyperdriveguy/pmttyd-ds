@@ -49,7 +49,8 @@ it is not cleared when maps cease to match. C/B are separate retained values.
 
 Request party_slit(P)0x8014be2c;result0 returns immediately. Otherwise request
 party_roll(P)0x8014ba6c;result0 also returns. These early exits occur AFTER the
-threshold/query/marker work above. Full slit/roll bodies remain open here.
+threshold/query/marker work above. Complete local [slit](FIELD_PARTNER_SLIT_GATE.md) and
+[roll](FIELD_PARTNER_ROLL_GATE.md) contracts now bind these return gates.
 
 If CAPTURED M+2e unsigned motion==14 and current P+0 mask0x00080000 clear,
 request partyMoveBehindMario(P,0) and return. Otherwise recapture owner O=P+160
@@ -86,5 +87,6 @@ The flying verifier pins this complete body,all local gates/requests/stores,
 exact constants and map identities. The
 [target-speed/history-pointer leaves](FIELD_PARTNER_FLY_SOURCE_LEAVES.md) and
 [flying record writer](FIELD_PARTNER_FLY_HISTORY_WRITER.md) now have complete
-local contracts. Slit/roll,source/index/FP-register/kind/flag/alias domains and
+local contracts. Slit/roll collision/animation backend,source/index/FP-register/
+kind/flag/alias domains and
 original execution remain dependencies even with all static checks passing.

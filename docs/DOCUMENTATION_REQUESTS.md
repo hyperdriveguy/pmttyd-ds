@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Partner slit and roll gates,slit-floor and forced-exit bindings | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete party_slit/party_roll and used slit-floor/forced-off leaves,caller/state/output graphs;pose/animation/source/terrain/numeric/original trajectories remain separate |
+| Partner slit and roll gates,slit-floor and forced-exit bindings | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Slit](behavior/FIELD_PARTNER_SLIT_GATE.md),[roll](behavior/FIELD_PARTNER_ROLL_GATE.md),[floor/forced exit](behavior/FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md),[paper wrappers](behavior/FIELD_PARTNER_PAPER_REQUEST_WRAPPERS.md):ten complete local bodies,return/count/phase/mask/resource/handle graph and22 direct sites;collision helper/animation/source/terrain/numeric/original trajectories remain separate |
 | Majinai effect update,soft-request consumption and draw requests | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Main/cleanup](behavior/MAJINAI_EFFECT_UPDATE_STATE_MACHINE.md),[Disp/pose leaves](behavior/MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md):complete local four-phase/soft04/map/material/alpha/fused particle/three-pass graph and leaves;animation/resource/matrix/display/driver/platform/source/runtime remains open |
 | Flying history production,initialization and source bindings | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Writer](behavior/FIELD_PARTNER_FLY_HISTORY_WRITER.md),[initializer](behavior/FIELD_PARTNER_FLY_HISTORY_INITIALIZATION.md),[Cloud/Vivian callbacks](behavior/FIELD_PARTNER_FLY_CALLBACK_BINDINGS.md),[source leaves](behavior/FIELD_PARTNER_FLY_SOURCE_LEAVES.md):seven complete local bodies,kind5/6 binding records,four actual writer/init sites;animation/ability/terrain/source/alias/numeric/original trajectories remain separate |
 | Effect soft/hard deletion and payload-release ownership | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete leaves](behavior/EFFECT_SOFT_AND_HARD_DELETION.md),[caller/name/fog lifetime](behavior/EFFECT_DELETE_CALLERS_AND_LIFETIME.md):soft02→OR04 versus hard heap3 free→flags0,raw Maya pointer,all271 DOL sites and fog-name correction;update/draw/driver/scene/raw/REL/runtime remains open |
@@ -2059,3 +2059,15 @@ visual/frame traces remain open. Verifier passes26 complete/linked hashes,338
 anchors,five spans;repeat reports equal. Prior construction/delete/general1980
 checks pass;make test56 CTest/78 Python and make all pass;2314 local links resolve.
 No native/test/asset conversion code changed by ID2;original listings remain /tmp.
+
+ID1 slit/roll delivery (2026-10-12),AC-01/AC-03 partial answer:
+Complete local gates and four floor/activation/forced-off plus four paper-wrapper
+bodies now specify state37/phase3a/count24,ordered angle/rotation/interpolation,
+strict-negative versus<=0 transitions,same-call fallthrough/next-call phases,
+return0 blocking and exact cleanup masks. Slit/forced-off clear P+4 mask0x3c0,
+including40/80;PaperOff requires flag AND nonnull name before releasing handle.
+Global floor getter preserves output on miss,clear preserves coordinate words;
+activation can set2000 while owner gate skips pending/state writes. Ten complete
+hashes,482 anchors,18 constants,four spans,two imports and22 actual direct sites
+validated;56 CTest/78 Python tests and3DS build passed. Parent remains open for
+collision helper/animation/resource/source/alias/numeric/runtime composition.

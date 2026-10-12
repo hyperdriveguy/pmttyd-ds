@@ -104,6 +104,10 @@ complete gameplay sequences before further general-library edge-case recovery.
 | [Partner live direction/activity](FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md) | Complete live direction q0/repeated-pointer and TargetDistY scalar rules | Target/scalar/status/source/angle domains and original outputs |
 | [Partner front-floor service](FIELD_PARTNER_FRONT_FLOOR.md) | Complete upward-clearance/downward-query,heading,quantized output and attribute return | Shared backend/clearance/math/source domains and original trajectories |
 | [Partner status/clearance leaves](FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md) | Guarded status-code table,float60 setter and exact direct DOL access/call census | Code/flag/BSS/alias/REL/lifecycle/source domains and original state traces |
+| [Partner slit gate](FIELD_PARTNER_SLIT_GATE.md) | Complete admission/entry/travel/rise/exit phase and return graph | Collision/paper/backend/source/numeric/original form domains |
+| [Partner roll gate](FIELD_PARTNER_ROLL_GATE.md) | Complete transform/spin/exit interpolation/count and blocking returns | Pose/backend/source/FP domains and original timing |
+| [Slit-floor and forced exit](FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md) | Complete getter/clear/activation/cleanup leaves and22 direct bindings | Availability producer,other callers and original lifecycle |
+| [Paper request wrappers](FIELD_PARTNER_PAPER_REQUEST_WRAPPERS.md) | Complete handle/group/name marker/light/guarded-release protocol | Animation/resource/lifetime/source/alias backend |
 | [Flying history writer](FIELD_PARTNER_FLY_HISTORY_WRITER.md) | Complete three-source/two-bank append/flags/index/publication graph | Source/bank/index/alias/cadence domains and original history traces |
 | [Flying history init](FIELD_PARTNER_FLY_HISTORY_INITIALIZATION.md) | Complete seeded bank/record order and selector/motion setup/early return | Pose/source/flag/alias/runtime composition |
 | [Cloud/Vivian flying bindings](FIELD_PARTNER_FLY_CALLBACK_BINDINGS.md) | Complete callbacks,kind5/6 records,phase/offset/trailing store/request order | Renderer/pose/lifecycle/numeric domains and original trajectories |

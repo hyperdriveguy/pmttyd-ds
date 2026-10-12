@@ -260,3 +260,13 @@ shipped US bindings;they do not establish runtime frequency or all source domain
 Current listing audit590 files/83916 instructions/640 paired-single operations
 is clean. Broader pose/ability/terrain/source/numeric/original trace and complete
 encounter gaps remain;no full-system closure or final requirements gate is met.
+
+ID1 slit/roll coverage update (2026-10-12):
+[slit](FIELD_PARTNER_SLIT_GATE.md),[roll](FIELD_PARTNER_ROLL_GATE.md),
+[floor/forced exit](FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md) and
+[paper wrappers](FIELD_PARTNER_PAPER_REQUEST_WRAPPERS.md) now close ten local
+bodies with22 direct US bindings. Collision helper,animation/resource/transform
+backend,source domains and original form traces remain open. Listing audit599
+files/84667 instructions/640 paired-single operations is clean;that is byte/text
+integrity,not full-system completion. Complete original encounter/persistence and
+broader shipped-system gaps still prevent final complete-game requirements.

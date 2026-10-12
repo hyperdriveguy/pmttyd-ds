@@ -1443,3 +1443,18 @@ identities,0 Switch,5 primary-PCM slice fallbacks. Existing local-assets/audio-m
 raw/catalog and RomFS WAV/audio-map.json derivatives remain unstaged. Original
 rights remain with their owners;local analysis/conversion grants no redistribution
 license. Exact build log:/tmp/id1-fly-history-build.log.
+
+ID1 slit/roll/paper evidence/build provenance (2026-10-12):read-only
+/home/carson/games/roms/G8ME01.iso US disc0 revision0 supplied complete
+party_slit/party_roll,floor/activation/forced-exit leaves and paper wrappers.
+Original resource/animation IDs at0x802f4750..0x802f47b8 and paper-group IDs
+0x802cb360..0x802cb390 are preserved as short interface identifiers,not authored
+story dialogue. Restore vectors/double bias/constants are pinned as metadata.
+Original ELF/listing/report remain ignored under artifacts/reference/behavior;
+source history contains only analysis/addresses/hashes/constant metadata. No new
+ID1 asset conversion policy or story text was introduced. make all invoked
+existing sound/proj/pmario.proj,pool,sdir,samp audio-map pipeline:3218 GameCube
+identities,0 Switch,5 primary-PCM slice fallbacks. Existing local-assets/audio-map
+raw/catalog and RomFS WAV/audio-map.json derivatives stay unstaged. Original
+rights remain with their owners;local analysis/conversion grants no redistribution
+license. Exact build log:/tmp/id1-slit-roll-build.log.

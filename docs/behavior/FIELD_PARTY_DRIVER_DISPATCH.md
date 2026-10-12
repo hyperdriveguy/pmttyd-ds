@@ -144,3 +144,10 @@ Next:kind callbacks and mode1/entry/ride/pipe/force-walk/damage bodies;
 effect,projection,presentation and pose-driver contracts;callers,flag/slot/index
 writers,complete field/battle teardown and original stop/run/transition traces.
 These dependencies still prevent complete party-system or full-game equivalence.
+
+ID1 mode11 dependency update (2026-10-12):pending
+[L_partyForceSlitOff](FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md) now has a
+complete local gate/heading/paper/flag/pose request graph. Its P+4 cleanup is
+mask0x3c0 and it preserves phase/count/global floor data. PaperOff's guarded
+handle ownership applies;this closure does not complete ride/pose/backend/source
+or original mode11 trajectories.
