@@ -1401,3 +1401,10 @@ while current service type is uint32_t(*)(void*,EventEntry&). Exact log:
 /tmp/id1-ground-test-rerun.log. Native owner should align this fixture signature;
 ID1 did not edit concurrent native files. Static floor evidence still passes;
 this is a host validation failure,not an original-game evidence failure.
+
+
+ID1 floor-query host validation completion (2026-10-12):native owner aligned
+the tail fixture callback signature. Fresh make test passes39 CTest suites and
+64 Python tests;exact passing log /tmp/id1-ground-test-final.log. Earlier missing-
+file and callback-mismatch failures are resolved historical runs. make all passed;
+static ground evidence remains green. ID1 changed no native files.

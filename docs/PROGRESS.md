@@ -8167,3 +8167,11 @@ entryAddress lambda has(void*) but service expects(void*,EventEntry&). Exact
 rerun log:/tmp/id1-ground-test-rerun.log. No passing host-test claim. Inbox
 records the concrete native fixture mismatch;ID1 leaves concurrent native code
 untouched and continues original behavior recovery.
+
+
+ID1 floor-query host validation completion:the native tail callback fixture
+signature was corrected by its owner. Fresh make test now passes39 CTest suites
+and64 Python tests (log /tmp/id1-ground-test-final.log). Earlier missing-file
+and callback mismatch failures above are historical/resolved;make all succeeded.
+No native files were changed by ID1. Next recovery proceeds with appear-position/
+out-of-screen and remaining movement/backend/domain/original trajectory work.
