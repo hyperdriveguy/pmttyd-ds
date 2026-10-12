@@ -1189,3 +1189,12 @@ close seven44-byte records/1.0/ordered fill and typed stores/two-byte gaps;
 link same-record consumers and already recovered initial unit data-table copy.
 3 hashes/34 anchors/2 spans/1 scoped DOL call verified;84 CTest/90 Python/
 make all pass.Later producers/source/save/query/Game/platform/runtime open.
+
+ID1 terminal-TEV update (2026-10-12):
+[color/cosine](behavior/display/MAP_TEV_TERMINAL_COLOR_AND_COSINE_ALPHA.md) and
+[projected pulse texture](behavior/display/MAP_TEV_ANIMATED_PROJECTED_TEXTURE.md)
+close masks0x80100000/0x800000 local graphs. Verify_map_tev_terminal.py reproduces
+255 scoped words/11 constants/five spans/two imports/six sites/65536 host byte
+cases. Original texture identity is hashed without payload export. Two depth
+middle branches/source/GX/SDK/libm/lifetime/images remain open;containing body
+identity remains PARTIAL semantics. Full-game final requirements are premature.

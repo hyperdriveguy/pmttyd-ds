@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Map TEV terminal color and animated projected texture | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete masks0x80100000/0x800000 raw color/cosine/byte arithmetic/procedural texture/matrix/counter requests;depth0x10000/0x40000 and source/GX/runtime remain open |
+| Map TEV terminal color and animated projected texture | AC-01, AC-03 | VALIDATED scoped blocks / lock released, 2026-10-12 | Documentation agent ID 1 | [Color/cosine alpha](behavior/display/MAP_TEV_TERMINAL_COLOR_AND_COSINE_ALPHA.md),[projected pulse texture](behavior/display/MAP_TEV_ANIMATED_PROJECTED_TEXTURE.md):complete masks0x80100000/0x800000 raw captures/two clocks/rounding/byte arithmetic/original texture/matrix/counter/register requests;depth0x10000/0x40000/source/GX/libm/lifetime/runtime open |
 | Map TEV projected texture0x400 and projected shadow0x20000 | AC-01, AC-03 | VALIDATED scoped blocks / lock released, 2026-10-12 | Documentation agent ID 1 | [Two-stage projection](behavior/display/MAP_TEV_FLAG400_TWO_STAGE_PROJECTION.md),[projected shadow/source](behavior/display/MAP_TEV_FLAG20000_PROJECTED_SHADOW.md):complete two request blocks/four source leaves/prior-stage output rewrite/shared swap/register/order/getter captures/counters;four remaining middle branches/GX/source/lifetime/runtime open |
 | Map TEV time-driven base modes8/9 | AC-01, AC-03 | VALIDATED scoped local blocks / lock released, 2026-10-12 | Documentation agent ID 1 | [Pulse/raw clock](behavior/display/MAP_TEV_MODE8_PULSE_AND_RAW_CLOCK.md),[shared scroll/matrices](behavior/display/MAP_TEV_MODE9_SHARED_SCROLL_AND_MATRICES.md),[base closure/gaps](behavior/display/MAP_TEV_BASE_MODE_CLOSURE_AND_REMAINING_WORK.md):complete base8/9 expressions/mutations/request order and startup metadata;actual scene/clock/state initialization/GX/libm and six middle branches remain open |
 | Map TEV fixed base modes1..7 and renderer mode12 | AC-01, AC-03 | VALIDATED scoped fixed programs / lock released, 2026-10-12 | Documentation agent ID 1 | [Stage tables](behavior/display/MAP_TEV_FIXED_STAGE_PROGRAMS.md),[mode12 callers/evidence](behavior/display/MAP_TEV_MODE12_CALLERS_AND_LITERAL_EVIDENCE.md):eight complete literal base programs/25 stage rows/150 requests/two actual mode12 caller argument graphs;time-driven modes8/9 and six middle branches/GX/source/lifetime/runtime remain open |
@@ -3253,3 +3253,22 @@ SHA256 c200a5800f3222ee2db8593d4e5be3caad807eda898d3258917caa1d5f7caaf3.
 After that actual state change,make test rerun PASSES84 CTest/90 Python;log
 /tmp/id1-tev-proj-test-rerun.log. Earlier configure failure is RESOLVED. make all
 and all projected/static checks pass. ID1 changes no native/CMake/tests.
+
+ID1 terminal-TEV validation breadcrumb (2026-10-12):255-word/constant/span/
+texture/byte arithmetic/static checks and84 CTest/90 Python pass. make all fails
+concurrent source/render.cpp:341:GPU_WRITE_RGB is not declared by installed SDK.
+Log:/tmp/id1-tev-terminal-build.log. Native renderer owner should use its SDK's
+RGB write-mask combination/finish source validation;ID1 changes no native render
+code and reruns only after actual source change.
+
+ID1 terminal-TEV delivery/build resolution (2026-10-12),AC-01/AC-03 partial:
+two detailed contracts in released row close masks0x80100000/0x800000 context/
+cosine/alpha multiplication and original pulse texture/synthetic view/ortho/
+clock reads/matrix/register/counter requests. Retained seed alpha255 and repeated
+KColor1 overwrite are explicit;raw input alpha is not output alpha. 255 words/
+11 constants/five spans/two imports/six sites/65536 host integer cases pass.
+84 CTest/90 Python pass. Renderer owner fixed unsupported mask with typed RGB
+combination,source SHAf2081e0ed34beac9bca8ad1407175f87b05bc54c8cf2149816dc548f57ec26ab;
+make all rerun passes/log /tmp/id1-tev-terminal-build-rerun.log. Earlier failure
+RESOLVED;ID1 changes no native code. Only ID1 lock released;two depth middle
+branches/Ortho/LookAt/GX/libm/source/lifetime/original images/full-game open.

@@ -494,3 +494,15 @@ Verifier:tools/verify_map_tev_projected.py;233 scoped words/three spans/two impo
 six sites. Four middle branch internals0x10000/0x40000/0x80100000/0x800000 remain
 open,alongside source/GX/lifetime/US scene/original images. Full TEV body identity
 is not complete semantic or whole-system evidence.
+
+## ID1 terminal TEV color and projected pulse texture (2026-10-12)
+
+[Color/context/cosine alpha](display/MAP_TEV_TERMINAL_COLOR_AND_COSINE_ALPHA.md)
+specifies raw selector precedence/clock/rounding/byte products/retained alpha.
+[Animated projected texture](display/MAP_TEV_ANIMATED_PROJECTED_TEXTURE.md)
+specifies original built-in payload/two clock reads/synthetic view/ortho/matrix/
+stage/KColor/counter order. Verifier:tools/verify_map_tev_terminal.py;255 scoped
+words/11 constants/five spans/two imports/six sites/65536 host integer cases.
+Two depth middle branches0x10000/0x40000,source/GX/libm/Ortho/LookAt/capture/cache/
+lifetime/original images remain open. Hash/count/request closure does not prove
+full original shader/system or whole-game completion.

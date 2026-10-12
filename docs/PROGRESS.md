@@ -12914,3 +12914,55 @@ with RGB-only writes. Final make test passed84 CTest targets/90 Python tests
 alpha-mask-only correction and is not an alpha-buffer oracle. An intermediate
 SDK RGB-mask enum name was replaced with the actual combined channel flags
 before the successful build. No asset/source color geometry changed.
+
+## 2026-10-12 — ID1 terminal TEV context color and animated projection
+
+Added [terminal color](behavior/display/MAP_TEV_TERMINAL_COLOR_AND_COSINE_ALPHA.md),
+[pulse texture](behavior/display/MAP_TEV_ANIMATED_PROJECTED_TEXTURE.md).
+Complete two local blocks specify ANY0x80100000 admission/raw context precedence/
+cosine default RGB-alpha path/unsigned GP/single/libm/FMA/truncation byte order,
+per-channel floor(RGB*alpha/255) and retained seed alpha255;0x800000 original
+texture/pulse integer/local synthetic eye-up-target/second fresh GP read/Ortho/
+LookAt/concat FIRST-alias/matrix-before-generator/stage/KColor/counter requests.
+Shared KColor1 overwritten again by texture branch,not isolated per stage.
+No measured clock/pulse/fade/gradient or original image behavior invented.
+Only ID1 scoped lock released;parent complete-game requirements remain open.
+
+Full TEV local semantics now lacks two depth middle branch internals0x10000/
+0x40000. Original flags/context/clock/texture/pose/group/source/scene/callback/
+resource/cache/lifetime and SDK/GPU/libm/FPSCR/Ortho/LookAt numeric/original images
+remain dependencies even for the locally closed request blocks. Local clock
+expressions use distinct divisors20/30/50 and separate reads;do not collapse into
+one measured frame period. Complete-game systems/final requirements remain open.
+
+Validation:verify_map_tev_terminal.py checks containing TEV identity as PARTIAL
+semantics,255 reviewed words,11 binary32 constants,five spans(unsigned bias,
+projected IDs,two raw seeds,three look-at vectors,original256-byte texture hash),
+two US lecture imports/six direct sites and65536 host byte-product cases. Repeat
+JSON byte-identical;wrong retained alpha,wrong texture identity and divisor256
+negatives rejected;Python compilation passed. Prior projected/time TEV checkers
+and general1980 anchors pass. Gekko655 listings/96032 instructions/914 paired
+ops,zero changes/unknowns. Initial545-file link scan passed;final scan below.
+No original instruction/game execution or GPU arithmetic oracle added.
+
+make test passed84 CTest suites/90 Python tests;log /tmp/id1-tev-terminal-test.log.
+make all initially failed concurrent source/render.cpp:341 unsupported
+GPU_WRITE_RGB;log /tmp/id1-tev-terminal-build.log. Renderer owner replaced it
+with typed GPU_WRITE_RED|GREEN|BLUE combination;fixed source SHA256
+f2081e0ed34beac9bca8ad1407175f87b05bc54c8cf2149816dc548f57ec26ab.
+After that verified source change,make all rerun PASSES/built3DSX;log
+/tmp/id1-tev-terminal-build-rerun.log. Earlier compile failure is RESOLVED.
+Existing3218 GameCube/0 Switch/5 primary-PCM slice pipeline ran. No ID1 native/
+converter/asset policy/profile/save mutation. ISO read-only;inspection/report
+ignored;ASSETS records original texture hash/seed metadata,without payload export.
+Concurrent native/ID2/reference docs preserved outside own staged shared hunks.
+
+Next:two remaining depth shader blocks,called numeric/SDK/source/GX/cache/
+lifetime/original image validation,alongside actual US gameplay/story/event/
+message order/branches/conditions and persistent encounter closure. No full-game
+completion percentage or final complete-game requirements claimed by these
+partial shader/local byte/reference/host-validation results.
+
+ID1 final terminal-TEV link audit:547 Markdown files checked after staging;
+zero broken links. Initial545-file count above is the earlier snapshot. Only
+ID1 files/shared hunks staged;other owners retain their current independent work.

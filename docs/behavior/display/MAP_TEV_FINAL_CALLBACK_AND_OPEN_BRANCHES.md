@@ -93,3 +93,10 @@ and [0x20000 projected shadow](MAP_TEV_FLAG20000_PROJECTED_SHADOW.md). These
 blocks/four pswp query leaves now close as local request semantics. Four other
 middle internals0x10000/0x40000/0x80100000/0x800000,source/GX/capture/lifetime/
 original images remain open;no full TEV/system or actually executed scene claim.
+
+ID1 terminal-middle status update (2026-10-12):earlier four-open-middle list
+is superseded locally by [terminal color](MAP_TEV_TERMINAL_COLOR_AND_COSINE_ALPHA.md)
+and [pulse texture](MAP_TEV_ANIMATED_PROJECTED_TEXTURE.md). These masks0x80100000/
+0x800000 request blocks now close. Two depth middle internals0x10000/0x40000,
+original source/GX/libm/Ortho/LookAt/cache/lifetime/images remain open;no complete
+shader/system or actually executed scene coverage implied.

@@ -400,3 +400,12 @@ all-system closure;identity/counts are not game completion.
 ID1 projected-TEV host resolution:missing concurrent fixture above is
 RESOLVED after actual file arrival;84 CTest/90 Python rerun and make all pass.
 Four middle internals/source/GX/runtime and all-system completion remain open.
+
+ID1 terminal-TEV coverage update (2026-10-12):
+[context/color](../display/MAP_TEV_TERMINAL_COLOR_AND_COSINE_ALPHA.md) and
+[projected pulse texture](../display/MAP_TEV_ANIMATED_PROJECTED_TEXTURE.md)
+close two additional middle blocks;255 scoped words/11 constants/five spans/
+two imports/six sites/65536 host integer cases pass. 84 CTest/90 Python/build
+pass after concurrent RGB enum repair. Two depth middle branches0x10000/0x40000
+and source/GX/numeric/cache/lifetime/images,broader gameplay/story and whole-system
+closure remain open;local coverage is not a full-game completion denominator.

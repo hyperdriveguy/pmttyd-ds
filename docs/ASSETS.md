@@ -1827,3 +1827,18 @@ Ground pass follow-up d8ec56f preserves framebuffer alpha: recovered dispDraw
 80010948–78 disables alpha writes before every camera4 callback, and Polygon
 inherits that state. Native writes only RGB with no depth writes. No asset
 conversion changed. The air-shadow source alpha preparation remains separate.
+
+ID1 terminal-TEV texture/seed provenance (2026-10-12):US G8ME01 ISO read-only.
+Original DOL texture803048a0,256 bytes,SHA256
+1b058d9cc9f2d6d3ee6fcb0252405672529f289f553ef90cd144cad5ca3eab5d,requested
+as4x64/format14/wrap0,1/mipmap0. Its payload is hash-checked,not exported into
+tracked source or replaced by generated gradient. Original eye/up/target vectors
+802bfa78/84/90,raw KColor seeds8041f8f4/f8=000000ff,projected IDs/unsigned bias
+pinned as metadata. Actual texture decoder/GX filtering/lifetime/capture/clock/
+Ortho/LookAt remain separate from original asset reuse. ELF/listing/report ignored
+under artifacts/reference/behavior;no ID1 art/audio/mesh adaptation policy change.
+make all first concurrent unsupported RGB enum failure was resolved by native
+owner;rerun3DSX passes/log /tmp/id1-tev-terminal-build-rerun.log. Existing
+sound/proj/pmario.proj,pool/sdir/samp pipeline3218 GameCube/0 Switch/5 primary-PCM
+fallbacks ran. Ignored packs/catalog/WAV/RomFS outside history;original rights
+remain with owners and metadata/new verifier grants no asset redistribution.

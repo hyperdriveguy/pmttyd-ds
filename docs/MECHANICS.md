@@ -1210,3 +1210,12 @@ the grounded pass using native RGB-only writes. This corrects the initial
 color-mask implementation without assuming initial EFB alpha0/255. Air GX
 passes explicitly alter alpha masks; their finite graph is now documented but
 entering frame/camera2 copy/clear state still needs native binding.
+
+ID1 terminal-TEV static addendum (2026-10-12):
+[color/context branch](behavior/display/MAP_TEV_TERMINAL_COLOR_AND_COSINE_ALPHA.md)
+and [pulse texture](behavior/display/MAP_TEV_ANIMATED_PROJECTED_TEXTURE.md) close
+local raw-clock/cosine/single/FMA/truncation/color/texture/matrix requests. Byte
+multiplication floor255 host proof is bounded arithmetic,not original execution.
+No Dolphin trace,measured period/fade/texture image/GPU parity added. 84 CTest/
+90 Python pass;3DS build passes after native owner's RGB enum fix. Two depth
+branches/source/libm/GX/Ortho/LookAt/lifetime/images remain incomplete.
