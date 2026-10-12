@@ -247,3 +247,14 @@ WeaponAftereffect and called hazard checks above. Exact weighted/forced decision
 RNG consumption and stage event ownership are specified; queued event execution,
 source/domain/seed ownership and original hazards remain open. This callback
 is not a status/resource cleanup substitute;the separate badge tail is still open.
+
+
+## Badge-tail service follow-up (2026-10-12)
+
+[Complete tail](BATTLE_ATTACK_BADGE_RECOVERY_TAIL.md),
+[called services](BATTLE_BADGE_RECOVERY_SERVICES.md) and
+[presentation/coercion](BATTLE_BADGE_RECOVERY_PRESENTATION.md) now close local
+SuitoruBadgeEffect graph/amount/resource/geometry obligations and scoped recovery
+effect request. Jump's waiting-child call is80356be0. Owner125/brother120 waits
+and sequential amount queries remain separate scheduling rules;full renderer/
+VM/source/domain and original execution are still dependencies.

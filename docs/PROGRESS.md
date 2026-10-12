@@ -6385,3 +6385,34 @@ graph. Next:queued stage hazard execution/source/domain/seed interleaving;
 Jump badge-effect tail and audience services;complete EVT-01 scheduling and
 original input/state/trajectory/audio/hazard traces. Complete-game requirements
 remain deferred until adequate system coverage;full objective stays incomplete.
+
+### 2026-10-12 — Documentation ID2: ordinary attack badge recovery tail
+
+Delivered BATTLE_ATTACK_BADGE_RECOVERY_TAIL.md,
+BATTLE_BADGE_RECOVERY_SERVICES.md and BATTLE_BADGE_RECOVERY_PRESENTATION.md.
+Complete32-command graph includes ordered HP/FP amount gates,two copied-local
+brothers, effect requests,brother120/owner125 waits and delayed resource writes/
+deletion. Complete amount/resource/geometry wrappers specify raw-actor translation,
+signed damage/count minimum,ignored but resolved part,HP bookkeeping attribute,
+FP shared-owner rereads,body list and integer/sentinel axis outputs. Scoped
+local-float encoding/MULF/INTEGER ADD and recovery effect catalog/request route
+avoid unquantized placement or detached native recovery timers. Actual Jump
+waiting-child call80356be0 pinned;corrected a four-byte transcription while
+building the verifier before delivery. Effect renderer/full VM/domain/source/
+original timing and presentation remain open.
+
+Validation: verify_badge_recovery_tail.py passed18 containing-body fingerprints,
+71 instruction anchors,13 data spans and exact32-command graph/two brothers;
+containing interpreter/effect hashes do not establish all namespaces/effects.
+Report/tmp/id2-badge-tail-evidence.json. Existing19-body/268-command Jump and
+13-body aftereffect verifiers passed. make test passed20 CTest suites and58
+Python tests;make all built concurrent candidate/takeoff modules and3DSX,exited0.
+All820 local behavior links resolved;git diff --check passed. ID2 made no native,
+asset,ISO,save or emulator/profile edits. Inspection artifacts/reports stay/tmp;
+concurrent native and ID1 lecture-field work preserved and not staged by ID2.
+
+Released only ID2's badge-tail lock,linked all three contracts in inbox/index/
+Jump graph. Next requests: audience feedback/prize/source writers, complete
+EVT-01 scheduling and numerical/domain contracts, stage queued event execution,
+original input/state/motion/audio traces. Whole documentation and eventual
+complete-game requirements objective remains active/incomplete.

@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Ordinary attack badge-effect tail and called recovery services | JUMP-01, DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [32-command tail](behavior/BATTLE_ATTACK_BADGE_RECOVERY_TAIL.md),[recovery/geometry](behavior/BATTLE_BADGE_RECOVERY_SERVICES.md),[coercion/effect route](behavior/BATTLE_BADGE_RECOVERY_PRESENTATION.md):complete local graph/wrappers/cores and scoped presentation binding;renderer/VM/domain/source/runtime remain open |
 | Lecture field trigger,story conditions and return requests | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover gor kurihakase_lecture callers,setup3/start/wait/return and exact US message/selection/persistent bindings;excludes complete battle-end controller and original traces |
 | Weapon aftereffect callback and ordinary Jump operands | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Dispatch](behavior/BATTLE_WEAPON_AFTEREFFECT_DISPATCH.md),[stage leaves](behavior/BATTLE_STAGE_AFTEREFFECT_REQUESTS.md):complete local weighted/forced RNG and destruction/nozzle/frame/object ownership;queued event bodies,source/domain and original traces remain open |
 | Stylish start/main/result and ordinary Jump timing bindings | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Timing/results](behavior/BATTLE_STYLISH_TIMING_AND_RESULTS.md),[icon](behavior/BATTLE_STYLISH_TIMING_ICON.md):complete local start/poll/input/output/queue/draw and four ordinary callers;source/scheduler/audience/display/assets/original traces remain open |
@@ -751,3 +752,19 @@ suppresses object registration. Queued event bodies,stage/source/allocator domai
 seed interleaving and executed hazards remain open. Standalone verifier passes
 13 complete body fingerprints,56 anchors,seven data spans and two ordinary
 callers. ID2 lock released;parent requests/other owners remain open.
+
+
+ID2 badge-tail delivery (2026-10-12), JUMP-01/DMG-02/STATUS-01 partial answer:
+[32-command tail](behavior/BATTLE_ATTACK_BADGE_RECOVERY_TAIL.md) closes both
+copied-local brothers, sequential HP/FP >=1 gates, effects, brother120/owner125
+waits and resource writes/delete. [recovery/geometry](behavior/BATTLE_BADGE_RECOVERY_SERVICES.md)
+closes raw-actor point readers signed min(badgeByte,damageWord), resource wrappers
+(including resolved but ignored part), HP bookkeeping attribute and geometry
+outputs. [coercion/effect route](behavior/BATTLE_BADGE_RECOVERY_PRESENTATION.md)
+closes scoped1024 float encoding/MULF then INTEGER ADD and recovery effect catalog/
+argument binding. Do not use unquantized host floating placement or detached
+recovery timers. Full renderer/audio, VM/source/delayed-validity and original
+traces remain open. Standalone verifier passes18 containing-body fingerprints
+(scoped interpreter/effect routes),71 anchors,13 data spans and all32 event
+commands/two brothers;actual Jump waiting-child site80356be0 pinned. Own lock
+released;parent requests and ID1's lecture-field reservation remain open.
