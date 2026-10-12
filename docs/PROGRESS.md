@@ -1135,3 +1135,22 @@ provisional. Then recover actual actor collision widths/ground physics and
 compare render proportions/camera in Dolphin. Original English story/dialogue,
 SFX, layered materials, water presentation and broader traversal remain
 incomplete; full expanded objective active.
+
+## Further character size reduction
+
+Following the latest oversized-character report, reduced the shared render
+scale from 0.35 to 0.24 (31.4% smaller in each dimension). Mario, Goombella,
+NPCs, battle actors, tilt and shadows use the same calibration. Map geometry
+and collision dimensions are unchanged. This remains visual calibration;
+original actor proportions need a matched Dolphin camera comparison.
+
+Validation: `make test` passed core and 27 Python tests; `make -j2 all`
+produced `ttyd-2ds.3dsx`. `python3 tools/emulator_smoke.py --fresh-save
+--seconds 4` exited 0. Reviewed `artifacts/azahar/boot.png`: smaller actors
+against plaza buildings and dual-screen rendering, with emulator reporting
+60 FPS. Hardware performance is unverified.
+
+Next: compare actor/map proportions with Dolphin under matched framing before
+further scale changes. Existing uncommitted road-motion work is separate and
+still needs its own documentation and emulator acceptance; do not assume this
+boot check validates that work.
