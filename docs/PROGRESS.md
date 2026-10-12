@@ -1,5 +1,34 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original-address callback registry and data-child binding
+
+Added `EventCallbackRegistry` with explicit original-address provider bindings,
+unchanged firstCall/result propagation and lifetime-owned service pointers.
+Missing callbacks leave checked-invoke output unchanged;native platform dispatch
+terminates on unsupported addresses even in release builds rather than returning
+synthetic success. Registration is native policy,not an original runtime table.
+Invocation captures the callback/user before allowing provider registry mutation.
+
+Added reusable native battle callback adapters and actual RunDataEventChild
+registration at8010a010. Operand resolution,creation,memory and schedule use
+`EventNativeRuntime`;actor translation/current-battle/unit lookup remain explicit
+backend providers. The binding calls the recovered body rather than rewriting
+its child/wait protocol. Other72-census callbacks are not automatically bound.
+
+Validation:make test passes61 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-callback-registry-test.log and /tmp/pm-callback-registry-build.log.
+`build-host/event_callback_registry_tests romfs/events.pmevt` passes registered
+callback execution into the extracted key7 child and parent resumption. Authored
+fixtures cover waiting child/owner capture,same-pass append,key resolution after
+unit lookup,zero-valued data continuation,first-call polling,duplicate/unbound
+registration and provider mutation. Unit/table/translation/cache test backends
+are authored inputs,not imported Mario-kind policy or original full Jump traces.
+
+Next:complete actor translation/registry-query providers and additional recovered
+callback families,then native battle binding and original Jump graph execution.
+Platform/source/domain/concurrency/FPSCR/full story fidelity remain open;goal
+incomplete. Updated EVT-01 breadcrumb for the documentation agent.
+
 ## 2026-10-12 — Shared native event service owner
 
 Added `EventNativeRuntime` owning both original context mappings,GP storage,

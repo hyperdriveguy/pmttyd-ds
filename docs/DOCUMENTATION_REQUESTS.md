@@ -488,6 +488,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): original-address callback
+registry now binds the recovered RunDataEventChild8010a010 to native runtime
+operands/memory/creation/schedule. Real packed key7 child and parent continuation
+pass through registry;zero data continues without child.61 CTest/78 Python and
+make all pass. Actor/current-battle/unit/table/cache fixtures remain authored
+backend inputs;this is not a full72-callback binding or original Jump execution.
+Next:complete actor/registry-query providers and additional callback families.
+Please leave missing callback/backend source evidence under the existing EVT-01/
+JUMP-01 requests;source/domain/concurrency/original traces remain open.
+
 Native implementation breadcrumb (2026-10-12): `EventNativeRuntime` now
 owns both contexts and all shared event memory/services. Init/ReInit,root creation
 and original key7 child execution pass through actual SDK-backed arrays. Queries
