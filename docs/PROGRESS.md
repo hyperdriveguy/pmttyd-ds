@@ -1,5 +1,38 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Complete effect driver,texture-cache and pool init/context release
+
+Documentation agent ID2 recovered full effMain170,effInit88,AutoRelease88,
+N64 reset38 and DVD-root leaf8 in two detailed contracts. Driver retains bank/
+count but queries current GP/context/active bit/callback per slot;new later
+records can update same pass,no local pause/time/credit scaling. Cache tail
+preserves async/sync/tag independent source reads and alloc0 tag acceptance.
+Init512*40=20KiB heap0 uses live count/array clear and separate manager stores.
+AutoRelease active01/context exact frees heap3 payload only;field0/battle1
+callers separately release animation then ReInit events. No universal destructor.
+
+Original US texture source e/us/effect_us.tpl is106880 bytes,SHA256
+93ef5d667ded662d6abf13133082bef138f9c88132365ff8b11f8abf2129dd14.
+Read-only FST/hash/source-path evidence and no-conversion/licensing/history
+boundaries added to ASSETS. No original texture extraction/conversion/native/
+test code changed;ELFs/listings remain /tmp/id2-fxdriver-*.
+
+Validation: verify_effect_driver.py passes14 complete/linked hashes,186
+instructions,eight data/source/SDA spans,four exact DOL sites and US texture
+fingerprint. Repeat reports match (/tmp/id2-fxdriver-evidence.json and -second.json).
+Prior deletion/outer-order/general1980 checks,Python compilation,diff-check
+and2373 local links pass. make test58/58 CTest suites and78 Python tests;
+make all passes. Logs:/tmp/id2-fxdriver-test.log,/tmp/id2-fxdriver-build.log.
+Concurrent native/ID1 changes preserved;own scope committed incrementally.
+
+Own lock released;EVT-01/JUMP-01/DMG-02 remain open. Next documentation closes
+file/TPL/texture consumers,animation/pose/matrix/display/scene/raw owner/backends,
+record/reset/end/turn and other requests. Native original source/registry/heap/
+address/time/render/audio/message integration and original resource/update/frame
+traces remain required. Goal active/incomplete;full-game fidelity/requirements
+completion remains unproven.
+
+
 ## 2026-10-12 — Event allocator services on shared RAM
 
 Added `EventMemoryBinding` to bind recovered memory/allocator services directly

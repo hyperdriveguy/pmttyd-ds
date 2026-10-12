@@ -18,6 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Slit collision admission helper and camera-direction binding | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete unk_800c2010 six filtered rays,normal-angle pairing,return/output and used direction/filter/caller bindings;ray/geometry/math/source/numeric/original trajectories remain separate |
+| Effect driver update,auto-release and pool initialization | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Driver/cache](behavior/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md),[pool/init/release](behavior/EFFECT_POOL_INITIALIZATION_AND_CONTEXT_RELEASE.md):full local context/active callback loop/cache captures,512 records/heap0/live clear,N64 reset/hard context release/four DOL bindings/US TPL identity;file/TPL/animation/display/scene/platform/source/runtime remains open |
 | Partner slit and roll gates,slit-floor and forced-exit bindings | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Slit](behavior/FIELD_PARTNER_SLIT_GATE.md),[roll](behavior/FIELD_PARTNER_ROLL_GATE.md),[floor/forced exit](behavior/FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md),[paper wrappers](behavior/FIELD_PARTNER_PAPER_REQUEST_WRAPPERS.md):ten complete local bodies,return/count/phase/mask/resource/handle graph and22 direct sites;collision helper/animation/source/terrain/numeric/original trajectories remain separate |
 | Majinai effect update,soft-request consumption and draw requests | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Main/cleanup](behavior/MAJINAI_EFFECT_UPDATE_STATE_MACHINE.md),[Disp/pose leaves](behavior/MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md):complete local four-phase/soft04/map/material/alpha/fused particle/three-pass graph and leaves;animation/resource/matrix/display/driver/platform/source/runtime remains open |
 | Flying history production,initialization and source bindings | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Writer](behavior/FIELD_PARTNER_FLY_HISTORY_WRITER.md),[initializer](behavior/FIELD_PARTNER_FLY_HISTORY_INITIALIZATION.md),[Cloud/Vivian callbacks](behavior/FIELD_PARTNER_FLY_CALLBACK_BINDINGS.md),[source leaves](behavior/FIELD_PARTNER_FLY_SOURCE_LEAVES.md):seven complete local bodies,kind5/6 binding records,four actual writer/init sites;animation/ability/terrain/source/alias/numeric/original trajectories remain separate |
@@ -2091,3 +2092,25 @@ activation can set2000 while owner gate skips pending/state writes. Ten complete
 hashes,482 anchors,18 constants,four spans,two imports and22 actual direct sites
 validated;56 CTest/78 Python tests and3DS build passed. Parent remains open for
 collision helper/animation/resource/source/alias/numeric/runtime composition.
+
+
+ID2 EVT-01/JUMP-01/DMG-02 effect driver/init/release delivery (2026-10-12), partial answer:
+[Driver/cache](behavior/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md) closes
+full effMain170:captured signed count/array but per-record current GP14/exact
+context0/1,active01,nonnull callback/ignored result,ascending live slots and
+same-pass later allocation;NO local GP18/time/credit scaling. Cache runs AFTER
+callbacks,independent manager/GP/prefix/root async/sync/tag captures,async0 retry
+versus alloc0 still tag publication. Exact seven prefix pointers/root ./format
+and read-only e/us/effect_us.tpl size106880/hash are pinned;provenance in ASSETS.
+[Init/release](behavior/EFFECT_POOL_INITIALIZATION_AND_CONTEXT_RELEASE.md)
+closes512*40 heap0 request/live array clear/multiple manager reloads,no old-state
+free,N64 independent8-byte reset,active01/exact context hard heap3 payload free
+without effect callbacks/pose/map/event cleanup. Four DOL direct sites and
+_unload context0/battle_exit context1 effect→animPoseAutoRelease→event ReInit
+request order pinned. Own lock released;file/TPL consumers/pose/display/scene/
+raw writer/platform and original update/resource/frame traces remain open.
+Verifier passes14 complete/linked hashes,186 anchors,eight spans,four exact
+DOL sites and US texture FST fingerprint;repeat reports equal. Prior delete/
+outer-order/general1980 checks pass;make test58 CTest/78 Python and make all
+pass;2373 local links resolve. No native/test/asset conversion code changed by ID2;
+texture only hashed read-only;original listings/ELFs stay /tmp/id2-fxdriver-*.

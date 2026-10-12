@@ -1458,3 +1458,18 @@ identities,0 Switch,5 primary-PCM slice fallbacks. Existing local-assets/audio-m
 raw/catalog and RomFS WAV/audio-map.json derivatives stay unstaged. Original
 rights remain with their owners;local analysis/conversion grants no redistribution
 license. Exact build log:/tmp/id1-slit-roll-build.log.
+
+
+## Original US shared effect texture source (ID2,2026-10-12)
+
+Effect driver selector1 resolves `./e/us/effect_us.tpl` through the original
+`%s/e/%s/effect_%s.tpl` format and US prefix. Read-only FST inspection of
+/home/carson/games/roms/G8ME01.iso confirms path `e/us/effect_us.tpl`,106880 bytes,
+SHA25693ef5d667ded662d6abf13133082bef138f9c88132365ff8b11f8abf2129dd14.
+`tools/verify_effect_driver.py` verifies current FST path/size/hash and original
+selector/format bindings. No extraction/conversion/scaling or texture rewrite
+was performed;native TPL indexing/palette/filter/resource consumers remain open.
+Reuse the original source through the documented asset provider;do not commit
+or distribute the ISO/extracted TPL/compiled packs. Original Nintendo/Intelligent
+Systems data;this project records no redistribution licence or rights transfer.
+See [driver/cache source](behavior/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md).

@@ -138,3 +138,10 @@ negative expiry,52 derived calls,early coordinate depth snapshot and all queue
 omissions. Main/Disp's local requests are delivered;driver/camera/matrix/resource/
 pose/particle/render/scene ownership,numeric exceptions and original traces
 remain EVT-01/JUMP-01/DMG-02 requirements.
+
+
+[Complete effect driver/cache](EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md) now
+supplies active01/exact context callback traversal after event manager requests;
+[pool initialization/context release](EFFECT_POOL_INITIALIZATION_AND_CONTEXT_RELEASE.md)
+closes512 slots and hard context payload release before separate animation/event
+teardown. Actual pose/resource/display/platform/scene and original traces remain open.

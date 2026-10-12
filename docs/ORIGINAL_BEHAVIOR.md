@@ -793,3 +793,11 @@ ordered headings,sign-sensitive roll exit snap,rootY slit rise,0x3c0 cleanup,
 global availability/output and guarded paper handle/name release are explicit.
 Collision helper,underlying animation/resource/matrix and source/alias/numeric/
 original-runtime domains remain open. Full-game requirements remain premature.
+
+
+[Effect driver/texture cache](behavior/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md)
+and [pool/init/context release](behavior/EFFECT_POOL_INITIALIZATION_AND_CONTEXT_RELEASE.md)
+close full local traversal/cache/init/auto-release,512-record source capacity,
+four exact direct bindings and effect→animation→event teardown requests. US
+effect texture file identity is recorded;file/TPL/pose/display/platform/scene/
+source and original update/resource/frame traces remain open.
