@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Lecture player attack bindings,missing mode transitions and teardown | AC-01, AC-02, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover Jump/Hammer lecture request graphs,1→2/5→6 producers,W2740 selection and lecture-end writes;excludes original runtime traces |
 | Unit/part hit/world/home positions and movement sound core | JUMP-01, DMG-02 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Recover used position leaves/event wrapper and sound-control/stop record lifecycle;source writers,playback internals and traces remain open |
 | Jump takeoff position,move-frame query and approach MovePosition | JUMP-01, AC-01 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Recover80109054/354,8010c8c0/1b4,8010ca74/334 local arguments/count/sentinel/delta/return rules;helper/domain and execution remain open |
 | Unit sound-mode loader and Mario jump sound record | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Sound-mode contract](behavior/BATTLE_UNIT_SOUND_MODE.md):complete partial-field loader and used type2/-1 request;source writers/macro resources/audio execution remain open |
