@@ -117,6 +117,36 @@ requirements and EVT-01/JUMP-01/DMG-02 remain incomplete.
 
 # Progress and next-session handoff
 
+## 2026-10-12 — Delivered first-attack pair graph bound natively
+
+Consumed ID2's complete paired selection/getter/event consolidation. Implemented
+original first side1 scan with last-slot63 retention on miss,live setup mode
+selection,passed-battle Mario/Party queries and unchecked partner kind predicate.
+Helper writes attacker then target with alias order and returns the last getter's
+raw pointer. Registered GetFirstAttackTarget8010b418:retains A then B/raw outputs,
+ignores attacker/helper return,captures body ID before fresh target-slot/id read,
+then performs two ordered retained-token writes. No single-enemy shortcut,
+attacker-null admission check or safe null-target(-1,-1) fallback is invented.
+
+Native services compose actual registry/getter/body/event providers. Caller-owned
+pair slots preserve provider-visible rereads;source setup/registry/part validity
+and full first-strike/Game ownership remain separate from local composition.
+
+Validation:make test passes77 CTest suites/86 Python tests;make all passes.
+Logs:/tmp/pm-first-attack-test-final.log and /tmp/pm-first-attack-build-final.log.
+Fixtures cover every signed mode boundary,paired/raw returns,output aliases,
+slot63 null/nonenemy miss,returned-kind mutation,absent attacker with valid target,
+body-before-id and target-slot mutation,retained A/B/output/part,null-body versus
+unchecked target00 read and actual native target/body definition output. Initial
+mutation fixture fired during candidate scan;corrected to Mario-query read before
+final checks. Records/providers remain authored inputs;no original runtime/
+emulator/hardware or full Jump/Game fidelity claim.
+
+Next:source first-strike/menu/unit/part provisioning,packed motion/AC/cost/pose/
+effect/audio/message callbacks and original outer turn/Game integration. Local
+first-attack request answered;remaining source/runtime domains and menu-domain
+scope remain open. Full-game goal stays active/incomplete.
+
 ## 2026-10-12 — Native SetPos and body-definition ID
 
 Registered SetPos80112fcc and GetBodyId8010ead8. SetPos resolves integer X/Y/Z

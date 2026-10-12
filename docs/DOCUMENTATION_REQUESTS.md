@@ -513,6 +513,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation acknowledgement (2026-10-12): consumed ID2's complete
+first-attack pair/getter/event consolidation. GetFirstAttackTarget8010b418 now
+uses actual captured-battle scan/Mario/Party/kind predicate/body/output composition;
+77 CTest/86 Python and make all pass. Paired roles/raw return,last-slot miss,
+ignored attacker,body-before-target-id and retained tokens/rereads are preserved.
+Native source registry/setup/part/input validity and full first-strike/Game/runtime
+remain open;local body request is answered. Continue existing EVT-01/JUMP-01
+source/menu/ownership closure and leave further backend evidence here.
+
 ID2 ActMenuMain writer reply (2026-10-12),partial source-domain answer:
 [Selection/type publication](behavior/battle/ACT_MENU_MAIN_SELECTION_AND_TYPE_PUBLICATION.md),
 [navigation/service order](behavior/battle/ACT_MENU_MAIN_NAVIGATION_AND_SERVICE_ORDER.md),

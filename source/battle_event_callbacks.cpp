@@ -5,6 +5,11 @@
 #include "event_memory_release.hpp"
 
 namespace ttyd {
+BattleFirstAttackServices nativeBattleFirstAttackServices(EventNativeRuntime& runtime) {
+    BattleFirstAttackServices s;s.memory=nativeBattleActorServices(runtime);s.values=nativeBattleEventUtilityServices(runtime).values;s.user=&runtime;
+    s.pair=[](void* p,uint32_t battle,uint32_t* attacker,uint32_t* target) {auto& r=*static_cast<EventNativeRuntime*>(p);return packedFirstAttackPair(battle,attacker,target,nativeBattleActorServices(r));};return s;
+}
+bool bindBattleFirstAttackTargetCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x8010b418,&runtime,[](void* p,EventEntry& e,int32_t) {return packedFirstAttackTargetEvent(e,nativeBattleFirstAttackServices(*static_cast<EventNativeRuntime*>(p)));});}
 BattlePackedSelectionServices nativeBattlePackedSelectionServices(EventNativeRuntime& runtime) {
     BattlePackedSelectionServices s;s.memory=nativeBattleActorServices(runtime);s.values=nativeBattleEventUtilityServices(runtime).values;s.user=&runtime;
     s.translate=[](void* p,EventEntry& e,int32_t selector) {auto& r=*static_cast<EventNativeRuntime*>(p);return translateBattleActor(&e,selector,nativeBattleActorServices(r));};return s;
