@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'message_draw_record_admission': {
+        0x80083434: '3bdf003c', 0x80083478: '38600000',
+        0x80083484: 'a81e0006', 0x80083490: '3b800001',
+        0x800834e8: '4082002c', 0x800835a4: '4bfb7f35',
+        0x8008365c: '40810884', 0x8008368c: '20a50064',
+        0x800836bc: '5497063e', 0x80083760: '38a5fffe',
+        0x80083804: '418106dc', 0x800838d0: '4bf9706d',
+        0x80083924: 'ec020078', 0x80083930: '418205b0',
+        0x80083974: '9ae1002b', 0x80083990: '540003df',
+        0x80083ee4: '3bde0018', 0x80083ee8: '801f0010',
+        0x80083ef4: '7f83e378', 0x80083384: '38800007',
+        0x800833a4: '38600000', 0x800833b0: '38800080',
+        0x800833c4: '93df00e0', 0x80042f30: '806d8ea0',
+    },
     'message_window_drawing': {
         0x800802a0: '80022140', 0x800802c8: '2803000b',
         0x800802f4: '548006f7', 0x80080320: '4bf8e4c9',
@@ -974,6 +988,20 @@ def verify(iso_path):
         if read(0x804160b0, 4).hex() != '8041ea3c':
             raise ValueError('Message indicator work pointer initializer mismatch')
         print('All twelve window draw targets, fifteen floats, mode0, clipping constants and indicator binding verified')
+        draw_controls = (0x800834c8, 0x80083ee0, 0x800834ac, 0x80083498,
+                         0x800835c4, 0x80083ee0, 0x80083ee0, 0x80083ee0,
+                         0x80083ee0, 0x80083ee0, 0x80083480, 0x80083478)
+        if struct.unpack('>12I', read(0x8030f600, 48)) != draw_controls:
+            raise ValueError('Message draw reserved control targets mismatch')
+        if read(0x80420770, 16) != struct.pack('>4f', 90.0, 270.0, -1.0, 20.0):
+            raise ValueError('Message pose orientation/icon constants mismatch')
+        if read(0x80420678, 4) != struct.pack('>f', 32.0):
+            raise ValueError('Message glyph admission height mismatch')
+        if read(0x804205dc, 8).hex() != '505050ff6e6e6eff':
+            raise ValueError('Message history emphasis colors mismatch')
+        if read(0x802c32e8, 12) != struct.pack('>3f', 0.0, 1.0, 1.0):
+            raise ValueError('Message emphasis scale vector template mismatch')
+        print('All twelve draw controls, pose/icon/glyph floats and emphasis color/vector bindings verified')
 
 
 if __name__ == '__main__':

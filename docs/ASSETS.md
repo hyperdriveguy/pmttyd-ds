@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 243 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 824 instruction anchors plus those
+now fingerprints 246 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 848 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -150,6 +150,11 @@ General window drawing adds three fingerprints, twelve type targets, fifteen
 geometry/indicator floats, mode0 interpolation target and unsigned32 conversion
 constants. Cursor pose pointer binding is recorded; original renderer/animation
 services and visual assets are not copied into the native runtime in this step.
+Draw record admission adds three fingerprints and reserved-control dispatch,
+pose orientation/icon/glyph constants and emphasis color/vector bindings.
+Only the admitted/control/embedded paths of msgDisp are locally documented in
+this step; its normal glyph effect tail remains an explicit dependency. Original
+glyphs/pose/icon data remain reused assets outside source history.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,

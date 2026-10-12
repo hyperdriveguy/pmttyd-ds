@@ -3431,3 +3431,32 @@ font/icon/pose/GX/projected-camera services, actual outer reset/sort/camera cade
 and real story callers. Continue original attribution/order/branches/conditions
 and other uncovered systems before complete-game requirements. Full objective
 active/incomplete; original execution/images comparisons still needed.
+
+## 2026-10-12 — Message draw admission, history and indicator callback
+
+Previous goal turn made progress through c82cf29. Began clean and added
+MESSAGE_DRAW_RECORD_ADMISSION.md: exposed live record prefix rather than parsed
+count/schedules, reserved controls, signed/unsigned key-match result and terminal
+cancellation, history visibility/emphasis/fades, pose transform/update requests,
+icon clip/alpha/font-color restoration and ordinary glyph admission/emphasis.
+Recovered msgDispKeyWait_render's ordered GX requests and incoming-word store
+through animGetPtr. Updated window result/callback, parser and embedded-object
+links. Normal msgDisp glyph effects after0x800839f4 remain explicitly open;
+full-function fingerprinting is not a claim of full glyph presentation coverage.
+
+Validation:848 instruction anchors and all prior checks passed read-only US ISO,
+including twelve reserved-control targets, pose/icon/glyph constants and emphasis
+color/vector bindings. Fresh246-function evidence reports matched byte-for-byte.
+All local behavior links resolve; git diff --check passed. make test passed core
+plus36 Python tests; make all exited0, no rebuild. Only research/provenance/evidence
+tooling changed. No original execution/emulator run or profile/save modification;
+original disassemblies/reports remain ignored. Static checks do not prove normal
+glyph effects, inner services, active/reset/camera/caller cadence, actual indicator
+images or original/native equivalence.
+
+Next: msgDisp normal dynamic/shake/wave/selection/plain glyph tail, including
+RNG/clock ordering and draw-time scale mutation; inner font/icon/matrix/pose/GX
+services and actual outer cadence/story callers. Continue original attribution/
+order/branches/conditions and all other uncovered systems before complete-game
+requirements. Full objective active/incomplete; original execution/images
+comparisons still needed.

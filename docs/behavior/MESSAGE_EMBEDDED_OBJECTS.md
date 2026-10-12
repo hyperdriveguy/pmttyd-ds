@@ -94,7 +94,10 @@ be silently changed based on inferred intention.
 Emit opcode 0xfff4: +6=low16(J), +8=halfword(H-K), +10=Q, +14=0.0 when O=0
 or 180.0 otherwise. Increment count and T by V. +c is not assigned here,
 and X/Y/L are not advanced by this record. Pose cleanup, animation advancement,
-draw transforms and resource lifetime belong to the consuming runtime.
+draw transforms and resource lifetime belong to the consuming runtime. Local
+pose/icon drawing and indicator callback requests are now covered in
+[draw admission](MESSAGE_DRAW_RECORD_ADMISSION.md); inner service lifetimes
+and executed images remain open.
 
 ## Paper/NPC control records (B)
 

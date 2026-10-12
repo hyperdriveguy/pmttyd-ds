@@ -129,10 +129,12 @@ No local active reset or pulse counter. Load msgw pointer from0x804160b0
 animPoseMain(poseID), then reload pointer/pose and call animPoseDraw with integer
 argument2 and floats(x+width-52,y-height+31,0,180,5), using current W geometry.
 No separate opacity/flag/state gate or frame/tick delta in this tail. The actual
-meaning of msgDisp's nonzero return, active reset and animation service cadence
-remain to be recovered. Initialization binds this slot to hoshi_2/HOS_C_1 and
+meaning of msgDisp's return is now covered in [record admission](MESSAGE_DRAW_RECORD_ADMISSION.md):
+matching key ordinals set1; an encountered terminal returns0. Active reset and
+animation service cadence remain open. Initialization binds this slot to hoshi_2/HOS_C_1 and
 msgDispKeyWait_render, as established in [resource initialization](MESSAGE_RESOURCES_AND_LOOKUP.md);
-that render callback and pose service bodies remain open. Do not label R as a proven key-wait enum
+the render callback is covered there, while pose service bodies remain open.
+Do not label R as a proven key-wait enum
 just from the visual role or routine names.
 
 ## Evidence limits and differential obligations (B/P)
@@ -146,8 +148,8 @@ Compare type routing, anchor copy versus projection, signed opacity interpolatio
 without clamp, fused center/edge arithmetic, exactly255 text gates, type1 stored
 position mutation and discarded text return, direct text at low opacity, signed
 versus unsigned clipping conversion/order, camera rectangle restoration, candidate
-R retention, active halfword and per-draw pose update. Remaining: msgDisp records/
-return semantics, border/GX/projection/animation services, current-camera and
+R retention, active halfword and per-draw pose update. Remaining: normal msgDisp
+glyph effects, border/GX/projection/animation services, current-camera and
 active producers/pose lifetime, original draw/caller cadence and matched images/story
 conditions. Local callback/conversion paths are established; complete dialogue/
 rendering/game equivalence remains unproven.
