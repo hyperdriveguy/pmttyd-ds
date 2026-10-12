@@ -1,5 +1,30 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original event context initialization/reset services
+
+Added context work/flag banks and raw unwritten94 word,plus complete documented
+`event_context_initialization.cpp` Init/ReInit sequencing. Init requests heap0/
+1b000 for each256-slot bank,snapshots GP separately after each allocation,writes
+timestamp low before high,clears retained allocation using live capacity,then
+clears work and flag banks. ReInit captures one GP/selector/timestamp,clears only
+the selected current array and resets allocation count/active state while
+preserving banks,other context,schedule count/tails,ID,speed and raw94. Neither
+path invokes per-entry deletion/copy-back/free or invents message-init work.
+
+Validation: `make test` passed41/41 CTest suites and69 Python tests; `make all`
+rebuilt ARM event modules and3dsx. Logs:/tmp/pm-event-context-test.log and
+/tmp/pm-event-context-build.log. Fixtures pin allocation/timestamp/clear/bank
+order,distinct snapshots,retained versus replaced pointers,live capacity,null
+allocation publication/clear,all selectors,cross-bank parent graph preservation,
+low-before-high observation and post-timestamp live array selection.
+
+Storage callbacks adapt original byte counts to semantic entries;SDK heap/native
+packed address/cache/platform ownership remains required. Failure fixture records
+original null/positive clear requests without claiming safe native recovery.
+Next:delivered SDK bootstrap allocator/native memory providers,time/update binding,
+original Jump source stream/callback registry and execution comparison. Goal is
+incomplete;EVT-01 breadcrumbs updated;no emulator run for unbound services.
+
 ## 2026-10-12 — Combined complete local event interpreter service path
 
 Added `event_interpreter.cpp` to route every recovered0..118 opcode through the

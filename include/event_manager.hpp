@@ -35,6 +35,9 @@ struct EventContext {
     int32_t capacity=0;
     EventEntry* entries=nullptr;
     uint64_t previousTimestamp=0;
+    std::array<int32_t,32> work{}; // Original context+4..83.
+    std::array<uint32_t,3> flags{}; // Original context+84..8f.
+    uint32_t field94=0; // Raw word,unwritten by Init/ReInit.
 };
 struct EventGlobals {
     int32_t battleContext=0,refreshRate=0;

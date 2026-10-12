@@ -465,6 +465,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Context-init breadcrumb (2026-10-12): `event_context_initialization.cpp` ports
+complete Init/ReInit and context banks. Tests retain two256/1b000 allocations,
+separate post-allocation GP timestamps,low/high writes,retained/live pointers,
+null allocation path,bank/schedule/ID/speed/other-context preservation and bulk
+reset without cancellation. make test passes41 suites/69 Python tests;make all
+passes. Native storage/SDK heap/address/cache/platform remains explicit.Next:
+delivered bootstrap allocator and native providers,time binding,original Jump
+source/registry ownership (requested above) and original runtime comparison.
+
 Combined-interpreter breadcrumb and source-binding request (2026-10-12):
 `event_interpreter.cpp` now routes all recovered local0..118 bodies through
 actual namespaces/lifecycle/manager services. Integration tests preserve live
