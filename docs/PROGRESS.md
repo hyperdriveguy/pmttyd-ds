@@ -3021,3 +3021,28 @@ library route; insert format/type/count call-site census; renderer/manager caden
 and service dependencies. Continue original story attribution/order/branches/
 conditions and all remaining systems before complete-game requirements. Full
 objective active/incomplete; executed-original comparisons still needed.
+
+## 2026-10-12 — Original format output and varargs consumers
+
+Previous turn progressed with1fa2d28 insertion wrappers. Added FORMAT_OUTPUT_RUNTIME.md:
+sprintf/vsprintf register-save setup and return-index termination (including-1),
+string sink clipping/requested-versus-copied counts, varargs general/floating/
+64-bit slot and overflow alignment, formatter literal streaming/consumer dispatch,
+string precision/length-prefix/empty-null behavior, n stores, padding/sign order
+and literal-tail fallback. Grammar/numeric/wide conversion helpers and actual
+call-site validity remain explicitly open. No host-libc equivalence is assumed.
+
+Validation:560 instruction anchors and prior checks passed read-only US ISO,
+plus original narrow-null string's empty sentinel. Evidence206 fingerprints
+reproduced byte-for-byte. All behavior links resolve; git diff --check passed.
+make test passed core plus36 Python tests; make all exited0, no rebuild.
+Workspace started clean; only research/provenance/evidence tooling changed.
+No original execution/emulator run or profile/save modification. Code/data
+extracts/reports remain ignored. Static checks do not prove library execution,
+valid formatting callers or original/native dialogue equivalence.
+
+Next: printf parse_format grammar and integer/decimal/hex-float helpers, wide
+conversion/memory services; replacement/callback bodies and insertion call-site
+census; renderer/manager cadence and original story attribution/order/branches/
+conditions. Continue all remaining systems before complete-game requirements.
+Full objective active/incomplete; executed-original comparisons needed.

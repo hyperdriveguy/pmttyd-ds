@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'format_output_runtime': {
+        0x8026a0fc: '3f800200', 0x8026a16c: '3880fffe',
+        0x8026a180: '7c1921ae', 0x8026a1f8: '7c1f21ae',
+        0x8026a3b4: '7c003040', 0x8026a3d8: '38600001',
+        0x802647a4: '38000007', 0x802647cc: '98060000',
+        0x8026480c: '80c60000', 0x8026a514: '480017a1',
+        0x8026a8e0: '38a00200', 0x8026a914: '3a833bb0',
+        0x8026a9d0: 'b3630000', 0x8026aa60: '48000154',
+        0x8026aae0: '3b39ffff', 0x8026aba0: '7f7b9a14',
+    },
     'message_insert_formatting': {
         0x800d2484: '7c058670', 0x800d2488: '3b45fffb',
         0x800d24e8: '907c0000', 0x800d2500: '418200bc',
@@ -671,6 +681,9 @@ def verify(iso_path):
         if read(0x8042186c, 6) != b'party\0':
             raise ValueError('Field partner speaker literal mismatch')
         print('All 18 field/battle partner suffix bindings and field speaker literal verified')
+        if read(0x80303bb0, 1) != b'\0':
+            raise ValueError('Narrow printf null-string sentinel mismatch')
+        print('Original narrow printf null-string empty sentinel verified')
 
 
 if __name__ == '__main__':

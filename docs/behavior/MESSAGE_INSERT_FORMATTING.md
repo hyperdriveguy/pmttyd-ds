@@ -133,3 +133,6 @@ argument-type census, other replacement helpers/callback bodies, generated text,
 renderer/manager and all original story attribution/order/branches/conditions.
 These two local formatting wrappers are documented; full substitution/dialogue
 and complete-game equivalence remain unfinished.
+Output termination, byte sink, argument slots and local formatter consumers are
+now specified in [format runtime](FORMAT_OUTPUT_RUNTIME.md); directive grammar,
+numeric/wide conversion and original call-site coverage remain open.
