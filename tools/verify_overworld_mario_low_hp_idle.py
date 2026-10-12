@@ -7,12 +7,18 @@ from verify_overworld_roads import verify
 from verify_overworld_animation_updates import animation,evaluate
 MANIFEST=Path(__file__).with_name('overworld_mario_low_hp_idle_evidence.json')
 def check_assets(iso,e):
-    files={r['path']:r for r in inventory(iso)['files']};poses=samples=0
+    files={r['path']:r for r in inventory(iso)['files']};poses=samples=0;texture_rows={}
+    assert 'a/e_mario-' not in files
     with Path(iso).open('rb') as disc:
+        tpl=e['shared_tpl'];row=files[tpl['path']];disc.seek(row['offset']);raw=disc.read(row['size'])
+        assert len(raw)==tpl['size'] and hashlib.sha256(raw).hexdigest()==tpl['sha256']
         for model in e['models']:
             row=files[model['path']];disc.seek(row['offset']);raw=disc.read(row['size'])
             assert len(raw)==model['size'] and hashlib.sha256(raw).hexdigest()==model['sha256']
             u=lambda a:struct.unpack_from('>I',raw,a)[0]
+            if model['path'] in ('a/a_mario','a/e_mario'):
+                assert raw[0x44:0x84].split(b'\0')[0]==b'a_mario'
+                texture_rows[model['path']]=raw[u(0x194):u(0x194)+u(0x130)*64]
             directory=[raw[u(0x1ac)+64*i:u(0x1ac)+64*i+60].split(b'\0')[0].decode() for i in range(u(0x148))]
             if model['path'].endswith('_r'):assert 'M_S_3R' not in directory and 'M_I_SR' not in directory
             for pose in model['poses']:
@@ -21,6 +27,7 @@ def check_assets(iso,e):
                 for t in [0,.25,1,28.5,a['end']-.5,a['end'],a['end']+1]:
                     output=evaluate(a,t);assert all(math.isfinite(x) for row in output['positions'] for x in row) and all(math.isfinite(x) for x in output['nodes']);samples+=1
                 poses+=1
+    assert texture_rows['a/a_mario']==texture_rows['a/e_mario']
     return poses,samples
 def key_admitted(seq,mario39,ship_first,ship_second,roll,slit,partner,
                  christine=0,bomhei=0,yoshi=0,partner_flags=0,partner_motion=0,held_item=0):
@@ -52,7 +59,10 @@ def derived():
     for hp,key,current,want in [(0,False,'M_S_1','M_I_S'),(1,True,'M_S_1','M_S_3'),(5,True,'M_S_1','M_S_3'),(6,True,'M_S_3','M_S_1'),(5,False,'M_S_3','M_S_1'),(5,False,'M_I_Y','M_I_Y')]:assert entry(hp,key,current)==want
     # Signed increment and strict threshold: reset entry5a=0, rate60 =>61st callback.
     assert 60<=1000*60//1000 and 61>1000*60//1000
-    return 8
+    for display,want in [(0,0),(89.999,0),(90,180),(180,180),(270,180),(270.001,0),(360,0)]:
+        assert (180 if 90<=display<=270 else 0)==want
+    assert (4 & ~0x30000000)==4
+    return 16
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--iso',default=DEFAULT_ISO);iso=p.parse_args().iso
     e=json.loads(MANIFEST.read_text());result=verify(iso,MANIFEST);poses,samples=check_assets(iso,e)

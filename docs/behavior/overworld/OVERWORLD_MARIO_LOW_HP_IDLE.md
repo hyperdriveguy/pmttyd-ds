@@ -22,6 +22,11 @@ main2000 requests M_U_2 with start-frame10. Ordinary ChangedPose compares
 against current name18 and queues frame0/restart only on different strings,
 as detailed in [clock/restart](OVERWORLD_MARIO_ANIMATION_CLOCK_AND_LOOPS.md).
 
+Display4 survives ChgPose: ordinary mask80058de8 clears only30000000,
+not4. PreDisp's MakeDispDir call is suppressed by signed Mario38!=0 or
+display100 (800578b8–d0), not display4. MakeDispDir itself has no display4
+gate. Do not freeze ordinary turning solely because the idle pose is S3.
+
 ## Ongoing idle refresh
 
 This is not a per-tick threshold replacement. In the ordinary branch, every
@@ -123,6 +128,17 @@ requests. A changed request stores18, clears display40000000, sets
 use effect handle234/file e_mario, not front22c or rear230. Phase3 explicitly
 zeros28 after that service call; phase1 does not. ChgPose(S1) clears the
 special pose-selection bits through its existing ordinary request owner.
+marioAdjustMoveDir800965fc in ordinary main00100000-clear domain snaps
+from **current display1ac**, not current stick/facing: if90<=display<=270,
+chooseD=180; otherwiseD=0. Compute H=wrap(Q1000(270−D+offset19c)), with
+signed ±.5 bias/1000 then truncation and repeated wrap, as in
+[toMovedir](OVERWORLD_DISPLAY_TO_MOVE_HEADING.md). Write1a0=H,1a4=H,
+1ac=D,1b0=D (80096770–84 or800968bc–d0). No display flags, rate/base-speed
+or wall-facing counters are written. The main00100000 special branch has
+separate four angle aliases and wrap classification; it is outside this
+ordinary long-idle bind. The source literal words for90/270/180/0/1000
+are pinned, not inferred from a camera-facing picture.
+
 Idle post only cancels sound handles (with motion19/20 exceptions); it does
 not reset44,48,58 or5a. Re-entry owns the resets listed above.
 
@@ -158,10 +174,24 @@ All have no NRM/VIS streams. Exact key times/metadata are pinned in the
 manifest; no broad special/effect geometry/runtime closure is implied by
 these six parsed poses.
 
+## Effect texture file alias
+
+animPoseEntry8004176c obtains raw model data and reads its texture stem at
+**header+44**, not the selected animation/model filename. At8004196c–80 it
+formats `"%s/%s-"` (802c1068) using directory `"a"` (8041fb3c) and that
+header string; fileAlloc at80041a54 opens the resulting path or reuses the
+matching retained texture resource. Both a/a_mario and a/e_mario declare
+**a_mario** at+44, so the shared original texture file is **a/a_mario-**.
+The ISO contains this file and no a/e_mario-. Their17 raw64-byte texture
+binding records (count130/pointer194) are byte-identical. Their other geometry,
+nodes, poses and updates remain distinct. The verifier pins the shared TPL
+identity, header strings, matching binding records and source path producer;
+it does not manufacture/rename a TPL or claim every animation uses one image.
+
 ## Validation and limits
 
-Run `python3 tools/verify_overworld_mario_low_hp_idle.py`. It pins12 source
-bodies,6 name spans,402 source instruction anchors, three original file
+Run `python3 tools/verify_overworld_mario_low_hp_idle.py`. It pins16 source
+bodies,6 name spans and3 additional data spans, source instruction anchors, three original file
 identities, exact six-pose metadata and absence of invented rear names;
 42 finite pose samples and bounded selector/threshold cases are host-derived.
 It does not execute the original binary, establish Gekko arithmetic parity,

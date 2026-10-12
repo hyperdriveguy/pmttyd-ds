@@ -109,6 +109,48 @@
       "address": 2150384544,
       "size": 8,
       "sha256": "15e4368e4a7e11a0a5f5378633b673a7f4e59f42a19121e580698987e2adc8a2"
+    },
+    {
+      "name": "animPoseEntry",
+      "address": 2147751788,
+      "size": 1260,
+      "sha256": "8d239cdb8bb0faf92f022b6f8289911fe399c160d7b769ed6cb39458a8da43c9"
+    },
+    {
+      "name": "marioAdjustMoveDir",
+      "address": 2148099580,
+      "size": 756,
+      "sha256": "dc188da65f365b360a33b86aa38db57b7b9c3d00aa3d17a31704a2eb3fa5a996"
+    },
+    {
+      "name": "marioMakeDispDir",
+      "address": 2147845032,
+      "size": 1376,
+      "sha256": "7e0560b22caeb7946736ea08f75a8f0f5c0b405229dc1fedb70a6ae726c79195"
+    },
+    {
+      "name": "marioPreDisp",
+      "address": 2147842168,
+      "size": 1156,
+      "sha256": "931919325d075e8e38090ffc465b6c2c490e642e9379575dfb6ac0f4da308aa3"
+    },
+    {
+      "name": "animation texture path format",
+      "address": 2150371432,
+      "size": 8,
+      "sha256": "bda93144bb3a69b5bd1541dc0a8975bcced82e3b7399a2b532c9e043dd6d864d"
+    },
+    {
+      "name": "animation asset directory",
+      "address": 2151807804,
+      "size": 4,
+      "sha256": "a2d398922901344d08180dc41d3e9d73d8c148c7f6e092835bbb28e02dbcf184"
+    },
+    {
+      "name": "AdjustMoveDir literals",
+      "address": 2151811680,
+      "size": 60,
+      "sha256": "02b65ebcfe87fba454dd7c07f1810c2eeb9f11e3e449468991ce6cb9a54cd3ad"
     }
   ],
   "dol_anchors": {
@@ -513,7 +555,24 @@
     "2147848588": "901f0004",
     "2147848592": "801f000c",
     "2147848596": "60001000",
-    "2147848600": "901f000c"
+    "2147848600": "901f000c",
+    "2147752308": "38c50044",
+    "2147752312": "38a286fc",
+    "2147752320": "48228739",
+    "2147752532": "48148ba5",
+    "2147847656": "54000102",
+    "2147842248": "540005ef",
+    "2147842252": "40820008",
+    "2148099612": "c0029658",
+    "2148099632": "c0029650",
+    "2148099952": "d05f01a0",
+    "2148099964": "d03f01a4",
+    "2148099968": "d01f01ac",
+    "2148099972": "d01f01b0",
+    "2148100284": "d05f01a0",
+    "2148100296": "d03f01a4",
+    "2148100300": "d01f01ac",
+    "2148100304": "d01f01b0"
   },
   "rel_spans": [],
   "rel_bindings": {},
@@ -714,5 +773,10 @@
         }
       ]
     }
-  ]
+  ],
+  "shared_tpl": {
+    "path": "a/a_mario-",
+    "size": 731296,
+    "sha256": "2ccf4f212340bb9cce33cd8457ac92a24ca3fc0db4fc95237224775e9534845e"
+  }
 }
