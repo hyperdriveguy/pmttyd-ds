@@ -1,5 +1,25 @@
 # Original asset pipeline
 
+## Behavior research provenance (2026-10-12)
+
+`tools/behavior_evidence.py` inventories the read-only ISO and hashes its DOL
+span, `rel/gor.rel`, and all 260 `msg/US/` files without exporting their contents.
+Output is ignored `artifacts/reference/behavior/evidence.json`; function ELFs
+and disassembly also stay in that directory. There is no conversion or native
+linking of original executable code in this research step. Binary identity,
+source URLs and inference boundaries are in [ORIGINAL_BEHAVIOR.md](ORIGINAL_BEHAVIOR.md).
+
+Public doldecomp/ttyd reference source and its MIT LICENSE were downloaded at
+revision `62131fc31866f85a12e4817a8dc37f0c25eb5f8c` into that ignored directory.
+Its declared baseline is Japanese G8MJ01 revision 0; selected findings were
+checked against US original bytes before documenting US behavior. No upstream
+implementation was copied into the native game. The existing external US symbol
+CSV remains research metadata from GPL-3.0 ttyd-utils. Extracted original assets
+remain subject to their original rights; neither reference license grants rights
+to distribute the ISO, messages, executable or converted asset packs.
+
+## Existing conversion pipeline
+
 The user's latest preference supersedes the initial hybrid-placeholder plan:
 use assets very similar to the original game, preferably original geometry and
 textures; scale textures/reduce vertices/adjust lighting for performance.

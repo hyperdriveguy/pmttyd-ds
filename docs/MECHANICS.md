@@ -1,5 +1,12 @@
 # Mechanics evidence ledger
 
+See [ORIGINAL_BEHAVIOR.md](ORIGINAL_BEHAVIOR.md) for a subsystem coverage index,
+identified US revision/DOL hash, and new static evidence for sequence ordering,
+event scheduling, command continuation and wait behavior. That reference keeps
+binary evidence separate from public reconstruction, observations and port
+proposals. This ledger is chronological: later implementation updates supersede
+earlier statements that a feature is missing.
+
 ## Status
 
 Dolphin booted the original ISO in an isolated profile and captured its initial

@@ -70,6 +70,11 @@ Read [progress](docs/PROGRESS.md), [architecture](docs/ARCHITECTURE.md),
 before continuing. User preference is to preserve original art, music and sound;
 the early redrawn assets and generated tones were rejected and retired.
 
+The [original behavior reference](docs/ORIGINAL_BEHAVIOR.md) indexes recovered
+US binary behavior, documents event execution and subsystem ordering, and tracks
+the evidence still needed for a strongly equivalent reimplementation. Reproduce
+its binary fingerprints with `tools/behavior_evidence.py`.
+
 Original US English dialogue and faithful story reproduction are required.
 The current dialogue interaction displays explicit development notices; original
 message playback and event sequencing are unfinished. No authored replacement
