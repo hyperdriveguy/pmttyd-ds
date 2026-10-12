@@ -236,14 +236,15 @@ def safe_path(text):
     return Path(*path.parts)
 
 
-def decode_job(job, decoder, output):
+def decode_job(job, decoder, output, verify_existing=False):
     source, relative, provenance, archive_loop = job
     target = output / 'pcm' / relative.with_suffix('.wav')
     target.parent.mkdir(parents=True, exist_ok=True)
     metadata = json.loads(subprocess.run([str(decoder), '-m', '-I', str(source)],
                           check=True, capture_output=True, text=True).stdout)
-    subprocess.run([str(decoder), '-i', '-W', '1', '-o', str(target), str(source)],
-                   check=True, capture_output=True, text=True)
+    if not verify_existing:
+        subprocess.run([str(decoder), '-i', '-W', '1', '-o', str(target), str(source)],
+                       check=True, capture_output=True, text=True)
     looping = metadata.get('loopingInfo')
     loop = archive_loop if archive_loop is not None else (
         [looping['start'], looping['end']] if looping else None)
@@ -264,7 +265,7 @@ def decode_job(job, decoder, output):
     return record
 
 
-def build(romfs, output, decoder, workers):
+def build(romfs, output, decoder, workers, verify_existing=False):
     romfs, output, decoder = romfs.resolve(), output.resolve(), decoder.resolve()
     if output == romfs or output in romfs.parents or romfs in output.parents:
         raise ValueError('Audio derivatives must be separate from source RomFS')
@@ -343,7 +344,7 @@ def build(romfs, output, decoder, workers):
     print(f"Preserved {len(sources)} sound files; extracted {len(extracted)} archive files; decoding {len(jobs)} assets", flush=True)
     results = []
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        for index, record in enumerate(pool.map(lambda job: decode_job(job, decoder, output), jobs), 1):
+        for index, record in enumerate(pool.map(lambda job: decode_job(job, decoder, output, verify_existing), jobs), 1):
             results.append(record)
             if index % 100 == 0 or index == len(jobs):
                 print(f'Decoded and verified {index}/{len(jobs)}', flush=True)
@@ -351,7 +352,9 @@ def build(romfs, output, decoder, workers):
                 'romfs': str(romfs), 'sources': sources, 'archive_files': extracted, 'audio': results,
                 'stream_count': len(streams), 'wave_count': len(jobs) - len(streams),
                 'converter_sha256': digest(Path(__file__)), 'decoder': str(decoder), 'decoder_sha256': digest(decoder),
-                'decoder_version': json.loads(subprocess.run([str(decoder), '-V'], check=True, capture_output=True, text=True).stdout),
+                # vgmstream's informational -V prints valid JSON but returns 1.
+                'decoder_version': json.loads(subprocess.run([str(decoder), '-V'], capture_output=True, text=True).stdout),
+                'validation_mode': 'existing WAV metadata/data-length/hash audit' if verify_existing else 'decoded and verified',
                 'loop_units': 'PCM frames [start,end), original source rate',
                 'license': 'Original game copyright retained; local derivatives only, no redistribution rights granted',
                 'limitations': 'Decoded source assets, not runtime mixes. Sound IDs/names and raw FWSD/group/control data retained; event mixing, envelopes, pitch and layered wave-sound playback are not rendered. No audible or hardware equivalence claim.'}
@@ -365,7 +368,9 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=Path, default=ROOT / 'local-assets/switch/audio')
     parser.add_argument('--decoder', type=Path, default=DEFAULT_DECODER)
     parser.add_argument('--workers', type=int, default=4)
+    parser.add_argument('--verify-existing', action='store_true',
+                        help='Audit existing WAVs against source metadata and regenerate the manifest without decoding')
     args = parser.parse_args()
     if not 1 <= args.workers <= 16:
         parser.error('--workers must be between 1 and 16')
-    build(args.romfs, args.output, args.decoder, args.workers)
+    build(args.romfs, args.output, args.decoder, args.workers, args.verify_existing)

@@ -108,6 +108,11 @@ class SwitchAudioTests(unittest.TestCase):
                 self.assertIn('-i', calls[-1]); self.assertIn('-W', calls[-1])
                 sidecar = root / record['loop_sidecar']
                 self.assertEqual(struct.unpack('<II', sidecar.read_bytes()), (2, 7))
+                before = len(calls)
+                audited = decode_job(job, Path('decoder'), root, verify_existing=True)
+                self.assertEqual(len(calls), before + 1)
+                self.assertIn('-m', calls[-1])
+                self.assertEqual(audited['pcm_sha256'], record['pcm_sha256'])
                 record = decode_job((*job[:3], None), Path('decoder'), root)
                 self.assertIsNone(record['loop']); self.assertFalse(sidecar.exists())
                 with self.assertRaises(ValueError):
