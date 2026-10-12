@@ -873,6 +873,23 @@ field-party-drive-evidence.json remain ignored under artifacts/reference/behavio
 No asset conversion,original execution,ISO/profile/save mutation,original
 binary/dialogue distribution or rewritten story occurred.
 
+### Complete collision mesh reused for directional wall movement (2026-10-12)
+
+Player wall rays now reuse the complete source collision-strip geometry already
+converted into ignored romfs/map.head and romfs/gor_00.head, gor_02.head,
+gor_03.head, gor_04.head. These are local derivatives of the read-only US
+G8ME01 ISO room maps documented above; no new extraction, conversion, asset
+publication or original data commit was made. Original node attributes, source
+owner IDs, source collision winding and cull bytes feed a native finite 3D ray
+adapter. Unlike legacy near-vertical .walls rows, this mesh retains oblique wall
+surfaces. The native policy operates in original engine units and converts to/
+from geometry scale.01; triangle math/traversal remain an adaptation requiring
+original comparisons. Verified current mesh counts3153/1604/3450/3504/548;
+none contains high-bit NPC-owner records. Dynamic named NPC filters require their
+own provider; admission of such unsupported records asserts instead of inventing
+owner names. Existing original asset ownership/licensing and private-use/no-
+redistribution restrictions still apply. All binary packs/captures stay ignored.
+
 Ordinary partner movement research by ID1 (2026-10-12):verify_field_party_follow.py
 and field_party_follow_evidence.json pin seven whole US DOL bodies,66 selected
 instructions,ten numeric constants,two kind-record data hashes and two lecture

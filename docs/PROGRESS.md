@@ -1,5 +1,87 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Directional walls, launch input and movement-rate binding
+
+Previous goal turn made concrete native/doc/test/commit progress;this continuation
+revalidated current README/PROGRESS,worktree and newly delivered contracts rather
+than assuming prior state. Goal remains active/incomplete.
+
+Implemented OVERWORLD_WALL_MOVEMENT.md in field_wall.hpp/cpp and bound ordinary
+player displacement to whole-vector directional rays instead of X-then-Z circle
+endpoints in loaded rooms. Forward heights/third air ray,source-unit signed
+quantization,strict closest/tie retention,half-tangent slide,asymmetric side-token
+tail,pass-through classifier and first-capped/second-uncapped Around correction
+follow recovered local order. Original view flag chooses8/2 rays;ordinary source
+init/default0 is explicit,with later writers unbound. Staying probes disposable
+positions and leaves actual root untouched. Normal forward contact metadata and
+side-distance output remain separate from movement. Complete original-winding
+.head geometry supplies finite 3D ray queries with cull/attributes and stable row
+order across spatial-index cells. Legacy segment fixtures use double-sided
+extrusion;placeholder bounds and partner eligibility remain separate adaptations.
+Unsupported named high-bit NPC owners assert at the geometry boundary;all five
+current meshes were verified to have none. Main native wall commit:cb114f1.
+
+Implemented OVERWORLD_MOTION_ARBITRATION.md's plain current-input classification
+BEFORE surviving jump entry. All nine idle/walk/dash neutral/weak/strong paths
+finish base/heading selection under one A sample;ground displacement is discarded
+and launch uses air policy. Native no longer replays an airborne/landing-call A
+trigger after physics. Physical Explore consumers read published signed axes and
+A held/edges,including input-clear behavior;groundedStick preserves integer
+radius²>3025 and equality33²+44². Circle Pad mapping/per-axis18 deadzone remain
+native device adaptations. Added threshold/current-turn,landing-edge,held-A and
+published-byte/chord regressions. Commit:ef37083.
+
+Implemented OVERWORLD_DIRECTION_MOVEMENT_RATE.md's retained-heading/camera-offset
+rate AFTER air cap and BEFORE wall movement. Current native fixed Z-facing camera
+uses explicit offset0;original camera defaults/writers are not inferred. Cached
+unit vectors/trig are numerical adapters. Depth gain is approximately19%,diagonal
+approximately13.44%;no second dash cap. Tests distinguish retained heading from
+current air drift and camera-offset rotation. Source1/2.25 describe BASE speeds,
+not a constant final world rate. Commit:09f162f. Updated mechanics/architecture,
+behavior index and original-asset provenance;no conversion or asset distribution.
+
+Validation:final make test passed31 CTest suites plus58 Python tests;make all
+rebuilt ttyd-2ds.elf/3dsx after native changes and final call exited0/no rebuild.
+Directional original-mesh check passed800 indexed-versus-full-scan rays across
+map/gor_00/gor_02/gor_03/gor_04;core original-room check passed18,315 full-scan
+collision probes and room arrivals. Static evidence verifiers passed movement
+19 bodies/29 anchors/6 constants;wall9/48/17;arbitration20/94/15;direction-rate
+6/27/8;new pending support/stairs11/111/22. git diff --check passed. Intermediate
+CMake missing-test registration from concurrent creation work resolved when its
+file appeared. Old overlap fixture was corrected to source Around preserving
+upper support near a wall;floor equality uses appropriate float tolerance.
+
+Isolated Azahar validation,all exit0 with fixture saves/captures only:
+- tools/emulator_smoke.py --save-fixture artifacts/fixtures/east-road.bin
+  --seconds 4 --input-script tests/azahar_roads.py:two reciprocal east-road pairs.
+- tools/emulator_smoke.py --save-fixture artifacts/fixtures/harbor-arrival-road.bin
+  --seconds 4 --input-script tests/azahar_harbor_stairs.py:harbor descent/dock/save/
+  return,HP7;passed both wall-only and final direction-rate build.
+- tools/emulator_smoke.py --save-fixture artifacts/fixtures/ceiling-road.bin
+  --seconds 4 --input-script tests/azahar_ceiling.py:five repeated jumps,preserved
+  HP7 and position(-6.7,.1),after published-input/launch correction.
+Logs stayed in/tmp;captures/test profiles in ignored artifacts/azahar. Display
+socket escalation was authorized. User emulator profile/saves untouched. These
+are native smoke/host/static checks,not original Dolphin or hardware fidelity.
+No ISO write,original binary/dialogue inclusion or invented story content.
+
+Next concrete native task:bind newly delivered OVERWORLD_SUPPORT_SLOPES_AND_STEPS.md
+(bc23a45) as a coherent source-owned support/angle/vertical-motion controller.
+Feet query precedes front-step while rootY remains unsnapped;angle record is
+last-query-owned,not winner-floor normal. Apply previous per-axis slope factors
+before air cap/direction rate;distinguish positive-delta fall11 (drift suppressed)
+from unknown-support fall10. First two upstairs calls retain base/travel;third
+reprocesses current input/newA/ground queries,with retained vertical+7c after
+completion unless another owner clears it. Current FieldStep/input/ground paths
+still diverge in those cases;do not claim stairs/floors complete from smoke passes.
+Documentation ID1 is separately recovering original partner history/homing/
+movement;inspect newly delivered FIELD_PARTNER_* contracts before replacing the
+provisional .08 sampling/512-point follower. Original ray numerics/traversal,
+contact counters/balloons/hazards,full control/pose/ability/transform gates,
+actual camera/road/story/dialogue/audio/animation owners and original traces
+remain necessary. Preserve concurrent battle/event and documentation edits;
+full overworld fidelity and the remake are incomplete.
+
 ## 2026-10-12 — Event stop/start traversal,ID scans and setters
 
 Implemented EVENT_STOP_START_RELATIONSHIP_TRAVERSAL.md and control-service leaves

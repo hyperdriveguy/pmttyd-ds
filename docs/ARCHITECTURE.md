@@ -363,3 +363,36 @@ locks across harness entry, retry and return. Its NPC/partner tokens and outcome
 Preparation/post/audio requests are recorded; original service bodies, sequence
 transition lifetime and story outcome producers remain unbound. Original VM
 operand resolution and discarded next-header read are outside this adapter.
+
+### Original wall policy with native triangle queries (2026-10-12)
+
+field_wall.hpp/cpp hold forward-height selection, quantization, closest normals,
+ordered side guards, half-tangent slide, attribute pass-through classification,
+and the two-pass surrounding correction. Their units are original engine units.
+Game converts root/intended travel into this policy before full-XZ acceptance;
+loaded rooms no longer run the legacy X-then-Z endpoint circles for player motion.
+Movement retains the corrected root regardless of Around's boolean return.
+wallContact and wallContactDistance retain separate ordinary forward-contact
+metadata; original wall counters/balloons/events/hazard consumers remain unbound.
+
+fieldWallRay consumes the complete existing source-winding .head mesh and its
+spatial index, preserving ascending row order/strict nearer replacement across
+cell boundaries. It uses finite float triangle intersection from field_ray.hpp;
+this is a geometry/numerical adapter rather than original hit-driver ABI code.
+Legacy segment-only test fixtures use double-sided extrusion. Placeholder bounds
+and the partner's older eligibility/ground path remain explicitly separate.
+Zero-speed probes disposable positions and leaves the actual root unchanged.
+
+The plain ground-to-jump reduction now classifies current neutral/walk/dash input
+and writes its current travel direction before begin, matching same-sample
+request retries in OVERWORLD_MOTION_ARBITRATION.md. Game never replays an air/
+landing-call jump edge after physics. Physical Explore inputs come from the
+producer's signed-axis/A-edge/A-held publication; groundedStick uses the raw
+integer radius² threshold, including equality3025. Analog Circle Pad/SDK and
+special contact/system/pose/action owners remain separate adapter dependencies.
+
+FieldMovement applies the recovered direction-dependent movement rate after air
+norm capping. It keeps headingOffsetDegrees separate from retained base/travel;
+the current fixed camera uses explicit0. Rate follows retained heading even for
+zero-base drift. Original marioPreCamera offset, camera-zone ownership, trigonometric
+numerics and earlier terrain-slope scaling remain separate binding boundaries.

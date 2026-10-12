@@ -187,6 +187,10 @@ complete gameplay sequences before further general-library edge-case recovery.
 | [Status infliction](BATTLE_STATUS_INFLICTION.md) | Weapon fields/stacking, ordered wrapper, immunity gates, susceptibility/RNG and mutation prefix | Weapon bindings, effect services and lifecycle |
 | [State and inventory](STATE_AND_INVENTORY.md) | Saved-work sizes/accessors, resource setters, capacity and generic item insertion | Full progression, equipment, special items and original save records |
 | [Randomness](RANDOMNESS.md) | rand recurrence and irand draw consumption | Seeding, randf, consumer call order and persistence |
+| [Ordinary overworld movement](OVERWORLD_MARIO_MOVEMENT.md) | Retained travel/current-stick air drift, jump phase startup and probe headings | Special modes, math services, source input/runtime comparisons |
+| [Ground/jump arbitration](OVERWORLD_MOTION_ARBITRATION.md) | Same-sample idle/walk/dash jump retries, current launch base/heading, late landing and no local A buffer | Contact/action/pose/lock/modifier domains and original traces |
+| [Directional wall movement](OVERWORLD_WALL_MOVEMENT.md) | Forward/side rays, half-tangent slide, pass-through, two Around passes and stationary ownership | Original ray traversal/numerics, dynamic contacts, special modes and hazards |
+| [Directional movement rate](OVERWORLD_DIRECTION_MOVEMENT_RATE.md) | Retained heading/camera-offset gain after air cap and quantized pre-camera offset producer | Actual camera ownership/defaults, original trig and terrain/special paths |
 | [Mechanics ledger](../MECHANICS.md) | Existing US ordinary field movement/collision/recovery/road evidence | Full physics, partners, dynamic events, matched original gameplay |
 | [Asset provenance](../ASSETS.md) | Original sources, conversion choices and reuse boundaries | Complete animation, sound-event and material behavior |
 

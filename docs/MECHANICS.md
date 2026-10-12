@@ -730,3 +730,84 @@ heading-offset and special motion19 branches remain unbound. An analytical
 ceiling-edge regression distinguishes retained-right probes from diagonal
 current-stick probes. The documentation verifier now pins19 containing bodies,
 29 anchors and six constants for this local movement/probe scope.
+
+## Directional wall movement and surrounding correction (2026-10-12)
+
+OVERWORLD_WALL_MOVEMENT.md now supplies the original ordinary moving-wall
+contract. The prior circle endpoint/X-then-Z player policy is superseded for
+loaded collision rooms by whole-vector forward/side queries and two surrounding
+correction passes. Forward heights remain26.6400013/11 original units, adding
+.1 when the signed motion counter is nonzero. Around uses11 and bodyHeight-1
+(normally36); its two passes use8 directions when view flag+14 bit0 is clear,
+otherwise2. Ordinary init clears that flag; later view writers remain open.
+
+Forward normals/distances use source.001-unit signed/FMA rounding. Closest tie
+retains the first ray; slide is half the full displacement's tangent component.
+The +45 guard stops on first hit, while the -45 guard uses its final ray token,
+including null. Attribute pass-through is a separate wrapper decision. Around
+filters pass-through hits before closest selection, caps only the first summed
+push (ordinary2.5, falling5 for width20), then admits half the UNcapped second
+push only for positive dot with the capped first. Staying probes disposable
+positions, so neutral ground input does not move Mario through this wrapper.
+
+Native FieldWall policy uses original engine units; its complete .head-mesh ray
+provider preserves source winding/cull/attributes and admits oblique geometry
+without the legacy .walls slope cutoff. The provider scales into cached native
+geometry and performs float triangle intersections; original hit-driver math,
+scene traversal, dynamic contacts/named NPC owners and hazard services remain
+unbound. No original execution or numerical equivalence is claimed. Normal
+contact metadata/distance are separate from the blocked/sliding position result.
+Native fallback geometry/placeholder bounds and partner eligibility queries remain
+separate adaptations. Around can keep the body on an upper ledge when an adjacent
+wall lies inside its clearance; the old overlap fixture's lower-landing expectation
+was superseded with a clearance/support regression, with float-height tolerance.
+
+## Plain launch arbitration and published field input (2026-10-12)
+
+OVERWORLD_MOTION_ARBITRATION.md closes the plain idle/walk/dash simultaneous
+A/input request paths. A trigger is not consumed by the repeated dispatcher:
+threshold/neutral requests can replace pending jump, but the next ground
+callback retries A. Current neutral/walk/dash base and current input heading
+therefore finish BEFORE surviving jump entry. Native Game now selects this
+plain ground state before begin while discarding ground displacement, then
+uses air displacement on the zero-height launch call. Standing/current weak
+input .5 launches with .0113125 native displacement, not drift-only.0013125.
+All nine idle/walk/dash-to-neutral/weak/strong paths and current-heading turns
+have source-derived host regression coverage. Airborne/landing-call A triggers
+are no longer replayed after physics; ordinary late landing requests dispatch
+next call, and a new grounded trigger is required for another launch.
+
+Physical Explore input now reads published signed-byte GP axes and A held/edge
+words after the existing PhysicalInputProducer update. The source integer
+squared-radius>3025 classification is preserved even for equality33²+44²=55²;
+raw byte55 remains walk when the preceding native float exceeded55/70 slightly.
+The producer's global input-clear chord also reaches field movement. Native
+Circle Pad device mapping and per-axis18 deadzone remain existing adaptations;
+this consumer does not add a new radial deadzone. SDK sampling/clamp, system/
+contact/talk/action/pose gates, external motion, transformation/badge/background
+modifiers and original runtime comparisons remain open. The plain semantic
+reduction is not the complete original Mario motion/pose/audio dispatcher.
+
+## Direction-dependent movement rate after the air cap (2026-10-12)
+
+OVERWORLD_DIRECTION_MOVEMENT_RATE.md distinguishes directional gain from terrain
+slope scaling. marioMoveMain calls marioGetMoveRate with retained travel heading
++1a4 after the ordinary air dash cap, then multiplies the combined norm before
+wall movement (unless roll flag0x01000000). Rate is fused1+
+.19000005722045898*abs(cos((retainedHeading-cameraOffset)*pi/180)); there is no
+nonzero-base gate and no second dash cap. Native FieldMovement now applies this
+gain after base/drift/cap composition and before the wall solver. Its cached
+unit-vector/trig representation remains a numerical adaptation; heading offset0
+corresponds to this port's current fixed Z-facing camera, not a recovered constant
+original Rogueport camera yaw. The source pre-camera offset owner is documented,
+but its actual camera-zone/script binding remains unimplemented.
+
+In this explicit camera domain, X travel retains base rate, depth gains about19%
+and45-degree diagonal gains about13.44%. A depth dash after the cap is approximately
+.026775 native per tick. Older normalized-diagonal/no-direction-gain ledger notes
+are superseded;1/2.25 original rates describe retained BASE speeds. Host tests
+cover axial/diagonal gain, camera-offset rotation, retained heading versus current
+orthogonal air input, post-cap ordering and native depth displacement. No original
+measured speed/camera/trig trace is claimed. Terrain angle-record scaling, stair
+retained travel/third-call reentry, support-loss motion10 versus11 and their tuple/
+drift ownership are separate pending contracts and implementation tasks.
