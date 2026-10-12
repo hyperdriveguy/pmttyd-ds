@@ -52,6 +52,15 @@ No local language-index validation exists here.
 
 ## Loading and storage lifetime (B)
 
+msgInit at 0x80084938, size 0xbc, creates pose `hoshi_2` with argument 2,
+stores its ID at message-work+0x20, selects `HOS_C_1` with argument 1,
+sets material bits 0x1800, clears 0x40 and installs msgDispKeyWait_render
+(0x80083360) with argument 0. It nulls raw/index pointers in slots 0 and 1,
+then calls msgLoad("global",1). It does not free previous pointers before
+nulling them or explicitly zero every work field; repeated initialization and
+release policy remain caller/lifecycle questions. The pose is the original
+key-wait presentation dependency, not a substitute generated UI asset.
+
 If raw pointer is null and slotIndex=1, probe the named resource in all seven
 language directories. For each successful DVDMgrOpen(path,2,0), obtain length,
 close handle and retain the signed maximum length. Allocate aligned32-byte size
@@ -140,7 +149,7 @@ capacity parameter. Tabs, newlines, slashes, numbers and high bytes are copied
 as ordinary bytes here; later argument parsing/control semantics are separate.
 This is not an XML parser and does not support quoting/escaping merely because
 control markup uses angle brackets. Caller scanner/nesting/command dispatch
-in msgAnalize is still open.
+in msgAnalize is partly recovered in [parser records](MESSAGE_PARSER_RECORDS.md).
 
 ## Multibyte lead predicate (B)
 
@@ -161,8 +170,10 @@ command first/later spaces, '>' at byte128, NUL before delimiter, no delimiter,
 and Japanese lead-byte boundaries versus US mode. These are derived cases, not
 executed-original observations.
 
-Remaining: initialization/release and all load callers, root/DVD/heap failure
+Remaining: release and all initialization/load callers, root/DVD/heap failure
 semantics, qsort equal-key ordering, msgAnalize commands/variables/branches,
 font byte-to-glyph/control decoding and story event attribution/order/conditions.
 The resource census and local lookup/tokenization contracts are documented;
-full dialogue and full-game equivalence remain unfinished.
+full dialogue and full-game equivalence remain unfinished. Parser-side glyph,
+wait/style/window/selection behavior is specified in
+[parser records](MESSAGE_PARSER_RECORDS.md), with remaining record paths explicit.

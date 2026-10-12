@@ -2772,3 +2772,33 @@ story attribution/order/event conditions, substitution and display lifetime.
 Continue camera/input/outer battle and other field/content/save services before
 complete-game requirements. Full objective active/incomplete; original/native
 execution comparisons still needed.
+
+## 2026-10-12 — Message parser layout, control records and initialization
+
+Previous turn progressed with8e00ce7 resource lookup. Added
+MESSAGE_PARSER_RECORDS.md from the US msgAnalize binary: append-only 24-byte
+record layout, terminal record outside the count, persisted coordinates and
+local style/speed state, US versus Japanese glyph paths, line rounding,
+post-command LF suppression, waits/style/color/audio controls, window types,
+positioning and selection setup. Recorded the five-conversion/four-prepared-
+destination sscanf ambiguity rather than inventing a safe grammar. Icon/pose/
+annotation branches and consumers remain explicitly unfinished. Extended lookup
+documentation with msgInit's original key-wait pose setup and global slot load.
+Original dialogue and story conditions are not rewritten or inferred.
+
+Validation:408 instruction anchors and prior checks passed against read-only
+US ISO, plus two command/format block hashes, layout floats/colors and pose
+bindings. An initially mistyped anchor address was corrected to the inspected
+instruction at0x8008204c before the passing run. Evidence164 fingerprints
+reproduced byte-for-byte. All behavior document links resolve; git diff --check
+passed. make test passed core plus36 Python tests; make all exited0, no rebuild.
+Workspace started clean; only research/provenance/evidence tooling changed.
+No original execution/emulator run or profile/save modification. Original
+extracts/disassembly and reports remain ignored. Static checks do not prove
+consumer timing, rendered dialogue or complete-game equivalence.
+
+Next: remaining icon/anim/paper/annotation parser paths, font glyph/width tables,
+msgMain record consumption and window/key/audio/pose lifetimes; resolve select
+format ABI against original resource data. Continue story attribution/order/
+conditions and remaining camera/input/outer battle/field/content/save systems
+before complete-game requirements. Full objective active/incomplete.

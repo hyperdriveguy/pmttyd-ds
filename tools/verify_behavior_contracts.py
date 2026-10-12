@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'message_parser_records': {
+        0x80081d08: '1cc00018', 0x80081ddc: '901e0038',
+        0x80081f70: 'b01c0004', 0x80081fa4: 'b003f244',
+        0x8008204c: 'd8210208', 0x80082144: '38000080',
+        0x80082230: '3b180064', 0x8008237c: '2c0403e7',
+        0x80082404: '66f70001', 0x80082674: '3b9c0018',
+        0x800829cc: '481e9979', 0x800829f4: '90010050',
+        0x80083254: '4bff26b1', 0x8008326c: '38630002',
+        0x80083310: '7c1b0734', 0x800849dc: '4bfffc81',
+    },
     'message_resources_and_lookup': {
         0x80081bc4: '835d0008', 0x80081be4: '40800050',
         0x80081c3c: '2c1b0002', 0x80081c54: '7c63002e',
@@ -483,6 +493,23 @@ def verify(iso_path):
             if hashlib.sha256(read(address, count*4)).hexdigest() != digest:
                 raise ValueError(f'Status infliction table fingerprint mismatch {address:#x}')
         print('Ten status infliction/presentation table fingerprints verified (254 entries)')
+        for address, size, digest in (
+            (0x8042067c, 236, '57195f3544a57d594e4f089ae0a3764a6a06d17a03366d4e2529ba1d6253727c'),
+            (0x802c3350, 228, '9a3f44608adc0830d97071c4ad8154a7307ad3d59a8a24d8546717d852083bf4'),
+        ):
+            if hashlib.sha256(read(address, size)).hexdigest() != digest:
+                raise ValueError(f'Message command/format block mismatch {address:#x}')
+        for address, expected in (
+            (0x802c3324, struct.pack('>3f', 1, 1, 1)),
+            (0x802c3330, struct.pack('>3f', 1, 1, 1)),
+            (0x80420624, struct.pack('>f', 10)),
+            (0x80420674, bytes.fromhex('3f33333342000000')),
+            (0x804205ec, bytes.fromhex('dcc8dcff00d914ff')),
+            (0x802c3438, b'hoshi_2\0HOS_C_1\0global\0'),
+        ):
+            if read(address, len(expected)) != expected:
+                raise ValueError(f'Message parser/initialization constant mismatch {address:#x}')
+        print('Two message command/format blocks, layout constants and initial pose bindings verified')
 
 
 if __name__ == '__main__':
