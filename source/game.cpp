@@ -594,8 +594,11 @@ void Game::move(const Input& i,bool launched) {
     // Airborne motion retains takeoff travel and adds current-stick drift;
     // release does not replace retained travel with zero or a fresh walk rate.
     const auto& axes=inputProducer.channels[0].analog;
-    const auto travel=fieldJump.airborne?fieldMovement.airborne(x,z):i.physicalSnapshot?
+    const auto combined=fieldJump.airborne?fieldMovement.airborne(x,z):i.physicalSnapshot?
         fieldMovement.groundedStick(axes.mainX,int8_t(-axes.mainY)):fieldMovement.grounded(x,z);
+    // The original directional rate follows the air cap and uses retained
+    // travel heading, rather than the combined current-stick drift direction.
+    const auto travel=fieldMovement.applyMovementRate(combined);
     if(len>0){x/=len;z/=len;}
     // Ordinary head/landing/ground probes use retained travel+1a4 when base
     // speed+180 is nonzero, otherwise the facing conversion (native flip).

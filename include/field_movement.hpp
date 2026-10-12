@@ -9,8 +9,19 @@ namespace ttyd {
 // represented by unit XZ vectors; this is not original numerical ABI emulation.
 struct FieldMovement {
     float speed=0,headingX=1,headingZ=0;
+    float headingOffsetDegrees=0; // Native fixed Z-facing camera; original camera owner pending.
     static constexpr float Walk=.01f,Dash=.0225f,DashStick=55.f/70.f;
     struct Displacement {float x=0,z=0;};
+    float movementRate() const {
+        // marioGetMoveRate: u(H)=(sin(H),-cos(H)). Represent its degree trig
+        // service through cached unit travel and the separately owned offset.
+        const float radians=headingOffsetDegrees*3.14159265358979323846f/180.f;
+        const float cosine=std::fma(headingX,std::sin(radians),-headingZ*std::cos(radians));
+        return std::fma(.190000057220459f,std::fabs(cosine),1.f);
+    }
+    Displacement applyMovementRate(Displacement travel) const {
+        const float rate=movementRate();return {travel.x*rate,travel.z*rate};
+    }
     Displacement grounded(float x,float z) {
         const float magnitude=std::hypot(x,z);
         if(magnitude==0){speed=0;return {};}

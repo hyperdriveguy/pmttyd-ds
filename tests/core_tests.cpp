@@ -158,7 +158,9 @@ void movement() {
     CHECK(std::fabs(displacement(DashThreshold,0,1).x-WalkSpeed)<.00001f);
     CHECK(std::fabs(displacement(DashThreshold+.001f,0,1).x-DashSpeed)<.00001f);
     CHECK(std::fabs(displacement(1,0,60).x-1.35f)<.0001f);
-    const auto diagonal=displacement(1,1,1);CHECK(std::fabs(std::hypot(diagonal.x,diagonal.z)-DashSpeed)<.00001f);
+    const auto diagonal=displacement(1,1,1);
+    CHECK(std::fabs(std::hypot(diagonal.x,diagonal.z)-DashSpeed*(1+.190000057220459f/std::sqrt(2.f)))<.00001f);
+    CHECK(std::fabs(displacement(0,1,1).z-DashSpeed*1.190000057220459f)<.00001f);
     Game g;Input right;right.x=1;
     advance(g,1);for(int n=0;n<1000;++n)g.tick(right);
     CHECK(walkable(g.progress.position));CHECK(g.progress.position.x<=9.f-BodyRadius);

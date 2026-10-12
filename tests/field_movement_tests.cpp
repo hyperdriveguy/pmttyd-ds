@@ -36,6 +36,14 @@ int main() {
     m.groundedStick(33,44);CHECK(m.speed==FieldMovement::Walk);
     m.groundedStick(34,44);CHECK(m.speed==FieldMovement::Dash);
     m.groundedStick(-55,0);CHECK(m.speed==FieldMovement::Walk && m.headingX==-1);
+    CHECK(m.movementRate()==1);
+    m.grounded(0,1);CHECK(close(m.movementRate(),1.190000057220459f));
+    auto depth=m.applyMovementRate(m.airborne(0,1));CHECK(close(depth.z,.026775001f)); // Cap precedes rate.
+    auto crossed=m.applyMovementRate(m.airborne(1,0));
+    CHECK(close(std::hypot(crossed.x,crossed.z),.026775001f)); // Rate follows retained Z, not drift.
+    m.grounded(1,1);CHECK(close(m.movementRate(),1+.190000057220459f/std::sqrt(2.f)));
+    m.grounded(1,0);m.headingOffsetDegrees=90;CHECK(close(m.movementRate(),1.190000057220459f));
+    m.grounded(0,1);CHECK(close(m.movementRate(),1));m.headingOffsetDegrees=0;
     clearCollision();Progress p;p.room=2;p.position={-4,2};
     auto launch=[&](Game& g,float x) {
         g.restore(p);Input i;i.x=x;g.tick(i);i.confirm=true;i.jumpHeld=true;g.tick(i);CHECK(g.airborne());
@@ -78,7 +86,7 @@ int main() {
     }
     Game turn;turn.restore(p);turn.tick(weak);Input changed;changed.z=.5f;changed.confirm=true;
     const auto oldPosition=turn.progress.position;turn.tick(changed);
-    CHECK(turn.progress.position.x==oldPosition.x && close(turn.progress.position.z-oldPosition.z,.0113125f));
+    CHECK(turn.progress.position.x==oldPosition.x && close(turn.progress.position.z-oldPosition.z,.013461875f));
     // The field sees published signed bytes and A edges, not stale HID fractions
     // or independently supplied abstract confirm/held bits.
     Game physical;physical.restore(p);Input pad;pad.physicalSnapshot=true;pad.x=.79f;
