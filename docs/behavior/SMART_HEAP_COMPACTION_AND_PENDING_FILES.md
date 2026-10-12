@@ -100,3 +100,9 @@ Smart allocation/arena provisioning,type-dependent relocation,draw-sync/cache
 platform bodies,DVD worker/source/scene cadence/TPL and original traces remain
 EVT-01/JUMP-01/DMG-02 requirements. This full local compactor does not establish
 a complete moving allocator or original resource rendering fidelity.
+
+[Complete allocator](SMART_ALLOCATION_HEADER_AND_GAP_PLACEMENT.md) and
+[retry ownership](SMART_ALLOCATION_RETRIES_AND_FAILURE_OWNERSHIP.md) now close
+this compactor's local pressure caller. Three retries use tail-only checks;
+newly reusable leading/interior space does not imply retry success. Arena/
+relocation/source/platform/runtime remain separate.

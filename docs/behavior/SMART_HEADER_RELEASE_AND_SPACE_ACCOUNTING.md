@@ -26,7 +26,7 @@ addresses below use offsets from its live base W,with32-bit arithmetic.
 | W | e004 / word | Leading reusable-space quantity |
 | W | e008,e00c / words | Used-chain head,tail |
 | W | e010,e014 / words | Available-header head,tail |
-| W | e018 / word | Available-header count incremented after normal recycle |
+| W | e018 / word | Release counter incremented after normal recycle;smartAlloc clears it after sync |
 
 These accesses establish a partial map,not the whole header stride/allocator
 schema or total game RAM. No address/type/generation/chain membership validation
@@ -112,3 +112,9 @@ leading/predecessor/tail gap recomputation and moving payload requests. Headers
 retain identity;[file moves](FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md) update
 live holders and retarget pending DVD destinations. Allocation/relocation/source/
 platform execution remain separate.
+
+[Complete allocation](SMART_ALLOCATION_HEADER_AND_GAP_PLACEMENT.md) shows that
+e018 is a release/synchronization counter,not an available-header stock count:
+nonzero requests draw sync then stores0. [Retries/failure](SMART_ALLOCATION_RETRIES_AND_FAILURE_OWNERSHIP.md)
+retain one reserved header and do not restore it on final0. Earlier free-count
+language is superseded by this complete reader/writer composition.

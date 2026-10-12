@@ -887,3 +887,11 @@ restart,group reuse/failure,shared/linked timestamp publication and rate writes
 are implementation contracts;clock/conversion/resource/Main/draw/lifecycle/
 original visual domains remain open. 299 direct DOL sites are references,not
 an original runtime census or complete animation system.
+
+ID2 smart allocation delivery (2026-10-12):
+[header/gap placement](behavior/SMART_ALLOCATION_HEADER_AND_GAP_PLACEMENT.md)
+and [retry/failure ownership](behavior/SMART_ALLOCATION_RETRIES_AND_FAILURE_OWNERSHIP.md)
+close smartAlloc. First flag/auto3,release-counter sync/reset,unguarded header
+reservation,word-wrap alignment,leading/first-fit gaps,three tail-only retries
+and failure without header restoration are explicit. e018 stock-count wording
+is corrected. Arena/relocation/worker/platform/source/runtime remain open.

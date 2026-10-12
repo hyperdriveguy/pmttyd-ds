@@ -1,5 +1,27 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2 complete smart allocation and failure ownership
+
+Added two detailed smartAlloc contracts and verifier. First-flag auto3 and
+release-counter synchronization/reset,unguarded reserved header,word-wrap size
+alignment/low8 tag,leading priority/first-fit placement and three tail-only
+compaction/collection retries are explicit. Final0 does not restore the reserved
+header. Corrected e018 stock-count wording against complete increment/reset
+composition;release/compaction docs link allocation. Released own ID2 lock.
+
+Validation:verify_smart_allocation.py passes six hashes(one complete/five linked),
+206 anchors,two startup/global spans;repeat JSON matches. Python compilation,
+prior compaction/release/collection/general1980 checks and2611 local links pass.
+make test passes68 CTest suites/78 Python tests;make all passes. Logs:
+/tmp/id2-smartalloc-test.log,/tmp/id2-smartalloc-build.log. Earlier compaction
+camera assertion failure is RESOLVED in this current full run. Scoped staged
+whitespace check passes. No native/test/asset conversion changes by ID2 and no
+original source-pressure/runtime execution or hardware capacity claim.
+
+Next:smartInit/arena provisioning,then type-dependent relocation and worker/
+platform/source/TPL/scene ownership. Full-game requirements and parent requests
+EVT-01/JUMP-01/DMG-02 remain incomplete.
+
 ## 2026-10-12 — Native effect deletion and fog payload ownership
 
 Implemented recovered hard deletion,soft deletion and raw Maya payload release.
