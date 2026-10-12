@@ -245,6 +245,8 @@ final dispatch without the lethal flag/pattern processing below. Otherwise:
 On every path reaching the end, OR1 into word D+0x27c, then call
 `BattleRunHitEvent(D,C)`. Original C may already contain lethal-related bits;
 this routine generally adds bits, rather than sanitizing all caller flags.
+The [dispatch contract](BATTLE_EVENT_DISPATCH.md) specifies replacement,
+cancellation, scheduling and script access to the stored code.
 The [revival marker](BATTLE_DAMAGE_CALCULATION.md) does not itself consume
 items or restore HP. Those actions and actual death/removal belong to the hit
 event graph and later services, still to be recovered.

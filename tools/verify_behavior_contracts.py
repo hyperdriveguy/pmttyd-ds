@@ -12,6 +12,23 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'battle_event_dispatch': {
+        0x8012985c: '28000028', 0x80129878: '3880002e',
+        0x8012989c: '80bc02b0', 0x801298f0: '806302b4',
+        0x80129908: '807c0290', 0x80129920: '807c029c',
+        0x80129938: '807c02a8', 0x80129960: '38a00020',
+        0x80129970: '93bc0278', 0x80127324: '38630008',
+        0x8012971c: '38a00000', 0x80129830: '93fe029c',
+    },
+    'battle_event_operands': {
+        0x8010a598: '801f0004', 0x8010a59c: '900302b0',
+        0x8010f1b0: '83bf0004', 0x8010f1e0: '63a40100',
+        0x8010f330: '7c00f039', 0x8010f3c4: '5405063e',
+    },
+    'event_entry_dispatch': {
+        0x800366bc: '7c00e000', 0x800366d0: '3bde01b0',
+        0x800376d8: '540006b5', 0x80037700: '900d193c',
+    },
     'damage_application': {
         0x800fe030: '2c190063', 0x800fe040: '2c19ff9d',
         0x800fe05c: '901f0284', 0x800fe500: '2c03001e',

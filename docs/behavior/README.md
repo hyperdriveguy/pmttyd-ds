@@ -17,6 +17,7 @@ This collection is in progress as of 2026-10-12.
 | [Damage calculation](BATTLE_DAMAGE_CALCULATION.md) | Ordered HP/FP callback gates, badge/status/defense arithmetic, result codes, absorption and revival marker | Weapon callbacks, death/revival execution and turn lifecycle |
 | [Counters](BATTLE_COUNTERS.md) | Complete local selection order, work record, jump-table returns, consumer accumulation/status/direct-damage calls | Other callers, status/application helpers, presentation and full orchestration |
 | [Damage application](BATTLE_DAMAGE_APPLICATION.md) | Ordered effects/audio, HP/FP mutation, shared FP owner, Pity Flower/Sleep draws, bookkeeping and lethal event-code selection | Helper internals, status recovery, death/revival event execution and full orchestration |
+| [Battle event dispatch](BATTLE_EVENT_DISPATCH.md) | Hit cancellation/replacement, data-key gate, wait/phase scheduling, code getters and raw/resolved operands | Installed event graphs, death/revival bodies, controller lifetime and remaining services |
 | [State and inventory](STATE_AND_INVENTORY.md) | Saved-work sizes/accessors, resource setters, capacity and generic item insertion | Full progression, equipment, special items and original save records |
 | [Randomness](RANDOMNESS.md) | rand recurrence and irand draw consumption | Seeding, randf, consumer call order and persistence |
 | [Mechanics ledger](../MECHANICS.md) | Existing US ordinary field movement/collision/recovery/road evidence | Full physics, partners, dynamic events, matched original gameplay |
