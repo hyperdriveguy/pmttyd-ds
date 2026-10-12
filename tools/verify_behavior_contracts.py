@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'message_window_lifecycle': {
+        0x8007fb4c: '38a00048', 0x8007fb74: '3860ffff',
+        0x8007ad60: '540307bc', 0x800816fc: '4bfae9f5',
+        0x80081714: '3863f258', 0x80081750: '907d0004',
+        0x800817a4: '9009f23c', 0x800817c0: '60000200',
+        0x80081924: '1c800024', 0x80081964: '1c80001f',
+        0x80081664: '42000000', 0x80081558: '90050010',
+        0x80081498: 'b01f0000', 0x800814d0: '2c1e0007',
+        0x800d21c0: '4182000c', 0x800d222c: '4182000c',
+    },
     'message_playback': {
         0x80083f50: '900d1b18', 0x80083fe4: '90c3f044',
         0x80084064: 'ec03007a', 0x8008414c: '901f0028',
@@ -564,6 +574,9 @@ def verify(iso_path):
             if read(pointer, len(name)+1) != name.encode()+b'\0':
                 raise ValueError(f'Message paper pose binding mismatch: {i}')
         print('All 14 playback targets, scroll coefficient and seven paper pose/group bindings verified')
+        if read(0x80420660, 20).hex() != 'c38c000043610000440c0000433000003f666666':
+            raise ValueError('Message window geometry constants mismatch')
+        print('Four default window geometry floats and small-window multiplier verified')
 
 
 if __name__ == '__main__':

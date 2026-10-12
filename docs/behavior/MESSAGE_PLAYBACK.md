@@ -213,3 +213,6 @@ cadence, original runtime numeric helper details, window/render/selection input,
 pose/NPC restoration, font/icon services and sound-bank/event bindings. This
 routine's local branches are documented; original/native dialogue execution and
 full story attribution/order/conditions remain unfinished.
+Window allocation, creation zeroing, Add/Repeat/Continue and identity close
+helpers are now specified in [window lifecycle](MESSAGE_WINDOW_LIFECYCLE.md).
+Their main callback and wait/input state transitions remain open.

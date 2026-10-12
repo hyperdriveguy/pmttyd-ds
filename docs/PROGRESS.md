@@ -2864,3 +2864,29 @@ selection/window lifetimes; clock snapshots and numeric helpers; font/icon/pose/
 NPC/sound dependencies. Continue full story attribution/order/conditions and
 remaining battle/camera/input/field/content/save systems before complete-game
 requirements. Full objective active/incomplete; executed comparisons needed.
+
+## 2026-10-12 — Message window creation and lifecycle controls
+
+Previous turn progressed with2f17da5 playback. Added MESSAGE_WINDOW_LIFECYCLE.md:
+seven-slot first-free pool and allocation/poll flags, fixed work zeroing and
+creation timestamps/defaults, temporary strlen-sized strcpy allocation,
+type/wpos/selection/small geometry, append over terminal, Continue/Repeat partial
+reset, deletion's empty record-count loop, identity-based force-close/NPC versus
+battle stay restoration and first-call event repeat/continue polling. Normal
+constructor zeroing explains untouched parser schedule fields; allocator slack,
+callback identity and main-state completion remain explicit dependencies.
+
+Validation:456 instruction anchors and prior checks passed against read-only
+US ISO, plus four default geometry floats and small-window multiplier.
+Evidence179 function fingerprints reproduced byte-for-byte. All behavior links
+resolve; git diff --check passed. make test passed core plus36 Python tests;
+make all exited0, no rebuild. Workspace started clean; only research/provenance/
+evidence tooling changed. No original execution/emulator run or profile/save
+changes. Code/data extracts and reports remain ignored. Static checks do not
+prove allocator failure behavior, window timing or original/native equivalence.
+
+Next: msgWindow_Main/Clear/selection state machines, input wait-state transitions
+and renderer; message event print/identity/callback producers and substitution;
+allocator/embedded-pose ownership, font/icon/sound services. Continue story
+attribution/order/conditions and all remaining battle/camera/input/field/content/
+save systems before complete-game requirements. Full objective active/incomplete.
