@@ -4073,3 +4073,30 @@ systems before complete-game requirements. Full objective active/incomplete;
 local equality/admission does not establish complete numerical/layout or full-
 game fidelity. Original data,IDs/tokens and story attribution/order/branches/
 event conditions remain mandatory.
+
+## 2026-10-12 — US decimal neighbor refinement and ties
+
+Added DECIMAL_NEIGHBOR_REFINEMENT_AND_TIES.md for remaining __dec2num local
+regions:up/down encoding steps,full42-byte record transfers,operand-specific
+loop comparison,direct infinity exits,four __minus_dec requests,record equality
+and low-bit parity ties,asymmetric lower/upper distance selections and shared
+sign exit. All containing __dec2num local flow is now documented across its
+contracts; __minus_dec/pow remain open dependencies and no exact-distance or
+complete correct-rounding/execution claim is made. Updated prior entry link.
+
+Validation:1336 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO. Fresh286-function reports reproduced byte-for-byte. All489
+local behavior links resolved;git diff --check passed. make test passed core
+plus36 Python tests;make all exited0 with no rebuild. No original execution/
+emulator,profile/save modification,native implementation,asset conversion or
+story/message rewrite. Original disassembly/reports remain ignored;working tree
+was clean at turn start.
+
+Next: __minus_dec numeric subtraction and pow dependencies;executed generated/
+difference records,neighbor bits/iterations,tie/FPSCR/final output at boundaries
+and actual scanner inputs. Continue drawing/string layout,resource/cadence
+callers and uncovered story/event/field/battle/audio/save/content before complete-
+game requirements. Full objective active/incomplete;local converter control
+recovery does not prove complete numeric/layout or full-game fidelity. Original
+data/IDs/tokens and story attribution/order/branches/event conditions remain
+mandatory.

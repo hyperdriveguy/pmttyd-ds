@@ -5,8 +5,8 @@ US G8ME01 revision0,recovered2026-10-12. Evidence B: complete __equals_dec at
 [initial approximation](DECIMAL_TO_BINARY_APPROXIMATION.md),
 [infinity boundary/sign exit](DECIMAL_TO_BINARY_INFINITY_BOUNDARY.md) and
 [binary-to-decimal generator](FORMAT_BINARY_DECIMAL_ENTRY.md). This covers local
-equality,initial magnitude direction and first upward neighbor only;subsequent
-neighbor search,distances/ties and final selection remain open. No original
+equality,initial magnitude direction and first upward neighbor only;[subsequent neighbor search,distances/ties and final selection](DECIMAL_NEIGHBOR_REFINEMENT_AND_TIES.md)
+are recovered separately;subtraction/pow dependencies remain open. No original
 execution or complete correctly-rounded conversion claim is established.
 
 ## __equals_dec interface and zero shortcuts (B)
