@@ -192,3 +192,16 @@ Use original traces or direct execution of the original routines to validate:
 The static verifier checks selected sort, wait-link, copy-back and scheduling
 anchors, not these behavioral traces. Until the missing opcode and service
 contracts are closed, original event inventory is not a full story interpreter.
+
+
+## Complete manager and continuation follow-up (2026-10-12)
+
+[Complete manager loop](EVENT_MANAGER_COMPLETE_LOOP.md) now specifies the whole
+local evtmgrMain/time/eligibility/credit/outcome sequence and full priority table.
+[Dispatch/waits](EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md) closes scoped fetch,
+common results,WAIT_FRAME,WAIT_MSEC and USER_FUNC continuations. A dispatcher
+yield can be polled again from remaining credit in the same manager pass;it is
+not one physical input or rendering frame. WAIT_MSEC uses the sign-extended
+low-word delta,not an unrestricted64-bit elapsed comparison. Constructors,
+append/initial state,remaining opcodes,time/domain writers and original traces
+remain open under EVT-01.

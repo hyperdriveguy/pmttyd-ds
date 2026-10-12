@@ -18,7 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Lecture field intersection and party callback bodies | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover crossing numeric/endpoint contract and clear/kill/previous-position/run/stop local callback dispatch;full party engine,EVT-01 scheduler and battle teardown remain separate |
-| Event manager complete loop,credit/lifetime and wait continuations | EVT-01 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Recover evtmgrMain complete eligibility/identity/credit/lifetime/return loop and dispatcher wait/USER_FUNC first-call policy;constructor/restart/type producers and unrelated opcode bodies remain separate |
+| Event manager complete loop,credit/lifetime and wait continuations | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete manager](behavior/EVENT_MANAGER_COMPLETE_LOOP.md),[dispatch/waits](behavior/EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md):complete local time/eligibility/ID/credit/result loop,priority and scoped fetch/wait/USER_FUNC;constructors/append/initial state and original traces remain open |
 | Ordinary attack badge-effect tail and called recovery services | JUMP-01, DMG-02, STATUS-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [32-command tail](behavior/BATTLE_ATTACK_BADGE_RECOVERY_TAIL.md),[recovery/geometry](behavior/BATTLE_BADGE_RECOVERY_SERVICES.md),[coercion/effect route](behavior/BATTLE_BADGE_RECOVERY_PRESENTATION.md):complete local graph/wrappers/cores and scoped presentation binding;renderer/VM/domain/source/runtime remain open |
 | Lecture field trigger,story conditions and return requests | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Field entry/return](behavior/LECTURE_FIELD_ENTRY_AND_RETURN.md):wall/reload story10 callers,crossing operands,choices,setup3 and common story11 exit answered;intersection/party/persistent services,battle-end controller and original traces remain open |
 | Weapon aftereffect callback and ordinary Jump operands | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Dispatch](behavior/BATTLE_WEAPON_AFTEREFFECT_DISPATCH.md),[stage leaves](behavior/BATTLE_STAGE_AFTEREFFECT_REQUESTS.md):complete local weighted/forced RNG and destruction/nozzle/frame/object ownership;queued event bodies,source/domain and original traces remain open |
@@ -780,3 +780,29 @@ traces remain open. Standalone verifier passes18 containing-body fingerprints
 (scoped interpreter/effect routes),71 anchors,13 data spans and all32 event
 commands/two brothers;actual Jump waiting-child site80356be0 pinned. Own lock
 released;parent requests and ID1's lecture-field reservation remain open.
+
+
+ID2 EVT-01 validation note (2026-10-12):make test currently passes21/22 CTest
+suites but core fails tests/core_tests.cpp:137 at
+`jumping.jumpHeight>.07f && jumping.progress.position.x>-.99f` during concurrent
+native field movement changes. Python suite did not run after CTest failure.
+New event-manager evidence passes;ID2 has not changed native code. Please resolve
+the fixture/behavior mismatch and re-run before claiming a full host pass.
+
+
+ID2 EVT-01 manager delivery (2026-10-12), partial answer:
+[complete manager](behavior/EVENT_MANAGER_COMPLETE_LOOP.md) closes context,
+raw64-bit tick delta/clamp/substitution, unstable unsigned-priority exchange,
+active/live-ID/0x92 eligibility, lifetime once per visit and single-rounded
+credit add/subtract-before-dispatch. Dispatcher0 can run again under remaining
+credit;1 aborts the whole manager,-1 ends only that entry. The count is live.
+[dispatch/waits](behavior/EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md) closes fetch,
+common handler outcomes,exact first-call waits/cached USER_FUNC,frame decrement
+and msec sign-extended LOW lifetime difference/unsigned division. No fixed one-
+physical-frame policy follows from yield. Standalone verifier passes seven
+containing-body fingerprints (dispatcher/numeric scope limited),70 anchors and
+eight constants/dispatch spans. Constructors/current-table append/initial credit/
+restart/type/run-check producers,other opcodes and original traces remain open.
+ID2 scoped lock released;EVT-01 stays priority0 and open. make all passed;host
+21/22 CTest failure is the concurrent field-movement assertion noted above;
+58 Python tests passed independently. No full host-pass claim.

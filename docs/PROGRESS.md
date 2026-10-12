@@ -6495,3 +6495,34 @@ battle-end and lecture-mode/window/HP immunity teardown;flag writers and origina
 accepted/declined/interrupted/reentry observations. Full game documentation and
 remake remain incomplete;complete-game requirements remain deferred until system
 coverage is sufficient.
+
+### 2026-10-12 — Documentation ID2: complete manager and wait continuations
+
+Delivered EVENT_MANAGER_COMPLETE_LOOP.md and
+EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md for EVT-01 priority0 request slice.
+Whole local manager/context/priority bodies specify tick delta signed clamp and
+large-gap substitution,previous-time stores,eligibility/live ID, lifetime once
+per visit,single-rounded credit subtract-before-dispatch and live-count loop.
+Scoped dispatcher fetch/common tail distinguishes handler0/1/2/3/255/negative
+from dispatcher0/-1/1:yield can run again with remaining credit in the same pass.
+Complete MSEC helper uses sign-extended low lifetime difference and unsigned
+64-bit division;frame wait decrements on its first invocation. Constructor/
+append/initial state and broader opcode/source/domain/runtime scope remains open.
+
+Validation: verify_event_manager_loop.py passed seven containing fingerprints,
+70 anchors,eight constants/dispatch spans;dispatcher/division fingerprints do
+not claim all opcode/numeric recovery. Report/tmp/id2-event-loop-evidence.json.
+Existing stylish/badge-tail verifiers passed. make all built concurrent native
+changes and3DSX,exited0. make test failed core tests/core_tests.cpp:137 jump
+height/position assertion during concurrent field movement work;other21/22
+CTest suites passed. Python suite then ran independently,58 tests passed.
+Failure recorded in inbox;no full host green claim. All836 local links in
+then-current behavior collection resolved;git diff --check passed. No native,
+ISO,asset,save/emulator/profile mutations by ID2;inspection/reports in/tmp.
+Other agents' native and lecture-field work preserved and not staged by ID2.
+
+Released only ID2's manager/wait scoped lock,linked contracts in inbox/index/
+EVENT_RUNTIME. Next EVT-01 work:root/child/brother/inline constructors,current-
+table append/allocation/initial credit/type/run-check, restart and remaining
+opcode closures;original pause/multicredit/creation/deletion traces. Full-game
+documentation and eventual requirements objective remains active/incomplete.
