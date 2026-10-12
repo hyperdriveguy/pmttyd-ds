@@ -1205,9 +1205,50 @@ void Game::battle(const Input& i) {
     }
 }
 void Game::updateMarioPresentation() {
-    if(scene==Scene::Explore || scene==Scene::Dialogue)
+    fieldIdleSounds.clear();
+    marioPresentation.offset=fieldMovement.headingOffsetDegrees;
+    const bool active=scene==Scene::Explore && fieldJump.motion==0 && !arriving && warpRequest<0 &&
+        !water.active() && !fade.active();
+    if(active) {
+        FieldKeyServices keys;
+        keys.partyId=[](){return 1;}; // Current follower harness, not original pouch/party ownership.
+        keys.party=[this](int){return &fieldKeyPartner;};
+        keys.sequence=[this](){return fieldSequence;};
+        keys.inputByte=[this](){return marioFieldControl?0:1;};
+        keys.shipChanging=[this](){return fieldShipChanging;};
+        keys.rollEnabled=[this](){return fieldRollEnabled;};keys.slitEnabled=[this](){return fieldSlitEnabled;};
+        keys.christineStatus=[this](){return fieldChristineStatus;};keys.bomheiKeyCheck=[this](){return fieldBomheiKeyCheck;};
+        keys.yoshiStatus=[this](){return fieldYoshiStatus;};keys.holdItem=[this](){return fieldHeldItem;};
+        FieldIdleServices services;
+        services.hp=[this](){return int(int16_t(progress.hp));};services.rate=[](){return TickRate;};
+        services.millisecondsToFrames=[](int ms){return int(int64_t(ms)*TickRate/1000);};
+        services.key=[&](){return fieldKeyAdmitted(keys);};
+        services.currentPose=[this](){return marioPresentation.selected;};
+        services.requestPose=[this](const char* name,bool effect){
+            marioPresentation.displayFlags=uint32_t(fieldIdle.displayFlags);
+            marioPresentation.poseStartFrame=uint16_t(fieldIdle.startFrame);
+            marioPresentation.requestPose(name,effect);fieldIdle.displayFlags=int32_t(marioPresentation.displayFlags);
+            fieldIdle.startFrame=int16_t(marioPresentation.poseStartFrame);
+        };
+        services.sound=[this](int id){fieldIdleSounds.push_back(id);};
+        services.adjustMoveDirection=[this](){
+            const float h=marioPresentation.adjustMoveDirection();
+            const float radians=h*.01745329238474369f;
+            fieldMovement.headingX=std::sin(radians);fieldMovement.headingZ=-std::cos(radians);
+        };
+        fieldIdle.displayFlags=int32_t(marioPresentation.displayFlags);
+        if(!fieldIdleWasActive)fieldIdle.enter(services);
+        fieldIdle.early(services);fieldIdle.late(services);
+        marioPresentation.displayFlags=uint32_t(fieldIdle.displayFlags);
+        marioPresentation.poseStartFrame=uint16_t(fieldIdle.startFrame);
+    }
+    fieldIdleWasActive=active;
+    if(scene==Scene::Explore || scene==Scene::Dialogue) {
         marioPresentation.update(fieldJump.motion,fieldMovement.speed,fieldMovement.headingOffsetDegrees,progress.hp,
-                                 fieldCameraTickMilliseconds(fieldCameraSimulationTicks));
+                                 fieldCameraTickMilliseconds(fieldCameraSimulationTicks),true);
+        fieldIdle.displayFlags=int32_t(marioPresentation.displayFlags);
+        fieldIdle.startFrame=int16_t(marioPresentation.poseStartFrame);
+    }
 }
 void Game::tick(const Input& rawInput) {
     struct PresentationOnExit {Game& game;~PresentationOnExit(){game.updateMarioPresentation();}} presentation{*this};

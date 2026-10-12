@@ -228,9 +228,10 @@ int main(int argc,char** argv) {
         CHECK(loadCameraRoadAssets("romfs"));
         ActorMeshPack mesh;CHECK(mesh.load("romfs/characters.pmmesh"));
         ActorAnimationPack animations;CHECK(animations.load("romfs/characters.pmanim"));
-        for(const auto name:{"M_S_1","M_W_1","M_R_1","M_J_1B","M_J_1C","M_S_1R","M_W_1R","M_R_1R","M_J_1BR","M_J_1CR"}) {
+        for(const auto name:{"M_S_1","M_W_1","M_R_1","M_J_1B","M_J_1C","M_S_3","M_I_S","M_I_Y","M_I_5","M_N_5A","M_S_1R","M_W_1R","M_R_1R","M_J_1BR","M_J_1CR"}) {
             const auto* pose=mesh.pose(name);CHECK(pose);
-            CHECK(pose->vertices.size()==(name[std::strlen(name)-1]=='R'?186u:306u));
+            if(std::strcmp(name,"M_I_5") && std::strcmp(name,"M_N_5A"))
+                CHECK(pose->vertices.size()==(name[std::strlen(name)-1]=='R'?186u:306u));
             const auto* animation=animations.pose(name);CHECK(animation);ActorAnimationSample sample;
             CHECK(animation->evaluate(0,sample) && sample.vertices.size()==pose->vertices.size());
             for(size_t i=0;i<sample.vertices.size();++i) {

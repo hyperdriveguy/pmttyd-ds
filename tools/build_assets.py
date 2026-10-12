@@ -42,8 +42,12 @@ def main():
     mario=asset('a/a_mario-','a_mario.tpl');convert_tpl(mario,WORK/'mario-original.png',0)
     mario_model=asset('a/a_mario','a_mario')
     rear_model=asset('a/a_mario_r','a_mario_r');rear_tpl=asset('a/a_mario_r-','a_mario_r.tpl')
-    character_mesh=compile_mesh([(mario_model,mario,['M_S_1','M_W_1','M_R_1','M_J_1B','M_J_1C']),
-                                (rear_model,rear_tpl,['M_S_1R','M_W_1R','M_R_1R','M_J_1BR','M_J_1CR'])],
+    idle_effect_model=asset('a/e_mario','e_mario')
+    if idle_effect_model.read_bytes()[0x44:0x84].split(b'\0')[0]!=b'a_mario':
+        raise ValueError('Idle effect texture source requires explicit original binding')
+    character_mesh=compile_mesh([(mario_model,mario,['M_S_1','M_W_1','M_R_1','M_J_1B','M_J_1C','M_S_3','M_I_S','M_I_Y']),
+                                (rear_model,rear_tpl,['M_S_1R','M_W_1R','M_R_1R','M_J_1BR','M_J_1CR']),
+                                (idle_effect_model,mario,['M_I_5','M_N_5A'])],
                                OUTPUT/'characters.pmmesh',WORK/'characters-mesh.png',OUTPUT/'characters.pmanim')
     texture(WORK/'characters-mesh.png',OUTPUT/'characters-mesh.t3x')
     atlas=Image.new('RGBA',(512,256))

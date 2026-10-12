@@ -44,7 +44,7 @@ def compile_mesh(models, output, atlas_path, animation_output=None):
                                      1-(cell//8*128+2+float(uv[1])*124)/1024))
             poses.append((name,vertices))
             axes=list(zip(*(v[:3] for v in vertices)))
-            metadata.append({'model':str(model),'animation':name,'frame':0,'triangles':len(triangles),
+            metadata.append({'model':str(model),'texture_source':str(tpl),'animation':name,'frame':0,'triangles':len(triangles),
                              'bounds':[[min(v) for v in axes],[max(v) for v in axes]]})
     with open(output,'wb') as file:
         file.write(struct.pack('<8sI',b'PMCHAR1\0',len(poses)))

@@ -18,7 +18,7 @@ def main():
     cells={(r['source'],r['tpl_index']):r['cell'] for r in manifest['texture_cells']}
     cases=[]
     for entry in manifest['poses']:
-        model=Path(entry['model']);name=entry['animation'];tpl=str(model)+'.tpl'
+        model=Path(entry['model']);name=entry['animation'];tpl=entry['texture_source']
         parsed=animation(model.read_bytes(),name)
         times={0,.25,1.5,parsed['end']/2,parsed['end']-.25,parsed['end'],parsed['end']+.25}
         # Texture steps include fractional original rear-run boundaries.

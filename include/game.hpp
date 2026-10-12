@@ -10,6 +10,8 @@
 #include "road_motion.hpp"
 #include "field_jump.hpp"
 #include "field_step.hpp"
+#include "field_idle.hpp"
+#include "field_key.hpp"
 #include "battle_timing_a.hpp"
 #include "battle_hammer.hpp"
 #include "battle_defense.hpp"
@@ -135,6 +137,13 @@ public:
     CameraRoadWork cameraRoadWork;
     FieldCameraEvents fieldCameraEvents;
     MarioPresentation marioPresentation;
+    FieldIdleWork fieldIdle;
+    // Native partner ability/status services are still adapters. These explicit
+    // inputs allow source eligibility instead of collapsing it to input enabled.
+    FieldKeyPartner fieldKeyPartner;
+    int fieldChristineStatus=0,fieldBomheiKeyCheck=0,fieldYoshiStatus=0,fieldHeldItem=0;
+    int fieldShipChanging=0,fieldRollEnabled=1,fieldSlitEnabled=1;
+    std::vector<int> fieldIdleSounds; // Original source IDs; macro playback unbound.
     // Basic source camera-event services. Coordinates are engine units;
     // EVT operand/address marshaling remains a separate runtime binding.
     bool setCameraTarget(CameraPoint xyz,float percent,int32_t durationMs,uint8_t curve);
@@ -224,6 +233,7 @@ private:
     void rebaseFieldCamera();
     void beginFieldCameraTick();
     void updateMarioPresentation();
+    bool fieldIdleWasActive=false;
     void publishFieldCameraTarget();
     void cacheFieldScreen();
     void publishFieldCameraCollision(const FieldSupport& support);

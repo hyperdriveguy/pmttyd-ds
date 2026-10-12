@@ -157,7 +157,7 @@ public:
         auto scalar=[&](auto& value){return std::fread(&value,sizeof(value),1,file)==1;};
         auto vector=[&](auto& values,uint32_t count){values.resize(count);return count==0 || std::fread(values.data(),sizeof(values[0]),count,file)==count;};
         std::array<char,8> magic{};uint32_t count=0;
-        if(!scalar(magic) || std::memcmp(magic.data(),"PMANIM1",8) || !scalar(count) || !count || count>10)return false;
+        if(!scalar(magic) || std::memcmp(magic.data(),"PMANIM1",8) || !scalar(count) || !count || count>64)return false;
         std::vector<ActorAnimationPose> pending;
         for(uint32_t poseIndex=0;poseIndex<count;++poseIndex) {
             ActorAnimationPose p;std::array<char,32> name{};std::array<uint32_t,6> sizes{};

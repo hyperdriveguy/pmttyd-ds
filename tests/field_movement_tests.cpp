@@ -6,7 +6,73 @@
 using namespace ttyd;
 #define CHECK(x) do {if(!(x)){std::cerr<<__LINE__<<": " #x "\n";std::exit(1);}}while(0)
 bool close(float a,float b){return std::fabs(a-b)<.000001f;}
+void idleCases() {
+    int hp=7;bool key=true;std::string pose="M_S_1";std::vector<int> sounds;
+    std::vector<std::string> requests;bool effect=false;int adjustments=0;
+    FieldIdleWork w;FieldIdleServices services;
+    services.hp=[&](){return hp;};services.key=[&](){return key;};services.rate=[](){return 60;};
+    services.millisecondsToFrames=[](int ms){return ms*60/1000;};
+    services.currentPose=[&](){return pose.c_str();};
+    services.requestPose=[&](const char* name,bool special){pose=name;effect=special;requests.push_back(pose);};
+    services.sound=[&](int id){sounds.push_back(id);};services.adjustMoveDirection=[&](){++adjustments;};
+    w.enter(services);w.early(services);w.late(services);CHECK(w.refresh==1 && w.count==1);
+    hp=5;for(int n=0;n<59;++n){w.early(services);w.late(services);}
+    CHECK(w.refresh==60 && pose=="M_S_1");w.early(services);CHECK(pose=="M_S_3" && w.breathe==1 && (w.displayFlags&4));
+    for(int n=0;n<119;++n)w.early(services);CHECK(w.breathe==120 && sounds.back()==226);
+    for(int n=0;n<120;++n)w.early(services);CHECK(w.breathe==0 && sounds.back()==225);
+    hp=7;w.early(services);CHECK(pose=="M_S_1" && w.refresh==0);
+    hp=0;w.enter(services);CHECK(pose=="M_I_S" && sounds.back()==371);
+    for(int n=0;n<60;++n)w.early(services);CHECK(pose=="M_I_S");w.early(services);CHECK(pose=="M_S_3");
+    hp=5;key=false;w.enter(services);CHECK(pose=="M_S_1");
+    pose="M_I_Y";w.enter(services);CHECK(pose=="M_I_Y");
+    hp=7;key=true;w.enter(services);w.count=2999;
+    const auto before=requests.size();w.late(services);CHECK(w.phase==1 && requests.size()==before);
+    w.late(services);CHECK(w.phase==2 && w.count==49 && pose=="M_I_5" && effect && adjustments==1 && sounds.back()==239);
+    for(int n=0;n<49;++n)w.late(services);CHECK(w.phase==2 && w.count==0);
+    w.late(services);CHECK(w.phase==3 && w.count==100 && pose=="M_S_1" && !effect);
+    for(int n=0;n<100;++n)w.late(services);CHECK(w.phase==3 && w.count==0);
+    w.late(services);CHECK(w.phase==4 && w.count==0 && w.sleepElapsed==0 && pose=="M_N_5A" && effect && sounds.back()==228);
+    for(int n=0;n<120;++n)w.late(services);CHECK(w.phase==4 && w.count==0 && w.sleepElapsed==120 && sounds.back()==228);
+    for(int n=0;n<600;++n)w.late(services);CHECK(w.sleepElapsed==600);
+    hp=5;w.late(services);CHECK(w.phase==4); // Initial stable low-HP gate exits before tail reread.
+    hp=7;w.mainFlags=8;w.late(services);CHECK(w.phase==0 && pose=="M_S_1");
+    w.phase=4;w.late(services);CHECK(w.phase==4); // Exact S1 cancellation guard retains phase.
+    MarioPresentation presentation;presentation.displayFlags=4;presentation.requestPose("M_S_3");
+    presentation.update(0,0,0,5,100,true);CHECK(presentation.supported && !std::strcmp(presentation.selected,"M_S_3") && (presentation.displayFlags&4));
+    presentation.update(0,0,0,5,200,true);CHECK(presentation.poseStartMilliseconds==100);
+    presentation.display=91;presentation.offset=20;CHECK(close(presentation.adjustMoveDirection(),110) && presentation.display==180 && presentation.target==180);
+    presentation.display=450;CHECK(close(presentation.adjustMoveDirection(),290) && presentation.display==0);
+    presentation.poseStartFrame=10;presentation.requestPose("M_I_5",true);
+    presentation.update(0,0,0,7,1000,true);CHECK(close(presentation.animationFrame(),9.96f));
+    presentation.requestPose("M_S_1");presentation.update(0,0,0,7,1100,true);CHECK(presentation.animationFrame()==0);
+
+    FieldKeyPartner partner;int ships=0;std::vector<int> calls;
+    FieldKeyServices gates;
+    gates.partyId=[&](){calls.push_back(1);return 9;};
+    gates.party=[&](int id){CHECK(id==9);calls.push_back(2);return &partner;};
+    gates.sequence=[&](){calls.push_back(3);return 2;};gates.inputByte=[](){return 0;};
+    gates.shipChanging=[&](){++ships;return 0;};gates.rollEnabled=[](){return 1;};gates.slitEnabled=[](){return 1;};
+    gates.christineStatus=[](){return 0;};gates.bomheiKeyCheck=[](){return 0;};gates.yoshiStatus=[](){return 0;};gates.holdItem=[](){return 0;};
+    CHECK(fieldKeyAdmitted(gates) && ships==2 && calls[0]==1 && calls[1]==2 && calls[2]==3);
+    partner.flags=0x100;for(int motion=5;motion<=7;++motion){partner.motion=motion;CHECK(!fieldKeyAdmitted(gates));}
+    partner.motion=4;CHECK(fieldKeyAdmitted(gates));partner.flags=0;partner.motion=5;CHECK(fieldKeyAdmitted(gates));
+    gates.shipChanging=[&](){++ships;return 1;};ships=0;CHECK(!fieldKeyAdmitted(gates) && ships==1);
+    gates.shipChanging=[&](){return ++ships==2?2:0;};ships=0;CHECK(!fieldKeyAdmitted(gates) && ships==2);
+    gates.shipChanging=[](){return 0;};gates.christineStatus=[](){return 1;};CHECK(!fieldKeyAdmitted(gates));
+    gates.party=[](int)->const FieldKeyPartner*{return nullptr;};CHECK(fieldKeyAdmitted(gates));
+    gates.rollEnabled=[](){return 0;};CHECK(!fieldKeyAdmitted(gates));
+
+    clearCollision();Game game;game.progress.hp=7;game.tick({});CHECK(game.fieldIdle.refresh==1);
+    game.progress.hp=2;for(int n=0;n<59;++n)game.tick({});CHECK(!std::strcmp(game.marioPresentation.selected,"M_S_1R"));
+    game.tick({});CHECK(!std::strcmp(game.marioPresentation.selected,"M_S_3") && game.marioPresentation.supported);
+    game.progress.hp=7;game.tick({});CHECK(!std::strcmp(game.marioPresentation.selected,"M_S_1R"));
+    game.fieldIdle.count=2999;game.tick({});CHECK(game.fieldIdle.phase==1);
+    game.tick({});CHECK(game.fieldIdle.phase==2 && game.fieldIdle.count==49 && !std::strcmp(game.marioPresentation.selected,"M_I_5"));
+    CHECK(game.marioPresentation.displayFlags&0x10000000);
+    Input moving;moving.x=1;game.tick(moving);CHECK(!std::strcmp(game.marioPresentation.selected,"M_R_1") && !(game.marioPresentation.displayFlags&0x10000000));
+}
 int main() {
+    idleCases();
     MarioPresentation display;CHECK(display.moveHeading()==270);
     display.display=180;CHECK(display.moveHeading()==90);display.display=0;
     display.wallRequest(2,90,0);CHECK(display.facing==90 && display.directionCountdown==14);

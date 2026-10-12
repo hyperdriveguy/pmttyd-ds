@@ -8,11 +8,14 @@ struct MarioPresentation {
     int32_t directionCountdown=0;
     float display=0,target=0,offset=0;
     uint32_t turnFlags=0;
+    uint32_t displayFlags=0;
+    bool queuedPose=false;
     unsigned previousMotion=~0u;
     const char* front="M_S_1";
     const char* selected="M_S_1R";
     uint64_t poseStartMilliseconds=0;
     uint64_t poseNowMilliseconds=0;
+    uint16_t poseStartFrame=0;
     bool supported=true,poseUploaded=false;
     void wallRequest(float speed,float heading,int16_t airCounter) {
         if(speed!=0 && airCounter==0) {
@@ -49,23 +52,34 @@ struct MarioPresentation {
             }
         }
     }
-    void update(unsigned motion,float speed,float cameraOffset,int hp,uint64_t now) {
+    void requestPose(const char* name,bool effect=false) {
+        if((displayFlags&2) || std::strcmp(selected,name)==0)return;
+        front=selected=name;queuedPose=true;
+        if(effect){displayFlags&=~0x40000000u;displayFlags|=0x10000000u;}
+        else {displayFlags&=~0x30000000u;poseStartFrame=0;}
+    }
+    float adjustMoveDirection() {
+        display=target=(display>=90 && display<=270)?180:0;
+        facing=moveHeading();return facing; // Caller also publishes travel1a4.
+    }
+    void update(unsigned motion,float speed,float cameraOffset,int hp,uint64_t now,bool idleOwned=false) {
         poseNowMilliseconds=now;
         offset=cameraOffset;
         bool pendingReset=false;
         if(motion!=previousMotion) {
             switch(motion) {
-            case 0:front="M_S_1";break;
-            case 1:front="M_W_1";break;
-            case 2:front="M_R_1";break;
-            case 3:front="M_J_1B";break;
-            case 10:front="M_J_1C";break;
+            case 0:if(!idleOwned)requestPose("M_S_1");break;
+            case 1:requestPose("M_W_1");break;
+            case 2:requestPose("M_R_1");break;
+            case 3:requestPose("M_J_1B");break;
+            case 10:requestPose("M_J_1C");break;
             default:break; // Motion11 keeps its earlier pose; other domains stay explicit.
             }
             if(motion<=3 || motion==10)pendingReset=std::strcmp(selected,front)!=0;
             previousMotion=motion;
         }
-        supported=(motion<=3 || motion==10 || motion==11) && (motion!=0 || hp>5);
+        (void)hp;
+        supported=motion<=3 || motion==10 || motion==11;
         const float heading=wrap(facing-offset);const bool rear=heading<=70 || heading>=290;
         const char* next=front;
         if(rear) {
@@ -75,8 +89,14 @@ struct MarioPresentation {
             else if(std::strcmp(front,"M_J_1B")==0)next="M_J_1BR";
             else if(std::strcmp(front,"M_J_1C")==0)next="M_J_1CR";
         }
-        if(!poseUploaded || pendingReset || std::strcmp(selected,next)!=0){selected=next;poseStartMilliseconds=now;poseUploaded=true;}
-        turn(speed); // Rear selection precedes display-direction update.
+        if(!poseUploaded || queuedPose || pendingReset || std::strcmp(selected,next)!=0) {
+            if(std::strcmp(selected,next)!=0)poseStartFrame=0; // Rear name writer zeros28.
+            selected=next;
+            poseStartMilliseconds=now-uint64_t(float(poseStartFrame)*16.66666603088379f);
+            poseUploaded=true;
+        }
+        queuedPose=false;
+        if(!(displayFlags&0x100))turn(speed); // Rear selection precedes display-direction update.
     }
     float moveHeading() const {
         const float a=270-display+offset;
