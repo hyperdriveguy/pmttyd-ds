@@ -801,3 +801,18 @@ close full local traversal/cache/init/auto-release,512-record source capacity,
 four exact direct bindings and effect→animation→event teardown requests. US
 effect texture file identity is recorded;file/TPL/pose/display/platform/scene/
 source and original update/resource/frame traces remain open.
+
+ID1 slit collision/math delivery (2026-10-12):
+[slit collision](behavior/FIELD_PARTNER_SLIT_COLLISION.md),
+[simple camera direction](behavior/FIELD_SIMPLE_CAMERA_DIRECTION.md) and
+[system angle table](behavior/FIELD_SYSTEM_ANGLE_TABLE.md) close three new local
+algorithms. Six maximum ordered/filtered probes,first-hit side ownership,raw
+normalXZ arithmetic-average gate,no output correction,camera quantization and
+91-coefficient quadrant/zero-vector rules are explicit. Existing filter contracts
+are reused;full backend/source/numeric/original-runtime domains remain open.
+
+[US message inventory correction](behavior/US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md)
+rechecks260 resources/13186 actual key/text pairs. Newly generated filename-ID/
+identifier-only/story-prefix claims do not supersede recovered loader/lookup
+contracts or establish dialogue/story coverage. Final full-game requirements
+remain premature.

@@ -66,7 +66,10 @@ angleABf(current rootXZ,current trailingXZ),then movePos(&trailingX,&trailingZ,
 The angle request therefore sees coincident planar coordinates in the ordinary
 stable-source domain after the copy. Do not substitute the earlier pre-copy
 angle or a conventional30-unit distance clamp without proving equivalence to
-angleABf's actual zero-vector behavior. This does not move rootXYZ itself.
+angleABf's actual zero-vector behavior. The
+[complete system-angle leaf](FIELD_SYSTEM_ANGLE_TABLE.md) now defines ordinary
+finite coincident input as positive0,so that domain requests movePos(30,0).
+This does not move rootXYZ itself.
 Full trailing-coordinate renderer/pose consumption remains open.
 
 ## Direct bindings and remaining composition

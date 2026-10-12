@@ -270,3 +270,14 @@ backend,source domains and original form traces remain open. Listing audit599
 files/84667 instructions/640 paired-single operations is clean;that is byte/text
 integrity,not full-system completion. Complete original encounter/persistence and
 broader shipped-system gaps still prevent final complete-game requirements.
+
+ID1 collision/math and inventory-evidence update (2026-10-12):
+[slit membership](FIELD_PARTNER_SLIT_COLLISION.md),
+[camera direction](FIELD_SIMPLE_CAMERA_DIRECTION.md) and
+[system angle table](FIELD_SYSTEM_ANGLE_TABLE.md) now have complete local
+contracts and actual slit caller binding. Listing audit602 files/85319 instructions/
+654 paired-single ops is clean. Backend/global/source/FP/original trace domains
+remain open. [Message inventory correction](US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md)
+rechecks260 resources/13186 key/text pairs;new filename-number/story-prefix guesses
+are not authoritative completion or dialogue evidence. No full-system/encounter
+closure establishes the final complete-game requirements gate.

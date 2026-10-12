@@ -1484,3 +1484,21 @@ No original geometry, texture, dialogue, music or sound bytes were committed.
 Ownership/licensing and local-only use remain as recorded above. The actor render
 contract now records source model scale/root transforms; no actor rebake or
 thumbnail/root conversion is claimed by this step.
+
+ID1 slit-collision/math and message-census provenance (2026-10-12):read-only
+/home/carson/games/roms/G8ME01.iso US disc0 revision0 supplied complete
+unk_800c2010,toMovedirSimple and angleABf@system.o,existing filter/backend
+identities,zero-vector templates0x802cb830,bias constants and91-word angleABTBL
+0x803041e0(size0x16c). A temporary /tmp/id1-system-angle-symbols.csv selected
+system.o rather than same-name pmario_sound.o;initial unqualified inspection
+rejected ambiguity. Table remains original reusable data;only span hash/addresses
+and short numeric metadata were committed,not an extracted table pack. Original
+ELF/listing/report remain ignored under artifacts/reference/behavior. Read-only
+message_resource_evidence report confirmed260 msg/US resources/13186 key/text
+pairs;only gor_00 key/offset/size/hash metadata is documented,no dialogue prose.
+No new ID1 conversion policy was introduced. make all invoked existing
+sound/proj/pmario.proj,pool,sdir,samp audio-map pipeline:3218 GameCube identities,
+0 Switch,5 primary-PCM slice fallbacks. Existing local-assets/audio-map raw/catalog
+and RomFS WAV/audio-map.json derivatives remain unstaged. Original rights remain
+with their owners;local analysis/conversion grants no redistribution license.
+Exact build log:/tmp/id1-slit-collision-build.log.

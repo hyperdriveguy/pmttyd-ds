@@ -104,6 +104,10 @@ complete gameplay sequences before further general-library edge-case recovery.
 | [Partner live direction/activity](FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md) | Complete live direction q0/repeated-pointer and TargetDistY scalar rules | Target/scalar/status/source/angle domains and original outputs |
 | [Partner front-floor service](FIELD_PARTNER_FRONT_FLOOR.md) | Complete upward-clearance/downward-query,heading,quantized output and attribute return | Shared backend/clearance/math/source domains and original trajectories |
 | [Partner status/clearance leaves](FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md) | Guarded status-code table,float60 setter and exact direct DOL access/call census | Code/flag/BSS/alias/REL/lifecycle/source domains and original state traces |
+| [Slit collision membership](FIELD_PARTNER_SLIT_COLLISION.md) | Complete ordered probe/filter/raw-normal angle-pair/boolean graph,no local output correction | Full backend/source/alias/math/FP/original collision domains |
+| [Simple camera direction](FIELD_SIMPLE_CAMERA_DIRECTION.md) | Complete global camera-only quantizer/wrap,without facing override | Global/source/exception/numeric domains |
+| [System angle table](FIELD_SYSTEM_ANGLE_TABLE.md) | Complete ratio/index/coefficient/quadrant/zero-vector graph | Original table reuse/source/index/FP domains and host parity |
+| [US inventory evidence correction](US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md) | Rechecked actual key/text census and corrected filename-ID/story inference boundary | Pending draft/generator reconciliation and complete story event binding |
 | [Partner slit gate](FIELD_PARTNER_SLIT_GATE.md) | Complete admission/entry/travel/rise/exit phase and return graph | Collision/paper/backend/source/numeric/original form domains |
 | [Partner roll gate](FIELD_PARTNER_ROLL_GATE.md) | Complete transform/spin/exit interpolation/count and blocking returns | Pose/backend/source/FP domains and original timing |
 | [Slit-floor and forced exit](FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md) | Complete getter/clear/activation/cleanup leaves and22 direct bindings | Availability producer,other callers and original lifecycle |

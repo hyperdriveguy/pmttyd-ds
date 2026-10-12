@@ -43,7 +43,9 @@ the moving pose tests. Nonzero/unordered speed takes the moving branch:
    A>=315 OR A<=45 OR(135<=A<=225);otherwise `PM_S_1D`. Unordered takes D.
 
 Both stopped/moving branches copy current rootXYZ to a local vector and request
-unk_800c2010(P,&vector)0x800c2010. Its full0x7b0-byte collision/body remains open.
+unk_800c2010(P,&vector)0x800c2010. Its
+[complete local collision-membership contract](FIELD_PARTNER_SLIT_COLLISION.md)
+now specifies the six filtered probes and raw-normal angle gate.
 Only result0 proceeds to the exit eligibility tests:if captured M+0 mask
 0x00100000 clear,request hitGetAttr(P+12c),then ONLY if its0x4000 clear request
 hitGetAttr(P+134). No pointer-null guard is inserted before those calls;the
@@ -88,5 +90,5 @@ Unhandled phase values preserve defaultR=1 without phase-specific work;the
 admission/setup path may still have run. All four dispatch groups are ordered
 as written,not a loop that processes new phases until stable. Constants30/20
 and phase IDs are recovered literals,not original observed durations.
-Source/phase/flag/alias/numeric domains,the collision helper,pose backend and
+Source/phase/flag/alias/numeric domains,the ray backend,pose backend and
 original slit/form traces remain open after the complete local byte checks pass.

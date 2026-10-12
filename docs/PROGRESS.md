@@ -9997,3 +9997,47 @@ cropped Mario thumbnail cannot inherit those bounds blindly. The rendered camera
 remains provisional until this integration is checked. Event camera overrides,
 original numeric parity, authored story/event execution and full-game completion
 remain unfinished; these steps do not complete the overworld or remake.
+
+## 2026-10-12 — ID1 complete slit collision,camera/table math and message correction
+
+Added [collision](behavior/FIELD_PARTNER_SLIT_COLLISION.md),
+[camera direction](behavior/FIELD_SIMPLE_CAMERA_DIRECTION.md) and
+[system angle table](behavior/FIELD_SYSTEM_ANGLE_TABLE.md). Three complete new
+local algorithms specify two ordered first-hit probe groups,fresh filter choices,
+raw normalXZ angle pairing,fnmsubs mean-angle gate,no P/V output writes,
+global camera quantization without facing override,91-coefficient/quadrant and
+zero-vector0 rules. Linked current slit/callback dependencies;full backend/
+source/alias/numeric/original traces remain open. Only ID1 scoped lock released.
+
+Also added [message inventory evidence correction](behavior/US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md):
+current read-only census260 resources/13186 key/text pairs,gor_00 328 pairs,
+not31 IDs inferred from filenames or identifier-only content. Pending generated
+drafts/progress story-prefix/unused-disc claims are not established. Visible
+banners added to BINARY_DOCUMENTATION.md/MESSAGE_FILES_ANALYSIS.md;those other-
+owner drafts/tool remain unstaged by ID1. New corrective contract/inbox metadata
+is the scoped committed delivery;no original dialogue prose was exported.
+
+Validation:verify_field_partner_slit_collision.py passes nine containing hashes
+(eight complete local bodies,one selected backend),408 anchors,19 constants,
+seven spans,two US lecture imports and sole direct slit caller across seven DOL
+text sections. Repeated report byte-identical;omitted-caller negative expectation
+rejected;Python compilation and prior slit/roll/front-wall/general-placement/
+flying-history verifiers passed. Angle table endpoint words0/90 both3f800000
+checked read-only. General verifier passed1980 anchors;all1825 behavior links
+resolved at snapshot. Gekko audit passed602 files/85319 instructions/654 paired-
+single ops,zero changes or unknowns. Initial make test failed CMakeLists:272
+missing concurrent tests/event_native_runtime_tests.cpp;after actual file arrival,
+rerun passed60 CTest suites and78 Python tests. make all passed/rebuilt3DSX.
+Logs:/tmp/id1-slit-collision-test.log,/tmp/id1-slit-collision-test-rerun.log,
+/tmp/id1-slit-collision-build.log. Historical missing-file failure is resolved.
+Build ran existing3218-identity/five-fallback audio pipeline;ASSETS records source/
+table/message/local derivative paths and unchanged ID1 conversion policy,outputs
+unstaged. No ID1 native implementation edits,original execution/measurement,
+profile/save mutation or original distribution. Concurrent work preserved.
+
+Next:paper animation/pose/transform marker consumers,ground homing/behind/beside,
+full ray/backend/global/source/alias/numeric domains and matched original form/
+following traces. Reconcile pending inventory drafts/generator labels,bind actual
+US story keys/events/speakers/conditions and recover a full original playable
+encounter through persistent outcomes. Full-game documentation and final
+complete-game requirements remain incomplete.

@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Slit collision admission helper and camera-direction binding | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete unk_800c2010 six filtered rays,normal-angle pairing,return/output and used direction/filter/caller bindings;ray/geometry/math/source/numeric/original trajectories remain separate |
+| Slit collision admission helper and camera-direction binding | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Collision](behavior/FIELD_PARTNER_SLIT_COLLISION.md),[camera direction](behavior/FIELD_SIMPLE_CAMERA_DIRECTION.md),[system angle table](behavior/FIELD_SYSTEM_ANGLE_TABLE.md):complete local probe/order/filter/normal-pair/return and two math graphs;backend/source/alias/numeric/original trajectories remain separate |
 | Effect driver update,auto-release and pool initialization | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Driver/cache](behavior/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md),[pool/init/release](behavior/EFFECT_POOL_INITIALIZATION_AND_CONTEXT_RELEASE.md):full local context/active callback loop/cache captures,512 records/heap0/live clear,N64 reset/hard context release/four DOL bindings/US TPL identity;file/TPL/animation/display/scene/platform/source/runtime remains open |
 | Partner slit and roll gates,slit-floor and forced-exit bindings | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Slit](behavior/FIELD_PARTNER_SLIT_GATE.md),[roll](behavior/FIELD_PARTNER_ROLL_GATE.md),[floor/forced exit](behavior/FIELD_PARTNER_SLIT_FLOOR_AND_FORCED_EXIT.md),[paper wrappers](behavior/FIELD_PARTNER_PAPER_REQUEST_WRAPPERS.md):ten complete local bodies,return/count/phase/mask/resource/handle graph and22 direct sites;collision helper/animation/source/terrain/numeric/original trajectories remain separate |
 | Majinai effect update,soft-request consumption and draw requests | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Main/cleanup](behavior/MAJINAI_EFFECT_UPDATE_STATE_MACHINE.md),[Disp/pose leaves](behavior/MAJINAI_EFFECT_DRAW_AND_POSE_REQUESTS.md):complete local four-phase/soft04/map/material/alpha/fused particle/three-pass graph and leaves;animation/resource/matrix/display/driver/platform/source/runtime remains open |
@@ -2144,3 +2144,27 @@ DOL sites and US texture FST fingerprint;repeat reports equal. Prior delete/
 outer-order/general1980 checks pass;make test58 CTest/78 Python and make all
 pass;2373 local links resolve. No native/test/asset conversion code changed by ID2;
 texture only hashed read-only;original listings/ELFs stay /tmp/id2-fxdriver-*.
+
+ID1 slit collision/math delivery (2026-10-12),AC-01/AC-03 partial answer:
+Complete local unk_800c2010 probes center/plus/minus until first hit on each
+side,with fresh global filter choice and raw normalXZ angles. It changes neither
+P nor input V locally;both sides must hit and fabs(180-0.5*round(A+B))<=10
+with original fnmsubs/ordered comparison. No shortest-arc/dot-product policy.
+Complete toMovedirSimple has no facing override;system angleABf is91-coefficient
+table/quadrants,zero vector0,not host atan2. Nine hashes(eight complete/one
+selected backend),408 anchors,19 constants,seven spans,two imports and single
+actual slit caller pass. Earlier CMake missing event_native_runtime_tests.cpp
+breadcrumb is RESOLVED after file arrival:rerun60 CTest/78 Python passes;3DS
+build passes. Only ID1 collision lock released;parent backend/source/runtime open.
+
+ID1 generated-inventory correction breadcrumb (2026-10-12):
+[Authoritative loader/census correction](behavior/US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md)
+supersedes unvalidated identifier-only/31-numeric-ID/story-prefix claims in new
+BINARY_DOCUMENTATION.md,MESSAGE_FILES_ANALYSIS.md and related PROGRESS entries.
+Current read-only schema3 census is260 resources/13186 complete key/text pairs;
+gor_00 has328 pairs,first key mac_0_014 and247-byte paired text. Filename digit
+regex in doc_binary_iso.py is NOT message-key parsing. Prefix semantics/speaker/
+scene order and unused-disc interpretation are not proven by inventory counts.
+Visible banners added to the two pending drafts;those drafts/tool remain unstaged
+by ID1. Source owner should reconcile them against recovered loader/event evidence
+and fix generator labels;do not use these guesses to implement story dialogue.
