@@ -1119,3 +1119,12 @@ close four local bodies:pending/admission/fresh opcode/return ownership/all
 state routes/edge controls/caller-specific End/live flag order.14 hashes/213
 anchors/2 keys verified;81 CTest/90 Python/make all pass.Party/delegate/
 source/query reachability/Game/platform/original runtime remain open.
+
+ID2 party/protect menu lifecycle delivery (2026-10-12):
+[Party selection](behavior/battle/PARTY_MENU_MAIN_SELECTION_AND_PENDING_BEHAVIOR.md),
+[navigation/order](behavior/battle/PARTY_MENU_NAVIGATION_CANCEL_AND_AUDIENCE.md),
+[lifecycle/Input](behavior/battle/PARTY_PROTECT_MENU_SETUP_END_AND_INPUT_BINDINGS.md)
+close six local bodies:fresh party word/state,disabled-confirm fall-through,
+cancel20/pending order,UI forwarding/live flags/protect Input-owned controls.
+17 hashes/193 anchors/2 keys verified;81 CTest/90 Python/make all pass.
+UI/multi-item/delegate/source/query/Game/platform/original runtime remain open.

@@ -27,6 +27,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
 | Native first-attack target and paired output ownership | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Pair/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md),[event/body part](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md):seven complete local bodies,captured B/raw outputs/mode pairs/slot63 miss/kind predicate/body-before-ID/write order/source part witness;source/Game/runtime separate;prior field_movement failure resolved by current74-suite run |
+| Native party selection and protect-partner menu lifecycle | EVT-01, JUMP-01 | VALIDATED six local bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Party selection](behavior/battle/PARTY_MENU_MAIN_SELECTION_AND_PENDING_BEHAVIOR.md),[navigation](behavior/battle/PARTY_MENU_NAVIGATION_CANCEL_AND_AUDIENCE.md),[lifecycle/Input](behavior/battle/PARTY_PROTECT_MENU_SETUP_END_AND_INPUT_BINDINGS.md):fresh M54c/state29/disabled-confirm fall-through/cancel20/pending order/live flags/protect no ID store;UI/delegate/source/query reachability/Game/runtime separate |
 | Native operation menu opcode publication and setup/end | EVT-01, JUMP-01 | VALIDATED four local bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Opcode/state](behavior/battle/OPERATION_MENU_MAIN_OPCODE_AND_STATE_PUBLICATION.md),[navigation](behavior/battle/OPERATION_MENU_NAVIGATION_CANCEL_AND_AUDIENCE.md),[setup/end](behavior/battle/OPERATION_MENU_SETUP_END_AND_FLAG_OWNERSHIP.md):fresh opcode/state routing/return despite mutation/pending order/boundary controls/live flags;party/delegate/query/source/Game/runtime separate |
 | Native operation-table producer and party admission helpers | EVT-01, JUMP-01 | VALIDATED four complete bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Entry/rows](behavior/battle/OPERATION_TABLE_ENTRY_PARTIAL_ROWS_AND_PUBLICATION.md),[charge/mandatory](behavior/battle/OPERATION_TABLE_CHARGE_DEFEND_ESCAPE_AND_KEYS.md),[party](behavior/battle/PARTY_SELECTION_TABLE_PRODUCTION_AND_CAPTURE.md),[icons/status](behavior/battle/PARTY_ICON_SOURCE_AND_CAN_ACT_STATUS.md):partial descriptors/party side effect/optional+mandatory rows/ordered cost/setup/current HP/count/scan bounds;menu/delegate/source/query reachability/Game/runtime separate |
 | Native complete confusion menu type and action selector | EVT-01, JUMP-01 | VALIDATED complete selector / lock released, 2026-10-12 | Documentation agent ID 2 | [Class/type](behavior/battle/CONFUSION_CLASS_SELECTION_AND_MENU_TYPE_WRITE.md),[weapon](behavior/battle/CONFUSION_WEAPON_SELECTION_AND_TARGET_POLICY.md),[operations/party](behavior/battle/CONFUSION_OPERATIONS_PARTY_AND_EVENT_OUTPUTS.md):four low-byte lists/RNG/fresh rechecks/type13→flustered/nine operation cases/null-versus-script outputs;producer/source/query/event/Game/runtime remain separate |
@@ -521,6 +522,20 @@ Do not invent extra samples for script invocations or suppress inactive private
 sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
+
+ID2 party/protect menu lifecycle reply (2026-10-12):
+[Party selection/pending](behavior/battle/PARTY_MENU_MAIN_SELECTION_AND_PENDING_BEHAVIOR.md),
+[navigation/cancel/audience](behavior/battle/PARTY_MENU_NAVIGATION_CANCEL_AND_AUDIENCE.md),
+[party/protect setup/end/Input](behavior/battle/PARTY_PROTECT_MENU_SETUP_END_AND_INPUT_BINDINGS.md)
+close six complete local bodies.Party confirmation rereads selected kind after
+sound/light before M54c/state29;disabled confirm clears pending then continues
+navigation.Cancellation goes20;audience pending BEFORE End/result0.Setup
+forwards F to UI without direct producer call.Protect queries other unit but
+publishes no party ID;two flag stores and Input-owned controls supplied.
+17 hashes(6 complete/11 linked),193 anchors/2 keys/repeat reports,
+81 CTest/90 Python/make all pass.ID2 lock released;no native edits.
+Next port-function priority:remaining multi-item menu writers and party key1
+weapon callback/source bindings.Query-event/Game/runtime remain open.
 
 Native implementation breadcrumb (2026-10-12): complete chooser now operates
 on live native unit/kind/status/weapon/item/FP and raw/private candidate bytes;

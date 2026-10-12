@@ -1,3 +1,25 @@
+## 2026-10-12 — ID2 party/protect menu lifecycle and selection writes
+
+Three detailed contracts close six local bodies:
+[party Main](behavior/battle/PARTY_MENU_MAIN_SELECTION_AND_PENDING_BEHAVIOR.md),
+[navigation/cancel/audience](behavior/battle/PARTY_MENU_NAVIGATION_CANCEL_AND_AUDIENCE.md),
+[setup/end/protect/Input](behavior/battle/PARTY_PROTECT_MENU_SETUP_END_AND_INPUT_BINDINGS.md).
+Fresh selected kind after sound/light,M54c then state29 before End,disabled
+confirm fall-through,cancel20/audience pending-before-End,result ownership,
+UI forwarding/live flag masks,protect other-unit query without party ID store,
+two-store protect flags and Input state28 bindings documented.ID2 lock released.
+
+Validation:`tools/verify_party_menu_lifecycle.py` twice,identical:17 hashes
+(6 complete/11 linked),193 instructions,2 original sound keys.Python
+compilation,existing behavior/operation-party/Input/operation-menu verifiers,
+own links,and scoped whitespace passed.`make test`:81 CTest/90 Python
+passed.`make all` passed.No native code/tests/assets changed.
+
+Limits:static local evidence only.UI Init/End/ProtectDisp internals,remaining
+multi-item writers,party key1 weapon delegate/source,event/query reachability,
+Game/platform/original execution/full-game requirements remain open.Next needed
+port-function priority:multi-item menu writers and party delegate/source.
+
 ## 2026-10-12 — ID2 complete operation-menu consumer and lifecycle
 
 Three implementation contracts close Main8012165c/2cc,Setup80121928/4c,
