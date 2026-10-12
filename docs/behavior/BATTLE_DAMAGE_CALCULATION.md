@@ -199,9 +199,11 @@ gate and callback side effect rather than only typical attack examples.
 
 These contracts cover calculators, not a complete battle. Still required:
 weapon callback catalog and all original data bindings, status helper rules,
-`BattleCheckDamage` orchestration, counters, direct HP/FP application and death/
-revival, hit-counter lifetimes, action-result producers, audience/events, and
+`BattleCheckDamage` orchestration, death/revival event execution, hit-counter
+lifetimes, action-result producers, audience/events, and
 original execution traces. Connect [precheck](BATTLE_HIT_PRECHECK.md) and
 [defense input](BATTLE_INPUT_AND_DEFENCE.md) through recovered callers before
-claiming end-to-end equivalence. Switch behavior needs separately versioned
+claiming end-to-end equivalence. Local [counter selection](BATTLE_COUNTERS.md)
+and [direct application](BATTLE_DAMAGE_APPLICATION.md) contracts now specify
+those stages with their remaining helper dependencies. Switch behavior needs separately versioned
 evidence and must not silently override this GameCube baseline.

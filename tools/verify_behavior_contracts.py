@@ -12,6 +12,22 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'damage_application': {
+        0x800fe030: '2c190063', 0x800fe040: '2c19ff9d',
+        0x800fe05c: '901f0284', 0x800fe500: '2c03001e',
+        0x800fe71c: '9b370270', 0x800fe734: '9b570271',
+        0x800fe754: '54000043', 0x800fe760: '54000211',
+        0x800fe780: 'b017010c', 0x800fe7fc: '7c000775',
+        0x800fe820: '7c9a1851', 0x800fe8dc: '2c030032',
+        0x800fe9a8: '60630200', 0x800fea0c: '60600400',
+        0x800fea1c: '4bffd001', 0x800fead4: '60000001',
+    },
+    'battle_fp_owner': {
+        0x80126c78: '2c0000e0', 0x80126c84: '2c0000e7',
+        0x80126c4c: 'b0830112', 0x80126b2c: 'a863010e',
+        0x80126bc4: 'b0640000', 0x80126bd0: '40810008',
+        0x800f87d8: '2c0000de', 0x800f87f4: '2c1f0040',
+    },
     'counter': {
         0x800fa6b0: '909a0028', 0x800fa708: '909a0000',
         0x800fa924: '901a0010', 0x800faaac: '901a0004',
@@ -129,6 +145,26 @@ def verify(iso_path):
         if struct.unpack('>12I', read(0x8034c720, 48)) != expected:
             raise ValueError('Counter classification jump table mismatch')
         print('All 12 counter classification jump-table targets verified')
+        constants = {0x804221b0: 60.0, 0x804221b8: 10.0,
+                     0x804221c0: 1.0, 0x804221cc: 30.0,
+                     0x804221dc: 8.0, 0x804221e0: 5.0,
+                     0x804221e4: -30.0, 0x804221e8: -60.0,
+                     0x804221ec: 0.0}
+        for address, value in constants.items():
+            if read(address, 4) != struct.pack('>f', value):
+                raise ValueError(f'Damage presentation constant mismatch {address:#x}')
+        sounds = {0x802ee2e0: 'SFX_MARIO_HAMMER_PIKKYO_R1',
+                  0x802ee2fc: 'SFX_MARIO_HAMMER_PIKKYO_Y1',
+                  0x802ee318: 'SFX_MARIO_HAMMER_PIKKYO_B1',
+                  0x802ee334: 'SFX_MARIO_HAMMER_PIKKYO_G1',
+                  0x802ee350: 'SFX_MARIO_HAMMER_PIKKYO_P1',
+                  0x802ee36c: 'SFX_MARIO_GUARD1',
+                  0x802ee380: 'SFX_MARIO_DAMAGE_FP1'}
+        for address, name in sounds.items():
+            expected = name.encode('ascii') + b'\0'
+            if read(address, len(expected)) != expected:
+                raise ValueError(f'Damage sound binding mismatch {address:#x}')
+        print('Nine damage presentation constants and seven sound keys verified')
 
 
 if __name__ == '__main__':

@@ -27,6 +27,8 @@ FUNCTIONS = (
     'btlevtcmd_ResultACDefence',
     'BattleCheckCounter', 'BattleInitCounterPreCheckWork',
     '_checkDamageCode_EmergencyRevival',
+    'BtlUnit_GetFp', 'BtlUnit_SetFp', 'BtlUnit_GetMaxFp', 'BtlUnit_RecoverFp',
+    'BattleGetMarioPtr',
     'swByteGet', 'swByteSet', '_swByteGet', '_swByteSet', 'swGet', 'swSet',
     'swClear', 'swReInit', 'swInit', 'pouchSetHP', 'pouchAddHP', 'pouchSetFP',
     'pouchSetMaxHP', 'pouchSetMaxFP', 'pouchSetPartyHP', 'pouchSetAP',
