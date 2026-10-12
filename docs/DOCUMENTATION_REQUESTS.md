@@ -439,6 +439,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Manager implementation breadcrumb (2026-10-12): `event_manager.cpp` and
+its host suite now port the delivered complete manager loop/priority table.
+Explicit GP/context/clock/dispatch providers preserve captured versus table
+context,raw tick delta,eligibility,identity,rounded credits,live count/appends
+and abort/no-inner-revalidation behavior. It does not sample pads or infer60Hz
+original clock values. Native constructors/dispatcher/value domains,actual GP/
+context/time/pause producers and original multicredit traces remain necessary
+bindings. Next:delivered wait/USER_FUNC continuation services and root/child/
+brother construction,then original Jump graph.
+
 Native implementation requires a complete US evtmgrMain/evtmgrCmd service
 contract before binding the recovered Jump graph:eligibility masks,64-bit lifetime
 increment source/rounding,credit precision/subtraction order,interpreter0/-1/1

@@ -1,5 +1,37 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original event manager loop and scheduling table
+
+Implemented EVENT_MANAGER_COMPLETE_LOOP.md in event_manager.hpp/cpp. Manager
+captures its GP/context independently of priority-table context,reproduces raw
+wrapping/signed-clamped tick delta,original clock conversion and large-gap refresh
+substitution,and retains captured original timestamp. Schedule sorting is the
+unsigned-priority nested exchange algorithm,including unstable equal priorities.
+Eligibility preserves active/ID/0x92 checks before lifetime/credit additions.
+Credit is rounded/stored then subtracted before dispatch;return1 aborts the pass,
+-1 stops one entry,and other results repeat without inner flag/ID revalidation.
+Live schedule count permits same-pass appends without resorting. Lifetime advances
+once per eligible visit,not once per credit;the manager has no input sampler.
+Clock/timestamp/refresh/context producers and dispatch remain explicit services.
+Native bounds and valid division/credit domains are invariants,not original clamps.
+Semantic64-bit timestamps are not a claim of packed original alias/store ABI.
+
+Validation:final make test passed twenty-five CTest suites plus58 Python tests;
+make all rebuilt event_manager.cpp and ttyd-2ds.elf/3dsx. Tests cover clock formula,
+negative/large/exact500/wrapped deltas,original timestamp retention,lifetime wrap,
+field/battle and changed table-context captures,unsigned unstable ties,each skip
+flag/inactive state,stale identity,fractional/multiple credits,store-before-call,
+no inner revalidation,per-entry termination/global abort,and live high-priority
+append running last. git diff --check passed. No emulator run or original executed
+clock/pause/multicredit trace claim. Default refresh is unspecified0;caller must
+supply actual source when large-gap substitution needs it. Native Game still uses
+its explicit provisional battle adapter until actual script dispatch is bound.
+
+Next:fetch/wait/USER_FUNC continuations,then constructors/ownership/tagged values
+and original Jump graph. Recovery geometry/effect wrappers remain pending;new
+manager documentation made scheduler implementation the critical next integration
+step. Full remake,source owners/story/assets and original traces remain incomplete.
+
 ## 2026-10-12 — Overworld air movement, startup and field-battle control
 
 Implemented the documented field battle start/resume/return protocol in
