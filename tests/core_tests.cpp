@@ -171,13 +171,26 @@ void dialogueAndTouch() {
     Input y;y.menuConfirm=true;tabs.tick(y);CHECK(!tabs.progress.sound);CHECK(tabs.saveRequested);
 }
 void timing() {
-    for(int frame:{1,42,43,47,48}) {
+    for(int frame:{1,28,29,40,41,42,43,47,48}) {
         Game g;g.startBattle();g.tick(confirm());advance(g,frame-1);g.tick(confirm());
         advance(g,BattleRules::JumpImpact-frame);
-        CHECK(g.lastDamage==(frame>=43?2:1));
+        CHECK(g.lastDamage==(frame>=41?2:1));
     }
-    // An early press cannot be repaired by mashing later.
-    Game mash;mash.startBattle();mash.tick(confirm());mash.tick(confirm());advance(mash,46);mash.tick(confirm());CHECK(mash.lastDamage==1);
+    // TimingA rejects two edges within the latest20 samples, even with one on impact.
+    for(int first:{29,30,41,47}) {
+        Game mash;mash.startBattle();mash.tick(confirm());advance(mash,first-1);
+        mash.tick(confirm());advance(mash,47-first);mash.tick(confirm());
+        CHECK(mash.lastDamage==1);
+    }
+    // An older edge lies outside the mash scan and cannot poison a later valid edge.
+    for(int first:{1,28}) {
+        Game old;old.startBattle();old.tick(confirm());advance(old,first-1);
+        old.tick(confirm());advance(old,47-first);old.tick(confirm());CHECK(old.lastDamage==2);
+    }
+    // Success is evaluated at impact, not latched on the first in-window edge.
+    Game delayed;delayed.startBattle();delayed.tick(confirm());advance(delayed,40);
+    delayed.tick(confirm());CHECK(!delayed.actionSuccess && delayed.phase==Phase::Windup);
+    advance(delayed,7);CHECK(delayed.actionSuccess && delayed.lastDamage==2);
     for(int release:{53,54,60,66}) {
         Game g;g.startBattle();g.selection=1;g.tick(confirm());
         Input held;held.hammerHeld=true;g.tick(held);advance(g,release-2);

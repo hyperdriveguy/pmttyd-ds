@@ -5,6 +5,11 @@ Rogueport geometry/textures, original character idle poses, and original music
 converted locally from your US GameCube ISO. It includes five connected Rogueport outdoor rooms, exploration, dialogue,
 a small Crump battle harness, touch menus and versioned saves.
 
+The Jump harness now uses the recovered US TimingA history checks and difficulty
+tables. Its impact schedule and selected difficulty remain provisional; Hammer,
+guard and encounter binding still need original-script integration. Open requests
+for the documentation agent are in [documentation requests](docs/DOCUMENTATION_REQUESTS.md).
+
 This is not a finished or fidelity-verified remake. Original skeletal/vertex
 animations, sound-effect event playback, measured tutorial mechanics and broader
 story content are still incomplete. Hardware performance has not been tested.

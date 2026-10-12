@@ -9,6 +9,7 @@
 #include "road_motion.hpp"
 #include "field_jump.hpp"
 #include "field_step.hpp"
+#include "battle_timing_a.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -37,10 +38,11 @@ enum class Scene : uint8_t { Explore, Dialogue, Battle, Victory, Defeat, FieldDe
 enum class Phase : uint8_t { Select, Windup, Impact, EnemyWindup, EnemyImpact };
 enum class Menu : uint8_t { Status, Map, Items, Settings };
 enum class Sound : uint8_t { None, Confirm, Jump, Hit, Success };
-// All windows are provisional prototype values, not measured TTYD behavior.
+// Encounter scheduling/damage and Hammer/guard windows remain provisional.
+// TimingA's window tables are recovered; its harness difficulty is provisional.
 struct BattleRules {
     static constexpr int CrumpHP = 5, CrumpAttack = 1;
-    static constexpr int JumpImpact = 48, JumpWindow = 5;
+    static constexpr int JumpImpact = 48, JumpDifficulty = 3;
     static constexpr int HammerRelease = 60, HammerWindow = 6;
     static constexpr int EnemyImpact = 54, GuardWindow = 5;
 };
@@ -110,7 +112,11 @@ private:
     bool integrateVertical(bool held,float& previousY);
     void finishVertical(float previousY);
     int turnTick = 0;
-    bool jumpAttempted = false, hammerArmed = false, guardAttempted = false;
+    bool hammerArmed = false, guardAttempted = false;
+    BattleTriggerHistory generalBattleTriggers;
+    TimingACommand jumpCommand;
+    // Explicit development seed; no claim about original seed/load ownership.
+    BattleRandom battleRandom{1};
     int dialoguePages() const;
     void move(const Input&);
     void battle(const Input&);

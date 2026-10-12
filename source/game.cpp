@@ -602,7 +602,8 @@ void Game::move(const Input& i) {
 void Game::startBattle() {
     scene=Scene::Battle; phase=Phase::Select; phaseTick=0; selection=0;
     enemyHP=BattleRules::CrumpHP; actionSuccess=false; guarded=false;
-    jumpAttempted=false; hammerArmed=false; guardAttempted=false;
+    generalBattleTriggers={};jumpCommand={};
+    hammerArmed=false; guardAttempted=false;
     jumpHeight=0; fieldJump={};fieldStep={};
 }
 void Game::attackDone(int damage) {
@@ -611,6 +612,10 @@ void Game::attackDone(int damage) {
     sound=actionSuccess ? Sound::Success : Sound::Hit;
 }
 void Game::battle(const Input& i) {
+    // One general-pad press-edge sample per simulation tick, before result calls.
+    // Physical edge production and tutorial cadence remain adaptation contracts.
+    generalBattleTriggers.push(i.confirm ? BattleButtonA : 0);
+    jumpCommand.tick();
     if (phase == Phase::Select) {
         if (i.left) selection=(selection+2)%3;
         if (i.right) selection=(selection+1)%3;
@@ -624,7 +629,12 @@ void Game::battle(const Input& i) {
                 lastDamage=0; actionSuccess=false; phase=Phase::Impact; phaseTick=0;
             } else {
                 phase=Phase::Windup; phaseTick=0; actionSuccess=false;
-                jumpAttempted=false; hammerArmed=i.hammerHeld;
+                hammerArmed=i.hammerHeld;
+                if(selection==0) {
+                    // Harness setup: per-attack count reset, ordinary route and
+                    // fixed difficulty, pending original script/tutorial binding.
+                    jumpCommand={};jumpCommand.tick();jumpCommand.state=100;
+                }
             }
             sound=Sound::Confirm;
         }
@@ -633,11 +643,12 @@ void Game::battle(const Input& i) {
     ++phaseTick;
     if (phase==Phase::Windup) {
         if (selection==0) {
-            if (i.confirm && !jumpAttempted) {
-                jumpAttempted=true;
-                actionSuccess=phaseTick>=BattleRules::JumpImpact-BattleRules::JumpWindow && phaseTick<=BattleRules::JumpImpact;
+            if (phaseTick>=BattleRules::JumpImpact) {
+                TimingAContext context;context.difficulty=BattleRules::JumpDifficulty;
+                actionSuccess=(jumpCommand.evaluate(generalBattleTriggers,context,battleRandom)&2)!=0;
+                jumpCommand.state=1000; // Harness finish scheduling, not recovered event binding.
+                attackDone(actionSuccess?2:1);
             }
-            if (phaseTick>=BattleRules::JumpImpact) attackDone(actionSuccess?2:1);
         } else {
             if (i.hammerHeld) hammerArmed=true;
             if (i.hammerReleased || phaseTick>=BattleRules::HammerRelease+BattleRules::HammerWindow) {

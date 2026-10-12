@@ -1,5 +1,69 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native US TimingA implementation and documentation requests
+
+Implemented the recovered ordinary Jump ID1 local contract in
+include/battle_timing_a.hpp and source/battle_timing_a.cpp. General battle press
+history shifts newest samples to index0 and retains30 entries; it is explicitly
+distinct from the private AC/defense pad. The evaluator preserves seven exact
+threshold/window tables, signed count selection and100000 cutoff, ordered
+token/RNG/automatic/battle-force routes, classification and count effects,
+20-sample anti-mash rejection, repeated-result behavior and nonconsuming input.
+The lifecycle preserves initialization scratch words, option bit0 clearing,
+state99/100 waits and same-call finish decrement with deferred callback cleanup.
+Native difficulty values outside0..6 are rejected before mutation; the original
+unchecked getter's invalid-memory behavior is not emulated.
+
+Added US rand/irand arithmetic with explicit caller-owned seed and zero-bound
+no-draw behavior. No original initial seed, full shared RNG ownership or save
+serialization is inferred. The ordinary native harness uses no RNG/force route.
+Portable module/test/build commit:9811fe0.
+
+Integrated TimingA into Game::battle: one A-edge sample per simulation tick,
+result evaluation at the harness impact call instead of first-press latching.
+At selected difficulty3, index7 succeeds and8 fails; two edges in0..19 reject,
+but an edge at20 or older does not reject a later valid edge. Input sampling,
+impact48, difficulty3, per-attack command/count reset and finish scheduling are
+explicit harness choices, not established original tutorial/event bindings.
+Crump HP/damage, Hammer B-hold and guard remain provisional. No original story
+or dialogue was altered, and no original asset conversion was needed.
+
+User directed file-based communication with the documentation agent. Added
+docs/DOCUMENTATION_REQUESTS.md as the request inbox, linked from README:
+AC-01 requests opening/Crump and Jump parameter/flag/difficulty/count/state/
+cadence/impact/tutorial/story bindings; AC-02 requests ordinary Hammer branch/
+period/difficulty/caller/display/sound and separate tutorial bindings. Please
+answer with evidence links and mark requests resolved there. This is a request
+left for the documentation agent, not a claim its answers have arrived.
+
+Validation: make test passed both CTest executables (core and new TimingA
+contract suite), plus52 Python tests. New tests cover all difficulty first-window
+edges, mash boundaries19/20, count equality/missing thresholds/cutoff, forced
+route precedence, RNG vectors/consumption, classification/history retention,
+word wrap and exact lifecycle countdown/cleanup. Integration scenarios exercise
+the new impact/window/mash behavior plus existing battle/victory/retry coverage.
+make all rebuilt ttyd-2ds.3dsx successfully for both implementation steps.
+git diff --check passed. These are derived contract tests, not original execution.
+
+python3 tools/emulator_smoke.py --seconds4 booted the updated native build using
+only its isolated profile. Reviewed artifacts/azahar/boot.png: both screens
+rendered the plaza and restored the isolated7/10HP save. This is boot/reload
+evidence, not Jump timing/gameplay acceptance or hardware performance evidence.
+Xvfb required sandbox escalation after display-socket failure. Incremental Git
+commit also required escalation because .git is mounted read-only in the sandbox;
+automatic approval accepted both actions. User emulator profiles/saves and the
+read-only ISO were untouched. Concurrent documentation/research edits in the
+workspace were left to their author and excluded from implementation commits.
+
+Next: implement documented ID3 Hammer local behavior and requests without
+inventing sound playback; bind correct period/difficulty/cadence/scene only after
+AC-02 answers. Use AC-01 answers to replace Jump harness scheduling and connect
+original Crump events/story. Then implement the documented private-pad defense
+contract and damage/event/inventory/UI systems with explicit caller boundaries.
+Original input/impact comparisons in isolated Dolphin and native interactive
+acceptance checks remain needed. All full-game closure gates remain open; the
+user's implementation goal remains active and incomplete.
+
 Updated 2026-10-12 (America/Boise). This is a working native development slice,
 not a completed remake or fidelity-verified port.
 
