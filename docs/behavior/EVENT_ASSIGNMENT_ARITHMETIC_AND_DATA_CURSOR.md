@@ -93,3 +93,14 @@ setter quantization;raw data tags,advance-before-read,second cursor reload/outpu
 alias and constructor/restart150 differences. Original numeric/alias/storage/
 source/script domain and execution traces remain open;these exact blocks do not
 establish a complete executed Jump or story interpreter.
+
+
+## Complete data/memory follow-up (2026-10-12)
+
+[Multiword/float readers](EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),
+[bitwise/time/indirect memory](EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md) and
+[user buffers/map allocation](EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md) close
+65..90 and called allocator/fill/cache local bodies. Indexed73 converts signed
+integer data to single precision,while sequential floats use IEEE `lfs`. Query,
+raw operand,cursor write and publication order remain explicit. Heap/source/
+pointer/numeric/capacity domains,other VM blocks and original traces remain open.

@@ -7240,3 +7240,35 @@ footmark and front-wall/surrounding/floor/fly helpers;angle/trig and exact Gekko
 estimate/FPSCR/domain;owner/flag/index writers and original trajectories;complete
 field/battle teardown. Full system documentation/remake remain incomplete;
 complete-game requirements remain deferred until sufficient system coverage.
+
+## 2026-10-12 — ID2 data readers,bitwise/time/memory and user allocation
+
+Added [multiword/float readers](behavior/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),
+[bitwise/time/memory](behavior/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md) and
+[user buffers/map allocation](behavior/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md).
+Complete local65..90 preserve cursor advance-before-load/reload between outputs,
+indexed73 signed-integer→single conversion versus sequential IEEE float load,
+raw/resolved RHS and destination capture,double-query source routing and word-
+wrapped60/1000 time products before signed truncation. Allocation76 publishes
+null failure,replaces E154 without local free,and uses global root8041e808.
+Complete local best-fit allocator keeps first equal fits,always writes remainder
+header,zeroes payload then flushes cache. Complete memset/fill/cache leaf policy
+and syscall/domain boundaries are recorded. Only ID2 scoped lock released;
+EVT-01 remains open and full runtime/ownership integration is not claimed.
+
+Validation:verify_event_data_memory_opcodes.py passed nine containing/linked/
+complete body fingerprints,269 anchors,28 spans including26 dispatch entries;
+repeated reports byte-identical;Python compilation passed. Deterministic100013
+inputs per time conversion matched instruction-form versus wrapped-product/
+signed-truncation formulas;this was host arithmetic,not original execution.
+General behavior verifier passed1980 anchors;full operand verifier passed.
+make test passed31 CTest suites and58 Python tests;make all succeeded without
+rebuild. All1274 local documentation links resolved;git diff --check passed.
+Original ISO read-only;no original execution/emulator observation,asset
+conversion,profile/save mutation or original binary/dialogue distribution.
+ID2 changed no native files;concurrent ID1/native work preserved.
+
+Next:remaining dispatch tail/debug opcodes and full opcode-coverage inventory;
+heap initialization/free/ownership,source/pointer/numeric/FPSCR/capacity/context/
+time domains and original data/memory/allocation/branch/multicredit traces.
+Complete-game documentation and requirements remain incomplete.

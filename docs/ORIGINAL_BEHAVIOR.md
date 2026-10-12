@@ -466,3 +466,12 @@ counter/state/history side effects,first-direction/second-speed output order,
 fused vector/norm composition and three double estimate refinements. The stay
 queries cannot be coalesced as pure reads. Numeric/source/terrain/domain and
 original trajectory evidence remain open.
+
+
+[Multiword/float data](behavior/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),
+[bitwise/time/memory](behavior/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md) and
+[user-buffer allocation](behavior/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md)
+specify complete local65..90,including indexed signed-integer float conversion,
+raw versus repeated operand queries,word-wrap time products and best-fit/split/
+zero/cache/publication order. Heap/pointer/numeric/source/capacity domains and
+original runtime traces remain open.

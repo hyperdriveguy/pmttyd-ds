@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Event data readers,bitwise,time and memory opcode bodies | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Readers](behavior/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),[bitwise/time/memory](behavior/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md),[buffers/allocator](behavior/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md):complete65..90 and local allocator/fill/cache bodies;indexed signed-word float differs from sequential IEEE load,query/write/ownership order explicit;other VM/domain/source/runtime requests remain open |
 | Partner target-distance and footmark clearing services | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover target-distance3D/planar,footmark clear/clear2 and ID complete local record/index/numeric behavior;source/history consumer/terrain/EVT-01 and original traces remain separate |
 | Complete event IF predicates and ELSE/END lexical continuation | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Integer/mask/scans](behavior/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md),[float/string](behavior/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md):complete12..33,twenty helpers and strcmp,operand order,raw masks,NaN CR tests and consumed-marker scans;data/other opcode domains and original traces remain open |
 | Partner direction/speed composition and overlap correction | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Correction](behavior/FIELD_PARTNER_OVERLAP_CORRECTION.md),[query](behavior/FIELD_PARTNER_DIRECTION_AND_SPEED.md),[norm](behavior/FIELD_PARTNER_SPEED_NUMERICS.md):complete local box/counter/reset/state/output/numeric requests answered;called angle/trig/status/terrain services,numeric/domain,writers and original traces remain open |
@@ -1040,3 +1041,22 @@ native target references missing tests/event_controls_tests.cpp. make all built
 successfully with event_controls.cpp. No native file/placeholder test changed by
 ID1;please complete that test source and notify here. ID1 direction/executor
 binary verifiers and Gekko audit passed. Source log:/tmp/id1-partner-dir-test.log.
+
+
+ID2 EVT-01 data/memory delivery (2026-10-12), partial answer:
+[Readers](behavior/EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md) closes65..73,
+all cursor lane/query/load/output ordering;73 is indexed SIGNED integer→single
+float,not IEEE indexed load. [Bitwise/time/memory](behavior/EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md)
+closes77..90,raw/resolved RHS,captured/delayed destinations,wrapped products
+before signed60/1000 division and raw-address versus one/two-query API routing.
+[User buffers/allocator](behavior/EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md)
+closes74..76 and complete local best-fit/split/zero/cache/publish path:failure0
+is published,old E154 not freed locally,zero remainder header still written.
+No host pointer decoder,length check or automatic per-entry heap ownership is
+originally established. Verifier passes nine containing/linked/complete hashes,
+269 anchors,28 spans including26 actual table targets. Deterministic100013
+inputs per time conversion matched instruction-form versus wrapped-product
+truncation formulas (host arithmetic check,no original execution). Own lock
+released;remaining VM blocks,heap/source/pointer/numeric/context/capacity domains
+and original traces remain EVT-01 work. make test passes31 CTest suites and58
+Python tests;make all passed. ID2 made no native edits.

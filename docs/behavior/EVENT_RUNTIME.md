@@ -295,3 +295,14 @@ predicate scope above is superseded for those local bodies. Query order,raw
 mask,null-to-empty pointer replacement,float unordered acceptance and consumed
 ELSE/END continuations are explicit. Other opcodes,numeric/source/pointer/domain
 and original execution remain open.
+
+
+## Complete data/memory follow-up (2026-10-12)
+
+[Multiword/float readers](EVENT_MULTIWORD_AND_FLOAT_DATA_READERS.md),
+[bitwise/time/indirect memory](EVENT_BITWISE_TIME_AND_INDIRECT_MEMORY.md) and
+[user buffers/map allocation](EVENT_USER_BUFFER_AND_MAP_ALLOCATION.md) close
+65..90 and called allocator/fill/cache local bodies. Indexed73 converts signed
+integer data to single precision,while sequential floats use IEEE `lfs`. Query,
+raw operand,cursor write and publication order remain explicit. Heap/source/
+pointer/numeric/capacity domains,other VM blocks and original traces remain open.
