@@ -1,5 +1,39 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Weapon costs,affordability and ordered payment
+
+Implemented BATTLE_WEAPON_COST_AND_PAYMENT.md in battle_weapon_cost.hpp/cpp.
+Weapon fields now retain signed item ID and distinct FP/AP bytes;unit retains
+unsigned2f5 cost-reduction byte. Cost captures initial item/base FP,queries badge
+copies then reloads item before exponential/linear dispatch,uses wrapped words,
+zero-preserving reduction and final signed999 cap. Numeric pow/fctiwz remain
+explicit original-service dependencies. Affordability captures FP before cost,
+skips AP read when FP fails,and rereads AP cost byte after AP query. Payment
+captures work,reads FP/cost,sets wrapped FP,then rereads kind for point/count
+records and always requests AddAP,including zero. It does not check affordability.
+
+Added full200 signed pouch-slot badge count,low16-before-lower/upper AP addition,
+byte-wrap-before-point-cap and corrupt-count-preserving helpers. Pouch helper is
+semantic byte-record access,not packed original global-pointer aliasing or disk
+save serialization. Event payment preserves actor/weapon resolution before actor
+translation/lookup and delegates resolved weapon-address ownership to its adapter.
+
+Validation:final make test passed seventeen CTest suites plus58 Python tests;
+make all built ttyd-2ds.elf/3dsx,then exited0/no rebuild after the final event test.
+Tests cover every scaling group,zero copies/zero cost,reduction floors,item reload
+with captured base,999 cost and231 point delta,FP-before-AP and AP-byte rereads,
+unaffordable payment,partner FP routed through the existing resource service to
+Mario slot37,negative FP halfword wrap,zero-cost action counts,kind mutation after
+FP setter,200-slot signed/zero badge counting,AP overflow/negative maximum clamp,
+action byte overflow/corrupt counts and payment event ordering. git diff --check
+passed. No emulator run for unbound payment/menu/pouch routes. Native default
+weapon cost fields remain0;no fabricated equipment,payment UI or save ownership.
+
+Next:implement delivered selected-target/weapon cursor services,then bind native
+original menu/pouch/equipment and Jump graph/EVT-01 scheduling. Badge2f5 producer,
+AP/pouch/action-record owners and numerical exceptional/FPSCR comparisons remain
+needed. Full remake remains incomplete.
+
 ## 2026-10-12 — Original Jump takeoff-position wrapper
 
 Implemented BATTLE_JUMP_TAKEOFF_POSITION.md in battle_jump_takeoff.hpp/cpp.

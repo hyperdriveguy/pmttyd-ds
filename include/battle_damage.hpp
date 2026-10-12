@@ -18,6 +18,7 @@ struct DamageUnit : BattleStatusUnit {
     DamageBadges badges;
     int16_t baseHp=0,maxHp=0,baseFp=0,maxFp=0,fp=0;
     uint8_t hpPlusCount=0,fpPlusCount=0;
+    uint8_t fpCostReduction=0; // Original unit2f5; equipment import owns its value.
     float snapshotValue=0;
     uint16_t snapshot13c=0,snapshot13e=0;
     int32_t dealtHp=0,requestedHp=0,requestedFp=0,consumedFp=0;
@@ -37,6 +38,8 @@ struct DamagePart {
 struct DamageWeapon;
 using DamagePowerCallback=int32_t (*)(DamageUnit*, DamageWeapon&, DamageUnit&, DamagePart&);
 struct DamageWeapon {
+    int32_t itemId=0;
+    uint8_t fpCost=0,apCost=0;
     DamagePowerCallback hpPower=nullptr, fpPower=nullptr;
     uint8_t element=0;
     uint32_t specialFlags=0;

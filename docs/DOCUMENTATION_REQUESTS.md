@@ -439,6 +439,16 @@ rather than treating a passing command helper as complete original attack timing
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
 
+Cost implementation breadcrumb (2026-10-12): `battle_weapon_cost.cpp` and its
+host suite implement delivered scaling,reduction,affordability,payment and byte/
+pouch arithmetic. Payment tests reuse the existing shared partner FP owner service
+and a nonzero Mario registry slot. Original menu/equipment/pouch/AP/action-record
+owners and pow/fctiwz/FPSCR extremes remain unbound. Please retain the existing
+requests for those producers/lifetimes and original affordability/payment traces;
+zero costs still request action-count/AP services and payment does not perform
+CheckWeaponCost. Next native dependency is selected-target/cursor ownership plus
+EVT-01 original event scheduling;default harness fields are not original menu data.
+
 Takeoff implementation breadcrumb (2026-10-12): `battle_jump_takeoff.cpp`
 and `battle_jump_takeoff_tests.cpp` port the complete documented local wrapper.
 It captures work,keeps private sample identity/chooser mode4,branches on signed
