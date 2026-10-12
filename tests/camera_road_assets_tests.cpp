@@ -5,6 +5,7 @@
 #include "camera_road_view.hpp"
 #include "game.hpp"
 #include "actor_mesh.hpp"
+#include "actor_animation.hpp"
 #include <cmath>
 #include <cstring>
 #include <cstdlib>
@@ -168,13 +169,109 @@ void actorPackCases() {
     std::rewind(file);CHECK(!pack.read(file) && pack.pose("fixture"));
     std::fclose(file);CHECK(!pack.load("/missing-actor-pack") && pack.pose("fixture"));
 }
-int main(int argc,char**) {
+void actorAnimationCases() {
+    ActorAnimationPose p;p.name="fixture";p.end=4;
+    p.positions={{0,0,0},{1,0,0},{0,1,0}};p.nodes.resize(24);
+    p.nodes[3]=p.nodes[4]=p.nodes[5]=1;p.groups={{-1,-1,0,0,1}};
+    p.bindings={{0,0,0,0,0},{0,1,0,1,0},{0,2,0,0,1}};
+    ActorTextureBinding texture{};texture.cells.fill(0xffff);texture.cells[0]=0;texture.cells[1]=1;p.textures={texture};
+    ActorAnimationKey zero,finish;finish.time=4;
+    finish.positions={{0,16,0,0,0}};finish.nodes={{1,16,0,0,0},{2,16,0,90,0}};finish.textures={{0,1,{0,0,0}}};
+    p.keys={zero,finish};ActorAnimationSample sample;
+    CHECK(p.evaluate(1,sample));CHECK(sample.positions[0][0]==.25f && sample.nodes[1]==.15625f);
+    CHECK(sample.nodes[2]==0 && sample.textures[0]==0 && sample.fraction==.25f);
+    CHECK(sample.vertices[0].x==.25f && sample.vertices[0].y==.15625f);
+    CHECK(p.evaluate(4,sample));CHECK(sample.positions[0][0]==1 && sample.nodes[1]==1 && sample.nodes[2]==1);
+    CHECK(sample.textures[0]==1 && sample.vertices[0].u==130.f/1024 && sample.next==sample.last);
+    p.loop=1;CHECK(p.evaluate(4,sample));CHECK(sample.selectedTime==0 && sample.textures[0]==0 && sample.nodes[1]==0);
+    CHECK(p.evaluate(5,sample));CHECK(sample.positions[0][0]==.25f && sample.nodes[1]==.15625f);
+    CHECK(p.evaluate(.5f,sample));CHECK(sample.nodes[1]==.04296875f); // Fractional rewind rebuilds full cache.
+    CHECK(p.evaluate(-1,sample) && sample.selectedTime==0);
+    CHECK(!p.evaluate(std::numeric_limits<float>::infinity(),sample));
+    const ActorSparseUpdate tangent{0,16,45,0,0};
+    CHECK(std::fabs(actorNodeDelta(tangent,.25f,4)-.71875f)<.00001f);
+    float n[24]={};n[3]=n[4]=1;n[5]=2;const float ones[]={1,1,1};
+    CHECK(actorNodeMatrix(n,true,ones).v[10]==1 && actorNodeMatrix(n,false,ones).v[10]==2);
+    n[5]=1;n[18]=5;CHECK(actorNodeMatrix(n,false,ones).v[3]==0);n[12]=10;
+    CHECK(actorNodeMatrix(n,false,ones).v[3]==5);CHECK(actorNodeMatrix(n,true,ones).v[3]==0);
+    const float parentZero[]={2,0,4};CHECK(actorNodeMatrix(n,true,parentZero).v[0]==1);
+    MarioPresentation presentation;presentation.update(0,0,0,10,1000);
+    CHECK(presentation.animationFrame()==0);presentation.update(0,0,0,10,2000);
+    CHECK(presentation.animationFrame()==60);CHECK(presentation.animationFrame()==60);
+    presentation.update(11,0,0,10,2500);presentation.update(0,0,0,10,3000);
+    CHECK(presentation.animationFrame()==0); // Front request queues a reset of the same final rear name.
+    presentation.facing=90;presentation.update(0,0,0,10,4000);CHECK(presentation.animationFrame()==0);
+    presentation.update(11,0,0,10,4500);presentation.update(0,0,0,10,5000);
+    CHECK(presentation.animationFrame()==60); // Same current front request does not queue.
+
+    // Local binary fixture verifies parsing, rollback and malformed graph rejection.
+    auto fixture=[&](bool cycle) {
+        FILE* file=std::tmpfile();CHECK(file);
+        auto write=[&](const auto& value){CHECK(std::fwrite(&value,sizeof(value),1,file)==1);};
+        const char magic[8]="PMANIM1",name[32]="fixture";uint32_t count=1;write(magic);write(count);write(name);
+        write(p.loop);write(p.start);write(p.end);const uint32_t sizes[]={3,24,1,3,1,2};write(sizes);
+        for(const auto& v:p.positions)write(v);for(auto v:p.nodes)write(v);
+        auto g=p.groups[0];if(cycle)g.sibling=0;write(g);
+        for(const auto& b:p.bindings)write(b);write(texture);
+        for(const auto& key:p.keys) {
+            write(key.time);const uint32_t counts[]={uint32_t(key.positions.size()),uint32_t(key.nodes.size()),uint32_t(key.textures.size())};write(counts);
+            for(const auto& r:key.positions)write(r);for(const auto& r:key.nodes)write(r);for(const auto& r:key.textures)write(r);
+        }
+        std::rewind(file);return file;
+    };
+    ActorAnimationPack pack;auto file=fixture(false);CHECK(pack.read(file));std::fclose(file);
+    CHECK(pack.pose("fixture") && !pack.pose("missing"));file=fixture(true);CHECK(!pack.read(file));std::fclose(file);
+    CHECK(pack.pose("fixture") && !pack.load("/missing-animation-pack"));
+}
+int main(int argc,char** argv) {
     if(argc>1) {
         CHECK(loadCameraRoadAssets("romfs"));
         ActorMeshPack mesh;CHECK(mesh.load("romfs/characters.pmmesh"));
+        ActorAnimationPack animations;CHECK(animations.load("romfs/characters.pmanim"));
         for(const auto name:{"M_S_1","M_W_1","M_R_1","M_J_1B","M_J_1C","M_S_1R","M_W_1R","M_R_1R","M_J_1BR","M_J_1CR"}) {
             const auto* pose=mesh.pose(name);CHECK(pose);
             CHECK(pose->vertices.size()==(name[std::strlen(name)-1]=='R'?186u:306u));
+            const auto* animation=animations.pose(name);CHECK(animation);ActorAnimationSample sample;
+            CHECK(animation->evaluate(0,sample) && sample.vertices.size()==pose->vertices.size());
+            for(size_t i=0;i<sample.vertices.size();++i) {
+                const auto& a=sample.vertices[i];const auto& b=pose->vertices[i];
+                CHECK(std::fabs(a.x-b.x)<.0001f && std::fabs(a.y-b.y)<.0001f && std::fabs(a.z-b.z)<.0001f);
+                CHECK(std::fabs(a.u-b.u)<.0000002f && std::fabs(a.v-b.v)<.0000002f);
+            }
+            const auto base=sample.vertices;bool changed=false;
+            for(float frame:{.25f,1.5f,animation->end*.5f,animation->end-.25f,animation->end,animation->end+.25f}) {
+                CHECK(animation->evaluate(frame,sample));
+                for(size_t i=0;i<sample.vertices.size();++i) {
+                    const auto& v=sample.vertices[i];CHECK(std::isfinite(v.x) && std::isfinite(v.y) && std::isfinite(v.z));
+                    changed|=v.x!=base[i].x || v.y!=base[i].y || v.z!=base[i].z || v.u!=base[i].u || v.v!=base[i].v;
+                }
+            }
+            // Some authored rear jump streams are static after key0; do not
+            // invent movement for those source poses. Walk/run must advance.
+            if(std::strncmp(name,"M_W_",4)==0 || std::strncmp(name,"M_R_",4)==0)CHECK(changed);
+        }
+        if(argc>2) {
+            FILE* reference=std::fopen(argv[2],"rb");CHECK(reference);
+            char magic[8];uint32_t cases=0;
+            CHECK(std::fread(magic,8,1,reference)==1 && std::memcmp(magic,"PMREF1\0",8)==0);
+            CHECK(std::fread(&cases,4,1,reference)==1 && cases>0 && cases<10000);
+            float error=0;
+            for(uint32_t c=0;c<cases;++c) {
+                char name[32];float frame=0;uint32_t count=0;
+                CHECK(std::fread(name,32,1,reference)==1 && std::memchr(name,0,32));
+                CHECK(std::fread(&frame,4,1,reference)==1 && std::fread(&count,4,1,reference)==1);
+                const auto* pose=animations.pose(name);CHECK(pose);ActorAnimationSample sample;
+                CHECK(pose->evaluate(frame,sample) && count==sample.vertices.size());
+                for(uint32_t v=0;v<count;++v) {
+                    ActorMeshVertex expected;CHECK(std::fread(&expected,sizeof(expected),1,reference)==1);
+                    const auto& actual=sample.vertices[v];
+                    const float local=std::max({std::fabs(actual.x-expected.x),std::fabs(actual.y-expected.y),std::fabs(actual.z-expected.z)});
+                    error=std::max(error,local);CHECK(local<.0002f);
+                    CHECK(std::fabs(actual.u-expected.u)<.0000002f && std::fabs(actual.v-expected.v)<.0000002f);
+                }
+            }
+            CHECK(std::fgetc(reference)==EOF);std::fclose(reference);
+            std::cout<<cases<<" independent animation samples passed; max host model error "<<error<<"\n";
         }
         const auto* idle=mesh.pose("M_S_1");float low=1000,high=-1000;
         for(const auto& v:idle->vertices){low=std::min(low,v.y);high=std::max(high,v.y);}
@@ -253,7 +350,7 @@ int main(int argc,char**) {
         CHECK(triangles==494 && regularTriangles>400);
         std::cout<<"Original camera assets passed: "<<total<<" authored roads, "<<triangles<<" zone triangles in five rooms\n";return 0;
     }
-    curveCases();zoneCases();stateCases();actorPackCases();CameraRoadAsset asset;auto raw=fixture();CHECK(asset.decode(raw));CHECK(asset.bytes()==raw);
+    curveCases();zoneCases();stateCases();actorPackCases();actorAnimationCases();CameraRoadAsset asset;auto raw=fixture();CHECK(asset.decode(raw));CHECK(asset.bytes()==raw);
     CHECK(asset.roadName(0)=="C_fixture" && asset.roadFloat(0,0x58)==42.5f && asset.roadWord(0,0x80)==0x89abcdef);
     CHECK(asset.collections()[8].offset==0xffbf3a10 && asset.collections()[8].count==0);
     CHECK((*asset.lensMetadata())[0]==25);

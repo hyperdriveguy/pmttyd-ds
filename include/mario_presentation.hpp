@@ -12,6 +12,7 @@ struct MarioPresentation {
     const char* front="M_S_1";
     const char* selected="M_S_1R";
     uint64_t poseStartMilliseconds=0;
+    uint64_t poseNowMilliseconds=0;
     bool supported=true,poseUploaded=false;
     void wallRequest(float speed,float heading,int16_t airCounter) {
         if(speed!=0 && airCounter==0) {
@@ -49,7 +50,9 @@ struct MarioPresentation {
         }
     }
     void update(unsigned motion,float speed,float cameraOffset,int hp,uint64_t now) {
+        poseNowMilliseconds=now;
         offset=cameraOffset;
+        bool pendingReset=false;
         if(motion!=previousMotion) {
             switch(motion) {
             case 0:front="M_S_1";break;
@@ -59,6 +62,7 @@ struct MarioPresentation {
             case 10:front="M_J_1C";break;
             default:break; // Motion11 keeps its earlier pose; other domains stay explicit.
             }
+            if(motion<=3 || motion==10)pendingReset=std::strcmp(selected,front)!=0;
             previousMotion=motion;
         }
         supported=(motion<=3 || motion==10 || motion==11) && (motion!=0 || hp>5);
@@ -71,7 +75,7 @@ struct MarioPresentation {
             else if(std::strcmp(front,"M_J_1B")==0)next="M_J_1BR";
             else if(std::strcmp(front,"M_J_1C")==0)next="M_J_1CR";
         }
-        if(!poseUploaded || std::strcmp(selected,next)!=0){selected=next;poseStartMilliseconds=now;poseUploaded=true;}
+        if(!poseUploaded || pendingReset || std::strcmp(selected,next)!=0){selected=next;poseStartMilliseconds=now;poseUploaded=true;}
         turn(speed); // Rear selection precedes display-direction update.
     }
     float moveHeading() const {
@@ -79,6 +83,8 @@ struct MarioPresentation {
         return wrap(std::trunc(std::fma(1000.f,a,a<0?-.5f:.5f))/1000.f);
     }
     float drawYaw() const{return wrap(display-offset);}
+    // Existing simulation clock -> whole-ms GP bridge; no render increments.
+    float animationFrame() const {return float(poseNowMilliseconds-poseStartMilliseconds)*60.f/1000.f;}
     bool reflectZ() const {const float d=wrap(display);return d>=90 && d<=270;}
 };
 }

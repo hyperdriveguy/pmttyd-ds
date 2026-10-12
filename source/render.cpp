@@ -45,7 +45,7 @@ bool Renderer::init() {
     sky.imported=Tex3DS_TextureImportStdio(skyFile,&sky.texture,nullptr,false);std::fclose(skyFile);
     if(!sky.imported)return false;
     C3D_TexSetFilter(&sky.texture,GPU_LINEAR,GPU_LINEAR);
-    if(!actorMesh.load("romfs:/characters.pmmesh"))return false;
+    if(!actorAnimations.load("romfs:/characters.pmanim"))return false;
     FILE* characterFile=std::fopen("romfs:/characters-mesh.t3x","rb");if(!characterFile)return false;
     characterTextures.imported=Tex3DS_TextureImportStdio(characterFile,&characterTextures.texture,nullptr,false);std::fclose(characterFile);
     if(!characterTextures.imported)return false;
@@ -214,9 +214,10 @@ void Renderer::character(int index,Vec2 p,float h,float w,float face,float lift,
     vertex(x0,y0,p.z,left,bottomV,white);vertex(x1,y0,p.z,right,bottomV,white);vertex(x1+tilt,y1,p.z,right,topV,white);
     vertex(x1+tilt,y1,p.z,right,topV,white);vertex(x0+tilt,y1,p.z,left,topV,white);vertex(x0,y0,p.z,left,bottomV,white);
 }
-bool Renderer::characterModel(const char* name,Vec2 root,float rootY,float yaw,bool reflectZ) {
-    const auto* pose=actorMesh.pose(name);if(!pose || pose->vertices.size()>size_t(MaxVertices-count))return false;
-    for(const auto& v:pose->vertices) {
+bool Renderer::characterModel(const char* name,float frame,Vec2 root,float rootY,float yaw,bool reflectZ) {
+    const auto* pose=actorAnimations.pose(name);
+    if(!pose || !pose->evaluate(frame,actorSample) || actorSample.vertices.size()>size_t(MaxVertices-count))return false;
+    for(const auto& v:actorSample.vertices) {
         const auto point=actorMeshPoint(v,{root.x,rootY,root.z},yaw,reflectZ);
         vertex(point[0],point[1],point[2],v.u,v.v,0xffffffff);
     }
@@ -286,7 +287,7 @@ void Renderer::world(const Game& g) {
     }
     const int legacyCount=count;
     if(!battle && g.marioPresentation.supported)
-        characterModel(g.marioPresentation.selected,g.progress.position,g.groundHeight+g.jumpHeight,
+        characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,g.groundHeight+g.jumpHeight,
                        g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ());
     C3D_BindProgram(&program);
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);

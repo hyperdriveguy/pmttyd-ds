@@ -32,14 +32,17 @@ def matrix(node,index,parent=-1,joint=False):
     return node_matrix(node[index:index+24],joint,
                        node[parent+3:parent+6] if parent>=0 else (1,1,1))
 
-def geometry(model,animation=None,frame=0):
+def geometry(model,animation=None,frame=0,evaluated=None,bindings=False):
     raw=Path(model).read_bytes()
     offs={name:u(raw,offset) for name,offset in [('shape',0x14c),('call',0x150),('pos',0x154),('ipos',0x158),('clr',0x164),('iclr',0x168),('itex',0x16c),('tex',0x18c),('mtx',0x190),('base',0x194),('texture',0x198),('draw',0x19c),('vis',0x1a0),('node',0x1a4),('group',0x1a8),('anim',0x1ac)]}
     node=np.frombuffer(raw,dtype='>f4',count=u(raw,0x140),offset=offs['node']).astype(float)
     pos=np.frombuffer(raw,dtype='>f4',count=u(raw,0xf0)*3,offset=offs['pos']).astype(float).reshape(-1,3)
     vis=list(raw[offs['vis']:offs['vis']+u(raw,0x13c)])
     texadd=[raw[offs['mtx']+n*24] for n in range(u(raw,0x12c))]
-    if animation:
+    if evaluated is not None:
+        node=np.asarray(evaluated['nodes']);pos=np.asarray(evaluated['positions'])
+        vis=evaluated['visibility'];texadd=evaluated['texture_indices']
+    elif animation:
         matches=[offs['anim']+n*64 for n in range(u(raw,0x148)) if raw[offs['anim']+n*64:offs['anim']+n*64+60].split(b'\0')[0].decode()==animation]
         if not matches:raise ValueError(f'Animation not found: {animation}')
         a=u(raw,matches[0]+60);fo=a+u(raw,a+0x28)
@@ -94,7 +97,7 @@ def geometry(model,animation=None,frame=0):
                             if texcount:
                                 ti=u(raw,offs['itex']+(first+itstart+n)*4)+tfirst
                                 uv=np.array(struct.unpack_from('>ff',raw,offs['tex']+ti*8))
-                            verts.append((p[:3],uv))
+                            verts.append((index,pi,uv,texid) if bindings else (p[:3],uv))
                         for n in range(1,count-1):triangles.append((tplidx,[verts[0],verts[n],verts[n+1]]))
             walk(child,m,index,depth+1)
         # Original sibling call retains the popped world matrix but supplies

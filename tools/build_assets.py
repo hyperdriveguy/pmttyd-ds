@@ -23,10 +23,10 @@ def main():
     tex3ds=shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds'
     source=Path(ISO)
     if not source.is_file():raise SystemExit('Original asset pack requires TTYD_ISO pointing to your GameCube ISO')
-    scripts=[Path(__file__),ROOT/'tools/iso_assets.py',ROOT/'tools/character_bake.py',ROOT/'tools/character_node.py',ROOT/'tools/character_mesh.py',ROOT/'tools/map_convert.py',ROOT/'tools/map_animation.py',ROOT/'tools/audio_convert.py',ROOT/'tools/room_convert.py']
+    scripts=[Path(__file__),ROOT/'tools/iso_assets.py',ROOT/'tools/character_bake.py',ROOT/'tools/character_node.py',ROOT/'tools/character_mesh.py',ROOT/'tools/character_animation_data.py',ROOT/'tools/character_animation_pack.py',ROOT/'tools/map_convert.py',ROOT/'tools/map_animation.py',ROOT/'tools/audio_convert.py',ROOT/'tools/room_convert.py']
     fingerprint=hashlib.sha256(b''.join(p.read_bytes() for p in scripts)+str((source.stat().st_size,source.stat().st_mtime_ns)).encode()).hexdigest()
     manifest=OUTPUT/'manifest.json'
-    required=['characters.pmmesh','characters-mesh.t3x','characters.t3x','sky.t3x','map.vertices','map.batches','rogueport.wav','battle.wav','victory.wav','stage.vertices','stage.batches','map.walls','map.ground','gor_00.vertices','gor_02.vertices','gor_03.vertices','gor_04.vertices','map.uvanim','stage.uvanim','gor_00.uvanim','gor_02.uvanim','gor_03.uvanim','gor_04.uvanim','rooms.bin','map.meshanim','stage.meshanim','gor_00.meshanim','gor_02.meshanim','gor_03.meshanim','gor_04.meshanim']
+    required=['characters.pmanim','characters.pmmesh','characters-mesh.t3x','characters.t3x','sky.t3x','map.vertices','map.batches','rogueport.wav','battle.wav','victory.wav','stage.vertices','stage.batches','map.walls','map.ground','gor_00.vertices','gor_02.vertices','gor_03.vertices','gor_04.vertices','map.uvanim','stage.uvanim','gor_00.uvanim','gor_02.uvanim','gor_03.uvanim','gor_04.uvanim','rooms.bin','map.meshanim','stage.meshanim','gor_00.meshanim','gor_02.meshanim','gor_03.meshanim','gor_04.meshanim']
     required.extend(prefix+'.returns' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
     required.extend(prefix+'.head' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
     required.extend(prefix+'.camera' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
@@ -44,7 +44,7 @@ def main():
     rear_model=asset('a/a_mario_r','a_mario_r');rear_tpl=asset('a/a_mario_r-','a_mario_r.tpl')
     character_mesh=compile_mesh([(mario_model,mario,['M_S_1','M_W_1','M_R_1','M_J_1B','M_J_1C']),
                                 (rear_model,rear_tpl,['M_S_1R','M_W_1R','M_R_1R','M_J_1BR','M_J_1CR'])],
-                               OUTPUT/'characters.pmmesh',WORK/'characters-mesh.png')
+                               OUTPUT/'characters.pmmesh',WORK/'characters-mesh.png',OUTPUT/'characters.pmanim')
     texture(WORK/'characters-mesh.png',OUTPUT/'characters-mesh.t3x')
     atlas=Image.new('RGBA',(512,256))
     poses=[]
