@@ -25,6 +25,20 @@ void attack(Game& g,bool success) {
     CHECK(g.phase==Phase::Impact);
 }
 void headContactRules() {
+    for(float angle:{50.f,90.f,130.f})CHECK(!headInclinationAllowed(angle));
+    CHECK(headInclinationAllowed(49.99f) && headInclinationAllowed(130.01f));
+    CHECK(headInclinationAllowed(60,true) && !headInclinationAllowed(75,true) && !headInclinationAllowed(105,true));
+    FieldJump idle;idle.begin(1);idle.tick(true,false);float proposed=.9f;
+    const float retainedHeight=idle.height,retainedV=idle.velocity;const int retainedCounter=idle.ticks;
+    CHECK(!idle.prepareCeiling(proposed,0,.01f) && proposed==1);
+    CHECK(idle.motion==0 && idle.pendingEntry && idle.jumping && !idle.falling);
+    CHECK(idle.height==retainedHeight && idle.velocity==retainedV && idle.ticks==retainedCounter);
+    FieldJump mismatch;mismatch.enterGround(2);mismatch.begin(1);mismatch.tick(true,false);proposed=.9f;
+    CHECK(!mismatch.prepareCeiling(proposed,.01f,.01f) && mismatch.motion==1 && mismatch.jumping);
+    FieldJump matched;matched.enterGround(1);matched.begin(1);matched.tick(true,false);proposed=.9f;
+    CHECK(matched.prepareCeiling(proposed,.01f,.01f) && matched.motion==3 && proposed==1);
+    FieldJump equality;equality.begin(1);proposed=1;
+    CHECK(equality.prepareCeiling(proposed,0,.01f) && equality.motion==3); // Strict below, not equality.
     CHECK(headMotionResponds(3) && headMotionResponds(6));
     for(unsigned motion:{0u,1u,2u,4u,7u,9u,10u,12u})CHECK(!headMotionResponds(motion));
     CHECK(stairRiseAllowed(0,.05f,30));CHECK(stairRiseAllowed(0,.11f,0));
@@ -71,6 +85,14 @@ void headGeometry() {
         out.write(reinterpret_cast<char*>(&flags),4);out.write(reinterpret_cast<char*>(&node),4);out.write(reinterpret_cast<char*>(&cull),4);
     };
     float root=99;ceiling(0,1);CHECK(loadHead(path));
+    FieldSlope record;record.inclination=23;record.tiltX=9;record.tiltZ=4;
+    auto miss=searchFieldHead({3,2},{1,0},.1f,.01f,.1f,&record);
+    CHECK(!miss.contact && miss.clearance==-.01f && record.tiltX==9 && record.tiltZ==4);
+    auto nearHead=searchFieldHead({-1,2},{1,0},.081f,.01f,.1f,&record);
+    CHECK(!nearHead.contact && nearHead.clearance>0 && nearHead.clearance<.001f);
+    CHECK(record.inclination==23 && record.tiltX<-179 && record.tiltZ<-179);
+    auto fastHead=searchFieldHead({-1,2},{1,0},.1f,-.1001f,.1f,&record);
+    CHECK(!fastHead.contact && fastHead.clearance<0); // Actual velocity gates node, not query/angle writes.
     CHECK(!headCollision({-1,2},{1,0},.081f,.01f,root));CHECK(root==99);
     CHECK(headCollision({-1,2},{1,0},.082f,.01f,root));CHECK(std::fabs(root-.072f)<.00001f);
     CHECK(headCollision({-2.08f,2},{1,0},.1f,.01f,root)); // Center misses; forward probe hits.
@@ -97,6 +119,16 @@ void headGeometry() {
     CHECK(loadHead(path));Game standing;standing.progress.room=2;standing.progress.position={-1,2};
     standing.tick({});CHECK(standing.overheadContact && !standing.airborne() && standing.groundHeight==0);
     Input walk;walk.x=1;standing.tick(walk);CHECK(standing.overheadContact && standing.progress.position.x>-1 && standing.groundHeight==0);
+    Progress lowStart;lowStart.room=2;lowStart.position={-1,2};Game lowIdle;lowIdle.restore(lowStart);
+    lowIdle.tick(confirm());CHECK(lowIdle.airborne() && lowIdle.fieldAirMotion().motion==0);
+    CHECK(lowIdle.fieldAirMotion().jumping && lowIdle.fieldAirMotion().pendingEntry);
+    CHECK(lowIdle.fieldAirMotion().ticks==1 && lowIdle.fieldAirMotion().velocity==.08f && lowIdle.jumpHeight==0);
+    Input lowHeld;lowHeld.jumpHeld=true;lowIdle.tick(lowHeld);
+    CHECK(!lowIdle.airborne() && !lowIdle.fieldAirMotion().hasAirFlags() && lowIdle.fieldAirMotion().velocity==0);
+    Game lowWalk;lowWalk.restore(lowStart);Input lowLaunch=confirm();lowLaunch.x=.5f;
+    lowWalk.tick(lowLaunch);CHECK(lowWalk.fieldAirMotion().motion==10 && lowWalk.fieldAirMotion().pendingEntry);
+    CHECK(!lowWalk.fieldAirMotion().hasAirFlags() && lowWalk.fieldAirMotion().ticks==1);
+    CHECK(std::fabs(lowWalk.progress.position.x-lowStart.position.x-.0113125f)<.00001f);
     clearCollision();standing.tick({});CHECK(!standing.overheadContact);
     ceiling(0,1);CHECK(loadHead(path));
     Game g;g.progress.room=2;g.progress.position={-1,2};g.tick(confirm());
@@ -107,7 +139,9 @@ void headGeometry() {
     // diagonal input would make the edge probe miss this original triangle.
     Game momentum;Progress launch;launch.room=2;launch.position={-2.12f,2};momentum.restore(launch);
     Input running;running.x=.5f;momentum.tick(running);running.confirm=true;momentum.tick(running);
-    momentum.progress.position={-2.08f,2};momentum.tick(held);CHECK(!momentum.overheadContact);
+    momentum.progress.position={-2.08f,2};momentum.tick(held);
+    CHECK(momentum.overheadContact && momentum.headContact.sourceNode==0);
+    CHECK(momentum.headClearance>0 && momentum.headClearance<=.05f); // Near miss sets contact flag without a node.
     momentum.progress.position={-2.08f,2};Input diagonal=held;diagonal.x=diagonal.z=1;
     momentum.tick(diagonal);CHECK(momentum.overheadContact && momentum.jumpHeight<.073f);
     clearCollision();Game falling;falling.progress.room=2;falling.progress.position={-1,2};falling.tick(confirm());
@@ -127,6 +161,26 @@ void headGeometry() {
     CHECK(std::fabs(falling.jumpHeight-control.jumpHeight)<.00001f); // Motion10 has no jump response.
     for(int n=0;n<40 && falling.airborne();++n)falling.tick({});
     CHECK(!falling.airborne() && falling.jumpHeight==0);
+    // Center near-miss must return before a later lateral probe's contact.
+    ceiling(0,1);
+    {std::fstream file(path,std::ios::binary|std::ios::in|std::ios::out);uint32_t count=2;
+        file.seekp(4);file.write(reinterpret_cast<char*>(&count),4);file.seekp(0,std::ios::end);
+        float lower[]={-.95f,.30f,1,2,.30f,1,-.95f,.30f,4};GroundContact owner{0,200};uint32_t cull=1;
+        file.write(reinterpret_cast<char*>(lower),36);file.write(reinterpret_cast<char*>(&owner),8);file.write(reinterpret_cast<char*>(&cull),4);}
+    CHECK(loadHead(path));auto first=searchFieldHead({-1,2},{1,0},.06f,0,.1f);
+    CHECK(!first.contact && first.clearance>.02f && first.clearance<.03f);
+    // A nearest steep ray updates projected tilts, then rejects its cone. The
+    // separate +4 flag selects the narrower rejection interval on that same hit.
+    ceiling(0,1);
+    {std::fstream file(path,std::ios::binary|std::ios::in|std::ios::out);
+        const float rise=std::sqrt(3.f)*2;
+        float steep[]={-2,.3f-rise,1,2,.3f+rise,1,-2,.3f-rise,4};
+        file.seekp(8);file.write(reinterpret_cast<char*>(steep),36);}
+    CHECK(loadHead(path));record.inclination=17;
+    auto rejected=searchFieldHead({0,2},{1,0},0,0,.1f,&record);
+    CHECK(!rejected.contact && rejected.clearance==-.01f && record.inclination==17 && record.tiltX<-119);
+    auto narrow=searchFieldHead({0,2},{1,0},0,0,.1f,&record,true);
+    CHECK(narrow.contact && narrow.node.sourceNode==100 && record.inclination==17);
     clearCollision();std::remove(path);
 }
 void movement() {
@@ -1025,9 +1079,16 @@ void originalVoidReturn() {
 void originalHeadJump() {
     clearCollision();CollisionTransition tx;CHECK(tx.load("romfs/map"));tx.commit();
     Progress p;p.position={-6.7f,.1f};p.crumpDefeated=true;
+    // Packed roof: back probe normal114.93deg is rejected; center132.97deg
+    // is admitted but initially returns a near miss. These are mesh/static
+    // contract checks, not measured original-game jump heights.
+    const auto first=searchFieldHead(p.position,{1,0},.137f,.0648f,.0648f);
+    CHECK(!first.contact && first.clearance>.17f && first.clearance<.19f);
+    const auto contact=searchFieldHead(p.position,{1,0},.32f,.03f,.03f);
+    CHECK(contact.contact && contact.node.sourceNode==1381592 && std::fabs(contact.correction-.307f)<.00001f);
     Game g;g.restore(p);g.tick(confirm());Input held;held.jumpHeld=true;float peak=0;
     for(int n=0;n<45;++n){g.tick(held);peak=std::max(peak,g.jumpHeight);}
-    CHECK(peak>.12f && peak<.15f);CHECK(!g.airborne() && g.jumpHeight==0);
+    CHECK(std::fabs(peak-.307f)<.00001f);CHECK(!g.airborne() && g.jumpHeight==0);
     CHECK(g.progress.hp==p.hp && g.warpRequest==-1);clearCollision();
 }
 int main(int argc,char**) {

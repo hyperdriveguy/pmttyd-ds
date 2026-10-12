@@ -35,6 +35,11 @@ constexpr float WallLowerRay = .11f, WallUpperRay = .2664f;
 constexpr float PartnerDistance = .5f;
 struct Vec2 { float x = 0, z = 0; };
 struct GroundContact {uint32_t attributes=0, sourceNode=0;};
+struct FieldHeadQuery {
+    bool contact=false;
+    float correction=0,clearance=-.01f;
+    GroundContact node;
+};
 struct FieldSupport {
     bool found=false;
     float height=0,delta=-.01f;
@@ -97,6 +102,9 @@ public:
     float groundHeight = 0, partnerHeight = 0;
     float groundMetadataHeight=0; // Source +1c4; distinct from actual rootY.
     bool overheadContact=false;
+    GroundContact headContact;
+    float headClearance=-.01f;
+    bool fieldHeadNarrowCone=false; // Original separate +4 flag owner remains unbound.
     GroundContact groundContact,partnerContact;
     GroundContact previousGroundContact; // Source +1ec, separate from current support.
     bool fieldAirOnScreen=true; // Ordinary on-screen adapter; original projection owner pending.
@@ -169,6 +177,8 @@ private:
     bool beginVoid();
     void advanceVertical(bool held,bool dispatch=true);
     bool integrateVertical(bool held,float& previousY,bool update=true);
+    FieldHeadQuery queryOverhead(float rootY,float velocity,float extension);
+    void dispatchFieldAir();
     void finishVertical(float previousY);
     int turnTick = 0;
     std::array<BattlePadWork,4> generalBattlePads;
@@ -219,13 +229,15 @@ bool loadGround(const char* path);
 bool loadHead(const char* path);
 bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot);
 bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot,float rayExtension);
+FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float rootY,float velocity,float extension,
+                              FieldSlope* slopes=nullptr,bool narrowCone=false);
 bool loadGroundReturns(const char* path);
 bool groundReturn(const GroundContact&,ReturnPoint& point);
 bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr,float* slope=nullptr);
 bool frontStepGround(Vec2 p,Vec2 direction,float rootY,float& height,float& slope);
 bool groundedFootprint(Vec2 p,Vec2 direction,float rootY,float& height,GroundContact* contact=nullptr);
 FieldSupport searchFieldSupport(Vec2 p,Vec2 direction,float rootY,float velocity,FieldSlope& slope,float depth=.11f);
-// Center falling floor ray (marioChkLandon): abs(v)+.0001 below, abs(v)+.05 above.
+// Center adapter; native marioChkLandon uses the shared five-foot support service.
 bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
 bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
 void clearCollision();

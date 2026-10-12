@@ -12,7 +12,7 @@ inline bool headAttributesSolid(uint32_t flags) {
     return !(flags&4) || (flags&0x00800000);
 }
 inline float headContactHeight(float triangleY) {
-    return std::trunc(triangleY*10000.f+18.5f)/10000.f;
+    return std::trunc(std::fma(triangleY,10000.f,18.5f))/10000.f;
 }
 inline bool headContactReached(float rootY,float velocity,float contactY) {
     return std::isfinite(rootY) && std::isfinite(velocity) && std::isfinite(contactY) &&
@@ -20,6 +20,9 @@ inline bool headContactReached(float rootY,float velocity,float contactY) {
 }
 inline float headClampedRoot(float contactY) {
     // Original fctiwz truncation, including negative world heights.
-    return std::trunc((contactY-HeadBodyHeight)*1000.f+.5f)/1000.f-.01f;
+    return std::trunc(std::fma(contactY-HeadBodyHeight,1000.f,.5f))/1000.f-.01f;
+}
+inline bool headInclinationAllowed(float angle,bool narrow=false) {
+    return !(angle>=(narrow?75.f:50.f) && angle<=(narrow?105.f:130.f));
 }
 }

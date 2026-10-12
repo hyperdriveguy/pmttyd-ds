@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <cstdint>
+#include "head_collision.hpp"
 namespace ttyd {
 // Ordinary Mario's original jumpData, at native engine-unit scale0.01.
 struct FieldJump {
@@ -26,8 +27,24 @@ struct FieldJump {
         airborne=pendingEntry=true; // Late request; entry owns flags/counter next call.
     }
     void ceilingFall(){beginFall();jumping=falling=false;}
+    void requestGround(unsigned desired) {
+        previousMotion=motion;motion=desired;pendingEntry=true;
+        // Late low-ceiling request preserves this call's jump flags/tuple/root.
+    }
+    bool prepareCeiling(float& proposed,float base,float walkThreshold) {
+        if(!falling && proposed<takeoffY) {
+            proposed=takeoffY;
+            if(base==0 && motion==3)requestGround(0);
+            else if(base!=0) {
+                const unsigned desired=base>walkThreshold?2:1;
+                if(desired!=previousMotion)requestGround(desired);
+            }
+        }
+        return headMotionResponds(motion);
+    }
     void dispatch(float rootY=0) {
         if(!airborne)return;
+        if(pendingEntry && motion<3)return; // Common ground dispatcher owns this request.
         if(pendingEntry) {
             pendingEntry=false;jumping=false;falling=true;phase=0;
             if(motion==11)suppressDrift=true;
@@ -50,7 +67,7 @@ struct FieldJump {
         if(entry && nextMotion==0) {
             clearTuple();ticks=0;countdown=phase=0;takeoffY=rootY;
         }
-        jumping=falling=pendingEntry=knownLowerFloor=suppressDrift=false;
+        airborne=jumping=falling=pendingEntry=knownLowerFloor=suppressDrift=false;
     }
     void integrate(bool held) {
         if(!airborne || (!falling && (!jumping || phase<10)))return;
