@@ -449,3 +449,11 @@ selection,threshold/map and distance branches,mode0 admission,ordered collision
 X/Z stores and kind7 pose requests. The mode0 guard does not skip all correction
 or terminal work. Called terrain/motion/geometry/ability bodies,domain/state
 writers and original trajectories remain open.
+
+
+[Integer/mask IF and scans](behavior/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md)
+and [float/string IF](behavior/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md) specify
+complete12..33 and twenty local predicates plus strcmp. Ordered queries,raw
+masks,null replacement,CR-based unordered acceptance and scan-consumed markers
+are explicit. Other VM opcodes,numeric/pointer/source domains and original
+branch traces remain open.

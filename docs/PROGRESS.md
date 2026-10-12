@@ -7176,3 +7176,34 @@ floor/fly correction and homing/fall/jump/behind bodies;state/flag/index/owner
 writers and original trajectories/stop/run traces;complete field/battle teardown.
 Full documentation/remake remain incomplete;complete-game requirements remain
 deferred until sufficient system coverage.
+
+## 2026-10-12 — ID2 complete IF predicates and branch continuations
+
+Added [integer/mask/continuations](behavior/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md)
+and [float/string predicates](behavior/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md).
+Complete12..33,twenty IF helpers and called strcmp retain query-before-second-
+operand-load,captured base,raw masks,signed comparisons,null-to-empty pointer
+replacement,byte/word read order and comparison return magnitude. Float CR
+negation accepts unordered on all predicates except equality when execution
+proceeds;no host relational substitute or extra precision conversion is inferred.
+False scan consumes same-level ELSE/END;ELSE scan ignores ELSE markers;END_IF
+only supplies2. All remain in the same dispatcher invocation. Existing root/
+lifetime evidence also answers the new deletion-counter breadcrumb:both touch
+8041e860 through r13+1940;this is distinct from schedule live count8041e85c.
+Only ID2's predicate lock released;EVT-01 remains open.
+
+Validation:verify_event_if_predicates.py passed twenty whole IF hashes,whole
+strcmp hash and containing dispatcher fingerprint,416 instruction anchors and
+25 spans (22 dispatch targets,NUL and r2 setup). All twenty29-instruction false
+scanners are byte-identical. Python compilation passed;general behavior verifier
+passed1980 anchors;root/lifetime/operand namespace verifiers passed. make test
+passed30 CTest suites and58 Python tests;make all succeeded with no rebuild.
+All1218 local documentation links resolved;git diff --check passed. Original
+ISO read-only;no original execution/emulator observation,asset conversion,
+profile/save mutation or original binary/dialogue distribution. ID2 changed
+no native files;concurrent ID1/native edits preserved.
+
+Next:remaining data-reader/bitwise/user-buffer/memory/other opcode bodies and
+numeric/pointer/source/capacity domains;original script composition,NaN/FPSCR
+and branch/pause/multicredit traces,then runtime binding acceptance. Complete
+game documentation and requirements remain incomplete.

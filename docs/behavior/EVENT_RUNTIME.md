@@ -284,3 +284,14 @@ all eleven CASE helpers,including exact group sentinel transitions and actual
 dispatch-table ordering. Earlier partial switch/case scope above is superseded
 for these local bodies. Scans ignore raw35 while counting34/1;case search stops
 36..47 and skips BREAK48. Source/numeric/domain and original traces remain open.
+
+
+## Complete IF predicate follow-up (2026-10-12)
+
+[Integer/mask/scans](EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md) and
+[float/string](EVENT_IF_FLOAT_AND_STRING_PREDICATES.md) now close12..33 and
+all twenty predicate helpers,including full called strcmp. Earlier partial
+predicate scope above is superseded for those local bodies. Query order,raw
+mask,null-to-empty pointer replacement,float unordered acceptance and consumed
+ELSE/END continuations are explicit. Other opcodes,numeric/source/pointer/domain
+and original execution remain open.

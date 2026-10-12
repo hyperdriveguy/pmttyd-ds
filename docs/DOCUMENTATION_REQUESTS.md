@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Complete event IF predicates and ELSE/END lexical continuation | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Integer/mask/scans](behavior/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md),[float/string](behavior/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md):complete12..33,twenty helpers and strcmp,operand order,raw masks,NaN CR tests and consumed-marker scans;data/other opcode domains and original traces remain open |
 | Partner direction/speed composition and target-count service | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover partyGetMoveDirSpd and called target-count exact local reset/state/output/numeric behavior;called angle/trig/status/terrain services,EVT-01 and original traces remain separate |
 | Event SWITCH and complete CASE group state machine | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Switch/scans](behavior/EVENT_SWITCH_STACK_AND_CASE_SCANS.md),[group/mask/range](behavior/EVENT_GROUPED_MASK_AND_RANGE_CASES.md):complete34..49 and eleven CASE bodies,actual table order,signed stack/state/raw-query/order and scanner continuations;IF/data/other opcode domains and original traces remain open |
 | Field partner walkMain executor and local terrain requests | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [walkMain dispatch](behavior/FIELD_PARTNER_WALK_DISPATCH.md),[stay local graph](behavior/FIELD_PARTNER_STAY_MOTION.md):complete selectors/threshold/mode/distance/collision/pose request order answered;called homing/movement/terrain/pose engines,domain/writers,EVT-01 and original traces remain open |
@@ -1002,3 +1003,31 @@ priority0/open for remaining IF/readers/other opcodes,numeric/source/domain and
 original traces. Verifier passes eleven full CASE and containing dispatcher
 hashes,267 anchors,16 actual dispatch words. make test passes30 CTest suites and
 58 Python tests;make all passed. ID2 changed no native code.
+
+
+ID2 EVT-01 predicate delivery (2026-10-12), partial answer:
+[Integer/mask/continuations](behavior/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md)
+and [float/string](behavior/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md) close12..33,
+all twenty IF helpers and full strcmp. Operand0 is resolved first;operand1 is
+loaded afterward from captured base. Masks are raw,strings resolve both/null→
+empty,and float NaN acceptance follows exact CR negation (all except equality
+accept unordered when comparison proceeds). False scan consumes same-level
+ELSE/END;ELSE scan ignores all ELSE markers. All twenty29-instruction false
+scanners are byte-identical. String comparator's byte-difference versus word±1
+returns,aligned read-through-NUL extent and unsigned byte order are explicit.
+Verifier passes22 full/containing hashes,416 anchors,25 spans and shared scanner
+comparison. Own lock released;remaining reader/bitwise/other VM opcodes,numeric/
+source/pointer/domain and original traces remain EVT-01 work. make test passes30
+CTest suites and58 Python tests;make all passed. ID2 made no native edits.
+
+ID2 reply to EVT-01 deletion-counter breadcrumb (2026-10-12):
+The already delivered [deletion](behavior/EVENT_DELETE_AND_COPYBACK.md) step5 and
+[root constructor](behavior/EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md) allocation
+step identify the SAME global word8041e860 = r13(8041cf20)+1940. evtDelete loads
+at800368a4,decrements at800368a8 and stores at800368ac after memset. Constructor
+store anchors8003752c/800372a4 use900d1940;increment precedes memset. This is
+not a captured context member or manager live schedule count8041e85c. Deletion
+captures GP-selected context before active testing;its brother array capture
+survives recursive calls,while each recursive invocation selects context anew.
+Fresh lifetime/root verifiers pass. Original capacity/relationship/clock/context/
+cancellation/pause traces remain requested.
