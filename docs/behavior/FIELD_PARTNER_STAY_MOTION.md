@@ -101,16 +101,17 @@ owner-state exclusions with a common guessed list.
 ## Ordered collision and position stores
 
 Capture current P+0x58/+0x5c/+0x60 into a stack position. Request
-partyGetMoveDirSpd(P,&A,&B),then
-**partySearchFrontWall(P,&position,B,A)**0x800c2c00. Retain its nonnull
+[partyGetMoveDirSpd(P,&direction,&speed)](FIELD_PARTNER_DIRECTION_AND_SPEED.md),then
+**partySearchFrontWall(P,&position,speed,direction)**0x800c2c00. Retain its nonnull
 return H at P+0x12c;also store H at+0x134 when float P+0x104 is not equal
 to zero. With null H,these hit fields are not cleared by this local body.
 
 Store returned position X and Z at P+0x58/+0x60;do not store Y here.
 Request partyGetMoveDirSpd again,then
-**unk_800c27c0(P,&position,B,A,P+0xf4,P+0xf0)**. Store the resulting
+**unk_800c27c0(P,&position,speed,direction,P+0xf4,P+0xf0)**. Store the resulting
 position X/Z again. These are ordered service calls using floating outputs;
-the called direction,wall and surrounding-correction bodies remain open.
+the direction/correction local bodies are now linked;called trig/geometry,
+wall and surrounding-correction bodies remain open.
 
 If P+0x32 is exactly1,request unk_80150fac(P) and return. Any other value
 requests unk_801512e0(P),then party_force_reset_outofscreen(P)0x8014b1a8,

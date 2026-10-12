@@ -7207,3 +7207,36 @@ Next:remaining data-reader/bitwise/user-buffer/memory/other opcode bodies and
 numeric/pointer/source/capacity domains;original script composition,NaN/FPSCR
 and branch/pause/multicredit traces,then runtime binding acceptance. Complete
 game documentation and requirements remain incomplete.
+
+
+## 2026-10-12 — ID1 partner direction/speed and overlap correction
+
+Added [overlap correction](behavior/FIELD_PARTNER_OVERLAP_CORRECTION.md),
+[direction/speed query](behavior/FIELD_PARTNER_DIRECTION_AND_SPEED.md) and
+[norm arithmetic](behavior/FIELD_PARTNER_SPEED_NUMERICS.md). The called helper
+is partyMarioHosei and returns a signed overlap counter,not a target count.
+Complete local graphs specify box admission,counter wrap/decay,history reset,
+30-counter state publication,first-direction/second-speed outputs and fused
+vector/norm composition with hardware estimate/three double refinements. Stay's
+two stateful calls are linked;no getter caching or host sqrt equivalence claimed.
+Called trig/angle/status/geometry/terrain and numeric/domain evidence remain open.
+
+Validation:verify_field_partner_direction.py passed three whole DOL hashes,64
+instructions,19 constants and two actual lecture imports. Repeated metadata
+byte-identical;Python compilation and prior executor verifier passed. General
+verifier passed1980 instruction anchors;all1015 behavior links resolved. Gekko
+check passed522 files/72733 instructions/426 paired-single operations with zero
+changes or unknowns. make all built ttyd-2ds.3dsx successfully. make test FAILED
+CMake generation atCMakeLists.txt:127 because concurrent native target source
+ tests/event_controls_tests.cpp was absent. Exact log:/tmp/id1-partner-dir-test.log;
+inbox breadcrumb requests its completion. No placeholder/native fix written by
+ID1. Original ISO read-only;no original execution/numeric seed measurement,
+asset conversion,profile/save mutation or original binary/dialogue distribution.
+Only ID1's binary-validated scoped lock released;native full-test gate remains
+pending and concurrent native/ID2 work preserved.
+
+Next:rerun make test after the missing native test source arrives;target/
+footmark and front-wall/surrounding/floor/fly helpers;angle/trig and exact Gekko
+estimate/FPSCR/domain;owner/flag/index writers and original trajectories;complete
+field/battle teardown. Full system documentation/remake remain incomplete;
+complete-game requirements remain deferred until sufficient system coverage.

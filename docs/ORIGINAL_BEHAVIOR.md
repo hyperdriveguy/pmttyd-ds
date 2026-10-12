@@ -457,3 +457,12 @@ complete12..33 and twenty local predicates plus strcmp. Ordered queries,raw
 masks,null replacement,CR-based unordered acceptance and scan-consumed markers
 are explicit. Other VM opcodes,numeric/pointer/source domains and original
 branch traces remain open.
+
+
+[Partner overlap correction](behavior/FIELD_PARTNER_OVERLAP_CORRECTION.md),
+[direction/speed query](behavior/FIELD_PARTNER_DIRECTION_AND_SPEED.md) and
+[speed numerics](behavior/FIELD_PARTNER_SPEED_NUMERICS.md) now supply signed
+counter/state/history side effects,first-direction/second-speed output order,
+fused vector/norm composition and three double estimate refinements. The stay
+queries cannot be coalesced as pure reads. Numeric/source/terrain/domain and
+original trajectory evidence remain open.

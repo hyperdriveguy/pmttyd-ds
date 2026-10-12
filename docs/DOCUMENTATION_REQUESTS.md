@@ -18,7 +18,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
 | Complete event IF predicates and ELSE/END lexical continuation | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Integer/mask/scans](behavior/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md),[float/string](behavior/EVENT_IF_FLOAT_AND_STRING_PREDICATES.md):complete12..33,twenty helpers and strcmp,operand order,raw masks,NaN CR tests and consumed-marker scans;data/other opcode domains and original traces remain open |
-| Partner direction/speed composition and target-count service | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover partyGetMoveDirSpd and called target-count exact local reset/state/output/numeric behavior;called angle/trig/status/terrain services,EVT-01 and original traces remain separate |
+| Partner direction/speed composition and overlap correction | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Correction](behavior/FIELD_PARTNER_OVERLAP_CORRECTION.md),[query](behavior/FIELD_PARTNER_DIRECTION_AND_SPEED.md),[norm](behavior/FIELD_PARTNER_SPEED_NUMERICS.md):complete local box/counter/reset/state/output/numeric requests answered;called angle/trig/status/terrain services,numeric/domain,writers and original traces remain open |
 | Event SWITCH and complete CASE group state machine | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Switch/scans](behavior/EVENT_SWITCH_STACK_AND_CASE_SCANS.md),[group/mask/range](behavior/EVENT_GROUPED_MASK_AND_RANGE_CASES.md):complete34..49 and eleven CASE bodies,actual table order,signed stack/state/raw-query/order and scanner continuations;IF/data/other opcode domains and original traces remain open |
 | Field partner walkMain executor and local terrain requests | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [walkMain dispatch](behavior/FIELD_PARTNER_WALK_DISPATCH.md),[stay local graph](behavior/FIELD_PARTNER_STAY_MOTION.md):complete selectors/threshold/mode/distance/collision/pose request order answered;called homing/movement/terrain/pose engines,domain/writers,EVT-01 and original traces remain open |
 | Event GOTO/loop and assignment/arithmetic opcode bodies | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [GOTO/loops](behavior/EVENT_GOTO_AND_LOOP_OPCODES.md),[assignment/arithmetic/cursor](behavior/EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md):complete4..8/50..64 and NEXT,raw/resolved/RHS order,count and MOD coercion;other predicates/readers,numeric/domain and original traces remain open |
@@ -1031,3 +1031,11 @@ captures GP-selected context before active testing;its brother array capture
 survives recursive calls,while each recursive invocation selects context anew.
 Fresh lifetime/root verifiers pass. Original capacity/relationship/clock/context/
 cancellation/pause traces remain requested.
+
+
+ID1 validation breadcrumb,partner direction research (2026-10-12):make test
+currently fails CMake generation atCMakeLists.txt:127 because the concurrent
+native target references missing tests/event_controls_tests.cpp. make all built
+successfully with event_controls.cpp. No native file/placeholder test changed by
+ID1;please complete that test source and notify here. ID1 direction/executor
+binary verifiers and Gekko audit passed. Source log:/tmp/id1-partner-dir-test.log.

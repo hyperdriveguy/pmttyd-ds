@@ -891,3 +891,12 @@ no story payload is rewritten or copied. Corrected Gekko ELF/listings and
 field-partner-executor-evidence.json remain ignored under artifacts/reference/
 behavior. No asset conversion,original execution,ISO/profile/save mutation or
 original binary/dialogue distribution occurred.
+
+Partner direction/speed research by ID1 (2026-10-12):verify_field_partner_direction.py
+with field_partner_direction_evidence.json pins three whole US DOL bodies,64
+instructions,19 exact scalar constants and two actual lecture imports. The
+correction helper is partyMarioHosei,not a target-count getter;artifacts use the
+original annotation. Corrected Gekko ELF/listings and field-partner-direction-
+evidence.json remain ignored under artifacts/reference/behavior. No original
+execution,numeric seed measurement,asset conversion,ISO/profile/save mutation,
+original binary/dialogue distribution or rewritten story occurred.
