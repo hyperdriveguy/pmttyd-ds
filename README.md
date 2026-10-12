@@ -9,9 +9,11 @@ This is not a finished or fidelity-verified remake. Original skeletal/vertex
 animations, sound-effect event playback, measured tutorial mechanics and broader
 story content are still incomplete. Hardware performance has not been tested.
 
-## Switch mechanics research
+## Mechanics research
 
-The active documentation reference is now the supplied Switch remake **1.0.0**.
+The primary behavior baseline is the supplied **US GameCube G8ME01 revision 0**.
+See the [completion assessment and priorities](docs/behavior/US_COMPLETION_AND_PRIORITIES.md).
+The supplied Switch remake **1.0.0** remains a separate comparison reference.
 See the [Switch research collection](docs/switch/README.md) for verified binary
 identity, combat/field data, native contracts and remaining gaps. Current research
 is **static analysis only**. The prototype and earlier behavior contracts remain

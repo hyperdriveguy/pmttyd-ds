@@ -4309,3 +4309,45 @@ battle/audio/save/content before complete-game requirements. Full objective
 active/incomplete;three helper contracts do not establish full rendering/game
 fidelity. Original data/IDs/tokens and story attribution/order/branches/event
 conditions remain required.
+
+## 2026-10-12 — US completion assessment and shipped-usage priorities
+
+Evaluated actual documentation versus full-game closure;added
+US_COMPLETION_AND_PRIORITIES.md and reprioritized the root/index references to
+US GameCube first,Switch comparisons separate. Existing85 behavior documents
+(before assessment) include32 numeric/format/scan documents;297 fingerprints
+and1532 anchors do not imply gameplay completion. All16 system closure gates
+remain open;no defensible overall percentage or matched gameplay equivalence.
+Corrected stale message/render coverage labels and51-function baseline count.
+
+Added read-only us_usage_audit.py scanning all DOL text direct branches,
+initialized-data address candidates and all29 shipped REL module0 imports.
+Report identifies7061 unique annotated text starts,4187 direct-call referenced,
+1471 data candidates,1608 REL imported and6229 with any audited reference.
+Classes overlap;832 without references are unresolved,not proven dead. Tool
+also decodes20 registered attack-command callback entries from80364348;none
+of their main bodies is currently fingerprinted. Registration/REL references
+are static leads,not demonstrated branch selection or execution frequency.
+
+Priority now opening/Crump original event/message/state graph,selected attack
+command contracts and defense impact timing,main/input/RNG ownership,then field/
+partners,rewards/progression/inventory/save,battle/audience and required camera/
+animation/audio,followed by full chapter/optional-content coverage. General
+library edge branches require demonstrated shipped input/observable dependency
+before further recovery. Full scope preserved;no dead-code exclusion inferred.
+
+Validation:original DOL hash matches prior baseline;two complete usage reports
+reproduced byte-for-byte;three synthetic tests distinguish call/tail/data/REL
+references,assert ISO immutability and reject revision/sentinel errors.
+make test passed core plus39 Python tests;make all exited0,no rebuild. Existing
+1532 instruction/data/resource checks passed;532 behavior links resolved;
+git diff --check passed. No original gameplay execution/emulator/profile/save
+modification,native implementation,asset conversion or story/dialogue rewrite.
+Metadata reports remain ignored;only audit tooling/tests/authored notes committed.
+
+Next: generalize original REL event binding inventory beyond Rogueport init;
+resolve opening/Crump entry/callbacks/unit/weapon/SetupAC operands and exact US
+message/speaker/conditions,then recover selected attack commands and compare
+isolated original timing/state traces. Expand through all US playable/optional
+content before deriving complete-game requirements. Full objective active and
+incomplete;assessment and static reference counts do not satisfy closure.

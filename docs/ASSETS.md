@@ -676,3 +676,10 @@ instruction semantics were cross-checked against Dolphin's public GPL-2.0-or-lat
 interpreter source;no interpreter implementation was copied or linked. The
 behavior document cites that reference and distinguishes original words from
 emulator interpretation. Original ELFs/disassembly/reports remain ignored.
+
+US completion/usage audit reads original DOL text/data and all29 shipped REL
+module0 import streams read-only. Ignored us-usage.json contains annotations,
+counts,relocation locations and20 command registration entries,not executable
+or dialogue bytes. Its addresses/names derive from the existing GPL-3.0 symbol
+metadata;no upstream implementation or original code is linked or distributed.
+No asset conversion or license change. Static references are not execution proof.

@@ -68,7 +68,7 @@ python3 tools/inspect_dol_function.py marioStMain --symbols artifacts/reference/
 python3 tools/verify_actor_collision.py
 ```
 
-The report now fingerprints 51 functions, inventories all 119 dispatcher targets,
+The report now fingerprints 297 functions, inventories all 119 dispatcher targets,
 hashes `gor.rel` and all 260 US message files, and lists all REL paths. Direct
 call-site lists are static instruction scans: indirect calls, conditional calls,
 execution counts and branch feasibility are not reconstructed. Fingerprinting a
@@ -326,6 +326,12 @@ the US GameCube baseline. If a Switch change is selected for the port, document
 it as a deliberate variant with its own acceptance trace.
 
 ## Next research slices
+
+The [US completion assessment](behavior/US_COMPLETION_AND_PRIORITIES.md)
+supersedes the ordering below. Start from shipped opening/Crump event bindings,
+resolve actually selected attack commands and record gameplay traces;defer
+unbound generic library edge cases. The US usage audit distinguishes direct
+references,callback/data candidates and shipped REL imports from execution.
 
 1. Close the event foundation: all variable namespaces, restart, full pause
    lifecycle and remaining opcode/service contracts, then a host interpreter

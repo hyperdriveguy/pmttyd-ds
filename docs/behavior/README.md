@@ -10,10 +10,15 @@ game**, assuming original models, textures, messages, sound and other data are
 reused. No requirement is satisfied merely by listing a subsystem or its symbols.
 This collection is in progress as of 2026-10-12.
 
+The [current US completion assessment and priorities](US_COMPLETION_AND_PRIORITIES.md)
+supersede older next-task lists: prioritize shipped event/command bindings and
+complete gameplay sequences before further general-library edge-case recovery.
+
 ## Detailed documents and evidence boundaries
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [US completion/priorities](US_COMPLETION_AND_PRIORITIES.md) | Current completion audit,shipped reference census,registered commands and mechanic-first order | Full event feasibility/original execution and all-system closure |
 | [Original baseline](../ORIGINAL_BEHAVIOR.md) | Disc/DOL identity, evidence rules, subsystem order, basic waits/callback continuations, initial complete-game scope | Most systems beyond the initial recovered contracts |
 | [Event runtime](EVENT_RUNTIME.md) | Priority/tie order, child/brother relationships, deletion/copy-back, selected stop behavior | Every opcode/variable type, service callbacks, restart/pause lifecycle |
 | [Battle input and defense](BATTLE_INPUT_AND_DEFENCE.md) | Original history buffers, virtual directions/repeat, complete local guard decision routine and tables | Caller gates, impact sampling, attacks, full damage/status/turn rules |
@@ -186,8 +191,8 @@ runtime semantics, resource lifetime and event bindings still require recovery.
 | Inventory/equipment/economy | Partial | All acquire/remove/sort/use/equip paths, shops/crafting/storage, mail and collectible effects |
 | Save/load/progression | Partial in-memory state | Record format/validation/failure flows, complete state lifetimes and load reconstruction |
 | RNG | Partial | All generators/seeds, persistence and consumption sites/order |
-| UI/messages/pause | Not recovered | Token interpreter, windows/options, input repeat/focus, scene pause/advance and accessibility adaptations |
-| Camera/graphics/animation | Format/field evidence only | Every track/type, scene/layer/cull/lighting behavior, paper transformations, camera modes, effects |
+| UI/messages/pause | Substantial local message/parser/window contracts;pause/focus integration open | Token interpreter, windows/options, input repeat/focus, scene pause/advance and accessibility adaptations |
+| Camera/graphics/animation | Formats,field and local display/font/matrix/camera-request contracts | Every track/type, scene/layer/cull/lighting behavior, paper transformations, camera modes, effects |
 | Audio/music | Formats/streams only | Game event→macro→voice behavior, track transitions, mix/loops/envelopes/synchronization |
 | Chapters/interludes/minigames | Not recovered | Reachable content inventory, per-mode mechanics, optional content and ending/postgame conditions |
 
