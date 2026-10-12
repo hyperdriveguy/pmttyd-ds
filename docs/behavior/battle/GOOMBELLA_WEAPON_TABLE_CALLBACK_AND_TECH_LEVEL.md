@@ -94,3 +94,11 @@ signed admissions,reloaded count/row pointers,reason preservation,name request,
 count-write/raw-return distinctions. Other six callbacks,unit-kind provisioning,
 full party weapon/event definitions,query-event domains,Game/platform/original
 runtime and full-game requirements remain open.
+
+## Delivered remaining-callback continuation
+
+[Complete six-body protocol and Koops exception](PARTY_WEAPON_CALLBACKS_COMPLETE_SHARED_PROTOCOL.md)
+and [exact source order](PARTY_WEAPON_CALLBACKS_WEAPON_SOURCE_MAP.md) now
+close the six local callbacks previously left open.All seven callback bodies
+and technique-level query are complete;unit provisioning/full events/query
+reachability/Game/original execution remain separate.

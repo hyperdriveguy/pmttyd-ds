@@ -1,3 +1,26 @@
+## 2026-10-12 — ID2 remaining six party weapon callbacks
+
+[Complete protocol/Koops exception](behavior/battle/PARTY_WEAPON_CALLBACKS_COMPLETE_SHARED_PROTOCOL.md)
+and [28-weapon source map](behavior/battle/PARTY_WEAPON_CALLBACKS_WEAPON_SOURCE_MAP.md)
+close the six formerly open key1 callback bodies.Five full programs match
+Christine after source-immediate/direct-call normalization;Koops first two icons
+are literal344/345,with later icons read from current weapons.Exact source
+pointers/order,gaps,keys and partial/count ownership supplied.Prior Goombella/
+source docs link this completion.All seven local callbacks now recovered;ID2
+lock released.No native code/tests/assets changed.
+
+Validation:`tools/verify_all_party_weapon_callbacks.py` twice,identical:
+12 hashes(8 complete/4 linked),1296 instructions,71 spans,and5 complete
+normalized program comparisons.Python compilation,existing behavior/Goombella/
+builder verifiers,own links,and scoped whitespace passed.`make test`:83
+CTest/90 Python passed.`make all` passed.
+
+Limits:static local bodies/source bindings only.Unit-table/current party/pouch
+provisioning,full weapon/action/event scripts,query-event source reachability,
+Game/platform/original execution/full-game requirements remain open.Next
+port-documentation priority:runtime unit table provisioning and query-event
+domains;no whole-party gameplay closure inferred from callback coverage.
+
 ## 2026-10-12 — ID2 Goombella weapon-table delegate and seven source chains
 
 Two detailed contracts supply

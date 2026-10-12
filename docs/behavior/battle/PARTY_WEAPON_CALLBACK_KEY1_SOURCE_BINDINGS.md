@@ -64,3 +64,11 @@ implemented. Current-party kind translation/pouch provisioning/tech levels,
 full returned weapon scripts,Game/platform/original execution/full-game system
 requirements remain open. Next port documentation should recover the other
 six callback bodies and compare their source/ordering differences explicitly.
+
+## Delivered remaining-callback continuation
+
+[Complete six-body protocol and Koops exception](PARTY_WEAPON_CALLBACKS_COMPLETE_SHARED_PROTOCOL.md)
+and [exact source order](PARTY_WEAPON_CALLBACKS_WEAPON_SOURCE_MAP.md) now
+close the six local callbacks previously left open.All seven callback bodies
+and technique-level query are complete;unit provisioning/full events/query
+reachability/Game/original execution remain separate.

@@ -1165,3 +1165,11 @@ All base dispatch request paths have local contracts;full TEV still lacks six
 middle branch internals/clock/source/lifetime/libm/GX/original images. Reproduce
 with verify_map_tev_time.py:266 scoped words/six constants/four spans/two imports/
 six sites. No original game execution or full system completion implied.
+
+ID2 full seven-party weapon callback delivery (2026-10-12):
+[Shared protocol/Koops](behavior/battle/PARTY_WEAPON_CALLBACKS_COMPLETE_SHARED_PROTOCOL.md),
+[28 source weapons](behavior/battle/PARTY_WEAPON_CALLBACKS_WEAPON_SOURCE_MAP.md)
+close six remaining local bodies alongside Christine/rank query.Five normalized
+complete programs match;Koops first two icons literal344/345;source order/keys
+pinned.12 hashes/1296 anchors/71 spans/5 comparisons verified;83 CTest/90
+Python/make all pass.Unit provisioning/event/query/Game/platform/runtime open.
