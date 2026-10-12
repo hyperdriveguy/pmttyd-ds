@@ -35,6 +35,8 @@ FUNCTIONS = (
     'btlevtcmd_CheckDamageCode', 'btlevtcmd_GetDamageCode',
     'BtlUnit_CheckStatus', 'BtlUnit_GetStatus', 'BtlUnit_SetStatus',
     'BtlUnit_CheckRecoveryStatus', '_CheckMoveCount',
+    'BattleSetStatusDamageFromWeapon', 'BattleSetStatusDamage',
+    '_getSickStatusParam', '_getSickStatusRate', '_getRegistStatus',
     'swByteGet', 'swByteSet', '_swByteGet', '_swByteSet', 'swGet', 'swSet',
     'swClear', 'swReInit', 'swInit', 'pouchSetHP', 'pouchAddHP', 'pouchSetFP',
     'pouchSetMaxHP', 'pouchSetMaxFP', 'pouchSetPartyHP', 'pouchSetAP',

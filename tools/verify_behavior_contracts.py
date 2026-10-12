@@ -5,6 +5,7 @@ These are static evidence checks, not original gameplay observation or proof
 that a port's implementation is equivalent. Never executes original code.
 """
 import argparse
+import hashlib
 import struct
 from pathlib import Path
 from iso_assets import DEFAULT_ISO
@@ -12,6 +13,14 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'status_infliction': {
+        0x800fbde8: '7c680774', 0x800fbeb8: '281f001c',
+        0x800fbf8c: '54600085', 0x800fc05c: '2c1a0000',
+        0x800fc098: '7f4303d6', 0x800fc0a8: '7f5ada14',
+        0x800fc0b0: '4bf09cf1', 0x800fc104: '60000020',
+        0x800fc130: '4802ba7d', 0x800fd330: '5400083c',
+        0x800fd470: '3bc00009', 0x800fd474: '9bfc0000',
+    },
     'status_storage': {
         0x80127864: '881e02f7', 0x801278d0: '2c000000',
         0x80127950: '981e0118', 0x801279d4: '480001d9',
@@ -214,6 +223,21 @@ def verify(iso_path):
             if struct.unpack(f'>{len(offsets)}I', read(address, len(offsets)*4)) != expected:
                 raise ValueError(f'Status dispatch table mismatch {address:#x}')
         print('All 81 status getter/setter/recovery dispatch targets verified')
+        # Fingerprints of the separately inspected case maps, not an execution proof.
+        infliction_tables = (
+            (0x8034c750, 17, '0df1727cb6b1b471c2b3b04c27d2308c33e6bd20e9a14de0b8e0d9e835173d0c'),
+            (0x8034c994, 25, '3e6d231a24a0bd9498fb481225a285aee6fff4a8f1a3b4171ec3dc0cca9636a6'),
+            (0x8034c924, 28, 'c12058ae38eb7cc956e7047bf4ce84a67823257e03172a88131b7631a57c2b15'),
+            (0x8034c8b4, 28, '1f1d356e7471a229883f54d6e727fa1026ca43bcdf857d4926b0dfa6882a7ecb'),
+            (0x8034c868, 19, '38d78863472bb41196a8840c644aaa21616f781c5e9fd7d4ccaaecdfdaac06c7'),
+            (0x8034c9f8, 28, 'a3a16c14935305c0ab1ff9eebd8b169c8d338260dc1efd8d979f0f8031628ba1'),
+            (0x8034ca68, 28, 'e12bc54914b01f8f264fa6c794660307ce1d07fc93420d1d27bface856bf85fd'),
+            (0x8034cad8, 28, 'b6132dc24a888c207329575a790a8a9d530f022130de2168a9a30b16b47acde7'),
+        )
+        for address, count, digest in infliction_tables:
+            if hashlib.sha256(read(address, count*4)).hexdigest() != digest:
+                raise ValueError(f'Status infliction table fingerprint mismatch {address:#x}')
+        print('Eight status infliction table fingerprints verified (201 entries)')
 
 
 if __name__ == '__main__':
