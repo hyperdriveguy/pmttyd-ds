@@ -2837,3 +2837,30 @@ mapping/width data and icon dimensions; substitution callers for selection
 placeholders. Continue story attribution/order/conditions and the remaining
 battle/camera/input/field/content/save systems before complete-game requirements.
 Full objective remains active/incomplete; executed-original comparisons needed.
+
+## 2026-10-12 — Message playback and record admission
+
+Previous turn progressed withad14ca1 embedded objects. Added MESSAGE_PLAYBACK.md:
+complete local msgMain branch/14-opcode map, clock quotient/low-word schedule
+advancement, two separately rounded scroll additions, input masks and latched
+acceleration, wait-state/resume return codes, callbacks/history, terminal outside
+parser count, unchecked schedule admission and paper-end index/pointer divergence.
+Documented paper pose/group bindings and generic-record sound admission once per
+invocation, including color/noise records and refreshed-versus-cached handle data.
+No delays/rates are claimed as measured. Caller/state producers remain open.
+
+Validation:440 instruction anchors and prior checks passed against read-only
+US ISO, plus all14 playback targets, scroll coefficient and seven paper pose/
+group bindings. Evidence167 function fingerprints reproduced byte-for-byte.
+All behavior links resolve; git diff --check passed. make test passed core plus36
+Python tests; make all exited0, no rebuild. Workspace started clean; only
+research/provenance/evidence tooling changed. No original execution/emulator run
+or profile/save modification. Code/data extracts and reports remain ignored.
+Static checks do not establish clock/callback cadence, renderer fidelity or
+original/native dialogue behavior equivalence.
+
+Next: message creation/event callbacks and wait/input state producers, render/
+selection/window lifetimes; clock snapshots and numeric helpers; font/icon/pose/
+NPC/sound dependencies. Continue full story attribution/order/conditions and
+remaining battle/camera/input/field/content/save systems before complete-game
+requirements. Full objective active/incomplete; executed comparisons needed.

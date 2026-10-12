@@ -157,8 +157,10 @@ negative/wrapped coordinates. No Western ruby-text grammar is inferred.
 The local branches of msgAnalize are now documented across these two parser
 files, including unusual literal behavior. This is not a full dialogue runtime:
 sscanf/library numeric behavior, font mapping/metrics, icon atlas geometry,
-pose/NPC lifetimes, display callbacks, msgMain record playback, user input,
-selection navigation and story scripts still need recovery and execution checks.
+pose/NPC lifetimes, display callbacks, user input, selection navigation and story
+scripts still need recovery and execution checks. Local msgMain admission,
+paper/audio effects and return codes are now specified in
+[playback](MESSAGE_PLAYBACK.md); caller cadence and rendering remain open.
 
 Derived cases include named/numeric/unknown/HM icons, leading sign routing,
 separate advance versus image geometry, scaleX annotations, odd annotation

@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'message_playback': {
+        0x80083f50: '900d1b18', 0x80083fe4: '90c3f044',
+        0x80084064: 'ec03007a', 0x8008414c: '901f0028',
+        0x8008419c: '38600002', 0x800841d4: '38040064',
+        0x80084298: '1fbd0064', 0x800842e0: '4181034c',
+        0x80084330: '939f0010', 0x80084348: '408202d4',
+        0x80084414: '901f0010', 0x8008446c: '9803f22c',
+        0x8008451c: '3b9cffff', 0x80084618: '900d1b18',
+        0x80084624: '2c1c0a00', 0x80005f8c: '80631338',
+    },
     'message_embedded_objects': {
         0x80081a78: '281e0012', 0x80081a80: '3860ffff',
         0x80082ad4: '41800034', 0x80082ba0: '9001003c',
@@ -538,6 +548,22 @@ def verify(iso_path):
             if read(address, len(expected)//2).hex() != expected:
                 raise ValueError(f'Embedded object constant mismatch {address:#x}')
         print('All 18 US message icon bindings and embedded-object constants verified')
+        playback_targets = (0x8008450c, 0x800844b4, 0x8008461c, 0x80084474,
+                            0x8008454c, 0x8008454c, 0x8008461c, 0x80084464,
+                            0x80084454, 0x80084430, 0x8008440c, 0x8008438c,
+                            0x8008433c, 0x80084310)
+        if struct.unpack('>14I', read(0x8030f630, 56)) != playback_targets:
+            raise ValueError('Message playback dispatch mismatch')
+        if read(0x80420794, 4).hex() != '3eb851ec':
+            raise ValueError('Message scroll coefficient mismatch')
+        if read(0x802c3424, 7) != b'p_b_st\0':
+            raise ValueError('Message paper group binding mismatch')
+        for i, name in enumerate(('PM_Y_1B', 'PM_Y_2B', 'PM_F_1B',
+                                  'PM_F_3B', 'PM_C_1B', 'PM_C_2B')):
+            pointer = struct.unpack('>I', read(0x804160d0+4*i, 4))[0]
+            if read(pointer, len(name)+1) != name.encode()+b'\0':
+                raise ValueError(f'Message paper pose binding mismatch: {i}')
+        print('All 14 playback targets, scroll coefficient and seven paper pose/group bindings verified')
 
 
 if __name__ == '__main__':
