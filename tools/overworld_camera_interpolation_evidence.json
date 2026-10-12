@@ -1,0 +1,6470 @@
+{
+  "schema": 1,
+  "scope": "Camera built-in interpolation0..13, shipped gor00\u201304 basic camera event modes, raw OS tick producers and retained room-load entry; source-only",
+  "dol_spans": [
+    {
+      "name": "intplGetValue",
+      "address": 2147511436,
+      "size": 944,
+      "sha256": "0d800da046dc09ba1fe07a6933b4a910553c1fbe7ea2f6a874395018f4b6a4ae"
+    },
+    {
+      "name": "cam3dMain",
+      "address": 2147543656,
+      "size": 2156,
+      "sha256": "3f53cc9fb1cd329508cbd04b88663fb664e80ab1ed9df39d0415204d3dfe57f3"
+    },
+    {
+      "name": "camLoadRoad",
+      "address": 2147545964,
+      "size": 232,
+      "sha256": "710f6eb4933ed2e3a699db5ed035f0c397565807f30b9aae7cd5129d92eaa861"
+    },
+    {
+      "name": "camEntryPersp",
+      "address": 2147547848,
+      "size": 724,
+      "sha256": "8124e9f8dda6fb8323a6b001a4d5cf9ea9b7669bfdf8ee1e666f0e28f253931b"
+    },
+    {
+      "name": "viPostCallback",
+      "address": 2147939332,
+      "size": 952,
+      "sha256": "044042552dcddf496a3dc8101c419b78fa63f1f7f0950870cec0954964b6ddff"
+    },
+    {
+      "name": "OSGetTime",
+      "address": 2150225996,
+      "size": 24,
+      "sha256": "47c7b4180d560222e0a882bbae6454020db5957d80d81e9e6b279ed80fe1bf28"
+    },
+    {
+      "name": "evt_cam3d_evt_set",
+      "address": 2148174292,
+      "size": 752,
+      "sha256": "129e1a3361b3ef245ec0f1b867aa4adbf63355dc22328e5632b21e97da33cde8"
+    },
+    {
+      "name": "evt_cam3d_evt_off",
+      "address": 2148171592,
+      "size": 216,
+      "sha256": "2373e545909b6aa94458745b1a379115b9fe2179e9e5b1b3993f8c2a94ab305b"
+    },
+    {
+      "name": "evt_cam3d_evt_set_xyz",
+      "address": 2148171012,
+      "size": 480,
+      "sha256": "e9aa6d185ab21be34a9a38a18dd3b5a684b598a16c13337f08b306da02e936ea"
+    },
+    {
+      "name": "evt_cam3d_evt_xyz_off",
+      "address": 2148170756,
+      "size": 256,
+      "sha256": "591e4bb376191cd22df2981aac2117d0340e1f146dea957558ff1f8f576cf91a"
+    },
+    {
+      "name": "evt_cam3d_evt_zoom_in",
+      "address": 2148175592,
+      "size": 604,
+      "sha256": "ec82cda290c5da1e3941e6fca6c586fe43230460eefabe2cb7cf0c1d24d91e2a"
+    },
+    {
+      "name": "Interpolation dispatch0..13",
+      "address": 2150646604,
+      "size": 56,
+      "sha256": "8d83f319ab8e3b69f554308d96cf5e37d6798e34fd3fbc37268400d32f71b852"
+    },
+    {
+      "name": "Interpolation/clock float constants",
+      "address": 2151806020,
+      "size": 64,
+      "sha256": "8a3fd4a776c33fed2f444de2e350baea86652041dc2e1b569dfe88446f564b0f"
+    }
+  ],
+  "dol_anchors": {
+    "2147511484": "2c050000",
+    "2147511492": "4082000c",
+    "2147511496": "fc20e890",
+    "2147511524": "2803000d",
+    "2147511576": "7c06002e",
+    "2147511588": "ec1de028",
+    "2147511608": "ec5f07f2",
+    "2147511636": "ec5f07f2",
+    "2147511672": "ec5f07f2",
+    "2147511716": "ec1ff024",
+    "2147511780": "ec5f07f2",
+    "2147511868": "ec5f07f2",
+    "2147511952": "ec3ef828",
+    "2147511988": "ec9ef828",
+    "2147512032": "ec9ef828",
+    "2147512084": "ec5f07f2",
+    "2147512160": "fc010040",
+    "2147512164": "40800008",
+    "2147512168": "fc200850",
+    "2147512176": "ec21e83c",
+    "2147512184": "c002802c",
+    "2147512232": "c0028040",
+    "2147512264": "c0028040",
+    "2147512308": "7c6c1b78",
+    "2147512328": "4e800421",
+    "2147939360": "4822e42d",
+    "2147939396": "7c00f010",
+    "2147939404": "9006002c",
+    "2147939416": "90060028",
+    "2147939536": "80030010",
+    "2147939544": "40820124",
+    "2147939548": "4810f649",
+    "2147939556": "40820118",
+    "2147939776": "9006003c",
+    "2147939784": "90060038",
+    "2147939800": "40820024",
+    "2148171740": "90e30070",
+    "2148171744": "80a500f8",
+    "2148171748": "54a5f0be",
+    "2148171752": "7ca62816",
+    "2148171756": "54a5d1be",
+    "2148171760": "7cbe29d6",
+    "2148171764": "90a3007c",
+    "2148171768": "90830078",
+    "2147546016": "54000734",
+    "2147546116": "d03d0038",
+    "2147546136": "b07d0004",
+    "2147546144": "d01d0008",
+    "2147546148": "981d00e0",
+    "2147546152": "d01d0084",
+    "2147546164": "d01d0094"
+  },
+  "rel_spans": [
+    {
+      "name": "mony_peton_talk",
+      "namespace": "gor_00.o",
+      "offset": 134592,
+      "size": 1144,
+      "sha256": "44d3ecf9161553be02e25b04eb5a37f7f91355f93c4772e11778878f385bb427"
+    },
+    {
+      "name": "marco_talk",
+      "namespace": "gor_00.o",
+      "offset": 136684,
+      "size": 1456,
+      "sha256": "34cc5098480f296a000804c103f795adc8f790503f8dcf2bd684e84745f230be"
+    },
+    {
+      "name": "mokorim_talk",
+      "namespace": "gor_00.o",
+      "offset": 145664,
+      "size": 2184,
+      "sha256": "6cd2e6574c73aa886b374d127c5b700695cdb1b8e5f0044b6879f22a3c78cf03"
+    },
+    {
+      "name": "enter_gorotsuki_town",
+      "namespace": "gor_00.o",
+      "offset": 152768,
+      "size": 2376,
+      "sha256": "6679b66c1735f1f541ff22f8aca1e155282a7463006212d5f353c29606bcce6d"
+    },
+    {
+      "name": "christine_osoware",
+      "namespace": "gor_00.o",
+      "offset": 155144,
+      "size": 1428,
+      "sha256": "03bdec7420754bb222ed5d83b7d1f2057de879a1187e7ae00a11a75f9d2497c0"
+    },
+    {
+      "name": "gundan1000tai_beforebattle",
+      "namespace": "gor_00.o",
+      "offset": 156572,
+      "size": 2096,
+      "sha256": "4cc7e8fba986105d05f73b8c21bea7c79e4b69e1fae556f88f4920f77fd97bef"
+    },
+    {
+      "name": "gundan1000tai_yure",
+      "namespace": "gor_00.o",
+      "offset": 159276,
+      "size": 88,
+      "sha256": "bfdfd0c55de0850c3f1b53a7e4c85bb3150de11a7c8e30671611f21b61b8dc1b"
+    },
+    {
+      "name": "gundan1000tai_afterbattle",
+      "namespace": "gor_00.o",
+      "offset": 159364,
+      "size": 4804,
+      "sha256": "c055f9af15c96521318b2359e11a89664dafcca92556a9daefa6716ea531d5e7"
+    },
+    {
+      "name": "shukko_event",
+      "namespace": "gor_00.o",
+      "offset": 165408,
+      "size": 1992,
+      "sha256": "fca26b9ccda4fd9c4b690ec2f56b57203da31c6fb33c4ee83f348844300f4d8c"
+    },
+    {
+      "name": "gorotsuki_kikan",
+      "namespace": "gor_00.o",
+      "offset": 168516,
+      "size": 2396,
+      "sha256": "8b2660d7b9a7bf61bc3f301063dffc3033acfe1e1730fcb4602ae5fca21f1460"
+    },
+    {
+      "name": "into_gor_ship",
+      "namespace": "gor_00.o",
+      "offset": 170912,
+      "size": 1060,
+      "sha256": "c377f66c7ee1ffbbcf6f8b653abc9737109c7b03c4f942f2d754990f656d326f"
+    },
+    {
+      "name": "gor_00_koopa_evt",
+      "namespace": "gor_00.o",
+      "offset": 173012,
+      "size": 4380,
+      "sha256": "2408be6c477b384f0b68b0fe2799b98143d7dd163c42c573a6179d6e5f4d84b6"
+    },
+    {
+      "name": "peach_mail",
+      "namespace": "gor_00.o",
+      "offset": 177392,
+      "size": 836,
+      "sha256": "4ff43cf0cd79a09e56d0f7667b8e89be82da049e5d010c7a815265dc0985f546"
+    },
+    {
+      "name": "gor_muj_ship_start",
+      "namespace": "gor_00.o",
+      "offset": 179772,
+      "size": 1032,
+      "sha256": "fd16e656b51afc2dfebf50e7b86ebbaab8110204bf38245dc57158fb9632fb71"
+    },
+    {
+      "name": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 183420,
+      "size": 6080,
+      "sha256": "6dc8925f3a866fae269e850e3371687949775b98fe21cd9d4e52c4f63eca12fa"
+    },
+    {
+      "name": "epilogue_evt2",
+      "namespace": "gor_00.o",
+      "offset": 189620,
+      "size": 296,
+      "sha256": "6de2898b7e4873333491e31b86be16292befdf0b28d6fe98f41bd4b3222a6fd1"
+    },
+    {
+      "name": "return_gorotsuki_town",
+      "namespace": "gor_00.o",
+      "offset": 190016,
+      "size": 2500,
+      "sha256": "8fe093bdd36ff4a7a53ddefd882d83d2230d9851350e6430ef2beef7b1972074"
+    },
+    {
+      "name": "nancy_init_check",
+      "namespace": "gor_01.o",
+      "offset": 197208,
+      "size": 2432,
+      "sha256": "2488f0c314fbe8f3c3f94573ff3533ef07bdf0aef5f5f602b0aa1374fa26de68"
+    },
+    {
+      "name": "marco_talk",
+      "namespace": "gor_01.o",
+      "offset": 201172,
+      "size": 2076,
+      "sha256": "44251c1c18ddabaa04f7a373fcf0e41fd867928b54e8812ca28bf154df656bb0"
+    },
+    {
+      "name": "master_talk",
+      "namespace": "gor_01.o",
+      "offset": 203444,
+      "size": 2580,
+      "sha256": "aec652991ec4e7bd25177ff3e5cfde57a88abcf932c3203a16343ebe5e65bc5f"
+    },
+    {
+      "name": "shoptender_talk",
+      "namespace": "gor_01.o",
+      "offset": 206132,
+      "size": 908,
+      "sha256": "a5781deb6f535ca9ae00bd6d391d982f7baf84ab12dedc69f47844577609ea9d"
+    },
+    {
+      "name": "christine_nakama",
+      "namespace": "gor_01.o",
+      "offset": 226392,
+      "size": 3040,
+      "sha256": "28feaf1c480e1eadbff8fd701e48800bef6b1356354ea0f7649db4d46d68ef3b"
+    },
+    {
+      "name": "ultrahammer_check",
+      "namespace": "gor_01.o",
+      "offset": 233360,
+      "size": 888,
+      "sha256": "24e96b0a5be2d80fbc3a81a2d23d8581e13458f8b47a2c338b370ce42fd5d0e1"
+    },
+    {
+      "name": "gor_01_koopa_evt",
+      "namespace": "gor_01.o",
+      "offset": 236340,
+      "size": 2336,
+      "sha256": "bcc1f8fe00188a14241bf16c597c327550d26f3260e627e52fb7650126cfb21f"
+    },
+    {
+      "name": "sekai_yami_evt",
+      "namespace": "gor_01.o",
+      "offset": 238912,
+      "size": 740,
+      "sha256": "b7bd529a275e43ae4e9a00052fa0f0bbf1992ba28e483901d80d7f9889480015"
+    },
+    {
+      "name": "minnnanokoe_evt",
+      "namespace": "gor_01.o",
+      "offset": 239652,
+      "size": 1588,
+      "sha256": "dba76075ae88736311646d064b3a89f58ec4a2470c17aebe3365c33924c0e9d9"
+    },
+    {
+      "name": "iri_16_tyutyu_talk",
+      "namespace": "gor_01.o",
+      "offset": 242112,
+      "size": 1780,
+      "sha256": "19b38713a16ee6874325b5d046898f3bd24fe79876b5714641401a87fdd40e02"
+    },
+    {
+      "name": "epilogue_evt",
+      "namespace": "gor_01.o",
+      "offset": 244812,
+      "size": 1252,
+      "sha256": "04b4c15269569cdfd1801f07d8ba0a265eff805958d3f68a5d72c1f8b2ae132e"
+    },
+    {
+      "name": "powerupya_party_lank_rtn",
+      "namespace": "gor_02.o",
+      "offset": 257752,
+      "size": 3144,
+      "sha256": "ea4687cf881a13fc230ee86d3559a6215c774d93fd7661bda8ee815ec1643b06"
+    },
+    {
+      "name": "unk_evt_gor_00040294",
+      "namespace": "gor_02.o",
+      "offset": 262804,
+      "size": 2176,
+      "sha256": "01ece4e3aa8ac202ca21d48b6fb0e56bf3b2d1f68f65715b0f003fb3b7718fd8"
+    },
+    {
+      "name": "unk_evt_gor_00040b14",
+      "namespace": "gor_02.o",
+      "offset": 264980,
+      "size": 476,
+      "sha256": "12592f967c207206671d22b6bbe7b9da73da739529db72e728700fb19db81aee"
+    },
+    {
+      "name": "kurihakase_talk",
+      "namespace": "gor_02.o",
+      "offset": 266976,
+      "size": 1684,
+      "sha256": "5bc38a400f4ba1d1c596c5da9c7606eb27add70edc140e4b5256d919728b7f7c"
+    },
+    {
+      "name": "oyabun_talk",
+      "namespace": "gor_02.o",
+      "offset": 268688,
+      "size": 1456,
+      "sha256": "699753917e010f6684b2a100e2a8111726fb75a1f4cbf8cefffee9fc5e3b50ad"
+    },
+    {
+      "name": "evt_door_03_caseopen",
+      "namespace": "gor_02.o",
+      "offset": 287660,
+      "size": 204,
+      "sha256": "777e2cac7485f30a77baeda9409a2a3a1b0aca48b2b7b5752d9dde83b620019f"
+    },
+    {
+      "name": "evt_door_03_roll_open",
+      "namespace": "gor_02.o",
+      "offset": 287864,
+      "size": 652,
+      "sha256": "8e9f0bb2b18f6629e04b08683b3d7e7fbc02e2f7fd8957c76446777f387f9164"
+    },
+    {
+      "name": "evt_gor_door_open",
+      "namespace": "gor_02.o",
+      "offset": 292348,
+      "size": 328,
+      "sha256": "b1dc02a5b4c54686ede607a802ffb04ab428959f0abd59b75c3f410bece302c2"
+    },
+    {
+      "name": "evt_gor_door_close",
+      "namespace": "gor_02.o",
+      "offset": 293896,
+      "size": 264,
+      "sha256": "a08cdc9b5a81c687000e714227817d555dc437fd29fab333750b75eb5db03892"
+    },
+    {
+      "name": "cam_yurasu_event",
+      "namespace": "gor_02.o",
+      "offset": 294532,
+      "size": 32,
+      "sha256": "2a0c9a6c0112181fd485baae31f4fc472094912b0815d5c5bd5c96d7d9ede2df"
+    },
+    {
+      "name": "steel_coin",
+      "namespace": "gor_02.o",
+      "offset": 294564,
+      "size": 1544,
+      "sha256": "d30c09ce0559f97e01cafff4e8fc7ea600757943049f1c9454effe17e182974a"
+    },
+    {
+      "name": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 296108,
+      "size": 3148,
+      "sha256": "9e27be37f4d93218ea9204cf25d17eef07876c130d25f13c8b5470739f545511"
+    },
+    {
+      "name": "kurihakase_wall_remove",
+      "namespace": "gor_02.o",
+      "offset": 299256,
+      "size": 1028,
+      "sha256": "404b1eb72ecc96d2ca959766a1f5375ce09f81e7bffeeb2fe135f223aa49550c"
+    },
+    {
+      "name": "kurihakase_lecture",
+      "namespace": "gor_02.o",
+      "offset": 300284,
+      "size": 1144,
+      "sha256": "003b2e23e35704e67e1beec34309e6237930c437125b86e274d17334db1e1ef3"
+    },
+    {
+      "name": "epigraphy_map",
+      "namespace": "gor_02.o",
+      "offset": 303448,
+      "size": 2484,
+      "sha256": "630c281bc31e2cbc34f88c075b6b05e327b432b9500a93a7501f4d3e48874b6b"
+    },
+    {
+      "name": "epigraphy_map_after_stage1",
+      "namespace": "gor_02.o",
+      "offset": 305932,
+      "size": 1032,
+      "sha256": "b1e447e2cc1c8c05ebd0f73ab3f2346180a4a2a112ca9bf7a5c35a5e3e49ac52"
+    },
+    {
+      "name": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 306964,
+      "size": 1600,
+      "sha256": "8e27923ed42355dd7d8f730b809ecefcd903d4e9fad4c6dd2642e8930b17abc0"
+    },
+    {
+      "name": "epigraphy_map_after_stage3",
+      "namespace": "gor_02.o",
+      "offset": 308564,
+      "size": 1472,
+      "sha256": "11784d0301937c9675174f1574d4e90779cd9ecf4ea3be79e959b9bfef93ba3d"
+    },
+    {
+      "name": "epigraphy_map_after_stage4",
+      "namespace": "gor_02.o",
+      "offset": 310036,
+      "size": 1188,
+      "sha256": "e9f8b36137650a137112bec801da94fd42b37f5f34fcea59384eca1bebfb6507"
+    },
+    {
+      "name": "epigraphy_map_after_stage5",
+      "namespace": "gor_02.o",
+      "offset": 311224,
+      "size": 900,
+      "sha256": "6ff331cd257340919d50a918e5f499633985b06279a4ae1fef8dab4c7c4efcc4"
+    },
+    {
+      "name": "epigraphy_map_after_stage6",
+      "namespace": "gor_02.o",
+      "offset": 312124,
+      "size": 980,
+      "sha256": "23106abf920ab3e5a824016bcb3d9a1db7f5ed65cb3410385462e380aa3fab90"
+    },
+    {
+      "name": "kurihakase_after3minutes",
+      "namespace": "gor_02.o",
+      "offset": 313104,
+      "size": 708,
+      "sha256": "c282ffe521ab7cc9640feafc7d3da176bbb608bf2e0a0def723732aab7fd750d"
+    },
+    {
+      "name": "epilogue_evt",
+      "namespace": "gor_02.o",
+      "offset": 316000,
+      "size": 404,
+      "sha256": "df9ab1403b4a5d238cdb7580ddd1cc264ba05f8c1cda8eeef3bc5c59710791d8"
+    },
+    {
+      "name": "maffiaboss_maffiaboss",
+      "namespace": "gor_03.o",
+      "offset": 321084,
+      "size": 1980,
+      "sha256": "fd563d0d529ff14952b231c63202282b99d2739a2d7925546046de0d1b7171a3"
+    },
+    {
+      "name": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 323064,
+      "size": 3072,
+      "sha256": "b180d0b416e95baec9a21295ea5b952908cdfd01cfaade4f51e14f76f7bfa2d6"
+    },
+    {
+      "name": "maffiaboss_teshita_irai",
+      "namespace": "gor_03.o",
+      "offset": 326136,
+      "size": 1012,
+      "sha256": "67dbdbfe99aeb43242ac1143d1d60d17d598e8c593d09c670e927f30b152d8d6"
+    },
+    {
+      "name": "maffiaboss_train_ticket",
+      "namespace": "gor_03.o",
+      "offset": 327348,
+      "size": 3296,
+      "sha256": "91cc7c13e38d4eb64492ab68e5f90319ecb78539f1c131289f11aae087fec811"
+    },
+    {
+      "name": "exchange_return_sub",
+      "namespace": "gor_03.o",
+      "offset": 336012,
+      "size": 528,
+      "sha256": "a9603e9254fb5400e35d4756fcc26ad4439bc107e7ddf09833723cd2dbc7516d"
+    },
+    {
+      "name": "exchange_keep_sub",
+      "namespace": "gor_03.o",
+      "offset": 336540,
+      "size": 528,
+      "sha256": "26c004c405ff71f0bd73015e49d534b08adbe7fe9122a294ca2ae65d54eb5151"
+    },
+    {
+      "name": "slot_set",
+      "namespace": "gor_03.o",
+      "offset": 342576,
+      "size": 672,
+      "sha256": "8cf1f69a1393b8964f1aa6a31af75d33eccd27b353d183e920eb2331f36388a7"
+    },
+    {
+      "name": "ranking_set",
+      "namespace": "gor_03.o",
+      "offset": 343832,
+      "size": 260,
+      "sha256": "776117ac39e7e5fddf502efd7fec3e012143f1fc49a38dfb9e8fcb038d4ccc86"
+    },
+    {
+      "name": "exchange_set",
+      "namespace": "gor_03.o",
+      "offset": 344092,
+      "size": 840,
+      "sha256": "07e31f7a88556ef97824d2a0c9c801307e42c294ac06ecc6ce600f3148062d4b"
+    },
+    {
+      "name": "evt_door_03_open",
+      "namespace": "gor_03.o",
+      "offset": 355156,
+      "size": 680,
+      "sha256": "222c9d91f940d9807ffe554d933f6ffe0e0a1d1a8bc214e4ac036d2f34ad7cbb"
+    },
+    {
+      "name": "evt_door_04_close",
+      "namespace": "gor_03.o",
+      "offset": 356492,
+      "size": 280,
+      "sha256": "b181bdac1caaa585cc8e220f654ef194b83b9e85cefce1a81ebaf54bb8939d2b"
+    },
+    {
+      "name": "uraguchi_event",
+      "namespace": "gor_03.o",
+      "offset": 357804,
+      "size": 1292,
+      "sha256": "810396abdc75fd95686ac07f3541c4751e463b68863706871a24af23b4619237"
+    },
+    {
+      "name": "majorin_nusumigiki",
+      "namespace": "gor_03.o",
+      "offset": 359576,
+      "size": 1324,
+      "sha256": "058926e7baa35fedbc247403bd2ddb32d265f1f1ca4d11ed248c22b49ba64611"
+    },
+    {
+      "name": "peach_mail",
+      "namespace": "gor_03.o",
+      "offset": 361304,
+      "size": 992,
+      "sha256": "809283c1d40875b90054134b366c52713eb6dc936ad791c5d66fe7a274b99437"
+    },
+    {
+      "name": "kuzi_bomb_talk_normal",
+      "namespace": "gor_03.o",
+      "offset": 362296,
+      "size": 1488,
+      "sha256": "82c5de963d5c37134f84db6be975307cfe47294d5cbc1a05d41c03602bd1a7f6"
+    },
+    {
+      "name": "kuzi_bomb_talk_husei",
+      "namespace": "gor_03.o",
+      "offset": 363784,
+      "size": 2356,
+      "sha256": "b8636513c6e4f789a3bc777a8ba97618d73cfef6bd3744f2c85897f96357998a"
+    },
+    {
+      "name": "kuzi_keiziban_normal",
+      "namespace": "gor_03.o",
+      "offset": 366748,
+      "size": 1564,
+      "sha256": "dae86cbee45db579cdf857aa2a8fe2c79f0b630d57f1de892c6df755d48fbf1d"
+    },
+    {
+      "name": "debug_event_mode",
+      "namespace": "gor_03.o",
+      "offset": 368596,
+      "size": 576,
+      "sha256": "f2eb930a737f2c755abc322b77de863a90cbcd3072b3b748a83d0ee30415ab8e"
+    },
+    {
+      "name": "hom_10_init_evt",
+      "namespace": "gor_04.o",
+      "offset": 378484,
+      "size": 560,
+      "sha256": "f09bb69e371e7e7dcd4dcdadc208e98be6c675dc9a6c2972e53d4553ab0fb839"
+    },
+    {
+      "name": "evt_train",
+      "namespace": "gor_04.o",
+      "offset": 379044,
+      "size": 1136,
+      "sha256": "44c697e66b4c589f33524647b91a0aea5d7e412c663886a7259c87fc1318850b"
+    },
+    {
+      "name": "evt_train2",
+      "namespace": "gor_04.o",
+      "offset": 380180,
+      "size": 1148,
+      "sha256": "97cc0ac53255415864dda3caa5b281e295a8137e3034a02bf1097473a2d2e161"
+    },
+    {
+      "name": "evt_hikousen",
+      "namespace": "gor_04.o",
+      "offset": 386344,
+      "size": 896,
+      "sha256": "668e83ac41c9fe94e06e7d4be9817232edec73a271dc8973a28df4cc758530aa"
+    },
+    {
+      "name": "evt_hikousen_return",
+      "namespace": "gor_04.o",
+      "offset": 387628,
+      "size": 1960,
+      "sha256": "0571cb8389dd04004bf5655a0b873680c6dac8c870b3ce78a0d7479baaaacfa6"
+    },
+    {
+      "name": "gor_04_koopa_evt",
+      "namespace": "gor_04.o",
+      "offset": 389588,
+      "size": 4492,
+      "sha256": "3550c725afdc598212dd0a8bcac4299a8390331d8bcc5000a528816b43bc4316"
+    }
+  ],
+  "rel_bindings": {
+    "134980": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "135408": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "135612": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "136936": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "137048": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "137120": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "137192": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "137728": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "145744": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "146496": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "146552": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "146656": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "146728": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "146984": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "147288": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "152840": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "153632": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "155036": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "155544": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "155968": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "156072": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "156464": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "157528": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "157860": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "158212": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "159292": {
+      "kind": "dol",
+      "address": 2148176196
+    },
+    "159392": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "159916": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "160336": {
+      "kind": "dol",
+      "address": 2148176196
+    },
+    "160904": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "161012": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "161448": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "163932": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "165460": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "165660": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "165828": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "165988": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "167120": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "167168": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "169116": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "169200": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "169296": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "170000": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "170224": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "170296": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "170796": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "170856": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "171500": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "171932": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "173084": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "173748": {
+      "kind": "dol",
+      "address": 2148176196
+    },
+    "173812": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "173904": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "174388": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "175408": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "175824": {
+      "kind": "dol",
+      "address": 2148176196
+    },
+    "177024": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "177116": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "177944": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "178164": {
+      "kind": "dol",
+      "address": 2148169420
+    },
+    "178172": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "180140": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "183476": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "183696": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "183776": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "183992": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "184064": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "184136": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "184208": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "184280": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "184352": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "184452": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "184528": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "185432": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "186240": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "186340": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "186600": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "186880": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "189432": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "189664": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "190116": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "190972": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "192404": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "197712": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "198052": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "198656": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "198920": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "199596": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "201368": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "201756": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "202984": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "203544": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "203636": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "204572": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "204756": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "205416": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "205488": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "206472": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "206688": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "226428": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "226836": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "227988": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "229004": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "229224": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "229352": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "234140": {
+      "kind": "dol",
+      "address": 2148176196
+    },
+    "236652": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "237752": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "238004": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "239024": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "240076": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "240936": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "241056": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "243672": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "243800": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "244984": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "245704": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "258740": {
+      "kind": "dol",
+      "address": 2148176196
+    },
+    "258768": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "260448": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "263172": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "263244": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "263824": {
+      "kind": "dol",
+      "address": 2148176196
+    },
+    "265032": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "265248": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "268236": {
+      "kind": "dol",
+      "address": 2148169000
+    },
+    "268248": {
+      "kind": "dol",
+      "address": 2148169116
+    },
+    "269700": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "269864": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "287664": {
+      "kind": "dol",
+      "address": 2148169000
+    },
+    "287720": {
+      "kind": "dol",
+      "address": 2148176196
+    },
+    "288056": {
+      "kind": "dol",
+      "address": 2148171012
+    },
+    "288096": {
+      "kind": "dol",
+      "address": 2148177440
+    },
+    "288400": {
+      "kind": "dol",
+      "address": 2148177440
+    },
+    "288428": {
+      "kind": "dol",
+      "address": 2148169000
+    },
+    "292352": {
+      "kind": "dol",
+      "address": 2148169000
+    },
+    "292556": {
+      "kind": "dol",
+      "address": 2148171012
+    },
+    "292660": {
+      "kind": "dol",
+      "address": 2148169000
+    },
+    "293900": {
+      "kind": "dol",
+      "address": 2148169000
+    },
+    "294040": {
+      "kind": "dol",
+      "address": 2148171012
+    },
+    "294144": {
+      "kind": "dol",
+      "address": 2148169000
+    },
+    "294536": {
+      "kind": "dol",
+      "address": 2148176196
+    },
+    "295400": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "296032": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "296380": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "296516": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "296808": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "296896": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "296984": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "297132": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "297492": {
+      "kind": "dol",
+      "address": 2148176196
+    },
+    "297668": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "297720": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "297792": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "297876": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "297948": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "298040": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "298100": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "298172": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "298432": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "298840": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "299188": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "299308": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "299992": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "300220": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "300728": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "301384": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "303576": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "303764": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "304356": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "304428": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "304816": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "304888": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "304972": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "305044": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "305644": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "305780": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "306024": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "306252": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "306440": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "306512": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "306752": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "306824": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "307056": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "307228": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "307356": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "307428": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "307488": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "307632": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "307764": {
+      "kind": "dol",
+      "address": 2148176196
+    },
+    "307836": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "307896": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "307980": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "308052": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "308112": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "308220": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "308292": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "308352": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "308424": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "308656": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "308836": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "309004": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "309076": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "309160": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "309220": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "309312": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "309388": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "309896": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "310128": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "310292": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "310444": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "310532": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "310640": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "310712": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "310784": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "310844": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "310916": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "311012": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "311084": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "311316": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "311480": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "311644": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "311716": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "311776": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "311984": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "312216": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "312396": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "312512": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "312584": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "312644": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "312956": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "313232": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "313292": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "313364": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "313564": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "313660": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "313708": {
+      "kind": "dol",
+      "address": 2148169116
+    },
+    "313724": {
+      "kind": "dol",
+      "address": 2148169000
+    },
+    "316216": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "321528": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "321600": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "322184": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "322308": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "322660": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "322788": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "322860": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "322956": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "323376": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "323460": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "323748": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "323796": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "323868": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "324040": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "324208": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "324304": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "324400": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "324496": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "324592": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "324720": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "325176": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "325272": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "325344": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "325896": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "326192": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "326308": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "327788": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "328068": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "328140": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "328756": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "328884": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "329020": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "329092": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "329984": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "330176": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "330520": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "336028": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "336152": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "336592": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "336700": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "342832": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "342888": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "343196": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "343848": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "344052": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "344248": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "344892": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "355172": {
+      "kind": "dol",
+      "address": 2148171012
+    },
+    "356532": {
+      "kind": "dol",
+      "address": 2148171012
+    },
+    "358200": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "358324": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "359064": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "359668": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "360364": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "360580": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "360640": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "360784": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "360844": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "362000": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "362232": {
+      "kind": "dol",
+      "address": 2148169420
+    },
+    "362240": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "362312": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "363736": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "363900": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "365084": {
+      "kind": "dol",
+      "address": 2148176196
+    },
+    "366092": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "367104": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "368052": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "369008": {
+      "kind": "dol",
+      "address": 2148170468
+    },
+    "369032": {
+      "kind": "dol",
+      "address": 2148169820
+    },
+    "369040": {
+      "kind": "dol",
+      "address": 2148169988
+    },
+    "369088": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "369136": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "378900": {
+      "kind": "dol",
+      "address": 2148169116
+    },
+    "378916": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "378972": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "379844": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "379956": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "380332": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "381248": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "386376": {
+      "kind": "dol",
+      "address": 2148177440
+    },
+    "387816": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "387880": {
+      "kind": "dol",
+      "address": 2148169116
+    },
+    "389556": {
+      "kind": "dol",
+      "address": 2148171592
+    },
+    "389604": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "389752": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "389936": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "390024": {
+      "kind": "dol",
+      "address": 2148175592
+    },
+    "390276": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "390608": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "390828": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "392144": {
+      "kind": "dol",
+      "address": 2148174292
+    },
+    "393368": {
+      "kind": "dol",
+      "address": 2148174292
+    }
+  },
+  "maps": [],
+  "basic_requests": [
+    {
+      "owner": "mony_peton_talk",
+      "namespace": "gor_00.o",
+      "offset": 134976,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        157,
+        115,
+        562,
+        157,
+        55,
+        217,
+        1000,
+        11
+      ]
+    },
+    {
+      "owner": "mony_peton_talk",
+      "namespace": "gor_00.o",
+      "offset": 135404,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4264967296,
+        115,
+        562,
+        4264967296,
+        55,
+        217,
+        300,
+        11
+      ]
+    },
+    {
+      "owner": "mony_peton_talk",
+      "namespace": "gor_00.o",
+      "offset": 135608,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "marco_talk",
+      "namespace": "gor_00.o",
+      "offset": 136932,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        110,
+        170,
+        472,
+        110,
+        110,
+        127,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "marco_talk",
+      "namespace": "gor_00.o",
+      "offset": 137044,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        160,
+        170,
+        472,
+        160,
+        110,
+        127,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "marco_talk",
+      "namespace": "gor_00.o",
+      "offset": 137116,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        60,
+        170,
+        472,
+        60,
+        110,
+        127,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "marco_talk",
+      "namespace": "gor_00.o",
+      "offset": 137188,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        95,
+        207,
+        763,
+        95,
+        89,
+        98,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "marco_talk",
+      "namespace": "gor_00.o",
+      "offset": 137724,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "mokorim_talk",
+      "namespace": "gor_00.o",
+      "offset": 145740,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        500,
+        120,
+        90,
+        500,
+        55,
+        4294967016,
+        800,
+        11
+      ]
+    },
+    {
+      "owner": "mokorim_talk",
+      "namespace": "gor_00.o",
+      "offset": 146492,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "mokorim_talk",
+      "namespace": "gor_00.o",
+      "offset": 146548,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        500,
+        120,
+        90,
+        500,
+        55,
+        4294967016,
+        800,
+        11
+      ]
+    },
+    {
+      "owner": "mokorim_talk",
+      "namespace": "gor_00.o",
+      "offset": 146652,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        515,
+        105,
+        5,
+        515,
+        55,
+        4294967016,
+        800,
+        11
+      ]
+    },
+    {
+      "owner": "mokorim_talk",
+      "namespace": "gor_00.o",
+      "offset": 146724,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        515,
+        90,
+        4294967226,
+        515,
+        55,
+        4294967016,
+        800,
+        11
+      ]
+    },
+    {
+      "owner": "mokorim_talk",
+      "namespace": "gor_00.o",
+      "offset": 146980,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        500,
+        120,
+        90,
+        500,
+        55,
+        4294967016,
+        800,
+        11
+      ]
+    },
+    {
+      "owner": "mokorim_talk",
+      "namespace": "gor_00.o",
+      "offset": 147284,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "enter_gorotsuki_town",
+      "namespace": "gor_00.o",
+      "offset": 152836,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        0,
+        700,
+        1420,
+        0,
+        4294967286,
+        0,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "enter_gorotsuki_town",
+      "namespace": "gor_00.o",
+      "offset": 153628,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        2,
+        225,
+        1015,
+        2,
+        50,
+        243,
+        3000,
+        11
+      ]
+    },
+    {
+      "owner": "enter_gorotsuki_town",
+      "namespace": "gor_00.o",
+      "offset": 155032,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "christine_osoware",
+      "namespace": "gor_00.o",
+      "offset": 155540,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        100,
+        127,
+        45,
+        100,
+        75,
+        4294967046,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "christine_osoware",
+      "namespace": "gor_00.o",
+      "offset": 155964,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        120,
+        105,
+        4294967243,
+        120,
+        70,
+        4294967046,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "christine_osoware",
+      "namespace": "gor_00.o",
+      "offset": 156068,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        100,
+        127,
+        45,
+        100,
+        75,
+        4294967046,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "christine_osoware",
+      "namespace": "gor_00.o",
+      "offset": 156460,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gundan1000tai_beforebattle",
+      "namespace": "gor_00.o",
+      "offset": 157524,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        36,
+        149,
+        224,
+        37,
+        53,
+        4294966979,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gundan1000tai_beforebattle",
+      "namespace": "gor_00.o",
+      "offset": 157856,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        0,
+        149,
+        224,
+        0,
+        53,
+        4294966979,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gundan1000tai_beforebattle",
+      "namespace": "gor_00.o",
+      "offset": 158208,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        80,
+        108,
+        4294967251,
+        80,
+        60,
+        4294966980,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "gundan1000tai_afterbattle",
+      "namespace": "gor_00.o",
+      "offset": 159388,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        80,
+        108,
+        4294967251,
+        80,
+        60,
+        4294966980,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "gundan1000tai_afterbattle",
+      "namespace": "gor_00.o",
+      "offset": 159912,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        30,
+        325,
+        334,
+        30,
+        65,
+        4294966980,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gundan1000tai_afterbattle",
+      "namespace": "gor_00.o",
+      "offset": 160900,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        285,
+        117,
+        50,
+        285,
+        25,
+        4294966981,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gundan1000tai_afterbattle",
+      "namespace": "gor_00.o",
+      "offset": 161008,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        1000,
+        11
+      ]
+    },
+    {
+      "owner": "gundan1000tai_afterbattle",
+      "namespace": "gor_00.o",
+      "offset": 161444,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        30,
+        325,
+        334,
+        30,
+        65,
+        4294966980,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "gundan1000tai_afterbattle",
+      "namespace": "gor_00.o",
+      "offset": 163928,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        30,
+        133,
+        4294967271,
+        30,
+        60,
+        4294966980,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "shukko_event",
+      "namespace": "gor_00.o",
+      "offset": 165456,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        85,
+        142,
+        398,
+        85,
+        90,
+        102,
+        1000,
+        11
+      ]
+    },
+    {
+      "owner": "shukko_event",
+      "namespace": "gor_00.o",
+      "offset": 165656,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        95,
+        207,
+        763,
+        95,
+        89,
+        98,
+        400,
+        11
+      ]
+    },
+    {
+      "owner": "shukko_event",
+      "namespace": "gor_00.o",
+      "offset": 165824,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        122,
+        360,
+        1112,
+        122,
+        180,
+        90,
+        2000,
+        11
+      ]
+    },
+    {
+      "owner": "shukko_event",
+      "namespace": "gor_00.o",
+      "offset": 165984,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        300,
+        0,
+        515,
+        300,
+        60,
+        91,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "shukko_event",
+      "namespace": "gor_00.o",
+      "offset": 167116,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        122,
+        360,
+        1112,
+        122,
+        180,
+        90,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "shukko_event",
+      "namespace": "gor_00.o",
+      "offset": 167164,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        0,
+        99,
+        4294966994,
+        4294967166,
+        64,
+        4294966844,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "gorotsuki_kikan",
+      "namespace": "gor_00.o",
+      "offset": 169112,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        60,
+        225,
+        432,
+        125,
+        225,
+        177,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "gorotsuki_kikan",
+      "namespace": "gor_00.o",
+      "offset": 169196,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        165,
+        120,
+        586,
+        170,
+        55,
+        217,
+        1500,
+        11
+      ]
+    },
+    {
+      "owner": "gorotsuki_kikan",
+      "namespace": "gor_00.o",
+      "offset": 169292,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        90,
+        165,
+        759,
+        90,
+        70,
+        217,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gorotsuki_kikan",
+      "namespace": "gor_00.o",
+      "offset": 169996,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        165,
+        127,
+        628,
+        165,
+        71,
+        184,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gorotsuki_kikan",
+      "namespace": "gor_00.o",
+      "offset": 170220,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        85,
+        190,
+        498,
+        85,
+        140,
+        50,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gorotsuki_kikan",
+      "namespace": "gor_00.o",
+      "offset": 170292,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        165,
+        120,
+        586,
+        170,
+        55,
+        217,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gorotsuki_kikan",
+      "namespace": "gor_00.o",
+      "offset": 170792,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        205,
+        127,
+        628,
+        205,
+        71,
+        184,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gorotsuki_kikan",
+      "namespace": "gor_00.o",
+      "offset": 170852,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "into_gor_ship",
+      "namespace": "gor_00.o",
+      "offset": 171496,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        188,
+        193,
+        753,
+        188,
+        74,
+        63,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "into_gor_ship",
+      "namespace": "gor_00.o",
+      "offset": 171928,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gor_00_koopa_evt",
+      "namespace": "gor_00.o",
+      "offset": 173080,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        167,
+        195,
+        920,
+        167,
+        68,
+        227,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "gor_00_koopa_evt",
+      "namespace": "gor_00.o",
+      "offset": 173808,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        167,
+        161,
+        737,
+        167,
+        68,
+        227,
+        800,
+        11
+      ]
+    },
+    {
+      "owner": "gor_00_koopa_evt",
+      "namespace": "gor_00.o",
+      "offset": 173900,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967169,
+        161,
+        737,
+        4294967169,
+        68,
+        227,
+        1000,
+        11
+      ]
+    },
+    {
+      "owner": "gor_00_koopa_evt",
+      "namespace": "gor_00.o",
+      "offset": 174384,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        10,
+        161,
+        36,
+        10,
+        78,
+        4294967023,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "gor_00_koopa_evt",
+      "namespace": "gor_00.o",
+      "offset": 175404,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        145,
+        193,
+        737,
+        145,
+        83,
+        225,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "gor_00_koopa_evt",
+      "namespace": "gor_00.o",
+      "offset": 177020,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        80,
+        103,
+        494,
+        80,
+        45,
+        225,
+        800,
+        11
+      ]
+    },
+    {
+      "owner": "gor_00_koopa_evt",
+      "namespace": "gor_00.o",
+      "offset": 177112,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        145,
+        193,
+        737,
+        145,
+        83,
+        225,
+        800,
+        0
+      ]
+    },
+    {
+      "owner": "peach_mail",
+      "namespace": "gor_00.o",
+      "offset": 177940,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967186,
+        109,
+        512,
+        4294967186,
+        57,
+        217,
+        1000,
+        11
+      ]
+    },
+    {
+      "owner": "peach_mail",
+      "namespace": "gor_00.o",
+      "offset": 178168,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gor_muj_ship_start",
+      "namespace": "gor_00.o",
+      "offset": 180136,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        184,
+        278,
+        1091,
+        184,
+        158,
+        99,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 183472,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        0,
+        700,
+        1420,
+        0,
+        4294967286,
+        0,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 183692,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        65,
+        102,
+        513,
+        65,
+        50,
+        217,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 183772,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        60,
+        164,
+        836,
+        60,
+        55,
+        220,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 183988,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        15,
+        116,
+        565,
+        15,
+        55,
+        220,
+        400,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 184060,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967286,
+        116,
+        565,
+        4294967286,
+        55,
+        220,
+        400,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 184132,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967261,
+        116,
+        565,
+        4294967261,
+        55,
+        220,
+        400,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 184204,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967256,
+        116,
+        565,
+        4294967256,
+        55,
+        220,
+        400,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 184276,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967236,
+        116,
+        565,
+        4294967236,
+        55,
+        220,
+        400,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 184348,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967211,
+        116,
+        565,
+        4294967211,
+        55,
+        220,
+        400,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 184448,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967206,
+        116,
+        565,
+        4294967206,
+        55,
+        220,
+        400,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 184524,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        60,
+        164,
+        836,
+        60,
+        55,
+        220,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 185428,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        95,
+        116,
+        565,
+        95,
+        55,
+        220,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 186236,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967096,
+        120,
+        505,
+        75,
+        60,
+        220,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 186336,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        30,
+        88,
+        466,
+        33,
+        45,
+        220,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 186596,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        110,
+        133,
+        663,
+        110,
+        55,
+        220,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 186876,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        2,
+        225,
+        1015,
+        2,
+        50,
+        243,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_00.o",
+      "offset": 189428,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        0,
+        700,
+        1420,
+        0,
+        4294967286,
+        0,
+        3500,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt2",
+      "namespace": "gor_00.o",
+      "offset": 189660,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        120,
+        40,
+        586,
+        4294967271,
+        50,
+        214,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "return_gorotsuki_town",
+      "namespace": "gor_00.o",
+      "offset": 190112,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        0,
+        700,
+        1420,
+        0,
+        4294967286,
+        0,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "return_gorotsuki_town",
+      "namespace": "gor_00.o",
+      "offset": 190968,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        2,
+        225,
+        1015,
+        2,
+        50,
+        243,
+        3000,
+        11
+      ]
+    },
+    {
+      "owner": "return_gorotsuki_town",
+      "namespace": "gor_00.o",
+      "offset": 192400,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "nancy_init_check",
+      "namespace": "gor_01.o",
+      "offset": 197708,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4264967296,
+        99,
+        4264967297,
+        4264967296,
+        39,
+        4264967298,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "nancy_init_check",
+      "namespace": "gor_01.o",
+      "offset": 198048,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        800,
+        11
+      ]
+    },
+    {
+      "owner": "nancy_init_check",
+      "namespace": "gor_01.o",
+      "offset": 198652,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4264967296,
+        80,
+        4264967297,
+        4264967296,
+        40,
+        4264967298,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "nancy_init_check",
+      "namespace": "gor_01.o",
+      "offset": 198916,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "nancy_init_check",
+      "namespace": "gor_01.o",
+      "offset": 199592,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "marco_talk",
+      "namespace": "gor_01.o",
+      "offset": 201364,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4264967296,
+        92,
+        128,
+        4264967296,
+        40,
+        4294967128,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "marco_talk",
+      "namespace": "gor_01.o",
+      "offset": 201752,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4264967307,
+        63,
+        152,
+        4264967307,
+        45,
+        4294967127,
+        1000,
+        11
+      ]
+    },
+    {
+      "owner": "marco_talk",
+      "namespace": "gor_01.o",
+      "offset": 202980,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "master_talk",
+      "namespace": "gor_01.o",
+      "offset": 203540,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        320,
+        99,
+        4294967284,
+        322,
+        43,
+        4294967025,
+        1000,
+        11
+      ]
+    },
+    {
+      "owner": "master_talk",
+      "namespace": "gor_01.o",
+      "offset": 203632,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        1000,
+        11
+      ]
+    },
+    {
+      "owner": "master_talk",
+      "namespace": "gor_01.o",
+      "offset": 204568,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        300,
+        95,
+        27,
+        300,
+        43,
+        4294967028,
+        1500,
+        11
+      ]
+    },
+    {
+      "owner": "master_talk",
+      "namespace": "gor_01.o",
+      "offset": 204752,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "master_talk",
+      "namespace": "gor_01.o",
+      "offset": 205412,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        300,
+        95,
+        27,
+        300,
+        43,
+        4294967028,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "master_talk",
+      "namespace": "gor_01.o",
+      "offset": 205484,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "shoptender_talk",
+      "namespace": "gor_01.o",
+      "offset": 206468,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        358,
+        123,
+        4294966995,
+        4294967107,
+        75,
+        4294966995,
+        2600,
+        11
+      ]
+    },
+    {
+      "owner": "shoptender_talk",
+      "namespace": "gor_01.o",
+      "offset": 206684,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        2600,
+        11
+      ]
+    },
+    {
+      "owner": "christine_nakama",
+      "namespace": "gor_01.o",
+      "offset": 226424,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        0,
+        134,
+        984,
+        0,
+        38,
+        442,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "christine_nakama",
+      "namespace": "gor_01.o",
+      "offset": 226832,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        0,
+        55,
+        800,
+        0,
+        45,
+        440,
+        400,
+        11
+      ]
+    },
+    {
+      "owner": "christine_nakama",
+      "namespace": "gor_01.o",
+      "offset": 227984,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        25,
+        55,
+        800,
+        25,
+        45,
+        440,
+        800,
+        11
+      ]
+    },
+    {
+      "owner": "christine_nakama",
+      "namespace": "gor_01.o",
+      "offset": 229000,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        0,
+        55,
+        800,
+        0,
+        45,
+        440,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "christine_nakama",
+      "namespace": "gor_01.o",
+      "offset": 229220,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        27,
+        45,
+        800,
+        27,
+        35,
+        440,
+        800,
+        11
+      ]
+    },
+    {
+      "owner": "christine_nakama",
+      "namespace": "gor_01.o",
+      "offset": 229348,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gor_01_koopa_evt",
+      "namespace": "gor_01.o",
+      "offset": 236648,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        200,
+        160,
+        616,
+        200,
+        65,
+        74,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "gor_01_koopa_evt",
+      "namespace": "gor_01.o",
+      "offset": 237748,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967071,
+        120,
+        755,
+        416,
+        150,
+        4294967284,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "gor_01_koopa_evt",
+      "namespace": "gor_01.o",
+      "offset": 238000,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        255,
+        164,
+        587,
+        255,
+        120,
+        341,
+        2600,
+        11
+      ]
+    },
+    {
+      "owner": "sekai_yami_evt",
+      "namespace": "gor_01.o",
+      "offset": 239020,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        0,
+        350,
+        1530,
+        0,
+        150,
+        44,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "minnnanokoe_evt",
+      "namespace": "gor_01.o",
+      "offset": 240072,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        0,
+        645,
+        824,
+        0,
+        55,
+        283,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "minnnanokoe_evt",
+      "namespace": "gor_01.o",
+      "offset": 240932,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        0,
+        110,
+        1093,
+        0,
+        110,
+        293,
+        1000,
+        11
+      ]
+    },
+    {
+      "owner": "minnnanokoe_evt",
+      "namespace": "gor_01.o",
+      "offset": 241052,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        0,
+        4294967221,
+        999,
+        0,
+        300,
+        293,
+        2000,
+        1
+      ]
+    },
+    {
+      "owner": "iri_16_tyutyu_talk",
+      "namespace": "gor_01.o",
+      "offset": 243668,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966780,
+        290,
+        230,
+        4294966780,
+        225,
+        4294967156,
+        800,
+        11
+      ]
+    },
+    {
+      "owner": "iri_16_tyutyu_talk",
+      "namespace": "gor_01.o",
+      "offset": 243796,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_01.o",
+      "offset": 244980,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967216,
+        225,
+        400,
+        4294967216,
+        200,
+        4294967196,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_01.o",
+      "offset": 245700,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        0,
+        275,
+        1397,
+        0,
+        200,
+        4294967196,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "powerupya_party_lank_rtn",
+      "namespace": "gor_02.o",
+      "offset": 258764,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966934,
+        193,
+        686,
+        4294966934,
+        37,
+        4294967096,
+        1600,
+        11
+      ]
+    },
+    {
+      "owner": "powerupya_party_lank_rtn",
+      "namespace": "gor_02.o",
+      "offset": 260444,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        1600,
+        11
+      ]
+    },
+    {
+      "owner": "unk_evt_gor_00040294",
+      "namespace": "gor_02.o",
+      "offset": 263168,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966961,
+        100,
+        158,
+        4294966961,
+        33,
+        4294967060,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "unk_evt_gor_00040294",
+      "namespace": "gor_02.o",
+      "offset": 263240,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "unk_evt_gor_00040b14",
+      "namespace": "gor_02.o",
+      "offset": 265028,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966976,
+        114,
+        371,
+        4294966976,
+        45,
+        4294967273,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "unk_evt_gor_00040b14",
+      "namespace": "gor_02.o",
+      "offset": 265244,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "oyabun_talk",
+      "namespace": "gor_02.o",
+      "offset": 269696,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4264967296,
+        72,
+        4294966543,
+        4264967296,
+        52,
+        4294966696,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "oyabun_talk",
+      "namespace": "gor_02.o",
+      "offset": 269860,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "evt_door_03_roll_open",
+      "namespace": "gor_02.o",
+      "offset": 288052,
+      "function": "evt_cam3d_evt_set_xyz",
+      "operands": [
+        65,
+        10,
+        4294967241,
+        0,
+        150,
+        11
+      ]
+    },
+    {
+      "owner": "evt_gor_door_open",
+      "namespace": "gor_02.o",
+      "offset": 292552,
+      "function": "evt_cam3d_evt_set_xyz",
+      "operands": [
+        4264967296,
+        4264967300,
+        4264967298,
+        0,
+        150,
+        11
+      ]
+    },
+    {
+      "owner": "evt_gor_door_close",
+      "namespace": "gor_02.o",
+      "offset": 294036,
+      "function": "evt_cam3d_evt_set_xyz",
+      "operands": [
+        4264967296,
+        4264967300,
+        4264967298,
+        0,
+        150,
+        11
+      ]
+    },
+    {
+      "owner": "steel_coin",
+      "namespace": "gor_02.o",
+      "offset": 295396,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966846,
+        103,
+        330,
+        4294966771,
+        43,
+        4294967290,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "steel_coin",
+      "namespace": "gor_02.o",
+      "offset": 296028,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 296376,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967181,
+        65,
+        4294967276,
+        4294967181,
+        30,
+        4294967079,
+        666,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 296512,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        95,
+        82,
+        4294967111,
+        42,
+        4294967079,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 296804,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967126,
+        84,
+        29,
+        4294967126,
+        40,
+        4294967079,
+        200,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 296892,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967141,
+        72,
+        4294967276,
+        4294967141,
+        37,
+        4294967079,
+        200,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 296980,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        59,
+        4294967227,
+        4294967156,
+        33,
+        4294967079,
+        200,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 297128,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        95,
+        82,
+        4294967111,
+        42,
+        4294967079,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 297664,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        64,
+        4294967275,
+        4294967111,
+        30,
+        4294967078,
+        300,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 297716,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        64,
+        4294967275,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 297788,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967046,
+        95,
+        122,
+        4294967111,
+        45,
+        4294967079,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 297872,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        64,
+        4294967275,
+        4294967156,
+        30,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 297944,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967231,
+        95,
+        107,
+        4294967111,
+        45,
+        4294967079,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 298036,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        64,
+        4294967275,
+        4294967111,
+        30,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 298096,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        64,
+        4294967275,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 298168,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        95,
+        82,
+        4294967111,
+        42,
+        4294967079,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 298428,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967136,
+        70,
+        4294967277,
+        4294967136,
+        40,
+        4294967079,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 298836,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967141,
+        78,
+        30,
+        4294967141,
+        40,
+        4294967079,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_first_talk",
+      "namespace": "gor_02.o",
+      "offset": 299184,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_wall_remove",
+      "namespace": "gor_02.o",
+      "offset": 299304,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967026,
+        100,
+        595,
+        4294967026,
+        30,
+        201,
+        2000,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_wall_remove",
+      "namespace": "gor_02.o",
+      "offset": 299988,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967086,
+        85,
+        595,
+        4294967086,
+        15,
+        201,
+        1000,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_wall_remove",
+      "namespace": "gor_02.o",
+      "offset": 300216,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_lecture",
+      "namespace": "gor_02.o",
+      "offset": 300724,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967051,
+        100,
+        639,
+        4294967051,
+        40,
+        294,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_lecture",
+      "namespace": "gor_02.o",
+      "offset": 301380,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map",
+      "namespace": "gor_02.o",
+      "offset": 303572,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967126,
+        75,
+        717,
+        4294967126,
+        75,
+        4294967288,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map",
+      "namespace": "gor_02.o",
+      "offset": 303760,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map",
+      "namespace": "gor_02.o",
+      "offset": 304352,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        60,
+        4294967256,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map",
+      "namespace": "gor_02.o",
+      "offset": 304424,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967046,
+        133,
+        93,
+        4294967116,
+        43,
+        4294967086,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map",
+      "namespace": "gor_02.o",
+      "offset": 304812,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        60,
+        4294967256,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map",
+      "namespace": "gor_02.o",
+      "offset": 304884,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map",
+      "namespace": "gor_02.o",
+      "offset": 304968,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        60,
+        4294967256,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map",
+      "namespace": "gor_02.o",
+      "offset": 305040,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967146,
+        100,
+        82,
+        4294967146,
+        47,
+        4294967079,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map",
+      "namespace": "gor_02.o",
+      "offset": 305640,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967116,
+        100,
+        82,
+        4294967116,
+        47,
+        4294967079,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map",
+      "namespace": "gor_02.o",
+      "offset": 305776,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage1",
+      "namespace": "gor_02.o",
+      "offset": 306020,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967126,
+        75,
+        717,
+        4294967126,
+        75,
+        4294967288,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage1",
+      "namespace": "gor_02.o",
+      "offset": 306248,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage1",
+      "namespace": "gor_02.o",
+      "offset": 306436,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        60,
+        4294967256,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage1",
+      "namespace": "gor_02.o",
+      "offset": 306508,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage1",
+      "namespace": "gor_02.o",
+      "offset": 306748,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        60,
+        4294967256,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage1",
+      "namespace": "gor_02.o",
+      "offset": 306820,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 307052,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967126,
+        75,
+        717,
+        4294967126,
+        75,
+        4294967288,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 307224,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 307352,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        70,
+        4,
+        4294967156,
+        32,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 307424,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967088,
+        63,
+        4294967256,
+        4294967088,
+        32,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 307484,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        63,
+        4294967256,
+        4294967156,
+        32,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 307628,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 307832,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967088,
+        70,
+        4,
+        4294967088,
+        32,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 307892,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        63,
+        4294967256,
+        4294967156,
+        32,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 307976,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 308048,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967088,
+        70,
+        4,
+        4294967088,
+        32,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 308108,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 308216,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        60,
+        4294967256,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 308288,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967088,
+        66,
+        4294967276,
+        4294967088,
+        33,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 308348,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage2",
+      "namespace": "gor_02.o",
+      "offset": 308420,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage3",
+      "namespace": "gor_02.o",
+      "offset": 308652,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967126,
+        75,
+        717,
+        4294967126,
+        75,
+        4294967288,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage3",
+      "namespace": "gor_02.o",
+      "offset": 308832,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage3",
+      "namespace": "gor_02.o",
+      "offset": 309000,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        60,
+        4294967256,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage3",
+      "namespace": "gor_02.o",
+      "offset": 309072,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage3",
+      "namespace": "gor_02.o",
+      "offset": 309156,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967088,
+        70,
+        4,
+        4294967088,
+        32,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage3",
+      "namespace": "gor_02.o",
+      "offset": 309216,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage3",
+      "namespace": "gor_02.o",
+      "offset": 309308,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        60,
+        4294967256,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage3",
+      "namespace": "gor_02.o",
+      "offset": 309384,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage3",
+      "namespace": "gor_02.o",
+      "offset": 309892,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage4",
+      "namespace": "gor_02.o",
+      "offset": 310124,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967126,
+        75,
+        717,
+        4294967126,
+        75,
+        4294967288,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage4",
+      "namespace": "gor_02.o",
+      "offset": 310288,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage4",
+      "namespace": "gor_02.o",
+      "offset": 310440,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        60,
+        4294967256,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage4",
+      "namespace": "gor_02.o",
+      "offset": 310528,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage4",
+      "namespace": "gor_02.o",
+      "offset": 310636,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        60,
+        4294967256,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage4",
+      "namespace": "gor_02.o",
+      "offset": 310708,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967036,
+        125,
+        256,
+        4294967116,
+        75,
+        4294967242,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage4",
+      "namespace": "gor_02.o",
+      "offset": 310780,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967088,
+        77,
+        28,
+        4294967088,
+        35,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage4",
+      "namespace": "gor_02.o",
+      "offset": 310840,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        60,
+        4294967256,
+        4294967156,
+        30,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage4",
+      "namespace": "gor_02.o",
+      "offset": 310912,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage4",
+      "namespace": "gor_02.o",
+      "offset": 311008,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        60,
+        4294967256,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage4",
+      "namespace": "gor_02.o",
+      "offset": 311080,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage5",
+      "namespace": "gor_02.o",
+      "offset": 311312,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967126,
+        75,
+        717,
+        4294967126,
+        75,
+        4294967288,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage5",
+      "namespace": "gor_02.o",
+      "offset": 311476,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage5",
+      "namespace": "gor_02.o",
+      "offset": 311640,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        60,
+        4294967256,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage5",
+      "namespace": "gor_02.o",
+      "offset": 311712,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967088,
+        77,
+        28,
+        4294967088,
+        35,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage5",
+      "namespace": "gor_02.o",
+      "offset": 311772,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage5",
+      "namespace": "gor_02.o",
+      "offset": 311980,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage6",
+      "namespace": "gor_02.o",
+      "offset": 312212,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967126,
+        75,
+        717,
+        4294967126,
+        75,
+        4294967288,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage6",
+      "namespace": "gor_02.o",
+      "offset": 312392,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage6",
+      "namespace": "gor_02.o",
+      "offset": 312508,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967156,
+        60,
+        4294967256,
+        4294967156,
+        30,
+        4294967078,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage6",
+      "namespace": "gor_02.o",
+      "offset": 312580,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967088,
+        77,
+        28,
+        4294967088,
+        35,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage6",
+      "namespace": "gor_02.o",
+      "offset": 312640,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "epigraphy_map_after_stage6",
+      "namespace": "gor_02.o",
+      "offset": 312952,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_after3minutes",
+      "namespace": "gor_02.o",
+      "offset": 313228,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4264967296,
+        95,
+        73,
+        4264967296,
+        43,
+        4294967079,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_after3minutes",
+      "namespace": "gor_02.o",
+      "offset": 313288,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967139,
+        95,
+        73,
+        4294967149,
+        43,
+        4294967079,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_after3minutes",
+      "namespace": "gor_02.o",
+      "offset": 313360,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967099,
+        121,
+        185,
+        4294967099,
+        50,
+        4294967079,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_after3minutes",
+      "namespace": "gor_02.o",
+      "offset": 313560,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967139,
+        95,
+        73,
+        4294967149,
+        43,
+        4294967079,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kurihakase_after3minutes",
+      "namespace": "gor_02.o",
+      "offset": 313656,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "epilogue_evt",
+      "namespace": "gor_02.o",
+      "offset": 316212,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967111,
+        90,
+        78,
+        4294967111,
+        40,
+        4294967078,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_maffiaboss",
+      "namespace": "gor_03.o",
+      "offset": 321524,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966811,
+        250,
+        4294967201,
+        4294967108,
+        205,
+        4294967201,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_maffiaboss",
+      "namespace": "gor_03.o",
+      "offset": 321596,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966613,
+        289,
+        4294967136,
+        4294967107,
+        215,
+        4294967136,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_maffiaboss",
+      "namespace": "gor_03.o",
+      "offset": 322180,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966787,
+        252,
+        4294967171,
+        4294967108,
+        202,
+        4294967171,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_maffiaboss",
+      "namespace": "gor_03.o",
+      "offset": 322304,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966787,
+        252,
+        4294967066,
+        4294967108,
+        202,
+        4294967066,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_maffiaboss",
+      "namespace": "gor_03.o",
+      "offset": 322656,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966613,
+        289,
+        4294967136,
+        4294967107,
+        215,
+        4294967136,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_maffiaboss",
+      "namespace": "gor_03.o",
+      "offset": 322784,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966787,
+        252,
+        4294967171,
+        4294967108,
+        202,
+        4294967171,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_maffiaboss",
+      "namespace": "gor_03.o",
+      "offset": 322856,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966911,
+        230,
+        4294967213,
+        4294967109,
+        200,
+        4294967213,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_maffiaboss",
+      "namespace": "gor_03.o",
+      "offset": 322952,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 323372,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966787,
+        252,
+        4294967196,
+        4294967108,
+        202,
+        4294967196,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 323456,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966613,
+        289,
+        4294967136,
+        4294967107,
+        215,
+        4294967136,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 323744,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966613,
+        289,
+        4294966911,
+        4294967107,
+        215,
+        4294966911,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 323792,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966811,
+        250,
+        4294967206,
+        4294967108,
+        205,
+        4294967206,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 323864,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966613,
+        289,
+        4294966911,
+        4294967107,
+        215,
+        4294966911,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 324036,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966613,
+        289,
+        4294967136,
+        4294967107,
+        215,
+        4294967136,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 324204,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966633,
+        284,
+        4294967139,
+        4294967107,
+        213,
+        4294967139,
+        200,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 324300,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966653,
+        278,
+        4294967142,
+        4294967107,
+        210,
+        4294967142,
+        200,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 324396,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966673,
+        273,
+        4294967145,
+        4294967107,
+        207,
+        4294967145,
+        200,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 324492,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966693,
+        268,
+        4294967148,
+        4294967107,
+        204,
+        4294967148,
+        200,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 324588,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966713,
+        262,
+        4294967151,
+        4294967108,
+        202,
+        4294967151,
+        200,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 324716,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966762,
+        247,
+        4294967146,
+        4294967108,
+        194,
+        4294967146,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 325172,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966846,
+        237,
+        4294967116,
+        4294967108,
+        200,
+        4294967116,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 325268,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966846,
+        242,
+        4294967211,
+        4294967108,
+        205,
+        4294967211,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 325340,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966613,
+        289,
+        4294967136,
+        4294967107,
+        215,
+        4294967136,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_airship_ticket",
+      "namespace": "gor_03.o",
+      "offset": 325892,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_teshita_irai",
+      "namespace": "gor_03.o",
+      "offset": 326188,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966861,
+        248,
+        4294967061,
+        4294967108,
+        212,
+        4294967061,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_teshita_irai",
+      "namespace": "gor_03.o",
+      "offset": 326304,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_train_ticket",
+      "namespace": "gor_03.o",
+      "offset": 327784,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966712,
+        265,
+        4294967151,
+        4294967107,
+        200,
+        4294967151,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_train_ticket",
+      "namespace": "gor_03.o",
+      "offset": 328064,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966811,
+        244,
+        4294967171,
+        4294967107,
+        195,
+        4294967171,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_train_ticket",
+      "namespace": "gor_03.o",
+      "offset": 328136,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966613,
+        282,
+        4294967131,
+        4294967107,
+        208,
+        4294967131,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_train_ticket",
+      "namespace": "gor_03.o",
+      "offset": 328752,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966786,
+        243,
+        4294967141,
+        4294967107,
+        195,
+        4294967141,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_train_ticket",
+      "namespace": "gor_03.o",
+      "offset": 328880,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966611,
+        280,
+        4294967126,
+        4294967105,
+        206,
+        4294967126,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_train_ticket",
+      "namespace": "gor_03.o",
+      "offset": 329016,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966786,
+        243,
+        4294967141,
+        4294967107,
+        195,
+        4294967141,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_train_ticket",
+      "namespace": "gor_03.o",
+      "offset": 329088,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966611,
+        280,
+        4294967126,
+        4294967105,
+        206,
+        4294967126,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_train_ticket",
+      "namespace": "gor_03.o",
+      "offset": 329980,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966762,
+        252,
+        4294967181,
+        4294967108,
+        200,
+        4294967181,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_train_ticket",
+      "namespace": "gor_03.o",
+      "offset": 330172,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966613,
+        285,
+        4294967146,
+        4294967108,
+        211,
+        4294967146,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "maffiaboss_train_ticket",
+      "namespace": "gor_03.o",
+      "offset": 330516,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "exchange_return_sub",
+      "namespace": "gor_03.o",
+      "offset": 336024,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4064413312,
+        4065095296,
+        4064550528,
+        4064765568,
+        4065032832,
+        4064550528,
+        600,
+        11
+      ]
+    },
+    {
+      "owner": "exchange_return_sub",
+      "namespace": "gor_03.o",
+      "offset": 336148,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "exchange_keep_sub",
+      "namespace": "gor_03.o",
+      "offset": 336588,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4064413312,
+        4065095296,
+        4064550528,
+        4064765568,
+        4065032832,
+        4064550528,
+        600,
+        11
+      ]
+    },
+    {
+      "owner": "exchange_keep_sub",
+      "namespace": "gor_03.o",
+      "offset": 336696,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "slot_set",
+      "namespace": "gor_03.o",
+      "offset": 342828,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4064563943,
+        4065083110,
+        4064726656,
+        4064765568,
+        4065047884,
+        4064726656,
+        600,
+        11
+      ]
+    },
+    {
+      "owner": "slot_set",
+      "namespace": "gor_03.o",
+      "offset": 342884,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4064563943,
+        4065083110,
+        4064803456,
+        4064765568,
+        4065047884,
+        4064803456,
+        600,
+        11
+      ]
+    },
+    {
+      "owner": "slot_set",
+      "namespace": "gor_03.o",
+      "offset": 343192,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        600,
+        11
+      ]
+    },
+    {
+      "owner": "ranking_set",
+      "namespace": "gor_03.o",
+      "offset": 343844,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4064412391,
+        4065085568,
+        4064849536,
+        4064765568,
+        4065025459,
+        4064849536,
+        600,
+        11
+      ]
+    },
+    {
+      "owner": "ranking_set",
+      "namespace": "gor_03.o",
+      "offset": 344048,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        600,
+        11
+      ]
+    },
+    {
+      "owner": "exchange_set",
+      "namespace": "gor_03.o",
+      "offset": 344244,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4064412698,
+        4065118233,
+        4064645146,
+        4064765568,
+        4065056281,
+        4064645146,
+        600,
+        11
+      ]
+    },
+    {
+      "owner": "exchange_set",
+      "namespace": "gor_03.o",
+      "offset": 344888,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        600,
+        11
+      ]
+    },
+    {
+      "owner": "evt_door_03_open",
+      "namespace": "gor_03.o",
+      "offset": 355168,
+      "function": "evt_cam3d_evt_set_xyz",
+      "operands": [
+        193,
+        30,
+        4294966900,
+        0,
+        150,
+        11
+      ]
+    },
+    {
+      "owner": "evt_door_04_close",
+      "namespace": "gor_03.o",
+      "offset": 356528,
+      "function": "evt_cam3d_evt_set_xyz",
+      "operands": [
+        328,
+        37,
+        4294966901,
+        0,
+        150,
+        11
+      ]
+    },
+    {
+      "owner": "uraguchi_event",
+      "namespace": "gor_03.o",
+      "offset": 358196,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966423,
+        124,
+        6,
+        4294966898,
+        53,
+        6,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "uraguchi_event",
+      "namespace": "gor_03.o",
+      "offset": 358320,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966423,
+        124,
+        4294967190,
+        4294966898,
+        53,
+        4294967190,
+        2500,
+        11
+      ]
+    },
+    {
+      "owner": "uraguchi_event",
+      "namespace": "gor_03.o",
+      "offset": 359060,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "majorin_nusumigiki",
+      "namespace": "gor_03.o",
+      "offset": 359664,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966871,
+        134,
+        733,
+        4294966871,
+        38,
+        192,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "majorin_nusumigiki",
+      "namespace": "gor_03.o",
+      "offset": 360360,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967046,
+        69,
+        350,
+        4294967046,
+        30,
+        128,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "majorin_nusumigiki",
+      "namespace": "gor_03.o",
+      "offset": 360576,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966981,
+        114,
+        586,
+        4294966981,
+        45,
+        192,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "majorin_nusumigiki",
+      "namespace": "gor_03.o",
+      "offset": 360636,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967046,
+        69,
+        350,
+        4294967046,
+        30,
+        128,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "majorin_nusumigiki",
+      "namespace": "gor_03.o",
+      "offset": 360780,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966926,
+        88,
+        463,
+        4294966926,
+        40,
+        192,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "majorin_nusumigiki",
+      "namespace": "gor_03.o",
+      "offset": 360840,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "peach_mail",
+      "namespace": "gor_03.o",
+      "offset": 361996,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4264967296,
+        91,
+        4294967285,
+        4264967296,
+        39,
+        4294966989,
+        1000,
+        11
+      ]
+    },
+    {
+      "owner": "peach_mail",
+      "namespace": "gor_03.o",
+      "offset": 362236,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kuzi_bomb_talk_normal",
+      "namespace": "gor_03.o",
+      "offset": 362308,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967146,
+        120,
+        890,
+        4294967146,
+        50,
+        470,
+        800,
+        11
+      ]
+    },
+    {
+      "owner": "kuzi_bomb_talk_normal",
+      "namespace": "gor_03.o",
+      "offset": 363732,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kuzi_bomb_talk_husei",
+      "namespace": "gor_03.o",
+      "offset": 363896,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967146,
+        120,
+        890,
+        4294967146,
+        50,
+        470,
+        800,
+        11
+      ]
+    },
+    {
+      "owner": "kuzi_bomb_talk_husei",
+      "namespace": "gor_03.o",
+      "offset": 366088,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "kuzi_keiziban_normal",
+      "namespace": "gor_03.o",
+      "offset": 367100,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294967146,
+        120,
+        890,
+        4294967146,
+        50,
+        470,
+        800,
+        11
+      ]
+    },
+    {
+      "owner": "kuzi_keiziban_normal",
+      "namespace": "gor_03.o",
+      "offset": 368048,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "debug_event_mode",
+      "namespace": "gor_03.o",
+      "offset": 369084,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4264967300,
+        4264967301,
+        4264967302,
+        4264967303,
+        4264967304,
+        4264967305,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "debug_event_mode",
+      "namespace": "gor_03.o",
+      "offset": 369132,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "hom_10_init_evt",
+      "namespace": "gor_04.o",
+      "offset": 378912,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4264967296,
+        300,
+        1400,
+        4264967296,
+        125,
+        0,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "hom_10_init_evt",
+      "namespace": "gor_04.o",
+      "offset": 378968,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4264967297,
+        300,
+        1400,
+        4264967297,
+        125,
+        0,
+        8000,
+        0
+      ]
+    },
+    {
+      "owner": "evt_train",
+      "namespace": "gor_04.o",
+      "offset": 379840,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        668,
+        95,
+        290,
+        361,
+        95,
+        121,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "evt_train",
+      "namespace": "gor_04.o",
+      "offset": 379952,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        410,
+        90,
+        571,
+        410,
+        90,
+        121,
+        2000,
+        12
+      ]
+    },
+    {
+      "owner": "evt_train2",
+      "namespace": "gor_04.o",
+      "offset": 380328,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        4294966936,
+        232,
+        603,
+        4294966936,
+        137,
+        62,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "evt_train2",
+      "namespace": "gor_04.o",
+      "offset": 381244,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        1000,
+        11
+      ]
+    },
+    {
+      "owner": "evt_hikousen_return",
+      "namespace": "gor_04.o",
+      "offset": 387812,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        446,
+        181,
+        658,
+        446,
+        86,
+        4294967179,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "evt_hikousen_return",
+      "namespace": "gor_04.o",
+      "offset": 389552,
+      "function": "evt_cam3d_evt_off",
+      "operands": [
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gor_04_koopa_evt",
+      "namespace": "gor_04.o",
+      "offset": 389600,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        425,
+        250,
+        340,
+        425,
+        214,
+        112,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "gor_04_koopa_evt",
+      "namespace": "gor_04.o",
+      "offset": 389748,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        128,
+        163,
+        666,
+        128,
+        71,
+        113,
+        2000,
+        11
+      ]
+    },
+    {
+      "owner": "gor_04_koopa_evt",
+      "namespace": "gor_04.o",
+      "offset": 389932,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        280,
+        153,
+        657,
+        280,
+        57,
+        116,
+        1600,
+        11
+      ]
+    },
+    {
+      "owner": "gor_04_koopa_evt",
+      "namespace": "gor_04.o",
+      "offset": 390020,
+      "function": "evt_cam3d_evt_zoom_in",
+      "operands": [
+        20,
+        800,
+        0,
+        11
+      ]
+    },
+    {
+      "owner": "gor_04_koopa_evt",
+      "namespace": "gor_04.o",
+      "offset": 390272,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        337,
+        134,
+        549,
+        337,
+        58,
+        116,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gor_04_koopa_evt",
+      "namespace": "gor_04.o",
+      "offset": 390604,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        273,
+        134,
+        549,
+        273,
+        58,
+        116,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gor_04_koopa_evt",
+      "namespace": "gor_04.o",
+      "offset": 390824,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        102,
+        163,
+        666,
+        102,
+        71,
+        113,
+        2000,
+        11
+      ]
+    },
+    {
+      "owner": "gor_04_koopa_evt",
+      "namespace": "gor_04.o",
+      "offset": 392140,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        65,
+        214,
+        670,
+        65,
+        125,
+        115,
+        500,
+        11
+      ]
+    },
+    {
+      "owner": "gor_04_koopa_evt",
+      "namespace": "gor_04.o",
+      "offset": 393364,
+      "function": "evt_cam3d_evt_set",
+      "operands": [
+        102,
+        163,
+        666,
+        102,
+        71,
+        113,
+        500,
+        11
+      ]
+    }
+  ],
+  "curve_histogram": {
+    "evt_cam3d_evt_set": {
+      "0": 2,
+      "1": 1,
+      "11": 235,
+      "12": 1
+    },
+    "evt_cam3d_evt_off": {
+      "11": 55
+    },
+    "evt_cam3d_evt_set_xyz": {
+      "11": 5
+    },
+    "evt_cam3d_evt_zoom_in": {
+      "11": 1
+    }
+  }
+}
