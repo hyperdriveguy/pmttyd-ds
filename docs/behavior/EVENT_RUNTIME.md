@@ -349,3 +349,13 @@ sizing/free/null rules differ;bulk reset does not invoke per-owner destructors.
 Per-event/scene/REL/indirect ownership,arena/alias/domain/platform and original
 traces remain open. Earlier local free/bootstrap gaps are superseded;automatic
 E154/E158 ownership/free remains unsupported without source lifetime evidence.
+
+
+## GP10 producer follow-up (2026-10-12)
+
+[Disc-thread readiness](EVENT_DISC_THREAD_READINESS_GATE.md),
+[system-message presentation](DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md) and
+[audio cover-state requests](AUDIO_DISC_COVER_STATE_REQUESTS.md) now close this
+GP10 writer path,13-status routing,retrace counts/card override,scoped thread
+startup and alternate error-mode input requests. DVD/VI/thread/ROM-font/render/
+audio/source/other-writer domains and original pause/recovery traces remain open.

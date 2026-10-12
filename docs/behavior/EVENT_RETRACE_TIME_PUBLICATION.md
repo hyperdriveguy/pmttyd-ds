@@ -119,3 +119,13 @@ null/flag/state0/negative/199/200;four independent low-mask banks,event38 ungate
 by mask,field40 versus battle;unconditional baseline/R publication while frozen,
 no later catch-up. Clock/GP/interrupt/scene/pause/window/numeric/source domains,
 callback reset/audio/rumble tail and original cadence/freeze traces remain open.
+
+
+## GP10 producer follow-up (2026-10-12)
+
+[Disc-thread readiness](EVENT_DISC_THREAD_READINESS_GATE.md),
+[system-message presentation](DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md) and
+[audio cover-state requests](AUDIO_DISC_COVER_STATE_REQUESTS.md) now close this
+GP10 writer path,13-status routing,retrace counts/card override,scoped thread
+startup and alternate error-mode input requests. DVD/VI/thread/ROM-font/render/
+audio/source/other-writer domains and original pause/recovery traces remain open.

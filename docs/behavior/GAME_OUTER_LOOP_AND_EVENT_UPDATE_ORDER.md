@@ -133,3 +133,13 @@ all channel fields/count,fewer-than4 baseline refresh,all4 no baseline update,
 signed quotient strict120 and sequence2 versus second-read4;OR-preserved flags.
 Callee/VI/thread/pad/scene/context/clock/idle/numeric domains and original update/
 pause/idle/multicredit traces remain EVT-01 and system integration requirements.
+
+
+## GP10 producer follow-up (2026-10-12)
+
+[Disc-thread readiness](EVENT_DISC_THREAD_READINESS_GATE.md),
+[system-message presentation](DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md) and
+[audio cover-state requests](AUDIO_DISC_COVER_STATE_REQUESTS.md) now close this
+GP10 writer path,13-status routing,retrace counts/card override,scoped thread
+startup and alternate error-mode input requests. DVD/VI/thread/ROM-font/render/
+audio/source/other-writer domains and original pause/recovery traces remain open.

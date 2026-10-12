@@ -8035,3 +8035,36 @@ Next:complete partner floor query,appear-position/out-of-screen services,
 homing/fall/jump/fly handlers and state/source/numeric domains;original ceiling/
 floor/transition traces and native surrounding-dot parity correction. Full-game
 documentation and eventual complete-game requirements remain incomplete.
+
+## 2026-10-12 — ID2 disc-thread GP10 readiness and system/audio requests
+
+Added [disc-thread gate](behavior/EVENT_DISC_THREAD_READINESS_GATE.md),
+[system-message presentation](behavior/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md)
+and [audio cover requests](behavior/AUDIO_DISC_COVER_STATE_REQUESTS.md).
+Complete local thread/status table distinguishes preserve status1 versus clears/
+error selectors,A/B/C live queries,retrace change observations,count10/11,
+card override,audio-before-override and alternate error-mode key/reset requests.
+Complete card/audio/font routing/init leaves,scoped thread startup and exact
+matrix/color/position/request bindings are pinned. Four original US-default
+system-message ranges/lengths/hashes are recorded in docs/ASSETS.md;message
+bodies/font bitmaps are not extracted or invented in source. Retained selector
+becomes a pointer and is not repaired on preserve paths. Only ID2 scoped lock
+released;SDK/ROM-font/VI/media/thread/render/audio/source/domain/traces stay open.
+
+Validation:verify_event_readiness_gate.py passed11 containing/complete/linked
+body hashes,184 anchors,13 data spans and four whole message resource hashes;
+repeated metadata byte-identical;Python compilation,general verifier1980 anchors
+and prior time verifier passed. Initial make test hit missing concurrent
+ event_memory_opcodes_tests.cpp at CMakeLists.txt:162. After the fixture arrived,
+fresh make test passed ALL38 CTest suites and63 Python tests,so that missing-
+file gate is resolved. make all rebuilt event_memory_opcodes/native3DSX and
+passed. All1618 local documentation links resolved;git diff --check passed.
+
+ISO read-only;no original interruption/media/thread execution or cadence trace,
+profile/save mutation,native/test/asset pipeline/conversion choice changes or
+original binary/dialogue distribution by ID2. Source-versioned resource evidence
+contains addresses/hashes only;inspection and metadata remain /tmp/id2-gate-*.
+Concurrent work/locks preserved. Next:other GP10/window/gate/state writers,
+VI/OS/media/ROM-font/font-layout/projection/playback backend,source transitions/
+selector/alias/interrupt domains and original freeze/recovery/input/audio/Jump/
+story traces. Complete-game documentation and requirements remain incomplete.

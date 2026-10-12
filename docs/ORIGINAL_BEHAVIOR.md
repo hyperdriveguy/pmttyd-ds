@@ -552,3 +552,11 @@ V.Y is captured input Y,not hit-point Y;fly ignores returned height,and all-null
 still writes fourth sampled X/Z plus height0. Original caller behavior is explicit,
 not replaced with a conventional ceiling solver. Full backend/numeric/source/
 trajectory and remaining floor/motion engines remain open.
+
+
+[Disc-thread readiness gate](behavior/EVENT_DISC_THREAD_READINESS_GATE.md),
+[system-message presentation](behavior/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md)
+and [audio cover-state requests](behavior/AUDIO_DISC_COVER_STATE_REQUESTS.md)
+now bind GP10 freeze to exact status/retrace/card/thread behavior and an alternate
+input/render request path. Original notice bytes/pointers and local audio state
+are pinned;SDK/ROM-font/render/playback/source/domain and original traces remain open.

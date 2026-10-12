@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Event GP10 readiness/freeze gate producer and disc thread | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Producer](behavior/EVENT_DISC_THREAD_READINESS_GATE.md),[message presentation](behavior/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md),[audio state](behavior/AUDIO_DISC_COVER_STATE_REQUESTS.md):complete disc thread/card/audio/font-routing local bodies,13-status table/scoped startup/four source resources;DVD/OS/render/source/domain/original traces remain open;make test38 suites/63 Python and make all pass |
 | Partner floor query and slope/support publication | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover used partySearchGround complete five-probe/order/slope/admission/cache graph and called heading adjustment leaf;full backend/filter/math/source/domain/EVT-01 and original trajectories remain separate |
 | Partner ceiling query and ray-request wrapper | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Ceiling query](behavior/FIELD_PARTNER_CEILING_QUERY.md),[scalar wrapper](behavior/FIELD_SCALAR_RAY_WRAPPER.md):complete local four-probe/output and hitCheckFilter ABI graph answered;initial wrapper name corrected;full backend/terrain/math/domain/EVT-01 and original trajectories remain open |
 | Map/SDK buffer release and pool initialization provenance | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Map free/battle pool](behavior/MAP_BUFFER_FREE_AND_BATTLE_POOL.md),[five pools/reset](behavior/MEMORY_POOL_BOOTSTRAP_AND_CLEAR.md),[SDK free/census](behavior/SDK_HEAP_RELEASE_AND_CALLER_CENSUS.md):complete local release/coalescing/bootstrap/bulk reset and50 direct DOL sites;event user-pointer/scene/REL/platform/source/runtime ownership remains open |
@@ -1331,3 +1332,36 @@ Four containing identities/three complete bodies,89 anchors,six constants,two
 spans/two lecture imports pass. make test37 CTest/63 Python and make all pass.
 Only ID1 scoped lock released;full backend/floor/source/math/trajectory and
 EVT-01 remain open. The earlier surrounding-dot native correction stays separate.
+
+
+ID2 readiness validation breadcrumb (2026-10-12):make test currently cannot
+configure because CMakeLists.txt:162 references missing
+tests/event_memory_opcodes_tests.cpp. make all rebuilt event_memory_opcodes and
+native3DSX successfully. This is concurrent native fixture arrival;ID2 changes
+no CMake/native/test files. Readiness/time/general original-binary verifiers
+pass;full host gate remains pending until the named fixture is available.
+
+
+ID2 EVT-01 readiness delivery (2026-10-12), partial answer:
+[Disc thread](behavior/EVENT_DISC_THREAD_READINESS_GATE.md) closes GP10 producer,
+all13 numeric statuses (1 preserves gate),A/B/C query order,retrace-change counting,
+count10/11 boundary,card override and alternate input/reset requests. [System
+presentation](behavior/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md) closes local
+ROM-font routing/init,width/projection/color/request ordering and four exact
+US-default DOL resources. V changes from selector to pointer during rendering;
+status1 retains it,with no automatic repair. [Audio cover state](behavior/AUDIO_DISC_COVER_STATE_REQUESTS.md)
+closes installed/open/close and three-record local state predicate;downstream
+stream pause/resume is not inferred. Scoped thread startup/GP10 consumers and
+13-status table are pinned. Verifier passes11 containing/whole hashes,184 anchors,
+13 spans and four message hashes. Own binary-validated lock released;SDK media/
+thread/VI/ROM-font/render/audio/source/domain and original interruption/recovery/
+pause/input traces remain open. make all and63 Python tests pass;full host test
+awaits the missing concurrent native fixture described above. No native changes
+or original message body/bitmap conversion committed by ID2.
+
+
+ID2 readiness validation completion (2026-10-12):native memory fixture has
+arrived. Fresh make test passes38 CTest suites and63 Python tests;the missing-
+fixture failure above is resolved. make all passes;current1618 local links all
+resolve. ID2 changes no native/test code;readiness/time/general evidence checks
+and source resource hashes pass. Only original domain/runtime gates remain open.

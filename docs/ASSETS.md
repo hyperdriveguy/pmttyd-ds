@@ -1043,3 +1043,22 @@ pinned. Inspection ELF/listings and field-partner-head-evidence.json stay ignore
 under artifacts/reference/behavior. ISO remained read-only;no asset conversion,
 original execution,profile/save mutation or original binary/dialogue distribution.
 Full backend geometry/domain/runtime behavior remains separate from identities.
+
+
+## US-default disc-thread system-message resources (ID2,2026-10-12)
+
+Read-only source:/home/carson/games/roms/G8ME01.iso,US G8ME01 disc0/revision0.
+[Presentation contract](behavior/DISC_THREAD_SYSTEM_MESSAGE_PRESENTATION.md)
+records original DOL language table slot1 and codes10..13 at virtual803019a0,
+803019f8,80301a3c,80301aac;ISO offsets31eca0,31ecf8,31ed3c,31edac;lengths
+87/67/109/123 bytes including NUL. Exact source SHA256 values are in that contract
+and tools/verify_event_readiness_gate.py. Text/newlines/language association
+must be reused unchanged if extracted;no paraphrase or invented system notice.
+No conversion/extracted message body or compiled pack was added by ID2;
+inspection ELF/listings/resource metadata remain /tmp/id2-gate-*. Copyrighted
+original-game/SDK data retains the existing proprietary asset/license posture;
+this research grants no distribution license. Only pointers,lengths,hashes and
+selected instruction/data anchors are source-versioned. SDK console-ROM font
+texture/encoding is a separate runtime source,not proved present in this ISO;
+font realization/reuse licensing remains unresolved and no bitmap conversion
+was invented. Story dialogue continues to use exact msg/US IDs/control tokens.
