@@ -1056,3 +1056,36 @@ was made. Animation interpolation/loop contracts were obtained from the
 requested documentation agent, but frame advancement remains unbound. Low-HP,
 special flags/pivots, recovery, partners, battle presentation and shadows remain
 on incomplete paths; ordinary mesh success does not close those domains.
+
+
+## 2026-10-12 — Ordinary source sparse animation playback
+
+Native7102aaf binds OVERWORLD_MARIO_ANIMATION_CLOCK_AND_LOOPS.md and
+OVERWORLD_MARIO_ANIMATION_SPARSE_UPDATES.md to evaluated ordinary geometry.
+Frame time is float(whole-ms current minus start)*60/1000 with default rate1;
+current/start use the existing simulation-tick-to-ms GP bridge, not render
+increments. Original descriptors wrap exact loop end to start; nonloop jump
+end stays at end. Stateless evaluation rebuilds original bases and applies
+passed full keys, then one fractional key. Fractional position updates are
+linear q/16; node updates use source-duration Hermite tangents. OUT<=-89 or
+>=89 holds the full scalar until key passage. Tangent table178 entries uses
+source radians word3c8efa33; host libm/f32 rounding are numeric adaptations.
+Texture bytes change modulo256 only at passed keys; no partial texture blend.
+
+Animation runs through actual original joint/transform nodes and current-group
+sibling parent convention, then source model scale/root/yaw/Z reflection.
+Original vertex bindings move with evaluated nodes/positions; stepped texture
+bindings select original atlas cells. Native tests preserve static authored
+rear jump geometry where its source updates do not move visible vertices.
+Queued pose restart was corrected from the agent's2f9f922 source addendum:
+marioChgPose compares requested front name with CURRENT name18, including R.
+A changed front request followed by rear mapping can force restart even when
+the final selected rear name equals its prior value. Same current front name
+does not queue. Tests cover both motion11-to-idle traces and repeated renders.
+
+143 independent source-derived host geometry samples compare with maximum
+model-coordinate difference6.79493e-06, including fractional texture-step
+boundaries. This is decoder/math agreement, not original Dolphin/Gekko parity.
+Isolated Azahar captures show native running/jumping plus save/traversal checks.
+Low-HP/special/recovery/partner/battle pose ownership,original shadow/material/
+color/normal services and original frame observations remain incomplete.

@@ -1665,3 +1665,32 @@ unstaged. No ID1 art/audio/mesh conversion policy change. Original rights remain
 with owners;local analysis grants no redistribution license. Exact log:
 /tmp/id1-render-build.log. Native ordinary mesh subset remains distinct from
 complete original materials/lighting/vertex-color/multi-coordinate/TEV behavior.
+
+
+## 2026-10-12 — Original ordinary sparse animation pack
+
+Native7102aaf loads ignored romfs/characters.pmanim (PMANIM1,293000 bytes)
+for the ten documented ordinary front/rear poses. The same read-only ISO
+sources a/a_mario,a/a_mario_r and their trailing-hyphen TPL files provide
+original base positions,node floats,visibility,node-kind/sibling/child graph,
+vertex/group/UV/texture bindings and sparse key records. No sampled-frame atlas,
+flattened-vertex interpolation or generated art replaces those source streams.
+The parser rejects unsupported normal/visibility updates,texture transforms,
+coordinate selectors and UV wrap domains in this bounded conversion.
+
+local-assets/characters-mesh.png and romfs/characters-mesh.t3x now contain37
+original texture cells (124px plus2px duplicated border in128px cells). Added
+cells cover actual stepped binding changes, including fractional rear-run keys.
+The ignored manifest records each TPL source/index/cell and animation pack path.
+The earlier PMCHAR1 frame0 pack remains a host fixture; native rendering uses
+PMANIM1 evaluated geometry. The romfs/*.pmanim ignore rule was committed as dc1df68.
+
+Independent test tooling writes ignored artifacts/character-animation-reference.bin
+from the read-only extracted models using the documentation verifier's evaluator,
+then the native host target compares143 poses/texture-boundary samples. Output
+contains original derived geometry and remains local. Original asset copyright
+and existing converter/reference attribution are unchanged; no original model,
+texture,animation or compiled payload was committed or licensed for distribution.
+Host/ARM floating-point affine/trig and handheld texture filtering remain adapters;
+original SDK/material/normal/color/GX/lighting/shadow numerical/visual composition
+is not established by these tests.

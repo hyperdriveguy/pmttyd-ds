@@ -12014,3 +12014,57 @@ in another owner's currently unstaged69-line PROGRESS preface;ID1 preserved
 that content and fixed its working-tree targets without staging the whole
 preface. The ID1 delivery footer/evidence files are staged separately;original
 source-gap census ownership remains with its author.
+
+
+## 2026-10-12 — Original ordinary Mario animations now play natively
+
+Completed7102aaf: ordinary overworld Mario now evaluates original base arrays,
+node hierarchy/vertex bindings and sparse animation streams for all ten front/
+rear poses at the documented source frame time. This replaces frame0-only
+native drawing. Passed keys accumulate original deltas; positions interpolate
+linearly, nodes use duration-weighted Hermite, OUT±89/90 holds until the key
+passes, texture indices step only at original keys. Exact loop/nonloop end
+behavior is retained. The actor model scale/root/display transforms from the
+previous delivery compose with these dynamic vertices. Native load is atomic
+and bounds/domain checked; malformed graph rollback has a host regression.
+
+Requested and received queued restart/handle lifetime evidence2f9f922 from the
+existing documentation agent. Source front request compares against current18,
+including R; a queued request can restart the same final rear name. Native
+clock tests now cover that case and unchanged front-name no-restart. The
+simulation-to-whole-ms GP bridge is explicit; rate is ordinary default1 and
+pose time does not advance from rendering calls. Unsupported external clocks,
+pause/service/rate/link/effect/pose ownership remain separate requirements.
+Local pack293000 bytes and37-cell original atlas stay ignored (ignore rule committed as dc1df68). No original asset bytes or invented story were committed.
+
+Validation: final make test passed78 CTest targets and90 Python tests
+(/tmp/pm-animation-final-test2.log); make all passed with native3DSX rebuilt
+(/tmp/pm-animation-final-build.log).143 independent original-animation samples
+from tools/character_animation_reference.py passed, maximum model error
+6.79493e-06 (/tmp/pm-animation-final-reference.log), with44 camera roads/494
+zones and ten frame0 mesh comparisons. Core original asset tests passed18315
+full-scan collision comparisons and all room arrivals
+(/tmp/pm-animation-final-original.log). Source pose/sparse/node verifiers and
+Python compilation passed (/tmp/pm-animation-source-{pose,updates,matrices}.log).
+Original source identities are read-only and verified, not executed.
+
+Isolated Azahar reciprocal east-road run exited0, four traversals/assertions
+and boot/four road captures under artifacts/azahar-mario-animation
+(/tmp/pm-animation-smoke.log). Dedicated west-road fixture run exited0,
+run/idle/jump/landing captures plus changed saved-X/room assertion under
+artifacts/azahar-mario-animation-poses-west
+(/tmp/pm-animation-poses-west.log); run-later and jump-rise were inspected.
+No user emulator profile or saves changed. Hardware and original-runtime
+visual/numeric comparison were not performed. Intermediate fresh-plaza pose
+capture pressed A near the harness Crump trigger and entered battle; the
+corrected0f4e22c script requires the west fixture and validates moved saveX.
+An intermediate full-test CMake failure from a concurrently added battle test
+was resolved when that file arrived before the final78-target run.
+
+Next: low-HP idle selection/lifetime and original actor shadow admission/assets
+were requested from /root/overworld_documentation; preliminary evidence says
+front-only M_S_3 plus delayed HP/ChkKey gates, so a per-tick threshold replacement
+would be wrong. Bind the completed contract when delivered. Continue original
+material/color/normal/lighting/GX services, special/recovery/partner/battle pose
+domains and actual event/story/message orchestration. Ordinary ten-pose playback
+is progress, not completion of the Rogueport slice or full overworld remake.
