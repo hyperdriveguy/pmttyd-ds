@@ -4,6 +4,16 @@
 #include "event_memory_release.hpp"
 
 namespace ttyd {
+BattleUnitEventServices nativeBattleUnitEventServices(EventNativeRuntime& runtime) {
+    BattleUnitEventServices s;s.memory=runtime.memoryBinding.services();s.user=&runtime;
+    auto values=nativeBattleEventUtilityServices(runtime);s.values=values.values;
+    s.translate=[](void* p,EventEntry& e,int32_t selector) {auto& r=*static_cast<EventNativeRuntime*>(p);return translateBattleActor(&e,selector,nativeBattleActorServices(r));};
+    s.unit=[](void* p,uint32_t battle,int32_t id) {auto& r=*static_cast<EventNativeRuntime*>(p);return battleRegistryUnit(battle,id,nativeBattleActorServices(r));};return s;
+}
+bool bindBattleGetHpCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x801101c4,&runtime,[](void* p,EventEntry& e,int32_t) {return battleUnitHpEvent(e,false,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));});}
+bool bindBattleGetMaxHpCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x801100cc,&runtime,[](void* p,EventEntry& e,int32_t) {return battleUnitHpEvent(e,true,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));});}
+bool bindBattleGetUnitWorkCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x8010f828,&runtime,[](void* p,EventEntry& e,int32_t) {return battleGetUnitWorkEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));});}
+bool bindBattleSetUnitWorkCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x8010f7a4,&runtime,[](void* p,EventEntry& e,int32_t) {return battleSetUnitWorkEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));});}
 EffectDeletionServices nativeEffectDeletionServices(EventNativeRuntime& runtime) {
     EffectDeletionServices s;s.memory=runtime.memoryBinding.services();s.user=&runtime;
     s.freeHeap=[](void* p,int32_t heap,uint32_t payload) {eventHeapFree(heap,payload,static_cast<EventNativeRuntime*>(p)->memoryBinding.services());};return s;

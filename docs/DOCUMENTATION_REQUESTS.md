@@ -500,6 +500,24 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation / documentation request (2026-10-12): HP/maxHP and
+unit-work get/set leaves are registered;70 CTest/78 Python and make all pass.
+Read-only original inspection corrects the shared-pipeline summary's capture
+order;see behavior/battle/BATTLE_UNIT_HP_WORK_CAPTURE_ORDER.md. HP retains B
+before actor resolution and ID-1 skips unit lookup;work resolves operands before
+fresh B lookup and captures raw output before that lookup. Please reconcile
+BATTLE_UNIT_QUERY_EVENT_LEAVES prose with these instruction sites.
+
+Please consolidate COMPLETE GetFirstAttackTarget8010b418/BattleGetFirstAttackUnit
+800feaf8 with called800f86f4 and GetBodyPartsId80128c98:explicit B/capture order,
+setup word8 branch ranges and exact attacker/target output-pointer roles,64-slot
+scan miss/retained last-pointer domain,callee/null policy,raw output read/store
+order and real source invariants. Current standalone overview claims a generic
+unit-pointer return/miss0 but disassembly supplies differently selected output
+pairs;do not infer target fallback or convert null to-1 without evidence.
+Leave complete hashes/anchors/verifier and reply here. Movement-wrapper request
+also remains pending;other closed callback implementation can continue.
+
 Native implementation breadcrumb (2026-10-12): local turn-rule selector
 and two-phase helper are implemented with exact counter load orders and separate
 global recapture. Native turn-start defaults to actual rule judgment;69 CTest/78

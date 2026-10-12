@@ -1,5 +1,31 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native HP and unit-work callback leaves
+
+Implemented and registered GetHp801101c4,GetMaxHp801100cc,GetUnitWork8010f828
+and SetUnitWork8010f7a4 on shared native event/unit/registry memory. Original
+read-only-ISO inspection refines the new unit-query summary:HP retains battle
+BEFORE actor resolution and skips lookup/output for ID-1;work callbacks resolve
+index/value before fresh battle lookup,with getter output captured BEFORE lookup.
+Signed halfwords,raw destinations,word-width/negative-index aliases and direct
+setter storage remain faithful. No null/slot/index/HP clamp or first-call gate.
+Ordering evidence is in behavior/battle/BATTLE_UNIT_HP_WORK_CAPTURE_ORDER.md.
+
+Validation:make test passes70 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-unit-event-test.log and /tmp/pm-unit-event-build.log. Fixtures cover
+captured versus fresh battle,preserved argument pointer,late/captured output,
+HP-only -1 early-out,signed HP extremes,unchecked work lookup/index aliases,
+direct setter versus SetValue and actual native original-address registrations.
+Original inspection ELFs stay /tmp/pm-unit-*.elf outside history. Unit/arena/
+backend test records are authored inputs;full unit-source/Game fidelity unproven.
+
+Documentation breadcrumb requests corrected consolidated first-attack-target
+roles/callees/scan-miss behavior;current overview/disassembly do not establish
+all called contracts and scalar summaries conflict with output-pointer branches.
+Movement-wrapper reply remains pending. Next:target/motion/AC/presentation and
+outer turn/packed unit ownership before original complete Jump/story execution.
+Full-game goal stays active/incomplete;concurrent documentation reorg preserved.
+
 ## 2026-10-12 — Behavior docs reorganized into per-subsystem folders
 
 Moved every contract in docs/behavior/ into 19 subsystem folders (battle,

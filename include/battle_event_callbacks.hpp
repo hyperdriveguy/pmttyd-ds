@@ -9,6 +9,7 @@
 #include "battle_packed_move.hpp"
 #include "effect_deletion.hpp"
 #include "battle_turn_rule.hpp"
+#include "battle_unit_event.hpp"
 
 namespace ttyd {
 struct BattleDataChildBackend {
@@ -28,6 +29,11 @@ struct BattleTurnFirstBackend {
 // Defaults implement recovered rule/move/effect services on shared packed bytes.
 EffectDeletionServices nativeEffectDeletionServices(EventNativeRuntime&);
 BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend&);
+BattleUnitEventServices nativeBattleUnitEventServices(EventNativeRuntime&);
+bool bindBattleGetHpCallback(EventCallbackRegistry&,EventNativeRuntime&);
+bool bindBattleGetMaxHpCallback(EventCallbackRegistry&,EventNativeRuntime&);
+bool bindBattleGetUnitWorkCallback(EventCallbackRegistry&,EventNativeRuntime&);
+bool bindBattleSetUnitWorkCallback(EventCallbackRegistry&,EventNativeRuntime&);
 BattleActorServices nativeBattleActorServices(EventNativeRuntime&);
 BattleDataChildServices nativeBattleDataChildServices(EventNativeRuntime&,const BattleDataChildBackend&);
 // Complete recovered actor translation and registry queries on runtime bytes.
