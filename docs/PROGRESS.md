@@ -1,3 +1,29 @@
+## 2026-10-12 — ID2 pinch status and warning port contracts
+
+[Threshold transitions](behavior/battle/BATTLE_PINCH_THRESHOLD_FLAGS_AND_TRANSITIONS.md),
+[all-unit warning scan](behavior/battle/BATTLE_PINCH_ALL_UNIT_SCAN_AND_WARNING_CADENCE.md),
+and [audience/source bindings](behavior/battle/BATTLE_PINCH_AUDIENCE_REQUESTS_AND_SOURCE_THRESHOLDS.md)
+close BattleCheckAllPinchStatus8011efd8/214, BtlUnit_CheckPinchStatus80126e00/100,
+and MarioDanger8019f440/38 / MarioPinch8019f478/38. Documented live reloads,
+entry-only callbacks, signed HP versus source thresholds, all-64 update,
+first-prequalified actor shadowing, shared byte countdown and source sound/
+float values. ID2 lock released. Documentation/evidence only; no native edits.
+
+Validation: `tools/verify_battle_pinch_status.py` twice with identical reports:
+12 body hashes (4 complete/8 linked), 225 instruction anchors, 14 spans.
+Python compilation, existing behavior/main/init verifiers, own Markdown links
+and scoped whitespace pass. `make test` passes 86/87 CTest; new packed Mario
+jump test aborts at tests/battle_packed_mario_jump_tests.cpp:53 on
+`f.run(1)==2 && f.entries[0].initialized==2 && f.playCalls==0 && f.sinCalls==0`.
+Exact /tmp/id2-pinch-test.log; inbox reports failure to native owner. Python
+suite run separately: 90 pass (/tmp/id2-pinch-python.log). `make all` passes
+(/tmp/id2-pinch-all.log). Previous 86-suite green result remains historical.
+
+Limits: static complete local functions, not original runtime observations.
+Status 27, audio delivery, audience target accumulator/source float meaning,
+actual scheduler cadence and full-game requirements remain open. Next priority:
+first-act/turn/end and audience target core contracts needed by native port.
+
 ## 2026-10-12 — ID2 parent BattleMain/manager/outer hook closure
 
 [Main service order/final state](behavior/battle/BATTLE_MAIN_SERVICE_ORDER_AND_FINAL_STATE_CHECK.md)

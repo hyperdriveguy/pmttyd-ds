@@ -1249,3 +1249,12 @@ close three bodies,independent captured owners/late state/one-bank dispatch/
 service order/outer completion flag.20 hashes/117 anchors/1 span/2 calls
 verified;86 CTest/90 Python/make all pass.Prior Jump fixture gate resolved.
 Field/callee/end/query/Game/platform/original runtime remain open.
+
+ID2 pinch chain closure (2026-10-12):
+[Thresholds](behavior/battle/BATTLE_PINCH_THRESHOLD_FLAGS_AND_TRANSITIONS.md),
+[warning scan](behavior/battle/BATTLE_PINCH_ALL_UNIT_SCAN_AND_WARNING_CADENCE.md),
+[audience/source](behavior/battle/BATTLE_PINCH_AUDIENCE_REQUESTS_AND_SOURCE_THRESHOLDS.md)
+close four complete bodies; 12 hashes/225 instructions/14 spans verified.
+Native requirements retain live reads, first-prequalified shadowing, byte timer
+and exact original source values. Host gate 86/87 due packed jump assertion;
+90 Python and make all pass. Status/audio/audience core/cadence/runtime open.

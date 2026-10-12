@@ -32,6 +32,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
 | Native first-attack target and paired output ownership | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Pair/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md),[event/body part](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md):seven complete local bodies,captured B/raw outputs/mode pairs/slot63 miss/kind predicate/body-before-ID/write order/source part witness;source/Game/runtime separate;prior field_movement failure resolved by current74-suite run |
+| Native all-unit pinch status and warning cadence | EVT-01, JUMP-01 | VALIDATED four complete bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Threshold transitions](behavior/battle/BATTLE_PINCH_THRESHOLD_FLAGS_AND_TRANSITIONS.md), [scan/countdown](behavior/battle/BATTLE_PINCH_ALL_UNIT_SCAN_AND_WARNING_CADENCE.md), [audience/source](behavior/battle/BATTLE_PINCH_AUDIENCE_REQUESTS_AND_SOURCE_THRESHOLDS.md): first-prequalified shadowing, signed HP/byte timer, exact source floats/keys; status/audio/core/cadence/runtime separate; host gate 86/87 packed Mario jump assertion |
 | Native BattleMain and sequence-manager parent dispatch | EVT-01, JUMP-01 | VALIDATED three complete bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Main order](behavior/battle/BATTLE_MAIN_SERVICE_ORDER_AND_FINAL_STATE_CHECK.md),[manager/hook](behavior/battle/BATTLE_SEQUENCE_MANAGER_BANKS_AND_OUTER_HOOK.md):independent captured owners/late state check/11 services/raw masks/one-bank dispatch/init-to-pinch/outer completion flag;called turn/end/resource/field cadence/query/runtime separate |
 | Native btlseqInit unit setup dispatch and registry reset | EVT-01, JUMP-01 | VALIDATED six local bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Dispatch](behavior/battle/BATTLE_INIT_SEQUENCE_DISPATCH_AND_RESOURCE_READINESS.md),[reset/readiness](behavior/battle/BATTLE_UNIT_REGISTRY_RESET_AND_INIT_EVENT_SCAN.md),[fields/source](behavior/battle/BATTLE_SEQUENCE_FIELDS_AND_INIT_SOURCE_BINDINGS.md):fall-through/carried setter args/64 full scan/resources/sequence map/upper-only registry bound;native Jump fixture resolved86/90;backend/source/end/query/runtime separate |
 | Native complete Btl_UnitSetup import and source provisioning | EVT-01, JUMP-01 | VALIDATED complete caller / lock released, 2026-10-12 | Documentation agent ID 2 | [Actors/imports](behavior/battle/BATTLE_UNIT_SETUP_ACTORS_AND_REPEATED_IMPORTS.md),[opponents/mask](behavior/battle/BATTLE_UNIT_SETUP_OPPONENT_LOOP_AND_EQUIPMENT_MASK.md):two explicit imports/retained-vs-fresh owners/static setup/unchecked kind/live count/typed source offsets/200-slot mask;Entry/services/end/query/source/runtime separate |
@@ -535,6 +536,23 @@ Do not invent extra samples for script invocations or suppress inactive private
 sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
+
+ID2 pinch status/warning port-function reply (2026-10-12):
+[Threshold transitions](behavior/battle/BATTLE_PINCH_THRESHOLD_FLAGS_AND_TRANSITIONS.md),
+[all-unit scan/countdown](behavior/battle/BATTLE_PINCH_ALL_UNIT_SCAN_AND_WARNING_CADENCE.md),
+and [audience/source bindings](behavior/battle/BATTLE_PINCH_AUDIENCE_REQUESTS_AND_SOURCE_THRESHOLDS.md)
+close four complete bodies. All-64 updates, first-prequalified shadowing,
+independent live threshold phases, callback suppression, positive-HP warning
+filter, shared wrapping timer and exact sound/float source data supplied.
+12 hashes (4 complete/8 linked), 225 anchors, 14 spans pass twice identically.
+ID2 lock released; no native implementation changes. Current `make test`
+gate is 86/87: newly added battle_packed_mario_jump aborts at
+`tests/battle_packed_mario_jump_tests.cpp:53`, assertion
+`f.run(1)==2 && f.entries[0].initialized==2 && f.playCalls==0 && f.sinCalls==0`.
+Exact log /tmp/id2-pinch-test.log. Python suite separately passes 90;
+`make all` passes. Native owner should resolve the packed jump fixture/behavior.
+Status/audio/audience-core/cadence/runtime remain open. Next needed port
+function documentation: first-act/turn/end dispatch and audience target core.
 
 ID2 parent BattleMain/manager/hook reply (2026-10-12):
 [Main service order/final state](behavior/battle/BATTLE_MAIN_SERVICE_ORDER_AND_FINAL_STATE_CHECK.md)
