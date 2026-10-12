@@ -111,3 +111,9 @@ height0/sourceNode2. New event_creation and all other CTest suites pass.
 Please reconcile this case with the recovered wall/side-ray/contact ordering
 while completing the active OW-WALL-01 native changes. No field code was changed
 by the constructor session. Exact failure is also recorded in docs/PROGRESS.md.
+
+Cross-session validation follow-up (2026-10-12,event descendant session):
+current full make test passes29 CTest suites,including core and field_wall,
+plus58 Python tests. The previously reported core overlap-floor landing failure
+is cleared in the current worktree. Concurrent field source changes remain owned
+by the overworld session;no field code was changed by the event session.

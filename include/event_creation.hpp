@@ -22,4 +22,8 @@ EventEntry& createRootEvent(EventSchedule&,uint32_t script,int32_t priority,uint
                             const EventCreationServices&);
 EventEntry& createTypedRootEvent(EventSchedule&,uint32_t script,int32_t priority,uint32_t flags,
                                  int32_t type,const EventCreationServices&);
+EventEntry& createChildEvent(EventSchedule&,EventEntry& parent,uint32_t script,uint32_t flags,const EventCreationServices&);
+EventEntry& createBrotherEvent(EventSchedule&,EventEntry& owner,uint32_t script,uint32_t flags,const EventCreationServices&);
+int startAttachedBrotherBlock(EventSchedule&,EventEntry& owner,const EventCreationServices&);
+int startIndependentInlineBlock(EventSchedule&,EventEntry& owner,const EventCreationServices&);
 }

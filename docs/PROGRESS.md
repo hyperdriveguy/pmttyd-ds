@@ -1,5 +1,39 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Child,brother and independent inline construction
+
+Implemented EVENT_CHILD_BROTHER_AND_INLINE_CONSTRUCTION.md in event_creation.
+Common allocation retains the chosen pointer before allocation-counter service
+access. Child publishes parent wait-link/flag before clearing destination,wraps
+priority+1,copies message/local/user/source fields and links waiting-parent.
+Brother retains priority,does not change owner,links brother-owner and leaves
+message metadata clear. Both use global speed/zero credit and active-manager
+append without root's flags20 gate. Child repairs zero global ID after run-check;
+brother repairs before. Root constructor behavior remains covered by its suite.
+
+Attached110/independent107 wrappers scan to first112/109 without nesting,advance
+owner before construction and preserve post-run-check recopy. Brother recopies
+owner/type/user/170/150 after construction but keeps earlier local copies and
+zero metadata. Inline uses independent root links,then copies current metadata/
+locals/flags after run-check and does not copy150 or recopy type. These helpers
+return handler2;end/deletion/control bodies remain next. No immediate script
+execution,joined brother or owner-link for independent inline was invented.
+
+Validation:make test passed twenty-nine CTest suites plus58 Python tests;
+make all rebuilt event_creation and ttyd-2ds.elf/3dsx,then exited0/no rebuild.
+The prior core overlap landing failure is cleared by current concurrent field
+work;core and field_wall suites now pass. New descendant tests cover inherited/
+cleared fields,encoded local value copies/shared user tokens,child255→0 and
+brother255,parent existing-child overwrite,active/outside append,zero-ID versus
+run-check ordering,source mutation during run-check,wrapper recopy distinctions,
+label scans past end markers and first-end non-nesting. git diff --check passed.
+No emulator run or original executed lifecycle/packed alias/capacity trace claim.
+
+Next:full deletion/copy-back and controls/restart,remaining opcode/operand routing,
+then original Jump stream/service binding. Native fixed battle timing and full
+remake remain incomplete. Existing source/context/ID/type/time/trace requests
+remain needed before claiming original scene equivalence.
+
 ## 2026-10-12 — Root event construction,label scanning and run-check
 
 Implemented EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md and

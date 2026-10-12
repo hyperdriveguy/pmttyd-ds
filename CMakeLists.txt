@@ -113,3 +113,7 @@ add_test(NAME event_dispatch COMMAND event_dispatch_tests)
 add_executable(event_creation_tests tests/event_creation_tests.cpp)
 target_link_libraries(event_creation_tests PRIVATE ttyd_core)
 add_test(NAME event_creation COMMAND event_creation_tests)
+
+add_executable(event_descendants_tests tests/event_descendants_tests.cpp)
+target_link_libraries(event_descendants_tests PRIVATE ttyd_core)
+add_test(NAME event_descendants COMMAND event_descendants_tests)

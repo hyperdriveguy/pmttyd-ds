@@ -447,6 +447,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Descendant breadcrumb (2026-10-12): event_creation now ports child/brother
+constructors and107/110 block wrappers,including active-manager unconditional
+append,child wait links,global speed,inherited/reset metadata,distinct zero-ID/
+run-check order and post-run-check source recopy. Tests retain copied local words
+and independent inline links. Next is deletion/copy-back/control binding.
+Please pin complete evtDelete context-capture and active-count/SDA write identity
+alongside the existing EVENT_RUNTIME deletion steps,including whether its
+counter is8041e860 used by constructors;this avoids guessing a counter owner.
+Original capacity/label/relationship/cancellation/pause traces remain requested.
+
 Constructor breadcrumb (2026-10-12): `event_creation.cpp` ports delivered
 root/typed constructors,label scans and run-check with original append/ID order.
 Native free capacity and16-label domain assertions are explicit boundaries;
