@@ -2942,3 +2942,29 @@ message renderer, event print callback/identity/substitution producers; clock an
 input snapshot cadence, font/icon/pose/NPC/audio dependencies. Continue story
 attribution/order/conditions and all remaining systems before complete-game
 requirements. Full objective active/incomplete; executed comparisons needed.
+
+## 2026-10-12 — Common print event identity and speaker placement
+
+Previous turn progressed with9aa89de general/clear states. Added
+MESSAGE_PRINT_EVENTS.md: four resolved operands, first-call-only window creation,
+direct/key identity and event ownership, consumed layer/placement words,
+event NPC owner versus named override, ten special-name/sentinel/relationship
+routes, partner fallback/Mario/NPC anchors, battle speaker fields and projected
+placement/ordered overrides. Preserved literal0x1effffff mask and completion on
+poll flag rather than allocation/deletion. Caller story conditions and helper
+services remain explicit gaps; original dialogue is not rewritten.
+
+Validation:512 instruction anchors and prior checks passed read-only US ISO,
+plus projected threshold and all ten special NPC strings. Evidence191 function
+fingerprints reproduced byte-for-byte. All behavior links resolve; git diff
+--check passed. make test passed core plus36 Python tests; make all exited0,
+no rebuild. Workspace started clean; only research/provenance/evidence tooling
+changed. No original execution/emulator run or profile/save modification.
+Original extracts/reports stay ignored. Static checks do not prove actual speaker
+attribution in every scene, projection rendering or original/native equivalence.
+
+Next: print partner/insert/add variants, placement/layer producers and substitution
+callbacks; renderer/key-wait indicator/manager cadence and speaker/font/icon/pose/
+audio dependencies. Continue original story call-graph attribution/order/branches/
+conditions and all other systems before complete-game requirements. Full objective
+active/incomplete; executed-original comparisons still needed.

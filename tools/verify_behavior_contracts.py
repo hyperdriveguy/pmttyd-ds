@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'message_print_events': {
+        0x800d2900: '41820480', 0x800d2930: '7c050734',
+        0x800d2940: '901c0190', 0x800d295c: '93630000',
+        0x800d296c: '9383f200', 0x800d2978: '28000006',
+        0x800d29b0: '3803ffff', 0x800d2ba4: '3863f204',
+        0x800d2bc4: '60000008', 0x800d2be8: '9067f224',
+        0x800d2c78: 'fc200a10', 0x800d2d7c: '901c0180',
+        0x800d2d84: '4bfa7fcd', 0x8004f628: '3860ffff',
+        0x8004f660: '3860fffe', 0x8004f67c: '3860fffd',
+    },
     'message_window_states': {
         0x80080c98: '9004f250', 0x80080cdc: '9003f254',
         0x80080dc8: '408105f8', 0x80080dd8: 'b01f0000',
@@ -618,6 +628,16 @@ def verify(iso_path):
         if read(0x8042065c, 4).hex() != '3f19999a':
             raise ValueError('Message history scroll coefficient mismatch')
         print('All 12 general window state targets, 24 sound bindings and history coefficient verified')
+        if read(0x80421874, 4).hex() != '43960000':
+            raise ValueError('Print projected anchor threshold mismatch')
+        for address, name in ((0x8041fd80, 'me'), (0x8041fdcc, 'party'),
+                              (0x802c14f0, '(^x^)party'), (0x802c14fc, 'extparty'),
+                              (0x8041fdd4, 'mario'), (0x802c1508, 'master'),
+                              (0x802c1510, 'slave_0'), (0x802c1518, 'slave_1'),
+                              (0x802c1520, 'slave_2'), (0x802c1528, 'slave_3')):
+            if read(address, len(name)+1) != name.encode()+b'\0':
+                raise ValueError(f'Event NPC special name mismatch: {name}')
+        print('Print projection threshold and all ten special event NPC names verified')
 
 
 if __name__ == '__main__':
