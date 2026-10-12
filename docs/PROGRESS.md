@@ -6082,3 +6082,31 @@ actual field trigger/return/story persistence;original input/state/US-message/
 animation/audio comparison traces. Continue remaining reachable US systems and
 optional content before final complete-game requirements. Full objective remains
 active/incomplete;local coordinator closure is not a complete lecture or game.
+
+### 2026-10-12 — Documentation ID2: selected target, weapon and payment
+
+Delivered BATTLE_SELECTED_TARGET_AND_WEAPON.md and
+BATTLE_WEAPON_COST_AND_PAYMENT.md for the reserved JUMP-01/DMG-01 slice.
+Complete local contracts cover ordered signed retained-selection reads/output
+callbacks, player command versus item weapon lookup, all15 cursor dispatch
+entries, cost scaling classes/reduction/cap, partner FP ownership/Mario registry
+lookup, separate affordability query, unchecked ordered FP/AP payment and
+wrap-before-cap action-record bytes. Default Jump/Hammer zero-cost operands and
+three ordinary Jump event bindings are verified. Corrected an eight-byte weapon
+address transcription during verifier construction, before delivery. No native
+code, ISO, asset, emulator profile or save changes by this documentation slice.
+
+Validation: new verify_weapon_selection_cost.py passed16 complete body hashes,
+11 instruction anchors,two constants,15 cursor targets,two weapon field checks
+and three event calls; report at/tmp/id2-selection-cost.json. Existing general
+behavior and19-body/268-command Jump graph evidence checks passed. make test
+passed16 CTest executables and58 Python tests;make all exited0,no rebuild.
+All750 local links across docs/behavior resolved;git diff --check passed.
+Inspection outputs/reports stay outside source history.
+
+Released only ID2's selected-target/cost lock and linked contracts in the inbox
+and behavior index. Parent requests remain open. Next requested dependencies:
+command-menu/selection producers,cost-check call cadence,numeric extremes,
+Jump stylish/aftereffect/badge tails and original execution traces. ID1's lecture
+player/mode/teardown reservation remains independent. Complete-game system
+requirements remain deferred pending adequate system coverage;goal incomplete.

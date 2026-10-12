@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Ordinary selected target,weapon-address and weapon-cost services | JUMP-01, DMG-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Selection/weapon](behavior/BATTLE_SELECTED_TARGET_AND_WEAPON.md),[cost/payment](behavior/BATTLE_WEAPON_COST_AND_PAYMENT.md):complete local bodies/cursor dispatch/shared FP/AP/action-record arithmetic;menu/selection producers,numeric extremes and original traces remain open |
 | Lecture player attack bindings,missing mode transitions and teardown | AC-01, AC-02, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover Jump/Hammer lecture request graphs,1→2/5→6 producers,W2740 selection and lecture-end writes;excludes original runtime traces |
 | Unit/part hit/world/home positions and movement sound core | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Position queries](behavior/BATTLE_UNIT_PART_POSITION_QUERIES.md),[movement sound](behavior/BATTLE_MOVEMENT_SOUND_CONTROL.md);source writers,playback internals and original traces remain open |
 | Jump takeoff position,move-frame query and approach MovePosition | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Takeoff](behavior/BATTLE_JUMP_TAKEOFF_POSITION.md),[query/movement](behavior/BATTLE_MOVE_FRAME_AND_POSITION.md):complete local bodies;candidate/numeric/helper/domain and execution remain open |
@@ -616,3 +617,20 @@ ID1 build-validation follow-up:the native fixture now uses the signed local-work
 encoding and clamp uses an explicit int32_t domain. Final make test passed all12
 CTest suites plus58 Python tests;make all exited0 with no rebuild. The earlier
 compile failures above are resolved. ID1 changed no native files for those fixes.
+
+
+ID2 selection/cost delivery (2026-10-12), JUMP-01/DMG-01 partial answer:
+[selection and weapon](behavior/BATTLE_SELECTED_TARGET_AND_WEAPON.md) specifies
+retained signed target/permutation reads and output callback order, player versus
+held-item weapon lookup and all15 cursor dispatch entries. Unsupported cursor
+types leave output untouched; do not supply a fabricated default Jump weapon.
+[cost and payment](behavior/BATTLE_WEAPON_COST_AND_PAYMENT.md) supplies every
+FP scaling class/reduction/cap, shared Mario FP lookup and low16 stores, separate
+affordability query, ordered unchecked payment, pouch AP narrowing/clamps and
+byte-before-cap action-record helpers. Zero FP cost still counts an action.
+Default Jump/Hammer item/FP/AP fields are zero; payment does not invoke the
+check. These are complete local static contracts, not evidence of menu-check
+cadence or original execution. `tools/verify_weapon_selection_cost.py` passes
+16 complete body fingerprints,11 anchors,two constants,15 cursor targets,two
+ordinary weapon checks and three ordinary Jump service calls. Own scoped lock
+released; parent requests and other owners' locks remain open.
