@@ -1,0 +1,4063 @@
+{
+  "schema": 1,
+  "scope": "Original finite general camera zone-triangle service and all shipped fan geometry; static source only",
+  "dol_spans": [
+    {
+      "name": "collisionTri_simple",
+      "address": 2147537844,
+      "size": 2880,
+      "sha256": "e3e3e03b6a0e4523a3758af9c14bd8683ec614fb7a7c9202729c84c065deaebc"
+    },
+    {
+      "name": "calcCamRoad",
+      "address": 2147530444,
+      "size": 3512,
+      "sha256": "30d1765fbf7b91469764903b659dec1c95db1da056d94007ac72c854a32b3fb2"
+    },
+    {
+      "name": "Downward camera zone vector",
+      "address": 2150364516,
+      "size": 12,
+      "sha256": "fa7bef25f8456446f4a0396325ecf87903e5abe8d5fd3b72aac5a49f351888dc"
+    },
+    {
+      "name": "Zone comparison doublezero",
+      "address": 2150364552,
+      "size": 8,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "name": "Initial camera bestheight",
+      "address": 2151806588,
+      "size": 4,
+      "sha256": "082d7ded3bfa61ba7137b7ae5451639469f66cb23707833675c69ee4f7851770"
+    }
+  ],
+  "dol_anchors": {
+    "2147538300": "fc010000",
+    "2147538324": "fc010000",
+    "2147538340": "4082000c",
+    "2147538344": "38600000",
+    "2147538544": "fc010040",
+    "2147538552": "408103a8",
+    "2147538640": "fc020040",
+    "2147538644": "4c411382",
+    "2147538648": "4082000c",
+    "2147538912": "fc020040",
+    "2147538916": "4081000c",
+    "2147539192": "fc020040",
+    "2147539196": "4081000c",
+    "2147539472": "fc020040",
+    "2147539476": "408103b0",
+    "2147539572": "fc020040",
+    "2147539576": "4c401382",
+    "2147539580": "4082000c",
+    "2147539844": "fc020040",
+    "2147539848": "4080000c",
+    "2147540124": "fc020040",
+    "2147540128": "4080000c",
+    "2147540404": "fc020040",
+    "2147540408": "4080000c",
+    "2147540524": "eca30024",
+    "2147540680": "fc010040",
+    "2147540692": "4080000c",
+    "2147540704": "d0270000",
+    "2147540708": "38600001",
+    "2147531052": "48001a89",
+    "2147531060": "4182000c",
+    "2147531064": "7f17c378",
+    "2147540424": "fc600850"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "camera_files": [
+    {
+      "path": "m/gor_00/c",
+      "size": 2048,
+      "sha256": "3d6f746ec51b1ba3165ba67aee2ca1fe17deb2d11a8fda9d3181a72356246d0c",
+      "triangles": [
+        {
+          "zone": 0,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 2,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 2,
+          "fan_index": 4,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 2,
+          "fan_index": 5,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 2,
+          "fan_index": 6,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        }
+      ]
+    },
+    {
+      "path": "m/gor_01/c",
+      "size": 7700,
+      "sha256": "173e43d28c5b557f7c47686c043e64c2ec0ebe61b29e12882b61b19262611757",
+      "triangles": [
+        {
+          "zone": 0,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 1,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 1,
+          "fan_index": 4,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": true
+        },
+        {
+          "zone": 3,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": true
+        },
+        {
+          "zone": 3,
+          "polygon": 0,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 0,
+          "fan_index": 4,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 0,
+          "fan_index": 5,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 2,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 3,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 3,
+          "fan_index": 4,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 3,
+          "fan_index": 5,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 5,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 5,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 5,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 5,
+          "fan_index": 4,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": true
+        },
+        {
+          "zone": 5,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": true
+        },
+        {
+          "zone": 5,
+          "polygon": 3,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 3,
+          "fan_index": 4,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 4,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 4,
+          "fan_index": 4,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 5,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 5,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 6,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 6,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": true,
+          "zero_xz": true
+        },
+        {
+          "zone": 8,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": true,
+          "zero_xz": true
+        },
+        {
+          "zone": 8,
+          "polygon": 4,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 5,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 5,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": true,
+          "zero_xz": true
+        },
+        {
+          "zone": 8,
+          "polygon": 5,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 6,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": true,
+          "zero_xz": true
+        },
+        {
+          "zone": 10,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 1,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        }
+      ]
+    },
+    {
+      "path": "m/gor_02/c",
+      "size": 11316,
+      "sha256": "ccf70290b06daa8d965b03e3796df9cf846c8f88c71651ac61aa3831f7aae41f",
+      "triangles": [
+        {
+          "zone": 0,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 3,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": true,
+          "zero_xz": true
+        },
+        {
+          "zone": 0,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": true,
+          "zero_xz": true
+        },
+        {
+          "zone": 0,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 4,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 4,
+          "fan_index": 4,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 5,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 5,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 6,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 6,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 7,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 7,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 0,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 1,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 3,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": true
+        },
+        {
+          "zone": 4,
+          "polygon": 3,
+          "fan_index": 4,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": true
+        },
+        {
+          "zone": 4,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 2,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 2,
+          "fan_index": 4,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 2,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 3,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 5,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 5,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 6,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 6,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 7,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 7,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 8,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 8,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 9,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 9,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 10,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 10,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 11,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 11,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 12,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 12,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 13,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 13,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 14,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 14,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 15,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 15,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 3,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": true
+        },
+        {
+          "zone": 8,
+          "polygon": 3,
+          "fan_index": 4,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": true
+        },
+        {
+          "zone": 8,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 5,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 5,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 6,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 6,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 7,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 7,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 8,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 8,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 9,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 9,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 10,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 10,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 11,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 11,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 12,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 12,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 13,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 13,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 13,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 14,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 14,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 15,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 15,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 16,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 16,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 17,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 17,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 18,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 18,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 19,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 19,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 20,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 20,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 21,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 21,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 22,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 22,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 23,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 23,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 5,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 5,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 6,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 6,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 7,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 7,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 8,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 8,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 9,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 9,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 10,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 10,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 11,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 11,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 11,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 12,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 12,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 13,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 13,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 14,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 14,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 15,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 15,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 1,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": true,
+          "zero_xz": true
+        },
+        {
+          "zone": 12,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 3,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 3,
+          "fan_index": 4,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 13,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 13,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 13,
+          "polygon": 0,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        }
+      ]
+    },
+    {
+      "path": "m/gor_03/c",
+      "size": 11392,
+      "sha256": "a0b2e3a1faa40d87f67d49bdd6917722b20aa480f969b3a42203b366060977af",
+      "triangles": [
+        {
+          "zone": 0,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 0,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 2,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 5,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 5,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 6,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 6,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 6,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 6,
+          "fan_index": 4,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 7,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 7,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 8,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 8,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 9,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 9,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 10,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 10,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 11,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 11,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 12,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 3,
+          "polygon": 12,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 4,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 5,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 6,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 7,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 4,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 5,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 5,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 6,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 6,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 6,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 6,
+          "fan_index": 4,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 7,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 7,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 8,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 8,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 9,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 9,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 10,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 10,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 11,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 11,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 12,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 8,
+          "polygon": 12,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 9,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 10,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 11,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 12,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 13,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 13,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 13,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 13,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 14,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 14,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 14,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 14,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 14,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 14,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 14,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 14,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 15,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 15,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 15,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 15,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 16,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 16,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 16,
+          "polygon": 0,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 17,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 17,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 17,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 17,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 18,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 18,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 18,
+          "polygon": 0,
+          "fan_index": 3,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 18,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 18,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 18,
+          "polygon": 1,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 18,
+          "polygon": 2,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 18,
+          "polygon": 2,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 18,
+          "polygon": 3,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 18,
+          "polygon": 3,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 18,
+          "polygon": 4,
+          "fan_index": 1,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 19,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 19,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 19,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 19,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 20,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 20,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 21,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 21,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 21,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 21,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 22,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 22,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 23,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 23,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": true,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 23,
+          "polygon": 1,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 23,
+          "polygon": 1,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        }
+      ]
+    },
+    {
+      "path": "m/gor_04/c",
+      "size": 1304,
+      "sha256": "9c6e9cfde7fd0986d25604dcb8eccef220f34bb431cbe21fd349f1d2b01a9c8b",
+      "triangles": [
+        {
+          "zone": 0,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 0,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 0,
+          "fan_index": 1,
+          "nonhorizontal": false,
+          "zero_3d": true,
+          "zero_xz": true
+        },
+        {
+          "zone": 1,
+          "polygon": 0,
+          "fan_index": 2,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        },
+        {
+          "zone": 1,
+          "polygon": 0,
+          "fan_index": 3,
+          "nonhorizontal": false,
+          "zero_3d": false,
+          "zero_xz": false
+        }
+      ]
+    }
+  ]
+}
