@@ -25,6 +25,8 @@ void attack(Game& g,bool success) {
     CHECK(g.phase==Phase::Impact);
 }
 void headContactRules() {
+    CHECK(headMotionResponds(3) && headMotionResponds(6));
+    for(unsigned motion:{0u,1u,2u,4u,7u,9u,10u,12u})CHECK(!headMotionResponds(motion));
     CHECK(stairRiseAllowed(0,.05f,30));CHECK(stairRiseAllowed(0,.11f,0));
     CHECK(!stairRiseAllowed(0,.049f,0));CHECK(!stairRiseAllowed(0,.111f,0));
     CHECK(!stairRiseAllowed(0,.08f,30.1f));
@@ -89,6 +91,13 @@ void headGeometry() {
         out.seekp(24);out.write(reinterpret_cast<char*>(&high),4);}
     CHECK(loadHead(path));CHECK(headCollision({-1,2},{1,0},.14f,.01f,root));
     CHECK(std::fabs(root-.122f)<.00001f); // Analytical sloped-plane center intersection.
+    ceiling(0,1);
+    {std::fstream out(path,std::ios::binary|std::ios::in|std::ios::out);float low=.35f;
+        for(int offset:{12,24,36}){out.seekp(offset);out.write(reinterpret_cast<char*>(&low),4);}}
+    CHECK(loadHead(path));Game standing;standing.progress.room=2;standing.progress.position={-1,2};
+    standing.tick({});CHECK(standing.overheadContact && !standing.airborne() && standing.groundHeight==0);
+    Input walk;walk.x=1;standing.tick(walk);CHECK(standing.overheadContact && standing.progress.position.x>-1 && standing.groundHeight==0);
+    clearCollision();standing.tick({});CHECK(!standing.overheadContact);
     ceiling(0,1);CHECK(loadHead(path));
     Game g;g.progress.room=2;g.progress.position={-1,2};g.tick(confirm());
     float maxY=0;Input held;held.jumpHeld=true;
@@ -102,12 +111,13 @@ void headGeometry() {
     }
     const float before=falling.jumpHeight;CHECK(before>.15f && falling.airborne());
     // Insert overhead contact at the pre-gravity head height while descending.
+    Game control=falling;control.tick(held);CHECK(!control.overheadContact);
     ceiling(0,1);const float roof=before+.365f;
     {std::fstream out(path,std::ios::binary|std::ios::in|std::ios::out);
         for(int offset:{12,24,36}){out.seekp(offset);out.write(reinterpret_cast<const char*>(&roof),4);}}
     CHECK(loadHead(path));CHECK(!headCollision({-1,2},{1,0},before,-.1001f,root,.1f));
-    const float expected=headClampedRoot(headContactHeight(roof))-.003f;
-    falling.tick(held);CHECK(std::fabs(falling.jumpHeight-expected)<.00001f);
+    falling.tick(held);CHECK(falling.overheadContact);
+    CHECK(std::fabs(falling.jumpHeight-control.jumpHeight)<.00001f); // Motion10 has no jump response.
     for(int n=0;n<40 && falling.airborne();++n)falling.tick({});
     CHECK(!falling.airborne() && falling.jumpHeight==0);
     clearCollision();std::remove(path);
@@ -390,9 +400,9 @@ void unequalFloorMotion() {
     float tri[]={-2,roof,1,3,roof,1,-2,roof,4};
     CHECK(write(headFd,"HEAD",4)==4);CHECK(write(headFd,&heads,4)==4);CHECK(write(headFd,tri,36)==36);
     CHECK(write(headFd,&attrs,4)==4);CHECK(write(headFd,&node,4)==4);CHECK(write(headFd,&cull,4)==4);
-    close(headFd);CHECK(loadHead(headPath));belowTakeoff.tick({});
-    const float expected=headClampedRoot(headContactHeight(roof))-.003f;
-    CHECK(std::fabs(belowTakeoff.groundHeight+belowTakeoff.jumpHeight-expected)<.00001f);
+    close(headFd);Game unblocked=belowTakeoff;unblocked.tick({});
+    CHECK(loadHead(headPath));belowTakeoff.tick({});CHECK(belowTakeoff.overheadContact);
+    CHECK(std::fabs(belowTakeoff.jumpHeight-unblocked.jumpHeight)<.00001f);
     CHECK(belowTakeoff.groundHeight+belowTakeoff.jumpHeight<rootY); // No teleport to takeoff1.
     for(int n=0;n<100 && belowTakeoff.airborne();++n)belowTakeoff.tick({});
     CHECK(!belowTakeoff.airborne() && belowTakeoff.groundHeight==0);std::remove(headPath);
@@ -466,11 +476,17 @@ void unequalFloorMotion() {
     Progress early=p;early.position={.07f,2};Game anticipate;anticipate.restore(early);left.jumpHeld=false;anticipate.tick(left);
     CHECK(anticipate.airborne() && anticipate.progress.position.x>0 && anticipate.groundHeight==0);
     for(int n=0;n<3;++n)anticipate.tick(left);CHECK(!anticipate.airborne() && std::fabs(anticipate.groundHeight-.08f)<.00001f);
+    char stairHead[]="/tmp/ttyd-stair-head-XXXXXX";int stairFd=mkstemp(stairHead);CHECK(stairFd>=0);
+    uint32_t stairHeads=1,stairCull=1;GroundContact ceilingOwner{0,1000};float ceilingTri[]={-2,.35f,1,3,.35f,1,-2,.35f,4};
+    CHECK(write(stairFd,"HEAD",4)==4);CHECK(write(stairFd,&stairHeads,4)==4);CHECK(write(stairFd,ceilingTri,36)==36);
+    CHECK(write(stairFd,&ceilingOwner,8)==8);CHECK(write(stairFd,&stairCull,4)==4);close(stairFd);CHECK(loadHead(stairHead));
     Game stairs;stairs.restore(p);left.jumpHeld=false;stairs.tick(left);
     CHECK(stairs.airborne() && stairs.groundHeight==0);
-    stairs.tick(save);CHECK(!stairs.saveRequested && std::fabs(stairs.groundHeight-.08f/3)<.00001f);
+    stairs.tick(save);CHECK(stairs.overheadContact && !stairs.saveRequested && std::fabs(stairs.groundHeight-.08f/3)<.00001f);
     stairs.tick(confirm());CHECK(stairs.airborne() && std::fabs(stairs.groundHeight-.16f/3)<.00001f);
     stairs.tick({});CHECK(!stairs.airborne() && std::fabs(stairs.groundHeight-.08f)<.00001f);
+    {std::ofstream empty(stairHead,std::ios::binary);empty.write("HEAD",4);uint32_t zero=0;empty.write(reinterpret_cast<char*>(&zero),4);}
+    CHECK(loadHead(stairHead));std::remove(stairHead);
     stepFloor(.2f);CHECK(loadGround(path));Game tall;tall.restore(p);tall.tick(left);
     CHECK(tall.progress.position.x==p.position.x && tall.groundHeight==0 && !tall.airborne());
     CHECK(!frontStepGround({.05f,2},{-1,0},0,forward,slope)); // .2 is above half-height ray origin.

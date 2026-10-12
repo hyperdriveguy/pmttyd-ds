@@ -667,3 +667,32 @@ would be incorrect, especially for negative heights due truncation semantics.
 Byte verifier now proves both stores. Nonzero residual vertical velocities/
 special flags, exact angle rounding, full cache/contact outputs, partner probe
 policy, grounded head checks and source wall push-out remain unfinished.
+
+## CORRECTION — GameCube overhead response motion gate (2026-10-12)
+
+This supersedes the earlier falling/upstairs clamp interpretation in this file
+and commits048ff7a/7857a24. Reviewing the complete response branch shows
+8008cc9c reads motion ID;8008cca0 accepts3,8008cca8 accepts6;8008ccac
+branches past response for all other IDs. Table80310030 identifies0 stay,
+1 walk,2 dash,3 jump,6 jumpStand,10 fall,12 upstairs. Source overhead still
+queries/stores contact for grounded/falling/upstairs, but these ordinary motions
+do NOT clear jump parameters, force falling or assign clamped actualY here.
+The previous tests proved our implementation behavior, not this source gate.
+
+Native normal jump now applies response only while representing motion3;
+apex transition/falling maps to10 and records query without response. Upstairs
+and standing/walking similarly record overheadContact only. The bool is a
+current-frame diagnostic, not a complete original head-object pointer/cache.
+Grounded contact runs after horizontal move and before floor selection; falling
+query retains pre-gravity placement. The source gate helper also documents6
+for future jumpStand; that ability is not implemented yet. Jump-only takeoff
+minimum/clearance remains intact for ordinary ascent. Original SFX342 mapping
+and earlier special-mode/attribute branches are still incomplete.
+
+New synthetic tests explicitly distinguish query from response: low roof does
+not interrupt ordinary standing/walking/upstairs; contacted falling trajectory
+matches an unobstructed control tick; normal rising jump still bumps/lands.
+Source verifier proves response comparisons/skip instruction and motion-table
+pointers. Do not infer Switch parity: README's active documentation reference
+is Switch1.0.0 static research, whose corresponding field contract remains
+untraced. This corrects the existing GameCube-native prototype comparison.

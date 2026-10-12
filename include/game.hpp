@@ -67,6 +67,7 @@ public:
     Progress progress;
     Vec2 partner{1.4f,2.5f};
     float groundHeight = 0, partnerHeight = 0;
+    bool overheadContact=false;
     GroundContact groundContact,partnerContact;
     GroundContact returnContact;
     WaterRecovery water;

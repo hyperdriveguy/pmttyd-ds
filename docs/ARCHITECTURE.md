@@ -335,3 +335,10 @@ root/contact once; lack of support begins falling. Loader/arrival/partner still
 use broad groundAt, also used by the temporary coarse tall-ledge movement guard.
 The forward stair ray runs before grounded root assignment. Actual root uses
 raw selected height; original rounded floor cache is distinct and not yet stored.
+
+Game.overheadContact is reset each simulation tick and records ordinary field
+head-query contact separately from collision response. The GameCube response
+gate accepts original motions3/6; native ordinary rising jump maps to3 and
+falling to10. Standing/walking/upstairs query without applying that response.
+Earlier fall/upstairs force-clamp notes are superseded by the source motion gate.
+This is a GameCube prototype contract, not a recovered Switch field contract.

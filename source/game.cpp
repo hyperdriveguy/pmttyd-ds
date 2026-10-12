@@ -406,17 +406,16 @@ bool Game::integrateVertical(bool held,float& previousY) {
     if(fieldJump.falling) {
         // Falling marioMain checks overhead before marioFall updates derivatives.
         // Without the ascent flag, marioChkOverhead extends its ray by10 engine units.
-        if(headCollision(progress.position,moveDirection,previousY,fieldJump.velocity,ceiling,.1f)) {
-            // Source fall flag bypasses the saved takeoff-Y minimum.
-            jumpBase=ceiling;fieldJump.beginFall();previousY=ceiling;groundContact={};
-        }
+        // Source motion10 records the query but bypasses jump-only response.
+        overheadContact=headCollision(progress.position,moveDirection,previousY,fieldJump.velocity,ceiling,.1f);
         fieldJump.tick(held,false);jumpHeight=jumpBase+fieldJump.height-groundHeight;
         return true;
     }
     fieldJump.tick(held,false);
-    if(headCollision(progress.position,moveDirection,jumpBase+fieldJump.height,fieldJump.velocity,ceiling,
-                     fieldJump.falling?.1f:fieldJump.velocity)) {
-        jumpBase=fieldJump.falling?ceiling:std::max(jumpBase,ceiling);fieldJump.beginFall();
+    overheadContact=headCollision(progress.position,moveDirection,jumpBase+fieldJump.height,fieldJump.velocity,ceiling,
+                                  fieldJump.falling?.1f:fieldJump.velocity);
+    if(overheadContact && headMotionResponds(fieldJump.falling?10:3)) {
+        jumpBase=std::max(jumpBase,ceiling);fieldJump.beginFall();
         groundContact={};jumpHeight=jumpBase-groundHeight;return false;
     }
     jumpHeight=jumpBase+fieldJump.height-groundHeight;
@@ -539,6 +538,10 @@ void Game::move(const Input& i) {
     candidate={p.x,p.z+z*speed};
     accept(candidate);
     progress.position=p;progress.elevation=groundHeight;
+    if(!fieldJump.airborne && !wasStepping) {
+        float ceiling=0;
+        overheadContact=headCollision(p,moveDirection,groundHeight,0,ceiling,.1f);
+    }
     if(!wasStepping && !fieldStep.active() && !fieldJump.airborne && len>0) {
         float height=0,slope=0;
         if(frontStepGround(p,moveDirection,groundHeight,height,slope) && stairRiseAllowed(groundHeight,height,slope)) {
@@ -589,9 +592,8 @@ void Game::move(const Input& i) {
     cameraHeight+=(groundHeight-cameraHeight)*.07f;
     if(wasStepping) {
         float ceiling=0;
-        if(headCollision(p,moveDirection,groundHeight,fieldStep.velocity,ceiling,.1f)) {
-            jumpBase=std::max(fieldStep.start,ceiling);fieldStep={};fieldJump.beginFall();jumpHeight=jumpBase-groundHeight;
-        }
+        // Upstairs motion12 also records contact without the jump-only response.
+        overheadContact=headCollision(p,moveDirection,groundHeight,fieldStep.velocity,ceiling,.1f);
     }
     if(wasFalling)advanceVertical(i.jumpHeld);
     else if(verticalReady)finishVertical(previousY);
@@ -662,7 +664,7 @@ void Game::battle(const Input& i) {
     }
 }
 void Game::tick(const Input& i) {
-    ++ticks; sound=Sound::None;
+    ++ticks; sound=Sound::None;overheadContact=false;
     const bool tap=i.touchX>=0;
     if(arriving) {
         fade.tick();const bool finished=roadMotion.tick();

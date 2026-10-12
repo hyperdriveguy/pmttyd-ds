@@ -6,6 +6,8 @@ namespace ttyd {
 // Geometry selection and face culling must precede these contact rules.
 constexpr float HeadBodyHeight=.37f;
 constexpr float HeadProbeRadius=.0975f; // .5*(base width20-.5), converted once.
+// GameCube US marioChkOverhead8008cc9c: ordinary jump and jumpStand only.
+constexpr bool headMotionResponds(unsigned motion){return motion==3 || motion==6;}
 inline bool headAttributesSolid(uint32_t flags) {
     return !(flags&4) || (flags&0x00800000);
 }

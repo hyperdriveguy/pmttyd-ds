@@ -3653,3 +3653,51 @@ comparisons and GX raster data. Continue uncovered story/event/field/battle/
 audio/save/content systems before complete-game requirements. Full objective
 remains active/incomplete; local contracts do not prove complete dialogue or
 full-game equivalence.
+
+## 2026-10-12 — Correct GameCube overhead response gate
+
+Previous goal turn made progress with five-probe grounded supportb182246.
+Current README also names Switch1.0.0 as the active STATIC documentation
+reference; existing prototype is GameCube-based and Switch field parity remains
+unverified. This step corrects a discovered bug in that existing prototype,
+without pretending GameCube contracts establish Switch behavior.
+
+Complete marioChkOverhead response trace shows8008cc9c–8008ccac accepts
+ONLY motion3 jump or6 jumpStand, otherwise skipping SFX/clear/fall/Y-write.
+Motion table verifies0 stay,1 walk,2 dash,10 fall,12 upstairs. Earlier
+048ff7a/7857a24 falling/upstairs clamp behavior and supporting tests were too
+broad; they validated implementation, not this omitted source motion gate.
+Removed those responses. Current-frame overheadContact records queries for
+normal standing/walking, falling and stairs without modifying trajectory.
+Normal ascending jump still responds; apex/fall maps to10. Helper documents
+3/6 gate, but jumpStand itself is not implemented.
+
+Validation: `make test` passed core and36 Python tests; new low-roof standing/
+walking checks preserve root/control, upstairs preserves3-tick rise despite
+contact, falling under contact matches an unobstructed control tick. Query
+reset and jump-response gate IDs tested; prior falling-clamp assertions replaced
+with source-correct expectation. Initial new fixture variable-name collision
+was fixed; source verifier's initially mistyped motion0 pointer was corrected
+against CSV/table bytes, final checks pass. `build-host/core_tests --rooms`
+passes all8 arrivals,18,315 indexed/full-scan probes and original water/void/
+ceiling checks. `make -j2 all` builds native3dsx; actor verifier passes motion
+table entries and3/6 comparisons/skip branch.
+
+Native ordinary ceiling jumps/landed save exited0; native harbor stair/dock-
+save/return exited0 with HP7. Commands:
+```sh
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/ceiling-road.bin --seconds 4 --input-script tests/azahar_ceiling.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_harbor_stairs.py
+```
+Ceiling run preceded equivalent explicit constexpr gate refactor; final harbor
+run used final native build. No build overlapped emulator execution; no original
+Switch execution or profile/save modification. Extracts/captures remain ignored.
+Mechanics/architecture append clear superseding corrections. Separate research
+changes are excluded from this feature commit.
+
+Next: static Switch field motion/integrator/collision contracts before claiming
+new-reference parity; preserve GameCube comparison provenance. Existing native
+wall push-out/sliding, contact owner/cache outputs, direction rounding, stair
+XZ/chaining, partner grounding and special states remain incomplete. Original
+English story/dialogue, SFX/animations/camera/interiors and full playable content
+still require work. Full goal active; hardware/complete fidelity unverified.
