@@ -2968,3 +2968,28 @@ callbacks; renderer/key-wait indicator/manager cadence and speaker/font/icon/pos
 audio dependencies. Continue original story call-graph attribution/order/branches/
 conditions and all other systems before complete-game requirements. Full objective
 active/incomplete; executed-original comparisons still needed.
+
+## 2026-10-12 — Partner print variants and placement setters
+
+Previous turn progressed with2713628 common print. Added MESSAGE_PRINT_VARIANTS.md:
+NPC name-only mutation, pending layer, accumulated orientation flags and literal
+preserved placement mask/float operands; all11 field/seven battle suffix bindings,
+signed field index versus e0-based battle kind, three distinct64-byte buffers,
+variant first-call gates/shared identity lifetime, resumed null battle-unit early
+completion and direct/key generic append. Original keys/text are retained; suffix
+character/caller attribution and insertion substitutions remain open.
+
+Validation:528 instruction anchors and prior checks passed read-only US ISO,
+plus all18 suffix bindings and original field speaker literal. Evidence199
+function fingerprints reproduced byte-for-byte. All behavior links resolve;
+git diff --check passed. make test passed core plus36 Python tests; make all
+exited0, no rebuild. Workspace started clean; only research/provenance/evidence
+tooling changed. No original execution/emulator run or profile/save changes.
+Original extracts/reports remain ignored. Static checks do not prove concurrent
+buffer ownership, story branch attribution or original/native equivalence.
+
+Next: insert/add-insert substitutions and callback bodies; partner/battle key
+caller census and character mappings; renderer/key-wait indicator/manager cadence
+and service dependencies. Continue full story attribution/order/branches/conditions
+and all remaining systems before complete-game requirements. Full objective
+active/incomplete; executed-original comparisons still needed.

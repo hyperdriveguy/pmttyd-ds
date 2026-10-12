@@ -153,3 +153,6 @@ substitution and callback bodies, speaker helper services/camera projection,
 renderer and manager cadence, identity lifetime and original story call-graph
 attribution/order/branches/conditions. Common print and NPC name resolution are
 locally documented; full dialogue and complete-game equivalence remain unfinished.
+Partner/append variants and NPC/layer/placement setters are now specified in
+[print variants](MESSAGE_PRINT_VARIANTS.md); insert substitutions/callbacks and
+story call graphs remain open.

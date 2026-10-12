@@ -13,6 +13,16 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'message_print_variants': {
+        0x800d1f14: '3863f204', 0x800d1f54: '907f0190',
+        0x800d1f98: '64008000', 0x800d1fe8: '64006000',
+        0x800d2030: '7400e100', 0x800d2050: 'd03e0184',
+        0x800d27d8: '7fff0774', 0x800d2824: '3902a42c',
+        0x800d2714: '41820040', 0x800d2750: '4bfaee6d',
+        0x800d2628: '3880fffc', 0x800d2644: '38600002',
+        0x800d2674: '8084fc80', 0x800d2694: '3900fffc',
+        0x800d2404: '41820024', 0x800d2440: '7c031878',
+    },
     'message_print_events': {
         0x800d2900: '41820480', 0x800d2930: '7c050734',
         0x800d2940: '901c0190', 0x800d295c: '93630000',
@@ -638,6 +648,19 @@ def verify(iso_path):
             if read(address, len(name)+1) != name.encode()+b'\0':
                 raise ValueError(f'Event NPC special name mismatch: {name}')
         print('Print projection threshold and all ten special event NPC names verified')
+        suffix_tables = (
+            (0x80416370, ('', '_kur', '_nok', '_bom', '_yos', '_win',
+                          '_viv', '_chu', '_jug', '_tel', '_lui')),
+            (0x8041639c, ('_kur', '_nok', '_yos', '_win', '_viv', '_bom', '_chu')),
+        )
+        for address, suffixes in suffix_tables:
+            for i, suffix in enumerate(suffixes):
+                pointer = struct.unpack('>I', read(address+4*i, 4))[0]
+                if read(pointer, len(suffix)+1) != suffix.encode()+b'\0':
+                    raise ValueError(f'Partner message suffix mismatch: {address:#x}/{i}')
+        if read(0x8042186c, 6) != b'party\0':
+            raise ValueError('Field partner speaker literal mismatch')
+        print('All 18 field/battle partner suffix bindings and field speaker literal verified')
 
 
 if __name__ == '__main__':
