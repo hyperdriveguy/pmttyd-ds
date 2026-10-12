@@ -19,6 +19,7 @@
 #include "battle_packed_takeoff.hpp"
 #include "battle_packed_choice.hpp"
 #include "battle_packed_sampling.hpp"
+#include "battle_move_frame_event.hpp"
 
 namespace ttyd {
 struct BattleDataChildBackend {
@@ -44,6 +45,8 @@ struct BattleTakeoffBackend {
     int32_t (*sample)(void*,BattleCandidateBuffer&,uint32_t,int32_t,int32_t,uint32_t,uint32_t,int32_t)=nullptr; // Null selects native sampler.
     uint32_t (*monosiri)(void*,int32_t kind)=nullptr;
 };
+BattleMoveFrameServices nativeBattleMoveFrameServices(EventNativeRuntime&);
+bool bindBattleGetMoveFrameCallback(EventCallbackRegistry&,EventNativeRuntime&);
 BattlePackedChoiceServices nativeBattleChoiceServices(EventNativeRuntime&);
 BattlePackedSamplingServices nativeBattleSamplingServices(EventNativeRuntime&,void* user=nullptr,uint32_t (*monosiri)(void*,int32_t)=nullptr);
 // Complete native sampler/chooser defaults;Monosiri mask1 requires its provider.

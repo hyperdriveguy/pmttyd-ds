@@ -20,6 +20,7 @@ struct EventNativePlatform {
     float (*signedWordFloat)(void*,int32_t)=nullptr;
     float (*divideFloat)(void*,float,float)=nullptr;
     float (*negativeMultiplySubtractFloat)(void*,float,float,float)=nullptr;
+    float (*distanceFloat)(void*,float,float,float,float)=nullptr;
 };
 // Shared native storage/service owner. GP address and RAM/arena provisioning are
 // explicit port policy. Platform callbacks are required at their call boundaries;

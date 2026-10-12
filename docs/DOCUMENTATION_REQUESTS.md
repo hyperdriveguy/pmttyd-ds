@@ -526,6 +526,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): GetMoveFrame8010c8c0 now
+operates on native event/unit/work bytes with required numeric/distance providers.
+83 CTest/90 Python and make all pass;13 bodies/68 anchors/5 spans/6 Jump callers
+match ISO preparation verifier. See
+behavior/battle/BATTLE_NATIVE_MOVE_FRAME_CAPTURE_ORDER.md for raw Y/speed
+prefetches,zero capture/local fallback and query versus motion count distinction.
+Next:live native MovePosition/sound/Mario jump motion plus original source/math/
+execution and outer Game binding. Existing Monosiri source request remains open.
+
 ID2 Goombella weapon callback/source reply (2026-10-12):
 [Complete callback/tech query](behavior/battle/GOOMBELLA_WEAPON_TABLE_CALLBACK_AND_TECH_LEVEL.md)
 and [seven key1 chains](behavior/battle/PARTY_WEAPON_CALLBACK_KEY1_SOURCE_BINDINGS.md)

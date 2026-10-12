@@ -5,6 +5,11 @@
 #include "event_memory_release.hpp"
 
 namespace ttyd {
+BattleMoveFrameServices nativeBattleMoveFrameServices(EventNativeRuntime& runtime) {
+    BattleMoveFrameServices s;s.common=nativeBattleChoiceServices(runtime);s.user=&runtime;
+    s.distance=[](void* p,float a,float b,float c,float d) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.distanceFloat);return r.platform.distanceFloat(r.platform.user,a,b,c,d);};return s;
+}
+bool bindBattleGetMoveFrameCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x8010c8c0,&runtime,[](void* p,EventEntry& e,int32_t) {return packedMoveFrameEvent(e,nativeBattleMoveFrameServices(*static_cast<EventNativeRuntime*>(p)));});}
 BattlePackedChoiceServices nativeBattleChoiceServices(EventNativeRuntime& runtime) {
     BattlePackedChoiceServices s;s.position=nativeBattlePartPositionServices(runtime);s.user=&runtime;
     s.status=[](void* p,uint32_t u,int32_t id) {auto& r=*static_cast<EventNativeRuntime*>(p);return int32_t(getPackedBattleStatus(u,id,nativeBattleActorServices(r)).duration);};

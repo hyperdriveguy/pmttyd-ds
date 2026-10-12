@@ -357,6 +357,35 @@ requirements and EVT-01/JUMP-01/DMG-02 remain incomplete.
 
 # Progress and next-session handoff
 
+## 2026-10-12 — Native GetMoveFrame event query
+
+Bound original GetMoveFrame8010c8c0 to native event/unit/work records. It retains
+raw Y/speed prefetches across integer conversion,captures output after GetFloat
+before unit lookup,queries visible XYZ then distABf inputs,and fetches local/
+stored speed only after distance. Native count follows trunc/divide/fused residual/
+positive increment word wrap/exact-zero1;negative nonzero values remain. Raw output
+sentinel skips store only;no unit-speed mutation or first-call gate. Numeric and
+distance providers are explicit;no provisional approach/impact constant is added.
+
+Evidence:behavior/battle/BATTLE_NATIVE_MOVE_FRAME_CAPTURE_ORDER.md;original ELF/
+disassembly /tmp/pm-native-move-frame.* stays outside history. MovePosition's
+count/speed/step policy remains independent and requires native binding. Full
+first-attack abs(n-22)/event cadence/Game/hardware behavior remains incomplete.
+
+Validation:make test83 CTest/90 Python;make all passes. Original read-only
+verify_jump_preparation.py passes13 bodies/68 anchors/5 spans/6 caller records.
+Logs:/tmp/pm-move-frame-event-test.log and /tmp/pm-move-frame-event-build.log.
+Tests cover query21 versus exact20,zero/negative count,signed-zero fallback and
+NaN bypass,omitted output/full math,prefetch/work/output capture,post-distance
+speed and pre-truncation zero capture,word increment wrap and native registry/
+event/unit RAM. std::hypot/fma and exceptional conversion providers are authored
+fixtures;no original numeric/trajectory/emulator/hardware/full encounter claim.
+
+Next:complete native MovePosition/movement-sound and Mario jump motion,source/
+numeric/transitive event services and outer battle/Game composition. Monosiri
+request remains open through documentation breadcrumbs. Goal active/incomplete;
+concurrent work preserved.
+
 ## 2026-10-12 — Native sampling and default takeoff composition
 
 Implemented full sampling entry/update/core and forward-level helper over native
