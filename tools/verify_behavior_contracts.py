@@ -13,6 +13,12 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'turn_recovery': {
+        0x8011c538: '2800004d', 0x8011c744: '90030160',
+        0x8011c750: '2c190040', 0x8011c7a4: '48001c30', 0x8011cc80: '3900011a',
+        0x8011ccf8: '4bfbcb51', 0x8011d680: '48009055',
+        0x8011ad30: '901f82b4', 0x800f8984: '38a50001',
+    },
     'damage_orchestration': {
         0x800fb0a4: '2c030005', 0x800fb104: '64000008',
         0x800fb138: '2c000001', 0x800fb20c: '4802e6c5',
@@ -244,6 +250,26 @@ def verify(iso_path):
         if read(0x802ee050, 20) != bytes(20):
             raise ValueError('Pikkyoro candidate initializer mismatch')
         print('Orchestration: five floats, three sound keys and candidate initializer verified')
+        if hashlib.sha256(read(0x80363cc8, 78*4)).hexdigest() != '42ae54671dbfed589235c6a229767eba9b48984a21a16ee5d10788bc9c85343f':
+            raise ValueError('Turn sequence dispatch table mismatch')
+        recovery_sites = (0x8011c710, 0x8011c7c8, 0x8011c888, 0x8011c948,
+                          0x8011ca08, 0x8011cac8, 0x8011cb88, 0x8011cc50,
+                          0x8011cd70, 0x8011ce30, 0x8011cef0, 0x8011cfb0,
+                          0x8011d070, 0x8011d130, 0x8011d1f0, 0x8011d2b0,
+                          0x8011d36c, 0x8011d42c, 0x8011d4ec, 0x8011d5ac,
+                          0x8011d66c, 0x8011d734, 0x8011d7f4)
+        for site in recovery_sites:
+            expected = 0x48000001 | ((0x80127890-site) & 0x03fffffc)
+            if struct.unpack('>I', read(site, 4))[0] != expected:
+                raise ValueError(f'Recovery helper call mismatch {site:#x}')
+        for address, name in {0x802efb80: 'SFX_REST_CONDITION1',
+                              0x802efb94: 'SFX_CONDITION_BREAK_ICE1'}.items():
+            expected = name.encode('ascii') + b'\0'
+            if read(address, len(expected)) != expected:
+                raise ValueError(f'Recovery sound binding mismatch {address:#x}')
+        if read(0x8042256c, 4) != struct.pack('>f', 1.0):
+            raise ValueError('Freeze expiry effect scale mismatch')
+        print('Turn recovery: dispatch hash, 23 calls, two sounds and scale verified')
         status_tables = {
             0x80364204: [0x7970, 0x792c, 0x7970, 0x7970, 0x7adc,
                          0x7970, 0x7970, 0x7970, 0x7970, 0x7970,

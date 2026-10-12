@@ -2300,3 +2300,53 @@ the coarse tall-ledge guard. Partner still needs original NPC grounding.
 Dynamic support, block/SFX events, original English story/dialogue, animation,
 camera, interiors and complete playable content remain unfinished. Full goal
 active; hardware/Dolphin fidelity acceptance unverified.
+
+## 2026-10-12 — Damage orchestration research validation
+
+The preceding goal turn made progress with5813bb3, then was interrupted before
+this handoff. BATTLE_DAMAGE_ORCHESTRATION.md specifies all local BattleCheckDamage
+branches, superguard variants, guard eligibility, status/damage ordering,
+code rewrites, audience calls, reaction selection, result precedence and
+Pikkyoro selection. Two retained RNG draws must not be optimized away: the
+Freeze event comparison against zero and pattern selection after immunity.
+
+Completed validation before interruption:203 instruction anchors and previous
+data checks passed, plus orchestration presentation bindings/zero initializer.
+Evidence report fingerprints87 functions and matched a second read byte for
+byte. make test passed core plus36 Python tests; make all exited0, no rebuild.
+Behavior links resolved; git diff --check passed. Concurrent runtime work was
+committed separately asb182246; this research did not author or stage it.
+Original extracts/disassembly remain ignored. No original execution, emulator,
+profile/save modification or dynamic-equivalence claim in this research.
+
+Next research: status recovery scheduling and periodic effects, event waits,
+actual death/revival scripts, weapon bindings and full-system coverage. Complete
+game requirements remain deferred until the systems are adequately documented.
+
+## 2026-10-12 — Turn status recovery passes and wait boundary
+
+Added BATTLE_TURN_RECOVERY.md:23 ordered recovery phases,64-slot iteration,
+generic recovery event registration/sound, allocation failure handling, Slow
+move reset, Freeze expiry damage/effect and event-wait transitions. Changed
+Sleep exits before polling its wait state; other changed recovery phases recurse
+into the wait. Empty phases skip waits recursively. Documented outer active-event
+wait protocol; its initial unit/background helper still needs recovery.
+
+Read-only DOL scan found24 direct branches to CheckRecoveryStatus:23 in turn
+controller and one Sleep-interruption call in direct damage. Report explicitly
+excludes indirect calls, REL relocations and script operands. Static validation
+passed212 instruction anchors plus23 recovery calls,78-entry dispatch-table hash,
+recovery sounds/scale and previous checks. Evidence92 function fingerprints
+matched a repeat report byte for byte. Links and git diff --check passed.
+make test passed core plus36 Python tests; make all exited0, no rebuild. A final
+Sleep transition anchor was added afterward and the full static verifier rerun.
+No native gameplay code authored, original execution/emulator run, or profile/
+save changes. Concurrent Switch tools were committed separately asdfc276e.
+Source extracts/disassemblies/reports remain ignored; ASSETS.md updated.
+
+Next: periodic Poison/Burn/HP/FP phases before recovery, generic recovery event,
+ResetMoveStatus, CheckShadowGuard, initial unit wait helper and conclusion
+handling. Recover outer turn/phase cadence and actual death/revival event bodies.
+Continue all other systems in behavior/README before complete-game requirements.
+Full objective active/incomplete; static fingerprints do not prove original/native
+runtime or rendering equivalence.

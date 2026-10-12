@@ -23,6 +23,8 @@ FUNCTIONS = (
     'BattleActionCommandResetDefenceResult', 'BattleACPadCheckRecordTrigger',
     'BtlPad_WorkInit', 'BtlPad_WorkUpdate', 'BattleActionCommandManager',
     'BattleActionCommandSetup', 'BattleCheckDamage', 'BattleDamageDirect',
+    'btlseqTurn', 'BattleWaitAllActiveEvtEnd',
+    'BattleIncSeq', 'BattleGetSeq', 'BattleSetSeq',
     'BattleCheckPikkyoro', 'BtlUnit_GetACPossibility', 'BtlUnit_CheckStatusFlag',
     'BattlePreCheckDamage', 'BattleCalculateDamage', 'BattleCalculateFpDamage',
     'btlevtcmd_ResultACDefence',
@@ -115,6 +117,23 @@ def report(iso_path, symbols_path):
                                   sha256=hashlib.sha256(data).hexdigest(),
                                   direct_branch_link_sites=calls))
 
+        recovery_branches = []
+        for section in sections:
+            if section['kind'] != 'text':
+                continue
+            data = at_va(section['address'], section['size'])
+            for offset in range(0, len(data) - 3, 4):
+                word = struct.unpack_from('>I', data, offset)[0]
+                if word >> 26 != 18:
+                    continue
+                displacement = word & 0x03fffffc
+                if displacement & 0x02000000:
+                    displacement -= 0x04000000
+                site = section['address'] + offset
+                target = (displacement if word & 2 else site + displacement) & 0xffffffff
+                if target == 0x80127890:
+                    recovery_branches.append(dict(site=site, link=bool(word & 1)))
+
         # US dispatch address recovered from evtmgrCmd's table load.
         dispatch = [struct.unpack('>I', at_va(0x80304fd0 + i * 4, 4))[0]
                     for i in range(119)]
@@ -137,6 +156,7 @@ def report(iso_path, symbols_path):
                      bss_address=struct.unpack_from('>I', dol_header, 0xd8)[0],
                      bss_size=struct.unpack_from('>I', dol_header, 0xdc)[0],
                      sections=sections),
+            recovery_direct_branches=recovery_branches,
             symbols_sha256=hashlib.sha256(symbol_bytes).hexdigest(),
             functions=functions, event_dispatch_address=0x80304fd0,
             event_dispatch_targets=dispatch, assets=assets,

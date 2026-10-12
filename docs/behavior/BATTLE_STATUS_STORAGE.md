@@ -197,3 +197,7 @@ construction from weapons, complete recovery caller schedule, periodic HP/FP
 effects, movement/action restrictions, animation/UI and end-of-battle cleanup.
 These local contracts and selected static anchors are not original execution
 tests or proof of a complete status system.
+
+The ordered turn-controller recovery passes are now specified in
+[turn recovery](BATTLE_TURN_RECOVERY.md). Outer turn cadence and periodic effect
+phases still require separate recovery.
