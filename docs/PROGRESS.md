@@ -1,3 +1,26 @@
+## 2026-10-12 — ID2 complete operation-menu consumer and lifecycle
+
+Three implementation contracts close Main8012165c/2cc,Setup80121928/4c,
+End80121600/38,and UI Main80115d2c/4:
+[opcode/state](behavior/battle/OPERATION_MENU_MAIN_OPCODE_AND_STATE_PUBLICATION.md),
+[navigation/cancel/audience](behavior/battle/OPERATION_MENU_NAVIGATION_CANCEL_AND_AUDIENCE.md),
+[setup/end/live flags](behavior/battle/OPERATION_MENU_SETUP_END_AND_FLAG_OWNERSHIP.md).
+Pending clear before gate,fresh opcode after sound,all opcode/default routes,
+unknown enabled opcode result1,disabled reason reread,boundary Trigger/interior
+Repeat,confirmation/cancel/audience-specific End order,and live flag masking
+covered.ID2 lock released;no native implementation/tests/assets changed.
+
+Validation:`tools/verify_operation_menu_control.py` twice,identical:14 hashes
+(4 complete/10 linked),213 instruction anchors,2 original sound keys.Python
+compilation,existing behavior/operation-party/Input/interruption verifiers,own
+Markdown links,and scoped whitespace passed.`make test`:81 CTest/90 Python
+passed.`make all` passed.
+
+Limits:static local evidence only.UI Init/End,party/protect/multi-item menu
+writers,party key1 weapon callbacks/source,query-event reachability,Game/
+platform/original execution/full-game requirements remain open.Next needed
+port-function priority:party/protect menu writers,then weapon delegate/source.
+
 ## 2026-10-12 — ID2 operation and party table producers
 
 Four detailed contracts close operation table801238b8/448,party table80123360/

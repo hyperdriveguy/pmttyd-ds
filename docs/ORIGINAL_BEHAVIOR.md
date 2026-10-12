@@ -1110,3 +1110,12 @@ close four bodies:partial descriptors/disabled counted parties/optional+mandator
 operations/ordered setup-cost-current HP/cursor publication/different scan bounds.
 16 hashes/472 anchors/32 spans verified;80 CTest/90 Python/make all pass.
 Menu/delegate/source/query/Game/platform/original runtime remain open.
+
+ID2 complete operation-menu closure (2026-10-12):
+[Opcode/state](behavior/battle/OPERATION_MENU_MAIN_OPCODE_AND_STATE_PUBLICATION.md),
+[navigation/order](behavior/battle/OPERATION_MENU_NAVIGATION_CANCEL_AND_AUDIENCE.md),
+[setup/end](behavior/battle/OPERATION_MENU_SETUP_END_AND_FLAG_OWNERSHIP.md)
+close four local bodies:pending/admission/fresh opcode/return ownership/all
+state routes/edge controls/caller-specific End/live flag order.14 hashes/213
+anchors/2 keys verified;81 CTest/90 Python/make all pass.Party/delegate/
+source/query reachability/Game/platform/original runtime remain open.
