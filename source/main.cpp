@@ -87,7 +87,7 @@ int main() {
             game.tick(pending);++metrics.steps;accumulator-=1./60;
             pending={};pending.x=i.x;pending.z=i.z;pending.jumpHeld=i.jumpHeld;pending.cancelHeld=i.cancelHeld;
             pending.physicalSnapshot=i.physicalSnapshot;pending.physicalButtons=i.physicalButtons;
-            if(game.progress.sound) audio.play(game.sound);
+            if(game.progress.sound) audio.play(game);
             if(noticeTicks>0)--noticeTicks;
         }
         if(accumulator>=1./60) {metrics.droppedTicks+=uint64_t(accumulator*60);accumulator=0;}

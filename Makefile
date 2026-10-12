@@ -167,7 +167,10 @@ ifneq ($(ROMFS),)
 	export _3DSXFLAGS += --romfs=$(CURDIR)/$(ROMFS)
 endif
 
-.PHONY: all clean assets-ready audio-assets test inventory
+.PHONY: all clean assets-ready audio-assets audio-map test inventory
+
+audio-map:
+	@python3 tools/audio_map.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)" --switch local-assets/switch/audio
 
 audio-assets:
 	@python3 tools/extract_audio.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
@@ -187,6 +190,7 @@ all: assets-ready $(BUILD) $(GFXBUILD) $(DEPSDIR) $(ROMFS_T3XFILES) $(T3XHFILES)
 
 assets-ready:
 	@python3 tools/build_assets.py
+	@python3 tools/audio_map.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)" --output local-assets/audio-map/native --romfs romfs
 
 $(BUILD):
 	@mkdir -p $@

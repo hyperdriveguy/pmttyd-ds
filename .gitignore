@@ -24,3 +24,5 @@ romfs/*.uvanim
 romfs/*.meshanim
 romfs/*.returns
 romfs/*.head
+
+romfs/audio-map.json

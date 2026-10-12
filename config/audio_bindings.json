@@ -8,7 +8,7 @@
     {"clip": "guard", "gamecube_name": "SFX_MARIO_GUARD1", "trigger": "guarded enemy impact; separate from action-command success"}
   ],
   "music": [
-    {"clip": "rogueport", "source": "sound/stream/stg_gor1_32k.stm", "trigger": "current five outdoor Rogueport rooms; retain through dialogue; story overrides remain unbound"},
+    {"clip": "rogueport", "source": "sound/stream/stg_gor2_32k.stm", "trigger": "current five outdoor Rogueport rooms; retain through dialogue; story overrides remain unbound"},
     {"clip": "battle", "source": "sound/stream/btl_zak1_32k.stm", "trigger": "current Crump battle harness; specific original tutorial selection remains unverified"},
     {"clip": "victory", "source": "sound/stream/btl_win1_32k.stm", "trigger": "victory entry; one-shot when source has no loop"},
     {"clip": null, "source": null, "trigger": "Defeat/FieldDefeat: stop current music; original game-over scheduling remains unbound"}

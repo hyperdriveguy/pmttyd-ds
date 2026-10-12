@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 import struct
 
-from audio_convert import sample
+from audio_convert import sample, stm, sample_directory
 from iso_assets import DEFAULT_ISO, inventory, extract
 from switch_audio import NintendoWare
 
@@ -24,10 +24,16 @@ def category(name):
         return 'dialogue'
     if 'ENV' in name:
         return 'ambience'
-    if name.startswith(('BGM_STG', 'BGM_O_STG', 'STG_', 'BGM_MAP')):
+    if name.startswith(('BGM_STG', 'BGM_M_STG', 'BGM_O_STG', 'STG_', 'BGM_MAP')):
         return 'overworld'
     if 'BTL' in name or 'BATTLE' in name or name.startswith(('SFX_AC_', 'SFX_CONDITION_')):
         return 'battle'
+    if name.startswith(('SFX_STG', 'SFX_END', 'SFX_OPN')):
+        return 'event'
+    if name.startswith(('SFX_ENM', 'SFX_BOSS')):
+        return 'battle'
+    if name.startswith(('SFX_ITEM', 'SE_ITEM')):
+        return 'item'
     if 'EVT' in name or name.startswith(('FF_', 'BGM_EVT')):
         return 'event'
     if any(s in name for s in ('CURSOR', 'SELECT', 'DECIDE', 'SYS_', 'FILE_', 'MENU')):
@@ -167,6 +173,12 @@ def switch_dependencies(root):
 
 
 def build(iso, output, romfs=None, switch=None):
+    iso = Path(iso).resolve()
+    for target in (output, romfs, switch):
+        if target is not None and (target.resolve() == iso or target.resolve() in iso.parents):
+            raise ValueError('Output/reference directory must be separate from ISO')
+    if romfs is not None:
+        romfs.mkdir(parents=True, exist_ok=True)
     output.mkdir(parents=True, exist_ok=True)
     rawdir = output / 'raw'; rawdir.mkdir(exist_ok=True)
     for suffix in ('proj', 'pool', 'sdir', 'samp'):
@@ -182,6 +194,8 @@ def build(iso, output, romfs=None, switch=None):
             row['objects'] = [{**fx, 'direct_macro': macros.get(fx['object_id'])} for fx in effects.get(row['fx_id'], [])]
     bindings = json.loads((ROOT / 'config/audio_bindings.json').read_text())
     byname = {r['name']: r for r in rows}
+    if [r['clip'] for r in bindings['effects']] != ['confirm', 'jump', 'hit', 'success', 'guard']:
+        raise ValueError('Cue filenames/order must match native AudioCue')
     selected = []
     for binding in bindings['effects']:
         row = byname[binding['gamecube_name']]
@@ -197,8 +211,15 @@ def build(iso, output, romfs=None, switch=None):
         selected.append({**binding, 'fx_id': row['fx_id'], 'object_id': objs[0]['object_id'],
             'sample_id': sid, 'pcm': pcm, 'volume': row['parameters'][0],
             'playback': 'GameCube primary-sample fallback; macro modulation/child voices not rendered'})
+    music_dir = romfs if romfs else output / 'pcm'
+    for binding in bindings['music']:
+        if not binding['source']: continue
+        source = rawdir / (binding['clip'] + '.stm')
+        extract(iso, binding['source'], source)
+        stm(source, music_dir / (binding['clip'] + '.wav'))
     switchrows = switch_dependencies(switch) if switch else []
     catalog = dict(schema=1, source_disc='G8ME01 revision 0', evidence=spans,
+        gamecube_samples=[{**r, 'library_pcm': f"local-assets/audio/pcm/samples/pmario-{r['id']:04x}.wav"} for r in sample_directory(rawdir / 'pmario.sdir')],
         gamecube=rows, switch=switchrows, slice=selected, music=bindings['music'],
         policy='Named Switch references may guide implementations; ambiguous cases use original GameCube identities. Never equate FX/macro/sample IDs.',
         license='Original assets retain copyright; local derivatives only; no redistribution rights granted')

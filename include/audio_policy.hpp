@@ -1,0 +1,32 @@
+#pragma once
+#include "game.hpp"
+#include <cstdint>
+#include <cstring>
+namespace ttyd {
+enum class AudioCue : int { None=-1, Confirm, Jump, Hit, Success, Guard };
+inline AudioCue audioCue(const Game& game) {
+    if(game.sound==Sound::None || game.scene==Scene::Victory || game.scene==Scene::Defeat || game.scene==Scene::FieldDefeat) return AudioCue::None;
+    switch(game.sound) {
+    case Sound::Confirm:return AudioCue::Confirm;
+    case Sound::Jump:return AudioCue::Jump;
+    case Sound::Hit:return AudioCue::Hit;
+    case Sound::Success:return game.scene==Scene::Battle && game.phase==Phase::EnemyImpact ? AudioCue::Guard : AudioCue::Success;
+    default:return AudioCue::None;
+    }
+}
+inline int audioTrack(Scene scene,bool enabled) {
+    if(!enabled || scene==Scene::Defeat || scene==Scene::FieldDefeat)return -1;
+    return scene==Scene::Battle?1:scene==Scene::Victory?2:0;
+}
+struct PcmHeader {uint32_t rate=0,channels=0,frames=0;};
+inline bool pcmHeader(const unsigned char* p,PcmHeader& out) {
+    auto u16=[p](int i)->uint32_t {return p[i]|uint32_t(p[i+1])<<8;};
+    auto u32=[p](int i)->uint32_t {return p[i]|uint32_t(p[i+1])<<8|uint32_t(p[i+2])<<16|uint32_t(p[i+3])<<24;};
+    if(std::memcmp(p,"RIFF",4) || std::memcmp(p+8,"WAVEfmt ",8) || std::memcmp(p+36,"data",4)
+        || u32(16)!=16 || u16(20)!=1 || u16(34)!=16)return false;
+    uint32_t channels=u16(22),rate=u32(24),bytes=u32(40);
+    if(channels<1 || channels>2 || rate<8000 || rate>48000 || !bytes || bytes%(channels*2)
+        || u16(32)!=channels*2 || u32(28)!=rate*channels*2 || uint64_t(u32(4))!=uint64_t(bytes)+36)return false;
+    out={rate,channels,bytes/(channels*2)};return true;
+}
+}

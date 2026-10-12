@@ -192,3 +192,7 @@ add_test(NAME event_memory_bootstrap COMMAND event_memory_bootstrap_tests)
 add_executable(event_memory_release_tests tests/event_memory_release_tests.cpp)
 target_link_libraries(event_memory_release_tests PRIVATE ttyd_core)
 add_test(NAME event_memory_release COMMAND event_memory_release_tests)
+
+add_executable(audio_policy_tests tests/audio_policy_tests.cpp)
+target_link_libraries(audio_policy_tests PRIVATE ttyd_core)
+add_test(NAME audio_policy COMMAND audio_policy_tests)

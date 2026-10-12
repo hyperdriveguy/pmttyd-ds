@@ -63,16 +63,17 @@ private:
 class Audio {
 public:
     bool init();
-    void play(Sound sound);
+    void play(const Game& game);
     void update(Scene scene, bool enabled);
     void shutdown();
     bool available() const { return ready; }
 private:
     bool ready=false;
     struct Clip { int16_t* data=nullptr; uint32_t samples=0; ndspWaveBuf wave{}; };
-    Clip clips[4];
+    Clip clips[5];
     FILE* music=nullptr;
     int musicTrack=-1;
+    bool musicLoop=false,musicEnded=false;
     uint32_t musicRate=32000, musicChannels=2, musicPosition=0, loopStart=0, loopEnd=0;
     int16_t* streamData=nullptr;
     ndspWaveBuf stream[3]{};
