@@ -1365,3 +1365,30 @@ fallbacks. Ignored local-assets/audio-map raw/catalog and RomFS WAV/audio-map.js
 derivatives stay unstaged. Original rights remain with their owners;this local
 analysis/conversion provides no redistribution license.
 Exact build log:/tmp/id1-general-placement-build.log.
+
+
+## Original camera container pack (2026-10-12)
+
+Camera import2ea1c21 reads /home/carson/games/roms/G8ME01.iso read-only and
+extracts m/gor_01/c to local-assets/gor_01.c and romfs/map.camera;
+m/gor_00/c,m/gor_02/c,m/gor_03/c,m/gor_04/c go to corresponding
+local-assets/gor_XX.c and romfs/gor_XX.camera. Sizes2048/7700/11316/11392/1304
+bytes preserve3/11/14/14/2 records. All five packed files match their ISO
+extents byte-for-byte. Per-file .provenance.json records original disc path,
+FST offset,size and hash;romfs/manifest.json retains those extraction records
+and camera_containers source-path mappings. No geometry/field endian conversion
+or coordinate scaling is applied to these immutable files. Portable native
+readers interpret big-endian fields and rawfile offsets on demand;authored
+coordinates convert only at documented runtime boundaries. Both absent pointer
+sentinels and every unresolved record/field remain preserved.
+
+The asset fingerprint regeneration also reran existing map/character/texture/
+original-music and sound-bank conversion with their established choices;no art
+or audio substitute was introduced by this camera change. Build output reported
+3218 GameCube identities and5 existing slice fallbacks from the concurrent audio
+pipeline;its code/config was not changed in these camera commits. Camera solver
+22968ed changes portable behavior only. Captures stay ignored under
+artifacts/azahar-camera-assets/. local-assets/,romfs/ and compiled packs were
+not staged. Original assets remain copyrighted by Nintendo/Intelligent Systems;
+local extraction/conversion conveys no right to distribute these assets or packs.
+No ISO or original executable bytes were modified or committed.

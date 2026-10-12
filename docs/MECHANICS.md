@@ -1,5 +1,25 @@
 # Mechanics evidence ledger
 
+## 2026-10-12 — Original camera data and straight-path branch
+
+Native2ea1c21 reads immutable big-endian original camera offsets without original
+VA relocation. Source header/lens pointer and all44 record/vector/zone identities
+remain intact;empty collections retain sentinels. Native byte/reference bounds
+and optional errors are safety adapters,not source validation claims.
+Native22968ed follows OVERWORLD_CAMERA_STRAIGHT_PATHS.md's19-record verified
+domain:ordered segment slabs,uncapped-distance strict ties,dominant-axis U,
+side-cap equality,endpoint indices/flags and unwritten result+4 ownership.
+Result+8 is actual segment-startY,not integer found;NoHit/Unsupported do not
+clear output or become invented camera limits. Host algebra/square-root differs
+from the source numerical pipeline;no original trajectory measurement is claimed.
+
+This is candidate-path infrastructure,not completed ordinary view binding.
+The camera's genuine look/collision input comes from eligible ground-search
+ray points and is retained on misses;player-root substitution is unauthorized.
+Dynamic shift,state comparison/transition,curved/duplicate paths and live lens/
+event owners remain required. All authentic records are imported,including
+unresolved branches;the fixed native view is still explicitly provisional.
+
 ## 2026-10-12 — Native camera retained targets and screen-cache policy
 
 Native dff51f1 binds the closed ordinary camera target prefix from

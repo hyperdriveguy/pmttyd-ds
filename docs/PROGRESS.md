@@ -1,5 +1,58 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original camera containers and bounded path solver
+
+Commit2ea1c21 imports all five authentic m/gor_00..04/c files into ignored
+RomFS camera assets and adds a portable immutable big-endian offset reader.
+Native startup loads the five-room service atomically;failed decode/reload retains
+prior valid data. All44 records/full names/raw words remain available by record
+identity, including unresolved geometry. The reader validates byte ranges and
+record-local collection references with checked wide arithmetic, preserves both
+ffbf3a10 zero-count sentinel pointers, and leaves the absent108 collection opaque.
+It supports the shippedUS1.01 domain rather than inventing a generic format.
+The lens header is dereferenced through e8;its25/.01/1000 metadata is not assigned
+to the live camera lens. Optional checked reads avoid target exceptions (ARM
+uses-fno-exceptions). This is portable validation,not original VA relocation or
+unchecked-loader emulation.
+
+Commit22968ed ports the closed mode0 nondegenerate constant-cardinal path branch.
+Classification from actual vectors/config accepts19 of44 records;others remain
+Unsupported,not generic clamps. The solver keeps original slab/segment order,
+strict uncapped closest-distance ties,dominant-axis parameter reconstruction,
+left/right side caps,equality behavior,U bounds/endcap indices2/3 and result
+flags. It preserves scratch word+4 and writes segment-startY at+8 separately
+from integer found. NoHit/Unsupported preserve output. Coordinates remain
+original authored units;host square-root/trig/scaled numerical equivalence is
+not claimed. This kernel is compiled for host/ARM but not yet authoritative
+for the rendered view:look/collision target,dynamicshift/state-transition and
+remaining curve/duplicate domains still need native binding.
+
+Validation: final make test passed52/52 CTest suites and78 Python tests;
+make all built3dsx with camera asset/curve objects. Logs:
+/tmp/pm-camera-path-test.log and /tmp/pm-camera-path-build.log.
+Original-asset host check decoded all44 records,matched19 eligible paths and
+verified endpoint tie/index/untouched-word behavior;/tmp/pm-camera-path-original.log.
+Earlier all8 room/indexed collision regressions passed18315 probes after native
+asset loading;/tmp/pm-camera-assets-core-original.log. Import validation logs:
+/tmp/pm-camera-assets-test-final.log,/tmp/pm-camera-assets-build-final.log,
+/tmp/pm-camera-assets-original.log. Source camera verifier passes39DOLspans/
+72anchors/5containers/75EVTowners/332requests;straight verifier7spans/44anchors/
+19records. Logs:/tmp/pm-camera-assets-evidence.log,/tmp/pm-camera-path-evidence.log.
+Every packedcamera file was compared byte-for-byte with its read-only ISO extent;
+allfive match. Isolated Azahar startup plus2 east reciprocal round trips passed:
+/tmp/pm-camera-assets-smoke.log,captures artifacts/azahar-camera-assets/. No user
+emulator profile/save changes;no claim of original runtime/numerical equivalence.
+
+Next native requirements requested from documentation agent:Mario f8/fc/100
+look-target producer (actual ground-search ray contact,not root fallback),
+camShiftMain argument/inertia,compareCamRoad/Hokan transitions and remaining
+curved/duplicate paths. Ground look-target initialization is sourcezero and
+eligible writes persist acrossmisses;do not fabricate it from playerXYZ. Agent
+has delivered rawcontainer66dcdc1 and straightcontract7340135;remaining camera
+owners are under research. Native fixed view remains explicitly provisional.
+Then bind source partner and pending ROAD story/case/event owners. Full goal
+remains active/incomplete;original/compiled assets remain outside Git history.
+
 ## 2026-10-12 — Complete battle fortune producer and pouch initializer
 
 Documentation agent ID2 closed BattleMajinaiCheck150,pouchMajinaiInit30 and its
