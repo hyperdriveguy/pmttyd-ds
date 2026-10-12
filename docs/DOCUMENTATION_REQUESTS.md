@@ -490,6 +490,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): registered Majinai query
+801146c4 now executes recovered output/flag/Done/EndCheck order with separate
+battle/pouch reads and byte wrap/reread/reset behavior. Original packed power-
+check80363388 inactive branch runs through the actual native VM/registry and
+deletes.63 CTest/78 Python and make all pass. Active query storage is tested;
+active sound/effect/jump/announcement graph remains unbound. Provider records
+are authored inputs;source/runtime/full activation claims remain open.
+SetMoveSpeed/SetFallAccel complete-wrapper request above remains pending;other
+closed callback work can continue independently. Leave evidence/replies here.
+
 Native implementation breadcrumb / documentation request (2026-10-12):
 JumpSetting8010d6cc is now registered and writes actual packed unit16c/170/174
 through native operands/actor/registry services. Original first Jump request

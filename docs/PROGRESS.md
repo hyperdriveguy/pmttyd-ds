@@ -1,5 +1,33 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Majinai power query and pouch consumption binding
+
+Added complete portable _majinai_powerup_check,Done and EndCheck contracts.
+Query captures battle/output before pouch mode;false writes0 without clearing
+battle state. Exact mode1 writes output1 FIRST,then captured battle byte18ff9,
+then separate Done and EndCheck owners. Done decrements LOW8 without clamping,
+rereads count and resets5b9→5ba;EndCheck independently captures battle/pouch and
+ORs00400000 at battleef4 only for exact count0. No merged pointer snapshot or
+new RNG/message/effect request is introduced. Native registry binds801146c4.
+
+Validation:make test passes63 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-majinai-query-test-final.log and /tmp/pm-majinai-query-build-final.log.
+`build-host/event_callback_registry_tests romfs/events.pmevt` passes extracted
+power-check80363388's inactive branch/query/conditional deletion through the
+native registry,in addition to earlier real child/JumpSetting paths. Active
+query storage is exercised directly;its full presentation graph is unbound.
+Portable fixtures cover modes0/1/2/255,counts0/1/2/255,wrap/reread/store order,
+output aliases and independently changed battle/pouch globals. Native unit,
+pouch/battle records and platform test services remain authored provider inputs.
+Initial full check saw a transient concurrent field-camera compile error;rerun
+passed after its header update. A query test's unmapped event was corrected to
+a registered entry before final checks. No original runtime/hardware claim.
+
+Next:movement-wrapper documentation request remains pending;continue other
+closed callback families,fortune/packed unit ownership and active effect/audio/
+announcement services before original Jump/Game integration. Full-game goal
+remains incomplete. Preserve concurrent field/camera/documentation work.
+
 ## 2026-10-12 — Native original JumpSetting callback
 
 Registered recovered JumpSetting8010d6cc on the original-address callback

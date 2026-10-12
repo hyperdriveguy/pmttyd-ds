@@ -59,6 +59,16 @@ int main(int argc,char** argv) {
         arbitrary.arguments=0x80355cf8;
         assert(registry.invoke(arbitrary,0x8010d6cc,1,result) && result==2 && memory.readWord(0x8400116c,word) && word==20 && memory.readWord(0x84001170,word) && word==0 && memory.readWord(0x84001174,word) && word==0x3f330000); // Actual initial Jump request:0/.69921875.
     }
+    assert(bindBattleMajinaiQueryCallback(registry,runtime) && !bindBattleMajinaiQueryCallback(registry,runtime));
+    assert(memory.registerRam(0x8041eb00,std::vector<uint8_t>(4)) && memory.writeWord(0x8041eb00,0x85000000) && memory.registerRam(0x85000000,std::vector<uint8_t>(0x5bc)));
+    assert(memory.registerRam(0x84018ff9,{9}) && memory.registerRam(0x84000ef4,std::vector<uint8_t>(4)));
+    auto& query=runtime.field.entries[0];query.arguments=0x80300200;assert(memory.writeWord(query.arguments,uint32_t(-30000000)));
+    assert(registry.invoke(query,0x801146c4,1,result) && result==2 && query.locals[0]==0);uint8_t flag;assert(memory.readByte(0x84018ff9,flag) && flag==9);
+    assert(memory.writeByte(0x850005ba,1) && memory.writeByte(0x850005b8,1));
+    assert(registry.invoke(query,0x801146c4,0,result) && result==2 && query.locals[0]==1 && memory.readWord(0x84000ef4,word) && word==0x00400000 && memory.readByte(0x850005b8,flag) && flag==0 && memory.readByte(0x850005ba,flag) && flag==0);
+    if(argc==2) {
+        auto& power=createRootEvent(runtime.schedule,0x80363388,10,0,runtime.creationServices());tick();assert(power.flags==0 && runtime.runtime.allocationCount==0); // Real power-check graph mode0 skips presentation and deletes.
+    }
     assert(registry.unbind(0x8010a010));result=99;assert(!registry.invoke(arbitrary,0x8010a010,0,result) && result==99);
     std::cout<<"native callback registry/data-child execution tests passed\n";
 }

@@ -20,6 +20,14 @@ BattleDataChildServices nativeBattleDataChildServices(EventNativeRuntime& runtim
     s.values.resolve=[](void* p,EventEntry& e,int32_t operand) {auto& r=*static_cast<EventNativeRuntime*>(p);return getEventValue(e,operand,r.interpreterServices().operands);};
     s.user=backend.user;s.translate=backend.translate;s.currentBattle=backend.currentBattle;s.unit=backend.unit;return s;
 }
+BattleMajinaiQueryServices nativeBattleMajinaiQueryServices(EventNativeRuntime& runtime) {
+    BattleMajinaiQueryServices s;s.memory=runtime.memoryBinding.services();
+    auto actors=nativeBattleActorServices(runtime);s.user=actors.user;s.byte=actors.byte;
+    s.values.user=&runtime;s.values.store=[](void* p,EventEntry& e,int32_t output,int32_t value) {auto& r=*static_cast<EventNativeRuntime*>(p);setEventValue(e,output,value,r.interpreterServices().operands);};return s;
+}
+bool bindBattleMajinaiQueryCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {
+    return registry.bind(0x801146c4,&runtime,[](void* p,EventEntry& e,int32_t) {return battleMajinaiPowerQuery(e,nativeBattleMajinaiQueryServices(*static_cast<EventNativeRuntime*>(p)));});
+}
 int32_t nativeBattleJumpSetting(EventEntry& e,EventNativeRuntime& runtime) {
     const uint32_t args=e.arguments;
     auto operands=runtime.interpreterServices().operands;auto memory=runtime.memoryBinding.services();

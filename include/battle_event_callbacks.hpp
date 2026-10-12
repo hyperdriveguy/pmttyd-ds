@@ -3,6 +3,7 @@
 #include "event_native_runtime.hpp"
 #include "battle_data_child.hpp"
 #include "battle_actor.hpp"
+#include "battle_majinai_query.hpp"
 
 namespace ttyd {
 struct BattleDataChildBackend {
@@ -20,4 +21,6 @@ BattleDataChildServices nativeBattleDataChildServices(EventNativeRuntime&);
 bool bindBattleDataChildCallback(EventCallbackRegistry&,BattleDataChildServices&);
 int32_t nativeBattleJumpSetting(EventEntry&,EventNativeRuntime&);
 bool bindBattleJumpSettingCallback(EventCallbackRegistry&,EventNativeRuntime&);
+BattleMajinaiQueryServices nativeBattleMajinaiQueryServices(EventNativeRuntime&);
+bool bindBattleMajinaiQueryCallback(EventCallbackRegistry&,EventNativeRuntime&);
 }
