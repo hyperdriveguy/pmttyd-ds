@@ -1,0 +1,233 @@
+{
+  "schema": 1,
+  "scope": "Original camera shift/reset room lifecycle and finite duplicate FPR28 caller provenance; static source only",
+  "dol_spans": [
+    {
+      "name": "camShiftInit",
+      "address": 2148481400,
+      "size": 100,
+      "sha256": "1da9fceeebd92128d905f716b7324c3523c05b62d694ca54ccab8efb39fe699a"
+    },
+    {
+      "name": "camShiftReset",
+      "address": 2148480208,
+      "size": 100,
+      "sha256": "1da9fceeebd92128d905f716b7324c3523c05b62d694ca54ccab8efb39fe699a"
+    },
+    {
+      "name": "camShiftPostMain",
+      "address": 2148480308,
+      "size": 28,
+      "sha256": "469f7bbe409e68db9bc321878f40be0b8e94150ee2810de9cde7e91e1bab3928"
+    },
+    {
+      "name": "camRoadSetup",
+      "address": 2147541252,
+      "size": 644,
+      "sha256": "df2dc8fb29d44245a5bdad8fc3cd2beca68a4c291bf1b983097bded71d20948e"
+    },
+    {
+      "name": "camRoadReset",
+      "address": 2147527188,
+      "size": 268,
+      "sha256": "f1f089b63abd30bf32e18948826066d870dc83720fef2dd30f0bfb056c28ec00"
+    },
+    {
+      "name": "camLoadRoad",
+      "address": 2147545964,
+      "size": 232,
+      "sha256": "710f6eb4933ed2e3a699db5ed035f0c397565807f30b9aae7cd5129d92eaa861"
+    },
+    {
+      "name": "_mapLoad",
+      "address": 2147651352,
+      "size": 3040,
+      "sha256": "59a90a079ae4874e80bed0a4803949763badc1f2f20f55b7a31565e747cf8621"
+    },
+    {
+      "name": "_load",
+      "address": 2147513824,
+      "size": 1236,
+      "sha256": "f3262e1da2393614aef8ea402d9cce45bfaf4b07365d32baee018863367fd3c2"
+    },
+    {
+      "name": "seq_gameOverMain",
+      "address": 2147976520,
+      "size": 1128,
+      "sha256": "8368ae5a863df5b2905bca50821b37d3adbcda916e9dcb855c8e41313308ef10"
+    },
+    {
+      "name": "evt_bero_cam_shift_init",
+      "address": 2147978444,
+      "size": 40,
+      "sha256": "5f286896eaee9a781e89ba73e27614d124873b3b4d56692eed652e8a8f50c359"
+    },
+    {
+      "name": "bero_get_position_pipe2",
+      "address": 2147980932,
+      "size": 332,
+      "sha256": "574ef8430ef2d1ffd0b5672984438194bbcad07d5d05f76b8d5a7fd61fb244a4"
+    },
+    {
+      "name": "evt_cam_shift_reset",
+      "address": 2148169420,
+      "size": 48,
+      "sha256": "ac87acdab857f39a1159fae94110075734fc235e4e4e61bb7999d68a3bcb0e13"
+    },
+    {
+      "name": "evt_cam_road_reset2",
+      "address": 2148169468,
+      "size": 352,
+      "sha256": "9ebaf46725e320f66f9e86e129266a6f362a9668e339206d463e7cd906080f8d"
+    },
+    {
+      "name": "evt_cam_road_reset",
+      "address": 2148169820,
+      "size": 168,
+      "sha256": "c6c115ed38ca867015519f4ed6501d75c2f7dd7e1ac6b6d59a5839ba2569f6ce"
+    },
+    {
+      "name": "__start",
+      "address": 2147504704,
+      "size": 348,
+      "sha256": "b00f6c9d8e761a4b3696c782578b4b104ce2987b2d3eac5303833d00ed9b6989"
+    },
+    {
+      "name": "__init_data",
+      "address": 2147505196,
+      "size": 192,
+      "sha256": "d914cfeeba969b19278cdc6b151829c1683d7852fb7cf568770d450c2eaaa8bb"
+    },
+    {
+      "name": "__init_hardware",
+      "address": 2147505388,
+      "size": 36,
+      "sha256": "8642fd111081aa793fe117f0aeebf19d2ef12966aef5feee9799235177bb53e0"
+    },
+    {
+      "name": "__OSFPRInit",
+      "address": 2150191576,
+      "size": 296,
+      "sha256": "e437ea4beacd2cadf3ada6ccf8ac4b8a8f0563b6d0488ccd871c52c35facf334"
+    },
+    {
+      "name": "main",
+      "address": 2147505632,
+      "size": 84,
+      "sha256": "0b92f63044555ec56987237833a4a6a1b065b019b6768de3368418719f52cf90"
+    },
+    {
+      "name": "marioStMain",
+      "address": 2147940612,
+      "size": 568,
+      "sha256": "74db581fe5f8665204b63c9706e483031f73edcc99e1596ce50b2a53db672f54"
+    },
+    {
+      "name": "camMain",
+      "address": 2147546884,
+      "size": 964,
+      "sha256": "fd7074046f87e9b4806121364396793eff9fb0e43454df0d33fd46dd2d1e26c4"
+    },
+    {
+      "name": "cam3dMain",
+      "address": 2147543656,
+      "size": 2156,
+      "sha256": "3f53cc9fb1cd329508cbd04b88663fb664e80ab1ed9df39d0415204d3dfe57f3"
+    },
+    {
+      "name": "camRoadMain",
+      "address": 2147527496,
+      "size": 1264,
+      "sha256": "b4962497703485b9c713074b9a4bbec1c3e4e295e5502246769bb75483c960fc"
+    },
+    {
+      "name": "calcCamRoad",
+      "address": 2147530444,
+      "size": 3512,
+      "sha256": "30d1765fbf7b91469764903b659dec1c95db1da056d94007ac72c854a32b3fb2"
+    },
+    {
+      "name": "collisionCurve",
+      "address": 2147533956,
+      "size": 3888,
+      "sha256": "3f2139c8454272ed77be995980b472436e4d332e053bc316181150e723e95610"
+    },
+    {
+      "name": "Global shift pointer",
+      "address": 2151770568,
+      "size": 4,
+      "sha256": "bc7dc434a8b5aa7f90892f5d9a6425bf172136242b433cbdf86400871871194b"
+    },
+    {
+      "name": "Original BSS clearing table",
+      "address": 2147505584,
+      "size": 32,
+      "sha256": "1c68dd5c390a5ebc3fce501d3abe500083593de33d7434ab23969c4b18c4319a"
+    }
+  ],
+  "dol_anchors": {
+    "2147541452": "480e57ad",
+    "2147514216": "480032ad",
+    "2147514220": "480ebd65",
+    "2147514936": "48002fdd",
+    "2147514940": "480eba95",
+    "2147977152": "4807ad11",
+    "2147978460": "4807a7f5",
+    "2147981040": "48079de1",
+    "2148169444": "4804bded",
+    "2148169764": "4804bcad",
+    "2148169960": "4804bbe9",
+    "2147653308": "41820024",
+    "2147653340": "4bfe5c91",
+    "2147546036": "4bffed51",
+    "2147527224": "83e30204",
+    "2147527228": "83c30000",
+    "2147527232": "83a301d0",
+    "2147527236": "4bffa671",
+    "2147527408": "93e30204",
+    "2147527416": "93c30000",
+    "2147527424": "93a301d0",
+    "2148169940": "907f00f8",
+    "2148169944": "901f00fc",
+    "2148169952": "901f0100",
+    "2148169744": "901f00f8",
+    "2148169752": "907f00fc",
+    "2148169756": "901f0100",
+    "2147504708": "480002a9",
+    "2147504728": "480001d5",
+    "2147505044": "4800024d",
+    "2147505404": "48290715",
+    "2147505408": "4828fcd9",
+    "2150191720": "13800090",
+    "2150191736": "c80d2120",
+    "2150191848": "ff800090",
+    "2147546920": "db8101b0",
+    "2147546992": "4e800421",
+    "2147547308": "ef9b0072",
+    "2147547816": "cb8101b0",
+    "2147530480": "db8102f0",
+    "2147531220": "48000ab1",
+    "2147532128": "ff80e850",
+    "2147532308": "48000671",
+    "2147532700": "480004e9",
+    "2147533992": "db810160",
+    "2147536804": "c08281ec",
+    "2147536864": "4182000c",
+    "2147536908": "ec1c523a",
+    "2147537612": "ec1c103a",
+    "2147537636": "ec1c083a",
+    "2147537708": "cb810160"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "global_work": {
+    "pointer_address": 2151770568,
+    "work_address": 2151553840,
+    "size": 56,
+    "reset_retains_offsets": [
+      24,
+      28
+    ]
+  }
+}

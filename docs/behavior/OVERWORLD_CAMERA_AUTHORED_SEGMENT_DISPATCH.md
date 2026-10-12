@@ -107,12 +107,13 @@ to that duplicate's output ownership. This real-number/cardinal proof permits
 a bounded native adapter to ignore that duplicate **after preserving prior
 segment evaluation and tie order**; it is not a source general skip rule.
 
-The two noncardinal duplicate records need source arithmetic and incoming/prior
-fraction provenance at exact-plane boundaries before a general skip or t=0
-binding can be claimed. The near-normal collapse alone does not close that
-zero-chord owner. Keep this dependency explicit. Negative/nonfinite caller
-register values and source SDK exceptional arithmetic are outside the bounded
-cardinal proof; no original execution is asserted.
+The finite output-equivalent closure for the two noncardinal duplicate records
+is now documented in [map lifetime and duplicates](OVERWORLD_CAMERA_MAP_LIFETIME_AND_DUPLICATES.md).
+Their exact zero parameter/tangent deltas remove any dependence on a finite
+retained fraction, but the point segment must still be evaluated. This is not
+a general duplicate skip or source fraction initialization. Nonfinite caller
+register values and source SDK exceptional arithmetic remain outside the
+bounded proof; no original execution is asserted.
 
 ## Inventory and verification
 
@@ -125,5 +126,5 @@ source identity/classification, not an invented camera scene.
 
 This closes the ordinary shipped straight-dispatch geometry beyond the initial
 19-record restriction. The engine's unused-in-this-slice circular-normal
-branch, extra curves, two noncardinal degenerate boundary domains, source numeric
+branch, extra curves, exceptional degenerate numeric domains, source numeric
 parity and original camera event lens/target services remain separate work.

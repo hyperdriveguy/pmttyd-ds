@@ -22,7 +22,9 @@ def classify(raw):
         for k in range(n-1):
             if abs(rows[k][0]-rows[k+1][0])<EPSILON and abs(rows[k][2]-rows[k+1][2])<EPSILON:
                 collapsed.append(k)
-            if (points[k][0],points[k][2])==(points[k+1][0],points[k+1][2]):duplicates.append(k)
+            if (points[k][0],points[k][2])==(points[k+1][0],points[k+1][2]):
+                if rows[k]!=rows[k+1]:raise ValueError('Duplicate fraction affects source row outputs')
+                duplicates.append(k)
         tangent=(rows[0][0],rows[0][2])
         cardinal=tangent in [(1.,0.),(-1.,0.),(0.,1.),(0.,-1.)]
         constant=all((r[0],r[2])==tangent for r in rows)
@@ -39,7 +41,7 @@ def verify_dispatch(iso):
             actual=classify(raw)
             if actual!=row['records']:raise ValueError('Camera segment classification mismatch')
             records+=actual
-    result.update(records=len(records),collapsed_pairs=sum(len(r['collapsed_pairs']) for r in records),nonduplicate_records=sum(not r['duplicate_pairs'] for r in records),duplicate_records=sum(bool(r['duplicate_pairs']) for r in records),bounded_cardinal_duplicates=sum(r['bounded_cardinal_duplicate'] for r in records))
+    result.update(records=len(records),collapsed_pairs=sum(len(r['collapsed_pairs']) for r in records),nonduplicate_records=sum(not r['duplicate_pairs'] for r in records),duplicate_records=sum(bool(r['duplicate_pairs']) for r in records),fraction_independent_duplicates=sum(len(r['duplicate_pairs']) for r in records),bounded_cardinal_duplicates=sum(r['bounded_cardinal_duplicate'] for r in records))
     if (result['records'],result['collapsed_pairs'],result['nonduplicate_records'],result['duplicate_records'],result['bounded_cardinal_duplicates'])!=(44,220,34,10,8):raise ValueError('Source dispatch inventory mismatch')
     return result
 if __name__=='__main__':
