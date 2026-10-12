@@ -428,7 +428,7 @@ bool groundedFootprint(Vec2 p,Vec2 direction,float rootY,float& height,GroundCon
 void Game::advanceVertical(bool held) {
     float previousY=0;if(integrateVertical(held,previousY))finishVertical(previousY);
 }
-bool Game::integrateVertical(bool held,float& previousY) {
+bool Game::integrateVertical(bool held,float& previousY,bool update) {
     if(!fieldJump.airborne){jumpHeight=0;if(groundHeight<=VoidThreshold)beginVoid();return false;}
     previousY=jumpBase+fieldJump.height;
     float ceiling=0;
@@ -440,7 +440,7 @@ bool Game::integrateVertical(bool held,float& previousY) {
         fieldJump.tick(held,false);jumpHeight=jumpBase+fieldJump.height-groundHeight;
         return true;
     }
-    fieldJump.tick(held,false);
+    if(update)fieldJump.tick(held,false);
     overheadContact=headCollision(progress.position,moveDirection,jumpBase+fieldJump.height,fieldJump.velocity,ceiling,
                                   fieldJump.falling?.1f:fieldJump.velocity);
     if(overheadContact && headMotionResponds(fieldJump.falling?10:3)) {
@@ -538,21 +538,26 @@ const char* Game::prompt() const {
     if (progress.room==0 && near(NpcPosition)) return "A: talk";
     return "Circle Pad: move   A: jump   X: partner";
 }
-void Game::move(const Input& i) {
+void Game::move(const Input& i,bool launched) {
     // Original marioMoveMain remembers the eligible floor before moving.
     if(groundContact.attributes&0x40000000)returnContact=groundContact;
     float x=i.x, z=i.z, len=std::hypot(x,z);
-    const float speed=len>DashThreshold?DashSpeed:WalkSpeed;
+    // Airborne motion retains takeoff travel and adds current-stick drift;
+    // release does not replace retained travel with zero or a fresh walk rate.
+    const auto travel=fieldJump.airborne?fieldMovement.airborne(x,z):fieldMovement.grounded(x,z);
     if(len>0){x/=len;z/=len;}
-    if(len>0)moveDirection={x,z};
+    // Ordinary head/landing/ground probes use retained travel+1a4 when base
+    // speed+180 is nonzero, otherwise the facing conversion (native flip).
+    // Current-stick drift and combined travel do not rotate those probes.
+    moveDirection=fieldMovement.speed!=0?Vec2{fieldMovement.headingX,fieldMovement.headingZ}:Vec2{facing,0};
     const bool wasStepping=fieldStep.active();
     if(wasStepping){fieldStep.tick();groundHeight=fieldStep.height;jumpHeight=0;groundContact={};}
     // Ordinary ascent: jump, overhead, move. Falling keeps move before gravity.
     const bool wasFalling=fieldJump.airborne && fieldJump.falling;
-    float previousY=0;const bool verticalReady=!wasFalling && integrateVertical(i.jumpHeld,previousY);
+    float previousY=0;const bool verticalReady=!wasFalling && integrateVertical(i.jumpHeld,previousY,!launched);
     if(water.active())return;
     Vec2 p = progress.position;
-    Vec2 candidate{p.x+x*speed,p.z};
+    Vec2 candidate{p.x+travel.x,p.z};
     float nextHeight=groundHeight;
     GroundContact nextContact;
     auto accept=[&](Vec2 candidate) {
@@ -565,7 +570,7 @@ void Game::move(const Input& i) {
         p=candidate;return true;
     };
     accept(candidate);
-    candidate={p.x,p.z+z*speed};
+    candidate={p.x,p.z+travel.z};
     accept(candidate);
     progress.position=p;progress.elevation=groundHeight;
     if(!fieldJump.airborne && !wasStepping) {
@@ -671,7 +676,7 @@ void Game::startBattle() {
     static constexpr int8_t zeros[5]={};
     playerBattlePart.defense=enemyBattlePart.defense=zeros;
     playerBattlePart.defenseAttributes=enemyBattlePart.defenseAttributes=zeros;
-    jumpHeight=0; fieldJump={};fieldStep={};
+    jumpHeight=0; fieldJump={};fieldStep={};fieldMovement={};
 }
 void Game::attackDone() {
     playerBattleUnit.hp=int16_t(progress.hp);enemyBattleUnit.hp=int16_t(enemyHP);
@@ -934,7 +939,14 @@ void Game::tick(const Input& i) {
         } else if (menu==Menu::Status) saveRequested=true;
         sound=Sound::Confirm;
     }
-    move(i);
+    // Enter air motion before launch-call horizontal movement. begin represents
+    // that call's phase0/counter1, so it must not consume another vertical tick.
+    // Original simultaneous motion/interaction arbitration remains unbound;
+    // these prompt checks belong to the development harness.
+    const bool launched=i.confirm && !i.cancel && !airborne() &&
+        !(progress.room==0 && ((!progress.crumpDefeated && near(CrumpPosition)) || near(NpcPosition)));
+    if(launched){jumpBase=groundHeight;fieldJump.begin();saveRequested=false;sound=Sound::Jump;}
+    move(i,launched);
     if(warpRequest>=0 || water.active() || fieldStep.active())return;
     if((groundContact.attributes&0x200) && !fieldJump.airborne && beginWater())return;
     if (i.cancel) openDialogue(2);

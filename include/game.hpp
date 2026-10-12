@@ -17,15 +17,16 @@
 #include "battle_weapon_power.hpp"
 #include "physical_input.hpp"
 #include "field_battle.hpp"
+#include "field_movement.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
 constexpr float StepHeight = .25f;
 // Original normal-Mario searchFrontWall: half20-unit width and two ray heights.
 constexpr float BodyRadius = .1f;
-constexpr float WalkSpeed=.01f, DashSpeed=.0225f;
+constexpr float WalkSpeed=FieldMovement::Walk, DashSpeed=FieldMovement::Dash;
 // Circle Pad magnitude maps to the original clamped70-unit stick range.
-constexpr float DashThreshold=55.f/70.f;
+constexpr float DashThreshold=FieldMovement::DashStick;
 constexpr float FloorFootRadius=.075f;
 constexpr float VoidThreshold=-20.f;
 constexpr float WallLowerRay = .11f, WallUpperRay = .2664f;
@@ -143,13 +144,14 @@ private:
     bool returnFromBattle(int32_t harnessResult);
     std::vector<Vec2> followerPath;
     FieldJump fieldJump;
+    FieldMovement fieldMovement;
     FieldStep fieldStep;
     float jumpBase=0;
     Vec2 moveDirection{1,0};
     ReturnPoint roomRespawn{1,0,3.5f};
     bool beginVoid();
     void advanceVertical(bool held);
-    bool integrateVertical(bool held,float& previousY);
+    bool integrateVertical(bool held,float& previousY,bool update=true);
     void finishVertical(float previousY);
     int turnTick = 0;
     std::array<BattlePadWork,4> generalBattlePads;
@@ -167,7 +169,7 @@ private:
     // Explicit development seed; no claim about original seed/load ownership.
     BattleRandom battleRandom{1};
     int dialoguePages() const;
-    void move(const Input&);
+    void move(const Input&,bool launched=false);
     void battle(const Input&);
     void attackDone();
     void applyBattleDamage(bool enemyTarget,int32_t hp,int32_t fp,uint32_t code);

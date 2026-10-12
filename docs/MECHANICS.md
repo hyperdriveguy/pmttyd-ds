@@ -696,3 +696,28 @@ Source verifier proves response comparisons/skip instruction and motion-table
 pointers. Do not infer Switch parity: README's active documentation reference
 is Switch1.0.0 static research, whose corresponding field contract remains
 untraced. This corrects the existing GameCube-native prototype comparison.
+
+## Ordinary air momentum and corrected jump startup (2026-10-12)
+
+The [overworld movement contract](behavior/OVERWORLD_MARIO_MOVEMENT.md) supersedes
+this ledger's earlier first-integration-at-counter3 interpretation. mot_jump's
+launch call decrements countdown2 to1 and records counter1 with phase0; the next
+call enters phase10/counter2. marioJump gates on phase<10, not counter<3. Released
+A shortening still begins at counter4. Native FieldJump now integrates on the
+first update after begin. With flat equal-height support its standalone tap/held
+landing predictions are22/26 updates after begin, and four-update heights are
+.22922/.245 native units. These are host source-derived predictions, not observed
+original-game timing. The native launch enters air movement before horizontal
+collision and preserves a zero-height launch invocation without consuming an
+extra derivative update; it still performs the overhead query on that call.
+
+Plain ordinary-air movement retains base speed/travel direction and adds current
+stick drift (capped70, times .015 times .25, converted at scale.01), then caps
+combined norm at ordinary dash speed. Neutral input preserves running momentum;
+full same-direction input on a walking jump gives .012625 per native tick rather
+than selecting dash. FieldMovement supplies this portable plain/no-badge/scale1
+policy to Game. Existing native vector/hypot math represents original angle/trig
+services; bit-exact numerical behavior is not established. Simultaneous idle/
+threshold/transform jump arbitration, movement-rate/slopes, wall deflection,
+modifiers, physical input conversion and original execution traces remain open.
+No Dolphin observation or art/audio conversion was performed for this change.

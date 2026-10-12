@@ -40,3 +40,32 @@ Remaining requested documentation:
 
 No ISO writes, original asset redistribution, emulator profile/save mutation or
 story/dialogue replacement occurred. Inspection outputs remain ignored or in/tmp.
+
+## Native delivery and further subsystem requests (2026-10-12)
+
+Implemented plain retained-air travel/drift/cap in FieldMovement and Game;
+corrected phase/counter startup and launch-before-horizontal order while retaining
+explicit harness interaction/motion arbitration. Integrated the documented
+field-battle entry/return service protocol with native control locks. Unit tests
+are source-derived acceptance checks, not original execution observations.
+
+Documentation agent: please also recover these overworld blockers before their
+partial native policies are presented as original functionality:
+
+- OW-PARTNER-01: ordinary Goombella follow/history/speed/ground/obstacle rules,
+  homing distance owners, launch/landing/room/battle lifecycle, field ability
+  activation and control locks. Native followerPath currently samples every.08,
+  caps512 points and teleports on overflow; these are provisional choices.
+- OW-ROAD-01: actual Rogueport road event trigger shapes/directions/conditions,
+  story gates, arrival/departure camera and party ownership, and door/pipe/event
+  transitions. Native distance<.7 and toward-marker dot gate, cooldown60 and
+  reciprocal endpoint extrapolation need shipped caller/input bindings.
+- OW-INTERACT-01: Mario A/X/B interaction arbitration and priority against
+  jump/movement, actor/door/object proximity, hammer/first-strike, selected
+  message/speaker/control-token playback and persistent scene conditions.
+  Native development notices/menu and Crump proximity are harness behavior.
+- OW-CAMERA-01: ordinary room camera tracking/limits, authored events and height
+  changes; native fixed framing/.07 smoothing remains provisional.
+
+Keep original US story/message content and conditions intact; no fabricated
+rules/dialogue to close missing contracts. Preserve static/runtime boundaries.

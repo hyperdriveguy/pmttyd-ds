@@ -89,3 +89,7 @@ add_test(NAME field_battle COMMAND field_battle_tests)
 add_executable(battle_badge_recovery_tests tests/battle_badge_recovery_tests.cpp)
 target_link_libraries(battle_badge_recovery_tests PRIVATE ttyd_core)
 add_test(NAME battle_badge_recovery COMMAND battle_badge_recovery_tests)
+
+add_executable(field_movement_tests tests/field_movement_tests.cpp)
+target_link_libraries(field_movement_tests PRIVATE ttyd_core)
+add_test(NAME field_movement COMMAND field_movement_tests)

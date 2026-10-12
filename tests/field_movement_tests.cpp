@@ -1,0 +1,59 @@
+#include "field_movement.hpp"
+#include "game.hpp"
+#include <cmath>
+#include <cstdlib>
+#include <iostream>
+using namespace ttyd;
+#define CHECK(x) do {if(!(x)){std::cerr<<__LINE__<<": " #x "\n";std::exit(1);}}while(0)
+bool close(float a,float b){return std::fabs(a-b)<.000001f;}
+int main() {
+    FieldJump tapped,held;tapped.begin();held.begin();
+    CHECK(tapped.ticks==1 && tapped.height==0);
+    tapped.tick(false);held.tick(true);
+    CHECK(tapped.ticks==2 && close(tapped.height,.0722f) && close(tapped.height,held.height));
+    tapped.tick(false);held.tick(true);
+    CHECK(tapped.ticks==3 && close(tapped.height,.137f) && close(tapped.height,held.height));
+    tapped.tick(false);held.tick(true);
+    CHECK(tapped.ticks==4 && close(held.height-tapped.height,.00526f));
+    FieldMovement m;
+    CHECK(close(m.airborne(1,0).x,.002625f)); // Standing launch: drift only.
+    CHECK(close(m.airborne(.5f,0).x,.0013125f));
+    CHECK(close(m.airborne(2,0).x,.002625f)); // Original stick cap70.
+    m.grounded(.5f,0);CHECK(close(m.speed,.01f));
+    CHECK(close(m.airborne(0,0).x,.01f));
+    CHECK(close(m.airborne(1,0).x,.012625f)); // No fresh dash entry in the air.
+    CHECK(close(m.airborne(-1,0).x,.007375f));
+    CHECK(close(m.airborne(0,1).x,.01f) && close(m.airborne(0,1).z,.002625f));
+    CHECK(close(m.speed,.01f) && close(m.headingX,1)); // Drift doesn't rewrite retained travel.
+    m.grounded(1,0);CHECK(close(m.airborne(0,0).x,.0225f));
+    CHECK(close(m.airborne(1,0).x,.0225f));
+    auto diagonal=m.airborne(0,1);CHECK(close(std::hypot(diagonal.x,diagonal.z),.0225f));
+    CHECK(diagonal.x>0 && diagonal.z>0);
+    m.grounded(0,-1);CHECK(close(m.airborne(0,0).z,-.0225f));
+    m.grounded(0,0);CHECK(m.speed==0 && m.airborne(0,0).z==0);
+    m.grounded(FieldMovement::DashStick,0);CHECK(close(m.speed,.01f));
+    m.grounded(FieldMovement::DashStick+.001f,0);CHECK(close(m.speed,.0225f));
+    clearCollision();Progress p;p.room=2;p.position={-4,2};
+    auto launch=[&](Game& g,float x) {
+        g.restore(p);Input i;i.x=x;g.tick(i);i.confirm=true;i.jumpHeld=true;g.tick(i);CHECK(g.airborne());
+        CHECK(g.jumpHeight==0); // Launch-call horizontal policy, no extra vertical tick.
+    };
+    Game walk;launch(walk,.5f);float before=walk.progress.position.x;
+    Input released;released.jumpHeld=true;walk.tick(released);
+    CHECK(close(walk.progress.position.x-before,.01f));
+    CHECK(close(walk.jumpHeight,.0722f)); // First subsequent manager update integrates.
+    Input stronger=released;stronger.x=1;before=walk.progress.position.x;walk.tick(stronger);
+    CHECK(close(walk.progress.position.x-before,.012625f));
+    Game dash;launch(dash,1);before=dash.progress.position.x;dash.tick(released);
+    CHECK(close(dash.progress.position.x-before,.0225f));
+    Game standing;launch(standing,0);before=standing.progress.position.x;standing.tick(stronger);
+    CHECK(close(standing.progress.position.x-before,.002625f));
+    // Current input drift participates in the launch invocation itself.
+    Game launchDrift;launchDrift.restore(p);Input launchInput;launchInput.confirm=true;launchInput.x=.5f;
+    launchDrift.tick(launchInput);CHECK(launchDrift.airborne() && launchDrift.jumpHeight==0);
+    CHECK(close(launchDrift.progress.position.x-p.position.x,.0013125f));
+    // Resetting the game must not carry speed from a previous room/save.
+    dash.restore(p);dash.tick(Input{});Input jump;jump.confirm=true;dash.tick(jump);
+    before=dash.progress.position.x;dash.tick(released);CHECK(dash.progress.position.x==before);
+    std::cout<<"Ordinary field air movement passed\n";
+}

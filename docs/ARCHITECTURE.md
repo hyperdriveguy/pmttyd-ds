@@ -342,3 +342,24 @@ gate accepts original motions3/6; native ordinary rising jump maps to3 and
 falling to10. Standing/walking/upstairs query without applying that response.
 Earlier fall/upstairs force-clamp notes are superseded by the source motion gate.
 This is a GameCube prototype contract, not a recovered Switch field contract.
+
+### Overworld air ownership and field-battle protocol (2026-10-12)
+
+FieldMovement retains ordinary ground travel speed/unit direction, and airborne
+updates combine this retained vector with capped current-stick drift instead of
+reclassifying walk/dash from current input. Grounded idle resets base speed.
+FieldJump's begin represents launch phase0/counter1; the first later update
+integrates at phase10/counter2. Game enters jump before horizontal collision and
+runs the launch overhead query without advancing derivatives twice. These
+source-derived contracts supersede earlier startup/air-drift notes; full original
+motion arbitration and math/collision services remain unbound.
+
+field_battle.hpp/cpp implement resolved-operand start/resume and field-return
+callbacks from FIELD_BATTLE_ENTRY_AND_RETURN.md. Services retain ordered work/NPC
+lookups, Mario/partner control requests, result reset, sequence4 request, and
+sequence2/nonzero-result cleanup. Native Game uses this protocol for control
+locks across harness entry, retry and return. Its NPC/partner tokens and outcome
+1/-1 are explicitly development fixtures, not original registry/outcome IDs.
+Preparation/post/audio requests are recorded; original service bodies, sequence
+transition lifetime and story outcome producers remain unbound. Original VM
+operand resolution and discarded next-header read are outside this adapter.

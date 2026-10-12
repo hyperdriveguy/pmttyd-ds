@@ -103,6 +103,13 @@ void headGeometry() {
     float maxY=0;Input held;held.jumpHeld=true;
     for(int n=0;n<40;++n){g.tick(held);maxY=std::max(maxY,g.groundHeight+g.jumpHeight);}
     CHECK(maxY<=.073f && maxY>.07f);CHECK(!g.airborne() && g.jumpHeight==0);
+    // Retained rightward travel rotates the head probes, even while current
+    // diagonal input would make the edge probe miss this original triangle.
+    Game momentum;Progress launch;launch.room=2;launch.position={-2.12f,2};momentum.restore(launch);
+    Input running;running.x=.5f;momentum.tick(running);running.confirm=true;momentum.tick(running);
+    momentum.progress.position={-2.08f,2};momentum.tick(held);CHECK(!momentum.overheadContact);
+    momentum.progress.position={-2.08f,2};Input diagonal=held;diagonal.x=diagonal.z=1;
+    momentum.tick(diagonal);CHECK(momentum.overheadContact && momentum.jumpHeight<.073f);
     clearCollision();Game falling;falling.progress.room=2;falling.progress.position={-1,2};falling.tick(confirm());
     float last=0;
     for(int n=0;n<30;++n) {
@@ -133,14 +140,15 @@ void movement() {
     Progress initial;initial.room=2;initial.position={-1,2};
     Input right;right.x=1;right.jumpHeld=true;
     Game standing;standing.restore(initial);standing.tick(right);CHECK(standing.progress.position.x==-1);
-    Game jumping;jumping.restore(initial);jumping.tick(confirm());jumping.tick({});jumping.tick(right);
+    Input runningJump=right;runningJump.confirm=true;
+    Game jumping;jumping.restore(initial);jumping.tick(right);jumping.tick(runningJump);jumping.tick(right);
     CHECK(jumping.jumpHeight>.07f && jumping.progress.position.x>-.99f);
     clearCollision();std::remove(path);}
-    FieldJump tapped;tapped.begin();for(int n=0;n<20;++n)tapped.tick(false);
+    FieldJump tapped;tapped.begin();for(int n=0;n<21;++n)tapped.tick(false);
     CHECK(tapped.airborne);tapped.tick(false);CHECK(!tapped.airborne);
     FieldJump held;held.begin();for(int n=0;n<4;++n)held.tick(true);
-    CHECK(std::fabs(held.height-.1946f)<.00001f);
-    for(int n=4;n<26;++n)held.tick(true);CHECK(held.airborne);
+    CHECK(std::fabs(held.height-.245f)<.00001f);
+    for(int n=4;n<25;++n)held.tick(true);CHECK(held.airborne);
     held.tick(true);CHECK(!held.airborne && held.height==0);
     auto displacement=[](float x,float z,int frames) {
         Game g;g.progress.position={-4,2};g.partner=g.progress.position;
@@ -159,7 +167,7 @@ void movement() {
     CHECK(obstacle.progress.position.z>=.6f+BodyRadius);
     CHECK(!walkable({std::numeric_limits<float>::quiet_NaN(),1}));
     CHECK(!walkable({0,0}));
-    Game jump;jump.progress.position={0,2};jump.tick(confirm());advance(jump,4);CHECK(std::fabs(jump.jumpHeight-.17882f)<.00001f);advance(jump,17);CHECK(std::fabs(jump.jumpHeight)<.01f);
+    Game jump;jump.progress.position={0,2};jump.tick(confirm());advance(jump,4);CHECK(std::fabs(jump.jumpHeight-.22922f)<.00001f);advance(jump,18);CHECK(std::fabs(jump.jumpHeight)<.01f);
     Game follow;follow.progress.position={-3,3};follow.partner={-6,3};advance(follow,100);CHECK(follow.partner.x>-4.1f);CHECK(walkable(follow.partner));
 }
 void dialogueAndTouch() {
@@ -460,7 +468,8 @@ void unequalFloorMotion() {
     CHECK(!landingFootprint({.08f,2},{1,0},1,0,floor));
     CHECK(!landingFootprint({0,2},{0,0},1,0,floor));
     Progress p;p.room=2;p.position={-.08f,2};p.elevation=1;
-    Game jump;jump.restore(p);jump.tick(confirm());Input right;right.x=1;right.jumpHeld=true;
+    Input right;right.x=1;right.jumpHeld=true;Input runningJump=right;runningJump.confirm=true;
+    Game jump;jump.restore(p);jump.tick(right);jump.tick(runningJump);
     for(int n=0;n<8;++n)jump.tick(right);
     CHECK(jump.progress.position.x>.075f && jump.airborne());
     CHECK(jump.groundHeight+jump.jumpHeight>1.3f); // World height does not fall with support.
@@ -500,7 +509,8 @@ void unequalFloorMotion() {
             GroundContact contact{0,uint32_t(n<2?1:2)};file.write(reinterpret_cast<char*>(triangle),36);file.write(reinterpret_cast<char*>(&contact),8);}
     }
     CHECK(loadGround(path));p.position={.08f,2};p.elevation=0;
-    Game higher;higher.restore(p);higher.tick(confirm());Input left;left.x=-1;left.jumpHeld=true;
+    Input left;left.x=-1;left.jumpHeld=true;runningJump=left;runningJump.confirm=true;
+    Game higher;higher.restore(p);higher.tick(left);higher.tick(runningJump);
     for(int n=0;n<8;++n)higher.tick(left);
     CHECK(higher.airborne() && higher.groundHeight==0 && higher.jumpHeight>.3f);
     for(int n=0;n<8;++n)higher.tick(left);

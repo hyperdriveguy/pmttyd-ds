@@ -10,7 +10,9 @@ struct FieldJump {
     void tick(bool held,bool clampToBase=true) {
         if(!airborne)return;
         ++ticks;
-        if(ticks<3)return; // mot_jump two-count startup, first count on begin.
+        // begin represents mot_jump's launch call (phase0,counter1).
+        // The next call exhausts countdown2 and enters phase10,counter2;
+        // marioJump gates on phase, not on a counter>=3 condition.
         jerk+=jerkRate;
         if(falling)jerk=std::min(0.f,jerk);
         acceleration+=jerk;velocity+=acceleration;

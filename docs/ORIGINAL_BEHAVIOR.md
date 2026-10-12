@@ -242,7 +242,7 @@ status notes; an old paragraph saying ceilings are missing is historical.
 | Coordinates | `_mapLoad` applies model scale 10. Native model scale .1 implies original engine literals × .01 | Preserve distinct coordinate spaces for dynamic transforms |
 | Ordinary movement | Walk/dash rates 1/2.25 original units per tick; stick cap 70, dash threshold 55 | State hysteresis, drift, transformations, follower physics |
 | Jump | Ascent tuple `(8,-.84,.08,-.02)`, fall `(-.1,-.2,.024,-.004)`; jerk→acceleration→velocity order; release adjustment -.526 | Special states, gravity variants and observed input timing |
-| Jump startup | Counter begins at 1; first integration at counter 3; release reduction from counter 4 | Compare matched Dolphin inputs |
+| Jump startup | Launch phase0/counter1; next call phase10/counter2 integrates; release reduction from counter4; [verified phase gate](behavior/OVERWORLD_MARIO_MOVEMENT.md) supersedes earlier counter3 interpretation | Compare matched Dolphin inputs |
 | Body/walls | Width 20, height 37; ordinary wall clearance 10; rays at 11 and about 26.64 | Push-out, sliding, dynamic walls |
 | Floor queries | Five probes, footprint radius 7.5; velocity-dependent ray bounds | Full slope/contact acceptance, walking beneath ceilings |
 | Head queries | Separate attribute filter and cull rule; five probes; original rounding and clearance | Special forms, block effects and dynamic geometry |
