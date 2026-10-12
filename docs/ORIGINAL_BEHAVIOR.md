@@ -1040,3 +1040,12 @@ actor/menu/shared cursor,pending/progress loops,fall-through/waits,paired target
 remap,independent directions,confirmation/audience order,and state29 live clears.
 39 hashes/526 anchors/3 spans verified;77 CTest/90 Python/make all pass.
 Callee/source/query reachability/Game/platform/original execution remain open.
+
+ID2 native weapon-menu Main/eligibility closure (2026-10-12):
+[Confirmation](behavior/battle/WEAPON_MENU_MAIN_CONFIRMATION_AND_LIGHT_REQUESTS.md),
+[navigation/End](behavior/battle/WEAPON_MENU_MAIN_NAVIGATION_CANCELLATION_AND_END.md),
+[count/update](behavior/battle/WEAPON_MENU_TARGET_COUNT_AND_ELIGIBILITY_UPDATE.md)
+supply seven complete local bodies,typed private sampling,captured row count,
+confirmation/boundary/request/fresh cursor/result ownership.20 hashes/344
+anchors/2 keys verified;78 CTest/90 Python/make all pass after resolved initial
+host link failure.Full builder/source/query reachability/Game/runtime remain open.

@@ -1,3 +1,28 @@
+## 2026-10-12 — ID2 weapon-menu Main and target eligibility
+
+Three detailed implementation contracts close seven complete local bodies:
+[confirmation](behavior/battle/WEAPON_MENU_MAIN_CONFIRMATION_AND_LIGHT_REQUESTS.md),
+[navigation/End](behavior/battle/WEAPON_MENU_MAIN_NAVIGATION_CANCELLATION_AND_END.md),
+[count/update](behavior/battle/WEAPON_MENU_TARGET_COUNT_AND_ELIGIBILITY_UPDATE.md).
+Retained B/T/U,private cursor slots,confirmation priority,boundary Trigger versus
+interior Repeat,fresh post-service row reads,cancel/result ownership,private
+sampling with negated side byte,captured updater count,and reason overwrite
+covered.Original sound keys reused;no native code/tests changed.ID2 lock released.
+
+Validation:`tools/verify_weapon_menu_main.py` twice,identical:20 hashes
+(7 complete/13 linked),344 anchors,2 original keys.Python compilation,existing
+behavior/menu/Input/ActMenu/sampling verifiers,local file links,and scoped
+whitespace passed.First `make test` failed linking battle_packed_position_tests
+with generic ELF EM62/file wrong format;host cache/link named /usr/bin/g++.
+Exact /tmp/id2-wmain-test.log.Retry /tmp/id2-wmain-test-retry.log passed
+78 CTest/90 Python;failure resolved,root cause unproven.`make all` passed.
+
+Limits:static local evidence only.Full table builder/remaining menu and gift/
+audience/confusion writers,source/query-event domains,Game/platform/original
+execution remain open.Next port-function priority:MakeSelectWeaponTable
+production/source bindings;then remaining query reachability.Full-game system
+requirements remain pending wider coverage.
+
 ## 2026-10-12 — ID2 complete BattleCommandInput state contract
 
 Delivered three implementation contracts for complete Input801229d8/0x838:

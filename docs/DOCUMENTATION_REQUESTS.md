@@ -25,6 +25,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
 | Native first-attack target and paired output ownership | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Pair/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md),[event/body part](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md):seven complete local bodies,captured B/raw outputs/mode pairs/slot63 miss/kind predicate/body-before-ID/write order/source part witness;source/Game/runtime separate;prior field_movement failure resolved by current74-suite run |
+| Native WeaponSelectMenuMain confirmation and target eligibility | EVT-01, JUMP-01 | VALIDATED seven local bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Confirmation](behavior/battle/WEAPON_MENU_MAIN_CONFIRMATION_AND_LIGHT_REQUESTS.md),[navigation/End](behavior/battle/WEAPON_MENU_MAIN_NAVIGATION_CANCELLATION_AND_END.md),[count/update](behavior/battle/WEAPON_MENU_TARGET_COUNT_AND_ELIGIBILITY_UPDATE.md):complete Main/End/private sampling/count/captured row-update/UI-light stubs/fresh cursor/request order;full builder/query reachability/source/Game/runtime remain separate |
 | Native BattleCommandInput state dispatch and target selection | EVT-01, JUMP-01 | VALIDATED complete caller / lock released, 2026-10-12 | Documentation agent ID 2 | [Entry/class](behavior/battle/COMMAND_INPUT_ENTRY_REENTRY_AND_CLASS_STATES.md),[target](behavior/battle/COMMAND_INPUT_TARGET_REMAP_AND_CONFIRMATION.md),[remaining/attack](behavior/battle/COMMAND_INPUT_AUXILIARY_STATES_AND_ATTACK_DISPATCH.md):all30 states/default/shared cursor/retained actor/re-entry/fall-through/target pair/confirmation/post-confirm audience/direct1;callee/event/query reachability/Game/runtime remain separate |
 | Native ActMenuMain type publication and control routing | EVT-01, JUMP-01 | VALIDATED six local bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Selection/type](behavior/battle/ACT_MENU_MAIN_SELECTION_AND_TYPE_PUBLICATION.md),[navigation/order](behavior/battle/ACT_MENU_MAIN_NAVIGATION_AND_SERVICE_ORDER.md),[setup/end/position gate](behavior/battle/ACT_MENU_SETUP_END_AND_POSITION_GATE.md):complete Main/setup/end/gate/cursor-init/UI-stub/three type stores/14-way switch/fresh output reads;Input/confusion/query reachability/Game/runtime remain open |
 | Native action-class table type and eligibility producer | EVT-01, JUMP-01 | VALIDATED local body / lock released, 2026-10-12 | Documentation agent ID 2 | [Admission/publication](behavior/battle/ACTION_CLASS_TABLE_ADMISSION_AND_PUBLICATION.md),[eligibility/keys](behavior/battle/ACTION_CLASS_TABLE_ELIGIBILITY_AND_MENU_KEYS.md):complete producer/types0,6,1,2,4,5,13/partial20-byte records/independent final flags/signed cursor correction/seven keys;ActMenuMain/query reachability/Game/runtime remain open |
@@ -513,6 +514,21 @@ Do not invent extra samples for script invocations or suppress inactive private
 sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
+
+ID2 weapon-menu Main/target eligibility reply (2026-10-12):
+[Confirmation/light requests](behavior/battle/WEAPON_MENU_MAIN_CONFIRMATION_AND_LIGHT_REQUESTS.md),
+[navigation/cancel/End](behavior/battle/WEAPON_MENU_MAIN_NAVIGATION_CANCELLATION_AND_END.md),
+and [count/update](behavior/battle/WEAPON_MENU_TARGET_COUNT_AND_ELIGIBILITY_UPDATE.md)
+close seven complete local bodies:Main/End/target count/update/UI Main/two
+light stubs.Confirmation priority,interior Repeat/boundary Trigger,post-service
+cursor rereads,retainedT,disabled reason/result,typed negated sampling direction,
+captured updater count,and reason overwrite supplied.20 hashes(7 complete/
+13 linked),344 anchors/2 keys/repeat reports,78 CTest/90 Python and make all
+pass.First shared-host link failure(/tmp/id2-wmain-test.log) RESOLVED on retry
+(/tmp/id2-wmain-test-retry.log);root cause unproven,no native edits by ID2.
+Next native documentation priority:full MakeSelectWeaponTable row/source
+production,remaining menu writers,and query-specific event domains.No safe
+unsupported-type fallback is established by these separate private stack slots.
 
 ID2 complete BattleCommandInput reply (2026-10-12):
 [Entry/re-entry/class states](behavior/battle/COMMAND_INPUT_ENTRY_REENTRY_AND_CLASS_STATES.md),
