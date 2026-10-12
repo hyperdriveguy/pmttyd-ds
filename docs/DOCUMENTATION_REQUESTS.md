@@ -21,7 +21,8 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Animation Main evaluation and linked-paper time/data graph | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/time](behavior/display/ANIMATION_MAIN_ENTRY_AND_TIME.md),[samples](behavior/display/ANIMATION_TIMELINE_SAMPLING.md),[cache](behavior/display/ANIMATION_COMPRESSED_DELTA_CACHE.md),[interpolation](behavior/display/ANIMATION_OUTPUT_INTERPOLATION.md),[facing](behavior/display/ANIMATION_MAIN_CAMERA_FACING.md),[init](behavior/display/ANIMATION_POOL_AND_TANGENT_INITIALIZATION.md):complete Main/init local graphs and original M_Z_1 metadata;resource/pool/draw/copy/clock/helper/libm/platform/source/runtime remain separate |
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
-| File relocation dispatch and supported type routes | EVT-01, JUMP-01, DMG-02 | VALIDATED binary / lock released, 2026-10-12 | Documentation agent ID 2 | [Dispatch/type map](behavior/file/FILE_RELOCATION_TYPE_DISPATCH.md),[eight flat types](behavior/file/FILE_FLAT_POINTER_RELOCATION.md):all11 routes,unsigned guards/ordered arithmetic/retained first/no null preservation;types4/5 nested handlers/platform/source/runtime remain open;host missing fixture recorded |
+| File relocation dispatch and supported type routes | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Dispatch/type map](behavior/file/FILE_RELOCATION_TYPE_DISPATCH.md),[eight flat types](behavior/file/FILE_FLAT_POINTER_RELOCATION.md):all11 routes,unsigned guards/ordered arithmetic/retained first/no null preservation;type5 nested handlers/platform/source/runtime remain open;prior missing fixture resolved |
+| Type4 texture-palette nested relocation | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Setup](behavior/file/FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_SETUP.md),[clear](behavior/file/FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_CLEAR.md):complete nested type4,signature/panic/low16 live count/pointer-data-flag order/source82 image headers;type5/consumers/platform/source/runtime remain separate;prior missing fixture resolved |
 | Smart arena initialization and header provisioning | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Initializer](behavior/memory/SMART_ARENA_AND_HEADER_INITIALIZATION.md),[scoped provisioning](behavior/memory/SMART_RESOURCE_PROVISIONING_REQUIREMENTS.md):complete smartInit,heap4 request/double clear,2048*28 headers/live endpoints/flag-counter reset;heap bootstrap/type relocation/platform/source/runtime remain separate |
 | Smart allocation placement and retry/header publication | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Header/gap placement](behavior/memory/SMART_ALLOCATION_HEADER_AND_GAP_PLACEMENT.md),[retry/failure](behavior/memory/SMART_ALLOCATION_RETRIES_AND_FAILURE_OWNERSHIP.md):complete smartAlloc,first flag/auto3,release-counter sync/reset,header reservation/word alignment/unsigned leading-firstfit/three tail-only retries/no failed-header restoration;arena init/type relocation/platform/source/runtime remain separate |
 | Smart-heap compaction and file-move requests | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Compactor/barriers](behavior/memory/SMART_HEAP_COMPACTION_AND_PENDING_FILES.md),[file move/address requests](behavior/file/FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md):complete two bodies,draw-sync/equal-address bypass/nonworker pending barrier/worker retarget/live holders/gaps/full-arena flush;type relocation/allocator/platform/source/runtime remain separate;prior host camera assertion resolved by current68-suite run |
@@ -2530,3 +2531,40 @@ history;this follow-up adds ID1 evidence tool/manifest,numeric notation refineme
 and exact delivery/provenance. Whole-tree link scan has five unrelated forward
 references in pending binary/REFERENCE_FILES_INVENTORY.md;new Main/init links
 resolve. Do not interpret those draft inventory promises as recovered systems.
+
+ID2 relocation host-gate completion (2026-10-12):missing battle_unit_event_tests.cpp
+fixture arrived;make test rerun passes70 CTest suites/78 Python tests. Log:
+/tmp/id2-reloc-test-rerun.log. Earlier configure-failure breadcrumb is RESOLVED.
+Private contracts/verifier commit9ac794c;make all already passed. Types4/5 nested
+handlers remain open. Shared handoff remains separate from staged reorganization.
+
+ID2 type4 validation breadcrumb (2026-10-12):make test cannot configure
+CMakeLists.txt:327 missing tests/battle_packed_status_tests.cpp. Log:
+/tmp/id2-type4-test.log. Binary/type4 US source fingerprint and make all pass;
+ID2 changes no CMake/native/tests. Native owner should finish fixture,then
+rerun host gate. Six unresolved inventory links remain owned by that document's
+source session;new type4 links resolve.
+
+ID2 type4 relocation delivery (2026-10-12),EVT-01/JUMP-01/DMG-02 partial:
+[Setup](behavior/file/FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_SETUP.md) and
+[clear](behavior/file/FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_CLEAR.md) close complete
+nested type4;private commit66b533e. Signature diagnostic before root guard,
+low16 index/live32 count,descriptor/table rereads,data flags23/02 and opposite
+setup/clear order/root-last clear are explicit. US effect TPL106880-byte source
+fingerprint/count82/table0c/distinct82 image headers/zero palette slots pinned;
+no native execution or nonzero-palette source witness is claimed.
+Verifier two containing/one panic hashes,165 selected anchors,four tables/strings
+spans,repeat JSON and prior dispatch/compaction/general1980 pass;make all passes.
+make test configure fails missing battle_packed_status_tests.cpp;separate78
+Python tests pass. Logs:/tmp/id2-type4-test.log,/tmp/id2-type4-build.log,
+/tmp/id2-type4-python.log. New links resolve;global2755-link snapshot has six
+unrelated inventory missing references. Own lock released;type5/consumers/
+platform/source/scene/original traces remain open. Shared handoff and previous
+relocation host completion remain separate from ID1's staged documentation.
+
+ID2 type4 host completion (2026-10-12):fixture arrived;make test rerun passes71
+CTest suites/78 Python tests (/tmp/id2-type4-test-rerun.log). Earlier missing
+battle_packed_status_tests.cpp breadcrumb is RESOLVED. make all passed and private
+contracts/verifier are66b533e. Shared ID2 handoff/previous relocation completion
+now prepared as a scoped patch after other session staging clears. Type5 and
+source/texture consumers/platform/original runtime/full-game requirements remain open.

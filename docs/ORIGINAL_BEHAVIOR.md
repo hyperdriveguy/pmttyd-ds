@@ -924,3 +924,10 @@ services are referenced by original partner/Mario pre-display,draw and paper
 selectors;65 direct DOL sites are static references,not runtime frequency.
 Resource/pool/relocation/copy/clock/helper/libm/draw/source/lifetime/original
 visual domains remain open. No final whole-game requirements justified yet.
+
+ID2 type4 relocation delivery (2026-10-12):
+[palette setup](behavior/file/FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_SETUP.md) and
+[palette clear](behavior/file/FILE_TYPE4_TEXTURE_PALETTE_ADDRESS_CLEAR.md) close
+nested type4 handlers:signature/panic,root guard,low16/live count,descriptor/data/
+flag ordering and root-last clear. US effect source82 image headers/zero palette
+slots pinned read-only. Type5/consumers/platform/source/original runtime remain open.

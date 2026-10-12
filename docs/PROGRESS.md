@@ -1,5 +1,32 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2 complete nested type4 texture-palette relocation
+
+Complete type4 Set/Clear documented in two linked files;private commit66b533e.
+Version diagnostic/root guard,low16/live-count loop,table/descriptor/data/flag
+order and alias rereads are explicit. Original US effect TPL witness has82
+distinct image headers,flags0,and no palette descriptors. Source hash/shape
+checks are not native execution or nonzero palette-branch evidence. Dispatch
+links updated;own ID2 type4 lock released. Type5 remains open.
+
+Validation:verify_file_type4_relocation.py passes two containing/one panic body
+hashes,165 selected anchors,four data/string spans and US effect source summary;
+repeat JSON matches. Python compile,prior dispatch/compaction/general1980 checks
+and new links pass. make all passes;make test cannot configure missing concurrent
+ tests/battle_packed_status_tests.cpp at CMakeLists.txt:327;separate78 Python tests
+pass. Logs:/tmp/id2-type4-test.log,/tmp/id2-type4-build.log,/tmp/id2-type4-python.log.
+Global2755-link snapshot has six unresolved inventory references. Scoped private
+whitespace check passes. Other staging preserved;shared handoff and previous
+host completion remain in worktree. No native/test/asset extraction/conversion
+change and no original texture/runtime/performance claim.
+
+Next:type5 nested graph;native owner supplies fixture/reruns host gate;inventory
+owner repairs links. Full-game requirements/source/platform/consumers remain open.
+
+Host rerun completion:fixture arrived;make test passes71 CTest suites/78 Python
+(/tmp/id2-type4-test-rerun.log). Earlier failure is RESOLVED. Shared ID2 handoff
+and previous relocation completion now included in a scoped commit patch.
+
 ## 2026-10-12 — Native HP and unit-work callback leaves
 
 Implemented and registered GetHp801101c4,GetMaxHp801100cc,GetUnitWork8010f828
@@ -86,6 +113,10 @@ or original runtime/source-format completeness claim.
 
 Next:finish nested4/5 handlers;native owner supplies its fixture and reruns host
 gate;inventory owner repairs five links. Full-game requirements remain incomplete.
+
+Host gate completion:the missing fixture arrived;make test rerun passes70 CTest
+suites/78 Python tests (/tmp/id2-reloc-test-rerun.log). Earlier configure failure
+is RESOLVED. Private scope commit9ac794c;shared handoff staging remains separate.
 
 ## 2026-10-12 — ID2 smart arena/header initialization and provisioning
 
