@@ -34,8 +34,15 @@ int32_t getUnitFp(DamageUnit& unit,const DamageApplicationServices& s) {return f
 int32_t getUnitMaxFp(DamageUnit& unit,const DamageApplicationServices& s) {return fpOwner(unit,s).maxFp;}
 void setUnitFp(DamageUnit& unit,int32_t value,const DamageApplicationServices& s) {fpOwner(unit,s).fp=half(value);}
 void recoverUnitFp(DamageUnit& unit,int32_t amount,const DamageApplicationServices& s) {
-    auto& owner=fpOwner(unit,s);owner.fp=half(add(owner.fp,amount));
-    if(owner.fp>owner.maxFp)owner.fp=owner.maxFp;
+    const bool partner=unit.kind>=224 && unit.kind<=230;
+    auto* maximumOwner=partner?findMarioResourceOwner(s):&unit;assert(maximumOwner);
+    const int16_t maximum=half(getUnitMaxFp(*maximumOwner,s));
+    auto* owner=partner?findMarioResourceOwner(s):&unit;assert(owner);
+    owner->fp=half(add(owner->fp,amount));
+    if(owner->fp>maximum)owner->fp=maximum;
+}
+void recoverUnitHp(DamageUnit& unit,int32_t amount) {
+    unit.hp=half(add(unit.hp,amount));if(unit.hp>unit.maxHp)unit.hp=unit.maxHp;
 }
 void applyDirectDamage(int32_t attackerId,DamageUnit& d,DamagePart* part,int32_t hp,int32_t fp,
                        uint32_t code,int32_t pattern,int32_t sleepRecovery,BattleRandom& random,

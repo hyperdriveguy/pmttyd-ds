@@ -31,6 +31,7 @@ int32_t getUnitFp(DamageUnit&,const DamageApplicationServices&);
 int32_t getUnitMaxFp(DamageUnit&,const DamageApplicationServices&);
 void setUnitFp(DamageUnit&,int32_t,const DamageApplicationServices&);
 void recoverUnitFp(DamageUnit&,int32_t,const DamageApplicationServices&);
+void recoverUnitHp(DamageUnit&,int32_t);
 // Ordered US local application. All executed service callbacks must be bound;
 // effects/audio/audience/hit events are real service requests, not inferred internals.
 // Final hit code is passed to hitEvent; the incoming code is by value.

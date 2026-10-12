@@ -1,5 +1,25 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Resource recovery core ordering correction
+
+Updated recoverUnitFp to match the newly delivered badge-recovery contract:
+partner recovery resolves Mario for maximum capture,then resolves Mario again
+for writable current FP. The captured signed-halfword maximum survives registry
+changes between lookups. Other units retain own-resource behavior. Added the
+recovered HP core:wrapped addition,narrow16 before upper-only cap,no display
+bookkeeping or lower clamp. These are shared recovery primitives for direct
+application and forthcoming original badge/turn event wrappers.
+
+Validation:make test passed twenty-two CTest suites plus58 Python tests,including
+the concurrently committed field_battle suite;make all rebuilt resource/game
+objects and ttyd-2ds.elf/3dsx. New regression changes the Mario owner between
+lookups and verifies second-owner FP capped against first-owner maximum.
+HP cases cover upper cap,negative result,halfword overflow and no bookkeeping
+mutation. Existing direct damage/resource/targeting suites remain green. No
+emulator run for this service-ordering correction;no original execution claim.
+Next:recover HP/FP event wrappers and badge recovery amount queries,then original
+recovery/Jump graph scheduling. Full remake remains incomplete.
+
 ## 2026-10-12 — Private takeoff sampler/chooser binding
 
 Connected recovered sampler and chooser to jumpTakeoffPositionEvent through an

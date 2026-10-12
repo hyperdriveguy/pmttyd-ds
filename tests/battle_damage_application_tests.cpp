@@ -70,6 +70,23 @@ void resourcesAndAccounting() {
     recoverUnitFp(pool.partner,20,pool.services());CHECK(pool.mario.fp==5);
     recoverUnitFp(pool.partner,-10,pool.services());CHECK(pool.mario.fp==-5);
     pool.mario.fp=32767;recoverUnitFp(pool.partner,1,pool.services());CHECK(pool.mario.fp==-32768);
+    struct RecoveryOwners {
+        DamageUnit first,second;int lookups=0;
+    } changing;
+    changing.first.kind=changing.second.kind=222;
+    changing.first.maxFp=5;changing.first.fp=1;
+    changing.second.maxFp=20;changing.second.fp=8;
+    DamageApplicationServices changingServices;changingServices.user=&changing;
+    changingServices.getUnit=[](void* user,int32_t id) {
+        auto& owners=*static_cast<RecoveryOwners*>(user);CHECK(id==0);
+        return ++owners.lookups==1?&owners.first:&owners.second;
+    };
+    recoverUnitFp(pool.partner,4,changingServices);
+    CHECK(changing.lookups==2 && changing.first.fp==1 && changing.second.fp==5);
+    DamageUnit hpRecovery;hpRecovery.hp=5;hpRecovery.maxHp=10;hpRecovery.hpBefore=42;
+    recoverUnitHp(hpRecovery,20);CHECK(hpRecovery.hp==10 && hpRecovery.hpBefore==42);
+    recoverUnitHp(hpRecovery,-20);CHECK(hpRecovery.hp==-10);
+    hpRecovery.hp=32767;recoverUnitHp(hpRecovery,1);CHECK(hpRecovery.hp==-32768);
     pool.units[2]=&pool.partner;pool.units[3]=&pool.a;pool.a.kind=222;pool.a.belong=1;
     CHECK(findMarioResourceOwner(pool.services())==&pool.mario); // Belong matters, first qualifying slot wins.
 }
