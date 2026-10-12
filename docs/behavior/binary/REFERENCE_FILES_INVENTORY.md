@@ -8,43 +8,60 @@ files on 2026-10-12 with `find`, `file(1)`, `stat`, `readelf` (headers only),
 git-ignored (`.gitignore` line 3: `artifacts/`), matching the project rule that
 extracted/inspection material is never committed or distributed.
 
-Companion documents:
+Companion documents (all in this `binary/` folder):
 
 - [DOL function slices](REFERENCE_DOL_FUNCTION_SLICES.md) — the `.elf`/`.disasm`
   corpus, pairing table and symbol cross-checks.
 - [Tool and asset trees](REFERENCE_TOOL_TREES.md) — vendored tool repositories,
   host builds, Windows binaries and the Switch extraction metadata.
+- [Binary artifacts](BINARY_ARTIFACTS.md) — per-binary `file(1)` identification
+  notes maintained alongside this inventory.
+- [Unaddressed binary functions](UNADDRESSED_BINARY_FUNCTIONS.md) — register of
+  slice names not yet covered by behavior contracts.
 
 ## Grand totals
 
-| Measure | Value (verified) |
+Counts use the filter `-not -path '*/.git/*'` unless stated otherwise. A
+parallel research session was actively adding DOL slices to `behavior/` and
+curating other trees while this inventory was verified, so all counts are a
+timestamped snapshot and some fluctuated between passes (`behavior/` grew from
+527 to 539 `.elf` slices within the hour; `.git` internals moved between 146
+and 160; `mbedtls` test vectors were pruned mid-run). Refresh with
+`find`/`stat` before relying on any count.
+
+| Measure | Value (snapshot 2026-10-12 16:22 MDT) |
 | --- | ---: |
-| Top-level regular files | 186 |
+| Top-level regular files | 186 *(stable across every pass)* |
 | Top-level directories | 8 |
-| All files, excluding `vgmstream/.git/` | 6,260 |
-| All files, including `vgmstream/.git/` | 6,406 |
-| Total file bytes, excluding `.git` | 503,273,570 |
+| All files, excluding `*/.git/*` | 6,288 |
+| All files, including `.git` internals | 6,448 |
+| Total file bytes, excluding `.git` | 503,447,467 |
 | Top-level file bytes | 12,394,064 |
 | Empty files (excl. `.git`) | 35 |
-| Apparent tree size (`du -sh`) | 697M |
+| `.git` internals (five shallow clones) | 160 |
+| Apparent tree size (`du -sh`, block-rounded) | 697M |
 
 ## Directory census
 
-| Directory | Files | `du -sh` | What it holds |
-| --- | ---: | --- | --- |
-| `behavior/` | 1,136 | 56M | Per-function DOL slices/listings (`.elf`/`.disasm`/`.annotated`), derived evidence JSON, decomp source copies, symbol extracts |
-| `citric-composer/` | 850 | 518M | Citric Composer / Koopa Harmony / Retsuko Sound Tool repository snapshot with .NET build outputs, NuGet packages, MSI installer, bundled SDK tool DLLs, format specs |
-| `decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/` | 343 | 11M | Snapshot of `doldecomp/ttyd` at commit `62131fc…` (JP `G8MJ01` config; MIT) |
-| `hactool/` | 1,050 | 33M | SciresM hactool source plus a host build (24 `.o`, `hactool` executable) and vendored `mbedtls/` (incl. test key material) |
-| `switch/` | 18 | 8.0M | hactool extraction metadata, integrity logs, AArch64 listings and derived battle-table JSON for the TTYD Remake (Switch, US v0) |
-| `switch-libpulsar/` | 98 | 488K | `p-sam/switch-libpulsar` source snapshot (BFSAR sound library, MIT); no build products |
-| `Unsimplifier/` | 123 | 1.3M | Darxoon “OrigamiWand/Unsimplifier” Svelte/Vite source snapshot (TTYD Remake data editor, Unlicense) |
-| `vgmstream/` | 2,602 | 60M | vgmstream git clone (commit `7c520e8`, r2117) including a host CMake build tree and prebuilt Windows DLLs |
-| *(top-level files)* | 186 | — | DOL slices/listings, symbol tables, provenance manifests, reference source files, build log, licenses |
+Per-directory file counts exclude each tree’s `.git/` internals; all values
+come from the snapshot named above.
 
-`vgmstream/` file count includes 146 files under `vgmstream/.git/` (shallow
-clone: `refs/heads/master` at `7c520e8 Merge pull request #2040 from
-bnnm/atrac9`, remote `https://github.com/vgmstream/vgmstream.git`).
+| Directory | Files (excl. `.git`) | Bytes | What it holds |
+| --- | ---: | ---: | --- |
+| `behavior/` | 1,177 *(grows)* | 54,963,032 | Per-function DOL slices/listings (`.elf`/`.disasm`/`.annotated`), derived evidence JSON, decomp source copies, symbol extracts |
+| `citric-composer/` | 821 | 341,424,645 | Citric Composer / Koopa Harmony / Retsuko Sound Tool repository snapshot with .NET build outputs, NuGet packages, MSI installer, bundled SDK tool DLLs, format specs |
+| `decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/` | 343 | 9,691,833 | Snapshot of `doldecomp/ttyd` at commit `62131fc…` (JP `G8MJ01` config; MIT) |
+| `hactool/` | 1,018 | 28,522,219 | SciresM hactool source plus a host build (24 `.o`, `hactool` executable) and vendored `mbedtls/` (incl. test key material) |
+| `switch/` | 18 | 8,312,218 | hactool extraction metadata, integrity logs, AArch64 listings and derived battle-table JSON for the TTYD Remake (Switch, US v0) |
+| `switch-libpulsar/` | 68 | 131,874 | `p-sam/switch-libpulsar` source snapshot (BFSAR sound library, MIT); no build products |
+| `Unsimplifier/` | 92 | 691,626 | Darxoon “OrigamiWand/Unsimplifier” Svelte/Vite source snapshot (TTYD Remake data editor, Unlicense) |
+| `vgmstream/` | 2,564 | 47,299,931 | vgmstream git clone (commit `7c520e8`, r2117) including a host CMake build tree and prebuilt Windows DLLs |
+| *(top-level files)* | 186 | 12,394,064 | DOL slices/listings, symbol tables, provenance manifests, reference source files, build log, licenses |
+
+Five trees are shallow git clones (29–30 `.git` files each; 146–160 files
+total observed across passes): `vgmstream`, `citric-composer`, `hactool`,
+`Unsimplifier`, `switch-libpulsar`. Pinned commits and remotes are listed in
+the [tool-trees document](REFERENCE_TOOL_TREES.md).
 
 ## Top-level files by category (186 files)
 
@@ -91,15 +108,15 @@ files”; the file actually contains 8 entries. The corrected census above is fr
 
 | Class | Count | Where |
 | --- | ---: | --- |
-| ELF 32-bit MSB relocatable, PowerPC, stripped (game DOL slices) | 608 | 88 top-level + 520 in `behavior/` |
-| ELF 64-bit LSB relocatable, x86-64 (host object files) | 768 | `vgmstream/build/` (677), `hactool/mbedtls/library/` (72), `hactool/` (24 `.o` + not counted as exec) |
+| ELF 32-bit MSB relocatable, PowerPC, stripped (game DOL slices) | 627 *(grows)* | 88 top-level + 539 in `behavior/` |
+| ELF 64-bit LSB relocatable, x86-64 (host object files) | 768 | `vgmstream/build/` (672), `hactool/mbedtls/library/` (72), `hactool/` root (24 `.o`) |
 | ELF 64-bit LSB pie executable, x86-64 | 6 | `hactool/hactool`, `vgmstream/build/cli/vgmstream-cli`, 4 CMake compiler-probe binaries under `vgmstream/build/CMakeFiles/4.4.4/` |
 | PE32 / PE32+ Windows DLLs and executables | 101 | 81 in `citric-composer/` (NuGet libs, .NET build outputs, bundled SDK tool DLLs), 20 in `vgmstream/ext_libs/` (+`dll-x64/`) |
 | Microsoft Installer (Composite Document) | 1 | `citric-composer/Citric Composer/Citric Installer.msi` (title “Citric Composer Installer”, author Gota7) |
 | MSVC program databases | 19 | `citric-composer/` build outputs |
-| PNG images | 154 | `citric-composer/` UI/docs assets |
-| Cryptographic test data (PEM/DER, incl. 163 PEM certificates, 34 PEM private keys, 21 OpenSSH keys) | ~270 | `hactool/mbedtls/tests/data_files/` (upstream mbedtls test vectors) |
-| Git pack/idx/rev objects | 146 files | `vgmstream/.git/` |
+| PNG images | 156 | 154 in `citric-composer/` (UI/docs assets), 2 in `Unsimplifier/static/` (icon, favicon) |
+| Cryptographic test vectors | 394 files at latest count | `hactool/mbedtls/tests/data_files/`: 185 PEM certificates, 22 certificate requests, 34 PEM RSA private keys, 23 OpenSSH private keys and 27 unclassified “data” blobs (DER/formats) at the latest pass; earlier passes saw 34 OpenSSH keys and 78 data blobs before concurrent curation pruned the directory. Upstream mbedtls test material, not project secrets |
+| Git internals (packs, index, refs, hooks) | 146–160 (snapshot: 160) | 29–30 files in each of the five shallow clones listed above |
 | Other “data” blobs (DER/keys/formats) | 78 | `hactool/mbedtls/tests/data_files/` |
 
 No game payload (ISO, DOL, NSP, NCA, RomFS) is present anywhere under
@@ -155,8 +172,11 @@ local `local-assets/` extraction, per `docs/ASSETS.md`.
 ## Verification performed for this document
 
 - `find`/`stat` for every count and byte size quoted (re-run 2026-10-12).
-- `file(1)` magic classification for every binary class in the census
-  (executed over all 6,260 non-`.git` files).
+- `file(1)` magic classification for every binary class in the census, run
+  over all non-`.git` files in several passes (6,276 / 6,287 / 6,288 files);
+  stable classes (ELF64, PE, MSI, pdb, PNG) were identical in every pass,
+  while the DOL-slice and mbedtls-test-vector counts moved with the live
+  corpus as documented above.
 - `readelf -h`/`readelf -S` on sampled slices (`walkSpeed.elf`,
   `bero_normal.elf`) — header/section inspection only.
 - `cmp` for all claimed byte-identical source copies (decomp and vgmstream
