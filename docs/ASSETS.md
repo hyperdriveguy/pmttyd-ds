@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 223 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 728 instruction anchors plus those
+now fingerprints 230 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 756 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -131,6 +131,11 @@ Hexadecimal float research adds one fingerprint; special strings reuse the
 already verified original block. Documentation preserves raw exponent/fraction,
 truncation and extended-precision stack-address calculations. No original
 formatter body is compiled into the prototype or distributed as source.
+Window manager/selection drawing add seven fingerprints, source path bindings
+font/msgWindow.tpl and %s/f/msgWindow.tpl, and selection color/geometry/smoothing
+constants. Public Japanese windowdrv.c supplies structural corroboration; US
+static instructions establish the contracts. No palette/GX objects are extracted
+or converted in this step, and no original renderer is compiled into the prototype.
 Hit-precheck and damage-calculator research adds prose contracts and metadata;
 no executable conversion or third-party implementation is incorporated.
 No full original routines, source extracts,

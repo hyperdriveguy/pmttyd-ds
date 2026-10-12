@@ -3314,3 +3314,33 @@ floating environment as open formatter dependencies. Continue original story
 attribution/order/branches/conditions and other uncovered systems before
 complete-game requirements. Full objective active/incomplete; original execution
 comparisons still needed.
+
+## 2026-10-12 — Window manager and selection draw callback
+
+Previous goal turn made progress through d6d6ed4. Began clean and added
+MESSAGE_WINDOW_MANAGER.md and MESSAGE_SELECTION_DRAWING.md: partial pool init/
+reinit, ordered live-slot callback traversal and caller placement, archive versus
+DVD palette setup, rounded read size/ignored completion status, completion-word
+path distinction and unchecked texture lookup. Selection draw contract records
+fog/color sources, border/text/icon call order, geometry/low-byte opacity and
+stored fused cursor smoothing during draw rather than main update. Pinned public
+Japanese windowdrv.c supplies structural corroboration; US instructions establish
+the local contracts. Updated lifecycle/state/selection cross-links.
+
+Validation:756 instruction anchors and prior checks passed against read-only US
+ISO, including two palette path strings, RGBA/seven selection floats and integer
+conversion bias. Fog-color source is BSS and explicitly not an ISO constant;
+runtime writers remain open. Fresh230-function evidence reports matched byte-for-
+byte. All local behavior links resolve; git diff --check passed. make test passed
+core plus36 Python tests; make all exited0, no rebuild. Only research/provenance/
+evidence tooling changed. No original execution/emulator run or profile/save
+modification; original disassemblies/reports remain ignored. Static checks do not
+prove global update/draw frequency, resource lifetime/error behavior, executed
+images/cursor motion or original/native equivalence.
+
+Next: msgWindow_Disp and msgDisp record consumers, display queue sorting/dispatch
+and outer cadence, then border/icon/font service bindings and real message/story
+callers. Formatter wide/memory/caller/floating-environment dependencies remain
+open. Continue original story attribution/order/branches/conditions and all
+other uncovered systems before complete-game requirements. Full objective active/
+incomplete; original execution comparisons still needed.

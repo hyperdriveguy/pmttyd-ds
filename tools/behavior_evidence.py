@@ -54,6 +54,8 @@ FUNCTIONS = (
     'frexp', 'ldexp', 'modf', 'copysign', '__cvt_dbl_usll',
     '__div2u', '__mod2u',
     'double2hex',
+    'windowMain', 'windowInit', 'windowReInit', 'windowTexSetup',
+    'unk_8007fcf0', 'getWakuTexObj', 'selectWindow_Disp',
     'btlevtcmd_AnnounceMessage', 'btlevtcmd_AnnounceSetParam',
     'BattlePadCheckTrigger', 'BattlePadMultiCheckTrigger', '_disp@battle_message.o',
     'evt_btl_camera_set_mode', 'evt_btl_camera_set_homing_unit',

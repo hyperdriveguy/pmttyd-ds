@@ -13,6 +13,24 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'message_window_manager': {
+        0x8007fa0c: '540007ff', 0x8007fa14: '819f003c',
+        0x8007fa28: '4e800421', 0x8007fa34: '2c1e0007',
+        0x8007fd90: '388001f8', 0x8007fda8: '90030028',
+        0x8007fde0: '900d1afc', 0x8007fbd0: '900301d8',
+        0x8007fc14: '40820074', 0x8007fc54: '541e0034',
+        0x8007fc70: '93ff006c', 0x8007fc98: '54042834',
+        0x8007fd04: '83e4002c', 0x8007fd68: '900d1afc',
+        0x8007ad34: '54602834', 0x8006f948: '480100a5',
+    },
+    'message_selection_drawing': {
+        0x8007fe1c: '80640028', 0x8007fe24: '80022144',
+        0x8007fe50: '9801000b', 0x8007fe6c: '4bffb5e1',
+        0x8007fe94: '4800354d', 0x8007fed4: '8807f243',
+        0x8007fee4: '1cc0001f', 0x8007fee8: '3806003a',
+        0x8007ff04: 'ec4618ba', 0x8007ff08: 'd047f248',
+        0x8007fecc: '38a001f8', 0x8007ff20: '4bf9aa1d',
+    },
     'format_hexadecimal_float': {
         0x8026b428: '2c0001fd', 0x8026b460: '4bffb425',
         0x8026b474: '54000421', 0x8026b50c: '54000631',
@@ -868,6 +886,23 @@ def verify(iso_path):
             if read(address, 8).hex() != expected:
                 raise ValueError(f'Binary numeric service constant mismatch {address:#x}')
         print('Six binary64 normalization/scaling constants verified')
+        for address, name in {0x802c3080: 'font/msgWindow.tpl',
+                              0x802c3094: '%s/f/msgWindow.tpl'}.items():
+            expected = name.encode('ascii') + b'\0'
+            if read(address, len(expected)) != expected:
+                raise ValueError(f'Window palette path mismatch {address:#x}')
+        selection_constants = {
+            0x804205fc: 'ffffff00', 0x80420600: '00000000',
+            0x80420604: '41f00000', 0x80420608: '42200000',
+            0x8042060c: '41c80000', 0x80420610: '40000000',
+            0x80420614: '3e99999a', 0x80420618: '3f800000',
+        }
+        for address, expected in selection_constants.items():
+            if read(address, 4).hex() != expected:
+                raise ValueError(f'Selection draw constant mismatch {address:#x}')
+        if read(0x802c3340, 8).hex() != '4330000080000000':
+            raise ValueError('Selection draw integer conversion bias mismatch')
+        print('Two window palette paths, selection RGBA/seven floats and integer bias verified')
 
 
 if __name__ == '__main__':

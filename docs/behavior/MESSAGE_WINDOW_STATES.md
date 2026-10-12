@@ -188,7 +188,9 @@ history comparisons/cursor clamps, timestamp updates, ordered history controls,
 clear playback during opening, clear wait state without local input and forced
 versus terminal close timestamps. These are derived obligations, not traces.
 
-Remaining: window/display manager cadence, renderer and key-wait indicator,
+Pool update traversal is now covered in [window manager](MESSAGE_WINDOW_MANAGER.md),
+selection draw geometry/cursor mutation in [selection drawing](MESSAGE_SELECTION_DRAWING.md).
+Remaining: outer/display manager cadence, renderer and key-wait indicator,
 event print/callback/identity/substitution producers, pose services and clock/
 input snapshots/numeric helper details; original story attribution/order/branches/
 conditions and all other systems. Local general/clear main branches are now

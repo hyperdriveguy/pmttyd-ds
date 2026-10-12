@@ -160,8 +160,11 @@ disabled cancellation, -2 versus arbitrary cancel result, direct/key identity,
 first-call-only creation, +17c saved index, signed LW0 result before delete and
 callback cleanup order. These are derived obligations, not executed observations.
 
-Remaining: selection display/highlighting/cursor interpolation, input snapshot
-and repeat cadence, pool/main scheduling, print callback/wait-state producers,
+Selection callback geometry/cursor interpolation is now covered in
+[selection drawing](MESSAGE_SELECTION_DRAWING.md), pool/main traversal in
+[window manager](MESSAGE_WINDOW_MANAGER.md).
+Remaining: inner selection/text highlighting, input snapshot
+and repeat cadence, outer/display scheduling, print callback/wait-state producers,
 all resource/message callers and original story branch attribution/conditions.
 Selection local main/event/deletion contracts are documented; full dialogue and
 complete-game equivalence remain unfinished.

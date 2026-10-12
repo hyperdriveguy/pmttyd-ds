@@ -31,8 +31,9 @@ allocation mask 1. Repeat/continue event wrappers use this second flag to poll.
 | 3c | main callback pointer |
 | 40 | delete callback pointer |
 
-Other pool initialization, update/display ordering and callback invocation remain
-window-manager dependencies; these offsets are not a complete manager contract.
+Pool initialization and ordered update/callback invocation are now covered in
+[window manager](MESSAGE_WINDOW_MANAGER.md). Display dispatch remains separate;
+these offsets are not a complete manager/renderer contract.
 
 ## msgWindow_Entry allocation and initialization (B)
 
@@ -165,4 +166,6 @@ Selection state/input/result and manager deletion helpers are now recovered in
 [selection](MESSAGE_SELECTION.md).
 General/clear state transitions, wait/history input and local closure are now
 specified in [window states](MESSAGE_WINDOW_STATES.md); rendering and manager
-cadence remain open.
+outer/display cadence remain open. Pool update order and texture setup are now
+covered in [window manager](MESSAGE_WINDOW_MANAGER.md); selection draw geometry
+and cursor mutation in [selection drawing](MESSAGE_SELECTION_DRAWING.md).
