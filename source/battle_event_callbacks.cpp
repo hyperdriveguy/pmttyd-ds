@@ -5,6 +5,14 @@
 #include "event_memory_release.hpp"
 
 namespace ttyd {
+BattlePackedMovePositionServices nativeBattleMovePositionServices(EventNativeRuntime& runtime,const BattleSoundPlaybackServices& playback) {
+    BattlePackedMovePositionServices s;s.query=nativeBattleMoveFrameServices(runtime);s.sound=nativeBattleMovementSoundServices(runtime,playback);
+    s.heading=[](void* p,float a,float b,float c,float d) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.headingFloat);return r.platform.headingFloat(r.platform.user,a,b,c,d);};
+    s.sine=[](void* p,double v) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.sineDouble);return r.platform.sineDouble(r.platform.user,v);};
+    s.cosine=[](void* p,double v) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.cosineDouble);return r.platform.cosineDouble(r.platform.user,v);};
+    s.roundDouble=[](void* p,double v) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.roundDoubleFloat);return r.platform.roundDoubleFloat(r.platform.user,v);};return s;
+}
+bool bindBattleMovePositionCallback(EventCallbackRegistry& registry,BattlePackedMovePositionServices& services) {return registry.bind(0x8010ca74,&services,[](void* p,EventEntry& e,int32_t first) {return packedMovePositionEvent(e,first,*static_cast<BattlePackedMovePositionServices*>(p));});}
 BattlePackedMovementSoundServices nativeBattleMovementSoundServices(EventNativeRuntime& runtime,const BattleSoundPlaybackServices& playback) {BattlePackedMovementSoundServices s;s.position=nativeBattlePartPositionServices(runtime);s.playback=playback;return s;}
 BattleMoveFrameServices nativeBattleMoveFrameServices(EventNativeRuntime& runtime) {
     BattleMoveFrameServices s;s.common=nativeBattleChoiceServices(runtime);s.user=&runtime;

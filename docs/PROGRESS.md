@@ -437,6 +437,36 @@ requirements and EVT-01/JUMP-01/DMG-02 remain incomplete.
 
 # Progress and next-session handoff
 
+## 2026-10-12 — Native MovePosition and horizontal record integration
+
+Bound original MovePosition8010ca74 to native event/unit/work fields with sentinel
+current/target setters and original horizontal helper. Arguments re-resolve every
+call;raw Y/Z/count prefetches survive conversion. First-call byte0xd/count/position/
+heading/distance/direction/speed/sound writes retain original order and live count/
+speed/distance rereads. Automatic count adjustment stays separate from GetMoveFrame.
+Every call steps X/Z,stores baseline XYZ,decrements/reloads count,then blocks with
+sound control or snaps full target XYZ/ends sound and returns advance+yield1.
+No Y interpolation/floor/collision/HP/AC/provisional impact schedule added.
+
+Evidence:behavior/battle/BATTLE_NATIVE_MOVE_POSITION_CAPTURE_ORDER.md. Horizontal
+helper retains sin round before cos,X load before cos round,and X store before Z
+load,including aliases. Required heading/distance/trig/round/numeric and original-
+shaped playback providers remain explicit;source geometry/math/audio/scene Game
+binding unfinished. Read-only original artifacts stay /tmp/pm-native-move-position.*,
+horizontal.*,move-current.* outside source history.
+
+Validation:make test85 CTest/90 Python;make all passes. Logs:
+/tmp/pm-packed-move-position-test.log and /tmp/pm-packed-move-position-build.log.
+Read-only source verifiers pass:preparation13 bodies/68 anchors/5 spans/6 callers;
+Mario-jump5 bodies/76 anchors/20 spans/2 callers. Native fixtures cover resumed
+operands/records,signed/sentinel/zero policy,query21 versus20 movement invocations,
+step/snap/Y separation,sound retention/stop,alias/read timing,live count and actual
+USER_FUNC cache/block/resume/advance+yield before END. Providers and source records
+are authored;no original trajectory/exception/emulator/hardware/full encounter
+claim. Next:native MarioJumpParam/MarioJumpPosition and original source/math/audio/
+transitive events/outer Game binding. Documentation gaps remain file requests.
+Full-game goal active/incomplete;concurrent work preserved.
+
 ## 2026-10-12 — Native sound-mode loader and movement-sound core
 
 Added native ordered partial LoadSeMode and movement sound core/unit/end services

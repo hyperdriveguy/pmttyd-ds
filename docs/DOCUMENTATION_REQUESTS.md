@@ -532,6 +532,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): MovePosition8010ca74 now
+operates on native event/unit/work/sound records with original horizontal helper,
+first-call count/speed policy and terminal snap/yield. 85 CTest/90 Python/make all
+and both Jump source verifiers pass. See
+behavior/battle/BATTLE_NATIVE_MOVE_POSITION_CAPTURE_ORDER.md for operand prefetch,
+live field rereads,trig/X/cos-round/alias order and actual USER_FUNC resume. Next:
+native MarioJumpParam/MarioJumpPosition plus source/math/audio/transitive event/
+outer Game composition. Existing Monosiri/spatial playback requests remain open;
+no original trajectory/numeric/hardware or full scene claim.
+
 ID2 snapshot caller host gate RESOLVED (2026-10-12):native fixture arrived;
 make test retry passed85 CTest/90 Python(/tmp/id2-switch-test-retry.log).
 Prior missing-file configuration failure is historical,not current blocking.
