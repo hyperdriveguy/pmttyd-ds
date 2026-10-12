@@ -2047,3 +2047,40 @@ entry validation separate. Source move-state XZ rates during stairs and low
 ceiling cancellation need review. Grounded overhead, wall sliding/push-out,
 dynamic support, original story/English dialogue/SFX/camera/animations/interiors
 and complete playable content remain incomplete. Full objective stays active.
+
+## 2026-10-12 — Direct damage application and shared FP research
+
+Previous goal turn progressed via4568b28/0ab7bdb counter contracts. Research
+commit41f6e27 now adds BATTLE_DAMAGE_APPLICATION.md: full local ordering of
+BattleDamageDirect, ±99 HP clamp, signed-byte amount accounting, conditional HP
+mutation, original/unbounded FP argument handling, shared partner FP owner,
+Pity Flower before FP subtraction, Sleep recovery request RNG, exact effect
+parameters/sound priority, action-record calls and lethal-event flag selection.
+Five supporting resource/owner helpers were inspected from original US bytes.
+Death/removal, revival consumption and HP restoration are explicitly left with
+unrecovered hit-event handlers rather than inferred from the marking flags.
+Coverage links and ASSETS.md provenance were updated. No runtime implementation
+was changed by this research.
+
+Validation: static ISO checks passed119 instruction anchors, both guard tables,
+accuracy constant,12 counter jump targets,9 damage-effect constants and7 sound
+keys. Evidence report now fingerprints63 functions and matched a repeat read.
+All behavior relative links resolved; git diff --check passed. make test passed
+core plus32 Python tests; make all exited0 with nothing to rebuild. Checks were
+against execution-time shared workspace, with unrelated runtime edits remaining
+in include/floor_contact.hpp, include/game.hpp, source/game.cpp,
+tests/core_tests.cpp, tools/verify_actor_collision.py and untracked
+include/field_step.hpp. Those files were not staged. ISO stayed read-only;
+extracted helper ELFs/disassembly and reports are ignored. No original binary or
+emulator was run, and no user profile/save was touched. Static anchors verify
+selected bytes, not complete dynamic equivalence or tested gameplay timing.
+
+Next: recover BattleCheckDamage orchestration and weapon/event callers;
+BattleSetStatusDamage, status getter/setter/recovery/turn lifecycle; actual hit
+event dispatch and death/revival event bodies. Trace unit/part/data lifetimes,
+attack callback catalog, action-record and audience helpers, complete effect and
+sound-macro execution. Add original execution traces and differential tests.
+The full-system register remains open for story/events, partners, field forms,
+save/UI, assets/animation/audio and complete content. Derive the complete-game
+requirements only after those contracts are documented. Full objective remains
+active; no complete-game or complete-battle equivalence claim.
