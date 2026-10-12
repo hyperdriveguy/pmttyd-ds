@@ -25,6 +25,77 @@ Next:delivered SDK bootstrap allocator/native memory providers,time/update bindi
 original Jump source stream/callback registry and execution comparison. Goal is
 incomplete;EVT-01 breadcrumbs updated;no emulator run for unbound services.
 
+## 2026-10-12 — Ordinary head queries and low-ceiling dispatch
+
+Previous goal turn made native/test/commit progress. This continuation inspected
+README/current handoff/shared worktree before changes. Goal remains active and
+incomplete. Native31f6cb8 binds the ordinary no-NPC head contract in
+OVERWORLD_AIRBORNE_AND_LANDING.md with ce29235/9869179/f305f1d addenda.
+
+Head queries now preserve overall inclination and prior projected tilts on all
+misses, write projected tilts from raw ray normals before cone rejection, and
+return the first admitted triangle's contact OR near miss. Later probes cannot
+replace an admitted near miss. Actual velocity gates the node separately from
+ray extension;contact node,clearance and near-contact flag are separate native
+outputs. Fixed-bias fused/truncated point/root formulas and the normal/narrow
+inclination intervals follow the local recovered policy. The head leaf only
+writes local Y;normal rootX copy-back is an identity,not a new lateral correction.
+
+Low-clearance arbitration requests ground motion before the motion3/6 response
+gate, preserving just-integrated root/tuple/airflags/counter on that call. Matching
+previous walk/dash permits the normal ceiling-fall response instead. The next
+manager invocation dispatches pending ground entry;walk/dash preserve tuple and
+counter, and front-step remains gated on counter0. Idle owns clearing/root snapshot.
+No extra fall invocation or universal takeoff snap is introduced on the ground
+request path. Public native contact flag now includes near misses,so old tests
+that equated it with a returned node were corrected to inspect both outputs.
+
+Validation on the committed native source:
+- make test passed40/40 CTest suites and64 Python tests,including concurrent event
+  suites. /tmp/pm-head-tests-final.log. Earlier attempts temporarily failed CMake
+  generation while another agent had registered event-tail/interpreter tests
+  before writing their files;once the files existed,the full required command
+  passed without changing or hiding their targets.
+- make all succeeded;the native sources were rebuilt earlier in this turn and
+  the final incremental call had nothing further to build. /tmp/pm-head-build-final.log.
+- Current build-host/core_tests original passed18,315 indexed/full-scan collision
+  probes,original-room arrivals/returns/void and corrected plaza-roof fixture;
+  field_wall_tests original passed800 directional rays across five rooms.
+- Read-only tools/verify_overworld_airborne_and_landing.py passed26 containing
+  bodies,185 instruction anchors and19 data spans against G8ME01 ISO.
+- Original-mesh inspection explained the former roof-height regression:rear
+  probe hits114.93-degree face (source cone rejects50..130),center132.97-degree
+  face is admitted and initially returns near miss. Derived native peak.307
+  replaces the old.12..15 solver expectation. This is a geometry/static-policy
+  regression,not a measured original-game trajectory. Temporary diagnostic
+  program/output remained in/tmp,not source history.
+- Isolated Azahar passed ceiling-road.bin with azahar_ceiling.py (five jumps,
+  landed(-6.7,.1),HP7),harbor-arrival-road.bin with azahar_harbor_stairs.py
+  (dock descent/save/return,HP7). Logs:/tmp/pm-head-ceiling.log and
+  /tmp/pm-head-harbor.log. East-road.bin with azahar_roads.py passed two reciprocal
+  plaza/east-road pairs on the same build;log:/tmp/pm-head-roads.log. Captures/test
+  saves remain ignored under artifacts/azahar;user profiles/saves untouched.
+- git diff --check passed on native and owned documentation changes.
+
+These checks are native/static evidence,not Dolphin gameplay comparison or
+New2DS XL hardware measurement. Geometry,trig and scaled float/quantization
+remain adaptations. Full NPC/hidden-block callbacks,special modes/root locks,
+pose/audio/input/camera owners and dynamic geometry remain open.
+
+Next native work is ready:OVERWORLD_ROGUEPORT_ROADS.md delivered2f88fc4 specifies
+eight exact road node IDs/targets,registration attribute overlay00800000 and
+ordinary case10's contact/name gate. Replace radius.7,toward-dot,cooldown and
+endpoint guesses with those owners. Preserve source early-story custom branches
+(story5/6/7),and keep the station north train door separate from its south road.
+Do not use absent native story state to pretend that all callbacks are generic.
+Documentation agent is recovering requested Rogueport camera4 tracking/yaw/
+screen projection;native fixed framing,.07 smoothing and default on-screen state
+remain provisional. ID1 independently owns partner terrain/motion research;
+native .08-spaced trail/512-point teleport still needs its composed original
+followers. Preserve concurrent event/battle/audio/documentation work. Original
+story/dialogue and full-game fidelity remain incomplete;goal is not complete.
+
+
 ## 2026-10-12 — Combined complete local event interpreter service path
 
 Added `event_interpreter.cpp` to route every recovered0..118 opcode through the

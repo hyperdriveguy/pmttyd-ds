@@ -1,5 +1,21 @@
 # Original asset pipeline
 
+## Ordinary head-query binding (2026-10-12)
+
+Native31f6cb8 binds the read-only US DOL contract in
+docs/behavior/OVERWORLD_AIRBORNE_AND_LANDING.md with ce29235/9869179/f305f1d
+addenda. Its verifier checks26 bodies,185 anchors and19 data spans in
+/home/carson/games/roms/G8ME01.iso without mutation. No asset conversion or
+pack format changed: existing ignored romfs/*.head retains original triangle
+winding/cull/attributes at scale.01. Raw ray normals feed head's projected angles
+without support's Q1000 normal rounding. Host geometry/trig/scaled arithmetic
+remain numerical adaptations. Mesh inspection at plaza(-6.7,.1) found rear roof
+inclination114.93 degrees (rejected) versus center132.97 (admitted); the former
+native peak fixture had accepted the rejected face. Updated native regression
+uses these static cone/probe decisions;this is not original gameplay measurement.
+Original copyrighted assets,ISO,compiled packs and emulator captures remain
+outside source history;this work grants no distribution license.
+
 ## Complete GameCube SFX sample extraction (2026-10-12)
 
 The earlier loop-only conversion is now extended to **all 1,247 samples** from

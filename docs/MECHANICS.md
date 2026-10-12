@@ -1,5 +1,32 @@
 # Mechanics evidence ledger
 
+## 2026-10-12 — Native ordinary head-query and low-ceiling ownership
+
+Native31f6cb8 binds the recovered no-NPC head contract, superseding provisional
+head notes below. Each ordered probe selects its nearest solid ray before the
+head cone gate; first admitted triangle returns contact or near miss, without
+searching later feet for a better contact. Raw normalized ray normals write
+projected tilts even before rejection, preserve overall inclination, and all-miss
+queries preserve the old record. Actual velocity gates the returned node; separate
+near clearance0..5 original units can still set the contact flag. Contact point
+and proposed root use the documented fixed-bias/fused/truncated local formulas.
+
+Low-clearance arbitration can request idle/walk/dash before the motion3/6 test,
+leaving just-integrated root and tuple/flags/counters untouched on that call.
+Matching previous walk/dash instead permits the ordinary pending-fall response.
+Next ground entry owns clearing;walk/dash retain tuple/counter, so front-step
+requires counter0. Source alias check confirms only local Y is written by the
+normal head leaf; rootX copy-back is an identity. Head contact/clearance/flag
+are separate native outputs. Static source verifier pins26 bodies/185 anchors/
+19 spans; no new Dolphin observations or hardware comparisons are claimed.
+
+The original-mesh plaza roof regression now checks rejected114.93-degree rear
+face/admitted132.97-degree center and first-center near miss before contact.
+Derived native peak.307 replaces the former.12..15 range from the incomplete
+solver;neither is an original gameplay observation. Geometry/trig/scaled floats
+remain adaptations;dynamic NPC/block,pose/audio,special modes/root locks and
+full camera/input/world lifecycle ownership remain open.
+
 ## 2026-10-12 — Native ordinary airborne/landing binding
 
 Static US contract OVERWORLD_AIRBORNE_AND_LANDING.md, recovered by the

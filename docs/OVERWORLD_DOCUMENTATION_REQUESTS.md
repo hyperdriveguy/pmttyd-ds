@@ -200,12 +200,20 @@ reset and invented landing ray bounds are removed. On-screen/bypass/key-control
 inputs remain explicit native adapters; original projection/control writers
 are not bound. LandOn clears drift mask0x80 and retains damping bypass0x20.
 
-Next native binding: ce29235 now specifies the ordinary low-ceiling branch and
-head-query gates. Current native head response still always applies its
-takeoff clamp and requests fall, while the original low-ceiling local branch
-can request ground motion before the motion3 test and skip actual root/tuple/
-flag writes. The current head provider also lacks original projected-tilt writes,
-inclination rejection and first-admitted-ray near-miss return. Bind these next.
+Native31f6cb8 binds ce29235/9869179/f305f1d's ordinary head contract: raw-normal
+projected tilt writes without overall/reset writes, cone rejection, first
+admitted ray contact or near-miss return, actual-V node gate and separate contact
+flag/clearance/node outputs. Low-ceiling requests ground motion before response
+admission, preserving root/tuple/flags/counter on that path. Next manager dispatch
+owns ground entry; walk/dash retain tuple/counter and the front-step counter gate.
+The head X copy is an identity in this domain; the leaf only writes local Y.
+
+Next native binding: [Rogueport roads](behavior/OVERWORLD_ROGUEPORT_ROADS.md),
+delivered2f88fc4. Exact node contacts and source registration attribute overlays
+must replace radius/dot/cooldown guesses; preserve documented story callbacks
+and distinguish the station north train door from an ordinary road. Camera
+tracking/yaw/screen projection recovery was requested from the documentation
+agent to replace fixed framing/.07 smoothing/default on-screen assumptions.
 Dynamic NPC/block classification, special attributes/modes, original numeric
 services, camera/control projection owners and source execution traces remain
 unbound. ID1 owns partner terrain/motion documentation independently.
