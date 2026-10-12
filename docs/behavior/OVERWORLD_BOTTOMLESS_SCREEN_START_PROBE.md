@@ -109,6 +109,45 @@ flags2 and10000000, sets jumpFlags10000 at80043d34–3c, stops their event and
 sets animation rate0. It is not a skipped npcMain manager, nor a rule stopping
 every actor or partner. The partner owner remains a separate contract.
 
+## Water admission height and travel callback boundaries
+
+Ordinary marioChkGnd checks current motion!=31, nonnull support1e8 and its
+hitObjGetAttr bit200 at8008f928–944. It passes **current rootY+90** to
+set_damage_root_ypos at8008f960–964, then requests motion31 at8008f968–96c.
+The selected support/surface height is not the passed argument. This is after
+that caller's preceding contact/root processing. Its optional preceding
+marioSetFall at8008f95c does not change the argument's source: the following
+instruction still explicitly loads current rootY.
+
+marioLandOn's ordinary water branch likewise tests motion!=31 and attr200 at
+80092de8–df8, loads current rootY at80092dfc, calls set_damage_root_ypos at
+e00, then directly switches current motion31, invokes prior motion's post
+callback and sets pending-entry bit1 (80092e54–94). Special main10000000 and
+other branch gates remain as their source inputs. set_damage_root_ypos copies
+that argument unchanged to2b8. Capture this actual admission rootY before the
+sink starts; do not recapture the subsequently sunken root or substitute the
+floor. NoUpdateCamPos does not assign f0=2b8: it retains actual incoming f0.
+
+The damage phase table8036ed4c pins control flow:
+
+| Trigger | Same-callback work and next phase |
+| --- | --- |
+| Pending entry | Setup0, then fall through phase dispatch8013af60 and phase0 sink/integration on this callback. |
+| Phase0 root below sink threshold | Set1/count40, branch end8013aff8; no hold decrement yet. |
+| Phase1 count reaches0 | Set10/count0/rise speed20, branch end8013b024; rise starts next callback. |
+| Phase10 | Increment count; at2 sets11; both branches fall into rise8013b06c on this callback. |
+| Phase11 prepares nonzero travel | Set12/delta/count;8013b310 branches endb5d8. First follow increment/XZ move/decrement next callback. |
+| Same preparation with zero distance | Set14/count10/delta;8013b34c branches endb5d8. First follow increment/decrement next callback. |
+| Phase12 travel completes | After this callback's increment/move/decrement, set13/count1, branch endb3c0. |
+| Phase13 count reaches0 | Set20 and branch endb3dc; fall starts next callback. |
+| Phase14 completes | After follow increment/decrement, set20/fall tuple and branch endb434. |
+| Phase20 lands | Set31/count50 then fall throughb554 decrement on this callback, leaving49. |
+| Phase31 positive HP after hold | Set32/count12 then fall throughb5b8 decrement, leaving11. |
+
+These boundaries belong to original motion31; native display phase names are
+not source phase numbers. Bottomless motion33 phase0 entry/travel is separately
+specified below; it must not inherit water's preparation pause accidentally.
+
 ## Immediate continuation and entry effects
 
 After the first outside Y, source sets horizontal recovery speed+2c4 to8,
