@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 
 namespace ttyd {
 // Ordinary Mario, scale1, without movement badges/transformation overrides.
@@ -15,6 +16,13 @@ struct FieldMovement {
         if(magnitude==0){speed=0;return {};}
         speed=magnitude>DashStick?Dash:Walk;
         headingX=x/magnitude;headingZ=z/magnitude;
+        return {headingX*speed,headingZ*speed};
+    }
+    Displacement groundedStick(int8_t x,int8_t z) {
+        grounded(float(x)/70.f,float(z)/70.f);
+        // The source threshold is on signed-byte integer axes, before magnitude
+        // clamping. Preserve exact squared-radius equality at55, including33/44.
+        speed=(x==0 && z==0)?0:(int(x)*x+int(z)*z>3025)?Dash:Walk;
         return {headingX*speed,headingZ*speed};
     }
     Displacement airborne(float x,float z) const {

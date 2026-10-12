@@ -267,6 +267,9 @@ FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float
     FieldWallHit nearest;nearest.distance=maximum;
     auto test=[&](std::array<float,9> triangle,uint32_t cull,GroundContact contact,uintptr_t token) {
         if(!ordinaryWallAttributes(contact.attributes))return;
+        // Current static room meshes contain no named high-bit NPC owners.
+        // Such an admitted record needs the original owner-name filter service.
+        assert(!(contact.attributes&0x80000000) || (contact.attributes&0x00080080));
         FieldWallHit hit;
         if(intersectFieldRay(triangle,cull,origin,direction,maximum,hit) &&
            (!nearest.token || hit.distance<nearest.distance)) {
@@ -590,7 +593,9 @@ void Game::move(const Input& i,bool launched) {
     float x=i.x, z=i.z, len=std::hypot(x,z);
     // Airborne motion retains takeoff travel and adds current-stick drift;
     // release does not replace retained travel with zero or a fresh walk rate.
-    const auto travel=fieldJump.airborne?fieldMovement.airborne(x,z):fieldMovement.grounded(x,z);
+    const auto& axes=inputProducer.channels[0].analog;
+    const auto travel=fieldJump.airborne?fieldMovement.airborne(x,z):i.physicalSnapshot?
+        fieldMovement.groundedStick(axes.mainX,int8_t(-axes.mainY)):fieldMovement.grounded(x,z);
     if(len>0){x/=len;z/=len;}
     // Ordinary head/landing/ground probes use retained travel+1a4 when base
     // speed+180 is nonzero, otherwise the facing conversion (native flip).
@@ -937,13 +942,23 @@ void Game::battle(const Input& i) {
         else { phase=Phase::Select; phaseTick=0; }
     }
 }
-void Game::tick(const Input& i) {
+void Game::tick(const Input& rawInput) {
+    Input input=rawInput;const Input& i=input;
     ++ticks; sound=Sound::None;overheadContact=false;
     if(i.physicalSnapshot) {
         std::array<RawPad,4> raw{};raw[0].buttons=i.physicalButtons;
         auto stick=[](float value) {return std::isfinite(value)?int8_t(std::clamp(value,-1.f,1.f)*70):int8_t(0);};
         raw[0].mainX=stick(i.x);raw[0].mainY=stick(-i.z);
         inputProducer.update(raw,TickRate,false); // Native polling/errors/C-stick/motors remain adapters.
+        if(scene==Scene::Explore) {
+            // Field consumers read the producer's signed-axis/buttons snapshot,
+            // including integer quantization and its global input-clear policy.
+            const auto& published=inputProducer.channels[0];
+            input.x=float(published.analog.mainX)/70.f;
+            input.z=-float(published.analog.mainY)/70.f;
+            input.confirm=(published.pressed&BattleButtonA)!=0;
+            input.jumpHeld=(published.buttons&BattleButtonA)!=0;
+        }
     }
     const bool tap=i.touchX>=0;
     if(arriving) {
@@ -1028,11 +1043,17 @@ void Game::tick(const Input& i) {
     }
     // Enter air motion before launch-call horizontal movement. begin represents
     // that call's phase0/counter1, so it must not consume another vertical tick.
-    // Original simultaneous motion/interaction arbitration remains unbound;
-    // these prompt checks belong to the development harness.
+    // Plain idle/walk/dash dispatcher repeats finish input classification before
+    // the surviving jump entry. These prompt checks still belong to the harness.
     const bool launched=i.confirm && !i.cancel && !airborne() &&
         !(progress.room==0 && ((!progress.crumpDefeated && near(CrumpPosition)) || near(NpcPosition)));
-    if(launched){jumpBase=groundHeight;fieldJump.begin();saveRequested=false;sound=Sound::Jump;}
+    if(launched) {
+        if(i.physicalSnapshot) {
+            const auto& axes=inputProducer.channels[0].analog;
+            fieldMovement.groundedStick(axes.mainX,int8_t(-axes.mainY));
+        } else fieldMovement.grounded(i.x,i.z);
+        jumpBase=groundHeight;fieldJump.begin();saveRequested=false;sound=Sound::Jump;
+    }
     move(i,launched);
     if(warpRequest>=0 || water.active() || fieldStep.active())return;
     if((groundContact.attributes&0x200) && !fieldJump.airborne && beginWater())return;
@@ -1040,7 +1061,9 @@ void Game::tick(const Input& i) {
     else if (i.confirm && !fieldJump.airborne) {
         if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) openDialogue(1);
         else if (progress.room==0 && near(NpcPosition)) openDialogue(0);
-        else { jumpBase=groundHeight;fieldJump.begin();saveRequested=false;sound=Sound::Jump; }
+        // A trigger sampled while airborne is not replayed after landing physics.
+        // Jump requests were admitted before move; original talk arbitration is
+        // still a separate event/interaction dependency.
     }
 }
 }
