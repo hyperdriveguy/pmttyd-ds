@@ -1,0 +1,248 @@
+{
+  "schema": 1,
+  "scope": "Bounded nondegenerate cardinal straight camera paths, authentic records and zero-shift state composition; curved/duplicate/transition domains unclosed",
+  "dol_spans": [
+    {
+      "name": "collisionCurve",
+      "address": 2147533956,
+      "size": 3888,
+      "sha256": "3f2139c8454272ed77be995980b472436e4d332e053bc316181150e723e95610"
+    },
+    {
+      "name": "calcCamRoad",
+      "address": 2147530444,
+      "size": 3512,
+      "sha256": "30d1765fbf7b91469764903b659dec1c95db1da056d94007ac72c854a32b3fb2"
+    },
+    {
+      "name": "calcCurrentCamState",
+      "address": 2147540724,
+      "size": 528,
+      "sha256": "0c015f8912b72cd53e101a973b35bbe4a3d2eba1e09905b347a692afc1100566"
+    },
+    {
+      "name": "camRoadMain",
+      "address": 2147527496,
+      "size": 1264,
+      "sha256": "b4962497703485b9c713074b9a4bbec1c3e4e295e5502246769bb75483c960fc"
+    },
+    {
+      "name": "Curve first best distance100million",
+      "address": 2151806600,
+      "size": 4,
+      "sha256": "b15839281fd54a7c2594d2932e4c3a2f2619eedf71a046855dfe239094bface5"
+    },
+    {
+      "name": "Endparameter mergeepsilon",
+      "address": 2150364568,
+      "size": 8,
+      "sha256": "bba542e8fc4a8a9ffe5583a4b42d6c2c27f2184052174e4652f07086262093db"
+    },
+    {
+      "name": "Direction negation",
+      "address": 2151806596,
+      "size": 4,
+      "sha256": "b705efea49cb3296c6f0417c21fe14f10adb140333fd79d7cfc3318904f887ea"
+    }
+  ],
+  "dol_anchors": {
+    "2147534120": "2c030000",
+    "2147534152": "80a400a4",
+    "2147534196": "1ca6000c",
+    "2147534208": "82a40044",
+    "2147534212": "1c00000c",
+    "2147534216": "82840084",
+    "2147534352": "ec010028",
+    "2147534364": "4080000c",
+    "2147534372": "d0010028",
+    "2147534512": "41800c48",
+    "2147534540": "41800c2c",
+    "2147534624": "fc022000",
+    "2147534636": "418207f8",
+    "2147536676": "c01e0008",
+    "2147536808": "fd202a10",
+    "2147536840": "ef862824",
+    "2147536892": "c93f0048",
+    "2147537144": "41820200",
+    "2147537156": "4182019c",
+    "2147537168": "4080009c",
+    "2147537204": "62520002",
+    "2147537224": "62520002",
+    "2147537236": "62400001",
+    "2147537248": "d0110000",
+    "2147537312": "92d10024",
+    "2147537332": "4081009c",
+    "2147537400": "62400001",
+    "2147537476": "92b10024",
+    "2147537520": "62520002",
+    "2147537552": "62520002",
+    "2147537572": "d0110000",
+    "2147537616": "d0110018",
+    "2147537648": "92f10024",
+    "2147537652": "92510028",
+    "2147537672": "4180f358",
+    "2147531568": "c0410180",
+    "2147531592": "ffe00850",
+    "2147531872": "c0028244",
+    "2147531876": "efff0032",
+    "2147531884": "efbd0032",
+    "2147532068": "418205cc",
+    "2147533552": "806d8088",
+    "2147533720": "d04f0034",
+    "2147533728": "d00f003c"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "camera_files": [
+    {
+      "path": "m/gor_00/c",
+      "size": 2048,
+      "sha256": "3d6f746ec51b1ba3165ba67aee2ca1fe17deb2d11a8fda9d3181a72356246d0c",
+      "eligible": [
+        {
+          "record_index": 0,
+          "record_offset": 280,
+          "name": "|MarioSt_CameraRoad|C_minato_l",
+          "row_count": 6
+        },
+        {
+          "record_index": 2,
+          "record_offset": 648,
+          "name": "|MarioSt_CameraRoad|C_umi_02",
+          "row_count": 6
+        }
+      ]
+    },
+    {
+      "path": "m/gor_01/c",
+      "size": 7700,
+      "sha256": "173e43d28c5b557f7c47686c043e64c2ec0ebe61b29e12882b61b19262611757",
+      "eligible": [
+        {
+          "record_index": 0,
+          "record_offset": 280,
+          "name": "|MarioSt_CameraRoad|C_mae",
+          "row_count": 6
+        },
+        {
+          "record_index": 1,
+          "record_offset": 464,
+          "name": "|MarioSt_CameraRoad|C_oku",
+          "row_count": 6
+        },
+        {
+          "record_index": 8,
+          "record_offset": 1752,
+          "name": "|MarioSt_CameraRoad|C_ie_02_f2_",
+          "row_count": 6
+        },
+        {
+          "record_index": 9,
+          "record_offset": 1936,
+          "name": "|MarioSt_CameraRoad|C_mae_02",
+          "row_count": 6
+        }
+      ]
+    },
+    {
+      "path": "m/gor_02/c",
+      "size": 11316,
+      "sha256": "ccf70290b06daa8d965b03e3796df9cf846c8f88c71651ac61aa3831f7aae41f",
+      "eligible": [
+        {
+          "record_index": 0,
+          "record_offset": 280,
+          "name": "|MarioSt_CameraRoad|C_ground_ma",
+          "row_count": 6
+        },
+        {
+          "record_index": 1,
+          "record_offset": 464,
+          "name": "|MarioSt_CameraRoad|C_ground_ok",
+          "row_count": 6
+        },
+        {
+          "record_index": 2,
+          "record_offset": 648,
+          "name": "|MarioSt_CameraRoad|C_ue",
+          "row_count": 6
+        },
+        {
+          "record_index": 3,
+          "record_offset": 832,
+          "name": "|MarioSt_CameraRoad|C_ie06",
+          "row_count": 6
+        },
+        {
+          "record_index": 8,
+          "record_offset": 1752,
+          "name": "|MarioSt_CameraRoad|C_ie05",
+          "row_count": 6
+        },
+        {
+          "record_index": 9,
+          "record_offset": 1936,
+          "name": "|MarioSt_CameraRoad|C_ground_ok",
+          "row_count": 6
+        },
+        {
+          "record_index": 12,
+          "record_offset": 2488,
+          "name": "|MarioSt_CameraRoad|C_ground_mi",
+          "row_count": 6
+        },
+        {
+          "record_index": 13,
+          "record_offset": 2672,
+          "name": "|MarioSt_CameraRoad|C_ground_ma",
+          "row_count": 6
+        }
+      ]
+    },
+    {
+      "path": "m/gor_03/c",
+      "size": 11392,
+      "sha256": "a0b2e3a1faa40d87f67d49bdd6917722b20aa480f969b3a42203b366060977af",
+      "eligible": [
+        {
+          "record_index": 0,
+          "record_offset": 280,
+          "name": "|MarioSt_CameraRoad|C_ground_ok",
+          "row_count": 6
+        },
+        {
+          "record_index": 12,
+          "record_offset": 2488,
+          "name": "|MarioSt_CameraRoad|C_san_rozi",
+          "row_count": 6
+        },
+        {
+          "record_index": 13,
+          "record_offset": 2672,
+          "name": "|MarioSt_CameraRoad|C_ground_ma",
+          "row_count": 6
+        }
+      ]
+    },
+    {
+      "path": "m/gor_04/c",
+      "size": 1304,
+      "sha256": "9c6e9cfde7fd0986d25604dcb8eccef220f34bb431cbe21fd349f1d2b01a9c8b",
+      "eligible": [
+        {
+          "record_index": 0,
+          "record_offset": 280,
+          "name": "|MarioSt_CameraRoad|C_mae",
+          "row_count": 6
+        },
+        {
+          "record_index": 1,
+          "record_offset": 464,
+          "name": "|MarioSt_CameraRoad|C_hai",
+          "row_count": 6
+        }
+      ]
+    }
+  ]
+}
