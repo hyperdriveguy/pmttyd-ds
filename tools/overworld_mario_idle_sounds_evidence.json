@@ -1,0 +1,689 @@
+{
+  "schema": 1,
+  "scope": "Original idle sound requests/retained handles and bounded MusyX cue dependencies, no macro playback or alias repair",
+  "dol_spans": [
+    {
+      "name": "mot_stay",
+      "address": 2148166736,
+      "size": 1952,
+      "sha256": "069e5535b3ccbcfd7ab9decef8927617d6f87731f7fdeb862ef7db9960322d04"
+    },
+    {
+      "name": "mot_stay_post",
+      "address": 2148166416,
+      "size": 172,
+      "sha256": "045f375d0d3f44bb67ed8d1b0e36f43a7e5d4d90a7a3fdc15e1477764c3b4376"
+    },
+    {
+      "name": "psndSFXOn_3D",
+      "address": 2148374600,
+      "size": 60,
+      "sha256": "29fdab1a516235c9bfbb11635067a2f53e115e54d41985990fbd5e09b6d1e971"
+    },
+    {
+      "name": "__psndSFXOn",
+      "address": 2148374836,
+      "size": 1344,
+      "sha256": "3a3a312954b07a93a0468dd3edfc5f1d2110d9b92e36a8aff2a9d46caec22e71"
+    },
+    {
+      "name": "psndSFXOff",
+      "address": 2148374008,
+      "size": 200,
+      "sha256": "98f5ff0126a346b87beb80bd7782bf707447ae48e4c1a0ef3663b018bed69300"
+    },
+    {
+      "name": "psndSFXMain",
+      "address": 2148376180,
+      "size": 2964,
+      "sha256": "0fae0aede024942248bde9a4adba0d21c6844dc9ac2e472cd0e4946112e6ccfa"
+    },
+    {
+      "name": "SoundEfxPlayEx",
+      "address": 2148404384,
+      "size": 756,
+      "sha256": "5c2c398630ca8fe6aed4825fb49c63746b7fc39bcd23c9176fe1f45aa6c6ef62"
+    },
+    {
+      "name": "SoundEfxStop",
+      "address": 2148404280,
+      "size": 104,
+      "sha256": "9cd9a0da99b4a24c9f88c6c0f7fa7d3bf83e967fe2595ca7afc40edce481eb8e"
+    },
+    {
+      "name": "macHandleActive",
+      "address": 2150115616,
+      "size": 3988,
+      "sha256": "a6e756fbbfec0844f2b838477c3f9ef76bca03b795a07903449474fe3c4603df"
+    },
+    {
+      "name": "mcmdStartSample",
+      "address": 2150104196,
+      "size": 512,
+      "sha256": "b0f15d330a9a07ca9c3b91f7e14c0fe3c3dd445529cfa0f7e8d9cec6e3da4eb0"
+    },
+    {
+      "name": "mcmdWait",
+      "address": 2150102284,
+      "size": 752,
+      "sha256": "05eb40e6b4450c70a054259d0b24f492fc9b012abfe127d4e86b305847da32ac"
+    },
+    {
+      "name": "psndInit",
+      "address": 2148386016,
+      "size": 368,
+      "sha256": "3e0abb3a40bb3770ab7ad17952694b9d29c945ff9219102ebe5d53fdbe1e0483"
+    },
+    {
+      "name": "SoundSLibLoadDVD",
+      "address": 2148407800,
+      "size": 912,
+      "sha256": "1f82c75a62357c95a2f0655f7a70f435f5364c079d57bb316085a513a080637f"
+    },
+    {
+      "name": "macro opcode dispatch0",
+      "address": 2151398552,
+      "size": 4,
+      "sha256": "7be3c96cb2981ff8282267b2ea281a8ba74ecda86f32b4528a482e47f13d4706"
+    },
+    {
+      "name": "macro opcode dispatch7",
+      "address": 2151398580,
+      "size": 4,
+      "sha256": "25f2414ce535546f96bf655d0ca77043cf337e23ff0c6dbb0b1fc5a49950ffff"
+    },
+    {
+      "name": "macro opcode dispatch16",
+      "address": 2151398616,
+      "size": 4,
+      "sha256": "03b397b4f181f13bf2a59a13a840a13c3506efccf6225db8d5001a8ccb6162ee"
+    },
+    {
+      "name": "macro opcode dispatch17",
+      "address": 2151398620,
+      "size": 4,
+      "sha256": "09156780df301f7af55d503bbc649bf83aee1d0b50b62dd0b1da52b9ee3cc67f"
+    },
+    {
+      "name": "macro opcode dispatch25",
+      "address": 2151398652,
+      "size": 4,
+      "sha256": "cfe29bc2b6fe2181531ddea1ba93cdd8c8b8684a1e065e5431526841caf0e97d"
+    },
+    {
+      "name": "macro opcode dispatch49",
+      "address": 2151398748,
+      "size": 4,
+      "sha256": "4827f32910bae490ceb27ce5b83db8c3114836735881491bfc0dbd0cac2de8c0"
+    },
+    {
+      "name": "macro opcode dispatch51",
+      "address": 2151398756,
+      "size": 4,
+      "sha256": "49b2c50404d0ffe21a16c6dad9d48a1586f5d30f0243b42696e98b98d09ab078"
+    },
+    {
+      "name": "macro opcode dispatch56",
+      "address": 2151398776,
+      "size": 4,
+      "sha256": "71438808f47555e0c46b0fd74bc001f8eb236417ef43b82b2fdf78df92711b32"
+    },
+    {
+      "name": "opcode51 voice bytes",
+      "address": 2150118612,
+      "size": 24,
+      "sha256": "8f6d990581d7b9666b2d739a4adcb4f2fdd547e764cf78d6d14ca6e2c64b1b98"
+    },
+    {
+      "name": "opcode56 voice age calculation",
+      "address": 2150118760,
+      "size": 44,
+      "sha256": "d9efbf40dffd96e13596e44d61008e16e0ca6231e80321ca6cc117bb45c4f507"
+    },
+    {
+      "name": "opcode17 hardware break",
+      "address": 2150117040,
+      "size": 16,
+      "sha256": "9e54cb1add3896ead0555d9617f50b719077de2bfc0a16d3709755c74213d144"
+    },
+    {
+      "name": "idle cue table row225",
+      "address": 2150726844,
+      "size": 20,
+      "sha256": "ce094715675f63aac26dd05751fa6fe5ab36bef3a9b3f9fbebca2edd6db33f60"
+    },
+    {
+      "name": "idle cue table row226",
+      "address": 2150726864,
+      "size": 20,
+      "sha256": "d352c851bf0000ed1c0b2c3fdda0a210ad2c7ce130cbe43a0ba3481b2e1f862d"
+    },
+    {
+      "name": "idle cue table row228",
+      "address": 2150726904,
+      "size": 20,
+      "sha256": "c9b075cd2a86f4759704b86959dd0fddbcc6500c5cecf102f264c5b08fb65b3a"
+    },
+    {
+      "name": "idle cue table row239",
+      "address": 2150727124,
+      "size": 20,
+      "sha256": "ae549dc985167d0811ca584d36c9e724d76d035e530810aa17c5059e0469cea2"
+    },
+    {
+      "name": "idle cue table row371",
+      "address": 2150729764,
+      "size": 20,
+      "sha256": "983c42636455b2aab9be985e0c7b1127b5d178e12cb8e950f1cb79a2d130019f"
+    }
+  ],
+  "dol_anchors": {
+    "2148167136": "38629bd4",
+    "2148167140": "4bfb1fa1",
+    "2148167144": "389f008c",
+    "2148167148": "38600173",
+    "2148167152": "48032a59",
+    "2148167712": "a81d0058",
+    "2148167716": "2c000000",
+    "2148167720": "40820014",
+    "2148167724": "389d008c",
+    "2148167728": "386000e1",
+    "2148167732": "48032815",
+    "2148167736": "907d027c",
+    "2148167740": "806d90b0",
+    "2148167744": "a89d0058",
+    "2148167748": "80030004",
+    "2148167752": "5400083c",
+    "2148167756": "7c040000",
+    "2148167760": "40820014",
+    "2148167764": "389d008c",
+    "2148167768": "386000e2",
+    "2148167772": "480327ed",
+    "2148167776": "907d027c",
+    "2148168324": "38629bf4",
+    "2148168328": "4bfb1e9d",
+    "2148168332": "4bfef371",
+    "2148168336": "4bfb6e31",
+    "2148168340": "7c7e1b78",
+    "2148168344": "386000ef",
+    "2148168348": "389e008c",
+    "2148168352": "480325a9",
+    "2148168356": "907e027c",
+    "2148168360": "38600032",
+    "2148168364": "38000002",
+    "2148168368": "907f0048",
+    "2148168372": "901f0044",
+    "2148168472": "4bfb6da9",
+    "2148168476": "7c7e1b78",
+    "2148168480": "386000e4",
+    "2148168484": "389e008c",
+    "2148168488": "48032521",
+    "2148168492": "907e027c",
+    "2148168496": "480000a4",
+    "2148168572": "38000000",
+    "2148168576": "901f0048",
+    "2148168580": "4bfb6d3d",
+    "2148168584": "7c7e1b78",
+    "2148168588": "386000e4",
+    "2148168592": "389e008c",
+    "2148168596": "480324b5",
+    "2148168600": "907e027c",
+    "2148166436": "a003002e",
+    "2148166440": "28000013",
+    "2148166444": "41820058",
+    "2148166448": "28000014",
+    "2148166452": "41820050",
+    "2148166456": "4bfb7589",
+    "2148166460": "7c7f1b78",
+    "2148166464": "8063027c",
+    "2148166468": "3c030001",
+    "2148166472": "2800ffff",
+    "2148166476": "41820010",
+    "2148166480": "48032aa9",
+    "2148166484": "3800ffff",
+    "2148166488": "901f027c",
+    "2148166492": "4bfb7565",
+    "2148166496": "7c7f1b78",
+    "2148166500": "80630280",
+    "2148166504": "3c030001",
+    "2148166508": "2800ffff",
+    "2148166512": "41820038",
+    "2148166516": "48032a85",
+    "2148166520": "3800ffff",
+    "2148166524": "901f0280",
+    "2148166528": "48000028",
+    "2148166532": "4bfb753d",
+    "2148166536": "7c7f1b78",
+    "2148166540": "8063027c",
+    "2148166544": "3c030001",
+    "2148166548": "2800ffff",
+    "2148166552": "41820010",
+    "2148166556": "48032a5d",
+    "2148166560": "3800ffff",
+    "2148166564": "901f027c",
+    "2148374600": "9421fff0",
+    "2148374604": "7c0802a6",
+    "2148374608": "7c872378",
+    "2148374612": "388000ff",
+    "2148374616": "90010014",
+    "2148374620": "38a000ff",
+    "2148374624": "38c00000",
+    "2148374628": "39000000",
+    "2148374632": "39200010",
+    "2148374636": "39400000",
+    "2148374640": "480000c5",
+    "2148376128": "a0640050",
+    "2148376132": "38030001",
+    "2148376136": "b0040050",
+    "2148376140": "b01d0004",
+    "2148376144": "a0040050",
+    "2148376148": "5400402e",
+    "2148376152": "7f7b0378",
+    "2148376156": "7f63db78"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "assets": [
+    {
+      "path": "sound/proj/pmario.proj",
+      "size": 28080,
+      "sha256": "f00a06f50bd9da5769f07fa751c2e4ae3731f3e0850236d62cd901c7f8eccdeb"
+    },
+    {
+      "path": "sound/proj/pmario.pool",
+      "size": 113992,
+      "sha256": "d0b12b497cee5718a5433285bdec8fcfe9b2dd25b1c1c0daa77ddb804cb7d1a0"
+    },
+    {
+      "path": "sound/proj/pmario.sdir",
+      "size": 89788,
+      "sha256": "9529535398c5f7a839dd18f00c8e831957b26b5aab6a7bf83e5ee6acb5cb8496"
+    },
+    {
+      "path": "sound/proj/pmario.samp",
+      "size": 11256080,
+      "sha256": "062f7542e2f13f867ee30a447904b2b8af0ae8e4334ca39b7e1f4286d90833ea"
+    },
+    {
+      "path": "sound/proj/pmario.etbl",
+      "size": 44064,
+      "sha256": "08263e1abd668bc636df6fce07f9e656469a021bb222920d4c56ce0b85054ec8"
+    },
+    {
+      "path": "sound/proj/pmario.slib",
+      "size": 282148,
+      "sha256": "8a7208d87acbe027f48dfbd0861c922531d8e3502b0b6026aa08130560bcc40a"
+    }
+  ],
+  "cues": [
+    {
+      "platform": "gamecube",
+      "table": "sfx",
+      "table_index": 225,
+      "address": 2150726844,
+      "name": "SFX_VOICE_MARIO_RELIEF1",
+      "flags": 536871617,
+      "fx_id": 705,
+      "stream_alias": "",
+      "category": "field-character",
+      "parameters": [
+        77,
+        64,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+      "group_bindings": [
+        {
+          "group_id": 5,
+          "object_id": 831,
+          "priority": 1,
+          "voices": 10,
+          "velocity": 127,
+          "pan": 64,
+          "key": 60,
+          "macro": {
+            "sample_ids": [
+              635
+            ],
+            "offset": 61016,
+            "size": 64,
+            "opcodes": [
+              56,
+              51,
+              16,
+              7,
+              17,
+              49,
+              0
+            ]
+          },
+          "commands": [
+            "0000003800107ac0",
+            "0018183300000000",
+            "00027b1000000000",
+            "01000107ffff0000",
+            "0000001100000000",
+            "0000003100000000",
+            "0000000000000000"
+          ],
+          "sample_records": [
+            {
+              "id": 635,
+              "offset": 7567136,
+              "rate": 22050,
+              "samples": 19838,
+              "loop": [
+                0,
+                0
+              ],
+              "record": 20320,
+              "coefficients": 65308
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "gamecube",
+      "table": "sfx",
+      "table_index": 226,
+      "address": 2150726864,
+      "name": "SFX_VOICE_MARIO_RELIEF2",
+      "flags": 536871618,
+      "fx_id": 706,
+      "stream_alias": "",
+      "category": "field-character",
+      "parameters": [
+        82,
+        64,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+      "group_bindings": [
+        {
+          "group_id": 5,
+          "object_id": 832,
+          "priority": 1,
+          "voices": 10,
+          "velocity": 127,
+          "pan": 64,
+          "key": 60,
+          "macro": {
+            "sample_ids": [
+              636
+            ],
+            "offset": 61080,
+            "size": 64,
+            "opcodes": [
+              56,
+              51,
+              16,
+              7,
+              17,
+              49,
+              0
+            ]
+          },
+          "commands": [
+            "0000003800107ac0",
+            "0018183300000000",
+            "00027c1000000000",
+            "01000107ffff0000",
+            "0000001100000000",
+            "0000003100000000",
+            "0000000000000000"
+          ],
+          "sample_records": [
+            {
+              "id": 636,
+              "offset": 7578496,
+              "rate": 22050,
+              "samples": 25923,
+              "loop": [
+                0,
+                0
+              ],
+              "record": 20352,
+              "coefficients": 65348
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "gamecube",
+      "table": "sfx",
+      "table_index": 228,
+      "address": 2150726904,
+      "name": "SFX_VOICE_MARIO_SLEEP1",
+      "flags": 536871619,
+      "fx_id": 707,
+      "stream_alias": "",
+      "category": "field-character",
+      "parameters": [
+        69,
+        64,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+      "group_bindings": [
+        {
+          "group_id": 5,
+          "object_id": 833,
+          "priority": 1,
+          "voices": 10,
+          "velocity": 127,
+          "pan": 64,
+          "key": 60,
+          "macro": {
+            "sample_ids": [
+              637
+            ],
+            "offset": 61144,
+            "size": 64,
+            "opcodes": [
+              56,
+              51,
+              16,
+              7,
+              17,
+              49,
+              0
+            ]
+          },
+          "commands": [
+            "0000003800107ac0",
+            "0018183300000000",
+            "00027d1000000000",
+            "01000107ffff0000",
+            "0000001100000000",
+            "0000003100000000",
+            "0000000000000000"
+          ],
+          "sample_records": [
+            {
+              "id": 637,
+              "offset": 7593312,
+              "rate": 22050,
+              "samples": 21095,
+              "loop": [
+                0,
+                0
+              ],
+              "record": 20384,
+              "coefficients": 65388
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "gamecube",
+      "table": "sfx",
+      "table_index": 239,
+      "address": 2150727124,
+      "name": "SFX_VOICE_MARIO_YAWN1",
+      "flags": 536871627,
+      "fx_id": 715,
+      "stream_alias": "",
+      "category": "field-character",
+      "parameters": [
+        87,
+        64,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+      "group_bindings": [
+        {
+          "group_id": 5,
+          "object_id": 841,
+          "priority": 1,
+          "voices": 10,
+          "velocity": 127,
+          "pan": 64,
+          "key": 60,
+          "macro": {
+            "sample_ids": [
+              645
+            ],
+            "offset": 61656,
+            "size": 64,
+            "opcodes": [
+              56,
+              51,
+              16,
+              7,
+              17,
+              49,
+              0
+            ]
+          },
+          "commands": [
+            "0000003800107ac0",
+            "0018183300000000",
+            "0002851000000000",
+            "01000107ffff0000",
+            "0000001100000000",
+            "0000003100000000",
+            "0000000000000000"
+          ],
+          "sample_records": [
+            {
+              "id": 645,
+              "offset": 7663776,
+              "rate": 22050,
+              "samples": 33485,
+              "loop": [
+                0,
+                0
+              ],
+              "record": 20640,
+              "coefficients": 65708
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "gamecube",
+      "table": "sfx",
+      "table_index": 371,
+      "address": 2150729764,
+      "name": "SFX_MARIO_FURAFURA1",
+      "flags": 536870912,
+      "fx_id": 0,
+      "stream_alias": "SE4_FLD_M_FURAFURA1",
+      "category": "field-character",
+      "parameters": [
+        0,
+        64,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+      "group_bindings": [
+        {
+          "group_id": 0,
+          "object_id": 62,
+          "priority": 255,
+          "voices": 10,
+          "velocity": 127,
+          "pan": 64,
+          "key": 60,
+          "macro": {
+            "sample_ids": [
+              56
+            ],
+            "offset": 16,
+            "size": 56,
+            "opcodes": [
+              56,
+              25,
+              16,
+              7,
+              49,
+              0
+            ]
+          },
+          "commands": [
+            "0000003800107ac0",
+            "00003c1900000100",
+            "0000381000000000",
+            "01000007ffff0000",
+            "0000003100000000",
+            "0000000000000000"
+          ],
+          "sample_records": [
+            {
+              "id": 56,
+              "offset": 829120,
+              "rate": 22050,
+              "samples": 1344,
+              "loop": [
+                0,
+                0
+              ],
+              "record": 1792,
+              "coefficients": 42148
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "opcode_dispatch": {
+    "0": 2150116360,
+    "7": 2150116632,
+    "16": 2150117024,
+    "17": 2150117040,
+    "25": 2150117228,
+    "49": 2150118548,
+    "51": 2150118612,
+    "56": 2150118760
+  }
+}
