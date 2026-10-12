@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'decimal_to_binary_special_values': {
+        0x80265810: '88030004', 0x80265824: '40820028',
+        0x80265844: '4800c63d', 0x80265850: '2c000049',
+        0x80265860: '41820014', 0x8026586c: '41820054',
+        0x80265890: '4800c5f1', 0x802658b8: '4800c5c9',
+        0x802658c8: '3c807ff0', 0x802658e4: '7c800378',
+        0x802658f0: '28000001', 0x80265900: '7c600378',
+        0x8026590c: '2c00000e', 0x80265924: '38c0000e',
+        0x80265948: '7cc300ae', 0x80265950: '540006f7',
+        0x80265978: '7c8430ae', 0x80265980: '5404063e',
+        0x8026598c: '39000001', 0x802659a0: '98070000',
+        0x802659b0: '98070000', 0x802659bc: '5400d97e',
+        0x802659d8: '7c600378', 0x802659e0: 'c8210038',
+    },
     'scan_float_hexadecimal': {
         0x8026e010: '3b200002', 0x8026e038: '9801001f',
         0x8026e07c: '3be00004', 0x8026e094: '540006b5',
@@ -1326,6 +1340,12 @@ def verify(iso_path):
         if [i for i, value in enumerate(scan_ctype) if value & 0x20] != list(range(48, 58))+list(range(65, 71))+list(range(97, 103)):
             raise ValueError('Float scan hexadecimal digit set mismatch')
         print('All twenty-two hexadecimal scan digit codes verified')
+        if read(0x80428bc8, 24) != struct.pack('>3d', 0.0, 1.0, -1.0):
+            raise ValueError('Decimal conversion sign constants mismatch')
+        if hashlib.sha256(read(0x803bb408, 256)).hexdigest() != '00c700f38385659ba060672f86d4a9a5376eadf9ed1cabb1c63290a0fdefe36a':
+            raise ValueError('Decimal conversion lowercase table mismatch')
+        print('Decimal conversion zero/sign constants and complete lowercase table verified')
+
 
 
 

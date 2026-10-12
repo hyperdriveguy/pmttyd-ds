@@ -3965,3 +3965,30 @@ field/battle/audio/save/content systems before complete-game requirements.
 Full objective active/incomplete; local __strtold recovery is not executable
 numeric/layout or full-game equivalence. Original IDs/tokens and story
 attribution/order/branches/event conditions remain required reused data.
+
+## 2026-10-12 — US decimal-to-binary entry and special records
+
+Inspected __dec2num0x80265804,size1080 entry through802659e8. Added detailed
+DECIMAL_TO_BINARY_SPECIAL_VALUES.md: count/first-byte precedence,nonzero-sign
+selection and copysign zero/infinity, N seed/sign,count1 quiet bit,13-byte
+payload cap, unchecked digit/lowercase conversion,parity packing,all-zero quiet
+bit and direct binary64 reload. Recorded malformed NG can construct infinity
+bits despite decoded nonzero payload. Whole-function identity is explicitly
+not finite conversion recovery;finite copying/approximation/refinement remains
+open. No original execution/NaN-FPSCR observation occurred.
+
+Validation:1236 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO; three sign/zero doubles and full256-byte lowercase hash
+added. Fresh285-function reports reproduced byte-for-byte. All467 local behavior
+links resolved; git diff --check passed. make test passed core plus36 Python
+tests; make all exited0 with no rebuild. No original execution/emulator,
+profile/save modification,native code,asset conversion or story/message rewrite.
+ELF/disassembly/reports remain ignored;working tree was clean at turn start.
+
+Next: finite __dec2num copy/digit preparation,approximation/comparison/refinement/
+rounding and boundary/sign exits;executed record/scanner/count/status/FPSCR corpus
+and actual icon inputs. Continue drawing/string layout,resource/cadence callers
+and uncovered story/event/field/battle/audio/save/content before complete-game
+requirements. Full objective active/incomplete;no complete numeric/layout or
+full-game fidelity claim. Original data,IDs/tokens and story attribution/order/
+branches/event conditions remain mandatory.
