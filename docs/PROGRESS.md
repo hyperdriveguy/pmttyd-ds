@@ -1,5 +1,37 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Combined complete local event interpreter service path
+
+Added `event_interpreter.cpp` to route every recovered0..118 opcode through the
+actual operand,lifecycle,loop,IF,SWITCH,data,memory and tail implementations.
+Manager integration retains original priority/live eligibility/credit dispatch;
+script/memory/function/clock/numeric/formatter owners remain explicit. MOD's
+fctiwz and division's divw adapters retain distinct users. No unsupported handler
+success,blanket yield or host-pointer reinterpretation replaces a recovered body.
+
+Validation: final `make test` passed40/40 CTest suites and64 Python tests; final
+`make all` passed. Logs:/tmp/pm-event-interpreter-test-final.log and
+/tmp/pm-event-interpreter-build-final.log. A multi-pass integration stream uses
+real namespaces,variable loop,IF/SWITCH,division/MOD/float arithmetic,raw data,
+map allocation/user words,joined child first-call polling/saved writes/flag copy-
+back,slot yield,debug request,USER_FUNC and deletion. Separate fixtures verify
+fractional-credit live WAIT_WHILE and independent root93 next-pass scheduling.
+The higher-priority child resumes the parent in the same rebuilt pass;an initial
+fixture assumption was corrected without changing the manager. A transient test
+launch collided with a concurrent linker;the final complete rerun passed.
+
+These are authored integration fixtures,not extracted original gameplay streams.
+Native context/bootstrap/packed memory ownership,FPSCR/formatter/platform services,
+original Jump callback registration/entry ownership and runtime traces remain
+open. Next:bind delivered context/time/bootstrap contracts,extract/import the
+original Jump stream and its required callback/source graph. Specific source
+binding request left in EVT-01 for the documentation agent. No emulator run for
+unbound services. The remake goal remains active/incomplete.
+
+Tail commit2ee549e also captured concurrently staged documentation-session
+partner-floor evidence;no native field source was included in that commit.
+Subsequent commits check staged path scope before committing.
+
 ## 2026-10-12 — Remaining event tail routes and diagnostic call preparation
 
 Implemented `event_tail_opcodes.cpp` for runtime1/3/11/113..118 and the complete

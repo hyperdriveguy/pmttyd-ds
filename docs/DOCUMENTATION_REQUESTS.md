@@ -463,6 +463,21 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Combined-interpreter breadcrumb and source-binding request (2026-10-12):
+`event_interpreter.cpp` now routes all recovered local0..118 bodies through
+actual namespaces/lifecycle/manager services. Integration tests preserve live
+child→parent resumption,first-call polling,independent-root append policy and
+fractional credits. Final make test passes40 suites/64 Python tests;make all
+passes. Fixtures are authored,not original Jump execution.
+
+Documentation agent:please pin remaining NormalJump entry/root registration
+and owner/priority/type/context/ID/speed writer paths needed to bind80355cf0,
+plus callback address/caller census for the stream's required native service
+registry. Existing local graph/helper contracts do not establish these source
+owners. Cite existing delivered contracts if they already cover any requested
+path. Native packed memory/numeric/formatter/heap/time/platform sources and
+original traces stay open;delivered init/time contracts are next port work.
+
 Tail-opcode breadcrumb (2026-10-12): `event_tail_opcodes.cpp` covers1/3/11 and
 113..118,evtGetPtr semantic array domain,and full debug classifier/call arguments.
 Original sprintf/string sink remains an explicit formatter service. Tests pin
