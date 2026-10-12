@@ -12,6 +12,25 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'hit_precheck': {
+        0x800fbb28: '60000008', 0x800fbbdc: '57c002d7',
+        0x800fbc08: '2c03005a', 0x800fbc3c: '2c03004b',
+        0x800fbc84: '2c030043', 0x800fbce4: '2c030032',
+        0x800fbd14: '7f6303d6', 0x800fbd60: '4bf0a041',
+    },
+    'hp_damage': {
+        0x800fd7fc: '633f001e', 0x800fd858: '5720039d',
+        0x800fd91c: '1c630005', 0x800fd9a8: '60000008',
+        0x800fdd34: '38040001', 0x800fdd68: '7c6023d6',
+        0x800fddc8: '1c63ffff', 0x800fddcc: '60002000',
+    },
+    'fp_damage': {
+        0x800fd6b0: '540004a5', 0x800fd710: '4082000c',
+        0x800fd748: '7c9e2051', 0x800fd770: '60000017',
+    },
+    'defence_event': {
+        0x801076ec: '4bff2acd', 0x801076f4: '38600002',
+    },
     'defence': {
         0x800fa200: '88a30306', 0x800fa204: '88030305',
         0x800fa208: '39650003', 0x800fa210: '7d605851',
@@ -88,6 +107,9 @@ def verify(iso_path):
             if list(read(address, 7)) != expected:
                 raise ValueError(f'Defence table mismatch at {address:#x}')
         print('Both seven-entry defence window tables verified')
+        if read(0x804221c4, 4) != bytes.fromhex('3f000000'):
+            raise ValueError('Accuracy multiplier is not binary32 0.5')
+        print('Conditional accuracy multiplier verified: 0.5')
 
 
 if __name__ == '__main__':

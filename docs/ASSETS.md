@@ -25,9 +25,12 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 51 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 56 instruction anchors plus those
-tables directly in the read-only ISO. No full original routines, source extracts,
+now fingerprints 55 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 78 instruction anchors plus those
+tables and the binary32 accuracy multiplier directly in the read-only ISO.
+Hit-precheck and damage-calculator research adds prose contracts and metadata;
+no executable conversion or third-party implementation is incorporated.
+No full original routines, source extracts,
 dialogue or assets were added to history. The detailed behavior documents explain
 the scope and do not claim the original binary has been executed or recompiled.
 

@@ -13,6 +13,8 @@ This collection is in progress as of 2026-10-12.
 | [Original baseline](../ORIGINAL_BEHAVIOR.md) | Disc/DOL identity, evidence rules, subsystem order, basic waits/callback continuations, initial complete-game scope | Most systems beyond the initial recovered contracts |
 | [Event runtime](EVENT_RUNTIME.md) | Priority/tie order, child/brother relationships, deletion/copy-back, selected stop behavior | Every opcode/variable type, service callbacks, restart/pause lifecycle |
 | [Battle input and defense](BATTLE_INPUT_AND_DEFENCE.md) | Original history buffers, virtual directions/repeat, complete local guard decision routine and tables | Caller gates, impact sampling, attacks, full damage/status/turn rules |
+| [Hit precheck](BATTLE_HIT_PRECHECK.md) | Ordered eligibility, per-copy evasion draws, accuracy reductions and return codes | Caller reactions, status lifetimes, stage-effect producer |
+| [Damage calculation](BATTLE_DAMAGE_CALCULATION.md) | Ordered HP/FP callback gates, badge/status/defense arithmetic, result codes and absorption | Weapon callbacks, counters, application, death/revival and turn lifecycle |
 | [State and inventory](STATE_AND_INVENTORY.md) | Saved-work sizes/accessors, resource setters, capacity and generic item insertion | Full progression, equipment, special items and original save records |
 | [Randomness](RANDOMNESS.md) | rand recurrence and irand draw consumption | Seeding, randf, consumer call order and persistence |
 | [Mechanics ledger](../MECHANICS.md) | Existing US ordinary field movement/collision/recovery/road evidence | Full physics, partners, dynamic events, matched original gameplay |
@@ -95,7 +97,7 @@ runtime semantics, resource lifetime and event bindings still require recovery.
 | Field movement/forms | Partial | Every motion/form, slopes/walls/ceilings, hazards, collision flags, interactions and moving geometry |
 | Partners/NPCs | Not recovered | Following/path/AI rules, field abilities, scripts, recruitment/upgrades and partner-specific collision |
 | Maps/transitions | Partial | All entrance types, dynamic objects, loading/REL lifetime, story gates, interior and scripted travel |
-| Combat/turn engine | Partial defense only | Unit/part/weapon semantics, target/turn ordering, every attack, status and damage modifier, loss/escape/win |
+| Combat/turn engine | Partial defense, precheck and HP/FP calculators | Unit/part/weapon lifecycle, target/turn ordering, callbacks, counters, status application, loss/escape/win |
 | Action commands | Partial input/defense | Every attack/special/stylish command's timing, difficulty, input state, scoring and effects |
 | Audience/stage/rewards | Not recovered | Audience AI, hazards, bingo/SP, XP/drop/progression formulas and conditions |
 | Inventory/equipment/economy | Partial | All acquire/remove/sort/use/equip paths, shops/crafting/storage, mail and collectible effects |

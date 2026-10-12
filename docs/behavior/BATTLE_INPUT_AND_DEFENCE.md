@@ -20,6 +20,24 @@ and [pad source](https://github.com/doldecomp/ttyd/blob/62131fc31866f85a12e4817a
 are discovery aids. Evidence artifacts are ignored
 `artifacts/reference/behavior/<function>.disasm` and `.elf`.
 
+## Confirmed event entry (B)
+
+`btlevtcmd_ResultACDefence`, US `0x80107694`, length `0x74`, reads two event
+arguments. It resolves argument 0 with `evtGetValue`, translates it through
+`BattleTransID`, and gets the unit pointer with `BattleGetUnitPtr`. It resolves
+argument 1 with `evtGetValue` and passes that value as the checker's second
+argument. The direct call at `0x801076ec` invokes
+`BattleActionCommandCheckDefence(unit, resolved_arg1)`. The wrapper discards
+the checker's register return and returns event completion code 2. Consumers
+can use the stored defense result; the wrapper does not assign it to an event
+output operand.
+
+This establishes a script-invoked entry, not every attack's impact sampling
+time. The original event streams and other call sites still need tracing.
+See [damage calculation](BATTLE_DAMAGE_CALCULATION.md) for the arithmetic
+effect of the guard flag once the caller supplies it; do not infer that calling
+the checker by itself subtracts damage or resolves an attack.
+
 ## Input state layout and update (B)
 
 `BtlPad_WorkUpdate`, `0x8011a0ac`, consumes one channel's global input snapshot.

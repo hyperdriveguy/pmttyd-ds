@@ -23,6 +23,8 @@ FUNCTIONS = (
     'BattleActionCommandResetDefenceResult', 'BattleACPadCheckRecordTrigger',
     'BtlPad_WorkInit', 'BtlPad_WorkUpdate', 'BattleActionCommandManager',
     'BattleActionCommandSetup', 'BattleCheckDamage', 'BattleDamageDirect',
+    'BattlePreCheckDamage', 'BattleCalculateDamage', 'BattleCalculateFpDamage',
+    'btlevtcmd_ResultACDefence',
     'swByteGet', 'swByteSet', '_swByteGet', '_swByteSet', 'swGet', 'swSet',
     'swClear', 'swReInit', 'swInit', 'pouchSetHP', 'pouchAddHP', 'pouchSetFP',
     'pouchSetMaxHP', 'pouchSetMaxFP', 'pouchSetPartyHP', 'pouchSetAP',
