@@ -13,6 +13,14 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'default_action_services': {
+        0x8005617c: '93bc00c8', 0x80056190: '907c00d8',
+        0x800560c8: 'fc00081e', 0x800560f8: '901f00a0',
+        0x80056108: '901f00d4', 0x801129cc: '4bf1e895',
+        0x80128338: 'd0230054', 0x80006e10: '4826b099',
+        0x80006e28: 'ec230072', 0x8012538c: '60000080',
+        0x8012c108: 'ec01007a', 0x8012c118: 'fc200818',
+    },
     'action_controller': {
         0x8011b2fc: '2800000e', 0x8011b33c: '901d0284',
         0x8011b4e4: '41810690', 0x8011b51c: '5400066e',
@@ -379,6 +387,23 @@ def verify(iso_path):
         if read(0x80422584, 4) != struct.pack('>f', 2.0):
             raise ValueError('Action camera speed threshold mismatch')
         print('Action dispatch table and camera threshold verified')
+        for address, size, digest in (
+            (0x8034e0cc, 0x74, '85b7d373edf4a7d9b00f7fca02f4d963aed838c0defd3ffce3f677406705254a'),
+            (0x8034f234, 0xb0, 'b84c3ee6c5ece89c124e1981b1f044f7f8623d96898ee486235a7b1fa793b4a4'),
+        ):
+            if hashlib.sha256(read(address, size)).hexdigest() != digest:
+                raise ValueError(f'Default action script fingerprint mismatch {address:#x}')
+        for address, value in {0x804226c4: -250000000.0, 0x8041f468: 4.0,
+                               0x8041f46c: 3.141592025756836,
+                               0x8041f470: 15.0, 0x8041f474: 100.0}.items():
+            if read(address, 4) != struct.pack('>f', value):
+                raise ValueError(f'Default action constant mismatch {address:#x}')
+        if struct.unpack('>I', read(0x8030436c, 4))[0] != 0x80006de4:
+            raise ValueError('Interpolation mode8 dispatch mismatch')
+        key = b'btl_msg_cant_move_zero_gravity\0'
+        if read(0x802ee8e0, len(key)) != key:
+            raise ValueError('Zero-gravity message binding mismatch')
+        print('Two default scripts, five floats, mode8 target and message ID verified')
         status_tables = {
             0x80364204: [0x7970, 0x792c, 0x7970, 0x7970, 0x7adc,
                          0x7970, 0x7970, 0x7970, 0x7970, 0x7970,

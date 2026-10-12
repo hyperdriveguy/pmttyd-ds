@@ -2662,3 +2662,29 @@ flag writers, audience/announcement/Break Slot services, outer turn/controller
 cadence, conclusion/rewards and death/revival execution; motion/float/pose
 services. Continue all systems before complete-game requirements. Full objective
 active/incomplete; original/native trace/rendering comparisons required.
+
+## 2026-10-12 — Default Electric/zero-gravity scripts and entry services
+
+Previous turn progressed witha82ddfc action state map. Added
+BATTLE_DEFAULT_ACTION_EVENTS.md: complete local Electric interpolation/display/
+wait script and zero-gravity pose/camera/message/wait sequence, original message
+ID binding, shared interpolation locals/continuation/truncation, mode8 binary32
+operation order/constants, display-offset sentinel and integer wrapper, command
+initialization leaf and camera-speed vector/sqrt caller. Electric's final LW10
+wait target remains distinct from owner.17 samples/yields are derived call counts,
+not measured frames. Other curves and cosine/sqrt library semantics remain open.
+
+Validation:348 instruction anchors, two default-script hashes, five float
+bindings, mode8 dispatch target and original message ID plus previous checks
+passed read-only US ISO. Evidence142 function fingerprints reproduced exactly.
+Behavior links resolve; git diff --check passed. make test passed core plus36
+Python tests; make all exited0, no rebuild. Workspace started clean; only research/
+provenance/tool metadata edited. No original executable/emulator run or profile/
+save changes. Script/code extracts and reports remain ignored; ASSETS.md updated.
+Hashes/static checks do not prove dynamic or visual replacement equivalence.
+
+Next: camera/message callbacks and original US message/control service, full
+CommandInput, display/pose services, interpolation modes and library numeric
+contracts; outer battle/turn cadence, audience/announcement and conclusion/
+reward/death/revival events. Continue all systems before complete-game system
+requirements. Objective active/incomplete; original/native traces still needed.

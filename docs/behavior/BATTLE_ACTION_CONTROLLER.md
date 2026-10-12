@@ -195,3 +195,7 @@ Remaining: command/menu and camera helpers, script and data-key bodies, status-
 window behavior, audience/announcement/Break Slot internals, action-flag writers,
 outer cadence, rewards/conclusion and death/revival execution. The local action
 map is complete; complete battle and full-game behavior remain unfinished.
+
+Electric/zero-gravity scripts and command-init/camera-speed helpers are now
+specified in [default action events](BATTLE_DEFAULT_ACTION_EVENTS.md), with
+remaining service and numerical dependencies explicit.
