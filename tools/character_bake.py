@@ -1,35 +1,22 @@
 #!/usr/bin/env python3
 """Bake original TTYD AnimGroup poses to transparent paper billboards.
-Format/matrix reference: noclip.website AnimGroup.ts (MIT; see third_party).
+Format reference: noclip.website AnimGroup.ts (MIT; see third_party).
+Node branches/traversal: recovered US contracts in docs/behavior/display.
 This preserves original layered geometry/textures, rather than redrawing art.
 """
 from pathlib import Path
-import math
 import struct
 import numpy as np
 from PIL import Image
 from iso_assets import convert_tpl
+from character_node import node_matrix
 
 def u(raw,o):return struct.unpack_from('>I',raw,o)[0]
 def i(raw,o):return struct.unpack_from('>i',raw,o)[0]
 def f(raw,o):return struct.unpack_from('>f',raw,o)[0]
-def trans(v):
-    m=np.eye(4);m[:3,3]=v;return m
-
-def rotate(values):
-    x,y,z=np.deg2rad(values)
-    sx,cx=math.sin(x),math.cos(x);sy,cy=math.sin(y),math.cos(y);sz,cz=math.sin(z),math.cos(z)
-    rx=np.array([[1,0,0,0],[0,cx,-sx,0],[0,sx,cx,0],[0,0,0,1]])
-    ry=np.array([[cy,0,sy,0],[0,1,0,0],[-sy,0,cy,0],[0,0,0,1]])
-    rz=np.array([[cz,-sz,0,0],[sz,cz,0,0],[0,0,1,0],[0,0,0,1]])
-    return rz@ry@rx
-
-def matrix(node,index,parent=-1):
-    v=node[index:index+24]
-    scale=trans(v[15:18]+v[21:24])@np.diag([*v[3:6],1])@trans(-v[15:18])
-    rotation=trans(v[12:15]+v[18:21])@rotate(v[9:12])@rotate(v[6:9]*2)@trans(-v[12:15])
-    if parent>=0:rotation=np.diag([*(1/node[parent+3:parent+6]),1])@rotation
-    return trans(v[:3])@rotation@scale
+def matrix(node,index,parent=-1,joint=False):
+    return node_matrix(node[index:index+24],joint,
+                       node[parent+3:parent+6] if parent>=0 else (1,1,1))
 
 def geometry(model,animation=None,frame=0):
     raw=Path(model).read_bytes()
@@ -58,13 +45,17 @@ def geometry(model,animation=None,frame=0):
                     else:pos[index]+=np.array(struct.unpack_from('>bbb',raw,o+1))/16
     triangles=[]
     groups=u(raw,0x144)
-    def walk(index,parent_matrix,parent_node=-1,depth=0):
+    def walk(index,parent_matrix,parent_group=-1,depth=0):
         if index<0:return
         if depth>100 or index>=groups:raise ValueError('Invalid character graph')
         g=offs['group']+index*88
         sibling,child,shape,visibility,nodeidx,ssc=struct.unpack_from('>iiiIII',raw,g+64)
         if vis[visibility]:
-            m=parent_matrix@matrix(node,nodeidx,parent_node if ssc else -1)
+            parent_node=-1
+            if ssc and parent_group>=0:
+                pg=offs['group']+parent_group*88
+                if u(raw,pg+84):parent_node=u(raw,pg+80)
+            m=parent_matrix@matrix(node,nodeidx,parent_node,bool(ssc))
             if shape>=0:
                 s=offs['shape']+shape*168
                 pfirst,cfirst,tfirst=u(raw,s+64),u(raw,s+80),u(raw,s+88)
@@ -91,8 +82,10 @@ def geometry(model,animation=None,frame=0):
                                 uv=np.array(struct.unpack_from('>ff',raw,offs['tex']+ti*8))
                             verts.append((p[:3],uv))
                         for n in range(1,count-1):triangles.append((tplidx,[verts[0],verts[n],verts[n+1]]))
-            walk(child,m,nodeidx,depth+1)
-        walk(sibling,parent_matrix,parent_node,depth+1)
+            walk(child,m,index,depth+1)
+        # Original sibling call retains the popped world matrix but supplies
+        # CURRENT group as parent for joint scale compensation, even if hidden.
+        walk(sibling,parent_matrix,index,depth+1)
     walk(groups-1,np.eye(4))
     return triangles
 
