@@ -1,5 +1,32 @@
 # Original asset pipeline
 
+## Complete GameCube SFX sample extraction (2026-10-12)
+
+The earlier loop-only conversion is now extended to **all 1,247 samples** from
+`sound/proj/pmario.sdir` and `sound/proj/pmario.samp` in the read-only US
+`/home/carson/games/roms/G8ME01.iso`. `make audio-assets` refreshes all six bank
+resources and converts every indexed sample into ignored
+`local-assets/audio/pcm/samples/pmario-<four-digit-hex-ID>.wav`. The 1,035
+nonlooped samples have no sidecar; the 212 looped samples retain their
+`.wav.loop` intervals. All preserve original sample IDs, mono PCM16 data,
+rates and lengths without resampling, normalization or generated replacements.
+
+Sample WAVs total 39,383,724 bytes. Library schema 2 now records 1,393 outputs
+(146 music tracks + 1,247 bank samples), totaling 930,759,732 WAV bytes.
+Verified all WAV formats/full data lengths/hashes/sidecar bounds, exact coverage
+of every directory ID, and all 152 raw-resource hashes. All 2,057 library files
+are Git-ignored and none is tracked. Unchanged music can be reused only after
+source/decoder fingerprints, WAV metadata, loop sidecars and PCM hash validation;
+corrupt music is reconverted. The complete bank directory and original
+`pool/proj/etbl/slib` resources remain preserved with extraction provenance.
+
+This completes sample extraction/conversion, not MusyX effect rendering:
+macro sequences, envelopes, pitch, layered voices and game event-to-effect
+bindings remain unimplemented. Original copyright/no redistribution rights and
+existing format-reference licensing remain unchanged; no additional third-party
+implementation was copied or linked. Assets remain outside RomFS and source
+history. No original-game listening or hardware audio equivalence is claimed.
+
 ## Ordinary airborne/landing binding (2026-10-12)
 
 Native97fd570 and db71cca use the US DOL contract in

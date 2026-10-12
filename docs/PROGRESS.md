@@ -1,5 +1,37 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Complete original SFX sample library
+
+Completed the user's follow-up to extract GameCube sound effects. Previous
+conversion covered only 212 looped samples; `make audio-assets` now extracts
+and converts every one of the 1,247 pmario bank samples from read-only G8ME01.
+Ignored `local-assets/audio/pcm/samples/` contains 1,035 nonlooped and 212 looped
+PCM16 WAVs, named by exact hexadecimal sample ID, retaining source rates/lengths.
+Only looped samples have `.wav.loop` sidecars. All six original MusyX bank
+resources and their provenance are preserved. Full sample WAV size is
+39,383,724 bytes; combined music/sample library is 1,393 WAVs/930,759,732 bytes.
+Manifest schema 2 reports converted/looped/nonlooped counts. Music reuse checks
+source/decoder fingerprints, WAV metadata/sidecars and PCM hash before reuse;
+authored integration fixture proves all-nonloop bank conversion and corrupt
+music-cache repair. Implementation commit: 7a9cb6c.
+
+Validation: `make audio-assets` exited 0 with all 1,247 samples and 146 verified
+cached music tracks. Independent audit verified all 1,393 WAV formats/full data
+lengths/frame counts/hashes/loop sidecars, exact bank-ID coverage and 152 raw
+resource hashes. All 2,057 library files are ignored; none is tracked.
+Final `make test` passed 38/38 CTest suites and 64 Python tests
+(/tmp/pm-sfx-test-final.log). Initial full run failed a core ceiling-contact
+assertion during concurrent field edits; rerun after those edits passed.
+Final `make all` exited 0 (/tmp/pm-sfx-build-final.log). `git diff --check` passed.
+Concurrent field/event/documentation edits were preserved separately. No ISO
+write, emulator run or user profile/save mutation was performed.
+
+Next: resolve original effect IDs/macros to samples and implement source-owned
+envelopes, pitch, layering and event playback; compare actual effects/loops with
+original-game audio. Extracted samples include shared voice/instrument sources
+and are not a claim of one finished effect per WAV. Full bank sample extraction
+is complete; faithful in-game SFX playback and the full remake remain unfinished.
+
 ## 2026-10-12 — Original event memory, user buffers and map allocation
 
 Implemented `event_memory_opcodes.cpp` for74..90 and complete documented local

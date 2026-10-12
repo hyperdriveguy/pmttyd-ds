@@ -71,12 +71,15 @@ cleans the 3DS build, retaining expensive local conversions. Original assets and
 built binaries are ignored by source history. Implementation and handoff notes are recorded in incremental Git commits.
 
 `make audio-assets` extracts all original music streams and the MusyX bank,
-then converts the streams and looped bank samples into the ignored
+then converts the streams and all 1,247 bank samples into the ignored
 `local-assets/audio/pcm/` library. Original rates/channels and loop intervals
 are retained in PCM16 WAVs with `.wav.loop` sidecars; the library manifest records
 source paths, hashes and sample IDs. An alternate ISO can be supplied with
 `TTYD_ISO=/path/to/G8ME01.iso make audio-assets`. The full library stays outside
 RomFS; the current slice still packages its three selected music tracks.
+Bank WAVs are named `pmario-<four-digit-hex-ID>.wav` in `pcm/samples/`;
+only the 212 looped samples have loop sidecars. These are original sample
+sources; MusyX macros and game event playback still require implementation.
 
 ## Controls
 
