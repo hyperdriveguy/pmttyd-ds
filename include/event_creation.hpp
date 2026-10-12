@@ -5,7 +5,7 @@ namespace ttyd {
 struct EventRuntimeGlobals {
     uint32_t allocationCount=0,nextId=0;
     float speed=0;
-    int32_t systemLevel=0; // Live whole GP18 mask (marioStGetSystemLevel),not last request enum.
+    int32_t systemLevel=0; // Requested enum8041e940,read by evtEntryRunCheck;distinct from GP18 mask.
 };
 struct EventCreationServices {
     void* user=nullptr;

@@ -1,5 +1,25 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Correct requested-level binding for constructor run-check
+
+Documentation agent's fresh8011b5e0..b7d8 source audit identified a mistake in
+my header and system-level fixture:evtEntryRunCheck reads REQUESTED8041e940
+at80037744,not whole GP18. Corrected EventRuntimeGlobals.systemLevel comment,
+added getRequestedEventSystemLevel and bound the fixture's runtime provider to
+that enum. Existing run-check algorithm already branches on enum1/2/3/4;the
+actual GP-mask getter/setter/clock admission remain separate and unchanged.
+Corrected prior misleading progress/breadcrumb source claims below.
+
+Validation:make test passes52 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-requested-level-test.log and /tmp/pm-requested-level-build.log.
+Regression distinguishes request2/mask3 and request3/mask7,including unrelated
+GP high bits;the constructor stops type10 from REQUESTED3. The former whole-mask
+composition fixture was incorrect source binding,despite green host tests.
+
+Next:conditional selected-attack root/actor/wait-event registration and native
+GP/context/arena/callback owners. Root/census/layout local docs now delivered;
+full native execution and original traces remain open.Goal active/incomplete.
+
 ## 2026-10-12 — Coherent context address view and array lifetime binding
 
 Added `event_context_addresses.cpp` for complete original160-byte context views:
@@ -459,9 +479,9 @@ contracts and bound original stop/start-all services. Requested level8041e940
 stays separate from GP18's whole mask. Recognized0..4 preserve high bits;
 1..3 retain two writes and a fresh GP reload before OR. Invalid requests query/
 write nothing. Lower nonzero transitions do not resume previous stop categories;
-request0 starts0xef and leaves0x10-only entries stopped. Runtime globals now
-explicitly document that constructor run-check consumes whole GP mask,not the
-last requested enum. Source/time/system-level behavior remains separate from
+request0 starts0xef and leaves0x10-only entries stopped. CORRECTION:the initial runtime comment/fixture incorrectly bound constructor
+run-check to GP18;original80037744 reads requested8041e940. See the later
+requested-level correction entry. Source/time/system-level behavior remains separate from
 physical-input polling and per-entry speed/credit.
 
 Validation: `make test` passed48/48 CTest suites and78 Python tests; `make all`
@@ -469,8 +489,8 @@ rebuilt ARM modules and3dsx. Logs:/tmp/pm-event-system-test.log and
 /tmp/pm-event-system-build.log. Fixtures cover all transitions/high bits/write
 order/invalids/noninverse stops,0xef exclusion,live GP changes between mask writes,
 requested-versus-effective getter and actual constructor run-check composition.
-Source-derived request2→GP3→run-check type10 behavior is a static/host fixture,
-not an observed original gameplay pause. Previous clock verifier passed9 bodies,
+The former request2→GP3→run-check type10 fixture used the WRONG source
+binding;it is superseded by requested-enum regression coverage. Previous clock verifier passed9 bodies,
 247 anchors and1 data span;no original runtime/cadence evidence asserted.
 
 Native GP/address/time/window/source owners,entry-layout/callback registration

@@ -9,6 +9,7 @@ void write(const EventMemoryServices& s,uint32_t a,uint32_t v) {assert(s.storeWo
 uint32_t gp(const EventMemoryServices& s) {return read(s,0x80415fd0);}
 }
 int32_t getEventSystemLevel(const EventMemoryServices& s) {const uint32_t g=gp(s);return sw(read(s,g+0x18));}
+int32_t getRequestedEventSystemLevel(const EventMemoryServices& s) {return sw(read(s,0x8041e940));}
 void setEventSystemLevel(int32_t request,const EventMemoryServices& s,const EventCreationServices& events) {
     if(request<0 || request>4)return;
     write(s,0x8041e940,static_cast<uint32_t>(request));uint32_t g=gp(s);

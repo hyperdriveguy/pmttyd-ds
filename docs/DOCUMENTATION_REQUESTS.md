@@ -481,6 +481,13 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Run-check source correction (2026-10-12): native header/fixture now consume
+requested8041e940 via getRequestedEventSystemLevel,as original80037744 proves.
+Whole GP18 remains the distinct getter/clock mask. Earlier whole-mask constructor
+claim/fixture was incorrect and superseded. make test passes52 suites/78 Python
+tests;make all passes. Next:conditional root actor/ID/wait-event binding and
+native GP/arena/function owners,without fabricated callback results.
+
 Context-address breadcrumb (2026-10-12): `event_context_addresses.cpp` supplies
 coherent complete160-byte views and original array words,including native
 retirement/replacement ordering. Tests preserve global work/flag aliases into
@@ -517,7 +524,8 @@ binding and actual original function registry,without fabricated callback result
 System-level source breadcrumb (2026-10-12): `event_system_level.cpp` binds
 original requested-level/whole-GP-mask transitions to existing stop/start-all.
 Tests preserve high bits,two writes/live reload,noninverse lowering,0xef/type10
-exclusion and constructor run-check reading WHOLE mask rather than last request.
+exclusion.The former constructor WHOLE-mask binding claim was incorrect;
+original run-check reads requested8041e940,corrected in the later source note.
 make test passes48 suites/78 Python tests;make all passes. Native GP aliases/time/
 window/main/UI/source ownership and original pause traces remain open. Next:
 native storage/context/time and original source/callback binding.Prior packed

@@ -25,7 +25,7 @@ struct Fixture {
         EventCreationServices s;s.user=this;s.manager.user=this;
         s.manager.globals=[](void* p) {return &static_cast<Fixture*>(p)->globals;};
         s.manager.context=[](void* p,bool) {return &static_cast<Fixture*>(p)->context;};
-        s.runtime=[](void* p) {auto& f=*static_cast<Fixture*>(p);f.runtime.systemLevel=getEventSystemLevel(f.memory());return &f.runtime;};
+        s.runtime=[](void* p) {auto& f=*static_cast<Fixture*>(p);f.runtime.systemLevel=getRequestedEventSystemLevel(f.memory());return &f.runtime;};
         s.stopAll=[](void* p,uint32_t mask) {auto& f=*static_cast<Fixture*>(p);stopAllEvents(mask,f.creation());};return s;
     }
     void set(int32_t r) {setEventSystemLevel(r,memory(),creation());}
@@ -48,9 +48,9 @@ int main() {
     Fixture live;live.words[0x1018]=15;live.words[0x2018]=0x40000004;
     live.onWrite=[&](uint32_t a,uint32_t) {if(a==0x1018)live.words[0x80415fd0]=0x2000;};live.set(2);
     assert(live.writes==std::vector<Write>({{0x8041e940,2},{0x1018,3},{0x2018,0x40000007}}) && getEventSystemLevel(live.memory())==0x40000007);
-    // Constructor/restart run-check reads the whole mask,not requested enum:
-    // request2 produces mask3,whose original run-check branch stops type10.
-    Fixture runCheck;runCheck.set(2);checkEventEntryRun(runCheck.creation());assert(runCheck.entries[2].flags==3);
-    runCheck.words[0x1018]|=0x80000000;runCheck.entries[2].flags=1;checkEventEntryRun(runCheck.creation());assert(runCheck.entries[2].flags==1); // Whole-word compare is not low-nibble enum lookup.
+    // Constructor/restart run-check reads requested8041e940,independently of
+    // the actual GP mask getter. Request2's mask3 does not stop type10 here.
+    Fixture runCheck;runCheck.set(2);checkEventEntryRun(runCheck.creation());assert(runCheck.entries[2].flags==1 && getRequestedEventSystemLevel(runCheck.memory())==2);
+    runCheck.set(3);runCheck.entries[2].flags=1;runCheck.words[0x1018]=0x80000000;checkEventEntryRun(runCheck.creation());assert(runCheck.entries[2].flags==3); // Requested3 stops10 despite unrelated GP mask.
     std::cout<<"event system-level tests passed\n";
 }
