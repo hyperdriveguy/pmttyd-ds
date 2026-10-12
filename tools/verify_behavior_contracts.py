@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'multibyte_conversion': {
+        0x80269a7c: '7c9d2379', 0x80269a88: '28050000',
+        0x80269aa0: '480000dd', 0x80269aa4: '2c030000',
+        0x80269ae0: '541e35b2', 0x80269aec: '540006be',
+        0x80269af4: '541e3432', 0x80269afc: '5400067e',
+        0x80269b28: '28000800', 0x80269b3c: '7c001800',
+        0x80269b54: 'b3df0000', 0x80269b58: '7c7e1b78',
+        0x80269b7c: '28040000', 0x80269b90: '7ca00775',
+        0x80269bb4: '54a00634', 0x80269bc0: '28040002',
+        0x80269bd0: '54000630', 0x80269be4: '3860fffe',
+        0x80269bec: '54a00636', 0x80269bf8: '28040003',
+        0x80269c0c: '4082001c', 0x80269c14: '54000630',
+        0x80269c44: '4182000c', 0x80269c50: '3860fffe',
+    },
     'scan_integer64': {
         0x8026e728: '90090000', 0x8026e744: '2c120001',
         0x8026e78c: '4bff6261', 0x8026e7b0: '7c03002e',

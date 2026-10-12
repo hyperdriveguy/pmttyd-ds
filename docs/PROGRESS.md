@@ -3851,3 +3851,31 @@ runtime resource/cadence callers and uncovered story/event/field/battle/audio/
 save/content systems before complete-game requirements. Full objective remains
 active/incomplete; no complete scanner/layout or full-game fidelity claim.
 Original data and story attribution/order/branches/conditions remain mandatory.
+
+## 2026-10-12 — US multibyte validation and halfword conversion
+
+Recovered mbtowc0x80269a5c,size120 and is_utf8_complete0x80269b7c,sizeec.
+Added detailed MULTIBYTE_CONVERSION.md: null/zero-size routes, complete versus
+incomplete/error lengths, one-/two-/three-byte forms, permissive high-bit-only
+continuations, exact halfword decode masks (seven bits on final byte), canonical
+length test and output/no-write behavior. Recorded absence of four-byte and
+surrogate checks. Composed with inspected scan selector7 calls that supply one
+byte, ignore failure and use differing c versus s/[ destination strides. These
+are static byte/branch deductions, not executed UTF-8 equivalence observations.
+Updated scan dependency links and provenance/index.
+
+Validation:1132 instruction anchors and all prior tables/constants/resource
+checks passed read-only ISO. Fresh283-function reports reproduced byte-for-byte.
+All445 local behavior links resolved; git diff --check passed. make test passed
+core plus36 Python tests; make all exited0 with no rebuild. No original execution/
+emulator, profile/save modification, native implementation, asset conversion or
+story/message rewriting. ELFs/disassemblies/reports remain ignored. Working tree
+was clean before this authored research increment.
+
+Next: __strtold floating scanner and conversion dependencies, executed byte/
+access/output and integer callback corpus, actual wide-format callers and icon
+arguments. Continue drawing/string layout, runtime resource/cadence and uncovered
+story/event/field/battle/audio/save/content systems before complete-game
+requirements. Full goal active/incomplete; static library contracts alone do not
+prove complete scanner/layout or full-game fidelity. Original message IDs/tokens
+and story attribution/order/branches/conditions remain mandatory reused data.
