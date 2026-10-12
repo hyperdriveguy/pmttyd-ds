@@ -1,5 +1,32 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native SetPos and body-definition ID
+
+Registered SetPos80112fcc and GetBodyId8010ead8. SetPos resolves integer X/Y/Z
+before fresh battle/unit lookup,always loads old visible position and preserves
+axes only for RAWf1194d80 tokens. It does not substitute GetFloat or resolved-
+value sentinel comparison. Stores all three visible floats in order. Body query
+retains battle before actor resolution,captures output before lookup and scans
+unit14/part0 linked records for first numeric attribute01;returns definition
+(part4).word0 rather than hardcoded1/record link. Its null/miss-1 policy belongs
+to the callee,not a wrapper actor-ID early-out.
+
+Read-only original inspection evidence is in
+behavior/battle/BATTLE_POSITION_WRITE_AND_BODY_ID_ORDER.md;original ELFs remain
+/tmp/pm-native-set-pos.elf and pm-native-get-body-id.elf outside history.
+
+Validation:make test passes76 CTest suites/86 Python tests;make all passes.
+Logs:/tmp/pm-position-write-test.log and /tmp/pm-position-write-build.log.
+Cases cover retained arguments,late versus captured battle/raw output,fresh old
+coordinate read,raw sentinel versus variable with same value,integer coercion
+of encoded3.5 to3,complete XYZ stores,linked body/definition selection/null/miss/
+first match and actual native callback memory. Provider records remain authored;
+FPSCR,source unit/part writers and full movement/render/Game fidelity unproven.
+
+Next:packed motion/part ownership,remaining target/cost/AC/pose/effect/audio/
+message callbacks and original outer turn/Game integration. First-attack and
+menu-domain requests remain open;full-game goal active/incomplete.
+
 ## 2026-10-12 — ID2 native menu setup/decision and scoped cursor domains
 
 Prioritized newest native query-domain request. Added two complete setup/decision

@@ -346,3 +346,7 @@ add_test(NAME battle_packed_position COMMAND battle_packed_position_tests)
 add_executable(battle_movement_setter_tests tests/battle_movement_setter_tests.cpp)
 target_link_libraries(battle_movement_setter_tests PRIVATE ttyd_core)
 add_test(NAME battle_movement_setter COMMAND battle_movement_setter_tests)
+
+add_executable(battle_position_write_tests tests/battle_position_write_tests.cpp)
+target_link_libraries(battle_position_write_tests PRIVATE ttyd_core)
+add_test(NAME battle_position_write COMMAND battle_position_write_tests)

@@ -13,6 +13,8 @@ struct BattleUnitEventServices {
     void (*removeEventId)(void*,uint32_t)=nullptr;
     EventEntry& (*createWait)(void*,uint32_t script,int32_t priority,uint32_t flags)=nullptr;
 };
+int32_t packedBodyPartId(uint32_t unit,const EventMemoryServices&);
+int32_t battleGetBodyIdEvent(EventEntry&,const BattleUnitEventServices&);
 int32_t runBattleUnitWait(uint32_t unit,const BattleUnitEventServices&);
 int32_t battleStartUnitWaitEvent(EventEntry&,const BattleUnitEventServices&);
 int32_t battleStopUnitWaitEvent(EventEntry&,const BattleUnitEventServices&);

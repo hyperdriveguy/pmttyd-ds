@@ -510,6 +510,15 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation / capture refinement (2026-10-12): SetPos80112fcc
+and GetBodyId8010ead8 now bind native original-address memory.76 CTest/86 Python
+and make all pass. See behavior/battle/BATTLE_POSITION_WRITE_AND_BODY_ID_ORDER.md:
+SetPos uses GetValue→integer→float and RAW sentinel preservation after old-position
+read;body query retains earlier battle/output and returns first flagged part's
+DEFINITION word0. No hardcoded body1 or global pipeline snapshot. Source part/
+unit writers,numeric/full motion/render/Game and original traces remain open;
+first-attack/menu-domain requests still pending. Leave further evidence here.
+
 ID2 menu-domain documentation reply (2026-10-12),partial source answer:
 [Complete setup/decision](behavior/battle/WEAPON_MENU_SETUP_AND_DECISION.md) and
 [type/cursor source evidence](behavior/battle/WEAPON_MENU_TYPE_DOMAINS_AND_CURSOR_REUSE.md)

@@ -22,6 +22,17 @@ void copyPackedUnitPosition(uint32_t unit,bool home,const std::array<uint32_t,3>
     assert(s.storeWord);const uint32_t offset=home?0x30:0x3c;
     for(unsigned i=0;i<3;++i)s.storeWord(s.user,outputs[i],word(s,unit+offset+4*i));
 }
+int32_t packedSetUnitPositionEvent(EventEntry& e,const BattleUnitEventServices& s) {
+    const uint32_t args=e.arguments;assert(s.values.resolve && s.translate && s.unit && s.memory.storeWord);
+    const int32_t actor=s.values.resolve(s.values.user,e,sw(word(s.memory,args))),id=s.translate(s.user,e,actor);
+    std::array<uint32_t,3> raw,coordinates;
+    for(unsigned i=0;i<3;++i) {raw[i]=word(s.memory,args+4+4*i);const int32_t integer=s.values.resolve(s.values.user,e,sw(raw[i]));const float value=float(integer);std::memcpy(&coordinates[i],&value,4);}
+    const uint32_t battle=word(s.memory,0x8041eb90),unit=s.unit(s.user,battle,id);
+    const std::array<uint32_t,3> previous{word(s.memory,unit+0x3c),word(s.memory,unit+0x40),word(s.memory,unit+0x44)};
+    for(unsigned i=0;i<3;++i)if(raw[i]==0xf1194d80)coordinates[i]=previous[i];
+    for(unsigned i=0;i<3;++i)s.memory.storeWord(s.memory.user,unit+0x3c+4*i,coordinates[i]);
+    return 2;
+}
 int32_t packedUnitPositionEvent(EventEntry& e,bool home,const BattleUnitEventServices& s) {
     const uint32_t args=e.arguments;assert(s.values.resolve && s.translate && s.unit && s.values.store);
     const int32_t actor=s.values.resolve(s.values.user,e,sw(word(s.memory,args)));

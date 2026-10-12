@@ -9,6 +9,16 @@ int32_t resolve(EventEntry& e,uint32_t address,const BattleUnitEventServices& s)
 int32_t actor(EventEntry& e,uint32_t args,const BattleUnitEventServices& s) {const int32_t selector=resolve(e,args,s);assert(s.translate);return s.translate(s.user,e,selector);}
 uint32_t unit(uint32_t battle,int32_t id,const BattleUnitEventServices& s) {assert(s.unit);return s.unit(s.user,battle,id);}
 }
+int32_t packedBodyPartId(uint32_t unit,const EventMemoryServices& s) {
+    if(!unit)return -1;
+    assert(s.word);uint32_t part=s.word(s.user,unit+0x14);
+    while(part) {if(s.word(s.user,part+0x1ac)&1) {const uint32_t definition=s.word(s.user,part+4);return sw(s.word(s.user,definition));}part=s.word(s.user,part);}
+    return -1;
+}
+int32_t battleGetBodyIdEvent(EventEntry& e,const BattleUnitEventServices& s) {
+    const uint32_t args=e.arguments,battle=word(s,0x8041eb90);const int32_t id=actor(e,args,s),output=sw(word(s,args+4));
+    const uint32_t u=unit(battle,id,s);const int32_t body=packedBodyPartId(u,s.memory);assert(s.values.store);s.values.store(s.values.user,e,output,body);return 2;
+}
 int32_t runBattleUnitWait(uint32_t u,const BattleUnitEventServices& s) {
     const uint32_t previous=word(s,u+0x290);
     if(previous!=0) {assert(s.removeEventId && s.memory.storeWord);s.removeEventId(s.user,previous);s.memory.storeWord(s.memory.user,u+0x290,0);}
