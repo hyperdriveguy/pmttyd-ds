@@ -1020,3 +1020,13 @@ close complete _btlcmd_MakeActClassTable:ordered types0/6/1/2/4/5/13,partial
 retained cursor and signed correction,seven original keys/icons.4 hashes,
 366 anchors/7 spans verified;76 CTest/86 Python and make all pass.ActMenuMain
 publication/query reachability/Game/source/runtime remain open.
+
+ID2 native ActMenuMain writer closure (2026-10-12):
+[Selection/type](behavior/battle/ACT_MENU_MAIN_SELECTION_AND_TYPE_PUBLICATION.md),
+[navigation/order](behavior/battle/ACT_MENU_MAIN_NAVIGATION_AND_SERVICE_ORDER.md),
+and [setup/end/position gate](behavior/battle/ACT_MENU_SETUP_END_AND_POSITION_GATE.md)
+recover six complete local bodies:three type stores,type13→state29,14-way
+switch,live class count,post-service cursor rereads,nine partial cursor resets,
+ordered Mario/Party gate,and result independent of mutation.24 hashes/472
+anchors/3 spans,77 CTest/86 Python/make all passed.Input/confusion/query
+reachability/Game/services/runtime remain open.

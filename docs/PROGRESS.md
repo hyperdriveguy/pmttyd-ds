@@ -1,3 +1,27 @@
+## 2026-10-12 — ID2 ActMenuMain type writers and setup/position gate
+
+Continued requested port-function documentation with three detailed contracts:
+[selection/publication](behavior/battle/ACT_MENU_MAIN_SELECTION_AND_TYPE_PUBLICATION.md),
+[navigation/service order](behavior/battle/ACT_MENU_MAIN_NAVIGATION_AND_SERVICE_ORDER.md),
+[setup/end/position gate](behavior/battle/ACT_MENU_SETUP_END_AND_POSITION_GATE.md).
+Six complete bodies cover Main's three type writes/live class validation/
+14-way dispatch/result0 despite mutations/fresh post-service cursor reads,
+setup's nine partial resets,end's live bit0 clear,and ordered Mario→Party
+position admission.No native code or tests changed.ID2 lock released.
+
+Validation:`tools/verify_act_menu_control.py` twice,identical reports:24
+hashes(6 complete/18 service identities),472 instruction anchors,3 source
+spans(full dispatch/two sound keys).Python compilation,existing behavior/
+weapon-domain/class-table verifiers,local Markdown file-link scan,and scoped
+whitespace passed.`make test`:77 CTest/86 Python passed.`make all` passed.
+
+Limits:static binary only.UI Init/End,target filtering,weapon table,audience,
+pad/camera/audio/status services,whole Input/confusion/event reachability,
+original execution and Game binding remain separate.Next native priority:
+Input states5/14/19/29 and weapon-query callback/event domains.Full-game
+requirements remain pending wider coverage;known type9/13 stores do not
+prove that selected-weapon queries execute with unsupported cursor types.
+
 ## 2026-10-12 — ID2 native action-class table producer documentation
 
 Prioritized requested native port functions;closed the complete static

@@ -25,6 +25,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
 | Native first-attack target and paired output ownership | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Pair/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md),[event/body part](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md):seven complete local bodies,captured B/raw outputs/mode pairs/slot63 miss/kind predicate/body-before-ID/write order/source part witness;source/Game/runtime separate;prior field_movement failure resolved by current74-suite run |
+| Native ActMenuMain type publication and control routing | EVT-01, JUMP-01 | VALIDATED six local bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Selection/type](behavior/battle/ACT_MENU_MAIN_SELECTION_AND_TYPE_PUBLICATION.md),[navigation/order](behavior/battle/ACT_MENU_MAIN_NAVIGATION_AND_SERVICE_ORDER.md),[setup/end/position gate](behavior/battle/ACT_MENU_SETUP_END_AND_POSITION_GATE.md):complete Main/setup/end/gate/cursor-init/UI-stub/three type stores/14-way switch/fresh output reads;Input/confusion/query reachability/Game/runtime remain open |
 | Native action-class table type and eligibility producer | EVT-01, JUMP-01 | VALIDATED local body / lock released, 2026-10-12 | Documentation agent ID 2 | [Admission/publication](behavior/battle/ACTION_CLASS_TABLE_ADMISSION_AND_PUBLICATION.md),[eligibility/keys](behavior/battle/ACTION_CLASS_TABLE_ELIGIBILITY_AND_MENU_KEYS.md):complete producer/types0,6,1,2,4,5,13/partial20-byte records/independent final flags/signed cursor correction/seven keys;ActMenuMain/query reachability/Game/runtime remain open |
 | Native weapon-menu setup decision and caller domains | EVT-01, JUMP-01 | VALIDATED scoped / lock released, 2026-10-12 | Documentation agent ID 2 | [Setup/decision](behavior/battle/WEAPON_MENU_SETUP_AND_DECISION.md),[type/cursor sources](behavior/battle/WEAPON_MENU_TYPE_DOMAINS_AND_CURSOR_REUSE.md):two complete functions/16 DOL calls/scoped type12 writer/state0 restore/Input initialized cursor reuse;broader menu writers/query reachability/Game/runtime remain open |
 | Native SetMoveSpeed and SetFallAccel wrappers | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete order](behavior/battle/BATTLE_MOVEMENT_SETTER_EVENT_ORDER.md),[source tokens](behavior/battle/BATTLE_MOVEMENT_WRAPPER_SOURCE_TOKENS.md):four complete bodies/retained args/translation→float→fresh B/unchecked-1/leaves/completion2/eight requests;Majinai+0.5 correction;source/Game/runtime separate;prior missing fixture resolved |
@@ -511,6 +512,28 @@ Do not invent extra samples for script invocations or suppress inactive private
 sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
+
+ID2 ActMenuMain writer reply (2026-10-12),partial source-domain answer:
+[Selection/type publication](behavior/battle/ACT_MENU_MAIN_SELECTION_AND_TYPE_PUBLICATION.md),
+[navigation/service order](behavior/battle/ACT_MENU_MAIN_NAVIGATION_AND_SERVICE_ORDER.md),
+and [setup/end/position gate](behavior/battle/ACT_MENU_SETUP_END_AND_POSITION_GATE.md)
+close six complete local bodies for porting.Three type stores:two explicit9/
+state29 routes;enabled current row copied at8012254c then14-way switch(type13
+state29).Fresh cursor reads after sound/End,disabled reasons,live class-count
+scan,independent result0/1,typed position admission,and nine partial cursor
+resets supplied.24 hashes(6 complete/18 linked),472 anchors/3 spans,repeated
+reports,77 CTest/86 Python/make all pass.Class/ActMenuMain writer request is
+answered locally;complete Input/confusion/query-event reachability remains open.
+Next native source priority:Input states5/14/19/29 and selected-weapon query
+callback/event bindings.Do not promote known type9/13 writers into proof that
+weapon queries execute with those types,or reuse another frame's cursor slot.
+
+ID2 shared-index breadcrumb (2026-10-12):commit5709c2d contains the validated
+action-class producer delivery plus concurrently staged reference census,
+inspect_dol_function updates,and three overworld contracts.Another writer
+staged those seven additional paths/PROGRESS section between ID2's exact
+seven-path index check and commit.No history rewrite or other-owner revert
+performed.Reference-census owner:your staged work is already in5709c2d.
 
 ID2 action-class producer reply (2026-10-12),partial menu-source answer:
 [Admission/publication](behavior/battle/ACTION_CLASS_TABLE_ADMISSION_AND_PUBLICATION.md)
