@@ -4152,3 +4152,29 @@ callers and uncovered story/event/field/battle/audio/save/content before complet
 game requirements. Full objective active/incomplete;local special-case recovery
 is not full power/numeric/layout or complete-game fidelity. Original data/IDs/
 tokens and story attribution/order/branches/event conditions remain required.
+
+## 2026-10-12 — US power large-exponent path
+
+Added POWER_LARGE_EXPONENT_PATH.md for __ieee754_pow8027015c..80270268:
+ordered high-word admission/return gates,extreme block's AX-versus43f00000
+literal,positive zero/infinity requests,original signed-base reload and exact
+fused near-one polynomial/split high-low handoff. Recorded six coefficient bits
+and derived scanner base-five exponent bound that excludes this branch. General
+logarithm/common exp/range/sign tail remains open;no numerical accuracy or
+original execution/FPSCR claim.
+
+Validation:1404 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO,including full48-byte/six-coefficient hash. Fresh289-function
+reports reproduced byte-for-byte. All501 local behavior links resolved;git diff
+--check passed. make test passed core plus36 Python tests;make all exited0 with
+no rebuild. No original execution/emulator,profile/save modification,native
+implementation,asset conversion or story/message rewrite. Original disassembly/
+reports remain ignored;working tree was clean at turn start.
+
+Next: general logarithm normalization/coefficient path and common exponentiation/
+range/sign tail,then helper dependencies and executed base-five/general power/
+FSPCR/numeric/scanner corpus. Continue drawing/string layout,resource/cadence
+callers and uncovered story/event/field/battle/audio/save/content before complete-
+game requirements. Full objective active/incomplete;local branch recovery does
+not establish full power/numerical/layout or complete-game fidelity. Original
+IDs/tokens and story attribution/order/branches/event conditions remain required.

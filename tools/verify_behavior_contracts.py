@@ -13,6 +13,18 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'power_large_exponent_path': {
+        0x80270164: '40810104', 0x8027016c: '7c071800',
+        0x80270180: '4181001c', 0x8027019c: '7c061800',
+        0x802701c8: '4080001c', 0x802701e8: '4081001c',
+        0x80270204: 'c8410008', 0x80270214: 'fcc20028',
+        0x80270224: 'fc8101bc', 0x80270230: 'fca601b2',
+        0x80270238: 'fc66193c', 0x8027023c: 'fc4201b2',
+        0x80270240: 'fc6500f2', 0x80270244: 'fc0000f2',
+        0x80270248: 'fc2101b8', 0x8027024c: 'fc02082a',
+        0x80270254: '90610034', 0x80270258: 'c8010030',
+        0x80270260: 'fc010028', 0x80270264: '480001ec',
+    },
     'power_entry_special_cases': {
         0x8027262c: '4bffd871', 0x8026fef0: '7ce45b79',
         0x8026ff00: 'c82219d8', 0x8026ff50: 'fc21002a',
@@ -1444,6 +1456,10 @@ def verify(iso_path):
         if read(0x80428e18, 24).hex() != '3ff000000000000000000000000000007ff0000000000000':
             raise ValueError('Power entry special constants mismatch')
         print('Power entry one/zero/infinity doubles verified')
+        if hashlib.sha256(read(0x80428e30, 48)).hexdigest() != 'f42eb6f1023251a852bb1af6d1e79824f428f6789e4e112203e2e351567fbf25':
+            raise ValueError('Power near-one polynomial constants mismatch')
+        print('All six power large-exponent polynomial constants verified')
+
 
 
 

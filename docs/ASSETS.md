@@ -26,7 +26,7 @@ includes src/include/config and rels under ignored
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
 now fingerprints 289 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1384 instruction anchors plus those
+window tables. Independent verifier checks 1404 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -637,3 +637,10 @@ core remains open;identity is not full behavior coverage. Authored contracts
 record parity/shortcut/errno order and decimal base-five caller domain. Original
 ELF/disassembly/reports stay ignored;no original execution/linking,asset conversion,
 message rewrite or licensing change occurs.
+
+Power large-exponent research adds20 anchors within existing __ieee754_pow
+identity and a full48-byte/six-coefficient hash. Authored contracts retain raw
+high-word thresholds,original signed-base reload,fused operations and low-word
+split;general logarithm/common tail remain open. No original execution/linking,
+asset conversion,message rewrite or licensing change;local inspection reports/
+disassembly remain ignored.
