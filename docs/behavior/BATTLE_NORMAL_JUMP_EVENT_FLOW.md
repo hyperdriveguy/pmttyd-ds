@@ -95,9 +95,11 @@ Signed L10>=1 requests L6=36,MarioJumpParam(-2,L0..2,L6),then creates brother
 0x8035632c..0x80356430 and parent MarioJumpPosition(-2,L0,L1,L2,L6,3,-1)
 at0x80356434. Otherwise it requests owner SE`SFX_VOICE_MARIO_BATTLE_JUMP1`,
 L6=36,the same MarioJumpParam,and MarioJumpPosition(...,L6,0,-1) at0x803564a0.
-The two MarioJumpPosition modes **3 and0 are distinct**. The generic
-[JumpPosition contract](BATTLE_JUMP_EVENT_CALLBACKS.md) is not this larger
-Mario-specific callback0x801093a8;do not substitute it or infer impact36.
+The two MarioJumpPosition modes **3 and0 are distinct**. The now recovered
+[Mario motion](BATTLE_MARIO_JUMP_MOTION.md) and [numerics](BATTLE_MARIO_JUMP_NUMERICS.md)
+specify this larger callback0x801093a8,which differs from the generic
+[JumpPosition contract](BATTLE_JUMP_EVENT_CALLBACKS.md). Do not substitute it
+or infer impact36.
 
 The subsequent-pass brother waits3,computes L0=L6/2-3,L1=L0-7,L2=L0+5,
 then L0=L6-4,and requests ACRStart(-2,L1,L2,L0,0),ACRGetResult(L6,L7).
@@ -214,7 +216,8 @@ under /tmp;ISO reads are read-only.
 
 This answers JUMP-01's **complete request-graph** portion. The
 [MarioJumpParam contract](BATTLE_MARIO_JUMP_PARAMETER.md) now closes parameter
-preparation;remaining:MarioJumpPosition/Takeoff/MoveFrame/MovePosition internals;exact floating/event
+preparation and [MarioJumpPosition](BATTLE_MARIO_JUMP_MOTION.md) now closes
+the local flight;remaining:Takeoff/MoveFrame/MovePosition internals;exact floating/event
 arithmetic and progress at motion completion;GetSelectEnemy/cost/data-child/
 power-check/stylish/prize-byte/aftereffect/badge-tail service bodies;AC result/option
 writers and original tutorial weapon/menu gates. Original input/state/RNG/hit/

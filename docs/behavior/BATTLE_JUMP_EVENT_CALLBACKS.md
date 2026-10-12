@@ -49,7 +49,7 @@ The fields are independent, even when initialization copies the same position:
 | U+0x17c | Binary32 horizontal heading in degrees A |
 | U+0x180 | Binary32 horizontal distance, then residual D |
 | U+0x188 | Direction byte; first-call x displacement writes +1 or -1, equality retains old value |
-| U+0x18c, +0x190 | Sound handles consulted by this callback; complete handle lifetime remains open |
+| U+0x18c, +0x190 | First words of destination sound-mode record,used as playback request inputs;voice handle lifetime remains open |
 | U+0x1c4 | Address passed to sound-mode loader as caller-owned storage |
 
 SetMoveTargetPos and SetMoveCurrentPos compare each incoming coordinate against

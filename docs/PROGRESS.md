@@ -1,5 +1,50 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2: requested Mario jump motion,numerics and sound mode
+
+Added BATTLE_MARIO_JUMP_MOTION.md with the complete801093a8/8c0 body.
+All seven arguments resolve as integers every invocation;normal first call
+initializes target/baseline/heading/distance/count/curve/sound and integrates on
+that same call. Visible sine-offset Y remains separate from linearly advanced
+baseline. Strict targetY clamp requires pre-decrement n<3;exact countdown0
+snaps only targetY,resets Phi/G and returns1 (advance+yield). Negative counts
+have no n<=0 completion. Mode1 skips setup and queries eligibility before
+its retained-baseline phase2/3 path. No direct shared AC result/count/main/
+option writes or pad-history calls occur;ResultAC remains a later script request.
+
+Added BATTLE_MARIO_JUMP_NUMERICS.md with ordered single/double/FMA operations,
+mode0 floating360/n versus mode3 integer360/n,distinct0.53/0.8 coefficients,
+height stages and2/4 multipliers,initial/per-step sine phase,terminal negative
+self-difference and full local reviseAngle wrapper. Original sin/fmod/frsqrte/
+FPSCR/angle/distance execution remains a dependency;no host curve equality claim.
+Added BATTLE_UNIT_SOUND_MODE.md with full80126588/14c type/mode loader,retained
+record gaps,unconditional reset even at-2,and actual type2/-1 source/playback
+request. U18c/U190 are record inputs,not proved live voice handles;corrected
+the generic jump field description. No replacement sound samples were introduced.
+
+Linked MJP-MOTION/MJP-NUM/SE-MODE requirements and released only ID2's validated
+motion/sound locks in DOCUMENTATION_REQUESTS.md. Earlier Jump graph/parameter
+documents now reference closed local motion while preserving numeric/audio/
+domain/caller/execution gaps. Independent ID1 Crump/lecture helper work and
+native resource initialization work preserved;ID2 changed no native implementation.
+
+Validation:tools/verify_mario_jump_motion.py passed five body fingerprints,
+76 instruction anchors,20 original constants and both ordinary mode/count/sound
+records;two fresh metadata reports repeated byte-for-byte. Jump graph verifier
+passed19 bodies/57 anchors/all268 requests/census;general verifier passed prior
+contracts. make test passed ten CTest suites (including concurrent resource
+implementation) and58 Python tests;make all exited0,no rebuild;710 behavior local
+links resolved;git diff --check passed. All original inspection/report artifacts
+remain under /tmp. No original execution/emulator,ISO/profile/save mutation,
+asset conversion,story rewrite or native implementation by ID2.
+
+Next:JUMP-01 Takeoff/MoveFrame/MovePosition preparation callbacks,selected target/
+cost/stylish/aftereffect/badge-tail and shared grade/option/result producers;
+original scene/domain/input/state/RNG/trajectory/audio comparisons. Continue
+DMG/STATUS caller/turn/reward service requests. Full-system documentation and
+complete-game requirements remain active/incomplete;closed local motion does
+not establish a faithful complete original encounter or game.
+
 ## 2026-10-12 — Battle-start status clearing binding
 
 Native battle start now calls clearUnitStatus for both semantic units after

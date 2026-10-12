@@ -86,9 +86,10 @@ while otherwise implementing distance-adjusted motion.
 
 The final return stylish block sets32 directly and uses generic JumpPosition;
 it does not call this MarioJumpParam service. Keep that caller separate.
-MarioJumpPosition0x801093a8/0x8c0 is still an independent unclosed callback:
-its mode0/3,remaining-count/landing/input/state effects cannot be inferred
-from this parameter preparation or generic JumpPosition.
+The subsequent [MarioJumpPosition contract](BATTLE_MARIO_JUMP_MOTION.md) now
+closes its local mode0/3/remaining-count/landing behavior separately. Its numerical
+helpers/audio/domain and original execution remain dependencies;none of those
+are inferred from parameter preparation or generic JumpPosition.
 
 ## Scoped requirements and verification
 

@@ -18,6 +18,9 @@ complete gameplay sequences before further general-library edge-case recovery.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Mario jump motion](BATTLE_MARIO_JUMP_MOTION.md) | Complete local first/resumed-call phases,baseline/visible integration,zero/exact-count landing and sound/AC request ownership | Numeric/audio helper/domain/caller composition and original trajectory/input traces |
+| [Mario jump numerics](BATTLE_MARIO_JUMP_NUMERICS.md) | Ordered single/double/fused formulas,mode division/height/phase branches,constants and complete local reviseAngle wrapper | Original sin/fmod/angle/distance/FPSCR execution and composed comparisons |
+| [Unit sound-mode loader](BATTLE_UNIT_SOUND_MODE.md) | Complete type/mode partial record initialization,retained gaps and concrete Mario setup playback input | Source/key/macro/voice writers,playback core/resources and original audio traces |
 | [Mario Jump parameter](BATTLE_MARIO_JUMP_PARAMETER.md) | Complete integer coordinate resolution,distance correction,raw count writeback and updated stylish caller operands | MarioJumpPosition body,original numeric execution and caller/timing traces |
 | [Ordinary Jump event flow](BATTLE_NORMAL_JUMP_EVENT_FLOW.md) | All268 request commands/branches,per-hit flags/count loop,first-attack setup,stylish/feedback and cleanup ownership | Mario-specific motion/service internals,per-hit writers,actual tutorial/cadence and original traces |
 | [Jump result/stop services](BATTLE_JUMP_RESULT_AND_STOP_SERVICES.md) | Complete result/count/window/mask/grade wrappers,prize code/byte clamp and deferred TimingA stop | Grade/option/code producers,help UI and actual callers/traces |

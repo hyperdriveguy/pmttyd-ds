@@ -17,6 +17,8 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Unit sound-mode loader and Mario jump sound record | JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Sound-mode contract](behavior/BATTLE_UNIT_SOUND_MODE.md):complete partial-field loader and used type2/-1 request;source writers/macro resources/audio execution remain open |
+| MarioJumpPosition complete local motion modes and AC side effects | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Motion](behavior/BATTLE_MARIO_JUMP_MOTION.md) and [numerics](behavior/BATTLE_MARIO_JUMP_NUMERICS.md):complete local body,all phases/rounded branches;numeric/audio dependencies and original traces remain open |
 | Crump NPC helper identity versus lecture helper modes and hooks | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover separate kind/setup/init/attack bindings and lecture work-mode branches;excludes full lecture/story execution and original traces |
 | Mario-specific JumpParam preparation and motion dependencies | JUMP-01, AC-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Parameter contract](behavior/BATTLE_MARIO_JUMP_PARAMETER.md):complete ordered integer resolution/distance-count writeback;MarioJumpPosition body/numeric execution/traces remain open |
 | Battle input sampler/reset caller census and system-level/event-speed controls | AC-01, AC-03, AC-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Reset owners](behavior/BATTLE_INPUT_RESET_OWNERS.md) and [level/speed controls](behavior/EVENT_SYSTEM_LEVEL_AND_SPEED.md);direct census,local controls and tutorial injection answered,full UI/type/writer/lecture graph and original traces remain open |
@@ -384,6 +386,28 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### JUMP-01 — Ordinary Jump follow-up and per-hit event flow (open)
 
+Further ID2 answer:[MarioJumpPosition motion](behavior/BATTLE_MARIO_JUMP_MOTION.md)
+and [rounded numerical operations](behavior/BATTLE_MARIO_JUMP_NUMERICS.md)
+close801093a8/8c0. All seven arguments resolve as integers on every call;first
+ordinary setup falls through into its first integration. Modes0/3 both use
+phase1,but use floating versus integer360/n and phase coefficients0.53/0.8.
+BaselineXYZ and sine-offset visibleY remain separate. Exact countdown0 returns1
+(advance+yield),snaps only targetY,and resets Phi/G for later owners;negative
+counts have no n<=0 completion. Mode1 skips setup and queries AC possibility
+before its distinct phase2/3 route. There are no direct AC count/result/main/
+option stores or pad-history calls in this body. Original ResultAC remains later
+in the script,after its window/2 wait. MJP-MOTION/MJP-NUM requirements provide
+implementation cases without invented rendering-frame/impact ticks.
+
+[Sound-mode loader](behavior/BATTLE_UNIT_SOUND_MODE.md) closes the local record
+schema,type2/-1 source words and conditional setup playback request. Word18c
+is playback input,not proved an allocated voice handle. Body-local sound return
+is ignored;source writers,__psndSFXOn resources/voice lifetime and audio traces
+remain open. Next graph dependencies are Takeoff/MoveFrame/MovePosition and
+selected-target/cost/stylish/aftereffect/badge-tail services,original reachability/
+domain/numeric/input/state traces. Generic and Mario local motion contracts do
+not by themselves close those services or the original encounter/game.
+
 Further ID2 answer:[MarioJumpParam](behavior/BATTLE_MARIO_JUMP_PARAMETER.md)
 closes80109c68/19c. It resolves X/Z via evtGetValue as signed integers,resolves
 but discards Y,reads visible current X/Z and requests distABf. Requested count36
@@ -417,10 +441,9 @@ inline. Copied stylish locals do not overwrite parent motion values;camera wait1
 does not block the parent. JUMP-EVT/JAC/JVM requirements give scoped acceptance
 cases,not measured impact ticks or a complete executed tutorial.
 
-MarioJumpParam is now answered by the newer linked contract above. Remaining
-blocker:MarioJumpPosition0x801093a8/8c0 is distinct from agent1's generic
-JumpPosition;recover its per-call AC/state/motion writes and landing/remaining-
-count conditions. Also close Takeoff/MoveFrame/
+MarioJumpParam and MarioJumpPosition are now answered by the newer linked
+contracts above,with numeric/audio/execution dependencies still explicit.
+Remaining preparation dependencies:Takeoff/MoveFrame/
 MovePosition,selected target/cost/power-child/stylish/prize-byte/aftereffect/badge
 tail internals and original tutorial/menu/input/state traces. Do not implement
 the request graph with the native fixed48/42 schedule or copied generic jump
