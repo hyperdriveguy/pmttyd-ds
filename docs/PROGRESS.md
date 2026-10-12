@@ -1,5 +1,33 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native home/visible position query bindings
+
+Registered GetHomePos801124f8 and GetPos80113620 using packed unit/event memory.
+Actor resolution/translation precedes fresh battle lookup;three RAW outputs are
+captured after lookup,then all source floats load into private temporaries before
+ordered per-axis conversion/SetValue. GetPos alone skips rawf1194d80 outputs;
+GetHomePos still converts and calls SetValue for those tokens. Added ordered
+leaf copy with distinct home30/34/38 and visible3c/40/44 storage,so overlapping
+leaf outputs can affect later reads. No first-call/actor-1/null/position clamp.
+Fctiwz remains explicit platform provider;exceptional/FPSCR behavior unproven.
+
+Read-only original inspection confirms the sentinel asymmetry and capture order.
+Evidence:behavior/battle/BATTLE_POSITION_EVENT_CAPTURE_ORDER.md. Original ELFs
+remain /tmp/pm-native-get-home-pos.elf and pm-native-get-pos.elf outside history.
+
+Validation:make test passes74 CTest suites/78 Python tests;make all passes.
+Logs:/tmp/pm-packed-position-test.log and /tmp/pm-packed-position-build.log.
+Previous concurrent core/field_movement failures now pass. Position cases cover
+ordered overlapping leaf copies,captured outputs,snapshotted coordinates despite
+later unit mutations,per-axis platform conversion,visible skip versus home's
+unconditional output,and actual native home/visible original-address callbacks.
+Records/arena/numeric providers are authored fixture inputs;no original runtime/
+emulator/hardware or full movement/Game fidelity claim.
+
+Next:claimed movement-wrapper documentation delivery,first-attack/menu-domain
+replies,remaining motion/AC/cost/pose/effect/audio/message services and original
+unit/outer turn/Game ownership. Full-game goal incomplete;concurrent edits kept.
+
 ## 2026-10-12 — ID2 requested SetMoveSpeed/SetFallAccel native contracts
 
 Complete two wrappers/two leaves documented in two files,private commit ef07139.

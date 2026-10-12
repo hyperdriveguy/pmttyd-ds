@@ -9,6 +9,8 @@ BattlePackedSelectionServices nativeBattlePackedSelectionServices(EventNativeRun
     BattlePackedSelectionServices s;s.memory=nativeBattleActorServices(runtime);s.values=nativeBattleEventUtilityServices(runtime).values;s.user=&runtime;
     s.translate=[](void* p,EventEntry& e,int32_t selector) {auto& r=*static_cast<EventNativeRuntime*>(p);return translateBattleActor(&e,selector,nativeBattleActorServices(r));};return s;
 }
+bool bindBattleGetPosCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x80113620,&runtime,[](void* p,EventEntry& e,int32_t) {return packedUnitPositionEvent(e,false,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));});}
+bool bindBattleGetHomePosCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x801124f8,&runtime,[](void* p,EventEntry& e,int32_t) {return packedUnitPositionEvent(e,true,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));});}
 bool bindBattleSelectedTargetCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x8010b540,&runtime,[](void* p,EventEntry& e,int32_t) {return packedSelectedTargetEvent(e,nativeBattlePackedSelectionServices(*static_cast<EventNativeRuntime*>(p)));});}
 bool bindBattleCommandWeaponCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x801057e8,&runtime,[](void* p,EventEntry& e,int32_t) {const auto result=packedCommandWeaponEvent(e,nativeBattlePackedSelectionServices(*static_cast<EventNativeRuntime*>(p)));if(!result)std::abort();return *result;});}
 BattleUnitEventServices nativeBattleUnitEventServices(EventNativeRuntime& runtime) {
@@ -16,6 +18,7 @@ BattleUnitEventServices nativeBattleUnitEventServices(EventNativeRuntime& runtim
     auto values=nativeBattleEventUtilityServices(runtime);s.values=values.values;
     s.translate=[](void* p,EventEntry& e,int32_t selector) {auto& r=*static_cast<EventNativeRuntime*>(p);return translateBattleActor(&e,selector,nativeBattleActorServices(r));};
     s.unit=[](void* p,uint32_t battle,int32_t id) {auto& r=*static_cast<EventNativeRuntime*>(p);return battleRegistryUnit(battle,id,nativeBattleActorServices(r));};
+    s.truncateFloat=[](void* p,float value) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.truncate);return r.platform.truncate(r.platform.user,value);};
     s.removeEventId=[](void* p,uint32_t id) {auto& r=*static_cast<EventNativeRuntime*>(p);deleteEventId(id,r.creationServices());};
     s.createWait=[](void* p,uint32_t script,int32_t priority,uint32_t flags)->EventEntry& {auto& r=*static_cast<EventNativeRuntime*>(p);return createRootEvent(r.schedule,script,priority,flags,r.creationServices());};
     s.checkStatus=[](void* p,uint32_t unit,int32_t id)->int32_t {auto& r=*static_cast<EventNativeRuntime*>(p);return checkPackedBattleStatus(unit,id,nativeBattleActorServices(r))?1:0;};return s;

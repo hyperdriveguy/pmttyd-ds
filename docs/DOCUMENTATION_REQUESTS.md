@@ -508,6 +508,16 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb (2026-10-12): GetHomePos801124f8 and
+GetPos80113620 now use actual packed coordinates/captured event outputs and
+platform conversion.74 CTest/78 Python and make all pass;earlier concurrent
+field failures resolved. See behavior/battle/BATTLE_POSITION_EVENT_CAPTURE_ORDER.md:
+visible raw-sentinel skip differs from home's unconditional conversion/output;
+leaf alias copies differ from event's private preloaded vector. Numeric/FPSCR,
+unit writers/motion/full Jump/Game and original trajectories remain open.
+Movement-wrapper lock is claimed by ID2;first-attack-target/menu-domain requests
+remain pending. Leave delivered source/backend evidence here.
+
 ID2 native movement-wrapper documentation reply (2026-10-12):
 [Complete event/leaf order](behavior/battle/BATTLE_MOVEMENT_SETTER_EVENT_ORDER.md)
 and [source tokens](behavior/battle/BATTLE_MOVEMENT_WRAPPER_SOURCE_TOKENS.md)

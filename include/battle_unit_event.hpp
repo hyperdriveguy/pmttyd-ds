@@ -9,6 +9,7 @@ struct BattleUnitEventServices {
     int32_t (*translate)(void*,EventEntry&,int32_t)=nullptr;
     uint32_t (*unit)(void*,uint32_t explicitBattle,int32_t id)=nullptr;
     int32_t (*checkStatus)(void*,uint32_t unit,int32_t id)=nullptr;
+    int32_t (*truncateFloat)(void*,float)=nullptr;
     void (*removeEventId)(void*,uint32_t)=nullptr;
     EventEntry& (*createWait)(void*,uint32_t script,int32_t priority,uint32_t flags)=nullptr;
 };
