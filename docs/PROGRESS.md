@@ -4230,3 +4230,29 @@ save/content before complete-game requirements. Full objective active/incomplete
 local power recovery is not complete numerical/layout or full-game fidelity.
 Original data/IDs/tokens and story attribution/order/branches/event conditions
 remain mandatory.
+
+## 2026-10-12 — US square-root numeric service
+
+Recovered sqrt0x802728d0,size20 and complete __ieee754_sqrt0x80272640,size224.
+Added SQUARE_ROOT_NUMERIC_SERVICE.md:wrapper,special exponent fused x*x+x and
+errno33 (including infinities),signed-zero preservation,negative finite NaN,
+subnormal word shifts,exponent parity,both integer digit-extraction loops,
+carry/borrow,remainder correction without floating rounding-mode probe and
+final binary64 assembly. Linked power helper dependency. No numerical accuracy,
+original FPSCR/error observation or composed equivalence claim.
+
+Validation:1484 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO;remainder-path+1 double checked. Fresh291-function reports
+reproduced byte-for-byte. All513 local behavior links resolved;git diff --check
+passed. make test passed core plus36 Python tests;make all exited0 with no rebuild.
+No original execution/emulator,profile/save modification,native implementation,
+asset conversion or story/message rewrite. Original ELF/disassembly/reports
+remain ignored;working tree was clean at turn start.
+
+Next: executed standalone sqrt/power/scanner/converter/record-distance corpus
+with actual FPSCR/errno/final bits and caller input invariants;continue original
+drawing/string layout and resource/cadence callers plus uncovered story/event/
+field/battle/audio/save/content before complete-game requirements. Full objective
+active/incomplete;closed local numeric call-chain documentation does not prove
+execution accuracy,complete layout or full-game fidelity. Original data/IDs/
+tokens and story attribution/order/branches/event conditions remain mandatory.

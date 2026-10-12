@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 289 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1460 instruction anchors plus those
+now fingerprints 291 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1484 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -657,3 +657,9 @@ full104-byte/thirteen-constant hash. Authored contracts cover complete local
 product/range/reduction/polynomial/scaling/sign sequence;helper and composed
 numerical execution equivalence remain open. No original code linking/execution,
 asset conversion,message rewrite or license change;local artifacts stay ignored.
+
+Square-root research adds sqrt/__ieee754_sqrt identities and24 anchors plus
+remainder-path one constant. Authored contracts record complete local special/
+errno,integer normalization/extraction/correction and output bit flow,without
+executed numerical/FPSCR equivalence. Original ELF/disassembly/reports stay
+ignored;no executable linking,asset conversion,message rewrite or license change.

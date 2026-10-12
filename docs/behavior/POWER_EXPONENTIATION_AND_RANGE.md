@@ -148,8 +148,8 @@ Original flags,NaN/denormal effects and exact power bits still require execution
 ## Coverage and validation obligations
 
 Entry/special,large-y,general-log and this contract now cover the local pow/
-__ieee754_pow bodies. sqrt invoked by the half-exponent shortcut remains an
-unrecovered helper here;ldexp has a local contract but composed execution is
+__ieee754_pow bodies. [sqrt invoked by the half-exponent shortcut](SQUARE_ROOT_NUMERIC_SERVICE.md)
+is recovered separately;ldexp has a local contract but composed execution is
 unverified. Decimal pow(5,Q) depends on this general tail for larger Q,then
 applies its own scaling/refinement;host-libm agreement is not presumed.
 

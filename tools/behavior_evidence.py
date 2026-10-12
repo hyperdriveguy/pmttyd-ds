@@ -69,7 +69,7 @@ FUNCTIONS = (
     '_JUTFont_DrawPos', 'kanjiGetWidth', 'HSV2RGB', 'floor',
     'JUTFontSetup', 'JUTFont_CodeToGlyph', 'kanjiSearch', 'hankakuSearch',
     'FontGetMessageWidth', 'FontGetMessageWidthLine', 'iconGetWidthHight', 'TEXGet',
-    'sscanf', '__StringRead', '__sformatter', '__strtoul', '__strtoull', '__strtold', '__dec2num', '__equals_dec', '__minus_dec', 'pow', '__ieee754_pow', 'mbtowc', 'is_utf8_complete',
+    'sscanf', '__StringRead', '__sformatter', '__strtoul', '__strtoull', '__strtold', '__dec2num', '__equals_dec', '__minus_dec', 'pow', '__ieee754_pow', 'sqrt', '__ieee754_sqrt', 'mbtowc', 'is_utf8_complete',
     'parse_format@MSL_C.PPCEABI.bare.H.a scanf.c',
     'btlevtcmd_AnnounceMessage', 'btlevtcmd_AnnounceSetParam',
     'BattlePadCheckTrigger', 'BattlePadMultiCheckTrigger', '_disp@battle_message.o',

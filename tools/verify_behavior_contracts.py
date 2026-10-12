@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'square_root_numeric_service': {
+        0x802728dc: '4bfffd65', 0x80272660: 'fc21087a',
+        0x80272668: '900d1f08', 0x8027267c: '7c031b79',
+        0x80272698: '900d1f08', 0x802726b4: '5400a814',
+        0x802726bc: '3863ffeb', 0x802726d8: '54c402d7',
+        0x802726f0: '7c651850', 0x80272700: '548407ff',
+        0x8027273c: '3cc00020', 0x80272748: '7c042800',
+        0x80272758: '7d8c3214', 0x80272778: '3cc08000',
+        0x80272794: '7c080040', 0x802727b8: '396b0001',
+        0x802727c8: '38a5ffff', 0x802727d0: '7d4a3214',
+        0x802727f0: '7ca00379', 0x80272808: 'd8010010',
+        0x80272820: '7d4a0214', 0x8027283c: '64a58000',
+        0x80272848: '7c000e70', 0x80272858: 'c8210010',
+    },
     'power_exponentiation_and_range': {
         0x80270458: '7c001b79', 0x80270460: 'cbe21a78',
         0x8027047c: '9061003c', 0x8027048c: 'fd83007a',
@@ -1502,6 +1516,10 @@ def verify(iso_path):
         if hashlib.sha256(read(0x80428eb8, 104)).hexdigest() != 'e8622f1b64a989054b1a4f9f9ac119b4ddcc610a6d259de9497624558d9981cf':
             raise ValueError('Power exponentiation/range constants mismatch')
         print('All thirteen power exponentiation/range constants verified')
+        if read(0x804290f8, 8).hex() != '3ff0000000000000':
+            raise ValueError('Square root remainder constant mismatch')
+        print('Square root remainder-path one constant verified')
+
 
 
 
