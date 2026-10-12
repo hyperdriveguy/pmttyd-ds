@@ -456,6 +456,14 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Operand-service breadcrumb (2026-10-12): `event_operands.cpp` ports complete
+integer/float namespaces and saved leaves. Tests cover asymmetric routing,
+encoded boundaries, word/byte switches, signed flag addressing and old/GP/query
+order. Original address/context/storage/FPSCR/save owners remain explicit
+services. Next:delivered branch/loop/arithmetic/switch/data bodies, then original
+Jump stream bindings. Existing source/domain/runtime traces remain open; no
+provisional constants were substituted for measured behavior.
+
 Opcode routing breadcrumb (2026-10-12): `event_control_opcodes.cpp` wires
 recovered92..112 run/ID/child/control/block/end paths to lifecycle services.
 Real manager/dispatcher integration exercises joined child copy-back and parent

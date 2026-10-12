@@ -1,5 +1,27 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Original event operand namespaces
+
+Implemented `event_operands.cpp` from the complete integer, float and saved-switch
+contracts in docs/behavior. Integer and float APIs retain their different signed
+routing, encoded-value boundaries, flag semantics, raw/old setter returns and
+single-precision quantization. Saved GSW0 remains a full word; other switch bytes
+narrow on store. Separate old-value/read/write GP captures and immediate context
+lookups remain observable through providers. Address arithmetic and PPC shift
+counts wrap explicitly; original float-to-word conversion is a required service.
+
+Validation: `make test` passed33/33 CTest suites and58 Python tests; `make all`
+passed and the ARM operand object and3dsx were built. Logs:
+/tmp/pm-operands-test.log and /tmp/pm-operands-build.log. Fixtures cover encoded
+boundaries, float/integer namespace asymmetry, signed flag addressing, NaN/zero,
+old-read-before-conversion and changing saved GP between read/write.
+
+The goal remains incomplete. This host-testable layer needs native address,
+context, numeric and save owners; it does not claim packed-layout aliasing or
+Gekko FPSCR equivalence. Next:branch/loop/arithmetic/switch/data opcode bodies,
+then original Jump stream and native service binding. Existing EVT-01 requests
+cover missing source/domain/runtime traces; documentation breadcrumbs updated.
+
 ## 2026-10-12 — Ordinary support, slope and upstairs binding
 
 Overworld goal remains active and incomplete. Native commit78eb86b binds the
