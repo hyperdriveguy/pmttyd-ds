@@ -2740,3 +2740,35 @@ caller census; camera modes/producers, full command input, outer battle/turn
 cadence and conclusion/reward/death/revival events. Continue all systems before
 complete-game requirements. Objective active/incomplete; original/native traces
 and rendering comparisons needed.
+
+## 2026-10-12 — US message resources, loading and lookup
+
+Previous turn progressed with3561cd8 announcement messages. Added
+MESSAGE_RESOURCES_AND_LOOKUP.md: two-slot resource records, seven language paths,
+slot1 maximum-language allocation, slot0 map allocation, retained-buffer failure
+path, pair-index sorting, exact slot precedence and binary-search bounds,
+localized fallback, 128-byte command split and language-dependent lead predicate.
+Duplicate ordering, complete control dispatch, glyph decoding, caller lifetimes
+and story conditions remain explicitly open. No original dialogue is rewritten.
+
+Added read-only message_resource_evidence.py. Census of260 US files found13,186
+key/text pairs, two duplicate key occurrences, zero unmatched keys/nonzero tails
+and4,366 high bytes. Metadata retains offsets, raw key hex and text hashes;
+literal tag lexemes are not interpreted controls. Reports and original extracts
+remain ignored. No assumed UTF-8 normalization or dialogue export is committed.
+
+Validation:392 instruction anchors and prior constants/tables/script checks
+passed against the read-only US ISO. Evidence162 function fingerprints and full
+message census each reproduced byte-for-byte in a second report. Five bounded
+parser cases and all behavior document links passed. make test passed core plus36
+Python tests; make all exited0, no rebuild; git diff --check passed. Workspace
+started clean; only research/provenance/evidence tooling changed. No original
+execution, emulator run or profile/save changes. Static checks do not establish
+original text rendering, timing or native-game equivalence.
+
+Next: msgAnalize command dispatch/variables/branches, font byte-to-glyph mapping,
+resource initialization/release/callers and original qsort duplicate ordering;
+story attribution/order/event conditions, substitution and display lifetime.
+Continue camera/input/outer battle and other field/content/save services before
+complete-game requirements. Full objective active/incomplete; original/native
+execution comparisons still needed.

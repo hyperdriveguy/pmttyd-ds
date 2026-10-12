@@ -149,3 +149,7 @@ original US text/control-token parsing, display-list lifetime, font/window
 rendering, parameter/configuration producers and other announcement callers.
 This callback is not the complete story-dialogue service. Full message and
 full-game fidelity remain unfinished.
+
+Local msgSearch/resource loading and command tokenization are now specified in
+[message resources](MESSAGE_RESOURCES_AND_LOOKUP.md); full control/glyph parsing
+and substitution remain open.

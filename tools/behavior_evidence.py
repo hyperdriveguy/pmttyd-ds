@@ -31,6 +31,7 @@ FUNCTIONS = (
     'BattleWaitAllActiveEvtEnd_NoBgSetEndWait', 'BattleCheckConcluded',
     'BattleAfterReactionMain', 'BattleAfterReactionRelease',
     'pouchRemoveItem', 'pouchRemoveItemIndex', 'btlevtcmd_ConsumeItemReserve',
+    'msgSearch', 'msgLoad', 'msg_compare', 'msgGetCommand', '_ismbblead',
     'btlevtcmd_AnnounceMessage', 'btlevtcmd_AnnounceSetParam',
     'BattlePadCheckTrigger', 'BattlePadMultiCheckTrigger', '_disp@battle_message.o',
     'evt_btl_camera_set_mode', 'evt_btl_camera_set_homing_unit',

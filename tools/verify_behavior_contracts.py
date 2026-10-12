@@ -13,6 +13,14 @@ from iso_assets import DEFAULT_ISO
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'message_resources_and_lookup': {
+        0x80081bc4: '835d0008', 0x80081be4: '40800050',
+        0x80081c3c: '2c1b0002', 0x80081c54: '7c63002e',
+        0x8008471c: '2c1a0006', 0x80084850: '901f0008',
+        0x80084910: '900d1b14', 0x80081ca0: '7c63fe70',
+        0x80081aa0: '38000080', 0x80081b38: '38600000',
+        0x80081b68: '40810014', 0x80081b78: '4181000c',
+    },
     'announcement_messages': {
         0x801abe54: '907d0078', 0x801abe60: 'b39e8c8e',
         0x801abeb4: '480be205', 0x801abeec: '4bf25479',
