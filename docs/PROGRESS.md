@@ -4256,3 +4256,29 @@ field/battle/audio/save/content before complete-game requirements. Full objectiv
 active/incomplete;closed local numeric call-chain documentation does not prove
 execution accuracy,complete layout or full-game fidelity. Original data/IDs/
 tokens and story attribution/order/branches/event conditions remain mandatory.
+
+## 2026-10-12 — US string pitch drawing
+
+Recovered FontDrawStringVecPitch0x80077034,size334,FontDrawStringPitch
+0x80077368,size68 and FontDrawString0x800773d0,size68. Added
+FONT_STRING_PITCH_DRAWING.md:vector/scalar ABI and matrix setup,lead/byte/tag
+routing without LF line branch,first-WID1 width,proportional versus fixed-cell
+translation/advance,ordered comparisons,outline/raw-effective-color restoration
+and two/ten known inner RNG draws per glyph. Preserved distinctions from message
+width/parser and caller-vector/current scale behavior. No original rendering,
+RNG seed/cadence or layout/image equivalence measured.
+
+Validation:1508 instruction anchors and prior tables/constants/resource checks
+passed read-only ISO;two zero-vector templates,half/default pitch checked.
+Fresh294-function reports reproduced byte-for-byte. All523 local behavior links
+resolved;git diff --check passed. make test passed core plus36 Python tests;
+make all exited0 with no rebuild. No original execution/emulator,profile/save
+modification,native implementation,asset conversion or story/message rewrite.
+ELFs/disassembly/reports remain ignored;working tree clean at turn start.
+
+Next: string matrix/center/shake and message-draw callers,matrix service contracts,
+resource/cadence and executed positions/images/RNG;composed numerical validation
+remains needed. Continue uncovered story/event/field/battle/audio/save/content
+before complete-game requirements. Full objective active/incomplete;local string
+wrapper coverage is not complete text/layout or full-game fidelity. Original
+IDs/tokens and story attribution/order/branches/event conditions remain required.

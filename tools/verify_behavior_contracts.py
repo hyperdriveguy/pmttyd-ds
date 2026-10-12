@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'font_string_pitch_drawing': {
+        0x8007706c: 'c3fa0000', 0x80077080: '48227231',
+        0x80077094: '4800aaad', 0x800770d4: '4800a9cd',
+        0x800770f4: '2804ffff', 0x80077170: '8ba40001',
+        0x80077178: 'fc1e0040', 0x800771ac: 'ec1e0028',
+        0x800771b4: 'ec23f83a', 0x800771c0: '482270a5',
+        0x800771d0: '48226b95', 0x800771e8: '418200e8',
+        0x8007721c: '90ed1a8c', 0x80077250: '4bffd4d1',
+        0x80077280: '4bffd4a1', 0x800772a4: '90ed1a8c',
+        0x800772dc: '4bffd445', 0x8007730c: '7c04002e',
+        0x80077328: 'efe2f83a', 0x80077334: 'effef83a',
+        0x80077394: 'd0210008', 0x800773bc: '4bfffc79',
+        0x80077400: 'c0228ff0', 0x80077424: '4bfffc11',
+    },
     'square_root_numeric_service': {
         0x802728dc: '4bfffd65', 0x80272660: 'fc21087a',
         0x80272668: '900d1f08', 0x8027267c: '7c031b79',
@@ -1519,6 +1533,12 @@ def verify(iso_path):
         if read(0x804290f8, 8).hex() != '3ff0000000000000':
             raise ValueError('Square root remainder constant mismatch')
         print('Square root remainder-path one constant verified')
+        if read(0x802c2b78, 24) != bytes(24):
+            raise ValueError('String pitch scalar vector templates mismatch')
+        if read(0x8042041c, 4) != struct.pack('>f', 0.5) or read(0x80420430, 4) != struct.pack('>f', -1.0):
+            raise ValueError('String pitch half/default constants mismatch')
+        print('Two scalar vector templates and half/default pitch verified')
+
 
 
 
