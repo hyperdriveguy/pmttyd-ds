@@ -229,6 +229,19 @@ void clearCollision() {walls.clear();wallLevels.clear();ground.clear();groundRet
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
 bool Game::recoveryReturn(ReturnPoint& point) const {return groundReturn(returnContact,point);}
+bool Game::beginWater() {
+    ReturnPoint target;
+    if(!recoveryReturn(target)) {
+        // Original ordinary map fallbacks, engine units/100. The generic
+        // vector is zero; gor_00/gor_04 have explicit source overrides.
+        target=progress.room==1?ReturnPoint{0,0,-2}:progress.room==4?ReturnPoint{4,.35f,-1}:ReturnPoint{};
+    }
+    float floor=target.y;
+    if(!groundAt({target.x,target.z},target.y,floor))return false;
+    target.y=floor;
+    water.begin({progress.position.x,groundHeight,progress.position.z},{target.x,target.y,target.z});
+    jumpHeight=0;jumpTick=0;warpRequest=-1;saveRequested=false;return true;
+}
 void Game::restore(const Progress& saved) {
     const Progress p=saved; // Caller may pass this game's own progress.
     *this = Game{};
@@ -260,6 +273,8 @@ const char* Game::dialogue() const {
     return dialogueKind == 1 ? encounter[dialoguePage] : notices[dialoguePage];
 }
 const char* Game::prompt() const {
+    if(scene==Scene::FieldDefeat)return "A: load save";
+    if(water.active())return "";
     if (scene == Scene::Dialogue) return "A / touch: next     B: close";
     if (scene == Scene::Victory) return "Crump defeated! A: return to plaza";
     if (scene == Scene::Defeat) return "A: retry     B: return to plaza";
@@ -391,6 +406,19 @@ void Game::battle(const Input& i) {
 void Game::tick(const Input& i) {
     ++ticks; sound=Sound::None;
     const bool tap=i.touchX>=0;
+    if(scene==Scene::FieldDefeat) {if(i.confirm || (tap && i.touchY>=107 && i.touchY<155))reloadRequested=true;return;}
+    if(water.active()) {
+        const auto event=water.tick(progress.hp);
+        progress.position={water.position[0],water.position[2]};
+        if(event==WaterEvent::Landed || event==WaterEvent::Complete || event==WaterEvent::Dead) {
+            groundHeight=water.position[1];progress.elevation=groundHeight;
+            groundAt(progress.position,groundHeight,groundHeight,&groundContact);
+        }
+        if(event==WaterEvent::Complete) {
+            followerPath.clear();followerPath.push_back(partner);followerPath.push_back(progress.position);
+        } else if(event==WaterEvent::Dead)scene=Scene::FieldDefeat;
+        return; // Original camera and NPC updates stay frozen through recovery.
+    }
     if (scene==Scene::Dialogue) {
         if (i.cancel || (tap && i.touchY>=168)) scene=Scene::Explore;
         else if (i.confirm || tap) {
@@ -425,6 +453,7 @@ void Game::tick(const Input& i) {
         sound=Sound::Confirm;
     }
     move(i);
+    if((groundContact.attributes&0x200) && jumpTick==0 && beginWater())return;
     if (i.cancel) openDialogue(2);
     else if (i.confirm && jumpTick==0) {
         if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) openDialogue(1);

@@ -278,6 +278,19 @@ void returnBindings() {
     contact.sourceNode=999;CHECK(!groundReturn(contact,point));CHECK(point.x==.84f);
     std::remove(path);clearCollision();
 }
+void waterRecovery() {
+    WaterRecovery w;int hp=7;w.begin({5.6f,-.1f,2.4f},{5.5f,.05f,-1.9f});
+    CHECK(w.tick(hp)==WaterEvent::None);CHECK(std::fabs(w.position[1]+.16f)<.0001f);
+    int elapsed=1;while(w.state!=1 && elapsed++<40)w.tick(hp);
+    CHECK(w.state==1 && w.counter==40 && hp==7);
+    for(int n=0;n<39;++n)w.tick(hp);CHECK(w.state==1);w.tick(hp);CHECK(w.state==10);
+    while(w.tick(hp)!=WaterEvent::Landed && elapsed++<400){}
+    CHECK(elapsed<400 && w.state==31 && w.counter==49);
+    CHECK(std::hypot(w.position[0]-5.5f,w.position[2]+1.9f)<=.081f && std::fabs(w.position[1]-.05f)<.0001f);
+    for(int n=0;n<48;++n)w.tick(hp);CHECK(hp==7);w.tick(hp);CHECK(hp==6 && w.state==32 && w.counter==11);
+    for(int n=0;n<10;++n)w.tick(hp);CHECK(w.active());CHECK(w.tick(hp)==WaterEvent::Complete && !w.active());
+    CHECK(hp==6);w.state=31;w.counter=1;hp=1;CHECK(w.tick(hp)==WaterEvent::Dead && hp==0 && !w.active());
+}
 void indexedOriginalCollision() {
     size_t queries=0;
     for(uint32_t room=0;room<5;++room) {
@@ -397,13 +410,28 @@ void originalReturnSelection() {
     CHECK(g.returnContact.sourceNode==0xd2a30);
     CHECK(g.recoveryReturn(point));CHECK(std::fabs(point.x-5.5f)<.001f);
     CHECK(std::fabs(point.y-.05f)<.001f && std::fabs(point.z+1.9f)<.001f);
-    const auto remembered=g.returnContact.sourceNode;walk(0,0,10);CHECK(g.returnContact.sourceNode==remembered);
+    const auto remembered=g.returnContact.sourceNode;CHECK(g.water.active());
+    const auto camera=std::array<float,3>{g.cameraX,g.cameraHeight,g.cameraZ};const auto partner=g.partner;
+    const int before=g.progress.hp;
+    for(int n=0;g.water.active() && n<500;++n) {
+        Input ignored;ignored.x=1;ignored.confirm=true;ignored.menuConfirm=true;g.tick(ignored);
+        CHECK(g.cameraX==camera[0] && g.cameraHeight==camera[1] && g.cameraZ==camera[2]);
+        CHECK(g.partner.x==partner.x && g.partner.z==partner.z);CHECK(!g.saveRequested);
+    }
+    CHECK(!g.water.active() && g.progress.hp==before-1 && g.scene==Scene::Explore);
+    CHECK(g.returnContact.sourceNode==remembered);
+    CHECK(std::hypot(g.progress.position.x-5.5f,g.progress.position.z+1.9f)<=.081f);
+    Game dead;p.room=1;p.position={5.6f,2.4f};p.elevation=-.1f;p.hp=1;dead.restore(p);
+    dead.tick({});CHECK(dead.water.active());
+    for(int n=0;dead.water.active() && n<700;++n)dead.tick({});
+    CHECK(dead.scene==Scene::FieldDefeat && dead.progress.hp==0 && !dead.saveRequested);
+    dead.tick(confirm());CHECK(dead.reloadRequested && dead.progress.hp==0);
     // Loading a different room resets the map-local remembered hit ID.
     CHECK(loadCollision("romfs/map.walls"));CHECK(loadGround("romfs/map.ground"));CHECK(loadGroundReturns("romfs/map.returns"));
     p.room=0;p.position={1,2};p.elevation=0;g.restore(p);CHECK(g.returnContact.sourceNode==0);CHECK(!g.recoveryReturn(point));
     clearCollision();
 }
 int main(int argc,char**) {
-    try {if(argc>1) {indexedOriginalCollision();originalRooms();originalReturnSelection();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();std::puts("Core scenarios passed");}
+    try {if(argc>1) {indexedOriginalCollision();originalRooms();originalReturnSelection();std::puts("Original room arrivals passed");return 0;}movement();dialogueAndTouch();timing();battles();saves();collisionImport();groundImport();collisionRollback();visibility();uvAnimation();meshAnimation();returnBindings();waterRecovery();std::puts("Core scenarios passed");}
     catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

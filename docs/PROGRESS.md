@@ -1024,3 +1024,64 @@ assertions also passed (exit0):
 ```sh
 python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_harbor_stairs.py
 ```
+
+## Native water damage/recovery and checkpoint reload
+
+Implemented portable original-derived water motion stages and integrated them
+with grounded0x200 contacts. Uses remembered authored return or original ordinary
+map fallback, source sink/hold/rise/travel/fall parameters, camera/follower freeze
+and blocked menus/input/warps. Horizontal movement uses source speed8 and
+truncated tick count, leaving less than one step of residual distance instead
+of snapping exactly to the point. Source landing counter fall-through and HP
+penalty boundaries are tested. One HP lost; HP0 enters FieldDefeat and offers
+checkpoint load, preserving saved HP instead of healing. Native save-load stages
+room collision/returns/rendering atomically; water positions cannot save or
+write on START exit. Existing battle defeat harness remains separate.
+
+Original marioJumpData four fall parameters read from US DOL(.sdata source):
+-.1,-.2,.024,-.004; terminal-18 and mot_damage cap-10. Source camera/NPC calls
+were traced. Implementation math is native, without executing/linking original
+code. Original source counters are not claimed observed timings. Original splash/
+chomp/pose/SFX/game-over assets and dynamic landing ray remain unfinished.
+Current controller lands using the static supporting floor at authored target;
+wall widths/flags and full original air contacts are still fidelity limitations.
+
+Validation:
+```sh
+make test
+build-host/core_tests --rooms
+make -j2 all
+python3 tools/road_fixtures.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-arrival-road.bin --seconds 4 --input-script tests/azahar_water.py
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/harbor-last-hp-road.bin --seconds 4 --input-script tests/azahar_water.py
+```
+All exited0: core plus27 Python tests; all8 room arrivals/18,315 probes; water
+source-stage progression and bounded completion, landing/HP counter boundaries,
+zero HP, camera/follower freeze, ignored controls, no intermediate save, fallback
+and field-defeat reload-request checks. Azahar HP7 run returned near the authored
+Ship_Change02 position and savedHP6. HP1 run reached game over, preserved original
+checkpoint bytes, reloaded HP1/entrance position and saved without healing.
+Reviewed positive water-result (copy water-positive-result.png): actor returned
+near original dock, full status UI, reported60fps. Reviewed
+water-checkpoint-reloaded.png: HP1 and original harbor entrance, full UI. No
+hardware performance or full original water-presentation acceptance claim.
+
+User expanded priorities now explicitly include warp fade effects and proper
+trigger/arrival distances, render proportions/distances, and correct physics.
+These remain active requirements. Next concrete task: source-derived road fade
+and entry/exit travel distances, then correct actor collision widths and remaining
+water presentation/ray behavior. Preliminary original evt_bero inventory shows
+road Bero records use auto direction20000/position100000/length-1; do NOT treat
+those sentinels as literal lengths. Native .7 trigger/.9 inset/45-tick cooldown
+remain provisional; fade is currently absent. evt_bero_info_run_road at8030e97c,
+bero_case_exec_road and evt_fade_set_mapchange_type are next evidence sources.
+Full English story/dialogue, original SFX, camera/boat visibility, layered
+materials and broader traversal remain incomplete; full objective active.
+
+Final road regression after water integration passed two reciprocal east/plaza
+round trips with saved-room assertions (exit0):
+```sh
+python3 tools/emulator_smoke.py --fresh-save --save-fixture artifacts/fixtures/east-road.bin --seconds 4 --input-script tests/azahar_roads.py
+```
+Normal gravity1.0 was additionally verified in original marioMain for Rogueport;
+moon-only0.5 overrides do not apply. See mechanics notes for original addresses.

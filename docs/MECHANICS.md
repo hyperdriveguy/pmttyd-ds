@@ -137,3 +137,35 @@ Further water trace: mot_damage initialization calls marioNoUpdateCamPos
 marioUpdateCamPos801a8f60 and npcStartForEvent80043bc8. Water recovery must
 freeze the field camera and NPC updates instead of following Mario's airborne
 recovery motion. Existing partner follow/camera does not yet implement this.
+
+Native water controller now implements ordinary mot_damage stages0/1/10/11/
+12/13/14/20/31/32/33: sink -6 engine units/tick until below root-160, hold40,
+rise20 decreasing by1 with POSITIVE minimum10 (not negative terminal velocity),
+then travel speed8 for integer-truncated horizontal-distance/8 ticks. No exact
+XZ teleport is introduced: remaining distance is less than one travel step.
+Zero-distance travel uses10-tick branch14. Fall uses original marioJumpData
++0x10 four floats(-.1,-.2,.024,-.004), jerk clamped nonpositive, terminal-18
+then mot_damage's additional-10 fall-step cap. Values were read from original
+DOL data; original source headers are not substituted for runtime values.
+
+Landing falls through assigning50 and decrementing on that same tick, yielding
+49 remaining hold ticks. HP-1 then positive HP assigns12 and decrements on the
+same tick, yielding11 remaining ticks. HP0 enters state33 instead of healing.
+Current zero-HP UI reloads a valid existing checkpoint without changing its HP;
+original game-over presentation remains unfinished. Original gor_00 fallback
+(0,0,-200) maps to(0,0,-2), gor_04(400,35,-100) maps to(4,.35,-1); other packed
+ordinary maps use zero vector. Special state/saved-vector/character cases remain
+unsupported. Normal water trigger requires current prototype jump to finish.
+
+Source-derived mechanics pass portable/native checks but are NOT Dolphin-
+observed acceptance. Original water splash/chomp effects, pose sequences, sound
+macros, final landing ray, body widths and exact float/timing boundaries remain
+required fidelity work. Camera/follower positions freeze in controller checks;
+full original NPC event/animation behavior is not yet reproduced.
+
+Normal gravity parameter confirmed: original marioMain8005a944 writes1.0 to
+Mario+0x228 each frame (DOL constant80420008). Only listed moo moon rooms
+replace it with0.5 at8005a9d8; current Rogueport rooms use1.0. marioResetGravity
+80096988 also writes1.0 (80420a74). Thus the implemented normal fall table
+selection is source-supported for this slice, rather than inferred from zeroed
+initial memory. Special gravity overrides remain out of scope for these rooms.

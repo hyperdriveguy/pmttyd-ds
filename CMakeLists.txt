@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(ttyd_core LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
-add_library(ttyd_core source/game.cpp source/save.cpp source/visibility.cpp source/uv_animation.cpp)
+add_library(ttyd_core source/game.cpp source/save.cpp source/visibility.cpp source/uv_animation.cpp source/water_recovery.cpp)
 target_include_directories(ttyd_core PUBLIC include)
 target_compile_options(ttyd_core PRIVATE -Wall -Wextra -Wpedantic)
 add_executable(core_tests tests/core_tests.cpp)

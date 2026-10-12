@@ -100,6 +100,19 @@ int main() {
             notice=ttyd::writeSave(savePath,game.progress)?"Progress saved":"Save failed; progress kept in memory";
             noticeTicks=180;game.saveRequested=false;
         }
+        if(game.reloadRequested) {
+            game.reloadRequested=false;ttyd::Progress checkpoint;
+            const auto result=ttyd::loadSave(savePath,checkpoint);bool ok=false;
+            if((result==ttyd::LoadResult::Loaded || result==ttyd::LoadResult::Recovered) && checkpoint.hp>0) {
+                ttyd::CollisionTransition transaction;float h=checkpoint.elevation;
+                if(stageRoomCollision(checkpoint.room,transaction) && ttyd::groundAt(checkpoint.position,h,h) &&
+                   ttyd::walkable(checkpoint.position,h) && renderer.changeRoom(checkpoint.room)) {
+                    game.restore(checkpoint);transaction.commit();ok=true;
+                }
+            }
+            notice=ok?"Progress loaded":"Save unavailable";noticeTicks=180;
+            accumulator=0;pending={};previous=seconds();
+        }
         audio.update(game.scene,game.progress.sound);
         metrics.renderMs=C3D_GetProcessingTime();metrics.gpuMs=C3D_GetDrawingTime();
         renderer.render(game,metrics,noticeTicks>0?notice:"",audio.available());
@@ -107,6 +120,6 @@ int main() {
         if(now-window>=1) {metrics.fps=frames/(now-window);window=now;frames=0;}
     }
     // A battle is transient; save only the exploration checkpoint.
-    if(game.scene==ttyd::Scene::Explore) ttyd::writeSave(savePath,game.progress);
+    if(game.scene==ttyd::Scene::Explore && !game.water.active()) ttyd::writeSave(savePath,game.progress);
     audio.shutdown();renderer.shutdown();romfsExit();gfxExit();return 0;
 }

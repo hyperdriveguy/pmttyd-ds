@@ -234,7 +234,7 @@ void Renderer::world(const Game& g) {
         struct Actor { int index;Vec2 p;float h,w,face,lift,tilt; };
         float bob=std::sin(g.ticks*.22f)*.018f;
         std::array<Actor,4> actors{{
-            {0,g.progress.position,1.45f,1.45f*g.turnScale,g.facing,g.groundHeight+g.jumpHeight,bob},
+            {0,g.progress.position,1.45f,1.45f*g.turnScale,g.facing,g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight,bob},
             {1,g.partner,1.05f,1.05f,g.facing,g.partnerHeight,bob},
             {3,NpcPosition,1.4f,1.4f,1,0,0},
             {2,CrumpPosition,1.9f,1.9f,-1,0,bob}
@@ -344,6 +344,12 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
             text(enemy?"Press A at the marker.":g.selection==0?"Press A at the marker.":"Hold B, release at the marker.",14,161,.52f,Ink);
             text("Timing guide is a prototype assist.",14,190,.43f,Ink);
         }
+    } else if(g.scene==Scene::FieldDefeat) {
+        text("GAME OVER",16,64,.9f,Ink);
+        button("Load save / A",16,107,288,48,true);
+    } else if(g.water.active()) {
+        char line[64];std::snprintf(line,sizeof(line),"Mario  %d/10 HP",g.progress.hp);
+        text(line,16,64,.72f,Ink);text("Partner: Goombella",16,105,.57f,Ink);
     } else if(g.scene==Scene::Dialogue) {
         text("Conversation",16,64,.76f,Ink);
         button("Next / A",16,105,288,49,true);

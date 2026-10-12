@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <vector>
 #include <memory>
+#include "water_recovery.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -18,7 +19,7 @@ inline constexpr std::array<Rect, 4> Obstacles{{
 }};
 inline constexpr Vec2 CrumpPosition{3, 3.5f};
 inline constexpr Vec2 NpcPosition{-2.5f, 3.5f};
-enum class Scene : uint8_t { Explore, Dialogue, Battle, Victory, Defeat };
+enum class Scene : uint8_t { Explore, Dialogue, Battle, Victory, Defeat, FieldDefeat };
 enum class Phase : uint8_t { Select, Windup, Impact, EnemyWindup, EnemyImpact };
 enum class Menu : uint8_t { Status, Map, Items, Settings };
 enum class Sound : uint8_t { None, Confirm, Jump, Hit, Success };
@@ -54,6 +55,8 @@ public:
     float groundHeight = 0, partnerHeight = 0;
     GroundContact groundContact,partnerContact;
     GroundContact returnContact;
+    WaterRecovery water;
+    bool reloadRequested=false;
     bool recoveryReturn(ReturnPoint& point) const;
     float cameraZ = 3.5f, cameraHeight = 0;
     float cameraX = 1, jumpHeight = 0, facing = 1, turnScale = 1;
@@ -83,6 +86,7 @@ private:
     void battle(const Input&);
     void attackDone(int damage);
     void openDialogue(int kind);
+    bool beginWater();
 };
 struct CollisionSnapshot;
 // Stages a room's collision; destruction restores the previous data unless committed.

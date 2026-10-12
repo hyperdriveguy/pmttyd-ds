@@ -188,3 +188,19 @@ IDs in another room. This latch does not implement the damage state machine.
 Floor sampling now excludes original bit4 triggers unless inclusion mask
 0x00080080 or0x00800000 applies, matching current normal-Mario ground-filter
 coverage. Roll/Vivian, name-dependent high-bit cases and wall filters remain open.
+
+WaterRecovery is portable fixed-tick motion using original mot_damage state
+numbers/parameters and native engine-to-world0.01. Game starts it on grounded
+water attribute0x200, resolving saved eligible owner or ordinary original map
+fallback, then supporting floor height. During recovery, input/menus/warps,
+camera and partner movement are suspended; field map animation clock continues.
+Rendering uses recovery body Y. Transient positions cannot save, including START
+exit. Landing applies one HP loss after the source hold counter; zero HP enters
+FieldDefeat, preserving the last checkpoint. Load-save request stages collision,
+returns and rendering before restoring progress, and never supplies artificial HP.
+
+Presentation is incomplete: original water/character effects, SFX/game-over
+music/art, NPC event behavior and observed timing remain unverified. Landing
+uses the current static floor provider at the authored point; original full ray
+queries/dynamic collision are still needed. Float scaling can shift exact source
+threshold boundaries; compare complete motion in Dolphin before acceptance.
