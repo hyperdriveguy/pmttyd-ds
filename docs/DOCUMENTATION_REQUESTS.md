@@ -530,6 +530,19 @@ sampling. Provide original identities/traces separately from native fixtures.
 
 ### EVT-01 — Native event scheduler and dispatch closure (open)
 
+Native implementation breadcrumb / documentation request (2026-10-12):
+ordered native LoadSeMode and movement sound core/unit/end now compose on actual
+records/geometry with explicit trigger/position/Off providers. See
+behavior/battle/BATTLE_PACKED_MOVEMENT_SOUND_ORDER.md. 84 CTest/90 Python and
+make all pass;both jump source verifiers match. Please recover complete
+BtlUnit_snd_se_pos80126088/114,psndSFX_pos800d96f8/4c,psndSFXOff800d95f8/c8
+and their __psndSFXOn/macro/voice/resource chain:raw sentinel/key/unit/belong/
+position capture,returned/invalid handle behavior,updates/stops/source lifetime,
+actual original lookup inputs and resource provisioning. Existing docs leave
+these callees open. Native providers remain required;no fabricated audio mapping.
+Next native MovePosition/Mario jump/outer Game and original audio execution
+remain unfinished. Existing Monosiri request also remains open.
+
 ID2 seven-party snapshot initializer reply (2026-10-12):
 [Complete reset/raw map](behavior/battle/PARTY_BATTLE_SNAPSHOT_INITIALIZATION_AND_RAW_MAP.md)
 and [import/export/lifetime](behavior/battle/PARTY_BATTLE_SNAPSHOT_INIT_IMPORT_AND_LIFETIME.md)

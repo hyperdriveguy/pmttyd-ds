@@ -5,6 +5,7 @@
 #include "event_memory_release.hpp"
 
 namespace ttyd {
+BattlePackedMovementSoundServices nativeBattleMovementSoundServices(EventNativeRuntime& runtime,const BattleSoundPlaybackServices& playback) {BattlePackedMovementSoundServices s;s.position=nativeBattlePartPositionServices(runtime);s.playback=playback;return s;}
 BattleMoveFrameServices nativeBattleMoveFrameServices(EventNativeRuntime& runtime) {
     BattleMoveFrameServices s;s.common=nativeBattleChoiceServices(runtime);s.user=&runtime;
     s.distance=[](void* p,float a,float b,float c,float d) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.distanceFloat);return r.platform.distanceFloat(r.platform.user,a,b,c,d);};return s;

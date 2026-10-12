@@ -402,6 +402,36 @@ requirements and EVT-01/JUMP-01/DMG-02 remain incomplete.
 
 # Progress and next-session handoff
 
+## 2026-10-12 — Native sound-mode loader and movement-sound core
+
+Added native ordered partial LoadSeMode and movement sound core/unit/end services
+on actual record/unit/part byte storage. Loader preserves initial14/18 resets,
+-2 retention,exact type source ranges,gaps and aliases. Core retains incoming XYZ
+before original discarded template reads,keeps empty/single/alternating branches,
+fresh post-trigger geometry/handle and post-counter selected-key reads,signed
+counter/period/wrap policy,periodic ignored return and Off-before-handle reset.
+Factory binds geometry/memory to EventNativeRuntime with required explicit
+original-shaped playback callbacks. No generated effect/silent fallback is added.
+
+Evidence:behavior/battle/BATTLE_PACKED_MOVEMENT_SOUND_ORDER.md. Read-only original
+ELFs stay /tmp/pm-native-sound-mode.*,move-sound.*,unit-move-sound.*,move-sound-end.*.
+Source template words802ee494..49c are queried even on empty keys. Playback core/
+macro/voice ownership and native Game binding remain open;documentation request
+for spatial trigger/position/Off services left under EVT-01. MovePosition source
+inspection is ready at /tmp/pm-native-move-position.* for next binding increment.
+
+Validation:make test84 CTest/90 Python;make all passes. Logs:
+/tmp/pm-packed-movement-sound-test.log and /tmp/pm-packed-movement-sound-build.log.
+Read-only jump-preparation verifier passes13 bodies/68 anchors/5 spans/6 callers;
+Mario-jump verifier passes5 bodies/76 anchors/20 spans/2 callers. Cases cover every
+loader type/mode,partial resets/gaps/source/self aliases,template/input snapshot,
+retained/failure/part geometry,alternating/zero-key/negative/wrap/selected-key
+rereads,Off ordering,unit geometry and actual native loader/factory byte RAM.
+Authored playback providers/records;no audible original macro,emulator/hardware
+or full encounter fidelity claim. Next:complete native MovePosition with sound/
+math,then Mario jump/transitive events/source/outer Game. Goal active/incomplete;
+concurrent work preserved.
+
 ## 2026-10-12 — Native GetMoveFrame event query
 
 Bound original GetMoveFrame8010c8c0 to native event/unit/work records. It retains
