@@ -1613,3 +1613,39 @@ and RomFS WAV/audio-map.json outputs unstaged. No ID1 art/audio/mesh conversion
 policy change. Existing bake/mesh node formula reconciliation documented for
 native owner. Original rights remain with owners;local analysis grants no
 redistribution license. Exact log:/tmp/id1-node-build.log.
+
+
+## 2026-10-12 — Original ordinary Mario model mesh pack
+
+Native53d573b replaces the ordinary field Mario billboard with ten original
+frame0 meshes: M_S_1/M_W_1/M_R_1/M_J_1B/M_J_1C from a/a_mario, and their
+R counterparts from a/a_mario_r. Their texture sources are a/a_mario- and
+a/a_mario_r-. tools/build_assets.py extracts all four files from the US ISO
+read-only into ignored local-assets; provenance JSON and romfs/manifest.json
+record source identities and conversion paths. No ISO, extracted models,
+textures or generated packs are committed or licensed for redistribution.
+Original art remains copyrighted by its owners; existing MIT noclip format
+reference attribution remains in third_party. New conversion code supplies no
+license for Nintendo/Intelligent Systems assets.
+
+Ignored local outputs are romfs/characters.pmmesh (PMCHAR1, ten poses,
+306 front/186 rear vertices each), local-assets/characters-mesh.png and
+romfs/characters-mesh.t3x. The atlas has31 source texture cells; original images
+are resized to124px with a duplicated2px edge border in128px cells on1024px
+RGBA. It retains authored UV orientation and rejects unimplemented wrapping or
+untextured draws. Pack vertices retain unscaled local XYZ/depth/root rather than
+cropping or fitting to a square billboard. Native source scalar2 and engine-unit
+conversion0.01 give local-to-native0.02; no arbitrary .16 actor height applies
+on this ordinary path. Rear models are separate original geometry/texture data,
+not X-mirrored front UVs. Texture resolution and atlas filtering are handheld
+adaptations, not original GX composition.
+
+Converter998ec61 and its compatibility follow-up bind documented joint versus
+transform builders, asymmetric joint Z gates, all-axis parent-zero fallback,
+pivot-offset admission, ordered rotations and current-group sibling parent
+selection. Generic helpers remain available to the separate map converter.
+Host NumPy/trig/concat are numerical adapters, not measured Gekko/libm parity.
+Geometry remains frame0; sparse animation updates are now documented but their
+native clock/evaluator/geometry binding is unfinished. Original normals, colors,
+material/GX/render callbacks, shadow geometry and complete display domains are
+still separate requirements.

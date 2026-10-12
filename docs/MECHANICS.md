@@ -1020,3 +1020,39 @@ near/far, reset documented curves/progress/FOV25 and clearflag10. Actual origina
 EVT operand marshaling, story request execution, other camera producers and
 SDK/Gekko view/projection parity remain required. Native tests prove service
 ordering/state lifetime and ordinary traversal, not original scene equivalence.
+
+
+## 2026-10-12 — Ordinary Mario facing and original mesh presentation
+
+Native53d573b follows overworld/OVERWORLD_MARIO_DISPLAY_DIRECTION.md,
+OVERWORLD_MARIO_ORDINARY_POSE_SELECTION.md and
+OVERWORLD_DISPLAY_TO_MOVE_HEADING.md. Ordinary motion IDs0/1/2/3/10 request
+M_S_1/M_W_1/M_R_1/M_J_1B/M_J_1C; motion11 retains the prior pose. Identical
+selected names preserve their upload/start time. Rear selection uses retained
+facing minus camera offset at inclusive70/290 sectors before display turning.
+The source target0/180 turn flags and asymmetric extra callback crossing are
+retained. Drawing uses display-minus-offset yaw and local Z reflection at
+inclusive90..270; it does not mirror X or texture coordinates.
+
+Wall preparation saves strictly larger requested combined movement S/H with
+count14; equal/slower requests count down, then replace retained S/H. Neutral
+and airborne paths clear stored speed while retaining heading/count. Requested
+norm is taken after slope/air preparation, before collision rejection/sliding.
+Direction rate reads prior facing+1a0, not new travel+1a4; the old documentation
+owner label was corrected against the actual c03e01a0 load. Fresh facing0 gives
+first right-running native travel0.026775, then0.0225. These are source-derived
+adapter regressions, not Dolphin measurements. Base speed0 uses quantized
+wrap(270-display+cameraOffset) for the documented standing, support and head
+probe domains. Water/void admission clears base speed as documented.
+
+Full original frame0 mesh coordinates now feed the native ordinary renderer.
+Source2x model scale with0.01 engine conversion replaces provisional billboard
+height on this path. Native998ec61 binds the newly recovered group-kind,
+parent-scale, pivot and sibling traversal branches in asset conversion.
+Source-compatible branch/order selection is distinct from numerical parity:
+host NumPy matrices and trig remain adapters; Gekko/FPSCR/GQR0/libm composition
+has not been compared against original runtime. No original Dolphin observation
+was made. Animation interpolation/loop contracts were obtained from the
+requested documentation agent, but frame advancement remains unbound. Low-HP,
+special flags/pivots, recovery, partners, battle presentation and shadows remain
+on incomplete paths; ordinary mesh success does not close those domains.

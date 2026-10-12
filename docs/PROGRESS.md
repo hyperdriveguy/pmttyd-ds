@@ -11673,3 +11673,61 @@ assuming the generic bake formula completes animation. Recover actual US story/
 event/message attribution/order/branches/conditions and complete encounters
 through persistent outcomes. Full-game documentation/final system requirements
 remain incomplete;local matrix closure is not complete-game coverage.
+
+
+## 2026-10-12 — Original ordinary Mario meshes and retained facing
+
+Completed native53d573b: ten original front/rear frame0 model meshes now draw
+ordinary Mario in the overworld with original local XYZ/root/depth, source2x
+scale and engine conversion0.01. M_S_1 is the idle request; motion11 retains
+its prior pose. Separate rear files, sector-before-turn selection, source
+Z reflection and draw yaw replace the legacy ordinary billboard. Pose changes
+retain source logical upload/start metadata; animation advancement is not bound.
+No generated artwork or dialogue was added. ASSETS records four read-only ISO
+sources, local ignored mesh/texture outputs and conversion/licensing boundaries.
+
+Ordinary retained facing now follows strictly-larger S/H/count14 wall policy,
+neutral/air retention, source display0/180 turn flags and crossing behavior.
+Direction rate reads PRIOR facing1a0; earlier documentation's travel1a4 owner
+was corrected against its actual load. Stationary support/head/ground probes
+use the documented display-to-move conversion. Water/void entry clears base
+speed. Reinitialization retains documented facing/turn targets. Regression
+cases cover cold versus warmed movement, equal-speed reversal, airborne
+retention, rear boundaries and asymmetric turn markers.
+
+Requested missing interpolation/toMovedir evidence from the existing
+/root/overworld_documentation agent; it delivered8b1af38 anddf39ebe, source
+verifiers and a read-only sparse evaluator. New ID1 matrix documents exposed
+converter discrepancies:998ec61 now branches on actual joint/transform type,
+uses literal asymmetric Z gates/all-axis parent-zero fallback, suppresses
+zero-pivot offsets, orders secondary/primary rotations and uses CURRENT group
+for sibling parent compensation.136277d restores generic helpers imported by
+map conversion. Host NumPy/trig/concat remain numerical adapters; this does not
+close original SDK/libm/GQR0/FPSCR/material/render composition.
+
+Exact final validation: make test passed75 CTest targets and86 Python tests
+(/tmp/pm-node-final-test.log); make all rebuilt the local original asset pack
+and native3DSX (/tmp/pm-node-final-build.log). Original camera/mesh asset checks
+passed44 roads/494 zones and all ten pose streams; core original checks passed
+18315 indexed-versus-full-scan probes and all room arrivals
+(/tmp/pm-node-final-original.log). Pose, heading, direction-rate and node-matrix
+source verifiers passed (/tmp/pm-node-{pose,heading,rate,matrix}-verifier.log).
+Scoped diff whitespace checks passed. Isolated Azahar run used the east-road
+fixture and tests/azahar_roads.py with two reciprocal traversals and saved-room
+assertions; exit0, boot plus four road captures in
+artifacts/azahar-mario-node-contract, log /tmp/pm-node-smoke.log. Arrival capture
+was inspected with the original mesh visible. User emulator profiles/saves
+were not changed. These are native binding checks, not Dolphin parity or
+hardware-performance measurements.
+
+Intermediate validation failures were resolved: concurrent battle/CMake files
+settled before the final75-target pass; the generic-map-helper import regression
+from this converter cleanup was corrected before the final build/test/smoke.
+Parallel documentation/battle work was preserved outside these commits.
+
+Next: bind documented GP clock/loop descriptors and actual sparse position/node
+interpolation to native animated geometry, including fractional stepped texture
+changes and tangent-hold behavior. Reconcile original render/material/color/
+normal/shadow services and remaining special/low-HP/recovery/partner domains.
+Continue original event/story/message binding and full overworld lifecycle;
+the Rogueport slice and frame0 ordinary mesh are not a completed remake.
