@@ -17,6 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Child/brother constructors and restart complete local state | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Descendants/107/110](behavior/EVENT_CHILD_BROTHER_AND_INLINE_CONSTRUCTION.md),[restart](behavior/EVENT_RESTART_PRESERVATION.md):complete local copy/reset/ownership/append/order and plain inline/brother paths;ID variants,remaining controls/domain and original traces remain open |
 | Field party destruction and position constructors | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover partyKill/partyKill2 saved-kind and pointer lifetime plus partyEntryPos/partyEntry2Pos complete local construction;mode engine,asset/services,EVT-01 and battle teardown remain separate |
 | Root/typed event constructors and label/run-check initialization | EVT-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Root/typed constructors](behavior/EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md),[labels/run-check](behavior/EVENT_LABEL_SCAN_AND_ENTRY_RUN_CHECK.md):complete local allocation/init/label scan/conditional append/system-level stop;child/brother/inline/restart/domain and original traces remain open |
 | Lecture field intersection and party callback bodies | AC-01, AC-03 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 1 | [Intersection/coordinates](behavior/FIELD_SEGMENT_INTERSECTION.md),[party callbacks](behavior/FIELD_PARTY_EVENT_CALLBACKS.md):local geometry/query/encoding,raw slot dispatch and first-call constructor route answered;full party engine,variable namespaces,EVT-01 scheduling,battle teardown and original traces remain open |
@@ -836,3 +837,19 @@ for child/brother/inline/restart and original traces. Current make test passes24
 CTest suites and58 Python tests;make all passed. Previous concurrent core:137
 field-movement failure is resolved by current validation;ID2 changed no native
 files for it.
+
+
+ID2 EVT-01 descendant/restart delivery (2026-10-12), partial answer:
+[descendants/107/110](behavior/EVENT_CHILD_BROTHER_AND_INLINE_CONSTRUCTION.md)
+closes full child/brother inherited/reset maps,parent waiting versus owner-only
+links,priority narrowing,global speed/credit0,labels and active-manager append.
+Child/brother append has no root flag0x20 gate. It specifies zero-ID/run-check
+order differences,post-constructor wrapper recopies,brother150 versus inline
+message metadata and independent inline ownership. [restart](behavior/EVENT_RESTART_PRESERVATION.md)
+closes exact stores/label rebuild/preserved locals,ID/links/flags/timers and global
+speed reset without append/cancel. First-call leftovers reset at subsequent
+fetch,not restart itself. Standalone verifier passes seven complete containing
+fingerprints,81 anchors,five spans;plain107/110 recovered,ID variants108/111 and
+other child/control/deletion opcode contracts remain open. Own lock released;
+EVT-01 stays open. make test passes25 CTest suites and58 Python tests;make all
+passed. No native changes by ID2.

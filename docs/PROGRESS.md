@@ -6621,3 +6621,31 @@ constructors,inherited versus reset fields,current-table append/type/run-check,
 restart ownership and remaining opcode closure;original multicredit/context/
 creation/deletion/pause traces. Complete-game documentation and subsequent
 requirements objective remains active/incomplete.
+
+### 2026-10-12 — Documentation ID2: descendants and restart closure
+
+Delivered EVENT_CHILD_BROTHER_AND_INLINE_CONSTRUCTION.md and
+EVENT_RESTART_PRESERVATION.md for EVT-01 scoped request. Complete child/brother
+bodies specify parent wait versus owner links,full inherited/reset maps,priority
+wrap,global speed/credit0,message metadata difference,labels and unconditional
+active-manager append. Zero-ID/run-check order differs between constructors.
+Complete plain107/110 wrappers retain first-end scanning,post-construction
+recopies,brother150 versus inline metadata and independent inline ownership.
+Restart resets pointers/opcode/stacks/labels/time/credit but preserves locals,
+identity/links/flags,timers and cached callback/first-call fields until fetch.
+No implicit child cancel,local rollback,immediate dispatch or capacity fallback.
+
+Validation: verify_event_descendant_constructors.py passed seven containing
+fingerprints,five newly recovered complete bodies plus root/run-check identities,
+81 anchors,five data spans;report/tmp/id2-event-descendants-evidence.json.
+Existing root and manager verifiers passed. make test passed25 CTest suites
+and58 Python tests;make all exited0,no rebuild. All867 local behavior links
+resolved;git diff --check passed. ID2 made no native/asset/ISO/save/emulator-profile
+changes;inspection ELFs/disassemblies/reports remain/tmp. Concurrent native event/
+field work and ID1 documentation preserved and not staged.
+
+Released only ID2's descendant/restart lock;linked both contracts in inbox/index/
+EVENT_RUNTIME. Next EVT-01:ID-output inline/brother variants,child-call and other
+control/deletion opcode closures,remaining initialization/domain/source owners
+and original multicredit/creation/deletion/pause traces. Full-game documentation
+and eventual requirements objective remains active/incomplete.

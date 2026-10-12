@@ -216,3 +216,16 @@ entry flag0x20;it precedes the global all-event stop run-check. Initial credit0
 and current global speed capture are explicit. Constructor capacity/labels have
 no local validation fallback. Child/brother/inline/restart and original traces
 remain EVT-01 dependencies.
+
+
+## Descendant/restart follow-up (2026-10-12)
+
+[Child/brother/inline constructors](EVENT_CHILD_BROTHER_AND_INLINE_CONSTRUCTION.md)
+now close the full local child/brother bodies and plain107/110 wrapper copy/order.
+[Restart](EVENT_RESTART_PRESERVATION.md) now closes its full reset/preservation
+contract;earlier partial caveats above are superseded for that local body.
+Child/brother append during an active manager pass without root's0x20 gate.
+Copied locals remain distinct from shared user pointers;restart preserves locals,
+relationships and ID,does not cancel children or append,and fetch later resets
+first-call continuation. ID-output variants and remaining opcode/deletion/domain/
+source/runtime closure remain open under EVT-01.
