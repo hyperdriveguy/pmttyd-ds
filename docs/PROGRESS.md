@@ -3577,3 +3577,10 @@ texture descriptor50; signed64 clock/trig/matrix services, actual outer draw/
 story callers. Continue original attribution/order/branches/conditions and all
 other uncovered systems before complete-game requirements. Full objective active/
 incomplete; original execution/image/seed comparisons still needed.
+
+Concurrent-work note: after committing c1282fb, git status showed unstaged changes
+in include/game.hpp, include/head_collision.hpp, source/game.cpp,
+tests/core_tests.cpp and tools/verify_actor_collision.py. They were not authored,
+staged or modified by this research step. The make test/make all results above
+record the state when those checks ran, not validation of subsequent concurrent
+native/collision changes. Preserve that work.
