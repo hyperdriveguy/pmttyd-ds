@@ -127,12 +127,40 @@ gate1 and enemy CheckDamage flags0x100 are now documented;global flag0x1000,
 guard/status/counter/precheck/damage/application/reward/defeat consumers still
 need a complete graph,including original multi-hit timing and input/RNG traces.
 
-Status Check/Get readers and pouch item-count services are explicit portable
-interfaces. The native fixture currently reports no statuses;it does not stand
-in for the documented original status storage/recovery services. Revival marking
+Status Check/Get now reads the implemented shared unit storage via
+`storedDamageStatusServices()`. Battle units retain storage between hits;initial
+status/infliction/turn/presentation binding remains unfinished. Pouch item-count
+is still an explicit service interface. Revival marking
 only tests original item151 in the correct owner path;consumption/healing/hit
 event scripts remain unbound and must not be replaced by an invented revival.
 Please link recovered callback/unit/application contracts here as they arrive.
+
+Partial stat answer arrived in
+[entry/stats/spawn](behavior/UNIT_ENTRY_STATS_AND_SPAWN.md):entry publishes the
+allocated unit before init,then copies signed kind HP/FP into three independent
+fields each. The checked boss receives HP5/FP0 at those stores;later overrides
+and the rest of unit entry remain open. Do not treat that as a measured starting
+stat trace or collapse current/max/base copies when implementing resources.
+
+## STATUS-01 — Status lifetime, event binding and turn ownership (open)
+
+Local [storage/recovery](behavior/BATTLE_STATUS_STORAGE.md),[move-count helpers](behavior/BATTLE_MOVE_COUNTS.md)
+and guard/action predicates are implemented in `source/battle_status.cpp`,with
+tests in `tests/battle_status_tests.cpp`. Damage integration uses the actual
+Check/Get storage contract rather than an always-absent reader. These services
+preserve byte narrowing,sign pairs,cancellation,Charge wrap,Fast/Slow reset and
+explicit recovery steps. The native harness does not fabricate status infliction
+or a once-per-turn recovery schedule.
+
+Please recover unit-entry status/badge/move-count initialization and concrete
+weapon/unit/event bindings reaching the documented infliction,recovery/periodic
+turn controllers. Pin full main/battle event cadence,turn/phase state producers,
+remaining-count consumption,+20/+23/+24 writers,end-of-battle cleanup and status
+effect/message/sound/pose callback resource bindings. Existing local recovery/
+move/periodic/controller documents provide contracts but not the whole original
+runtime graph. Include original multi-turn traces (Slow/Fast,negative durations,
+Charge consumption,wakeup on lethal/live damage) and actor save/reload lifetime.
+Do not use portable test fixtures or prototype turn timing as original evidence.
 
 ## Implementation coverage and next work
 

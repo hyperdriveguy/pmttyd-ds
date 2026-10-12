@@ -1,5 +1,75 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native status storage/recovery and move helpers
+
+Implemented docs/behavior/BATTLE_STATUS_STORAGE.md and the required local
+move helpers from BATTLE_MOVE_COUNTS.md in include/battle_status.hpp and
+source/battle_status.cpp. Shared semantic unit state retains original status
+byte offsets118..135,move bytes20..24,HP,kind/belong,Zap Tap and unit/status flags;
+this is not original packed ABI or complete unit initialization. Getters preserve
+signed8 ID narrowing,shared-pair sign filtering and zero/default output;presence
+preserves negative durations and badge-only Electric. Setters preserve no-write
+success,opposite Burn/Freeze cancellation,size/attack overwrite versus defense
+sign cancellation,zero-side clears,Charge byte wrap before signed/cap checks,
+Sleep auxiliary reset and positive-only Fast/Slow cancellation/reset side effects.
+Portable status/move incremental commit:cbf1a33.
+
+Recovery is one explicit callable step:HP/Instant Kill gates,signed durations,
+Sleep's negative-duration clear/auxiliary preservation,retained Poison/regen
+strength,direct size/attack pair writes,other setter calls and their side effects,
+local-expiry return value and Charge/Flipped no-op. No invented once-per-turn
+schedule,infliction chance,immunity or periodic effect is added. Move reset
+preserves Fast's unsigned shift/narrowing,Slow's signed/threshold branch,zero
+fallback,untouched-count mutation gate and signed max-count cap without a reset.
+CanAct/CanGuard preserve status/flag order and the documented null arithmetic
+result;AC possibility adds membership/kind gates and still has no HP/count check.
+
+DamageUnit now shares the status unit fields;storedDamageStatusServices supplies
+actual Check/Get readers. Removed the always-absent native status callbacks.
+The harness owns persistent player/enemy battle-unit storage instead of recreating
+it on every attack,and keeps HP synchronized after attack/damage/item healing.
+Mario kind222 is used;enemy kind/other initial stats remain explicitly pending
+unit data binding. Guard dispatch now includes the documented AC possibility
+predicate. Status infliction/event/turn/lifetime initialization is still unbound,
+so the harness starts with no inflicted effects;we do not add a fabricated status
+demo or tutorial branch. Save/story/dialogue/art/audio behavior was not rewritten.
+
+Validation:make test passed6 CTest executables (core,TimingA,Hammer,defense/pad,
+damage,status/move) plus58 Python tests;make all rebuilt ttyd-2ds.3dsx;git diff
+--check passed. Status tests cover all28 ID getter/setter routes,byte ID/value
+narrowing,sign pairs/zero durations,no-write returns,negative and zero incoming
+cancellation,Charge wrap/saturation,explicit recovery/mutation versus expiry,
+Sleep auxiliary preservation/live/lethal/Instant Kill gates,Fast/Slow side
+effects,partial-count/flag suppression,base0/1 thresholds,Fast64 wrap,signed
+max-count behavior and action/guard/null/AC predicates. Damage integration tests
+compose actual stored Charge/size/attack/defense setters,recovery,Burn/Freeze
+cancellation and badge-only Electric readers with the recovered calculator.
+Core scenarios assert persistent HP mirrors alongside all prior behavior.
+These are derived contract tests,not original executed comparisons.
+
+Isolated regression:python3 tools/emulator_smoke.py --fresh-save --seconds4
+--input-script tests/azahar_defense.py. Reviewed defense-single (Guard,Mario10HP,
+Crump4HP) and defense-mash (Hit taken,Mario9HP,Crump3HP) after shared status-reader
+and persistent-unit integration. Manual captures validate the native harness,
+not original status gameplay/turn timing or hardware performance. Existing stage
+props/camera/animation limitations remain visible. Only generated test save was
+reset;no user emulator profile/save or ISO write. Git/display escalations were
+automatically approved. Concurrent documentation work was preserved.
+
+Added STATUS-01 to docs/DOCUMENTATION_REQUESTS.md for unit status/badge/move
+initialization,infliction/periodic/turn/event ownership,count consumption and
+effect/audio/pose bindings. Linked incoming UNIT_ENTRY_STATS_AND_SPAWN as partial
+DMG-01 stat-copy evidence:boss HP5/FP0 writes are established,but later override/
+full entry/unit registry/init remain open. New feedback/stage-gate documentation
+arrived during work;inspect its exact caller/reset conditions next.
+
+Next implement original direct damage application/resource ownership with
+ordered presentation/event interfaces;connect real weapon/unit stat data as
+documentation arrives. Bind actual infliction/recovery/controllers rather than
+adding prototype turn rules. Continue original tutorial/story/message/event
+runtime work and file-based documentation requests. Full implementation goal
+remains active/incomplete;local status services do not make the game complete.
+
 ## 2026-10-12 — Native ordered HP/FP calculators and revival marker
 
 Implemented docs/behavior/BATTLE_DAMAGE_CALCULATION.md in

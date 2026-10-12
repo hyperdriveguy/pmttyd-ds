@@ -11,7 +11,13 @@ int32_t add(int32_t a,int32_t b) {return signedWord(uint32_t(a)+uint32_t(b));}
 int32_t sub(int32_t a,int32_t b) {return signedWord(uint32_t(a)-uint32_t(b));}
 int32_t mul(int32_t a,int32_t b) {return signedWord(uint32_t(a)*uint32_t(b));}
 int32_t floorZero(int32_t value) {return std::max<int32_t>(value,0);}
+bool storedStatusCheck(void*,const DamageUnit& unit,int id) {return checkStatus(&unit,id);}
+int8_t storedStatusStrength(void*,const DamageUnit& unit,int id) {
+    const uint8_t value=getStatus(unit,id).strength;
+    return value<128?int8_t(value):int8_t(int(value)-256);
 }
+}
+DamageStatusServices storedDamageStatusServices() {return {nullptr,storedStatusCheck,storedStatusStrength};}
 int32_t calculateHpDamage(DamageUnit* attacker,DamageUnit& defender,DamagePart& part,
                           DamageWeapon& weapon,uint32_t& code,uint32_t flags,
                           DamageBattleState& battle,const DamageStatusServices& statuses) {

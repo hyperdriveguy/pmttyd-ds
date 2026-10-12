@@ -8,7 +8,10 @@ a small Crump battle harness, touch menus and versioned saves.
 The Jump harness now uses the recovered US TimingA history checks and difficulty
 tables. Hammer uses the recovered held-left command with the ordinary default
 weapon's charge period and difficulty. Guard uses the recovered private-pad
-history checks and difficulty windows. HP/FP damage calculators follow recovered
+history checks and difficulty windows. Portable status storage/recovery and
+move-count helpers follow the recovered contracts and feed the damage readers.
+Original status infliction,turn cadence and presentation remain unfinished.
+HP/FP damage calculators follow recovered
 modifier ordering;the harness's weapon powers/stats,impact scheduling and original
 tutorial/event/eligibility binding remain provisional. Open requests
 for the documentation agent are in [documentation requests](docs/DOCUMENTATION_REQUESTS.md).

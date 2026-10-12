@@ -171,7 +171,27 @@ void revivalMarker() {
     unit.kind=223;unit.heldItem=0;inventory.count=1;
     CHECK(markEmergencyRevival(unit,code,services)==0 && code==0x800); // No pouch on nonplayer path.
 }
+void storedStatusPipeline() {
+    Fixture f;uint32_t code;
+    const auto readers=storedDamageStatusServices();
+    auto damage=[&] {return calculateHpDamage(&f.a,f.d,f.p,f.w,code,0,f.b,readers);};
+    f.w.specialFlags=6;
+    CHECK(setStatus(f.a,16,0,4)==1);CHECK(setStatus(f.a,10,2,2)==1);
+    CHECK(setStatus(f.a,13,2,-1)==1);CHECK(setStatus(f.d,14,2,3)==1);
+    CHECK(damage()==9 && (f.a.flags&8)); // 7+4+2-1,then defense3.
+    CHECK(checkRecoveryStatus(&f.a,10)==0 && damage()==9);
+    CHECK(checkRecoveryStatus(&f.a,10)==1 && damage()==7);
+    CHECK(setStatus(f.d,15,2,-2)==0 && damage()==10); // Opposite defense cancels.
+    CHECK(setStatus(f.d,15,2,-2)==1 && damage()==10); // Down clamps base defense0.
+    CHECK(readers.strength(readers.user,f.d,15)==-2);
+    f.a.zapTap=1;CHECK(readers.check(readers.user,f.a,6));
+    CHECK(readers.strength(readers.user,f.a,6)==0);
+    CHECK(setStatus(f.d,15,0,0)==0); // End the defense-down phase before checking Burn's element.
+    f.w.specialFlags=0x400;CHECK(setStatus(f.a,8,2,0)==1);
+    f.defense[1]=2;CHECK(damage()==5 && code==24);
+    CHECK(setStatus(f.a,9,2,0)==0 && damage()==7 && code==23);
+}
 int main() {
-    try {callbacksAndGates();attackerModifiers();defensesAndAttributes();damageTailAndFp();revivalMarker();std::puts("Damage calculator contract scenarios passed");}
+    try {callbacksAndGates();attackerModifiers();defensesAndAttributes();damageTailAndFp();revivalMarker();storedStatusPipeline();std::puts("Damage calculator contract scenarios passed");}
     catch(const std::exception& e) {std::fprintf(stderr,"%s\n",e.what());return 1;}
 }

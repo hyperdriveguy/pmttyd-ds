@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include "battle_status.hpp"
 
 namespace ttyd {
 // Friendly badge labels are annotations of the documented US byte fields.
@@ -8,13 +9,12 @@ struct DamageBadges {
     uint8_t pDownDUp=0, doublePain=0, lastStand=0, defendPlus=0, damageDodge=0;
     uint8_t hpDrain=0, fpDrain=0, icePower=0;
 };
-struct DamageUnit {
-    int32_t kind=0, extraDefense=0, attackSequence=0;
-    int16_t hp=0, damageSequence=0;
+struct DamageUnit : BattleStatusUnit {
+    int32_t extraDefense=0, attackSequence=0;
+    int16_t damageSequence=0;
     uint8_t danger=0, peril=0;
-    uint32_t attributes=0, flags=0, statusFlags=0, heldItem=0;
+    uint32_t attributes=0, heldItem=0;
     DamageBadges badges;
-    void* statusData=nullptr;
 };
 struct DamagePart {
     uint32_t attributes=0;
@@ -34,13 +34,14 @@ struct DamageBattleState {
     uint32_t actionResult=0;
     uint8_t mode=0;
 };
-// Explicit status service boundary. Readers must implement the original Check/
-// GetStatus contracts; neither status storage nor infliction is invented here.
+// Explicit status service boundary. The standard readers below use the recovered
+// shared unit storage; callers may inject readers for separately owned unit data.
 struct DamageStatusServices {
     void* user=nullptr;
     bool (*check)(void*, const DamageUnit&, int)=nullptr;
     int8_t (*strength)(void*, const DamageUnit&, int)=nullptr;
 };
+DamageStatusServices storedDamageStatusServices();
 
 // US local calculators: no HP/FP mutation, resource caps, hit events or RNG.
 // Defender/part/weapon/state and status readers must be valid. Attacker may be

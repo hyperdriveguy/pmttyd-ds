@@ -103,6 +103,8 @@ public:
     const HammerCommand& hammerAction() const { return hammerCommand; }
     int defenseResult() const { return defenseCommand.result; }
     uint32_t damageCode() const { return lastDamageCode; }
+    const DamageUnit& playerBattleState() const { return playerBattleUnit; }
+    const DamageUnit& enemyBattleState() const { return enemyBattleUnit; }
     const char* dialogue() const;
     const char* prompt() const;
     bool near(Vec2 point, float distance = 1.5f) const;
@@ -121,6 +123,7 @@ private:
     BattlePadWork generalBattlePad, actionCommandPad;
     DefenseCommand defenseCommand;
     uint32_t lastDamageCode=0;
+    DamageUnit playerBattleUnit, enemyBattleUnit;
     TimingACommand jumpCommand;
     HammerCommand hammerCommand;
     // Explicit development seed; no claim about original seed/load ownership.
