@@ -13,7 +13,7 @@ struct DamagePart;
 struct DamageUnit : BattleStatusUnit {
     int32_t extraDefense=0, attackSequence=0;
     int16_t damageSequence=0;
-    uint8_t danger=0, peril=0;
+    uint8_t danger=0, peril=0, jumpPowerBonus=0, hammerPowerBonus=0;
     uint32_t attributes=0, heldItem=0;
     DamageBadges badges;
     int16_t baseHp=0,maxHp=0,baseFp=0,maxFp=0,fp=0;
@@ -38,6 +38,8 @@ struct DamageWeapon {
     uint8_t element=0;
     uint32_t specialFlags=0;
     void* callbackData=nullptr;
+    int32_t defaultPower=0;
+    std::array<int32_t,6> powerWords{};
 };
 struct DamageBattleState {
     uint32_t actionResult=0;
