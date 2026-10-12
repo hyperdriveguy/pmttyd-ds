@@ -65,7 +65,8 @@ callback or holder nullness. It does not invoke the user callback or close DVD.
 For removed E,store state0 FIRST. Read E.a0 as H;compare raw H to E+4. Exact
 identity means embedded archive holder:skip smartFree. Any other value,
 INCLUDING0,requests smartFree(H),with no local null guard or return check.
-The full smartFree and relocation implementation remain separate contracts.
+The [complete smartFree](SMART_HEADER_RELEASE_AND_SPACE_ACCOUNTING.md) now
+supplies header release;relocation remains separate.
 The comparison establishes archive-versus-smart-header release routing;it does
 not prove arbitrary raw H is valid or that the original source admits null H.
 
@@ -124,3 +125,9 @@ fileInit and ten archive-mode setter sites. Verifier scans all seven DOL text
 sections for aligned direct bl/bla targets and exact instructions. No REL,
 indirect function calls,raw-pointer references or runtime invocation counts are
 covered. Smart allocator policy and other caller graphs remain separate work.
+
+[Smart header release](SMART_HEADER_RELEASE_AND_SPACE_ACCOUNTING.md) performs
+no heap-free call:tag4 only changes to3;normal release updates lists/space and
+recycles header metadata while preserving its payload pointer. File-entry
+recycling continues in either case. [Automatic tag release](SMART_AUTOMATIC_TAG_RELEASE.md)
+has a separate two-pass/full-word3 policy. Full allocator/compaction remains open.

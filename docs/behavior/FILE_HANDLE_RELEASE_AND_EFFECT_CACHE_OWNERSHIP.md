@@ -108,3 +108,8 @@ or state3 after resetting count0. Full collection/async producers remain open.
 state2→state0 removal,embedded-holder skip versus smartFree(header),and stale
 raw entry preservation. Release remains a separate refcount/state operation;
 collection mode/thread/pending and actual smart-heap lifetime matter.
+
+[Smart header release/accounting](SMART_HEADER_RELEASE_AND_SPACE_ACCOUNTING.md)
+now makes the next ownership boundary explicit:collection's smartFree request
+can mark4→3 only,or recycle a header/space without a heap-free call. Original
+payload storage/compaction and tag/scene ownership require their own contracts.

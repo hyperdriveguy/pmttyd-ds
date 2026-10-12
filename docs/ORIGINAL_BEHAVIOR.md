@@ -847,3 +847,11 @@ bodies. Mode0 worker flags overwrite,mode1 initially-pending wait without aging,
 signed count<=-2,state2 collection/holder routing/live unlink/retained traversal,
 1024*176 heap0 clear/link and17 direct DOL sites are explicit. Smart heap/worker/
 relocation/TPL/source/platform/scene/original traces remain open.
+
+ID2 smart release delivery (2026-10-12):
+[header release/accounting](behavior/SMART_HEADER_RELEASE_AND_SPACE_ACCOUNTING.md)
+and [automatic tag release](behavior/SMART_AUTOMATIC_TAG_RELEASE.md) close
+smartFree/smartAutoFree. Tag4→3 deferral,no heap deallocation,live unlink/space/
+free-list/count updates,stale payload and low16 first-pass versus full-word3
+second-pass policy are explicit. Allocation/compaction/relocation/tag/source/
+scene/platform/original traces remain open.

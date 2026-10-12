@@ -1,5 +1,26 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — ID2 smart-header release and automatic tag filtering
+
+Added two full smartFree/smartAutoFree contracts and binary verifier. Exact
+header tag4 only marks3;normal release unlinks,accounts size+gap,recycles header
+metadata and increments free count while preserving payload pointer. No heap
+free occurs. Automatic release compares low16 first,then admits a separate tag4
+pass only for full input3. File collection/release docs now link these ownership
+boundaries. Released only ID2's smart-release lock;parent requests remain partial.
+
+Validation:verify_smart_release.py passes seven hashes(two complete/five linked),
+126 anchors,two startup/global spans;repeat JSON matches. Python compilation,
+prior collection/async/acquisition/general1980 checks and2539 local links pass.
+make test passes66 CTest suites/78 Python tests;make all passes. Logs:
+/tmp/id2-smartfree-test.log,/tmp/id2-smartfree-build.log. Scoped staged whitespace
+check passes. No native/test/asset conversion changes by ID2;no original runtime
+execution or source-tag/scene/arena policy claim.
+
+Next:recover smartAlloc/smartGarbage/arena provisioning and type-dependent
+relocation,then worker/platform/source/TPL/scene bindings. Full-game behavior/
+requirements and EVT-01/JUMP-01/DMG-02 remain incomplete.
+
 ## 2026-10-12 — Turn first-process composition and fog expiry
 
 Implemented complete local turn-first-process sequence with explicit battle
