@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Animation name/paper selection and local-time setters | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete animPoseSetAnim/SetPaperAnim/SetPaperAnimGroup/SetLocalTime/SetLocalTimeRate used by partner pre-display;resource lookup/Main/draw/backend/numeric/lifecycle remain separate |
+| Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
 | Smart-heap compaction and file-move requests | EVT-01, JUMP-01, DMG-02 | VALIDATED binary / lock released, 2026-10-12 | Documentation agent ID 2 | [Compactor/barriers](behavior/SMART_HEAP_COMPACTION_AND_PENDING_FILES.md),[file move/address requests](behavior/FILE_PAYLOAD_MOVE_AND_ADDRESS_REQUESTS.md):complete two bodies,draw-sync/equal-address bypass/nonworker pending barrier/worker retarget/live holders/gaps/full-arena flush;type relocation/allocator/platform/source/runtime remain separate;host camera assertion pending |
 | Smart allocation header release and file ownership | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Header release/accounting](behavior/SMART_HEADER_RELEASE_AND_SPACE_ACCOUNTING.md),[automatic tag release](behavior/SMART_AUTOMATIC_TAG_RELEASE.md):complete smartFree/smartAutoFree,4→3 deferral,no heap free,live unlink/gap/free-header/count writes,low16 versus full-word3 passes;allocator/compaction/relocation/platform/source/runtime remain separate |
@@ -2396,3 +2396,18 @@ Separately78 Python tests pass. Logs:/tmp/id2-smartgc-test.log,
 /tmp/id2-smartgc-build.log,/tmp/id2-smartgc-python.log. Only ID2's documentation
 lock released;camera native owner must resolve its assertion. Allocator/relocation/
 worker/source/platform/scene/original runtime remain open.
+
+ID1 animation setter delivery (2026-10-12),AC-01/AC-03 partial answer:
+[Selector/restart](behavior/ANIMATION_SELECTOR_AND_RESTART.md),
+[paper-group reuse](behavior/ANIMATION_PAPER_GROUP_REUSE.md),
+[local time/clock](behavior/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md)
+close five complete used local setters. Negative signed selector means string;
+nonnegative means index,missing names map0;ordinary force1 restarts same index;
+paper third argument ignored. Group null/failure differ;first same-mode scan then
+mode2 reuse;failed nonnull still stamps/flags/index/ec. Local time SINGLE-scales
+16.66666603088379 before64-bit conversion,adjusts shared timestamps and conditionally
+copies linked ordinary stamp;rate writes only+44. No defaults/allocation/free
+were invented. Five hashes/423 words/two constants/two pointer spans/two imports/
+299 direct DOL sites pass;68 CTest/78 Python/3DS build pass. Static census is not
+US runtime frequency. Only ID1 lock released;Main/draw/resource/clock/helper/
+source/lifetime/numeric/original visuals remain open.

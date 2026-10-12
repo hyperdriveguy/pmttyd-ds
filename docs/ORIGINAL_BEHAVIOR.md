@@ -877,3 +877,13 @@ close smartGarbage/fileGarbageMoveMem. Draw-sync request,equal-address bypass,
 nonworker pending barriers,worker retarget,live holders/next/gaps,tail/full-arena
 flush and separate clear ENTRY/setup PAYLOAD arguments are explicit. Relocation/
 allocator/worker/cache/platform/source/scene/original traces remain open.
+
+ID1 animation setter closure (2026-10-12):
+[selector/restart](behavior/ANIMATION_SELECTOR_AND_RESTART.md),
+[paper-group reuse](behavior/ANIMATION_PAPER_GROUP_REUSE.md),
+[local time/clock](behavior/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md)
+close five complete used local service bodies. Signed selector encoding,forced
+restart,group reuse/failure,shared/linked timestamp publication and rate writes
+are implementation contracts;clock/conversion/resource/Main/draw/lifecycle/
+original visual domains remain open. 299 direct DOL sites are references,not
+an original runtime census or complete animation system.

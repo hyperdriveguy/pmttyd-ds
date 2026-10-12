@@ -62,3 +62,10 @@ The slit/roll verifier pins all four complete wrappers,handle/name/mask requests
 resource identities and stores. Backend allocation/failure/material/animation/
 resource lifetime,borrowed-name/source/alias/index and original presentation
 remain dependencies;the wrappers alone do not implement the reused-data renderer.
+
+ID1 group backend update (2026-10-12):
+[paper-group reuse](ANIMATION_PAPER_GROUP_REUSE.md) now closes the complete local
+setter called by On/Off. Null clears linked ID/ec mask1;failed nonnull still
+writes timestamps/index/flags/ec. It performs no resource allocation/release.
+The wrapper's separately owned paper-pose handle and group binding are distinct;
+entry/release/Main/source/runtime/original paper presentation remain open.

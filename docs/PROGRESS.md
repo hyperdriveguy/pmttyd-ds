@@ -10543,3 +10543,41 @@ shadow/queue/source/alias/FP lifetime and original paper/form presentation trace
 Reconcile pending BTLNO/message drafts with actual US event/key/speaker/condition
 bindings and recover one complete original playable encounter through persistent
 outcomes. Full-game documentation and final complete-game requirements incomplete.
+
+## 2026-10-12 — ID1 animation selectors,paper-group reuse and local-time writes
+
+Added [selection/restart](behavior/ANIMATION_SELECTOR_AND_RESTART.md),
+[paper-group reuse](behavior/ANIMATION_PAPER_GROUP_REUSE.md) and
+[local time/clock](behavior/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md).
+Five complete used US local setters now specify signed name-vs-index encoding,
+missing-name index0,forced equal-index restart,linked resource dereference before
+guard,paper third-argument nonuse,two-pass group reuse and null versus failed
+nonnull publication. Timestamp writes preserve low-before-high order. Local time
+single-scales16.66666603088379 before original64-bit conversion,subtracts with
+borrow,copies common paper timestamp and conditionally linked ordinary stamp.
+Rate stores only+44. Clock mode selects original GP pairs and literal hardware
+multiply-high divisor request;no guessed host clock/default/allocator added.
+Only ID1 scoped lock released. Original Main/draw/resource,pool/name/linked
+lifetime,clock producers,conversion/division helper numerics and visuals remain open.
+
+Validation:verify_animation_selection_time.py passes five complete body hashes,
+423 reviewed words,two binary32 constants,two initial global-pointer spans,two
+US lecture imports and299 exact direct sites across seven DOL text sections.
+Census does not prove every site's US runtime reachability/frequency. Repeated
+report byte-identical;omitted-caller negative rejected;Python compilation passed.
+Prior partner pre-display verifier passed;general verifier passed1980 anchors;
+all1947 behavior links resolved at snapshot. Gekko audit passed615 files/86587
+instructions/656 paired-single ops,zero changes or unknowns. make test passed68
+CTest suites and78 Python tests;make all passed/rebuilt3DSX. Logs:
+/tmp/id1-animation-test.log,/tmp/id1-animation-build.log. Existing3218 GameCube/
+0 Switch/5 primary-PCM slice fallbacks pipeline ran;ASSETS records unchanged
+conversion policy/local outputs. No native source,original runtime/visual
+measurement,profile/save mutation or original distribution by ID1. Concurrent
+native/ID2 and unvalidated inventory drafts preserved outside this delivery.
+
+Next:recover used animPoseMain evaluation/time/resource and linked-paper graph,
+DrawMtx/material/SDK matrix backend and timestamp conversion/division helpers;
+trace original source/pool lifetime and visuals. Reconcile original event/key/
+speaker/condition bindings and complete an original playable encounter through
+persistent outcomes. Full-game documentation and final system requirements remain
+incomplete;leaf evidence and green host tests do not establish whole-game closure.

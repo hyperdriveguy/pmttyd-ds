@@ -68,3 +68,10 @@ Those sites bind actual driver calls and the facing helper. Callback constructio
 anchors pin both registration paths. Reports/ELFs/listings remain ignored.
 Animation/display/camera/matrix/resource/source/alias/FP domains and original
 presentation traces remain open after static checks and host tests pass.
+
+ID1 backend dependency update (2026-10-12):the used ordinary/paper
+[selectors](ANIMATION_SELECTOR_AND_RESTART.md) and
+[local-time setter](ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md) now have complete
+local contracts. Force1 restarts equal ordinary indices;paper's third argument
+is ignored locally. Explicit frame setup adjusts/copies timestamps rather than
+storing a frame counter. Main/resource/clock/helper/source/original visuals remain open.

@@ -107,6 +107,9 @@ complete gameplay sequences before further general-library edge-case recovery.
 | [Partner live direction/activity](FIELD_PARTNER_LIVE_DIRECTION_AND_ACTIVITY.md) | Complete live direction q0/repeated-pointer and TargetDistY scalar rules | Target/scalar/status/source/angle domains and original outputs |
 | [Partner front-floor service](FIELD_PARTNER_FRONT_FLOOR.md) | Complete upward-clearance/downward-query,heading,quantized output and attribute return | Shared backend/clearance/math/source domains and original trajectories |
 | [Partner status/clearance leaves](FIELD_PARTNER_TARGET_STATUS_AND_CLEARANCE.md) | Guarded status-code table,float60 setter and exact direct DOL access/call census | Code/flag/BSS/alias/REL/lifecycle/source domains and original state traces |
+| [Animation selectors/restart](ANIMATION_SELECTOR_AND_RESTART.md) | Complete ordinary/paper signed selector,resource addressing and restart writes | Resource/Main/linked/name/source/runtime domains |
+| [Paper-group reuse](ANIMATION_PAPER_GROUP_REUSE.md) | Complete two-pass lookup,null/failure,flags/index/stamps | Pool/resource/lifetime/Main/original visuals |
+| [Animation local time/clock](ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md) | Complete scaling,borrow/shared/linked writes,rate and literal clock requests | Clock producers/conversion/division/evaluation/numeric/runtime |
 | [Partner pre-display](FIELD_PARTNER_PRE_DISPLAY.md) | Complete name/paper/frame/update/render gate/depth/registration order | Animation/camera/queue/source/numeric/original visual domains |
 | [Partner pose selectors](FIELD_PARTNER_POSE_REQUEST_SELECTION.md) | Complete name/HP-remap/table/adjacent-color request and two source leaves | Pouch/kind/index/name/resource/lifecycle domains |
 | [Partner facing](FIELD_PARTNER_DISPLAY_FACING.md) | Complete selection,four interpolation/latch branches and live stores | Flag/target/alias/FP domains and original turning |

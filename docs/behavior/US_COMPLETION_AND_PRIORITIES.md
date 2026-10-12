@@ -294,3 +294,11 @@ Listing audit610 files/86164 instructions/656 paired-single ops is clean.
 Unvalidated BTLNO string-name mapping/completion claims remain superseded by
 [message evidence correction](US_MESSAGE_INVENTORY_EVIDENCE_CORRECTIONS.md).
 No complete system/original encounter establishes final game requirements.
+
+ID1 animation setter update (2026-10-12):five complete used local setters are
+now covered by [selection](ANIMATION_SELECTOR_AND_RESTART.md),
+[group reuse](ANIMATION_PAPER_GROUP_REUSE.md) and
+[time/clock](ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md). Main/draw/resource/pool/
+clock/helper/source/numeric/original visuals remain open. Static299-call census
+is not game completion or original reachability/frequency. Full-game system
+requirements remain premature until these and other system/story gaps close.

@@ -1540,3 +1540,17 @@ sound/proj/pmario.proj,pool,sdir,samp audio-map pipeline:3218 GameCube identitie
 and RomFS WAV/audio-map.json derivatives remain unstaged. Original rights remain
 with their owners;local analysis/conversion grants no redistribution license.
 Exact build log:/tmp/id1-predisplay-build.log.
+
+ID1 animation setter evidence/build provenance (2026-10-12):US G8ME01 ISO
+opened read-only. Five original local bodies and their299 direct DOL references
+are pinned as metadata. Original binary32 zero0x8041fb28 and factor
+16.66666603088379 at0x8041fb40;initial work/global pointers0x80415dc0/
+0x80415fd0 are hashed,not represented as live state. Loaded names/resources are
+reused original data;no pose/message/art asset or runtime source was exported
+into tracked docs. Inspection ELF/listings/report remain ignored under
+artifacts/reference/behavior. make all ran the existing sound/proj/pmario.proj,
+pool,sdir,samp pipeline:3218 GameCube identities,0 Switch,5 primary-PCM slice
+fallbacks. Existing local-assets/audio-map raw/catalog and RomFS WAV/audio-map.json
+outputs unstaged;no ID1 conversion policy change. Original rights remain with
+owners;local analysis grants no redistribution license. Exact log:
+/tmp/id1-animation-build.log.
