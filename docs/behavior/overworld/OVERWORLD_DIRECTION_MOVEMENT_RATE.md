@@ -23,15 +23,20 @@ coefficient=80420aa0 (word3e428f60). Subtract at800969c8, multiply/divide at
 The helper neither reads support/slope nor clamps/normalizes its H argument.
 
 `marioMoveMain` caps ordinary air norm to dash-speed*scale at8005994c–960.
-Then, unless main MarioFlags&0x01000000, it loads RETAINED travel heading+1a4,
+Then, unless main MarioFlags&0x01000000, it loads retained facing+1a0,
 requests rate at80059970 and multiplies the already combined/capped norm at
 80059974. It stores norm+18c at80059988 before wall collision. This is neither
 an input-magnitude gain nor a rate based on combined air-displacement heading.
 Special external movement routes can bypass this whole normal path separately.
 
 The rate has no gate requiring nonzero retained base+180. A zero-base jump whose
-current stick creates drift still uses retained heading+1a4 as the rate input;
-keep that retained heading independently of base speed and current input.
+current stick creates drift still uses retained facing+1a0 as the rate input;
+keep that facing independently of base speed, travel1a4 and current input.
+Instruction8005996c is c03e01a0, and CheckWall writes1a0 later in the same
+callback. This corrects the earlier prose's mislabeled1a4 input; the original
+pinned instruction/body already contain1a0. The rate uses preceding retained
+wall-facing, including source14-count direction hysteresis. See
+[its caller/facing owner](OVERWORLD_MARIO_DISPLAY_DIRECTION.md).
 
 At offset0 and original unit heading u(H)=(sin(H),-cos(H)), the ideal directional
 expression is1+0.19000005722045898*abs(u.z). Depth H0/180 gains approximately19%;

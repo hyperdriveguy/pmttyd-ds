@@ -125,13 +125,13 @@ Camera19c is actual retained input-heading offset, not an inferred billboard
 angle. Keep engine*.01 actor units and source scalar2 independently of these
 heading rules.
 
-marioMakeDispDir800583a8, called at800578d0 when character/display gates allow,
-writes retained target1b0 and current1ac through its turn-state branches.
-Its full transition/intermediate-angle domain is **not closed by this selector
-contract**; do not substitute current stick for1ac and call it source fidelity.
-The model matrix is closed given those actual fields. A native static-pose
-atlas remains a projection/bake adaptation unless it includes required pose
-yaw/reflection/pivot effects and the retained turn owner.
+[The retained display-direction contract](OVERWORLD_MARIO_DISPLAY_DIRECTION.md)
+closes fresh heading0, reinitialization retention, ordinary wall-fallback facing
+and the target0/180 turn machine in marioMakeDispDir800583a8. Rear selection
+runs before that update; draw consumes the updated1ac. Other direction event/
+road writers and special target/flag domains remain explicit dependencies.
+A native static-pose atlas remains a projection/bake adaptation unless it includes
+required pose yaw/reflection/pivot effects and actual retained turn state.
 
 ## Validation
 

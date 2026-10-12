@@ -39,6 +39,10 @@ def verify(iso):
         for address,value in {**CONSTANTS, **ANCHORS}.items():
             if read(address,len(value)//2).hex() != value:
                 raise ValueError(f'Anchor/constant mismatch: {address:#x}')
+    # Pin field identity, not merely a mislabeled source instruction hash.
+    heading_load = int.from_bytes(bytes.fromhex(ANCHORS[0x8005996c]), 'big')
+    if heading_load >> 26 != 48 or heading_load & 0xffff != 0x1a0:
+        raise ValueError('Movement-rate caller must load retained facing1a0')
     return dict(scope='Static US Mario direction movement rate; no execution/timing claim',
                 bodies=len(BODIES), anchors=len(ANCHORS), constants=len(CONSTANTS))
 
