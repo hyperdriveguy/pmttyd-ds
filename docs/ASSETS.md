@@ -25,8 +25,8 @@ includes src/include/config and rels under ignored
 `artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
 `decomp_coverage.py` parses its configuration without executing it; report is
 ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
-now fingerprints 280 selected US functions and includes two seven-byte defense
-window tables. Independent verifier checks 1084 instruction anchors plus those
+now fingerprints 281 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1108 instruction anchors plus those
 tables, the binary32 accuracy multiplier and all twelve counter jump-table
 targets directly in the read-only ISO. Direct-damage research additionally
 verifies nine presentation float constants and seven sound-key bindings.
@@ -554,3 +554,9 @@ contracts record signs/base inference, lookahead/width/count, sticky overflow
 with wrapped magnitude and unconditional unread. No public strtoul or executed
 conversion claim is implied. Original disassembly/reports remain ignored; no
 asset conversion, original executable linking or license change occurs.
+
+Unsigned64 scan research adds __strtoull identity and24 anchors, with a full
+hash of its separate17-entry state table. Authored contracts record division
+threshold, word products/carries, overflow/count/sign outputs and invalid-entry
+uninitialized-register unread. Local ELF/disassembly/report outputs stay ignored;
+no original execution, asset conversion, native linking or license change occurs.

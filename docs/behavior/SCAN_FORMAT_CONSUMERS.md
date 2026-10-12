@@ -86,7 +86,7 @@ is nonzero, and store according to selector if destination is nonnull:
 Unknown selectors perform no storage but still increment A if destination is
 nonnull. Successful integer routes increment B regardless of destination.
 The [unsigned32 helper](SCAN_INTEGER32.md) now establishes its overflow flag,
-digit/prefix/whitespace and count behavior. The64-bit helper remains separate; the consumer does not directly gate
+digit/prefix/whitespace and count behavior. The [unsigned64 helper](SCAN_INTEGER64.md) is recovered separately; the consumer does not directly gate
 success on that status word.
 
 Floating routes call __strtold0x8026d6d0(width,readCallback,context,&count,&status).

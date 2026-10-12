@@ -3823,3 +3823,31 @@ audio/save/content systems before complete-game requirements. Full objective
 active/incomplete; this local helper does not establish complete scanner/layout
 or full-game fidelity. Original message IDs/tokens, attribution/order/branches
 and event conditions remain required.
+
+## 2026-10-12 — US unsigned64 scan helper
+
+Recovered __strtoull0x8026e6dc,size40c. Added detailed SCAN_INTEGER64.md:
+callback/high-low return ABI, sign/base/prefix/count states, two __div2u threshold
+sites, unsigned subtract/borrow comparisons, low/high/cross-word multiply and
+carry addition, sticky overflow with wrapped magnitude, width/EOF count and
+unread order. Invalid entry forwards incoming r20 (not initialized locally) to
+unread, unlike unsigned32's incoming width value. Linked prior division and scan
+consumer contracts. Derived64-bit boundary examples remain explicitly static.
+
+Validation:1108 instruction anchors and existing tables/constants/font checks
+passed read-only ISO; full17-entry unsigned64 state-table hash added. Fresh
+281-function reports reproduced byte-for-byte. All438 local behavior links
+resolved; git diff --check passed. make test passed core plus36 Python tests;
+make all exited0 with no rebuild. No original execution/emulator, profile/save
+modification, native code change, asset conversion or story/message rewriting.
+ELFs/disassemblies/reports remain ignored. mbtowc entry was also inspected locally
+for the next dependency; its decoder/complete contract remains unrecovered here.
+Working tree was clean before this authored research increment.
+
+Next: mbtowc and its length/byte validation helper, __strtold floating scan and
+numeric conversion dependencies; executed integer callback/output/count/carry
+comparisons and original format/argument corpus. Continue drawing/string layout,
+runtime resource/cadence callers and uncovered story/event/field/battle/audio/
+save/content systems before complete-game requirements. Full objective remains
+active/incomplete; no complete scanner/layout or full-game fidelity claim.
+Original data and story attribution/order/branches/conditions remain mandatory.

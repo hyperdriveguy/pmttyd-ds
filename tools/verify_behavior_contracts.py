@@ -13,6 +13,20 @@ from iso_assets import DEFAULT_ISO, inventory
 
 # Independent expected instructions transcribed from the inspected US functions.
 ANCHORS = {
+    'scan_integer64': {
+        0x8026e728: '90090000', 0x8026e744: '2c120001',
+        0x8026e78c: '4bff6261', 0x8026e7b0: '7c03002e',
+        0x8026e7f0: '3a730001', 0x8026e850: '90110000',
+        0x8026e87c: '3bc00004', 0x8026e8bc: '3be00010',
+        0x8026e8e8: '3be00008', 0x8026e928: '4bff60c5',
+        0x8026e950: '7c14f800', 0x8026e9dc: '7c1ac010',
+        0x8026e9e4: '7c15a910', 0x8026e9f8: '7c7af816',
+        0x8026ea08: '7cb7f9d6', 0x8026ea14: '7cba41d6',
+        0x8026ea28: '7c602110', 0x8026ea40: '7c87a014',
+        0x8026ea48: '7c050114', 0x8026ea74: '7c1d9000',
+        0x8026ea8c: '73c00034', 0x8026eabc: '7e84a378',
+        0x8026eacc: '7f44d378', 0x8026ead0: '7ee3bb78',
+    },
     'scan_integer32': {
         0x8026eb2c: '90090000', 0x8026eb48: '2c160001',
         0x8026eb84: '7f40eb96', 0x8026eba0: '7c03002e',
@@ -1232,6 +1246,10 @@ def verify(iso_path):
         if hashlib.sha256(read(0x803bb508, 256)).hexdigest() != '8985a5a84f72643f92031c52cc557992ad6b42f7975223ea98bea822c7665294':
             raise ValueError('Scan uppercase table mismatch')
         print('All seventeen unsigned32 scan states and complete uppercase table verified')
+        if hashlib.sha256(read(0x803bb940, 68)).hexdigest() != 'e32e4c11896c665caff75135f8cf7f254507b20eff6bc7dbf048a455736a77e8':
+            raise ValueError('Unsigned64 scan state table mismatch')
+        print('All seventeen unsigned64 scan state targets verified')
+
 
 
 
