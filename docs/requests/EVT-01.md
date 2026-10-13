@@ -509,6 +509,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [forward refill](../behavior/audio/MUSYX_STREAM_POSITION_AND_FORWARD_REFILL.md).
   /14/block mapping/callback gates/fresh modulo versus retained offset/
   flush-before-cursor order pinned; wrap/footer/providers/runtime open.
+- [x] Complete streamHandle zero-position wrapped refill —
+  [zero-position refill](../behavior/audio/MUSYX_STREAM_ZERO_POSITION_WRAPPED_REFILL.md).
+  Callback gates/fresh modulo/byte-versus-logical length/retained block offset/
+  flush-before-cursor order pinned; nonzero wrap/footer/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2582,3 +2586,13 @@ route/six callback/nine refill vectors and65540 division cases checked. Position
 normalization, zero-return/fresh state gate, fresh modulo versus retained block
 offset and flush-before-cursor order pinned. Wrapped refill/footer/providers/
 domains/original audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream zero-position wrapped refill delivery
+
+Completed one local region in
+[zero-position refill](../behavior/audio/MUSYX_STREAM_ZERO_POSITION_WRAPPED_REFILL.md).
+Three spans/113 anchors/four calls/two callback sites verified; six dispatch/five
+callback/nine refill vectors checked. Fresh modulo, stored byte-length versus
+forward logical-length branch, retained pre-callback block offset and flush-before-
+cursor publication pinned. Nonzero wrap/footer/providers/domains/original audio/
+native binding remain open; EVT-01 stays OPEN.

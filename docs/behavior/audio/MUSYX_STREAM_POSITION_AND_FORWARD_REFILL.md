@@ -88,3 +88,9 @@ Remaining: wrapped-refill/common footer/ABI, actual producer callback/position/
 format/cursor/length/flags/source/selector/voice/count providers and valid value/
 divisor/extent/alignment/encoding/alias/lifetime/IRQ/concurrency domains, transitive
 ARAM/DSP consumers and original callback/refill/stream/audio traces. EVT-01 OPEN.
+
+## 2026-10-13 — Zero-position wrapped-refill follow-up
+
+[Zero-position refill](MUSYX_STREAM_ZERO_POSITION_WRAPPED_REFILL.md) closes that wrapped branch and pins its
+format0 byte-length distinction. Nonzero wrap/footer/ABI/provider/domain/
+original refill/audio/native binding remain open.

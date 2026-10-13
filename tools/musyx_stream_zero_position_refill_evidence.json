@@ -1,0 +1,405 @@
+{
+  "schema": 1,
+  "scope": "Complete streamHandle zero-position wrapped refill region; nonzero wrap/footer/providers/runtime open",
+  "complete_bodies": [],
+  "complete_regions": [
+    {
+      "name": "streamHandle zero-position wrapped refill",
+      "address": 2150083308,
+      "size": 452
+    }
+  ],
+  "linked_only": [
+    "streamHandle",
+    "hwFlushStream"
+  ],
+  "dol_spans": [
+    {
+      "name": "streamHandle zero-position wrapped refill",
+      "address": 2150083308,
+      "size": 452,
+      "sha256": "2d4a12da7c27b24bda118c8a822bb297cc9c0e4cdd82dad03a53108de653bb4b"
+    },
+    {
+      "name": "streamHandle",
+      "address": 2150082200,
+      "size": 2276,
+      "sha256": "f5bc74901c36f1c68441ece7e21cafa90df9d96aa57b2b630e1b3cffba963a27"
+    },
+    {
+      "name": "hwFlushStream",
+      "address": 2150175460,
+      "size": 144,
+      "sha256": "634fc956a3bf16f400a5f528427e1462e980320e220f23990d903746c69cc74b"
+    }
+  ],
+  "dol_anchors": {
+    "2150083308": "28030000",
+    "2150083312": "408201c0",
+    "2150083316": "2c050001",
+    "2150083320": "418200cc",
+    "2150083324": "40800414",
+    "2150083328": "2c050000",
+    "2150083332": "40800008",
+    "2150083336": "48000408",
+    "2150083340": "807c0018",
+    "2150083344": "5406083c",
+    "2150083348": "80fc0014",
+    "2150083352": "38a00000",
+    "2150083356": "819c0010",
+    "2150083360": "7c801850",
+    "2150083364": "7c673214",
+    "2150083368": "80fc0050",
+    "2150083372": "38c00000",
+    "2150083376": "7d8903a6",
+    "2150083380": "4e800421",
+    "2150083384": "28030000",
+    "2150083388": "418203d4",
+    "2150083392": "881c000c",
+    "2150083396": "28000002",
+    "2150083400": "408203c8",
+    "2150083404": "80fc0020",
+    "2150083408": "809c0018",
+    "2150083412": "7ca71a14",
+    "2150083416": "801c0008",
+    "2150083420": "7c652396",
+    "2150083424": "5400039d",
+    "2150083428": "7c0321d6",
+    "2150083432": "7f602850",
+    "2150083436": "40820050",
+    "2150083440": "281b0000",
+    "2150083444": "40820028",
+    "2150083448": "801c001c",
+    "2150083452": "54e4083c",
+    "2150083456": "807c0014",
+    "2150083460": "38e00000",
+    "2150083464": "88dc000e",
+    "2150083468": "7ca40050",
+    "2150083472": "39000000",
+    "2150083476": "48016751",
+    "2150083480": "48000024",
+    "2150083484": "7c07d850",
+    "2150083488": "807c0014",
+    "2150083492": "88dc000e",
+    "2150083496": "54e4083c",
+    "2150083500": "5405083c",
+    "2150083504": "38e00000",
+    "2150083508": "39000000",
+    "2150083512": "4801672d",
+    "2150083516": "937c0020",
+    "2150083520": "48000350",
+    "2150083524": "3c802492",
+    "2150083528": "807c0018",
+    "2150083532": "38844925",
+    "2150083536": "811c0014",
+    "2150083540": "7d240016",
+    "2150083544": "819c0010",
+    "2150083548": "7c801850",
+    "2150083552": "80fc0050",
+    "2150083556": "38a00000",
+    "2150083560": "38c00000",
+    "2150083564": "7c090050",
+    "2150083568": "5400f87e",
+    "2150083572": "7c004a14",
+    "2150083576": "541e0038",
+    "2150083580": "7c68f214",
+    "2150083584": "7d8903a6",
+    "2150083588": "4e800421",
+    "2150083592": "28030000",
+    "2150083596": "41820304",
+    "2150083600": "881c000c",
+    "2150083604": "28000002",
+    "2150083608": "408202f8",
+    "2150083612": "801c0020",
+    "2150083616": "809c0018",
+    "2150083620": "7ca01a14",
+    "2150083624": "801c0008",
+    "2150083628": "7c652396",
+    "2150083632": "5400039d",
+    "2150083636": "7c0321d6",
+    "2150083640": "7f602850",
+    "2150083644": "4082006c",
+    "2150083648": "281b0000",
+    "2150083652": "40820028",
+    "2150083656": "801c001c",
+    "2150083660": "7fc4f378",
+    "2150083664": "807c0014",
+    "2150083668": "38e00000",
+    "2150083672": "88dc000e",
+    "2150083676": "7cbe0050",
+    "2150083680": "39000000",
+    "2150083684": "48016681",
+    "2150083688": "48000040",
+    "2150083692": "3c602492",
+    "2150083696": "381b000d",
+    "2150083700": "38834925",
+    "2150083704": "807c0014",
+    "2150083708": "7ca40016",
+    "2150083712": "88dc000e",
+    "2150083716": "7fc4f378",
+    "2150083720": "38e00000",
+    "2150083724": "39000000",
+    "2150083728": "7c050050",
+    "2150083732": "5400f87e",
+    "2150083736": "7c002a14",
+    "2150083740": "54000038",
+    "2150083744": "7cbe0050",
+    "2150083748": "48016641",
+    "2150083752": "937c0020",
+    "2150083756": "48000264"
+  },
+  "direct_calls": [
+    {
+      "site": 2150083476,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    },
+    {
+      "site": 2150083512,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    },
+    {
+      "site": 2150083684,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    },
+    {
+      "site": 2150083748,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "indirect_call_sites": [
+    {
+      "site": 2150083380,
+      "pointer_field": 16,
+      "arguments": [
+        "source14+wrap32(2*captured_cursor20)",
+        "captured_length18-captured_cursor20",
+        0,
+        0,
+        "user50"
+      ]
+    },
+    {
+      "site": 2150083588,
+      "pointer_field": 16,
+      "arguments": [
+        "source14+block(captured_cursor20)",
+        "captured_length18-captured_cursor20",
+        0,
+        0,
+        "user50"
+      ]
+    }
+  ],
+  "derived_dispatch_vectors": [
+    {
+      "normalized_position": 0,
+      "format": 0,
+      "route": "zero_format0"
+    },
+    {
+      "normalized_position": 0,
+      "format": 1,
+      "route": "zero_format1"
+    },
+    {
+      "normalized_position": 0,
+      "format": 2,
+      "route": "footer"
+    },
+    {
+      "normalized_position": 0,
+      "format": 255,
+      "route": "footer"
+    },
+    {
+      "normalized_position": 1,
+      "format": 0,
+      "route": "nonzero_wrap"
+    },
+    {
+      "normalized_position": 14,
+      "format": 1,
+      "route": "nonzero_wrap"
+    }
+  ],
+  "derived_callback_vectors": [
+    {
+      "return_count": 0,
+      "fresh_state": 2,
+      "admitted": false
+    },
+    {
+      "return_count": 1,
+      "fresh_state": 2,
+      "admitted": true
+    },
+    {
+      "return_count": 4294967295,
+      "fresh_state": 2,
+      "admitted": true
+    },
+    {
+      "return_count": 1,
+      "fresh_state": 0,
+      "admitted": false
+    },
+    {
+      "return_count": 1,
+      "fresh_state": 3,
+      "admitted": false
+    }
+  ],
+  "derived_refill_vectors": [
+    {
+      "format": 0,
+      "captured_cursor": 14,
+      "captured_length": 16,
+      "callback_offset": 28,
+      "callback_length": 2,
+      "post_callback_cursor": 14,
+      "return_count": 2,
+      "fresh_length18": 16,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 0,
+      "flush_offset": 28,
+      "flush_size": 4,
+      "requests_flush": true
+    },
+    {
+      "format": 0,
+      "captured_cursor": 14,
+      "captured_length": 16,
+      "callback_offset": 28,
+      "callback_length": 2,
+      "post_callback_cursor": 14,
+      "return_count": 2,
+      "fresh_length18": 16,
+      "byte_length1c": 99,
+      "flags8": 0,
+      "new_cursor": 0,
+      "flush_offset": 28,
+      "flush_size": 71,
+      "requests_flush": true
+    },
+    {
+      "format": 0,
+      "captured_cursor": 14,
+      "captured_length": 16,
+      "callback_offset": 28,
+      "callback_length": 2,
+      "post_callback_cursor": 14,
+      "return_count": 4,
+      "fresh_length18": 16,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 2,
+      "flush_offset": 28,
+      "flush_size": 4294967272,
+      "requests_flush": true
+    },
+    {
+      "format": 0,
+      "captured_cursor": 14,
+      "captured_length": 16,
+      "callback_offset": 28,
+      "callback_length": 2,
+      "post_callback_cursor": 4,
+      "return_count": 2,
+      "fresh_length18": 16,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 6,
+      "flush_offset": 8,
+      "flush_size": 4,
+      "requests_flush": true
+    },
+    {
+      "format": 1,
+      "captured_cursor": 42,
+      "captured_length": 56,
+      "callback_offset": 24,
+      "callback_length": 14,
+      "post_callback_cursor": 42,
+      "return_count": 14,
+      "fresh_length18": 56,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 0,
+      "flush_offset": 24,
+      "flush_size": 8,
+      "requests_flush": true
+    },
+    {
+      "format": 1,
+      "captured_cursor": 42,
+      "captured_length": 56,
+      "callback_offset": 24,
+      "callback_length": 14,
+      "post_callback_cursor": 42,
+      "return_count": 1,
+      "fresh_length18": 56,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 43,
+      "flush_offset": 24,
+      "flush_size": 8,
+      "requests_flush": true
+    },
+    {
+      "format": 1,
+      "captured_cursor": 42,
+      "captured_length": 56,
+      "callback_offset": 24,
+      "callback_length": 14,
+      "post_callback_cursor": 14,
+      "return_count": 14,
+      "fresh_length18": 56,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 28,
+      "flush_offset": 24,
+      "flush_size": 4294967288,
+      "requests_flush": true
+    },
+    {
+      "format": 1,
+      "captured_cursor": 42,
+      "captured_length": 56,
+      "callback_offset": 24,
+      "callback_length": 14,
+      "post_callback_cursor": 42,
+      "return_count": 14,
+      "fresh_length18": 56,
+      "byte_length1c": 32,
+      "flags8": 131072,
+      "new_cursor": 0,
+      "flush_offset": 24,
+      "flush_size": 8,
+      "requests_flush": false
+    },
+    {
+      "format": 0,
+      "captured_cursor": 14,
+      "captured_length": 16,
+      "callback_offset": 28,
+      "callback_length": 2,
+      "post_callback_cursor": 14,
+      "return_count": 2,
+      "fresh_length18": 0,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": null,
+      "flush_offset": 28,
+      "flush_size": null,
+      "requests_flush": false
+    }
+  ]
+}
