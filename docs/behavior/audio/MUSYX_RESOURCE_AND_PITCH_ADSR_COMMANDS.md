@@ -127,3 +127,10 @@ Remaining: salChangeADSRState/pow/transitive math, actual resource/curve/command
 volume/base-note/coefficient/descriptor/envelope/flag/caller writers, valid length/
 type/index/FP/value/alias/shared-cell/IRQ/concurrency domains and original ADSR/
 pitch/controller/audio traces; other opcodes/full native binding. EVT-01 OPEN.
+
+### 2026-10-13 — Setup state-engine child follow-up
+
+[Complete ADSR transitions/release](MUSYX_ADSR_STATE_TRANSITIONS_AND_RELEASE.md)
+now closes adsrSetup's salChangeADSRState child, including two-type zero-stage
+fallthrough and table/count/step domains. Envelope advancement, actual caller/
+value/index/FP domains and original audio remain open.

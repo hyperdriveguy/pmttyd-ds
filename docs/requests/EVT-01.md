@@ -355,6 +355,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   LE resource/layout/coefficient/adjustment/envelope request paths —
   [resource/pitch ADSR](../behavior/audio/MUSYX_RESOURCE_AND_PITCH_ADSR_COMMANDS.md).
   Sentinel/single precision/half wrap/post-child flags retained; state engine/runtime open.
+- [x] Complete salChangeADSRState/adsrStartRelease/adsrRelease
+  type/phase/count/domain/step/table/release paths —
+  [ADSR transitions/release](../behavior/audio/MUSYX_ADSR_STATE_TRANSITIONS_AND_RELEASE.md).
+  Zero-stage fallthrough/raw index/linear-versus-converted zero effects retained; advance/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2049,3 +2053,20 @@ mask/FP/field/store-order bindings checked as deductions. Full fresh ELFs/listin
 stay `/tmp`; no native change/original execution/body/binary asset export. State
 engine/pow, actual resource/index/FP/descriptor/command/caller/domain/alias/IRQ/
 concurrency and original ADSR/pitch/audio remain OPEN.
+
+### 2026-10-13 — ADSR state transitions and release
+
+[Three complete bodies](../behavior/audio/MUSYX_ADSR_STATE_TRANSITIONS_AND_RELEASE.md)
+close two-type attack/decay/sustain/terminal fallthrough, raw-versus-derived count/
+step/level/log table domains and explicit/stored release duration/FP conversion.
+Zero linear release preserves level; converted-zero release clears both domains.
+Terminal does not independently force phase4 or clear descriptor. No generic
+stage duration1, table/value guard, common zero behavior or measured cadence inferred.
+
+Validation: read-only manifest nine spans (three bodies/one linked/five numeric
+data),217 anchors/two calls passes. Five linear/five log-count/five release/seven
+index-formula vectors and domain/mask/width/table/order checked as deductions.
+Full fresh ELFs/listings stay `/tmp`; no native change/original execution/body/
+binary asset export. Advancement, actual type/phase/count/level/duration/sustain/
+caller/domain/alias/IRQ/concurrency and macro/hardware/DSP/original envelope/
+release/audio remain OPEN.

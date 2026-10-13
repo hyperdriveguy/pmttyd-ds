@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero ADSR transitions/release
+
+Completed salChangeADSRState/adsrStartRelease/adsrRelease for EVT-01; checked
+the corresponding inbox portion.
+[ADSR transitions/release](behavior/audio/MUSYX_ADSR_STATE_TRANSITIONS_AND_RELEASE.md)
+pins zero-stage fallthrough/two domains/count/step/table/terminal and explicit/
+stored release. Linear-zero preserves level; converted-zero clears level/log.
+Advancement/actual type/index/divisor/FP/alias/caller/runtime domains remain open;
+no common zero handling/table repair or measured cadence inferred.
+
+Validation: read-only ISO manifest passed nine spans (three bodies/one linked/
+five numeric data),217 anchors/two calls. Five linear/five log-count/five release/
+seven index-formula vectors and domain/mask/width/table/order deductions checked.
+Link audit passed833 Markdown files/zero broken links; scoped `git diff --check`
+passed. Documentation/metadata only; no `make test`/`make all` rerun. Full original
+inspection ELFs/listings stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded from this commit.
+
+Next: priority-zero EVT-01 envelope advancement and actual type/phase/count/
+level/log/step/duration/sustain/selector/caller writers, valid table/index/divisor/
+float/value/alias/IRQ/concurrency domains, macro/hardware/DSP consumers and
+original transition/release/audio traces; other opcodes/full native binding.
+Lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero resource/pitch ADSR commands
 
 Completed mcmdSetADSR/mcmdSetPitchADSR/adsrSetup and opcodes12/32 for
