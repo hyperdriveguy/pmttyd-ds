@@ -1,0 +1,339 @@
+{
+  "schema": 1,
+  "scope": "Complete existing DSP voice format4/5/6 pending-buffer and completion region; startup/providers/runtime open",
+  "complete_bodies": [],
+  "complete_regions": [
+    {
+      "name": "existing_voice_buffer_completion",
+      "address": 2150144724,
+      "size": 288
+    }
+  ],
+  "linked_only": [
+    "salBuildCommandList",
+    "salSynthSendMessage",
+    "salDeactivateVoice"
+  ],
+  "dol_spans": [
+    {
+      "name": "salBuildCommandList",
+      "address": 2150141440,
+      "size": 9720,
+      "sha256": "14f94e450a1f0069db5607b861a7dbe8e8e3c98d59ecba707574284c12ee920b"
+    },
+    {
+      "name": "salSynthSendMessage",
+      "address": 2150151160,
+      "size": 68,
+      "sha256": "cd01bed69227acc17fdb1549126fcaafa8d1819bce658661a063cf6e93d1a4d8"
+    },
+    {
+      "name": "salDeactivateVoice",
+      "address": 2150151388,
+      "size": 96,
+      "sha256": "4d5ef93ba58d3f89aa1ab830e40c932b0864811f88ce21b3de0970cc456f54ef"
+    },
+    {
+      "name": "existing_voice_buffer_completion",
+      "address": 2150144724,
+      "size": 288,
+      "sha256": "02138b1bc94daf0639b3f06bc776f31b4f85b7a270f0081fd4a17b21260c231a"
+    }
+  ],
+  "dol_anchors": {
+    "2150144724": "881d0090",
+    "2150144728": "28000004",
+    "2150144732": "4182000c",
+    "2150144736": "28000005",
+    "2150144740": "40820090",
+    "2150144744": "881d00a0",
+    "2150144748": "b01300b4",
+    "2150144752": "881d0090",
+    "2150144756": "28000005",
+    "2150144760": "408200c8",
+    "2150144764": "881d009c",
+    "2150144768": "28000000",
+    "2150144772": "408200bc",
+    "2150144776": "a01300c2",
+    "2150144780": "28000000",
+    "2150144784": "418200b0",
+    "2150144788": "809d0098",
+    "2150144792": "3c602492",
+    "2150144796": "80fd0094",
+    "2150144800": "38634925",
+    "2150144804": "38c4ffff",
+    "2150144808": "38000001",
+    "2150144812": "7ca33016",
+    "2150144816": "54e4083c",
+    "2150144820": "90fd0078",
+    "2150144824": "7c653050",
+    "2150144828": "5463f87e",
+    "2150144832": "7c632a14",
+    "2150144836": "5465e8fe",
+    "2150144840": "1ca5000e",
+    "2150144844": "54630836",
+    "2150144848": "38630002",
+    "2150144852": "7ca53050",
+    "2150144856": "7f432a14",
+    "2150144860": "7f44d214",
+    "2150144864": "5743843e",
+    "2150144868": "b0730076",
+    "2150144872": "b3530078",
+    "2150144876": "981d009c",
+    "2150144880": "48000050",
+    "2150144884": "28000006",
+    "2150144888": "40820048",
+    "2150144892": "881d009c",
+    "2150144896": "28000000",
+    "2150144900": "4082003c",
+    "2150144904": "a01300c2",
+    "2150144908": "28000000",
+    "2150144912": "41820030",
+    "2150144916": "80bd0094",
+    "2150144920": "38000001",
+    "2150144924": "807d0098",
+    "2150144928": "54a4f87e",
+    "2150144932": "7f432214",
+    "2150144936": "90bd0078",
+    "2150144940": "3b5affff",
+    "2150144944": "5743843e",
+    "2150144948": "b0730076",
+    "2150144952": "b3530078",
+    "2150144956": "981d009c",
+    "2150144960": "801d008c",
+    "2150144964": "28000000",
+    "2150144968": "4082002c",
+    "2150144972": "807d00dc",
+    "2150144976": "801d0084",
+    "2150144980": "7c030040",
+    "2150144984": "4180001c",
+    "2150144988": "7fa3eb78",
+    "2150144992": "38800000",
+    "2150144996": "48001815",
+    "2150145000": "7fa3eb78",
+    "2150145004": "480018f1",
+    "2150145008": "48000d74"
+  },
+  "direct_calls": [
+    {
+      "site": 2150144996,
+      "target": 2150151160,
+      "name": "salSynthSendMessage"
+    },
+    {
+      "site": 2150145004,
+      "target": 2150151388,
+      "name": "salDeactivateVoice"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_division_check": {
+    "low_word_cases": 65536,
+    "edge_cases": 6,
+    "lcg_cases": 4096,
+    "method": "Original high-multiply/shift formula checked against unsigned quotient/remainder14; not original execution"
+  },
+  "derived_endpoint_vectors": [
+    {
+      "address": 0,
+      "count": 0,
+      "wrapped_count_minus_one": 4294967295,
+      "quotient": 306783378,
+      "remainder": 3,
+      "type5_endpoint": 613566757,
+      "type6_endpoint": 4294967295,
+      "type5_high": 9362,
+      "type5_low": 18725,
+      "type6_high": 65535,
+      "type6_low": 65535
+    },
+    {
+      "address": 0,
+      "count": 1,
+      "wrapped_count_minus_one": 0,
+      "quotient": 0,
+      "remainder": 0,
+      "type5_endpoint": 2,
+      "type6_endpoint": 0,
+      "type5_high": 0,
+      "type5_low": 2,
+      "type6_high": 0,
+      "type6_low": 0
+    },
+    {
+      "address": 0,
+      "count": 14,
+      "wrapped_count_minus_one": 13,
+      "quotient": 0,
+      "remainder": 13,
+      "type5_endpoint": 15,
+      "type6_endpoint": 13,
+      "type5_high": 0,
+      "type5_low": 15,
+      "type6_high": 0,
+      "type6_low": 13
+    },
+    {
+      "address": 0,
+      "count": 15,
+      "wrapped_count_minus_one": 14,
+      "quotient": 1,
+      "remainder": 0,
+      "type5_endpoint": 18,
+      "type6_endpoint": 14,
+      "type5_high": 0,
+      "type5_low": 18,
+      "type6_high": 0,
+      "type6_low": 14
+    },
+    {
+      "address": 4096,
+      "count": 28,
+      "wrapped_count_minus_one": 27,
+      "quotient": 1,
+      "remainder": 13,
+      "type5_endpoint": 8223,
+      "type6_endpoint": 2075,
+      "type5_high": 0,
+      "type5_low": 8223,
+      "type6_high": 0,
+      "type6_low": 2075
+    },
+    {
+      "address": 4294967295,
+      "count": 1,
+      "wrapped_count_minus_one": 0,
+      "quotient": 0,
+      "remainder": 0,
+      "type5_endpoint": 0,
+      "type6_endpoint": 2147483647,
+      "type5_high": 0,
+      "type5_low": 0,
+      "type6_high": 32767,
+      "type6_low": 65535
+    },
+    {
+      "address": 2147483648,
+      "count": 4294967295,
+      "wrapped_count_minus_one": 4294967294,
+      "quotient": 306783378,
+      "remainder": 2,
+      "type5_endpoint": 613566756,
+      "type6_endpoint": 1073741822,
+      "type5_high": 9362,
+      "type5_low": 18724,
+      "type6_high": 16383,
+      "type6_low": 65534
+    },
+    {
+      "address": 305419896,
+      "count": 2147483648,
+      "wrapped_count_minus_one": 2147483647,
+      "quotient": 153391689,
+      "remainder": 1,
+      "type5_endpoint": 3065106819,
+      "type6_endpoint": 2300193595,
+      "type5_high": 46769,
+      "type5_low": 53635,
+      "type6_high": 35098,
+      "type6_low": 11067
+    }
+  ],
+  "derived_gate_vectors": [
+    {
+      "type": 4,
+      "latch": 0,
+      "pb_c2": 1,
+      "copies_b4": true,
+      "updates_endpoint": false
+    },
+    {
+      "type": 5,
+      "latch": 0,
+      "pb_c2": 0,
+      "copies_b4": true,
+      "updates_endpoint": false
+    },
+    {
+      "type": 5,
+      "latch": 1,
+      "pb_c2": 1,
+      "copies_b4": true,
+      "updates_endpoint": false
+    },
+    {
+      "type": 5,
+      "latch": 0,
+      "pb_c2": 1,
+      "copies_b4": true,
+      "updates_endpoint": true
+    },
+    {
+      "type": 6,
+      "latch": 0,
+      "pb_c2": 1,
+      "copies_b4": false,
+      "updates_endpoint": true
+    },
+    {
+      "type": 6,
+      "latch": 255,
+      "pb_c2": 1,
+      "copies_b4": false,
+      "updates_endpoint": false
+    },
+    {
+      "type": 0,
+      "latch": 0,
+      "pb_c2": 1,
+      "copies_b4": false,
+      "updates_endpoint": false
+    }
+  ],
+  "derived_completion_vectors": [
+    {
+      "word8c": 0,
+      "position": 0,
+      "length": 0,
+      "completes": true
+    },
+    {
+      "word8c": 0,
+      "position": 0,
+      "length": 1,
+      "completes": false
+    },
+    {
+      "word8c": 0,
+      "position": 5,
+      "length": 5,
+      "completes": true
+    },
+    {
+      "word8c": 0,
+      "position": 6,
+      "length": 5,
+      "completes": true
+    },
+    {
+      "word8c": 1,
+      "position": 6,
+      "length": 5,
+      "completes": false
+    },
+    {
+      "word8c": 4294967295,
+      "position": 4294967295,
+      "length": 0,
+      "completes": false
+    },
+    {
+      "word8c": 0,
+      "position": 4294967295,
+      "length": 2147483648,
+      "completes": true
+    }
+  ]
+}

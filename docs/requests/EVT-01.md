@@ -428,6 +428,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [budget/rejection/voice chain](../behavior/audio/MUSYX_DSP_BUDGET_REJECTION_AND_VOICE_CHAIN.md).
   Original tables/wrapped cost/fresh pointer/successor/request order pinned;
   startup/sample/domain/original performance/DSP/audio remain open.
+- [x] Complete existing-voice type4/5/6 field/pending-buffer endpoint
+  and completion region — [existing endpoints/completion](../behavior/audio/MUSYX_EXISTING_VOICE_BUFFER_ENDPOINTS_AND_COMPLETION.md).
+  Captured/fresh dispatch/latch/raw wrapped formulas/message-before-deactivate
+  pinned; startup/provider/domain/original DSP/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2294,3 +2298,12 @@ indices, current/tail/future-studio deactivation/callback ordering and admitted
 PB chain/command03 gate pinned. Synthetic system-word fixtures are not measured
 clock/performance. Startup/sample/provider/domain/original DSP/audio remain open;
 parent EVT-01 stays OPEN.
+
+## 2026-10-13 — Existing voice endpoint/completion delivery
+
+Completed one region in [existing endpoints/completion](../behavior/audio/MUSYX_EXISTING_VOICE_BUFFER_ENDPOINTS_AND_COMPLETION.md).
+Four spans/72 instruction anchors/two calls verified;22 endpoint/gate/completion
+vectors and69638 unsigned quotient/remainder14 cases checked, with all-word
+formula proof. Type capture/fresh reads/raw address/count/zero wrap/latch and
+independent unsigned completion/callback order pinned. Parent EVT-01 OPEN;
+startup/provider/encoding/domain/original endpoint/DSP/audio remain open.

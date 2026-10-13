@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [MusyX existing voice endpoints/completion](audio/MUSYX_EXISTING_VOICE_BUFFER_ENDPOINTS_AND_COMPLETION.md) | Complete type4/5/6 field/pending endpoint and unsigned completion/callback region | Startup/provider/encoding/alias domains and original sample/DSP/audio |
 | [MusyX DSP budget/rejection/voice chain](audio/MUSYX_DSP_BUDGET_REJECTION_AND_VOICE_CHAIN.md) | Complete initial/cost/table/unsigned rejection cascade/PB chain/command03 gate regions | Startup/sample/provider/index/alias domains and original performance/DSP/audio |
 | [MusyX DSP studio payloads/fade bindings](audio/MUSYX_DSP_STUDIO_COMMAND_PAYLOADS_AND_FADE_BINDINGS.md) | Ten complete input/aux/mode/surround/compressor/chain/fade/loop regions | Remaining voice/budget/admission, pointer/index domains and original DSP/audio |
 | [MusyX DSP command rollover/finalization](audio/MUSYX_DSP_COMMAND_ROLLOVER_AND_FINALIZATION.md) | Initialization/twelve rollover blocks/deferred link-size/flush/final command publication | Other payload/admission/budget/cache/DSP domains and original command/audio |

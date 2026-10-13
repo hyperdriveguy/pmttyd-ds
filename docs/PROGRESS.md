@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero existing voice endpoints/completion
+
+Completed existing-voice type4/5/6 field/pending-buffer endpoint/completion
+region; checked the EVT-01 portion.
+[Existing endpoints/completion](behavior/audio/MUSYX_EXISTING_VOICE_BUFFER_ENDPOINTS_AND_COMPLETION.md)
+pins captured/fresh type dispatch/latch/c2/raw wrapped address/count formulas and
+independent unsigned progress/length/message-before-deactivate order. Startup/
+provider/encoding/domain/original endpoint/DSP/audio execution remains open.
+
+Validation: read-only ISO manifest passed four spans (one region/three linked),
+72 instruction anchors/two calls. Eight endpoints/seven gates/seven completion
+vectors and69638 unsigned high-multiply quotient/remainder14 cases checked;
+algebra proves the quotient formula across unsigned32. Link audit passed857
+Markdown files/zero broken links; scoped `git diff --check` passed. Documentation/
+metadata only; no `make test`/`make all` rerun. Full original fresh builder ELF/
+listing stays `/tmp`; no bodies/binary assets committed. Concurrent native/staged
+edits excluded.
+
+Next: priority-zero EVT-01 startup/sample-format bodies, actual type/latch/PB.c2/
+bytea0/address/count/word78/word8c/progress/length/callback/record writers and
+valid encoding/index/overflow/residency/alias/lifetime/IRQ/concurrency domains;
+cache/DSP consumers and original endpoint/completion/voice/audio traces. Remaining
+precision work, lower-priority inbox/full native/full-game remain open.
+
 ## 2026-10-13 — Inbox priority-zero DSP budget/rejection/voice chain
 
 Completed three initial/cost/rejection/PB-chain/command02/03 gate regions;

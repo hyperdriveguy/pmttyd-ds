@@ -144,3 +144,9 @@ mode/type/count/new-setup/result/table/array/list/PB/callback writers and valid
 index/overflow/member/cycle/alias/lifetime/IRQ/concurrency domains; cache/DSP
 consumers and original cost/rejection/chain/voice/audio traces. Three local
 regions answered; whole builder/full native binding and EVT-01 remain OPEN.
+
+## 2026-10-13 — Existing voice completion follow-up
+
+[Existing endpoints/completion](MUSYX_EXISTING_VOICE_BUFFER_ENDPOINTS_AND_COMPLETION.md) closes the local existing-voice
+pending-buffer formulas and independent completion gate. Startup/sample-format/
+provider/value/alias domains and original DSP/audio execution remain open.
