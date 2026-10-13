@@ -2,6 +2,69 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original Darkly and reusable per-actor talk rules
+
+Added source Darklyクラガリさん to the east-side early0..55 slice in
+commit3b08537. Read-only tagged/REL/DOL evidence retains XYZ(-335,0,-335),
+direction270,30/30 dimensions,flags0x40080603, drawmask1 and original
+c_f_mura descriptor0Z_1/idleS_1/talkT_1.
+[Source contract](behavior/field/ROGUEPORT_DARKLY_STATIC_AND_TALK_BINDINGS.md)
+pins original static setup/null regular, lifetime census, asset provenance
+and complete later talk thresholds/quest exception. Goomba4 was investigated
+but requires original wandering/quest owners; no stationary replacement added.
+
+[Native binding](behavior/field/NATIVE_DARKLY_AND_PER_ACTOR_TALK_RULES.md)
+uses existing actor matrix/camera-facing, source pose/message clocks, dimensions,
+collision and talk-ray services without a renderer character branch. Original
+US gor_02_034_00 bytes,wait/key tokens and speaker attribution remain unchanged;
+no story write. Darkly's later175 flag/name child remains unbound. Source
+thresholds differ from Chu, so PMNPC007 adds per-actor source-order/full-ID
+rules instead of reusing one global table. Current Chu keeps all nine original
+ordinary requests; Darkly binds onlyLESS56. Empty/unmatched bindings do not
+fallback or suppress A jump. Generic room prefixes and model metadata support
+future area resources without model-index or gor_-only exporter coupling.
+Legacy1..6 remain readable; staged parser rejects malformed counts/comparisons/
+IDs/room namespaces/truncation. Rule tests include equality, greater/equal,
+unconditional and duplicate first-match cases, plus future tik_04 namespace.
+
+Original a/c_f_mura/a/c_f_mura- resources convert locally to13 wrap-aware124px
+texture cells,1024x256RGBA8 atlas (1MiB),UV4 and original sparse hierarchy/
+geometry/pass/cull. No generated replacement visuals/audio/dialogue. Source
+positions and scalar2 remain separate from *.01 native mapping. Asset ledger
+and documentation inbox record source paths/conversion/rights and remaining
+quest/lifetime domains. Packs, manifests, raw assets and captures are ignored.
+
+Validation: shared `make test` passes126 CTest/101 Python,
+`/tmp/darkly-shared-test.log`; isolated snapshot `/tmp/pm-darkly-si2xzi8u`
+passes125 CTest/101 Python, `/tmp/darkly-isolated-test.log`. Shared/isolated
+`make all` pass without warnings/errors at `/tmp/darkly-shared-native.log`
+and `/tmp/darkly-isolated-native.log`. Snapshot excludes foreign working edits;
+count difference is concurrent test coverage outside that snapshot. Original
+asset tests verify model/descriptor/idle/talk, metadata, contact and unchanged
+message/story through closure. Initial side fixture used the wrong local stick
+for the alley's source camera90; corrected approach uses right/world+Z and
+retains original geometry/placement. Independent parser/model/source review
+passed; its ordering/unknown-talk-admission followups were implemented.
+
+Isolated Azahar/Xvfb `tests/azahar_darkly.py` with fixture from
+`tools/make_field_actor_fixture.py --actor darkly` passes source contact at
+native(-3.350000,-3.625000), visible original message, onset-save suppression,
+return/save, unchanged room2/story8 and checksum. Binary `artifacts/ttyd-darkly.3dsx`,
+profile/captures `artifacts/azahar-darkly`, log `/tmp/darkly-emulator.log`.
+Inspected original model/room/contact/message/return captures; contact capture
+shows60fps,simulation3.23ms/CPU6.7ms/GPU0.5ms in software emulator. This is not
+New2DS hardware speed or matched original-runtime pixel proof. Link audit
+passes839 Markdown files/zero broken links; whitespace passes. ISO read-only;
+no assets/original prose committed, foreign battle/audio work preserved.
+
+Next: original Goomba4 urouro/quest and other per-area source creation/event
+owners; Darkly's later175 switch/name child and remaining lifetimes; original
+NPC timer/movement/registry/auto-turn and full interaction/encounter composition.
+Expand source rules only for verified one-print branches; complex events need
+original state/service graphs. Continue inbox documentation/best-effort binding,
+matched original trajectories/rendering and dense-area New2DS measurements.
+The deliverable remains an early Rogueport slice, not a finished full remake.
+
 ## 2026-10-13 — Inbox priority-zero hardware pitch/volume/DSP ramps
 
 Completed hwSetPitch/hwSetVolume/sal_setup_dspvol/salCheckVolErrorAndResetDelta;
