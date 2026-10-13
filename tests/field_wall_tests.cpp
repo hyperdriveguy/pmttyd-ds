@@ -99,7 +99,22 @@ void airShadowCases() {
     CHECK(mesh[1].color[3]==0 && mesh[2].color[3]==22);
     CHECK(fieldAirShadowVertices(FieldShadowGeometry{},r,{{0},false}).empty());
 }
+void boundsCases() {
+    const std::array<float,9> v{0,0,0,0,1,0,0,0,1};const auto b=fieldRayBounds(v.data());
+    CHECK(fieldRayMayReach(b,{1,.25f,.25f},{-1,0,0},1)); // Inclusive endpoint.
+    CHECK(fieldRayMayReach(b,{0,.5f,.5f},{0,0,0},0));
+    CHECK(!fieldRayMayReach(b,{1,.25f,.25f},{1,0,0},1));
+    CHECK(fieldRayMayReach(b,{-.005f,.5f,.5f},{0,0,0},0)); // Conservative margin.
+    CHECK(!fieldRayMayReach(b,{-.1f,.5f,.5f},{0,0,0},0));
+    CHECK(fieldRayMayReach(b,{10,10,10},{0,0,0},std::numeric_limits<float>::quiet_NaN()));
+    CHECK(fieldRayMayReach(b,{10,10,10},{std::numeric_limits<float>::infinity(),0,0},1));
+    for(float offset:{0.f,.000001f,-.000001f})for(float length:{0.f,1.f,1.000001f}) {
+        const FieldWallVector origin{1,.5f+offset,.5f-offset},direction{-1,0,0};FieldWallHit hit;
+        if(intersectFieldRay(v,3,origin,direction,length,hit))CHECK(fieldRayMayReach(b,origin,direction,length));
+    }
+}
 int main(int argc,char**) {
+    boundsCases();
     if(argc>1) {
         FieldShadowGeometry geometry;CHECK(geometry.load("romfs/shadows.pmshadow"));
         FieldShadowRecord record;record.type=2;record.size=13;record.flags=3;
@@ -121,8 +136,10 @@ int main(int argc,char**) {
             for(int n=0;n<160;++n) {
                 const auto& v=triangles[(n*1229+13)%count].vertices;
                 const float angle=n*.37f;FieldWallVector direction{std::cos(angle),0,std::sin(angle)};
+                if(n%3==1)direction={0,-1,0};
+                if(n%3==2)direction={direction.x*.8f,-.25f,direction.z*.8f};
                 FieldWallVector start{(v[0]+v[3]+v[6])/3-direction.x*.15f,
-                    (v[1]+v[4]+v[7])/3+(n%3)*.001f,(v[2]+v[5]+v[8])/3-direction.z*.15f};
+                    (v[1]+v[4]+v[7])/3-direction.y*.15f+(n%3)*.001f,(v[2]+v[5]+v[8])/3-direction.z*.15f};
                 FieldWallVector source{start.x*100,start.y*100,start.z*100};
                 // Use the native adapter's scale/rounding for the reference scan.
                 start={source.x*.01f,source.y*.01f,source.z*.01f};
@@ -133,6 +150,7 @@ int main(int argc,char**) {
                     if(ordinaryWallAttributes(tri.owner.attributes) &&
                        intersectFieldRay(tri.vertices,tri.cull,start,direction,maximum,h) &&
                        (!expected.token || h.distance<expected.distance)) {
+                        CHECK(fieldRayMayReach(fieldRayBounds(tri.vertices.data()),start,direction,maximum));
                         h.token=row+1;h.attributes=tri.owner.attributes;expected=h;
                     }
                 }
@@ -153,6 +171,31 @@ int main(int argc,char**) {
                 if(shadow.found) {
                     CHECK(close(shadow.point.y,shadowOrigin.y-down.distance*100,.0001f));
                     CHECK(close(shadow.normal.x,down.normal.x) && close(shadow.normal.y,down.normal.y) && close(shadow.normal.z,down.normal.z));
+                }
+            }
+            if(std::string(name)=="gor_02") {
+                // Contact retry at the original Mouser fixture. Compare with a
+                // full source-order scan, including rays on the grid boundary.
+                for(int n=0;n<16;++n) {
+                    const float radians=(250.f+45.f*(n/2))*.01745329238474369f;
+                    const FieldWallVector direction{std::sin(radians),0,-std::cos(radians)};
+                    const FieldWallVector source{122.5f,n%2?36.f:11.f,-400};
+                    const FieldWallVector start{source.x*.01f,source.y*.01f,source.z*.01f};
+                    const float maximum=10.f*.01f;FieldWallHit expected;expected.distance=maximum;
+                    size_t candidates=0;
+                    for(size_t row=0;row<triangles.size();++row) {
+                        const auto& tri=triangles[row];FieldWallHit hit;
+                        candidates+=fieldRayMayReach(fieldRayBounds(tri.vertices.data()),start,direction,maximum);
+                        if(ordinaryWallAttributes(tri.owner.attributes) &&
+                           intersectFieldRay(tri.vertices,tri.cull,start,direction,maximum,hit) &&
+                           (!expected.token || hit.distance<expected.distance)) {
+                            hit.token=row+1;hit.attributes=tri.owner.attributes;expected=hit;
+                        }
+                    }
+                    CHECK(candidates<10); // Short contact rays avoid thousands of narrow-phase divisions.
+                    const auto actual=fieldWallRay(source,direction,10);
+                    CHECK(actual.token==expected.token && actual.attributes==expected.attributes);
+                    CHECK(close(actual.distance,expected.distance*100,.0001f));
                 }
             }
         }

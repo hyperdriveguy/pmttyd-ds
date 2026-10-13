@@ -85,8 +85,8 @@ struct GroundTriangle { float v[9];GroundContact contact;uint32_t cull=3; };
 static_assert(sizeof(GroundContact)==8,"Ground metadata must contain two uint32 words");
 static_assert(sizeof(ReturnPoint)==12,"Return position must contain three float32 values");
 std::vector<GroundTriangle> ground;
-struct HeadTriangle {float v[9];GroundContact contact;uint32_t cull;};
-static_assert(sizeof(HeadTriangle)==48,"Head pack record size");
+struct HeadTriangle {float v[9];GroundContact contact;uint32_t cull;FieldRayBounds bounds;};
+static_assert(offsetof(HeadTriangle,bounds)==48,"Head pack prefix size");
 std::vector<HeadTriangle> head;
 std::unordered_map<uint32_t,ReturnPoint> groundReturns;
 using SpatialIndex=std::unordered_map<uint64_t,std::vector<uint32_t>>;
@@ -311,6 +311,7 @@ bool loadHead(const char* path) {
         ok=ok && std::fread(&tri,48,1,file)==1;
         for(float v:tri.v)if(!std::isfinite(v))ok=false;
         if(tri.cull>3)ok=false;
+        tri.bounds=fieldRayBounds(tri.v);
     }
     ok=ok && std::fgetc(file)==EOF;std::fclose(file);
     SpatialIndex next;size_t references=0;
@@ -363,10 +364,12 @@ static FieldWallHit fieldMapRay(FieldWallVector origin,FieldWallVector direction
         }
     };
     if(!head.empty()) {
+        const auto segment=fieldRaySegment(origin,direction,maximum);
         const float endX=origin.x+direction.x*maximum,endZ=origin.z+direction.z*maximum;
         const int left=std::floor(std::min(origin.x,endX)/GridSize),right=std::floor(std::max(origin.x,endX)/GridSize);
         const int back=std::floor(std::min(origin.z,endZ)/GridSize),front=std::floor(std::max(origin.z,endZ)/GridSize);
         auto testIndex=[&](uint32_t n) {
+            if(!fieldRayMayReach(head[n].bounds,segment))return;
             std::array<float,9> triangle;std::copy(head[n].v,head[n].v+9,triangle.begin());
             test(triangle,head[n].cull,head[n].contact,n+1);
         };

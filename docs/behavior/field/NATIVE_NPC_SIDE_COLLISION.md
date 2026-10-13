@@ -86,6 +86,27 @@ this is a coverage adapter, not complete all-story NPC lifetime reconstruction.
 
 ## Verification and remaining work
 
+Native map-ray acceleration caches expanded XYZ triangle bounds after the
+unchanged48-byte HEAD record prefix. Load staging and collision-transition
+swap/rollback own the bounds with the triangle vector. Each ray computes its
+segment bounds once; source-order candidates outside those bounds skip the
+existing narrow phase. Dynamic object filtering and the original narrow-phase
+intersection, attributes, cull and nearest/equal-hit rules are unchanged.
+The expansion `.01 native +64*float epsilon*max(1,abs(vertex coordinates))`
+is a deliberately conservative native acceleration margin, not an original
+measured constant. Nonfinite/negative-length requests bypass this rejection.
+Nearly-degenerate floating-point false hits outside finite geometric bounds
+remain outside the proven corpus; no general instruction-exact parity claim.
+
+The original gor_02 room has3,450 HEAD triangles; its native bounds cache adds
+82,800 bytes. At the Mouser fixture, a no-hit16-ray around retry previously
+tested4,816 grid candidates; the expanded XYZ bounds reject those static
+triangles before narrow-phase divisions. Original five-room/full-scan parity
+tests include800 horizontal/vertical/oblique queries and16 contact rays, plus
+endpoint, near-boundary, zero-length and unsupported-input gate cases. Emulator
+timing is separate from New2DS hardware performance; exact captures and timings
+are recorded in progress.
+
 Portable tests cover sphere strict equality/vertical endpoints, direct flags,
 compAngle ties/one-wrap, independently derived polynomial bit fixtures,
 rollback-on-miss,40-degree threshold, source cap amplification, contact-before-

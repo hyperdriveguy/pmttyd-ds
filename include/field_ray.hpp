@@ -1,9 +1,41 @@
 #pragma once
 #include "field_wall.hpp"
 #include <array>
+#include <algorithm>
 #include <cmath>
+#include <limits>
 
 namespace ttyd {
+// Native acceleration only. Retain the original narrow-phase request/order.
+struct FieldRayBounds {FieldWallVector low,high;};
+inline FieldRayBounds fieldRayBounds(const float* v) {
+    float magnitude=1;
+    for(unsigned i=0;i<9;++i)magnitude=std::max(magnitude,std::fabs(v[i]));
+    const float margin=.01f+64.f*std::numeric_limits<float>::epsilon()*magnitude;
+    FieldRayBounds bounds;
+    bounds.low={std::min({v[0],v[3],v[6]})-margin,std::min({v[1],v[4],v[7]})-margin,std::min({v[2],v[5],v[8]})-margin};
+    bounds.high={std::max({v[0],v[3],v[6]})+margin,std::max({v[1],v[4],v[7]})+margin,std::max({v[2],v[5],v[8]})+margin};
+    return bounds;
+}
+struct FieldRaySegment {FieldRayBounds bounds;bool finite=false;};
+inline FieldRaySegment fieldRaySegment(FieldWallVector origin,FieldWallVector direction,float maximum) {
+    const FieldWallVector end{origin.x+direction.x*maximum,origin.y+direction.y*maximum,origin.z+direction.z*maximum};
+    const bool finite=std::isfinite(origin.x) && std::isfinite(origin.y) && std::isfinite(origin.z) &&
+        std::isfinite(direction.x) && std::isfinite(direction.y) && std::isfinite(direction.z) &&
+        std::isfinite(maximum) && maximum>=0 && std::isfinite(end.x) && std::isfinite(end.y) && std::isfinite(end.z);
+    return {{{std::min(origin.x,end.x),std::min(origin.y,end.y),std::min(origin.z,end.z)},
+             {std::max(origin.x,end.x),std::max(origin.y,end.y),std::max(origin.z,end.z)}},finite};
+}
+inline bool fieldRayMayReach(const FieldRayBounds& b,const FieldRaySegment& ray) {
+    if(!ray.finite)return true; // Leave unsupported requests to the existing narrow phase.
+    return !(ray.bounds.low.x>b.high.x || ray.bounds.high.x<b.low.x ||
+             ray.bounds.low.y>b.high.y || ray.bounds.high.y<b.low.y ||
+             ray.bounds.low.z>b.high.z || ray.bounds.high.z<b.low.z);
+}
+inline bool fieldRayMayReach(const FieldRayBounds& b,FieldWallVector origin,
+                             FieldWallVector direction,float maximum) {
+    return fieldRayMayReach(b,fieldRaySegment(origin,direction,maximum));
+}
 // Native finite-triangle geometry service for the source wall policy. This is
 // an explicit numerical adaptation, not original hitCheckVecFilter emulation.
 inline bool intersectFieldRay(const std::array<float,9>& v,uint32_t cull,
