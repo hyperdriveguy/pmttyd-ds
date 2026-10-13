@@ -238,18 +238,23 @@ int main(){
             assert(charged.trioCommands.count()==1 && charged.trioCommands.selected()[0]==5); // Ground replacement admits Hammer.
             charged.tick(advance);charged.tick(Input{});
             for(unsigned n=0;n<1500 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
-            assert(charged.trioAttack.pendingFunction()==0x802149ec);
+            assert(charged.trioAttack.pendingFunction()==0x8021b70c);
             assert(charged.trioAttack.readWord(0x84000034,value) && value==0 && charged.trioBattleIntro.actors[4].hidden);
             assert(charged.trioAttack.readWord(0x84105278,value) && value==0x10717);
-            assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x07000008);
+            assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700000a);
             assert(charged.trioAttack.readWord(0x84400010,value) && value==1); // Packed original result, not field completion.
             assert(charged.trioAttack.readWord(0x84000f28,value) && value!=0);
             const auto end=value;
             assert(charged.trioAttack.readWord(end,value) && value==0);
-            assert(charged.trioAttack.readWord(end+0x30,value) && value==0);
+            assert(charged.trioAttack.readWord(end+0x30,value) && value==2);
             assert(charged.trioAttack.readWord(end+0x29c,value) && value==0);
             assert(charged.trioAttack.readWord(end+0x2a0,value) && value>=60 && value<180);
             assert(charged.trioAttack.readWord(end+0x2a4,value) && value==0);
+            assert(charged.trioAttack.rewardIcons());const auto& icons=*charged.trioAttack.rewardIcons();
+            assert(!icons[0].hidden && icons[0].alpha==255 && std::fabs(icons[0].position[0]-6)<.0001f && icons[0].position[1]==25);
+            for(unsigned n=1;n<19;++n)assert(icons[n].hidden && icons[n].alpha==0);
+            assert(charged.trioBattleIntro.actors[0].pose=="M_V_2" && charged.trioBattleIntro.actors[1].pose=="PKR_Y_1");
+            assert(charged.trioAttack.readWord(end+4,value) && value==0);
             uint32_t stockExp=0;assert(charged.trioAttack.readWord(0x84000f00,stockExp) && stockExp==10);
             assert(charged.trioAttack.readWord(end+8,value) && value==0x000a000a); // Original stock EXP, remaining EXP, no pouch grant yet.
             assert(charged.trioAttack.readWord(0x85000094,value) && (value&0xffff)==0);

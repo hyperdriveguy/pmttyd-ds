@@ -8,7 +8,7 @@ def build(iso):
     work=Path('local-assets/message-icons');work.mkdir(parents=True,exist_ok=True)
     directory=work/'icon.bin';tpl=work/'icon.tpl';extract(iso,'icon.bin',directory);extract(iso,'icon.tpl',tpl)
     raw=directory.read_bytes();atlas=Image.new('RGBA',(512,256));x=y=row=0;icons=[];payload=bytearray()
-    for identifier in (129,504,115):
+    for identifier in (129,504,115,404):
         offset=struct.unpack_from('>H',raw,2*(identifier+1))[0];loop,_,_,count=struct.unpack_from('>4H',raw,offset)
         payload+=struct.pack('<3I',identifier,loop,count);frames=[]
         for i in range(count):

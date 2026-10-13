@@ -6,9 +6,10 @@ converted locally from your US GameCube ISO. It includes five connected Roguepor
 a small Crump battle harness, touch menus and versioned saves.
 
 The underground trio executes original attacks, enemy turns, wing fall and
-death/removal. Its ending now calculates original drops and prepares10EXP,
-then waits for the original reward-icon presentation. Full victory and field
-return remain unfinished. Native new-file flow retains a source-based initial
+death/removal. Its ending now calculates original drops, presents the original
+animated EXP stars and runs Mario/Goombella victory poses. It waits at the
+PointGet effect before reward counting; full victory and field return remain
+unfinished. Native new-file flow retains a source-based initial
 pouch across room changes; battle import preserves supplied HP/FP. Legacy
 checkpoint files do not yet serialize that original storage.
 

@@ -1206,3 +1206,29 @@ content remains Nintendo/Intelligent Systems copyrighted material, used locally
 from the user's ISO without redistribution. Compiled catalog/messages/captures
 and ISO remain outside source history. See
 [known-state native binding](behavior/field/NATIVE_GOOMBA4_ORDINARY_TALK.md).
+
+### 2026-10-13 EXP type0 window frame source evidence
+
+Read-only ISO `f/msgWindow.tpl`,321984bytes; ignored local evidence
+`artifacts/recovered-temp-evidence/msgWindow.tpl`. Original TPL descriptor0
+is72x72CMPR (format14), source type0 nine-slice texture. See
+[geometry/material and clock](behavior/display/EXP_ICON_CLOCK_AND_TYPE0_WINDOW_FRAME.md).
+No generated substitute art or distribution of original assets; same user-owned
+ISO/local-use licensing limitation applies. Native import/render remains next.
+
+## 2026-10-13 — Native original EXP stars and victory poses
+
+The read-only US ISO supplies `icon.bin` ID404 / `icon.tpl` frames418..421,
+40x40 pixels, loop1 and six simulation updates per frame. The existing original
+message-icon atlas now imports all four frames unchanged. Original `a/b_mario`
+M_V_1/M_V_2 and `a/c_pkr` PKR_Y_1 are included in the trio animation packs.
+Original `f/msgWindow.tpl` descriptor0 supplies the nine-slice EXP frame.
+The declared400x240 viewport adapter halves source coordinates/dimensions,
+preserves bottom anchoring, uses source icon scales.9/.45 and frame alpha128;
+texture tint preserves RGB. Existing locally converted original victory PCM
+is selected while this positive-EXP prefix owns the battle. Complete WIN2,
+voice/crowd/camera and original raster routing remain open.
+
+Extracted assets, local caches, RomFS packs and emulator captures remain ignored.
+Nintendo/Intelligent Systems ownership remains unchanged; no redistribution
+rights are granted. PointGet US texture strips remain next implementation work.

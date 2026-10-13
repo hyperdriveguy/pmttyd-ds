@@ -49,6 +49,9 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Underground trio ordinary EXP ending tail](battle/UNDERGROUND_TRIO_NO_LEVEL_UP_ENDING_TAIL.md) | Exact0c..1f timers, independent effect softdelete, actual body/voice gates, fade10 completion, Rule0 and ordered pouch/field export | Native effect/GX/fade/audio/field reconstruction cadence; level-up/zeroEXP/special branches |
+| [EXP icon clock and original window frame](display/EXP_ICON_CLOCK_AND_TYPE0_WINDOW_FRAME.md) | Per-record404 creation/reset/six-call delay, same-pass outer cadence, original nine-slice36vertices/UV/material and72pxCMPR frame | Native icon inner draw, source camera/GX/palette scheduling and original raster comparison |
+| [US PointGet layout and lifecycle](effect/POINT_GET_US_LAYOUT_AND_LIFECYCLE.md) | Original phrase/digit widths, cap, ordered shadow/foreground matrices/quads/UV, local effect timer/softdelete and shared assets | Native source camera/display-state/GX texture sampling, numeric/raster comparison and effect-pool scheduling |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
 | [Game stream play wrappers/slots/header request](audio/GAME_STREAM_PLAY_WRAPPERS_REPLACE_SLOT_AND_HEADER_READ.md) | Complete PlayCh/Ex/root leaf; replacement/slot/defaults/path/two opens/header dispatch | Header callback/providers/manager/original playback |
 | [Game stream main ordered fades/stops](audio/GAME_STREAM_MAIN_ORDERED_FADES_AND_INLINE_STOPS.md) | Complete SoundSSMain; three rows/stop priority/sequential40-20-10/three mix/two stop blocks | Providers/FP domains and original cadence/fade/stop/audio |

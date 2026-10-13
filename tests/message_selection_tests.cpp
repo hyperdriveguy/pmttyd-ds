@@ -25,6 +25,9 @@ int main() {
     assert(loadMessageIcons("romfs/message-icons.bin"));
     const auto* cursor=messageIcon(504);assert(cursor && cursor->frames.size()==10 && cursor->loop==1);
     assert(cursor->frame(0).delay==2 && cursor->frame(18).delay==28 && &cursor->frame(46)==&cursor->frame(0));
+    const auto* star=messageIcon(404);assert(star && star->loop==1 && star->frames.size()==4);
+    for(const auto& frame:star->frames)assert(frame.delay==6 && frame.width==40 && frame.height==40);
+    assert(&star->frame(6)==&star->frames[1] && &star->frame(24)==&star->frames[0]);
     const auto* stick=messageIcon(129);assert(stick && stick->frames[0].width==80 && stick->frames[0].height==80);
     MessagePlayback p;assert(p.open("icon","<icon STICK 0.6 -30 45 -10>A",font,0));
     assert(p.records[0].code==0xfff8 && p.records[0].flags==129 && p.records[0].x==-6 && p.records[0].y==-48 && p.records[0].extra==45);

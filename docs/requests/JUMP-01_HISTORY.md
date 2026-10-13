@@ -2328,3 +2328,50 @@ Remaining exact innericon clock/window/GXquad matrices/GPU viewport/parity,
 MSLcos numeric provider, completeeffectaudio and laterEXP/level/export/field
 providers remain boundedrequests. Docs-only/no native edits/commit;
 git diff --check validation.
+
+### 2026-10-13 delivery: fresh ten-point no-level-up ending tail
+
+[Ordinary EXP ending tail](../behavior/battle/UNDERGROUND_TRIO_NO_LEVEL_UP_ENDING_TAIL.md)
+pins per-invocation0c..1f, ordinary skip0f, five-call effect pointer release
+independent of PointGet leave/deallocation, exact voice/bodytype42 gates,
+source fade10 (200ms, strict ratio>1, GP4 refresh, selected-slot flags2),
+ordered actualunit→pouch export and field-party reconstruction. Rule0 writes
+I19=6, not invented return2. Normal ending does not heal HP/FP or directly
+unlock/story-advance; original battle/sequence/field wait remains required.
+Other level-up, zeroEXP, fortune-end, fade/GX/audio/field constructor services
+remain bounded dependencies. Read-only original bodies/constants; docs-only,
+no native edits/build/commit; git diff --check.
+
+### 2026-10-13 delivery: original EXP icon creation clock/window frame
+
+[Icon clock and frame](../behavior/display/EXP_ICON_CLOCK_AND_TYPE0_WINDOW_FRAME.md)
+pins iconEntry2D memset/localframe0/currentimage418/delay6, per-record Main
+countdown/wrap/reload and hiddenclock advancement. Original outerupdate
+creates in battleMain then decrements in iconMain samepass. Windowtype0
+uses original f/msgWindow.tpl descriptor0 (72x72CMPR), exactnine-slice36vertices
+UV0/thirds/1, color*texture alpha andsourcecamera. Native raster/palette/camera
+services remain explicit; no globalclock or substitute rectangle needed.
+Readonly bodies/descriptor/TPL header and180floatFIFO symbolic census;
+docs-only/no native edits/build/commit; git diff --check.
+
+### 2026-10-13 delivery: complete used US PointGet layout/lifecycle
+
+[PointGet](../behavior/effect/POINT_GET_US_LAYOUT_AND_LIFECYCLE.md) pins original
+36-byte payload, creation/update same-outer-pass ownership, pre-update depth
+versus live draw XYZ,45enter/softdeletehold/60leave. CompleteUS10 widthL322/
+scale200/322, two ordered passes/black128shadow offsets4,-4 versuswhiteFG,
+FOREGROUNDdimensions forbothpasses, exactphrase/digit cursor/quad/UV matrices
+and originaldigit1.42857146 scale. No generatedlayout or extraeffectcompletion
+barrier. Displaycallback inherits blend/cull/depth fromoriginaldispatcher;
+sourcecamera/GXsampling/numeric/raster/provider lifetimes remainbounded.
+Read-only whole localbodies/constants;docs-only/no native edits/build/commit;
+git diff --check.
+
+### 2026-10-13 delivery: exact EXP404 bottom anchor
+
+[Icon draw follow-up](../behavior/display/EXP_ICON_CLOCK_AND_TYPE0_WINDOW_FRAME.md#2026-10-13-used404-draw-anchor-follow-up)
+confirms actual1011 iconDisp→iconGX XY(-W/2,H),(W/2,H),(W/2,0),(-W/2,0):
+centerX/bottomY. BigY25/.9 spans25..61;smallY0/.45 spans0..18; usedmask10
+bypasses.6/special403/405. Exactcamera*T*Ry(-yaw)*scale andclearflipmasks
+retain sourceadapter boundaries. Docs-only/read-only/no native edit/commit;
+git diff --check.

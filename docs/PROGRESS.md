@@ -6765,3 +6765,90 @@ Retain fresh pouch through actual field/save ownership. Full source harbor fight
 and return remain pending; result0/story4/control/save barriers remain intact.
 Original cover/fade/environment/effects/audio consumers and hardware parity remain
 ongoing. The opening playtest goal remains active and incomplete.
+
+## 2026-10-13 — Original ten-point ending tail source delivery
+
+Documented [ordinary trio ending tail](behavior/battle/UNDERGROUND_TRIO_NO_LEVEL_UP_ENDING_TAIL.md):
+exact0c..1f timer/invocation order, independent effect softdelete/pointer
+release, voice/bodytype42 conditions, source fade10 refresh/strict completion,
+Rule0 and ordered persistent-pouch/field-party export. Original field wait and
+161-command scene remain the postbattle owners; no fabricated heal/story write.
+
+Validation: read-only US DOL complete bodies/tables/constants; scoped
+`git diff --check`. Documentation only; no native edits, builds or commit.
+Next bind actual PointGet presentation/counting/tail and original icon creation
+clock/window geometry, then full sequence/field restoration; alternate EXP/
+level-up/fortune/audio/GPU/field constructor services remain open.
+
+## 2026-10-13 — EXP icon clock and original frame source delivery
+
+[Icon clock/window frame](behavior/display/EXP_ICON_CLOCK_AND_TYPE0_WINDOW_FRAME.md)
+closes per-record source404 frame0/delay6/reset/Main/hidden advancement and
+same outer-pass creation/decrement ordering. Original type0 window texture
+72x72CMPR and36-vertex nine-slice geometry/UV/color material are documented.
+
+Validation: read-only original bodies/TPL header,180float FIFO symbolic census
+and `git diff --check`. Documentation only; no native edits/tests/builds/commit.
+Next native providers can replace borrowed clock/frame placeholders; actual
+icon draw, camera/GX/palette lifecycle and original raster comparison remain.
+
+## 2026-10-13 — Original US PointGet complete layout delivery
+
+[PointGet source layout](behavior/effect/POINT_GET_US_LAYOUT_AND_LIFECYCLE.md)
+closes original US phrase/digit widths/cap, foreground-derived shadow geometry,
+ordered matrices/quads/UV and effect entry/Main/softdelete lifetime for10EXP.
+Fresh line half-width322 and actual scaling200/322; original assets preserved.
+
+Validation: complete read-only original bodies/constants and quad/matrix paths;
+`git diff --check`. Documentation only; no native edits/tests/builds/commit.
+Next bind original PointGet graphics/counting; source camera/display dispatcher
+state/pool/texture scheduling and actual numeric/raster comparisons remain open.
+
+## 2026-10-13 — Original EXP icon bottom anchor correction evidence
+
+[Used404 icon draw](behavior/display/EXP_ICON_CLOCK_AND_TYPE0_WINDOW_FRAME.md#2026-10-13-used404-draw-anchor-follow-up)
+confirms sourcecenterX/bottomY quad and actual1011 geometry/flip/scale branch.
+BigY25 spans25..61; smallY0 spans0..18 before declaredviewport scaling.
+Validation: read-only complete iconDisp/iconGX/constants; git diff --check.
+Documentation only; no native edits/tests/build/commit. Native renderer can
+replace centerY assumption; sourcecamera/GX/runtime raster comparison remains.
+
+## 2026-10-13 — Native trio EXP icons and victory events
+
+Implemented actual ending08→09→0a with original19-entry EXP setup, source
+positions/scales, alpha64 increments/cap255, hidden behavior and per-record
+six-update frame clock (including hidden records). Creation-pass120 wait
+decrements to119 before presentation. Source data40 creates the original
+Mario/Goombella victory roots with source priority/owner/U2a8 tracking.
+Original404 frames418..421 and M_V_1/M_V_2/PKR_Y_1 are locally packed;
+Citro2D preserves source texture RGB/alpha, bottom anchors and type0 nine-slice
+frame geometry using original descriptor0 and a declared half-size viewport.
+Native reward UI uses a layer independent of stage depth; existing original
+victory PCM selects during this positive-EXP prefix.
+
+Validation: make test passed151/151 CTest and103/103 Python tests
+(`artifacts/trio-exp-tests-final.log`). Final make all and make debug-short
+passed (`artifacts/trio-exp-bottom-all.log`, `artifacts/trio-exp-bottom-debug.log`).
+Original assets regenerate locally; Python capture syntax and git diff --check
+passed. Host checks pin ten-point setup, alpha/visibility, source wait/result
+boundary and original victory pose names; icon metadata checks pin all four
+original40x40 frames, delay6 and wrap. Integrated workspace also includes
+concurrent workstreams; this commit stages this increment only.
+
+Actual attacks/removal in isolated Azahar reach the original reward prefix.
+Earlier diagnostic captures caught white texture tint and incorrect center-Y
+anchoring; both corrected from native/source evidence. Final immutable binary
+and matching ELF are `artifacts/trio-exp-bottom-snapshot/`; final isolated
+capture evidence is `artifacts/azahar-trio-exp-bottom/`; reviewed final capture
+and enlarged diagnostic confirm the original frame, bottom-anchored animated
+star and victory poses after actual enemy removal. The original ISO and
+user emulator profile/saves remain untouched. Full original frame/camera/GX
+raster parity and hardware performance remain unverified.
+
+The native stop remains actual PointGetEntry8021b70c, bank0700000a, before
+counting. PouchEXP remains0, fieldresult0/story11/control lock remain intact;
+this is not a completed victory or prologue. Next implement original US
+PointGet strips/lifecycle, bank0b counting and ordinary0c..1f fade/export/field
+return, then resume unchanged scene dialogue. Original camera/crowd/voice,
+WIN2 routing, shared RNG/equipment/save ownership, alternative rewards/level-up
+and broader prologue owners remain incomplete. Goal remains active.

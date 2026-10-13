@@ -210,3 +210,20 @@ read-only icon/effect TPL decoding and source pixel inspection;
 `git diff --check`. No native edits/build rerun/commit. Next bind source08
 scalar/icon providers and victory event ownership, then effect/counting
 presentation before later reward/export/field return is claimed.
+
+## 2026-10-13 native positive-EXP presentation prefix
+
+The native trio now executes source08→09→0a: original19-record setup, positions,
+source.9/.45 scales, hidden flags, alpha64 increments/cap255 and per-record
+six-update animation clock, including hidden records. Source120 wait starts
+with the creation-pass decrement. Source unit data40 supplies priority10
+victory event roots, retaining owner and U2a8 tracking. Fresh10EXP reaches
+actual PointGetEntry8021b70c before bank0b; pouchEXP remains0, fieldresult0,
+story11 and control lock remain intact. No reward or field success is invented.
+
+Citro2D uses original404 frames and type0 window texture/nine-slice geometry,
+source bottom anchor and explicit half-size viewport conversion. Original
+victory PCM selects through the existing native audio adapter. Full source
+camera/crowd/voice/GX state, WIN2 and hardware raster/performance parity remain
+open. Exact PointGet art/lifecycle, counting and ordinary tail are documented
+in their subsystem contracts and are the next native providers.
