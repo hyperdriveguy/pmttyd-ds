@@ -6,6 +6,26 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 sequence pause/mute/deferred field contracts
+
+Delivered [pause/mute](behavior/audio/MUSYX_SEQUENCE_PAUSE_MUTE_AND_DEFERRED_FIELDS.md).
+Three complete bodies pin inline lookup, state1 active→paused before note kill/
+recycle, high-bit pause/mute deferred fields, raw mute words and public IRQ
+forwarding. No timing/silence/private-index repair inferred. Marked local
+EVT-01 portions complete; deferred consumers/provider/runtime remains OPEN.
+
+Validation: generic read-only verifier6 spans (3 complete/3 linked),160 anchors/
+five resolved calls passes.10 pause/6 mute/5 flag vectors and three-head order
+checked as deductions. Full fresh ELFs/listings stay `/tmp`; no original execution.
+Link audit775 Markdown files/0 broken; whitespace checks pass. Docs/metadata only:
+no make rerun, native change or original body/asset export. Isolated index excludes
+unrelated staged/worktree work.
+
+Next/limits: ID/state/list/note/deferred-byte/word/mute-field providers/consumers,
+resume/controller/voice scheduling, index/member/alias/IRQ/concurrency and original
+pause/mute/audio traces. Continue priority0 source/backend then priority1 damage.
+No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Priority0 synthHandle fade/aux region and local body closure
 
 Delivered [fades/aux](behavior/audio/MUSYX_SYNTH_MASTER_PAUSE_FADES_AND_AUX_CALLBACKS.md).

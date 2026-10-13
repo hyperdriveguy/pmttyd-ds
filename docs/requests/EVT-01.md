@@ -163,6 +163,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [fades/aux region](../behavior/audio/MUSYX_SYNTH_MASTER_PAUSE_FADES_AND_AUX_CALLBACKS.md).
 - [ ] synthHandle child handlers, fade/queue/voice/flags/time/providers/
   numerical/concurrency domains and original scheduling/audio evidence.
+- [x] Complete seqPause/seqMute/sndSeqMute local bodies —
+  [pause/mute/deferred fields](../behavior/audio/MUSYX_SEQUENCE_PAUSE_MUTE_AND_DEFERRED_FIELDS.md).
+  Lookup/state/list/note/raw-field/IRQ order pinned; deferred consumers/resume/
+  provider/domain/original pause/mute/audio evidence remains open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1128,3 +1132,17 @@ Validation: read-only manifest9 spans (region/6 linked/whole fingerprint/zero),
 source deductions, not execution. Full listing/ELF stays `/tmp`; no native/body/
 asset export. Fade/mode/providers/numeric/IRQ/concurrency/seqPause-Mute/aux and
 other children/callback installation/original scheduling/audio remain OPEN.
+
+### 2026-10-13 — Sequence pause/mute and public mute wrapper
+
+[Three complete local bodies](../behavior/audio/MUSYX_SEQUENCE_PAUSE_MUTE_AND_DEFERRED_FIELDS.md)
+close inline active/paused lookup, untagged state1 active→paused publication
+before note voice-kill/recycle, tagged nonzero-state pause bit8, unconditional
+mute raw words/tagged bit10+deferred words and raw public IRQ forwarding.
+No invented audible silence timing, private-index repair or extra state gate.
+
+Validation: read-only manifest6 spans (3 complete/3 linked),160 anchors/five
+resolved calls passes.10 pause/6 mute/5 flag vectors/three note-head order are
+source deductions; full fresh ELFs/listings stay `/tmp`. No native change/original
+execution/body/asset export. Private/state/list/note/deferred consumers/resume/
+voice/source/index/alias/IRQ/concurrency/original audio remain OPEN.

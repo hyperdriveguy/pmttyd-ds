@@ -105,3 +105,5 @@ is now answered. Remaining: fade/bitmap/mode/coefficient providers and numeric/
 alias/IRQ/concurrency invariants, seqPause/Mute and precision/mac/ADSR/aux child
 semantics, callback installation, original scheduling/fade/voice/audio traces.
 Full native/source/runtime/hardware equivalence and EVT-01 remain OPEN.
+
+[Complete sequence pause/mute/public mute](MUSYX_SEQUENCE_PAUSE_MUTE_AND_DEFERRED_FIELDS.md) now closes those exact fade children, preserving input high-bit deferred paths. Actual field consumers/resume/voice/source/runtime remain open.
