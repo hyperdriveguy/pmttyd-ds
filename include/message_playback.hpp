@@ -22,6 +22,7 @@ class MessagePlayback {
 public:
     bool open(const char* id,const char* text,const MessageFont&,uint64_t now);
     bool append(const char* text,const MessageFont&,uint64_t now);
+    bool resume(uint64_t now);
     void tick(uint64_t now,uint32_t triggers);
     bool active() const{return state!=0;}
     bool waiting() const{return state==3;}
@@ -33,6 +34,8 @@ public:
     size_t cursor=0;
     int32_t scroll=0,scrollTarget=0;
     uint32_t elapsed=0,flags=3;
+    uint16_t windowFlags=0; // W allocation/poll bits; distinct from D playback flags.
+    bool pending() const{return (windowFlags&2)!=0;}
     uint16_t acceptedKey=0,wait=0,state=0;
     uint8_t alpha=255;
     uint32_t talkCountdown=0;

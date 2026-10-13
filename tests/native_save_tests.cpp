@@ -11,10 +11,21 @@ static void checksum(SaveBytes& bytes,int length=36) {
 }
 int main() {
     Progress p;p.room=0;p.interiorMask=1;p.originalStory=8;p.position={1.06f,-1.24f};
-    auto bytes=encodeSave(p);Progress out;assert(bytes[4]==5 && bytes[33]==1);
+    auto bytes=encodeSave(p);Progress out;assert(bytes[4]==6 && bytes[33]==1);
     assert(decodeSave(bytes,out) && out.room==0 && out.interiorMask==1 && out.originalStory==8);
     p.originalFlag1207=true;
     const auto departed=encodeSave(p);assert(departed[34]==1 && decodeSave(departed,out) && out.originalFlag1207);
+    for(unsigned bits=0;bits<8;++bits)for(unsigned mode:{0u,1u,9u,255u}) {
+        p.originalFlag1207=bits&1;p.originalFlag233=bits&2;p.originalFlag236=bits&4;p.originalSaveMode=mode;
+        const auto saved=encodeSave(p);
+        assert(saved[34]==bits && saved[35]==mode && decodeSave(saved,out));
+        assert(out.originalFlag1207==p.originalFlag1207 && out.originalFlag233==p.originalFlag233 &&
+               out.originalFlag236==p.originalFlag236 && out.originalSaveMode==mode);
+    }
+    auto v5=departed;v5[4]=5;checksum(v5);
+    assert(decodeSave(v5,out) && out.originalFlag1207 && !out.originalFlag233 && !out.originalFlag236 && !out.originalSaveMode);
+    for(int field:{34,35}){auto invalid=v5;invalid[field]=2;checksum(invalid);assert(!decodeSave(invalid,out));}
+    p.originalFlag233=p.originalFlag236=false;p.originalSaveMode=0;
     auto v4=bytes;v4[4]=4;checksum(v4);assert(decodeSave(v4,out) && !out.originalFlag1207 && out.interiorMask==1);
     v4[34]=1;checksum(v4);assert(!decodeSave(v4,out));
     p.originalFlag1207=false;
@@ -24,7 +35,7 @@ int main() {
     p.room=0;p.interiorMask=2;assert(!decodeSave(encodeSave(p),out));
     p.interiorMask=3;assert(!decodeSave(encodeSave(p),out));
     const Progress previous=out;
-    for(int field:{33,34,35}) {
+    for(int field:{33,34}) {
         auto bad=bytes;bad[field]=255;checksum(bad);
         assert(!decodeSave(bad,out) && out.interiorMask==previous.interiorMask && out.room==previous.room);
     }
@@ -48,5 +59,5 @@ int main() {
         assert(decodeSave(old,out) && out.interiorMask==0 && !out.originalStory);
     }
     std::remove(path.c_str());std::remove((path+".bak").c_str());
-    std::puts("Native v5 original flag/interior state, legacy saves, validation and recovery passed");
+    std::puts("Native v6 source save switches, original flags/interior state, legacy saves and recovery passed");
 }

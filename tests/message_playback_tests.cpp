@@ -45,11 +45,29 @@ int main(int argc,char**) {
     MessagePlayback once;assert(once.open("once","A<o>B",font,0));
     for(uint64_t ms=0;ms<1000 && !once.stopped();ms+=17)once.tick(ms,0x100);
     assert(once.stopped() && once.active() && once.cursor==2 && once.elapsed==25 && !(once.flags&4));
+    assert(!once.pending() && (once.windowFlags&1));
     once.tick(2000,0x300);assert(once.stopped() && once.cursor==2);
     const auto onceSerial=once.serial;const auto onceCursor=once.cursor;
     assert(once.append("<p>C<k>",font,2000));
     assert(once.serial==onceSerial && once.cursor==onceCursor && once.elapsed==25 && once.rawText()=="A<o>B<p>C<k>");
     assert(once.records[2].code=='B' && once.records[2].schedule==75 && once.state==1);
+    assert(once.pending());
+    MessagePlayback retained;assert(retained.open("retained","A<o>B<k>",font,0));
+    for(uint64_t ms=0;ms<1000 && !retained.stopped();ms+=17)retained.tick(ms,0x100);
+    const auto cursor=retained.cursor,serial=retained.serial;
+    const auto elapsed=retained.elapsed,dataFlags=retained.flags;
+    assert(retained.resume(2000) && retained.pending() && retained.active());
+    assert(retained.cursor==cursor && retained.serial==serial && retained.elapsed==elapsed && retained.flags==dataFlags);
+    for(uint64_t ms=2001;ms<3000 && !retained.waiting();ms+=17)retained.tick(ms,0x100);
+    assert(retained.waiting() && retained.pending());
+    const auto waitCursor=retained.cursor;
+    assert(retained.resume(4000) && retained.wait==1 && retained.cursor==waitCursor);
+    retained.tick(4001,0);assert(retained.waiting() && retained.pending());
+    for(uint64_t ms=4002;ms<5000 && retained.active();ms+=17) {
+        retained.tick(ms,0x100);
+        if(retained.state==7 || retained.state==8)assert(retained.pending());
+    }
+    assert(retained.complete() && !retained.pending() && !retained.resume(5000));
     assert(p.open("fixture",raw,font,0) && p.rawText()==raw && p.id()=="fixture");
     assert(p.records[0].code=='A' && p.records[0].flags==9 && p.records[0].value==3 && p.records[0].schedule==0);
     assert(p.records[1].code==0xfffb && p.records[1].schedule==25);

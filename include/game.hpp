@@ -122,6 +122,8 @@ struct Progress {
     // GSW0 is a full source word. Legacy/new harness state cannot infer it.
     std::optional<int32_t> originalStory;
     bool originalFlag1207=false; // Original GSF: Frankly has departed through the east pipe.
+    bool originalFlag233=false,originalFlag236=false; // Save-block first/post-story notices.
+    uint8_t originalSaveMode=0; // Original GSW4, independent of native file existence.
     uint8_t interiorMask=0; // Native same-map door state; separate from GSW0.
 };
 class Game {

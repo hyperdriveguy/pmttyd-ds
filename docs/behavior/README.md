@@ -464,6 +464,9 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 
 - [Partner save-block source collision](partner/FIELD_PARTNER_SAVE_BLOCK_COLLISION_BINDING.md) — original floor/front/around name filters and distinct source callbacks.
 - [Native save-block lifecycle/event core](field/NATIVE_SAVE_BLOCK_LIFECYCLE_AND_EVENT_CORE.md) — source stages, nested keys and original221-command request graph; native scene/UI/card binding next.
+- [Native save-block retained presentation/write queue](field/NATIVE_SAVE_BLOCK_RETAINED_PRESENTATION.md)
+- [Save camera8 letterbox decision lock](camera/SAVE_BLOCK_CAMERA8_LETTERBOX_DECISION_LOCK.md)
+- [Save original cue431 and residency](audio/SAVE_BLOCK_431_SOURCE_CUE_AND_RESIDENCY.md)
 - [Save-block restart/event identities](display/SAVE_BLOCK_RESTART_CLOCK_AND_EVENT_IDENTITIES.md) — original ratio publication, program spans and callbacks.
 - [Save retained window requests](message/SAVE_EVENT_RETAINED_WINDOW_CONTINUE_AND_APPEND.md) — Continue/Add ownership and raw control polling.
 - [Native map-object collision](field/NATIVE_MAP_OBJECT_HEAD_COLLISION.md) — original bbox cube and shared head/floor/wall responses.

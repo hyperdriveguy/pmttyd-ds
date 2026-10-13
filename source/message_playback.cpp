@@ -48,6 +48,7 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
             else if(name=="wave")style|=4;
             else if(name=="/wave")style&=~4u;
             else if(name=="small"){next.windowType=1;smallSpacing=true;}
+            else if(name=="system") {next.windowType=3;auto r=record(0xfff7);r.flags=0xdcc8dcff;next.records.push_back(r);}
             else if(name=="select") {
                 int a,b,c,d;char extra;
                 if(std::sscanf(args.c_str(),"%d%d%d%d %c",&a,&b,&c,&d,&extra)!=4 || a<-32768 || a>32767 || b<-32768 || b>32767 || c<-32768 || c>32767 || d<-32768 || d>32767)return false;
@@ -100,7 +101,7 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
         if(next.choiceWidth<=0)return false;
         next.geometry={float(-int(next.choiceWidth)/2),float(next.choiceY),float(next.choiceWidth),float(half(36*next.choiceCount+40))};
     }
-    next.records.push_back(record(0xffff));next.state=5;next.alpha=0;next.lastTime=next.animationTime=now;
+    next.records.push_back(record(0xffff));next.state=5;next.windowFlags=3;next.alpha=0;next.lastTime=next.animationTime=now;
     next.openedAt=now;
     static uint64_t serial=0;next.serial=++serial;
     *this=std::move(next);return true;
@@ -113,7 +114,11 @@ bool MessagePlayback::append(const char* text,const MessageFont& font,uint64_t n
     // T/V/style/coordinates and overwrite the prior terminal slot. Playback
     // ownership and the existing window identity/anchor remain unchanged.
     records=std::move(parsed.records);raw=std::move(parsed.raw);
-    state=1;lastTime=now;return true;
+    state=1;windowFlags|=2;lastTime=now;return true;
+}
+bool MessagePlayback::resume(uint64_t now) {
+    if(!active())return false;
+    state=1;windowFlags|=2;lastTime=now;return true;
 }
 int MessagePlayback::play(uint64_t now,uint32_t input) {
     flags&=~2u;
@@ -151,10 +156,10 @@ void MessagePlayback::tick(uint64_t now,uint32_t input) {
         if(--talkCountdown==0){talking=false;talkLatched=false;}
     }
     if(state==5){animationTime=now;state=6;}
-    if(state==6){const uint64_t a=(now-animationTime)*255/200;alpha=uint8_t(std::min<uint64_t>(a,255));if(a>255){state=1;lastTime=now;}return;}
-    if(state==7){animationTime=now;state=8;return;}
-    if(state==8){if(alpha==0){state=0;return;}const uint64_t a=(now-animationTime)*255/200;alpha=uint8_t(a>=255?0:255-a);return;}
+    if(state==6){windowFlags|=2;const uint64_t a=(now-animationTime)*255/200;alpha=uint8_t(std::min<uint64_t>(a,255));if(a>255){state=1;lastTime=now;}return;}
+    if(state==7){animationTime=now;state=8;}
+    if(state==8){if(alpha==0){state=0;windowFlags=0;return;}const uint64_t a=(now-animationTime)*255/200;alpha=uint8_t(a>=255?0:255-a);return;}
     if(state==3){if(input&0x300){state=1;wait=2;if((input&0x200) && !(flags&0x80))flags|=4;}return;}
-    if(state==1){const int result=play(now,input);if(result==0){state=7;talking=false;}else if(result==1){state=2;talking=false;}else if(result==2)state=3;}
+    if(state==1){const int result=play(now,input);if(result==0){state=7;talking=false;}else if(result==1){state=2;windowFlags&=~2u;talking=false;}else if(result==2)state=3;}
 }
 }

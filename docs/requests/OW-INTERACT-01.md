@@ -261,3 +261,25 @@ Raw scrl_auto/once_stop yields parser scroll/retained-stop records; clearing
 poll2 atstate2 does not delete the window. Selection uses separateE+17c while
 printE+178 persists through children. Fresh read-only five-body inspection;
 original/native window capture and card services remain open.
+
+### 2026-10-13 — Save camera8 letterbox lock and original cue431
+
+[Camera8 lock](../behavior/camera/SAVE_BLOCK_CAMERA8_LETTERBOX_DECISION_LOCK.md)
+recovers bit0x200 as camLetterBox's automatic enable/disable decision bypass,
+preserving bit0x100 while bar growth/fade/draw continue. Camera8 is a distinct
+2d owner; native field camera4 flags must not become a guessed follow freeze.
+[Original cue431](../behavior/audio/SAVE_BLOCK_431_SOURCE_CUE_AND_RESIDENCY.md)
+pins SFX_MOBJ_BLOCK_SAVE1 row/FX618/group5/macro745/sample550 and distinguishes
+ignored-library availability from selected native residency (currently absent).
+Read-only DOL/bank/catalog inspection; no native camera/audio implementation,
+original runtime group residence or pixel/audio equivalence claim.
+
+### 2026-10-13 — Portable retained save presentation implemented
+
+[Native provider](../behavior/field/NATIVE_SAVE_BLOCK_RETAINED_PRESENTATION.md)
+now executes original print/Add/Continue/selection payloads through retained
+windows, separate poll/data flags and delayed ticketed SD write acknowledgement.
+Original No/Yes/B/error paths and source nested keys pass native host tests.
+Save v6 preserves GSF233/236/GSW4 alongside GSF1207, with legacy migration.
+This does not close live object/event/camera/audio/I/O binding, original card
+error classification, native capture parity or full field ordering.

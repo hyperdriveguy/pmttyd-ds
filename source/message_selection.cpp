@@ -11,7 +11,7 @@ bool MessageSelection::open(const char* id,const char* text,const MessageFont& f
 void MessageSelection::tick(const MessageSelectionInput& input) {
     if(state==5){opacity+=25;if(opacity>255){opacity=255;state=1;}}
     else if(state==7) {
-        if(!opacity){state=4;message.state=0;return;}
+        if(!opacity){state=4;message.state=0;message.windowFlags=0;return;}
         opacity=opacity<=25?0:opacity-25;
     } else if(state==1) {
         const auto previous=current;
