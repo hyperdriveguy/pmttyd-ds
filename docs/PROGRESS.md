@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero macro vibrato/portamento
+
+Completed mcmdVibrato/mcmdPortamento/synthInitPortamento and opcodes27/28
+for EVT-01; checked the corresponding inbox portion.
+[Vibrato/portamento](behavior/audio/MUSYX_MACRO_VIBRATO_PORTAMENTO_AND_INITIALIZATION.md)
+pins conversion/zero duration versus signed-byte/phase, controller65 write/query/
+mode gates and initializer early-return/state stores. Mode2 does not clear400
+on low controller; initializer skip still permits caller flag publication. Actual
+command/provider/consumer/shared-cell/runtime domains remain open.
+
+Validation: read-only ISO manifest passed ten spans (three bodies/two regions/
+four linked/table),151 anchors/ten calls/two registrations. Eight vibrato/seven
+mode/five initializer vectors and byte/mask/order deductions checked. Link audit
+passed825 Markdown files/zero broken links; scoped `git diff --check` passed.
+Documentation/metadata only; no `make test`/`make all` rerun. Full original
+inspection ELFs/listings stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded from this commit.
+
+Next: priority-zero EVT-01 other macro opcodes and actual command/duration/rate/
+amplitude/byte133/base132/flags/controller/caller producers, modulation/pitch/job
+consumers and valid shared-cell/alias/IRQ/concurrency/initialization domains;
+original vibrato/portamento/controller/audio traces. Full native/runtime binding,
+lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero hardware sample playback/pitch
 
 Completed hwInitSamplePlayback/DoSetPitch/SRC/filter/ITD for EVT-01; checked

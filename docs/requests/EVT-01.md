@@ -335,6 +335,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   bodies and original lookup tables —
   [hardware playback/pitch](../behavior/audio/MUSYX_HARDWARE_SAMPLE_PLAYBACK_AND_PITCH.md).
   Inclusive slot/raw padding/unsigned backward scan retained; domains/DSP/runtime open.
+- [x] Complete mcmdVibrato/mcmdPortamento/synthInitPortamento and
+  opcodes27/28 conversion/parameter/flag/controller/init paths —
+  [vibrato/portamento](../behavior/audio/MUSYX_MACRO_VIBRATO_PORTAMENTO_AND_INITIALIZATION.md).
+  Signed-byte branches/fresh reads/initializer early return retained; domains/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1945,3 +1949,19 @@ deductions. Full fresh ELFs/listings stay `/tmp`; no native change/original
 execution/body/binary asset export. Actual pool/slot/descriptor/padding/ratio/
 divisor/preceding-memory/caller/domain/alias/IRQ/concurrency and DSP/format/
 consumer/original playback/pitch/audio remain OPEN.
+
+### 2026-10-13 — Vibrato, portamento and initialization
+
+[Three bodies/two regions](../behavior/audio/MUSYX_MACRO_VIBRATO_PORTAMENTO_AND_INITIALIZATION.md)
+close type flags/conversion/zero duration versus signed-byte parameter/phase
+branches, portamento prefix/modes/controller65 write-versus-query and initializer
+low20000 early return/mode-byte state stores. Mode2 <=8064 leaves flags unchanged;
+caller still publishes400 if initializer skips. No amplitude100 clamp, generic
+mode disable, captured command/phase guarantee or measured modulation cadence inferred.
+
+Validation: read-only manifest ten spans (three bodies/two regions/four linked/
+table),151 anchors/ten calls/two registrations passes. Eight vibrato/seven mode/
+five initializer vectors and byte/mask/store-order deductions checked. Full fresh
+ELFs/listings stay `/tmp`; no native change/original execution/body/binary asset
+export. Actual command/rate/amplitude/flags/controller/caller/domain/alias/IRQ/
+concurrency, modulation consumers and original vibrato/portamento/audio remain OPEN.
