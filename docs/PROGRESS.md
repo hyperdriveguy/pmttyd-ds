@@ -2,6 +2,27 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero producer dispatch/silence prefix
+
+Completed _sscallback dispatch/silent-fill prefix and return ABI; EVT-01 checked.
+[Producer silence](behavior/audio/GAME_STREAM_PRODUCER_DISPATCH_AND_SILENT_FILL_PREFIX.md)
+pins low8 row/all-zero/gates/latch, PCM per-store count and ADPCM whole-block
+zeroing with original count return. Whole live refill/helpers/providers/original
+mute/refill/audio/native binding remain open.
+
+Validation: read-only ISO manifest passed two spans,213 anchors,zero calls.
+Ten encoded-count/seven tag/ten dispatch/six PCM/five all-zero vectors checked.
+Link audit passed928 Markdown files/zero broken links; scoped diff check passed.
+Mathematical deductions separate from original execution; raw large loop words
+are models, not actual fills. Docs/metadata only; no make test/all rerun. Fresh
+full ELF/listing/scoped generator stay /tmp; no bodies/assets committed. Concurrent
+native work excluded. Approved push remains pending valid GitHub credentials.
+
+Next: priority-zero EVT-01 _sscallback live refill/helpers, deferred DVD manager/
+providers/value/extent/alias/lifetime/IRQ/concurrency/ABI domains and original
+mute/block-boundary/short-span/refill/callback/audio traces. Other inbox/native/
+full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero stream header whole callback
 
 Completed allocation/zeroing/mix/cache tail and whole SoundSSPlayChEx_main;

@@ -595,6 +595,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] SoundSSPlayChEx_main allocation/zeroing/cache continuation and whole
   local callback — [tail/composition](../behavior/audio/GAME_STREAM_HEADER_ALLOCATION_CACHE_AND_COMPOSITION.md).
   All627 words covered; raw allocation results/fade/mix/cache ordering pinned.
+- [x] _sscallback dispatch/silent-fill prefix and return ABI — [producer silence](../behavior/audio/GAME_STREAM_PRODUCER_DISPATCH_AND_SILENT_FILL_PREFIX.md).
+  Low8/all-zero/mask8006/latch, PCM per-store count and ADPCM raw block/return
+  pinned; whole live refill/helper/provider/runtime remains open.
 - [ ] _sscallback, deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
@@ -2972,3 +2975,11 @@ four mix vectors and ABI/callback/publication sites checked; allocation/pan pins
 reverified. Raw failure results still publish IDs/flags, fixed zeroing precedes
 allocation and fresh cache reads follow mix. _sscallback/manager/providers/
 original startup/audio/native binding open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream producer dispatch/silence prefix delivery
+
+Completed [scoped producer prefix/return ABI](../behavior/audio/GAME_STREAM_PRODUCER_DISPATCH_AND_SILENT_FILL_PREFIX.md).
+Two spans/213 anchors/zero calls verified; ten encoded-count/seven tag/ten
+dispatch/six PCM/five all-zero vectors checked. PCM counts each zero halfword;
+ADPCM zeros complete encoded blocks but returns original count sum. Whole live
+refill/helpers/providers/original audio/native binding open; EVT-01 stays OPEN.

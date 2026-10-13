@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Underground trio ordinary EXP ending tail](battle/UNDERGROUND_TRIO_NO_LEVEL_UP_ENDING_TAIL.md) | Exact0c..1f timers, independent effect softdelete, actual body/voice gates, fade10 completion, Rule0 and ordered pouch/field export | Native effect/GX/fade/audio/field reconstruction cadence; level-up/zeroEXP/special branches |
+| [Stream producer dispatch/silent-fill prefix](audio/GAME_STREAM_PRODUCER_DISPATCH_AND_SILENT_FILL_PREFIX.md) | Complete prefix/return ABI; low8/all-zero/gates/PCM count/ADPCM block zeroing | Whole live refill/helpers/providers/original audio |
 | [Stream header allocation/cache/composition](audio/GAME_STREAM_HEADER_ALLOCATION_CACHE_AND_COMPOSITION.md) | Complete tail/whole627-word callback; zeroing/raw allocation/fade/mix/cache order | _sscallback/manager/providers/original startup/audio |
 | [Stream header initial reads/pending](audio/GAME_STREAM_HEADER_INITIAL_READS_AND_PENDING_PUBLICATION.md) | Complete initial-read region; storage gate/chunk/fresh type/request-before-count/pending | Whole allocation/cache continuation/providers/original IO/audio |
 | [Stream header match/fields/format prefix](audio/GAME_STREAM_HEADER_MATCH_FIELDS_AND_FORMAT_PREFIX.md) | Complete prefix/exit ABI; unmatched third row/field narrowing/sentinel/format/copies/reset | Whole callback continuation/providers/original header playback |
