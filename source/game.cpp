@@ -1023,6 +1023,7 @@ const char* Game::dialogue() const {
     return dialogueKind == 1 ? encounter[dialoguePage] : notices[dialoguePage];
 }
 const char* Game::prompt() const {
+    if(harborTutorial.running())return harborTutorial.failed?"Development notice: original tutorial initialization unavailable":harborTutorial.introComplete?"Development notice: original tutorial action services pending":harborTutorial.message.waiting()?"A / B: next":"A / B: reveal text";
     if(saveObjects && saveObjects->failed)return "Development notice: save service unavailable";
     if(saveLocked())return saveObjects->presentation.selection.active()?"A: select     B: cancel":"A / B: next";
     if(harborEncounter.locked())return harborEncounter.failed?"Development notice: source encounter unavailable":harborEncounter.battleRequested?"Development notice: original tutorial battle service pending":harborEncounter.message.waiting()?"A / B: next":"A / B: reveal text";
@@ -1788,6 +1789,10 @@ void Game::tick(const Input& rawInput) {
         saveRequested=false;
         if(!passive || professorStory.locked())return;
     }
+    if(harborTutorial.running()) {
+        harborTutorial.tick(ticks*1000/60,(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u));
+        scene=Scene::Battle;saveRequested=false;return;
+    }
     if(progress.room==1 && progress.originalStory==4 && !harborEncounter.triggered)beginHarborEncounter(harborResume);
     if(harborEncounter.running()) {
         const bool passive=!harborEncounter.locked();
@@ -1805,6 +1810,9 @@ void Game::tick(const Input& rawInput) {
         while(harborCameraCursor<harborEncounter.cameras.size()){const auto& c=harborEncounter.cameras[harborCameraCursor++];setCameraView({c.eye[0],c.eye[1],c.eye[2]},{c.at[0],c.at[1],c.at[2]},c.duration,uint8_t(c.curve));}
         progress.hp=harborEncounter.hp;progress.originalStory=harborEncounter.story;saveRequested=false;
         scene=harborEncounter.locked()?Scene::Dialogue:Scene::Explore;
+        // The original field event retains its blocking battle-start call.
+        // Only source setup2 initialization/phase owns this bounded battle entry.
+        if(harborEncounter.battleRequested && harborEncounter.battleSetup==2 && !harborTutorial.triggered && harborTutorial.begin(ticks*1000/60,progress.hp))scene=Scene::Battle;
         if(harborEncounter.locked())return;
     }
     if(harborStory.locked()) {

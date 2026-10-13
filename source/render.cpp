@@ -201,6 +201,7 @@ bool Renderer::loadMap(const char* name,Room& room) {
         if(!slot.imported)return false;
         C3D_TexSetFilter(&slot.texture,GPU_LINEAR,GPU_LINEAR);
     }
+    GSPGPU_FlushDataCache(room.vertices,size_t(room.vertexCount)*sizeof(Vertex));
     return true;
 }
 void Renderer::freeRoom(Room& room) {
@@ -511,8 +512,9 @@ void Renderer::harborActors(const Game& g) {
 void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
     const bool fieldTalk=g.fieldActorTalk.message.active();
     const bool professor=g.storyPresentation().locked();
-    const bool encounter=g.harborEncounter.locked();
-    const auto& message=supplied?*supplied:encounter?g.harborEncounter.message:professor?g.storyPresentation().message:fieldTalk?g.fieldActorTalk.message:g.harborStory.message;if(!message.active())return;
+    const bool tutorial=g.harborTutorial.running();
+    const bool encounter=!tutorial && g.harborEncounter.locked();
+    const auto& message=supplied?*supplied:tutorial?g.harborTutorial.message:encounter?g.harborEncounter.message:professor?g.storyPresentation().message:fieldTalk?g.fieldActorTalk.message:g.harborStory.message;if(!message.active())return;
     const auto& font=harborMessageFont();
     // Unproject tilted NDC into the same pixel space as the 2D backend.
     // Reuse the actual world matrix: a parallel eye/FOV calculation can drift
@@ -533,7 +535,15 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
     };
     float anchorX=0,anchorY=0,marioX=0,marioY=0;unsigned mode=0;
     const bool newWindow=!supplied && messageWindowSerial!=message.serial;
-    if(newWindow && professor) {
+    if(newWindow && tutorial && g.harborTutorial.speaker>=0 && g.harborTutorial.speaker<3) {
+        const auto id=unsigned(g.harborTutorial.speaker);const auto& a=g.harborTutorial.actors[id];
+        messageTalkAnchor={a.position[0]*.01f,a.position[1]*.01f,a.position[2]*.01f};
+        const auto* pose=tutorialActors[id].animations.pose(a.pose.c_str());
+        if(pose && pose->evaluate(float(g.harborTutorial.now-a.poseAt)*.06f,actorSample))for(const auto& v:actorSample.vertices)messageTalkAnchor.y=std::max(messageTalkAnchor.y,a.position[1]*.01f+v.y*.02f);
+        const auto& mario=g.harborTutorial.actors[1].position;
+        if(project(messageTalkAnchor,anchorX,anchorY) && project({mario[0]*.01f,mario[1]*.01f,mario[2]*.01f},marioX,marioY))mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
+    }
+    if(newWindow && !tutorial && professor) {
         const auto& a=g.storyPresentation().actors[g.storyPresentation().speaker];const auto& root=g.storyPresentation().speakerRoot;
         messageTalkAnchor={root[0]*.01f,root[1]*.01f,root[2]*.01f};
         const ActorAnimationPack* animations=&partnerAnimations;
@@ -567,7 +577,7 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
         if(project(messageTalkAnchor,anchorX,anchorY) && project({g.progress.position.x,g.groundHeight+g.jumpHeight,g.progress.position.z},marioX,marioY))
             mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
     }
-    for(unsigned i=0;newWindow && !fieldTalk && !professor && i<g.harborStory.actors.size();++i) {
+    for(unsigned i=0;newWindow && !tutorial && !fieldTalk && !professor && i<g.harborStory.actors.size();++i) {
         const auto& actor=g.harborStory.actors[i];if(actor.key!=(encounter?g.harborEncounter.speaker:g.harborStory.speaker))continue;
         const auto& root=encounter?g.harborEncounter.speakerRoot:g.harborStory.speakerRoot;
         messageTalkAnchor={root[0]*.01f,root[1]*.01f,root[2]*.01f};
@@ -954,6 +964,7 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
     text(label,x+7,y+8,.48f,disabled?rgb(135,129,116):Ink);
 }
 void Renderer::overlay(const Game& g) {
+    if(g.harborTutorial.running()){originalMessage(g);if(!tutorialReady || g.harborTutorial.failed || g.harborTutorial.introComplete)text(!tutorialReady?"Development notice: tutorial presentation unavailable":g.prompt(),25,112,.43f,Ink);return;}
     if(g.harborEncounter.locked()){originalMessage(g);if(g.harborEncounter.failed || g.harborEncounter.pendingService)text(g.prompt(),25,112,.43f,Ink);return;}
     if(g.saveObjects && (g.saveLocked() || g.saveObjects->presentation.message.active())) {
         const auto& p=g.saveObjects->presentation;originalMessage(g,&p.message);
@@ -1010,6 +1021,7 @@ void Renderer::overlay(const Game& g) {
     }
 }
 void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
+    if(g.harborTutorial.running())return;
     if(g.trioBattleActive && g.trioCommands.state!=TrioBattleCommands::State::Closed) {
         const auto& commands=g.trioCommands;
         if(commands.state==TrioBattleCommands::State::Command) {
@@ -1124,14 +1136,14 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     for(auto i=messageDynamicWindows.begin();i!=messageDynamicWindows.end();) {
         const auto id=i->first;const auto& story=g.storyPresentation();
         const bool keep=id==story.message.serial || id==story.selection.message.serial || id==g.harborStory.message.serial ||
-            id==g.fieldActorTalk.message.serial || (g.saveObjects && (id==g.saveObjects->presentation.message.serial || id==g.saveObjects->presentation.selection.message.serial));
+            id==g.harborEncounter.message.serial || id==g.harborTutorial.message.serial || id==g.fieldActorTalk.message.serial || (g.saveObjects && (id==g.saveObjects->presentation.message.serial || id==g.saveObjects->presentation.selection.message.serial));
         if(!keep)i=messageDynamicWindows.erase(i);else ++i;
     }
     C2D_TextBufClear(textBuffer);
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     const bool battle=g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,battle?0xA6CBD8FF:0,0);
-    C3D_FrameDrawOn(top);world(g);
+    C3D_FrameDrawOn(top);if(g.harborTutorial.running())worldTutorial(g);else world(g);
     C2D_Prepare();C2D_SceneBegin(top);overlay(g);
     if(g.fade.alpha())C2D_DrawRectSolid(0,0,.99f,400,240,C2D_Color32(0,0,0,g.fade.alpha()));
     C2D_Flush();
@@ -1144,7 +1156,8 @@ void Renderer::shutdown() {
     if(c3dReady) C3D_FrameSync();
     if(textBuffer) C2D_TextBufDelete(textBuffer);
     releaseFrontend();
-    for(Room* room : {&plaza,&stage,&trioBackground,&trioStage})freeRoom(*room);
+    for(Room* room : {&plaza,&stage,&trioBackground,&trioStage,&harborBattleBackground,&harborBattleStage})freeRoom(*room);
+    for(auto& actor:tutorialActors)if(actor.image.imported){Tex3DS_TextureFree(actor.image.imported);C3D_TexDelete(&actor.image.texture);}
     if(sky.imported) {Tex3DS_TextureFree(sky.imported);C3D_TexDelete(&sky.texture);}
     if(characterTextures.imported) {Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);}
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}

@@ -35,5 +35,13 @@ int main(int argc,char**){
     assert(game.harborEncounter.battleRequested && game.progress.originalStory==4 && game.scene==Scene::Dialogue && !game.saveRequested);
     assert(game.harborStory.finished && game.harborEncounter.messageOrder.size()==3);
     assert(game.prompt()==std::string("Development notice: original tutorial battle service pending"));
+    assert(loadHarborTutorialAssets("romfs"));
+    Game tutorialGame;saved.hp=2;tutorialGame.restore(saved);
+    for(unsigned t=0;t<6000 && !tutorialGame.harborTutorial.message.active();++t){Input input;input.confirm=t%4==0;tutorialGame.tick(input);assert(!tutorialGame.harborTutorial.failed);}
+    assert(tutorialGame.harborTutorial.running() && tutorialGame.harborTutorial.message.id()=="mac_0_b_t1_000");
+    assert(tutorialGame.progress.originalStory==4 && tutorialGame.scene==Scene::Battle && tutorialGame.progress.hp==5);
+    for(unsigned t=0;t<600;++t){Input input;input.confirm=t%4==0;tutorialGame.tick(input);tutorialGame.harborTutorial.animationComplete(1);}
+    assert(tutorialGame.harborTutorial.introComplete && tutorialGame.harborTutorial.result==0 && tutorialGame.harborEncounter.story==4);
+    assert(!tutorialGame.saveRequested && tutorialGame.prompt()==std::string("Development notice: original tutorial action services pending"));
     std::puts("source132-command harbor event: integer admission, resume, three messages, jump, HP floor and real battle-service barrier passed");
 }

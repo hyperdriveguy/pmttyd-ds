@@ -36,6 +36,7 @@
 #include "partner_follow.hpp"
 #include "harbor_story.hpp"
 #include "harbor_encounter.hpp"
+#include "harbor_tutorial.hpp"
 #include "professor_story.hpp"
 #include "trio_battle_commands.hpp"
 #include "trio_attack.hpp"
@@ -163,6 +164,7 @@ public:
     PartnerFollow partnerFollow;
     HarborStory harborStory;
     HarborEncounter harborEncounter;
+    HarborTutorial harborTutorial;
     size_t harborCameraCursor=0;
     bool harborResume=false;
     bool beginHarborEncounter(bool resume);
@@ -243,6 +245,8 @@ public:
     const DamageUnit& playerBattleState() const { return playerBattleUnit; }
     const DamageUnit& enemyBattleState() const { return enemyBattleUnit; }
     const std::vector<DamageServiceRequest>& damageRequests() const { return pendingDamageRequests; }
+    void publishPhysicalInput(const std::array<RawPad,4>& pads) {inputProducer.update(pads,TickRate,false);}
+    void retainPhysicalInput(const Game& previous) {inputProducer=previous.inputProducer;}
     const GlobalInputChannel& physicalChannel(size_t i=0) const { assert(i<4);return inputProducer.channels[i]; }
     const BattlePadWork& generalPad(size_t i=0) const {assert(i<4);return generalBattlePads[i];}
     const BattlePadWork& privatePad() const {return actionCommandPad;}

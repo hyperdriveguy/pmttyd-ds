@@ -62,7 +62,7 @@ int main() {
         gfxExit();
         return 1;
     }
-    if(!loadRoomCollision(0) || !(ttyd::loadWarps("romfs:/rooms.bin") && ttyd::loadFieldPipes("romfs:/field-pipes.bin")) || !ttyd::loadFieldDoors("romfs:/doors.pmdoor") || !ttyd::loadCameraRoadAssets("romfs:") || !ttyd::loadHarborEncounterAssets("romfs:") || !ttyd::loadHarborStoryAssets("romfs:") || !ttyd::loadFieldActorCatalog("romfs:") || !ttyd::loadFieldSaveObjectAssets("romfs:") || !ttyd::loadProfessorStoryAssets("romfs:") || !ttyd::loadUndergroundStoryAssets("romfs:") || !ttyd::loadTrioBattleAssets("romfs:") || !ttyd::loadTrioAttackAssets("romfs:")) {
+    if(!loadRoomCollision(0) || !(ttyd::loadWarps("romfs:/rooms.bin") && ttyd::loadFieldPipes("romfs:/field-pipes.bin")) || !ttyd::loadFieldDoors("romfs:/doors.pmdoor") || !ttyd::loadCameraRoadAssets("romfs:") || !ttyd::loadHarborTutorialAssets("romfs:") || !ttyd::loadHarborEncounterAssets("romfs:") || !ttyd::loadHarborStoryAssets("romfs:") || !ttyd::loadFieldActorCatalog("romfs:") || !ttyd::loadFieldSaveObjectAssets("romfs:") || !ttyd::loadProfessorStoryAssets("romfs:") || !ttyd::loadUndergroundStoryAssets("romfs:") || !ttyd::loadTrioBattleAssets("romfs:") || !ttyd::loadTrioAttackAssets("romfs:")) {
         renderer.shutdown();romfsExit();gfxExit();return 1;
     }
     ttyd::Audio audio;audio.init();
@@ -76,7 +76,7 @@ int main() {
     auto restoreProgress=[&](const ttyd::Progress& checkpoint) {
         ttyd::CollisionTransition transaction;float height=checkpoint.elevation;
         if(!stageRoomCollision(checkpoint.room,transaction))return false;
-        auto ownedCandidate=std::make_unique<ttyd::Game>();auto& candidate=*ownedCandidate;candidate.restore(checkpoint);
+        auto ownedCandidate=std::make_unique<ttyd::Game>();auto& candidate=*ownedCandidate;candidate.restore(checkpoint);candidate.retainPhysicalInput(game);
         if(!candidate.checkpointGround(height) || !ttyd::walkable(checkpoint.position,height) || !renderer.changeRoom(checkpoint.room))return false;
         game=std::move(candidate);transaction.commit();return true;
     };
@@ -122,9 +122,18 @@ int main() {
         merge(pending,i);pendingStart|=bool(down&KEY_START);
         const double simulationStart=seconds();metrics.steps=0;
         while(accumulator>=1./60 && metrics.steps<5) {
-            if(frontend.screen==ttyd::FrontScreen::Playing)game.tick(pending);
+            if(frontend.screen==ttyd::FrontScreen::Playing){renderer.advanceTutorialAnimations(game);game.tick(pending);}
             else {
                 ++frontTicks;
+                // PAD publication is global across scene ownership. Preserve
+                // held-button history when the fresh field Game is restored,
+                // so the final dialogue edge cannot become a second jump edge.
+                if(pending.physicalSnapshot) {
+                    std::array<ttyd::RawPad,4> pads{};pads[0].buttons=uint16_t(pending.physicalButtons);
+                    pads[0].mainX=int8_t(std::clamp(pending.x,-1.f,1.f)*70.f);
+                    pads[0].mainY=int8_t(std::clamp(-pending.z,-1.f,1.f)*70.f);
+                    game.publishPhysicalInput(pads);
+                }
                 ttyd::FrontInput fi;fi.confirm=pending.confirm;fi.cancel=pending.cancel;
                 fi.start=pendingStart;pendingStart=false;
                 fi.previous=pending.left;fi.next=pending.right;
@@ -200,9 +209,10 @@ int main() {
             notice=ok?"Progress loaded":"Save unavailable";noticeTicks=180;
             accumulator=0;pending={};previous=seconds();
         }
-        if(frontend.screen==ttyd::FrontScreen::Playing)audio.update(game.trioBattleActive?ttyd::Scene::Battle:game.scene,game.progress.sound,game.harborStory.enabled && game.harborStory.triggered,
+        if(frontend.screen==ttyd::FrontScreen::Playing && game.harborTutorial.running())audio.updateFrontend(12,game.progress.sound);
+        else if(frontend.screen==ttyd::FrontScreen::Playing)audio.update(game.trioBattleActive?ttyd::Scene::Battle:game.scene,game.progress.sound,game.harborStory.enabled && game.harborStory.triggered,
                      game.professorStory.locked()?game.professorStory.music:0,game.progress.room);
-        else audio.updateFrontend(frontend.screen==ttyd::FrontScreen::Demo?(demo.bookComplete?6:5):frontend.screen==ttyd::FrontScreen::Opening?opening.music():4,game.progress.sound);
+        else audio.updateFrontend(frontend.screen==ttyd::FrontScreen::Demo?demo.music():frontend.screen==ttyd::FrontScreen::Opening?opening.music():4,game.progress.sound);
         metrics.renderMs=C3D_GetProcessingTime();metrics.gpuMs=C3D_GetDrawingTime();
         if(frontend.screen==ttyd::FrontScreen::Playing)renderer.render(game,metrics,noticeTicks>0?notice:"",audio.available());
         else renderer.renderFrontend(frontend,demo,opening,noticeTicks>0?notice:"");

@@ -25,12 +25,23 @@ def verify(iso,symbols):
         for address,x in [(0x1084,2),(0x10a8,0),(0x132c,2),(0x1350,0)]:
             args=by_address[address]['operands']
             if args[0].get('annotation')!='evt_mapobj_trans' or args[2].get('identifier')!='S_posuto' or [o['raw'] for o in args[3:]]!=[x,0,0]:raise ValueError('Source postbox request changed')
+        for address,start,end in [(0x11a8,0,180),(0x1248,180,0),(0x1454,0,180),(0x15e4,180,0)]:
+            args=by_address[address]['operands']
+            if args[0].get('annotation')!='evt_sub_intpl_msec_init' or [o['raw'] for o in args[1:]]!=[11,start,end,500]:raise ValueError('Source door interpolation caller changed')
         source.seek(0x420);dol=struct.unpack('>I',source.read(4))[0]
         expected=[(0x1b390,0x180,'57e372ec60ffbbf1c19db9155a33e19257e14109babf0fbd6be1d57032afbbcb'),(0x1b254,0x13c,'8568e88b40ba87f4d1230cdc767c803b07230e6d9b8d4b62a2dfe1c1371b7a07'),(0x25130,0x420,'212353de648b9515c7c9618b7faa4210044a37855eb11ab28fa2d389388d75f1')]
         for offset,size,digest in expected:
             source.seek(dol+offset)
             if hashlib.sha256(source.read(size)).hexdigest()!=digest:raise ValueError('Source matrix service changed')
         source.seek(dol);header=source.read(0x100)
+        provider=0x80055cd4
+        for i in range(18):
+            offset,base,size=(struct.unpack_from('>I',header,b+4*i)[0] for b in [0,0x48,0x90])
+            if base<=provider and provider+4<=base+size:
+                source.seek(dol+offset+provider-base)
+                if struct.unpack('>I',source.read(4))[0]!=0x4bfb0fb9:raise ValueError('Source interpolation provider changed')
+                break
+        else:raise ValueError('Unmapped interpolation provider')
         for address,value in [(0x8041f944,0x41200000),(0x8041f948,0x3c8efa35)]:
             found=False
             for i in range(18):
@@ -40,7 +51,7 @@ def verify(iso,symbols):
                     if struct.unpack('>I',source.read(4))[0]!=value:raise ValueError('Source local-unit/radian constant changed')
                     found=True;break
             if not found:raise ValueError('Missing source constant')
-    return 10
+    return 15
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--iso',default=DEFAULT_ISO);p.add_argument('--symbols',default='artifacts/reference/us_symbols.csv');a=p.parse_args()

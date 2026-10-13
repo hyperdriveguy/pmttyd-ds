@@ -36,7 +36,8 @@ size_t OpeningHouseObjects::bindings() const {size_t n=0;for(const auto& o:objec
 void OpeningHouseObjects::apply(float door,float postbox,const Writer& write) const {
     if(!write || !std::isfinite(door) || !std::isfinite(postbox))return;
     // evt_door multiplies its interpolation operand by Q1024(-568), then -1.
-    const float angle=(door*.5546875f)*.01745329238474369f;
+    const float degrees=std::trunc((door*.5546875f)*1024.f)/1024.f;
+    const float angle=degrees*.01745329238474369f;
     const float c=std::cos(angle),s=std::sin(angle);
     for(const auto& o:objects)for(const auto& b:o.bindings){
         const float parameter=o.tag==0?door:postbox;

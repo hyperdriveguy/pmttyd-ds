@@ -39,7 +39,7 @@ private:
     struct Motion {std::array<float,3> start{},target{};uint64_t begin=0,end=0;bool active=false;};
     std::vector<Request> requests;
     std::array<Motion,3> motion{};
-    Motion cameraEye,cameraAt;
+    Motion cameraEye,cameraAt,doorMotion;
     size_t cursor=0;
     bool started=false,waitingMessage=false;
     uint64_t deadline=0;

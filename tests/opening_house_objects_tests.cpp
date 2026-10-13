@@ -25,6 +25,8 @@ int main(int argc,char** argv){
     assert(std::fabs(vertices[0][0]-(2+std::cos(angle)))<1e-6f);
     assert(std::fabs(vertices[0][2]-(-4-std::sin(angle)))<1e-6f);
     assert(std::fabs(vertices[1][0]-3.02f)<1e-6f);
+    pack.apply(1.f/1024,0,write);assert((vertices[0]==OpeningHouseObjects::Point{3,3,-4}));
+    pack.apply(180,2,write);
     const auto once=vertices;pack.apply(180,2,write);assert(vertices==once);
     pack.apply(0,0,write);assert((vertices[0]==OpeningHouseObjects::Point{3,3,-4}));assert(vertices[1]==vertices[0]);
     assert(!pack.load(path.c_str(),5));assert(pack.bindings()==2);

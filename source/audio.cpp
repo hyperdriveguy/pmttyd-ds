@@ -58,7 +58,7 @@ void Audio::switchTrack(int track) {
     ndspChnWaveBufClear(1);
     if(music) {std::fclose(music);music=nullptr;}
     musicTrack=track;musicPosition=0;musicEnded=false;musicLoop=false;
-    const char* names[]={"rogueport","battle","victory","harbor-danger","title","demo-book","demo-market","opening-house","opening-voyage","opening-sailing","professor-music","underground-music"};
+    const char* names[]={"rogueport","battle","victory","harbor-danger","title","demo-book","demo-market","opening-house","opening-voyage","opening-sailing","professor-music","underground-music","harbor-tutorial-music"};
     if(track<0 || track>=int(sizeof(names)/sizeof(names[0])))return;
     char path[96];std::snprintf(path,sizeof(path),"romfs:/%s.wav",names[track]);music=std::fopen(path,"rb");
     if(!music)return;

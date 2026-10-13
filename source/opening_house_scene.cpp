@@ -1,4 +1,5 @@
 #include "opening_house_scene.hpp"
+#include "field_camera_events.hpp"
 #include <algorithm>
 #include <cmath>
 namespace ttyd {
@@ -58,7 +59,16 @@ void OpeningHouseScene::updateMotion() {
             else {actors[0].pose="M_S_1";actors[0].poseTick=tick;actors[0].yaw=90;}
         }
     }
-    advance(cameraEye,eye);advance(cameraAt,at);
+    auto curve=[&](Motion& m,std::array<float,3>& p) {
+        if(!m.active)return;
+        const auto elapsed=std::min(tick-m.begin,m.end-m.begin);
+        for(unsigned k=0;k<3;++k)p[k]=*cameraInterpolation(11,int32_t(elapsed),int32_t(m.end-m.begin),m.start[k],m.target[k]);
+        if(tick>=m.end){p=m.target;m.active=false;}
+    };
+    curve(cameraEye,eye);curve(cameraAt,at);
+    std::array<float,3> door{doorAngle,0,0};curve(doorMotion,door);
+    // evt_sub_intpl_msec_get_value publishes through source evtSetFloat LW0.
+    doorAngle=std::trunc(door[0]*1024.f)/1024.f;
 }
 void OpeningHouseScene::advance(uint64_t simulationTick) {
     if(simulationTick<tick || complete)return;
@@ -81,7 +91,7 @@ void OpeningHouseScene::step() {
             case Kind::Visible:actors[r.actor].visible=r.point[0]!=0;break;
             case Kind::Camera:if(r.duration){cameraEye={eye,r.point,tick,tick+r.duration,true};cameraAt={at,r.aim,tick,tick+r.duration,true};}else{eye=r.point;at=r.aim;cameraEye.active=cameraAt.active=false;}break;
             case Kind::Interior:interior=true;break;
-            case Kind::Door:doorAngle=r.point[0];break;
+            case Kind::Door:doorMotion={{doorAngle,0,0},r.point,tick,tick+30,true};break;
             case Kind::Postbox:postboxX=r.point[0];break;
             case Kind::Message:waitingMessage=true;nextMessage=r.actor;break;
             }

@@ -1,6 +1,7 @@
 #pragma once
 #include "game.hpp"
 #include "frontend.hpp"
+#include "opening_house_objects.hpp"
 #include "opening_demo.hpp"
 #include "opening_sequence.hpp"
 #include "visibility.hpp"
@@ -24,6 +25,7 @@ public:
     bool init();
     bool changeRoom(uint32_t room);
     void beginFrontend();
+    void advanceTutorialAnimations(Game&);
     void releaseFrontend();
     void render(const Game&, const Metrics&, const char* notice, bool audioAvailable);
     void renderFrontend(const Frontend&, const OpeningDemo&, const OpeningSequence&, const char* notice);
@@ -76,13 +78,18 @@ private:
         bool fenceCaptured=false;
         uint64_t fenceTick=UINT64_MAX;
     };
-    Room plaza,stage,frontRoom,trioBackground,trioStage;
+    Room plaza,stage,frontRoom,trioBackground,trioStage,harborBattleBackground,harborBattleStage;
     std::string frontMapName;
     bool frontActive=false;
     uint32_t frontPhase=UINT32_MAX;
     std::string frontFailure;
+    OpeningHouseObjects frontHouseObjects;
     struct CineActor {std::string name;ActorAnimationPack animations;Texture image;float uvScale=1;};
     std::vector<CineActor> cineActors;
+    std::array<CineActor,3> tutorialActors;
+    bool tutorialReady=false;
+    bool loadTutorialPresentation();
+    void worldTutorial(const Game&);
     bool frontWorld(const char*,CameraPoint,CameraPoint,const OpeningSequence*,const OpeningDemo&);
     struct FrontTexture {std::string name;Texture image;std::array<uint32_t,4> size{};};
     std::vector<FrontTexture> frontTextures;

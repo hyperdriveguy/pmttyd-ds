@@ -2,7 +2,10 @@
 #include <algorithm>
 #include <cstdio>
 namespace ttyd {
-namespace {constexpr uint32_t Ink=0xff352d29,Paper=0xffdff2fb,Red=0xff4966d8;
+namespace {constexpr int MaxVertices=12000;
+constexpr auto FieldRGB=GPU_WRITEMASK(GPU_WRITE_RED|GPU_WRITE_GREEN|GPU_WRITE_BLUE);
+constexpr auto FieldRGBDepth=GPU_WRITEMASK(FieldRGB|GPU_WRITE_DEPTH);
+constexpr uint32_t Ink=0xff352d29,Paper=0xffdff2fb,Red=0xff4966d8;
 uint32_t rgb(unsigned r,unsigned g,unsigned b,unsigned a=255){return C2D_Color32(r,g,b,a);}}
 void Renderer::beginFrontend(){
     C3D_FrameSync();
@@ -10,7 +13,7 @@ void Renderer::beginFrontend(){
     frontActive=true;
 }
 void Renderer::releaseFrontend(){
-    C3D_FrameSync();freeRoom(frontRoom);frontMapName.clear();
+    C3D_FrameSync();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();
     for(auto& t:frontTextures)if(t.image.imported){Tex3DS_TextureFree(t.image.imported);C3D_TexDelete(&t.image.texture);}
     frontTextures.clear();
     for(auto& a:cineActors)if(a.image.imported){Tex3DS_TextureFree(a.image.imported);C3D_TexDelete(&a.image.texture);}
@@ -35,6 +38,7 @@ bool Renderer::frontImage(const char* name,float x,float y,float w,float h) {
     C2D_DrawImageAt({&found->image.texture,&sub},x,y,0,nullptr,w/z[0],h/z[1]);return true;
 }
 void Renderer::frontMessage(const MessagePlayback& message) {
+    if(!message.active())return;
     const auto& font=harborMessageFont();
     uint32_t color=0x000000ff;
     for(size_t i=0;i<std::min(message.cursor,message.records.size());++i) {
@@ -53,11 +57,19 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     if(frontMapName!=map) {
         // A cutscene owns one map. Release the preceding scene before staging
         // its successor; retaining both can exhaust the native linear arena.
-        C3D_FrameSync();freeRoom(frontRoom);frontMapName.clear();
+        C3D_FrameSync();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();
         for(auto& t:frontTextures)if(t.image.imported){Tex3DS_TextureFree(t.image.imported);C3D_TexDelete(&t.image.texture);}
         frontTextures.clear();
         Room pending;if(!loadMap(map,pending)){freeRoom(pending);frontFailure=std::string("Scene map load failed: ")+map;return false;}
-        frontRoom=std::move(pending);frontMapName=map;frontFailure.clear();
+        frontRoom=std::move(pending);
+        if(std::string(map)=="opening-aaa_00" && !frontHouseObjects.load("romfs:/opening-aaa_00.houseobj",frontRoom.vertexCount)) {
+            freeRoom(frontRoom);frontFailure="Original house object bindings unavailable";return false;
+        }
+        frontMapName=map;frontFailure.clear();
+    }
+    if(opening && frontHouseObjects.size()) {
+        frontHouseObjects.apply(opening->house.doorAngle,opening->house.postboxX,[&](uint32_t i,const OpeningHouseObjects::Point& p){frontRoom.vertices[i].x=p[0];frontRoom.vertices[i].y=p[1];frontRoom.vertices[i].z=p[2];});
+        GSPGPU_FlushDataCache(frontRoom.vertices,size_t(frontRoom.vertexCount)*sizeof(Vertex));
     }
     Game snapshot;snapshot.progress.room=255;snapshot.ticks=(opening?opening->now:demo.now)*60/1000;
     snapshot.fieldCameraFrame.eye={eye.x*.01f,eye.y*.01f,eye.z*.01f};snapshot.fieldCameraFrame.at={at.x*.01f,at.y*.01f,at.z*.01f};
@@ -73,7 +85,9 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
     auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
     drawMap(false,snapshot,false,&frontRoom);
-    auto actor=[&](const char* bank,const char* pose,CameraPoint root,float yaw) {
+    count=0; // Each queued actor retains its own range until frame submission.
+    if(cineActors.empty())cineActors.reserve(4);
+    auto actor=[&](const char* bank,const char* pose,CameraPoint root,float yaw,float frame=-1) {
         auto found=std::find_if(cineActors.begin(),cineActors.end(),[&](const auto& a){return a.name==bank;});
         if(found==cineActors.end()) {
             CineActor pending;pending.name=bank;const std::string base=std::string("romfs:/")+bank;
@@ -85,25 +99,56 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
             pending.image.imported=Tex3DS_TextureImportStdio(f,&pending.image.texture,nullptr,false);std::fclose(f);if(!pending.image.imported)return false;
             C3D_TexSetFilter(&pending.image.texture,GPU_LINEAR,GPU_LINEAR);cineActors.push_back(std::move(pending));found=cineActors.end()-1;
         }
-        count=0;if(!characterModel(pose,float(snapshot.ticks),{root.x*.01f,root.z*.01f},root.y*.01f,yaw,false,false,&found->animations,found->uvScale))return false;
+        const int first=count;
+        const auto* animation=found->animations.pose(pose);
+        if(!animation || !animation->evaluate(frame<0?float(snapshot.ticks):frame,actorSample) || actorSample.vertices.size()>size_t(MaxVertices-count))return false;
+        const ActorRootTransform transform({root.x*.01f,root.y*.01f,root.z*.01f},yaw,false);
+        for(size_t n=0;n<actorSample.vertices.size();++n) {
+            const auto& v=actorSample.vertices[n];const auto point=transform.point(v);
+            vertex(point[0],point[1],point[2],v.u,1-(1-v.v)*found->uvScale,0xffffffff,actorSample.colors.empty()?nullptr:&actorSample.colors[n]);
+        }
         auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
-        C3D_TexBind(0,&found->image.texture);C3D_DrawArrays(GPU_TRIANGLES,0,count);return true;
+        if(count>first)GSPGPU_FlushDataCache(vertices+first,size_t(count-first)*sizeof(Vertex));
+        C3D_TexBind(0,&found->image.texture);
+        if(actorSample.batches.empty())C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
+        else for(const auto& batch:actorSample.batches) {
+            if(!batch.count || batch.cull==2)continue;
+            const GPU_CULLMODE culls[]={GPU_CULL_FRONT_CCW,GPU_CULL_BACK_CCW,GPU_CULL_NONE,GPU_CULL_NONE};
+            C3D_CullFace(culls[batch.cull]);C3D_DepthTest(true,GPU_GEQUAL,batch.pass==3?FieldRGB:FieldRGBDepth);
+            C3D_AlphaTest(batch.pass==2,GPU_GEQUAL,128);
+            const bool opaque=batch.pass==1 || batch.pass==2;
+            C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,opaque?GPU_ONE:GPU_SRC_ALPHA,opaque?GPU_ZERO:GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,opaque?GPU_ZERO:GPU_ONE_MINUS_SRC_ALPHA);
+            C3D_DrawArrays(GPU_TRIANGLES,first+batch.start,batch.count);
+        }
+        C3D_CullFace(GPU_CULL_NONE);C3D_DepthTest(true,GPU_GREATER,FieldRGBDepth);C3D_AlphaTest(true,GPU_GREATER,8);
+        C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
+        return true;
     };
     bool ok=true;
     if(!opening && demo.bookComplete) {
-        ok=actor("c_peach","P_S_1",{0,0,450},180) && actor("c_nazo","S_1",{-145,0,450},180);
+        const auto& scene=demo.market;constexpr const char* banks[]={"c_peach","c_nazo","demo-chest"};
+        constexpr uint32_t speakers[]={0x2040,0x2048,0};
+        for(unsigned n=0;n<3;++n)if(scene.actors[n].visible) {
+            const auto& a=scene.actors[n];const bool talking=demo.message.active() && !demo.message.waiting() && demo.speaker==speakers[n];
+            const bool right=a.yaw>0 && a.yaw<180;
+            ok=actor(banks[n],scene.actorPose(n,talking),{a.position[0],a.position[1],a.position[2]},n==2?a.yaw:right?180:0,float(demo.now*60/1000-a.poseTick)) && ok;
+        }
     } else if(opening && (opening->part==OpeningPart::House || opening->part==OpeningPart::HouseReturn)) {
-        // Source explicit placements: postbox/outside versus read-letter interior.
-        const CameraPoint luigi=opening->part==OpeningPart::House && opening->index<2?CameraPoint{225,30,-75}:opening->part==OpeningPart::House && opening->index==2?CameraPoint{25,30,-155}:CameraPoint{-52,30,-275};
-        const bool letterPose=opening->part==OpeningPart::HouseReturn || opening->index==4;
-        const bool talking=opening->message.active() && !opening->message.waiting();
-        ok=actor("c_luigi",letterPose?(talking?"L_9":"L_8"):(talking?"L_7":"L_5"),luigi,0);
-        if(opening->part==OpeningPart::House && opening->index<=1)ok=actor("c_paretta","S_1",{210,25,-30},0) && ok;
-        count=0;characterModel("M_S_1",float(snapshot.ticks),opening->part==OpeningPart::House && opening->index<=2?Vec2{-1.50f,-3.30f}:Vec2{-.85f,-3.10f},.30f,180,false);
-        auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,0,count);
+        const auto& scene=opening->house;
+        constexpr uint32_t keys[]={0,0x474,0x468};
+        for(unsigned n=1;n<3;++n)if(scene.actors[n].visible) {
+            const auto& a=scene.actors[n];const bool talking=opening->message.active() && !opening->message.waiting() && opening->speaker==keys[n];
+            const bool right=a.yaw>0 && a.yaw<180;
+            ok=actor(n==1?"c_luigi":"c_paretta",scene.actorPose(n,talking),{a.position[0],a.position[1],a.position[2]},right?180:0,float(opening->now*60/1000-a.poseTick)) && ok;
+        }
+        if(scene.actors[0].visible) {
+            const auto& a=scene.actors[0];const bool right=a.yaw>0 && a.yaw<180;
+            const int first=count;ok=characterModel(scene.actorPose(0,false),float(opening->now*60/1000-a.poseTick),{a.position[0]*.01f,a.position[2]*.01f},a.position[1]*.01f,right?180:0,right) && ok;
+            auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);if(count>first)GSPGPU_FlushDataCache(vertices+first,size_t(count-first)*sizeof(Vertex));C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
+        }
     } else if(opening && opening->part==OpeningPart::Arrival) {
-        count=0;characterModel("M_S_1",float(snapshot.ticks),{0,2.25f},.15f,180,false);
-        auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,0,count);
+        const int first=count;characterModel("M_S_1",float(snapshot.ticks),{0,2.25f},.15f,180,false);
+        auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);if(count>first)GSPGPU_FlushDataCache(vertices+first,size_t(count-first)*sizeof(Vertex));C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
     }
     drawMap(false,snapshot,true,&frontRoom);
     C2D_Prepare();C2D_SceneBegin(top);return ok;
@@ -118,19 +163,20 @@ void Renderer::renderFrontend(const Frontend& f,const OpeningDemo& demo,const Op
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,0,0);C3D_FrameDrawOn(top);C2D_Prepare();C2D_SceneBegin(top);
     bool ok=true;
     if(f.screen==FrontScreen::Demo && demo.bookComplete) {
-        ok=frontWorld("map",{0,100,834},{0,50,437},nullptr,demo);
+        const auto& scene=demo.market;
+        ok=frontWorld("map",{scene.eye[0],scene.eye[1],scene.eye[2]},{scene.at[0],scene.at[1],scene.at[2]},nullptr,demo);
+        if(scene.revealProgress<1)C2D_DrawRectSolid(0,0,0,400,240,rgb(0,0,0,unsigned((1-scene.revealProgress)*255)));
     } else if(f.screen==FrontScreen::Opening) {
         const char* map=opening.map();
         CameraPoint eye{-376,154,65},at{-63,75,-247};
-        if(opening.part==OpeningPart::House && opening.index<2){eye={145,122,717};at={145,108,-180};}
-        else if(opening.part==OpeningPart::House && opening.index==2){eye={-345,154,96};at={-32,75,-217};}
+        if(opening.part==OpeningPart::House || opening.part==OpeningPart::HouseReturn){const auto& scene=opening.house;eye={scene.eye[0],scene.eye[1],scene.eye[2]};at={scene.at[0],scene.at[1],scene.at[2]};}
         if(opening.part==OpeningPart::Voyage){eye={0,500,1400};at={0,0,0};}
         if(opening.part==OpeningPart::Wake){eye={0,200,1000};at={0,0,0};}
         if(opening.part==OpeningPart::Arrival){eye={2,225,1015};at={2,50,243};}
         if(opening.part==OpeningPart::MapDisplay)ok=frontImage("opening-map",48,0,304,240);
         else if(opening.part==OpeningPart::Letter)ok=frontImage("opening-letter",88,30,224,148);
         else if(opening.part==OpeningPart::Prologue){ok=frontImage("prologue",48,95,304,55);}
-        else if(map){const std::string prefix=opening.part==OpeningPart::HouseReturn || (opening.part==OpeningPart::House && opening.index>=2)?"opening-aaa_00-interior":opening.part==OpeningPart::Arrival?"gor_00":"opening-"+std::string(map);ok=frontWorld(prefix.c_str(),eye,at,&opening,demo);}
+        else if(map){const std::string prefix=opening.part==OpeningPart::HouseReturn || (opening.part==OpeningPart::House && opening.house.interior)?"opening-aaa_00-interior":opening.part==OpeningPart::Arrival?"gor_00":"opening-"+std::string(map);ok=frontWorld(prefix.c_str(),eye,at,&opening,demo);}
     } else if(f.screen==FrontScreen::Demo) {
         char name[24];std::snprintf(name,sizeof(name),"demo-%u",demo.image());
         ok=frontImage(name,48,0,304,240);

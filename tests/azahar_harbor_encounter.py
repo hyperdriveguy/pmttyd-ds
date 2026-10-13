@@ -12,7 +12,7 @@ def run(env,capture):
   x('keydown','Right');time.sleep(1.8);x('keyup','Right')
   x('keydown','Up');time.sleep(1.8);x('keyup','Up')
  time.sleep(1);capture('source-admission')
- for n in range(80):
+ for n in range(180):
   press('a')
-  if n in [8,20,36,60]:capture('beforebattle-'+str(n))
- capture('pending-original-tutorial-service')
+  if n in [8,20,36,60,90,120,160]:capture('beforebattle-'+str(n))
+ capture('original-tutorial-intro-or-pending-combat')
