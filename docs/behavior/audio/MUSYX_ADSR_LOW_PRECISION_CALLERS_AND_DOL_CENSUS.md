@@ -137,3 +137,9 @@ remain open; the whole builder fingerprint is still not full semantic closure.
 [Modulation/pan ramps](MUSYX_LOW_PRECISION_MODULATION_AND_PAN_RAMPS.md) closes the intermediate oscillator/periodic/
 pan region80277788..802779d0. Sine/pitch/controller/portamento/requeue and
 provider/domain/original voice/audio/native binding remain open.
+
+## 2026-10-13 — Pitch preparation follow-up
+
+[Pitch preparation](MUSYX_LOW_PRECISION_PITCH_PREPARATION.md) closes note/cents/bend/modulation region
+80277a30..80277bb0. Portamento/final pitch/requeue/provider/domain/original
+voice/audio/native binding remain open.

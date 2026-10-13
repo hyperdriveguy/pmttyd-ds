@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero low-precision pitch preparation
+
+Completed LowPrecisionHandler note/cents/bend/modulation region; checked EVT-01
+portion. [Pitch preparation](behavior/audio/MUSYX_LOW_PRECISION_PITCH_PREPARATION.md)
+pins retained note, signed base versus unsigned modulation cents, cached/query/
+ff-skip bend and fresh scale flag/wrapped product/signed shift order.
+Remaining handler/providers/domains/original pitch/audio/native binding open.
+
+Validation: read-only ISO manifest passed four spans,96 whole-region anchors,
+two calls. Seven base/six gate/five bend/six modulation vectors and512 byte
+/100 cases checked. Link audit passed873 Markdown files/zero broken links;
+scoped `git diff --check` passed. Mathematical source deductions are separate
+from original execution. Documentation/metadata only; no `make test`/`make all`
+rerun. Fresh full original handler ELF/listing/generator stay `/tmp`; no bodies/
+binary assets committed. Concurrent native edits excluded. Previously approved
+push remains pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 LowPrecisionHandler portamento/controller transition,
+final pitch/ADSR/scaling/hardware/requeue/ABI, actual note/cents/cache/range/factor/
+depth/oscillator/flag/controller/voice providers and valid value/index/extent/
+alias/lifetime/IRQ/concurrency domains, original pitch/audio traces. Remaining
+macro/stream/song/backend, lower-priority inbox and full native/game work open.
+
 ## 2026-10-13 — Inbox priority-zero integer sine lookup
 
 Completed sndSin/original1024 numeric coefficients/two oscillator bindings;
