@@ -85,3 +85,9 @@ Remaining: voiceUnblock/stream callback constructors and state/count/voice/DSP
 providers, valid index/offset/reinit/concurrency domains, streamHandle/command
 consumer/actual DSP/hardware behavior and original kill/init/audio traces. Four
 complete local bodies are answered; full native/source/runtime remains OPEN.
+
+## 2026-10-13 — Stream lookup/mode/mix follow-up
+
+[Lookup/mode/mix](MUSYX_STREAM_ID_LOOKUP_OUTPUT_MODE_AND_MIX.md) closes five local lookup/output-mode/volume/
+hardware-mix dependencies. Stream engine/lifecycle/providers/domains/original
+audio/native binding remain open.

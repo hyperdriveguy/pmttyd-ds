@@ -1,0 +1,753 @@
+{
+  "schema": 1,
+  "scope": "Five complete stream ID lookup/output mode/volume publication/hardware-mix leaves; callers/runtime open",
+  "complete_bodies": [
+    "GetPrivateIndex",
+    "CheckOutputMode",
+    "SetupVolume",
+    "SetupVolumeAndPan",
+    "SetHWMix"
+  ],
+  "linked_only": [
+    "hwSetVolume"
+  ],
+  "dol_spans": [
+    {
+      "name": "GetPrivateIndex",
+      "address": 2150084632,
+      "size": 352,
+      "sha256": "4adccdc6efc6fa9693468f9b7eed6a5aff6bcb5b981def0f4251255c1ca71f6c"
+    },
+    {
+      "name": "CheckOutputMode",
+      "address": 2150084984,
+      "size": 52,
+      "sha256": "d55c78d83bcf6dd5584aef2f088c9af23accaff6033b84af1376e9c85676fb8c"
+    },
+    {
+      "name": "SetupVolume",
+      "address": 2150085036,
+      "size": 16,
+      "sha256": "9d414aa2f7326a257a073a4cdea3e73b7be562be0976b9b176a1ac64cff3a910"
+    },
+    {
+      "name": "SetupVolumeAndPan",
+      "address": 2150085052,
+      "size": 68,
+      "sha256": "d3a4199a5899fb085fe1664272ec43cfa0b55934815ccdd653d161a85e783168"
+    },
+    {
+      "name": "SetHWMix",
+      "address": 2150082060,
+      "size": 140,
+      "sha256": "719c181851e89eba6d4f95c0864adeee2e48f4c9d592eeb397fc14a78e648a7f"
+    },
+    {
+      "name": "hwSetVolume",
+      "address": 2150174544,
+      "size": 704,
+      "sha256": "7572e8abd4d46b2efbaa2acc084c05712849d45f4cbb8225dd7d905aaaa7657c"
+    },
+    {
+      "name": "Stream mix constant 0x80429178",
+      "address": 2151846264,
+      "size": 4,
+      "sha256": "7b75b05602b209475f3d646f32fb7d36affded9fdc8084b78b7511f56098e385"
+    },
+    {
+      "name": "Stream mix constant 0x80429180",
+      "address": 2151846272,
+      "size": 8,
+      "sha256": "2b2979f362d94c89fe17a6e01637f14332de063fe7a544bdc5facfc046f4169f"
+    }
+  ],
+  "dol_anchors": {
+    "2150084632": "3c808040",
+    "2150084636": "38000008",
+    "2150084640": "388498e8",
+    "2150084644": "38a00000",
+    "2150084652": "8804000c",
+    "2150084660": "41820018",
+    "2150084664": "80040004",
+    "2150084672": "4082000c",
+    "2150084684": "88040074",
+    "2150084688": "38a50001",
+    "2150084692": "38840068",
+    "2150084700": "41820018",
+    "2150084704": "80040004",
+    "2150084712": "4082000c",
+    "2150084724": "88040074",
+    "2150084728": "38a50001",
+    "2150084732": "38840068",
+    "2150084740": "41820018",
+    "2150084744": "80040004",
+    "2150084752": "4082000c",
+    "2150084764": "88040074",
+    "2150084768": "38a50001",
+    "2150084772": "38840068",
+    "2150084780": "41820018",
+    "2150084784": "80040004",
+    "2150084792": "4082000c",
+    "2150084804": "88040074",
+    "2150084808": "38a50001",
+    "2150084812": "38840068",
+    "2150084820": "41820018",
+    "2150084824": "80040004",
+    "2150084832": "4082000c",
+    "2150084844": "88040074",
+    "2150084848": "38a50001",
+    "2150084852": "38840068",
+    "2150084860": "41820018",
+    "2150084864": "80040004",
+    "2150084872": "4082000c",
+    "2150084884": "88040074",
+    "2150084888": "38a50001",
+    "2150084892": "38840068",
+    "2150084900": "41820018",
+    "2150084904": "80040004",
+    "2150084912": "4082000c",
+    "2150084924": "88040074",
+    "2150084928": "38a50001",
+    "2150084932": "38840068",
+    "2150084940": "41820018",
+    "2150084944": "80040004",
+    "2150084952": "4082000c",
+    "2150084964": "38840068",
+    "2150084968": "38a50001",
+    "2150084972": "4200fec0",
+    "2150084976": "3860ffff",
+    "2150084984": "80ad1f6c",
+    "2150084992": "41820018",
+    "2150084996": "38a00040",
+    "2150085000": "38000000",
+    "2150085004": "98a30000",
+    "2150085008": "98040000",
+    "2150085024": "38000000",
+    "2150085028": "98040000",
+    "2150085036": "98830059",
+    "2150085040": "98a3005c",
+    "2150085044": "98c3005d",
+    "2150085052": "98830059",
+    "2150085056": "98e3005c",
+    "2150085060": "9903005d",
+    "2150085064": "98a3005e",
+    "2150085068": "98c3005f",
+    "2150085072": "808d1f6c",
+    "2150085080": "41820010",
+    "2150085084": "38a00040",
+    "2150085088": "38c00000",
+    "2150085092": "48000010",
+    "2150085100": "40820008",
+    "2150085104": "38c00000",
+    "2150085108": "98a3005a",
+    "2150085112": "98c3005b",
+    "2150082068": "3ce04330",
+    "2150082076": "90010024",
+    "2150082080": "38800000",
+    "2150082088": "88c30059",
+    "2150082092": "88a3005c",
+    "2150082096": "90c1000c",
+    "2150082100": "8803005d",
+    "2150082104": "90e10008",
+    "2150082108": "88c3005a",
+    "2150082116": "90a10014",
+    "2150082128": "88c3005b",
+    "2150082132": "90e10010",
+    "2150082136": "8063004c",
+    "2150082148": "9001001c",
+    "2150082160": "90e10018",
+    "2150082180": "480168cd",
+    "2150082184": "80010024",
+    "2150082192": "38210020",
+    "2150084648": "7c0903a6",
+    "2150084656": "28000000",
+    "2150084668": "7c030040",
+    "2150084676": "7ca32b78",
+    "2150084680": "4e800020",
+    "2150084696": "28000000",
+    "2150084708": "7c030040",
+    "2150084716": "7ca32b78",
+    "2150084720": "4e800020",
+    "2150084736": "28000000",
+    "2150084748": "7c030040",
+    "2150084756": "7ca32b78",
+    "2150084760": "4e800020",
+    "2150084776": "28000000",
+    "2150084788": "7c030040",
+    "2150084796": "7ca32b78",
+    "2150084800": "4e800020",
+    "2150084816": "28000000",
+    "2150084828": "7c030040",
+    "2150084836": "7ca32b78",
+    "2150084840": "4e800020",
+    "2150084856": "28000000",
+    "2150084868": "7c030040",
+    "2150084876": "7ca32b78",
+    "2150084880": "4e800020",
+    "2150084896": "28000000",
+    "2150084908": "7c030040",
+    "2150084916": "7ca32b78",
+    "2150084920": "4e800020",
+    "2150084936": "28000000",
+    "2150084948": "7c030040",
+    "2150084956": "7ca32b78",
+    "2150084960": "4e800020",
+    "2150084980": "4e800020",
+    "2150084988": "54a007ff",
+    "2150085012": "4e800020",
+    "2150085016": "54a007bd",
+    "2150085020": "4c820020",
+    "2150085032": "4e800020",
+    "2150085048": "4e800020",
+    "2150085076": "548007ff",
+    "2150085096": "548007bd",
+    "2150085116": "4e800020",
+    "2150082060": "9421ffe0",
+    "2150082064": "7c0802a6",
+    "2150082072": "c8621d40",
+    "2150082084": "c0821d38",
+    "2150082112": "c8010008",
+    "2150082120": "54c5801e",
+    "2150082124": "ec201828",
+    "2150082140": "54c6801e",
+    "2150082144": "c8010010",
+    "2150082152": "ec240072",
+    "2150082156": "ec401828",
+    "2150082164": "c8010018",
+    "2150082168": "ec4400b2",
+    "2150082172": "ec001828",
+    "2150082176": "ec640032",
+    "2150082188": "7c0803a6",
+    "2150082196": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2150082180,
+      "target": 2150174544,
+      "name": "hwSetVolume"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "mix_literal": {
+    "address": 2151846264,
+    "bits": "3c010204",
+    "value": 0.007874015718698502
+  },
+  "conversion_bias": {
+    "address": 2151846272,
+    "bits": "4330000000000000"
+  },
+  "lookup_layout": {
+    "base": 2151651560,
+    "rows": 64,
+    "stride": 104,
+    "state_byte": 12,
+    "public_id_word": 4,
+    "unroll_rows": 8,
+    "outer_iterations": 8,
+    "miss": 4294967295
+  },
+  "derived_lookup_vectors": [
+    {
+      "target": 7,
+      "prefix_rows": [
+        {
+          "state": 0,
+          "public_id": 7
+        },
+        {
+          "state": 2,
+          "public_id": 7
+        },
+        {
+          "state": 1,
+          "public_id": 7
+        }
+      ],
+      "remaining_rows_inactive": true,
+      "selected": 1
+    },
+    {
+      "target": 4294967295,
+      "prefix_rows": [
+        {
+          "state": 255,
+          "public_id": 4294967295
+        }
+      ],
+      "remaining_rows_inactive": true,
+      "selected": 0
+    },
+    {
+      "target": 0,
+      "prefix_rows": [
+        {
+          "state": 0,
+          "public_id": 0
+        }
+      ],
+      "remaining_rows_inactive": true,
+      "selected": 4294967295
+    },
+    {
+      "target": 7,
+      "prefix_rows": [
+        {
+          "state": 3,
+          "public_id": 7
+        }
+      ],
+      "remaining_rows_inactive": true,
+      "selected": 0
+    },
+    {
+      "target": 7,
+      "prefix_rows": [
+        {
+          "state": 1,
+          "public_id": 8
+        },
+        {
+          "state": 1,
+          "public_id": 7
+        }
+      ],
+      "remaining_rows_inactive": true,
+      "selected": 1
+    }
+  ],
+  "derived_mode_vectors": [
+    {
+      "flags": 0,
+      "requested_pan": 10,
+      "requested_surround": 20,
+      "effective_pan": 10,
+      "effective_surround": 0,
+      "check_writes_pan": false,
+      "check_writes_surround": true
+    },
+    {
+      "flags": 1,
+      "requested_pan": 10,
+      "requested_surround": 20,
+      "effective_pan": 64,
+      "effective_surround": 0,
+      "check_writes_pan": true,
+      "check_writes_surround": true
+    },
+    {
+      "flags": 2,
+      "requested_pan": 10,
+      "requested_surround": 20,
+      "effective_pan": 10,
+      "effective_surround": 20,
+      "check_writes_pan": false,
+      "check_writes_surround": false
+    },
+    {
+      "flags": 3,
+      "requested_pan": 10,
+      "requested_surround": 20,
+      "effective_pan": 64,
+      "effective_surround": 0,
+      "check_writes_pan": true,
+      "check_writes_surround": true
+    },
+    {
+      "flags": 4294967292,
+      "requested_pan": 511,
+      "requested_surround": 511,
+      "effective_pan": 255,
+      "effective_surround": 0,
+      "check_writes_pan": false,
+      "check_writes_surround": true
+    },
+    {
+      "flags": 4294967295,
+      "requested_pan": 0,
+      "requested_surround": 255,
+      "effective_pan": 64,
+      "effective_surround": 0,
+      "check_writes_pan": true,
+      "check_writes_surround": true
+    }
+  ],
+  "derived_mix_vectors": [
+    {
+      "volume_byte": 0,
+      "aux_a_byte": 0,
+      "aux_b_byte": 0,
+      "pan_byte": 64,
+      "surround_byte": 0,
+      "volume": 0.0,
+      "aux_a": 0.0,
+      "aux_b": 0.0,
+      "pan_word": 4194304,
+      "surround_word": 0,
+      "studio": 0
+    },
+    {
+      "volume_byte": 127,
+      "aux_a_byte": 127,
+      "aux_b_byte": 127,
+      "pan_byte": 127,
+      "surround_byte": 127,
+      "volume": 1.0,
+      "aux_a": 1.0,
+      "aux_b": 1.0,
+      "pan_word": 8323072,
+      "surround_word": 8323072,
+      "studio": 0
+    },
+    {
+      "volume_byte": 255,
+      "aux_a_byte": 255,
+      "aux_b_byte": 255,
+      "pan_byte": 255,
+      "surround_byte": 255,
+      "volume": 2.007874011993408,
+      "aux_a": 2.007874011993408,
+      "aux_b": 2.007874011993408,
+      "pan_word": 16711680,
+      "surround_word": 16711680,
+      "studio": 0
+    },
+    {
+      "volume_byte": 64,
+      "aux_a_byte": 32,
+      "aux_b_byte": 16,
+      "pan_byte": 10,
+      "surround_byte": 20,
+      "volume": 0.5039370059967041,
+      "aux_a": 0.25196850299835205,
+      "aux_b": 0.12598425149917603,
+      "pan_word": 655360,
+      "surround_word": 1310720,
+      "studio": 0
+    }
+  ],
+  "derived_full_slot_vectors": [
+    {
+      "only_active_matching_slot": 0,
+      "selected": 0,
+      "address": 2151651560
+    },
+    {
+      "only_active_matching_slot": 1,
+      "selected": 1,
+      "address": 2151651664
+    },
+    {
+      "only_active_matching_slot": 2,
+      "selected": 2,
+      "address": 2151651768
+    },
+    {
+      "only_active_matching_slot": 3,
+      "selected": 3,
+      "address": 2151651872
+    },
+    {
+      "only_active_matching_slot": 4,
+      "selected": 4,
+      "address": 2151651976
+    },
+    {
+      "only_active_matching_slot": 5,
+      "selected": 5,
+      "address": 2151652080
+    },
+    {
+      "only_active_matching_slot": 6,
+      "selected": 6,
+      "address": 2151652184
+    },
+    {
+      "only_active_matching_slot": 7,
+      "selected": 7,
+      "address": 2151652288
+    },
+    {
+      "only_active_matching_slot": 8,
+      "selected": 8,
+      "address": 2151652392
+    },
+    {
+      "only_active_matching_slot": 9,
+      "selected": 9,
+      "address": 2151652496
+    },
+    {
+      "only_active_matching_slot": 10,
+      "selected": 10,
+      "address": 2151652600
+    },
+    {
+      "only_active_matching_slot": 11,
+      "selected": 11,
+      "address": 2151652704
+    },
+    {
+      "only_active_matching_slot": 12,
+      "selected": 12,
+      "address": 2151652808
+    },
+    {
+      "only_active_matching_slot": 13,
+      "selected": 13,
+      "address": 2151652912
+    },
+    {
+      "only_active_matching_slot": 14,
+      "selected": 14,
+      "address": 2151653016
+    },
+    {
+      "only_active_matching_slot": 15,
+      "selected": 15,
+      "address": 2151653120
+    },
+    {
+      "only_active_matching_slot": 16,
+      "selected": 16,
+      "address": 2151653224
+    },
+    {
+      "only_active_matching_slot": 17,
+      "selected": 17,
+      "address": 2151653328
+    },
+    {
+      "only_active_matching_slot": 18,
+      "selected": 18,
+      "address": 2151653432
+    },
+    {
+      "only_active_matching_slot": 19,
+      "selected": 19,
+      "address": 2151653536
+    },
+    {
+      "only_active_matching_slot": 20,
+      "selected": 20,
+      "address": 2151653640
+    },
+    {
+      "only_active_matching_slot": 21,
+      "selected": 21,
+      "address": 2151653744
+    },
+    {
+      "only_active_matching_slot": 22,
+      "selected": 22,
+      "address": 2151653848
+    },
+    {
+      "only_active_matching_slot": 23,
+      "selected": 23,
+      "address": 2151653952
+    },
+    {
+      "only_active_matching_slot": 24,
+      "selected": 24,
+      "address": 2151654056
+    },
+    {
+      "only_active_matching_slot": 25,
+      "selected": 25,
+      "address": 2151654160
+    },
+    {
+      "only_active_matching_slot": 26,
+      "selected": 26,
+      "address": 2151654264
+    },
+    {
+      "only_active_matching_slot": 27,
+      "selected": 27,
+      "address": 2151654368
+    },
+    {
+      "only_active_matching_slot": 28,
+      "selected": 28,
+      "address": 2151654472
+    },
+    {
+      "only_active_matching_slot": 29,
+      "selected": 29,
+      "address": 2151654576
+    },
+    {
+      "only_active_matching_slot": 30,
+      "selected": 30,
+      "address": 2151654680
+    },
+    {
+      "only_active_matching_slot": 31,
+      "selected": 31,
+      "address": 2151654784
+    },
+    {
+      "only_active_matching_slot": 32,
+      "selected": 32,
+      "address": 2151654888
+    },
+    {
+      "only_active_matching_slot": 33,
+      "selected": 33,
+      "address": 2151654992
+    },
+    {
+      "only_active_matching_slot": 34,
+      "selected": 34,
+      "address": 2151655096
+    },
+    {
+      "only_active_matching_slot": 35,
+      "selected": 35,
+      "address": 2151655200
+    },
+    {
+      "only_active_matching_slot": 36,
+      "selected": 36,
+      "address": 2151655304
+    },
+    {
+      "only_active_matching_slot": 37,
+      "selected": 37,
+      "address": 2151655408
+    },
+    {
+      "only_active_matching_slot": 38,
+      "selected": 38,
+      "address": 2151655512
+    },
+    {
+      "only_active_matching_slot": 39,
+      "selected": 39,
+      "address": 2151655616
+    },
+    {
+      "only_active_matching_slot": 40,
+      "selected": 40,
+      "address": 2151655720
+    },
+    {
+      "only_active_matching_slot": 41,
+      "selected": 41,
+      "address": 2151655824
+    },
+    {
+      "only_active_matching_slot": 42,
+      "selected": 42,
+      "address": 2151655928
+    },
+    {
+      "only_active_matching_slot": 43,
+      "selected": 43,
+      "address": 2151656032
+    },
+    {
+      "only_active_matching_slot": 44,
+      "selected": 44,
+      "address": 2151656136
+    },
+    {
+      "only_active_matching_slot": 45,
+      "selected": 45,
+      "address": 2151656240
+    },
+    {
+      "only_active_matching_slot": 46,
+      "selected": 46,
+      "address": 2151656344
+    },
+    {
+      "only_active_matching_slot": 47,
+      "selected": 47,
+      "address": 2151656448
+    },
+    {
+      "only_active_matching_slot": 48,
+      "selected": 48,
+      "address": 2151656552
+    },
+    {
+      "only_active_matching_slot": 49,
+      "selected": 49,
+      "address": 2151656656
+    },
+    {
+      "only_active_matching_slot": 50,
+      "selected": 50,
+      "address": 2151656760
+    },
+    {
+      "only_active_matching_slot": 51,
+      "selected": 51,
+      "address": 2151656864
+    },
+    {
+      "only_active_matching_slot": 52,
+      "selected": 52,
+      "address": 2151656968
+    },
+    {
+      "only_active_matching_slot": 53,
+      "selected": 53,
+      "address": 2151657072
+    },
+    {
+      "only_active_matching_slot": 54,
+      "selected": 54,
+      "address": 2151657176
+    },
+    {
+      "only_active_matching_slot": 55,
+      "selected": 55,
+      "address": 2151657280
+    },
+    {
+      "only_active_matching_slot": 56,
+      "selected": 56,
+      "address": 2151657384
+    },
+    {
+      "only_active_matching_slot": 57,
+      "selected": 57,
+      "address": 2151657488
+    },
+    {
+      "only_active_matching_slot": 58,
+      "selected": 58,
+      "address": 2151657592
+    },
+    {
+      "only_active_matching_slot": 59,
+      "selected": 59,
+      "address": 2151657696
+    },
+    {
+      "only_active_matching_slot": 60,
+      "selected": 60,
+      "address": 2151657800
+    },
+    {
+      "only_active_matching_slot": 61,
+      "selected": 61,
+      "address": 2151657904
+    },
+    {
+      "only_active_matching_slot": 62,
+      "selected": 62,
+      "address": 2151658008
+    },
+    {
+      "only_active_matching_slot": 63,
+      "selected": 63,
+      "address": 2151658112
+    }
+  ]
+}

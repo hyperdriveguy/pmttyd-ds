@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero stream lookup/output mode/mix
+
+Completed GetPrivateIndex/CheckOutputMode/SetupVolume/SetupVolumeAndPan/SetHWMix;
+checked EVT-01 portion. [Lookup/mode/mix](behavior/audio/MUSYX_STREAM_ID_LOOKUP_OUTPUT_MODE_AND_MIX.md)
+pins64-row first-active-ID scan, requested/effective pan writes, exact unclamped
+byte scaling and fixed studio0 hardware request. Stream engine/lifecycle/
+providers/domains/original audio/native binding remain open.
+
+Validation: read-only ISO manifest passed eight spans,157 whole-body anchors,
+one call. Five lookup/64 individual-slot/six mode/four finite gain vectors checked.
+Link audit passed880 Markdown files/zero broken links; scoped `git diff --check`
+passed. Mathematical source deductions are separate from original execution.
+Documentation/metadata only; no `make test`/`make all` rerun. Fresh full original
+ELFs/listings/generator stay `/tmp`; no bodies/binary assets committed. Concurrent
+native edits excluded. Previously approved push remains pending invalid GitHub
+credentials; no repeat push attempted this turn.
+
+Next: priority-zero EVT-01 streamHandle/AllocEx/Free/Activate/Deactivate/Frq/
+MixParameter/output-mode ownership, actual ID/state/voice/volume/mode/resource
+providers and valid extent/value/alias/lifetime/IRQ/concurrency domains, transitive
+DSP/hardware consumers and original stream/audio traces. Remaining macro/song/
+backend, lower-priority inbox and full native/game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero low-precision final pitch/composition
 
 Completed LowPrecisionHandler output/requeue/ABI helpers and composed whole

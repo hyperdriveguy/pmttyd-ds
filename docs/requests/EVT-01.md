@@ -492,6 +492,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   and compose whole local body — [final pitch/composition](../behavior/audio/MUSYX_LOW_PRECISION_FINAL_PITCH_AND_COMPOSITION.md).
   Eight regions cover454 semantic+11 ABI words; helper fallthrough, narrow
   lookup/interpolation/scaling/publication pinned; providers/runtime open.
+- [x] Complete stream GetPrivateIndex/CheckOutputMode/SetupVolume/
+  SetupVolumeAndPan/SetHWMix — [lookup/mode/mix](../behavior/audio/MUSYX_STREAM_ID_LOOKUP_OUTPUT_MODE_AND_MIX.md).
+  64-row first-active-ID scan, requested/effective mode writes, byte scaling
+  and fixed studio0 hardware request pinned; engine/providers/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2508,3 +2512,13 @@ Six lookup/six doppler vectors checked. Narrow note/fraction/returned base, wrap
 addends/scaling/half212-before-hardware/requeue and helper entry-through-return
 pinned. Providers/domains/transitive consumers/original voice/audio/native
 binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream ID lookup/output mode/mix delivery
+
+Completed five local bodies in
+[lookup/mode/mix](../behavior/audio/MUSYX_STREAM_ID_LOOKUP_OUTPUT_MODE_AND_MIX.md).
+Eight spans/157 whole-body anchors/one call verified; five lookup/64 slot/six
+mode/four finite mix vectors checked. First nonzero-state matching ID, requested
+versus effective pan, exact byte scaling and studio0 hardware request pinned.
+Stream engine/lifecycle/providers/domains/original audio/native binding remain
+open; EVT-01 stays OPEN.
