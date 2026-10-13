@@ -5,6 +5,12 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
 
 ## Open todos
 
+- [ ] Bind the used NPC yaw/display matrix and tribe scale/height/pose owners
+  for Professor c_kuri_h. Actual bank clip D_1 differs from the tribe's d_1
+  literal; preserve case and recover selector/fallback behavior. Current
+  native story8 S_1 rendering adapts billboard facing/clock/scalar, while
+  first-talk/fence scene execution remains open.
+
 - [ ] Follow the used outer map-object flag2/0x800 and inner0x800/0x1000
   consumers through draw/fade/material requests. Native indoor cutaways
   provisionally suppress the outer display subtree while entered; replace
@@ -46,3 +52,12 @@ agent to replace fixed framing/.07 smoothing/default on-screen assumptions.
 Dynamic NPC/block classification, special attributes/modes, original numeric
 services, camera/control projection owners and source execution traces remain
 unbound. ID1 owns partner terrain/motion documentation independently.
+
+2026-10-13 follow-up source story delivery:
+[Professor first conversation and fence](../behavior/story/PROFESSOR_FIRST_TALK_AND_FENCE.md)
+recovers story8 open and story9 close callback chronology, all29 original
+first-talk resource IDs/speakers, party `_kur` expansion, required message
+controls, Professor model c_kuri_h, Mario poses, temporary party1 conversion,
+source fence paper/display/collision removal and story10 lecture handoff.
+The existing lecture contract retains its numeric choices and story11 return.
+No original gameplay execution or complete prologue fidelity claim is made.

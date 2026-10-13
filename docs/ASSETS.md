@@ -11,6 +11,20 @@ licensing notes live in the chapters below.
 
 ## Asset chapters
 
+Professor Frankly: [converter](../tools/professor_assets.py) reads `a/c_kuri_h`
+and its `a/c_kuri_h-` texture bank from the read-only US ISO. It exports source
+Z_1,S_1,T_1,W_1,R_1,D_1 as PMANIM3, retaining source geometry/hierarchy/visibility/
+animation streams. Textures follow the established124-pixel cells with2-pixel
+edge padding. The12 used texture cells occupy1024x256, so unused rows are
+cropped without resizing or color quantization. Native V adaptation uses the
+pack's4x scale, reducing RGBA8 texture allocation from4MiB to1MiB. Source
+animations/UVs stay in their standard full-atlas domain for independent tests.
+Ignored `romfs/professor.pmanim`, `.pmmesh`, `.t3x`, `.bin`, `.json` and
+`local-assets/professor/` retain generated data/provenance, with no redistribution
+rights for Nintendo/Intelligent Systems assets. The DOL tribe's literal `d_1`
+differs from bank `D_1`; no invented case alias is introduced. Full NPC pose
+selection/yaw/scalar/backend binding remains requested in the inbox.
+
 Same-map inn/professor doors: [source contract](behavior/overworld/OVERWORLD_ROGUEPORT_INTERIOR_DOORS.md)
 and [converter](../tools/door_assets.py) use `m/gor_01/d`, `m/gor_02/d` and the
 verified `rel/gor.rel` names/layout from the read-only US ISO. Existing original

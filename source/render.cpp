@@ -51,6 +51,13 @@ bool Renderer::init() {
     C3D_TexSetFilter(&sky.texture,GPU_LINEAR,GPU_LINEAR);
     if(!actorAnimations.load("romfs:/characters.pmanim"))return false;
     if(!partnerAnimations.load("romfs:/partner.pmanim"))return false;
+    if(!professorAnimations.load("romfs:/professor.pmanim"))return false;
+    FILE* professorMetrics=std::fopen("romfs:/professor.bin","rb");if(!professorMetrics)return false;
+    char professorMagic[8];
+    const bool professorValid=std::fread(professorMagic,8,1,professorMetrics)==1 && !std::memcmp(professorMagic,"PMPNPC1",8) &&
+        std::fread(&professorUVScale,4,1,professorMetrics)==1 && std::fgetc(professorMetrics)==EOF;
+    std::fclose(professorMetrics);
+    if(!professorValid || !(professorUVScale==1 || professorUVScale==2 || professorUVScale==4 || professorUVScale==8))return false;
     if(!shadowGeometry.load("romfs:/shadows.pmshadow"))return false;
     FILE* characterFile=std::fopen("romfs:/characters-mesh.t3x","rb");if(!characterFile)return false;
     characterTextures.imported=Tex3DS_TextureImportStdio(characterFile,&characterTextures.texture,nullptr,false);std::fclose(characterFile);
@@ -62,7 +69,7 @@ bool Renderer::init() {
     if(!partnerTextures.imported)return false;
     C3D_TexSetFilter(&partnerTextures.texture,GPU_LINEAR,GPU_LINEAR);
     C3D_TexSetWrap(&partnerTextures.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
-    for(auto entry:{std::pair<const char*,Texture*>{"romfs:/font.t3x",&fontTexture},{"romfs:/harbor-actors.t3x",&harborTexture},{"romfs:/message-window.t3x",&messageWindowTexture}}) {
+    for(auto entry:{std::pair<const char*,Texture*>{"romfs:/font.t3x",&fontTexture},{"romfs:/harbor-actors.t3x",&harborTexture},{"romfs:/message-window.t3x",&messageWindowTexture},{"romfs:/professor.t3x",&professorTexture}}) {
         FILE* file=std::fopen(entry.first,"rb");if(!file)return false;
         entry.second->imported=Tex3DS_TextureImportStdio(file,&entry.second->texture,nullptr,false);std::fclose(file);
         if(!entry.second->imported)return false;
@@ -242,12 +249,13 @@ void Renderer::character(int index,Vec2 p,float h,float w,float face,float lift,
     vertex(x0,y0,p.z,left,bottomV,white);vertex(x1,y0,p.z,right,bottomV,white);vertex(x1+tilt,y1,p.z,right,topV,white);
     vertex(x1+tilt,y1,p.z,right,topV,white);vertex(x0+tilt,y1,p.z,left,topV,white);vertex(x0,y0,p.z,left,bottomV,white);
 }
-bool Renderer::characterModel(const char* name,float frame,Vec2 root,float rootY,float yaw,bool reflectZ,bool companion) {
-    const auto* pose=(companion?partnerAnimations:actorAnimations).pose(name);
+bool Renderer::characterModel(const char* name,float frame,Vec2 root,float rootY,float yaw,bool reflectZ,bool companion,const ActorAnimationPack* custom,float uvScale) {
+    const auto* pose=(custom?*custom:companion?partnerAnimations:actorAnimations).pose(name);
     if(!pose || !pose->evaluate(frame,actorSample) || actorSample.vertices.size()>size_t(MaxVertices-count))return false;
+    const ActorRootTransform rootTransform({root.x,rootY,root.z},yaw,reflectZ);
     for(const auto& v:actorSample.vertices) {
-        const auto point=actorMeshPoint(v,{root.x,rootY,root.z},yaw,reflectZ);
-        vertex(point[0],point[1],point[2],v.u,v.v,0xffffffff);
+        const auto point=rootTransform.point(v);
+        vertex(point[0],point[1],point[2],v.u,1-(1-v.v)*uvScale,0xffffffff);
     }
     return true;
 }
@@ -299,8 +307,9 @@ void Renderer::originalMessage(const Game& g) {
             const auto* pose=partnerAnimations.pose(actor.moving?"PKR_W_1":"PKR_S_1");
             if(pose && pose->evaluate(float(g.ticks),actorSample) && !actorSample.vertices.empty()) {
                 CameraPoint low{INFINITY,INFINITY,INFINITY},high{-INFINITY,-INFINITY,-INFINITY};
+                const ActorRootTransform rootTransform({messageTalkAnchor.x,messageTalkAnchor.y,messageTalkAnchor.z},actor.display,actor.display==180);
                 for(const auto& v:actorSample.vertices) {
-                    const auto p=actorMeshPoint(v,{messageTalkAnchor.x,messageTalkAnchor.y,messageTalkAnchor.z},actor.display,actor.display==180);
+                    const auto p=rootTransform.point(v);
                     low.x=std::min(low.x,p[0]);low.z=std::min(low.z,p[2]);high.x=std::max(high.x,p[0]);high.y=std::max(high.y,p[1]);high.z=std::max(high.z,p[2]);
                 }
                 messageTalkAnchor={(low.x+high.x)*.5f,high.y,(low.z+high.z)*.5f};
@@ -482,6 +491,13 @@ void Renderer::world(const Game& g) {
         characterModel(a.moving?"PKR_W_1":"PKR_S_1",float(g.ticks),{a.x*.01f,a.z*.01f},a.y*.01f,a.display,a.display==180,true);
     }
     const int partnerEnd=count;
+    if(!battle && g.progress.room==2 && g.progress.originalStory==8 && (g.fieldDoor.interiorMask&2)) {
+        // Source kurihakase_init story8 placement. Full NPC yaw/pose owner and
+        // the first-talk override are separate scene bindings; ordinary yaw is
+        // adapted to the current billboard model-facing convention.
+        characterModel("S_1",float(g.ticks),{-1.35f,-2.40f},0,180,true,false,&professorAnimations,professorUVScale);
+    }
+    const int professorEnd=count;
     if(!battle && g.harborStory.enabled && g.harborStory.triggered)harborActors(g);
     const int harborEnd=count;
     bool polygonShadow=false;int airShadowCount=0;
@@ -519,7 +535,8 @@ void Renderer::world(const Game& g) {
     C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
     if(actorEnd>legacyCount){C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
     if(partnerEnd>actorEnd){C3D_TexBind(0,&partnerTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,actorEnd,partnerEnd-actorEnd);}
-    if(harborEnd>partnerEnd){C3D_TexBind(0,&harborTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,partnerEnd,harborEnd-partnerEnd);}
+    if(professorEnd>partnerEnd){C3D_TexBind(0,&professorTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,partnerEnd,professorEnd-partnerEnd);}
+    if(harborEnd>professorEnd){C3D_TexBind(0,&harborTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,professorEnd,harborEnd-professorEnd);}
     if(polygonShadow || airShadowCount) {
         C3D_TexEnvInit(env);
         C3D_TexEnvSrc(env,C3D_Both,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);
@@ -703,6 +720,7 @@ void Renderer::shutdown() {
     if(sky.imported) {Tex3DS_TextureFree(sky.imported);C3D_TexDelete(&sky.texture);}
     if(characterTextures.imported) {Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);}
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}
+    if(professorTexture.imported) {Tex3DS_TextureFree(professorTexture.imported);C3D_TexDelete(&professorTexture.texture);}
     for(auto* texture:{&fontTexture,&harborTexture,&messageWindowTexture})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}
     if(imported) Tex3DS_TextureFree(imported);
     if(atlasReady) C3D_TexDelete(&atlas);

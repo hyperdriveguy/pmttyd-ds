@@ -35,6 +35,7 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
             const auto control=next.raw.substr(at,end-at);const auto space=control.find(' ');
             const auto name=control.substr(0,space);const auto args=space==std::string::npos?std::string{}:control.substr(space+1);float value=0;
             if(name=="k" || name=="key") {auto r=record(0xfffe);r.x=k;next.records.push_back(r);t+=100;k=half(k+1);}
+            else if(name=="dkey" || name=="/dkey") {auto r=record(0xfff5);r.flags=name=="dkey"?1u:0u;next.records.push_back(r);}
             else if(name=="p" || name=="scrl_auto") {if(s){auto r=record(0xfffd);r.y=half(s-3);next.records.push_back(r);baseline=half(y-6);y=half(y-3);s=0;t+=50;}}
             else if(name=="wait" || name=="speed") {if(!number(args,value) || double(value)<-2147483648. || double(value)>=2147483648.)return false;if(name=="wait")t+=uint32_t(int32_t(value));else speed=uint32_t(int32_t(value));}
             else if(name=="/speed")speed=25;
@@ -87,6 +88,10 @@ int MessagePlayback::play(uint64_t now,uint32_t input) {
         if(r.code==0xffff)return 0;
         if(r.code==0xfffe && int32_t(r.x)==acceptedKey){wait=1;elapsed=r.schedule;flags&=~4u;}
         else if(r.code==0xfffd){scrollTarget-=r.y;elapsed=r.schedule;}
+        else if(r.code==0xfff5) {
+            if(r.flags){flags|=0x80;flags&=~4u;elapsed=r.schedule;}
+            else flags&=~0x80u;
+        }
         ++cursor;
     }
     return wait?2:3;

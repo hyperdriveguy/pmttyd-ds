@@ -12,9 +12,25 @@ int main(int argc,char**) {
             for(uint64_t ms=0;ms<120000 && p.active();ms+=17){if(p.waiting())++waits;p.tick(ms,0x100);}
             assert(!p.active() && waits && p.rawText()==messages.find(key));
         }
-        std::cout<<"20 original harbor payloads parse/play with original font and preserved bytes\n";return 0;
+        assert(messages.load("romfs/messages/gor_02.txt"));
+        const char* professor[]={"066_kur","066_01","067","067_01","067_02","067_03","067_04","067_05","067_06","068_kur","069","069_01","069_02","069_03","070_kur","071","072_kur","073","073_01","074_kur","075","076_kur","077","078_kur","079","080","081","081_01_kur","082"};
+        for(const auto* suffix:professor) {
+            const std::string key=std::string("mac_0_")+suffix;MessagePlayback p;
+            assert(p.open(key.c_str(),messages.find(key.c_str()),font,0));
+            for(uint64_t ms=0;ms<120000 && p.active();ms+=17)p.tick(ms,0x100);
+            assert(!p.active() && p.rawText()==messages.find(key.c_str()));
+        }
+        std::cout<<"20 harbor and 29 professor original payloads parse/play with original font and preserved bytes\n";return 0;
     }
     font.glyphs.resize(256,{0,0,10,22,{0,0}});for(unsigned i=0;i<256;++i)font.mapping[i]=i;
+    MessagePlayback gated;assert(gated.open("gate","<dkey><wait 350>A</dkey>B",font,0));
+    assert(gated.records[0].code==0xfff5 && gated.records[0].flags==1 && gated.records[0].schedule==0);
+    assert(gated.records[2].code==0xfff5 && gated.records[2].flags==0 && gated.records[2].schedule==375);
+    gated.tick(0,0);gated.tick(201,0);gated.tick(202,0x100);
+    assert(gated.cursor==1 && gated.elapsed==0 && (gated.flags&0x80) && !(gated.flags&4));
+    gated.tick(203,0x100);assert(gated.elapsed==1 && gated.cursor==1);
+    gated.tick(552,0x100);assert(gated.elapsed==350 && gated.cursor==2 && (gated.flags&0x80));
+    gated.tick(577,0x100);assert(gated.elapsed==375 && !(gated.flags&0x80));
     MessagePlayback p;const char* raw="<dynamic 3>A\nB<k>\n<p>\n<wait 100>C<k>";
     assert(p.open("fixture",raw,font,0) && p.rawText()==raw && p.id()=="fixture");
     assert(p.records[0].code=='A' && p.records[0].flags==9 && p.records[0].value==3 && p.records[0].schedule==0);

@@ -14,8 +14,9 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',required=True)
     parser.add_argument('--collection',default='character_mesh',help='Mesh metadata collection in the local asset manifest')
+    parser.add_argument('--manifest',help='Standalone actor mesh metadata manifest; overrides collection')
     args=parser.parse_args()
-    manifest=json.loads(Path('romfs/manifest.json').read_text())[args.collection]
+    manifest=json.loads(Path(args.manifest).read_text()) if args.manifest else json.loads(Path('romfs/manifest.json').read_text())[args.collection]
     cells={(r['source'],r['tpl_index']):r['cell'] for r in manifest['texture_cells']}
     cases=[]
     for entry in manifest['poses']:

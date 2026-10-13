@@ -48,3 +48,5 @@ romfs/*.pmshadow
 /romfs/harbor-actors.json
 /build-harbor-verify/
 /romfs/*.pmdoor
+/romfs/professor.json
+/romfs/professor.bin

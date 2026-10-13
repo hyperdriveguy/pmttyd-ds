@@ -46,7 +46,8 @@ private:
         uint64_t animationStart=UINT64_MAX;
     };
     Room plaza,stage;
-    Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture;
+    Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture,professorTexture;
+    float professorUVScale=1;
     std::array<std::array<float,3>,2> harborActorMetrics{};
     std::array<std::array<float,3>,2> harborTalkOffsets{};
     mutable std::vector<float> messageDynamic;
@@ -56,7 +57,7 @@ private:
     unsigned messagePlacement=0;
     CameraPoint messageTalkAnchor;
     uint32_t messageRng=0x6d736777; // Presentation RNG adapter, separate from mechanics.
-    ActorAnimationPack actorAnimations,partnerAnimations;
+    ActorAnimationPack actorAnimations,partnerAnimations,professorAnimations;
     ActorAnimationSample actorSample;
     FieldShadowGeometry shadowGeometry;
     bool loadMap(const char* name,Room& room);
@@ -71,7 +72,7 @@ private:
     void box(float x,float z,float w,float d,float h,uint32_t color);
     void ground(float x0,float z0,float x1,float z1,float y,uint32_t color);
     void character(int index,Vec2 p,float height,float width,float facing,float lift=0,float tilt=0);
-    bool characterModel(const char* pose,float frame,Vec2 root,float rootY,float yaw,bool reflectZ,bool companion=false);
+    bool characterModel(const char* pose,float frame,Vec2 root,float rootY,float yaw,bool reflectZ,bool companion=false,const ActorAnimationPack* custom=nullptr,float uvScale=1);
     void marioGroundShadow(const FieldShadowRecord&);
     void harborActors(const Game&);
     void originalMessage(const Game&);

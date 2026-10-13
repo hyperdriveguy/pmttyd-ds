@@ -8,6 +8,53 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+
+## 2026-10-13 — Original Frankly animation and first-talk message prerequisites
+
+Added the original c_kuri_h model/texture bank and six real clips
+Z_1,S_1,T_1,W_1,R_1,D_1 to the local animation pipeline. Native story8 professor
+interior draws original animated S_1 at source init(-135,0,-240). The12-cell
+RGBA8 atlas crops unused rows to1024x256 without resizing those cells or changing
+colors, saving3MiB of texture memory; a checked V scale adapts the existing
+animation pack UV domain. Original animated geometry/hierarchy/visibility stays
+intact. Actual bank D_1 versus tribe literal d_1 is explicitly recorded with no
+invented alias. See [assets](ASSETS.md) and
+[complete scene evidence](behavior/story/PROFESSOR_FIRST_TALK_AND_FENCE.md).
+
+Message parser/playback now binds dkey and its close: source0xfff5 payload1/0,
+nonzero sets0x80/clears acceleration/anchors elapsed to record schedule; zero
+clears0x80 only. Timed source waits stay active under repeated A input. Tests now
+parse/play all29 original first-talk payloads, including resolved party `_kur`
+keys, original malformed-looking `</dynamic 3>`, styles/colors and unchanged
+raw bytes. No narrative text or substitute scene is authored.
+
+Validation: `make test` passes **96 CTest / 96 Python tests**
+(`/tmp/professor-tests.log`); `make all` builds native3DSX with no warnings
+(`/tmp/professor-build.log`). Explicit original-data message test passes20
+harbor+29 professor payloads. Independent animation reference generation and
+`actor_visibility_tests romfs/professor.pmanim artifacts/professor-animation-reference.bin`
+pass45 source samples, maximum host model error1.90735e-06. Native input-gate
+regression verifies acceleration reset, real elapsed wait and timed reopening.
+Document audit checks695 Markdown files with0 broken links; diff whitespace
+check passes. Isolated Azahar story8/interior2 fixture under
+`artifacts/azahar-professor-idle/` boots inside the original house with Frankly
+visible; reviewed boot.png. Fixture is a native development save, not original
+GameCube progress. User emulator profiles and read-only ISO are untouched;
+all original/generated assets stay ignored and outside source history.
+
+Limits/next: this is character/message prerequisite work, NOT complete
+first-talk/fence execution. NPC yaw/clock/scalar and init visibility are scoped
+native adapters awaiting producer/backend binding in OW-ROAD-01. Source
+first-talk's initial position override, concurrent brothers/shared wait, actor
+movement/poses, cameras/music/effects/item display, temporary Frankly party1 and
+story8→9 remain to execute. Fence removal must proceed9→10 and dispatch the
+original lecture, whose common return is11. Consider the existing EventNativeRuntime
+for the original REL script rather than manually flattening concurrent commands;
+DOL-only pack_event_scripts needs REL-section relocation/data provisioning first.
+Broader arrival/tutorial/story progression and hardware performance remain
+unfinished. Goal stays active.
+
+
 ## 2026-10-13 — Harbor partner fall-through and original follow distances
 
 Reproduced the user's harbor ledge complaint on original converted geometry:
