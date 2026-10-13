@@ -394,6 +394,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [original IEEE remainder](../behavior/audio/IEEE_REMAINDER_USED_BY_MUSYX.md).
   Exceptional arithmetic/finite bit normalization/remainder/reconstruction/
   signed zero pinned; FPSCR/trap/NaN/runtime/original audio remain open.
+- [x] Complete salBuildCommandList three-triplet volume-ramp consumer
+  region — [DSP ramp consumers](../behavior/audio/MUSYX_DSP_VOLUME_RAMP_CONSUMERS.md).
+  Nine component bindings/dirty/correction/mask/studio cross-triplet order
+  pinned; whole builder/provider/domain/original DSP/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2185,3 +2189,13 @@ vectors and4096 exact integer-rational versus host fmod finite bit-pattern
 crosschecks passed. Signed-zero table and source normalization/subtract/shift/
 reconstruction/exceptional operation pinned. This is static/math evidence;
 original FPSCR/trap/NaN/runtime/mixer/DSP/audio remains open. Parent EVT-01 OPEN.
+
+## 2026-10-13 — DSP volume-ramp consumer delivery
+
+Completed the three-triplet builder region in
+[DSP ramp consumers](../behavior/audio/MUSYX_DSP_VOLUME_RAMP_CONSUMERS.md).
+Four spans/422 anchors/22 direct prepare/correct calls verified;22 flag vectors,
+six decoded clear masks/nine component bindings checked. Dirty versus residual
+paths, fresh level/status decisions, studio exceptions and alternate C dependency
+on B2 pinned. Parent EVT-01 stays OPEN; full builder/domain/DSP/audio execution
+remains separate from local flag/mask/request behavior.

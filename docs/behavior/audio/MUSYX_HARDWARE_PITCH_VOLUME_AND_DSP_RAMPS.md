@@ -138,3 +138,9 @@ native binding remain OPEN.
 sentinel/phase region and remainder wrapper. Both interpolation/output branches,
 IEEE remainder/math/domain/original audio remain open; full mixer fingerprint
 still does not establish its complete semantics.
+
+## 2026-10-13 — DSP ramp caller follow-up
+
+[DSP ramp consumers](MUSYX_DSP_VOLUME_RAMP_CONSUMERS.md) closes the builder's three-triplet prepare/
+correct/mask region, including studio exceptions and cross-triplet dependencies.
+Whole builder/providers/valid alias-domain/original DSP/audio remain open.

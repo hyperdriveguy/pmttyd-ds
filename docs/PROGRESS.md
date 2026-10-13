@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero DSP volume-ramp consumers
+
+Completed salBuildCommandList three-triplet prepare/correct/mask region;
+checked the EVT-01 portion. [DSP ramp consumers](behavior/audio/MUSYX_DSP_VOLUME_RAMP_CONSUMERS.md)
+pins nine component bindings/dirty versus residual paths/fresh level-status
+flag decisions/studio suppression/cross-triplet C dependency on B2. Remaining
+builder/provider/domain/command execution and original ramp/DSP/audio stay open.
+
+Validation: read-only ISO manifest passed four spans (one region/whole-builder/
+two helpers),422 anchors/22 calls. Nine dirty-pair/nine residual-pair/four alternate-
+C flag vectors, six instruction-decoded low-half clear masks/nine component
+binding rows checked. Link audit passed846 Markdown files/zero broken links;
+scoped `git diff --check` passed. Documentation/metadata only; no `make test`/
+`make all` rerun. Full original fresh builder ELF/listing stays `/tmp`; no bodies/
+binary assets committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 surrounding DSP builder admission/list/budget/sample/
+setup/cache/command regions, actual desired/host/PB flag/mode/mask/index/record/
+alias/lifetime/IRQ/concurrency domains and original ramp/mask/command/DSP/audio
+traces. Remaining precision work, lower-priority inbox and full native/full-game
+work remain open.
+
 ## 2026-10-13 — Inbox priority-zero IEEE mixer remainder
 
 Completed __ieee754_fmod used by the mixer phase requests; checked the EVT-01

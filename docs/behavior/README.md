@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [MusyX DSP volume-ramp consumers](audio/MUSYX_DSP_VOLUME_RAMP_CONSUMERS.md) | Complete three-triplet prepare/correct/mask region including studio-mode cross-triplet paths | Surrounding builder/providers/domains, command execution and original DSP/audio |
 | [Original IEEE remainder used by MusyX](audio/IEEE_REMAINDER_USED_BY_MUSYX.md) | Complete exceptional gate, finite normalization/subtract/shift/reconstruction and signed-zero body | FPSCR/NaN/trap/runtime domains and original mixer/audio |
 | [MusyX volume interpolation/output branches](audio/MUSYX_VOLUME_INTERPOLATION_AND_OUTPUT_BRANCHES.md) | Both output regions compose the complete local mixer; exact single interpolation/table pairing/nine-store order | IEEE math/FP/index/alias/runtime domains, DSP consumers and original audio |
 | [MusyX volume coordinate/phase preparation](audio/MUSYX_VOLUME_COORDINATE_AND_PHASE_PREPARATION.md) | Complete mixer table/sentinel/unsigned coordinate/compression/phase region and remainder wrapper | Interpolation/output branches, IEEE math/domains and original mixer/audio |
