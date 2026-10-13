@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero DSP studio payloads/fade bindings
+
+Completed ten studio/input/aux/mode/surround/compressor/voice-chain-tail/fade/
+loop regions; checked the EVT-01 portion.
+[Studio payloads/fades](behavior/audio/MUSYX_DSP_STUDIO_COMMAND_PAYLOADS_AND_FADE_BINDINGS.md)
+pins exact fields/raw indices/fresh frame pairing/mode gates/modulo/nine fades/
+cache/outer-loop order. Compressor table fingerprint is identity only; remaining
+voice/budget/admission/domain/cache/DSP/original audio remain open.
+
+Validation: read-only ISO manifest passed14 spans (ten regions/whole-builder/
+fade/cache/table),323 instruction anchors/11 calls. Six auxiliary-index/five raw-
+frame/seven mode/six surround-gate/one compressor-layout vectors, nine fade
+bindings and all256 auxiliary-byte quotient/modulo cases checked. Link audit
+passed854 Markdown files/zero broken links; scoped `git diff --check` passed.
+Documentation/metadata only; no `make test`/`make all` rerun. Full original fresh
+builder ELF/listing stays `/tmp`; no bodies/binary assets committed. Compressor
+table stored only as hash identity. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 preceding command03 admission, full voice/sample/
+budget/command paths, actual studio/input/count/reference/frame/aux/mode/buffer/
+coefficient/block/alias/lifetime/IRQ/concurrency domains, cache/DSP/table consumers
+and original studio/input/aux/surround/compressor/fade/command/audio traces.
+Remaining precision work, lower-priority inbox/full native/full-game remain open.
+
 ## 2026-10-13 — Inbox priority-zero DSP command rollover/finalization
 
 Completed command-cell initialization/twelve rollover blocks/final command/cache

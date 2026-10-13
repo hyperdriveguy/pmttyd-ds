@@ -138,3 +138,9 @@ actual pointer/cell/X/size/allocation/cache/DSP consumers and valid total extent
 wrap/alias/lifetime/IRQ/concurrency domains; original chunk/link/flush/command/
 DSP/audio traces. Fourteen local regions answered; whole builder/full native
 binding and EVT-01 remain OPEN.
+
+## 2026-10-13 — Studio command follow-up
+
+[Studio payloads/fades](MUSYX_DSP_STUDIO_COMMAND_PAYLOADS_AND_FADE_BINDINGS.md) closes ten input/aux/mode/surround/
+compressor/chain/fade/loop regions around the rollover blocks. Remaining voice/
+budget/admission/domain/cache/DSP/original audio execution stays open.

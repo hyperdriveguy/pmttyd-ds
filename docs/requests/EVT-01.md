@@ -419,6 +419,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [command rollover/finalization](../behavior/audio/MUSYX_DSP_COMMAND_ROLLOVER_AND_FINALIZATION.md).
   Unsigned fit/low16 aligned sizes/deferred link/flush/fresh pointer order
   pinned; payload/domain/cache/DSP/original audio remain open.
+- [x] Complete ten DSP studio/input/aux/mode/surround/compressor/
+  chain-tail/fade/loop payload regions — [studio payloads/fade bindings](../behavior/audio/MUSYX_DSP_STUDIO_COMMAND_PAYLOADS_AND_FADE_BINDINGS.md).
+  Exact command fields/fresh frame pairing/gates/modulo/nine fades pinned;
+  voice/budget/admission/domain/original DSP/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2266,3 +2270,12 @@ census bindings/22 formula vectors checked. Initialization/unsigned fit, low16
 aligned size, deferred previous-link size/flush, fresh pointer publication and
 final0e/0f/cache order pinned. Other payload/budget/domain/cache/DSP/original
 command/audio execution remain open. Parent EVT-01 stays OPEN.
+
+## 2026-10-13 — DSP studio payload/fade binding delivery
+
+Completed ten regions in [studio payloads/fade bindings](../behavior/audio/MUSYX_DSP_STUDIO_COMMAND_PAYLOADS_AND_FADE_BINDINGS.md).
+Fourteen spans/323 instruction anchors/11 calls verified;25 formula vectors/
+nine fade bindings and all256 auxiliary-byte modulo cases checked. Exact fields/
+raw index/fresh frame/mode/admission/chain/cache/outer-loop order pinned.
+Compressor table fingerprint is source identity only; child/domain/remaining
+voice/budget/DSP/audio remain open. Parent EVT-01 stays OPEN.
