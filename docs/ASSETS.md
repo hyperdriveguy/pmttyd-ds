@@ -1003,3 +1003,23 @@ Original Nintendo/Intelligent Systems copyright remains; no distribution
 license is granted or inferred. ISO, extracted assets, compiled packs and
 original dialogue remain outside source history. Static/native checks are not
 Dolphin observations or New2DS hardware performance measurements.
+
+## 2026-10-13 — Original wandering-Goomba resource preparation
+
+The existing read-only `tools/field_actor_assets.py` model compiler prepared
+`a/c_kuribo_n` and its header-selected `a/c_kuribo_n-` bank from the local US
+ISO. Raw resources/provenance stay under ignored `local-assets/field-actors/`;
+ignored `romfs/field-goomba.pmanim`, `.pmmesh`, `.t3x` and `.json` retain original
+Z_1/S_1/T_1/W_1/R_1, hierarchy, sparse animation, material/cull/RGBA and source
+hashes/offsets. The manifest records14 texture cells,1024x256RGBA8 atlas,UV4;
+124px texture scaling and wrap-aware128px cells follow the existing converter.
+No replacement artwork or tones are generated. This prepares the original bank
+for native regular-event binding; it is not yet registered as a live field NPC.
+
+[Original wandering driver](behavior/field/FIELD_NPC_WANDER_DRIVER_AND_GOOMBA4.md)
+retains source placement/tribe/dimensions/pose/sound metadata and quest guards.
+[Portable core](behavior/field/NATIVE_NPC_WANDER_CORE.md) uses no exported DOL
+text or executable body; native C++ implements recovered phase/clock/RNG/sound
+requests. Shared clock/seed, event lifetimes and original audio providers remain
+unbound. Nintendo/Intelligent Systems rights remain with no redistribution
+license; ISO/raw assets/compiled packs/original dialogue stay outside history.

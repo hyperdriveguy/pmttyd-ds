@@ -54,6 +54,7 @@ romfs/*.pmshadow
 /romfs/field-actors.json
 /romfs/field-chu.json
 /romfs/field-darkly.json
+/romfs/field-goomba.json
 
 /romfs/professor-events.pmevt
 /romfs/professor-program.bin

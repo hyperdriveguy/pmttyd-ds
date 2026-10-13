@@ -17,8 +17,10 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
   `animPoseDrawMtx`; source dir270 requests facing90, which is an animation
   parameter rather than world yaw. Recover tribe scale/height/talk-anchor
   semantics and tavern first-floor RGB fade before adding interior actors.
-- [ ] Recover `gor_villager_urouro` init/main numeric/collision/pose/timing
-  helpers before activating Goomba2 regular motion. Tagged aitypeなし does
+- [ ] Bind recovered [original wander driver](../behavior/field/FIELD_NPC_WANDER_DRIVER_AND_GOOMBA4.md)
+  through regular-event lifetime, paused clock/support, shared RNG and quest
+  item/window services. Direct init/main phases, sound tail, movement components
+  and Goomba4 quest-before-story arms are recovered; tagged aitypeなし does
   not suppress a separately registered regular event.
 
 - [ ] Mario A/X/B interaction arbitration and priority against jump/movement,
@@ -483,3 +485,50 @@ prefixes and model metadata allow additional original area resources to use
 existing presentation/collision/talk services. Original later175 flag/name
 children and all-story lifetime remain OPEN; exact build/rendered fixture
 validation is in [progress](../PROGRESS.md).
+
+
+### 2026-10-13 — Original wandering driver and Goomba4 bounded delivery
+
+Explicitly delegated documentation-only read-only source recovery delivered
+[field wander/Goomba4 contract](../behavior/field/FIELD_NPC_WANDER_DRIVER_AND_GOOMBA4.md):
+44-byte work schema, four ongoing phases, move countdown multiple20 rounding,
+strict readiness/contact branches, min20ms displacement cap, retained component
+semantics, full step-sound request tail, frame-rate conversion and shared LCG.
+NPC main direct40000000 movement, map bypass, seconds publication and distinct
+automatic-pose400 owner are pinned. Init's added00400000 other consumers remain
+open. Source Goomba4 init overrides tagged placement to(-370,0,130), radius70,
+speed30; original bank/poses/dimensions/sound metadata and quest-before-story
+checks guard the early gor_02_030_00 print. Low story alone is not quest closure.
+
+Request remains OPEN for lifetime/restart, clock/gravity/support, shared RNG
+seed/cadence, original quest item tables/selection and hardware/runtime parity.
+No native code or tests/emulator changed; no numeric documentation-agent ID
+assigned, so no delivery-log ownership invented. Static deductions are not
+Dolphin/hardware observations.
+
+
+### 2026-10-13 — Wander lifecycle/ground adapter follow-up
+
+The [wander field contract](../behavior/field/FIELD_NPC_WANDER_DRIVER_AND_GOOMBA4.md)
+now pins authored Goomba4 npcMoveG netvertical0/no-ray exit, bulk-zero NPCdt
+entry versus current clock anchor, setup init-completion→regular construction,
+USER_FUNC retained polls and candidate-before-A regular-event pause. Added
+mainflag00400000 owns candidate-loss saved-yaw restore/regular resume; stopped
+events preserve countdown/work. Mario touch actor is cleared/replaced by NPC
+scan and consumed by the preceding next field EVT pass. These are local source
+owners, not hardware/runtime measurements or a quest0 fallback. General gravity/
+support, clock/pause/manager interleaving, regular restart/work destruction and
+quest item/window state remain OPEN.
+
+### 2026-10-13 — Portable original wander-core binding
+
+[Portable wander core](../behavior/field/NATIVE_NPC_WANDER_CORE.md) implements
+recovered phases, retained work/components, ordered readiness, capped steps,
+clock/RNG helpers and source sound requests. Tests retain exact phase/count/
+random/comparison/byte-toggle behavior, without choosing an original shared
+seed or replacing paper-facing readiness with clip timing. Original Goomba
+resources were prepared locally, not registered as a stationary replacement.
+Native regular-event stop/resume, live prior dt/contact, movement/pose services
+and quest/item state remain required before activating Goomba4. Exact build
+validation is in [progress](../PROGRESS.md); no new original-runtime or hardware
+measurement. Parent request remains OPEN.
