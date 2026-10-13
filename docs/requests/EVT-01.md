@@ -574,6 +574,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Three-row gates, unsigned chunk/strict32 advance, DVD/ARAM request and
   pending publication, companion copy/shared latch/bridge pinned; callback/
   manager/providers/SDK/original IRQ/IO/audio remain open.
+- [x] Complete _ssDVDReadAsync_activeChk — [completion callback](../behavior/audio/GAME_STREAM_COMPLETION_MATCH_CURSOR_AND_STARTUP.md).
+  First-match/result/count/terminal flags/latch, independent startup readiness,
+  activation-before-inline mix-before-old flag8 and counter pinned; runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2837,3 +2840,12 @@ Six spans/302 anchors/seven calls and two callback bindings verified; twelve
 chunk/ten stable gate/six latch/six copy vectors checked. Request-before-pending,
 strict alignment and fresh companion/latch ordering pinned. Callback/manager/
 providers/SDK/original IRQ/IO/audio/native binding open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Game stream completion callback delivery
+
+Completed [whole active-check callback](../behavior/audio/GAME_STREAM_COMPLETION_MATCH_CURSOR_AND_STARTUP.md).
+Seven spans/262 anchors/seven calls verified; eight completion/four match/seven
+result/eight ready/five mix-gate/five counter vectors checked; pan pins reverified.
+Stored requested count, terminal pending difference and unmatched ready-row
+startup pinned. Provider/SDK/FP/original callback/IRQ/audio/native binding open;
+EVT-01 stays OPEN.
