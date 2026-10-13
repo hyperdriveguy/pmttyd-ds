@@ -12,19 +12,15 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   callback/source/address/numeric domains and global ownership needed to
   validate the composed scheduler. Mathematical invocations remain separate
   from physical pad samples.
-- [x] Complete `BtlUnit_snd_se_pos` 80126088/114, `psndSFX_pos` 800d96f8/4c
-  and `psndSFXOff` 800d95f8/c8 bodies — **bodies answered** by ID 3 on
-  2026-10-12 ([trigger](../behavior/audio/BATTLE_UNIT_POSITIONAL_SFX_TRIGGER.md),
-  [position update](../behavior/audio/BATTLE_POSITIONAL_SFX_POSITION_UPDATE.md),
-  [stop](../behavior/audio/BATTLE_POSITIONAL_SFX_OFF.md)): slot layout at
-  0x803DF988 stride 40 by low-8 handle bits, 0x80316b28 stride-20 channel
-  table by key>>19, two-bit SoundSS/Song/Efx stop selection, clear-without-
-  stop and no-op double-stop paths, status 10 overriding 11, irand(41)+belong
-  +offset-20 start id, and the unsigned `r0 < 0x4D80` preserve-versus-explicit
-  volume branch. *`__psndSFXOn` macro/voice/resource provisioning, Check/GetStatus
-  internals, psndSFX_pit, irand domain, the psndSFXMain position reader, other
-  callers and all original traces remain open, so the audio chain as a whole
-  is not closed. The Monosiri/spatial playback request remains open alongside it.*
+- [x] Complete local BtlUnit_snd_se_pos, psndSFX_pos/Off/accessors and
+  __psndSFXOn provisioning — source errors corrected2026-10-13 in
+  [update/correction delivery](../behavior/audio/POSITIONAL_SFX_UPDATE_OWNERS_AND_SOURCE_CORRECTIONS.md).
+  Low13 row selection, pending-bit1 semantics, descriptor+4 backend dispatch,
+  numeric/name ABI, defaults, reclaim priority and generation wrap are pinned.
+- [x] Complete psndMain cooldown producer; scoped SFXMain completion sweep,
+  pending transition and preference reset — same delivery.
+- [ ] Remaining SFXMain spatial/volume/startup/macro/resource/backend/source
+  chain and original audio traces; complete Monosiri consumer/source binding.
 - [x] Complete `battleGetUnitMonosiriPtr` 8012ef20 with its original
   table/source provisioning — **answered** by ID 3 on 2026-10-12
   ([lookup](../behavior/audio/BATTLE_UNIT_MONOSIRI_LOOKUP.md)): the table is
@@ -414,3 +410,22 @@ Validation: nine existing source verifiers pass (manager, root, descendants,
 dispatch tail, run/control, menu domains, ActMenu, interruptions, Jump registry).
 Inspection ELFs remain `/tmp/inbox-*.elf`. No native code or original assets
 changed; no original execution trace was collected. Parent request remains OPEN.
+
+### 2026-10-13 — Priority0 positional-SFX source corrections and update ownership
+
+[Correction/update contract](../behavior/audio/POSITIONAL_SFX_UPDATE_OWNERS_AND_SOURCE_CORRECTIONS.md)
+supersedes conflicting2026-10-12 audio delivery statements above. Rewrote the
+complete provisioning, stop and accessor contracts against fresh US listings.
+The previously claimed index-versus-packed-key conflict was a clrlwi decoding
+error: readers use key&0x1fff. Off queued flag1 SET clears without engine stop;
+flag1 clear dispatches through row+4 high descriptor bits. Name pointers are
+signed-negative keys; nonnegative keys are raw numeric IDs. Default255 volume/
+pan paths are live, mute override direction is corrected, reclaim uses strict
+priority greater-than, generation wrap stays coherent. Cooldown decrements in
+psndMain, not psndSFXMain; the latter resets preference at its tail.
+
+Validation: nine independently regenerated body listings under `/tmp`;
+13 body/table/numeric spans and78 source anchors pass the existing generic
+DOL verifier with `tools/positional_sfx_corrections_evidence.json`. No new tool
+code or native/asset change. Full spatial/backend/macro/resource/original
+execution remains open, with no fabricated playback or sample mapping.

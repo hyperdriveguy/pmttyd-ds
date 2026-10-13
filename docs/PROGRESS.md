@@ -2,6 +2,32 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Priority0 positional-SFX correction and update producers
+
+Reinspected and rewrote original [provisioning](behavior/audio/POSITIONAL_SFX_SLOT_PROVISIONING.md),
+[stop](behavior/audio/BATTLE_POSITIONAL_SFX_OFF.md) and [accessors](behavior/audio/BATTLE_POSITIONAL_SFX_SLOT_ACCESSORS.md).
+[Update/correction delivery](behavior/audio/POSITIONAL_SFX_UPDATE_OWNERS_AND_SOURCE_CORRECTIONS.md)
+closes full psndMain cooldown producer and scoped SFXMain completion/pending/
+preference-reset paths. Corrected low13 table index, pending flag direction,
+row+4 high backend bits, numeric/name ABI, mute override,40-slot free search,
+strict reclaim priority, live255 defaults, independent delay/offset stores and
+coherent16-bit generation wrap. Prior conflicting historical deliveries are
+explicitly superseded; original request text remains unchanged.
+
+Validation:9 complete body listings independently regenerated under `/tmp`.
+`python3 tools/verify_overworld_roads.py --manifest tools/positional_sfx_corrections_evidence.json`
+passes13 DOL body/table/numeric spans and78 instruction anchors. Link audit
+checks704 Markdown files with0 broken links; `git diff --check` passes.
+Metadata only; no tool/native code change, so make test/all not rerun. Read-only
+ISO and user emulator profiles/saves untouched; no original code/assets exported
+into history. Commit excludes unrelated staged/worktree changes.
+
+Limits/next: SFXMain middle/spatial/startup and Sound/MusyX resources/macros remain
+partially recovered; original execution and other source writers stay open.
+Next recover full used effect startup and two Hammer charge cue macro bindings,
+then continue EVT-01 menu/global/source and original scheduling evidence.
+Full game documentation/remake and hardware parity remain incomplete.
+
 ## 2026-10-13 — Original east Mouser talk and per-area actor resources
 
 Feature commit `8cdab4a` adds stationary east Chu3/Mouser using original
