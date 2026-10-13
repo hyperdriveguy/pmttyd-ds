@@ -33,6 +33,7 @@
 #include "partner_presentation.hpp"
 #include "partner_follow.hpp"
 #include "harbor_story.hpp"
+#include "harbor_encounter.hpp"
 #include "professor_story.hpp"
 #include "trio_battle_commands.hpp"
 #include "trio_attack.hpp"
@@ -159,6 +160,10 @@ public:
     PartnerPresentation partnerPresentation;
     PartnerFollow partnerFollow;
     HarborStory harborStory;
+    HarborEncounter harborEncounter;
+    size_t harborCameraCursor=0;
+    bool harborResume=false;
+    bool beginHarborEncounter(bool resume);
     ProfessorStory professorStory;
     PartnerFollow professorFollow;
     void updateTemporaryProfessor();

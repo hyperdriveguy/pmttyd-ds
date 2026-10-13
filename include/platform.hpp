@@ -93,6 +93,10 @@ private:
     DVLB_s* messageSystemShader=nullptr;shaderProgram_s messageSystemProgram{};
     bool messageSystemProgramReady=false;
     int messageSystemTransform=0;float messageSystemPhase=0;
+
+    Texture harborMarioTexture;
+    ActorAnimationPack harborMarioAnimations;
+    float harborMarioUVScale=1;
     Texture professorMarioTexture;
     Texture trioMarioTexture;ActorAnimationPack trioMarioAnimations;float trioMarioUVScale=1;
     Texture professorMapTexture;

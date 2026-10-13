@@ -852,6 +852,7 @@ void Game::restore(const Progress& saved) {
     fieldDoor.interiorMask=p.interiorMask;
     applyDoorCollision(p.room,fieldDoor.interiorMask);
     harborStory.reset(p.room==1 && p.originalStory && *p.originalStory==3);
+    harborResume=p.room==1 && p.originalStory==4;
     partner = {p.position.x-0.3f,p.position.z};
     groundHeight=p.elevation;partnerHeight=p.elevation;
     if (!walkable(partner,p.elevation)) partner = p.position;
@@ -935,6 +936,13 @@ void Game::updateTemporaryProfessor() {
         else if(heading>=190 && heading<=350)actor.yaw=270;
     }
 }
+bool Game::beginHarborEncounter(bool resume) {
+    if(!harborEncounter.begin(ticks*1000/60,{progress.position.x*100,groundHeight*100,progress.position.z*100},progress.hp,resume))return false;
+    const auto& m=harborEncounter.actors[0].position;
+    progress.position={m[0]*.01f,m[2]*.01f};groundHeight=progress.elevation=m[1]*.01f;
+    harborStory.enabled=harborStory.triggered=harborStory.finished=true;harborCameraCursor=0;
+    return true;
+}
 void Game::openDialogue(int kind) {
     scene = Scene::Dialogue; dialogueKind = kind; dialoguePage = 0;
     sound = Sound::Confirm;
@@ -956,6 +964,7 @@ const char* Game::dialogue() const {
 const char* Game::prompt() const {
     if(saveObjects && saveObjects->failed)return "Development notice: save service unavailable";
     if(saveLocked())return saveObjects->presentation.selection.active()?"A: select     B: cancel":"A / B: next";
+    if(harborEncounter.locked())return harborEncounter.failed?"Development notice: source encounter unavailable":harborEncounter.battleRequested?"Development notice: original tutorial battle service pending":harborEncounter.message.waiting()?"A / B: next":"A / B: reveal text";
     if(fieldActorTalk.message.active())return fieldActorTalk.message.waiting()?"A / B / touch: next":"A / B: reveal text";
     if(harborStory.locked())return harborStory.failed?"Development notice: source message unavailable":harborStory.message.waiting()?"A / B / touch: next":"A / B: reveal text";
     if(scene==Scene::FieldDefeat)return "A: load save";
@@ -1474,8 +1483,8 @@ void Game::tick(const Input& rawInput) {
             game.updateSaveObjects();
             game.updateTemporaryProfessor();
             game.progress.interiorMask=uint8_t(game.fieldDoor.interiorMask);
-            if(game.fieldDoor.active() || game.professorStory.running() || game.professorStory.temporaryProfessor)game.saveRequested=false;
-            if(!game.professorStory.locked())game.updateMarioPresentation();
+            if(game.harborEncounter.running() || game.fieldDoor.active() || game.professorStory.running() || game.professorStory.temporaryProfessor)game.saveRequested=false;
+            if(!game.professorStory.locked() && !game.harborEncounter.locked())game.updateMarioPresentation();
             Input talkInput=raw;
             if(raw.physicalSnapshot)talkInput.confirm=(game.inputProducer.channels[0].pressed&BattleButtonA)!=0;
             game.updateFieldNpcTalk(talkInput); // NPC owner follows current Mario/object updates.
@@ -1708,6 +1717,25 @@ void Game::tick(const Input& rawInput) {
         saveRequested=false;
         if(!passive || professorStory.locked())return;
     }
+    if(progress.room==1 && progress.originalStory==4 && !harborEncounter.triggered)beginHarborEncounter(harborResume);
+    if(harborEncounter.running()) {
+        const bool passive=!harborEncounter.locked();
+        if(passive)harborEncounter.actors[0].position={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
+        float support=0;const auto& root=harborEncounter.actors[0].position;
+        std::optional<float> floor;
+        if(groundAt({root[0]*.01f,root[2]*.01f},root[1]*.01f,support))floor=std::round(support*100000.f)/1000.f;
+        harborEncounter.tick(ticks*1000/60,(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u),floor);
+        if(!passive || harborEncounter.locked()) {
+            const auto& m=harborEncounter.actors[0].position;progress.position={m[0]*.01f,m[2]*.01f};
+            groundHeight=progress.elevation=m[1]*.01f;jumpHeight=0;
+        }
+        for(unsigned n=0;n<4;++n){const auto& source=harborEncounter.actors[n+1];auto& actor=harborStory.actors[n];
+            actor.x=source.position[0];actor.y=source.position[1];actor.z=source.position[2];actor.moving=source.moving;actor.display=source.yaw==90?180:0;}
+        while(harborCameraCursor<harborEncounter.cameras.size()){const auto& c=harborEncounter.cameras[harborCameraCursor++];setCameraView({c.eye[0],c.eye[1],c.eye[2]},{c.at[0],c.at[1],c.at[2]},c.duration,uint8_t(c.curve));}
+        progress.hp=harborEncounter.hp;progress.originalStory=harborEncounter.story;saveRequested=false;
+        scene=harborEncounter.locked()?Scene::Dialogue:Scene::Explore;
+        if(harborEncounter.locked())return;
+    }
     if(harborStory.locked()) {
         // Source key-off blocks new player actions, not field physics. Keep
         // support/jump/fall owners advancing under neutral native input.
@@ -1725,7 +1753,7 @@ void Game::tick(const Input& rawInput) {
             else if(harborStory.finished)fieldCameraEvents.viewOff(eye,at,500,11,now);
         }
         saveRequested=false;
-        if(harborStory.finished){progress.originalStory=4;scene=Scene::Explore;saveRequested=true;}
+        if(harborStory.finished){progress.originalStory=4;scene=Scene::Explore;saveRequested=true;beginHarborEncounter(false);}
         return;
     }
     if (scene==Scene::Dialogue) {

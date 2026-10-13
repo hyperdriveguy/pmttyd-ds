@@ -897,3 +897,23 @@ The existing original Goomba D1 pose now uses recovered death rotations,
 camera-dependent Z mirror and depth-5 over its original model scalar2. Packs/
 extracted data remain ignored; original asset ownership and no redistribution
 grant are unchanged. Particle and death sound presentation providers remain open.
+
+## 2026-10-13 — Original harbor before-battle event and Mario poses
+
+`tools/harbor_event_assets.py` extracts `rel/gor.rel` read-only and packages the
+original before-battle event through source ADDR32 relocations in ignored
+`romfs/harbor-events.pmevt` and `harbor-program.bin`. Raw data, provenance and
+call/section manifests stay in ignored `local-assets/harbor-event/`. Native
+section addresses are port policy; the original commands/branches/waits and
+message/speaker pointers remain unchanged. Text comes from the existing original
+`msg/US/gor_00.txt` resource. No extracted script or narrative text is committed.
+
+Original `a/a_mario`, `a/e_mario`, `a/a_mario-` provide real M_S_1/M_W_1/M_J_1B/
+M_J_1C/M_I_N/M_N_H clips. M_I_N and M_N_H are actual e_mario clips, not aliases.
+The shared geometry/animation converter preserves model/hierarchy/key streams;
+empty atlas rows are cropped, the runtime atlas is512px wide with62px cells and
+1px borders, and V scaling compensates the crop. This bounds linear memory.
+Existing original Goombella/Crump/X-Naut assets remain in use. Original game
+rights remain Nintendo/Intelligent Systems; no redistribution license is granted.
+Original environment/effect/SFX requests are retained but their native consumers
+remain unbound; no generated replacement audio was added.

@@ -532,3 +532,6 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [Native underground trio scene](story/NATIVE_UNDERGROUND_TRIO_SCENE.md): original approach poll, actors/poses, prebattle dialogue and retained setup4 boundary.
 
 - [Native setup4 battle introduction](battle/NATIVE_SETUP4_BATTLE_INTRODUCTION.md): original unit/part data, Frankly init/entry/phase and original selected stage objects.
+
+- [Native harbor before-battle](story/NATIVE_HARBOR_BEFORE_BATTLE.md)
+- [Stationary scripted jump](field/FIELD_SCRIPTED_STATIONARY_JUMP.md)

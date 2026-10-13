@@ -2,6 +2,41 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original harbor before-battle event execution
+
+The ordered opening now continues from the original six harbor messages into
+`gundan1000tai_beforebattle`, loaded from read-only US `gor.rel` with all132
+commands and relocated source operands intact. Native bindings retain original
+integer coordinate admission, fresh/resume branches, actor/speaker ownership,
+022→023→024 messages, independent charges, camera requests, HP floor5 and
+Crump setup2. Existing native movement is an explicitly limited presentation
+adapter. The stationary200ms surprise jump uses the recovered normal binary32
+recurrence, including same-call ascent/descent transition and floor admission;
+its scoped verifier checks20 instruction anchors and five SDA constants.
+Original event bytes/messages/poses remain local and ignored; provenance and
+conversion choices are in [assets](ASSETS.md), [the encounter contract](behavior/story/NATIVE_HARBOR_BEFORE_BATTLE.md)
+and [the scoped jump contract](behavior/field/FIELD_SCRIPTED_STATIONARY_JUMP.md).
+
+Validation: isolated `/tmp/pm-harbor-continuation` `make test` passes105 CTest
+and100 Python tests; `make all` builds the native3DS executable. Tests cover
+signed integer poll edges, fresh/resume coordinates, original message order,
+HP2→5/HP10 retention, stationary jump samples, and integrated story3→4 control
+and save suppression. The original-source verifier passes against the read-only
+ISO. Isolated Azahar `artifacts/azahar-harbor-fresh-chain` was inspected at the
+original Goombella bubble and the pending battle boundary after actor charge.
+No user profile/save was modified. Link audit724 Markdown files/0 broken links
+and whitespace checks pass. An earlier resume smoke did not cross the X admission
+threshold; it is not counted as successful native encounter validation.
+
+Limits/next: the real tutorial battle-start service is unbound. The source VM
+stays blocked at that call with a development notice, retains story4, suppresses
+saving and never fabricates a battle result or dispatches the postbattle child.
+Bind the original setup2/tutorial/return services before story5 and original
+025..033 continuation. Original effect/audio request consumers, numeric NPC
+movement, roll/horizontal jump branches and complete opening scene choreography
+remain open. Keep the user goal active; the earlier title/files/opening adapter
+plus this encounter are incremental playtest milestones, not a complete remake.
+
 ## 2026-10-13 — Inbox priority-zero RPN parameter writers
 
 Completed inpSetRPNHi/Dec/Inc for EVT-01; checked the corresponding inbox portion.

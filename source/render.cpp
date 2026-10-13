@@ -70,6 +70,14 @@ bool Renderer::init() {
     C3D_TexSetFilter(&sky.texture,GPU_LINEAR,GPU_LINEAR);
     if(!actorAnimations.load("romfs:/characters.pmanim"))return false;
     if(!partnerAnimations.load("romfs:/partner.pmanim"))return false;
+    if(!harborMarioAnimations.load("romfs:/harbor-mario.pmanim"))return false;
+    FILE* harborUV=std::fopen("romfs:/harbor-mario.bin","rb");if(!harborUV)return false;
+    char harborMagic[8];bool harborValid=std::fread(harborMagic,8,1,harborUV)==1 && !std::memcmp(harborMagic,"PMHUV001",8) && std::fread(&harborMarioUVScale,4,1,harborUV)==1 && std::fgetc(harborUV)==EOF;
+    std::fclose(harborUV);if(!harborValid || !(harborMarioUVScale==1 || harborMarioUVScale==2 || harborMarioUVScale==4 || harborMarioUVScale==8))return false;
+    FILE* harborMario=std::fopen("romfs:/harbor-mario.t3x","rb");if(!harborMario)return false;
+    harborMarioTexture.imported=Tex3DS_TextureImportStdio(harborMario,&harborMarioTexture.texture,nullptr,false);std::fclose(harborMario);
+    if(!harborMarioTexture.imported)return false;
+    C3D_TexSetFilter(&harborMarioTexture.texture,GPU_LINEAR,GPU_LINEAR);
     if(!professorMarioAnimations.load("romfs:/professor-mario.pmanim"))return false;
     if(!professorFenceAnimations.load("romfs:/professor-fence.pmanim"))return false;
     FILE* storyUV=std::fopen("romfs:/professor-mario.bin","rb");if(!storyUV)return false;
@@ -483,7 +491,8 @@ void Renderer::harborActors(const Game& g) {
 void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
     const bool fieldTalk=g.fieldActorTalk.message.active();
     const bool professor=g.storyPresentation().locked();
-    const auto& message=supplied?*supplied:professor?g.storyPresentation().message:fieldTalk?g.fieldActorTalk.message:g.harborStory.message;if(!message.active())return;
+    const bool encounter=g.harborEncounter.locked();
+    const auto& message=supplied?*supplied:encounter?g.harborEncounter.message:professor?g.storyPresentation().message:fieldTalk?g.fieldActorTalk.message:g.harborStory.message;if(!message.active())return;
     const auto& font=harborMessageFont();
     // Unproject tilted NDC into the same pixel space as the 2D backend.
     // Reuse the actual world matrix: a parallel eye/FOV calculation can drift
@@ -539,8 +548,8 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
             mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
     }
     for(unsigned i=0;newWindow && !fieldTalk && !professor && i<g.harborStory.actors.size();++i) {
-        const auto& actor=g.harborStory.actors[i];if(actor.key!=g.harborStory.speaker)continue;
-        const auto& root=g.harborStory.speakerRoot;
+        const auto& actor=g.harborStory.actors[i];if(actor.key!=(encounter?g.harborEncounter.speaker:g.harborStory.speaker))continue;
+        const auto& root=encounter?g.harborEncounter.speakerRoot:g.harborStory.speakerRoot;
         messageTalkAnchor={root[0]*.01f,root[1]*.01f,root[2]*.01f};
         if(i==0) {
             // Import the rendered pose bounds rather than an authored height.
@@ -787,7 +796,10 @@ void Renderer::world(const Game& g) {
         character(2,crump,2.1f,2.1f,-1);
     }
     const int legacyCount=count;
-    if(!battle && (g.trioBattleActive || g.storyPresentation().locked())) {
+    if(!battle && g.harborEncounter.locked()) {
+        const auto& a=g.harborEncounter.actors[0];const bool right=a.yaw>0 && a.yaw<180;
+        characterModel(a.moving?"M_W_1":a.pose.c_str(),float(g.harborEncounter.now-a.poseAt)*.06f,g.progress.position,g.groundHeight,right?180:0,right,false,&harborMarioAnimations,harborMarioUVScale);
+    } else if(!battle && (g.trioBattleActive || g.storyPresentation().locked())) {
         const auto& a=g.storyPresentation().actors[0];const bool right=a.yaw>0 && a.yaw<180;
         characterModel(a.moving?"M_W_1":a.pose.c_str(),float(g.storyPresentation().now-a.poseAt)*.06f,g.trioBattleActive?Vec2{a.position[0]*.01f,a.position[2]*.01f}:g.progress.position,g.trioBattleActive?a.position[1]*.01f:g.groundHeight,
                        right?180:0,right,false,g.trioBattleActive?&trioMarioAnimations:&professorMarioAnimations,g.trioBattleActive?trioMarioUVScale:professorMarioUVScale);
@@ -865,7 +877,7 @@ void Renderer::world(const Game& g) {
     BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
     C3D_TexBind(0,&atlas);
     C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
-    if(actorEnd>legacyCount){C3D_TexBind(0,g.trioBattleActive?&trioMarioTexture.texture:g.storyPresentation().locked()?&professorMarioTexture.texture:&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
+    if(actorEnd>legacyCount){C3D_TexBind(0,g.trioBattleActive?&trioMarioTexture.texture:g.harborEncounter.locked()?&harborMarioTexture.texture:g.storyPresentation().locked()?&professorMarioTexture.texture:&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
     if(partnerEnd>actorEnd){C3D_TexBind(0,&partnerTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,actorEnd,partnerEnd-actorEnd);}
     if(!battle)drawFieldActors(false);
     if(undergroundEnd>fieldActorEnd){C3D_TexBind(0,&undergroundTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,fieldActorEnd,undergroundEnd-fieldActorEnd);}
@@ -919,6 +931,7 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
     text(label,x+7,y+8,.48f,disabled?rgb(135,129,116):Ink);
 }
 void Renderer::overlay(const Game& g) {
+    if(g.harborEncounter.locked()){originalMessage(g);if(g.harborEncounter.failed || g.harborEncounter.pendingService)text(g.prompt(),25,112,.43f,Ink);return;}
     if(g.saveObjects && (g.saveLocked() || g.saveObjects->presentation.message.active())) {
         const auto& p=g.saveObjects->presentation;originalMessage(g,&p.message);
         const auto& choice=p.selection;
@@ -997,7 +1010,7 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
         }
         return;
     }
-    if(g.harborStory.locked() || g.storyPresentation().locked() || g.scene==Scene::Dialogue)return;
+    if(g.harborEncounter.locked() || g.harborStory.locked() || g.storyPresentation().locked() || g.scene==Scene::Dialogue)return;
     panel(6,5,308,32,Ink);text("ROGUEPORT FIELD NOTES",16,11,.59f,Paper);
     if(g.scene==Scene::Battle) {
         text("Partner: Goombella",12,49,.44f,Ink);
@@ -1113,6 +1126,7 @@ void Renderer::shutdown() {
     if(characterTextures.imported) {Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);}
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}
     if(trioMarioTexture.imported){Tex3DS_TextureFree(trioMarioTexture.imported);C3D_TexDelete(&trioMarioTexture.texture);}
+    if(harborMarioTexture.imported){Tex3DS_TextureFree(harborMarioTexture.imported);C3D_TexDelete(&harborMarioTexture.texture);}
     if(professorMarioTexture.imported) {Tex3DS_TextureFree(professorMarioTexture.imported);C3D_TexDelete(&professorMarioTexture.texture);}
     if(professorMapTexture.imported) {Tex3DS_TextureFree(professorMapTexture.imported);C3D_TexDelete(&professorMapTexture.texture);}
     if(undergroundTexture.imported){Tex3DS_TextureFree(undergroundTexture.imported);C3D_TexDelete(&undergroundTexture.texture);}

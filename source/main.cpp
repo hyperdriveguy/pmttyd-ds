@@ -62,7 +62,7 @@ int main() {
         gfxExit();
         return 1;
     }
-    if(!loadRoomCollision(0) || !(ttyd::loadWarps("romfs:/rooms.bin") && ttyd::loadFieldPipes("romfs:/field-pipes.bin")) || !ttyd::loadFieldDoors("romfs:/doors.pmdoor") || !ttyd::loadCameraRoadAssets("romfs:") || !ttyd::loadHarborStoryAssets("romfs:") || !ttyd::loadFieldActorCatalog("romfs:") || !ttyd::loadFieldSaveObjectAssets("romfs:") || !ttyd::loadProfessorStoryAssets("romfs:") || !ttyd::loadUndergroundStoryAssets("romfs:") || !ttyd::loadTrioBattleAssets("romfs:") || !ttyd::loadTrioAttackAssets("romfs:")) {
+    if(!loadRoomCollision(0) || !(ttyd::loadWarps("romfs:/rooms.bin") && ttyd::loadFieldPipes("romfs:/field-pipes.bin")) || !ttyd::loadFieldDoors("romfs:/doors.pmdoor") || !ttyd::loadCameraRoadAssets("romfs:") || !ttyd::loadHarborEncounterAssets("romfs:") || !ttyd::loadHarborStoryAssets("romfs:") || !ttyd::loadFieldActorCatalog("romfs:") || !ttyd::loadFieldSaveObjectAssets("romfs:") || !ttyd::loadProfessorStoryAssets("romfs:") || !ttyd::loadUndergroundStoryAssets("romfs:") || !ttyd::loadTrioBattleAssets("romfs:") || !ttyd::loadTrioAttackAssets("romfs:")) {
         renderer.shutdown();romfsExit();gfxExit();return 1;
     }
     ttyd::Audio audio;audio.init();
@@ -212,6 +212,6 @@ int main() {
     }
     saveWorker.finish(); // Complete an already accepted write before closing services.
     // A battle is transient; save only the exploration checkpoint.
-    if(frontend.screen==ttyd::FrontScreen::Playing && !game.progress.originalStory && !game.saveLocked() && !game.professorStory.temporaryProfessor && !game.professorStory.running() && game.scene==ttyd::Scene::Explore && !game.airborne() && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0 && game.pipeRequest<0) ttyd::writeSave(savePath,game.progress);
+    if(frontend.screen==ttyd::FrontScreen::Playing && !game.progress.originalStory && !game.harborEncounter.running() && !game.saveLocked() && !game.professorStory.temporaryProfessor && !game.professorStory.running() && game.scene==ttyd::Scene::Explore && !game.airborne() && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0 && game.pipeRequest<0) ttyd::writeSave(savePath,game.progress);
     audio.shutdown();renderer.shutdown();romfsExit();gfxExit();return 0;
 }

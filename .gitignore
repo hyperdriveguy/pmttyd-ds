@@ -102,3 +102,9 @@ local-assets/professor-fence/
 /romfs/trio-attack*
 
 /romfs/npc-angle.bin
+
+/romfs/harbor-events.pmevt
+/romfs/harbor-program.bin
+
+/romfs/harbor-mario.bin
+/romfs/harbor-mario.json
