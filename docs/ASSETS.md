@@ -1089,16 +1089,3 @@ Original Nintendo/Intelligent Systems rights remain; no redistribution license
 is granted or inferred. ISO/raw assets/compiled packs/original dialogue remain
 outside source history. Source/native code/manifest evidence is not matched
 Dolphin execution or a New2DSXL hardware performance measurement.
-
-## 2026-10-13 — Original ordinary Hammer animations
-
-`tools/trio_attack_assets.py` adds original `M_H_1A`, `M_H_1B`, `M_H_1C` from
-ISO `a/b_mario`, using original `a/a_mario-` textures. Unchanged wrapper/core
-80416c40/8035d6d4 and weapon80353de8 were already in the data-only DOL pack.
-Existing mesh baking, atlas halving with Lanczos, RGBA8 tex3ds conversion and
-UV-scale metadata are retained; no replacement artwork or dialogue is authored.
-The converter reads the ISO read-only, keeps extracted models/atlases/animations
-and compiled packs outside source history, and fingerprints tool/source inputs.
-Nintendo/Intelligent Systems ownership and no redistribution grant are unchanged.
-Original charge cue keys are retained service requests; importing these poses
-does not imply complete original gauge or MusyX voice/macro playback.
