@@ -64,6 +64,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [upload/stream bridge](../behavior/audio/MUSYX_ARAM_UPLOAD_AND_HARDWARE_STREAM_BRIDGE.md).
   Raw upload/full-word priority, alignment/cache request/callback order pinned;
   caller stream engine/providers/extent/lifetime/SDK/DMA/runtime remain open.
+- [x] Complete dataInitStack/dataInit/hwInitSampleMem, sndSetHooks/
+  salMalloc and public/hardware upload-callback forwarding bodies —
+  [cache/reset/hook producers](../behavior/audio/MUSYX_DEFAULT_CACHE_RESOURCE_RESET_AND_HOOK_INSTALLATION.md).
+  Default base/end/cursor, count/table reset and ordered alias-sensitive hook
+  publication pinned; actual setup caller/provider/reset/runtime remains open.
 - [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -681,3 +686,20 @@ Flush. Eight priority and42 offset/count boundary vectors are derived evidence;
 no original function executes. Fresh full ELFs/listings stay `/tmp`; no native
 change/code-body/bank export. Caller/indirect/REL/dynamic/source/extent/lifetime/
 SDK/cache/ARQ/DMA/original audio traces remain OPEN.
+
+### 2026-10-13 — Default cache, resource reset and hook installation
+
+[Seven complete producer/wrapper bodies](../behavior/audio/MUSYX_DEFAULT_CACHE_RESOURCE_RESET_AND_HOOK_INSTALLATION.md)
+close ordered gsDefault/root/current/cache base/end/cursor publication, six U16
+registry resets and800hex-byte macro main-table clear. hwInitSampleMem forwards
+only original r4 as aramInit's input. sndSetHooks reads two input words and writes
+allocator twice before reading/publishing free; aliasing is order-sensitive.
+Ordinary salMalloc and public/hardware upload-configuration forwarding preserve
+raw inputs/child returns, without independent success/lifetime policy.
+
+Validation: read-only manifest9 spans (7 complete/2 linked documented children),
+87 anchors/four resolved direct calls passes; four derived cache/wrap vectors,
+exact macro-clear extent and three hook alias vectors checked. Full inspection
+ELFs/listings remain `/tmp`; no original code execution/native change/bank export.
+Caller/provider/alias/reset/concurrency/residency/per-kind registry/SDK/voice and
+original setup/audio traces remain OPEN. Local portions checked, parent open.

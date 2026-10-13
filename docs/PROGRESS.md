@@ -5,6 +5,27 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 default cache, resource reset and hook installation
+
+Delivered [cache/reset/hook producers](behavior/audio/MUSYX_DEFAULT_CACHE_RESOURCE_RESET_AND_HOOK_INSTALLATION.md).
+Seven complete bodies pin gsDefault base/end/cursor and root/current publication,
+six U16 registry-count resets, whole macro main-table clear, second-argument-only
+ARAM initialization, ordered hook copy, ordinary allocator and callback forwarding.
+Reset counts do not erase all registries or prove stopped voices; alias-sensitive
+hook copy is preserved. Marked local EVT-01 portions complete; parent OPEN.
+
+Validation: generic read-only verifier9 spans (7 complete/2 linked documented
+children),87 anchors and4 resolved direct calls passes. Four derived cache/wrap
+vectors,800hex macro-clear extent and3 hook-alias vectors checked. Full fresh
+ELFs/listings remain `/tmp`; no original code executes. Link audit741 Markdown
+files/0 broken; whitespace checks pass. Docs/metadata only: no make rerun, native
+change or original code-body/bank export. Isolated index excludes unrelated work.
+
+Next/limits: actual setup callers/B/N/allocator/callback providers, per-kind
+registries, alias/reset/concurrency/residency domains, voice/macro/MIDI/SDK and
+original setup/audio/runtime traces. Continue priority0 source and live SFX/calc3D,
+then priority1 damage graph. No playback/hardware/full-game completion claim.
+
 ## 2026-10-13 — Priority0 generic ARAM upload and hardware stream bridge
 
 Delivered [upload/stream bridge](behavior/audio/MUSYX_ARAM_UPLOAD_AND_HARDWARE_STREAM_BRIDGE.md).

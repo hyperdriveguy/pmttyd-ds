@@ -67,3 +67,5 @@ Remaining: hook installation/provider allocation, actual base/size/cache default
 queue initialization/concurrency invariants, ARQ/OS/cache/DMA, sample-bank loading
 and original runtime/hardware traces. Three complete local bodies are answered;
 full audio/source equivalence remains OPEN.
+
+[Complete default cache/resource reset/hook installation](MUSYX_DEFAULT_CACHE_RESOURCE_RESET_AND_HOOK_INSTALLATION.md) now answers those local producer bodies, including raw second-argument ARAM initialization and ordered two-input-word hook copy. Actual caller/provider/alias/reset/runtime ownership remains open.
