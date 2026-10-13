@@ -24,7 +24,9 @@ register/stack traffic:
 - [Mario+744] = single(floatword([0x802C3EA8]) + f2) — the table word is
   **live** here, unlike the [speed doc](OVERWORLD_SPEED_FALL_LANDING_LEAVES.md)'s
   all-dead case: f0 survives from the `fadds` to the `stfs` because only
-  integer ops intervene.
+  integer ops intervene. The word reads 0x00000000 from the ISO, so this lane
+  is f2 rounded to single (the dead SDA load at r2−27036 reads 37.0 but never
+  reaches a store).
 - [Mario+748] = f3 bits.
 
 The SDA load (`lfs 0, −27036(r2)`) is dead (f0 is overwritten by the `fadds`

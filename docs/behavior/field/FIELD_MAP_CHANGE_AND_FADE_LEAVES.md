@@ -30,8 +30,9 @@ with mapName at +8, beroName at +12. Full order:
    `strncpy(bero, beroName, 32)`.
 3. `psndENVOff(0x200)` then `psndENVOff(0x201)` (512/513).
 4. Three `strcmp`s: gp (word at [r13−28496]) +300 = `currentMapName`
-   (+0x12C in the snapshot header) against "" and "gor_01" (absolute
-   0x802CF2D4), and next-map buffer against "gor_01".
+   (+0x12C in the snapshot header) against "" (the SDA bytes read
+   00 00 00 00 from the ISO, corroborating) and "gor_01" (absolute
+   0x802BF2D4, read from the ISO), and next-map buffer against "gor_01".
 5. If all three are nonzero: set bit 0 of the halfword at
    [[r13+7624]+276] (`ori`/`sth`; [r13+7624] is the snapshot's `bdsw`,
    +276 = +0x114).
@@ -61,5 +62,7 @@ besides the five resolutions; no validation of the stored values.
 
 Buffer/flag lifetimes, `bdsw` identity beyond the snapshot's extern, sound
 and shop internals, gp provenance, cadence, and any on-screen transition.
-The "gor_01"/"" literals are snapshot-corroborated, not re-read from the US
-binary's rodata here.
+The "gor_01"/"" literals are re-read from US rodata above; buffer/flag
+lifetimes, `bdsw` identity beyond the snapshot's extern, sound
+and shop internals, gp provenance, cadence, and any on-screen transition
+remain open.

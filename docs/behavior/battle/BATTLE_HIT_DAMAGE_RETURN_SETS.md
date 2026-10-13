@@ -26,12 +26,12 @@ lecture JSONs name it without a contract.
 3. `_mapAlloc([r13+6376], count*16)`, publish the pointer at [r13+6736],
    `memcpy` the records over. Both globals cited positionally.
 4. Walk the copy with stride 16 while [rec+0] != 0: if float [rec+8] equals
-   the SDA constant (r2−28784, `fcmpu`, value not recovered), call
+   −1000.0 (SDA r2−28784, read from the ISO; `fcmpu`) call
    `hitObjGetPos(rec+4)` then `hitGrpDamageReturnSet([rec+0], rec)`.
 5. Return 2.
 
-The float equality gate and the SDA constant's value are the open items;
-the copy pointer's consumers are not traced here.
+The float equality gate now reads −1000.0 straight from the ISO; the copy
+pointer's consumers are not traced here.
 
 ## hitGrpDamageReturnSet (80013efc, 56 lines): name search, single dispatch
 

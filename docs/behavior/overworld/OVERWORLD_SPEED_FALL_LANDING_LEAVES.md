@@ -119,7 +119,7 @@ float call. Destination is the raw second event word in both paths.
 43 lines, one `bl` (marioGetPtr). Only `marioGetFallSpd` has a
 `us-usage.json` row (mario_motion.o, 148 bytes, 9 link sites). The body is a
 three-lane float integrator over [Mario+124/128/132/136] with SDA clamp
-constant K (r2−27572 — the same slot as `mario_width`'s step) and a data
+constant 0.0 (r2−27296, read from the ISO) and a data
 table at [r13−28176] (cited positionally):
 
 1. [132] = min([132] + [136], K).
@@ -128,14 +128,14 @@ table at [r13−28176] (cited positionally):
    test): [124] = that float and [132] = [128] = [136] = K.
 4. Return [124] in f1.
 
-The [airborne doc](../overworld/OVERWORLD_AIRBORNE_AND_LANDING.md)'s
-terminal-cap-and-zero reset in `marioFall` is a related pattern, not this
-body. No claim about which lane is velocity/position/accumulator beyond the
-update order above.
+The clamp/reset value reads 0.0 straight from the ISO, and the
+[r13−28176]+36 snap matches the shape of the airborne doc's
+`marioJumpData+36` terminal value — cited as correspondence, not identity.
 
 ## Not established
 
-Unresolved SDA slots (fallSpeed clamp r2−27296, hit const r2−28784, bero
-K_a/K_b r2−28456/−28448), table contents, offset meanings not linked above, call
+Unresolved SDA slots (hit const r2−28784 now reads −1000.0 from the ISO;
+bero K_a/K_b read 30.0/60.0 — see the [bero length
+leaf](OVERWORLD_BERO_LENGTH_LEAF.md)), table contents, offset meanings not linked above, call
 cadence, and any in-game effect. The duplicate extractions are reported as
 observed facts; neither name is declared canonical.
