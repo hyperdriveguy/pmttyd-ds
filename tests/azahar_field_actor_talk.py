@@ -3,6 +3,7 @@ from pathlib import Path
 import struct
 import subprocess
 import time
+from PIL import Image
 
 def run(env,capture):
     def x(*args):
@@ -13,6 +14,10 @@ def run(env,capture):
     save=Path(env['PM_PORT_SMOKE_OUTPUT'])/'data/azahar-emu/sdmc/3ds/ttyd-2ds/progress.bin'
     previous=save.stat().st_mtime_ns
     press('a');time.sleep(.6);capture('original-mouser-talk')
+    with Image.open(Path(env['PM_PORT_SMOKE_OUTPUT'])/'original-mouser-talk.png') as shot:
+        pixels=shot.convert('RGB').crop((300,235,700,325)).get_flattened_data()
+        assert sum(min(rgb)>210 and max(rgb)-min(rgb)<12 for rgb in pixels)>3500, 'Original message window did not open'
+    assert save.stat().st_mtime_ns==previous, 'Talk onset wrote the checkpoint'
     for n in range(12):
         press('a');time.sleep(.5)
         if n in (2,5):capture('mouser-page-'+str(n))

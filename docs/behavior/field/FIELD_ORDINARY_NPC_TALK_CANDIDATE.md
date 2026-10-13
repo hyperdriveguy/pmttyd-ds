@@ -82,13 +82,19 @@ camera-relative half-plane test with the NPC's width span, not a authored
 After facing admission recompute horizontal PSVECDistance and require<=radius.
 Compute system heading MarioXZ→NPCXZ, call sincosf, then derive true horizontal
 norm from deltaXZ through original three-refinement root. Request
-hitCheckFilter(scope0,origin MarioXYZ withY=rootY+0.75*MarioHeight,
+hitCheckFilter(nullCallback,origin MarioXYZ withY=rootY+0.75*MarioHeight,
 sinHeading,vertical0,cosHeading,length=horizontalNorm,output pointers).
 Nonzero hit rejects talk: this is map occlusion between actors. Original
-filter attributes/backend/math are dependencies; do not ignore walls.
+null-callback backend/math are dependencies; do not ignore walls or add the
+ordinary movement-wall attribute predicate. See [ray/getter source policy](FIELD_NPC_TALK_RAY_AND_DISPLAY_DIRECTION.md).
 
 No-hit candidates compete on **strictly smaller distance**, initialized1000;
 first registry candidate wins equal-distance ties. Store chosen NPC at work+10.
+Distance>=current chosen distance does **not** skip directional/occlusion work:
+0x80047908 only bypasses the near-actor temporary write to0x80047910,
+which still begins facing checks. Strict candidate-distance rejection occurs
+after the successful no-hit ray at0x80047bd8..be0. Preserve those query calls
+even when a prior nearer candidate already exists.
 This differs from the partner query's last-active-horizontal-match behavior.
 The same branch also owns nearby actor auto-turn/event-stop flags; their source
 lifecycle must be preserved separately when binding the complete dispatcher.
@@ -103,7 +109,10 @@ There is no requirement to wait for a new nearest query after A, and no
 story-state write in this ordinary admission block.
 
 npcMain's field dispatcher invokes fbatEncountCheck in fieldstate1 and
-fbatTalkMode in states2/3. Fresh field-root inspection pins local owner order:
+fbatTalkMode in states2/3. It reads the dispatch state once: source A admission
+commits1→2 and returns from EncountCheck without falling through into TalkMode.
+Ordinary stage0 event construction therefore occurs on the next admitted
+npcMain invocation, not immediately inside the A candidate scan. Fresh field-root inspection pins local owner order:
 marioStMain0x8006f904 calls camMain at0x8006f944,EVT main0x8006f954,
 Mario main0x8006f95c,mobjMain0x8006f960,npcMain0x8006f964,caseMain0x8006f97c.
 NPC talk candidate and actor collision response therefore run after this

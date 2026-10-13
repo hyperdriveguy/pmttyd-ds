@@ -1,15 +1,18 @@
 #include "field_actors.hpp"
+#include "npc_presentation.hpp"
 #include <cmath>
 #include <cstring>
 namespace ttyd {
-namespace {FieldActorAssets catalog;std::string assetRoot;uint64_t generation=0;}
+namespace {FieldActorAssets catalog;NpcAngleTable npcAngles;std::string assetRoot;uint64_t generation=0;}
 bool loadFieldActorCatalog(const char* root) {
     if(!root)return false;
     FieldActorAssets next;if(!next.load((std::string(root)+"/field-actors.pmnpc").c_str()))return false;
-    catalog=std::move(next);assetRoot=root;++generation;return true;
+    NpcAngleTable nextAngles;if(!nextAngles.load((std::string(root)+"/npc-angle.bin").c_str()))return false;
+    catalog=std::move(next);npcAngles=nextAngles;assetRoot=root;++generation;return true;
 }
 const FieldActorAssets& fieldActorCatalog(){return catalog;}
 uint64_t fieldActorCatalogGeneration(){return generation;}
+const NpcAngleTable& fieldNpcAngles(){return npcAngles;}
 std::string fieldActorTalkKey(const FieldActorRecord& actor,int32_t story) {
     if(actor.talkPrefix.empty())return {};
     constexpr int32_t limits[]={56,112,164,215,261,339,373,401};

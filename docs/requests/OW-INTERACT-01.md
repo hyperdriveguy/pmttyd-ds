@@ -344,3 +344,55 @@ constant reads. Documentation links and whitespace checks pass. Source
 inspection outputs remain /tmp; no native edit/commit/test/build or runtime
 claim. Full collision polynomial numerics, event/window/regular-stop lifecycle,
 all fbatHitCheck branches, map-object interaction and pause/retrace remain open.
+
+### 2026-10-13 — Side polynomial/caller gates and null talk-ray callback
+
+Delivered [NPC Mario-side response numerics](../behavior/field/FIELD_NPC_MARIO_SIDE_RESPONSE_NUMERICS.md):
+exact coefficient bits, quadrant reductions, fused polynomial/delta/cap graph,
+wall retry and complete direct npcMain gate chain to side call. Activeflags1+2
+and source-state+1d4 mask10 precede terminal bypass flags8/20/4000; stationary
+zero-speed path reaches collision without npcMoveG. Source SDK/angle/frsqrte
+backend/FPSCR remain numeric dependencies.
+
+[Talk-ray callback/display getter](../behavior/field/FIELD_NPC_TALK_RAY_AND_DISPLAY_DIRECTION.md)
+corrects earlier scope0 wording: r3 is null callback, so ordinary Mario wall
+attribute predicate must not be added. Four backend callback gates skip
+invocation on null; generic geometry admission remains separate. Source
+marioGetDispDir is wrap((current displayTurn+1ac-90)+camera snapshot+19c),
+then talk scan separately subtracts live camera+114. Render yaw/mirror and
+current movement heading are not equivalent substitutes.
+
+Validation: fresh read-only DOL inspections and direct coefficient/constant
+reads; links/whitespace pass. No native edits/commits/build/runtime claim.
+Full source geometry/backend, NPC-state timer producers, collision trajectories
+and complete event/window/global cadence remain open.
+
+### 2026-10-13 — Strict-nearest query order and deferred talk construction
+
+Source recheck confirms a radially eligible actor farther than the current
+chosen actor still executes facing and occlusion queries; the early distance
+comparison skips only nearActor assignment (0x80047908), while chosen-distance
+rejection occurs after no-hit ray (0x80047bd8..be0). [Talk contract](../behavior/field/FIELD_ORDINARY_NPC_TALK_CANDIDATE.md)
+now states this explicitly. Dispatcher reads fieldstate once, so A's1→2
+transition cannot fall through to fbatTalkMode in that invocation: ordinary
+talk stage0 starts on the next admitted npcMain invocation. Fresh source
+instruction recheck; docs-only, no native changes or runtime claim.
+
+### 2026-10-13 — Native ordinary candidate and retained owner binding
+
+[Native talk selection](../behavior/field/NATIVE_NPC_TALK_SELECTION.md) replaces
+provisional0.65-radius/height proximity with source dimensions, live/rounded
+camera/display inputs, source halfplanes/width edges, null-callback obstruction
+and strict nearest selection. Previous NPC candidate blocks following Mario jump
+without a fresh facing/radius scan; A selection starts the simple source talk
+on the following NPC invocation, and wait-return clears without rescanning.
+Available Mario display/main flags and native key-off feed admission; current
+static source Entry flags3 map known catalog lifetime. Prompts reuse retained
+simulation state. Original messages/story branches remain unchanged.
+
+Host tests now use full source camera/head geometry and warmup, distinguish
+filtered wall versus null-callback talk obstruction, and cover retained/pending/
+return cases. Emulator assertions require a visible original message window;
+return/save alone is insufficient proof. Full NPC registry/auto-turn/regular-
+event locks, transformed/key-depth/control modes, encounters, other events/areas,
+source side response and original backend/runtime/hardware parity remain OPEN.

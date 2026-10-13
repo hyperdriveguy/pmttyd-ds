@@ -6,6 +6,7 @@
 #include "head_collision.hpp"
 #include "floor_contact.hpp"
 #include "field_ray.hpp"
+#include "npc_interaction.hpp"
 #include "battle_unit_resources.hpp"
 #include "battle_action_services.hpp"
 #include "secondary_party_source.hpp"
@@ -344,17 +345,17 @@ FieldShadowHit fieldShadowRay(FieldWallVector origin,FieldWallVector direction,f
         test(ground[n].v,ground[n].cull,ground[n].contact);
     return result;
 }
-FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float maximum,const std::vector<FieldObjectTriangle>* objects) {
+static FieldWallHit fieldMapRay(FieldWallVector origin,FieldWallVector direction,float maximum,const std::vector<FieldObjectTriangle>* objects,bool wallPolicy) {
     // Geometry cache is in native scale. Policy inputs/outputs are engine units.
     origin={origin.x*.01f,origin.y*.01f,origin.z*.01f};maximum*=.01f;
     FieldWallHit nearest;nearest.distance=maximum;
     auto test=[&](std::array<float,9> triangle,uint32_t cull,GroundContact contact,uintptr_t token,uint32_t owner=0) {
         if(!owner && !doorCollisionEnabled(contact.sourceNode))return;
         if(!owner)contact=runtimeContact(contact);
-        if(!ordinaryWallAttributes(contact.attributes))return;
+        if(wallPolicy && !ordinaryWallAttributes(contact.attributes))return;
         // Current static room meshes contain no named high-bit NPC owners.
         // Such an admitted record needs the original owner-name filter service.
-        assert(owner || !(contact.attributes&0x80000000) || (contact.attributes&0x00080080));
+        assert(!wallPolicy || owner || !(contact.attributes&0x80000000) || (contact.attributes&0x00080080));
         FieldWallHit hit;
         if(intersectFieldRay(triangle,cull,origin,direction,maximum,hit) &&
            (!nearest.token || hit.distance<nearest.distance)) {
@@ -392,11 +393,14 @@ FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float
         }
     }
     if(objects)for(size_t i=0;i<objects->size();++i) {
-        const auto& tri=(*objects)[i];if(!tri.ordinarySolid)continue;
+        const auto& tri=(*objects)[i];if(wallPolicy && !tri.ordinarySolid)continue;
         test(tri.vertices,tri.cull,{tri.attributes,0},std::max(head.size(),walls.size())+i+1,tri.owner);
     }
     nearest.distance*=100.f;
     return nearest;
+}
+FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float maximum,const std::vector<FieldObjectTriangle>* objects) {
+    return fieldMapRay(origin,direction,maximum,objects,true);
 }
 bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot) {
     return headCollision(p,direction,worldY,velocity,clampedRoot,velocity);
@@ -748,18 +752,64 @@ bool Game::beginVoid() {
 void clearCollision() {doorCollisionRoom=UINT32_MAX;doorCollisionMask=UINT32_MAX;disabledDoorNodes.clear();roadAttributeNodes.clear();walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();head.clear();headIndex.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
+NpcTalkPlayer Game::fieldNpcTalkPlayer() const {
+    NpcTalkPlayer mario;mario.root={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
+    mario.motion=fieldJump.motion;mario.displayTurn=marioPresentation.display;
+    mario.cameraSnapshot=marioPresentation.offset;
+    mario.viewFlags=marioPresentation.displayFlags;mario.flags=uint32_t(fieldIdle.mainFlags);
+    mario.viewYaw=fieldNpcAngles().angle(fieldCameraFrame.eye.x,fieldCameraFrame.eye.z,fieldCameraFrame.at.x,fieldCameraFrame.at.z);
+    return mario;
+}
+bool Game::fieldNpcTalkCandidateAlive() const {
+    return npcTalkGeneration==fieldActorCatalogGeneration() && npcTalkCandidate &&
+        fieldNpcTalkPlayer().talkable() && std::any_of(fieldActorCatalog().actors().begin(),fieldActorCatalog().actors().end(),
+            [&](const auto& actor){return actor.key==npcTalkCandidate &&
+                actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags);});
+}
 const FieldActorRecord* Game::nearbyFieldActor() const {
-    // Provisional native talk admission until original NPC search/arbitration
-    // is recovered. Exact source message selection is a separate binding.
-    const FieldActorRecord* found=nullptr;float closest=.65f*.65f;
+    if(scene!=Scene::Explore || !fieldControlEnabled() || fieldKeysOff || saveLocked() || water.active() ||
+       fieldStep.active() || fieldDoor.active() || arriving || fade.active() || warpRequest>=0 || pipeRequest>=0)return nullptr;
+    const auto mario=fieldNpcTalkPlayer();
+    FieldWallServices rays;rays.user=const_cast<Game*>(this);
+    rays.ray=[](void* p,FieldWallVector from,FieldWallVector direction,float distance) {
+        return fieldMapRay(from,direction,distance,&static_cast<Game*>(p)->fieldObjectTriangles,false);
+    };
+    NpcTalkScan scan;
     for(const auto& actor:fieldActorCatalog().actors()) {
-        if(actor.talkPrefix.empty() || !actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask) ||
-           std::fabs(actor.position[1]*.01f-groundHeight)>.25f)continue;
-        const float dx=actor.position[0]*.01f-progress.position.x,dz=actor.position[2]*.01f-progress.position.z;
-        const float distance=dx*dx+dz*dz;
-        if(distance<closest){found=&actor;closest=distance;}
+        if(actor.kind || actor.npcWidth<=0 || actor.npcHeight<=0 ||
+           !actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))continue;
+        // Current static entries retain source Entry flags3; dynamic flag/event
+        // producers and encounter branches require the original registry owner.
+        scan.consider({actor.key,{actor.position[0],actor.position[1],actor.position[2]},
+            actor.npcWidth,actor.npcHeight,3,!actor.talkPrefix.empty()},mario,fieldNpcAngles(),rays);
     }
-    return found;
+    if(scan.candidate)for(const auto& actor:fieldActorCatalog().actors())
+        if(actor.key==scan.candidate && actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))return &actor;
+    return nullptr;
+}
+void Game::updateFieldNpcTalk(const Input& input) {
+    if(npcTalkWaiting) {
+        if(!fieldActorTalk.message.active()){npcTalkWaiting=false;npcTalkCandidate=0;}
+        return; // Source wait/return owner does not scan again in this invocation.
+    }
+    if(npcTalkPending) {
+        const uint32_t selected=npcTalkPending;npcTalkPending=0;
+        if(npcTalkGeneration==fieldActorCatalogGeneration() && scene==Scene::Explore && progress.originalStory)
+            for(const auto& actor:fieldActorCatalog().actors())if(actor.key==selected &&
+                actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags)) {
+                if(fieldActorTalk.begin(actor,*progress.originalStory,harborMessageFont(),ticks*1000/60)) {
+                    fieldActorTalk.actor.yaw=fieldNpcAngles().angle(actor.position[0],actor.position[2],
+                        progress.position.x*100,progress.position.z*100);
+                    scene=Scene::Dialogue;saveRequested=false;npcTalkWaiting=true;return;
+                }
+                break;
+            }
+        npcTalkCandidate=0;return;
+    }
+    const auto* actor=nearbyFieldActor();npcTalkCandidate=actor?actor->key:0;
+    npcTalkGeneration=fieldActorCatalogGeneration();
+    if(!actor || !input.confirm || !progress.originalStory)return;
+    npcTalkPending=actor->key;saveRequested=false; // State1→2; next NPC invocation starts the event.
 }
 bool Game::recoveryReturn(ReturnPoint& point) const {return groundReturn(returnContact,point);}
 bool Game::beginWater() {
@@ -922,7 +972,7 @@ const char* Game::prompt() const {
     }
     if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) return "A: confront Lord Crump";
     if (progress.room==0 && near(NpcPosition)) return "A: talk";
-    if(nearbyFieldActor())return "A: talk";
+    if(fieldNpcTalkCandidateAlive())return "A: talk"; // Retained simulation result; no render-time map ray.
     return "Circle Pad: move   A: jump   X: partner";
 }
 void Game::rebaseFieldCamera() {
@@ -1426,6 +1476,9 @@ void Game::tick(const Input& rawInput) {
             game.progress.interiorMask=uint8_t(game.fieldDoor.interiorMask);
             if(game.fieldDoor.active() || game.professorStory.running() || game.professorStory.temporaryProfessor)game.saveRequested=false;
             if(!game.professorStory.locked())game.updateMarioPresentation();
+            Input talkInput=raw;
+            if(raw.physicalSnapshot)talkInput.confirm=(game.inputProducer.channels[0].pressed&BattleButtonA)!=0;
+            game.updateFieldNpcTalk(talkInput); // NPC owner follows current Mario/object updates.
             const auto& axes=game.inputProducer.channels[0].analog;
             const int mainX=raw.physicalSnapshot?axes.mainX:std::isfinite(raw.x)?int(std::clamp(raw.x,-1.f,1.f)*70.f):0;
             const int mainY=raw.physicalSnapshot?axes.mainY:std::isfinite(raw.z)?int(std::clamp(raw.z,-1.f,1.f)*70.f):0;
@@ -1726,11 +1779,6 @@ void Game::tick(const Input& rawInput) {
         groundHeight=progress.elevation=fieldStep.height;jumpHeight=0;
     }
     if(i.confirm && !i.cancel && !airborne()) {
-        if(const auto* actor=nearbyFieldActor()) {
-            if(progress.originalStory && fieldActorTalk.begin(*actor,*progress.originalStory,harborMessageFont(),ticks*1000/60)) {
-                scene=Scene::Dialogue;saveRequested=false;return;
-            }
-        }
         for(size_t n=0;n<fieldDoors().size();++n) {
             const auto& d=fieldDoors()[n];if(d.room!=progress.room)continue;
             const bool opening=!(fieldDoor.interiorMask&d.mask);
@@ -1753,7 +1801,8 @@ void Game::tick(const Input& rawInput) {
             saveRequested=false;return;
         }
     }
-    const bool launched=i.confirm && !i.cancel && !airborne() &&
+    const bool retainedNpcTalk=fieldNpcTalkCandidateAlive();
+    const bool launched=i.confirm && !i.cancel && !airborne() && !retainedNpcTalk &&
         !(progress.room==0 && ((!progress.crumpDefeated && near(CrumpPosition)) || near(NpcPosition)));
     if(launched) {
         if(i.physicalSnapshot) {

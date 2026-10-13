@@ -40,6 +40,7 @@
 #include "field_object_collision.hpp"
 #include "field_save_objects.hpp"
 namespace ttyd {
+struct NpcTalkPlayer;
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
 constexpr float StepHeight = .25f;
@@ -245,6 +246,13 @@ public:
     bool near(Vec2 point, float distance = 1.5f) const;
     const FieldActorRecord* nearbyFieldActor() const;
 private:
+    NpcTalkPlayer fieldNpcTalkPlayer() const;
+    bool fieldNpcTalkCandidateAlive() const;
+    uint32_t npcTalkCandidate=0;
+    uint32_t npcTalkPending=0;
+    bool npcTalkWaiting=false;
+    uint64_t npcTalkGeneration=0;
+    void updateFieldNpcTalk(const Input&);
     FieldBattleWork fieldBattleWork;
     int32_t fieldSequence=2;
     bool marioFieldControl=true,partnerFieldControl=true;

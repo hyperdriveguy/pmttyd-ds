@@ -236,6 +236,8 @@ void Renderer::fieldActors(const Game& g) {
                 actor.pose=g.storyPresentation().message.talking && g.storyPresentation().speaker==2?"T_1":g.trioBattleActive?g.storyPresentation().actors[2].pose:g.storyPresentation().actors[2].moving?"W_1":"S_1";
             } else if(!actor.visible(g.progress.room,g.progress.originalStory,g.fieldDoor.interiorMask,g.fieldSystemFlags))continue;
             float frame=float(g.ticks-plaza.actorStart);
+            if(actor.kind==0 && g.fieldActorTalk.message.active() && g.fieldActorTalk.actor.key==actor.key)
+                actor.yaw=g.fieldActorTalk.actor.yaw;
             if(g.saveObjects)if(const auto* object=g.saveObjects->find(actor.key)){actor.pose=object->pose;frame=object->frame;}
             NpcPresentation* npc=nullptr;
             if(actor.kind==0) {

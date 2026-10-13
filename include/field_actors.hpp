@@ -44,6 +44,8 @@ private:
 bool loadFieldActorCatalog(const char* root);
 const FieldActorAssets& fieldActorCatalog();
 uint64_t fieldActorCatalogGeneration();
+class NpcAngleTable;
+const NpcAngleTable& fieldNpcAngles();
 // Source simple CASE_LESS talk family only. Native admission/proximity and
 // rendering are adapters; complex event graphs need their own service owners.
 class FieldActorTalk {

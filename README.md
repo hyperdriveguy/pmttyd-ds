@@ -42,8 +42,10 @@ story content are still incomplete. Hardware performance has not been tested.
 Original static NPC setup now uses a per-area model/pose catalog. In the native
 early story0..55 envelope, east-side Mouser uses his original placement,
 `c_tyusan` animation and US talk event. Grounded A nearby plays unchanged
-original message IDs/control tokens and returns without a story write. Talk
-proximity/priority remains provisional. Source local matrix/camera-facing, tribe
+original message IDs/control tokens and returns without a story write. Talk uses
+source dimensions, facing/width-edge tests, map obstruction and nearest selection;
+the previous NPC candidate suppresses Mario's next A jump before the new scan.
+Full interaction/encounter priority remains partial. Source local matrix/camera-facing, tribe
 dimensions, talk anchors and stay/talk requests now use recovered source rules;
 original shape culling/colors are retained. NPC collision and full display services
 remain unfinished. Area resources stage

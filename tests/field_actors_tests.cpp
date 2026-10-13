@@ -1,10 +1,12 @@
 #include "field_actors.hpp"
 #include "actor_animation.hpp"
 #include "game.hpp"
+#include "camera_road_assets.hpp"
 #include <cassert>
 #include <cstring>
 #include <iostream>
 #include <limits>
+#include <unistd.h>
 using namespace ttyd;
 namespace {
 template<class T> void append(std::vector<uint8_t>& bytes,const T& value) {
@@ -90,7 +92,8 @@ int main(int argc,char**) {
         assert(saveBlock.visible(0,0,0) && saveBlock.visible(0,400,0) && !saveBlock.visible(0,341,0) && !saveBlock.visible(0,8,0,0x20));
         const auto scaled=ActorRootTransform({0,0,0},0,false,10.f*.01f).point({10,10,10,0,0});
         for(float v:scaled)assert(std::fabs(v-1.f)<.000001f);
-        assert(loadCollision("romfs/gor_02.walls") && loadGround("romfs/gor_02.ground"));
+        assert(loadCollision("romfs/gor_02.walls") && loadGround("romfs/gor_02.ground") && loadHead("romfs/gor_02.head"));
+        assert(loadCameraRoadAssets("romfs"));
         float height=0;assert(groundAt({1.f,-3.7f},0,height) && walkable({1.f,-3.7f},height));
         assert(loadFieldActorCatalog("romfs") && loadHarborStoryAssets("romfs"));
         MessageAssets originals;assert(originals.loadRoom("romfs/messages/gor_02.txt"));
@@ -100,12 +103,38 @@ int main(int argc,char**) {
             FieldActorTalk talk;assert(talk.begin(chu,story,harborMessageFont(),0));
             assert(talk.message.id()==key && talk.message.rawText()==originals.find(key.c_str()) && talk.actor.key==chu.key);
         }
-        Game game;Progress saved;saved.room=2;saved.originalStory=8;saved.position={1.f,-3.7f};game.restore(saved);
+        Game game;Progress saved;saved.room=2;saved.originalStory=8;saved.position={1.2f,-4.f};game.restore(saved);
+        for(int n=0;n<360;++n)game.tick({}); // Native checkpoint warmup and NPC publication.
         assert(game.nearbyFieldActor());Input press;press.confirm=true;game.tick(press);
+        assert(!game.fieldActorTalk.message.active() && !game.airborne());
+        game.tick({}); // Next NPC invocation owns fbatTalkMode event entry.
         assert(game.fieldActorTalk.message.active() && game.fieldActorTalk.message.id()=="gor_02_031_00" && !game.airborne());
         assert(game.fieldActorTalk.actor.key==chu.key && game.progress.originalStory==8);
+        assert(game.fieldActorTalk.actor.yaw==270 && chu.yaw==270); // Talk facing is source world yaw.
         for(int t=0;t<5000 && game.fieldActorTalk.message.active();++t){game.tick(press);assert(game.progress.originalStory==8 && !game.saveRequested);}
         assert(!game.fieldActorTalk.message.active() && game.scene==Scene::Explore);
+        Game turned;turned.restore(saved);for(int n=0;n<360;++n)turned.tick({});assert(turned.nearbyFieldActor());
+        turned.marioPresentation.displayFlags|=1;assert(!turned.nearbyFieldActor());
+        turned.marioPresentation.displayFlags&=~1u;
+        turned.fieldIdle.mainFlags|=0x01000000;assert(!turned.nearbyFieldActor());turned.fieldIdle.mainFlags&=~0x01000000;
+        turned.fieldKeysOff=true;assert(!turned.nearbyFieldActor());turned.fieldKeysOff=false;
+        turned.marioPresentation.display=turned.marioPresentation.target=180;
+        assert(!turned.nearbyFieldActor());turned.tick(press);
+        assert(!turned.airborne() && !turned.fieldActorTalk.message.active()); // Previous NPC candidate still owns this Mario query.
+        turned.tick(press);assert(turned.airborne() && !turned.fieldActorTalk.message.active());
+        Game outOfRange;saved.position={1.f,-3.7f};outOfRange.restore(saved);outOfRange.tick({});
+        assert(!outOfRange.nearbyFieldActor());outOfRange.tick(press);assert(outOfRange.airborne());
+        char wallPath[]="/tmp/pm-npc-talk-wall-XXXXXX";const int fd=mkstemp(wallPath);assert(fd>=0);
+        FILE* file=fdopen(fd,"wb");assert(file);
+        const uint32_t count=0xc0000001;const Rect wall{1.35f,-4.2f,1.35f,-3.8f};
+        const Vec2 levels{-1,1};const GroundContact contact{4,99};
+        assert(std::fwrite(&count,4,1,file)==1 && std::fwrite(&wall,sizeof(wall),1,file)==1 &&
+            std::fwrite(&levels,sizeof(levels),1,file)==1 && std::fwrite(&contact,sizeof(contact),1,file)==1);
+        assert(std::fclose(file)==0);clearCollision();assert(loadGround("romfs/gor_02.ground") && loadCollision(wallPath));unlink(wallPath);
+        assert(!fieldWallRay({120,27.75f,-400},{1,0,0},30).token); // Wall callback rejects attributes4.
+        Game blocked;saved.position={1.2f,-4.f};blocked.restore(saved);for(int n=0;n<360;++n)blocked.tick({});
+        assert(!blocked.nearbyFieldActor()); // Null talk callback retains this obstructing polygon.
+        assert(loadCollision("romfs/gor_02.walls") && loadHead("romfs/gor_02.head"));
         saved.originalStory.reset();game.restore(saved);assert(!game.nearbyFieldActor());
         for(const auto& model:a.models()) {
             ActorAnimationPack animations;assert(animations.load(("romfs/"+model.asset+".pmanim").c_str()));

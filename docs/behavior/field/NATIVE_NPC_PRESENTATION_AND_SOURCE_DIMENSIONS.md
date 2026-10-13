@@ -15,8 +15,9 @@ inventing missing source metadata. NPC dimensions are separate from render scale
 objects require zero/empty NPC-only fields. Malformed input preserves the prior
 catalog atomically. Static Chu and Frankly source tribe widths/heights are30/30;
 their talk poses are CHU_T_1/T_1. Original root/source keys and unchanged US talk
-payloads/story branches remain. Native early story envelope and A proximity/priority
-are still coverage/arbitration adapters, not recovered general source rules.
+payloads/story branches remain. Native early story envelope is a coverage adapter;
+[ordinary talk selection](NATIVE_NPC_TALK_SELECTION.md) now follows recovered
+local rules. Full encounter/event/registry arbitration remains separate.
 
 The builder reads only source DOL data for tribe fields/name pointers and the
 91-float system angleABf table at803041e0. Ignored `npc-angle.bin` retains the

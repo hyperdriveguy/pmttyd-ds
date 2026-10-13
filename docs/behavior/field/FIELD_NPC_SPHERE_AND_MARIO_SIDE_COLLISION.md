@@ -85,3 +85,8 @@ Complete polynomial helper numerics, caller-wide pool/flag domains, Mario map
 wall placement and retrace order, dynamic NPC collision and battle/interaction
 arbitration remain open. [Ordinary talk candidate](FIELD_ORDINARY_NPC_TALK_CANDIDATE.md)
 owns its different radius/facing/occlusion and A-admission predicates.
+
+Scoped numeric/caller-gate follow-up: [exact side response and polynomial](FIELD_NPC_MARIO_SIDE_RESPONSE_NUMERICS.md)
+pins the source FMA coefficients and remaining direct npcMain gates, including
+active1+2 and current state+1d4 mask10. The local terminal flags8/20/4000
+are not the entire caller admission chain.

@@ -40,7 +40,9 @@ S_1, story!=341 and system mask0x20 admission. Its presentation uses
 [PMANIM4 surfaces](../display/NATIVE_ACTOR_SURFACE_PACK.md).
 The constructor gates are represented; dynamic system flag producers remain
 partial. PMNPC004 adds original model names for floor/wall filters.
-Loading continues to accept PMNPC001/002/003.
+PMNPC005 adds source dimensions/talk names and model draw masks; versions1..5
+remain readable. The catalog loader stages the original angle table atomically
+with the catalog for [ordinary talk selection](NATIVE_NPC_TALK_SELECTION.md).
 
 Loading rejects oversized counts, unsafe names, invalid model indices,
 nonfinite positions/yaw/scale, unsupported UV scale, contradictory gates,
@@ -57,7 +59,9 @@ destination geometry. Failed imports discard staged resources after
 before disposing the previous area's resources. Staging peak memory includes
 both areas. Model resources remain shared among their instances.
 
-Animation time uses simulation ticks since the first render after area load.
+Object animation time uses simulation ticks since the first render after area load.
+NPC instance clocks retain simulation milliseconds and source message requests,
+as described by [NPC presentation](NATIVE_NPC_PRESENTATION_AND_SOURCE_DIMENSIONS.md).
 One persistent sample per resident model caches tick and pose; sampling another
 pose invalidates that cache. Hierarchy traversal arrays retain capacity and use
 allocation-free recursive dispatch after warmup. Source sparse key replay
@@ -70,19 +74,26 @@ through `Renderer::fieldActorMetrics()`. Actor overflow submits no partial mesh.
 Texture groups submit citro3d spans through the existing PICA shader, depth/
 alpha admission and frame services.
 
-Static paper-facing converts source90/270 to the current right/left adapter.
-Original NPC matrix/camera correction, `animPoseDrawMtx` facing, flags,
-normal-based material lighting, translucent sorting and shadows remain open.
+Original NPC matrix/camera correction, Main/Inner facing, source dimensions,
+talk clocks and source shape culling/colors are bound in the scoped
+[presentation service](NATIVE_NPC_PRESENTATION_AND_SOURCE_DIMENSIONS.md).
+Full display flags, material lighting, translucent sorting and shadows remain open.
 Emulator output establishes bounded execution, not New2DS hardware performance
-or original GPU parity. Talk admission currently uses a native0.65-unit XZ
-circle,0.25-unit height tolerance and grounded A before door/jump admission.
-These are provisional adapters, not recovered original search/arbitration.
+or original GPU parity. [Ordinary talk selection](NATIVE_NPC_TALK_SELECTION.md)
+uses source width/height, camera-relative width-span facing, map obstruction and
+strict nearest selection. NPC updates publish a candidate after Mario; that
+retained candidate can block the next Mario A jump. Selected talk starts on the
+following NPC invocation. Complete encounter/door/regular-event priority is open.
 Talk opens the exact source room/global resource and uses original playback;
 new actions and saves stay locked until closure while neutral field physics
-continues. Collision, NPC search, facing-to-Mario and wandering remain open.
+continues. Talk uses source turn-to-Mario and restores the catalog yaw after
+closure. Collision, complete auto-turn/registry/event ownership and wandering
+remain open.
 
 The original save-block S_1 retains outside0..1 UVs, discrete scrolling updates,
 source binding repeat overrides, RGBA and pass2/3. Original bbox head, top support and ordinary Mario side collision are connected. Hit callback, save-choice
-dispatch and card persistence remain unbound. Their recovered contracts are
+dispatch and native SD persistence are connected through
+[live save objects](NATIVE_LIVE_SAVE_BLOCK.md); original card/audio services
+remain unbound. Their recovered contracts are
 [head lifecycle](SAVE_BLOCK_HEAD_CONTACT_AND_HIT_LIFECYCLE.md) and
 [common save graph](SAVE_BLOCK_COMMON_SAVE_EVENT_AND_CHOICES.md).
