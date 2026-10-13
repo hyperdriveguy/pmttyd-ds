@@ -1,0 +1,774 @@
+{
+  "schema": 1,
+  "scope": "Three complete macro start/MIDI priority/VID constructor bodies; allocation/priority/resource/provider/runtime open",
+  "complete_bodies": [
+    "macStart",
+    "seqGetMIDIPriority",
+    "vidMakeNew"
+  ],
+  "linked_only": [
+    "_savegpr_14",
+    "dataGetMacro",
+    "voiceAllocate",
+    "vidRemoveVoiceReferences",
+    "hwIsActive",
+    "inpResetMidiCtrl",
+    "inpResetChannelDefaults",
+    "voiceSetPriority",
+    "synthForceLowPrecisionUpdate",
+    "hwBreak",
+    "voiceFree",
+    "_restgpr_14"
+  ],
+  "dol_spans": [
+    {
+      "name": "macStart",
+      "address": 2150121300,
+      "size": 1080,
+      "sha256": "0be04ec8eba8450dfb24ddce6481987f8e17b1621b890665f75f11045b8705ab"
+    },
+    {
+      "name": "seqGetMIDIPriority",
+      "address": 2150080276,
+      "size": 28,
+      "sha256": "a4e68b437489be7b00bcadc9f0316f49507edc88a90dd4c5bfb2a3471595b294"
+    },
+    {
+      "name": "vidMakeNew",
+      "address": 2150123600,
+      "size": 276,
+      "sha256": "5c3f69b1e7965e4632a236cef7927cfc06689e061f645397ff23d4a0247d34fb"
+    },
+    {
+      "name": "_savegpr_14",
+      "address": 2149992788,
+      "size": 4,
+      "sha256": "d5e74c3f5d4f0f04dd2f491bd4a57afe70866e076bb17ef3b734617545e31aad"
+    },
+    {
+      "name": "dataGetMacro",
+      "address": 2150101084,
+      "size": 140,
+      "sha256": "40b6a8d47d9e807befc0bcc0530b54a0085d3a7739441ac715c7f4c35e658d05"
+    },
+    {
+      "name": "voiceAllocate",
+      "address": 2150125532,
+      "size": 272,
+      "sha256": "e82095b7ca238e173b5b3dc16a62d4c6bc7b110f5b3a799d1811bbf53d80a8dc"
+    },
+    {
+      "name": "vidRemoveVoiceReferences",
+      "address": 2150122708,
+      "size": 872,
+      "sha256": "46c48091753a8c38a770d4d93c50f8625c43dfd16f17cf63f0b9e9ebcf7a96d2"
+    },
+    {
+      "name": "hwIsActive",
+      "address": 2150172632,
+      "size": 32,
+      "sha256": "375b411fbc13b4d8177c69d863b45104eda75645bf41a10378495e6c8a1db650"
+    },
+    {
+      "name": "inpResetMidiCtrl",
+      "address": 2150165592,
+      "size": 240,
+      "sha256": "3cfe8ccb13fea5a398a690d136a6df07106e64f36ff492e34f8612fdcd634e62"
+    },
+    {
+      "name": "inpResetChannelDefaults",
+      "address": 2150166608,
+      "size": 92,
+      "sha256": "7bd002d5a6bab9157757a6797198a7064ba9c2497cff6ba82482d5184c596819"
+    },
+    {
+      "name": "voiceSetPriority",
+      "address": 2150124040,
+      "size": 588,
+      "sha256": "571e041add21eb20282a32700e5d1ac00f2aa1db9b8f2b5a7882e696a6a46b06"
+    },
+    {
+      "name": "synthForceLowPrecisionUpdate",
+      "address": 2150074316,
+      "size": 68,
+      "sha256": "8682c439433463f7da8d7b606e97afa6e7abaf65b036ed8151672da41feb394e"
+    },
+    {
+      "name": "hwBreak",
+      "address": 2150173128,
+      "size": 80,
+      "sha256": "8955a746dcfe8382cd1d36ebc366a74d422fe57fd15e8a178a5ade8eccbf2990"
+    },
+    {
+      "name": "voiceFree",
+      "address": 2150125924,
+      "size": 452,
+      "sha256": "f5592e6746e48edb3497424c1b2d4a9ec97f1a47f5d03b96377c1fdee691c308"
+    },
+    {
+      "name": "_restgpr_14",
+      "address": 2149992864,
+      "size": 4,
+      "sha256": "739fa73f0eae2004fe31b6f509142f8d082037557fe5faaa311e1211ae87de16"
+    }
+  ],
+  "dol_anchors": {
+    "2150121308": "90010054",
+    "2150121312": "39610050",
+    "2150121316": "4bfe09f1",
+    "2150121320": "8ac1005b",
+    "2150121328": "8ae1005f",
+    "2150121352": "8b41006b",
+    "2150121360": "8b61006f",
+    "2150121368": "81c10074",
+    "2150121380": "4bffb0b9",
+    "2150121388": "418203c4",
+    "2150121396": "40820020",
+    "2150121408": "4bff5f55",
+    "2150121420": "41820008",
+    "2150121452": "48000ff1",
+    "2150121460": "3c1d0001",
+    "2150121468": "41820374",
+    "2150121476": "806d1f70",
+    "2150121488": "480004c5",
+    "2150121492": "801c004c",
+    "2150121500": "418200ec",
+    "2150121508": "40820038",
+    "2150121512": "807c0040",
+    "2150121520": "40820010",
+    "2150121524": "801c003c",
+    "2150121528": "900d1ffc",
+    "2150121532": "4800000c",
+    "2150121536": "801c003c",
+    "2150121540": "9003003c",
+    "2150121544": "807c003c",
+    "2150121552": "4182000c",
+    "2150121556": "801c0040",
+    "2150121560": "90030040",
+    "2150121564": "809c0098",
+    "2150121568": "38600000",
+    "2150121572": "80bc009c",
+    "2150121588": "4182008c",
+    "2150121592": "3800ffff",
+    "2150121608": "41820038",
+    "2150121612": "807c0048",
+    "2150121620": "40820010",
+    "2150121624": "801c0044",
+    "2150121628": "900d1ff8",
+    "2150121632": "4800000c",
+    "2150121636": "801c0044",
+    "2150121640": "90030044",
+    "2150121644": "807c0044",
+    "2150121652": "4182000c",
+    "2150121656": "801c0048",
+    "2150121660": "90030048",
+    "2150121664": "38800000",
+    "2150121668": "3c60fffc",
+    "2150121672": "909c009c",
+    "2150121676": "3803fffb",
+    "2150121680": "3860ffff",
+    "2150121684": "909c0098",
+    "2150121688": "808d1ff0",
+    "2150121692": "80ad1ff4",
+    "2150121696": "90bc00a4",
+    "2150121700": "909c00a0",
+    "2150121704": "80bc0118",
+    "2150121708": "809c0114",
+    "2150121716": "901c0118",
+    "2150121724": "901c0114",
+    "2150121728": "38000002",
+    "2150121732": "901c004c",
+    "2150121736": "807c0118",
+    "2150121740": "38000010",
+    "2150121744": "80bc0114",
+    "2150121748": "38800000",
+    "2150121768": "901c0118",
+    "2150121772": "909c0114",
+    "2150121776": "4800c6a9",
+    "2150121784": "41820010",
+    "2150121788": "801c0118",
+    "2150121796": "901c0118",
+    "2150121800": "38000000",
+    "2150121808": "901c009c",
+    "2150121812": "901c0098",
+    "2150121816": "41820044",
+    "2150121820": "38000001",
+    "2150121828": "981c011d",
+    "2150121836": "388000ff",
+    "2150121840": "38a00001",
+    "2150121844": "4800aae5",
+    "2150121852": "388000ff",
+    "2150121856": "4800aed1",
+    "2150121860": "9bbc0216",
+    "2150121864": "386000ff",
+    "2150121868": "38000000",
+    "2150121872": "987c0217",
+    "2150121876": "981c0218",
+    "2150121880": "48000014",
+    "2150121884": "981c011d",
+    "2150121888": "9abc0216",
+    "2150121892": "9adc0217",
+    "2150121896": "9afc0218",
+    "2150121900": "b1fc0104",
+    "2150121916": "923c0100",
+    "2150121920": "3cc07530",
+    "2150121924": "38a00400",
+    "2150121932": "90dc0110",
+    "2150121944": "39000000",
+    "2150121948": "b0bc010e",
+    "2150121960": "38e0ffff",
+    "2150121964": "93fc0034",
+    "2150121972": "88010073",
+    "2150121980": "915c0038",
+    "2150121984": "9a5c0131",
+    "2150121988": "b13c012e",
+    "2150121992": "991c0130",
+    "2150121996": "9a7c0214",
+    "2150122000": "9a9c0215",
+    "2150122004": "9b3c0219",
+    "2150122008": "991c008c",
+    "2150122012": "991c008d",
+    "2150122016": "90fc00ec",
+    "2150122020": "90fc00f0",
+    "2150122024": "90fc0108",
+    "2150122028": "9b7c021a",
+    "2150122032": "981c021b",
+    "2150122036": "98dc021c",
+    "2150122040": "991c0442",
+    "2150122044": "991c0441",
+    "2150122048": "991c0440",
+    "2150122052": "90bc00f4",
+    "2150122056": "480007c1",
+    "2150122068": "480005fd",
+    "2150122076": "3c0e0001",
+    "2150122084": "418200ec",
+    "2150122088": "801c004c",
+    "2150122096": "418200d8",
+    "2150122100": "809c0098",
+    "2150122104": "38600000",
+    "2150122108": "80bc009c",
+    "2150122124": "41820094",
+    "2150122128": "3800ffff",
+    "2150122144": "41820038",
+    "2150122148": "807c0048",
+    "2150122156": "40820010",
+    "2150122160": "801c0044",
+    "2150122164": "900d1ff8",
+    "2150122168": "4800000c",
+    "2150122172": "801c0044",
+    "2150122176": "90030044",
+    "2150122180": "807c0044",
+    "2150122188": "4182000c",
+    "2150122192": "801c0048",
+    "2150122196": "90030048",
+    "2150122204": "4bff44f1",
+    "2150122208": "38800000",
+    "2150122212": "3c60fffc",
+    "2150122216": "909c009c",
+    "2150122220": "3803fffb",
+    "2150122224": "3860ffff",
+    "2150122228": "909c0098",
+    "2150122232": "808d1ff0",
+    "2150122236": "80ad1ff4",
+    "2150122240": "90bc00a4",
+    "2150122244": "909c00a0",
+    "2150122248": "80bc0118",
+    "2150122252": "809c0114",
+    "2150122260": "901c0118",
+    "2150122268": "901c0114",
+    "2150122272": "800d1ffc",
+    "2150122280": "901c003c",
+    "2150122284": "4182000c",
+    "2150122288": "806d1ffc",
+    "2150122292": "93830040",
+    "2150122296": "38000000",
+    "2150122300": "901c0040",
+    "2150122304": "938d1ffc",
+    "2150122308": "901c004c",
+    "2150122316": "48000028",
+    "2150122324": "4800c485",
+    "2150122332": "4182000c",
+    "2150122340": "4800c665",
+    "2150122348": "48000df9",
+    "2150122352": "3860ffff",
+    "2150122356": "39610050",
+    "2150122360": "4bfe0629",
+    "2150122364": "80010054",
+    "2150122372": "38210050",
+    "2150080276": "3ca08040",
+    "2150080284": "38658200",
+    "2150123600": "80cd2010",
+    "2150123604": "3c060001",
+    "2150123616": "38c60001",
+    "2150123620": "4182fff0",
+    "2150123624": "90cd2010",
+    "2150123632": "80cd200c",
+    "2150123640": "39200000",
+    "2150123644": "48000048",
+    "2150123648": "80080008",
+    "2150123656": "41810044",
+    "2150123660": "40820030",
+    "2150123664": "80ed2010",
+    "2150123668": "3c070001",
+    "2150123680": "38e70001",
+    "2150123684": "4182fff0",
+    "2150123688": "90ed2010",
+    "2150123696": "80080008",
+    "2150123704": "4180ffbc",
+    "2150123712": "81080000",
+    "2150123720": "4082ffb8",
+    "2150123724": "80ad2008",
+    "2150123736": "4082000c",
+    "2150123740": "3860ffff",
+    "2150123748": "80a50000",
+    "2150123756": "90ad2008",
+    "2150123760": "4182000c",
+    "2150123764": "38000000",
+    "2150123768": "90050004",
+    "2150123776": "4082000c",
+    "2150123780": "90cd200c",
+    "2150123784": "48000008",
+    "2150123788": "90c90000",
+    "2150123792": "91260004",
+    "2150123800": "91060000",
+    "2150123804": "41820008",
+    "2150123808": "90c80004",
+    "2150123812": "90e60008",
+    "2150123820": "800300f4",
+    "2150123824": "9006000c",
+    "2150123828": "4182000c",
+    "2150123836": "48000008",
+    "2150123840": "38000000",
+    "2150123844": "900300fc",
+    "2150123852": "90c300f8",
+    "2150123856": "4182000c",
+    "2150123868": "806300f4",
+    "2150080296": "7c63022e",
+    "2150123816": "28040000",
+    "2150121952": "51e0801e",
+    "2150121956": "7fa50378"
+  },
+  "direct_calls": [
+    {
+      "site": 2150121316,
+      "target": 2149992788,
+      "name": "_savegpr_14"
+    },
+    {
+      "site": 2150121380,
+      "target": 2150101084,
+      "name": "dataGetMacro"
+    },
+    {
+      "site": 2150121408,
+      "target": 2150080276,
+      "name": "seqGetMIDIPriority"
+    },
+    {
+      "site": 2150121452,
+      "target": 2150125532,
+      "name": "voiceAllocate"
+    },
+    {
+      "site": 2150121488,
+      "target": 2150122708,
+      "name": "vidRemoveVoiceReferences"
+    },
+    {
+      "site": 2150121776,
+      "target": 2150172632,
+      "name": "hwIsActive"
+    },
+    {
+      "site": 2150121844,
+      "target": 2150165592,
+      "name": "inpResetMidiCtrl"
+    },
+    {
+      "site": 2150121856,
+      "target": 2150166608,
+      "name": "inpResetChannelDefaults"
+    },
+    {
+      "site": 2150122056,
+      "target": 2150124040,
+      "name": "voiceSetPriority"
+    },
+    {
+      "site": 2150122068,
+      "target": 2150123600,
+      "name": "vidMakeNew"
+    },
+    {
+      "site": 2150122204,
+      "target": 2150074316,
+      "name": "synthForceLowPrecisionUpdate"
+    },
+    {
+      "site": 2150122324,
+      "target": 2150172632,
+      "name": "hwIsActive"
+    },
+    {
+      "site": 2150122340,
+      "target": 2150173128,
+      "name": "hwBreak"
+    },
+    {
+      "site": 2150122348,
+      "target": 2150125924,
+      "name": "voiceFree"
+    },
+    {
+      "site": 2150122360,
+      "target": 2149992864,
+      "name": "_restgpr_14"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_start_key_modes": [
+    {
+      "raw_key": 0,
+      "fx": false,
+      "stored_key": 0,
+      "checks_midi_priority": true
+    },
+    {
+      "raw_key": 127,
+      "fx": false,
+      "stored_key": 127,
+      "checks_midi_priority": true
+    },
+    {
+      "raw_key": 128,
+      "fx": true,
+      "stored_key": 0,
+      "checks_midi_priority": false
+    },
+    {
+      "raw_key": 255,
+      "fx": true,
+      "stored_key": 127,
+      "checks_midi_priority": false
+    },
+    {
+      "raw_key": 256,
+      "fx": false,
+      "stored_key": 0,
+      "checks_midi_priority": true
+    },
+    {
+      "raw_key": 4294967295,
+      "fx": true,
+      "stored_key": 127,
+      "checks_midi_priority": false
+    }
+  ],
+  "derived_priority_vectors": [
+    {
+      "input_priority": 7,
+      "midi_priority": 65535,
+      "resolved": 7
+    },
+    {
+      "input_priority": 7,
+      "midi_priority": 0,
+      "resolved": 0
+    },
+    {
+      "input_priority": 7,
+      "midi_priority": 255,
+      "resolved": 255
+    },
+    {
+      "input_priority": 7,
+      "midi_priority": 256,
+      "resolved": 0
+    },
+    {
+      "input_priority": 4294967295,
+      "midi_priority": 32767,
+      "resolved": 255
+    }
+  ],
+  "derived_priority_addresses": [
+    {
+      "raw_set": 0,
+      "raw_channel": 0,
+      "address": 2151645696
+    },
+    {
+      "raw_set": 7,
+      "raw_channel": 15,
+      "address": 2151645950
+    },
+    {
+      "raw_set": 255,
+      "raw_channel": 255,
+      "address": 2151654366
+    },
+    {
+      "raw_set": 256,
+      "raw_channel": 256,
+      "address": 2151645696
+    }
+  ],
+  "derived_compound_ids": [
+    {
+      "macro_id": 1,
+      "key": 64,
+      "raw_slot": 7,
+      "full_id": 81927
+    },
+    {
+      "macro_id": 65535,
+      "key": 255,
+      "raw_slot": 255,
+      "full_id": 4294967295
+    },
+    {
+      "macro_id": 65537,
+      "key": 384,
+      "raw_slot": 1,
+      "full_id": 98305
+    },
+    {
+      "macro_id": 0,
+      "key": 0,
+      "raw_slot": 256,
+      "full_id": 256
+    },
+    {
+      "macro_id": 4660,
+      "key": 127,
+      "raw_slot": 63,
+      "full_id": 305430335
+    }
+  ],
+  "derived_initial_state_routes": [
+    {
+      "state": 0,
+      "active_unlink": true,
+      "skip_old_wait_cleanup": false
+    },
+    {
+      "state": 1,
+      "active_unlink": false,
+      "skip_old_wait_cleanup": false
+    },
+    {
+      "state": 2,
+      "active_unlink": false,
+      "skip_old_wait_cleanup": true
+    },
+    {
+      "state": 3,
+      "active_unlink": false,
+      "skip_old_wait_cleanup": false
+    },
+    {
+      "state": 255,
+      "active_unlink": false,
+      "skip_old_wait_cleanup": false
+    }
+  ],
+  "derived_common_flag_vectors": [
+    {
+      "before": 0,
+      "hardware_active": false,
+      "low": 2,
+      "high": 0
+    },
+    {
+      "before": 4294967295,
+      "hardware_active": false,
+      "low": 18,
+      "high": 0
+    },
+    {
+      "before": 0,
+      "hardware_active": true,
+      "low": 3,
+      "high": 0
+    },
+    {
+      "before": 16,
+      "hardware_active": true,
+      "low": 19,
+      "high": 0
+    }
+  ],
+  "pending_field_bindings": [
+    {
+      "offset": 260,
+      "width": 2,
+      "source": "A1.low16"
+    },
+    {
+      "offset": 256,
+      "width": 4,
+      "source": "A4.raw"
+    },
+    {
+      "offset": 272,
+      "width": 4,
+      "source": "75300000hex"
+    },
+    {
+      "offset": 270,
+      "width": 2,
+      "source": "1024"
+    },
+    {
+      "offset": 52,
+      "width": 4,
+      "source": "macro pointer"
+    },
+    {
+      "offset": 56,
+      "width": 4,
+      "source": "macro pointer+A11.low16*8"
+    },
+    {
+      "offset": 305,
+      "width": 1,
+      "source": "selected key.low8"
+    },
+    {
+      "offset": 302,
+      "width": 2,
+      "source": "selected key.low8"
+    },
+    {
+      "offset": 304,
+      "width": 1,
+      "source": "0"
+    },
+    {
+      "offset": 532,
+      "width": 1,
+      "source": "A6.low8"
+    },
+    {
+      "offset": 533,
+      "width": 1,
+      "source": "A7.low8"
+    },
+    {
+      "offset": 537,
+      "width": 1,
+      "source": "A12.low8"
+    },
+    {
+      "offset": 140,
+      "width": 1,
+      "source": "0"
+    },
+    {
+      "offset": 141,
+      "width": 1,
+      "source": "0"
+    },
+    {
+      "offset": 236,
+      "width": 4,
+      "source": "ffffffffhex"
+    },
+    {
+      "offset": 240,
+      "width": 4,
+      "source": "ffffffffhex"
+    },
+    {
+      "offset": 264,
+      "width": 4,
+      "source": "ffffffffhex"
+    },
+    {
+      "offset": 538,
+      "width": 1,
+      "source": "A14.low8"
+    },
+    {
+      "offset": 539,
+      "width": 1,
+      "source": "A15.low8"
+    },
+    {
+      "offset": 540,
+      "width": 1,
+      "source": "A16.raw==0"
+    },
+    {
+      "offset": 1090,
+      "width": 1,
+      "source": "0"
+    },
+    {
+      "offset": 1089,
+      "width": 1,
+      "source": "0"
+    },
+    {
+      "offset": 1088,
+      "width": 1,
+      "source": "0"
+    },
+    {
+      "offset": 244,
+      "width": 4,
+      "source": "compound ID"
+    }
+  ],
+  "derived_vid_counter_vectors": [
+    {
+      "before": 0,
+      "candidate": 0,
+      "next_counter": 1
+    },
+    {
+      "before": 1,
+      "candidate": 1,
+      "next_counter": 2
+    },
+    {
+      "before": 4294967294,
+      "candidate": 4294967294,
+      "next_counter": 4294967295
+    },
+    {
+      "before": 4294967295,
+      "candidate": 0,
+      "next_counter": 1
+    }
+  ],
+  "derived_vid_return_modes": [
+    {
+      "raw_selector": 0,
+      "publishes_secondary_pointer": false,
+      "returns": "fresh internal"
+    },
+    {
+      "raw_selector": 1,
+      "publishes_secondary_pointer": true,
+      "returns": "public"
+    },
+    {
+      "raw_selector": 256,
+      "publishes_secondary_pointer": true,
+      "returns": "public"
+    },
+    {
+      "raw_selector": 4294967295,
+      "publishes_secondary_pointer": true,
+      "returns": "public"
+    }
+  ],
+  "vid_globals": {
+    "free_root": 2151804712,
+    "active_root": 2151804716,
+    "next_public_id": 2151804720
+  }
+}

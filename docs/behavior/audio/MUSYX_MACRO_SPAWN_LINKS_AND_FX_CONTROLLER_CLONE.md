@@ -127,3 +127,10 @@ owners, valid slot/member/generation/alias/cycle/IRQ/reentrancy/concurrency/
 invalidation domains and original spawn/refusal/link/clone/audio traces.
 Two local bodies/opcode stub are answered; remaining interpreter opcodes,
 EVT-01 and full native/source/runtime/hardware equivalence remain OPEN.
+
+### Start/VID child follow-up
+
+[Complete macStart/MIDI-priority/VID construction](MUSYX_MACRO_START_PRIORITY_AND_VID_CONSTRUCTION.md)
+now closes the exact start child and public/internal return selector. Spawn
+passes selector0, requesting internal ID; allocator/priority/resource/free
+providers and actual ownership/rollback/original audio domains remain open.

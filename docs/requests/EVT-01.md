@@ -273,6 +273,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Raw key/16-argument request/suppression/public-node/chain order and five
   controller clone requests pinned; macStart/providers/lifetime/identity/
   invalidation and original spawn/audio remain open.
+- [x] Complete macStart/seqGetMIDIPriority/vidMakeNew local bodies —
+  [start/priority/VID construction](../behavior/audio/MUSYX_MACRO_START_PRIORITY_AND_VID_CONSTRUCTION.md).
+  Allocation/state/pending/ID/active/failure order and public/internal return
+  selector/counter/free-node order pinned; allocator/priority/resource/free/
+  lifecycle/domain/original activation/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1623,3 +1628,21 @@ full ELFs/listings stay `/tmp`; no native change/original execution/body/binary
 asset export. macStart/allocation/VID/pending/ID/link/flag/lifetime providers,
 member/generation/alias/cycle/IRQ/reentrancy/concurrency/invalidation and original
 spawn/refusal/clone/audio traces remain OPEN.
+
+### 2026-10-13 — Macro start, priority and VID construction
+
+[Three complete local bodies](../behavior/audio/MUSYX_MACRO_START_PRIORITY_AND_VID_CONSTRUCTION.md)
+close lookup/MIDI-priority/allocation request, state-dependent active/wait
+cleanup, FX cold reset versus MIDI pending fields, compound internal ID,
+priority/VID request, activation or failure cleanup. VID counter advances before
+free-node admission, sorted public-ID collisions skip sentinel, and raw return
+selector chooses public versus freshly reread internal ID. Spawn's selector0
+requests the internal route. No full allocator/resource/priority/free semantics,
+ID/table guard, atomic list repair or rollback inferred from fingerprints.
+
+Validation: read-only manifest15 spans (three complete/12 linked),234 anchors/
+15 calls passes. Six key/five priority/four address/five compound/five state/four
+flags/four counter/four return-mode vectors and24 field bindings checked as
+deductions. Full fresh ELFs stay `/tmp`; no native change/original execution/body/
+binary asset export. Actual providers/lifecycle/bounds/member/generation/sorted/
+alias/IRQ/concurrency/rollback and original spawn/activation/audio remain OPEN.

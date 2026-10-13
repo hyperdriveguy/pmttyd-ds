@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero macro start/priority/VID construction
+
+Completed macStart/seqGetMIDIPriority/vidMakeNew for EVT-01; checked the
+corresponding inbox portion. [Start/priority/VID](behavior/audio/MUSYX_MACRO_START_PRIORITY_AND_VID_CONSTRUCTION.md)
+pins lookup/priority/allocation requests, old state/wait cleanup, pending fields/
+compound ID, public VID construction and active publication/failure cleanup.
+VID selector0 returns a fresh internal ID; nonzero returns public ID. Counter
+advances before free-node admission. Allocator/priority/resource/free providers
+remain linked/open; no complete rollback/lifetime or original playback inferred.
+
+Validation: read-only ISO manifest passed15 spans (three complete/12 linked),
+234 anchors/15 calls. Six key/five priority/four address/five compound/five state/
+four flags/four counter/four return-mode vectors and24 field bindings checked
+as deductions. Link audit passed805 Markdown files/zero broken links;
+`git diff --check` passed. Documentation/metadata only; no `make test`/`make all`
+rerun. Full original inspection ELFs stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 voiceAllocate/voiceSetPriority/reference/free/resource
+services and actual argument/registry/ID/VID/list/pending/flag/clock lifecycle,
+valid slot/member/generation/sorted/alias/concurrency/rollback domains; remaining
+macro opcodes and original activation/audio traces. Full native/runtime binding,
+lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero macro spawn/links/FX clone
 
 Completed mcmdPlayMacro/synthFXCloneMidiSetup and opcode8 stub for EVT-01;
