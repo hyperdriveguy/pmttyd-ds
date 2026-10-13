@@ -1,0 +1,455 @@
+{
+  "schema": 1,
+  "scope": "Complete ZeroOffsetHandler volume/aux output request region; remaining handler/runtime open",
+  "complete_bodies": [],
+  "complete_regions": [
+    {
+      "name": "ZeroOffsetHandler volume and aux output",
+      "address": 2150073128,
+      "size": 388
+    }
+  ],
+  "linked_only": [
+    "ZeroOffsetHandler",
+    "inpGetVolume",
+    "inpGetReverb",
+    "inpGetPreAuxA",
+    "inpGetPostAuxB",
+    "inpGetPreAuxB",
+    "hwSetVolume"
+  ],
+  "dol_spans": [
+    {
+      "name": "ZeroOffsetHandler",
+      "address": 2150071912,
+      "size": 1968,
+      "sha256": "e10e7212a41f16892773ec0b6decced70f91c2bb46302e8b27d19665461b078c"
+    },
+    {
+      "name": "inpGetVolume",
+      "address": 2150168432,
+      "size": 72,
+      "sha256": "72138e19d2f6d742d8359c2047fb23e9010f0540d37192702384c552f5ee0862"
+    },
+    {
+      "name": "inpGetReverb",
+      "address": 2150169008,
+      "size": 72,
+      "sha256": "e26ba0e6dd4fa37c65be980aa4647f7c1b2ac7f8dc496e2a7243a0c610fd7ceb"
+    },
+    {
+      "name": "inpGetPreAuxA",
+      "address": 2150168936,
+      "size": 72,
+      "sha256": "ec5f53a1427b6007443bba1d9f8580e414d8e10d34f2a50aef442ca2410a1f14"
+    },
+    {
+      "name": "inpGetPostAuxB",
+      "address": 2150169152,
+      "size": 72,
+      "sha256": "48a63e28592656971648421842d08d1c9afddf51a3d05ccd8555383e7338109d"
+    },
+    {
+      "name": "inpGetPreAuxB",
+      "address": 2150169080,
+      "size": 72,
+      "sha256": "e8257aa716aff144bbcde47a91b3797910e948793a11919145142362d3d8eb80"
+    },
+    {
+      "name": "hwSetVolume",
+      "address": 2150174544,
+      "size": 704,
+      "sha256": "7572e8abd4d46b2efbaa2acc084c05712849d45f4cbb8225dd7d905aaaa7657c"
+    },
+    {
+      "name": "ZeroOffsetHandler volume and aux output",
+      "address": 2150073128,
+      "size": 388,
+      "sha256": "a281ecce1f671218ac723ea1af43c469ad94a7d288691c81e98fb964bddc60d1"
+    },
+    {
+      "name": "Output constants 0x80429120",
+      "address": 2151846176,
+      "size": 4,
+      "sha256": "7b75b05602b209475f3d646f32fb7d36affded9fdc8084b78b7511f56098e385"
+    },
+    {
+      "name": "Output constants 0x8042913c",
+      "address": 2151846204,
+      "size": 8,
+      "sha256": "a889efb99595e9d50fd8514568009f3ff30a6e53b004d9bfbb01e40bb79b6c20"
+    },
+    {
+      "name": "Output constants 0x80429148",
+      "address": 2151846216,
+      "size": 8,
+      "sha256": "2b2979f362d94c89fe17a6e01637f14332de063fe7a544bdc5facfc046f4169f"
+    }
+  ],
+  "dol_anchors": {
+    "2150073128": "28000000",
+    "2150073132": "40820010",
+    "2150073136": "801e0220",
+    "2150073140": "70000f01",
+    "2150073144": "41820174",
+    "2150073148": "7fc3f378",
+    "2150073152": "48017431",
+    "2150073156": "5463043e",
+    "2150073160": "3c004330",
+    "2150073164": "9061002c",
+    "2150073168": "ec3e07f2",
+    "2150073172": "c8621d08",
+    "2150073176": "7fc3f378",
+    "2150073180": "90010028",
+    "2150073184": "c0021cfc",
+    "2150073188": "c8410028",
+    "2150073192": "ec421828",
+    "2150073196": "ec2100b2",
+    "2150073200": "efe00072",
+    "2150073204": "4801763d",
+    "2150073208": "5460043e",
+    "2150073212": "3c804330",
+    "2150073216": "90010024",
+    "2150073220": "7fc3f378",
+    "2150073224": "881e0194",
+    "2150073228": "90810020",
+    "2150073232": "c8821d08",
+    "2150073236": "c8010020",
+    "2150073240": "9001001c",
+    "2150073244": "ec202028",
+    "2150073248": "c0421cfc",
+    "2150073252": "90810018",
+    "2150073256": "c0021ce0",
+    "2150073260": "ec7f0072",
+    "2150073264": "c8210018",
+    "2150073268": "ec212028",
+    "2150073272": "ec4200f2",
+    "2150073276": "ec2100b2",
+    "2150073280": "efa00072",
+    "2150073284": "480175a5",
+    "2150073288": "5460043e",
+    "2150073292": "3c804330",
+    "2150073296": "90010014",
+    "2150073300": "7fc3f378",
+    "2150073304": "881e0195",
+    "2150073308": "90810010",
+    "2150073312": "c8821d08",
+    "2150073316": "c8010010",
+    "2150073320": "90010034",
+    "2150073324": "ec002028",
+    "2150073328": "c0421cfc",
+    "2150073332": "90810030",
+    "2150073336": "c0221ce0",
+    "2150073340": "ec7e0032",
+    "2150073344": "c8010030",
+    "2150073348": "ec002028",
+    "2150073352": "ec4200f2",
+    "2150073356": "ec010032",
+    "2150073360": "ec22e82a",
+    "2150073364": "ef80082a",
+    "2150073368": "48017629",
+    "2150073372": "5463043e",
+    "2150073376": "3c004330",
+    "2150073380": "9061003c",
+    "2150073384": "7fc3f378",
+    "2150073388": "c8421d08",
+    "2150073392": "90010038",
+    "2150073396": "c0021cfc",
+    "2150073400": "c8210038",
+    "2150073404": "ec211028",
+    "2150073408": "ec3f0072",
+    "2150073412": "efa00072",
+    "2150073416": "480175b1",
+    "2150073420": "5463043e",
+    "2150073424": "3c004330",
+    "2150073428": "90610044",
+    "2150073432": "fc20f890",
+    "2150073436": "c0021d00",
+    "2150073440": "fc40e090",
+    "2150073444": "90010040",
+    "2150073448": "7fa3eb78",
+    "2150073452": "ec0007f2",
+    "2150073456": "c8a21d08",
+    "2150073460": "c8810040",
+    "2150073464": "fc00001e",
+    "2150073468": "c0621cfc",
+    "2150073472": "ec842828",
+    "2150073476": "d8010048",
+    "2150073480": "ec9e0132",
+    "2150073484": "8001004c",
+    "2150073488": "b01e0454",
+    "2150073492": "ec030132",
+    "2150073496": "889e0196",
+    "2150073500": "ec60e82a",
+    "2150073504": "80be0164",
+    "2150073508": "80de0168",
+    "2150073512": "48018aa9"
+  },
+  "direct_calls": [
+    {
+      "site": 2150073152,
+      "target": 2150168432,
+      "name": "inpGetVolume"
+    },
+    {
+      "site": 2150073204,
+      "target": 2150169008,
+      "name": "inpGetReverb"
+    },
+    {
+      "site": 2150073284,
+      "target": 2150168936,
+      "name": "inpGetPreAuxA"
+    },
+    {
+      "site": 2150073368,
+      "target": 2150169152,
+      "name": "inpGetPostAuxB"
+    },
+    {
+      "site": 2150073416,
+      "target": 2150169080,
+      "name": "inpGetPreAuxB"
+    },
+    {
+      "site": 2150073512,
+      "target": 2150174544,
+      "name": "hwSetVolume"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "literal_values": [
+    {
+      "address": 2151846176,
+      "word": "3c010204",
+      "value": 0.007874015718698502
+    },
+    {
+      "address": 2151846204,
+      "word": "38800200",
+      "value": 6.103888154029846e-05
+    },
+    {
+      "address": 2151846208,
+      "word": "46fffe00",
+      "value": 32767.0
+    }
+  ],
+  "unsigned_conversion_bias": {
+    "address": 2151846216,
+    "bits": "4330000000000000"
+  },
+  "derived_gate_vectors": [
+    {
+      "carried": 0,
+      "dirty220": 0,
+      "admitted": false
+    },
+    {
+      "carried": 1,
+      "dirty220": 0,
+      "admitted": true
+    },
+    {
+      "carried": 0,
+      "dirty220": 1,
+      "admitted": true
+    },
+    {
+      "carried": 0,
+      "dirty220": 2,
+      "admitted": false
+    },
+    {
+      "carried": 0,
+      "dirty220": 256,
+      "admitted": true
+    },
+    {
+      "carried": 0,
+      "dirty220": 2048,
+      "admitted": true
+    },
+    {
+      "carried": 0,
+      "dirty220": 4096,
+      "admitted": false
+    },
+    {
+      "carried": 4294967295,
+      "dirty220": 0,
+      "admitted": true
+    }
+  ],
+  "derived_output_vectors": [
+    {
+      "base_gain": 1,
+      "master_gain": 1,
+      "volume": 16383,
+      "reverb": 0,
+      "pre_aux_a": 0,
+      "post_aux_b": 0,
+      "pre_aux_b": 0,
+      "byte194": 0,
+      "byte195": 0,
+      "main": 1.0,
+      "reverb_term": 0.0,
+      "pre_a_term": 0.0,
+      "extra_a_term": 0.0,
+      "aux_a": 0.0,
+      "post_b_term": 0.0,
+      "pre_b_term": 0.0,
+      "aux_b": 0.0,
+      "converted_integer": 32767,
+      "half454": 32767
+    },
+    {
+      "base_gain": 1,
+      "master_gain": 1,
+      "volume": 0,
+      "reverb": 0,
+      "pre_aux_a": 0,
+      "post_aux_b": 0,
+      "pre_aux_b": 0,
+      "byte194": 0,
+      "byte195": 127,
+      "main": 0.0,
+      "reverb_term": 0.0,
+      "pre_a_term": 0.0,
+      "extra_a_term": 1.0,
+      "aux_a": 1.0,
+      "post_b_term": 0.0,
+      "pre_b_term": 0.0,
+      "aux_b": 0.0,
+      "converted_integer": 0,
+      "half454": 0
+    },
+    {
+      "base_gain": 0,
+      "master_gain": 0,
+      "volume": 0,
+      "reverb": 0,
+      "pre_aux_a": 0,
+      "post_aux_b": 0,
+      "pre_aux_b": 0,
+      "byte194": 0,
+      "byte195": 127,
+      "main": 0.0,
+      "reverb_term": 0.0,
+      "pre_a_term": 0.0,
+      "extra_a_term": 1.0,
+      "aux_a": 1.0,
+      "post_b_term": 0.0,
+      "pre_b_term": 0.0,
+      "aux_b": 0.0,
+      "converted_integer": 0,
+      "half454": 0
+    },
+    {
+      "base_gain": 0.5,
+      "master_gain": 0.25,
+      "volume": 8192,
+      "reverb": 8192,
+      "pre_aux_a": 8192,
+      "post_aux_b": 8192,
+      "pre_aux_b": 8192,
+      "byte194": 64,
+      "byte195": 32,
+      "main": 0.06250381469726562,
+      "reverb_term": 0.01574995368719101,
+      "pre_a_term": 0.2500152587890625,
+      "extra_a_term": 0.25196850299835205,
+      "aux_a": 0.5177336931228638,
+      "post_b_term": 0.031253814697265625,
+      "pre_b_term": 0.2500152587890625,
+      "aux_b": 0.2812690734863281,
+      "converted_integer": 2048,
+      "half454": 2048
+    },
+    {
+      "base_gain": 1,
+      "master_gain": 1,
+      "volume": 65535,
+      "reverb": 65535,
+      "pre_aux_a": 65535,
+      "post_aux_b": 65535,
+      "pre_aux_b": 65535,
+      "byte194": 255,
+      "byte195": 255,
+      "main": 4.00018310546875,
+      "reverb_term": 32.12892532348633,
+      "pre_a_term": 4.00018310546875,
+      "extra_a_term": 2.007874011993408,
+      "aux_a": 38.13698196411133,
+      "post_b_term": 16.00146484375,
+      "pre_b_term": 4.00018310546875,
+      "aux_b": 20.00164794921875,
+      "converted_integer": 131074,
+      "half454": 2
+    },
+    {
+      "base_gain": -1,
+      "master_gain": 1,
+      "volume": 8192,
+      "reverb": 0,
+      "pre_aux_a": 0,
+      "post_aux_b": 0,
+      "pre_aux_b": 0,
+      "byte194": 0,
+      "byte195": 0,
+      "main": -0.500030517578125,
+      "reverb_term": -0.0,
+      "pre_a_term": -0.0,
+      "extra_a_term": 0.0,
+      "aux_a": 0.0,
+      "post_b_term": -0.0,
+      "pre_b_term": -0.0,
+      "aux_b": -0.0,
+      "converted_integer": -16384,
+      "half454": 49152
+    },
+    {
+      "base_gain": 1,
+      "master_gain": 0,
+      "volume": 8192,
+      "reverb": 8192,
+      "pre_aux_a": 8192,
+      "post_aux_b": 8192,
+      "pre_aux_b": 8192,
+      "byte194": 127,
+      "byte195": 0,
+      "main": 0.0,
+      "reverb_term": 0.0,
+      "pre_a_term": 0.500030517578125,
+      "extra_a_term": 0.0,
+      "aux_a": 0.500030517578125,
+      "post_b_term": 0.0,
+      "pre_b_term": 0.500030517578125,
+      "aux_b": 0.500030517578125,
+      "converted_integer": 0,
+      "half454": 0
+    }
+  ],
+  "request_order": [
+    "inpGetVolume",
+    "inpGetReverb",
+    "inpGetPreAuxA",
+    "inpGetPostAuxB",
+    "inpGetPreAuxB",
+    "hwSetVolume"
+  ],
+  "hardware_request": {
+    "index": "retained raw input",
+    "studio_byte_offset": 406,
+    "pan_word_offset": 356,
+    "surround_word_offset": 360,
+    "float_arguments": [
+      "main",
+      "aux_a",
+      "aux_b"
+    ],
+    "ignored_return": true
+  }
+}

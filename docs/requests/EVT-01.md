@@ -462,6 +462,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   requests and wrapped clamps — [pan/surround](../behavior/audio/MUSYX_ZERO_OFFSET_PAN_AND_SURROUND.md).
   Captured/fresh mode, post-child bases, signed versus unsigned clamps and
   fixed/clean path carried indicator pinned; remainder/runtime open.
+- [x] Complete ZeroOffsetHandler main volume/auxiliary output request
+  region — [volume/aux output](../behavior/audio/MUSYX_ZERO_OFFSET_VOLUME_AND_AUX_OUTPUT.md).
+  Dirty admission/six-call order, base-versus-main aux terms, separate byte
+  addition/single rounding/half454/fresh hardware ABI pinned; remainder open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2406,3 +2410,13 @@ eight surround/eight gate vectors and65536 rotate-mask cases checked. Captured
 versus fresh mode, signed pan/unsigned surround clamp, first raw surround store
 and fixed/clean path indicator order pinned. Remaining handler/providers/domains/
 original audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Zero-offset volume/aux output delivery
+
+Completed one local region in
+[volume/aux output](../behavior/audio/MUSYX_ZERO_OFFSET_VOLUME_AND_AUX_OUTPUT.md).
+Eleven spans/97 instruction anchors/six calls verified; eight admission/seven
+finite single-output vectors checked. Exact base-versus-main aux terms, separate
+byte195 addition, post-child field reads, integer snapshot-before-hardware request
+and final ABI pinned. Filter/requeue/providers/domains/original audio/native
+binding remain open; EVT-01 stays OPEN.

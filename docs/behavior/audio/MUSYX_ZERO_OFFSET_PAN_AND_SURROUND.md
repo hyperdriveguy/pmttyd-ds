@@ -82,3 +82,9 @@ Remaining: volume/aux/filter/output/hardware/requeue/epilogue regions, actual
 synthFlags/dirty/voice/base/controller writers, valid value/extent/alias/lifetime/
 IRQ/concurrency domains, original pan/surround/audio traces and native binding.
 EVT-01 remains OPEN.
+
+## 2026-10-13 — Volume/aux output follow-up
+
+[Volume/aux output](MUSYX_ZERO_OFFSET_VOLUME_AND_AUX_OUTPUT.md) closes the next admission/controller/main-aux/
+snapshot/hardware request region. Filter/requeue/epilogue and provider/domain/
+original audio/native binding remain open.
