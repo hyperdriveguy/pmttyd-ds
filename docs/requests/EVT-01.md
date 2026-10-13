@@ -209,6 +209,12 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Type5/6 encoding, three range branches/six callback sites, raw descriptors
   and fresh post-callback advancement pinned; actual callbacks/transfer work/
   provider domains and original contiguous/wrapped/partial audio remain open.
+- [x] Scoped virtual-table configuration writer consolidation and DOL
+  literal-materialization/direct-entry-call census —
+  [provider/DOL census](../behavior/audio/MUSYX_VIRTUAL_TABLE_PROVIDER_AND_DOL_ENTRY_CENSUS.md).
+  Five known bodies/28 candidate constructions/seven calls pinned; no local
+  count/loop-size/nonzero callback provider supplied. Wider indirect/REL/alias
+  providers and actual callback/transfer/runtime remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1332,3 +1338,20 @@ deductions. Fresh ELF/listing stays `/tmp`; no native change/original execution/
 body/asset export. Actual callback installation/byte-transfer implementation,
 field/result/bounds/nonzero-size/alias/IRQ/reentrancy/concurrency domains and
 original contiguous/wrapped/partial/zero-return refill/audio remain OPEN.
+
+### 2026-10-13 — Virtual table provider and scoped DOL entry census
+
+[Provider/census consolidation](../behavior/audio/MUSYX_VIRTUAL_TABLE_PROVIDER_AND_DOL_ENTRY_CENSUS.md)
+pins known local configuration writers,28 bounded literal-address candidates
+owned only by the five complete virtual bodies, and seven exact DOL entry
+calls from bootstrap/message/frame/updater. Within those five bodies, count/
+callback are only initialized0; no loop-size writer/nonzero callback installer
+is supplied. This scoped result is not proof that the original game never
+configures virtual sampling; indirect/REL/pointer/alias writers remain open.
+
+Validation: read-only predicate scan and independent direct-call decode; manifest
+10 spans (two whole text segments/five prior bodies/three callers),66 anchors/
+seven calls passes. Generic verifier checks bytes/targets, not independent
+replay of the scan's completeness. Scanner/generator stay `/tmp`; no native
+change/original execution/body/asset export. Actual nonzero configuration/
+callback implementation/transfer/result/providers and original playback remain OPEN.

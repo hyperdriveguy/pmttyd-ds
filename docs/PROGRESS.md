@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero virtual table provider/DOL census
+
+Completed a scoped configuration-writer and DOL entry census for EVT-01 and
+checked its inbox portion. [Provider/census](behavior/audio/MUSYX_VIRTUAL_TABLE_PROVIDER_AND_DOL_ENTRY_CENSUS.md)
+consolidates known count/size/generation/callback writes,28 bounded literal-
+address constructions owned by the five complete virtual bodies, and seven
+exact entry calls. Those bodies supply no positive count/loop-size/nonzero
+callback installation. Wider indirect/REL/pointer/alias providers remain open;
+no original unused-feature/reachability/runtime conclusion is inferred.
+
+Validation: bounded predicate scan and independent exact DOL direct-call decode
+ran read-only. Manifest passed10 spans (two whole text segments/five prior bodies/
+three callers),66 anchors/seven calls. Generic verifier checks bytes/hashes/
+targets; scan completeness is limited to the explicitly documented predicate.
+Documentation link audit passed788 Markdown files/zero broken links;
+`git diff --check` passed. Documentation/metadata only; no `make test`/`make all`
+rerun. Scanner/generator stay `/tmp`; no original bodies/assets committed.
+Concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 wider indirect/REL/alias configuration/callback search,
+actual transfer/result/provider contracts and original playback traces; continue
+other open scheduler/audio/controller/source requirements. Full native/runtime
+binding, lower-priority inbox/full-game work remain incomplete.
+
 ## 2026-10-13 — Inbox priority-zero virtual-sample refill
 
 Completed the whole vsUpdateBuffer local contract for EVT-01 and checked the

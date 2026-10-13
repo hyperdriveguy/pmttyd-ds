@@ -132,3 +132,10 @@ nonzero-size/overflow/alias/generation/IRQ/reentrancy/concurrency domains and
 original contiguous/wrapped/partial/zero-return refill/audio traces. The local
 refill body is answered; EVT-01 and full native/source/runtime/hardware
 equivalence remain OPEN.
+
+### Provider/callsite follow-up
+
+[Scoped virtual table provider/DOL census](MUSYX_VIRTUAL_TABLE_PROVIDER_AND_DOL_ENTRY_CENSUS.md)
+now consolidates known configuration writes and pins28 bounded literal-address
+candidates/seven exact DOL entry calls. Wider indirect/REL/alias writers,
+callback installation/transfer implementation and original execution remain open.

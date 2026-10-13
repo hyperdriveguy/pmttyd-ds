@@ -1,0 +1,569 @@
+{
+  "schema": 1,
+  "scope": "DOL bounded literal-materialization and exact direct-entry-call census for virtual table; indirect/REL/provider/runtime not closed",
+  "complete_bodies": [],
+  "previous_complete_bodies": [
+    "vsInit",
+    "vsSampleStartNotify",
+    "vsSampleEndNotify",
+    "vsUpdateBuffer",
+    "vsSampleUpdates"
+  ],
+  "linked_only": [
+    "synthHWMessageHandler",
+    "sndInit",
+    "snd_handle_irq"
+  ],
+  "dol_spans": [
+    {
+      "name": "vsInit",
+      "address": 2150132572,
+      "size": 188,
+      "sha256": "29afbd00982a8ebaa0aca8ae35addd1dfd4bf38e3ab508551481b36573e349fa"
+    },
+    {
+      "name": "vsSampleStartNotify",
+      "address": 2150132760,
+      "size": 716,
+      "sha256": "77a97862d58ed437ff9c215417fb4ac471ea89f443848a38331e874b83c2ac93"
+    },
+    {
+      "name": "vsSampleEndNotify",
+      "address": 2150133476,
+      "size": 168,
+      "sha256": "69c0c01b67aee3a13daf834c3ecfcde2edc30f405e8398127b6ce48586f4ad7e"
+    },
+    {
+      "name": "vsUpdateBuffer",
+      "address": 2150133644,
+      "size": 856,
+      "sha256": "1aad75a2c6de4546dfe56ab36d3981df31c64adec55ba2fe8a86d2d6f179393f"
+    },
+    {
+      "name": "vsSampleUpdates",
+      "address": 2150134500,
+      "size": 528,
+      "sha256": "742351c33138f07d5ff904a82d2780a65a546b8be2ee049e79c82ebc34ced2e2"
+    },
+    {
+      "name": "census_DOL_text_slot0",
+      "address": 2147496192,
+      "size": 9440,
+      "sha256": "7682542fad8be7976b86cfdf79c08ae007eac9f9cca351dd2677d04821d72ceb"
+    },
+    {
+      "name": "census_DOL_text_slot1",
+      "address": 2147505632,
+      "size": 2857792,
+      "sha256": "9f8e88ff2c5a392db0a2d0bc045c91371c7750057373b7d4a40bfcd8cab2131c"
+    },
+    {
+      "name": "synthHWMessageHandler",
+      "address": 2150078248,
+      "size": 208,
+      "sha256": "42c7eddb44bea874d7b626f093e7c6d9e30f3a5d1362b3a7be551a098f315316"
+    },
+    {
+      "name": "sndInit",
+      "address": 2150161100,
+      "size": 312,
+      "sha256": "afa403253d43b9f8934cd62ee752597085b76c334359fd5341e3d82e2fed6c81"
+    },
+    {
+      "name": "snd_handle_irq",
+      "address": 2150172080,
+      "size": 340,
+      "sha256": "d4d190baec40488c9462ce3a257582f7880d0c1aa1477199cbfd4f8e11cf95d5"
+    }
+  ],
+  "dol_anchors": {
+    "2150078352": "4800d755",
+    "2150078400": "4800d459",
+    "2150078420": "4800d711",
+    "2150134700": "4bfffbe1",
+    "2150134744": "4bfffbb5",
+    "2150161356": "4bff8f91",
+    "2150172392": "4bff6bfd",
+    "2150132572": "3c608040",
+    "2150132580": "38a36b00",
+    "2150132736": "3c608040",
+    "2150132744": "38636b00",
+    "2150132784": "3c608040",
+    "2150132800": "38c36b00",
+    "2150132896": "3c608040",
+    "2150132904": "38836b00",
+    "2150132936": "3c608040",
+    "2150132944": "38636b00",
+    "2150132988": "3c608040",
+    "2150132996": "38636b00",
+    "2150133032": "3c808040",
+    "2150133040": "38a46b00",
+    "2150133072": "3c808040",
+    "2150133080": "38c46b00",
+    "2150133180": "3c808040",
+    "2150133188": "38046b00",
+    "2150133204": "3c808040",
+    "2150133212": "38846b00",
+    "2150133240": "3c808040",
+    "2150133244": "38046b00",
+    "2150133280": "3c808040",
+    "2150133284": "38046b00",
+    "2150133304": "3c808040",
+    "2150133308": "38a46b00",
+    "2150133396": "3c608040",
+    "2150133404": "38036b00",
+    "2150133508": "3c808040",
+    "2150133516": "38a46b00",
+    "2150133588": "3c608040",
+    "2150133596": "38036b00",
+    "2150133724": "3c608040",
+    "2150133732": "38a36b00",
+    "2150133804": "3c808040",
+    "2150133812": "38846b00",
+    "2150133848": "3c608040",
+    "2150133860": "38a36b00",
+    "2150133912": "3c808040",
+    "2150133920": "38846b00",
+    "2150133992": "3c608040",
+    "2150134008": "3bc36b00",
+    "2150134120": "3c608040",
+    "2150134128": "3bc36b00",
+    "2150134252": "3c608040",
+    "2150134268": "3bc36b00",
+    "2150134380": "3c608040",
+    "2150134388": "3bc36b00",
+    "2150134520": "3c608040",
+    "2150134524": "3be36b00",
+    "2150134580": "3c608040",
+    "2150134584": "38036b00",
+    "2150134924": "3c608040",
+    "2150134932": "38036b00",
+    "2150134960": "3c608040",
+    "2150134968": "38036b00",
+    "2150132588": "98850000",
+    "2150132748": "b0030b48",
+    "2150132752": "90030b4c"
+  },
+  "direct_calls": [
+    {
+      "site": 2150078352,
+      "target": 2150133476,
+      "name": "vsSampleEndNotify"
+    },
+    {
+      "site": 2150078400,
+      "target": 2150132760,
+      "name": "vsSampleStartNotify"
+    },
+    {
+      "site": 2150078420,
+      "target": 2150133476,
+      "name": "vsSampleEndNotify"
+    },
+    {
+      "site": 2150134700,
+      "target": 2150133644,
+      "name": "vsUpdateBuffer"
+    },
+    {
+      "site": 2150134744,
+      "target": 2150133644,
+      "name": "vsUpdateBuffer"
+    },
+    {
+      "site": 2150161356,
+      "target": 2150132572,
+      "name": "vsInit"
+    },
+    {
+      "site": 2150172392,
+      "target": 2150134500,
+      "name": "vsSampleUpdates"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "materialization_candidates": [
+    {
+      "lis_site": 2150132572,
+      "site": 2150132580,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsInit"
+      ]
+    },
+    {
+      "lis_site": 2150132736,
+      "site": 2150132744,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsInit"
+      ]
+    },
+    {
+      "lis_site": 2150132784,
+      "site": 2150132800,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleStartNotify"
+      ]
+    },
+    {
+      "lis_site": 2150132896,
+      "site": 2150132904,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleStartNotify"
+      ]
+    },
+    {
+      "lis_site": 2150132936,
+      "site": 2150132944,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleStartNotify"
+      ]
+    },
+    {
+      "lis_site": 2150132988,
+      "site": 2150132996,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleStartNotify"
+      ]
+    },
+    {
+      "lis_site": 2150133032,
+      "site": 2150133040,
+      "opcode": 14,
+      "reg": 4,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleStartNotify"
+      ]
+    },
+    {
+      "lis_site": 2150133072,
+      "site": 2150133080,
+      "opcode": 14,
+      "reg": 4,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleStartNotify"
+      ]
+    },
+    {
+      "lis_site": 2150133180,
+      "site": 2150133188,
+      "opcode": 14,
+      "reg": 4,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleStartNotify"
+      ]
+    },
+    {
+      "lis_site": 2150133204,
+      "site": 2150133212,
+      "opcode": 14,
+      "reg": 4,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleStartNotify"
+      ]
+    },
+    {
+      "lis_site": 2150133240,
+      "site": 2150133244,
+      "opcode": 14,
+      "reg": 4,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleStartNotify"
+      ]
+    },
+    {
+      "lis_site": 2150133280,
+      "site": 2150133284,
+      "opcode": 14,
+      "reg": 4,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleStartNotify"
+      ]
+    },
+    {
+      "lis_site": 2150133304,
+      "site": 2150133308,
+      "opcode": 14,
+      "reg": 4,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleStartNotify"
+      ]
+    },
+    {
+      "lis_site": 2150133396,
+      "site": 2150133404,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleStartNotify"
+      ]
+    },
+    {
+      "lis_site": 2150133508,
+      "site": 2150133516,
+      "opcode": 14,
+      "reg": 4,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleEndNotify"
+      ]
+    },
+    {
+      "lis_site": 2150133588,
+      "site": 2150133596,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleEndNotify"
+      ]
+    },
+    {
+      "lis_site": 2150133724,
+      "site": 2150133732,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsUpdateBuffer"
+      ]
+    },
+    {
+      "lis_site": 2150133804,
+      "site": 2150133812,
+      "opcode": 14,
+      "reg": 4,
+      "target": 2151705344,
+      "owners": [
+        "vsUpdateBuffer"
+      ]
+    },
+    {
+      "lis_site": 2150133848,
+      "site": 2150133860,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsUpdateBuffer"
+      ]
+    },
+    {
+      "lis_site": 2150133912,
+      "site": 2150133920,
+      "opcode": 14,
+      "reg": 4,
+      "target": 2151705344,
+      "owners": [
+        "vsUpdateBuffer"
+      ]
+    },
+    {
+      "lis_site": 2150133992,
+      "site": 2150134008,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsUpdateBuffer"
+      ]
+    },
+    {
+      "lis_site": 2150134120,
+      "site": 2150134128,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsUpdateBuffer"
+      ]
+    },
+    {
+      "lis_site": 2150134252,
+      "site": 2150134268,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsUpdateBuffer"
+      ]
+    },
+    {
+      "lis_site": 2150134380,
+      "site": 2150134388,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsUpdateBuffer"
+      ]
+    },
+    {
+      "lis_site": 2150134520,
+      "site": 2150134524,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleUpdates"
+      ]
+    },
+    {
+      "lis_site": 2150134580,
+      "site": 2150134584,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleUpdates"
+      ]
+    },
+    {
+      "lis_site": 2150134924,
+      "site": 2150134932,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleUpdates"
+      ]
+    },
+    {
+      "lis_site": 2150134960,
+      "site": 2150134968,
+      "opcode": 14,
+      "reg": 3,
+      "target": 2151705344,
+      "owners": [
+        "vsSampleUpdates"
+      ]
+    }
+  ],
+  "materialization_method": {
+    "segments": "DOL text slots0..6",
+    "lis_opcode": 15,
+    "lis_ra": 0,
+    "lis_immediate": 32832,
+    "following_instructions_max": 32,
+    "base_immediate_min": 27392,
+    "base_immediate_max": 30287,
+    "candidate_opcodes": [
+      14,
+      32,
+      34,
+      36,
+      38,
+      40,
+      42,
+      44,
+      48,
+      50,
+      52,
+      54
+    ],
+    "stop_on_same_rt_opcodes": [
+      14,
+      15,
+      32,
+      34,
+      40,
+      42,
+      48,
+      50
+    ],
+    "limitations": "Syntactic candidates only; no full control/data flow, propagated pointers, alternate materialization, small-data aliases, REL or callbacks"
+  },
+  "direct_entry_call_owners": [
+    {
+      "site": 2150078352,
+      "owners": [
+        "synthHWMessageHandler"
+      ]
+    },
+    {
+      "site": 2150078400,
+      "owners": [
+        "synthHWMessageHandler"
+      ]
+    },
+    {
+      "site": 2150078420,
+      "owners": [
+        "synthHWMessageHandler"
+      ]
+    },
+    {
+      "site": 2150134700,
+      "owners": [
+        "vsSampleUpdates"
+      ]
+    },
+    {
+      "site": 2150134744,
+      "owners": [
+        "vsSampleUpdates"
+      ]
+    },
+    {
+      "site": 2150161356,
+      "owners": [
+        "sndInit"
+      ]
+    },
+    {
+      "site": 2150172392,
+      "owners": [
+        "snd_handle_irq"
+      ]
+    }
+  ],
+  "local_configuration_writes": [
+    {
+      "site": 2150132588,
+      "address": 2151705344,
+      "width": 1,
+      "value": 0
+    },
+    {
+      "site": 2150132748,
+      "address": 2151708232,
+      "width": 2,
+      "value": 0
+    },
+    {
+      "site": 2150132752,
+      "address": 2151708236,
+      "width": 4,
+      "value": 0
+    }
+  ],
+  "local_configured_loop_size_writes": [],
+  "local_nonzero_callback_installations": []
+}
