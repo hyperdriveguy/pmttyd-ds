@@ -58,7 +58,8 @@ bool FieldActorAssets::read(FILE* f) {
     };
     std::array<char,8> magic{};uint32_t modelCount=0,actorCount=0;
     if(!scalar(magic))return false;
-    const bool version7=!std::memcmp(magic.data(),"PMNPC007",8);
+    const bool version8=!std::memcmp(magic.data(),"PMNPC008",8);
+    const bool version7=version8 || !std::memcmp(magic.data(),"PMNPC007",8);
     const bool version6=version7 || !std::memcmp(magic.data(),"PMNPC006",8);
     const bool version5=version6 || !std::memcmp(magic.data(),"PMNPC005",8);
     const bool version4=version5 || !std::memcmp(magic.data(),"PMNPC004",8);
@@ -103,6 +104,17 @@ bool FieldActorAssets::read(FILE* f) {
                 !scalar(rule.story) || !string(rule.message) || rule.message.size()<7 ||
                 rule.message[6]!='_' || a.talkPrefix.empty() || rule.message.substr(0,6)!=a.talkPrefix.substr(0,6))return false;
         }
+        if(version8) {
+            auto& w=a.wander;
+            if(!scalar(a.sourceTalkPresent) || a.sourceTalkPresent>1 || !scalar(w.enabled) || w.enabled>1 || !scalar(w.flags) ||
+               !scalar(w.radius) || !scalar(w.speed) || !scalar(w.runThreshold) || !scalar(w.stepPeriod) ||
+               !string(w.idle,!w.enabled) || !string(w.walk,!w.enabled) || !string(w.run,!w.enabled) ||
+               !string(w.soundLeft,true) || !string(w.soundRight,true))return false;
+            if(!std::isfinite(w.radius) || !std::isfinite(w.speed) || !std::isfinite(w.runThreshold) ||
+               (w.enabled && (a.kind!=0 || !(a.npcFlags&0x40000000) || (a.npcFlags&(0x100000|0x20000|0x08000000)) || w.radius<=0 || w.radius>10000 || w.speed<=0 || w.speed>10000 || w.runThreshold<=0 || w.runThreshold>10000 || w.stepPeriod>65535)) ||
+               (!w.enabled && (w.flags || w.radius || w.speed || w.runThreshold || w.stepPeriod || !w.idle.empty() || !w.walk.empty() || !w.run.empty() || !w.soundLeft.empty() || !w.soundRight.empty())) ||
+               (a.kind && a.sourceTalkPresent) || (!a.sourceTalkPresent && !a.talkRules.empty()))return false;
+        } else a.sourceTalkPresent=!a.talkPrefix.empty();
         if(a.storyGate==2 && a.storyLow!=a.storyHigh)return false;
         if(!a.talkPrefix.empty() && (a.kind!=0 || a.talkPrefix.size()!=11 ||
            (version7?a.talkPrefix[3]!='_':a.talkPrefix.substr(0,4)!="gor_") ||

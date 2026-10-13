@@ -259,7 +259,9 @@ void Renderer::fieldActors(const Game& g) {
                 actor.position=g.storyPresentation().actors[2].position;actor.yaw=g.storyPresentation().actors[2].yaw;
                 actor.pose=g.storyPresentation().message.talking && g.storyPresentation().speaker==2?"T_1":g.trioBattleActive?g.storyPresentation().actors[2].pose:g.storyPresentation().actors[2].moving?"W_1":"S_1";
             } else if(!actor.visible(g.progress.room,g.progress.originalStory,g.fieldDoor.interiorMask,g.fieldSystemFlags))continue;
-            uint32_t npcFlags=actor.npcFlags;
+            const auto* live=actor.wander.enabled?g.fieldNpcState(actor.key):nullptr;
+            if(live && live->initialized){if(!live->presentationReady)continue;actor.position={live->body.root.x,live->body.root.y,live->body.root.z};actor.yaw=live->movement.yaw;actor.pose=live->pose;}
+            uint32_t npcFlags=live && live->initialized?live->body.flags:actor.npcFlags;
             if(scripted)npcFlags=(npcFlags&~g.storyPresentation().actors[2].flagMask)|
                 (g.storyPresentation().actors[2].flags&g.storyPresentation().actors[2].flagMask);
             if(actor.kind==0 && npcFlags && (npcFlags&3)!=3)continue;
@@ -267,28 +269,32 @@ void Renderer::fieldActors(const Game& g) {
             if(actor.kind==0 && g.fieldActorTalk.message.active() && g.fieldActorTalk.actor.key==actor.key)
                 actor.yaw=g.fieldActorTalk.actor.yaw;
             if(g.saveObjects)if(const auto* object=g.saveObjects->find(actor.key)){actor.pose=object->pose;frame=object->frame;}
-            NpcPresentation* npc=nullptr;
+            const NpcPresentation* npc=nullptr;
             if(actor.kind==0) {
                 const auto* selected=selectNpcAnimation(gpu.animations,actor.pose.c_str());
                 if(!selected){++actorMetrics.sampleFailures;continue;}
                 actor.pose=selected->name;
                 std::string talkPose;
                 if(!actor.talkPose.empty())talkPose=selectNpcAnimation(gpu.animations,actor.talkPose.c_str())->name;
-                auto& state=plaza.npcs[actor.key];npc=&state.presentation;
-                const uint64_t now=g.ticks*1000/60;
-                if(now<state.clock.poseAt)state={};
-                if(npcFlags&0x8000)npc->flags|=0x100;else npc->flags&=~0x100u;
-                frame=state.clock.update(actor.pose,talkPose,
-                    g.fieldActorTalk.actor.key==actor.key?&g.fieldActorTalk.message:nullptr,now);
-                actor.pose=state.clock.pose;
-                NpcMatrixInput input;input.root=actor.position;input.yaw=actor.yaw;input.drawScale=actor.scale;
-                input.flags=npcFlags;
-                NpcCameraService camera;camera.user=const_cast<FieldCameraFrame*>(&g.fieldCameraFrame);
-                camera.read=[](void* p) {
-                    const auto& frame=*static_cast<FieldCameraFrame*>(p);
-                    return NpcCamera{{frame.eye.x*100,frame.eye.y*100,frame.eye.z*100},{frame.at.x*100,frame.at.y*100,frame.at.z*100}};
-                };
-                if(!npc->prepare(input,npcAngles,camera)){++actorMetrics.sampleFailures;continue;}
+                if(live && live->initialized) {
+                    npc=&live->presentation;frame=60.f*float(g.ticks*1000/60-live->poseAt)/1000.f;
+                } else {
+                    auto& state=plaza.npcs[actor.key];auto* mutableNpc=&state.presentation;npc=mutableNpc;
+                    const uint64_t now=g.ticks*1000/60;
+                    if(now<state.clock.poseAt)state={};
+                    if(npcFlags&0x8000)mutableNpc->flags|=0x100;else mutableNpc->flags&=~0x100u;
+                    frame=state.clock.update(actor.pose,talkPose,
+                        g.fieldActorTalk.actor.key==actor.key?&g.fieldActorTalk.message:nullptr,now);
+                    actor.pose=state.clock.pose;
+                    NpcMatrixInput input;input.root=actor.position;input.yaw=actor.yaw;input.drawScale=actor.scale;
+                    input.flags=npcFlags;
+                    NpcCameraService camera;camera.user=const_cast<FieldCameraFrame*>(&g.fieldCameraFrame);
+                    camera.read=[](void* p) {
+                        const auto& frame=*static_cast<FieldCameraFrame*>(p);
+                        return NpcCamera{{frame.eye.x*100,frame.eye.y*100,frame.eye.z*100},{frame.at.x*100,frame.at.y*100,frame.at.z*100}};
+                    };
+                    if(!mutableNpc->prepare(input,npcAngles,camera)){++actorMetrics.sampleFailures;continue;}
+                }
             }
             ++actorMetrics.visible;
             if(gpu.tick!=g.ticks || gpu.pose!=actor.pose || gpu.frame!=frame) {

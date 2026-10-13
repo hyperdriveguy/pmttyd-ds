@@ -96,6 +96,12 @@ int main(int argc,char**) {
         bad=b;bad.pop_back();assert(!read(a,bad));
         std::memcpy(b.data()+actors+92,"tik_04_000_",11);std::memcpy(b.data()+actors+212,"tik_04_000_00",12);
         assert(read(a,b) && fieldActorTalkKey(a.actors()[0],8)=="tik_04_000_00"); // Future room namespace.
+        b[7]='8';b.insert(b.end(),188,0);b.insert(b.begin()+actors+244,188,0);replace(b,actors+244,1u);
+        assert(read(a,b) && a.actors()[0].sourceTalkPresent && !a.actors()[0].wander.enabled);
+        bad=b;replace(bad,actors+244,0u);assert(!read(a,bad)); // Bound rules require original event presence.
+        bad=b;replace(bad,actors+244+12,0x7fc00000u);assert(!read(a,bad));
+        bad=b;replace(bad,actors+244+4,1u);assert(!read(a,bad)); // Incomplete moving profile rejected atomically.
+        bad=b;bad.pop_back();assert(!read(a,bad));
     }
     FieldActorRecord ordered;ordered.talkRulesBound=true;
     ordered.talkRules={{1,175,"gor_02_034_03"},{0,215,"gor_02_034_04"},{0,215,"gor_02_034_05"},{2,401,"gor_02_034_10"}};
@@ -105,12 +111,13 @@ int main(int argc,char**) {
     if(argc>1) {
         assert(a.load("romfs/field-actors.pmnpc"));assert(a.actors().size()>=3 && a.models().size()>=2);
         assert(a.models()[0].asset=="field-chu" && a.models()[1].asset=="professor");
-        const auto& chu=a.actors()[0];assert(chu.room==2 && chu.pose=="CHU_S_1");
+        const auto findActor=[&](const char* asset)->const FieldActorRecord&{for(const auto& actor:a.actors())if(a.models()[actor.model].asset==asset)return actor;std::abort();};
+        const auto& chu=findActor("field-chu");assert(chu.room==2 && chu.pose=="CHU_S_1");
         assert(chu.npcWidth==30 && chu.npcHeight==30 && chu.talkPose=="CHU_T_1" && a.models()[0].drawMask==1);
-        assert(chu.npcFlags==0x80603 && a.actors()[1].npcFlags==0x40080603);
+        assert(chu.npcFlags==0x80603 && findActor("professor").npcFlags==0x40080603);
         assert((chu.position==std::array<float,3>{150,0,-400}) && chu.yaw==270);
         assert(chu.visible(2,8,0) && chu.visible(2,55,2) && !chu.visible(2,56,0) && !chu.visible(2,std::nullopt,0));
-        const auto& saveBlock=a.actors()[3];assert(saveBlock.kind==1 && saveBlock.scale==10 && saveBlock.pose=="S_1");
+        const auto& saveBlock=findActor("field-saveblock");assert(saveBlock.kind==1 && saveBlock.scale==10 && saveBlock.pose=="S_1");
         assert((saveBlock.position==std::array<float,3>{185,60,-55}));
         assert(saveBlock.visible(0,0,0) && saveBlock.visible(0,400,0) && !saveBlock.visible(0,341,0) && !saveBlock.visible(0,8,0,0x20));
         const auto scaled=ActorRootTransform({0,0,0},0,false,10.f*.01f).point({10,10,10,0,0});
@@ -120,7 +127,7 @@ int main(int argc,char**) {
         float height=0;assert(groundAt({1.f,-3.7f},0,height) && walkable({1.f,-3.7f},height));
         assert(loadFieldActorCatalog("romfs") && loadHarborStoryAssets("romfs"));
         MessageAssets originals;assert(originals.loadRoom("romfs/messages/gor_02.txt"));
-        const auto& darkly=a.actors()[4];assert(a.models()[darkly.model].originalName=="c_f_mura");
+        const auto& darkly=findActor("field-darkly");assert(a.models()[darkly.model].originalName=="c_f_mura");
         assert((darkly.position==std::array<float,3>{-335,0,-335}) && darkly.yaw==270 && darkly.npcFlags==0x40080603);
         assert(darkly.npcWidth==30 && darkly.npcHeight==30 && darkly.talkPose=="T_1");
         assert(darkly.visible(2,8,0) && !darkly.visible(2,56,0));
@@ -158,15 +165,15 @@ int main(int argc,char**) {
         for(int n=0;n<40;++n)walking.tick(toward);
         assert(walking.fieldNpcContact()==chu.key && walking.progress.position.x>1.21f && walking.progress.position.x<1.23f);
         assert(!walking.airborne() && walking.progress.originalStory==8);
-        Game scripted;scripted.restore(saved);for(int n=0;n<360;++n)scripted.tick({});
+        Game scripted;auto professorSaved=saved;professorSaved.position={0,-4};scripted.restore(professorSaved);for(int n=0;n<360;++n)scripted.tick({});
         scripted.professorStory.triggered=true;scripted.professorStory.finished=true;
         auto& professor=scripted.professorStory.actors[2];professor.npcActive=true;
-        professor.position={120,0,-400};professor.placementGeneration=1;
+        professor.position={0,0,-400};professor.placementGeneration=1;
         professor.flags=professor.flagMask=0x40000020;scripted.tick({});assert(!scripted.fieldNpcContact());
-        professor.flags=0;scripted.tick({});assert(scripted.fieldNpcContact()==a.actors()[1].key);
+        professor.flags=0;scripted.tick({});assert(scripted.fieldNpcContact()==findActor("professor").key);
         professor.hidden=true;professor.flags=0x80;professor.flagMask|=0x80;
-        scripted.tick({});assert(scripted.fieldNpcContact()==a.actors()[1].key); // Draw hiding leaves source collision eligible.
-        professor.npcActive=false;scripted.tick({});assert(scripted.fieldNpcContact()!=a.actors()[1].key);
+        scripted.tick({});assert(scripted.fieldNpcContact()==findActor("professor").key); // Draw hiding leaves source collision eligible.
+        professor.npcActive=false;scripted.tick({});assert(scripted.fieldNpcContact()!=findActor("professor").key);
         Game history;auto away=saved;away.position={0,-4};history.restore(away);
         for(int n=0;n<360;++n)history.tick({});
         history.professorStory.triggered=true;history.professorStory.finished=true;
@@ -175,7 +182,7 @@ int main(int argc,char**) {
         moving.position[0]=10;history.tick({}); // Continuous movement keeps the previous root.
         assert(moving.position[0]==100 && !history.fieldNpcContact());
         moving.position[0]=10;++moving.placementGeneration;history.tick({}); // Explicit source placement seeds history.
-        assert(moving.position[0]==10 && history.fieldNpcContact()==a.actors()[1].key);
+        assert(moving.position[0]==10 && history.fieldNpcContact()==findActor("professor").key);
         history.progress.position={0,-4};moving.position[0]=100;++moving.placementGeneration;
         moving.flagMask|=3;moving.flags=2;history.tick({});
         moving.position[0]=200;history.tick({}); // Initial flags gate must not publish the end snapshot.

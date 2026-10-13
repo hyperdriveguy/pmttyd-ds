@@ -532,3 +532,31 @@ Native regular-event stop/resume, live prior dt/contact, movement/pose services
 and quest/item state remain required before activating Goomba4. Exact build
 validation is in [progress](../PROGRESS.md); no new original-runtime or hardware
 measurement. Parent request remains OPEN.
+
+
+### 2026-10-13 — Native binding candidate/clock dependency clarification
+
+[Ordinary candidate contract](../behavior/field/FIELD_ORDINARY_NPC_TALK_CANDIDATE.md)
+now distinguishes every fully admitted actor's pause from strict-nearest winner,
+original event-pointer presence from supported native playback, local failure
+cleanup from actor/global skipped paths, and yaw-only save/restore from paper/
+movement/phase state. [Wander contract](../behavior/field/FIELD_NPC_WANDER_DRIVER_AND_GOOMBA4.md)
+pins per-actor dt/movement/clear/pose/snapshot before final candidate scan: a
+paused regular event leaves NPC clock active, and its next no-component movement
+pass can select idle while preserving driver countdown/phase. No source quest0
+or unsupported dialogue fallback is inferred. Static source checks; no native
+code/test/emulator or hardware measurement performed by this delivery.
+
+
+### 2026-10-13 — Native PMNPC008 live wandering binding breadcrumb
+
+[Native live wandering](../behavior/field/NATIVE_LIVE_NPC_WANDER.md) records
+PMNPC008 model/actor/rule/wander format, original tagged scan order, live Goomba4
+source init/radius/speed/zero-vertical/direct-XZ profile, prior NPCdt/touch
+publications, retained candidate pause and actual-speed S/W/R selection. Paper
+state advances once per native simulation tick; rendering reads its matrix.
+Original event presence is independent of unbound quest playback. Native RNG
+seed1 is an explicit adapter, and original left/right sound requests now play their original primary samples
+through NDSP; full macro/spatial routing remains unbound. Source complete quest/scheduler/clock/lifetime/audio and
+original/hardware numeric/performance comparisons remain OPEN. No PROGRESS,
+code or commit changes by this explicitly delegated documentation worker.

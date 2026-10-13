@@ -62,7 +62,7 @@ def npc_source_data(iso):
             if len(data)!=size:raise ValueError('Truncated source constant')
             return data
         result={}
-        for name,address in [('c_tyusan',0x80333554),('c_kuri_h',0x80333014),('c_f_mura',0x80333110)]:
+        for name,address in [('c_tyusan',0x80333554),('c_kuri_h',0x80333014),('c_f_mura',0x80333110),('c_kuribo_n',0x8033335c)]:
             raw=read(address,0x54);width,height=struct.unpack_from('>2f',raw,0x28)
             ptr=struct.unpack_from('>I',raw,0x14)[0];talk=bytearray()
             for i in range(32):
@@ -71,6 +71,18 @@ def npc_source_data(iso):
                 talk.append(c)
             else:raise ValueError('Unterminated original talk pose')
             result[name]=dict(address=address,width=width,height=height,talk_pose=talk.decode('ascii'),sha256=hashlib.sha256(raw).hexdigest())
+            def source_string(ptr):
+                if not ptr:return ''
+                data=bytearray()
+                for i in range(64):
+                    c=read(ptr+i,1)[0]
+                    if not c:return data.decode('ascii')
+                    data.append(c)
+                raise ValueError('Unterminated original NPC string')
+            result[name].update(idle=source_string(struct.unpack_from('>I',raw,0x10)[0]),
+                walk=source_string(struct.unpack_from('>I',raw,0x18)[0]),run=source_string(struct.unpack_from('>I',raw,0x1c)[0]),
+                run_threshold=struct.unpack_from('>f',raw,0x3c)[0],step_period=struct.unpack_from('>H',raw,0x48)[0],
+                sound_left=source_string(struct.unpack_from('>I',raw,0x40)[0]),sound_right=source_string(struct.unpack_from('>I',raw,0x44)[0]))
         angles=read(0x803041e0,91*4)
         Path('romfs/npc-angle.bin').write_bytes(b'PMNANG01'+struct.pack('<91f',*struct.unpack('>91f',angles)))
         result['angle_table']=dict(address=0x803041e0,count=91,sha256=hashlib.sha256(angles).hexdigest())
@@ -120,6 +132,7 @@ def build(iso):
     if darkly['tribe']!='クラガリさん' or darkly['aitype']!='なし':
         raise ValueError('Unsupported original Darkly setup')
     darkly_scale=compile_model(iso,'field-darkly','c_f_mura',['S_1',npc_constants['c_f_mura']['talk_pose']])
+    goomba_scale=compile_model(iso,'field-goomba','c_kuribo_n',['S_1','T_1','W_1','R_1'])
     chu_scale = compile_model(iso,'field-chu','c_tyusan',['CHU_S_1',npc_constants['c_tyusan']['talk_pose']])
     professor_scale = json.loads(Path('romfs/professor.json').read_text())['uv_scale']
     object_scale=build_objects(iso)
@@ -128,6 +141,7 @@ def build(iso):
         dict(asset='professor',scale=professor_scale,original='c_kuri_h',path=Path('local-assets/professor/c_kuri_h')),
         dict(asset='field-saveblock',scale=object_scale,original='MOBJ_SaveBlock',path=Path('local-assets/map-objects/MOBJ_SaveBlock'),hit=True),
         dict(asset='field-darkly',scale=darkly_scale,original='c_f_mura',path=work/'c_f_mura'),
+        dict(asset='field-goomba',scale=goomba_scale,original='c_kuribo_n',path=work/'c_kuribo_n'),
     ]
     models = [(m['asset'],m['scale']) for m in model_specs]
     # Source Frankly init: exact story8/10 branches; story9 hides his NPC.
@@ -142,10 +156,16 @@ def build(iso):
                     position=[185,60,-55],yaw=0,pose='S_1',source='gor.rel:gor_01_init_evt@0x3c514'),
                dict(key=identifier('gor_02','クラガリさん'),room=2,model=3,required=0,forbidden=0,low=0,high=55,
                     position=darkly['position'],yaw=darkly['yaw'],pose='S_1',talk_prefix='gor_02_034_',npc_flags=0x40080603,
-                    talk_rules=[(0,56,'gor_02_034_00')],source='m/gor_02/s:クラガリさん;gor.rel:init@0x446a8/talk@0x44d90')]
+                    talk_rules=[(0,56,'gor_02_034_00')],source='m/gor_02/s:クラガリさん;gor.rel:init@0x446a8/talk@0x44d90'),
+               dict(key=identifier('gor_02','クリボー４'),room=2,model=4,required=0,forbidden=0,low=0,high=55,
+                    position=[-370,0,130],yaw=270,pose='S_1',npc_flags=0x40080603,source_talk_present=1,
+                    wander=dict(radius=70,speed=30),talk_rules=[],source='gor.rel:kuribo4_init@0x438f0/regular@0x43924')]
+    tagged_order={name:i for i,name in enumerate(tagged_npcs(setup.read_bytes().decode('shift_jis')))}
+    source_order={identifier('gor_02',name):i for name,i in tagged_order.items()}
+    records.sort(key=lambda r:(r['room'],source_order.get(r['key'],0)))
     # Original bbox fields consumed by mobjHitEntry, not rendered pose bounds.
     bounds=struct.unpack_from('>6f',Path('local-assets/map-objects/MOBJ_SaveBlock').read_bytes(),0xd0)
-    data = bytearray(struct.pack('<8sII',b'PMNPC007',len(models),len(records)))
+    data = bytearray(struct.pack('<8sII',b'PMNPC008',len(models),len(records)))
     collision=[]
     for spec in model_specs:
         asset,scale=spec['asset'],spec['scale']
@@ -175,6 +195,11 @@ def build(iso):
         r['talk_rules']=rules
         data += struct.pack('<I',len(rules))
         for comparison,story,message in rules:data += struct.pack('<Ii32s',comparison,story,fixed(message))
+        r['source_talk_present']=r.get('source_talk_present',int(bool(prefix)))
+        w=r.get('wander');r['wander']=w
+        data += struct.pack('<3I3fI',r['source_talk_present'],int(w is not None),w.get('flags',0) if w else 0,w['radius'] if w else 0,w['speed'] if w else 0,dims['run_threshold'] if w else 0,dims['step_period'] if w else 0)
+        for field in ['idle','walk','run','sound_left','sound_right']:
+            data += fixed(dims[field]) if w and dims[field] else bytes(32)
     Path('romfs/field-actors.pmnpc').write_bytes(data)
     Path('romfs/field-actors.json').write_text(json.dumps(dict(models=models,actors=records,collision=collision,npc_constants=npc_constants,
         setup=json.loads(setup.with_suffix('.s.provenance.json').read_text()),

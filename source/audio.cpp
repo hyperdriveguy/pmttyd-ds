@@ -6,7 +6,8 @@
 namespace ttyd {
 namespace {
 constexpr uint32_t StreamFrames=2048;
-constexpr const char* CueNames[]={"confirm","jump","hit","success","guard","save-block"};
+constexpr const char* CueNames[]={"confirm","jump","hit","success","guard","save-block","goomba-step-left","goomba-step-right"};
+constexpr const char* OriginalCueNames[]={"SFX_CURSOR_OK1","SFX_MARIO_JUMP1","SFX_MARIO_DAMAGE1","SFX_AC_OK1","SFX_MARIO_GUARD1","SFX_MOBJ_BLOCK_SAVE1","SFX_FLD_NPC_KURI_MOVE1L","SFX_FLD_NPC_KURI_MOVE1R"};
 bool readHeader(FILE* file,PcmHeader& pcm) {
     unsigned char bytes[44]{};
     return std::fread(bytes,1,44,file)==44 && pcmHeader(bytes,pcm);
@@ -18,7 +19,7 @@ bool Audio::init() {
     streamData=(int16_t*)linearAlloc(StreamFrames*2*2*3);
     if(!streamData) {shutdown();return false;}
     for(int n=0;n<3;++n) stream[n].data_pcm16=streamData+n*StreamFrames*2;
-    for(int n=0;n<6;++n) {
+    for(int n=0;n<8;++n) {
         char path[96];std::snprintf(path,sizeof(path),"romfs:/%s.wav",CueNames[n]);
         FILE* file=std::fopen(path,"rb");
         if(!file) {shutdown();return false;}
@@ -38,7 +39,7 @@ bool Audio::init() {
         ndspChnSetFormat(n+2,NDSP_FORMAT_MONO_PCM16);
         // Conservative harness mix. Jump's muted original table entry is
         // deliberately overridden for this primary-sample fallback.
-        constexpr float gains[]={80.f/127,0.65f,100.f/127,110.f/127,100.f/127,100.f/127};
+        constexpr float gains[]={80.f/127,0.65f,100.f/127,110.f/127,100.f/127,100.f/127,45.f/127,45.f/127};
         float mix[12]{};mix[0]=mix[1]=gains[n]*.65f;ndspChnSetMix(n+2,mix);
     }
     return true;
@@ -47,6 +48,11 @@ void Audio::play(const Game& game) {
     if(!ready || !game.progress.sound)return;
     if(game.saveObjects)for(auto id:game.saveObjects->sounds)if(id==431) {
         auto& clip=clips[5];ndspChnWaveBufClear(7);clip.wave.status=NDSP_WBUF_FREE;ndspChnWaveBufAdd(7,&clip.wave);
+    }
+    for(const auto& request:game.fieldNpcSounds()) {
+        for(int index=0;index<8;++index)if(request.key==OriginalCueNames[index]) {
+            auto& clip=clips[index];ndspChnWaveBufClear(index+2);clip.wave.status=NDSP_WBUF_FREE;ndspChnWaveBufAdd(index+2,&clip.wave);break;
+        }
     }
     int cue=static_cast<int>(audioCue(game));
     if(cue<0 || cue>=5)return;
@@ -102,14 +108,14 @@ void Audio::update(Scene scene,bool enabled,bool harborDanger,int professorMusic
     if(enabled && room==5 && (scene==Scene::Explore || scene==Scene::Dialogue))wanted=11;
     if(enabled && professorMusic)wanted=professorMusic<0?-1:10;
     if(wanted!=musicTrack)switchTrack(wanted);
-    if(!enabled)for(int n=0;n<6;++n)ndspChnWaveBufClear(n+2);
+    if(!enabled)for(int n=0;n<8;++n)ndspChnWaveBufClear(n+2);
     for(auto& b:stream) if(b.status==NDSP_WBUF_DONE)fill(b);
 }
 void Audio::updateFrontend(int track,bool enabled) {
     if(!ready)return;
     if(!enabled)track=-1;
     if(track!=musicTrack)switchTrack(track);
-    if(!enabled)for(int n=0;n<6;++n)ndspChnWaveBufClear(n+2);
+    if(!enabled)for(int n=0;n<8;++n)ndspChnWaveBufClear(n+2);
     for(auto& b:stream)if(b.status==NDSP_WBUF_DONE)fill(b);
 }
 void Audio::shutdown() {

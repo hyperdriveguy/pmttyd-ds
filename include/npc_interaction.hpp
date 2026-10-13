@@ -23,6 +23,6 @@ struct NpcTalkPlayer {
 struct NpcTalkScan {
     uintptr_t candidate=0,nearActor=0;
     float distance=1000;
-    void consider(const NpcTalkBody&,const NpcTalkPlayer&,const NpcAngleTable&,const FieldWallServices&);
+    bool consider(const NpcTalkBody&,const NpcTalkPlayer&,const NpcAngleTable&,const FieldWallServices&);
 };
 }

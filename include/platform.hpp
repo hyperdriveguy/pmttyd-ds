@@ -181,7 +181,7 @@ public:
 private:
     bool ready=false;
     struct Clip { int16_t* data=nullptr; uint32_t samples=0; ndspWaveBuf wave{}; };
-    Clip clips[6];
+    Clip clips[8];
     FILE* music=nullptr;
     int musicTrack=-1;
     bool musicLoop=false,musicEnded=false;

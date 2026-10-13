@@ -339,3 +339,41 @@ flags. No original assets, code, saves or source ISO mutated, and no measured
 Dolphin/New2DSXL claim added. General quest state remains unknown unless its
 source globals are explicitly published; these lifecycle findings do not
 authorize assuming quest0.
+
+
+## 2026-10-13 follow-up: paused regular does not pause NPC clock/pose
+
+The per-actor npcMain loop publishes dt and services horizontal movement,
+component clear, npcMoveG and Mario-side collision before automatic-pose
+selection. It then registers presentation and copies current XYZ to previous
++98/+9c/+a0 at0x8004b10c..120. Only after all actors are processed does the
+field-mode dispatcher call fbatEncountCheck at0x8004b31c. Candidate admission
+stops the regular event after that invocation's current movement/pose/snapshot;
+there is no retroactive cancellation of already applied movement.
+
+StopID modifies event stopped flags, not NPC clock anchors/dt/state10. A regular
+callback paused by candidate state20000000 therefore consumes no new phase/RNG/
+countdown calls, while ordinary admitted npcMain continues publishing seconds
+and servicing any retained movement components. After a dt>0 movement pass
+clears those components, a following pass without a new callback or other
+writer moves zero. Actual post-collision root delta divided by current dt then
+selects idle S_1/phase1 under mainflag400 (unless other root/movement writers
+intervene). The wander phase can still be moving phase1 or idle phase3; it is
+independent from NPC automatic-animation phase+108.
+
+Idle driver phases and readiness/countdown early exits do not themselves clear
+components; an adapter must retain their fields and let npcMain own the clear.
+Under NPCdt<=0 source skips movement/clear/automatic speed selection but still
+reaches the existing side-response gates. Regular pause is not equivalent to
+forcing dt0, resetting clock anchor, resampling RNG, restarting driver phase0,
+copying current root into previous prematurely or immediately issuing idle
+before the already serviced stop-frame movement.
+
+The [candidate contract](FIELD_ORDINARY_NPC_TALK_CANDIDATE.md) now distinguishes
+per-actor full admission from strict-nearest winner and skipped/unvisited actor
+paths. Original talk-event presence is independent of native quest/playback
+availability. Turning copies only ry+144/+148, preserving movement heading,
+driver work and paper-facing retained state; presentation remains owned by the
+normal Main/Inner path. This admits original auto-turn without inventing quest0
+or playing an unsupported quest message. Exact stop/start source timing and
+numeric/render cadence still require matched original/runtime observations.

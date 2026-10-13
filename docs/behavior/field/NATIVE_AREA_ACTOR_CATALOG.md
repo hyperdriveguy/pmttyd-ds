@@ -4,6 +4,8 @@ This is an authored native adapter for the recovered static init subset in
 [ordinary NPC bindings](ROGUEPORT_ORDINARY_NPC_BINDINGS.md) and
 [Frankly init](../story/PROFESSOR_FIRST_TALK_AND_FENCE.md). It is not the complete
 original NPC driver, map setup parser or event evaluator.
+[Live wandering](NATIVE_LIVE_NPC_WANDER.md) now binds the recovered zero-vertical
+Goomba4 profile alongside the static records.
 
 `tools/field_actor_assets.py` reads original Shift-JIS `m/gor_02/s`, retaining
 Chu3 position `(150,0,-400)`, direction270 and tribe. Its model is
@@ -20,6 +22,12 @@ position(-335,0,-335),direction270,c_f_mura bank,S_1/T_1 and flags0x40080603.
 His current early0..55 envelope binds only original gor_02_034_00; source175
 name/flag and later threshold branches remain unbound. Relative order after
 Chu follows the original registry. No omitted branch receives a fake fallback.
+
+Original east Goomba4 uses init(-370,0,130),direction270,c_kuribo_n,
+radius70/speed30 and source S_1/W_1/R_1 selection in early0..55. Its original
+talk event is present for candidate pause but its quest-before-story playback
+is unbound; no missing quest state is inferred. Registry records now sort by
+original tagged order, including Goomba4 before Chu/Darkly.
 
 Professor records retain exact story8 position `(-135,0,-240)` and story10
 position `(-220,0,305)`. Story9 has no visible NPC record. Story8 interior and
@@ -51,7 +59,12 @@ adds original npcFlags (200-byte actor rows); versions1..6 remain readable,
 with legacy missing flags retained as unbound0. PMNPC007 adds a variable
 source-order talk-rule tail after each actor: count then comparison/story/fullID
 records. Empty/unmatched bound rules return empty; versions1..6 retain their
-legacy selector compatibility. See [native per-actor rule format](NATIVE_DARKLY_AND_PER_ACTOR_TALK_RULES.md). [Native NPC side collision](NATIVE_NPC_SIDE_COLLISION.md)
+legacy selector compatibility. PMNPC008 retains100-byte model rows and the
+200-byte actor prefix plus PMNPC007 rules, then adds188 bytes for original talk
+presence,enabled/work flags,radius/speed/run threshold,step period and five
+pose/sound names. Legacy versions remain readable; enabled wander admission is
+bounded to source direct-horizontal/no-gravity flags. See [live format and owners](NATIVE_LIVE_NPC_WANDER.md)
+and [native per-actor rule format](NATIVE_DARKLY_AND_PER_ACTOR_TALK_RULES.md). [Native NPC side collision](NATIVE_NPC_SIDE_COLLISION.md)
 uses source Entry/setup/constructor flags and per-instance previous roots. The catalog loader stages the original angle table atomically
 with the catalog for [ordinary talk selection](NATIVE_NPC_TALK_SELECTION.md).
 
@@ -97,11 +110,15 @@ retained candidate can block the next Mario A jump. Selected talk starts on the
 following NPC invocation. Complete encounter/door/regular-event priority is open.
 Talk opens the exact source room/global resource and uses original playback;
 new actions and saves stay locked until closure while neutral field physics
-continues. Talk uses source turn-to-Mario and restores the catalog yaw after
-closure. [NPC side response](NATIVE_NPC_SIDE_COLLISION.md) now binds source
+continues. Stationary talk uses source turn-to-Mario and restores its retained base yaw
+after closure. Live wandering saves/restores current source yaw through its
+candidate/event owner and preserves countdown/work while stopped. [NPC side response](NATIVE_NPC_SIDE_COLLISION.md) now binds source
 dimensions/flags, previous-root rollback, polynomial response and map-wall
-retry. Complete NPC timers/motion/auto-turn/registry/event ownership and
-wandering remain open.
+retry. [Live Goomba4](NATIVE_LIVE_NPC_WANDER.md) consumes prior NPC clock/touch
+publications, applies direct XZ displacement, selects poses from actual speed
+and publishes live paper matrices once per simulation tick for read-only
+rendering. General NPC timers/motion/registry/event lifetime and other
+wandering profiles remain open.
 
 The original save-block S_1 retains outside0..1 UVs, discrete scrolling updates,
 source binding repeat overrides, RGBA and pass2/3. Original bbox head, top support and ordinary Mario side collision are connected. Hit callback, save-choice

@@ -1049,3 +1049,56 @@ and compiled packs outside source history, and fingerprints tool/source inputs.
 Nintendo/Intelligent Systems ownership and no redistribution grant are unchanged.
 Original charge cue keys are retained service requests; importing these poses
 does not imply complete original gauge or MusyX voice/macro playback.
+
+## 2026-10-13 — Live original Goomba4 and PMNPC008
+
+The prepared original a/c_kuribo_n bank is now registered as live Goomba4 in
+ignored romfs/field-actors.pmnpc PMNPC008. Original model source ISO offset
+886803444,size18920,SHA256
+2f62e39215aa2c355ea0c9edb4a3e40e2964d602186b6fd4016eac326fbbadb3;
+texture a/c_kuribo_n- offset886822364,size24416,SHA256
+2a9eed35878cb232d7ee8770e3cc76cbbfddba00d48cb7c95612b65ca9225cd1.
+Raw model/header-selected texture bank and provenance stay ignored under
+local-assets/field-actors/c_kuribo_n and c_kuribo_n.tpl. Ignored
+romfs/field-goomba.pmanim/.pmmesh/.t3x/.json retain original Z_1/S_1/T_1/W_1/R_1,
+hierarchy/sparse states,RGBA/pass/cull/sampler metadata. Manifest records14
+texture cells,1024x256 runtime atlas,UV4;124px decoded textures and128px
+wrap-aware gutter cells remain converter choices. Uncompressed RGBA8 payload
+is1MiB(1024*256*4); this is not a hardware residency measurement. tex3ds usesRGBA8/auto
+compression; source drawscalar2 and source engine units*.01 remain unchanged.
+
+PMNPC008 retains100-byte model/200-byte actor prefix plus PMNPC007 rules and
+adds188-byte original event-presence/wander/pose/sound metadata. Actor ordering
+follows original tagged registry; Goomba4 retains source init(-370,0,130),
+direction270,radius70/speed30,tribe dimensions30/30 and original movement sound
+names. [Live binding](behavior/field/NATIVE_LIVE_NPC_WANDER.md) uses the existing
+original-art citro3d renderer with simulation-owned live paper presentation.
+Queued original SFX_FLD_NPC_KURI_MOVE1L/R requests now play original primary
+samples993/994 through config/audio_bindings.json,tools/audio_map.py and ignored
+romfs/audio-map.json. Original sound/pmario MusyX DSP ADPCM samples decode
+to monoPCM16 at16000Hz: sample993 is540 samples at bank offset10014976;
+sample994 is672 samples at10015296. Ignored romfs/goomba-step-left.wav and
+goomba-step-right.wav are bounded one-shots with source rate/ID retained.
+Native clips6/7 use libctru NDSP channels8/9 and source volume45/127 times the
+existing master gain0.65. Source name/mask/root remain in the request queue;
+macro modulation/child voices, material-mask effects and spatial attenuation
+remain native adapters, not original audio parity. Quest playback
+stays unbound; no fabricated state/dialogue or replacement art/tones added.
+
+Original Nintendo/Intelligent Systems rights remain; no redistribution license
+is granted or inferred. ISO/raw assets/compiled packs/original dialogue remain
+outside source history. Source/native code/manifest evidence is not matched
+Dolphin execution or a New2DSXL hardware performance measurement.
+
+## 2026-10-13 — Original ordinary Hammer animations
+
+`tools/trio_attack_assets.py` adds original `M_H_1A`, `M_H_1B`, `M_H_1C` from
+ISO `a/b_mario`, using original `a/a_mario-` textures. Unchanged wrapper/core
+80416c40/8035d6d4 and weapon80353de8 were already in the data-only DOL pack.
+Existing mesh baking, atlas halving with Lanczos, RGBA8 tex3ds conversion and
+UV-scale metadata are retained; no replacement artwork or dialogue is authored.
+The converter reads the ISO read-only, keeps extracted models/atlases/animations
+and compiled packs outside source history, and fingerprints tool/source inputs.
+Nintendo/Intelligent Systems ownership and no redistribution grant are unchanged.
+Original charge cue keys are retained service requests; importing these poses
+does not imply complete original gauge or MusyX voice/macro playback.

@@ -161,3 +161,50 @@ map-object/A arbitration and event scheduler/global frame ordering. Source US
 IDs/attribution/branches must follow their actor talk events, not fabricated
 native dialogue. [NPC collision](FIELD_NPC_SPHERE_AND_MARIO_SIDE_COLLISION.md)
 owns its distinct halfwidth/height/response predicates.
+
+
+## 2026-10-13 candidate side effects: admission versus playback binding
+
+Source actor talkEvent+128 presence is checked before the candidate graph;
+there is no story/quest/message-resolution service in this scan. Consequently
+original Goomba4 can auto-turn/pause its regular event even when a native
+implementation lacks its quest playback. Keep original event presence separate
+from whether native playback is currently bound. A refusal to fabricate an
+unsupported quest branch must not silently erase source candidacy side effects.
+This source split does not authorize playing an unknown message or inventing
+quest state.
+
+At0x80047bd0..47bec a clear ray sets local admission r24=1 before strict
+nearest selection; nearest failure does not clear r24. Every fully admitted
+actor, including actors losing nearest ties/distance, reaches its auto-turn
+branch. A native scan that exposes only the winner loses this information.
+The retained nearest candidate/work+10, radial hint/Mario+1d8 and per-actor
+local admission/auto-turn are three distinct outputs.
+
+| Source path | Auto-turn state/lifetime result |
+| --- | --- |
+| Full overlap/facing/radius/clear-ray admission, state20000000 clear | Set NPCstate+1d4 mask20000000; save ry+144 to+148; StopID regular+11c; unless mainflags01000000, request normalized angle NPCXZ→MarioXZ to ry+144 |
+| Full admission, state20000000 already set | Retain saved yaw/state; no additional turn or stop request |
+| Vertical fail, facing fail, late radius fail or blocked ray, state20000000 set | Clear state mask; if mainflags00400000, copy saved ry+148 to+144 and StartID regular+11c; otherwise OR NPC+140 mask10000000 |
+| Those failed local paths with state clear | No auto-turn mutation |
+| Actor mainflags2 clear, flags8 set or original talkEvent pointer null | Jump0x80047c90 without local failure cleanup |
+| Global Mario talk/key scan gates fail | Skip actor scan; do not infer per-actor candidate-loss cleanup |
+
+The source first radial comparison only updates the radial hint; facing is
+visited even for out-of-radius actors, then radius is required again before
+ray. A native early radial failure produces the same ordinary selection result
+but suppresses those source angle-service requests; expose it as a visited
+local failure when modelling pause state, not as an unvisited actor. A missing
+ray backend is unavailable evidence, not a proven source blocked-ray result.
+
+This branch saves/restores only source ry+144/+148. It does not rewrite move
+heading+1ac, animation phase+108, paper retained angle+74/target+7c/sign+78
+or restart the wander work. Existing presentation owners receive the changed
+ry in their ordinary service order. Candidate loss does not reset animation
+phase; talk-event completion does reset+108 when mainflags400 as already
+recovered. Source state20000000 means regular event is stopped by this owner,
+not that NPCmain's clock/movement is suspended.
+
+[Wander lifetime](FIELD_NPC_WANDER_DRIVER_AND_GOOMBA4.md) pins candidate-before-A
+stop and original StopID/StartID retained work. No snapshot of the current
+native renderer implies exact original presentation cadence or hardware parity.

@@ -6,7 +6,9 @@
     {"clip": "hit", "gamecube_name": "SFX_MARIO_DAMAGE1", "trigger": "current harness generic impact; enemy-specific hits remain ambiguous"},
     {"clip": "success", "gamecube_name": "SFX_AC_OK1", "trigger": "player action-command success; primary voice only"},
     {"clip": "guard", "gamecube_name": "SFX_MARIO_GUARD1", "trigger": "guarded enemy impact; separate from action-command success"},
-    {"clip": "save-block", "gamecube_name": "SFX_MOBJ_BLOCK_SAVE1", "source_request": 431, "trigger": "source save-block stage0; original primary sample550; macro/3D routing remain adapters"}
+    {"clip": "save-block", "gamecube_name": "SFX_MOBJ_BLOCK_SAVE1", "source_request": 431, "trigger": "source save-block stage0; original primary sample550; macro/3D routing remain adapters"},
+    {"clip": "goomba-step-left", "gamecube_name": "SFX_FLD_NPC_KURI_MOVE1L", "trigger": "original urouro strict step-period/toggle request; source primary sample993; macro/3D routing remain adapters"},
+    {"clip": "goomba-step-right", "gamecube_name": "SFX_FLD_NPC_KURI_MOVE1R", "trigger": "original urouro strict step-period/toggle request; source primary sample994; macro/3D routing remain adapters"}
   ],
   "music": [
     {"clip": "rogueport", "source": "sound/stream/stg_gor2_32k.stm", "trigger": "current five outdoor Rogueport rooms; retain through dialogue; story overrides remain unbound"},

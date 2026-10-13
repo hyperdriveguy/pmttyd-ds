@@ -2,6 +2,7 @@
 #include "game.hpp"
 #include "head_collision.hpp"
 #include <cassert>
+#include <algorithm>
 #include <cmath>
 #include <iostream>
 #include <fstream>
@@ -14,7 +15,7 @@ int main() {
     assert(loadFieldActorCatalog("romfs"));const auto& assets=fieldActorCatalog();
     std::vector<FieldObjectTriangle> triangles;
     buildFieldObjectCollision(assets,0,8,0,0,triangles);assert(triangles.size()==12);
-    const auto actor=assets.actors()[3];const auto& model=assets.models()[actor.model];
+    const auto actor=*std::find_if(assets.actors().begin(),assets.actors().end(),[](const auto& a){return a.sourceName=="mobj_save";});const auto& model=assets.models()[actor.model];
     assert(actor.sourceName=="mobj_save" && model.hitMode==1 && model.originalName=="MOBJ_SaveBlock");
     assert(near(model.hitBounds[0],-1.27f) && near(model.hitBounds[4],2.500000238418579f));
     float minimum=10,maximum=-10;
@@ -79,7 +80,7 @@ int main() {
     std::ifstream packed("romfs/field-actors.pmnpc",std::ios::binary);
     const std::vector<char> catalogBytes((std::istreambuf_iterator<char>(packed)),{});
     for(const char* name:{"MOBJ_HiddenHatenaBlock","MOBJ_HiddenBadgeBlock","MOBJ_Hidden10CountBlock"}) {
-        auto bytes=catalogBytes;const size_t modelStride=std::memcmp(bytes.data(),"PMNPC005",8)==0 || std::memcmp(bytes.data(),"PMNPC006",8)==0 || std::memcmp(bytes.data(),"PMNPC007",8)==0?100:96;
+        auto bytes=catalogBytes;const size_t modelStride=std::memcmp(bytes.data(),"PMNPC008",8)==0?100:std::memcmp(bytes.data(),"PMNPC005",8)==0 || std::memcmp(bytes.data(),"PMNPC006",8)==0 || std::memcmp(bytes.data(),"PMNPC007",8)==0?100:96;
         const size_t modelName=16+2*modelStride+64;
         std::memset(bytes.data()+modelName,0,32);std::memcpy(bytes.data()+modelName,name,std::strlen(name));
         FILE* stream=std::tmpfile();assert(stream);assert(std::fwrite(bytes.data(),1,bytes.size(),stream)==bytes.size());std::rewind(stream);

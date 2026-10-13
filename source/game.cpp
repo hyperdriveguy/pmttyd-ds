@@ -814,17 +814,98 @@ void Game::updateFieldNpcTalk(const Input& input) {
             }
         npcTalkCandidate=0;return;
     }
-    const auto* actor=nearbyFieldActor();npcTalkCandidate=actor?actor->key:0;
+    const FieldActorRecord* actor=nullptr;
+    if(fieldNpcEventCandidate) {
+        for(const auto& row:fieldActorCatalog().actors())if(row.key==fieldNpcEventCandidate && progress.originalStory &&
+            fieldActorTalkAvailable(row,*progress.originalStory)){actor=&row;break;}
+    } else actor=nearbyFieldActor();
+    npcTalkCandidate=fieldNpcEventCandidate?fieldNpcEventCandidate:actor?actor->key:0;
     npcTalkGeneration=fieldActorCatalogGeneration();
     if(!actor || !input.confirm || !progress.originalStory)return;
     npcTalkPending=actor->key;saveRequested=false; // State1→2; next NPC invocation starts the event.
 }
-void Game::updateFieldNpcCollision() {
-    fieldNpcHit=0;
+const FieldNpcInstance* Game::fieldNpcState(uint32_t key) const {
+    if(fieldNpcRoom!=progress.room || fieldNpcGeneration!=fieldActorCatalogGeneration())return nullptr;
+    const auto found=fieldNpcs.find(key);return found==fieldNpcs.end()?nullptr:&found->second;
+}
+void Game::synchronizeFieldNpcs() {
     const auto generation=fieldActorCatalogGeneration();
     if(fieldNpcGeneration!=generation || fieldNpcRoom!=progress.room) {
-        fieldNpcs.clear();fieldNpcGeneration=generation;fieldNpcRoom=progress.room;
+        fieldNpcs.clear();fieldNpcEventCandidate=0;fieldNpcGeneration=generation;fieldNpcRoom=progress.room;
     }
+}
+void Game::updateFieldNpcEvents() {
+    synchronizeFieldNpcs();npcSoundRequests.clear();
+    if((scene!=Scene::Explore && scene!=Scene::Dialogue) || trioBattleActive || water.active() ||
+       arriving || fade.active() || warpRequest>=0 || pipeRequest>=0)return;
+    struct Context {Game* game;const FieldActorRecord* actor;};
+    NpcWanderServices services;
+    services.frames=[](void*,int32_t ms){return npcWanderFrames(ms,TickRate);};
+    services.random=[](void* p,int32_t bound){return npcWanderRandom(static_cast<Context*>(p)->game->npcRandomSeed,bound);};
+    services.turnReady=[](void* p,const NpcWanderActor& a) {
+        const auto& pose=static_cast<Context*>(p)->game->fieldNpcs.at(uint32_t(a.token)).presentation;
+        return npcWanderTurnReady(pose.flags,pose.retained,pose.target);
+    };
+    services.angle=[](void*,FieldWallVector a,FieldWallVector b){return fieldNpcAngles().angle(a.x,a.z,b.x,b.z);};
+    services.distance=[](void*,FieldWallVector a,FieldWallVector b){const float x=a.x-b.x,z=a.z-b.z;return std::sqrt(std::fma(x,x,z*z));};
+    services.sine=[](void*,float r){return float(std::sin(double(r)));};
+    services.cosine=[](void*,float r){return float(std::cos(double(r)));};
+    services.sound=[](void* p,uintptr_t name,uint32_t mask,FieldWallVector root) {
+        const auto& c=*static_cast<Context*>(p);c.game->npcSoundRequests.push_back({name==1?c.actor->wander.soundLeft:c.actor->wander.soundRight,mask,root});
+    };
+    NpcWanderMario mario;mario.root={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
+    mario.travelHeading=fieldNpcAngles().angle(0,0,fieldMovement.headingX,fieldMovement.headingZ);mario.contact=fieldNpcHit;
+    for(const auto& actor:fieldActorCatalog().actors()) {
+        if(!actor.wander.enabled || !actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))continue;
+        auto& state=fieldNpcs[actor.key];Context context{this,&actor};services.user=&context;
+        if(!state.initialized) {
+            state.body.root=state.body.previous={actor.position[0],actor.position[1],actor.position[2]};
+            state.movement.token=actor.key;state.movement.root=state.body.root;state.movement.yaw=actor.yaw;
+            state.movement.flags=actor.npcFlags;state.movement.stepPeriod=uint16_t(actor.wander.stepPeriod);
+            state.movement.sounds[0]=actor.wander.soundLeft.empty()?0:1;state.movement.sounds[1]=actor.wander.soundRight.empty()?0:2;
+            initializeNpcWander(state.wander,state.movement,state.body.root.x,state.body.root.z,actor.wander.radius,actor.wander.speed,actor.wander.flags,services);
+            state.clock=state.poseAt=ticks*1000/TickRate;state.pose=actor.wander.idle;state.initialized=true;
+        }
+        state.movement.root=state.body.root;
+        if(!state.paused)tickNpcWander(state.wander,state.movement,mario,services);
+    }
+}
+void Game::updateFieldNpcCandidates() {
+    fieldNpcEventCandidate=0;
+    if(scene!=Scene::Explore || !fieldControlEnabled() || fieldKeysOff || saveLocked() || water.active() ||
+       fieldStep.active() || fieldDoor.active() || arriving || fade.active() || warpRequest>=0 || pipeRequest>=0)return;
+    const auto mario=fieldNpcTalkPlayer();if(!mario.talkable())return;
+    FieldWallServices rays{this,[](void* p,FieldWallVector origin,FieldWallVector direction,float length){return fieldMapRay(origin,direction,length,&static_cast<Game*>(p)->fieldObjectTriangles,false);}};
+    NpcTalkScan scan;
+    for(const auto& actor:fieldActorCatalog().actors()) {
+        if(actor.kind || !actor.sourceTalkPresent || !actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))continue;
+        auto it=fieldNpcs.find(actor.key);if(it==fieldNpcs.end())continue;auto& state=it->second;
+        if(!(state.body.flags&2) || (state.body.flags&8))continue; // Source skipped slots do not resume.
+        const bool admitted=scan.consider({actor.key,state.body.root,actor.npcWidth,actor.npcHeight,state.body.flags,true},mario,fieldNpcAngles(),rays);
+        if(!actor.wander.enabled)continue;
+        if(admitted) {
+            if(!state.paused) {
+                state.savedYaw=state.movement.yaw;state.paused=true;state.body.state|=0x20000000;
+                if(!(state.body.flags&0x01000000))state.movement.yaw=fieldNpcAngles().angle(state.body.root.x,state.body.root.z,mario.root.x,mario.root.z);
+            }
+        } else if(state.paused){state.movement.yaw=state.savedYaw;state.paused=false;state.body.state&=~0x20000000u;}
+    }
+    fieldNpcEventCandidate=uint32_t(scan.candidate);
+}
+void Game::updateFieldNpcPresentation() {
+    for(const auto& actor:fieldActorCatalog().actors()) {
+        if(!actor.wander.enabled || !actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))continue;
+        auto found=fieldNpcs.find(actor.key);if(found==fieldNpcs.end() || !found->second.initialized)continue;
+        auto& instance=found->second;const auto& body=instance.body;
+        if((body.flags&3)!=3){instance.presentationReady=false;continue;}
+        NpcMatrixInput input;input.root={body.root.x,body.root.y,body.root.z};input.yaw=instance.movement.yaw;input.drawScale=actor.scale;input.flags=body.flags;
+        if(body.flags&0x8000)instance.presentation.flags|=0x100;else instance.presentation.flags&=~0x100u;
+        NpcCameraService camera{&fieldCameraFrame,[](void* p){const auto& f=*static_cast<FieldCameraFrame*>(p);return NpcCamera{{f.eye.x*100,f.eye.y*100,f.eye.z*100},{f.at.x*100,f.at.y*100,f.at.z*100}};}};
+        instance.presentationReady=instance.presentation.prepare(input,fieldNpcAngles(),camera);
+    }
+}
+void Game::updateFieldNpcCollision() {
+    fieldNpcHit=0;synchronizeFieldNpcs();
     if((scene!=Scene::Explore && scene!=Scene::Dialogue) || trioBattleActive || water.active() ||
        arriving || fade.active() || warpRequest>=0 || pipeRequest>=0)return;
     NpcSidePlayer mario;mario.root={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
@@ -856,13 +937,35 @@ void Game::updateFieldNpcCollision() {
             const auto& source=professorStory.actors[2];root=source.position;placement=source.placementGeneration;
             flags=(actor.npcFlags&~source.flagMask)|(source.flags&source.flagMask);
         }
-        const FieldWallVector position{root[0],root[1],root[2]};
         const auto inserted=fieldNpcs.try_emplace(actor.key);auto& instance=inserted.first->second;
+        if(actor.wander.enabled && instance.initialized) {
+            root={instance.body.root.x,instance.body.root.y,instance.body.root.z};flags=instance.movement.flags;
+        }
+        const FieldWallVector position{root[0],root[1],root[2]};
         if(inserted.second || instance.scripted!=scripted || instance.placement!=placement)instance.body.previous=position;
         auto& body=instance.body;body.token=actor.key;body.root=position;body.width=actor.npcWidth;
         body.height=actor.npcHeight;body.flags=flags;
         instance.scripted=scripted;instance.placement=placement;instance.seen=ticks;
-        if(npcSideUpdateAdmitted(body))respondNpcSide(body,mario,fieldNpcAngles(),services);
+        const bool admitted=npcSideUpdateAdmitted(body);
+        if(actor.wander.enabled && instance.initialized && (body.state&0x10) && (body.flags&3)==3) {
+            const auto now=ticks*1000/TickRate;const auto elapsed=now-instance.clock;instance.clock=now;
+            instance.movement.dt=float(elapsed>500?16:elapsed)/1000.f;
+            if(instance.movement.dt>0) {
+                assert(body.flags&0x40000000); // Current authored profile uses source direct-horizontal branch.
+                body.root.x+=instance.movement.components.x;body.root.z+=instance.movement.components.z;
+                instance.movement.components.x=instance.movement.components.z=0;
+            }
+        }
+        if(admitted)respondNpcSide(body,mario,fieldNpcAngles(),services);
+        if(actor.wander.enabled && instance.initialized) {
+            instance.movement.root=body.root;
+            if((body.flags&0x400) && instance.movement.dt>0) {
+                const float x=body.root.x-body.previous.x,z=body.root.z-body.previous.z;
+                const float speed=std::sqrt(std::fma(x,x,z*z))/instance.movement.dt;
+                const int phase=speed<.10000000149011612f?1:speed<actor.wander.runThreshold?2:3;
+                if(phase!=instance.posePhase){instance.posePhase=phase;instance.poseAt=ticks*1000/TickRate;instance.pose=phase==1?actor.wander.idle:phase==2?actor.wander.walk:actor.wander.run;}
+            }
+        }
         if(scripted)professorStory.actors[2].position={body.root.x,body.root.y,body.root.z};
         if((body.flags&3)==3)body.previous=body.root; // Rejected initial slots do not reach the source end snapshot.
     }
@@ -1043,7 +1146,10 @@ const char* Game::prompt() const {
     }
     if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) return "A: confront Lord Crump";
     if (progress.room==0 && near(NpcPosition)) return "A: talk";
-    if(fieldNpcTalkCandidateAlive())return "A: talk"; // Retained simulation result; no render-time map ray.
+    if(fieldNpcTalkCandidateAlive()) {
+        for(const auto& actor:fieldActorCatalog().actors())if(actor.key==npcTalkCandidate && progress.originalStory && !fieldActorTalkAvailable(actor,*progress.originalStory))return "Development notice: NPC event unavailable";
+        return "A: talk";
+    } // Retained simulation result; no render-time map ray.
     return "Circle Pad: move   A: jump   X: partner";
 }
 void Game::rebaseFieldCamera() {
@@ -1552,7 +1658,9 @@ void Game::tick(const Input& rawInput) {
             if(!game.professorStory.locked() && !game.harborEncounter.locked())game.updateMarioPresentation();
             Input talkInput=raw;
             if(raw.physicalSnapshot)talkInput.confirm=(game.inputProducer.channels[0].pressed&BattleButtonA)!=0;
+            game.updateFieldNpcCandidates();
             game.updateFieldNpcTalk(talkInput); // NPC owner follows current Mario/object updates.
+            game.updateFieldNpcPresentation();
             game.checkFieldRoadCases();
             const auto& axes=game.inputProducer.channels[0].analog;
             const int mainX=raw.physicalSnapshot?axes.mainX:std::isfinite(raw.x)?int(std::clamp(raw.x,-1.f,1.f)*70.f):0;
@@ -1584,6 +1692,7 @@ void Game::tick(const Input& rawInput) {
             input.jumpHeld=(published.buttons&BattleButtonA)!=0;
         }
     }
+    updateFieldNpcEvents(); // Regular USER_FUNC consumes previous NPC publications before Mario.
     const bool tap=i.touchX>=0;
     if(!saveObjects)saveObjects=std::make_shared<FieldSaveObjects>();
     saveObjects->configure(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags,ticks*1000/60);

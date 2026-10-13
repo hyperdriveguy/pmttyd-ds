@@ -7,6 +7,7 @@
 #include <optional>
 #include <unordered_map>
 #include "npc_collision.hpp"
+#include "npc_wander.hpp"
 #include "water_recovery.hpp"
 #include "transition_fade.hpp"
 #include "road_motion.hpp"
@@ -134,6 +135,18 @@ struct Progress {
     uint8_t originalSaveMode=0; // Original GSW4, independent of native file existence.
     uint8_t interiorMask=0; // Native same-map door state; separate from GSW0.
 };
+struct FieldNpcInstance {
+    NpcSideBody body;
+    NpcWanderWork wander;
+    NpcWanderActor movement;
+    NpcPresentation presentation;
+    std::string pose;
+    uint64_t placement=0,seen=0,clock=0,poseAt=0;
+    int posePhase=0;
+    float savedYaw=0;
+    bool scripted=false,initialized=false,paused=false,presentationReady=false;
+};
+struct FieldNpcSoundRequest {std::string key;uint32_t mask=0;FieldWallVector root;};
 class Game {
 public:
     Progress progress;
@@ -257,6 +270,8 @@ public:
     bool near(Vec2 point, float distance = 1.5f) const;
     const FieldActorRecord* nearbyFieldActor() const;
     uint32_t fieldNpcContact() const{return fieldNpcHit;}
+    const FieldNpcInstance* fieldNpcState(uint32_t key) const;
+    const std::vector<FieldNpcSoundRequest>& fieldNpcSounds() const{return npcSoundRequests;}
 private:
     NpcTalkPlayer fieldNpcTalkPlayer() const;
     bool fieldNpcTalkCandidateAlive() const;
@@ -265,7 +280,13 @@ private:
     bool npcTalkWaiting=false;
     uint64_t npcTalkGeneration=0;
     void updateFieldNpcTalk(const Input&);
-    struct FieldNpcInstance {NpcSideBody body;uint64_t placement=0,seen=0;bool scripted=false;};
+    uint32_t npcRandomSeed=1; // Deterministic native seed; original shared seed/interleaving remains unbound.
+    uint32_t fieldNpcEventCandidate=0;
+    std::vector<FieldNpcSoundRequest> npcSoundRequests;
+    void synchronizeFieldNpcs();
+    void updateFieldNpcEvents();
+    void updateFieldNpcCandidates();
+    void updateFieldNpcPresentation();
     std::unordered_map<uint32_t,FieldNpcInstance> fieldNpcs;
     uint64_t fieldNpcGeneration=0;
     uint32_t fieldNpcRoom=~0u;

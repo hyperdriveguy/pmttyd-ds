@@ -2,8 +2,10 @@
 
 2026-10-13; implements the recovered direct graph in
 [original wander/Goomba4 evidence](FIELD_NPC_WANDER_DRIVER_AND_GOOMBA4.md).
-This core is compiled for host and3DS but does not activate a native Goomba
-or replace his original quest/event/ground providers.
+This core is compiled for host and3DS. The separate
+[live native binding](NATIVE_LIVE_NPC_WANDER.md) now activates original Goomba4
+under a bounded zero-vertical profile; quest/event/ground providers remain
+separate from this portable arithmetic.
 
 `NpcWanderWork` retains the44-byte source phase/flags/countdown/flip/budget/
 anchor/radius fields. Initialization uses caller-provided live frame conversion,
@@ -40,9 +42,10 @@ facing10degree/NaN behavior. These are static deductions/host checks, not origin
 Dolphin timing or New2DS performance measurements. Exact build results are in
 [progress](../../PROGRESS.md).
 
-Next native binding must retain source event work while stopped, consume
+The [live native binding](NATIVE_LIVE_NPC_WANDER.md) retains source event work
+while stopped and consumes
 previously published NPCdt/components/contact in the documented root order,
-apply source NPC-main/gravity/pose gates, and share live roots/flags/pose with
+applying the bound NPC-main/zero-vertical/pose gates and sharing live roots/flags/pose with
 rendering and talk. Goomba4's inventory/quest branches precede ordinary talk;
 unknown quest state cannot be replaced by an early-story dialogue assumption.
 Native model/sound conversion and exact original/new-hardware comparisons remain
