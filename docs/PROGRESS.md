@@ -2,6 +2,24 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-12 — Native original US message library and resource lookup
+
+Imported all 260 `msg/US` resources / 13,186 key/text pairs byte for byte
+into ignored `romfs/messages/`, with hashes, source offsets and licensing in
+its local manifest. `make all` now packages this library. Portable
+`MessageResource` retains original IDs/control tokens/high bytes, builds an
+offset index, and atomically rejects invalid files. `MessageAssets` provides
+room-before-global lookup. Missing/ambiguous keys deliberately return null;
+original fallback and duplicate-key qsort behavior remain unbound. See
+[asset provenance](assets/SCRIPTS_MESSAGES_EFFECTS.md).
+
+Validation: `make test` **88 CTest / 92 Python passing**, `make all` builds
+3DSX, `build-host/message_assets_tests romfs/messages/gor_00.txt` verifies
+328 actual harbor pairs and all 20 opening IDs. No story playback or emulator
+behavior changed in this increment. Next: original-token presentation and
+story-call bindings, position-triggered harbor scenes, indoor entrances.
+The playable prologue / original-game parity goal remains incomplete.
+
 ## 2026-10-12 — Native cross-check fixes: sink guard + default lanes
 
 The native session's independent re-read falsified my water doc's sink

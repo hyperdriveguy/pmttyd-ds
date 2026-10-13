@@ -40,3 +40,4 @@ romfs/*.pmshadow
 
 # Extracted per-function disassembly dumps (evidence working files, not source history)
 *.disasm
+/romfs/messages/

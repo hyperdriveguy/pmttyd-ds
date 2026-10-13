@@ -134,3 +134,21 @@ Reuse the original source through the documented asset provider;do not commit
 or distribute the ISO/extracted TPL/compiled packs. Original Nintendo/Intelligent
 Systems data;this project records no redistribution licence or rights transfer.
 See [driver/cache source](../behavior/effect/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md).
+# 2026-10-12 — Complete US message resources for native playback
+
+`tools/message_assets.py` opens the US ISO read-only and copies every
+`msg/US/*.txt` resource byte for byte into ignored `romfs/messages/`.
+The local manifest records source paths, ISO offsets, byte sizes, SHA-256,
+pair counts and duplicate-key metadata. All 260 resources / 13,186 pairs retain
+their original IDs, high bytes and control tokens. No dialogue is committed.
+No encoding normalization, text rewriting or token stripping occurs.
+Original Nintendo/Intelligent Systems rights remain applicable; these local
+assets have no redistribution license.
+
+`MessageResource` builds an offset index over exact raw strings, rejecting
+malformed/truncated resources atomically. `MessageAssets` queries room slot
+before global slot. Missing keys return null in this native adapter; original
+localized fallback binding remains open. Duplicate pairs are retained, but
+ambiguous keys return null until original equal-key qsort ordering is recovered.
+Only resident resource bytes/indexes need RAM; the full library resides in RomFS.
+This delivers asset lookup, not original parser, fonts, story or window playback.
