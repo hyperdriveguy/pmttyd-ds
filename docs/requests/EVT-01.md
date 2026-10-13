@@ -311,6 +311,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   byte/pair stores, special default propagation and notification —
   [MIDI setters](../behavior/audio/MUSYX_MIDI_CONTROLLER_SETTERS_AND_NOTIFICATION.md).
   FX special MIDI-address formulas/raw inputs retained; RPN/domain/runtime open.
+- [x] Complete inpSetRPNHi/Dec/Inc selector/default arithmetic and
+  captured/fresh live voice propagation —
+  [RPN writers](../behavior/audio/MUSYX_RPN_PARAMETER_WRITERS_AND_VOICE_PROPAGATION.md).
+  Eight input bits/equality-only word guards retained; caller/domain/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1818,3 +1822,19 @@ mask/address/matching/order deductions checked. Full fresh ELFs/listings stay
 `/tmp`; no native change/original execution/body/binary asset export. RPN children,
 raw caller/table/count/membership/alias/IRQ/concurrency/reinit/job domains and
 original controller/pair/pedal/audio remain OPEN.
+
+### 2026-10-13 — RPN parameter writers and live voice propagation
+
+[Three complete bodies](../behavior/audio/MUSYX_RPN_PARAMETER_WRITERS_AND_VOICE_PROPAGATION.md)
+close selectors0/7f7d/7f7e, byte clamp/step, high-word low9-preserve/eight-input-
+bit replacement and full-word equality-only increment/decrement guards. Hi
+propagates a retained word; step writers reload it per matching voice. Boundary
+cases still scan; byte cases publish1db before separately reloaded1da. No general
+14-bit saturation, upper-byte7-bit mask, atomic snapshot or FX table repair invented.
+
+Validation: read-only manifest three complete spans,219 anchors/zero calls passes.
+Six high-mask/seven byte/six whole-word/six selector vectors and packed-address/
+rotate/scan-order deductions checked. Full fresh ELFs/listings stay `/tmp`; no
+native change/original execution/body/binary asset export. Actual selector/default/
+voice/count/caller writers/consumers, valid table/value/address/matching/alias/
+reinit/IRQ/concurrency and original RPN/controller/audio remain OPEN.

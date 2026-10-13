@@ -2,6 +2,27 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero RPN parameter writers
+
+Completed inpSetRPNHi/Dec/Inc for EVT-01; checked the corresponding inbox portion.
+[RPN writers](behavior/audio/MUSYX_RPN_PARAMETER_WRITERS_AND_VOICE_PROPAGATION.md)
+pins selector routes/byte clamps and steps, high-word nine-preserved/eight-input
+bits, equality-only word guards and distinct retained/fresh propagation. Boundary
+cases still scan; step defaults can differ across matches under unsupported
+mutation. Actual selector/caller/table/value/alias/runtime domains remain open.
+
+Validation: read-only ISO manifest passed three complete spans,219 anchors/zero
+calls. Six high-mask/seven byte/six whole-word/six selector vectors and packed-
+address/rotate/scan-order deductions checked. Link audit passed815 Markdown files/
+zero broken links; `git diff --check` passed. Documentation/metadata only; no
+`make test`/`make all` rerun. Full original inspection ELFs/listings stay `/tmp`;
+no bodies/binary assets committed. Concurrent native edits excluded from this commit.
+
+Next: priority-zero EVT-01 other macro opcodes and actual selector/controller/
+default/voice/count/caller producers/consumers, valid set/channel/packed-value/
+address/matching/alias/reinit/IRQ/concurrency domains and original RPN/controller/
+audio traces. Full native/runtime binding, lower-priority inbox/full-game work open.
+
 ## 2026-10-13 — Inbox priority-zero MIDI setters and notification
 
 Completed inpSetMidiCtrl/inpSetMidiCtrl14/synthKeyStateUpdate for EVT-01;

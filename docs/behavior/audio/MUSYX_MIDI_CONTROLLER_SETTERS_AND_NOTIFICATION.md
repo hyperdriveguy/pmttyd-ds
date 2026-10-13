@@ -116,3 +116,10 @@ Remaining: complete RPNHi/Dec/Inc, actual raw caller/controller/selector/default
 voice/count/dirty/job writers and consumers, valid table/voice/matching/alias/
 IRQ/concurrency/reinit domains and original pair/publication/pedal/audio traces.
 EVT-01 remains OPEN.
+
+### 2026-10-13 — RPN child follow-up
+
+[Complete RPN writers](MUSYX_RPN_PARAMETER_WRITERS_AND_VOICE_PROPAGATION.md)
+now close the Hi/Dec/Inc children: exact selector/mask/byte/whole-word guards and
+retained versus fresh default propagation. Parent store/forced notification order
+remains as above. Actual caller/table/value/alias domains and original audio open.
