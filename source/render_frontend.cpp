@@ -35,7 +35,9 @@ bool Renderer::frontImage(const char* name,float x,float y,float w,float h,uint8
     }
     const auto& z=found->size;Tex3DS_SubTexture sub{};sub.width=z[0];sub.height=z[1];
     sub.left=0;sub.right=float(z[0])/z[2];sub.top=1;sub.bottom=1-float(z[1])/z[3];
-    if(w>0 && h>0){C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(255,255,255,alpha),1);C2D_DrawImageAt({&found->image.texture,&sub},x,y,0,&tint,w/z[0],h/z[1]);}
+    // Keep original RGB; tint strength1 replaces it with white. Alpha still
+    // modulates the source image for scene fades at strength0.
+    if(w>0 && h>0){C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(255,255,255,alpha),0);C2D_DrawImageAt({&found->image.texture,&sub},x,y,0,&tint,w/z[0],h/z[1]);}
     return true;
 }
 void Renderer::frontMessage(const MessagePlayback& message) {

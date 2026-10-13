@@ -617,3 +617,16 @@ record338's distinct description key are pinned. Metadata-only census stays/tmp;
 no assets/prose/native implementation/index/PROGRESS/build/profile/save changes.
 Native rendering, clock/input ownership, original inventory/quest binding and
 matched Dolphin/hardware validation remain OPEN.
+
+### 2026-10-13 — Original item-selector frame and decoration
+
+Explicitly delegated source recovery now pins
+[item-selector frame/tab](../behavior/display/ITEM_SELECTOR_WINDOW_FRAME.md):
+winMgrDisp Rz*S, per-frame center translation, definitionRGB/managerlow8alpha,
+base border20, decoration1 blue150x28 tab/border8 and exact integer centering;
+windowDispGX2_Waku_col's36-vertex centered nine-slice UV/FIFO, original
+f/msgWindow.tpl descriptor0 and full used GX material program. Complete fresh
+spans/hashes plus180-write/36-vertex numeric checker; no native source/assets/
+shared index/PROGRESS/ASSETS/build/profile/save edits. Camera/filter/raster,
+full list/header/help rendering, original clocks/input/event ownership and
+Dolphin/New2DS correctness/performance remain OPEN.

@@ -665,3 +665,4 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 
 - [Original item presentation metadata](unit/ITEM_PRESENTATION_METADATA.md): physical table extent, original message keys, null record and icon census.
 - [Native item presentation catalog](unit/NATIVE_ITEM_PRESENTATION_CATALOG.md): indexed original metadata pack and shared selector art admission; UI/event binding remains open.
+- [Original item-selector frame and decoration](display/ITEM_SELECTOR_WINDOW_FRAME.md): window matrices, separate rectangle centers, nine-slice original texture/material and used blue tab geometry.
