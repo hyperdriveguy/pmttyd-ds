@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero stream allocation/length
+
+Completed sndStreamAllocEx/sndStreamAllocLength/ABI helpers; checked EVT-01
+portion. [Allocation/length](behavior/audio/MUSYX_STREAM_ALLOCATION_AND_LENGTH_PUBLICATION.md)
+pins first free/collision ID, wrapped sizing, partial record/coefficients/mode/
+filter/state3-before-buffer/deferred activation/state-only failure and IRQ order.
+Child lifecycle/providers/domains/original allocation/audio/native binding open.
+
+Validation: read-only ISO manifest passed11 spans,349 anchors,eight calls.
+Thirteen length/six ID/four slot/five format/six completion vectors and16 copy
+rows checked. Link audit passed896 Markdown files/zero broken links; scoped
+`git diff --check` passed. Mathematical source deductions are separate from
+original execution. Documentation/metadata only; no `make test`/`make all` rerun.
+Fresh full original ELFs/listings/generator stay `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded. Previously approved push remains
+pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 stream activation/deactivation/free/frequency/mix,
+actual callers/flags/count/ID/state/length/source/callback/voice/default/resource
+providers and valid extent/value/encoding/alias/lifetime/IRQ/concurrency/ABI
+domains, transitive ARAM/DSP consumers and original allocation/failure/stream/
+audio traces. Remaining macro/song/backend, lower-priority inbox/full game open.
+
 ## 2026-10-13 — Inbox priority-zero stream footer/composition
 
 Completed streamHandle footer/loop-PS/ABI and composed whole local source body;

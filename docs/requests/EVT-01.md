@@ -521,6 +521,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   compose whole local handler — [footer/composition](../behavior/audio/MUSYX_STREAM_LOOP_FOOTER_AND_COMPOSITION.md).
   Six regions cover558 semantic+11 ABI words; fresh gates/translated read/
   loop-byte/helper order pinned; lifecycle/providers/runtime open.
+- [x] Complete sndStreamAllocEx/sndStreamAllocLength —
+  [allocation/length](../behavior/audio/MUSYX_STREAM_ALLOCATION_AND_LENGTH_PUBLICATION.md).
+  First free/collision ID/wrapped length/partial record/state-before-buffer/
+  deferred activation/failure/IRQ order pinned; child lifecycle/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2624,4 +2628,15 @@ and ABI helper prerequisite reverified. Six-region union covers558 semantic+11
 ABI words,total569/8e4hex without gaps/overlap. Seven gate/five source/four leaf
 vectors checked. Fresh footer gates/raw translated load/loop-byte/helper order
 pinned. Lifecycle/providers/domains/transitive ARAM/DSP/original stream/audio/
+native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream allocation/length delivery
+
+Completed two local bodies/ABI helpers in
+[allocation/length](../behavior/audio/MUSYX_STREAM_ALLOCATION_AND_LENGTH_PUBLICATION.md).
+Eleven spans/349 anchors/eight calls verified; thirteen length/six ID/four slot/
+five format/six completion vectors and16 coefficient-copy rows checked. First
+free/candidate sentinel-collision retry, wrapped byte length, partial record/
+coefficients/mode/filter/state3-before-buffer/deferred activation/state-only
+failure pinned. Child lifecycle/providers/domains/original allocation/audio/
 native binding remain open; EVT-01 stays OPEN.

@@ -80,3 +80,9 @@ source/selector/voice/loop-PS providers and valid value/divisor/extent/alignment
 encoding/address-map/cache/alias/lifetime/IRQ/concurrency/ABI/FP domains, transitive
 ARAM/DSP consumers and original startup/refill/stream/audio traces. EVT-01 and
 full native/full-game binding remain OPEN.
+
+## 2026-10-13 — Allocation/length follow-up
+
+[Allocation/length](MUSYX_STREAM_ALLOCATION_AND_LENGTH_PUBLICATION.md) closes local allocator/length/ABI helpers,
+including ID/record/buffer/deferred activation/failure order. Child lifecycle/
+providers/domains/original stream/audio/native binding remain open.
