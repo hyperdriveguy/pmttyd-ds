@@ -3,7 +3,7 @@
 2026-10-13; scoped US early Rogueport binding of
 [ordinary candidate/lifecycle](FIELD_ORDINARY_NPC_TALK_CANDIDATE.md) and
 [null ray/display getter](FIELD_NPC_TALK_RAY_AND_DISPLAY_DIRECTION.md).
-The current native simple CASE_LESS Mouser talk family retains unchanged US
+The current native simple source-order Mouser/Darkly talk rules retain unchanged US
 message IDs, text, control tokens and story branches; no story write is added.
 This is not the complete original encounter/NPC/event dispatcher.
 
@@ -85,3 +85,9 @@ and supplies current contact/root/flags with source rollback and wall retry.
 Next: full NPC timers/movement and complete registry/auto-turn/
 regular-event lifetime, original encounter and map-object/A composition,
 additional original per-area events/NPCs/objects and hardware profiling.
+
+[PMNPC007 per-actor rules](NATIVE_DARKLY_AND_PER_ACTOR_TALK_RULES.md) preserve
+full original IDs and source comparison order. Darkly binds only the original
+story<56 arm; no-match/empty bound lists return empty, so later name/flag
+branches receive no fabricated fallback. Original arbitration/presentation/
+side-response services remain shared with Chu.

@@ -62,7 +62,7 @@ def npc_source_data(iso):
             if len(data)!=size:raise ValueError('Truncated source constant')
             return data
         result={}
-        for name,address in [('c_tyusan',0x80333554),('c_kuri_h',0x80333014)]:
+        for name,address in [('c_tyusan',0x80333554),('c_kuri_h',0x80333014),('c_f_mura',0x80333110)]:
             raw=read(address,0x54);width,height=struct.unpack_from('>2f',raw,0x28)
             ptr=struct.unpack_from('>I',raw,0x14)[0];talk=bytearray()
             for i in range(32):
@@ -116,51 +116,69 @@ def build(iso):
     chu = tagged_npcs(setup.read_bytes().decode('shift_jis'))['チューさん３']
     if chu['tribe'] != 'チューさん' or chu['aitype'] != 'なし':
         raise ValueError('Unsupported original stationary actor setup')
+    darkly = tagged_npcs(setup.read_bytes().decode('shift_jis'))['クラガリさん']
+    if darkly['tribe']!='クラガリさん' or darkly['aitype']!='なし':
+        raise ValueError('Unsupported original Darkly setup')
+    darkly_scale=compile_model(iso,'field-darkly','c_f_mura',['S_1',npc_constants['c_f_mura']['talk_pose']])
     chu_scale = compile_model(iso,'field-chu','c_tyusan',['CHU_S_1',npc_constants['c_tyusan']['talk_pose']])
     professor_scale = json.loads(Path('romfs/professor.json').read_text())['uv_scale']
     object_scale=build_objects(iso)
-    models = [('field-chu',chu_scale),('professor',professor_scale),('field-saveblock',object_scale)]
+    model_specs = [
+        dict(asset='field-chu',scale=chu_scale,original='c_tyusan',path=work/'c_tyusan'),
+        dict(asset='professor',scale=professor_scale,original='c_kuri_h',path=Path('local-assets/professor/c_kuri_h')),
+        dict(asset='field-saveblock',scale=object_scale,original='MOBJ_SaveBlock',path=Path('local-assets/map-objects/MOBJ_SaveBlock'),hit=True),
+        dict(asset='field-darkly',scale=darkly_scale,original='c_f_mura',path=work/'c_f_mura'),
+    ]
+    models = [(m['asset'],m['scale']) for m in model_specs]
     # Source Frankly init: exact story8/10 branches; story9 hides his NPC.
     # Interior admission is the current same-map door visibility adapter.
     records = [dict(key=identifier('gor_02','チューさん３'),room=2,model=0,required=0,forbidden=0,low=0,high=55,
-                    position=chu['position'],yaw=chu['yaw'],pose='CHU_S_1',source='m/gor_02/s:チューさん３'),
+                    position=chu['position'],yaw=chu['yaw'],pose='CHU_S_1',talk_prefix='gor_02_031_',source='m/gor_02/s:チューさん３'),
                dict(key=identifier('gor_02','クリハカセ'),room=2,model=1,required=2,forbidden=0,low=8,high=8,
                     position=[-135,0,-240],yaw=90,pose='S_1',source='gor.rel:kurihakase_init@0x410c8'),
                dict(key=identifier('gor_02','クリハカセ'),room=2,model=1,required=0,forbidden=2,low=10,high=10,
                     position=[-220,0,305],yaw=270,pose='S_1',source='gor.rel:kurihakase_init@0x410c8'),
                dict(key=identifier('gor_01','mobj_save'),room=0,model=2,required=0,forbidden=0,low=341,high=341,gate=2,kind=1,scale=10,system_forbidden=0x20,
-                    position=[185,60,-55],yaw=0,pose='S_1',source='gor.rel:gor_01_init_evt@0x3c514')]
+                    position=[185,60,-55],yaw=0,pose='S_1',source='gor.rel:gor_01_init_evt@0x3c514'),
+               dict(key=identifier('gor_02','クラガリさん'),room=2,model=3,required=0,forbidden=0,low=0,high=55,
+                    position=darkly['position'],yaw=darkly['yaw'],pose='S_1',talk_prefix='gor_02_034_',npc_flags=0x40080603,
+                    talk_rules=[(0,56,'gor_02_034_00')],source='m/gor_02/s:クラガリさん;gor.rel:init@0x446a8/talk@0x44d90')]
     # Original bbox fields consumed by mobjHitEntry, not rendered pose bounds.
     bounds=struct.unpack_from('>6f',Path('local-assets/map-objects/MOBJ_SaveBlock').read_bytes(),0xd0)
-    data = bytearray(struct.pack('<8sII',b'PMNPC006',len(models),len(records)))
+    data = bytearray(struct.pack('<8sII',b'PMNPC007',len(models),len(records)))
     collision=[]
-    for index,(asset,scale) in enumerate(models):
-        hit=index==2;box=bounds if hit else [0]*6
+    for spec in model_specs:
+        asset,scale=spec['asset'],spec['scale']
+        hit=spec.get('hit',False);box=bounds if hit else [0]*6
         data += struct.pack('<32sfI6f',fixed(asset),scale,int(hit),*box)
-        original_name=['c_tyusan','c_kuri_h','MOBJ_SaveBlock'][index]
+        original_name=spec['original']
         data += fixed(original_name)
-        path=Path('local-assets/map-objects/MOBJ_SaveBlock') if hit else Path('local-assets/professor/c_kuri_h') if index==1 else Path('local-assets/field-actors/c_tyusan')
+        path=spec['path']
         draw_mask=struct.unpack_from('>I',path.read_bytes(),0xc4)[0]
         data += struct.pack('<I',draw_mask)
         collision.append(dict(asset=asset,original_name=original_name,hit_mode=int(hit),bounds=box,draw_mask=draw_mask))
     for r in records:
-        prefix='gor_02_031_' if r['model']==0 else ''
+        prefix=r.get('talk_prefix','')
         r['talk_prefix']=prefix
         r['source_name']='mobj_save' if r.get('kind')==1 else ''
         data += struct.pack('<8I2i5f32s32s',r['key'],r['room'],r['model'],r['required'],r['forbidden'],r.get('gate',1),r.get('kind',0),r.get('system_forbidden',0),
                             r['low'],r['high'],*r['position'],r['yaw'],r.get('scale',2),fixed(r['pose']),fixed(prefix) if prefix else bytes(32))
         data += fixed(r['source_name']) if r['source_name'] else bytes(32)
-        dims=npc_constants[['c_tyusan','c_kuri_h'][r['model']]] if r.get('kind',0)==0 else dict(width=0,height=0,talk_pose='')
+        dims=npc_constants[model_specs[r['model']]['original']] if r.get('kind',0)==0 else dict(width=0,height=0,talk_pose='')
         r['npc_dimensions']=dims
         data += struct.pack('<2f',dims['width'],dims['height'])
         data += fixed(dims['talk_pose']) if dims['talk_pose'] else bytes(32)
         # Source Entry3 + setup80600, with Frankly's constructor OR40000000.
-        r['npc_flags']=(0x80603 | (0x40000000 if r['model']==1 else 0)) if r.get('kind',0)==0 else 0
+        r['npc_flags']=r.get('npc_flags',0x80603 | (0x40000000 if model_specs[r['model']]['original']=='c_kuri_h' else 0)) if r.get('kind',0)==0 else 0
         data += struct.pack('<I',r['npc_flags'])
+        rules=r.get('talk_rules',[(0,limit,prefix+f'{i:02d}') for i,limit in enumerate([56,112,164,215,261,339,373,401])]+[(3,0,prefix+'08')] if prefix else [])
+        r['talk_rules']=rules
+        data += struct.pack('<I',len(rules))
+        for comparison,story,message in rules:data += struct.pack('<Ii32s',comparison,story,fixed(message))
     Path('romfs/field-actors.pmnpc').write_bytes(data)
     Path('romfs/field-actors.json').write_text(json.dumps(dict(models=models,actors=records,collision=collision,npc_constants=npc_constants,
         setup=json.loads(setup.with_suffix('.s.provenance.json').read_text()),
-        coverage='Static original init subset; Chu story0..55 is a native coverage envelope. Actor keys are native FNV IDs; positions/yaw/pose retain source units. Original display-direction driver, talk arbitration and scripted motion remain separate.',
+        coverage='Static original init subset; Chu/Darkly story0..55 is a native coverage envelope; Darkly binds only the original story<56 print arm, not later quest branches. Actor keys are native FNV IDs; positions/yaw/pose retain source units. Original display-direction driver, talk arbitration and scripted motion remain separate.',
         license='Local original Nintendo/Intelligent Systems resources; no redistribution rights'),ensure_ascii=False,indent=2)+'\n')
 
 

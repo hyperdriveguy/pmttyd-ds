@@ -786,7 +786,8 @@ const FieldActorRecord* Game::nearbyFieldActor() const {
         const auto live=fieldNpcs.find(actor.key);
         const auto root=live!=fieldNpcs.end()?live->second.body.root:FieldWallVector{actor.position[0],actor.position[1],actor.position[2]};
         const auto flags=live!=fieldNpcs.end()?live->second.body.flags:actor.npcFlags;
-        scan.consider({actor.key,root,actor.npcWidth,actor.npcHeight,flags,!actor.talkPrefix.empty()},mario,fieldNpcAngles(),rays);
+        const bool talkBound=progress.originalStory && fieldActorTalkAvailable(actor,*progress.originalStory);
+        scan.consider({actor.key,root,actor.npcWidth,actor.npcHeight,flags,talkBound},mario,fieldNpcAngles(),rays);
     }
     if(scan.candidate)for(const auto& actor:fieldActorCatalog().actors())
         if(actor.key==scan.candidate && actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))return &actor;

@@ -82,7 +82,26 @@ int main(int argc,char**) {
         b[7]='6';
         for(unsigned i=0;i<2;++i){const size_t at=actors+i*200+196;b.insert(b.begin()+at,4,0);replace(b,at,0x80603u);}
         assert(read(a,b) && a.actors()[0].npcFlags==0x80603);
+        b[7]='7';for(int i=1;i>=0;--i)b.insert(b.begin()+actors+i*200+200,4,0);
+        assert(read(a,b) && a.actors()[0].talkRulesBound && !fieldActorTalkAvailable(a.actors()[0],8) && fieldActorTalkKey(a.actors()[0],8).empty());
+        std::memcpy(b.data()+actors+92,"gor_02_034_",11);
+        replace(b,actors+200,1u);std::vector<uint8_t> rule;
+        append(rule,0u);append(rule,int32_t(56));text(rule,"gor_02_034_00");
+        b.insert(b.begin()+actors+204,rule.begin(),rule.end());
+        assert(read(a,b) && fieldActorTalkKey(a.actors()[0],55)=="gor_02_034_00");
+        assert(fieldActorTalkKey(a.actors()[0],56).empty() && fieldActorTalkKey(a.actors()[0],175).empty());
+        bad=b;replace(bad,actors+200,65u);assert(!read(a,bad));
+        bad=b;replace(bad,actors+204,4u);assert(!read(a,bad));
+        bad=b;bad[actors+204+8]='x';assert(!read(a,bad));
+        bad=b;bad.pop_back();assert(!read(a,bad));
+        std::memcpy(b.data()+actors+92,"tik_04_000_",11);std::memcpy(b.data()+actors+212,"tik_04_000_00",12);
+        assert(read(a,b) && fieldActorTalkKey(a.actors()[0],8)=="tik_04_000_00"); // Future room namespace.
     }
+    FieldActorRecord ordered;ordered.talkRulesBound=true;
+    ordered.talkRules={{1,175,"gor_02_034_03"},{0,215,"gor_02_034_04"},{0,215,"gor_02_034_05"},{2,401,"gor_02_034_10"}};
+    assert(fieldActorTalkKey(ordered,175)=="gor_02_034_03" && fieldActorTalkKey(ordered,214)=="gor_02_034_04");
+    assert(fieldActorTalkKey(ordered,215).empty() && fieldActorTalkKey(ordered,401)=="gor_02_034_10");
+    ordered.talkRules.push_back({3,0,"gor_02_034_00"});assert(fieldActorTalkKey(ordered,300)=="gor_02_034_00");
     if(argc>1) {
         assert(a.load("romfs/field-actors.pmnpc"));assert(a.actors().size()>=3 && a.models().size()>=2);
         assert(a.models()[0].asset=="field-chu" && a.models()[1].asset=="professor");
@@ -101,6 +120,23 @@ int main(int argc,char**) {
         float height=0;assert(groundAt({1.f,-3.7f},0,height) && walkable({1.f,-3.7f},height));
         assert(loadFieldActorCatalog("romfs") && loadHarborStoryAssets("romfs"));
         MessageAssets originals;assert(originals.loadRoom("romfs/messages/gor_02.txt"));
+        const auto& darkly=a.actors()[4];assert(a.models()[darkly.model].originalName=="c_f_mura");
+        assert((darkly.position==std::array<float,3>{-335,0,-335}) && darkly.yaw==270 && darkly.npcFlags==0x40080603);
+        assert(darkly.npcWidth==30 && darkly.npcHeight==30 && darkly.talkPose=="T_1");
+        assert(darkly.visible(2,8,0) && !darkly.visible(2,56,0));
+        assert(fieldActorTalkAvailable(darkly,8) && !fieldActorTalkAvailable(darkly,175));
+        assert(fieldActorTalkKey(darkly,8)=="gor_02_034_00" && fieldActorTalkKey(darkly,175).empty());
+        ActorAnimationPack darklyArt;assert(darklyArt.load("romfs/field-darkly.pmanim"));
+        assert(darklyArt.pose("S_1") && darklyArt.pose("T_1") && darklyArt.pose("Z_1"));
+        Game darklyGame;Progress darklySaved;darklySaved.room=2;darklySaved.originalStory=8;darklySaved.position={-3.35f,-3.65f};
+        darklyGame.restore(darklySaved);for(int n=0;n<360;++n)darklyGame.tick({});
+        Input towardDarkly;towardDarkly.x=1;for(int n=0;n<40;++n)darklyGame.tick(towardDarkly);
+        assert(darklyGame.fieldNpcContact()==darkly.key && darklyGame.nearbyFieldActor() && darklyGame.nearbyFieldActor()->key==darkly.key);
+        Input darklyPress;darklyPress.confirm=true;darklyGame.tick(darklyPress);darklyGame.tick({});
+        assert(darklyGame.fieldActorTalk.message.id()=="gor_02_034_00" && darklyGame.fieldActorTalk.message.active());
+        assert(darklyGame.fieldActorTalk.message.rawText()==originals.find("gor_02_034_00") && darklyGame.progress.originalStory==8);
+        for(int n=0;n<5000 && darklyGame.fieldActorTalk.message.active();++n){darklyGame.tick(darklyPress);assert(darklyGame.progress.originalStory==8 && !darklyGame.saveRequested);}
+        assert(!darklyGame.fieldActorTalk.message.active() && darklyGame.scene==Scene::Explore);
         const int32_t cases[]={-1,55,56,111,112,163,164,214,215,260,261,338,339,372,373,400,401,500};
         for(int32_t story:cases) {
             const auto key=fieldActorTalkKey(chu,story);assert(originals.find(key.c_str()));

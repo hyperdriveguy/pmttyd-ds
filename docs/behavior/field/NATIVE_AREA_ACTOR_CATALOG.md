@@ -15,6 +15,12 @@ selects original `gor_02_031_00`..08 via the eight CASE_LESS thresholds;
 the current envelope admits00 at runtime. Original message bytes/tokens and
 actual actor attribution are retained, with no story write.
 
+[Darkly](NATIVE_DARKLY_AND_PER_ACTOR_TALK_RULES.md) adds his original stationary
+position(-335,0,-335),direction270,c_f_mura bank,S_1/T_1 and flags0x40080603.
+His current early0..55 envelope binds only original gor_02_034_00; source175
+name/flag and later threshold branches remain unbound. Relative order after
+Chu follows the original registry. No omitted branch receives a fake fallback.
+
 Professor records retain exact story8 position `(-135,0,-240)` and story10
 position `(-220,0,305)`. Story9 has no visible NPC record. Story8 interior and
 story10 exterior admission follow the existing native door adapter. First-talk,
@@ -42,7 +48,10 @@ The constructor gates are represented; dynamic system flag producers remain
 partial. PMNPC004 adds original model names for floor/wall filters.
 PMNPC005 adds source dimensions/talk names and model draw masks. PMNPC006
 adds original npcFlags (200-byte actor rows); versions1..6 remain readable,
-with legacy missing flags retained as unbound0. [Native NPC side collision](NATIVE_NPC_SIDE_COLLISION.md)
+with legacy missing flags retained as unbound0. PMNPC007 adds a variable
+source-order talk-rule tail after each actor: count then comparison/story/fullID
+records. Empty/unmatched bound rules return empty; versions1..6 retain their
+legacy selector compatibility. See [native per-actor rule format](NATIVE_DARKLY_AND_PER_ACTOR_TALK_RULES.md). [Native NPC side collision](NATIVE_NPC_SIDE_COLLISION.md)
 uses source Entry/setup/constructor flags and per-instance previous roots. The catalog loader stages the original angle table atomically
 with the catalog for [ordinary talk selection](NATIVE_NPC_TALK_SELECTION.md).
 

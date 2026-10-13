@@ -40,8 +40,10 @@ coverage, original material/shadow rendering, complete sound-effect event playba
 story content are still incomplete. Hardware performance has not been tested.
 
 Original static NPC setup now uses a per-area model/pose catalog. In the native
-early story0..55 envelope, east-side Mouser uses his original placement,
-`c_tyusan` animation and US talk event. Grounded A nearby plays unchanged
+early story0..55 envelope, east-side Mouser and Darkly use their original
+placements, `c_tyusan`/`c_f_mura` animations and unchanged US talk events.
+Per-actor source-order talk rules preserve their different story branches;
+Darkly's later name quest remains unbound. Grounded A nearby plays unchanged
 original message IDs/control tokens and returns without a story write. Talk uses
 source dimensions, facing/width-edge tests, map obstruction and nearest selection;
 the previous NPC candidate suppresses Mario's next A jump before the new scan.

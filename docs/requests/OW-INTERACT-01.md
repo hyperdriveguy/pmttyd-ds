@@ -5,6 +5,10 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
 
 ## Open todos
 
+- [ ] Bind Darkly's exact later-story talk graph, including leading story175
+  flag0xf84060bd/name child and duplicate<215 case. Early0..55 has a verified
+  one-print source arm; Chu's generic thresholds cannot substitute globally.
+
 - [ ] Bind original save-block hit flag8 producer, update states/animation and
   common save-window event0x803bac3c to SAVE-01 persistence; original plaza
   spawn/model/system-event owners are recovered, proximity+A is not.
@@ -450,3 +454,32 @@ placement-history and flag/lifetime cases. Exact build/emulator validation is
 recorded in [progress](../PROGRESS.md). Full registry/movement/timer/event
 composition, Gekko/SDK/backend numerics and original/hardware traces remain
 OPEN; this does not close the full request.
+
+### 2026-10-13 — Additional stationary east NPC: original Darkly
+
+[Darkly static/talk bindings](../behavior/field/ROGUEPORT_DARKLY_STATIC_AND_TALK_BINDINGS.md)
+recovers source actorクラガリさん placement(-335,0,-335),direction270,
+c_f_mura/S_1/T_1/descriptor0Z_1,30/30 dimensions, setupflags80600 and
+init40000000/Entry3, with no regular event. Source early0..55 uniquely prints
+gor_02_034_00 unchanged. Full ordered talk thresholds and leading175 special
+name branch are retained; later graph cannot use Chu's generic selector.
+Goomba4 alternative requires original wander/quest owners.
+
+Validation: read-only fresh REL event extraction, DOL tribe/asset/US key reads,
+bounded original sparse evaluator admission and all648 annotated gor event
+reference census. Asset hashes/paths and raw controls recorded; no copied
+original prose/assets in history. Docs-only, no native edits or commit.
+Dynamic/foreign actor lifetime, later name quest and runtime/rendering comparison
+remain open.
+
+### 2026-10-13 — Native Darkly and reusable per-actor talk rules
+
+[Native Darkly/rule binding](../behavior/field/NATIVE_DARKLY_AND_PER_ACTOR_TALK_RULES.md)
+adds original c_f_mura assets, source placement/dimensions/flags and the unchanged
+story<56 print arm. PMNPC007 retains source-order, full-message-ID rules per
+actor instead of applying Mouser's thresholds to every NPC. Unmatched/empty
+bindings cannot suppress jump or invent a later-story fallback. Generic room
+prefixes and model metadata allow additional original area resources to use
+existing presentation/collision/talk services. Original later175 flag/name
+children and all-story lifetime remain OPEN; exact build/rendered fixture
+validation is in [progress](../PROGRESS.md).

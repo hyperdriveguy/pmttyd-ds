@@ -973,3 +973,33 @@ executed. The native93105b2c callback maps tik section1+5b2c to its recovered
 XY direction ABI, with original npc-angle.bin data. Provenance remains the
 read-only local US ISO; original Nintendo/Intelligent Systems data has no
 redistribution license. Compiled/original assets remain ignored.
+
+## 2026-10-13 — Original Darkly and PMNPC007 talk-rule catalog
+
+`tools/field_actor_assets.py` imports original read-only `a/c_f_mura` and
+`a/c_f_mura-` for source Darklyクラガリさん from `m/gor_02/s`. Extracted
+model/texture resources and provenance remain ignored under
+`local-assets/field-actors/c_f_mura` and `c_f_mura.tpl`; converted/reference
+images and `field-darkly-runtime.png` remain there too. Ignored
+`romfs/field-darkly.pmanim`, `.pmmesh`, `.t3x` and `.json` retain original
+descriptor0Z_1,idleS_1,talkT_1,hierarchy/sparse states,RGBA/pass/cull metadata.
+Source hashes/offsets are in [Darkly source bindings](behavior/field/ROGUEPORT_DARKLY_STATIC_AND_TALK_BINDINGS.md).
+
+Current manifest records13 texture cells,1024×256 runtime atlas,UV scale4,
+124px decoded texture scaling with128px cells and original wrap-aware gutters.
+tex3ds emitsRGBA8 with automatic compression. Source NPC draw scalar2 and
+engine units*.01 are unchanged; no generated replacement art/music/text is
+introduced. Width/height30/30,placement(-335,0,-335),direction270 and flags
+0x40080603 come from the source tagged/tribe/Entry/setup/init owners.
+
+Ignored `romfs/field-actors.pmnpc` is nowPMNPC007:200-byte fixed actor prefix,
+then per-actor count and40-byte comparison/story/full-message-ID rules. Current
+Chu retains original nine ordinary requests; Darkly retains onlyLESS56→
+gor_02_034_00 and early0..55 coverage. Empty/unmatched lists do not invent
+legacy fallback for unbound later175/name branches. Original US payloads stay
+in existing ignored message packs byte-for-byte. See [native binding and limits](behavior/field/NATIVE_DARKLY_AND_PER_ACTOR_TALK_RULES.md).
+
+Original Nintendo/Intelligent Systems copyright remains; no distribution
+license is granted or inferred. ISO, extracted assets, compiled packs and
+original dialogue remain outside source history. Static/native checks are not
+Dolphin observations or New2DS hardware performance measurements.

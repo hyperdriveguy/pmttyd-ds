@@ -53,6 +53,7 @@ romfs/*.pmshadow
 /romfs/*.pmnpc
 /romfs/field-actors.json
 /romfs/field-chu.json
+/romfs/field-darkly.json
 
 /romfs/professor-events.pmevt
 /romfs/professor-program.bin

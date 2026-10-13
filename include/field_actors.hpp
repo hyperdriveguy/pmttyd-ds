@@ -14,6 +14,11 @@ struct FieldActorModel {
     uint32_t hitMode=0; // 0 unbound, 1 original mobjHitEntry mode0/default object scale.
     std::array<float,6> hitBounds{}; // Original model minXYZ,maxXYZ.
 };
+struct FieldActorTalkRule {
+    uint32_t comparison=0; // 0 less, 1 equal, 2 greater/equal, 3 unconditional.
+    int32_t story=0;
+    std::string message;
+};
 struct FieldActorRecord {
     uint32_t key=0,room=0,model=0,interiorRequired=0,interiorForbidden=0,storyGate=0,kind=0; // 0 NPC, 1 map object.
     uint32_t systemForbidden=0;
@@ -24,13 +29,16 @@ struct FieldActorRecord {
     float npcWidth=0,npcHeight=0; // Source tribe dimensions, independent of draw scalar.
     std::string talkPose;
     uint32_t npcFlags=0; // Source Entry/setup/constructor flags; legacy rows leave metadata unbound.
+    std::vector<FieldActorTalkRule> talkRules;
+    bool talkRulesBound=false; // PMNPC007 source-order rules; empty means event not bound.
     bool visible(uint32_t currentRoom,std::optional<int32_t> story,uint32_t interior,uint32_t system=0) const {
         return room==currentRoom && (interior&interiorRequired)==interiorRequired && !(interior&interiorForbidden) &&
             !(system&systemForbidden) && (!storyGate || (story && (storyGate==2?*story!=storyLow:*story>=storyLow && *story<=storyHigh)));
     }
 };
 std::string fieldActorTalkKey(const FieldActorRecord&,int32_t story);
-// PMNPC001..006 are local containers. They describe recovered static init subsets;
+bool fieldActorTalkAvailable(const FieldActorRecord&,int32_t story);
+// PMNPC001..007 are local containers. They describe recovered static init subsets;
 // scripted actor movement/flags and the original NPC driver are separate owners.
 class FieldActorAssets {
 public:

@@ -3,7 +3,15 @@
 #include <cmath>
 #include <cstring>
 namespace ttyd {
-namespace {FieldActorAssets catalog;NpcAngleTable npcAngles;std::string assetRoot;uint64_t generation=0;}
+namespace {
+FieldActorAssets catalog;NpcAngleTable npcAngles;std::string assetRoot;uint64_t generation=0;
+const FieldActorTalkRule* talkRule(const FieldActorRecord& actor,int32_t story) {
+    for(const auto& rule:actor.talkRules)if(rule.comparison==3 ||
+        (rule.comparison==0 && story<rule.story) || (rule.comparison==1 && story==rule.story) ||
+        (rule.comparison==2 && story>=rule.story))return &rule;
+    return nullptr;
+}
+}
 bool loadFieldActorCatalog(const char* root) {
     if(!root)return false;
     FieldActorAssets next;if(!next.load((std::string(root)+"/field-actors.pmnpc").c_str()))return false;
@@ -14,10 +22,16 @@ const FieldActorAssets& fieldActorCatalog(){return catalog;}
 uint64_t fieldActorCatalogGeneration(){return generation;}
 const NpcAngleTable& fieldNpcAngles(){return npcAngles;}
 std::string fieldActorTalkKey(const FieldActorRecord& actor,int32_t story) {
+    if(actor.talkRulesBound) {
+        const auto* rule=talkRule(actor,story);return rule?rule->message:std::string{};
+    }
     if(actor.talkPrefix.empty())return {};
     constexpr int32_t limits[]={56,112,164,215,261,339,373,401};
     unsigned branch=0;while(branch<8 && story>=limits[branch])++branch;
     return actor.talkPrefix+"0"+char('0'+branch);
+}
+bool fieldActorTalkAvailable(const FieldActorRecord& actor,int32_t story) {
+    return actor.talkRulesBound?talkRule(actor,story)!=nullptr:!actor.talkPrefix.empty();
 }
 bool FieldActorTalk::begin(const FieldActorRecord& source,int32_t story,const MessageFont& font,uint64_t now) {
     if(message.active() || assetRoot.empty() || source.talkPrefix.size()<6)return false;
@@ -44,7 +58,8 @@ bool FieldActorAssets::read(FILE* f) {
     };
     std::array<char,8> magic{};uint32_t modelCount=0,actorCount=0;
     if(!scalar(magic))return false;
-    const bool version6=!std::memcmp(magic.data(),"PMNPC006",8);
+    const bool version7=!std::memcmp(magic.data(),"PMNPC007",8);
+    const bool version6=version7 || !std::memcmp(magic.data(),"PMNPC006",8);
     const bool version5=version6 || !std::memcmp(magic.data(),"PMNPC005",8);
     const bool version4=version5 || !std::memcmp(magic.data(),"PMNPC004",8);
     const bool version3=version4 || !std::memcmp(magic.data(),"PMNPC003",8);
@@ -81,8 +96,16 @@ bool FieldActorAssets::read(FILE* f) {
         }
         if(models[a.model].hitMode && a.kind!=1)return false;
         if(version6 && (!scalar(a.npcFlags) || (a.kind==1 && a.npcFlags)))return false;
+        if(version7) {
+            uint32_t count=0;if(!scalar(count) || count>64 || (a.kind==1 && count))return false;
+            a.talkRulesBound=true;a.talkRules.resize(count);
+            for(auto& rule:a.talkRules)if(!scalar(rule.comparison) || rule.comparison>3 ||
+                !scalar(rule.story) || !string(rule.message) || rule.message.size()<7 ||
+                rule.message[6]!='_' || a.talkPrefix.empty() || rule.message.substr(0,6)!=a.talkPrefix.substr(0,6))return false;
+        }
         if(a.storyGate==2 && a.storyLow!=a.storyHigh)return false;
-        if(!a.talkPrefix.empty() && (a.kind!=0 || a.talkPrefix.size()!=11 || a.talkPrefix.substr(0,4)!="gor_" ||
+        if(!a.talkPrefix.empty() && (a.kind!=0 || a.talkPrefix.size()!=11 ||
+           (version7?a.talkPrefix[3]!='_':a.talkPrefix.substr(0,4)!="gor_") ||
            a.talkPrefix[6]!='_' || a.talkPrefix.back()!='_'))return false;
         for(float v:a.position)if(!std::isfinite(v) || std::fabs(v)>100000)return false;
         for(uint32_t j=0;j<i;++j) {

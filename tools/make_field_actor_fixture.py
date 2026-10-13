@@ -6,9 +6,11 @@ import struct
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output',type=Path,default=Path('artifacts/fixtures/east-npc-story8.bin'))
-    args=parser.parse_args();data=bytearray(40);data[:4]=b'PM2D'
-    struct.pack_into('<IffII',data,4,4,1.2,-4.,10,1)
+    parser.add_argument('--actor',choices=['mouser','darkly'],default='mouser')
+    parser.add_argument('--output',type=Path)
+    args=parser.parse_args();args.output=args.output or Path('artifacts/fixtures/'+('east-npc-story8.bin' if args.actor=='mouser' else 'darkly-story8.bin'));data=bytearray(40);data[:4]=b'PM2D'
+    x,z=(1.2,-4.) if args.actor=='mouser' else (-3.35,-3.65)
+    struct.pack_into('<IffII',data,4,4,x,z,10,1)
     data[25]=1;data[26]=2;struct.pack_into('<i',data,28,8);data[32]=1
     checksum=2166136261
     for byte in data[:36]:checksum=((checksum^byte)*16777619)&0xffffffff
