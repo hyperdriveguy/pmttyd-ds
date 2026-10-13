@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero integer sine lookup
+
+Completed sndSin/original1024 numeric coefficients/two oscillator bindings;
+checked EVT-01 portion. [Integer sine](behavior/audio/MUSYX_SINE_QUARTER_WAVE_LOOKUP.md)
+pins low12 phase,1023 mirror/narrowed negation, bounded indices and source
+peak4095. Runtime table/caller domains/remaining handler/original audio remain open.
+
+Validation: read-only ISO manifest passed three spans,37 anchors (35 body/two
+caller),two bindings. Eighteen boundary/high-bit vectors/all4096 phase checks and
+numeric coefficients' big-endian serialization/hash passed. Link audit passed872
+Markdown files/zero broken links; scoped `git diff --check` passed. Mathematical
+source deductions are separate from original execution. Documentation/metadata
+only; no `make test`/`make all` rerun. Fresh original ELF/listing/generator stay
+`/tmp`; no binary bodies/table bytes/assets committed. Concurrent native edits
+excluded. Previously approved push remains pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 LowPrecisionHandler pitch/controller/portamento/
+requeue/ABI, actual table/phase/period/divisor/time/depth/dirty/flag/voice providers
+and valid value/index/extent/alias/lifetime/IRQ/concurrency domains, original
+oscillator/audio traces. Remaining macro/stream/song/backend, lower-priority inbox
+and full native/game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero low-precision modulation/pan ramps
 
 Completed LowPrecisionHandler oscillator/periodic/pan ramp region; checked

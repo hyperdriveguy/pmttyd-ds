@@ -111,3 +111,9 @@ Remaining: sndSin internals, handler pitch/controller/portamento/requeue/ABI,
 actual phase/period/rate/countdown/target/dirty/flag/time/voice writers and valid
 index/extent/value/divisor/alias/lifetime/IRQ/concurrency domains, original
 oscillator/pan/audio traces and native binding. EVT-01 remains OPEN.
+
+## 2026-10-13 — Sine lookup follow-up
+
+[Integer sine lookup](MUSYX_SINE_QUARTER_WAVE_LOOKUP.md) closes sndSin/original numeric table and
+two oscillator call bindings. Runtime table ownership/caller divisions/providers/
+remaining handler/original audio/native binding remain open.

@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [Integer sine lookup](audio/MUSYX_SINE_QUARTER_WAVE_LOOKUP.md) | Complete sndSin/original1024 numeric coefficients/two oscillator bindings | Runtime table owners/caller domains and original audio |
 | [Low-precision modulation/pan ramps](audio/MUSYX_LOW_PRECISION_MODULATION_AND_PAN_RAMPS.md) | Complete oscillator/periodic/pan ramp region | Sine/remaining handler/providers/domains and original audio |
 | [Zero-offset filter/requeue/composition](audio/MUSYX_ZERO_OFFSET_FILTER_REQUEUE_AND_COMPOSITION.md) | Complete finish and composed whole local ZeroOffsetHandler body | Providers/domains/transitive consumers and original voice/audio |
 | [Zero-offset volume/aux output](audio/MUSYX_ZERO_OFFSET_VOLUME_AND_AUX_OUTPUT.md) | Complete dirty admission/main-aux arithmetic/snapshot/hardware request region | Filter/requeue/epilogue, providers/domains and original audio |

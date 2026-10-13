@@ -475,6 +475,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [modulation/pan ramps](../behavior/audio/MUSYX_LOW_PRECISION_MODULATION_AND_PAN_RAMPS.md).
   Wrapped phase/divisor/masks, dirty comparison, reset/expiry/raw target and
   clamp/flag order pinned; sine/handler remainder/domains/runtime open.
+- [x] Complete sndSin integer lookup/original1024-entry quarter-wave
+  table and two low-precision call bindings —
+  [integer sine lookup](../behavior/audio/MUSYX_SINE_QUARTER_WAVE_LOOKUP.md).
+  Low12/mirror/sign narrowing/all4096 phases pinned; runtime table owners/
+  caller divisors/providers/remaining handler/original audio stay open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2450,3 +2455,13 @@ six periodic/eight pan-ramp vectors checked. Two ordered oscillators/separately
 flagged oscillator, distinct elapsed masks, one-reset periodic accumulators and
 raw-expiry versus continuing-clamp pan paths pinned. Sine/handler remainder/
 providers/domains/original audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Integer sine lookup delivery
+
+Completed sndSin/original numeric table/two oscillator bindings in
+[integer sine lookup](../behavior/audio/MUSYX_SINE_QUARTER_WAVE_LOOKUP.md).
+Three spans/37 anchors/two caller bindings verified; all1024 numeric coefficients
+reserialize to pinned source hash. Eighteen vectors/all4096 phase branch/index
+checks passed. Low12 masking/1023 mirror/narrowed negation and source peak4095
+pinned. Runtime table/caller domains/remaining handler/original audio/native
+binding remain open; EVT-01 stays OPEN.
