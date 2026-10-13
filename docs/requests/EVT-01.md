@@ -445,6 +445,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   cache-service names/pins — [cache ranges/source corrections](../behavior/audio/GEKKO_CACHE_RANGE_SERVICES_AND_AUDIO_CALL_CORRECTIONS.md).
   Wrapped count/opcode/sc order pinned; six contracts/four child identities
   corrected; syscall/hardware/domain/original cache/DSP/audio remain open.
+- [x] Complete cache SystemCallVector/installer/ICInvalidateRange/
+  memcpy local chain and direct OSInit call binding —
+  [syscall vector/installation](../behavior/audio/GEKKO_CACHE_SYSCALL_VECTOR_AND_INSTALLATION.md).
+  Exact copied length/SPR/barrier/cache/byte-copy order pinned; boot/vector
+  residency/exception/hardware/domain/original DSP/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2349,3 +2354,13 @@ e0 is DCStoreRangeNoSync,ab4 DCFlushRangeNoSync,a54 DCFlushRange,a28
 DCInvalidateRange. Earlier prose name attributions superseded; prior byte/site
 proofs did not validate those names. All ten composed-builder prerequisite
 manifests reverified. Syscall/hardware/domain/original audio and EVT-01 OPEN.
+
+## 2026-10-13 — Cache syscall vector/installation delivery
+
+Completed four local bodies/direct installer call in
+[syscall vector/installation](../behavior/audio/GEKKO_CACHE_SYSCALL_VECTOR_AND_INSTALLATION.md).
+Six spans/67 instruction/caller anchors/four calls verified;16 source-operation
+vectors/copy-range bindings checked. Actual28-byte copy versus256-byte cache
+publication, temporary SPR1008 bit8/isync/sync/restore/rfi, IC barriers and
+overlap byte direction pinned. Boot/vector residency/exception/cache/DSP/original
+audio remain open; parent EVT-01 stays OPEN.

@@ -104,3 +104,9 @@ ordering/trap/ownership domains, actual caller ranges/alias/lifetime/partial-
 publication and DSP command consumers, original cache/voice/audio traces and
 native binding. Five local bodies and listed source-name corrections answered;
 full audio/runtime and EVT-01 remain OPEN.
+
+## 2026-10-13 — Syscall vector follow-up
+
+[Vector/installation](GEKKO_CACHE_SYSCALL_VECTOR_AND_INSTALLATION.md) closes the local source vector/installer/
+IC range/memcpy chain and pins OSInit's direct call. Boot/vector residency,
+exception/cache/hardware domains and original DSP/audio execution remain open.

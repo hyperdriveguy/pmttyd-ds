@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero cache syscall vector/installation
+
+Completed SystemCallVector/__OSInitSystemCall/ICInvalidateRange/memcpy and
+pinned direct OSInit call; checked the EVT-01 portion.
+[Vector/installation](behavior/audio/GEKKO_CACHE_SYSCALL_VECTOR_AND_INSTALLATION.md)
+pins28-byte source copy/256-byte cache lengths, temporary SPR1008 bit8/isync/
+sync/restore/rfi, IC barrier/range and original overlap byte direction. Actual
+boot/vector residency/exception/cache/hardware/original DSP/audio remain open.
+
+Validation: read-only ISO manifest passed six spans (four bodies/two linked),67
+whole-body/caller anchors/four direct calls. Four SPR/six finite overlap-copy/
+six IC range-barrier vectors and copy source/end/destination/hash/cache lengths
+checked. Link audit passed864 Markdown files/zero broken links; scoped `git diff
+--check` passed. Documentation/metadata only; no `make test`/`make all` rerun.
+Full original fresh ELFs/listings stay `/tmp`; no vector/bodies/binary assets
+committed. No live vector/processor/emulator state modified. Concurrent native
+edits excluded.
+
+Next: priority-zero EVT-01 complete boot/vector/handler residency/patch owners,
+original exception/MSR/SRR/HID0/address/privilege/cache/IRQ/ordering/trap/coherency
+domains, actual copy/caller ranges/alias/lifetime/DSP consumers and original
+syscall/cache/voice/audio traces. Remaining precision/macro/stream/song/backend
+work, lower-priority inbox and full native/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero cache ranges/source corrections
 
 Completed five DC cache-range bodies; checked the EVT-01 portion.

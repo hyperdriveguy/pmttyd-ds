@@ -1,0 +1,395 @@
+{
+  "schema": 1,
+  "scope": "Complete cache syscall vector/installer/instruction-range/copy bodies; boot/exception/HID0/runtime open",
+  "complete_bodies": [
+    "SystemCallVector",
+    "__OSInitSystemCall",
+    "ICInvalidateRange",
+    "memcpy"
+  ],
+  "linked_only": [
+    "DCFlushRangeNoSync",
+    "OSInit"
+  ],
+  "dol_spans": [
+    {
+      "name": "SystemCallVector",
+      "address": 2150221244,
+      "size": 32,
+      "sha256": "645737e26b087a24f1993b8eb5da38794a01734303bbde0cfc1930e8c6261e5e"
+    },
+    {
+      "name": "__OSInitSystemCall",
+      "address": 2150221276,
+      "size": 100,
+      "sha256": "b6bb44742688aa42c4a8874a8966c2c958ee31445ad7646d9f017ef1687e0994"
+    },
+    {
+      "name": "ICInvalidateRange",
+      "address": 2150198028,
+      "size": 52,
+      "sha256": "5c0cb4f4df95f7fb600123d9052dc8dea26ad6a963dc0108ac7fbc388d76b975"
+    },
+    {
+      "name": "memcpy",
+      "address": 2147504540,
+      "size": 80,
+      "sha256": "2ae30d938e412adf2364d7d2c9768f1b36c4b0bcefaf934345ec62b428b2a046"
+    },
+    {
+      "name": "DCFlushRangeNoSync",
+      "address": 2150197940,
+      "size": 44,
+      "sha256": "609869ef211e15fd73610a3431bcdf99f1597d86ee3854f6bba65fd3b0b6d226"
+    },
+    {
+      "name": "OSInit",
+      "address": 2150191972,
+      "size": 1248,
+      "sha256": "fff6e2217e0fa2df4e4f022133fe2e82e317dbe0271366c472d77f98ef3a1325"
+    }
+  ],
+  "dol_anchors": {
+    "2150221280": "90010004",
+    "2150221288": "93e1000c",
+    "2150221292": "3ca08000",
+    "2150221296": "3c80802a",
+    "2150221300": "3c60802a",
+    "2150221304": "3be50c00",
+    "2150221308": "3803c5d8",
+    "2150221312": "3884c5bc",
+    "2150221324": "4bd68b91",
+    "2150221332": "38800100",
+    "2150221336": "4bffa49d",
+    "2150221348": "38800100",
+    "2150221352": "4bffa4e5",
+    "2150221356": "80010014",
+    "2150221360": "83e1000c",
+    "2150221364": "38210010",
+    "2150198044": "3884001f",
+    "2150198060": "38630020",
+    "2150198064": "4200fff8",
+    "2147504544": "41800028",
+    "2147504548": "3884ffff",
+    "2147504552": "38c3ffff",
+    "2147504556": "38a50001",
+    "2147504560": "4800000c",
+    "2147504576": "4082fff4",
+    "2147504592": "38a50001",
+    "2147504596": "4800000c",
+    "2147504612": "4082fff4",
+    "2150221244": "7d30faa6",
+    "2150221248": "612a0008",
+    "2150221252": "7d50fba6",
+    "2150221256": "4c00012c",
+    "2150221260": "7c0004ac",
+    "2150221264": "7d30fba6",
+    "2150221268": "4c000064",
+    "2150221272": "60000000",
+    "2150221276": "7c0802a6",
+    "2150221284": "9421fff0",
+    "2150221316": "7fe3fb78",
+    "2150221320": "7ca40050",
+    "2150221328": "7fe3fb78",
+    "2150221340": "7c0004ac",
+    "2150221344": "7fe3fb78",
+    "2150221368": "7c0803a6",
+    "2150221372": "4e800020",
+    "2150198028": "28040000",
+    "2150198032": "4c810020",
+    "2150198036": "546506fe",
+    "2150198040": "7c842a14",
+    "2150198048": "5484d97e",
+    "2150198052": "7c8903a6",
+    "2150198056": "7c001fac",
+    "2150198068": "7c0004ac",
+    "2150198072": "4c00012c",
+    "2150198076": "4e800020",
+    "2147504540": "7c041840",
+    "2147504564": "8c040001",
+    "2147504568": "9c060001",
+    "2147504572": "34a5ffff",
+    "2147504580": "4e800020",
+    "2147504584": "7c842a14",
+    "2147504588": "7cc32a14",
+    "2147504600": "8c04ffff",
+    "2147504604": "9c06ffff",
+    "2147504608": "34a5ffff",
+    "2147504616": "4e800020",
+    "2150192364": "480070f1"
+  },
+  "direct_calls": [
+    {
+      "site": 2150221324,
+      "target": 2147504540,
+      "name": "memcpy"
+    },
+    {
+      "site": 2150221336,
+      "target": 2150197940,
+      "name": "DCFlushRangeNoSync"
+    },
+    {
+      "site": 2150221352,
+      "target": 2150198028,
+      "name": "ICInvalidateRange"
+    },
+    {
+      "site": 2150192364,
+      "target": 2150221276,
+      "name": "__OSInitSystemCall"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "installer_binding": {
+    "destination": 2147486720,
+    "source": 2150221244,
+    "source_end": 2150221272,
+    "copied_bytes": 28,
+    "source_sha256": "0e8a68b1dc6ec7f385cd568a2d30ef5abbaf6cf0432f917ab55c4f05c378d6b1",
+    "data_publication_length": 256,
+    "instruction_publication_length": 256
+  },
+  "derived_hid0_vectors": [
+    {
+      "before": 0,
+      "during": 8,
+      "after": 0,
+      "clobbers_gpr": [
+        9,
+        10
+      ]
+    },
+    {
+      "before": 8,
+      "during": 8,
+      "after": 8,
+      "clobbers_gpr": [
+        9,
+        10
+      ]
+    },
+    {
+      "before": 2147483648,
+      "during": 2147483656,
+      "after": 2147483648,
+      "clobbers_gpr": [
+        9,
+        10
+      ]
+    },
+    {
+      "before": 4294967295,
+      "during": 4294967295,
+      "after": 4294967295,
+      "clobbers_gpr": [
+        9,
+        10
+      ]
+    }
+  ],
+  "derived_copy_vectors": [
+    {
+      "destination": 0,
+      "source": 8,
+      "length": 4,
+      "direction": "forward",
+      "after_bytes": [
+        8,
+        9,
+        10,
+        11,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "returned_destination": 0
+    },
+    {
+      "destination": 8,
+      "source": 0,
+      "length": 4,
+      "direction": "backward",
+      "after_bytes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        0,
+        1,
+        2,
+        3,
+        12,
+        13,
+        14,
+        15
+      ],
+      "returned_destination": 8
+    },
+    {
+      "destination": 2,
+      "source": 0,
+      "length": 6,
+      "direction": "backward",
+      "after_bytes": [
+        0,
+        1,
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "returned_destination": 2
+    },
+    {
+      "destination": 0,
+      "source": 2,
+      "length": 6,
+      "direction": "forward",
+      "after_bytes": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "returned_destination": 0
+    },
+    {
+      "destination": 4,
+      "source": 4,
+      "length": 4,
+      "direction": "forward",
+      "after_bytes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "returned_destination": 4
+    },
+    {
+      "destination": 4,
+      "source": 4,
+      "length": 0,
+      "direction": "forward",
+      "after_bytes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "returned_destination": 4
+    }
+  ],
+  "derived_ic_range_vectors": [
+    {
+      "pointer": 2147486720,
+      "length": 256,
+      "counter": 8,
+      "iterations": 8,
+      "post_loop_sync_isync": true,
+      "final_pointer": 2147486976
+    },
+    {
+      "pointer": 4097,
+      "length": 0,
+      "counter": 1,
+      "iterations": 0,
+      "post_loop_sync_isync": false,
+      "final_pointer": 4097
+    },
+    {
+      "pointer": 4127,
+      "length": 1,
+      "counter": 1,
+      "iterations": 1,
+      "post_loop_sync_isync": true,
+      "final_pointer": 4159
+    },
+    {
+      "pointer": 4127,
+      "length": 2,
+      "counter": 2,
+      "iterations": 2,
+      "post_loop_sync_isync": true,
+      "final_pointer": 4191
+    },
+    {
+      "pointer": 4294967280,
+      "length": 64,
+      "counter": 3,
+      "iterations": 3,
+      "post_loop_sync_isync": true,
+      "final_pointer": 80
+    },
+    {
+      "pointer": 0,
+      "length": 4294967295,
+      "counter": 0,
+      "iterations": 4294967296,
+      "post_loop_sync_isync": true,
+      "final_pointer": 0
+    }
+  ]
+}
