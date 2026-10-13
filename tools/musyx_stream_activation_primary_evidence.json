@@ -1,0 +1,403 @@
+{
+  "schema": 1,
+  "scope": "Complete stream activation primary lookup/voice block/terminal return regions and ABI; companion continuation/providers/runtime open",
+  "complete_bodies": [],
+  "complete_regions": [
+    {
+      "name": "sndStreamActivate primary admission",
+      "address": 2150091468,
+      "size": 468
+    },
+    {
+      "name": "sndStreamActivate primary terminal return",
+      "address": 2150093024,
+      "size": 12
+    }
+  ],
+  "linked_only": [
+    "sndStreamActivate",
+    "hwDisableIrq",
+    "voiceBlock",
+    "hwEnableIrq"
+  ],
+  "dol_spans": [
+    {
+      "name": "sndStreamActivate primary admission",
+      "address": 2150091468,
+      "size": 468,
+      "sha256": "1792d73e08b4a41065f11b765820f0689d1c580ee59a6749f3d77801e3da6e89"
+    },
+    {
+      "name": "sndStreamActivate primary terminal return",
+      "address": 2150093024,
+      "size": 12,
+      "sha256": "5fedce8698f610ad04ea4b594349510ef020bb306916b5a5ff8ce8f73d0400cd"
+    },
+    {
+      "name": "sndStreamActivate",
+      "address": 2150091444,
+      "size": 1624,
+      "sha256": "6d7b0a9be12cd4881768e2da1d4ed56e7c49abe4ee9375f365c4fdfb5d427a59"
+    },
+    {
+      "name": "hwDisableIrq",
+      "address": 2150180880,
+      "size": 56,
+      "sha256": "edb5198c972d01b93658216671fd046d6f96210b534bbfa30b6844c8db6138d2"
+    },
+    {
+      "name": "voiceBlock",
+      "address": 2150127048,
+      "size": 452,
+      "sha256": "200046c3c6bfef86c3ca328f8af51302ea766bec4a4919c3cbfc7cbda01c24c9"
+    },
+    {
+      "name": "hwEnableIrq",
+      "address": 2150180824,
+      "size": 56,
+      "sha256": "3bcc66eb43ecfd8c2739c9765c710b462e66bc98fe31d107c000e0d3e3b6fc81"
+    }
+  ],
+  "dol_anchors": {
+    "2150091468": "7c7d1b78",
+    "2150091472": "93810010",
+    "2150091476": "3b800000",
+    "2150091480": "48015d39",
+    "2150091484": "3c608040",
+    "2150091488": "38000008",
+    "2150091492": "3bc398e8",
+    "2150091496": "38800000",
+    "2150091500": "7fc3f378",
+    "2150091504": "7c0903a6",
+    "2150091508": "8803000c",
+    "2150091512": "28000000",
+    "2150091516": "41820014",
+    "2150091520": "80030004",
+    "2150091524": "7c1d0040",
+    "2150091528": "40820008",
+    "2150091532": "48000110",
+    "2150091536": "88030074",
+    "2150091540": "38840001",
+    "2150091544": "38630068",
+    "2150091548": "28000000",
+    "2150091552": "41820014",
+    "2150091556": "80030004",
+    "2150091560": "7c1d0040",
+    "2150091564": "40820008",
+    "2150091568": "480000ec",
+    "2150091572": "88030074",
+    "2150091576": "38840001",
+    "2150091580": "38630068",
+    "2150091584": "28000000",
+    "2150091588": "41820014",
+    "2150091592": "80030004",
+    "2150091596": "7c1d0040",
+    "2150091600": "40820008",
+    "2150091604": "480000c8",
+    "2150091608": "88030074",
+    "2150091612": "38840001",
+    "2150091616": "38630068",
+    "2150091620": "28000000",
+    "2150091624": "41820014",
+    "2150091628": "80030004",
+    "2150091632": "7c1d0040",
+    "2150091636": "40820008",
+    "2150091640": "480000a4",
+    "2150091644": "88030074",
+    "2150091648": "38840001",
+    "2150091652": "38630068",
+    "2150091656": "28000000",
+    "2150091660": "41820014",
+    "2150091664": "80030004",
+    "2150091668": "7c1d0040",
+    "2150091672": "40820008",
+    "2150091676": "48000080",
+    "2150091680": "88030074",
+    "2150091684": "38840001",
+    "2150091688": "38630068",
+    "2150091692": "28000000",
+    "2150091696": "41820014",
+    "2150091700": "80030004",
+    "2150091704": "7c1d0040",
+    "2150091708": "40820008",
+    "2150091712": "4800005c",
+    "2150091716": "88030074",
+    "2150091720": "38840001",
+    "2150091724": "38630068",
+    "2150091728": "28000000",
+    "2150091732": "41820014",
+    "2150091736": "80030004",
+    "2150091740": "7c1d0040",
+    "2150091744": "40820008",
+    "2150091748": "48000038",
+    "2150091752": "88030074",
+    "2150091756": "38840001",
+    "2150091760": "38630068",
+    "2150091764": "28000000",
+    "2150091768": "41820014",
+    "2150091772": "80030004",
+    "2150091776": "7c1d0040",
+    "2150091780": "40820008",
+    "2150091784": "48000014",
+    "2150091788": "38630068",
+    "2150091792": "38840001",
+    "2150091796": "4200fee0",
+    "2150091800": "3880ffff",
+    "2150091804": "3c040001",
+    "2150091808": "2800ffff",
+    "2150091812": "418204c0",
+    "2150091816": "3c608040",
+    "2150091820": "386398e8",
+    "2150091824": "1f840068",
+    "2150091828": "3ba3000c",
+    "2150091832": "7c1de0ae",
+    "2150091836": "28000003",
+    "2150091840": "40820048",
+    "2150091844": "7c63e214",
+    "2150091848": "88630058",
+    "2150091852": "4800897d",
+    "2150091856": "3c808040",
+    "2150091860": "3c030001",
+    "2150091864": "388498e8",
+    "2150091868": "7c84e214",
+    "2150091872": "2800ffff",
+    "2150091876": "9064004c",
+    "2150091880": "40820010",
+    "2150091884": "48015b6d",
+    "2150091888": "38600000",
+    "2150091892": "48000478",
+    "2150091896": "38600000",
+    "2150091900": "38000001",
+    "2150091904": "90640020",
+    "2150091908": "7c1de1ae",
+    "2150091912": "3c608040",
+    "2150091916": "386398e8",
+    "2150091920": "7f83e02e",
+    "2150091924": "3c1c0001",
+    "2150091928": "2800ffff",
+    "2150091932": "41820444",
+    "2150093024": "3b800001",
+    "2150093028": "480156f5",
+    "2150093032": "7f83e378",
+    "2150091444": "9421ffe0",
+    "2150091448": "7c0802a6",
+    "2150091452": "90010024",
+    "2150091456": "93e1001c",
+    "2150091460": "93c10018",
+    "2150091464": "93a10014",
+    "2150093036": "80010024",
+    "2150093040": "83e1001c",
+    "2150093044": "83c10018",
+    "2150093048": "83a10014",
+    "2150093052": "83810010",
+    "2150093056": "7c0803a6",
+    "2150093060": "38210020",
+    "2150093064": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2150091480,
+      "target": 2150180880,
+      "name": "hwDisableIrq"
+    },
+    {
+      "site": 2150091852,
+      "target": 2150127048,
+      "name": "voiceBlock"
+    },
+    {
+      "site": 2150091884,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    },
+    {
+      "site": 2150093028,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_lookup_vectors": [
+    {
+      "rows": [
+        {
+          "state": 0,
+          "public_id": 7
+        },
+        {
+          "state": 3,
+          "public_id": 7
+        }
+      ],
+      "requested_id": 7,
+      "remaining_rows_inactive": true,
+      "selected": 1
+    },
+    {
+      "rows": [
+        {
+          "state": 255,
+          "public_id": 7
+        },
+        {
+          "state": 3,
+          "public_id": 7
+        }
+      ],
+      "requested_id": 7,
+      "remaining_rows_inactive": true,
+      "selected": 0
+    },
+    {
+      "rows": [
+        {
+          "state": 0,
+          "public_id": 0
+        }
+      ],
+      "requested_id": 0,
+      "remaining_rows_inactive": true,
+      "selected": null
+    },
+    {
+      "rows": [
+        {
+          "state": 3,
+          "public_id": 4294967295
+        }
+      ],
+      "requested_id": 4294967295,
+      "remaining_rows_inactive": true,
+      "selected": 0
+    },
+    {
+      "rows": [
+        {
+          "state": 1,
+          "public_id": 8
+        },
+        {
+          "state": 2,
+          "public_id": 7
+        }
+      ],
+      "requested_id": 7,
+      "remaining_rows_inactive": true,
+      "selected": 1
+    }
+  ],
+  "derived_primary_vectors": [
+    {
+      "initial_state": 3,
+      "voice_block_return": 4294967295,
+      "companion_word": 4294967295,
+      "requests_block": true,
+      "stores_voice4c": 4294967295,
+      "block_failure": true,
+      "clears_cursor_and_sets_state1": false,
+      "primary_terminal_return": 0,
+      "continues_companion": false
+    },
+    {
+      "initial_state": 3,
+      "voice_block_return": 0,
+      "companion_word": 4294967295,
+      "requests_block": true,
+      "stores_voice4c": 0,
+      "block_failure": false,
+      "clears_cursor_and_sets_state1": true,
+      "primary_terminal_return": 1,
+      "continues_companion": false
+    },
+    {
+      "initial_state": 3,
+      "voice_block_return": 256,
+      "companion_word": 4294967295,
+      "requests_block": true,
+      "stores_voice4c": 256,
+      "block_failure": false,
+      "clears_cursor_and_sets_state1": true,
+      "primary_terminal_return": 1,
+      "continues_companion": false
+    },
+    {
+      "initial_state": 1,
+      "voice_block_return": 4294967295,
+      "companion_word": 4294967295,
+      "requests_block": false,
+      "stores_voice4c": null,
+      "block_failure": false,
+      "clears_cursor_and_sets_state1": false,
+      "primary_terminal_return": 1,
+      "continues_companion": false
+    },
+    {
+      "initial_state": 2,
+      "voice_block_return": 4294967295,
+      "companion_word": 7,
+      "requests_block": false,
+      "stores_voice4c": null,
+      "block_failure": false,
+      "clears_cursor_and_sets_state1": false,
+      "primary_terminal_return": null,
+      "continues_companion": true
+    },
+    {
+      "initial_state": 255,
+      "voice_block_return": 0,
+      "companion_word": 7,
+      "requests_block": false,
+      "stores_voice4c": null,
+      "block_failure": false,
+      "clears_cursor_and_sets_state1": false,
+      "primary_terminal_return": null,
+      "continues_companion": true
+    },
+    {
+      "initial_state": 3,
+      "voice_block_return": 1,
+      "companion_word": 7,
+      "requests_block": true,
+      "stores_voice4c": 1,
+      "block_failure": false,
+      "clears_cursor_and_sets_state1": true,
+      "primary_terminal_return": null,
+      "continues_companion": true
+    }
+  ],
+  "derived_slot_vectors": [
+    {
+      "slot": 0,
+      "record_address": 2151651560,
+      "primary_state_address": 2151651572
+    },
+    {
+      "slot": 7,
+      "record_address": 2151652288,
+      "primary_state_address": 2151652300
+    },
+    {
+      "slot": 8,
+      "record_address": 2151652392,
+      "primary_state_address": 2151652404
+    },
+    {
+      "slot": 63,
+      "record_address": 2151658112,
+      "primary_state_address": 2151658124
+    }
+  ],
+  "abi_binding": {
+    "stack_bytes": 32,
+    "saved_gprs": [
+      28,
+      29,
+      30,
+      31
+    ],
+    "saved_lr_offset_from_frame": 36,
+    "default_result": 0
+  }
+}

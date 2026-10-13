@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero stream activation primary
+
+Completed sndStreamActivate primary lookup/voice/state/terminal-return regions
+and ABI; checked EVT-01 portion.
+[Primary activation](behavior/audio/MUSYX_STREAM_ACTIVATION_PRIMARY_ADMISSION.md)
+pins64-row lookup/fresh state3, voice publication before failure, cursor/state1
+stores and companion-sentinel return. Companion continuation/providers/IRQ/
+domains/original activation/audio/native binding remain open.
+
+Validation: read-only ISO manifest passed six spans,134 anchors,four calls.
+Five lookup/seven primary/four slot vectors checked. Link audit passed897 Markdown
+files/zero broken links; scoped `git diff --check` passed. Mathematical source
+checks are separate from original execution. Documentation/metadata only; no
+`make test`/`make all` rerun. Fresh full original ELF/listing/generator stay `/tmp`;
+no bodies/binary assets committed. Concurrent native edits excluded. Previously
+approved push remains pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 sndStreamActivate companion continuation/recursive
+requests/enables/return composition; actual state/ID/priority/voice/companion/IRQ
+providers and valid value/index/extent/alias/lifetime/concurrency/ABI domains,
+stream deactivation/free/frequency/mix and original activation/failure/audio traces.
+Remaining macro/song/backend, lower-priority inbox and full native/game work open.
+
 ## 2026-10-13 — Original stationary candidacy and simulation paper facing
 
 Committed eee81fa: [stationary NPC binding](behavior/field/NATIVE_STATIC_NPC_CANDIDACY.md)

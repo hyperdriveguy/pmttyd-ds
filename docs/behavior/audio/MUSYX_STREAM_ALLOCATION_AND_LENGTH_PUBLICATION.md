@@ -113,3 +113,9 @@ Remaining: activation/deactivation/free/frequency/mix lifecycle, actual callers/
 flags/count/ID/state/length/source/callback/voice/default/resource providers and
 valid extent/value/encoding/alias/lifetime/IRQ/concurrency/ABI domains, transitive
 ARAM/DSP consumers and original allocation/failure/stream/audio traces. EVT-01 OPEN.
+
+## 2026-10-13 — Primary activation follow-up
+
+[Primary activation](MUSYX_STREAM_ACTIVATION_PRIMARY_ADMISSION.md) closes initial lookup/voice/state/terminal
+paths, including allocator's ordinary companion-sentinel branch. Companion
+continuation/providers/domains/original activation/audio/native binding open.

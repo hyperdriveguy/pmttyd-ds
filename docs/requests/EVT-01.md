@@ -525,6 +525,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [allocation/length](../behavior/audio/MUSYX_STREAM_ALLOCATION_AND_LENGTH_PUBLICATION.md).
   First free/collision ID/wrapped length/partial record/state-before-buffer/
   deferred activation/failure/IRQ order pinned; child lifecycle/runtime open.
+- [x] Complete sndStreamActivate primary lookup/voice admission/
+  terminal returns and ABI — [primary activation](../behavior/audio/MUSYX_STREAM_ACTIVATION_PRIMARY_ADMISSION.md).
+  Fresh state3/voice-before-failure/cursor-state/companion sentinel pinned;
+  companion continuation/IRQ/providers/runtime remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2640,3 +2644,13 @@ free/candidate sentinel-collision retry, wrapped byte length, partial record/
 coefficients/mode/filter/state3-before-buffer/deferred activation/state-only
 failure pinned. Child lifecycle/providers/domains/original allocation/audio/
 native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream activation primary delivery
+
+Completed two primary regions/ABI in
+[primary activation](../behavior/audio/MUSYX_STREAM_ACTIVATION_PRIMARY_ADMISSION.md).
+Six spans/134 anchors/four calls verified; five lookup/seven primary/four slot
+vectors checked. Independent64-row scan, fresh state3, raw voice publication before
+sentinel check, cursor/state1 stores, primary failure and companion-sentinel
+terminal paths pinned. Companion continuation/providers/IRQ/domains/original
+activation/audio/native binding remain open; EVT-01 stays OPEN.
