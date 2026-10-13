@@ -2,6 +2,78 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Live original save-block events, System graphics and asynchronous SD persistence
+
+Commit `0675712` binds [live save blocks](behavior/field/NATIVE_LIVE_SAVE_BLOCK.md)
+by original model identity/catalog source owner and name. Actual source bbox head
+contact triggers flag8; per-instance S_1/A_1 clocks and source previous-published
+ratio control the original stages. Native raw input/windows/events precede Mario;
+object callback and animation publication follow Mario. Neutral-input physics
+still lands Mario while nested source key/system ownership is active. Camera8
+bit200 has a separate owner; field camera4 does not receive a follow-freeze guess.
+The same catalog/registry path serves future rooms with source save-block records.
+
+Original System pattern5, shape42..45/ring46..49 and selection index0 now draw
+with original source dimensions/masks, four-quad/nine-slice geometry, source UV/
+phase and PICA texture interpolation/alpha stages. Original type3 scissor and
+no-tail routing, separate retained-message effect caches, original cursor1f8 and
+independent choices are live. Source221-command event graph/US first-hit/dialogue/
+branches are unchanged. Renderer samples per-instance raw X with source clip
+starts/clamps and caches time as well as pose/tick; it never decides completion.
+Cue431 now schedules the original sample550 on resident NDSP channel7. This is
+an original primary-sample fallback; MusyX macro/3D/group parity is still unproven.
+[Asset provenance](ASSETS.md) records unchanged texture/PCM conversion and rights.
+
+Accepted writes use a libctru worker with an owned checkpoint/path,16KiB stack,
+priority31/default permitted core, release/acquire completion and the existing
+atomic v6 SD/temp/backup writer. No enqueues no write. Harness writes suppress
+while source saving owns input, and exit autosave is limited to legacy harness
+state without originalStory. Other harness autosaves remain adapters. Original
+GC card/header/error classification, shared field VM/category/pause ownership,
+optional custom source object programs and camera8 letterbox UI remain partial.
+Native provider fault recovery is an adapter, not invented source behavior.
+
+Validation: shared `make test` passes114 CTest/100 Python. Isolated source/romfs
+snapshot `/tmp/pm-live-save-cp7b1_2f` passes113 CTest/100 Python and `make all`;
+only the existing private professor fence-reference fixture check is excluded.
+All committed implementation files match the validated isolated source snapshot.
+Logs: `/tmp/live-save-shared-test.log`, `/tmp/live-save-isolated-test.log`,
+`/tmp/live-save-native.log`, `/tmp/live-save-isolated-native.log`. Game tests use
+actual jump/head physics, original first-hit/No/Yes windows and delayed real file
+writes; they check landing, nested keys, camera separation, unchanged No files,
+source switch persistence, restored S_1 and previous ratio at250ms. No compiler
+warnings/errors were emitted by the isolated native build. Source clock samples
+and test timestamps are adapter inputs, not measured original behavior.
+
+Isolated Azahar binary `artifacts/ttyd-live-save.3dsx` passes repeat-hit No in
+`artifacts/azahar-live-save-no2` (byte-identical checkpoint, no temp/backup), Yes
+in `artifacts/azahar-live-save-yes` (original success window, atomic v6 file and
+backup), and all three first-hit explanation pages followed by No in
+`artifacts/azahar-live-save-first` (original flags0 file unchanged). Scripts are
+`tests/azahar_save_block_no.py`, `tests/azahar_save_block_yes.py` and
+`tests/azahar_save_block_first_hit.py`; fixtures remain ignored in artifacts.
+All final choice/return/page/success images were inspected. First No smoke used
+an input before the selection finished opening, so its file-only assertion did
+not prove cancellation; inspected screenshots exposed that error and the final
+scripts wait for the completed source choice. The final No captures show the
+cursor on No and return to exploration. Sandboxed Xvfb failed its display socket;
+scoped isolated-profile escalation completed the final runs without modifying
+user emulator profiles/saves. Warm captured emulator reports60fps, simulation
+2.47ms/CPU8.4ms/GPU0.5ms in the idle return; this is not hardware profiling or a
+New2DS XL performance guarantee. Final link audit782 Markdown files/0 broken;
+owned commit whitespace check passes. Original ISO stays read-only, and extracted
+assets/compiled packs/binaries remain outside history. Concurrent battle/audio
+research and pending shared edits are preserved through isolated scoped staging.
+
+Next: ordinary NPC source pre-display/facing/tribe dimensions/talk-anchor services
+and source interaction/collision arbitration, then remaining constructor-specific
+objects and area catalog expansion. Keep using OW-INTERACT-01/other inbox contracts
+rather than proximity or fabricated story. Verify source runtime/pixel/audio parity,
+full field pause/category/shared VM/save state, narrow System frame cases and
+source3D/macro sounds; profile actual New2DS XL hardware. Original S_1/A_1 assets,
+source events and reusable live save infrastructure now work; the full-game/area
+coverage and overall user goal remain active and incomplete.
+
 ## 2026-10-13 — Inbox priority-zero hardware message/sample notifications
 
 Completed five hardware-message/sample notification local contracts for EVT-01
