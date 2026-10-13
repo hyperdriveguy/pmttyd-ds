@@ -28,9 +28,10 @@ bit-identical execution of the complete original event graph. Door mesh
 rotation, light/dark effects, indoor NPC/item activation, inn upstairs callbacks,
 Professor story8 first-talk and story9 wall-removal callbacks, letterboxing,
 original sound macros and nested key ownership remain unbound. This adapter
-does not write story words or fabricate any dialogue. Interior saves remain
-suppressed until the persistent door-state format is implemented; the existing
-outside save remains available. These limitations prevent a claim of full
+does not write story words or fabricate any dialogue. Native
+[version4 saves](../format/NATIVE_SAVE_FORMAT.md) restore the completed interior
+mask before collision validation; saves during door choreography stay suppressed.
+These limitations prevent a claim of full
 prologue or original indoor scene parity.
 
 ## Room identity and source records

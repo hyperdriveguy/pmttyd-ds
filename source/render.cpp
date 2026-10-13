@@ -318,7 +318,8 @@ void Renderer::originalMessage(const Game& g) {
     if(!project(messageTalkAnchor,anchorX,anchorY))mode=0;
     else mode=messagePlacement;
     if(message.windowType==11)mode=0;
-    const auto plan=messageWindowPlan(message.geometry,mode,anchorX,anchorY,message.alpha,message.windowType);
+    auto plan=messageWindowPlan(message.geometry,mode,anchorX,anchorY,message.alpha,message.windowType);
+    stretchMessageTail(plan,anchorX,anchorY);
     if(message.windowType!=11)messageBorder(plan,message.alpha,message.windowType);
     if(!plan.textVisible)return;
     if(messageSerial!=message.serial){messageSerial=message.serial;messageIdentity=message.id();messageDynamic.clear();for(const auto& r:message.records)messageDynamic.push_back(r.value);}
@@ -368,7 +369,7 @@ void Renderer::messageBorder(const MessageWindowPlan& plan,uint8_t alpha,int typ
             auto sub=image(600,pass?0:64,48,64);
             constexpr float uv[6][2]={{0,0},{1,0},{1,1},{0,0},{1,1},{0,1}};
             for(unsigned n=0;n<6;++n) {
-                const float u=uv[n][0],v=uv[n][1];const auto p=messageTailPoint(plan,u,v);
+                const float u=uv[n][0],v=uv[n][1];const auto p=messageTailMaskPoint(plan,u,v,pass==0);
                 messageTailVertices[pass*6+n]={200+p.x*MessageWindowScale,120-p.y*.5f,0,
                     sub.left+(sub.right-sub.left)*u,sub.top+(sub.bottom-sub.top)*v,1,1,1,alpha/255.f};
             }

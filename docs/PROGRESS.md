@@ -5,6 +5,48 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+
+## 2026-10-13 — Save and reload playable interiors
+
+Native PM2D version4 adds the completed inn/professor interior mask while
+retaining40-byte records and version1/2/3 loading. Story remains a separate
+optional signed word; no original story is inferred or changed. Unknown masks,
+room/mask mismatches and reserved bytes reject atomically. Native temporary-file,
+backup recovery and checksum behavior is preserved. This is a native format,
+not a recovered original card format; [SAVE-01](requests/SAVE-01.md) stays open.
+See [format contract](behavior/format/NATIVE_SAVE_FORMAT.md).
+
+Game restore applies saved door collision/display state before floor/wall
+validation in the native startup transaction. Completed interiors permit the
+existing manual save; in-flight door choreography still suppresses saves. A
+room transition resets the previous room's door mask. Original-data tests enter,
+save/reload and exit both buildings through their actual close contacts.
+
+Validation: final `make test` passes **96 CTest / 96 Python tests**
+(`/tmp/indoor-save-final-tests.log`); `make all` builds native3DSX
+(`/tmp/indoor-save-final-build.log`); `build-host/field_door_tests original`
+passes both source rooms after save/reload. New native-save tests cover old
+versions, invalid masks/reserved bytes, actual version3 file loading, version4
+writing/loading and backup recovery without mutating decoded state on failure.
+Document audit checks694 Markdown files with0 broken links; diff whitespace
+checks pass. Isolated Azahar `tests/azahar_indoor_save.py` asserts version4,
+room0/interior1 in the actual saved file. A second launch with that isolated
+save reloads inside the original inn; reviewed
+`artifacts/azahar-indoor-save/boot.png`. User profiles/saves remain untouched.
+Original assets/packs remain local and ignored. Validation runs on the current
+shared worktree; concurrent partner/message changes are kept separate from
+this incremental save commit.
+
+Next: implement the original professor story8 first-talk with recovered
+ordered US message keys (party print expands to `_kur`), original Frankly
+`c_kuri_h` art/poses and source camera/actor chronology. Source `dkey` parser/
+playback behavior is documented but not yet bound; `col` is already supported.
+Then implement story9 close/wall-removal and its story10 lecture dispatch, not a
+fabricated terminal story state. Door animation/light/audio, indoor NPC/item
+activation and upstairs doors remain unfinished, as do the broader prologue
+arrival/tutorial/story transitions and hardware performance. Goal stays active.
+
+
 ## 2026-10-13 — Correct tail direction and preserve original4:3 bubble proportions
 
 Fixed the observed Goombella tail miss in79c15b1. Tail masks now draw through

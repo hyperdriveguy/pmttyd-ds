@@ -85,6 +85,16 @@ int main(int argc,char**) {
         assert(std::fabs(cross)<.01f && dot>0);
         const auto maskTip=messageTailPoint(plan,.5f,.75f);
         assert(std::fabs(maskTip.x-(base.x+(tip.x-base.x)*.75f))<.001f);
+        auto stretched=plan;stretchMessageTail(stretched,ax,ay);
+        assert(stretched.tail && stretched.tailStretched);
+        assert(std::fabs(std::hypot(stretched.tipX-ax,stretched.tipY-ay)*MessageWindowScale-4)<.001f);
+        for(bool shadow:{false,true}) {
+            const auto visible=messageTailMaskPoint(stretched,22.5f/48,(shadow?59.5f:47.5f)/64,shadow);
+            assert(std::fabs(visible.x-stretched.tipX)<.001f && std::fabs(visible.y-stretched.tipY)<.001f);
+            const auto retainedBase=messageTailMaskPoint(stretched,.5f,0,shadow);
+            assert(retainedBase.x==plan.tailX && retainedBase.y==plan.tailY);
+        }
     }
+    auto close=left;stretchMessageTail(close,close.tailX,close.tailY-1);assert(!close.tail);
     std::cout<<"source schedules, key waits, LF suppression, scrolling, fade and rollback passed\n";
 }

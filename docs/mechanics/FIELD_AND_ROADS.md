@@ -23,7 +23,7 @@ head/wall/floor collision continue. Departure does not freeze XZ or wait for
 travel completion before starting the parent timer. The ordinary150units/s
 movement service and final snap remain simulation-tick based.
 
-Original GSW0 is now an optional full signed word in the native version3 save;
+Original GSW0 is an optional full signed word in native version3/4 saves;
 legacy/prototype victory cannot infer it. Unknown story or source callbacks for
 HarborOut5/PartnerArrival6/CoinArrival7 remain explicit MissingStory/Custom
 dependencies and are not silently executed as generic travel. gor_03 debug

@@ -107,3 +107,22 @@ toward that point. No marker remains in the production build. The original
 shadow mask extends farther than the white mask; its tip is not the white
 triangle's endpoint. Source tail support, alpha, event IDs/order and controls
 are retained. Hardware and matched original-runtime raster parity remain open.
+
+## User-requested tail stretching (2026-10-13)
+
+The original window-relative endpoint remains available in `messageWindowPlan`.
+Native story drawing now applies `stretchMessageTail` afterward: retain the
+original base/width/suppression gate, then extend toward the projected talk
+anchor with a four-screen-pixel gap. This gap is an authored handheld preference,
+not an original measured constant. Too-close anchors suppress the tail.
+
+The original48x64 white/shadow masks have their last opaque texel at(22,47)
+and(22,59). Native UV-to-quad geometry maps their texel centers to the same
+requested visible endpoint, independently compensating their transparent
+margins. Both passes retain horizontal rows and the original base; the shadow
+keeps its original wider outline without stretching beyond the speaker.
+No original raster, message/control bytes, actor root or timing is changed.
+Tests cover left/right/inverted stretch, retained base, four-pixel gap,
+matching visible mask endpoints and too-close suppression. Original fixed
+endpoint behavior remains a separate source contract, not a parity claim for
+this user-requested native extension.

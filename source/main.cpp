@@ -50,9 +50,13 @@ int main() {
     float savedHeight=saved.elevation;bool restored=false;
     if(loaded==ttyd::LoadResult::Loaded || loaded==ttyd::LoadResult::Recovered) {
         ttyd::CollisionTransition transaction;
-        if(stageRoomCollision(saved.room,transaction) && ttyd::groundAt(saved.position,saved.elevation,savedHeight) &&
-           ttyd::walkable(saved.position,savedHeight) && (saved.room==0 || renderer.changeRoom(saved.room))) {
-            game.restore(saved);transaction.commit();restored=true;
+        if(stageRoomCollision(saved.room,transaction)) {
+            ttyd::Game candidate=game;
+            candidate.restore(saved); // Door collision state precedes validation.
+            if(ttyd::groundAt(saved.position,saved.elevation,savedHeight) &&
+               ttyd::walkable(saved.position,savedHeight) && (saved.room==0 || renderer.changeRoom(saved.room))) {
+                game=std::move(candidate);transaction.commit();restored=true;
+            }
         }
     }
     if(!restored)game.restore(game.progress);

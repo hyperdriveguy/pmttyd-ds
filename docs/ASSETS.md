@@ -510,3 +510,9 @@ use the source sheared quad rather than a rotated sprite. These are native
 anchor/aspect adaptations, not recovered NPC tribe heights. Original rights
 and local-only asset/cache exclusions remain unchanged. See the
 [native bubble contract](behavior/message/NATIVE_MESSAGE_BUBBLES.md).
+
+The2026-10-13 tail-stretch refinement reuses the same original48x64 tail masks
+(indices1/2), without editing their pixels or rebuilding the atlas. Native
+geometry compensates each mask's transparent margins so their last opaque
+texel centers terminate together near the speaker. The four-screen-pixel gap
+is a user-requested presentation adaptation, not measured original behavior.

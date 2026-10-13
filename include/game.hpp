@@ -116,6 +116,7 @@ struct Progress {
     bool crumpDefeated = false, sound = true;
     // GSW0 is a full source word. Legacy/new harness state cannot infer it.
     std::optional<int32_t> originalStory;
+    uint8_t interiorMask=0; // Native same-map door state; separate from GSW0.
 };
 class Game {
 public:

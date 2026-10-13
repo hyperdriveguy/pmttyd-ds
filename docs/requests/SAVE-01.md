@@ -4,6 +4,11 @@
 
 Open todos:
 
+Native progress2026-10-13: the port now writes PM2D version4,40-byte records,
+adding a scoped indoor-door mask at byte33 and retaining version1/2/3 loading.
+See [native format](../behavior/format/NATIVE_SAVE_FORMAT.md). This does not close
+any original card/switch persistence requests below.
+
 - [ ] Complete original `cardMain` save/load state machine and record: save-file format/layout, checksum algorithm, corruption detection/repair, backup recovery, error/recovery states, multi-slot management and card-operation timing/coordination.
 - [ ] `swSet`/`swGet` story-switch bank: bank word count, index-to-story mapping, whether the `rotlwi`5 bit computation is the true encoding or a compiler artifact, and how the bank is saved/loaded.
 - [ ] Persistent namespaces that must round-trip (party/inventory/status records noted open in `UNIT_STATUS_CLEAR_AND_POUCH_IMPORT`), so the native PM2D format can be replaced by original persistence semantics.

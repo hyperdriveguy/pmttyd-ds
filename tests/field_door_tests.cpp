@@ -1,5 +1,6 @@
 #include "field_door.hpp"
 #include "game.hpp"
+#include "save.hpp"
 #include <cassert>
 #include <cstdio>
 #include <string>
@@ -41,14 +42,19 @@ int main(int argc,char**) {
             int tick=0;while(g.fieldDoor.active() && tick++<300)g.tick({});
             assert(!g.fieldDoor.active() && (g.fieldDoor.interiorMask&d.mask));
             assert(std::fabs(g.progress.position.z-d.inside[2])<.001f);
-            g.saveRequested=true;g.tick({});assert(!g.saveRequested);
+            g.saveRequested=true;g.tick({});assert(g.saveRequested);
+            Progress restored;assert(decodeSave(encodeSave(g.progress),restored));
+            assert(restored.interiorMask==d.mask && restored.originalStory==7);
+            g.restore(restored);assert(g.fieldDoor.interiorMask==d.mask && !g.fieldDoor.active());
             Input backward;backward.z=1;
             for(int t=0;t<24;++t)g.tick(backward);
             assert(g.wallContact.sourceNode==d.closeNode);
             g.tick(a);assert(g.fieldDoor.active());
+            g.saveRequested=true;g.tick({});assert(!g.saveRequested);
             tick=0;while(g.fieldDoor.active() && tick++<300)g.tick({});
             assert(!g.fieldDoor.active() && !(g.fieldDoor.interiorMask&d.mask));
             assert(g.progress.originalStory==7);
+            assert(g.progress.interiorMask==0);
         }
     }
     std::puts("Source door contact gates and scoped movement/wait bridge passed");

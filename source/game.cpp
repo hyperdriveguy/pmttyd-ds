@@ -210,7 +210,7 @@ bool Game::finishWarp() {
     RoadMotion staged;
     if(!staged.begin({start.x,start.z},{arrival.x,arrival.z}))return false;
     if(!roadStartGround(start,reverse->centerY,height))return false;
-    Progress next=progress;next.room=w.target;next.position=arrival;next.elevation=height;
+    Progress next=progress;next.room=w.target;next.position=arrival;next.elevation=height;next.interiorMask=0;
     const uint32_t systemFlags=fieldSystemFlags;
     const RoadCallback entryCallback=inCallback(w);
     restore(next);groundHeight=height;cameraHeight=height;partner=arrival;partnerHeight=height;partnerContact=groundContact;
@@ -747,7 +747,8 @@ void Game::restore(const Progress& saved) {
     fieldCameraFrame=retainedFrame;fieldCameraAuthored=retainedAuthored;
     fieldCameraSimulationTicks=cameraClock;fieldCameraShift.previousMilliseconds=shiftTimestamp;
     progress = p;
-    applyDoorCollision(p.room,0);
+    fieldDoor.interiorMask=p.interiorMask;
+    applyDoorCollision(p.room,fieldDoor.interiorMask);
     harborStory.reset(p.room==1 && p.originalStory && *p.originalStory==3);
     partner = {p.position.x-0.8f,p.position.z};
     groundHeight=p.elevation;partnerHeight=p.elevation;
@@ -1306,7 +1307,8 @@ void Game::tick(const Input& rawInput) {
     struct PresentationOnExit {
         Game& game;Vec2 previous;const Input& raw;
         ~PresentationOnExit(){
-            if(game.fieldDoor.active() || game.fieldDoor.interiorMask)game.saveRequested=false;
+            game.progress.interiorMask=uint8_t(game.fieldDoor.interiorMask);
+            if(game.fieldDoor.active())game.saveRequested=false;
             game.updateMarioPresentation();
             const auto& axes=game.inputProducer.channels[0].analog;
             const int mainX=raw.physicalSnapshot?axes.mainX:std::isfinite(raw.x)?int(std::clamp(raw.x,-1.f,1.f)*70.f):0;
