@@ -32,7 +32,7 @@ def matrix(node,index,parent=-1,joint=False):
     return node_matrix(node[index:index+24],joint,
                        node[parent+3:parent+6] if parent>=0 else (1,1,1))
 
-def geometry(model,animation=None,frame=0,evaluated=None,bindings=False,include_hidden=False):
+def geometry(model,animation=None,frame=0,evaluated=None,bindings=False,include_hidden=False,surfaces=False):
     raw=Path(model).read_bytes()
     offs={name:u(raw,offset) for name,offset in [('shape',0x14c),('call',0x150),('pos',0x154),('ipos',0x158),('clr',0x164),('iclr',0x168),('itex',0x16c),('tex',0x18c),('mtx',0x190),('base',0x194),('texture',0x198),('draw',0x19c),('vis',0x1a0),('node',0x1a4),('group',0x1a8),('anim',0x1ac)]}
     node=np.frombuffer(raw,dtype='>f4',count=u(raw,0x140),offset=offs['node']).astype(float)
@@ -87,17 +87,24 @@ def geometry(model,animation=None,frame=0,evaluated=None,bindings=False,include_
                     else:tplidx=-1
                     runstart,runcount=u(raw,d+56),u(raw,d+60)
                     ipstart,itstart=u(raw,d+64),u(raw,d+76)
+                    icstart=u(raw,d+72)
                     for run in range(runcount):
-                        c=offs['call']+(runstart+run)*8;first,count=u(raw,c),u(raw,c+4)
+                        c=offs['call']+(runstart+run)*8;first,count=u(raw,c),u(raw,c+4)&65535
                         verts=[]
                         for n in range(count):
-                            pi=u(raw,offs['ipos']+(first+ipstart+n)*4)+pfirst
+                            pi=(u(raw,offs['ipos']+(first+ipstart+n)*4)&65535)+pfirst
                             p=m@np.array([*pos[pi],1])
                             uv=np.array([0.,0.])
                             if texcount:
-                                ti=u(raw,offs['itex']+(first+itstart+n)*4)+tfirst
+                                ti=(u(raw,offs['itex']+(first+itstart+n)*4)&65535)+tfirst
                                 uv=np.array(struct.unpack_from('>ff',raw,offs['tex']+ti*8))
-                            verts.append((index,pi,uv,texid) if bindings else (p[:3],uv))
+                            if surfaces:
+                                if not bindings:raise ValueError('Surface metadata requires indexed geometry')
+                                ci=(u(raw,offs['iclr']+(first+icstart+n)*4)&65535)+cfirst
+                                rgba=tuple(raw[offs['clr']+ci*4:offs['clr']+ci*4+4])
+                                if len(rgba)!=4:raise ValueError('Truncated original vertex color')
+                                verts.append((index,pi,uv,texid,rgba,u(raw,s+160),u(raw,s+164)))
+                            else:verts.append((index,pi,uv,texid) if bindings else (p[:3],uv))
                         for n in range(1,count-1):triangles.append((tplidx,[verts[0],verts[n],verts[n+1]]))
             walk(child,m,index,depth+1)
         # Original sibling call retains the popped world matrix but supplies

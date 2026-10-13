@@ -183,6 +183,7 @@ void Renderer::fieldActors(const Game& g) {
     if(plaza.actorStart==UINT64_MAX || g.ticks<plaza.actorStart)plaza.actorStart=g.ticks;
     for(auto& gpu:plaza.actorModels) {
         gpu.start=count;
+        gpu.batches.clear();
         const auto& model=fieldActorAssets.models()[gpu.model];
         for(const auto& sourceActor:fieldActorAssets.actors()) {
             auto actor=sourceActor;
@@ -192,7 +193,7 @@ void Renderer::fieldActors(const Game& g) {
                 if(actor.storyLow!=8 || g.professorStory.actors[2].hidden)continue;
                 actor.position=g.professorStory.actors[2].position;actor.yaw=g.professorStory.actors[2].yaw;
                 actor.pose=g.professorStory.actors[2].moving?"W_1":g.professorStory.message.active() && g.professorStory.speaker==2?"T_1":"S_1";
-            } else if(!actor.visible(g.progress.room,g.progress.originalStory,g.fieldDoor.interiorMask))continue;
+            } else if(!actor.visible(g.progress.room,g.progress.originalStory,g.fieldDoor.interiorMask,g.fieldSystemFlags))continue;
             ++actorMetrics.visible;
             if(gpu.tick!=g.ticks || gpu.pose!=actor.pose) {
                 const auto* pose=gpu.animations.pose(actor.pose.c_str());
@@ -204,13 +205,36 @@ void Renderer::fieldActors(const Game& g) {
             // camera-relative turn smoothing are still an open native adapter.
             const bool right=actor.kind==0 && actor.yaw>0 && actor.yaw<180;
             const ActorRootTransform root({actor.position[0]*.01f,actor.position[1]*.01f,actor.position[2]*.01f},actor.kind==1?actor.yaw:right?180:0,right,actor.scale*.01f);
-            for(const auto& v:gpu.sample.vertices) {
-                const auto p=root.point(v);vertex(p[0],p[1],p[2],v.u,1-(1-v.v)*model.uvScale,0xffffffff);
+            const uint32_t first=uint32_t(count);
+            for(size_t i=0;i<gpu.sample.vertices.size();++i) {
+                const auto& v=gpu.sample.vertices[i];const auto p=root.point(v);
+                vertex(p[0],p[1],p[2],v.u,1-(1-v.v)*model.uvScale,0xffffffff,gpu.sample.colors.empty()?nullptr:&gpu.sample.colors[i]);
             }
+            if(gpu.sample.batches.empty())gpu.batches.push_back({first,uint32_t(count)-first,0,3});
+            else for(auto batch:gpu.sample.batches){batch.start+=first;gpu.batches.push_back(batch);}
             actorMetrics.vertices+=uint32_t(gpu.sample.vertices.size());
         }
         gpu.count=count-gpu.start;
     }
+}
+void Renderer::drawFieldActors(bool translucent) {
+    for(auto& model:plaza.actorModels)for(const auto& batch:model.batches) {
+        if((batch.pass==3)!=translucent || !batch.count || batch.cull==2)continue;
+        C3D_TexBind(0,&model.texture.texture);
+        const GPU_CULLMODE culls[]={GPU_CULL_FRONT_CCW,GPU_CULL_BACK_CCW,GPU_CULL_NONE,GPU_CULL_NONE};
+        C3D_CullFace(culls[batch.cull]);
+        C3D_DepthTest(true,batch.pass?GPU_GEQUAL:GPU_GREATER,translucent?FieldRGB:FieldRGBDepth);
+        if(batch.pass==2) {
+            C3D_AlphaTest(true,GPU_GEQUAL,128);
+            C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_ONE,GPU_ZERO,GPU_ONE,GPU_ZERO);
+        } else {
+            C3D_AlphaTest(!translucent,GPU_GREATER,8);
+            C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
+        }
+        C3D_DrawArrays(GPU_TRIANGLES,batch.start,batch.count);
+    }
+    C3D_CullFace(GPU_CULL_NONE);C3D_DepthTest(true,GPU_GREATER,FieldRGBDepth);C3D_AlphaTest(true,GPU_GREATER,8);
+    C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
 }
 void Renderer::updateCutaways(Room& room,const Game& g) {
     Point3 eye{g.fieldCameraFrame.eye.x,g.fieldCameraFrame.eye.y,g.fieldCameraFrame.eye.z};
@@ -327,9 +351,10 @@ void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* suppl
     C3D_CullFace(GPU_CULL_NONE);
     C3D_DepthTest(true,GPU_GREATER,battle?GPU_WRITE_ALL:FieldRGBDepth);
 }
-void Renderer::vertex(float x,float y,float z,float u,float v,uint32_t color) {
+void Renderer::vertex(float x,float y,float z,float u,float v,uint32_t color,const ActorColor* rgba) {
     if(count>=MaxVertices) return;
     vertices[count++]={x,y,z,u,v,(color&255)/255.f,((color>>8)&255)/255.f,((color>>16)&255)/255.f,((color>>24)&255)/255.f};
+    if(rgba){auto& vertex=vertices[count-1];vertex.r=(*rgba)[0];vertex.g=(*rgba)[1];vertex.b=(*rgba)[2];vertex.a=(*rgba)[3];}
 }
 void Renderer::quad(Vec2 a,Vec2 b,float y0,float y1,uint32_t c) {
     float u=496.f/512,v=1-240.f/256;
@@ -671,6 +696,7 @@ void Renderer::world(const Game& g) {
         }
     }
 
+    if(count)GSPGPU_FlushDataCache(vertices,size_t(count)*sizeof(Vertex));
     C3D_BindProgram(&program);
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);
     AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
@@ -693,7 +719,7 @@ void Renderer::world(const Game& g) {
     C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
     if(actorEnd>legacyCount){C3D_TexBind(0,g.professorStory.locked()?&professorMarioTexture.texture:&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
     if(partnerEnd>actorEnd){C3D_TexBind(0,&partnerTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,actorEnd,partnerEnd-actorEnd);}
-    if(!battle)for(auto& gpu:plaza.actorModels)if(gpu.count){C3D_TexBind(0,&gpu.texture.texture);C3D_DrawArrays(GPU_TRIANGLES,gpu.start,gpu.count);}
+    if(!battle)drawFieldActors(false);
     if(professorItemEnd>fieldActorEnd){C3D_TexBind(0,&professorMapTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,fieldActorEnd,professorItemEnd-fieldActorEnd);}
     if(harborEnd>professorItemEnd){C3D_TexBind(0,&harborTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,professorItemEnd,harborEnd-professorItemEnd);}
     if(polygonShadow || airShadowCount) {
@@ -728,7 +754,7 @@ void Renderer::world(const Game& g) {
         C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
     }
     // Original stage400000 opaques,500000 shadows,600000 translucent.
-    if(!battle)drawMap(false,g,true);
+    if(!battle){drawFieldActors(true);drawMap(false,g,true);}
 }
 void Renderer::text(const char* str,float x,float y,float scale,uint32_t color) {
     C2D_Text t;C2D_TextParse(&t,textBuffer,str);C2D_TextOptimize(&t);

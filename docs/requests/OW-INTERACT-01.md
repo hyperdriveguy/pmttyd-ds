@@ -163,3 +163,48 @@ contract before packaging the object. Constructor/display scalar10 and the
 hit-driven save request graph are delivered separately in
 [save-block source binding](../behavior/field/ROGUEPORT_SAVE_BLOCK_SOURCE_BINDING.md).
 This parent interaction/runtime request remains open.
+
+### 2026-10-13 — Save-block animated UV and material dependency recovery
+
+[Save-block UV/material binding](../behavior/display/SAVE_BLOCK_ANIMATED_UV_AND_MATERIAL_BINDING.md)
+corrects a crucial source distinction: although TPL defaults are clamp0/0,
+BOTH original model binding records override wrapping with3, selecting
+REPEAT1/1. S_1 loops start1/end119 (span118); binding1 retains118 cumulative
+float tx/ty deltas with NO fractional texture interpolation. Its source UV
+mapping is(u+tx,v−ty), followed by sampler wrapping. Native atlas conversion
+must preserve within-triangle repeats rather than clamp/fract only vertices.
+
+The same witness recovers visible untextured frame/star/layer draws,196 original
+RGBA entries, shape pass0/2/3 and cull-none requests, default material flags0
+and lighting flag2. Texture*RGBA is the recovered base-input adapter; original
+ambient/near-object lighting/fog, writer domains and exact GX sampling remain
+open. Fresh read-only ISO headers, clip records, rounded host replay and DOL
+entry/display inspections validate this dependency; three existing complete
+animation/material verifiers pass. No native or original-runtime claim; parent
+interaction/save/render goal remains open.
+
+### 2026-10-13 — Original save-block head-contact and hit lifecycle
+
+[Save-block head/hit contract](../behavior/field/SAVE_BLOCK_HEAD_CONTACT_AND_HIT_LIFECYCLE.md)
+recovers the original dynamic12-triangle box, bbox-derived XYZ dimensions,
+source strip winding and HOBJ_mobj_save identity. Original new-head-name
+comparison publishes objectflag8 through flag0x400000; same held contact does
+not retrigger. System-level/motion31/32/disabled-object gates precede callback.
+A_1 is nonloop0..15; completion reads previous pose+0x84 ratio>=1 because
+callback precedes animation Main. Complete0..4 optional/system-event stages,
+priority30/type26 object userdata and nested Mario key counter are recorded.
+Original common card/event flow remains open. Fresh read-only DOL/model/table
+inspections validate this scoped delivery; no native/runtime claim.
+
+### 2026-10-13 — Common save child/choices and source dispatch order
+
+[Common save event/choices](../behavior/field/SAVE_BLOCK_COMMON_SAVE_EVENT_AND_CHOICES.md)
+recovers all197 evt_memcard_save commands, normal/first-save/ending mode gates,
+original28 US keyed payload identities, cancellation, status-specific format/
+create/IPL branches, retry and return. Corrected operand ownership is GSF233/
+236,GSW0/4,LF10/11,LW0/10; LF10 is an event-local flag rather than map storage.
+Fresh source Main calls event-manager before Mario, then map objects; head
+publication precedes object activation. Source collision template cullbyte1=1
+(one-sided) is added to the prior head contract. Original card backend, source
+flag persistence and native choice/error adapter remain open. Read-only stream/
+message/DOL recovery, with no original execution or native completion claim.

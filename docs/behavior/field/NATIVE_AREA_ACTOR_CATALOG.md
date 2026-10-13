@@ -23,7 +23,7 @@ these static records do not execute or replace their events.
 
 ## Local format and ownership
 
-PMNPC001 contains8-byte magic, uint32 model/actor counts, then model rows with
+PMNPC001/002 contain8-byte magic, uint32 model/actor counts, then model rows with
 32-byte asset stem and float UV scale. Actor rows are120 bytes: seven uint32
 words(key,room,model,interior required,interior forbidden,story gate,kind), two
 signed story bounds, five floats(originalXYZ,yaw,model scalar), and32-byte pose
@@ -31,7 +31,13 @@ name plus32-byte optional talk prefix. Kind0 is NPC, kind1 reserves map-object p
 endian on supported host/ARM targets. Keys are native FNV identifiers over
 room/source name; they are not REL pointers. The scalar is explicit because
 [original save blocks](ROGUEPORT_SAVE_BLOCK_SOURCE_BINDING.md) use10, while
-ordinary NPCs use2. No save-block record is packaged yet.
+ordinary NPCs use2. PMNPC002 adds a uint32 system-forbidden mask before the
+story bounds (124-byte rows). Gate2 excludes exactly one story value.
+The original plaza `mobj_save` uses scalar10, position `(185,60,-55)`,
+S_1, story!=341 and system mask0x20 admission. Its presentation uses
+[PMANIM4 surfaces](../display/NATIVE_ACTOR_SURFACE_PACK.md).
+The constructor gates are represented; dynamic system flag producers remain
+partial. Loading continues to accept PMNPC001.
 
 Loading rejects oversized counts, unsafe names, invalid model indices,
 nonfinite positions/yaw/scale, unsupported UV scale, contradictory gates,
@@ -72,7 +78,9 @@ Talk opens the exact source room/global resource and uses original playback;
 new actions and saves stay locked until closure while neutral field physics
 continues. Collision, NPC search, facing-to-Mario and wandering remain open.
 
-The original save-block S_1 has UVs outside0..1 and nonzero scrolling texture
-updates. The current ordinary-animation compiler correctly rejects that domain.
-Support original texture-transform/clamp behavior before packaging this object;
-do not silently clamp vertex UVs or discard its texture-key updates.
+The original save-block S_1 retains outside0..1 UVs, discrete scrolling updates,
+source binding repeat overrides, RGBA and pass2/3. Head collision, hit callback,
+save-choice dispatch and card persistence are not connected by this visual
+milestone. Their recovered contracts are
+[head lifecycle](SAVE_BLOCK_HEAD_CONTACT_AND_HIT_LIFECYCLE.md) and
+[common save graph](SAVE_BLOCK_COMMON_SAVE_EVENT_AND_CHOICES.md).

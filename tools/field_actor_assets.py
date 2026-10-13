@@ -16,6 +16,7 @@ from PIL import Image
 from iso_assets import DEFAULT_ISO, extract
 from character_mesh import compile_mesh
 from professor_assets import build as build_professor
+from map_object_assets import build as build_objects
 
 
 def tagged_npcs(text):
@@ -79,7 +80,8 @@ def build(iso):
         raise ValueError('Unsupported original stationary actor setup')
     chu_scale = compile_model(iso,'field-chu','c_tyusan',['CHU_S_1'])
     professor_scale = json.loads(Path('romfs/professor.json').read_text())['uv_scale']
-    models = [('field-chu',chu_scale),('professor',professor_scale)]
+    object_scale=build_objects(iso)
+    models = [('field-chu',chu_scale),('professor',professor_scale),('field-saveblock',object_scale)]
     # Source Frankly init: exact story8/10 branches; story9 hides his NPC.
     # Interior admission is the current same-map door visibility adapter.
     records = [dict(key=identifier('gor_02','チューさん３'),room=2,model=0,required=0,forbidden=0,low=0,high=55,
@@ -87,13 +89,15 @@ def build(iso):
                dict(key=identifier('gor_02','クリハカセ'),room=2,model=1,required=2,forbidden=0,low=8,high=8,
                     position=[-135,0,-240],yaw=90,pose='S_1',source='gor.rel:kurihakase_init@0x410c8'),
                dict(key=identifier('gor_02','クリハカセ'),room=2,model=1,required=0,forbidden=2,low=10,high=10,
-                    position=[-220,0,305],yaw=270,pose='S_1',source='gor.rel:kurihakase_init@0x410c8')]
-    data = bytearray(struct.pack('<8sII',b'PMNPC001',len(models),len(records)))
+                    position=[-220,0,305],yaw=270,pose='S_1',source='gor.rel:kurihakase_init@0x410c8'),
+               dict(key=identifier('gor_01','mobj_save'),room=0,model=2,required=0,forbidden=0,low=341,high=341,gate=2,kind=1,scale=10,system_forbidden=0x20,
+                    position=[185,60,-55],yaw=0,pose='S_1',source='gor.rel:gor_01_init_evt@0x3c514')]
+    data = bytearray(struct.pack('<8sII',b'PMNPC002',len(models),len(records)))
     for asset,scale in models:data += struct.pack('<32sf',fixed(asset),scale)
     for r in records:
         prefix='gor_02_031_' if r['model']==0 else ''
         r['talk_prefix']=prefix
-        data += struct.pack('<7I2i5f32s32s',r['key'],r['room'],r['model'],r['required'],r['forbidden'],1,r.get('kind',0),
+        data += struct.pack('<8I2i5f32s32s',r['key'],r['room'],r['model'],r['required'],r['forbidden'],r.get('gate',1),r.get('kind',0),r.get('system_forbidden',0),
                             r['low'],r['high'],*r['position'],r['yaw'],r.get('scale',2),fixed(r['pose']),fixed(prefix) if prefix else bytes(32))
     Path('romfs/field-actors.pmnpc').write_bytes(data)
     Path('romfs/field-actors.json').write_text(json.dumps(dict(models=models,actors=records,

@@ -70,3 +70,5 @@ romfs/*.pmshadow
 
 romfs/professor-fence.*
 local-assets/professor-fence/
+
+/romfs/field-saveblock.json

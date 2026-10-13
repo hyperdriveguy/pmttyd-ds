@@ -1,5 +1,27 @@
 # Original asset pipeline
 
+## 2026-10-13 — Original save-block surface conversion
+
+`tools/map_object_assets.py` extracts original `a/MOBJ_SaveBlock` and its
+header-selected `a/MOBJ_SaveBlock-` companion from the read-only US ISO into
+ignored `local-assets/map-objects/MOBJ_SaveBlock` and `MOBJ_SaveBlock.tpl`.
+Ignored `romfs/field-saveblock.pmanim`, `.t3x` and `.json` preserve original
+S_1/A_1, hierarchy, geometry, RGBA, pass/cull and texture transforms. The
+manifest records disc/path hashes and converter fingerprint. Source material
+binding override3 sets repeat on both axes despite clamp in the TPL header.
+Triangle subdivision preserves interpolation across wrap boundaries;124px
+texture cells use2px opposite-edge repeat gutters and RGBA8 Tex3DS conversion.
+A neutral white cell multiplies original untextured vertex colors; no generated
+replacement artwork is used. PMNPC002 records the original plaza placement,
+scalar10, story341 exclusion and constructor mask0x20. See
+[native surface format](behavior/display/NATIVE_ACTOR_SURFACE_PACK.md).
+
+Nintendo/Intelligent Systems original resources have no redistribution license.
+Extracted banks, atlases, compiled assets, fixtures and captures remain outside
+source history. Geometry/texture downscaling, native floating-point matrix
+arithmetic, lighting and global translucent ordering remain adaptations.
+This supersedes the earlier entry's deferred save-block conversion status.
+
 ## 2026-10-13 — Area NPC catalog and original east-side Mouser
 
 `tools/field_actor_assets.py` reads `m/gor_02/s` from the local read-only US ISO

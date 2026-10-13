@@ -429,4 +429,8 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 
 - [Native opening and file selection](story/NATIVE_OPENING_FLOW.md)
 
+- [Native actor surface pack](display/NATIVE_ACTOR_SURFACE_PACK.md) — original scrolling textures, RGBA and source pass/cull rendering.
+- [Save-block UV/material binding](display/SAVE_BLOCK_ANIMATED_UV_AND_MATERIAL_BINDING.md) — original texture overrides, matrix and draw passes.
+- [Save-block head/hit lifecycle](field/SAVE_BLOCK_HEAD_CONTACT_AND_HIT_LIFECYCLE.md) — source cube collision and hit state machine.
+- [Save-block common event](field/SAVE_BLOCK_COMMON_SAVE_EVENT_AND_CHOICES.md) — original choices, flags and card request graph.
 - [Native per-area actor catalog](field/NATIVE_AREA_ACTOR_CATALOG.md) — authored static-init coverage, residency, batching and remaining source bindings.

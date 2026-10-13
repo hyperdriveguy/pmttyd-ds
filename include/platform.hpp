@@ -52,6 +52,7 @@ private:
         uint64_t tick=UINT64_MAX;
         std::string pose;
         int start=0,count=0;
+        std::vector<ActorSurfaceBatch> batches;
     };
     struct Room {
         std::vector<MapBatch> batches;
@@ -104,6 +105,7 @@ private:
     bool loadMap(const char* name,Room& room);
     bool loadFieldActors(uint32_t roomId,Room& room);
     void fieldActors(const Game&);
+    void drawFieldActors(bool translucent);
     void freeRoom(Room& room);
     void drawMap(bool battle,const Game& game,bool translucent=false,Room* supplied=nullptr);
     void updateCutaways(Room& room,const Game& game);
@@ -122,7 +124,7 @@ private:
     void messageBorder(const MessageWindowPlan&,uint8_t alpha,int type=0);
     int marioAirShadow(const FieldShadowRecord&);
     void shadow(Vec2 p,float radius,float floor=0);
-    void vertex(float x,float y,float z,float u,float v,uint32_t color);
+    void vertex(float x,float y,float z,float u,float v,uint32_t color,const ActorColor* rgba=nullptr);
     void text(const char*,float x,float y,float scale,uint32_t color);
     void panel(float x,float y,float w,float h,uint32_t color);
     void button(const char*,float x,float y,float w,float h,bool active,bool disabled=false);

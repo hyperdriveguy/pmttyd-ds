@@ -39,7 +39,9 @@ bool FieldActorAssets::read(FILE* f) {
         return true;
     };
     std::array<char,8> magic{};uint32_t modelCount=0,actorCount=0;
-    if(!scalar(magic) || std::memcmp(magic.data(),"PMNPC001",8) || !scalar(modelCount) || !scalar(actorCount) ||
+    if(!scalar(magic))return false;
+    const bool version2=!std::memcmp(magic.data(),"PMNPC002",8);
+    if((!version2 && std::memcmp(magic.data(),"PMNPC001",8)) || !scalar(modelCount) || !scalar(actorCount) ||
        modelCount>64 || actorCount>1024 || (!modelCount && actorCount))return false;
     std::vector<FieldActorModel> models(modelCount);
     for(uint32_t i=0;i<modelCount;++i) {
@@ -51,17 +53,20 @@ bool FieldActorAssets::read(FILE* f) {
     for(uint32_t i=0;i<actorCount;++i) {
         auto& a=actors[i];
         if(!scalar(a.key) || !scalar(a.room) || !scalar(a.model) || !scalar(a.interiorRequired) || !scalar(a.interiorForbidden) ||
-           !scalar(a.storyGate) || !scalar(a.kind) || !scalar(a.storyLow) || !scalar(a.storyHigh) || !scalar(a.position) || !scalar(a.yaw) || !scalar(a.scale) || !string(a.pose) || !string(a.talkPrefix,true) ||
-           !a.key || a.room>65535 || a.model>=modelCount || (a.interiorRequired&a.interiorForbidden) || a.storyGate>1 ||
+           !scalar(a.storyGate) || !scalar(a.kind) || (version2 && !scalar(a.systemForbidden)) || !scalar(a.storyLow) || !scalar(a.storyHigh) || !scalar(a.position) || !scalar(a.yaw) || !scalar(a.scale) || !string(a.pose) || !string(a.talkPrefix,true) ||
+           !a.key || a.room>65535 || a.model>=modelCount || (a.interiorRequired&a.interiorForbidden) || a.storyGate>(version2?2u:1u) ||
            (a.storyGate?a.storyLow>a.storyHigh:a.storyLow!=0 || a.storyHigh!=0) || !std::isfinite(a.yaw) || a.kind>1 ||
            !std::isfinite(a.scale) || a.scale<=0 || a.scale>100)return false;
+        if(a.storyGate==2 && a.storyLow!=a.storyHigh)return false;
         if(!a.talkPrefix.empty() && (a.kind!=0 || a.talkPrefix.size()!=11 || a.talkPrefix.substr(0,4)!="gor_" ||
            a.talkPrefix[6]!='_' || a.talkPrefix.back()!='_'))return false;
         for(float v:a.position)if(!std::isfinite(v) || std::fabs(v)>100000)return false;
         for(uint32_t j=0;j<i;++j) {
             const auto& b=actors[j];if(a.key!=b.key || a.room!=b.room)continue;
             const bool distinctInterior=(a.interiorRequired&b.interiorForbidden) || (b.interiorRequired&a.interiorForbidden);
-            const bool distinctStory=a.storyGate && b.storyGate && (a.storyHigh<b.storyLow || b.storyHigh<a.storyLow);
+            const bool distinctStory=(a.storyGate==1 && b.storyGate==1 && (a.storyHigh<b.storyLow || b.storyHigh<a.storyLow)) ||
+                (a.storyGate==2 && b.storyGate==1 && b.storyLow==b.storyHigh && b.storyLow==a.storyLow) ||
+                (b.storyGate==2 && a.storyGate==1 && a.storyLow==a.storyHigh && a.storyLow==b.storyLow);
             if(!distinctInterior && !distinctStory)return false;
         }
     }

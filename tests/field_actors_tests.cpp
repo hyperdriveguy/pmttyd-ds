@@ -42,12 +42,22 @@ int main(int argc,char**) {
     {auto b=good;b.push_back(0);assert(!read(a,b));}
     {auto b=good;b.pop_back();assert(!read(a,b));}
     assert(!a.load("/missing-field-actor-catalog") && a.actors().size()==2);
+    {auto b=good;b[7]='2';
+        for(int i=1;i>=0;--i)b.insert(b.begin()+row+i*stride+28,4,0);
+        replace(b,row+20,2u);replace(b,row+32,341u);replace(b,row+36,341u);replace(b,row+28,0x20u);
+        assert(read(a,b));assert(a.actors()[0].visible(12,8,2,0) && !a.actors()[0].visible(12,341,2,0));
+        assert(!a.actors()[0].visible(12,8,2,0x20) && !a.actors()[0].visible(12,std::nullopt,2,0));
+        replace(b,row+36,342u);assert(!read(a,b));assert(a.actors()[0].storyHigh==341);
+    }
     if(argc>1) {
         assert(a.load("romfs/field-actors.pmnpc"));assert(a.actors().size()>=3 && a.models().size()>=2);
         assert(a.models()[0].asset=="field-chu" && a.models()[1].asset=="professor");
         const auto& chu=a.actors()[0];assert(chu.room==2 && chu.pose=="CHU_S_1");
         assert((chu.position==std::array<float,3>{150,0,-400}) && chu.yaw==270);
         assert(chu.visible(2,8,0) && chu.visible(2,55,2) && !chu.visible(2,56,0) && !chu.visible(2,std::nullopt,0));
+        const auto& saveBlock=a.actors()[3];assert(saveBlock.kind==1 && saveBlock.scale==10 && saveBlock.pose=="S_1");
+        assert((saveBlock.position==std::array<float,3>{185,60,-55}));
+        assert(saveBlock.visible(0,0,0) && saveBlock.visible(0,400,0) && !saveBlock.visible(0,341,0) && !saveBlock.visible(0,8,0,0x20));
         const auto scaled=ActorRootTransform({0,0,0},0,false,10.f*.01f).point({10,10,10,0,0});
         for(float v:scaled)assert(std::fabs(v-1.f)<.000001f);
         assert(loadCollision("romfs/gor_02.walls") && loadGround("romfs/gor_02.ground"));

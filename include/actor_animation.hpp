@@ -1,5 +1,6 @@
 #pragma once
 #include "actor_mesh.hpp"
+#include "actor_surface.hpp"
 #include <algorithm>
 #include <functional>
 #include <limits>
@@ -68,9 +69,11 @@ struct ActorVertexBinding {uint32_t group,position,texture;float u,v;};
 struct ActorTextureBinding {uint32_t initial;std::array<uint16_t,256> cells;};
 struct ActorSparseUpdate {uint32_t index;int8_t a,b,c;uint8_t padding;};
 struct ActorTextureUpdate {uint32_t index;uint8_t delta,padding[3];};
+struct ActorTextureShift {float s=0,t=0;};
 struct ActorAnimationKey {
     float time=0;std::vector<ActorSparseUpdate> positions,normals,nodes;std::vector<ActorTextureUpdate> textures;
     std::vector<ActorTextureUpdate> visibility; // Original byte deltas, full keys only.
+    std::vector<ActorTextureShift> shifts; // PMANIM4, paired with texture records.
 };
 struct ActorAnimationSample {
     std::vector<ActorVector> positions,normals;
@@ -78,6 +81,9 @@ struct ActorAnimationSample {
     std::vector<uint8_t> textures;
     std::vector<uint8_t> visibility;
     std::vector<ActorMeshVertex> vertices;
+    std::vector<ActorColor> colors;
+    std::vector<ActorSurfaceState> surfaces;
+    std::vector<ActorSurfaceBatch> batches;
     float selectedTime=0,fraction=0;size_t last=0,next=0;
     // Retained hierarchy workspace avoids per-draw allocations on ARM11.
     std::vector<ActorMatrix> world;
@@ -103,6 +109,9 @@ struct ActorAnimationPose {
     std::vector<ActorGroup> groups;std::vector<ActorVertexBinding> bindings;
     std::vector<ActorTextureBinding> textures;std::vector<ActorAnimationKey> keys;
     std::vector<uint8_t> visibility; // PMANIM3 bases; Group.visible becomes an index.
+    std::vector<ActorSurfaceState> surfaces; // PMANIM4 original texture matrices/wraps.
+    std::vector<ActorColor> colors; // One original RGBA per binding.
+    std::vector<ActorSurfaceTriangle> triangles;
     bool evaluate(float time,ActorAnimationSample& out) const {
         if(!std::isfinite(time) || keys.empty() || groups.empty())return false;
         const float length=end-start;
@@ -113,6 +122,7 @@ struct ActorAnimationPose {
         const float span=last==next?0:(next==0?end-keys[last].time:keys[next].time-keys[last].time);
         const float q=span==0?0:(selected-keys[last].time)/span;
         out.positions=positions;out.normals=normals;out.nodes=nodes;out.visibility=visibility;out.textures.resize(textures.size());
+        out.surfaces=surfaces;
         for(size_t i=0;i<textures.size();++i)out.textures[i]=uint8_t(textures[i].initial);
         for(size_t i=0;i<=last;++i) {
             for(const auto& r:keys[i].positions) {
@@ -123,6 +133,10 @@ struct ActorAnimationPose {
             }
             for(const auto& r:keys[i].nodes)out.nodes[r.index]+=r.a*.0625f;
             for(const auto& r:keys[i].textures)out.textures[r.index]=uint8_t(out.textures[r.index]+r.delta);
+            for(size_t j=0;j<keys[i].shifts.size();++j) {
+                auto& state=out.surfaces[keys[i].textures[j].index].transform;
+                state[0]+=keys[i].shifts[j].s;state[1]+=keys[i].shifts[j].t;
+            }
             for(const auto& r:keys[i].visibility)out.visibility[r.index]=uint8_t(out.visibility[r.index]+r.delta);
         }
         if(last<next) {
@@ -157,7 +171,28 @@ struct ActorAnimationPose {
             return self(self,g.sibling,incoming,index,admitted);
         };
         if(!walk(walk,int32_t(groups.size()-1),ActorMatrix{},-1,true))return false;
-        out.vertices.clear();out.vertices.reserve(bindings.size());
+        out.vertices.clear();out.vertices.reserve(bindings.size());out.colors.clear();out.batches.clear();
+        if(!surfaces.empty()) {
+            if(colors.size()!=bindings.size() || triangles.size()*3!=bindings.size())return false;
+            for(size_t index=0;index<bindings.size();index+=3) {
+                const auto& first=bindings[index];if(!seen[first.group])return false;if(!active[first.group])continue;
+                const uint16_t cell=textures[first.texture].cells[out.textures[first.texture]];if(cell>=64)return false;
+                std::array<ActorSurfaceVertex,3> triangle;
+                for(unsigned i=0;i<3;++i) {
+                    const auto& b=bindings[index+i];const auto p=world[b.group].point(out.positions[b.position]);
+                    const auto uv=actorTexturePoint(out.surfaces[b.texture].transform,b.u,b.v);
+                    triangle[i]={{p[0],p[1],p[2],uv[0],uv[1]},colors[index+i]};
+                }
+                const uint32_t start=uint32_t(out.vertices.size());
+                if(!appendActorSurface(triangle,out.surfaces[first.texture],cell,out.vertices,out.colors))return false;
+                const uint32_t count=uint32_t(out.vertices.size())-start;
+                if(!count)continue;
+                const auto& draw=triangles[index/3];
+                if(!out.batches.empty() && out.batches.back().pass==draw.pass && out.batches.back().cull==draw.cull)out.batches.back().count+=count;
+                else out.batches.push_back({start,count,draw.pass,draw.cull});
+            }
+            return true;
+        }
         for(const auto& b:bindings) {
             if(!seen[b.group])return false;
             if(!active[b.group])continue;
@@ -178,7 +213,8 @@ public:
         auto vector=[&](auto& values,uint32_t count){values.resize(count);return count==0 || std::fread(values.data(),sizeof(values[0]),count,file)==count;};
         std::array<char,8> magic{};uint32_t count=0;
         if(!scalar(magic))return false;
-        const bool version3=std::memcmp(magic.data(),"PMANIM3",8)==0;
+        const bool version4=std::memcmp(magic.data(),"PMANIM4",8)==0;
+        const bool version3=version4 || std::memcmp(magic.data(),"PMANIM3",8)==0;
         const bool version2=version3 || std::memcmp(magic.data(),"PMANIM2",8)==0;
         if((!version2 && std::memcmp(magic.data(),"PMANIM1",8)) || !scalar(count) || !count || count>64)return false;
         std::vector<ActorAnimationPose> pending;
@@ -187,19 +223,35 @@ public:
             if(!scalar(name) || !name[0] || !std::memchr(name.data(),0,name.size()) || !scalar(p.loop) ||
                !scalar(p.start) || !scalar(p.end) || !scalar(sizes) || (version2 && !scalar(normalCount)) || (version3 && !scalar(visibilityCount)))return false;
             p.name=name.data();for(const auto& prior:pending)if(prior.name==p.name)return false;
-            if(p.loop>1 || !std::isfinite(p.start) || !std::isfinite(p.end) || p.start!=0 || p.end<p.start ||
+            if(p.loop>1 || !std::isfinite(p.start) || !std::isfinite(p.end) || (!version4 && p.start!=0) || p.end<p.start ||
                !sizes[0] || sizes[0]>8192 || !sizes[1] || sizes[1]>8192 || sizes[1]%24 ||
                !sizes[2] || sizes[2]>128 || !sizes[3] || sizes[3]>8192 || sizes[3]%3 ||
                !sizes[4] || sizes[4]>256 || !sizes[5] || sizes[5]>1024 || normalCount>8192 || visibilityCount>8192 || (version3 && !visibilityCount))return false;
             if(!vector(p.positions,sizes[0]) || !vector(p.normals,normalCount) || !vector(p.nodes,sizes[1]) || !vector(p.visibility,visibilityCount) || !vector(p.groups,sizes[2]) ||
                !vector(p.bindings,sizes[3]) || !vector(p.textures,sizes[4]))return false;
+            if(version4) {
+                if(!vector(p.surfaces,sizes[4]))return false;
+                p.colors.resize(sizes[3]);
+                for(auto& color:p.colors) {
+                    std::array<uint8_t,4> rgba{};if(!scalar(rgba))return false;
+                    for(unsigned i=0;i<4;++i)color[i]=float(rgba[i])/255;
+                }
+                if(!vector(p.triangles,sizes[3]/3))return false;
+                for(const auto& state:p.surfaces) {
+                    if(state.wrapS>2 || state.wrapT>2)return false;
+                    for(float v:state.transform)if(!std::isfinite(v))return false;
+                }
+                for(const auto& t:p.triangles)if((t.pass!=2 && t.pass!=3) || t.cull>3)return false;
+                for(size_t i=0;i<p.bindings.size();i+=3)for(unsigned j=1;j<3;++j)
+                    if(p.bindings[i].group!=p.bindings[i+j].group || p.bindings[i].texture!=p.bindings[i+j].texture)return false;
+            }
             for(const auto& v:p.positions)for(float x:v)if(!std::isfinite(x))return false;
             for(const auto& v:p.normals)for(float x:v)if(!std::isfinite(x))return false;
             for(float x:p.nodes)if(!std::isfinite(x))return false;
             for(const auto& g:p.groups)if(g.sibling<-1 || g.child<-1 || g.sibling>=int32_t(sizes[2]) ||
                 g.child>=int32_t(sizes[2]) || g.node>sizes[1]-24 || g.node%24 || g.joint>1 || (version3?g.visible>=visibilityCount:g.visible>1))return false;
             for(const auto& b:p.bindings)if(b.group>=sizes[2] || b.position>=sizes[0] || b.texture>=sizes[4] ||
-                !std::isfinite(b.u) || !std::isfinite(b.v) || b.u<0 || b.u>1 || b.v<0 || b.v>1)return false;
+                !std::isfinite(b.u) || !std::isfinite(b.v) || (version4?(std::fabs(b.u)>128 || std::fabs(b.v)>128):b.u<0 || b.u>1 || b.v<0 || b.v>1))return false;
             for(const auto& t:p.textures){if(t.initial>255)return false;for(auto cell:t.cells)if(cell>=64 && cell!=0xffff)return false;}
             uint32_t total=0;
             for(uint32_t key=0;key<sizes[5];++key) {
@@ -212,6 +264,8 @@ public:
                 total+=visibilityRecords;
                 for(auto n:records){if(n>16384 || total>1000000-n)return false;total+=n;}
                 if(!vector(k.positions,records[0]) || !vector(k.normals,normalRecords) || !vector(k.nodes,records[1]) || !vector(k.textures,records[2]) || !vector(k.visibility,visibilityRecords))return false;
+                if(version4 && !vector(k.shifts,records[2]))return false;
+                for(const auto& r:k.shifts)if(!std::isfinite(r.s) || !std::isfinite(r.t))return false;
                 for(const auto& r:k.positions)if(r.index>=sizes[0])return false;
                 for(const auto& r:k.normals)if(r.index>=normalCount)return false;
                 for(const auto& r:k.nodes)if(r.index>=sizes[1] || (r.c>-89 && r.c<89 && (r.b<-89 || r.b>=89)))return false;

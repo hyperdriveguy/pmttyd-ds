@@ -40,6 +40,15 @@ UNIT_STATUS_CLEAR_AND_POUCH_IMPORT rows),so the native save can be replaced by
 original persistence semantics. No lock reserved;no original save trace
 claimed.
 
+### 2026-10-13 — Save-block activation/lifecycle prerequisite
+
+[Source head-contact and hit lifecycle](../behavior/field/SAVE_BLOCK_HEAD_CONTACT_AND_HIT_LIFECYCLE.md)
+delivers original dynamic hit-box geometry, new-head-contact flag8 admission,
+nonloop A_1 query/publication order and optional/system-event completion gates.
+This closes a local activation dependency only. Original common save child,
+cardMain format/error/timing and persistent switch namespaces remain OPEN.
+Read-only DOL/model/table inspections; no native or original-runtime claim.
+
 ### 2026-10-13 — Switch bank extents, encoding and concrete Tattle namespace
 
 [Corrected swdrv contract](../behavior/memory/SW_SET.md) answers bank counts and
@@ -58,3 +67,13 @@ arithmetic recheck8951 cases covers all8192 global/512 local bits, Tattle range
 and boundary values. Inspection ELF/listings stay `/tmp`; no native code,
 original save trace or asset export. Complete cardMain/on-disk namespaces,
 checksum/errors/backup/timing and bank/story writer/runtime mapping remain OPEN.
+
+### 2026-10-13 — Common save UI/card request dependency
+
+[Common save event/choices](../behavior/field/SAVE_BLOCK_COMMON_SAVE_EVENT_AND_CHOICES.md)
+records the complete local197-command UI/card request graph and its blocking
+write/header/code leaves. Source saveblock normalmode0 supports original
+Yes/No/B-cancel without a write on refusal, with GSF233/236 already updated;
+success is gated by completed source code0. A native PM2D backend must remain
+an explicit adapter. Original card record/slots/format/error mapping and global
+persistent save semantics remain OPEN. Static read-only evidence only.
