@@ -215,6 +215,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Five known bodies/28 candidate constructions/seven calls pinned; no local
   count/loop-size/nonzero callback provider supplied. Wider indirect/REL/alias
   providers and actual callback/transfer/runtime remain open.
+- [x] Complete inpInit/inpResetMidiCtrl/inpResetChannelDefaults/last-note setter —
+  [controller init/reset/defaults](../behavior/audio/MUSYX_INPUT_INITIALIZATION_CONTROLLER_RESET_AND_DEFAULTS.md).
+  Global/per-voice writes, exact cold/warm tables, preserve255 and packed
+  channel/default/last-note order pinned; callers/consumers/other writers/
+  bounds/alias and original controller/audio evidence remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1355,3 +1360,21 @@ seven calls passes. Generic verifier checks bytes/targets, not independent
 replay of the scan's completeness. Scanner/generator stay `/tmp`; no native
 change/original execution/body/asset export. Actual nonzero configuration/
 callback implementation/transfer/result/providers and original playback remain OPEN.
+
+### 2026-10-13 — Controller initialization, reset tables and channel defaults
+
+[Four complete local bodies and two default tables](../behavior/audio/MUSYX_INPUT_INITIALIZATION_CONTROLLER_RESET_AND_DEFAULTS.md)
+close global paired aux dirty-byte and full-word255 dirty flags,58 exact per-voice
+stores, common low/high frequency-default writes, cold copy versus warm255
+preservation, final last-note255 request and packed9-byte channel-default stores.
+Warm reset writes ten table positions; global inpInit does not clear controller
+value/last-note/channel-default arrays. No blanket reset, standard-MIDI default
+substitution, bounds repair, padded record layout or inferred filter response.
+
+Validation: read-only manifest nine spans (four complete/three linked/two
+default tables),223 anchors/four calls passes.58 decoded stores/64 aux/128 dirty
+writes/all134 bytes per table/six destination/five preserve vectors checked as
+deductions. Fresh full ELFs/listings stay `/tmp`; no native change/original
+execution/body/binary asset export. Actual callers/inputs, matrix/dirty/MIDI/
+last-note/filter consumers/other writers, memcpy/bounds/alignment/alias/IRQ/
+concurrency/reinit and original reset/controller/audio traces remain OPEN.

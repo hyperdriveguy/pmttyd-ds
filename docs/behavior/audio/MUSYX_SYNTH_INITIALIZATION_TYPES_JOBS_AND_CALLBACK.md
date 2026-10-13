@@ -175,3 +175,10 @@ hardware equivalence remain OPEN.
 now closes the installed handler and its virtual start/end, hardware-ID and
 macro-end local bodies. Callback implementations/table providers, linked
 hardware/ID services and original message/scheduling/audio traces remain open.
+
+### Controller initialization follow-up
+
+[Complete inpInit/controller reset/defaults](MUSYX_INPUT_INITIALIZATION_CONTROLLER_RESET_AND_DEFAULTS.md)
+now pins the exact global child, per-voice branch and common frequency-default
+writes, plus cold/warm/last-note/channel-default services. Actual callers/
+controller/filter/dirty consumers and original controller/audio traces remain open.

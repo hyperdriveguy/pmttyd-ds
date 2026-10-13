@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero controller initialization/defaults
+
+Completed four controller initialization/reset/default/last-note contracts and
+two default-table interpretations for EVT-01; checked the corresponding inbox
+portion. [Controller init/reset/defaults](behavior/audio/MUSYX_INPUT_INITIALIZATION_CONTROLLER_RESET_AND_DEFAULTS.md)
+pins58 per-voice stores, global aux-byte/dirty-word resets, common frequency
+defaults, cold copy/warm255 preservation, last-note request and packed9-byte
+channel defaults. Global inpInit does not reset all controller values; warm
+reset stores only ten positions. No blanket clear, bounds repair, padded host
+record or original filter/controller timing inferred.
+
+Validation: read-only ISO manifest passed nine spans (four complete/three linked/
+two tables),223 anchors/four calls.58 decoded stores/64 aux/128 dirty writes,
+all134 classified bytes per table/six destination/five preserve vectors checked
+as deductions. Documentation link audit passed789 Markdown files/zero broken
+links; `git diff --check` passed. Documentation/metadata only; no `make test`/
+`make all` rerun. Original full inspection ELFs/listings stay `/tmp`; no bodies/
+binary assets committed. Concurrent native edits excluded from the commit.
+
+Next: priority-zero EVT-01 actual reset/init callers and controller/matrix/aux/
+dirty/last-note/filter consumers/other writers, valid bounds/alignment/alias/
+IRQ/reinit/concurrency domains and original controller/audio traces. Full
+scheduler/native/runtime binding, lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero virtual table provider/DOL census
 
 Completed a scoped configuration-writer and DOL entry census for EVT-01 and
