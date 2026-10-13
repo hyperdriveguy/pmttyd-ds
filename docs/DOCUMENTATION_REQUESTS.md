@@ -3466,3 +3466,65 @@ result;projected setter copies32 bytes in pairs then publishes holder pointer.
 DIRECT DOL sites and no actual usage claim. make test87 CTest/90 Python and
 make all pass. Only ID1 lock released;loader/source/caller/GX/numeric/lifetime/
 original visuals and complete-game requirements remain open.
+
+Native implementation source audit / documentation request (2026-10-12),JUMP-01:
+reviewed the recent native commits that shipped without leaving requests
+(b79bbe2 packed Mario Jump services,81c143d water/void/pipe recovery poses,
+778add7 idle/low-HP pose scheduling,e1257d8/357a656 field shadows). Local
+function bodies are recovered;the asks below target original provenance the
+port still lacks. Commit79bbe2 binds packedMarioJumpPositionEvent801093a8 to
+native event/unit/memory with explicit single/double/trig providers;mode1
+eligibility falls back to packedACPossibility(unit+0xc,kind223,statuses1/2/9/27,
+unit+0x138 mask1),which BATTLE_DAMAGE_ORCHESTRATION already covers,and the
+motion/numerics/sound-mode local bodies are closed in
+BATTLE_MARIO_JUMP_MOTION/NUMERICS/BATTLE_UNIT_SOUND_MODE. Still absent and
+requested:1) the three-word block the packed body loads at0x802ee470/474/478
+immediately before its SFX request — original contents/roles and whether it is
+the standard attack-sound key row supplied to LoadSeMode-type2 sources;
+2) the concrete original jump sound-key domain stored at unit+18c by the
+sound-mode sources,and the psndSFXOn_3D invocation record for this callback:
+point-in-time (same setup invocation as the phase switch or later),the copied
+baseline position pointer (unit+154-15c here),return-value handling and whether
+any landing/terminal cue follows;3) identity and FPSCR entry state of the Gekko
+PS-family sin/cos called by801093a8 — MJP-NUM-04 already requests differential
+bits;the symbol/address and rounding mode are the remaining doc ask. The native
+port fires play once at setup with baseline154-15c and performs the global reads
+without writes;no original audio output/cadence claim exists. No lock reserved;
+existing spatial/psndSFX/audio requests stay open. This entry adds no native/
+test/CMake change (docs-only;latest recorded host state87 CTest/90 Python and
+make all passing).
+
+Native implementation source audit / documentation request (2026-10-12),
+field/AC-03:source/water_recovery.cpp implements ordinary-Mario water/void
+return-fall (mot_damage water motion31 and mot_bottomless motion33) as portable
+fixed-tick motion with stages0/1/10/11/15/20/33 and authored parameters:sink
+velocity-0.06 to root-1.6,40-tick rise hold with+0.003,two-tick sway then lift
+arc+0.2 decaying by-0.01 to minimum0.1 until root+5,travel step distance/0.08
+at stage15,drop-back fallVelocity-0.001/fallAcceleration-0.002/fallJerk+0.00024/
+fallJerkRate-0.00004,and followDelta=(returnY-admittedRootY)/travelTicks;the HP
+penalty is applied on landing. include/water_recovery.hpp marks these counters
+as source-derived,not Dolphin observations. Pose ownership/timings are recovered
+in OVERWORLD_MARIO_RECOVERY_POSES and bottomless detection/return in
+MECHANICS.md(lines536-545:threshold-2000,+37 Y,300-unit probe,return index);the
+numeric stage contract itself is NOT. Please recover original mot_damage
+water-motion31 numeric stages(sink/rise/arc/travel/return counters,velocities,
+accelerations,jerk rates,reach heights,HP-penalty tick and phase transitions)
+and mot_bottomless motion33/34 placement/fall parameters so the portable
+constants replace source-derived values before any recovery-fidelity claim.
+No lock reserved;no original trace or game/hardware claim exists today.
+
+Native implementation source audit / documentation request (2026-10-12),
+field/AC-03:OVERWORLD_MARIO_RECOVERY_POSES documents water/void/pipe POSE
+ownership and leaves original pose-table owners open for domains4..9(NPC/
+switch/stand/small jump),14 talk,15 item,16..17 hip,18..20 hammer/jabara,
+21..28 paper/partner transformations,30 grasp,32 spike damage,34 reset,
+35 shadow,36 party use and37..40 Bowser/dummy,next to the already-closed
+ordinary0/1/2/3/10 entries. The native game.cpp recovery scheduler selects
+ordinary poses only and needs the original marioChgPose/marioChgEvtPose table
+slice for those domains(pose names,entry conditions,ordering). Separately,the
+same doc requires completing original pipe recovery paper(p_dokan_x) asset
+decoding/link deformation,exit/unlink,transform and movement;native bindings
+currently use M_Z_1 as a static stand-in and must not be treated as the paper
+geometry. Please recover the pose-table slice and the pipe paper lifecycle;
+leave further field presentation/sound/source/format claims unproven. No lock
+reserved.
