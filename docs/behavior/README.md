@@ -49,6 +49,8 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [MusyX ARAM sample store](audio/MUSYX_ARAM_SAMPLE_STORE_AND_CURSOR_REWIND.md) | Complete direct/chunk upload, capacity/32-byte alignment, cursor-only removal, callback configuration and address leaves | Initialization/cache/stream/source/caller order and SDK/DMA/original playback |
+| [MusyX ARAM queue completion](audio/MUSYX_ARAM_QUEUE_COMPLETION_AND_SAMPLE_REQUESTS.md) | Complete callback and low-queue sync; sample producer post/count/index ordering | Other producers/index/count/concurrency invariants and SDK/hardware/runtime |
 | [MusyX sample-directory lifetime](audio/MUSYX_SAMPLE_DIRECTORY_REGISTRATION_AND_REFERENCES.md) | Four complete registration/acquire/release/removal bodies; mutable refs/addresses and preferred-directory precondition | Actual directory/sample-bank/cache/voice providers, valid domains and original runtime |
 | [MusyX sample hardware bridge](audio/MUSYX_SAMPLE_STORAGE_HARDWARE_BRIDGE.md) | Four complete save/remove/identity/sync bodies; encoded byte-count proof and1247 original records | ARAM/cache/DMA/allocation/decoder services and original playback |
 | [MusyX group lifecycle/resource lists](audio/MUSYX_GROUP_PUSH_POP_AND_RESOURCE_LISTS.md) | Complete push/pop/InsertData stack and ordered typed/ranged requests;12 original groups/2998 IDs and Hammer dependencies | Child sample/pool/stop/memory/voice/source/runtime residency |

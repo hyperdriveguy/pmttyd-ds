@@ -47,6 +47,12 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [hardware bridge](../behavior/audio/MUSYX_SAMPLE_STORAGE_HARDWARE_BRIDGE.md).
   Mutable refs/addresses, preferred-ID precondition and encoded size rules pinned;
   actual ARAM/cache/voice/loading/source/runtime ownership stays open.
+- [x] Complete aramStoreData/RemoveData/SetUploadCallback, address/size
+  leaves, aramQueueCallback and aramSyncTransferQueue local bodies —
+  [store/cursor/configuration](../behavior/audio/MUSYX_ARAM_SAMPLE_STORE_AND_CURSOR_REWIND.md),
+  [queue completion](../behavior/audio/MUSYX_ARAM_QUEUE_COMPLETION_AND_SAMPLE_REQUESTS.md).
+  Direct/chunk upload and low-queue order pinned; init/other producers/SDK/DMA/
+  source/caller removal order/concurrency/original execution remain open.
 - [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -606,3 +612,23 @@ Hammer775/776 transfer sizes3016/872 bytes.54 derived format/count vectors and
 whole-domain arithmetic proof do not execute original code. Fresh inspection
 ELFs/listings stay `/tmp`; no native code or original asset export. ARAM/cache/
 DMA/voice/macro/loading/valid-source domains and original traces remain OPEN.
+
+### 2026-10-13 — ARAM sample store, cursor rewind and queue completion
+
+[Six complete store/config/address bodies](../behavior/audio/MUSYX_ARAM_SAMPLE_STORE_AND_CURSOR_REWIND.md)
+close wrapping32-byte size alignment, cache-dependent capacity limits, retained
+return versus fresh destination/cursor, direct and callback chunk uploads,
+max-based chunk configuration and raw address/INPUT-byte leaves. Removal ignores
+the address and only rewinds cache.word8; it does not free/erase/cancel/stop.
+[Two complete queue bodies](../behavior/audio/MUSYX_ARAM_QUEUE_COMPLETION_AND_SAMPLE_REQUESTS.md)
+close selected-queue full-slot callback scan/unconditional count decrement and
+low-only busy synchronization. Source sample posts precede count/index updates;
+invalid pointer/count and callback/chunk/index domains remain prerequisites.
+
+Validation: read-only manifest16 spans (8 complete/8 linked SDK/helper),207
+anchors and16 resolved direct calls passes generic verifier. Derived checks:
+8 alignment/rewind boundary vectors including wrap, all256 possible byte index
+updates,5 completion-count boundaries. These arithmetic cases are not original
+execution. Fresh full ELFs/listings remain `/tmp/inbox-aram*`; no native change or
+original bank/code-body export. Init/stream/other queue producers/cache providers,
+SDK flush/interrupt/ARQ/DMA and original voice/audio traces remain OPEN.

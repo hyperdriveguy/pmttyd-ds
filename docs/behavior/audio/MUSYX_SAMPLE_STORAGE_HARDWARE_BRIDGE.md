@@ -74,3 +74,5 @@ Remaining: aramStoreData/RemoveData/Sync queue, allocation/cache/alignment/DMA,
 metadata/sample-bank pointers and actual voice/sample lifetime/decoding/output.
 These bridge bodies and size rules are answered; original execution, hardware
 and complete audio-chain equivalence remain OPEN.
+
+[Complete local ARAM store/remove/configuration/address services](MUSYX_ARAM_SAMPLE_STORE_AND_CURSOR_REWIND.md) and [queue completion/synchronization](MUSYX_ARAM_QUEUE_COMPLETION_AND_SAMPLE_REQUESTS.md) now answer those exact child bodies. Removal rewinds the cache cursor; sync busy-waits only the low queue. Initialization/source/SDK/DMA/voice and original runtime remain open.

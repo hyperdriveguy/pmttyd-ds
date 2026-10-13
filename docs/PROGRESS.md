@@ -4,6 +4,31 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 ARAM sample store and queue completion
+
+Delivered [sample store/cursor/configuration](behavior/audio/MUSYX_ARAM_SAMPLE_STORE_AND_CURSOR_REWIND.md)
+and [queue completion/synchronization](behavior/audio/MUSYX_ARAM_QUEUE_COMPLETION_AND_SAMPLE_REQUESTS.md).
+Eight complete local bodies pin32-byte wrapping alignment/capacity, direct versus
+callback chunks, retained return/fresh destination/cursor, post-before-count/index,
+full callback scan and low-only busy sync. Removal only rewinds caller cursor,
+ignoring the supplied address. No timeout, invalid-completion guard or fabricated
+free/voice-stop semantics. Marked local EVT-01 portions complete; parent OPEN.
+
+Validation: generic read-only verifier16 spans (8 complete/8 linked SDK/helpers),
+207 instruction anchors and16 independently resolved direct calls passes.
+Derived8 alignment/rewind vectors,256 byte-index arithmetic cases and5 callback
+count boundaries checked; these are static arithmetic evidence. Fresh complete
+inspection ELFs/listings remain `/tmp/inbox-aram*`. Link audit734 Markdown files/
+0 broken; whitespace checks pass. Documentation/source metadata only: no make
+rerun, native changes or original code-body/bank export. Isolated commit index
+excludes unrelated staged/worktree native work.
+
+Next/limits: aramInit/stream/cache producers and other queue upload paths, actual
+callback providers/removal order/queue concurrency, SDK flush/interrupt/ARQ/DMA,
+voice/macro/MIDI/resource ownership and original audio/runtime traces. Continue
+priority0 initialization/source and live SFX/calc3D, then priority1 damage graph.
+No hardware/original playback/full-game equivalence claim.
+
 ## 2026-10-13 — Priority0 sample directory lifetime and storage bridge
 
 Delivered [directory/reference lifetime](behavior/audio/MUSYX_SAMPLE_DIRECTORY_REGISTRATION_AND_REFERENCES.md)
