@@ -63,7 +63,7 @@ int32_t packedMarioJumpPositionEvent(EventEntry& e,int32_t first,const BattlePac
             assert(s.subtract && s.divide && s.add);float height=op.round(s.subtract(op.user,double(real(m,unit+0x180)),twenty));height=op.round(s.divide(op.user,double(height),six));height=op.round(s.add(op.user,double(height),fortySeven));store(m,unit+0x184,height);
             if(mode==2 || mode==4) {const float h=real(m,unit+0x184);const double multiplier=wide(m,mode==2?0x802ee708:0x802ee720);assert(s.multiply);store(m,unit+0x184,op.round(s.multiply(op.user,double(h),multiplier)));}
             op.advance(unit,mode,true);loadPackedUnitSoundMode(2,sound,unit+0x1c4,unit+0x18c,m);const uint32_t key=word(m,unit+0x18c);
-            if(key) {for(unsigned i=0;i<3;++i)word(m,0x802ee470+4*i);const auto baseline=vector(m,unit+0x154);assert(s.play);s.play(s.user,key,baseline);}
+            if(key) {const auto baseline=vector(m,unit+0x154);assert(s.play);s.play(s.user,key,baseline);} // original also loads 0x802ee470/474/478 (r30=0x802ee458 +24/28/32) into a scratch block, then overwrites it with the unit floats before the call: dead loads, not modeled.
         }
     }
     const int32_t phase=e.initialized<128?e.initialized:int32_t(e.initialized)-256;
