@@ -7,6 +7,68 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+
+## 2026-10-13 — Harbor partner fall-through and original follow distances
+
+Reproduced the user's harbor ledge complaint on original converted geometry:
+the old center/crossing landing query could reject valid support and fall below
+the dock until recovery copied Mario's root. Read-only original contracts prove
+five-probe support BEFORE fall integration, current-velocity drop admission,
+normal homing floor-loss acceleration-1 versus stay-1.5, velocity cap-16 and
+horizontal damping0.2 followed by1.3*retained speed/direction. Native support now
+uses Goombella's original width26/height24, ordinary partner attribute filtering,
+Q1000 pointY and highest admitted support. Wall occupancy no longer rejects
+valid landing; only Mario's jump flag marks history jumps.
+
+Corrected an initial distance interpretation during validation:45/50 are speed
+thresholds, not a fixed trailing gap. Original q0 activity normally remains
+nonzero through dash-base2.25 fallback even at idle. Replaced fixed0.5 trail
+spacing with width/speed history reach13+speed, separate wake-up50/idle100,
+source speed selection/thresholded bonus and ordinary overlap box/corrections.
+Restore now uses a0.3 leftward native seed based on general placement's30-unit
+magnitude instead of the provisional0.8; full facing/search placement is unbound.
+Evidence/contract commit `41b0e6d`, implementation/fixtures `9672cd6`; see
+[ground-follow distances](behavior/partner/FIELD_PARTNER_GROUND_FOLLOW_DISTANCES.md)
+and [native binding scope](behavior/partner/FIELD_PARTNER_NATIVE_FOLLOW.md).
+
+Validation: final `make test` passes **95 CTest / 96 Python tests**, log
+`/tmp/partner-fall-final-test.log`; final `make all` builds3DSX without warnings,
+`/tmp/partner-fall-final-build.log`. Actual harbor regression uses two deck
+positions,90 idle ticks, a verified admitted Mario jump and300 following ticks;
+partner minimumY>=0.149, zero resets and grounded0.15 arrival. Portable tests
+cover support-before-gravity, side-probe landing independent of wall occupancy,
+retained speed damping, history reach, overlap, dense jump marks and blockages.
+The old idle catch-up test's100-tick dash assumption was changed to260 ticks
+for the original1.5-unit idle bonus cap. `core_tests --original` passes18,315
+indexed/full-scan probes and all original-room scenarios, log
+`/tmp/partner-fall-original-final.log`. Extended homing verifier passes64
+instructions/12 constants; ground, direction, fall, jump, lifetime and front-wall
+verifiers pass against the read-only ISO.695 document links and diff check pass.
+One intermediate Python visibility test failed during concurrent map changes;
+the final full run passes after that concurrent fix. Door/save/message work was
+preserved and excluded from the staged partner hunks.
+
+Isolated Azahar final capture passes with15-second startup, original converted
+harbor geometry and `tests/azahar_partner_harbor_fall.py`, under ignored
+`artifacts/azahar-partner-harbor-final/`; log `/tmp/partner-fall-final-smoke.log`.
+The input script samples the short fall window and then reveals Goombella by
+moving Mario sideways. Inspected `partner-dock-side-view.png` confirms both
+characters grounded on the dock. Earlier straight-line pictures hid Goombella
+behind Mario; temporary isolated tracing proved minimumY0.15 and zero resets.
+All temporary instrumentation was removed before the final build. A reproducible
+native fixture generator is `tools/make_partner_harbor_fixture.py`; no original
+save/ISO or compiled asset is committed. All profiles/saves are isolated; Xvfb
+needed display-socket escalation and the user's emulator state was untouched.
+
+Limitations/next: this fixes the reproduced dry harbor descent using source
+physics and distance rules, not full instruction-exact party locomotion. Native
+vector history, exact smoothing-call multiplicity/trig/rounding, ray/cache/flag
+ownership, forced/fly/ability modes and dynamic surfaces remain adapters. Bind
+full80-record ground homing, partner wall services and placement3/4 (+37 for fall
+recovery), then compare original Dolphin jump/fall/cadence and partner distances.
+No new Dolphin observations or hardware claim; full prologue/game fidelity remains
+incomplete. Original art and existing original sound assets were retained.
+
 ## 2026-10-13 — Stretch bubble tails to the visible speaker
 
 User requested a reaching tail rather than the original fixed window-relative

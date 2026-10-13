@@ -458,3 +458,27 @@ are native verification only. Final captures are under ignored
 `artifacts/azahar-partner-follow-spacing/`; profiles and saves are isolated.
 Full partner floor/front-wall/placement and original sound-service composition,
 Dolphin trajectory comparison and hardware behavior remain open.
+
+## 2026-10-13 — Harbor partner fall and distance correction
+
+Recovered ordinary ground-homing distance and history/overlap rules directly
+from read-only US bytes; see [ground-follow contract](behavior/partner/FIELD_PARTNER_GROUND_FOLLOW_DISTANCES.md).
+The45/50 values govern speed decisions, not a fixed resting gap. Target activity
+normally stays nonzero at idle through the dash-base fallback. Native history
+now consumes within13+speed original units and uses the source overlap box.
+
+The old native harbor descent missed valid floor support, continued below the
+dock and eventually used root-copy recovery. Source fall queries five probes
+before gravity, uses homing loss acceleration-1 (stay loss-1.5), damps horizontal
+speed0.2 and uses1.3*retained speed. Native regression at two deck positions now
+admits an actual jump, lands at0.15 and records zero resets over300 ticks.
+Temporary isolated native CSV tracing also showed minimum partnerY0.15 and zero
+resets. Tracing was removed from the release build. These are native observations
+and static original contracts; no original Dolphin timing/trajectory was measured.
+
+Final isolated captures in `artifacts/azahar-partner-harbor-final/` sample the
+brief fall window. `partner-dock-side-view.png` shows grounded Goombella beside
+Mario after a small lateral reveal; a straight-line view can naturally hide her
+behind Mario. No depth-test override, fabricated motion cue or generated art was
+introduced. Original-runtime trajectories, full terrain/placement/state-service
+composition and hardware behavior remain open.
