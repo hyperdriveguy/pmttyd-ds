@@ -128,6 +128,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [listener/cross/inverse](../behavior/audio/MUSYX_LISTENER_UPDATE_CROSS_AND_MATRIX_INVERSE.md).
   Vector/matrix/rounding/store order pinned; basis/allocation/alias/singular/
   PPC/consumer/source/original runtime remain open.
+- [x] Complete sndSeqGetValid/sndSeqStop/seqGetPrivateId/seqStop
+  local bodies —
+  [sequence validity/stop](../behavior/audio/MUSYX_SEQUENCE_VALIDITY_PRIVATE_ID_AND_STOP.md).
+  Lookup tag/state/note/free-list order pinned; ID/index/state/list/note/voice/
+  resource/source/runtime remains open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -968,3 +973,17 @@ matrix examples/one cross example are static deductions, not original numeric
 execution. Full fresh ELFs/listings stay `/tmp`; no native/body/asset export.
 Listener/basis/providers/alias/null/finite/invertible/PPC/CalcEmitter consumers
 and original geometry/audio remain OPEN.
+
+### 2026-10-13 — Sequence validity/private-ID and stop lifecycle
+
+[Four complete local bodies](../behavior/audio/MUSYX_SEQUENCE_VALIDITY_PRIVATE_ID_AND_STOP.md)
+close active-before-paused low31 key lookup/tagged private-byte return, boolean
+validity, IRQ stop wrapper, high-bit efc-clear versus untagged state-specific
+unlink/note-kill/recycle paths and shared instance-free insertion. No private
+index guard, unknown-state refusal or audible validity guarantee invented.
+
+Validation: read-only manifest9 spans (4 complete/5 linked),157 anchors/8
+resolved direct calls passes. Nine validity/five width/five state vectors and
+original8-instance extent checked as source deductions. Full listings/ELFs stay
+`/tmp`; no original execution/native/body/asset export. ID/state/list/note/efc/
+index/cycle/alias/concurrency/voice/resource and original stop/audio remain OPEN.

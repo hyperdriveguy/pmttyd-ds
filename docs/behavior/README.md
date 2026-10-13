@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [MusyX sequence validity/stop](audio/MUSYX_SEQUENCE_VALIDITY_PRIVATE_ID_AND_STOP.md) | Complete active/paused ID lookup, valid wrapper, tagged-field clear and state/note/instance stop recycling | Private-index/state/list/note writers, voice/resource lifetime and original audio |
 | [MusyX listener/cross/inverse](audio/MUSYX_LISTENER_UPDATE_CROSS_AND_MATRIX_INVERSE.md) | Complete four-vector copies, cross/matrix stack layout, ordered inverse/translation and volume | Listener/basis/source/alias/singular/PPC/consumer domains and original audio |
 | [Game effect/listener/completion main](audio/GAME_EFFECT_MAIN_LISTENER_EMITTER_AND_COMPLETION.md) | Complete listener/vector setup, emitter update/completion passes and outer SoundMain/Int order | Listener/providers/pool/sequence/SS/DVD/controller/voice/concurrency and original audio |
 | [MusyX emitter update/3D reset](audio/MUSYX_EMITTER_VECTOR_VOLUME_UPDATE_AND_3D_RESET.md) | Complete two-vector/low-byte target/current-volume writes and ordered root/studio/flag reset | Construction/consumers/caller providers/alias/finite/reset domains and original audio |

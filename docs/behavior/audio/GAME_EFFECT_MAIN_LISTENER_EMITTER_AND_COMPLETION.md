@@ -122,3 +122,5 @@ completion/audio traces. Three complete local services are answered; full native
 source/runtime/hardware equivalence remains OPEN.
 
 [Complete listener update/cross/inverse](MUSYX_LISTENER_UPDATE_CROSS_AND_MATRIX_INVERSE.md) now closes the exact listener child and its math helpers. Actual basis/allocation/alias/singular/PPC/consumer/source/runtime remains open.
+
+[Complete sequence validity/private-ID/stop](MUSYX_SEQUENCE_VALIDITY_PRIVATE_ID_AND_STOP.md) now closes those exact outer SoundMain children. Validity is lookup existence; high-bit stop differs from instance recycling. Actual ID/state/list/note/voice/source/runtime remains open.

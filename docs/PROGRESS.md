@@ -6,6 +6,26 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 sequence validity and stop lifecycle
+
+Delivered [sequence validity/stop](behavior/audio/MUSYX_SEQUENCE_VALIDITY_PRIVATE_ID_AND_STOP.md).
+Four complete bodies pin active-before-paused key/private-ID lookup, validity
+boolean, public IRQ wrapper and high-bit field-clear versus untagged state/note/
+instance recycle. Source lacks private-index/unknown-state repair; no audible
+validity guarantee. Marked local EVT-01 portions complete; parent OPEN.
+
+Validation: generic read-only verifier9 spans (4 complete/5 linked),157 anchors/
+8 resolved direct calls passes. Nine validity/five width/five state vectors and
+original8-instance extent checked as deductions. Full fresh ELFs/listings stay
+`/tmp`; no original execution. Link audit762 Markdown files/0 broken; whitespace
+checks pass. Docs/metadata only: no make rerun, native change or original body/
+asset export. Isolated index excludes unrelated shared work.
+
+Next/limits: key/private-ID/state/instance/note/free/efc providers and valid index/
+list/cycle/alias/concurrency domains, voice/resource/sequencer execution and
+original validity/stop/audio traces. Continue priority0 source/backend then
+priority1 damage graph. No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Source save lifecycle and original221-command event core
 
 Commit `a0905a6` adds the portable source save-block callback, owned hit-name
