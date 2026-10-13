@@ -339,6 +339,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   opcodes27/28 conversion/parameter/flag/controller/init paths —
   [vibrato/portamento](../behavior/audio/MUSYX_MACRO_VIBRATO_PORTAMENTO_AND_INITIALIZATION.md).
   Signed-byte branches/fresh reads/initializer early return retained; domains/runtime open.
+- [x] Complete mcmdRandomKey/sndGetPitch/sndPitchUpOne/unsigned
+  conversion helper and opcode23 with original float tables/literals —
+  [random notes/pitch lookup](../behavior/audio/MUSYX_RANDOM_NOTE_AND_PITCH_LOOKUP.md).
+  RNG order/raw absolute endpoints/single precision retained; domains/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1965,3 +1969,20 @@ five initializer vectors and byte/mask/store-order deductions checked. Full fres
 ELFs/listings stay `/tmp`; no native change/original execution/body/binary asset
 export. Actual command/rate/amplitude/flags/controller/caller/domain/alias/IRQ/
 concurrency, modulation consumers and original vibrato/portamento/audio remain OPEN.
+
+### 2026-10-13 — Random note commands and floating pitch lookup
+
+[Four bodies/one region](../behavior/audio/MUSYX_RANDOM_NOTE_AND_PITCH_LOOKUP.md)
+close absolute/relative interval, optional cents then required note RNG, shared
+command/note/publication/wait and ignored child return, then single-precision
+pitch tables/literals/output-rate division and unsigned floating conversion.
+One-step multiplier differs from toneup index1. No rejection-sampled randomness,
+absolute127 clamp, propagated opcode23 stop, table guard or unified float constant inferred.
+
+Validation: read-only manifest18 spans (four bodies/one region/six linked/six
+numeric data),95 anchors/nine calls/one registration passes. Six interval/five
+selection/five cents/six route/seven conversion vectors, all65536 cents quotient
+cases and exact float literals/table identity checked as deductions. Full fresh
+ELFs/listings stay `/tmp`; no native change/original execution/body/binary asset
+export. Actual seed/command/note/rate/table/float/domain/alias/IRQ/concurrency,
+consumers and original random-note/pitch/audio remain OPEN.

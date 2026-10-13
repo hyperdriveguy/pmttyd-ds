@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero random notes/pitch lookup
+
+Completed mcmdRandomKey/sndGetPitch/sndPitchUpOne/unsigned conversion helper
+and opcode23 for EVT-01; checked the corresponding inbox portion.
+[Random notes/pitch](behavior/audio/MUSYX_RANDOM_NOTE_AND_PITCH_LOOKUP.md)
+pins interval/cents/note RNG/shared rewrite/publication/wait and single-precision
+table/scale/divide/conversion. Distinct one-step/up-table constants and ignored
+opcode23 wait return retained. Actual seed/float/table/command/runtime domains open.
+
+Validation: read-only ISO manifest passed18 spans (four bodies/one region/six
+linked/six numeric data),95 anchors/nine calls/one registration. Six interval/
+five selection/five cents/six route/seven conversion vectors, all65536 cents
+quotient cases and exact float tables/literals checked as deductions. Link audit
+passed826 Markdown files/zero broken links; scoped `git diff --check` passed.
+Documentation/metadata only; no `make test`/`make all` rerun. Full original
+inspection ELFs/listings stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded from this commit.
+
+Next: priority-zero EVT-01 other macro opcodes and actual seed/RNG/command/note/
+cent/reference/rate/table/caller producers, valid interval/table/float/divisor/
+shared-cell/alias/IRQ/concurrency domains, pitch/DSP consumers and original
+random-note/pitch/audio traces. Full native/runtime binding, lower-priority inbox/
+full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero macro vibrato/portamento
 
 Completed mcmdVibrato/mcmdPortamento/synthInitPortamento and opcodes27/28
