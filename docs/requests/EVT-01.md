@@ -598,6 +598,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] _sscallback dispatch/silent-fill prefix and return ABI — [producer silence](../behavior/audio/GAME_STREAM_PRODUCER_DISPATCH_AND_SILENT_FILL_PREFIX.md).
   Low8/all-zero/mask8006/latch, PCM per-store count and ADPCM raw block/return
   pinned; whole live refill/helper/provider/runtime remains open.
+- [x] _sscallback live subrecord/decode-call/ADPCM copy region —
+  [live encoded](../behavior/audio/GAME_STREAM_PRODUCER_LIVE_ENCODED_COPY_AND_DECODE_CALLS.md). Tags/helper return chain/rounded
+  byte copy/boundary/total/second-span/requested-count pinned; PCM/helper open.
 - [ ] _sscallback, deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
@@ -2983,3 +2986,12 @@ Two spans/213 anchors/zero calls verified; ten encoded-count/seven tag/ten
 dispatch/six PCM/five all-zero vectors checked. PCM counts each zero halfword;
 ADPCM zeros complete encoded blocks but returns original count sum. Whole live
 refill/helpers/providers/original audio/native binding open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream producer live encoded region delivery
+
+Completed [live encoded/decode-call region](../behavior/audio/GAME_STREAM_PRODUCER_LIVE_ENCODED_COPY_AND_DECODE_CALLS.md).
+Two spans/172 anchors/two calls verified; ten size/seven tag/five route/six
+boundary/four total/four return vectors checked; prefix pins reverified. Current
+buffer rollback skips total check; first-span stop does not gate second span;
+requested sum still publishes. PCM/decoder/whole callback/providers/original
+audio/native binding remain open; EVT-01 stays OPEN.
