@@ -2,6 +2,78 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original ordinary NPC talk selection and retained owner order
+
+Commit `0203759` binds [native ordinary talk selection](behavior/field/NATIVE_NPC_TALK_SELECTION.md)
+to recovered source dimensions, Mario display/main flags, key-off admission,
+live viewYaw versus rounded camera snapshot/display getter, inclusive vertical/
+radius checks, center/+halfwidth/-halfwidth halfplanes, null-callback map
+obstruction and strict nearest/first tie. Portable NpcTalkPlayer/NpcTalkScan
+separate mechanics from native geometry/registry services. Source nearActor
+r25 remains distinct from chosen candidate; native registry/auto-turn ownership
+is not invented. Current static entries map source Entry flags3 and known area/
+story lifetimes. Source20/37 dimensions cover current ordinary Mario only;
+transformed dimensions/modes/party and nested-key/forced providers remain open.
+
+The retained prior NPC candidate blocks following Mario A jump without a fresh
+facing/radius scan. Later NPC scan publishes current candidate; A commits pending
+selection and the next NPC invocation starts the original simple Mouser talk.
+Wait/return clears without rescanning in that invocation. Talk yaw turns toward
+Mario and catalog saved yaw restores after closure. Source US IDs/text/control
+tokens/story branches remain unchanged; no story write added. Prompts consume
+retained simulation state rather than running map rays while rendering. Catalog/
+original angle-table staging is atomic. Resident source-winding head meshes,
+spatial indices and dynamic object geometry are reused; null talk rays bypass
+ordinary Mario wall attributes/ordinarySolid. ARM object inspection confirms
+VFP float arithmetic and vsqrt.f32 for the ordinary finite norm, with fmaf/trig
+library adapters preserving their stated numeric boundaries. Existing citro3d
+material/pass/cull/texture rendering remains.
+
+Delegated [side-response numerics](behavior/field/FIELD_NPC_MARIO_SIDE_RESPONSE_NUMERICS.md)
+and [talk null callback/display getter](behavior/field/FIELD_NPC_TALK_RAY_AND_DISPLAY_DIRECTION.md)
+pin exact polynomial/FMA/cap/constants, direct NPC-main gates, null callback
+policy, getter and next-invocation ordering. Earlier scope0 terminology was
+corrected. [OW-INTERACT-01](requests/OW-INTERACT-01.md) remains open for full
+registry/encounter/regular-event/auto-turn/collision/backend/runtime ownership.
+
+Validation: final shared `make test` passes117 CTest/100 Python at
+`/tmp/npc-talk-shared-test-final.log`; isolated snapshot
+`/tmp/pm-npc-talk-qt8g5ba7` passes116 CTest/100 Python at
+`/tmp/npc-talk-isolated-test-final.log`. Difference is the existing private
+professor fence-reference test excluded from the snapshot. Shared and isolated
+`make all` pass, no warnings/errors, logs `/tmp/npc-talk-shared-native-final.log`
+and `/tmp/npc-talk-isolated-native-final.log`. Independent source/predicate/
+geometry/order/render review passes; its identified live Mario flag gap was
+fixed and covered. Tests include full original camera/head geometry, source
+boundary/width/flag/nearest/nearActor vectors, retained candidate and pending/
+return ordering, old out-of-range jump and an attributes4 polygon proving
+filtered wall miss versus null-callback talk obstruction.
+
+An initial emulator fixture failed to open a message despite passing weak
+return/save assertions. Full-camera host warmup proved the authored view settles
+from0 to180, reversing eligible world side. Corrected fixture is original
+room2/story8 at native(1.2,-4); tests now warm source camera and explicitly
+require a visible original message cloud plus no onset checkpoint write.
+Final isolated binary `artifacts/ttyd-npc-talk-final.3dsx`, profile
+`artifacts/azahar-npc-talk-cached`, script `tests/azahar_npc_source_presentation.py`
+passes; inspected idle/talk/return show original NPC/window and restored field,
+unchanged story/checksum and return/save assertions pass. Final emulator log
+`/tmp/npc-talk-emulator-cached.log`; final image runs60fps in software emulator,
+which does not prove New2DS XL speed or original-runtime pixel equality.
+Rejected `artifacts/azahar-npc-talk` is not validation; corrected intermediate
+`artifacts/azahar-npc-talk-final` also passes strict window assertions.
+Documentation links pass812 Markdown files/zero broken links; whitespace passes.
+ISO read-only, artifacts/compiled packs/profiles ignored; concurrent battle/audio
+work preserved through scoped Git indices.
+
+Next: bind original stationary NPC side response with the now-pinned polynomial/
+FMA/quadrant/cap graph, active1+2/state10 and bypass8/20/4000 gates, previous-NPC-XZ
+rollback and ordered Mario wall retry; preserve Mario→objects→NPC scheduling.
+Then complete dynamic registry/auto-turn/regular events and source encounter/
+door/pipe/A composition, expand original per-area NPC/event/object coverage,
+finish display/material/shadow services and profile New2DS XL hardware. Full
+remake and broader goal remain unfinished.
+
 ## 2026-10-13 — Inbox priority-zero macro metric/priority inline state
 
 Completed macHandleActive opcodes48..57 for EVT-01; checked the corresponding
