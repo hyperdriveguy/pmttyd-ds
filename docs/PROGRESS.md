@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero macro loop/jumps/registry lookup
+
+Completed four loop/registry/binary-search/comparator bodies and three control-
+flow regions for EVT-01; checked the corresponding inbox portion.
+[Loop/jumps/lookup](behavior/audio/MUSYX_MACRO_LOOP_JUMP_AND_REGISTRY_LOOKUP.md)
+pins shared countdown/random/gates/loop PC, header/scratch lookup and exact
+conditional/direct miss/termination requests for six opcodes. Zero random divisor
+is unchecked; binary lookup assumes valid sorted/provider domains. No private
+loop stack, registry/code bound repair or full resource/free semantics inferred.
+
+Validation: read-only ISO manifest passed14 spans (four complete/three regions/
+six linked/one table),153 anchors/15 calls. Nine loop/five offset/seven bucket/
+six search vectors/six registrations and comparator binding checked as deductions.
+Link audit passed801 Markdown files/zero broken links; `git diff --check` passed.
+Documentation/metadata only; no `make test`/`make all` rerun. Full original
+inspection ELFs/listings stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 remaining macro opcodes, registry/assets/resource/
+reference/free providers and actual command/counter/PC/flags/ID writers, valid
+nonzero-divisor/sorted/member/code-range/alias/reentrancy/concurrency domains;
+original loop/branch/termination/audio traces. Full scheduler/native/runtime
+binding, lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero macro wait/queue/time conversion
 
 Completed five macro wait/queue/random/conversion local bodies and two opcode

@@ -167,3 +167,10 @@ shared-domain/original execution requirements remain open.
 now pins flag gates, randomization, indefinite sentinel, exact clock bases and
 queue order. Other opcode paths, actual time/rate/seed/list domains and original
 macro scheduling/audio evidence remain open.
+
+### Loop/jump/lookup follow-up
+
+[Complete loop/registry search and opcode0/1/2/3/5/6 regions](MUSYX_MACRO_LOOP_JUMP_AND_REGISTRY_LOOKUP.md)
+now pins counter/gates, macro lookup scratch/binary comparator, conditional
+versus direct miss behavior and termination requests. Remaining opcodes,
+registry/resources/free children, domains and original execution remain open.

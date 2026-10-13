@@ -262,6 +262,12 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [wait/queue/time conversion](../behavior/audio/MUSYX_MACRO_WAIT_QUEUE_AND_TIME_CONVERSION.md).
   Flag/return effects, sentinel/random/base/deadline and equal-before queue
   order pinned; time units/providers/list/domain/original waits/audio open.
+- [x] Complete mcmdLoop/dataGetMacro/sndBSearch/maccmp and three control-
+  flow regions for opcodes0/1/2/3/5/6 —
+  [loop/jumps/registry lookup](../behavior/audio/MUSYX_MACRO_LOOP_JUMP_AND_REGISTRY_LOOKUP.md).
+  Shared countdown/gates, registry scratch/search, conditional/direct miss
+  and termination requests pinned; resource/free providers/command/bounds/
+  divisor/sorted domains and original control-flow/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1575,3 +1581,22 @@ deductions. Fresh full ELFs/listings stay `/tmp`; no native change/original
 execution/body/binary asset export. Actual commands/flags/seed/rates/timestamps/
 clock/list writers, nonzero-rate/member/sorted/cycle/alias/IRQ/concurrency/
 indefinite domains and original wait/random/event/audio traces remain OPEN.
+
+### 2026-10-13 — Macro loop, jumps and registry lookup
+
+[Four complete bodies/three opcode regions](../behavior/audio/MUSYX_MACRO_LOOP_JUMP_AND_REGISTRY_LOOKUP.md)
+close shared halfword counter/random countdown/gates/base-relative loop PC,
+macro header/scratch/pool lookup and signed-comparator binary search, six opcode
+registrations and conditional-versus-direct jump/termination requests. Loop
+randomization has no zero-divisor guard;65535 skips countdown. Conditional
+lookup misses continue, direct misses request reference removal/free and stop.
+No private loop stack, registry/code bounds repair, first-duplicate guarantee
+or full termination-child semantics inferred from linkage.
+
+Validation: read-only manifest14 spans (four complete/three regions/six linked/
+one table),153 anchors/15 calls passes. Nine loop/five offset/seven bucket/six
+search vectors/six registrations checked as deductions; comparator indirect
+binding pinned. Full fresh ELFs/listings stay `/tmp`; no native change/original
+execution/body/binary asset export. Registry/resource/free providers, actual
+command/counter/PC/ID inputs and divisor/sorted/member/alias/IRQ/reentrancy/
+concurrency/original loop/branch/audio traces remain OPEN.
