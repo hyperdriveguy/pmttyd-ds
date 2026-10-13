@@ -152,3 +152,10 @@ valid raw-index/type/count/bounds/alias/generation/numeric/IRQ/reentrancy/
 concurrency/reinit domains and original refill/underrun/position/start-end/audio
 traces. Five local services are answered; EVT-01 and full native/source/runtime/
 hardware equivalence remain OPEN.
+
+### Refill child follow-up
+
+[Complete vsUpdateBuffer](MUSYX_VIRTUAL_SAMPLE_REFILL_DESCRIPTOR_AND_CURSOR.md)
+now pins contiguous/wrapped type5/6 descriptor writes, tag1 callback and fresh
+post-callback cursor advancement. Actual callback/byte-transfer implementation,
+field/result domains and original refill/underrun/audio evidence remain open.

@@ -204,6 +204,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Correct80406b00 table, partial reset,64-map scan, state/identity/remaining/
   threshold/cleanup and raw position routes pinned; refill child/providers/
   callback/domain and original update/playback evidence remain open.
+- [x] Complete vsUpdateBuffer local refill body —
+  [refill descriptors/cursor](../behavior/audio/MUSYX_VIRTUAL_SAMPLE_REFILL_DESCRIPTOR_AND_CURSOR.md).
+  Type5/6 encoding, three range branches/six callback sites, raw descriptors
+  and fresh post-callback advancement pinned; actual callbacks/transfer work/
+  provider domains and original contiguous/wrapped/partial audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1309,3 +1314,21 @@ position vectors and all65536 low-input rounding cases checked as deductions.
 Fresh ELFs/listings stay `/tmp`; no native change/original execution/body/asset
 export. vsUpdateBuffer/table/pitch/hardware providers, actual callback/domain/
 reinit/concurrency and original refill/underrun/playback traces remain OPEN.
+
+### 2026-10-13 — Virtual-sample refill descriptor and cursor
+
+[Complete vsUpdateBuffer](../behavior/audio/MUSYX_VIRTUAL_SAMPLE_REFILL_DESCRIPTOR_AND_CURSOR.md)
+closes equality/unsupported-type no-op, type5/6 first-offset encodings, forward/
+zero-target-tail/nonzero-target-two-segment descriptors, six unchecked tag1
+callback sites and nonzero-result advancement using fresh cursor/size and a
+32-bit wrapped sum before remainder. Zero return performs no parent cursor
+write. No descriptor clamp, result-length cap, callback-null repair, additional
+callback per segment or shared start/refill boolean convention.
+
+Validation: read-only manifest one complete span/141 anchors including six
+indirect sites/no direct calls passes. Ten offset/13 stable descriptor/nine
+post-callback vectors and all65536 low-input type5 encoding cases checked as
+deductions. Fresh ELF/listing stays `/tmp`; no native change/original execution/
+body/asset export. Actual callback installation/byte-transfer implementation,
+field/result/bounds/nonzero-size/alias/IRQ/reentrancy/concurrency domains and
+original contiguous/wrapped/partial/zero-return refill/audio remain OPEN.

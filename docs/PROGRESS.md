@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero virtual-sample refill
+
+Completed the whole vsUpdateBuffer local contract for EVT-01 and checked the
+corresponding inbox portion. [Refill descriptor/cursor](behavior/audio/MUSYX_VIRTUAL_SAMPLE_REFILL_DESCRIPTOR_AND_CURSOR.md)
+pins type5/6 offset encoding, forward/tail/wrapped two-segment descriptor order,
+six tag1 callback sites and nonzero-return advancement using fresh cursor/size
+and a wrapped32-bit sum. Zero return adds no parent cursor write. No invented
+callback-null/bounds repair, result cap or original byte-transfer/audio timing.
+
+Validation: read-only ISO manifest passed one complete span/141 anchors,
+including six indirect sites/no direct calls. Ten offset/13 stable descriptor/
+nine post-callback vectors plus all65536 low-input type5 encoding cases checked
+as deductions. Documentation link audit passed787 Markdown files/zero broken
+links; `git diff --check` passed. Documentation/metadata only; no `make test`/
+`make all` rerun. Original full inspection ELF/listing stays `/tmp`; no body/
+assets committed. Concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 actual callback installation/implementation and byte
+transfer, slot/cursor/type/size/result providers and valid range/nonzero-size/
+alias/reentrancy/concurrency domains; original contiguous/wrapped/partial/
+zero-return refill/audio traces. Full scheduler/native/runtime binding,
+lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero virtual init/update/position
 
 Completed five virtual initializer/updater/hardware position/state local
