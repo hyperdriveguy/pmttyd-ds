@@ -171,18 +171,20 @@ void actorPackCases() {
 }
 void actorAnimationCases() {
     ActorAnimationPose p;p.name="fixture";p.end=4;
-    p.positions={{0,0,0},{1,0,0},{0,1,0}};p.nodes.resize(24);
+    p.positions={{0,0,0},{1,0,0},{0,1,0}};p.normals={{0,1,0}};p.nodes.resize(24);
     p.nodes[3]=p.nodes[4]=p.nodes[5]=1;p.groups={{-1,-1,0,0,1}};
     p.bindings={{0,0,0,0,0},{0,1,0,1,0},{0,2,0,0,1}};
     ActorTextureBinding texture{};texture.cells.fill(0xffff);texture.cells[0]=0;texture.cells[1]=1;p.textures={texture};
     ActorAnimationKey zero,finish;finish.time=4;
-    finish.positions={{0,16,0,0,0}};finish.nodes={{1,16,0,0,0},{2,16,0,90,0}};finish.textures={{0,1,{0,0,0}}};
+    finish.positions={{0,16,0,0,0}};finish.normals={{0,-16,8,32,0}};finish.nodes={{1,16,0,0,0},{2,16,0,90,0}};finish.textures={{0,1,{0,0,0}}};
     p.keys={zero,finish};ActorAnimationSample sample;
     CHECK(p.evaluate(1,sample));CHECK(sample.positions[0][0]==.25f && sample.nodes[1]==.15625f);
     CHECK(sample.nodes[2]==0 && sample.textures[0]==0 && sample.fraction==.25f);
+    CHECK(sample.normals[0][0]==-.25f && sample.normals[0][1]==1.125f && sample.normals[0][2]==.5f);
     CHECK(sample.vertices[0].x==.25f && sample.vertices[0].y==.15625f);
     CHECK(p.evaluate(4,sample));CHECK(sample.positions[0][0]==1 && sample.nodes[1]==1 && sample.nodes[2]==1);
     CHECK(sample.textures[0]==1 && sample.vertices[0].u==130.f/1024 && sample.next==sample.last);
+    CHECK(sample.normals[0][0]==-1 && sample.normals[0][1]==1.5f && sample.normals[0][2]==2);
     p.loop=1;CHECK(p.evaluate(4,sample));CHECK(sample.selectedTime==0 && sample.textures[0]==0 && sample.nodes[1]==0);
     CHECK(p.evaluate(5,sample));CHECK(sample.positions[0][0]==.25f && sample.nodes[1]==.15625f);
     CHECK(p.evaluate(.5f,sample));CHECK(sample.nodes[1]==.04296875f); // Fractional rewind rebuilds full cache.
@@ -205,32 +207,38 @@ void actorAnimationCases() {
     CHECK(presentation.animationFrame()==60); // Same current front request does not queue.
 
     // Local binary fixture verifies parsing, rollback and malformed graph rejection.
-    auto fixture=[&](bool cycle) {
+    auto fixture=[&](bool cycle,bool version2=false,bool badNormal=false) {
         FILE* file=std::tmpfile();CHECK(file);
         auto write=[&](const auto& value){CHECK(std::fwrite(&value,sizeof(value),1,file)==1);};
-        const char magic[8]="PMANIM1",name[32]="fixture";uint32_t count=1;write(magic);write(count);write(name);
+        const char magic[8]="PMANIM1",name[32]="fixture";uint32_t count=1;if(version2){const char magic2[8]="PMANIM2";write(magic2);}else write(magic);write(count);write(name);
         write(p.loop);write(p.start);write(p.end);const uint32_t sizes[]={3,24,1,3,1,2};write(sizes);
-        for(const auto& v:p.positions)write(v);for(auto v:p.nodes)write(v);
+        if(version2){uint32_t normals=1;write(normals);}
+        if(badNormal)p.keys[1].normals[0].index=1;
+        for(const auto& v:p.positions)write(v);if(version2)for(const auto& v:p.normals)write(v);for(auto v:p.nodes)write(v);
         auto g=p.groups[0];if(cycle)g.sibling=0;write(g);
         for(const auto& b:p.bindings)write(b);write(texture);
         for(const auto& key:p.keys) {
-            write(key.time);const uint32_t counts[]={uint32_t(key.positions.size()),uint32_t(key.nodes.size()),uint32_t(key.textures.size())};write(counts);
-            for(const auto& r:key.positions)write(r);for(const auto& r:key.nodes)write(r);for(const auto& r:key.textures)write(r);
+            write(key.time);const uint32_t counts[]={uint32_t(key.positions.size()),uint32_t(key.nodes.size()),uint32_t(key.textures.size())};write(counts);if(version2){uint32_t normals=key.normals.size();write(normals);}
+            for(const auto& r:key.positions)write(r);if(version2)for(const auto& r:key.normals)write(r);for(const auto& r:key.nodes)write(r);for(const auto& r:key.textures)write(r);
         }
         std::rewind(file);return file;
     };
     ActorAnimationPack pack;auto file=fixture(false);CHECK(pack.read(file));std::fclose(file);
     CHECK(pack.pose("fixture") && !pack.pose("missing"));file=fixture(true);CHECK(!pack.read(file));std::fclose(file);
     CHECK(pack.pose("fixture") && !pack.load("/missing-animation-pack"));
+    file=fixture(false,true);CHECK(pack.read(file));std::fclose(file);
+    CHECK(pack.pose("fixture")->evaluate(1,sample) && sample.normals[0][2]==.5f);
+    file=fixture(false,true,true);CHECK(!pack.read(file));std::fclose(file);
+    CHECK(pack.pose("fixture")->evaluate(1,sample) && sample.normals[0][2]==.5f);
 }
 int main(int argc,char** argv) {
     if(argc>1) {
         CHECK(loadCameraRoadAssets("romfs"));
         ActorMeshPack mesh;CHECK(mesh.load("romfs/characters.pmmesh"));
         ActorAnimationPack animations;CHECK(animations.load("romfs/characters.pmanim"));
-        for(const auto name:{"M_S_1","M_W_1","M_R_1","M_J_1B","M_J_1C","M_S_3","M_I_S","M_I_Y","M_I_5","M_N_5A","M_S_1R","M_W_1R","M_R_1R","M_J_1BR","M_J_1CR"}) {
+        for(const auto name:{"M_S_1","M_W_1","M_R_1","M_J_1B","M_J_1C","M_S_3","M_I_S","M_I_Y","M_I_5","M_N_5A","M_F_1","M_D_2","M_U_3","M_S_1R","M_W_1R","M_R_1R","M_J_1BR","M_J_1CR"}) {
             const auto* pose=mesh.pose(name);CHECK(pose);
-            if(std::strcmp(name,"M_I_5") && std::strcmp(name,"M_N_5A"))
+            if(std::strcmp(name,"M_I_5") && std::strcmp(name,"M_N_5A") && std::strcmp(name,"M_F_1"))
                 CHECK(pose->vertices.size()==(name[std::strlen(name)-1]=='R'?186u:306u));
             const auto* animation=animations.pose(name);CHECK(animation);ActorAnimationSample sample;
             CHECK(animation->evaluate(0,sample) && sample.vertices.size()==pose->vertices.size());
