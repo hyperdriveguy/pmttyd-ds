@@ -586,6 +586,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete SoundSSPlayCh/Ex/getMarioStDvdRoot — [public play wrappers](../behavior/audio/GAME_STREAM_PLAY_WRAPPERS_REPLACE_SLOT_AND_HEADER_READ.md).
   Replace-before-validation, first-free slot/failure retention, ordered defaults,
   shared path/two opens/deferred header request pinned; header/runtime open.
+- [x] SoundSSPlayChEx_main matching/header/format/reset prefix and exit ABI —
+  [header prefix](../behavior/audio/GAME_STREAM_HEADER_MATCH_FIELDS_AND_FORMAT_PREFIX.md). Unmatched third row/index3,
+  raw mappings/sentinel/format0..2/copies/reset pinned; whole callback open.
+- [ ] SoundSSPlayChEx_main allocation/initial-read/cache continuation and
+  original header/resource/provider/validity/execution binding.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2886,6 +2891,15 @@ six slot/four caching-outcome/five raw caching-argument vectors checked; stop
 pins reverified. Failed opens retain reserved slot, second failure retains newly
 opened primary, and header setup is deferred. Header callback/providers/manager/
 original playback/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream header matching/format prefix delivery
+
+Completed [scoped prefix/exit ABI](../behavior/audio/GAME_STREAM_HEADER_MATCH_FIELDS_AND_FORMAT_PREFIX.md).
+Two spans/185 anchors/zero calls verified; seven match/five sentinel/five format/
+five type vectors, twelve field mappings/two coefficient copies/eighteen reset
+stores checked. Unmatched callbacks process third row with index3; sentinel
+does not clear old200; unsupported format preserves prior state. Whole callback
+allocation/IO/cache continuation and original/provider binding OPEN; EVT-01 OPEN.
 
 ### 2026-10-13 delivery: fresh ten-point no-level-up ending tail
 

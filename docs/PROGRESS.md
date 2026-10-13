@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero stream header matching/format prefix
+
+Completed SoundSSPlayChEx_main matching/fields/format/reset prefix and exit ABI;
+checked scoped EVT-01 portion and added explicit continuation todo.
+[Header prefix](behavior/audio/GAME_STREAM_HEADER_MATCH_FIELDS_AND_FORMAT_PREFIX.md)
+pins unmatched third-row/index3 fallthrough, raw mappings/type narrowing,
+sentinel preserving prior200, formats/copy/reset. Whole allocation/initial IO/
+cache continuation/providers/original header/playback/native binding open.
+
+Validation: read-only ISO manifest passed two spans,185 anchors,zero calls.
+Seven match/five sentinel/five format/five type vectors, twelve field mappings/
+two coefficient copies/eighteen reset stores checked. Link audit passed923
+Markdown files/zero broken links; scoped diff check passed. Mathematical source
+deductions separate from original execution. Docs/metadata only; no make test/
+all rerun. Fresh full callback ELF/listing/scoped generator stay /tmp; no bodies/
+assets committed. Concurrent native work excluded. Approved push pending valid
+GitHub credentials.
+
+Next: priority-zero EVT-01 same callback allocation/initial-read/cache continuation,
+then deferred DVD manager/provider/value/extent/alias/lifetime/IRQ/concurrency/
+ABI domains and original header/cache/playback/audio traces. Other inbox/native/
+full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero public stream play wrappers
 
 Completed SoundSSPlayCh/Ex/getMarioStDvdRoot; checked EVT-01 portion.
