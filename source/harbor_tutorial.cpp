@@ -33,6 +33,8 @@ bool loadHarborTutorialAssets(const char* root){
 }
 struct HarborTutorialRuntime {
  HarborTutorial* scene=nullptr;EventNativeRuntime vm;std::unique_ptr<HarborTutorialPacked> packed;
+ void* resourceUser=nullptr;bool(*paperReady)(void*,uint32_t,int32_t)=nullptr;bool(*niceReady)(void*,int32_t)=nullptr;
+ void* fadeUser=nullptr;void(*fadeEntry)(void*,int32_t,int32_t,uint32_t)=nullptr;bool(*fadeFinished)(void*)=nullptr;
  uint32_t initRoot=0,phaseRoot=0,attackRoot=0;uint64_t messagePoseSerial=0;bool openingDispatched=false;
  std::array<uint64_t,3> completeEpoch{};std::array<bool,3> complete{};
  struct Interpolation{int32_t mode=0,start=0,end=0,limit=0,step=0;};
@@ -116,6 +118,8 @@ bool HarborTutorial::beginWithContext(uint64_t time,int32_t hp,int32_t maxHp,boo
  if(!r.packed->registerActor(actors[0]) || !r.packed->registerActor(actors[1])){failed=true;return false;}r.packed->recordInit(0,r.initRoot);
  if(freshPouch){if(!r.packed->provisionFreshPouch(messages.find("name_party3"))){failed=true;return false;}uint32_t pouch=0;if(!r.vm.memory.readWord(0x8041eb00,pouch) || !r.vm.memory.writeHalf(pouch+0x70,uint16_t(hp))){failed=true;return false;}writeSavedSwitch(SavedSwitchFamily::GlobalByte,0,story,r.vm.interpreterServices().operands);if(!r.packed->provisionFreshFieldInformation(source[9]+0x60eb8-0x60c90,source[9],source[10])){failed=true;return false;}r.packed->recordInit(1,r.root(r.word(actors[1].sourceKind+0xbc),1).id);}
  tick(time,0);return !failed;}
+void HarborTutorial::setStartupResources(void* user,bool(*paper)(void*,uint32_t,int32_t),bool(*nice)(void*,int32_t)){if(runtime_){runtime_->resourceUser=user;runtime_->paperReady=paper;runtime_->niceReady=nice;}}
+void HarborTutorial::setStartupFade(void* user,void(*entry)(void*,int32_t,int32_t,uint32_t),bool(*finished)(void*)){if(runtime_){runtime_->fadeUser=user;runtime_->fadeEntry=entry;runtime_->fadeFinished=finished;}}
 void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* physical){if(!runtime_ || failed || time<now)return;now=time;auto& r=*runtime_;r.scene=this;if(message.active())message.tick(now,keys);
  if(message.poseRequestSerial!=r.messagePoseSerial && speaker>=0 && speaker<3){r.messagePoseSerial=message.poseRequestSerial;auto& a=actors[speaker];const auto& pose=message.poseRequest==MessagePlayback::PoseRequest::Talk?a.talkPose:a.stayPose;if(!pose.empty()){a.pose=pose;a.poseAt=message.poseRequestedAt;}}
  r.packed->samplePhysical(time,physical);r.packed->publish(*this);r.vm.gp.timestamp=now*eventClockRate(243000000);r.vm.runManager();r.packed->publish(*this);r.packed->capture(*this);

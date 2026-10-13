@@ -33,6 +33,7 @@ bool Renderer::loadTutorialPresentation() {
 }
 void Renderer::advanceTutorialAnimations(Game& game) {
     if(!tutorialReady || !game.harborTutorial.running())return;
+    if(game.harborTutorial.running()){bindTutorialStartupResources(game.harborTutorial);advanceTutorialCurtain(game.harborTutorial);}
     for(unsigned i=0;i<3;++i) {
         const auto& a=game.harborTutorial.actors[i];const auto* pose=tutorialActors[i].animations.pose(a.pose.c_str());
         if(pose && pose->end>pose->start && game.harborTutorial.now>=a.poseAt && float(game.harborTutorial.now-a.poseAt)*.06f>=pose->end)
@@ -76,5 +77,6 @@ void Renderer::worldTutorial(const Game& g) {
         C3D_TexBind(0,&tutorialActors[i].image.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
     }
     drawMap(true,g,true,&harborBattleBackground);drawMap(true,g,true,&harborBattleStage);
+    drawTutorialCurtain();
 }
 }

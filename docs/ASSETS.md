@@ -1166,3 +1166,29 @@ category69 handlesGoombella type43. Allare Nintendo/Intelligent Systems local
 original-game resources; noreplacementlicenseorredistributionrights implied.
 See [sourceEXP contract](behavior/battle/UNDERGROUND_TRIO_EXP_PRESENTATION_AND_COUNTING.md)
 for exact dimensions, hashes, source coordinates and remainingrender dependencies.
+
+## Original battle startup and harbor curtain resources
+
+Read-only G8ME01.iso supplies a/p_b_st, a/p_jyabara (actual TPL owner a/p_slit-),
+a/p_kaiten_h and original a/EFF_nice_us, EFF_good_us, EFF_great_us,
+EFF_wonderful_us, EFF_excellent_us, EFF_lucky_us with their trailing-minus banks.
+Ignored battle-startup-resources.bin keeps full original banks/25 descriptors;
+23 supported original poses retain PMANIM4 wrapped UV/pass/cull/RGBA. Two dormant
+accordion poses retain opaque original descriptors; no playback/capture is faked.
+Original US language1/context1 keys and NULL grade-row slot remain source-owned.
+Converted GPU atlases are capped512wide with original source gutter/wrap rules.
+Explicit captured-texture export admission retains sourcekind1 in descriptors;
+its fallback TPL does not substitute for an actual field capture.
+
+Original a/OFF_d_maku_left_right and a/OFF_d_maku_left_right- supply ignored
+harbor-curtain.pmanim/t3x/bin/json for source fade23/context2/A_2. Original sparse
+geometry is216 triangles,14 keys,span0..45. One source atlas becomes512x64 with
+UVscale8. Sourcepass0 normalization and native image-plane projection are recorded
+in display/NATIVE_HARBOR_CURTAIN_FADE.md. Completion uses the admitted/evaluated
+original pose, not the stored duration200. No generated image/audio/geometry.
+
+All original banks, images, converted packs and compiled binaries remain local
+and ignored. Nintendo/Intelligent Systems ownership applies; no redistribution
+rights are claimed. Exporters honor configured ISO paths and open originals only
+read-only. Source native adapters and source hashes may enter history; originals
+and executable PPC bytes never do.

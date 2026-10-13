@@ -11,6 +11,9 @@
 #include "field_air_shadow.hpp"
 #include "field_actors.hpp"
 #include "npc_presentation.hpp"
+#include "battle_curtain_fade.hpp"
+#include "battle_startup_resources.hpp"
+#include <memory>
 #include <3ds.h>
 #include <citro2d.h>
 #include <citro3d.h>
@@ -30,6 +33,8 @@ public:
     void render(const Game&, const Metrics&, const char* notice, bool audioAvailable);
     void renderFrontend(const Frontend&, OpeningDemo&, const OpeningSequence&, const char* notice);
     void shutdown();
+    bool bindTutorialStartupResources(HarborTutorial&);
+    void releaseTutorialStartupResources();
     struct ActorMetrics {uint32_t visible=0,vertices=0,overflow=0,sampleFailures=0;};
     ActorMetrics fieldActorMetrics() const {return actorMetrics;}
 private:
@@ -47,6 +52,9 @@ private:
     C2D_TextBuf textBuffer=nullptr;
     struct MapBatch { uint32_t start,count; int32_t texture; uint32_t layer,wrapS,wrapT; };
     struct Texture { C3D_Tex texture{}; Tex3DS_Texture imported=nullptr; };
+    std::unique_ptr<BattleStartupResources> tutorialStartupResources;
+    std::array<Texture,9> tutorialStartupTextures;
+    HarborTutorial* tutorialStartupOwner=nullptr;
     struct Occluder {Bounds3 bounds{};std::vector<uint32_t> batches;uint64_t hiddenUntil=0;bool hidden=false;};
     struct FieldActorModelGpu {
         uint32_t model=0;
@@ -88,6 +96,17 @@ private:
     std::vector<CineActor> cineActors;
     std::array<CineActor,3> tutorialActors;
     bool tutorialReady=false;
+    BattleCurtainFade tutorialFade;
+    CineActor tutorialCurtain;
+    HarborTutorial* tutorialFadeOwner=nullptr;
+    uint64_t tutorialFadeEpoch=0,tutorialFadeTick=UINT64_MAX;
+    float tutorialFadeLoops=0;
+    uint32_t tutorialFadeMaterial=0;
+    bool tutorialCurtainAttempted=false,tutorialCurtainReady=false,tutorialCurtainLive=false;
+    bool loadTutorialCurtain();
+    void advanceTutorialCurtain(HarborTutorial&);
+    void drawTutorialCurtain();
+    void releaseTutorialCurtain();
     bool loadTutorialPresentation();
     void worldTutorial(const Game&);
     ActorAnimationPack demoPaperAnimations;

@@ -121,3 +121,7 @@ romfs/demo-chest.*
 
 romfs/demo-page.*
 romfs/demo-page-back.*
+
+romfs/battle-startup-resources.*
+romfs/battle-ready-*
+romfs/harbor-curtain.*

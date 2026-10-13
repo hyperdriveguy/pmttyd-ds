@@ -41,6 +41,10 @@ public:
     // Explicit original new-game entry context; creates the verified fresh pouch
     // and executes Mario kind+bc initialization before admitting intro phase.
     bool beginFresh(uint64_t milliseconds,int32_t marioHp,int32_t marioMaxHp,int32_t originalStory);
+    // Attach after beginFresh; clear before provider teardown. These bindings
+    // await the complete source scheduler owner and do not advance intro alone.
+    void setStartupResources(void* user,bool(*paperReady)(void*,uint32_t,int32_t),bool(*niceReady)(void*,int32_t));
+    void setStartupFade(void* user,void(*entry)(void*,int32_t,int32_t,uint32_t),bool(*finished)(void*));
     void tick(uint64_t milliseconds,uint32_t keys,const BattlePadSample* physical=nullptr);
     // Explicit scheduler/service bridge. Refuses an overlapping phase root.
     bool dispatchPhase(int32_t sourceTurn,uint32_t sourcePhase);

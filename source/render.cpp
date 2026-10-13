@@ -1164,6 +1164,8 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
 }
 void Renderer::shutdown() {
     if(c3dReady) C3D_FrameSync();
+    releaseTutorialCurtain();
+    releaseTutorialStartupResources();
     if(textBuffer) C2D_TextBufDelete(textBuffer);
     releaseFrontend();
     for(Room* room : {&plaza,&stage,&trioBackground,&trioStage,&harborBattleBackground,&harborBattleStage})freeRoom(*room);

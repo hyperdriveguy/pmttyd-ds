@@ -20,7 +20,7 @@ def border_indices(size,wrap):
     raise ValueError('Unsupported original wrap mode')
 
 
-def compile_surface_mesh(models,output,atlas_path):
+def compile_surface_mesh(models,output,atlas_path,captured_textures=False):
     atlas=Image.new('RGBA',(1024,1024));cells={}
     def texture_cell(model,tpl,tid,wrap):
         key=(str(tpl),tid,tuple(wrap))
@@ -38,7 +38,7 @@ def compile_surface_mesh(models,output,atlas_path):
             tile=Image.fromarray(pixels[y[:,None],x[None,:]],'RGBA')
             atlas.paste(tile,((cell%8)*128,(cell//8)*128))
         return cells[key]
-    compile_animation_pack(models,output,texture_cell,surfaces=True)
+    compile_animation_pack(models,output,texture_cell,surfaces=True,captured_textures=captured_textures)
     height=128
     while height<((len(cells)+7)//8)*128:height*=2
     atlas.crop((0,0,1024,height)).save(atlas_path)

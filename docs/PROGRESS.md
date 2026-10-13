@@ -6380,3 +6380,48 @@ fallthrough/counting. Next: import/render those original reward assets, bind
 source count/victory children/fade/export/sequence and preserved gorotuki field
 continuation, then finish shared field pouch/save/encounter input ownership.
 Full original-fidelity playable prologue goal remains active and incomplete.
+
+## 2026-10-13 — Source startup controllers, native readiness and original curtain
+
+Integrated original Init/SequenceManager, US six-effect readiness row, ordinary
+firstAttack0/shared FirstAct states1..14, mandatory system/Mario UnitSetup and
+complete portable UnitEntry storage/control bodies. Actual fresh source order is
+system kind220/ID0, Mario kind222/ID1, then Crump/ID2 and spawned helper/ID3.
+These controllers retain required service providers. They do not replace the
+current bounded intro with an unconditionally successful initialization or enable
+an internal attack diagnostic as a legitimate command/turn owner. Packed literal
+registry IDs and public three-actor visual slots still need coherent migration.
+
+Actual9 original US startup banks/25 descriptors/23 supported clips and original
+GPU atlases now admit source readiness. Two unsupported dormant accordion clips
+retain their raw descriptors/bank; admission does not acknowledge their playback
+or paper field capture. The original p_jyabara texture owner is p_slit. Wrapped
+UV/pass/cull/RGBA remain in explicit PMANIM4 conversion; default ordinary capture
+kind rejection is retained. Configured ISO overrides pass through all exporters.
+
+Bound original fade23/context2 OFF_d_maku_left_right A_2, actual14 keys/216
+triangles/0..45 span and original atlas. Portable fade polls resource admission,
+uses source pre/post-main progress queries, RGB truncation*.98 afterprogress.5,
+then original release/flag2 atprogress1. Duration200 is retained rather than used
+as a substitute timer. Native completion uses actual evaluated pose and simulation
+time. Unique queued ranges retain all actors. Native image-plane mapping remains
+an explicit adapter; admission occurs after field GPU rooms are released.
+
+Validation: isolated integrated make test144/144 CTest +103/103 Python and
+make all pass (/tmp/opening-startup-unit-final-{test,build}.log); focused curtain
+original-pack and callback-order checks pass. Read-only original verifiers pin15
+startup/UnitSetup/UnitEntry spans,10 US resource/row anchors and12 curtain provider
+hashes/dispatch/constants/keys. Isolated temporary curtain component smoke in
+artifacts/azahar-original-curtain-projection caught and corrected a100x image-unit
+error. Reviewed sample129 shows original pleated curtain moving off screen and
+sample130 restores stage/actors. That temporary trigger is removed before the
+normal build. This proves the bounded native consumer, not source FirstAct
+choreography, complete fade/camera/material parity or a battle result. User
+profiles/saves and the source ISO remain untouched; original packs are ignored.
+
+Next: bind required UnitEntry helper services and literal registry/visual mapping,
+then actual Init/FirstAct/Turn/command/damage/reaction/end/reward/field owners.
+Retain fresh pouch through actual field/save ownership. Full source harbor fight
+and return remain pending; result0/story4/control/save barriers remain intact.
+Original cover/fade/environment/effects/audio consumers and hardware parity remain
+ongoing. The opening playtest goal remains active and incomplete.

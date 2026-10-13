@@ -616,3 +616,7 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [Battle Packed Counter And Hit Event](battle/BATTLE_PACKED_COUNTER_AND_HIT_EVENT.md)
 
 - [Harbor original field battle information](battle/HARBOR_SOURCE_FIELD_INFORMATION.md)
+
+- [Harbor source sequence startup and unit allocation](battle/HARBOR_SOURCE_SEQUENCE_STARTUP.md)
+- [Original US startup resource admission](battle/NATIVE_STARTUP_RESOURCE_ADMISSION.md)
+- [Native original harbor curtain fade](display/NATIVE_HARBOR_CURTAIN_FADE.md)

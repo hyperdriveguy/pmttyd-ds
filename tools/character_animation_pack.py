@@ -5,7 +5,7 @@ from character_bake import geometry,u
 from character_animation_data import animation
 
 
-def compile_animation_pack(models,output,texture_cell,surfaces=False):
+def compile_animation_pack(models,output,texture_cell,surfaces=False,captured_textures=False):
     with open(output,'wb') as file:
         file.write(struct.pack('<8sI',b'PMANIM4\0' if surfaces else b'PMANIM3\0',sum(len(names) for _,_,names in models)))
         for model,tpl,names in models:
@@ -42,7 +42,11 @@ def compile_animation_pack(models,output,texture_cell,surfaces=False):
                         if index>=u(raw,0x134):index=0
                         tid=u(raw,u(raw,0x198)+index*64+4)
                         if surfaces:
-                            if u(raw,u(raw,0x198)+index*64+8)!=0:raise ValueError('Surface texture kind requires another material service')
+                            kind=u(raw,u(raw,0x198)+index*64+8)
+                            if kind!=0 and not(captured_textures and kind==1):raise ValueError('Surface texture kind requires another material service')
+                            # Explicit descriptor import preserves original kind1
+                            # via the owning raw-resource companion. This atlas
+                            # contains source fallback art, not a capture ack.
                             override=struct.unpack_from('>i',raw,u(raw,0x194)+binding*8+4)[0]
                             if override==-1:
                                 image=u(tpl_raw,u(tpl_raw,8)+tid*8);wrap=struct.unpack_from('>II',tpl_raw,image+12)
