@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-12 — Merge the overworld request inbox into docs/requests
+
+Migrated `OVERWORLD_DOCUMENTATION_REQUESTS.md` into the standard inbox style:
+seven per-request files under `requests/` (OW-MOVE-01, OW-WALL-01,
+OW-SUPPORT-01, OW-PARTNER-01, OW-ROAD-01, OW-INTERACT-01, OW-CAMERA-01), each
+with a status line, an Open-todos checklist, verbatim request text and an
+append-only answer/delivery history. The seven rows join the status table in
+`DOCUMENTATION_REQUESTS.md`, which also absorbs the story-integrity and
+static/runtime rules that headed the separate file; the "tracked separately"
+pointer is gone. Cross-links in `behavior/overworld/OVERWORLD_MARIO_MOVEMENT.md`
+and `behavior/battle/BATTLE_HIT_VEC_TRAVERSAL_ORDER.md` now target the
+per-request files.
+
+Validation: `python3 tools/check_doc_links.py` (686 markdown files, 0 broken)
+plus a line-by-line comparison of the old file against the new files — every
+original line survives; only heading levels, the three header provenance lines
+and the relative link prefixes differ. Docs-only, no make rerun. Limitation:
+overworld deliveries stay recorded in each request's history and are not
+back-filled as `requests/DELIVERY_LOG.md` rows, because the original inbox
+never named a numeric documentation-agent ID for them. Next: answer the OW-*
+open todos and register new deliveries/locks in the delivery log.
+Full-game incomplete.
+
 ## 2026-10-12 — EVT-01 accessors, start wrappers, Monosiri, and an address correction (ID 3)
 
 Second EVT-01 pass as documentation agent ID 3, continuing the inbox queue.
