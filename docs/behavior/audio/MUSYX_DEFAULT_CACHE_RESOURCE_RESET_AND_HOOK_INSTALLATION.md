@@ -106,3 +106,5 @@ Remaining: installing/root initialization callers and actual B/N/hook/callback
 providers, per-kind registry storage, safe reset/concurrency/alias/residency,
 SDK/voice/macro/MIDI and original setup/acquire/release/audio traces. Seven complete
 local producer/wrapper bodies are answered; full native/source/runtime remains OPEN.
+
+[Game allocator and complete sndInit/hwInit bootstrap](GAME_AUDIO_ALLOCATOR_AND_MUSYX_BOOTSTRAP.md) now answers the original game hook table/providers, scoped installing prefix and complete local default-cache/resource initialization caller. Whole SoundInit and child source/hardware/runtime remain open.

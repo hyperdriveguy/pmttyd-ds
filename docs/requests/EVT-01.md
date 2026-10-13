@@ -69,6 +69,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [cache/reset/hook producers](../behavior/audio/MUSYX_DEFAULT_CACHE_RESOURCE_RESET_AND_HOOK_INSTALLATION.md).
   Default base/end/cursor, count/table reset and ordered alias-sensitive hook
   publication pinned; actual setup caller/provider/reset/runtime remains open.
+- [x] Complete game sndMalloc/sndFree providers and sndInit/hwInit
+  bootstrap, original hook table and scoped SoundInit startup prefix —
+  [allocator/bootstrap](../behavior/audio/GAME_AUDIO_ALLOCATOR_AND_MUSYX_BOOTSTRAP.md).
+  Actual default-cache/resource caller arguments/order now pinned; whole game
+  init/child hardware/synth/stream/source/failure/runtime remain open.
 - [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -703,3 +708,20 @@ exact macro-clear extent and three hook alias vectors checked. Full inspection
 ELFs/listings remain `/tmp`; no original code execution/native change/bank export.
 Caller/provider/alias/reset/concurrency/residency/per-kind registry/SDK/voice and
 original setup/audio traces remain OPEN. Local portions checked, parent open.
+
+### 2026-10-13 — Game allocator providers and MusyX bootstrap callers
+
+[Four complete bodies plus scoped game prefix](../behavior/audio/GAME_AUDIO_ALLOCATOR_AND_MUSYX_BOOTSTRAP.md)
+close heap0 allocator/free requests, actual two-word hook table installation,
+fixed game sndInit arguments, low-byte configuration/caps, hardware failure
+returns and successful resource/sequence/synth/stream/virtual-sample/3D order.
+Default-cache base/size and dataInit raw inputs now have a complete local caller.
+Hardware failures do not unwind earlier child mutations; game startup prefix
+ignores sndInit result. Active1 is local publication, not residency/playback proof.
+
+Validation: read-only manifest29 spans (4 complete/1 scoped prefix/1 original
+hook table/23 linked),134 anchors and25 resolved direct calls passes. Original
+8-byte table independently equals sndMalloc/sndFree; nine derived width/clamp
+vectors checked. Full listings/ELFs remain `/tmp`; no original code executes or
+body/bank asset is exported. Whole SoundInit/child OS/ARAM/AI/DSP/IRQ/synth/stream/
+source/provider/reset/concurrency/failure/original startup/audio remain OPEN.

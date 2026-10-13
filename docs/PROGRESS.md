@@ -5,6 +5,30 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 game allocator providers and MusyX bootstrap
+
+Delivered [game allocator/bootstrap](behavior/audio/GAME_AUDIO_ALLOCATOR_AND_MUSYX_BOOTSTRAP.md).
+Four complete bodies and scoped SoundInit startup prefix establish original
+hook table/providers, fixed game initialization inputs, low-byte configuration,
+hardware admission/failure and successful default-cache/resource/child init order.
+Game prefix ignores sndInit result; no child failure unwind or residency/playback
+proof inferred. Marked local EVT-01 portions complete; parent OPEN.
+
+Validation: generic read-only verifier29 spans (4 complete/1 scoped prefix/
+1 original hook table/23 linked),134 anchors/25 resolved direct calls passes.
+Independent8-byte table matches actual provider symbols; nine derived clamp/width
+vectors checked. Full fresh ELFs/listings remain `/tmp`; no original execution.
+Initial link audit742 Markdown files/0 broken; later shared audit743 files found
+one unrelated new underground link pending. All6 delivery Markdown files have
+0 broken links; whitespace checks pass. Docs/metadata only:
+no make rerun, native change or code-body/bank export. Isolated index excludes
+unrelated worktree/staged work.
+
+Next/limits: whole SoundInit effects/loader/settings tail, child OS/AR/AI/DSP/IRQ/
+frame/seq/synth/stream/virtual-sample/3D, provider/size/reset/concurrency/failure
+and original startup/audio traces. Continue priority0 source/live SFX/calc3D,
+then priority1 damage graph. No hardware/audio/full-game completion claim.
+
 ## 2026-10-13 — Priority0 default cache, resource reset and hook installation
 
 Delivered [cache/reset/hook producers](behavior/audio/MUSYX_DEFAULT_CACHE_RESOURCE_RESET_AND_HOOK_INSTALLATION.md).

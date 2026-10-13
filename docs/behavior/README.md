@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Game allocator/MusyX bootstrap](audio/GAME_AUDIO_ALLOCATOR_AND_MUSYX_BOOTSTRAP.md) | Four complete provider/sndInit/hwInit bodies; original hook table and scoped SoundInit prefix | Whole game init/child hardware/synth/stream/source/failure/runtime |
 | [MusyX cache/reset/hook producers](audio/MUSYX_DEFAULT_CACHE_RESOURCE_RESET_AND_HOOK_INSTALLATION.md) | Complete default stack/cache publication, six registry counts/macro table reset, allocator hooks and upload forwarding | Actual setup callers/providers, alias/reset/residency domains and original runtime |
 | [MusyX ARAM upload/stream bridge](audio/MUSYX_ARAM_UPLOAD_AND_HARDWARE_STREAM_BRIDGE.md) | Complete raw generic upload, high/low queue and aligned DCStoreRange stream flush/init/exit/address;25 direct DOL callers | Stream caller/providers/extent/lifetime and SDK/cache/DMA/original execution |
 | [MusyX ARAM initialization/hooks](audio/MUSYX_ARAM_INITIALIZATION_AND_ALLOCATOR_HOOKS.md) | Complete zero-buffer allocation/fill/post/wait/free, limits/reset ordering and indirect hooks | Hook/provider/SDK/queue reinit/concurrency and original DMA/runtime |
