@@ -6039,7 +6039,10 @@ Validation:
   a fight result; screenshots supplement the host initialization assertions.
 - Original unskipped37-message demo completed its final input gate before the
   paper depth fix; focused corrected fold/rune/back/narration captures are in
-  artifacts/azahar-original-paper-depth. Full corrected unskipped repeat remains.
+  artifacts/azahar-original-paper-depth. The corrected full230-second demo now
+  reaches its final input guard; B retains the demo and A enters title, captured
+  in artifacts/azahar-corrected-full-demo. Screenshots supplement host exact-ID
+  and guard assertions; they are not full original-image/timing parity.
 - make debug-short passed; isolated25-second boot in
   artifacts/azahar-opening-debug-short-long shows direct development field.
   The earlier5-second capture was still blank during initial loading.
@@ -6057,7 +6060,7 @@ New2DS hardware parity are not claimed.
 
 Next: bind legitimate source startup/first-turn/command/Jump owner and full
 damage/reaction services; retain fresh pouch through the actual field/save path; then real battle end and
-original field continuation. Repeat the full corrected unskipped demo. Finish
+original field continuation. Finish
 original cover geometry/outer projection, fade/light/tree/environment, sound and
 crystal/radiation consumers; profile actual New2DS memory/performance. The goal
 remains incomplete while the real harbor fight/return and these scene services
