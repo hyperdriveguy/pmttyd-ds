@@ -561,6 +561,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [fade/stop/deferred close](../behavior/audio/GAME_STREAM_FADE_STOP_AND_DEFERRED_CLOSE.md).
   Signed GP/half duration/ordered step, nested counter/flag-before-close/free/
   fresh decrement/global invalidation pinned; consumers/runtime open.
+- [x] Complete SoundSSSetPlayFreqCh — [game frequency](../behavior/audio/GAME_STREAM_FREQUENCY_CACHE_AND_REQUESTS.md).
+  Halfword-before-fresh-flag8, shared counter, post-primary type/frequency
+  rereads and conditional dual request/restore pinned; providers/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2790,3 +2793,13 @@ time-set/four close vectors checked. Signed GP/duration/minimum step, raw counte
 wrap/fresh decrement, flags-before-deferred-DVD/stream-free and global marker
 order pinned. Consumers/GP/counter/IO/provider/FP domains/original stop/audio/
 native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Game stream frequency cache/request delivery
+
+Completed whole local
+[game frequency wrapper](../behavior/audio/GAME_STREAM_FREQUENCY_CACHE_AND_REQUESTS.md).
+Four spans/53 anchors/four calls verified; six narrowing/seven gate/four fresh-
+request/six counter vectors checked. Cached low16 before immediate gate, fresh
+primary/conditional secondary frequency/type and counter wrap/restore order
+pinned. Engine/providers/IRQ domains/original frequency/audio/native binding
+remain open; EVT-01 stays OPEN.

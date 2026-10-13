@@ -103,3 +103,9 @@ Remaining: fade/stop consumers, GP/time/counter/marker/base/flag/table/handle/
 stream-ID/type providers, deferred DVD close owner, valid value/extent/alias/
 lifetime/IRQ/concurrency/FP domains, decoder/DVD/DMA/ARAM/DSP and original fade/
 stop/IO/audio traces. Four local bodies answered; EVT-01/native/full game OPEN.
+
+## 2026-10-13 — Game frequency follow-up
+
+[Game frequency](GAME_STREAM_FREQUENCY_CACHE_AND_REQUESTS.md) closes the frequency wrapper using the same
+shared counter, with fresh conditional dual-ID requests. Engine/providers/IRQ
+domains/original frequency/audio/native binding remain open.

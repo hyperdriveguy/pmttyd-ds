@@ -1,0 +1,312 @@
+{
+  "schema": 1,
+  "scope": "Complete game stream frequency cache/flag8/IRQ/fresh dual-ID requests; channel/counter/providers/runtime open",
+  "complete_bodies": [
+    "SoundSSSetPlayFreqCh"
+  ],
+  "linked_only": [
+    "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+    "sndStreamFrq",
+    "OSRestoreInterrupts"
+  ],
+  "dol_spans": [
+    {
+      "name": "SoundSSSetPlayFreqCh",
+      "address": 2148391296,
+      "size": 212,
+      "sha256": "bff48a2c4ff9cd0f4e5d95101f6a7122724d7c18a4ed2b932ba5e1ca610a6791"
+    },
+    {
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+      "address": 2150210260,
+      "size": 20,
+      "sha256": "91253610f8caa4988f3df8595ccfc6e5eafaf0b6df1b302668555ab7d528b1bc"
+    },
+    {
+      "name": "sndStreamFrq",
+      "address": 2150088056,
+      "size": 1640,
+      "sha256": "318d5e82cb8b366f2740fd9730f36faa5f7d444a539072df91e296eac48c7201"
+    },
+    {
+      "name": "OSRestoreInterrupts",
+      "address": 2150210300,
+      "size": 36,
+      "sha256": "54db610a580003e2db23e460425f4662f4f4e7a4da3ae6f89a632df9e52b427a"
+    }
+  ],
+  "dol_anchors": {
+    "2148391304": "3ca0803e",
+    "2148391308": "90010014",
+    "2148391316": "93e1000c",
+    "2148391320": "3be50138",
+    "2148391324": "93c10008",
+    "2148391328": "807f0100",
+    "2148391344": "4182008c",
+    "2148391348": "b09e0018",
+    "2148391360": "4182007c",
+    "2148391372": "40820014",
+    "2148391376": "481bc105",
+    "2148391380": "3c80803e",
+    "2148391384": "38840138",
+    "2148391388": "90640210",
+    "2148391396": "38030001",
+    "2148391400": "b01f020c",
+    "2148391404": "807e004c",
+    "2148391412": "4819e385",
+    "2148391424": "40820010",
+    "2148391428": "807e00d4",
+    "2148391436": "4819e36d",
+    "2148391448": "41820024",
+    "2148391452": "3863ffff",
+    "2148391460": "b07f020c",
+    "2148391464": "40820014",
+    "2148391468": "3c60803e",
+    "2148391472": "38630138",
+    "2148391476": "80630210",
+    "2148391480": "481bc0c5",
+    "2148391484": "80010014",
+    "2148391488": "83e1000c",
+    "2148391492": "83c10008",
+    "2148391500": "38210010",
+    "2148391296": "9421fff0",
+    "2148391300": "7c0802a6",
+    "2148391312": "1c030138",
+    "2148391332": "7fc30214",
+    "2148391336": "a01e0000",
+    "2148391340": "28000000",
+    "2148391352": "a01e0000",
+    "2148391356": "54000739",
+    "2148391364": "a01f020c",
+    "2148391368": "28000000",
+    "2148391392": "a07f020c",
+    "2148391408": "a09e0018",
+    "2148391416": "a01e001a",
+    "2148391420": "28000002",
+    "2148391432": "a09e0018",
+    "2148391440": "a07f020c",
+    "2148391444": "28030000",
+    "2148391456": "5460043f",
+    "2148391496": "7c0803a6",
+    "2148391504": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2148391376,
+      "target": 2150210260,
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi"
+    },
+    {
+      "site": 2148391412,
+      "target": 2150088056,
+      "name": "sndStreamFrq"
+    },
+    {
+      "site": 2148391436,
+      "target": 2150088056,
+      "name": "sndStreamFrq"
+    },
+    {
+      "site": 2148391480,
+      "target": 2150210300,
+      "name": "OSRestoreInterrupts"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "record_binding": {
+    "base_pointer_word": 2151547448,
+    "stride": 312,
+    "flags_half": 0,
+    "frequency_half": 24,
+    "type_half": 26,
+    "primary_id_word": 76,
+    "secondary_id_word": 212,
+    "counter_half": 2151547716,
+    "saved_irq_word": 2151547720
+  },
+  "derived_frequency_vectors": [
+    {
+      "input_word": 0,
+      "stored_half": 0,
+      "requested_first_word": 0
+    },
+    {
+      "input_word": 32000,
+      "stored_half": 32000,
+      "requested_first_word": 32000
+    },
+    {
+      "input_word": 48000,
+      "stored_half": 48000,
+      "requested_first_word": 48000
+    },
+    {
+      "input_word": 65535,
+      "stored_half": 65535,
+      "requested_first_word": 65535
+    },
+    {
+      "input_word": 65536,
+      "stored_half": 0,
+      "requested_first_word": 0
+    },
+    {
+      "input_word": 4294967295,
+      "stored_half": 65535,
+      "requested_first_word": 65535
+    }
+  ],
+  "derived_gate_vectors": [
+    {
+      "initial_flags": 0,
+      "fresh_flags": 8,
+      "post_primary_type": 2,
+      "stores_frequency": false,
+      "enters_irq": false,
+      "primary_requests": 0,
+      "secondary_requests": 0
+    },
+    {
+      "initial_flags": 1,
+      "fresh_flags": 1,
+      "post_primary_type": 2,
+      "stores_frequency": true,
+      "enters_irq": false,
+      "primary_requests": 0,
+      "secondary_requests": 0
+    },
+    {
+      "initial_flags": 2,
+      "fresh_flags": 2,
+      "post_primary_type": 2,
+      "stores_frequency": true,
+      "enters_irq": false,
+      "primary_requests": 0,
+      "secondary_requests": 0
+    },
+    {
+      "initial_flags": 8,
+      "fresh_flags": 8,
+      "post_primary_type": 0,
+      "stores_frequency": true,
+      "enters_irq": true,
+      "primary_requests": 1,
+      "secondary_requests": 0
+    },
+    {
+      "initial_flags": 8,
+      "fresh_flags": 8,
+      "post_primary_type": 2,
+      "stores_frequency": true,
+      "enters_irq": true,
+      "primary_requests": 1,
+      "secondary_requests": 1
+    },
+    {
+      "initial_flags": 65535,
+      "fresh_flags": 65535,
+      "post_primary_type": 2,
+      "stores_frequency": true,
+      "enters_irq": true,
+      "primary_requests": 1,
+      "secondary_requests": 1
+    },
+    {
+      "initial_flags": 8,
+      "fresh_flags": 0,
+      "post_primary_type": 2,
+      "stores_frequency": true,
+      "enters_irq": false,
+      "primary_requests": 0,
+      "secondary_requests": 0
+    }
+  ],
+  "derived_fresh_request_vectors": [
+    {
+      "initial_input": 32000,
+      "first_frequency": 32000,
+      "post_primary_frequency": 32000,
+      "post_primary_type": 2,
+      "second_frequency": 32000
+    },
+    {
+      "initial_input": 48000,
+      "first_frequency": 48000,
+      "post_primary_frequency": 44100,
+      "post_primary_type": 2,
+      "second_frequency": 44100
+    },
+    {
+      "initial_input": 65536,
+      "first_frequency": 0,
+      "post_primary_frequency": 65535,
+      "post_primary_type": 2,
+      "second_frequency": 65535
+    },
+    {
+      "initial_input": 48000,
+      "first_frequency": 48000,
+      "post_primary_frequency": 44100,
+      "post_primary_type": 0,
+      "second_frequency": null
+    }
+  ],
+  "derived_counter_vectors": [
+    {
+      "initial": 0,
+      "entry_fresh": 0,
+      "local_disable": true,
+      "incremented": 1,
+      "before_leave": 1,
+      "stored_leave": 0,
+      "local_restore": true
+    },
+    {
+      "initial": 1,
+      "entry_fresh": 1,
+      "local_disable": false,
+      "incremented": 2,
+      "before_leave": 2,
+      "stored_leave": 1,
+      "local_restore": false
+    },
+    {
+      "initial": 65535,
+      "entry_fresh": 65535,
+      "local_disable": false,
+      "incremented": 0,
+      "before_leave": 0,
+      "stored_leave": null,
+      "local_restore": false
+    },
+    {
+      "initial": 0,
+      "entry_fresh": 0,
+      "local_disable": true,
+      "incremented": 1,
+      "before_leave": 0,
+      "stored_leave": null,
+      "local_restore": false
+    },
+    {
+      "initial": 1,
+      "entry_fresh": 1,
+      "local_disable": false,
+      "incremented": 2,
+      "before_leave": 1,
+      "stored_leave": 0,
+      "local_restore": true
+    },
+    {
+      "initial": 0,
+      "entry_fresh": 65535,
+      "local_disable": true,
+      "incremented": 0,
+      "before_leave": 0,
+      "stored_leave": null,
+      "local_restore": false
+    }
+  ]
+}

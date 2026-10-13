@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero game stream frequency
+
+Completed SoundSSSetPlayFreqCh; checked EVT-01 portion.
+[Game frequency](behavior/audio/GAME_STREAM_FREQUENCY_CACHE_AND_REQUESTS.md)
+pins halfword-before-fresh-flag8, shared counter, primary/conditional secondary
+post-child frequency/type rereads and restore order. Engine/providers/IRQ domains/
+original frequency/audio/native binding remain open.
+
+Validation: read-only ISO manifest passed four spans,53 anchors,four calls.
+Six narrowing/seven gate/four fresh-request/six counter vectors checked. Link
+audit passed914 Markdown files/zero broken links; scoped `git diff --check`
+passed. Mathematical source deductions are separate from original execution.
+Documentation/metadata only; no `make test`/`make all` rerun. Fresh full original
+ELF/listing/generator stay `/tmp`; no bodies/binary assets committed. Concurrent
+native edits excluded. Previously approved push remains pending invalid GitHub
+credentials.
+
+Next: priority-zero EVT-01 game stream pan/volume/engine/play/callbacks and actual
+channel/base/flag/frequency/type/ID/counter/saved-state providers and valid
+value/extent/alias/lifetime/IRQ/concurrency domains, transitive ARAM/AI/DSP and
+original frequency/dual-stream/IRQ/audio traces. Remaining macro/song/backend,
+lower-priority inbox and full native/game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero game stream fade/stop
 
 Completed SoundSSFadeoutCh/StopCh/SoundSetFadeTime/DVDMgrClose; checked EVT-01
