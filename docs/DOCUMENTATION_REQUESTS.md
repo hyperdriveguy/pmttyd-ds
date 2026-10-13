@@ -3494,6 +3494,19 @@ existing spatial/psndSFX/audio requests stay open. This entry adds no native/
 test/CMake change (docs-only;latest recorded host state87 CTest/90 Python and
 make all passing).
 
+Documentation answer (2026-10-12, no lock, static artifacts only):
+[Jump SFX provenance](behavior/battle/BATTLE_JUMP_SFX_PROVENANCE.md). 1a: the
+0x802EE470 block is `vec3_802ee470` (battle_event_cmd.o, .rodata vec3) reading
+all-zero from the ISO by two independent offsets — zero scratch, not a key
+row; the packed JumpPosition body never references 0x802E absolutely, so
+runtime writers are unidentified and the neighbor words it loads once are dead
+before the call. 1b: U+0x18C key via LoadSeMode (existing sound-mode doc) with
+a two-call psndSFXOn_3D record (key + unit-340/344/348 position block; second
+call inherits r3, no landing cue in-body). 1c: no Gekko PS math ops in
+801093a8 (paired-singles are spill/restore only); trig via system_angleABf/
+distABf; FPSCR entry unobservable. Runtime writers, signature, value domain
+and audio output remain open. No native/test/CMake/asset change by this answer.
+
 Native implementation source audit / documentation request (2026-10-12),
 field/AC-03:source/water_recovery.cpp implements ordinary-Mario water/void
 return-fall (mot_damage water motion31 and mot_bottomless motion33) as portable
