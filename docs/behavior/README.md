@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Underground trio ordinary EXP ending tail](battle/UNDERGROUND_TRIO_NO_LEVEL_UP_ENDING_TAIL.md) | Exact0c..1f timers, independent effect softdelete, actual body/voice gates, fade10 completion, Rule0 and ordered pouch/field export | Native effect/GX/fade/audio/field reconstruction cadence; level-up/zeroEXP/special branches |
+| [Stream header allocation/cache/composition](audio/GAME_STREAM_HEADER_ALLOCATION_CACHE_AND_COMPOSITION.md) | Complete tail/whole627-word callback; zeroing/raw allocation/fade/mix/cache order | _sscallback/manager/providers/original startup/audio |
 | [Stream header initial reads/pending](audio/GAME_STREAM_HEADER_INITIAL_READS_AND_PENDING_PUBLICATION.md) | Complete initial-read region; storage gate/chunk/fresh type/request-before-count/pending | Whole allocation/cache continuation/providers/original IO/audio |
 | [Stream header match/fields/format prefix](audio/GAME_STREAM_HEADER_MATCH_FIELDS_AND_FORMAT_PREFIX.md) | Complete prefix/exit ABI; unmatched third row/field narrowing/sentinel/format/copies/reset | Whole callback continuation/providers/original header playback |
 | [EXP icon clock and original window frame](display/EXP_ICON_CLOCK_AND_TYPE0_WINDOW_FRAME.md) | Per-record404 creation/reset/six-call delay, same-pass outer cadence, original nine-slice36vertices/UV/material and72pxCMPR frame | Native icon inner draw, source camera/GX/palette scheduling and original raster comparison |

@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero stream header whole callback
+
+Completed allocation/zeroing/mix/cache tail and whole SoundSSPlayChEx_main;
+checked EVT-01 local completion while keeping original/provider binding open.
+[Tail/composition](behavior/audio/GAME_STREAM_HEADER_ALLOCATION_CACHE_AND_COMPOSITION.md)
+pins fixed zeroing, raw allocation failure publication, deferred callbacks,
+fade/mix recapture and fresh cache setup. _sscallback/manager/providers/original
+startup/audio/native binding remain open.
+
+Validation: read-only ISO new manifest passed eleven spans,253 anchors,ten calls.
+Prefix/initial-read manifests reverified; all627 disjoint words cover complete
+9cc-byte callback, independently checked against ISO. Six zero/five allocation/
+five secondary/six cache/four mix vectors, ABI/callback/publication sites checked;
+allocation/pan child pins reverified. Link audit passed927 Markdown files/zero
+broken links; scoped diff check passed. Mathematical deductions separate from
+original execution. Docs/metadata only; no make test/all rerun. Fresh full ELF/
+listing/scoped generator stay /tmp; no bodies/assets committed. Concurrent native
+work excluded. Approved push remains pending valid GitHub credentials.
+
+Next: priority-zero EVT-01 _sscallback/deferred DVD manager and actual providers/
+value/extent/alias/lifetime/IRQ/concurrency/ABI/FP domains, transitive SDK/ARAM/AI/
+DSP and original allocation-failure/cache/short-read/callback/startup/audio traces.
+Other inbox/native/full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero stream header initial reads
 
 Completed SoundSSPlayChEx_main initial-read region; checked EVT-01 portion.

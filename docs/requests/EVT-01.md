@@ -592,8 +592,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] SoundSSPlayChEx_main initial-read region — [initial reads](../behavior/audio/GAME_STREAM_HEADER_INITIAL_READS_AND_PENDING_PUBLICATION.md).
   Cache gate/full chunk/independent storage paths/fresh post-primary type and
   count/pending after IO pinned; whole callback allocation/cache remains open.
-- [ ] SoundSSPlayChEx_main allocation/zeroing/cache continuation and
-  original header/resource/provider/validity/execution binding.
+- [x] SoundSSPlayChEx_main allocation/zeroing/cache continuation and whole
+  local callback — [tail/composition](../behavior/audio/GAME_STREAM_HEADER_ALLOCATION_CACHE_AND_COMPOSITION.md).
+  All627 words covered; raw allocation results/fade/mix/cache ordering pinned.
+- [ ] _sscallback, deferred DVD manager and original header/resource/provider/
+  validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2959,3 +2962,13 @@ chunk/seven admission/four type/six pending vectors and publication sites checke
 Prefix/chunk pins reverified. Fresh post-primary type, independent storage flags
 and request-before-count/pending pinned. Allocation/zeroing/cache continuation/
 providers/original IO/audio/native binding open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream header allocation/cache and whole-body delivery
+
+Completed [tail and whole callback composition](../behavior/audio/GAME_STREAM_HEADER_ALLOCATION_CACHE_AND_COMPOSITION.md).
+New eleven spans/253 anchors/ten calls; earlier prefix/initial reads reverified;
+all627 disjoint words verified. Six zero/five allocation/five secondary/six cache/
+four mix vectors and ABI/callback/publication sites checked; allocation/pan pins
+reverified. Raw failure results still publish IDs/flags, fixed zeroing precedes
+allocation and fresh cache reads follow mix. _sscallback/manager/providers/
+original startup/audio/native binding open; EVT-01 stays OPEN.
