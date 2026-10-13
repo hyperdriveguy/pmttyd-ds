@@ -398,6 +398,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   region — [DSP ramp consumers](../behavior/audio/MUSYX_DSP_VOLUME_RAMP_CONSUMERS.md).
   Nine component bindings/dirty/correction/mask/studio cross-triplet order
   pinned; whole builder/provider/domain/original DSP/audio remain open.
+- [x] Complete hwSetFilter/hwLowPassFrqToCoef and DSP ITD/SRC/
+  polyphase/filter parameter-copy region — [filter/DSP parameters](../behavior/audio/MUSYX_FILTER_COEFFICIENTS_AND_DSP_PARAMETERS.md).
+  Mode state/single child order/output halves/fresh copy gates pinned;
+  math/domain/whole builder/original filter/DSP/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2199,3 +2203,12 @@ six decoded clear masks/nine component bindings checked. Dirty versus residual
 paths, fresh level/status decisions, studio exceptions and alternate C dependency
 on B2 pinned. Parent EVT-01 stays OPEN; full builder/domain/DSP/audio execution
 remains separate from local flag/mask/request behavior.
+
+## 2026-10-13 — Filter coefficient/DSP parameter delivery
+
+Completed two bodies/one region in [filter/DSP parameters](../behavior/audio/MUSYX_FILTER_COEFFICIENTS_AND_DSP_PARAMETERS.md).
+Thirteen spans/80 anchors/two calls verified;27 state/gate/scale/clamp vectors
+and seven numeric literals retained. Exact low-byte1 admission, raw active-byte
+preservation, single math request/conversion/output order and five independent
+DSP copy gates pinned. Math/FPSCR/caller/domain/command/original filter/audio
+remain open. Parent EVT-01 stays OPEN.

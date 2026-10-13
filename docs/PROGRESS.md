@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero filter coefficients/DSP parameters
+
+Completed hwSetFilter/hwLowPassFrqToCoef and the builder's five parameter-copy
+gates; checked the EVT-01 portion.
+[Filter/DSP parameters](behavior/audio/MUSYX_FILTER_COEFFICIENTS_AND_DSP_PARAMETERS.md)
+pins exact low-byte1 mode admission/raw active-byte preservation, unsigned/single
+math child/conversion/output order and fresh ITD/SRC/polyphase/filter gates.
+Math/FPSCR/domain/whole builder/command/original filter/DSP/audio remain open.
+
+Validation: read-only ISO manifest passed13 spans (two bodies/three linked/one
+region/seven numeric literals),80 anchors/two calls. Nine setter-state/seven
+consumer-gate/five input-scaling/six synthetic final-clamp vectors checked. Link
+audit passed847 Markdown files/zero broken links; scoped `git diff --check`
+passed. Documentation/metadata only; no `make test`/`make all` rerun. Full original
+fresh ELFs/listings stay `/tmp`; no bodies/binary assets committed. Concurrent
+native edits excluded.
+
+Next: priority-zero EVT-01 sndCos/sndSqrt/source math/FPSCR/transitive execution,
+actual frequency/mode/coefficient/flag/record/PB/type/value/alias/lifetime/IRQ/
+concurrency domains, surrounding builder setup/cache/command consumers and
+original filter/parameter/DSP/audio traces. Remaining DSP/precision work,
+lower-priority inbox and full native/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero DSP volume-ramp consumers
 
 Completed salBuildCommandList three-triplet prepare/correct/mask region;

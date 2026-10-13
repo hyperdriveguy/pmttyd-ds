@@ -139,3 +139,9 @@ regions, actual desired/host/PB flag/mode/mask/index/record/alias/lifetime/IRQ/
 concurrency domains, original ramp/mask/command/DSP/audio traces and complete
 native binding. One local three-triplet consumer region answered; whole builder
 and EVT-01 remain OPEN.
+
+## 2026-10-13 — Following DSP parameter region
+
+[Filter/DSP parameters](MUSYX_FILTER_COEFFICIENTS_AND_DSP_PARAMETERS.md) closes the next ITD/SRC/polyphase/filter
+copy region and filter setter/coefficient wrapper. Full math/FP/caller domains,
+surrounding builder/command execution and original DSP/audio remain open.

@@ -1,0 +1,417 @@
+{
+  "schema": 1,
+  "scope": "Complete filter setter/coefficient wrapper and DSP parameter publication region; math/domain/runtime open",
+  "complete_bodies": [
+    "hwSetFilter",
+    "hwLowPassFrqToCoef"
+  ],
+  "linked_only": [
+    "sndCos",
+    "sndSqrt",
+    "salBuildCommandList"
+  ],
+  "dol_spans": [
+    {
+      "name": "hwSetFilter",
+      "address": 2150174324,
+      "size": 128,
+      "sha256": "a168dafcaa90132a8b3c2b4a8179ef6fd6c2e76b3013053a1cf5c911710a69cb"
+    },
+    {
+      "name": "hwLowPassFrqToCoef",
+      "address": 2150174076,
+      "size": 248,
+      "sha256": "eddfb83bad2414e770b215b7a20eb28dc91bd57538b265542e88cfd0920b5a46"
+    },
+    {
+      "name": "sndCos",
+      "address": 2150171772,
+      "size": 212,
+      "sha256": "d0aed78db10fd0a33fed848fd314915b8c9efe3f530da1638a498dcb0b97f8c4"
+    },
+    {
+      "name": "sndSqrt",
+      "address": 2150171688,
+      "size": 84,
+      "sha256": "a64b56636e91c47b60b433fde100be8cdbe70cd72d8b170d32dc342e61f3eb1d"
+    },
+    {
+      "name": "salBuildCommandList",
+      "address": 2150141440,
+      "size": 9720,
+      "sha256": "14f94e450a1f0069db5607b861a7dbe8e8e3c98d59ecba707574284c12ee920b"
+    },
+    {
+      "name": "dsp_parameter_publication",
+      "address": 2150146752,
+      "size": 148,
+      "sha256": "bccb02c0a59d0686f03ff35920ec44b75fa0683445ec324227c6afc6ce430e10"
+    },
+    {
+      "name": "float_2_804292a8",
+      "address": 2151846568,
+      "size": 4,
+      "sha256": "c31425b44a7ed682a3356bf6820141e1584a15c43b6d6793f552e5d4621586f7"
+    },
+    {
+      "name": "float_6p2832_804292ac",
+      "address": 2151846572,
+      "size": 4,
+      "sha256": "b98b1dc54619f9fabdef9645d1ba7edf720799180d5049bea9155fb0245ca3e2"
+    },
+    {
+      "name": "float_32000_804292b0",
+      "address": 2151846576,
+      "size": 4,
+      "sha256": "da53a6ae0f1fe080d3b45e5e2b201dd7755ecdb5516bc317f40b28280ae4a80b"
+    },
+    {
+      "name": "float_1_804292b4",
+      "address": 2151846580,
+      "size": 4,
+      "sha256": "de620abd6d3615746360c1d15ce3a56291236d37424124054a49d25e947ffc4d"
+    },
+    {
+      "name": "float_neg1_804292b8",
+      "address": 2151846584,
+      "size": 4,
+      "sha256": "b705efea49cb3296c6f0417c21fe14f10adb140333fd79d7cfc3318904f887ea"
+    },
+    {
+      "name": "float_32768_804292bc",
+      "address": 2151846588,
+      "size": 4,
+      "sha256": "0ab677189bbd88d8d69abceb88946f32a36333b36d4e75cb1ae69ef3c4cf1fc2"
+    },
+    {
+      "name": "double_to_int_mask_804292c0",
+      "address": 2151846592,
+      "size": 8,
+      "sha256": "2b2979f362d94c89fe17a6e01637f14332de063fe7a544bdc5facfc046f4169f"
+    }
+  ],
+  "dol_anchors": {
+    "2150174328": "806d2068",
+    "2150174336": "880300d4",
+    "2150174344": "40820030",
+    "2150174360": "38000001",
+    "2150174364": "980300d4",
+    "2150174368": "b0a300d6",
+    "2150174372": "b0c300d8",
+    "2150174376": "80030024",
+    "2150174384": "90030024",
+    "2150174400": "4082001c",
+    "2150174404": "b0a300d6",
+    "2150174408": "b0c300d8",
+    "2150174412": "80030024",
+    "2150174420": "90030024",
+    "2150174428": "38000000",
+    "2150174432": "980300d4",
+    "2150174436": "80030024",
+    "2150174444": "90030024",
+    "2150174084": "90010044",
+    "2150174088": "dbe10030",
+    "2150174096": "93e1002c",
+    "2150174100": "93c10028",
+    "2150174104": "3c004330",
+    "2150174108": "9061000c",
+    "2150174120": "90010008",
+    "2150174152": "4bfff6b5",
+    "2150174172": "40810018",
+    "2150174184": "4bfff641",
+    "2150174192": "48000008",
+    "2150174208": "40810008",
+    "2150174212": "48000018",
+    "2150174224": "40800008",
+    "2150174228": "48000008",
+    "2150174268": "d8010018",
+    "2150174272": "d8210010",
+    "2150174276": "8001001c",
+    "2150174280": "80610014",
+    "2150174284": "b07e0000",
+    "2150174288": "b01f0000",
+    "2150174296": "80010044",
+    "2150174304": "83e1002c",
+    "2150174308": "83c10028",
+    "2150174316": "38210040",
+    "2150146752": "801d0024",
+    "2150146756": "540005ad",
+    "2150146760": "41820014",
+    "2150146764": "a01d00d0",
+    "2150146768": "b0130040",
+    "2150146772": "a01d00d2",
+    "2150146776": "b0130042",
+    "2150146780": "801d0024",
+    "2150146784": "540005ef",
+    "2150146788": "4182000c",
+    "2150146792": "a01d00cc",
+    "2150146796": "b0130008",
+    "2150146800": "801d0024",
+    "2150146804": "54000631",
+    "2150146808": "4182000c",
+    "2150146812": "a01d00ce",
+    "2150146816": "b013000a",
+    "2150146820": "801d0024",
+    "2150146824": "5400056b",
+    "2150146828": "41820020",
+    "2150146832": "889d00d4",
+    "2150146836": "38000000",
+    "2150146840": "7c6400d0",
+    "2150146844": "7c632378",
+    "2150146848": "54630ffe",
+    "2150146852": "b07300ba",
+    "2150146856": "b01300bc",
+    "2150146860": "801d0024",
+    "2150146864": "54000529",
+    "2150146868": "41820020",
+    "2150146872": "881d00d4",
+    "2150146876": "28000000",
+    "2150146880": "41820014",
+    "2150146884": "a01d00d6",
+    "2150146888": "b01300be",
+    "2150146892": "a01d00d8",
+    "2150146896": "b01300c0"
+  },
+  "direct_calls": [
+    {
+      "site": 2150174152,
+      "target": 2150171772,
+      "name": "sndCos"
+    },
+    {
+      "site": 2150174184,
+      "target": 2150171688,
+      "name": "sndSqrt"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "complete_regions": [
+    {
+      "name": "dsp_parameter_publication",
+      "address": 2150146752,
+      "size": 148
+    }
+  ],
+  "numeric_literals": {
+    "float_2_804292a8": 2.0,
+    "float_6p2832_804292ac": 6.2831854820251465,
+    "float_32000_804292b0": 32000.0,
+    "float_1_804292b4": 1.0,
+    "float_neg1_804292b8": -1.0,
+    "float_32768_804292bc": 32768.0,
+    "double_to_int_mask_804292c0": 4503599627370496.0
+  },
+  "derived_filter_mode_vectors": [
+    {
+      "old_active": 0,
+      "raw_mode": 0,
+      "no_op": true,
+      "new_active": 0,
+      "writes_coefficients": false,
+      "dirty_or": 0
+    },
+    {
+      "old_active": 0,
+      "raw_mode": 1,
+      "no_op": false,
+      "new_active": 1,
+      "writes_coefficients": true,
+      "dirty_or": 3072
+    },
+    {
+      "old_active": 0,
+      "raw_mode": 2,
+      "no_op": true,
+      "new_active": 0,
+      "writes_coefficients": false,
+      "dirty_or": 0
+    },
+    {
+      "old_active": 1,
+      "raw_mode": 0,
+      "no_op": false,
+      "new_active": 0,
+      "writes_coefficients": false,
+      "dirty_or": 1024
+    },
+    {
+      "old_active": 1,
+      "raw_mode": 1,
+      "no_op": false,
+      "new_active": 1,
+      "writes_coefficients": true,
+      "dirty_or": 2048
+    },
+    {
+      "old_active": 2,
+      "raw_mode": 1,
+      "no_op": false,
+      "new_active": 2,
+      "writes_coefficients": true,
+      "dirty_or": 2048
+    },
+    {
+      "old_active": 255,
+      "raw_mode": 2,
+      "no_op": false,
+      "new_active": 0,
+      "writes_coefficients": false,
+      "dirty_or": 1024
+    },
+    {
+      "old_active": 0,
+      "raw_mode": 257,
+      "no_op": false,
+      "new_active": 1,
+      "writes_coefficients": true,
+      "dirty_or": 3072
+    },
+    {
+      "old_active": 1,
+      "raw_mode": 256,
+      "no_op": false,
+      "new_active": 0,
+      "writes_coefficients": false,
+      "dirty_or": 1024
+    }
+  ],
+  "derived_consumer_vectors": [
+    {
+      "flags": 0,
+      "active": 0,
+      "copies_itd": false,
+      "copies_src": false,
+      "copies_polyphase": false,
+      "publishes_filter_enable": false,
+      "filter_enable_half": null,
+      "copies_filter_coefficients": false
+    },
+    {
+      "flags": 3968,
+      "active": 0,
+      "copies_itd": true,
+      "copies_src": true,
+      "copies_polyphase": true,
+      "publishes_filter_enable": true,
+      "filter_enable_half": 0,
+      "copies_filter_coefficients": false
+    },
+    {
+      "flags": 3968,
+      "active": 1,
+      "copies_itd": true,
+      "copies_src": true,
+      "copies_polyphase": true,
+      "publishes_filter_enable": true,
+      "filter_enable_half": 1,
+      "copies_filter_coefficients": true
+    },
+    {
+      "flags": 2048,
+      "active": 0,
+      "copies_itd": false,
+      "copies_src": false,
+      "copies_polyphase": false,
+      "publishes_filter_enable": false,
+      "filter_enable_half": null,
+      "copies_filter_coefficients": false
+    },
+    {
+      "flags": 2048,
+      "active": 255,
+      "copies_itd": false,
+      "copies_src": false,
+      "copies_polyphase": false,
+      "publishes_filter_enable": false,
+      "filter_enable_half": null,
+      "copies_filter_coefficients": true
+    },
+    {
+      "flags": 1024,
+      "active": 2,
+      "copies_itd": false,
+      "copies_src": false,
+      "copies_polyphase": false,
+      "publishes_filter_enable": true,
+      "filter_enable_half": 1,
+      "copies_filter_coefficients": false
+    },
+    {
+      "flags": 512,
+      "active": 0,
+      "copies_itd": true,
+      "copies_src": false,
+      "copies_polyphase": false,
+      "publishes_filter_enable": false,
+      "filter_enable_half": null,
+      "copies_filter_coefficients": false
+    }
+  ],
+  "derived_scale_vectors": [
+    {
+      "raw_frequency": 0,
+      "unsigned_single": 0.0,
+      "angle": 0.0
+    },
+    {
+      "raw_frequency": 1,
+      "unsigned_single": 1.0,
+      "angle": 0.0001963495451491326
+    },
+    {
+      "raw_frequency": 16000,
+      "unsigned_single": 16000.0,
+      "angle": 3.1415927410125732
+    },
+    {
+      "raw_frequency": 32000,
+      "unsigned_single": 32000.0,
+      "angle": 6.2831854820251465
+    },
+    {
+      "raw_frequency": 4294967295,
+      "unsigned_single": 4294967296.0,
+      "angle": 843314.875
+    }
+  ],
+  "derived_clamp_vectors": [
+    {
+      "raw_coefficient": -2.0,
+      "admitted_coefficient": -1.0,
+      "first_half": 0,
+      "second_half": 32768
+    },
+    {
+      "raw_coefficient": -1.0,
+      "admitted_coefficient": -1.0,
+      "first_half": 0,
+      "second_half": 32768
+    },
+    {
+      "raw_coefficient": -0.5,
+      "admitted_coefficient": -0.5,
+      "first_half": 16384,
+      "second_half": 16384
+    },
+    {
+      "raw_coefficient": 0.0,
+      "admitted_coefficient": 0.0,
+      "first_half": 32768,
+      "second_half": 0
+    },
+    {
+      "raw_coefficient": 1.0,
+      "admitted_coefficient": 1.0,
+      "first_half": 0,
+      "second_half": 32768
+    },
+    {
+      "raw_coefficient": 2.0,
+      "admitted_coefficient": 1.0,
+      "first_half": 0,
+      "second_half": 32768
+    }
+  ]
+}
