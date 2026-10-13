@@ -1,0 +1,141 @@
+{
+  "schema": 1,
+  "scope": "Static Hammer charge cue table/FX/macro/sample bindings; no macro execution or playback parity",
+  "assets": [
+    {
+      "path": "sound/proj/pmario.pool",
+      "size": 113992,
+      "sha256": "d0b12b497cee5718a5433285bdec8fcfe9b2dd25b1c1c0daa77ddb804cb7d1a0"
+    },
+    {
+      "path": "sound/proj/pmario.proj",
+      "size": 28080,
+      "sha256": "f00a06f50bd9da5769f07fa751c2e4ae3731f3e0850236d62cd901c7f8eccdeb"
+    },
+    {
+      "path": "sound/proj/pmario.sdir",
+      "size": 89788,
+      "sha256": "9529535398c5f7a839dd18f00c8e831957b26b5aab6a7bf83e5ee6acb5cb8496"
+    }
+  ],
+  "cues": [
+    {
+      "name": "SFX_AC_PI1",
+      "table_index": 2619,
+      "address": 2150774724,
+      "flags": 536871774,
+      "fx_id": 862,
+      "stream_alias": "",
+      "parameters": [
+        60,
+        64,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "group_bindings": [
+        {
+          "group_id": 6,
+          "object_id": 995,
+          "priority": 8,
+          "voices": 10,
+          "velocity": 127,
+          "pan": 64,
+          "key": 60,
+          "macro": {
+            "sample_ids": [
+              776
+            ],
+            "offset": 71704,
+            "size": 64,
+            "opcodes": [
+              56,
+              51,
+              16,
+              7,
+              17,
+              49,
+              0
+            ]
+          },
+          "macro_commands_sha256": "9721872fe0759a26b5f8ac439dd099615047241cf716f4c38b4fd9aba2d60be4",
+          "samples": [
+            {
+              "id": 776,
+              "record": 24832,
+              "record_sha256": "6f301c388ca9ef947ce62bf9e0b2a12b684ac12a169f0ff755a21837b5d441f3",
+              "rate": 16000,
+              "samples": 1526,
+              "loop": [
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SFX_AC_PONE1",
+      "table_index": 2620,
+      "address": 2150774744,
+      "flags": 536871773,
+      "fx_id": 861,
+      "stream_alias": "",
+      "parameters": [
+        70,
+        64,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "group_bindings": [
+        {
+          "group_id": 6,
+          "object_id": 994,
+          "priority": 8,
+          "voices": 10,
+          "velocity": 127,
+          "pan": 64,
+          "key": 60,
+          "macro": {
+            "sample_ids": [
+              775
+            ],
+            "offset": 71640,
+            "size": 64,
+            "opcodes": [
+              56,
+              51,
+              16,
+              7,
+              17,
+              49,
+              0
+            ]
+          },
+          "macro_commands_sha256": "0b804c1a7a61fe81799f492babb6d0f03f728c5d77e73c021a21ce6caa4ad1e5",
+          "samples": [
+            {
+              "id": 775,
+              "record": 24800,
+              "record_sha256": "d685f343bcbf510c0651b7796ae82fa2c1be02e33d3c269b0c97b7126c1d28f4",
+              "rate": 16000,
+              "samples": 5276,
+              "loop": [
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Hammer charge cue resources](audio/HAMMER_CHARGE_CUE_RESOURCE_BINDINGS.md) | Two actual original callers and table→FX→group/macro→sample identities, rates/lengths/loop fields | Full command/display/macro/backend execution and original charge/audio traces |
 | [SFX update/corrections](audio/POSITIONAL_SFX_UPDATE_OWNERS_AND_SOURCE_CORRECTIONS.md) | Complete psndMain cooldown owner; scoped SFXMain completion sweep/pending transition/preference tail; corrected source masks/ABI/dispatch | Full SFXMain middle/spatial/start/backend/resource and original execution |
 | [DMG-01 initialization/count binding](battle/DMG_01_INITIALIZATION_AND_JUMP_COUNT_BINDINGS.md) | Full local Entry/UnitSetup composition, signed HP/FP copies, original Jump shared count reset/success stores/readout | Other counters/loadout/mutations, full consumer graph and original multihit traces |
 | [EVT-01 service consolidation](event/EVT_01_SERVICE_CONTRACT_AND_REMAINING_BINDINGS.md) | Scheduler/constructor/wait composition, corrected leaf capture, conditional Jump root/registry and local menu writers | Original traces, query-specific cursor domains, dynamic/global/platform/numeric bindings |

@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original Hammer charge cue resource answer
+
+Delivered [two charge cue bindings](behavior/audio/HAMMER_CHARGE_CUE_RESOURCE_BINDINGS.md)
+and checked that portion of AC-02. Actual callers8012a4b0/4d8 resolve PI1/PONE1
+through table ordinals2619/2620, FX862/861, group6/macros995/994 and original
+samples776/775. Directory rate16000 and nonloop1526/5276 frame lengths are
+static dependencies, not a complete cue duration or substitute WAV playback.
+Three original bank asset hashes and derived metadata stay in a source manifest;
+no original macro bytes/PCM/ISO or new asset conversion enters history.
+
+Validation: `/tmp/verify_hammer_evidence.py` reparses original ISO rows/project/
+pool/directory, passing3 assets/2 cues/2 macro bindings/2 sample records and
+all1247 directory records. Generic DOL verifier passes14 spans/85 anchors,
+including full Hammer main/two caller instructions; complete behavior verifier
+passes (`/tmp/inbox-hammer-behavior-check.log`). Both existing ignored PCM
+counterparts exist. Link audit706 Markdown files/0 broken links; whitespace
+check passes. Documentation/metadata only; no make test/all rerun. Unrelated
+staged/worktree edits preserved outside this commit.
+
+Next/limits: full SFXMain spatial/start/volume/effect backend/MusyX execution,
+EVT-01 query-specific menu/source/global domains and original scheduler/audio
+traces remain open. AC-02 lifecycle/display/forced/suppression writers and
+original charge playback remain unchecked. Continue by inbox priority; no
+original runtime/hardware/full-game equivalence claim.
+
 ## 2026-10-13 — Priority0 positional-SFX correction and update producers
 
 Reinspected and rewrote original [provisioning](behavior/audio/POSITIONAL_SFX_SLOT_PROVISIONING.md),
