@@ -410,6 +410,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   prepass — [depop/fade/prepass](../behavior/audio/MUSYX_DEPOP_ACCUMULATION_FADE_AND_STUDIO_PREPASS.md).
   Nine accumulator bindings/wrapped clamp/residual fade/successor/callback/
   active/break/root order pinned; caller/domain/original DSP/audio open.
+- [x] Complete SortVoices and DSP list collection/reverse iteration
+  regions — [DSP sorting/collection](../behavior/audio/MUSYX_DSP_VOICE_SORT_AND_COLLECTION.md).
+  Unsigned key/pivot/recursive/tie/store order/64-slot binding pinned;
+  list/domain/budget/whole builder/original DSP/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2238,3 +2242,13 @@ and nine field bindings checked. Wrapped-then-clamped accumulation, residual
 fade, captured versus post-child successor reads, callback/sentinel/active/break
 checks and after-traversal root clear pinned. Fade callers/list providers/domain/
 original depop/DSP/audio remain open. Parent EVT-01 stays OPEN.
+
+## 2026-10-13 — DSP sorter/collection delivery
+
+Completed SortVoices and two caller regions in
+[DSP sorting/collection](../behavior/audio/MUSYX_DSP_VOICE_SORT_AND_COLLECTION.md).
+Six spans/180 instruction anchors/seven calls verified; eight identity/order/six
+midpoint vectors and3280 finite source-order model cases checked. Unsigned key
+partitioning, midpoint wrap, unstable ties, exact recursive order, unchecked
+64-slot collection and reverse consumption pinned. Parent EVT-01 stays OPEN;
+original list/priority/domain/budget/DSP/audio execution remains separate.

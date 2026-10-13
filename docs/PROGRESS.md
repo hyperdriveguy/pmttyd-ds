@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero DSP sorter/collection
+
+Completed SortVoices and builder list collection/reverse iteration regions;
+checked the EVT-01 portion.
+[DSP sorting/collection](behavior/audio/MUSYX_DSP_VOICE_SORT_AND_COLLECTION.md)
+pins unsigned keys/wrapped midpoint/pivot stores/exact recursive order/unstable
+ties, unchecked64-slot array and reverse consumption. Actual list/priority/index/
+alias domains, budget/admission/original DSP/audio remain open.
+
+Validation: read-only ISO manifest passed six spans (sorter/two regions/three
+linked),180 instruction anchors/seven calls plus reverse-load binding. Eight
+identity/order/six midpoint vectors and3280 source-order mathematical model
+cases checked for unsigned ascending/permutation invariants, lengths0..7/three
+key values. Link audit passed852 Markdown files/zero broken links; scoped `git
+diff --check` passed. Documentation/metadata only; no `make test`/`make all` rerun.
+Full original fresh ELFs/listings stay `/tmp`; no bodies/binary assets committed.
+Concurrent native/staged edits excluded.
+
+Next: priority-zero EVT-01 actual priority/list/count/index/record/array writers,
+valid signed range/overflow/member/cycle/duplicate/alias/lifetime/IRQ/concurrency
+domains, surrounding builder budget/admission/cache/commands and original
+collection/sort/voice/DSP/audio traces. Remaining precision work, lower-priority
+inbox and full native/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero depop/fade/studio prepass
 
 Completed HandleDepopVoice/DoDepopFade and builder studio two-list prepass;

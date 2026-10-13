@@ -126,3 +126,9 @@ latch/active/break/sentinel/root/link writers and valid studio/list/member/cycle
 index/value/alias/lifetime/IRQ/concurrency domains; original depop/fade/list/
 callback/DSP/audio traces. Two bodies/one prepass region answered; whole builder/
 full native binding and EVT-01 remain OPEN.
+
+## 2026-10-13 — Sorted voice caller follow-up
+
+[DSP sorting/collection](MUSYX_DSP_VOICE_SORT_AND_COLLECTION.md) closes the local pointer sorter, list
+collector and reverse iteration used later in the same builder. List/priority/
+index/alias domains, budget/admission and original DSP/audio remain open.
