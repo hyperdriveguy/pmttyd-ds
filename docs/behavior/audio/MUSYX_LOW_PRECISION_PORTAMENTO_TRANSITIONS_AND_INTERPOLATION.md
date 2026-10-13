@@ -86,3 +86,9 @@ Remaining: final ADSR/pitch/scaling/hardware/requeue/ABI regions, actual channel
 set/controller/cache/mode/flags/duration/current/time/note/voice providers and
 valid index/extent/value/alias/lifetime/IRQ/concurrency domains, original glide/
 pitch/audio traces and native binding. EVT-01 remains OPEN.
+
+## 2026-10-13 — Final pitch/composition follow-up
+
+[Final pitch/composition](MUSYX_LOW_PRECISION_FINAL_PITCH_AND_COMPOSITION.md) closes final output/requeue/ABI
+and composes the whole local handler. Providers/domains/transitive consumers/
+original pitch/voice/audio/native binding remain open.

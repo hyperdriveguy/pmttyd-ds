@@ -488,6 +488,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   interpolation — [portamento](../behavior/audio/MUSYX_LOW_PRECISION_PORTAMENTO_TRANSITIONS_AND_INTERPOLATION.md).
   Unchanged-value exception/threshold/init/flag/cache order, wrapped signed
   step/unsigned endpoint/elapsed-only snap pinned; remainder/runtime open.
+- [x] Complete LowPrecisionHandler final pitch/hardware/requeue/ABI
+  and compose whole local body — [final pitch/composition](../behavior/audio/MUSYX_LOW_PRECISION_FINAL_PITCH_AND_COMPOSITION.md).
+  Eight regions cover454 semantic+11 ABI words; helper fallthrough, narrow
+  lookup/interpolation/scaling/publication pinned; providers/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2493,3 +2497,14 @@ interpolation vectors checked. Unchanged-controller exception, strict8064
 threshold, raw mode/init/flags/cache, wrapped signed step versus unsigned endpoint
 and elapsed-only completion pinned. Remaining handler/providers/domains/original
 glide/audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Low-precision final pitch/whole-body composition delivery
+
+Completed final output/requeue/ABI helpers and composed whole local
+[LowPrecisionHandler](../behavior/audio/MUSYX_LOW_PRECISION_FINAL_PITCH_AND_COMPOSITION.md).
+New11 spans/53 anchors/seven calls verified; four prior manifests reverified.
+Eight-region union covers454 semantic+11 ABI words,total465/744hex without gaps.
+Six lookup/six doppler vectors checked. Narrow note/fraction/returned base, wrapped
+addends/scaling/half212-before-hardware/requeue and helper entry-through-return
+pinned. Providers/domains/transitive consumers/original voice/audio/native
+binding remain open; EVT-01 stays OPEN.

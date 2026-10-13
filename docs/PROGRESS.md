@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero low-precision final pitch/composition
+
+Completed LowPrecisionHandler output/requeue/ABI helpers and composed whole
+local source body; checked EVT-01 portion.
+[Final pitch/composition](behavior/audio/MUSYX_LOW_PRECISION_FINAL_PITCH_AND_COMPOSITION.md)
+pins narrow lookup/fraction/wrapped addends/scaling, half212 before hardware,
+requeue and complete GPR helper fallthrough. Whole local handler answered;
+providers/domains/transitive consumers/original voice/audio/native binding open.
+
+Validation: new read-only ISO manifest passed11 spans,53 anchors,seven calls.
+Four prior region manifests reverified. Eight disjoint regions cover454 semantic
+words plus11 anchored ABI words,total465/744hex. Six lookup/six doppler vectors
+and bit-extraction/composition checks passed. Link audit passed879 Markdown files/
+zero broken links; scoped `git diff --check` passed. Mathematical source deductions
+are separate from original execution. Documentation/metadata only; no `make test`/
+`make all` rerun. Fresh full original handler ELF/listing/generator stay `/tmp`;
+no bodies/binary assets committed. Concurrent native edits excluded. Previously
+approved push remains pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 actual voice/note/fraction/sample/ADSR/periodic/
+controller/index/job providers and valid value/extent/alias/lifetime/IRQ/
+concurrency/stack/ABI domains, transitive hardware/DSP services and original
+pitch/voice/audio traces. Remaining macro/stream/song/backend, lower-priority
+inbox and full native/game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero low-precision portamento
 
 Completed LowPrecisionHandler controller transitions/interpolation; checked

@@ -1,0 +1,372 @@
+{
+  "schema": 1,
+  "scope": "Complete LowPrecisionHandler final pitch/scaling/requeue/ABI and local whole-body composition; providers/runtime open",
+  "complete_bodies": [],
+  "complete_regions": [
+    {
+      "name": "LowPrecisionHandler final pitch output",
+      "address": 2150071740,
+      "size": 120
+    }
+  ],
+  "linked_only": [
+    "LowPrecisionHandler",
+    "sndGetPitch",
+    "sndPitchUpOne",
+    "inpGetDoppler",
+    "hwSetPitch",
+    "synthAddJob",
+    "_savegpr_27",
+    "_restgpr_27"
+  ],
+  "dol_spans": [
+    {
+      "name": "LowPrecisionHandler",
+      "address": 2150070052,
+      "size": 1860,
+      "sha256": "e87531921a7e6a3e82db9aae7cfe65110b201c274f127948dfda83ca5f9ecae3"
+    },
+    {
+      "name": "sndGetPitch",
+      "address": 2150130360,
+      "size": 228,
+      "sha256": "aacc812d37f1153f51e21404947372b193ef7777f0e9cd0f6ad71e983cf14153"
+    },
+    {
+      "name": "sndPitchUpOne",
+      "address": 2150130300,
+      "size": 60,
+      "sha256": "f011b2f5cbcbd8da1333f41c567b4a0fffeb2b9ae9874e8ae083c4526d8df13e"
+    },
+    {
+      "name": "inpGetDoppler",
+      "address": 2150168720,
+      "size": 72,
+      "sha256": "a14c6594f0fa0224da7c47b2e240c67b23cfff98fca984ada0259ef92c8182d9"
+    },
+    {
+      "name": "hwSetPitch",
+      "address": 2150173868,
+      "size": 120,
+      "sha256": "6f9378107d2ac6fa91bc577a7ee354e0e096bc955b3541eb23fdb0ab71b6093e"
+    },
+    {
+      "name": "synthAddJob",
+      "address": 2150073880,
+      "size": 336,
+      "sha256": "f6da5afc2a48347c693b299e0d814251239e4fce8f95b68103d515461057fbf8"
+    },
+    {
+      "name": "_savegpr_27",
+      "address": 2149992840,
+      "size": 4,
+      "sha256": "9b7068092a358c943c21b18b4e28928e880bfbb1b334082dfe973add4b6a6303"
+    },
+    {
+      "name": "_restgpr_27",
+      "address": 2149992916,
+      "size": 4,
+      "sha256": "d92806e26a2751f9ee9be41b269c32d3537032c43680315c96e9f68ac99dc60b"
+    },
+    {
+      "name": "LowPrecisionHandler final pitch output",
+      "address": 2150071740,
+      "size": 120,
+      "sha256": "51a10067aec5a66444c0e1fed0f35b265745365c684af64581247a4b0f82971b"
+    },
+    {
+      "name": "GPR27..31 helper fallthrough 0x80264988",
+      "address": 2149992840,
+      "size": 24,
+      "sha256": "b4814c06940feda1d69a09c2872ae96a0892aabf82650fa07c61274781041c99"
+    },
+    {
+      "name": "GPR27..31 helper fallthrough 0x802649d4",
+      "address": 2149992916,
+      "size": 24,
+      "sha256": "75acbd95e1851a499b7b350731fff4dbed648c791108274cf10ce6c7ccac1ed4"
+    }
+  ],
+  "dol_anchors": {
+    "2150071740": "809c0124",
+    "2150071744": "57c3863e",
+    "2150071748": "4800e4f5",
+    "2150071752": "57de043f",
+    "2150071756": "547d801e",
+    "2150071760": "41820020",
+    "2150071764": "57bf843e",
+    "2150071768": "7fe3fb78",
+    "2150071772": "4800e4a1",
+    "2150071776": "5460043e",
+    "2150071780": "7c1f0050",
+    "2150071784": "7c1e01d6",
+    "2150071788": "7fbd0214",
+    "2150071792": "801c01a8",
+    "2150071796": "7f83e378",
+    "2150071800": "809c01a4",
+    "2150071804": "7fa0ea14",
+    "2150071808": "7fa4ea14",
+    "2150071812": "48017a8d",
+    "2150071816": "5463043e",
+    "2150071820": "57a0843e",
+    "2150071824": "7c0019d6",
+    "2150071828": "7f63db78",
+    "2150071832": "54049c3e",
+    "2150071836": "b09c0212",
+    "2150071840": "48018e8d",
+    "2150071844": "7f83e378",
+    "2150071848": "38800000",
+    "2150071852": "38a00f00",
+    "2150071856": "480007e9",
+    "2150070052": "9421ffd0",
+    "2150070056": "7c0802a6",
+    "2150070060": "90010034",
+    "2150070064": "39610030",
+    "2150070068": "4bfed255",
+    "2150071888": "39610030",
+    "2150071892": "4bfecb81",
+    "2150071896": "80010034",
+    "2150071900": "7c0803a6",
+    "2150071904": "38210030",
+    "2150071908": "4e800020",
+    "2149992840": "936bffec",
+    "2149992844": "938bfff0",
+    "2149992848": "93abfff4",
+    "2149992852": "93cbfff8",
+    "2149992856": "93ebfffc",
+    "2149992860": "4e800020",
+    "2149992916": "836bffec",
+    "2149992920": "838bfff0",
+    "2149992924": "83abfff4",
+    "2149992928": "83cbfff8",
+    "2149992932": "83ebfffc",
+    "2149992936": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2150071748,
+      "target": 2150130360,
+      "name": "sndGetPitch"
+    },
+    {
+      "site": 2150071772,
+      "target": 2150130300,
+      "name": "sndPitchUpOne"
+    },
+    {
+      "site": 2150071812,
+      "target": 2150168720,
+      "name": "inpGetDoppler"
+    },
+    {
+      "site": 2150071840,
+      "target": 2150173868,
+      "name": "hwSetPitch"
+    },
+    {
+      "site": 2150071856,
+      "target": 2150073880,
+      "name": "synthAddJob"
+    },
+    {
+      "site": 2150070068,
+      "target": 2149992840,
+      "name": "_savegpr_27"
+    },
+    {
+      "site": 2150071892,
+      "target": 2149992916,
+      "name": "_restgpr_27"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "composed_region_coverage": {
+    "regions": [
+      {
+        "manifest": "musyx_adsr_low_precision_callers_evidence.json",
+        "name": "low_precision_admission_clock",
+        "address": 2150070072,
+        "size": 80
+      },
+      {
+        "manifest": "musyx_adsr_low_precision_callers_evidence.json",
+        "name": "low_precision_adsr_request",
+        "address": 2150070736,
+        "size": 96
+      },
+      {
+        "manifest": "musyx_adsr_low_precision_callers_evidence.json",
+        "name": "low_precision_pitch_adsr_contribution",
+        "address": 2150071676,
+        "size": 64
+      },
+      {
+        "manifest": "musyx_adsr_low_precision_callers_evidence.json",
+        "name": "low_precision_dirty_tail",
+        "address": 2150071860,
+        "size": 28
+      },
+      {
+        "manifest": "musyx_low_precision_modulation_pan_evidence.json",
+        "name": "LowPrecisionHandler modulation and pan ramps",
+        "address": 2150070152,
+        "size": 584
+      },
+      {
+        "manifest": "musyx_low_precision_pitch_preparation_evidence.json",
+        "name": "LowPrecisionHandler pitch preparation",
+        "address": 2150070832,
+        "size": 384
+      },
+      {
+        "manifest": "musyx_low_precision_portamento_evidence.json",
+        "name": "LowPrecisionHandler portamento",
+        "address": 2150071216,
+        "size": 460
+      },
+      {
+        "manifest": "musyx_low_precision_finish_composition_evidence.json",
+        "name": "LowPrecisionHandler final pitch output",
+        "address": 2150071740,
+        "size": 120
+      }
+    ],
+    "semantic_words": 454,
+    "abi_words": 11,
+    "total_words": 465,
+    "body_address": 2150070052,
+    "body_size": 1860
+  },
+  "derived_lookup_vectors": [
+    {
+      "prepared_pitch": 0,
+      "note_argument": 0,
+      "sample_word124": 0,
+      "fraction": 0,
+      "base_return": 0,
+      "base_word": 0,
+      "next_return": 1,
+      "interpolated_word": 0,
+      "requests_next": false
+    },
+    {
+      "prepared_pitch": 3932160,
+      "note_argument": 60,
+      "sample_word124": 32000,
+      "fraction": 0,
+      "base_return": 4096,
+      "base_word": 268435456,
+      "next_return": 4200,
+      "interpolated_word": 268435456,
+      "requests_next": false
+    },
+    {
+      "prepared_pitch": 3964928,
+      "note_argument": 60,
+      "sample_word124": 32000,
+      "fraction": 32768,
+      "base_return": 4096,
+      "base_word": 268435456,
+      "next_return": 4200,
+      "interpolated_word": 271843328,
+      "requests_next": true
+    },
+    {
+      "prepared_pitch": 4294967295,
+      "note_argument": 255,
+      "sample_word124": 0,
+      "fraction": 65535,
+      "base_return": 65535,
+      "base_word": 4294901760,
+      "next_return": 0,
+      "interpolated_word": 65535,
+      "requests_next": true
+    },
+    {
+      "prepared_pitch": 2147549183,
+      "note_argument": 0,
+      "sample_word124": 1,
+      "fraction": 65535,
+      "base_return": 4294967295,
+      "base_word": 4294901760,
+      "next_return": 1,
+      "interpolated_word": 131070,
+      "requests_next": true
+    },
+    {
+      "prepared_pitch": 1,
+      "note_argument": 0,
+      "sample_word124": 1,
+      "fraction": 1,
+      "base_return": 65536,
+      "base_word": 0,
+      "next_return": 65535,
+      "interpolated_word": 65535,
+      "requests_next": true
+    }
+  ],
+  "derived_doppler_vectors": [
+    {
+      "base_pitch_word": 268435456,
+      "word1a8": 0,
+      "word1a4": 0,
+      "return_word": 8192,
+      "summed_pitch": 268435456,
+      "wrapped_product": 33554432,
+      "half212_and_hardware_pitch": 4096
+    },
+    {
+      "base_pitch_word": 268435456,
+      "word1a8": 0,
+      "word1a4": 0,
+      "return_word": 65535,
+      "summed_pitch": 268435456,
+      "wrapped_product": 268431360,
+      "half212_and_hardware_pitch": 32767
+    },
+    {
+      "base_pitch_word": 4294967295,
+      "word1a8": 1,
+      "word1a4": 0,
+      "return_word": 8192,
+      "summed_pitch": 0,
+      "wrapped_product": 0,
+      "half212_and_hardware_pitch": 0
+    },
+    {
+      "base_pitch_word": 268435456,
+      "word1a8": 4294967295,
+      "word1a4": 0,
+      "return_word": 4294967295,
+      "summed_pitch": 268435455,
+      "wrapped_product": 268365825,
+      "half212_and_hardware_pitch": 32759
+    },
+    {
+      "base_pitch_word": 2147483648,
+      "word1a8": 2147483648,
+      "word1a4": 0,
+      "return_word": 8192,
+      "summed_pitch": 0,
+      "wrapped_product": 0,
+      "half212_and_hardware_pitch": 0
+    },
+    {
+      "base_pitch_word": 4294967295,
+      "word1a8": 4294967295,
+      "word1a4": 4294967295,
+      "return_word": 65535,
+      "summed_pitch": 4294967293,
+      "wrapped_product": 4294836225,
+      "half212_and_hardware_pitch": 65520
+    }
+  ],
+  "requeue_binding": {
+    "category": 0,
+    "delay": 3840,
+    "occurs_after_hwSetPitch": true,
+    "before_dirty_tail": true
+  }
+}
