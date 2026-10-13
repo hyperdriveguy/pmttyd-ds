@@ -399,3 +399,5 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [Public decompilation audit](meta/PUBLIC_DECOMP_AUDIT.md) — pinned doldecomp/ttyd object census and what it does and does not prove.
 - [Gate for the eventual system requirements document](meta/REQUIREMENTS_GATE.md) — evidence rules the eventual requirements must satisfy.
 - [ID1 map material, texture/light and TEV contract status](display/ID1_MAP_MATERIAL_AND_TEV_STATUS.md) — dated ID1 delivery summaries; append new ones there, not to this index.
+
+- [Rogueport story object visibility](field/ROGUEPORT_STORY_OBJECT_VISIBILITY.md): recovered ordinary-entry ship, wake, east and west group conditions.

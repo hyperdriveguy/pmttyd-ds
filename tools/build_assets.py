@@ -15,6 +15,7 @@ from character_bake import bake
 from character_mesh import compile_mesh
 from shadow_pack import compile_shadow
 from map_convert import convert
+from map_visibility import EVENT_GROUPS
 from audio_convert import stm,sample_directory
 from room_convert import exits,damage_returns,resolve_damage_returns,road_hit
 ROOT=Path(__file__).resolve().parents[1]
@@ -24,7 +25,7 @@ def main():
     tex3ds=shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds'
     source=Path(ISO)
     if not source.is_file():raise SystemExit('Original asset pack requires TTYD_ISO pointing to your GameCube ISO')
-    scripts=[Path(__file__),ROOT/'tools/iso_assets.py',ROOT/'tools/character_bake.py',ROOT/'tools/character_node.py',ROOT/'tools/character_mesh.py',ROOT/'tools/shadow_pack.py',ROOT/'tools/verify_overworld_mario_air_shadow.py',ROOT/'tools/character_animation_data.py',ROOT/'tools/character_animation_pack.py',ROOT/'tools/map_convert.py',ROOT/'tools/map_animation.py',ROOT/'tools/audio_convert.py',ROOT/'tools/room_convert.py']
+    scripts=[Path(__file__),ROOT/'tools/iso_assets.py',ROOT/'tools/character_bake.py',ROOT/'tools/character_node.py',ROOT/'tools/character_mesh.py',ROOT/'tools/shadow_pack.py',ROOT/'tools/verify_overworld_mario_air_shadow.py',ROOT/'tools/character_animation_data.py',ROOT/'tools/character_animation_pack.py',ROOT/'tools/map_convert.py',ROOT/'tools/map_visibility.py',ROOT/'tools/map_animation.py',ROOT/'tools/audio_convert.py',ROOT/'tools/room_convert.py']
     fingerprint=hashlib.sha256(b''.join(p.read_bytes() for p in scripts)+str((source.stat().st_size,source.stat().st_mtime_ns)).encode()).hexdigest()
     manifest=OUTPUT/'manifest.json'
     required=['shadows.pmshadow','characters.pmanim','characters.pmmesh','characters-mesh.t3x','characters.t3x','sky.t3x','map.vertices','map.batches','rogueport.wav','battle.wav','victory.wav','stage.vertices','stage.batches','map.walls','map.ground','gor_00.vertices','gor_02.vertices','gor_03.vertices','gor_04.vertices','map.uvanim','stage.uvanim','gor_00.uvanim','gor_02.uvanim','gor_03.uvanim','gor_04.uvanim','rooms.bin','map.meshanim','stage.meshanim','gor_00.meshanim','gor_02.meshanim','gor_03.meshanim','gor_04.meshanim']
@@ -91,7 +92,7 @@ def main():
         hidden=('gondora_2','hako_1') if room=='gor_04' else ()
         ambient=('mizu','noname','ie_01_light') if room=='gor_02' else ('nami','nami_02','hiki_nami') if room=='gor_00' else ()
         mesh_ambient=('nami',) if room=='gor_00' else ()
-        info=convert(room_model,WORK/room,hidden=hidden,ambient=ambient,mesh_ambient=mesh_ambient);rooms[room]=info
+        info=convert(room_model,WORK/room,hidden=hidden,ambient=ambient,mesh_ambient=mesh_ambient,event_groups=EVENT_GROUPS.get(room,{}));rooms[room]=info
         for ext in ['vertices','batches','walls','ground','head','uvanim','meshanim']:shutil.copyfile(WORK/room/f'map.{ext}',OUTPUT/f'{room}.{ext}')
         for index,name in enumerate(info['textures']):
             path=WORK/room/f'texture-{index}.png';convert_tpl(room_tpl,path,index)

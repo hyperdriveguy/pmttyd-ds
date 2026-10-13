@@ -437,3 +437,17 @@ because their projected segment and min/max heights match. Five rooms export
 `verify_wall_attributes.py` validates the new layout and original owner flags.
 The existing wall selection threshold(abs(normalY)/length<=0.2) is unchanged;
 coverage of other angled surfaces and dynamic hit meshes remains unfinished.
+
+## 2026-10-12 — Story-controlled outdoor geometry groups
+
+Original `m/gor_00/d`, `m/gor_02/d`, `m/gor_03/d` geometry now retains
+source subtree identities for ordinary-entry visibility recovered from
+`rel/gor.rel`. The read-only ISO remains the source; local extraction and
+compiled packs remain ignored. Conversion splits material batches by event
+group and records it in bits26..31, preserving original vertex values, texture
+scaling, collision and animation bindings. Geometry stays available for later
+story conditions. The harbor ship groups/wakes, east interior/gate and west
+alternate foliage use recovered initialization conditions; full event overrides
+remain open. See [visibility contract](behavior/field/ROGUEPORT_STORY_OBJECT_VISIBILITY.md).
+Nintendo original asset licensing/provenance is unchanged: local personal-use
+conversion only, no ISO or extracted/compiled assets committed or distributed.

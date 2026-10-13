@@ -26,11 +26,11 @@ def topology(command,verts):
         for n in range(1,len(verts)-1):yield [verts[0],verts[n],verts[n+1]]
     else:raise ValueError(f'Unsupported GX primitive {command:#x}')
 
-def batch_flags(layer,group,cull):
-    """Low byte: layer; bits8–23: cutaway group; bits24–25: GX cull index."""
-    if not 0<=layer<=255 or not 0<=group<=65535 or not 0<=cull<=3:
+def batch_flags(layer,group,cull,event_group=0):
+    """Low byte: layer; bits8–23: cutaway group; bits24–25: GX cull index; bits26–31: event visibility group."""
+    if not 0<=layer<=255 or not 0<=group<=65535 or not 0<=cull<=3 or not 0<=event_group<=63:
         raise ValueError('Invalid map batch metadata')
-    return layer | group<<8 | cull<<24
+    return layer | group<<8 | cull<<24 | event_group<<26
 
 def hit_topology(verts):
     """hitCalcVtxPosition uses strip triples with opposite winding to GX rendering."""
@@ -52,7 +52,8 @@ def wall_segments(collision,metadata=None,with_triangles=False):
             segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max()),*tag,*geometry))
     return sorted(segments)
 
-def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=()):
+def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=(),event_groups=None):
+    event_groups=event_groups or {}
     raw=Path(path).read_bytes();base=32
     table=32+u(raw,4)+u(raw,8)*4;names=table+u(raw,12)*8
     def string(o):return raw[o:raw.index(b'\0',o)].decode('ascii')
@@ -87,7 +88,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
                 continue
             for mat in targets:mat['uv']=sample_material(track,frame)
     vertices=defaultdict(list);nodes=[];collision=[];collision_meta=[];head_geometry=[];collision_nodes={};markers=[];cutaway_nodes={};cull_counts=defaultdict(int);owners=defaultdict(list);node_info={}
-    def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0,suppressed=False,parent_node=None):
+    def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0,suppressed=False,parent_node=None,event_group=0):
         if depth>100:raise ValueError('Invalid map graph')
         name=string(base+u(raw,o));visible=visible or name==scene_name;collidable=collidable or name==collision_name
         values=struct.unpack_from('>9f',raw,o+24);local_matrix=trans(values[6:9])@rotate(values[3:6])@np.diag([*values[:3],1]);m=parent@local_matrix
@@ -97,6 +98,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
         node_group=exterior_group
         if node_exterior and not node_group and u(raw,o+92):
             node_group=o;cutaway_nodes[node_group]=name
+        node_event_group=event_groups.get(name,event_group)
         node_suppressed=suppressed or name in hidden
         nodes.append(name)
         draw_pointer=u(raw,o+88)
@@ -147,8 +149,8 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
                     if visible and not node_suppressed:
                         for tri in tris:
                             group=node_group if node_exterior else 0
-                            vertices[(base+mo,group,cull)].extend(tri)
-                            owners[(base+mo,group,cull)].extend([o]*3)
+                            vertices[(base+mo,group,cull,node_event_group)].extend(tri)
+                            owners[(base+mo,group,cull,node_event_group)].extend([o]*3)
                             cull_counts[cull]+=1
                     elif collidable:
                         for tri in tris:
@@ -159,25 +161,25 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
             points=np.array(marker_points) if marker_points else np.array([(m@np.array([0,0,0,1]))[:3]*scale])
             markers.append({'name':name,'bounds':[points.min(0).tolist(),points.max(0).tolist()]})
         child=u(raw,o+12);sibling=u(raw,o+16)
-        if child:walk(base+child,m,visible,collidable,depth+1,node_exterior,node_group,node_suppressed,o)
-        if sibling:walk(base+sibling,parent,visible if name!=scene_name else False,collidable if name!=collision_name else False,depth+1,exterior,exterior_group,suppressed,parent_node)
+        if child:walk(base+child,m,visible,collidable,depth+1,node_exterior,node_group,node_suppressed,o,node_event_group)
+        if sibling:walk(base+sibling,parent,visible if name!=scene_name else False,collidable if name!=collision_name else False,depth+1,exterior,exterior_group,suppressed,parent_node,event_group)
     walk(base+u(raw,chunks['information']+4),np.eye(4))
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
     ambient_names={t['material'] for a in animations if a['name'] in ambient for t in a['material_tracks'] if t['texgen']==0}
     count=0;batches=[];bounds=[];bindings=defaultdict(list);position_bindings=defaultdict(list)
     cutaway_ids={node:n+1 for n,node in enumerate(sorted(cutaway_nodes))}
     with (output/'map.vertices').open('wb') as out:
-        for mo,group,cull in sorted(vertices,key=lambda x:materials[x[0]]['layer']):
-            v=vertices[(mo,group,cull)];mat=materials[mo]
+        for mo,group,cull,event_group in sorted(vertices,key=lambda x:materials[x[0]]['layer']):
+            v=vertices[(mo,group,cull,event_group)];mat=materials[mo]
             inverse=np.linalg.inv(mat['uv']) if mat['texture']>=0 and any(n in ambient_names for n in (mat['name'],re.sub('_[vx]','',mat['name']))) else None
             for index,row in enumerate(v):
-                position_bindings[owners[(mo,group,cull)][index]].append((count+index,*row[:3]))
+                position_bindings[owners[(mo,group,cull,event_group)][index]].append((count+index,*row[:3]))
                 if inverse is not None:
                     original=inverse@np.array([row[3],1-row[4],1])
                     bindings[mo].append((count+index,float(original[0]),float(original[1])))
                 if mat['texture']<0:row[3]=496/512;row[4]=1-240/256
                 out.write(struct.pack('<9f',*row));bounds.append(row[:3])
-            batches.append((count,len(v),mat['texture'],batch_flags(mat['layer'],cutaway_ids.get(group,0),cull),*mat['wrap']));count+=len(v)
+            batches.append((count,len(v),mat['texture'],batch_flags(mat['layer'],cutaway_ids.get(group,0),cull,event_group),*mat['wrap']));count+=len(v)
     with (output/'map.batches').open('wb') as out:
         out.write(struct.pack('<II',len(batches),len(textures)))
         for b in batches:out.write(struct.pack('<IIiIII',*b))
@@ -262,7 +264,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
             out.write(struct.pack('<9fIII',*(v for point in tri for v in point),*meta,cull))
     summary={'source':str(path),'scale':scale,'vertices':count,'triangles':count//3,'batches':len(batches),'textures':textures,
              'bounds':[np.min(bounds,axis=0).tolist(),np.max(bounds,axis=0).tolist()],
-             'cull_triangles':dict(cull_counts),'cutaway_nodes':[{'id':cutaway_ids[o],'name':name} for o,name in sorted(cutaway_nodes.items())],'exit_markers':markers,'limitations':warnings,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}
+             'cull_triangles':dict(cull_counts),'cutaway_nodes':[{'id':cutaway_ids[o],'name':name} for o,name in sorted(cutaway_nodes.items())],'exit_markers':markers,'limitations':warnings,'event_groups':event_groups,'hidden_nodes':list(hidden),'nodes':len(nodes),'collision_triangles':len(collision)}
     (output/'map.animations.json').write_text(json.dumps(animations,indent=2)+'\n')
     summary['animations']=[{'name':a['name'],'duration':a['duration'],'mesh_tracks':len(a['tracks']),'material_tracks':len(a['material_tracks']),'material_table_offset':a['material_table_offset']} for a in animations]
     summary['ambient_mesh_clips']=list(mesh_ambient);summary['animated_position_vertices']=len(mesh_used)

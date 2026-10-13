@@ -1,6 +1,7 @@
 #include "platform.hpp"
 #include "world_shbin.h"
 #include "field_camera.hpp"
+#include "map_visibility.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -79,7 +80,7 @@ bool Renderer::loadMap(const char* name,Room& room) {
     ok=room.vertices && std::fread(room.vertices,1,bytes,f)==size_t(bytes);std::fclose(f);if(!ok)return false;
     for(auto b:room.batches) if(b.start>room.vertexCount || b.count>room.vertexCount-b.start || b.texture<-1 || b.texture>=int32_t(textureCount))return false;
     uint32_t groups=0;
-    for(auto batch:room.batches) {if(batch.count%3 || ((batch.layer>>8)&65535)>1024 || (batch.layer>>26))return false;groups=std::max(groups,(batch.layer>>8)&65535);}
+    for(auto batch:room.batches) {if(batch.count%3 || ((batch.layer>>8)&65535)>1024 || (batch.layer>>26)>8)return false;groups=std::max(groups,(batch.layer>>8)&65535);}
     std::snprintf(path,sizeof(path),"romfs:/%s.uvanim",name);
     if(!loadUVAnimation(path,room.vertexCount,room.uvTracks))return false;
     std::snprintf(path,sizeof(path),"romfs:/%s.meshanim",name);
@@ -180,6 +181,7 @@ void Renderer::drawMap(bool battle,const Game& game,bool translucent) {
     const GPU_TEXTURE_WRAP_PARAM wraps[]={GPU_CLAMP_TO_EDGE,GPU_REPEAT,GPU_MIRRORED_REPEAT};
     for(auto batch:room.batches) {
         if(!battle && ((batch.layer&255)==2)!=translucent)continue;
+        if(!battle && !mapEventGroupVisible(batch.layer>>26,game.progress.originalStory.value_or(0)))continue;
         uint32_t group=(batch.layer>>8)&65535;
         if(!battle && group && room.occluders[group].hidden)continue;
         C3D_Tex* texture=batch.texture<0?&atlas:&room.textures[batch.texture].texture;
