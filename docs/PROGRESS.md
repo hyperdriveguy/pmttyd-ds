@@ -5,6 +5,26 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 effect spatial controls and emitter query leaves
+
+Delivered [spatial/emitter leaves](behavior/audio/SOUND_EFFECT_SPATIAL_CONTROLS_AND_EMITTER_LOOKUP.md).
+Five complete bodies pin early pan/surround record stores, fresh pool/voice lookup,
+raw/controller width and two surround requests, retained volume read and active/
+flag-gated emitter voice lookup. No rollback on voice miss or inferred audible
+liveness. Marked local EVT-01 portions complete; parent OPEN.
+
+Validation: generic read-only verifier10 spans (5 complete/5 linked),75 anchors/
+11 resolved direct calls passes. All256 surround mappings,9 raw-width and15
+active/flag vectors checked; original functions not executed. Fresh full ELFs/
+listings stay `/tmp`. Link audit756 Markdown files/0 broken; whitespace checks
+pass. Docs/source metadata only: no make rerun, native changes or original body/
+bank export. Isolated index excludes unrelated staged/worktree work.
+
+Next/limits: effect-pool/emitter flags/voice providers and valid ordinal/null/
+lifetime/concurrency domains, controller/MIDI/voice/backend services and original
+pan/surround/fade/audio traces. Continue priority0 source/backend then priority1
+damage graph. No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Priority0 remaining positional SFX live/fade/mute graph
 
 Delivered [SFX live/fade/mute](behavior/audio/POSITIONAL_SFX_LIVE_SPATIAL_FADE_AND_MUTE.md).

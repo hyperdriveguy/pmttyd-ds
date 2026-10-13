@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Effect spatial controls/emitter lookup](audio/SOUND_EFFECT_SPATIAL_CONTROLS_AND_EMITTER_LOOKUP.md) | Complete pan/surround early publication, dual controllers, stored volume read and active/voice flag queries | Pool/emitter writers/ordinal/lifetime domains and actual controller/audio execution |
 | [Positional SFX live/fade/mute](audio/POSITIONAL_SFX_LIVE_SPATIAL_FADE_AND_MUTE.md) | Complete remaining global/live regions; composed whole-local SFXMain graph, fresh controls/mute/fade/stop ordering | Backend/writers/flags/fade/domain/lifetime and original audio |
 | [Game listener/camera bindings](audio/GAME_LISTENER_SETTER_AND_SEQUENCE_CAMERA_BINDINGS.md) | Complete setter/camera lookup; two scoped field/battle position/heading argument regions and direct census | Camera/flag/state writers, sequence gates/cadence, indirect routes and original audio |
 | [Game calc3D/angle table](audio/GAME_CALC3D_SPATIAL_RESULT_AND_ANGLE_TABLE.md) | Complete position-flag precedence, table angle, pan/surround/distance/volume and retained packed result byte | Listener/shared writers, PPC/libm/finite domains, live SFX and original audio |

@@ -76,3 +76,5 @@ Remaining: full sndFX*/emitter/controller semantics, pool allocation/other
 writers/teardown, source valid ordinals and original mute/liveness/control traces.
 
 [Complete MusyX API/voice/IRQ wrappers](MUSYX_EFFECT_API_WRAPPERS_AND_VOICE_LOOKUP.md) now establish the used public calls, external-versus-internal voice identity and separate IRQ nesting. Core synth/resource/map lifetime and original playback remain open.
+
+[Complete pan/surround/volume read and emitter lookup](SOUND_EFFECT_SPATIAL_CONTROLS_AND_EMITTER_LOOKUP.md) now closes those exact local dependencies. Pan/surround publish before lookup, unlike volume; emitter queries read stored flags/voice rather than audible state. Pool/emitter writers/controller/runtime remain open.

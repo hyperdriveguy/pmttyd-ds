@@ -103,6 +103,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   spatial/nonspatial/mute/fade-zero-stop regions; composed whole local body —
   [live/fade/mute](../behavior/audio/POSITIONAL_SFX_LIVE_SPATIAL_FADE_AND_MUTE.md).
   Child backends/global-slot flag/fade/denominator/source/runtime remain open.
+- [x] Complete SoundEfxSetPan/SetSrndPan/GetVolume and
+  sndEmitterVoiceID/sndCheckEmitter local bodies —
+  [spatial/emitter leaves](../behavior/audio/SOUND_EFFECT_SPATIAL_CONTROLS_AND_EMITTER_LOOKUP.md).
+  Early record publication/dual controllers/stored flag-volume reads pinned;
+  pool/emitter writers/controller/voice/source/runtime remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -851,3 +856,35 @@ Validation: read-only manifest18 spans (2 scoped/15 linked/whole fingerprint),
 vectors are derived source cases, not original execution. Full ELF/listing stays
 `/tmp`. SS/song/effect child services/writers/flags/fade/denominator/source/alias/
 concurrency/lifetime/original audio remain OPEN; source request text unchanged.
+
+### 2026-10-13 — Effect spatial controllers and emitter query leaves
+
+[Five complete local bodies](../behavior/audio/SOUND_EFFECT_SPATIAL_CONTROLS_AND_EMITTER_LOOKUP.md)
+close pan/surround stores before fresh pool/voice lookup, retained raw controller
+arguments, surround131 then132 mapping and low-byte stored-volume read. Emitter
+Check returns active-gated bit10000; VoiceID reads retained word38 under MusyX
+IRQ without independently checking voice validity. Stored state differs from
+actual playback; first controller failure does not suppress the second request.
+
+Validation: read-only manifest10 spans (5 complete/5 linked),75 anchors/11
+resolved direct calls passes.256 surround/nine raw-width/15 emitter flag vectors
+checked as static deductions; full fresh listings/ELFs remain `/tmp`. No native
+change/original execution/body/bank export. Pool/emitter writers/ordinal/null/
+lifetime/concurrency/controller/MIDI/voice/original spatial/audio remain OPEN.
+
+2026-10-13 setup4 intro/phase/player-source follow-up:
+[Setup4 intro/phase/stage/player bindings](../behavior/battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md)
+pins kindcount/table/init offsets andfourbodypart records, conditionalfresh
+registry IDs0system/1Mario/2Goombella/3..6sourcegroup, concurrent trackedentry
+barriersbeforeselector0Franklyphase(channel4exact04000001/turn1) beforemenu.
+Actualsource bti_01/stg_00_1 m/d,t resources/hash evidence andidentical8x8
+b/tpl stubs; exactMovePosition45 is callbackcountwithsoundmode-1, notspeed.
+Jump/Hammer andHeadbonkpower/action sourcebindings supplied; Headbonkpouch+0xa
+attacklevel differsfromtechmenu+0xc, its227commandgraph identified.
+NEW boundedproducer requests: executed tik4 startingfirstAttackType/phase/turn
+writers andentry/curtain/runtime barriersequence; sourcecandidategeometry/
+weaponmask/commandconfirmation domains; compositebattle-stageplacement/object
+providers; actualstartingpouchrank/loadout; fullHeadbonk/Hammer/partyinit service
+composition,pad/impactclocks andbattleloss/escape resultproducer routing.
+Keep these pendingwhileimplementing explicitlyscoped best-effortproviders.
+No nativeedit/commit ororiginalexecution claim.
