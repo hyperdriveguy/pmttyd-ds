@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Underground trio ordinary EXP ending tail](battle/UNDERGROUND_TRIO_NO_LEVEL_UP_ENDING_TAIL.md) | Exact0c..1f timers, independent effect softdelete, actual body/voice gates, fade10 completion, Rule0 and ordered pouch/field export | Native effect/GX/fade/audio/field reconstruction cadence; level-up/zeroEXP/special branches |
+| [SDK DVD queue pop/check/dequeue/coverage](file/SDK_DVD_QUEUE_POP_CHECK_DEQUEUE_AND_LOCAL_COVERAGE.md) | Complete consumers/all5 local queue functions; split IRQ/fresh pop/post-restore clears/stale links | Command/cancel/providers/original IO |
 | [SDK DVD async submission/queue append](file/SDK_DVD_ASYNC_SUBMISSION_AND_QUEUE_APPEND.md) | Complete submit/push/clear; command/cache/IRQ/state/ordered links/ready/raw return | Queue consumers/command engine/providers/original IO |
 | [SDK DVD read bounds/wait/wake/close](file/SDK_DVD_READ_BOUNDS_WAIT_WAKE_AND_CLOSE.md) | Complete read/close/read-sync callback; bounds/async admission/state/IRQ/wait/cancel return | Command/cancel/thread/providers/original IO/audio |
 | [DVD manager init/cancel/worker](file/DVD_MANAGER_INITIALIZATION_CANCELLATION_AND_WORKER.md) | Complete Init/Delete/proc_main; queue/thread publication/failure spin/cancel/main-yield | SDK/providers/original lifecycle/IO/audio |

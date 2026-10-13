@@ -619,6 +619,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete DVDReadAbsAsyncPrio/__DVDPushWaitingQueue/__DVDClearWaitingQueue —
   [async submit/append](../behavior/file/SDK_DVD_ASYNC_SUBMISSION_AND_QUEUE_APPEND.md). Command/cache/IRQ/state,
   raw priority/fresh tail/ready/normal1 return pinned; engine/runtime open.
+- [x] Complete __DVDPopWaitingQueue/Check/Dequeue and all5 dvdqueue.c functions —
+  [queue consumers/coverage](../behavior/file/SDK_DVD_QUEUE_POP_CHECK_DEQUEUE_AND_LOCAL_COVERAGE.md). Four heads/split IRQ/
+  fresh pop/post-restore clears/retained dequeue pinned; engine/runtime open.
 - [ ] Deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
@@ -3079,3 +3082,12 @@ priority/three append models, six field stores/four head resets and sites checke
 read pins reverified. Ordered fresh-tail links, state2 before push and normal1
 return pinned. Queue consumers/command engine/providers/original IO/audio/native
 binding open; EVT-01 stays OPEN.
+
+## 2026-10-13 — SDK DVD queue consumers/local coverage delivery
+
+Completed [pop/check/dequeue and local queue coverage](../behavior/file/SDK_DVD_QUEUE_POP_CHECK_DEQUEUE_AND_LOCAL_COVERAGE.md).
+Five spans/86 anchors/eleven calls verified; five selection/three gap/five dequeue/
+one stale-link models/sites checked. Earlier clear/push pins reverified; all5
+namespace functions/126 words matched ISO. Pop rereads selected head after
+restore/disable, clears node after restore; dequeue leaves node links. Engine/
+cancel/providers/original IO/audio/native binding open; EVT-01 stays OPEN.

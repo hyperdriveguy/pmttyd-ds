@@ -2,6 +2,27 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero SDK DVD queue consumers
+
+Completed pop/check/dequeue and all5 local dvdqueue.c functions; EVT-01 checked.
+[Consumers/coverage](behavior/file/SDK_DVD_QUEUE_POP_CHECK_DEQUEUE_AND_LOCAL_COVERAGE.md)
+pins four-head predicates/split IRQ/fresh selected head/post-restore node clears/
+retained dequeue links. Command/cancel/providers/original IO/native binding open.
+
+Validation: read-only ISO manifest passed five spans,86 anchors,eleven calls.
+Five selection/three gap/five dequeue/one stale-link models/publication sites
+checked; clear/push pins reverified, all5 functions/126 words matched ISO. Link
+audit passed940 Markdown files/zero broken links; scoped diff check passed.
+Mathematical models separate from original execution. Docs/metadata only; no
+make test/all rerun. Fresh full ELFs/listings/generator stay /tmp; no bodies/assets
+committed. Concurrent native work excluded. Approved push pending valid GitHub
+credentials.
+
+Next: priority-zero EVT-01 stateReady/command engine/cancellation and actual
+queue/link/priority/token/state/ownership/provider/value/extent/alias/lifetime/
+IRQ/concurrency/ABI domains, original order/pop/dequeue/pause/cancel/callback/
+IO/audio traces. Other inbox/native/full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero SDK DVD async submission/append
 
 Completed DVDReadAbsAsyncPrio/__DVDPushWaitingQueue/__DVDClearWaitingQueue;

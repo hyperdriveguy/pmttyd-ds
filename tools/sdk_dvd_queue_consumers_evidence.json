@@ -1,0 +1,368 @@
+{
+  "schema": 1,
+  "scope": "Complete DVD waiting queue pop/check/dequeue and all5 local queue-function coverage; IRQ split/fresh links/post-restore clears/stale dequeue, providers/runtime open",
+  "complete_bodies": [
+    "__DVDPopWaitingQueue",
+    "__DVDCheckWaitingQueue",
+    "__DVDDequeueWaitingQueue"
+  ],
+  "linked_only": [
+    "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+    "OSRestoreInterrupts"
+  ],
+  "dol_spans": [
+    {
+      "name": "__DVDPopWaitingQueue",
+      "address": 2150248104,
+      "size": 160,
+      "sha256": "c44281726d6b1c597fd86347d5afb70ab359c5baa9c3fd62f3e5de7591549c02"
+    },
+    {
+      "name": "__DVDCheckWaitingQueue",
+      "address": 2150248264,
+      "size": 88,
+      "sha256": "a9b190bfcb0f7f034a4ce5dd9dda556211df06477a6f18229bc777023fa03208"
+    },
+    {
+      "name": "__DVDDequeueWaitingQueue",
+      "address": 2150248352,
+      "size": 96,
+      "sha256": "309287e187f1481182228d6749d08d6e0a4e88af36279c2ffc1abd63224756c7"
+    },
+    {
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+      "address": 2150210260,
+      "size": 20,
+      "sha256": "91253610f8caa4988f3df8595ccfc6e5eafaf0b6df1b302668555ab7d528b1bc"
+    },
+    {
+      "name": "OSRestoreInterrupts",
+      "address": 2150210300,
+      "size": 36,
+      "sha256": "54db610a580003e2db23e460425f4662f4f4e7a4da3ae6f89a632df9e52b427a"
+    }
+  ],
+  "dol_anchors": {
+    "2150248108": "90010004",
+    "2150248116": "93e1000c",
+    "2150248120": "4bff6c1d",
+    "2150248124": "38000004",
+    "2150248128": "3c808041",
+    "2150248136": "38843938",
+    "2150248140": "3be00000",
+    "2150248144": "80040000",
+    "2150248152": "41820048",
+    "2150248156": "4bff6c21",
+    "2150248160": "4bff6bf5",
+    "2150248164": "3c808041",
+    "2150248172": "38043938",
+    "2150248180": "83e50000",
+    "2150248184": "801f0000",
+    "2150248188": "90050000",
+    "2150248192": "809f0000",
+    "2150248196": "90a40004",
+    "2150248200": "4bff6bf5",
+    "2150248204": "38000000",
+    "2150248208": "901f0000",
+    "2150248216": "901f0004",
+    "2150248220": "48000018",
+    "2150248224": "38840008",
+    "2150248228": "3bff0001",
+    "2150248232": "4200ffa8",
+    "2150248236": "4bff6bd1",
+    "2150248240": "38600000",
+    "2150248244": "80010014",
+    "2150248248": "83e1000c",
+    "2150248252": "38210010",
+    "2150248268": "90010004",
+    "2150248276": "4bff6b81",
+    "2150248280": "38000004",
+    "2150248284": "3c808041",
+    "2150248292": "38843938",
+    "2150248296": "80040000",
+    "2150248304": "41820010",
+    "2150248308": "4bff6b89",
+    "2150248312": "38600001",
+    "2150248316": "48000014",
+    "2150248320": "38840008",
+    "2150248324": "4200ffe4",
+    "2150248328": "4bff6b75",
+    "2150248332": "38600000",
+    "2150248336": "8001000c",
+    "2150248340": "38210008",
+    "2150248356": "90010004",
+    "2150248364": "93e10014",
+    "2150248372": "4bff6b21",
+    "2150248376": "809f0004",
+    "2150248380": "80bf0000",
+    "2150248388": "4182000c",
+    "2150248396": "40820010",
+    "2150248400": "4bff6b2d",
+    "2150248404": "38600000",
+    "2150248408": "48000014",
+    "2150248412": "90a40000",
+    "2150248416": "90850004",
+    "2150248420": "4bff6b19",
+    "2150248424": "38600001",
+    "2150248428": "8001001c",
+    "2150248432": "83e10014",
+    "2150248436": "38210018",
+    "2150248104": "7c0802a6",
+    "2150248112": "9421fff0",
+    "2150248132": "7c0903a6",
+    "2150248148": "7c002040",
+    "2150248168": "57e51838",
+    "2150248176": "7ca02a14",
+    "2150248212": "7fe3fb78",
+    "2150248256": "7c0803a6",
+    "2150248260": "4e800020",
+    "2150248264": "7c0802a6",
+    "2150248272": "9421fff8",
+    "2150248288": "7c0903a6",
+    "2150248300": "7c002040",
+    "2150248344": "7c0803a6",
+    "2150248348": "4e800020",
+    "2150248352": "7c0802a6",
+    "2150248360": "9421ffe8",
+    "2150248368": "7c7f1b78",
+    "2150248384": "28040000",
+    "2150248392": "28050000",
+    "2150248440": "7c0803a6",
+    "2150248444": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2150248120,
+      "target": 2150210260,
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi"
+    },
+    {
+      "site": 2150248156,
+      "target": 2150210300,
+      "name": "OSRestoreInterrupts"
+    },
+    {
+      "site": 2150248160,
+      "target": 2150210260,
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi"
+    },
+    {
+      "site": 2150248200,
+      "target": 2150210300,
+      "name": "OSRestoreInterrupts"
+    },
+    {
+      "site": 2150248236,
+      "target": 2150210300,
+      "name": "OSRestoreInterrupts"
+    },
+    {
+      "site": 2150248276,
+      "target": 2150210260,
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi"
+    },
+    {
+      "site": 2150248308,
+      "target": 2150210300,
+      "name": "OSRestoreInterrupts"
+    },
+    {
+      "site": 2150248328,
+      "target": 2150210300,
+      "name": "OSRestoreInterrupts"
+    },
+    {
+      "site": 2150248372,
+      "target": 2150210260,
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi"
+    },
+    {
+      "site": 2150248400,
+      "target": 2150210300,
+      "name": "OSRestoreInterrupts"
+    },
+    {
+      "site": 2150248420,
+      "target": 2150210300,
+      "name": "OSRestoreInterrupts"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "queue_function_inventory": [
+    {
+      "name": "__DVDClearWaitingQueue",
+      "address": 2150247944,
+      "size": 56,
+      "manifest": "tools/sdk_dvd_submit_queue_evidence.json"
+    },
+    {
+      "name": "__DVDPushWaitingQueue",
+      "address": 2150248000,
+      "size": 104,
+      "manifest": "tools/sdk_dvd_submit_queue_evidence.json"
+    },
+    {
+      "name": "__DVDPopWaitingQueue",
+      "address": 2150248104,
+      "size": 160,
+      "manifest": "tools/sdk_dvd_queue_consumers_evidence.json"
+    },
+    {
+      "name": "__DVDCheckWaitingQueue",
+      "address": 2150248264,
+      "size": 88,
+      "manifest": "tools/sdk_dvd_queue_consumers_evidence.json"
+    },
+    {
+      "name": "__DVDDequeueWaitingQueue",
+      "address": 2150248352,
+      "size": 96,
+      "manifest": "tools/sdk_dvd_queue_consumers_evidence.json"
+    }
+  ],
+  "derived_selection_vectors": [
+    {
+      "nonempty": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "pop_priority": null,
+      "check_return": 0
+    },
+    {
+      "nonempty": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "pop_priority": 0,
+      "check_return": 1
+    },
+    {
+      "nonempty": [
+        false,
+        true,
+        true,
+        false
+      ],
+      "pop_priority": 1,
+      "check_return": 1
+    },
+    {
+      "nonempty": [
+        false,
+        false,
+        false,
+        true
+      ],
+      "pop_priority": 3,
+      "check_return": 1
+    },
+    {
+      "nonempty": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "pop_priority": 0,
+      "check_return": 1
+    }
+  ],
+  "derived_gap_vectors": [
+    {
+      "selected": 1,
+      "new_selected_first": 8192,
+      "returns": 8192,
+      "clears_captured_node_links": true,
+      "rescans_priority": false,
+      "rechecks_empty": false
+    },
+    {
+      "selected": 1,
+      "new_selected_first": 2151758144,
+      "returns": 2151758144,
+      "clears_captured_node_links": true,
+      "rescans_priority": false,
+      "rechecks_empty": false
+    },
+    {
+      "selected": 3,
+      "new_selected_first": 12288,
+      "returns": 12288,
+      "clears_captured_node_links": true,
+      "rescans_priority": false,
+      "rechecks_empty": false
+    }
+  ],
+  "derived_dequeue_vectors": [
+    {
+      "prev": 0,
+      "next": 0,
+      "return_value": 0,
+      "rewires": false,
+      "clears_node_links": false
+    },
+    {
+      "prev": 1,
+      "next": 0,
+      "return_value": 0,
+      "rewires": false,
+      "clears_node_links": false
+    },
+    {
+      "prev": 0,
+      "next": 1,
+      "return_value": 0,
+      "rewires": false,
+      "clears_node_links": false
+    },
+    {
+      "prev": 1,
+      "next": 2,
+      "return_value": 1,
+      "rewires": true,
+      "clears_node_links": false
+    },
+    {
+      "prev": 1,
+      "next": 1,
+      "return_value": 1,
+      "rewires": true,
+      "clears_node_links": false
+    }
+  ],
+  "derived_stale_vectors": [
+    {
+      "first_remove": 1,
+      "second_remove": 1,
+      "node_prev_retained": true,
+      "node_next_retained": true,
+      "guarantees_membership": false
+    }
+  ],
+  "publication_sites": {
+    "pop_first_restore": 2150248156,
+    "pop_second_disable": 2150248160,
+    "pop_fresh_node": 2150248180,
+    "pop_head_next": 2150248188,
+    "pop_next_prev": 2150248196,
+    "pop_restore": 2150248200,
+    "pop_clear_next": 2150248208,
+    "pop_clear_prev": 2150248216,
+    "dequeue_prev_next": 2150248412,
+    "dequeue_next_prev": 2150248416
+  },
+  "queue_layout": {
+    "head_base": 2151758136,
+    "count": 4,
+    "head_stride": 8,
+    "next_offset": 0,
+    "prev_offset": 4
+  }
+}
