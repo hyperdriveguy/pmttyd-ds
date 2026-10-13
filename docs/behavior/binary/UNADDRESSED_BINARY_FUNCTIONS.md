@@ -109,6 +109,7 @@ contracted under its canonical name at the same entry address:
 | `btlevtcmd_AnnounceMessage` @801abdd0 (placeholder `_announceMessage` was a misnomer/empty) | Newly extracted pair; structure matches the contracted [announcement callback](../battle/BATTLE_ANNOUNCEMENT_MESSAGES.md) (5 resolutions, msgSearch/strcpy/sprintf branches, dispEntry, timer) — alias, no new contract |
 | `PSVECDotProduct` @8029ec84 (placeholder `PSVECdotProduct` was case-mismatched/empty) | Newly extracted pair; 9-instruction leaf contracted in the [traversal doc](../battle/BATTLE_HIT_VEC_TRAVERSAL_ORDER.md) |
 | `flyMain@mot_plane.o` @8009c9b8 (no placeholder existed) | Newly extracted pair; contracted in [plane motion](../overworld/OVERWORLD_PLANE_FLIGHT_MOTION.md) |
+| `lightSort` = `lightdrv _sort` @8001bccc | [Character light queries](../display/MAP_CHARACTER_LIGHT_QUERIES.md) contracts the three-way float compare (greater→1, less→−1, else 0) and its `sorter800064fc` caller — alias, no new contract |
 
 ## Group D — duplicate extractions under two names (2 pairs)
 
