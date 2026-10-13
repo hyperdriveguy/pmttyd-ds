@@ -41,3 +41,7 @@ romfs/*.pmshadow
 # Extracted per-function disassembly dumps (evidence working files, not source history)
 *.disasm
 /romfs/messages/
+/romfs/font.pmfont
+/romfs/font.json
+/romfs/harbor-actors.bin
+/romfs/harbor-actors.json

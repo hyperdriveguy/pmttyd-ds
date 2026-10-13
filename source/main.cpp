@@ -39,7 +39,7 @@ int main() {
         gfxExit();
         return 1;
     }
-    if(!loadRoomCollision(0) || !ttyd::loadWarps("romfs:/rooms.bin") || !ttyd::loadCameraRoadAssets("romfs:")) {
+    if(!loadRoomCollision(0) || !ttyd::loadWarps("romfs:/rooms.bin") || !ttyd::loadCameraRoadAssets("romfs:") || !ttyd::loadHarborStoryAssets("romfs:")) {
         renderer.shutdown();romfsExit();gfxExit();return 1;
     }
     ttyd::Audio audio;audio.init();
@@ -122,7 +122,7 @@ int main() {
             notice=ok?"Progress loaded":"Save unavailable";noticeTicks=180;
             accumulator=0;pending={};previous=seconds();
         }
-        audio.update(game.scene,game.progress.sound);
+        audio.update(game.scene,game.progress.sound,game.harborStory.enabled && game.harborStory.triggered);
         metrics.renderMs=C3D_GetProcessingTime();metrics.gpuMs=C3D_GetDrawingTime();
         renderer.render(game,metrics,noticeTicks>0?notice:"",audio.available());
         game.fade.presented();

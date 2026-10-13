@@ -152,3 +152,39 @@ localized fallback binding remains open. Duplicate pairs are retained, but
 ambiguous keys return null until original equal-key qsort ordering is recovered.
 Only resident resource bytes/indexes need RAM; the full library resides in RomFS.
 This delivers asset lookup, not original parser, fonts, story or window playback.
+
+## 2026-10-12 — Original US font and harbor story3 playback assets
+
+`tools/font_assets.py` reads `f/papermarioset_US.bfn` from the read-only US
+ISO. Ignored `romfs/font.pmfont` contains the original byte-to-glyph map and
+162 glyph rectangles/widths; `font.t3x` contains the original512x256 I4 mask
+converted to white RGBA with intensity as alpha. Source WID bearing and GLY
+row+2/height22 coordinates are retained. The ordered FontSetup space/replacement
+width writes7 then9 leave glyph0 width9, as specified in the font contract.
+Local `font.json` records source offset/hash, conversion and rights. No font
+bytes, bitmap or original dialogue are committed.
+
+`MessagePlayback` retains the original ID and raw text while emitting source
+24-byte glyph/line/key/scroll records for the opening domain, including wait,
+speed, scale, dynamic and shake flags. Source25 default schedule, key ordinals,
+LF suppression after controls, scrolling, latched acceleration and ordinary
+opening/closing fade drive playback through the fixed-tick millisecond bridge.
+Unsupported commands fail atomically; selection/history/paper/icon/audio and
+full window/material/RNG consumers remain open. Glyph rendering uses the
+original mask/widths with adapted screen geometry; dynamic relaxation follows
+the recovered draw mutation. Shake/noise and the original bubble texture remain
+unbound. This is scoped native presentation, not original raster equivalence.
+
+`tools/harbor_actor_assets.py` reads `a/c_kanbu_ibt`, its header-selected texture
+bank `a/c_kanbu-`, and `a/c_zako_n`/`a/c_zako_n-`. Original setup Z_1 poses bake
+to ignored `harbor-actors.t3x`, with root offsets/source scalar2 in the local
+binary/manifest. Goombella reuses the original animated c_pkr pack. Crump and
+subordinate animation/automatic-pose services remain unbound.
+
+The source story3 call `bgmon(512,BGM_EVT_DANGER4)` binds catalog BGM row164
+to `sound/stream/evt_kik4_32k.stm`; its original PCM16 conversion and loop data
+are packaged as `harbor-danger.wav`. The local harbor manifest includes source
+paths, hashes and conversion metadata. Native NDSP switches to this stream at
+the trigger; original mix/envelope/environment/text SFX macro services remain
+open. All these assets retain Nintendo/Intelligent Systems rights and stay
+local/ignored without a redistribution license.

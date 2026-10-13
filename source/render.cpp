@@ -61,6 +61,18 @@ bool Renderer::init() {
     if(!partnerTextures.imported)return false;
     C3D_TexSetFilter(&partnerTextures.texture,GPU_LINEAR,GPU_LINEAR);
     C3D_TexSetWrap(&partnerTextures.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
+    for(auto entry:{std::pair<const char*,Texture*>{"romfs:/font.t3x",&fontTexture},{"romfs:/harbor-actors.t3x",&harborTexture}}) {
+        FILE* file=std::fopen(entry.first,"rb");if(!file)return false;
+        entry.second->imported=Tex3DS_TextureImportStdio(file,&entry.second->texture,nullptr,false);std::fclose(file);
+        if(!entry.second->imported)return false;
+        C3D_TexSetFilter(&entry.second->texture,GPU_LINEAR,GPU_LINEAR);
+        C3D_TexSetWrap(&entry.second->texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
+    }
+    FILE* metrics=std::fopen("romfs:/harbor-actors.bin","rb");if(!metrics)return false;
+    char magic[8];uint32_t n=0;
+    const bool valid=std::fread(magic,8,1,metrics)==1 && !std::memcmp(magic,"PMHNPC1",8) && std::fread(&n,4,1,metrics)==1 && n==2 && std::fread(harborActorMetrics.data(),sizeof(harborActorMetrics),1,metrics)==1 && std::fgetc(metrics)==EOF;
+    std::fclose(metrics);if(!valid)return false;
+    for(const auto& m:harborActorMetrics)for(float v:m)if(!std::isfinite(v) || std::fabs(v)>10)return false;
     return loadMap("map",plaza) && loadMap("stage",stage);
 }
 bool Renderer::loadMap(const char* name,Room& room) {
@@ -245,6 +257,34 @@ void Renderer::shadow(Vec2 p,float r,float floor) {
     vertex(x0,floor+.012f,z0,0,.5f,white);vertex(x1,floor+.012f,z0,.25f,.5f,white);vertex(x1,floor+.012f,z1,.25f,.25f,white);
     vertex(x1,floor+.012f,z1,.25f,.25f,white);vertex(x0,floor+.012f,z1,0,.25f,white);vertex(x0,floor+.012f,z0,0,.5f,white);
 }
+void Renderer::harborActors(const Game& g) {
+    for(unsigned i=1;i<4;++i) {
+        const auto& actor=g.harborStory.actors[i];const unsigned cell=i==1?0:1;
+        const auto& m=harborActorMetrics[cell];const float x=actor.x*.01f+m[0],y=actor.y*.01f+m[1],z=actor.z*.01f;
+        const float left=cell*.5f,right=left+.5f;
+        vertex(x,y,z,left,0,0xffffffff);vertex(x+m[2],y,z,right,0,0xffffffff);vertex(x+m[2],y+m[2],z,right,1,0xffffffff);
+        vertex(x+m[2],y+m[2],z,right,1,0xffffffff);vertex(x,y+m[2],z,left,1,0xffffffff);vertex(x,y,z,left,0,0xffffffff);
+    }
+}
+void Renderer::originalMessage(const Game& g) {
+    const auto& message=g.harborStory.message;if(!message.active())return;
+    const auto& font=harborMessageFont();
+    panel(14,122,372,106,rgb(251,242,223,message.alpha));
+    if(messageSerial!=message.serial){messageSerial=message.serial;messageIdentity=message.id();messageDynamic.clear();for(const auto& r:message.records)messageDynamic.push_back(r.value);}
+    for(size_t i=0;i<std::min(message.cursor,message.records.size());++i) {
+        const auto& r=message.records[i];if(r.code>=font.glyphs.size())continue;
+        const auto& glyph=font.glyphs[r.code];const float y=132+(2-float(r.y)-message.scroll)*.62f;
+        if(y<124 || y+glyph.height*r.scale*.62f>226)continue;
+        const float dynamic=(r.flags&1)?messageDynamic[i]:1;
+        const float scale=.62f*r.scale*dynamic;
+        Tex3DS_SubTexture sub{};sub.width=glyph.width;sub.height=glyph.height;
+        sub.left=glyph.x/512.f;sub.right=(glyph.x+glyph.width)/512.f;sub.top=1-glyph.y/256.f;sub.bottom=1-(glyph.y+glyph.height)/256.f;
+        C2D_Image image{&fontTexture.texture,&sub};C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(0,0,0,message.alpha),1.f);
+        C2D_DrawImageAt(image,26+r.x*.62f+float(glyph.width>>1)*(1-dynamic)*r.scale*.62f,
+                       y+12*(1-dynamic)*r.scale*.62f,.5f,&tint,scale,scale);
+        if(r.flags&1)messageDynamic[i]=std::fma(.5f,dynamic-1,1.f);
+    }
+}
 void Renderer::marioGroundShadow(const FieldShadowRecord& record) {
     const auto points=fieldShadowPolygon(record);
     constexpr int triangles[]={0,1,2,2,1,3,2,3,4,4,3,5}; // Original strip triangulation.
@@ -284,7 +324,8 @@ void Renderer::world(const Game& g) {
     vertex(x0,y0,z,0,0,0xffffffff);vertex(x1,y0,z,1,0,0xffffffff);vertex(x1,y1,z,1,1,0xffffffff);
     vertex(x1,y1,z,1,1,0xffffffff);vertex(x0,y1,z,0,1,0xffffffff);vertex(x0,y0,z,0,0,0xffffffff);
     if(!battle) {
-        shadow(g.partner,.43f,g.partnerHeight);if(g.progress.room==0)shadow(NpcPosition,.48f);
+        if(!g.harborStory.enabled)shadow(g.partner,.43f,g.partnerHeight);
+        if(g.progress.room==0)shadow(NpcPosition,.48f);
         if(g.progress.room==0 && !g.progress.crumpDefeated) shadow(CrumpPosition,.65f);
         struct Actor { int index;Vec2 p;float h,w,face,lift,tilt; };
         float bob=std::sin(g.ticks*.22f)*.018f;
@@ -326,9 +367,15 @@ void Renderer::world(const Game& g) {
         characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight,
                        g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ());
     const int actorEnd=count;
-    if(!battle)characterModel(g.partnerPresentation.name(),g.partnerPresentation.frame(),g.partner,g.partnerHeight,
+    if(!battle && !g.harborStory.enabled)characterModel(g.partnerPresentation.name(),g.partnerPresentation.frame(),g.partner,g.partnerHeight,
                              g.partnerPresentation.yaw(),g.partnerPresentation.reflectZ(),true);
+    if(!battle && g.harborStory.enabled && g.harborStory.triggered) {
+        const auto& a=g.harborStory.actors[0];
+        characterModel(a.moving?"PKR_W_1":"PKR_S_1",float(g.ticks),{a.x*.01f,a.z*.01f},a.y*.01f,a.display,a.display==180,true);
+    }
     const int partnerEnd=count;
+    if(!battle && g.harborStory.enabled && g.harborStory.triggered)harborActors(g);
+    const int harborEnd=count;
     bool polygonShadow=false;int airShadowCount=0;
     if(!battle) {
         const float rootY=g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight;
@@ -364,6 +411,7 @@ void Renderer::world(const Game& g) {
     C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
     if(actorEnd>legacyCount){C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
     if(partnerEnd>actorEnd){C3D_TexBind(0,&partnerTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,actorEnd,partnerEnd-actorEnd);}
+    if(harborEnd>partnerEnd){C3D_TexBind(0,&harborTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,partnerEnd,harborEnd-partnerEnd);}
     if(polygonShadow || airShadowCount) {
         C3D_TexEnvInit(env);
         C3D_TexEnvSrc(env,C3D_Both,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);
@@ -371,21 +419,21 @@ void Renderer::world(const Game& g) {
         C3D_AlphaTest(false,GPU_ALWAYS,0);
         if(polygonShadow) {
             C3D_DepthTest(true,GPU_GEQUAL,FieldRGB);
-            C3D_DrawArrays(GPU_TRIANGLES,partnerEnd,count-partnerEnd);
+            C3D_DrawArrays(GPU_TRIANGLES,harborEnd,count-harborEnd);
         } else {
             // Source LEQUAL becomes GEQUAL with the reversed native projection.
             // Preserve each record's alpha OR, front-face zero, RGB mask blend.
             C3D_DepthTest(true,GPU_GEQUAL,GPU_WRITE_ALPHA);
             C3D_CullFace(GPU_CULL_FRONT_CCW);
             C3D_ColorLogicOp(GPU_LOGICOP_OR);
-            C3D_DrawArrays(GPU_TRIANGLES,partnerEnd,airShadowCount);
+            C3D_DrawArrays(GPU_TRIANGLES,harborEnd,airShadowCount);
             C3D_CullFace(GPU_CULL_BACK_CCW);
             C3D_ColorLogicOp(GPU_LOGICOP_COPY);
-            C3D_DrawArrays(GPU_TRIANGLES,partnerEnd+airShadowCount,airShadowCount);
+            C3D_DrawArrays(GPU_TRIANGLES,harborEnd+airShadowCount,airShadowCount);
             C3D_CullFace(GPU_CULL_FRONT_CCW);
             C3D_DepthTest(true,GPU_GEQUAL,FieldRGB);
             C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_DST_ALPHA,GPU_ONE_MINUS_DST_ALPHA,GPU_ONE,GPU_ZERO);
-            C3D_DrawArrays(GPU_TRIANGLES,partnerEnd+airShadowCount*2,airShadowCount);
+            C3D_DrawArrays(GPU_TRIANGLES,harborEnd+airShadowCount*2,airShadowCount);
         }
         C3D_CullFace(GPU_CULL_NONE);
         C3D_AlphaTest(true,GPU_GREATER,8);
@@ -415,7 +463,8 @@ void Renderer::overlay(const Game& g) {
     panel(8,7,174,28,Paper);
     char line[128];std::snprintf(line,sizeof(line),"Mario  HP %d/10",g.progress.hp);text(line,16,12,.54f,Ink);
     text((g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat)?"BATTLE STAGE":roomName(g.progress.room),205,12,.46f,rgb(255,246,222));
-    if(g.scene==Scene::Dialogue) {
+    if(g.harborStory.locked())originalMessage(g);
+    else if(g.scene==Scene::Dialogue) {
         panel(14,163,372,65,Paper);text(g.dialogue(),26,172,.55f,Ink);
         text("A / touch >",308,208,.4f,Ink);
     } else {
@@ -479,9 +528,11 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
         char line[64];std::snprintf(line,sizeof(line),"Mario  %d/10 HP",g.progress.hp);
         text(line,16,64,.72f,Ink);text("Partner: Goombella",16,105,.57f,Ink);
     } else if(g.scene==Scene::Dialogue) {
-        text("Conversation",16,64,.76f,Ink);
-        button("Next / A",16,105,288,49,true);
-        button("Close / B",16,168,288,43,false);
+        const bool story=g.harborStory.locked();
+        const char* speaker=g.harborStory.speaker==0x14b28?"Goombella":g.harborStory.speaker==0x14b40?"Lord Crump":"X-Naut";
+        text(story?speaker:"Conversation",16,64,.76f,Ink);
+        button(story?(g.harborStory.message.waiting()?"Next / A or B":"Reveal / A or B"):"Next / A",16,105,288,49,true);
+        if(!story)button("Close / B",16,168,288,43,false);
     } else if(g.scene==Scene::Victory || g.scene==Scene::Defeat) {
         text(g.scene==Scene::Victory?"Battle complete":"Mario needs another try",16,64,.7f,Ink);
         button(g.scene==Scene::Victory?"Return to plaza / A":"Retry / A",16,107,288,48,true);
@@ -550,6 +601,7 @@ void Renderer::shutdown() {
     if(sky.imported) {Tex3DS_TextureFree(sky.imported);C3D_TexDelete(&sky.texture);}
     if(characterTextures.imported) {Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);}
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}
+    for(auto* texture:{&fontTexture,&harborTexture})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}
     if(imported) Tex3DS_TextureFree(imported);
     if(atlasReady) C3D_TexDelete(&atlas);
     if(vertices) linearFree(vertices);

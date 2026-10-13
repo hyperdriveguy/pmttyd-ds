@@ -44,7 +44,11 @@ private:
         uint64_t animationStart=UINT64_MAX;
     };
     Room plaza,stage;
-    Texture sky,characterTextures,partnerTextures;
+    Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture;
+    std::array<std::array<float,3>,2> harborActorMetrics{};
+    mutable std::vector<float> messageDynamic;
+    mutable std::string messageIdentity;
+    mutable uint64_t messageSerial=0;
     ActorAnimationPack actorAnimations,partnerAnimations;
     ActorAnimationSample actorSample;
     FieldShadowGeometry shadowGeometry;
@@ -62,6 +66,8 @@ private:
     void character(int index,Vec2 p,float height,float width,float facing,float lift=0,float tilt=0);
     bool characterModel(const char* pose,float frame,Vec2 root,float rootY,float yaw,bool reflectZ,bool companion=false);
     void marioGroundShadow(const FieldShadowRecord&);
+    void harborActors(const Game&);
+    void originalMessage(const Game&);
     int marioAirShadow(const FieldShadowRecord&);
     void shadow(Vec2 p,float radius,float floor=0);
     void vertex(float x,float y,float z,float u,float v,uint32_t color);
@@ -73,7 +79,7 @@ class Audio {
 public:
     bool init();
     void play(const Game& game);
-    void update(Scene scene, bool enabled);
+    void update(Scene scene, bool enabled,bool harborDanger=false);
     void shutdown();
     bool available() const { return ready; }
 private:

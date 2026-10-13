@@ -31,6 +31,7 @@
 #include "mario_presentation.hpp"
 #include "partner_presentation.hpp"
 #include "partner_follow.hpp"
+#include "harbor_story.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -142,6 +143,7 @@ public:
     MarioPresentation marioPresentation;
     PartnerPresentation partnerPresentation;
     PartnerFollow partnerFollow;
+    HarborStory harborStory;
     FieldIdleWork fieldIdle;
     // Native partner ability/status services are still adapters. These explicit
     // inputs allow source eligibility instead of collapsing it to input enabled.

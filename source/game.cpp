@@ -727,6 +727,7 @@ void Game::restore(const Progress& saved) {
     fieldCameraFrame=retainedFrame;fieldCameraAuthored=retainedAuthored;
     fieldCameraSimulationTicks=cameraClock;fieldCameraShift.previousMilliseconds=shiftTimestamp;
     progress = p;
+    harborStory.reset(p.room==1 && p.originalStory && *p.originalStory==3);
     partner = {p.position.x-0.8f,p.position.z};
     groundHeight=p.elevation;partnerHeight=p.elevation;
     if (!walkable(partner,p.elevation)) partner = p.position;
@@ -775,6 +776,7 @@ const char* Game::dialogue() const {
     return dialogueKind == 1 ? encounter[dialoguePage] : notices[dialoguePage];
 }
 const char* Game::prompt() const {
+    if(harborStory.locked())return harborStory.failed?"Development notice: source message unavailable":harborStory.message.waiting()?"A / B / touch: next":"A / B: reveal text";
     if(scene==Scene::FieldDefeat)return "A: load save";
     if(water.active() || fade.active() || arriving || warpRequest>=0)return "";
     if (scene == Scene::Dialogue) return "A / touch: next     B: close";
@@ -1380,6 +1382,26 @@ void Game::tick(const Input& rawInput) {
         publishFieldCameraTarget();
         return; // Motion publication and partner/NPC lifecycle remain separate owners.
     }
+    if(harborStory.locked()) {
+        // Source key-off blocks new player actions, not field physics. Keep
+        // support/jump/fall owners advancing under neutral native input.
+        if(fieldJump.airborne)dispatchFieldAir();
+        move(Input{});
+        const unsigned before=harborStory.stage;
+        const uint32_t keys=(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u);
+        harborStory.tick(ticks*1000/60,keys);
+        if(harborStory.stage!=before) {
+            const auto eye=CameraPoint{fieldCameraFrame.eye.x*100,fieldCameraFrame.eye.y*100,fieldCameraFrame.eye.z*100};
+            const auto at=CameraPoint{fieldCameraFrame.at.x*100,fieldCameraFrame.at.y*100,fieldCameraFrame.at.z*100};
+            const auto now=fieldCameraTickMilliseconds(fieldCameraSimulationTicks);
+            if(harborStory.stage==2 || harborStory.stage==9)fieldCameraEvents.setView({100,127,45},{100,75,-250},eye,at,500,11,now);
+            else if(harborStory.stage==5)fieldCameraEvents.setView({120,105,-53},{120,70,-250},eye,at,500,11,now);
+            else if(harborStory.finished)fieldCameraEvents.viewOff(eye,at,500,11,now);
+        }
+        saveRequested=false;
+        if(harborStory.finished){progress.originalStory=4;scene=Scene::Explore;saveRequested=true;}
+        return;
+    }
     if (scene==Scene::Dialogue) {
         if (i.cancel || (tap && i.touchY>=168)) scene=Scene::Explore;
         else if (i.confirm || tap) {
@@ -1446,6 +1468,10 @@ void Game::tick(const Input& rawInput) {
     move(i,launched);
     if(warpRequest>=0 || water.active() || fieldStep.active())return;
     if((groundContact.attributes&0x200) && !fieldJump.airborne && beginWater())return;
+    if(harborStory.enabled && !harborStory.triggered &&
+       std::trunc(std::trunc(progress.position.z*100.f*1024.f)/1024.f)<=-100 && harborStory.begin(ticks*1000/60)) {
+        scene=Scene::Dialogue;saveRequested=false;return;
+    }
     if (i.cancel) openDialogue(2);
     else if (i.confirm && !fieldJump.airborne) {
         if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) openDialogue(1);

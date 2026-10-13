@@ -2,6 +2,56 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-12 — Original harbor dialogue checkpoint and US font
+
+Added a source-derived story3 harbor sequencer for original mac_0_016..021,
+with the recovered position gate (integer decoded Z<=-100), exact message IDs/
+raw payloads/speaker order, independent delayed actor moves, source camera
+requests and terminal story4 write. It is enabled only by explicit native
+originalStory=3 in harbor; legacy/new harness state does not invent a story
+checkpoint. The gate has no added A/grounded condition, and neutral field
+physics continues an existing jump while the scene blocks new player actions.
+
+Opening glyph/key/page/wait/speed/scale/dynamic records and finite ordinary
+window fade/acceleration/scroll behavior are portable. Original US BFN glyph
+masks, mappings, width patches and row offsets render through citro2d, retaining
+all original message bytes/tokens. Speaker captions are presentation labels,
+not rewritten dialogue. Original c_kanbu_ibt/c_zako_n setup art and the exact
+BGM_EVT_DANGER4 stream are packaged locally; see
+[asset provenance](assets/SCRIPTS_MESSAGES_EFFECTS.md) and
+[source choreography](behavior/story/STORY_HARBOR_OPENING_BINDINGS.md).
+
+This remains a development checkpoint, not complete scene/REL VM fidelity:
+NPC numeric stepping/collision/automatic poses use a documented temporary
+speed adapter; Crump/subordinates use original static setup art. Mario
+set_dir/reardir, nested key/GSF persistence, environmental/NPC/text SFX, crowd,
+original bubble/history/selection/paper/shake/noise services remain unbound.
+Story2 arrival/resume and story4 tutorial continuation/restore are unfinished.
+Fresh launch remains the plaza harness. No new fabricated dialogue was added.
+
+Native checks parse/play all20 opening payloads with their exact source font
+and retained bytes; integration checks the six speaker/ID order, position-only
+and airborne admission, independent movement/owner completion, save suppression
+and story3→4 boundary. Isolated Azahar captured original font/dialogue and
+persisted story4. The first test checkpoint was on water and lost1 HP; the
+final helper places it on independently probed dry harbor ground. Source camera
+and NPC timing are static-derived/adapted, not Dolphin observations.
+
+Validation: `make test` **93 CTest / 96 Python passing**, `make all` builds
+3DSX without warnings; original-data `message_playback_tests original` and
+`harbor_story_tests original` pass. `check_doc_links.py` checks690 files with
+0 broken links. Final isolated checkpoint capture is
+`artifacts/azahar-harbor-story3-physics/`, driven by
+`tests/azahar_harbor_story.py`; final story4 persistence passes. An airborne
+regression test first exposed a missing air-motion dispatch in the dialogue
+physics bridge; adding that ordinary dispatch lets the jump land while the
+original key wait remains active. User emulator profiles/saves were untouched.
+No original-runtime or hardware performance observation was made.
+
+Next: bind original arrival and tutorial continuation, full message/window/NPC
+services, original event runtime composition and indoor entrances/maps. Full
+prologue parity and hardware performance remain incomplete.
+
 
 ## 2026-10-12 — Partner 3D following, jumps, falls and wall/path recovery
 
@@ -56,6 +106,7 @@ placement3, fall placement4/+37, dynamic platforms, ability modes and partner
 sound playback remain unbound. Record original Dolphin jump/ledge/wall/warp
 trajectories before claiming measured parity; see [mechanics](MECHANICS.md).
 Hardware behavior and full prologue/full-game fidelity remain incomplete.
+
 
 ## 2026-10-12 — Prologue map object visibility from original events
 

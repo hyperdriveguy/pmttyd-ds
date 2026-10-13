@@ -271,3 +271,134 @@ the two resource SHA-256 values and absence of `<select>`; existing
 `tools/verify_behavior_contracts.py` passes. Full key/control service semantics,
 postbattle actor/crowd wait predicates, original execution and runtime fidelity
 remain open. See [OW-INTERACT-01](../../requests/OW-INTERACT-01.md).
+
+## Story3 post-trigger choreography (2026-10-12 partial delivery)
+
+Fresh read-only ISO extraction of `christine_osoware` pins the complete 93-command,
+0x594-byte span SHA-256
+`03bdec7420754bb222ed5d83b7d1f2057de879a1187e7ae00a11a75f9d2497c0`.
+All sites below are REL file offsets. This is a static event request chronology,
+not a Dolphin observation or native performance measurement. It closes the
+request composition around 016..021; individual NPC movement/pose, sound and
+camera runtime fidelity remain separate services.
+
+Notation: G=actor key0x14b28, C=0x14b40, A=0x14b5c, B=0x14b6c.
+LW0/LW1/LW2 are raw0xfe363c80/81/82. `ADD(LW0,-N)` is integer opcode53,
+not float opcode58: position locals written as encoded floats are decoded with
+integer truncation by this arithmetic before the integer result is stored.
+Consequently the requested X is **trunc(decoded current X)-N**, not necessarily
+current floating X minus N. The target Z remains the unmodified LW2 float.
+Both source movement operands decode exactly: raw0xf24d4a80=180.0 and
+raw0xf24c5a80=120.0 under the [float operand service](../event/EVENT_FLOAT_OPERAND_ROUTING.md).
+
+`MOVE(key,s)` below means the exact six-argument request
+`evt_npc_move_position(key,LW0,LW2,0,FLOAT(s),0)`. The fourth argument is
+integer0, the fifth is the encoded float above and the sixth is raw0. Do not
+replace these requests with invented travel durations. Independent inline
+opcodes107/109 copy locals and advance the owner over their bodies without
+joining; see [constructor ownership](../event/EVENT_CHILD_BROTHER_AND_INLINE_CONSTRUCTION.md).
+Their get-position calls occur after their own delays, rather than all positions
+being captured when the parent creates the inline.
+
+### Admission through the first movement group
+
+After the position poll, GSF(1179)=1 at0x25ebc. At0x25ec8/edc the NPC key
+0x13f1c receives flag_onoff(1,key,0x400000) and
+sound_data_set(key,0,0,0,0,0); key0x14a50 receives the same at0x25efc/25f10.
+Then bgmon(512,`BGM_EVT_DANGER4`) at0x25f30 and envoff(512) at0x25f40 precede
+the synchronous setup child0x25f4c. The existing setup table supplies the four
+actor positions/facing/flags. Only Mario key is disabled at0x25f54: the main
+post-trigger stream does **not** call cont_onoff(0).
+
+| Owner site | Exact request |
+| --- | --- |
+| 0x25f60 | print(0,mac_0_016,0,G) |
+| 0x25f78 | mario_set_dir(90,0,0) |
+| 0x25f8c | mario_set_reardir() |
+| 0x25f94 | cam3d_evt_set(100,127,45,100,75,-250,500,11) |
+| 0x25fbc..0x26004 | Independent inline G: get_position at25fc0; ADD(LW0,-100) at25fd8; MOVE(G,180) at25fe4; END_INLINE at26004 |
+| 0x26008..0x26058 | Independent inline C: WAIT_MSEC(300) at2600c; get_position at26014; ADD(LW0,-100) at2602c; MOVE(C,120) at26038; end26058 |
+| 0x2605c..0x260ac | Independent inline A: WAIT_MSEC(350) at26060; get_position at26068; ADD(LW0,-100) at26080; MOVE(A,120) at2608c; end260ac |
+| 0x260b0..0x26100 | Independent inline B: WAIT_MSEC(350) at260b4; get_position at260bc; ADD(LW0,-100) at260d4; MOVE(B,120) at260e0; end26100 |
+| 0x26104 | Owner WAIT_MSEC(1400) |
+| 0x2610c | print(0,mac_0_017,0,C) |
+| 0x26124 | print(0,mac_0_018,0,G) |
+
+Each get_position has `(key,LW0,LW1,LW2)` arguments. There are no joins on these
+four inlines and no pose-change calls. From the explicit setup positions, if
+no other service alters them before the reads, the requested targets are
+G(75,-300), C(125,-300), A(155,-330), B(180,-330) in X/Z. These are inferred
+request targets, not guaranteed positions when017 begins.
+
+### Camera change and the second movement group
+
+| Owner site | Exact request |
+| --- | --- |
+| 0x2613c | cam3d_evt_set(120,105,-53,120,70,-250,500,11) |
+| 0x26164 | WAIT_MSEC(500) |
+| 0x2616c | print(0,mac_0_019,0,C) |
+| 0x26184 | print(0,mac_0_020,0,A) |
+| 0x2619c | WAIT_MSEC(500) |
+| 0x261a4 | cam3d_evt_set(100,127,45,100,75,-250,500,11) |
+| 0x261cc | WAIT_MSEC(1000) |
+| 0x261d4..0x2621c | Independent inline C: get_position at261d8; ADD(LW0,-20) at261f0; MOVE(C,120) at261fc; end2621c |
+| 0x26220..0x26270 | Independent inline A: WAIT_MSEC(100) at26224; get_position at2622c; ADD(LW0,-20) at26244; MOVE(A,120) at26250; end26270 |
+| 0x26274..0x262c4 | Independent inline B: WAIT_MSEC(150) at26278; get_position at26280; ADD(LW0,-20) at26298; MOVE(B,120) at262a4; end262c4 |
+| 0x262c8 | Owner WAIT_MSEC(50) |
+| 0x262d0 | get_position(G,LW0,LW1,LW2) in owner |
+| 0x262e8 | ADD(LW0,-20) in owner |
+| 0x262f4 | MOVE(G,120) in owner, not an inline |
+| 0x26314 | print(0,mac_0_021,0,G) |
+
+The final G move is a yielding USER_FUNC in the owner, so021 follows its
+completion. The C/A/B inlines are independent and are not waited or explicitly
+cancelled at that boundary. If the earlier target requests have completed
+unchanged, this group's final requested X values are G55/C105/A135/B160; Z
+remains -300/-300/-330/-330. Again those values are not a runtime trace.
+
+### Completion and control ownership
+
+| Site | Exact request |
+| --- | --- |
+| 0x2632c | cam3d_evt_off(500,11) |
+| 0x2633c | SET(GSW(0),4) |
+| 0x26348 | mario_key_onoff(1) |
+| 0x26354 | nannpc_init(local data0x20930,0,0,0,400) |
+| 0x26370 | nannpc_set_subfunc(1,module0 callback nannpc_ext_main_sub_fast) |
+| 0x26380 | SET(LW0,0) |
+| 0x2638c | RUN_EVT(gundan1000tai_beforebattle file0x2639c) |
+| 0x26394 / 0x26398 | RETURN / END |
+
+The story byte is written **before** key restoration; camera-off is requested
+before that write. There is no final cont_onoff call, wait-for-camera, crowd
+join, movement join, Mario position command, Mario movement command or explicit
+NPC/Mario pose command in this post-trigger stream. Absence here does not
+prevent the called services from owning automatic movement poses. The original
+[key wrapper](../overworld/OVERWORLD_STORY_STATE_AND_ROAD_CONTROL.md) is nested
+Mario byte+39 ownership (off increments/on decrements), not a freely assigned
+Boolean; partyKeyOff/On are return-only US bodies.
+
+Only LW0==1 enters the leading resume branch0x25e08..25e78 already documented.
+After that branch and the admission poll, there are no IF/ELSE/SWITCH commands
+in the remaining main stream. All six prints are unconditionally ordered,
+with original speaker keys retained. The inline delays and owner waits are
+opcode10 event-lifetime waits, not render-frame waits; see
+[WAIT_MSEC continuation](../event/EVENT_DISPATCH_AND_WAIT_CONTINUATIONS.md).
+
+Additional helper inspection: `evt_npc_move_position` US80052254/690 resolves
+key with evtGetValue, X/Z with evtGetFloat, duration with evtGetValue then
+single division, and the fifth parameter with evtGetFloat; flags are read raw.
+It returns0 while moving and has terminal return2 paths. At entry it stores
+resolved X/current Y/Z into NPC+356/360/364 and the fifth argument at+432.
+This documents the local request/continuation interface only; full driver
+integration, numeric step/pause cadence, automatic poses/collision and source
+runtime validation remain open. `evt_mario_set_reardir` US800e6da8/40 calls
+marioGetPtr then marioStGetRearDir, writes its SDA float to Mario+420/+416 and
+returns2; the function name does not justify inventing extra animation motion.
+
+Validation: fresh ISO `rel_event_inventory.py` extraction to `/tmp/scene3.json`;
+all93 original command headers/words independently compared to read-only source
+REL bytes, all USER_FUNC import words and seven inline pairs checked. Fresh
+DOL helper disassembly retained only under `/tmp`. No native files changed and
+no original dialogue prose was copied into this contract. OW-INTERACT-01 stays
+OPEN for general arbitration and original runtime fidelity.

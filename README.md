@@ -150,9 +150,22 @@ Original US English dialogue and faithful story reproduction are required.
 `make all` now packages all 260 original `msg/US` resources byte for byte under
 ignored `romfs/messages/`. Portable room/global lookup retains IDs and tokens;
 story-window playback is still unbound.
-The current dialogue interaction displays explicit development notices; original
-message playback and event sequencing are unfinished. No authored replacement
-character dialogue should be used.
+The ordinary exploration harness still displays development notices. A native
+story3 harbor checkpoint now plays the first six original Goombella/Crump/X-Naut
+messages with source speaker/order/position bindings, original US font and danger
+music. Arrival, tutorial continuation and full event/window services remain
+unfinished. No authored replacement character dialogue should be used.
+
+To inspect that development checkpoint in an isolated emulator profile:
+
+```sh
+python3 tools/make_harbor_checkpoint.py
+python3 tools/emulator_smoke.py --save-fixture artifacts/fixtures/harbor-story3.bin --seconds 10 --input-script tests/azahar_harbor_story.py --output-dir artifacts/azahar-harbor-story3
+```
+
+This native test checkpoint bypasses the unfinished arrival intro; it is not an
+original GameCube save or the complete prologue demo. A/B advance or accelerate
+the original message window; its closed page waits preserve the source controls.
 
 Outdoor road exits link the plaza with harbor, east and west rooms. Walk toward
 the original road openings to change rooms; arrival progress is saved. The west-side road also connects to the station. Interior
