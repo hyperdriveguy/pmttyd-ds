@@ -2,6 +2,32 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero macro input selectors/first-use/dirty
+
+Completed18 macro input selector/global dirty setter local contracts and four
+mask tables for EVT-01; checked the corresponding inbox portion.
+[Selectors/first-use/dirty](behavior/audio/MUSYX_MACRO_INPUT_SELECTORS_FIRST_USE_AND_DIRTY.md)
+pins15 voice/two aux builder callers, conditional first-use mode0/reset,
+separate signed coefficient decoding and post-builder dirty publication.
+Existing selectors still use command mode; shared aux descriptors have per-voice
+flags. This proves a conditional first-row/r28 chain, not global reachability/
+flag lifecycle/shared ownership or original interpreter/audio timing.
+
+Validation: read-only ISO manifest passed23 spans (18 complete/one prior builder/
+four tables),480 anchors/19 calls.15 schemas/four first-use/four field/four global-
+dirty/nine coefficient vectors, common voice-body regions and all65536 high-half/
+all256 fraction-byte division cases checked as deductions. DOL scan found17
+builder calls in these selectors. Link audit passed795 Markdown files/zero broken
+links; `git diff --check` passed. Documentation/metadata only; no `make test`/
+`make all` rerun. Full original inspection ELFs/listings stay `/tmp`; no bodies/
+binary assets committed. Concurrent native edits excluded from the commit.
+
+Next: priority-zero EVT-01 interpreter/command and first-use-flag lifecycle,
+shared aux ownership/other descriptor/dirty writers, actual caller/global first-
+mode/r28/count/bounds/alias/concurrency domains; original selection/recompute/
+audio traces. Full scheduler/native/runtime binding, lower-priority inbox and
+full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero descriptor builder/FX copy/translation
 
 Completed inpAddCtrl/inpFXCopyCtrl/inpTranslateExCtrl local contracts and one

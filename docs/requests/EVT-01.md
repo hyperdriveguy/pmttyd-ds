@@ -240,6 +240,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Exact reset/count admission/publication, alias translation and ordered raw
   byte copies pinned; first mode is not universally enforced and FX copy
   does not mark dirty. Actual callers/invalidation/domain/runtime remain open.
+- [x] Complete15 voice/two aux macro input selectors/global dirty setter —
+  [selectors/first-use/dirty](../behavior/audio/MUSYX_MACRO_INPUT_SELECTORS_FIRST_USE_AND_DIRTY.md).
+  Conditional first-use mode0 builder chain, coefficient decode and post-child
+  dirty publication pinned; interpreter/flag lifecycle/shared ownership/global
+  first-row/r28/bounds and original macro/audio evidence remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1480,3 +1485,23 @@ fresh ELFs/listings stay `/tmp`; no native change/original execution/body/binary
 asset export. Actual callers/dirty invalidation/other descriptor writers,
 first-mode/r28/FX bounds/lifetime/alias/IRQ/concurrency and original build/copy/
 recompute/audio traces remain OPEN.
+
+### 2026-10-13 — Macro input selectors, first use and dirty publication
+
+[18 complete local bodies and four mask tables](../behavior/audio/MUSYX_MACRO_INPUT_SELECTORS_FIRST_USE_AND_DIRTY.md)
+close15 voice/two aux builder callers and global dirty setter. Clear first-use
+flags force mode0/reset row construction; existing selectors use command mode.
+Coefficient decoding retains separate signed base/fraction division, dirty is
+published after builder even after append refusal, and shared aux descriptors
+use per-voice first-use flags. This closes a conditional first-row/r28 chain,
+not a universal invariant or complete interpreter binding. No rollback/shared
+ownership/range/physical audio behavior invented.
+
+Validation: read-only manifest23 spans (18 complete/one prior builder/four
+tables),480 anchors/19 calls passes.15 schemas/four first-use/four field/four
+global-dirty/nine coefficient vectors, common voice-body regions and all65536
+high-half/all256 fraction-byte division cases checked as deductions. DOL scan
+found17 builder calls in these selector bodies. Full fresh ELFs/listings stay
+`/tmp`; no native change/original execution/body/binary asset export. Actual
+interpreter/flag lifecycle/shared ownership/other writers, global first-mode/
+r28/parameter/studio/channel/bounds/alias/concurrency and original audio remain OPEN.

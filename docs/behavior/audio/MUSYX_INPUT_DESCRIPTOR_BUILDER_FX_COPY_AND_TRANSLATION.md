@@ -142,3 +142,11 @@ other descriptor/count/index/mode/coefficient/variable writers, first-row/r28/
 source/FX-row bounds/lifetime/alias/IRQ/concurrency domains and original build/
 copy/recompute/audio traces. Three local services are answered; EVT-01 and
 full native/source/runtime/hardware equivalence remain OPEN.
+
+### Macro selector caller follow-up
+
+[Complete macro selectors/first-use/dirty](MUSYX_MACRO_INPUT_SELECTORS_FIRST_USE_AND_DIRTY.md)
+now closes17 local builder callers and the global dirty setter. Clear first-use
+flags force mode0/reset construction; existing flags use command mode. Dirty
+publication follows builder even after append refusal. Global first-row/r28/
+flag-lifecycle/shared-ownership and original macro/audio evidence remain open.
