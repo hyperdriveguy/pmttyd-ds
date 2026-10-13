@@ -2,6 +2,72 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Title/file menu and fresh-file opening order adapter
+
+Normal boot now plays the original storybook/market demonstration, title and
+four-file menu before starting an empty file's opening. Native controllers own
+input separately from field mechanics. A/START skips the demo to title and
+opens file selection; D-pad/touch chooses a file, B returns to title. Original
+US messages are preloaded and parsed before the new-file sequence starts:
+37 demo payloads and11 opening payloads preserve IDs/raw bytes/control tokens
+and explicit speaker operands. Diary sets source type7. New-file order is
+house → letter → house return/map display → voyage/input gate → original
+prologue heading → awakening → arrival → saved harbor story3 at(0,15,225).
+Map display retains the source +2/clamp255 counter over128 simulation updates;
+source GSW0 writes2/3 are explicit. Existing original saves are not a priority
+per the user's steering; slot0 keeps the existing path as a low-cost convention.
+
+Original title/desk/book/letter/map/prologue raster assets, house/voyage/wake
+geometry, four character banks and six music streams are converted locally.
+House outside/interior snapshots use distinct visibility roots; Luigi retains
+idle/talk/read clips. Front-end caches release before field loading and empty
+actor-atlas rows are cropped with checked UV scaling. No generated art, rewritten
+story dialogue, synthesized tones or redistributed ISO assets were added. See
+[asset choices](ASSETS.md) and [opening contract](behavior/story/NATIVE_OPENING_FLOW.md).
+`make debug-short` creates a separate `ttyd-2ds-debug-short.3dsx` and build directory
+that starts in the prior checkpoint/plaza harness without the opening.
+
+Incremental commits: controller `d47d21f`, test/index registration `e19eda1`,
+native/assets/order adapter `a096639`, committed-professor API compatibility
+`433a001`. Concurrent work was changing the shared field actor packs and source
+APIs during testing. Final reproducible validation used isolated checkout
+`/tmp/pm-opening-validation-a096639` with the exact433a001 main.cpp correction,
+without incorporating unrelated pending edits. `make test` passes **101 CTest /
+96 Python tests** (`/tmp/opening-isolated-test.log`); `make all` passes without
+warnings (`/tmp/opening-isolated-build.log`); `make debug-short` passes
+(`/tmp/opening-isolated-debug-build.log`). The primary working tree additionally
+passed103 CTest/100 Python tests at `/tmp/opening-preload-test.log`, but that
+mutable-worktree result is not the reproducible feature baseline. Original-data
+playback tests verify all48 IDs, source speakers, automatic demo completion,
+source-story writes and voyage input admission. Document audit checks720 Markdown
+files with0 broken links; whitespace check passes.
+
+Isolated Azahar fresh-file `tests/azahar_opening_flow.py` passes the full sequence
+and verifies a native40-byte saved room1/story3 checkpoint
+(`/tmp/opening-isolated-smoke.log`). Reviewed title, file menu, voyage and final
+harbor exploration captures; copies are under ignored `artifacts/azahar-opening-isolated/`.
+Separate debug-short Azahar boot passes directly into the plaza
+(`/tmp/opening-isolated-debug-smoke.log`); reviewed debug-short-boot.png.
+Local verified artifacts are `ttyd-2ds-opening-verified.3dsx` and
+`ttyd-2ds-debug-short-verified.3dsx`. The isolated source/profile/assets stay under
+/tmp; original extracted assets/binaries remain ignored. No user emulator profile
+or saves were modified. Xvfb required display-socket escalation. Earlier shared
+runs exposed initialization/resource failures and are superseded by this stable
+checkout validation; no original-runtime/Dolphin or hardware measurement is claimed.
+
+Limitations/next: this is an **event-order/presentation adapter**, not complete
+source cutscene execution. Book/page transforms, original camera interpolation,
+NPC movement/yaw/pose ownership, ship transitions, fades, title curtains, diary
+border/glyph effects, environment/SFX services and full new-game pouch/card
+initialization remain unbound. Preserve original concurrent/branch/control semantics
+when replacing snapshots with REL execution. The new-file path reaches story3;
+the existing six-message harbor encounter reaches4, but original022..024 battle
+entry, tutorial/full Jump continuation,025..033 postbattle/crowd joins and the
+subsequent story progression still need native binding before fresh-file playtests
+can reach all later events in order. Continue with those source graphs and the
+remaining opening choreography; do not call the full opening or remake complete.
+The user's goal remains active.
+
 ## 2026-10-13 — Original house-exit fence event and live lecture entry
 
 [Native fence/lecture entry](behavior/story/NATIVE_PROFESSOR_FENCE_AND_LECTURE_ENTRY.md)
