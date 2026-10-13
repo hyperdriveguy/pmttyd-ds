@@ -233,3 +233,35 @@ Closed by this pass (no decompiled definition in the pinned snapshot):
 8008c1a8) remain open: both are partially described inside the airborne and
 bottomless contracts but have no dedicated body contract and no snapshot
 definition.
+
+### Second pass (same session)
+
+Closed by the second pass, again with no snapshot definition:
+
+| Listing | Symbol | Entry | Contract |
+| --- | --- | --- | --- |
+| `BattleAfterReactionQueueInit` | same | 800f7af0 | [After-reaction queue](battle/BATTLE_AFTER_REACTION_QUEUE.md) |
+| `BattleAfterReactionEntry` | same | 800f7a78 | [After-reaction queue](battle/BATTLE_AFTER_REACTION_QUEUE.md) |
+| `BattleAfterReactionRelease` | same | 800f79e4 | [After-reaction queue](battle/BATTLE_AFTER_REACTION_QUEUE.md) |
+| `BattleStatusWindowCheck` | same | 800f7514 | [Status window/camera X](battle/BATTLE_STATUS_WINDOW_CHECK_AND_NOMOVE_X.md) |
+| `btl_camera_nomove_x_onoff` | same | 8012b33c | [Status window/camera X](battle/BATTLE_STATUS_WINDOW_CHECK_AND_NOMOVE_X.md) |
+| `btlevtcmd_SetEventDamage` | same | 8010a55c | [Damage event leaves](battle/BTLEVTCMD_DAMAGE_EVENT_LEAVES.md) |
+| `btlevtcmd_CommandCheckDamage` | same | 8010a688 | [Damage event leaves](battle/BTLEVTCMD_DAMAGE_EVENT_LEAVES.md) |
+| `msgWindow_ForceClose` | same | 80081424 | [Window close/repeat](message/MSG_WINDOW_FORCE_CLOSE_AND_REPEAT.md) |
+| `msgWindow_Repeat` | same | 800814f4 | [Window close/repeat](message/MSG_WINDOW_FORCE_CLOSE_AND_REPEAT.md) |
+| `evt_msg_close` | same | 800d2178 | [Window close/repeat](message/MSG_WINDOW_FORCE_CLOSE_AND_REPEAT.md) |
+| `evt_msg_repeat` | same | 800d21a8 | [Window close/repeat](message/MSG_WINDOW_FORCE_CLOSE_AND_REPEAT.md) |
+| `evt_sub_intpl_init` | same | 80056120 | [Interpolation/party leaves](event/EVENT_INTERPOLATION_AND_PARTY_RUN_STOP_LEAVES.md) |
+| `evt_sub_intpl_get_value` | same | 80056064 | [Interpolation/party leaves](event/EVENT_INTERPOLATION_AND_PARTY_RUN_STOP_LEAVES.md) |
+| `evt_party_run` | same | 800eae70 | [Interpolation/party leaves](event/EVENT_INTERPOLATION_AND_PARTY_RUN_STOP_LEAVES.md) |
+| `evt_party_stop` | same | 800eaeb8 | [Interpolation/party leaves](event/EVENT_INTERPOLATION_AND_PARTY_RUN_STOP_LEAVES.md) |
+
+Correction carried by the camera X row: the Y/Z contract in
+[the wait/camera leaves](../overworld/OVERWORLD_SPEED_FALL_LANDING_LEAVES.md)
+sibling `battle/BATTLE_WAIT_CAMERA_STATUS_EVENT_LEAVES.md` describes the guard
+as "return immediately when incoming r3 < 0". The actual guard is
+`cmpw r3, word[W+10076]` / `bclr 12,0`, which returns only when the first
+argument equals that word, and the `word[W+10076]` load is therefore live.
+The same contract's "unresolved `bl 0x800f7514`" is now
+[resolved](battle/BATTLE_STATUS_WINDOW_CHECK_AND_NOMOVE_X.md) as
+`BattleStatusWindowCheck`.
