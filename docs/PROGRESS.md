@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero ADSR advancement/wrapper
+
+Completed adsrHandle/adsrHandleLowPrecision for EVT-01; checked the inbox
+portion. [Advancement/output order](behavior/audio/MUSYX_ADSR_ADVANCEMENT_AND_LOW_PRECISION.md)
+pins two domains, pre-update level publication/fresh delta, count wrap/exact-zero
+transition and fifteen-call output reuse/early return. Caller cadence/value/index/
+alias/DSP/original envelope/audio remain open; no measured timing inferred.
+
+Validation: read-only ISO manifest passed four spans (two complete bodies/one
+linked state-change/one numeric table),83 anchors/three calls. Ten quantization,
+five linear/count,seven log-index/five wrapper formula vectors checked;194 table
+halves retained. Link audit passed834 Markdown files/zero broken links; scoped
+`git diff --check` passed. Documentation/metadata only; no `make test`/`make all`
+rerun. Full original inspection ELFs/listings stay `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded. Authorized push of all committed
+changes failed: GitHub rejected configured username/token; no push succeeded.
+
+Next: priority-zero EVT-01 actual envelope callers/cadence and type/phase/count/
+level/log/step/selector writers, valid table/value/alias/lifetime/IRQ/concurrency
+domains, macro/hardware/DSP consumers and original output/audio traces. Other
+opcodes, lower-priority inbox and full native/full-game work remain open.
+
 ## 2026-10-13 — Original NPC side collision and accelerated wall queries
 
 Implemented [native ordinary NPC side collision](behavior/field/NATIVE_NPC_SIDE_COLLISION.md)

@@ -121,3 +121,9 @@ Remaining: envelope advancement service and actual type/phase/count/level/log/
 step/duration/sustain/selector/pool/caller writers, valid table/index/divisor/
 float/value/alias/IRQ/concurrency domains, macro/hardware/DSP consumers and
 original envelope transition/release/audio traces. EVT-01 remains OPEN.
+
+## 2026-10-13 — Advancement follow-up
+
+[Advancement/output order](MUSYX_ADSR_ADVANCEMENT_AND_LOW_PRECISION.md) closes adsrHandle and its fifteen-call
+wrapper: old-level outputs precede exact-zero count transitions. Actual callers,
+cadence/value/index/alias domains and original envelope/audio traces remain open.

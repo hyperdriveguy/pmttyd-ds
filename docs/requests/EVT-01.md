@@ -359,6 +359,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   type/phase/count/domain/step/table/release paths —
   [ADSR transitions/release](../behavior/audio/MUSYX_ADSR_STATE_TRANSITIONS_AND_RELEASE.md).
   Zero-stage fallthrough/raw index/linear-versus-converted zero effects retained; advance/runtime open.
+- [x] Complete adsrHandle/adsrHandleLowPrecision local advancement and
+  repeated-call wrapper — [advancement/output order](../behavior/audio/MUSYX_ADSR_ADVANCEMENT_AND_LOW_PRECISION.md).
+  Old-level output/fresh delta/count wrap/transition/table/wrapper pinned;
+  caller cadence/value/index/alias/original audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2070,3 +2074,13 @@ Full fresh ELFs/listings stay `/tmp`; no native change/original execution/body/
 binary asset export. Advancement, actual type/phase/count/level/duration/sustain/
 caller/domain/alias/IRQ/concurrency and macro/hardware/DSP/original envelope/
 release/audio remain OPEN.
+
+## 2026-10-13 — ADSR advancement and low-precision wrapper delivery
+
+Completed two local bodies in [advancement/output order](../behavior/audio/MUSYX_ADSR_ADVANCEMENT_AND_LOW_PRECISION.md).
+Four ISO spans/83 anchors/three calls verified; 27 formula vectors and194 original
+numeric table halves recorded. Old-level publication precedes count transition;
+wrapper reuses output pointers for up to15 calls, stops on nonzero child result.
+Unknown phases/count0/unbounded table indices/signed-min quantization remain
+source behavior rather than repaired inputs. Caller cadence/domain/original
+audio/full native binding remain open. Parent EVT-01 stays OPEN.
