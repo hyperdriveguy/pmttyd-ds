@@ -146,6 +146,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [stream kill/reset/hardware flags](../behavior/audio/MUSYX_STREAM_KILL_INITIALIZATION_AND_HW_BREAK.md).
   First-match callback/prefix reset/fresh DSP event writes pinned; Unblock/
   provider/consumer/reinit/index/concurrency/original runtime remains open.
+- [x] Complete macMakeInactive/macMakeActive/macInit and
+  synthForceLowPrecisionUpdate bodies —
+  [macro lifecycle](../behavior/audio/MUSYX_MACRO_ACTIVE_INACTIVE_WAIT_AND_INIT.md).
+  State/list/wait/time/flag/job request order pinned; job/interpreter/providers/
+  wait/domain/concurrency/original execution remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1043,3 +1048,17 @@ passes.10 initialization/10 kill-route/16 break vectors are derived only; full
 fresh ELFs/listings stay `/tmp`. No original execution/native/body/asset export.
 Unblock/callback/state/count/index/DSP provider-consumer/reset/concurrency and
 original stream/voice shutdown/audio remain OPEN.
+
+### 2026-10-13 — Macro active/inactive/wait/init local lifecycle
+
+[Four complete bodies](../behavior/audio/MUSYX_MACRO_ACTIVE_INACTIVE_WAIT_AND_INIT.md)
+close equality early return, active/time unlink, zero/all-ones wait distinction,
+low-then-high clear/time publication, literalfffbfffb flags, forced two-job request
+and live-count/per-field pointer macro init. No member/unknown-state/alias repair
+or inferred macro scheduling/voice/resource release.
+
+Validation: read-only manifest5 spans (4 complete/1 linked),125 anchors/three
+resolved calls passes;6 wait/5 mask/7 state vectors/job order are static deductions.
+Full fresh ELFs/listings stay `/tmp`; no original execution/native/body/asset
+export. Job/interpreter/wait/state/list/voice/provider/IRQ/concurrency and original
+macro/activation/audio remain OPEN.

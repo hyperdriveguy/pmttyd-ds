@@ -108,3 +108,5 @@ IRQ/concurrency domains, original sequence-note kill/recycle/audio traces. Two
 local bodies are answered; full native/source/runtime/hardware remains OPEN.
 
 [Complete stream kill/init and hardware break/active flags](MUSYX_STREAM_KILL_INITIALIZATION_AND_HW_BREAK.md) now closes those exact tail children. First-match callback and event-bit publication remain distinct from resource/voice/hardware completion; deeper providers/consumers/runtime open.
+
+[Complete macro inactive/active/wait/init](MUSYX_MACRO_ACTIVE_INACTIVE_WAIT_AND_INIT.md) now closes the exact inactive child, preserving equality early return and conditional wait cleanup. Jobs/interpreter/time/list/providers/original execution remain open.

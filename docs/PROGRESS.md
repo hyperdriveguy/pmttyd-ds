@@ -6,6 +6,26 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 macro active/inactive/wait/init lifecycle
+
+Delivered [macro lifecycle](behavior/audio/MUSYX_MACRO_ACTIVE_INACTIVE_WAIT_AND_INIT.md).
+Four complete bodies pin state equality gates, active/time unlink, two-word wait
+sentinels/clear/time and literal flags, activation's two-job request and live-count/
+per-field pointer init. No scheduler/resource completion inferred. Marked local
+EVT-01 portions complete; jobs/interpreter/source/runtime remain OPEN.
+
+Validation: generic read-only verifier5 spans (4 complete/1 linked),125 anchors/
+three resolved calls passes.6 wait/5 mask/7 state vectors and ordered job metadata
+are deductions; no original code executes. Full fresh ELFs/listings stay `/tmp`.
+Link audit768 Markdown files/0 broken; whitespace checks pass. Docs/metadata only:
+no make rerun, native change or original body/asset export. Isolated index excludes
+unrelated staged/worktree work.
+
+Next/limits: synthAddJob/macro interpreter/wait-time producers, state/list/voice/
+count/pointer providers and member/alias/IRQ/concurrency domains, original job/
+macro/voice/audio traces. Continue priority0 source/backend then priority1 damage.
+No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Priority0 stream kill/init and hardware break flags
 
 Delivered [stream/hardware leaves](behavior/audio/MUSYX_STREAM_KILL_INITIALIZATION_AND_HW_BREAK.md).
