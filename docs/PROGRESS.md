@@ -5,6 +5,60 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+
+## 2026-10-13 — Source save lifecycle and original221-command event core
+
+Commit `a0905a6` adds the portable source save-block callback, owned hit-name
+cache and uint8 nested key leaves. The callback preserves exact stage0..4
+request order, previous-published ratio/ordered NaN comparison, optional versus
+system children, entry priority30/type26, distinct running predicates and
+retained eventID. These mechanics are compiled for host/ARM and do not yet
+change the Game's live save-block interaction.
+
+Original system/wrapper/common-child arrays retain221 commands/14 callback
+identities/89 sites in ignored local packs. The builder validates exact source
+hashes and reads only DOL data spans/operand strings plus actual label-scanner
+lookahead words. No original executable body is exported or dialogue invented.
+The existing interpreter executes the original child/branch/switch/flag graph;
+typed services preserve raw/resolved arguments, source speaker/coordinates,
+ID-versus-raw controls, firstCall/yielding semantics and output references.
+See [native core](behavior/field/NATIVE_SAVE_BLOCK_LIFECYCLE_AND_EVENT_CORE.md)
+and [asset provenance](ASSETS.md).
+
+Documentation inbox work recovered
+[restart/event identities](behavior/display/SAVE_BLOCK_RESTART_CLOCK_AND_EVENT_IDENTITIES.md)
+and [retained Continue/Add ownership](behavior/message/SAVE_EVENT_RETAINED_WINDOW_CONTINUE_AND_APPEND.md).
+Continue resumes/polls, not force-closes; raw scroll/once_stop appends preserve
+the retained main window while selection has its own handle. Actual native
+message/card providers remain next; test callbacks are not presentation/I/O.
+
+Validation: final shared `make test` passes110 CTest/100 Python tests. Isolated
+source/romfs snapshot `/tmp/pm-save-flow-jikuwdrm` passes107 CTest/100 Python
+and `make all` after final request/move changes; concurrent underground work
+is excluded from that snapshot. Original-data tests check No/success flags and
+mode/story effects, exact ID/raw-control order, source attribution/arguments,
+yielding header/write, all normal-mode error families, accepted format/create,
+format/create/write failure repolls, guard break and moved runtime ownership.
+Lifecycle tests cover suppression, callback stage/order, nested key wrap, NaN,
+optional children and helper-versus-wait predicates. An initial test backend
+accepted every later creation choice while retaining a persistent error and
+entered the source retry loop; the owned process was stopped and test responses
+corrected. Source loop was preserved. An earlier shared run failed a concurrent
+unfinished underground test syntax error; the final shared run above passes.
+Documentation links758 files/0 broken and whitespace checks pass. No emulator
+run is claimed for this library-only milestone; current rendering is unchanged.
+ISO remains read-only and compiled packs/assets remain outside history.
+
+Next: bind actual source instances/head-name publication, independently timed
+S_1/A_1 with Main publication after callback, original431 audio when available,
+event manager before Mario, nested Game key/system/camera ownership, retained
+message windows and original selection. Then connect a yielding native persistence
+adapter and preserve GSF233/236/GSW4 alongside existing source flags. Avoid
+force-close on Continue or an extra Continue on success; No must not write.
+Source pause/category/camera consumers, shared field VM/state, full lifetime,
+original execution traces, other areas/actors and hardware profiling remain open.
+The full user goal remains active.
+
 ## 2026-10-13 — Priority0 MusyX listener update and cross/inverse math
 
 Delivered [listener/cross/inverse](behavior/audio/MUSYX_LISTENER_UPDATE_CROSS_AND_MATRIX_INVERSE.md).
