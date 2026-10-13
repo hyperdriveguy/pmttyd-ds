@@ -2,6 +2,79 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Live original Goomba4, source pause ownership and NDSP footsteps
+
+Committed live [Goomba4/wandering binding](behavior/field/NATIVE_LIVE_NPC_WANDER.md)
+in acf058b. PMNPC008 retains original source talk-event presence separately
+from playback, adds188-byte typed wander/pose/sound metadata and preserves
+original tagged relative registry order. Source init(-370,0,130),direction270,
+radius70/speed30,30/30 dimensions and40480603 regular flags remain exact.
+Actor state owns retained work, previous root, previous NPCdt/contact, yaw,
+automatic S_1/W_1/R_1 phase and simulation-owned paper presentation. Rendering
+reads its live matrix/pose clock without a second facing update; model resources
+still stage/batch through tex3ds/citro3d. Source fresh zero-vertical/no-gravity
+profile takes the proven no-ground-probe path rather than inventing a floor ray.
+
+Regular USER_FUNC executes before Mario using prior NPC publications; NPC-main
+publishes current interval, applies direct displacement, clears components,
+responds to Mario, chooses pose from actual speed and snapshots. Candidate
+admission is independent of native quest playback and strict nearest victory;
+fully admitted wandering actors pause even when not nearest. Stop/resume
+retains work/countdown; skipped global/actor gates do not resume. Yaw turns
+only on first candidacy, saves/restores source yaw without heading mutation.
+Unknown nearest quest playback cannot redirect A to farther Chu/Darkly.
+Original Goomba quest/flags/items remain unavailable: A jumping is suppressed,
+no substitute dialogue/story write is generated, and a labeled development
+notice explains missing playback. Source/native contracts and inbox retain
+that boundary. Native seed1 and simulation60Hz clock remain explicit adapters
+pending full shared seed/scheduler/clock binding.
+
+Original c_kuribo_n descriptor0Z_1/S_1/T_1/W_1/R_1 uses14 cells,
+1024x256RGBA8/UV4,1MiB nominal texture payload. Original step names request
+source primary samples993/994 through libctru NDSP channels8/9; decoded
+16000Hz monoPCM16 lengths540/672 and tablevolume45/127 are retained, with the
+existing0.65 master gain. Named cue lookup uses the loaded original clip table.
+Original name/mask/root requests remain inspectable; full macro/child voices,
+material-mask routing and spatial attenuation remain adapters. No generated
+replacement art/tones. ISO/raw resources/packs/captures remain ignored.
+
+Validation: final shared `make test` passes134 CTest/103 Python at
+`/tmp/live-wander-shared-test-complete.log`; isolated snapshot
+`/tmp/pm-live-wander-4wc3cmxh` passes133 CTest/103 Python at
+`/tmp/live-wander-isolated-test-complete.log`. Shared and isolated `make all`
+pass without warnings/errors, logs `/tmp/live-wander-shared-native-complete.log`
+and `/tmp/live-wander-isolated-native-complete.log`. Original-data tests verify
+freshdt0/prior-publication movement, bounded1600tick walking, run/idle/sound
+requests, retained pause/resume and skipped gates, first-turn retention, room
+invalidation and unsupported-nearest/no-farther-dialogue with real message
+providers. Parser tests reject incomplete moving profiles/malformed v8 data;
+older formats and object support remain covered. Intermediate shared links
+raced library rebuilds; final complete shared/isolated runs are the validation.
+Independent source/runtime/render review caught repeated candidacy turning and
+playback-winner mismatch; both corrected and regression-tested.
+
+Final binary `artifacts/ttyd-live-wander-final.3dsx` passes isolated Azahar/Xvfb
+`tests/azahar_live_wander.py` with goomba/goomba-observe fixtures from the fixture
+tool. Profiles/captures `artifacts/azahar-live-wander-pause` and
+`artifacts/azahar-live-wander-observe`; logs `/tmp/live-wander-emulator-pause.log`
+and `/tmp/live-wander-emulator-observe-final.log`. Strict original-hat visibility/
+motion assertion finds centers357.32,357.29,377.38,395.35 across captures;
+stationary player, room2/story8, save admission/checksum and unavailable-quest
+no-window assertion pass. Inspected original moving/paused art and development
+notice; captures run60fps in software emulator (observed sim~1.0ms,CPU~7.0ms,
+GPU~0.5ms). This is not New2DS hardware speed, full audio-runtime fidelity or
+matched original-runtime pixel/trajectory measurement. Link audit passes867
+Markdown files/zero broken links; whitespace passes. f371744 removes an
+accidentally duplicated asset-ledger chapter, preserving the original foreign
+entry. Concurrent battle/opening/audio work excluded from feature commits.
+
+Next: bind Goomba4 quest/switch/item-table/window services before ordinary talk;
+complete shared RNG/clock/event-category scheduling and all-story lifetimes;
+static-NPC candidate turn/secondaryflag140 ownership; additional original area
+NPC/events/objects and full sound/spatial/shadow/backend services. Compare
+original traces and dense-area New2DS performance. Early Rogueport remains an
+incremental remake slice; the full requested goal is still active.
+
 ## 2026-10-13 — Inbox priority-zero stream lookup/output mode/mix
 
 Completed GetPrivateIndex/CheckOutputMode/SetupVolume/SetupVolumeAndPan/SetHWMix;
