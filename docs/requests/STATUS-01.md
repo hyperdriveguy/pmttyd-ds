@@ -5,9 +5,12 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 
 ## Open todos
 
-- [ ] Unit-entry status/badge/move-count initialization and the concrete
-  weapon/unit/event bindings reaching the documented infliction, recovery and
-  periodic turn controllers.
+- [x] Local unit-entry status/badge/move-count initialization — full
+  [Entry](../behavior/battle/BATTLE_UNIT_ENTRY_COMPLETE.md),
+  [pouch/status](../behavior/unit/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md) and
+  [badge/count](../behavior/unit/UNIT_BADGE_COUNT_IMPORT.md) contracts.
+- [ ] Concrete weapon/unit/event bindings reaching infliction, recovery and
+  periodic turn controllers, later initialization mutations and original traces.
 - [ ] Full main/battle event cadence, turn/phase state producers,
   remaining-count consumption and the `+20/+23/+24` writers.
 - [ ] End-of-battle cleanup and status effect/message/sound/pose callback
@@ -82,3 +85,13 @@ does no resource writes,but direct revision still updates HP/FP maxima. INIT-01.
 provide scoped requirements/cases. Badge aggregation,move init,snapshot writers,
 infliction/periodic/turn/presentation/save lifetime and original traces remain
 open. This is also a partial DMG-01 answer for later HP/FP override ownership.
+
+### 2026-10-13 — Priority5 initialization portion checked
+
+The priority1 [initialization delivery](../behavior/battle/DMG_01_INITIALIZATION_AND_JUMP_COUNT_BINDINGS.md)
+revalidates full local Entry/UnitSetup and existing status/badge/count imports.
+Marked only that initialization portion complete. Entry/setup/general behavior
+verifiers pass against the read-only ISO. Infliction/turn/end/presentation/save
+binding and multi-turn execution remain OPEN. Priority4 AC-02's remaining full
+lifecycle/display/macro bindings still need recovery; this shared prerequisite
+check does not replace that work or establish turn cadence.

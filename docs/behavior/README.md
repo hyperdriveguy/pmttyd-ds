@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [DMG-01 initialization/count binding](battle/DMG_01_INITIALIZATION_AND_JUMP_COUNT_BINDINGS.md) | Full local Entry/UnitSetup composition, signed HP/FP copies, original Jump shared count reset/success stores/readout | Other counters/loadout/mutations, full consumer graph and original multihit traces |
 | [EVT-01 service consolidation](event/EVT_01_SERVICE_CONTRACT_AND_REMAINING_BINDINGS.md) | Scheduler/constructor/wait composition, corrected leaf capture, conditional Jump root/registry and local menu writers | Original traces, query-specific cursor domains, dynamic/global/platform/numeric bindings |
 | [Shape entry/defaults](display/ANIMATION_SHAPE_RENDER_ENTRY_AND_DEFAULTS.md) | Complete two-body matrix/pass/cull/default request order | Texture/map/GX/SDK/source/lifetime/runtime |
 | [Texture override scans](display/ANIMATION_RENDER_TEXTURE_OVERRIDE_SELECTION.md) | Complete reversed slot/index fallback/kind priority/null/alpha differences | Override/resource/texture object/coordinate/GX/source |

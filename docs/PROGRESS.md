@@ -2,6 +2,34 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Priority1 initialization/count and priority2/3 inbox portions
+
+Delivered [DMG-01 initialization/count composition](behavior/battle/DMG_01_INITIALIZATION_AND_JUMP_COUNT_BINDINGS.md):
+full local Entry/UnitSetup, signed HP/FP copy and later imports, distinct body-part
+selectors, setup count0/result1, four encoded TimingA increment routes and
+read-only shared count query. Independently corrected result-reader battle/output
+capture order and pending bit0/mask1 wording. Marked scoped delivered portions
+in DMG-01, AC-03, AC-01 and the shared STATUS-01 initialization prerequisite;
+request text remains unchanged and parent integration/runtime work stays OPEN.
+Priority4 AC-02 full lifecycle/display/macro bindings remain pending.
+
+Validation: full Entry verifier33 bodies/441 anchors/11 spans; UnitSetup8 bodies/
+190 anchors/5 spans; Jump graph268 commands/19 bodies/57 anchors/5 concurrent
+blocks; input cadence11 hashes/154 anchors/28 calls/3 data bindings; boss Jump
+10 fingerprints/55 instructions/9 constants; lecture helper roles and complete
+general behavior verifier pass. Setup/TimingA/count/result reader listings
+regenerated to `/tmp/inbox-*.elf`, read-only ISO. Final document link and
+whitespace checks recorded with the delivery commit. Documentation only:
+`make test`/`make all` not rerun. Unrelated staged/native edits remain excluded.
+
+Limitations/next: actual loadout/stat/bonus and remaining counter writers, full
+consumer/reward/defeat/tutorial eligibility graph, query-specific cursor domains,
+source/platform services and original multihit/input/RNG/pause/turn traces still
+need recovery. Continue priority0 remaining source/runtime acceptance, then
+priority1 consumer/counter owners, priority2 global defense/forced-counter gates,
+priority3 tutorial writers, priority4 Hammer display/audio and priority5 turn
+lifetime. No new Dolphin observations, hardware or complete-game fidelity claim.
+
 ## 2026-10-13 — Priority0 documentation inbox delivery
 
 Consolidated [EVT-01's local service contract](behavior/event/EVT_01_SERVICE_CONTRACT_AND_REMAINING_BINDINGS.md)

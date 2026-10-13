@@ -5,15 +5,20 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 
 ## Open todos
 
-- [ ] Kind/stat allocation-copy/init consumers, max/current HP/FP, and
-  actor/body-part and attack-sequence reset/increment ownership.
+- [x] Full local kind/stat allocation-copy/init and max/current HP/FP
+  constructor/setup consumers — [initialization/count answer](../behavior/battle/DMG_01_INITIALIZATION_AND_JUMP_COUNT_BINDINGS.md).
+- [x] Ordinary Jump shared AC count reset/increment/read ownership — same
+  answer, independently reinspected setup/result/getter bodies.
+- [ ] Remaining actor/body-part/other-attack counter owners, later mutations,
+  actual equipment/level/bonus producers and original initialization traces.
 - [ ] Complete guard/status/counter/precheck/damage/application/reward/defeat
   consumer graph, including original multi-hit timing and input/RNG traces;
   global flag `0x1000` and tutorial gate interactions remain open.
 - [ ] Callback side effects/read order and signed field widths retained; do not
   assume tutorial level 1, bonus 0 or AC state without initialization/caller
   evidence.
-- [ ] Link recovered callback/unit/application contracts here as they arrive.
+- [x] Link current callback/unit/application deliveries — linked below and in
+  the initialization/count answer. Future contracts should still be appended.
 - [x] Default and Mario Jump/Hammer power callback bodies and tables —
   delivered ([power callbacks](../behavior/battle/BATTLE_WEAPON_POWER_CALLBACKS.md)).
 - [x] Kanbu1 part defense/attribute tables and unit part lifetime — delivered
@@ -86,3 +91,25 @@ allocated unit before init,then copies signed kind HP/FP into three independent
 fields each. The checked boss receives HP5/FP0 at those stores;later overrides
 and the rest of unit entry remain open. Do not treat that as a measured starting
 stat trace or collapse current/max/base copies when implementing resources.
+
+### 2026-10-13 — Priority1 initialization and shared-count delivery
+
+[Initialization/count bindings](../behavior/battle/DMG_01_INITIALIZATION_AND_JUMP_COUNT_BINDINGS.md)
+composes full local Entry/UnitSetup, parts, stat, pouch and badge contracts;
+independently pins setup reset, four encoded TimingA success-increment sites
+and read-only count query. Corrected result-reader battle/output capture order
+and clarified pending bit0/mask1 in the linked result/stop contract. Count is
+shared across the ordinary Jump repeat path, not a per-hit fresh command.
+
+Additional current consumer deliveries: [HP/FP calculation](../behavior/battle/BATTLE_DAMAGE_CALCULATION.md),
+[application](../behavior/battle/BATTLE_DAMAGE_APPLICATION.md),
+[damage orchestration](../behavior/battle/BATTLE_DAMAGE_ORCHESTRATION.md),
+[power callbacks](../behavior/battle/BATTLE_WEAPON_POWER_CALLBACKS.md) and
+[ordinary Jump graph](../behavior/battle/BATTLE_NORMAL_JUMP_EVENT_FLOW.md).
+These local contracts do not close the complete reward/defeat/tutorial graph.
+
+Validation: complete unit-entry, unit-setup, Jump-graph and general behavior
+source verifiers pass. Four AC setup/result/count/result-reader complete listings
+were regenerated in `/tmp/inbox-*.elf` from the read-only ISO. No native code,
+original trace or asset change; parent remains OPEN for listed integration,
+mutation, other counters and runtime evidence.

@@ -14,12 +14,12 @@ Updated 2026-10-12 (America/Boise). The user requested using files in `docs/` to
 
 | Request | State | Open work (see file for full todos) | File |
 | --- | --- | --- | --- |
-| AC-01 — Opening Crump encounter and Jump callers | Open (partially answered) | REL entry/selection, Jump state writers, pad cadence vs private AC pad, seed/RNG writers, original impact trace | [requests/AC-01.md](requests/AC-01.md) |
+| AC-01 — Opening Crump encounter and Jump callers | Open (partially answered) | Tutorial exceptions/overrides, transitive/global state and seed/RNG writers, original selection/impact trace; local entry/command graph answered | [requests/AC-01.md](requests/AC-01.md) |
 | AC-02 — Ordinary Hammer binding and presentation | Open (period/base difficulty answered) | Suppression/automatic/forced writers, result/damage consumers, display/gauge and sound-key macros | [requests/AC-02.md](requests/AC-02.md) |
-| AC-03 — Defense callers, pad cadence and eligibility | Open (attack graph/target ABI answered) | Global edge/repeat producer, snapshot bindings, pad update order/pause cadence, +0x13 gate, original input traces | [requests/AC-03.md](requests/AC-03.md) |
-| DMG-01 — Weapon power, unit stats and damage dispatch | Open (power callbacks/part tables/calculators answered) | Allocation-copy/init consumers, full consumer graph, multi-hit timing and input/RNG traces | [requests/DMG-01.md](requests/DMG-01.md) |
+| AC-03 — Defense callers, pad cadence and eligibility | Open (attack graph/target ABI answered) | SDK/pause/physical cadence, other attack bindings, eligibility/override writers and original traces; local producer/snapshots/order answered | [requests/AC-03.md](requests/AC-03.md) |
+| DMG-01 — Weapon power, unit stats and damage dispatch | Open (power callbacks/part tables/calculators answered) | Other counter/mutation owners, actual loadout/stat producers, complete consumer graph and original multi-hit input/RNG traces | [requests/DMG-01.md](requests/DMG-01.md) |
 | DMG-02 — Direct application service internals | Open (position queries/movement sound answered) | Parts/hit/height/belong schemas, sound pointers, action-record/audience state, rounding/order traces | [requests/DMG-02.md](requests/DMG-02.md) |
-| STATUS-01 — Status lifetime, turn ownership | Open (clear/import/export answered) | Entry initialization, event/turn cadence, +20/+23/+24 writers, multi-turn traces | [requests/STATUS-01.md](requests/STATUS-01.md) |
+| STATUS-01 — Status lifetime, turn ownership | Open (clear/import/export answered) | Infliction/turn/end/presentation binding, +20/+23/+24 writers and multi-turn/save traces; local entry/import initialization answered | [requests/STATUS-01.md](requests/STATUS-01.md) |
 | INPUT-01 — Remaining native adaptation, WorkInit bytes | Open (WorkInit byte map answered) | PADRead/Clamp/Reset, GP writers/chords, poll boundaries, impact schedule, credit loop | [requests/INPUT-01.md](requests/INPUT-01.md) |
 | EVT-01 — Native event scheduler and dispatch closure | Open (local scheduler/constructors/waits, capture order and direct registry answered) | Original scheduler traces, query-specific weapon cursor invariants, dynamic/global sources and full audio/Monosiri binding | [requests/EVT-01.md](requests/EVT-01.md) |
 | JUMP-01 — Ordinary Jump follow-up and per-hit event flow | Open (SFX provenance answered) | Complete event 80355cf0 control flow and original timing/state traces | [requests/JUMP-01.md](requests/JUMP-01.md) |
@@ -47,7 +47,7 @@ does not answer its full runtime binding request.
 | Priority | Request / implementation blocker | State / owner / reserved slice |
 | --- | --- | --- |
 | 0 | EVT-01: complete native event scheduling and continuation | Open; needed to replace provisional Jump timers with the recovered graph; request file specifies remaining complete local contracts |
-| 1 | DMG-01: real weapon power, part defenses and dispatch/application | Power bodies/operands and scoped part construction/table/lifetime delivered by ID2;level/bonus/AC producers,mutation and application binding remain open |
+| 1 | DMG-01: real weapon power, part defenses and dispatch/application | Local power/part/Entry/UnitSetup and shared Jump count owners delivered;level/equipment/bonus producers,other counters,mutation and application/runtime binding remain open |
 | 2 | AC-03: enemy hit branch and actual defense sampling boundary | Attack graph/target ABI delivered and lock released; pad cadence,global eligibility and execution remain open |
 | 3 | AC-01: tutorial/ordinary Jump state ownership and impact cadence | Shared enemy-attack graph delivered; next recover pad/update and movement callback composition |
 | 4 | AC-02: Hammer lifecycle, result consumers and original audio binding | Open; ordinary weapon period/base difficulty already answered |

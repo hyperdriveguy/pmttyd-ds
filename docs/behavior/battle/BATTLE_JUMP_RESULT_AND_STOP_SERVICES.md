@@ -17,14 +17,17 @@ measured input timing or closure of all called UI/unit/event services.
 
 ## Stored result and count are separate outputs
 
-GetResultAC loads raw output operand0,reads shared BattleWork word1cb8 and
-writes it through evtSetValue;GetResultCountAC does the same using word1cb4.
+Both retain the argument pointer, capture the shared BattleWork pointer, then
+load raw output operand0. GetResultAC reads retained BattleWork word1cb8;
+GetResultCountAC reads word1cb4. Each writes through evtSetValue.
+GetResultCountAC capture/load sites80107558/5c/60 were independently rechecked
+on2026-10-13; see [count ownership](DMG_01_INITIALIZATION_AND_JUMP_COUNT_BINDINGS.md).
 Neither resolves the destination first,invokes the result evaluator,resamples
 input,increments count or resets state. Both return event completion2 with no
 first-call gate. Preserve evtSetValue side effects and raw destination policy.
 
 The [ResultAC wrapper](BATTLE_ACTION_COMMAND_CALLBACKS.md) separately invokes
-the command's evaluator and polls stored pending bit1. The script calls it
+the command's evaluator and polls stored pending bit0 (mask1). The script calls it
 before reading result. A result reader alone cannot replace that request.
 The [TimingA evaluator](BATTLE_TIMING_A_COMMAND.md) can increment count on
 success and can reevaluate the same retained pad history;these two readers
