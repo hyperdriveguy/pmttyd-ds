@@ -529,6 +529,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   terminal returns and ABI — [primary activation](../behavior/audio/MUSYX_STREAM_ACTIVATION_PRIMARY_ADMISSION.md).
   Fresh state3/voice-before-failure/cursor-state/companion sentinel pinned;
   companion continuation/IRQ/providers/runtime remain open.
+- [x] Complete sndStreamActivate companion continuation/recursive
+  request/unwinds and compose whole local body —
+  [companions/composition](../behavior/audio/MUSYX_STREAM_ACTIVATION_COMPANIONS_AND_COMPOSITION.md).
+  Four stages before recursion/partial writes/exact enables/406 words pinned;
+  chain/IRQ/providers/domains/original activation/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2654,3 +2659,13 @@ vectors checked. Independent64-row scan, fresh state3, raw voice publication bef
 sentinel check, cursor/state1 stores, primary failure and companion-sentinel
 terminal paths pinned. Companion continuation/providers/IRQ/domains/original
 activation/audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream activation companions/composition delivery
+
+Completed companion continuation and composed whole local
+[activation](../behavior/audio/MUSYX_STREAM_ACTIVATION_COMPANIONS_AND_COMPOSITION.md).
+New six spans/272 anchors/fourteen calls verified; prior primary manifest
+reverified. Region union392+14 external ABI words,total406/658hex,all body anchors.
+Fifteen finite acyclic-chain vectors checked. Inline stages/recursive request,
+partial publication/failure and exact stage-specific enables pinned. Chain/IRQ/
+provider domains/original activation/audio/native binding open; EVT-01 stays OPEN.

@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero activation companions/composition
+
+Completed sndStreamActivate companion continuation and composed whole local
+body; checked EVT-01 portion.
+[Companions/composition](behavior/audio/MUSYX_STREAM_ACTIVATION_COMPANIONS_AND_COMPOSITION.md)
+pins four stages before recursion, fresh companion/partial voice/state writes,
+recursive return propagation and exact enables. Local source answered; chain/
+IRQ/provider domains/original activation/audio/native binding remain open.
+
+Validation: new read-only ISO manifest passed six spans,272 anchors,fourteen
+calls. Prior primary manifest reverified; disjoint union392+14 external ABI
+words,total406/658hex,and all body anchors covered. Fifteen finite acyclic-chain
+models checked for success/failure/missing links/partial writes/recursion/counts.
+Link audit passed899 Markdown files/zero broken links; scoped `git diff --check`
+passed. Mathematical/source checks are separate from original execution.
+Documentation/metadata only; no `make test`/`make all` rerun. Fresh full original
+ELF/listing/generator stay `/tmp`; no bodies/binary assets committed. Concurrent
+native edits excluded. Previously approved push remains pending invalid GitHub
+credentials; no repeat push attempted this turn.
+
+Next: priority-zero EVT-01 stream free/deactivate/frequency/mix and companion
+writers/acyclicity/ID/state/priority/voice/IRQ/providers and valid index/extent/
+value/alias/lifetime/concurrency/stack/ABI domains, original chained activation/
+failure/audio traces. Remaining macro/song/backend, lower-priority inbox/full game.
+
 ## 2026-10-13 — Inbox priority-zero stream activation primary
 
 Completed sndStreamActivate primary lookup/voice/state/terminal-return regions

@@ -85,3 +85,9 @@ composition, actual state/ID/priority/voice/companion/IRQ/providers and valid
 value/index/extent/alias/lifetime/concurrency/ABI domains, stream deactivation/
 free/frequency/mix, transitive ARAM/DSP and original activation/failure/audio
 traces. Primary local portion answered; whole sndStreamActivate and EVT-01 OPEN.
+
+## 2026-10-13 — Companion/composition follow-up
+
+[Companions/composition](MUSYX_STREAM_ACTIVATION_COMPANIONS_AND_COMPOSITION.md) closes continuation/recursive request/
+unwinds and composes whole local sndStreamActivate. Chain/IRQ/provider domains/
+original activation/audio/native binding remain open.

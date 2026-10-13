@@ -1,0 +1,1828 @@
+{
+  "schema": 1,
+  "scope": "Complete stream activation companion continuation and whole-body composition; chain/IRQ/providers/runtime open",
+  "complete_bodies": [],
+  "complete_regions": [
+    {
+      "name": "sndStreamActivate companion continuation",
+      "address": 2150091936,
+      "size": 1088
+    }
+  ],
+  "linked_only": [
+    "sndStreamActivate",
+    "hwDisableIrq",
+    "voiceBlock",
+    "hwEnableIrq",
+    "GetPrivateIndex"
+  ],
+  "dol_spans": [
+    {
+      "name": "sndStreamActivate companion continuation",
+      "address": 2150091936,
+      "size": 1088,
+      "sha256": "2a3732b323974f490f3d24ef966eb5c71ff708a859ef73556526f42cb9a59918"
+    },
+    {
+      "name": "sndStreamActivate",
+      "address": 2150091444,
+      "size": 1624,
+      "sha256": "6d7b0a9be12cd4881768e2da1d4ed56e7c49abe4ee9375f365c4fdfb5d427a59"
+    },
+    {
+      "name": "hwDisableIrq",
+      "address": 2150180880,
+      "size": 56,
+      "sha256": "edb5198c972d01b93658216671fd046d6f96210b534bbfa30b6844c8db6138d2"
+    },
+    {
+      "name": "voiceBlock",
+      "address": 2150127048,
+      "size": 452,
+      "sha256": "200046c3c6bfef86c3ca328f8af51302ea766bec4a4919c3cbfc7cbda01c24c9"
+    },
+    {
+      "name": "hwEnableIrq",
+      "address": 2150180824,
+      "size": 56,
+      "sha256": "3bcc66eb43ecfd8c2739c9765c710b462e66bc98fe31d107c000e0d3e3b6fc81"
+    },
+    {
+      "name": "GetPrivateIndex",
+      "address": 2150084632,
+      "size": 352,
+      "sha256": "4adccdc6efc6fa9693468f9b7eed6a5aff6bcb5b981def0f4251255c1ca71f6c"
+    }
+  ],
+  "dol_anchors": {
+    "2150091936": "3be00000",
+    "2150091940": "48015b6d",
+    "2150091944": "38000008",
+    "2150091948": "7fc4f378",
+    "2150091952": "38600000",
+    "2150091956": "7c0903a6",
+    "2150091960": "8804000c",
+    "2150091964": "28000000",
+    "2150091968": "41820014",
+    "2150091972": "80040004",
+    "2150091976": "7c1c0040",
+    "2150091980": "40820008",
+    "2150091984": "48000110",
+    "2150091988": "88040074",
+    "2150091992": "38630001",
+    "2150091996": "38840068",
+    "2150092000": "28000000",
+    "2150092004": "41820014",
+    "2150092008": "80040004",
+    "2150092012": "7c1c0040",
+    "2150092016": "40820008",
+    "2150092020": "480000ec",
+    "2150092024": "88040074",
+    "2150092028": "38630001",
+    "2150092032": "38840068",
+    "2150092036": "28000000",
+    "2150092040": "41820014",
+    "2150092044": "80040004",
+    "2150092048": "7c1c0040",
+    "2150092052": "40820008",
+    "2150092056": "480000c8",
+    "2150092060": "88040074",
+    "2150092064": "38630001",
+    "2150092068": "38840068",
+    "2150092072": "28000000",
+    "2150092076": "41820014",
+    "2150092080": "80040004",
+    "2150092084": "7c1c0040",
+    "2150092088": "40820008",
+    "2150092092": "480000a4",
+    "2150092096": "88040074",
+    "2150092100": "38630001",
+    "2150092104": "38840068",
+    "2150092108": "28000000",
+    "2150092112": "41820014",
+    "2150092116": "80040004",
+    "2150092120": "7c1c0040",
+    "2150092124": "40820008",
+    "2150092128": "48000080",
+    "2150092132": "88040074",
+    "2150092136": "38630001",
+    "2150092140": "38840068",
+    "2150092144": "28000000",
+    "2150092148": "41820014",
+    "2150092152": "80040004",
+    "2150092156": "7c1c0040",
+    "2150092160": "40820008",
+    "2150092164": "4800005c",
+    "2150092168": "88040074",
+    "2150092172": "38630001",
+    "2150092176": "38840068",
+    "2150092180": "28000000",
+    "2150092184": "41820014",
+    "2150092188": "80040004",
+    "2150092192": "7c1c0040",
+    "2150092196": "40820008",
+    "2150092200": "48000038",
+    "2150092204": "88040074",
+    "2150092208": "38630001",
+    "2150092212": "38840068",
+    "2150092216": "28000000",
+    "2150092220": "41820014",
+    "2150092224": "80040004",
+    "2150092228": "7c1c0040",
+    "2150092232": "40820008",
+    "2150092236": "48000014",
+    "2150092240": "38840068",
+    "2150092244": "38630001",
+    "2150092248": "4200fee0",
+    "2150092252": "3860ffff",
+    "2150092256": "3c030001",
+    "2150092260": "2800ffff",
+    "2150092264": "418202ec",
+    "2150092268": "1f830068",
+    "2150092272": "7c1de0ae",
+    "2150092276": "28000003",
+    "2150092280": "40820050",
+    "2150092284": "3c608040",
+    "2150092288": "380398e8",
+    "2150092292": "7c60e214",
+    "2150092296": "88630058",
+    "2150092300": "480087bd",
+    "2150092304": "3c808040",
+    "2150092308": "3c030001",
+    "2150092312": "388498e8",
+    "2150092316": "7c84e214",
+    "2150092320": "2800ffff",
+    "2150092324": "9064004c",
+    "2150092328": "40820010",
+    "2150092332": "480159ad",
+    "2150092336": "3be00000",
+    "2150092340": "480002a4",
+    "2150092344": "38600000",
+    "2150092348": "38000001",
+    "2150092352": "90640020",
+    "2150092356": "7c1de1ae",
+    "2150092360": "3c608040",
+    "2150092364": "386398e8",
+    "2150092368": "7f83e02e",
+    "2150092372": "3c1c0001",
+    "2150092376": "2800ffff",
+    "2150092380": "41820274",
+    "2150092384": "3be00000",
+    "2150092388": "480159ad",
+    "2150092392": "38000008",
+    "2150092396": "38600000",
+    "2150092400": "7c0903a6",
+    "2150092404": "881e000c",
+    "2150092408": "28000000",
+    "2150092412": "41820014",
+    "2150092416": "801e0004",
+    "2150092420": "7c1c0040",
+    "2150092424": "40820008",
+    "2150092428": "48000110",
+    "2150092432": "881e0074",
+    "2150092436": "38630001",
+    "2150092440": "3bde0068",
+    "2150092444": "28000000",
+    "2150092448": "41820014",
+    "2150092452": "801e0004",
+    "2150092456": "7c1c0040",
+    "2150092460": "40820008",
+    "2150092464": "480000ec",
+    "2150092468": "881e0074",
+    "2150092472": "38630001",
+    "2150092476": "3bde0068",
+    "2150092480": "28000000",
+    "2150092484": "41820014",
+    "2150092488": "801e0004",
+    "2150092492": "7c1c0040",
+    "2150092496": "40820008",
+    "2150092500": "480000c8",
+    "2150092504": "881e0074",
+    "2150092508": "38630001",
+    "2150092512": "3bde0068",
+    "2150092516": "28000000",
+    "2150092520": "41820014",
+    "2150092524": "801e0004",
+    "2150092528": "7c1c0040",
+    "2150092532": "40820008",
+    "2150092536": "480000a4",
+    "2150092540": "881e0074",
+    "2150092544": "38630001",
+    "2150092548": "3bde0068",
+    "2150092552": "28000000",
+    "2150092556": "41820014",
+    "2150092560": "801e0004",
+    "2150092564": "7c1c0040",
+    "2150092568": "40820008",
+    "2150092572": "48000080",
+    "2150092576": "881e0074",
+    "2150092580": "38630001",
+    "2150092584": "3bde0068",
+    "2150092588": "28000000",
+    "2150092592": "41820014",
+    "2150092596": "801e0004",
+    "2150092600": "7c1c0040",
+    "2150092604": "40820008",
+    "2150092608": "4800005c",
+    "2150092612": "881e0074",
+    "2150092616": "38630001",
+    "2150092620": "3bde0068",
+    "2150092624": "28000000",
+    "2150092628": "41820014",
+    "2150092632": "801e0004",
+    "2150092636": "7c1c0040",
+    "2150092640": "40820008",
+    "2150092644": "48000038",
+    "2150092648": "881e0074",
+    "2150092652": "38630001",
+    "2150092656": "3bde0068",
+    "2150092660": "28000000",
+    "2150092664": "41820014",
+    "2150092668": "801e0004",
+    "2150092672": "7c1c0040",
+    "2150092676": "40820008",
+    "2150092680": "48000014",
+    "2150092684": "3bde0068",
+    "2150092688": "38630001",
+    "2150092692": "4200fee0",
+    "2150092696": "3860ffff",
+    "2150092700": "3c030001",
+    "2150092704": "2800ffff",
+    "2150092708": "41820124",
+    "2150092712": "1f830068",
+    "2150092716": "7c1de0ae",
+    "2150092720": "28000003",
+    "2150092724": "40820050",
+    "2150092728": "3c608040",
+    "2150092732": "380398e8",
+    "2150092736": "7c60e214",
+    "2150092740": "88630058",
+    "2150092744": "48008601",
+    "2150092748": "3c808040",
+    "2150092752": "3c030001",
+    "2150092756": "388498e8",
+    "2150092760": "7c84e214",
+    "2150092764": "2800ffff",
+    "2150092768": "9064004c",
+    "2150092772": "40820010",
+    "2150092776": "480157f1",
+    "2150092780": "3be00000",
+    "2150092784": "480000e4",
+    "2150092788": "38600000",
+    "2150092792": "38000001",
+    "2150092796": "90640020",
+    "2150092800": "7c1de1ae",
+    "2150092804": "3c608040",
+    "2150092808": "386398e8",
+    "2150092812": "7f83e02e",
+    "2150092816": "3c1c0001",
+    "2150092820": "2800ffff",
+    "2150092824": "418200ac",
+    "2150092828": "3be00000",
+    "2150092832": "480157f1",
+    "2150092836": "7f83e378",
+    "2150092840": "4bffdff1",
+    "2150092844": "3c030001",
+    "2150092848": "2800ffff",
+    "2150092852": "41820088",
+    "2150092856": "1f830068",
+    "2150092860": "7c1de0ae",
+    "2150092864": "28000003",
+    "2150092868": "40820050",
+    "2150092872": "3c608040",
+    "2150092876": "380398e8",
+    "2150092880": "7c60e214",
+    "2150092884": "88630058",
+    "2150092888": "48008571",
+    "2150092892": "3c808040",
+    "2150092896": "3c030001",
+    "2150092900": "388498e8",
+    "2150092904": "7c84e214",
+    "2150092908": "2800ffff",
+    "2150092912": "9064004c",
+    "2150092916": "40820010",
+    "2150092920": "48015761",
+    "2150092924": "3be00000",
+    "2150092928": "48000048",
+    "2150092932": "38600000",
+    "2150092936": "38000001",
+    "2150092940": "90640020",
+    "2150092944": "7c1de1ae",
+    "2150092948": "3c608040",
+    "2150092952": "386398e8",
+    "2150092956": "7c63e02e",
+    "2150092960": "3c030001",
+    "2150092964": "2800ffff",
+    "2150092968": "41820010",
+    "2150092972": "4bfffa09",
+    "2150092976": "7c7f1b78",
+    "2150092980": "48000008",
+    "2150092984": "3be00001",
+    "2150092988": "4801571d",
+    "2150092992": "48000008",
+    "2150092996": "3be00001",
+    "2150093000": "48015711",
+    "2150093004": "48000008",
+    "2150093008": "3be00001",
+    "2150093012": "48015705",
+    "2150093016": "7ffcfb78",
+    "2150093020": "48000008"
+  },
+  "direct_calls": [
+    {
+      "site": 2150091940,
+      "target": 2150180880,
+      "name": "hwDisableIrq"
+    },
+    {
+      "site": 2150092300,
+      "target": 2150127048,
+      "name": "voiceBlock"
+    },
+    {
+      "site": 2150092332,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    },
+    {
+      "site": 2150092388,
+      "target": 2150180880,
+      "name": "hwDisableIrq"
+    },
+    {
+      "site": 2150092744,
+      "target": 2150127048,
+      "name": "voiceBlock"
+    },
+    {
+      "site": 2150092776,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    },
+    {
+      "site": 2150092832,
+      "target": 2150180880,
+      "name": "hwDisableIrq"
+    },
+    {
+      "site": 2150092840,
+      "target": 2150084632,
+      "name": "GetPrivateIndex"
+    },
+    {
+      "site": 2150092888,
+      "target": 2150127048,
+      "name": "voiceBlock"
+    },
+    {
+      "site": 2150092920,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    },
+    {
+      "site": 2150092972,
+      "target": 2150091444,
+      "name": "sndStreamActivate"
+    },
+    {
+      "site": 2150092988,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    },
+    {
+      "site": 2150093000,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    },
+    {
+      "site": 2150093012,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "composed_region_coverage": {
+    "regions": [
+      {
+        "manifest": "musyx_stream_activation_primary_evidence.json",
+        "name": "sndStreamActivate primary admission",
+        "address": 2150091468,
+        "size": 468
+      },
+      {
+        "manifest": "musyx_stream_activation_primary_evidence.json",
+        "name": "sndStreamActivate primary terminal return",
+        "address": 2150093024,
+        "size": 12
+      },
+      {
+        "manifest": "musyx_stream_activation_companion_composition_evidence.json",
+        "name": "sndStreamActivate companion continuation",
+        "address": 2150091936,
+        "size": 1088
+      }
+    ],
+    "region_words": 392,
+    "external_abi_words": 14,
+    "total_words": 406,
+    "body_address": 2150091444,
+    "body_size": 1624
+  },
+  "companion_stages": [
+    {
+      "stage": 1,
+      "disable_site": 2150091940,
+      "lookup_start": 2150091960,
+      "lookup_kind": "inline64",
+      "block_site": 2150092300,
+      "failure_enable_site": 2150092332,
+      "failure_exit": 2150093016,
+      "success_enable_site": 2150093012
+    },
+    {
+      "stage": 2,
+      "disable_site": 2150092388,
+      "lookup_start": 2150092404,
+      "lookup_kind": "inline64",
+      "block_site": 2150092744,
+      "failure_enable_site": 2150092776,
+      "failure_exit": 2150093012,
+      "success_enable_site": 2150093000
+    },
+    {
+      "stage": 3,
+      "disable_site": 2150092832,
+      "lookup_start": 2150092840,
+      "lookup_kind": "GetPrivateIndex",
+      "block_site": 2150092888,
+      "failure_enable_site": 2150092920,
+      "failure_exit": 2150093000,
+      "success_enable_site": 2150092988
+    }
+  ],
+  "derived_chain_vectors": [
+    {
+      "chain_length": 1,
+      "fail_id": null,
+      "missing_last": false,
+      "initial_state": 3,
+      "result": 1,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 1,
+          "voice": 0,
+          "cursor": 0,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 0,
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 1,
+      "enable_requests": 1,
+      "recursive_requests": 0
+    },
+    {
+      "chain_length": 2,
+      "fail_id": null,
+      "missing_last": false,
+      "initial_state": 3,
+      "result": 1,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 1,
+          "voice": 0,
+          "cursor": 0,
+          "companion": 1
+        },
+        {
+          "public_id": 1,
+          "state": 1,
+          "voice": 1,
+          "cursor": 0,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 0,
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "voiceBlock",
+          "id": 1,
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 2,
+      "enable_requests": 2,
+      "recursive_requests": 0
+    },
+    {
+      "chain_length": 3,
+      "fail_id": null,
+      "missing_last": false,
+      "initial_state": 3,
+      "result": 1,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 1,
+          "voice": 0,
+          "cursor": 0,
+          "companion": 1
+        },
+        {
+          "public_id": 1,
+          "state": 1,
+          "voice": 1,
+          "cursor": 0,
+          "companion": 2
+        },
+        {
+          "public_id": 2,
+          "state": 1,
+          "voice": 2,
+          "cursor": 0,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 0,
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "voiceBlock",
+          "id": 1,
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "voiceBlock",
+          "id": 2,
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 3,
+      "enable_requests": 3,
+      "recursive_requests": 0
+    },
+    {
+      "chain_length": 4,
+      "fail_id": null,
+      "missing_last": false,
+      "initial_state": 3,
+      "result": 1,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 1,
+          "voice": 0,
+          "cursor": 0,
+          "companion": 1
+        },
+        {
+          "public_id": 1,
+          "state": 1,
+          "voice": 1,
+          "cursor": 0,
+          "companion": 2
+        },
+        {
+          "public_id": 2,
+          "state": 1,
+          "voice": 2,
+          "cursor": 0,
+          "companion": 3
+        },
+        {
+          "public_id": 3,
+          "state": 1,
+          "voice": 3,
+          "cursor": 0,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 0,
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "voiceBlock",
+          "id": 1,
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "voiceBlock",
+          "id": 2,
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 3
+        },
+        {
+          "request": "voiceBlock",
+          "id": 3,
+          "depth": 0,
+          "stage": 3
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 4,
+      "enable_requests": 4,
+      "recursive_requests": 0
+    },
+    {
+      "chain_length": 5,
+      "fail_id": null,
+      "missing_last": false,
+      "initial_state": 3,
+      "result": 1,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 1,
+          "voice": 0,
+          "cursor": 0,
+          "companion": 1
+        },
+        {
+          "public_id": 1,
+          "state": 1,
+          "voice": 1,
+          "cursor": 0,
+          "companion": 2
+        },
+        {
+          "public_id": 2,
+          "state": 1,
+          "voice": 2,
+          "cursor": 0,
+          "companion": 3
+        },
+        {
+          "public_id": 3,
+          "state": 1,
+          "voice": 3,
+          "cursor": 0,
+          "companion": 4
+        },
+        {
+          "public_id": 4,
+          "state": 1,
+          "voice": 4,
+          "cursor": 0,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 0,
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "voiceBlock",
+          "id": 1,
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "voiceBlock",
+          "id": 2,
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 3
+        },
+        {
+          "request": "voiceBlock",
+          "id": 3,
+          "depth": 0,
+          "stage": 3
+        },
+        {
+          "request": "recursive",
+          "id": 4,
+          "depth": 0
+        },
+        {
+          "request": "disable",
+          "depth": 1,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 4,
+          "depth": 1,
+          "stage": 0
+        },
+        {
+          "request": "enable",
+          "depth": 1
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 5,
+      "enable_requests": 5,
+      "recursive_requests": 1
+    },
+    {
+      "chain_length": 6,
+      "fail_id": null,
+      "missing_last": false,
+      "initial_state": 3,
+      "result": 1,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 1,
+          "voice": 0,
+          "cursor": 0,
+          "companion": 1
+        },
+        {
+          "public_id": 1,
+          "state": 1,
+          "voice": 1,
+          "cursor": 0,
+          "companion": 2
+        },
+        {
+          "public_id": 2,
+          "state": 1,
+          "voice": 2,
+          "cursor": 0,
+          "companion": 3
+        },
+        {
+          "public_id": 3,
+          "state": 1,
+          "voice": 3,
+          "cursor": 0,
+          "companion": 4
+        },
+        {
+          "public_id": 4,
+          "state": 1,
+          "voice": 4,
+          "cursor": 0,
+          "companion": 5
+        },
+        {
+          "public_id": 5,
+          "state": 1,
+          "voice": 5,
+          "cursor": 0,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 0,
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "voiceBlock",
+          "id": 1,
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "voiceBlock",
+          "id": 2,
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 3
+        },
+        {
+          "request": "voiceBlock",
+          "id": 3,
+          "depth": 0,
+          "stage": 3
+        },
+        {
+          "request": "recursive",
+          "id": 4,
+          "depth": 0
+        },
+        {
+          "request": "disable",
+          "depth": 1,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 4,
+          "depth": 1,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 1,
+          "stage": 1
+        },
+        {
+          "request": "voiceBlock",
+          "id": 5,
+          "depth": 1,
+          "stage": 1
+        },
+        {
+          "request": "enable",
+          "depth": 1
+        },
+        {
+          "request": "enable",
+          "depth": 1
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 6,
+      "enable_requests": 6,
+      "recursive_requests": 1
+    },
+    {
+      "chain_length": 4,
+      "fail_id": 0,
+      "missing_last": false,
+      "initial_state": 3,
+      "result": 0,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 3,
+          "voice": 4294967295,
+          "cursor": 123,
+          "companion": 1
+        },
+        {
+          "public_id": 1,
+          "state": 3,
+          "voice": 2882400000,
+          "cursor": 123,
+          "companion": 2
+        },
+        {
+          "public_id": 2,
+          "state": 3,
+          "voice": 2882400000,
+          "cursor": 123,
+          "companion": 3
+        },
+        {
+          "public_id": 3,
+          "state": 3,
+          "voice": 2882400000,
+          "cursor": 123,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 0,
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 1,
+      "enable_requests": 1,
+      "recursive_requests": 0
+    },
+    {
+      "chain_length": 4,
+      "fail_id": 1,
+      "missing_last": false,
+      "initial_state": 3,
+      "result": 0,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 1,
+          "voice": 0,
+          "cursor": 0,
+          "companion": 1
+        },
+        {
+          "public_id": 1,
+          "state": 3,
+          "voice": 4294967295,
+          "cursor": 123,
+          "companion": 2
+        },
+        {
+          "public_id": 2,
+          "state": 3,
+          "voice": 2882400000,
+          "cursor": 123,
+          "companion": 3
+        },
+        {
+          "public_id": 3,
+          "state": 3,
+          "voice": 2882400000,
+          "cursor": 123,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 0,
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "voiceBlock",
+          "id": 1,
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 2,
+      "enable_requests": 2,
+      "recursive_requests": 0
+    },
+    {
+      "chain_length": 4,
+      "fail_id": 2,
+      "missing_last": false,
+      "initial_state": 3,
+      "result": 0,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 1,
+          "voice": 0,
+          "cursor": 0,
+          "companion": 1
+        },
+        {
+          "public_id": 1,
+          "state": 1,
+          "voice": 1,
+          "cursor": 0,
+          "companion": 2
+        },
+        {
+          "public_id": 2,
+          "state": 3,
+          "voice": 4294967295,
+          "cursor": 123,
+          "companion": 3
+        },
+        {
+          "public_id": 3,
+          "state": 3,
+          "voice": 2882400000,
+          "cursor": 123,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 0,
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "voiceBlock",
+          "id": 1,
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "voiceBlock",
+          "id": 2,
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 3,
+      "enable_requests": 3,
+      "recursive_requests": 0
+    },
+    {
+      "chain_length": 4,
+      "fail_id": 3,
+      "missing_last": false,
+      "initial_state": 3,
+      "result": 0,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 1,
+          "voice": 0,
+          "cursor": 0,
+          "companion": 1
+        },
+        {
+          "public_id": 1,
+          "state": 1,
+          "voice": 1,
+          "cursor": 0,
+          "companion": 2
+        },
+        {
+          "public_id": 2,
+          "state": 1,
+          "voice": 2,
+          "cursor": 0,
+          "companion": 3
+        },
+        {
+          "public_id": 3,
+          "state": 3,
+          "voice": 4294967295,
+          "cursor": 123,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 0,
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "voiceBlock",
+          "id": 1,
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "voiceBlock",
+          "id": 2,
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 3
+        },
+        {
+          "request": "voiceBlock",
+          "id": 3,
+          "depth": 0,
+          "stage": 3
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 4,
+      "enable_requests": 4,
+      "recursive_requests": 0
+    },
+    {
+      "chain_length": 1,
+      "fail_id": null,
+      "missing_last": true,
+      "initial_state": 3,
+      "result": 0,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 1,
+          "voice": 0,
+          "cursor": 0,
+          "companion": 1
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 0,
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 2,
+      "enable_requests": 2,
+      "recursive_requests": 0
+    },
+    {
+      "chain_length": 3,
+      "fail_id": null,
+      "missing_last": true,
+      "initial_state": 3,
+      "result": 0,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 1,
+          "voice": 0,
+          "cursor": 0,
+          "companion": 1
+        },
+        {
+          "public_id": 1,
+          "state": 1,
+          "voice": 1,
+          "cursor": 0,
+          "companion": 2
+        },
+        {
+          "public_id": 2,
+          "state": 1,
+          "voice": 2,
+          "cursor": 0,
+          "companion": 3
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 0,
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "voiceBlock",
+          "id": 1,
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "voiceBlock",
+          "id": 2,
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 3
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 4,
+      "enable_requests": 4,
+      "recursive_requests": 0
+    },
+    {
+      "chain_length": 4,
+      "fail_id": null,
+      "missing_last": true,
+      "initial_state": 3,
+      "result": 0,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 1,
+          "voice": 0,
+          "cursor": 0,
+          "companion": 1
+        },
+        {
+          "public_id": 1,
+          "state": 1,
+          "voice": 1,
+          "cursor": 0,
+          "companion": 2
+        },
+        {
+          "public_id": 2,
+          "state": 1,
+          "voice": 2,
+          "cursor": 0,
+          "companion": 3
+        },
+        {
+          "public_id": 3,
+          "state": 1,
+          "voice": 3,
+          "cursor": 0,
+          "companion": 4
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 0,
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "voiceBlock",
+          "id": 1,
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "voiceBlock",
+          "id": 2,
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 3
+        },
+        {
+          "request": "voiceBlock",
+          "id": 3,
+          "depth": 0,
+          "stage": 3
+        },
+        {
+          "request": "recursive",
+          "id": 4,
+          "depth": 0
+        },
+        {
+          "request": "disable",
+          "depth": 1,
+          "stage": 0
+        },
+        {
+          "request": "enable",
+          "depth": 1
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 5,
+      "enable_requests": 5,
+      "recursive_requests": 1
+    },
+    {
+      "chain_length": 5,
+      "fail_id": null,
+      "missing_last": true,
+      "initial_state": 3,
+      "result": 0,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 1,
+          "voice": 0,
+          "cursor": 0,
+          "companion": 1
+        },
+        {
+          "public_id": 1,
+          "state": 1,
+          "voice": 1,
+          "cursor": 0,
+          "companion": 2
+        },
+        {
+          "public_id": 2,
+          "state": 1,
+          "voice": 2,
+          "cursor": 0,
+          "companion": 3
+        },
+        {
+          "public_id": 3,
+          "state": 1,
+          "voice": 3,
+          "cursor": 0,
+          "companion": 4
+        },
+        {
+          "public_id": 4,
+          "state": 1,
+          "voice": 4,
+          "cursor": 0,
+          "companion": 5
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 0,
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "voiceBlock",
+          "id": 1,
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "voiceBlock",
+          "id": 2,
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 3
+        },
+        {
+          "request": "voiceBlock",
+          "id": 3,
+          "depth": 0,
+          "stage": 3
+        },
+        {
+          "request": "recursive",
+          "id": 4,
+          "depth": 0
+        },
+        {
+          "request": "disable",
+          "depth": 1,
+          "stage": 0
+        },
+        {
+          "request": "voiceBlock",
+          "id": 4,
+          "depth": 1,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 1,
+          "stage": 1
+        },
+        {
+          "request": "enable",
+          "depth": 1
+        },
+        {
+          "request": "enable",
+          "depth": 1
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 6,
+      "enable_requests": 6,
+      "recursive_requests": 1
+    },
+    {
+      "chain_length": 5,
+      "fail_id": null,
+      "missing_last": false,
+      "initial_state": 1,
+      "result": 1,
+      "rows": [
+        {
+          "public_id": 0,
+          "state": 1,
+          "voice": 2882400000,
+          "cursor": 123,
+          "companion": 1
+        },
+        {
+          "public_id": 1,
+          "state": 1,
+          "voice": 2882400000,
+          "cursor": 123,
+          "companion": 2
+        },
+        {
+          "public_id": 2,
+          "state": 1,
+          "voice": 2882400000,
+          "cursor": 123,
+          "companion": 3
+        },
+        {
+          "public_id": 3,
+          "state": 1,
+          "voice": 2882400000,
+          "cursor": 123,
+          "companion": 4
+        },
+        {
+          "public_id": 4,
+          "state": 1,
+          "voice": 2882400000,
+          "cursor": 123,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 0
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 1
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 2
+        },
+        {
+          "request": "disable",
+          "depth": 0,
+          "stage": 3
+        },
+        {
+          "request": "recursive",
+          "id": 4,
+          "depth": 0
+        },
+        {
+          "request": "disable",
+          "depth": 1,
+          "stage": 0
+        },
+        {
+          "request": "enable",
+          "depth": 1
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        },
+        {
+          "request": "enable",
+          "depth": 0
+        }
+      ],
+      "disable_requests": 5,
+      "enable_requests": 5,
+      "recursive_requests": 1
+    }
+  ]
+}
