@@ -14,7 +14,8 @@ public:
  EventNativeRuntime& vm;EventCallbackRegistry registry;BattleRandom random{0};
  int32_t chosenUnit=-1,chosenPart=0;
  BattlePackedMovePositionServices movement;BattlePackedGenericJumpServices jump;
- BattleCameraRequestServices camera;
+ BattleCameraRequestServices camera;bool physicalCurrent=false;uint64_t sampledAt=UINT64_MAX;
+ void samplePhysical(uint64_t milliseconds,const BattlePadSample*);
  explicit HarborTutorialPacked(EventNativeRuntime& r):vm(r){}
  bool provision();
  bool registerActor(HarborTutorialActor&);

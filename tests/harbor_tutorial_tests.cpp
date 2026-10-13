@@ -36,6 +36,17 @@ int main(){
  assert(t.readPackedWord(0x8410202c,packed) && packed==0x04000001);
  assert(t.readPackedWord(0x841002a8,packed) && packed!=0);assert(t.readPackedWord(0x84100290,packed) && packed==0);
  bool retained=false;for(const auto& r:t.requests)if(r.owner==0 && r.function==t.pendingService && !r.rawOperands.empty())retained=true;assert(retained);
+ // Dialogue edges do not feed defense. Missing physical samples preserve the gate.
+ for(unsigned i=0;i<3;++i)t.tick((++tick)*1000/60,0x100);
+ assert(t.pendingService==0x80107694);
+ const auto hpBeforeDefense=t.actors[1].hp;BattlePadSample physical;physical.snapshot.buttons=BattleButtonA;physical.pressed=BattleButtonA;
+ t.tick((++tick)*1000/60,0,&physical);
+ assert(t.readPackedWord(0x84001cb0,packed) && packed==4);
+ assert(t.pendingService==0x8010a78c && t.actors[1].hp==hpBeforeDefense && t.result==0);
+ // ResultACDefence clears the private history; a second pass at this timestamp
+ // must not resample the producer trigger and resurrect that cleared history.
+ const auto impactTime=t.now;t.tick(impactTime,0,&physical);
+ assert(t.readPackedWord(0x84001d34,packed) && packed==0);
  assert(!t.dispatchPhase(2,0x04000003));
  // Exercise guarded feedback roots on a separately initialized VM without
  // bypassing the live introduction in the primary instance.

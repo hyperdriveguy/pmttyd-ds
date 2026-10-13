@@ -1794,7 +1794,8 @@ void Game::tick(const Input& rawInput) {
         if(!passive || professorStory.locked())return;
     }
     if(harborTutorial.running()) {
-        harborTutorial.tick(ticks*1000/60,(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u));
+        const auto physical=inputProducer.channels[0].battleSample();
+        harborTutorial.tick(ticks*1000/60,(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u),rawInput.physicalSnapshot?&physical:nullptr);
         scene=Scene::Battle;saveRequested=false;return;
     }
     if(progress.room==1 && progress.originalStory==4 && !harborEncounter.triggered)beginHarborEncounter(harborResume);

@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include "event_lifecycle.hpp"
 #include "battle_packed_hit_precheck.hpp"
+#include "battle_packed_pad.hpp"
 namespace ttyd {
 namespace {void required(bool ok){if(!ok)std::abort();}int32_t signByte(uint8_t b){return b<128?int32_t(b):int32_t(b)-256;}}
 uint32_t HarborTutorialPacked::word(uint32_t a)const{uint32_t v=0;required(vm.memory.readWord(a,v));return v;}
@@ -21,9 +22,11 @@ bool HarborTutorialPacked::provision(){
  for(auto span:std::array<std::pair<uint32_t,unsigned>,4>{{{0x8041eb90,4},{Battle,0x19400},{Units,0x3000},{Parts,0x3000}}})if(!vm.memory.registerRam(span.first,std::vector<uint8_t>(span.second)))return false;
  word(0x8041eb90,Battle);half(Battle+8,2);half(Battle+16,1);half(Battle+24,0);byte(Battle+0xa,1);byte(Battle+0x12,255); // Fresh source group-policy adapter.
  for(unsigned i=0;i<64;++i){word(Battle+0x120+4*i,0xffffffff);word(Battle+0x16f5c+8*i,0xffffffff);}
+ BattlePadWork pad;pad.init();writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));
  movement=nativeBattleMovePositionServices(vm,{});jump.movement=movement;camera.positions=nativeBattlePartPositionServices(vm);camera.values=camera.positions.unit.values;
  return bindBattleSetMoveSpeedCallback(registry,vm) && bindBattleMovePositionCallback(registry,movement) && bindBattleJumpSettingCallback(registry,vm) && bindBattleGetPosCallback(registry,vm) && bindBattleGetHomePosCallback(registry,vm) && bindBattleGetHitPosCallback(registry,vm) && bindBattleGetUnitWorkCallback(registry,vm) && bindBattleSetUnitWorkCallback(registry,vm) && bindBattleGetHpCallback(registry,vm) && bindBattleGetMaxHpCallback(registry,vm) && bindBattleStartWaitCallback(registry,vm) && bindBattleStopWaitCallback(registry,vm);
 }
+void HarborTutorialPacked::samplePhysical(uint64_t time,const BattlePadSample* sample){physicalCurrent=sample!=nullptr;if(!sample || sampledAt==time)return;sampledAt=time;auto pad=readPackedBattlePad(Battle+0x1d1c,nativeBattleActorServices(vm));pad.update(*sample);writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));}
 bool HarborTutorialPacked::registerActor(HarborTutorialActor& a){
  if(a.id<0 || a.id>2 || registered[a.id])return false;
  const uint32_t id=uint32_t(a.id),u=Units+id*0x1000,p=Parts+id*0x1000,k=a.id==1?word(0x80416a50):a.sourceKind;
@@ -63,6 +66,8 @@ void HarborTutorialPacked::capture(HarborTutorial& scene){
 bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,int32_t& result){
  if(registry.invoke(e,function,first,result))return true;
  switch(function){
+ case 0x80107694:{if(!physicalCurrent)return false;const auto u=actor(e),weapon=uint32_t(value(e,1));word(Battle+0x1cb0,0);DefenseContext context;uint16_t hp=0,override=0;required(vm.memory.readHalf(u+0x10c,hp));context.hp=int16_t(hp);context.simplifiers=byte(u+0x305);context.unsimplifiers=byte(u+0x306);context.automatic=byte(u+0x307);context.weaponGate=byte(weapon+0x13);required(vm.memory.readHalf(Battle+0x1d18,override));DefenseCommand command;command.overrideCounter=int16_t(override);auto pad=readPackedBattlePad(Battle+0x1d1c,nativeBattleActorServices(vm));command.evaluate(pad,context);half(Battle+0x1d18,command.overrideCounter);word(Battle+0x1cb0,command.result);writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));result=2;return true;}
+
  case 0x8012bfd0:result=battleCameraModeEvent(e,camera);return true;
  case 0x8012be38:result=battleCameraHomingEvent(e,camera);return true;
  case 0x8012b8cc:result=battleCameraSpeedEvent(e,camera);return true;

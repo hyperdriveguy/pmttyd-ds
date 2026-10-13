@@ -1,5 +1,6 @@
 #pragma once
 #include "message_playback.hpp"
+#include "battle_defense.hpp"
 #include <array>
 #include <memory>
 #include <vector>
@@ -35,7 +36,7 @@ public:
     MessagePlayback message;std::vector<std::string> messageOrder;
     std::vector<HarborTutorialRequest> requests;
     bool begin(uint64_t milliseconds,int32_t marioHp,int32_t marioMaxHp=10);
-    void tick(uint64_t milliseconds,uint32_t keys);
+    void tick(uint64_t milliseconds,uint32_t keys,const BattlePadSample* physical=nullptr);
     // Explicit scheduler/service bridge. Refuses an overlapping phase root.
     bool dispatchPhase(int32_t sourceTurn,uint32_t sourcePhase);
     // Animation driver publishes actual completion; a tick/count alone cannot.

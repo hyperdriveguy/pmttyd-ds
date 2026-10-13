@@ -59,7 +59,7 @@ struct HarborTutorialRuntime {
  int pending(uint32_t function){if(!scene->pendingService)scene->pendingService=function;return 0;}
  int call(EventEntry& e,uint32_t function,bool first){
  if(first){HarborTutorialRequest r{function,e.currentCommand,scene->now,e.owner,{}};for(unsigned i=0;i<e.argumentCount;++i)r.rawOperands.push_back(raw(e,i));scene->requests.push_back(std::move(r));}
- if(packed){packed->publish(*scene);int32_t result=0;if(packed->invoke(e,function,first?1:0,result)){packed->capture(*scene);return result;}}
+ if(packed){packed->publish(*scene);int32_t result=0;if(packed->invoke(e,function,first?1:0,result)){packed->capture(*scene);if(result!=0 && scene->pendingService==function)scene->pendingService=0;return result;}}
  if(function==0x80104498){const auto& a=scene->actors[actor(e)];if(a.heldItem!=0)return pending(function);if(scene->pendingService==function)scene->pendingService=0;output(e,1,0);return 2;}
  if(function==0x8011384c){output(e,0,(scene->battleFlags&uint32_t(raw(e,1)))!=0?1:0);return 2;}
  auto found=callbacks.find(function);if(found==callbacks.end())return pending(function);
@@ -113,9 +113,9 @@ bool HarborTutorial::begin(uint64_t time,int32_t hp,int32_t maxHp){if(!ready || 
  for(unsigned i=0;i<3;++i){const auto v=r.word(source[8]+0xc+i*4);std::memcpy(&actors[0].position[i],&v,4);}actors[0].home=actors[0].position;
  if(!r.packed->registerActor(actors[0]) || !r.packed->registerActor(actors[1])){failed=true;return false;}r.packed->recordInit(0,r.initRoot);
  tick(time,0);return !failed;}
-void HarborTutorial::tick(uint64_t time,uint32_t keys){if(!runtime_ || failed || time<now)return;now=time;auto& r=*runtime_;r.scene=this;if(message.active())message.tick(now,keys);
+void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* physical){if(!runtime_ || failed || time<now)return;now=time;auto& r=*runtime_;r.scene=this;if(message.active())message.tick(now,keys);
  if(message.poseRequestSerial!=r.messagePoseSerial && speaker>=0 && speaker<3){r.messagePoseSerial=message.poseRequestSerial;auto& a=actors[speaker];const auto& pose=message.poseRequest==MessagePlayback::PoseRequest::Talk?a.talkPose:a.stayPose;if(!pose.empty()){a.pose=pose;a.poseAt=message.poseRequestedAt;}}
- r.packed->publish(*this);r.vm.gp.timestamp=now*eventClockRate(243000000);r.vm.runManager();r.packed->publish(*this);r.packed->capture(*this);
+ r.packed->samplePhysical(time,physical);r.packed->publish(*this);r.vm.gp.timestamp=now*eventClockRate(243000000);r.vm.runManager();r.packed->publish(*this);r.packed->capture(*this);
  if(!initialized && !r.exists(r.initRoot) && r.vm.runtime.allocationCount==0){initialized=true;dispatchPhase(1,0x04000001);r.openingDispatched=true;}
  if(attackActive && !r.exists(r.attackRoot))attackActive=false;
  if(phaseActive && !r.exists(r.phaseRoot)){phaseActive=false;if(r.openingDispatched && phaseWord==0x04000001)introComplete=true;}

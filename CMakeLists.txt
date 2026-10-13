@@ -652,3 +652,5 @@ target_sources(ttyd_core PRIVATE source/battle_camera_requests.cpp source/battle
 add_executable(battle_jump_camera_precheck_tests tests/battle_jump_camera_precheck_tests.cpp)
 target_link_libraries(battle_jump_camera_precheck_tests PRIVATE ttyd_core)
 add_test(NAME battle_jump_camera_precheck COMMAND battle_jump_camera_precheck_tests)
+
+target_sources(ttyd_core PRIVATE source/battle_packed_pad.cpp)
