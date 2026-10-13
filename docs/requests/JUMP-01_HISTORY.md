@@ -2224,3 +2224,56 @@ linkedfromHammertrio contract. Actual8035e128 keySWING1 output0requiresno
 fakehandleforretainedoriginalsoundrequest; nonzeroRAWoutputneedsactualvoice
 providerorremainspending. Underlyingmacro/sample/playbackremainseparate.
 Docs-only/no nativeedits/commit;git diff --check passed.
+
+
+### 2026-10-13 delivery: original Paragoomba wing-fall used binding
+
+[Wing-fall contract](../behavior/battle/PARAGOOMBA_WING_FALL_USED_TRIO_BINDING.md)
+pins W74/part800/F100 admission, actual code410117 fresh failed H1,
+tracked generic damage→data0e→fall93521ee4 child and full26-command order.
+Grounded pose/data/parts93522728/27c8/2800 recreate original c_kuribo KUR poses;
+ChangeKind writes only U8, preserves original U10/HP/actor identity. ReplaceParts
+reset/preservation fields, OffAttribute/OffParts RAW masks, OnUnitFlag U1c,
+all grounded event-install and evaluated sound-key packed writes are closed.
+Ground init9352290c exact wait/attack/damage/confusion/sound/StartWait sequence
+included. Air admission becomes partattrs9 at replacement; no invented hide-wing
+or HP-based scene trigger. Original last-enemy result selection enters end7
+07000000 then FieldBattleInfo+3c callback or audience-end admission8021290c;
+full end/reward/field return remains a concrete dependency. Docs-only/no native
+edits/commit; read-only source recovery and git diff --check validation.
+
+
+### 2026-10-13 delivery: wing-fall SetHomePos801123d0
+
+[Wing-fall ABI](../behavior/battle/PARAGOOMBA_WING_FALL_USED_TRIO_BINDING.md)
+closes reached SetHomePos801123d0/128: four evtGetValue operands in order,
+actor translated, signed integer XYZ converted to float; leaf801289a0/10
+writes U30/34/38 only. No sentinel, evtGetFloat, output, first-call/current
+position/offset/floor query. Native must preserve original integer GetPos
+locals before storing home, not invent fractional inputs. Read-only source
+listings /tmp/trio-para-sethome.dis and leaf listing. Docs-only/no native
+edits/commit; git diff --check passed.
+
+
+### 2026-10-13 delivery: grounded Paragoomba attack93105a14 angle helper
+
+[Wing-fall contract](../behavior/battle/PARAGOOMBA_WING_FALL_USED_TRIO_BINDING.md)
+pins reached93105a14 to original krb_get_dir@unit_patakuri.o, not distance.
+Four float inputs old/newXY and evaluated prior integer output; dx/dy bothzero
+writespriorangle, else systemangleABf→fctiwz→integer output. Exact REL imports,
+zero constant, raw helper hash and used groundattack306f4 five locals recorded.
+Semantic provider reuse with Spike/Headbonk validated; no invented sqrt/pow or
+names-only alias. Docs-only/no native edits/commit; git diff --check passed.
+
+
+### 2026-10-13 delivery: battle missing PTK_R_2 source fallback art
+
+[Wing-fall resource contract](../behavior/battle/PARAGOOMBA_WING_FALL_USED_TRIO_BINDING.md)
+pins shared battle animPoseSetAnim exact-search/exhaustion→descriptor0 policy.
+Original a/c_kuribo row0 KUR_Z_2, descriptor6b74, nonloop0..20/one key0,
+three visibility updates only, visible static135-triangle geometry. PTK_R_2 is
+absent; KUR_R_2 exists and is a separate original10-frame run. Bank/hash/source
+provenance and host evaluated geometry bounds recorded; numerical host adapter
+not claimed as original raster observation. Native subset fallback must retain
+source KUR_Z_2 rather than current packfirst KUR_S_1. Docs-only/no native edits
+or commit; git diff --check passed.

@@ -195,6 +195,43 @@ int main(){
         assert(charged.trioAttack.readWord(0x84000030,value) && value==(successful?0u:0x84104000u));
         for(unsigned o:{0x1ca0u,0x1ca4u,0x1ca8u,0x1cacu})assert(charged.trioAttack.readWord(0x84000000+o,value) && value==0);
         assert(charged.progress.originalStory==11 && charged.fieldBattleState().result==0 && !charged.fieldControlEnabled());
+        if(successful){
+            charged.tick(advance);assert(charged.trioCommands.state==TrioBattleCommands::State::Target && charged.trioCommands.count()==1 && charged.trioCommands.selected()[0]==5);
+            charged.tick(advance);charged.tick(Input{});
+            for(unsigned n=0;n<1500 && !charged.trioAttack.pendingFunction() && !charged.trioAttack.finished();++n)charged.tick(Input{});
+            assert(!charged.trioAttack.pendingFunction() && charged.trioAttack.finished());
+            assert(charged.trioAttack.readWord(0x8410510c,value) && value>>16==1);
+            assert(charged.trioAttack.readWord(0x84105278,value) && value==0x410117);
+            assert(charged.trioAttack.readWord(0x84105008,value) && value==1);
+            assert(charged.trioAttack.readWord(0x84105010,value) && value==0x93521b48); // Original flying kind definition retained.
+            assert(charged.trioAttack.readWord(0x842051ac,value) && value==9);
+            assert(charged.trioAttack.readWord(0x84205004,value) && value==0x93522800);
+            assert(charged.trioAttack.readWord(0x842051bc,value) && value==0x93522728);
+            assert(charged.trioAttack.readWord(0x84105018,value) && value==0x935227c8);
+            assert(charged.trioAttack.readWord(0x84105034,value) && value==0);
+            assert(charged.trioBattleIntro.actors[4].position[1]==0 && !charged.trioBattleIntro.actors[4].hidden);
+            for(unsigned n=0;n<1500 && !charged.trioAttack.pendingFunction() && charged.trioAttack.commandActor()!=1;++n)charged.tick(Input{});
+            assert(!charged.trioAttack.pendingFunction() && charged.trioAttack.commandActor()==1);
+            assert(charged.trioAttack.readWord(0x841052a0,value) && value==0x935229e4);
+            assert(charged.trioAttack.readWord(0x8410528c,value) && value==0x93523194);
+            assert(charged.trioAttack.readWord(0x841052b0,value) && value==0x935229b4);
+            assert(charged.trioAttack.readWord(0x841052a4,value) && value==0x935229e4);
+            assert(charged.trioBattleIntro.actors[4].pose=="KUR_S_1");
+            uint32_t marioHp=0,partnerHp=0;assert(charged.trioAttack.readWord(0x8410110c,marioHp) && charged.trioAttack.readWord(0x8410210c,partnerHp));
+            assert((marioHp>>16)+(partnerHp>>16)==16); // The original grounded attacker dealt one damage to its sampled target.
+            assert(std::string(charged.trioCommands.targetName(5))==std::string(charged.trioCommands.targetName(3)));
+            charged.trioCommands.chooseCommand(1);charged.tick(advance);
+            assert(charged.trioCommands.count()==1 && charged.trioCommands.selected()[0]==5); // Ground replacement admits Hammer.
+            charged.tick(advance);charged.tick(Input{});
+            for(unsigned n=0;n<1500 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
+            assert(charged.trioAttack.pendingFunction()==0x80215234);
+            assert(charged.trioAttack.readWord(0x84000034,value) && value==0 && charged.trioBattleIntro.actors[4].hidden);
+            assert(charged.trioAttack.readWord(0x84105278,value) && value==0x10717);
+            assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x07000000);
+            assert(charged.progress.originalStory==11 && charged.fieldBattleState().result==0 && !charged.fieldControlEnabled());
+
+
+        }
     }
     for(uint32_t button:{0x100u,0x200u}) {
         Game defended;defended.restore(checkpoint);
@@ -229,5 +266,5 @@ int main(){
                 [](const ProfessorServiceRequest& r){return r.function==0x8010510c && r.command==0x803516b8;}));
         }
     }
-    std::cout<<"Original Jump damage, owned reactions, return/idle, source move consumption, Mario-to-Goombella handoff, persistent Headbonk damage, deferred removal and source enemy impact/recovery, private defence, audience drain and original failed/charged Hammer passed\n";
+    std::cout<<"Original Jump damage, owned reactions, return/idle, source move consumption, Mario-to-Goombella handoff, persistent Headbonk damage, deferred removal and source enemy impact/recovery, private defence, audience drain and original failed/charged Hammer and wing-fall/grounded attack passed\n";
 }

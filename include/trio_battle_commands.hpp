@@ -22,7 +22,7 @@ public:
     std::optional<TrioAttackRequest> attack;
     bool begin(const ProfessorStory&,int32_t actorId=1);
     void syncPositions(const ProfessorStory&);
-    void syncUnitState(const std::array<DamageUnit,7>&,const std::array<bool,7>&);
+    void syncUnitState(const std::array<DamageUnit,7>&,const std::array<bool,7>&,const std::array<DamagePart,7>* parts=nullptr);
     void input(uint32_t triggers,uint32_t repeats);
     void chooseCommand(unsigned);
     void chooseTarget(unsigned);

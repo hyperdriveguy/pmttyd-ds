@@ -5640,3 +5640,67 @@ Headbonk successful follow-ups, Spike warning/counter, full conclusion and
 original field/story return. Gauge/voice, optional stylish/teaching/mask2,
 nonfresh status/crowd/equipment and original timing/numeric parity remain open.
 The full original-fidelity playable prologue goal remains active and incomplete.
+
+## 2026-10-13 — Native original wing fall, grounded attack and final removal
+
+A fresh failed Headbonk on flying Para(kind2) now adds source reaction400000
+only through weapon4000/part800/per-hit100 admission, yielding410117/HP1.
+Original installed damage/root/child owns the complete fall: attribute clears,
+PTK_D_1/wait1000, raw pose/data tables, actual part replacement, KUR_D_1,
+JumpPosition10 toY0/home update, wait500, ChangeKind1, original grounded init,
+wait1 and final pose. Integer SetHomePos preserves raw XYZ truncation; it is not
+a float/sentinel setter. No independent fall timer, teleport or HP reset is used.
+
+ReplaceParts preserves the specified old fields and imports the original ground
+record. Native resource recreation reuses the preloaded one-part c_kuribo bank;
+full multiparts/resource lifetime remains an adapter. Current kind1 changes
+without replacing original kind-definition93521b48, identity, level or HP1.
+Original ground wait/attack/damage/confusion/sound pointers install through
+source event setters. The grounded attack executes its real root, shared
+krb_get_dir93105a14 angle-table ABI and default power1; native generic-jump
+numeric services remain adapters. The next player menu follows source phase/
+barriers and retains HP. Live part attributes/current kind refresh command
+sampling and original US name: grounded unit5 is Goomba and admits Hammer.
+
+Original c_kuribo now packages KUR_R_2 and keeps original descriptor0 KUR_Z_2
+first. Authored PTK_R_2 is absent from the original bank; original battle uses
+shared missing-name fallback to descriptor0. No replacement animation is
+invented. Native source assertions preserve exact tables/part/event pointers,
+original definition and floor/homeY0. All asset extraction remains read-only;
+originals, compiled packs and snapshots remain ignored.
+
+The host scenario now defeats and removes all three opponents through source
+hits, death/reward scripts and deferred registry retirement. After wing fall/
+grounded attack, Mario's missed Hammer kills the remaining HP1 Goomba with
+10717. Original conclusion sets bank7=07000000. Runtime now exposes the exact
+next ordinary owner btlseqEnd80215234 instead of silently remaining active.
+It does not fabricate result1, export rewards/stats or release field controls;
+story11/result0/control lock remain until original ending/return is implemented.
+
+Validation: `make test` passes134/134 CTest and103/103 Python tests
+(`/tmp/trio-wing-tests-final.log`). Integration covers original Hammer and prior
+guard/turn behavior, full wing transition, HP/definition retention, exact part/
+pose/data/ground event pointers, grounded attack's sampled one-damage target,
+correct name/Hammer admission, final original death/removal and ending boundary.
+`make all` and `make debug-short` pass (`/tmp/trio-wing-all-final.log`,
+`/tmp/trio-wing-native-final.log`) without compiler warnings. `git diff --check`
+passes. Capture helper Python syntax check passes after suppressing xdotool
+verbosity; that edit changes only logging, not the captured input sequence.
+
+Isolated Azahar: `artifacts/azahar-trio-wing-fall`, immutable
+`artifacts/trio-wing-snapshot` debug-short binary/ELF, underground-story11 fixture,
+48second boot and `tests/azahar_trio_wing_fall.py`. Reviewed captures show the
+flying target/Headbonk, wings present before replacement, grounded KUR_D_1
+(sample10), restored ground idle/menu and original Goomba name alongside Spiky
+Goomba after the enemy round. Screenshots do not prove every intermediate frame,
+exact HP, charge success or final enemy kill; those are host assertions. Other
+emulator profiles/saves are untouched. No hardware FPS or Dolphin parity claim.
+
+Next: bind original btlseqEnd victory/result/audience/reward/pouch/export owners
+and original field-result1 gorotuki continuation. Source first-ending audience
+services do not become no-ops merely because the current crowd adapter is empty.
+Retain the original FieldInfo/NpcInfo callback producer; do not force itnull or
+skip ending presentation to fabricate field return. Successful Jump/Headbonk
+follow-ups, Spike warning/counter, gauge/voice, optional stylish/teaching,
+nonfresh status/crowd/equipment and full story/hardware parity remain open.
+The original-fidelity playable prologue goal remains active and incomplete.

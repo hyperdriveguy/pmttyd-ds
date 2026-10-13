@@ -1089,3 +1089,18 @@ Original Nintendo/Intelligent Systems rights remain; no redistribution license
 is granted or inferred. ISO/raw assets/compiled packs/original dialogue remain
 outside source history. Source/native code/manifest evidence is not matched
 Dolphin execution or a New2DSXL hardware performance measurement.
+
+## 2026-10-13 — Original grounded Goomba pose and bank fallback
+
+`tools/underground_event_assets.py` retains original descriptor0 `KUR_Z_2`
+first and additionally imports grounded run `KUR_R_2` from read-only ISO
+`a/c_kuribo`, using original `a/c_kuribo-` textures. Original flying/grounded
+parts share this same resource bank. Authored `PTK_R_2` is absent from the bank;
+the shared battle animation selector falls back to actual descriptor0 rather
+than inventing or substituting a different run animation. `KUR_Z_2` has visible
+static source geometry; existing original S/T/W/R/D poses remain imported.
+The mesh/atlas/animation conversion pipeline and texture scaling are unchanged.
+Original fall and grounded init/attack/wait/part/pose/data definitions were
+already in the data-only tik pack; they retain original relocation addresses.
+Extracted originals, compiled packs and binaries stay ignored. Nintendo/
+Intelligent Systems ownership and no redistribution grant remain unchanged.

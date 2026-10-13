@@ -41,7 +41,10 @@ const char* TrioBattleCommands::commandName(unsigned i) const {
 }
 const char* TrioBattleCommands::targetName(int32_t id) const {
     if(id<3 || id>6)return "";
-    const auto* name=labels.find(trioBattleUnitSpecs()[id-3].nameKey.data());return name?name:"";
+    for(const auto& spec:trioBattleUnitSpecs())if(spec.kind==uint32_t(units[id].kind)){
+        const auto* name=labels.find(spec.nameKey.data());return name?name:"";
+    }
+    return "";
 }
 CandidateSamplingServices TrioBattleCommands::services() {
     // Rebind views for every sampling call: a Game copy must never retain pointers
@@ -79,7 +82,7 @@ bool TrioBattleCommands::begin(const ProfessorStory& scene,int32_t actorId) {
     }
     syncPositions(scene);state=State::Command;return true;
 }
-void TrioBattleCommands::syncUnitState(const std::array<DamageUnit,7>& state,const std::array<bool,7>& alive){units=state;present=alive;}
+void TrioBattleCommands::syncUnitState(const std::array<DamageUnit,7>& state,const std::array<bool,7>& alive,const std::array<DamagePart,7>* parts){units=state;present=alive;if(parts)for(unsigned id=1;id<7;++id)positionParts[id].attributes=(*parts)[id].attributes;}
 void TrioBattleCommands::syncPositions(const ProfessorStory& scene) {
     for(unsigned id=1;id<7;++id) {
         const auto& p=scene.actors[visual[id]].position;positions[id]={p[0],p[1],p[2]};

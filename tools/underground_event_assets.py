@@ -41,7 +41,8 @@ def build(iso):
     metadata=struct.pack('<8s5I',b'PMTRIO1',address(events[0]['file_offset']),*[address(n) for n in names],len(callbacks))
     metadata+=b''.join(struct.pack('<II',a,t) for a,t in sorted(callbacks.items()))
     Path('romfs/underground-program.bin').write_bytes(metadata)
-    poses=[prefix+'_'+pose for prefix in ('KUR','PTK','TGK') for pose in ('S_1','T_1','W_1','R_1','D_1')]
+    poses=['KUR_Z_2']+[prefix+'_'+pose for prefix in ('KUR','PTK','TGK') for pose in ('S_1','T_1','W_1','R_1','D_1')]
+    poses+=['KUR_R_2'] # Original grounded pose41; authored PTK_R_2 misses this bank and uses descriptor0.
     scale=compile_model(iso,'underground-goombas','c_kuribo',poses)
     Path('romfs/underground-goombas.bin').write_bytes(struct.pack('<f',scale))
     Path('romfs/underground-trio.json').write_text(json.dumps(dict(events=events,callbacks=callbacks,actor_names=names,uv_scale=scale,source='rel/tik.rel,a/c_kuribo,a/c_kuribo-',foreign=foreign,license='Nintendo/Intelligent Systems resources; no redistribution rights'),indent=2)+'\n')

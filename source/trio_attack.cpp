@@ -88,6 +88,24 @@ struct TrioAttackRuntime {
         if(first){ProfessorServiceRequest r{fn,e.currentCommand,now,{}};for(unsigned i=0;i<e.argumentCount;++i)r.rawOperands.push_back(raw(e,i));trace.push_back(std::move(r));}
         int32_t result;if(registry.invoke(e,fn,first,result))return result;
         switch(fn) {
+        case 0x801123d0:{const auto u=unit(e);std::array<float,3> position{};for(unsigned i=0;i<3;++i)position[i]=float(value(e,i+1));for(unsigned i=0;i<3;++i)real(u+0x30+4*i,position[i]);return 2;}
+        case 0x8010e368:{const auto u=unit(e);word(u+0x104,word(u+0x104)&~uint32_t(raw(e,1)));return 2;}
+        case 0x8010e1b8:{const auto p=packedUnitPart(unit(e),value(e,1),nativeBattleActorServices(vm).memory);word(p+0x1ac,word(p+0x1ac)&~uint32_t(raw(e,2)));return 2;}
+        case 0x80106468:{const auto p=packedUnitPart(unit(e),value(e,1),nativeBattleActorServices(vm).memory);word(p+0x1bc,uint32_t(raw(e,2)));return 2;}
+        case 0x8010dae0:word(unit(e)+0x18,uint32_t(raw(e,1)));return 2;
+        case 0x8010dc44:word(unit(e)+8,uint32_t(value(e,1)));return 2;
+        case 0x8010a500:case 0x8010a388:case 0x8010a55c:case 0x8010a32c:{const auto u=unit(e);const unsigned offset=fn==0x8010a500?0x28c:fn==0x8010a388?0x2a0:fn==0x8010a55c?0x2b0:0x2a4;word(u+offset,uint32_t(raw(e,1)));if(fn==0x8010a388)word(u+0x2ac,0);return 2;}
+        case 0x80104b08:{const auto u=unit(e);word(u+0x1c4,uint32_t(value(e,1)));word(u+0x1c8,uint32_t(value(e,2)));return 2;}
+        case 0x80104ddc:case 0x80104f64:{const auto u=unit(e);std::array<int32_t,5> args{};for(unsigned i=0;i<5;++i)args[i]=value(e,i+1);const auto base=u+(fn==0x80104ddc?0x1dc:0x1cc);word(base,args[0]);word(base+4,args[1]);for(unsigned i=0;i<3;++i)half(base+8+2*i,args[i+2]);return 2;}
+        case 0x8011319c:{
+            const auto u=unit(e),p=packedUnitPart(u,value(e,1),nativeBattleActorServices(vm).memory),record=uint32_t(raw(e,2));const auto id=uint32_t(value(e,3));
+            if(!record || word(record)!=id || word(u+8)!=2 || id!=1){if(!pending)pending=fn;return 0;}
+            word(p+4,record);word(p+8,word(record+4));for(unsigned o:{0x40u,0x44u,0x38u,0x3cu})word(p+(o==0x40?0x1ac:o==0x44?0x1b0:o==0x38?0x1b4:0x1b8),word(record+o));
+            for(unsigned axis=0;axis<3;++axis){real(p+0x24+4*axis,real(record+0xc+4*axis));real(p+0x48+4*axis,0);real(p+0x54+4*axis,0);}real(p+0x170,real(record+0x18));real(p+0x174,real(record+0x1c));real(p+0x17c,0);real(p+0x180,0);half(p+0x1a0,0);
+            // Both authored variants use c_kuribo. The preloaded native bank
+            // reuses its geometry/pose IDs; the following source pose request resets animation.
+            return 2;
+        }
         case 0x8015235c:if(raw(e,1)!=0){if(!pending)pending=fn;return 0;}soundRequests.push_back(text(uint32_t(raw(e,0))));return 2; // Original request retained; returned voice is discarded by this source call.
         case 0x80115648:output(e,0,int8_t(byte(word(0x8041eb00)+0x99)));return 2;
         case 0x80107ad4:word(Battle+0x1cc4,uint32_t(raw(e,0)));return 2;
@@ -156,19 +174,19 @@ struct TrioAttackRuntime {
         case 0x80105890:output(e,0,byte(selectedWeapon()+0x6e));return 2;
         case 0x80105928:{const auto u=unit(e),w=selectedWeapon();if(word(w+8) || byte(w+0x11) || byte(w+0x12)){if(!pending)pending=fn;return 0;}if(word(u+8)>=224 && word(u+8)<231){auto points=byte(Battle+0x16f4d),count=byte(Battle+0x16f4e);addActionPoint(points,0);addActionCount(count);byte(Battle+0x16f4d,points);byte(Battle+0x16f4e,count);}return 2;}
         case 0x8010aaa8:{const auto a=unit(e),d=unit(e,1),p=packedUnitPart(d,value(e,2),nativeBattleActorServices(vm).memory),w=selectedWeapon();const uint32_t flags=uint32_t(raw(e,3));for(unsigned o=0x118;o<=0x135;++o)if(byte(a+o) || byte(d+o)){if(!pending)pending=fn;return 0;}if(byte(w+0x10)!=100 || (word(p+0x1b0)&2) || word(Battle+0x182bc) || (word(d+0x104)&0x18) || (word(p+0x1ac)&(0x4000|0x40)) || byte(d+0x2e0) || byte(d+0x2e1) || byte(d+0x2e2)){if(!pending)pending=fn;return 0;}if(word(w+0x74)&4)word(a+0x27c,word(a+0x27c)|8);if(!(flags&0x100000) && !(word(w+0x74)&8))(void)random.bounded(100);output(e,4,1);return e.flags&1?2:255;}
-        case 0x8010a688:{const auto a=unit(e),d=unit(e,1),p=packedUnitPart(d,value(e,2),nativeBattleActorServices(vm).memory),w=selectedWeapon();if(word(d+8)!=1 || word(p+0x1b0) || w!=0x80393ea8){if(!pending)pending=fn;return 0;}word(d+0x258,p);const auto result=checkGroundDamage(a,d,p,w,uint32_t(raw(e,3)));if(result>=0)output(e,4,result);return result>=0 && (e.flags&1)?2:255;}
+        case 0x8010a688:{const auto a=unit(e),d=unit(e,1),p=packedUnitPart(d,value(e,2),nativeBattleActorServices(vm).memory),w=selectedWeapon();if((word(d+8)!=1 && word(d+8)!=2) || word(p+0x1b0) || w!=0x80393ea8){if(!pending)pending=fn;return 0;}word(d+0x258,p);const auto result=checkGroundDamage(a,d,p,w,uint32_t(raw(e,3)));if(result>=0)output(e,4,result);return result>=0 && (e.flags&1)?2:255;}
         case 0x8011355c:{const auto u=unit(e);for(unsigned i=0;i<3;++i)if(raw(e,i+1)!=-250000000)setEventFloat(e,raw(e,i+1),real(u+0x3c+4*i),vm.interpreterServices().operands);return 2;}
         case 0x80111894:{const auto u=unit(e);for(unsigned i=0;i<3;++i)if(raw(e,i+1)!=-250000000)output(e,i+1,int32_t(real(u+0x6c+4*i)));return 2;}
         case 0x8010e614:output(e,1,int8_t(byte(unit(e)+0x189)));return 2;
         case 0x8010b8f4:{const auto u=unit(e);const int32_t amount=value(e,2),sign=int8_t(byte(u+0x188))?int8_t(byte(u+0x188)):int8_t(byte(u+0x189));output(e,1,int32_t(uint32_t(value(e,1))+uint32_t(amount)*uint32_t(sign)));return 2;}
         case 0x801103dc:case 0x8011049c:{const auto id=translateBattleActor(&e,value(e,0),nativeBattleActorServices(vm));if(id==-1)return 2;const auto u=word(Battle+0x20+4*id);for(unsigned i=0;i<3;++i){const float v=getEventFloat(e,raw(e,i+1),vm.interpreterServices().operands);if(v!=-250000000.f)real(u+0x90+4*i,fn==0x801103dc?real(u+0x90+4*i)+v:v);}return 2;}
         case 0x80112978:{const auto u=unit(e);for(unsigned i=0;i<3;++i){const float v=float(value(e,i+1));if(v!=-250000000.f)real(u+0x54+4*i,v);}return 2;}
-        case 0x93105b2c:case 0x80189910:{std::array<float,4> p{};for(unsigned i=0;i<4;++i)p[i]=getEventFloat(e,raw(e,i),vm.interpreterServices().operands);const int32_t previous=value(e,4);const float dx=p[2]-p[0],dy=p[3]-p[1];output(e,4,dx==0 && dy==0?previous:int32_t(sourceAngles.angle(dx,dy,0,0)));return 2;}
+        case 0x93105b2c:case 0x93105a14:case 0x80189910:{std::array<float,4> p{};for(unsigned i=0;i<4;++i)p[i]=getEventFloat(e,raw(e,i),vm.interpreterServices().operands);const int32_t previous=value(e,4);const float dx=p[2]-p[0],dy=p[3]-p[1];output(e,4,dx==0 && dy==0?previous:int32_t(sourceAngles.angle(dx,dy,0,0)));return 2;}
         case 0x801072e4:return 2; // Retained original stylish-audience request; producer adapter remains open.
         case 0x8010a78c: {
             const auto a=unit(e),d=unit(e,1),p=packedUnitPart(d,value(e,2),nativeBattleActorServices(vm).memory),w=uint32_t(value(e,3));const uint32_t flags=uint32_t(raw(e,4));
             const bool playerHit=(word(d+8)==1 && !word(p+0x1b0) && w==0x803538a8) || (word(a+8)==222 && (word(d+8)==1 || word(d+8)==3) && word(p+0x1b0)<=1 && w==0x80353de8);
-            const bool enemyHit=(word(a+8)==2 || word(a+8)==3) && (word(d+8)==222 || word(d+8)==224) && !word(p+0x1b0) && word(w+0x1c)==0x80189d30 && !word(w+0x40);
+            const bool enemyHit=(word(a+8)>=1 && word(a+8)<=3) && (word(d+8)==222 || word(d+8)==224) && !word(p+0x1b0) && word(w+0x1c)==0x80189d30 && !word(w+0x40);
             if(!playerHit && !enemyHit){if(!pending)pending=fn;return 0;}
             word(d+0x258,p);
             if(enemyHit && !(word(w+0x74)&0x20000) && packedACPossibility(d,nativeBattleActorServices(vm)) && int32_t(word(Battle+0x1cb0))==5){
@@ -361,7 +379,8 @@ struct TrioAttackRuntime {
         for(unsigned offset:{0x2b4u,0x290u,0x29cu,0x2a8u}){const auto id=word(u+offset);if(id)deleteEventId(id,vm.creationServices());word(u+offset,0);}
         auto& e=createRootEvent(vm.schedule,script,10,0x20,vm.creationServices());e.owner=int32_t(word(u));word(u+0x278,code);word(u+0x2b4,e.id);
     }
-    int32_t checkGroundDamage(uint32_t a,uint32_t d,uint32_t,uint32_t w,uint32_t flags) {
+    int32_t checkGroundDamage(uint32_t a,uint32_t d,uint32_t p,uint32_t w,uint32_t flags) {
+        if((word(w+0x74)&0x4000) && (word(p+0x1ac)&0x800) && (flags&0x100))flags|=0x400000;
         const auto ai=word(a),di=word(d);readDamage(ai);readDamage(di);auto& attacker=damageUnits[ai];auto& defender=damageUnits[di];auto& part=damageParts[di];
         DamageWeapon weapon=w==0x80353de8?ordinaryHammerWeapon():ordinaryJumpWeapon();weapon.specialFlags=word(w+0x74);weapon.element=byte(w+0x6c);if(word(w+0x1c)==0x80189d30){weapon.hpPower=defaultWeaponPower;weapon.defaultPower=int32_t(word(w+0x20));if(!(weapon.specialFlags&0x20000) && packedACPossibility(d,nativeBattleActorServices(vm)) && int32_t(word(Battle+0x1cb0))>3)flags|=0x40000;}if(w==0x80393ea8){weapon.specialFlags=word(w+0x74);weapon.hpPower=[](DamageUnit*,DamageWeapon& weapon,DamageUnit&,DamagePart&){auto& r=*static_cast<TrioAttackRuntime*>(weapon.callbackData);const int32_t level=r.half(0x85000000+14+0xa),index=std::min<int32_t>(2*level+int32_t((r.word(Battle+0x1cb8)>>1)&1),5);return int32_t(r.word(0x80393ea8+0x20+4*index));};}for(unsigned i=0;i<6;++i)weapon.powerWords[i]=int32_t(word(w+0x20+4*i));
         struct PowerContext{TrioAttackRuntime* runtime;uint32_t weapon;};PowerContext context{this,w};
@@ -617,7 +636,7 @@ struct TrioAttackRuntime {
             HammerSoundSink sounds;sounds.user=this;sounds.play=[](void* p,const char* key)->int32_t{static_cast<TrioAttackRuntime*>(p)->soundRequests.emplace_back(key);return 0;};const auto result=c.tick(context,random,sounds);if(result<0){if(!pending)pending=0x8012a17c;return;}storeHammer(c);if(result==0)word(Battle+0x1ca0,0);
         }
     }
-    void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){scene=&s;now=time;if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();}vm.runManager();if(hasBrokenUnit())done=false;}publish(s);}
+    void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){scene=&s;now=time;if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();if(word(Battle+4)==3){pending=0x80215234;publish(s);return;}BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();}vm.runManager();if(hasBrokenUnit())done=false;}publish(s);}
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
 bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>();if(!r->initialize(menu,scene,hp))return false;runtime_=std::move(r);return true;}
@@ -625,7 +644,7 @@ void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,cons
 bool TrioAttack::active()const{return runtime_ && !runtime_->done;}
 bool TrioAttack::finished()const{return runtime_ && runtime_->done;}
 int32_t TrioAttack::commandActor()const{if(!runtime_ || runtime_->pending || !runtime_->done || runtime_->word(Battle+0xf18)!=0x04000002)return -1;if(runtime_->readyActor>=0)return runtime_->readyActor;if(runtime_->word(Battle+0xf1c)!=0x05000008)return -1;for(unsigned i=0;i<64;++i){const int32_t id=int32_t(runtime_->word(Battle+0x120+4*i));if(id<0 || id>=64)continue;const auto u=runtime_->word(Battle+0x20+4*id);if(u && int8_t(runtime_->byte(u+0x22))>0 && runtime_->byte(u+0x20)!=10 && runtime_->byte(u+0x20)!=1 && (!runtime_->byte(u+0x135) || (runtime_->word(u+0x104)&0x10000)))return id;}return -1;}
-bool TrioAttack::prepareCommands(TrioBattleCommands& menu,const ProfessorStory& scene){if(!runtime_ || !runtime_->done || runtime_->pending || runtime_->word(Battle+0xf18)!=0x04000002 || runtime_->word(Battle+0xf1c)!=0x05000008)return false;runtime_->prepareActor();if(!menu.begin(scene,runtime_->readyActor))return false;std::array<bool,7> present{};for(unsigned id=1;id<7;++id){present[id]=runtime_->word(Battle+0x20+4*id)!=0;runtime_->readDamage(id);}menu.syncUnitState(runtime_->damageUnits,present);return true;}
+bool TrioAttack::prepareCommands(TrioBattleCommands& menu,const ProfessorStory& scene){if(!runtime_ || !runtime_->done || runtime_->pending || runtime_->word(Battle+0xf18)!=0x04000002 || runtime_->word(Battle+0xf1c)!=0x05000008)return false;runtime_->prepareActor();if(!menu.begin(scene,runtime_->readyActor))return false;std::array<bool,7> present{};for(unsigned id=1;id<7;++id){present[id]=runtime_->word(Battle+0x20+4*id)!=0;runtime_->readDamage(id);}menu.syncUnitState(runtime_->damageUnits,present,&runtime_->damageParts);return true;}
 uint32_t TrioAttack::pendingFunction()const{return runtime_?runtime_->pending:0;}
 const std::vector<ProfessorServiceRequest>& TrioAttack::requests()const{static const std::vector<ProfessorServiceRequest> empty;return runtime_?runtime_->trace:empty;}
 bool TrioAttack::readWord(uint32_t a,uint32_t& v)const{return runtime_ && runtime_->vm.memory.readWord(a,v);}
