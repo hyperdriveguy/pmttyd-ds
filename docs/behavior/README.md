@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [MusyX emitter update/3D reset](audio/MUSYX_EMITTER_VECTOR_VOLUME_UPDATE_AND_3D_RESET.md) | Complete two-vector/low-byte target/current-volume writes and ordered root/studio/flag reset | Construction/consumers/caller providers/alias/finite/reset domains and original audio |
 | [MusyX emitter removal/unload](audio/MUSYX_EMITTER_REMOVE_ALL_AND_FX_LIFETIME.md) | Complete individual/all/FX-array unlink, high-half flag clear, key-off requests and9 direct callers | Emitter/list/FX/member/IRQ writers, key-off effects and original unload/audio |
 | [Effect spatial controls/emitter lookup](audio/SOUND_EFFECT_SPATIAL_CONTROLS_AND_EMITTER_LOOKUP.md) | Complete pan/surround early publication, dual controllers, stored volume read and active/voice flag queries | Pool/emitter writers/ordinal/lifetime domains and actual controller/audio execution |
 | [Positional SFX live/fade/mute](audio/POSITIONAL_SFX_LIVE_SPATIAL_FADE_AND_MUTE.md) | Complete remaining global/live regions; composed whole-local SFXMain graph, fresh controls/mute/fade/stop ordering | Backend/writers/flags/fade/domain/lifetime and original audio |

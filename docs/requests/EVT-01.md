@@ -113,6 +113,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [emitter removal/unload](../behavior/audio/MUSYX_EMITTER_REMOVE_ALL_AND_FX_LIFETIME.md).
   Retained-next/unlink/high-half clear/key-off order pinned; list/FX/source/
   caller/member/IRQ/voice/runtime remains open.
+- [x] Complete sndUpdateEmitter/s3dInit and scoped two-site direct
+  DOL caller census —
+  [vector/volume update and reset](../behavior/audio/MUSYX_EMITTER_VECTOR_VOLUME_UPDATE_AND_3D_RESET.md).
+  Ordered aliased vector/volume/root/flag publications pinned; constructors/
+  consumers/caller/provider/reset/numeric/runtime remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -907,3 +912,18 @@ resolved direct calls passes. Whole-DOL aligned caller census9 sites;6 flag-clea
 12 active-gate vectors derived only. Full ELFs/listings stay `/tmp`; no original
 execution/body/asset export. Emitter construction/list/FX/member/cycle/IRQ/source,
 full caller unload/silence and original key-off/audio/lifetime remain OPEN.
+
+### 2026-10-13 — Emitter vector/volume update and 3D root reset
+
+[Two complete local bodies](../behavior/audio/MUSYX_EMITTER_VECTOR_VOLUME_UPDATE_AND_3D_RESET.md)
+close active-gated two-vector publication, low-byte volume/127 target and ordered
+current>target clamp, independent of emitter membership. 3D reset zeros roots/
+used-studio word, assigns base1/max3/count0 and flags bits1/2 without clearing
+old nodes, voices or active flags. No smoothing/cadence/release rule invented.
+
+Validation: read-only manifest6 spans (2 complete/2 IRQ/2 literals),47 anchors/
+two resolved direct calls passes; whole-DOL direct census2 sites.8 volume/7
+configuration/5 finite clamp vectors are derived only, not PPC execution.
+Full ELFs/listings remain `/tmp`; no native change/body/asset export. Constructors/
+consumers/caller-provider/alias/null/finite/reset/concurrency and original audio
+remain OPEN; local portions marked, parent open.

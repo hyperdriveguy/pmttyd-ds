@@ -96,3 +96,5 @@ Remaining: effect-pool/record/emitter active/voice writers and valid ordinal/
 pointer/lifetime/concurrency domains, emitter construction/update/removal and
 controller/MIDI/voice/backend execution, original pan/surround/fade/audio traces.
 Five complete local leaves are answered; full audio/native/runtime remains OPEN.
+
+[Complete vector/volume update and 3D root/config reset](MUSYX_EMITTER_VECTOR_VOLUME_UPDATE_AND_3D_RESET.md) now closes those exact local state producers. Update does not require emitter membership; reset does not clear detached flags/voices. Construction/consumers/provider/runtime remain open.

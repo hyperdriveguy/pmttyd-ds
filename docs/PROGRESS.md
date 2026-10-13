@@ -5,6 +5,27 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 emitter vector/volume update and 3D reset
+
+Delivered [update/reset](behavior/audio/MUSYX_EMITTER_VECTOR_VOLUME_UPDATE_AND_3D_RESET.md).
+Two complete bodies pin ordered two-vector copies, low-byte volume/127 target,
+current-volume one-sided clamp and exact root/studio/flag reset. Update does not
+check emitter membership; reset does not clear old emitter flags/voices. No
+smoothing/cadence/release inferred. Marked local EVT-01 portions complete;
+construction/consumers/source/runtime remain OPEN.
+
+Validation: generic read-only verifier6 spans (2 complete/2 IRQ/2 literal),47
+anchors/two resolved direct calls passes. Whole-DOL direct census2 sites;8 volume/
+7 flag/5 finite clamp vectors derived only. Full fresh ELFs/listings stay `/tmp`;
+no original execution. Link audit758 Markdown files/0 broken; whitespace checks
+pass. Docs/metadata only: no make rerun, native change or original body/asset
+export. Isolated index excludes unrelated staged/worktree work.
+
+Next/limits: emitter construction/list/vector/volume consumers, actual SoundEfxMain
+provider/gate graph, listener/studio setup, alias/null/finite/reset/concurrency and
+original update/audio traces. Continue priority0 source/backend then priority1
+damage graph. No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Priority0 emitter removal and FX unload lifecycle
 
 Delivered [emitter lifecycle](behavior/audio/MUSYX_EMITTER_REMOVE_ALL_AND_FX_LIFETIME.md).

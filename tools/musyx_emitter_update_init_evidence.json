@@ -1,0 +1,246 @@
+{
+  "schema": 1,
+  "scope": "Complete emitter vector/volume update and 3D root/config reset; constructors/callers/source/runtime open",
+  "complete_bodies": [
+    "sndUpdateEmitter",
+    "s3dInit"
+  ],
+  "linked_only": [
+    "hwDisableIrq",
+    "hwEnableIrq"
+  ],
+  "dol_spans": [
+    {
+      "name": "sndUpdateEmitter",
+      "address": 2150155264,
+      "size": 216,
+      "sha256": "8a638d6da9a58d18f481a748a1477bac4f896a57cffcf927e135f82b903e001f"
+    },
+    {
+      "name": "s3dInit",
+      "address": 2150161044,
+      "size": 56,
+      "sha256": "9635cb2ac5c73433bdd7e742ab0cba93e712bf7c04153e71c3087f01d397f614"
+    },
+    {
+      "name": "hwDisableIrq",
+      "address": 2150180880,
+      "size": 56,
+      "sha256": "edb5198c972d01b93658216671fd046d6f96210b534bbfa30b6844c8db6138d2"
+    },
+    {
+      "name": "hwEnableIrq",
+      "address": 2150180824,
+      "size": 56,
+      "sha256": "3bcc66eb43ecfd8c2739c9765c710b462e66bc98fe31d107c000e0d3e3b6fc81"
+    },
+    {
+      "name": "emitter_unsigned_integer_bias",
+      "address": 2151846488,
+      "size": 8,
+      "sha256": "2b2979f362d94c89fe17a6e01637f14332de063fe7a544bdc5facfc046f4169f"
+    },
+    {
+      "name": "emitter_volume_divisor",
+      "address": 2151846500,
+      "size": 4,
+      "sha256": "eb1dc1b77d15392b46070f31889e9c1e4f420af45e9771e3e74b43d1796879ca"
+    }
+  ],
+  "dol_anchors": {
+    "2150155272": "90010024",
+    "2150155276": "93e1001c",
+    "2150155284": "93c10018",
+    "2150155292": "93a10014",
+    "2150155300": "93810010",
+    "2150155308": "880d1f40",
+    "2150155316": "41820080",
+    "2150155320": "480063d9",
+    "2150155328": "3c004330",
+    "2150155332": "9061000c",
+    "2150155340": "90010008",
+    "2150155344": "807d0000",
+    "2150155352": "801d0004",
+    "2150155364": "907c0010",
+    "2150155368": "901c0014",
+    "2150155376": "801d0008",
+    "2150155380": "901c0018",
+    "2150155384": "807e0000",
+    "2150155388": "801e0004",
+    "2150155392": "907c001c",
+    "2150155396": "901c0020",
+    "2150155400": "801e0008",
+    "2150155404": "901c0024",
+    "2150155424": "40810008",
+    "2150155432": "48006331",
+    "2150155436": "38600001",
+    "2150155440": "48000008",
+    "2150155444": "38600000",
+    "2150155448": "80010024",
+    "2150155452": "83e1001c",
+    "2150155456": "83c10018",
+    "2150155460": "83a10014",
+    "2150155464": "83810010",
+    "2150155472": "38210020",
+    "2150161044": "38c00000",
+    "2150161056": "38a00001",
+    "2150161060": "38600003",
+    "2150161064": "90cd2084",
+    "2150161068": "90cd2080",
+    "2150161072": "90cd207c",
+    "2150161076": "98ad207a",
+    "2150161080": "986d2079",
+    "2150161084": "98cd2088",
+    "2150161088": "988d2078",
+    "2150161092": "980d2077",
+    "2148402688": "481abe01",
+    "2150161364": "4bfffec1"
+  },
+  "direct_calls": [
+    {
+      "site": 2150155320,
+      "target": 2150180880,
+      "name": "hwDisableIrq"
+    },
+    {
+      "site": 2150155432,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "direct_dol_caller_census": [
+    {
+      "site": 2148402688,
+      "target": 2150155264,
+      "name": "sndUpdateEmitter",
+      "owner": "SoundEfxMain"
+    },
+    {
+      "site": 2150161364,
+      "target": 2150161044,
+      "name": "s3dInit",
+      "owner": "sndInit"
+    }
+  ],
+  "original_literals": [
+    {
+      "name": "emitter_unsigned_integer_bias",
+      "address": 2151846488,
+      "hex": "4330000000000000"
+    },
+    {
+      "name": "emitter_volume_divisor",
+      "address": 2151846500,
+      "hex": "42fe0000"
+    }
+  ],
+  "derived_volume_boundary_vectors": [
+    {
+      "raw": 0,
+      "low_byte": 0,
+      "target": 0.0
+    },
+    {
+      "raw": 1,
+      "low_byte": 1,
+      "target": 0.007874015718698502
+    },
+    {
+      "raw": 126,
+      "low_byte": 126,
+      "target": 0.9921259880065918
+    },
+    {
+      "raw": 127,
+      "low_byte": 127,
+      "target": 1.0
+    },
+    {
+      "raw": 128,
+      "low_byte": 128,
+      "target": 1.0078740119934082
+    },
+    {
+      "raw": 255,
+      "low_byte": 255,
+      "target": 2.007874011993408
+    },
+    {
+      "raw": 256,
+      "low_byte": 0,
+      "target": 0.0
+    },
+    {
+      "raw": 4294967295,
+      "low_byte": 255,
+      "target": 2.007874011993408
+    }
+  ],
+  "derived_init_flag_vectors": [
+    {
+      "flags": 0,
+      "use_max_voices": 0,
+      "use_legacy": 0
+    },
+    {
+      "flags": 1,
+      "use_max_voices": 0,
+      "use_legacy": 0
+    },
+    {
+      "flags": 2,
+      "use_max_voices": 1,
+      "use_legacy": 0
+    },
+    {
+      "flags": 3,
+      "use_max_voices": 1,
+      "use_legacy": 0
+    },
+    {
+      "flags": 4,
+      "use_max_voices": 0,
+      "use_legacy": 1
+    },
+    {
+      "flags": 7,
+      "use_max_voices": 1,
+      "use_legacy": 1
+    },
+    {
+      "flags": 4294967295,
+      "use_max_voices": 1,
+      "use_legacy": 1
+    }
+  ],
+  "derived_current_volume_vectors": [
+    {
+      "current": 0.0,
+      "target": 1.0,
+      "stored": 0.0
+    },
+    {
+      "current": 1.0,
+      "target": 0.0,
+      "stored": 0.0
+    },
+    {
+      "current": 1.0,
+      "target": 1.0,
+      "stored": 1.0
+    },
+    {
+      "current": 2.0,
+      "target": 1.0,
+      "stored": 1.0
+    },
+    {
+      "current": -1.0,
+      "target": 0.0,
+      "stored": -1.0
+    }
+  ]
+}
