@@ -6,6 +6,26 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 scoped synthesis job consumer and clock tail
+
+Delivered [consumer/clock](behavior/audio/MUSYX_SYNTH_JOB_DRAIN_VOICE_CONTROLS_AND_CLOCK.md).
+Two complete regions/no-op leaf pin category0→2→1 captured-next/marker/root
+order, voice flag/pedal/hardware requests, fresh index advancement and64-bit
+raw-input time addition. Whole synthHandle fingerprint does not close its
+master-fade/aux middle. Marked local portions complete; parent EVT-01 OPEN.
+
+Validation: generic read-only verifier13 spans (2 regions/1 leaf/9 linked/whole
+fingerprint),163 anchors/10 direct calls passes.3 queue/5 index/5 clock vectors
+and65536 pedal cases are derived checks; original code not executed. Full fresh
+ELF/listing stays `/tmp`. Link audit772 Markdown files/0 broken; whitespace checks
+pass. Docs/metadata only: no make rerun, native change or original body/asset
+export. Isolated index excludes unrelated staged/worktree work.
+
+Next/limits: synthHandle zero-offset/master-fade/aux middle, precision/zero/mac/
+pedal/ADSR/hardware handlers, queue/voice/flags/time providers and member/alias/
+IRQ/concurrency domains, original scheduling/audio traces. Continue priority0
+source/backend then priority1 damage. No hardware/playback/full-game completion.
+
 ## 2026-10-13 — Retained original save windows and ticketed persistence services
 
 Commit `bd61acc` adds [portable save presentation](behavior/field/NATIVE_SAVE_BLOCK_RETAINED_PRESENTATION.md).

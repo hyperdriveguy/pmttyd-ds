@@ -155,6 +155,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [job insertion/start timestamps](../behavior/audio/MUSYX_SYNTH_JOB_INSERTION_AND_START_TIMESTAMPS.md).
   Slot/category/duplicate/root/time order pinned; queue init/consumer/type/
   member/time/IRQ/concurrency/original execution remain open.
+- [x] Complete synthHandle job-drain/voice-control/index and clock-tail
+  regions, hwFrameDone no-op —
+  [job consumer/clock](../behavior/audio/MUSYX_SYNTH_JOB_DRAIN_VOICE_CONTROLS_AND_CLOCK.md).
+- [ ] Remaining synthHandle master-fade/aux middle, child handlers and
+  queue/voice/flags/time/domain/original scheduling/audio evidence.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1092,3 +1097,17 @@ completionpublication recovered. Boundedremaining requests: actualsource
 HP→status27death/hit-event/barrier producer (CheckStatus27doesnotreadHP),
 usedmenu/turn/orderchange/headbonk/guard/servicecomposition, completeend
 reward/override/loss/escape/fieldreturn andoriginaltrace. No nativeedit/commit.
+
+### 2026-10-13 — Scoped synthesis queue consumer, voice controls and clock tail
+
+[Complete local regions](../behavior/audio/MUSYX_SYNTH_JOB_DRAIN_VOICE_CONTROLS_AND_CLOCK.md)
+close active sample-info gate/mac request, category0→2→1 captured-next/markerff/
+root-clear order, stream skip, pedal/start/key-off/ADSR/dirty flags, fresh slot
+advance and64-bit raw-input time addition. FrameDone is a no-op. Remaining
+synthHandle master-fade/aux section is explicitly NOT closed by its fingerprint.
+
+Validation: read-only manifest13 spans (2 regions/1 complete leaf/9 linked/whole
+fingerprint),163 anchors/10 resolved calls passes.3 queue/5 index/5 clock vectors
+and65536 pedal cases derived only. Full fresh ELF/listing stays `/tmp`; no native/
+body/asset export. Remaining middle/child/provider/member/alias/IRQ/concurrency
+and original scheduling/voice/audio remain OPEN.

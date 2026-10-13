@@ -90,3 +90,5 @@ Remaining: table/index/node-marker/time initialization and consumer advancement,
 valid category/member/index/null/alias/IRQ/concurrency domains, actual job handlers/
 macro/voice scheduling and original queue/time/audio traces. Two complete local
 services are answered; full source/native/runtime/hardware remains OPEN.
+
+[Complete scoped job drain/voice controls/clock tail](MUSYX_SYNTH_JOB_DRAIN_VOICE_CONTROLS_AND_CLOCK.md) now closes the exact category consumer/order and index/time advancement regions. Remaining synthHandle fade/aux middle and child/provider/original scheduling remain open.
