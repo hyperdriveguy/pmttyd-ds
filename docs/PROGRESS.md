@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero busy callback success/audio
+
+Completed cbForStateBusy success/ImmCommand table region; checked EVT-01 portion.
+[Success/audio](behavior/file/SDK_DVD_BUSY_CALLBACK_SUCCESS_COMPLETION_AND_AUDIO.md)
+pins motor-before-cancel, resume0/cancel, exact DMA equality/reissue, mutable
+immediate/controller results and command6 reissue/reject/completion. Error tail/
+whole callback/providers/original IO/audio/native binding remain open.
+
+Validation: read-only ISO manifest passed six spans,198 body+3 table anchors,
+nine calls. Five gate/five precedence/five DMA/seven immediate/five result/four
+audio vectors and eight indirect/global/publication sites checked; prefix pins
+reverified. Link audit passed949 Markdown files/zero broken links; scoped diff
+check passed. Mathematical deductions separate from original execution. Docs/
+metadata only; no make test/all rerun. Fresh full callback ELF/listing/scoped
+generator stay /tmp; no bodies/assets committed. Concurrent native work excluded.
+Approved push pending valid GitHub credentials.
+
+Next: priority-zero EVT-01 same callback error tail/whole composition, actual
+status/command/DMA/table/controller/progress/motor/cancel/audio/callback/providers
+and valid value/extent/alias/lifetime/IRQ/concurrency/ABI domains, original
+chunk/short-read/immediate/audio/callback/IO traces. Other inbox/full-game open.
+
 ## 2026-10-13 — Inbox priority-zero busy callback prefix
 
 Completed cbForStateBusy fatal/stop/progress/cancel prefix/return ABI;

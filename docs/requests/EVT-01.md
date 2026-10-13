@@ -631,7 +631,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] cbForStateBusy fatal/stop/progress/cancel prefix and return ABI —
   [busy callback prefix](../behavior/file/SDK_DVD_BUSY_CALLBACK_STOP_PROGRESS_AND_CANCEL_PREFIX.md). Exact16/two-read stop/DMA
   before status8/cancel callback order pinned; whole success/error remains open.
-- [ ] cbForStateBusy success/error continuation and actual status/controller/
+- [x] cbForStateBusy success region/ImmCommand initial table — [success/audio](../behavior/file/SDK_DVD_BUSY_CALLBACK_SUCCESS_COMPLETION_AND_AUDIO.md).
+  Motor-before-cancel, DMA equality/reissue, fresh immediate/audio completion
+  pinned; error tail/whole composition/providers/original binding remains open.
+- [ ] cbForStateBusy error tail/whole composition and actual status/controller/
   command/cancel/callback/provider/runtime binding.
 - [ ] Deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
@@ -3183,3 +3186,12 @@ stop/seven DMA/six progress/six prefix-cancel vectors and sites checked; busy pi
 reverified. Progress precedes cancellation; stop cancellation sets resume7 while
 non-stop mask8 does not. Whole success/error/children/providers/original IO/audio/
 native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — SDK DVD busy callback success delivery
+
+Completed [success/audio region](../behavior/file/SDK_DVD_BUSY_CALLBACK_SUCCESS_COMPLETION_AND_AUDIO.md).
+Six spans/198 body+3 table anchors/nine calls/eight indirect sites verified; five
+gate/five precedence/five DMA/seven immediate/five result/four audio vectors and
+sites checked; prefix pins reverified. Exact DMA equality, motor-before-cancel,
+mutable immediate table and command6 reissue/reject/completion pinned. Error
+tail/whole callback/providers/original IO/audio/native binding open; EVT-01 OPEN.
