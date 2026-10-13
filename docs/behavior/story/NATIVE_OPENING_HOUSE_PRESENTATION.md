@@ -55,8 +55,9 @@ The native outside map binds original door/postbox transforms, including the
 500ms curve11 door requests, source Q1024 truncation and concurrent closing.
 House camera requests now use recovered curve11 endpoints/durations. Source
 clock conversion, host/native trig and movement remain adaptations; original
-numeric/image equivalence is not claimed. Tree interpolation, sound/effect/
-environment consumers, letterbox/fade ownership and complete NPC flags/
+numeric/image equivalence is not claimed. Finite original foreground tree
+parallax now consumes the same source curve. Sound/effect/environment consumers,
+letterbox/fade ownership and complete NPC flags/
 automatic-pose services remain unbound. Initial actor
 visibility/heading and map readiness are native bridges. HouseReturn, letter,
 map, voyage, wake and arrival still use the separately documented adapter.
@@ -67,3 +68,46 @@ message admission/order, retained endpoints, original waiting ticks, concurrent
 Mario approach, simulation cadence independence, and original pose-pack sampling.
 Full original-runtime image/timing/material equality and hardware profiling
 remain open.
+
+## Foreground tree parallax consumer (2026-10-13)
+
+Original evt_prologue's independent inline at0xe18..0xeb4 calls
+intpl_msec_init(11,0,1500,4000), publishes LW0, divides that value by10,
+translates sai_ki2 on+X at0xe50, negates LW0, translates sai_ki1 at0xe78,
+waits one frame, and stops when the interpolation's completion word clears.
+This is a finite opening camera parallax translation; it is not a repeating
+ambient sway. aaa_00_init_evt clears flag2 on both roots at0x2ab8/0x2ad0;
+these requests do not hide them through visibility bit1. The previous exporter
+omitted both roots, losing their original geometry and the scene consumer.
+
+OpeningHouseScene.treeX now follows original selector11 over240 simulation
+ticks, retaining both evtSetFloat Q1024 truncations (interpolation publication
+and division). The endpoint150 remains after the inline ends. The existing
+original [interpolation adapter](../../../include/field_camera_events.hpp)
+preserves recovered constants/order but native trig/clock parity remains open.
+Sparse simulation calls replay the same curve; rendering does not advance it.
+
+The exterior pack now retains both exact source subtrees and exports PMHOBJ02
+bindings ordered S_ie_door, S_posuto, sai_ki2, sai_ki1. Original map world
+matrices/local vertices remain intact. The renderer applies additional local
+X translations +treeX/10 and −treeX/10, as original mapObjTranslate divides
+engine inputs by10 and the source matrix builder postconcatenates the additional
+matrix. Authored tree scale1.2 remains, so this is not a flat world-space offset.
+Door and postbox behavior is unchanged. Every application recomputes from the
+original geometry; repeated calls do not accumulate translation. Switching
+to the interior pack releases the exterior trees and their bindings.
+
+Converted exterior vertices increase25626→31656 by restoring6030 original tree
+vertices. Four roots have6912 bindings:594 door,288 postbox,3015 each tree.
+PMHOBJ02 is193776 bytes. Other map textures/materials/order and the interior
+variant remain unchanged. The opening converter fingerprint forces rebuild;
+an obsolete two-root pack is rejected rather than silently losing the consumer.
+
+Source verifier now checks23 object/interpolation/axis/constants anchors
+(including two tree roots, arithmetic, one-frame wait and flag2 clears), alongside
+original door event/matrix function hashes. Tests verify curve start/midpoint/
+endpoint/hold and Q1024 publication, sparse/dense progression, opposite roots,
+repeated-application/reset behavior, actual original counts and invalid packs.
+This is static/source/host/build evidence; native screenshots, original-runtime
+comparison, complete flag2/display ownership and hardware profiling remain open.
+Sound/environment/fade requests and original Parakarry glide still need consumers.

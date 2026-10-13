@@ -92,6 +92,7 @@ private:
     uint32_t frontPhase=UINT32_MAX;
     std::string frontFailure;
     OpeningHouseObjects frontHouseObjects;
+    std::unique_ptr<Game> frontDrawSnapshot;
     struct CineActor {std::string name;ActorAnimationPack animations;Texture image;float uvScale=1;ActorAnimationSample sample;const ActorAnimationPose* sampledPose=nullptr;float sampledTime=-1;};
     std::vector<CineActor> cineActors;
     std::array<CineActor,3> tutorialActors;
@@ -115,12 +116,22 @@ private:
     struct DemoPaperSurface {uint32_t capture,pass,cull;};
     std::array<DemoPaperSurface,124> demoPaperSurfaces{};
     bool demoPaperReady=false,demoPaperAttempted=false;
+    std::array<C3D_Tex,4> bookCaptureTextures{};
+    std::array<bool,4> bookCaptureReady{};
+    uint8_t* bookCapturePixels=nullptr;
+    bool captureBookPage(OpeningDemo&,unsigned);
+    void freeBookCaptures();
+    std::array<Texture,2> demoEffectTextures;
+    bool demoEffectsReady=false;
+    bool frontDemoEffects(const DemoChestEffects&,CameraPoint,CameraPoint);
+    void freeDemoEffects();
     bool loadDemoPaper();
+    bool frontBookCover(const OpeningDemo&);
     bool frontBookPaper(OpeningDemo&,std::array<float,4>&);
     bool frontWorld(const char*,CameraPoint,CameraPoint,const OpeningSequence*,const OpeningDemo&);
     struct FrontTexture {std::string name;Texture image;std::array<uint32_t,4> size{};};
     std::vector<FrontTexture> frontTextures;
-    bool frontImage(const char*,float,float,float,float);
+    bool frontImage(const char*,float,float,float,float,uint8_t alpha=255);
     void frontMessage(const MessagePlayback&);
     Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture;
     Texture messagePanel,messageSystemPattern;
@@ -195,19 +206,28 @@ public:
     void play(const Game& game);
     void update(Scene scene, bool enabled,bool harborDanger=false,int professorMusic=0,uint32_t room=0);
     void updateFrontend(int track,bool enabled);
+    void updateFrontend(const OpeningDemo&,bool enabled);
     void shutdown();
     bool available() const { return ready; }
 private:
     bool ready=false;
     struct Clip { int16_t* data=nullptr; uint32_t samples=0; ndspWaveBuf wave{}; };
     Clip clips[8];
-    FILE* music=nullptr;
+    struct MusicStream {
+        FILE* file=nullptr;
+        int track=-1;
+        bool loop=false,ended=false;
+        uint32_t rate=32000,channels=2,position=0,loopStart=0,loopEnd=0;
+        ndspWaveBuf buffers[3]{};
+    };
+    MusicStream music[2];
+    unsigned musicSlot=0;
     int musicTrack=-1;
-    bool musicLoop=false,musicEnded=false;
-    uint32_t musicRate=32000, musicChannels=2, musicPosition=0, loopStart=0, loopEnd=0;
     int16_t* streamData=nullptr;
-    ndspWaveBuf stream[3]{};
-    void switchTrack(int track);
-    void fill(ndspWaveBuf& buffer);
+    void stopMusic(unsigned slot);
+    void switchTrack(int track,bool preservePrevious=false);
+    void fill(MusicStream&,unsigned slot,ndspWaveBuf&);
+    void musicMix(unsigned slot,uint8_t volume);
+    void serviceMusic();
 };
 }

@@ -55,8 +55,8 @@ def main():
         for ext in ['d','t']:
             extract(a.iso,f'm/{room}/{ext}',work/(room+'.'+ext));records.append(json.loads((work/(room+'.'+ext+'.provenance.json')).read_text()))
         prefix='opening-'+variant
-        hidden=('sai_ki1','sai_ki2','S_naka') if variant=='aaa_00' else ('S_ie_door',) if variant=='aaa_00-interior' else ()
-        info=convert(work/(room+'.d'),work/variant,hidden=hidden,scene_root='S_naka' if variant=='aaa_00-interior' else None,object_bindings=('S_ie_door','S_posuto') if variant=='aaa_00' else ())
+        hidden=('S_naka',) if variant=='aaa_00' else ('S_ie_door',) if variant=='aaa_00-interior' else ()
+        info=convert(work/(room+'.d'),work/variant,hidden=hidden,scene_root='S_naka' if variant=='aaa_00-interior' else None,object_bindings=('S_ie_door','S_posuto','sai_ki2','sai_ki1') if variant=='aaa_00' else ())
         if variant=='aaa_00':shutil.copyfile(work/variant/'map.houseobj',out/(prefix+'.houseobj'))
         for ext in ['vertices','batches','uvanim','meshanim']:shutil.copyfile(work/variant/('map.'+ext),out/(prefix+'.'+ext))
         for index,_ in enumerate(info['textures']):

@@ -22,6 +22,9 @@ public:
     bool interior=false,complete=false,musicStarted=false;
     unsigned nextMessage=0;
     float doorAngle=0,postboxX=0;
+    // evt_prologue's independent 4000ms foreground parallax inline: ki2 +X,
+    // ki1 -X. This is a finite source translation, not an ambient sway loop.
+    float treeX=0;
     uint64_t tick=0;
     void begin(uint64_t simulationTick);
     void advance(uint64_t simulationTick);

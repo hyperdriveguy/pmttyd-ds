@@ -10,11 +10,11 @@ bool packedBattleUnitInitReady(uint32_t b,const BattleStartupServices& s){assert
 }
 void packedBattleSequenceInit(uint32_t b,const BattleStartupServices& s){
  const auto& m=s.memory.memory;assert(m.word && m.storeWord);auto state=packedBattleGetSequence(b,1,m);
- if(state==0x01000000){packedBattleIncrementSequence(b,1,m);state=0x01000001;}
+ if(state==0x01000000){packedBattleSetSequence(b,1,0x01000001,m);state=0x01000001;}
  if(state==0x01000001){assert(s.mario && s.marioPartyId && s.party && s.unitSetup);const auto mario=s.mario(s.user);m.storeWord(m.user,mario+4,m.word(m.user,mario+4)|1);const auto party=s.party(s.user,s.marioPartyId(s.user));if(party)m.storeWord(m.user,party+4,m.word(m.user,party+4)|1);s.unitSetup(s.user,b);packedBattleSetSequence(b,1,0x01000002,m);return;}
  if(state==0x01000002){if(packedBattleUnitInitReady(b,s))packedBattleSetSequence(b,1,0x01000003,m);return;}
  if(state==0x01000003){assert(s.paperReady && s.niceReady);if(!s.paperReady(s.user,0x802efbe4,1))return;if(!s.paperReady(s.user,0x802efbec,1))return;if(!s.paperReady(s.user,0x802efbf8,1))return;if(!s.niceReady(s.user,1))return;packedBattleSetSequence(b,1,0x01000004,m);return;}
- if(state==0x01000004){packedBattleIncrementSequence(b,1,m);state=0x01000005;}
+ if(state==0x01000004){packedBattleSetSequence(b,1,0x01000005,m);return;}
  if(state==0x01000005){assert(s.statusEventOn && s.statusSystemOn);s.statusEventOn(s.user);s.statusSystemOn(s.user);packedBattleSetSequence(b,0,1,m);packedBattleSetSequence(b,2,0x02000000,m);}
 }
 void packedBattleSequenceManager(uint32_t b,const BattleSequenceManagerServices& s){

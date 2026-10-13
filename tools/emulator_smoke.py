@@ -13,6 +13,16 @@ import time
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'artifacts/azahar'
 
+def check_native_exception(output):
+    """A visible exception dialog leaves Azahar running; process liveness alone fails."""
+    log=Path(output)/'data/azahar-emu/log/azahar_log.txt'
+    if not log.exists():return
+    with log.open('rb') as file:
+        file.seek(max(0,log.stat().st_size-65536))
+        tail=file.read().decode('utf-8',errors='replace')
+    if 'core/arm/exception_handler.cpp:LogException:' in tail:
+        raise RuntimeError('Native application exception; inspect isolated Azahar log and latest capture')
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--save-fixture',help='Copy a versioned native test save into the isolated profile before boot')
@@ -64,6 +74,7 @@ def main():
             app=subprocess.Popen(command,env=env,stdout=elog,stderr=elog)
             def capture(name='boot'):
                 subprocess.run(['import','-window','root',str(OUT/f'{name}.png')],env=env,check=True)
+                if not args.reference_dolphin:check_native_exception(OUT)
             time.sleep(args.seconds)
             if app.poll() is not None: raise RuntimeError(f'Emulator exited with {app.returncode}; inspect launch.log')
             capture()

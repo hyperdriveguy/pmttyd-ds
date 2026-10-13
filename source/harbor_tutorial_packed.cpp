@@ -82,7 +82,7 @@ void HarborTutorialPacked::capture(HarborTutorial& scene){
   uint16_t v=0;required(vm.memory.readHalf(u+0x10c,v));a.hp=int16_t(v);required(vm.memory.readHalf(u+0x108,v));a.maxHp=int16_t(v);
   for(unsigned axis=0;axis<3;++axis){a.position[axis]=real(u+0x3c+4*axis);a.home[axis]=real(u+0x30+4*axis);}
   for(unsigned i=0;i<16;++i)a.work[i]=int32_t(word(u+0x218+4*i));
-  a.wait=word(u+0x28c);a.phase=word(u+0x298);a.attack=word(u+0x2a0);a.confusion=word(u+0x2a4);a.damage=word(u+0x2b0);a.entry=word(u+0x2b8);
+  a.maxMoves=signByte(byte(u+0x21));a.wait=word(u+0x28c);a.phase=word(u+0x298);a.attack=word(u+0x2a0);a.confusion=word(u+0x2a4);a.damage=word(u+0x2b0);a.entry=word(u+0x2b8);
  }
  scene.chosenUnit=chosenUnit;scene.chosenPart=chosenPart;
  for(auto& r:sounds){r.time=scene.now;scene.soundRequests.push_back(std::move(r));}sounds.clear();
@@ -92,6 +92,7 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  if(registry.invoke(e,function,first,result))return true;
  switch(function){
  case 0x8010a500:case 0x8010a388:case 0x8010a55c:case 0x8010a32c:case 0x8010a4a4:{const auto u=actor(e);const uint32_t offset=function==0x8010a500?0x28c:function==0x8010a388?0x2a0:function==0x8010a55c?0x2b0:function==0x8010a32c?0x2a4:0x2b8;word(u+offset,uint32_t(raw(e,1)));if(function==0x8010a388)word(u+0x2ac,0);result=2;return true;}
+ case 0x8010fce0:{const auto battle=word(0x8041eb90);const auto id=translateBattleActor(&e,value(e,0),nativeBattleActorServices(vm));if(id!=-1){const auto u=word(battle+0x20+4u*uint32_t(id));byte(u+0x21,uint8_t(value(e,1)));if(signByte(byte(u+0x22))>signByte(byte(u+0x21)))byte(u+0x22,byte(u+0x21));}result=2;return true;}
  case 0x80104b08:{const auto u=actor(e),launch=uint32_t(value(e,1)),land=uint32_t(value(e,2));word(u+0x1c4,launch);word(u+0x1c8,land);result=2;return true;}
  case 0x80104ddc:case 0x80104f64:{const auto u=actor(e);std::array<int32_t,5> args{};for(unsigned i=0;i<5;++i)args[i]=value(e,i+1);const auto bank=u+(function==0x80104ddc?0x1dc:0x1cc);word(bank,uint32_t(args[0]));word(bank+4,uint32_t(args[1]));half(bank+8,args[2]);half(bank+10,args[3]);half(bank+12,args[4]);result=2;return true;}
  case 0x8010f4cc:{const auto selector=value(e,0),id=translateBattleActor(&e,selector,nativeBattleActorServices(vm)),part=value(e,1),index=value(e,2),v=value(e,3);const auto u=word(Battle+0x20+4u*uint32_t(id)),p=packedUnitPart(u,part,nativeBattleActorServices(vm).memory);word(p+0x130+4u*uint32_t(index),uint32_t(v));result=2;return true;}

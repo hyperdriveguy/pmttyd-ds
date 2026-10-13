@@ -13,10 +13,22 @@ def verify(iso,symbols):
         source.seek(6)
         if source.read(2)!=bytes(2):raise ValueError('US disc0 revision0 required')
         source.seek(entry['offset']);raw=source.read(entry['size'])
-        events=inventory_events(raw,symbols,'aaa',['evt_door','evt_prologue'])['events']
+        events=inventory_events(raw,symbols,'aaa',['evt_door','evt_prologue','aaa_00_init_evt'])['events']
         door=next(e for e in events if e['name']=='evt_door')
         if door['sha256']!='fb757f201ef61a0482a7bc99a053b5c75daf0dcfb3b6ccb9daea3cee67b25b38':raise ValueError('Source door event changed')
         by_address={c['address']:c for e in events for c in e['commands']}
+        args=by_address[0xe1c]['operands']
+        if args[0].get('annotation')!='evt_sub_intpl_msec_init' or [o['raw'] for o in args[1:]]!=[11,0,1500,4000]:raise ValueError('Original tree interpolation changed')
+        for address,opcode,value in [(0xe44,61,4064977536),(0xe6c,60,4064966272)]:
+            c=by_address[address]
+            if c['opcode']!=opcode or [o['raw'] for o in c['operands']]!=[4264967296,value]:raise ValueError('Original tree divisor/negation changed')
+        for address,name in [(0xe50,'sai_ki2'),(0xe78,'sai_ki1')]:
+            args=by_address[address]['operands']
+            if args[0].get('annotation')!='evt_mapobj_trans' or args[2].get('identifier')!=name or [o['raw'] for o in args[1:2]+args[3:]]!=[1,4264967296,0,0]:raise ValueError('Original tree root/axis changed')
+        for address,name in [(0x2ab8,'sai_ki1'),(0x2ad0,'sai_ki2')]:
+            args=by_address[address]['operands']
+            if args[0].get('annotation')!='evt_mapobj_flag_onoff' or args[3].get('identifier')!=name or [o['raw'] for o in args[1:3]+args[4:]]!=[1,0,2]:raise ValueError('Original tree flag2 clear changed')
+        if by_address[0xe94]['opcode']!=9 or by_address[0xe94]['operands'][0]['raw']!=1:raise ValueError('Original tree frame wait changed')
         for address,raw_value in [(0xb74,4064966728),(0xb80,4064966272)]:
             c=by_address[address]
             if c['opcode']!=60 or c['operands'][1]['raw']!=raw_value:raise ValueError('Source door multiplier changed')
@@ -51,7 +63,7 @@ def verify(iso,symbols):
                     if struct.unpack('>I',source.read(4))[0]!=value:raise ValueError('Source local-unit/radian constant changed')
                     found=True;break
             if not found:raise ValueError('Missing source constant')
-    return 15
+    return 23
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--iso',default=DEFAULT_ISO);p.add_argument('--symbols',default='artifacts/reference/us_symbols.csv');a=p.parse_args()

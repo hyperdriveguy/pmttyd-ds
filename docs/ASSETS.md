@@ -1232,3 +1232,49 @@ voice/crowd/camera and original raster routing remain open.
 Extracted assets, local caches, RomFS packs and emulator captures remain ignored.
 Nintendo/Intelligent Systems ownership remains unchanged; no redistribution
 rights are granted. PointGet US texture strips remain next implementation work.
+
+## Original demo chest crystal/radiation resources
+
+Read-only tools/demo_effect_assets.py exports original DOL N64 quad/triangle
+arrays, deterministic radiation rows, float/color constants to ignored
+romfs/demo-effects.bin (PMDEFX01,700 bytes). Original e/us/effect_n64.tpl
+textures109/110 become romfs/demo-crystal-109.t3x and demo-crystal-110.t3x;
+64×32 I8 and64×64 I4 dimensions are unchanged. Shared GX intensity decoding
+now retains original alpha by replicating intensity into all RGBA channels.
+Exporter fingerprints include this decoder and regenerate affected packs.
+Local source copies/PNGs/provenance remain local-assets/demo-effects; ignored
+romfs/demo-effects.json records source addresses/hashes and conversion scope.
+Only original-used subtypes2/6/3 are consumed, without invented geometry or RNG.
+See [effect contract](behavior/effect/NATIVE_DEMO_CHEST_EFFECTS.md) for source
+ownership and native camera/GX numeric adapters. Rights remain Nintendo/
+Intelligent Systems; local use only, no redistribution rights. Original data,
+compiled packs and source disassembly are never committed.
+
+## Original opening foreground tree bindings
+
+The aaa_00 exterior pack now retains original sai_ki2/sai_ki1 subtrees formerly
+omitted by the opening exporter. Original187-command evt_prologue drives finite
+4000ms opposite-X camera parallax; no ambient animation or generated art is
+invented. The original map root/local transforms (including tree scale1.2),
+geometry, texture indices/materials and atlas conversion remain intact.
+Ignored romfs/opening-aaa_00.houseobj now uses PMHOBJ02 with four roots,6912
+bindings/193776 bytes; exterior mesh31656 vertices includes6030 restored tree
+vertices. Existing textures need no additional source resource. Converter
+fingerprints force regeneration and native pack validation rejects obsolete
+bindings. Rights remain Nintendo/Intelligent Systems, local use only with no
+redistribution rights. Original payloads/compiled packs stay outside history.
+
+## Original book composite capture and audio transition
+
+Original demo.tpl cover1/2 remains288x352. A bounded read-only exporter keeps
+page-base indices3..7 at240x304 in256x512 textures; original illustration8..12
+and desktop0 retain their existing conversion. Native captured page fronts are
+actual top-screen RGBA8 framebuffer copies, cropped193x240 and tiled256x256;
+they contain no newly generated art. Original OFF_d_meku_right A_1 remains the
+page deformation and the original rune texture remains its back.
+
+Original BGM_DEMO1/DEMO2 PCM packs retain original decoding/loops. Two fixed
+native streams consume source6000ms fade and750ms retiring-tail clocks; no
+new music is generated. Native scaling/projection/readback/audio scheduling
+remain documented adapters. All extracted/compiled resources and provenance
+remain ignored local products, for local use without redistribution rights.

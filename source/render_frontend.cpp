@@ -13,13 +13,13 @@ void Renderer::beginFrontend(){
     frontActive=true;
 }
 void Renderer::releaseFrontend(){
-    C3D_FrameSync();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();
+    C3D_FrameSync();freeBookCaptures();freeDemoEffects();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontDrawSnapshot.reset();
     for(auto& t:frontTextures)if(t.image.imported){Tex3DS_TextureFree(t.image.imported);C3D_TexDelete(&t.image.texture);}
     frontTextures.clear();
     for(auto& a:cineActors)if(a.image.imported){Tex3DS_TextureFree(a.image.imported);C3D_TexDelete(&a.image.texture);}
     cineActors.clear();
 }
-bool Renderer::frontImage(const char* name,float x,float y,float w,float h) {
+bool Renderer::frontImage(const char* name,float x,float y,float w,float h,uint8_t alpha) {
     if(frontTextures.empty())frontTextures.reserve(32); // C2D retains texture pointers until flush.
     auto found=std::find_if(frontTextures.begin(),frontTextures.end(),[&](const auto& f){return f.name==name;});
     if(found==frontTextures.end()) {
@@ -35,7 +35,7 @@ bool Renderer::frontImage(const char* name,float x,float y,float w,float h) {
     }
     const auto& z=found->size;Tex3DS_SubTexture sub{};sub.width=z[0];sub.height=z[1];
     sub.left=0;sub.right=float(z[0])/z[2];sub.top=1;sub.bottom=1-float(z[1])/z[3];
-    if(w>0 && h>0)C2D_DrawImageAt({&found->image.texture,&sub},x,y,0,nullptr,w/z[0],h/z[1]);
+    if(w>0 && h>0){C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(255,255,255,alpha),1);C2D_DrawImageAt({&found->image.texture,&sub},x,y,0,&tint,w/z[0],h/z[1]);}
     return true;
 }
 void Renderer::frontMessage(const MessagePlayback& message) {
@@ -59,8 +59,8 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         // A cutscene owns one map. Release the preceding scene before staging
         // its successor; retaining both can exhaust the native linear arena.
         C3D_FrameSync();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();
-        for(auto& t:frontTextures)if(t.image.imported){Tex3DS_TextureFree(t.image.imported);C3D_TexDelete(&t.image.texture);}
-        frontTextures.clear();
+        // Phase ownership releases image textures. The source final book
+        // adjustment shares its image resources with the newly visible market.
         Room pending;if(!loadMap(map,pending)){freeRoom(pending);frontFailure=std::string("Scene map load failed: ")+map;return false;}
         frontRoom=std::move(pending);
         if(std::string(map)=="opening-aaa_00" && !frontHouseObjects.load("romfs:/opening-aaa_00.houseobj",frontRoom.vertexCount)) {
@@ -69,10 +69,13 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         frontMapName=map;frontFailure.clear();
     }
     if(opening && frontHouseObjects.size()) {
-        frontHouseObjects.apply(opening->house.doorAngle,opening->house.postboxX,[&](uint32_t i,const OpeningHouseObjects::Point& p){frontRoom.vertices[i].x=p[0];frontRoom.vertices[i].y=p[1];frontRoom.vertices[i].z=p[2];});
+        frontHouseObjects.apply(opening->house.doorAngle,opening->house.postboxX,opening->house.treeX,[&](uint32_t i,const OpeningHouseObjects::Point& p){frontRoom.vertices[i].x=p[0];frontRoom.vertices[i].y=p[1];frontRoom.vertices[i].z=p[2];});
         GSPGPU_FlushDataCache(frontRoom.vertices,size_t(frontRoom.vertexCount)*sizeof(Vertex));
     }
-    Game snapshot;snapshot.progress.room=255;snapshot.ticks=(opening?opening->now:demo.now)*60/1000;
+    // Original actor hierarchy evaluation needs the native stack; keep the
+    // large, renderer-only map snapshot in scene-owned heap storage.
+    if(!frontDrawSnapshot)frontDrawSnapshot=std::make_unique<Game>();
+    auto& snapshot=*frontDrawSnapshot;snapshot.progress.room=255;snapshot.ticks=(opening?opening->now:demo.now)*60/1000;
     snapshot.fieldCameraFrame.eye={eye.x*.01f,eye.y*.01f,eye.z*.01f};snapshot.fieldCameraFrame.at={at.x*.01f,at.y*.01f,at.z*.01f};
     C3D_Mtx projection,view;
     Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(42),C3D_AspectRatioTop,.1f,80,false);
@@ -161,21 +164,27 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);if(count>first)GSPGPU_FlushDataCache(vertices+first,size_t(count-first)*sizeof(Vertex));C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
     }
     drawMap(false,snapshot,true,&frontRoom,visibleGroups);
+    if(!opening && demo.bookComplete)ok=frontDemoEffects(demo.market.effects,eye,at) && ok;
     C2D_Prepare();C2D_SceneBegin(top);return ok;
 }
 void Renderer::renderFrontend(const Frontend& f,OpeningDemo& demo,const OpeningSequence& opening,const char* notice) {
     // Keep only the current demonstration image/scene family resident. This
     // also bounds a natural (unskipped) storybook run and letter/map overlays.
-    const uint32_t phase=f.screen==FrontScreen::Demo?(demo.bookComplete?199:100):
+    const uint32_t phase=f.screen==FrontScreen::Demo?(demo.bookComplete && !demo.book.adjusting?199:100):
         f.screen==FrontScreen::Opening?200+uint32_t(opening.part):0;
     if(phase!=frontPhase){releaseFrontend();frontPhase=phase;}
     C2D_TextBufClear(textBuffer);C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,0,0);C3D_FrameDrawOn(top);C2D_Prepare();C2D_SceneBegin(top);
     bool ok=true;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
+    std::array<bool,4> captureRequested{};
     if(f.screen==FrontScreen::Demo && demo.bookComplete) {
         const auto& scene=demo.market;
         ok=frontWorld("opening-demo-market",{scene.eye[0],scene.eye[1],scene.eye[2]},{scene.at[0],scene.at[1],scene.at[2]},nullptr,demo);
-        if(scene.revealProgress<1)C2D_DrawRectSolid(0,0,0,400,240,rgb(0,0,0,unsigned((1-scene.revealProgress)*255)));
+        if(demo.book.adjusting){
+            ok=frontImage("demo-0",48,0,304,240,uint8_t(int(255.f*(1-demo.book.fade)))) && ok;
+            ok=frontBookCover(demo) && ok;
+            if(demoPaperReady)ok=frontBookPaper(demo,paperPresented) && ok;
+        }
     } else if(f.screen==FrontScreen::Opening) {
         const char* map=opening.map();
         CameraPoint eye{-376,154,65},at{-63,75,-247};
@@ -191,12 +200,10 @@ void Renderer::renderFrontend(const Frontend& f,OpeningDemo& demo,const OpeningS
         if(!loadDemoPaper() || !frontImage("demo-page-back",0,0,0,0)){demo.failed=true;ok=false;}
         else demo.paperServicesBound=true;
         for(unsigned n=0;n<4;++n)if(demo.book.pages[n].active && demo.book.pages[n].capturePending) {
-            char capture[24];std::snprintf(capture,sizeof(capture),"demo-%u",demo.book.pages[n].image);
-            if(frontImage(capture,0,0,0,0))demo.book.captureComplete(n);else {demo.failed=true;ok=false;}
+            captureRequested[n]=true;
         }
-        char name[24];std::snprintf(name,sizeof(name),"demo-%u",demo.image());
-        ok=frontImage(name,48,0,304,240) && ok;
-        if(demo.narration<5){const float scale=demo.book.scale;ok=frontImage("demo-1",200-76*scale,111-93*scale,152*scale,186*scale) && ok;}
+        ok=frontImage("demo-0",48,0,304,240) && ok;
+        count=0;ok=frontBookCover(demo) && ok;
         if(demoPaperReady)ok=frontBookPaper(demo,paperPresented) && ok;
     } else {
         ok=frontImage("title-background",48,0,304,240);
@@ -230,6 +237,11 @@ void Renderer::renderFrontend(const Frontend& f,OpeningDemo& demo,const OpeningS
     if(!ok){text("Original front-end texture unavailable",10,216,.4f,Red);if(!frontFailure.empty())text(frontFailure.c_str(),10,203,.35f,Red);}
     if(notice && *notice)text(notice,10,229,.35f,Ink);
     C2D_Flush();C3D_FrameEnd(0);
+    if(std::any_of(captureRequested.begin(),captureRequested.end(),[](bool value){return value;})){
+        if(!ok){demo.failed=true;return;}
+        C3D_FrameSync();
+        for(unsigned n=0;n<4;++n)if(captureRequested[n] && !captureBookPage(demo,n))demo.failed=true;
+    }
     for(unsigned n=0;n<4;++n)if(paperPresented[n]>=180)demo.book.presented(n,paperPresented[n]);
 }
 

@@ -1,11 +1,13 @@
 #pragma once
 #include "opening_house_scene.hpp"
+#include "demo_chest_effects.hpp"
 namespace ttyd {
 // Source-request presentation bridge for dmo's original marketplace event.
 // Linear movement/camera and source paper capture/effect services are separate.
 class OpeningDemoScene {
 public:
     std::array<OpeningSceneActor,3> actors; // Peach, merchant, golden chest
+    DemoChestEffects effects;
     std::array<float,3> eye{0,385,1473},at{0,100,0};
     uint64_t tick=0;
     bool active=false,waitingForTitle=false,wallsVisible=false,musicStarted=false;

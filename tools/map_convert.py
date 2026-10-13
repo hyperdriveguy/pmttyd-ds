@@ -245,7 +245,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
     # Geometry remains ignored; descendants inherit the addressed object's matrix.
     if object_bindings:
         with (output/'map.houseobj').open('wb') as out:
-            out.write(struct.pack('<8sII',b'PMHOBJ01',count,len(object_bindings)))
+            out.write(struct.pack('<8sII',b'PMHOBJ02',count,len(object_bindings)))
             for tag,name in enumerate(object_bindings):
                 matches=[node for node,info in node_info.items() if info['name']==name]
                 if len(matches)!=1:raise ValueError(f'Unique event object required: {name}')

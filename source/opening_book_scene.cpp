@@ -12,14 +12,25 @@ void OpeningBookScene::advance(uint64_t tick){
     const uint64_t elapsed=now-start;
     const float milliseconds=float(std::min<uint64_t>(elapsed,720)*1000/60);
     const float q=milliseconds/12000.f;
-    scale=std::min(1.5f,std::fma(600.f,1-q,1500.f*q)/1000.f);
+    if(!adjusting && !adjusted)scale=std::min(1.5f,std::fma(600.f,1-q,1500.f*q)/1000.f);
     if(opening){
         const auto elapsedOpen=std::min<uint64_t>(now-openingStart,120);
         rotation=*cameraInterpolation(11,int32_t(elapsedOpen),120,0,1800)/10.f;
         if(elapsedOpen==120){rotation=180;opening=false;}
     }
+    if(adjusting){
+        const uint64_t elapsedAdjust=std::min<uint64_t>(now-adjustStart,180);
+        // Source linear integer0..1000 over3000ms, then LW0/=1000.
+        const auto milliseconds=elapsedAdjust*1000/60;
+        fade=float(milliseconds*1000/3000)/1000.f;
+        const float wave=float(std::sin(double(1.5707963705062866f*fade)));
+        scale=std::fma(1.5f,wave,1.5f);offsetY=-105.f*wave;
+        finalPaperScale=scale/1.5f;finalPaperOffsetX=offsetX/10.f;finalPaperOffsetY=offsetY/10.f;
+        if(elapsedAdjust==180){adjusting=false;adjusted=true;releasePages();}
+    }
 }
 void OpeningBookScene::open(){opening=true;openingStart=now;rotation=0;image=8;}
+void OpeningBookScene::startAdjust(){if(adjusting || adjusted)return;adjusting=true;adjustStart=now;fade=0;finalPaperScale=scale/1.5f;}
 bool OpeningBookScene::beginPage(unsigned index){
     if(index>=4 || pages[index].active)return false;
     // next increments the source background before its paper starts; the old

@@ -92,7 +92,15 @@ def verify(iso,symbols):
     for address,(action,name) in flags.items():
         c=commands[address];args=c['operands']
         if c['opcode']!=91 or args[0].get('annotation')!='evt_mapobj_flag_onoff' or [o['raw'] for o in (args[1],args[2],args[4])]!=[1,action,1] or args[3].get('identifier')!=name:raise ValueError('Demo visibility request changed')
-    return len(anchors)+2+5+3+5+len(flags)+len(alias)+2
+    for address,name,kind,duration in [(0x3994,'crystal_n64',2,0),(0x39d4,'crystal_n64',6,60),(0x3a24,'radiation_n64',3,0)]:
+        c=commands[address];args=c['operands']
+        expected=[kind,4264967296,4264967297,4264967298,4064967808,duration,0,0,0,0,0,0]
+        if c['opcode']!=91 or args[0].get('annotation')!='evt_eff64' or args[2].get('identifier')!=name or [o['raw'] for o in args[3:]]!=expected:raise ValueError('Demo effect request changed')
+    for address,name in [(0x3a14,'eff_cam'),(0x3a64,'eff_cam1')]:
+        if commands[address]['operands'][0].get('annotation')!=name:raise ValueError('Demo effect camera owner changed')
+    if commands[0x3a1c]['opcode']!=10 or commands[0x3a1c]['operands'][0]['raw']!=500:raise ValueError('Radiation creation wait changed')
+    if commands[0x3988]['opcode']!=53 or [o['raw'] for o in commands[0x3988]['operands']]!=[4264967297,10]:raise ValueError('Effect chest anchor height changed')
+    return len(anchors)+2+5+3+5+len(flags)+len(alias)+2+7
 
 
 def main():

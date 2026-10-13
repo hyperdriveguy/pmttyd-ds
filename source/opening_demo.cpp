@@ -2,8 +2,8 @@
 #include <cstdio>
 #include <algorithm>
 namespace ttyd {
-bool OpeningDemo::load(const char* root){if(!root)return false;const std::string b=root;return assets.loadGlobal((b+"/messages/global.txt").c_str()) && assets.loadRoom((b+"/messages/dmo_00.txt").c_str()) && font.load((b+"/font.pmfont").c_str());}
-void OpeningDemo::begin(uint64_t now){this->now=now;narration=0;speaker=0;failed=false;bookComplete=false;finished=false;waitingForTitle=false;bookOpening=false;bookRotation=0;waitingPage=-1;market={};book.begin(now*60/1000);message={};deadline=now+4000;}
+bool OpeningDemo::load(const char* root){if(!root)return false;const std::string b=root;return assets.loadGlobal((b+"/messages/global.txt").c_str()) && assets.loadRoom((b+"/messages/dmo_00.txt").c_str()) && font.load((b+"/font.pmfont").c_str()) && loadDemoChestEffectAssets(root);}
+void OpeningDemo::begin(uint64_t now){this->now=now;narration=0;speaker=0;failed=false;bookComplete=false;finished=false;waitingForTitle=false;bookOpening=false;bookRotation=0;waitingPage=-1;market={};book.begin(now*60/1000);bgm.begin(now*60/1000);message={};deadline=now+4000;}
 bool OpeningDemo::print(uint64_t now){
     static constexpr uint32_t speakers[]={0,0x2040,0,0x2048,0x2040,0x2048,0x2040,0x2040,0x2048,0x2040,0x2048,0x2040,0x2040};
     speaker=narration>24?speakers[narration-25]:0;
@@ -14,15 +14,16 @@ void OpeningDemo::tick(uint64_t now,uint32_t keys){
     // Source buttonCheck's trigger mask is A|START, never B. The native
     // front end owns the fade/sequence request; source fade-end remains open.
     if(keys&0x1100){finished=true;return;}
-    book.advance(now*60/1000);bookOpening=book.opening;bookRotation=book.rotation;
+    book.advance(now*60/1000);bgm.advance(now*60/1000);bookOpening=book.opening;bookRotation=book.rotation;
     if(bookComplete)market.advance(now*60/1000);
+    if(market.effects.failed){failed=true;return;}
     if(message.active()){
         message.tick(now,bookComplete?keys:0);if(message.active())return;
         deadline=now;
         // Source explicit waits after page turns. Paper animation time remains
         // a native presentation adapter rather than an original-runtime claim.
         if(bookComplete){market.messageComplete(narration-25);market.advance(now*60/1000);}
-        else if(narration==24){book.releasePages();bookComplete=true;market.begin(now*60/1000);}
+        else if(narration==24){book.startAdjust();bgm.transition();bookComplete=true;market.begin(now*60/1000);}
         else if(narration==4){book.open();bookOpening=true;deadline+=3000;}
         else if(paperServicesBound && (narration==8 || narration==12 || narration==16 || narration==21)){
             waitingPage=narration==8?0:narration==12?1:narration==16?2:3;

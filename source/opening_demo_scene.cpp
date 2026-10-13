@@ -52,6 +52,7 @@ void OpeningDemoScene::move(unsigned i,std::array<float,3> target,float speed) {
     a.yaw=std::atan2(dx,-dz)*180/3.14159265358979323846f;if(a.yaw<0)a.yaw+=360;pose(i,walk[i],a.talkPose);
 }
 void OpeningDemoScene::update() {
+    effects.advance(tick);
     auto advance=[&](Motion& m,std::array<float,3>& p){if(!m.active)return;const float t=std::min(1.f,float(tick-m.begin)/float(m.end-m.begin));for(unsigned i=0;i<3;++i)p[i]=m.start[i]+(m.target[i]-m.start[i])*t;if(t==1)m.active=false;};
     for(unsigned i=0;i<3;++i){const bool moving=motion[i].active;advance(motion[i],actors[i].position);actors[i].moving=motion[i].active;
         if(moving && !motion[i].active && i<2)pose(i,idle[i],actors[i].talkPose);
@@ -73,7 +74,7 @@ void OpeningDemoScene::update() {
     if(opened){
         if(tick>=openTick+18 && tick<openTick+36 && std::strcmp(actors[0].pose,"P_B_3"))pose(0,"P_B_3");
         if(tick>=openTick+36 && std::strcmp(actors[0].pose,"P_B_4"))pose(0,"P_B_4");
-        if(tick>=openTick+30)radiationRequested=true;
+        if(tick>=openTick+30 && !radiationRequested){radiationRequested=true;effects.requestRadiation(tick,effects.crystals[0].position);}
     }
 }
 void OpeningDemoScene::advance(uint64_t simulationTick) {if(!active || simulationTick<tick)return;while(tick<simulationTick){++tick;step();}step();}
@@ -93,7 +94,7 @@ void OpeningDemoScene::step() {
             case Kind::Lift:motion[2]={actors[2].position,{actors[2].position[0]-60*.099609375f,10,actors[2].position[2]},tick,tick+r.duration,true};break;
             case Kind::Handoff:handoff=true;handoffTick=tick;chestOffset=actors[2].position[0]-actors[1].position[0];break;
             case Kind::Walls:wallsVisible=true;break;
-            case Kind::Open:opened=true;openTick=tick;crystalRequested=true;break;
+            case Kind::Open:{opened=true;openTick=tick;crystalRequested=true;auto point=actors[2].position;point[1]+=10;effects.requestCrystals(tick,point);break;}
             }
         }
         if((r.kind==Kind::Wait && tick<deadline) || (r.kind==Kind::Move && motion[r.actor].active) || (r.kind==Kind::Lift && motion[2].active) || (r.kind==Kind::Message && waitingMessage))return;

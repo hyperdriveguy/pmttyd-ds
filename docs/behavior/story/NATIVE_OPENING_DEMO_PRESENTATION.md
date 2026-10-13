@@ -36,7 +36,8 @@ merchant(−145,0,450)/yaw90 and chest(−125,0,450). Source camera starts at
 Peach's move to(0,0,450) at source speed60,1000ms and op_00.
 `OpeningDemo.music()` changes from book5 to marketplace6 after that initial
 3000+1000ms interval, matching the source BGM_DEMO2 request owner; source
-book BGM's6000ms fade remains an unbound audio envelope.
+book BGM's6000ms fade is consumed by the source-verified portable clock and
+two independent fixed native PCM stream owners.
 
 The eight root camera requests retain endpoints and requested durations:
 (0,100,834)/(0,50,437)/800ms;
@@ -49,7 +50,8 @@ The eight root camera requests retain endpoints and requested durations:
 (−85,50,590)/(−85,28,442)/15000ms.
 All source interpolation selectors are11. The native camera uses linear
 interpolation; selector11 numeric equality is not claimed. revealProgress
-retains the0→1 request but original adjust's paper/book transforms are unbound.
+retains the0→1 request; original book/paper adjustment snapshots now feed
+the mixed native market/book composition.
 
 Original Peach P_B_1→P_B_2 and autotalk P_T_7, P_H_1→P_S_7, and final
 P_B_3→P_B_4 requests preserve their explicit wait order. Peach's tribe changes
@@ -68,7 +70,10 @@ X+=0.0830078125,Y+=0.166015625. Independent Peach departure/return and chest
 tracking continue while the root moves the merchant ±20 at speed40. The
 controller keeps those owners independent. Original chest yaw225 and A_1
 opening, crystal/radiation request order and Peach's300ms-spaced reactions
-precede the final waitingForTitle state. Effect consumers remain unbound.
+precede the final waitingForTitle state. Source crystalN64 subtypes2/6 and
+radiationN64 subtype3 now have bounded portable and native consumers with
+original geometry, intensity-alpha masks and independent effect clocks. See
+[effect ownership](../effect/NATIVE_DEMO_CHEST_EFFECTS.md).
 
 Movement is a native constant-speed/heading bridge using source speed operands;
 original NPC driver/trig/facing/flag/status/tribe scheduling remains unfinished.
@@ -84,8 +89,11 @@ divides10 before book_r, followed by explicit1000ms. OpeningDemo exposes its
 native0→180 curve11 bridge and postpones book05 accordingly. Source demo_scale
 and four original captured-page A_1 clips now have native consumers and explicit
 capture/final-pose acknowledgements. See [book presentation](NATIVE_OPENING_BOOK_PRESENTATION.md).
-Source outer projection, closed-cover geometry and complete window transforms
-remain unbound.
+The source cover quads, original page-base/illustration composition and final
+adjustment are now consumed natively. Page fronts require an actual completed
+GPU composition copy; a missing resource cannot acknowledge capture. Source
+outer paper projection and complete camera/window services remain adapters.
+See [book cover/capture](../display/NATIVE_OPENING_BOOK_COVER.md).
 
 The original Peach/merchant packs retain19/4 original clips, with descriptor0
 first. Chest S_1/A_1 uses original MOBJ_GoldenTreasureBox and its texture bank.
@@ -98,7 +106,8 @@ cached; root transforms continue to update independently. No substitute mesh, ge
 
 The native renderer consumes actorPose, actor roots/yaw, tick−poseTick and
 camera arrays. The dedicated original marketplace pack consumes wall requests.
-Source crystal and radiation requests remain unbound. Ambient source rotem/Goomba/Chu interrupted walk events, original
+Source crystal/radiation consumers now use original geometry/masks and clocks;
+see [effect ownership](../effect/NATIVE_DEMO_CHEST_EFFECTS.md). Ambient source rotem/Goomba/Chu interrupted walk events, original
 background/materials, complete map visibility, paper/fade/audio/effects and
 hardware/original-image timing remain unfinished. tools/verify_opening_demo_scene.py
 checks all three original event hashes/counts plus30 camera/placement/input/

@@ -8,11 +8,16 @@ using namespace ttyd;
 int main(int argc,char**) {
     OpeningHouseScene house;house.begin(0);
     assert(!house.messageReady(0) && !house.interior && !house.musicStarted);
-    house.advance(89);assert(!house.musicStarted);house.advance(90);assert(house.musicStarted);
+    assert(house.treeX==0);
+    house.advance(120);assert(std::fabs(house.treeX-75)<=1.f/1024);
+    assert(house.treeX*1024==std::trunc(house.treeX*1024));
+    OpeningHouseScene music;music.begin(0);music.advance(89);assert(!music.musicStarted);music.advance(90);assert(music.musicStarted);
     house.advance(150);assert(std::fabs(house.eye[2]-800.5f)<.0001f);
     house.advance(240);assert(house.actors[2].visible && house.actors[2].moving);
+    assert(house.treeX==150);
     assert(house.eye[2]>717 && house.eye[2]<884);
     house.advance(300);assert(house.eye[2]==717 && !house.messageReady(0));
+    assert(house.treeX==150);
     uint64_t tick=300;
     while(!house.messageReady(0)){house.advance(++tick);assert(tick<2000);}
     assert((house.actors[2].position==std::array<float,3>{210,25,-30}));
@@ -54,6 +59,7 @@ int main(int argc,char**) {
     batched.advance(100+delivery);for(uint64_t i=101;i<=100+delivery;++i)individual.advance(i);
     assert(batched.messageReady(0) && individual.messageReady(0));
     assert(batched.actors[2].position==individual.actors[2].position && batched.eye==individual.eye);
+    assert(batched.treeX==individual.treeX && batched.treeX==150);
     batched.advance(99);assert(batched.tick==100+delivery);
     if(argc>1){
         ActorAnimationPack luigi;assert(luigi.load("romfs/c_luigi.pmanim"));

@@ -6897,3 +6897,53 @@ PointGet strips/lifecycle, bank0b counting and ordinary0c..1f fade/export/field
 return, then resume unchanged scene dialogue. Original camera/crowd/voice,
 WIN2 routing, shared RNG/equipment/save ownership, alternative rewards/level-up
 and broader prologue owners remain incomplete. Goal remains active.
+
+## 2026-10-13 — Source book composition, captured paper and scene consumers
+
+Implemented original procedural cover/page-base/illustration composition, source
+final adjust over the newly visible market, and actual native GPU page capture.
+Four independent RGBA8 textures acknowledge only a completed, successful old
+composition copy. Native readback crop/rotation/padding/Morton layout has host
+coverage. Focused isolated Azahar first exposed vertically inverted page fronts;
+the actual display-transfer row mapping is corrected and subsequent fold captures
+show upright original artwork. Screenshots also exposed opaque blend state leaking
+into bottom-screen text; book consumers now restore alpha blending.
+
+Original book6000ms fade, marketplace start after3000+1000ms and750ms retiring
+tail now feed two fixed original-PCM stream owners. Original crystal/radiation
+subtypes2/6/3 use original source geometry/masks and independent simulation
+clocks. Original house sai_ki2/sai_ki1 geometry and finite4000ms opposite-X
+parallax are restored. Source UnitEntry helpers now cover initial fields,
+vectors, equipment, pouch import/revision, pose-name lookup/display admission;
+source Init state4 returns after setting5, rather than falling through. These
+helpers remain distinct from still-pending active startup/turn ownership.
+
+Validation: integrated make test155/155 CTest and105/105 Python passes
+(/tmp/opening-composite-capture-corrected-test.log). Native make all passes
+(/tmp/opening-composite-alpha-restored-build.log). Focused isolated captures
+artifacts/azahar-source-book-capture-corrected show upright old-page faces and
+original fold geometry. A subsequent complete demo run is pending at this
+commit; no original raster, audible/hardware parity or complete battle proof is
+claimed. Original source hashes/anchors and asset converters remain read-only;
+all raw resources/compiled packs/captures are ignored local products.
+
+Also verified the clean combined primary ca0565a checkout:150/150 CTest,103/103
+Python, native make all and isolated fresh-file route to saved source story3
+Rogueport checkpoint pass (artifacts/opening-current-ca0565a-validation). Initial
+combined build/test ran out of temporary-disk space; after archiving only our
+generated outputs/caches to ignored project artifacts, the full rerun passed.
+User emulator profile/saves and source ISO are untouched.
+
+Next: complete native unskipped demo and new-file regression, integrate literal
+harbor registry/entry/local-frame providers and original Init/FirstAct/Turn,
+then command/damage/reaction/end/reward/field return. Original fade/camera/glide/
+environment services and hardware comparison remain open. Result0/story4/save
+barriers remain intact. The opening goal remains active and incomplete.
+
+Follow-up: the first complete new-composition run raised a native exception
+at the book-to-market transition, so it did not pass. Azahar's log showed
+unmapped stack writes in original actor hierarchy evaluation; native default
+stack is32KB and frontWorld reserved roughly16KB for its Game scratch snapshot.
+That renderer-only snapshot now has scene-owned heap storage. Smoke captures
+now detect native exception dialogs even while Azahar remains running. Two
+focused harness checks pass; complete native rerun is pending.

@@ -14,7 +14,8 @@ pinch(0) then FirstAct, pinch(0) then Turn, or End. A callback changing the
 outer state does not dispatch a second controller in that same call. The eight
 channel offsets and invalid-channel no-op/zero behavior follow the source.
 
-Init preserves source same-call fall-throughs 0→1 and 4→5. It requests field
+Init preserves the source same-call fall-through0→1. State4 sets5 and returns;
+status activation begins on the next manager call. It requests field
 Mario/party flags before UnitSetup, waits for actual unit-init event IDs, then
 short-circuits ordered paper probes p_b_st/p_jyabara/p_kaiten_h with context1.
 Only after all three succeed does Nice mode1 run. Nice reloads current language
@@ -101,3 +102,68 @@ Ignored original-data tests prove system definition80416a80→kind220 with one
 part and init803adf38, followed by Mario definition80416a50→kind222 with three
 parts and init80372ec4. Both actual init roots receive their newly allocated
 original owner IDs0/1. No source pack expansion is needed for these records.
+
+## Executable packed unary initialization helpers
+
+`initializePackedBattleUnitHelper` now supplies actual source storage bodies for
+BattleStatusEffectInit8019673c (empty blr), BattleStatusIconInit80253e84
+(zero7a0 bytes at348), BattleStatusChangeInfoWorkInit80195d34 (six stride12
+records; write first8 bytes, preserve last4), BtlUnit_ClearStatus80127b58
+(zero118..135, exact type16/-99 setter branch, then change-info), and
+BtlUnit_HpGaugeInit80125fd8 (signed HP copies, original ratio and timer fields).
+These run in original-data UnitEntry tests, replacing their recording-only
+unary fixture services. Unsupported helper addresses return false without
+mutation; actual display/pouch/vector initialization remains separately owned.
+Gauge initialization preserves original zero-max 0/0 NaN; it does not invent a
+safe ratio for the system unit. Floating-point NaN payload is host dependent.
+
+## Executable resource, vector, pose and display services
+
+Packed resource import/revision now uses actual source pouch and partner
+snapshots, preserving repeated pouch/index queries, signed halfword caps, badge
+counts2f1/2f2,14-byte pouch partner rows,44-byte battle snapshots and the30-byte
+status restore with retained unit136/137 gap. Source partner HP≤0 follows exact
+type27 duration1 storage. Mario imports carried HP/FP before source revision.
+System/enemy SetParamFromPouch still queries pouch but does not revise resources.
+
+All thirteen UnitEntry unit/part vector leaves are executable. They retain exact
+source destinations, per-axis -250000000 sentinel comparisons, required original
+reviseAngle provider for unit rotations, and SetRotate's final ≥360→0 clamp.
+The existing portable reviseJumpAngle recovers the same system reviseAngle body
+and can provide that numeric service; no angle is inferred from rendering.
+
+Original GetPoseNameFromType retains ordered exact-or-range fallback28/39/69,
+including earlier fallback overriding a later exact entry. Source display
+searchPoseTbl is distinct: at most28 entries, exact-or28 in original order.
+btlDispEntAnime walks every source part: NULL table or bank gives posehandle-1;
+otherwise it copies source initial name before calling actual bank poseEntry
+context1. Actual pose allocation remains a required native provider.
+
+Original-data UnitEntry tests now execute all recovered initialization/resource/
+vector/body/pose/display services; only heap, root creation and bank allocation
+are fixture providers. Tests prove fresh Mario HP7/max10/FP5/level1 and all three
+original part allocations. Mario body uses initial M_S_1; parts2/3 have attributes
+13010000 and copied initial KRN_H_1 via source table80417bc8. All three request
+actual b_mario bank802f3fa8. KRN_H_1 is absent from b_mario's clip catalog: Entry
+only stores this initial string and does not call SetAnim. Converter selection
+must therefore keep actual M_S_1/M_N_2, without a fabricated shell descriptor or
+replacement playback. Later shell playback remains source-service owned.
+
+## Source fresh equipment and system init count
+
+`equipPackedUnitItems` recovers complete BtlUnit_EquipItem800f831c outer
+ownership: pouch query even for NULL unit, exact40-byte reset when mode bit1,
+system220 early exit,200 signed badge entries for mode bits2/4 with bit1 removed,
+or original single item, then actual resource revision. EquipOne remains its
+explicit source helper provider. `equipPackedNoItem` implements only the original
+_EquipItem800f7ca4 first item==0 return, before any unit access. This is sufficient
+for verified fresh empty equipment and original setup2 item0; nonzero badges
+remain unsupported until their source branches bind, rather than borrowing
+native inventory or silently ignoring equipment.
+
+Packed btlevtcmd_SetMaxMoveCount8010fce0 now handles every actual registry owner,
+including invisible system220: capture current battle before operand resolution,
+translate actor, original -1 early return, store count21 and signed clamp22.
+The three visual projections capture maximum moves from actual source21.
+This removes the projection-only callback dependency from original system
+init803adf38, whose wait/attack/damage/count0/start-wait commands are now covered.

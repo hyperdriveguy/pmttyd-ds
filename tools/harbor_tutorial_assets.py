@@ -50,6 +50,13 @@ def build(iso):
   du=lambda a:struct.unpack('>I',read_dol(a,4))[0]
   if imports.get(0x60c8c)!=0x80417920 or read_dol(0x80417920,8)!=b'\0'*8:raise ValueError('Unexpected setup2 held-item table')
   mario_kind=du(0x80416a50);mario_parts=du(mario_kind+0xb8);mario_table=du(mario_parts+0x48)
+  # Literal UnitEntry admits all3 original Mario parts before init. Parts2/3
+  # retain the source shell name; display Entry does not SetAnim. This name
+  # is not a b_mario clip and must not be fabricated by the converter.
+  if read_dol(mario_kind+0xb4,1)!=b'\x03':raise ValueError('Unexpected Mario part count')
+  for index in [1,2]:
+   if du(mario_parts+index*0x4c+0x48)!=0x80417bc8:raise ValueError('Unexpected Mario shell pose table')
+  if read_dol(0x80417bc8,24)!=struct.pack('>6I',28,0x802f3f90,39,0x802f3f90,69,0x802f3f90) or read_dol(0x802f3f90,8)!=b'KRN_H_1\0':raise ValueError('Unexpected Mario shell pose')
   if du(mario_kind)!=222:raise ValueError('Unexpected Mario kind')
   strings={};table_data=bytearray()
   for i in range(80):

@@ -5,6 +5,7 @@
 #include <cstdio>
 using namespace ttyd;
 int main(int argc,char**){
+    if(argc>1)assert(loadDemoChestEffectAssets("romfs"));
     OpeningDemoScene scene;scene.begin(0);assert(scene.active && !scene.messageReady(0));
     assert(scene.mapGroupVisible(0) && !scene.mapGroupVisible(1) && !scene.mapGroupVisible(2) && !scene.mapGroupVisible(64));
     assert((scene.actors[0].position==std::array<float,3>{-2,0,550}));assert(scene.actors[0].yaw==90);

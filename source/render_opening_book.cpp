@@ -25,17 +25,17 @@ bool Renderer::frontBookPaper(OpeningDemo& demo,std::array<float,4>& presented) 
     // Source camera/FOV/depth/image-base services remain a separate dependency.
     C3D_Mtx projection;Mtx_OrthoTilt(&projection,0,400,240,0,-100,100,true);
     C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&projection);
+    C3D_SetScissor(GPU_SCISSOR_NORMAL,0,48,240,352);
     C3D_DepthTest(true,GPU_GEQUAL,GPU_WRITE_ALL);C3D_AlphaTest(true,GPU_GEQUAL,128);
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_ONE,GPU_ZERO,GPU_ONE,GPU_ZERO);
     for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
     auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
-    count=0;bool ok=true;
+    bool ok=true;
     const auto* pose=demoPaperAnimations.pose("A_1");
     for(unsigned n=0;n<4;++n) {
         const auto& page=demo.book.pages[n];if(!page.active || page.capturePending)continue;
-        char capture[24];std::snprintf(capture,sizeof(capture),"demo-%u",page.image);
         auto texture=[&](const char* name)->FrontTexture*{auto i=std::find_if(frontTextures.begin(),frontTextures.end(),[&](const auto& t){return t.name==name;});return i==frontTextures.end()?nullptr:&*i;};
-        auto* front=texture(capture);auto* back=texture("demo-page-back");
+        auto* front=bookCaptureReady[n]?&bookCaptureTextures[n]:nullptr;auto* back=texture("demo-page-back");
         const float frame=demo.book.pageFrame(n);
         auto& sample=demoPaperSamples[n];
         if(!front || !back || !pose){ok=false;continue;}
@@ -46,17 +46,20 @@ bool Renderer::frontBookPaper(OpeningDemo& demo,std::array<float,4>& presented) 
             const auto& point=sample.vertices[v];const auto& surface=demoPaperSurfaces[v/3];
             const float cell=surface.capture?1.f:0.f;
             const float u=(point.u*1024-cell*128-2)/124,vv=((1-point.v)*1024-2)/124;
-            const float texU=surface.capture?(62+u*193)/float(front->size[2]):u*float(back->size[0])/back->size[2];
-            const float texV=surface.capture?1-vv*240/float(front->size[3]):1-vv*float(back->size[1])/back->size[3];
-            vertex(48+(124+(point.x+32)*386/64)*.5f,(24-point.y)*5.f,page.depth-16-point.z*386/128,texU,texV,0xffffffff);
+            const float texU=surface.capture?u*193/256.f:u*float(back->size[0])/back->size[2];
+            const float texV=surface.capture?1-vv*240/256.f:1-vv*float(back->size[1])/back->size[3];
+            const bool final=n==3 && demo.book.adjusting;
+            const float scale=final?demo.book.finalPaperScale:1;
+            const float x=point.x*scale+(final?demo.book.finalPaperOffsetX:0),y=point.y*scale+(final?demo.book.finalPaperOffsetY:0),z=point.z*scale;
+            vertex(48+(124+(x+32)*386/64)*.5f,(24-y)*5.f,page.depth-16-z*386/128,texU,texV,0xffffffff);
         }
         GSPGPU_FlushDataCache(vertices+first,372*sizeof(Vertex));
         auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
         // Original cull1, back face. Winding adaptation for the tilted image plane.
         C3D_CullFace(GPU_CULL_BACK_CCW);
-        for(unsigned t=0;t<124;) {unsigned end=t+1;while(end<124 && demoPaperSurfaces[end].capture==demoPaperSurfaces[t].capture)++end;C3D_TexBind(0,demoPaperSurfaces[t].capture?&front->image.texture:&back->image.texture);C3D_DrawArrays(GPU_TRIANGLES,first+t*3,(end-t)*3);t=end;}
+        for(unsigned t=0;t<124;) {unsigned end=t+1;while(end<124 && demoPaperSurfaces[end].capture==demoPaperSurfaces[t].capture)++end;C3D_TexBind(0,demoPaperSurfaces[t].capture?front:&back->image.texture);C3D_DrawArrays(GPU_TRIANGLES,first+t*3,(end-t)*3);t=end;}
         presented[n]=frame;
     }
-    C3D_CullFace(GPU_CULL_NONE);C2D_Prepare();C2D_SceneBegin(top);return ok;
+    C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,240,400);C3D_CullFace(GPU_CULL_NONE);C3D_AlphaTest(true,GPU_GREATER,0);C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);C2D_Prepare();C2D_SceneBegin(top);return ok;
 }
 }

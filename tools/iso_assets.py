@@ -115,10 +115,10 @@ def decode_gx(data, width, height, fmt, palette=None):
                     n=y*bw+x
                     if fmt in (0,8):
                         val=(block[n//2]>>(4 if n%2==0 else 0))&15
-                        pixel=(val*17,)*3+(255,) if fmt==0 else palette_pixel(palette,val)
+                        pixel=(val*17,)*4 if fmt==0 else palette_pixel(palette,val)
                     elif fmt in (1,9):
                         val=block[n]
-                        pixel=(val,val,val,255) if fmt==1 else palette_pixel(palette,val)
+                        pixel=(val,val,val,val) if fmt==1 else palette_pixel(palette,val)
                     elif fmt==2:
                         v=block[n];pixel=((v&15)*17,)*3+((v>>4)*17,)
                     elif fmt==3:

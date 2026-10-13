@@ -639,3 +639,6 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [Harbor source sequence startup and unit allocation](battle/HARBOR_SOURCE_SEQUENCE_STARTUP.md)
 - [Original US startup resource admission](battle/NATIVE_STARTUP_RESOURCE_ADMISSION.md)
 - [Native original harbor curtain fade](display/NATIVE_HARBOR_CURTAIN_FADE.md)
+
+- [Harbor source sequence startup](battle/HARBOR_SOURCE_SEQUENCE_STARTUP.md): original init/resource admission and ordinary FirstAct entry/fade/event gates through Turn ownership.
+- [Native demo chest effects](effect/NATIVE_DEMO_CHEST_EFFECTS.md)

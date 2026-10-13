@@ -79,6 +79,11 @@ void OpeningHouseScene::advance(uint64_t simulationTick) {
 }
 void OpeningHouseScene::step() {
     musicStarted=tick-beginTick>=90;updateMotion();
+    const auto elapsed=std::min<uint64_t>(tick-beginTick,240);
+    const float treeValue=*cameraInterpolation(11,int32_t(elapsed),240,0,1500);
+    // evt_sub publishes through evtSetFloat; DIV float publishes again.
+    const float published=std::trunc(treeValue*1024.f)/1024.f;
+    treeX=std::trunc((published/10.f)*1024.f)/1024.f;
     while(cursor<requests.size()) {
         const auto& r=requests[cursor];
         if(!started){started=true;

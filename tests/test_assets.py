@@ -8,7 +8,7 @@ a=importlib.util.module_from_spec(spec);spec.loader.exec_module(a)
 class GXTests(unittest.TestCase):
     def test_i4_tiling_and_crop(self):
         p=a.decode_gx(bytes([0xf0]*32),7,5,0)
-        self.assertEqual(len(p),35);self.assertEqual(p[0],(255,255,255,255));self.assertEqual(p[1],(0,0,0,255))
+        self.assertEqual(len(p),35);self.assertEqual(p[0],(255,255,255,255));self.assertEqual(p[1],(0,0,0,0))
     def test_rgba8_planes(self):
         p=a.decode_gx(bytes([128,255]*16+[30,40]*16),4,4,6)
         self.assertEqual(p[0],(255,30,40,128))

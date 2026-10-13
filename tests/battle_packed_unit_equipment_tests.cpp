@@ -1,0 +1,10 @@
+#include "battle_packed_unit_equipment.hpp"
+#include "battle_event_callbacks.hpp"
+#include <cassert>
+#include <vector>
+#include <iostream>
+using namespace ttyd;
+struct Fixture {EventNativeRuntime vm{0x81000000,{}};std::vector<std::array<int32_t,2>> items;int pouchCalls=0;Fixture(){assert(vm.memory.registerRam(0x1000,std::vector<uint8_t>(0x6000)));}void w(uint32_t a,uint32_t v){assert(vm.memory.writeWord(a,v));}void half(uint32_t a,uint16_t v){assert(vm.memory.writeHalf(a,v));}PackedUnitEquipmentServices services(){PackedUnitEquipmentServices s;s.resources.memory=nativeBattleActorServices(vm);s.resources.user=this;s.resources.pouch=[](void* p){++static_cast<Fixture*>(p)->pouchCalls;return uint32_t(0x4000);};s.user=this;s.equipOne=[](void* p,uint32_t u,int32_t mode,int32_t item){assert(u==0x1000);static_cast<Fixture*>(p)->items.push_back({mode,item});};return s;}};
+int main(){Fixture f;assert(equipPackedNoItem(0) && !equipPackedNoItem(1));equipPackedUnitItems(0,3,0,f.services());assert(f.pouchCalls==1 && f.items.empty());f.w(0x1008,220);for(unsigned i=0;i<40;++i)assert(f.vm.memory.writeByte(0x12e0+i,255));equipPackedUnitItems(0x1000,3,0,f.services());assert(f.pouchCalls==2 && f.items.empty());uint8_t b;for(unsigned i=0;i<40;++i)assert(f.vm.memory.readByte(0x12e0+i,b) && b==0);f.w(0x1008,222);f.half(0x408e,10);f.half(0x4090,5);f.half(0x438a,0xffff);f.half(0x438c,305);equipPackedUnitItems(0x1000,3,99,f.services());assert(f.items.size()==200 && (f.items[0]==std::array<int32_t,2>{2,-1}) && (f.items[1]==std::array<int32_t,2>{2,305}) && f.pouchCalls==4);f.items.clear();equipPackedUnitItems(0x1000,1,7,f.services());assert((f.items==std::vector<std::array<int32_t,2>>{{1,7}}) && f.pouchCalls==6);f.items.clear();f.half(0x438a,0);f.half(0x438c,0);auto service=f.services();service.equipOne=[](void* p,uint32_t,int32_t mode,int32_t item){assert(mode==2 && equipPackedNoItem(item));static_cast<Fixture*>(p)->items.push_back({mode,item});};equipPackedUnitItems(0x1000,3,0,service);assert(f.items.size()==200);
+ std::cout<<"Original equipment pouch/null/system/reset/list/single/revision ownership and exact no-item route passed\n";
+}

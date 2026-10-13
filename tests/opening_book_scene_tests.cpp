@@ -25,6 +25,14 @@ int main(int argc,char**argv){
     assert(book.beginPage(1) && book.pages[0].active && book.pages[1].image==9 && book.pages[1].depth==5);
     book.captureComplete(1);book.advance(1560);book.presented(1,180);assert(book.pageComplete(1) && !book.pages[0].active);
     book.releasePages();for(auto& p:book.pages)assert(!p.active);assert(!book.beginPage(4));
+    book.beginPage(3);book.captureComplete(3);book.startAdjust();
+    assert(book.adjusting && !book.adjusted && book.pages[3].active && book.fade==0);
+    book.advance(1650);assert(book.adjusting && book.fade==.5f);
+    assert(std::fabs(book.scale-2.5606601f)<1e-6f && std::fabs(book.offsetY+74.24621f)<1e-5f);
+    assert(book.finalPaperScale==book.scale/1.5f && book.finalPaperOffsetY==book.offsetY/10 && book.pages[3].active);
+    book.advance(1739);assert(book.adjusting && book.pages[3].active && book.fade<1);
+    book.advance(1740);assert(!book.adjusting && book.adjusted && book.fade==1 && book.scale==3 && book.offsetY==-105 && !book.pages[3].active);
+    book.advance(1900);assert(book.scale==3 && book.fade==1); // Scale brother does not overwrite final adjustment.
     if(argc>1){
         ActorAnimationPack pack;assert(pack.load(argv[1]));const auto* pose=pack.pose("A_1");assert(pose && !pose->loop && pose->start==0 && pose->end==180);
         assert(pose->bindings.size()==372 && pose->keys.size()==181 && pose->textures.size()==2);
