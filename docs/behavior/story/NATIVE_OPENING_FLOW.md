@@ -75,3 +75,9 @@ follows the outside S_naka exclusion versus interior S_aaa_00/S_ie_door
 exclusions. Outside translated trees are omitted after their source move
 endpoint; the actual translation/camera transition remains pending. Luigi's
 original L_5/L_7 and L_8/L_9 idle/talk pairs replace the single idle snapshot.
+
+The House phase now exposes a portable source-request presentation controller
+with authored delivery/return/approach waypoints and original walking/carrying
+clips. It gates each message on the appropriate scene stage; see
+[house presentation scope](NATIVE_OPENING_HOUSE_PRESENTATION.md). This remains
+a bounded native bridge rather than full REL graph execution.
