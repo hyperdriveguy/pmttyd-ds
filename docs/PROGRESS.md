@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero virtual init/update/position
+
+Completed five virtual initializer/updater/hardware position/state local
+contracts for EVT-01 and checked the corresponding inbox portion.
+[Virtual init/update/position](behavior/audio/MUSYX_VIRTUAL_SAMPLE_INIT_UPDATES_AND_POSITION.md)
+pins partial table reset,64-map scan independent of configured count, fresh
+identity/state/position/remaining/signed-threshold/cleanup order and hardware
+position type routes. Corrected the prior notification prose table base from
+803f6b00 to80406b00; original instruction hashes/relative ordering were correct.
+No whole-slot reset, position fallback or physical underrun timing inferred.
+
+Validation: read-only ISO manifest passed12 spans (five complete/seven linked),
+149 anchors/11 calls; prior notification manifest reverified.64 reset addresses/
+six state/ten rounding/five remaining/six threshold/five startup/15 position
+vectors plus all65536 low-input rounding cases checked as deductions.
+Documentation link audit passed786 Markdown files/zero broken links;
+`git diff --check` passed. Documentation/metadata only; no `make test`/`make all`
+rerun. Original full inspection listings/ELFs stay `/tmp`; no bodies/assets
+committed. Concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 complete vsUpdateBuffer, table/count/size/callback/
+remaining/type/pitch/hardware providers and valid bounds/generation/numeric/
+reinit/concurrency domains; original refill/underrun/playback traces. Full
+scheduler/native/runtime binding, lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero sample identity/hardware fields
 
 Completed six sample-start child contracts for EVT-01 and checked the

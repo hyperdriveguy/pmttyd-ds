@@ -47,7 +47,7 @@ their own valid index/pointer invariant.
 
 ## Complete virtual end matching and callback cleanup
 
-Virtual table T=803f6b00, slot stride2chex, mapping bytes T+b08, user callback
+Virtual table T=80406b00, slot stride2chex, mapping bytes T+b08, user callback
 word T+b4c. vsSampleEndNotify(X) first rejects exactffffffff. Otherwise:
 
 1. Load map[X.low8]. Byte255 returns without further work.
@@ -177,3 +177,15 @@ now closes those six children. Sequence association searches active nodes only,
 with eight whole-list retries; public-ID lookup follows internal voice chains.
 Actual list/ID/hardware field providers, backend consumers and original
 association/playback/callback traces remain open.
+
+### Address correction, 2026-10-13
+
+The virtual table base above is corrected to80406b00, matching the original
+`lis 8040`/`addi 6b00` instructions and `vs` BSS symbol. The previous803f6b00
+prose address was incorrect; original function hashes/instruction evidence and
+relative field ordering were unaffected.
+
+[Complete virtual initialization/updater/position](MUSYX_VIRTUAL_SAMPLE_INIT_UPDATES_AND_POSITION.md)
+now pins the corrected80406b00 table layout, partial initialization,64-entry
+update scan, identity/remaining/cleanup and hardware state/position leaves.
+Refill child/table providers/callback implementations/original audio remain open.

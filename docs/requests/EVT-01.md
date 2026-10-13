@@ -199,6 +199,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Captured-root/internal-ID chains, active-only eight whole-list retries and
   exact fresh-base field reads/writes pinned; providers/backend consumers/
   domains and original association/playback evidence remain open.
+- [x] Complete vsInit/vsSampleUpdates/hardware virtual state/startup/position —
+  [virtual init/updates/position](../behavior/audio/MUSYX_VIRTUAL_SAMPLE_INIT_UPDATES_AND_POSITION.md).
+  Correct80406b00 table, partial reset,64-map scan, state/identity/remaining/
+  threshold/cleanup and raw position routes pinned; refill child/providers/
+  callback/domain and original update/playback evidence remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1284,3 +1289,23 @@ vectors are deductions, including a ten-node first-pass match. Fresh full ELFs/
 listings stay `/tmp`; no native change/original execution/body/asset export.
 List/ID/sample field producers, backend consumers, pointer/index/generation/
 cycle/member/alias/IRQ/concurrency and original association/playback remain OPEN.
+
+### 2026-10-13 — Virtual initialization, updater and hardware position
+
+[Five complete local bodies](../behavior/audio/MUSYX_VIRTUAL_SAMPLE_INIT_UPDATES_AND_POSITION.md)
+close count/maps/generation/callback-only reset,64-entry updater independent
+of configured count, fresh-map admission/state routes/type5 position rounding,
+identity/remaining/signed-threshold/voice and fresh cleanup order. Hardware
+position types0/1/4/5 versus2/6 versus3 and exact startup-byte==1 are pinned.
+Corrected the prior notification prose table base from803f6b00 to80406b00,
+matching original instructions/BSS symbol; prior source hashes/relative order
+were unaffected. No whole-slot reset, generic position fallback or inferred
+physical underrun timing.
+
+Validation: read-only manifest12 spans (five complete/seven linked),149 anchors/
+11 calls passes; prior notification source manifest also reverified.64 reset
+addresses/six state/ten rounding/five remaining/six threshold/five startup/15
+position vectors and all65536 low-input rounding cases checked as deductions.
+Fresh ELFs/listings stay `/tmp`; no native change/original execution/body/asset
+export. vsUpdateBuffer/table/pitch/hardware providers, actual callback/domain/
+reinit/concurrency and original refill/underrun/playback traces remain OPEN.
