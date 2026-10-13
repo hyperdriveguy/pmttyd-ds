@@ -2,6 +2,72 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original east Mouser talk and per-area actor resources
+
+Feature commit `8cdab4a` adds stationary east Chu3/Mouser using original
+`m/gor_02/s` XYZ/tribe/direction, `a/c_tyusan` / texture bank and `CHU_S_1`
+sparse animation. Its simple original talk event selects CASE_LESS branches
+at56/112/164/215/261/339/373/401; original US IDs/payloads/control tokens and
+actual actor attribution are retained with no story write. Current runtime
+coverage is explicitly story0..55, not a recovered visibility rule. Native
+proximity0.65/height0.25 and grounded A-before-door/jump priority remain
+provisional until original search/arbitration binds. No original story is
+inferred from absent native save data. Original Frankly story8/10 init positions
+move into the same catalog; his complete scenes remain separate owners.
+
+The portable catalog validates model namespaces, story/interior gates and
+whole records atomically. Destination-area models stage with geometry; failed
+imports retain the resident area. Animation samples persist per model and cache
+simulation ticks/poses; hierarchy arrays retain capacity, recursive dispatch
+avoids std::function allocation, and root trig runs once per instance. GPU
+texture batches use citro3d linear buffers and whole-mesh capacity admission.
+Visible actor/vertex/sample-failure/overflow counters expose bounded submission.
+See [native scope](behavior/field/NATIVE_AREA_ACTOR_CATALOG.md),
+[source bindings](behavior/field/ROGUEPORT_ORDINARY_NPC_BINDINGS.md) and
+[provenance](ASSETS.md). Initial transform helper commit is `c46ee29`.
+
+Validation: isolated source snapshot `/tmp/pm-field-verified-at8uf8ls` of the
+feature changes passes `make test`: **99 CTest / 96 Python tests**
+(`/tmp/goal-field-isolated-test.log`), and `make all` without warnings
+(`/tmp/goal-field-isolated-build.log`). Snapshot excludes concurrent opening/
+professor additions and uses local ignored original resources. Original-data
+tests cover18 branch-boundary stories/all9 unchanged US payloads, actual talk
+entry/closure, speaker identity, no story/save mutation while talking, original
+room fixture ground/wall admission, and sampled model streams. Catalog tests
+cover malformed/unsafe/overlapping records and retained state on failed reads.
+Earlier shared runs also passed100 CTest/96 Python; shared native builds briefly
+failed during in-flight frontend/audio/professor edits. Those intermediate
+failures are not claimed as feature validation; the isolated build is passing.
+
+Immutable ignored `artifacts/ttyd-field-actors.3dsx` is the validated snapshot
+binary. Isolated Azahar run uses `tools/make_field_actor_fixture.py` and
+`tests/azahar_field_actor_talk.py`, output
+`artifacts/azahar-field-actors-verified/`, log
+`/tmp/goal-field-verified-smoke.log`. Reviewed original-Mouser talk and final
+return captures: source art, speaker-reaching tail, restored exploration/menu
+and actual manual save with unchanged story8/checksum. The script requires a
+new save timestamp after source-window closure, avoiding repeated-A reopening
+as false success. Xvfb required display-socket escalation; user profiles/saves
+and ISO were untouched. This is native scene validation, not Dolphin or hardware
+parity/performance evidence. No new Dolphin observations were taken.
+
+Documentation worker recovered ordinary NPC and save-block bindings and added
+inbox breadcrumbs. Save-block original spawn `(185,60,-55)`, scalar10 and
+hit/system-event graph are documented in
+[source binding](behavior/field/ROGUEPORT_SAVE_BLOCK_SOURCE_BINDING.md).
+Conversion exposed S_1 UVs outside0..1 plus scrolling texture keys; the ordinary
+compiler correctly rejects that domain. The incomplete probe pack was removed
+and no save-block record ships. Bind original animated texture matrices and
+clamp/material services before adding its visual/hit/save implementation.
+
+Next: close original NPC search/priority/facing/collision and shadow/material
+services; bind Goomba wandering and tavern NPC fade; integrate professor/fence/
+lecture scenes through their source owners; implement save-block texture/hit/
+card lifecycle. Gather dense-room/movement timing traces on New2DS hardware and
+matched Dolphin observations. Broader prologue/game fidelity remains incomplete;
+the user's goal stays active. Other concurrent worktree/staged changes are
+preserved outside this feature commit.
+
 ## 2026-10-13 — Priority1 initialization/count and priority2/3 inbox portions
 
 Delivered [DMG-01 initialization/count composition](behavior/battle/DMG_01_INITIALIZATION_AND_JUMP_COUNT_BINDINGS.md):
