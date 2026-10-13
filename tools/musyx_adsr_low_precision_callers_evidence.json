@@ -1,0 +1,491 @@
+{
+  "schema": 1,
+  "scope": "Four complete LowPrecisionHandler admission/envelope/pitch/dirty regions; six-service DOL direct-call census; remaining body/DSP/runtime open",
+  "complete_bodies": [],
+  "complete_regions": [
+    {
+      "name": "low_precision_admission_clock",
+      "address": 2150070072,
+      "size": 80
+    },
+    {
+      "name": "low_precision_adsr_request",
+      "address": 2150070736,
+      "size": 96
+    },
+    {
+      "name": "low_precision_pitch_adsr_contribution",
+      "address": 2150071676,
+      "size": 64
+    },
+    {
+      "name": "low_precision_dirty_tail",
+      "address": 2150071860,
+      "size": 28
+    }
+  ],
+  "linked_only": [
+    "adsrHandle",
+    "adsrHandleLowPrecision",
+    "adsrRelease",
+    "adsrStartRelease",
+    "adsrSetup",
+    "salChangeADSRState",
+    "LowPrecisionHandler",
+    "salBuildCommandList",
+    "hwIsActive"
+  ],
+  "dol_spans": [
+    {
+      "name": "adsrHandle",
+      "address": 2150132032,
+      "size": 408,
+      "sha256": "96f1a11c436537e471bd796988980dca9d3551c895f0d9b969566025c7249ffe"
+    },
+    {
+      "name": "adsrHandleLowPrecision",
+      "address": 2150132440,
+      "size": 132,
+      "sha256": "618ae4198d58b906097a98e35068b190f62f4a0ece936b30e2adad913ff958b5"
+    },
+    {
+      "name": "adsrRelease",
+      "address": 2150131672,
+      "size": 360,
+      "sha256": "c5f673e49151c7280a96516c2ce3f3da15e04ccad975eec697dc4d191dcf62a1"
+    },
+    {
+      "name": "adsrStartRelease",
+      "address": 2150131336,
+      "size": 336,
+      "sha256": "b4d22415d9655e415e3b8afa0a74994e609f44d2902cfb4e12171e340ba10010"
+    },
+    {
+      "name": "adsrSetup",
+      "address": 2150131296,
+      "size": 40,
+      "sha256": "25d3fc1afca32864220fe67a0a646f6dffa4092dadda889181b240e2941f2497"
+    },
+    {
+      "name": "salChangeADSRState",
+      "address": 2150130676,
+      "size": 620,
+      "sha256": "f15a8980b24dc561c379a2ea9b295fdbfc20f5fee339390859ceb8852a8b5d2a"
+    },
+    {
+      "name": "LowPrecisionHandler",
+      "address": 2150070052,
+      "size": 1860,
+      "sha256": "e87531921a7e6a3e82db9aae7cfe65110b201c274f127948dfda83ca5f9ecae3"
+    },
+    {
+      "name": "salBuildCommandList",
+      "address": 2150141440,
+      "size": 9720,
+      "sha256": "14f94e450a1f0069db5607b861a7dbe8e8e3c98d59ecba707574284c12ee920b"
+    },
+    {
+      "name": "hwIsActive",
+      "address": 2150172632,
+      "size": 32,
+      "sha256": "375b411fbc13b4d8177c69d863b45104eda75645bf41a10378495e6c8a1db650"
+    },
+    {
+      "name": "low_precision_admission_clock",
+      "address": 2150070072,
+      "size": 80,
+      "sha256": "24bd8689e09f03bb2fd6eb11b46b48507b57827cb42f6444441b0fb0eb8df146"
+    },
+    {
+      "name": "low_precision_adsr_request",
+      "address": 2150070736,
+      "size": 96,
+      "sha256": "e15c96649e9618e4279ba426b4a308f7214cec4c2190db770b80e7fdae3eb799"
+    },
+    {
+      "name": "low_precision_pitch_adsr_contribution",
+      "address": 2150071676,
+      "size": 64,
+      "sha256": "757e2d88d9b38e40add8ce34d53075f146c8f5d6c24f20b5aec9ed80e71c1f96"
+    },
+    {
+      "name": "low_precision_dirty_tail",
+      "address": 2150071860,
+      "size": 28,
+      "sha256": "d8d4e4579f9f1fdd16fd84b6bbddfb0be4682cdd9970ef52205ac24baf819ed1"
+    },
+    {
+      "name": "dol_text_section_0",
+      "address": 2147496192,
+      "size": 9440,
+      "sha256": "7682542fad8be7976b86cfdf79c08ae007eac9f9cca351dd2677d04821d72ceb"
+    },
+    {
+      "name": "dol_text_section_1",
+      "address": 2147505632,
+      "size": 2857792,
+      "sha256": "9f8e88ff2c5a392db0a2d0bc045c91371c7750057373b7d4a40bfcd8cab2131c"
+    }
+  ],
+  "dol_anchors": {
+    "2150070072": "7c7b1b78",
+    "2150070076": "808d1f70",
+    "2150070080": "1c1b0458",
+    "2150070084": "7f840214",
+    "2150070088": "48019091",
+    "2150070092": "28030000",
+    "2150070096": "40820010",
+    "2150070100": "801c0034",
+    "2150070104": "28000000",
+    "2150070108": "418206d8",
+    "2150070112": "808d1f80",
+    "2150070116": "7f9ee378",
+    "2150070120": "80ad1f84",
+    "2150070124": "3ba00000",
+    "2150070128": "807c0028",
+    "2150070132": "801c0024",
+    "2150070136": "7fe32810",
+    "2150070140": "90bc0028",
+    "2150070144": "7c002110",
+    "2150070148": "909c0024",
+    "2150070736": "807c0114",
+    "2150070740": "38000200",
+    "2150070744": "80bc0118",
+    "2150070748": "38800000",
+    "2150070752": "7c600038",
+    "2150070756": "7ca32038",
+    "2150070760": "7c632278",
+    "2150070764": "7c002278",
+    "2150070768": "7c600379",
+    "2150070772": "4182003c",
+    "2150070776": "387c01e8",
+    "2150070780": "3881000a",
+    "2150070784": "38a10008",
+    "2150070788": "4800f0d5",
+    "2150070792": "28030000",
+    "2150070796": "41820024",
+    "2150070800": "80bc0118",
+    "2150070804": "3800ffff",
+    "2150070808": "809c0114",
+    "2150070812": "3860fdff",
+    "2150070816": "7ca00038",
+    "2150070820": "901c0118",
+    "2150070824": "7c801838",
+    "2150070828": "901c0114",
+    "2150071676": "807c0114",
+    "2150071680": "38000200",
+    "2150071684": "80bc0118",
+    "2150071688": "38800000",
+    "2150071692": "7c600038",
+    "2150071696": "7ca32038",
+    "2150071700": "7c632278",
+    "2150071704": "7c002278",
+    "2150071708": "7c600379",
+    "2150071712": "4182001c",
+    "2150071716": "801c01f0",
+    "2150071720": "a87c0210",
+    "2150071724": "7c008670",
+    "2150071728": "7c0301d6",
+    "2150071732": "7c003e70",
+    "2150071736": "7fde0214",
+    "2150071860": "881c00a8",
+    "2150071864": "28000000",
+    "2150071868": "41820014",
+    "2150071872": "38600000",
+    "2150071876": "38007fff",
+    "2150071880": "987c00a8",
+    "2150071884": "901c0220",
+    "2150074884": "4800ddd5",
+    "2150107000": "48005ee9",
+    "2150131316": "4bfffd81",
+    "2150132168": "4bfffa2d",
+    "2150132388": "4bfff951",
+    "2150132500": "4bfffe2d",
+    "2150142564": "4bffd3fd",
+    "2150145028": "4bffca5d",
+    "2150146956": "4bffc44d",
+    "2150147012": "4bffc57d",
+    "2150147340": "4bffc17d",
+    "2150147380": "4bffc2a5",
+    "2150147476": "4bffc3ad"
+  },
+  "direct_calls": [
+    {
+      "site": 2150070088,
+      "target": 2150172632,
+      "name": "hwIsActive"
+    },
+    {
+      "site": 2150070788,
+      "target": 2150132440,
+      "name": "adsrHandleLowPrecision"
+    },
+    {
+      "site": 2150074884,
+      "target": 2150131672,
+      "name": "adsrRelease"
+    },
+    {
+      "site": 2150107000,
+      "target": 2150131296,
+      "name": "adsrSetup"
+    },
+    {
+      "site": 2150131316,
+      "target": 2150130676,
+      "name": "salChangeADSRState"
+    },
+    {
+      "site": 2150132168,
+      "target": 2150130676,
+      "name": "salChangeADSRState"
+    },
+    {
+      "site": 2150132388,
+      "target": 2150130676,
+      "name": "salChangeADSRState"
+    },
+    {
+      "site": 2150132500,
+      "target": 2150132032,
+      "name": "adsrHandle"
+    },
+    {
+      "site": 2150142564,
+      "target": 2150131296,
+      "name": "adsrSetup"
+    },
+    {
+      "site": 2150145028,
+      "target": 2150131296,
+      "name": "adsrSetup"
+    },
+    {
+      "site": 2150146956,
+      "target": 2150131672,
+      "name": "adsrRelease"
+    },
+    {
+      "site": 2150147012,
+      "target": 2150132032,
+      "name": "adsrHandle"
+    },
+    {
+      "site": 2150147340,
+      "target": 2150131336,
+      "name": "adsrStartRelease"
+    },
+    {
+      "site": 2150147380,
+      "target": 2150131672,
+      "name": "adsrRelease"
+    },
+    {
+      "site": 2150147476,
+      "target": 2150132032,
+      "name": "adsrHandle"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "adsr_dol_call_census": [
+    {
+      "site": 2150070788,
+      "target": 2150132440,
+      "name": "adsrHandleLowPrecision",
+      "caller": "LowPrecisionHandler"
+    },
+    {
+      "site": 2150074884,
+      "target": 2150131672,
+      "name": "adsrRelease",
+      "caller": "synthHandle"
+    },
+    {
+      "site": 2150107000,
+      "target": 2150131296,
+      "name": "adsrSetup",
+      "caller": "mcmdSetPitchADSR"
+    },
+    {
+      "site": 2150131316,
+      "target": 2150130676,
+      "name": "salChangeADSRState",
+      "caller": "adsrSetup"
+    },
+    {
+      "site": 2150132168,
+      "target": 2150130676,
+      "name": "salChangeADSRState",
+      "caller": "adsrHandle"
+    },
+    {
+      "site": 2150132388,
+      "target": 2150130676,
+      "name": "salChangeADSRState",
+      "caller": "adsrHandle"
+    },
+    {
+      "site": 2150132500,
+      "target": 2150132032,
+      "name": "adsrHandle",
+      "caller": "adsrHandleLowPrecision"
+    },
+    {
+      "site": 2150142564,
+      "target": 2150131296,
+      "name": "adsrSetup",
+      "caller": "salBuildCommandList"
+    },
+    {
+      "site": 2150145028,
+      "target": 2150131296,
+      "name": "adsrSetup",
+      "caller": "salBuildCommandList"
+    },
+    {
+      "site": 2150146956,
+      "target": 2150131672,
+      "name": "adsrRelease",
+      "caller": "salBuildCommandList"
+    },
+    {
+      "site": 2150147012,
+      "target": 2150132032,
+      "name": "adsrHandle",
+      "caller": "salBuildCommandList"
+    },
+    {
+      "site": 2150147340,
+      "target": 2150131336,
+      "name": "adsrStartRelease",
+      "caller": "salBuildCommandList"
+    },
+    {
+      "site": 2150147380,
+      "target": 2150131672,
+      "name": "adsrRelease",
+      "caller": "salBuildCommandList"
+    },
+    {
+      "site": 2150147476,
+      "target": 2150132032,
+      "name": "adsrHandle",
+      "caller": "salBuildCommandList"
+    }
+  ],
+  "census_sections": [
+    {
+      "section": 0,
+      "address": 2147496192,
+      "size": 9440
+    },
+    {
+      "section": 1,
+      "address": 2147505632,
+      "size": 2857792
+    }
+  ],
+  "derived_elapsed_vectors": [
+    {
+      "now": 0,
+      "previous": 0,
+      "low_delta": 0,
+      "high_delta": 0,
+      "new_stamp": 0
+    },
+    {
+      "now": 4294967298,
+      "previous": 4294967294,
+      "low_delta": 4,
+      "high_delta": 0,
+      "new_stamp": 4294967298
+    },
+    {
+      "now": 1,
+      "previous": 2,
+      "low_delta": 4294967295,
+      "high_delta": 4294967295,
+      "new_stamp": 1
+    },
+    {
+      "now": 0,
+      "previous": 18446744073709551615,
+      "low_delta": 1,
+      "high_delta": 0,
+      "new_stamp": 0
+    },
+    {
+      "now": 8589934592,
+      "previous": 0,
+      "low_delta": 0,
+      "high_delta": 2,
+      "new_stamp": 8589934592
+    }
+  ],
+  "derived_flag_vectors": [
+    {
+      "before": 0,
+      "child_result": 0,
+      "called": false,
+      "after": 0
+    },
+    {
+      "before": 512,
+      "child_result": 0,
+      "called": true,
+      "after": 512
+    },
+    {
+      "before": 512,
+      "child_result": 1,
+      "called": true,
+      "after": 0
+    },
+    {
+      "before": 4294967295,
+      "child_result": 2,
+      "called": true,
+      "after": 4294966783
+    },
+    {
+      "before": 256,
+      "child_result": 1,
+      "called": false,
+      "after": 256
+    }
+  ],
+  "derived_pitch_vectors": [
+    {
+      "level": 65536,
+      "signed_depth": 128,
+      "wrapped_product": 128,
+      "contribution": 1
+    },
+    {
+      "level": 2147418112,
+      "signed_depth": 32767,
+      "wrapped_product": 1073676289,
+      "contribution": 8388096
+    },
+    {
+      "level": 4294901760,
+      "signed_depth": 128,
+      "wrapped_product": 4294967168,
+      "contribution": -1
+    },
+    {
+      "level": 2147483648,
+      "signed_depth": -32768,
+      "wrapped_product": 1073741824,
+      "contribution": 8388608
+    },
+    {
+      "level": 305419896,
+      "signed_depth": -1,
+      "wrapped_product": 4294962636,
+      "contribution": -37
+    }
+  ]
+}

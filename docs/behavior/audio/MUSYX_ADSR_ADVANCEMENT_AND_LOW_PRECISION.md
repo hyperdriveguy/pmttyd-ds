@@ -105,3 +105,11 @@ Remaining: actual type/phase/count/level/log/step/selector/caller writers, valid
 index/value/alias/lifetime/IRQ/concurrency domains, envelope caller cadence,
 macro/hardware/DSP consumers and original envelope/output/audio traces.
 EVT-01 stays OPEN; this closes the two local advancement bodies only.
+
+## 2026-10-13 — Low-precision caller follow-up
+
+[Caller/census](MUSYX_ADSR_LOW_PRECISION_CALLERS_AND_DOL_CENSUS.md) closes the synth caller admission/envelope/pitch/dirty
+regions and records fourteen direct DOL calls to six ADSR entries. Synth pitch
+reads the fresh descriptor level separately from the old-level stack output.
+Remaining precision/DSP semantics, caller domains and original cadence/audio
+remain open.

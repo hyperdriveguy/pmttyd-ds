@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero low-precision ADSR caller/census
+
+Completed four LowPrecisionHandler admission/clock/envelope/pitch/dirty
+regions and the six-service DOL direct-call census; checked the EVT-01 portion.
+[Caller/census](behavior/audio/MUSYX_ADSR_LOW_PRECISION_CALLERS_AND_DOL_CENSUS.md)
+pins retained voice/elapsed low, stack outputs/status-bit clearing and independent
+fresh descriptor-level pitch contribution. Fourteen direct calls identified;
+seven DSP builder sites remain semantic work. Remaining precision/DSP sections,
+indirect/REL/domain/cadence/original envelope/audio stay open.
+
+Validation: read-only ISO manifest passed15 spans (four regions/nine linked
+bodies/two nonempty DOL text sections),80 anchors/15 calls. Fresh opcode18/LK/
+AA/displacement scan of all seven text slots found14 exact calls to six entries;
+five elapsed/five flag/five signed pitch vectors checked. Link audit passed836
+Markdown files/zero broken links; scoped `git diff --check` passed. Documentation/
+metadata only; no `make test`/`make all` rerun. Full original inspection ELFs/
+listings/census generator stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 DSP builder envelope setup/release/update/command
+regions, remaining precision modulation/controller/portamento/pitch/requeue,
+actual descriptor/flag/depth/time providers and valid value/alias/stack/IRQ/
+concurrency/lifetime domains, indirect/REL callers and original voice/DSP/audio
+traces. Lower-priority inbox and full native/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero ADSR advancement/wrapper
 
 Completed adsrHandle/adsrHandleLowPrecision for EVT-01; checked the inbox

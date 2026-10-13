@@ -363,6 +363,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   repeated-call wrapper — [advancement/output order](../behavior/audio/MUSYX_ADSR_ADVANCEMENT_AND_LOW_PRECISION.md).
   Old-level output/fresh delta/count wrap/transition/table/wrapper pinned;
   caller cadence/value/index/alias/original audio remain open.
+- [x] Complete LowPrecisionHandler admission/clock/envelope request/pitch
+  contribution/dirty-tail regions and six-service14-call DOL census —
+  [low-precision caller/census](../behavior/audio/MUSYX_ADSR_LOW_PRECISION_CALLERS_AND_DOL_CENSUS.md).
+  Remaining handler/DSP regions, indirect/REL callers/cadence/domains stay open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2084,3 +2088,13 @@ wrapper reuses output pointers for up to15 calls, stops on nonzero child result.
 Unknown phases/count0/unbounded table indices/signed-min quantization remain
 source behavior rather than repaired inputs. Caller cadence/domain/original
 audio/full native binding remain open. Parent EVT-01 stays OPEN.
+
+## 2026-10-13 — Low-precision envelope caller and DOL census delivery
+
+Completed four regions and a six-service14-call census in
+[low-precision caller/census](../behavior/audio/MUSYX_ADSR_LOW_PRECISION_CALLERS_AND_DOL_CENSUS.md).
+Fifteen spans/80 anchors/15 calls verified;15 formula vectors checked. Captured
+voice/admission/elapsed-low, reused stack output/status-bit clearing, independent
+fresh descriptor pitch contribution and dirty replacement pinned. DOL census
+scans both nonempty text sections; indirect/REL calls and original execution
+remain open. Full handler/DSP envelope semantics and parent EVT-01 remain OPEN.
