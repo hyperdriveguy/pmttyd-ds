@@ -2,6 +2,27 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-12 — Water/void recovery: apply recovered bottomless drop-back lanes
+
+Reviewed the
+[water](../behavior/overworld/OVERWORLD_WATER_RECOVERY_NUMERICS.md) and
+[bottomless](../behavior/overworld/OVERWORLD_BOTTOMLESS_RECOVERY_NUMERICS.md)
+numerics deliverables against the `WaterRecovery` prototype. Independently
+re-read the ISO DOL and confirmed the mot_bottomless drop-back lanes
+(`0x80091bd4`: `[124]/[128]/[132]/[136] = 0.34/-0.002/-0.01/0.0`), so replaced
+the prototype's authored `-.001/-.002/+.00024/-.00004` cascade (which matched
+only `-0.002`) and pinned it in `tests/field_camera_tests.cpp`. Did **not**
+apply the `-6.0` sink velocity, the `0.08` travel step or the `state==15`
+handling: the deliverable leaves them unestablished, the `0.08` constant has no
+SDA source, there is no original stage-15 slot, and the prologue guard reads as
+`[Mario+124]==0.0` on the DOL (the contract states `!= 0.0`). The prototype
+still omits the `[Mario+552]`-mismatch condition and the `r4` default lanes.
+Breadcrumb: `requests/FIELD-RECOVERY-01.md`.
+
+Validation: `make test` 87 CTest / 90 Python pass, `make all` 3DSX pass,
+warning-free compile of the changed TU. Docs mid-restructure (inbox split into
+`requests/`); breadcrumbs went to the per-request file. Full-game incomplete.
+
 ## 2026-10-12 — Inbox request: EVT-01 positional SFX chain (ID 3)
 
 Worked the [request inbox](DOCUMENTATION_REQUESTS.md) as documentation
