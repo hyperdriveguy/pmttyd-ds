@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero hardware pitch/volume/DSP ramps
+
+Completed hwSetPitch/hwSetVolume/sal_setup_dspvol/salCheckVolErrorAndResetDelta;
+checked the EVT-01 portion. [Pitch/volume/DSP ramps](behavior/audio/MUSYX_HARDWARE_PITCH_VOLUME_AND_DSP_RAMPS.md)
+pins duplicate/event-slot/dirty publication, float triplets/ITD table, signed
+coarse division and residual correction/mask/reset order. Mixer internals,
+DSP ramp callers/consumers and valid index/FP/alias/runtime domains remain open;
+source constants do not establish measured cadence or audible playback.
+
+Validation: read-only ISO manifest passed eight spans (four bodies/one linked/
+two float literals/one numeric table),121 anchors/one call. Seven pitch/six
+ramp/eleven correction/four triplet-gate/five ITD-index vectors and all131071
+signed divide160 differences checked;128 ITD halves retained. Link audit passed840
+Markdown files/zero broken links; scoped `git diff --check` passed. Documentation/
+metadata only; no `make test`/`make all` rerun. Full original inspection ELFs/
+listings stay `/tmp`; no bodies/binary assets committed. Concurrent native edits
+excluded.
+
+Next: priority-zero EVT-01 full salCalcVolume/math/table providers, DSP ramp
+callers/command consumers, actual pitch/pan/float/flag/marker/record/studio/time/
+mask writers and valid index/FP/alias/lifetime/IRQ/concurrency domains; original
+volume/pitch/ramp/DSP/audio traces. Remaining precision/builder work,
+lower-priority inbox and full native/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero DSP initialization/activation
 
 Completed salInitDspCtrl/salActivateStudio/salInitHRTFBuffer/salActivateVoice/

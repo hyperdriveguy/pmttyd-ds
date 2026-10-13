@@ -377,6 +377,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [DSP initialization/activation](../behavior/audio/MUSYX_DSP_INITIALIZATION_AND_ACTIVATION.md).
   Partial failures/unchecked buffers/fresh bounds/list/publication/indexed
   key-off pinned; child/valid domain/original DSP/audio remain open.
+- [x] Complete hwSetPitch/hwSetVolume/sal_setup_dspvol/
+  salCheckVolErrorAndResetDelta local publication/ramp bodies —
+  [pitch/volume/DSP ramps](../behavior/audio/MUSYX_HARDWARE_PITCH_VOLUME_AND_DSP_RAMPS.md).
+  Duplicate/dirty/time/float/table/division/correction order pinned;
+  mixer/caller/domain/original DSP/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2129,3 +2134,13 @@ record/cache bindings, unchecked per-voice buffers, fresh count/base reads,
 studio/list publication, start time byte and indexed key-off are pinned.
 No allocator/cache/DSP child execution, safe raw domain, cleanup or original
 init/start/audio trace inferred. Parent EVT-01 remains OPEN.
+
+## 2026-10-13 — Hardware pitch/volume and DSP ramps delivery
+
+Completed four local bodies in [pitch/volume/DSP ramps](../behavior/audio/MUSYX_HARDWARE_PITCH_VOLUME_AND_DSP_RAMPS.md).
+Eight spans/121 anchors/one call verified;33 vectors and all131071 signed
+divide160 differences checked; original128-halfword ITD table/two float literals
+retained. Duplicate/dirty/event-slot publication, triplet conversion, raw table
+index, coarse preparation and residual correction/reset semantics pinned.
+Mixer internals/ramp caller domains/DSP consumers/original audio stay open;
+source constants are not measured timing. Parent EVT-01 remains OPEN.

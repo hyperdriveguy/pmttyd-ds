@@ -140,3 +140,9 @@ count/base/time/studio/record/link/descriptor providers, valid static extent/
 index/null/value/alias/partial-init/reinit/lifetime/IRQ/concurrency domains and
 original init/allocation/start/key-off/DSP/audio traces. Six local bodies are
 answered; full native/runtime binding and EVT-01 remain OPEN.
+
+## 2026-10-13 — Pitch/volume/ramp follow-up
+
+[Pitch/volume/DSP ramps](MUSYX_HARDWARE_PITCH_VOLUME_AND_DSP_RAMPS.md) closes hardware duplicate/dirty/event
+publication and two local DSP ramp helpers. Actual mixer internals/ramp callers/
+consumers/value/FP/alias domains and original audio remain open.
