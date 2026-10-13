@@ -390,6 +390,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   compose the local whole mixer — [volume interpolation/outputs](../behavior/audio/MUSYX_VOLUME_INTERPOLATION_AND_OUTPUT_BRANCHES.md).
   Original volume/pan tables, cross-table extra pairing, two/three gain
   paths and single/store order pinned; IEEE/domain/DSP/audio remain open.
+- [x] Complete __ieee754_fmod local child used by mixer phases —
+  [original IEEE remainder](../behavior/audio/IEEE_REMAINDER_USED_BY_MUSYX.md).
+  Exceptional arithmetic/finite bit normalization/remainder/reconstruction/
+  signed zero pinned; FPSCR/trap/NaN/runtime/original audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2172,3 +2176,12 @@ and266 original volume/pan floats/five literals retained. Nonzero mode ignores E
 zeros two slots and pairs extra lower pan samples with normal upper samples;
 pre-compression phases and source single/store order retained. IEEE/FP/index/
 alias/caller/DSP/original mixer/audio remain open. Parent EVT-01 stays OPEN.
+
+## 2026-10-13 — IEEE mixer remainder delivery
+
+Completed __ieee754_fmod in [original IEEE remainder](../behavior/audio/IEEE_REMAINDER_USED_BY_MUSYX.md).
+Two spans/94 anchors/zero calls verified;12 finite/seven exceptional-gate
+vectors and4096 exact integer-rational versus host fmod finite bit-pattern
+crosschecks passed. Signed-zero table and source normalization/subtract/shift/
+reconstruction/exceptional operation pinned. This is static/math evidence;
+original FPSCR/trap/NaN/runtime/mixer/DSP/audio remains open. Parent EVT-01 OPEN.

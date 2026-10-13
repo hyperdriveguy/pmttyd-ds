@@ -121,3 +121,10 @@ full salCalcVolume/native binding and EVT-01 remain OPEN.
 the local whole mixer. Cross-table extra pan pairing, source single/store order
 and nonzero mode's ignored third gain are retained. IEEE math/FP/index/alias/
 runtime domains, DSP consumers and original audio remain open.
+
+## 2026-10-13 — IEEE child follow-up
+
+[Original IEEE remainder](IEEE_REMAINDER_USED_BY_MUSYX.md) closes the local __ieee754_fmod body,
+including finite integer normalization/remainder/reconstruction and signed zero.
+Exceptional operation is pinned without inventing NaN payload/FPSCR/trap behavior;
+original execution/domain/mixer/DSP/audio remain open.

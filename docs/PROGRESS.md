@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero IEEE mixer remainder
+
+Completed __ieee754_fmod used by the mixer phase requests; checked the EVT-01
+portion. [Original IEEE remainder](behavior/audio/IEEE_REMAINDER_USED_BY_MUSYX.md)
+pins exceptional gate/double multiply-self-divide, finite exponent/significand
+normalization, subtract/shift loop, normal/subnormal reconstruction and signed
+zero. Original FPSCR/NaN/trap/runtime/mixer/DSP/audio evidence remains open.
+
+Validation: read-only ISO manifest passed two spans (complete body/numeric signed-
+zero table),94 anchors/zero calls. Twelve finite bit-pattern/seven exceptional-
+gate vectors checked; deterministic4096 finite exact integer-rational versus
+host math.fmod bit-pattern crosschecks passed. These are mathematical deductions,
+not original instruction execution or exception/FPSCR experiments. Link audit
+passed843 Markdown files/zero broken links; scoped `git diff --check` passed.
+Documentation/metadata only; no `make test`/`make all` rerun. Full original
+inspection ELF/listing/crosscheck generator stays `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 original FPSCR/rounding/trap/NaN/denormal execution,
+actual gain/coordinate/index/table/output/alias/lifetime/IRQ/concurrency domains,
+DSP ramp/command consumers and original mixer/audio traces. Remaining DSP/
+precision work, lower-priority inbox and full native/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero mixer interpolation/output branches
 
 Completed both salCalcVolume output regions and composed the whole local
