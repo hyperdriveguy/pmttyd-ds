@@ -113,3 +113,10 @@ Remaining: hwInitSamplePlayback/DoSetPitch, actual resident registry/descriptor/
 ID/ref/output/command/word158/length/flags/metric/pitch/caller providers, valid
 sorted/duplicate/member/range/zero-length/shared-cell/alias/IRQ/concurrency
 and original start/refusal/pitch/sample/audio traces. EVT-01 remains OPEN.
+
+### 2026-10-13 — Hardware/pitch provider follow-up
+
+[Complete hardware playback/pitch](MUSYX_HARDWARE_SAMPLE_PLAYBACK_AND_PITCH.md)
+now closes these child bodies, including inclusive time-slot reset/full descriptor
+copy and unchecked unsigned pitch table arithmetic. Actual descriptor/padding/
+ratio/slot/caller domains and DSP/original audio remain open.

@@ -331,6 +331,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   referenced lookup/descriptor/offset/hardware request paths —
   [sample start/resource lookup](../behavior/audio/MUSYX_MACRO_SAMPLE_START_AND_RESOURCE_LOOKUP.md).
   Multiply wrap/zero-length/source rereads retained; hardware/pitch/domain/runtime open.
+- [x] Complete hwInitSamplePlayback/DoSetPitch/SRC/filter/ITD local
+  bodies and original lookup tables —
+  [hardware playback/pitch](../behavior/audio/MUSYX_HARDWARE_SAMPLE_PLAYBACK_AND_PITCH.md).
+  Inclusive slot/raw padding/unsigned backward scan retained; domains/DSP/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1923,3 +1927,21 @@ ordering checked as deductions. Full fresh ELFs/listings stay `/tmp`; no native
 change/original execution/body/binary asset export. Hardware/pitch children,
 actual residency/descriptor/ID/ref/command/provider/domain/alias/IRQ/concurrency
 and original start/refusal/sample/audio remain OPEN.
+
+### 2026-10-13 — Hardware sample playback and pitch providers
+
+[Five complete bodies](../behavior/audio/MUSYX_HARDWARE_SAMPLE_PLAYBACK_AND_PITCH.md)
+close inclusive slot-control clear/preserved bit, full descriptor/padding copy,
+conditional field reset and SRC/filter/ITD publication, then unsigned pitch shift/
+divide/normalization/strict backward threshold scan and interpolation. Stable
+slot255 never ends; exact octave normalization reaches reads before declared
+pitch table. No count/table guard, signed interpolation, cents/127 repair or
+DSP/audio completion inferred. Diagnostic vector stops are not original returns.
+
+Validation: read-only manifest nine spans (five bodies/three tables/preceding
+halfword),146 anchors/three calls passes. Eight copy bindings, four finite slot/
+nine pitch vectors and mask/width/divisor/table/address/order checked as source
+deductions. Full fresh ELFs/listings stay `/tmp`; no native change/original
+execution/body/binary asset export. Actual pool/slot/descriptor/padding/ratio/
+divisor/preceding-memory/caller/domain/alias/IRQ/concurrency and DSP/format/
+consumer/original playback/pitch/audio remain OPEN.

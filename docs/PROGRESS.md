@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero hardware sample playback/pitch
+
+Completed hwInitSamplePlayback/DoSetPitch/SRC/filter/ITD for EVT-01; checked
+the corresponding inbox portion.
+[Hardware playback/pitch](behavior/audio/MUSYX_HARDWARE_SAMPLE_PLAYBACK_AND_PITCH.md)
+pins inclusive slot clear/preserved bit, full descriptor/padding copy, field/
+SRC/filter/ITD writes and unsigned pitch normalization/strict backward table scan/
+interpolation. Stable slot255 never ends; exact octave reaches pre-table reads.
+Actual input/extent/alias/DSP/runtime remain open; no arithmetic repair inferred.
+
+Validation: read-only ISO manifest passed nine spans (five bodies/three tables/
+preceding halfword),146 anchors/three calls. Eight copy bindings, four finite slot/
+nine pitch vectors and mask/width/divisor/table/address/order deductions checked.
+Diagnostic stops are not original returns. Link audit passed823 Markdown files/
+zero broken links; scoped `git diff --check` passed. Documentation/metadata only;
+no `make test`/`make all` rerun. Full original inspection ELFs/listings stay `/tmp`;
+no bodies/binary assets committed. Concurrent native edits excluded from this commit.
+
+Next: priority-zero EVT-01 actual hardware pool/time-slot/descriptor/padding/
+flags/SRC/ITD/pitch/caller providers, valid ordinal/table/ratio/divisor/preceding-
+memory/alias/IRQ/concurrency domains and DSP/format/loading/consumer/original
+playback/pitch/audio traces; other macro opcodes. Full native/runtime binding,
+lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero macro sample start/resource lookup
 
 Completed mcmdStartSample/dataGetSample/smpcmp and opcode16 for EVT-01;
