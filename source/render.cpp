@@ -61,7 +61,7 @@ bool Renderer::init() {
     if(!partnerTextures.imported)return false;
     C3D_TexSetFilter(&partnerTextures.texture,GPU_LINEAR,GPU_LINEAR);
     C3D_TexSetWrap(&partnerTextures.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
-    for(auto entry:{std::pair<const char*,Texture*>{"romfs:/font.t3x",&fontTexture},{"romfs:/harbor-actors.t3x",&harborTexture}}) {
+    for(auto entry:{std::pair<const char*,Texture*>{"romfs:/font.t3x",&fontTexture},{"romfs:/harbor-actors.t3x",&harborTexture},{"romfs:/message-window.t3x",&messageWindowTexture}}) {
         FILE* file=std::fopen(entry.first,"rb");if(!file)return false;
         entry.second->imported=Tex3DS_TextureImportStdio(file,&entry.second->texture,nullptr,false);std::fclose(file);
         if(!entry.second->imported)return false;
@@ -269,20 +269,81 @@ void Renderer::harborActors(const Game& g) {
 void Renderer::originalMessage(const Game& g) {
     const auto& message=g.harborStory.message;if(!message.active())return;
     const auto& font=harborMessageFont();
-    panel(14,122,372,106,rgb(251,242,223,message.alpha));
+    // Project through the same eye/aim/FOV/aspect as the native world backend.
+    const auto& frame=g.fieldCameraFrame;
+    auto project=[&](CameraPoint p,float& x,float& y) {
+        const float dx=frame.at.x-frame.eye.x,dy=frame.at.y-frame.eye.y,dz=frame.at.z-frame.eye.z;
+        const float length=std::sqrt(dx*dx+dy*dy+dz*dz),side=std::hypot(dx,dz);
+        if(length<=0 || side<=0)return false;
+        const float fx=dx/length,fy=dy/length,fz=dz/length,rx=-dz/side,rz=dx/side;
+        const float px=p.x-frame.eye.x,py=p.y-frame.eye.y,pz=p.z-frame.eye.z;
+        const float depth=px*fx+py*fy+pz*fz;
+        if(depth<=frame.nearPlane)return false;
+        const float focal=1/std::tan(frame.fov*3.14159265358979323846f/360.f);
+        x=(px*rx+pz*rz)*focal/depth*192; // 120/.625 maps to source X.
+        y=(px*(-rz*fy)+py*(rz*fx-rx*fz)+pz*(rx*fy))*focal/depth*240;
+        return std::isfinite(x) && std::isfinite(y);
+    };
+    float anchorX=0,anchorY=0,marioX=0,marioY=0;unsigned mode=0;
+    for(unsigned i=0;i<g.harborStory.actors.size();++i) {
+        const auto& actor=g.harborStory.actors[i];if(actor.key!=g.harborStory.speaker)continue;
+        // Native actor height adapter until NPC tribe+150 is imported.
+        const float height=i==0?.55f:harborActorMetrics[i==1?0:1][1]+harborActorMetrics[i==1?0:1][2];
+        if(project({actor.x*.01f,actor.y*.01f+height,actor.z*.01f},anchorX,anchorY) &&
+           project({g.progress.position.x,g.groundHeight+g.jumpHeight,g.progress.position.z},marioX,marioY))
+            mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
+        break;
+    }
+    const auto plan=messageWindowPlan(message.geometry,mode,anchorX,anchorY,message.alpha,message.windowType);
+    if(message.windowType!=11)messageBorder(plan,message.alpha,message.windowType);
+    if(!plan.textVisible)return;
     if(messageSerial!=message.serial){messageSerial=message.serial;messageIdentity=message.id();messageDynamic.clear();for(const auto& r:message.records)messageDynamic.push_back(r.value);}
+    uint32_t color=0x000000ff;
     for(size_t i=0;i<std::min(message.cursor,message.records.size());++i) {
-        const auto& r=message.records[i];if(r.code>=font.glyphs.size())continue;
-        const auto& glyph=font.glyphs[r.code];const float y=132+(2-float(r.y)-message.scroll)*.62f;
-        if(y<124 || y+glyph.height*r.scale*.62f>226)continue;
+        const auto& r=message.records[i];if(r.code==0xfff7){color=r.flags;continue;}if(r.code>=font.glyphs.size())continue;
+        const auto& glyph=font.glyphs[r.code];
+        float x=200+(plan.textX+r.x)*.625f,y=120-(plan.textY+float(r.y)+message.scroll-2)*.5f;
         const float dynamic=(r.flags&1)?messageDynamic[i]:1;
-        const float scale=.62f*r.scale*dynamic;
+        const float scaleX=.625f*r.scale*dynamic,scaleY=.5f*((r.flags&0x10000) && !(r.flags&1)?1:r.scale)*dynamic;
+        if(r.flags&2) {
+            auto jitter=[&](){messageRng^=messageRng<<13;messageRng^=messageRng>>17;messageRng^=messageRng<<5;return (messageRng%10000)%3;};
+            x+=jitter()*.625f;y-=jitter()*.5f;
+        } else if((r.flags&4) && !(r.flags&1)) {
+            const float phase=.01f*message.elapsed-.02f*(plan.textX+r.x);
+            x+=3.2f*std::cos(phase)*.625f;y+=3.2f*std::sin(phase)*.5f;
+        }
+        x+=float(glyph.width>>1)*(1-dynamic)*r.scale*.625f;
+        y+=12*(1-dynamic)*r.scale*.5f;
+        const float clipTop=120-plan.textY*.5f,clipBottom=clipTop+(message.windowType==1?126:100)*.5f;
+        // Native crop adapter: reject partially clipped masks rather than
+        // corrupting GPU scissor state used by the next screen.
+        if(y<clipTop || y+glyph.height*scaleY>clipBottom)continue;
         Tex3DS_SubTexture sub{};sub.width=glyph.width;sub.height=glyph.height;
         sub.left=glyph.x/512.f;sub.right=(glyph.x+glyph.width)/512.f;sub.top=1-glyph.y/256.f;sub.bottom=1-(glyph.y+glyph.height)/256.f;
-        C2D_Image image{&fontTexture.texture,&sub};C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(0,0,0,message.alpha),1.f);
-        C2D_DrawImageAt(image,26+r.x*.62f+float(glyph.width>>1)*(1-dynamic)*r.scale*.62f,
-                       y+12*(1-dynamic)*r.scale*.62f,.5f,&tint,scale,scale);
+        C2D_Image image{&fontTexture.texture,&sub};C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(color>>24,(color>>16)&255,(color>>8)&255,(color&255)*message.alpha/255),1.f);
+        C2D_DrawImageAt(image,x,y,.5f,&tint,scaleX,scaleY);
         if(r.flags&1)messageDynamic[i]=std::fma(.5f,dynamic-1,1.f);
+    }
+}
+void Renderer::messageBorder(const MessageWindowPlan& plan,uint8_t alpha,int type) {
+    const auto& b=plan.box;
+    auto image=[&](unsigned x,unsigned y,unsigned w,unsigned h) {
+        Tex3DS_SubTexture sub{};sub.width=w;sub.height=h;sub.left=x/1024.f;sub.right=(x+w)/1024.f;sub.top=1-y/512.f;sub.bottom=1-(y+h)/512.f;return sub;
+    };
+    C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(255,255,255,alpha),0.f);
+    // Shadow before fill; original ordinary indices13..16 and9..12.
+    for(unsigned pass=0;pass<2;++pass) {
+        if(plan.tail) {
+            const float bx=200+plan.tailX*.625f,by=120-plan.tailY*.5f;
+            const float ex=200+plan.tipX*.625f,ey=120-plan.tipY*.5f;
+            const float length=std::hypot(ex-bx,ey-by),angle=std::atan2(-(ex-bx),ey-by);
+            auto sub=image(600,pass?0:64,48,64);C2D_Image tail{&messageWindowTexture.texture,&sub};
+            const float sy=length/39,centerDistance=23*sy;
+            if(length>0)C2D_DrawImageAtRotated(tail,bx+(ex-bx)*centerDistance/length,by+(ey-by)*centerDistance/length,.4f,angle,&tint,plan.tailWidth*.625f/48,sy);
+        }
+        auto sub=type==1?image(600,pass?128:192,232,64):image(0,pass?0:176,560,176);
+        C2D_Image bubble{&messageWindowTexture.texture,&sub};
+        C2D_DrawImageAt(bubble,200+b.x*.625f,120-b.y*.5f,.4f,&tint,b.width*.625f/sub.width,b.height*.5f/sub.height);
     }
 }
 void Renderer::marioGroundShadow(const FieldShadowRecord& record) {
@@ -460,6 +521,11 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
     text(label,x+7,y+8,.48f,disabled?rgb(135,129,116):Ink);
 }
 void Renderer::overlay(const Game& g) {
+    if(g.harborStory.locked()){originalMessage(g);if(g.harborStory.failed)text(g.prompt(),25,112,.45f,Ink);return;}
+    if(g.scene==Scene::Dialogue) {
+        const auto plan=messageWindowPlan({},0,0,0,255);messageBorder(plan,255);
+        text(g.dialogue(),64,28,.5f,Ink);return;
+    }
     panel(8,7,174,28,Paper);
     char line[128];std::snprintf(line,sizeof(line),"Mario  HP %d/10",g.progress.hp);text(line,16,12,.54f,Ink);
     text((g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat)?"BATTLE STAGE":roomName(g.progress.room),205,12,.46f,rgb(255,246,222));
@@ -485,6 +551,7 @@ void Renderer::overlay(const Game& g) {
     }
 }
 void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
+    if(g.harborStory.locked() || g.scene==Scene::Dialogue)return;
     panel(6,5,308,32,Ink);text("ROGUEPORT FIELD NOTES",16,11,.59f,Paper);
     if(g.scene==Scene::Battle) {
         text("Partner: Goombella",12,49,.44f,Ink);
@@ -601,7 +668,7 @@ void Renderer::shutdown() {
     if(sky.imported) {Tex3DS_TextureFree(sky.imported);C3D_TexDelete(&sky.texture);}
     if(characterTextures.imported) {Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);}
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}
-    for(auto* texture:{&fontTexture,&harborTexture})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}
+    for(auto* texture:{&fontTexture,&harborTexture,&messageWindowTexture})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}
     if(imported) Tex3DS_TextureFree(imported);
     if(atlasReady) C3D_TexDelete(&atlas);
     if(vertices) linearFree(vertices);

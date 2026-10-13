@@ -43,5 +43,6 @@ romfs/*.pmshadow
 /romfs/messages/
 /romfs/font.pmfont
 /romfs/font.json
+/romfs/message-window.json
 /romfs/harbor-actors.bin
 /romfs/harbor-actors.json

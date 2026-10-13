@@ -44,11 +44,12 @@ private:
         uint64_t animationStart=UINT64_MAX;
     };
     Room plaza,stage;
-    Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture;
+    Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture;
     std::array<std::array<float,3>,2> harborActorMetrics{};
     mutable std::vector<float> messageDynamic;
     mutable std::string messageIdentity;
     mutable uint64_t messageSerial=0;
+    uint32_t messageRng=0x6d736777; // Presentation RNG adapter, separate from mechanics.
     ActorAnimationPack actorAnimations,partnerAnimations;
     ActorAnimationSample actorSample;
     FieldShadowGeometry shadowGeometry;
@@ -68,6 +69,7 @@ private:
     void marioGroundShadow(const FieldShadowRecord&);
     void harborActors(const Game&);
     void originalMessage(const Game&);
+    void messageBorder(const MessageWindowPlan&,uint8_t alpha,int type=0);
     int marioAirShadow(const FieldShadowRecord&);
     void shadow(Vec2 p,float radius,float floor=0);
     void vertex(float x,float y,float z,float u,float v,uint32_t color);

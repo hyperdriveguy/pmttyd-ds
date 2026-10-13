@@ -32,5 +32,35 @@ int main(int argc,char**) {
     assert(!p.open("bad","A<wait",font,1000));
     assert(p.open("scale","<scale 2>A\nB</scale>C",font,0));
     assert(p.records[0].scale==2 && p.records[2].y==-84 && p.records[3].scale==1);
+    assert(p.open("controls","<col ff000080><scaleX 2>A\n<pos 12 999><wave>B</wave></scale></col>C",font,0));
+    assert(p.records[0].code==0xfff7 && p.records[0].flags==0xff000080);
+    assert(p.records[1].scale==2 && (p.records[1].flags&0x10000) && p.records[1].y==-10);
+    assert(p.records[3].x==12 && p.records[3].y==-42 && (p.records[3].flags&4));
+    assert(p.records[4].code==0xfff7 && p.records[4].flags==255);
+    assert(p.records[5].scale==1 && !(p.records[5].flags&0x10004));
+    assert(p.open("placement","<wpos -240 200 480 160>A\nB<k><p><pos 20 10>C",font,0));
+    assert(p.geometry.x==-240 && p.geometry.y==200 && p.geometry.width==480 && p.geometry.height==160);
+    assert(p.records[5].x==20 && p.records[5].y==-58);
+    const auto geometry=p.geometry;
+    assert(!p.open("bad","<wpos 0 0 -1 100>A",font,0) && p.geometry.width==geometry.width);
+    assert(!p.open("bad","<col nope>A",font,0));
+    assert(p.open("small","<small>A\nB",font,0) && p.windowType==1);
+    assert(p.records[2].y==-32 && std::fabs(p.geometry.width-208.8f)<.001f);
+    // Left/right, equality, offscreen and missing-speaker placement routes.
+    assert(messageSpeakerMode(-100,0)==3 && messageSpeakerMode(100,0)==7);
+    assert(messageSpeakerMode(0,0)==7 && messageSpeakerMode(300,0)==2 && messageSpeakerMode(-300,0)==2);
+    const auto direct=messageWindowPlan({},0,0,0,128);
+    assert(direct.textVisible && !direct.tail && direct.box.x==-280 && direct.box.y==225);
+    const auto left=messageWindowPlan({},3,-100,-60,255),right=messageWindowPlan({},7,100,-60,255);
+    assert(left.textVisible && left.tail && right.tail && left.tailX<right.tailX);
+    assert(left.tipX>=-100 && right.tipX<=100 && left.tipY<left.tailY);
+    const auto above=messageWindowPlan({},3,-100,100,255);
+    assert(!above.tail); // Speaker above the source tail boundary suppresses it.
+    const auto invisible=messageWindowPlan({},3,-100,-60,0);
+    assert(!invisible.textVisible && invisible.box.width==10 && invisible.box.height==10);
+    const auto halfway=messageWindowPlan({},3,-100,-60,128);
+    assert(!halfway.textVisible && halfway.box.width>10 && halfway.box.width<560);
+    const auto small=messageWindowPlan({0,0,208.8f,57.6f},7,100,20,255,1);
+    assert(std::fabs(small.box.x+4.4f)<.001f && small.box.y==80 && small.textY==74);
     std::cout<<"source schedules, key waits, LF suppression, scrolling, fade and rollback passed\n";
 }

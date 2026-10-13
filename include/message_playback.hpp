@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include "message_window.hpp"
 namespace ttyd {
 struct FontGlyph {uint16_t x,y;uint8_t width,height,padding[2];};
 class MessageFont {
@@ -33,6 +34,8 @@ public:
     uint16_t acceptedKey=0,wait=0,state=0;
     uint8_t alpha=255;
     uint64_t serial=0; // Native draw-cache lifetime, independent of message ID.
+    MessageWindowGeometry geometry;
+    int windowType=0;
 private:
     std::string identity,raw;
     uint64_t lastTime=0,animationTime=0;

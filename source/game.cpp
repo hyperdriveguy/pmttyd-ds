@@ -482,7 +482,7 @@ bool groundReturn(const GroundContact& contact,ReturnPoint& point) {
     point=found->second;return true;
 }
 static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact* contact,float* slope=nullptr,
-                         FieldSlope* record=nullptr,bool rejectSteep=true,bool actorFilter=true) {
+                         FieldSlope* record=nullptr,bool rejectSteep=true,bool actorFilter=true,bool partnerFilter=false) {
     if(!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(low) || !std::isfinite(high) || low>high ||
        std::fabs(p.x)>4096 || std::fabs(p.z)>4096)return false;
     if(ground.empty()) {if(low>0 || high<0)return false;height=0;if(contact)*contact={};if(slope)*slope=0;return true;}
@@ -493,6 +493,8 @@ static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact
         // in the five currently packaged rooms; transform filters are deferred.
         const uint32_t flags=runtimeContact(ground[n].contact).attributes;
         if(actorFilter && !(flags&0x00080080) && !(flags&0x00800000) && (flags&4))continue;
+        // Ordinary partner chkfilter's early static-attribute branches.
+        if(partnerFilter && !(flags&0x00080080) && (flags&0x00800004))continue;
         const float* v=ground[n].v;
         const float normalY=(v[5]-v[2])*(v[6]-v[0])-(v[3]-v[0])*(v[8]-v[2]);
         if(ground[n].cull==1 && normalY<=0)continue; // Downward ray backface.
@@ -744,14 +746,14 @@ void Game::updatePartner() {
     PartnerFollowServices services;
     services.free=[](CameraPoint p){return walkable({p.x,p.z},p.y);};
     services.floor=[](CameraPoint p,float low,float high,float& height) {
-        GroundContact contact;
-        if(!groundWithin({p.x,p.z},low,high,height,&contact))return false;
+        GroundContact contact;FieldSlope slope;
+        if(!groundWithin({p.x,p.z},low,high,height,&contact,nullptr,&slope,true,false,true))return false;
         return !(contact.attributes&0x200);
     };
     services.project=[this](CameraPoint p){return projectCameraRoot(p,fieldCameraFrame.view,fieldCameraFrame.projection,fieldCameraFrame.viewport);};
     CameraPoint root{partner.x,partnerHeight,partner.z};
     partnerFollow.tick(root,{progress.position.x,groundHeight+jumpHeight,progress.position.z},
-                       airborne(),DashSpeed,services);
+                       fieldJump.jumping,fieldMovement.speed,services);
     partner={root.x,root.z};partnerHeight=root.y;partnerContact={};
     if(partnerFollow.motion==PartnerFollow::Motion::Ground) {
         float floor=root.y;groundAt(partner,root.y,floor,&partnerContact);
