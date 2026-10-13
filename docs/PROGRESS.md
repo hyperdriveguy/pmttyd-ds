@@ -2,6 +2,73 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original stationary candidacy and simulation paper facing
+
+Committed eee81fa: [stationary NPC binding](behavior/field/NATIVE_STATIC_NPC_CANDIDACY.md)
+adds portable visited-candidate transitions and binds original Chu3/Darkly
+first-admission turn, retained yaw, skipped-gate ownership and next-pass null
+interrupt consumption. The documentation agent recovered original
+npcCheckInterrupt and verified REL raw null words plus absent relocations for
+both exact source setup rows. Static loss posts secondary10000000; the next
+flags1/2-admitted NPC pass preserves only secondary00000f00 and clears
+state00001000 without restoring yaw or creating an event. Source profile
+admission is scoped to room2 and exact area/name IDs525f654d/e4c10e3d,
+so future areas reusing their character models do not inherit null scripts.
+Full interrupt/event metadata/providers remain future work.
+
+Native static NPC instances now own original yaw, message-driven pose clocks
+and paper Main/Inner preparation in simulation; the renderer reads their
+prepared matrix/pose clock without advancing retained facing on repeat draws.
+Scripted Frankly retains his event owner. Original artwork, source poses,
+message IDs/control tokens/attribution and room model batching through
+citro3d/tex3ds are retained. Talk start respects source no-turn flags and
+publishes its facing to the live instance. The shared candidate helper retains
+existing Goomba stop/resume callbacks and source no-turn/restore distinctions.
+Independent review caught angle-table rounding to360; candidate/talk headings
+now normalize through source reviseAngle with a boundary regression. No new
+story dialogue, branch fallback, story writes or replacement art/audio.
+No asset conversion/licensing change; existing local asset ledger applies.
+
+Validation: final shared `make test` passes141 CTest/103 Python,
+`/tmp/npc-static-candidate-shared-test-latest.log`. Isolated source snapshot
+`/tmp/pm-static-candidate-7a5rc5ru` with only owned implementation overlays
+passes138 CTest/103 Python, `/tmp/npc-static-candidate-isolated-test-final.log`.
+Tests distinguish first/repeated candidacy, wandering restore/start, static
+loss/request/next-pass consumption, no-turn actors and normalized near-Z
+heading. Original-data Darkly fixture settles the camera before approach,
+then verifies saved/retained yaw, skipped keys, local loss and later consumption.
+Original talk and existing Goomba/side-collision checks remain passing.
+Shared and isolated `make all` pass without warnings/errors, logs
+`/tmp/npc-static-candidate-shared-native-final.log` and
+`/tmp/npc-static-candidate-isolated-native-final.log`. Intermediate shared
+runs caught incomplete concurrent battle build registrations, missing pouch
+test and a battle-drop memory assertion; the final141-test run supersedes them.
+The isolated overlay excludes concurrent pouch edits. Link audit passes896
+Markdown files/zero broken links; whitespace and emulator-script compilation pass.
+
+Final isolated binary `artifacts/ttyd-static-candidate-final.3dsx` passes
+`tests/azahar_static_npc_talk.py` in separate Azahar/Xvfb profiles/captures
+`artifacts/azahar-static-candidate-chu-verified` and
+`artifacts/azahar-static-candidate-darkly-verified`; logs
+`/tmp/npc-static-candidate-chu-emulator-verified.log` and
+`/tmp/npc-static-candidate-darkly-emulator-verified.log`. Corrected script
+requires field HUD plus shaded Rogueport geometry before talk; Darkly requires
+original contact approach. Window onset performs no save; return admits save,
+retaining room2/story8, player contact bounds and checksum. Inspected actual
+original actors, field and speaker-anchored windows. Earlier fixed-delay script
+mistook title artwork for a window; those earlier green results are discarded.
+Captures show60fps exploration and51..58fps dialogue with two simultaneous
+software-emulator instances; these are smoke observations, not controlled
+hardware/dense-area benchmarks or matched original-runtime visual parity.
+ISO is read-only; binary packs/captures/profiles remain ignored, and user profile
+and saves are untouched. Concurrent battle/pouch/audio work is preserved.
+
+Next: original Goomba4 quest/switch/item-table/window binding, general actor
+script metadata and interrupt replacement/regular lifetime, complete ordinary
+talk return/cadence, original shared RNG/clock, additional original area actors/
+events/objects and matched Dolphin/New2DS rendering/performance measurements.
+The full requested remake goal remains active; this is an early Rogueport slice.
+
 ## 2026-10-13 — Inbox priority-zero stream allocation/length
 
 Completed sndStreamAllocEx/sndStreamAllocLength/ABI helpers; checked EVT-01
