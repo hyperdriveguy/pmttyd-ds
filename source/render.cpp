@@ -2,6 +2,7 @@
 #include "platform.hpp"
 #include "paper_fence_warp.hpp"
 #include "message_icons.hpp"
+#include "item_presentation.hpp"
 #include "world_shbin.h"
 #include "message_system_shbin.h"
 #include "field_camera.hpp"
@@ -24,6 +25,7 @@ uint32_t rgb(unsigned r,unsigned g,unsigned b,unsigned a=255) { return C2D_Color
 uint32_t shade(uint32_t c,float factor) { return rgb((c&255)*factor,((c>>8)&255)*factor,((c>>16)&255)*factor); }
 }
 bool Renderer::init() {
+    if(!loadItemPresentations("romfs:/item-presentations.bin"))return false;
     if(!C3D_Init(C3D_DEFAULT_CMDBUF_SIZE)) return false;
     c3dReady=true;
     if(!C2D_Init(2048)) return false;

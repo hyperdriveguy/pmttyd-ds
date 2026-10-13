@@ -603,3 +603,17 @@ icon.bin/icon.tpl header checks; inspection artifacts remain /tmp. No original
 asset/dialogue prose, source code, shared PROGRESS/index or emulator/profile/save
 edit. OW-INTERACT-01 stays OPEN for full rendering/backend/input/cadence and
 native quest/interpreter/inventory binding; this is not matched-runtime parity.
+
+### 2026-10-13 — Complete original item presentation metadata
+
+Explicitly delegated read-only documentation work recovered
+[item presentation metadata](../behavior/unit/ITEM_PRESENTATION_METADATA.md):
+itemDataTable803108a8/3520 has340 physical40-byte records; only zero record339
+lacks name/description keys. Every key for0..338 is uniquely in original
+msg/US/global.txt. All340 icon fields have bounded descriptors/frame references
+into613-image icon.tpl;305 distinct item icons, four animated item records.
+Exact consumer anchors, full-span/resource hashes, item95/107 keys/pointers and
+record338's distinct description key are pinned. Metadata-only census stays/tmp;
+no assets/prose/native implementation/index/PROGRESS/build/profile/save changes.
+Native rendering, clock/input ownership, original inventory/quest binding and
+matched Dolphin/hardware validation remain OPEN.

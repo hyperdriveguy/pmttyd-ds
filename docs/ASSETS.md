@@ -1309,3 +1309,27 @@ declared full-native-viewport projection adapter for this source texture result;
 original camera8/GX restoration and raster parity remain unverified. All local
 original models/packs/ELFs/captures remain ignored; original ownership/local-use
 licensing limits and read-only ISO handling are unchanged.
+
+## Original item presentation catalog and selector art (2026-10-13)
+
+Read-only US G8ME01 revision0 DOL itemDataTable803108a8,3520hex bytes,
+SHA256cd9e52c1f0946f785301879d0e9560a5b87860abd648e9721973159291d0add9,
+feeds `tools/item_presentation_assets.py`. Ignored
+`romfs/item-presentations.bin`/`.json` retain340 original indexed name/description
+keys, source pointer identities and icon IDs; no rewritten prose or imported
+weapon/game code. Keys resolve in original `msg/US/global.txt`; existing room
+lookup precedence remains. Record339 is null metadata, not a fallback item.
+See [native catalog](behavior/unit/NATIVE_ITEM_PRESENTATION_CATALOG.md) and
+[original metadata](behavior/unit/ITEM_PRESENTATION_METADATA.md).
+
+`tools/message_icon_assets.py` additionally decodes icon.bin IDs307/308 and
+445/446/447 using their original descriptors and icon.tpl images312/313 and
+465/466/467. Quest icons remain40x40, arrows48x48, stripe24x24 with all original
+pixels/frame timing,2px transparent atlas padding and no resampling. They fit
+existing512x512 RGBA8 `romfs/message-icons.t3x`; no GPU atlas dimension increase.
+Raw/decoded resources remain ignored `local-assets/message-icons/`; metadata
+and compiled packs remain ignored `romfs/`. Original icon source hashes are in
+[the window contract](behavior/message/ITEM_TABLE_SELECTION_WINDOW.md).
+Nintendo/Intelligent Systems resources have no redistribution grant; local
+extraction/conversion only. Nothing here authorizes distributing original art,
+messages, assets or ISO. Complete selector drawing/runtime fidelity remains open.

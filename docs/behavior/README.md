@@ -661,3 +661,6 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 
 - [Harbor source sequence startup](battle/HARBOR_SOURCE_SEQUENCE_STARTUP.md): original init/resource admission and ordinary FirstAct entry/fade/event gates through Turn ownership.
 - [Native demo chest effects](effect/NATIVE_DEMO_CHEST_EFFECTS.md)
+
+- [Original item presentation metadata](unit/ITEM_PRESENTATION_METADATA.md): physical table extent, original message keys, null record and icon census.
+- [Native item presentation catalog](unit/NATIVE_ITEM_PRESENTATION_CATALOG.md): indexed original metadata pack and shared selector art admission; UI/event binding remains open.
