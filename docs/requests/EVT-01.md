@@ -1360,6 +1360,16 @@ original contiguous/wrapped/partial/zero-return refill/audio remain OPEN.
 pins known local configuration writers,28 bounded literal-address candidates
 owned only by the five complete virtual bodies, and seven exact DOL entry
 calls from bootstrap/message/frame/updater. Within those five bodies, count/
+callback are only initialized0; no loop-size writer/nonzero callback installer
+is supplied. This scoped result is not proof that the original game never
+configures virtual sampling; indirect/REL/pointer/alias writers remain open.
+
+Validation: read-only predicate scan and independent direct-call decode; manifest
+10 spans (two whole text segments/five prior bodies/three callers),66 anchors/
+seven calls passes. Generic verifier checks bytes/targets, not independent
+replay of the scan's completeness. Scanner/generator stay `/tmp`; no native
+change/original execution/body/asset export. Actual nonzero configuration/
+callback implementation/transfer/result/providers and original playback remain OPEN.
 
 ### 2026-10-13 — Controller initialization, reset tables and channel defaults
 
@@ -1378,13 +1388,3 @@ deductions. Fresh full ELFs/listings stay `/tmp`; no native change/original
 execution/body/binary asset export. Actual callers/inputs, matrix/dirty/MIDI/
 last-note/filter consumers/other writers, memcpy/bounds/alignment/alias/IRQ/
 concurrency/reinit and original reset/controller/audio traces remain OPEN.
-callback are only initialized0; no loop-size writer/nonzero callback installer
-is supplied. This scoped result is not proof that the original game never
-configures virtual sampling; indirect/REL/pointer/alias writers remain open.
-
-Validation: read-only predicate scan and independent direct-call decode; manifest
-10 spans (two whole text segments/five prior bodies/three callers),66 anchors/
-seven calls passes. Generic verifier checks bytes/targets, not independent
-replay of the scan's completeness. Scanner/generator stay `/tmp`; no native
-change/original execution/body/asset export. Actual nonzero configuration/
-callback implementation/transfer/result/providers and original playback remain OPEN.
