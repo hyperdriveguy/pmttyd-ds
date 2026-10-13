@@ -6,6 +6,26 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 synthHandle fade/aux region and local body closure
+
+Delivered [fades/aux](behavior/audio/MUSYX_SYNTH_MASTER_PAUSE_FADES_AND_AUX_CALLBACKS.md).
+Complete final region pins zero-offset gate, master/pause coefficient/bitmap
+publication, mode requests/early exit and8-studio A→B/tag1/control-halfword
+callbacks. Prior queue/voice/clock plus this contract closes local whole
+synthHandle. Marked local portion complete; child/provider/runtime EVT-01 OPEN.
+
+Validation: generic read-only verifier9 spans (region/6 linked/whole fingerprint/
+zero literal),150 anchors/six resolved calls passes.6 modes/5 bitmap/16 studio-side
+rows are source deductions, not original execution. Full listing/ELF remains
+`/tmp`, source reverified. Link audit773 Markdown files/0 broken; whitespace checks
+pass. Docs/metadata only: no make rerun, native change or original body/asset
+export. Isolated index excludes unrelated staged/worktree work.
+
+Next/limits: fade/bitmap/mode/coefficients and queue/voice/time providers, PPC/
+alias/IRQ/concurrency domains, sequencePause/Mute/precision/mac/ADSR/aux children,
+callback installation and original scheduling/fade/audio traces. Continue
+priority0 source/backend then priority1 damage. No hardware/full-game completion.
+
 ## 2026-10-13 — Priority0 scoped synthesis job consumer and clock tail
 
 Delivered [consumer/clock](behavior/audio/MUSYX_SYNTH_JOB_DRAIN_VOICE_CONTROLS_AND_CLOCK.md).

@@ -158,8 +158,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete synthHandle job-drain/voice-control/index and clock-tail
   regions, hwFrameDone no-op —
   [job consumer/clock](../behavior/audio/MUSYX_SYNTH_JOB_DRAIN_VOICE_CONTROLS_AND_CLOCK.md).
-- [ ] Remaining synthHandle master-fade/aux middle, child handlers and
-  queue/voice/flags/time/domain/original scheduling/audio evidence.
+- [x] Complete remaining synthHandle master/pause fade and aux callbacks;
+  composed local whole body —
+  [fades/aux region](../behavior/audio/MUSYX_SYNTH_MASTER_PAUSE_FADES_AND_AUX_CALLBACKS.md).
+- [ ] synthHandle child handlers, fade/queue/voice/flags/time/providers/
+  numerical/concurrency domains and original scheduling/audio evidence.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1111,3 +1114,17 @@ fingerprint),163 anchors/10 resolved calls passes.3 queue/5 index/5 clock vector
 and65536 pedal cases derived only. Full fresh ELF/listing stays `/tmp`; no native/
 body/asset export. Remaining middle/child/provider/member/alias/IRQ/concurrency
 and original scheduling/voice/audio remain OPEN.
+
+### 2026-10-13 — Remaining synthHandle fade/aux region and local closure
+
+[Complete final local region](../behavior/audio/MUSYX_SYNTH_MASTER_PAUSE_FADES_AND_AUX_CALLBACKS.md)
+closes zero-offset admission, live master versus captured pause bitmap clear,
+ordered single coefficient updates/snap/stop-pause-mute requests, early empty
+scan exit and8-studio A→B four-param/tag1 callbacks. Prior queue/voice/clock plus
+this region covers local entire synthHandle, separate from child execution.
+
+Validation: read-only manifest9 spans (region/6 linked/whole fingerprint/zero),
+150 anchors/six resolved calls passes.6 modes/5 bitmaps/16 studio-side rows are
+source deductions, not execution. Full listing/ELF stays `/tmp`; no native/body/
+asset export. Fade/mode/providers/numeric/IRQ/concurrency/seqPause-Mute/aux and
+other children/callback installation/original scheduling/audio remain OPEN.

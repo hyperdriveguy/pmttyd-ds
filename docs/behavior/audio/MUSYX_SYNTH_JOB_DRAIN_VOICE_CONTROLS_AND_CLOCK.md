@@ -104,3 +104,5 @@ and auxiliary controller callbacks. Other open work: mac/precision/zero/pedal/
 ADSR/hardware child internals, queue/index/voice/flags/time providers and valid
 member/null/alias/IRQ/concurrency domains, original scheduling/voice/audio traces.
 Two local regions and no-op leaf are answered; full native/source/runtime OPEN.
+
+[Complete master/pause fades and aux callback region](MUSYX_SYNTH_MASTER_PAUSE_FADES_AND_AUX_CALLBACKS.md) now closes the remaining local synthHandle section. The composed local whole body is answered; child/provider/numeric/concurrency/original execution remain open.
