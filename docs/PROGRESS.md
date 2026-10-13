@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero macro pan/volume/envelopes
+
+Completed pan/surround/scale/envelope/fade/sndConvert2Ms/curve lookup/comparator
+and opcodes13..15/20..21 for EVT-01; checked the corresponding inbox portion.
+[Pan/volume/envelopes](behavior/audio/MUSYX_MACRO_PAN_VOLUME_AND_ENVELOPE_COMMANDS.md)
+pins raw versus converted pan duration,127 versus128 scale/ramp arithmetic,
+curve interpolation/sentinel and signed step/publication. Pre/post-child source
+captures retained; no unified divisor/post-curve clamp or immediate job inferred.
+Actual command/divisor/value/curve/mix/DSP/runtime domains remain open.
+
+Validation: read-only ISO manifest passed19 spans (eight bodies/five regions/
+five linked/table),210 anchors/19 calls/five registrations. Five pan/six scale/
+four target/four curve/four step vectors and division/mask/width/address/order
+checked as deductions. Link audit passed828 Markdown files/zero broken links;
+scoped `git diff --check` passed. Documentation/metadata only; no `make test`/
+`make all` rerun. Full original inspection ELFs/listings stay `/tmp`; no bodies/
+binary assets committed. Concurrent native edits excluded from this commit.
+
+Next: priority-zero EVT-01 other macro opcodes and actual command/rate/pan/volume/
+curve/registry/flag/caller writers, valid raw-versus-converted divisor/value/
+alias/shared-cell/IRQ/concurrency domains and envelope/mix/job/DSP consumers;
+original pan/fade/audio traces. Full native/runtime binding, lower-priority inbox/
+full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero random notes/pitch lookup
 
 Completed mcmdRandomKey/sndGetPitch/sndPitchUpOne/unsigned conversion helper

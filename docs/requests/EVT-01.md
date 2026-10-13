@@ -343,6 +343,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   conversion helper and opcode23 with original float tables/literals —
   [random notes/pitch lookup](../behavior/audio/MUSYX_RANDOM_NOTE_AND_PITCH_LOOKUP.md).
   RNG order/raw absolute endpoints/single precision retained; domains/runtime open.
+- [x] Complete pan/surround/scale/envelope/fade, sndConvert2Ms and
+  curve lookup/comparator plus opcodes13..15/20..21 —
+  [pan/volume/envelopes](../behavior/audio/MUSYX_MACRO_PAN_VOLUME_AND_ENVELOPE_COMMANDS.md).
+  Raw versus converted duration/127 versus128/curve/store order retained; runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1986,3 +1990,20 @@ cases and exact float literals/table identity checked as deductions. Full fresh
 ELFs/listings stay `/tmp`; no native change/original execution/body/binary asset
 export. Actual seed/command/note/rate/table/float/domain/alias/IRQ/concurrency,
 consumers and original random-note/pitch/audio remain OPEN.
+
+### 2026-10-13 — Macro pan, volume scaling and envelope/fade commands
+
+[Eight bodies/five regions](../behavior/audio/MUSYX_MACRO_PAN_VOLUME_AND_ENVELOPE_COMMANDS.md)
+close raw-duration pan step with converted duration field,127 scale versus128
+ramp target, curve lookup/sentinel/interpolation, downshift/minimum divisor and
+signed envelope/fade step/publication. Curve result is not post-clamped; envelope
+uses pre-conversion old volume for start but fresh volume for target. No unified
+divisor, generic clamp/snapshot, automatic job or audible gain/pan inferred.
+
+Validation: read-only manifest19 spans (eight bodies/five regions/five linked/
+table),210 anchors/19 calls/five registrations passes. Five pan/six scale/four
+target/four curve/four step vectors, division/mask/width/address/order checked as
+deductions. Full fresh ELFs/listings stay `/tmp`; no native change/original
+execution/body/binary asset export. Actual command/rate/pan/volume/curve/registry/
+flag/divisor/value/caller/domain/alias/IRQ/concurrency and mix/envelope/DSP/
+original pan/fade/audio remain OPEN.
