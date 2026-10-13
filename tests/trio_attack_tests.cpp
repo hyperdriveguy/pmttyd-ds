@@ -157,6 +157,45 @@ int main(){
     for(unsigned id:{4u,5u})assert(game.trioAttack.readWord(0x84100020+id*0x1000,value) && ((value>>24)&255)==0 && ((value>>8)&255)==1);
     assert(game.progress.originalStory==11 && game.fieldBattleState().result==0 && !game.fieldControlEnabled() && !game.saveRequested);
     assert(game.progress.position.x==fieldPosition.x && game.progress.position.z==fieldPosition.z && game.progress.hp==checkpoint.hp);
+    game.trioCommands.chooseCommand(1);game.tick(advance);
+    assert(game.trioCommands.state==TrioBattleCommands::State::Target && game.trioCommands.count()==1 && game.trioCommands.selected()[0]==4);
+    game.tick(advance);game.tick(Input{});
+    for(unsigned n=0;n<1500 && !game.trioAttack.pendingFunction() && game.trioAttack.commandActor()!=2;++n)game.tick(Input{});
+    assert(!game.trioAttack.pendingFunction() && game.trioAttack.commandActor()==2);
+    assert(game.trioAttack.readWord(0x8410410c,value) && value>>16==1);
+    assert(game.trioAttack.readWord(0x84104278,value) && value==0x10117);
+    assert(game.trioAttack.readWord(0x84001cb8,value) && value==0);
+    assert(game.trioBattleIntro.actors[0].pose=="M_S_1" && game.trioBattleIntro.actors[5].pose=="TGK_S_1");
+    for(unsigned o:{0x1ca0u,0x1ca4u,0x1ca8u,0x1cacu})assert(game.trioAttack.readWord(0x84000000+o,value) && value==0);
+    for(bool successful:{false,true}) {
+        Game charged;charged.restore(checkpoint);
+        for(unsigned n=0;n<3600 && !charged.trioBattleActive;++n)charged.tick(advance);
+        for(unsigned n=0;n<3600 && !charged.trioBattleIntro.finished;++n)charged.tick(advance);
+        for(unsigned n=0;n<3000 && !charged.trioAttack.pendingFunction();++n){
+            if(charged.trioAttack.readWord(0x84000000,value) && value>>16==2 && charged.trioAttack.commandActor()==1)break;
+            Input next;next.physicalSnapshot=true;
+            const auto state=charged.trioCommands.state;
+            if(!charged.trioAttack.active() && (state==TrioBattleCommands::State::Command || state==TrioBattleCommands::State::Target))next=advance;
+            charged.tick(next);
+        }
+        assert(!charged.trioAttack.pendingFunction() && charged.trioCommands.actor==1);
+        charged.trioCommands.chooseCommand(1);charged.tick(advance);charged.tick(advance);
+        bool released=false,heldSeen=false;uint32_t settledResult=1,classification=0;
+        for(unsigned n=0;n<1500 && !charged.trioAttack.pendingFunction() && charged.trioAttack.commandActor()!=2;++n){
+            if(charged.trioAttack.readWord(0x84001f50,value) && value>=uint32_t(successful?5:2))released=true;
+            Input next;next.physicalSnapshot=true;next.x=released?0.f:-1.f;charged.tick(next);
+            if(!released && charged.trioAttack.readWord(0x84001034,value))heldSeen|=(value&0x40000)!=0;
+            if(charged.trioAttack.readWord(0x84001cb8,value) && !(value&1)){settledResult=value;assert(charged.trioAttack.readWord(0x84001cf0,classification));}
+        }
+        assert(!charged.trioAttack.pendingFunction() && charged.trioAttack.commandActor()==2);
+        assert(heldSeen && released && settledResult==(successful?2u:0u) && classification==(successful?3u:1u));
+        assert(charged.trioAttack.readWord(0x8410410c,value) && value>>16==(successful?0u:1u));
+        assert(charged.trioAttack.readWord(0x84104278,value) && value==(successful?0x30717u:0x10117u));
+        assert(charged.trioBattleIntro.actors[5].hidden==successful);
+        assert(charged.trioAttack.readWord(0x84000030,value) && value==(successful?0u:0x84104000u));
+        for(unsigned o:{0x1ca0u,0x1ca4u,0x1ca8u,0x1cacu})assert(charged.trioAttack.readWord(0x84000000+o,value) && value==0);
+        assert(charged.progress.originalStory==11 && charged.fieldBattleState().result==0 && !charged.fieldControlEnabled());
+    }
     for(uint32_t button:{0x100u,0x200u}) {
         Game defended;defended.restore(checkpoint);
         for(unsigned n=0;n<3600 && !defended.trioBattleActive;++n)defended.tick(advance);
@@ -190,5 +229,5 @@ int main(){
                 [](const ProfessorServiceRequest& r){return r.function==0x8010510c && r.command==0x803516b8;}));
         }
     }
-    std::cout<<"Original Jump damage, owned reactions, return/idle, source move consumption, Mario-to-Goombella handoff, persistent Headbonk damage, deferred removal and source enemy impact/recovery, private defence and audience drain passed\n";
+    std::cout<<"Original Jump damage, owned reactions, return/idle, source move consumption, Mario-to-Goombella handoff, persistent Headbonk damage, deferred removal and source enemy impact/recovery, private defence, audience drain and original failed/charged Hammer passed\n";
 }

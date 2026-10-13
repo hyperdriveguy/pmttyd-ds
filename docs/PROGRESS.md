@@ -5390,3 +5390,64 @@ inventing an impact schedule. Then conditional Spike warning/counter, successful
 Jump/Headbonk follow-ups, Para wing-fall, conclusion and original field/story
 return. Documentation work has recovered the Hammer dependency map from the
 request inbox/read-only original; full prologue completion remains unproven.
+
+## 2026-10-13 — Original ordinary Hammer event and held-left native command
+
+Original weapon80353de8 launches wrapper80416c40/core8035d6d4 through the
+persistent VM. Its approach/ftomsec windup, M_H_1A/B/C poses, StartAC/ResultAC
+poll, swing WAIT7 and source damage/result/recovery branches run unchanged.
+No fixed impact tick is introduced. AcSetParamAll preserves resolved sentinels,
+mode remains raw, and the level helper reads signed pouch99. Fresh pouch98/99
+are explicitly initialized1; imported field upgrades remain unbound.
+
+ID3 now round-trips every documented packed Hammer field, including source
+registration, shared signed forced counter, stage/countdown/scratch/handles,
+actor automatic/options/difficulty and suppression. General pad atBf2c receives
+full native samples independently of private guard B1d1c. Held-left comes from
+B1034, not an A/B edge. Source manager return0 clears main only; original1007
+clears all four pointers. Stop writes1005 and the original60-step cleanup runs.
+Raw-output0 evt_snd_sfxon retains its original sound key without writing a fake
+voice result. Charge cue handle0 is a presentation adapter; actual cue/macro
+playback and original gauge drawing remain unfinished. Circle Pad prompts are
+presentation adaptations, not story dialogue.
+
+Hammer power now reads the selected source weapon's words, actual pouch98/99
+and U2ff/U300 bonuses through recovered callbacks/calculators. Fresh Hammer
+hits ground Goomba(kind1) and Spiked(kind3); W78 resistance2 prevents the early
+spike counter in this admitted scope. Para's original flying kind is2. No-input
+and early release cause H1/code10117, leaving Spiked1HP. Stage5 held-left release
+produces result2/class3/H2/code30717, original Spiked death/reward/registry and
+visual removal, then Goombella's command menu. Earlier guard/counter/turn
+bookkeeping remains green. HP0 does not bypass original death or manufacture
+victory/field return.
+
+Original M_H_1A/B/C are imported from read-only ISO a/b_mario/a/a_mario-, using
+the existing atlas/mesh pipeline. Data-only script banks already contained the
+source Hammer. Extracted assets/packs and binaries stay outside source history.
+No new dialogue is authored, and no generated Hammer artwork or tones are used.
+
+Validation: `make test` passes134/134 CTest and103/103 Python tests
+(`/tmp/trio-hammer-tests-final.log`). Focused integration covers source target
+occlusion (Spiked only after Goomba removal; airborne Para excluded), timeout,
+early/full-stage release via full physical snapshots, exact HP/result/class/code,
+original death/removal and Goombella handoff, four-pointer cleanup, story11/
+result0/field lock. `make all` and `make debug-short` pass
+(`/tmp/trio-hammer-all-final.log`, `/tmp/trio-hammer-native-final.log`) without
+compiler warnings. `git diff --check` passes.
+
+Isolated Azahar: `artifacts/azahar-trio-hammer`, immutable
+`artifacts/trio-hammer-snapshot` debug-short binary/ELF, underground-story11
+fixture, 48second boot and `tests/azahar_trio_hammer.py`. Reviewed screenshots
+show Hammer menu/Spiked target, original hammer geometry/windup/swing,
+Circle Pad prompt and restored Goombella Headbonk menu after no-input recovery.
+Native early/full charge-window success is host-verified, not captured/measured
+on hardware. Other emulator profiles/saves are untouched; no hardware FPS or
+Dolphin parity claim is made.
+
+Next: bind original Para wing-fall/damage graph and ground replacement parts/
+poses/scripts. ChangeKind writes U8 while retaining original U10; source model
+bank remains c_kuribo, so do not invent a replacement resource. Then Jump/
+Headbonk successful follow-ups, Spike warning/counter, full conclusion and
+original field/story return. Gauge/voice, optional stylish/teaching/mask2,
+nonfresh status/crowd/equipment and original timing/numeric parity remain open.
+The full original-fidelity playable prologue goal remains active and incomplete.

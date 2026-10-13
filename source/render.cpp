@@ -996,7 +996,7 @@ void Renderer::overlay(const Game& g) {
         }
         if(g.trioBattleActive && (g.trioCommands.state==TrioBattleCommands::State::AttackReady || (g.trioCommands.state==TrioBattleCommands::State::Closed && g.trioAttack.active()))) {
             if(g.trioAttack.pendingFunction()){panel(16,20,368,30,Paper);text("Development notice: source damage services pending",25,28,.43f,Ink);}
-            else if(g.trioAttack.active()) {panel(16,20,170,30,Paper);text("A: action command",25,28,.5f,Ink);}
+            else if(g.trioAttack.active()) {panel(16,20,170,30,Paper);text(g.trioCommands.state==TrioBattleCommands::State::AttackReady && g.trioCommands.attack && g.trioCommands.attack->weapon==0x80353de8?"Hold left, then release":"A: action command",25,28,.5f,Ink);}
             else text(g.trioAttack.finished()?"Development notice: turn scheduling pending":"Development notice: original attack event pending",25,112,.45f,Ink);
         }
         if(g.storyPresentation().pendingService)text("Development notice: original battle backend pending",25,112,.45f,Ink);
@@ -1041,7 +1041,7 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
         } else {
             if(g.trioAttack.active()) {
                 text(commands.commandName(commands.command),12,76,.63f,Ink);
-                text(g.trioAttack.pendingFunction()?"Development notice: source damage services pending":"A: action command",12,174,.42f,Ink);
+                text(g.trioAttack.pendingFunction()?"Development notice: source damage services pending":g.trioCommands.state==TrioBattleCommands::State::AttackReady && g.trioCommands.attack && g.trioCommands.attack->weapon==0x80353de8?"Hold Circle Pad left, then release":"A: action command",12,174,.42f,Ink);
             } else {
                 text(g.trioAttack.finished()?"Development notice: turn scheduling pending":"Development notice: original attack event pending",12,76,.42f,Ink);
                 if(!g.trioAttack.finished())text("B: return to target selection",12,174,.44f,Ink);

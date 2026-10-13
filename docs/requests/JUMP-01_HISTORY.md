@@ -2202,3 +2202,25 @@ attrs12000000, levelbyte1, signedpriority/span88/890, parts/init/data pointers;
 SetMaxMoveCount0→sourceTurnFirstreset0/state10. Native dummyKinds6shouldbe
 replacedthroughimportedgroupowner beforeusingfreshoriginalTurnFirstservices.
 No nativeedit/commit;git diff --check passed.
+
+### 2026-10-13 delivery: ordinary Hammer used underground trio binding
+
+New [battle contract](../behavior/battle/ORDINARY_HAMMER_USED_TRIO_BINDING.md)
+pins originalW80353de8→wrapper80416c40→387cmdcore8035d6d4; freshmask2clear
+N4/T25/difficulty3,approach/precheck,level1M_H_1A/B/C,actualResultAC→WAIT7
+impact and100/20100branches. ExistingHammerCommand/ActionCommandView/shared
+VM/damage APIs mapped; packedID3main/result/delete lifecycle/heldgeneralpad/
+sharedforcedcounter/levelP99/Hammerpower80189c38 remain concreteintegration
+requirements. No fabricatedfixedimpact schedule orautoselectedHammer;
+originalJumpSpikedFranklywarningremainsconditionalsourcegraph. Display/audio/
+nonfresh/stylish/firstattackproviders remainexplicitrequests. Documentation-only,
+no nativeedits/commit;git diff --check validation only.
+
+### 2026-10-13 delivery: Hammer used evt_snd_sfxon8015235c
+
+ClosedoriginaleventtwoRAWoperands/playback/output0discard/noGetValue/return2
+in [audio wrapper](../behavior/audio/BATTLE_POSITIONAL_SFX_START_WRAPPERS.md#original-evt_snd_sfxon-raw-event-wrapper),
+linkedfromHammertrio contract. Actual8035e128 keySWING1 output0requiresno
+fakehandleforretainedoriginalsoundrequest; nonzeroRAWoutputneedsactualvoice
+providerorremainspending. Underlyingmacro/sample/playbackremainseparate.
+Docs-only/no nativeedits/commit;git diff --check passed.

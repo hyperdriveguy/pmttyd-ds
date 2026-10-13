@@ -148,3 +148,34 @@ consistent with the accessor family, which publishes position into
   established.
 - Callers of `psndSFXOnEx_3D` — none are documented in this repository.
 - No original execution trace.
+## Original evt_snd_sfxon raw event wrapper
+
+2026-10-13 follow-up fromordinaryHammer usedsource pending. Complete US
+`evt_snd_sfxon8015235c/64` andpsndSFXOn800d98bc/3c inspected read-only;
+/tmp/trio-hammer-sfxon.dis/.elf andtrio-hammer-psnd-on.dis/.elf are ignored
+inspection evidence. This closes eventABI, notunderlyingkey/macro/sample/
+voice playback completion.
+
+Twoeventoperands are **both RAW**:
+`(rawSoundKeyPointer,rawOptionalIntOutputToken)`.
+Readentry18argumentpointer; capturewordarg1 asrawtoken, wordarg0 askeyinput.
+Thereisno evtGetValue/evtGetFloat, actortranslation, firstcallgate, nullkeyskip,
+positionlookup, delay, voicehandleclassification, allocation or RNGinwrapper.
+CallpsndSFXOn(key) onbothbranches. If **rawarg1==0**, discardregisterreturn
+andperformno eventwrite. Ifrawarg1!=0, passreturnedword unchangedasintto
+`evtSetValue(event,rawarg1,returnedHandle)`. Return2.
+
+Arawlocalvariabletoken whose currentvalue0 isstillnonzeroRAWandrequestsoutput;
+thisisnotconditional onresolvedlocalvalue. Neither keynoroutputtokenisresolved
+beforeplayback. UnderlyingpsndSFXOn passeskey,255,255,0,NULLposition,0,10hex,0
+to__psndSFXOn800d9934. Itsresult/voiceidentity/resources areownedbythatservice,
+notinventedbyeventwrapper. Thereisno Off orretainedvoicefieldwritehere.
+
+UsedordinaryHammercommand8035e128 haskey802ef2dc
+SFX_MARIO_HAMMER_SWING1 and **literaloutput0**. A scopednative retainedoriginal
+soundrequestneednotfabricate avoicehandlefor thisdiscarded-return branch;
+callbackmaycompleteevent2 whileactualaudiointegrationremains explicitly
+unboundpresentation. Itmuststillrecord/requestthisauthoredkey. Fornonzerooutput,
+provideanactualnativevoicehandle adapterorretainpending ratherthanstoringan
+unownedfake0/−1. Sourcewrapperitselfdoesnotnormalizefailedhandles. Existing
+movement/chargevoice owners aredistinctfromthisnonpositionaloneshotwrapper.
