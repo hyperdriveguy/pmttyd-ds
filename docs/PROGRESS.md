@@ -2,6 +2,34 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Emulator performance review
+
+Reviewed the renderer's per-frame costs: map animation vertex updates/cache flushes,
+material batch submission, actor pose evaluation, and triangle-level exterior
+cutaway checks. Existing size reductions are documented in [asset provenance](ASSETS.md):
+source maps cap textures at128 pixels, and original character atlases trim unused
+regions. No code optimization was justified by this pass; preserving original
+geometry, animation, culling and gameplay behavior takes priority until a measured
+hotspot is found.
+
+Isolated Azahar software-renderer captures use separate profiles under
+`artifacts/azahar-perf-plaza/` and `artifacts/azahar-perf-professor/`. The plaza
+boot overlay showed60 FPS,1.63ms simulation,5.1ms CPU and0.5ms GPU. The professor
+story8 fixture showed60 FPS,4.15ms simulation,5.3ms CPU and0.5ms GPU. The captures
+are brief overlay samples, not percentile/frame-time traces. The attempted
+walkthrough completed, but its movement capture hid the timing overlay behind a
+development notice, so it provides no moving-camera timing result.
+
+No `make test` or `make all` was run because this was a read-only performance
+review and the shared worktree contains unrelated in-flight implementation edits.
+The emulator reports steady60 FPS with CPU/GPU headroom in these scenes; no
+reproducible emulator dip was observed. Software Azahar timing does not establish
+real 2DS XL performance. Next: collect repeated per-frame timings on hardware and
+capture cutaway-active movement without overlays before changing hot paths. If
+original-equivalent behavior and measured hardware performance conflict, track
+the affected behavior as a high-priority fidelity/performance task rather than
+silently changing it.
+
 
 
 
