@@ -84,8 +84,8 @@ Validation: full Entry verifier33 bodies/441 anchors/11 spans; UnitSetup8 bodies
 blocks; input cadence11 hashes/154 anchors/28 calls/3 data bindings; boss Jump
 10 fingerprints/55 instructions/9 constants; lecture helper roles and complete
 general behavior verifier pass. Setup/TimingA/count/result reader listings
-regenerated to `/tmp/inbox-*.elf`, read-only ISO. Final document link and
-whitespace checks recorded with the delivery commit. Documentation only:
+regenerated to `/tmp/inbox-*.elf`, read-only ISO. `python3 tools/check_doc_links.py`:703 Markdown files,0 broken links;
+`git diff --check` passes. Documentation only:
 `make test`/`make all` not rerun. Unrelated staged/native edits remain excluded.
 
 Limitations/next: actual loadout/stat/bonus and remaining counter writers, full
