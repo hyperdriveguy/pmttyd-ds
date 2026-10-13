@@ -570,6 +570,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete SoundSSSetVolCh — [volume setter](../behavior/audio/GAME_STREAM_VOLUME_CACHE_AND_REQUESTS.md).
   Low8 float10-before-floatc, fresh gates/recaptured pool and inline pan/dual
   request order pinned; providers/FP/original volume/audio remain open.
+- [x] Complete SoundSSMainInt/DVDMgrReadAsync/cache_flush — [interrupt engine](../behavior/audio/GAME_STREAM_INTERRUPT_REFILL_COPY_AND_LATCH.md).
+  Three-row gates, unsigned chunk/strict32 advance, DVD/ARAM request and
+  pending publication, companion copy/shared latch/bridge pinned; callback/
+  manager/providers/SDK/original IRQ/IO/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2825,3 +2829,11 @@ Four spans/102 anchors/three calls verified; six cache/eight gate/seven split/
 four type vectors and pool bindings checked. Low8 float10 then floatc in old
 row precede fresh gates and new-row pan/mix routing. Providers/FP/original
 volume/audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Game stream interrupt engine delivery
+
+Completed [interrupt engine and two bridges](../behavior/audio/GAME_STREAM_INTERRUPT_REFILL_COPY_AND_LATCH.md).
+Six spans/302 anchors/seven calls and two callback bindings verified; twelve
+chunk/ten stable gate/six latch/six copy vectors checked. Request-before-pending,
+strict alignment and fresh companion/latch ordering pinned. Callback/manager/
+providers/SDK/original IRQ/IO/audio/native binding open; EVT-01 stays OPEN.
