@@ -291,6 +291,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   free/accounting and hardware priority storage —
   [priority/free writers](../behavior/audio/MUSYX_PRIORITY_LIST_AND_VOICE_FREE_WRITERS.md).
   Kill sort labels corrected; actual caller/metric/list domains/runtime open.
+- [x] Complete voiceBlock/voiceUnblock/voiceAllocatePeek reservation,
+  protection/synthetic identity, recycle and output admission —
+  [block/unblock/peek](../behavior/audio/MUSYX_VOICE_BLOCK_UNBLOCK_AND_ALLOCATION_PEEK.md).
+  Raw ordinal versus low8 identity retained; VID/caller/domain/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1711,3 +1715,20 @@ revalidated. Full fresh ELFs/listings stay `/tmp`; no native change/original
 execution/body/binary asset export. Caller/metric/kind/identity/other writers,
 valid slot/member/sorted/cycle/alias/reinit/IRQ/concurrency/accounting/rollback,
 hardware/DSP consumers and original allocation/free/audio remain OPEN.
+
+### 2026-10-13 — Voice block/unblock and allocation peek
+
+[Three complete local bodies](../behavior/audio/MUSYX_VOICE_BLOCK_UNBLOCK_AND_ALLOCATION_PEEK.md)
+close fixed FX search arguments, free unlink/old-kind decrement/new-FX increment,
+protection/kind/group/synthetic identity and child order, raw unblock hardware/
+identity/recycle/final protection clear, and peek's group-word output admission.
+Miss/free selection leave peek output unwritten. Block does not first reset
+metric; unblock's final protection clear reloads the pool. No masked raw ordinal,
+atomic reservation, child-result rollback or universal output fallback invented.
+
+Validation: read-only manifest nine spans (three complete/six linked),180
+anchors/ten calls passes. Seven counter/seven identity/four peek vectors and
+global/table addresses checked as deductions. Full fresh ELFs/listings stay
+`/tmp`; no native change/original execution/body/binary asset export. VID removal,
+actual callers/ordinal/identity/count/member/sorted/alias/IRQ/concurrency/
+accounting/stream/resource domains and original reservation/free/audio remain OPEN.

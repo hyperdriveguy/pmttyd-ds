@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero voice block/unblock and allocation peek
+
+Completed voiceBlock/voiceUnblock/voiceAllocatePeek for EVT-01; checked the
+corresponding inbox portion. [Block/unblock/peek](behavior/audio/MUSYX_VOICE_BLOCK_UNBLOCK_AND_ALLOCATION_PEEK.md)
+pins fixed FX search, free/count bookkeeping, protected FX/group/synthetic
+identity publication, raw unblock hardware/recycle/final pool reload and peek's
+group-word output admission. Miss/free peek leaves output unwritten; raw ordinal
+and low8 identity indexing remain distinct. VID/callers/domains/runtime open.
+
+Validation: read-only ISO manifest passed nine spans (three complete/six linked),
+180 anchors/ten calls. Seven counter/seven identity/four peek vectors and global/
+table addresses checked as source deductions. Link audit passed810 Markdown
+files/zero broken links; `git diff --check` passed. Documentation/metadata only;
+no `make test`/`make all` rerun. Full original inspection ELFs/listings stay
+`/tmp`; no bodies/binary assets committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 VID reference removal and actual block/unblock/peek/
+priority/metric/kind/identity/count callers/providers, valid raw ordinal/synthetic
+ID/member/sorted/cycle/alias/reinit/IRQ/concurrency/accounting/rollback/stream/
+resource domains; remaining macro opcodes and original reservation/free/audio
+traces. Full native/runtime binding, lower-priority inbox/full-game work open.
+
 ## 2026-10-13 — Inbox priority-zero priority-list and voice-free writers
 
 Completed voiceSetPriority/voiceFree/hwSetPriority for EVT-01; checked the
