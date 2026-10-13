@@ -438,3 +438,8 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/gor_00.ground")
     add_test(NAME partner_harbor_follow COMMAND partner_follow_tests --harbor)
     set_tests_properties(partner_harbor_follow PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif()
+
+target_sources(ttyd_core PRIVATE source/frontend.cpp)
+add_executable(frontend_tests tests/frontend_tests.cpp)
+target_link_libraries(frontend_tests PRIVATE ttyd_core)
+add_test(NAME frontend COMMAND frontend_tests)

@@ -407,3 +407,5 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [Rogueport interior doors](overworld/OVERWORLD_ROGUEPORT_INTERIOR_DOORS.md): original same-map inn/professor records, contact admission, destinations and source event chronology.
 - [Native save format](format/NATIVE_SAVE_FORMAT.md): version4 interior state, backward compatibility and atomic validation/recovery.
 - [Professor first-talk and fence](story/PROFESSOR_FIRST_TALK_AND_FENCE.md): original door/story gates, 31 message bindings and complete first-talk/fence command requests.
+
+- [Native opening and file selection](story/NATIVE_OPENING_FLOW.md)
