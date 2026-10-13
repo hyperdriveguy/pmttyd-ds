@@ -49,6 +49,8 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [MusyX sample-directory lifetime](audio/MUSYX_SAMPLE_DIRECTORY_REGISTRATION_AND_REFERENCES.md) | Four complete registration/acquire/release/removal bodies; mutable refs/addresses and preferred-directory precondition | Actual directory/sample-bank/cache/voice providers, valid domains and original runtime |
+| [MusyX sample hardware bridge](audio/MUSYX_SAMPLE_STORAGE_HARDWARE_BRIDGE.md) | Four complete save/remove/identity/sync bodies; encoded byte-count proof and1247 original records | ARAM/cache/DMA/allocation/decoder services and original playback |
 | [MusyX group lifecycle/resource lists](audio/MUSYX_GROUP_PUSH_POP_AND_RESOURCE_LISTS.md) | Complete push/pop/InsertData stack and ordered typed/ranged requests;12 original groups/2998 IDs and Hammer dependencies | Child sample/pool/stop/memory/voice/source/runtime residency |
 | [Game sound group loader](audio/GAME_SOUND_GROUP_WARMUP_AND_LOADER_REQUESTS.md) | Complete busy/index/ready warm-up, two bank-push/count modes and temporary-buffer free | Actual file/resource/init/bank/source/runtime residency and original traces |
 | [MusyX FX registry insert/remove](audio/MUSYX_FX_GROUP_REGISTRY_INSERT_AND_REMOVE.md) | Complete duplicate/new registration,128 cap, references/live entry byte9=31 and ordered compaction | Project/group residency, sorting/pointer/unload/voice/IRQ domains and original runtime |

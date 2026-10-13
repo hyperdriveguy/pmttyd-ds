@@ -41,6 +41,12 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [group lifecycle](../behavior/audio/MUSYX_GROUP_PUSH_POP_AND_RESOURCE_LISTS.md),
   [game loader](../behavior/audio/GAME_SOUND_GROUP_WARMUP_AND_LOADER_REQUESTS.md).
   Child registries/stop/memory/loading/source/runtime residency remain open.
+- [x] Complete dataInsert/RemoveSDir, dataAdd/RemoveSampleReference and
+  hwSave/RemoveSample, hwTransAddr, hwSyncSampleMem local bodies —
+  [directory/reference lifetime](../behavior/audio/MUSYX_SAMPLE_DIRECTORY_REGISTRATION_AND_REFERENCES.md),
+  [hardware bridge](../behavior/audio/MUSYX_SAMPLE_STORAGE_HARDWARE_BRIDGE.md).
+  Mutable refs/addresses, preferred-ID precondition and encoded size rules pinned;
+  actual ARAM/cache/voice/loading/source/runtime ownership stays open.
 - [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -579,3 +585,24 @@ all12. Group6 includes775/776 samples and994/995 macros. Fresh full listings/
 derived reports stay `/tmp`; no original asset export or native change. Child
 SDir/pool/sample/stop, actual residency/sorting/voice/source/hardware/original
 execution remains OPEN. Source request text is unchanged.
+
+### 2026-10-13 — Sample directory/reference lifetime and storage bridge
+
+[Four complete directory/reference bodies](../behavior/audio/MUSYX_SAMPLE_DIRECTORY_REGISTRATION_AND_REFERENCES.md)
+close preferred-pointer publication even on refusal, duplicate/capacity behavior,
+low16 ref wrap, first-acquire address publication and hardware rewrite, zero-ref
+release and ordered registry compaction. Missing preferred inactive candidate
+has no guarded failure return; valid sample/directory identity is a prerequisite.
+Removing a directory does not reset the preferred pointer or free sample data.
+[Four hardware bridge bodies](../behavior/audio/MUSYX_SAMPLE_STORAGE_HARDWARE_BRIDGE.md)
+close raw save/remove/cache requests, identity translation and queue-sync request.
+Encoded counts are literal format routes; format0/1/4/5 byte sizing is proved
+ceil(N/14)*8 throughout the24-bit source domain, separate from audible duration.
+
+Validation: read-only manifest13 spans (8 complete/5 linked-only),256 instruction
+anchors,10 independently resolved direct calls and original .sdir resource hash
+passes. Independent directory check1247 records, all original refs0/formats0;
+Hammer775/776 transfer sizes3016/872 bytes.54 derived format/count vectors and
+whole-domain arithmetic proof do not execute original code. Fresh inspection
+ELFs/listings stay `/tmp`; no native code or original asset export. ARAM/cache/
+DMA/voice/macro/loading/valid-source domains and original traces remain OPEN.

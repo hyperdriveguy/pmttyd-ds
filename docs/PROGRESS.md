@@ -4,6 +4,31 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 sample directory lifetime and storage bridge
+
+Delivered [directory/reference lifetime](behavior/audio/MUSYX_SAMPLE_DIRECTORY_REGISTRATION_AND_REFERENCES.md)
+and [sample hardware bridge](behavior/audio/MUSYX_SAMPLE_STORAGE_HARDWARE_BRIDGE.md).
+Eight complete local bodies pin preferred-pointer publication, duplicate/capacity
+behavior, mutable low16 refs and resolved addresses, acquisition preconditions,
+release/removal/compaction and raw hardware/cache requests. First acquisition
+requires a matching preferred inactive candidate; no source not-found fallback.
+Encoded transfer sizing is proved over the24-bit count domain; it is not audible
+length or successful residency. Marked these EVT-01 portions complete; parent OPEN.
+
+Validation: read-only generic verifier13 DOL spans (8 complete/5 linked),256
+anchors,10 independently resolved calls and1 original directory resource hash
+(no map nodes) passes. Independent original .sdir parse1247 records, all refs0/
+formats0; Hammer775/776 source transfers3016/872 bytes.54 derived boundary vectors
+and exact-domain arithmetic proof remain static evidence. Fresh full ELFs and
+listings remain `/tmp`. Link audit731 Markdown files/0 broken; whitespace checks
+pass. Docs/metadata only: no make test/all rerun, native changes or original
+asset/code-body export. Unrelated staged/worktree changes excluded.
+
+Next/limits: ARAM store/remove/sync/cache/allocation/DMA services, per-kind pool
+registries, bank/source initialization, macro/voice/MIDI stops and actual runtime
+residency. Continue priority0 audio source owners and live SFX/calc3D requests,
+then priority1 damage/counter graph. No original audio/hardware/full-game claim.
+
 ## 2026-10-13 — Original map-object bbox head collision
 
 Commit `12d4b56` connects the original save-block cube to the existing native

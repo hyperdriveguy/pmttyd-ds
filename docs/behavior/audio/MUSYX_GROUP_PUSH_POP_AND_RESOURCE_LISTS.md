@@ -138,3 +138,5 @@ original Hammer dependencies to the push lists. This is static source inclusion,
 not proof that a particular runtime push succeeded. The manifest pins the whole
 project hash in the generic verifier's resource-span (`maps`) slot with no map
 nodes; it makes no geometry claim. Decoded counts/hashes are metadata only.
+
+[Complete directory/sample reference lifetime](MUSYX_SAMPLE_DIRECTORY_REGISTRATION_AND_REFERENCES.md) and [hardware storage bridge](MUSYX_SAMPLE_STORAGE_HARDWARE_BRIDGE.md) now answer those exact local child bodies, including mutable refs/addresses and original encoded transfer sizes. Actual ARAM/cache/voice loading/lifetime and original runtime stay open.
