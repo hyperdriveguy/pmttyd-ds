@@ -108,3 +108,5 @@ local-assets/professor-fence/
 
 /romfs/harbor-mario.bin
 /romfs/harbor-mario.json
+
+romfs/harbor-tutorial-*
