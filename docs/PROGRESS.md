@@ -1,5 +1,70 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Medium-size field collision functions (mario_hit.o)
+
+Continued the medium-size sweep requested for a US port. First verified
+that the 359-function fingerprint set in
+`artifacts/reference/behavior/evidence.json` is now fully referenced by
+existing docs (its `documented` flag is stale and was not used), then
+widened the search to the full `us_symbols.csv`: 1098 game-text functions
+in the 500-1500 byte band, 810 of them not referenced anywhere.
+
+Worked the Mario field-collision family, picked because it is directly
+needed for movement fidelity. Five new contracts in `docs/behavior/field/`:
+
+- `MARIO_SLIT_CHK_WALL_AROUND.md` - complete structural read of the 8
+  direction slit probe: two sweeps, three-way per-direction
+  classification, and the two-group triple-run rule that returns 0 on
+  three adjacent blocked directions.
+- `MARIO_CHECK_WALL_ROLL.md` - the roll wall check, including the 14-tick
+  wall-hold re-arm record at `mario+0x1cc..0x1d4`.
+- `MARIO_SEARCH_HEAD_ROLL.md` - the 5-iteration indexed direction dispatch,
+  with the `frsp` roundings between trig and scale called out.
+- `MARIO_SEARCH_FRONT_WALL_STAYING.md` and `MARIO_CHECK_WALL.md` - both
+  documented as **complete bodies** (every branch and call site).
+  The staying search contributes the `mario[+0x2e] == 19` veto, the
+  field-name gate and the triple `vivianGetStatus` gate; `marioCheckWall`
+  contributes the 5-char hit-name hysteresis (thresholds 10/20) on a
+  **signed** byte at `mario+0x3f` and the in-place `movePos` slide.
+- `SEARCH_FRONT_WALL.md` and `MARIO_CHK_WALL_AROUND.md` - the two largest
+  callees (2404 and 2460 bytes), documented at **structure level only**:
+  entry gates, probe grouping, SDK vector math. Their probe sequences and
+  result reduction are explicitly not decoded.
+
+Cross-references in the earlier three docs were corrected where they listed
+these two callees as undocumented, including one `marioChgWallAround` /
+`marioChkWallAround` transcription error.
+
+Newly recorded facts: the field literal at `0x800c3d88` gates both
+`searchFrontWall` and stage 3 of `marioSearchFrontWall_staying`, so those
+two paths are tied to one specific field; the 5-char hit-name literal
+compared in `marioCheckWall` lives at `0x80049504`.
+
+Validation: all callees resolved against `us_symbols.csv`; disassembly
+regenerated per function into `/tmp` only; every `git diff --check` clean;
+README link audit and field cross-link audit both clean. Docs-only, so
+`make test` / `make all` were not rerun. Full-game work remains
+incomplete.
+
+Limitations: no Dolphin observations were taken this session, so every
+claim is class B. The two structure-level docs must not be read as
+equivalent to the original implementations.
+
+Next tasks:
+
+1. Decode the 9-probe reduction in `searchFrontWall` and the 12-probe
+   reduction in `marioChkWallAround` - these block full movement parity.
+2. Read the two unresolved literals from the ISO: `0x800c3d88` (the
+   gated field name) and `0x80049504` (the hysteresis hit-name prefix).
+3. Extract the `lfs` constants at `0x80049468`..`0x8004950c` - they are
+   referenced by nearly every function documented in this session and are
+   currently the largest single source of provisional numbers.
+4. Continue the 810-function medium backlog; `party/*` and
+   `npcCheckHitMarioSide` / `mobjHitEntry` are the next highest-value
+   targets after collision.
+5. `docs/PROGRESS.md` tables should be reconciled against actual file
+   contents if any further drift is found.
+
 ## 2026-10-12 — Native request 3 slice: pose call-site survey
 
 Delivered OVERWORLD_POSE_CALL_SITE_SURVEY: 18 marioChgPose sites with
