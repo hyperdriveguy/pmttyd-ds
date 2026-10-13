@@ -1206,12 +1206,3 @@ content remains Nintendo/Intelligent Systems copyrighted material, used locally
 from the user's ISO without redistribution. Compiled catalog/messages/captures
 and ISO remain outside source history. See
 [known-state native binding](behavior/field/NATIVE_GOOMBA4_ORDINARY_TALK.md).
-
-### 2026-10-13 EXP type0 window frame source evidence
-
-Read-only ISO `f/msgWindow.tpl`,321984bytes; ignored local evidence
-`artifacts/recovered-temp-evidence/msgWindow.tpl`. Original TPL descriptor0
-is72x72CMPR (format14), source type0 nine-slice texture. See
-[geometry/material and clock](behavior/display/EXP_ICON_CLOCK_AND_TYPE0_WINDOW_FRAME.md).
-No generated substitute art or distribution of original assets; same user-owned
-ISO/local-use licensing limitation applies. Native import/render remains next.
