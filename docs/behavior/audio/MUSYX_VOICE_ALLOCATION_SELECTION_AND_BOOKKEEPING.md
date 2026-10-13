@@ -139,3 +139,11 @@ slot/priority/member/sorted/cycle/alias/IRQ/reentrancy/concurrency/accounting/
 rollback domains and original quota/free/replacement/audio traces. Two local
 bodies are answered; EVT-01 and full native/source/runtime/hardware equivalence
 remain OPEN.
+
+### 2026-10-13 — Initialization provider follow-up
+
+[Complete allocation-aid initialization](MUSYX_ALLOCATION_AID_INITIALIZATION.md)
+now pins initial free links/endpoints, membership/head reset and running counters/
+priority root. It retains repeated count reads and zero-count endpoint writes.
+Priority/free/recycle writers, actual count/argument domains and original
+allocation/audio remain open.

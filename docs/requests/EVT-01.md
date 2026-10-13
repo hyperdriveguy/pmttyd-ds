@@ -283,6 +283,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Limits/group counts/priority/free/eligibility/min-metric and raw free/counter
   order pinned; no eviction implied. Aid/priority/free providers/argument/
   accounting domains and original allocation/audio remain open.
+- [x] Complete synthInitAllocationAids free-record/endpoints, priority membership/
+  head and counter/root reset —
+  [allocation-aid initialization](../behavior/audio/MUSYX_ALLOCATION_AID_INITIALIZATION.md).
+  Zero-count stores/root retained; count validity/other writers/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1669,3 +1673,19 @@ Full fresh ELFs/listings stay `/tmp`; no native change/original execution/body/
 binary asset export. Aid/priority/free/recycle/limits/markers/IDs/metric writers,
 valid slot/member/sorted/cycle/alias/IRQ/concurrency/accounting/rollback and
 original quota/free/replacement/audio traces remain OPEN.
+
+### 2026-10-13 — Allocation-aid initialization
+
+[Complete local initializer](../behavior/audio/MUSYX_ALLOCATION_AID_INITIALIZATION.md)
+closes free-record construction/endpoints, priority membership/head reset and
+ordered FX/root/Music reset. Four count reads retained; membership clears only
+half2, sort records remain untouched. Zero endpoint count still writes root0,
+marker255 and byte8040693d before the free table. No empty-root repair,64-slot
+cap, voice/resource cleanup or single-count snapshot inferred.
+
+Validation: read-only manifest one complete span,142 anchors/zero calls passes.
+Eight stable-count/six free-row vectors and exact global/table addresses checked
+as deductions. Full fresh ELF/listing stays `/tmp`; no native change/original
+execution/body/binary asset export. Actual count/caller/membership/free/sort/
+counter writers, valid slot/member/cycle/alias/reinit/IRQ/concurrency/accounting
+and original initialization/allocation/audio traces remain OPEN.

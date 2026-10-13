@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero allocation-aid initialization
+
+Completed synthInitAllocationAids for EVT-01; checked the corresponding inbox
+portion. [Aid initialization](behavior/audio/MUSYX_ALLOCATION_AID_INITIALIZATION.md)
+pins four count reads, free-link/endpoints, membership-only/head reset and ordered
+FX/root/Music writes. Zero endpoint count retains root0/marker255 and a store
+before the free table. Valid counts/call order/other writers remain open; no
+empty-root repair,64-slot guard or voice/resource cleanup inferred.
+
+Validation: read-only ISO manifest passed one complete span,142 anchors/zero
+calls. Eight stable-count/six free-row vectors and exact global/table addresses
+checked as source deductions. Link audit passed808 Markdown files/zero broken
+links; `git diff --check` passed. Documentation/metadata only; no `make test`/
+`make all` rerun. Full original inspection ELF/listing stays `/tmp`; no bodies/
+binary assets committed. Concurrent native edits excluded from this commit.
+
+Next: priority-zero EVT-01 voiceSetPriority/free/recycle writers and actual
+count/caller/argument/limit/marker/metric/ID providers, valid slot/member/sorted/
+cycle/alias/reinitialization/concurrency/accounting/rollback domains; remaining
+macro opcodes and original initialization/allocation/audio traces. Full native/
+runtime binding, lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero voice selection/allocation bookkeeping
 
 Completed voiceAllocate/voiceAllocateFind for EVT-01; checked the corresponding
