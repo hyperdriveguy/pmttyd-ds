@@ -224,7 +224,9 @@ void movement() {
     CHECK(!walkable({std::numeric_limits<float>::quiet_NaN(),1}));
     CHECK(!walkable({0,0}));
     Game jump;jump.progress.position={0,2};jump.tick(confirm());advance(jump,4);CHECK(std::fabs(jump.jumpHeight-.22922f)<.00001f);advance(jump,18);CHECK(std::fabs(jump.jumpHeight)<.01f);
-    Game follow;follow.progress.position={-3,3};follow.partner={-6,3};advance(follow,100);CHECK(follow.partner.x>-4.1f);CHECK(walkable(follow.partner));
+    // Original idle-owner catch-up caps its bonus at1.5 units per admitted
+    // tick; this used to assume the prototype's constant dash budget.
+    Game follow;follow.progress.position={-3,3};follow.partner={-6,3};advance(follow,260);CHECK(follow.partner.x>-4.1f);CHECK(walkable(follow.partner));
 }
 void dialogueAndTouch() {
     Game g;g.progress.position=CrumpPosition;g.tick(confirm());CHECK(g.scene==Scene::Dialogue);

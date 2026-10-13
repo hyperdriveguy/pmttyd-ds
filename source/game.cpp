@@ -750,7 +750,7 @@ void Game::restore(const Progress& saved) {
     fieldDoor.interiorMask=p.interiorMask;
     applyDoorCollision(p.room,fieldDoor.interiorMask);
     harborStory.reset(p.room==1 && p.originalStory && *p.originalStory==3);
-    partner = {p.position.x-0.8f,p.position.z};
+    partner = {p.position.x-0.3f,p.position.z};
     groundHeight=p.elevation;partnerHeight=p.elevation;
     if (!walkable(partner,p.elevation)) partner = p.position;
     groundAt(p.position,p.elevation,groundHeight,&groundContact);
@@ -771,6 +771,7 @@ void Game::updatePartner() {
         return !(contact.attributes&0x200);
     };
     services.project=[this](CameraPoint p){return projectCameraRoot(p,fieldCameraFrame.view,fieldCameraFrame.projection,fieldCameraFrame.viewport);};
+    services.ownerDirection={fieldMovement.headingX,0,fieldMovement.headingZ};
     CameraPoint root{partner.x,partnerHeight,partner.z};
     partnerFollow.tick(root,{progress.position.x,groundHeight+jumpHeight,progress.position.z},
                        fieldJump.jumping,fieldMovement.speed,services);
