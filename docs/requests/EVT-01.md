@@ -323,6 +323,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   event install/clear/defer/wakeup —
   [key-off/pedal/traps](../behavior/audio/MUSYX_MACRO_KEYOFF_PEDAL_AND_EVENT_TRAPS.md).
   Sample-end existing contract revalidated; flag/index/caller/domain/runtime open.
+- [x] Complete mcmdGosub/mcmdAddKey/voiceIsLastStarted and opcodes
+  24..26/36..37 ring/note/publication/wait paths —
+  [subroutines/note commands](../behavior/audio/MUSYX_MACRO_SUBROUTINES_AND_NOTE_COMMANDS.md).
+  Low-byte count/S16 note wrap/route-specific gates retained; domains/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1882,3 +1886,19 @@ five displacement vectors and masks/ordering checked as deductions. Full fresh
 ELFs/listings stay `/tmp`; no native change/original execution/body/binary asset
 export. Actual flag/event/index/command/caller/domain/alias/IRQ/concurrency and
 original key-off/pedal/event/audio remain OPEN.
+
+### 2026-10-13 — Macro subroutines and note commands
+
+[Three bodies/five regions](../behavior/audio/MUSYX_MACRO_SUBROUTINES_AND_NOTE_COMMANDS.md)
+close lookup/push/miss cleanup, raw-index return, add-key/inline note clamp,
+last-started predicate and command rewrite/wait/result propagation. Push rotates
+before writes and clamps count only after low8 wrap; note clamps after low16
+store/S16 reread. Base132 route uses channel admission rather than last-started.
+No overflow refusal, raw-index repair, generic note gate or whole interpreter closure.
+
+Validation: read-only manifest14 spans (three bodies/five regions/five linked/
+table),162 anchors/13 calls/five registrations passes. Six push/four return/six
+note/six predicate vectors and mask/address/order checked as deductions. Full
+fresh ELFs/listings stay `/tmp`; no native change/original execution/body/binary
+asset export. Actual ring/note/table/command/caller/alias/IRQ/concurrency and
+original subroutine/note/wait/audio remain OPEN.

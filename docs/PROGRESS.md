@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero macro subroutines/note commands
+
+Completed mcmdGosub/mcmdAddKey/voiceIsLastStarted and opcodes24..26/36..37
+for EVT-01; checked the corresponding inbox portion.
+[Subroutines/notes](behavior/audio/MUSYX_MACRO_SUBROUTINES_AND_NOTE_COMMANDS.md)
+pins rotating push/raw return/miss cleanup, low16/S16 note clamp, route-specific
+last-note gates and shared command rewrite/wait/result propagation. Actual ring/
+note/table/command/caller/domains/runtime remain open; no index repair inferred.
+
+Validation: read-only ISO manifest passed14 spans (three bodies/five regions/
+five linked/table),162 anchors/13 calls/five registrations. Six push/four return/
+six note/six predicate vectors and mask/address/order deductions checked. Link
+audit passed820 Markdown files/zero broken links; scoped `git diff --check` passed.
+Documentation/metadata only; no `make test`/`make all` rerun. Full original
+inspection ELFs/listings stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded. Earlier authorized push failed GitHub username/
+token authentication; no publication claimed. Latest objective removes periodic
+pushes, so this delivery is committed locally.
+
+Next: priority-zero EVT-01 other macro opcodes and actual ring/note/base131/132/
+last-started/code/command/caller writers, valid count/index/slot/generation/table/
+alias/shared-cell/IRQ/concurrency domains and original subroutine/note/wait/audio
+traces. Full native/runtime binding, lower-priority inbox/full-game work open.
+
 ## 2026-10-13 — Inbox priority-zero key-off/pedal/event traps
 
 Completed macSetExternalKeyoff/macSetPedalState and opcode40/41 for EVT-01;
