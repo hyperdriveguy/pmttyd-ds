@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [MusyX sound/voice kill recycling](audio/MUSYX_VOICE_SOUND_KILL_AND_ALLOCATOR_RECYCLE.md) | Complete external chain identity/retained-next kill and internal priority/free-list/count recycle plus hardware requests | Map/macro/stream/hardware children, allocator/source/concurrency and original lifetime/audio |
 | [MusyX sequence free-chain init](audio/MUSYX_SEQUENCE_INITIALIZATION_AND_FREE_CHAINS.md) | Complete8-instance/private-ID/MIDI-priority and256-note free-chain reset; exact cross-record writes | Constructors/payload/voice/resources/priority consumers/reset/runtime |
 | [MusyX sequence validity/stop](audio/MUSYX_SEQUENCE_VALIDITY_PRIVATE_ID_AND_STOP.md) | Complete active/paused ID lookup, valid wrapper, tagged-field clear and state/note/instance stop recycling | Private-index/state/list/note writers, voice/resource lifetime and original audio |
 | [MusyX listener/cross/inverse](audio/MUSYX_LISTENER_UPDATE_CROSS_AND_MATRIX_INVERSE.md) | Complete four-vector copies, cross/matrix stack layout, ordered inverse/translation and volume | Listener/basis/source/alias/singular/PPC/consumer domains and original audio |

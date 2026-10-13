@@ -6,6 +6,26 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 sound-chain kill and voice allocator recycling
+
+Delivered [sound/voice kill](behavior/audio/MUSYX_VOICE_SOUND_KILL_AND_ALLOCATOR_RECYCLE.md).
+Two complete bodies pin external mapping/identity/captured successor, stale skip,
+internal priority/free-list/count recycle and stream/hardware tail. Requested kill
+and allocator state changes are separate from actual hardware/audio completion.
+Marked local EVT-01 portions complete; child/source/runtime remain OPEN.
+
+Validation: generic read-only verifier6 spans (2 complete/4 linked),124 anchors/
+five resolved direct calls passes.5 mask/4 counter/6 index/4 chain-route vectors
+checked as deductions. Full fresh ELFs/listings stay `/tmp`; no original code
+executes. Link audit766 Markdown files/0 broken; whitespace checks pass. Docs/
+metadata only: no make rerun, native change or original body/asset export.
+Isolated index excludes unrelated staged/worktree work.
+
+Next/limits: map-reference/macro-inactive/stream/hardware children, identity/
+priority/free/count providers and valid chain/index/member/IRQ/concurrency domains,
+original note/voice recycle/audio traces. Continue priority0 source/backend then
+priority1 damage graph. No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Priority0 sequence initialization and free chains
 
 Delivered [sequence free-chain init](behavior/audio/MUSYX_SEQUENCE_INITIALIZATION_AND_FREE_CHAINS.md).

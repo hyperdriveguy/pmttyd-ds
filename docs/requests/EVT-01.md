@@ -137,6 +137,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   producer — [sequence free-chain init](../behavior/audio/MUSYX_SEQUENCE_INITIALIZATION_AND_FREE_CHAINS.md).
   Exact8/256 chains/cross-record stores pinned; constructors/payload/voice/
   resources/priority consumers/reset/concurrency/runtime remain open.
+- [x] Complete voiceKillSound/voiceKill local mapping/chain/allocator
+  recycling bodies —
+  [sound/voice kill](../behavior/audio/MUSYX_VOICE_SOUND_KILL_AND_ALLOCATOR_RECYCLE.md).
+  Captured successor/stale skip/priority-free-count/hardware order pinned;
+  map/macro/stream/hardware children/provider/domain/runtime remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1005,3 +1010,18 @@ Validation: read-only manifestone whole span/88 anchors/no calls passes. Exact
 assertions/in-bounds writes checked as deductions. Full ELF/listing stays `/tmp`;
 no original code executes/body/asset exports. Constructors/ID/list/note/payload/
 priority consumers/voice/resources/reset/concurrency/original audio remain OPEN.
+
+### 2026-10-13 — Sound-chain kill and internal allocator recycling
+
+[Two complete local bodies](../behavior/audio/MUSYX_VOICE_SOUND_KILL_AND_ALLOCATOR_RECYCLE.md)
+close ordered external-map lookup, prefetched successor across identity/kill,
+stale skip/continue and request-based return0. Internal kill retains record across
+map/macro children, unlinks priority chains, conditionally appends free voice/
+decrements byte counts, clears identity, then requests stream/hardware even
+when macro-active word was0. No CPU free/audible completion inferred.
+
+Validation: read-only manifest6 spans (2 complete/4 linked),124 anchors/five
+resolved direct calls passes.5 mask/4 counter/6 index/4 chain-route vectors are
+source deductions, not execution. Full fresh ELFs/listings stay `/tmp`; no native/
+body/asset export. Map/macro/stream/hardware/voice-priority-free providers and
+index/member/chain/cycle/IRQ/concurrency/original audio remain OPEN.

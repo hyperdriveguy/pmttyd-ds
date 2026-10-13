@@ -108,3 +108,5 @@ resource lifetime, original validity/tagged-stop/note/audio traces. Four local
 bodies are answered; full native/source/runtime/hardware remains OPEN.
 
 [Complete sequence initialization/free-chain producer](MUSYX_SEQUENCE_INITIALIZATION_AND_FREE_CHAINS.md) now establishes initial IDs0..7/state0/empty active-paused roots and free chains. Constructors/later writers and reset/payload/voice/resource/runtime domains remain open.
+
+[Complete sound-chain/internal voice kill](MUSYX_VOICE_SOUND_KILL_AND_ALLOCATOR_RECYCLE.md) now closes this exact note-stop child and allocator request core. Map/macro/stream/hardware and source/list/voice/runtime lifetime remain open.
