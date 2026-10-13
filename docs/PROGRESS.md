@@ -1,6 +1,6 @@
 ## 2026-10-12 — Fifth gap pass: guard wrapper, act-status publisher, small-data setter and float-to-unsigned
 
-- [Small unit/runtime leaves](docs/behavior/unit/SMALL_UNIT_RUNTIME_AND_MOTION_LEAVES.md):
+- [Small unit/runtime leaves](behavior/unit/SMALL_UNIT_RUNTIME_AND_MOTION_LEAVES.md):
   `BtlUnit_CanGuardStatus` (801272dc) is a frame-only forwarder to
   `BtlUnit_CanActStatus` (8012724c), so a `bl 801272dc` site is a `bl 8012724c`
   site for call-graph purposes. `btlevtcmd_CheckActStatus` (80105cb4) resolves a
