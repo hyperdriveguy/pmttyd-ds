@@ -583,6 +583,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete SoundSSMain — [ordered fades/stops](../behavior/audio/GAME_STREAM_MAIN_ORDERED_FADES_AND_INLINE_STOPS.md).
   Initial gates/stop priority, sequential40-20-10, recaptured mix/stop rows and
   zero-before-subtract/counter/close-free/marker order pinned; runtime open.
+- [x] Complete SoundSSPlayCh/Ex/getMarioStDvdRoot — [public play wrappers](../behavior/audio/GAME_STREAM_PLAY_WRAPPERS_REPLACE_SLOT_AND_HEADER_READ.md).
+  Replace-before-validation, first-free slot/failure retention, ordered defaults,
+  shared path/two opens/deferred header request pinned; header/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2874,3 +2877,12 @@ gate/five counter vectors and three mix/two stop groups checked; pan/stop pins
 reverified. Sequential mode bits, zero prechecks, pool recapture and child order
 pinned. Providers/FP/original cadence/fade/stop/audio/native binding remain open;
 EVT-01 stays OPEN.
+
+## 2026-10-13 — Public game stream play wrapper delivery
+
+Completed [play wrappers/root leaf](../behavior/audio/GAME_STREAM_PLAY_WRAPPERS_REPLACE_SLOT_AND_HEADER_READ.md).
+15 spans/182 anchors/twelve calls/23 ordered writes/header binding verified;
+six slot/four caching-outcome/five raw caching-argument vectors checked; stop
+pins reverified. Failed opens retain reserved slot, second failure retains newly
+opened primary, and header setup is deferred. Header callback/providers/manager/
+original playback/native binding remain open; EVT-01 stays OPEN.

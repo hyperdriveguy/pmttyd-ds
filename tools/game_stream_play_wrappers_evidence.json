@@ -1,0 +1,622 @@
+{
+  "schema": 1,
+  "scope": "Complete public game stream play wrappers and root leaf; replace/slot/init/path/open/header-dispatch/failure order, header callback/runtime open",
+  "complete_bodies": [
+    "SoundSSPlayChEx",
+    "SoundSSPlayCh",
+    "getMarioStDvdRoot"
+  ],
+  "linked_only": [
+    "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+    "DVDMgrClose",
+    "sndStreamFree",
+    "OSRestoreInterrupts",
+    "sprintf",
+    "DVDMgrOpen",
+    "DVDMgrReadAsync",
+    "SoundSSPlayChEx_main"
+  ],
+  "dol_spans": [
+    {
+      "name": "SoundSSPlayChEx",
+      "address": 2148395728,
+      "size": 684,
+      "sha256": "e3d25ca4426d17dc1a5122f29509fb612a46cfed8992f1f9968d5a4a5650806a"
+    },
+    {
+      "name": "SoundSSPlayCh",
+      "address": 2148396412,
+      "size": 36,
+      "sha256": "24ff0ae928a9be196204abdfe250f55b98eddec1cbd975da654bbd845991d062"
+    },
+    {
+      "name": "getMarioStDvdRoot",
+      "address": 2147513224,
+      "size": 8,
+      "sha256": "20e17ad249044e215aba5f071125d98aee73da26094bbb4ff323cfcdf3574f7d"
+    },
+    {
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+      "address": 2150210260,
+      "size": 20,
+      "sha256": "91253610f8caa4988f3df8595ccfc6e5eafaf0b6df1b302668555ab7d528b1bc"
+    },
+    {
+      "name": "DVDMgrClose",
+      "address": 2148814292,
+      "size": 16,
+      "sha256": "94db90a29f286b23aa565f38431131e6cd4dd9b2b341a852cdff146164fad6b3"
+    },
+    {
+      "name": "sndStreamFree",
+      "address": 2150089696,
+      "size": 1748,
+      "sha256": "684f7227d0523aedec966dae5fa29e88c62bfdc32ec030026f9d4cdafafa2c4c"
+    },
+    {
+      "name": "OSRestoreInterrupts",
+      "address": 2150210300,
+      "size": 36,
+      "sha256": "54db610a580003e2db23e460425f4662f4f4e7a4da3ae6f89a632df9e52b427a"
+    },
+    {
+      "name": "sprintf",
+      "address": 2150015160,
+      "size": 224,
+      "sha256": "50511d2156f10f1f673ae32bf84f42cce8e35f4b3264040db35daa0666534c30"
+    },
+    {
+      "name": "DVDMgrOpen",
+      "address": 2148814472,
+      "size": 412,
+      "sha256": "81238bae8554f5f1f28b208d0ceded5a06fc5c3edbfa6af16504e91b0066d62f"
+    },
+    {
+      "name": "DVDMgrReadAsync",
+      "address": 2148814308,
+      "size": 52,
+      "sha256": "4c478666e9adfaa95c0af8028fac451f8b1a6b00d567054312e501f559ac2495"
+    },
+    {
+      "name": "SoundSSPlayChEx_main",
+      "address": 2148393220,
+      "size": 2508,
+      "sha256": "c7eaf9c2cade5a8a4f8fdbc7b63580f58d15ac7ac85608c372ea60cfe6fb917a"
+    },
+    {
+      "name": "Play root/format/default literal 0x8041f494",
+      "address": 2151806100,
+      "size": 2,
+      "sha256": "075d3ddf5a3a826e13a92288e853bc4b2cb17fb05367ae865f401a4bb11f05ce"
+    },
+    {
+      "name": "Play root/format/default literal 0x802e3cd0",
+      "address": 2150513872,
+      "size": 8,
+      "sha256": "3e208fe4725e9ec04c714d139fce06f40773664eddc2b9ba1fa46d2add042357"
+    },
+    {
+      "name": "Play root/format/default literal 0x80421908",
+      "address": 2151815432,
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "name": "Play root/format/default literal 0x80421918",
+      "address": 2151815448,
+      "size": 9,
+      "sha256": "4b9de24991416e84773be1d565dc21addfe202e198a3cee0c8f9ab2a90203791"
+    }
+  ],
+  "dol_anchors": {
+    "2148395736": "90010024",
+    "2148395748": "3c60803e",
+    "2148395756": "3be30138",
+    "2148395768": "807f0100",
+    "2148395784": "418200c8",
+    "2148395788": "418200c4",
+    "2148395800": "40820014",
+    "2148395804": "481bafb9",
+    "2148395808": "3c80803e",
+    "2148395812": "38840138",
+    "2148395816": "90640210",
+    "2148395824": "38030001",
+    "2148395828": "b01f020c",
+    "2148395840": "41820020",
+    "2148395848": "3c60803e",
+    "2148395852": "38630138",
+    "2148395856": "38800000",
+    "2148395868": "b0830226",
+    "2148395872": "38000000",
+    "2148395876": "b01e0000",
+    "2148395880": "807e0028",
+    "2148395884": "48066269",
+    "2148395888": "807e00b0",
+    "2148395892": "48066261",
+    "2148395896": "807e004c",
+    "2148395900": "4819d865",
+    "2148395912": "4082000c",
+    "2148395916": "807e00d4",
+    "2148395920": "4819d851",
+    "2148395932": "41820024",
+    "2148395936": "3863ffff",
+    "2148395944": "b07f020c",
+    "2148395948": "40820014",
+    "2148395952": "3c60803e",
+    "2148395956": "38630138",
+    "2148395960": "80630210",
+    "2148395964": "481baf41",
+    "2148395968": "3c60803e",
+    "2148395972": "3800ffff",
+    "2148395976": "38630138",
+    "2148395980": "90030104",
+    "2148395988": "41820068",
+    "2148395992": "3c60803e",
+    "2148395996": "38c00000",
+    "2148396000": "38a30138",
+    "2148396020": "4081003c",
+    "2148396032": "40820024",
+    "2148396036": "3c60803e",
+    "2148396044": "38630138",
+    "2148396048": "38800001",
+    "2148396056": "b0830226",
+    "2148396060": "b0de0002",
+    "2148396064": "48000010",
+    "2148396068": "38630002",
+    "2148396072": "38c60001",
+    "2148396076": "4200ffcc",
+    "2148396088": "40800130",
+    "2148396092": "3c60803e",
+    "2148396096": "38800000",
+    "2148396100": "38a30138",
+    "2148396104": "38600040",
+    "2148396108": "93650104",
+    "2148396120": "38000001",
+    "2148396124": "b09e0074",
+    "2148396132": "909e006c",
+    "2148396136": "909e005c",
+    "2148396140": "909e0060",
+    "2148396144": "b09e007c",
+    "2148396148": "b09e007e",
+    "2148396152": "b09e0080",
+    "2148396156": "b09e0082",
+    "2148396160": "b09e0084",
+    "2148396164": "b09e00fc",
+    "2148396168": "909e00f4",
+    "2148396172": "909e00e4",
+    "2148396176": "909e00e8",
+    "2148396180": "b09e0104",
+    "2148396184": "b09e0106",
+    "2148396188": "b09e0108",
+    "2148396192": "b09e010a",
+    "2148396196": "b09e010c",
+    "2148396200": "b07e0006",
+    "2148396204": "b09e0008",
+    "2148396216": "b01e0000",
+    "2148396220": "41820010",
+    "2148396232": "b01e0000",
+    "2148396236": "4bf286bd",
+    "2148396240": "3c80802e",
+    "2148396244": "3ce0803e",
+    "2148396256": "38670038",
+    "2148396260": "38843cd0",
+    "2148396264": "38e2a4dc",
+    "2148396272": "4818b3c9",
+    "2148396276": "3c60803e",
+    "2148396280": "38800000",
+    "2148396284": "3b630038",
+    "2148396288": "38a00000",
+    "2148396296": "48066181",
+    "2148396304": "907e0028",
+    "2148396308": "40820010",
+    "2148396312": "38000000",
+    "2148396316": "b01e0000",
+    "2148396320": "48000048",
+    "2148396328": "38800000",
+    "2148396332": "38a00000",
+    "2148396336": "48066159",
+    "2148396344": "907e00b0",
+    "2148396348": "40820010",
+    "2148396352": "38000000",
+    "2148396356": "b01e0000",
+    "2148396360": "48000020",
+    "2148396364": "3c80800e",
+    "2148396368": "807e0028",
+    "2148396372": "38e4e104",
+    "2148396376": "809e0050",
+    "2148396380": "38a00100",
+    "2148396384": "38c00000",
+    "2148396388": "48066081",
+    "2148396396": "80010024",
+    "2148396404": "38210020",
+    "2148396420": "38a00000",
+    "2148396424": "90010014",
+    "2148396428": "4bfffd45",
+    "2148396432": "80010014",
+    "2148396440": "38210010",
+    "2147513224": "38628054",
+    "2148395728": "9421ffe0",
+    "2148395732": "7c0802a6",
+    "2148395740": "bf61000c",
+    "2148395744": "7c7b1b78",
+    "2148395752": "7c9c2378",
+    "2148395760": "7cbd2b78",
+    "2148395764": "1c1b0138",
+    "2148395772": "7fc30214",
+    "2148395776": "a01e0000",
+    "2148395780": "28000000",
+    "2148395792": "a01f020c",
+    "2148395796": "28000000",
+    "2148395820": "a07f020c",
+    "2148395832": "a01e0000",
+    "2148395836": "5400056b",
+    "2148395844": "a01e0002",
+    "2148395860": "5400083c",
+    "2148395864": "7c630214",
+    "2148395904": "a01e001a",
+    "2148395908": "28000002",
+    "2148395924": "a07f020c",
+    "2148395928": "28030000",
+    "2148395940": "5460043f",
+    "2148395984": "2c1d0000",
+    "2148396004": "a0050224",
+    "2148396008": "7ca32b78",
+    "2148396012": "7c0903a6",
+    "2148396016": "2c000000",
+    "2148396024": "a0030226",
+    "2148396028": "28000000",
+    "2148396040": "54c0083c",
+    "2148396052": "7c630214",
+    "2148396080": "a0050224",
+    "2148396084": "7c060000",
+    "2148396112": "2c1d0000",
+    "2148396116": "c022a4c8",
+    "2148396128": "c002a4d8",
+    "2148396208": "d03e0010",
+    "2148396212": "d01e000c",
+    "2148396224": "a01e0000",
+    "2148396228": "60000400",
+    "2148396248": "7c651b78",
+    "2148396252": "7f86e378",
+    "2148396268": "4cc63182",
+    "2148396292": "7f63db78",
+    "2148396300": "28030000",
+    "2148396324": "7f63db78",
+    "2148396340": "28030000",
+    "2148396392": "bb61000c",
+    "2148396400": "7c0803a6",
+    "2148396408": "4e800020",
+    "2148396412": "9421fff0",
+    "2148396416": "7c0802a6",
+    "2148396436": "7c0803a6",
+    "2148396444": "4e800020",
+    "2147513228": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2148395804,
+      "target": 2150210260,
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi"
+    },
+    {
+      "site": 2148395884,
+      "target": 2148814292,
+      "name": "DVDMgrClose"
+    },
+    {
+      "site": 2148395892,
+      "target": 2148814292,
+      "name": "DVDMgrClose"
+    },
+    {
+      "site": 2148395900,
+      "target": 2150089696,
+      "name": "sndStreamFree"
+    },
+    {
+      "site": 2148395920,
+      "target": 2150089696,
+      "name": "sndStreamFree"
+    },
+    {
+      "site": 2148395964,
+      "target": 2150210300,
+      "name": "OSRestoreInterrupts"
+    },
+    {
+      "site": 2148396236,
+      "target": 2147513224,
+      "name": "getMarioStDvdRoot"
+    },
+    {
+      "site": 2148396272,
+      "target": 2150015160,
+      "name": "sprintf"
+    },
+    {
+      "site": 2148396296,
+      "target": 2148814472,
+      "name": "DVDMgrOpen"
+    },
+    {
+      "site": 2148396336,
+      "target": 2148814472,
+      "name": "DVDMgrOpen"
+    },
+    {
+      "site": 2148396388,
+      "target": 2148814308,
+      "name": "DVDMgrReadAsync"
+    },
+    {
+      "site": 2148396428,
+      "target": 2148395728,
+      "name": "SoundSSPlayChEx"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_slot_vectors": [
+    {
+      "slots": [],
+      "chosen": null,
+      "reserved_after": []
+    },
+    {
+      "slots": [
+        0
+      ],
+      "chosen": 0,
+      "reserved_after": [
+        1
+      ]
+    },
+    {
+      "slots": [
+        1
+      ],
+      "chosen": null,
+      "reserved_after": [
+        1
+      ]
+    },
+    {
+      "slots": [
+        1,
+        0,
+        0
+      ],
+      "chosen": 1,
+      "reserved_after": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "slots": [
+        2,
+        65535,
+        0
+      ],
+      "chosen": 2,
+      "reserved_after": [
+        2,
+        65535,
+        1
+      ]
+    },
+    {
+      "slots": [
+        1,
+        1,
+        1
+      ],
+      "chosen": null,
+      "reserved_after": [
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "derived_failure_vectors": [
+    {
+      "stage": "no slot",
+      "slot_retained": false,
+      "marker": "ffffffff if occupied was replaced; otherwise previous",
+      "flags": "unchanged after optional replacement",
+      "newly_opened_primary_closed": false,
+      "header_requested": false
+    },
+    {
+      "stage": "primary null",
+      "slot_retained": true,
+      "marker": "channel",
+      "flags": 0,
+      "newly_opened_primary_closed": false,
+      "header_requested": false
+    },
+    {
+      "stage": "secondary null",
+      "slot_retained": true,
+      "marker": "channel",
+      "flags": 0,
+      "newly_opened_primary_closed": false,
+      "header_requested": false
+    },
+    {
+      "stage": "both nonnull",
+      "slot_retained": true,
+      "marker": "channel",
+      "flags": "1/401 before header child; later flags unresolved",
+      "newly_opened_primary_closed": false,
+      "header_requested": true
+    }
+  ],
+  "derived_cache_argument_vectors": [
+    {
+      "raw": 0,
+      "caching": false,
+      "base_flags": 1
+    },
+    {
+      "raw": 1,
+      "caching": true,
+      "base_flags": 1025
+    },
+    {
+      "raw": 2,
+      "caching": true,
+      "base_flags": 1025
+    },
+    {
+      "raw": 2147483648,
+      "caching": true,
+      "base_flags": 1025
+    },
+    {
+      "raw": 4294967295,
+      "caching": true,
+      "base_flags": 1025
+    }
+  ],
+  "derived_initial_writes": [
+    {
+      "offset": 116,
+      "width": 2,
+      "value": 0
+    },
+    {
+      "offset": 108,
+      "width": 4,
+      "value": 0
+    },
+    {
+      "offset": 92,
+      "width": 4,
+      "value": 0
+    },
+    {
+      "offset": 96,
+      "width": 4,
+      "value": 0
+    },
+    {
+      "offset": 124,
+      "width": 2,
+      "value": 0
+    },
+    {
+      "offset": 126,
+      "width": 2,
+      "value": 0
+    },
+    {
+      "offset": 128,
+      "width": 2,
+      "value": 0
+    },
+    {
+      "offset": 130,
+      "width": 2,
+      "value": 0
+    },
+    {
+      "offset": 132,
+      "width": 2,
+      "value": 0
+    },
+    {
+      "offset": 252,
+      "width": 2,
+      "value": 0
+    },
+    {
+      "offset": 244,
+      "width": 4,
+      "value": 0
+    },
+    {
+      "offset": 228,
+      "width": 4,
+      "value": 0
+    },
+    {
+      "offset": 232,
+      "width": 4,
+      "value": 0
+    },
+    {
+      "offset": 260,
+      "width": 2,
+      "value": 0
+    },
+    {
+      "offset": 262,
+      "width": 2,
+      "value": 0
+    },
+    {
+      "offset": 264,
+      "width": 2,
+      "value": 0
+    },
+    {
+      "offset": 266,
+      "width": 2,
+      "value": 0
+    },
+    {
+      "offset": 268,
+      "width": 2,
+      "value": 0
+    },
+    {
+      "offset": 6,
+      "width": 2,
+      "value": 64
+    },
+    {
+      "offset": 8,
+      "width": 2,
+      "value": 0
+    },
+    {
+      "offset": 16,
+      "width": 4,
+      "value": "float0"
+    },
+    {
+      "offset": 12,
+      "width": 4,
+      "value": "float127"
+    },
+    {
+      "offset": 0,
+      "width": 2,
+      "value": 1
+    }
+  ],
+  "callback_binding": {
+    "site": 2148396372,
+    "target": 2148393220,
+    "name": "SoundSSPlayChEx_main",
+    "buffer_offset": 80,
+    "header_count": 256,
+    "file_offset": 0
+  },
+  "layout": {
+    "state": 2151547192,
+    "pool_pointer": 2151547448,
+    "stride": 312,
+    "counter": 2151547716,
+    "saved_irq": 2151547720,
+    "marker": 2151547452,
+    "slot_count_half": 2151547740,
+    "slot_table": 2151547742,
+    "path_buffer": 2151546936,
+    "path_capacity": 256
+  }
+}
