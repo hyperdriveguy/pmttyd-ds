@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [MusyX volume coordinate/phase preparation](audio/MUSYX_VOLUME_COORDINATE_AND_PHASE_PREPARATION.md) | Complete mixer table/sentinel/unsigned coordinate/compression/phase region and remainder wrapper | Interpolation/output branches, IEEE math/domains and original mixer/audio |
 | [MusyX hardware pitch/volume/DSP ramps](audio/MUSYX_HARDWARE_PITCH_VOLUME_AND_DSP_RAMPS.md) | Four complete duplicate/dirty publication and signed ramp/residual correction bodies | Mixer/ramp callers/consumers, valid FP/index/alias domains and original audio |
 | [MusyX DSP initialization/activation](audio/MUSYX_DSP_INITIALIZATION_AND_ACTIVATION.md) | Six complete allocation/record/studio/HRTF/list/start/key-off bodies | Allocator/cache/DSP children, domains and original init/start/audio |
 | [MusyX DSP ADSR setup/command loop](audio/MUSYX_DSP_ADSR_SETUP_AND_COMMAND_LOOP.md) | Four setup/start/update-command regions and complete host-position/message/deactivation leaves | Other DSP builder/producers/consumers/domains and original cadence/audio |

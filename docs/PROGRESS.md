@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero mixer coordinate/phase preparation
+
+Completed salCalcVolume coordinate/table/sentinel/compression/phase region and
+fmod wrapper; checked the EVT-01 portion.
+[Coordinate/phase preparation](behavior/audio/MUSYX_VOLUME_COORDINATE_AND_PHASE_PREPARATION.md)
+pins low-byte table selection/raw sentinel/unsigned floor/single conversion,
+optional pre-compression phases and common child-request order. Both table/output
+branches and IEEE remainder/math/domain/original mixer/audio remain open.
+
+Validation: read-only ISO manifest passed13 spans (one region/one wrapper/three
+linked/two numeric tables/six literals),108 anchors/13 calls. Seven raw-coordinate/
+sentinel/carry,six binary32 compression and six table-selection vectors checked;
+258 original table floats retained. Link audit passed841 Markdown files/zero
+broken links; scoped `git diff --check` passed. Documentation/metadata only; no
+`make test`/`make all` rerun. Full original inspection ELFs/listings stay `/tmp`;
+no bodies/binary assets committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 both mixer interpolation/output branches, original
+pan-table/literal providers, IEEE remainder/math/FPSCR/transitive execution,
+actual coordinate/volume/table/output/alias/lifetime/IRQ/concurrency domains and
+original mixer/volume/DSP/audio traces. Remaining DSP/precision work,
+lower-priority inbox and full native/full-game work remain open.
+
 ## 2026-10-13 — Original Darkly and reusable per-actor talk rules
 
 Added source Darklyクラガリさん to the east-side early0..55 slice in

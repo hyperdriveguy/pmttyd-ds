@@ -382,6 +382,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [pitch/volume/DSP ramps](../behavior/audio/MUSYX_HARDWARE_PITCH_VOLUME_AND_DSP_RAMPS.md).
   Duplicate/dirty/time/float/table/division/correction order pinned;
   mixer/caller/domain/original DSP/audio remain open.
+- [x] Complete salCalcVolume table/coordinate/sentinel/compression/phase
+  preparation region and fmod wrapper — [volume coordinate/phase preparation](../behavior/audio/MUSYX_VOLUME_COORDINATE_AND_PHASE_PREPARATION.md).
+  Original tables/single rounding/pre-compression saves/child order pinned;
+  output branches/IEEE child/domain/original mixer/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2144,3 +2148,13 @@ retained. Duplicate/dirty/event-slot publication, triplet conversion, raw table
 index, coarse preparation and residual correction/reset semantics pinned.
 Mixer internals/ramp caller domains/DSP consumers/original audio stay open;
 source constants are not measured timing. Parent EVT-01 remains OPEN.
+
+## 2026-10-13 — Mixer coordinate/phase preparation delivery
+
+Completed one region/one wrapper in
+[volume coordinate/phase preparation](../behavior/audio/MUSYX_VOLUME_COORDINATE_AND_PHASE_PREPARATION.md).
+Thirteen spans/108 anchors/13 calls verified;19 formula vectors and258 original
+volume-table floats/six numeric literals retained. Raw sentinel/unsigned floor/
+low-byte selector/single conversion, optional pre-compression phases and common
+phase/index request order pinned. Both output branches/IEEE math/caller/domain/
+original mixer/audio remain open. Parent EVT-01 stays OPEN.

@@ -131,3 +131,10 @@ command consumers, actual pitch/pan/float/flag/marker/record/studio/time/mask
 writers, valid index/FP/alias/lifetime/IRQ/concurrency domains and original
 volume/pitch/ramp/DSP/audio traces. Four local bodies answered; EVT-01/full
 native binding remain OPEN.
+
+## 2026-10-13 — Mixer preparation follow-up
+
+[Coordinate/phase preparation](MUSYX_VOLUME_COORDINATE_AND_PHASE_PREPARATION.md) closes the mixer parameter/table/
+sentinel/phase region and remainder wrapper. Both interpolation/output branches,
+IEEE remainder/math/domain/original audio remain open; full mixer fingerprint
+still does not establish its complete semantics.
