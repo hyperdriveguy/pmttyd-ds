@@ -10,6 +10,7 @@ romfs/manifest.json
 *.map
 /ttyd-2ds.lst
 __pycache__/
+opencode.json
 local-assets/
 romfs/*.vertices
 romfs/*.batches
