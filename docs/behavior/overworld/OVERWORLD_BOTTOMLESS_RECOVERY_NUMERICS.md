@@ -54,6 +54,10 @@ nothing — stage 13 (written by the HP path below) is terminal by gate.
   [124]/[128]/[132]/[136] = 0.34 / −0.002 / −0.01 / 0.0. The port's authored
   −0.001/−0.002/+0.00024/−0.00004 cascade matches only the −0.002 lane;
   replace the other three with these readings.
+- Default lanes (r4-sourced): before that test, [124/128/132/136] load from
+  [r4+0/4/8/12] where r4 = [r13−28176]+16 when [Mario+46] == 5, else the
+  absolute table 0x80416208+16. The mismatch triple overwrites them; on a
+  match they survive. Table contents are not read out here.
 
 ## Stages 10/11/12 and the HP path
 

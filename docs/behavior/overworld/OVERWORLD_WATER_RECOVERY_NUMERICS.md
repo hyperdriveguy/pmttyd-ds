@@ -24,9 +24,12 @@ behavior in the port is authored, not original.
 
 ## Sink and entry (stages 0–1)
 
-- Entry prologue: if [Mario+124] != 0.0, [124] = −6.0 and [128/132/136] =
-  0.0 (sink-velocity init); SFX 404 path and bgmode-gated positioning follow
-  per surrounding calls (not decoded here).
+- Entry prologue: if [Mario+124] == 0.0, [124] = −6.0 and [128/132/136] =
+  0.0 (sink-velocity init on a zeroed lane; nonzero lanes pass through
+  untouched). A prior revision stated this guard backwards — corrected
+  after the native session's independent re-read. SFX 404 path and
+  bgmode-gated positioning follow per surrounding calls (not decoded
+  here).
 - Stage 0 (8013af84): [144] += ([696] − 160.0); if [144] ≤ 0 (NaN-safe
   `cror`) call 0x80094020; [124] += −6.0; [128] = [132] = [136] = 0.0.
 - Stage-0 exit (in-line): [124] = 0.3, stage = 1, counter = 40.
