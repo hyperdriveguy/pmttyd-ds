@@ -82,6 +82,9 @@ def compile_model(iso,asset,name,poses):
     model = work/name;tpl = work/(name+'.tpl')
     extract(iso, 'a/'+name, model)
     bank = model.read_bytes()[0x44:0x84].split(b'\0')[0].decode('ascii')
+    raw=model.read_bytes();directory=struct.unpack_from('>I',raw,0x1ac)[0]
+    zero=raw[directory:directory+60].split(b'\0')[0].decode('ascii')
+    poses=[zero,*[pose for pose in poses if pose!=zero]]
     extract(iso, 'a/'+bank+'-', tpl)
     helpers = ['character_mesh.py','character_surface_mesh.py','character_bake.py','character_node.py','character_animation_pack.py','character_animation_data.py','iso_assets.py']
     fingerprint = hashlib.sha256(Path(__file__).read_bytes() + b''.join(Path('tools',p).read_bytes() for p in helpers) +
@@ -97,6 +100,7 @@ def compile_model(iso,asset,name,poses):
         tex3ds = shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds'
         subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o',str(required[2]),str(work/(asset+'-runtime.png'))],check=True,stdout=subprocess.DEVNULL)
         result.update(fingerprint=fingerprint,uv_scale=1024/height,
+                      original_index0=zero,
                       assets=[json.loads(p.read_text()) for p in [model.with_suffix('.provenance.json'),tpl.with_suffix('.tpl.provenance.json')]],
                       license='Local original Nintendo/Intelligent Systems assets; no redistribution rights')
         manifest.write_text(json.dumps(result,indent=2)+'\n')

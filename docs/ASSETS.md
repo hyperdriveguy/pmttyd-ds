@@ -871,3 +871,17 @@ and packs/manifests/T3X stay in ignored RomFS. Nintendo/Intelligent Systems righ
 remain; local conversion grants no redistribution rights. No generated NPC art
 or rewritten dialogue is introduced. Numeric SDK/render and full NPC services
 remain adapters as described by the native presentation contract.
+
+## 2026-10-13 — Original NPC descriptor0 animation fallback
+
+The local original NPC converters now retain the source animation bank's first
+64-byte descriptor before other selected poses (directory offset at header+1ac).
+Read-only `a/c_tyusan` supplies CHU_Z_1; `a/c_kuri_h` supplies Z_1.
+Ignored per-model manifests record `original_index0`; compiled PMANIM4 retains
+original sparse animation streams and existing RGBA/pass/cull/UV/sampler data.
+The case-sensitive source tribe d_1 therefore falls back to Z_1 rather than
+being rewritten to bank D_1. Canonical pose selection is documented in the
+[native NPC contract](behavior/field/NATIVE_NPC_PRESENTATION_AND_SOURCE_DIMENSIONS.md).
+Existing124px textures/gutters, hierarchy and scaling remain. Extracted banks,
+textures, manifests and compiled packs stay ignored outside source history;
+Nintendo/Intelligent Systems ownership and no redistribution rights remain.

@@ -207,6 +207,7 @@ struct ActorAnimationPose {
 class ActorAnimationPack {
 public:
     const ActorAnimationPose* pose(const char* name) const {for(const auto& p:poses)if(p.name==name)return &p;return nullptr;}
+    const ActorAnimationPose* firstPose() const{return poses.empty()?nullptr:&poses.front();}
     bool load(const char* path){FILE* f=std::fopen(path,"rb");if(!f)return false;bool ok=read(f);std::fclose(f);return ok;}
     bool read(FILE* file) {
         auto scalar=[&](auto& value){return std::fread(&value,sizeof(value),1,file)==1;};

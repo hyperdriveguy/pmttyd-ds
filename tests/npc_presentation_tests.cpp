@@ -9,6 +9,25 @@ struct Camera {
     NpcCameraService service(){return {this,[](void* p){auto& c=*static_cast<Camera*>(p);++c.calls;return c.camera;}};}
 };
 int main() {
+    ActorAnimationPack empty;
+    assert(!selectNpcAnimation(empty,"missing") && !selectNpcAnimation(empty,nullptr));
+    ActorAnimationPack professor,chu;
+    assert(professor.load("romfs/professor.pmanim") && chu.load("romfs/field-chu.pmanim"));
+    assert(professor.firstPose()->name=="Z_1" && chu.firstPose()->name=="CHU_Z_1");
+    assert(!professor.pose("d_1") && selectNpcAnimation(professor,"d_1")==professor.firstPose());
+    assert(selectNpcAnimation(professor,"D_1")==professor.pose("D_1"));
+    assert(selectNpcAnimation(chu,"chu_s_1")==chu.firstPose() && selectNpcAnimation(chu,"CHU_S_1")==chu.pose("CHU_S_1"));
+    NpcPoseClock fallbackClock;
+    assert(fallbackClock.update(selectNpcAnimation(professor,"d_1")->name,"",nullptr,100)==0);
+    assert(near(fallbackClock.update(selectNpcAnimation(professor,"another missing name")->name,"",nullptr,200),6));
+    assert(fallbackClock.poseAt==100); // Unknown names resolving to one pose do not restart.
+    MessagePlayback fallbackMessage;fallbackMessage.serial=1;fallbackMessage.poseRequestSerial=1;
+    fallbackMessage.poseRequestedAt=210;fallbackMessage.poseRequest=MessagePlayback::PoseRequest::Talk;
+    const auto& zero=professor.firstPose()->name;
+    assert(fallbackClock.update(zero,selectNpcAnimation(professor,"missing talk")->name,&fallbackMessage,210)==0);
+    fallbackMessage.poseRequestSerial=2;fallbackMessage.poseRequestedAt=220;
+    fallbackMessage.poseRequest=MessagePlayback::PoseRequest::Stay;
+    assert(fallbackClock.update(zero,zero,&fallbackMessage,220)==0 && fallbackClock.poseAt==220);
     NpcAngleTable table;assert(table.load("romfs/npc-angle.bin"));
     assert(!table.load("/nonexistent/npc-angle.bin"));
     assert(table.angle(0,0,0,0)==0 && table.angle(0,0,0,-1)==0 && table.angle(0,0,1,0)==90);

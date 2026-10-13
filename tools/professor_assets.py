@@ -24,6 +24,9 @@ def build(iso):
     required=[Path('romfs/professor.'+suffix) for suffix in ['pmmesh','pmanim','t3x','bin']]
     if manifest.exists() and all(p.exists() for p in required) and json.loads(manifest.read_text()).get('fingerprint')==fingerprint:return
     poses=['Z_1','S_1','T_1','W_1','R_1','D_1']
+    directory=struct.unpack_from('>I',model.read_bytes(),0x1ac)[0]
+    zero=model.read_bytes()[directory:directory+60].split(b'\0')[0].decode('ascii')
+    if poses[0]!=zero:raise ValueError('Original descriptor0 must lead the native NPC bank')
     compile_mesh([(model,tpl,poses)],required[0],work/'legacy.png')
     result=compile_surface_mesh([(model,tpl,poses)],required[1],work/'mesh.png')
     height=128
@@ -33,7 +36,8 @@ def build(iso):
     tex3ds=shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds'
     subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o',str(required[2]),str(work/'runtime.png')],check=True,stdout=subprocess.DEVNULL)
     result.update(fingerprint=fingerprint,atlas_height=height,uv_scale=1024/height,assets=[json.loads(p.read_text()) for p in [model.with_suffix('.provenance.json'),tpl.with_suffix('.tpl.provenance.json')]],
-                  unresolved_tribe_pose='DOL tribe string d_1 differs from actual bank D_1; no alias invented',
+                  original_index0=zero,
+                  tribe_pose_fallback='Case-sensitive DOL tribe d_1 misses bank D_1 and selects source descriptor0 Z_1',
                   license='Local original Nintendo/Intelligent Systems assets; no redistribution rights')
     manifest.write_text(json.dumps(result,indent=2)+'\n')
     print('Original Frankly animation poses:',len(poses))

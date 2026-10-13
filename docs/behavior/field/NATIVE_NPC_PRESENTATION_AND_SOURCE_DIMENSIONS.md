@@ -54,7 +54,19 @@ MessagePlayback publishes Talk/Stay request generations/timestamps at documented
 countdown and terminal/retained-stop branches. Ordinary Chu follows these to
 source CHU_T_1 or stay pose, including same-name forced restarts. Other scripted
 pose producers still use their current scoped event adapters. This is not the
-complete NPC registry/name/flag200 routing service. Source NPC print anchors
+complete NPC registry/name/flag200 routing service.
+
+Native animation lookup is case-sensitive, matching animPoseSetAnim: an unknown
+name selects the bank's original descriptor0. The local subset converter reads
+the original descriptor directory at header+1ac and retains descriptor0 first,
+including CHU_Z_1 for Chu and Z_1 for Frankly. Lowercase tribe d_1 therefore
+selects Z_1 rather than aliasing uppercase D_1. Initial NPC pack admission and
+base/talk requests use the canonical selected name before the clock sees it;
+two unknown names selecting the same pose preserve restart0 timing, while source
+message forced-restart requests retain their existing generation semantics.
+Empty banks cannot select a fallback. Map-object lookup remains exact-name.
+
+Source NPC print anchors
 use captured root plus height once; rendering no longer derives ordinary Chu/
 Frankly anchors from sampled mesh bounds or model scale. Explicit event anchor
 override, party/battle NPC anchors and later anchor updates need their owners.

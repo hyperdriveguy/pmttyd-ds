@@ -209,7 +209,8 @@ bool Renderer::loadFieldActors(uint32_t roomId,Room& room) {
         const auto& model=fieldActorAssets.models()[index];
         const auto base=std::string("romfs:/")+model.asset;
         if(!gpu.animations.load((base+".pmanim").c_str()))return false;
-        for(const auto& actor:fieldActorAssets.actors())if(actor.room==roomId && actor.model==index && !gpu.animations.pose(actor.pose.c_str()))return false;
+        for(const auto& actor:fieldActorAssets.actors())if(actor.room==roomId && actor.model==index &&
+            !(actor.kind==0?selectNpcAnimation(gpu.animations,actor.pose.c_str()):gpu.animations.pose(actor.pose.c_str())))return false;
         FILE* f=std::fopen((base+".t3x").c_str(),"rb");if(!f)return false;
         gpu.texture.imported=Tex3DS_TextureImportStdio(f,&gpu.texture.texture,nullptr,false);std::fclose(f);
         if(!gpu.texture.imported)return false;
@@ -237,10 +238,15 @@ void Renderer::fieldActors(const Game& g) {
             if(g.saveObjects)if(const auto* object=g.saveObjects->find(actor.key)){actor.pose=object->pose;frame=object->frame;}
             NpcPresentation* npc=nullptr;
             if(actor.kind==0) {
+                const auto* selected=selectNpcAnimation(gpu.animations,actor.pose.c_str());
+                if(!selected){++actorMetrics.sampleFailures;continue;}
+                actor.pose=selected->name;
+                std::string talkPose;
+                if(!actor.talkPose.empty())talkPose=selectNpcAnimation(gpu.animations,actor.talkPose.c_str())->name;
                 auto& state=plaza.npcs[actor.key];npc=&state.presentation;
                 const uint64_t now=g.ticks*1000/60;
                 if(now<state.clock.poseAt)state={};
-                frame=state.clock.update(actor.pose,actor.talkPose,
+                frame=state.clock.update(actor.pose,talkPose,
                     g.fieldActorTalk.actor.key==actor.key?&g.fieldActorTalk.message:nullptr,now);
                 actor.pose=state.clock.pose;
                 NpcMatrixInput input;input.root=actor.position;input.yaw=actor.yaw;input.drawScale=actor.scale;

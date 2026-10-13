@@ -2,6 +2,9 @@
 #include <cassert>
 #include <cstring>
 namespace ttyd {
+const ActorAnimationPose* selectNpcAnimation(const ActorAnimationPack& pack,const char* name) {
+    const auto* found=name?pack.pose(name):nullptr;return found?found:pack.firstPose();
+}
 float NpcPoseClock::update(const std::string& base,const std::string& talk,const MessagePlayback* message,uint64_t now) {
     if(now<poseAt)*this={};
     if(basePose!=base){basePose=pose=base;poseAt=now;}

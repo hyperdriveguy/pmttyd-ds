@@ -11,6 +11,8 @@ private:
     std::array<float,91> values{};
 };
 float npcReviseAngle(float);
+// The local NPC pack must retain the original bank's descriptor0 first.
+const ActorAnimationPose* selectNpcAnimation(const ActorAnimationPack&,const char* name);
 struct NpcCamera {CameraPoint eye,at;};
 struct NpcCameraService {void* user=nullptr;NpcCamera (*read)(void*)=nullptr;};
 struct NpcMatrixInput {
