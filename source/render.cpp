@@ -259,7 +259,7 @@ void Renderer::fieldActors(const Game& g) {
                 actor.position=g.storyPresentation().actors[2].position;actor.yaw=g.storyPresentation().actors[2].yaw;
                 actor.pose=g.storyPresentation().message.talking && g.storyPresentation().speaker==2?"T_1":g.trioBattleActive?g.storyPresentation().actors[2].pose:g.storyPresentation().actors[2].moving?"W_1":"S_1";
             } else if(!actor.visible(g.progress.room,g.progress.originalStory,g.fieldDoor.interiorMask,g.fieldSystemFlags))continue;
-            const auto* live=actor.wander.enabled?g.fieldNpcState(actor.key):nullptr;
+            const auto* live=actor.kind==0 && !scripted?g.fieldNpcState(actor.key):nullptr;
             if(live && live->initialized){if(!live->presentationReady)continue;actor.position={live->body.root.x,live->body.root.y,live->body.root.z};actor.yaw=live->movement.yaw;actor.pose=live->pose;}
             uint32_t npcFlags=live && live->initialized?live->body.flags:actor.npcFlags;
             if(scripted)npcFlags=(npcFlags&~g.storyPresentation().actors[2].flagMask)|

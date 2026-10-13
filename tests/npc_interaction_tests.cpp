@@ -49,4 +49,29 @@ int main() {
     rays.blocked=false;player.cameraSnapshot=0;player.viewYaw=90;npc.root={30,0,0};scan={};
     scan.consider(npc,player,angles,rays.service());assert(!scan.candidate);
     player.cameraSnapshot=270;scan={};scan.consider(npc,player,angles,rays.service());assert(scan.candidate==4);
+    // The candidate lifecycle is independent of winning nearest selection.
+    struct Events {unsigned stops=0,starts=0;} events;
+    NpcTalkTurnServices turns{&events,
+        [](void* p){++static_cast<Events*>(p)->stops;},
+        [](void* p){++static_cast<Events*>(p)->starts;}};
+    NpcTalkTurn turn{0x10,0x40,270,0};
+    updateNpcTalkTurn(turn,true,0x00400003,{0,0,0},{30,0,0},angles,turns);
+    assert(turn.state==0x20000010 && turn.savedYaw==270 && turn.yaw==90 && events.stops==1);
+    updateNpcTalkTurn(turn,true,0x00400003,{0,0,0},{0,0,30},angles,turns);
+    assert(turn.yaw==90 && turn.savedYaw==270 && events.stops==1);
+    updateNpcTalkTurn(turn,false,0x00400003,{},{},angles,turns);
+    assert(turn.state==0x10 && turn.yaw==270 && turn.secondaryFlags==0x40 && events.starts==1);
+    updateNpcTalkTurn(turn,false,0x00400003,{},{},angles,turns);assert(events.starts==1);
+    // Static loss requests +140's consumer rather than directly restoring yaw.
+    updateNpcTalkTurn(turn,true,3,{},{30,0,0},angles,turns);
+    updateNpcTalkTurn(turn,false,3,{},{},angles,turns);
+    assert(turn.yaw==90 && turn.savedYaw==270 && turn.secondaryFlags==0x10000040 && events.starts==1);
+    // A source no-turn actor still saves yaw and stops its regular event.
+    turn={0,0,180,0};updateNpcTalkTurn(turn,true,0x01000003,{},{30,0,0},angles,turns);
+    assert(turn.yaw==180 && turn.savedYaw==180 && (turn.state&0x20000000));
+    turn.secondaryFlags=0xfffffaff;turn.state=0x20001010;
+    consumeNpcNullInterrupts(turn.secondaryFlags,turn.state);
+    assert(turn.secondaryFlags==0xa00 && turn.state==0x20000010 && turn.yaw==180);
+    turn={};updateNpcTalkTurn(turn,true,3,{},{-1.e-10f,0,-30},angles,{});
+    assert(turn.yaw>=0 && turn.yaw<360 && turn.yaw==0); // Rounded source angle360 is normalized.
 }

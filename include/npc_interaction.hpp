@@ -25,4 +25,21 @@ struct NpcTalkScan {
     float distance=1000;
     bool consider(const NpcTalkBody&,const NpcTalkPlayer&,const NpcAngleTable&,const FieldWallServices&);
 };
+// fbatEncountCheck's visited actor result. Skipped scan gates must not call
+// this owner. Event handles are supplied by the native registry/scheduler.
+struct NpcTalkTurn {
+    uint32_t state=0,secondaryFlags=0;
+    float yaw=0,savedYaw=0;
+};
+struct NpcTalkTurnServices {
+    void* user=nullptr;
+    void (*stopRegular)(void*)=nullptr;
+    void (*startRegular)(void*)=nullptr;
+};
+void updateNpcTalkTurn(NpcTalkTurn&,bool admitted,uint32_t mainFlags,
+                      FieldWallVector npc,FieldWallVector mario,
+                      const NpcAngleTable&,const NpcTalkTurnServices&);
+// npcCheckInterrupt's fallthrough when all six script slots are proven null.
+// Caller owns the flags1/2 NPC-main gate and invokes this before candidate scan.
+void consumeNpcNullInterrupts(uint32_t& secondaryFlags,uint32_t& state);
 }

@@ -208,3 +208,90 @@ not that NPCmain's clock/movement is suspended.
 [Wander lifetime](FIELD_NPC_WANDER_DRIVER_AND_GOOMBA4.md) pins candidate-before-A
 stop and original StopID/StartID retained work. No snapshot of the current
 native renderer implies exact original presentation cadence or hardware parity.
+
+
+## 2026-10-13 static candidate loss and interrupt consumption
+
+The separate event-trigger word is NPC+140; it is neither main flags+0 nor
+state+1d4. Fresh read-only DOL inspection recovers its local consumer
+`npcCheckInterrupt`0x800440f8,size0x234. `npcMain` calls it at0x8004acc8,
+after current movement/collision and before display registration, and only later
+calls the ordinary field encounter/candidate owner at0x8004b31c. Consequently
+a trigger posted by that candidate scan cannot be consumed by this earlier
+call in the same invocation. The next admitted per-actor NPC pass consumes it;
+do not clear it immediately as part of candidate-loss cleanup.
+
+The consumer first calls evtCheckID(NPCregularID+11c), then reads+140. The
+returned event-alive value does not guard this local trigger dispatch. It
+examines trigger bits outside00000f00, using the following priority. A trigger
+with a null corresponding script falls through to lower priority tests.
+
+| Trigger mask in NPC+140 | Script pointer in NPC | New event byte10 |
+| --- | --- | --- |
+| 00000010 | +12c | 8 |
+| 10000000 | +124, original regular script | 1 |
+| 00000008 | +13c | 5 |
+| 00000001 | +130 | 2 |
+| 00000002 | +134 | 3 |
+| 00000004 | +138 | 4 |
+
+The00000001/2/4 branches additionally require state+1d4 mask00001000 clear
+and mainflag00200000 clear; mask1 also requires event-trigger00000100 clear.
+The10000000 regular-replacement branch has none of those extra gates.
+For the first nonnull admitted script it calls evtEntry(script,0,00000020),
+sets the listed event type byte and event+170=NPC, then deletes the previous
+regularID through evtDeleteID0x80036664. It replaces NPC+11c with the new
+ID+15c, retains only event-trigger bits00000f00, clears state00001000,
+sets NPC+18c/+188 to0 and float+1b0 to0, and returns1. If no script admits,
+it still retains only event-trigger00000f00 and clears state00001000, but
+performs none of those event-ID/work resets and returns0. **Neither path
+writes ry+144 or saved ry+148.** A10000000 request is a replacement regular
+script request, not an implicit yaw-restoration instruction or StartID on
+the existing stopped regular event. The caller ignores this return value.
+
+### Bounded ordinary Chu3 and Darkly result
+
+Fresh read-only `rel/gor.rel` extraction and self ADDR32 relocation inspection
+confirm the following setup records. A raw zero pointer alone is insufficient
+REL evidence; these null fields also have no local/import/foreign relocation.
+
+| Actor | Setup row | Main setup flags | Secondary setup flags | Init event | Regular row+10 |
+| --- | --- | --- | --- | --- | --- |
+| Chu3 | 452d4 | 00080600 | 0 | 43dc8 | null |
+| Darkly | 45444 | 00080600 | 0 | 446a8 | null |
+
+Both rows also have null row+18/+1c/+20/+24/+28, mapping via
+`evt_npc_setup`0x800532fc..53328 to NPC+12c/+130/+134/+138/+13c. Thus no
+alternate interrupt script is available in this fresh bounded setup either.
+Chu's init is RETURN/END; Darkly's init ORs mainflag40000000 then
+RETURN/END. Constructor flags3 give ordinary Chu00080603 and
+Darkly40080603. Both source tagged-map yaw values are270. Neither has
+mainflag00400000; Darkly's40000000 movement bypass is a different mask.
+See [Darkly source setup](ROGUEPORT_DARKLY_STATIC_AND_TALK_BINDINGS.md) and
+[Chu flag initialization](FIELD_NPC_MARIO_SIDE_RESPONSE_NUMERICS.md).
+
+For these fresh stationary actors, first full candidate admission saves the
+current yaw and turns once toward Mario unless mainflag01000000. Continued
+admission retains that yaw even as Mario moves around. A visited local loss
+clears state20000000 and posts event-trigger10000000, retaining the turned
+yaw. The next admitted npcCheckInterrupt sees null regular/alternate scripts,
+clears the request as described and still retains that yaw. A later fresh
+admission saves this retained yaw and turns again. **Restoring the initial
+map yaw270 or saved yaw on ordinary candidate loss would add a behavior absent
+from these source owners.** Skipped actor/global candidate gates retain the
+existing candidate state rather than invoking local-loss cleanup.
+
+This is bounded to the recovered fresh setup and these local owners; foreign
+script writes may alter flags, yaw, scripts or actor lifetime. Talk completion
+still follows its independent recovered state20000000 guard above. That
+completion's explicit restore when the guard is clear is not an authorization
+to restore yaw on every proximity loss. This delivery does not establish
+original EVT cadence, every caller of npcCheckInterrupt, all interrupt
+semantics, runtime visual parity or hardware timing.
+
+Validation: original ISO opened read-only; inspect_dol_function.py recovered
+npcCheckInterrupt,npcMain,evt_npc_setup and the candidate branch into /tmp.
+REL inspection used read_bindings on a fresh /tmp extraction, verifying null
+raw words and absent relocation entries for both setup rows. No source code,
+original asset/dialogue or inspection binary is added to history. Documentation
+only; native tests/builds and emulator measurements are not claimed.

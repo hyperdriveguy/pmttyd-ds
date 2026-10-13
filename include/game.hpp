@@ -140,9 +140,11 @@ struct FieldNpcInstance {
     NpcWanderWork wander;
     NpcWanderActor movement;
     NpcPresentation presentation;
+    NpcPoseClock poseClock;
     std::string pose;
     uint64_t placement=0,seen=0,clock=0,poseAt=0;
     int posePhase=0;
+    uint32_t secondaryFlags=0;
     float savedYaw=0;
     bool scripted=false,initialized=false,paused=false,presentationReady=false;
 };

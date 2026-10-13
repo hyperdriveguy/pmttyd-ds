@@ -2,6 +2,25 @@
 #include <cassert>
 #include <cmath>
 namespace ttyd {
+void consumeNpcNullInterrupts(uint32_t& secondaryFlags,uint32_t& state) {
+    secondaryFlags&=0x00000f00u;state&=~0x1000u;
+}
+void updateNpcTalkTurn(NpcTalkTurn& turn,bool admitted,uint32_t flags,
+                      FieldWallVector npc,FieldWallVector mario,
+                      const NpcAngleTable& angles,const NpcTalkTurnServices& services) {
+    if(admitted) {
+        if(turn.state&0x20000000u)return;
+        turn.state|=0x20000000u;turn.savedYaw=turn.yaw;
+        if(services.stopRegular)services.stopRegular(services.user);
+        if(!(flags&0x01000000u))turn.yaw=npcReviseAngle(angles.angle(npc.x,npc.z,mario.x,mario.z));
+    } else if(turn.state&0x20000000u) {
+        turn.state&=~0x20000000u;
+        if(flags&0x00400000u) {
+            turn.yaw=turn.savedYaw;
+            if(services.startRegular)services.startRegular(services.user);
+        } else turn.secondaryFlags|=0x10000000u;
+    }
+}
 bool NpcTalkPlayer::talkable() const {
     return !(partyType==4 && (partyFlags&0x100)) && motion<=2 && !(viewFlags&1) &&
         backgroundMode!=1 && !(flags&0x01000000) && !controlMode;

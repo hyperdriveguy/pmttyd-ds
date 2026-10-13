@@ -806,8 +806,9 @@ void Game::updateFieldNpcTalk(const Input& input) {
                 auto current=actor;const auto live=fieldNpcs.find(actor.key);
                 if(live!=fieldNpcs.end())current.position={live->second.body.root.x,live->second.body.root.y,live->second.body.root.z};
                 if(fieldActorTalk.begin(current,*progress.originalStory,harborMessageFont(),ticks*1000/60)) {
-                    fieldActorTalk.actor.yaw=fieldNpcAngles().angle(current.position[0],current.position[2],
-                        progress.position.x*100,progress.position.z*100);
+                    if(!(current.npcFlags&0x01000000))fieldActorTalk.actor.yaw=npcReviseAngle(fieldNpcAngles().angle(current.position[0],current.position[2],
+                        progress.position.x*100,progress.position.z*100));
+                    if(live!=fieldNpcs.end())live->second.movement.yaw=fieldActorTalk.actor.yaw;
                     scene=Scene::Dialogue;saveRequested=false;npcTalkWaiting=true;return;
                 }
                 break;
@@ -882,21 +883,29 @@ void Game::updateFieldNpcCandidates() {
         auto it=fieldNpcs.find(actor.key);if(it==fieldNpcs.end())continue;auto& state=it->second;
         if(!(state.body.flags&2) || (state.body.flags&8))continue; // Source skipped slots do not resume.
         const bool admitted=scan.consider({actor.key,state.body.root,actor.npcWidth,actor.npcHeight,state.body.flags,true},mario,fieldNpcAngles(),rays);
-        if(!actor.wander.enabled)continue;
-        if(admitted) {
-            if(!state.paused) {
-                state.savedYaw=state.movement.yaw;state.paused=true;state.body.state|=0x20000000;
-                if(!(state.body.flags&0x01000000))state.movement.yaw=fieldNpcAngles().angle(state.body.root.x,state.body.root.z,mario.root.x,mario.root.z);
-            }
-        } else if(state.paused){state.movement.yaw=state.savedYaw;state.paused=false;state.body.state&=~0x20000000u;}
+        if(state.scripted)continue;
+        NpcTalkTurn turn{state.body.state,state.secondaryFlags,state.movement.yaw,state.savedYaw};
+        NpcTalkTurnServices turns{&state,
+            [](void* p){static_cast<FieldNpcInstance*>(p)->paused=true;},
+            [](void* p){static_cast<FieldNpcInstance*>(p)->paused=false;}};
+        if(!actor.wander.enabled)turns={}; // Current static source regular IDs/scripts are null.
+        updateNpcTalkTurn(turn,admitted,state.body.flags,state.body.root,mario.root,fieldNpcAngles(),turns);
+        state.body.state=turn.state;state.secondaryFlags=turn.secondaryFlags;
+        state.movement.yaw=turn.yaw;state.savedYaw=turn.savedYaw;
     }
     fieldNpcEventCandidate=uint32_t(scan.candidate);
 }
 void Game::updateFieldNpcPresentation() {
     for(const auto& actor:fieldActorCatalog().actors()) {
-        if(!actor.wander.enabled || !actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))continue;
+        if(actor.kind || !actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))continue;
         auto found=fieldNpcs.find(actor.key);if(found==fieldNpcs.end() || !found->second.initialized)continue;
         auto& instance=found->second;const auto& body=instance.body;
+        if(instance.scripted)continue;
+        if(!actor.wander.enabled) {
+            instance.poseClock.update(actor.pose,actor.talkPose,
+                fieldActorTalk.actor.key==actor.key?&fieldActorTalk.message:nullptr,ticks*1000/TickRate);
+            instance.pose=instance.poseClock.pose;instance.poseAt=instance.poseClock.poseAt;
+        }
         if((body.flags&3)!=3){instance.presentationReady=false;continue;}
         NpcMatrixInput input;input.root={body.root.x,body.root.y,body.root.z};input.yaw=instance.movement.yaw;input.drawScale=actor.scale;input.flags=body.flags;
         if(body.flags&0x8000)instance.presentation.flags|=0x100;else instance.presentation.flags&=~0x100u;
@@ -938,6 +947,9 @@ void Game::updateFieldNpcCollision() {
             flags=(actor.npcFlags&~source.flagMask)|(source.flags&source.flagMask);
         }
         const auto inserted=fieldNpcs.try_emplace(actor.key);auto& instance=inserted.first->second;
+        if(!actor.wander.enabled && !scripted && !instance.initialized) {
+            instance.movement.yaw=actor.yaw;instance.initialized=true;
+        }
         if(actor.wander.enabled && instance.initialized) {
             root={instance.body.root.x,instance.body.root.y,instance.body.root.z};flags=instance.movement.flags;
         }
@@ -967,6 +979,12 @@ void Game::updateFieldNpcCollision() {
             }
         }
         if(scripted)professorStory.actors[2].position={body.root.x,body.root.y,body.root.z};
+        // Verified source records have null regular/all interrupt script slots.
+        // Profile IDs are gor_02/Chu3 and gor_02/Darkly, not reusable model IDs.
+        // Future actor profiles need their own original script providers.
+        if((body.flags&3)==3 && !scripted && actor.room==2 &&
+           (actor.key==0x525f654d || actor.key==0xe4c10e3d))
+            consumeNpcNullInterrupts(instance.secondaryFlags,body.state);
         if((body.flags&3)==3)body.previous=body.root; // Rejected initial slots do not reach the source end snapshot.
     }
     for(auto it=fieldNpcs.begin();it!=fieldNpcs.end();) {

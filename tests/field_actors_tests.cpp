@@ -131,6 +131,21 @@ int main(int argc,char**) {
         assert((darkly.position==std::array<float,3>{-335,0,-335}) && darkly.yaw==270 && darkly.npcFlags==0x40080603);
         assert(darkly.npcWidth==30 && darkly.npcHeight==30 && darkly.talkPose=="T_1");
         assert(darkly.visible(2,8,0) && !darkly.visible(2,56,0));
+        Game staticTurn;Progress staticSaved;staticSaved.room=2;staticSaved.originalStory=8;staticSaved.position={1.2f,-4};
+        staticTurn.restore(staticSaved);for(int n=0;n<360;++n)staticTurn.tick({});
+        staticTurn.progress.position={-3.35f,-3.65f};
+        staticTurn.marioPresentation.display=staticTurn.marioPresentation.target=180;staticTurn.tick({});
+        const auto* liveStatic=staticTurn.fieldNpcState(darkly.key);
+        assert(liveStatic && liveStatic->initialized && liveStatic->presentationReady);
+        assert(liveStatic->savedYaw==270 && liveStatic->movement.yaw==0 && (liveStatic->body.state&0x20000000));
+        staticTurn.progress.position.x+=.05f;staticTurn.tick({});
+        assert(staticTurn.fieldNpcState(darkly.key)->movement.yaw==0); // First admission owns yaw.
+        staticTurn.fieldKeysOff=true;staticTurn.progress.position={1.2f,-4};staticTurn.tick({});
+        assert(staticTurn.fieldNpcState(darkly.key)->body.state&0x20000000); // Skipped gates retain ownership.
+        staticTurn.fieldKeysOff=false;staticTurn.tick({});liveStatic=staticTurn.fieldNpcState(darkly.key);
+        assert(!(liveStatic->body.state&0x20000000) && (liveStatic->secondaryFlags&0x10000000) && liveStatic->movement.yaw==0);
+        staticTurn.tick({});liveStatic=staticTurn.fieldNpcState(darkly.key);
+        assert(!liveStatic->secondaryFlags && liveStatic->movement.yaw==0); // Null regular does not restore yaw.
         assert(fieldActorTalkAvailable(darkly,8) && !fieldActorTalkAvailable(darkly,175));
         assert(fieldActorTalkKey(darkly,8)=="gor_02_034_00" && fieldActorTalkKey(darkly,175).empty());
         ActorAnimationPack darklyArt;assert(darklyArt.load("romfs/field-darkly.pmanim"));

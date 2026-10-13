@@ -41,9 +41,10 @@ special correction masks. Unsupported scale/rotation/flag producers remain open.
 Incoming animation angle is reviseAngle(-eventYaw). Ordinary source Main publishes
 the facing sign before Inner reads it. Inner makes separate current-camera reads
 for classification and front/rear target, unwraps retained angle and performs
-one fused0.1 recurrence per admitted stationary native draw, or source mask100 snap.
-[Live wandering](NATIVE_LIVE_NPC_WANDER.md) instead prepares its paper state once
-per admitted simulation tick and exposes a read-only matrix to rendering. It then
+one fused0.1 recurrence per admitted native preparation, or source mask100 snap.
+[Live wandering](NATIVE_LIVE_NPC_WANDER.md) and
+[ordinary stationary NPCs](NATIVE_STATIC_NPC_CANDIDACY.md) prepare paper state
+once per admitted simulation tick and expose a read-only matrix to rendering. It then
 applies retained rotation, previous Main sign's Z reflection and the separate
 uniform source draw scalar2. Constructor flags9 and angle0 reflect the stable
 fresh NPC Entry/PeraOn path; native sign0 is only an unused sentinel until Main,

@@ -560,3 +560,18 @@ seed1 is an explicit adapter, and original left/right sound requests now play th
 through NDSP; full macro/spatial routing remains unbound. Source complete quest/scheduler/clock/lifetime/audio and
 original/hardware numeric/performance comparisons remain OPEN. No PROGRESS,
 code or commit changes by this explicitly delegated documentation worker.
+
+
+### 2026-10-13 — Static candidate-loss interrupt consumer
+
+[Ordinary candidate contract](../behavior/field/FIELD_ORDINARY_NPC_TALK_CANDIDATE.md)
+now recovers npcCheckInterrupt800440f8/234 and the +14010000000 regular-script
+replacement request. It executes before the later candidate scan, so loss
+posts a request for a following admitted NPC pass. Exact trigger priority,
+null-script fallthrough and clearing masks are recorded. Fresh read-only REL
+bytes plus relocation absence prove Chu3/Darkly regular and alternate interrupt
+script pointers are null: ordinary local candidacy loss retains turned yaw,
+then clears the unbound request; it does not restore map/saved yaw. Their
+mainflags00400000 remain clear. Full foreign script writes, lifetime, EVT
+cadence and measured presentation stay OPEN. Documentation-only source checks;
+no native build/emulator/hardware claim.
