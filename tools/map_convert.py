@@ -52,7 +52,7 @@ def wall_segments(collision,metadata=None,with_triangles=False):
             segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max()),*tag,*geometry))
     return sorted(segments)
 
-def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=(),event_groups=None,scene_root=None,scene_offsets=None):
+def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=(),event_groups=None,scene_root=None,scene_offsets=None,object_bindings=()):
     event_groups=event_groups or {}
     raw=Path(path).read_bytes();base=32
     table=32+u(raw,4)+u(raw,8)*4;names=table+u(raw,12)*8
@@ -241,6 +241,26 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
             out.write(struct.pack('<II',track['duration'],len(track['bindings'])))
             for frame in track['frames']:out.write(struct.pack('<12f',*frame))
             for vertex in track['bindings']:out.write(struct.pack('<Ifff',*vertex))
+    # Retain per-object local coordinates for bounded native event transforms.
+    # Geometry remains ignored; descendants inherit the addressed object's matrix.
+    if object_bindings:
+        with (output/'map.houseobj').open('wb') as out:
+            out.write(struct.pack('<8sII',b'PMHOBJ01',count,len(object_bindings)))
+            for tag,name in enumerate(object_bindings):
+                matches=[node for node,info in node_info.items() if info['name']==name]
+                if len(matches)!=1:raise ValueError(f'Unique event object required: {name}')
+                target=matches[0];matrix=node_info[target]['world'].copy();matrix[:3,:]*=scale
+                matrix[:3,3]+=np.array(scene_offsets.get(name,(0,0,0)))
+                inverse=np.linalg.inv(matrix);bound=[]
+                for owner,rows in position_bindings.items():
+                    ancestor=owner
+                    while ancestor is not None and ancestor!=target:ancestor=node_info[ancestor]['parent']
+                    if ancestor!=target:continue
+                    for index,x,y,z in rows:
+                        local=(inverse@np.array([x,y,z,1]))[:3]
+                        bound.append((index,*local,x,y,z))
+                out.write(struct.pack('<II12f',tag,len(bound),*matrix[:3,:].flatten()))
+                for row in sorted(bound):out.write(struct.pack('<I6f',*row))
     # Complete static collision mesh for upward head rays, without slope filtering.
     with (output/'map.head').open('wb') as out:
         out.write(struct.pack('<4sI',b'HEAD',len(head_geometry)))

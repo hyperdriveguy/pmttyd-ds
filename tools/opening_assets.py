@@ -29,6 +29,7 @@ def main():
     images += [(f'demo-{i}','demo.tpl',i) for i in [0,1,2,8,9,10,11,12]]
     tracks=[('title','sys_tit1_32k'),('demo-book','sys_demo1_32k'),('demo-market','sys_demo2_32k'),('opening-house','evt_mri1_32k'),('opening-voyage','sys_opn1_32k'),('opening-sailing','evt_kou1_32k')]
     required=[f'opening-{r}.vertices' for r in ['aaa_00','aaa_00-interior','muj_20','gor_10']]+[n+ext for n,_,_ in images for ext in ['.t3x','.size']]+[n+'.wav' for n,_ in tracks]+['prologue.t3x','prologue.size']
+    required += ['opening-aaa_00.houseobj']
     required += [n+ext for n in ['c_luigi','c_paretta','c_peach','c_nazo'] for ext in ['.pmanim','.t3x','.uvscale']]
     if manifest.exists() and json.loads(manifest.read_text()).get('fingerprint')==fingerprint and all((out/n).exists() for n in required) and cached_maps_complete(out):return
     records=[]
@@ -53,7 +54,8 @@ def main():
             extract(a.iso,f'm/{room}/{ext}',work/(room+'.'+ext));records.append(json.loads((work/(room+'.'+ext+'.provenance.json')).read_text()))
         prefix='opening-'+variant
         hidden=('sai_ki1','sai_ki2','S_naka') if variant=='aaa_00' else ('S_ie_door',) if variant=='aaa_00-interior' else ()
-        info=convert(work/(room+'.d'),work/variant,hidden=hidden,scene_root='S_naka' if variant=='aaa_00-interior' else None)
+        info=convert(work/(room+'.d'),work/variant,hidden=hidden,scene_root='S_naka' if variant=='aaa_00-interior' else None,object_bindings=('S_ie_door','S_posuto') if variant=='aaa_00' else ())
+        if variant=='aaa_00':shutil.copyfile(work/variant/'map.houseobj',out/(prefix+'.houseobj'))
         for ext in ['vertices','batches','uvanim','meshanim']:shutil.copyfile(work/variant/('map.'+ext),out/(prefix+'.'+ext))
         for index,_ in enumerate(info['textures']):
             png=work/variant/f'texture-{index}.png';convert_tpl(work/(room+'.t'),png,index)
