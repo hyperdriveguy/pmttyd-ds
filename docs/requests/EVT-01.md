@@ -312,6 +312,75 @@ three values I first read as debug label **strings** (`0x80091434`, `0x80091504`
 `hitCheckVecFilter` as filter labels. Two of them were already correct in the
 original text and are now documented as function pointers rather than strings.
 
+### ID 3, 2026-10-12 — `__psndSFXOn` provisioning decoded
+
+[Slot provisioning](../behavior/audio/POSITIONAL_SFX_SLOT_PROVISIONING.md).
+`__psndSFXOn` 800d9934 is now decoded **end to end**, which closes the last
+structural gap in the positional-SFX family: it is the only writer of the
+`pssfx` fields the accessors read.
+
+Recovered behaviour, all class B:
+
+- **Name resolution is a `strcmp` scan.** The `key` argument is passed to
+  `strcmp` against `pssfxlist[i].word0`, stride 20, up to **4242** entries.
+  A key of `0` skips the scan and resolves to index 0; a scan that runs off
+  the end also resolves to index 0. There is no not-found failure.
+- **Three rejection gates before any slot is touched:** global `+0x56` bit
+  29 as a mute that applies **only when `arg7 != 0`**; a signed-byte
+  **cooldown of 6** at global `+0x5c` that rejects while nonzero and is set
+  to 6 on every start; and, for pssfxlist index 869 only, an event flag at
+  `0xF5DE0180` that must equal 2. Indices outside `<91`, `>=2250` and not
+  445/447 bypass the event path; index 517 diverts to it.
+- **Two-stage slot search.** First 20 slots for a free slot with the same
+  `(key >> 19)`, bumping a preference cursor at global `+0x54` by **8** per
+  reuse. If none, **40** slots are scanned and an occupied compatible slot
+  is *reclaimed*: the body inlines a full copy of `psndSFXOff`, including
+  the `slot+0x06 & 0x1F` gate, the `key >> 19` table index and the two-bit
+  SoundSS/Song/Efx stop, then clears the record. Reclaim also requires
+  `slot+0x0c == pssfxlist[+0x10]`. **Exhaustion returns `-1`.**
+- **`slot+0x06` channel bits are a function of the pssfxlist index** —
+  base `0x101`, then bits 5, 13, 14, 15 of the index plus per-index and
+  per-field overrides. This is how similar sounds are routed to different
+  hardware channels.
+- **Handle packing confirmed:** `channel = ++global[0x50]`,
+  `slot[+0x04] = (u16)channel`, return `slot_index | (channel << 8)`. This
+  independently confirms the layout `psndSFXChk` validates. Note the
+  asymmetry: `slot+0x04` gets the full 16-bit counter but only the value
+  shifted by 8 reaches the handle, so the two diverge once the 16-bit
+  counter wraps.
+- **Two dead clamps.** At `0x800d9c60` and `0x800d9c70` both `clrlwi
+  ...,24` then `cmplwi ...,255` can never be greater, so `li 20,127` and
+  the `lbz 21,13(28)` default are **unreachable**. Recorded, not repaired.
+- **Nothing here decrements the cooldown.** If `psndSFXMain` is not ported
+  with its decrement, `global[0x5c]` stays nonzero and all further starts
+  fail permanently. This is now the practical dependency.
+
+**One item left deliberately unresolved, and it is worth flagging upstream.**
+`__psndSFXOn` writes `slot+0x00` as the **bare pssfxlist index** (0..4241)
+via `stw 18, 0(29)`. But `psndSFXOff` and `psndSFX_pit` both derive their
+pssfxlist row from `(slot+0x00) >> 19`, which for 0..4241 is always **0**.
+Taken literally the accessors would always resolve `pssfxlist[0]`. The
+instruction bytes are unambiguous, so either the accessors are wrong, or
+`slot+0x00` is meant to hold a packed key and `__psndSFXOn` is not the only
+writer — but no other writer is visible. I have **not** guessed a
+reconciliation. This should be settled before either side is relied on.
+
+**Still open after this:** `psndSFXMain` (2964 bytes), which is now the
+sole remaining item in the positional-SFX chain and owns the cooldown
+decrement, the preference-cursor expiry and the reader of volume, distance
+and the published position. Also open: the two distance constants at
+`0x800E3C60`/`0x800E3C68` and `lfs -23412(r2)`, `pssfxlist` row fields,
+Monosiri record layout and writers, `BtlUnit_CheckStatus`/`GetStatus`,
+`SoundEfxSetPitch`, `irand(41)` domain. No original execution traces. No ISO
+bytes were copied into the repository and no fabricated audio mapping is
+claimed.
+
+Validation: body re-disassembled from the read-only ISO with the ELF in
+`/tmp` only; callees resolved against `us_symbols.csv`; every `lis`/`addi`
+data base re-derived and cross-checked to land in `.bss`/`.data` against the
+`pssfx` and `pssfxlist` symbols; `git diff --check` and link audit clean.
+Docs-only, so `make test` / `make all` were not rerun.
+
 **Still open:** `__psndSFXOn` 800d9934 (1344 bytes) remains the largest gap and
 now blocks only the slot writers; `psndSFXMain` (2964 bytes) is the reader of
 volume, distance and the published position; Monosiri record layout and table

@@ -117,6 +117,75 @@ Next tasks:
    have dropped rows from it. Worth an owner check before it is treated as
    a reliable index.
 
+## 2026-10-12 — `__psndSFXOn` slot provisioning decoded (ID 3)
+
+Third EVT-01 pass as documentation agent ID 3, taking the top item from
+the previous queue: `__psndSFXOn` (`0x800d9934`, 1344 bytes), the last
+structural gap in the positional-SFX chain because it is the **only**
+writer of the `pssfx` fields the accessors read.
+
+Delivered [POSITIONAL_SFX_SLOT_PROVISIONING](behavior/audio/POSITIONAL_SFX_SLOT_PROVISIONING.md),
+decoded end-to-end. Evidence class B; the `make test` / `make all` gates
+were not rerun because this is docs-only.
+
+Recovered:
+
+- **The `key` argument is a string.** Name resolution is a `strcmp` scan
+  over `pssfxlist` (stride 20, up to **4242** entries) against
+  `word0`. Key `0` skips the scan; a scan that runs off the end resolves to
+  index 0. There is no not-found failure.
+- **Three pre-allocation gates**: global `+0x56` bit 29 as a mute that
+  applies only when `arg7 != 0`; a signed-byte **cooldown of 6** at global
+  `+0x5c` that rejects while nonzero; and for index 869 an event flag at
+  `0xF5DE0180` that must equal 2. Indices 517 and 869 are the only
+  per-index specials.
+- **Two-stage slot search**: 20 same-key slots first (with a `+8`
+  preference cursor at global `+0x54`), then a 40-slot reclaim pass that
+  **inlines a full copy of `psndSFXOff`** — same low-5 gate, same
+  `key >> 19` table index, same two-bit SoundSS/Song/Efx stop — and
+  additionally requires `slot+0x0c == pssfxlist[+0x10]`. Exhaustion
+  returns `-1`.
+- **Channel bits are a pure function of the pssfxlist index**: base
+  `0x101`, plus bits 5/13/14/15 of the index and per-index/per-field
+  overrides. This is the routing mechanism.
+- **Handle packing confirmed**: `channel = ++global[0x50]`,
+  `slot[+0x04] = (u16)channel`, return `slot_index | (channel << 8)`.
+  Independently confirms what `psndSFXChk` validates. Recorded asymmetry:
+  `slot+0x04` gets the full 16-bit counter but only `<<8` reaches the
+  handle, so the two diverge when the counter wraps.
+- **Two unreachable volume clamps** at `0x800d9c60`/`0x800d9c70` — the
+  `clrlwi ...,24` then `cmplwi ...,255` can never be greater. Recorded as
+  observed rather than "fixed" into live clamps.
+
+**One conflict deliberately left open.** `__psndSFXOn` writes `slot+0x00`
+as the bare pssfxlist index (0..4241), but `psndSFXOff` and `psndSFX_pit`
+derive their pssfxlist row from `(slot+0x00) >> 19`, which is always 0 for
+that range. Read literally the accessors always resolve `pssfxlist[0]`.
+The bytes are unambiguous (`stw 18, 0(29)`) and no second writer is
+visible, so **no reconciliation was invented**. Flagged in the contract and
+in the EVT-01 reply as something to settle before either side is relied
+on.
+
+**The practical dependency this created:** nothing in `__psndSFXOn`
+decrements the cooldown. If `psndSFXMain` is ported without its decrement,
+`global[0x5c]` stays nonzero and every later start fails permanently. That
+makes `psndSFXMain` (2964 bytes) the single remaining item in the chain.
+
+Registered one validated delivery row and appended the reply to
+[requests/EVT-01.md](requests/EVT-01.md).
+
+Next tasks:
+
+1. **`psndSFXMain`** (2964 bytes) — cooldown decrement, preference-cursor
+   expiry, and the reader of volume, distance and the published position.
+   This is the last item in the positional-SFX chain.
+2. Resolve the `slot+0x00` index-versus-packed-key conflict above.
+3. Monosiri record layout beyond `+0x04` and its table writers.
+4. Remaining EVT-01 todos: `evtmgrCmd` opcode bodies, NormalJump
+   registration writers, `CommandGetWeaponAddress`/`SelectWeapon` cursor
+   modes, `BATTLE_UNIT_QUERY_EVENT_LEAVES` prose reconciliation.
+5. `docs/behavior/README.md` remains a contended file; verify rows survive.
+
 ## 2026-10-12 — OW-MOVE-01 input remainder: key-data update
 
 Re-extracted marioUpdateKeyData (0x80095cb0, ISO read-only) and contracted
