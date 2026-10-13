@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero controller/default/last-note reads
+
+Completed three controller/default-pointer/last-note local contracts for EVT-01
+and checked the corresponding inbox portion.
+[Controller/getter reads](behavior/audio/MUSYX_CONTROLLER_READS_DEFAULT_POINTER_AND_LAST_NOTE.md)
+pins all256 controller routes, raw paired-byte OR, byte>=64 thresholds,
+constant-zero RPN range and packed/default/last-note table getters. Only the
+controller getter rejects channel255. Static cold/warm read compositions are
+recorded without clamping raw bytes, inventing shared gates or claiming
+original controller/audio timing.
+
+Validation: read-only ISO manifest passed three complete spans/67 anchors,
+including both threshold carry/mask sequences/no direct calls.256 routes/eight
+pair/eight threshold/six single/six destination vectors checked as deductions.
+Documentation link audit passed790 Markdown files/zero broken links;
+`git diff --check` passed. Documentation/metadata only; no `make test`/`make all`
+rerun. Original full inspection ELFs/listings stay `/tmp`; no bodies/assets
+committed. Concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 _GetInputValue/matrix/filter/dirty/last-note consumers,
+actual read/reset/write callers and valid bounds/raw-byte/alias/concurrency
+domains; original controller/audio traces. Full scheduler/native/runtime
+binding, lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero controller initialization/defaults
 
 Completed four controller initialization/reset/default/last-note contracts and

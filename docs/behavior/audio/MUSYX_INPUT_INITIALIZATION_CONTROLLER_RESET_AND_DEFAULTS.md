@@ -190,3 +190,10 @@ matrix/aux/dirty/MIDI/last-note/filter consumers and other writers, memcpy and
 valid bounds/alignment/alias/IRQ/concurrency/reinit domains, original cold/warm/
 per-voice/global reset and controller/audio traces. Four local services are
 answered; EVT-01 and full native/source/runtime/hardware equivalence remain OPEN.
+
+### Read services follow-up
+
+[Complete controller/default-pointer/last-note reads](MUSYX_CONTROLLER_READS_DEFAULT_POINTER_AND_LAST_NOTE.md)
+now pins exact range dispatch, paired OR/threshold/constant-zero behavior and
+the two packed table getters. Actual callers/matrix/filter/dirty consumers,
+mutation/bounds domains and original controller/audio traces remain open.

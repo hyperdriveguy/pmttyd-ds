@@ -1,0 +1,2139 @@
+{
+  "schema": 1,
+  "scope": "Three complete controller/default pointer/last-note reads; exact range and byte operations, caller/provider/runtime open",
+  "complete_bodies": [
+    "inpGetMidiCtrl",
+    "inpGetChannelDefaults",
+    "inpGetMidiLastNote"
+  ],
+  "linked_only": [],
+  "dol_spans": [
+    {
+      "name": "inpGetMidiCtrl",
+      "address": 2150165832,
+      "size": 708,
+      "sha256": "b353635f39d6d8d4c1a707de32fa3a24b16d881f4343e5b1be26605140c8a29e"
+    },
+    {
+      "name": "inpGetChannelDefaults",
+      "address": 2150166540,
+      "size": 68,
+      "sha256": "0a7d8a5109d200a3c052aa2a0e729a0d5a1848bd413087e9723e7bf462fdc800"
+    },
+    {
+      "name": "inpGetMidiLastNote",
+      "address": 2150167188,
+      "size": 60,
+      "sha256": "e9293288e5eca9e0120b6c680c5f8239be6d3ff9de614fefd98d890b67747ab0"
+    }
+  ],
+  "dol_anchors": {
+    "2150165840": "418202b4",
+    "2150165852": "41820170",
+    "2150165864": "4080003c",
+    "2150165872": "3c808041",
+    "2150165880": "38049748",
+    "2150165904": "88030020",
+    "2150165928": "4080003c",
+    "2150165936": "3c808041",
+    "2150165940": "38600040",
+    "2150165944": "38a49748",
+    "2150165952": "38003fff",
+    "2150165992": "41800014",
+    "2150166000": "4080000c",
+    "2150166004": "38600000",
+    "2150166020": "4182000c",
+    "2150166028": "40820044",
+    "2150166044": "3c808041",
+    "2150166052": "38049748",
+    "2150166076": "88030001",
+    "2150166100": "4182000c",
+    "2150166108": "40820044",
+    "2150166124": "3c808041",
+    "2150166132": "38049748",
+    "2150166156": "88030001",
+    "2150166188": "3c608041",
+    "2150166192": "38639748",
+    "2150166228": "40800034",
+    "2150166236": "3c808041",
+    "2150166244": "3804dec8",
+    "2150166260": "88030020",
+    "2150166284": "40800034",
+    "2150166292": "3c808041",
+    "2150166296": "38600040",
+    "2150166300": "3804dec8",
+    "2150166308": "38003fff",
+    "2150166340": "41800014",
+    "2150166348": "4080000c",
+    "2150166352": "38600000",
+    "2150166368": "4182000c",
+    "2150166376": "40820038",
+    "2150166384": "3c808041",
+    "2150166396": "3804dec8",
+    "2150166412": "88030001",
+    "2150166436": "4182000c",
+    "2150166444": "40820038",
+    "2150166452": "3c808041",
+    "2150166464": "3804dec8",
+    "2150166480": "88030001",
+    "2150166504": "3c608041",
+    "2150166512": "3803dec8",
+    "2150166532": "38600000",
+    "2150166548": "4082001c",
+    "2150166556": "3c608041",
+    "2150166564": "38030048",
+    "2150166580": "3c608041",
+    "2150166588": "3863da48",
+    "2150167196": "41820020",
+    "2150167200": "3ca08041",
+    "2150167208": "38850288",
+    "2150167228": "3c808041",
+    "2150167236": "38640308",
+    "2150165968": "7c632010",
+    "2150165972": "7c631910",
+    "2150165976": "7c001878",
+    "2150166316": "7c632010",
+    "2150166320": "7c631910",
+    "2150166324": "7c001878"
+  },
+  "direct_calls": [],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_controller_routes": [
+    {
+      "controller": 0,
+      "route": {
+        "kind": "pair32",
+        "first": 0,
+        "second": 32
+      }
+    },
+    {
+      "controller": 1,
+      "route": {
+        "kind": "pair32",
+        "first": 1,
+        "second": 33
+      }
+    },
+    {
+      "controller": 2,
+      "route": {
+        "kind": "pair32",
+        "first": 2,
+        "second": 34
+      }
+    },
+    {
+      "controller": 3,
+      "route": {
+        "kind": "pair32",
+        "first": 3,
+        "second": 35
+      }
+    },
+    {
+      "controller": 4,
+      "route": {
+        "kind": "pair32",
+        "first": 4,
+        "second": 36
+      }
+    },
+    {
+      "controller": 5,
+      "route": {
+        "kind": "pair32",
+        "first": 5,
+        "second": 37
+      }
+    },
+    {
+      "controller": 6,
+      "route": {
+        "kind": "pair32",
+        "first": 6,
+        "second": 38
+      }
+    },
+    {
+      "controller": 7,
+      "route": {
+        "kind": "pair32",
+        "first": 7,
+        "second": 39
+      }
+    },
+    {
+      "controller": 8,
+      "route": {
+        "kind": "pair32",
+        "first": 8,
+        "second": 40
+      }
+    },
+    {
+      "controller": 9,
+      "route": {
+        "kind": "pair32",
+        "first": 9,
+        "second": 41
+      }
+    },
+    {
+      "controller": 10,
+      "route": {
+        "kind": "pair32",
+        "first": 10,
+        "second": 42
+      }
+    },
+    {
+      "controller": 11,
+      "route": {
+        "kind": "pair32",
+        "first": 11,
+        "second": 43
+      }
+    },
+    {
+      "controller": 12,
+      "route": {
+        "kind": "pair32",
+        "first": 12,
+        "second": 44
+      }
+    },
+    {
+      "controller": 13,
+      "route": {
+        "kind": "pair32",
+        "first": 13,
+        "second": 45
+      }
+    },
+    {
+      "controller": 14,
+      "route": {
+        "kind": "pair32",
+        "first": 14,
+        "second": 46
+      }
+    },
+    {
+      "controller": 15,
+      "route": {
+        "kind": "pair32",
+        "first": 15,
+        "second": 47
+      }
+    },
+    {
+      "controller": 16,
+      "route": {
+        "kind": "pair32",
+        "first": 16,
+        "second": 48
+      }
+    },
+    {
+      "controller": 17,
+      "route": {
+        "kind": "pair32",
+        "first": 17,
+        "second": 49
+      }
+    },
+    {
+      "controller": 18,
+      "route": {
+        "kind": "pair32",
+        "first": 18,
+        "second": 50
+      }
+    },
+    {
+      "controller": 19,
+      "route": {
+        "kind": "pair32",
+        "first": 19,
+        "second": 51
+      }
+    },
+    {
+      "controller": 20,
+      "route": {
+        "kind": "pair32",
+        "first": 20,
+        "second": 52
+      }
+    },
+    {
+      "controller": 21,
+      "route": {
+        "kind": "pair32",
+        "first": 21,
+        "second": 53
+      }
+    },
+    {
+      "controller": 22,
+      "route": {
+        "kind": "pair32",
+        "first": 22,
+        "second": 54
+      }
+    },
+    {
+      "controller": 23,
+      "route": {
+        "kind": "pair32",
+        "first": 23,
+        "second": 55
+      }
+    },
+    {
+      "controller": 24,
+      "route": {
+        "kind": "pair32",
+        "first": 24,
+        "second": 56
+      }
+    },
+    {
+      "controller": 25,
+      "route": {
+        "kind": "pair32",
+        "first": 25,
+        "second": 57
+      }
+    },
+    {
+      "controller": 26,
+      "route": {
+        "kind": "pair32",
+        "first": 26,
+        "second": 58
+      }
+    },
+    {
+      "controller": 27,
+      "route": {
+        "kind": "pair32",
+        "first": 27,
+        "second": 59
+      }
+    },
+    {
+      "controller": 28,
+      "route": {
+        "kind": "pair32",
+        "first": 28,
+        "second": 60
+      }
+    },
+    {
+      "controller": 29,
+      "route": {
+        "kind": "pair32",
+        "first": 29,
+        "second": 61
+      }
+    },
+    {
+      "controller": 30,
+      "route": {
+        "kind": "pair32",
+        "first": 30,
+        "second": 62
+      }
+    },
+    {
+      "controller": 31,
+      "route": {
+        "kind": "pair32",
+        "first": 31,
+        "second": 63
+      }
+    },
+    {
+      "controller": 32,
+      "route": {
+        "kind": "pair32",
+        "first": 0,
+        "second": 32
+      }
+    },
+    {
+      "controller": 33,
+      "route": {
+        "kind": "pair32",
+        "first": 1,
+        "second": 33
+      }
+    },
+    {
+      "controller": 34,
+      "route": {
+        "kind": "pair32",
+        "first": 2,
+        "second": 34
+      }
+    },
+    {
+      "controller": 35,
+      "route": {
+        "kind": "pair32",
+        "first": 3,
+        "second": 35
+      }
+    },
+    {
+      "controller": 36,
+      "route": {
+        "kind": "pair32",
+        "first": 4,
+        "second": 36
+      }
+    },
+    {
+      "controller": 37,
+      "route": {
+        "kind": "pair32",
+        "first": 5,
+        "second": 37
+      }
+    },
+    {
+      "controller": 38,
+      "route": {
+        "kind": "pair32",
+        "first": 6,
+        "second": 38
+      }
+    },
+    {
+      "controller": 39,
+      "route": {
+        "kind": "pair32",
+        "first": 7,
+        "second": 39
+      }
+    },
+    {
+      "controller": 40,
+      "route": {
+        "kind": "pair32",
+        "first": 8,
+        "second": 40
+      }
+    },
+    {
+      "controller": 41,
+      "route": {
+        "kind": "pair32",
+        "first": 9,
+        "second": 41
+      }
+    },
+    {
+      "controller": 42,
+      "route": {
+        "kind": "pair32",
+        "first": 10,
+        "second": 42
+      }
+    },
+    {
+      "controller": 43,
+      "route": {
+        "kind": "pair32",
+        "first": 11,
+        "second": 43
+      }
+    },
+    {
+      "controller": 44,
+      "route": {
+        "kind": "pair32",
+        "first": 12,
+        "second": 44
+      }
+    },
+    {
+      "controller": 45,
+      "route": {
+        "kind": "pair32",
+        "first": 13,
+        "second": 45
+      }
+    },
+    {
+      "controller": 46,
+      "route": {
+        "kind": "pair32",
+        "first": 14,
+        "second": 46
+      }
+    },
+    {
+      "controller": 47,
+      "route": {
+        "kind": "pair32",
+        "first": 15,
+        "second": 47
+      }
+    },
+    {
+      "controller": 48,
+      "route": {
+        "kind": "pair32",
+        "first": 16,
+        "second": 48
+      }
+    },
+    {
+      "controller": 49,
+      "route": {
+        "kind": "pair32",
+        "first": 17,
+        "second": 49
+      }
+    },
+    {
+      "controller": 50,
+      "route": {
+        "kind": "pair32",
+        "first": 18,
+        "second": 50
+      }
+    },
+    {
+      "controller": 51,
+      "route": {
+        "kind": "pair32",
+        "first": 19,
+        "second": 51
+      }
+    },
+    {
+      "controller": 52,
+      "route": {
+        "kind": "pair32",
+        "first": 20,
+        "second": 52
+      }
+    },
+    {
+      "controller": 53,
+      "route": {
+        "kind": "pair32",
+        "first": 21,
+        "second": 53
+      }
+    },
+    {
+      "controller": 54,
+      "route": {
+        "kind": "pair32",
+        "first": 22,
+        "second": 54
+      }
+    },
+    {
+      "controller": 55,
+      "route": {
+        "kind": "pair32",
+        "first": 23,
+        "second": 55
+      }
+    },
+    {
+      "controller": 56,
+      "route": {
+        "kind": "pair32",
+        "first": 24,
+        "second": 56
+      }
+    },
+    {
+      "controller": 57,
+      "route": {
+        "kind": "pair32",
+        "first": 25,
+        "second": 57
+      }
+    },
+    {
+      "controller": 58,
+      "route": {
+        "kind": "pair32",
+        "first": 26,
+        "second": 58
+      }
+    },
+    {
+      "controller": 59,
+      "route": {
+        "kind": "pair32",
+        "first": 27,
+        "second": 59
+      }
+    },
+    {
+      "controller": 60,
+      "route": {
+        "kind": "pair32",
+        "first": 28,
+        "second": 60
+      }
+    },
+    {
+      "controller": 61,
+      "route": {
+        "kind": "pair32",
+        "first": 29,
+        "second": 61
+      }
+    },
+    {
+      "controller": 62,
+      "route": {
+        "kind": "pair32",
+        "first": 30,
+        "second": 62
+      }
+    },
+    {
+      "controller": 63,
+      "route": {
+        "kind": "pair32",
+        "first": 31,
+        "second": 63
+      }
+    },
+    {
+      "controller": 64,
+      "route": {
+        "kind": "threshold64",
+        "index": 64
+      }
+    },
+    {
+      "controller": 65,
+      "route": {
+        "kind": "threshold64",
+        "index": 65
+      }
+    },
+    {
+      "controller": 66,
+      "route": {
+        "kind": "threshold64",
+        "index": 66
+      }
+    },
+    {
+      "controller": 67,
+      "route": {
+        "kind": "threshold64",
+        "index": 67
+      }
+    },
+    {
+      "controller": 68,
+      "route": {
+        "kind": "threshold64",
+        "index": 68
+      }
+    },
+    {
+      "controller": 69,
+      "route": {
+        "kind": "threshold64",
+        "index": 69
+      }
+    },
+    {
+      "controller": 70,
+      "route": {
+        "kind": "single_shift7",
+        "index": 70
+      }
+    },
+    {
+      "controller": 71,
+      "route": {
+        "kind": "single_shift7",
+        "index": 71
+      }
+    },
+    {
+      "controller": 72,
+      "route": {
+        "kind": "single_shift7",
+        "index": 72
+      }
+    },
+    {
+      "controller": 73,
+      "route": {
+        "kind": "single_shift7",
+        "index": 73
+      }
+    },
+    {
+      "controller": 74,
+      "route": {
+        "kind": "single_shift7",
+        "index": 74
+      }
+    },
+    {
+      "controller": 75,
+      "route": {
+        "kind": "single_shift7",
+        "index": 75
+      }
+    },
+    {
+      "controller": 76,
+      "route": {
+        "kind": "single_shift7",
+        "index": 76
+      }
+    },
+    {
+      "controller": 77,
+      "route": {
+        "kind": "single_shift7",
+        "index": 77
+      }
+    },
+    {
+      "controller": 78,
+      "route": {
+        "kind": "single_shift7",
+        "index": 78
+      }
+    },
+    {
+      "controller": 79,
+      "route": {
+        "kind": "single_shift7",
+        "index": 79
+      }
+    },
+    {
+      "controller": 80,
+      "route": {
+        "kind": "single_shift7",
+        "index": 80
+      }
+    },
+    {
+      "controller": 81,
+      "route": {
+        "kind": "single_shift7",
+        "index": 81
+      }
+    },
+    {
+      "controller": 82,
+      "route": {
+        "kind": "single_shift7",
+        "index": 82
+      }
+    },
+    {
+      "controller": 83,
+      "route": {
+        "kind": "single_shift7",
+        "index": 83
+      }
+    },
+    {
+      "controller": 84,
+      "route": {
+        "kind": "single_shift7",
+        "index": 84
+      }
+    },
+    {
+      "controller": 85,
+      "route": {
+        "kind": "single_shift7",
+        "index": 85
+      }
+    },
+    {
+      "controller": 86,
+      "route": {
+        "kind": "single_shift7",
+        "index": 86
+      }
+    },
+    {
+      "controller": 87,
+      "route": {
+        "kind": "single_shift7",
+        "index": 87
+      }
+    },
+    {
+      "controller": 88,
+      "route": {
+        "kind": "single_shift7",
+        "index": 88
+      }
+    },
+    {
+      "controller": 89,
+      "route": {
+        "kind": "single_shift7",
+        "index": 89
+      }
+    },
+    {
+      "controller": 90,
+      "route": {
+        "kind": "single_shift7",
+        "index": 90
+      }
+    },
+    {
+      "controller": 91,
+      "route": {
+        "kind": "single_shift7",
+        "index": 91
+      }
+    },
+    {
+      "controller": 92,
+      "route": {
+        "kind": "single_shift7",
+        "index": 92
+      }
+    },
+    {
+      "controller": 93,
+      "route": {
+        "kind": "single_shift7",
+        "index": 93
+      }
+    },
+    {
+      "controller": 94,
+      "route": {
+        "kind": "single_shift7",
+        "index": 94
+      }
+    },
+    {
+      "controller": 95,
+      "route": {
+        "kind": "single_shift7",
+        "index": 95
+      }
+    },
+    {
+      "controller": 96,
+      "route": {
+        "kind": "constant0"
+      }
+    },
+    {
+      "controller": 97,
+      "route": {
+        "kind": "constant0"
+      }
+    },
+    {
+      "controller": 98,
+      "route": {
+        "kind": "constant0"
+      }
+    },
+    {
+      "controller": 99,
+      "route": {
+        "kind": "constant0"
+      }
+    },
+    {
+      "controller": 100,
+      "route": {
+        "kind": "constant0"
+      }
+    },
+    {
+      "controller": 101,
+      "route": {
+        "kind": "constant0"
+      }
+    },
+    {
+      "controller": 102,
+      "route": {
+        "kind": "single_shift7",
+        "index": 102
+      }
+    },
+    {
+      "controller": 103,
+      "route": {
+        "kind": "single_shift7",
+        "index": 103
+      }
+    },
+    {
+      "controller": 104,
+      "route": {
+        "kind": "single_shift7",
+        "index": 104
+      }
+    },
+    {
+      "controller": 105,
+      "route": {
+        "kind": "single_shift7",
+        "index": 105
+      }
+    },
+    {
+      "controller": 106,
+      "route": {
+        "kind": "single_shift7",
+        "index": 106
+      }
+    },
+    {
+      "controller": 107,
+      "route": {
+        "kind": "single_shift7",
+        "index": 107
+      }
+    },
+    {
+      "controller": 108,
+      "route": {
+        "kind": "single_shift7",
+        "index": 108
+      }
+    },
+    {
+      "controller": 109,
+      "route": {
+        "kind": "single_shift7",
+        "index": 109
+      }
+    },
+    {
+      "controller": 110,
+      "route": {
+        "kind": "single_shift7",
+        "index": 110
+      }
+    },
+    {
+      "controller": 111,
+      "route": {
+        "kind": "single_shift7",
+        "index": 111
+      }
+    },
+    {
+      "controller": 112,
+      "route": {
+        "kind": "single_shift7",
+        "index": 112
+      }
+    },
+    {
+      "controller": 113,
+      "route": {
+        "kind": "single_shift7",
+        "index": 113
+      }
+    },
+    {
+      "controller": 114,
+      "route": {
+        "kind": "single_shift7",
+        "index": 114
+      }
+    },
+    {
+      "controller": 115,
+      "route": {
+        "kind": "single_shift7",
+        "index": 115
+      }
+    },
+    {
+      "controller": 116,
+      "route": {
+        "kind": "single_shift7",
+        "index": 116
+      }
+    },
+    {
+      "controller": 117,
+      "route": {
+        "kind": "single_shift7",
+        "index": 117
+      }
+    },
+    {
+      "controller": 118,
+      "route": {
+        "kind": "single_shift7",
+        "index": 118
+      }
+    },
+    {
+      "controller": 119,
+      "route": {
+        "kind": "single_shift7",
+        "index": 119
+      }
+    },
+    {
+      "controller": 120,
+      "route": {
+        "kind": "single_shift7",
+        "index": 120
+      }
+    },
+    {
+      "controller": 121,
+      "route": {
+        "kind": "single_shift7",
+        "index": 121
+      }
+    },
+    {
+      "controller": 122,
+      "route": {
+        "kind": "single_shift7",
+        "index": 122
+      }
+    },
+    {
+      "controller": 123,
+      "route": {
+        "kind": "single_shift7",
+        "index": 123
+      }
+    },
+    {
+      "controller": 124,
+      "route": {
+        "kind": "single_shift7",
+        "index": 124
+      }
+    },
+    {
+      "controller": 125,
+      "route": {
+        "kind": "single_shift7",
+        "index": 125
+      }
+    },
+    {
+      "controller": 126,
+      "route": {
+        "kind": "single_shift7",
+        "index": 126
+      }
+    },
+    {
+      "controller": 127,
+      "route": {
+        "kind": "single_shift7",
+        "index": 127
+      }
+    },
+    {
+      "controller": 128,
+      "route": {
+        "kind": "adjacent_pair",
+        "first": 128,
+        "second": 129
+      }
+    },
+    {
+      "controller": 129,
+      "route": {
+        "kind": "adjacent_pair",
+        "first": 128,
+        "second": 129
+      }
+    },
+    {
+      "controller": 130,
+      "route": {
+        "kind": "single_shift7",
+        "index": 130
+      }
+    },
+    {
+      "controller": 131,
+      "route": {
+        "kind": "single_shift7",
+        "index": 131
+      }
+    },
+    {
+      "controller": 132,
+      "route": {
+        "kind": "adjacent_pair",
+        "first": 132,
+        "second": 133
+      }
+    },
+    {
+      "controller": 133,
+      "route": {
+        "kind": "adjacent_pair",
+        "first": 132,
+        "second": 133
+      }
+    },
+    {
+      "controller": 134,
+      "route": {
+        "kind": "single_shift7",
+        "index": 134
+      }
+    },
+    {
+      "controller": 135,
+      "route": {
+        "kind": "single_shift7",
+        "index": 135
+      }
+    },
+    {
+      "controller": 136,
+      "route": {
+        "kind": "single_shift7",
+        "index": 136
+      }
+    },
+    {
+      "controller": 137,
+      "route": {
+        "kind": "single_shift7",
+        "index": 137
+      }
+    },
+    {
+      "controller": 138,
+      "route": {
+        "kind": "single_shift7",
+        "index": 138
+      }
+    },
+    {
+      "controller": 139,
+      "route": {
+        "kind": "single_shift7",
+        "index": 139
+      }
+    },
+    {
+      "controller": 140,
+      "route": {
+        "kind": "single_shift7",
+        "index": 140
+      }
+    },
+    {
+      "controller": 141,
+      "route": {
+        "kind": "single_shift7",
+        "index": 141
+      }
+    },
+    {
+      "controller": 142,
+      "route": {
+        "kind": "single_shift7",
+        "index": 142
+      }
+    },
+    {
+      "controller": 143,
+      "route": {
+        "kind": "single_shift7",
+        "index": 143
+      }
+    },
+    {
+      "controller": 144,
+      "route": {
+        "kind": "single_shift7",
+        "index": 144
+      }
+    },
+    {
+      "controller": 145,
+      "route": {
+        "kind": "single_shift7",
+        "index": 145
+      }
+    },
+    {
+      "controller": 146,
+      "route": {
+        "kind": "single_shift7",
+        "index": 146
+      }
+    },
+    {
+      "controller": 147,
+      "route": {
+        "kind": "single_shift7",
+        "index": 147
+      }
+    },
+    {
+      "controller": 148,
+      "route": {
+        "kind": "single_shift7",
+        "index": 148
+      }
+    },
+    {
+      "controller": 149,
+      "route": {
+        "kind": "single_shift7",
+        "index": 149
+      }
+    },
+    {
+      "controller": 150,
+      "route": {
+        "kind": "single_shift7",
+        "index": 150
+      }
+    },
+    {
+      "controller": 151,
+      "route": {
+        "kind": "single_shift7",
+        "index": 151
+      }
+    },
+    {
+      "controller": 152,
+      "route": {
+        "kind": "single_shift7",
+        "index": 152
+      }
+    },
+    {
+      "controller": 153,
+      "route": {
+        "kind": "single_shift7",
+        "index": 153
+      }
+    },
+    {
+      "controller": 154,
+      "route": {
+        "kind": "single_shift7",
+        "index": 154
+      }
+    },
+    {
+      "controller": 155,
+      "route": {
+        "kind": "single_shift7",
+        "index": 155
+      }
+    },
+    {
+      "controller": 156,
+      "route": {
+        "kind": "single_shift7",
+        "index": 156
+      }
+    },
+    {
+      "controller": 157,
+      "route": {
+        "kind": "single_shift7",
+        "index": 157
+      }
+    },
+    {
+      "controller": 158,
+      "route": {
+        "kind": "single_shift7",
+        "index": 158
+      }
+    },
+    {
+      "controller": 159,
+      "route": {
+        "kind": "single_shift7",
+        "index": 159
+      }
+    },
+    {
+      "controller": 160,
+      "route": {
+        "kind": "single_shift7",
+        "index": 160
+      }
+    },
+    {
+      "controller": 161,
+      "route": {
+        "kind": "single_shift7",
+        "index": 161
+      }
+    },
+    {
+      "controller": 162,
+      "route": {
+        "kind": "single_shift7",
+        "index": 162
+      }
+    },
+    {
+      "controller": 163,
+      "route": {
+        "kind": "single_shift7",
+        "index": 163
+      }
+    },
+    {
+      "controller": 164,
+      "route": {
+        "kind": "single_shift7",
+        "index": 164
+      }
+    },
+    {
+      "controller": 165,
+      "route": {
+        "kind": "single_shift7",
+        "index": 165
+      }
+    },
+    {
+      "controller": 166,
+      "route": {
+        "kind": "single_shift7",
+        "index": 166
+      }
+    },
+    {
+      "controller": 167,
+      "route": {
+        "kind": "single_shift7",
+        "index": 167
+      }
+    },
+    {
+      "controller": 168,
+      "route": {
+        "kind": "single_shift7",
+        "index": 168
+      }
+    },
+    {
+      "controller": 169,
+      "route": {
+        "kind": "single_shift7",
+        "index": 169
+      }
+    },
+    {
+      "controller": 170,
+      "route": {
+        "kind": "single_shift7",
+        "index": 170
+      }
+    },
+    {
+      "controller": 171,
+      "route": {
+        "kind": "single_shift7",
+        "index": 171
+      }
+    },
+    {
+      "controller": 172,
+      "route": {
+        "kind": "single_shift7",
+        "index": 172
+      }
+    },
+    {
+      "controller": 173,
+      "route": {
+        "kind": "single_shift7",
+        "index": 173
+      }
+    },
+    {
+      "controller": 174,
+      "route": {
+        "kind": "single_shift7",
+        "index": 174
+      }
+    },
+    {
+      "controller": 175,
+      "route": {
+        "kind": "single_shift7",
+        "index": 175
+      }
+    },
+    {
+      "controller": 176,
+      "route": {
+        "kind": "single_shift7",
+        "index": 176
+      }
+    },
+    {
+      "controller": 177,
+      "route": {
+        "kind": "single_shift7",
+        "index": 177
+      }
+    },
+    {
+      "controller": 178,
+      "route": {
+        "kind": "single_shift7",
+        "index": 178
+      }
+    },
+    {
+      "controller": 179,
+      "route": {
+        "kind": "single_shift7",
+        "index": 179
+      }
+    },
+    {
+      "controller": 180,
+      "route": {
+        "kind": "single_shift7",
+        "index": 180
+      }
+    },
+    {
+      "controller": 181,
+      "route": {
+        "kind": "single_shift7",
+        "index": 181
+      }
+    },
+    {
+      "controller": 182,
+      "route": {
+        "kind": "single_shift7",
+        "index": 182
+      }
+    },
+    {
+      "controller": 183,
+      "route": {
+        "kind": "single_shift7",
+        "index": 183
+      }
+    },
+    {
+      "controller": 184,
+      "route": {
+        "kind": "single_shift7",
+        "index": 184
+      }
+    },
+    {
+      "controller": 185,
+      "route": {
+        "kind": "single_shift7",
+        "index": 185
+      }
+    },
+    {
+      "controller": 186,
+      "route": {
+        "kind": "single_shift7",
+        "index": 186
+      }
+    },
+    {
+      "controller": 187,
+      "route": {
+        "kind": "single_shift7",
+        "index": 187
+      }
+    },
+    {
+      "controller": 188,
+      "route": {
+        "kind": "single_shift7",
+        "index": 188
+      }
+    },
+    {
+      "controller": 189,
+      "route": {
+        "kind": "single_shift7",
+        "index": 189
+      }
+    },
+    {
+      "controller": 190,
+      "route": {
+        "kind": "single_shift7",
+        "index": 190
+      }
+    },
+    {
+      "controller": 191,
+      "route": {
+        "kind": "single_shift7",
+        "index": 191
+      }
+    },
+    {
+      "controller": 192,
+      "route": {
+        "kind": "single_shift7",
+        "index": 192
+      }
+    },
+    {
+      "controller": 193,
+      "route": {
+        "kind": "single_shift7",
+        "index": 193
+      }
+    },
+    {
+      "controller": 194,
+      "route": {
+        "kind": "single_shift7",
+        "index": 194
+      }
+    },
+    {
+      "controller": 195,
+      "route": {
+        "kind": "single_shift7",
+        "index": 195
+      }
+    },
+    {
+      "controller": 196,
+      "route": {
+        "kind": "single_shift7",
+        "index": 196
+      }
+    },
+    {
+      "controller": 197,
+      "route": {
+        "kind": "single_shift7",
+        "index": 197
+      }
+    },
+    {
+      "controller": 198,
+      "route": {
+        "kind": "single_shift7",
+        "index": 198
+      }
+    },
+    {
+      "controller": 199,
+      "route": {
+        "kind": "single_shift7",
+        "index": 199
+      }
+    },
+    {
+      "controller": 200,
+      "route": {
+        "kind": "single_shift7",
+        "index": 200
+      }
+    },
+    {
+      "controller": 201,
+      "route": {
+        "kind": "single_shift7",
+        "index": 201
+      }
+    },
+    {
+      "controller": 202,
+      "route": {
+        "kind": "single_shift7",
+        "index": 202
+      }
+    },
+    {
+      "controller": 203,
+      "route": {
+        "kind": "single_shift7",
+        "index": 203
+      }
+    },
+    {
+      "controller": 204,
+      "route": {
+        "kind": "single_shift7",
+        "index": 204
+      }
+    },
+    {
+      "controller": 205,
+      "route": {
+        "kind": "single_shift7",
+        "index": 205
+      }
+    },
+    {
+      "controller": 206,
+      "route": {
+        "kind": "single_shift7",
+        "index": 206
+      }
+    },
+    {
+      "controller": 207,
+      "route": {
+        "kind": "single_shift7",
+        "index": 207
+      }
+    },
+    {
+      "controller": 208,
+      "route": {
+        "kind": "single_shift7",
+        "index": 208
+      }
+    },
+    {
+      "controller": 209,
+      "route": {
+        "kind": "single_shift7",
+        "index": 209
+      }
+    },
+    {
+      "controller": 210,
+      "route": {
+        "kind": "single_shift7",
+        "index": 210
+      }
+    },
+    {
+      "controller": 211,
+      "route": {
+        "kind": "single_shift7",
+        "index": 211
+      }
+    },
+    {
+      "controller": 212,
+      "route": {
+        "kind": "single_shift7",
+        "index": 212
+      }
+    },
+    {
+      "controller": 213,
+      "route": {
+        "kind": "single_shift7",
+        "index": 213
+      }
+    },
+    {
+      "controller": 214,
+      "route": {
+        "kind": "single_shift7",
+        "index": 214
+      }
+    },
+    {
+      "controller": 215,
+      "route": {
+        "kind": "single_shift7",
+        "index": 215
+      }
+    },
+    {
+      "controller": 216,
+      "route": {
+        "kind": "single_shift7",
+        "index": 216
+      }
+    },
+    {
+      "controller": 217,
+      "route": {
+        "kind": "single_shift7",
+        "index": 217
+      }
+    },
+    {
+      "controller": 218,
+      "route": {
+        "kind": "single_shift7",
+        "index": 218
+      }
+    },
+    {
+      "controller": 219,
+      "route": {
+        "kind": "single_shift7",
+        "index": 219
+      }
+    },
+    {
+      "controller": 220,
+      "route": {
+        "kind": "single_shift7",
+        "index": 220
+      }
+    },
+    {
+      "controller": 221,
+      "route": {
+        "kind": "single_shift7",
+        "index": 221
+      }
+    },
+    {
+      "controller": 222,
+      "route": {
+        "kind": "single_shift7",
+        "index": 222
+      }
+    },
+    {
+      "controller": 223,
+      "route": {
+        "kind": "single_shift7",
+        "index": 223
+      }
+    },
+    {
+      "controller": 224,
+      "route": {
+        "kind": "single_shift7",
+        "index": 224
+      }
+    },
+    {
+      "controller": 225,
+      "route": {
+        "kind": "single_shift7",
+        "index": 225
+      }
+    },
+    {
+      "controller": 226,
+      "route": {
+        "kind": "single_shift7",
+        "index": 226
+      }
+    },
+    {
+      "controller": 227,
+      "route": {
+        "kind": "single_shift7",
+        "index": 227
+      }
+    },
+    {
+      "controller": 228,
+      "route": {
+        "kind": "single_shift7",
+        "index": 228
+      }
+    },
+    {
+      "controller": 229,
+      "route": {
+        "kind": "single_shift7",
+        "index": 229
+      }
+    },
+    {
+      "controller": 230,
+      "route": {
+        "kind": "single_shift7",
+        "index": 230
+      }
+    },
+    {
+      "controller": 231,
+      "route": {
+        "kind": "single_shift7",
+        "index": 231
+      }
+    },
+    {
+      "controller": 232,
+      "route": {
+        "kind": "single_shift7",
+        "index": 232
+      }
+    },
+    {
+      "controller": 233,
+      "route": {
+        "kind": "single_shift7",
+        "index": 233
+      }
+    },
+    {
+      "controller": 234,
+      "route": {
+        "kind": "single_shift7",
+        "index": 234
+      }
+    },
+    {
+      "controller": 235,
+      "route": {
+        "kind": "single_shift7",
+        "index": 235
+      }
+    },
+    {
+      "controller": 236,
+      "route": {
+        "kind": "single_shift7",
+        "index": 236
+      }
+    },
+    {
+      "controller": 237,
+      "route": {
+        "kind": "single_shift7",
+        "index": 237
+      }
+    },
+    {
+      "controller": 238,
+      "route": {
+        "kind": "single_shift7",
+        "index": 238
+      }
+    },
+    {
+      "controller": 239,
+      "route": {
+        "kind": "single_shift7",
+        "index": 239
+      }
+    },
+    {
+      "controller": 240,
+      "route": {
+        "kind": "single_shift7",
+        "index": 240
+      }
+    },
+    {
+      "controller": 241,
+      "route": {
+        "kind": "single_shift7",
+        "index": 241
+      }
+    },
+    {
+      "controller": 242,
+      "route": {
+        "kind": "single_shift7",
+        "index": 242
+      }
+    },
+    {
+      "controller": 243,
+      "route": {
+        "kind": "single_shift7",
+        "index": 243
+      }
+    },
+    {
+      "controller": 244,
+      "route": {
+        "kind": "single_shift7",
+        "index": 244
+      }
+    },
+    {
+      "controller": 245,
+      "route": {
+        "kind": "single_shift7",
+        "index": 245
+      }
+    },
+    {
+      "controller": 246,
+      "route": {
+        "kind": "single_shift7",
+        "index": 246
+      }
+    },
+    {
+      "controller": 247,
+      "route": {
+        "kind": "single_shift7",
+        "index": 247
+      }
+    },
+    {
+      "controller": 248,
+      "route": {
+        "kind": "single_shift7",
+        "index": 248
+      }
+    },
+    {
+      "controller": 249,
+      "route": {
+        "kind": "single_shift7",
+        "index": 249
+      }
+    },
+    {
+      "controller": 250,
+      "route": {
+        "kind": "single_shift7",
+        "index": 250
+      }
+    },
+    {
+      "controller": 251,
+      "route": {
+        "kind": "single_shift7",
+        "index": 251
+      }
+    },
+    {
+      "controller": 252,
+      "route": {
+        "kind": "single_shift7",
+        "index": 252
+      }
+    },
+    {
+      "controller": 253,
+      "route": {
+        "kind": "single_shift7",
+        "index": 253
+      }
+    },
+    {
+      "controller": 254,
+      "route": {
+        "kind": "single_shift7",
+        "index": 254
+      }
+    },
+    {
+      "controller": 255,
+      "route": {
+        "kind": "single_shift7",
+        "index": 255
+      }
+    }
+  ],
+  "derived_pair_vectors": [
+    {
+      "first": 0,
+      "second": 0,
+      "result": 0
+    },
+    {
+      "first": 127,
+      "second": 127,
+      "result": 16383
+    },
+    {
+      "first": 64,
+      "second": 0,
+      "result": 8192
+    },
+    {
+      "first": 127,
+      "second": 0,
+      "result": 16256
+    },
+    {
+      "first": 0,
+      "second": 255,
+      "result": 255
+    },
+    {
+      "first": 1,
+      "second": 128,
+      "result": 128
+    },
+    {
+      "first": 255,
+      "second": 255,
+      "result": 32767
+    },
+    {
+      "first": 255,
+      "second": 0,
+      "result": 32640
+    }
+  ],
+  "derived_threshold_vectors": [
+    {
+      "value": 0,
+      "result": 0
+    },
+    {
+      "value": 1,
+      "result": 0
+    },
+    {
+      "value": 63,
+      "result": 0
+    },
+    {
+      "value": 64,
+      "result": 16383
+    },
+    {
+      "value": 65,
+      "result": 16383
+    },
+    {
+      "value": 127,
+      "result": 16383
+    },
+    {
+      "value": 128,
+      "result": 16383
+    },
+    {
+      "value": 255,
+      "result": 16383
+    }
+  ],
+  "threshold_instruction": {
+    "site": 2150165968,
+    "operation": "subfc r3,r3,r4: unsigned byte minus64 sets carry when byte>=64"
+  },
+  "derived_single_vectors": [
+    {
+      "value": 0,
+      "result": 0
+    },
+    {
+      "value": 1,
+      "result": 128
+    },
+    {
+      "value": 64,
+      "result": 8192
+    },
+    {
+      "value": 127,
+      "result": 16256
+    },
+    {
+      "value": 128,
+      "result": 16384
+    },
+    {
+      "value": 255,
+      "result": 32640
+    }
+  ],
+  "derived_destination_vectors": [
+    {
+      "raw_controller": 7,
+      "raw_channel": 0,
+      "raw_set": 0,
+      "controller": 7,
+      "channel": 0,
+      "set": 0,
+      "controller_get_returns_zero": false,
+      "row": 2151716680,
+      "defaults": 2151733832,
+      "last_note": 2151744136
+    },
+    {
+      "raw_controller": 128,
+      "raw_channel": 15,
+      "raw_set": 7,
+      "controller": 128,
+      "channel": 15,
+      "set": 7,
+      "controller_get_returns_zero": false,
+      "row": 2151733698,
+      "defaults": 2151734975,
+      "last_note": 2151744263
+    },
+    {
+      "raw_controller": 132,
+      "raw_channel": 63,
+      "raw_set": 255,
+      "controller": 132,
+      "channel": 63,
+      "set": 255,
+      "controller_get_returns_zero": false,
+      "row": 2151743426,
+      "defaults": 2151744127,
+      "last_note": 2151744327
+    },
+    {
+      "raw_controller": 98,
+      "raw_channel": 255,
+      "raw_set": 255,
+      "controller": 98,
+      "channel": 255,
+      "set": 255,
+      "controller_get_returns_zero": true,
+      "row": 2151769154,
+      "defaults": 2151745855,
+      "last_note": 2151744519
+    },
+    {
+      "raw_controller": 255,
+      "raw_channel": 255,
+      "raw_set": 7,
+      "controller": 255,
+      "channel": 255,
+      "set": 7,
+      "controller_get_returns_zero": true,
+      "row": 2151765858,
+      "defaults": 2151737135,
+      "last_note": 2151744503
+    },
+    {
+      "raw_controller": 263,
+      "raw_channel": 256,
+      "raw_set": 511,
+      "controller": 7,
+      "channel": 0,
+      "set": 255,
+      "controller_get_returns_zero": false,
+      "row": 2151734984,
+      "defaults": 2151743560,
+      "last_note": 2151744264
+    }
+  ]
+}

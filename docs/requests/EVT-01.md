@@ -220,6 +220,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Global/per-voice writes, exact cold/warm tables, preserve255 and packed
   channel/default/last-note order pinned; callers/consumers/other writers/
   bounds/alias and original controller/audio evidence remain open.
+- [x] Complete inpGetMidiCtrl/default-pointer/last-note read bodies —
+  [controller/default/last-note reads](../behavior/audio/MUSYX_CONTROLLER_READS_DEFAULT_POINTER_AND_LAST_NOTE.md).
+  All256 controller routes/raw-byte OR/threshold/constant-zero semantics,
+  distinct channel255 gates and packed getter order pinned; callers/consumers/
+  mutation/bounds and original controller/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1388,3 +1393,20 @@ deductions. Fresh full ELFs/listings stay `/tmp`; no native change/original
 execution/body/binary asset export. Actual callers/inputs, matrix/dirty/MIDI/
 last-note/filter consumers/other writers, memcpy/bounds/alignment/alias/IRQ/
 concurrency/reinit and original reset/controller/audio traces remain OPEN.
+
+### 2026-10-13 — Controller/default-pointer/last-note read services
+
+[Three complete local bodies](../behavior/audio/MUSYX_CONTROLLER_READS_DEFAULT_POINTER_AND_LAST_NOTE.md)
+close controller range dispatch and read order, paired0..63/128-129/132-133
+bitwise OR,64..69 byte>=64 threshold,96..101 constant0, raw single-byte shift,
+packed9-byte default pointer and last-note byte getter. Only controller getter
+rejects channel255. Raw paired bytes are not clamped to seven bits; OR differs
+from addition for overlapping bits. Cold/warm read consequences are static
+compositions, not standard-MIDI defaults or original audio execution.
+
+Validation: read-only manifest three complete spans/67 anchors including both
+carry/mask sequences/no direct calls passes.256 controller routes/eight pair/
+eight threshold/six single/six destination vectors checked as deductions.
+Fresh full ELFs/listings stay `/tmp`; no native change/original execution/body/
+asset export. Actual callers/inputs, matrix/filter/dirty/last-note consumers,
+mutation/bounds/raw-byte/alias/IRQ/concurrency and original audio remain OPEN.
