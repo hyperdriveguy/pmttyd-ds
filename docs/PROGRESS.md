@@ -3528,3 +3528,56 @@ copied.
 - Cross-reference shared helper functions across command implementations
 - Document remaining event command handlers and their argument processing
 - Recover complete motion ID table and associated behavior chains
+
+## 2026-10-13 — Native original Jump damage and owned Goomba reactions
+
+`TrioAttack` now imports installed tik damage/wait wrappers and original kind/
+part/data pointers. Fresh ordinary Goomba NormalJump calls the recovered power,
+HP/FP calculation and direct application services, writes packed accounting,
+and starts the original owned hit root with exact cancellation order. Original
+generic damage/subset children execute their source waits and pose requests.
+A missed first timing deals1 damage (2→1), completes Mario recovery/home movement,
+and returns Goomba to automatic type28/KUR_S_1. Successful timing starts the
+source second hit; two successful timings preserve20000/20100 and HP2→1→0.
+First-success/second-miss also reaches0 with source full code10717. Source
+status27 is written by the death child after the reaction and WAIT_FRAME30,
+not by the HP setter. Lethal presentation currently suspends at AddRotate801115f8.
+
+StopAC now persists the original1f54 finish countdown and clears all four
+callback registrations only when Main returns0. Original stylish window/result
+helpers, generic recovery jump integration and used reaction/event-wait leaves
+are bound. Missing source callbacks preserve the first pending address. A completed
+action retains its battle resources and locked field control pending original
+turn scheduling; the development overlay now describes that boundary and stops
+advertising a cancel action that cannot run. Source battle result remains0 and
+story remains11. No win, reward or field return is inferred from HP0.
+
+Validation: `make test` passed116/116 CTest checks and100/100 Python tests
+(`/tmp/trio-hit-tests-final.log`). Focused original Jump checks cover first miss,
+first-success/second-miss, both successes, exact per-hit flags/accounting, owned
+reaction, source death status, alive idle and AC cleanup. `make all` passed
+(`/tmp/trio-hit-all-final.log`), and `make debug-short` passed
+(`/tmp/trio-hit-native-final.log`); no compiler warnings in those final logs.
+`git diff --check` passed. Read-only asset conversion produced a1,351,884-byte
+local event/data pack and48-byte PMTHIT1 mapping; no original files were staged.
+
+Isolated Azahar run: `tools/emulator_smoke.py --binary
+ttyd-2ds-debug-short.3dsx --save-fixture
+artifacts/fixtures/underground-trio-story11.bin --seconds48 --input-script
+tests/azahar_trio_jump_reaction.py --output-dir
+artifacts/azahar-trio-jump-hit-reaction-final` passed launch/capture. The extended
+30-second post-input capture shows original Goomba damage pose, Mario at home
+and the pending reaction service. The first shorter run captured target selection
+and the setup interval, so it alone does not verify damage. Native HP/control
+words were verified by host integration tests, not emulator memory inspection.
+The setup delay needs profiling; emulator FPS is not a hardware result. The
+profile/saves remain isolated.
+
+Limitations/next: bind original AddRotate/rotation publication, death sound/effect
+requests, rewards and deferred removal; then install Mario idle and original turn
+scheduler. Source Spike counter/Frankly warning and Paragoomba wing-fall remain
+pending at CheckDamage8010a78c. Feedback/audience/effect/audio providers retain
+requests but full presentation remains unbound. Difficulty/pouch level1, empty
+equipment and seed0 remain scoped fresh-prologue adapters; original seed/math/
+clock parity and other statuses need binding. Continue the original battle-end
+and field return ownership after turns; the prologue demo goal remains active.

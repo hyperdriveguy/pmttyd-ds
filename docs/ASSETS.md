@@ -838,3 +838,15 @@ M_A_5 has one source key at0 and duration2; no extra endpoint is generated.
 The actual Mario battle atlas is bound for setup4 rendering. All original
 assets/compiled packs stay outside history with Nintendo/Intelligent Systems
 ownership and no redistribution grant.
+
+2026-10-13 Jump hit/reaction dependencies: the local Jump event pack now also
+imports relocated non-executable `rel/tik.rel` data sections at the existing
+`0x93000000 + section*0x100000` banks. Original Goomba/Spike/Paragoomba kind
+and part definitions, damage/wait wrappers and strings retain local relocations;
+DOL imports retain original addresses. `romfs/trio-attack-units.bin` (PMTHIT1,
+three rows) maps each source kind to its installed damage/wait scripts. No
+PowerPC text is included. The converter reads the ISO only; extracted REL,
+packs and source manifests stay ignored. Nintendo/Intelligent Systems ownership
+and no redistribution grant remain unchanged. Native damage currently supports
+fresh ordinary Goomba Jump only; packaging the other definitions does not imply
+those callback paths are implemented.

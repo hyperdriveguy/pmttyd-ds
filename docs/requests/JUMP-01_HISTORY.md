@@ -1906,3 +1906,37 @@ Paragoomba originalkey0e part/kind/event replacement and Spikedkey25 Frankly
 09206/07 warning admission included; namedAnimeChangePose force0 andsame-index
 clockretention recovered. Remaining rewards/effects/audio/fulltransitivedisplay/
 customevent/registry teardown services remainbounded; no nativeedit/commit.
+
+
+2026-10-13 fresh Goomba ordinary CheckDamage source composition:
+[Setup4 tuple/callback boundary](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#fresh-ordinary-goomba-checkdamage-tuple-and-callback-boundary)
+pins perhitF100/20000/20100→directtupleH1,Q0,C117/20017/20117,
+HP1lethalC717/20717onlyfinalF100, D260/A280/D273orderedbookkeeping,
+CheckDamagewrapperrawflags/result18versusVM2/255, installedscript/rootlocals/
+owner/sharedD278/currentpartD258 andU29cphaseversusU2b4hit, originalattacker
+WaitAttackEnd andboundedminimalgenericDamage/deadcorecallbackaddresscatalog.
+Derivedfreshscopeuseslevel1noequipment/status/bonus; noexecution/hardwareclaim.
+Rewards/effects/fulltransitivecallbacksretaindocumentationrequests; no nativeedit.
+
+
+2026-10-13 death-leaf/reward/ordinarywait source follow-up:
+[Used leaves and rewards](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#used-death-leaves-reward-storage-and-automatic-wait-pose)
+closes _disable_restore_command_cursor B1c70/B1c74zero/return2, unitattack/hit
+waithelper and CheckCommandUnit gates, SetStatus27singlebyteU135write, original
+coinRNG/expformula andBf00/work14stores, backitem gatingandstarpointoffsetmath.
+Corrects earlier inferredwaitname: literal1 ispartID; automaticnostatuspose28
+selectsKUR_S_1, notKUR_N_1. Rewardsrequireoriginalpouch/stage/currentitemowners;
+no nativeedit/commit/executionclaim, boundedtransitivesremainopen.
+
+
+2026-10-13 native hit/reaction increment: original Goomba damage/wait wrappers
+and DOL generic reaction now execute with source HP/accounting and event
+ownership. First missed timing completes one-damage recovery/idle; two hits
+reach the original death child and pending AddRotate801115f8. Source calculation
+retains the10000 code bit when flags100 and defender attribute100 is absent;
+native fresh missed-hit words are10117/10717. The earlier simplified tuple
+summary117/717 omitted that calculator bit. Full successful timings preserve
+20000/20100 requests. StopAC countdown/callback cleanup and stylish windows
+are bound. Spike counter, wing-fall, death presentation/rewards/teardown, original
+seed ownership and turn scheduler remain unfinished. This is implementation
+progress against the delivered contracts, not completion of JUMP-01.

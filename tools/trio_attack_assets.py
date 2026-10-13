@@ -34,13 +34,37 @@ def build(iso=DEFAULT_ISO):
                     else:split.append((start,body))
                 spans=split
             segments.extend(spans)
+    # Import relocated tik data definitions/scripts; executable REL sections are
+    # excluded. These share the existing source-address bank with the intro.
+    from rel_event_inventory import read_bindings,inventory_events
+    work=Path('local-assets/trio-battle');work.mkdir(parents=True,exist_ok=True)
+    relpath=work/'tik.rel';extract(iso,'rel/tik.rel',relpath);raw=relpath.read_bytes()
+    local,imports,_=read_bindings(raw);u=lambda o:struct.unpack_from('>I',raw,o)[0]
+    sections=[(u(u(16)+i*8),u(u(16)+i*8+4),0x93000000+i*0x100000) for i in range(u(12))]
+    def address(o):return next(base+o-(off&~3) for off,size,base in sections if off and (off&~3)<=o<(off&~3)+size)
+    for flags,size,base in sections:
+        off=flags&~3
+        if not off or not size or flags&1:continue
+        data=bytearray(raw[off:off+size]);data.extend(b'\0'*(-len(data)%4))
+        for site,binding in local.items():
+            if off<=site<off+size:struct.pack_into('>I',data,site-off,sections[binding['section']][2]+binding['addend'])
+        for site,a in imports.items():
+            if off<=site<off+size:struct.pack_into('>I',data,site-off,a)
+        segments.append((base,data))
+    units=json.loads(Path('romfs/trio-battle.json').read_text())['units'][:3]
+    data=struct.pack('<8sI',b'PMTHIT1',3)
+    for spec,namespace in zip(units,('unit_kuriboo.o','unit_togekuri.o','unit_patakuri.o')):
+        events=inventory_events(raw,'artifacts/reference/us_symbols.csv','tik',['damage_event@'+namespace,'wait_event@'+namespace])['events']
+        data+=struct.pack('<3I',address(spec['kind']),*[address(e['file_offset']) for e in events])
+    Path('romfs/trio-attack-units.bin').write_bytes(data)
+    segments.sort()
     offset=12+12*len(segments);table=[];payload=[];spans=[]
     for address,data in segments:
         table.append(struct.pack('>III',address,len(data),offset));payload.append(data)
         spans.append(dict(address=address,size=len(data),sha256=hashlib.sha256(data).hexdigest()));offset+=len(data)
     packed=b'PMEVT001'+struct.pack('>I',len(segments))+b''.join(table+payload)
     Path('romfs/trio-attack-events.pmevt').write_bytes(packed)
-    manifest.update(format='PMEVT001',segments=spans,size=len(packed),sha256=hashlib.sha256(packed).hexdigest(),conversion='Unchanged original DOL data sections7..12; section11 trimmed at80418000; live manager/context/global ranges excluded; no PPC text',limitation='Original source data and dependencies only; native callback coverage and owned runtime fields remain required')
+    manifest.update(format='PMEVT001',segments=spans,size=len(packed),sha256=hashlib.sha256(packed).hexdigest(),conversion='Unchanged original DOL data sections7..12; section11 trimmed at80418000; live manager/context/global ranges excluded; relocated tik non-executable data sections included; no PPC text',limitation='Original source data and dependencies only; native callback coverage and owned runtime fields remain required')
     Path('romfs/trio-attack.json').write_text(json.dumps(manifest,indent=2)+'\n')
     work=Path('local-assets/trio-battle');work.mkdir(parents=True,exist_ok=True)
     model=work/'b_mario';tpl=work/'a_mario.tpl';extract(iso,'a/b_mario',model);extract(iso,'a/a_mario-',tpl)

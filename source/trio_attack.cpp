@@ -9,9 +9,13 @@
 #include "battle_action_services.hpp"
 #include "battle_timing_a.hpp"
 #include "battle_weapon_cost.hpp"
+#include "battle_weapon_power.hpp"
+#include "battle_damage_application.hpp"
+#include "event_lifecycle.hpp"
 namespace ttyd {
 namespace {
 EventScriptAssets scripts;bool assetsReady=false;
+std::array<std::array<uint32_t,3>,3> reactionUnits{};
 constexpr uint32_t Battle=0x84000000,Units=0x84100000,Parts=0x84200000,Kinds=0x84300000;
 constexpr std::array<unsigned,7> visual{{0,0,1,3,5,4,2}};
 void required(bool ok){if(!ok)std::abort();}
@@ -21,7 +25,11 @@ bool loadTrioAttackAssets(const char* root) {
     if(!root)return false;
     EventScriptAssets next;if(!next.load((std::string(root)+"/trio-attack-events.pmevt").c_str()))return false;
     uint32_t command=0;if(!next.readWord(0x80355cf0,command) || command!=0x5005b)return false;
-    scripts=std::move(next);assetsReady=true;return true;
+    FILE* f=std::fopen((std::string(root)+"/trio-attack-units.bin").c_str(),"rb");if(!f)return false;
+    char magic[8];uint32_t count=0;decltype(reactionUnits) units{};
+    const bool valid=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMTHIT1",8) && std::fread(&count,4,1,f)==1 && count==3 && std::fread(units.data(),12,3,f)==3 && std::fgetc(f)==EOF;
+    std::fclose(f);if(!valid)return false;
+    scripts=std::move(next);reactionUnits=units;assetsReady=true;return true;
 }
 struct TrioAttackRuntime {
     EventNativeRuntime vm;
@@ -32,6 +40,9 @@ struct TrioAttackRuntime {
     BattlePackedMovePositionServices movement;
     BattleMarioJumpBackend jumpBackend;BattlePackedMarioJumpServices jump;
     BattleTriggerHistory history;BattleRandom random{0}; // Explicit native seed adapter; original seed ownership is open.
+    std::array<DamageUnit,7> damageUnits{};std::array<DamagePart,7> damageParts{};
+    std::array<std::array<int8_t,5>,7> defenses{},defenseAttributes{};
+    std::vector<DamageEffect> damageEffects;std::vector<std::string> soundRequests;std::vector<DamageNotice> notices;
     ProfessorStory* scene=nullptr;
     uint64_t now=0;uint32_t root=0,pending=0;
     bool done=false;
@@ -55,6 +66,8 @@ struct TrioAttackRuntime {
     void word(uint32_t a,uint32_t v){required(vm.memory.writeWord(a,v));}
     uint8_t byte(uint32_t a)const{uint8_t v=0;required(vm.memory.readByte(a,v));return v;}
     void byte(uint32_t a,uint8_t v){required(vm.memory.writeByte(a,v));}
+    int16_t half(uint32_t a)const{uint16_t v=0;required(vm.memory.readHalf(a,v));return int16_t(v);}
+    void half(uint32_t a,int32_t v){required(vm.memory.writeHalf(a,uint16_t(v)));}
     void real(uint32_t a,float v){word(a,bits(v));}
     float real(uint32_t a)const{const auto v=word(a);float f;std::memcpy(&f,&v,4);return f;}
     int32_t raw(EventEntry& e,unsigned i)const{return int32_t(word(e.arguments+4*i));}
@@ -68,12 +81,12 @@ struct TrioAttackRuntime {
         switch(fn) {
         case 0x8010ad00: { // Source fresh no-protector domain; retain both output writes.
             (void)unit(e);const int32_t target=translateBattleActor(&e,value(e,1),nativeBattleActorServices(vm));const int32_t part=value(e,2);
-            for(unsigned id=1;id<7;++id)if(int32_t(word(Units+id*0x1000+0x140))==target){pending=fn;return 0;}
+            for(unsigned id=1;id<7;++id)if(int32_t(word(Units+id*0x1000+0x140))==target){if(!pending)pending=fn;return 0;}
             output(e,1,target);output(e,2,part);return 2;
         }
         case 0x801059a0: { // Ordinary item0/FP0/AP0 still records its action count.
             const auto u=unit(e),weapon=uint32_t(value(e,1));
-            if(word(weapon+8) || byte(weapon+0x11) || byte(weapon+0x12)){pending=fn;return 0;}
+            if(word(weapon+8) || byte(weapon+0x11) || byte(weapon+0x12)){if(!pending)pending=fn;return 0;}
             uint16_t fp=0;required(vm.memory.readHalf(u+0x112,fp));required(vm.memory.writeHalf(u+0x112,fp));
             if(word(u+8)==222){auto points=byte(Battle+0x16f4b),count=byte(Battle+0x16f4c);addActionPoint(points,0);addActionCount(count);byte(Battle+0x16f4b,points);byte(Battle+0x16f4c,count);}
             return 2;
@@ -96,21 +109,66 @@ struct TrioAttackRuntime {
         case 0x8010b7c4:{const auto u=unit(e);const int32_t amount=value(e,2),sign=int8_t(byte(u+0x189));const auto x=value(e,1);output(e,1,int32_t(uint32_t(x)-uint32_t(amount)*uint32_t(sign)));return 2;}
         case 0x8010e684: {
             const auto u=unit(e);const int32_t actorPart=value(e,1),target=value(e,2),targetPart=value(e,3),mode=raw(e,4);
-            if(actorPart!=-1 || (mode!=1 && mode!=16)){pending=fn;return 0;}
-            float x=float(target);if(mode==16){const int32_t id=translateBattleActor(&e,target,nativeBattleActorServices(vm));const auto t=word(Battle+0x20+4*id),part=packedUnitPart(t,targetPart,nativeBattleActorServices(vm).memory);if(word(part+0x1ac)&0x10000000){pending=fn;return 0;}x=real(t+0x3c)+real(part+0x24);}
+            if(actorPart!=-1 || (mode!=1 && mode!=16)){if(!pending)pending=fn;return 0;}
+            float x=float(target);if(mode==16){const int32_t id=translateBattleActor(&e,target,nativeBattleActorServices(vm));const auto t=word(Battle+0x20+4*id),part=packedUnitPart(t,targetPart,nativeBattleActorServices(vm).memory);if(word(part+0x1ac)&0x10000000){if(!pending)pending=fn;return 0;}x=real(t+0x3c)+real(part+0x24);}
             const float delta=x-real(u+0x3c);output(e,5,delta>0?1:delta<0?-1:int8_t(byte(u+0x189)));return 2;
         }
         case 0x80106b20: {
             const auto u=unit(e);const int32_t partId=value(e,1),type=value(e,2);const auto p=packedUnitPart(u,partId,nativeBattleActorServices(vm).memory);
-            if(type!=40 && type!=42){pending=fn;return 0;}
-            uint32_t table=word(p+0x1bc),name=0;for(unsigned i=0;i<34;++i)if(word(table+8*i)==uint32_t(type)){name=word(table+8*i+4);break;}
-            if(!name){pending=fn;return 0;}changePose(u,p,text(name),false);return 2;
+            uint32_t table=word(p+0x1bc),name=0;if(!table){if(!pending)pending=fn;return 0;}
+            for(unsigned i=0;i<70 && word(table+8*i+4);++i)if(word(table+8*i)==uint32_t(type)){name=word(table+8*i+4);break;}
+            if(!name){if(!pending)pending=fn;return 0;}changePose(u,p,text(name),false);return 2;
         }
         case 0x80106bb8:{const auto u=unit(e);const auto p=packedUnitPart(u,value(e,1),nativeBattleActorServices(vm).memory);changePose(u,p,text(uint32_t(value(e,2))),false);return 2;}
+        case 0x8010a78c: {
+            const auto a=unit(e),d=unit(e,1),p=packedUnitPart(d,value(e,2),nativeBattleActorServices(vm).memory),w=uint32_t(value(e,3));const uint32_t flags=uint32_t(raw(e,4));
+            if(word(d+8)!=1 || word(p+0x1b0) || w!=0x803538a8){if(!pending)pending=fn;return 0;}
+            word(d+0x258,p);const int32_t result=checkGroundDamage(a,d,p,w,flags);output(e,5,result);return e.flags&1?2:255;
+        }
+        case 0x801064d8:{const auto u=unit(e),p=packedUnitPart(u,value(e,1),nativeBattleActorServices(vm).memory);for(unsigned o=0x118;o<=0x135;++o)if(byte(u+o)){if(!pending)pending=fn;return 0;}if(word(u+0x104)&0x20000){if(!pending)pending=fn;return 0;}const auto table=word(p+0x1bc);uint32_t name=0;for(unsigned i=0;i<28 && word(table+8*i+4);++i)if(word(table+8*i)==28){name=word(table+8*i+4);break;}if(!name){if(!pending)pending=fn;return 0;}changePose(u,p,text(name),false);word(p+0x204,(word(p+0x204)&~uint32_t(2|0x10|0x80|4))|1);return 2;}
+        case 0x801141a4:word(Battle+0x1c70,0);byte(Battle+0x1c74,0);return 2;
+        case 0x8010dcb0:{const auto kind=int32_t(word(unit(e)+8));output(e,1,kind==222 || (kind>=224 && kind<231));return 2;}
+        case 0x801140fc:{const auto u=unit(e);if(!u)return 2;for(unsigned o:{0x2a8u,0x2b4u})for(int i=0;i<vm.battle.capacity;++i)if(word(u+o) && (vm.battle.entries[i].flags&1) && vm.battle.entries[i].id==word(u+o))return 0;return 2;}
+        case 0x80105e50:{const auto u=unit(e);const int32_t type=value(e,1),duration=value(e,2);(void)value(e,3);const bool on=value(e,4)!=0;if(type!=27){if(!pending)pending=fn;return 0;}byte(u+0x135,on?duration:0);return 2;}
+        case 0x80111720:{const auto u=unit(e);for(unsigned i=0;i<3;++i)real(u+0x6c+4*i,float(value(e,i+1)));return 2;} // Used fresh zero rotation.
+        case 0x80106dfc: {
+            if(first){const auto id=translateBattleActor(&e,value(e,0),nativeBattleActorServices(vm));word(Battle+0x271c,0);for(unsigned i=0;i<3;++i)word(Battle+0x2720+4*i,value(e,i+1));word(Battle+0x272c,id);word(Battle+0x2730,0);word(Battle+0x2734,value(e,4));}
+            const auto id=int32_t(word(Battle+0x272c));const uint32_t a=id>=0 && id<64?word(Battle+0x20+4*id):0;const int32_t t=int32_t(word(Battle+0x271c)+1);word(Battle+0x271c,t);
+            int32_t result=0;const int32_t lo=int32_t(word(Battle+0x2720)),hi=int32_t(word(Battle+0x2724)),end=int32_t(word(Battle+0x2728));
+            if(!a || (word(a+0x27c)&0x10))result=1;
+            else {const int32_t scan=int32_t(word(Battle+0x2734));if(t<=1 && scan>0)for(int32_t i=0;i<scan;++i)if(history.entries[i]&0x100){result=-1;break;}
+                if(!result && ((history.entries[0]&0x100) || (byte(a+0x307) && lo<t && t<=hi)))result=t<=lo?-1:t<=hi?2:-2;
+                if(!result && t>=end)result=1;
+            }
+            if(result){word(Battle+0x2730,result);return 1;}return 0;
+        }
+        case 0x80106d7c:{const auto result=int32_t(word(Battle+0x2730)),count=int32_t(word(Battle+0x271c));if(raw(e,0)!=-250000000)output(e,0,result);if(raw(e,1)!=-250000000)output(e,1,count);return 2;}
+        case 0x80139898:return 2; // Original no-stylish audience request retained.
+        case 0x801075c4:{const int32_t actor=value(e,0),input=value(e,1);int32_t result=std::clamp(input+int32_t(byte(Battle+0x1cbd))-1,int32_t(0),int32_t(6));if(actor!=-1 && actor!=-5 && (word(unit(e)+0x278)&255)==30)result=-1;output(e,2,result);return 2;}
+        case 0x80106fa0:return 2; // Original success-effect request retained in trace.
+        case 0x8010f2e8:output(e,2,(word(unit(e)+0x278)&uint32_t(raw(e,1)))?1:0);return 2;
+        case 0x8010f0e8:output(e,2,word(unit(e)+0x274)==uint32_t(value(e,1)));return 2;
+        case 0x8010f374:output(e,1,word(unit(e)+0x278)&255);return 2;
+        case 0x8010f458:output(e,1,int8_t(byte(unit(e)+0x270)));return 2;
+        case 0x8010ed8c:output(e,1,int32_t(word(unit(e)+8)));return 2;
+        case 0x80105b40:{const auto u=unit(e);word(u+0x1c,word(u+0x1c)|uint32_t(value(e,1)));return 2;}
+        case 0x80105ae0:{const auto u=unit(e);word(u+0x1c,word(u+0x1c)&~uint32_t(value(e,1)));return 2;}
+        case 0x8010e430:output(e,2,(word(unit(e)+0x104)&uint32_t(value(e,1)))?1:0);return 2;
+        case 0x8010a154: {
+            const auto a=word(Battle+0x20+4*word(Battle+0x420));if(!a || !word(a+0x2a8))return 2;
+            const auto id=word(a+0x2a8);for(int i=0;i<vm.battle.capacity;++i)if((vm.battle.entries[i].flags&1) && vm.battle.entries[i].id==id)return 0;
+            word(a+0x2a8,0);return 2;
+        }
+        case 0x80107758:if(word(Battle+0x1cac)==0x8012a7c0)word(Battle+0x1c9c,1000);return 2;
+        case 0x8010d208:return genericJump(e,first);
+        // Feedback/effect providers retain original requests; source event waits
+        // and unit/reaction state remain executing, rather than flattened timers.
+        case 0x8010749c:case 0x80139af4:case 0x8010436c:case 0x801054e8:return 2;
+        case 0x80113950:case 0x801138d8:output(e,1,0);return 2; // Fresh unequipped drain badges.
         case 0x8010abac: { // Bounded fresh trio precheck. Changed status/badges/fog await generic binding.
             const auto a=unit(e),d=unit(e,1),p=packedUnitPart(d,value(e,2),nativeBattleActorServices(vm).memory),w=uint32_t(value(e,3));const uint32_t flags=value(e,4);
-            for(unsigned o=0x118;o<=0x135;++o)if(byte(a+o) || byte(d+o)){pending=fn;return 0;}
-            if(byte(d+0x2e0) || byte(d+0x2e1) || byte(d+0x2e2) || word(Battle+0x182bc) || (word(d+0x104)&0x18) || (word(p+0x1ac)&(0x4000|0x40)) || (word(p+0x1b0)&2) || byte(w+0x10)!=100){pending=fn;return 0;}
+            for(unsigned o=0x118;o<=0x135;++o)if(byte(a+o) || byte(d+o)){if(!pending)pending=fn;return 0;}
+            if(byte(d+0x2e0) || byte(d+0x2e1) || byte(d+0x2e2) || word(Battle+0x182bc) || (word(d+0x104)&0x18) || (word(p+0x1ac)&(0x4000|0x40)) || (word(p+0x1b0)&2) || byte(w+0x10)!=100){if(!pending)pending=fn;return 0;}
             if(word(w+0x74)&4)word(a+0x27c,word(a+0x27c)|8);
             if(!(flags&0x100000) && !(word(w+0x74)&8))(void)random.bounded(100);
             output(e,5,1);return 2;
@@ -134,7 +192,8 @@ struct TrioAttackRuntime {
         }
         // Deliberately no success fallback. A pending owner remains suspended
         // until its callback is implemented; it cannot spend a turn or win.
-        pending=fn;return 0;
+        if(!pending)pending=fn;
+        return 0;
     }
     bool initialize(const TrioBattleCommands& menu,ProfessorStory& s,int16_t hp) {
         scene=&s;now=s.now;
@@ -154,7 +213,10 @@ struct TrioAttackRuntime {
             byte(u+0x189,s.actors[visual[id]].yaw>0 && s.actors[visual[id]].yaw<180?1:255);byte(p+0xbd,id<3?1:255);real(u+0x114,1);
             for(unsigned axis=0;axis<3;++axis){real(u+0x3c+4*axis,s.actors[visual[id]].position[axis]);real(u+0x30+4*axis,s.actors[visual[id]].position[axis]);}
             if(id>=3) {
-                const auto& spec=trioBattleUnitSpecs()[id-3];word(u+0x104,spec.attributes);word(p+0x1ac,spec.partAttributes);word(p+0x1b0,spec.counterAttributes);
+                const auto& spec=trioBattleUnitSpecs()[id-3];
+                if(id<=5){const auto kind=reactionUnits[id-3][0],definition=word(kind+0xb8);word(u+0x10,kind);word(u+0x18,word(kind+0xc0));word(u+0x2b0,reactionUnits[id-3][1]);word(u+0x28c,reactionUnits[id-3][2]);word(p+4,definition);word(p+0x1bc,word(definition+0x48));word(p+0x1b4,word(definition+0x38));word(p+0x1b8,word(definition+0x3c));}
+                half(u+0x108,spec.hp);
+                word(u+0x104,spec.attributes);word(p+0x1ac,spec.partAttributes);word(p+0x1b0,spec.counterAttributes);
                 required(vm.memory.writeHalf(u+0x10c,spec.hp));required(vm.memory.writeHalf(p+0x1a0,spec.forwardBias));
                 for(unsigned axis=0;axis<3;++axis){real(p+0x24+axis*4,spec.partPosition[axis]);real(p+0x170+axis*4,spec.hitOffset[axis]);real(p+0x188+axis*4,spec.samplingOffset[axis]);}
             } else {
@@ -167,7 +229,7 @@ struct TrioAttackRuntime {
                         for(unsigned axis=0;axis<3;++axis){real(part+0x24+axis*4,real(record+0xc+axis*4));real(part+0x170+axis*4,real(record+0x18+axis*4));real(part+0x188+axis*4,real(record+0x24+axis*4));}
                         for(unsigned offset:{0x40u,0x44u,0x38u,0x3cu,0x48u})word(part+(offset==0x40?0x1ac:offset==0x44?0x1b0:offset==0x38?0x1b4:offset==0x3c?0x1b8:0x1bc),word(record+offset));
                     }
-                    required(vm.memory.writeHalf(u+0x10c,hp));
+                    required(vm.memory.writeHalf(u+0x10c,hp));half(u+0x108,10);
                 }
             }
         }
@@ -175,11 +237,73 @@ struct TrioAttackRuntime {
         bool ok=bindBattleJumpSettingCallback(registry,vm) && bindBattleFlagQueryCallback(registry,vm) && bindBattleSelectedTargetCallback(registry,vm) && bindBattleCommandWeaponCallback(registry,vm) &&
             bindBattleWaitGuardMoveCallback(registry,vm) && bindBattleDataChildCallback(registry,child) && bindBattleMajinaiQueryCallback(registry,vm) && bindBattleGetPosCallback(registry,vm) &&
             bindBattleGetHomePosCallback(registry,vm) && bindBattleSetPosCallback(registry,vm) && bindBattleSetMoveSpeedCallback(registry,vm) && bindBattleTakeoffCallback(registry,takeoff) &&
-            bindBattleMovePositionCallback(registry,movement) && bindBattleGetMoveFrameCallback(registry,vm) && bindBattleGetHitPosCallback(registry,vm) && bindBattleMarioJumpParameterCallback(registry,vm);
+            bindBattleMovePositionCallback(registry,movement) && bindBattleGetMoveFrameCallback(registry,vm) && bindBattleGetHitPosCallback(registry,vm) && bindBattleMarioJumpParameterCallback(registry,vm) && bindBattleStartWaitCallback(registry,vm) && bindBattleCheckStatusCallback(registry,vm) && bindBattleCheckDataCallback(registry,vm) && bindBattleSetFallAccelCallback(registry,vm);
         jumpBackend.runtime=&vm;jumpBackend.user=this;jumpBackend.play=[](void*,uint32_t,const std::array<float,3>&)->uint32_t{return 0;};
         jump=nativeBattleMarioJumpServices(jumpBackend);ok=ok && bindBattleMarioJumpPositionCallback(registry,jump);
         if(!ok)return false;
         auto& e=createRootEvent(vm.schedule,0x80355cf0,10,0,vm.creationServices());e.owner=menu.actor;root=e.id;word(Units+menu.actor*0x1000+0x2a8,e.id);return true;
+    }
+    void readDamage(unsigned id) {
+        auto& d=damageUnits[id];const auto u=Units+id*0x1000,p=Parts+id*0x1000;
+        d.kind=int32_t(word(u+8));d.belong=int8_t(byte(u+0xc));d.hp=half(u+0x10c);d.maxHp=half(u+0x108);d.fp=half(u+0x112);d.maxFp=half(u+0x10e);
+        d.flags=word(u+0x27c);d.statusFlags=word(u+0x138);d.attributes=word(u+0x104);d.damageSequence=half(u+0x260);d.attackSequence=int32_t(word(u+0x280));
+        for(unsigned i=0;i<30;++i)d.statusBytes[i]=byte(u+0x118+i);
+        damageParts[id].attributes=word(p+0x1ac);
+        if(id>=3 && id<=5){defenses[id]=trioBattleUnitSpecs()[id-3].defense;for(unsigned i=0;i<5;++i)defenseAttributes[id][i]=int8_t(trioBattleUnitSpecs()[id-3].defenseAttributes[i]);}
+        damageParts[id].defense=defenses[id].data();damageParts[id].defenseAttributes=defenseAttributes[id].data();
+    }
+    void writeDamage(unsigned id) {
+        const auto& d=damageUnits[id];const auto u=Units+id*0x1000;
+        half(u+0x10c,d.hp);word(u+0x27c,d.flags);word(u+0x208,d.hpBefore);word(u+0x20c,d.hpAfter);word(u+0x264,d.requestedHp);word(u+0x268,d.requestedFp);word(u+0x26c,d.consumedFp);
+        byte(u+0x270,d.lastHp);byte(u+0x271,d.lastFp);byte(u+0x272,d.lastConsumedFp);word(u+0x274,d.pattern);half(u+0x1fe,d.damageFlags);
+    }
+    DamageApplicationServices application() {
+        DamageApplicationServices s;s.user=this;
+        s.getUnit=[](void* p,int32_t id)->DamageUnit* {return id>=1 && id<7?&static_cast<TrioAttackRuntime*>(p)->damageUnits[id]:nullptr;};
+        s.bodyPart=[](void* p,DamageUnit& d)->DamagePart* {auto& r=*static_cast<TrioAttackRuntime*>(p);return &r.damageParts[&d-r.damageUnits.data()];};
+        s.hitPosition=[](void* p,DamageUnit& d,DamagePart&) {auto& r=*static_cast<TrioAttackRuntime*>(p);const unsigned id=&d-r.damageUnits.data();auto xyz=packedHitPosition(Units+id*0x1000,Parts+id*0x1000,nativeBattlePartPositionServices(r.vm));return DamagePosition{xyz[0],xyz[1],xyz[2]};};
+        s.effect=[](void* p,const DamageEffect& effect){static_cast<TrioAttackRuntime*>(p)->damageEffects.push_back(effect);};
+        s.sound=[](void* p,const char* key,DamagePosition){if(key)static_cast<TrioAttackRuntime*>(p)->soundRequests.emplace_back(key);};
+        s.notice=[](void* p,DamageUnit&,DamageNotice notice){static_cast<TrioAttackRuntime*>(p)->notices.push_back(notice);};
+        s.hitEvent=[](void* p,DamageUnit& d,uint32_t code){auto& r=*static_cast<TrioAttackRuntime*>(p);const unsigned id=&d-r.damageUnits.data();r.writeDamage(id);r.hitEvent(Units+id*0x1000,code);};
+        s.inventory.itemCount=[](void*,int32_t)->int32_t{return 0;};return s;
+    }
+    void hitEvent(uint32_t u,uint32_t code) {
+        const auto script=word(u+0x2b0);if(!script)return;
+        for(unsigned offset:{0x2b4u,0x290u,0x29cu,0x2a8u}){const auto id=word(u+offset);if(id)deleteEventId(id,vm.creationServices());word(u+offset,0);}
+        auto& e=createRootEvent(vm.schedule,script,10,0x20,vm.creationServices());e.owner=int32_t(word(u));word(u+0x278,code);word(u+0x2b4,e.id);
+    }
+    int32_t checkGroundDamage(uint32_t a,uint32_t d,uint32_t,uint32_t w,uint32_t flags) {
+        const auto ai=word(a),di=word(d);readDamage(ai);readDamage(di);auto& attacker=damageUnits[ai];auto& defender=damageUnits[di];auto& part=damageParts[di];
+        DamageWeapon weapon=ordinaryJumpWeapon();for(unsigned i=0;i<6;++i)weapon.powerWords[i]=int32_t(word(w+0x20+4*i));
+        WeaponPowerServices power;power.user=this;power.actionResult=[](void* p){return static_cast<TrioAttackRuntime*>(p)->word(Battle+0x1cb8);};power.pouchLevel=[](void*,MarioPowerKind)->uint8_t{return 1;};
+        power.bonus=[](void*,const DamageUnit& u,MarioPowerKind kind){return kind==MarioPowerKind::Jump?u.jumpPowerBonus:u.hammerPowerBonus;};
+        power.powerWord=[](void* p,int32_t index)->int32_t {auto& r=*static_cast<TrioAttackRuntime*>(p);return int32_t(r.word(0x803538a8+0x20+4*index));};weapon.callbackData=&power;
+        DamageBattleState state;state.actionResult=word(Battle+0x1cb8);uint32_t code=0;const auto hp=calculateHpDamage(&attacker,defender,part,weapon,code,flags,state,storedDamageStatusServices());const auto fp=calculateFpDamage(&attacker,defender,part,weapon,code,flags,state);
+        defender.damageSequence=int16_t(uint16_t(defender.damageSequence)+1);half(d+0x260,defender.damageSequence);
+        applyDirectDamage(ai,defender,&part,hp,fp,code,byte(w+0x6d),1,random,application());
+        word(a+0x27c,attacker.flags);word(a+0x280,word(a+0x280)+1);byte(d+0x273,word(a+0x280));return hp || fp?18:19;
+    }
+    int32_t genericJump(EventEntry& e,bool first) {
+        const int32_t selector=value(e,0),x=value(e,1),y=value(e,2),z=value(e,3),requested=value(e,4);(void)value(e,5);
+        const auto id=translateBattleActor(&e,selector,nativeBattleActorServices(vm));const auto u=word(Battle+0x20+4*id);
+        if(first) {
+            e.initialized=1;if(requested)word(u+0x16c,requested);
+            setPackedMovePosition(u,true,{float(x),float(y),float(z)},nativeBattleActorServices(vm).memory);
+            setPackedMovePosition(u,false,{real(u+0x3c),real(u+0x40),real(u+0x44)},nativeBattleActorServices(vm).memory);
+            real(u+0x17c,vm.platform.headingFloat(this,real(u+0x3c),real(u+0x44),float(x),float(z)));real(u+0x180,std::hypot(float(x)-real(u+0x3c),float(z)-real(u+0x44)));
+            const float dx=float(x)-real(u+0x3c),dy=float(y)-real(u+0x40);if(dx!=0)byte(u+0x188,dx>0?1:255);
+            if(!word(u+0x16c))word(u+0x16c,uint32_t(int32_t(real(u+0x180)/real(u+0x170))));else real(u+0x170,real(u+0x180)/float(int32_t(word(u+0x16c))));
+            const float n=float(int32_t(word(u+0x16c)));real(u+0x180,-std::fma(n,real(u+0x170),-real(u+0x180)));if(!word(u+0x16c))return 2;
+            real(u+0x178,std::fma(real(u+0x174)*n,.5f,dy/n));real(u+0x170,real(u+0x170)+real(u+0x180)/n);
+        }
+        real(u+0x158,real(u+0x158)+real(u+0x178));real(u+0x178,real(u+0x178)-real(u+0x174));if(real(u+0x178)<0 && real(u+0x158)<real(u+0x164))real(u+0x158,real(u+0x164));
+        integratePackedMoveHorizontal(u+0x154,u+0x15c,real(u+0x170),real(u+0x17c),movement);
+        for(unsigned axis=0;axis<3;++axis)real(u+0x3c+4*axis,real(u+0x154+4*axis));
+        word(u+0x16c,word(u+0x16c)-1);
+        if(int32_t(word(u+0x16c))>0)return 0;
+        for(unsigned axis=0;axis<3;++axis)real(u+0x3c+4*axis,real(u+0x160+4*axis));
+        return 1;
     }
     void changePose(uint32_t u,uint32_t p,const std::string& name,bool force) {
         for(unsigned i=0;i<=name.size();++i)byte(p+0x1c4+i,i==name.size()?0:unsigned(name[i]));
@@ -187,15 +311,15 @@ struct TrioAttackRuntime {
         const unsigned id=word(u);if(scene->actors[visual[id]].pose!=name){scene->actors[visual[id]].pose=name;scene->actors[visual[id]].poseAt=now;}
     }
     TimingACommand timing() const {
-        TimingACommand c;c.state=int32_t(word(Battle+0x1c9c));c.flags=word(Battle+0x1f50);c.classification=int32_t(word(Battle+0x1ce8));c.result=word(Battle+0x1cb8);c.count=int32_t(word(Battle+0x1cb4));
+        TimingACommand c;c.finishCountdown=int32_t(word(Battle+0x1f54));c.state=int32_t(word(Battle+0x1c9c));c.flags=word(Battle+0x1f50);c.classification=int32_t(word(Battle+0x1ce8));c.result=word(Battle+0x1cb8);c.count=int32_t(word(Battle+0x1cb4));
         for(unsigned i=0;i<11;++i)c.scratch[i]=word(Battle+0x1f20+4*i);
         return c;
     }
     void storeTiming(const TimingACommand& c) {
-        word(Battle+0x1c9c,c.state);word(Battle+0x1f50,c.flags);word(Battle+0x1ce8,c.classification);word(Battle+0x1cb8,c.result);word(Battle+0x1cb4,c.count);
+        word(Battle+0x1f54,c.finishCountdown);word(Battle+0x1c9c,c.state);word(Battle+0x1f50,c.flags);word(Battle+0x1ce8,c.classification);word(Battle+0x1cb8,c.result);word(Battle+0x1cb4,c.count);
         for(unsigned i=0;i<11;++i)word(Battle+0x1f20+4*i,c.scratch[i]);
     }
-    void actionManager() {if(word(Battle+0x1ca0)==0x8012aae0){auto c=timing();c.tick();storeTiming(c);}}
+    void actionManager() {if(word(Battle+0x1ca0)==0x8012aae0){auto c=timing();const int result=c.tick();storeTiming(c);if(!result)for(unsigned o:{0x1ca0u,0x1ca4u,0x1ca8u,0x1cacu})word(Battle+o,0);}}
     void tick(uint64_t time,ProfessorStory& s,uint32_t triggers){scene=&s;now=time;history.push(triggers);if(!pending && !done){vm.gp.timestamp=time*eventClockRate(243000000);actionManager();vm.runManager();done=vm.runtime.allocationCount==0;}publish(s);}
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=Units+id*0x1000;for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;}}
 };

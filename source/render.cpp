@@ -917,7 +917,7 @@ void Renderer::overlay(const Game& g) {
         if(g.trioBattleActive && g.trioCommands.state==TrioBattleCommands::State::AttackReady) {
             if(g.trioAttack.pendingFunction()){panel(16,20,368,30,Paper);text("Development notice: source damage services pending",25,28,.43f,Ink);}
             else if(g.trioAttack.active()) {panel(16,20,170,30,Paper);text("A: action command",25,28,.5f,Ink);}
-            else text("Development notice: original attack event pending",25,112,.45f,Ink);
+            else text(g.trioAttack.finished()?"Development notice: turn scheduling pending":"Development notice: original attack event pending",25,112,.45f,Ink);
         }
         if(g.storyPresentation().pendingService)text("Development notice: original battle backend pending",25,112,.45f,Ink);
         return;
@@ -962,8 +962,8 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
                 text(commands.commandName(commands.command),12,76,.63f,Ink);
                 text(g.trioAttack.pendingFunction()?"Development notice: source damage services pending":"A: action command",12,174,.42f,Ink);
             } else {
-                text("Development notice: original attack event pending",12,76,.42f,Ink);
-                text("B: return to target selection",12,174,.44f,Ink);
+                text(g.trioAttack.finished()?"Development notice: turn scheduling pending":"Development notice: original attack event pending",12,76,.42f,Ink);
+                if(!g.trioAttack.finished())text("B: return to target selection",12,174,.44f,Ink);
             }
         }
         return;

@@ -452,7 +452,7 @@ With those clear, if code100 is clear call WaitAttackEnd at8034db98. Continue
 home movement only if currentXYZ differs from homeXYZ. Fresh ordinary Goomba
 standing at home skips movement to label102, ResetFaceDirection(LW10),
 StartWaitEvent(LW10), RETURN. The damage pose table maps type39 to KUR_D_1
-(REL2a89c record); wait table type1 is KUR_N_1. Spiked equivalents TGK_D_1/
+(REL2a89c record); table type1 is KUR_N_1 (not the automatic no-status wait choice). Spiked equivalents TGK_D_1/
 TGK_N_1; flying Paragoomba PTK_D_1/PTK_N_1. Ordinary home movement type40
 is corresponding *_W_1 and speed is source event float4.
 
@@ -568,3 +568,230 @@ key30(hex48)→DOL80416b38 btldefaultevt_Dummy followed byzero terminator.
 Consequently used reactionkey10 and deathoverride49/coreprelude50 are absent
 and the callback returns2; no invented generic customscript. Flying tablekey0e
 and Spikedkey25 are real callbacks and preserve child owner/barrier semantics.
+
+
+## Fresh ordinary Goomba CheckDamage tuple and callback boundary
+
+2026-10-13 follow-up; this derived case composes inspected CheckDamage wrapper
+8010a78c/fc with the linked original orchestrator, calculator, direct-application,
+weapon-power and dispatch contracts. Assumptions: originallevel1MarioJump,
+zeroequipment/status/bonus modifiers, normal element0, ordinarysetup4groundGoomba,
+no guard/counter/emergency-revival. No source execution measurement is claimed.
+
+CheckDamage event operands are actor,target,part,weapon,flags,destination.
+Wrapper evaluates/translatesactor andtarget, evaluatespart→GetPartsPtr, evaluates
+weapon; readsflags **raw** at operand+10 and destinationraw+14. Calls
+BattleCheckDamage(A,D,P,W,F). Fornegative resultreturns255withoutwritingoutput.
+Forresult>=0 evtSetValue(destination,result),then evtCheckID(callingeventID):
+active→2, absent→255. Ordinaryvictimdispatch doesnotcanceltheMarioevent and
+therefore theusedreturn is2 with destinationvalue18, not18 asVMhandlerreturn.
+
+No precheck occurs inside this callback. Source ordinaryGroundGoomba has
+counterattributes0; normalweaponpart-reactionpairs do not overlap: partflags9
+lack1000/2000/800. Thus partReaction0. Original powercallback fromlevel1table
+is1 regardless ofTimingAsuccessbit; FPelement/callback0 givesQ0,patternM0,
+statusBits0, sleepRecovery1. The concrete direct tuple is
+BattleDamageDirect(MarioU0,D,P,1,0,F|23,0,1). Source callandmutationordering:
+
+1. SetD258=P beforecounterselection.
+2. HPthenFPcalculator sharecode; D.S16U260 increment with16bitnarrowing afterboth.
+3. Statusweaponrequest iscalledonlyifF100 (or40000000) andnot40000; these
+   ordinaryweapon zero-statusfieldsproduce0. Success20000skipsthisrequest.
+4. AudienceEnemyDamage(1), then directtuple above.
+5. Direct writesD270=1,D264+=1,D271=D272=0,D268+=0; HPsnapshotD208,
+   signedhalfwordHPsubtract/clamp, HPafterD20c. F100controlsD1fe bit1; otherbits
+   preserved. Damagecode maygainlethalbits as tablebelow, then D27c|=1 andhitdispatch.
+6. Afterdirectreturns, attackerwordA280 increments; newlowbyte→D273. Result18
+   when no counterconsumer. Neither calccode nor thisresultmeansstatus27 isalreadyset.
+
+| Per-hit callerF | Direct inputC | HP2→1 finalC | HP1→0 finalC |
+| --- | --- | --- | --- |
+| 100 (timingfailure/finalhit) | 117 | 117 | 717 |
+| 20000 (firsttimingsuccess) | 20017 | 20017 | 20017 |
+| 20100 (secondtimingsuccess/finalhit) | 20117 | 20117 | 20717 |
+
+HP<=0 gains200|400 onlywhenC100 ispresent; C20000alonecanleavezeroHP without
+status/deathadmission. The native adapter mustretainoriginalflags ratherthan
+inferdeathfromHP. Source normal successfultwohits are20000then20100, HP2→1→0;
+success/failureare20000then100 withthesameper-hitpower1. Firstfailure100 only
+HP2→1 andendsattack. See [originalJumpgraph](BATTLE_NORMAL_JUMP_EVENT_FLOW.md)
+foractualsubsequentprecheck andtargetadmission; donotguarantee asecondhit manually.
+
+DispatchfreshGoomba damagepointerU2b0=REL2ab28 from initSetEventDamage.
+BattleRunHitEvent8012984c permits lowcode23 withouttheonlylowcode40/datatable46
+specialgate. Directdispatcher801298d0 cancels andclearsD2b4,D290,D29c,D2a8,
+inthatorder; constructor evtEntry(script,10,20) zerosrootlocals andassignsnewID.
+Dispatcher writes eventowner+160=GoombaU0, D278=completeC,D2b4=newhitID.
+Damagewrapper thenSETLW10=-2,LW11=1; genericchildcopieslocals/owner. There isno
+injectedpart/codeLW seed: bodypart1comesfromwrapper, actualhitpartD258comesfrom
+CheckDamage, fullcodeis sharedD278 readbyCheckDamageCode/GetDamageCode.
+U29c istrackedphaseeventID, notdamageID; BattleRunPhaseEvent uses294/298script,
+evtEntry(script,10,20),ownerU0,newID→U29c; itdoesnotcanceloldphasefirst.
+
+FirstsuccessGoombareaction startsD2b4 independentlyofMarioattack. Itwaits1000ms,
+thenWaitAttackEnd becauseC100clear. WaitAttackEnd polls currentattackerB420→A2a8
+andblockswhileactive. Secondhitdispatchcancelsfirstreactionchildchain before
+startingnewreaction withlatestD278. Final20100/100skipWaitAttackEnd; lethal400
+enterssource30frame/status27/deadcorepathpreviouslydocumented. Same-passappend
+flag20doesnotmean immediateexecution; preserveschedulerordering andparentchild
+copyback. A280/D273 writesfollowhitconstructor, notprecedeit.
+
+### Minimal used genericDamage/deadcore service catalog
+
+The list below is a bounded freshordinarygroundvictim graph, including guards
+that are evaluated tofalse. Movement-backhome and variant/revival/electric/
+freeze/dodgy/guard/customstatus branches expand thecatalog; they mustremain
+explicitlyunbound until supported. OriginalVMalso needsSET,conditionals,
+SWITCH/CASE_OR,labels/goto,WAIT_MSEC/FRAME,RUN_CHILD,brother,LOOP andreturn/end.
+
+| Callback | USaddress | bytes | Used role |
+| --- | --- | --- | --- |
+| btlevtcmd_SetRotate | 80111720 | 372 | entryreset/deathspinreset |
+| btlevtcmd_CheckDamageCode | 8010f2e8 | 140 | highbitadmission/sharedD278 |
+| btlevtcmd_CheckDamagePattern | 8010f0e8 | 140 | freshfalsepattern guards |
+| btlevtcmd_GetDamageCode | 8010f374 | 112 | sharedD278lowbyte switches |
+| btlevtcmd_OnUnitFlag | 80105b40 | 96 | reaction1/death08000000 |
+| btlevtcmd_RunDataEventChild | 8010a010 | 160 | optionalreaction10/customdeath49/prelude50 |
+| btlevtcmd_CheckDataOfDataTable | 80109f88 | 136 | zeroterminatedkeypresence |
+| btlevtcmd_GetDamage | 8010f458 | 116 | storedHPdamageD270 |
+| btlevtcmd_AnimeChangePoseType | 80106b20 | 152 | type39damage;waittableis separate |
+| btlevtcmd_WaitAttackEnd | 8010a154 | 116 | currentattackerA2a8barrier |
+| btlevtcmd_CheckAttribute | 8010e430 | 140 | ground/homebranch |
+| btlevtcmd_GetPos | 80113620 | 232 | homecompare/effectplacement |
+| btlevtcmd_GetHomePos | 801124f8 | 196 | homecompare |
+| btlevtcmd_ResetFaceDirection | 8010e4bc | 112 | posthitreset |
+| btlevtcmd_StartWaitEvent | 8010a26c | 100 | neworiginalwaitscript |
+| btlevtcmd_GetUnitKind | 8010ed8c | 108 | deathkindbranch |
+| btlevtcmd_OnOffStatus | 80105e50 | 188 | originalstatus27producer |
+| btlevtcmd_AddRotate | 801115f8 | 296 | 48spin/30tipframes |
+| btlevtcmd_SetRotateOffset | 80110f9c | 296 | deathpivotreset |
+| btlevtcmd_snd_se | 80104700 | 188 | originaldeathsoundkeys |
+| evt_eff | 8006d970 | 2572 | smoke/starpointoriginaleffectrequests |
+| btlevtcmd_GetCoin | 8010d914 | 108 | rewardamount |
+| btlevtcmd_StoreCoin | 8010d8d8 | 60 | rewardaccumulator |
+| btlevtcmd_GetExp | 8010d9bc | 108 | rewardamount |
+| btlevtcmd_StoreExp | 8010d980 | 60 | rewardaccumulator |
+| _add_star_point_disp_offset | 80113f88 | 372 | starpointplacement |
+| btlevtcmd_GetBackItem | 8010da28 | 184 | deathdropowner |
+| btlevtcmd_ClearAllStatus | 80105df8 | 88 | deathclearbeforeKillUnit |
+| btlevtcmd_KillUnit | 80113304 | 184 | mode0status27/deferredregistrydelete |
+
+This catalog is symbol/span/source-call evidence, not evidenceallcallbackbodies
+areclosed. Originalcoin/experience/effects/audioandfullpartdisplayremain retained
+requests; donotsatisfy thembyinventingrewards,timersordeathdialogue. Original
+waitscript invokes AnimeChangePoseFromTable801064d8; its pose/statusselectorand
+ordinarydisplayservice are also required forvisiblereturntoKUR_S_1.
+
+
+## Used death leaves, reward storage and automatic wait pose
+
+2026-10-13 original US inspection follow-up. Numeric bodies inspected with
+inspect_dol_function; local `/tmp/trio-disablecursor.dis`, `trio-dmwait.dis`,
+`trio-checkcommand.dis`, `trio-unitcoin.dis`, `trio-unitexp.dis`,
+`trio-battlecoin.dis`, `trio-battleexp.dis`, `trio-backitem.dis`,
+`trio-staroffset.dis`, `trio-statuspose.dis`, `trio-searchpose.dis`, and
+`trio-setstatus.dis`. No original-execution or native-binding claim.
+
+- _disable_restore_command_cursor801141a4/18 loads globalBattle r13+1c70,
+  storesword0 atB1c70,byte0 atB1c74,returns2. No argumentreads,waits/unitchanges.
+- _check_at_dm_event_wait801140fc/a8 resolves/translatesarg0unit. Missingunit
+  returns2; ifU2a8 nonzero andevtCheckIDactive return0; thenidenticalcheckU2b4;
+  otherwise2. DoesnotclearstaleIDs. This is requested byplayer/partnerdeath
+  branches, notthefreshGoombadeadcore path.
+- CheckCommandUnit8010dcb0/90 resolves/translatesunit; signedwordkindU8 equal222
+  or224<=kind<231 writes1 viaevtSetValue(rawarg1),otherwise0; returns2.
+- OnOffStatus27 callsBtlUnit_SetStatus80127bac/388. Its27branch80127f1c writes
+  byteU135=low8durationandreturn1; ignoresstrength. NoHP/event/registry/flag
+  writes. Status27duration1 isfirstscript-owned and laterKillUnitreasserts it.
+
+### Reward getters and owners
+
+GetCoin8010d914/6c andGetExp8010d9bc/6c evaluateunit→translate→unitptr; call
+BtlUnit_GetCoin80126ca8/78 orBtlUnit_GetExp80126d20/e0; write returnedamount
+torawarg1 through evtSetValue; return2. Getter results are not pouch deposits.
+StoreCoin8010d8d8/3c andStoreExp8010d980/3c evaluateamount,call BattleStoreCoin
+800f7c0c/14 orBattleStoreExp800f7bfc/10,return2. StoreCoin work=*(B2738),
+work+14 += amount asword; StoreExp Bf00 += amount asword. No clamp/pouch write.
+
+BtlUnit_GetCoin: nullunit→0. kind=*(U10); total=U8(kind12); loopindex0,
+repeatU8(kind10) times: irand100, rereadkind, ifsignedrandom <U8(kind11)
+total++. Reloadtrialcount eachloopcondition. Goomba kindREL2a7d8 binds
+coinbase0,trialcount1,chance60; thus one sourceRNGdraw produces0or1, not a
+constantcoinreward. Thedraw mustremain intheoriginaldeathscriptphase.
+
+BtlUnit_GetExp: pouchGetPtr800d5eb0; playerlevel=S16(pouch8a),
+enemylevel=U8(Ud). Ifplayerlevel>enemy return0. Otherwise work=*(B2738),
+setup=*(work+c), stage=*(setup+18), stageclass=S32(stage0).
+Factor rawfloatconstants804226a8=1.0 forclass0..2;804226b4=1.100000023841858
+for3;804226b8=1.2999999523162842 for4;804226bc=1.5 otherwise.
+Convert signedleveldifference tosingle; singlemultiplyfactor*difference;
+singlemultiply804226c0=.5; truncate towardzero; add U8(kind+f) baseexp.
+Goomba baseexp0/level7 withclass0/playerlevel1 derives3. Do nothardcode this
+without binding theoriginalpouchlevel andstageclass owners. Experience has
+no RNGdraw here and doesnotgrantlevelups inthegetter/storecallback.
+
+GetBackItem8010da28/b8 resolvesunit; ifU1c lacks40000000 orU308==0 return2
+withoutwrites. Otherwise work=*(B2738),setup=*(work+c), scan8wordssetup+7c:
+stopatfirstzero; writeitemU308toslot; clearU308. Ifall8slots nonzero, codewrites
+slot8 ratherthanrejecting/clamping. Thefreshnoitem pathmustpreservezero/no-op,
+not manufactureanitem ornewdropdraw; actualinitialU308/flagproducer retains
+itsownsourceownership request.
+
+_add_star_point_disp_offset80113f88/174 resolvesunit thenreads/evaluatesrawXYZ
+operandtokensinorder. Integercoordinates convert tosingle, add kindfloatvec
++90/+94/+98 withsinglefadds; fctiwz eachresult, writebacksameXYZtokensinorder;
+return2. No rendering/expmutation or floattokenwrites. Goomba kindvec(0,0,0),
+so deadcorealready-addedY30/Z10remain unchanged inthisfreshcase.
+
+### Correction: automatic ordinary wait chooses type28, not type1
+
+The literal1 in AnimeChangePoseFromTable(-2,1) isbodypartID. It isnotpose type1.
+Earlier summarycallingtheautomaticwait KUR_N_1 wasunsupported and is corrected.
+Wrapper801064d8/6c resolvesunit+part then btlDispPoseAnime801010f4/38(P).
+Thecallee consumesonlyP; volatileextraregisterr4 fromthepartlookup isirrelevant
+becauseit isoverwrittenbeforeuse. PoseAnime P204 &=~(2|10|80|4); P204|=1.
+It doesnot setname/typeordirectlyrestartanimation.
+
+btlDispMain80102874 checksP204bit2; when clear, call _GetStatusPoseType80103084/74.
+UnitattributeU104&20000 returns27 first. Else testoriginalprioritylist at
+80416ab0:27,2,9,1,4,5,3,-1; returnfirstactivestatus,else28. Forenemy kinds1..215,
+searchPoseTbl80103cd0/44(P1bc,type) scansmax28 eightbytepairs, returningnamewhen
+entrytype equalsrequested **or equals28**; nulltable/endwithoutmatch→null.
+FreshnostatusGoomba chooses28→RELbb28 KUR_S_1. Its type1 KUR_N_1 remains a
+separatevalid tableentry, notthisordinarywaitchoice. Afterselection btlDispMain
+hasFast/Slowplaybackrate checks; ordinaryrateconstant unchanged; P204bit1
+consumercalls animPoseSetAnim withbit8forcepolicyasdocumentedabove. Same-index
+force0retainstheanimationselectorclock/caches. Originalstatusposevariants are
+outsidefreshnostatusscope andcannotbe substitutedwithunconditionaltype28.
+
+### 2026-10-13 native Jump hit/reaction binding
+
+`TrioAttack` imports the installed tik damage and wait wrappers and runs original
+DOL generic damage children in its battle-context event manager. Fresh ordinary
+Goomba Jump uses the recovered power/calculation/direct-application cores,
+writes source HP/accounting, starts the owned hit root and preserves cancellation
+order. Target HP starts at2. First missed timing produces HP1; the original hit
+child waits1000ms, completes, and automatic wait selects type28/KUR_S_1.
+Mario's original recovery jumps/home movement complete. Two hits reach HP0;
+the source child sets status27 after its reaction and WAIT_FRAME30, then stops
+at unbound AddRotate801115f8. Original death presentation/rewards/removal and
+turn scheduling still require native binding. No battle victory or field result
+is manufactured from HP0. The completed-action native adapter keeps field
+control locked and retains battle resources rather than opening a stale menu.
+
+Native code words retain calculator flags beyond `flags|23`: original HP
+calculation ORs10000 when flags100 and defender attribute100 is absent. This
+fresh Goomba path therefore produces10117 for a missed first hit and10717
+for a missed lethal second hit, not just117/717. Full-word event checks must
+retain this bit. Host checks cover both successful timings (20000 then20100),
+first-success/second-miss, alive return, callback ownership and AC cleanup.
+
+StopAC starts TimingA state1000. The runtime preserves its source1f54 countdown
+and clears all four callback registrations only when Main returns0. Stylish
+window/result helpers retain original event invocation counts and press edges.
+Feedback, audience, effect and sound requests are retained; their full original
+presentation providers, optional stylish icons, original RNG seed ownership and
+Mario's installed idle event remain unfinished. Fresh no-status wait display is
+scoped explicitly; other status pose paths suspend rather than selecting an
+unrelated idle. Spike counter and Paragoomba wing-fall still suspend at
+CheckDamage8010a78c, preserving their HP and event ownership.
