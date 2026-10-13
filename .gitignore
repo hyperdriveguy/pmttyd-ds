@@ -36,3 +36,6 @@ romfs/*.pmmesh
 romfs/*.pmanim
 
 romfs/*.pmshadow
+
+# Extracted per-function disassembly dumps (evidence working files, not source history)
+*.disasm

@@ -160,7 +160,7 @@ is counted in Group D, not here.)
 
 `party_flyMain` (`behavior/`, entry 800c7ff8, 1584-byte `.elf`, 354-line
 `.disasm`, 43 `bl`) is closed by
-[the fly-main dispatch contract](partner/FIELD_PARTNER_FLY_MAIN_DISPATCH.md):
+[the fly-main dispatch contract](../partner/FIELD_PARTNER_FLY_MAIN_DISPATCH.md):
 complete mode/substate dispatch, first-call marker, splash marker,
 countdown and hazard guards. Its sibling `flyMain.disasm` is a
 zero-byte placeholder (see below), so no content comparison is possible.

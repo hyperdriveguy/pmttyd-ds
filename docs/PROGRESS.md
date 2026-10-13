@@ -1,5 +1,18 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native request 2 remainder: bottomless numerics
+
+Delivered OVERWORLD_BOTTOMLESS_RECOVERY_NUMERICS: first-tick gate,
+win_03/win_01/tik_01 lane selection (rodata-read), angle setup, stage
+machine via ISO-read table (0/2/10/11/12 live, 13 terminal-by-gate),
+fallSpeed-shape integrator, min −10.0 snap, land/HP chain, and the
+0.34/−0.002/−0.01 drop-back triple (port's jerk cascade matches one lane).
+Dead −2000.0 load and SDA set pinned from ISO. Request 2 fully answered
+except float-chain interiors.
+
+Validation: call/SDA/stage-write re-checks, link audit, diff --check clean.
+Docs-only, no make rerun. Next: pose-table slice (request 3). Incomplete.
+
 ## 2026-10-12 — Native request 2: water recovery numerics
 
 Delivered OVERWORLD_WATER_RECOVERY_NUMERICS for field/AC-03: full
