@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero stream free/reverse clear
+
+Completed sndStreamFree/ABI helpers; checked EVT-01 portion.
+[Free/reverse clear](behavior/audio/MUSYX_STREAM_FREE_AND_REVERSE_STATE_CLEAR.md)
+pins five stages, deactivate-before-fresh-selector/link, parent buffer exits
+before descendants and deepest-first retained-slot state0/enables. Frequency/
+mix/resource/chain/IRQ/provider domains/original free/audio/native binding open.
+
+Validation: read-only ISO manifest passed ten spans,453 anchors,24 calls.
+Fifteen finite-chain models checked for stable deactivation/exit/recursion/reverse
+clear/missing links/retained fields/request counts. Link audit passed903 Markdown
+files/zero broken links; scoped `git diff --check` passed. Mathematical/source
+checks are separate from original execution. Documentation/metadata only; no
+`make test`/`make all` rerun. Fresh full original ELF/listing/generator stay `/tmp`;
+no bodies/binary assets committed. Concurrent native edits excluded. Previously
+approved push remains pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 stream frequency/mix, actual ID/state/voice/buffer/
+companion/IRQ/resource providers and valid value/index/extent/alias/lifetime/
+concurrency/stack/ABI/termination domains, transitive ARAM/DSP consumers and
+original chained free/deactivation/failure/audio traces. Remaining macro/song/
+backend, lower-priority inbox and full native/game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero stream deactivation chain
 
 Completed sndStreamDeactivate whole local body; checked EVT-01 portion.

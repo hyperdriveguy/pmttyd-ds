@@ -538,6 +538,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   companion/recursive/IRQ body — [deactivation chain](../behavior/audio/MUSYX_STREAM_DEACTIVATION_AND_COMPANION_CHAIN.md).
   Fresh state1/2 unblock-before3, retained buffer/ID/voice/cursor, partial
   progress and exact enables pinned; free/providers/runtime open.
+- [x] Complete sndStreamFree five-stage deactivate/buffer-exit/
+  companion/recursive/reverse-state-clear body and ABI helpers —
+  [free/reverse clear](../behavior/audio/MUSYX_STREAM_FREE_AND_REVERSE_STATE_CLEAR.md).
+  Fresh selector/link, exits before descendants, deepest-first state0/enables
+  and retained-slot writes pinned; resource/chain/providers/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2717,3 +2722,13 @@ finite acyclic-chain models checked. Five IDs before recursion, fresh1/2 unblock
 before3, retained buffer/ID/voice/cursor, partial missing-link progress and exact
 enables pinned. Free/lifecycle/chain/IRQ/provider domains/original deactivation/
 audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream free/reverse-state-clear delivery
+
+Completed whole local
+[stream free](../behavior/audio/MUSYX_STREAM_FREE_AND_REVERSE_STATE_CLEAR.md).
+Ten spans/453 anchors/24 calls verified; fifteen finite-chain models checked.
+Five IDs before recursion, deactivate-before-fresh-buffer-exit/link, parent exit
+before descendants and deepest-first retained-slot state0/enables pinned. Other
+record fields retained; missing links unwind earlier progress. Resource/chain/IRQ/
+provider domains/original free/audio/native binding open; EVT-01 stays OPEN.

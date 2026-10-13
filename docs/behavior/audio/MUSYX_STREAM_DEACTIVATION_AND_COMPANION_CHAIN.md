@@ -88,3 +88,9 @@ Remaining: stream free/frequency/mix, actual ID/state/voice/companion/IRQ/provid
 and valid value/index/extent/alias/lifetime/concurrency/stack/ABI/termination
 domains, transitive ARAM/DSP consumers and original deactivation/reactivation/
 chained failure/audio traces. EVT-01 and full native/full-game binding OPEN.
+
+## 2026-10-13 — Free/reverse-clear follow-up
+
+[Free/reverse clear](MUSYX_STREAM_FREE_AND_REVERSE_STATE_CLEAR.md) closes the caller's full deactivate/buffer-exit/
+companion/recursive/reverse-state-clear body. Resource/chain/IRQ/provider domains/
+original free/audio/native binding remain open.
