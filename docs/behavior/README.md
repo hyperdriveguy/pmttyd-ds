@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Game calc3D/angle table](audio/GAME_CALC3D_SPATIAL_RESULT_AND_ANGLE_TABLE.md) | Complete position-flag precedence, table angle, pan/surround/distance/volume and retained packed result byte | Listener/shared writers, PPC/libm/finite domains, live SFX and original audio |
 | [MusyX frame/aux callback order](audio/MUSYX_AUDIO_FRAME_AND_AUX_CALLBACK_ORDER.md) | Complete DSP-before-updates frame graph, five slices, live voice clears/aux callbacks and direct critical/time leaves | Child engines/providers/format/IRQ/reentrancy and original audio cadence |
 | [MusyX DSP task/callback/mail](audio/MUSYX_DSP_TASK_CALLBACKS_AND_COMMAND_MAIL.md) | Complete task publication/init wait, three callbacks, command mail and raw clock arithmetic | DSP program/SDK/builder/state/thread/source/concurrency and original audio |
 | [MusyX AI buffers/callback/IRQ init](audio/MUSYX_AI_BUFFERS_CALLBACK_AND_IRQ_INITIALIZATION.md) | Complete zeroed four-slot allocation, initial/rotating DMA requests, logic gates, CPU destination, IRQ init and compressor flag | Actual SDK/DSP/frame callback/writers/alias/concurrency/reinit and original audio timing |

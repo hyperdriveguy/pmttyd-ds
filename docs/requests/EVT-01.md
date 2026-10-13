@@ -89,7 +89,12 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [frame/aux order](../behavior/audio/MUSYX_AUDIO_FRAME_AND_AUX_CALLBACK_ORDER.md).
   DSP-before-five-slice update/voice clear/fresh A→B callback reads pinned;
   child engines/provider/format/reentrancy/IRQ/original cadence remain open.
-- [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
+- [x] Complete calc3D/pmario_sound angleABf and original91-float
+  angle table/literals —
+  [spatial result/angle table](../behavior/audio/GAME_CALC3D_SPATIAL_RESULT_AND_ANGLE_TABLE.md).
+  Flag/capture/PPC operation/pan/surround/falloff/byte publication pinned;
+  listener/shared writers/PPC-libm domains/live SFX/original audio remain open.
+- [ ] Remaining SFXMain live/spatial/volume/fade, listener/shared writers, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
 - [x] Complete battleGetUnitMonosiriPtr8012ef20, initialized231-record
@@ -789,3 +794,19 @@ three-channel extent and6 aux gates checked as static deductions. Full listings/
 ELFs remain `/tmp`; no original code executes or body/bank asset is exported.
 Child seq/synth/stream/3D/virtual-sample/builder, shared-state/providers/format/
 IRQ/reentrancy and original frame/aux/audio traces remain OPEN.
+
+### 2026-10-13 — Complete calc3D spatial result and angle table
+
+[Two complete local bodies](../behavior/audio/GAME_CALC3D_SPATIAL_RESULT_AND_ANGLE_TABLE.md)
+close relative-then-replace point flags, retained heading/fresh listener reads,
+91-row table angle branches, literal196 pan fold, reciprocal sqrt refinement,
+cos/sin surround transform, offset200/range100*distance falloff and byte-first
+volume clamp. Shared result writes only bytes0..2 and returns retained byte3
+with the packed word. No host atan2/sqrt replacement or audible mapping invented.
+
+Validation: read-only manifest9 spans (2 complete/2 linked libm/table/4 literal
+spans),161 anchors/four resolved direct calls passes. Original91 table rows and
+literal bytes independently checked;15 signed pan-fold boundary vectors remain
+static deductions. Full ELFs/listings stay `/tmp`; no original execution/body/
+bank export. Listener/shared source writers, finite/exception/PPC/libm numeric
+invariants, live SFX/backend and original spatial/audio traces remain OPEN.

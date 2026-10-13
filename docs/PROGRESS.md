@@ -5,6 +5,27 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 calc3D spatial result and angle table
+
+Delivered [calc3D/angle-table contract](behavior/audio/GAME_CALC3D_SPATIAL_RESULT_AND_ANGLE_TABLE.md).
+Two complete bodies pin flag/capture precedence, original91-row angle table,
+literal196 pan fold, PPC sqrt refinement/cos/sin surround, distance falloff and
+byte-first volume clamp. Shared output preserves byte3. No host math replacement,
+measured numeric/audio behavior or guessed listener invariant. Marked local
+EVT-01 portions complete; parent OPEN.
+
+Validation: generic read-only verifier9 spans (2 complete/2 linked libm/1 table/
+4 literal spans),161 anchors/four resolved direct calls passes.91 original table
+rows/literal bytes checked;15 signed fold vectors remain static arithmetic.
+Full fresh ELFs/listings stay `/tmp`; no original execution. Link audit750 Markdown
+files/0 broken; whitespace checks pass. Docs/source metadata only: no make rerun,
+native changes or original body/bank export. Isolated index excludes shared work.
+
+Next/limits: listener/shared-byte source writers, valid heading/flags/finite and
+PPC fused/frsqrte/fctiwz/libm domains, live SFX/backend/original spatial/audio
+traces. Continue priority0 live/source owners then priority1 damage graph.
+No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Priority0 audio frame and aux callback order
 
 Delivered [frame/aux graph](behavior/audio/MUSYX_AUDIO_FRAME_AND_AUX_CALLBACK_ORDER.md).

@@ -100,3 +100,5 @@ source table/slot writers and original audio/runtime traces. No WAV-only cue or
 native guessed startup cadence is established. The parent audio chain stays OPEN.
 
 [Complete check/volume/pitch/aux/stop leaves](SOUND_EFFECT_RECORD_CONTROL_LEAVES.md) now supply the used local ordinal/voice/controller and KeyOff request rules; underlying MusyX/emitter/runtime semantics remain open.
+
+[Complete calc3D/angle-table source](GAME_CALC3D_SPATIAL_RESULT_AND_ANGLE_TABLE.md) now closes that exact local child, including flag precedence, 196 pan threshold, byte-first volume clamp and retained result byte3. Listener/shared writers/PPC/libm domains/live updates/original audio remain open.
