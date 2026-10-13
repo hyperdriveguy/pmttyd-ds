@@ -2,6 +2,69 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original NPC side collision and accelerated wall queries
+
+Implemented [native ordinary NPC side collision](behavior/field/NATIVE_NPC_SIDE_COLLISION.md)
+in commits74a28cf/c398f21. Portable source response preserves original
+sphere/body admission, compAngle one-adjustment ties, finite binary32 source
+polynomials, previous-XZ rollback/recheck, retained-travel40-degree branch,
+source amplification/cap and required wall retry. PMNPC006 retains original
+Chu0x80603/Frankly0x40080603 flags and source dimensions. Scripted creation,
+explicit placement generations, continuous movement, flag OR/CLEAR ownership
+and draw hiding remain distinct. Current contact/root/flags feed talk/render;
+source8000 snap binding now reaches presentation100. Source Around saves the
+uncapped first correction and admits negative/unordered second dot. Road case
+checks follow NPC ownership. Source-derived inbox evidence appended to
+[OW-INTERACT-01](requests/OW-INTERACT-01.md); no new Dolphin observations.
+
+Instances reset by room/catalog generation; native mechanics remain independent
+of3DS services. An initial unconditional engine/native position rescale caused
+exact-coordinate tests to fail; corrected to publish MarioXZ only after actual
+contact. Tests now cover original Chu walking contact, Professor collision
+mask clears, invisible active bodies, deletion, explicit placement versus
+continuous rollback and rejected-slot history. Original US message content,
+IDs/control tokens and story state remain unchanged.
+
+A warmed emulator run exposed contact slowdown: around retry visited4,816
+static grid candidates. Cached expanded XYZ bounds now reject unreachable
+triangles before the unchanged narrow phase, preserving source slot order,
+filtering, cull, nearest/equal-hit and dynamic-object policy. HEAD serialized
+prefix remains48 bytes; derived bounds stage/swap with geometry. gor_02 adds
+82,800 cache bytes for3,450 triangles. Native margin is an acceleration adapter,
+not measured original behavior. Five-room full-scan parity covers800 horizontal/
+vertical/oblique queries plus16 contact rays and boundary/unsupported cases.
+
+Validation: final shared `make test` passes126 CTest/101 Python at
+`/tmp/npc-ray-bounds-shared-test.log`; isolated snapshot
+`/tmp/pm-npc-collision-u6mshs4d` passes123 CTest/101 Python at
+`/tmp/npc-ray-bounds-isolated-test.log`. Shared and isolated `make all` pass,
+no warnings/errors, logs `/tmp/npc-ray-bounds-shared-native-final.log` and
+`/tmp/npc-ray-bounds-isolated-native-final.log`. Independent numerical/history/
+rendering/cache review found no blocker. Link audit passes833 Markdown files,
+zero broken links; scoped whitespace checks pass. Difference in test counts
+reflects concurrent additions outside the isolated source snapshot.
+
+Isolated Azahar/Xvfb `tests/azahar_npc_collision.py` with original story8 native
+fixture passes contact position(1.225000,-4.000000), unchanged room2/story8,
+checksum, visible original message, onset save suppression and return/save.
+Final binary `artifacts/ttyd-npc-collision-bounds.3dsx`, test-only profile/captures
+`artifacts/azahar-npc-collision`, log `/tmp/npc-ray-bounds-emulator.log`.
+Inspected contact/US talk/return captures retain original art and message window.
+Warm baseline before bounds showed contact7fps and simulation47.42ms; final
+contact capture shows60fps and simulation3.70ms in the software emulator.
+Baseline captures remain `artifacts/azahar-npc-collision-baseline`; this is not
+New2DS hardware performance or a matched original-runtime pixel measurement.
+ISO read-only; extracted resources/packs/binaries/profiles/captures ignored.
+Concurrent battle/opening/audio edits excluded from these scoped commits.
+
+Next: extend original per-area NPC/event/object creation from source bindings;
+full NPC timer/speed/gravity/pose/regular-event and alternate registry ownership;
+transformed Mario dimensions and remaining retained-heading writers; complete
+encounter/object/door/pipe arbitration. Verify matched original trajectories,
+near-degenerate Gekko/SDK/backend numerics and dense-area New2DS performance.
+Continue documentation inbox/best-effort bindings and incremental commits.
+The current deliverable remains an early Rogueport slice, not the full remake.
+
 ## 2026-10-13 — Inbox priority-zero ADSR transitions/release
 
 Completed salChangeADSRState/adsrStartRelease/adsrRelease for EVT-01; checked
