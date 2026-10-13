@@ -1,0 +1,367 @@
+{
+  "schema": 1,
+  "scope": "Four complete stream kill/init and hardware break/active-record bodies; unblock/stream/DSP/provider/runtime open",
+  "complete_bodies": [
+    "streamKill",
+    "streamInit",
+    "hwBreak",
+    "hwIsActive"
+  ],
+  "linked_only": [
+    "voiceUnblock"
+  ],
+  "dol_spans": [
+    {
+      "name": "streamKill",
+      "address": 2150084480,
+      "size": 152,
+      "sha256": "e6d224288d501d0bbc347f148a91e9d165fb0f2a0ec665a3b8339b621a89348b"
+    },
+    {
+      "name": "streamInit",
+      "address": 2150081860,
+      "size": 200,
+      "sha256": "77339834c0aac8ffe2a4e4e892c65601a7018af14e40d3257f894f4c9727cfec"
+    },
+    {
+      "name": "hwBreak",
+      "address": 2150173128,
+      "size": 80,
+      "sha256": "8955a746dcfe8382cd1d36ebc366a74d422fe57fd15e8a178a5ade8eccbf2990"
+    },
+    {
+      "name": "hwIsActive",
+      "address": 2150172632,
+      "size": 32,
+      "sha256": "375b411fbc13b4d8177c69d863b45104eda75645bf41a10378495e6c8a1db650"
+    },
+    {
+      "name": "voiceUnblock",
+      "address": 2150127500,
+      "size": 536,
+      "sha256": "77c1cdd1047474afc2a0f2f4d65ae052875acde302138df1f484d75ff68d79ee"
+    }
+  ],
+  "dol_anchors": {
+    "2150084488": "3c808040",
+    "2150084492": "90010014",
+    "2150084496": "38000040",
+    "2150084500": "93e1000c",
+    "2150084504": "3be498e8",
+    "2150084512": "881f000c",
+    "2150084520": "4182000c",
+    "2150084528": "4082004c",
+    "2150084532": "809f004c",
+    "2150084540": "40820040",
+    "2150084548": "4082000c",
+    "2150084556": "4800a7c1",
+    "2150084560": "38000003",
+    "2150084564": "38600000",
+    "2150084568": "981f000c",
+    "2150084572": "38800000",
+    "2150084576": "38a00000",
+    "2150084580": "38c00000",
+    "2150084584": "819f0010",
+    "2150084588": "80ff0050",
+    "2150084600": "4800000c",
+    "2150084604": "3bff0068",
+    "2150084608": "4200ffa0",
+    "2150084612": "80010014",
+    "2150084616": "83e1000c",
+    "2150084624": "38210010",
+    "2150081860": "3c608040",
+    "2150081864": "38a00000",
+    "2150081868": "38838540",
+    "2150081872": "38000003",
+    "2150081876": "88640210",
+    "2150081880": "38e00000",
+    "2150081884": "98ad1f95",
+    "2150081892": "980d1f94",
+    "2150081896": "4081008c",
+    "2150081904": "38c3fff8",
+    "2150081908": "4081004c",
+    "2150081912": "38060007",
+    "2150081916": "3c608040",
+    "2150081924": "386398e8",
+    "2150081936": "40810030",
+    "2150081940": "98a3000c",
+    "2150081944": "38e70008",
+    "2150081948": "98a30074",
+    "2150081952": "98a300dc",
+    "2150081956": "98a30144",
+    "2150081960": "98a301ac",
+    "2150081964": "98a30214",
+    "2150081968": "98a3027c",
+    "2150081972": "98a302e4",
+    "2150081976": "38630340",
+    "2150081980": "4200ffd8",
+    "2150081984": "88c40210",
+    "2150081992": "3c608040",
+    "2150082000": "388398e8",
+    "2150082004": "38600000",
+    "2150082020": "40800010",
+    "2150082024": "9864000c",
+    "2150082028": "38840068",
+    "2150082032": "4200fff8",
+    "2150082036": "38000000",
+    "2150082040": "386d1f8c",
+    "2150082044": "900d1f88",
+    "2150082048": "980d1f8c",
+    "2150082052": "90030004",
+    "2150173132": "800d2068",
+    "2150173140": "880300f0",
+    "2150173148": "40820018",
+    "2150173152": "880d2098",
+    "2150173160": "4082000c",
+    "2150173164": "38000001",
+    "2150173168": "980300f2",
+    "2150173172": "806d2068",
+    "2150173176": "880d2098",
+    "2150173192": "80030024",
+    "2150173200": "90030024",
+    "2150172636": "806d2068",
+    "2150172644": "886300f0"
+  },
+  "direct_calls": [
+    {
+      "site": 2150084556,
+      "target": 2150127500,
+      "name": "voiceUnblock"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_stream_init_vectors": [
+    {
+      "voices": 0,
+      "bulk_stores": 0,
+      "tail_stores": 0,
+      "within_64_records": true
+    },
+    {
+      "voices": 1,
+      "bulk_stores": 0,
+      "tail_stores": 1,
+      "within_64_records": true
+    },
+    {
+      "voices": 8,
+      "bulk_stores": 0,
+      "tail_stores": 8,
+      "within_64_records": true
+    },
+    {
+      "voices": 9,
+      "bulk_stores": 8,
+      "tail_stores": 1,
+      "within_64_records": true
+    },
+    {
+      "voices": 16,
+      "bulk_stores": 8,
+      "tail_stores": 8,
+      "within_64_records": true
+    },
+    {
+      "voices": 17,
+      "bulk_stores": 16,
+      "tail_stores": 1,
+      "within_64_records": true
+    },
+    {
+      "voices": 63,
+      "bulk_stores": 56,
+      "tail_stores": 7,
+      "within_64_records": true
+    },
+    {
+      "voices": 64,
+      "bulk_stores": 56,
+      "tail_stores": 8,
+      "within_64_records": true
+    },
+    {
+      "voices": 65,
+      "bulk_stores": 64,
+      "tail_stores": 1,
+      "within_64_records": false
+    },
+    {
+      "voices": 255,
+      "bulk_stores": 248,
+      "tail_stores": 7,
+      "within_64_records": false
+    }
+  ],
+  "derived_stream_kill_routes": [
+    {
+      "state": 0,
+      "voice_match": false,
+      "unblock": false,
+      "callback": false,
+      "stored_state": 0
+    },
+    {
+      "state": 0,
+      "voice_match": true,
+      "unblock": false,
+      "callback": false,
+      "stored_state": 0
+    },
+    {
+      "state": 1,
+      "voice_match": false,
+      "unblock": false,
+      "callback": false,
+      "stored_state": 1
+    },
+    {
+      "state": 1,
+      "voice_match": true,
+      "unblock": false,
+      "callback": true,
+      "stored_state": 3
+    },
+    {
+      "state": 2,
+      "voice_match": false,
+      "unblock": false,
+      "callback": false,
+      "stored_state": 2
+    },
+    {
+      "state": 2,
+      "voice_match": true,
+      "unblock": true,
+      "callback": true,
+      "stored_state": 3
+    },
+    {
+      "state": 3,
+      "voice_match": false,
+      "unblock": false,
+      "callback": false,
+      "stored_state": 3
+    },
+    {
+      "state": 3,
+      "voice_match": true,
+      "unblock": false,
+      "callback": false,
+      "stored_state": 3
+    },
+    {
+      "state": 255,
+      "voice_match": false,
+      "unblock": false,
+      "callback": false,
+      "stored_state": 255
+    },
+    {
+      "state": 255,
+      "voice_match": true,
+      "unblock": false,
+      "callback": false,
+      "stored_state": 255
+    }
+  ],
+  "derived_hw_break_vectors": [
+    {
+      "active": 0,
+      "offset": 0,
+      "set_f2": false,
+      "event_word_offset": 36
+    },
+    {
+      "active": 0,
+      "offset": 1,
+      "set_f2": false,
+      "event_word_offset": 40
+    },
+    {
+      "active": 0,
+      "offset": 4,
+      "set_f2": false,
+      "event_word_offset": 52
+    },
+    {
+      "active": 0,
+      "offset": 255,
+      "set_f2": false,
+      "event_word_offset": 1056
+    },
+    {
+      "active": 1,
+      "offset": 0,
+      "set_f2": true,
+      "event_word_offset": 36
+    },
+    {
+      "active": 1,
+      "offset": 1,
+      "set_f2": false,
+      "event_word_offset": 40
+    },
+    {
+      "active": 1,
+      "offset": 4,
+      "set_f2": false,
+      "event_word_offset": 52
+    },
+    {
+      "active": 1,
+      "offset": 255,
+      "set_f2": false,
+      "event_word_offset": 1056
+    },
+    {
+      "active": 2,
+      "offset": 0,
+      "set_f2": false,
+      "event_word_offset": 36
+    },
+    {
+      "active": 2,
+      "offset": 1,
+      "set_f2": false,
+      "event_word_offset": 40
+    },
+    {
+      "active": 2,
+      "offset": 4,
+      "set_f2": false,
+      "event_word_offset": 52
+    },
+    {
+      "active": 2,
+      "offset": 255,
+      "set_f2": false,
+      "event_word_offset": 1056
+    },
+    {
+      "active": 255,
+      "offset": 0,
+      "set_f2": false,
+      "event_word_offset": 36
+    },
+    {
+      "active": 255,
+      "offset": 1,
+      "set_f2": false,
+      "event_word_offset": 40
+    },
+    {
+      "active": 255,
+      "offset": 4,
+      "set_f2": false,
+      "event_word_offset": 52
+    },
+    {
+      "active": 255,
+      "offset": 255,
+      "set_f2": false,
+      "event_word_offset": 1056
+    }
+  ]
+}

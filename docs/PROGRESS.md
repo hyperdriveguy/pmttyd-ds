@@ -6,6 +6,26 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 stream kill/init and hardware break flags
+
+Delivered [stream/hardware leaves](behavior/audio/MUSYX_STREAM_KILL_INITIALIZATION_AND_HW_BREAK.md).
+Four complete bodies pin64-record first-match kill/callback, configured-prefix
+stream reset with fresh tail count and exact DSP break/active flags. Record
+publication is separate from hardware/voice/audio completion. Marked local
+EVT-01 portions complete; deeper providers/consumers/runtime remain OPEN.
+
+Validation: generic read-only verifier5 spans (4 complete/1 linked),78 anchors/
+one direct call passes.10 initialization/10 kill-route/16 break cases are derived
+source checks. Full fresh ELFs/listings stay `/tmp`; no original code executes.
+Link audit767 Markdown files/0 broken; whitespace checks pass. Docs/metadata only:
+no make rerun, native change or original body/asset export. Isolated index excludes
+unrelated staged/worktree work.
+
+Next/limits: voiceUnblock/callback/stream-state/count providers, valid index/offset/
+reset/concurrency domains, streamHandle/DSP consumers and original shutdown/audio
+traces. Continue priority0 source/backend then priority1 damage graph.
+No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Original setup4 units, stage and Frankly battle introduction
 
 [Native introduction](behavior/battle/NATIVE_SETUP4_BATTLE_INTRODUCTION.md)

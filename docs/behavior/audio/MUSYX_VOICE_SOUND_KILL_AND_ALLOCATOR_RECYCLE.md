@@ -106,3 +106,5 @@ Remaining: vid reference mutation/mac inactive/stream/hardware internals, voice/
 priority/free-list/identity/count providers and valid chain/index/member/cycle/
 IRQ/concurrency domains, original sequence-note kill/recycle/audio traces. Two
 local bodies are answered; full native/source/runtime/hardware remains OPEN.
+
+[Complete stream kill/init and hardware break/active flags](MUSYX_STREAM_KILL_INITIALIZATION_AND_HW_BREAK.md) now closes those exact tail children. First-match callback and event-bit publication remain distinct from resource/voice/hardware completion; deeper providers/consumers/runtime open.

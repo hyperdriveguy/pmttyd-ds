@@ -142,6 +142,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [sound/voice kill](../behavior/audio/MUSYX_VOICE_SOUND_KILL_AND_ALLOCATOR_RECYCLE.md).
   Captured successor/stale skip/priority-free-count/hardware order pinned;
   map/macro/stream/hardware children/provider/domain/runtime remain open.
+- [x] Complete streamKill/streamInit/hwBreak/hwIsActive local bodies —
+  [stream kill/reset/hardware flags](../behavior/audio/MUSYX_STREAM_KILL_INITIALIZATION_AND_HW_BREAK.md).
+  First-match callback/prefix reset/fresh DSP event writes pinned; Unblock/
+  provider/consumer/reinit/index/concurrency/original runtime remains open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1025,3 +1029,17 @@ resolved direct calls passes.5 mask/4 counter/6 index/4 chain-route vectors are
 source deductions, not execution. Full fresh ELFs/listings stay `/tmp`; no native/
 body/asset export. Map/macro/stream/hardware/voice-priority-free providers and
 index/member/chain/cycle/IRQ/concurrency/original audio remain OPEN.
+
+### 2026-10-13 — Stream kill/reset and hardware break/active record source
+
+[Four complete local bodies](../behavior/audio/MUSYX_STREAM_KILL_INITIALIZATION_AND_HW_BREAK.md)
+close64-record first state1/2 voice match, optional Unblock then state3/fresh
+callback(0,0,0,0,user), configured-count-only reset with fresh tail count, and
+hardware f2/event-word publication. Active query reports any nonzero f0 while
+Break's f2 requires exact1/offset0. No actual hardware completion inferred.
+
+Validation: read-only manifest5 spans (4 complete/1 linked),78 anchors/one call
+passes.10 initialization/10 kill-route/16 break vectors are derived only; full
+fresh ELFs/listings stay `/tmp`. No original execution/native/body/asset export.
+Unblock/callback/state/count/index/DSP provider-consumer/reset/concurrency and
+original stream/voice shutdown/audio remain OPEN.
