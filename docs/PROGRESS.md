@@ -12,7 +12,7 @@ and four-stage enables. Mix/FP/chain/IRQ/providers/original audio remain open.
 
 Validation: read-only ISO manifest passed11 spans,422 anchors,16 calls. Eight
 finite/exception-domain pitch vectors/fifteen stable chain models checked for
-writes/state2 requests/partial progress/recursion/IRQ counts. Link audit passed904
+writes/state2 requests/partial progress/recursion/IRQ counts. Link audit passed907
 Markdown files/zero broken links; scoped `git diff --check` passed. Mathematical
 source deductions are separate from original execution; invalid FP/conversion
 outputs unresolved. Documentation/metadata only; no `make test`/`make all` rerun.
