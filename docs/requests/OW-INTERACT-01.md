@@ -240,3 +240,24 @@ to NPCforce1 talk/stay andpartyselector7/1 sourcehelpers. _evt_msg_print creates
 andbindswindow butdoesnotactivatetalk directly; retained/closingwindows can
 alreadyrequeststay. ExplicitNPC andparty speakers retain distinct lifecycle
 owners. Native managercadence/actualrenderedcomparison remain open.
+
+### 2026-10-13 — Save animation restart and event-array callback identities
+
+[Restart/event identities](../behavior/display/SAVE_BLOCK_RESTART_CLOCK_AND_EVENT_IDENTITIES.md)
+recovers force1 setter reset versus subsequent Main publication for A_1/S_1,
+source elapsed/ratio/start semantics and previous-publication completion query.
+Pins exact three event spans/hashes and14 unique USER_FUNC callbacks across
+89 encoded sites; no event/code bodies are exported. Original clock traces and
+complete native/card/event binding remain open. Read-only source reads and
+animation selector/Main verifiers pass; no original execution claim.
+
+### 2026-10-13 — Save-message Continue/Add retained-window waits
+
+[Save retained-window contract](../behavior/message/SAVE_EVENT_RETAINED_WINDOW_CONTINUE_AND_APPEND.md)
+confirms evt_msg_continue resumesstate1 and polls savedwindowflags2 without
+force-close/replay/key-release; print_add uses flags1 raw controls versus flags0
+US lookup, appends over the prior terminal and polls the same retained owner.
+Raw scrl_auto/once_stop yields parser scroll/retained-stop records; clearing
+poll2 atstate2 does not delete the window. Selection uses separateE+17c while
+printE+178 persists through children. Fresh read-only five-body inspection;
+original/native window capture and card services remain open.

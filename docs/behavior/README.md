@@ -454,6 +454,9 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [Native opening and file selection](story/NATIVE_OPENING_FLOW.md)
 
 - [Partner save-block source collision](partner/FIELD_PARTNER_SAVE_BLOCK_COLLISION_BINDING.md) — original floor/front/around name filters and distinct source callbacks.
+- [Native save-block lifecycle/event core](field/NATIVE_SAVE_BLOCK_LIFECYCLE_AND_EVENT_CORE.md) — source stages, nested keys and original221-command request graph; native scene/UI/card binding next.
+- [Save-block restart/event identities](display/SAVE_BLOCK_RESTART_CLOCK_AND_EVENT_IDENTITIES.md) — original ratio publication, program spans and callbacks.
+- [Save retained window requests](message/SAVE_EVENT_RETAINED_WINDOW_CONTINUE_AND_APPEND.md) — Continue/Add ownership and raw control polling.
 - [Native map-object collision](field/NATIVE_MAP_OBJECT_HEAD_COLLISION.md) — original bbox cube and shared head/floor/wall responses.
 - [Dynamic object hit registry](field/DYNAMIC_OBJECT_HIT_REGISTRY_AND_RAY_ORDER.md) — source insertion, traversal, query ties and lifetime.
 - [Native actor surface pack](display/NATIVE_ACTOR_SURFACE_PACK.md) — original scrolling textures, RGBA and source pass/cull rendering.

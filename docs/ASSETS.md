@@ -1,5 +1,22 @@
 # Original asset pipeline
 
+## 2026-10-13 — Original save event arrays and string operands
+
+`tools/save_block_event_assets.py`, called by the field actor asset build, opens
+US G8ME01 disc0 revision0 read-only. It reads selected DOL data spans at
+8030b4ec/164 bytes,803bac3c/52 bytes and803ba444/2040 bytes, plus the actual
+source label-scanner lookahead words and direct message operand strings.
+Ignored `romfs/save-block-events.pmevt` retains original addresses/221 commands;
+`romfs/save-block-program.bin` records14 source callback identities/89 sites.
+Ignored `local-assets/save-block/event-program.json` records exact disc offsets,
+original event/compiled segment hashes, conversion fingerprint and string paths.
+The exporter excludes DOL text sections and never exports executable bodies.
+Original message IDs resolve unchanged `msg/US/global.txt`; no dialogue rewrite
+or replacement event array is introduced. Native source interpreter and typed
+window/card request providers are platform adaptations. Original Nintendo/
+Intelligent Systems rights apply; no redistribution license. See
+[native core](behavior/field/NATIVE_SAVE_BLOCK_LIFECYCLE_AND_EVENT_CORE.md).
+
 ## 2026-10-13 — Original object model-name filters and full cube queries
 
 PMNPC004 records original model names `c_tyusan`, `c_kuri_h` and

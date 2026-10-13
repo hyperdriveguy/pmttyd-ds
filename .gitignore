@@ -89,3 +89,6 @@ local-assets/professor-fence/
 /romfs/underground-trio.json
 /romfs/underground-goombas.*
 /build-trio-verify/
+
+/romfs/save-block-events.pmevt
+/romfs/save-block-program.bin

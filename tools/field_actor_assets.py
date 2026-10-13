@@ -17,6 +17,7 @@ from iso_assets import DEFAULT_ISO, extract
 from character_mesh import compile_mesh
 from professor_assets import build as build_professor
 from map_object_assets import build as build_objects
+from save_block_event_assets import build as build_save_events
 
 
 def tagged_npcs(text):
@@ -72,6 +73,7 @@ def compile_model(iso,asset,name,poses):
 
 
 def build(iso):
+    build_save_events(iso)
     build_professor(iso)
     work = Path('local-assets/field-actors');work.mkdir(parents=True, exist_ok=True)
     setup = work/'gor_02.s';extract(iso, 'm/gor_02/s', setup)
