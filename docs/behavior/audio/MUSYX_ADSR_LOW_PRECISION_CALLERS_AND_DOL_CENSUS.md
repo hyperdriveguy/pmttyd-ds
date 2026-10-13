@@ -124,3 +124,10 @@ other descriptor/flag/depth/time/index providers, source-valid value/alias/stack
 IRQ/concurrency/lifetime domains, indirect/REL/runtime callers and original
 voice/envelope/DSP/audio traces. Four local regions and scoped direct census are
 answered; EVT-01 and full native binding remain OPEN.
+
+## 2026-10-13 — DSP call-site follow-up
+
+[DSP ADSR command loop](MUSYX_DSP_ADSR_SETUP_AND_COMMAND_LOOP.md) now closes the seven DSP builder ADSR
+call sites in four complete regions and the host-position/message/deactivation
+leaves. Other builder semantics/providers/consumers/domain/original cadence/audio
+remain open; the whole builder fingerprint is still not full semantic closure.

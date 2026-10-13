@@ -367,6 +367,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   contribution/dirty-tail regions and six-service14-call DOL census —
   [low-precision caller/census](../behavior/audio/MUSYX_ADSR_LOW_PRECISION_CALLERS_AND_DOL_CENSUS.md).
   Remaining handler/DSP regions, indirect/REL callers/cadence/domains stay open.
+- [x] Complete seven salBuildCommandList ADSR call sites in four setup/
+  start/command-loop regions, plus host playback-position, message callback
+  and deactivation leaves — [DSP ADSR command loop](../behavior/audio/MUSYX_DSP_ADSR_SETUP_AND_COMMAND_LOOP.md).
+  Command/mask/release/delta/cache order pinned; full builder/producers/
+  consumers/domain/cadence/original audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2098,3 +2103,14 @@ voice/admission/elapsed-low, reused stack output/status-bit clearing, independen
 fresh descriptor pitch contribution and dirty replacement pinned. DOL census
 scans both nonempty text sections; indirect/REL calls and original execution
 remain open. Full handler/DSP envelope semantics and parent EVT-01 remain OPEN.
+
+## 2026-10-13 — DSP envelope setup/command loop delivery
+
+Completed four builder regions and three leaves in
+[DSP ADSR command loop](../behavior/audio/MUSYX_DSP_ADSR_SETUP_AND_COMMAND_LOOP.md).
+Fourteen spans/309 anchors/18 calls verified;24 formula vectors/nine numeric
+command-offset halves recorded. Setup requests, indexed release precedence,
+delta command emission, previous-result completion/repeated callback order,
+cache publication, host position and unlink semantics pinned. Raw index/wrap/
+stack/alias domains remain source requirements; no measured cadence inferred.
+Full builder/native/DSP/audio execution and parent EVT-01 remain OPEN.

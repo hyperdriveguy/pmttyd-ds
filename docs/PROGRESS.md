@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero DSP ADSR setup/command loop
+
+Completed four salBuildCommandList setup/start/envelope-command regions and
+three host-position/message/deactivation leaves; checked the EVT-01 portion.
+[DSP ADSR loop](behavior/audio/MUSYX_DSP_ADSR_SETUP_AND_COMMAND_LOOP.md)
+pins all seven local ADSR call sites, release precedence/mask/delta commands,
+previous-result/repeated callback completion, flush range and retained playback
+position/unlink order. Other builder/provider/consumer/domain/cadence/original
+voice/DSP/audio execution remains open.
+
+Validation: read-only ISO manifest passed14 spans (three bodies/four regions/
+six linked/nine-halfword numeric table),309 anchors/18 calls and alternate index
+source. Six loop/eight release-precedence/five delta/five host-position vectors
+checked. Link audit passed838 Markdown files/zero broken links; scoped `git diff
+--check` passed. Documentation/metadata only; no `make test`/`make all` rerun.
+Full original inspection ELFs/listings stay `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 DSP builder sample/mixer/budget/mask/index/record/
+setup producers and branch admission, callback registration/transitive services,
+cache/DSP command consumers, valid studio/list/stack/type/value/alias/lifetime/
+IRQ/concurrency domains and original voice/envelope/command/audio traces.
+Remaining precision-handler sections, lower-priority inbox and full native/
+full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero low-precision ADSR caller/census
 
 Completed four LowPrecisionHandler admission/clock/envelope/pitch/dirty
