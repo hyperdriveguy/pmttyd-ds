@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero busy callback prefix
+
+Completed cbForStateBusy fatal/stop/progress/cancel prefix/return ABI;
+checked EVT-01 portion and added explicit success/error continuation todo.
+[Callback prefix](behavior/file/SDK_DVD_BUSY_CALLBACK_STOP_PROGRESS_AND_CANCEL_PREFIX.md)
+pins exact16/two-read stop, DMA-progress-before-status8, stop-resume7 versus
+non-stop cancel and command-before-fresh-cancel callback/ready order. Whole
+success/error/children/providers/original IO/audio/native binding open.
+
+Validation: read-only ISO manifest passed nine spans,135 anchors,eight calls.
+Eight status/stop/seven DMA/six wrapped-progress/six prefix-cancel vectors and
+four indirect/global/publication sites checked; busy pins reverified. Link audit
+passed947 Markdown files/zero broken links; scoped diff check passed.
+Mathematical deductions separate from original execution. Docs/metadata only;
+no make test/all rerun. Fresh full callback ELF/listing/scoped generator stay /tmp;
+no bodies/assets committed. Concurrent native work excluded. Approved push
+pending valid GitHub credentials.
+
+Next: priority-zero EVT-01 same callback success/error continuation and actual
+status/controller/command/chunk/progress/cancel/resume/callback/providers and
+valid value/extent/alias/lifetime/IRQ/concurrency/ABI domains, original stop/
+cover/cancel/short-read/callback/IO/audio traces. Other inbox/native/full-game open.
+
 ## 2026-10-13 — Inbox priority-zero SDK DVD busy dispatch
 
 Completed stateBusy/17-entry dispatch table; checked EVT-01 portion.

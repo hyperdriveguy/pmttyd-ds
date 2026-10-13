@@ -628,6 +628,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete SDK DVD stateBusy/17-entry table — [busy dispatch](../behavior/file/SDK_DVD_STATE_BUSY_COMMAND_DISPATCH_AND_READ_CHUNKS.md).
   All command branches/MMIO/zero callback/fresh512KiB chunks/audio/optional ABI
   pinned; completion/low-level/providers/original/native binding remains open.
+- [x] cbForStateBusy fatal/stop/progress/cancel prefix and return ABI —
+  [busy callback prefix](../behavior/file/SDK_DVD_BUSY_CALLBACK_STOP_PROGRESS_AND_CANCEL_PREFIX.md). Exact16/two-read stop/DMA
+  before status8/cancel callback order pinned; whole success/error remains open.
+- [ ] cbForStateBusy success/error continuation and actual status/controller/
+  command/cancel/callback/provider/runtime binding.
 - [ ] Deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
@@ -3169,3 +3174,12 @@ verified; eight chunk/three address/four auto/six optional vectors and all table
 MMIO/publication/ABI sites checked; ready pins reverified. Input versus global
 executing, zero-completion recursion and fresh read-chunk addressing pinned.
 Completion/low-level/providers/original IO/audio/native binding open; EVT-01 OPEN.
+
+## 2026-10-13 — SDK DVD busy callback prefix delivery
+
+Completed [scoped callback prefix/return ABI](../behavior/file/SDK_DVD_BUSY_CALLBACK_STOP_PROGRESS_AND_CANCEL_PREFIX.md).
+Nine spans/135 anchors/eight calls/four indirect sites verified; eight status/
+stop/seven DMA/six progress/six prefix-cancel vectors and sites checked; busy pins
+reverified. Progress precedes cancellation; stop cancellation sets resume7 while
+non-stop mask8 does not. Whole success/error/children/providers/original IO/audio/
+native binding remain open; EVT-01 stays OPEN.

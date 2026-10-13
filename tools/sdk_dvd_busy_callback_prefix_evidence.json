@@ -1,0 +1,473 @@
+{
+  "schema": 1,
+  "scope": "Complete busy callback fatal/stop/progress/cancel prefix plus return ABI only; success/error continuation/providers/runtime open",
+  "regions": [
+    {
+      "name": "cbForStateBusy status/stop/progress/cancel prefix",
+      "address": 2150243044,
+      "size": 516
+    },
+    {
+      "name": "cbForStateBusy return ABI",
+      "address": 2150244644,
+      "size": 24
+    }
+  ],
+  "dol_spans": [
+    {
+      "name": "cbForStateBusy status/stop/progress/cancel prefix",
+      "address": 2150243044,
+      "size": 516,
+      "sha256": "624007ef24fff821f2e93176e3b3541d038f61afbe032ff868e270fe5c5a7772"
+    },
+    {
+      "name": "cbForStateBusy return ABI",
+      "address": 2150244644,
+      "size": 24,
+      "sha256": "bea18f122a141c4684ba0f6b8a46a846af8a0cea12d136168453668e2bd438e5"
+    },
+    {
+      "name": "__DVDStoreErrorCode",
+      "address": 2150248732,
+      "size": 124,
+      "sha256": "04e17db1044ff8cc3c0a98d05e6d6e3a20a0765566b87799d4433426ad410ba9"
+    },
+    {
+      "name": "DVDReset",
+      "address": 2150246092,
+      "size": 68,
+      "sha256": "e5a24224db38d703a607b287d72007bee6621ad11ac96f02f0049afdd43602ad"
+    },
+    {
+      "name": "cbForStateError",
+      "address": 2150237932,
+      "size": 172,
+      "sha256": "a9db624d1cc5f92c181a51afbd65495564d0eda3fc85146628a0b338ab0edcee"
+    },
+    {
+      "name": "DVDLowStopMotor",
+      "address": 2150234280,
+      "size": 140,
+      "sha256": "48fdcaef174ad7b5cbd21170d35fc94600344d397d54632f32ee5e430664c0e0"
+    },
+    {
+      "name": "stateReady",
+      "address": 2150241468,
+      "size": 744,
+      "sha256": "45306e28e50e177a5f90234de14dd8b6719ef8e1d84d0e0672e816bc5456ce0b"
+    },
+    {
+      "name": "DVDLowWaitCoverClose",
+      "address": 2150234072,
+      "size": 44,
+      "sha256": "789c5095ef3abda20bd674a7f82124d1e2322e7575f674b1f9c7bd125c2c0c5c"
+    },
+    {
+      "name": "cbForStateMotorStopped",
+      "address": 2150241232,
+      "size": 236,
+      "sha256": "5b2a8ceea32a89423d850d4870e8e878815fae96c233ec8fb835a6807474aa86"
+    }
+  ],
+  "dol_anchors": {
+    "2150243044": "7c0802a6",
+    "2150243048": "28030010",
+    "2150243052": "90010004",
+    "2150243056": "3c808041",
+    "2150243060": "9421ffe8",
+    "2150243064": "93e10014",
+    "2150243068": "3be438a0",
+    "2150243072": "93c10010",
+    "2150243076": "40820020",
+    "2150243080": "3c600123",
+    "2150243084": "38634568",
+    "2150243088": "4800160d",
+    "2150243092": "48000bb9",
+    "2150243096": "38600000",
+    "2150243100": "4bffebd1",
+    "2150243104": "48000604",
+    "2150243108": "800d226c",
+    "2150243112": "28000003",
+    "2150243116": "41820010",
+    "2150243120": "800d226c",
+    "2150243124": "2800000f",
+    "2150243128": "408200e0",
+    "2150243132": "546007bd",
+    "2150243136": "41820020",
+    "2150243140": "3c600123",
+    "2150243144": "38634567",
+    "2150243148": "480015d1",
+    "2150243152": "3c60802a",
+    "2150243156": "386306ec",
+    "2150243160": "4bffdd51",
+    "2150243164": "480005c8",
+    "2150243168": "38000000",
+    "2150243172": "900d2284",
+    "2150243176": "800d226c",
+    "2150243180": "2800000f",
+    "2150243184": "4082000c",
+    "2150243188": "38000001",
+    "2150243192": "900d2288",
+    "2150243196": "800d2270",
+    "2150243200": "28000000",
+    "2150243204": "4182006c",
+    "2150243208": "38000007",
+    "2150243212": "83cd2250",
+    "2150243216": "900d2278",
+    "2150243220": "387f0040",
+    "2150243224": "38000000",
+    "2150243228": "900d2270",
+    "2150243232": "3800000a",
+    "2150243236": "906d2250",
+    "2150243240": "901e000c",
+    "2150243244": "819e0028",
+    "2150243248": "280c0000",
+    "2150243252": "41820014",
+    "2150243256": "7d8803a6",
+    "2150243260": "389e0000",
+    "2150243264": "3860fffd",
+    "2150243268": "4e800021",
+    "2150243272": "818d2274",
+    "2150243276": "280c0000",
+    "2150243280": "41820014",
+    "2150243284": "7d8803a6",
+    "2150243288": "389e0000",
+    "2150243292": "38600000",
+    "2150243296": "4e800021",
+    "2150243300": "4bfff8d9",
+    "2150243304": "38000001",
+    "2150243308": "48000008",
+    "2150243312": "38000000",
+    "2150243316": "2c000000",
+    "2150243320": "4082052c",
+    "2150243324": "808d2250",
+    "2150243328": "38000007",
+    "2150243332": "3c60802a",
+    "2150243336": "9004000c",
+    "2150243340": "386313d0",
+    "2150243344": "4bffdbc9",
+    "2150243348": "48000510",
+    "2150243352": "808d226c",
+    "2150243356": "28040001",
+    "2150243360": "41820018",
+    "2150243364": "3804fffc",
+    "2150243368": "28000001",
+    "2150243372": "4081000c",
+    "2150243376": "2804000e",
+    "2150243380": "4082000c",
+    "2150243384": "38000001",
+    "2150243388": "4800001c",
+    "2150243392": "800d1564",
+    "2150243396": "7c040040",
+    "2150243400": "4082000c",
+    "2150243404": "38000001",
+    "2150243408": "48000008",
+    "2150243412": "38000000",
+    "2150243416": "2c000000",
+    "2150243420": "41820028",
+    "2150243424": "80cd2250",
+    "2150243428": "3c80cc00",
+    "2150243432": "38846000",
+    "2150243436": "80840018",
+    "2150243440": "8006001c",
+    "2150243444": "80a60020",
+    "2150243448": "7c040050",
+    "2150243452": "7c050214",
+    "2150243456": "90060020",
+    "2150243460": "54600739",
+    "2150243464": "41820060",
+    "2150243468": "83cd2250",
+    "2150243472": "387f0040",
+    "2150243476": "38000000",
+    "2150243480": "900d2270",
+    "2150243484": "3800000a",
+    "2150243488": "906d2250",
+    "2150243492": "901e000c",
+    "2150243496": "819e0028",
+    "2150243500": "280c0000",
+    "2150243504": "41820014",
+    "2150243508": "7d8803a6",
+    "2150243512": "389e0000",
+    "2150243516": "3860fffd",
+    "2150243520": "4e800021",
+    "2150243524": "818d2274",
+    "2150243528": "280c0000",
+    "2150243532": "41820014",
+    "2150243536": "7d8803a6",
+    "2150243540": "389e0000",
+    "2150243544": "38600000",
+    "2150243548": "4e800021",
+    "2150243552": "4bfff7dd",
+    "2150243556": "48000440",
+    "2150244644": "8001001c",
+    "2150244648": "83e10014",
+    "2150244652": "83c10010",
+    "2150244656": "38210018",
+    "2150244660": "7c0803a6",
+    "2150244664": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2150243088,
+      "target": 2150248732,
+      "name": "__DVDStoreErrorCode"
+    },
+    {
+      "site": 2150243092,
+      "target": 2150246092,
+      "name": "DVDReset"
+    },
+    {
+      "site": 2150243100,
+      "target": 2150237932,
+      "name": "cbForStateError"
+    },
+    {
+      "site": 2150243148,
+      "target": 2150248732,
+      "name": "__DVDStoreErrorCode"
+    },
+    {
+      "site": 2150243160,
+      "target": 2150234280,
+      "name": "DVDLowStopMotor"
+    },
+    {
+      "site": 2150243300,
+      "target": 2150241468,
+      "name": "stateReady"
+    },
+    {
+      "site": 2150243344,
+      "target": 2150234072,
+      "name": "DVDLowWaitCoverClose"
+    },
+    {
+      "site": 2150243552,
+      "target": 2150241468,
+      "name": "stateReady"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_stop_vectors": [
+    {
+      "raw_status": 16,
+      "first_command": 3,
+      "second_command": 3,
+      "reset_exact": true,
+      "stop_route": false,
+      "stop_error": false
+    },
+    {
+      "raw_status": 18,
+      "first_command": 3,
+      "second_command": 3,
+      "reset_exact": false,
+      "stop_route": true,
+      "stop_error": true
+    },
+    {
+      "raw_status": 0,
+      "first_command": 3,
+      "second_command": 3,
+      "reset_exact": false,
+      "stop_route": true,
+      "stop_error": false
+    },
+    {
+      "raw_status": 1,
+      "first_command": 3,
+      "second_command": 3,
+      "reset_exact": false,
+      "stop_route": true,
+      "stop_error": false
+    },
+    {
+      "raw_status": 2,
+      "first_command": 3,
+      "second_command": 3,
+      "reset_exact": false,
+      "stop_route": true,
+      "stop_error": true
+    },
+    {
+      "raw_status": 0,
+      "first_command": 1,
+      "second_command": 15,
+      "reset_exact": false,
+      "stop_route": true,
+      "stop_error": false
+    },
+    {
+      "raw_status": 0,
+      "first_command": 1,
+      "second_command": 3,
+      "reset_exact": false,
+      "stop_route": false,
+      "stop_error": false
+    },
+    {
+      "raw_status": 4294967295,
+      "first_command": 3,
+      "second_command": 3,
+      "reset_exact": false,
+      "stop_route": true,
+      "stop_error": true
+    }
+  ],
+  "derived_dma_vectors": [
+    {
+      "command": 1,
+      "custom": 99,
+      "updates": true
+    },
+    {
+      "command": 4,
+      "custom": 99,
+      "updates": true
+    },
+    {
+      "command": 5,
+      "custom": 99,
+      "updates": true
+    },
+    {
+      "command": 14,
+      "custom": 99,
+      "updates": true
+    },
+    {
+      "command": 7,
+      "custom": 99,
+      "updates": false
+    },
+    {
+      "command": 99,
+      "custom": 99,
+      "updates": true
+    },
+    {
+      "command": 4294967295,
+      "custom": 4294967295,
+      "updates": true
+    }
+  ],
+  "derived_progress_vectors": [
+    {
+      "chunk": 32,
+      "controller_remaining": 0,
+      "old_progress": 0,
+      "new_progress": 32
+    },
+    {
+      "chunk": 32,
+      "controller_remaining": 7,
+      "old_progress": 100,
+      "new_progress": 125
+    },
+    {
+      "chunk": 32,
+      "controller_remaining": 32,
+      "old_progress": 100,
+      "new_progress": 100
+    },
+    {
+      "chunk": 32,
+      "controller_remaining": 33,
+      "old_progress": 100,
+      "new_progress": 99
+    },
+    {
+      "chunk": 0,
+      "controller_remaining": 0,
+      "old_progress": 0,
+      "new_progress": 0
+    },
+    {
+      "chunk": 32,
+      "controller_remaining": 0,
+      "old_progress": 4294967280,
+      "new_progress": 16
+    }
+  ],
+  "derived_cancel_vectors": [
+    {
+      "stop_branch": true,
+      "canceling": 0,
+      "status8": false,
+      "requests_cancel_callbacks": false,
+      "sets_resume7": false
+    },
+    {
+      "stop_branch": true,
+      "canceling": 1,
+      "status8": false,
+      "requests_cancel_callbacks": true,
+      "sets_resume7": true
+    },
+    {
+      "stop_branch": true,
+      "canceling": 4294967295,
+      "status8": false,
+      "requests_cancel_callbacks": true,
+      "sets_resume7": true
+    },
+    {
+      "stop_branch": false,
+      "canceling": 0,
+      "status8": true,
+      "requests_cancel_callbacks": true,
+      "sets_resume7": false
+    },
+    {
+      "stop_branch": false,
+      "canceling": 1,
+      "status8": false,
+      "requests_cancel_callbacks": false,
+      "sets_resume7": false
+    },
+    {
+      "stop_branch": false,
+      "canceling": 1,
+      "status8": true,
+      "requests_cancel_callbacks": true,
+      "sets_resume7": false
+    }
+  ],
+  "indirect_calls": [
+    {
+      "site": 2150243268,
+      "source": "captured command word28",
+      "result": -3
+    },
+    {
+      "site": 2150243296,
+      "source": "fresh CancelCallback",
+      "result": 0
+    },
+    {
+      "site": 2150243520,
+      "source": "captured command word28",
+      "result": -3
+    },
+    {
+      "site": 2150243548,
+      "source": "fresh CancelCallback",
+      "result": 0
+    }
+  ],
+  "globals": {
+    "current_command": 2151805324,
+    "executing": 2151805296,
+    "canceling": 2151805328,
+    "cancel_callback": 2151805332,
+    "resume": 2151805336,
+    "retry": 2151805348,
+    "reset_required": 2151805352,
+    "custom_dma": 2151801988,
+    "dummy": 2151758048,
+    "controller_remaining": 3422576664
+  }
+}
