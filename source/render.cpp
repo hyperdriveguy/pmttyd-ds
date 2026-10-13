@@ -78,6 +78,14 @@ bool Renderer::init() {
     if(!messageIconTexture.imported)return false;
     C3D_TexSetFilter(&messageIconTexture.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&messageIconTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     C3D_TexSetFilter(&professorMapTexture.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&professorMapTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
+    if(!undergroundAnimations.load("romfs:/underground-goombas.pmanim"))return false;
+    FILE* undergroundMetrics=std::fopen("romfs:/underground-goombas.bin","rb");if(!undergroundMetrics)return false;
+    const bool validUnderground=std::fread(&undergroundUVScale,4,1,undergroundMetrics)==1 && std::fgetc(undergroundMetrics)==EOF;
+    std::fclose(undergroundMetrics);if(!validUnderground)return false;
+    FILE* undergroundAtlas=std::fopen("romfs:/underground-goombas.t3x","rb");if(!undergroundAtlas)return false;
+    undergroundTexture.imported=Tex3DS_TextureImportStdio(undergroundAtlas,&undergroundTexture.texture,nullptr,false);std::fclose(undergroundAtlas);
+    if(!undergroundTexture.imported)return false;
+    C3D_TexSetFilter(&undergroundTexture.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&undergroundTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     if(!fieldActorAssets.load("romfs:/field-actors.pmnpc"))return false;
     if(!shadowGeometry.load("romfs:/shadows.pmshadow"))return false;
     FILE* characterFile=std::fopen("romfs:/characters-mesh.t3x","rb");if(!characterFile)return false;
@@ -168,7 +176,7 @@ bool Renderer::changeRoom(uint32_t room) {
 }
 bool Renderer::loadFieldActors(uint32_t roomId,Room& room) {
     for(uint32_t index=0;index<fieldActorAssets.models().size();++index) {
-        bool used=false;
+        bool used=roomId==5 && fieldActorAssets.models()[index].asset=="professor";
         for(const auto& actor:fieldActorAssets.actors())if(actor.room==roomId && actor.model==index){used=true;break;}
         if(!used)continue;
         room.actorModels.emplace_back();auto& gpu=room.actorModels.back();gpu.model=index;
@@ -193,7 +201,7 @@ void Renderer::fieldActors(const Game& g) {
         for(const auto& sourceActor:fieldActorAssets.actors()) {
             auto actor=sourceActor;
             if(actor.model!=gpu.model)continue;
-            const bool scripted=model.asset=="professor" && g.progress.room==2 && g.professorStory.triggered;
+            const bool scripted=model.asset=="professor" && (g.progress.room==2 || g.progress.room==5) && g.professorStory.triggered;
             if(scripted) {
                 if(actor.storyLow!=8 || g.professorStory.actors[2].hidden)continue;
                 actor.position=g.professorStory.actors[2].position;actor.yaw=g.professorStory.actors[2].yaw;
@@ -449,6 +457,9 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
             animations=nullptr;name="T_1";
             for(const auto& gpu:plaza.actorModels)if(fieldActorAssets.models()[gpu.model].asset=="professor")animations=&gpu.animations;
         }
+        if(g.professorStory.underground && g.professorStory.speaker>=3) {
+            animations=&undergroundAnimations;name=a.pose.c_str();
+        }
         const auto* pose=animations?animations->pose(name):nullptr;
         if(pose && pose->evaluate(float(g.ticks),actorSample) && !actorSample.vertices.empty()) {
             const bool right=a.yaw>0 && a.yaw<180;
@@ -690,6 +701,15 @@ void Renderer::world(const Game& g) {
     actorMetrics={};
     if(!battle)fieldActors(g);
     const int fieldActorEnd=count;
+    if(!battle && g.professorStory.underground) {
+        for(unsigned i=3;i<6;++i) {
+            const auto& a=g.professorStory.actors[i];if(a.hidden)continue;
+            const bool right=a.yaw>0 && a.yaw<180;std::string pose=a.pose;
+            if((a.flags&0x200) && g.professorStory.message.talking && g.professorStory.speaker==i)pose=std::string(i==3?"KUR":i==4?"PTK":"TGK")+"_T_1";
+            characterModel(pose.c_str(),float(g.professorStory.now-a.poseAt)*.06f,{a.position[0]*.01f,a.position[2]*.01f},a.position[1]*.01f,right?180:0,right,false,&undergroundAnimations,undergroundUVScale);
+        }
+    }
+    const int undergroundEnd=count;
     if(!battle && g.professorStory.locked() && g.professorStory.itemVisible) {
         const auto& s=g.professorStory;const auto& p=s.itemPosition;
         // Native billboard bridge for the source icon/position/scale requests.
@@ -739,7 +759,8 @@ void Renderer::world(const Game& g) {
     if(actorEnd>legacyCount){C3D_TexBind(0,g.professorStory.locked()?&professorMarioTexture.texture:&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
     if(partnerEnd>actorEnd){C3D_TexBind(0,&partnerTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,actorEnd,partnerEnd-actorEnd);}
     if(!battle)drawFieldActors(false);
-    if(professorItemEnd>fieldActorEnd){C3D_TexBind(0,&professorMapTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,fieldActorEnd,professorItemEnd-fieldActorEnd);}
+    if(undergroundEnd>fieldActorEnd){C3D_TexBind(0,&undergroundTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,fieldActorEnd,undergroundEnd-fieldActorEnd);}
+    if(professorItemEnd>undergroundEnd){C3D_TexBind(0,&professorMapTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,undergroundEnd,professorItemEnd-undergroundEnd);}
     if(harborEnd>professorItemEnd){C3D_TexBind(0,&harborTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,professorItemEnd,harborEnd-professorItemEnd);}
     if(polygonShadow || airShadowCount) {
         C3D_TexEnvInit(env);
@@ -799,7 +820,7 @@ void Renderer::overlay(const Game& g) {
             messageIconImage(0x1f8,g.ticks,200+(box.x+2)*MessageWindowScale,120-choice.cursorY*.5f,1,uint8_t(choice.opacity));
         }
         if(g.harborStory.failed || g.professorStory.failed)text("Development notice: source scene unavailable",25,112,.45f,Ink);
-        if(g.professorStory.pendingService)text("Development notice: original lesson backend pending",25,112,.45f,Ink);
+        if(g.professorStory.pendingService)text("Development notice: original battle backend pending",25,112,.45f,Ink);
         return;
     }
     if(g.scene==Scene::Dialogue) {
@@ -936,6 +957,7 @@ void Renderer::shutdown() {
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}
     if(professorMarioTexture.imported) {Tex3DS_TextureFree(professorMarioTexture.imported);C3D_TexDelete(&professorMarioTexture.texture);}
     if(professorMapTexture.imported) {Tex3DS_TextureFree(professorMapTexture.imported);C3D_TexDelete(&professorMapTexture.texture);}
+    if(undergroundTexture.imported){Tex3DS_TextureFree(undergroundTexture.imported);C3D_TexDelete(&undergroundTexture.texture);}
     if(messageIconTexture.imported) {Tex3DS_TextureFree(messageIconTexture.imported);C3D_TexDelete(&messageIconTexture.texture);}
     for(auto* texture:{&fontTexture,&harborTexture,&messageWindowTexture})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}
     if(imported) Tex3DS_TextureFree(imported);

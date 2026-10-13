@@ -5,6 +5,48 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Original underground approach, dialogue and Goomba animations
+
+[Native trio scene](behavior/story/NATIVE_UNDERGROUND_TRIO_SCENE.md) runs actual
+161-command gorotuki_sanninngumi and10-command footstep child in the existing
+VM. Story<=11 roomrestore admits sourceinitial placement/flags and MarioX>=-100
+crossingpoll, then original keys/cameras/party positioning and seven exact
+086..092 messages with correct named speakers/Goombella suffix. Parallel actor
+run/hop/move blocks preserve original local/shared event IDs. Imported actual
+c_kuribo KUR/PTK/TGK stay/talk/walk/run/damage sparse poses and Marioe_mario
+M_N_7. Native citro3d batches draw allthree variants; Frankly now follows/renders
+as temporary partner underground and accepts original party1 placement.
+
+Scoped source callbacks cover facing towardNPC, Mario/party positions and NPC
+run/damage poses. Original script requests battleinfo4 and remains atbattle_start
+until its actual backend exists; no postbattle messages/story12 are synthesized.
+Documentation inbox delivered full setup4 contract: threeHP2 variants PLUS
+Frankly coordinator, five firstturn messages and two conditional spike messages,
+variant weapons/flags/counter/fall and source wait/result ownership.
+
+Validation: staged source snapshot /tmp/pm-underground-trio-dbe8scf9 passes
+make test108 CTest/100Python. Shared make all and separate DEBUG_SHORT_BOOT
+artifacts/ttyd-underground-trio build pass; focused underground/professor tests
+pass. Host original-data checks pin placements, passive poll, inclusive crossing,
+message order, source pose/party positions, four cameras, setup4 and retained11.
+Isolated Azahar artifacts/azahar-underground-trio captures original086, allthree
+variants/Frankly, camera/dialogue pages and final pendingbattle notice; images
+inspected. It is manual presentation evidence, not a full nativebattle pass.
+Initial unusedZ_2 imports rejected non-endpoint topology, so only actualused
+poses are admitted. InitialM_N_7 bank assumption rejected; corrected to original
+e_mario. First shared make test encountered an unrelated build-host concurrent
+archive race; isolated staged build excludes unfinished concurrent save-event
+work and preserves its files. No user emulator profile/save touched.
+
+Limits/next: bind setup4 battle/coordinator and original attack/counter/fall/result
+services, then original093/094/094_01/GSW0=12 continuation. Full party stop/run,
+force-restart pose clocks, NPC terrain/ease/hop arithmetic, effects/SFX, source
+cadence, original lighting/material/shadow sorting and original-runtime traces
+remain incomplete. Source first-arrival main map services/dynamic hit toggles and
+actual pipe BOTH-party restoration also remain partial. Live scene saves remain
+suppressed because native event state is not serialized. Complete setup3 lecture,
+prologue route/ruins and New2DS hardware validation still required; goal active.
+
 ## 2026-10-13 — Priority0 calc3D spatial result and angle table
 
 Delivered [calc3D/angle-table contract](behavior/audio/GAME_CALC3D_SPATIAL_RESULT_AND_ANGLE_TABLE.md).

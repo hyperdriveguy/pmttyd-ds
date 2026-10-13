@@ -732,3 +732,20 @@ record/hit identities and conversion/source manifest. Original gor pipe event
 extends PMPROG4 metadata; no original script instruction is rewritten apart
 from supported relocation. Nintendo/Intelligent Systems rights remain;
 original or compiled assets are not committed or distributed.
+
+## 2026-10-13 — Original underground trio animations and event pack
+
+Read-only rel/tik.rel provides gorotuki_sanninngumi161commands and
+ashioto10commands. tools/underground_event_assets.py writes ignored
+romfs/underground-events.pmevt/.program.bin and underground-trio.json metadata
+using original words and supported relocations; no source code is compiled.
+Actual original NPC keys remain pointer-resolved. a/c_kuribo and a/c_kuribo-
+provide fifteen KUR/PTK/TGK S_1/T_1/W_1/R_1/D_1 poses in ignored
+romfs/underground-goombas.pmmesh/.pmanim/.t3x/.bin/.json. Existing bounded model
+converter retains original texture cells/pixels with atlas padding/cropping,
+geometry and sparse keys. Idle Z_2 has non-endpoint key topology outside that
+importer's domain and is unused by this scoped scene; no substituted idle pose
+is claimed. Mario M_N_7 comes from actual e_mario/a_mario- (not a_mario), added
+to the existing scaled scene atlas. Original US tik_01/tik_04 message packs
+supply exact payloads and control tokens. Local originals/compiled packs stay
+ignored and retain Nintendo/Intelligent Systems rights; no redistribution grant.

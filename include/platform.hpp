@@ -89,6 +89,7 @@ private:
     ActorAnimationPack professorMarioAnimations;
     ActorAnimationPack professorFenceAnimations;
     ActorAnimationSample professorFenceSample;
+    ActorAnimationPack undergroundAnimations;Texture undergroundTexture;float undergroundUVScale=1;
     float professorMarioUVScale=1;
     FieldActorAssets fieldActorAssets;
     ActorMetrics actorMetrics;

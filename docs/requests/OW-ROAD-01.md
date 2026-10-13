@@ -131,3 +131,16 @@ requests: casecontactproducer and originalruntime, pipepaperpose/fade/camera/aud
 setup4unit/group/coordinator/result graph, moving-floor/bomb services and
 message dynamic/shake/STICKicon renderedparity. No nativecode edited, no
 originalruntime/test claim.
+
+2026-10-13 underground setup4 follow-up:
+[Goomba trio setup4 and return](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md)
+binds tiknumeric4→BTLNO_TIK_01_01→weighted50→four-unitgroup (threeordinary
+Goombavariants PLUSFranklyB4 coordinator), exactHP2/2/2 andweapons1/1/2,
+floating/winged/hammer-target/spikecounterflags andgroundedfallbranch. Full
+usedinit/Franklyentry/firstturnphase/counterinstruction commandtables plus
+sevenexactUSmessagehash/tokencensus; battlefieldwait requiressequence2 AND
+resultnonzero, with no localvictorypredicate. Sourcefirstturn092_01..05 and
+once-onlyspikemistake092_06/07 cannot be omitted. Nativebattlebackend,used
+player/partnercommands,dynamicstage/audience,rewards,pad/impactclocks and
+resultproducerloss/escape routing remain requesteddependencies, not closed
+by these static bindings. No nativeedit/commit/runtimeverification.

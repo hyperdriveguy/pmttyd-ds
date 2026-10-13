@@ -816,6 +816,8 @@ void Game::restore(const Progress& saved) {
     registerRoadCases(true);
     if(p.room==2 && p.originalStory==10)professorStory.beginLecture(ticks*1000/60,
         {p.position.x*100,groundHeight*100,p.position.z*100},{partner.x*100,partnerHeight*100,partner.z*100},p.originalFlag1207);
+    if(p.room==5 && p.originalStory && *p.originalStory<=11)professorStory.beginUnderground(ticks*1000/60,*p.originalStory,
+        {p.position.x*100,groundHeight*100,p.position.z*100},{partner.x*100,partnerHeight*100,partner.z*100},p.originalFlag1207);
     if(p.room==2 && p.originalStory==11)professorStory.restoreProfessor(p.originalFlag1207);
 }
 bool Game::checkpointGround(float& height) {
@@ -842,7 +844,7 @@ void Game::updatePartner() {
     }
 }
 void Game::updateTemporaryProfessor() {
-    if(!professorStory.temporaryProfessor || (professorStory.locked() && !(fieldDoor.active() && professorStory.fenceStarted)) || progress.room!=2 ||
+    if(!professorStory.temporaryProfessor || (professorStory.locked() && !(fieldDoor.active() && professorStory.fenceStarted)) || (progress.room!=2 && progress.room!=5) ||
        (scene!=Scene::Explore && scene!=Scene::Dialogue) || warpRequest>=0 || fade.active())return;
     PartnerFollowServices services;
     services.free=[](CameraPoint p){return walkable({p.x,p.z},p.y);};

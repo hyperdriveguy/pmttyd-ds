@@ -12,6 +12,8 @@
 #include <unordered_map>
 namespace ttyd {
 namespace {
+MessageAssets undergroundMessages;MessageResource undergroundExtra;EventScriptAssets undergroundScripts;
+std::unordered_map<uint32_t,uint32_t> undergroundCallbacks;uint32_t undergroundEntry=0;std::array<uint32_t,3> trioNames{};bool undergroundReady=false;
 MessageAssets messages;EventScriptAssets scripts;MessageFont font;
 uint32_t script=0,fenceScript=0,lectureScript=0,pipeScript=0,franklyName=0,goombellaName=0;std::unordered_map<uint32_t,uint32_t> callbacks;bool ready=false;
 std::vector<uint32_t> fenceNodes;float fenceFrames=0;
@@ -44,10 +46,25 @@ bool loadProfessorStoryAssets(const char* root) {
     scripts=std::move(p);messages=std::move(m);font=std::move(f);script=entry;fenceScript=fence;lectureScript=lecture;pipeScript=pipe;
     franklyName=frankly;goombellaName=goombella;callbacks=std::move(next);ready=true;return true;
 }
+bool loadUndergroundStoryAssets(const char* root) {
+    const std::string base=root;
+    EventScriptAssets scripts;MessageAssets text;MessageResource extra;
+    if(!scripts.load((base+"/underground-events.pmevt").c_str()) || !text.loadRoom((base+"/messages/tik_01.txt").c_str()) ||
+       !extra.load((base+"/messages/tik_04.txt").c_str()))return false;
+    FILE* f=std::fopen((base+"/underground-program.bin").c_str(),"rb");if(!f)return false;
+    char magic[8];uint32_t entry=0,count=0;std::array<uint32_t,3> names{};
+    bool ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMTRIO1",8) && std::fread(&entry,4,1,f)==1 &&
+        std::fread(names.data(),4,3,f)==3 && std::fread(&count,4,1,f)==1 && count<72;
+    std::unordered_map<uint32_t,uint32_t> callbacks;
+    for(uint32_t i=0;ok && i<count;++i){uint32_t a,t;ok=std::fread(&a,4,1,f)==1 && std::fread(&t,4,1,f)==1 && t<71 && callbacks.emplace(a,t).second;}
+    uint32_t word;ok=ok && std::fgetc(f)==EOF && scripts.readWord(entry,word);std::fclose(f);if(!ok)return false;
+    undergroundScripts=std::move(scripts);undergroundMessages=std::move(text);undergroundExtra=std::move(extra);
+    undergroundCallbacks=std::move(callbacks);trioNames=names;undergroundEntry=entry;undergroundReady=true;return true;
+}
 struct ProfessorRuntime {
     ProfessorStory* scene=nullptr;bool doorBusy=true;uint32_t keys=0,rootId=0;
     struct Move {std::array<float,3> start{},target{};uint64_t begin=0,end=0;bool active=false,jump=false;float apex=0;};
-    std::array<Move,3> moves{};
+    std::array<Move,6> moves{};
     std::unordered_map<uint32_t,uint64_t> waits;
     EventNativeRuntime vm;
     ProfessorRuntime():vm(0x81000000,platform(this)) {}
@@ -73,7 +90,12 @@ struct ProfessorRuntime {
     uint32_t pointer(EventEntry& e,unsigned n){return uint32_t(value(e,n));}
     unsigned npc(EventEntry& e,unsigned n) {
         const auto p=pointer(e,n);if(p==franklyName)return 2;if(p==goombellaName)return 1;
+        if(scene->underground)for(unsigned i=0;i<3;++i)if(p==trioNames[i])return i+3;
         scene->failed=true;return 2;
+    }
+    const char* text(const char* key) {
+        if(!scene->underground)return messages.find(key);
+        const char* p=undergroundMessages.find(key);return p?p:undergroundExtra.find(key);
     }
     void positionOut(EventEntry& e,unsigned first,unsigned actor) {
         const auto op=vm.interpreterServices().operands;
@@ -101,7 +123,7 @@ struct ProfessorRuntime {
         return m.active?0:2;
     }
     void advance() {
-        for(unsigned i=0;i<3;++i)if(moves[i].active) {
+        for(unsigned i=0;i<moves.size();++i)if(moves[i].active) {
             auto& m=moves[i];const float t=std::min(1.f,float(scene->now-m.begin)/float(m.end-m.begin));
             for(unsigned k=0;k<3;++k)scene->actors[i].position[k]=m.start[k]+(m.target[k]-m.start[k])*t;
             if(m.jump){const float c=-4*m.apex,b=(m.target[1]-m.start[1])-c;scene->actors[i].position[1]=m.start[1]+t*(b+c*t);}
@@ -111,9 +133,10 @@ struct ProfessorRuntime {
     int print(EventEntry& e,bool first,bool party) {
         if(first) {
             auto key=string(pointer(e,party?0:1));if(party)key+="_kur";
-            scene->speaker=party || string(pointer(e,3))=="party" || pointer(e,3)==goombellaName?1:2;
+            if(party)scene->speaker=1;
+            else {const auto name=string(pointer(e,3));scene->speaker=name=="party"?1:name=="extparty"?2:npc(e,3);}
             scene->speakerRoot=scene->actors[scene->speaker].position;
-            if(!scene->message.open(key.c_str(),messages.find(key.c_str()),font,scene->now)){scene->failed=true;return 0;}
+            if(!scene->message.open(key.c_str(),text(key.c_str()),font,scene->now)){scene->failed=true;return 0;}
             scene->messageOrder.push_back(key);
         }
         return scene->message.active() && !scene->message.stopped()?0:2;
@@ -121,7 +144,7 @@ struct ProfessorRuntime {
     int select(EventEntry& e,bool first) {
         if(first) {
             const auto key=string(pointer(e,1));
-            if(!scene->selection.open(key.c_str(),messages.find(key.c_str()),font,scene->now)){scene->failed=true;return 0;}
+            if(!scene->selection.open(key.c_str(),text(key.c_str()),font,scene->now)){scene->failed=true;return 0;}
             scene->selectionOrder.push_back(key);
         }
         if(scene->selection.active())return 0;
@@ -131,13 +154,14 @@ struct ProfessorRuntime {
     int append(EventEntry& e,bool first) {
         if(first) {
             const auto key=string(pointer(e,1));
-            if(!scene->message.append(messages.find(key.c_str()),font,scene->now)){scene->failed=true;return 0;}
+            if(!scene->message.append(text(key.c_str()),font,scene->now)){scene->failed=true;return 0;}
             scene->messageOrder.push_back(key);
         }
         return scene->message.active() && !scene->message.stopped()?0:2;
     }
     int32_t call(EventEntry& e,uint32_t function,bool first) {
-        const auto found=callbacks.find(function);if(found==callbacks.end()){scene->failed=true;return 0;}
+        const auto& admitted=scene->underground?undergroundCallbacks:callbacks;
+        const auto found=admitted.find(function);if(found==admitted.end()){scene->failed=true;return 0;}
         const unsigned tag=found->second;
         if(first){ProfessorServiceRequest r{function,e.currentCommand,scene->now,{}};
             for(unsigned i=0;i<e.argumentCount;++i)r.rawOperands.push_back(operand(e,i));
@@ -150,7 +174,9 @@ struct ProfessorRuntime {
         case 5:for(unsigned i=0;i<3;++i)scene->itemPosition[i]=number(e,2+i);scene->itemVisible=true;return 2;
         case 7:for(unsigned i=0;i<3;++i)scene->itemPosition[i]=number(e,1+i);scene->itemVisible=scene->itemPosition[1]!=-1000;return 2;
         case 8:scene->itemScale=number(e,1);return 2;
-        case 9:if(string(pointer(e,2))=="S_saku04")scene->fenceHidden=value(e,0)!=0;return 2;
+        case 9:if(scene->underground && string(pointer(e,2))=="S")scene->undergroundGroupShown=value(e,0)==1 && value(e,1)==0;
+            if(string(pointer(e,2))=="S_saku04")scene->fenceHidden=value(e,0)!=0;
+            return 2;
         case 11:positionOut(e,1,0);return 2;
         case 12:scene->keysEnabled=value(e,0)!=0;return 2;
         case 13:return move(e,first,0,0,1,2);
@@ -181,6 +207,19 @@ struct ProfessorRuntime {
         case 24:scene->actors[npc(e,0)].yaw=number(e,1);return 2;
         case 26:return move(e,first,1,1,2,3);
         case 28:if(first)scene->actors[1].yaw=number(e,1);return delay(e,first,uint64_t(std::max<int32_t>(0,value(e,2))));
+        case 64:case 65: {
+            const unsigned actor=tag==64?0:value(e,0)==1?2:1,target=npc(e,tag==64?0:1);
+            const auto& a=scene->actors[actor].position;const auto& b=scene->actors[target].position;
+            float heading=std::atan2(b[0]-a[0],a[2]-b[2])*57.29577951308232f;
+            scene->actors[actor].yaw=heading<0?heading+360:heading;return 2;
+        }
+        case 66:setPosition(0,0);return 2;
+        case 67:setPosition(value(e,0)==1?2:1,1);return 2;
+        case 68:case 69: {
+            const unsigned actor=npc(e,0);const char* prefix=actor==3?"KUR":actor==4?"PTK":"TGK";
+            scene->actors[actor].pose=std::string(prefix)+(tag==68?"_R_1":"_D_1");scene->actors[actor].poseAt=scene->now;return 2;
+        }
+        case 70:scene->music=0;return 2;
         case 63:if(value(e,0)==1)scene->professorControlEnabled=value(e,1)!=0;return 2;
         case 30:scene->music=-1;return 2;
         case 31:scene->music=pointer(e,1)?1:0;return 2;
@@ -234,7 +273,7 @@ struct ProfessorRuntime {
         if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(1024*1024)) ||
            !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) ||
            !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) ||
-           !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.importScripts(scripts))return false;
+           !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.importScripts(scene->underground?undergroundScripts:scripts))return false;
         auto m=vm.memoryBinding.services();const auto start=eventSdkInitializeAllocator(0x82000000,0x82100000,1,m);
         if(eventSdkCreateHeap(start,0x82100000,m)!=0)return false;
         if(!vm.memory.writeWord(0x8041e844,0) || !vm.memory.writeWord(0x81000004,60))return false;
@@ -267,6 +306,15 @@ bool ProfessorStory::beginLecture(uint64_t time,std::array<float,3> mario,std::a
     actors[0].position=mario;actors[0].pose="M_S_1";actors[1].position=goombella;actors[2].position={-220,0,305};
     runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
     if(!runtime_->initialize(lectureScript,10)){failed=true;return false;}tick(time,0,false);return !failed;
+}
+bool ProfessorStory::beginUnderground(uint64_t time,int32_t initialStory,std::array<float,3> mario,std::array<float,3> goombella,bool departed) {
+    if(!ready || !undergroundReady || triggered || initialStory>11)return false;
+    *this=ProfessorStory{};underground=true;triggered=true;temporaryProfessor=departed;professorDeparted=departed;story=initialStory;now=time;
+    actors[0].position=mario;actors[0].pose="M_S_1";actors[1].position=goombella;actors[1].pose="PKR_S_1";
+    actors[2].position=mario;actors[2].hidden=!departed;actors[2].yaw=270;
+    for(unsigned i=0;i<3;++i){auto& a=actors[i+3];a.position={0,-1000,0};a.hidden=true;a.yaw=270;a.pose=std::string(i==0?"KUR":i==1?"PTK":"TGK")+"_S_1";}
+    runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
+    if(!runtime_->initialize(undergroundEntry,initialStory)){failed=true;return false;}tick(time,0,false);return !failed;
 }
 bool ProfessorStory::departThroughPipe(uint64_t time,int32_t initialStory,bool departed) {
     if(!ready || running())return false;

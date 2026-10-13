@@ -53,6 +53,7 @@ suffix.
 | [MusyX frame/aux callback order](audio/MUSYX_AUDIO_FRAME_AND_AUX_CALLBACK_ORDER.md) | Complete DSP-before-updates frame graph, five slices, live voice clears/aux callbacks and direct critical/time leaves | Child engines/providers/format/IRQ/reentrancy and original audio cadence |
 | [MusyX DSP task/callback/mail](audio/MUSYX_DSP_TASK_CALLBACKS_AND_COMMAND_MAIL.md) | Complete task publication/init wait, three callbacks, command mail and raw clock arithmetic | DSP program/SDK/builder/state/thread/source/concurrency and original audio |
 | [MusyX AI buffers/callback/IRQ init](audio/MUSYX_AI_BUFFERS_CALLBACK_AND_IRQ_INITIALIZATION.md) | Complete zeroed four-slot allocation, initial/rotating DMA requests, logic gates, CPU destination, IRQ init and compressor flag | Actual SDK/DSP/frame callback/writers/alias/concurrency/reinit and original audio timing |
+| [Underground trio setup4 and return](battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md) | Four-unit group with FranklyB4, unit stats/weapons/variant flags, init/firstturn/counter instruction graphs and exact message metadata | Native battle composition, impact/pad clocks and outcome routing/runtime |
 | [Rogueport underground pipe route](overworld/ROGUEPORT_UNDERGROUND_PIPE_ROUTE.md) | Reciprocal records, exact case6/10 gates,60unit/20unit position math, both-party entry and Frankly outcallback | Contact producer, paper/camera/audio/runtime |
 | [First underground arrival and Goomba trio](story/UNDERGROUND_FIRST_ARRIVAL_AND_GOOMBA_TRIO.md) | Full161command encounter/init/arrival, original NPC assets/visibility and ten message bindings including tik_04 resource | Actual setup4 battle backend, other map services and runtime parity |
 | [Game allocator/MusyX bootstrap](audio/GAME_AUDIO_ALLOCATOR_AND_MUSYX_BOOTSTRAP.md) | Four complete provider/sndInit/hwInit bodies; original hook table and scoped SoundInit prefix | Whole game init/child hardware/synth/stream/source/failure/runtime |
@@ -462,3 +463,5 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [Field speaker pose ownership](message/FIELD_SPEAKER_TALK_STAY_POSE_OWNERSHIP.md): glyph countdown and actual talk/stay requests.
 
 - [Native underground pipe route](story/NATIVE_UNDERGROUND_PIPE_ROUTE.md): original departure flag/event, reciprocal map loading and explicit pipe-motion/story gaps.
+
+- [Native underground trio scene](story/NATIVE_UNDERGROUND_TRIO_SCENE.md): original approach poll, actors/poses, prebattle dialogue and retained setup4 boundary.

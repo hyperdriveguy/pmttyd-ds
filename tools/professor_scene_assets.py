@@ -9,7 +9,7 @@ from audio_convert import stm
 def build(iso):
     work=Path('local-assets/professor-scene');work.mkdir(parents=True,exist_ok=True)
     tpl=work/'a_mario.tpl';extract(iso,'a/a_mario-',tpl);models=[]
-    for bank,names in [('a_mario',['M_S_1','M_W_1','M_V_2','M_U_3']),('e_mario',['M_I_G','M_D_8','M_C_3'])]:
+    for bank,names in [('a_mario',['M_S_1','M_W_1','M_V_2','M_U_3']),('e_mario',['M_I_G','M_D_8','M_C_3','M_N_7'])]:
         model=work/bank;extract(iso,'a/'+bank,model)
         if model.read_bytes()[0x44:0x84].split(b'\0')[0]!=b'a_mario':raise ValueError('Unexpected original texture owner')
         models.append((model,tpl,names))

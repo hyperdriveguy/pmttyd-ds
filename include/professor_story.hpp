@@ -7,6 +7,7 @@
 #include <vector>
 namespace ttyd {
 bool loadProfessorStoryAssets(const char* root);
+bool loadUndergroundStoryAssets(const char* root);
 const std::vector<uint32_t>& professorFenceCollisionNodes();
 struct ProfessorSceneActor {
     std::array<float,3> position{};
@@ -33,6 +34,7 @@ public:
     std::string fencePose="Z_1";
     uint64_t fencePoseAt=0;
     uint32_t pendingService=0;
+    bool underground=false,undergroundGroupShown=false;
     bool goombellaNpc=false;
     bool professorDeparted=false,professorControlEnabled=true;
     int battleSetup=-1;
@@ -43,7 +45,7 @@ public:
     int music=0;
     std::array<float,3> itemPosition{};
     float itemScale=1;bool itemVisible=false;
-    std::array<ProfessorSceneActor,3> actors{}; // Mario,Goombella,Frankly.
+    std::array<ProfessorSceneActor,6> actors{}; // Mario,Goombella,Frankly,three Goombas.
     std::array<float,3> speakerRoot{};
     MessagePlayback message;
     std::vector<ProfessorCameraRequest> cameras;
@@ -53,10 +55,11 @@ public:
     bool beginFence(uint64_t milliseconds,std::array<float,3> mario,std::array<float,3> goombella);
     bool beginLecture(uint64_t milliseconds,std::array<float,3> mario,std::array<float,3> goombella,bool departed=false);
     bool departThroughPipe(uint64_t milliseconds,int32_t initialStory,bool departed);
+    bool beginUnderground(uint64_t milliseconds,int32_t initialStory,std::array<float,3> mario,std::array<float,3> goombella,bool departed);
     void restoreProfessor(bool departed);
     void tick(uint64_t milliseconds,uint32_t keys,bool doorBusy,const MessageSelectionInput& selectionInput={});
     bool running() const{return triggered && !finished;}
-    bool locked() const{return running() && !(fenceStarted && story>=10 && keysEnabled);}
+    bool locked() const{return running() && !((underground || (fenceStarted && story>=10)) && keysEnabled);}
 private:
     std::shared_ptr<ProfessorRuntime> runtime_;
 };

@@ -83,3 +83,9 @@ local-assets/professor-fence/
 /romfs/field-pipes.bin
 /build-pipe-verify/
 /romfs/underground-music.wav*
+
+/romfs/underground-events.pmevt
+/romfs/underground-program.bin
+/romfs/underground-trio.json
+/romfs/underground-goombas.*
+/build-trio-verify/
