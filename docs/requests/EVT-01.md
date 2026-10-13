@@ -577,6 +577,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete _ssDVDReadAsync_activeChk — [completion callback](../behavior/audio/GAME_STREAM_COMPLETION_MATCH_CURSOR_AND_STARTUP.md).
   First-match/result/count/terminal flags/latch, independent startup readiness,
   activation-before-inline mix-before-old flag8 and counter pinned; runtime open.
+- [x] Complete _ssDVDReadAsync_cache_next/cache_aram and DVDMgrGetLength —
+  [cache callbacks](../behavior/audio/GAME_STREAM_CACHE_CALLBACK_TRANSFER_AND_INITIAL_READS.md). Fixed32768 transfer, owner low8,
+  fresh progress/count, continuation/reset/initial reads pinned; runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2849,3 +2852,13 @@ result/eight ready/five mix-gate/five counter vectors checked; pan pins reverifi
 Stored requested count, terminal pending difference and unmatched ready-row
 startup pinned. Provider/SDK/FP/original callback/IRQ/audio/native binding open;
 EVT-01 stays OPEN.
+
+## 2026-10-13 — Game stream cache callbacks delivery
+
+Completed [two cache callbacks and length leaf](../behavior/audio/GAME_STREAM_CACHE_CALLBACK_TRANSFER_AND_INITIAL_READS.md).
+Nine spans/294 anchors/eleven calls/six callback bindings verified; six owner/
+four next/seven continuation/six branch/six index/twelve linked chunk vectors
+checked. Interrupt/completion pins reverified. Fixed32768 transfer despite short
+logical count, owner low8 without serial validation, fresh progress/length and
+reset-before-initial IO pinned. Providers/SDK/original DMA/cache/startup/audio/
+native binding open; EVT-01 stays OPEN.

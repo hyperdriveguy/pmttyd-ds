@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero stream cache callbacks
+
+Completed _ssDVDReadAsync_cache_next/cache_aram/DVDMgrGetLength; EVT-01 checked.
+[Cache callbacks](behavior/audio/GAME_STREAM_CACHE_CALLBACK_TRANSFER_AND_INITIAL_READS.md)
+pin fixed32768 transfer despite short logical count, serial/low8 owner, ordered
+cursor/progress, fresh length/continuation, resets/type and initial playback IO.
+Providers/SDK/original cache/DMA/startup/audio/native binding remain open.
+
+Validation: read-only ISO manifest passed nine spans,294 anchors,eleven calls.
+Six owner/four next/seven continuation/six branch/six index/twelve linked chunk
+vectors and six callback bindings checked; interrupt/completion pins reverified.
+Link audit passed920 Markdown files/zero broken links; scoped diff check passed.
+Mathematical deductions separate from original execution. Docs/metadata only;
+no make test/all rerun. Fresh ELFs/listings/generator stay /tmp; no bodies/assets
+committed. Concurrent native changes excluded. Approved push remains pending
+valid GitHub credentials.
+
+Next: priority-zero EVT-01 SoundSSMain/play/deferred DVD manager and actual
+providers/value/extent/alias/lifetime/IRQ/concurrency/ABI domains, transitive
+SDK/cache/ARAM/AI/DSP and original cache/error/short-read/DMA/callback/startup/
+audio traces. Other inbox/native/full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero stream completion callback
 
 Completed _ssDVDReadAsync_activeChk; checked EVT-01 portion.
