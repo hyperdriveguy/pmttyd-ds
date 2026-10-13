@@ -634,8 +634,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] cbForStateBusy success region/ImmCommand initial table — [success/audio](../behavior/file/SDK_DVD_BUSY_CALLBACK_SUCCESS_COMPLETION_AND_AUDIO.md).
   Motor-before-cancel, DMA equality/reissue, fresh immediate/audio completion
   pinned; error tail/whole composition/providers/original binding remains open.
-- [ ] cbForStateBusy error tail/whole composition and actual status/controller/
-  command/cancel/callback/provider/runtime binding.
+- [x] cbForStateBusy error tail and whole local406-word callback —
+  [error/composition](../behavior/file/SDK_DVD_BUSY_CALLBACK_ERROR_AND_WHOLE_COMPOSITION.md). Inquiry/four fresh command
+  reads/equality/cancel/completion/error-fetch pinned; child/runtime open.
+- [ ] Error/recovery/low-level callback children and actual status/controller/
+  command/cancel/callback/provider/runtime/native binding.
 - [ ] Deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
@@ -3195,6 +3198,15 @@ gate/five precedence/five DMA/seven immediate/five result/four audio vectors and
 sites checked; prefix pins reverified. Exact DMA equality, motor-before-cancel,
 mutable immediate table and command6 reissue/reject/completion pinned. Error
 tail/whole callback/providers/original IO/audio/native binding open; EVT-01 OPEN.
+
+## 2026-10-13 — SDK DVD busy callback error/whole delivery
+
+Completed [error tail/whole composition](../behavior/file/SDK_DVD_BUSY_CALLBACK_ERROR_AND_WHOLE_COMPOSITION.md).
+New eight spans/73 anchors/five calls/three indirect sites/two bindings verified;
+prior regions reverified and all406 disjoint callback words checked against ISO.
+Eight route/three raw callback-result models/publication sites checked. Inquiry
+priority, four fresh command reads and equality despite success-clear pinned.
+Error/recovery/low-level/providers/original IO/audio/native binding open; EVT-01 OPEN.
 
 ### 2026-10-13 delivery/request: preservedtrio postwait callbacks/nativegaps
 

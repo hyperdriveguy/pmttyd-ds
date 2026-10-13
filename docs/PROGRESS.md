@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero whole DVD busy callback
+
+Completed error tail/whole local cbForStateBusy; checked EVT-01 portion and
+kept child/provider/runtime/native work open.
+[Error/composition](behavior/file/SDK_DVD_BUSY_CALLBACK_ERROR_AND_WHOLE_COMPOSITION.md)
+pins inquiry priority/four-read command gate, equality despite success-clear,
+cancel/complete fresh-record behavior and error request. Whole local body closed.
+
+Validation: read-only ISO new manifest passed eight spans,73 anchors,five calls.
+Three indirect/two bindings/eight route/three raw callback models/publication
+sites checked; prior regions reverified. All406 disjoint words cover658-byte
+callback against ISO;22 direct calls/15 indirect sites composed. Link audit
+passed950 Markdown files/zero broken links; scoped diff check passed.
+Mathematical deductions separate from original execution. Docs/metadata only;
+no make test/all rerun. Fresh full callback ELF/listing/scoped generator stay /tmp;
+no bodies/assets committed. Concurrent native work excluded. Approved push
+pending valid GitHub credentials.
+
+Next: priority-zero EVT-01 cbForStateGettingError/cbForStateError/low-level/reset/
+cover/cancel and actual providers/value/extent/alias/lifetime/IRQ/concurrency/ABI,
+original inquiry/equality/error/short-read/recovery/callback/IO/audio traces.
+Other inbox/native/full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero busy callback success/audio
 
 Completed cbForStateBusy success/ImmCommand table region; checked EVT-01 portion.

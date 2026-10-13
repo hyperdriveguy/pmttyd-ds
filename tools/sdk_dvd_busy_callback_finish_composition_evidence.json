@@ -1,0 +1,323 @@
+{
+  "schema": 1,
+  "scope": "Complete busy callback error tail and whole406-word composition; command14/recognized equality/cancel/completion/request-error order, providers/runtime open",
+  "regions": [
+    {
+      "name": "cbForStateBusy error tail",
+      "address": 2150244352,
+      "size": 292
+    }
+  ],
+  "dol_spans": [
+    {
+      "name": "Busy callback error tail",
+      "address": 2150244352,
+      "size": 292,
+      "sha256": "6070acbaa10ba64eb9d54d26dd38c35ea3892988b8088980137ab6809dcb3a96"
+    },
+    {
+      "name": "__DVDStoreErrorCode",
+      "address": 2150248732,
+      "size": 124,
+      "sha256": "04e17db1044ff8cc3c0a98d05e6d6e3a20a0765566b87799d4433426ad410ba9"
+    },
+    {
+      "name": "DVDLowStopMotor",
+      "address": 2150234280,
+      "size": 140,
+      "sha256": "48fdcaef174ad7b5cbd21170d35fc94600344d397d54632f32ee5e430664c0e0"
+    },
+    {
+      "name": "stateReady",
+      "address": 2150241468,
+      "size": 744,
+      "sha256": "45306e28e50e177a5f90234de14dd8b6719ef8e1d84d0e0672e816bc5456ce0b"
+    },
+    {
+      "name": "DVDLowRequestError",
+      "address": 2150234420,
+      "size": 140,
+      "sha256": "7a206ef9c1228cbf99daf2d94f5bc256fd359f2456f6bd9fb43fe01ba2911f8c"
+    },
+    {
+      "name": "cbForStateGettingError",
+      "address": 2150238376,
+      "size": 612,
+      "sha256": "74f326465f078e2e8f2a2f077a38c77300976b21c9b71fd74be5e6f73829e9dc"
+    },
+    {
+      "name": "cbForStateError",
+      "address": 2150237932,
+      "size": 172,
+      "sha256": "a9db624d1cc5f92c181a51afbd65495564d0eda3fc85146628a0b338ab0edcee"
+    },
+    {
+      "name": "Whole composed cbForStateBusy",
+      "address": 2150243044,
+      "size": 1624,
+      "sha256": "b2ffd6f37e055d4f021a6966c40191cbd0e4f490b17c81c5bcde48305fc54d79"
+    }
+  ],
+  "dol_anchors": {
+    "2150244352": "800d226c",
+    "2150244356": "2800000e",
+    "2150244360": "40820020",
+    "2150244364": "3c600123",
+    "2150244368": "38634567",
+    "2150244372": "48001109",
+    "2150244376": "3c60802a",
+    "2150244380": "386306ec",
+    "2150244384": "4bffd889",
+    "2150244388": "48000100",
+    "2150244392": "800d226c",
+    "2150244396": "28000001",
+    "2150244400": "41820028",
+    "2150244404": "800d226c",
+    "2150244408": "28000004",
+    "2150244412": "4182001c",
+    "2150244416": "800d226c",
+    "2150244420": "28000005",
+    "2150244424": "41820010",
+    "2150244428": "800d226c",
+    "2150244432": "2800000e",
+    "2150244436": "408200c4",
+    "2150244440": "83cd2250",
+    "2150244444": "807e0020",
+    "2150244448": "801e0014",
+    "2150244452": "7c030040",
+    "2150244456": "408200b0",
+    "2150244460": "800d2270",
+    "2150244464": "28000000",
+    "2150244468": "41820064",
+    "2150244472": "38800000",
+    "2150244476": "908d2278",
+    "2150244480": "387f0040",
+    "2150244484": "3800000a",
+    "2150244488": "908d2270",
+    "2150244492": "906d2250",
+    "2150244496": "901e000c",
+    "2150244500": "819e0028",
+    "2150244504": "280c0000",
+    "2150244508": "41820014",
+    "2150244512": "7d8803a6",
+    "2150244516": "389e0000",
+    "2150244520": "3860fffd",
+    "2150244524": "4e800021",
+    "2150244528": "818d2274",
+    "2150244532": "280c0000",
+    "2150244536": "41820014",
+    "2150244540": "7d8803a6",
+    "2150244544": "389e0000",
+    "2150244548": "38600000",
+    "2150244552": "4e800021",
+    "2150244556": "4bfff3f1",
+    "2150244560": "38000001",
+    "2150244564": "48000008",
+    "2150244568": "38000000",
+    "2150244572": "2c000000",
+    "2150244576": "40820044",
+    "2150244580": "808d2250",
+    "2150244584": "387f0040",
+    "2150244588": "38000000",
+    "2150244592": "906d2250",
+    "2150244596": "9004000c",
+    "2150244600": "81840028",
+    "2150244604": "280c0000",
+    "2150244608": "41820010",
+    "2150244612": "80640020",
+    "2150244616": "7d8803a6",
+    "2150244620": "4e800021",
+    "2150244624": "4bfff3ad",
+    "2150244628": "48000010",
+    "2150244632": "3c60802a",
+    "2150244636": "386308a8",
+    "2150244640": "4bffd815"
+  },
+  "direct_calls": [
+    {
+      "site": 2150244372,
+      "target": 2150248732,
+      "name": "__DVDStoreErrorCode"
+    },
+    {
+      "site": 2150244384,
+      "target": 2150234280,
+      "name": "DVDLowStopMotor"
+    },
+    {
+      "site": 2150244556,
+      "target": 2150241468,
+      "name": "stateReady"
+    },
+    {
+      "site": 2150244624,
+      "target": 2150241468,
+      "name": "stateReady"
+    },
+    {
+      "site": 2150244640,
+      "target": 2150234420,
+      "name": "DVDLowRequestError"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "whole_composition": {
+    "address": 2150243044,
+    "size": 1624,
+    "words": 406,
+    "prior_manifests": [
+      "tools/sdk_dvd_busy_callback_prefix_evidence.json",
+      "tools/sdk_dvd_busy_callback_success_evidence.json"
+    ],
+    "direct_calls": 22,
+    "indirect_sites": 15
+  },
+  "derived_route_vectors": [
+    {
+      "first_command": 14,
+      "classification_reads": [
+        14,
+        14,
+        14,
+        14
+      ],
+      "progress": 32,
+      "total": 32,
+      "canceling": 0,
+      "route": "store error/stop motor"
+    },
+    {
+      "first_command": 1,
+      "classification_reads": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "progress": 32,
+      "total": 32,
+      "canceling": 0,
+      "route": "state0/progress callback"
+    },
+    {
+      "first_command": 1,
+      "classification_reads": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "progress": 31,
+      "total": 32,
+      "canceling": 0,
+      "route": "request error"
+    },
+    {
+      "first_command": 1,
+      "classification_reads": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "progress": 33,
+      "total": 32,
+      "canceling": 0,
+      "route": "request error"
+    },
+    {
+      "first_command": 1,
+      "classification_reads": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "progress": 32,
+      "total": 32,
+      "canceling": 1,
+      "route": "resume0/cancel callbacks"
+    },
+    {
+      "first_command": 99,
+      "classification_reads": [
+        99,
+        99,
+        99,
+        99
+      ],
+      "progress": 32,
+      "total": 32,
+      "canceling": 0,
+      "route": "request error"
+    },
+    {
+      "first_command": 2,
+      "classification_reads": [
+        2,
+        2,
+        2,
+        14
+      ],
+      "progress": 32,
+      "total": 32,
+      "canceling": 0,
+      "route": "state0/progress callback"
+    },
+    {
+      "first_command": 0,
+      "classification_reads": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "progress": 0,
+      "total": 0,
+      "canceling": 0,
+      "route": "request error"
+    }
+  ],
+  "derived_callback_vectors": [
+    {
+      "progress": 0,
+      "callback_result": 0
+    },
+    {
+      "progress": 32,
+      "callback_result": 32
+    },
+    {
+      "progress": 4294967295,
+      "callback_result": 4294967295
+    }
+  ],
+  "indirect_call_sites": [
+    2150244524,
+    2150244552,
+    2150244620
+  ],
+  "callback_bindings": [
+    {
+      "site": 2150244380,
+      "target": 2150237932,
+      "name": "cbForStateError"
+    },
+    {
+      "site": 2150244636,
+      "target": 2150238376,
+      "name": "cbForStateGettingError"
+    }
+  ],
+  "publication_sites": {
+    "resume_zero": 2150244476,
+    "cancel_zero": 2150244488,
+    "cancel_dummy": 2150244492,
+    "cancel_state10": 2150244496,
+    "complete_dummy": 2150244592,
+    "complete_state0": 2150244596,
+    "callback_progress": 2150244612
+  }
+}
