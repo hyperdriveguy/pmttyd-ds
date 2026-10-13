@@ -450,6 +450,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [syscall vector/installation](../behavior/audio/GEKKO_CACHE_SYSCALL_VECTOR_AND_INSTALLATION.md).
   Exact copied length/SPR/barrier/cache/byte-copy order pinned; boot/vector
   residency/exception/hardware/domain/original DSP/audio remain open.
+- [x] Complete ZeroOffsetHandler admission/timestamp/ramp region —
+  [zero-offset admission/ramp](../behavior/audio/MUSYX_ZERO_OFFSET_ADMISSION_AND_RAMP.md).
+  Captured voice/time, low elapsed, wrapped product/signed clamp, fresh flag
+  clear/word158 publication and carried indicator pinned; remainder/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2364,3 +2368,13 @@ vectors/copy-range bindings checked. Actual28-byte copy versus256-byte cache
 publication, temporary SPR1008 bit8/isync/sync/restore/rfi, IC barriers and
 overlap byte direction pinned. Boot/vector residency/exception/cache/DSP/original
 audio remain open; parent EVT-01 stays OPEN.
+
+## 2026-10-13 — Zero-offset admission/ramp delivery
+
+Completed one local region in
+[zero-offset admission/ramp](../behavior/audio/MUSYX_ZERO_OFFSET_ADMISSION_AND_RAMP.md).
+Three spans/79 instruction anchors/one direct call verified; four admission/five
+elapsed/fourteen ramp vectors checked. Raw wrapped low-time product precedes
+signed target clamp; fresh high flag clear and unconditional admitted-ramp
+word158 publication pinned. Remaining handler/providers/domains/original voice/
+audio and native binding remain open; parent EVT-01 stays OPEN.

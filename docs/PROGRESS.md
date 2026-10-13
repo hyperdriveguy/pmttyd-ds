@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero zero-offset admission/ramp
+
+Completed ZeroOffsetHandler admission/timestamp/ramp region; checked the EVT-01
+portion. [Admission/ramp](behavior/audio/MUSYX_ZERO_OFFSET_ADMISSION_AND_RAMP.md)
+pins retained voice, low elapsed/shift, wrapped product before signed clamp,
+fresh high-word gate clear, word158 publication and carried update indicator.
+Remaining handler/providers/domains/original audio/native binding remain open.
+
+Validation: read-only ISO manifest passed three spans,79 whole-region anchors,
+one direct call. Four admission/five elapsed/fourteen ramp source-operation vectors
+checked, including equality, zero step/rate and signed wrap. Link audit passed
+866 Markdown files/zero broken links; scoped `git diff --check` passed.
+Documentation/metadata only; no `make test`/`make all` rerun. Fresh full original
+handler ELF/listing/generator stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded. Approved push of all current commits attempted;
+GitHub rejected configured credentials (invalid username/token). Push remains pending.
+
+Next: priority-zero EVT-01 ZeroOffsetHandler remaining table/gain/controller/aux/
+hardware/output/requeue, LowPrecisionHandler remainder, actual voice/time/rate/
+target/flag/accumulator/IRQ/concurrency domains and original voice/audio traces;
+remaining macro/stream/song/backend, lower-priority inbox and full native/game work.
+Retry the authorized push once GitHub credentials work.
+
 ## 2026-10-13 — Inbox priority-zero cache syscall vector/installation
 
 Completed SystemCallVector/__OSInitSystemCall/ICInvalidateRange/memcpy and
