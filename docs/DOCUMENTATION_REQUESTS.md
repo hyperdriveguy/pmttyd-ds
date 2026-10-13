@@ -3577,3 +3577,22 @@ round-trip(party/inventory/status records already noted as open in
 UNIT_STATUS_CLEAR_AND_POUCH_IMPORT rows),so the native save can be replaced by
 original persistence semantics. No lock reserved;no original save trace
 claimed.
+
+Native implementation source-audit follow-up (2026-10-12),JUMP-01:request1 is
+answered by [Jump SFX provenance](behavior/battle/BATTLE_JUMP_SFX_PROVENANCE.md)
+(commit044ba5c),and two native premises are corrected.0x802EE470/474/478 is
+`vec3_802ee470` zero scratch (battle_event_cmd.o .rodata),not a jump key row;
+the reference JumpPosition body has no absolute0x802E read,so the neighbor
+dead loads are0x802EE458/45C/460 on the double base.801093a8 contains no Gekko
+PS arithmetic(paired-singles are spill/restore only);trig/distance arrive via
+system_angleABf8000703c and distABf8000722c,so the "PS-family sin/cos"
+premise is unsupported. Native follow-ups for the packed Jump owner:drop the
+three spurious0x802ee470 reads in the battle_packed_mario_jump.cpp setup
+branch,bind the numeric providers to the same-TU angleABf/distABf helpers
+instead of an assumed PS sin/cos (MJP-NUM-04 differential bits still wanted),
+and model BOTH psndSFXOn_3D records0x8010d594/690(inherited r3 key,unit+340/
+344/348 position block,second-call position rebuild) rather than a single
+play-at-setup;return handling and any landing cue remain outside the body.
+Request2/3 are answered as above;request1 answered.The water/void motion,
+pose-domain,marioMain and save/persistence requests remain open.No native/
+test/CMake/asset change in this entry(docs-only).
