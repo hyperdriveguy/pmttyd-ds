@@ -8,9 +8,12 @@ Field and battle simulation remain paused during that ownership.
 `beginFrontend` synchronizes the preceding GPU frame and frees field/plaza,
 ordinary battle, trio background and trio stage rooms. Shared shader, font and
 base actor resources remain available. A front-end phase owns only its current
-raster images, cinematic actor banks and scene map. Demonstration image changes,
-market entry and opening part changes release the previous phase after GPU
-synchronization. Title and file selection share one raster phase.
+raster images, cinematic actor banks and scene map. The storybook is one bounded
+phase: its seven original rasters and rune-back texture remain resident while
+page capture consumers need earlier images. Market entry and opening part
+changes release that phase after GPU synchronization. Title and file selection
+share one raster phase. The small original paper geometry stays CPU resident;
+its original textures follow the raster cache lifetime.
 
 A scene-map change releases the preceding map before staging its successor.
 Failure frees the partial staged room and retains an explicit development load

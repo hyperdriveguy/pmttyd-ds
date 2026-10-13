@@ -5942,3 +5942,75 @@ Next: bind source DropMaterial and correct live pouch/resource ownership,
 then EXP/victory poses and presentation, fade/export/field sequence return,
 and original gorotuki continuation. The full playable prologue goal remains
 active and incomplete.
+
+## 2026-10-13 — Native opening chain, original scene consumers and combined verification
+
+Integrated the normal demo → title → four file slots → fresh-file opening →
+source story3 harbor checkpoint, with separate debug-short target. Existing
+native-save compatibility is not required by the user; automated testing still
+uses isolated profiles/fixtures only. Original37 demo/11 opening payloads,
+message IDs, tokens, attribution and input gates remain source-owned.
+
+House rendering now consumes original actor roots/poses/local simulation clocks,
+source cameras, door curve11/Q1024 requests and original hinge/postbox geometry.
+Fixed queued actors overwriting one another's GPU vertex ranges. Original demo
+marketplace rendering consumes Peach/merchant/chest choreography, original opaque
+pass1/color/cull surfaces and the dedicated gor_01 map with five hidden interiors
+and both source wall subtrees. Identical selected actor samples are cached,
+avoiding repeated wrapped-chest tessellation while its pose is static.
+
+The original OFF_d_meku_right A_1 page mesh and rune back now render. Texture
+admission/final180 sample acknowledgements gate the four turns; original scale,
+third-message timing and curve11 book request are retained. Native orthographic
+outer projection/depth is explicitly an adapter. A first smoke exposed paper
+behind its2D underlay; corrected depth layering is visible in focused captures.
+No substituted mesh/art or rewritten story dialogue was added. Golden-chest
+forensics separately proved the colorful rug objects are original S_roten stock;
+independent original conversion matches native chest PMANIM4/T3X/crop bytes.
+
+The harbor source event owns admission, messages022..024, charges/HP minimum and
+blocking setup2 request. Native tutorial entry runs original init/phase/t1_000
+on source-selected bti_01/stg_00_0 and original BGM126. Packed three-unit/part,
+work/HP/hook/target ownership and source Crump approach/jump/precheck services are
+integrated. ResultACDefence now consumes explicit physical samples; abstract
+story A/B edges cannot stand in for guard input. Original fresh pouch, Mario
+init/wait hooks and shared counter/hit-event cancellation/priority services are
+bound. Actual CheckDamage, legitimate first-turn/command/attack ownership,
+turn/end/reaction/reward and genuine field return remain unfinished.
+Result0/story4/save blocking are retained; no victory or source story5 is faked.
+
+Validation:
+- Combined committed tree4ed0b6c plus408df97/faa0184 in
+  /tmp/pm-opening-merged-4ed0b6c: make test135/135 CTest +103/103 Python;
+  make all passed (/tmp/opening-merged-mario-{test,build}.log).
+- Fresh normal Azahar route completed and saved source story3;
+  artifacts/azahar-opening-merged-fresh contains title/files/house/harbor captures.
+- Original tutorial intro reached its pending combat boundary with three distinct
+  actors; artifacts/azahar-harbor-packed-intro and
+  artifacts/azahar-harbor-fresh-mario-intro (fresh pouch/Mario init). This is not
+  a fight result; screenshots supplement the host initialization assertions.
+- Original unskipped37-message demo completed its final input gate before the
+  paper depth fix; focused corrected fold/rune/back/narration captures are in
+  artifacts/azahar-original-paper-depth. Full corrected unskipped repeat remains.
+- make debug-short passed; isolated25-second boot in
+  artifacts/azahar-opening-debug-short-long shows direct development field.
+  The earlier5-second capture was still blank during initial loading.
+- Read-only source verifiers:15 house object/matrix anchors,51 demo scene/map
+  anchors and53 book/capture constants; independent10-sample chest UV/byte check
+  passed. Source checks are static evidence, not Dolphin observations.
+- Isolated defense integration129/129 CTest +103/103 Python and native build passed;
+  its bridge was then rechecked in the combined132-test tree. No user profile,
+  original ISO or user saves were modified. Originals/artifact packs are ignored.
+
+Local playtest binary: artifacts/ttyd-opening-faa0184.3dsx (normal opening chain,
+verified checkpoint; combat remains pending). New contracts live under story/
+and display/, indexed by docs/behavior/README.md. Full-game and original-image/
+New2DS hardware parity are not claimed.
+
+Next: bind legitimate source startup/first-turn/command/Jump owner and full
+damage/reaction services; retain fresh pouch through the actual field/save path; then real battle end and
+original field continuation. Repeat the full corrected unskipped demo. Finish
+original cover geometry/outer projection, fade/light/tree/environment, sound and
+crystal/radiation consumers; profile actual New2DS memory/performance. The goal
+remains incomplete while the real harbor fight/return and these scene services
+are still pending.

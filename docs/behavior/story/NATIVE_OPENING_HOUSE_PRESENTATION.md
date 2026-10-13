@@ -51,11 +51,13 @@ movement or WAIT_FRAME counters. Source millisecond waits use the smallest
 whole60Hz tick count that does not end early; this is a scoped native clock
 adapter, not proof of the original WAIT_MSEC owner's exact scheduling.
 
-Door endpoints and source postbox shake offsets are retained as requests;
-original map transforms, tree interpolation, sound/effect/environment consumers,
-letterbox/fade ownership and complete NPC flags/automatic-pose services remain
-unbound. Camera interpolation is linear native presentation despite retaining
-source endpoints/duration; selector11 equality is not claimed. Initial actor
+The native outside map binds original door/postbox transforms, including the
+500ms curve11 door requests, source Q1024 truncation and concurrent closing.
+House camera requests now use recovered curve11 endpoints/durations. Source
+clock conversion, host/native trig and movement remain adaptations; original
+numeric/image equivalence is not claimed. Tree interpolation, sound/effect/
+environment consumers, letterbox/fade ownership and complete NPC flags/
+automatic-pose services remain unbound. Initial actor
 visibility/heading and map readiness are native bridges. HouseReturn, letter,
 map, voyage, wake and arrival still use the separately documented adapter.
 

@@ -1104,3 +1104,37 @@ Original fall and grounded init/attack/wait/part/pose/data definitions were
 already in the data-only tik pack; they retain original relocation addresses.
 Extracted originals, compiled packs and binaries stay ignored. Nintendo/
 Intelligent Systems ownership and no redistribution grant remain unchanged.
+
+## Integrated native opening scene products
+
+All resources below originate from read-only G8ME01.iso and remain ignored/local.
+Original message catalogs retain msg/US IDs/payload bytes/control tokens. Native
+house packs preserve m/aaa_00/{d,t}, original S_ie_door/S_posuto hierarchy/world
+matrices and geometry bindings (PMHOBJ01). Original a/c_luigi/c_paretta poses
+supply movement/carry/talking; native geometry/clock/trig adapters are documented.
+
+Original a/c_peach/c_nazo and a/MOBJ_GoldenTreasureBox plus their trailing-minus
+texture banks supply demo actors. Chest PMANIM4 preserves original wrapped UV
+surfaces, untextured color and source opaque pass1. demo-chest.uvscale records
+cropped atlas scaling; static selected samples are cached without changing art.
+opening-demo-market.* preserves original m/gor_01 S hierarchy, excluding five
+source interiors and tagging both source wall subtrees for demo-owned visibility.
+Original texture dimensions are capped128px in map conversion.
+
+Original a/OFF_d_meku_right and texture bank supply demo-page.pmanim A_1 and
+PMDPG001 triangle capture-kind/pass/cull companion. demo-page-back.t3x uses
+original rune TPL0, half-size240x304 with256x512 transparent padding. Original
+old demo8..11 raster crops provide capture fronts; the native outer image-plane
+projection is explicitly an adapter. No invented fold or generated texture.
+
+Harbor setup2 uses original m/bti_01 and m/stg_00_0 selection/transforms and
+sound/stream/btl_cbs1_32k.stm (source BGM126, original32k stereo PCM/loop).
+Harbor tutorial actor packs retain original b_mario/c_kanbu/c_pkr clips/atlases;
+Crump attack clips are added from that original bank. Ignored tutorial event
+packs retain source scripts/selected DOL data/rodata, excluding executable PPC
+text and live VM context storage. Packed source pad/state/services are native
+code adaptations, not redistributed originals.
+
+Original Nintendo/Intelligent Systems ownership/no-redistribution terms remain.
+Source files, converted images/audio/geometry/event packs and compiled local
+3DSX artifacts are never staged. No generated tones or replacement story art.
