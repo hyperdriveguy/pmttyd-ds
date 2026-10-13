@@ -78,6 +78,9 @@ private:
     };
     Room plaza,stage,frontRoom,trioBackground,trioStage;
     std::string frontMapName;
+    bool frontActive=false;
+    uint32_t frontPhase=UINT32_MAX;
+    std::string frontFailure;
     struct CineActor {std::string name;ActorAnimationPack animations;Texture image;float uvScale=1;};
     std::vector<CineActor> cineActors;
     bool frontWorld(const char*,CameraPoint,CameraPoint,const OpeningSequence*,const OpeningDemo&);

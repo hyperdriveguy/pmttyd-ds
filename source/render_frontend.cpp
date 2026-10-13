@@ -4,7 +4,11 @@
 namespace ttyd {
 namespace {constexpr uint32_t Ink=0xff352d29,Paper=0xffdff2fb,Red=0xff4966d8;
 uint32_t rgb(unsigned r,unsigned g,unsigned b,unsigned a=255){return C2D_Color32(r,g,b,a);}}
-void Renderer::beginFrontend(){C3D_FrameSync();freeRoom(plaza);}
+void Renderer::beginFrontend(){
+    C3D_FrameSync();
+    for(auto* room:{&plaza,&stage,&trioBackground,&trioStage})freeRoom(*room);
+    frontActive=true;
+}
 void Renderer::releaseFrontend(){
     C3D_FrameSync();freeRoom(frontRoom);frontMapName.clear();
     for(auto& t:frontTextures)if(t.image.imported){Tex3DS_TextureFree(t.image.imported);C3D_TexDelete(&t.image.texture);}
@@ -47,8 +51,13 @@ void Renderer::frontMessage(const MessagePlayback& message) {
 }
 bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const OpeningSequence* opening,const OpeningDemo& demo) {
     if(frontMapName!=map) {
-        Room pending;if(!loadMap(map,pending)){C3D_FrameSync();freeRoom(pending);return false;}
-        C3D_FrameSync();freeRoom(frontRoom);frontRoom=std::move(pending);frontMapName=map;
+        // A cutscene owns one map. Release the preceding scene before staging
+        // its successor; retaining both can exhaust the native linear arena.
+        C3D_FrameSync();freeRoom(frontRoom);frontMapName.clear();
+        for(auto& t:frontTextures)if(t.image.imported){Tex3DS_TextureFree(t.image.imported);C3D_TexDelete(&t.image.texture);}
+        frontTextures.clear();
+        Room pending;if(!loadMap(map,pending)){freeRoom(pending);frontFailure=std::string("Scene map load failed: ")+map;return false;}
+        frontRoom=std::move(pending);frontMapName=map;frontFailure.clear();
     }
     Game snapshot;snapshot.progress.room=255;snapshot.ticks=(opening?opening->now:demo.now)*60/1000;
     snapshot.fieldCameraFrame.eye={eye.x*.01f,eye.y*.01f,eye.z*.01f};snapshot.fieldCameraFrame.at={at.x*.01f,at.y*.01f,at.z*.01f};
@@ -100,6 +109,11 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     C2D_Prepare();C2D_SceneBegin(top);return ok;
 }
 void Renderer::renderFrontend(const Frontend& f,const OpeningDemo& demo,const OpeningSequence& opening,const char* notice) {
+    // Keep only the current demonstration image/scene family resident. This
+    // also bounds a natural (unskipped) storybook run and letter/map overlays.
+    const uint32_t phase=f.screen==FrontScreen::Demo?(demo.bookComplete?199:100+demo.image()):
+        f.screen==FrontScreen::Opening?200+uint32_t(opening.part):0;
+    if(phase!=frontPhase){releaseFrontend();frontPhase=phase;}
     C2D_TextBufClear(textBuffer);C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,0,0);C3D_FrameDrawOn(top);C2D_Prepare();C2D_SceneBegin(top);
     bool ok=true;
@@ -150,7 +164,7 @@ void Renderer::renderFrontend(const Frontend& f,const OpeningDemo& demo,const Op
         if(opening.failed)text(opening.failure.c_str(),16,188,.40f,Red);
         text("Development sequence / scene services pending",10,215,.36f,Ink);
     }
-    if(!ok)text("Original front-end texture unavailable",10,216,.4f,Red);
+    if(!ok){text("Original front-end texture unavailable",10,216,.4f,Red);if(!frontFailure.empty())text(frontFailure.c_str(),10,203,.35f,Red);}
     if(notice && *notice)text(notice,10,229,.35f,Ink);
     C2D_Flush();C3D_FrameEnd(0);
 }

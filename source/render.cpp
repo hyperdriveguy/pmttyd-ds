@@ -204,6 +204,14 @@ void Renderer::freeRoom(Room& room) {
 }
 bool Renderer::changeRoom(uint32_t room) {
     releaseFrontend();
+    if(frontActive) {
+        Room pendingStage,pendingBackground,pendingTrio;
+        if(!loadMap("stage",pendingStage) || !loadMap("bti_01",pendingBackground) || !loadMap("stg_00_1",pendingTrio)) {
+            C3D_FrameSync();freeRoom(pendingStage);freeRoom(pendingBackground);freeRoom(pendingTrio);return false;
+        }
+        stage=std::move(pendingStage);trioBackground=std::move(pendingBackground);trioStage=std::move(pendingTrio);
+        frontActive=false;
+    }
     const char* name=roomAsset(room);if(!name)return false;
     Room next;
     if(!loadMap(name,next) || !loadFieldActors(room,next)) {C3D_FrameSync();freeRoom(next);return false;}
