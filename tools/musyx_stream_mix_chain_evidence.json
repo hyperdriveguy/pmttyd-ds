@@ -1,0 +1,2256 @@
+{
+  "schema": 1,
+  "scope": "Complete stream mix three-stage publication/state2/companion/recursive/IRQ body and ABI helpers; stream.c inventory audit, providers/runtime open",
+  "complete_bodies": [
+    "sndStreamMixParameter"
+  ],
+  "linked_only": [
+    "_savegpr_25",
+    "hwDisableIrq",
+    "hwSetVolume",
+    "SetupVolume",
+    "CheckOutputMode",
+    "GetPrivateIndex",
+    "SetupVolumeAndPan",
+    "SetHWMix",
+    "hwEnableIrq",
+    "_restgpr_25"
+  ],
+  "dol_spans": [
+    {
+      "name": "sndStreamMixParameter",
+      "address": 2150086676,
+      "size": 1380,
+      "sha256": "cf5d60dbe1652cda126b4178d1bafbaa67b96850380552e875cde313677da474"
+    },
+    {
+      "name": "_savegpr_25",
+      "address": 2149992832,
+      "size": 4,
+      "sha256": "da9ef5858ffe614285a83445d8c981678ae6d8d7b27b36f9f1baad264defb876"
+    },
+    {
+      "name": "hwDisableIrq",
+      "address": 2150180880,
+      "size": 56,
+      "sha256": "edb5198c972d01b93658216671fd046d6f96210b534bbfa30b6844c8db6138d2"
+    },
+    {
+      "name": "hwSetVolume",
+      "address": 2150174544,
+      "size": 704,
+      "sha256": "7572e8abd4d46b2efbaa2acc084c05712849d45f4cbb8225dd7d905aaaa7657c"
+    },
+    {
+      "name": "SetupVolume",
+      "address": 2150085036,
+      "size": 16,
+      "sha256": "9d414aa2f7326a257a073a4cdea3e73b7be562be0976b9b176a1ac64cff3a910"
+    },
+    {
+      "name": "CheckOutputMode",
+      "address": 2150084984,
+      "size": 52,
+      "sha256": "d55c78d83bcf6dd5584aef2f088c9af23accaff6033b84af1376e9c85676fb8c"
+    },
+    {
+      "name": "GetPrivateIndex",
+      "address": 2150084632,
+      "size": 352,
+      "sha256": "4adccdc6efc6fa9693468f9b7eed6a5aff6bcb5b981def0f4251255c1ca71f6c"
+    },
+    {
+      "name": "SetupVolumeAndPan",
+      "address": 2150085052,
+      "size": 68,
+      "sha256": "d3a4199a5899fb085fe1664272ec43cfa0b55934815ccdd653d161a85e783168"
+    },
+    {
+      "name": "SetHWMix",
+      "address": 2150082060,
+      "size": 140,
+      "sha256": "719c181851e89eba6d4f95c0864adeee2e48f4c9d592eeb397fc14a78e648a7f"
+    },
+    {
+      "name": "hwEnableIrq",
+      "address": 2150180824,
+      "size": 56,
+      "sha256": "3bcc66eb43ecfd8c2739c9765c710b462e66bc98fe31d107c000e0d3e3b6fc81"
+    },
+    {
+      "name": "_restgpr_25",
+      "address": 2149992908,
+      "size": 4,
+      "sha256": "fa22e71785bc91cb8a2ab7bd6b937f8637c064b07e62638ed268069d7dd8f14e"
+    },
+    {
+      "name": "GPR25..31 fallthrough 0x80264980",
+      "address": 2149992832,
+      "size": 32,
+      "sha256": "997b16aca792bab6169a06d20b54c44de2b5bc06ad58c1a0b607a4c80fd90c07"
+    },
+    {
+      "name": "GPR25..31 fallthrough 0x802649cc",
+      "address": 2149992908,
+      "size": 32,
+      "sha256": "38f8b66483cbb0b980bd8f797c6ecc0b101eb2638e4b2b417dae04c92920c383"
+    },
+    {
+      "name": "Stream mix constant 0x80429178",
+      "address": 2151846264,
+      "size": 4,
+      "sha256": "7b75b05602b209475f3d646f32fb7d36affded9fdc8084b78b7511f56098e385"
+    },
+    {
+      "name": "Stream mix constant 0x80429180",
+      "address": 2151846272,
+      "size": 8,
+      "sha256": "2b2979f362d94c89fe17a6e01637f14332de063fe7a544bdc5facfc046f4169f"
+    }
+  ],
+  "dol_anchors": {
+    "2150086684": "90010054",
+    "2150086688": "39610050",
+    "2150086692": "4bfe915d",
+    "2150086716": "48016fd5",
+    "2150086720": "3c608040",
+    "2150086724": "38000008",
+    "2150086728": "3bc398e8",
+    "2150086732": "38600000",
+    "2150086744": "8804000c",
+    "2150086752": "41820014",
+    "2150086756": "80040004",
+    "2150086764": "40820008",
+    "2150086768": "48000110",
+    "2150086772": "88040074",
+    "2150086776": "38630001",
+    "2150086780": "38840068",
+    "2150086788": "41820014",
+    "2150086792": "80040004",
+    "2150086800": "40820008",
+    "2150086804": "480000ec",
+    "2150086808": "88040074",
+    "2150086812": "38630001",
+    "2150086816": "38840068",
+    "2150086824": "41820014",
+    "2150086828": "80040004",
+    "2150086836": "40820008",
+    "2150086840": "480000c8",
+    "2150086844": "88040074",
+    "2150086848": "38630001",
+    "2150086852": "38840068",
+    "2150086860": "41820014",
+    "2150086864": "80040004",
+    "2150086872": "40820008",
+    "2150086876": "480000a4",
+    "2150086880": "88040074",
+    "2150086884": "38630001",
+    "2150086888": "38840068",
+    "2150086896": "41820014",
+    "2150086900": "80040004",
+    "2150086908": "40820008",
+    "2150086912": "48000080",
+    "2150086916": "88040074",
+    "2150086920": "38630001",
+    "2150086924": "38840068",
+    "2150086932": "41820014",
+    "2150086936": "80040004",
+    "2150086944": "40820008",
+    "2150086948": "4800005c",
+    "2150086952": "88040074",
+    "2150086956": "38630001",
+    "2150086960": "38840068",
+    "2150086968": "41820014",
+    "2150086972": "80040004",
+    "2150086980": "40820008",
+    "2150086984": "48000038",
+    "2150086988": "88040074",
+    "2150086992": "38630001",
+    "2150086996": "38840068",
+    "2150087004": "41820014",
+    "2150087008": "80040004",
+    "2150087016": "40820008",
+    "2150087020": "48000014",
+    "2150087024": "38840068",
+    "2150087028": "38630001",
+    "2150087032": "4200fee0",
+    "2150087036": "3860ffff",
+    "2150087040": "3c030001",
+    "2150087048": "418203d4",
+    "2150087056": "3c808040",
+    "2150087060": "38600000",
+    "2150087064": "80ed1f6c",
+    "2150087068": "380498e8",
+    "2150087076": "9b2c0059",
+    "2150087092": "9b8c005c",
+    "2150087104": "3908005c",
+    "2150087108": "986c005d",
+    "2150087112": "3929005d",
+    "2150087116": "9b4c005e",
+    "2150087120": "9b6c005f",
+    "2150087124": "398c0059",
+    "2150087128": "41820010",
+    "2150087136": "38a00040",
+    "2150087140": "48000010",
+    "2150087148": "40820008",
+    "2150087156": "3c608040",
+    "2150087160": "388398e8",
+    "2150087168": "98ab005a",
+    "2150087176": "3ba4000c",
+    "2150087180": "98cb005b",
+    "2150087184": "396b005a",
+    "2150087188": "394a005b",
+    "2150087200": "40820078",
+    "2150087204": "88ac0000",
+    "2150087208": "3ce04330",
+    "2150087212": "88680000",
+    "2150087220": "88090000",
+    "2150087224": "38800000",
+    "2150087228": "90a10014",
+    "2150087236": "90e10010",
+    "2150087240": "88ab0000",
+    "2150087248": "9061001c",
+    "2150087256": "886a0000",
+    "2150087264": "90e10018",
+    "2150087280": "90010024",
+    "2150087292": "8068004c",
+    "2150087296": "90e10020",
+    "2150087316": "480154bd",
+    "2150087320": "3c608040",
+    "2150087324": "386398e8",
+    "2150087332": "3c1f0001",
+    "2150087340": "418202b0",
+    "2150087344": "48016d61",
+    "2150087348": "38000008",
+    "2150087352": "38600000",
+    "2150087360": "881e000c",
+    "2150087368": "41820014",
+    "2150087372": "801e0004",
+    "2150087380": "40820008",
+    "2150087384": "48000110",
+    "2150087388": "881e0074",
+    "2150087392": "38630001",
+    "2150087396": "3bde0068",
+    "2150087404": "41820014",
+    "2150087408": "801e0004",
+    "2150087416": "40820008",
+    "2150087420": "480000ec",
+    "2150087424": "881e0074",
+    "2150087428": "38630001",
+    "2150087432": "3bde0068",
+    "2150087440": "41820014",
+    "2150087444": "801e0004",
+    "2150087452": "40820008",
+    "2150087456": "480000c8",
+    "2150087460": "881e0074",
+    "2150087464": "38630001",
+    "2150087468": "3bde0068",
+    "2150087476": "41820014",
+    "2150087480": "801e0004",
+    "2150087488": "40820008",
+    "2150087492": "480000a4",
+    "2150087496": "881e0074",
+    "2150087500": "38630001",
+    "2150087504": "3bde0068",
+    "2150087512": "41820014",
+    "2150087516": "801e0004",
+    "2150087524": "40820008",
+    "2150087528": "48000080",
+    "2150087532": "881e0074",
+    "2150087536": "38630001",
+    "2150087540": "3bde0068",
+    "2150087548": "41820014",
+    "2150087552": "801e0004",
+    "2150087560": "40820008",
+    "2150087564": "4800005c",
+    "2150087568": "881e0074",
+    "2150087572": "38630001",
+    "2150087576": "3bde0068",
+    "2150087584": "41820014",
+    "2150087588": "801e0004",
+    "2150087596": "40820008",
+    "2150087600": "48000038",
+    "2150087604": "881e0074",
+    "2150087608": "38630001",
+    "2150087612": "3bde0068",
+    "2150087620": "41820014",
+    "2150087624": "801e0004",
+    "2150087632": "40820008",
+    "2150087636": "48000014",
+    "2150087640": "3bde0068",
+    "2150087644": "38630001",
+    "2150087648": "4200fee0",
+    "2150087652": "3860ffff",
+    "2150087656": "3c030001",
+    "2150087664": "41820168",
+    "2150087672": "3c608040",
+    "2150087676": "9b610008",
+    "2150087684": "380398e8",
+    "2150087692": "9b410009",
+    "2150087704": "38c00000",
+    "2150087708": "4bfff591",
+    "2150087712": "88a10009",
+    "2150087716": "38610009",
+    "2150087720": "88010008",
+    "2150087724": "38810008",
+    "2150087728": "98be005e",
+    "2150087732": "981e005f",
+    "2150087736": "4bfff541",
+    "2150087740": "88610009",
+    "2150087744": "88010008",
+    "2150087748": "987e005a",
+    "2150087752": "981e005b",
+    "2150087764": "40820074",
+    "2150087768": "88be0059",
+    "2150087772": "3ce04330",
+    "2150087776": "887e005c",
+    "2150087780": "38800000",
+    "2150087784": "881e005d",
+    "2150087788": "90a10024",
+    "2150087796": "90e10020",
+    "2150087800": "88be005a",
+    "2150087808": "9061001c",
+    "2150087816": "887e005b",
+    "2150087824": "90e10018",
+    "2150087840": "90010014",
+    "2150087852": "807e004c",
+    "2150087856": "90e10010",
+    "2150087876": "4801528d",
+    "2150087880": "83de0000",
+    "2150087884": "3c1e0001",
+    "2150087892": "41820084",
+    "2150087896": "48016b39",
+    "2150087904": "4bfff339",
+    "2150087908": "3c030001",
+    "2150087916": "41820068",
+    "2150087924": "3c608040",
+    "2150087932": "380398e8",
+    "2150087956": "39000000",
+    "2150087960": "4bfff4a5",
+    "2150087972": "4082000c",
+    "2150087980": "4bffe8e1",
+    "2150087984": "807f0000",
+    "2150087988": "3c030001",
+    "2150087996": "41820018",
+    "2150088016": "4bfffac5",
+    "2150088020": "48016a85",
+    "2150088024": "48016a81",
+    "2150088028": "48016a7d",
+    "2150088032": "39610050",
+    "2150088036": "4bfe8c69",
+    "2150088040": "80010054",
+    "2150088048": "38210050",
+    "2150086676": "9421ffb0",
+    "2150086680": "7c0802a6",
+    "2150086696": "7c7d1b78",
+    "2150086700": "7c992378",
+    "2150086704": "7cba2b78",
+    "2150086708": "7cdb3378",
+    "2150086712": "7cfc3b78",
+    "2150086736": "7fc4f378",
+    "2150086740": "7c0903a6",
+    "2150086748": "28000000",
+    "2150086760": "7c1d0040",
+    "2150086784": "28000000",
+    "2150086796": "7c1d0040",
+    "2150086820": "28000000",
+    "2150086832": "7c1d0040",
+    "2150086856": "28000000",
+    "2150086868": "7c1d0040",
+    "2150086892": "28000000",
+    "2150086904": "7c1d0040",
+    "2150086928": "28000000",
+    "2150086940": "7c1d0040",
+    "2150086964": "28000000",
+    "2150086976": "7c1d0040",
+    "2150087000": "28000000",
+    "2150087012": "7c1d0040",
+    "2150087044": "2800ffff",
+    "2150087052": "1fe30068",
+    "2150087072": "7d80fa14",
+    "2150087080": "7d886378",
+    "2150087084": "7d896378",
+    "2150087088": "54e007ff",
+    "2150087096": "7f66db78",
+    "2150087100": "7f45d378",
+    "2150087132": "7c661b78",
+    "2150087144": "54e007bd",
+    "2150087152": "7c661b78",
+    "2150087164": "7d64fa14",
+    "2150087172": "7d6a5b78",
+    "2150087192": "7c1df8ae",
+    "2150087196": "28000002",
+    "2150087216": "7d04fa14",
+    "2150087232": "c8621d40",
+    "2150087244": "c8010010",
+    "2150087252": "54a5801e",
+    "2150087260": "ec201828",
+    "2150087268": "c0821d38",
+    "2150087272": "5466801e",
+    "2150087276": "c8010018",
+    "2150087284": "ec240072",
+    "2150087288": "ec401828",
+    "2150087300": "c8010020",
+    "2150087304": "ec4400b2",
+    "2150087308": "ec001828",
+    "2150087312": "ec640032",
+    "2150087328": "7fe3f82e",
+    "2150087336": "2800ffff",
+    "2150087356": "7c0903a6",
+    "2150087364": "28000000",
+    "2150087376": "7c1f0040",
+    "2150087400": "28000000",
+    "2150087412": "7c1f0040",
+    "2150087436": "28000000",
+    "2150087448": "7c1f0040",
+    "2150087472": "28000000",
+    "2150087484": "7c1f0040",
+    "2150087508": "28000000",
+    "2150087520": "7c1f0040",
+    "2150087544": "28000000",
+    "2150087556": "7c1f0040",
+    "2150087580": "28000000",
+    "2150087592": "7c1f0040",
+    "2150087616": "28000000",
+    "2150087628": "7c1f0040",
+    "2150087660": "2800ffff",
+    "2150087668": "1fe30068",
+    "2150087680": "7f24cb78",
+    "2150087688": "7fc0fa14",
+    "2150087696": "7fc3f378",
+    "2150087700": "7f85e378",
+    "2150087756": "7c1df8ae",
+    "2150087760": "28000002",
+    "2150087792": "c8621d40",
+    "2150087804": "c8010020",
+    "2150087812": "54a5801e",
+    "2150087820": "ec201828",
+    "2150087828": "c0821d38",
+    "2150087832": "5466801e",
+    "2150087836": "c8010018",
+    "2150087844": "ec240072",
+    "2150087848": "ec401828",
+    "2150087860": "c8010010",
+    "2150087864": "ec4400b2",
+    "2150087868": "ec001828",
+    "2150087872": "ec640032",
+    "2150087888": "2800ffff",
+    "2150087900": "7fc3f378",
+    "2150087912": "2800ffff",
+    "2150087920": "1fc30068",
+    "2150087928": "7f24cb78",
+    "2150087936": "7fe0f214",
+    "2150087940": "7f45d378",
+    "2150087944": "7fe3fb78",
+    "2150087948": "7f66db78",
+    "2150087952": "7f87e378",
+    "2150087964": "7c1df0ae",
+    "2150087968": "28000002",
+    "2150087976": "7fe3fb78",
+    "2150087992": "2800ffff",
+    "2150088000": "7f24cb78",
+    "2150088004": "7f45d378",
+    "2150088008": "7f66db78",
+    "2150088012": "7f87e378",
+    "2150088044": "7c0803a6",
+    "2150088052": "4e800020",
+    "2149992832": "932bffe4",
+    "2149992836": "934bffe8",
+    "2149992840": "936bffec",
+    "2149992844": "938bfff0",
+    "2149992848": "93abfff4",
+    "2149992852": "93cbfff8",
+    "2149992856": "93ebfffc",
+    "2149992860": "4e800020",
+    "2149992908": "832bffe4",
+    "2149992912": "834bffe8",
+    "2149992916": "836bffec",
+    "2149992920": "838bfff0",
+    "2149992924": "83abfff4",
+    "2149992928": "83cbfff8",
+    "2149992932": "83ebfffc",
+    "2149992936": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2150086692,
+      "target": 2149992832,
+      "name": "_savegpr_25"
+    },
+    {
+      "site": 2150086716,
+      "target": 2150180880,
+      "name": "hwDisableIrq"
+    },
+    {
+      "site": 2150087316,
+      "target": 2150174544,
+      "name": "hwSetVolume"
+    },
+    {
+      "site": 2150087344,
+      "target": 2150180880,
+      "name": "hwDisableIrq"
+    },
+    {
+      "site": 2150087708,
+      "target": 2150085036,
+      "name": "SetupVolume"
+    },
+    {
+      "site": 2150087736,
+      "target": 2150084984,
+      "name": "CheckOutputMode"
+    },
+    {
+      "site": 2150087876,
+      "target": 2150174544,
+      "name": "hwSetVolume"
+    },
+    {
+      "site": 2150087896,
+      "target": 2150180880,
+      "name": "hwDisableIrq"
+    },
+    {
+      "site": 2150087904,
+      "target": 2150084632,
+      "name": "GetPrivateIndex"
+    },
+    {
+      "site": 2150087960,
+      "target": 2150085052,
+      "name": "SetupVolumeAndPan"
+    },
+    {
+      "site": 2150087980,
+      "target": 2150082060,
+      "name": "SetHWMix"
+    },
+    {
+      "site": 2150088016,
+      "target": 2150086676,
+      "name": "sndStreamMixParameter"
+    },
+    {
+      "site": 2150088020,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    },
+    {
+      "site": 2150088024,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    },
+    {
+      "site": 2150088028,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    },
+    {
+      "site": 2150088036,
+      "target": 2149992908,
+      "name": "_restgpr_25"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "mix_scale": 0.007874015718698502,
+  "stage_bindings": [
+    {
+      "stage": 0,
+      "disable": 2150086716,
+      "hardware_mix_site": 2150087316,
+      "enable": 2150088028,
+      "publication": "inline: capture mode before fields"
+    },
+    {
+      "stage": 1,
+      "disable": 2150087344,
+      "hardware_mix_site": 2150087876,
+      "enable": 2150088024,
+      "publication": "SetupVolume plus stack CheckOutputMode"
+    },
+    {
+      "stage": 2,
+      "disable": 2150087896,
+      "hardware_mix_site": 2150087980,
+      "enable": 2150088020,
+      "publication": "SetupVolumeAndPan and SetHWMix"
+    }
+  ],
+  "derived_mix_vectors": [
+    {
+      "mode": 0,
+      "raw_volume": 127,
+      "raw_pan": 10,
+      "raw_surround": 20,
+      "raw_aux_a": 64,
+      "stored59": 127,
+      "stored5c": 64,
+      "stored5d": 0,
+      "requested5e": 10,
+      "requested5f": 20,
+      "effective5a": 10,
+      "effective5b": 0,
+      "scaled_volume": 1.0,
+      "scaled_aux_a": 0.5039370059967041,
+      "scaled_aux_b": 0
+    },
+    {
+      "mode": 1,
+      "raw_volume": 255,
+      "raw_pan": 255,
+      "raw_surround": 255,
+      "raw_aux_a": 255,
+      "stored59": 255,
+      "stored5c": 255,
+      "stored5d": 0,
+      "requested5e": 255,
+      "requested5f": 255,
+      "effective5a": 64,
+      "effective5b": 0,
+      "scaled_volume": 2.007874011993408,
+      "scaled_aux_a": 2.007874011993408,
+      "scaled_aux_b": 0
+    },
+    {
+      "mode": 2,
+      "raw_volume": 0,
+      "raw_pan": 511,
+      "raw_surround": 511,
+      "raw_aux_a": 0,
+      "stored59": 0,
+      "stored5c": 0,
+      "stored5d": 0,
+      "requested5e": 255,
+      "requested5f": 255,
+      "effective5a": 255,
+      "effective5b": 255,
+      "scaled_volume": 0.0,
+      "scaled_aux_a": 0.0,
+      "scaled_aux_b": 0
+    },
+    {
+      "mode": 3,
+      "raw_volume": 4294967295,
+      "raw_pan": 4294967295,
+      "raw_surround": 4294967295,
+      "raw_aux_a": 4294967295,
+      "stored59": 255,
+      "stored5c": 255,
+      "stored5d": 0,
+      "requested5e": 255,
+      "requested5f": 255,
+      "effective5a": 64,
+      "effective5b": 0,
+      "scaled_volume": 2.007874011993408,
+      "scaled_aux_a": 2.007874011993408,
+      "scaled_aux_b": 0
+    },
+    {
+      "mode": 4294967292,
+      "raw_volume": 1,
+      "raw_pan": 0,
+      "raw_surround": 255,
+      "raw_aux_a": 1,
+      "stored59": 1,
+      "stored5c": 1,
+      "stored5d": 0,
+      "requested5e": 0,
+      "requested5f": 255,
+      "effective5a": 0,
+      "effective5b": 0,
+      "scaled_volume": 0.007874015718698502,
+      "scaled_aux_a": 0.007874015718698502,
+      "scaled_aux_b": 0
+    },
+    {
+      "mode": 2,
+      "raw_volume": 127,
+      "raw_pan": 64,
+      "raw_surround": 127,
+      "raw_aux_a": 127,
+      "stored59": 127,
+      "stored5c": 127,
+      "stored5d": 0,
+      "requested5e": 64,
+      "requested5f": 127,
+      "effective5a": 64,
+      "effective5b": 127,
+      "scaled_volume": 1.0,
+      "scaled_aux_a": 1.0,
+      "scaled_aux_b": 0
+    }
+  ],
+  "derived_chain_vectors": [
+    {
+      "length": 1,
+      "missing_last": false,
+      "initial_states": [
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "updated": true,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "hardware_mix",
+          "id": 0
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 1,
+      "enable_count": 1
+    },
+    {
+      "length": 2,
+      "missing_last": false,
+      "initial_states": [
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "updated": true,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "updated": true,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "hardware_mix",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 1
+        },
+        {
+          "request": "hardware_mix",
+          "id": 1
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 2,
+      "enable_count": 2
+    },
+    {
+      "length": 3,
+      "missing_last": false,
+      "initial_states": [
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "updated": true,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "updated": true,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "updated": true,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "hardware_mix",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 1
+        },
+        {
+          "request": "hardware_mix",
+          "id": 1
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "mix_store",
+          "id": 2
+        },
+        {
+          "request": "hardware_mix",
+          "id": 2
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 3,
+      "enable_count": 3
+    },
+    {
+      "length": 4,
+      "missing_last": false,
+      "initial_states": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "updated": true,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "updated": true,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "updated": true,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 2,
+          "updated": true,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "hardware_mix",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 1
+        },
+        {
+          "request": "hardware_mix",
+          "id": 1
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "mix_store",
+          "id": 2
+        },
+        {
+          "request": "hardware_mix",
+          "id": 2
+        },
+        {
+          "request": "recursive",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 3
+        },
+        {
+          "request": "hardware_mix",
+          "id": 3
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 4,
+      "enable_count": 4
+    },
+    {
+      "length": 5,
+      "missing_last": false,
+      "initial_states": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "updated": true,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "updated": true,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "updated": true,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 2,
+          "updated": true,
+          "companion": 4
+        },
+        {
+          "id": 4,
+          "state": 2,
+          "updated": true,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "hardware_mix",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 1
+        },
+        {
+          "request": "hardware_mix",
+          "id": 1
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "mix_store",
+          "id": 2
+        },
+        {
+          "request": "hardware_mix",
+          "id": 2
+        },
+        {
+          "request": "recursive",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 3
+        },
+        {
+          "request": "hardware_mix",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 4
+        },
+        {
+          "request": "hardware_mix",
+          "id": 4
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 5,
+      "enable_count": 5
+    },
+    {
+      "length": 6,
+      "missing_last": false,
+      "initial_states": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "updated": true,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "updated": true,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "updated": true,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 2,
+          "updated": true,
+          "companion": 4
+        },
+        {
+          "id": 4,
+          "state": 2,
+          "updated": true,
+          "companion": 5
+        },
+        {
+          "id": 5,
+          "state": 2,
+          "updated": true,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "hardware_mix",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 1
+        },
+        {
+          "request": "hardware_mix",
+          "id": 1
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "mix_store",
+          "id": 2
+        },
+        {
+          "request": "hardware_mix",
+          "id": 2
+        },
+        {
+          "request": "recursive",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 3
+        },
+        {
+          "request": "hardware_mix",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 4
+        },
+        {
+          "request": "hardware_mix",
+          "id": 4
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "mix_store",
+          "id": 5
+        },
+        {
+          "request": "hardware_mix",
+          "id": 5
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 6,
+      "enable_count": 6
+    },
+    {
+      "length": 7,
+      "missing_last": false,
+      "initial_states": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "updated": true,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "updated": true,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "updated": true,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 2,
+          "updated": true,
+          "companion": 4
+        },
+        {
+          "id": 4,
+          "state": 2,
+          "updated": true,
+          "companion": 5
+        },
+        {
+          "id": 5,
+          "state": 2,
+          "updated": true,
+          "companion": 6
+        },
+        {
+          "id": 6,
+          "state": 2,
+          "updated": true,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "hardware_mix",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 1
+        },
+        {
+          "request": "hardware_mix",
+          "id": 1
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "mix_store",
+          "id": 2
+        },
+        {
+          "request": "hardware_mix",
+          "id": 2
+        },
+        {
+          "request": "recursive",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 3
+        },
+        {
+          "request": "hardware_mix",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 4
+        },
+        {
+          "request": "hardware_mix",
+          "id": 4
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "mix_store",
+          "id": 5
+        },
+        {
+          "request": "hardware_mix",
+          "id": 5
+        },
+        {
+          "request": "recursive",
+          "id": 6
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 6
+        },
+        {
+          "request": "hardware_mix",
+          "id": 6
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 7,
+      "enable_count": 7
+    },
+    {
+      "length": 1,
+      "missing_last": true,
+      "initial_states": [
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "updated": true,
+          "companion": 1
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "hardware_mix",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 2,
+      "enable_count": 2
+    },
+    {
+      "length": 2,
+      "missing_last": true,
+      "initial_states": [
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "updated": true,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "updated": true,
+          "companion": 2
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "hardware_mix",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 1
+        },
+        {
+          "request": "hardware_mix",
+          "id": 1
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 3,
+      "enable_count": 3
+    },
+    {
+      "length": 3,
+      "missing_last": true,
+      "initial_states": [
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "updated": true,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "updated": true,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "updated": true,
+          "companion": 3
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "hardware_mix",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 1
+        },
+        {
+          "request": "hardware_mix",
+          "id": 1
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "mix_store",
+          "id": 2
+        },
+        {
+          "request": "hardware_mix",
+          "id": 2
+        },
+        {
+          "request": "recursive",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 4,
+      "enable_count": 4
+    },
+    {
+      "length": 4,
+      "missing_last": true,
+      "initial_states": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "updated": true,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "updated": true,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "updated": true,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 2,
+          "updated": true,
+          "companion": 4
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "hardware_mix",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 1
+        },
+        {
+          "request": "hardware_mix",
+          "id": 1
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "mix_store",
+          "id": 2
+        },
+        {
+          "request": "hardware_mix",
+          "id": 2
+        },
+        {
+          "request": "recursive",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 3
+        },
+        {
+          "request": "hardware_mix",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 5,
+      "enable_count": 5
+    },
+    {
+      "length": 5,
+      "missing_last": true,
+      "initial_states": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "updated": true,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "updated": true,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "updated": true,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 2,
+          "updated": true,
+          "companion": 4
+        },
+        {
+          "id": 4,
+          "state": 2,
+          "updated": true,
+          "companion": 5
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "hardware_mix",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 1
+        },
+        {
+          "request": "hardware_mix",
+          "id": 1
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "mix_store",
+          "id": 2
+        },
+        {
+          "request": "hardware_mix",
+          "id": 2
+        },
+        {
+          "request": "recursive",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 3
+        },
+        {
+          "request": "hardware_mix",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 4
+        },
+        {
+          "request": "hardware_mix",
+          "id": 4
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 6,
+      "enable_count": 6
+    },
+    {
+      "length": 5,
+      "missing_last": false,
+      "initial_states": [
+        1,
+        2,
+        3,
+        255,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 1,
+          "updated": true,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "updated": true,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 3,
+          "updated": true,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 255,
+          "updated": true,
+          "companion": 4
+        },
+        {
+          "id": 4,
+          "state": 2,
+          "updated": true,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 1
+        },
+        {
+          "request": "hardware_mix",
+          "id": 1
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "mix_store",
+          "id": 2
+        },
+        {
+          "request": "recursive",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 4
+        },
+        {
+          "request": "hardware_mix",
+          "id": 4
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 5,
+      "enable_count": 5
+    },
+    {
+      "length": 5,
+      "missing_last": false,
+      "initial_states": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 3,
+          "updated": true,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 3,
+          "updated": true,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 3,
+          "updated": true,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 3,
+          "updated": true,
+          "companion": 4
+        },
+        {
+          "id": 4,
+          "state": 3,
+          "updated": true,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 1
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "mix_store",
+          "id": 2
+        },
+        {
+          "request": "recursive",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 3
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "mix_store",
+          "id": 4
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 5,
+      "enable_count": 5
+    },
+    {
+      "length": 5,
+      "missing_last": false,
+      "initial_states": [
+        2,
+        0,
+        2,
+        1,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "updated": true,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 0,
+          "updated": false,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "updated": false,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 1,
+          "updated": false,
+          "companion": 4
+        },
+        {
+          "id": 4,
+          "state": 2,
+          "updated": false,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "mix_store",
+          "id": 0
+        },
+        {
+          "request": "hardware_mix",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 2,
+      "enable_count": 2
+    }
+  ],
+  "source_namespace_inventory": [
+    {
+      "name": "streamInit",
+      "address": 2150081860,
+      "size": 200,
+      "manifest": "musyx_stream_kill_hw_break_evidence.json",
+      "closure": "complete_body"
+    },
+    {
+      "name": "SetHWMix",
+      "address": 2150082060,
+      "size": 140,
+      "manifest": "musyx_stream_lookup_mode_mix_evidence.json",
+      "closure": "complete_body"
+    },
+    {
+      "name": "streamHandle",
+      "address": 2150082200,
+      "size": 2276,
+      "manifest": "musyx_stream_finish_composition_evidence.json",
+      "closure": "composed"
+    },
+    {
+      "name": "streamCorrectLoops",
+      "address": 2150084476,
+      "size": 4,
+      "manifest": "musyx_audio_frame_aux_processing_evidence.json",
+      "closure": "complete_body"
+    },
+    {
+      "name": "streamKill",
+      "address": 2150084480,
+      "size": 152,
+      "manifest": "musyx_stream_kill_hw_break_evidence.json",
+      "closure": "complete_body"
+    },
+    {
+      "name": "GetPrivateIndex",
+      "address": 2150084632,
+      "size": 352,
+      "manifest": "musyx_stream_lookup_mode_mix_evidence.json",
+      "closure": "complete_body"
+    },
+    {
+      "name": "CheckOutputMode",
+      "address": 2150084984,
+      "size": 52,
+      "manifest": "musyx_stream_lookup_mode_mix_evidence.json",
+      "closure": "complete_body"
+    },
+    {
+      "name": "SetupVolume",
+      "address": 2150085036,
+      "size": 16,
+      "manifest": "musyx_stream_lookup_mode_mix_evidence.json",
+      "closure": "complete_body"
+    },
+    {
+      "name": "SetupVolumeAndPan",
+      "address": 2150085052,
+      "size": 68,
+      "manifest": "musyx_stream_lookup_mode_mix_evidence.json",
+      "closure": "complete_body"
+    },
+    {
+      "name": "streamOutputModeChanged",
+      "address": 2150085120,
+      "size": 304,
+      "manifest": "musyx_stream_output_mode_propagation_evidence.json",
+      "closure": "complete_body"
+    },
+    {
+      "name": "sndStreamAllocEx",
+      "address": 2150085424,
+      "size": 1184,
+      "manifest": "musyx_stream_allocation_and_length_evidence.json",
+      "closure": "complete_body"
+    },
+    {
+      "name": "sndStreamAllocLength",
+      "address": 2150086608,
+      "size": 68,
+      "manifest": "musyx_stream_allocation_and_length_evidence.json",
+      "closure": "complete_body"
+    },
+    {
+      "name": "sndStreamMixParameter",
+      "address": 2150086676,
+      "size": 1380,
+      "manifest": "musyx_stream_mix_chain_evidence.json",
+      "closure": "complete_body"
+    },
+    {
+      "name": "sndStreamFrq",
+      "address": 2150088056,
+      "size": 1640,
+      "manifest": "musyx_stream_frequency_chain_evidence.json",
+      "closure": "complete_body"
+    },
+    {
+      "name": "sndStreamFree",
+      "address": 2150089696,
+      "size": 1748,
+      "manifest": "musyx_stream_free_chain_evidence.json",
+      "closure": "complete_body"
+    },
+    {
+      "name": "sndStreamActivate",
+      "address": 2150091444,
+      "size": 1624,
+      "manifest": "musyx_stream_activation_companion_composition_evidence.json",
+      "closure": "composed"
+    },
+    {
+      "name": "sndStreamDeactivate",
+      "address": 2150093068,
+      "size": 1812,
+      "manifest": "musyx_stream_deactivation_chain_evidence.json",
+      "closure": "complete_body"
+    }
+  ]
+}

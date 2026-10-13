@@ -101,3 +101,9 @@ Remaining: stream mix, actual caller/frequency/reference/ID/state/voice/companio
 IRQ/providers and valid value/index/extent/alias/lifetime/concurrency/stack/ABI/
 termination/FP/conversion domains, transitive ARAM/DSP consumers and original
 frequency/chained partial update/audio traces. EVT-01/native/full-game binding OPEN.
+
+## 2026-10-13 — Mix/local inventory follow-up
+
+[Mix/local inventory](MUSYX_STREAM_MIX_AND_LOCAL_MODULE_COVERAGE.md) closes mix and audits17 tagged stream.c
+local functions. Providers/IRQ/FP/chain domains/transitive/original audio/
+native binding remain open.

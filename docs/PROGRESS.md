@@ -2,6 +2,32 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero stream mix/local inventory
+
+Completed sndStreamMixParameter/ABI helpers and audited all17 tagged stream.c
+local functions; checked EVT-01 portion.
+[Mix/local inventory](behavior/audio/MUSYX_STREAM_MIX_AND_LOCAL_MODULE_COVERAGE.md)
+pins AuxB0/three publication routes/fresh state2/retained raw argument recursion/
+IRQ order. All17 local tagged functions answered; provider domains/transitive
+ARAM/DSP/original audio/native binding remain open.
+
+Validation: new read-only ISO manifest passed15 spans,361 anchors,16 calls.
+Six byte/mode/gain vectors/fifteen stable chain models checked. All17 CSV-tagged
+functions matched name/address/size to full fingerprints and complete/composed
+contracts;16 inventory/prerequisite manifests reverified. Link audit passed910
+Markdown files/zero broken links; scoped `git diff --check` passed. Mathematical
+source/inventory checks are separate from original execution and full runtime
+coverage. Documentation/metadata only; no `make test`/`make all` rerun. Fresh
+full original ELF/listing/generator stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded. Previously approved push remains pending
+invalid GitHub credentials.
+
+Next: priority-zero EVT-01 actual stream caller/state/ID/parameter/mode/voice/
+companion/IRQ/resource providers and valid value/index/extent/encoding/alias/
+lifetime/concurrency/stack/ABI/termination/FP domains, transitive ARAM/DSP and
+original startup/refill/mix/frequency/free/chained failure/audio traces.
+Remaining macro/song/backend, lower-priority inbox/full native/game work open.
+
 ## 2026-10-13 — Inbox priority-zero stream frequency chain
 
 Completed sndStreamFrq/ABI helpers; checked EVT-01 portion.

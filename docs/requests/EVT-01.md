@@ -548,6 +548,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [frequency chain](../behavior/audio/MUSYX_STREAM_FREQUENCY_AND_COMPANION_CHAIN.md).
   Raw store/fresh gates/reference/multiply-before-divide/conversion/enables
   pinned; mix/FP/chain/providers/runtime remain open.
+- [x] Complete sndStreamMixParameter and audit all17 US CSV-tagged
+  stream.c functions for local contract coverage —
+  [mix/local inventory](../behavior/audio/MUSYX_STREAM_MIX_AND_LOCAL_MODULE_COVERAGE.md).
+  AuxB0/three publication routes/fresh state2/original argument forwarding/
+  IRQ order pinned; provider domains/transitive/original audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2747,3 +2752,13 @@ vectors/fifteen stable chain models checked. Raw frequency-before-fresh-state2,
 reference/voice reads, single multiply-before-divide/signed conversion, retained
 frequency forwarding and four-stage enables pinned. Mix/FP/chain/IRQ/provider
 domains/original frequency/audio/native binding open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream mix/local-function inventory delivery
+
+Completed whole local mix body and audited17 tagged stream.c functions in
+[mix/local inventory](../behavior/audio/MUSYX_STREAM_MIX_AND_LOCAL_MODULE_COVERAGE.md).
+Fifteen spans/361 anchors/16 calls verified; six mix/fifteen chain models checked.
+AuxB0/three mode-read publication routes/fresh state2/three-stage recursion
+pinned. All17 names/addresses/sizes matched complete/composed evidence; inventory
+and composed prerequisites reverified. Providers/IRQ/FP/chain domains/transitive
+ARAM/DSP/original audio/native binding remain open; EVT-01 stays OPEN.
