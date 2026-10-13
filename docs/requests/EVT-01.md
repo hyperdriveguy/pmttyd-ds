@@ -123,6 +123,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [effect/listener/completion main](../behavior/audio/GAME_EFFECT_MAIN_LISTENER_EMITTER_AND_COMPLETION.md).
   Separate pool captures/fresh cleanup/double check/countdown order pinned;
   listener/providers/sequence/SS/DVD/voice/concurrency/runtime remain open.
+- [x] Complete sndUpdateListener/salCrossProduct/salInvertMatrix
+  bodies and original literals —
+  [listener/cross/inverse](../behavior/audio/MUSYX_LISTENER_UPDATE_CROSS_AND_MATRIX_INVERSE.md).
+  Vector/matrix/rounding/store order pinned; basis/allocation/alias/singular/
+  PPC/consumer/source/original runtime remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -948,3 +953,18 @@ double-query metadata derived only; full fresh ELFs/listings remain `/tmp`.
 No native changes/original execution/body/bank export. Listener/providers/pool/
 sequence metadata/writers/alias/concurrency/SS/DVD/controller/voice and original
 completion/displacement/audio traces remain OPEN.
+
+### 2026-10-13 — Listener update, cross product and matrix inverse
+
+[Three complete local bodies](../behavior/audio/MUSYX_LISTENER_UPDATE_CROSS_AND_MATRIX_INVERSE.md)
+close active-gated four-vector ordered copies, cross-product row basis/position
+stack matrix, inverse cofactor/translation store order and low-byte volume/127.
+No normalization/singular fallback/status rejection or in-place alias safety
+invented. Math uses separate single instructions; child result is not checked.
+
+Validation: read-only manifest10 spans (3 complete/4 linked/3 literal),229
+anchors/six resolved direct calls passes. Derived stack/store maps/two admitted
+matrix examples/one cross example are static deductions, not original numeric
+execution. Full fresh ELFs/listings stay `/tmp`; no native/body/asset export.
+Listener/basis/providers/alias/null/finite/invertible/PPC/CalcEmitter consumers
+and original geometry/audio remain OPEN.

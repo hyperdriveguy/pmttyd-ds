@@ -5,6 +5,26 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 MusyX listener update and cross/inverse math
+
+Delivered [listener/cross/inverse](behavior/audio/MUSYX_LISTENER_UPDATE_CROSS_AND_MATRIX_INVERSE.md).
+Three complete bodies pin four-vector publication, cross-product order, stack
+matrix layout, inverse cofactor/translation stores and low-byte volume/127.
+No normalization, singular rejection or in-place snapshot guarantee added.
+Marked local EVT-01 portions complete; numeric/source/consumer/runtime OPEN.
+
+Validation: generic read-only verifier10 spans (3 complete/4 linked/3 literal),
+229 anchors/six resolved direct calls passes. Derived stack/store maps and two
+admitted matrix/one cross examples remain static deductions; no original code
+executes. Full fresh ELFs/listings stay `/tmp`. Link audit761 Markdown files/
+0 broken; whitespace checks pass. Docs/metadata only: no make rerun, native
+change or original body/asset export. Isolated index excludes unrelated work.
+
+Next/limits: listener/basis/allocation providers, null/nonalias/finite/invertible/
+PPC numerical domains, CalcEmitter/consumer transforms and original geometry/
+audio traces. Continue priority0 source/backend then priority1 damage graph.
+No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Priority0 game effect main and outer sound updates
 
 Delivered [effect/listener/completion main](behavior/audio/GAME_EFFECT_MAIN_LISTENER_EMITTER_AND_COMPLETION.md).

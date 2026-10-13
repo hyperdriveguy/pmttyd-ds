@@ -120,3 +120,5 @@ record/pool/countdown/sequence metadata writers, pointer/flag/alias/concurrency
 invariants, DVD/SS/sequence/controller/voice execution and original displacement/
 completion/audio traces. Three complete local services are answered; full native/
 source/runtime/hardware equivalence remains OPEN.
+
+[Complete listener update/cross/inverse](MUSYX_LISTENER_UPDATE_CROSS_AND_MATRIX_INVERSE.md) now closes the exact listener child and its math helpers. Actual basis/allocation/alias/singular/PPC/consumer/source/runtime remains open.
