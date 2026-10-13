@@ -43,3 +43,30 @@ currently use M_Z_1 as a static stand-in and must not be treated as the paper
 geometry. Please recover the pose-table slice and the pipe paper lifecycle;
 leave further field presentation/sound/source/format claims unproven. No lock
 reserved.
+
+## Native implementation breadcrumbs
+
+Native note (2026-10-12): reviewed
+[water numerics](../behavior/overworld/OVERWORLD_WATER_RECOVERY_NUMERICS.md)
+and
+[bottomless numerics](../behavior/overworld/OVERWORLD_BOTTOMLESS_RECOVERY_NUMERICS.md)
+against the native prototype `WaterRecovery` (`source/water_recovery.cpp`).
+Independently re-read the ISO DOL and confirmed the bottomless drop-back lanes
+at 0x80091bd4-0x80091bf0: `[124]/[128]/[132]/[136] = 0.34 / -0.002 / -0.01 /
+0.0`. Applied only that replacement (the prototype's
+`-.001/-.002/+.00024/-.00004` cascade matched just the `-0.002` lane), pinned it
+in `tests/field_camera_tests.cpp`, and marked the lanes recovered in
+`include/water_recovery.hpp`.
+
+Not applied, because the deliverable leaves them unestablished or the prototype
+has no matching structure: the `-6.0` sink velocity and the stage-0/1 sink/hold
+chain (the prologue branch reads as `[Mario+124] == 0.0` on the DOL, i.e. the
+opposite guard direction from the contract's `!= 0.0`; float-chain interiors
+open), the `0.08` travel step and `distance/0.08` ratio (no such SDA constant),
+the authored `state==15` handling (no original stage-15 slot), and the rise/arc
+velocities. The prototype still does **not** model the `[Mario+552]`-mismatch
+condition or the `r4`-sourced default fall lanes, so a constant swap alone is
+not full recovery. The pose-table slice
+([call-site survey](../behavior/overworld/OVERWORLD_POSE_CALL_SITE_SURVEY.md))
+and the pipe-paper lifecycle remain open. No lock reserved. Validation:
+`make test` 87 CTest / 90 Python pass, `make all` 3DSX pass.
