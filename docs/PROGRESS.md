@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero macro scheduler/scoped dispatch
+
+Completed whole macHandle outer contract and four macHandleActive dispatch
+regions for EVT-01; checked the corresponding inbox portion.
+[Scheduler/scoped dispatch](behavior/audio/MUSYX_MACRO_SCHEDULER_AND_SCOPED_DISPATCH.md)
+pins wait/active/event/captured-next/deadline and macro-clock order, shared
+command-budget fetch/PC publication,17 selector registrations and common join.
+Normal unmodified counter admits32 commands; attempt33 returns before fetch.
+Remaining active initialization/other opcodes are open; no whole-interpreter,
+original execution or rendering-frame timing claim from a function fingerprint.
+
+Validation: read-only ISO manifest passed29 spans (one complete body/four regions/
+23 linked/one table),158 anchors/24 calls.17 registrations/six wait/six clock/11
+opcode/five budget/five event vectors checked as deductions. Link audit passed796
+Markdown files/zero broken links; `git diff --check` passed. Documentation/metadata
+only; no `make test`/`make all` rerun. Full original inspection ELFs/listing stay
+`/tmp`; no bodies/binary assets committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 complete remaining macHandleActive initialization/
+opcodes/children and actual command/flag/list/debug/time writers; valid sorted/
+member/cycle/alias/reentrancy/IRQ/concurrency/clock/first-mode/r28 domains and
+original macro scheduling/audio traces. Full scheduler/native/runtime binding,
+lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero macro input selectors/first-use/dirty
 
 Completed18 macro input selector/global dirty setter local contracts and four

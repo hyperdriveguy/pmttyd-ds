@@ -148,3 +148,10 @@ first-row/r28/count/index/coefficient/parameter/studio/channel/set/bounds/alias/
 IRQ/concurrency domains and original selection/recompute/audio traces.18 local
 bodies are answered; EVT-01 and full native/source/runtime/hardware equivalence
 remain OPEN.
+
+### Interpreter registration follow-up
+
+[Complete outer scheduler/scoped dispatch](MUSYX_MACRO_SCHEDULER_AND_SCOPED_DISPATCH.md)
+now pins wait/event/active traversal, macro-clock tail, command-budget/PC order
+and exact17 selector opcode registrations. Remaining interpreter initialization/
+opcodes, actual command/flag/list/time writers and original audio remain open.

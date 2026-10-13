@@ -1,0 +1,937 @@
+{
+  "schema": 1,
+  "scope": "Complete outer macro scheduler and four complete dispatch regions/selector stubs; macHandleActive initialization/other opcodes/providers/runtime open",
+  "complete_bodies": [
+    "macHandle"
+  ],
+  "linked_only": [
+    "_savegpr_26",
+    "macMakeActive",
+    "hwIsActive",
+    "macHandleActive",
+    "_restgpr_26",
+    "mcmdVolumeSelect",
+    "mcmdPanningSelect",
+    "mcmdPitchWheelSelect",
+    "mcmdModWheelSelect",
+    "mcmdPedalSelect",
+    "mcmdPortamentoSelect",
+    "mcmdReverbSelect",
+    "mcmdSurroundPanningSelect",
+    "mcmdDopplerSelect",
+    "mcmdTremoloSelect",
+    "mcmdPreAuxASelect",
+    "mcmdPreAuxBSelect",
+    "mcmdPostAuxBSelect",
+    "mcmdAuxAFXSelect",
+    "mcmdAuxBFXSelect",
+    "mcmdFilterSwitchSelect",
+    "mcmdFilterParameterSelect",
+    "_restgpr_25"
+  ],
+  "dol_spans": [
+    {
+      "name": "macHandle",
+      "address": 2150119604,
+      "size": 340,
+      "sha256": "f1b7eb39076e5b809d8f295f16988845a00a72e1d5885d06022b6a625e74b052"
+    },
+    {
+      "name": "_savegpr_26",
+      "address": 2149992836,
+      "size": 4,
+      "sha256": "f9a0aa775cd3482d87e2d3594f54c8a8832221d827a4d8687a00b0d1a8c4ac1d"
+    },
+    {
+      "name": "macMakeActive",
+      "address": 2150120784,
+      "size": 264,
+      "sha256": "26132eacfba3d5579c15a85f19ac04506ff5bcf7a59d589e01b028b2c1bbdd5a"
+    },
+    {
+      "name": "hwIsActive",
+      "address": 2150172632,
+      "size": 32,
+      "sha256": "375b411fbc13b4d8177c69d863b45104eda75645bf41a10378495e6c8a1db650"
+    },
+    {
+      "name": "macHandleActive",
+      "address": 2150115616,
+      "size": 3988,
+      "sha256": "a6e756fbbfec0844f2b838477c3f9ef76bca03b795a07903449474fe3c4603df"
+    },
+    {
+      "name": "_restgpr_26",
+      "address": 2149992912,
+      "size": 4,
+      "sha256": "6f2c01e0c60008d78187c0c8715d1a5751793fd00e4991dbda7b49b230a193a9"
+    },
+    {
+      "name": "macro_dispatch_fetch",
+      "address": 2150116244,
+      "size": 116,
+      "sha256": "0daa6cb0422596cf4ae6fbf4cbfcd078ddf64b6ac60c875fdb699e0adfb1af85"
+    },
+    {
+      "name": "macro_selectors64_78",
+      "address": 2150118888,
+      "size": 240,
+      "sha256": "1a51c3b00ecbfc894097f935050804719f450469ef43b0be98ecbb3fa49db12a"
+    },
+    {
+      "name": "mcmdVolumeSelect",
+      "address": 2150108692,
+      "size": 260,
+      "sha256": "f45cda4a125c0038137865fce5ecc2ad485f2a93961e3bd701f56ebaad46468b"
+    },
+    {
+      "name": "mcmdPanningSelect",
+      "address": 2150108952,
+      "size": 260,
+      "sha256": "34c81cb308ba7bf6109929e42082fe31581812503964009189f75b9e56c7e82c"
+    },
+    {
+      "name": "mcmdPitchWheelSelect",
+      "address": 2150109212,
+      "size": 260,
+      "sha256": "a47f0c88f9a934ffc529d4265a053da67e4caef26ad9787516de25952c30559c"
+    },
+    {
+      "name": "mcmdModWheelSelect",
+      "address": 2150109472,
+      "size": 260,
+      "sha256": "410b5871675ea6e494d47d0fd7bfbee8bb404eba2836faf3cc494c26925948b1"
+    },
+    {
+      "name": "mcmdPedalSelect",
+      "address": 2150109732,
+      "size": 260,
+      "sha256": "e1d6d43c04384ca8c508ff8e16adc53bf397d27c0265800726be00459a4ec523"
+    },
+    {
+      "name": "mcmdPortamentoSelect",
+      "address": 2150109992,
+      "size": 260,
+      "sha256": "6923724c808bd0b45cf6c4d08dd7974e7fb76b2416b9b673dc0b6d41e251b0a5"
+    },
+    {
+      "name": "mcmdReverbSelect",
+      "address": 2150110252,
+      "size": 260,
+      "sha256": "25c0a993634c2af2bfc9696b04c57541b8451bc6fecda3ce2baaf9c162732d47"
+    },
+    {
+      "name": "mcmdSurroundPanningSelect",
+      "address": 2150111292,
+      "size": 260,
+      "sha256": "b4dc61cc359c90e9b40daf17e4f75352a642950c7d8fb549f8d4ea95bb406e3a"
+    },
+    {
+      "name": "mcmdDopplerSelect",
+      "address": 2150111552,
+      "size": 260,
+      "sha256": "0605bdf1d1d54b7ae99d2d685b8bb1830c7a0dd77a820772a13da4cd77e3c92a"
+    },
+    {
+      "name": "mcmdTremoloSelect",
+      "address": 2150111812,
+      "size": 260,
+      "sha256": "3a3c86373154f055444bcc6d0ca6eb9cec7ba6c44b08c3b318a915e6789b0be2"
+    },
+    {
+      "name": "mcmdPreAuxASelect",
+      "address": 2150110512,
+      "size": 260,
+      "sha256": "bef28823881846fa7e73198d744ab314ef89333c2ce6d876b18e2e2e25c9e03a"
+    },
+    {
+      "name": "mcmdPreAuxBSelect",
+      "address": 2150110772,
+      "size": 260,
+      "sha256": "c5ac664a5c59d02425bef4298358fcf485f1a2b2985f06afbd9e2c064fd47c99"
+    },
+    {
+      "name": "mcmdPostAuxBSelect",
+      "address": 2150111032,
+      "size": 260,
+      "sha256": "2ec2657e392534290ebed6b9e0e8339b1473974d4772dcfed2ad0db50e24e991"
+    },
+    {
+      "name": "mcmdAuxAFXSelect",
+      "address": 2150112592,
+      "size": 380,
+      "sha256": "304f16c46fbd60910590c7a2146c62afc6eb8ee6431c2382a195213f396121c7"
+    },
+    {
+      "name": "mcmdAuxBFXSelect",
+      "address": 2150112972,
+      "size": 380,
+      "sha256": "6a437856b2db5b120921394e5b01da0c0621cfe3ca5054e0f32c788e59780082"
+    },
+    {
+      "name": "macro_selectors94_95",
+      "address": 2150119320,
+      "size": 32,
+      "sha256": "12c90292d1c79f554f013a67b8f6f774ccc2d5b57b8c57e420203951835c97ea"
+    },
+    {
+      "name": "mcmdFilterSwitchSelect",
+      "address": 2150112072,
+      "size": 260,
+      "sha256": "f03b12a9b6dfedd3f777e210701c5cd273b0208a5cb833a43f50d92a0a1f9584"
+    },
+    {
+      "name": "mcmdFilterParameterSelect",
+      "address": 2150112332,
+      "size": 260,
+      "sha256": "f8b0d50e79bf0466544889476268846a735ba94bed870834aa956c5384d5dc46"
+    },
+    {
+      "name": "macro_dispatch_join_exit",
+      "address": 2150119572,
+      "size": 32,
+      "sha256": "f55276b2277ee1856e05c771e28bc752e21ca46cfe77884df46070aa69e1e3c0"
+    },
+    {
+      "name": "_restgpr_25",
+      "address": 2149992908,
+      "size": 4,
+      "sha256": "fa22e71785bc91cb8a2ab7bd6b937f8637c064b07e62638ed268069d7dd8f14e"
+    },
+    {
+      "name": "macro_opcode_jump_table",
+      "address": 2151398552,
+      "size": 456,
+      "sha256": "345713d3d8e89aaa83f2d07674a81487a12ccc098b28598b23ca5b091dafd4a2"
+    }
+  ],
+  "dol_anchors": {
+    "2150119612": "90010024",
+    "2150119616": "39610020",
+    "2150119620": "4bfe10c1",
+    "2150119624": "836d1ff8",
+    "2150119632": "4800001c",
+    "2150119636": "835b0044",
+    "2150119644": "48000475",
+    "2150119648": "939b00a4",
+    "2150119652": "93fb00a0",
+    "2150119664": "41820028",
+    "2150119668": "839b009c",
+    "2150119672": "800d1ff4",
+    "2150119676": "83fb0098",
+    "2150119680": "806d1ff0",
+    "2150119700": "4182ffc0",
+    "2150119704": "83ed1ffc",
+    "2150119708": "480000b4",
+    "2150119712": "881f0068",
+    "2150119716": "83df003c",
+    "2150119724": "41820018",
+    "2150119728": "807f0054",
+    "2150119744": "48000008",
+    "2150119748": "38000000",
+    "2150119756": "41820078",
+    "2150119760": "801f0114",
+    "2150119764": "38800000",
+    "2150119768": "80bf0118",
+    "2150119772": "38600020",
+    "2150119796": "40820050",
+    "2150119800": "801f00f4",
+    "2150119808": "4800ce59",
+    "2150119816": "4082003c",
+    "2150119820": "881f0068",
+    "2150119828": "41820030",
+    "2150119832": "801f0054",
+    "2150119840": "41820024",
+    "2150119844": "809f0060",
+    "2150119848": "38000000",
+    "2150119856": "909f0038",
+    "2150119860": "809f0054",
+    "2150119864": "909f0034",
+    "2150119868": "901f0054",
+    "2150119872": "48000391",
+    "2150119880": "4bffef59",
+    "2150119892": "4082ff4c",
+    "2150119896": "806d1ff4",
+    "2150119900": "800d1ff0",
+    "2150119912": "906d1ff4",
+    "2150119916": "900d1ff0",
+    "2150119920": "39610020",
+    "2150119924": "4bfe0fdd",
+    "2150119928": "80010024",
+    "2150119936": "38210020",
+    "2150116244": "38000000",
+    "2150116248": "3c608040",
+    "2150116252": "980d2000",
+    "2150116256": "3ba38540",
+    "2150116260": "3b8d1fe8",
+    "2150116264": "886d2000",
+    "2150116268": "38630001",
+    "2150116272": "5460063e",
+    "2150116276": "986d2000",
+    "2150116280": "28000020",
+    "2150116284": "41810ce0",
+    "2150116288": "809f0038",
+    "2150116292": "3bc00000",
+    "2150116296": "80640000",
+    "2150116300": "38040008",
+    "2150116304": "906d1fe8",
+    "2150116308": "80640004",
+    "2150116312": "907c0004",
+    "2150116316": "901f0038",
+    "2150116320": "834d1fe8",
+    "2150116324": "5740067e",
+    "2150116328": "28000071",
+    "2150116332": "41810ca8",
+    "2150116336": "3c60803c",
+    "2150116340": "5400103a",
+    "2150116344": "3863bc98",
+    "2150116348": "7c03002e",
+    "2150116352": "7c0903a6",
+    "2150116356": "4e800420",
+    "2150118888": "7fe3fb78",
+    "2150118892": "388d1fe8",
+    "2150118896": "4bffd825",
+    "2150118900": "480002a0",
+    "2150118904": "7fe3fb78",
+    "2150118908": "388d1fe8",
+    "2150118912": "4bffd919",
+    "2150118916": "48000290",
+    "2150118920": "7fe3fb78",
+    "2150118924": "388d1fe8",
+    "2150118928": "4bffda0d",
+    "2150118932": "48000280",
+    "2150118936": "7fe3fb78",
+    "2150118940": "388d1fe8",
+    "2150118944": "4bffdb01",
+    "2150118948": "48000270",
+    "2150118952": "7fe3fb78",
+    "2150118956": "388d1fe8",
+    "2150118960": "4bffdbf5",
+    "2150118964": "48000260",
+    "2150118968": "7fe3fb78",
+    "2150118972": "388d1fe8",
+    "2150118976": "4bffdce9",
+    "2150118980": "48000250",
+    "2150118984": "7fe3fb78",
+    "2150118988": "388d1fe8",
+    "2150118992": "4bffdddd",
+    "2150118996": "48000240",
+    "2150119000": "7fe3fb78",
+    "2150119004": "388d1fe8",
+    "2150119008": "4bffe1dd",
+    "2150119012": "48000230",
+    "2150119016": "7fe3fb78",
+    "2150119020": "388d1fe8",
+    "2150119024": "4bffe2d1",
+    "2150119028": "48000220",
+    "2150119032": "7fe3fb78",
+    "2150119036": "388d1fe8",
+    "2150119040": "4bffe3c5",
+    "2150119044": "48000210",
+    "2150119048": "7fe3fb78",
+    "2150119052": "388d1fe8",
+    "2150119056": "4bffdea1",
+    "2150119060": "48000200",
+    "2150119064": "7fe3fb78",
+    "2150119068": "388d1fe8",
+    "2150119072": "4bffdf95",
+    "2150119076": "480001f0",
+    "2150119080": "7fe3fb78",
+    "2150119084": "388d1fe8",
+    "2150119088": "4bffe089",
+    "2150119092": "480001e0",
+    "2150119096": "7fe3fb78",
+    "2150119100": "388d1fe8",
+    "2150119104": "4bffe691",
+    "2150119108": "480001d0",
+    "2150119112": "7fe3fb78",
+    "2150119116": "388d1fe8",
+    "2150119120": "4bffe7fd",
+    "2150119124": "480001c0",
+    "2150119320": "7fe3fb78",
+    "2150119324": "388d1fe8",
+    "2150119328": "4bffe3a9",
+    "2150119332": "480000f0",
+    "2150119336": "7fe3fb78",
+    "2150119340": "388d1fe8",
+    "2150119344": "4bffe49d",
+    "2150119348": "480000e0",
+    "2150119572": "281e0000",
+    "2150119576": "4182f310",
+    "2150119580": "39610030",
+    "2150119584": "4bfe112d",
+    "2150119588": "80010034",
+    "2150119592": "7c0803a6",
+    "2150119596": "38210030",
+    "2150119600": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2150119620,
+      "target": 2149992836,
+      "name": "_savegpr_26"
+    },
+    {
+      "site": 2150119644,
+      "target": 2150120784,
+      "name": "macMakeActive"
+    },
+    {
+      "site": 2150119808,
+      "target": 2150172632,
+      "name": "hwIsActive"
+    },
+    {
+      "site": 2150119872,
+      "target": 2150120784,
+      "name": "macMakeActive"
+    },
+    {
+      "site": 2150119880,
+      "target": 2150115616,
+      "name": "macHandleActive"
+    },
+    {
+      "site": 2150119924,
+      "target": 2149992912,
+      "name": "_restgpr_26"
+    },
+    {
+      "site": 2150118896,
+      "target": 2150108692,
+      "name": "mcmdVolumeSelect"
+    },
+    {
+      "site": 2150118912,
+      "target": 2150108952,
+      "name": "mcmdPanningSelect"
+    },
+    {
+      "site": 2150118928,
+      "target": 2150109212,
+      "name": "mcmdPitchWheelSelect"
+    },
+    {
+      "site": 2150118944,
+      "target": 2150109472,
+      "name": "mcmdModWheelSelect"
+    },
+    {
+      "site": 2150118960,
+      "target": 2150109732,
+      "name": "mcmdPedalSelect"
+    },
+    {
+      "site": 2150118976,
+      "target": 2150109992,
+      "name": "mcmdPortamentoSelect"
+    },
+    {
+      "site": 2150118992,
+      "target": 2150110252,
+      "name": "mcmdReverbSelect"
+    },
+    {
+      "site": 2150119008,
+      "target": 2150111292,
+      "name": "mcmdSurroundPanningSelect"
+    },
+    {
+      "site": 2150119024,
+      "target": 2150111552,
+      "name": "mcmdDopplerSelect"
+    },
+    {
+      "site": 2150119040,
+      "target": 2150111812,
+      "name": "mcmdTremoloSelect"
+    },
+    {
+      "site": 2150119056,
+      "target": 2150110512,
+      "name": "mcmdPreAuxASelect"
+    },
+    {
+      "site": 2150119072,
+      "target": 2150110772,
+      "name": "mcmdPreAuxBSelect"
+    },
+    {
+      "site": 2150119088,
+      "target": 2150111032,
+      "name": "mcmdPostAuxBSelect"
+    },
+    {
+      "site": 2150119104,
+      "target": 2150112592,
+      "name": "mcmdAuxAFXSelect"
+    },
+    {
+      "site": 2150119120,
+      "target": 2150112972,
+      "name": "mcmdAuxBFXSelect"
+    },
+    {
+      "site": 2150119328,
+      "target": 2150112072,
+      "name": "mcmdFilterSwitchSelect"
+    },
+    {
+      "site": 2150119344,
+      "target": 2150112332,
+      "name": "mcmdFilterParameterSelect"
+    },
+    {
+      "site": 2150119584,
+      "target": 2149992908,
+      "name": "_restgpr_25"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "complete_regions": [
+    "macro_dispatch_fetch",
+    "macro_selectors64_78",
+    "macro_selectors94_95",
+    "macro_dispatch_join_exit"
+  ],
+  "opcode_jump_targets": [
+    2150116360,
+    2150116384,
+    2150116408,
+    2150116464,
+    2150116524,
+    2150116544,
+    2150116560,
+    2150116632,
+    2150116660,
+    2150116676,
+    2150116800,
+    2150116880,
+    2150116960,
+    2150116976,
+    2150116992,
+    2150117008,
+    2150117024,
+    2150117040,
+    2150117056,
+    2150117080,
+    2150117144,
+    2150117160,
+    2150117176,
+    2150117192,
+    2150117208,
+    2150117228,
+    2150117312,
+    2150117440,
+    2150117456,
+    2150117472,
+    2150117576,
+    2150117680,
+    2150117736,
+    2150117752,
+    2150117844,
+    2150117976,
+    2150118004,
+    2150118088,
+    2150119572,
+    2150119572,
+    2150118108,
+    2150118228,
+    2150118296,
+    2150118312,
+    2150118424,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150118440,
+    2150118548,
+    2150118588,
+    2150118612,
+    2150118636,
+    2150118660,
+    2150118680,
+    2150118696,
+    2150118760,
+    2150118804,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150118888,
+    2150118904,
+    2150118920,
+    2150118936,
+    2150118952,
+    2150118968,
+    2150118984,
+    2150119000,
+    2150119016,
+    2150119032,
+    2150119048,
+    2150119064,
+    2150119080,
+    2150119096,
+    2150119112,
+    2150119572,
+    2150119128,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119208,
+    2150119252,
+    2150119268,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119320,
+    2150119336,
+    2150119352,
+    2150119372,
+    2150119392,
+    2150119412,
+    2150119432,
+    2150119452,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119572,
+    2150119536,
+    2150119556
+  ],
+  "selector_dispatch": [
+    {
+      "opcode": 64,
+      "stub": 2150118888,
+      "callsite": 2150118896,
+      "target": 2150108692,
+      "name": "mcmdVolumeSelect"
+    },
+    {
+      "opcode": 65,
+      "stub": 2150118904,
+      "callsite": 2150118912,
+      "target": 2150108952,
+      "name": "mcmdPanningSelect"
+    },
+    {
+      "opcode": 66,
+      "stub": 2150118920,
+      "callsite": 2150118928,
+      "target": 2150109212,
+      "name": "mcmdPitchWheelSelect"
+    },
+    {
+      "opcode": 67,
+      "stub": 2150118936,
+      "callsite": 2150118944,
+      "target": 2150109472,
+      "name": "mcmdModWheelSelect"
+    },
+    {
+      "opcode": 68,
+      "stub": 2150118952,
+      "callsite": 2150118960,
+      "target": 2150109732,
+      "name": "mcmdPedalSelect"
+    },
+    {
+      "opcode": 69,
+      "stub": 2150118968,
+      "callsite": 2150118976,
+      "target": 2150109992,
+      "name": "mcmdPortamentoSelect"
+    },
+    {
+      "opcode": 70,
+      "stub": 2150118984,
+      "callsite": 2150118992,
+      "target": 2150110252,
+      "name": "mcmdReverbSelect"
+    },
+    {
+      "opcode": 71,
+      "stub": 2150119000,
+      "callsite": 2150119008,
+      "target": 2150111292,
+      "name": "mcmdSurroundPanningSelect"
+    },
+    {
+      "opcode": 72,
+      "stub": 2150119016,
+      "callsite": 2150119024,
+      "target": 2150111552,
+      "name": "mcmdDopplerSelect"
+    },
+    {
+      "opcode": 73,
+      "stub": 2150119032,
+      "callsite": 2150119040,
+      "target": 2150111812,
+      "name": "mcmdTremoloSelect"
+    },
+    {
+      "opcode": 74,
+      "stub": 2150119048,
+      "callsite": 2150119056,
+      "target": 2150110512,
+      "name": "mcmdPreAuxASelect"
+    },
+    {
+      "opcode": 75,
+      "stub": 2150119064,
+      "callsite": 2150119072,
+      "target": 2150110772,
+      "name": "mcmdPreAuxBSelect"
+    },
+    {
+      "opcode": 76,
+      "stub": 2150119080,
+      "callsite": 2150119088,
+      "target": 2150111032,
+      "name": "mcmdPostAuxBSelect"
+    },
+    {
+      "opcode": 77,
+      "stub": 2150119096,
+      "callsite": 2150119104,
+      "target": 2150112592,
+      "name": "mcmdAuxAFXSelect"
+    },
+    {
+      "opcode": 78,
+      "stub": 2150119112,
+      "callsite": 2150119120,
+      "target": 2150112972,
+      "name": "mcmdAuxBFXSelect"
+    },
+    {
+      "opcode": 94,
+      "stub": 2150119320,
+      "callsite": 2150119328,
+      "target": 2150112072,
+      "name": "mcmdFilterSwitchSelect"
+    },
+    {
+      "opcode": 95,
+      "stub": 2150119336,
+      "callsite": 2150119344,
+      "target": 2150112332,
+      "name": "mcmdFilterParameterSelect"
+    }
+  ],
+  "derived_wait_vectors": [
+    {
+      "now": 0,
+      "deadline": 0,
+      "activates": true
+    },
+    {
+      "now": 0,
+      "deadline": 1,
+      "activates": false
+    },
+    {
+      "now": 1,
+      "deadline": 0,
+      "activates": true
+    },
+    {
+      "now": 4294967296,
+      "deadline": 4294967295,
+      "activates": true
+    },
+    {
+      "now": 4294967295,
+      "deadline": 4294967296,
+      "activates": false
+    },
+    {
+      "now": 18446744073709551615,
+      "deadline": 18446744073709551615,
+      "activates": true
+    }
+  ],
+  "derived_clock_vectors": [
+    {
+      "before": 0,
+      "raw_delta": 0,
+      "after": 0
+    },
+    {
+      "before": 0,
+      "raw_delta": 1,
+      "after": 1
+    },
+    {
+      "before": 4294967295,
+      "raw_delta": 1,
+      "after": 4294967296
+    },
+    {
+      "before": 4294967295,
+      "raw_delta": 4294967295,
+      "after": 8589934590
+    },
+    {
+      "before": 18446744073709551615,
+      "raw_delta": 1,
+      "after": 0
+    },
+    {
+      "before": 18446744073709551615,
+      "raw_delta": 4294967295,
+      "after": 4294967294
+    }
+  ],
+  "derived_opcode_vectors": [
+    {
+      "raw_word": 0,
+      "opcode": 0,
+      "table_admitted": true,
+      "pc_advance": 8
+    },
+    {
+      "raw_word": 64,
+      "opcode": 64,
+      "table_admitted": true,
+      "pc_advance": 8
+    },
+    {
+      "raw_word": 78,
+      "opcode": 78,
+      "table_admitted": true,
+      "pc_advance": 8
+    },
+    {
+      "raw_word": 94,
+      "opcode": 94,
+      "table_admitted": true,
+      "pc_advance": 8
+    },
+    {
+      "raw_word": 95,
+      "opcode": 95,
+      "table_admitted": true,
+      "pc_advance": 8
+    },
+    {
+      "raw_word": 113,
+      "opcode": 113,
+      "table_admitted": true,
+      "pc_advance": 8
+    },
+    {
+      "raw_word": 114,
+      "opcode": 114,
+      "table_admitted": false,
+      "pc_advance": 8
+    },
+    {
+      "raw_word": 127,
+      "opcode": 127,
+      "table_admitted": false,
+      "pc_advance": 8
+    },
+    {
+      "raw_word": 128,
+      "opcode": 0,
+      "table_admitted": true,
+      "pc_advance": 8
+    },
+    {
+      "raw_word": 255,
+      "opcode": 127,
+      "table_admitted": false,
+      "pc_advance": 8
+    },
+    {
+      "raw_word": 4294967295,
+      "opcode": 127,
+      "table_admitted": false,
+      "pc_advance": 8
+    }
+  ],
+  "derived_budget_vectors": [
+    {
+      "before": 0,
+      "stored_next": 1,
+      "fetches": true
+    },
+    {
+      "before": 31,
+      "stored_next": 32,
+      "fetches": true
+    },
+    {
+      "before": 32,
+      "stored_next": 33,
+      "fetches": false
+    },
+    {
+      "before": 254,
+      "stored_next": 255,
+      "fetches": false
+    },
+    {
+      "before": 255,
+      "stored_next": 0,
+      "fetches": true
+    }
+  ],
+  "derived_event_gate_vectors": [
+    {
+      "event_byte": 0,
+      "event_pointer": 1,
+      "flags_low": 0,
+      "hardware_active": 0,
+      "first_gate": false,
+      "restore_if_stable": false
+    },
+    {
+      "event_byte": 1,
+      "event_pointer": 0,
+      "flags_low": 0,
+      "hardware_active": 0,
+      "first_gate": false,
+      "restore_if_stable": false
+    },
+    {
+      "event_byte": 1,
+      "event_pointer": 1,
+      "flags_low": 32,
+      "hardware_active": 0,
+      "first_gate": false,
+      "restore_if_stable": false
+    },
+    {
+      "event_byte": 1,
+      "event_pointer": 1,
+      "flags_low": 0,
+      "hardware_active": 1,
+      "first_gate": true,
+      "restore_if_stable": false
+    },
+    {
+      "event_byte": 1,
+      "event_pointer": 1,
+      "flags_low": 0,
+      "hardware_active": 0,
+      "first_gate": true,
+      "restore_if_stable": true
+    }
+  ]
+}

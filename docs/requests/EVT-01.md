@@ -245,6 +245,12 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Conditional first-use mode0 builder chain, coefficient decode and post-child
   dirty publication pinned; interpreter/flag lifecycle/shared ownership/global
   first-row/r28/bounds and original macro/audio evidence remain open.
+- [x] Complete macHandle outer body and scoped macHandleActive fetch/
+  selector-stub/join regions —
+  [macro scheduler/dispatch](../behavior/audio/MUSYX_MACRO_SCHEDULER_AND_SCOPED_DISPATCH.md).
+  Wait/active/event/captured-next/clock order,32-command normal budget,
+  pre-dispatch PC advance and17 opcode registrations pinned; other active
+  initialization/opcodes/providers/domain/original scheduling/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1505,3 +1511,21 @@ found17 builder calls in these selector bodies. Full fresh ELFs/listings stay
 `/tmp`; no native change/original execution/body/binary asset export. Actual
 interpreter/flag lifecycle/shared ownership/other writers, global first-mode/
 r28/parameter/studio/channel/bounds/alias/concurrency and original audio remain OPEN.
+
+### 2026-10-13 — Outer macro scheduler and scoped command dispatch
+
+[Complete macHandle and four dispatch regions](../behavior/audio/MUSYX_MACRO_SCHEDULER_AND_SCOPED_DISPATCH.md)
+close due wait activation/captured successor/deadline publication, active event
+restoration/interpreter requests and fresh64-bit clock tail. Fetch increments
+shared byte budget before command access, advances PC before low7 opcode dispatch,
+and registers17 recovered selector stubs. Under an unmodified counter32 commands
+execute; attempt33 exits before fetch. Other macHandleActive initialization/
+opcode bodies are explicitly open; whole-body hash is not semantic closure.
+No global queue repair, renderer-frame cadence or unknown-opcode error invented.
+
+Validation: read-only manifest29 spans (one complete body/four regions/23 linked/
+one table),158 anchors/24 calls passes.17 registrations/six wait/six clock/11
+opcode/five budget/five event vectors checked as deductions. Full fresh ELFs/
+listing stay `/tmp`; no native change/original execution/body/binary asset export.
+Remaining opcode/child/command/flag/list/debug/time writers, sorted/member/cycle/
+alias/reentrancy/IRQ/concurrency/first-mode/r28 and original macro/audio remain OPEN.
