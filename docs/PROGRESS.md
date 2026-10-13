@@ -2,6 +2,33 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Priority0 Monosiri table, consumer and census answer
+
+Delivered [Tattle table/consumers](behavior/battle/MONOSIRI_TABLE_SOURCE_AND_CONSUMERS.md)
+and rewrote [lookup](behavior/audio/BATTLE_UNIT_MONOSIRI_LOOKUP.md). Corrected
+spatial-sound misclassification, lis arithmetic, impossible-null and safe-caching
+claims. Original sampling actually tests pointer0, reloads kind and looks up
+again; arbitrary invalid kind can wrap to0. Initialized231-record table supplies
+six name/help/log/model/pose/additional-key fields. Complete message-key callback
+resolves its unused second argument then raw output before fresh unit lookup,
+without actor translation. Direct census:17 DOL calls,2 REL24 imports.
+
+Validation: generic metadata verifier13 spans/40 anchors; sampling verifier7
+bodies/48 anchors/14 constants passes. Independent DOL scan and US usage audit
+agree17 linked/0 nonlink/0 data-word candidates plus2 imports across29 RELs.
+All231 table records/column counts and original example identifiers inspected;
+wrapped-zero derivation checked. Inspection files and reports remain `/tmp`.
+Link audit708 Markdown files/0 broken links; whitespace check passes. Docs and
+metadata only: no make rerun, native change or original asset/dialogue export.
+Unrelated staged/worktree edits are preserved outside the commit.
+
+Next/limits: table mutation/alias/valid-kind and full Tattle/log/AC/REL/event/
+save/runtime binding remain open. Separately observed flag setters/readers use
+persistent switches and battle work, not table-population writes. Recover that
+shared flag graph and correct the SW_SET rotate-by-five interpretation, then
+continue priority0 source/menu/audio/runtime requests. No original gameplay/
+hardware/full-game equivalence claim.
+
 ## 2026-10-13 — Original Hammer charge cue resource answer
 
 Delivered [two charge cue bindings](behavior/audio/HAMMER_CHARGE_CUE_RESOURCE_BINDINGS.md)

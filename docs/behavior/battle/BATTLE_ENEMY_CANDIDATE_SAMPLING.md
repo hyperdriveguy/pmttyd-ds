@@ -181,3 +181,12 @@ and equal-X blocking, actor pointer exception, positive versus nonpositive equal
 key ordering, and unused padding. Source writers, full status/numerical/helper
 contracts, valid capacity/domain proofs, selection UI and original traces remain
 open. This closes local sampling semantics without establishing encounter timing.
+
+## Monosiri source clarification (2026-10-13)
+
+The [corrected Tattle table/consumer contract](MONOSIRI_TABLE_SOURCE_AND_CONSUMERS.md)
+confirms the actual pointer-null test and fresh unit-kind reload/second lookup
+in C-mask1. Its field4 is a battle-help message-key pointer, not a spatial-sound
+resource. The original admission table above remains correct; earlier lookup
+prose dismissing the pointer check is superseded. Table/leaf/event-key bodies
+are now delivered, while source mutation/kind domains and runtime stay open.

@@ -20,17 +20,15 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete psndMain cooldown producer; scoped SFXMain completion sweep,
   pending transition and preference reset — same delivery.
 - [ ] Remaining SFXMain spatial/volume/startup/macro/resource/backend/source
-  chain and original audio traces; complete Monosiri consumer/source binding.
-- [x] Complete `battleGetUnitMonosiriPtr` 8012ef20 with its original
-  table/source provisioning — **answered** by ID 3 on 2026-10-12
-  ([lookup](../behavior/audio/BATTLE_UNIT_MONOSIRI_LOOKUP.md)): the table is
-  `monosiriMessageTable` at `0x8036CF40` (`.data`), stride **24**, **5544 bytes
-  = exactly 231 records**. The 20-byte body is `lis -32713; addi -12480` plus
-  `mulli 24`, so it is a pure address computation with a **signed** multiply
-  and **no** bounds check, **no** negative-kind check and **no** null return
-  path. *Record field layout beyond the known `+0x04` null test, the table's
-  writers and the full call census remain open, so this closes the lookup
-  function, not the whole Monosiri/spatial playback area.*
+  chain and original audio traces.
+- [x] Complete battleGetUnitMonosiriPtr8012ef20, initialized231-record
+  Tattle/message/model table, six used field roles, complete message-key event
+  leaf and scoped direct census17 DOL calls/2 REL imports —
+  [source/consumers](../behavior/battle/MONOSIRI_TABLE_SOURCE_AND_CONSUMERS.md),
+  [corrected lookup](../behavior/audio/BATTLE_UNIT_MONOSIRI_LOOKUP.md).
+  Earlier spatial-sound/caller/null-domain claims are superseded.
+- [ ] Monosiri table mutation/alias/valid-kind invariants, indirect/dynamic
+  callers and full Tattle/log/AC/event/presentation/persistence/runtime binding.
 - [x] Local menu-type writers, direct caller census and concrete Input
   state11 same-invocation cursor reuse — answered by the [type/reuse contract](../behavior/battle/WEAPON_MENU_TYPE_DOMAINS_AND_CURSOR_REUSE.md),
   [ActMenu publication](../behavior/battle/ACT_MENU_MAIN_SELECTION_AND_TYPE_PUBLICATION.md),
@@ -429,3 +427,25 @@ Validation: nine independently regenerated body listings under `/tmp`;
 DOL verifier with `tools/positional_sfx_corrections_evidence.json`. No new tool
 code or native/asset change. Full spatial/backend/macro/resource/original
 execution remains open, with no fabricated playback or sample mapping.
+
+### 2026-10-13 — Monosiri table/source/census and message-key leaf
+
+[Original table/consumers](../behavior/battle/MONOSIRI_TABLE_SOURCE_AND_CONSUMERS.md)
+answers initialized231-row source provisioning, six used pointer fields,
+complete get_monosiri_msg_no leaf and17 direct DOL calls plus2 module0 REL24
+imports across29 shipped RELs. It is Tattle/message/model data, not spatial
+sound. Corrected lookup arithmetic and invalid-domain null behavior: no guarded
+null failure, but wrapping arbitrary kind can compute0. The actual sampling
+pointer test and second fresh kind/lookup are preserved, not optimized away.
+The event helper resolves a second operand even though its result is unused,
+then captures raw output before fresh battle/unit lookup; no actor translation.
+Raw identifiers are read from ISO strings rather than truncated symbol labels.
+
+Validation:13 body/table fingerprints and40 source anchors pass generic DOL
+verification; existing sampling verifier7 bodies/48 anchors/14 constants passes.
+Independent direct-reference scan and US usage audit agree17 linked/0 nonlink/
+0 data-word candidates plus2 REL imports. Independent table scan checks all231
+records and column nonnull counts230/164/143/229/230/230; actual example IDs
+and wrapped-zero derivation were verified. Inspection-only files remain `/tmp`.
+No native tool/code or original asset/dialogue payload change; full table writer/
+source-domain/Tattle/log/AC/persistence/runtime integration remains OPEN.

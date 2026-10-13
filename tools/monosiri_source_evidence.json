@@ -1,0 +1,373 @@
+{
+  "schema": 1,
+  "scope": "Corrected complete Monosiri/Tattle lookup and message-key callback; initialized table, scoped consumers/direct census; no full log/REL/AC/runtime closure",
+  "dol_spans": [
+    {
+      "name": "battleGetUnitMonosiriPtr",
+      "address": 2148724512,
+      "size": 20,
+      "sha256": "1b9b355b1415421c6829c8a4ff01091c57e36aec47bc10cb17cbfebb4bdd247f"
+    },
+    {
+      "name": "btlevtcmd_get_monosiri_msg_no",
+      "address": 2149094832,
+      "size": 132,
+      "sha256": "acf5186643557c465923df6416b14310b2775aed704b27cb431111f9536a848e"
+    },
+    {
+      "name": "_btlSamplingEnemy",
+      "address": 2148529796,
+      "size": 3028,
+      "sha256": "8276dd99cd4c9e1572b903ed72fe3d20a8700be749ee33bdbdbf078cc4ffb15b"
+    },
+    {
+      "name": "compare_func3_r",
+      "address": 2148882808,
+      "size": 312,
+      "sha256": "b0874ec2b285f1486a2e9aa101e2b945a286fce291b824225ebca9b1aa35216f"
+    },
+    {
+      "name": "compare_func3",
+      "address": 2148883120,
+      "size": 312,
+      "sha256": "31435df47b7436d12356d3708ce845d54a6c779b54b8fd8dfa25118802dd7d51"
+    },
+    {
+      "name": "compare_func2_r",
+      "address": 2148883620,
+      "size": 276,
+      "sha256": "2d114a37855e178fe0fab35159673d32d155528663046992a68d4ff104422bdd"
+    },
+    {
+      "name": "compare_func2",
+      "address": 2148883896,
+      "size": 276,
+      "sha256": "aedfb265b5eddd0174581dfbfd57a3336afeef3e9a890ea5f7bbd67effbd19fc"
+    },
+    {
+      "name": "monosiri_disp",
+      "address": 2148995124,
+      "size": 2228,
+      "sha256": "7ab42571a77f68a8acfc20dd15c7ff411ae2370fc1f1f19fda384cb3e0f1ad51"
+    },
+    {
+      "name": "monosiriMain",
+      "address": 2148999880,
+      "size": 984,
+      "sha256": "83003079899fa9ed9bdd7a8cb09cb4a9117a9ec23f98296be012a9491005b699"
+    },
+    {
+      "name": "monoshiriGX",
+      "address": 2149001036,
+      "size": 2324,
+      "sha256": "e6e932fe18d10b3cacc0d02c0b27ee7aca10f862711cad680125af3fa1eba4fd"
+    },
+    {
+      "name": "winLogMain",
+      "address": 2149010932,
+      "size": 7560,
+      "sha256": "48499c2eb8f7d227c2c76854be307f3fe24022dd15b64d8bae828313516806ea"
+    },
+    {
+      "name": "winLogInit",
+      "address": 2149018928,
+      "size": 3108,
+      "sha256": "3b70160a0ee429818182ba274930ca40d8ac79cb2e3d57603b0215344b817562"
+    },
+    {
+      "name": "monosiriMessageTable",
+      "address": 2151075648,
+      "size": 5544,
+      "sha256": "bfc4c3d1b467a49b72afa952b4e3991ab741575f00be17c2a55563a90c2ab03a"
+    }
+  ],
+  "dol_anchors": {
+    "2148724512": "1c830018",
+    "2148724516": "3c608037",
+    "2148724520": "3803cf40",
+    "2148724524": "7c602214",
+    "2149094868": "4bea7c8d",
+    "2149094884": "4bea7c7d",
+    "2149094888": "83ff0008",
+    "2149094896": "806d1c70",
+    "2149094900": "4bf6f2d9",
+    "2149094904": "80630008",
+    "2149094908": "4bfa5925",
+    "2149094920": "80a40004",
+    "2149094928": "4bea76ed",
+    "2148531308": "801d01ac",
+    "2148531312": "54000319",
+    "2148531332": "4802f29d",
+    "2148531336": "28030000",
+    "2148531340": "4082000c",
+    "2148531352": "807c0008",
+    "2148531356": "4802f285",
+    "2148531360": "80030004",
+    "2148531368": "4082000c",
+    "2148883180": "807e0000",
+    "2148883196": "807f0000",
+    "2148996804": "807f0000",
+    "2148996808": "4bf104c5",
+    "2148997056": "807f0014",
+    "2148997060": "4bf103c9",
+    "2149000364": "8063000c",
+    "2149000372": "4bec7859",
+    "2149000568": "807c000c",
+    "2149000576": "4becf1ed",
+    "2149000592": "809c0010",
+    "2149000596": "4becebdd",
+    "2149002008": "80790000",
+    "2149002012": "4bf0f071",
+    "2149021588": "80030008",
+    "2149021936": "80030008",
+    "2149017880": "80a40008",
+    "2149017892": "4bfec5ad"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "table_nonnull_counts": [
+    230,
+    164,
+    143,
+    229,
+    230,
+    230
+  ],
+  "record_examples": [
+    {
+      "kind": 0,
+      "pointers": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "identifiers": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "kind": 1,
+      "pointers": [
+        2150565720,
+        2150565736,
+        2150565752,
+        2150565768,
+        2150565780,
+        2150565788
+      ],
+      "identifiers": [
+        "btl_un_kuriboo",
+        "btl_hlp_kuriboo",
+        "menu_enemy_001",
+        "c_kuribo",
+        "KUR_Z_2",
+        "menu_monosiri_nara"
+      ]
+    },
+    {
+      "kind": 13,
+      "pointers": [
+        2150566468,
+        2150566488,
+        0,
+        2150566452,
+        2150566460,
+        2150565988
+      ],
+      "identifiers": [
+        "btl_un_kamec_bunsin",
+        "btl_hlp_kamec_bunshin",
+        null,
+        "c_kamek",
+        "KMK_Z_1",
+        "menu_monosiri_tik"
+      ]
+    },
+    {
+      "kind": 208,
+      "pointers": [
+        2150576980,
+        0,
+        0,
+        2150565768,
+        2150565780,
+        2150566664
+      ],
+      "identifiers": [
+        "btl_un_ufo",
+        null,
+        null,
+        "c_kuribo",
+        "KUR_Z_2",
+        "menu_monosiri_gon"
+      ]
+    },
+    {
+      "kind": 222,
+      "pointers": [
+        2150577308,
+        2150577324,
+        2150577340,
+        2150565768,
+        2150565780,
+        2150565780
+      ],
+      "identifiers": [
+        "btl_un_mario",
+        "btl_hlp_mario",
+        "menu_enemy_160",
+        "c_kuribo",
+        "KUR_Z_2",
+        "KUR_Z_2"
+      ]
+    },
+    {
+      "kind": 223,
+      "pointers": [
+        2150577356,
+        0,
+        2150577372,
+        2150565768,
+        2150565780,
+        2150565780
+      ],
+      "identifiers": [
+        "btl_un_koura",
+        null,
+        "menu_enemy_161",
+        "c_kuribo",
+        "KUR_Z_2",
+        "KUR_Z_2"
+      ]
+    },
+    {
+      "kind": 224,
+      "pointers": [
+        2150576400,
+        0,
+        2150577292,
+        2150565768,
+        2150565780,
+        2150565780
+      ],
+      "identifiers": [
+        "btl_un_christine",
+        null,
+        "menu_enemy_162",
+        "c_kuribo",
+        "KUR_Z_2",
+        "KUR_Z_2"
+      ]
+    }
+  ],
+  "dol_direct_references": [
+    {
+      "site": 2148531332,
+      "link": true,
+      "containing_body": "_btlSamplingEnemy"
+    },
+    {
+      "site": 2148531356,
+      "link": true,
+      "containing_body": "_btlSamplingEnemy"
+    },
+    {
+      "site": 2148882848,
+      "link": true,
+      "containing_body": "compare_func3_r"
+    },
+    {
+      "site": 2148882860,
+      "link": true,
+      "containing_body": "compare_func3_r"
+    },
+    {
+      "site": 2148883160,
+      "link": true,
+      "containing_body": "compare_func3"
+    },
+    {
+      "site": 2148883172,
+      "link": true,
+      "containing_body": "compare_func3"
+    },
+    {
+      "site": 2148883644,
+      "link": true,
+      "containing_body": "compare_func2_r"
+    },
+    {
+      "site": 2148883656,
+      "link": true,
+      "containing_body": "compare_func2_r"
+    },
+    {
+      "site": 2148883920,
+      "link": true,
+      "containing_body": "compare_func2"
+    },
+    {
+      "site": 2148883932,
+      "link": true,
+      "containing_body": "compare_func2"
+    },
+    {
+      "site": 2148996596,
+      "link": true,
+      "containing_body": "monosiri_disp"
+    },
+    {
+      "site": 2149000352,
+      "link": true,
+      "containing_body": "monosiriMain"
+    },
+    {
+      "site": 2149001888,
+      "link": true,
+      "containing_body": "monoshiriGX"
+    },
+    {
+      "site": 2149017868,
+      "link": true,
+      "containing_body": "winLogMain"
+    },
+    {
+      "site": 2149021584,
+      "link": true,
+      "containing_body": "winLogInit"
+    },
+    {
+      "site": 2149021932,
+      "link": true,
+      "containing_body": "winLogInit"
+    },
+    {
+      "site": 2149094908,
+      "link": true,
+      "containing_body": "btlevtcmd_get_monosiri_msg_no"
+    }
+  ],
+  "rel_imports": [
+    {
+      "module": "rel/gor.rel",
+      "section": 1,
+      "offset": 20620,
+      "relocation_type": 10
+    },
+    {
+      "module": "rel/tou2.rel",
+      "section": 1,
+      "offset": 15352,
+      "relocation_type": 10
+    }
+  ]
+}
