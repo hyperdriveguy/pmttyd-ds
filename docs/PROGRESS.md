@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero PCM and whole stream producer
+
+Completed PCM continuation/whole local _sscallback; checked EVT-01 and kept
+ssDecodeDPCM/manager/providers/original/native binding open.
+[PCM/composition](behavior/audio/GAME_STREAM_PRODUCER_PCM_AND_WHOLE_COMPOSITION.md)
+pins initial alignment/per-copy count, boundary-before-position, retry skipping
+position/end and copied-count early-stop return. All local producer routes closed.
+
+Validation: read-only ISO new manifest passed two spans,136 anchors,zero calls.
+Prior dispatch/encoded manifests reverified; all521 disjoint words cover complete
+824-byte callback, checked against ISO. Six alignment/seven step/four return
+vectors/publication sites checked. Link audit passed931 Markdown files/zero
+broken links; scoped diff check passed. Mathematical deductions separate from
+original execution. Docs/metadata only; no make test/all rerun. Fresh full callback/
+helper ELFs/listings/scoped generator stay /tmp; no bodies/assets committed.
+Concurrent native work excluded. Approved push pending valid GitHub credentials.
+
+Next: priority-zero EVT-01 ssDecodeDPCM/deferred DVD manager and actual providers/
+value/extent/alias/lifetime/IRQ/concurrency/ABI domains, transitive SDK/cache/ARAM/
+AI/DSP and original starvation/buffer-switch/loop/early-stop/refill/audio traces.
+Other inbox/native/full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero producer live encoded region
 
 Completed _sscallback subrecord/decode-call/ADPCM byte-copy region; EVT-01 checked.

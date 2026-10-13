@@ -601,7 +601,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] _sscallback live subrecord/decode-call/ADPCM copy region —
   [live encoded](../behavior/audio/GAME_STREAM_PRODUCER_LIVE_ENCODED_COPY_AND_DECODE_CALLS.md). Tags/helper return chain/rounded
   byte copy/boundary/total/second-span/requested-count pinned; PCM/helper open.
-- [ ] _sscallback, deferred DVD manager and original header/resource/provider/
+- [x] _sscallback PCM continuation and whole local callback — [PCM/composition](../behavior/audio/GAME_STREAM_PRODUCER_PCM_AND_WHOLE_COMPOSITION.md).
+  All521 words verified; count/boundary-before-position/retry/early-stop return
+  pinned; decoder/providers/original/native binding remains open.
+- [ ] ssDecodeDPCM, deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
@@ -3006,3 +3009,12 @@ remains0b;nextcallsets0c delay. Freshnormal10delay100/fiveSFX;firstheld
 delay10/oneSFX. ExpIconEnd clearsE30mask2, iconDelete onlyactive1bit, retains
 all19E pointers/recordbytes; nofree/wholememset. Docs-only/read-only/no native
 edits/build/commit; git diff --check.
+
+## 2026-10-13 — Stream producer PCM and whole callback delivery
+
+Completed [PCM/whole composition](../behavior/audio/GAME_STREAM_PRODUCER_PCM_AND_WHOLE_COMPOSITION.md).
+New two spans/136 anchors/zero calls verified; previous regions reverified and
+all521 disjoint words checked against ISO. Six alignment/seven step/four return
+vectors/publication sites checked. PCM copied count differs from ADPCM requested
+sum on early stop; rollback skips position/end. Decoder/manager/providers/
+original refill/audio/native binding open; EVT-01 stays OPEN.
