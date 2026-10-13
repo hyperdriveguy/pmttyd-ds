@@ -1148,14 +1148,6 @@ mode/state/cancel-completion/display request order.21 hashes/477 anchors/18
 spans,82 CTest/90 Python/make all pass after resolved initial sampling assertion.
 UI/delegate/source/query/Game/platform/original runtime remain open.
 
-ID2 Goombella party-delegate/source closure (2026-10-12):
-[Callback/tech query](behavior/battle/GOOMBELLA_WEAPON_TABLE_CALLBACK_AND_TECH_LEVEL.md),
-[seven source bindings](behavior/battle/PARTY_WEAPON_CALLBACK_KEY1_SOURCE_BINDINGS.md)
-supply two complete bodies,current-global rank/typed admissions/reloaded count/
-partial row ownership,and all seven initial key1 chains.12 hashes/200 anchors/
-23 spans verified;82 CTest/90 Python/make all retry pass.Other six callbacks,
-unit provisioning/query/source/Game/platform/original runtime remain open.
-
 ID1 time-driven TEV update (2026-10-12):
 [mode8 pulse](behavior/display/MAP_TEV_MODE8_PULSE_AND_RAW_CLOCK.md),
 [mode9 scroll](behavior/display/MAP_TEV_MODE9_SHARED_SCROLL_AND_MATRICES.md),
@@ -1165,6 +1157,14 @@ All base dispatch request paths have local contracts;full TEV still lacks six
 middle branch internals/clock/source/lifetime/libm/GX/original images. Reproduce
 with verify_map_tev_time.py:266 scoped words/six constants/four spans/two imports/
 six sites. No original game execution or full system completion implied.
+
+ID2 Goombella party-delegate/source closure (2026-10-12):
+[Callback/tech query](behavior/battle/GOOMBELLA_WEAPON_TABLE_CALLBACK_AND_TECH_LEVEL.md),
+[seven source bindings](behavior/battle/PARTY_WEAPON_CALLBACK_KEY1_SOURCE_BINDINGS.md)
+supply two complete bodies,current-global rank/typed admissions/reloaded count/
+partial row ownership,and all seven initial key1 chains.12 hashes/200 anchors/
+23 spans verified;82 CTest/90 Python/make all retry pass.Other six callbacks,
+unit provisioning/query/source/Game/platform/original runtime remain open.
 
 ID2 full seven-party weapon callback delivery (2026-10-12):
 [Shared protocol/Koops](behavior/battle/PARTY_WEAPON_CALLBACKS_COMPLETE_SHARED_PROTOCOL.md),
@@ -1258,3 +1258,12 @@ close four complete bodies; 12 hashes/225 instructions/14 spans verified.
 Native requirements retain live reads, first-prequalified shadowing, byte timer
 and exact original source values. Host gate 86/87 due packed jump assertion;
 90 Python and make all pass. Status/audio/audience core/cadence/runtime open.
+
+ID1 map-material source recovery (2026-10-12):
+[entry/TEV inputs](behavior/display/MAP_MATERIAL_ENTRY_CHANNELS_AND_TEV_INPUTS.md)
+links five detailed source/light/texture/matrix/setter contracts. Six complete
+local bodies/806 words/six constants/six spans/two imports/five exact sites pass
+verify_map_material_source.py. Actual map/display-list/matrix caller bindings
+and raw material/object operands close locally;setter zero direct DOL calls.
+Original loader/source/flag/slot/name/config/cache/lifetime/GX/numeric/scene/
+image validation and full-system/complete-game requirements remain open.

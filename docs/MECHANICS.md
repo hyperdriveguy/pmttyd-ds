@@ -1229,3 +1229,11 @@ proof supports arithmetic only;composed2927-word coverage supports manual local
 review. Final86 CTest/90 Python/make all pass after native fixture changes;
 earlier missing/assertion failures resolved. No ID1 native/test/profile/save
 changes. SDK/source/lifetime/rendering-system/original-runtime closure remains open.
+
+ID1 map-material static addendum (2026-10-12):
+[map source inputs](behavior/display/MAP_MATERIAL_ENTRY_CHANNELS_AND_TEV_INPUTS.md)
+now specify material count/mode and object flags/model address,distinct map
+light/texture/matrix/source behavior. Name miss/zero-matrix gates are local code
+facts,not witnessed malformed source scenes or measured trajectories/pixels.
+No Dolphin/original execution/images added. 87 CTest/90 Python/make all pass;
+loader/caller/source/numeric/GX/lifetime and full-game rendering remain open.

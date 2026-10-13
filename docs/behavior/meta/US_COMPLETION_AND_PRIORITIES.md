@@ -419,3 +419,11 @@ pass;earlier native fixture failures resolved. This closes one LOCAL REQUEST
 body's documentation,not SDK/GX/source/capture/lifetime/US runtime/images or a
 full-scope rendering-system row. Whole-game documentation and final complete-game
 requirements remain incomplete;coverage counts are not a game denominator.
+
+ID1 map-material source update (2026-10-12):
+[actual map caller/TEV operands](../display/MAP_MATERIAL_ENTRY_CHANNELS_AND_TEV_INPUTS.md)
+plus source/light/texture/matrix/setter contracts close six local bodies. Evidence
+806 words/six constants/six spans/two imports/five sites and87 CTest/90 Python/
+build pass. Actual setter REL/indirect usage and loader/source/slot/flag/caller/
+GXR/resource/lifetime/scene/image domains remain open;no full-system/game
+completion inferred. Final complete-game requirements remain deferred.

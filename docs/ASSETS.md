@@ -1881,3 +1881,17 @@ pixel equivalence remain unverified. Source alpha0 clear and RGB-only ordinary
 scene writes are now bound, with opaque→shadow→translucent stage order.
 This supersedes the provisional Mario type2 ellipse; partner/NPC/battle
 shadows and nonordinary/cube/camera1 cache paths remain adapters.
+
+ID1 map-material source metadata (2026-10-12):US G8ME01 ISO read-only. Wrap
+IDs802bfa44=[0,1,2],eight light IDs802bfa58,seed802bfa9c=(0,0,-1),unsigned LOD
+bias802bfc20,ambient8041f908=000000ff and projected IDs802bf9f0 pinned as words/
+hashes. No map/model/texture/pose/light name/message payload exported. Actual
+texture name/TPL/slot/format relocation/LOD/wrap/GX lifetime remains separate.
+Projected setter copies embedded object metadata to8041e6b4 and holder8041e6b0;
+no image data extraction/copy/license or runtime usage proven by that setter.
+ELFs/listings/report ignored under artifacts/reference/behavior. No ID1 texture
+scaling/geometry/lighting/audio adaptation/converter policy change. make all
+passes/log /tmp/id1-map-material-build.log;existing sound/proj/pmario.proj,
+pool/sdir/samp pipeline3218 GameCube/0 Switch/5 primary-PCM slice fallbacks ran.
+Ignored catalogs/packs/WAV/RomFS remain outside source history;original rights
+remain with owners and local analysis supplies no asset redistribution license.

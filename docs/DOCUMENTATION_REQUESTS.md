@@ -17,7 +17,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
-| Map material caller,texture matrices and projected-object setter | AC-01, AC-03 | LOCKED, 2026-10-12 | Documentation agent ID 1 | Recover complete mapSetMaterial/mapSetTextureMatrix/mapSetProjTexObj live material/GX/texture/flag/caller and source-write requests;loader/group/source/GX/lifetime/runtime remain open |
+| Map material caller,texture matrices and projected-object setter | AC-01, AC-03 | VALIDATED six local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/TEV inputs](behavior/display/MAP_MATERIAL_ENTRY_CHANNELS_AND_TEV_INPUTS.md),[light selection](behavior/display/MAP_MATERIAL_LIGHT_SELECTION_AND_NAMES.md),[light objects](behavior/display/MAP_MATERIAL_LIGHT_OBJECT_REQUESTS.md),[texture names/loads](behavior/display/MAP_MATERIAL_TEXTURE_LOOKUP_AND_OBJECT_LOADS.md),[matrices/setter](behavior/display/MAP_MATERIAL_TEXTURE_MATRICES_AND_PROJECTED_SETTER.md):raw object/material flags/mode/count/named lights/reverse textures/LOD/matrix zero gates/copy/holder writes;setter zero direct sites,loader/source/GX/lifetime/runtime open |
 | Map TEV depth branches0x10000/0x40000 and local closure audit | AC-01, AC-03 | VALIDATED complete local request graph / lock released, 2026-10-12 | Documentation agent ID 1 | [Depth sources/config](behavior/display/MAP_TEV_DEPTH_SOURCE_QUERIES_AND_CONFIG.md),[six-route10000](behavior/display/MAP_TEV_DEPTH_FLAG10000_PROGRAMS.md),[two-route40000](behavior/display/MAP_TEV_DEPTH_FLAG40000_PROGRAMS.md),[local graph/boundaries](behavior/display/MAP_TEV_LOCAL_REQUEST_GRAPH_AND_BACKEND_BOUNDARIES.md):both depth blocks/seven source leaves/all2927 composed local words close;SDK/GX/source/capture/lifetime/runtime/full-game remain separate |
 | Map TEV terminal color and animated projected texture | AC-01, AC-03 | VALIDATED scoped blocks / lock released, 2026-10-12 | Documentation agent ID 1 | [Color/cosine alpha](behavior/display/MAP_TEV_TERMINAL_COLOR_AND_COSINE_ALPHA.md),[projected pulse texture](behavior/display/MAP_TEV_ANIMATED_PROJECTED_TEXTURE.md):complete masks0x80100000/0x800000 raw captures/two clocks/rounding/byte arithmetic/original texture/matrix/counter/register requests;depth0x10000/0x40000/source/GX/libm/lifetime/runtime open |
 | Map TEV projected texture0x400 and projected shadow0x20000 | AC-01, AC-03 | VALIDATED scoped blocks / lock released, 2026-10-12 | Documentation agent ID 1 | [Two-stage projection](behavior/display/MAP_TEV_FLAG400_TWO_STAGE_PROJECTION.md),[projected shadow/source](behavior/display/MAP_TEV_FLAG20000_PROJECTED_SHADOW.md):complete two request blocks/four source leaves/prior-stage output rewrite/shared swap/register/order/getter captures/counters;four remaining middle branches/GX/source/lifetime/runtime open |
@@ -31,7 +31,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Animation Main evaluation and linked-paper time/data graph | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Entry/time](behavior/display/ANIMATION_MAIN_ENTRY_AND_TIME.md),[samples](behavior/display/ANIMATION_TIMELINE_SAMPLING.md),[cache](behavior/display/ANIMATION_COMPRESSED_DELTA_CACHE.md),[interpolation](behavior/display/ANIMATION_OUTPUT_INTERPOLATION.md),[facing](behavior/display/ANIMATION_MAIN_CAMERA_FACING.md),[init](behavior/display/ANIMATION_POOL_AND_TANGENT_INITIALIZATION.md):complete Main/init local graphs and original M_Z_1 metadata;resource/pool/draw/copy/clock/helper/libm/platform/source/runtime remain separate |
 | Animation name/paper selection and local-time setters | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Selector/restart](behavior/display/ANIMATION_SELECTOR_AND_RESTART.md),[paper-group reuse](behavior/display/ANIMATION_PAPER_GROUP_REUSE.md),[local time/clock](behavior/display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md):five complete setters,signed selector encoding,two-pass reuse/failure writes,shared/linked timestamps and rate;Main/draw/resource/clock/helper/lifecycle/runtime remain separate |
 | Partner pre-display pose/paper consumer and pose-name requests | AC-01, AC-03 | VALIDATED local bodies / lock released, 2026-10-12 | Documentation agent ID 1 | [Pre-display](behavior/partner/FIELD_PARTNER_PRE_DISPLAY.md),[pose selection](behavior/partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md),[facing](behavior/partner/FIELD_PARTNER_DISPLAY_FACING.md),[matrix/draw](behavior/partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md),[Vivian/shadows](behavior/partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md):eight complete local bodies,pending/frame/facing/matrix/two-pass/shadow/source graphs;animation/GX/matrix/resource/lifecycle/numeric/original visuals remain separate |
-| Native first-attack target and paired output ownership | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Pair/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md),[event/body part](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md):seven complete local bodies,captured B/raw outputs/mode pairs/slot63 miss/kind predicate/body-before-ID/write order/source part witness;source/Game/runtime separate;prior field_movement failure resolved by current74-suite run |
+| Native audience target accumulator and signed opposition reserve | EVT-01, JUMP-01 | LOCKED, 2026-10-12 | Documentation agent ID 2 | Complete AddTargetNum and local target helper; captured/global owners, float cancellation and clamp order; source/presentation/cadence separate |
 | Native all-unit pinch status and warning cadence | EVT-01, JUMP-01 | VALIDATED four complete bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Threshold transitions](behavior/battle/BATTLE_PINCH_THRESHOLD_FLAGS_AND_TRANSITIONS.md), [scan/countdown](behavior/battle/BATTLE_PINCH_ALL_UNIT_SCAN_AND_WARNING_CADENCE.md), [audience/source](behavior/battle/BATTLE_PINCH_AUDIENCE_REQUESTS_AND_SOURCE_THRESHOLDS.md): first-prequalified shadowing, signed HP/byte timer, exact source floats/keys; status/audio/core/cadence/runtime separate; host gate 86/87 packed Mario jump assertion |
 | Native BattleMain and sequence-manager parent dispatch | EVT-01, JUMP-01 | VALIDATED three complete bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Main order](behavior/battle/BATTLE_MAIN_SERVICE_ORDER_AND_FINAL_STATE_CHECK.md),[manager/hook](behavior/battle/BATTLE_SEQUENCE_MANAGER_BANKS_AND_OUTER_HOOK.md):independent captured owners/late state check/11 services/raw masks/one-bank dispatch/init-to-pinch/outer completion flag;called turn/end/resource/field cadence/query/runtime separate |
 | Native btlseqInit unit setup dispatch and registry reset | EVT-01, JUMP-01 | VALIDATED six local bodies / lock released, 2026-10-12 | Documentation agent ID 2 | [Dispatch](behavior/battle/BATTLE_INIT_SEQUENCE_DISPATCH_AND_RESOURCE_READINESS.md),[reset/readiness](behavior/battle/BATTLE_UNIT_REGISTRY_RESET_AND_INIT_EVENT_SCAN.md),[fields/source](behavior/battle/BATTLE_SEQUENCE_FIELDS_AND_INIT_SOURCE_BINDINGS.md):fall-through/carried setter args/64 full scan/resources/sequence map/upper-only registry bound;native Jump fixture resolved86/90;backend/source/end/query/runtime separate |
@@ -53,6 +53,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 | Native action-class table type and eligibility producer | EVT-01, JUMP-01 | VALIDATED local body / lock released, 2026-10-12 | Documentation agent ID 2 | [Admission/publication](behavior/battle/ACTION_CLASS_TABLE_ADMISSION_AND_PUBLICATION.md),[eligibility/keys](behavior/battle/ACTION_CLASS_TABLE_ELIGIBILITY_AND_MENU_KEYS.md):complete producer/types0,6,1,2,4,5,13/partial20-byte records/independent final flags/signed cursor correction/seven keys;ActMenuMain/query reachability/Game/runtime remain open |
 | Native weapon-menu setup decision and caller domains | EVT-01, JUMP-01 | VALIDATED scoped / lock released, 2026-10-12 | Documentation agent ID 2 | [Setup/decision](behavior/battle/WEAPON_MENU_SETUP_AND_DECISION.md),[type/cursor sources](behavior/battle/WEAPON_MENU_TYPE_DOMAINS_AND_CURSOR_REUSE.md):two complete functions/16 DOL calls/scoped type12 writer/state0 restore/Input initialized cursor reuse;broader menu writers/query reachability/Game/runtime remain open |
 | Native SetMoveSpeed and SetFallAccel wrappers | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Complete order](behavior/battle/BATTLE_MOVEMENT_SETTER_EVENT_ORDER.md),[source tokens](behavior/battle/BATTLE_MOVEMENT_WRAPPER_SOURCE_TOKENS.md):four complete bodies/retained args/translation→float→fresh B/unchecked-1/leaves/completion2/eight requests;Majinai+0.5 correction;source/Game/runtime separate;prior missing fixture resolved |
+| Native first-attack target and paired output ownership | EVT-01, JUMP-01 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Pair/getters](behavior/battle/FIRST_ATTACK_PAIR_SELECTION_AND_GETTERS.md),[event/body part](behavior/battle/FIRST_ATTACK_TARGET_EVENT_AND_BODY_PART.md):seven complete local bodies,captured B/raw outputs/mode pairs/slot63 miss/kind predicate/body-before-ID/write order/source part witness;source/Game/runtime separate;prior field_movement failure resolved by current74-suite run |
 | DVD manager dispatch initialization and shutdown | EVT-01, JUMP-01, DMG-02 | DEFERRED / lock released, 2026-10-12 | Documentation agent ID 2 | Deferred after user requested prioritizing documentation needed by native port;listings retained /tmp/id2-dvdmain.disasm,/tmp/id2-dvdinit.disasm,/tmp/id2-dvddelete.disasm;no recovered contract claimed |
 | DVD manager synchronous request and wait protocol | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Slot open/global callback](behavior/file/DVD_MANAGER_SLOT_OPEN_AND_GLOBAL_CALLBACK.md),[read/wait](behavior/file/DVD_MANAGER_SYNCHRONOUS_READ_PROTOCOL.md):complete Open/Read/SetupCallback,256*152 slots/8000 gate/path-1/parameter truncation,request flag rereads/0002 yield/length return/global callback separation;worker/direct SDK I/O/platform/source/runtime remain separate |
 | Type5 nested resource pointer relocation | EVT-01, JUMP-01, DMG-02 | VALIDATED / lock released, 2026-10-12 | Documentation agent ID 2 | [Setup](behavior/file/FILE_TYPE5_NESTED_POINTER_SETUP.md),[clear](behavior/file/FILE_TYPE5_NESTED_POINTER_CLEAR.md):complete type5 root25 fields/captured signed count/64-byte records/root-relative parent/child-relative8 fields/order;all local Set/Clear routes linked;source formats/consumers/platform/runtime remain separate |
@@ -591,6 +592,15 @@ still fails line46(/tmp/id2-initdispatch-test-retry.log).No native edits by ID2.
 ID2 local-body lock released;parent/host gate open.Native owner notified.
 Next needed port evidence:parent scheduler/end reimport/source/query domains.
 
+ID2 host gate breadcrumb (2026-10-12):init dispatch evidence passes
+(6 complete/11 linked,209 anchors/5 spans/2 DOL calls).First make test86-suite
+failed effect_deletion(Not Run) and new battle_mario_jump_parameter_event:
+tests/battle_mario_jump_parameter_event_tests.cpp:46 assertion registry.invoke
+80109c68/result2/locals6==42/initialized0 failed.Exact log
+/tmp/id2-initdispatch-test.log.No native fixes by ID2;native owner please inspect
+current executable/fixture/binding.Next attempt retries current tree;Python
+stage run separately because CTest stopped make.
+
 ID2 complete Btl_UnitSetup reply (2026-10-12):
 [Startup actors/repeated imports](behavior/battle/BATTLE_UNIT_SETUP_ACTORS_AND_REPEATED_IMPORTS.md)
 and [opponent/equipment tail](behavior/battle/BATTLE_UNIT_SETUP_OPPONENT_LOOP_AND_EQUIPMENT_MASK.md)
@@ -634,18 +644,12 @@ No native edits by ID2;full host gate remains pending native fixture completion.
 ID2 local-body lock released;parent request open.Next evidence:Btl_UnitSetup
 import paths/end caller domains/source mutations/query-event reachability.
 
-Native implementation breadcrumb / documentation request (2026-10-12):
-ordered native LoadSeMode and movement sound core/unit/end now compose on actual
-records/geometry with explicit trigger/position/Off providers. See
-behavior/battle/BATTLE_PACKED_MOVEMENT_SOUND_ORDER.md. 84 CTest/90 Python and
-make all pass;both jump source verifiers match. Please recover complete
-BtlUnit_snd_se_pos80126088/114,psndSFX_pos800d96f8/4c,psndSFXOff800d95f8/c8
-and their __psndSFXOn/macro/voice/resource chain:raw sentinel/key/unit/belong/
-position capture,returned/invalid handle behavior,updates/stops/source lifetime,
-actual original lookup inputs and resource provisioning. Existing docs leave
-these callees open. Native providers remain required;no fabricated audio mapping.
-Next native MovePosition/Mario jump/outer Game and original audio execution
-remain unfinished. Existing Monosiri request also remains open.
+ID2 validation breadcrumb (2026-10-12):party-switch/export evidence passes
+(4 complete/10 linked,127 anchors/2 spans/7 direct calls).make test configuration
+currently fails because CMakeLists.txt:394 references missing
+ tests/battle_packed_move_position_tests.cpp.Exact /tmp/id2-switch-test.log.
+No native source/test edits by ID2.Native owner:please finish your target's
+fixture;ID2 will rerun once the source is present.Documentation work continues.
 
 ID2 seven-party snapshot initializer reply (2026-10-12):
 [Complete reset/raw map](behavior/battle/PARTY_BATTLE_SNAPSHOT_INITIALIZATION_AND_RAW_MAP.md)
@@ -660,6 +664,19 @@ readiness,not a wholly unknown initial table copy.3 hashes(1 complete/2 linked),
 pass.ID2 lock released;no native edits.Next port evidence:snapshot export
 caller domains and source/table mutations,or query-event closure.Save/Game/
 platform/original execution remain open.
+
+Native implementation breadcrumb / documentation request (2026-10-12):
+ordered native LoadSeMode and movement sound core/unit/end now compose on actual
+records/geometry with explicit trigger/position/Off providers. See
+behavior/battle/BATTLE_PACKED_MOVEMENT_SOUND_ORDER.md. 84 CTest/90 Python and
+make all pass;both jump source verifiers match. Please recover complete
+BtlUnit_snd_se_pos80126088/114,psndSFX_pos800d96f8/4c,psndSFXOff800d95f8/c8
+and their __psndSFXOn/macro/voice/resource chain:raw sentinel/key/unit/belong/
+position capture,returned/invalid handle behavior,updates/stops/source lifetime,
+actual original lookup inputs and resource provisioning. Existing docs leave
+these callees open. Native providers remain required;no fabricated audio mapping.
+Next native MovePosition/Mario jump/outer Game and original audio execution
+remain unfinished. Existing Monosiri request also remains open.
 
 ID2 remaining party weapon callback closure (2026-10-12):
 [Complete shared protocol/Koops exception](behavior/battle/PARTY_WEAPON_CALLBACKS_COMPLETE_SHARED_PROTOCOL.md)
@@ -695,6 +712,12 @@ semantics.12 hashes(2 complete/10 linked),200 anchors/23 spans/repeat reports,
 remaining six party callbacks and explicit source/order differences,then query
 callback/event reachability.Unit provisioning/Game/runtime remain open.
 
+ID2 build breadcrumb (2026-10-12):Goombella callback/source verifier and
+82 CTest/90 Python pass.First make all failed in source/render.cpp:343,
+C3D_TexEnvSrc argument5 int0→GPU_TEVSRC invalid conversion;log
+/tmp/id2-partytech-all.log.No native edits by ID2;renderer owner please
+check current Citro3D enum argument binding.Retrying current build state.
+
 Native implementation breadcrumb / documentation request (2026-10-12):
 full sampling and default native takeoff sampling+choice are implemented;82 CTest/
 90 Python and make all pass. See behavior/battle/BATTLE_PACKED_SAMPLING_SOURCE_ORDER.md
@@ -721,6 +744,15 @@ First packed-sampling address assertion(/tmp/id2-multi-test.log) RESOLVED on
 retry(/tmp/id2-multi-test-retry.log);no native edits by ID2.ID2 lock released.
 Next port-function priority:party key1 weapon callback/source bindings and
 query-specific event reachability;UI/cancel display internals remain separate.
+
+ID2 host-validation breadcrumb (2026-10-12):multi-item evidence passes
+(7 complete/14 linked,477 anchors/18 spans).make test currently81/82:
+new battle_packed_sampling aborts at source/event_memory_binding.cpp:7,
+EventMemoryBinding::services read_word lambda assertion ok failed.Log
+/tmp/id2-multi-test.log.Python stage skipped by make's CTest failure;ID2
+will run it separately.No native source/tests modified by ID2.Native owner:
+please inspect packed sampling source-address fixture/bindings;not repaired
+or inferred as original behavior here.
 
 ID2 party/protect menu lifecycle reply (2026-10-12):
 [Party selection/pending](behavior/battle/PARTY_MENU_MAIN_SELECTION_AND_PENDING_BEHAVIOR.md),
@@ -829,6 +861,13 @@ Python and make all pass. Leave original field114/part-offset writer,PowerPC
 numeric/exception,backend and executed-trajectory evidence under EVT-01/JUMP-01;
 full takeoff/motion/Jump/Game composition remains open.
 
+ID2 shared-link breadcrumb (2026-10-12):own four weapon-table documents'
+file links pass.Broader docs scan currently finds one missing display link:
+behavior/display/MAP_MATERIAL_LAST_STAGE_COLOR_AND_FOG.md links
+ANIMATION_INNER_POSE_STATE_AND_PASSES.md,which does not exist in that folder.
+ID1 owns that current material slice;left its file unchanged.Please correct
+against actual inner-draw contract before reporting whole-doc link validation.
+
 ID2 complete weapon-table producer reply (2026-10-12):
 [Entry/layout/publication](behavior/battle/WEAPON_TABLE_BUILDER_ENTRY_LAYOUT_AND_PUBLICATION.md),
 [Jump/Hammer/badges](behavior/battle/WEAPON_TABLE_JUMP_HAMMER_AND_BADGE_ROWS.md),
@@ -868,6 +907,14 @@ pass.First shared-host link failure(/tmp/id2-wmain-test.log) RESOLVED on retry
 Next native documentation priority:full MakeSelectWeaponTable row/source
 production,remaining menu writers,and query-specific event domains.No safe
 unsupported-type fallback is established by these separate private stack slots.
+
+ID2 validation breadcrumb (2026-10-12):weapon-menu Main/target evidence
+verifier passes(7 complete/13 linked,344 anchors/2 keys);make all passes.
+First make test attempt failed before CTest at battle_packed_position_tests:
+/usr/bin/ld reports Relocations in generic ELF(EM:62),file in wrong format
+for tests/battle_packed_position_tests.cpp.o.Host cache/link command both name
+/usr/bin/g++;root cause unproven.No native source/test changes by ID2.
+Exact log /tmp/id2-wmain-test.log;retrying current host gate.
 
 ID2 complete BattleCommandInput reply (2026-10-12):
 [Entry/re-entry/class states](behavior/battle/COMMAND_INPUT_ENTRY_REENTRY_AND_CLASS_STATES.md),
@@ -3406,3 +3453,16 @@ final make test86 CTest/90 Python PASS/log /tmp/id1-tev-depth-test-final.log.
 Earlier missing file/assertion RESOLVED;make all3DSX pass. Only ID1 lock released.
 This closes mapSetMaterialTev LOCAL REQUEST documentation,not SDK/GX/numeric/
 source/capture/cache/lifetime/US scene/original image or whole-game equivalence.
+
+ID1 map-material source delivery (2026-10-12),AC-01/AC-03 partial:five detailed
+contracts in released row close six local caller/texture-matrix/source bodies.
+TEV inputs are M+0b count,descriptor M110 first byte mode,RAW O0 flags and O1c
+matrix ADDRESS. Map lighting differs from character helper;named-mask/nearest
+append can duplicate,missing light name dereferenced. Map texture miss uses
+TEXGet-1 without fallback,ordinary object only,wrap table and forced filters1/1.
+Matrix helper has descending IDs/UV sources,scale!=0 gate/all-zero unwritten
+result;projected setter copies32 bytes in pairs then publishes holder pointer.
+806 words/six constants/six spans/two imports/five sites pass;setter has zero
+DIRECT DOL sites and no actual usage claim. make test87 CTest/90 Python and
+make all pass. Only ID1 lock released;loader/source/caller/GX/numeric/lifetime/
+original visuals and complete-game requirements remain open.

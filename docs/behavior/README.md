@@ -523,3 +523,16 @@ tools/verify_map_tev_depth.py,1115 new words/six spans/two imports/six sites/
 65536 byte cases plus rechecked six-manifest2927-word coverage with zero holes/
 conflicts. This is complete local REQUEST documentation,not SDK/GX/numeric/
 source/capture/cache/lifetime/US execution/images or whole-system/game completion.
+
+## ID1 map material source caller and texture matrices (2026-10-12)
+
+[Entry/TEV](display/MAP_MATERIAL_ENTRY_CHANNELS_AND_TEV_INPUTS.md),
+[light selection](display/MAP_MATERIAL_LIGHT_SELECTION_AND_NAMES.md),
+[light objects](display/MAP_MATERIAL_LIGHT_OBJECT_REQUESTS.md),
+[texture loads](display/MAP_MATERIAL_TEXTURE_LOOKUP_AND_OBJECT_LOADS.md),
+[matrices/setter](display/MAP_MATERIAL_TEXTURE_MATRICES_AND_PROJECTED_SETTER.md)
+close six local bodies with actual raw object/material source inputs and used
+map caller sites. Verifier:tools/verify_map_material_source.py;806 words/six
+constants/six spans/two imports/five direct sites. Setter has zero DIRECT DOL
+sites,not claimed runtime use. Loader/source/caller admission/GX/numeric/cache/
+lifetime/actual scene/images and whole-game requirements remain open.
