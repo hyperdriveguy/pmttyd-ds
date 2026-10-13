@@ -4,6 +4,53 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+
+## 2026-10-13 — Original object top/side collision and supported checkpoint restore
+
+Commits `4e12f64` and `1d853a6` bind the unchanged original12-face save-block
+cube to top support, ordinary Mario forward/around wall queries and checkpoint
+validation. PMNPC004 retains original model names so the source hidden-model
+floor/wall exclusions remain explicit; older catalogs remain loadable. Dynamic
+floor/wall owners stay separate from static REL offsets/array indices. Existing
+five-foot support, two-height wall rays, source corrections and landing response
+remain shared. Static object geometry caches catalog generation and room/story/
+interior/system admission, avoiding rebuilds across unchanged queries/frames.
+Successful catalog replacement invalidates reuse; failed loading retains it.
+See [native collision](behavior/field/NATIVE_MAP_OBJECT_HEAD_COLLISION.md).
+
+Source documentation through OW-INTERACT-01 establishes
+[ordinary Goombella save-cube admission](behavior/partner/FIELD_PARTNER_SAVE_BLOCK_COLLISION_BINDING.md),
+including distinct floor/front/around filters and tie rules. Goombella's current
+native floor adapter includes the cube; its complete original wall driver remains
+unbound. The file menu/reload path previously rejected on-block checkpoints via
+static-only validation. Both now use the same object-aware candidate service
+and existing transactional area replacement. Native save elevation quantization
+stores the top fixture as.9, then source support resolves actual top.85.
+
+Validation: final isolated source/romfs snapshot
+`/tmp/pm-object-surfaces-mkwzez51` passes `make test`104 CTest/100 Python tests
+and `make all`. Original-data tests check top/side normals/backfaces, dynamic
+owner metadata, hidden-name floor/wall rejection with head geometry retained,
+standing, full top jump/landing/walk-off, malformed V4 name atomicity and cache
+invalidation after catalog replacement/system gating. The final checkpoint
+regression is covered by that complete run. An initial Azahar top capture
+exposed static-only checkpoint rejection; it was corrected before acceptance.
+Immutable final binary `artifacts/ttyd-saveblock-checkpoint.3dsx` loads the
+`--on-block` fixture in isolated `artifacts/azahar-saveblock-top2`; inspected
+`saveblock-head-landed.png` shows Mario on the original block after jumping.
+No user emulator profile/saves touched. These host/emulator checks establish
+this native slice, not matched original execution or New2DS performance.
+Documentation links731 files/0 broken before the handoff; whitespace checks pass.
+Unrelated concurrent lecture/message/save/audio changes remain outside these commits.
+
+Next/limits: connect source name-contact cache and save callback0..4 with
+independently timed S_1/A_1 poses, previous-published loop ratio, nested keys,
+system/camera ownership, original US save choices and a native persistence
+adapter retaining source switch namespaces. Hit animation/prompt remain unbound.
+Source partner body-wall driver, moving objects, dynamic shadow queries,
+multiple-map-record hit ordering, full area/event content, original lighting/
+translucent ordering and hardware profiling remain open. Keep the full goal active.
+
 ## 2026-10-13 — Priority0 ARAM sample store and queue completion
 
 Delivered [sample store/cursor/configuration](behavior/audio/MUSYX_ARAM_SAMPLE_STORE_AND_CURSOR_REWIND.md)
