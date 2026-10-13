@@ -242,7 +242,7 @@ public:
                     if(state.wrapS>2 || state.wrapT>2)return false;
                     for(float v:state.transform)if(!std::isfinite(v))return false;
                 }
-                for(const auto& t:p.triangles)if((t.pass!=2 && t.pass!=3) || t.cull>3)return false;
+                for(const auto& t:p.triangles)if((t.pass!=1 && t.pass!=2 && t.pass!=3) || t.cull>3)return false;
                 for(size_t i=0;i<p.bindings.size();i+=3)for(unsigned j=1;j<3;++j)
                     if(p.bindings[i].group!=p.bindings[i+j].group || p.bindings[i].texture!=p.bindings[i+j].texture)return false;
             }

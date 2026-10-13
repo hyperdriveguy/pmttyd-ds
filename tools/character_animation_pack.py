@@ -80,7 +80,7 @@ def compile_animation_pack(models,output,texture_cell,surfaces=False):
                     for vertex in vertices:file.write(bytes(vertex[4]))
                     for i in range(0,len(vertices),3):
                         group=vertices[i][0];binding=vertices[i][3];mode,cull=vertices[i][5:7]
-                        if mode not in (0,2,3) or cull>3:raise ValueError('Unsupported original surface pass/cull')
+                        if mode not in (0,1,2,3) or cull>3:raise ValueError('Unsupported original surface pass/cull')
                         if any(v[0]!=group or v[3]!=binding or v[5:7]!=(mode,cull) for v in vertices[i:i+3]):raise ValueError('Inconsistent triangle material owner')
                         file.write(struct.pack('<2I',2 if mode==0 else mode,cull))
                 for key in anim['frames']:

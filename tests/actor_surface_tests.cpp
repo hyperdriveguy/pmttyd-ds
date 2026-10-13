@@ -76,7 +76,7 @@ int main(int argc,char**) {
         const std::vector<uint8_t> bytes{std::istreambuf_iterator<char>(file),std::istreambuf_iterator<char>()};
         const size_t surfaceOffset=12+76+idle->positions.size()*12+idle->normals.size()*12+idle->nodes.size()*4+idle->visibility.size()+
             idle->groups.size()*20+idle->bindings.size()*20+idle->textures.size()*516;
-        for(auto fault:std::array<std::pair<size_t,uint32_t>,3>{{{surfaceOffset,0x7fc00000},{surfaceOffset+20,3},{surfaceOffset+idle->surfaces.size()*28+idle->colors.size()*4,1}}}) {
+        for(auto fault:std::array<std::pair<size_t,uint32_t>,3>{{{surfaceOffset,0x7fc00000},{surfaceOffset+20,3},{surfaceOffset+idle->surfaces.size()*28+idle->colors.size()*4,4}}}) {
             auto bad=bytes;std::memcpy(bad.data()+fault.first,&fault.second,4);FILE* f=std::tmpfile();assert(f);
             assert(std::fwrite(bad.data(),1,bad.size(),f)==bad.size());std::rewind(f);assert(!pack.read(f));std::fclose(f);
             assert(pack.pose("S_1")==idle && pack.pose("A_1")==hit);

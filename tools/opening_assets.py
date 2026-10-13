@@ -7,6 +7,7 @@ from iso_assets import DEFAULT_ISO,extract,convert_tpl
 from audio_convert import stm
 from map_convert import convert
 from character_mesh import compile_mesh
+from character_surface_mesh import compile_surface_mesh
 
 def cached_maps_complete(out):
     """A vertices file alone cannot admit an original map pack cache hit."""
@@ -23,14 +24,15 @@ def cached_maps_complete(out):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--iso',default=DEFAULT_ISO);p.add_argument('--output',default='romfs');a=p.parse_args()
     out=Path(a.output);work=Path('local-assets/opening');work.mkdir(parents=True,exist_ok=True);out.mkdir(parents=True,exist_ok=True)
-    iso=Path(a.iso);fingerprint=hashlib.sha256(Path(__file__).read_bytes()+Path('tools/iso_assets.py').read_bytes()+Path('tools/audio_convert.py').read_bytes()+Path('tools/map_convert.py').read_bytes()+Path('tools/character_mesh.py').read_bytes()+str((iso.stat().st_size,iso.stat().st_mtime_ns)).encode()).hexdigest()
+    helpers=['iso_assets.py','audio_convert.py','map_convert.py','character_mesh.py','character_surface_mesh.py','character_animation_pack.py','character_animation_data.py']
+    iso=Path(a.iso);fingerprint=hashlib.sha256(Path(__file__).read_bytes()+b''.join(Path('tools',name).read_bytes() for name in helpers)+str((iso.stat().st_size,iso.stat().st_mtime_ns)).encode()).hexdigest()
     manifest=out/'opening-assets.json'
     images=[('title-background','mariost.tpl',5),('title-logo','mariost.tpl',21),('title-prompt','mariost.tpl',16),('title-copyright','mariost.tpl',9),('opening-letter','mariost.tpl',4),('opening-map','mariost.tpl',3)]
     images += [(f'demo-{i}','demo.tpl',i) for i in [0,1,2,8,9,10,11,12]]
     tracks=[('title','sys_tit1_32k'),('demo-book','sys_demo1_32k'),('demo-market','sys_demo2_32k'),('opening-house','evt_mri1_32k'),('opening-voyage','sys_opn1_32k'),('opening-sailing','evt_kou1_32k')]
     required=[f'opening-{r}.vertices' for r in ['aaa_00','aaa_00-interior','muj_20','gor_10']]+[n+ext for n,_,_ in images for ext in ['.t3x','.size']]+[n+'.wav' for n,_ in tracks]+['prologue.t3x','prologue.size']
     required += ['opening-aaa_00.houseobj']
-    required += [n+ext for n in ['c_luigi','c_paretta','c_peach','c_nazo'] for ext in ['.pmanim','.t3x','.uvscale']]
+    required += [n+ext for n in ['c_luigi','c_paretta','c_peach','c_nazo','demo-chest'] for ext in ['.pmanim','.t3x','.uvscale']]
     if manifest.exists() and json.loads(manifest.read_text()).get('fingerprint')==fingerprint and all((out/n).exists() for n in required) and cached_maps_complete(out):return
     records=[]
     for path in ['mariost.tpl','demo.tpl']:
@@ -61,10 +63,17 @@ def main():
             png=work/variant/f'texture-{index}.png';convert_tpl(work/(room+'.t'),png,index)
             im=Image.open(png).convert('RGBA');w,h=im.size;im.resize((min(128,1<<(w-1).bit_length()),min(128,1<<(h-1).bit_length())),Image.Resampling.LANCZOS).save(png)
             subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o',str(out/f'{prefix}-{index}.t3x'),str(png)],check=True,stdout=subprocess.DEVNULL)
-    for bank,pose in [('c_luigi','L_5'),('c_paretta','S_1'),('c_peach','P_S_1'),('c_nazo','S_1')]:
-        extract(a.iso,'a/'+bank,work/bank);extract(a.iso,'a/'+bank+'-',work/(bank+'.tpl'))
+    scene_poses={'c_luigi':['L_5','L_6','L_7','L_8','L_9','L_11'],
+                 'c_paretta':['S_1'],
+                 'c_peach':['P_Z_1','P_S_1','P_T_1','P_W_1','P_S_7','P_T_13','P_W_7','P_S_4','P_T_4','P_W_4','P_S_8','P_T_14','P_W_8','P_B_1','P_B_2','P_T_7','P_H_1','P_B_3','P_B_4'],
+                 'c_nazo':['Z_1','S_1','T_1','A_1'],
+                 'demo-chest':['S_1','A_1']}
+    for bank,poses in scene_poses.items():
+        original='MOBJ_GoldenTreasureBox' if bank=='demo-chest' else bank
+        extract(a.iso,'a/'+original,work/bank);extract(a.iso,'a/'+original+'-',work/(bank+'.tpl'))
         records.extend(json.loads(p.read_text()) for p in [work/(bank+'.provenance.json'),work/(bank+'.tpl.provenance.json')])
-        png=work/(bank+'.png');mesh=compile_mesh([(work/bank,work/(bank+'.tpl'),['L_5','L_6','L_7','L_8','L_9','L_11'] if bank=='c_luigi' else [pose])],out/(bank+'.pmmesh'),png,out/(bank+'.pmanim'))
+        png=work/(bank+'.png');models=[(work/bank,work/(bank+'.tpl'),poses)]
+        mesh=compile_surface_mesh(models,out/(bank+'.pmanim'),png) if bank=='demo-chest' else compile_mesh(models,out/(bank+'.pmmesh'),png,out/(bank+'.pmanim'))
         height=128
         while height<((mesh['textures']+7)//8)*128:height*=2
         Image.open(png).crop((0,0,1024,height)).save(png)
