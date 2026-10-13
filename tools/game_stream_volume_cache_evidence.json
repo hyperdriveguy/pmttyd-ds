@@ -1,0 +1,379 @@
+{
+  "schema": 1,
+  "scope": "Complete game stream volume setter; low8 float10-before-floatc cache, pool recapture/inline pan requests, providers/runtime open",
+  "complete_bodies": [
+    "SoundSSSetVolCh"
+  ],
+  "linked_only": [
+    "sndStreamMixParameter"
+  ],
+  "dol_spans": [
+    {
+      "name": "SoundSSSetVolCh",
+      "address": 2148391964,
+      "size": 408,
+      "sha256": "29116a3cc5090f2de4aac7cb61a9203e6241422b7ae6f7150c026c0410cf8625"
+    },
+    {
+      "name": "sndStreamMixParameter",
+      "address": 2150086676,
+      "size": 1380,
+      "sha256": "cf5d60dbe1652cda126b4178d1bafbaa67b96850380552e875cde313677da474"
+    },
+    {
+      "name": "Volume/pan conversion constant 0x802e3cc0",
+      "address": 2150513856,
+      "size": 16,
+      "sha256": "20328d4327fadaaed8ad021724d9249544865299854153192385f2b6f3204ea7"
+    },
+    {
+      "name": "Volume/pan conversion constant 0x8042190c",
+      "address": 2151815436,
+      "size": 4,
+      "sha256": "64da18fa6011453c029d2164aecd3037b262fd1e1119a65d67364927590245ef"
+    }
+  ],
+  "dol_anchors": {
+    "2148391972": "90010044",
+    "2148391976": "dbe10030",
+    "2148391984": "93e1002c",
+    "2148391988": "3ca0803e",
+    "2148391992": "38a50138",
+    "2148392000": "80050100",
+    "2148392016": "41820148",
+    "2148392024": "3c804330",
+    "2148392028": "9001000c",
+    "2148392032": "3c60802e",
+    "2148392040": "90810008",
+    "2148392068": "41820114",
+    "2148392072": "80050100",
+    "2148392096": "418200f8",
+    "2148392100": "b0bf0006",
+    "2148392112": "418200e8",
+    "2148392124": "4082002c",
+    "2148392132": "38e00000",
+    "2148392144": "807f004c",
+    "2148392152": "d8010008",
+    "2148392156": "8081000c",
+    "2148392160": "4819db35",
+    "2148392164": "480000b4",
+    "2148392180": "40800020",
+    "2148392184": "90a1000c",
+    "2148392192": "90810008",
+    "2148392212": "3805ffc0",
+    "2148392220": "40820034",
+    "2148392228": "3c004330",
+    "2148392236": "3c80802e",
+    "2148392240": "90610014",
+    "2148392248": "90010010",
+    "2148392280": "807f004c",
+    "2148392284": "38a00000",
+    "2148392292": "38e00000",
+    "2148392296": "d8010018",
+    "2148392300": "8081001c",
+    "2148392304": "4819daa5",
+    "2148392316": "807f00d4",
+    "2148392320": "38a0007f",
+    "2148392328": "38e00000",
+    "2148392332": "d8010020",
+    "2148392336": "80810024",
+    "2148392340": "4819da81",
+    "2148392348": "80010044",
+    "2148392356": "83e1002c",
+    "2148392364": "38210040",
+    "2148391964": "9421ffc0",
+    "2148391968": "7c0802a6",
+    "2148391980": "f3e10038",
+    "2148391996": "1ce30138",
+    "2148392004": "7cc03a14",
+    "2148392008": "a0060000",
+    "2148392012": "28000000",
+    "2148392020": "5480063e",
+    "2148392036": "c8433cc0",
+    "2148392044": "c8010008",
+    "2148392048": "ec001028",
+    "2148392052": "d0060010",
+    "2148392056": "d006000c",
+    "2148392060": "a0060000",
+    "2148392064": "54000739",
+    "2148392076": "a0660006",
+    "2148392080": "7fe03a14",
+    "2148392084": "a01f0000",
+    "2148392088": "5465063e",
+    "2148392092": "28000000",
+    "2148392104": "a01f0000",
+    "2148392108": "54000739",
+    "2148392116": "a01f001a",
+    "2148392120": "28000001",
+    "2148392128": "c01f0010",
+    "2148392136": "a01f0008",
+    "2148392140": "fc00001e",
+    "2148392148": "5406063e",
+    "2148392168": "c07f0010",
+    "2148392172": "28050040",
+    "2148392176": "ffe01890",
+    "2148392188": "c002a4cc",
+    "2148392196": "c8210008",
+    "2148392200": "ec211028",
+    "2148392204": "ec2100f2",
+    "2148392208": "efe10024",
+    "2148392216": "54000fff",
+    "2148392224": "2065007f",
+    "2148392232": "6c638000",
+    "2148392244": "c8443cc8",
+    "2148392252": "c002a4cc",
+    "2148392256": "c8210010",
+    "2148392260": "ec211028",
+    "2148392264": "ec2100f2",
+    "2148392268": "ec610024",
+    "2148392272": "fc00181e",
+    "2148392276": "a01f0008",
+    "2148392288": "5406063e",
+    "2148392308": "fc00f81e",
+    "2148392312": "a01f0008",
+    "2148392324": "5406063e",
+    "2148392344": "e3e10038",
+    "2148392352": "cbe10030",
+    "2148392360": "7c0803a6",
+    "2148392368": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2148392160,
+      "target": 2150086676,
+      "name": "sndStreamMixParameter"
+    },
+    {
+      "site": 2148392304,
+      "target": 2150086676,
+      "name": "sndStreamMixParameter"
+    },
+    {
+      "site": 2148392340,
+      "target": 2150086676,
+      "name": "sndStreamMixParameter"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_cache_vectors": [
+    {
+      "raw_input": 0,
+      "byte_value": 0,
+      "float_bits": "00000000",
+      "write_order": [
+        "old row float10",
+        "old row floatc"
+      ]
+    },
+    {
+      "raw_input": 127,
+      "byte_value": 127,
+      "float_bits": "42fe0000",
+      "write_order": [
+        "old row float10",
+        "old row floatc"
+      ]
+    },
+    {
+      "raw_input": 128,
+      "byte_value": 128,
+      "float_bits": "43000000",
+      "write_order": [
+        "old row float10",
+        "old row floatc"
+      ]
+    },
+    {
+      "raw_input": 255,
+      "byte_value": 255,
+      "float_bits": "437f0000",
+      "write_order": [
+        "old row float10",
+        "old row floatc"
+      ]
+    },
+    {
+      "raw_input": 256,
+      "byte_value": 0,
+      "float_bits": "00000000",
+      "write_order": [
+        "old row float10",
+        "old row floatc"
+      ]
+    },
+    {
+      "raw_input": 4294967295,
+      "byte_value": 255,
+      "float_bits": "437f0000",
+      "write_order": [
+        "old row float10",
+        "old row floatc"
+      ]
+    }
+  ],
+  "derived_gate_vectors": [
+    {
+      "old_initial": 0,
+      "old_fresh": 8,
+      "new_initial": 8,
+      "new_fresh": 8,
+      "volume_writes": false,
+      "pool_reload": false,
+      "new_pan_write": false,
+      "mix_route": false
+    },
+    {
+      "old_initial": 1,
+      "old_fresh": 1,
+      "new_initial": 8,
+      "new_fresh": 8,
+      "volume_writes": true,
+      "pool_reload": false,
+      "new_pan_write": false,
+      "mix_route": false
+    },
+    {
+      "old_initial": 1,
+      "old_fresh": 8,
+      "new_initial": 0,
+      "new_fresh": 8,
+      "volume_writes": true,
+      "pool_reload": true,
+      "new_pan_write": false,
+      "mix_route": false
+    },
+    {
+      "old_initial": 1,
+      "old_fresh": 8,
+      "new_initial": 1,
+      "new_fresh": 1,
+      "volume_writes": true,
+      "pool_reload": true,
+      "new_pan_write": true,
+      "mix_route": false
+    },
+    {
+      "old_initial": 1,
+      "old_fresh": 8,
+      "new_initial": 1,
+      "new_fresh": 8,
+      "volume_writes": true,
+      "pool_reload": true,
+      "new_pan_write": true,
+      "mix_route": true
+    },
+    {
+      "old_initial": 8,
+      "old_fresh": 8,
+      "new_initial": 8,
+      "new_fresh": 8,
+      "volume_writes": true,
+      "pool_reload": true,
+      "new_pan_write": true,
+      "mix_route": true
+    },
+    {
+      "old_initial": 65535,
+      "old_fresh": 0,
+      "new_initial": 65535,
+      "new_fresh": 65535,
+      "volume_writes": true,
+      "pool_reload": false,
+      "new_pan_write": false,
+      "mix_route": false
+    },
+    {
+      "old_initial": 2,
+      "old_fresh": 8,
+      "new_initial": 65535,
+      "new_fresh": 8,
+      "volume_writes": true,
+      "pool_reload": true,
+      "new_pan_write": true,
+      "mix_route": true
+    }
+  ],
+  "derived_split_vectors": [
+    {
+      "pan": 0,
+      "volume": 127,
+      "primary_word": 127,
+      "secondary_word": 0
+    },
+    {
+      "pan": 63,
+      "volume": 127,
+      "primary_word": 127,
+      "secondary_word": 127
+    },
+    {
+      "pan": 64,
+      "volume": 127,
+      "primary_word": 127,
+      "secondary_word": 127
+    },
+    {
+      "pan": 65,
+      "volume": 127,
+      "primary_word": 124,
+      "secondary_word": 127
+    },
+    {
+      "pan": 127,
+      "volume": 127,
+      "primary_word": 0,
+      "secondary_word": 127
+    },
+    {
+      "pan": 128,
+      "volume": 127,
+      "primary_word": 4294967294,
+      "secondary_word": 127
+    },
+    {
+      "pan": 255,
+      "volume": 127,
+      "primary_word": 4294967038,
+      "secondary_word": 127
+    }
+  ],
+  "derived_type_vectors": [
+    {
+      "type_half": 0,
+      "requests": 2,
+      "primary_pan": 0,
+      "secondary_pan": 127,
+      "aux_a": 0
+    },
+    {
+      "type_half": 1,
+      "requests": 1,
+      "primary_pan": "low8 old cached half6",
+      "secondary_pan": null,
+      "aux_a": 0
+    },
+    {
+      "type_half": 2,
+      "requests": 2,
+      "primary_pan": 0,
+      "secondary_pan": 127,
+      "aux_a": 0
+    },
+    {
+      "type_half": 65535,
+      "requests": 2,
+      "primary_pan": 0,
+      "secondary_pan": 127,
+      "aux_a": 0
+    }
+  ],
+  "derived_pool_bindings": {
+    "volume_writes": "old row float10 then floatc",
+    "pan_source": "old row half6 after pool reload",
+    "pan_write_and_mix": "new row half6/type/float10/IDs/half8",
+    "base_pointer_word": 2151547448,
+    "stride": 312
+  }
+}

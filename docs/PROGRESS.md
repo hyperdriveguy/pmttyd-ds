@@ -2,6 +2,26 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero game stream volume
+
+Completed SoundSSSetVolCh; checked EVT-01 portion.
+[Volume setter](behavior/audio/GAME_STREAM_VOLUME_CACHE_AND_REQUESTS.md)
+pins low8 float10-before-floatc, fresh old/new gates, pool recapture and ordered
+mono/dual requests using new-row data. Providers/FP/original volume/audio/native
+binding remain open.
+
+Validation: read-only ISO manifest passed four spans,102 anchors,three calls.
+Six cache/eight gate/seven finite split/four type vectors and pool annotations
+checked. Link audit passed917 Markdown files/zero broken links; scoped diff
+check passed. Mathematical deductions separate from original execution. Docs/
+metadata only; no make test/all rerun. Fresh ELF/listing/generator stay /tmp;
+no bodies/binary assets committed. Concurrent native edits excluded. Previously
+approved push remains pending invalid GitHub credentials; local commits retained.
+
+Next: priority-zero EVT-01 game stream engine/play/callbacks and actual providers/
+value/extent/alias/lifetime/IRQ/concurrency/FP domains, transitive ARAM/AI/DSP and
+original volume/mono/dual/audio traces. Other inbox/native/full-game work open.
+
 ## 2026-10-13 — Inbox priority-zero game stream pan/surround
 
 Completed SoundSSSetPanCh/SoundSSSetSrndPanCh; checked EVT-01 portion.

@@ -567,6 +567,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete SoundSSSetPanCh/SoundSSSetSrndPanCh — [pan/surround](../behavior/audio/GAME_STREAM_PAN_SURROUND_CACHE_AND_REQUESTS.md).
   Low8 cache/raw mono pan, divisor63, all non-one dual types, fresh ID/surround
   requests and surround pool recapture pinned; providers/runtime open.
+- [x] Complete SoundSSSetVolCh — [volume setter](../behavior/audio/GAME_STREAM_VOLUME_CACHE_AND_REQUESTS.md).
+  Low8 float10-before-floatc, fresh gates/recaptured pool and inline pan/dual
+  request order pinned; providers/FP/original volume/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2814,3 +2817,11 @@ Five spans/185 anchors/six calls verified; seven split/four type/five cache
 vectors and pool bindings checked. Source divisor63, raw mono pan argument,
 non-one dual routing and old/new surround pool rows pinned. Providers/FP/
 original pan/surround/audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Game stream volume setter delivery
+
+Completed [whole local volume setter](../behavior/audio/GAME_STREAM_VOLUME_CACHE_AND_REQUESTS.md).
+Four spans/102 anchors/three calls verified; six cache/eight gate/seven split/
+four type vectors and pool bindings checked. Low8 float10 then floatc in old
+row precede fresh gates and new-row pan/mix routing. Providers/FP/original
+volume/audio/native binding remain open; EVT-01 stays OPEN.
