@@ -2177,3 +2177,28 @@ usedZ<=90floor0provablewithoutinventedheight. Fullstagewriters/transitive
 init remainbounded. Triocontractlinksclosure/pendingnativeboundary and
 originalpose49MarioM_J_1B/GoombellaPKR_A_1 banks/force0; nofallbackidleinvented.
 No nativeedits/commit; git diff --check passed.
+
+### 2026-10-13 delivery: exact TurnEnd queue/zero population and nextTurn owner
+
+Appended `TurnEnd audience queue leaves and bounded next-round controller`
+to [trio contract](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md).
+Originalgroupsum23/level1threshold46; Turn1A13908+3,RNGchance/categories;
+AddPhaseEvtListduplicateNOwrite/order/reloadedcount/noexplicitcap pinned.
+NumToTargetA1377c+13780/13790,GetExistflag1excludemasks100/2,statusbyteHEX19
+excludeDEC12,AddAudienceNum P8c/amount0/Bef4100gates pinned. Freshdelta0 has
+noRNG/write; populationnonzero remainsrequest. Emptyrecords canfaithfullydrain
+actualTurnEndqueuedcategories throughsourceeligibility, notwholesalequeueclear.
+
+ExistingnativeBattleTurnFirstServices/battleTurnFirstProcess APIs identified;
+sourcefreshrule/fortune/fog/priority0gates pinned. Turn2→3→5→6Poisonowner
+8011d898 exactrecursion documented; existingperiodic/regen/recoveryauthorities
+and40..4b tailpackedwrites linked fornextactualround/phase2 readiness.
+No nativeedits/commit, no fabricatedmenu/return2/victory;git diff --check passed.
+
+### 2026-10-13 follow-up: Frankly original kind resolution for TurnFirst
+
+Triocontractpinsfourthoriginalgrouprecord93518a00→kind9352ff60 (file3d990),
+attrs12000000, levelbyte1, signedpriority/span88/890, parts/init/data pointers;
+SetMaxMoveCount0→sourceTurnFirstreset0/state10. Native dummyKinds6shouldbe
+replacedthroughimportedgroupowner beforeusingfreshoriginalTurnFirstservices.
+No nativeedit/commit;git diff --check passed.

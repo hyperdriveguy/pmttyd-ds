@@ -5230,3 +5230,64 @@ original next-turn audience/turn-first owners with their RNG/order before
 opening another player turn. Then successful player follow-ups, Spike warning,
 wing-fall, conclusion and original field/story return. Do not bypass these
 owners with fabricated completion or reset turn bookkeeping at phase boundaries.
+
+## 2026-10-13 — Superguard recovery and original fresh next-round control
+
+TransStageFloorPosition now captures the three source operands, resolves X/Z,
+uses original embedded-stage threshold90/lowfloor−50 and writes only raw Y.
+Original B-superguard counter bounces/recovery and owned-event barriers drain.
+No unconditional zero floor or fabricated completion is used.
+
+TurnEnd retains original four-unit group metadata (including defeated Goomba),
+sum23/player-level1/threshold46, chance increment, mandatory RNG, unique category
+queue and target-count arithmetic. The empty native crowd follows actual
+zero-amount/capacity gates; known chance categories filter through the no-SysCtrl
+record path without invented RNG. Nonempty crowd allocation/movement,
+threshold target-size changes and other category graphs remain explicit boundaries.
+
+Fresh initialization now calls the original portable TurnFirst processor from
+count0 to1; next round calls it to2. Rule/fortune/fog/record/move/priority and
+unit U24 ordering reuse native shared-memory services. Frankly's original kind
+is resolved from the fourth source group unitset, including level/priority/data
+instead of the old synthetic kind row. The integration confirms U24=2 despite
+his count0 and the source turn record counter2.
+
+Original Turn2→3→5 and ordered zero-status/zero-Happy-badge scan branches,
+word/halfword countdown tails and Turn4a/4b return run in the original logical
+order. Admitted nonfresh periodic damage/recovery/Happy-effect paths remain
+pending at their actual provider; they are not skipped. Original get_turn feeds
+Frankly's phase1/turn gate. Phase0→1→2 then uses existing original phase hooks,
+event barriers and actor selection to open Mario's next command menu. The
+first-turn lecture does not replay; HP remains Mario8/Goombella9 in the no-input
+fixture, Mario9 after A guard, and Mario10 after B superguard (SpikedHP1).
+Field HP/story11/result0/control lock remain unchanged until original field
+return is implemented. The demo is still incomplete.
+
+Validation: `make test` passes133/133 CTest and103/103 Python tests
+(`/tmp/trio-next-turn-tests-final.log`). Focused integration verifies full phases
+2/3/4/5/6/0/1/2, count2, source Frankly pointer/U24, record counter2, chance3,
+queue0, actual Mario command state, retained HP, guard/counter codes, attack
+cancellation and recovered hit-event cleanup. `make all` and `make debug-short`
+pass (`/tmp/trio-next-turn-all-final.log`, `/tmp/trio-next-turn-native-final.log`),
+without compiler warnings. `git diff --check` passes. Full nonfresh status,
+audience/crowd, successful player follow-ups, Spike warning, Hammer, wing-fall,
+conclusion/field return, original numeric/cadence parity and hardware performance
+remain unfinished. The original-fidelity playable prologue goal remains active.
+
+Isolated Azahar capture: `artifacts/azahar-trio-next-turn`, immutable
+`artifacts/trio-next-turn-snapshot` debug-short binary/ELF, underground-story11
+fixture, 48second boot and updated `tests/azahar_trio_enemy_impacts.py`. Manual
+review shows original Mario damage pose/Spiked recovery (sample04), then
+`source-next-player-command.png` shows restored idle actors, surviving Spiked/
+Paragoomba and Mario's Normal Jump/Normal Hammer menu. Host assertions establish
+turn2, HP and event ownership; screenshots do not prove native guard windows or
+every reaction frame. Other emulator profiles/saves are untouched. No hardware
+FPS or original-runtime parity is claimed.
+
+Next: bind original ordinary Hammer wrapper80416c40/core8035d6d4 and W80353de8,
+its held-left command3 packed/general-pad ownership, source Hammer power and
+original M_H poses. Preserve actual approach/waits/result branches instead of
+inventing an impact schedule. Then conditional Spike warning/counter, successful
+Jump/Headbonk follow-ups, Para wing-fall, conclusion and original field/story
+return. Documentation work has recovered the Hammer dependency map from the
+request inbox/read-only original; full prologue completion remains unproven.

@@ -34,4 +34,4 @@ def run(env, capture):
         time.sleep(1)
         capture('enemy-impact-recovery-%02d' % index)
     time.sleep(15)
-    capture('original-turn-end-boundary')
+    capture('source-next-player-command')

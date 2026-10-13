@@ -87,12 +87,19 @@ struct TrioAttackRuntime {
         if(first){ProfessorServiceRequest r{fn,e.currentCommand,now,{}};for(unsigned i=0;i<e.argumentCount;++i)r.rawOperands.push_back(raw(e,i));trace.push_back(std::move(r));}
         int32_t result;if(registry.invoke(e,fn,first,result))return result;
         switch(fn) {
+        case 0x8010510c:{
+            const float x=float(value(e,0));const int32_t destination=raw(e,1);
+            const float z=float(value(e,2));const auto b=word(0x8041eb90);(void)x;
+            const float floor=z<=real(b+0x16f28)?0.f:real(b+0x16f30);
+            setEventValue(e,destination,int32_t(floor),vm.interpreterServices().operands);return 2;
+        }
         case 0x80056120:{std::array<int32_t,4> args{};for(unsigned i=0;i<4;++i)args[i]=value(e,i);e.locals[11]=args[0];e.locals[12]=args[1];e.locals[13]=args[2];e.locals[14]=0;e.locals[15]=args[3];return 2;}
         case 0x80055f90:{if(e.locals[11]!=5){if(!pending)pending=fn;return 0;}const auto sample=cameraInterpolation(e.locals[11],e.locals[14],e.locals[15],float(e.locals[12]),float(e.locals[13]));required(sample.has_value());setEventFloat(e,raw(e,0),*sample,vm.interpreterServices().operands);output(e,1,e.locals[14]<e.locals[15]?1:0);e.locals[14]=int32_t(uint32_t(e.locals[14])+1);return 2;}
         case 0x80105020:{const auto u=unit(e);std::array<int32_t,7> a{};for(unsigned i=0;i<7;++i)a[i]=value(e,i+1);const auto record=u+0x18c;word(record,uint32_t(a[0]));word(record+4,uint32_t(a[1]));half(record+0xc,a[2]);half(record+0xe,a[3]);half(record+0x10,a[3]);half(record+0x14,0);half(record+8,a[5]);half(record+0xa,a[6]);word(record+0x18,0xffffffff);return 2;}
         case 0x80107694:{const auto u=unit(e),w=uint32_t(value(e,1));word(Battle+0x1cb0,0);readPrivatePad();DefenseContext context;context.hp=half(u+0x10c);context.simplifiers=byte(u+0x305);context.unsimplifiers=byte(u+0x306);context.automatic=byte(u+0x307);context.weaponGate=byte(w+0x13);DefenseCommand command;command.overrideCounter=half(Battle+0x1d18);command.evaluate(privatePad,context);half(Battle+0x1d18,command.overrideCounter);word(Battle+0x1cb0,command.result);writePrivatePad();return 2;}
         case 0x80113f1c:{const auto u=unit(e);if(u)half(u+0x1fe,uint16_t(half(u+0x1fe))|1);return 2;}
         case 0x80113708:output(e,0,word(Battle+0xf18)==uint32_t(raw(e,1)));return 2;
+        case 0x801137b8:output(e,0,half(word(0x8041eb90)));return 2;
         case 0x80104498:{const auto u=unit(e);if(word(u+0x308)){if(!pending)pending=fn;return 0;}output(e,1,0);return 2;}
         case 0x8010eed4:{const auto side=int8_t(byte(unit(e)+0xc));output(e,1,side==0?1:side==1?0:side);return 2;}
         case 0x8010b664:{const auto actor=translateBattleActor(&e,value(e,0),nativeBattleActorServices(vm));const int32_t side=int8_t(value(e,1));const auto w=uint32_t(value(e,2)),attributes=word(w+0x68);int32_t direction=int8_t(-byte(Battle+0xa+8*side));if(attributes&0x10000000)direction=int8_t(-direction);
@@ -265,9 +272,10 @@ struct TrioAttackRuntime {
         if(eventSdkCreateHeap(start,0x82100000,m)!=0)return false;
         word(0x8041e844,0);vm.gp.refreshRate=60;vm.gp.timestamp=now*eventClockRate(243000000);vm.initializeContexts();vm.gp.battleContext=1;
         word(Battle+0x2858,Work+0x400);half(Battle+8,2);half(Battle+0x10,1);
+        real(Battle+0x16f28,90);real(Battle+0x16f30,-50); // Source fresh BattleStageInit floor fields.
         for(unsigned i=0;i<64;++i)word(Battle+0x16f5c+8*i,0xffffffff);
         for(unsigned i=0;i<28;++i)byte(Battle+0x18da0+12*i,0xff);
-        half(Battle,1);word(Battle+0xf14,0x0300004c);word(Battle+0xf18,0x04000002);word(Battle+0xf1c,0x05000009);word(Battle+0xf20,0x06000007);
+        half(Battle,0);word(Battle+0xf14,0x0300004c);word(Battle+0xf18,0x04000002);word(Battle+0xf1c,0x05000009);word(Battle+0xf20,0x06000007);
         word(Battle+0x2738,Work);word(Work+0xc,Work+0x100);word(Work+0x118,reactionGroup);half(0x85000000+0x8a,1);
         word(0x8041eb90,Battle);word(0x8041eb00,0x85000000);byte(Battle+0xa,1);byte(Battle+0x12,255);
         word(Battle+0x420,menu.actor);word(Battle+0x424,6);word(Battle+0x1c5c,0);word(Battle+0x171c+0x4b0,0);word(Battle+0x171c+0x80,menu.attack->weapon);
@@ -280,6 +288,7 @@ struct TrioAttackRuntime {
             for(unsigned axis=0;axis<3;++axis){real(u+0x3c+4*axis,s.actors[visual[id]].position[axis]);real(u+0x30+4*axis,s.actors[visual[id]].position[axis]);}
             if(id>=3) {
                 const auto& spec=trioBattleUnitSpecs()[id-3];
+                if(id==6){const auto kind=word(word(reactionGroup+4)+3*0x30);word(u+0x10,kind);word(u+0x18,word(kind+0xc0));}
                 if(id<=5){const auto kind=reactionUnits[id-3][0],definition=word(kind+0xb8);word(u+0x10,kind);word(u+0x18,word(kind+0xc0));word(u+0x2b0,reactionUnits[id-3][1]);word(u+0x28c,reactionUnits[id-3][2]);word(u+0x2a0,reactionUnits[id-3][3]);word(p+4,definition);word(p+0x1bc,word(definition+0x48));word(p+0x1b4,word(definition+0x38));word(p+0x1b8,word(definition+0x3c));}
                 byte(u+0xd,byte(word(u+0x10)+0xe));half(u+0x108,spec.hp);
                 word(u+0x104,spec.attributes);word(p+0x1ac,spec.partAttributes);word(p+0x1b0,spec.counterAttributes);
@@ -303,6 +312,7 @@ struct TrioAttackRuntime {
         }
         word(Units+6*0x1000+0x298,franklyPhase);
         for(unsigned id=1;id<7;++id)clearStatus(Units+id*0x1000);
+        BattleTurnFirstBackend firstTurn;firstTurn.runtime=&vm;battleTurnFirstProcess(Battle,nativeBattleTurnFirstServices(firstTurn));
         buildBattlePhaseTables(Battle,phaseServices());
         child=nativeBattleDataChildServices(vm);takeoffBackend.runtime=&vm;takeoff=nativeBattleTakeoffServices(vm,nativeBattleTakeoffCoreServices(takeoffBackend));BattleSoundPlaybackServices playback;playback.user=this;playback.trigger=[](void* p,uint32_t,uint32_t key,int32_t,int32_t,const std::array<float,3>&){auto& r=*static_cast<TrioAttackRuntime*>(p);r.soundRequests.push_back(r.text(key));return uint32_t(0);};playback.position=[](void*,uint32_t,const std::array<float,3>&){};playback.off=[](void*,uint32_t){};movement=nativeBattleMovePositionServices(vm,playback);
         bool ok=bindBattleJumpSettingCallback(registry,vm) && bindBattleFlagQueryCallback(registry,vm) && bindBattleSelectedTargetCallback(registry,vm) && bindBattleCommandWeaponCallback(registry,vm) &&
@@ -450,7 +460,7 @@ struct TrioAttackRuntime {
     bool phaseAudienceIdle() {
         (void)word(0x8041eb00);const auto a=word(Battle+0x2858),flags=word(a);if(!(flags&8))return true;
         for(unsigned i=0;i<200;++i){const auto f=word(a+0x1bc+0x134*i);if((f&1) && !(f&(0x100|2|0x10))){if(!pending)pending=0x801a6ce8;return false;}}
-        if(word(a+0x13904)){if(!pending)pending=0x801a6ce8;return false;}
+        for(uint32_t i=0;i<word(a+0x13904);++i){const auto category=word(a+0x138cc+4*i);if(category!=4 && category!=9 && category!=10 && category!=11 && category!=12 && category!=13){if(!pending)pending=0x801a6ce8;return false;}}
         const auto state=word(a+0x137dc);
         if(state==0 || state==5 || state==7){if(state==0)word(a+0x137dc,5);if(flags&0x40000)word(a+0x137dc,15);else {word(a+0x137dc,7);word(a+0x137dc,13);}return false;}
         if(state==13){word(a+0x13904,0);word(a+0x137dc,12);word(a+0x137e0,0);word(a+0x137dc,15);return false;}
@@ -459,9 +469,58 @@ struct TrioAttackRuntime {
         if(!pending)pending=0x801a6ce8;
         return false;
     }
+    void addAudiencePhase(int32_t category) {
+        const auto a=word(Battle+0x2858);const int32_t count=int32_t(word(a+0x13904));
+        for(int32_t i=0;i<count;++i)if(word(a+0x138cc+4*uint32_t(i))==uint32_t(category))return;
+        word(a+0x138cc+4*uint32_t(count),uint32_t(category));word(a+0x13904,word(a+0x13904)+1);
+    }
+    bool audienceTurnEnd() {
+        const auto b=word(0x8041eb90),mario=battleMarioUnit(b,nativeBattleActorServices(vm)),a=word(b+0x2858),pouch=word(0x8041eb00);
+        const auto setup=word(word(b+0x2738)+0xc),group=word(setup+0x18);
+        if(word(a)&0x40000)return true;
+        const auto chance=word(a+0x13908)+3;word(a+0x13908,int32_t(chance)>100?100:chance);
+        uint32_t sum=0;const auto sets=word(group+4);for(uint32_t i=0;i<word(group);++i)sum+=byte(word(sets+0x30*i)+0xe);
+        const int32_t threshold=std::max<int32_t>(5,int32_t(2*sum)/byte(mario+0xd)),turn=half(b);
+        if(turn>=threshold){if(!pending)pending=0x801a1a74;return false;} // Source AddTargetNum needs its target-size provider.
+        const auto draw=random.bounded(100);
+        if(int32_t(draw)<int32_t(word(a+0x13908))){for(int32_t category:{4,9,10,11,12,13})addAudiencePhase(category);word(a+0x13908,0);}
+        if(!(word(a)&0x40000)){
+            int32_t target=int32_t(real(a+0x1377c)+real(a+0x13780));if(target<0)target=0;if(target>int32_t(word(a+0x13790)))target=int32_t(word(a+0x13790));
+            int32_t current=0;for(unsigned i=0;i<200;++i){const auto record=a+0x1bc+0x134*i,flags=word(record);if((flags&1) && !(flags&(0x100|2)) && byte(record+0x19)!=12)++current;}
+            const int32_t amount=int32_t(uint32_t(target)-uint32_t(current));
+            // Source AddAudienceNum early exits remain valid for the explicit
+            // empty crowd adapter; allocation/movement for nonzero amounts is pending.
+            const auto capacity=byte(pouch+0x8c);if(capacity && amount && !(word(b+0xef4)&0x100)){if(!pending)pending=0x801a1708;return false;}
+        }
+        return true;
+    }
+    bool emptyTurnPass(uint32_t state) {
+        static constexpr std::array<int32_t,23> recovery{{1,2,3,5,6,7,8,9,10,11,4,12,13,14,15,0,23,24,18,19,20,21,22}};
+        const auto actors=nativeBattleActorServices(vm);
+        for(unsigned i=0;i<64;++i){const auto u=word(Battle+0x20+4*i);if(!u || half(u+0x10c)<=0)continue;
+            if(checkPackedBattleStatus(u,27,actors))continue;
+            bool admitted=false;uint32_t provider=0;
+            if(state==6 || state==8 || state==10 || state==12){const int32_t id=state==6?4:state==8?8:state==10?23:24;const auto value=getPackedBattleStatus(u,id,actors);admitted=int8_t(value.strength)>0;provider=state==6?0x8011d898:state==8?0x8011d978:state==10?0x8011db60:0x8011dd08;}
+            else if(state==14 || state==16){admitted=half(Battle)>1 && byte(u+(state==14?0x2ee:0x2ef));provider=state==14?0x8011de64:0x8011e01c;}
+            else {admitted=getPackedBattleStatus(u,recovery[(state-18)/2],actors).duration!=0;provider=0x80127890;}
+            if(admitted){if(!pending)pending=provider;return false;}
+        }
+        return true;
+    }
     void handoff() {
-        if(word(Battle+0xf14)==0x0300004d){if(!pending)pending=0x8019f298;return;}
+        if(word(Battle+0xf14)==0x0300004d){if(!audienceTurnEnd())return;word(Battle+0xf14,0x03000001);word(Battle+0xef4,word(Battle+0xef4)&~0x2000u);return;}
+        if(word(Battle+0xf14)==0x03000001){BattleTurnFirstBackend backend;backend.runtime=&vm;battleTurnFirstProcess(Battle,nativeBattleTurnFirstServices(backend));word(Battle+0xf14,0x03000002);}
+        if(word(Battle+0xf14)==0x03000002){word(Battle+0xf14,0x03000003);}
+        if(word(Battle+0xf14)==0x03000003){if(half(Battle)!=1)word(Battle+0xf14,0x03000005);else {if(!pending)pending=0x8011c588;return;}}
+        if(word(Battle+0xf14)==0x03000005)word(Battle+0xf14,0x03000006);
+        while(word(Battle+0xf14)>=0x03000006 && word(Battle+0xf14)<=0x0300003e){const auto state=word(Battle+0xf14)-0x03000000;if(!emptyTurnPass(state))return;word(Battle+0xf14,word(Battle+0xf14)+2);}
+        while(word(Battle+0xf14)>=0x03000040 && word(Battle+0xf14)<=0x03000044){const auto field=Battle+0x19050+2*(word(Battle+0xf14)-0x03000040);if(word(field))word(field,word(field)-1);word(Battle+0xf14,word(Battle+0xf14)+2);}
+        while(word(Battle+0xf14)==0x03000046 || word(Battle+0xf14)==0x03000048){const auto field=word(Battle+0xf14)==0x03000046?0x13c:0x13e;
+            for(unsigned i=0;i<64;++i){const auto u=word(Battle+0x20+4*i);if(!u || half(u+0x10c)<=0 || checkPackedBattleStatus(u,27,nativeBattleActorServices(vm)))continue;const auto timer=uint16_t(half(u+field));if(timer)half(u+field,timer-1);}word(Battle+0xf14,word(Battle+0xf14)+2);
+        }
+        if(word(Battle+0xf14)==0x0300004a){word(Battle+0xf14,0x0300004b);word(Battle+0xf14,0x0300004c);word(Battle+0xf18,0x04000000);return;}
         if(word(Battle+0xf18)==0x04000006){word(Battle+0xf14,word(Battle+0xf14)+1);word(Battle+0xf18,0x04000000);return;}
+        if(word(Battle+0xf18)==0x04000000){word(Battle+0xf18,0x04000001);word(Battle+0xf1c,0x05000000);return;}
         for(;;) {
             const auto state=word(Battle+0xf1c);
             if(state==0x05000000){buildBattlePhaseTables(Battle,phaseServices());word(Battle+0xf1c,state+1);continue;}

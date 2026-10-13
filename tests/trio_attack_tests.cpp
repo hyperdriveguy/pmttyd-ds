@@ -121,26 +121,31 @@ int main(){
     assert(headbonk!=game.trioAttack.requests().end());
     game.tick(Input{});assert(game.trioAttack.commandActor()==-1 && game.trioAttack.readWord(0x84000f1c,value) && value==0x0500000b);
     std::vector<uint32_t> phaseOrder,audienceOrder;uint32_t priorPhase=0;
-    for(unsigned i=0;i<1200 && !game.trioAttack.pendingFunction();++i){
+    for(unsigned i=0;i<1200 && !game.trioAttack.pendingFunction() && game.trioAttack.commandActor()!=1;++i){
         game.tick(Input{});assert(game.trioAttack.readWord(0x84000f18,value));
         if(value!=priorPhase){phaseOrder.push_back(value);priorPhase=value;}
         assert(game.trioAttack.readWord(0x84400400,value));
         if(value&8){assert(game.trioAttack.readWord(0x84413bdc,value));if(audienceOrder.empty() || audienceOrder.back()!=value)audienceOrder.push_back(value);}
     }
-    assert(phaseOrder==std::vector<uint32_t>({0x04000002,0x04000003,0x04000004,0x04000005,0x04000006,0x04000000}));
+    assert(phaseOrder==std::vector<uint32_t>({0x04000002,0x04000003,0x04000004,0x04000005,0x04000006,0x04000000,0x04000001,0x04000002}));
     assert(audienceOrder==std::vector<uint32_t>({0,13,15}));
     assert(game.trioAttack.readWord(0x84400400,value) && !(value&8));
-    assert(game.trioAttack.readWord(0x84000f14,value) && value==0x0300004d);
-    assert(game.trioAttack.readWord(0x84000000,value) && value>>16==1); // Phase changes do not increment turns.
-    assert(game.trioAttack.pendingFunction()==0x8019f298 && game.trioAttack.finished());
-    assert(game.trioAttack.readWord(0x84000420,value) && value==5); // Spiked completed; original next enemy.
+    assert(game.trioAttack.readWord(0x84000f14,value) && value==0x0300004c);
+    assert(game.trioAttack.readWord(0x84000000,value) && value>>16==2); // Only source TurnFirst increments the turn.
+    assert(game.trioAttack.pendingFunction()==0 && game.trioAttack.finished());
+    assert(game.trioAttack.readWord(0x84106010,value) && value==0x9352ff60); // Frankly participates through his original kind.
+    assert(game.trioAttack.readWord(0x84106024,value) && value>>24==2); // Nonacting Frankly still receives both turn preparations.
+    assert(game.trioAttack.readWord(0x84016f54,value) && (value&255)==2); // Source turn action-record byte16f57.
+    assert(game.trioAttack.readWord(0x84413d08,value) && value==3); // First TurnEnd chance increment survived the source RNG test.
+    assert(game.trioAttack.readWord(0x84413d04,value) && value==0);
+    assert(game.trioAttack.readWord(0x84000420,value) && value==1); // Source phase selection returned to Mario.
     assert(game.trioAttack.readWord(0x841042a0,value) && value==0x935238e0); // Installed Spiked root.
     assert(game.trioAttack.readWord(0x841052ac,value) && value==1);
     assert(game.trioAttack.readWord(0x841052a8,value) && value==0);
     assert(game.trioAttack.readWord(0x84000ee0,value) && value==5); // Source sampler's actor ID, not a menu actor.
-    assert(game.trioAttack.commandActor()==-1 && game.trioCommands.actor==2 && game.trioCommands.state==TrioBattleCommands::State::Closed);
+    assert(game.trioAttack.commandActor()==1 && game.trioCommands.actor==1 && game.trioCommands.state==TrioBattleCommands::State::Command);
     const auto phaseChecks=std::count_if(game.trioAttack.requests().begin(),game.trioAttack.requests().end(),[](const ProfessorServiceRequest& r){return r.function==0x80113708;});
-    assert(phaseChecks==3 && !game.trioBattleIntro.message.active()); // Frankly gates phase3/4/5 without lecture replay.
+    assert(phaseChecks==5 && !game.trioBattleIntro.message.active()); // Frankly gates phase3/4/5 without lecture replay.
     assert(game.trioBattleIntro.actors[5].pose=="TGK_S_1"); // Original type43 band fallback69.
     assert(game.trioAttack.readWord(0x8410629c,value) && value==0); // Finished tracked phase hook cleared by barrier.
     assert(game.trioAttack.readWord(0x8410110c,value) && value>>16==8);
@@ -149,7 +154,7 @@ int main(){
     assert(game.trioAttack.readWord(0x84001cb0,value) && value==2);
     assert(game.trioAttack.readWord(0x84001d34,value) && value==0); // Private reset independent of general pad.
     assert(game.trioBattleIntro.actors[0].pose=="M_S_1" && game.trioBattleIntro.actors[4].pose=="PTK_S_1");
-    for(unsigned id:{4u,5u})assert(game.trioAttack.readWord(0x84100020+id*0x1000,value) && ((value>>24)&255)==10 && ((value>>8)&255)==0);
+    for(unsigned id:{4u,5u})assert(game.trioAttack.readWord(0x84100020+id*0x1000,value) && ((value>>24)&255)==0 && ((value>>8)&255)==1);
     assert(game.progress.originalStory==11 && game.fieldBattleState().result==0 && !game.fieldControlEnabled() && !game.saveRequested);
     assert(game.progress.position.x==fieldPosition.x && game.progress.position.z==fieldPosition.z && game.progress.hp==checkpoint.hp);
     for(uint32_t button:{0x100u,0x200u}) {
@@ -158,17 +163,32 @@ int main(){
         for(unsigned n=0;n<3600 && !defended.trioBattleIntro.finished;++n)defended.tick(advance);
         bool pressed=false;uint32_t defence=0;
         for(unsigned n=0;n<3000 && !defended.trioAttack.pendingFunction();++n){
+            if(defended.trioAttack.readWord(0x84000000,value) && value>>16==2 && defended.trioAttack.commandActor()==1)break;
             Input next;next.physicalSnapshot=true;
             const auto menuState=defended.trioCommands.state;
             if(!defended.trioAttack.active() && (menuState==TrioBattleCommands::State::Command || menuState==TrioBattleCommands::State::Target))next=advance;
             if(!pressed && defended.trioBattleIntro.actors[5].battleScale[0]>1.3f){next.physicalSnapshot=true;next.physicalButtons=button;next.confirm=false;pressed=true;}
             defended.tick(next);
-            if(defended.trioAttack.readWord(0x84001cb0,value) && value && !defence)defence=value;
+            if(defended.trioAttack.readWord(0x84001cb0,value) && value && !defence){
+                defence=value;
+                if(defence==5){assert(defended.trioAttack.readWord(0x84104280,value) && value==1);assert(defended.trioAttack.readWord(0x84101270,value) && (value&255)==1);}
+            }
         }
         assert(pressed && defence==(button==0x100?4u:5u));
         assert(defended.trioAttack.readWord(0x8410110c,value) && value>>16==(button==0x100?9u:10u));
-        if(button==0x100){assert(defended.trioAttack.pendingFunction()==0x8019f298);assert(defended.trioAttack.readWord(0x84101278,value) && value==0x50117);}
-        else {assert(defended.trioAttack.readWord(0x84104280,value) && value==1);assert(defended.trioAttack.readWord(0x8410410c,value) && value>>16==1);assert(defended.trioAttack.readWord(0x84101278,value) && value==0x8012a);assert(defended.trioAttack.readWord(0x84104278,value) && value==0x137);assert(defended.trioAttack.readWord(0x841042a8,value) && value==0);assert(defended.trioAttack.pendingFunction()==0x8010510c);}
+        if(button==0x100){assert(defended.trioAttack.pendingFunction()==0);assert(defended.trioAttack.readWord(0x84101278,value) && value==0x50117);}
+        else {
+            assert(defended.trioAttack.readWord(0x8410410c,value) && value>>16==1);
+            assert(defended.trioAttack.readWord(0x84101278,value) && value==0x8012a);
+            assert(defended.trioAttack.readWord(0x84104278,value) && value==0x137);
+            assert(defended.trioAttack.readWord(0x841042a8,value) && value==0);
+            assert(defended.trioAttack.pendingFunction()==0);
+            assert(defended.trioAttack.readWord(0x841042b4,value) && value==0);
+            assert(defended.trioAttack.readWord(0x84016f28,value) && value==0x42b40000);
+            assert(defended.trioAttack.readWord(0x84016f30,value) && value==0xc2480000);
+            assert(std::any_of(defended.trioAttack.requests().begin(),defended.trioAttack.requests().end(),
+                [](const ProfessorServiceRequest& r){return r.function==0x8010510c && r.command==0x803516b8;}));
+        }
     }
     std::cout<<"Original Jump damage, owned reactions, return/idle, source move consumption, Mario-to-Goombella handoff, persistent Headbonk damage, deferred removal and source enemy impact/recovery, private defence and audience drain passed\n";
 }

@@ -2302,3 +2302,186 @@ case andusedposebank; visualimportavailabilityisaseparate nativeprovider.
 Confirmedavoidcounter8034f4cc requests49thenoriginal40stepmode5Yspin, with
 no final0rotationfabrication. Nativecurrentfloorpending shouldremainexplicit
 until typedstageproviderisbound; originalroundoutcomes/victoryarenotclaimed.
+
+## TurnEnd audience queue leaves and bounded next-round controller
+
+2026-10-13 documentation follow-up for native next-turnbinding. Rechecked
+original BattleAudienceAddPhaseEvtList801a1520/7c,
+BattleAudienceNumToTarget801a1c60/7c, NumToTargetSub801a1bf4/6c,
+AddAudienceNum801a1708/1c4, usedcategory eligibility801a7d74/bc,
+btlseqTurn dispatch/table and original setup4group/kind bytes. Existing portable
+TurnFirst implementation/providers were inspected read-only, not changed.
+
+### Source group threshold and first TurnEnd RNG path
+
+Original group tikfile26460: count4,+4unitsetpointer263a0; unitset stride30,
+word0kind. Original fourkind+0e bytes are Goomba2a7d8→7,Spiked30c30→8,
+Para2f578→7,Frankly3d990→1, sum23. PlayerU+d sourcepouchlevel1 makes
+TurnEndthreshold46, independent ofremovedGoomba/liveenemycount. CurrentturnB0=1
+therefore skips AddTargetNum andcategory6. Native empty adapterA13908=0 becomes3;
+mandatory irand100 draw<3 appendscategories4,9,10,11,12,13 inthatorder and
+resetscounter13908=0; otherwisecounter3survives. Originalcalleralwaysthen
+NumToTarget. Retain native RNGadapter seed as explicitpolicy, notsourcefact.
+
+### AddPhaseEvtList exact ordinary ABI, duplicate and capacity
+
+Ordinary DOLfunction takes `(signedword category)` inr3; no evententry/output/
+return2protocol. CapturesAudienceBaseA through801a86a0. ReadcountwordA13904,
+interpret signedfor scanadmission; count>0 scanscount entries inascendingorder
+atA138cc+4*i. First equalcategory returns with **no write**. No match: write
+category atA138cc+4*CAPTUREDcount; reloadwordA13904, add1wordwrap andstore.
+The reload occursafter append. Sourcehelperhas **no explicitcapacity clamp**,
+categoryrangecheck, negativecountguard, RNGdraw, sort oreventlaunch.
+The14category0..13 originaldomain+duplicateelimination canboundtheordinary
+queue to14, butdo notinventa cap/clamp insidehelper. Native unsupportedinvalid
+state admission mayremain explicit rather thanmemorycorruption; thatpolicy is
+notclaimed original. Fresh list0 plus sixdistinctcategoriesbecomescount6;
+repeatingthe samecategory makesnocount/payloadchange.
+
+### NumToTarget zero-record gates and packed fields
+
+Ordinary noargumentservice capturesA; Aflags40000set returnswithnomutation.
+Else compute `target=truncToS32(single(A1377c+A13780))`; signedtarget<0→0;
+then iftarget>signedwordA13790 settarget=A13790 (thissecondcapcanmakeitnegative).
+CallNumToTargetSub, subtractitscount fromtarget withwordarithmetic, call
+AddAudienceNum(delta), discarditsresult. It doesnotwrite target intoAfields.
+
+NumToTargetSub capturesA thenfori0..199 callsGetExist. Countrecordwhen
+GetExist(i)==1 **and byte record+0x19 (hex25) != 12 decimal (0x0c)**.
+Recordbase=A+1bc+134*i. GetExist checksrecordword0 mask1 SET andmasks100/2
+CLEAR. This count does **not** requireSysCtrlmask10clear; existingdisabled
+records canstillcount. Neither thishelper norzero-recordpath uses RNG/writes.
+
+AddAudienceNum capturesglobalBattle, AudienceA, pouchP, reads unsignedhalfP8c.
+P8c==0 returns0 beforeamounttest. Else delta==0returns0; elseBattleflagsBef4
+mask100set returns0. These are original gates, notemptycrowdshortcuts.
+FreshadapterzeroA1377c/A13780/A13790 +zero-recordexist yields target0/current0/
+delta0, soAddAudienceNum0 safelyreturns0 afterpouchread evenifP8c!=0.
+No queue, record, capacity, SP orRNGmutation occurs inthiscomposedzeropath.
+Positive/negativeamount population/removal graphs remainbounded; sourceP8c0
+bypass canbeused ifthatactualpouchvalue isprovided, notinventedtoforcecompletion.
+
+### Original category queue drain with empty records
+
+A future phase4 state13 canconsume the TurnEndqueue evenifitcontains6categories;
+empty-audience isdifferentfromempty-queue. Capturesoldcount/payload atA138cc,
+setsA13904=0, processes eacholdcategory inoriginalorder. For sourceTurnEnd
+categories4/9/10/11/12/13, admission scansindices0..59 inclusive through
+helper801a7d74. Helper: SysCtrl0→0 immediately; otherwise requirebyte1bkind
+matchesrequestedkind, statusbyte19 not{13,12,11,21,22}decimal, thenreturn
+recordword0mask8 normalized0/1. Sourcekindrequests4→2,9→5,10→6,11→9,
+12→11,13→12. Categories9/11/12 areadditionally gatedbyAflags4000clear;
+11excludesstatus18;12needs BattleAudienceDetectPakkunEatTarget801a1058 !=−1 aftereligibility.
+Emptyrecords failthefirstSysCtrltest, neveradmitItemOn/queueappend/RNG.
+Thusnewqueuecount0, skips randomizedchoiceat801a7304, entersstate12/substate0,
+then15 aspreviouslydocumented. Nonemptyadmission/categoryevent graph remains
+an explicit boundary. Do notdiscardoldqueuewholesale withouttestingitsrecord
+admission, orgenerateRNGchoicewhennewcount0.
+
+### Reusable native TurnFirst services and exact remaining controller boundary
+
+Existing portable `battleTurnFirstProcess` in source/battle_turn_first.cpp is
+complete per[BATTLE_TURN_FIRST_PROCESS_COMPLETE](BATTLE_TURN_FIRST_PROCESS_COMPLETE.md).
+`nativeBattleTurnFirstServices(BattleTurnFirstBackend&)` in
+source/battle_event_callbacks.cpp supplies sharedmemory/byte/rulejudge/fortune/
+resetmove/irand/softdelete. Defaultbackendjudge usesjudgeBattleTurnRule;
+fortune usesnativeBattleMajinaiQueryServices; defaultreset uses
+resetPackedBattleMoveStatus; defaultsoftdelete uses recovered effectprovider.
+Backend/runtime lifetime mustoutlivethese calls. ReuseactualAPI ratherthan
+handresettingMario/Goomcounts orreturningevent2fromordinaryTurnFirst.
+
+CurrentfreshnativeFieldInfo rulebyte18=0 meanssourceJudgeTurnRule nohandledrule;
+pouch5b8=0 meanssourceMajinaiCheck returns0withoutRNG (stillglobalpointerread);
+fogtimerB182b8=0 meanssourceFogEnd returns1withoutreading/deletingfogpointer.
+Originalkind priority/spans+88/+89 **all00** forMario80372afc,Goombella80393bec,
+threeoriginalGoomba variants andFrankly3d990. Allnonnullsurvivors therefore
+sourceirand(0), consumednoRNG, U28=0. Franklyremainsnonnull/participates with
+U21=0/resetcount0; survivingplayer/enemyU21=1 resetmoves1. PreserveU24byte++
+order, sourceB0signedincrement andcappedB16f57counter alreadyclosed. These
+freshgates do notclosefuture fortune/status/badge/fog population.
+
+After TurnFirst, sourceTurnstate1 StepTurn→2 and recurses controller. Exact
+next Turn2 table80363cc8[2]→8011c66c: StepTurnONCE→3,recurse.
+Turn3entry8011c588 seesnewS16B0=2 !=1, StepTurnTWICE→5,recurse.
+Turn5entry8011c684 StepTurnONCE→6,recurse. Therefore retaining sourcepending
+at **Turn6 Poison scan8011d898** is the smallestcorrectnextowner; do notlabel
+Turn2asnativecommandmenualreadyready.
+
+Existing authoritiesclosefurtherfreshscanadmissions:
+[periodicdamage](BATTLE_PERIODIC_DAMAGE.md) handlesTurn6Poison/8Burn;
+[regeneration](BATTLE_REGENERATION.md) handlesa/cstatus23/24,e/10Happybadge;
+[recovery](BATTLE_TURN_RECOVERY.md) handles12..3e recoveryinoriginalnon-numeric
+statusorder. Freshzerostatuses/zeroHappy2ee/2ef gateallscanmutationsoff and
+eachno-changebranch StepTurnTWICE+immediaterecursion; nonfreshadmission must
+executeoriginalchild/providerorretainboundary. These controllers cannotbe
+replacedbya genericframewait oronehop skipbasedonlyon“newturn”.
+
+Tail40/42/44 readswordsB19050/54/58; nonzero→word−1 (evennegative), then
+StepTWICE/recurse. Tail46/48 scans64units, skipnull/status27/HP<=0; decrement
+nonzero unsignedhalfU13c/U13e respectively; StepTWICE/recurse. Freshzerofields
+neednowrites. Tail4aStepONCE/recurse→4b;4bStepONCE→4c, SetPhase4=04000000,
+**returns**. Nextouter4cphasewrapper0 incrementsphase1/setsMove5=05000000.
+OriginalexistingMove/phasehooks/emptyphase1→phase2 selectionthenownsnextplayer
+readiness. Franklyoriginalphase1/turn1lecture gateisfalseatturn2; no repeated
+firstturnlectureisinvented. Native next-roundcommand readiness shouldonlybe
+reportedafterthiscontroller/barrier/menu ownershipisbound andverified.
+
+Remainingproviders areactualnonfreshstatus/periodic/recovery childgraphs,
+audiencepopulation/targetcounter/categoryactions, completeplayercommandmanager
+andoriginalhardware/render/audio cadence. Localsourcefreshgates are nowcoherent;
+no victory, fabricateddialogue, unconditionalaudiencesuccess orreturn2skip is
+introduced by this documentation.
+
+### Original Frankly kind owner before native TurnFirst
+
+Thefourthsourcegroup unitset (file26430) hasword0relocatedkind
+**9352ff60**, file3d990/unit_lecture_frankli_kuriboo. Resolve through
+originalgroup93518a30 word+4→unitset93518970, fourthrecord+90→93518a00,
+thenword0 ratherthanretaining syntheticKinds6. Exactkind0=b4,+acattributes=
+12000000,+0elevelbyte1, signedpriority+88=0/span+89=0. Kind+b4partcount1,
++b8partstable9353007c(file3daac), +bcinit935300c8(file3daf8),
++c0datatable93530074(file3daa4). Init's SetMaxMoveCount0 establishesU21=0;
+TurnFirst resets itthroughoriginalno-statuspolicy toU22/U23=0,U20=10.
+Sourceattributes/level/kinddependencyremainoriginal evenwhen currentnative
+surrogate priority byteshappen tobezero. Originalpart/draw initialization is
+separatefromthisusedpriority/countproducer; no newnativeeditsmadehere.
+
+### Native fresh next-round binding (2026-10-13)
+
+Native `TrioAttackRuntime` now binds TransStageFloorPosition with three typed
+operands and the source embedded-stage threshold90/lowfloor−50. The raw Y
+output token is captured before resolving Z; X/Z remain intact. Original
+superguard counter recovery completes its bounces and tracked hit-event barrier.
+`btlevtcmd_get_turn` reads the live signed battle halfword for original Frankly
+phase gates. Original kind metadata for Frankly comes from the fourth original
+group unitset, rather than the synthetic native kind row.
+
+Fresh initialization and the next round both reuse the recovered
+`battleTurnFirstProcess`/native backend: rule judgment, signed turn count,
+fortune request, action-record counter, every live unit's U24/move reset/source
+kind priority RNG, status flag clear and fog check. First-process initialization
+starts the fresh native snapshot at count0 and reaches1; next round reaches2.
+Frankly participates with his original kind/count0 and U24 reaches2. Full
+prebattle controller setup still remains separate from this snapshot adapter.
+
+Turn4d runs original group-based TurnEnd math and mandatory RNG, unique phase
+category queue insertion and target-count scan. The original group remains
+four units/sum23 even after Goomba's deferred removal. The fresh seed fixture
+retains chance3 and an empty queue. Amount0/capacity0 AddAudienceNum early
+exits follow source gates; populated crowd allocation/movement and threshold
+AddTargetNum remain explicit providers. Queued categories4/9/10/11/12/13 drain
+through the source no-SysCtrl-record admission path without invented RNG.
+
+Turn2→3→5→6 and the ordered poison/burn/regeneration/Happy/recovery scans now
+execute the documented no-change branches for the fresh zero-status/zero-badge
+snapshot. Source status reads gate these branches; admitted periodic effects,
+nonzero recovery durations and Happy trials retain their actual provider boundary.
+This does not implement nonfresh status expiry/effect child choreography. Tail
+word/halfword countdowns retain source narrowing/decrement gates. Turn4a/4b
+returns to phase0, then phases1/2 use existing phase tables, original Frankly
+hooks and owned-event barriers before preparing Mario's command menu.
+No HP reset, lecture replay, fabricated victory/result or field return occurs.
+Host integration verifies full phase order2/3/4/5/6/0/1/2, turn count2, record
+count2, source Frankly pointer/U24, actual Mario menu, retained player HP and
+no-input/A-guard/B-superguard round completion. Hardware/original-runtime
+cadence, full audience/status services and subsequent attacks remain unproven.
