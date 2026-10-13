@@ -169,6 +169,6 @@ int main() {
         if(now-window>=1) {metrics.fps=frames/(now-window);window=now;frames=0;}
     }
     // A battle is transient; save only the exploration checkpoint.
-    if(frontend.screen==ttyd::FrontScreen::Playing && !game.professorStory.temporaryProfessor && !game.professorStory.running() && game.scene==ttyd::Scene::Explore && !game.airborne() && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0) ttyd::writeSave(savePath,game.progress);
+    if(frontend.screen==ttyd::FrontScreen::Playing && !game.professorStory.temporaryProfessor && !game.professorStory.locked() && game.scene==ttyd::Scene::Explore && !game.airborne() && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0) ttyd::writeSave(savePath,game.progress);
     audio.shutdown();renderer.shutdown();romfsExit();gfxExit();return 0;
 }
