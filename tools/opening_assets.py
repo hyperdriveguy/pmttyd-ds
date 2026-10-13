@@ -31,7 +31,7 @@ def main():
     images += [(f'demo-{i}','demo.tpl',i) for i in [0,1,2,8,9,10,11,12]]
     tracks=[('title','sys_tit1_32k'),('demo-book','sys_demo1_32k'),('demo-market','sys_demo2_32k'),('opening-house','evt_mri1_32k'),('opening-voyage','sys_opn1_32k'),('opening-sailing','evt_kou1_32k')]
     required=[f'opening-{r}.vertices' for r in ['aaa_00','aaa_00-interior','muj_20','gor_10']]+[n+ext for n,_,_ in images for ext in ['.t3x','.size']]+[n+'.wav' for n,_ in tracks]+['prologue.t3x','prologue.size']
-    required += ['opening-aaa_00.houseobj']
+    required += ['opening-aaa_00.houseobj','demo-page.pmanim','demo-page.bin','demo-page.json','demo-page-back.t3x','demo-page-back.size']
     required += [n+ext for n in ['c_luigi','c_paretta','c_peach','c_nazo','demo-chest'] for ext in ['.pmanim','.t3x','.uvscale']]
     if manifest.exists() and json.loads(manifest.read_text()).get('fingerprint')==fingerprint and all((out/n).exists() for n in required) and cached_maps_complete(out):return
     records=[]
@@ -92,5 +92,7 @@ def main():
     heading.save(work/'prologue.png')
     subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o',str(out/'prologue.t3x'),str(work/'prologue.png')],check=True,stdout=subprocess.DEVNULL)
     (out/'prologue.size').write_bytes(struct.pack('<4I',x,max(im.height for im in letters),512,128))
+    from opening_book_assets import build as build_book
+    build_book(a.iso,out)
     manifest.write_text(json.dumps(dict(fingerprint=fingerprint,sources=records,images=images,music=tracks,conversion='Large background raster half-size Lanczos; small title masks unchanged; transparent power-of-two padding; original-rate PCM16 music and loop intervals',license='Original Nintendo/Intelligent Systems assets for local use; no redistribution rights'),indent=2)+'\n')
 if __name__=='__main__':main()

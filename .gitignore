@@ -118,3 +118,6 @@ romfs/*.houseobj
 romfs/demo-chest.*
 
 /romfs/opening-demo-market.json
+
+romfs/demo-page.*
+romfs/demo-page-back.*
