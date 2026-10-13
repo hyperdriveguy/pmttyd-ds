@@ -8,8 +8,8 @@ a small Crump battle harness, touch menus and versioned saves.
 The underground trio executes original attacks, enemy turns, wing fall and
 death/removal. Its ending now calculates original drops, presents the original
 animated EXP stars, runs Mario/Goombella victory poses and displays the original
-US PointGet art while counting Star Points into battle pouch storage. Full
-victory export and field return remain unfinished. Native new-file flow retains a source-based initial
+US PointGet art while counting Star Points. The finishing poses, fade and
+resource export now run; battle teardown and field return remain unfinished. Native new-file flow retains a source-based initial
 pouch across room changes; battle import preserves supplied HP/FP. Legacy
 checkpoint files do not yet serialize that original storage.
 

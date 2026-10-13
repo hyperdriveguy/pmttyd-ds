@@ -3091,3 +3091,57 @@ one stale-link models/sites checked. Earlier clear/push pins reverified; all5
 namespace functions/126 words matched ISO. Pop rereads selected head after
 restore/disable, clears node after restore; dequeue leaves node links. Engine/
 cancel/providers/original IO/audio/native binding open; EVT-01 stays OPEN.
+
+### 2026-10-13 delivery/request: ordinary trio field-return handshake
+
+[Field handshake](../behavior/battle/UNDERGROUND_TRIO_FIELD_RETURN_HANDSHAKE.md)
+pins source sequence5→6/counter>30/GP alternatives, seq-game originalretained
+fade presets/constructor9/300, BattleExit ordered originalresource/context/event
+restoration and actualwaitseq2&&I10nonzero. Authoredgor_01 christine_nakama
+374b0 evt_pouch_party_join(1)→P0eOR1 belongsjoininghistory, not1f/newgame
+heal. marioCtrlOn byte38nestedcount, globalpartyCtrlOnBOTHslots20000000,
+Postoriginalappearance/flags andunchanged161-commandmessage/story12tail.
+Nextboundednativeproviders: BattleEnd800f8da4/transitivecontextrelease/field
+rootpause-resume; actualpartyEntry/HelloMain/partyGetAppearPos800c6c9c;
+originalGPpresets/sequenceexit-init ordering and Progresspouchjoin/saveowner.
+Read-onlycompletebodies/tables/joinrecord/nativeAPIcheck; docs-only/no native
+edit/build/commit; git diff --check.
+
+### 2026-10-13 delivery: original used fade10 texture/NPC namespace
+
+[Fade10 consumer](../behavior/display/BATTLE_END_FADE10_TEXTURE_CONSUMER.md)
+pins completeused disp_texture: embedded1x1I4FF80415020, NO externalTPL/palette
+lookup, identityUV/matrix, alphaByte=low8trunc(single255*slotratio), blackRGB,
+sourcealpha blend, camera8projection/view,608-squarequad±304 andprojection
+restore. Type10doesnotcompletedflag2skip; solidblackprimitivecanmatchthis
+usedwhite-texture*blackmaterialunderdeclaredcamera/coverageadapter. Actual
+GX/camera/clip/rasterparity andotherfadeart remainbounded. Ending1c loadsF8
+thenNPC140OR100 at8021654c..54, separatefromNPC0/visibility. Readonlywhole
+body/table/constants/texel; docs-only/no nativeedits/build/commit;diffcheckpass.
+
+### 2026-10-13 delivery/request: ending mapfree/fieldparty fresh constructor
+
+[BattleFree/End](../behavior/battle/ENDING_HEAP_FREE_AND_REMAINING_UNIT_TEARDOWN.md)
+closesBattleFree(pointer):nullskip,actualmapheapbase8041e80c/_mapFree,notSDK
+__memFree; header32/live8/size4/next0 orderedneighborcoalescing, noEpayload
+clear. LaterBattleEnd64slotliveDelete thenicon/menu/stage/audience/breakslot,
+optionalB1c78free/Bfree/globalB0.
+[Constructorcomposition](../behavior/partner/FIELD_PARTY_POSITION_CONSTRUCTORS.md#2026-10-13-battle1f-ordinary-goombella-constructor-composition)
+resolveskind1c_pkr/PKRS1versusHP<=5PKRD2,f4=26,length56,partyEntryposition
+helper2twiceviafreshHelloMain10,not16-countsubstate0jump. ExistingMain/general
+appearance/fallbackcontractsauthority; GetAppearPos2_800c6718 remainingfull
+typedray/classification/caller contract/nativeproviderrequested, plusactual
+registry/allocator/model/context. Readonlywholebodies;docs-only/no nativeedit
+build/commit; git diff --check.
+
+### 2026-10-13 delivery: source E BattleAlloc/mapheap bootstrap pairing
+
+[Mapallocationbinding](../behavior/memory/BATTLE_END_MAP_ALLOCATION_BINDING.md)
+pinsending05actualcall802154e0→BattleAlloc800f8934(2ac),not88d8; wrapper
+usesroot8041e80c/_mapAlloc8002ff58. Complete32-byte roundedbestfit/firsttie/
+mandatorysplit/zero/DCflush andE2ac→2c0 payload/2e0 span, nestedsourcearena
+64000/root63fe0. Existing eventmapallocation/memorybootstrap/subpoolcontracts
+areauthority; parentprimaryrootandSDKheaders remainseparate. Correctfreepair
+usesinnerroot; no12-byteSDKheader, noE-onlyarenaoriginalhistoryclaim or
+staledouble-free/idempotenceassumption. Docs-only/read-only/no nativecode
+build/commit; git diff --check.

@@ -138,3 +138,48 @@ internals;HP/color readers and resource persistence;mode initialization and
 global-index writers;owner-slot invariants,complete battle teardown and original
 lesson transition traces. These local constructor graphs do not establish a
 complete functioning party system or full-game equivalence.
+
+## 2026-10-13 battle1f ordinary Goombella constructor composition
+
+Read-only used partyEntry800bea68/1b8, partyHello800bbc48/194 and
+partyHelloMain800bb544/704 listings in ignored artifacts/recovered-temp-evidence.
+Existing Main/kuribo_init authority above and
+[general appearance](FIELD_PARTNER_GENERAL_PLACEMENT.md) with
+[fallback](FIELD_PARTNER_GENERAL_PLACEMENT_FALLBACK.md) already close their
+local bodies; their native service binding remains separate.
+
+OriginalmarioPartyEntry first requires pouchrow1flags&1, removes current
+fieldMario245 registered actor, thenpartyEntry(1),storesreturnedindex245,
+resolvespointer,requestsHello. Slot1Frankly staysindependent. Main's firstfree
+slotdomain/allocator/publication and doublememset mustrespectthatactualregistry,
+notreusebattleactorbytes. Main kind1 record80314410→string804213e0 `c_pkr`;
+ordinaryselector1@80314748→802cb4dc `PKR_S_1`; HP<=5 selector12@80314774
+→802cb52c `PKR_D_2`. ResourcebranchdependsactualMario80000000→P48000,
+sooriginaldotappearance remainsseparate ifthatflagisset. NoHPheal/unlock here.
+
+Main kuribo_init setsP f0=24,f4=26,33=1,32=0. Thusoriginalappearance
+horizontalquerylength30+f4 is56forfreshGoombella, notinvented30. partyEntry
+setsvector70=(1,1,1),38=10,angles110/10c fromowner1ac,requests
+partyGetAppearPos2(P,&P58)800c6718,duplicatespositiontoPb8..c0,ordered
+pose1/12queriesandsetsP34=1. Thiswrapperhasnounsafeconstructorfailure
+repair: allocatedfreeslot/validowner/animation domain must alreadyhold.
+
+SourcefreshP8doesnotmask8,soHello skipspendingentrysetupandcallsHelloMain.
+Byte38=10 dispatchestable803141c4[10]→800bb9ec:requestsGetAppearPos2 AGAIN
+intoP58,duplicatesXYZ toPb8..c0,originalpose1/12/null/strcmp update,then
+setsP34=1 andreturns1. Byte38retains10. Do notlaunchsubstate0's16-count
+jump/scale pathorbroadenotherHelloMainstates asusedfreshrecovery.
+
+GetAppearPos2 complete584-bytebody startsownerM=P160; length=30+Pf4,
+retainsfacingM1ac;writesM8c/90/94tooutput beforegating. SignedM246negative
+selectssingle-slotray path; nonnegativeselectsdual-slotpath. Itisnotan
+unconditionalfixed30-offset return. Wholelocalbodyoriginalray/trig/placement
+providers stillneedscopedtypedbinding (andfullfunctioncontract ifnotelsewhere
+closed). LatermarioFBattlePostinsteadusesGENERALappearance800c6c9c,whose
+localprimary/fallback/admission contracts alreadyexist; withFranklyM246>=0
+itsdualslotheading/attribute/downray policy applies. Don'tconfusethetwohelpers.
+
+Nextboundedrequest: GetAppearPos2_800c6718 complete typedray/classification/
+output/caller domains; actualfieldregistry/allocator/model/HelloMainfresh10
+composition; sourcenumericcollision/provider mapping andretainedpausedfield
+VM. Read-onlysource/nativeaudit; git diff --check; no native edits/build/commit.

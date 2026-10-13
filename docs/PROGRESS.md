@@ -7215,3 +7215,108 @@ Next implement ordinary0e→10→19..1f body/fade/export and actual sequence/fie
 wait publication, then resume unchanged scene dialogue. Source shared RNG,
 equipment, camera/crowd/voice/count sound playback and alternative rewards/
 level-up/fortune branches remain incomplete. Full prologue goal remains active.
+
+## 2026-10-13 — Original victory-to-field handshake source delivery
+
+[Field-return handshake](behavior/battle/UNDERGROUND_TRIO_FIELD_RETURN_HANDSHAKE.md)
+closes exact sequencepoll>30, retainedfadepreset/source9/300initialization,
+authoredGoombella joining-pouch flag, BattleExit serviceorder andnestedfield
+control/post-placement requirements. Original161-command continuation owns
+remaining dialogue/escapes/story12/keys/music; no battlefinishstorywrite.
+
+Validation: read-only complete bodies/tables/originaljoinrecord andnativeAPI
+inspection; git diff --check. Documentation only, no native edits/tests/build
+orcommit. Next bind BattleEnd/contextrelease/pausedfieldroots andactualfield
+partyconstructor/appearance/sequence/pouchsave ownership at1f; alternateflags/
+fadepresets andoriginalexecution remain separate provider domains.
+
+## 2026-10-13 — Original ending fade10 consumer source delivery
+
+[Fade10 GPU consumer](behavior/display/BATTLE_END_FADE10_TEXTURE_CONSUMER.md)
+closes embeddedwhite1x1I4/blacksourcecolor/bytealpha, exactcamera8quad and
+material, completedflagdrawgate andNPC140OR100 typednamespace. Actualused
+fade10 requiresnoexternalart; nativeprojection/coverage/GXrestoration remains
+anexplicitbackendadapter untiloriginalrastercomparison.
+
+Validation: read-only completebody/table/constants/embeddedtexel;
+`git diff --check`. Docs only; no native edits/tests/build/commit. Next bind
+actualsourcebytealpha/material/coverageandfieldreturn;otherfadeart/lifecycle
+andcamera/GXnumerics remainopen.
+
+## 2026-10-13 — Ending map-heap free and fresh field-party source delivery
+
+[Ending allocation/teardown](behavior/battle/ENDING_HEAP_FREE_AND_REMAINING_UNIT_TEARDOWN.md)
+closesactualBattleFree mapheader/null/coalescing andlaterBattleEndordered64
+unit/resource releases. [Fieldconstructorcomposition](behavior/partner/FIELD_PARTY_POSITION_CONSTRUCTORS.md#2026-10-13-battle1f-ordinary-goombella-constructor-composition)
+pinsoriginalGoombellabank/HPpose/length56 andfreshHello10position-helperorder.
+
+Validation: readonlycompleteusedbodies/serviceidentities;git diff --check.
+Docs only; no native edits/tests/builds/commit. Next native1f mayretireE via
+declaredmapallocator thenholdactualfieldconstructor; remainingtypedAppear2
+ray/provider/context/registry/modelandlaterBattleEndtransitives remainopen.
+
+## 2026-10-13 — Native ordinary finishing poses, fade and resource export
+
+Implementation commit f068e8a binds source ordinary0e→10→19..1f through
+resource export before BattleFree. Original body-part/pose lookup selects M_V_1
+then type42 M_R_1/PKR_R_1 after60calls. Retained Mario flags and party-death
+voice gates, actual crowd/BGM/voice request addresses and per-call state order
+are preserved. Field encounterNPC140 OR100 has a distinct native flag view
+and keeps ordinary NPC0/visibility flags untouched.
+
+Used fade10 preserves sourcefloat division/add order,200ms duration, supplied
+native refresh-rate adapter60, strict ratio>1 completion and truncated byte
+alpha. Original embeddedwhite1x1I4/black-color result is adapted to native
+screen coverage; no external fade image is missing. Packed exporter follows
+original Mario HP/FP and party HP/raw snapshot order, including30status bytes
+and retained gap22/23. Canonical pouch publication updates Progress HP/FP/EXP,
+also retaining battle-owned storage for legacy checkpoints, without a normal
+heal or end-of-battle Goombella unlock. Legacy inventory/quest/save state still
+needs complete original lifecycle ownership.
+
+Validation: final make test164/164 CTest +107/107 Python pass
+(`artifacts/trio-ending-tail-tests-final.log`). make all/debug-short pass
+(`artifacts/trio-ending-tail-all.log`, `artifacts/trio-ending-tail-debug.log`).
+Host checks pin finishingpose/timer order, strict fade equality boundary,
+actual packed export/noheal/maxima preservation, exact partner snapshot/gap
+copy, Progress pouch publication and fieldresult0/story11/control lock.
+Scoped metadata audit checked1486 relative link targets with zero missing files
+(anchor identities were not separately checked). Initial test exposed and corrected missing canonical Progress ownership when
+a legacy fixture entered without original storage. Python capture syntax and
+scoped git diff --check pass. Integrated tests/builds include concurrent
+workstreams; scoped commits keep unrelated pending changes separate.
+
+Isolated native actual-attack evidence `artifacts/azahar-trio-ending-tail/`
+reaches the completed black fade; immutable binary/ELF is
+`artifacts/trio-ending-tail-snapshot/`. The development notice initially failed
+depth ordering and was corrected; rebuilt final overlay binaries/ELFs are
+`artifacts/trio-ending-tail-overlay-snapshot/` with capture
+`artifacts/azahar-trio-ending-tail-overlay/` and successful all/debug-short
+logs `artifacts/trio-ending-tail-overlay-{all,debug}.log`. Reviewed finalcapture
+confirms the completed black fade and readable field-restoration notice;
+frame34 confirms PointGet sliding out during Mario finishing pose. Original ISO and
+user emulator profiles/saves remain untouched; raw/compiled assets are ignored.
+Original camera/GX raster and hardware performance remain unverified.
+
+Native frontier is actual BattleFree800f8908 before E teardown/field-party
+reconstruction. Source1f result/Rule0/context/sequence/field admission owners
+are not replaced by an immediate return or fabricated dialogue. Next bind
+original map allocator/BattleFree, actual party constructor/appearance/hello,
+Rule0/audience stop, remaining BattleEnd/sequence counter/field recovery and
+resume the preserved161-command root. Source authored Goombella join owns
+P0eOR1; legacy snapshots must not pretend that an ending grants the unlock.
+Crowd/voice/BGM provider playback, original shared RNG/equipment/save domain,
+alternative rewards/level-up/fortune and broader prologue work remain incomplete.
+The full prologue goal remains active.
+
+## 2026-10-13 — Source ending allocation/map-heap pairing delivery
+
+[Original E allocation](behavior/memory/BATTLE_END_MAP_ALLOCATION_BINDING.md)
+closesactualBattleAlloc8934/2ac call,32-byteheader/bestfit/split,704byte
+zero/cache andnested400KiB rootbootstrap. Existingprimarymap/SDKsource
+contracts reused; nativearena/priorallocationhistory remainsdeclaredadapter.
+
+Validation: readonlycompleteallocator/wrapper/call/bootstrap andvalidheader
+arithmetic;git diff --check. Documentation only; no native edits/tests/builds
+orcommit. Next nativeE migratescorrectsourcealloc/freepair beforefield
+constructor; fulloriginalresource/SDK/cache/history mapping staysopen.

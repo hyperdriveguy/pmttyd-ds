@@ -127,3 +127,30 @@ postbattle restoration must be bound before claiming complete victory.
 
 Validation: complete read-only local bodies/jump tables and constants,
 `git diff --check`. Documentation-only; no native tests/builds or commit.
+
+## 2026-10-13 native ordinary finishing/export prefix
+
+Native0e→10→19→1a→1b→1c→1d→1e→1f follows the ordinary source per-call
+ordering. Original body-part lookup and pose-table resolution select M_V_1,
+then type42 M_R_1/PKR_R_1 after60calls. Source retained Mario flags/dead-party
+voice gates are preserved. Field NPC140 has a distinct native `npcBattleFlags`
+view;1c OR100 preserves NPC0/visibility flags. Crowd/voice/BGM requests are
+retained; full audio/provider playback remains open.
+
+The used fade10 preserves separate float division/add rounding, supplied
+refresh-rate adapter60, source200ms duration, strict ratio>1 completion and
+truncated bytealpha. Embedded white1px/black-color draw adapts to native screen
+coverage; no missing external fade-art placeholder. Original global dispatcher/
+camera/GX execution and hardware raster remain unverified.
+
+State1f performs original Mario then optional party packed export with the
+source special40 HP gate. Partner raw snapshots preserve exact30bytes and
+gap22/23. Native canonical pouch publication carries HP/FP/EXP into Progress,
+including battle-owned storage from legacy checkpoints, without a heal or new
+party unlock. Legacy pouch/quest/save reconstruction remains provisional.
+
+Frontier is actual BattleFree800f8908 before E teardown and actual field-party
+constructors; result0/story11/control lock remain intact. Original BattleFree
+uses the source map allocator, not an invented SDK __memFree call. Remaining
+1f/sequence/context/field reconstruction is detailed in the field-handshake
+contract; source Goombella joining callback must own its unlock flag.

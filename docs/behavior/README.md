@@ -49,6 +49,10 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Trio field-return handshake](battle/UNDERGROUND_TRIO_FIELD_RETURN_HANDSHAKE.md) | Exact sequence>30/callback teardown/retained fade presets, authored Goombella join, nested controls and original field wait/161-command continuation | Native BattleEnd/context release/appearance/party constructor/sequence/pouch-save lifetimes and original execution |
+| [Ending map-heap free and remaining-unit teardown](battle/ENDING_HEAP_FREE_AND_REMAINING_UNIT_TEARDOWN.md) | Exact BattleFree/_mapFree header/coalescing/null behavior and later ordered BattleEnd64-unit/resources/free/global clear | Native map allocator/bootstrap/field constructors and transitive teardown/context lifetime |
+| [Battle ending original map allocation](memory/BATTLE_END_MAP_ALLOCATION_BINDING.md) | Actual BattleAlloc8934,32-byte best-fit/split/fill/cache, nested400KiB arena/bootstrap and correct E alloc/free pairing | Native prior allocation history/arena/SDK/cache/adapted addresses and original execution |
+| [Battle-ending fade10 texture consumer](display/BATTLE_END_FADE10_TEXTURE_CONSUMER.md) | Embedded1x1I4FF texel, bytealpha/truncation, exact608-square camera8 quad/material and endingNPC140 flag namespace | Native camera/clip/GX restoration and original raster comparison; other fade resources |
 | [Underground trio ordinary EXP ending tail](battle/UNDERGROUND_TRIO_NO_LEVEL_UP_ENDING_TAIL.md) | Exact0c..1f timers, independent effect softdelete, actual body/voice gates, fade10 completion, Rule0 and ordered pouch/field export | Native effect/GX/fade/audio/field reconstruction cadence; level-up/zeroEXP/special branches |
 | [SDK DVD queue pop/check/dequeue/coverage](file/SDK_DVD_QUEUE_POP_CHECK_DEQUEUE_AND_LOCAL_COVERAGE.md) | Complete consumers/all5 local queue functions; split IRQ/fresh pop/post-restore clears/stale links | Command/cancel/providers/original IO |
 | [SDK DVD async submission/queue append](file/SDK_DVD_ASYNC_SUBMISSION_AND_QUEUE_APPEND.md) | Complete submit/push/clear; command/cache/IRQ/state/ordered links/ready/raw return | Queue consumers/command engine/providers/original IO |

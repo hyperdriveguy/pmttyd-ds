@@ -1297,3 +1297,15 @@ are adapted by the existing half-size viewport. Full source camera/dispatcher/
 filtering/raster parity remains open. Original packs and captures are ignored,
 the ISO is read-only, and Nintendo/Intelligent Systems ownership/no
 redistribution rights remain unchanged. No generated wording or substitute art.
+
+## 2026-10-13 — Original finishing poses and fade10
+
+The existing original `a/b_mario` M_V_1/M_R_1 and `a/c_pkr` PKR_R_1 packs
+serve the used ending19/1a requests. No additional character art is substituted.
+Used fade10 draws an embedded white1x1I4 texel (original DOL80415020, byteFF),
+modulated by original black color and low-byte truncated255*ratio alpha.
+It requires no external TPL/palette. Citro2D solid-rectangle submission is the
+declared full-native-viewport projection adapter for this source texture result;
+original camera8/GX restoration and raster parity remain unverified. All local
+original models/packs/ELFs/captures remain ignored; original ownership/local-use
+licensing limits and read-only ISO handling are unchanged.

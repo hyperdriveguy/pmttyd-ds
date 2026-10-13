@@ -1196,7 +1196,10 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C2D_TargetClear(bottom,Paper);C2D_Prepare();C2D_SceneBegin(bottom);menu(g,m,notice,audioAvailable);
     if(g.trioBattleActive && g.trioAttack.endingFadeAlpha())C2D_DrawRectSolid(0,0,.99f,320,240,C2D_Color32(0,0,0,g.trioAttack.endingFadeAlpha()));
     if(g.fade.alpha())C2D_DrawRectSolid(0,0,.99f,320,240,C2D_Color32(0,0,0,g.fade.alpha()));
-    if(g.trioBattleActive && g.trioAttack.pendingFunction() && g.trioAttack.endingFadeAlpha()==255)text("Development notice: field restoration pending",12,76,.42f,rgb(255,255,255));
+    if(g.trioBattleActive && g.trioAttack.pendingFunction() && g.trioAttack.endingFadeAlpha()==255){
+        C2D_Flush();C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);
+        text("Development notice: field restoration pending",12,76,.42f,rgb(255,255,255));
+    }
     C2D_Flush();
     C3D_FrameEnd(0);
 }
