@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero SDK DVD busy dispatch
+
+Completed stateBusy/17-entry dispatch table; checked EVT-01 portion.
+[Busy dispatch](behavior/file/SDK_DVD_STATE_BUSY_COMMAND_DISPATCH_AND_READ_CHUNKS.md)
+pins LastState/command/MMIO, input versus global executing, zero callback/ready,
+fresh512KiB chunk/address fields/audio variants/optional ABI. Completion/low-level/
+providers/original IO/audio/native binding remain open.
+
+Validation: read-only ISO manifest passed thirteen spans,208 body+17 table
+anchors,seventeen calls. Eight chunk/three address/four auto/six optional vectors,
+full dispatch/MMIO/publication/ABI/two indirect sites checked; ready pins reverified.
+Link audit passed944 Markdown files/zero broken links; scoped diff check passed.
+Mathematical deductions separate from original execution. Docs/metadata only;
+no make test/all rerun. Fresh full ELF/listing/generator stay /tmp; no bodies/
+assets committed. Concurrent native work excluded. Approved push pending valid
+GitHub credentials.
+
+Next: priority-zero EVT-01 cbForStateBusy/optional/low-level read and other command
+engines/providers/value/extent/alias/lifetime/IRQ/concurrency/ABI domains, original
+zero/chunk/short-read/controller/callback/IO/audio traces. Other inbox/native/
+full-game work remains open.
+
 ## 2026-10-13 — Original item-table services and live key-item guards
 
 Committedd938dbe: [item-selection core](behavior/message/NATIVE_ITEM_TABLE_SELECTION_CORE.md)
