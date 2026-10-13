@@ -129,3 +129,5 @@ Remaining: listener/shared-byte writers/caller domains, original heading/flag/
 finite-coordinate invariants, PPC frsqrte/fused/fctiwz/NaN and libm equivalence,
 live SFX updates/backend/audio observations. Two complete local bodies/table
 are answered; full spatial/native/source/runtime equivalence remains OPEN.
+
+[Complete listener setter and scoped camera argument bindings](GAME_LISTENER_SETTER_AND_SEQUENCE_CAMERA_BINDINGS.md) now close that local writer and the two direct DOL caller regions. Camera table/state/heading, sequence gates/cadence, battle flag and other shared writers/original audio remain open.

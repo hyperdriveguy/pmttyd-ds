@@ -94,6 +94,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [spatial result/angle table](../behavior/audio/GAME_CALC3D_SPATIAL_RESULT_AND_ANGLE_TABLE.md).
   Flag/capture/PPC operation/pan/surround/falloff/byte publication pinned;
   listener/shared writers/PPC-libm domains/live SFX/original audio remain open.
+- [x] Complete psndSetPosDirListener/camGetPtr and scoped field/battle
+  listener argument regions, original literals and two-site direct DOL census —
+  [listener/camera bindings](../behavior/audio/GAME_LISTENER_SETTER_AND_SEQUENCE_CAMERA_BINDINGS.md).
+  Exact alias-sensitive stores/repeated camera queries/0,400,600 battle source
+  pinned; camera/flag/sequence/shared writers/cadence/original audio remain open.
 - [ ] Remaining SFXMain live/spatial/volume/fade, listener/shared writers, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -810,3 +815,19 @@ literal bytes independently checked;15 signed pan-fold boundary vectors remain
 static deductions. Full ELFs/listings stay `/tmp`; no original execution/body/
 bank export. Listener/shared source writers, finite/exception/PPC/libm numeric
 invariants, live SFX/backend and original spatial/audio traces remain OPEN.
+
+### 2026-10-13 — Listener setter and scoped sequence camera bindings
+
+[Listener source contract](../behavior/audio/GAME_LISTENER_SETTER_AND_SEQUENCE_CAMERA_BINDINGS.md)
+closes X/Y capture then stores before Z read, heading stfs and raw pointer return;
+camGetPtr is unchecked shifted table lookup. Field caller copies first camera4
+position then second camera4 heading; battle uses fixed(0,0,400), bit100→Z600,
+then fresh camera4 heading. Whole sequences/gates/cadence and camera providers
+remain separate; no coherent listener snapshot or unsupported normalization.
+
+Validation: read-only manifest6 spans (2 complete/2 scoped/1 linked/1 literal),
+46 anchors/8 resolved direct calls passes. Whole-DOL aligned setter census2 sites;
+original literals0/400/200 independently decoded. Alias vector is static deduction,
+not original execution. Fresh ELFs/listings remain `/tmp`; no native/body/asset
+export. Camera/heading/battle flag/shared writers, sequence gates, indirect/REL/
+dynamic/source domains and original spatial/audio traces remain OPEN.

@@ -5,6 +5,28 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 listener setter and sequence camera source bindings
+
+Delivered [listener/camera source](behavior/audio/GAME_LISTENER_SETTER_AND_SEQUENCE_CAMERA_BINDINGS.md).
+Two complete bodies/two scoped argument regions pin alias-sensitive XYZ stores,
+heading publication, unchecked camera table lookup, field position/repeated-heading
+queries and battle fixed XYZ/flag100 Z adjustment. Exact direct argument bindings
+are closed; whole camera/sequence gates/cadence remain open. Marked local EVT-01
+portions complete; parent OPEN.
+
+Validation: generic read-only verifier6 spans (2 complete/2 scoped/1 linked/
+1 original literal),46 anchors/8 resolved direct calls passes. Whole-DOL aligned
+setter census2 sites; original constants0/400/200 decoded. Alias example is a
+static deduction, not original execution. Full fresh ELFs/listings stay `/tmp`.
+Link audit752 Markdown files/0 broken; whitespace checks pass. Docs/metadata only:
+no make rerun, native change or original code-body/asset export. Isolated index
+excludes unrelated staged/worktree work.
+
+Next/limits: camera pointers/position/heading producers and finite/null/source
+invariants, whole sequence admission/cadence, battle flag/shared-result writers,
+indirect/REL/dynamic routes and original spatial/audio traces. Continue priority0
+live SFX/source then priority1 damage graph. No hardware/full-game/audio claim.
+
 ## 2026-10-13 — Original underground approach, dialogue and Goomba animations
 
 [Native trio scene](behavior/story/NATIVE_UNDERGROUND_TRIO_SCENE.md) runs actual

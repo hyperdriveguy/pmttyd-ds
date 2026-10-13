@@ -1,0 +1,192 @@
+{
+  "schema": 1,
+  "scope": "Two complete listener/camera lookup bodies and two scoped sequence publication regions; camera producers/gates/runtime open",
+  "complete_bodies": [
+    "psndSetPosDirListener",
+    "camGetPtr"
+  ],
+  "linked_only": [
+    "marioGetPtr"
+  ],
+  "dol_spans": [
+    {
+      "name": "psndSetPosDirListener",
+      "address": 2148385664,
+      "size": 40,
+      "sha256": "2b221bb598fb0525c7c151e35b6fc960a8985d15964c516498ba86aa398e0b2a"
+    },
+    {
+      "name": "camGetPtr",
+      "address": 2147545852,
+      "size": 20,
+      "sha256": "726c91fbc0c5f3c0a1e728d6fd9cde3f5df96a49a66c878179347fd7ce4df247"
+    },
+    {
+      "name": "seq_gameMain_listener_arguments",
+      "address": 2147513580,
+      "size": 60,
+      "sha256": "fa9f983ba934bf22a9844d29aae66959ca2e7f24ecd728bb69ba9d12968358b5"
+    },
+    {
+      "name": "marioGetPtr",
+      "address": 2147868864,
+      "size": 8,
+      "sha256": "3a59459f28ddd5d287c200434ad158a9dfe277f4f6bcaae3eb8698505aa9773d"
+    },
+    {
+      "name": "seq_battleMain_listener_arguments",
+      "address": 2147958244,
+      "size": 84,
+      "sha256": "2e0ebcf9b52837fec9b354abce2bdcc5b78dbabb0bee3415997ae2fd8f2b044f"
+    },
+    {
+      "name": "battle_listener_original_literals",
+      "address": 2151809988,
+      "size": 12,
+      "sha256": "3dc8c160bf746c26705daeadbcc68dc73962b11be85a1efeea06b9a7fadfd12f"
+    }
+  ],
+  "dol_anchors": {
+    "2148385664": "3ca0803e",
+    "2148385668": "80830000",
+    "2148385672": "80030004",
+    "2148385676": "38a5f6e8",
+    "2148385680": "90850030",
+    "2148385684": "90050034",
+    "2148385688": "80030008",
+    "2148385692": "90050038",
+    "2147545852": "3c80803d",
+    "2147545860": "386495f8",
+    "2147513636": "480d4e5d",
+    "2147958324": "4806854d",
+    "2147513580": "48056bd5",
+    "2147513584": "38600004",
+    "2147513588": "48007e09",
+    "2147513592": "8083000c",
+    "2147513596": "80030010",
+    "2147513600": "90810014",
+    "2147513604": "90010018",
+    "2147513608": "80030014",
+    "2147513612": "38600004",
+    "2147513616": "9001001c",
+    "2147513620": "48007de9",
+    "2147513624": "7c641b78",
+    "2147513628": "38610014",
+    "2147513632": "c0240114",
+    "2147958244": "4bfea2dd",
+    "2147958248": "38600004",
+    "2147958252": "4bf9b511",
+    "2147958256": "c0028f84",
+    "2147958260": "c0228f88",
+    "2147958264": "d0010010",
+    "2147958268": "806d1c70",
+    "2147958272": "d0010014",
+    "2147958276": "d0210018",
+    "2147958280": "80030ef4",
+    "2147958284": "540005ef",
+    "2147958288": "41820010",
+    "2147958292": "c0028f8c",
+    "2147958296": "ec01002a",
+    "2147958300": "d0010018",
+    "2147958304": "38600004",
+    "2147958308": "4bf9b4d9",
+    "2147958312": "7c641b78",
+    "2147958316": "38610010",
+    "2147958320": "c0240114"
+  },
+  "direct_calls": [
+    {
+      "site": 2147513580,
+      "target": 2147868864,
+      "name": "marioGetPtr"
+    },
+    {
+      "site": 2147513588,
+      "target": 2147545852,
+      "name": "camGetPtr"
+    },
+    {
+      "site": 2147513620,
+      "target": 2147545852,
+      "name": "camGetPtr"
+    },
+    {
+      "site": 2147513636,
+      "target": 2148385664,
+      "name": "psndSetPosDirListener"
+    },
+    {
+      "site": 2147958244,
+      "target": 2147868864,
+      "name": "marioGetPtr"
+    },
+    {
+      "site": 2147958252,
+      "target": 2147545852,
+      "name": "camGetPtr"
+    },
+    {
+      "site": 2147958308,
+      "target": 2147545852,
+      "name": "camGetPtr"
+    },
+    {
+      "site": 2147958324,
+      "target": 2148385664,
+      "name": "psndSetPosDirListener"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "direct_dol_caller_census": [
+    {
+      "site": 2147513636,
+      "target": 2148385664,
+      "name": "psndSetPosDirListener",
+      "owner": "seq_gameMain"
+    },
+    {
+      "site": 2147958324,
+      "target": 2148385664,
+      "name": "psndSetPosDirListener",
+      "owner": "seq_battleMain"
+    }
+  ],
+  "scoped_regions": [
+    {
+      "name": "seq_gameMain_listener_arguments",
+      "address": 2147513580,
+      "size": 60
+    },
+    {
+      "name": "seq_battleMain_listener_arguments",
+      "address": 2147958244,
+      "size": 84
+    }
+  ],
+  "original_battle_listener_literals": [
+    0.0,
+    400.0,
+    200.0
+  ],
+  "derived_listener_alias_vector": {
+    "source_offset_from_output": -4,
+    "initial_words": [
+      10,
+      20,
+      30,
+      40
+    ],
+    "stored_xyz": [
+      10,
+      20,
+      20
+    ],
+    "snapshot_xyz": [
+      10,
+      20,
+      30
+    ]
+  }
+}
