@@ -84,7 +84,8 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
     for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
     auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
-    drawMap(false,snapshot,false,&frontRoom);
+    const uint32_t visibleGroups=!opening && demo.bookComplete?demo.market.visibleMapGroups():UINT32_MAX;
+    drawMap(false,snapshot,false,&frontRoom,visibleGroups);
     count=0; // Each queued actor retains its own range until frame submission.
     if(cineActors.empty())cineActors.reserve(4);
     auto actor=[&](const char* bank,const char* pose,CameraPoint root,float yaw,float frame=-1) {
@@ -101,17 +102,25 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         }
         const int first=count;
         const auto* animation=found->animations.pose(pose);
-        if(!animation || !animation->evaluate(frame<0?float(snapshot.ticks):frame,actorSample) || actorSample.vertices.size()>size_t(MaxVertices-count))return false;
+        if(!animation)return false;
+        float selected=animation->start;const float time=frame<0?float(snapshot.ticks):frame,length=animation->end-animation->start;
+        if(length!=0 && time>=animation->start)selected=animation->loop?time-std::trunc((time-animation->start)/length)*length:std::min(time,animation->end);
+        if(found->sampledPose!=animation || found->sampledTime!=selected) {
+            if(!animation->evaluate(time,found->sample))return false;
+            found->sampledPose=animation;found->sampledTime=selected;
+        }
+        const auto& sample=found->sample;
+        if(sample.vertices.size()>size_t(MaxVertices-count))return false;
         const ActorRootTransform transform({root.x*.01f,root.y*.01f,root.z*.01f},yaw,false);
-        for(size_t n=0;n<actorSample.vertices.size();++n) {
-            const auto& v=actorSample.vertices[n];const auto point=transform.point(v);
-            vertex(point[0],point[1],point[2],v.u,1-(1-v.v)*found->uvScale,0xffffffff,actorSample.colors.empty()?nullptr:&actorSample.colors[n]);
+        for(size_t n=0;n<sample.vertices.size();++n) {
+            const auto& v=sample.vertices[n];const auto point=transform.point(v);
+            vertex(point[0],point[1],point[2],v.u,1-(1-v.v)*found->uvScale,0xffffffff,sample.colors.empty()?nullptr:&sample.colors[n]);
         }
         auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
         if(count>first)GSPGPU_FlushDataCache(vertices+first,size_t(count-first)*sizeof(Vertex));
         C3D_TexBind(0,&found->image.texture);
-        if(actorSample.batches.empty())C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
-        else for(const auto& batch:actorSample.batches) {
+        if(sample.batches.empty())C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
+        else for(const auto& batch:sample.batches) {
             if(!batch.count || batch.cull==2)continue;
             const GPU_CULLMODE culls[]={GPU_CULL_FRONT_CCW,GPU_CULL_BACK_CCW,GPU_CULL_NONE,GPU_CULL_NONE};
             C3D_CullFace(culls[batch.cull]);C3D_DepthTest(true,GPU_GEQUAL,batch.pass==3?FieldRGB:FieldRGBDepth);
@@ -150,7 +159,7 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         const int first=count;characterModel("M_S_1",float(snapshot.ticks),{0,2.25f},.15f,180,false);
         auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);if(count>first)GSPGPU_FlushDataCache(vertices+first,size_t(count-first)*sizeof(Vertex));C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
     }
-    drawMap(false,snapshot,true,&frontRoom);
+    drawMap(false,snapshot,true,&frontRoom,visibleGroups);
     C2D_Prepare();C2D_SceneBegin(top);return ok;
 }
 void Renderer::renderFrontend(const Frontend& f,const OpeningDemo& demo,const OpeningSequence& opening,const char* notice) {
@@ -164,7 +173,7 @@ void Renderer::renderFrontend(const Frontend& f,const OpeningDemo& demo,const Op
     bool ok=true;
     if(f.screen==FrontScreen::Demo && demo.bookComplete) {
         const auto& scene=demo.market;
-        ok=frontWorld("map",{scene.eye[0],scene.eye[1],scene.eye[2]},{scene.at[0],scene.at[1],scene.at[2]},nullptr,demo);
+        ok=frontWorld("opening-demo-market",{scene.eye[0],scene.eye[1],scene.eye[2]},{scene.at[0],scene.at[1],scene.at[2]},nullptr,demo);
         if(scene.revealProgress<1)C2D_DrawRectSolid(0,0,0,400,240,rgb(0,0,0,unsigned((1-scene.revealProgress)*255)));
     } else if(f.screen==FrontScreen::Opening) {
         const char* map=opening.map();

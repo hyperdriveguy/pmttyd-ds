@@ -84,7 +84,7 @@ private:
     uint32_t frontPhase=UINT32_MAX;
     std::string frontFailure;
     OpeningHouseObjects frontHouseObjects;
-    struct CineActor {std::string name;ActorAnimationPack animations;Texture image;float uvScale=1;};
+    struct CineActor {std::string name;ActorAnimationPack animations;Texture image;float uvScale=1;ActorAnimationSample sample;const ActorAnimationPose* sampledPose=nullptr;float sampledTime=-1;};
     std::vector<CineActor> cineActors;
     std::array<CineActor,3> tutorialActors;
     bool tutorialReady=false;
@@ -140,7 +140,7 @@ private:
     void fieldActors(const Game&);
     void drawFieldActors(bool translucent);
     void freeRoom(Room& room);
-    void drawMap(bool battle,const Game& game,bool translucent=false,Room* supplied=nullptr);
+    void drawMap(bool battle,const Game& game,bool translucent=false,Room* supplied=nullptr,uint32_t sceneVisibleGroups=UINT32_MAX);
     void updateCutaways(Room& room,const Game& game);
     bool c3dReady=false,c2dReady=false,programReady=false,atlasReady=false;
     void world(const Game&);

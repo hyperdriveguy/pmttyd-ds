@@ -357,7 +357,7 @@ void Renderer::updateCutaways(Room& room,const Game& g) {
         occluder.hidden=blocked || g.ticks<occluder.hiddenUntil;
     }
 }
-void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* supplied) {
+void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* supplied,uint32_t sceneVisibleGroups) {
     auto& room=supplied?*supplied:battle?stage:plaza;
     if(!supplied && !battle && !translucent && game.progress.room==2 && game.professorStory.captureRequested && !room.fenceOriginal.empty()) {
         const auto& scene=game.professorStory;
@@ -432,7 +432,11 @@ void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* suppl
     for(auto batch:room.batches) {
         if(!battle && game.progress.room==2 && batch.layer>>26==8 && game.professorStory.fenceHidden && !game.professorStory.fenceVisible)continue;
         if((!battle || supplied) && ((batch.layer&255)==2)!=translucent)continue;
-        if(!battle && !mapEventGroupVisible(batch.layer>>26,game.progress.originalStory.value_or(0),game.fieldDoor.interiorMask))continue;
+        if(!battle) {
+            const auto eventGroup=batch.layer>>26;
+            if(sceneVisibleGroups!=UINT32_MAX) {if(eventGroup>=32 || !(sceneVisibleGroups&(1u<<eventGroup)))continue;}
+            else if(!mapEventGroupVisible(eventGroup,game.progress.originalStory.value_or(0),game.fieldDoor.interiorMask))continue;
+        }
         uint32_t group=(batch.layer>>8)&65535;
         if(!battle && group && room.occluders[group].hidden)continue;
         C3D_Tex* texture=batch.texture<0?&atlas:&room.textures[batch.texture].texture;
