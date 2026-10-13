@@ -103,3 +103,5 @@ sequence/synth/stream/virtual-sample/3D children and source/provider/size/reset/
 concurrency/lifetime invariants; original startup/failure/audio traces. These four
 complete local bodies and scoped game prefix are answered; full native/hardware/
 audio/runtime equivalence remains OPEN.
+
+[Complete AI buffer/callback/IRQ initialization and compressor flag](MUSYX_AI_BUFFERS_CALLBACK_AND_IRQ_INITIALIZATION.md) now closes those local bootstrap children. DSP/control/frame/SDK/provider/concurrency/original runtime remain separate.

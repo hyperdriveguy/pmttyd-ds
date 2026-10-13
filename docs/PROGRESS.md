@@ -5,6 +5,27 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 AI buffers, callback and IRQ initialization
+
+Delivered [AI/IRQ/compressor source](behavior/audio/MUSYX_AI_BUFFERS_CALLBACK_AND_IRQ_INITIALIZATION.md).
+Six complete bodies pin initial IRQ ownership, four-slot allocation/null failure,
+state/registration/initial DMA/rate publication, callback rotation/tick-before-gates,
+OS enable/dispatch/disable ordering, CPU destination and compressor flag. These
+are local source requests, not measured DMA/frame/audio behavior. Marked local
+EVT-01 portions complete; parent OPEN.
+
+Validation: generic read-only verifier15 spans (6 complete/9 linked),83 anchors
+and11 resolved direct calls passes. All256 byte-index arithmetic cases, exact
+four-slot extent and9 DSP/logic gate vectors checked; original code not executed.
+Fresh complete ELFs/listings remain `/tmp`. Link audit746 Markdown files/0 broken;
+whitespace checks pass. Docs/metadata only: no make rerun, native changes or
+original code-body/bank export. Isolated index excludes unrelated shared work.
+
+Next/limits: DSP/control/frame callback services, actual state writers and SDK/
+physical coherence/alias/concurrency/reinit domains, original interrupt/callback/
+audio traces. Continue priority0 source/live SFX/calc3D then priority1 damage
+counter graph. No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Priority0 game allocator providers and MusyX bootstrap
 
 Delivered [game allocator/bootstrap](behavior/audio/GAME_AUDIO_ALLOCATOR_AND_MUSYX_BOOTSTRAP.md).

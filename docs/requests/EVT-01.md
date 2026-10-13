@@ -74,6 +74,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [allocator/bootstrap](../behavior/audio/GAME_AUDIO_ALLOCATOR_AND_MUSYX_BOOTSTRAP.md).
   Actual default-cache/resource caller arguments/order now pinned; whole game
   init/child hardware/synth/stream/source/failure/runtime remain open.
+- [x] Complete hwInitIrq, salInitAi/StartAi/Callback/AiGetDest and
+  hwEnableCompressor bodies —
+  [AI/IRQ/compressor source](../behavior/audio/MUSYX_AI_BUFFERS_CALLBACK_AND_IRQ_INITIALIZATION.md).
+  Allocation/state/rotating DMA/logic/OS ordering pinned; SDK/DSP/frame/writers/
+  alias/concurrency/reinit/original timing remain open.
 - [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -725,3 +730,19 @@ hook table/23 linked),134 anchors and25 resolved direct calls passes. Original
 vectors checked. Full listings/ELFs remain `/tmp`; no original code executes or
 body/bank asset is exported. Whole SoundInit/child OS/ARAM/AI/DSP/IRQ/synth/stream/
 source/provider/reset/concurrency/failure/original startup/audio remain OPEN.
+
+### 2026-10-13 — AI buffer, callback and IRQ initialization source
+
+[Six complete local bodies](../behavior/audio/MUSYX_AI_BUFFERS_CALLBACK_AND_IRQ_INITIALIZATION.md)
+close initial OS saved state/nesting1, null allocation publication, four-slot clear/
+flush and AI state/registration/physical DMA/rate writes. Callback rotates DMA and
+publishes OS tick BEFORE DSP-done/active gates; dispatch enables OS interrupts,
+loads fresh callback, then disables and clears active without restoring saved state.
+CPU destination is two slots ahead; compressor only publishes a flag. No measured
+frame/DMA timing or original audible output is inferred.
+
+Validation: read-only manifest15 spans (6 complete/9 linked),83 anchors and11
+resolved direct calls passes. All256 byte-index arithmetic cases, exact4*280=a00
+extent and9 logic-gate vectors checked; source functions not executed. Fresh
+ELFs/listings remain `/tmp`. SDK/DMA/DSP/frame providers, shared-state writers,
+null/alias/reinit/concurrency and original callback/audio traces remain OPEN.

@@ -1,0 +1,353 @@
+{
+  "schema": 1,
+  "scope": "Six complete IRQ init/AI buffer/start/callback/destination/compressor bodies; DSP/IRQ/SDK/callback/runtime open",
+  "complete_bodies": [
+    "hwInitIrq",
+    "salInitAi",
+    "salStartAi",
+    "salCallback",
+    "salAiGetDest",
+    "hwEnableCompressor"
+  ],
+  "linked_only": [
+    "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+    "salMallocPhysical",
+    "memset",
+    "DCFlushRange",
+    "AIRegisterDMACallback",
+    "AIInitDMA",
+    "AIStartDMA",
+    "OSGetTick",
+    "OSEnableInterrupts"
+  ],
+  "dol_spans": [
+    {
+      "name": "hwInitIrq",
+      "address": 2150180780,
+      "size": 44,
+      "sha256": "9d878ad0577496e476ba3ce79bd6a35dc81621698ac6ddf50ec303445d53456b"
+    },
+    {
+      "name": "salInitAi",
+      "address": 2150180096,
+      "size": 200,
+      "sha256": "c52a6b1598a78c4549c4582f1980d71eabeb371e12cf2f43855bc61c0aa41a06"
+    },
+    {
+      "name": "salStartAi",
+      "address": 2150180296,
+      "size": 32,
+      "sha256": "ec65d461f12b4a501ddcf7ac11c38350a37015aea59fd46735b31294b7792e70"
+    },
+    {
+      "name": "salCallback",
+      "address": 2150179776,
+      "size": 168,
+      "sha256": "da4c61f8d0619326d6689e8a180a02512d13f90dbaf3559ac5f21fbaab22f9d9"
+    },
+    {
+      "name": "salAiGetDest",
+      "address": 2150180328,
+      "size": 48,
+      "sha256": "8070eebf642cf83fd0bb3542a2657a22d65ece8ba98eb9845559e501a8ecfcdc"
+    },
+    {
+      "name": "hwEnableCompressor",
+      "address": 2150176232,
+      "size": 12,
+      "sha256": "68d9b0f29d71848cd771e3e959986fdbcac85a784f6a6257b111958f0a325909"
+    },
+    {
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+      "address": 2150210260,
+      "size": 20,
+      "sha256": "91253610f8caa4988f3df8595ccfc6e5eafaf0b6df1b302668555ab7d528b1bc"
+    },
+    {
+      "name": "salMallocPhysical",
+      "address": 2150181044,
+      "size": 48,
+      "sha256": "598184ad74d834e00eb59450e850b70a15a78a553c089abfe22701fad3cf65e4"
+    },
+    {
+      "name": "memset",
+      "address": 2147504308,
+      "size": 48,
+      "sha256": "4176c17fce5f28ccea737946be853ea45a125b52e9acab356ba54454aa352b5c"
+    },
+    {
+      "name": "DCFlushRange",
+      "address": 2150197844,
+      "size": 48,
+      "sha256": "93cccdef2db2d4edd330b23e345500e30ae5ead17cfaea13e3c8ac963a39ab33"
+    },
+    {
+      "name": "AIRegisterDMACallback",
+      "address": 2150269524,
+      "size": 68,
+      "sha256": "38a9d07bb3545a492b2288fc1f5c46b547d5e2676a1d5a975f8b8c50f81e5e91"
+    },
+    {
+      "name": "AIInitDMA",
+      "address": 2150269592,
+      "size": 136,
+      "sha256": "a7bb70561566e97feb5daf21ea340dffcf85c23482f9789216e40befe432f65c"
+    },
+    {
+      "name": "AIStartDMA",
+      "address": 2150269728,
+      "size": 24,
+      "sha256": "097736bfa2eda3a62426e9e2f9ad6da1af1b1bb4217f530d150f955bde25fc3d"
+    },
+    {
+      "name": "OSGetTick",
+      "address": 2150226020,
+      "size": 8,
+      "sha256": "7836ce7cf2facfcda9d887183c84a835cd71b6de5b52dede3efb27d086a23294"
+    },
+    {
+      "name": "OSEnableInterrupts",
+      "address": 2150210280,
+      "size": 20,
+      "sha256": "fc3bb9e8a3a33462577b4b59ca6d5e07c3a146205838d416cf9b11972894aed6"
+    }
+  ],
+  "dol_anchors": {
+    "2150180788": "90010014",
+    "2150180792": "4800731d",
+    "2150180796": "38000001",
+    "2150180800": "906d20c0",
+    "2150180804": "b00d20c4",
+    "2150180808": "80010014",
+    "2150180816": "38210010",
+    "2150180104": "90010014",
+    "2150180108": "93e1000c",
+    "2150180116": "93c10008",
+    "2150180124": "38600a00",
+    "2150180128": "48000395",
+    "2150180136": "906d20e4",
+    "2150180140": "41820080",
+    "2150180144": "38800000",
+    "2150180148": "38a00a00",
+    "2150180152": "4bd72b7d",
+    "2150180156": "806d20e4",
+    "2150180160": "38800a00",
+    "2150180164": "48004511",
+    "2150180168": "38800001",
+    "2150180172": "38000000",
+    "2150180176": "3c608029",
+    "2150180180": "900d20dc",
+    "2150180184": "386323c0",
+    "2150180188": "908d20e0",
+    "2150180192": "988d20e8",
+    "2150180196": "900d20d8",
+    "2150180200": "93cd20ec",
+    "2150180204": "48015ce9",
+    "2150180208": "880d20e8",
+    "2150180212": "38800280",
+    "2150180216": "806d20e4",
+    "2150180224": "3c638000",
+    "2150180232": "48015d11",
+    "2150180236": "3c608040",
+    "2150180240": "38800020",
+    "2150180244": "38638540",
+    "2150180248": "38007d00",
+    "2150180252": "90830004",
+    "2150180256": "38600001",
+    "2150180260": "901f0000",
+    "2150180264": "48000008",
+    "2150180268": "38600000",
+    "2150180272": "80010014",
+    "2150180276": "83e1000c",
+    "2150180280": "83c10008",
+    "2150180288": "38210010",
+    "2150180304": "90010014",
+    "2150180308": "48015d4d",
+    "2150180312": "80010014",
+    "2150180320": "38210010",
+    "2150179784": "38800280",
+    "2150179788": "90010014",
+    "2150179792": "88ad20e8",
+    "2150179796": "806d20e4",
+    "2150179800": "38a50001",
+    "2150179808": "3c638000",
+    "2150179832": "98ad20e8",
+    "2150179844": "48015e95",
+    "2150179848": "4800b45d",
+    "2150179852": "906d20d4",
+    "2150179856": "800d20e0",
+    "2150179864": "41820038",
+    "2150179868": "800d20d8",
+    "2150179876": "40820034",
+    "2150179880": "38000001",
+    "2150179884": "900d20d8",
+    "2150179888": "480076b9",
+    "2150179892": "818d20ec",
+    "2150179904": "48007695",
+    "2150179908": "38000000",
+    "2150179912": "900d20d8",
+    "2150179916": "4800000c",
+    "2150179920": "38000001",
+    "2150179924": "900d20dc",
+    "2150179928": "80010014",
+    "2150179936": "38210010",
+    "2150180328": "886d20e8",
+    "2150180332": "808d20e4",
+    "2150180336": "38630002",
+    "2150176232": "38000001",
+    "2150176236": "900d2054"
+  },
+  "direct_calls": [
+    {
+      "site": 2150180792,
+      "target": 2150210260,
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi"
+    },
+    {
+      "site": 2150180128,
+      "target": 2150181044,
+      "name": "salMallocPhysical"
+    },
+    {
+      "site": 2150180152,
+      "target": 2147504308,
+      "name": "memset"
+    },
+    {
+      "site": 2150180164,
+      "target": 2150197844,
+      "name": "DCFlushRange"
+    },
+    {
+      "site": 2150180204,
+      "target": 2150269524,
+      "name": "AIRegisterDMACallback"
+    },
+    {
+      "site": 2150180232,
+      "target": 2150269592,
+      "name": "AIInitDMA"
+    },
+    {
+      "site": 2150180308,
+      "target": 2150269728,
+      "name": "AIStartDMA"
+    },
+    {
+      "site": 2150179844,
+      "target": 2150269592,
+      "name": "AIInitDMA"
+    },
+    {
+      "site": 2150179848,
+      "target": 2150226020,
+      "name": "OSGetTick"
+    },
+    {
+      "site": 2150179888,
+      "target": 2150210280,
+      "name": "OSEnableInterrupts"
+    },
+    {
+      "site": 2150179904,
+      "target": 2150210260,
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_ai_index_vectors": [
+    {
+      "index": 0,
+      "next": 1,
+      "destination": 2
+    },
+    {
+      "index": 1,
+      "next": 2,
+      "destination": 3
+    },
+    {
+      "index": 2,
+      "next": 3,
+      "destination": 0
+    },
+    {
+      "index": 3,
+      "next": 0,
+      "destination": 1
+    },
+    {
+      "index": 4,
+      "next": 1,
+      "destination": 2
+    },
+    {
+      "index": 255,
+      "next": 0,
+      "destination": 1
+    }
+  ],
+  "derived_ai_allocation_extent": {
+    "total_bytes": 2560,
+    "slot_bytes": 640,
+    "slots": 4
+  },
+  "derived_callback_branch_vectors": [
+    {
+      "dsp_done": 0,
+      "logic_active": 0,
+      "dispatch": false,
+      "set_waiting": true
+    },
+    {
+      "dsp_done": 0,
+      "logic_active": 1,
+      "dispatch": false,
+      "set_waiting": true
+    },
+    {
+      "dsp_done": 0,
+      "logic_active": 4294967295,
+      "dispatch": false,
+      "set_waiting": true
+    },
+    {
+      "dsp_done": 1,
+      "logic_active": 0,
+      "dispatch": true,
+      "set_waiting": false
+    },
+    {
+      "dsp_done": 1,
+      "logic_active": 1,
+      "dispatch": false,
+      "set_waiting": false
+    },
+    {
+      "dsp_done": 1,
+      "logic_active": 4294967295,
+      "dispatch": false,
+      "set_waiting": false
+    },
+    {
+      "dsp_done": 4294967295,
+      "logic_active": 0,
+      "dispatch": true,
+      "set_waiting": false
+    },
+    {
+      "dsp_done": 4294967295,
+      "logic_active": 1,
+      "dispatch": false,
+      "set_waiting": false
+    },
+    {
+      "dsp_done": 4294967295,
+      "logic_active": 4294967295,
+      "dispatch": false,
+      "set_waiting": false
+    }
+  ]
+}
