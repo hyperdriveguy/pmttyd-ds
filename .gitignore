@@ -115,3 +115,5 @@ romfs/harbor-tutorial-*
 romfs/*.houseobj
 
 romfs/demo-chest.*
+
+/romfs/opening-demo-market.json

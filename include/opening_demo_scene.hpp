@@ -17,6 +17,9 @@ public:
     bool messageReady(unsigned index) const;
     void messageComplete(unsigned index);
     const char* actorPose(unsigned actor,bool talking) const;
+    // Scene-local batch groups; never reinterpret these as field story groups.
+    uint64_t visibleMapGroups() const{return wallsVisible?3:1;}
+    bool mapGroupVisible(uint32_t group) const{return group<2 && (visibleMapGroups()&(uint64_t(1)<<group));}
 private:
     enum class Kind {Wait,Move,Camera,Tribe,Pose,Reverse,Message,Lift,Handoff,Walls,Open};
     struct Request {Kind kind=Kind::Wait;unsigned actor=0;std::array<float,3> point{},aim{};uint64_t duration=0;const char* pose=nullptr;const char* talk=nullptr;};

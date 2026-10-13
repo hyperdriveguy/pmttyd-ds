@@ -6,6 +6,7 @@
 using namespace ttyd;
 int main(int argc,char**){
     OpeningDemoScene scene;scene.begin(0);assert(scene.active && !scene.messageReady(0));
+    assert(scene.mapGroupVisible(0) && !scene.mapGroupVisible(1) && !scene.mapGroupVisible(2) && !scene.mapGroupVisible(64));
     assert((scene.actors[0].position==std::array<float,3>{-2,0,550}));assert(scene.actors[0].yaw==90);
     scene.advance(179);assert(scene.revealProgress<1);scene.advance(180);assert(scene.revealProgress==1);
     scene.advance(239);assert(!scene.musicStarted);scene.advance(240);assert(scene.musicStarted);
@@ -17,7 +18,8 @@ int main(int argc,char**){
         if(index==5)assert(scene.actors[0].position[0]==-55);
         if(index==7)assert(scene.actors[0].position[0]==-80 && !std::strcmp(scene.actorPose(0,true),"P_T_13"));
         if(index==8)assert(scene.actors[2].position[1]==10 && scene.actors[2].position[0]<-125);
-        if(index==10)assert(scene.wallsVisible && scene.eye[0]==-450);
+        if(index==9)assert(!scene.mapGroupVisible(1));
+        if(index==10)assert(scene.wallsVisible && scene.eye[0]==-450 && scene.mapGroupVisible(1) && scene.visibleMapGroups()==3);
         const auto position=scene.actors[2].position;
         for(unsigned i=0;i<4;++i)scene.advance(tick);assert(scene.actors[2].position==position);
         // Leave the last payload visible long enough for its independent

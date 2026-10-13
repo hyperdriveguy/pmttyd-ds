@@ -36,6 +36,15 @@ def verify(iso,symbols):
             row=read(address,84)
             got=[string(struct.unpack_from('>I',row,offset)[0]) for offset in [8,20,24]]
             if got!=expected:raise ValueError('Original demo tribe pose mapping changed')
+        # Original _load compares dmo_00 and calls mapLoad with gor_01 only
+        # on equality. Other names use the ordinary requested map pointer.
+        alias={0x80007608:0x3c80802c,0x80007614:0x3be4f268,
+               0x80007668:0x389f0064,0x8000766c:0x48265df9,
+               0x80007670:0x2c030000,0x80007674:0x40820010,
+               0x80007678:0x387f006c,0x8000767c:0x4802168d}
+        for address,word in alias.items():
+            if struct.unpack('>I',read(address,4))[0]!=word:raise ValueError('Original dmo map alias changed')
+        if string(0x802bf2cc)!='dmo_00' or string(0x802bf2d4)!='gor_01':raise ValueError('Demo map alias names changed')
     events=inventory_events(raw,symbols,'dmo',['demo_evt','buttonCheck','dmo_00_init_evt'])['events']
     expected=[(392,'3e3f3b88dd5e9c8268dfdb58cf0df3120b0548814225041879830c3e637bc6c0'),
               (12,'c178ed3cafa4d6bcc0df930a54bec44c1f412b19ce91bbb8903d1de791601e33'),
@@ -75,11 +84,19 @@ def verify(iso,symbols):
         if c['opcode']!=(5 if address==0x35f0 else 10) or c['operands'][0]['raw']!=amount:raise ValueError('Demo source loop/wait changed')
     for address,value in [(0x3610,.0830078125),(0x361c,.166015625),(0x33d0,.099609375)]:
         if number(commands[address]['operands'][1]['raw'])!=value:raise ValueError('Chest source float operand changed')
-    return len(anchors)+2+5+3+5
+    flags={0x4070:(1,'S'),0x2dac:(0,'S'),
+           0x2dc4:(1,'S_ie_01_naka'),0x2ddc:(1,'S_ie_02_f1_naka'),0x2df4:(1,'S_ie_02_f2_naka'),
+           0x2e0c:(1,'S_ie_03_naka'),0x2e24:(1,'S_ie_04_naka'),
+           0x2e3c:(1,'S_gai_kabe_k'),0x2e54:(1,'S_gai_kabe_k_01'),
+           0x34d4:(0,'S_gai_kabe_k'),0x34ec:(0,'S_gai_kabe_k_01')}
+    for address,(action,name) in flags.items():
+        c=commands[address];args=c['operands']
+        if c['opcode']!=91 or args[0].get('annotation')!='evt_mapobj_flag_onoff' or [o['raw'] for o in (args[1],args[2],args[4])]!=[1,action,1] or args[3].get('identifier')!=name:raise ValueError('Demo visibility request changed')
+    return len(anchors)+2+5+3+5+len(flags)+len(alias)+2
 
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--iso',default=DEFAULT_ISO)
     p.add_argument('--symbols',default='artifacts/reference/us_symbols.csv');a=p.parse_args()
-    print(f'US demo392/button12/init63 commands and {verify(a.iso,a.symbols)} scene/guard/wait/float/tribe anchors verified read-only')
+    print(f'US demo392/button12/init63 commands and {verify(a.iso,a.symbols)} scene/guard/wait/float/tribe/visibility/alias anchors verified read-only')
 if __name__=='__main__':main()
