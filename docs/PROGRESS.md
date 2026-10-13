@@ -2,6 +2,32 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero stream footer/composition
+
+Completed streamHandle footer/loop-PS/ABI and composed whole local source body;
+checked EVT-01 portion. [Footer/composition](behavior/audio/MUSYX_STREAM_LOOP_FOOTER_AND_COMPOSITION.md)
+pins fresh gates/raw translated read/loop byte/helper fallthrough order. Whole
+local handler answered; lifecycle/providers/domains/transitive ARAM/DSP/original
+stream/audio/native binding remain open.
+
+Validation: new read-only ISO manifest passed seven spans,44 anchors,three calls.
+Four prior region manifests and ABI helper prerequisite reverified. Six disjoint
+regions cover558 semantic+11 ABI words,total569/8e4hex. Seven gate/five source/
+four leaf vectors and region composition checked. Link audit passed895 Markdown
+files/zero broken links; scoped `git diff --check` passed. Mathematical source
+checks are separate from original execution; address vectors do not prove valid
+loads. Documentation/metadata only; no `make test`/`make all` rerun. Fresh full
+original handler/leaf ELFs/listings/generator stay `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded. Previously approved push remains
+pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 stream allocation/activation/deactivation/free/frequency/
+mix lifecycle; actual producer/delay/count/state/format/descriptor/position/cursor/
+length/flags/source/selector/voice/loop-PS providers and valid value/divisor/extent/
+alignment/encoding/address-map/cache/alias/lifetime/IRQ/concurrency/ABI/FP domains,
+transitive ARAM/DSP consumers and original startup/refill/stream/audio traces.
+Remaining macro/song/backend, lower-priority inbox and full native/game open.
+
 ## 2026-10-13 — Inbox priority-zero stream nonzero-position refill
 
 Completed streamHandle nonzero-position wrapped refill; checked EVT-01 portion.

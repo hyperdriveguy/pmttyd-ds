@@ -1,0 +1,284 @@
+{
+  "schema": 1,
+  "scope": "Complete streamHandle footer/ABI/loop-PS leaf and composed local whole handler; providers/runtime open",
+  "complete_bodies": [
+    "hwSetStreamLoopPS"
+  ],
+  "complete_regions": [
+    {
+      "name": "streamHandle common stream-loop footer",
+      "address": 2150084368,
+      "size": 64
+    }
+  ],
+  "linked_only": [
+    "streamHandle",
+    "_savegpr_27",
+    "_restgpr_27"
+  ],
+  "dol_spans": [
+    {
+      "name": "streamHandle common stream-loop footer",
+      "address": 2150084368,
+      "size": 64,
+      "sha256": "5e5f90c64945cbacb41912b21d1458ed4ffd3bec68f8b3ac5d9d2378595b88ed"
+    },
+    {
+      "name": "streamHandle",
+      "address": 2150082200,
+      "size": 2276,
+      "sha256": "f5bc74901c36f1c68441ece7e21cafa90df9d96aa57b2b630e1b3cffba963a27"
+    },
+    {
+      "name": "hwSetStreamLoopPS",
+      "address": 2150173748,
+      "size": 20,
+      "sha256": "1963cb1ad2f4e86ad62207a7b09de3ea256aaa8839bfaee6155adf26db9c0103"
+    },
+    {
+      "name": "GPR save27..31 fallthrough",
+      "address": 2149992840,
+      "size": 24,
+      "sha256": "b4814c06940feda1d69a09c2872ae96a0892aabf82650fa07c61274781041c99"
+    },
+    {
+      "name": "GPR restore27..31 fallthrough",
+      "address": 2149992916,
+      "size": 24,
+      "sha256": "75acbd95e1851a499b7b350731fff4dbed648c791108274cf10ce6c7ccac1ed4"
+    },
+    {
+      "name": "_savegpr_27",
+      "address": 2149992840,
+      "size": 4,
+      "sha256": "9b7068092a358c943c21b18b4e28928e880bfbb1b334082dfe973add4b6a6303"
+    },
+    {
+      "name": "_restgpr_27",
+      "address": 2149992916,
+      "size": 4,
+      "sha256": "d92806e26a2751f9ee9be41b269c32d3537032c43680315c96e9f68ac99dc60b"
+    }
+  ],
+  "dol_anchors": {
+    "2150084368": "881c000c",
+    "2150084372": "28000002",
+    "2150084376": "40820038",
+    "2150084380": "801c0008",
+    "2150084384": "5400039d",
+    "2150084388": "4082002c",
+    "2150084392": "881c000d",
+    "2150084396": "28000001",
+    "2150084400": "40820020",
+    "2150084404": "809c0014",
+    "2150084408": "807c004c",
+    "2150084412": "3c844000",
+    "2150084416": "80040000",
+    "2150084420": "5404463e",
+    "2150084424": "989c000f",
+    "2150084428": "48015ce9",
+    "2150173748": "1c0300f8",
+    "2150173752": "806d2068",
+    "2150173756": "7c630214",
+    "2150173760": "988300a0",
+    "2150173764": "4e800020",
+    "2150082200": "9421ff90",
+    "2150082204": "7c0802a6",
+    "2150082208": "90010074",
+    "2150082212": "39610070",
+    "2150082216": "4bfea2e1",
+    "2150084452": "39610070",
+    "2150084456": "4bfe9a6d",
+    "2150084460": "80010074",
+    "2150084464": "7c0803a6",
+    "2150084468": "38210070",
+    "2150084472": "4e800020",
+    "2149992840": "936bffec",
+    "2149992844": "938bfff0",
+    "2149992848": "93abfff4",
+    "2149992852": "93cbfff8",
+    "2149992856": "93ebfffc",
+    "2149992860": "4e800020",
+    "2149992916": "836bffec",
+    "2149992920": "838bfff0",
+    "2149992924": "83abfff4",
+    "2149992928": "83cbfff8",
+    "2149992932": "83ebfffc",
+    "2149992936": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2150084428,
+      "target": 2150173748,
+      "name": "hwSetStreamLoopPS"
+    },
+    {
+      "site": 2150082216,
+      "target": 2149992840,
+      "name": "_savegpr_27"
+    },
+    {
+      "site": 2150084456,
+      "target": 2149992916,
+      "name": "_restgpr_27"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "composed_region_coverage": {
+    "regions": [
+      {
+        "manifest": "musyx_stream_startup_dispatch_evidence.json",
+        "name": "streamHandle throttle dispatch and startup",
+        "address": 2150082220,
+        "size": 584
+      },
+      {
+        "manifest": "musyx_stream_startup_dispatch_evidence.json",
+        "name": "streamHandle next-row count tail",
+        "address": 2150084432,
+        "size": 20
+      },
+      {
+        "manifest": "musyx_stream_forward_refill_evidence.json",
+        "name": "streamHandle forward refill",
+        "address": 2150082804,
+        "size": 504
+      },
+      {
+        "manifest": "musyx_stream_zero_position_refill_evidence.json",
+        "name": "streamHandle zero-position wrapped refill",
+        "address": 2150083308,
+        "size": 452
+      },
+      {
+        "manifest": "musyx_stream_nonzero_wrapped_refill_evidence.json",
+        "name": "streamHandle nonzero-position wrapped refill",
+        "address": 2150083760,
+        "size": 608
+      },
+      {
+        "manifest": "musyx_stream_finish_composition_evidence.json",
+        "name": "streamHandle common stream-loop footer",
+        "address": 2150084368,
+        "size": 64
+      }
+    ],
+    "semantic_words": 558,
+    "abi_words": 11,
+    "total_words": 569,
+    "body_address": 2150082200,
+    "body_size": 2276
+  },
+  "helper_prerequisite": "musyx_low_precision_finish_composition_evidence.json",
+  "derived_footer_gate_vectors": [
+    {
+      "state": 2,
+      "flags8": 0,
+      "format": 1,
+      "reads_translated_source": true,
+      "publishes_loop_ps": true
+    },
+    {
+      "state": 2,
+      "flags8": 131072,
+      "format": 1,
+      "reads_translated_source": false,
+      "publishes_loop_ps": false
+    },
+    {
+      "state": 2,
+      "flags8": 0,
+      "format": 0,
+      "reads_translated_source": false,
+      "publishes_loop_ps": false
+    },
+    {
+      "state": 2,
+      "flags8": 0,
+      "format": 255,
+      "reads_translated_source": false,
+      "publishes_loop_ps": false
+    },
+    {
+      "state": 0,
+      "flags8": 0,
+      "format": 1,
+      "reads_translated_source": false,
+      "publishes_loop_ps": false
+    },
+    {
+      "state": 3,
+      "flags8": 0,
+      "format": 1,
+      "reads_translated_source": false,
+      "publishes_loop_ps": false
+    },
+    {
+      "state": 2,
+      "flags8": 65536,
+      "format": 1,
+      "reads_translated_source": true,
+      "publishes_loop_ps": true
+    }
+  ],
+  "derived_source_vectors": [
+    {
+      "source14": 0,
+      "translated_address": 1073741824,
+      "read_word": 0,
+      "high_byte": 0
+    },
+    {
+      "source14": 2147487744,
+      "translated_address": 3221229568,
+      "read_word": 305419896,
+      "high_byte": 18
+    },
+    {
+      "source14": 3221229568,
+      "translated_address": 4096,
+      "read_word": 4294967295,
+      "high_byte": 255
+    },
+    {
+      "source14": 4294967295,
+      "translated_address": 1073741823,
+      "read_word": 2147483648,
+      "high_byte": 128
+    },
+    {
+      "source14": 1073741824,
+      "translated_address": 2147483648,
+      "read_word": 16777215,
+      "high_byte": 0
+    }
+  ],
+  "derived_loop_ps_vectors": [
+    {
+      "index": 0,
+      "raw_ps": 0,
+      "wrapped_offset": 0,
+      "record_byte_a0": 0
+    },
+    {
+      "index": 1,
+      "raw_ps": 255,
+      "wrapped_offset": 248,
+      "record_byte_a0": 255
+    },
+    {
+      "index": 255,
+      "raw_ps": 4660,
+      "wrapped_offset": 63240,
+      "record_byte_a0": 52
+    },
+    {
+      "index": 4294967295,
+      "raw_ps": 4294967295,
+      "wrapped_offset": 4294967048,
+      "record_byte_a0": 255
+    }
+  ]
+}

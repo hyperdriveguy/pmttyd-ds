@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [Stream footer/whole-body composition](audio/MUSYX_STREAM_LOOP_FOOTER_AND_COMPOSITION.md) | Complete footer/loop-PS/ABI helpers and composed local streamHandle | Lifecycle/providers/domains/transitive ARAM/DSP and original audio |
 | [Stream nonzero-position wrapped refill](audio/MUSYX_STREAM_NONZERO_POSITION_WRAPPED_REFILL.md) | Complete two-span callback/strict split/eight upload/publication paths | Footer/ABI/providers/domains and original audio |
 | [Stream zero-position wrapped refill](audio/MUSYX_STREAM_ZERO_POSITION_WRAPPED_REFILL.md) | Complete zero-position callbacks/modulo/four flush/publication branches | Nonzero wrap/footer/ABI/providers/domains and original audio |
 | [Stream position/forward refill](audio/MUSYX_STREAM_POSITION_AND_FORWARD_REFILL.md) | Complete position normalization/forward callbacks/modulo/flush publication region | Wrapped refill/footer/ABI/providers/domains and original audio |

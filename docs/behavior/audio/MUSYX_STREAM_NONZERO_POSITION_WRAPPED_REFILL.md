@@ -88,3 +88,9 @@ position/format/cursor/length/flags/source/selector/voice/count providers and
 valid divisor/value/extent/alignment/encoding/alias/lifetime/IRQ/concurrency
 domains, transitive ARAM/DSP consumers and original wrapped-refill/stream/audio
 traces. EVT-01 and native binding remain OPEN.
+
+## 2026-10-13 — Footer/composition follow-up
+
+[Footer/composition](MUSYX_STREAM_LOOP_FOOTER_AND_COMPOSITION.md) closes footer/loop-PS/ABI and composes the
+whole local handler. Lifecycle/providers/domains/transitive ARAM/DSP/original
+stream/audio/native binding remain open.

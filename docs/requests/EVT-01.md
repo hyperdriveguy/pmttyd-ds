@@ -517,6 +517,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [nonzero wrapped refill](../behavior/audio/MUSYX_STREAM_NONZERO_POSITION_WRAPPED_REFILL.md).
   Two-span callback/strict returned-count split/down-versus-up block sizes/
   ordered uploads before cursor pinned; footer/providers/runtime open.
+- [x] Complete streamHandle common footer/hwSetStreamLoopPS/ABI and
+  compose whole local handler — [footer/composition](../behavior/audio/MUSYX_STREAM_LOOP_FOOTER_AND_COMPOSITION.md).
+  Six regions cover558 semantic+11 ABI words; fresh gates/translated read/
+  loop-byte/helper order pinned; lifecycle/providers/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2610,3 +2614,14 @@ ordered-refill vectors checked. Two-span callback, post-child capacity strict
 split, zero-length second post, down-versus-up block sizes, fresh source reads
 and cursor publication pinned. Footer/ABI/providers/domains/original stream/
 audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream footer/whole-body composition delivery
+
+Completed common footer/loop-PS/ABI and composed whole local
+[streamHandle](../behavior/audio/MUSYX_STREAM_LOOP_FOOTER_AND_COMPOSITION.md).
+New seven spans/44 anchors/three calls verified; four prior region manifests
+and ABI helper prerequisite reverified. Six-region union covers558 semantic+11
+ABI words,total569/8e4hex without gaps/overlap. Seven gate/five source/four leaf
+vectors checked. Fresh footer gates/raw translated load/loop-byte/helper order
+pinned. Lifecycle/providers/domains/transitive ARAM/DSP/original stream/audio/
+native binding remain open; EVT-01 stays OPEN.
