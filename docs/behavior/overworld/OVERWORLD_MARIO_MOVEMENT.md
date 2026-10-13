@@ -159,7 +159,7 @@ conveyors/additive motion, field lock transitions, airborne wall deflection and
 full idle/jump/transform arbitration before claiming complete field equivalence.
 Runtime observations remain needed for ordinary launch, release/reversal,
 walk→dash+jump boundary, landing and ledge loss. Requests are tracked in
-[the dedicated overworld documentation inbox](../../OVERWORLD_DOCUMENTATION_REQUESTS.md).
+[OW-MOVE-01 in the documentation request inbox](../../requests/OW-MOVE-01.md).
 
 ## Five-probe orientation clarification
 

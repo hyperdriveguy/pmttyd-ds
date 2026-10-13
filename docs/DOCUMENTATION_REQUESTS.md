@@ -1,6 +1,6 @@
 # Documentation agent requests from the native implementation
 
-Updated 2026-10-12 (America/Boise). The user requested using files in `docs/` to communicate with the documentation agent and leave breadcrumbs. This file is the **index**; request bodies, answers and history live in [`requests/`](requests/). Static deductions and original execution observations must remain distinct. Do not change native harness choices into original-game evidence.
+Updated 2026-10-12 (America/Boise). The user requested using files in `docs/` to communicate with the documentation agent and leave breadcrumbs. This file is the **index**; request bodies, answers and history live in [`requests/`](requests/). Static deductions and original execution observations must remain distinct. Do not change native harness choices into original-game evidence. Keep original US story/message content and conditions intact; no fabricated rules/dialogue to close missing contracts. Preserve static/runtime boundaries.
 
 ## How to use this inbox
 
@@ -26,8 +26,17 @@ Updated 2026-10-12 (America/Boise). The user requested using files in `docs/` to
 | FIELD-RECOVERY-01 — Water/void stages, pose domains, pipe paper (field/AC-03) | Open | Water/void numeric stages, pose table slice, pipe paper lifecycle | [requests/FIELD-RECOVERY-01.md](requests/FIELD-RECOVERY-01.md) |
 | MAINLOOP-01 — marioMain per-retrace body (P0c) | Open | Motion dispatch/subsystems/input gate/battle transition, marioStMain pause cadence | [requests/MAINLOOP-01.md](requests/MAINLOOP-01.md) |
 | SAVE-01 — cardMain/swSet persistence (P1b) | Open | Save format/state machine, story-switch bank, round-trip namespaces | [requests/SAVE-01.md](requests/SAVE-01.md) |
+| OW-MOVE-01 — Ordinary Mario movement state and current input | Open (movement and motion arbitration answered) | Motion arbitration tails, input producer clamp/deadzone, wall/slope rate composition, ledge/reentry/badge/Paper modes, original input traces | [requests/OW-MOVE-01.md](requests/OW-MOVE-01.md) |
+| OW-WALL-01 — Swept directional movement and sliding | Open (wall contract delivered) | `hitCheckVecFilter` triangle/traversal domains, +14 view and hidden owners, Vivian/Paper bypass paths, original collision traces | [requests/OW-WALL-01.md](requests/OW-WALL-01.md) |
+| OW-SUPPORT-01 — Direction rate, slope record, support and stairs | Open (direction rate, support/slopes/stairs and airborne/landing answered) | Triangle/math/traversal delta domains, SDK/camera/vertical writers, dynamic surfaces/attributes, special modes, execution traces | [requests/OW-SUPPORT-01.md](requests/OW-SUPPORT-01.md) |
+| OW-PARTNER-01 — Ordinary Goombella follow and field lifecycle | Open | Follow/history/speed/ground/obstacle rules, homing owners, launch/landing/room/battle lifecycle, ability activation and control locks | [requests/OW-PARTNER-01.md](requests/OW-PARTNER-01.md) |
+| OW-ROAD-01 — Rogueport road triggers and transitions | Open (roads contract delivered) | Exact node contacts/registration overlays, story callbacks, station north train door, NPC/block classification, numeric services | [requests/OW-ROAD-01.md](requests/OW-ROAD-01.md) |
+| OW-INTERACT-01 — Mario A/X/B interaction arbitration and playback | Open | Priority against jump/movement, proximity, hammer/first-strike, message/speaker/control-token playback, scene conditions | [requests/OW-INTERACT-01.md](requests/OW-INTERACT-01.md) |
+| OW-CAMERA-01 — Ordinary room camera tracking and limits | Open | Room tracking/limits, authored events, height changes, tracking/yaw/screen-projection owners | [requests/OW-CAMERA-01.md](requests/OW-CAMERA-01.md) |
 
-Overworld-specific requests are tracked separately in [OVERWORLD_DOCUMENTATION_REQUESTS.md](OVERWORLD_DOCUMENTATION_REQUESTS.md).
+The overworld requests formerly kept in `OVERWORLD_DOCUMENTATION_REQUESTS.md`
+(OW-* rows above) were merged into this inbox on 2026-10-12; that separate inbox
+existed only to avoid concurrent edits to this index and no longer exists.
 
 ## Implementation priorities
 

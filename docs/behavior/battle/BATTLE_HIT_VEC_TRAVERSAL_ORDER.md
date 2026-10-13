@@ -2,7 +2,7 @@
 
 US G8ME01 disc0 revision0; static contract, no execution or gameplay claim.
 Answers the traversal-ordering half of overworld request OW-WALL-01
-(`docs/OVERWORLD_DOCUMENTATION_REQUESTS.md`): full `hitCheckVecFilter`
+(`docs/requests/OW-WALL-01.md`): full `hitCheckVecFilter`
 (0x800158a4, 839-line listing, 49 `bl` + 4 indirect calls) region/loop/call
 skeleton. Triangle-interior float math stays open (see end).
 
