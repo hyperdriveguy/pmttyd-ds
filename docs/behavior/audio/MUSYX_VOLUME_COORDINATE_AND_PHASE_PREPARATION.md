@@ -114,3 +114,10 @@ float literal providers, __ieee754_fmod/math/FPSCR/transitive execution, actual
 coordinate/volume/table/output/alias/lifetime/IRQ/concurrency domains and original
 mixer/volume/DSP/audio traces. Parameter/phase preparation and wrapper answered;
 full salCalcVolume/native binding and EVT-01 remain OPEN.
+
+## 2026-10-13 — Output-branch follow-up
+
+[Interpolation/outputs](MUSYX_VOLUME_INTERPOLATION_AND_OUTPUT_BRANCHES.md) closes both output regions and composes
+the local whole mixer. Cross-table extra pan pairing, source single/store order
+and nonzero mode's ignored third gain are retained. IEEE math/FP/index/alias/
+runtime domains, DSP consumers and original audio remain open.

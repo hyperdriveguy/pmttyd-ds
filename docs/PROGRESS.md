@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero mixer interpolation/output branches
+
+Completed both salCalcVolume output regions and composed the whole local
+mixer body with the prior preparation contract; checked the EVT-01 portion.
+[Interpolation/outputs](behavior/audio/MUSYX_VOLUME_INTERPOLATION_AND_OUTPUT_BRANCHES.md)
+pins original tables, exact single interpolation/products/nine-store order,
+nonzero mode's ignored third gain/zero slots and cross-table extra pan pairing.
+IEEE math/FP/index/alias/runtime domains, DSP consumers/original audio remain open.
+
+Validation: read-only ISO manifest passed16 spans (whole body/two regions/four
+linked/four numeric tables/five literals),337 anchors/19 calls. Eight binary32
+finite/nonalias formula vectors checked, including paired E changes;266 original
+volume/pan floats retained. Link audit passed842 Markdown files/zero broken
+links; scoped `git diff --check` passed. Documentation/metadata only; no `make test`/
+`make all` rerun. Full original inspection ELF/listing stays `/tmp`; no bodies/
+binary assets committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 IEEE remainder/math/FPSCR/transitive execution,
+actual gain/coordinate/index/table/output/alias/lifetime/IRQ/concurrency domains,
+DSP ramp/command consumers and original mixer/volume/DSP/audio traces. Remaining
+DSP/precision work, lower-priority inbox and full native/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero mixer coordinate/phase preparation
 
 Completed salCalcVolume coordinate/table/sentinel/compression/phase region and

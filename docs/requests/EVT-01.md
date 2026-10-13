@@ -386,6 +386,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   preparation region and fmod wrapper — [volume coordinate/phase preparation](../behavior/audio/MUSYX_VOLUME_COORDINATE_AND_PHASE_PREPARATION.md).
   Original tables/single rounding/pre-compression saves/child order pinned;
   output branches/IEEE child/domain/original mixer/audio remain open.
+- [x] Complete both salCalcVolume interpolation/output branches and
+  compose the local whole mixer — [volume interpolation/outputs](../behavior/audio/MUSYX_VOLUME_INTERPOLATION_AND_OUTPUT_BRANCHES.md).
+  Original volume/pan tables, cross-table extra pairing, two/three gain
+  paths and single/store order pinned; IEEE/domain/DSP/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2158,3 +2162,13 @@ volume-table floats/six numeric literals retained. Raw sentinel/unsigned floor/
 low-byte selector/single conversion, optional pre-compression phases and common
 phase/index request order pinned. Both output branches/IEEE math/caller/domain/
 original mixer/audio remain open. Parent EVT-01 stays OPEN.
+
+## 2026-10-13 — Mixer interpolation/output delivery
+
+Completed both output regions and composed the local salCalcVolume body in
+[volume interpolation/outputs](../behavior/audio/MUSYX_VOLUME_INTERPOLATION_AND_OUTPUT_BRANCHES.md).
+Sixteen spans/337 anchors/19 calls verified; eight finite/nonalias formula vectors
+and266 original volume/pan floats/five literals retained. Nonzero mode ignores E,
+zeros two slots and pairs extra lower pan samples with normal upper samples;
+pre-compression phases and source single/store order retained. IEEE/FP/index/
+alias/caller/DSP/original mixer/audio remain open. Parent EVT-01 stays OPEN.
