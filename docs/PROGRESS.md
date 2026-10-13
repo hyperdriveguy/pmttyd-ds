@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero DVD error/timeout/fatal bridge
+
+Completed cbForStateError/stateTimeout/__DVDPrintFatalMessage; EVT-01 checked.
+[Error wrappers](behavior/file/SDK_DVD_ERROR_CALLBACK_TIMEOUT_AND_FATAL_BRIDGE.md)
+pin state-before-exact16, timeout/error0 reentry, optional fatal handler, fresh
+post-handler executing/dummy/fatal flag and cancel-pointer-before-clear/ready.
+Error/reset/handler/providers/original IO/audio/native binding remains open.
+
+Validation: read-only ISO manifest passed six spans,68 anchors,six calls.
+Five status/six cancel/three handler/two snapshot models, timeout order/three
+indirect/global/publication sites checked; whole busy callback pins reverified.
+Link audit passed951 Markdown files/zero broken links; scoped diff check passed.
+Mathematical deductions separate from original execution. Docs/metadata only;
+no make test/all rerun. Fresh full ELFs/listings/generator stay /tmp; no bodies/
+assets committed. Concurrent native work excluded. Approved push pending valid
+GitHub credentials.
+
+Next: priority-zero EVT-01 cbForStateGettingError/reset/error-store/low-level and
+actual fatal handler/status/executing/cancel/provider/value/extent/alias/lifetime/
+IRQ/concurrency/ABI domains, original timeout/nonreturn/fatal/cancel/IO/audio
+traces. Other inbox/native/full-game work remains open.
+
 ## 2026-10-13 — Original item presentation resources and visible frontend colors
 
 Committed7559a76 adds the reusable

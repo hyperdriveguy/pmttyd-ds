@@ -639,6 +639,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   reads/equality/cancel/completion/error-fetch pinned; child/runtime open.
 - [ ] Error/recovery/low-level callback children and actual status/controller/
   command/cancel/callback/provider/runtime/native binding.
+- [x] Complete cbForStateError/stateTimeout/__DVDPrintFatalMessage —
+  [error/timeout/fatal bridge](../behavior/file/SDK_DVD_ERROR_CALLBACK_TIMEOUT_AND_FATAL_BRIDGE.md). State-before-timeout,
+  error0 reentry/post-handler snapshot/cancel callback order pinned; runtime open.
 - [ ] Deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
@@ -3218,3 +3221,12 @@ success,54a_recnotapplied,70BGMon_fwithoutactualfadeowner; originalfield
 MarioWord4/currentindices/partyconstructor/controlcounter/pouchjoinand
 separatefieldVMpausedchildren ownershiprequired. Noforcedunlock orstorywrite.
 Read-onlysource/nativeaudit; docs-only/no nativecode/build/commit;diffcheckpass.
+
+## 2026-10-13 — SDK DVD error/timeout/fatal bridge delivery
+
+Completed [three local error wrappers](../behavior/file/SDK_DVD_ERROR_CALLBACK_TIMEOUT_AND_FATAL_BRIDGE.md).
+Six spans/68 anchors/six calls/three indirect sites verified; five status/six
+cancel/three handler/two post-handler snapshot models and timeout/global/sites
+checked; busy pins reverified. Failed-state target can differ from callback
+record; cancel pointer captured before clearing Canceling. Error/reset/handler/
+providers/original IO/audio/native binding remain open; EVT-01 stays OPEN.

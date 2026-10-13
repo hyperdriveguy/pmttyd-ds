@@ -1,0 +1,297 @@
+{
+  "schema": 1,
+  "scope": "Complete DVD error callback/timeout/fatal handler bridge; failed state/timeout reentry/fatal handler/resnapshot/dummy/callback/cancel/ready order, providers/runtime open",
+  "complete_bodies": [
+    "cbForStateError",
+    "stateTimeout",
+    "__DVDPrintFatalMessage"
+  ],
+  "linked_only": [
+    "stateReady",
+    "__DVDStoreErrorCode",
+    "DVDReset"
+  ],
+  "dol_spans": [
+    {
+      "name": "cbForStateError",
+      "address": 2150237932,
+      "size": 172,
+      "sha256": "a9db624d1cc5f92c181a51afbd65495564d0eda3fc85146628a0b338ab0edcee"
+    },
+    {
+      "name": "stateTimeout",
+      "address": 2150238104,
+      "size": 52,
+      "sha256": "eb20109f2de4caf0de0faef11cf1ad0a982e42a15a8c7078fb28d3351d867686"
+    },
+    {
+      "name": "__DVDPrintFatalMessage",
+      "address": 2150249104,
+      "size": 48,
+      "sha256": "301a2481d0e64bda50ed8391a8707e7f4f9904ff00134899565de2c343d9afb2"
+    },
+    {
+      "name": "stateReady",
+      "address": 2150241468,
+      "size": 744,
+      "sha256": "45306e28e50e177a5f90234de14dd8b6719ef8e1d84d0e0672e816bc5456ce0b"
+    },
+    {
+      "name": "__DVDStoreErrorCode",
+      "address": 2150248732,
+      "size": 124,
+      "sha256": "04e17db1044ff8cc3c0a98d05e6d6e3a20a0765566b87799d4433426ad410ba9"
+    },
+    {
+      "name": "DVDReset",
+      "address": 2150246092,
+      "size": 68,
+      "sha256": "e5a24224db38d703a607b287d72007bee6621ad11ac96f02f0049afdd43602ad"
+    }
+  ],
+  "dol_anchors": {
+    "2150237940": "90010004",
+    "2150237944": "3800ffff",
+    "2150237952": "93e10014",
+    "2150237956": "808d2250",
+    "2150237960": "9004000c",
+    "2150237964": "4082000c",
+    "2150237968": "48000089",
+    "2150237972": "48000070",
+    "2150237976": "48002b79",
+    "2150237980": "3c608041",
+    "2150237984": "83ed2250",
+    "2150237988": "380338e0",
+    "2150237992": "38600001",
+    "2150237996": "900d2250",
+    "2150238000": "906d2268",
+    "2150238004": "819f0028",
+    "2150238012": "41820014",
+    "2150238020": "389f0000",
+    "2150238024": "3860ffff",
+    "2150238032": "800d2270",
+    "2150238040": "41820028",
+    "2150238044": "818d2274",
+    "2150238048": "38000000",
+    "2150238052": "900d2270",
+    "2150238060": "41820014",
+    "2150238068": "389f0000",
+    "2150238072": "38600000",
+    "2150238080": "48000d3d",
+    "2150238084": "8001001c",
+    "2150238088": "83e10014",
+    "2150238092": "38210018",
+    "2150238108": "3c600123",
+    "2150238112": "90010004",
+    "2150238116": "38634568",
+    "2150238124": "48002971",
+    "2150238128": "48001f1d",
+    "2150238132": "38600000",
+    "2150238136": "4bffff35",
+    "2150238140": "8001000c",
+    "2150238144": "38210008",
+    "2150249108": "90010004",
+    "2150249116": "818d22a0",
+    "2150249124": "4182000c",
+    "2150249136": "8001000c",
+    "2150249140": "38210008",
+    "2150237932": "7c0802a6",
+    "2150237936": "28030010",
+    "2150237948": "9421ffe8",
+    "2150238008": "280c0000",
+    "2150238016": "7d8803a6",
+    "2150238028": "4e800021",
+    "2150238036": "28000000",
+    "2150238056": "280c0000",
+    "2150238064": "7d8803a6",
+    "2150238076": "4e800021",
+    "2150238096": "7c0803a6",
+    "2150238100": "4e800020",
+    "2150238104": "7c0802a6",
+    "2150238120": "9421fff8",
+    "2150238148": "7c0803a6",
+    "2150238152": "4e800020",
+    "2150249104": "7c0802a6",
+    "2150249112": "9421fff8",
+    "2150249120": "280c0000",
+    "2150249128": "7d8803a6",
+    "2150249132": "4e800021",
+    "2150249144": "7c0803a6",
+    "2150249148": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2150237968,
+      "target": 2150238104,
+      "name": "stateTimeout"
+    },
+    {
+      "site": 2150237976,
+      "target": 2150249104,
+      "name": "__DVDPrintFatalMessage"
+    },
+    {
+      "site": 2150238080,
+      "target": 2150241468,
+      "name": "stateReady"
+    },
+    {
+      "site": 2150238124,
+      "target": 2150248732,
+      "name": "__DVDStoreErrorCode"
+    },
+    {
+      "site": 2150238128,
+      "target": 2150246092,
+      "name": "DVDReset"
+    },
+    {
+      "site": 2150238136,
+      "target": 2150237932,
+      "name": "cbForStateError"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_status_vectors": [
+    {
+      "raw": 0,
+      "initial_state_write": 4294967295,
+      "timeout_branch": false,
+      "direct_fatal_branch": true
+    },
+    {
+      "raw": 1,
+      "initial_state_write": 4294967295,
+      "timeout_branch": false,
+      "direct_fatal_branch": true
+    },
+    {
+      "raw": 16,
+      "initial_state_write": 4294967295,
+      "timeout_branch": true,
+      "direct_fatal_branch": false
+    },
+    {
+      "raw": 17,
+      "initial_state_write": 4294967295,
+      "timeout_branch": false,
+      "direct_fatal_branch": true
+    },
+    {
+      "raw": 4294967295,
+      "initial_state_write": 4294967295,
+      "timeout_branch": false,
+      "direct_fatal_branch": true
+    }
+  ],
+  "derived_cancel_vectors": [
+    {
+      "canceling": 0,
+      "callback_present": false,
+      "clears_canceling": false,
+      "invokes": false
+    },
+    {
+      "canceling": 0,
+      "callback_present": true,
+      "clears_canceling": false,
+      "invokes": false
+    },
+    {
+      "canceling": 1,
+      "callback_present": false,
+      "clears_canceling": true,
+      "invokes": false
+    },
+    {
+      "canceling": 1,
+      "callback_present": true,
+      "clears_canceling": true,
+      "invokes": true
+    },
+    {
+      "canceling": 4294967295,
+      "callback_present": false,
+      "clears_canceling": true,
+      "invokes": false
+    },
+    {
+      "canceling": 4294967295,
+      "callback_present": true,
+      "clears_canceling": true,
+      "invokes": true
+    }
+  ],
+  "derived_handler_vectors": [
+    {
+      "handler": 0,
+      "invokes": false,
+      "assigns_arguments": false
+    },
+    {
+      "handler": 1,
+      "invokes": true,
+      "assigns_arguments": false
+    },
+    {
+      "handler": 4294967295,
+      "invokes": true,
+      "assigns_arguments": false
+    }
+  ],
+  "derived_resnapshot_vectors": [
+    {
+      "initial_command": 4096,
+      "after_handler_command": 4096,
+      "failed_initial": 4096,
+      "callback_command": 4096,
+      "checks_identity": false
+    },
+    {
+      "initial_command": 4096,
+      "after_handler_command": 8192,
+      "failed_initial": 4096,
+      "callback_command": 8192,
+      "checks_identity": false
+    }
+  ],
+  "timeout_request_order": [
+    "__DVDStoreErrorCode(01234568hex)",
+    "DVDReset",
+    "cbForStateError(0)"
+  ],
+  "indirect_call_sites": [
+    {
+      "site": 2150238028,
+      "result": -1,
+      "argument": "post-handler captured command"
+    },
+    {
+      "site": 2150238076,
+      "result": 0,
+      "argument": "same captured command"
+    },
+    {
+      "site": 2150249132,
+      "result": "no argument assignment",
+      "argument": "no argument assignment"
+    }
+  ],
+  "globals": {
+    "executing": 2151805296,
+    "fatal": 2151805320,
+    "canceling": 2151805328,
+    "cancel_callback": 2151805332,
+    "fatal_handler": 2151805376,
+    "dummy": 2151758048
+  },
+  "publication_sites": {
+    "initial_failed": 2150237960,
+    "post_handler_capture": 2150237984,
+    "dummy": 2150237996,
+    "fatal_one": 2150238000,
+    "cancel_zero": 2150238052
+  }
+}
