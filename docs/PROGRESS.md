@@ -1,5 +1,17 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native request 3 slice: pose call-site survey
+
+Delivered OVERWORLD_POSE_CALL_SITE_SURVEY: 18 marioChgPose sites with
+ISO-read literals (KPA_D_1/D_2 table pair, M_D_2/M_U_3 recovery pair,
+M_J_1B/M_J_1C, M_W/M_O/M_R alternation) plus gate/ordering notes; all
+surveyed sites are marioChgPose (no EvtPose). Remaining request-3 items
+(named domains, pipe-paper asset work) explicitly scoped out with a
+non-finding (no reference body) for the pipe lifecycle.
+
+Validation: all 18 call sites re-checked, literal strings ISO-read, link
+audit, diff --check clean. Docs-only, no make rerun. Full-game incomplete.
+
 ## 2026-10-12 — Native request 2 remainder: bottomless numerics
 
 Delivered OVERWORLD_BOTTOMLESS_RECOVERY_NUMERICS: first-tick gate,
