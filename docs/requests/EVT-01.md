@@ -604,7 +604,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] _sscallback PCM continuation and whole local callback — [PCM/composition](../behavior/audio/GAME_STREAM_PRODUCER_PCM_AND_WHOLE_COMPOSITION.md).
   All521 words verified; count/boundary-before-position/retry/early-stop return
   pinned; decoder/providers/original/native binding remains open.
-- [ ] ssDecodeDPCM, deferred DVD manager and original header/resource/provider/
+- [x] Complete ssDecodeDPCM and16-value dtbl — [DPCM decoder](../behavior/audio/GAME_STREAM_DPCM_MARKERS_PREDICTOR_AND_BOUNDARIES.md).
+  Marker/nibble/packed-state/saturation/output-count/buffer/loop/source-return
+  pinned; providers/original/native binding remains open.
+- [ ] Deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
@@ -3018,3 +3021,13 @@ all521 disjoint words checked against ISO. Six alignment/seven step/four return
 vectors/publication sites checked. PCM copied count differs from ADPCM requested
 sum on early stop; rollback skips position/end. Decoder/manager/providers/
 original refill/audio/native binding open; EVT-01 stays OPEN.
+
+## 2026-10-13 — DPCM decoder/table delivery
+
+Completed [whole decoder/scale table](../behavior/audio/GAME_STREAM_DPCM_MARKERS_PREDICTOR_AND_BOUNDARIES.md).
+Two spans/132 anchors/zero calls/16 signed scales verified; six nibble/six marker/
+seven predictor/six packet/seven boundary/three zero-request vectors and sites
+checked; producer/PCM pins reverified. Marker consumes bytes without sample,
+signed predictor saturates, packed state survives buffer transitions and loop
+resets predictor. Providers/manager/original decoded audio/native binding open;
+EVT-01 stays OPEN.

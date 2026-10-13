@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Underground trio ordinary EXP ending tail](battle/UNDERGROUND_TRIO_NO_LEVEL_UP_ENDING_TAIL.md) | Exact0c..1f timers, independent effect softdelete, actual body/voice gates, fade10 completion, Rule0 and ordered pouch/field export | Native effect/GX/fade/audio/field reconstruction cadence; level-up/zeroEXP/special branches |
+| [Stream DPCM markers/predictor/boundaries](audio/GAME_STREAM_DPCM_MARKERS_PREDICTOR_AND_BOUNDARIES.md) | Complete decoder/16-scale table; marker/nibble/saturation/count/buffer/loop/return | Providers/deferred manager/original decoded audio |
 | [Stream producer PCM/whole composition](audio/GAME_STREAM_PRODUCER_PCM_AND_WHOLE_COMPOSITION.md) | Complete PCM/all521-word callback; per-copy count/boundary-before-position/retry/early stop | Decoder/providers/original refill/audio |
 | [Stream producer live encoded/decode calls](audio/GAME_STREAM_PRODUCER_LIVE_ENCODED_COPY_AND_DECODE_CALLS.md) | Complete region; tag/decode-call protocol/rounded byte copy/boundary/stop/return | PCM/helper/whole callback/providers/original audio |
 | [Stream producer dispatch/silent-fill prefix](audio/GAME_STREAM_PRODUCER_DISPATCH_AND_SILENT_FILL_PREFIX.md) | Complete prefix/return ABI; low8/all-zero/gates/PCM count/ADPCM block zeroing | Whole live refill/helpers/providers/original audio |

@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero DPCM decoder/table
+
+Completed ssDecodeDPCM/16-value dtbl; checked EVT-01 portion.
+[DPCM decoder](behavior/audio/GAME_STREAM_DPCM_MARKERS_PREDICTOR_AND_BOUNDARIES.md)
+pins marker/no-output, packed nibble/state, signed scale/saturation, output/count,
+buffer/retry/switch/loop predictor reset and source-pointer return. Providers/
+manager/original decoded audio/native binding remain open.
+
+Validation: read-only ISO manifest passed two spans,132 anchors,zero calls and
+16 signed scale values. Six nibble/six marker/seven predictor/six packet/seven
+boundary/three zero-request vectors and publication sites checked; PCM/producer
+pins reverified. Link audit passed932 Markdown files/zero broken links; scoped
+diff check passed. Mathematical deductions separate from original execution.
+Docs/metadata only; no make test/all rerun. Fresh full ELF/listing/generator stay
+/tmp; no bodies/assets committed. Concurrent native changes excluded. Approved
+push remains pending valid GitHub credentials.
+
+Next: priority-zero EVT-01 deferred DVD manager/providers and valid value/extent/
+alias/lifetime/IRQ/concurrency/ABI domains, transitive SDK/cache/ARAM/AI/DSP and
+original packet-boundary/saturation/starvation/loop/refill/callback/audio traces.
+Other inbox/native/full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero PCM and whole stream producer
 
 Completed PCM continuation/whole local _sscallback; checked EVT-01 and kept
