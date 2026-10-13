@@ -65,6 +65,9 @@ base/talk requests use the canonical selected name before the clock sees it;
 two unknown names selecting the same pose preserve restart0 timing, while source
 message forced-restart requests retain their existing generation semantics.
 Empty banks cannot select a fallback. Map-object lookup remains exact-name.
+This string-only selector covers current exported NPC requests. Numeric source
+selectors and valid original names omitted from a local pose subset remain
+unsupported; future event bindings must export their requested poses before use.
 
 Source NPC print anchors
 use captured root plus height once; rendering no longer derives ordinary Chu/

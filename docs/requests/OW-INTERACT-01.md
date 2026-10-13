@@ -319,3 +319,28 @@ clock/restart generations. Local native tests and isolated visible original
 Mouser talk/return pass. Full pre-display/color/blur/shadows, source NPC collision,
 interaction priority, wander/tavern fade, numeric/runtime parity and other areas
 remain OPEN; this does not close the parent request.
+
+### 2026-10-13 — Mario/NPC collision and ordinary A-talk local owners
+
+Delegated read-only documentation delivered [NPC sphere and Mario side collision](../behavior/field/FIELD_NPC_SPHERE_AND_MARIO_SIDE_COLLISION.md)
+and [ordinary talk candidate/lifecycle](../behavior/field/FIELD_ORDINARY_NPC_TALK_CANDIDATE.md).
+Sphere query measures distance to NPC vertical segment and tests halfwidth+
+extra radius; NPC-main side response uses inclusive vertical overlap, half
+combined width+5, previous-NPC-XZ rollback, Mario response and map-wall retry.
+The partner last-horizontal-match query is not interchangeable.
+
+Ordinary talk needs current Mario motion0..2, zero key depth, live flags2/
+not8/talkEvent, inclusive vertical overlap, source radius half combined width
+plus10, camera-relative center/width-edge directional tests and unobstructed
+map ray. Strict nearest wins first ties; A commits fieldstate2. Source
+MarioInit width20/height37 and NPCEntry flags3 publication are pinned. Camera
+viewYaw and ray(sin,-cos) preserve the original compass. Field root proves
+MarioMain→mobjMain→npcMain→caseMain order. fbatTalkMode's complete local
+start/wait/return requests retain actor event context6 and source eventID wait.
+
+Validation: fresh read-only ISO disassembly of nine used query/caller bodies,
+MarioInit/cam3dMain and field-root call instructions, plus direct dimension/
+constant reads. Documentation links and whitespace checks pass. Source
+inspection outputs remain /tmp; no native edit/commit/test/build or runtime
+claim. Full collision polynomial numerics, event/window/regular-stop lifecycle,
+all fbatHitCheck branches, map-object interaction and pause/retrace remain open.

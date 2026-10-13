@@ -2,6 +2,55 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original NPC descriptor0 fallback and collision/talk research
+
+Commit `b5b1242` retains original animation descriptor0 in NPC subsets and
+selects it on case-sensitive missing-name requests: Chu CHU_Z_1, Frankly Z_1,
+including original lowercase tribe d_1. Canonical base/talk names reach retained
+pose clocks before change detection, so two unknown names selecting one pose
+preserve restart0; source message generations still force same-name Talk/Stay
+restarts. Empty-bank rejection and map-object exact-name lookup remain. Packs
+retain original material/pass/cull/UV/color data and existing citro3d submission;
+source descriptor directory/provenance/rights are recorded in [assets](ASSETS.md)
+and the [native contract](behavior/field/NATIVE_NPC_PRESENTATION_AND_SOURCE_DIMENSIONS.md).
+Numeric selectors, unexported valid source poses and repeated same-name scripted
+Frankly restart requests remain separate coverage adapters.
+
+Delegated documentation pins [NPC sphere/side response](behavior/field/FIELD_NPC_SPHERE_AND_MARIO_SIDE_COLLISION.md)
+and [ordinary talk selection/lifecycle](behavior/field/FIELD_ORDINARY_NPC_TALK_CANDIDATE.md):
+source vertical-segment query, inclusive side geometry/NPC rollback/Mario push/
+wall retry; Mario20/37 dimensions, NPCEntry flags3, camera-relative center/width-
+edge halfplanes, obstructing map ray, strict nearest/first tie, original A state
+transition and Mario→objects→NPC update order. [OW-INTERACT-01](requests/OW-INTERACT-01.md)
+remains open. These recovered predicates are not yet the native interaction
+binding; the current .65-native-unit shortcut remains explicitly provisional.
+
+Validation: final shared `make test` passes116 CTest/100 Python at
+`/tmp/npc-fallback-shared-test-final.log`; isolated snapshot
+`/tmp/pm-npc-fallback-gxc4y_oe` passes115 CTest/100 Python at
+`/tmp/npc-fallback-isolated-test-final.log`. Difference is the existing private
+professor fence-reference check excluded from the snapshot. Shared and isolated
+`make all` pass at `/tmp/npc-fallback-shared-native.log` and
+`/tmp/npc-fallback-isolated-native.log`, no warnings/errors. Independent read-only
+fallback/cache/material review passes. Isolated binary
+`artifacts/ttyd-npc-fallback.3dsx`, profile `artifacts/azahar-npc-fallback`,
+original Mouser idle/talk/return script passes; inspected talk image shows the
+original NPC and message window visible, and unchanged-story/checksum/save-return
+assertions pass. Log `/tmp/npc-fallback-emulator.log`; this software emulator
+check does not establish New2DS XL performance or original-runtime pixel parity.
+Final documentation link audit passes801 Markdown files/zero broken links;
+`git diff --check` passes. ISO read-only; assets/profile/build artifacts ignored;
+concurrent battle/audio/source-history edits preserved through scoped indices.
+
+Next: replace provisional ordinary NPC search with recovered motion/flag/
+vertical/radius/directional/occlusion/nearest rules and preserved candidate
+ownership across Mario/NPC update order; adapt fixture positions/facing to source
+radius. Bind source stationary/dynamic side response after exact polynomial/wall
+and caller domains, retain distinct partner scan. Then expand original per-area
+NPC/event/object lifetimes, collision and dialogue branch coverage; complete
+pre-display/material/shadow services and hardware profiling. Full remake and
+broader goal remain unfinished.
+
 ## 2026-10-13 — Inbox priority-zero macro loop/jumps/registry lookup
 
 Completed four loop/registry/binary-search/comparator bodies and three control-
