@@ -1,3 +1,36 @@
+## 2026-10-12 — Fifth gap pass: guard wrapper, act-status publisher, small-data setter and float-to-unsigned
+
+- [Small unit/runtime leaves](docs/behavior/unit/SMALL_UNIT_RUNTIME_AND_MOTION_LEAVES.md):
+  `BtlUnit_CanGuardStatus` (801272dc) is a frame-only forwarder to
+  `BtlUnit_CanActStatus` (8012724c), so a `bl 801272dc` site is a `bl 8012724c`
+  site for call-graph purposes. `btlevtcmd_CheckActStatus` (80105cb4) resolves a
+  unit id, calls that same `BtlUnit_CanActStatus`, and publishes a fixed literal
+  1 or 0 through `evtSetValue` using the **raw** second operand word as the
+  destination. `unk_80151d20` (party_motion.o) is a three-instruction setter
+  that writes the constant `60.0` (0x42700000 at 0x8042318c) to the small-data
+  slot at `0x8041ec10` and returns. `__cvt_fp2unsigned` (80264860, runtime.c)
+  maps `f1 < 0` to 0, `0 <= f1 <= 2^32` to `0xFFFFFFFF`, `f1 > 2^32` to
+  `trunc(f1)` and NaN to `0xFFFFFFFF`; the 2^31 constant at `0x80303a30` is
+  loaded but dead on every reachable path because the `f1 > 2^31` branch is
+  always true once execution passes the 2^32 test.
+
+Register state after this pass: 360 reference listings have no snapshot
+definition; 31 of them still have no substantive prose contract. The largest
+remaining unaddressed bodies are `seq_battleMain` (253 lines), `partyReInit`
+(461), `_getSickStatusParam` (286), `JUTFontSetup` (196),
+`FontDrawStringVecPitch` (211), `pouchRemoveItemIndex` (183),
+`npcSetupBattleInfo` (166), `vivian_move`/`cloud_move`, the pad readers
+(`DEMOPadRead`/`DEMOPadCopy`), `btlevtcmd_ConsumeItemReserve` and
+`btlevtcmd_AnimeChangePoseType`. `marioLandOn` and `marioSearchHead` are now
+carried by multiple contracts and are no longer counted as open.
+
+Validation: docs-only; `make test` and `make all` were run for the previous pass
+and are unchanged by this one (logs `/tmp/pm-gap3-test.log`,
+`/tmp/pm-gap3-build.log`). `python3 tools/check_doc_links.py` reports 0 broken
+links. No native/test/asset conversion change, hence no runtime, cadence,
+emulator or original-execution claim. EVT-01/JUMP-01/DMG-02 and the full-game
+requirements remain incomplete.
+
 # Progress and next-session handoff
 
 ## 2026-10-12 — Native JUMP-01 correction: packed Mario jump SFX

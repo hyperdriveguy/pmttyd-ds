@@ -291,6 +291,15 @@ Closed by the second pass, again with no snapshot definition:
 | `shadowGetCharShadowProjection` | same | 8002bc7c | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
 | `shadowGetCharShadowTexObj` | same | 8002bca0 | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
 
+### Fifth pass (same session)
+
+| Listing | Symbol | Entry | Contract |
+| --- | --- | --- | --- |
+| `BtlUnit_CanGuardStatus` | same | 801272dc | [Small unit/runtime leaves](../unit/SMALL_UNIT_RUNTIME_AND_MOTION_LEAVES.md) |
+| `btlevtcmd_CheckActStatus` | same | 80105cb4 | [Small unit/runtime leaves](../unit/SMALL_UNIT_RUNTIME_AND_MOTION_LEAVES.md) |
+| `unk_80151d20` | same | 80151d20 | [Small unit/runtime leaves](../unit/SMALL_UNIT_RUNTIME_AND_MOTION_LEAVES.md) |
+| `__cvt_fp2unsigned` | same | 80264860 | [Small unit/runtime leaves](../unit/SMALL_UNIT_RUNTIME_AND_MOTION_LEAVES.md) |
+
 `BattleAfterReactionMain` (800f78fc) was verified against the existing
 [waits and conclusion](../battle/BATTLE_WAITS_AND_CONCLUSION.md) contract rather
 than re-documented: the queue holder, the `BattleConsumeReserveItem` /
