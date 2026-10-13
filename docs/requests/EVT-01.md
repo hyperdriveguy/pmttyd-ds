@@ -642,6 +642,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete cbForStateError/stateTimeout/__DVDPrintFatalMessage —
   [error/timeout/fatal bridge](../behavior/file/SDK_DVD_ERROR_CALLBACK_TIMEOUT_AND_FATAL_BRIDGE.md). State-before-timeout,
   error0 reentry/post-handler snapshot/cancel callback order pinned; runtime open.
+- [x] Complete CategorizeError/cbForStateGettingError —
+  [error category/recovery dispatch](../behavior/file/SDK_DVD_ERROR_CATEGORY_AND_RECOVERY_DISPATCH.md). Exact full-word
+  special case, low24/retry reread, captured high byte and cancel/recovery order
+  pinned; physical error meanings/children/original execution remain open.
 - [ ] Deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
@@ -3230,3 +3234,13 @@ cancel/three handler/two post-handler snapshot models and timeout/global/sites
 checked; busy pins reverified. Failed-state target can differ from callback
 record; cancel pointer captured before clearing Canceling. Error/reset/handler/
 providers/original IO/audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — SDK DVD error category/recovery dispatch delivery
+
+Completed [two local bodies](../behavior/file/SDK_DVD_ERROR_CATEGORY_AND_RECOVERY_DISPATCH.md).
+Twelve spans/198 anchors/17 calls/three indirect sites verified; twelve category/
+eight resume/nine route/six status mathematical vectors and exact global/
+publication/child/callback sites checked; error-wrapper pins reverified.
+Category1 bypasses cancellation; other categories preserve the captured high
+byte while reading fresh globals. Physical errors/recovery children/providers/
+original IO/audio/native binding remain open; EVT-01 stays OPEN.

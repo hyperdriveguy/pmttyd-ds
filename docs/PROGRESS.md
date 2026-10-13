@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox DVD error category and recovery dispatch
+
+Completed CategorizeError/cbForStateGettingError; EVT-01 portions checked.
+[Category/recovery contract](behavior/file/SDK_DVD_ERROR_CATEGORY_AND_RECOVERY_DISPATCH.md)
+pins exact full-word special case, low24/retry reread/last-error, captured high
+byte, cancellation resume and retry/seek/last-state/cover/motor dispatch. This
+preserves loading/cancellation semantics relevant to the 2DS XL port; hardware
+recovery children, physical error meanings and actual providers remain open.
+
+Validation: read-only ISO manifest passed12 spans/198 anchors/17 direct calls.
+Twelve category/eight resume/nine route/six status mathematical vectors and
+three indirect/global/publication sites checked; error-wrapper pins reverified.
+Link audit passed956 Markdown files/zero broken links; scoped diff check passed.
+Static deductions remain separate from original execution. Docs/metadata only;
+no make test/all rerun. ELFs/listings/generator stay /tmp; no bodies/assets
+committed. Concurrent native work excluded. Approved push pending valid GitHub
+credentials after authentication rejection; no push retried without a change.
+
+Next: select inbox work by concrete native 2DS XL dependencies before further
+DVD hardware internals. EVT-01 recovery/provider/IRQ/alias/lifetime/ABI and
+original IO/audio traces remain open, as do other inbox/full-game requests.
+
 ## 2026-10-13 — Inbox priority-zero DVD error/timeout/fatal bridge
 
 Completed cbForStateError/stateTimeout/__DVDPrintFatalMessage; EVT-01 checked.
