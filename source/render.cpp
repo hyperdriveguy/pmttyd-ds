@@ -48,12 +48,18 @@ bool Renderer::init() {
     if(!sky.imported)return false;
     C3D_TexSetFilter(&sky.texture,GPU_LINEAR,GPU_LINEAR);
     if(!actorAnimations.load("romfs:/characters.pmanim"))return false;
+    if(!partnerAnimations.load("romfs:/partner.pmanim"))return false;
     if(!shadowGeometry.load("romfs:/shadows.pmshadow"))return false;
     FILE* characterFile=std::fopen("romfs:/characters-mesh.t3x","rb");if(!characterFile)return false;
     characterTextures.imported=Tex3DS_TextureImportStdio(characterFile,&characterTextures.texture,nullptr,false);std::fclose(characterFile);
     if(!characterTextures.imported)return false;
     C3D_TexSetFilter(&characterTextures.texture,GPU_LINEAR,GPU_LINEAR);
     C3D_TexSetWrap(&characterTextures.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
+    FILE* partnerFile=std::fopen("romfs:/partner-mesh.t3x","rb");if(!partnerFile)return false;
+    partnerTextures.imported=Tex3DS_TextureImportStdio(partnerFile,&partnerTextures.texture,nullptr,false);std::fclose(partnerFile);
+    if(!partnerTextures.imported)return false;
+    C3D_TexSetFilter(&partnerTextures.texture,GPU_LINEAR,GPU_LINEAR);
+    C3D_TexSetWrap(&partnerTextures.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     return loadMap("map",plaza) && loadMap("stage",stage);
 }
 bool Renderer::loadMap(const char* name,Room& room) {
@@ -220,8 +226,8 @@ void Renderer::character(int index,Vec2 p,float h,float w,float face,float lift,
     vertex(x0,y0,p.z,left,bottomV,white);vertex(x1,y0,p.z,right,bottomV,white);vertex(x1+tilt,y1,p.z,right,topV,white);
     vertex(x1+tilt,y1,p.z,right,topV,white);vertex(x0+tilt,y1,p.z,left,topV,white);vertex(x0,y0,p.z,left,bottomV,white);
 }
-bool Renderer::characterModel(const char* name,float frame,Vec2 root,float rootY,float yaw,bool reflectZ) {
-    const auto* pose=actorAnimations.pose(name);
+bool Renderer::characterModel(const char* name,float frame,Vec2 root,float rootY,float yaw,bool reflectZ,bool companion) {
+    const auto* pose=(companion?partnerAnimations:actorAnimations).pose(name);
     if(!pose || !pose->evaluate(frame,actorSample) || actorSample.vertices.size()>size_t(MaxVertices-count))return false;
     for(const auto& v:actorSample.vertices) {
         const auto point=actorMeshPoint(v,{root.x,rootY,root.z},yaw,reflectZ);
@@ -288,6 +294,7 @@ void Renderer::world(const Game& g) {
         }};
         std::sort(actors.begin(),actors.end(),[](const Actor& a,const Actor& b){return a.p.z<b.p.z;});
         for(auto a:actors) if((a.index<2 || g.progress.room==0) && (a.index!=2 || !g.progress.crumpDefeated)) {
+            if(a.index==1)continue; // Original animated Goombella is drawn with her own texture pack.
             if(a.index==0 && (g.marioPresentation.supported || (g.marioPresentation.displayFlags&1)))continue;
             character(a.index,a.p,a.h,a.w,a.face,a.lift,a.tilt);
         }
@@ -317,6 +324,9 @@ void Renderer::world(const Game& g) {
         characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight,
                        g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ());
     const int actorEnd=count;
+    if(!battle)characterModel(g.partnerPresentation.name(),g.partnerPresentation.frame(),g.partner,g.partnerHeight,
+                             g.partnerPresentation.yaw(),g.partnerPresentation.reflectZ(),true);
+    const int partnerEnd=count;
     bool polygonShadow=false;int airShadowCount=0;
     if(!battle) {
         const float rootY=g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight;
@@ -351,6 +361,7 @@ void Renderer::world(const Game& g) {
     C3D_TexBind(0,&atlas);
     C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
     if(actorEnd>legacyCount){C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
+    if(partnerEnd>actorEnd){C3D_TexBind(0,&partnerTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,actorEnd,partnerEnd-actorEnd);}
     if(polygonShadow || airShadowCount) {
         C3D_TexEnvInit(env);
         C3D_TexEnvSrc(env,C3D_Both,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);
@@ -358,21 +369,21 @@ void Renderer::world(const Game& g) {
         C3D_AlphaTest(false,GPU_ALWAYS,0);
         if(polygonShadow) {
             C3D_DepthTest(true,GPU_GEQUAL,FieldRGB);
-            C3D_DrawArrays(GPU_TRIANGLES,actorEnd,count-actorEnd);
+            C3D_DrawArrays(GPU_TRIANGLES,partnerEnd,count-partnerEnd);
         } else {
             // Source LEQUAL becomes GEQUAL with the reversed native projection.
             // Preserve each record's alpha OR, front-face zero, RGB mask blend.
             C3D_DepthTest(true,GPU_GEQUAL,GPU_WRITE_ALPHA);
             C3D_CullFace(GPU_CULL_FRONT_CCW);
             C3D_ColorLogicOp(GPU_LOGICOP_OR);
-            C3D_DrawArrays(GPU_TRIANGLES,actorEnd,airShadowCount);
+            C3D_DrawArrays(GPU_TRIANGLES,partnerEnd,airShadowCount);
             C3D_CullFace(GPU_CULL_BACK_CCW);
             C3D_ColorLogicOp(GPU_LOGICOP_COPY);
-            C3D_DrawArrays(GPU_TRIANGLES,actorEnd+airShadowCount,airShadowCount);
+            C3D_DrawArrays(GPU_TRIANGLES,partnerEnd+airShadowCount,airShadowCount);
             C3D_CullFace(GPU_CULL_FRONT_CCW);
             C3D_DepthTest(true,GPU_GEQUAL,FieldRGB);
             C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_DST_ALPHA,GPU_ONE_MINUS_DST_ALPHA,GPU_ONE,GPU_ZERO);
-            C3D_DrawArrays(GPU_TRIANGLES,actorEnd+airShadowCount*2,airShadowCount);
+            C3D_DrawArrays(GPU_TRIANGLES,partnerEnd+airShadowCount*2,airShadowCount);
         }
         C3D_CullFace(GPU_CULL_NONE);
         C3D_AlphaTest(true,GPU_GREATER,8);
@@ -536,6 +547,7 @@ void Renderer::shutdown() {
     }
     if(sky.imported) {Tex3DS_TextureFree(sky.imported);C3D_TexDelete(&sky.texture);}
     if(characterTextures.imported) {Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);}
+    if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}
     if(imported) Tex3DS_TextureFree(imported);
     if(atlasReady) C3D_TexDelete(&atlas);
     if(vertices) linearFree(vertices);

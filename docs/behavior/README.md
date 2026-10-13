@@ -216,6 +216,7 @@ suffix.
 | [Animation local time/clock](display/ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md) | Complete scaling,borrow/shared/linked writes,rate and literal clock requests | Clock producers/conversion/division/evaluation/numeric/runtime |
 | [Partner pre-display](partner/FIELD_PARTNER_PRE_DISPLAY.md) | Complete name/paper/frame/update/render gate/depth/registration order | Animation/camera/queue/source/numeric/original visual domains |
 | [Partner pose selectors](partner/FIELD_PARTNER_POSE_REQUEST_SELECTION.md) | Complete name/HP-remap/table/adjacent-color request and two source leaves | Pouch/kind/index/name/resource/lifecycle domains |
+| [Goombella ordinary poses](partner/FIELD_GOOMBELLA_ORDINARY_POSE_BINDING.md) | Exact normal kind1 pose strings, loops, moving selector, ordinary owner scale and model scale | Native homing/input/facing/sound/HP ownership and original execution |
 | [Partner facing](partner/FIELD_PARTNER_DISPLAY_FACING.md) | Complete selection,four interpolation/latch branches and live stores | Flag/target/alias/FP domains and original turning |
 | [Partner matrix and draw](partner/FIELD_PARTNER_DISPLAY_MATRIX_AND_PASSES.md) | Complete enable census,ordered aliased transforms,two passes/post-draw rate | SDK matrix/animation/GX/source/runtime backend |
 | [Vivian tail/shadow requests](partner/FIELD_PARTNER_VIVIAN_PRESENTATION_AND_SHADOWS.md) | Complete trailing/tail predicate/ray/shadow order | Pose/shadow/queue/source/FP/original visual domains |

@@ -44,8 +44,8 @@ private:
         uint64_t animationStart=UINT64_MAX;
     };
     Room plaza,stage;
-    Texture sky,characterTextures;
-    ActorAnimationPack actorAnimations;
+    Texture sky,characterTextures,partnerTextures;
+    ActorAnimationPack actorAnimations,partnerAnimations;
     ActorAnimationSample actorSample;
     FieldShadowGeometry shadowGeometry;
     bool loadMap(const char* name,Room& room);
@@ -60,7 +60,7 @@ private:
     void box(float x,float z,float w,float d,float h,uint32_t color);
     void ground(float x0,float z0,float x1,float z1,float y,uint32_t color);
     void character(int index,Vec2 p,float height,float width,float facing,float lift=0,float tilt=0);
-    bool characterModel(const char* pose,float frame,Vec2 root,float rootY,float yaw,bool reflectZ);
+    bool characterModel(const char* pose,float frame,Vec2 root,float rootY,float yaw,bool reflectZ,bool companion=false);
     void marioGroundShadow(const FieldShadowRecord&);
     int marioAirShadow(const FieldShadowRecord&);
     void shadow(Vec2 p,float radius,float floor=0);

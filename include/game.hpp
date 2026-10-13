@@ -29,6 +29,7 @@
 #include "camera_road_state.hpp"
 #include "field_camera_events.hpp"
 #include "mario_presentation.hpp"
+#include "partner_presentation.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -138,6 +139,7 @@ public:
     CameraRoadWork cameraRoadWork;
     FieldCameraEvents fieldCameraEvents;
     MarioPresentation marioPresentation;
+    PartnerPresentation partnerPresentation;
     FieldIdleWork fieldIdle;
     // Native partner ability/status services are still adapters. These explicit
     // inputs allow source eligibility instead of collapsing it to input enabled.

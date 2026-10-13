@@ -1,7 +1,7 @@
 # Paper Mario: TTYD — New 2DS XL prototype
 
 A native homebrew remake in development. The current slice uses original
-Rogueport geometry/textures, original ordinary Mario animations, character idle poses, and original music
+Rogueport geometry/textures, original ordinary Mario and Goombella animations, other character idle poses, and original music
 converted locally from your US GameCube ISO. It includes five connected Rogueport outdoor rooms, exploration, dialogue,
 a small Crump battle harness, touch menus and versioned saves.
 

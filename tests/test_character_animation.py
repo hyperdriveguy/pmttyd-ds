@@ -44,6 +44,16 @@ class CharacterAnimationTests(unittest.TestCase):
         self.assertEqual(evaluate(parsed,5)['positions'][0],[.25,0,0])
         self.assertEqual(evaluate(parsed,-1)['selected_time'],0)
 
+    def test_visibility_is_byte_addition_at_passed_keys(self):
+        raw=fixture();struct.pack_into('>I',raw,0x300+24,1)
+        struct.pack_into('>I',raw,0x300+0x38,0x130)
+        struct.pack_into('>I',raw,0x350+44+32,1)
+        raw[0x430:0x432]=bytes([0,255]);raw[0x6f0]=1
+        parsed=animation(raw,'fixture')
+        self.assertEqual(evaluate(parsed,3.999)['visibility'],[1])
+        self.assertEqual(evaluate(parsed,4)['visibility'],[0])
+        self.assertEqual(evaluate(parsed,1)['visibility'],[1])
+
     def test_source_tangents_and_strict_out_range(self):
         self.assertEqual(node_delta(16,0,0,.25,4),.15625)
         self.assertAlmostEqual(node_delta(16,45,0,.25,4),.71875,places=5)

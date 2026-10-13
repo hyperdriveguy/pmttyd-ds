@@ -8,6 +8,20 @@ original GPU output, complete animation runtime or numeric parity is claimed.
 
 ## Original draw wrappers
 
+2026-10-12 converter baseline correction: recomputed both model metadata rows
+with the current host geometry/character-node arithmetic adapter after the
+stepped visibility fix (original modulo256 byte addition). Goombella PKR_Z_1
+metadata remained exactly equal; Mario's derived bounds/root values changed
+by sub-micro-unit rounding amounts (maximum Z now1.000000954529515 rather
+than1.0000004221423517). Updated only converter-derived manifest values;
+all source-body/constants/model fingerprints remain unchanged. Rounded tables
+below retain their displayed precision. This is host-adapter regression
+maintenance, not a newly measured original-game bound or numeric-parity claim.
+
+Goombella's ordinary stay resource is now separately recovered as selector1
+PKR_S_1 in the [ordinary pose binding](../partner/FIELD_GOOMBELLA_ORDINARY_POSE_BINDING.md).
+The PKR_Z_1 frame0 envelope below continues to describe only that resource.
+
 marioDisp80056be0 reads Mario+c8/+cc/+d0 scaleXYZ and multiplies by an inlined
 marioGetScale at80056bf4–c28. Ordinary main flag0x02000000 clear gives scalar2
 (word40000000 at80420004); set gives1.2 (3f99999a at80420000).

@@ -32,7 +32,7 @@ def matrix(node,index,parent=-1,joint=False):
     return node_matrix(node[index:index+24],joint,
                        node[parent+3:parent+6] if parent>=0 else (1,1,1))
 
-def geometry(model,animation=None,frame=0,evaluated=None,bindings=False):
+def geometry(model,animation=None,frame=0,evaluated=None,bindings=False,include_hidden=False):
     raw=Path(model).read_bytes()
     offs={name:u(raw,offset) for name,offset in [('shape',0x14c),('call',0x150),('pos',0x154),('ipos',0x158),('clr',0x164),('iclr',0x168),('itex',0x16c),('tex',0x18c),('mtx',0x190),('base',0x194),('texture',0x198),('draw',0x19c),('vis',0x1a0),('node',0x1a4),('group',0x1a8),('anim',0x1ac)]}
     node=np.frombuffer(raw,dtype='>f4',count=u(raw,0x140),offset=offs['node']).astype(float)
@@ -57,7 +57,7 @@ def geometry(model,animation=None,frame=0,evaluated=None,bindings=False):
                 for j in range(count):
                     o=base+j*stride;index+=raw[o]
                     if kind=='node':node[index]+=struct.unpack_from('>b',raw,o+1)[0]/16
-                    elif kind=='vis':vis[index]=struct.unpack_from('>b',raw,o+1)[0]==1
+                    elif kind=='vis':vis[index]=(vis[index]+raw[o+1])&255
                     elif kind=='texadd':texadd[index]+=struct.unpack_from('>b',raw,o+1)[0]
                     else:pos[index]+=np.array(struct.unpack_from('>bbb',raw,o+1))/16
     triangles=[]
@@ -67,7 +67,7 @@ def geometry(model,animation=None,frame=0,evaluated=None,bindings=False):
         if depth>100 or index>=groups:raise ValueError('Invalid character graph')
         g=offs['group']+index*88
         sibling,child,shape,visibility,nodeidx,ssc=struct.unpack_from('>iiiIII',raw,g+64)
-        if vis[visibility]:
+        if include_hidden or vis[visibility]:
             parent_node=-1
             if ssc and parent_group>=0:
                 pg=offs['group']+parent_group*88

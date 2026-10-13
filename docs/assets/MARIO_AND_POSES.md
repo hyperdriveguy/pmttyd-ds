@@ -344,3 +344,30 @@ passes/log /tmp/id1-map-material-build.log;existing sound/proj/pmario.proj,
 pool/sdir/samp pipeline3218 GameCube/0 Switch/5 primary-PCM slice fallbacks ran.
 Ignored catalogs/packs/WAV/RomFS remain outside source history;original rights
 remain with owners and local analysis supplies no asset redistribution license.
+# 2026-10-12 — Goombella animation and visibility assets
+
+Read-only original `a/c_pkr` and `a/c_pkr-` supply the ignored
+`romfs/partner.pmanim`, `partner.pmmesh` and `partner-mesh.t3x` packs.
+The four original clips are `PKR_Z_1` (zero-duration setup), `PKR_S_1`
+(ordinary idle), `PKR_W_1` and `PKR_R_1`; the native follower plays the latter
+three. Source binding and original loop descriptors are in
+[Goombella ordinary poses](../behavior/partner/FIELD_GOOMBELLA_ORDINARY_POSE_BINDING.md).
+`romfs/manifest.json` records model/texture paths, poses, texture cells and bounds
+under `partner_mesh`; extracted source provenance remains in `local-assets/`.
+
+PMANIM3 retains original visibility base bytes, per-group visibility indices,
+and sparse full-key modulo256 deltas. Conversion retains geometry hidden at
+frame0 when a stream animates visibility, so later original keys can reveal it.
+Hidden ancestors suppress descendants; siblings keep their own visibility.
+Visibility is stepped, with no interpolation or procedural blinking. The old
+offline bake incorrectly assigned `delta==1`; it now adds the byte modulo256.
+PMANIM1/2 retain their static boolean group interpretation for compatibility.
+Zero-duration, one-key poses load and sample without division by zero.
+
+Goombella uses the original scalar2 / native engine*.01 model conversion,
+without billboard fitting or procedural bob. Her original texture pages are
+resized to124px with2px borders in a separate1024px atlas (the Mario atlas is
+already near its64-cell capacity). Original node/position/normal/index/visibility
+streams remain present; native material/lighting and turning/homing services
+still need binding. Original Nintendo/Intelligent Systems assets remain local,
+ignored and without redistribution rights; no extracted data is committed.

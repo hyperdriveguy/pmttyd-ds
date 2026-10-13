@@ -63,18 +63,20 @@ inline ActorMatrix actorNodeMatrix(const float* n,bool joint,const float* parent
     }
     return result;
 }
-struct ActorGroup {int32_t sibling,child;uint32_t node,joint,visible;};
+struct ActorGroup {int32_t sibling,child;uint32_t node,joint,visible;}; // v1/2 boolean; v3 visibility-buffer index.
 struct ActorVertexBinding {uint32_t group,position,texture;float u,v;};
 struct ActorTextureBinding {uint32_t initial;std::array<uint16_t,256> cells;};
 struct ActorSparseUpdate {uint32_t index;int8_t a,b,c;uint8_t padding;};
 struct ActorTextureUpdate {uint32_t index;uint8_t delta,padding[3];};
 struct ActorAnimationKey {
     float time=0;std::vector<ActorSparseUpdate> positions,normals,nodes;std::vector<ActorTextureUpdate> textures;
+    std::vector<ActorTextureUpdate> visibility; // Original byte deltas, full keys only.
 };
 struct ActorAnimationSample {
     std::vector<ActorVector> positions,normals;
     std::vector<float> nodes;
     std::vector<uint8_t> textures;
+    std::vector<uint8_t> visibility;
     std::vector<ActorMeshVertex> vertices;
     float selectedTime=0,fraction=0;size_t last=0,next=0;
 };
@@ -97,6 +99,7 @@ struct ActorAnimationPose {
     std::vector<ActorVector> positions,normals;std::vector<float> nodes;
     std::vector<ActorGroup> groups;std::vector<ActorVertexBinding> bindings;
     std::vector<ActorTextureBinding> textures;std::vector<ActorAnimationKey> keys;
+    std::vector<uint8_t> visibility; // PMANIM3 bases; Group.visible becomes an index.
     bool evaluate(float time,ActorAnimationSample& out) const {
         if(!std::isfinite(time) || keys.empty() || groups.empty())return false;
         const float length=end-start;
@@ -106,7 +109,7 @@ struct ActorAnimationPose {
         size_t next=last+1;if(next==keys.size())next=loop?0:last;
         const float span=last==next?0:(next==0?end-keys[last].time:keys[next].time-keys[last].time);
         const float q=span==0?0:(selected-keys[last].time)/span;
-        out.positions=positions;out.normals=normals;out.nodes=nodes;out.textures.resize(textures.size());
+        out.positions=positions;out.normals=normals;out.nodes=nodes;out.visibility=visibility;out.textures.resize(textures.size());
         for(size_t i=0;i<textures.size();++i)out.textures[i]=uint8_t(textures[i].initial);
         for(size_t i=0;i<=last;++i) {
             for(const auto& r:keys[i].positions) {
@@ -117,6 +120,7 @@ struct ActorAnimationPose {
             }
             for(const auto& r:keys[i].nodes)out.nodes[r.index]+=r.a*.0625f;
             for(const auto& r:keys[i].textures)out.textures[r.index]=uint8_t(out.textures[r.index]+r.delta);
+            for(const auto& r:keys[i].visibility)out.visibility[r.index]=uint8_t(out.visibility[r.index]+r.delta);
         }
         if(last<next) {
             for(const auto& r:keys[next].positions) {
@@ -130,24 +134,29 @@ struct ActorAnimationPose {
             for(const auto& r:keys[next].nodes)out.nodes[r.index]+=actorNodeDelta(r,q,keys[next].time-keys[last].time);
         }
         out.selectedTime=selected;out.last=last;out.next=next;out.fraction=q;
-        std::vector<ActorMatrix> world(groups.size());std::vector<uint8_t> seen(groups.size());
-        std::function<bool(int32_t,const ActorMatrix&,int32_t)> walk;
-        walk=[&](int32_t index,const ActorMatrix& incoming,int32_t parent){
+        std::vector<ActorMatrix> world(groups.size());std::vector<uint8_t> seen(groups.size()),active(groups.size());
+        std::function<bool(int32_t,const ActorMatrix&,int32_t,bool)> walk;
+        walk=[&](int32_t index,const ActorMatrix& incoming,int32_t parent,bool admitted){
             if(index==-1)return true;
             if(index<0 || size_t(index)>=groups.size() || seen[index])return false;
             seen[index]=1;const auto& g=groups[index];
-            if(g.visible) {
+            const bool visible=visibility.empty()?g.visible!=0:out.visibility[g.visible]!=0;
+            active[index]=admitted && visible;
+            if(active[index]) {
                 const float ones[]={1,1,1};const float* p=ones;
                 if(g.joint && parent>=0 && groups[parent].joint)p=out.nodes.data()+groups[parent].node+3;
                 world[index]=incoming*actorNodeMatrix(out.nodes.data()+g.node,g.joint,p);
-                if(!walk(g.child,world[index],index))return false;
             }
-            return walk(g.sibling,incoming,index);
+            // Validate the complete graph even when hidden; descendants produce
+            // no vertices/matrix work until the ancestor is visible again.
+            if(!walk(g.child,world[index],index,active[index]))return false;
+            return walk(g.sibling,incoming,index,admitted);
         };
-        if(!walk(int32_t(groups.size()-1),ActorMatrix{},-1))return false;
+        if(!walk(int32_t(groups.size()-1),ActorMatrix{},-1,true))return false;
         out.vertices.clear();out.vertices.reserve(bindings.size());
         for(const auto& b:bindings) {
-            if(!seen[b.group] || !groups[b.group].visible)return false;
+            if(!seen[b.group])return false;
+            if(!active[b.group])continue;
             const uint16_t cell=textures[b.texture].cells[out.textures[b.texture]];if(cell>=64)return false;
             const auto p=world[b.group].point(out.positions[b.position]);
             out.vertices.push_back({p[0],p[1],p[2],(float(cell%8)*128+2+b.u*124)/1024,
@@ -165,40 +174,45 @@ public:
         auto vector=[&](auto& values,uint32_t count){values.resize(count);return count==0 || std::fread(values.data(),sizeof(values[0]),count,file)==count;};
         std::array<char,8> magic{};uint32_t count=0;
         if(!scalar(magic))return false;
-        const bool version2=std::memcmp(magic.data(),"PMANIM2",8)==0;
+        const bool version3=std::memcmp(magic.data(),"PMANIM3",8)==0;
+        const bool version2=version3 || std::memcmp(magic.data(),"PMANIM2",8)==0;
         if((!version2 && std::memcmp(magic.data(),"PMANIM1",8)) || !scalar(count) || !count || count>64)return false;
         std::vector<ActorAnimationPose> pending;
         for(uint32_t poseIndex=0;poseIndex<count;++poseIndex) {
-            ActorAnimationPose p;std::array<char,32> name{};std::array<uint32_t,6> sizes{};uint32_t normalCount=0;
+            ActorAnimationPose p;std::array<char,32> name{};std::array<uint32_t,6> sizes{};uint32_t normalCount=0,visibilityCount=0;
             if(!scalar(name) || !name[0] || !std::memchr(name.data(),0,name.size()) || !scalar(p.loop) ||
-               !scalar(p.start) || !scalar(p.end) || !scalar(sizes) || (version2 && !scalar(normalCount)))return false;
+               !scalar(p.start) || !scalar(p.end) || !scalar(sizes) || (version2 && !scalar(normalCount)) || (version3 && !scalar(visibilityCount)))return false;
             p.name=name.data();for(const auto& prior:pending)if(prior.name==p.name)return false;
-            if(p.loop>1 || !std::isfinite(p.start) || !std::isfinite(p.end) || p.start!=0 || p.end<=p.start ||
+            if(p.loop>1 || !std::isfinite(p.start) || !std::isfinite(p.end) || p.start!=0 || p.end<p.start ||
                !sizes[0] || sizes[0]>8192 || !sizes[1] || sizes[1]>8192 || sizes[1]%24 ||
                !sizes[2] || sizes[2]>128 || !sizes[3] || sizes[3]>8192 || sizes[3]%3 ||
-               !sizes[4] || sizes[4]>256 || sizes[5]<2 || sizes[5]>1024 || normalCount>8192)return false;
-            if(!vector(p.positions,sizes[0]) || !vector(p.normals,normalCount) || !vector(p.nodes,sizes[1]) || !vector(p.groups,sizes[2]) ||
+               !sizes[4] || sizes[4]>256 || !sizes[5] || sizes[5]>1024 || normalCount>8192 || visibilityCount>8192 || (version3 && !visibilityCount))return false;
+            if(!vector(p.positions,sizes[0]) || !vector(p.normals,normalCount) || !vector(p.nodes,sizes[1]) || !vector(p.visibility,visibilityCount) || !vector(p.groups,sizes[2]) ||
                !vector(p.bindings,sizes[3]) || !vector(p.textures,sizes[4]))return false;
             for(const auto& v:p.positions)for(float x:v)if(!std::isfinite(x))return false;
             for(const auto& v:p.normals)for(float x:v)if(!std::isfinite(x))return false;
             for(float x:p.nodes)if(!std::isfinite(x))return false;
             for(const auto& g:p.groups)if(g.sibling<-1 || g.child<-1 || g.sibling>=int32_t(sizes[2]) ||
-                g.child>=int32_t(sizes[2]) || g.node>sizes[1]-24 || g.node%24 || g.joint>1 || g.visible>1)return false;
+                g.child>=int32_t(sizes[2]) || g.node>sizes[1]-24 || g.node%24 || g.joint>1 || (version3?g.visible>=visibilityCount:g.visible>1))return false;
             for(const auto& b:p.bindings)if(b.group>=sizes[2] || b.position>=sizes[0] || b.texture>=sizes[4] ||
                 !std::isfinite(b.u) || !std::isfinite(b.v) || b.u<0 || b.u>1 || b.v<0 || b.v>1)return false;
             for(const auto& t:p.textures){if(t.initial>255)return false;for(auto cell:t.cells)if(cell>=64 && cell!=0xffff)return false;}
             uint32_t total=0;
             for(uint32_t key=0;key<sizes[5];++key) {
-                ActorAnimationKey k;std::array<uint32_t,3> records{};uint32_t normalRecords=0;
-                if(!scalar(k.time) || !scalar(records) || (version2 && !scalar(normalRecords)) || !std::isfinite(k.time) ||
+                ActorAnimationKey k;std::array<uint32_t,3> records{};uint32_t normalRecords=0,visibilityRecords=0;
+                if(!scalar(k.time) || !scalar(records) || (version2 && !scalar(normalRecords)) || (version3 && !scalar(visibilityRecords)) || !std::isfinite(k.time) ||
                    (key==0?k.time!=p.start:k.time<=p.keys.back().time) || k.time>p.end)return false;
-                if(normalRecords>16384 || total>1000000-normalRecords)return false;total+=normalRecords;
+                if(normalRecords>16384 || total>1000000-normalRecords)return false;
+                total+=normalRecords;
+                if(visibilityRecords>16384 || total>1000000-visibilityRecords)return false;
+                total+=visibilityRecords;
                 for(auto n:records){if(n>16384 || total>1000000-n)return false;total+=n;}
-                if(!vector(k.positions,records[0]) || !vector(k.normals,normalRecords) || !vector(k.nodes,records[1]) || !vector(k.textures,records[2]))return false;
+                if(!vector(k.positions,records[0]) || !vector(k.normals,normalRecords) || !vector(k.nodes,records[1]) || !vector(k.textures,records[2]) || !vector(k.visibility,visibilityRecords))return false;
                 for(const auto& r:k.positions)if(r.index>=sizes[0])return false;
                 for(const auto& r:k.normals)if(r.index>=normalCount)return false;
                 for(const auto& r:k.nodes)if(r.index>=sizes[1] || (r.c>-89 && r.c<89 && (r.b<-89 || r.b>=89)))return false;
                 for(const auto& r:k.textures)if(r.index>=sizes[4])return false;
+                for(const auto& r:k.visibility)if(r.index>=visibilityCount)return false;
                 p.keys.push_back(std::move(k));
             }
             if(p.keys.back().time!=p.end)return false;

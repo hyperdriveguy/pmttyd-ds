@@ -13,8 +13,9 @@ from verify_overworld_animation_updates import animation,evaluate
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',required=True)
+    parser.add_argument('--collection',default='character_mesh',help='Mesh metadata collection in the local asset manifest')
     args=parser.parse_args()
-    manifest=json.loads(Path('romfs/manifest.json').read_text())['character_mesh']
+    manifest=json.loads(Path('romfs/manifest.json').read_text())[args.collection]
     cells={(r['source'],r['tpl_index']):r['cell'] for r in manifest['texture_cells']}
     cases=[]
     for entry in manifest['poses']:
@@ -23,7 +24,7 @@ def main():
         times={0,.25,1.5,parsed['end']/2,parsed['end']-.25,parsed['end'],parsed['end']+.25}
         # Texture steps include fractional original rear-run boundaries.
         for key in parsed['frames']:
-            if key['texture']:
+            if key['texture'] or key['visibility']:
                 times.update((max(0,key['time']-.01),key['time'],min(parsed['end'],key['time']+.01)))
         for time in sorted(times):
             time=struct.unpack('<f',struct.pack('<f',time))[0]

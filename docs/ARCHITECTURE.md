@@ -20,8 +20,9 @@ disposal of the previous room; failed loads keep the current rendering.
 Character idle poses plus original Mario jump/hammer textures are baked from original layered geometry into a shared
 transparent atlas. World geometry and paper billboards use a PICA vertex shader;
 menus and text use citro2d. The battle stage also uses original geometry from stg_01. Encounter-specific
-backdrops, props, audience and visibility rules still need comparison. Original animation playback
-remain future work. Cameras follow player X/Z and floor height smoothly;
+backdrops, props, audience and visibility rules still need comparison. Ordinary
+Mario and Goombella play original sparse animation streams; broader animation
+coverage remains unfinished. Cameras follow player X/Z and floor height smoothly;
 original event-script camera rails and foreground occlusion remain unfinished.
 
 Music is losslessly decoded from DSP ADPCM to PCM16 offline, preserving source
@@ -396,3 +397,29 @@ norm capping. It keeps headingOffsetDegrees separate from retained base/travel;
 the current fixed camera uses explicit0. Rate follows retained heading even for
 zero-base drift. Original marioPreCamera offset, camera-zone ownership, trigonometric
 numerics and earlier terrain-slope scaling remain separate binding boundaries.
+### Goombella and animated node visibility (2026-10-12)
+
+PMANIM3 adds visibility base bytes and sparse byte updates to the existing
+positions/normals/nodes/texture state. A group's last field indexes that buffer;
+older pack versions retain their static visible boolean. Full passed keys add
+visibility modulo256. Fractional keys leave it unchanged. Hierarchy evaluation
+omits hidden nodes and descendants from submitted vertices while preserving
+sibling independence and original sibling parent selection. The loader also
+validates hidden branches for graph cycles and retains its previous pack on
+rejection. A zero-duration one-key pose samples its initial state directly.
+
+Goombella has a separate original animation/texture pack, drawn through the same
+linear vertex buffer/PICA pipeline after Mario and before native shadow passes.
+Original stay/walk/run resources replace her field billboard. Fixed simulation
+ticks provide animation time; unchanged pose requests retain phase, switching
+poses resets phase, and room restoration resets presentation. Original moving
+selector reads its speed, ordinary Rogueport owner scale1, and processed Mario
+stick class as distinct inputs. Its sound helper remains unbound.
+
+The follower still supplies actual native displacement as a provisional speed
+and heading adapter. Ordinary paper-facing uses the recovered target ranges
+and four turn/latch branches, with positive X targeting180 for c_pkr's original
+left-facing base. Source homing/heading writers and special turn flags remain
+unbound. Partner HP/dot-table/event poses and battle animation
+coverage remain unbound. No procedural bob or synthesized blink is attached to
+the original field model. Texture batching requires one additional atlas bind.

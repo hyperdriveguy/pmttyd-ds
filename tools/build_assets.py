@@ -31,6 +31,7 @@ def main():
     required.extend(prefix+'.returns' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
     required.extend(prefix+'.head' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
     required.extend(prefix+'.camera' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
+    required.extend(['partner.pmanim','partner.pmmesh','partner-mesh.t3x'])
     if manifest.exists() and all((OUTPUT/p).exists() for p in required):
         if json.loads(manifest.read_text()).get('fingerprint')==fingerprint:return
     WORK.mkdir(parents=True,exist_ok=True);OUTPUT.mkdir(exist_ok=True)
@@ -58,6 +59,9 @@ def main():
         model=asset('a/'+name,name);tpl=asset('a/'+name+'-',name+'.tpl')
         target=WORK/f'{name}-idle.png';poses.append(bake(model,tpl,target,anim))
         atlas.alpha_composite(Image.open(target),(index*128,0))
+    partner_mesh=compile_mesh([(WORK/'c_pkr',WORK/'c_pkr.tpl',['PKR_Z_1','PKR_S_1','PKR_W_1','PKR_R_1'])],
+                              OUTPUT/'partner.pmmesh',WORK/'partner-mesh.png',OUTPUT/'partner.pmanim')
+    texture(WORK/'partner-mesh.png',OUTPUT/'partner-mesh.t3x')
     marioimage=Image.open(WORK/'mario-original.png').convert('RGBA')
     bbox=marioimage.getbbox();marioimage=marioimage.crop(bbox);marioimage.thumbnail((118,118),Image.Resampling.LANCZOS)
     atlas.alpha_composite(marioimage,((128-marioimage.width)//2,123-marioimage.height))
@@ -180,7 +184,7 @@ def main():
     for filename in ['confirm.wav','jump.wav','hit.wav','success.wav']:
         (OUTPUT/filename).unlink(missing_ok=True)
     manifest.write_text(json.dumps({'fingerprint':fingerprint,'source_disc':'G8ME01','assets':records,
-        'shadow_geometry':shadow_metadata,'characters':poses,'character_mesh':character_mesh,'map':summary,'overworld_rooms':rooms,'road_links':links,'camera_containers':{'map':'m/gor_01/c',**{room:'m/'+room+'/c' for room in ['gor_00','gor_02','gor_03','gor_04']}},'damage_return_tables':return_tables,'resolved_damage_returns':resolved_returns,'battle_stage':stage_summary,'music':music,'sample_bank_entries':len(directory),
+        'shadow_geometry':shadow_metadata,'characters':poses,'character_mesh':character_mesh,'partner_mesh':partner_mesh,'map':summary,'overworld_rooms':rooms,'road_links':links,'camera_containers':{'map':'m/gor_01/c',**{room:'m/'+room+'/c' for room in ['gor_00','gor_02','gor_03','gor_04']}},'damage_return_tables':return_tables,'resolved_damage_returns':resolved_returns,'battle_stage':stage_summary,'music':music,'sample_bank_entries':len(directory),
         'sound_effect_status':'Original banks preserved; macro-to-event mapping not yet implemented. No synthetic replacements.',
         'conversion':'Original character idle poses and Mario jump/hammer textures baked to RGBA8 atlas; static Rogueport geometry; map textures capped at 128px; DSP music decoded losslessly at original rate'},indent=2)+'\n')
     print(f'Built original asset pack: {summary["triangles"]} map triangles, {len(directory)} preserved samples')

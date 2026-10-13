@@ -714,6 +714,7 @@ bool Game::beginWater() {
     jumpHeight=0;fieldJump={};fieldJump.motion=31;fieldStep={};fieldVerticalVelocity=0;warpRequest=-1;saveRequested=false;return true;
 }
 void Game::restore(const Progress& saved) {
+    partnerPresentation={};partnerPresentation.startTick=partnerPresentation.nowTick=ticks;
     const Progress p=saved; // Caller may pass this game's own progress.
     const uint64_t cameraClock=fieldCameraSimulationTicks,shiftTimestamp=fieldCameraShift.previousMilliseconds;
     auto cameraEvents=fieldCameraEvents;cameraEvents.roomLoad();
@@ -1278,7 +1279,20 @@ void Game::updateMarioPresentation() {
     }
 }
 void Game::tick(const Input& rawInput) {
-    struct PresentationOnExit {Game& game;~PresentationOnExit(){game.updateMarioPresentation();}} presentation{*this};
+    struct PresentationOnExit {
+        Game& game;Vec2 previous;const Input& raw;
+        ~PresentationOnExit(){
+            game.updateMarioPresentation();
+            const auto& axes=game.inputProducer.channels[0].analog;
+            const int mainX=raw.physicalSnapshot?axes.mainX:std::isfinite(raw.x)?int(std::clamp(raw.x,-1.f,1.f)*70.f):0;
+            const int mainY=raw.physicalSnapshot?axes.mainY:std::isfinite(raw.z)?int(std::clamp(raw.z,-1.f,1.f)*70.f):0;
+            const int movementClass=mainX*mainX+mainY*mainY<=3025?1:2;
+            const bool ordinary=(game.scene==Scene::Explore || game.scene==Scene::Dialogue) &&
+                !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0;
+            game.partnerPresentation.update(ordinary?game.partner.x-previous.x:0,
+                ordinary?game.partner.z-previous.z:0,movementClass,game.ticks,game.fieldMovement.headingOffsetDegrees);
+        }
+    } presentation{*this,partner,rawInput};
     Input input=rawInput;const Input& i=input;
     ++ticks;++fieldCameraSimulationTicks; sound=Sound::None;overheadContact=false;
     if(scene==Scene::Explore || scene==Scene::Dialogue)beginFieldCameraTick();

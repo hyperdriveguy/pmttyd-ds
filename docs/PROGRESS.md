@@ -2,6 +2,52 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-12 — Goombella original animations, visibility and facing correction
+
+Field Goombella now renders original `PKR_S_1`/`PKR_W_1`/`PKR_R_1` idle,
+walk and run clips from `a/c_pkr` + `a/c_pkr-`, using original scalar2 and a
+separate texture atlas. Static zero-span `PKR_Z_1` is also packaged for setup.
+PMANIM3 adds original visibility bases, group indices and sparse full-key
+modulo256 updates. Hidden ancestors suppress descendants while preserving
+siblings; shapes hidden at frame0 remain available for later keys. Corrected
+the offline bake's old `delta==1` assignment. PMANIM1/2 remain readable.
+Source clips replace her field billboard/procedural bob. See
+[asset provenance](assets/MARIO_AND_POSES.md) and
+[Goombella binding](behavior/partner/FIELD_GOOMBELLA_ORDINARY_POSE_BINDING.md).
+
+The user caught reversed travel-facing in the initial native adapter. Replaced
+that snap mapping with the recovered ordinary `partyMakeDispDir` target ranges,
+four interpolation/latch branches and wrapped Z-reflection. Positive X uses
+source heading90 / target180; negative X targets0. Original moving pose
+selection keeps partner speed, owner scale1 and Mario stick class distinct.
+Native displacement still adapts source speed/heading; original homing, special
+turn flags, sound helper, HP/dot-table and event/battle poses remain unbound.
+This is animation progress, not completed partner/story fidelity.
+
+Validation: `make test` **90 CTest / 93 Python passing**; `make all` builds
+3DSX without warnings. Independent original-data comparison passes **39
+Goombella samples**, max model error5.53811e-6, and **251 Mario samples**,
+max error3.05176e-5, including texture/visibility boundaries. Synthetic tests
+cover byte wrapping, hidden descendants/siblings/cycles, rewind, invalid pack
+rollback, zero-duration poses and both facing endpoints. Source checks pass
+47 scale anchors/13 DOL spans/2 converter models and515 partner instructions/
+32 constants/7 spans;688 document links pass. Refreshed a previously stale
+converter-derived Mario numeric baseline without changing source fingerprints.
+
+An initial isolated west-road capture passed movement/jump/save. A later short
+hold failed its0.1-unit distance assertion (actual0.072); the longer dedicated
+`azahar_partner_animation.py` capture passed, saving room0 X=-3.20559 from
+-5.05. These are software-emulator fixture checks, not measured original timing
+or hardware performance. Final facing capture under `artifacts/azahar-partner-facing`
+passes the expanded right/left movement/jump/save script; manually inspected
+`partner-run-later.png` and `partner-idle-left.png` confirm correct facing in
+both directions. All emulator profiles/saves are isolated from the user's profile.
+
+Next: native original message parser/window playback, harbor REL scene
+activation and indoor doors/maps; remaining partner motion/poses and prologue
+visibility conditions. The playable prologue / original-game parity goal
+remains incomplete.
+
 ## 2026-10-12 — Harbor position gates and original Mario position callback
 
 Documentation cross-check recovered original story3's integer Z<=-100 gate,

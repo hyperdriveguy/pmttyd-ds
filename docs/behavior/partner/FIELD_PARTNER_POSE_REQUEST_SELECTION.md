@@ -64,3 +64,9 @@ remain separate even though these local loads are closed.
 remap/table/current-name requests and original table/adjacent spans alongside
 pre-display/facing/drawing/tail predicate. Exact resource strings remain reused
 original assets;metadata hashes are not playback or original visual validation.
+
+2026-10-12 native binding supplement:
+[decoded Goombella normal row and moving selector](FIELD_GOOMBELLA_ORDINARY_POSE_BINDING.md)
+records exact selector1/2/3 resource names, low-HP names, loop descriptors and
+the original speed/input-class decision graph. It does not close the wider
+follower lifecycle or runtime presentation.
