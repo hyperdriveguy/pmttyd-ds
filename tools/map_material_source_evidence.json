@@ -1,0 +1,4241 @@
+{
+  "schema": 1,
+  "rel_sha256": "d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a",
+  "rel_imports": [
+    {
+      "file_offset": 300492,
+      "address": 2148445880
+    },
+    {
+      "file_offset": 301400,
+      "address": 2148445808
+    }
+  ],
+  "bodies": [
+    {
+      "name": "mapSetMaterial",
+      "address": 2147618388,
+      "size": 1556,
+      "sha256": "8161c005604dcd5f1334d06619507a5b635e2f57081f4d773efe47b388deea8b",
+      "scope": "complete local body"
+    },
+    {
+      "name": "mapSetTextureMatrix",
+      "address": 2147619944,
+      "size": 864,
+      "sha256": "af539d9dee0be4b0bf98108378f829d3f1309b3e1cfbc8c683fb9a592e8a0443",
+      "scope": "complete local body"
+    },
+    {
+      "name": "mapSetProjTexObj",
+      "address": 2147603160,
+      "size": 72,
+      "sha256": "f8633a0214e38272b1bd63fd934b4a00193f4007707df7ccfe431eb479ee8ee1",
+      "scope": "complete local body"
+    },
+    {
+      "name": "mapSetLight",
+      "address": 2147633468,
+      "size": 460,
+      "sha256": "8d11cfd2b95f8751caad7de645a3df9ed7adaf6c742a69722b8e4f1afb04fc46",
+      "scope": "complete local body"
+    },
+    {
+      "name": "lightGetAmbient",
+      "address": 2147596896,
+      "size": 112,
+      "sha256": "f29356e9bef2b211bd436683d7f884bb894b3ece5b3f4c3b56f7294e0bb37e93",
+      "scope": "complete local body"
+    },
+    {
+      "name": "lightNameToPtr",
+      "address": 2147597560,
+      "size": 160,
+      "sha256": "687f5ac934c23aa7d58e80652dc1447ce5058fefdb3903277ca10a1eb4fafb40",
+      "scope": "complete local body"
+    }
+  ],
+  "anchors": [
+    {
+      "address": 2147618388,
+      "hex": "9421fe50",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618392,
+      "hex": "7c0802a6",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618396,
+      "hex": "900101b4",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618400,
+      "hex": "dbe101a0",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618404,
+      "hex": "f3e101a8",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618408,
+      "hex": "be61016c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618412,
+      "hex": "800284c8",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618416,
+      "hex": "3ca0802c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618420,
+      "hex": "7c9f2378",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618424,
+      "hex": "7c7e1b78",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618428,
+      "hex": "9001001c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618432,
+      "hex": "3b85f958",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618436,
+      "hex": "3881005c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618440,
+      "hex": "3b200000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618444,
+      "hex": "3ae00002",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618448,
+      "hex": "48003aad",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618452,
+      "hex": "7c7d1b78",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618456,
+      "hex": "3b61005c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618460,
+      "hex": "3b5c0100",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618464,
+      "hex": "3b000000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618468,
+      "hex": "3ac00000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618472,
+      "hex": "4800030c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618476,
+      "hex": "809c0144",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618480,
+      "hex": "807c0148",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618484,
+      "hex": "801c014c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618488,
+      "hex": "90810024",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618492,
+      "hex": "827b0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618496,
+      "hex": "90610028",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618500,
+      "hex": "9001002c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618504,
+      "hex": "a0730000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618508,
+      "hex": "546004e7",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618512,
+      "hex": "4182007c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618516,
+      "hex": "4bfee411",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618520,
+      "hex": "3863011c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618524,
+      "hex": "38930024",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618528,
+      "hex": "38a10030",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618532,
+      "hex": "4827d7c1",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618536,
+      "hex": "c0210030",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618540,
+      "hex": "3861010c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618544,
+      "hex": "c0410034",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618548,
+      "hex": "c0610038",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618552,
+      "hex": "48295dc1",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618556,
+      "hex": "80bb0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618560,
+      "hex": "3861010c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618564,
+      "hex": "38810018",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618568,
+      "hex": "80050048",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618572,
+      "hex": "90010018",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618576,
+      "hex": "48295dd5",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618580,
+      "hex": "c04284f0",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618584,
+      "hex": "3861010c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618588,
+      "hex": "809b0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618592,
+      "hex": "fc601090",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618596,
+      "hex": "c0240050",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618600,
+      "hex": "c0840054",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618604,
+      "hex": "c0a40058",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618608,
+      "hex": "c0c4005c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618612,
+      "hex": "48295b09",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618616,
+      "hex": "809a0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618620,
+      "hex": "3861010c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618624,
+      "hex": "48295db1",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618628,
+      "hex": "3ae00001",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618632,
+      "hex": "48000258",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618636,
+      "hex": "546004a5",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618640,
+      "hex": "4182011c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618644,
+      "hex": "c0228508",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618648,
+      "hex": "386100dc",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618652,
+      "hex": "c0130030",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618656,
+      "hex": "38800078",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618660,
+      "hex": "ec210032",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618664,
+      "hex": "4827d089",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618668,
+      "hex": "80bb0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618672,
+      "hex": "386100ac",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618676,
+      "hex": "c0228508",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618680,
+      "hex": "38800079",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618684,
+      "hex": "c0050034",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618688,
+      "hex": "ec210032",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618692,
+      "hex": "4827d06d",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618696,
+      "hex": "80bb0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618700,
+      "hex": "3861007c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618704,
+      "hex": "c0228508",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618708,
+      "hex": "3880007a",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618712,
+      "hex": "c0050038",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618716,
+      "hex": "ec210032",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618720,
+      "hex": "4827d051",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618724,
+      "hex": "388100ac",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618728,
+      "hex": "3861007c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618732,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618736,
+      "hex": "4827cdb5",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618740,
+      "hex": "388100dc",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618744,
+      "hex": "386100ac",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618748,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618752,
+      "hex": "4827cda5",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618756,
+      "hex": "38810024",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618760,
+      "hex": "386100dc",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618764,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618768,
+      "hex": "4827d6d5",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618772,
+      "hex": "38610024",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618776,
+      "hex": "c0228510",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618780,
+      "hex": "7c641b78",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618784,
+      "hex": "4827dbe9",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618788,
+      "hex": "807b0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618792,
+      "hex": "38810024",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618796,
+      "hex": "38a10030",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618800,
+      "hex": "38630024",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618804,
+      "hex": "4827db8d",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618808,
+      "hex": "4bfee2ed",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618812,
+      "hex": "38810030",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618816,
+      "hex": "3863011c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618820,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618824,
+      "hex": "4827d69d",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618828,
+      "hex": "c0210030",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618832,
+      "hex": "3861010c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618836,
+      "hex": "c0410034",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618840,
+      "hex": "c0610038",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618844,
+      "hex": "48295c9d",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618848,
+      "hex": "80bb0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618852,
+      "hex": "3861010c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618856,
+      "hex": "38810014",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618860,
+      "hex": "80050048",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618864,
+      "hex": "90010014",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618868,
+      "hex": "48295cb1",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618872,
+      "hex": "c04284f0",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618876,
+      "hex": "3861010c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618880,
+      "hex": "809b0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618884,
+      "hex": "fc601090",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618888,
+      "hex": "c0c28500",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618892,
+      "hex": "fc801090",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618896,
+      "hex": "c0240050",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618900,
+      "hex": "fca01090",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618904,
+      "hex": "482959e5",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618908,
+      "hex": "809a0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618912,
+      "hex": "3861010c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618916,
+      "hex": "48295c8d",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618920,
+      "hex": "48000138",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618924,
+      "hex": "54600463",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618928,
+      "hex": "41820130",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618932,
+      "hex": "4bfee271",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618936,
+      "hex": "3863011c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618940,
+      "hex": "38930024",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618944,
+      "hex": "38a10030",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618948,
+      "hex": "4827d621",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618952,
+      "hex": "80bb0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618956,
+      "hex": "386100dc",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618960,
+      "hex": "c0228508",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618964,
+      "hex": "38800078",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618968,
+      "hex": "c0050030",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618972,
+      "hex": "ec210032",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618976,
+      "hex": "4827cf51",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618980,
+      "hex": "80bb0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618984,
+      "hex": "386100ac",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618988,
+      "hex": "c0228508",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618992,
+      "hex": "38800079",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147618996,
+      "hex": "c0050034",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619000,
+      "hex": "ec210032",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619004,
+      "hex": "4827cf35",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619008,
+      "hex": "80bb0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619012,
+      "hex": "3861007c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619016,
+      "hex": "c0228508",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619020,
+      "hex": "3880007a",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619024,
+      "hex": "c0050038",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619028,
+      "hex": "ec210032",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619032,
+      "hex": "4827cf19",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619036,
+      "hex": "388100ac",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619040,
+      "hex": "3861007c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619044,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619048,
+      "hex": "4827cc7d",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619052,
+      "hex": "388100dc",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619056,
+      "hex": "386100ac",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619060,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619064,
+      "hex": "4827cc6d",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619068,
+      "hex": "38810024",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619072,
+      "hex": "386100dc",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619076,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619080,
+      "hex": "4827d59d",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619084,
+      "hex": "4bfee1d9",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619088,
+      "hex": "38810024",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619092,
+      "hex": "3863011c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619096,
+      "hex": "7c852378",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619100,
+      "hex": "4827d5dd",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619104,
+      "hex": "c0210030",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619108,
+      "hex": "3861010c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619112,
+      "hex": "c0410034",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619116,
+      "hex": "c0610038",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619120,
+      "hex": "48295b89",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619124,
+      "hex": "c0210024",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619128,
+      "hex": "3861010c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619132,
+      "hex": "c0410028",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619136,
+      "hex": "c061002c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619140,
+      "hex": "48295b85",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619144,
+      "hex": "80bb0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619148,
+      "hex": "3861010c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619152,
+      "hex": "c00284f4",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619156,
+      "hex": "38800004",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619160,
+      "hex": "c025004c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619164,
+      "hex": "ec210032",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619168,
+      "hex": "482958f9",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619172,
+      "hex": "c0228514",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619176,
+      "hex": "3861010c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619180,
+      "hex": "c04284f4",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619184,
+      "hex": "38800000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619188,
+      "hex": "48295a75",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619192,
+      "hex": "80bb0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619196,
+      "hex": "3861010c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619200,
+      "hex": "38810010",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619204,
+      "hex": "80050048",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619208,
+      "hex": "90010010",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619212,
+      "hex": "48295b59",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619216,
+      "hex": "809a0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619220,
+      "hex": "3861010c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619224,
+      "hex": "48295b59",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619228,
+      "hex": "3ae00001",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619232,
+      "hex": "801a0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619236,
+      "hex": "3b7b0004",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619240,
+      "hex": "3b5a0004",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619244,
+      "hex": "3ad60001",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619248,
+      "hex": "7f180378",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619252,
+      "hex": "7c16e800",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619256,
+      "hex": "4180fcf4",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619260,
+      "hex": "4bffa8a5",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619264,
+      "hex": "28030000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619268,
+      "hex": "41820010",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619272,
+      "hex": "80030048",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619276,
+      "hex": "9001014c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619280,
+      "hex": "4800000c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619284,
+      "hex": "8001001c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619288,
+      "hex": "9001014c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619292,
+      "hex": "8001014c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619296,
+      "hex": "38600001",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619300,
+      "hex": "90010020",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619304,
+      "hex": "48295d55",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619308,
+      "hex": "80010020",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619312,
+      "hex": "3881000c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619316,
+      "hex": "38600004",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619320,
+      "hex": "9001000c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619324,
+      "hex": "48295b71",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619328,
+      "hex": "801f0004",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619332,
+      "hex": "38810008",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619336,
+      "hex": "38600004",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619340,
+      "hex": "90010008",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619344,
+      "hex": "48295c45",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619348,
+      "hex": "881f0008",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619352,
+      "hex": "2c000001",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619356,
+      "hex": "41820060",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619360,
+      "hex": "408000a4",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619364,
+      "hex": "2c000000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619368,
+      "hex": "40800008",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619372,
+      "hex": "48000098",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619376,
+      "hex": "7c1d00d0",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619380,
+      "hex": "7f07c378",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619384,
+      "hex": "7c00e878",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619388,
+      "hex": "7ee9bb78",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619392,
+      "hex": "54040ffe",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619396,
+      "hex": "38600000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619400,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619404,
+      "hex": "38c00000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619408,
+      "hex": "39000002",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619412,
+      "hex": "48295d25",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619416,
+      "hex": "38600002",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619420,
+      "hex": "38800000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619424,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619428,
+      "hex": "38c00000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619432,
+      "hex": "38e00000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619436,
+      "hex": "39000000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619440,
+      "hex": "39200002",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619444,
+      "hex": "48295d05",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619448,
+      "hex": "4800004c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619452,
+      "hex": "7c1d00d0",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619456,
+      "hex": "7f07c378",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619460,
+      "hex": "7c00e878",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619464,
+      "hex": "7ee9bb78",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619468,
+      "hex": "54040ffe",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619472,
+      "hex": "38600000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619476,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619480,
+      "hex": "38c00001",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619484,
+      "hex": "39000002",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619488,
+      "hex": "48295cd9",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619492,
+      "hex": "38600002",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619496,
+      "hex": "38800000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619500,
+      "hex": "38a00000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619504,
+      "hex": "38c00001",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619508,
+      "hex": "38e00000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619512,
+      "hex": "39000000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619516,
+      "hex": "39200002",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619520,
+      "hex": "48295cb9",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619524,
+      "hex": "887f000b",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619528,
+      "hex": "3b1c00ec",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619532,
+      "hex": "cbfc02c8",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619536,
+      "hex": "3ee04330",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619540,
+      "hex": "3b63ffff",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619544,
+      "hex": "5760103a",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619548,
+      "hex": "7f5f0214",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619552,
+      "hex": "4800013c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619556,
+      "hex": "806d1744",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619560,
+      "hex": "3b800000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619564,
+      "hex": "a81e00de",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619568,
+      "hex": "1ca302f4",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619572,
+      "hex": "82da000c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619576,
+      "hex": "80cd1740",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619580,
+      "hex": "80960000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619584,
+      "hex": "1c600178",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619588,
+      "hex": "7fa62a14",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619592,
+      "hex": "82840000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619596,
+      "hex": "38030094",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619600,
+      "hex": "7ebd002e",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619604,
+      "hex": "7eb3ab78",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619608,
+      "hex": "48000024",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619612,
+      "hex": "80730004",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619616,
+      "hex": "7e84a378",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619620,
+      "hex": "4824c141",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619624,
+      "hex": "2c030000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619628,
+      "hex": "40820008",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619632,
+      "hex": "4800001c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619636,
+      "hex": "3a730004",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619640,
+      "hex": "3b9c0001",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619644,
+      "hex": "80150000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619648,
+      "hex": "7c1c0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619652,
+      "hex": "4180ffd8",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619656,
+      "hex": "3b80ffff",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619660,
+      "hex": "a81e00de",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619664,
+      "hex": "7f84e378",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619668,
+      "hex": "1c600178",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619672,
+      "hex": "38030084",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619676,
+      "hex": "7c7d002e",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619680,
+      "hex": "480167fd",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619684,
+      "hex": "7c7c1b78",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619688,
+      "hex": "80e30000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619692,
+      "hex": "88670021",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619696,
+      "hex": "88070022",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619700,
+      "hex": "7c030040",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619704,
+      "hex": "4082000c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619708,
+      "hex": "39400000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619712,
+      "hex": "48000008",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619716,
+      "hex": "39400001",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619720,
+      "hex": "88960008",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619724,
+      "hex": "3861003c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619728,
+      "hex": "88160009",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619732,
+      "hex": "5488103a",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619736,
+      "hex": "80870008",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619740,
+      "hex": "5400103a",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619744,
+      "hex": "a0a70002",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619748,
+      "hex": "a0c70000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619752,
+      "hex": "80e70004",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619756,
+      "hex": "7d18402e",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619760,
+      "hex": "7d38002e",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619764,
+      "hex": "48295efd",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619768,
+      "hex": "813c0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619772,
+      "hex": "3861003c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619776,
+      "hex": "92e10150",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619780,
+      "hex": "38800001",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619784,
+      "hex": "88e90021",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619788,
+      "hex": "38a00001",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619792,
+      "hex": "88090022",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619796,
+      "hex": "38c00000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619800,
+      "hex": "90e10154",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619804,
+      "hex": "39000000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619808,
+      "hex": "c069001c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619812,
+      "hex": "c8010150",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619816,
+      "hex": "9001015c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619820,
+      "hex": "ec20f828",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619824,
+      "hex": "88e90020",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619828,
+      "hex": "92e10158",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619832,
+      "hex": "c8010158",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619836,
+      "hex": "ec40f828",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619840,
+      "hex": "48296145",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619844,
+      "hex": "7f24cb78",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619848,
+      "hex": "3861003c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619852,
+      "hex": "48296475",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619856,
+      "hex": "3b390001",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619860,
+      "hex": "3b5afffc",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619864,
+      "hex": "3b7bffff",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619868,
+      "hex": "2c1b0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619872,
+      "hex": "4080fec4",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619876,
+      "hex": "807f0110",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619880,
+      "hex": "28030000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619884,
+      "hex": "4182000c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619888,
+      "hex": "88830000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619892,
+      "hex": "48000008",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619896,
+      "hex": "38800000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619900,
+      "hex": "887f000b",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619904,
+      "hex": "38de001c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619908,
+      "hex": "80be0000",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619912,
+      "hex": "48000739",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619916,
+      "hex": "e3e101a8",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619920,
+      "hex": "cbe101a0",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619924,
+      "hex": "ba61016c",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619928,
+      "hex": "800101b4",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619932,
+      "hex": "7c0803a6",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619936,
+      "hex": "382101b0",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619940,
+      "hex": "4e800020",
+      "purpose": "mapSetMaterial complete reviewed word"
+    },
+    {
+      "address": 2147619944,
+      "hex": "9421fe70",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147619948,
+      "hex": "7c0802a6",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147619952,
+      "hex": "90010194",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147619956,
+      "hex": "dbe10180",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147619960,
+      "hex": "f3e10188",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147619964,
+      "hex": "dbc10170",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147619968,
+      "hex": "f3c10178",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147619972,
+      "hex": "dba10160",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147619976,
+      "hex": "f3a10168",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147619980,
+      "hex": "db810150",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147619984,
+      "hex": "f3810158",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147619988,
+      "hex": "db610140",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147619992,
+      "hex": "f3610148",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147619996,
+      "hex": "db410130",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620000,
+      "hex": "f3410138",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620004,
+      "hex": "db210120",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620008,
+      "hex": "f3210128",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620012,
+      "hex": "db010110",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620016,
+      "hex": "f3010118",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620020,
+      "hex": "bf4100f8",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620024,
+      "hex": "7c7a1b78",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620028,
+      "hex": "3c60802c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620032,
+      "hex": "889a000b",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620036,
+      "hex": "3803f9f0",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620040,
+      "hex": "c3e28500",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620044,
+      "hex": "3ba00000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620048,
+      "hex": "3b64ffff",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620052,
+      "hex": "3b800000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620056,
+      "hex": "1c9b001c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620060,
+      "hex": "5763103a",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620064,
+      "hex": "7ffa2214",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620068,
+      "hex": "7fc01a14",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620072,
+      "hex": "48000284",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620076,
+      "hex": "c0bf0034",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620080,
+      "hex": "c03f003c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620084,
+      "hex": "c0df0038",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620088,
+      "hex": "ffa02890",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620092,
+      "hex": "c01f0030",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620096,
+      "hex": "fc1f2800",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620100,
+      "hex": "ff803090",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620104,
+      "hex": "c37f002c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620108,
+      "hex": "ffc00850",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620112,
+      "hex": "ff400050",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620116,
+      "hex": "40820028",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620120,
+      "hex": "fc1f3000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620124,
+      "hex": "40820020",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620128,
+      "hex": "c00284f0",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620132,
+      "hex": "fc00d800",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620136,
+      "hex": "40820014",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620140,
+      "hex": "fc00d000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620144,
+      "hex": "4082000c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620148,
+      "hex": "fc00f000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620152,
+      "hex": "418201fc",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620156,
+      "hex": "c06284f0",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620160,
+      "hex": "fc1e1800",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620164,
+      "hex": "4182007c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620168,
+      "hex": "c08284f4",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620172,
+      "hex": "386100c8",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620176,
+      "hex": "c05f0040",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620180,
+      "hex": "c03f0044",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620184,
+      "hex": "c0028500",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620188,
+      "hex": "ec4400b2",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620192,
+      "hex": "ec04007c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620196,
+      "hex": "ef220172",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620200,
+      "hex": "ef0001b2",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620204,
+      "hex": "fc20c890",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620208,
+      "hex": "fc40c090",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620212,
+      "hex": "4827ccbd",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620216,
+      "hex": "c0028508",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620220,
+      "hex": "38610038",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620224,
+      "hex": "3880007a",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620228,
+      "hex": "ec2007b2",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620232,
+      "hex": "4827ca69",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620236,
+      "hex": "fc20c850",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620240,
+      "hex": "c06284f0",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620244,
+      "hex": "fc40c050",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620248,
+      "hex": "38610098",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620252,
+      "hex": "4827cc95",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620256,
+      "hex": "38810038",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620260,
+      "hex": "386100c8",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620264,
+      "hex": "7c852378",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620268,
+      "hex": "4827c7b9",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620272,
+      "hex": "38610038",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620276,
+      "hex": "38810098",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620280,
+      "hex": "7c651b78",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620284,
+      "hex": "4827c7a9",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620288,
+      "hex": "c00284f0",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620292,
+      "hex": "fc1d0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620296,
+      "hex": "4082000c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620300,
+      "hex": "fc1c0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620304,
+      "hex": "41820018",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620308,
+      "hex": "fc20e890",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620312,
+      "hex": "c0628500",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620316,
+      "hex": "fc40e090",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620320,
+      "hex": "38610008",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620324,
+      "hex": "4827cccd",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620328,
+      "hex": "c00284f0",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620332,
+      "hex": "fc1b0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620336,
+      "hex": "4082000c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620340,
+      "hex": "fc1a0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620344,
+      "hex": "41820018",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620348,
+      "hex": "fc20d890",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620352,
+      "hex": "c06284f0",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620356,
+      "hex": "fc40d090",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620360,
+      "hex": "38610068",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620364,
+      "hex": "4827cc25",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620368,
+      "hex": "c00284f0",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620372,
+      "hex": "fc1e0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620376,
+      "hex": "41820080",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620380,
+      "hex": "fc1d0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620384,
+      "hex": "4082000c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620388,
+      "hex": "fc1c0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620392,
+      "hex": "4182003c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620396,
+      "hex": "38610038",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620400,
+      "hex": "38810008",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620404,
+      "hex": "38a100c8",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620408,
+      "hex": "4827c72d",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620412,
+      "hex": "c00284f0",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620416,
+      "hex": "fc1b0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620420,
+      "hex": "4082000c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620424,
+      "hex": "fc1a0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620428,
+      "hex": "418200b0",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620432,
+      "hex": "386100c8",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620436,
+      "hex": "38810068",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620440,
+      "hex": "7c651b78",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620444,
+      "hex": "4827c709",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620448,
+      "hex": "4800009c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620452,
+      "hex": "fc1b0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620456,
+      "hex": "4082000c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620460,
+      "hex": "fc1a0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620464,
+      "hex": "41820018",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620468,
+      "hex": "38610038",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620472,
+      "hex": "38810068",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620476,
+      "hex": "38a100c8",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620480,
+      "hex": "4827c6e5",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620484,
+      "hex": "48000078",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620488,
+      "hex": "38610038",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620492,
+      "hex": "388100c8",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620496,
+      "hex": "4827c6a1",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620500,
+      "hex": "48000068",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620504,
+      "hex": "fc1d0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620508,
+      "hex": "4082000c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620512,
+      "hex": "fc1c0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620516,
+      "hex": "4182003c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620520,
+      "hex": "c00284f0",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620524,
+      "hex": "fc1b0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620528,
+      "hex": "4082000c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620532,
+      "hex": "fc1a0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620536,
+      "hex": "41820018",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620540,
+      "hex": "38610008",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620544,
+      "hex": "38810068",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620548,
+      "hex": "38a100c8",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620552,
+      "hex": "4827c69d",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620556,
+      "hex": "48000030",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620560,
+      "hex": "38610008",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620564,
+      "hex": "388100c8",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620568,
+      "hex": "4827c659",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620572,
+      "hex": "48000020",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620576,
+      "hex": "fc1b0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620580,
+      "hex": "4082000c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620584,
+      "hex": "fc1a0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620588,
+      "hex": "41820010",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620592,
+      "hex": "38610068",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620596,
+      "hex": "388100c8",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620600,
+      "hex": "4827c639",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620604,
+      "hex": "809e0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620608,
+      "hex": "386100c8",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620612,
+      "hex": "38a00001",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620616,
+      "hex": "48298cc9",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620620,
+      "hex": "88ba000b",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620624,
+      "hex": "7fa3eb78",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620628,
+      "hex": "80de0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620632,
+      "hex": "38800001",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620636,
+      "hex": "38050003",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620640,
+      "hex": "38e00000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620644,
+      "hex": "7cbc0050",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620648,
+      "hex": "3900007d",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620652,
+      "hex": "482936d9",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620656,
+      "hex": "48000028",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620660,
+      "hex": "88ba000b",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620664,
+      "hex": "7fa3eb78",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620668,
+      "hex": "38800001",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620672,
+      "hex": "38c0003c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620676,
+      "hex": "38050003",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620680,
+      "hex": "38e00000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620684,
+      "hex": "7cbc0050",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620688,
+      "hex": "3900007d",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620692,
+      "hex": "482936b1",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620696,
+      "hex": "3bbd0001",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620700,
+      "hex": "3b9c0001",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620704,
+      "hex": "3bffffe4",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620708,
+      "hex": "3bdefffc",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620712,
+      "hex": "3b7bffff",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620716,
+      "hex": "2c1b0000",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620720,
+      "hex": "4080fd7c",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620724,
+      "hex": "e3e10188",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620728,
+      "hex": "cbe10180",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620732,
+      "hex": "e3c10178",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620736,
+      "hex": "cbc10170",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620740,
+      "hex": "e3a10168",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620744,
+      "hex": "cba10160",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620748,
+      "hex": "e3810158",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620752,
+      "hex": "cb810150",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620756,
+      "hex": "e3610148",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620760,
+      "hex": "cb610140",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620764,
+      "hex": "e3410138",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620768,
+      "hex": "cb410130",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620772,
+      "hex": "e3210128",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620776,
+      "hex": "cb210120",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620780,
+      "hex": "e3010118",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620784,
+      "hex": "cb010110",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620788,
+      "hex": "bb4100f8",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620792,
+      "hex": "80010194",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620796,
+      "hex": "7c0803a6",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620800,
+      "hex": "38210190",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147620804,
+      "hex": "4e800020",
+      "purpose": "mapSetTextureMatrix complete reviewed word"
+    },
+    {
+      "address": 2147603160,
+      "hex": "80a30000",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603164,
+      "hex": "80030004",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603168,
+      "hex": "90ad1794",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603172,
+      "hex": "900d1798",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603176,
+      "hex": "80a30008",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603180,
+      "hex": "8003000c",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603184,
+      "hex": "90ad179c",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603188,
+      "hex": "900d17a0",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603192,
+      "hex": "80a30010",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603196,
+      "hex": "80030014",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603200,
+      "hex": "90ad17a4",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603204,
+      "hex": "900d17a8",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603208,
+      "hex": "80a30018",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603212,
+      "hex": "8003001c",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603216,
+      "hex": "90ad17ac",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603220,
+      "hex": "900d17b0",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603224,
+      "hex": "908d1790",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147603228,
+      "hex": "4e800020",
+      "purpose": "mapSetProjTexObj complete reviewed word"
+    },
+    {
+      "address": 2147633468,
+      "hex": "9421ffd0",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633472,
+      "hex": "7c0802a6",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633476,
+      "hex": "90010034",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633480,
+      "hex": "38a10008",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633484,
+      "hex": "bf410018",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633488,
+      "hex": "7c7a1b78",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633492,
+      "hex": "7c9b2378",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633496,
+      "hex": "3b800000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633500,
+      "hex": "387a001c",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633504,
+      "hex": "389a0010",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633508,
+      "hex": "48279d41",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633512,
+      "hex": "807a0008",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633516,
+      "hex": "80630058",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633520,
+      "hex": "88030002",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633524,
+      "hex": "54000739",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633528,
+      "hex": "418200dc",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633532,
+      "hex": "80030004",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633536,
+      "hex": "28000000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633540,
+      "hex": "40820020",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633544,
+      "hex": "7f64db78",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633548,
+      "hex": "38610008",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633552,
+      "hex": "38a00008",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633556,
+      "hex": "38c00000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633560,
+      "hex": "4bff7139",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633564,
+      "hex": "7c7c1b78",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633568,
+      "hex": "48000150",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633572,
+      "hex": "7f7edb78",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633576,
+      "hex": "3ba00000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633580,
+      "hex": "3be00000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633584,
+      "hex": "807a0008",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633588,
+      "hex": "38000001",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633592,
+      "hex": "7c00e830",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633596,
+      "hex": "80630058",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633600,
+      "hex": "80630004",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633604,
+      "hex": "7c600039",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633608,
+      "hex": "41820054",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633612,
+      "hex": "808d1744",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633616,
+      "hex": "381f0004",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633620,
+      "hex": "a87a00de",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633624,
+      "hex": "1c8402f4",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633628,
+      "hex": "80ad1740",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633632,
+      "hex": "1c630178",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633636,
+      "hex": "7c641a14",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633640,
+      "hex": "38630098",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633644,
+      "hex": "7c65182e",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633648,
+      "hex": "7c63002e",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633652,
+      "hex": "80630000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633656,
+      "hex": "4bff7301",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633660,
+      "hex": "a0030000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633664,
+      "hex": "54000421",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633668,
+      "hex": "40820018",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633672,
+      "hex": "3b9c0001",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633676,
+      "hex": "907e0000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633680,
+      "hex": "2c1c0008",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633684,
+      "hex": "3bde0004",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633688,
+      "hex": "40800014",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633692,
+      "hex": "3bbd0001",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633696,
+      "hex": "3bff0004",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633700,
+      "hex": "2c1d0020",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633704,
+      "hex": "4180ff88",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633708,
+      "hex": "2c1c0008",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633712,
+      "hex": "408000c0",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633716,
+      "hex": "5780103a",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633720,
+      "hex": "38610008",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633724,
+      "hex": "7c9b0214",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633728,
+      "hex": "20bc0008",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633732,
+      "hex": "38c00000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633736,
+      "hex": "4bff7089",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633740,
+      "hex": "7f9c1a14",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633744,
+      "hex": "480000a0",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633748,
+      "hex": "80030004",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633752,
+      "hex": "28000000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633756,
+      "hex": "41820090",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633760,
+      "hex": "3ba00000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633764,
+      "hex": "7f7fdb78",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633768,
+      "hex": "7fbeeb78",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633772,
+      "hex": "807a0008",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633776,
+      "hex": "38000001",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633780,
+      "hex": "7c00e830",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633784,
+      "hex": "80630058",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633788,
+      "hex": "80630004",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633792,
+      "hex": "7c600039",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633796,
+      "hex": "41820054",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633800,
+      "hex": "808d1744",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633804,
+      "hex": "381e0004",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633808,
+      "hex": "a87a00de",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633812,
+      "hex": "1c8402f4",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633816,
+      "hex": "80ad1740",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633820,
+      "hex": "1c630178",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633824,
+      "hex": "7c641a14",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633828,
+      "hex": "38630098",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633832,
+      "hex": "7c65182e",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633836,
+      "hex": "7c63002e",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633840,
+      "hex": "80630000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633844,
+      "hex": "4bff7245",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633848,
+      "hex": "a0030000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633852,
+      "hex": "54000421",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633856,
+      "hex": "40820018",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633860,
+      "hex": "3b9c0001",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633864,
+      "hex": "907f0000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633868,
+      "hex": "2c1c0008",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633872,
+      "hex": "3bff0004",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633876,
+      "hex": "4080001c",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633880,
+      "hex": "3bbd0001",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633884,
+      "hex": "3bde0004",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633888,
+      "hex": "2c1d0020",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633892,
+      "hex": "4180ff88",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633896,
+      "hex": "48000008",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633900,
+      "hex": "3b800000",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633904,
+      "hex": "7f83e378",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633908,
+      "hex": "bb410018",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633912,
+      "hex": "80010034",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633916,
+      "hex": "7c0803a6",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633920,
+      "hex": "38210030",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147633924,
+      "hex": "4e800020",
+      "purpose": "mapSetLight complete reviewed word"
+    },
+    {
+      "address": 2147596896,
+      "hex": "9421fff0",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596900,
+      "hex": "7c0802a6",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596904,
+      "hex": "90010014",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596908,
+      "hex": "4800f9c5",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596912,
+      "hex": "2c030001",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596916,
+      "hex": "386d1730",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596920,
+      "hex": "40820008",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596924,
+      "hex": "38630008",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596928,
+      "hex": "80030000",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596932,
+      "hex": "80630004",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596936,
+      "hex": "7c0903a6",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596940,
+      "hex": "2c000000",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596944,
+      "hex": "4081002c",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596948,
+      "hex": "a0830000",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596952,
+      "hex": "548007ff",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596956,
+      "hex": "41820018",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596960,
+      "hex": "54800631",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596964,
+      "hex": "40820010",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596968,
+      "hex": "54800421",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596972,
+      "hex": "41820008",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596976,
+      "hex": "48000010",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596980,
+      "hex": "38630060",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596984,
+      "hex": "4200ffdc",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596988,
+      "hex": "38600000",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596992,
+      "hex": "80010014",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147596996,
+      "hex": "7c0803a6",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147597000,
+      "hex": "38210010",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147597004,
+      "hex": "4e800020",
+      "purpose": "lightGetAmbient complete reviewed word"
+    },
+    {
+      "address": 2147597560,
+      "hex": "9421ffe0",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597564,
+      "hex": "7c0802a6",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597568,
+      "hex": "90010024",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597572,
+      "hex": "93e1001c",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597576,
+      "hex": "93c10018",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597580,
+      "hex": "93a10014",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597584,
+      "hex": "93810010",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597588,
+      "hex": "7c7c1b78",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597592,
+      "hex": "4800f719",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597596,
+      "hex": "2c030001",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597600,
+      "hex": "3bed1730",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597604,
+      "hex": "40820008",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597608,
+      "hex": "3bff0008",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597612,
+      "hex": "83df0004",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597616,
+      "hex": "3ba00000",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597620,
+      "hex": "48000034",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597624,
+      "hex": "a01e0000",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597628,
+      "hex": "540007ff",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597632,
+      "hex": "41820020",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597636,
+      "hex": "7f83e378",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597640,
+      "hex": "389e0002",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597644,
+      "hex": "48251719",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597648,
+      "hex": "2c030000",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597652,
+      "hex": "4082000c",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597656,
+      "hex": "7fc3f378",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597660,
+      "hex": "4800001c",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597664,
+      "hex": "3bbd0001",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597668,
+      "hex": "3bde0060",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597672,
+      "hex": "801f0000",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597676,
+      "hex": "7c1d0000",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597680,
+      "hex": "4180ffc8",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597684,
+      "hex": "38600000",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597688,
+      "hex": "80010024",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597692,
+      "hex": "83e1001c",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597696,
+      "hex": "83c10018",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597700,
+      "hex": "83a10014",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597704,
+      "hex": "83810010",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597708,
+      "hex": "7c0803a6",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597712,
+      "hex": "38210020",
+      "purpose": "lightNameToPtr complete reviewed word"
+    },
+    {
+      "address": 2147597716,
+      "hex": "4e800020",
+      "purpose": "lightNameToPtr complete reviewed word"
+    }
+  ],
+  "constants": [
+    {
+      "address": 2151807280,
+      "hex": "00000000"
+    },
+    {
+      "address": 2151807284,
+      "hex": "3f000000"
+    },
+    {
+      "address": 2151807296,
+      "hex": "3f800000"
+    },
+    {
+      "address": 2151807304,
+      "hex": "3c8efa35"
+    },
+    {
+      "address": 2151807312,
+      "hex": "c9800000"
+    },
+    {
+      "address": 2151807316,
+      "hex": "447a0000"
+    }
+  ],
+  "data": [
+    {
+      "address": 2150365764,
+      "size": 12,
+      "sha256": "9b8ddf1ef739bf7b27a17c33f02c862e27e16639246e87885ef1ee7c7914a656",
+      "words": [
+        0,
+        1,
+        2
+      ],
+      "name": "three wrap IDs"
+    },
+    {
+      "address": 2150365784,
+      "size": 32,
+      "sha256": "eb16dc8298669760b3971fd087f0e0a4ac083641b2817383857f20ca0989c0f3",
+      "words": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        128
+      ],
+      "name": "eight light IDs"
+    },
+    {
+      "address": 2150365852,
+      "size": 12,
+      "sha256": "4c25974396fb752c1ac68d196585032ac12032e870ec358f5663da9275026337",
+      "words": [
+        0,
+        0,
+        3212836864
+      ],
+      "name": "map material light seed"
+    },
+    {
+      "address": 2150366240,
+      "size": 8,
+      "sha256": "2b2979f362d94c89fe17a6e01637f14332de063fe7a544bdc5facfc046f4169f",
+      "words": [
+        1127219200,
+        0
+      ],
+      "name": "unsigned LOD conversion bias"
+    },
+    {
+      "address": 2151807240,
+      "size": 4,
+      "sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332",
+      "words": [
+        255
+      ],
+      "name": "ambient fallback seed"
+    },
+    {
+      "address": 2150365680,
+      "size": 40,
+      "sha256": "6ba6cb35c1def9647f4576a0b7effd2533403fa049affeabb8a7e669ebca489e",
+      "words": [
+        30,
+        33,
+        36,
+        39,
+        42,
+        45,
+        48,
+        51,
+        54,
+        57
+      ],
+      "name": "ten projected matrix IDs"
+    }
+  ],
+  "direct_reference_census": {
+    "text_sections": 7,
+    "targets": [
+      {
+        "name": "mapSetMaterial",
+        "address": 2147618388,
+        "sites": [
+          {
+            "address": 2147642144,
+            "link": true
+          },
+          {
+            "address": 2147656560,
+            "link": true
+          }
+        ]
+      },
+      {
+        "name": "mapSetTextureMatrix",
+        "address": 2147619944,
+        "sites": [
+          {
+            "address": 2147640416,
+            "link": true
+          },
+          {
+            "address": 2147641340,
+            "link": true
+          }
+        ]
+      },
+      {
+        "name": "mapSetProjTexObj",
+        "address": 2147603160,
+        "sites": []
+      },
+      {
+        "name": "mapSetLight",
+        "address": 2147633468,
+        "sites": [
+          {
+            "address": 2147618448,
+            "link": true
+          }
+        ]
+      }
+    ]
+  }
+}

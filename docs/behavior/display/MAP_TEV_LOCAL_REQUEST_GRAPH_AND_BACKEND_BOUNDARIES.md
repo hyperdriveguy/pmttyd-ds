@@ -70,3 +70,11 @@ rendering system and broader US gameplay/story/event/message/asset/audio/save/
 optional-content systems remain incomplete. The user's final complete-game
 requirements document remains deferred until those whole-system behavior/source/
 validation gates are satisfied. No game completion percentage is derived here.
+
+ID1 source-caller dependency update (2026-10-12):
+[mapSetMaterial entry](MAP_MATERIAL_ENTRY_CHANNELS_AND_TEV_INPUTS.md) now binds
+raw object word0 flags,object+1c model MATRIX ADDRESS,material U8+0b count and
+mode descriptor+0 through material+110. Map texture/light/matrix/name and
+projected object/holder publication local contracts are linked there. Loader/
+relocation/valid slot/name/flag/format/caller/GX/lifetime/scene/original images
+remain open;this source recovery does not close the whole material system.
