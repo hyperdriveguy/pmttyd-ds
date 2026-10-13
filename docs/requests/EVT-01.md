@@ -484,6 +484,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   preparation — [pitch preparation](../behavior/audio/MUSYX_LOW_PRECISION_PITCH_PREPARATION.md).
   Signed-versus-unsigned cents, cached/query/ff-skip bend, fresh modulation
   flags/wrapped products/shifts pinned; remainder/providers/runtime open.
+- [x] Complete LowPrecisionHandler portamento controller transitions/
+  interpolation — [portamento](../behavior/audio/MUSYX_LOW_PRECISION_PORTAMENTO_TRANSITIONS_AND_INTERPOLATION.md).
+  Unchanged-value exception/threshold/init/flag/cache order, wrapped signed
+  step/unsigned endpoint/elapsed-only snap pinned; remainder/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2479,3 +2483,13 @@ modulation vectors and512 byte-division cases checked. Retained note, signed
 base versus unsigned modulation cents, cached/query/ff-skip bend and fresh scale
 flag/wrapped product/signed shift order pinned. Remaining handler/providers/
 domains/original pitch/audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Low-precision portamento delivery
+
+Completed one local region in
+[portamento](../behavior/audio/MUSYX_LOW_PRECISION_PORTAMENTO_TRANSITIONS_AND_INTERPOLATION.md).
+Three spans/115 whole-region anchors/one call verified; twelve transition/eight
+interpolation vectors checked. Unchanged-controller exception, strict8064
+threshold, raw mode/init/flags/cache, wrapped signed step versus unsigned endpoint
+and elapsed-only completion pinned. Remaining handler/providers/domains/original
+glide/audio/native binding remain open; EVT-01 stays OPEN.

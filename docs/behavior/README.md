@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [Low-precision portamento](audio/MUSYX_LOW_PRECISION_PORTAMENTO_TRANSITIONS_AND_INTERPOLATION.md) | Complete controller/cache/flag transitions and wrapped interpolation | Final pitch/requeue/providers/domains and original audio |
 | [Low-precision pitch preparation](audio/MUSYX_LOW_PRECISION_PITCH_PREPARATION.md) | Complete note/cents/cached-query-skip bend/modulation region | Portamento/final pitch/requeue/providers/domains and original audio |
 | [Integer sine lookup](audio/MUSYX_SINE_QUARTER_WAVE_LOOKUP.md) | Complete sndSin/original1024 numeric coefficients/two oscillator bindings | Runtime table owners/caller domains and original audio |
 | [Low-precision modulation/pan ramps](audio/MUSYX_LOW_PRECISION_MODULATION_AND_PAN_RAMPS.md) | Complete oscillator/periodic/pan ramp region | Sine/remaining handler/providers/domains and original audio |

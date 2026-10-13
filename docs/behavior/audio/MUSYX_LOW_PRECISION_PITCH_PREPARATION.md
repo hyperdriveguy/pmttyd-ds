@@ -73,3 +73,9 @@ Remaining: portamento/controller transition and final pitch/ADSR/scaling/hardwar
 requeue/ABI regions, actual note/cents/cache/range/factor/depth/oscillator/flag/
 controller/voice providers and valid value/index/extent/alias/lifetime/IRQ/
 concurrency domains, original pitch/audio traces and native binding. EVT-01 OPEN.
+
+## 2026-10-13 — Portamento follow-up
+
+[Portamento](MUSYX_LOW_PRECISION_PORTAMENTO_TRANSITIONS_AND_INTERPOLATION.md) closes the next controller-transition/interpolation
+region80277bb0..80277d7c. Final pitch/requeue/providers/domains/original
+glide/audio/native binding remain open.

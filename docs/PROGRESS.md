@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero low-precision portamento
+
+Completed LowPrecisionHandler controller transitions/interpolation; checked
+EVT-01 portion. [Portamento](behavior/audio/MUSYX_LOW_PRECISION_PORTAMENTO_TRANSITIONS_AND_INTERPOLATION.md)
+pins unchanged-controller exception, strict threshold, raw init/flag/cache order,
+wrapped signed step versus unsigned endpoint and elapsed-only completion.
+Remaining handler/providers/domains/original glide/audio/native binding open.
+
+Validation: read-only ISO manifest passed three spans,115 whole-region anchors,
+one call. Twelve transition/eight interpolation vectors checked, including
+threshold/ff/mode/zero-divisor/overshoot/wrap. Link audit passed877 Markdown files/
+zero broken links; scoped `git diff --check` passed. Mathematical source deductions
+are separate from original execution. Documentation/metadata only; no `make test`/
+`make all` rerun. Fresh full original handler ELF/listing/generator stay `/tmp`;
+no bodies/binary assets committed. Concurrent native edits excluded. Previously
+approved push remains pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 LowPrecisionHandler final ADSR/pitch/scaling/hardware/
+requeue/ABI and body composition; actual channel/set/controller/cache/mode/flags/
+duration/current/time/note/voice providers and valid index/extent/value/alias/
+lifetime/IRQ/concurrency domains, original glide/pitch/audio traces. Remaining
+macro/stream/song/backend, lower-priority inbox and full native/game work open.
+
 ## 2026-10-13 — Inbox priority-zero low-precision pitch preparation
 
 Completed LowPrecisionHandler note/cents/bend/modulation region; checked EVT-01
