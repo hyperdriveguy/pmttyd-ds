@@ -222,7 +222,9 @@ void Renderer::renderFrontend(const Frontend& f,OpeningDemo& demo,const OpeningS
         ok=frontImage("title-background",48,0,304,240);
         ok=frontImage("title-logo",90,24,220,119) && ok;
         if(f.screen==FrontScreen::Title)ok=frontImage("title-prompt",128,159,144,16) && ok;
-        ok=frontImage("title-copyright",132,215,136,32) && ok;
+        // Native reflow: keep the full half-size original copyright inside
+        // the240-line viewport rather than clipping its last7 lines.
+        ok=frontImage("title-copyright",132,208,136,32) && ok;
     }
     C2D_Flush();C2D_TargetClear(bottom,Paper);C2D_Prepare();C2D_SceneBegin(bottom);
     if(f.screen==FrontScreen::Demo) {
