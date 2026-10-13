@@ -1,0 +1,318 @@
+{
+  "schema": 1,
+  "scope": "Two complete synth job insertion/start timestamp bodies; queue consumer/type/member/time/provider/runtime open",
+  "complete_bodies": [
+    "synthAddJob",
+    "synthStartSynthJobHandling"
+  ],
+  "linked_only": [],
+  "dol_spans": [
+    {
+      "name": "synthAddJob",
+      "address": 2150073880,
+      "size": 336,
+      "sha256": "f6da5afc2a48347c693b299e0d814251239e4fce8f95b68103d515461057fbf8"
+    },
+    {
+      "name": "synthStartSynthJobHandling",
+      "address": 2150074216,
+      "size": 100,
+      "sha256": "fe772bb398eaf51d7f8e08666ac09cedb642f437fbee8afbcb2dceff54ecea5b"
+    }
+  ],
+  "dol_anchors": {
+    "2150073880": "880d1f41",
+    "2150073888": "3ca08040",
+    "2150073904": "38058d94",
+    "2150073916": "41820084",
+    "2150073920": "40800010",
+    "2150073928": "40800014",
+    "2150073932": "480000f0",
+    "2150073940": "408000e8",
+    "2150073944": "480000d0",
+    "2150073948": "88030009",
+    "2150073960": "41820050",
+    "2150073972": "80c30000",
+    "2150073980": "4182000c",
+    "2150073984": "80030004",
+    "2150073988": "90060004",
+    "2150073992": "80c30004",
+    "2150074000": "41820010",
+    "2150074004": "80030000",
+    "2150074008": "90060000",
+    "2150074012": "4800001c",
+    "2150074016": "88030009",
+    "2150074020": "3cc08040",
+    "2150074024": "80e30000",
+    "2150074028": "38668d94",
+    "2150074044": "48000080",
+    "2150074048": "3883000c",
+    "2150074052": "88030015",
+    "2150074060": "41820054",
+    "2150074072": "80640000",
+    "2150074080": "4182000c",
+    "2150074084": "80040004",
+    "2150074088": "90030004",
+    "2150074092": "80640004",
+    "2150074100": "41820010",
+    "2150074104": "80040000",
+    "2150074108": "90030000",
+    "2150074112": "48000020",
+    "2150074116": "88040009",
+    "2150074120": "3c608040",
+    "2150074124": "38638d94",
+    "2150074128": "80c40000",
+    "2150074140": "90c30008",
+    "2150074144": "38e50008",
+    "2150074148": "48000018",
+    "2150074152": "38830018",
+    "2150074156": "88030021",
+    "2150074168": "38e50004",
+    "2150074172": "99040009",
+    "2150074176": "80070000",
+    "2150074184": "90040000",
+    "2150074188": "4182000c",
+    "2150074192": "80670000",
+    "2150074196": "90830004",
+    "2150074200": "38000000",
+    "2150074204": "90040004",
+    "2150074208": "90870000",
+    "2150074224": "38800000",
+    "2150074228": "38a00000",
+    "2150074232": "90010014",
+    "2150074236": "93e1000c",
+    "2150074244": "800d1f80",
+    "2150074248": "80cd1f84",
+    "2150074252": "90c30028",
+    "2150074256": "90030024",
+    "2150074260": "800d1f80",
+    "2150074264": "80cd1f84",
+    "2150074268": "90c30030",
+    "2150074272": "9003002c",
+    "2150074276": "4bfffe75",
+    "2150074284": "38800001",
+    "2150074288": "38a00000",
+    "2150074292": "4bfffe65",
+    "2150074296": "80010014",
+    "2150074300": "83e1000c",
+    "2150074308": "38210010"
+  },
+  "direct_calls": [
+    {
+      "site": 2150074276,
+      "target": 2150073880,
+      "name": "synthAddJob"
+    },
+    {
+      "site": 2150074292,
+      "target": 2150073880,
+      "name": "synthAddJob"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_slot_vectors": [
+    {
+      "index": 0,
+      "delay": 0,
+      "slot": 0
+    },
+    {
+      "index": 0,
+      "delay": 1,
+      "slot": 0
+    },
+    {
+      "index": 0,
+      "delay": 255,
+      "slot": 0
+    },
+    {
+      "index": 0,
+      "delay": 256,
+      "slot": 1
+    },
+    {
+      "index": 0,
+      "delay": 8191,
+      "slot": 31
+    },
+    {
+      "index": 0,
+      "delay": 8192,
+      "slot": 0
+    },
+    {
+      "index": 0,
+      "delay": 4294967295,
+      "slot": 31
+    },
+    {
+      "index": 31,
+      "delay": 0,
+      "slot": 31
+    },
+    {
+      "index": 31,
+      "delay": 1,
+      "slot": 31
+    },
+    {
+      "index": 31,
+      "delay": 255,
+      "slot": 31
+    },
+    {
+      "index": 31,
+      "delay": 256,
+      "slot": 0
+    },
+    {
+      "index": 31,
+      "delay": 8191,
+      "slot": 30
+    },
+    {
+      "index": 31,
+      "delay": 8192,
+      "slot": 31
+    },
+    {
+      "index": 31,
+      "delay": 4294967295,
+      "slot": 30
+    },
+    {
+      "index": 255,
+      "delay": 0,
+      "slot": 31
+    },
+    {
+      "index": 255,
+      "delay": 1,
+      "slot": 31
+    },
+    {
+      "index": 255,
+      "delay": 255,
+      "slot": 31
+    },
+    {
+      "index": 255,
+      "delay": 256,
+      "slot": 0
+    },
+    {
+      "index": 255,
+      "delay": 8191,
+      "slot": 30
+    },
+    {
+      "index": 255,
+      "delay": 8192,
+      "slot": 31
+    },
+    {
+      "index": 255,
+      "delay": 4294967295,
+      "slot": 30
+    }
+  ],
+  "derived_category_layout": [
+    {
+      "type": 0,
+      "node_offset": 0,
+      "slot_word_offset": 0
+    },
+    {
+      "type": 1,
+      "node_offset": 12,
+      "slot_word_offset": 8
+    },
+    {
+      "type": 2,
+      "node_offset": 24,
+      "slot_word_offset": 4
+    }
+  ],
+  "derived_duplicate_vectors": [
+    {
+      "type": 0,
+      "old_slot": 5,
+      "target_slot": 5,
+      "returns_early": true,
+      "unlinks": false
+    },
+    {
+      "type": 0,
+      "old_slot": 6,
+      "target_slot": 5,
+      "returns_early": false,
+      "unlinks": true
+    },
+    {
+      "type": 0,
+      "old_slot": 255,
+      "target_slot": 5,
+      "returns_early": false,
+      "unlinks": false
+    },
+    {
+      "type": 1,
+      "old_slot": 5,
+      "target_slot": 5,
+      "returns_early": true,
+      "unlinks": false
+    },
+    {
+      "type": 1,
+      "old_slot": 6,
+      "target_slot": 5,
+      "returns_early": false,
+      "unlinks": true
+    },
+    {
+      "type": 1,
+      "old_slot": 255,
+      "target_slot": 5,
+      "returns_early": false,
+      "unlinks": false
+    },
+    {
+      "type": 2,
+      "old_slot": 5,
+      "target_slot": 5,
+      "returns_early": true,
+      "unlinks": false
+    },
+    {
+      "type": 2,
+      "old_slot": 6,
+      "target_slot": 5,
+      "returns_early": true,
+      "unlinks": false
+    },
+    {
+      "type": 2,
+      "old_slot": 255,
+      "target_slot": 5,
+      "returns_early": false,
+      "unlinks": false
+    }
+  ],
+  "derived_start_time_mapping": [
+    {
+      "global_high": 2151804576,
+      "global_low": 2151804580,
+      "target_high": 36,
+      "target_low": 40
+    },
+    {
+      "global_high": 2151804576,
+      "global_low": 2151804580,
+      "target_high": 44,
+      "target_low": 48
+    }
+  ]
+}

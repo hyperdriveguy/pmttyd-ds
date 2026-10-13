@@ -151,6 +151,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [macro lifecycle](../behavior/audio/MUSYX_MACRO_ACTIVE_INACTIVE_WAIT_AND_INIT.md).
   State/list/wait/time/flag/job request order pinned; job/interpreter/providers/
   wait/domain/concurrency/original execution remain open.
+- [x] Complete synthAddJob/synthStartSynthJobHandling local bodies —
+  [job insertion/start timestamps](../behavior/audio/MUSYX_SYNTH_JOB_INSERTION_AND_START_TIMESTAMPS.md).
+  Slot/category/duplicate/root/time order pinned; queue init/consumer/type/
+  member/time/IRQ/concurrency/original execution remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1062,3 +1066,29 @@ resolved calls passes;6 wait/5 mask/7 state vectors/job order are static deducti
 Full fresh ELFs/listings stay `/tmp`; no original execution/native/body/asset
 export. Job/interpreter/wait/state/list/voice/provider/IRQ/concurrency and original
 macro/activation/audio remain OPEN.
+
+### 2026-10-13 — Synth job insertion and initial timestamp requests
+
+[Two complete local bodies](../behavior/audio/MUSYX_SYNTH_JOB_INSERTION_AND_START_TIMESTAMPS.md)
+close32-slot selection, three embedded categories, category0/1 same-slot return/
+reschedule versus category2 any-queued return, exact unlink/prepend writes and
+two independently captured real-time pairs before0/1 requests. Unsupported raw
+categories lack initialized pointers; no safe default/no-op invented.
+
+Validation: read-only manifesttwo spans/75 anchors/two resolved calls passes.
+21 slot/3 category/9 duplicate/two time mappings are source deductions, not
+execution. Fresh full ELFs/listings stay `/tmp`; no native/body/asset export.
+Queue initialization/markers/index/time/consumer/type/member/alias/IRQ/concurrency
+and original scheduling/macro/voice/audio remain OPEN.
+
+2026-10-13 trio target/turn/result follow-up:
+[Trio targets, turns and victory](../behavior/battle/UNDERGROUND_TRIO_TARGETS_TURNS_AND_VICTORY.md)
+usesexistingcompletecandidate/UI/countcontracts withactualdefaultweaponmasks
+andfreshtrio sourcecandidates: Jump/Headbonkall3includingselectablespike;
+HammerfrontGoombaonlyuntilremoved,airborneexcluded. Exactbodygeometry/bias
+importoffsets, precheck1(finalaccuracydraw) vslaterunresistedtopspikecounter
+1damage/return-1, firstturncounts/phaseIDs, victoryresult1producerandflag31
+completionpublication recovered. Boundedremaining requests: actualsource
+HP→status27death/hit-event/barrier producer (CheckStatus27doesnotreadHP),
+usedmenu/turn/orderchange/headbonk/guard/servicecomposition, completeend
+reward/override/loss/escape/fieldreturn andoriginaltrace. No nativeedit/commit.

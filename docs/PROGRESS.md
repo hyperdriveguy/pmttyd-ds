@@ -6,6 +6,25 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 synthesis job insertion and start timestamps
+
+Delivered [jobs/start time](behavior/audio/MUSYX_SYNTH_JOB_INSERTION_AND_START_TIMESTAMPS.md).
+Two complete bodies pin32-slot arithmetic, distinct category duplicate/reschedule
+rules, ordered node/root writes and two real-time captures before0/1 requests.
+Unsupported categories have no guarded failure; source type precondition remains.
+Marked local EVT-01 portions complete; queue consumers/runtime remain OPEN.
+
+Validation: generic read-only verifiertwo spans/75 anchors/two direct calls passes.
+21 slot/3 category/9 duplicate/two timestamp maps checked as deductions; original
+code not executed. Full fresh ELFs/listings stay `/tmp`. Link audit771 Markdown
+files/0 broken; whitespace checks pass. Docs/metadata only: no make rerun, native
+change or original body/asset export. Isolated index excludes unrelated work.
+
+Next/limits: queue/table/index/markers/time init and consumer advancement, category/
+member/null/alias/IRQ/concurrency source domains, actual job/macro/voice scheduling
+and original queue/audio traces. Continue priority0 source/backend then priority1
+damage graph. No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Priority0 macro active/inactive/wait/init lifecycle
 
 Delivered [macro lifecycle](behavior/audio/MUSYX_MACRO_ACTIVE_INACTIVE_WAIT_AND_INIT.md).

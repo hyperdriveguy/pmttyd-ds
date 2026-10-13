@@ -92,3 +92,5 @@ Remaining: synthAddJob/macro interpreter/wait-time producers, state/active/time/
 voice/pointer/count providers and member/alias/IRQ/concurrency domains, actual job/
 macro/voice lifetime and original wait/activation/audio traces. Four complete
 local bodies are answered; full native/source/runtime/hardware remains OPEN.
+
+[Complete job insertion/start timestamps](MUSYX_SYNTH_JOB_INSERTION_AND_START_TIMESTAMPS.md) now closes the exact synthAddJob child, including distinct category duplicate rules and invalid-type precondition. Queue initialization/consumers/time/provider/original execution remain open.
