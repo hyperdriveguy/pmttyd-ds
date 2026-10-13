@@ -187,6 +187,12 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Exact local voice/fader/aux/job initial fields,32 row types and callback
   publication pinned; child services/other writers/provider bounds/reinit
   domains and original initialization/scheduling/audio remain open.
+- [x] Complete synthHWMessageHandler/hwGetVirtualSampleID/virtual start-end/
+  macSampleEndNotify bodies —
+  [hardware messages/sample notifications](../behavior/audio/MUSYX_HW_MESSAGE_AND_SAMPLE_NOTIFICATION_ORDER.md).
+  Four-message dispatch, reclaim/reserve/map/generation/payload, callback-zero
+  acceptance/fresh cleanup and macro wakeup pinned; providers/children/actual
+  callbacks/domains and original message/sample/audio evidence remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1235,3 +1241,22 @@ Fresh full ELFs/listings stay `/tmp`; no native change/original execution/body/
 asset export. Child/controller/allocation/voice/callback services, other writers,
 caller bounds/null/overflow/alias/IRQ/concurrency/reinit and original init/audio
 remain OPEN.
+
+### 2026-10-13 — Installed hardware messages and sample notifications
+
+[Five complete local bodies](../behavior/audio/MUSYX_HW_MESSAGE_AND_SAMPLE_NOTIFICATION_ORDER.md)
+close exact four-message dispatch, hardware virtual-ID lookup, virtual end
+map/generation/callback/fresh cleanup, macro state/event/flag wakeup and virtual
+start reclaim/first-free reservation/map publication/candidate generation/
+payload/callback-zero acceptance versus buffer+slot cleanup. Virtual end runs
+before message0's fresh full-ID macro check; message3 has no identity/gate/macro
+path. Only message2 propagates a child result. No invented callback success
+convention, reservation rollback or post-callback identity repair.
+
+Validation: read-only manifest16 spans (five complete/11 linked),201 anchors/
+20 calls passes. Nine message/eight ID/15 generation/eight wakeup/four callback/
+five stable-slot vectors are deductions; full fresh ELFs/listings stay `/tmp`.
+No native change/original execution/body/asset export. Table/map/count/counter/
+callback/voice/event/flag providers, hardware/VID/sequence-instance children,
+actual callback mutations, bounds/alias/IRQ/reentrancy/concurrency and original
+start/end/refusal/reuse/message/audio traces remain OPEN.

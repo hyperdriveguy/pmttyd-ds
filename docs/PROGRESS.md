@@ -2,6 +2,32 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero hardware message/sample notifications
+
+Completed five hardware-message/sample notification local contracts for EVT-01
+and checked the corresponding inbox portion.
+[Message/start-end order](behavior/audio/MUSYX_HW_MESSAGE_AND_SAMPLE_NOTIFICATION_ORDER.md)
+pins the installed four-message dispatch, hardware virtual-ID leaf, virtual
+end matching/callback cleanup, macro sample-end restoration/wakeup and virtual
+start reclaim/reserve/map/generation/payload/callback order. Callback return0
+accepts a start. End cleanup reads fresh slot voice after callback; message0
+checks full voice identity only after virtual end. No original audio timing,
+callback mutation guarantee or post-callback identity repair is inferred.
+
+Validation: read-only ISO manifest passed16 spans (five complete/11 linked),
+201 anchors/20 calls. Nine message/eight ID/15 generation/eight wakeup/four
+callback/five stable-slot vectors checked as deductions. Documentation link
+audit passed782 Markdown files/zero broken links; `git diff --check` passed.
+Documentation/metadata only; no `make test`/`make all` rerun. Original full
+inspection listings/ELFs stay `/tmp`; no bodies/assets committed. Unrelated
+concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 virtual table/map/count/counter/callback and voice/
+event/flag providers, hardware/VID/sequence-instance children, actual callbacks
+and bounds/alias/IRQ/reentrancy/concurrency domains; original start/end/refusal/
+reuse/message/audio traces. Full scheduling/native/runtime binding, lower-
+priority inbox and full-game work remain incomplete.
+
 ## 2026-10-13 — Inbox priority-zero synthesis initialization
 
 Completed synthInit/synthSetMusicVolumeType/sndVolume/hwSetMesgCallback local

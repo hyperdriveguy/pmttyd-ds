@@ -168,3 +168,10 @@ IDs/time/mode/type providers and bounds/null/overflow/alias/IRQ/concurrency/
 reinit invariants, original initialization/reinitialization/scheduling/audio
 traces. These local services are answered; EVT-01 and full native/source/runtime/
 hardware equivalence remain OPEN.
+
+### Installed callback follow-up
+
+[Complete hardware-message/sample notification graph](MUSYX_HW_MESSAGE_AND_SAMPLE_NOTIFICATION_ORDER.md)
+now closes the installed handler and its virtual start/end, hardware-ID and
+macro-end local bodies. Callback implementations/table providers, linked
+hardware/ID services and original message/scheduling/audio traces remain open.

@@ -1,0 +1,791 @@
+{
+  "schema": 1,
+  "scope": "Five complete hardware-message/sample notification bodies; ordered start/end generation callback publication, provider/runtime open",
+  "complete_bodies": [
+    "synthHWMessageHandler",
+    "hwGetVirtualSampleID",
+    "vsSampleEndNotify",
+    "macSampleEndNotify",
+    "vsSampleStartNotify"
+  ],
+  "linked_only": [
+    "voiceKill",
+    "macMakeActive",
+    "_savegpr_26",
+    "aramGetStreamBufferAddress",
+    "hwSetVirtualSampleLoopBuffer",
+    "hwGetSampleID",
+    "vidGetPublicId",
+    "seqGetInstanceForVoice",
+    "hwGetSampleExtraData",
+    "hwGetSampleType",
+    "_restgpr_26"
+  ],
+  "dol_spans": [
+    {
+      "name": "synthHWMessageHandler",
+      "address": 2150078248,
+      "size": 208,
+      "sha256": "42c7eddb44bea874d7b626f093e7c6d9e30f3a5d1362b3a7be551a098f315316"
+    },
+    {
+      "name": "hwGetVirtualSampleID",
+      "address": 2150176244,
+      "size": 40,
+      "sha256": "ee6bfe465b8420b099ebfa9b44b1769a7b9a31cd42d1abfceb3dcb0a3f93a895"
+    },
+    {
+      "name": "vsSampleEndNotify",
+      "address": 2150133476,
+      "size": 168,
+      "sha256": "69c0c01b67aee3a13daf834c3ecfcde2edc30f405e8398127b6ce48586f4ad7e"
+    },
+    {
+      "name": "macSampleEndNotify",
+      "address": 2150119944,
+      "size": 172,
+      "sha256": "dbdfc2a1fbcc36399f9bd8b48e25bd749d13cc9291f63a9baebd2edb095d64b3"
+    },
+    {
+      "name": "vsSampleStartNotify",
+      "address": 2150132760,
+      "size": 716,
+      "sha256": "77a97862d58ed437ff9c215417fb4ac471ea89f443848a38331e874b83c2ac93"
+    },
+    {
+      "name": "voiceKill",
+      "address": 2150128036,
+      "size": 564,
+      "sha256": "9692e0b2d45c1106eec1921695966c814248ea244f0c8a58a6b46eeb66d2dae7"
+    },
+    {
+      "name": "macMakeActive",
+      "address": 2150120784,
+      "size": 264,
+      "sha256": "26132eacfba3d5579c15a85f19ac04506ff5bcf7a59d589e01b028b2c1bbdd5a"
+    },
+    {
+      "name": "_savegpr_26",
+      "address": 2149992836,
+      "size": 4,
+      "sha256": "f9a0aa775cd3482d87e2d3594f54c8a8832221d827a4d8687a00b0d1a8c4ac1d"
+    },
+    {
+      "name": "aramGetStreamBufferAddress",
+      "address": 2150179472,
+      "size": 56,
+      "sha256": "2f9b1f95b69375f66cba48e6cfb72193786faea258a6e07d4b1e440409d96ccb"
+    },
+    {
+      "name": "hwSetVirtualSampleLoopBuffer",
+      "address": 2150173636,
+      "size": 32,
+      "sha256": "3874b92e4c3e1bae4faad3a8735e83d8e3ddf7c50db3c6facbe1b43d73e95f6f"
+    },
+    {
+      "name": "hwGetSampleID",
+      "address": 2150173708,
+      "size": 20,
+      "sha256": "f63d7d5b27b79f93ada646dd300b73a8120ccf6a9bfbdd9d73e254871de2b012"
+    },
+    {
+      "name": "vidGetPublicId",
+      "address": 2150123956,
+      "size": 84,
+      "sha256": "b5c4680233914f0a616f768ad518ddebc49ae12d87f2b705d15c2f4901f8dc12"
+    },
+    {
+      "name": "seqGetInstanceForVoice",
+      "address": 2150080304,
+      "size": 164,
+      "sha256": "f62b816f43b52efa02c81ee6f87bd400a45bb2260398341209f3c3fdd8d1bf4b"
+    },
+    {
+      "name": "hwGetSampleExtraData",
+      "address": 2150173728,
+      "size": 20,
+      "sha256": "9fedab2e2f36b972755452da21da2438e133571a37b4ed8fd17551b639cd5304"
+    },
+    {
+      "name": "hwGetSampleType",
+      "address": 2150173688,
+      "size": 20,
+      "sha256": "c5beccb8be972f0088afbc1249ce4027df0ec519065912fd0abd532b68ffc5f9"
+    },
+    {
+      "name": "_restgpr_26",
+      "address": 2149992912,
+      "size": 4,
+      "sha256": "6f2c01e0c60008d78187c0c8715d1a5751793fd00e4991dbda7b49b230a193a9"
+    }
+  ],
+  "dol_anchors": {
+    "2150078260": "90010024",
+    "2150078264": "93e1001c",
+    "2150078268": "93c10018",
+    "2150078272": "3bc00000",
+    "2150078276": "93a10014",
+    "2150078284": "41820070",
+    "2150078288": "40800014",
+    "2150078296": "41820018",
+    "2150078300": "40800054",
+    "2150078304": "48000078",
+    "2150078312": "40800070",
+    "2150078316": "48000060",
+    "2150078324": "800d1f70",
+    "2150078336": "8804011c",
+    "2150078344": "40820050",
+    "2150078348": "48017e69",
+    "2150078352": "4800d755",
+    "2150078356": "800d1f70",
+    "2150078364": "800300f4",
+    "2150078372": "40820034",
+    "2150078376": "4800a261",
+    "2150078380": "4800002c",
+    "2150078388": "4800c1f1",
+    "2150078392": "48000020",
+    "2150078400": "4800d459",
+    "2150078408": "48000010",
+    "2150078416": "48017e25",
+    "2150078420": "4800d711",
+    "2150078424": "80010024",
+    "2150078432": "83e1001c",
+    "2150078436": "83c10018",
+    "2150078440": "83a10014",
+    "2150078448": "38210020",
+    "2150176248": "806d2068",
+    "2150176256": "880300f0",
+    "2150176264": "4082000c",
+    "2150176268": "3860ffff",
+    "2150176276": "806300ec",
+    "2150133484": "90010014",
+    "2150133488": "3c030001",
+    "2150133496": "93e1000c",
+    "2150133500": "93c10008",
+    "2150133504": "41820074",
+    "2150133508": "3c808040",
+    "2150133516": "38a46b00",
+    "2150133520": "3bc50b08",
+    "2150133532": "41820058",
+    "2150133556": "40820040",
+    "2150133560": "81850b4c",
+    "2150133568": "41820014",
+    "2150133572": "38840018",
+    "2150133576": "38600002",
+    "2150133588": "3c608040",
+    "2150133592": "38a00000",
+    "2150133596": "38036b00",
+    "2150133600": "386000ff",
+    "2150133608": "98a40008",
+    "2150133612": "8804000b",
+    "2150133620": "80010014",
+    "2150133624": "83e1000c",
+    "2150133628": "83c10008",
+    "2150133636": "38210010",
+    "2150119952": "90010014",
+    "2150119956": "93e1000c",
+    "2150119964": "8003004c",
+    "2150119972": "4082007c",
+    "2150119976": "881f0068",
+    "2150119984": "41820034",
+    "2150119988": "801f0054",
+    "2150119996": "41820028",
+    "2150120000": "809f0060",
+    "2150120004": "38000000",
+    "2150120008": "909f0038",
+    "2150120012": "809f0054",
+    "2150120016": "909f0034",
+    "2150120020": "901f0054",
+    "2150120024": "480002f9",
+    "2150120028": "38000001",
+    "2150120032": "48000008",
+    "2150120036": "38000000",
+    "2150120044": "40820034",
+    "2150120048": "801f0114",
+    "2150120052": "38800000",
+    "2150120056": "80bf0118",
+    "2150120060": "3c600004",
+    "2150120084": "4182000c",
+    "2150120092": "480002b5",
+    "2150120096": "80010014",
+    "2150120100": "83e1000c",
+    "2150120108": "38210010",
+    "2150132768": "90010024",
+    "2150132772": "39610020",
+    "2150132776": "4bfddd5d",
+    "2150132784": "3c608040",
+    "2150132792": "39200000",
+    "2150132800": "38c36b00",
+    "2150132804": "38a00000",
+    "2150132808": "388000ff",
+    "2150132812": "48000044",
+    "2150132828": "39030008",
+    "2150132832": "88030008",
+    "2150132840": "41820024",
+    "2150132844": "3863000b",
+    "2150132848": "88030000",
+    "2150132856": "40820014",
+    "2150132860": "98a80000",
+    "2150132864": "88030000",
+    "2150132872": "98830b08",
+    "2150132876": "39290001",
+    "2150132880": "89060000",
+    "2150132892": "4180ffb4",
+    "2150132896": "3c608040",
+    "2150132900": "3be00000",
+    "2150132904": "38836b00",
+    "2150132908": "48000040",
+    "2150132924": "88030008",
+    "2150132932": "40820024",
+    "2150132936": "3c608040",
+    "2150132940": "38800001",
+    "2150132944": "38636b00",
+    "2150132948": "38000000",
+    "2150132956": "98830008",
+    "2150132960": "9003000c",
+    "2150132964": "48000018",
+    "2150132968": "3bff0001",
+    "2150132980": "4180ffbc",
+    "2150132984": "3be000ff",
+    "2150132988": "3c608040",
+    "2150132996": "38636b00",
+    "2150133004": "3b830b08",
+    "2150133016": "418201a0",
+    "2150133024": "38800000",
+    "2150133028": "4800b56d",
+    "2150133032": "3c808040",
+    "2150133040": "38a46b00",
+    "2150133048": "80a50004",
+    "2150133056": "48009e85",
+    "2150133064": "48009ec5",
+    "2150133072": "3c808040",
+    "2150133080": "38c46b00",
+    "2150133088": "b0640018",
+    "2150133092": "88e60000",
+    "2150133100": "38600000",
+    "2150133104": "38050001",
+    "2150133108": "b0060b48",
+    "2150133112": "4800002c",
+    "2150133128": "88040008",
+    "2150133136": "41820010",
+    "2150133148": "41820014",
+    "2150133152": "38630001",
+    "2150133164": "4180ffd0",
+    "2150133176": "4082ffb0",
+    "2150133180": "3c808040",
+    "2150133188": "38046b00",
+    "2150133200": "4bffdbe5",
+    "2150133204": "3c808040",
+    "2150133208": "3c030001",
+    "2150133212": "38846b00",
+    "2150133228": "41820020",
+    "2150133232": "80650000",
+    "2150133236": "4bff313d",
+    "2150133240": "3c808040",
+    "2150133244": "38046b00",
+    "2150133252": "90640020",
+    "2150133256": "48000010",
+    "2150133264": "3800ffff",
+    "2150133268": "90030020",
+    "2150133276": "48009e05",
+    "2150133280": "3c808040",
+    "2150133284": "38046b00",
+    "2150133292": "90640024",
+    "2150133300": "48009dc5",
+    "2150133304": "3c808040",
+    "2150133308": "38a46b00",
+    "2150133316": "9864000a",
+    "2150133320": "3b44000b",
+    "2150133324": "9b64000b",
+    "2150133328": "81850b4c",
+    "2150133336": "4182002c",
+    "2150133340": "38840018",
+    "2150133344": "38600000",
+    "2150133360": "40820014",
+    "2150133376": "4800004c",
+    "2150133384": "38800000",
+    "2150133388": "38a00000",
+    "2150133392": "48009d35",
+    "2150133396": "3c608040",
+    "2150133400": "38a00000",
+    "2150133404": "38036b00",
+    "2150133408": "386000ff",
+    "2150133416": "98a40008",
+    "2150133420": "881a0000",
+    "2150133428": "48000014",
+    "2150133436": "38800000",
+    "2150133440": "38a00000",
+    "2150133444": "48009d01",
+    "2150133448": "3860ffff",
+    "2150133452": "39610020",
+    "2150133456": "4bfddb01",
+    "2150133460": "80010024",
+    "2150133468": "38210020"
+  },
+  "direct_calls": [
+    {
+      "site": 2150078348,
+      "target": 2150176244,
+      "name": "hwGetVirtualSampleID"
+    },
+    {
+      "site": 2150078352,
+      "target": 2150133476,
+      "name": "vsSampleEndNotify"
+    },
+    {
+      "site": 2150078376,
+      "target": 2150119944,
+      "name": "macSampleEndNotify"
+    },
+    {
+      "site": 2150078388,
+      "target": 2150128036,
+      "name": "voiceKill"
+    },
+    {
+      "site": 2150078400,
+      "target": 2150132760,
+      "name": "vsSampleStartNotify"
+    },
+    {
+      "site": 2150078416,
+      "target": 2150176244,
+      "name": "hwGetVirtualSampleID"
+    },
+    {
+      "site": 2150078420,
+      "target": 2150133476,
+      "name": "vsSampleEndNotify"
+    },
+    {
+      "site": 2150120024,
+      "target": 2150120784,
+      "name": "macMakeActive"
+    },
+    {
+      "site": 2150120092,
+      "target": 2150120784,
+      "name": "macMakeActive"
+    },
+    {
+      "site": 2150132776,
+      "target": 2149992836,
+      "name": "_savegpr_26"
+    },
+    {
+      "site": 2150133028,
+      "target": 2150179472,
+      "name": "aramGetStreamBufferAddress"
+    },
+    {
+      "site": 2150133056,
+      "target": 2150173636,
+      "name": "hwSetVirtualSampleLoopBuffer"
+    },
+    {
+      "site": 2150133064,
+      "target": 2150173708,
+      "name": "hwGetSampleID"
+    },
+    {
+      "site": 2150133200,
+      "target": 2150123956,
+      "name": "vidGetPublicId"
+    },
+    {
+      "site": 2150133236,
+      "target": 2150080304,
+      "name": "seqGetInstanceForVoice"
+    },
+    {
+      "site": 2150133276,
+      "target": 2150173728,
+      "name": "hwGetSampleExtraData"
+    },
+    {
+      "site": 2150133300,
+      "target": 2150173688,
+      "name": "hwGetSampleType"
+    },
+    {
+      "site": 2150133392,
+      "target": 2150173636,
+      "name": "hwSetVirtualSampleLoopBuffer"
+    },
+    {
+      "site": 2150133444,
+      "target": 2150173636,
+      "name": "hwSetVirtualSampleLoopBuffer"
+    },
+    {
+      "site": 2150133456,
+      "target": 2149992912,
+      "name": "_restgpr_26"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_message_routes": [
+    {
+      "message": 0,
+      "path": "gated_end_then_identity_macro"
+    },
+    {
+      "message": 1,
+      "path": "voiceKill"
+    },
+    {
+      "message": 2,
+      "path": "start_return"
+    },
+    {
+      "message": 3,
+      "path": "unconditional_end"
+    },
+    {
+      "message": 4,
+      "path": "return_zero"
+    },
+    {
+      "message": 255,
+      "path": "return_zero"
+    },
+    {
+      "message": 256,
+      "path": "return_zero"
+    },
+    {
+      "message": 2147483648,
+      "path": "return_zero"
+    },
+    {
+      "message": 4294967295,
+      "path": "return_zero"
+    }
+  ],
+  "derived_end_id_vectors": [
+    {
+      "raw": 0,
+      "miss": false,
+      "voice": 0,
+      "generation": 0
+    },
+    {
+      "raw": 1,
+      "miss": false,
+      "voice": 1,
+      "generation": 0
+    },
+    {
+      "raw": 255,
+      "miss": false,
+      "voice": 255,
+      "generation": 0
+    },
+    {
+      "raw": 256,
+      "miss": false,
+      "voice": 0,
+      "generation": 1
+    },
+    {
+      "raw": 305419896,
+      "miss": false,
+      "voice": 120,
+      "generation": 13398
+    },
+    {
+      "raw": 16777215,
+      "miss": false,
+      "voice": 255,
+      "generation": 65535
+    },
+    {
+      "raw": 2147483649,
+      "miss": false,
+      "voice": 1,
+      "generation": 0
+    },
+    {
+      "raw": 4294967295,
+      "miss": true,
+      "voice": 255,
+      "generation": 65535
+    }
+  ],
+  "derived_generation_vectors": [
+    {
+      "generation": 0,
+      "next_counter": 1,
+      "voice": 0,
+      "public_id": 0
+    },
+    {
+      "generation": 0,
+      "next_counter": 1,
+      "voice": 7,
+      "public_id": 7
+    },
+    {
+      "generation": 0,
+      "next_counter": 1,
+      "voice": 255,
+      "public_id": 255
+    },
+    {
+      "generation": 1,
+      "next_counter": 2,
+      "voice": 0,
+      "public_id": 256
+    },
+    {
+      "generation": 1,
+      "next_counter": 2,
+      "voice": 7,
+      "public_id": 263
+    },
+    {
+      "generation": 1,
+      "next_counter": 2,
+      "voice": 255,
+      "public_id": 511
+    },
+    {
+      "generation": 255,
+      "next_counter": 256,
+      "voice": 0,
+      "public_id": 65280
+    },
+    {
+      "generation": 255,
+      "next_counter": 256,
+      "voice": 7,
+      "public_id": 65287
+    },
+    {
+      "generation": 255,
+      "next_counter": 256,
+      "voice": 255,
+      "public_id": 65535
+    },
+    {
+      "generation": 256,
+      "next_counter": 257,
+      "voice": 0,
+      "public_id": 65536
+    },
+    {
+      "generation": 256,
+      "next_counter": 257,
+      "voice": 7,
+      "public_id": 65543
+    },
+    {
+      "generation": 256,
+      "next_counter": 257,
+      "voice": 255,
+      "public_id": 65791
+    },
+    {
+      "generation": 65535,
+      "next_counter": 0,
+      "voice": 0,
+      "public_id": 16776960
+    },
+    {
+      "generation": 65535,
+      "next_counter": 0,
+      "voice": 7,
+      "public_id": 16776967
+    },
+    {
+      "generation": 65535,
+      "next_counter": 0,
+      "voice": 255,
+      "public_id": 16777215
+    }
+  ],
+  "derived_macro_wake_vectors": [
+    {
+      "state": 0,
+      "event_byte": 1,
+      "event_pointer": 1,
+      "flags_hi": 0,
+      "flags_lo": 0,
+      "branch": "none"
+    },
+    {
+      "state": 1,
+      "event_byte": 1,
+      "event_pointer": 1,
+      "flags_hi": 0,
+      "flags_lo": 0,
+      "branch": "event_restore"
+    },
+    {
+      "state": 1,
+      "event_byte": 0,
+      "event_pointer": 1,
+      "flags_hi": 0,
+      "flags_lo": 0,
+      "branch": "none"
+    },
+    {
+      "state": 1,
+      "event_byte": 1,
+      "event_pointer": 0,
+      "flags_hi": 0,
+      "flags_lo": 0,
+      "branch": "none"
+    },
+    {
+      "state": 1,
+      "event_byte": 0,
+      "event_pointer": 0,
+      "flags_hi": 4294967295,
+      "flags_lo": 0,
+      "branch": "none"
+    },
+    {
+      "state": 1,
+      "event_byte": 0,
+      "event_pointer": 0,
+      "flags_hi": 0,
+      "flags_lo": 262144,
+      "branch": "flag_wake"
+    },
+    {
+      "state": 1,
+      "event_byte": 1,
+      "event_pointer": 1,
+      "flags_hi": 0,
+      "flags_lo": 262144,
+      "branch": "event_restore"
+    },
+    {
+      "state": 2,
+      "event_byte": 1,
+      "event_pointer": 1,
+      "flags_hi": 0,
+      "flags_lo": 262144,
+      "branch": "none"
+    }
+  ],
+  "derived_callback_admission_vectors": [
+    {
+      "callback_present": false,
+      "result": 0,
+      "accept": false
+    },
+    {
+      "callback_present": true,
+      "result": 0,
+      "accept": true
+    },
+    {
+      "callback_present": true,
+      "result": 1,
+      "accept": false
+    },
+    {
+      "callback_present": true,
+      "result": 4294967295,
+      "accept": false
+    }
+  ],
+  "derived_stable_slot_vectors": [
+    {
+      "before": [],
+      "slot_voices": [],
+      "want": 7,
+      "reclaimed": [],
+      "selected": 255,
+      "after": []
+    },
+    {
+      "before": [
+        1,
+        1
+      ],
+      "slot_voices": [
+        1,
+        2
+      ],
+      "want": 7,
+      "reclaimed": [],
+      "selected": 255,
+      "after": [
+        1,
+        1
+      ]
+    },
+    {
+      "before": [
+        1,
+        0,
+        0
+      ],
+      "slot_voices": [
+        1,
+        2,
+        3
+      ],
+      "want": 7,
+      "reclaimed": [],
+      "selected": 1,
+      "after": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "before": [
+        1,
+        1,
+        1
+      ],
+      "slot_voices": [
+        7,
+        1,
+        7
+      ],
+      "want": 7,
+      "reclaimed": [
+        0,
+        2
+      ],
+      "selected": 0,
+      "after": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "before": [
+        2,
+        255,
+        1
+      ],
+      "slot_voices": [
+        7,
+        7,
+        2
+      ],
+      "want": 7,
+      "reclaimed": [
+        0,
+        1
+      ],
+      "selected": 0,
+      "after": [
+        1,
+        0,
+        1
+      ]
+    }
+  ]
+}
