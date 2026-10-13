@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero DSP command rollover/finalization
+
+Completed command-cell initialization/twelve rollover blocks/final command/cache
+publication; checked the EVT-01 portion.
+[Command rollover/finalization](behavior/audio/MUSYX_DSP_COMMAND_ROLLOVER_AND_FINALIZATION.md)
+pins unsigned fit/low16 aligned sizes, deferred previous-link size/flush, fresh
+pointer publication and final0e/0f/cache order. Other payload/admission/budget/
+domain/cache/DSP/original command/audio execution remain open.
+
+Validation: read-only ISO manifest passed16 spans (fourteen regions/whole-builder/
+cache child),533 instruction anchors/14 calls. Whole aligned body census found12
+exact li0,0d rollover sites; twelve threshold/equality/wrap,seven size/three final-
+command vectors checked. Link audit passed853 Markdown files/zero broken links;
+scoped `git diff --check` passed. Documentation/metadata only; no `make test`/
+`make all` rerun. Full original fresh builder ELF/listing stays `/tmp`; no bodies/
+binary assets committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 pending command payload/admission/budget/studio/voice
+regions, actual pointer/cell/X/size/allocation/cache/DSP consumers and valid total
+extent/wrap/alias/lifetime/IRQ/concurrency domains; original chunk/link/flush/
+command/DSP/audio traces. Remaining precision work, lower-priority inbox and
+full native/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero DSP sorter/collection
 
 Completed SortVoices and builder list collection/reverse iteration regions;

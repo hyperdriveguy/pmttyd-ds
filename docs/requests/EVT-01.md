@@ -414,6 +414,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   regions — [DSP sorting/collection](../behavior/audio/MUSYX_DSP_VOICE_SORT_AND_COLLECTION.md).
   Unsigned key/pivot/recursive/tie/store order/64-slot binding pinned;
   list/domain/budget/whole builder/original DSP/audio remain open.
+- [x] Complete DSP command-cell initialization, twelve rollover blocks
+  and final command/cache publication regions —
+  [command rollover/finalization](../behavior/audio/MUSYX_DSP_COMMAND_ROLLOVER_AND_FINALIZATION.md).
+  Unsigned fit/low16 aligned sizes/deferred link/flush/fresh pointer order
+  pinned; payload/domain/cache/DSP/original audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2252,3 +2257,12 @@ midpoint vectors and3280 finite source-order model cases checked. Unsigned key
 partitioning, midpoint wrap, unstable ties, exact recursive order, unchecked
 64-slot collection and reverse consumption pinned. Parent EVT-01 stays OPEN;
 original list/priority/domain/budget/DSP/audio execution remains separate.
+
+## 2026-10-13 — DSP command rollover/finalization delivery
+
+Completed fourteen regions in [command rollover/finalization](../behavior/audio/MUSYX_DSP_COMMAND_ROLLOVER_AND_FINALIZATION.md).
+Sixteen spans/533 instruction anchors/14 calls verified;12 exact rollover-site
+census bindings/22 formula vectors checked. Initialization/unsigned fit, low16
+aligned size, deferred previous-link size/flush, fresh pointer publication and
+final0e/0f/cache order pinned. Other payload/budget/domain/cache/DSP/original
+command/audio execution remain open. Parent EVT-01 stays OPEN.

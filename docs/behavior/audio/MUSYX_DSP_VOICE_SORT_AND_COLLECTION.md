@@ -121,3 +121,9 @@ range/overflow/member/cycle/duplicate/alias/lifetime/IRQ/concurrency domains,
 surrounding builder budget/admission/cache/commands and original collection/
 sort/voice/DSP/audio traces. One complete sorter/two regions answered; whole
 builder/full native binding and EVT-01 remain OPEN.
+
+## 2026-10-13 — Command chunk follow-up
+
+[Command rollover/finalization](MUSYX_DSP_COMMAND_ROLLOVER_AND_FINALIZATION.md) closes initialization/twelve local
+rollover blocks/final command/cache publication. Other payload/budget/admission/
+valid pointer-domain/cache/DSP/original audio execution remain open.
