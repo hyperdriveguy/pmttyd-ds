@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero zero-offset gain/attenuation
+
+Completed ZeroOffsetHandler live fader/track/base gain and modulation/tremolo
+attenuation region; checked EVT-01 portion.
+[Gain/attenuation](behavior/audio/MUSYX_ZERO_OFFSET_GAIN_AND_ATTENUATION.md)
+pins row21/22 selection, unsigned conversions, post-child halfword reads,
+signed half transform, exact single constants/step/reload and update order.
+Remaining handler/providers/domains/original audio/native binding remain open.
+
+Validation: read-only ISO manifest passed six spans,128 whole-region instruction
+anchors,two direct calls. Five selection/five gain/eight attenuation finite model
+vectors and65536 signed16 half-transform cases checked. Link audit passed867
+Markdown files/zero broken links; scoped `git diff --check` passed. Source checks
+and mathematical deductions are separate from original execution. Documentation/
+metadata only; no `make test`/`make all` rerun. Fresh full original handler ELF/
+listing/generator remain `/tmp`; no bodies/binary assets committed. Concurrent
+native edits excluded. Previously approved push remains pending invalid GitHub
+credentials; no authentication changes or repeat push attempted this turn.
+
+Next: priority-zero EVT-01 ZeroOffsetHandler pan/surround/aux/volume/hardware/
+output/requeue and LowPrecisionHandler remainder, actual fader/track/voice/
+controller providers and valid index/extent/value/alias/lifetime/IRQ/concurrency/
+FP domains, original gain/audio traces. Remaining macro/stream/song/backend,
+lower-priority inbox and full native/game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero zero-offset admission/ramp
 
 Completed ZeroOffsetHandler admission/timestamp/ramp region; checked the EVT-01

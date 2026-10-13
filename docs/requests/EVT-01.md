@@ -454,6 +454,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [zero-offset admission/ramp](../behavior/audio/MUSYX_ZERO_OFFSET_ADMISSION_AND_RAMP.md).
   Captured voice/time, low elapsed, wrapped product/signed clamp, fresh flag
   clear/word158 publication and carried indicator pinned; remainder/runtime open.
+- [x] Complete ZeroOffsetHandler fader/track/base gain and modulation/
+  tremolo attenuation region — [gain/attenuation](../behavior/audio/MUSYX_ZERO_OFFSET_GAIN_AND_ATTENUATION.md).
+  Fresh flag clear/live row selection, unsigned conversions, signed half, exact
+  single constants/step/reload/update order pinned; remainder/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2378,3 +2382,13 @@ elapsed/fourteen ramp vectors checked. Raw wrapped low-time product precedes
 signed target clamp; fresh high flag clear and unconditional admitted-ramp
 word158 publication pinned. Remaining handler/providers/domains/original voice/
 audio and native binding remain open; parent EVT-01 stays OPEN.
+
+## 2026-10-13 — Zero-offset gain/attenuation delivery
+
+Completed one local region in
+[gain/attenuation](../behavior/audio/MUSYX_ZERO_OFFSET_GAIN_AND_ATTENUATION.md).
+Six spans/128 whole-region instruction anchors/two direct calls verified; five
+selection/five gain/eight attenuation vectors and65536 signed-half cases checked.
+Live master/pause/track reads, modulation-before-tremolo, post-child field reads,
+exact single rounding/step/reload/carried update order pinned. Remaining handler/
+providers/domains/original audio and native binding remain open; EVT-01 stays OPEN.

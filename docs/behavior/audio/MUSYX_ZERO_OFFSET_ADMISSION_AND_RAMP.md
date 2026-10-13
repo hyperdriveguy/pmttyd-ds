@@ -75,3 +75,9 @@ requeue/epilogue regions, hwIsActive semantics, actual voice/time/rate/target/fl
 accumulator providers, source-valid extent/type/index/alias/lifetime/IRQ/concurrency
 and timing domains, original voice/audio execution and native binding. EVT-01
 remains OPEN.
+
+## 2026-10-13 — Gain/attenuation follow-up
+
+[Gain/attenuation](MUSYX_ZERO_OFFSET_GAIN_AND_ATTENUATION.md) closes the next flag-clear/live-fader/track/
+base-gain/modulation/tremolo/attenuation region. Pan/aux/output/requeue and
+provider/domain/original audio/native binding remain open.
