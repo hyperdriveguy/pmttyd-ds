@@ -41,7 +41,8 @@ bool FieldActorAssets::read(FILE* f) {
     };
     std::array<char,8> magic{};uint32_t modelCount=0,actorCount=0;
     if(!scalar(magic))return false;
-    const bool version4=!std::memcmp(magic.data(),"PMNPC004",8);
+    const bool version5=!std::memcmp(magic.data(),"PMNPC005",8);
+    const bool version4=version5 || !std::memcmp(magic.data(),"PMNPC004",8);
     const bool version3=version4 || !std::memcmp(magic.data(),"PMNPC003",8);
     const bool version2=version3 || !std::memcmp(magic.data(),"PMNPC002",8);
     if((!version2 && std::memcmp(magic.data(),"PMNPC001",8)) || !scalar(modelCount) || !scalar(actorCount) ||
@@ -57,6 +58,7 @@ bool FieldActorAssets::read(FILE* f) {
             if(m.hitMode && m.hitBounds[4]<=0)return false;
         }
         if(version4 && !string(m.originalName))return false;
+        if(version5 && !scalar(m.drawMask))return false;
         for(uint32_t j=0;j<i;++j)if(models[j].asset==m.asset)return false;
     }
     std::vector<FieldActorRecord> actors(actorCount);
@@ -68,6 +70,11 @@ bool FieldActorAssets::read(FILE* f) {
            (a.storyGate?a.storyLow>a.storyHigh:a.storyLow!=0 || a.storyHigh!=0) || !std::isfinite(a.yaw) || a.kind>1 ||
            !std::isfinite(a.scale) || a.scale<=0 || a.scale>100)return false;
         if(version3 && !string(a.sourceName,a.kind==0))return false;
+        if(version5) {
+            if(!scalar(a.npcWidth) || !scalar(a.npcHeight) || !string(a.talkPose,true))return false;
+            if(!std::isfinite(a.npcWidth) || !std::isfinite(a.npcHeight) || a.npcWidth<0 || a.npcHeight<0 ||
+               a.npcWidth>10000 || a.npcHeight>10000 || (a.kind==1 && (a.npcWidth || a.npcHeight || !a.talkPose.empty())))return false;
+        }
         if(models[a.model].hitMode && a.kind!=1)return false;
         if(a.storyGate==2 && a.storyLow!=a.storyHigh)return false;
         if(!a.talkPrefix.empty() && (a.kind!=0 || a.talkPrefix.size()!=11 || a.talkPrefix.substr(0,4)!="gor_" ||

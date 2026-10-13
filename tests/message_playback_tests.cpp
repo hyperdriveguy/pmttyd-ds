@@ -35,8 +35,10 @@ int main(int argc,char**) {
     talk.tick(0,0);talk.tick(201,0);talk.tick(202,0);
     assert(talk.talkCountdown==15 && !talk.talking && !talk.talkLatched);
     talk.tick(203,0);assert(talk.talking && talk.talkLatched && talk.talkCountdown==14);
+    assert(talk.poseRequest==MessagePlayback::PoseRequest::Talk && talk.poseRequestSerial==1 && talk.poseRequestedAt==203);
     for(uint64_t ms=204;ms<=217;++ms)talk.tick(ms,0);
     assert(!talk.talking && !talk.talkLatched && talk.state==1 && talk.cursor==1);
+    assert(talk.poseRequest==MessagePlayback::PoseRequest::Stay && talk.poseRequestSerial==2 && talk.poseRequestedAt==217);
     talk.tick(1300,0);assert(talk.stopped() && !talk.talking && talk.talkCountdown==15);
     talk.tick(1301,0);assert(talk.talking && talk.talkCountdown==14);
     for(uint64_t ms=1302;ms<=1315;++ms)talk.tick(ms,0);

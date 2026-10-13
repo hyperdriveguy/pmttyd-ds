@@ -79,7 +79,8 @@ int main() {
     std::ifstream packed("romfs/field-actors.pmnpc",std::ios::binary);
     const std::vector<char> catalogBytes((std::istreambuf_iterator<char>(packed)),{});
     for(const char* name:{"MOBJ_HiddenHatenaBlock","MOBJ_HiddenBadgeBlock","MOBJ_Hidden10CountBlock"}) {
-        auto bytes=catalogBytes;constexpr size_t modelName=16+2*96+64;
+        auto bytes=catalogBytes;const size_t modelStride=std::memcmp(bytes.data(),"PMNPC005",8)==0?100:96;
+        const size_t modelName=16+2*modelStride+64;
         std::memset(bytes.data()+modelName,0,32);std::memcpy(bytes.data()+modelName,name,std::strlen(name));
         FILE* stream=std::tmpfile();assert(stream);assert(std::fwrite(bytes.data(),1,bytes.size(),stream)==bytes.size());std::rewind(stream);
         FieldActorAssets hidden;assert(hidden.read(stream));std::fclose(stream);

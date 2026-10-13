@@ -850,3 +850,24 @@ packs and source manifests stay ignored. Nintendo/Intelligent Systems ownership
 and no redistribution grant remain unchanged. Native damage currently supports
 fresh ordinary Goomba Jump only; packaging the other definitions does not imply
 those callback paths are implemented.
+
+## 2026-10-13 — Original NPC dimensions, facing constants and source surfaces
+
+`tools/field_actor_assets.py` reads the read-only US DOL tribe rows80333554
+(c_tyusan) and80333014(c_kuri_h), recording original30/30 dimension fields,
+CHU_T_1/T_1 pose pointers and row hashes in ignored `romfs/field-actors.json`.
+PMNPC005 adds source resource+c4 draw masks and per-actor dimensions/talk pose.
+Source angleABf's91 float entries at803041e0 are endian-converted unchanged
+into ignored `romfs/npc-angle.bin` (PMNANG01+364 bytes), SHA256
+58c60c710ded98d199e5505805a56f956721d54cf4674bac65012bb431717432
+for the original big-endian source table. No executable code is exported.
+
+Original Chu now includes CHU_T_1 alongside CHU_S_1. Chu/Frankly PMANIM4
+packs use `character_surface_mesh.py` to preserve original vertex RGBA, shape
+passes/no-cull indices and sampler state. Original textures remain resized124px
+with2px sampler-aware gutters in128px cells; dynamic UVs and source colors are
+retained. All extracted/converted model/TPL/PNG files stay in ignored local-assets,
+and packs/manifests/T3X stay in ignored RomFS. Nintendo/Intelligent Systems rights
+remain; local conversion grants no redistribution rights. No generated NPC art
+or rewritten dialogue is introduced. Numeric SDK/render and full NPC services
+remain adapters as described by the native presentation contract.

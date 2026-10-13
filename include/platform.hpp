@@ -9,6 +9,7 @@
 #include "actor_animation.hpp"
 #include "field_air_shadow.hpp"
 #include "field_actors.hpp"
+#include "npc_presentation.hpp"
 #include <3ds.h>
 #include <citro2d.h>
 #include <citro3d.h>
@@ -57,6 +58,8 @@ private:
         std::vector<ActorSurfaceBatch> batches;
     };
     struct Room {
+        struct NpcDrawState {NpcPresentation presentation;NpcPoseClock clock;};
+        std::unordered_map<uint32_t,NpcDrawState> npcs;
         std::vector<MapBatch> batches;
         std::vector<Occluder> occluders;
         std::vector<Texture> textures;
@@ -102,6 +105,7 @@ private:
     ActorAnimationPack undergroundAnimations;Texture undergroundTexture;float undergroundUVScale=1;
     float professorMarioUVScale=1;
     FieldActorAssets fieldActorAssets;
+    NpcAngleTable npcAngles;
     ActorMetrics actorMetrics;
     std::array<std::array<float,3>,2> harborActorMetrics{};
     std::array<std::array<float,3>,2> harborTalkOffsets{};

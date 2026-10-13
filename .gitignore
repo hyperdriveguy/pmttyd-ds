@@ -100,3 +100,5 @@ local-assets/professor-fence/
 /build-trio-battle/
 
 /romfs/trio-attack*
+
+/romfs/npc-angle.bin

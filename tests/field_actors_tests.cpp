@@ -67,11 +67,22 @@ int main(int argc,char**) {
         bad=b;bad[row+28]='/';assert(!read(a,bad));
         bad=b;bad[row+28]=0;assert(!read(a,bad));
         assert(a.models()[0].originalName=="FixtureModel");
+        b[7]='5';b.insert(b.begin()+row+60,4,0);replace(b,row+60,1u);const size_t actors=row+64;
+        for(unsigned i=0;i<2;++i) {
+            const size_t at=actors+i*196+156;
+            b.insert(b.begin()+at,40,0);
+            replace(b,at,0x41f00000u);replace(b,at+4,0x41f00000u);
+            std::memcpy(b.data()+at+8,"TalkPose",8);
+        }
+        assert(read(a,b) && a.actors()[0].npcHeight==30 && a.actors()[0].talkPose=="TalkPose");
+        bad=b;replace(bad,actors+156+4,0x7fc00000u);assert(!read(a,bad));
+        assert(a.actors()[0].npcHeight==30);
     }
     if(argc>1) {
         assert(a.load("romfs/field-actors.pmnpc"));assert(a.actors().size()>=3 && a.models().size()>=2);
         assert(a.models()[0].asset=="field-chu" && a.models()[1].asset=="professor");
         const auto& chu=a.actors()[0];assert(chu.room==2 && chu.pose=="CHU_S_1");
+        assert(chu.npcWidth==30 && chu.npcHeight==30 && chu.talkPose=="CHU_T_1" && a.models()[0].drawMask==1);
         assert((chu.position==std::array<float,3>{150,0,-400}) && chu.yaw==270);
         assert(chu.visible(2,8,0) && chu.visible(2,55,2) && !chu.visible(2,56,0) && !chu.visible(2,std::nullopt,0));
         const auto& saveBlock=a.actors()[3];assert(saveBlock.kind==1 && saveBlock.scale==10 && saveBlock.pose=="S_1");
@@ -101,6 +112,7 @@ int main(int argc,char**) {
             for(const auto& actor:a.actors())if(a.models()[actor.model].asset==model.asset) {
                 const auto* pose=animations.pose(actor.pose.c_str());assert(pose);ActorAnimationSample sample;
                 for(float frame:{0.f,1.f,60.f,300.f})assert(pose->evaluate(frame,sample) && !sample.vertices.empty() && sample.vertices.size()<12000);
+                if(actor.kind==0)assert(!sample.batches.empty() && !sample.colors.empty() && sample.batches[0].cull==3 && sample.batches[0].pass==2);
             }
         }
     }

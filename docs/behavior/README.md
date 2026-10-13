@@ -229,6 +229,7 @@ suffix.
 | [Jump parameter installation](overworld/MARIO_SET_JUMP_PARAMETERS.md) | Complete marioSetJumpPara 23-entry motion dispatch, three tuple tables, trig/flag scale gate, playerGravity override and Koopa tail with six callers | Tuple slot meanings, flag producers, kpaSetJumpPara internals and cadence |
 | [Peak-Y publisher](overworld/MARIO_PEAK_Y_PUBLISHER.md) | Complete two-instruction marioSetPeakYpos copy of position.y into +0x12C with all ten callers | Consumers of +0x12C, apex enforcement, cadence and on-screen effects |
 | [Rogueport save-block source binding](field/ROGUEPORT_SAVE_BLOCK_SOURCE_BINDING.md) | Original spawn/Koopa exclusion, bank/S_1/scalar10 and hit/system-event request graph | Contact/hit producer, common save event, animation/backend and card persistence |
+| [NPC dimensions, anchors and registration](display/NPC_DIMENSIONS_TALK_ANCHOR_AND_DISPLAY_REGISTRATION.md) | Source dimensions/root+height message anchor and scoped cull/color/alpha/display queue/stay-talk requests | Full NPC/event/window/material/shadow lifecycle and runtime |
 | [Ordinary Rogueport NPC bindings](field/ROGUEPORT_ORDINARY_NPC_BINDINGS.md) | Exact tagged placements/tribes, init/regular/talk owners, banks/poses and ordinary source-facing requests | Wander, tavern fade, complete NPC display/arbitration and runtime |
 | [Field battle entry/return](field/FIELD_BATTLE_ENTRY_AND_RETURN.md) | Area/index registration,NPC setup/random draws,first-call start and field-result polling | Service/lifetime/result producers and original transitions |
 | [Lecture player attacks](story/LECTURE_PLAYER_ATTACK_FLOW.md) | Default lecture weapon substitution,Jump/Hammer teaching polls,feedback slots,mode1→2/5→6 writers and13-command end requests | Full menu/end/runtime/field controller and original input/presentation traces |
@@ -487,6 +488,7 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 
 - [Partner save-block source collision](partner/FIELD_PARTNER_SAVE_BLOCK_COLLISION_BINDING.md) — original floor/front/around name filters and distinct source callbacks.
 - [Native save-block lifecycle/event core](field/NATIVE_SAVE_BLOCK_LIFECYCLE_AND_EVENT_CORE.md) — source stages, nested keys and original221-command request graph; native scene/UI/card binding next.
+- [Native ordinary NPC presentation](field/NATIVE_NPC_PRESENTATION_AND_SOURCE_DIMENSIONS.md) — source matrix/facing/dimensions/talk requests and original shape surfaces.
 - [Native live save-block binding](field/NATIVE_LIVE_SAVE_BLOCK.md) — source hit clocks/events, original System/selection GPU rendering and yielding SD writer.
 - [Native save-block retained presentation/write queue](field/NATIVE_SAVE_BLOCK_RETAINED_PRESENTATION.md)
 - [Save camera8 letterbox decision lock](camera/SAVE_BLOCK_CAMERA8_LETTERBOX_DECISION_LOCK.md)

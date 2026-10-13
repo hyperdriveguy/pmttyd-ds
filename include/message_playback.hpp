@@ -40,6 +40,9 @@ public:
     uint8_t alpha=255;
     uint32_t talkCountdown=0;
     bool talkLatched=false,talking=false; // General_Main requests, independent of window state.
+    enum class PoseRequest:uint8_t {None,Talk,Stay};
+    PoseRequest poseRequest=PoseRequest::None;
+    uint64_t poseRequestSerial=0,poseRequestedAt=0;
     uint64_t serial=0; // Native draw-cache lifetime, independent of message ID.
     uint64_t openedAt=0;
     MessageWindowGeometry geometry;

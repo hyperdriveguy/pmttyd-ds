@@ -112,6 +112,7 @@ bool Renderer::init() {
     C3D_TexSetFilter(&trioMarioTexture.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&trioMarioTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     if(!loadMap("bti_01",trioBackground) || !loadMap("stg_00_1",trioStage))return false;
     if(!fieldActorAssets.load("romfs:/field-actors.pmnpc"))return false;
+    if(!npcAngles.load("romfs:/npc-angle.bin"))return false;
     if(!shadowGeometry.load("romfs:/shadows.pmshadow"))return false;
     FILE* characterFile=std::fopen("romfs:/characters-mesh.t3x","rb");if(!characterFile)return false;
     characterTextures.imported=Tex3DS_TextureImportStdio(characterFile,&characterTextures.texture,nullptr,false);std::fclose(characterFile);
@@ -234,6 +235,23 @@ void Renderer::fieldActors(const Game& g) {
             } else if(!actor.visible(g.progress.room,g.progress.originalStory,g.fieldDoor.interiorMask,g.fieldSystemFlags))continue;
             float frame=float(g.ticks-plaza.actorStart);
             if(g.saveObjects)if(const auto* object=g.saveObjects->find(actor.key)){actor.pose=object->pose;frame=object->frame;}
+            NpcPresentation* npc=nullptr;
+            if(actor.kind==0) {
+                auto& state=plaza.npcs[actor.key];npc=&state.presentation;
+                const uint64_t now=g.ticks*1000/60;
+                if(now<state.clock.poseAt)state={};
+                frame=state.clock.update(actor.pose,actor.talkPose,
+                    g.fieldActorTalk.actor.key==actor.key?&g.fieldActorTalk.message:nullptr,now);
+                actor.pose=state.clock.pose;
+                NpcMatrixInput input;input.root=actor.position;input.yaw=actor.yaw;input.drawScale=actor.scale;
+                if(scripted)input.flags=g.storyPresentation().actors[2].flags;
+                NpcCameraService camera;camera.user=const_cast<FieldCameraFrame*>(&g.fieldCameraFrame);
+                camera.read=[](void* p) {
+                    const auto& frame=*static_cast<FieldCameraFrame*>(p);
+                    return NpcCamera{{frame.eye.x*100,frame.eye.y*100,frame.eye.z*100},{frame.at.x*100,frame.at.y*100,frame.at.z*100}};
+                };
+                if(!npc->prepare(input,npcAngles,camera)){++actorMetrics.sampleFailures;continue;}
+            }
             ++actorMetrics.visible;
             if(gpu.tick!=g.ticks || gpu.pose!=actor.pose || gpu.frame!=frame) {
                 const auto* pose=gpu.animations.pose(actor.pose.c_str());
@@ -241,16 +259,16 @@ void Renderer::fieldActors(const Game& g) {
                 gpu.tick=g.ticks;gpu.pose=actor.pose;gpu.frame=frame;
             }
             if(gpu.sample.vertices.size()>size_t(MaxVertices-count)){++actorMetrics.overflow;continue;}
-            // Source facing270 points left. Original NPC display-direction and
-            // camera-relative turn smoothing are still an open native adapter.
-            const bool right=actor.kind==0 && actor.yaw>0 && actor.yaw<180;
-            const ActorRootTransform root({actor.position[0]*.01f,actor.position[1]*.01f,actor.position[2]*.01f},actor.kind==1?actor.yaw:right?180:0,right,actor.scale*.01f);
+            const ActorRootTransform root({actor.position[0]*.01f,actor.position[1]*.01f,actor.position[2]*.01f},actor.yaw,false,actor.scale*.01f);
             const uint32_t first=uint32_t(count);
             for(size_t i=0;i<gpu.sample.vertices.size();++i) {
-                const auto& v=gpu.sample.vertices[i];const auto p=root.point(v);
+                const auto& v=gpu.sample.vertices[i];const auto p=npc?npc->point(v):root.point(v);
                 vertex(p[0],p[1],p[2],v.u,1-(1-v.v)*model.uvScale,0xffffffff,gpu.sample.colors.empty()?nullptr:&gpu.sample.colors[i]);
             }
-            if(gpu.sample.batches.empty())gpu.batches.push_back({first,uint32_t(count)-first,0,3});
+            if(gpu.sample.batches.empty()) {
+                const uint8_t pass=(model.drawMask&1u) || (model.drawMask&4u)?2:(model.drawMask&2u)?1:3;
+                gpu.batches.push_back({first,uint32_t(count)-first,0,pass});
+            }
             else for(auto batch:gpu.sample.batches){batch.start+=first;gpu.batches.push_back(batch);}
             actorMetrics.vertices+=uint32_t(gpu.sample.vertices.size());
         }
@@ -488,7 +506,11 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
             animations=&undergroundAnimations;name=a.pose.c_str();
         }
         const auto* pose=animations?animations->pose(name):nullptr;
-        if(pose && pose->evaluate(float(g.ticks),actorSample) && !actorSample.vertices.empty()) {
+        float npcHeight=0;
+        if(g.storyPresentation().speaker==2)for(const auto& actor:fieldActorAssets.actors())
+            if(fieldActorAssets.models()[actor.model].originalName=="c_kuri_h"){npcHeight=actor.npcHeight;break;}
+        if(npcHeight>0)messageTalkAnchor.y+=npcHeight*.01f;
+        if(!npcHeight && pose && pose->evaluate(float(g.ticks),actorSample) && !actorSample.vertices.empty()) {
             const bool right=a.yaw>0 && a.yaw<180;
             const ActorRootTransform transform({messageTalkAnchor.x,messageTalkAnchor.y,messageTalkAnchor.z},right?180:0,right);
             CameraPoint low{INFINITY,INFINITY,INFINITY},high{-INFINITY,-INFINITY,-INFINITY};
@@ -501,13 +523,7 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
     if(newWindow && fieldTalk && !professor) {
         const auto& actor=g.fieldActorTalk.actor;
         messageTalkAnchor={actor.position[0]*.01f,actor.position[1]*.01f,actor.position[2]*.01f};
-        for(const auto& gpu:plaza.actorModels)if(gpu.model==actor.model && !gpu.sample.vertices.empty()) {
-            const bool right=actor.yaw>0 && actor.yaw<180;
-            const ActorRootTransform root({messageTalkAnchor.x,messageTalkAnchor.y,messageTalkAnchor.z},right?180:0,right,actor.scale*.01f);
-            CameraPoint low{INFINITY,INFINITY,INFINITY},high{-INFINITY,-INFINITY,-INFINITY};
-            for(const auto& v:gpu.sample.vertices){const auto p=root.point(v);low.x=std::min(low.x,p[0]);low.z=std::min(low.z,p[2]);high.x=std::max(high.x,p[0]);high.y=std::max(high.y,p[1]);high.z=std::max(high.z,p[2]);}
-            messageTalkAnchor={(low.x+high.x)*.5f,high.y,(low.z+high.z)*.5f};
-        }
+        if(actor.npcHeight>0)messageTalkAnchor=NpcPresentation::talkAnchor(actor.position,actor.npcHeight);
         if(project(messageTalkAnchor,anchorX,anchorY) && project({g.progress.position.x,g.groundHeight+g.jumpHeight,g.progress.position.z},marioX,marioY))
             mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
     }

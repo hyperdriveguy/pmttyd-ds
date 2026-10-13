@@ -295,3 +295,27 @@ plays its source primary sample; macro/3D/group behavior remains an adapter.
 Host and isolated native/first-hit/No/Yes captures pass within this bounded domain.
 The broad todo stays OPEN for original manager sequence/pause/shared VM/card state,
 SAVE-01 full pouch persistence, camera8 UI, spatial/macro audio and runtime parity.
+
+### 2026-10-13 — NPC dimensions, talk-anchor and display-registration owners
+
+Explicitly delegated read-only documentation delivered
+[NPC dimensions/anchor/registration](../behavior/display/NPC_DIMENSIONS_TALK_ANCHOR_AND_DISPLAY_REGISTRATION.md).
+Source tribe dimensions are independent of model scale; ordinary NPC print
+anchors copy rootXYZ and add height once, gated by EventEntry+180 mask1effffff.
+Recovered npcMain's bounded cull/color/alpha/main/blur/offscreen registration
+block and ordinary stay/talk pose leaf requests. These local owners answer
+the width/height/root-anchor subset; full NPC flags/pre-display lifecycle,
+material/shadow/backend, event overrides and interaction timing remain open.
+Fresh read-only DOL extraction and constant reads validate the source requests.
+No native edits/build/runtime claim or invented numeric lock ownership.
+
+### 2026-10-13 — Native ordinary NPC local presentation bound
+
+[Native presentation](../behavior/field/NATIVE_NPC_PRESENTATION_AND_SOURCE_DIMENSIONS.md)
+uses original tribe dimensions/talk poses and angle table, source ordered
+matrix/Main/Inner facing and root-plus-height anchors. Original shape culling/
+RGBA/pass data now survive in PMANIM4; ordinary talk requests carry simulation
+clock/restart generations. Local native tests and isolated visible original
+Mouser talk/return pass. Full pre-display/color/blur/shadows, source NPC collision,
+interaction priority, wander/tavern fade, numeric/runtime parity and other areas
+remain OPEN; this does not close the parent request.

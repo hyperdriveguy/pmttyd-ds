@@ -151,15 +151,16 @@ int MessagePlayback::play(uint64_t now,uint32_t input) {
 }
 void MessagePlayback::tick(uint64_t now,uint32_t input) {
     if(!state || now<lastTime)return;
+    auto requestPose=[&](PoseRequest request){poseRequest=request;++poseRequestSerial;poseRequestedAt=now;};
     if(windowType!=5 && talkCountdown) {
-        if(!talkLatched){talking=true;talkLatched=true;}
-        if(--talkCountdown==0){talking=false;talkLatched=false;}
+        if(!talkLatched){talking=true;talkLatched=true;requestPose(PoseRequest::Talk);}
+        if(--talkCountdown==0){talking=false;talkLatched=false;requestPose(PoseRequest::Stay);}
     }
     if(state==5){animationTime=now;state=6;}
     if(state==6){windowFlags|=2;const uint64_t a=(now-animationTime)*255/200;alpha=uint8_t(std::min<uint64_t>(a,255));if(a>255){state=1;lastTime=now;}return;}
     if(state==7){animationTime=now;state=8;}
     if(state==8){if(alpha==0){state=0;windowFlags=0;return;}const uint64_t a=(now-animationTime)*255/200;alpha=uint8_t(a>=255?0:255-a);return;}
     if(state==3){if(input&0x300){state=1;wait=2;if((input&0x200) && !(flags&0x80))flags|=4;}return;}
-    if(state==1){const int result=play(now,input);if(result==0){state=7;talking=false;}else if(result==1){state=2;windowFlags&=~2u;talking=false;}else if(result==2)state=3;}
+    if(state==1){const int result=play(now,input);if(result==0){state=7;talking=false;requestPose(PoseRequest::Stay);}else if(result==1){state=2;windowFlags&=~2u;talking=false;requestPose(PoseRequest::Stay);}else if(result==2)state=3;}
 }
 }

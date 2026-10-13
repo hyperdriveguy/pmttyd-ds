@@ -10,6 +10,7 @@
 namespace ttyd {
 struct FieldActorModel {
     std::string asset,originalName;float uvScale=1;
+    uint32_t drawMask=0; // Original animation resource+c4; 0 for legacy unbound metadata.
     uint32_t hitMode=0; // 0 unbound, 1 original mobjHitEntry mode0/default object scale.
     std::array<float,6> hitBounds{}; // Original model minXYZ,maxXYZ.
 };
@@ -20,13 +21,15 @@ struct FieldActorRecord {
     std::array<float,3> position{}; // Original engine XYZ, scaled only by renderer.
     float yaw=0,scale=2; // Original model scalar; objects own distinct scales.
     std::string pose,talkPrefix,sourceName; // Empty when the recovered talk event is unbound.
+    float npcWidth=0,npcHeight=0; // Source tribe dimensions, independent of draw scalar.
+    std::string talkPose;
     bool visible(uint32_t currentRoom,std::optional<int32_t> story,uint32_t interior,uint32_t system=0) const {
         return room==currentRoom && (interior&interiorRequired)==interiorRequired && !(interior&interiorForbidden) &&
             !(system&systemForbidden) && (!storyGate || (story && (storyGate==2?*story!=storyLow:*story>=storyLow && *story<=storyHigh)));
     }
 };
 std::string fieldActorTalkKey(const FieldActorRecord&,int32_t story);
-// PMNPC001/002/003/004 are local containers. They describe recovered static init subsets;
+// PMNPC001..005 are local containers. They describe recovered static init subsets;
 // scripted actor movement/flags and the original NPC driver are separate owners.
 class FieldActorAssets {
 public:
