@@ -59,6 +59,17 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         // A cutscene owns one map. Release the preceding scene before staging
         // its successor; retaining both can exhaust the native linear arena.
         C3D_FrameSync();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();
+        if(!opening && demo.book.adjusting){
+            // The original prior page owners are finished. Keep only the book
+            // layers used by final adjust while admitting the marketplace.
+            for(auto i=frontTextures.begin();i!=frontTextures.end();){
+                const bool keep=i->name=="demo-0" || i->name=="demo-1" || i->name=="demo-2" || i->name=="demo-7" || i->name=="demo-12" || i->name=="demo-page-back";
+                if(keep){++i;continue;}
+                if(i->image.imported){Tex3DS_TextureFree(i->image.imported);C3D_TexDelete(&i->image.texture);}
+                i=frontTextures.erase(i);
+            }
+            for(unsigned n=0;n<4;++n)if(bookCaptureReady[n] && !demo.book.pages[n].active){C3D_TexDelete(&bookCaptureTextures[n]);bookCaptureReady[n]=false;}
+        }
         // Phase ownership releases image textures. The source final book
         // adjustment shares its image resources with the newly visible market.
         Room pending;if(!loadMap(map,pending)){freeRoom(pending);frontFailure=std::string("Scene map load failed: ")+map;return false;}
@@ -96,12 +107,12 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         auto found=std::find_if(cineActors.begin(),cineActors.end(),[&](const auto& a){return a.name==bank;});
         if(found==cineActors.end()) {
             CineActor pending;pending.name=bank;const std::string base=std::string("romfs:/")+bank;
-            if(!pending.animations.load((base+".pmanim").c_str()))return false;
+            if(!pending.animations.load((base+".pmanim").c_str())){frontFailure=std::string("Scene animation load failed: ")+bank;return false;}
             FILE* uv=std::fopen((base+".uvscale").c_str(),"rb");if(!uv)return false;
             bool ok=std::fread(&pending.uvScale,4,1,uv)==1 && std::fgetc(uv)==EOF;std::fclose(uv);
             if(!ok || !(pending.uvScale==1 || pending.uvScale==2 || pending.uvScale==4 || pending.uvScale==8))return false;
             FILE* f=std::fopen((base+".t3x").c_str(),"rb");if(!f)return false;
-            pending.image.imported=Tex3DS_TextureImportStdio(f,&pending.image.texture,nullptr,false);std::fclose(f);if(!pending.image.imported)return false;
+            pending.image.imported=Tex3DS_TextureImportStdio(f,&pending.image.texture,nullptr,false);std::fclose(f);if(!pending.image.imported){char error[128];std::snprintf(error,sizeof(error),"Scene texture failed: %s (%lu KB free)",bank,(unsigned long)(linearSpaceFree()/1024));frontFailure=error;return false;}
             C3D_TexSetFilter(&pending.image.texture,GPU_LINEAR,GPU_LINEAR);cineActors.push_back(std::move(pending));found=cineActors.end()-1;
         }
         const int first=count;
@@ -214,7 +225,7 @@ void Renderer::renderFrontend(const Frontend& f,OpeningDemo& demo,const OpeningS
     C2D_Flush();C2D_TargetClear(bottom,Paper);C2D_Prepare();C2D_SceneBegin(bottom);
     if(f.screen==FrontScreen::Demo) {
         if(demo.message.active() && demo.speaker)text(demo.speaker==0x2040?"Peach":"Merchant",16,22,.5f,Ink);
-        frontMessage(demo.message);text("A / START: title",16,211,.46f,Ink);
+        frontMessage(demo.message);text(demo.waitingForTitle?"Demo ended: A / START":"A / START: title",16,211,.46f,Ink);
         if(demo.failed)text("Opening resource unavailable",16,188,.46f,Red);
     } else if(f.screen==FrontScreen::Title)text("A / START: select a file",47,108,.6f,Ink);
     else if(f.screen==FrontScreen::Files) {
