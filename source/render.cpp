@@ -151,6 +151,7 @@ void Renderer::freeRoom(Room& room) {
     room=Room{};
 }
 bool Renderer::changeRoom(uint32_t room) {
+    releaseFrontend();
     const char* name=roomAsset(room);if(!name)return false;
     Room next;
     if(!loadMap(name,next) || !loadFieldActors(room,next)) {C3D_FrameSync();freeRoom(next);return false;}
@@ -232,9 +233,9 @@ void Renderer::updateCutaways(Room& room,const Game& g) {
         occluder.hidden=blocked || g.ticks<occluder.hiddenUntil;
     }
 }
-void Renderer::drawMap(bool battle,const Game& game,bool translucent) {
-    auto& room=battle?stage:plaza;
-    if(!battle && !translucent)updateCutaways(room,game);
+void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* supplied) {
+    auto& room=supplied?*supplied:battle?stage:plaza;
+    if(!supplied && !battle && !translucent)updateCutaways(room,game);
     if(!translucent) {
         if(room.animationStart==UINT64_MAX)room.animationStart=game.ticks;
         for(const auto& track:room.meshTracks) {
@@ -828,6 +829,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
 void Renderer::shutdown() {
     if(c3dReady) C3D_FrameSync();
     if(textBuffer) C2D_TextBufDelete(textBuffer);
+    releaseFrontend();
     for(Room* room : {&plaza,&stage})freeRoom(*room);
     if(sky.imported) {Tex3DS_TextureFree(sky.imported);C3D_TexDelete(&sky.texture);}
     if(characterTextures.imported) {Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);}

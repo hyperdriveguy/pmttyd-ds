@@ -59,3 +59,11 @@ romfs/*.pmshadow
 /romfs/professor-mario.bin
 /romfs/professor-scene.json
 /romfs/professor-map.bin
+
+/romfs/*.size
+
+/romfs/opening-assets.json
+
+/build-debug-short/
+
+/romfs/*.uvscale

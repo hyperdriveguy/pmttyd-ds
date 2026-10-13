@@ -558,6 +558,45 @@ geometry compensates each mask's transparent margins so their last opaque
 texel centers terminate together near the speaker. The four-screen-pixel gap
 is a user-requested presentation adaptation, not measured original behavior.
 
+## 2026-10-13 — Native opening assets
+
+`tools/opening_assets.py` reads the US ISO with the existing read-only extractor.
+Raw/conversion intermediates stay in ignored `local-assets/opening/`; runtime
+resources and the provenance manifest stay in ignored `romfs/`. No asset, ISO,
+original dialogue, executable or compiled pack is included in source commits.
+All original assets retain Nintendo/Intelligent Systems rights; these conversions
+grant no redistribution license. Existing tool-reference licenses still apply.
+
+Title uses `mariost.tpl` indices5(background),21(US logo),16(English START mask),
+9(US copyright). The letter uses palette4, requested by the original gor_10
+`draw`/winTexSet call after `tegami` loads `%s/mariost.tpl`. Storybook uses `demo.tpl` desk0, cover1 and pictures8..12.
+Large608x480 images become304x240 with Lanczos, smaller masks retain their pixels,
+and transparent power-of-two padding is excluded by checked `.size` metadata.
+The US `sys.rel` prologue heading table at0x2648 supplies19,20,21,22,21,23,24,25
+and terminator255; the corresponding `e/us/effect_sys.tpl` letters are composed
+without redrawing or replacing their text. Native heading layout is an adaptation.
+
+Original `m/aaa_00/{d,t}`, `m/gor_10/{d,t}` and `m/muj_20/{d,t}` supply opening
+room meshes/materials. Geometry remains source-derived; texture axes are capped
+at128px using the established map converter. Original `a/c_luigi`, `a/c_paretta`,
+`a/c_peach`, `a/c_nazo` and their `-` texture banks supply original L_5/S_1/P_S_1/S_1
+clips; Luigi additionally retains L_7/L_8/L_9 for the original talk/read poses.
+Mesh/animation hierarchy and model coordinates remain intact. Unused
+1024x1024 atlas rows are cropped to the smallest128-based power-of-two height;
+`.uvscale` compensates V coordinates while retaining all occupied cells.
+Map presentation uses `mariost.tpl` palette3 requested by aaa `draw`/winTexSet.
+The outside/interior house variants retain the corresponding original visibility
+requests. Current scene snapshots do not reproduce the full source animation choreography.
+
+The six original streams are `sound/stream/sys_tit1_32k.stm` (BGM_TITLE1),
+`sys_demo1_32k.stm` (BGM_DEMO1), `sys_demo2_32k.stm` (BGM_DEMO2),
+`evt_mri1_32k.stm` (BGM_EVT_MARIO_HOUSE1), `sys_opn1_32k.stm` (BGM_OPENING1),
+`evt_kou1_32k.stm` (BGM_EVT_SAILING1). Decoding preserves original rates/channels
+and loop intervals in PCM16 WAV/loop sidecars. Native environment sounds and
+scene-specific effects remain unbound; no synthetic replacements were added.
+Original `msg/US/{dmo_00,aaa_00,gor_10,gor_00}.txt` remain byte-for-byte message
+resources with IDs/control tokens retained. See [opening flow contract](behavior/story/NATIVE_OPENING_FLOW.md).
+
 
 ## 2026-10-13 — Original professor first-talk resources
 

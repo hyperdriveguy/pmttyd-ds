@@ -38,3 +38,40 @@ position-polled encounter. See [harbor bindings](STORY_HARBOR_OPENING_BINDINGS.m
 These are static source bindings, not Dolphin observations. Full scene services,
 original menu animation and new-game initialization remain to be bound. This
 contract does not claim full opening execution at the initial controller step.
+
+## Sequencing adapter implementation
+
+`OpeningDemo` now plays24 book payloads then13 market payloads, retaining raw
+bytes and timed dkey/speed/page controls. `OpeningSequence` plays four aaa
+prologue payloads, one gor letter payload, aaa pro_05, a voyage input gate,
+original prologue raster heading, three awakening payloads and two arrival
+payloads. Diary parsing sets source window type7. Native bottom-screen layout
+uses the original font mask and retains source glyph positions, scale, colors
+and scroll; the dedicated diary border and full glyph effects remain pending.
+
+Scene snapshots use original maps and actor idle clips. Their cutaway, actor
+placement/pose scheduling, camera interpolation, book/page transforms, ship
+movement, title curtains, environmental sounds/effects and fade owners are
+unfinished. The adapter's inter-scene waits and snapshots are authored native
+presentation, NOT measured original behavior or complete REL execution. In
+particular the voyage gate follows the source request but its travel scheduling
+is still an adapter. The story3 harbor handoff is the source final explicit
+Mario request(0,15,225), not the story3-resume(0,15,250). The ordinary position
+poll must then trigger016; it must not be skipped directly into a battle.
+
+The playtest path is explicitly marked as development sequencing. Completing
+faithful cutscenes requires binding the original finite/parallel event graph,
+not treating this ordered-message adapter as full story-service closure.
+`make debug-short` produces a separate build/target with TTYD_DEBUG_SHORT_BOOT,
+so a short development boot cannot replace the normal build's front end.
+
+Map presentation now retains the original aaa `draw` palette3 and `mapdraw`
++4 counter(+2 each call, clamp255 and WW0=1 on exceeding255):128 native
+simulation updates precede GSW0=2/voyage. Original caller cadence/draw scaling
+remain unbound. The letter requests palette4 from gor `draw` at REL0x116b8/
+0x116e8 after `tegami` loads `%s/mariost.tpl`; the map requests palette3 at
+aaa0x3c0/0x3f0. Both use original raster art. House snapshot visibility now
+follows the outside S_naka exclusion versus interior S_aaa_00/S_ie_door
+exclusions. Outside translated trees are omitted after their source move
+endpoint; the actual translation/camera transition remains pending. Luigi's
+original L_5/L_7 and L_8/L_9 idle/talk pairs replace the single idle snapshot.

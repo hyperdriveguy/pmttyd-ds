@@ -1,5 +1,8 @@
 #pragma once
 #include "game.hpp"
+#include "frontend.hpp"
+#include "opening_demo.hpp"
+#include "opening_sequence.hpp"
 #include "visibility.hpp"
 #include "uv_animation.hpp"
 #include "actor_mesh.hpp"
@@ -13,14 +16,15 @@
 #include <vector>
 #include <cstdio>
 namespace ttyd {
-class Frontend; class OpeningDemo;
 struct Metrics { float simulationMs=0, renderMs=0, gpuMs=0, fps=0; int steps=0; uint64_t droppedTicks=0; };
 class Renderer {
 public:
     bool init();
     bool changeRoom(uint32_t room);
+    void beginFrontend();
+    void releaseFrontend();
     void render(const Game&, const Metrics&, const char* notice, bool audioAvailable);
-    void renderFrontend(const Frontend&, const OpeningDemo&, const char* notice);
+    void renderFrontend(const Frontend&, const OpeningDemo&, const OpeningSequence&, const char* notice);
     void shutdown();
     struct ActorMetrics {uint32_t visible=0,vertices=0,overflow=0,sampleFailures=0;};
     ActorMetrics fieldActorMetrics() const {return actorMetrics;}
@@ -61,7 +65,15 @@ private:
         std::vector<FieldActorModelGpu> actorModels;
         uint64_t actorStart=UINT64_MAX;
     };
-    Room plaza,stage;
+    Room plaza,stage,frontRoom;
+    std::string frontMapName;
+    struct CineActor {std::string name;ActorAnimationPack animations;Texture image;float uvScale=1;};
+    std::vector<CineActor> cineActors;
+    bool frontWorld(const char*,CameraPoint,CameraPoint,const OpeningSequence*,const OpeningDemo&);
+    struct FrontTexture {std::string name;Texture image;std::array<uint32_t,4> size{};};
+    std::vector<FrontTexture> frontTextures;
+    bool frontImage(const char*,float,float,float,float);
+    void frontMessage(const MessagePlayback&);
     Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture;
     Texture professorMarioTexture;
     Texture professorMapTexture;
@@ -86,7 +98,7 @@ private:
     bool loadFieldActors(uint32_t roomId,Room& room);
     void fieldActors(const Game&);
     void freeRoom(Room& room);
-    void drawMap(bool battle,const Game& game,bool translucent=false);
+    void drawMap(bool battle,const Game& game,bool translucent=false,Room* supplied=nullptr);
     void updateCutaways(Room& room,const Game& game);
     bool c3dReady=false,c2dReady=false,programReady=false,atlasReady=false;
     void world(const Game&);
@@ -113,6 +125,7 @@ public:
     bool init();
     void play(const Game& game);
     void update(Scene scene, bool enabled,bool harborDanger=false,int professorMusic=0);
+    void updateFrontend(int track,bool enabled);
     void shutdown();
     bool available() const { return ready; }
 private:

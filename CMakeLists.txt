@@ -458,3 +458,14 @@ target_sources(ttyd_core PRIVATE source/frontend.cpp)
 add_executable(frontend_tests tests/frontend_tests.cpp)
 target_link_libraries(frontend_tests PRIVATE ttyd_core)
 add_test(NAME frontend COMMAND frontend_tests)
+
+target_sources(ttyd_core PRIVATE source/opening_demo.cpp)
+
+target_sources(ttyd_core PRIVATE source/opening_sequence.cpp)
+
+if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/messages/dmo_00.txt" AND EXISTS "${CMAKE_SOURCE_DIR}/romfs/font.pmfont")
+    add_executable(opening_sequence_tests tests/opening_sequence_tests.cpp)
+    target_link_libraries(opening_sequence_tests PRIVATE ttyd_core)
+    add_test(NAME opening_sequence_original COMMAND opening_sequence_tests)
+    set_tests_properties(opening_sequence_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+endif()

@@ -77,6 +77,22 @@ make test
 azahar ./ttyd-2ds.3dsx
 ```
 
+Normal builds start with the original storybook/demo, title and four-file menu.
+A or START skips the demo to the title; another press opens file selection.
+Choose an empty file to play the opening dialogue sequence through Mario's house,
+Peach's letter, voyage, prologue heading and harbor arrival. A/B advances messages;
+the voyage waits for A/START. This is an event-order adapter with original US
+text/art/music; full source choreography, camera moves and effects remain unfinished.
+
+For brief development boot, `make debug-short` builds the separate
+`ttyd-2ds-debug-short.3dsx` in `build-debug-short/`. It bypasses the front end
+and uses the prior checkpoint/plaza harness. Normal builds retain the opening.
+Use `--binary ttyd-2ds-debug-short.3dsx` with the older emulator fixtures.
+
+Fresh-file flow validation: `python3 tools/emulator_smoke.py --fresh-save --seconds 12
+--input-script tests/azahar_opening_flow.py --output-dir artifacts/azahar-opening-flow`
+(as one shell command).
+
 Audio uses NDSP and requires the launcher-provided DSP component or a locally
 dumped `sdmc:/3ds/dspfirm.cdc`. With the supplied local firmware copied into
 the isolated Azahar profile, music/jump output and mute/restore were verified
@@ -131,7 +147,8 @@ remains GameCube-based. Decoder setup, asset coverage and provenance are in
 Walk east toward Crump and press A to enter the encounter. The battle timing
 meter is a development aid. A mushroom cannot be used at full HP. Victory returns
 to exploration and saves the checkpoint. Saves reside at
-`sdmc:/3ds/ttyd-2ds/progress.bin`; invalid saves fall back to a valid backup.
+`sdmc:/3ds/ttyd-2ds/progress.bin` for File1 and `progress2.bin` through
+`progress4.bin` for Files2–4; invalid saves fall back to a valid backup.
 
 ## Verification and handoff
 

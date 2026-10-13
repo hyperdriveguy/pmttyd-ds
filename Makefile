@@ -36,8 +36,8 @@ include $(DEVKITARM)/3ds_rules
 #     - icon.png
 #     - <libctru folder>/default_icon.png
 #---------------------------------------------------------------------------------
-TARGET		:=	ttyd-2ds
-BUILD		:=	build
+TARGET		?=	ttyd-2ds
+BUILD		?=	build
 SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=	include
@@ -60,6 +60,10 @@ CFLAGS	:=	-g -Wall -O2 -mword-relocations \
 			$(ARCH)
 
 CFLAGS	+=	$(INCLUDE) -D__3DS__
+
+ifeq ($(DEBUG_SHORT_BOOT),1)
+CFLAGS += -DTTYD_DEBUG_SHORT_BOOT
+endif
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++17
 
@@ -193,6 +197,7 @@ all: assets-ready $(BUILD) $(GFXBUILD) $(DEPSDIR) $(ROMFS_T3XFILES) $(T3XHFILES)
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
 assets-ready:
+	@python3 tools/opening_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/build_assets.py
 	@python3 tools/door_assets.py
 	@python3 tools/message_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
@@ -269,3 +274,7 @@ $(OUTPUT).elf	:	$(OFILES)
 #---------------------------------------------------------------------------------------
 endif
 #---------------------------------------------------------------------------------------
+
+.PHONY: debug-short
+debug-short:
+	@$(MAKE) all DEBUG_SHORT_BOOT=1 BUILD=build-debug-short TARGET=ttyd-2ds-debug-short

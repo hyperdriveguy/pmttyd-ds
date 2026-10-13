@@ -35,6 +35,7 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
             const auto control=next.raw.substr(at,end-at);const auto space=control.find(' ');
             const auto name=control.substr(0,space);const auto args=space==std::string::npos?std::string{}:control.substr(space+1);float value=0;
             if(name=="k" || name=="key") {auto r=record(0xfffe);r.x=k;next.records.push_back(r);t+=100;k=half(k+1);}
+            else if(name=="o" || name=="once_stop") {next.records.push_back(record(0xfffc));t+=50;}
             else if(name=="dkey" || name=="/dkey") {auto r=record(0xfff5);r.flags=name=="dkey"?1u:0u;next.records.push_back(r);}
             else if(name=="p" || name=="scrl_auto") {if(s){auto r=record(0xfffd);r.y=half(s-3);next.records.push_back(r);baseline=half(y-6);y=half(y-3);s=0;t+=50;}}
             else if(name=="wait" || name=="speed") {if(!number(args,value) || double(value)<-2147483648. || double(value)>=2147483648.)return false;if(name=="wait")t+=uint32_t(int32_t(value));else speed=uint32_t(int32_t(value));}
@@ -47,6 +48,7 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
             else if(name=="/wave")style&=~4u;
             else if(name=="small"){next.windowType=1;smallSpacing=true;}
             else if(name=="clear")next.windowType=11;
+            else if(name=="diary")next.windowType=7;
             else if(name=="wpos") {int a,b,c,d;char extra;if(std::sscanf(args.c_str(),"%d%d%d%d %c",&a,&b,&c,&d,&extra)!=4 || c<=0 || d<=0 || c>32767 || d>32767)return false;next.geometry={float(half(a)),float(half(b)),float(c),float(d)};}
             else if(name=="dynamic") {if(!number(args,dynamic))return false;style|=1;}
             else if(name=="/dynamic")style&=~1u;
@@ -86,6 +88,7 @@ int MessagePlayback::play(uint64_t now,uint32_t input) {
     while(cursor<records.size() && records[cursor].schedule<=elapsed) {
         const auto& r=records[cursor];
         if(r.code==0xffff)return 0;
+        if(r.code==0xfffc){++cursor;elapsed=r.schedule;flags&=~4u;return 1;}
         if(r.code==0xfffe && int32_t(r.x)==acceptedKey){wait=1;elapsed=r.schedule;flags&=~4u;}
         else if(r.code==0xfffd){scrollTarget-=r.y;elapsed=r.schedule;}
         else if(r.code==0xfff5) {
@@ -103,6 +106,6 @@ void MessagePlayback::tick(uint64_t now,uint32_t input) {
     if(state==7){animationTime=now;state=8;return;}
     if(state==8){if(alpha==0){state=0;return;}const uint64_t a=(now-animationTime)*255/200;alpha=uint8_t(a>=255?0:255-a);return;}
     if(state==3){if(input&0x300){state=1;wait=2;if((input&0x200) && !(flags&0x80))flags|=4;}return;}
-    if(state==1){const int result=play(now,input);if(result==0)state=7;else if(result==2)state=3;}
+    if(state==1){const int result=play(now,input);if(result==0)state=7;else if(result==1)state=2;else if(result==2)state=3;}
 }
 }

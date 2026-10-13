@@ -55,7 +55,7 @@ void Audio::switchTrack(int track) {
     ndspChnWaveBufClear(1);
     if(music) {std::fclose(music);music=nullptr;}
     musicTrack=track;musicPosition=0;musicEnded=false;musicLoop=false;
-    const char* names[]={"rogueport","battle","victory","harbor-danger","professor-music"};
+    const char* names[]={"rogueport","battle","victory","harbor-danger","title","demo-book","demo-market","opening-house","opening-voyage","opening-sailing","professor-music"};
     if(track<0 || track>=int(sizeof(names)/sizeof(names[0])))return;
     char path[96];std::snprintf(path,sizeof(path),"romfs:/%s.wav",names[track]);music=std::fopen(path,"rb");
     if(!music)return;
@@ -96,10 +96,17 @@ void Audio::fill(ndspWaveBuf& buffer) {
 void Audio::update(Scene scene,bool enabled,bool harborDanger,int professorMusic) {
     if(!ready)return;
     int wanted=enabled && harborDanger && (scene==Scene::Explore || scene==Scene::Dialogue)?3:audioTrack(scene,enabled);
-    if(enabled && professorMusic)wanted=professorMusic<0?-1:4;
+    if(enabled && professorMusic)wanted=professorMusic<0?-1:10;
     if(wanted!=musicTrack)switchTrack(wanted);
     if(!enabled)for(int n=0;n<5;++n)ndspChnWaveBufClear(n+2);
     for(auto& b:stream) if(b.status==NDSP_WBUF_DONE)fill(b);
+}
+void Audio::updateFrontend(int track,bool enabled) {
+    if(!ready)return;
+    if(!enabled)track=-1;
+    if(track!=musicTrack)switchTrack(track);
+    if(!enabled)for(int n=0;n<5;++n)ndspChnWaveBufClear(n+2);
+    for(auto& b:stream)if(b.status==NDSP_WBUF_DONE)fill(b);
 }
 void Audio::shutdown() {
     if(ready) {

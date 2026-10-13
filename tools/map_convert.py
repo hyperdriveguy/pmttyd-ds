@@ -52,7 +52,7 @@ def wall_segments(collision,metadata=None,with_triangles=False):
             segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max()),*tag,*geometry))
     return sorted(segments)
 
-def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=(),event_groups=None):
+def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=(),event_groups=None,scene_root=None):
     event_groups=event_groups or {}
     raw=Path(path).read_bytes();base=32
     table=32+u(raw,4)+u(raw,8)*4;names=table+u(raw,12)*8
@@ -71,7 +71,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
             uvmatrix=texture_matrix(*v)
         if samplers>1:warnings.append({'material':name,'samplers':samplers,'limitation':'Only texture zero currently rendered'})
         materials[o]={'name':name,'color':color,'color_source':raw[o+8],'layer':raw[o+10],'texture':tid,'uv':uvmatrix,'wrap':wrap}
-    info=chunks['information'];scene_name=string(base+u(raw,info+8));collision_name=string(base+u(raw,info+12))
+    info=chunks['information'];scene_name=scene_root or string(base+u(raw,info+8));collision_name=string(base+u(raw,info+12))
     if animation is not None and (ambient or mesh_ambient):raise ValueError('Preview and runtime animation export are separate')
     animations=read_animations(path);selected={}
     if animation is not None:
