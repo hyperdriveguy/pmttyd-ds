@@ -441,6 +441,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [startup finish/composed builder](../behavior/audio/MUSYX_DSP_STARTUP_ENDPOINTS_AND_COMMON_FINISH.md).
   Region union covers2419 non-ABI words plus11 anchored ABI words;
   provider/domain/transitive DSP/original audio/full native remain open.
+- [x] Complete five DC cache-range bodies and correct prior audio
+  cache-service names/pins — [cache ranges/source corrections](../behavior/audio/GEKKO_CACHE_RANGE_SERVICES_AND_AUDIO_CALL_CORRECTIONS.md).
+  Wrapped count/opcode/sc order pinned; six contracts/four child identities
+  corrected; syscall/hardware/domain/original cache/DSP/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2335,3 +2339,13 @@ Region union covers all2419 non-ABI words;11 ABI words separately anchored,
 total2430/25f8hex. Twenty formula vectors/nine seed bindings/all256 start-byte
 predicates checked. Local builder body answered; provider/ABI/value/alias/IRQ/
 concurrency/cache/DSP/original voice/audio/native binding and parent EVT-01 OPEN.
+
+## 2026-10-13 — Cache range bodies and audio source corrections
+
+Completed five bodies in [cache ranges/source corrections](../behavior/audio/GEKKO_CACHE_RANGE_SERVICES_AND_AUDIO_CALL_CORRECTIONS.md).
+Five spans/57 whole-body anchors/zero direct calls verified;11 range vectors/
+8224 small-domain checks passed. Corrected six contracts/four child pins: actual
+e0 is DCStoreRangeNoSync,ab4 DCFlushRangeNoSync,a54 DCFlushRange,a28
+DCInvalidateRange. Earlier prose name attributions superseded; prior byte/site
+proofs did not validate those names. All ten composed-builder prerequisite
+manifests reverified. Syscall/hardware/domain/original audio and EVT-01 OPEN.

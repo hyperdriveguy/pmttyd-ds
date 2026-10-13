@@ -1,0 +1,224 @@
+{
+  "schema": 1,
+  "scope": "Five complete cache range bodies; wrapped line count/opcode/sc order; handler/hardware/runtime open",
+  "complete_bodies": [
+    "DCInvalidateRange",
+    "DCFlushRange",
+    "DCStoreRange",
+    "DCFlushRangeNoSync",
+    "DCStoreRangeNoSync"
+  ],
+  "linked_only": [],
+  "dol_spans": [
+    {
+      "name": "DCInvalidateRange",
+      "address": 2150197800,
+      "size": 44,
+      "sha256": "4f84050b94b4b2c17ad350c4a1a3eac215276b3af65d3fbc0d7b4bc615ff36a5"
+    },
+    {
+      "name": "DCFlushRange",
+      "address": 2150197844,
+      "size": 48,
+      "sha256": "93cccdef2db2d4edd330b23e345500e30ae5ead17cfaea13e3c8ac963a39ab33"
+    },
+    {
+      "name": "DCStoreRange",
+      "address": 2150197892,
+      "size": 48,
+      "sha256": "18ef22fd876c32a67466e960df329bb94c9dadfa38bf622fc296ed027e174912"
+    },
+    {
+      "name": "DCFlushRangeNoSync",
+      "address": 2150197940,
+      "size": 44,
+      "sha256": "609869ef211e15fd73610a3431bcdf99f1597d86ee3854f6bba65fd3b0b6d226"
+    },
+    {
+      "name": "DCStoreRangeNoSync",
+      "address": 2150197984,
+      "size": 44,
+      "sha256": "a7929eb21f752bcfe4a57ddaa40202556220e1d633448f8e100a662a807a5d10"
+    }
+  ],
+  "dol_anchors": {
+    "2150197816": "3884001f",
+    "2150197832": "38630020",
+    "2150197836": "4200fff8",
+    "2150197860": "3884001f",
+    "2150197876": "38630020",
+    "2150197880": "4200fff8",
+    "2150197908": "3884001f",
+    "2150197924": "38630020",
+    "2150197928": "4200fff8",
+    "2150197956": "3884001f",
+    "2150197972": "38630020",
+    "2150197976": "4200fff8",
+    "2150198000": "3884001f",
+    "2150198016": "38630020",
+    "2150198020": "4200fff8",
+    "2150197800": "28040000",
+    "2150197804": "4c810020",
+    "2150197808": "546506fe",
+    "2150197812": "7c842a14",
+    "2150197820": "5484d97e",
+    "2150197824": "7c8903a6",
+    "2150197828": "7c001bac",
+    "2150197840": "4e800020",
+    "2150197844": "28040000",
+    "2150197848": "4c810020",
+    "2150197852": "546506fe",
+    "2150197856": "7c842a14",
+    "2150197864": "5484d97e",
+    "2150197868": "7c8903a6",
+    "2150197872": "7c0018ac",
+    "2150197884": "44000002",
+    "2150197888": "4e800020",
+    "2150197892": "28040000",
+    "2150197896": "4c810020",
+    "2150197900": "546506fe",
+    "2150197904": "7c842a14",
+    "2150197912": "5484d97e",
+    "2150197916": "7c8903a6",
+    "2150197920": "7c00186c",
+    "2150197932": "44000002",
+    "2150197936": "4e800020",
+    "2150197940": "28040000",
+    "2150197944": "4c810020",
+    "2150197948": "546506fe",
+    "2150197952": "7c842a14",
+    "2150197960": "5484d97e",
+    "2150197964": "7c8903a6",
+    "2150197968": "7c0018ac",
+    "2150197980": "4e800020",
+    "2150197984": "28040000",
+    "2150197988": "4c810020",
+    "2150197992": "546506fe",
+    "2150197996": "7c842a14",
+    "2150198004": "5484d97e",
+    "2150198008": "7c8903a6",
+    "2150198012": "7c00186c",
+    "2150198024": "4e800020"
+  },
+  "direct_calls": [],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "cache_operations": [
+    {
+      "name": "DCInvalidateRange",
+      "address": 2150197800,
+      "operation": "dcbi",
+      "post_loop_sc": false
+    },
+    {
+      "name": "DCFlushRange",
+      "address": 2150197844,
+      "operation": "dcbf",
+      "post_loop_sc": true
+    },
+    {
+      "name": "DCStoreRange",
+      "address": 2150197892,
+      "operation": "dcbst",
+      "post_loop_sc": true
+    },
+    {
+      "name": "DCFlushRangeNoSync",
+      "address": 2150197940,
+      "operation": "dcbf",
+      "post_loop_sc": false
+    },
+    {
+      "name": "DCStoreRangeNoSync",
+      "address": 2150197984,
+      "operation": "dcbst",
+      "post_loop_sc": false
+    }
+  ],
+  "derived_range_vectors": [
+    {
+      "pointer": 4096,
+      "length": 0,
+      "computed_counter": 0,
+      "cache_iterations": 0,
+      "final_pointer": 4096
+    },
+    {
+      "pointer": 4096,
+      "length": 1,
+      "computed_counter": 1,
+      "cache_iterations": 1,
+      "final_pointer": 4128
+    },
+    {
+      "pointer": 4096,
+      "length": 32,
+      "computed_counter": 1,
+      "cache_iterations": 1,
+      "final_pointer": 4128
+    },
+    {
+      "pointer": 4096,
+      "length": 33,
+      "computed_counter": 2,
+      "cache_iterations": 2,
+      "final_pointer": 4160
+    },
+    {
+      "pointer": 4097,
+      "length": 31,
+      "computed_counter": 1,
+      "cache_iterations": 1,
+      "final_pointer": 4129
+    },
+    {
+      "pointer": 4127,
+      "length": 1,
+      "computed_counter": 1,
+      "cache_iterations": 1,
+      "final_pointer": 4159
+    },
+    {
+      "pointer": 4127,
+      "length": 2,
+      "computed_counter": 2,
+      "cache_iterations": 2,
+      "final_pointer": 4191
+    },
+    {
+      "pointer": 4294967292,
+      "length": 8,
+      "computed_counter": 2,
+      "cache_iterations": 2,
+      "final_pointer": 60
+    },
+    {
+      "pointer": 0,
+      "length": 4294967295,
+      "computed_counter": 0,
+      "cache_iterations": 4294967296,
+      "final_pointer": 0
+    },
+    {
+      "pointer": 31,
+      "length": 4294967295,
+      "computed_counter": 1,
+      "cache_iterations": 1,
+      "final_pointer": 63
+    },
+    {
+      "pointer": 4096,
+      "length": 4294967265,
+      "computed_counter": 0,
+      "cache_iterations": 4294967296,
+      "final_pointer": 4096
+    }
+  ],
+  "derived_small_domain_check": {
+    "offsets": 32,
+    "lengths": 257,
+    "cases": 8224,
+    "method": "Count/ceil32 identity for nonwrapping nonzero lengths; zero-length bypass; not original execution"
+  }
+}

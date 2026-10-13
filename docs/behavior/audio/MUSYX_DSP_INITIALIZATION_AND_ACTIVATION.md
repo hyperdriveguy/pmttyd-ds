@@ -25,10 +25,10 @@ return into dspARAMZeroBuffer8041ef50. Then, in order:
 | salMallocPhysical(40*fresh voice byte) | dspITDBuffer8041ef84 | Return0 |
 
 Publication precedes each null test. After surround allocation, request
-memset(return,0,280), reload surround pointer and DCInvalidateRange(ptr,280).
-After ITD allocation, request DCFlushRange(return,40*fresh voice byte).
+memset(return,0,280), reload surround pointer and DCFlushRange(ptr,280).
+After ITD allocation, request DCInvalidateRange(return,40*fresh voice byte).
 Do not substitute a zero fill of ITD memory: none is requested here. Capture
-ITD pointer into a local cursor after the flush. Count reads for allocation,
+ITD pointer into a local cursor after the cache request. Count reads for allocation,
 flush and later loop are independent. Zero count still requests zero-sized
 voice/ITD allocations; null results follow the same failure paths.
 All explicit failures return0 without local rollback/free/count restoration.
@@ -50,7 +50,7 @@ For each record at fresh dspVoice+off, stores occur in this order:
 4. Reload PB=record.word0 for each binding: PB.half4=high16(PB), half6=low16(PB);
    PB.half4e/50=high/low of fresh record.word4; PB.half38/3a=high/low of captured
    ITD cursor. Store cursor to record.word8; advance cursor by40; wordec=ffffffff.
-5. Reload PB and request DCFlushRangeNoSync(PB,c4).
+5. Reload PB and request DCStoreRangeNoSync.
 6. Store record.words24/28/2c/30/34=0 in that order, with fresh base loads.
 
 There is no whole-record zero fill, envelope setup, link initialization or
@@ -68,11 +68,11 @@ loop does not enforce that extent. At each record S:
 
 - byte50=0; request salMallocPhysical(36), publish S.word0; null returns0.
 - Request salMallocPhysical(3c00), publish S.word28; null returns0.
-- Reload S.word28; memset(ptr,0,3c00), then reload and DCStoreRangeNoSync(ptr,3c00).
+- Reload S.word28; memset(ptr,0,3c00), then reload and DCFlushRangeNoSync(ptr,3c00).
 - Set word2c=fresh28+780, word30=fresh2c+780, word34=fresh30+780, word38=fresh34+780,
   word3c=fresh38+780, word40=fresh3c+780, word44=fresh40+780, all wrapping32.
 - Reload S.word0; memset(ptr,0,36). Clear words in order c,8,4,18,14,10,24,20,1c.
-  Reload S.word0; DCStoreRangeNoSync(ptr,36).
+  Reload S.word0; DCFlushRangeNoSync(ptr,36).
 
 Eight780-sized slices fit one3c00 block. Root words48/4c are not cleared by
 this allocation loop; studio activation below initializes those for its selected
@@ -87,10 +87,10 @@ last possible explicit allocation failure; zero studios does not skip it.
 ## Complete studio activation and HRTF initialization
 
 salActivateStudio(I,B,W) selects S=dspStudio+bc*low8(I). Retain B/W. In order:
-memset(fresh S.word28,0,3c00); reload pointer, DCStoreRangeNoSync(ptr,3c00);
+memset(fresh S.word28,0,3c00); reload pointer, DCFlushRangeNoSync(ptr,3c00);
 memset(fresh S.word0,0,36); clear S.words c,8,4,18,14,10,24,20,1c;
-reload S.word0, DCStoreRangeNoSync(ptr,36); memset(fresh S.word30,0,780),
-reload pointer/DCStoreRangeNoSync(ptr,780); repeat for fresh S.word3c.
+reload S.word0, DCFlushRangeNoSync(ptr,36); memset(fresh S.word30,0,780),
+reload pointer/DCFlushRangeNoSync(ptr,780); repeat for fresh S.word3c.
 Finally clear S.word48 and4c; byte50=1; byte51=low8(B); byte52=0;
 word54=raw W; wordb0=0; wordac=0. No bounds/null/allocated/active guard,
 voice traversal/deactivation/free, preservation of old roots or scalar status
@@ -98,7 +98,7 @@ assignment. Re-activation can replace live roots; actual admissible callers
 and membership ownership remain open.
 
 salInitHRTFBuffer: read dspHrtfHistoryBuffer8041ef7c, request memset(ptr,0,100), reload
-pointer, request DCStoreRangeNoSync(ptr,100); return without independent status.
+pointer, request DCFlushRangeNoSync(ptr,100); return without independent status.
 No allocation/null guard. A child mutation can change the second request's pointer.
 
 ## Complete voice activation and hardware start/key-off
@@ -152,3 +152,10 @@ consumers/value/FP/alias domains and original audio remain open.
 [Depop/fade/prepass](MUSYX_DEPOP_ACCUMULATION_FADE_AND_STUDIO_PREPASS.md) closes two local depop helpers and the builder's
 studio two-list prepass. Captured/fresh successor ordering and callback/root
 publication retained; list providers/domains/original DSP/audio remain open.
+
+## 2026-10-13 — Cache-service source-name correction
+
+[Cache range/source correction](GEKKO_CACHE_RANGE_SERVICES_AND_AUDIO_CALL_CORRECTIONS.md)
+corrects earlier service-name attribution against US symbols/direct targets.
+The body above now names the emitted original service; pointer/length/order
+evidence stays unchanged. Hardware/handler/runtime cache effects remain open.

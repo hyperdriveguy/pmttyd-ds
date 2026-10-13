@@ -38,7 +38,7 @@ B as an independent measured available-cycle budget.
 ## Complete voice cost tables and accumulation
 
 V=r29, PB=r19, S=r16 retained by preceding code. This region begins AFTER
-envelope advancement and the per-voice command-buffer DCFlushRange request.
+envelope advancement and the per-voice command-buffer DCStoreRangeNoSync request.
 Capture F=unsigned PB.half0c and PB.halfba. Original mixer table at80303f50,
 16 unsigned halves, is:
 
@@ -117,7 +117,7 @@ No pointer/type/alignment/cache-child status validation.
 
 Nonnull previous PB enters8028a940: write current PB's high16 to previous.half0,
 set stack.word1c=1, write current low16 to previous.half2, then request
-DCStoreRangeNoSync(previousPB,c4). No command02 is emitted on this path.
+DCFlushRangeNoSync(previousPB,c4). No command02 is emitted on this path.
 Both paths retain r18=current PB. Shared reverse-loop tail subtracts4 from end
 and1 from remaining; SIGNED remaining>0 admits next sorted record.
 
@@ -150,3 +150,10 @@ regions answered; whole builder/full native binding and EVT-01 remain OPEN.
 [Existing endpoints/completion](MUSYX_EXISTING_VOICE_BUFFER_ENDPOINTS_AND_COMPLETION.md) closes the local existing-voice
 pending-buffer formulas and independent completion gate. Startup/sample-format/
 provider/value/alias domains and original DSP/audio execution remain open.
+
+## 2026-10-13 — Cache-service source-name correction
+
+[Cache range/source correction](GEKKO_CACHE_RANGE_SERVICES_AND_AUDIO_CALL_CORRECTIONS.md)
+corrects earlier service-name attribution against US symbols/direct targets.
+The body above now names the emitted original service; pointer/length/order
+evidence stays unchanged. Hardware/handler/runtime cache effects remain open.

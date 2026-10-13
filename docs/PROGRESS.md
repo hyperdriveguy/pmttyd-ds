@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero cache ranges/source corrections
+
+Completed five DC cache-range bodies; checked the EVT-01 portion.
+[Cache/source corrections](behavior/audio/GEKKO_CACHE_RANGE_SERVICES_AND_AUDIO_CALL_CORRECTIONS.md)
+pins wrapped line count/unconditional first loop/opcodes/post-loop sc. Corrected
+six earlier contracts/four linked-body pins: e0 DCStoreRangeNoSync,ab4
+DCFlushRangeNoSync,a54 DCFlushRange,a28 DCInvalidateRange. Prior prose names
+were wrong; historical entries remain intact and this correction supersedes
+those attributions. Syscall/hardware/domain/original cache/DSP/audio remain open.
+
+Validation: new read-only ISO manifest passed five spans/five complete bodies,
+57 whole-body instruction anchors/zero direct calls. Eleven range/zero/threshold/
+wrap vectors and8224 small-domain count checks passed. All ten composed-builder
+prerequisite manifests reverified, including corrected child pins; source region/
+call/address evidence unchanged. Link audit passed863 Markdown files/zero broken
+links; scoped `git diff --check` passed. Documentation/metadata only; no `make test`/
+`make all` rerun. Full original fresh ELFs/listings stay `/tmp`; no bodies/binary
+assets committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 original syscall vector/handler and cache/address/
+IRQ/coherency/ordering/trap/ownership domains, actual caller range/alias/lifetime/
+partial publication/DSP consumers and original cache/voice/audio traces. Remaining
+precision/macro/stream/song/backend work, lower-priority inbox and full native/
+full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero startup finish/composed DSP builder
 
 Completed startup loop/fallback endpoints/filter/volume seeds/start-slot/active

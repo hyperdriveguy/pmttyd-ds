@@ -14,7 +14,7 @@
     "salSynthSendMessage",
     "salDeactivateVoice",
     "memset",
-    "DCInvalidateRange"
+    "DCFlushRange"
   ],
   "dol_spans": [
     {
@@ -42,10 +42,10 @@
       "sha256": "4176c17fce5f28ccea737946be853ea45a125b52e9acab356ba54454aa352b5c"
     },
     {
-      "name": "DCInvalidateRange",
-      "address": 2150197800,
-      "size": 44,
-      "sha256": "4f84050b94b4b2c17ad350c4a1a3eac215276b3af65d3fbc0d7b4bc615ff36a5"
+      "name": "DCFlushRange",
+      "address": 2150197844,
+      "size": 48,
+      "sha256": "93cccdef2db2d4edd330b23e345500e30ae5ead17cfaea13e3c8ac963a39ab33"
     },
     {
       "name": "dsp_startup_format_prefix",
@@ -625,5 +625,6 @@
       "continues": true,
       "sends1_then_deactivates": false
     }
-  ]
+  ],
+  "source_name_correction": "2026-10-13: linked cache body corrected to original direct target; existing call anchors/regions unchanged."
 }

@@ -76,7 +76,7 @@
   ],
   "linked_only": [
     "salBuildCommandList",
-    "DCFlushRange"
+    "DCStoreRangeNoSync"
   ],
   "dol_spans": [
     {
@@ -86,10 +86,10 @@
       "sha256": "14f94e450a1f0069db5607b861a7dbe8e8e3c98d59ecba707574284c12ee920b"
     },
     {
-      "name": "DCFlushRange",
-      "address": 2150197844,
-      "size": 48,
-      "sha256": "93cccdef2db2d4edd330b23e345500e30ae5ead17cfaea13e3c8ac963a39ab33"
+      "name": "DCStoreRangeNoSync",
+      "address": 2150197984,
+      "size": 44,
+      "sha256": "a7929eb21f752bcfe4a57ddaa40202556220e1d633448f8e100a662a807a5d10"
     },
     {
       "name": "command_init",
@@ -1021,5 +1021,6 @@
       ],
       "new_cursor": 12
     }
-  ]
+  ],
+  "source_name_correction": "2026-10-13: linked cache body corrected to original direct target; existing call anchors/regions unchanged."
 }

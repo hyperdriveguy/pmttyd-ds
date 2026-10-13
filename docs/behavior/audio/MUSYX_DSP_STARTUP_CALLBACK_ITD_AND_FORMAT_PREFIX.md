@@ -33,7 +33,7 @@ registry/ownership/IRQ check, fallback buffer or callback success normalization.
 
 Store halfword0 to PB.aa/ac/ae/b0/b2 in that order. Read V.wordf4 bit80000000.
 Clear bit: PB.half36=0, preserving ITD offsets/history/scratch. Set bit:
-request memset(fresh V.word08,0,40), reload word08, request DCInvalidateRange(ptr,40).
+request memset(fresh V.word08,0,40), reload word08, request DCFlushRange(ptr,40).
 Then unsigned V.halfd0 to PB40, fresh d0 to PB3c; V.halfd2 to PB42, fresh d2
  to PB3e; PB36=1. No buffer allocation/null/size check or child-result test.
 
@@ -137,3 +137,10 @@ and EVT-01 remain OPEN.
 [Startup finish/composition](MUSYX_DSP_STARTUP_ENDPOINTS_AND_COMMON_FINISH.md) closes loop/fallback endpoints and
 common startup finish, and audits complete local builder region coverage. Local
 body answered; provider/domain/ABI/transitive DSP/original audio/native remain open.
+
+## 2026-10-13 — Cache-service source-name correction
+
+[Cache range/source correction](GEKKO_CACHE_RANGE_SERVICES_AND_AUDIO_CALL_CORRECTIONS.md)
+corrects earlier service-name attribution against US symbols/direct targets.
+The body above now names the emitted original service; pointer/length/order
+evidence stays unchanged. Hardware/handler/runtime cache effects remain open.

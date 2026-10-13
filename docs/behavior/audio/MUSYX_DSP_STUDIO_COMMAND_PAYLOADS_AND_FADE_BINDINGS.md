@@ -60,7 +60,7 @@ Input headers/budget additions alone do not establish actual mix contribution.
 At8028aa20 (admission/rollover gate in preceding region), capture P; compute P+2
 and publish dspCmdPtr BEFORE storing half03 through captured old P. Length2.
 Then if retained last-voice PB pointer r18 nonnull, store PB.half0=0 then half2=0,
-request DCStoreRangeNoSync(PB,c4). Null skips. This tail runs whether preceding
+request DCFlushRangeNoSync(PB,c4). Null skips. This tail runs whether preceding
 voice-produced-command flag selected command03; the gate itself remains outside
 this region. No deactivation/list unlink or whole parameter block clear.
 
@@ -110,7 +110,7 @@ it across all child requests. Then call DoDepopFade(C,D,A) nine times in order:
 This packs nine six-byte records in36hex bytes. Child uses captured X for
 step selection but fresh accumulator/delta reads for copy/advance, as its complete
 contract states. No child return test or B recapture between components. After
-all nine, request DCStoreRangeNoSync(B,36).
+all nine, request DCFlushRangeNoSync(B,36).
 
 Outer loop increments the stack+24 studio BYTE, then freshly reads
 salMaxStudioNum8041efb9; unsigned byte ordinal<count branches to80288ebc.
@@ -159,3 +159,10 @@ answered; whole builder/full native binding and EVT-01 remain OPEN.
 [Budget/rejection/chain](MUSYX_DSP_BUDGET_REJECTION_AND_VOICE_CHAIN.md) closes initial/cost/rejection/PB-chain
 regions and command03 admission. Remaining startup/sample/provider/value/index/
 alias domains and original cost/DSP/audio execution remain open.
+
+## 2026-10-13 — Cache-service source-name correction
+
+[Cache range/source correction](GEKKO_CACHE_RANGE_SERVICES_AND_AUDIO_CALL_CORRECTIONS.md)
+corrects earlier service-name attribution against US symbols/direct targets.
+The body above now names the emitted original service; pointer/length/order
+evidence stays unchanged. Hardware/handler/runtime cache effects remain open.

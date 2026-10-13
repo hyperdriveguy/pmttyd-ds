@@ -55,11 +55,11 @@ recorded in the prepass contract.
 
 For each block capture current P and MaxPtr E. Compare UNSIGNED
 wrap32(P+k)>wrap32(E-8). False (including exact equality) skips ALL rollover
-writes/flush and reaches the pending command outside the block. No widened
+writes/store and reaches the pending command outside the block. No widened
 comparison, total-buffer bound or second post-rollover fit test. Address wrap
 can change admission; arbitrary pointers are not made safe by this local check.
 
-## Exact rollover link, deferred size and flush protocol
+## Exact rollover link, deferred size and store protocol
 
 On admitted rollover:
 
@@ -70,7 +70,7 @@ On admitted rollover:
    N=wrap32(wrap32(currentPtr+8-CurBase)+3)&0000fffc. Thus N is an aligned
    LOW16-sized word, not unbounded rounded32 length. Retain N across the child.
 3. If captured LastLoad nonnull, store halfN at LastLoad+6, then read fresh
-   LastBase and unsigned LastSize; request DCFlushRange(LastBase,LastSize).
+   LastBase and unsigned LastSize; request DCStoreRangeNoSync(LastBase,LastSize).
    Null LastLoad instead stores N into FirstSize, with no child request.
 4. AFTER that branch/child, reload MaxPtr, dspCmdPtr and CurBase. Store in order:
    LastLoad=freshPtr; LastSize=low16(retained N); LastBase=freshCurBase;
@@ -80,9 +80,9 @@ On admitted rollover:
 Command0d's target address is the next chunk. Its size half at+6 is NOT filled
 in this block: a later rollover/finalization supplies the NEXT chunk's size.
 The current block fills the PREVIOUS link's size field with this chunk's N,
-then flushes the preceding chunk using its captured/published LastSize. On first
+then stores the preceding chunk using its captured/published LastSize. On first
 rollover, FirstSize records the initial chunk's N. Current chunk's link/header
-is flushed later, not by an unconditional immediate current-chunk flush here.
+is stored later, not by an unconditional immediate current-chunk store here.
 No initial zero placeholder at new link+6 is written by these blocks.
 
 Use source publication order and fresh reads rather than a captured structure
@@ -117,9 +117,9 @@ store. Under stable disjoint globals/memory total cursor advances12 bytes.
 Capture LastLoad, CurBase and dspCmdPtr. Compute
 N=wrap32(wrap32(currentPtr-CurBase)+3)&0000fffc, without rollover's additional8.
 If LastLoad nonnull, write halfN to LastLoad+6, read fresh LastBase/LastSize and
-request DCFlushRange for that previous chunk. Otherwise set FirstSize=N without
+request DCStoreRangeNoSync for that previous chunk. Otherwise set FirstSize=N without
 that request. Then reread CurBase/currentPtr and ALWAYS request
-DCFlushRange(CurBase,wrap32(currentPtr-CurBase)), using RAW unrounded current
+DCStoreRangeNoSync(CurBase,wrap32(currentPtr-CurBase)), using RAW unrounded current
 length. It is not the retained aligned N. The ordinary ABI epilogue follows;
 no independent scalar status is assigned and child returns are ignored.
 
@@ -135,7 +135,7 @@ Full fresh builder ELF/listing remains `/tmp`; no bodies/binary assets committed
 
 Remaining: pending command payload/admission/budget/studio/voice regions,
 actual pointer/cell/X/size/allocation/cache/DSP consumers and valid total extent/
-wrap/alias/lifetime/IRQ/concurrency domains; original chunk/link/flush/command/
+wrap/alias/lifetime/IRQ/concurrency domains; original chunk/link/store/command/
 DSP/audio traces. Fourteen local regions answered; whole builder/full native
 binding and EVT-01 remain OPEN.
 
@@ -144,3 +144,10 @@ binding and EVT-01 remain OPEN.
 [Studio payloads/fades](MUSYX_DSP_STUDIO_COMMAND_PAYLOADS_AND_FADE_BINDINGS.md) closes ten input/aux/mode/surround/
 compressor/chain/fade/loop regions around the rollover blocks. Remaining voice/
 budget/admission/domain/cache/DSP/original audio execution stays open.
+
+## 2026-10-13 — Cache-service source-name correction
+
+[Cache range/source correction](GEKKO_CACHE_RANGE_SERVICES_AND_AUDIO_CALL_CORRECTIONS.md)
+corrects earlier service-name attribution against US symbols/direct targets.
+The body above now names the emitted original service; pointer/length/order
+evidence stays unchanged. Hardware/handler/runtime cache effects remain open.

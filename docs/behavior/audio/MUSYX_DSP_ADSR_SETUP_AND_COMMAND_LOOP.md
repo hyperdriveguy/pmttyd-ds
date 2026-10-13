@@ -115,8 +115,8 @@ indices can exceed five count/mask slots; no safe indexing is inferred.
 At8028a62c, if retained R nonzero, send message0 and deactivate AGAIN. The
 prior-completion branch already requested both, so it reaches a second message/
 deactivation pair; the callback can observe/mutate state between requests.
-If R==0 skip these requests. In both cases reread V.word4 as cache-flush base;
-request DCFlushRange(base,wrap32(C-base)) at8028a650. Cursor C is retained
+If R==0 skip these requests. In both cases reread V.word4 as cache-store base;
+request DCStoreRangeNoSync(base,wrap32(C-base)) at8028a650. Cursor C is retained
 rather than stored back to V.word4 by this region. Callback mutations can change
 the freshly read base; unsigned wrap/alias/cache-buffer domains remain open.
 Other builder work resumes at8028a654.
@@ -172,3 +172,10 @@ ADSR call sites; full builder/native binding and EVT-01 remain OPEN.
 studio initialization and activation/start/key-off producers. Partial allocation
 failures and unchecked buffer use remain exact local behavior; transitive child/
 valid domain/original DSP/audio evidence remains open.
+
+## 2026-10-13 — Cache-service source-name correction
+
+[Cache range/source correction](GEKKO_CACHE_RANGE_SERVICES_AND_AUDIO_CALL_CORRECTIONS.md)
+corrects earlier service-name attribution against US symbols/direct targets.
+The body above now names the emitted original service; pointer/length/order
+evidence stays unchanged. Hardware/handler/runtime cache effects remain open.
