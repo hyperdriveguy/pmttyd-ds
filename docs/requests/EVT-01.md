@@ -177,6 +177,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Sixteen halfword stores/deferred writes, speed missing-ID domain, tagged
   volume modes/64-entry group scan and raw IRQ order pinned; synthVolume/
   consumers/provider domains and original tempo/volume/audio remain open.
+- [x] Complete synthVolume/sndConvertMs local bodies —
+  [selectors/fader publication](../behavior/audio/MUSYX_SYNTH_VOLUME_SELECTORS_AND_FADE_PUBLICATION.md).
+  Six selector scans/direct indexing, numeric literals, low16 duration
+  conversion and ordered zero/nonzero fader/bitmap writes pinned; other
+  writers/provider/bounds/domains and original duration/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1190,3 +1195,20 @@ anchors/ten calls passes. Eight halfword/seven address/16 mode/15 flag vectors,
 ELFs/listings stay `/tmp`; no native change/original execution/body/asset export.
 synthVolume/deferred/track consumers, ID/group/mode/time providers, lookup-success/
 index/bounds/alias/IRQ/concurrency and original tempo/volume/miss/audio remain OPEN.
+
+### 2026-10-13 — Synthesis volume selectors and fader publication
+
+[Complete synthVolume and duration converter](../behavior/audio/MUSYX_SYNTH_VOLUME_SELECTORS_AND_FADE_PUBLICATION.md)
+close six row-type selector scans/unchecked direct indexing, exact target and
+coefficient literals, low16 duration<<8, mode/ID publication, zero-duration
+immediate sequence dispatch and final fresh bitmap OR. Zero duration still
+sets active while preserving earlier start/coefficient fields. Special scans
+store IDffffffff; no invented direct bounds repair, volume clamp, coefficient
+reset or original physical fade measurement.
+
+Validation: read-only manifest11 spans (two complete/five linked/four literals),
+192 anchors/15 calls passes.256 selector/eight duration/eight target/ten mode/
+six row-type vectors checked as deductions. Fresh full ELFs/listings stay `/tmp`;
+no native change/original execution/body/asset export. Fader initialization/other
+writers, caller/group/ID/numeric/alias/IRQ/concurrency domains, deferred consumers
+and original zero/nonzero-duration/tempo/fade/audio remain OPEN.

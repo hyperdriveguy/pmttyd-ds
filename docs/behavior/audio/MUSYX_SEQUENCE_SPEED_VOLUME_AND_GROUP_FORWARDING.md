@@ -129,3 +129,10 @@ ID/group/field/flag/mode/time providers, caller lookup-success/private-ID/group
 bounds/list/alias/IRQ/concurrency invariants and original tempo/volume/miss/audio
 traces. These four local services are answered; EVT-01 and full native/source/
 runtime/hardware equivalence remain OPEN.
+
+### Synthesis volume follow-up
+
+[Complete synthVolume/sndConvertMs](MUSYX_SYNTH_VOLUME_SELECTORS_AND_FADE_PUBLICATION.md)
+now pins the exact selector routes, low16 duration conversion, fader arithmetic
+and zero/nonzero publication/bitmap order. Caller/group/ID/fader providers,
+deferred/track consumers and original tempo/volume/audio evidence remain open.

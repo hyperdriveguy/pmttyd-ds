@@ -107,3 +107,8 @@ semantics, callback installation, original scheduling/fade/voice/audio traces.
 Full native/source/runtime/hardware equivalence and EVT-01 remain OPEN.
 
 [Complete sequence pause/mute/public mute](MUSYX_SEQUENCE_PAUSE_MUTE_AND_DEFERRED_FIELDS.md) now closes those exact fade children, preserving input high-bit deferred paths. Actual field consumers/resume/voice/source/runtime remain open.
+
+[Complete synthesis volume producer](MUSYX_SYNTH_VOLUME_SELECTORS_AND_FADE_PUBLICATION.md)
+now closes selector/duration/mode/target and ordered master-fader publication
+for this caller. Other row/bitmap/coefficient writers, valid domains and
+original scheduling/fade/audio execution remain open.

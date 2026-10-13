@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero synthesis volume producer
+
+Completed synthVolume/sndConvertMs source contracts for EVT-01 and checked
+that inbox portion. [Selectors and fader publication](behavior/audio/MUSYX_SYNTH_VOLUME_SELECTORS_AND_FADE_PUBLICATION.md)
+pins six row-type scans/direct indexing, four numeric literals, low16 duration
+conversion, ordered fader/mode/ID stores, zero-duration sequence dispatch and
+fresh bitmap OR. Zero duration preserves earlier start/coefficient fields yet
+sets active; direct selectors beyond31 derive unchecked table writes. These
+are static semantics, not original executed corruption or audible fade timing.
+
+Validation: read-only ISO manifest passed11 spans (two complete/five linked/four
+literals),192 anchors/15 calls.256 selector/eight duration/eight target/ten mode/
+six row-type vectors checked as deductions. Documentation link audit passed779
+Markdown files/zero broken links; `git diff --check` passed. Documentation/metadata
+only; no `make test`/`make all` rerun. Original full listings/ELFs stay `/tmp`;
+no bodies/assets committed. Unrelated concurrent native work excluded.
+
+Next: priority-zero EVT-01 fader initialization/other bitmap/row writers,
+caller group/ID/mode/time/numeric domains, sequence deferred/track consumers and
+original duration/audio traces. Full scheduling/native/runtime binding and
+lower-priority inbox/full-game work remain incomplete.
+
 ## 2026-10-13 — Inbox priority-zero sequence speed/volume
 
 Completed four local sequence speed/volume/public-wrapper contracts for EVT-01
