@@ -8,7 +8,7 @@ void WaterRecovery::begin(std::array<float,3> start,std::array<float,3> destinat
 WaterEvent WaterRecovery::tick(int& hp) {
     if(state==15) {
         position[0]+=travelX;position[2]+=travelZ;
-        if(--counter<=0){state=20;fallVelocity=-.001f;fallAcceleration=-.002f;fallJerk=.00024f;fallJerkRate=-.00004f;}
+        if(--counter<=0){state=20;fallVelocity=.34f;fallAcceleration=-.002f;fallJerk=-.01f;fallJerkRate=0.f;}
     } else if(state==0) {
         if(position[1]>=root-1.6f)position[1]+=velocity;
         else {state=1;counter=40;velocity=.003f;}
@@ -29,7 +29,7 @@ WaterEvent WaterRecovery::tick(int& hp) {
             position[0]+=travelX;position[2]+=travelZ;
         }
         if(--counter<=0) {
-            fallVelocity=-.001f;fallAcceleration=-.002f;fallJerk=.00024f;fallJerkRate=-.00004f;
+            fallVelocity=.34f;fallAcceleration=-.002f;fallJerk=-.01f;fallJerkRate=0.f;
             state=state==12?13:20;counter=1;
         }
     } else if(state==13) {

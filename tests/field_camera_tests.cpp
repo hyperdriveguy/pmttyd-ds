@@ -42,6 +42,7 @@ void bottomlessCases() {
     WaterRecovery recovery;recovery.beginVoid({0,2,0},{.03f,0,0});
     CHECK(recovery.counter==0 && recovery.position[0]==0);int hp=7;recovery.tick(hp);
     CHECK(recovery.position[0]==.08f && recovery.state==20 && hp==7);
+    CHECK(recovery.fallVelocity==.34f && recovery.fallAcceleration==-.002f && recovery.fallJerk==-.01f && recovery.fallJerkRate==0.f); // Recovered mot_bottomless drop-back lanes, DOL 0x80091bd4.
     recovery.beginVoid({0,2,0},{0,0,0});recovery.tick(hp);
     CHECK(recovery.position[2]==-.08f && recovery.state==20);
     clearCollision();Game game;game.restore(game.progress);
