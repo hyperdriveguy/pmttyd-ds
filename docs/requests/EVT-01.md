@@ -616,6 +616,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete DVDReadPrio/DVDClose/dvdfs cbForReadSync — [SDK read/close](../behavior/file/SDK_DVD_READ_BOUNDS_WAIT_WAKE_AND_CLOSE.md).
   Bounds/async submission/IRQ/status/sleep-wake/cancel-return pinned; command/
   cancel/thread/providers/original/native binding remains open.
+- [x] Complete DVDReadAbsAsyncPrio/__DVDPushWaitingQueue/__DVDClearWaitingQueue —
+  [async submit/append](../behavior/file/SDK_DVD_ASYNC_SUBMISSION_AND_QUEUE_APPEND.md). Command/cache/IRQ/state,
+  raw priority/fresh tail/ready/normal1 return pinned; engine/runtime open.
 - [ ] Deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
@@ -3067,3 +3070,12 @@ three close vectors and ABI/field/callback sites checked; manager pins reverifie
 Wrapped signed/unsigned bounds, three terminal states/shared queue and close1
 regardless of cancel result pinned. Child commands/thread/cancel/providers/
 original IO/audio/native binding open; EVT-01 stays OPEN.
+
+## 2026-10-13 — SDK DVD submission/queue append delivery
+
+Completed [submission/push/clear](../behavior/file/SDK_DVD_ASYNC_SUBMISSION_AND_QUEUE_APPEND.md).
+Seven spans/95 anchors/seven calls verified; eight invalidation/five ready/seven
+priority/three append models, six field stores/four head resets and sites checked;
+read pins reverified. Ordered fresh-tail links, state2 before push and normal1
+return pinned. Queue consumers/command engine/providers/original IO/audio/native
+binding open; EVT-01 stays OPEN.

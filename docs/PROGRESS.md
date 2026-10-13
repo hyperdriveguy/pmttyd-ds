@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero SDK DVD async submission/append
+
+Completed DVDReadAbsAsyncPrio/__DVDPushWaitingQueue/__DVDClearWaitingQueue;
+checked EVT-01 portions. [Submission/append](behavior/file/SDK_DVD_ASYNC_SUBMISSION_AND_QUEUE_APPEND.md)
+pins command/cache-before-IRQ, state2, raw priority/fresh-tail link order, ready
+conditional and normal1 return. Queue consumers/command engine/providers/
+original IO/audio/native binding remain open.
+
+Validation: read-only ISO manifest passed seven spans,95 anchors,seven calls.
+Eight invalidation/five ready/seven priority/three append models, six field
+writes/four head resets/publication sites checked; read-wrapper pins reverified.
+Link audit passed939 Markdown files/zero broken links; scoped diff check passed.
+Mathematical deductions separate from original execution. Docs/metadata only;
+no make test/all rerun. Fresh full ELFs/listings/generator stay /tmp; no bodies/
+assets committed. Concurrent native work excluded. Approved push pending valid
+GitHub credentials.
+
+Next: priority-zero EVT-01 queue pop/check/dequeue/stateReady/command engine,
+actual queue/priority/command/global-state/token/providers and valid value/extent/
+alias/lifetime/IRQ/concurrency/ABI domains, original order/pause/cache/callback/
+IO/audio traces. Other inbox/native/full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero SDK DVD read/close/wake
 
 Completed DVDReadPrio/DVDClose/dvdfs cbForReadSync; checked EVT-01 portion.
