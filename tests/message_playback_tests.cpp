@@ -32,6 +32,10 @@ int main(int argc,char**) {
     gated.tick(552,0x100);assert(gated.elapsed==350 && gated.cursor==2 && (gated.flags&0x80));
     gated.tick(577,0x100);assert(gated.elapsed==375 && !(gated.flags&0x80));
     MessagePlayback p;const char* raw="<dynamic 3>A\nB<k>\n<p>\n<wait 100>C<k>";
+    MessagePlayback once;assert(once.open("once","A<o>B",font,0));
+    for(uint64_t ms=0;ms<1000 && !once.stopped();ms+=17)once.tick(ms,0x100);
+    assert(once.stopped() && once.active() && once.cursor==2 && once.elapsed==25 && !(once.flags&4));
+    once.tick(2000,0x300);assert(once.stopped() && once.cursor==2);
     assert(p.open("fixture",raw,font,0) && p.rawText()==raw && p.id()=="fixture");
     assert(p.records[0].code=='A' && p.records[0].flags==9 && p.records[0].value==3 && p.records[0].schedule==0);
     assert(p.records[1].code==0xfffb && p.records[1].schedule==25);

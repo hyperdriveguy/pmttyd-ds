@@ -43,7 +43,7 @@ int main() {
         renderer.shutdown();romfsExit();gfxExit();return 1;
     }
     ttyd::Audio audio;audio.init();
-    ttyd::Game game;ttyd::Progress saved;
+    auto ownedGame=std::make_unique<ttyd::Game>();auto& game=*ownedGame;ttyd::Progress saved;
     const std::string saveDirectory="sdmc:/3ds/ttyd-2ds";
     std::string savePath=ttyd::saveSlotPath(saveDirectory,0);
     mkdir("sdmc:/3ds",0777);mkdir(saveDirectory.c_str(),0777);
@@ -53,7 +53,7 @@ int main() {
     auto restoreProgress=[&](const ttyd::Progress& checkpoint) {
         ttyd::CollisionTransition transaction;float height=checkpoint.elevation;
         if(!stageRoomCollision(checkpoint.room,transaction))return false;
-        ttyd::Game candidate;candidate.restore(checkpoint);
+        auto ownedCandidate=std::make_unique<ttyd::Game>();auto& candidate=*ownedCandidate;candidate.restore(checkpoint);
         if(!ttyd::groundAt(checkpoint.position,height,height) || !ttyd::walkable(checkpoint.position,height) || !renderer.changeRoom(checkpoint.room))return false;
         game=std::move(candidate);transaction.commit();return true;
     };
@@ -132,7 +132,7 @@ int main() {
         if(game.warpRequest>=0 && game.fade.ready()) {
             ttyd::CollisionTransition transaction;
             // Target ID comes from the original, validated road table.
-            ttyd::Game candidate=game;
+            auto ownedCandidate=std::make_unique<ttyd::Game>(game);auto& candidate=*ownedCandidate;
             // Read target from the fixed record requested by the simulation.
             uint32_t target=game.warpTarget();
             bool ok=stageRoomCollision(target,transaction) && candidate.finishWarp();
@@ -169,6 +169,6 @@ int main() {
         if(now-window>=1) {metrics.fps=frames/(now-window);window=now;frames=0;}
     }
     // A battle is transient; save only the exploration checkpoint.
-    if(frontend.screen==ttyd::FrontScreen::Playing && !game.professorStory.temporaryProfessor && !game.professorStory.locked() && game.scene==ttyd::Scene::Explore && !game.airborne() && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0) ttyd::writeSave(savePath,game.progress);
+    if(frontend.screen==ttyd::FrontScreen::Playing && !game.professorStory.temporaryProfessor && !game.professorStory.running() && game.scene==ttyd::Scene::Explore && !game.airborne() && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0) ttyd::writeSave(savePath,game.progress);
     audio.shutdown();renderer.shutdown();romfsExit();gfxExit();return 0;
 }

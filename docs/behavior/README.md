@@ -422,6 +422,8 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [Native save format](format/NATIVE_SAVE_FORMAT.md): version4 interior state, backward compatibility and atomic validation/recovery.
 - [Professor first-talk and fence](story/PROFESSOR_FIRST_TALK_AND_FENCE.md): original door/story gates, 31 message bindings and complete first-talk/fence command requests.
 - [Native professor first-talk](story/NATIVE_PROFESSOR_FIRST_TALK.md): original REL execution, native field services and explicit remaining presentation/party dependencies.
+- [Native fence/lecture entry](story/NATIVE_PROFESSOR_FENCE_AND_LECTURE_ENTRY.md): original exit scene, paper deformation, collision removal and live crossing poll.
+- [Fence paper capture](display/PROLOGUE_FENCE_PAPER_CAPTURE_AND_ANIMATION.md): source quad, sparse keys, rectangle and image completion owners.
 - [Temporary Frankly follow](partner/NATIVE_TEMPORARY_FRANKLY_FOLLOW.md): original secondary-party source selection and native terrain adapter.
 - [Frankly party lifecycle/fence admission](partner/FIELD_PROFESSOR_TEMPORARY_PARTY_AND_FENCE_ADMISSION.md): source kind11 construction, slot1 history and story9 house exit callback.
 

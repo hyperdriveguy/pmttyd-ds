@@ -64,6 +64,11 @@ private:
         uint64_t animationStart=UINT64_MAX;
         std::vector<FieldActorModelGpu> actorModels;
         uint64_t actorStart=UINT64_MAX;
+        std::vector<std::pair<uint32_t,Vertex>> fenceOriginal;
+        CameraView fenceCaptureView{};
+        std::array<float,4> fenceCapturePlane{};
+        bool fenceCaptured=false;
+        uint64_t fenceTick=UINT64_MAX;
     };
     Room plaza,stage,frontRoom;
     std::string frontMapName;
@@ -79,6 +84,8 @@ private:
     Texture professorMapTexture;
     std::array<float,2> professorMapSize{};
     ActorAnimationPack professorMarioAnimations;
+    ActorAnimationPack professorFenceAnimations;
+    ActorAnimationSample professorFenceSample;
     float professorMarioUVScale=1;
     FieldActorAssets fieldActorAssets;
     ActorMetrics actorMetrics;

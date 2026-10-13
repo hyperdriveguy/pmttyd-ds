@@ -25,7 +25,7 @@ def main():
         times={0,.25,1.5,parsed['end']/2,parsed['end']-.25,parsed['end'],parsed['end']+.25}
         # Texture steps include fractional original rear-run boundaries.
         for key in parsed['frames']:
-            if key['texture'] or key['visibility']:
+            if key['texture'] or key['visibility'] or key['node'] or key['position']:
                 times.update((max(0,key['time']-.01),key['time'],min(parsed['end'],key['time']+.01)))
         for time in sorted(times):
             time=struct.unpack('<f',struct.pack('<f',time))[0]

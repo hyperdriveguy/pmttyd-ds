@@ -624,3 +624,29 @@ and control bytes come unchanged from the existing `msg/US/gor_02.txt` import.
 The source manifest is ignored `romfs/professor-scene.json`. All originals remain
 Nintendo/Intelligent Systems property; conversion grants no redistribution
 license. No original assets or compiled packs are committed.
+
+
+## 2026-10-13 — Original fence removal resources
+
+`tools/professor_event_assets.py` now relocates the original first-talk,
+kurihakase_wall_remove and kurihakase_lecture data:318 original commands with
+pinned source hashes,63 scoped callbacks and three native entry addresses.
+Ignored `romfs/professor-program.bin` uses PMPROG2; the original events, strings
+and local/module0 relocation policy are preserved in local manifests.
+
+`tools/professor_fence_assets.py` reads `a/OFF_d_saku` and `a/OFF_d_saku-` from
+the read-only ISO. Ignored `romfs/professor-fence.{pmmesh,pmanim,json,bin}` retains
+the actual A_1 nonloop deformation, seven keys and140 source animation frames,
+plus source A_saku_04 collision subtree IDs from the imported gor_02 map. Raw
+resources/intermediates remain ignored `local-assets/professor-fence/`. The
+placeholder paper TPL is not used as a replacement for the fence appearance.
+
+Native presentation retains the78 original S_saku04 map vertices and material
+textures, then deforms that geometry using the actual paper quad in a frozen
+camera plane. This handheld capture adapter avoids a second scene render; it
+is not exact original GX offscreen capture, rectangle clipping, depth-plane or
+shadow reproduction. Source capture-bound writes/aspect arithmetic and original
+animation-completion wait remain in the event. Original fence open/fall SFX
+requests are retained; complete original spatial/MusyX playback is unbound.
+All originals retain Nintendo/Intelligent Systems rights; no redistribution
+license or original assets/compiled packs enter history.

@@ -67,3 +67,6 @@ romfs/*.pmshadow
 /build-debug-short/
 
 /romfs/*.uvscale
+
+romfs/professor-fence.*
+local-assets/professor-fence/

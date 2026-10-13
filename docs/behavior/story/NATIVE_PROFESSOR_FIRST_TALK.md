@@ -11,7 +11,7 @@ event commands and original strings are preserved in ignored local packs.
 [ProfessorStory](../../../source/professor_story.cpp) executes those words in
 EventNativeRuntime. The existing interpreter owns brothers, shared flag waits,
 integer/float operands, event credit, milliseconds/frames and GSW0 writes.
-The scoped catalog admits35 original callbacks. The119 callback starts and17
+First-talk calls35 callbacks within the expanded63-function scoped catalog. The119 callback starts and17
 camera requests remain observable. No hand-authored replacement conversation,
 flattened message sequence or source byte rewrite runs the scene.
 
@@ -39,9 +39,8 @@ and collision stepping, audio fades/environment mix and item icon service
 details remain open. Temporary Frankly party1 starts at the source saved position, then uses the
 [secondary-party follow adapter](../partner/NATIVE_TEMPORARY_FRANKLY_FOLLOW.md).
 Complete lifecycle/persistence remains unbound. Saves including exit saves are
-suppressed while that temporary state cannot be serialized. Fence removal,
-story10 lecture dispatch and source lesson/battle branches remain separate
-required work; first-talk completion is not full prologue parity.
+suppressed while that temporary state cannot be serialized. [Fence removal and lecture entry](NATIVE_PROFESSOR_FENCE_AND_LECTURE_ENTRY.md)
+now execute separately; source lesson choices/battle branches remain required work; first-talk completion is not full prologue parity.
 
 [Original-data tests](../../../tests/professor_story_tests.cpp) check door wait,
 all29 IDs/order,119 callback starts,17 cameras, source hop peak, original item

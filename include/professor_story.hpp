@@ -6,6 +6,7 @@
 #include <vector>
 namespace ttyd {
 bool loadProfessorStoryAssets(const char* root);
+const std::vector<uint32_t>& professorFenceCollisionNodes();
 struct ProfessorSceneActor {
     std::array<float,3> position{};
     float yaw=0;std::string pose="S_1";
@@ -22,6 +23,13 @@ struct ProfessorRuntime;
 class ProfessorStory {
 public:
     bool triggered=false,finished=false,failed=false,keysEnabled=true,temporaryProfessor=false;
+    bool fenceStarted=false,fenceHidden=false,fenceVisible=false,fenceCollisionOff=false;
+    bool captureRequested=false;
+    mutable bool captureReady=false; // Offscreen backend publishes the previous-frame rectangle.
+    mutable std::array<int32_t,4> captureBounds{};
+    std::string fencePose="Z_1";
+    uint64_t fencePoseAt=0;
+    uint32_t pendingService=0;
     int32_t story=8;unsigned speaker=0;uint64_t now=0;
     int music=0;
     std::array<float,3> itemPosition{};
@@ -33,8 +41,10 @@ public:
     std::vector<ProfessorServiceRequest> presentationRequests;
     std::vector<std::string> messageOrder;
     bool begin(uint64_t milliseconds,std::array<float,3> mario,std::array<float,3> goombella);
+    bool beginFence(uint64_t milliseconds,std::array<float,3> mario,std::array<float,3> goombella);
     void tick(uint64_t milliseconds,uint32_t keys,bool doorBusy);
-    bool locked() const{return triggered && !finished;}
+    bool running() const{return triggered && !finished;}
+    bool locked() const{return running() && !(fenceStarted && story>=10 && keysEnabled);}
 private:
     std::shared_ptr<ProfessorRuntime> runtime_;
 };

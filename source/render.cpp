@@ -1,4 +1,5 @@
 #include "platform.hpp"
+#include "paper_fence_warp.hpp"
 #include "world_shbin.h"
 #include "field_camera.hpp"
 #include "map_visibility.hpp"
@@ -52,6 +53,7 @@ bool Renderer::init() {
     if(!actorAnimations.load("romfs:/characters.pmanim"))return false;
     if(!partnerAnimations.load("romfs:/partner.pmanim"))return false;
     if(!professorMarioAnimations.load("romfs:/professor-mario.pmanim"))return false;
+    if(!professorFenceAnimations.load("romfs:/professor-fence.pmanim"))return false;
     FILE* storyUV=std::fopen("romfs:/professor-mario.bin","rb");if(!storyUV)return false;
     char storyMagic[8];
     const bool storyValid=std::fread(storyMagic,8,1,storyUV)==1 && !std::memcmp(storyMagic,"PMSUV1",8) &&
@@ -114,6 +116,8 @@ bool Renderer::loadMap(const char* name,Room& room) {
     room.vertexCount=bytes/sizeof(Vertex);room.vertices=(Vertex*)linearAlloc(bytes);
     ok=room.vertices && std::fread(room.vertices,1,bytes,f)==size_t(bytes);std::fclose(f);if(!ok)return false;
     for(auto b:room.batches) if(b.start>room.vertexCount || b.count>room.vertexCount-b.start || b.texture<-1 || b.texture>=int32_t(textureCount))return false;
+    for(auto batch:room.batches)if(batch.layer>>26==8)
+        for(uint32_t i=0;i<batch.count;++i)room.fenceOriginal.push_back({batch.start+i,room.vertices[batch.start+i]});
     uint32_t groups=0;
     for(auto batch:room.batches) {if(batch.count%3 || ((batch.layer>>8)&65535)>1024 || (batch.layer>>26)>12)return false;groups=std::max(groups,(batch.layer>>8)&65535);}
     std::snprintf(path,sizeof(path),"romfs:/%s.uvanim",name);
@@ -235,6 +239,44 @@ void Renderer::updateCutaways(Room& room,const Game& g) {
 }
 void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* supplied) {
     auto& room=supplied?*supplied:battle?stage:plaza;
+    if(!supplied && !battle && !translucent && game.progress.room==2 && game.professorStory.captureRequested && !room.fenceOriginal.empty()) {
+        const auto& scene=game.professorStory;
+        if(!room.fenceCaptured) {
+            room.fenceCaptureView=game.fieldCameraFrame.view;
+            float xmin=INFINITY,ymin=INFINITY,xmax=-INFINITY,ymax=-INFINITY;
+            int32_t left=INT32_MAX,top=INT32_MAX,right=INT32_MIN,bottom=INT32_MIN;
+            for(const auto& saved:room.fenceOriginal) {
+                const auto& p=saved.second;const float v[]={p.x,p.y,p.z};
+                float xy[2];for(unsigned axis=0;axis<2;++axis) {
+                    const auto& row=room.fenceCaptureView[axis];xy[axis]=row[0]*v[0]+row[1]*v[1]+row[2]*v[2]+row[3];
+                }
+                xmin=std::min(xmin,xy[0]);xmax=std::max(xmax,xy[0]);ymin=std::min(ymin,xy[1]);ymax=std::max(ymax,xy[1]);
+                const auto screen=projectCameraRoot({p.x,p.y,p.z},game.fieldCameraFrame.view,game.fieldCameraFrame.projection,game.fieldCameraFrame.viewport);
+                if(screen.valid){left=std::min(left,screen.x);right=std::max(right,screen.x);top=std::min(top,screen.y);bottom=std::max(bottom,screen.y);}
+            }
+            if(xmax>xmin && ymax>ymin && right>left && bottom>top) {
+                room.fenceCapturePlane={xmin,ymin,xmax-xmin,ymax-ymin};room.fenceCaptured=true;
+                scene.captureBounds={left,top,right-left,bottom-top};scene.captureReady=true;
+            }
+        }
+        if(room.fenceCaptured && scene.fenceVisible && room.fenceTick!=game.ticks) {
+            room.fenceTick=game.ticks;
+            const auto* pose=professorFenceAnimations.pose("A_1");
+            const float time=scene.fencePose=="A_1"?float(scene.now-scene.fencePoseAt)*.06f:0;
+            if(pose && pose->evaluate(time,professorFenceSample)) {
+                std::array<ActorVector,4> corners{};
+                for(size_t i=0;i<pose->bindings.size();++i)if(pose->bindings[i].position<4) {
+                    const auto& v=professorFenceSample.vertices[i];corners[pose->bindings[i].position]={v.x,v.y,v.z};
+                }
+                for(const auto& saved:room.fenceOriginal) {
+                    auto& vertex=room.vertices[saved.first];const auto& original=saved.second;
+                    const auto p=paperFenceWarp({original.x,original.y,original.z},room.fenceCaptureView,room.fenceCapturePlane,corners);
+                    vertex.x=p[0];vertex.y=p[1];vertex.z=p[2];
+                }
+                for(auto batch:room.batches)if(batch.layer>>26==8)GSPGPU_FlushDataCache(room.vertices+batch.start,batch.count*sizeof(Vertex));
+            }
+        }
+    }
     if(!supplied && !battle && !translucent)updateCutaways(room,game);
     if(!translucent) {
         if(room.animationStart==UINT64_MAX)room.animationStart=game.ticks;
@@ -268,6 +310,7 @@ void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* suppl
     auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,room.vertices,sizeof(Vertex),3,0x210);
     const GPU_TEXTURE_WRAP_PARAM wraps[]={GPU_CLAMP_TO_EDGE,GPU_REPEAT,GPU_MIRRORED_REPEAT};
     for(auto batch:room.batches) {
+        if(!battle && game.progress.room==2 && batch.layer>>26==8 && game.professorStory.fenceHidden && !game.professorStory.fenceVisible)continue;
         if(!battle && ((batch.layer&255)==2)!=translucent)continue;
         if(!battle && !mapEventGroupVisible(batch.layer>>26,game.progress.originalStory.value_or(0),game.fieldDoor.interiorMask))continue;
         uint32_t group=(batch.layer>>8)&65535;
@@ -701,7 +744,7 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
     text(label,x+7,y+8,.48f,disabled?rgb(135,129,116):Ink);
 }
 void Renderer::overlay(const Game& g) {
-    if(g.fieldActorTalk.message.active() || g.harborStory.locked() || g.professorStory.locked()){originalMessage(g);if(g.harborStory.failed || g.professorStory.failed)text("Development notice: source scene unavailable",25,112,.45f,Ink);return;}
+    if(g.fieldActorTalk.message.active() || g.harborStory.locked() || g.professorStory.locked()){originalMessage(g);if(g.harborStory.failed || g.professorStory.failed)text("Development notice: source scene unavailable",25,112,.45f,Ink);if(g.professorStory.pendingService)text("Development notice: source choice service pending",25,112,.45f,Ink);return;}
     if(g.scene==Scene::Dialogue) {
         const auto plan=messageWindowPlan({},0,0,0,255);messageBorder(plan,255);
         text(g.dialogue(),64,28,.5f,Ink);return;

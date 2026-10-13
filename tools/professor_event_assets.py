@@ -2,7 +2,7 @@
 """Relocate original gor REL data into an explicitly authored native address map.
 
 No event commands or strings are rewritten except source ADDR32 relocations.
-Only kurihakase_first_talk is admitted by the scoped native callback catalog.
+First-talk, fence removal and lecture use the scoped native callback catalog.
 """
 import hashlib
 import json
@@ -17,13 +17,21 @@ SERVICES = ['evt_cam3d_evt_off','evt_cam3d_evt_set','evt_cam_shake','evt_door_en
  'evt_mario_set_party_pos','evt_mario_set_pose','evt_msg_print','evt_msg_print_party','evt_npc_flag_onoff',
  'evt_npc_get_position','evt_npc_jump_position_nohit','evt_npc_move_position','evt_npc_set_position','evt_npc_set_ry',
  'evt_party_dispflg_onoff','evt_party_move_pos2','evt_party_run','evt_party_set_dir','evt_party_stop',
- 'evt_snd_bgmoff','evt_snd_bgmon','evt_snd_envoff','evt_snd_envon','evt_snd_sfxon_3d']
+ 'evt_snd_bgmoff','evt_snd_bgmon','evt_snd_envoff','evt_snd_envon','evt_snd_sfxon_3d',
+ 'evt_party_get_pos','evt_mario_clear_party','evt_paper_entry','evt_offscreen_entry','evt_img_entry',
+ 'evt_img_set_paper','evt_mapobj_set_offscreen','set_depthPlaneOffset','evt_offscreen_get_boundingbox',
+ 'evt_img_alloc_capture','evt_img_clear_virtual_point','evt_img_set_paper_anim','evt_img_onoff',
+ 'evt_img_set_shadow','evt_snd_sfxon','evt_img_wait_animend','evt_mapobj_clear_offscreen',
+ 'evt_img_release','evt_offscreen_delete','evt_hitobj_onoff','evt_sub_check_intersect',
+ 'evt_msg_select','evt_msg_print_add','evt_mario_kill_party','evt_npc_set_battle_info',
+ 'evt_npc_battle_start','evt_npc_wait_battle_end','evt_mario_set_prev_party_pos']
 
 def build(iso=DEFAULT_ISO):
     work=Path('local-assets/professor');work.mkdir(parents=True,exist_ok=True)
     source=work/'gor.rel';extract(iso,'rel/gor.rel',source);raw=source.read_bytes()
     if hashlib.sha256(raw).hexdigest()!='d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a':raise ValueError('Unexpected US gor REL')
-    event=inventory_events(raw,'artifacts/reference/us_symbols.csv','gor',['kurihakase_first_talk'])['events'][0]
+    events=inventory_events(raw,'artifacts/reference/us_symbols.csv','gor',['kurihakase_first_talk','kurihakase_wall_remove','kurihakase_lecture'])['events'];event=events[0]
+    if events[1]['sha256']!='404b1eb72ecc96d2ca959766a1f5375ce09f81e7bffeeb2fe135f223aa49550c' or events[2]['sha256']!='003b2e23e35704e67e1beec34309e6237930c437125b86e274d17334db1e1ef3':raise ValueError('Fence/lecture source changed')
     if event['sha256']!='9e27be37f4d93218ea9204cf25d17eef07876c130d25f13c8b5470739f545511':raise ValueError('First-talk source changed')
     local,imports,foreign=read_bindings(raw)
     u=lambda o:struct.unpack_from('>I',raw,o)[0]
@@ -47,24 +55,27 @@ def build(iso=DEFAULT_ISO):
             if off<=site<off+size:struct.pack_into('>I',data,site-off,value)
         segments.append((base,bytes(data)))
     called={}
-    for command in event['commands']:
-        if command['opcode']!=91:continue
-        operand=command['operands'][0];name=operand.get('annotation')
-        if name not in SERVICES or 'dol_address' not in operand:raise ValueError('Unadmitted first-talk callback')
-        called[operand['dol_address']]=SERVICES.index(name)
+    for entry in events:
+        for command in entry['commands']:
+            if command['opcode']!=91:continue
+            operand=command['operands'][0];name=operand.get('annotation')
+            if name not in SERVICES:raise ValueError('Unadmitted professor callback')
+            target=operand.get('dol_address')
+            if target is None:target=address(operand['rel_offset'])
+            called[target]=SERVICES.index(name)
     table=bytearray();payload=bytearray();offset=12+12*len(segments)
     for base,data in segments:
         table+=struct.pack('>III',base,len(data),offset);payload+=data;offset+=len(data)
     Path('romfs/professor-events.pmevt').write_bytes(b'PMEVT001'+struct.pack('>I',len(segments))+table+payload)
-    metadata=struct.pack('<8sII',b'PMPROG1',address(event['file_offset']),len(called))
+    metadata=struct.pack('<8s4I',b'PMPROG2',*[address(e['file_offset']) for e in events],len(called))
     metadata+=b''.join(struct.pack('<II',a,tag) for a,tag in sorted(called.items()))
     Path('romfs/professor-program.bin').write_bytes(metadata)
-    manifest=dict(source='rel/gor.rel',sha256=hashlib.sha256(raw).hexdigest(),event=event,
+    manifest=dict(source='rel/gor.rel',sha256=hashlib.sha256(raw).hexdigest(),event=event,events=events,
                   sections=sections,callbacks=called,foreign_relocations=foreign,
                   policy='Authored native section bases; original module0 imports and local ADDR32 relocations; unsupported callbacks are not silently admitted',
                   license='Local original Nintendo/Intelligent Systems data; no redistribution rights')
     Path('local-assets/professor/event-program.json').write_text(json.dumps(manifest,indent=2)+'\n')
-    print('Original first-talk event commands:',len(event['commands']))
+    print('Original professor event commands:',sum(len(e['commands']) for e in events))
 
 if __name__=='__main__':
     import argparse

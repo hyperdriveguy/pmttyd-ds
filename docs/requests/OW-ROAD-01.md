@@ -84,3 +84,11 @@ and constructor mode2, exact set_party_pos ownership, secondary history's
 Goombella-versus-Mario source selection and clear(1)→partyKill2 restoration.
 Fence admission is the door exit, not a newly invented fence proximity trigger.
 Original follow trajectories/paper/collision/native runtime fidelity remain open.
+
+2026-10-13 fence capture/paper follow-up:
+[Fence paper capture and animation](../behavior/display/PROLOGUE_FENCE_PAPER_CAPTURE_AND_ANIMATION.md)
+recovers OFF_d_saku source format/base mesh/A_1 seven keys and140frame span,
+image clock/loop-ratio completion, previous-frame unsignedpixel capture bounds,
+literal source aspect arithmetic and bounded64×48screen-plane matrix request.
+Existing generic parser evaluates A_1; static Z_1 needs a single-key adapter.
+Full capturetexture/depth/FOV/material/shadow/native runtime owners remain open.

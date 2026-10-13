@@ -2,6 +2,53 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original house-exit fence event and live lecture entry
+
+[Native fence/lecture entry](behavior/story/NATIVE_PROFESSOR_FENCE_AND_LECTURE_ENTRY.md)
+executes the original63-command wall-removal event through its story9 close-door
+contact+A callback. Door-end wait, temporary-party-to-NPC conversion, original
+083/084 messages, cameras/movement/hops and source GSW0=10 run in the existing
+VM. Expanded original REL catalog preserves318 commands/63 callbacks across
+first-talk, fence and lecture. The source lecture crossing poll remains live
+with field controls enabled, then runs084_01/084_02 through its original pending
+choice service. Added source `<o>`/once_stop retained-window behavior.
+
+Imported actual OFF_d_saku A_1 nonloop140-frame deformation/seven keys. Native
+capture bounds unblock the original integer/aspect commands; original78 fence
+vertices/materials deform in a frozen camera-plane adapter. Original map hide
+and image display ownership remain distinct from actual A_saku_04 collision
+removal. Source story>=10 restores collision removal on reload. Saves/exit
+saves remain suppressed while the live event lacks persistence. Asset paths,
+adaptations and rights are recorded in [assets](ASSETS.md).
+
+Validation: final shared-worktree `make test` passes104 CTest/100 Python tests;
+`make all` builds the3DS binary. Separately exported staged source compiles
+host/native and passes102 CTest tests after regenerating its field actor format
+in `/tmp/professor-fence-stage`; workspace assets are untouched by that rebuild.
+Original-data tests complete first-talk, walk to the close-door contact, wait
+for capture/animation, compare collision before/after, reach story10, walk the
+opened gap and reach the pending original lecture choice. Independent23-paper-
+animation samples pass0.00025 local-unit tolerance, max error0.000213623; the
+initial generic0.0002 check rejected that large-fall sample, and ordinary default
+tolerance remains unchanged. Key/boundary interpolation sampling was expanded.
+
+The first Azahar run overflowed the native checkpoint-restore stack. Main game,
+validation/warp candidates and full reset temporaries now use heap storage;
+retry `artifacts/azahar-professor-fence-heap/` restores the checkpoint and shows
+original083/084, fence gap and restored controls without that exception. Native
+`artifacts/azahar-professor-fence-gap/` replay walks through the gap and reaches
+original084_02 retained text and the pending choice service. Earlier straight
+replays hit the pipe; corrected navigation uses the opened gap. Initial staged-tree
+compile raced the file export and lacked main; rerun after export completes
+passes. No physical3DS or original runtime trace was obtained.
+
+Next/limits: bind original selection/add services, both lesson branches, actual
+lecture battle/return and story10 reload admission. Source offscreen/GX capture,
+rectangle clipping/depth/shadow, image clock and SFX/backend/flag consumers are
+still partial; current map-material deformation is an explicit handheld adapter.
+Earlier harbor/prologue gaps, temporary-party persistence and hardware
+performance still prevent full playable prologue parity.
+
 ## 2026-10-13 — Priority0 synth FX resource and chained control cores
 
 Delivered [complete synth request cores](behavior/audio/MUSYX_SYNTH_EFFECT_RESOURCE_AND_CONTROL_CORES.md):

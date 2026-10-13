@@ -48,7 +48,9 @@ std::vector<RoadWarp> roads;
 std::vector<uint32_t> roadAttributeNodes;
 std::vector<uint32_t> disabledDoorNodes;
 uint32_t doorCollisionRoom=UINT32_MAX,doorCollisionMask=UINT32_MAX;
+bool fenceCollisionDisabled=false;
 bool doorCollisionEnabled(uint32_t node) {
+    if(fenceCollisionDisabled && std::binary_search(professorFenceCollisionNodes().begin(),professorFenceCollisionNodes().end(),node))return false;
     return !std::binary_search(disabledDoorNodes.begin(),disabledDoorNodes.end(),node);
 }
 void applyDoorCollision(uint32_t room,uint32_t mask) {
@@ -755,12 +757,16 @@ void Game::restore(const Progress& saved) {
     const auto retainedFrame=fieldCameraFrame;const bool retainedAuthored=fieldCameraAuthored;
     const auto retainedCameraFlags=fieldCameraFlags&~0x10u;
     const auto retainedPresentation=marioPresentation;
-    *this = Game{};
+    // A full Game reset exceeds the remaining native stack under checkpoint
+    // validation. Keep the reset work on the heap, then move its owned state.
+    auto reset=std::make_unique<Game>();
+    *this = std::move(*reset);
     marioPresentation.facing=retainedPresentation.facing;marioPresentation.display=retainedPresentation.display;marioPresentation.target=retainedPresentation.target;
     fieldCameraEvents=cameraEvents;fieldCameraFlags=retainedCameraFlags;
     fieldCameraFrame=retainedFrame;fieldCameraAuthored=retainedAuthored;
     fieldCameraSimulationTicks=cameraClock;fieldCameraShift.previousMilliseconds=shiftTimestamp;
     progress = p;
+    fenceCollisionDisabled=p.room==2 && p.originalStory.value_or(0)>=10;
     fieldDoor.interiorMask=p.interiorMask;
     applyDoorCollision(p.room,fieldDoor.interiorMask);
     harborStory.reset(p.room==1 && p.originalStory && *p.originalStory==3);
@@ -795,7 +801,7 @@ void Game::updatePartner() {
     }
 }
 void Game::updateTemporaryProfessor() {
-    if(!professorStory.temporaryProfessor || professorStory.locked() || progress.room!=2 ||
+    if(!professorStory.temporaryProfessor || (professorStory.locked() && !(fieldDoor.active() && professorStory.fenceStarted)) || progress.room!=2 ||
        (scene!=Scene::Explore && scene!=Scene::Dialogue) || warpRequest>=0 || fade.active())return;
     PartnerFollowServices services;
     services.free=[](CameraPoint p){return walkable({p.x,p.z},p.y);};
@@ -1350,13 +1356,14 @@ void Game::updateMarioPresentation() {
     }
 }
 void Game::tick(const Input& rawInput) {
+    fenceCollisionDisabled=progress.room==2 && (progress.originalStory.value_or(0)>=10 || professorStory.fenceCollisionOff);
     applyDoorCollision(progress.room,fieldDoor.interiorMask);
     struct PresentationOnExit {
         Game& game;Vec2 previous;const Input& raw;
         ~PresentationOnExit(){
             game.updateTemporaryProfessor();
             game.progress.interiorMask=uint8_t(game.fieldDoor.interiorMask);
-            if(game.fieldDoor.active() || game.professorStory.locked() || game.professorStory.temporaryProfessor)game.saveRequested=false;
+            if(game.fieldDoor.active() || game.professorStory.running() || game.professorStory.temporaryProfessor)game.saveRequested=false;
             if(!game.professorStory.locked())game.updateMarioPresentation();
             const auto& axes=game.inputProducer.channels[0].analog;
             const int mainX=raw.physicalSnapshot?axes.mainX:std::isfinite(raw.x)?int(std::clamp(raw.x,-1.f,1.f)*70.f):0;
@@ -1491,20 +1498,30 @@ void Game::tick(const Input& rawInput) {
         saveRequested=false;if(!fieldActorTalk.message.active())scene=Scene::Explore;
         return;
     }
-    if(professorStory.locked()) {
+    if(professorStory.running()) {
+        const bool passive=!professorStory.locked();
+        if(passive) {
+            professorStory.actors[0].position={progress.position.x*100,groundHeight*100+jumpHeight*100,progress.position.z*100};
+            professorStory.actors[1].position={partner.x*100,partnerHeight*100,partner.z*100};
+        }
         const uint32_t keys=(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u);
         professorStory.tick(ticks*1000/60,keys,false);
         const auto& m=professorStory.actors[0].position;
         const auto& p=professorStory.actors[1].position;
-        progress.position={m[0]*.01f,m[2]*.01f};groundHeight=progress.elevation=m[1]*.01f;
-        partner={p[0]*.01f,p[2]*.01f};partnerHeight=p[1]*.01f;
+        if(!passive || professorStory.locked()) {
+            progress.position={m[0]*.01f,m[2]*.01f};groundHeight=progress.elevation=m[1]*.01f;
+            partner={p[0]*.01f,p[2]*.01f};partnerHeight=p[1]*.01f;
+        }
         while(professorCameraCursor<professorStory.cameras.size()) {
             const auto& c=professorStory.cameras[professorCameraCursor++];
             if(c.off)releaseCameraView(c.duration,uint8_t(c.curve));
             else setCameraView({c.eye[0],c.eye[1],c.eye[2]},{c.at[0],c.at[1],c.at[2]},c.duration,uint8_t(c.curve));
         }
-        if(professorStory.finished){progress.originalStory=professorStory.story;scene=Scene::Explore;}
-        saveRequested=false;return;
+        progress.originalStory=professorStory.story;
+        if(professorStory.finished || !professorStory.locked())scene=Scene::Explore;
+        else scene=Scene::Dialogue;
+        saveRequested=false;
+        if(!passive || professorStory.locked())return;
     }
     if(harborStory.locked()) {
         // Source key-off blocks new player actions, not field physics. Keep
@@ -1592,6 +1609,11 @@ void Game::tick(const Input& rawInput) {
             if(opening && progress.room==2 && progress.originalStory==8 && !professorStory.triggered) {
                 if(professorStory.begin(ticks*1000/60,{progress.position.x*100,groundHeight*100,progress.position.z*100},
                                        {partner.x*100,partnerHeight*100,partner.z*100}))scene=Scene::Dialogue;
+            }
+            if(!opening && progress.room==2 && progress.originalStory==9 && professorStory.temporaryProfessor) {
+                professorCameraCursor=0;
+                if(professorStory.beginFence(ticks*1000/60,{progress.position.x*100,groundHeight*100,progress.position.z*100},
+                    {partner.x*100,partnerHeight*100,partner.z*100}))scene=Scene::Dialogue;
             }
             applyDoorCollision(progress.room,fieldDoor.interiorMask);
             const auto& target=opening?d.inside:d.outside;

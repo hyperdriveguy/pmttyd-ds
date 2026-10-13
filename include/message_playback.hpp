@@ -25,6 +25,7 @@ public:
     bool active() const{return state!=0;}
     bool waiting() const{return state==3;}
     bool complete() const{return state==0;}
+    bool stopped() const{return state==2;} // Retained window after source once_stop.
     const std::string& id() const{return identity;}
     const std::string& rawText() const{return raw;}
     std::vector<MessageRecord> records;

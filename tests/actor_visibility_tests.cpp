@@ -2,9 +2,12 @@
 #include "partner_presentation.hpp"
 #include <cassert>
 #include <iostream>
+#include <cstdlib>
 using namespace ttyd;
 int main(int argc,char** argv) {
-    if(argc==3) {
+    if(argc==3 || argc==4) {
+        const float tolerance=argc==4?std::strtof(argv[3],nullptr):.0002f;
+        assert(std::isfinite(tolerance) && tolerance>0 && tolerance<=.001f);
         ActorAnimationPack pack;assert(pack.load(argv[1]));
         FILE* file=std::fopen(argv[2],"rb");assert(file);char magic[8];uint32_t cases;
         assert(std::fread(magic,8,1,file)==1 && !std::memcmp(magic,"PMREF1\0",8));
@@ -17,7 +20,7 @@ int main(int argc,char** argv) {
             assert(pose->evaluate(frame,sample) && sample.vertices.size()==count);
             for(uint32_t n=0;n<count;++n){ActorMeshVertex expected;assert(std::fread(&expected,sizeof(expected),1,file)==1);
                 const auto& actual=sample.vertices[n];const float error=std::max({std::fabs(actual.x-expected.x),std::fabs(actual.y-expected.y),std::fabs(actual.z-expected.z)});
-                maxError=std::max(maxError,error);assert(error<.0002f && std::fabs(actual.u-expected.u)<.0000002f && std::fabs(actual.v-expected.v)<.0000002f);
+                maxError=std::max(maxError,error);assert(error<tolerance && std::fabs(actual.u-expected.u)<.0000002f && std::fabs(actual.v-expected.v)<.0000002f);
             }
         }
         assert(std::fgetc(file)==EOF);std::fclose(file);
