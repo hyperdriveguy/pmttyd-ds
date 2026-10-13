@@ -93,3 +93,14 @@ existing generic DOL verifier:
 ELFs/listings remain `/tmp/inbox-*.elf` / `.disasm`; ISO is read-only.
 Full SFX update spatial/volume/start/macro/resource paths and original traces
 remain OPEN. This adds no native code, sampled replacement tone or asset export.
+
+## Pending/backend continuation (2026-10-13)
+
+[Complete pending startup requests](POSITIONAL_SFX_PENDING_STARTUP_REQUESTS.md)
+now closes800da010..398, including real stream/song/effect routing, spatial
+packet extraction, aux and same-pass pending-clear/live entry. [Effect PlayEx](SOUND_EFFECT_PLAY_EX_ALLOCATION_AND_START.md)
+closes separate40-record first-free/priority-steal/start/interrupt/final-liveness
+behavior; [five controls](SOUND_EFFECT_RECORD_CONTROL_LEAVES.md) close Check,
+Volume,Pitch,Aux1 and Stop. These supersede this file's earlier “startup/backend
+not documented” scope for those exact local bodies only. calc3D, live main
+spatial/volume/fade, MusyX/resources/hardware/source/runtime remain open.

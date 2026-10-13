@@ -15,12 +15,18 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete local BtlUnit_snd_se_pos, psndSFX_pos/Off/accessors and
   __psndSFXOn provisioning — source errors corrected2026-10-13 in
   [update/correction delivery](../behavior/audio/POSITIONAL_SFX_UPDATE_OWNERS_AND_SOURCE_CORRECTIONS.md).
-  Low13 row selection, pending-bit1 semantics, descriptor+4 backend dispatch,
+  Low13 row selection, pending mask1 semantics, descriptor+4 backend dispatch,
   numeric/name ABI, defaults, reclaim priority and generation wrap are pinned.
 - [x] Complete psndMain cooldown producer; scoped SFXMain completion sweep,
   pending transition and preference reset — same delivery.
-- [ ] Remaining SFXMain spatial/volume/startup/macro/resource/backend/source
-  chain and original audio traces.
+- [x] Complete local SFXMain pending startup region800da010..398 and
+  SoundEfxPlayEx allocation/steal/start/liveness plus Check/Volume/Pitch/Aux1/
+  Stop bodies — [startup requests](../behavior/audio/POSITIONAL_SFX_PENDING_STARTUP_REQUESTS.md),
+  [PlayEx](../behavior/audio/SOUND_EFFECT_PLAY_EX_ALLOCATION_AND_START.md),
+  [record controls](../behavior/audio/SOUND_EFFECT_RECORD_CONTROL_LEAVES.md).
+- [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
+  MusyX macro/resource/emitter/interrupt/backend/source chain and original
+  audio traces. Linked service hashes alone do not close their semantics.
 - [x] Complete battleGetUnitMonosiriPtr8012ef20, initialized231-record
   Tattle/message/model table, six used field roles, complete message-key event
   leaf and scoped direct census17 DOL calls/2 REL imports —
@@ -467,3 +473,24 @@ independent signed arithmetic8951 cases and source list scan pass. All original
 inspection outputs remain `/tmp`. Table mutation/aliases/source domains, other
 flag/policy writers, full Tattle/log/AC/scene/card lifetime and original runtime
 remain OPEN. Request text remains unchanged; no native or original save claim.
+
+### 2026-10-13 — Complete pending startup and six local effect backend bodies
+
+[Pending region](../behavior/audio/POSITIONAL_SFX_PENDING_STARTUP_REQUESTS.md)
+closes queued delay decrement/start order, exact stream/song/effect requests,
+volume division/clamping, spatial packet byte extraction, aux and same-pass
+live processing. [PlayEx](../behavior/audio/SOUND_EFFECT_PLAY_EX_ALLOCATION_AND_START.md)
+closes separate40-record first-free/priority<=steal, post-KeyOff emitter flag,
+interrupt nesting, raw controller arguments versus stored narrowed values,
+new-voice failure and fresh-pool/final-liveness behavior. [Five controls](../behavior/audio/SOUND_EFFECT_RECORD_CONTROL_LEAVES.md)
+close Check/Volume/Pitch/Aux1/Stop, including repeated versus single sndFXCheck,
+raw controller values, fresh global zero-volume gate and flags-only stop clear.
+Do not collapse public slot, effect record ordinal and underlying voice identity.
+
+Validation: read-only generic verifier25 spans/143 anchors; independent census50
+aligned direct call sites in six bodies and caller region resolves all targets.
+Division127 arithmetic checks65026 byte-products plus195078 clamp cases.
+Fresh listings remain `/tmp/inbox-fx*.elf` and source/current disassembly files.
+Linked backend identities are explicitly separate from complete bodies. Full
+calc3D/live/spatial/fade/MusyX/resources/hardware/source/original runtime still
+OPEN. No native code/tool implementation, original asset export or playback claim.

@@ -49,6 +49,9 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [SFX pending startup](audio/POSITIONAL_SFX_PENDING_STARTUP_REQUESTS.md) | Complete800da010..398 delay/start/three-backend request/aux/pending-clear and same-pass live entry | Full calc3D/live/fade/stream/song/MusyX/resource/runtime |
+| [Effect pool PlayEx](audio/SOUND_EFFECT_PLAY_EX_ALLOCATION_AND_START.md) | Complete40-record first-free/priority-steal/start/interrupt/publish/fresh-pool/liveness body | Pool/other writers, core MusyX/emitter/resource/hardware/original execution |
+| [Effect record controls](audio/SOUND_EFFECT_RECORD_CONTROL_LEAVES.md) | Complete Check/Volume/Pitch/Aux1/Stop ordinal→voice rules, controller widths/order and clear policy | Core voice/emitter/controller semantics and source/runtime lifetime |
 | [Switch storage/encoding](memory/SW_SET.md) | Complete12-body access/init/reset, global256/local16-word flags, byte banks and full-word global index0; modulo32 correction | Card record/load/recovery, full story/namespace writers and original persistence traces |
 | [Monosiri flag groups/storage](battle/MONOSIRI_FLAG_GROUPS_AND_SWITCH_STORAGE.md) | Complete group-aware persistent4474+kind/battle bitmap setter, policy/original-kind checker and48 static groups | Other writers/source domains, complete Tattle/log/AC/scene/card lifetime/runtime |
 | [Monosiri table/consumers](battle/MONOSIRI_TABLE_SOURCE_AND_CONSUMERS.md) | Initialized231-row Tattle/message/model table, six field-use regions, complete message-key event leaf,17 DOL calls/2 REL imports | Table mutation/alias/kind domains, dynamic callers and full log/Tattle/AC/persistence/runtime |

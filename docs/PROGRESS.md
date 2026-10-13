@@ -2,6 +2,33 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Priority0 pending SFX startup and effect backend contracts
+
+Delivered [complete pending region](behavior/audio/POSITIONAL_SFX_PENDING_STARTUP_REQUESTS.md),
+[effect PlayEx](behavior/audio/SOUND_EFFECT_PLAY_EX_ALLOCATION_AND_START.md) and
+[five control leaves](behavior/audio/SOUND_EFFECT_RECORD_CONTROL_LEAVES.md).
+Queued delay reaches0 before a later start visit; successful startup enters
+live processing the same update. Three backend routes retain original volume,
+spatial packet, aux and cleanup order. Effect engine uses a separate40-record
+pool with first-free/priority<=steal, raw start/controllers, interrupt nesting,
+stored narrowed fields, fresh-pool lookup and repeated liveness checks. Check,
+Volume,Pitch,Aux1 and Stop preserve their different checks and field widths.
+Marked those local EVT-01 portions complete; no full audio-chain completion.
+
+Validation: fresh current SFXMain and six complete effect listings in `/tmp`.
+Generic DOL verifier sfx_startup_backend_evidence.json passes25 spans/143
+anchors; independent direct-call census50 sites resolves all targets. Arithmetic
+check65026 products proves division127;195078 offset/clamp cases pass. Final
+link audit716 Markdown files/0 broken links; whitespace checks pass. Metadata/
+documentation only: no make rerun, native code, generated tone or asset export.
+Unrelated staged/worktree edits remain excluded from the commit.
+
+Next/limits: full calc3D/listener/live volume/fade, stream/song services and
+MusyX/resource/emitter/interrupt/hardware/source/runtime still open. Continue
+priority0 spatial/core/backend and query-specific weapon/menu source domains,
+then priority1 consumer/counter graph. Original execution/audio/hardware/full
+remake fidelity remains unverified; no provisional timing is original evidence.
+
 ## 2026-10-13 — Tattle flag owners and switch encoding/storage answer
 
 Delivered [complete Tattle flag graph](behavior/battle/MONOSIRI_FLAG_GROUPS_AND_SWITCH_STORAGE.md)

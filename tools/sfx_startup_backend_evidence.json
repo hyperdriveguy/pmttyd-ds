@@ -1,0 +1,604 @@
+{
+  "schema": 1,
+  "scope": "Complete local pending-startup region, effect PlayEx/check/volume/pitch/aux/stop; linked backend identities only, no full spatial/MusyX/runtime claim",
+  "dol_spans": [
+    {
+      "name": "psndSFXMain",
+      "address": 2148376180,
+      "size": 2964,
+      "sha256": "0fae0aede024942248bde9a4adba0d21c6844dc9ac2e472cd0e4946112e6ccfa"
+    },
+    {
+      "name": "SoundEfxPlayEx",
+      "address": 2148404384,
+      "size": 756,
+      "sha256": "5c2c398630ca8fe6aed4825fb49c63746b7fc39bcd23c9176fe1f45aa6c6ef62"
+    },
+    {
+      "name": "SoundEfxCheck",
+      "address": 2148403136,
+      "size": 156,
+      "sha256": "09da81ccfaa0fcbb165f7ddee7e6a0207d87a4ec039ec7014288c5dd433cd7ce"
+    },
+    {
+      "name": "SoundEfxSetVolume",
+      "address": 2148403964,
+      "size": 192,
+      "sha256": "50d49398f953d70a71a6d79ba4df687d2b12225fcf056c97d99b94356447af8e"
+    },
+    {
+      "name": "SoundEfxSetPitch",
+      "address": 2148404156,
+      "size": 124,
+      "sha256": "082320a1d12a4e58217b44285d08f526abffa9e4dfb0257acbc8b5ea157bca3f"
+    },
+    {
+      "name": "SoundEfxSetAux1",
+      "address": 2148403812,
+      "size": 120,
+      "sha256": "599e7bfac3bcdf98a6c5088b9d5d333005d5139ab73c526412a26d6189b4d7e5"
+    },
+    {
+      "name": "SoundEfxStop",
+      "address": 2148404280,
+      "size": 104,
+      "sha256": "9cd9a0da99b4a24c9f88c6c0f7fa7d3bf83e967fe2595ca7afc40edce481eb8e"
+    },
+    {
+      "name": "calc3D",
+      "address": 2148386516,
+      "size": 1268,
+      "sha256": "7fb5ef97e7b8297bc50d7f0713e55842775cad29fa20dd3f0af7f0278ac435ca"
+    },
+    {
+      "name": "sndFXStartEx",
+      "address": 2150080724,
+      "size": 136,
+      "sha256": "4be4ded0cd177ea3ef40c14aec248dfe4cffe84efd12a8c05681d71615401f1d"
+    },
+    {
+      "name": "sndFXCtrl",
+      "address": 2150080468,
+      "size": 96,
+      "sha256": "83b94d997b4e93682ce9acbaf759eab9b92966759cb59f083f6773badac975b3"
+    },
+    {
+      "name": "sndFXCtrl14",
+      "address": 2150080564,
+      "size": 96,
+      "sha256": "a39bbdc177eb855f63b0b73f4d029946ad435d196b329cc3b4a65644f24be76f"
+    },
+    {
+      "name": "sndFXCheck",
+      "address": 2150080860,
+      "size": 76,
+      "sha256": "024d8ffc678e162a60c81ac9976587df208e4803c1387719c8194f357cf110e2"
+    },
+    {
+      "name": "sndFXKeyOff",
+      "address": 2150080660,
+      "size": 64,
+      "sha256": "ce25820a97fcbf917d01950f6ef799df9ff896c12ec58f6c85fc2de3ff50ba0b"
+    },
+    {
+      "name": "sndCheckEmitter",
+      "address": 2150155480,
+      "size": 32,
+      "sha256": "9ee1c00e896259cbeb29515d52a9df8f02d143127b74902a500451c623ced864"
+    },
+    {
+      "name": "sndRemoveEmitter",
+      "address": 2150155512,
+      "size": 168,
+      "sha256": "667bf117040daa8011ded03a59a16e8937d6f802f5200e8c7a00bf024a2caed3"
+    },
+    {
+      "name": "sndEmitterVoiceID",
+      "address": 2150155680,
+      "size": 92,
+      "sha256": "2adf8c591fda8960d94727258f724e13ea3a00b5eec37245dd79044d4aec558f"
+    },
+    {
+      "name": "SoundSSCheck",
+      "address": 2148391272,
+      "size": 24,
+      "sha256": "ce13662f81a88a9d55bfbf9bd1bf8e1b7506f0104231d9e3d6d00523ee953c56"
+    },
+    {
+      "name": "SoundSSStopCh",
+      "address": 2148392952,
+      "size": 268,
+      "sha256": "b6867edb2a9bd240988d91c2971f9b0e9f6003e2ca07a422082498d8b9fc84ee"
+    },
+    {
+      "name": "SoundSSPlayCh",
+      "address": 2148396412,
+      "size": 36,
+      "sha256": "24ff0ae928a9be196204abdfe250f55b98eddec1cbd975da654bbd845991d062"
+    },
+    {
+      "name": "SoundSSSetPanCh",
+      "address": 2148392372,
+      "size": 352,
+      "sha256": "f9c4281da33eda2dbab3c89d2bad1d0a4115b7e689ef0e0c7ce75fa65ab2b6f9"
+    },
+    {
+      "name": "SoundSSSetVolCh",
+      "address": 2148391964,
+      "size": 408,
+      "sha256": "29116a3cc5090f2de4aac7cb61a9203e6241422b7ae6f7150c026c0410cf8625"
+    },
+    {
+      "name": "SoundSongCheck",
+      "address": 2148405140,
+      "size": 64,
+      "sha256": "0a7181b7f433687545b895158ee1669c407924bb1f03b9f1d35143c80777f308"
+    },
+    {
+      "name": "SoundSongPlayCh",
+      "address": 2148405836,
+      "size": 264,
+      "sha256": "283105d15b7ec3f39f2ee85db54bba31676e5d1d928ab6065e17e759733ecb0c"
+    },
+    {
+      "name": "SoundSongSetVolCh",
+      "address": 2148405292,
+      "size": 132,
+      "sha256": "673fd325d42ae7ba5efbf4c0baa64a6cfeb9a983c9961573cdc704ea529c23c5"
+    },
+    {
+      "name": "SoundEfxSetSrndPan",
+      "address": 2148403460,
+      "size": 216,
+      "sha256": "d17d8555b0716ab45259d401f6c0664347a8f3973385f6d6e0f190bd5fd94ec2"
+    }
+  ],
+  "dol_anchors": {
+    "2148376604": "418209b4",
+    "2148376608": "548504fe",
+    "2148376624": "546007ff",
+    "2148376640": "41820358",
+    "2148376644": "5460062c",
+    "2148376648": "b0190006",
+    "2148376652": "a079000e",
+    "2148376660": "41820010",
+    "2148376668": "b019000e",
+    "2148376672": "48000970",
+    "2148376676": "80fe0004",
+    "2148376680": "54e00001",
+    "2148376696": "480038f1",
+    "2148376732": "480038cd",
+    "2148376736": "546006b5",
+    "2148376740": "4182000c",
+    "2148376748": "48003f4d",
+    "2148376772": "480038a5",
+    "2148376820": "41820278",
+    "2148376828": "48004c81",
+    "2148376840": "48003cad",
+    "2148376864": "7c0401d6",
+    "2148376868": "7c630096",
+    "2148376876": "7c003670",
+    "2148376884": "7c001a14",
+    "2148376888": "7c050051",
+    "2148376920": "48003ac5",
+    "2148376944": "48006e25",
+    "2148377000": "5404013e",
+    "2148377004": "480070a1",
+    "2148377084": "48006e31",
+    "2148377092": "a0190006",
+    "2148377096": "540007bd",
+    "2148377100": "418200b0",
+    "2148377172": "80790000",
+    "2148377188": "48002471",
+    "2148377192": "90610008",
+    "2148377204": "88a10008",
+    "2148377208": "88c10009",
+    "2148377216": "48006a21",
+    "2148377220": "90790018",
+    "2148377236": "4182009c",
+    "2148377244": "48006861",
+    "2148377256": "4800665d",
+    "2148377268": "48006909",
+    "2148377348": "54e3043e",
+    "2148377360": "48006991",
+    "2148377364": "90790018",
+    "2148377380": "4182000c",
+    "2148377388": "48006891",
+    "2148377408": "889e000f",
+    "2148377416": "4081000c",
+    "2148377424": "7c840214",
+    "2148377432": "40810008",
+    "2148377448": "480066fd",
+    "2148377452": "80790018",
+    "2148377464": "40820014",
+    "2148377472": "90190000",
+    "2148377476": "90190018",
+    "2148377488": "5400043c",
+    "2148377492": "b0190006",
+    "2148403176": "4082000c",
+    "2148403192": "40820038",
+    "2148403196": "41820014",
+    "2148403204": "481abd9d",
+    "2148403208": "48199955",
+    "2148403220": "48199949",
+    "2148403224": "48199945",
+    "2148403252": "481abca5",
+    "2148403868": "481abb05",
+    "2148403872": "481996bd",
+    "2148403884": "481996b1",
+    "2148403896": "41820010",
+    "2148403904": "3880005b",
+    "2148403908": "48199511",
+    "2148404020": "41820018",
+    "2148404028": "481aba65",
+    "2148404032": "4819961d",
+    "2148404048": "4819960d",
+    "2148404064": "41820040",
+    "2148404076": "b01e0004",
+    "2148404088": "4819945d",
+    "2148404100": "a0030214",
+    "2148404108": "41820014",
+    "2148404124": "48199439",
+    "2148404204": "41820014",
+    "2148404212": "481ab9ad",
+    "2148404216": "48199565",
+    "2148404228": "48199559",
+    "2148404244": "381f2000",
+    "2148404252": "5405043e",
+    "2148404256": "48199415",
+    "2148404324": "41820028",
+    "2148404332": "48199429",
+    "2148404336": "a01f0000",
+    "2148404340": "540006f7",
+    "2148404352": "481ab879",
+    "2148404360": "b01f0000",
+    "2148404436": "7cfe3b78",
+    "2148404440": "7c0903a6",
+    "2148404608": "4200ff5c",
+    "2148404612": "281d0028",
+    "2148404628": "5743063e",
+    "2148404640": "a01e0002",
+    "2148404648": "41810040",
+    "2148404676": "481992d1",
+    "2148404680": "a0180000",
+    "2148404696": "481ab721",
+    "2148404704": "b0180000",
+    "2148404728": "4180000c",
+    "2148404748": "b01e0000",
+    "2148404756": "a018020c",
+    "2148404768": "481b8cb5",
+    "2148404780": "90640210",
+    "2148404808": "b018020c",
+    "2148404812": "48199289",
+    "2148404816": "907e000c",
+    "2148404828": "807e000c",
+    "2148404832": "48199175",
+    "2148404836": "a078020c",
+    "2148404852": "5460043f",
+    "2148404856": "b078020c",
+    "2148404860": "40820014",
+    "2148404876": "481b8c71",
+    "2148404892": "4082000c",
+    "2148404912": "b01e0000",
+    "2148404928": "b01e0002",
+    "2148404940": "b0be0004",
+    "2148404944": "b09e0006",
+    "2148404948": "b01e0008",
+    "2148404952": "b33e0010",
+    "2148404956": "a0030214",
+    "2148404980": "481990e1",
+    "2148404988": "807f00f4",
+    "2148405020": "40820038",
+    "2148405024": "41820014",
+    "2148405032": "481ab679",
+    "2148405036": "48199231",
+    "2148405048": "48199225",
+    "2148405052": "48199221",
+    "2148405064": "40820024",
+    "2148405080": "481ab581",
+    "2148405112": "3ba0ffff"
+  },
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "complete_bodies": [
+    "SoundEfxPlayEx",
+    "SoundEfxCheck",
+    "SoundEfxSetVolume",
+    "SoundEfxSetPitch",
+    "SoundEfxSetAux1",
+    "SoundEfxStop"
+  ],
+  "scoped_regions": [
+    {
+      "name": "psndSFXMain_pending_startup",
+      "address": 2148376592,
+      "size": 904
+    }
+  ],
+  "linked_only": [
+    "calc3D",
+    "sndFXStartEx",
+    "sndFXCtrl",
+    "sndFXCtrl14",
+    "sndFXCheck",
+    "sndFXKeyOff",
+    "sndCheckEmitter",
+    "sndRemoveEmitter",
+    "sndEmitterVoiceID",
+    "SoundSSCheck",
+    "SoundSSStopCh",
+    "SoundSSPlayCh",
+    "SoundSSSetPanCh",
+    "SoundSSSetVolCh",
+    "SoundSongCheck",
+    "SoundSongPlayCh",
+    "SoundSongSetVolCh",
+    "SoundEfxSetSrndPan"
+  ],
+  "direct_calls": [
+    {
+      "site": 2148404676,
+      "target": 2150080660,
+      "name": "sndFXKeyOff"
+    },
+    {
+      "site": 2148404696,
+      "target": 2150155512,
+      "name": "sndRemoveEmitter"
+    },
+    {
+      "site": 2148404768,
+      "target": 2150210260,
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi"
+    },
+    {
+      "site": 2148404812,
+      "target": 2150080724,
+      "name": "sndFXStartEx"
+    },
+    {
+      "site": 2148404832,
+      "target": 2150080468,
+      "name": "sndFXCtrl"
+    },
+    {
+      "site": 2148404876,
+      "target": 2150210300,
+      "name": "OSRestoreInterrupts"
+    },
+    {
+      "site": 2148404980,
+      "target": 2150080468,
+      "name": "sndFXCtrl"
+    },
+    {
+      "site": 2148405032,
+      "target": 2150155680,
+      "name": "sndEmitterVoiceID"
+    },
+    {
+      "site": 2148405036,
+      "target": 2150080860,
+      "name": "sndFXCheck"
+    },
+    {
+      "site": 2148405048,
+      "target": 2150080860,
+      "name": "sndFXCheck"
+    },
+    {
+      "site": 2148405052,
+      "target": 2150080860,
+      "name": "sndFXCheck"
+    },
+    {
+      "site": 2148405080,
+      "target": 2150155480,
+      "name": "sndCheckEmitter"
+    },
+    {
+      "site": 2148403204,
+      "target": 2150155680,
+      "name": "sndEmitterVoiceID"
+    },
+    {
+      "site": 2148403208,
+      "target": 2150080860,
+      "name": "sndFXCheck"
+    },
+    {
+      "site": 2148403220,
+      "target": 2150080860,
+      "name": "sndFXCheck"
+    },
+    {
+      "site": 2148403224,
+      "target": 2150080860,
+      "name": "sndFXCheck"
+    },
+    {
+      "site": 2148403252,
+      "target": 2150155480,
+      "name": "sndCheckEmitter"
+    },
+    {
+      "site": 2148404028,
+      "target": 2150155680,
+      "name": "sndEmitterVoiceID"
+    },
+    {
+      "site": 2148404032,
+      "target": 2150080860,
+      "name": "sndFXCheck"
+    },
+    {
+      "site": 2148404048,
+      "target": 2150080860,
+      "name": "sndFXCheck"
+    },
+    {
+      "site": 2148404088,
+      "target": 2150080468,
+      "name": "sndFXCtrl"
+    },
+    {
+      "site": 2148404124,
+      "target": 2150080468,
+      "name": "sndFXCtrl"
+    },
+    {
+      "site": 2148404212,
+      "target": 2150155680,
+      "name": "sndEmitterVoiceID"
+    },
+    {
+      "site": 2148404216,
+      "target": 2150080860,
+      "name": "sndFXCheck"
+    },
+    {
+      "site": 2148404228,
+      "target": 2150080860,
+      "name": "sndFXCheck"
+    },
+    {
+      "site": 2148404256,
+      "target": 2150080564,
+      "name": "sndFXCtrl14"
+    },
+    {
+      "site": 2148403868,
+      "target": 2150155680,
+      "name": "sndEmitterVoiceID"
+    },
+    {
+      "site": 2148403872,
+      "target": 2150080860,
+      "name": "sndFXCheck"
+    },
+    {
+      "site": 2148403884,
+      "target": 2150080860,
+      "name": "sndFXCheck"
+    },
+    {
+      "site": 2148403908,
+      "target": 2150080468,
+      "name": "sndFXCtrl"
+    },
+    {
+      "site": 2148404332,
+      "target": 2150080660,
+      "name": "sndFXKeyOff"
+    },
+    {
+      "site": 2148404352,
+      "target": 2150155512,
+      "name": "sndRemoveEmitter"
+    },
+    {
+      "site": 2148376696,
+      "target": 2148391272,
+      "name": "SoundSSCheck"
+    },
+    {
+      "site": 2148376732,
+      "target": 2148391272,
+      "name": "SoundSSCheck"
+    },
+    {
+      "site": 2148376748,
+      "target": 2148392952,
+      "name": "SoundSSStopCh"
+    },
+    {
+      "site": 2148376772,
+      "target": 2148391272,
+      "name": "SoundSSCheck"
+    },
+    {
+      "site": 2148376828,
+      "target": 2148396412,
+      "name": "SoundSSPlayCh"
+    },
+    {
+      "site": 2148376840,
+      "target": 2148392372,
+      "name": "SoundSSSetPanCh"
+    },
+    {
+      "site": 2148376920,
+      "target": 2148391964,
+      "name": "SoundSSSetVolCh"
+    },
+    {
+      "site": 2148376944,
+      "target": 2148405140,
+      "name": "SoundSongCheck"
+    },
+    {
+      "site": 2148377004,
+      "target": 2148405836,
+      "name": "SoundSongPlayCh"
+    },
+    {
+      "site": 2148377084,
+      "target": 2148405292,
+      "name": "SoundSongSetVolCh"
+    },
+    {
+      "site": 2148377188,
+      "target": 2148386516,
+      "name": "calc3D"
+    },
+    {
+      "site": 2148377216,
+      "target": 2148404384,
+      "name": "SoundEfxPlayEx"
+    },
+    {
+      "site": 2148377244,
+      "target": 2148403964,
+      "name": "SoundEfxSetVolume"
+    },
+    {
+      "site": 2148377256,
+      "target": 2148403460,
+      "name": "SoundEfxSetSrndPan"
+    },
+    {
+      "site": 2148377268,
+      "target": 2148404156,
+      "name": "SoundEfxSetPitch"
+    },
+    {
+      "site": 2148377360,
+      "target": 2148404384,
+      "name": "SoundEfxPlayEx"
+    },
+    {
+      "site": 2148377388,
+      "target": 2148404156,
+      "name": "SoundEfxSetPitch"
+    },
+    {
+      "site": 2148377448,
+      "target": 2148403812,
+      "name": "SoundEfxSetAux1"
+    }
+  ],
+  "derived_arithmetic": {
+    "product_domain": [
+      0,
+      65025
+    ],
+    "division_cases": 65026,
+    "offset_cases": [
+      0,
+      127,
+      65535
+    ],
+    "clamp_cases": 195078
+  }
+}
