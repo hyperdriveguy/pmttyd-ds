@@ -54,7 +54,7 @@ int main(){
         assert(success.readWord(0x84001cb4,value) && value==1);
         const auto damage=std::find_if(success.requests().rbegin(),success.requests().rend(),[](const ProfessorServiceRequest& r){return r.function==0x8010a78c;});
         assert(damage!=success.requests().rend() && damage->rawOperands.size()==6 && damage->rawOperands[4]==(index==0?0x100:0x20000)); // Source first-success hit flags.
-        assert(success.readWord(0x84101000+0x27c,value) && (value&8)); // Precheck charge token occurs before impact.
+        assert(success.readWord(0x84101000+0x27c,value) && ((value&8)!=0)==(index!=0)); // Precheck charge token occurs before impact.
         assert(success.readWord(0x84103000+index*0x1000+0x10c,value) && value>>16==(index==0?0u:2u)); // Ground hits apply damage; other kind callbacks stay pending.
         if(index==0) {
             assert(lethalBeforeStatus && retiredNextCall);
@@ -105,7 +105,20 @@ int main(){
     for(unsigned o:{0x1ca0u,0x1ca4u,0x1ca8u,0x1cacu})assert(game.trioAttack.readWord(0x84000000+o,value) && value==0);
     const auto completedRequests=game.trioAttack.requests().size();game.tick(advance);
     assert(game.trioAttack.finished() && game.trioAttack.requests().size()==completedRequests);
+    assert(game.trioCommands.actor==2 && game.trioCommands.state==TrioBattleCommands::State::Target);
+    assert(game.trioAttack.readWord(0x84101020,value) && ((value>>24)&255)==10 && ((value>>8)&255)==0);
+    assert(game.trioAttack.readWord(0x84102020,value) && ((value>>8)&255)==1);
+    game.tick(advance);game.tick(Input{});assert(game.trioAttack.active());
+    for(unsigned i=0;i<1200 && !game.trioAttack.pendingFunction() && !game.trioAttack.finished();++i)game.tick(Input{});
+    assert(game.trioAttack.finished() && !game.trioAttack.pendingFunction());
+    assert(game.trioBattleIntro.actors[3].hidden && game.trioBattleIntro.actors[1].pose=="PKR_S_1");
+    assert(game.trioAttack.readWord(0x8410210c,value) && value>>16==10);
+    assert(game.trioAttack.readWord(0x84000f00,value) && value==3);
+    assert(game.trioAttack.readWord(0x84102020,value) && ((value>>24)&255)==10 && ((value>>8)&255)==0);
+    const auto headbonk=std::find_if(game.trioAttack.requests().begin(),game.trioAttack.requests().end(),[](const ProfessorServiceRequest& r){return r.command==0x803941a8;});
+    assert(headbonk!=game.trioAttack.requests().end());
+    game.tick(Input{});assert(game.trioAttack.commandActor()==-1 && game.trioAttack.readWord(0x84000f1c,value) && value==0x0500000b);
     assert(game.progress.originalStory==11 && game.fieldBattleState().result==0 && !game.fieldControlEnabled() && !game.saveRequested);
     assert(game.progress.position.x==fieldPosition.x && game.progress.position.z==fieldPosition.z && game.progress.hp==checkpoint.hp);
-    std::cout<<"Original Jump damage, owned reactions, return/idle, AC cleanup and death rewards and deferred removal passed\n";
+    std::cout<<"Original Jump damage, owned reactions, return/idle, source move consumption, Mario-to-Goombella handoff, persistent Headbonk damage and deferred removal passed\n";
 }

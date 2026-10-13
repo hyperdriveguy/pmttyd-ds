@@ -11,6 +11,8 @@ public:
     void tick(uint64_t milliseconds,ProfessorStory&,uint32_t triggers=0);
     bool active() const;
     bool finished() const;
+    int32_t commandActor() const;
+    bool prepareCommands(TrioBattleCommands&,const ProfessorStory&);
     uint32_t pendingFunction() const;
     const std::vector<ProfessorServiceRequest>& requests() const;
     bool readWord(uint32_t address,uint32_t& value) const;

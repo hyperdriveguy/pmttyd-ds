@@ -9,7 +9,7 @@ import shutil,subprocess
 from pack_event_scripts import build_pack,DEFAULT_EVENTS
 
 def build(iso=DEFAULT_ISO):
-    _,manifest=build_pack(iso,'artifacts/reference/us_symbols.csv',DEFAULT_EVENTS)
+    _,manifest=build_pack(iso,'artifacts/reference/us_symbols.csv',DEFAULT_EVENTS+['partyChristineAttack_NormalAttack@unit_party_christine.o'])
     segments=[]
     with Path(iso).open('rb') as disc:
         disc.seek(0x420);base=struct.unpack('>I',disc.read(4))[0];disc.seek(base);header=disc.read(256)
@@ -34,6 +34,10 @@ def build(iso=DEFAULT_ISO):
                     else:split.append((start,body))
                 spans=split
             segments.extend(spans)
+        # Immutable Goombella defense/status/default attack/wait data, beyond
+        # the mutable-tail cutoff. Import only its exact admitted source span.
+        off,va=(struct.unpack_from('>I',header,b+11*4)[0] for b in (0,0x48))
+        disc.seek(base+off+0x80418450-va);segments.append((0x80418450,disc.read(0x4c)))
     # Import relocated tik data definitions/scripts; executable REL sections are
     # excluded. These share the existing source-address bank with the intro.
     from rel_event_inventory import read_bindings,inventory_events
@@ -83,6 +87,18 @@ def build(iso=DEFAULT_ISO):
         subprocess.run([shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds','-f','rgba8','-z','auto','-o',str(products[2]),str(work/'battle-mario-runtime.png')],check=True,stdout=subprocess.DEVNULL)
         meta.update(fingerprint=fingerprint,atlasHeight=height,uvScale=1024/height,source='a/b_mario,a/a_mario-',license='Nintendo/Intelligent Systems original assets; no redistribution rights')
         metrics.write_text(json.dumps(meta,indent=2)+'\n')
+
+    model=work/'c_pkr';tpl=work/'c_pkr.tpl';extract(iso,'a/c_pkr',model);extract(iso,'a/c_pkr-',tpl)
+    poses=['PKR_S_1','PKR_R_1','PKR_W_1','PKR_J_1A','PKR_A_2B','PKR_T_1']
+    fingerprint=hashlib.sha256(Path(__file__).read_bytes()+model.read_bytes()+tpl.read_bytes()+b''.join(Path('tools',h).read_bytes() for h in helpers)).hexdigest()
+    metrics=Path('romfs/trio-attack-goombella.json');products=[Path('romfs/trio-attack-goombella.'+ext) for ext in ('pmmesh','pmanim','t3x','bin')]
+    if not(metrics.exists() and all(p.exists() for p in products) and json.loads(metrics.read_text()).get('fingerprint')==fingerprint):
+        meta=compile_mesh([(model,tpl,poses)],products[0],work/'headbonk-atlas.png',products[1]);height=128
+        while height<((meta['textures']+7)//8)*128:height*=2
+        Image.open(work/'headbonk-atlas.png').crop((0,0,1024,height)).resize((512,height//2),Image.Resampling.LANCZOS).save(work/'headbonk-runtime.png')
+        products[3].write_bytes(struct.pack('<8sf',b'PMSUV1',1024/height))
+        subprocess.run([shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds','-f','rgba8','-z','auto','-o',str(products[2]),str(work/'headbonk-runtime.png')],check=True,stdout=subprocess.DEVNULL)
+        meta.update(fingerprint=fingerprint,atlasHeight=height,uvScale=1024/height,source='a/c_pkr,a/c_pkr-',license='Nintendo/Intelligent Systems original assets; no redistribution rights');metrics.write_text(json.dumps(meta,indent=2)+'\n')
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--iso',default=DEFAULT_ISO);build(p.parse_args().iso)

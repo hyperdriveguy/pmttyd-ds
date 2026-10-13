@@ -54,7 +54,7 @@ CandidateSamplingServices TrioBattleCommands::services() {
     }
     CandidateSamplingServices s;s.user=this;
     s.captureWork=[](void* p)->void* {return p;};
-    s.unit=[](void*,void* w,int32_t id)->SamplingUnit* {return id>0 && id<7?&static_cast<TrioBattleCommands*>(w)->samplingUnits[id]:nullptr;};
+    s.unit=[](void*,void* w,int32_t id)->SamplingUnit* {return id>0 && id<7 && static_cast<TrioBattleCommands*>(w)->present[id]?&static_cast<TrioBattleCommands*>(w)->samplingUnits[id]:nullptr;};
     s.part=[](void* p,int32_t id,int32_t part)->SamplingPart* {return id>0 && id<7 && part==1?&static_cast<TrioBattleCommands*>(p)->samplingParts[id]:nullptr;};
     s.status27=[](void*,SamplingUnit& u){return checkStatus(u.data,27);};
     s.worldPosition=[](void*,SamplingPart& p){JumpVector v;getPartWorldPosition(*p.position,&v.x,&v.y,&v.z);return v;};
@@ -64,7 +64,7 @@ bool TrioBattleCommands::begin(const ProfessorStory& scene,int32_t actorId) {
     if(!ready || (actorId!=1 && actorId!=2))return false;
     *this=TrioBattleCommands{};actor=actorId;
     for(unsigned id=1;id<7;++id) {
-        partCounts[id]=1;scales[id]=1;facings[id]=id<3?1:-1;units[id].belong=id<3?0:1;
+        present[id]=true;partCounts[id]=1;scales[id]=1;facings[id]=id<3?1:-1;units[id].belong=id<3?0:1;
         positionParts[id].id=1;
     }
     units[1].kind=222;units[2].kind=224;
@@ -79,6 +79,7 @@ bool TrioBattleCommands::begin(const ProfessorStory& scene,int32_t actorId) {
     }
     syncPositions(scene);state=State::Command;return true;
 }
+void TrioBattleCommands::syncUnitState(const std::array<DamageUnit,7>& state,const std::array<bool,7>& alive){units=state;present=alive;}
 void TrioBattleCommands::syncPositions(const ProfessorStory& scene) {
     for(unsigned id=1;id<7;++id) {
         const auto& p=scene.actors[visual[id]].position;positions[id]={p[0],p[1],p[2]};

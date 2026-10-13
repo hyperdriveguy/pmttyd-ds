@@ -917,3 +917,25 @@ Existing original Goombella/Crump/X-Naut assets remain in use. Original game
 rights remain Nintendo/Intelligent Systems; no redistribution license is granted.
 Original environment/effect/SFX requests are retained but their native consumers
 remain unbound; no generated replacement audio was added.
+
+
+## 2026-10-13 — Original Goombella Headbonk battle assets
+
+`tools/trio_attack_assets.py` reads the supplied US ISO read-only and imports
+original `a/c_pkr` and `a/c_pkr-` into ignored
+`romfs/trio-attack-goombella.pmanim`, `.t3x` and `.bin` (PMSUV1 UV scale).
+The pack retains PKR_S_1/R_1/W_1/J_1A/A_2B/T_1 hierarchy and sparse animation
+streams. Atlas width512, proportional height and texture resampling follow the
+existing local battle conversion; original asset/model files and conversion
+metrics stay under ignored `local-assets/trio-battle/goombella/`. Native rendering
+batches the pack with citro3d and applies original battle pose clocks/rotation.
+This is original Nintendo/Intelligent Systems copyrighted game data for local
+port development; no redistribution license is granted or inferred.
+
+The original read-only Goombella data span80418450..8041849b includes defense,
+status, default attack and wait plus the scanner's original lookahead word.
+The local event manifest inventories/pins Headbonk root803941a8, size0xce0,
+SHA25677d2f5d30bea8bd4ff16b0d09ac2e942e705f4717e9fb233b1ccfb2166efc37c.
+The native trajectory uses the existing original `npc-angle.bin` table rather
+than a replacement atan implementation. Original ROM, extracted packs and
+compiled assets remain outside source history.

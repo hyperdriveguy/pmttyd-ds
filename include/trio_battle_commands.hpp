@@ -22,6 +22,7 @@ public:
     std::optional<TrioAttackRequest> attack;
     bool begin(const ProfessorStory&,int32_t actorId=1);
     void syncPositions(const ProfessorStory&);
+    void syncUnitState(const std::array<DamageUnit,7>&,const std::array<bool,7>&);
     void input(uint32_t triggers,uint32_t repeats);
     void chooseCommand(unsigned);
     void chooseTarget(unsigned);
@@ -33,6 +34,7 @@ public:
     const char* targetName(int32_t) const;
 private:
     std::array<uint8_t,7> partCounts{};
+    std::array<bool,7> present{};
     std::array<float,7> scales{};
     std::array<int8_t,7> facings{};
     std::array<BattlePositionUnit,7> positionUnits{};

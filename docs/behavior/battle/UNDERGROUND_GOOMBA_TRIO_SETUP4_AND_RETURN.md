@@ -1108,3 +1108,410 @@ Goomba disappears after deferred removal. Original effect/sound requests
 remain in the trace, but smoke/star/death audio presentation providers are not
 executed. Battle turn, Spike counter, Paragoomba wing-fall, victory/reward export
 and original field return remain unfinished; no result1 is fabricated.
+
+
+## Setup4 first Mario action to Goombella command handoff
+
+2026-10-13 source composition uses the authoritative complete
+[action controller](BATTLE_ACTION_CONTROLLER.md),
+[move controller](BATTLE_MOVE_CONTROLLER.md),
+[phase tables](BATTLE_PHASE_TABLES.md),
+[barriers](BATTLE_WAITS_AND_CONCLUSION.md), and
+[sequence storage](BATTLE_SEQUENCE_FIELDS_AND_INIT_SOURCE_BINDINGS.md).
+This is a bounded derived fresh case: source registry IDs1Mario/2Goombella,
+turn1,phase04000002,normalcounts1,state0,no extra statuses/items/actions/orderchange;
+ordinary Jump has finished its source root and has killed onlygroundGoomba.
+It is not an original measured turn trace or a license to returnready from
+unimplemented audience/status services.
+
+### Exact post-Jump state and readiness ownership
+
+Act channel6 is Bf20, Move channel5 Bf1c, phase channel4 Bf18; current actorID
+B420. Source Act7(06000007) polls the barrier, adjusts statusmessages, then
+falls throughAct8 which polls itagain andcalls BOTH announcement pumps.
+Barrier scans every registered unit's U29c,U2a8,U2b4,U2bc in that order,
+clearingfinishedIDs butretainingactiveones; ordinarywaitU290 isexcluded.
+Outerbattle IDs are B182b4,182c4,180fc,182c8,182c0, withfirstliveearlyreturn.
+After-reaction queue and reserve consumption arepartoftheoriginalbarrier,
+not a nativeattack-completed boolean. Goomba death root/childrentrackedU2b4
+must finish; KillUnitdeletionmark retires beforethe next eventpass bysource
+BattleCheckUnitBroken cadence. Rootcompletion alone cannotreleaseAct7.
+
+AtAct9, normalMario state0/remaining1 consumesone move, remaining0,state10.
+WithU13802000000clear, countdecrementoccurs; withU27c2000clear, U24resets0.
+Becauseplayerbelong0, phaseword04000002, Goombella stillcount1/nostatus27
+andbattleflag2000clear, original exhaustedpathwritesMarioU311=96.
+Charge-consume flagU27c8, whenpresent, callsSetStatus16(1,-99) thenclearsbit;
+freshno-chargecase skipsit. U25c clears; B18ff9 clearsONLYifvalue1. Missingactor
+wouldskipactorwrites butstillruncommon reservation/audiencetail.
+
+CommonAct9 consumes B19060/64/68/6c reserveditemslots viaoriginalservice,
+clearsBef4bit4, callsAudience_PerAct, movesAct→10. Act10 waits audience reaction,
+checksconclusion, thenBreakSlot reactionifcontinuing. Act11drainsBOTHmessage
+pumps; Act12barrierthen optionalpostscriptU2c8→trackedU2cc; Act13pollspostID,
+Act14barrierincrementsMove5 from9 to10. These exactfallthroughs occurwithin
+onebtlseqActcallwhenservicesready; noforcedone-frame-per-state delay.
+FreshoriginalMario hasno installedpostscript through itsused init, butthefield
+mustremainowned ratherthanomittedfromgeneralgraph. U2ccpostID isnotpart of
+unitbarrier andhasitsownAct13poll.
+
+Move10 checksconclusion FIRST. WithSpiked/Paragoomba alive, continue; forall
+nonnullunits SetTotalHitDamage(0)→U264 andclearU27c1000. BattlePhaseEndCheck
+returns0 becauseGoombella inexistingactorlist hasstate!=10, signedU22>0,
+status27clear. SetMove5=05000008 andRETURN; donotselectsameoutercall. Next
+BattleMain sequence invocation entersMove8, resetsall-unit hitbookkeeping,
+selectsactor2 fromthe EXISTING sortedphase2actorlist, writesB420=2,
+GoombellaU27c|=1000, Move5→9 andAct6=06000000, thenfallsintobtlseqAct.
+Act0 seeskind224 andstatuses1/2/9/27clear→BattleCommandInit thenAct1.
+Act1requirescameraMoveSpeed<=2; thenAct2runsBattleCommandInput untilready.
+Command/menu/input/readiness providers mustbe bound; donotgrant anattackroot
+merelybecausea menuadapterselectedGoombella.
+
+ThereisnoPhaseFirstProcess/table rebuild orphase-event fanout betweenMario
+andGoombella: thoseonlyoccurwhenMove5 state0starts aphase. Phase2originalsort
+isstableabs(homeX) thenpriority; Mariohome-100 precedesGoombellahome-140,
+bothkindpriority/span0means sourceirand0 consumesno RNG atturnreset. The
+handoff itselfdoesnotdraw a newrandomactorpriority. Enemyphase4 order30/70/110
+isderivedfromsameoriginalhomes; deathremovaldeletesGoombaactorIDs inB120table.
+
+### Frankly and phase hooks
+
+Firstphasehooks are U294(selector1 fanout Move4, all64), then U298(selector0
+orderedtable serial Move6/7). Tablemembership/orderremain distinct fromactors.
+Ordinary trioinit installs no U294/U298 phasehooks; Frankly installs U298=REL3dc40.
+Phase-eventtable includesallnonnullnonexcludedunits anduses source side/home keys;
+missingcallbacksare skippedwithoutcompacting IDs. Frankly iscount0 andcannot
+be selectedasactor, evenwhenitsphaseevent iseligible.
+
+WhenGoombella isselectedafterMario, Frankly isNOTcalledagain: Move10→8 skips
+Move0..7. AtnewphaseboundariesMove0constructstables, andMove6canrunFranklyagain.
+Itsactual39-command event checksphase04000001 andturn1 before09201..05;
+phase2/phase4/otherturn returnswithoutdialogue. Spikywarning09206/07 belongs
+separatecounterchild/key25, notthisphasehook. Do notreplaylesson aftereachattack.
+
+### Goombella original provisioning and Headbonk command
+
+Kind unitdata_Party_Christine80393bec/c4 has signedHP10/FP5, onebodypart
+80393ba0/4c modelpointer804243b0→c_pkr, poseTable80393a98.
+SourcekindHP isonlyconstructionbase: originalpartnerSetParamFromPouch imports
+currentHP frompouch partnerrecord R+6, baseHP R+4,maxHP withbadgecounts, then
+battle status/sizing snapshot. Partnerkind224mapsrecordindex1; noFPfieldwrites
+onthispartnerimportpath. RuntimeHPcopies U10a/U108/U10c andFP110/10e/112 remain
+distinct. HP<=0importsetsstatus27. Usingfresh10HP untilactualnativepouch owner
+isbound remainsanexplicitadapter, notproofallplaythroughsstartwith10.
+
+Init80393d9c/cc is12commands SHA256
+1c6cc4109de20d372b9425c72d612c019e9fd152e4c2dcb356a68768689683d7:
+SetEventWait(-2,80418480),SetEventAttack(-2,80418478),
+SetEventDamage(-2,80393e68),SetEventConfusion(-2,8034f1e8),
+originalwalk/run/jumpsounds,SetUnitWork(-2,0,0),
+SetEventEntry(-2,80393cb0),StartWaitEvent(-2),RETURN,END.
+It installs no phase/postscript. Wait80418480/18 SHA256
+fd12f377ceeb12767e6053fa99a25989153c0169d545691c96342aecf1a282af calls
+AnimeChangePoseFromTable(-2,1),RETURN,END: no-statusautomatic28→PKR_S_1.
+Body1 isnotpose1. Type39=PKR_D_1,40=PKR_W_1,42=PKR_R_1.
+
+Installeddefaultattack80418478/8 isonlyRETURN/END (SHA256
+1e9fcd4ca7e6723c4a822c370faad68aa89031573b2376d87e4cc3c6626ede61).
+A selectedHeadbonk insteadusesoriginalweapon80393ea8+b0→NormalAttack803941a8/ce0
+through originalcommandattackselector, nottheemptydefault installedevent.
+Theweaponpowercallback/table andcandidatefiltersarealreadyboundinthecompanion
+contracts; itsentiremotion/TimingA/counter/followup graph remainsaseparateused
+implementation task. Damage80393e68/40 sixcommands SHA256
+a2601eb4b39fb08b19b7dcb05bd82bddbef224708bad7a3c452c39ed06c1a608:
+SetRotate(-2,0,0,0);SETLW10=-2;SETLW11=1;RUN_CHILDdefaultDamage;RETURN;END.
+
+### Newly inspected used readiness leaves and explicit boundaries
+
+BattleStatusChangeMsgWorkInit80195a94/5c zeros600bytes B18da0..18ff7;
+for28records stride12 setsrecordbyte0=ff. BattleStatusChangeMsgAdjust801958bc/158
+skipsrecordsexactlywhen signedbyte0==-1; freshall-emptyrecordwork performsno
+unit/statuswrite. MsgMain801956f8/1c4 usesoriginalorderedrecordindexlist; when
+allrecordsareemptyreturns0 andskipsitsotherwiseall-unitstatusinforeset.
+Zero-statusordinaryJumpdoesnotproduce astatusmessageentry justfromHPdamage,
+andClearStatus27hasseparatedeathproducer; nofictionalannouncementsaretocreate.
+Nonemptymessagebody/queuewriter/string/effect ownershipremains a boundedrequest.
+
+BattleStatusChangeAnnouceMain_Unit80195af0/8 isLITERALreturn0 inUSbinary.
+AnnouceMain80195af8/64 scansall64nonnullunit slots, callsleaf, OR-readiness,
+returns0 underthisactualleaf. It iscorrecttosupportthisoriginalstub; unrelated
+AnnounceMessage eventservice isnottherebysupported.
+
+Audience_CheckReaction801a7e30/64 capturesAudienceBase=B2858 via801a86a0/c;
+callsBattleAudienceGetPtr(0)801a8664/3c, thenreadsbase+4 eventENTRYpointer:
+nonnull +evtCheckID(entry15c)active→1; elsebase+4=0,return0. Audience_PerAct
+801a7e94/440 mayproduce reactions/RNG andremainsseparatelyrequested; no
+unconditionalzero audience result isproved merelybyfreshnoequipment.
+
+BreakSlot_CheckReaction80203394/98 useswork=B1616c via8020524c/10;
+FIRST BattleBreakSlot_Start8020342c/64. Startif signedwork+c>=3 clears+c,
+setswork+4=2, requestsfirstslotpointer80205210(0), thenfor3stride5c slots
+setsword8=4,wordc=0. Checkthenreturns1 ifsignedwork+4 is1..8inclusive,
+elsepollsentrypointerwork+130 ID15c; active→1. Idlepathcallsoriginalcamera
+mode(0,0),speed(0,2),AudienceNumToTarget801a1c60,clearswork130,return0.
+Slot-token/state producer andAudience_PerAct contribution arerealdependencies,
+not guessed0 gates. Nativebest-effort providers shouldexplicitlyreportthat
+scopeuntiloriginalreaction/slot/audience/camera ownership isbound.
+
+
+## Headbonk used command, coordinate and rotation callbacks
+
+2026-10-13 source recovery for original NormalAttack803941a8/ce0,227commands,
+SHA25677d2f5d30bea8bd4ff16b0d09ac2e942e705f4717e9fb233b1ccfb2166efc37c.
+Original inventory `/tmp/trio-headbonk-events.json`; inspected DOL callbacks in
+`/tmp/hb-{lv,cost,pre,check,posfloat,getrot,diradd,face,scale,krb,select,pay}.dis`.
+No native edit, original execution, or visual equivalence is claimed.
+
+### Selected command weapon ownership, cost and damage requests
+
+BattleGetSelectWeapon8012021c/4c takesB: M=B171c; readCURRENTTYPEwordB1c5c;
+_btlcmd_GetCursorPtr80124cb8(M,type,&privateStackSlot); cursor=*output;
+weaponIndex=S32(cursor0); returnWORD(M+0x80+0x1c*weaponIndex). Stackoutput isnot
+preinitializedhere. [Cursor/type contract](WEAPON_MENU_TYPE_DOMAINS_AND_CURSOR_REUSE.md)
+closesvalidtype routing anddistinguishesunsupporteduntouchedoutputdomains.
+The callbackdoesnotfetchweaponfromunitdefaultattackpointer oritsownLW12.
+A native selected-command provider mustretainthisownership andcurrentweapon
+query timing, withunsupportedcursor domains explicit.
+
+CommandGetWeaponActionLv80105890/50 hasONE operand: rawoutputtoken. Query
+currentglobalB selectedweapon, readU8(W6e), evtSetValue(output,value),return2.
+UsedHeadbonkW80393ea8 hasactionlevel3; thecallbackhasnoactoroperand. It feeds
+AcSetDifficulty(-2,LW0) beforeSetupAC(-2,1,1,0). HeadbonkusesTimingAordinary
+setup; do notresetparams/flags/history beyondsourceSetupACscope.
+
+CommandPayWeaponCost80105928/78 evaluatesactor arg0,translatesandgetsunit using
+capturedglobalB; THEN reusescapturedB forSelectWeapon, callsPayWeaponCost(U,W),
+return2. No weaponoperand, output, affordability query orrefund. Originalcost
+core isclosed in [cost/payment](BATTLE_WEAPON_COST_AND_PAYMENT.md).
+HeadbonkbyteW11 FPcost0,W12 APcost0 (W10=100 isaccuracy,notcost). Evenzero
+cost retainsGetFp/SetFp viaMario sharedFP owner, PartnerAction AddPointB16f4d(0),
+AddCountB16f4e, pouchAddAP(0). Zero-cost adaptercannotdropactioncount/accounting.
+
+CommandPreCheckDamage8010aaa8/104 andCommandCheckDamage8010a688/104 use
+FIVE operands(actor,target,part,RAWflags,RAWdestination). Resolveactor→unit,
+resolve target→unit, resolvepart→BtlUnit_GetPartsPtr80128cd8(target,part),
+then querySelectWeapon(capturedglobalB). Coretuple is(A,D,P,W,rawflags), through
+BattlePreCheckDamage800fbadc orBattleCheckDamage800fb01c. A negativecore result
+returns255 withoutoutputwrite. NonnegativewritesresulttoRAWdestination via
+integer evtSetValue, thenevtCheckID(callingevent15c): active→2,absent→255.
+Result1/18 isstoredscriptvalue, neverthehandlercompletioncode. Rawflagssupport
+noevtvariable-resolution inthese wrappers.
+
+NormalAttackfirstprecheckF100 at803943f0; subsequentLW10>=1 usesF100100 at
+803943d0. TimingfailureCheckF100 at80394a48; successfulcount<=1 CheckF20000
+at80394b08 thenLW10++andloop; count>1 CheckF20100 at80394bb4. Selectedweapon
+isrequeriedfor eachcommandcallback; parentLW12weaponcaptureisnotusedasthis
+wrapper'sargument. Headbonkordinarylevel1per-hitpower1/FPdamage0 followsalready
+closedpartyweaponpower table; spikecounter/fall/directhit dispatchretainthose
+originalper-hit flags andsharedunitcodeownership. Do notdoubleoneHPwrite.
+
+### Coordinate/facing/scaling leaves
+
+GetPosFloat8011355c/c4 resolves/translatesunit, GetPos80128c7c→U3c/40/44.
+RAW XYZdestinationtokensf1194d80(-250000000) eachskipaxisoutput; otheraxes
+call evtSetFloat800304bc inXYZorder, nointegertruncation. Tokencomparison
+precedeswrite; destinationvariablevalues do notbecomeignoredtokens.
+
+GetRotate80111894/e8 resolves/translatesunit,GetRotate80128898→U6c/70/74.
+SameRAWdestinationtoken sentinel. Eachwrittenaxis fctiwz truncatestowardzero,
+theninteger evtSetValue. Noangle normalization/clamp insidegetter.
+
+MoveDirectionAdd8010b8f4/b0 takes(actor,RAWcoordinateToken,amount).
+Evaluateactor/amount asinteger; useS8(U188) whennonzero,otherwiseS8(U189).
+Compute low32(amount*sign),then evtGetValue(coordinateToken), writewrap32(sum)
+tosameRAWtoken viaevtSetValue. Actorposition isnotwritten. SourceHeadbonk
+avoidance uses30then20 offsetsforwardalongmovement/facing sign; thisdiffers
+fromFaceDirectionSub recoveryoffsetsbackwardalongface.
+
+GetFaceDirection8010e614/70 resolvesunit, readsign-extendedbyteU189, writeinteger
+rawarg1,return2. Noatan2 orfloatconversion. Source±1signisnotnativeyawdegrees.
+
+SetScale8011049c/c0 evaluates/translatesactor. IftranslatedID==-1,return2
+beforeXYZreads. Otherwisefetchunit, evalXYZ viaevtGetFloat80030840, call
+BtlUnit_SetScale80128524/34(U,x,y,z),return2. CorestoresU90/94/98 axesunless
+incomingfloataxisexactlysame asfloat-250000000sentinel. NoU114scalarwrite.
+SourceHeadbonkResultAC path callsSetScale(-2,1,1,1) at80394a18, restoringvector
+scalesindependentlyofunit/pouch sizing scalar.
+
+### krb_get_dir and actual motion rotation siblings
+
+UsedChristine krb_get_dir80189910/118 takesfourfloatcoords andaninteger
+output/prior-angle token. evtGetFloat firstfourinorder(oldX,oldY,newX,newY),
+then evtGetValue(fifthtoken)capturespriorangle. dx=single(newX-oldX),
+dy=single(newY-oldY). If BOTHexactly0 viafcmpu, evtSetValue(fifth,priorangle).
+OtherwisecallSYSTEMangleABf8000703c(dx,dy,0,0), not(0,0,dx,dy), fctiwz
+returnedangle,evtSetValue(fifth,int),return2. Originalzero constant804243cc.
+The2D helper seesXY trajectorycoordinates asits generic2D input; do not
+substituteX/Z actorheading orcopytheenemyRELkrbhelperjustbysymbolname.
+Numericatan2/FPSCR domainbelongsalreadyrecoveredsystemangleprovider; nofinite
+orzero-speedheuristic beyondthisexacttwo-zero branch.
+
+Usednames areoriginalPKR_A_2B at802f9318, PKR_J_1A at802f9324, notinvented
+pose replacements. InitialpassLW10<=0 at80394454 setsPKR_A_2B, spawnsattached
+brotherwaiting2frames thenACRStart(-2,0,7,7,0); parentwaits10frames thenPKR_J_1A.
+Anotherindependentinlinewaits15frames thenoriginalSFX_BTL_KURI_ATTACK1.
+JumpSetting initialandperpass(20,S0,G0.69921875) isoriginalquantizedgravity.
+
+SubsequentpassLW10>=1: gettargetHitXYZ,Z+=5,SetRotateOffset(-2,0,14,0),
+SetRotate0; attachedbrotherwait15frames then6iterationsGetFace→multiply-30→
+AddRotateZ(step),WAIT_FRAME1. ParentMarioJumpPosition(count36,mode3,last0),
+usingtheoriginalsamecallbackonGoombellaunit ratherthanMario-onlykindrouting.
+
+Firstpass: SetRotateOffset(0,14,0),readACRresult. Ifresult==2, declareacrobat
+andspawnattachedbrother; compute desiredface tosame target(mode16),
+LW9=-15ifdesiredface+1,otherwise+15; GetPosFloat(initialLW5/6/7),LW8=0;
+36iterationsAddRotateZ(LW9),WAIT_FRAME1. Elseattachedbrother:
+GetPosFloat(initialLW5/6/7),LW8=0;36iterationsGetPosFloat(currentLW12/13/14),
+krb_get_dir(oldLW5/6,currentLW12/13,LW8),GetRotateXYZintsLW0/1/2,
+SetRotate(oldX,oldY,LW8),FSETLW5=LW12,FSETLW6=LW13,WAIT_FRAME1.
+These brotherlocals arecopied/private andmustnotoverwriteparentprecheckLW5.
+ParentGetHitXYZ,Z+=5;N=36;MarioJumpParam mayadjustcount; MarioJumpPosition
+usesreturnedN(mode0,last0). Sourcefixed36tickrotationloop isnotautomatically
+rescaledtotheadjustedjumplength; preserveactualevent/motionowners.
+
+Afternormalhit/StopAC, originalreturnbrotherreadsZangleintegeronly(GetRotate
+RAWsentinelsX/Y), ifZ<0 negatesit; multiplybyGetFaceDirection; intdivide15;
+repeat15timesAddRotateZ(delta),decrementcounter,WAIT_FRAME1;thenSetRotate0.
+Integerdivisiontruncates; thefinalSetRotate0removesremainder. Parentbounces
+back60/20/8unitsalongFaceDirectionSub withcounts30/12/8, thenhomeMovePosition
+andStartWait. Avoidancebranchinsteadresetspivot/rotations,PKR_S_1,thenMoveDirAdd
+30/20 andgenericJumpcounts20/10, wait500ms beforehomepath. Do notmerge thetwo
+recoveriesorapplyper-renderdelta-time tooriginalsimulation/eventloops.
+
+Thelocalwrappers andusedrotationmathareclosed; actualoriginalACRstylish/result
+prize/help/audience/audio/camera services, fullselectedweaponmenu/progression,
+originalfloat/fctiwzexceptionsemantics andcompleteHeadbonk execution remain
+separate retainedrequests. Nativebesteffort maybindthefreshordinarypath while
+reportingthoseboundaries andreturntolatersourceevidence; no fabricatedstory.
+
+
+### Native persistent player handoff and Headbonk (2026-10-13)
+
+The native trio runtime retains registry, HP, reactions, AC work and rewards
+between Mario NormalJump and Goombella Headbonk. Portable PhaseFirst builds
+original packed actor/position tables once for fresh phase2; stable priority and
+home-distance ordering, deferred-state selection, phase-end checks and move
+consumption use the recovered contracts above. The normal post-action path
+polls owned action/reaction and outer event IDs before consuming the actor's
+move. Wait events are excluded. It respects message, reservation, audience,
+BreakSlot and optional post-event boundaries instead of completing on attack
+root disappearance alone. Missing nonempty providers preserve a pending address.
+Move10 observes source conclusion first, then clears accounting/token1000 and
+selects the next player without rebuilding the phase or replaying Frankly's
+phase-start lecture. Original Move8 resets next-actor accounting and command
+ownership. The menu receives current registry/HP/status; targets are not reset.
+
+Goombella installs original kind80393bec, part80393ba0, damage80393e68 and
+wait80418480. Headbonk executes original weapon80393ea8's root803941a8,
+including source TimingA requests, airborne direction/rotation, ground damage,
+reaction/death ownership and recovery. Her battle draw pack uses original
+c_pkr poses, per-pose clocks and battle rotation/mirror services. Its static
+source words are imported read-only, including the event scanner's one-word
+lookahead. No field sprite animation is substituted for Headbonk.
+
+The admitted path is fresh level0 Goombella, HP10, no badges/status/equipment,
+zero-cost Headbonk against the ground Goomba. Native party/pouch ownership,
+full command init, phase0..7 controllers, audience/BreakSlot producers, nonempty
+status messages/reservations and original RNG/SDK math remain partial adapters.
+Source effects/sounds/stylish requests are retained, with incomplete playback.
+Spike/Para damage callbacks still suspend. After both players spend their move,
+Move11 is the next unbound progression boundary; enemy actions and victory are
+not synthesized. Battle result stays0 and story11 remains locked. Host tests
+assert HP1 surviving Mario's missed Jump then HP0 from Goombella's missed
+Headbonk, one reward/retirement, source idle and exhausted player move counts.
+
+
+## Next source step: Move11 to enemy phase and variant callback admission
+
+2026-10-13 documentation-only follow-up after native Headbonk validation.
+This evidence is for the next implementation step; it does not claim current
+native phase11/enemy scheduling or variants execute. Existing appended native
+implementation reports are unchanged. Original `/tmp/trio-turn.dis`,
+`trio-audperphase.dis`, `trio-checkperphase.dis`, `trio-changekind.dis`,
+`trio-changedata.dis`, `trio-setposetable.dis`, `trio-replaceparts.dis` are local
+US inspection evidence. Authoritative generic state maps remain linked above.
+
+### Smallest bounded readiness provider and actual phase sequence
+
+Move11 calls BattleAudience_CheckReactionPerPhase801a6ce8/f80. The smallest
+closed used admission branch is exact: AudienceBase=B2858 via801a86a0;
+pouchGetPtr800d5eb0 iscalledbeforeflags; ifAudienceBase.word0 mask8 CLEAR,
+return0 at801a6d10, without RNG, event creation or state-machine writes.
+Ifmask8 SET, the original large21-state audience phase-reaction controller runs;
+it cannot be replaced with unconditional0. Its stateword isAudienceBase+137dc.
+The source body returns1 while pending,0 on completion; original audience/
+pouch/state/slot/effect producers are retained requests for that admitted graph.
+
+BattleAudience_PerPhase801a7c68/10c takes original phaseword, capturesbase.
+Phase04000002 withbaseflags40000clear processes200 audience entries, removing
+qualified type7-heldthrow items and resettable100 item slots. It doesnot set
+phase-reactionmask8 on this route. Phase04000004 invokes801a5a0c, ORsbaseflags8,
+zerosbase+137dc. This distinguishes the exact phase2 early-clear readiness
+branch from later enemy-phase-end reaction work. Current native owner may use
+that source-clear-mask branch where its actual packed flags admitit; do not
+assert alloriginal audience flags from a zeroed native adapter.
+
+Move11 lowbyteaudience-ready0 then original eventbarrier-ready advancesMove5
+11→12 andRETURNS. A laterMove12 invocation alwayscallsBOTHmessagepumps;
+whenboth0 incrementsphasechannel4 andresetsMove5=05000000,thenreturns.
+Fromplayerphase04000002 the nextphase is04000003, not direct04000004.
+Phase3 startsPhaseFirstProcess: no surviving unit inthissetup hasU2c=04000003,
+so actorlistempty. Phasehooktable remainsseparate: Frankly selector0 event can
+runbutits phase1/turn1gate returnswithoutdialogue. Oncehooksend,Move6→10,
+PhaseEndCheck returns1 onemptyactorlist, thenphase3Move11/12→phase4.
+Phase4 builds actual survivingenemy actors sorted bypriority/homeabsX; after
+Goomba death the originalSpikedhome70 precedesParahome110. Franklycount0
+cannotbe selectedasattacker. A grounded survivingPara retainsX110/homeY0.
+
+btlseqTurn0300004c dispatches8011e3a4→btlseqPhase andreturns; tableentry4b
+setsTurn3→4c andPhase4=04000000 earlierat8011e384..39c. Phase6 increments
+Turn3→4d andresetsPhase4=04000000. LaterTurn4d invokes8019f298, setsTurn3=
+03000001 andclearsBef4mask2000; futureTurnFirstProcess owns nextturn counts.
+Do notresetunitmoves orincrementturn atplayer→enemy phase boundary.
+
+Enemy actor Act0 retains inhibited1 forkind1/2/3 becauseonlyplayer222/224..230
+clearit. Therefore Act3 writesU2ac=1 andORU1c04000000; Act6 runs installed
+attackeventU2a0 underitsoriginal status gates. SourceSpiked attack REL31310,
+Para flyingattack2fb0c beginEnemyItemUseCheck(-2,LW0), optionalchilditemevent,
+thenoriginalGetEnemyBelong/SamplingEnemy/ChoiceSamplingEnemy. These event roots,
+item/target/RNG/motion/guard services arethe nextboundednative tasks; don't
+invent a damage-only enemyturn or selectMario withoutoriginaltargetchoice.
+
+### Fresh counter and wing-fall source integration boundaries
+
+SourceHeadbonkW80393ea8 specialW74=35007,resistanceW78=0000000c (lacks2).
+Withfresh noSpikeShield, topSpike counter isthereforesame asJump: original
+precheck1, CheckCounter workordinaryadmission0, counterdamage1/full299(hex12b),
+defenderhitevent31(hex1f), CheckDamagecore-1/commandwrapper255. SpikedHP remains2;
+Goombella sourceHP10wouldbecome9, subjecttoactualpouchHP. Attackerhitdispatch
+cancelsitsattackU2a8; victimSpikehitU2b4 runsdatakey25 warning child. Current
+attackerB420 remainsGoombella, soFrankly'sonce-onlywarning choosesoriginal
+mac_0_092_07;Mariochooses092_06. Bothactor/victim reactionevents mustfinishbefore
+postactionbarrier. Complete original messageorder/timing isalreadylistedabove.
+
+FlyingPara onpart-reactionF400000 dispatchesdata key0e→REL2f914 fallchild.
+The originalweapon/partpair gates andF100requirement remain asdocumented;
+these flags mustnotbe inferredsolelyfromHP loss. Currentnative lackofthese
+providers isexplicitlyunfinished. Small source-binding leaves newlyclosed:
+
+- AnimeSetPoseTable80106468/70 evaluatesunit/part, storesRAWtableoperand P1bc.
+- ChangeDataTable8010dae0/5c evaluatesunit, storesRAWtableoperand U18.
+- ChangeKind8010dc44/6c evaluatesunit/newkind, writesONLYcurrentkindwordU8.
+  It doesnotreplaceU4originalkind/U10kinddefinition,resources/level/HP/status.
+  FallChangeKind1 mustnotreloadgrounddefinitionorresetHP.
+- ReplaceParts8011319c/168 evaluatesunit/currentpart andnewpartID; newtableRAW.
+  Nonnullnewtable firstrecordIDmustmatchnewID; mismatch originalbranch loops
+  onthecomparisonwithoutadvancing. Usednewrecord30230 hasID1,so thisbad-domain
+  loopisnotadmitted. SetP4=newrecord,P8=source4,P1ac=source40,P1b0=44,
+  P1b4/P1b8=38/3c,P24/28/2c=sourcec/10/14. SetPartsRotate0 andpivot0;
+  P170/174=source18/1c,P17c/P180=0,P1a0=0. P178hitZ,scale/baseangle,
+  sampleoffset/P1bc remainunchanged locally. ALWAYSthenbtlDispEntAnime(U),
+  recreatingallpartposeIDs usingcurrentmodels/tables. No oldposeRelease inthis
+  wrapper. Nativepreallocatedresource/atlas policy mustremainexplicitadapter.
+
+OriginalfallstreamordersPoseTable30158 thenData301f8 thenParts30230,
+unitflag4→damagepose39, fallSFX,JumpPosition10toY0,homeupdate,walkSFX,
+500ms,ChangeKind1,groundinit3033c,WAIT_FRAME1,pose39. Groundinitreplacesinstalled
+attack/wait/damage/soundservices. Hidingwingsalone cannot satisfy thistransition.
+Originalresources,resourcepose recreation, exactgenericjump/audio/effects and
+variant eventexecution remainnextimplementation work, notcompletednativeclaims.

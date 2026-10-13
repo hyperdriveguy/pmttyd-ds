@@ -1990,3 +1990,39 @@ direct-A draw algebra is implemented for the recovered fresh branch. Mario's
 original80417c38 wait stream now returns to M_S_1. Original particle/audio
 requests are retained; turn/variant/end/pouch/seed/hardware providers remain
 open. This advances the native implementation, not full JUMP-01 closure.
+
+
+2026-10-13 requested source Mario→Goombella progression composition:
+[Source handoff](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#setup4-first-mario-action-to-goombella-command-handoff)
+pinsAct7..14all-unit/battle/postbarriers,count1→0/state10/Mario31196/reservations,
+Move10→8nextoutercall selectionfromexistingphase2table, noFranklyreplaybetween
+actors, exactphasehookgates, Goombella originalinit/wait/HPsnapshot/Headbonk
+selectedweaponversusemptydefaultattack. Newlyinspectedannouncementunitliteral0,
+emptymsgworkpath, actualAudience/BreakSlotreadinessownerfieldsincluded.
+Openuseddependencies: Audience_PerAct801a7e94/440reaction/RNGwriters, slot-token/
+state producers, nonemptyMsgAdjust/Main/queue/string/effectservices, fullselected
+Headbonkcommandgraph/camera/input/pouchowners. These arenotclosedbygeneric
+controllerdiagrams oradapter0readiness. No nativeedit/commit/runtimeclaim.
+
+
+2026-10-13 Headbonk used transitive callback delivery:
+[Headbonk source callbacks](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#headbonk-used-command-coordinate-and-rotation-callbacks)
+closes CommandCost/ActionLv/PreCheck/Check selectedweapon/currentmenu ownership,
+rawflags/output/2vs255; typedGetPosFloat/GetRotate rawsentinels, direction-local
+add andface/scaling fields, ChristinekrbXYdelta→origin math, actualsource227cmd
+PKR_A_2B/PKR_J_1A brother/inline rotationcounts/pivot/recovery arithmetic.
+Existingcost/selector/numericcontractsremainauthority. Used ACR/stylish/prize/
+help/audience/audio/camera/menu ownersretaintheirrequests; no nativeedit/commit.
+
+
+2026-10-13 next-step evidence persisted before native Headbonk commit:
+[Phase11/variants](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#next-source-step-move11-to-enemy-phase-and-variant-callback-admission)
+closes exactphaseaudience mask8-clearearlyreturn, PerPhase2versus4flags/state
+writes, playerphase2→emptyphase3→enemyphase4 (no turnreset), Turn4c/4d storage,
+sourceenemyAct3/installattackrootadmission. Headbonkspike tuple/warningowner,
+Parafallrawtable/current-kind-only/partreplacement field preservation recovered.
+Pending native: Move11/audience/camera/phase3/4 ownership, source enemyitem/
+samplingchoice/RNG/attack/guard paths, spikecounter andwingfall execution/audio/
+effects/pose recreation. Fullmask8SETphaseaudience/controller andsourceflag
+producersremainrequests; useoriginalcleargateasboundednextstep,notalwaysready.
+Documentation-only; no nativeedits/commit. Existingnativeappendsectionsunchanged.

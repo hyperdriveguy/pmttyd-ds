@@ -1646,12 +1646,17 @@ void Game::tick(const Input& rawInput) {
             else setCameraView({c.eye[0],c.eye[1],c.eye[2]},{c.at[0],c.at[1],c.at[2]},c.duration,uint8_t(c.curve));
         }
         if(trioBattleIntro.finished && !trioBattleIntro.message.active()) {
-            // Turn scheduling is still pending; a completed action retains its battle
-            // state instead of reopening the menu over stale target HP.
-            if(trioAttack.active() || trioAttack.finished()) {
+            if(trioAttack.active()) {
                 const uint32_t triggers=i.physicalSnapshot?inputProducer.channels[0].pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers);
                 scene=Scene::Dialogue;saveRequested=false;return;
+            }
+            if(trioAttack.finished()) {
+                const uint32_t triggers=i.physicalSnapshot?inputProducer.channels[0].pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
+                trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers);
+                if(trioAttack.prepareCommands(trioCommands,trioBattleIntro) || trioAttack.commandActor()<0) {
+                    scene=Scene::Dialogue;saveRequested=false;return;
+                }
             }
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp)) {
                 trioAttack.tick(ticks*1000/60,trioBattleIntro);

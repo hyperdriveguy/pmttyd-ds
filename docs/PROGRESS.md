@@ -4339,3 +4339,55 @@ Battle result stays0 and story11 stays locked pending original conclusion/end/
 field return; do not synthesize victory from HP. Profile native event-bank setup
 latency separately. The full playable original-fidelity prologue goal remains
 active and incomplete.
+
+
+## 2026-10-13 — Persistent player turns and original Goombella Headbonk
+
+The trio battle retains native battle/unit/AC resources between player actions.
+Original packed PhaseFirst ordering, selection, phase-end checks and actor move
+consumption are host-testable helpers. Normal post-action states wait for owned
+reaction/event IDs and source message/reservation/audience/BreakSlot gates before
+spending the move. Move10/8 hands Mario's completed turn to Goombella without
+rebuilding the phase, replaying Frankly's lecture or resetting target HP.
+Command sampling uses the live registry and retained HP/status.
+
+Goombella installs original kind/part/damage/wait definitions and executes
+Headbonk weapon80393ea8/root803941a8. Used CP wrappers, source power lookup,
+raw position/rotation sentinels, scale and XY-angle trajectory are bound for the
+fresh ordinary ground path. Original c_pkr idle/run/walk/jump/attack/talk assets
+are locally extracted and batched with citro3d; per-pose clocks and battle
+rotations apply to her action. Original data/script bytes stay ignored/read-only.
+
+Focused tests pass: source stable priority/home ordering, positional tables,
+deferred/dead actor selection, signed move counts, bypass flags/state chains,
+Mario-to-Goombella live menu handoff, retained Goomba HP1 then Headbonk HP0,
+once-only reward/retirement, original idle and both spent moves. `make test`
+initially passed121/121 CTest and100/100 Python tests. With concurrent opening/
+NPC work added, the latest full CTest run passes122/123; the remaining failure
+is `field_actors_original`, tests/field_actors_tests.cpp:133 (scripted inactive
+NPC contact assertion). This turn's battle checks pass. An earlier opening
+pose failure was resolved by regenerating stale local opening assets; the
+latest opening tests pass. Exact latest logs: `/tmp/trio-turn-tests-final.log`
+and `/tmp/trio-turn-python-final.log`. `make all` and `make debug-short` pass
+(`/tmp/trio-turn-all-final.log`, `/tmp/trio-turn-native-final.log`), with no
+compiler warnings. ARM's int32_t/std::min deduction issue was corrected.
+`git diff --check` passes. Concurrent native asset conversions caused one
+truncated-image run; sequential rebuild passed.
+
+Isolated Azahar capture `artifacts/azahar-trio-headbonk` uses the debug-short
+binary, underground-story11 fixture,48-second boot and
+`tests/azahar_trio_headbonk.py`. It shows original tutorial dialogue, Mario's
+Goomba defeat/removal, Goombella Headbonk menu/target selection and her original
+jump/rotation pose. This input run then attacks Spiked and correctly reaches
+the retained pending damage service. It does not prove completed ground
+Headbonk recovery; the host integration test covers that path. Native profiles/
+saves are isolated; no hardware FPS or Dolphin-image parity claim.
+
+Limits/next: phase11 onward/enemy AI, Spike counter and Frankly warning,
+Paragoomba wing-fall, full first-turn/command init, original audience/BreakSlot
+producers, equipment/pouch ownership, RNG and sound/effect/stylish playback.
+Documentation inbox work now records the phase2→empty3→enemy4 transition and
+variant callback/part-replacement owners. After both player moves the native
+runtime stays locked at Move11 with result0/story11; victory is not inferred.
+Fresh partnerHP10/level0 and empty equipment remain explicit adapters. The
+original-fidelity prologue demo goal is active and incomplete.

@@ -583,6 +583,12 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/npc-angle.bin")
     set_tests_properties(npc_presentation_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif()
 
+# Recovered packed phase tables and post-action move consumption.
+target_sources(ttyd_core PRIVATE source/battle_phase.cpp)
+add_executable(battle_phase_tests tests/battle_phase_tests.cpp)
+target_link_libraries(battle_phase_tests PRIVATE ttyd_core)
+add_test(NAME battle_phase_original COMMAND battle_phase_tests)
+
 target_sources(ttyd_core PRIVATE source/harbor_encounter.cpp)
 add_executable(harbor_encounter_tests tests/harbor_encounter_tests.cpp)
 target_link_libraries(harbor_encounter_tests PRIVATE ttyd_core)

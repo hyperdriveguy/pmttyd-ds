@@ -102,6 +102,7 @@ private:
     float harborMarioUVScale=1;
     Texture professorMarioTexture;
     Texture trioMarioTexture;ActorAnimationPack trioMarioAnimations;float trioMarioUVScale=1;
+    Texture trioPartnerTexture;ActorAnimationPack trioPartnerAnimations;float trioPartnerUVScale=1;
     Texture professorMapTexture;
     Texture messageIconTexture;
     void messageIconImage(uint32_t id,uint64_t ticks,float centerX,float bottomY,float scale,uint8_t alpha);
