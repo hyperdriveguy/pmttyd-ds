@@ -159,8 +159,10 @@ two absolute targets. `gekko-repair-report.json` names `bero_normal`,
 is counted in Group D, not here.)
 
 `party_flyMain` (`behavior/`, entry 800c7ff8, 1584-byte `.elf`, 354-line
-`.disasm`, 43 `bl`) has no JSON row and no prose mention; the
-FIELD_PARTNER_FLY_* series never names it. Its sibling `flyMain.disasm` is a
+`.disasm`, 43 `bl`) is closed by
+[the fly-main dispatch contract](partner/FIELD_PARTNER_FLY_MAIN_DISPATCH.md):
+complete mode/substate dispatch, first-call marker, splash marker,
+countdown and hazard guards. Its sibling `flyMain.disasm` is a
 zero-byte placeholder (see below), so no content comparison is possible.
 
 ## Zero-byte placeholders (no content to document)
@@ -242,28 +244,67 @@ Closed by the second pass, again with no snapshot definition:
 
 | Listing | Symbol | Entry | Contract |
 | --- | --- | --- | --- |
-| `BattleAfterReactionQueueInit` | same | 800f7af0 | [After-reaction queue](battle/BATTLE_AFTER_REACTION_QUEUE.md) |
-| `BattleAfterReactionEntry` | same | 800f7a78 | [After-reaction queue](battle/BATTLE_AFTER_REACTION_QUEUE.md) |
-| `BattleAfterReactionRelease` | same | 800f79e4 | [After-reaction queue](battle/BATTLE_AFTER_REACTION_QUEUE.md) |
-| `BattleStatusWindowCheck` | same | 800f7514 | [Status window/camera X](battle/BATTLE_STATUS_WINDOW_CHECK_AND_NOMOVE_X.md) |
-| `btl_camera_nomove_x_onoff` | same | 8012b33c | [Status window/camera X](battle/BATTLE_STATUS_WINDOW_CHECK_AND_NOMOVE_X.md) |
-| `btlevtcmd_SetEventDamage` | same | 8010a55c | [Damage event leaves](battle/BTLEVTCMD_DAMAGE_EVENT_LEAVES.md) |
-| `btlevtcmd_CommandCheckDamage` | same | 8010a688 | [Damage event leaves](battle/BTLEVTCMD_DAMAGE_EVENT_LEAVES.md) |
-| `msgWindow_ForceClose` | same | 80081424 | [Window close/repeat](message/MSG_WINDOW_FORCE_CLOSE_AND_REPEAT.md) |
-| `msgWindow_Repeat` | same | 800814f4 | [Window close/repeat](message/MSG_WINDOW_FORCE_CLOSE_AND_REPEAT.md) |
-| `evt_msg_close` | same | 800d2178 | [Window close/repeat](message/MSG_WINDOW_FORCE_CLOSE_AND_REPEAT.md) |
-| `evt_msg_repeat` | same | 800d21a8 | [Window close/repeat](message/MSG_WINDOW_FORCE_CLOSE_AND_REPEAT.md) |
-| `evt_sub_intpl_init` | same | 80056120 | [Interpolation/party leaves](event/EVENT_INTERPOLATION_AND_PARTY_RUN_STOP_LEAVES.md) |
-| `evt_sub_intpl_get_value` | same | 80056064 | [Interpolation/party leaves](event/EVENT_INTERPOLATION_AND_PARTY_RUN_STOP_LEAVES.md) |
-| `evt_party_run` | same | 800eae70 | [Interpolation/party leaves](event/EVENT_INTERPOLATION_AND_PARTY_RUN_STOP_LEAVES.md) |
-| `evt_party_stop` | same | 800eaeb8 | [Interpolation/party leaves](event/EVENT_INTERPOLATION_AND_PARTY_RUN_STOP_LEAVES.md) |
+| `BattleAfterReactionQueueInit` | same | 800f7af0 | [After-reaction queue](../battle/BATTLE_AFTER_REACTION_QUEUE.md) |
+| `BattleAfterReactionEntry` | same | 800f7a78 | [After-reaction queue](../battle/BATTLE_AFTER_REACTION_QUEUE.md) |
+| `BattleAfterReactionRelease` | same | 800f79e4 | [After-reaction queue](../battle/BATTLE_AFTER_REACTION_QUEUE.md) |
+| `BattleStatusWindowCheck` | same | 800f7514 | [Status window/camera X](../battle/BATTLE_STATUS_WINDOW_CHECK_AND_NOMOVE_X.md) |
+| `btl_camera_nomove_x_onoff` | same | 8012b33c | [Status window/camera X](../battle/BATTLE_STATUS_WINDOW_CHECK_AND_NOMOVE_X.md) |
+| `btlevtcmd_SetEventDamage` | same | 8010a55c | [Damage event leaves](../battle/BTLEVTCMD_DAMAGE_EVENT_LEAVES.md) |
+| `btlevtcmd_CommandCheckDamage` | same | 8010a688 | [Damage event leaves](../battle/BTLEVTCMD_DAMAGE_EVENT_LEAVES.md) |
+| `msgWindow_ForceClose` | same | 80081424 | [Window close/repeat](../message/MSG_WINDOW_FORCE_CLOSE_AND_REPEAT.md) |
+| `msgWindow_Repeat` | same | 800814f4 | [Window close/repeat](../message/MSG_WINDOW_FORCE_CLOSE_AND_REPEAT.md) |
+| `evt_msg_close` | same | 800d2178 | [Window close/repeat](../message/MSG_WINDOW_FORCE_CLOSE_AND_REPEAT.md) |
+| `evt_msg_repeat` | same | 800d21a8 | [Window close/repeat](../message/MSG_WINDOW_FORCE_CLOSE_AND_REPEAT.md) |
+| `evt_sub_intpl_init` | same | 80056120 | [Interpolation/party leaves](../event/EVENT_INTERPOLATION_AND_PARTY_RUN_STOP_LEAVES.md) |
+| `evt_sub_intpl_get_value` | same | 80056064 | [Interpolation/party leaves](../event/EVENT_INTERPOLATION_AND_PARTY_RUN_STOP_LEAVES.md) |
+| `evt_party_run` | same | 800eae70 | [Interpolation/party leaves](../event/EVENT_INTERPOLATION_AND_PARTY_RUN_STOP_LEAVES.md) |
+| `evt_party_stop` | same | 800eaeb8 | [Interpolation/party leaves](../event/EVENT_INTERPOLATION_AND_PARTY_RUN_STOP_LEAVES.md) |
+
+### Third pass (same session)
+
+| Listing | Symbol | Entry | Contract |
+| --- | --- | --- | --- |
+| `btlevtcmd_GetWeaponActionLv` | same | 801058e0 | [Weapon/status/wait leaves](../battle/BTLEVTCMD_WEAPON_STATUS_WAIT_LEAVES.md) |
+| `btlevtcmd_AcSetDifficulty` | same | 80107b38 | [Weapon/status/wait leaves](../battle/BTLEVTCMD_WEAPON_STATUS_WAIT_LEAVES.md) |
+| `btlevtcmd_AnnounceSetParam` | same | 801abc10 | [Weapon/status/wait leaves](../battle/BTLEVTCMD_WEAPON_STATUS_WAIT_LEAVES.md) |
+| `btlevtcmd_AfterReactionEntry` | same | 80105a78 | [Weapon/status/wait leaves](../battle/BTLEVTCMD_WEAPON_STATUS_WAIT_LEAVES.md) |
+| `btlevtcmd_StatusWindowOnOff` | same | 80103e34 | [Weapon/status/wait leaves](../battle/BTLEVTCMD_WEAPON_STATUS_WAIT_LEAVES.md) |
+| `btlevtcmd_StartWaitEvent` | same | 8010a26c | [Weapon/status/wait leaves](../battle/BTLEVTCMD_WEAPON_STATUS_WAIT_LEAVES.md) |
+
+### Fourth pass (same session)
+
+| Listing | Symbol | Entry | Contract |
+| --- | --- | --- | --- |
+| `shadowGetRamp16TexObj` | same | 8002bc6c | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+| `shadowGetRamp8TexObj` | same | 8002bc74 | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+| `shadowGetDepthShadowDepthMtx` | same | 8002bc0c | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+| `shadowGetDepthShadowProjTexMtx` | same | 8002bc00 | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+| `shadowGetDepthShadowConfig` | same | 8002bb50 | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+| `shadowGetDepthShadowTexObj` | same | 8002bc18 | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+| `shadowGetDepthShadowColor` | same | 8002bb6c | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+| `shadowGetProjShadowColor` | same | 8002bae4 | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+| `shadowGetProjShadowProjTexMtx` | same | 8002baf0 | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+| `shadowGetProjShadowConfig` | same | 8002bac8 | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+| `shadowGetProjShadowTexObj` | same | 8002bafc | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+| `shadowGetCharShadowColor` | same | 8002bc88 | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+| `shadowGetCharShadowProjTexMtx` | same | 8002bc94 | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+| `shadowGetCharShadowProjection` | same | 8002bc7c | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+| `shadowGetCharShadowTexObj` | same | 8002bca0 | [Shadow driver leaves](../display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) |
+
+`BattleAfterReactionMain` (800f78fc) was verified against the existing
+[waits and conclusion](../battle/BATTLE_WAITS_AND_CONCLUSION.md) contract rather
+than re-documented: the queue holder, the `BattleConsumeReserveItem` /
+`BattleCheckConcluded` / `BtlUnit_GetData` / `evtEntry` order and the recursive
+restart on a missing unit all match that prose, so the
+[queue contract](../battle/BATTLE_AFTER_REACTION_QUEUE.md) now links to it
+instead of declaring it open.
 
 Correction carried by the camera X row: the Y/Z contract in
-[the wait/camera leaves](../overworld/OVERWORLD_SPEED_FALL_LANDING_LEAVES.md)
-sibling `battle/BATTLE_WAIT_CAMERA_STATUS_EVENT_LEAVES.md` describes the guard
+[the wait/camera leaves](../battle/BATTLE_WAIT_CAMERA_STATUS_EVENT_LEAVES.md)
+describes the guard
 as "return immediately when incoming r3 < 0". The actual guard is
 `cmpw r3, word[W+10076]` / `bclr 12,0`, which returns only when the first
 argument equals that word, and the `word[W+10076]` load is therefore live.
 The same contract's "unresolved `bl 0x800f7514`" is now
-[resolved](battle/BATTLE_STATUS_WINDOW_CHECK_AND_NOMOVE_X.md) as
+[resolved](../battle/BATTLE_STATUS_WINDOW_CHECK_AND_NOMOVE_X.md) as
 `BattleStatusWindowCheck`.

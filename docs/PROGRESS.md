@@ -1,5 +1,196 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native request 2: water recovery numerics
+
+Delivered OVERWORLD_WATER_RECOVERY_NUMERICS for field/AC-03: full
+stage/counter machine ([68]=stage via ISO-read table 0x8036ED4C, [72]=
+counter), 12-slot ISO-read SDA set, sink −6.0 init, 40-count stage-1 hold,
+two-tick stage-10 arm, HP-penalty tick at stage-31 expiry, 12-count stage-32
+window, and named gaps where the port authored ratios/jerk (no 0.08-class
+constant, no jerk lane in-body). Stale "stage15" has no slot (no-op).
+
+Validation: dispatch/stage-write/SFX-ID/HP-call re-checks with int/float
+register-file care; link audit; diff --check clean. Docs-only, no make
+rerun. Next: bottomless motion33/34, pose-table slice. Full-game incomplete.
+
+## 2026-10-12 — Native JUMP-01 request 1 answered (SFX provenance)
+
+Fulfilled the packed-Jump provenance request from the native inbox with
+BATTLE_JUMP_SFX_PROVENANCE: vec3 scratch proven zero-bytes (not a key row),
+U+0x18C key domain with two-call psndSFXOn_3D record (second inherits r3),
+and no-PS-math finding for 801093a8. Recorded the answer in
+DOCUMENTATION_REQUESTS.md without touching the request text. Water/motion
+and pose-table requests (2/3) remain open — mot bodies located for next.
+
+Validation: dual-offset ISO reads, call-site arg traces, PS-op sweep,
+link audit, diff --check clean. Docs-only, no make rerun. Full-game
+incomplete.
+
+## 2026-10-12 — Third and fourth gap passes: event leaves and the shadow driver
+
+- [Weapon/status/wait leaves](behavior/battle/BTLEVTCMD_WEAPON_STATUS_WAIT_LEAVES.md):
+  six `battle_event_cmd.o` bodies with no snapshot definition.
+  `btlevtcmd_GetWeaponActionLv` publishes `lbz [resolved+0x6E]` through
+  `evtSetValue` with a **raw** destination word; `btlevtcmd_AcSetDifficulty`
+  drives `BattleActionCommandSetDifficulty(B, unit, value)`; and
+  `btlevtcmd_AnnounceSetParam` writes into an 8-byte-stride record array at
+  `BattleWork+0x18C8C` at the `+4` value word of `4*index`, with no bounds check.
+  `btlevtcmd_AfterReactionEntry` resolves operands into
+  `BattleTransID`/`evtGetValue` and calls the queue helper from the
+  after-reaction contract. `btlevtcmd_StatusWindowOnOff` is a signed four-way
+  dispatch writing `word[B+0x2748]` (modes 0/1) or `word[B+0x2744]` (mode 3) and
+  then always calling `BattleStatusWindowCheck`; those are exactly the two words
+  whose nonzero state forces that checkpoint's result to 0, which is recorded as
+  a static inference. `btlevtcmd_StartWaitEvent` calls `BattleRunWaitEvent` only
+  when `word[unit+0x28C]` is nonzero, pairing with the existing stop leaf.
+- [Shadow driver leaves](behavior/display/SHADOW_DRIVER_ACCESSOR_LEAVES.md):
+  the whole fifteen-body `shadowGet*` family in `shadowdrv.o`, previously absent
+  from every prose file. Three SDA words at `0x804150c8/cc/d0` select the
+  depth/projected/character shadow records; two static texture objects live at
+  `0x8041e738`/`0x8041e758`; the three `ProjTexMtx` getters share relative
+  `+124`; the two `Config` getters index a 72-byte-stride table at `0x80304a60`
+  from `word[record+8]` with no bounds check; the three `TexObj` getters gate on
+  bit 0 of `word[record+0]` and tail-call `smartTexObj(record+220, word[record+
+  252])`, returning NULL when the gate is clear. `shadowGetDepthShadowColor` is
+  the only value-producing body: it packs `(255-c)*alpha/255` for the three
+  component bytes at `record+256..259` using the `0x80808081` signed-division
+  idiom into one word with a zero high byte.
+
+`BattleAfterReactionMain` was checked against the existing
+[waits and conclusion](behavior/battle/BATTLE_WAITS_AND_CONCLUSION.md)
+contract instead of being rewritten: the queue scan, `BattleConsumeReserveItem`,
+`BattleCheckConcluded`, `BtlUnit_GetData`, `evtEntry` and the recursive restart
+on a missing unit all match that prose, so the queue contract now links to it.
+`btlevtcmd_AcSetParamAll` was likewise left alone: it stores eight resolved
+operands into `word[B+0x1CC8+4*i]`, skipping the `0xf1194d80` sentinel, which the
+action-command callback contract already documents.
+
+Validation: `make test` passes and `make all` passes; logs
+`/tmp/pm-gap3-test.log`, `/tmp/pm-gap2-build.log` (docs-only pass, no native
+change). `python3 tools/check_doc_links.py` reports one pre-existing broken link
+owned by another agent (`partner/FIELD_PARTNER_FLY_MAIN_DISPATCH.md`); every link
+added by this pass resolves.
+
+Next: remaining unaddressed rows are larger bodies — `BattleCheckPikkyoro`
+(112 lines), `battleMakePhaseEvtTable`/`battleSortPhaseMoveTable`,
+`partyDoWork`, `_getRegistStatus` and `marioLandOn`/`marioSearchHead`.
+EVT-01/JUMP-01/DMG-02 and the full-game requirements remain incomplete.
+
+# Progress and next-session handoff
+
+## 2026-10-12 — Source audit: documentation requests for packed Jump and recovery
+
+Observed the implementations under `source/` and filed three native
+documentation requests in docs/DOCUMENTATION_REQUESTS.md (appended at the end;
+no docs-agent lock reserved). Reviewed the recent native commits that shipped
+without leaving requests (b79bbe2 packed Mario Jump services, 81c143d
+water/void/pipe recovery poses, 778add7 idle/low-HP pose scheduling,
+e1257d8/357a656 field shadows).
+
+- JUMP-01: the packed Mario Jump position binding (commit79bbe2) requests the
+  0x802ee470/474/478 sound-key block, the original jump psndSFXOn_3D
+  invocation record (timing/vector/return/landing cue), and the PS-family
+  sin/cos identity plus FPSCR entry state. Local bodies were already recovered
+  (BATTLE_MARIO_JUMP_MOTION/NUMERICS, BATTLE_UNIT_SOUND_MODE,
+  BATTLE_DAMAGE_ORCHESTRATION for the mode1 AC-possibility fallback).
+- field/AC-03: `source/water_recovery.cpp` water/void return-fall parameters
+  (mot_damage motion31 / mot_bottomless motion33 stages) are authored and
+  source-derived per include/water_recovery.hpp; pose timings are recovered,
+  the numeric stage contract is not. Requested measured original sink/rise/arc/
+  travel/return counters, HP-penalty tick, and bottomless placement/fall.
+- field/AC-03: recovery pose-table domains 4..40 and pipe paper (p_dokan_x)
+  lifecycle requested per the OVERWORLD_MARIO_RECOVERY_POSES open tail.
+- P0c main-loop/field-dispatch: the native fixed-60Hz accumulator and
+  Game::tick/move/startBattle substitutes have no original marioMain
+  (8005a7e0) request; asked for the motion-ID→subsystem dispatch chain,
+  battle-transition construction, input gate and marioStMain retrace/pause
+  cadence (MARIO_MAIN.md sketch gaps), leaving existing pause/RNG asks open.
+- P1b save/persistence: source/save.cpp uses a native PM2D format and one
+  opaque originalStory int; asked for the complete original cardMain save
+  record/state machine and the swSet/swGet story-switch bank, since CARD_MAIN.md
+  and SW_SET.md are early sketches with explicit remaining gaps and no inbox
+  entry.
+
+Address-coverage check: of every original 0x8xxxxxxx address referenced by
+source/, only 0x802ee470 (sound-key block, requested) lacked a contract; the
+memory-bootstrap table, game-pointer clock block and sampling constants are
+already documented.
+
+Follow-up: the documentation agent answered the JUMP-01 request in commit
+044ba5c with behavior/battle/BATTLE_JUMP_SFX_PROVENANCE.md. It corrects two
+premises — 0x802EE470/474/478 is `vec3_802ee470` zero scratch (not a key row),
+and 801093a8 has no Gekko PS math (trig via system_angleABf/distABf). Recorded
+the resulting native action items (drop the spurious 0x802ee470 reads, bind the
+same-TU angle/dist helpers, model both psndSFXOn_3D calls) as a ledger
+breadcrumb; no native code changed.
+
+Validation: docs-only change; no native/test/CMake edits and no make rerun
+(latest recorded host state remains 87 CTest/90 Python and make all passing).
+
+Next: documentation agent answers the five requests; native closures for
+packed Jump sound cadence, water/void physics replacement, pose-table driven
+recovery presentation, the original field main-loop/pause cadence and original
+save persistence; full-game story/encounter closure stays open.
+
+## 2026-10-12 — Getter plus status dispatch; case-table rescue
+
+Closed BattleGetUnitPtr (NULL-domain table, −1-first, asymmetric setter,
+487-site US row; snapshot definition with JP/US caveat) and BtlUnit_GetStatus
+(28-slot ISO-read jump table, paired sign gates, nullable outputs).
+Verification caught a badly misaligned case table in my own draft (wrong
+lanes for statuses 0/2/3/16–24/27, inverted pair directions); rewrote it
+from a machine dump of every block and re-verified all 20 lane blocks plus
+6 paired blocks. Also resolved a phantom read-tool/listing discrepancy by
+re-reading bytes from disk (disk won).
+
+Validation: full re-verification, link audit, diff --check clean. Docs-only,
+no make rerun. Next: zero-byte placeholder re-extraction; triangle/math
+interiors. Full-game incomplete.
+
+## 2026-10-12 — OW-WALL-01 traversal half: hit-vector skeleton
+
+Delivered BATTLE_HIT_VEC_TRAVERSAL_ORDER for the overworld wall inbox:
+4-region/call-census (49 bl all resolved: PSVEC family, checkTriVec_xz,
+mapGetWork)/return skeleton with ISO-read SDA values, NaN-safe gate
+patterns, and a verified region-1 counter/pointer asymmetry (r30+1/r31+84
+vs r31+1/r30+84 elsewhere) reported without inference. Triangle interiors,
+chunk ownership, and callback identity stay open per the request's own
+remainder. Fixed two of my own early assertions (stride count, uniform-loop
+claim) during verification.
+
+Validation: machine-extracted census/edges/strides/counts, link audit,
+diff --check clean. Docs-only, no make rerun. Full-game incomplete.
+
+## 2026-10-12 — New denomination: flagged-callee contracts (CheckStatus, filter, search)
+
+Survey found the register's flagged open callees now have reference pairs but
+no dedicated contracts. Closed three: BATTLE_UNIT_CHECK_STATUS (null gate,
+GetStatus byte, 6-compare, +759 test, exact {0,1}), BATTLE_HIT_CHECK_FILTER
+(8-int/6-float marshal, hitVec call, six outputs, residue return),
+MESSAGE_MSG_SEARCH (two-table binary search with gp fallback, no miss-null).
+Caught two wrong relative links pre-commit (battle/→overworld, message/→battle).
+
+Validation: full instruction re-checks (incl. corrected stfs count and
+output-opcode proof), link audit, diff --check clean. Docs-only, no make
+rerun. Next: BtlUnit_GetStatus, BattleGetUnitPtr dedicated contracts;
+zero-byte placeholder re-extraction. Full-game incomplete.
+
+## 2026-10-12 — Register complete: landing query 2, hitVec alias (43/43)
+
+Closed checkLand2 as marioChkLandon2 (five-probe loop, variant dispatch,
+lane quantization, angle tail; doc overworld/OVERWORLD_LANDING_QUERY_2.md)
+and resolved hitVec as alias of partially-contracted hitCheckVecFilter
+(SLOPES doc covers orientation/normalization; triangle phases stay open).
+Final tally: 38 behavior contracts + 5 alias resolutions = all 43 register
+rows addressed. Residual open work outside the register: angleABf/
+system_angleABf bodies, hitVec triangle phases, and the usual lifetimes/
+cadences. Fixed two of my own errors pre-commit (wrong bl census, wrong
+callee-share claim).
+
+Validation: instruction re-checks, ISO SDA reads, link audit incl. a
+repaired register link; diff --check clean. Docs-only, no make rerun.
+Full-game goal stays incomplete.
+
 ## 2026-10-12 — Porting-critical large function documentation
 
 Added detailed documentation for high-priority functions needed for porting,
@@ -37,6 +228,9 @@ direct damage, damage validation, and counter checking.
 | `btlseqTurn` | `0x80042b94` | 7896 B | `event/BTLSEQ_TURN.md` |
 | `btlseqAct` | `0x8011bb38` | 2220 B | `event/BTLSEQ_ACT.md` |
 | `btlseqMove` | `0x8011c264` | 1680 B | `event/BTLSEQ_MOVE.md` |
+| `evt_npc_wait_battle_end` | `0x8004efbc` | 184 B | `event/EVT_NPC_WAIT_BATTLE_END.md` |
+| `evt_npc_set_battle_info` | `0x8004f0a4` | 100 B | `event/EVT_NPC_SET_BATTLE_INFO.md` |
+| `evt_npc_battle_start` | `0x8004efbc` | 184 B | `event/EVT_NPC_BATTLE_START.md` |
 
 Event VM command interpreter, battle turn/action/move sequence controllers.
 

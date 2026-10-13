@@ -68,8 +68,8 @@ caller).
 
 ## Not established
 
-- The consumer loop `BattleAfterReactionMain`, the queue's frame/tick cadence,
-  and what `value` identifies.
+- The queue's frame/tick cadence and what `value` identifies (the consumer loop
+  is documented elsewhere; the callers of these three bodies are not).
 - Whether entry pointers can alias each other such that a returned record
   address could equal a queued entry address; the code does not test for that.
 - No caller census is included here; callers live in the same object and their
