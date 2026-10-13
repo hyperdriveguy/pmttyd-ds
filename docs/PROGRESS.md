@@ -2,6 +2,66 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original wandering-NPC driver core and lifecycle evidence
+
+Implemented the [portable wander core](behavior/field/NATIVE_NPC_WANDER_CORE.md)
+in commita8d09d6, compiled for host/3DS. It retains original44-byte work,
+four phases, live frame conversion, RNG ordering/multiple20 countdown,
+separate paper-facing readiness calls, strict radius/contact conditions,
+minimum displacement cap, preserved components on early exits, idle yaw flips
+without heading writes and exact sound threshold/toggle/FMA requests. Source
+LCG and wrapped frame helpers consume caller-owned seed/rate, not an invented
+private original trajectory. Original work allocation, event lifetime, roots,
+NPC-main component consumption and platform providers remain separate owners.
+
+The inbox yielded [full original driver/Goomba4 evidence](behavior/field/FIELD_NPC_WANDER_DRIVER_AND_GOOMBA4.md):
+initial XYZ(-370,0,130) overrides tagged placement; radius70/speed30; initflags
+40080603 become40480603 through regular initialization. Source corrections
+confirmed min(speed*dt,20*speed/1000), idle speed threshold0.1 and distinct
+main00400000 versus auto-pose00000400. Fresh Goomba vertical0/no gravity takes
+npcMoveG's zero exit before floor probes or Y writes. NPCdt begins0 and source
+clock anchor begins current time. Regular event executes before Mario/NPC,
+consuming prior dt/contact/Mario touch. Candidacy stops regular events beforeA,
+including eligible non-nearest actors; candidate loss/resume preserves work,
+phase/countdown rather than rerunning init. Full sound tail and original quest
+branches before ordinary story text are recorded. Unknown quest state cannot
+be treated as quest0 or replaced by generic dialogue.
+
+Prepared original c_kuribo_n Z_1/S_1/T_1/W_1/R_1 locally through the existing
+read-only converter. Ignored field-goomba manifest records14 cells,
+1024x256RGBA8/UV4; raw/provenance/compiled resources stay ignored. Asset ledger
+records paths, conversion and Nintendo/Intelligent Systems rights. This bank
+is not yet registered as a live moving actor, and no stationary Goomba substitute
+was added. The native core contract/inbox explicitly retains this boundary.
+
+Validation: final shared `make test` passes130 CTest/103 Python at
+`/tmp/npc-wander-shared-test-final.log`; isolated snapshot
+`/tmp/pm-npc-wander-6f1t0umc` passes129 CTest/101 Python at
+`/tmp/npc-wander-isolated-test-final.log`. Targeted core checks pass at
+`/tmp/npc-wander-target-final.log`; final suite adds mixed readiness/three-versus-
+four-query order, signed-byte sound toggles and cap equality. Shared/isolated
+`make all` pass at `/tmp/npc-wander-shared-native.log` and
+`/tmp/npc-wander-isolated-native.log`. Isolated build has no warnings/errors;
+shared build has an unrelated concurrent trio_attack.cpp:365 indentation
+warning. Concurrent battle/audio changes excluded from this scoped commit.
+Independent source/disassembly/core review passed; suggested meaningful
+ordering/byte/interface coverage was added. Link audit passes848 Markdown files,
+zero broken links; whitespace passes. Static deductions are not Dolphin
+observations; core not activated, so no new emulator/gameplay/hardware claim.
+ISO read-only, no original executable bodies/assets/dialogue in source history.
+
+Next concrete native step: instantiate source regular work per actor, run its
+USER_FUNC before Mario with prior published dt/touch/map contact, apply current
+NPC-main direct-horizontal/zero-vertical/side-response/automatic-pose services,
+and expose live root/yaw/pose to existing rendering. Preserve original stopped
+regular work on candidate/message transitions. Bind Goomba4 quest/flags/items
+or explicitly leave that event unavailable; do not publish an assumed ordinary
+message. Then use original bank/step-sound resources and verify native walking,
+radius reversal, contact, pause/resume and rendering/performance with isolated
+fixtures and matched original observations. Shared clock/RNG/backend/FPSCR,
+all-story lifetime and broader event/NPC/object/area work remain open. The full
+goal remains active; this is an incremental Rogueport foundation, not completion.
+
 ## 2026-10-13 — Inbox priority-zero filter coefficients/DSP parameters
 
 Completed hwSetFilter/hwLowPassFrqToCoef and the builder's five parameter-copy
