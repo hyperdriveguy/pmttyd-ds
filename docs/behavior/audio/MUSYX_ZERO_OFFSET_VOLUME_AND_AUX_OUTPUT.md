@@ -96,3 +96,9 @@ Remaining: filter/requeue/epilogue, actual gain/controller/byte/studio/dirty/
 voice providers and valid value/extent/alias/lifetime/IRQ/concurrency/FP/conversion
 domains, transitive hardware consumers and original output/audio traces. Existing
 hardware contract closes its local body, not full runtime binding. EVT-01 OPEN.
+
+## 2026-10-13 — Finish/composition follow-up
+
+[Finish/composition](MUSYX_ZERO_OFFSET_FILTER_REQUEUE_AND_COMPOSITION.md) closes filter/priority/requeue/dirty/ABI
+finish and composes the whole local handler. Providers/domains/transitive
+consumers/original voice/audio/native binding remain open.

@@ -1,0 +1,539 @@
+{
+  "schema": 1,
+  "scope": "Complete ZeroOffsetHandler filter/priority/requeue/dirty finish and whole handler composition; providers/runtime open",
+  "complete_bodies": [],
+  "complete_regions": [
+    {
+      "name": "ZeroOffsetHandler semantic finish",
+      "address": 2150073516,
+      "size": 300
+    }
+  ],
+  "linked_only": [
+    "ZeroOffsetHandler",
+    "inpGetFilterSwitch",
+    "inpGetFilterParameter",
+    "__cvt_fp2unsigned",
+    "hwLowPassFrqToCoef",
+    "hwSetFilter",
+    "hwSetPriority",
+    "hwGetTimeOffset",
+    "synthAddJob"
+  ],
+  "dol_spans": [
+    {
+      "name": "ZeroOffsetHandler",
+      "address": 2150071912,
+      "size": 1968,
+      "sha256": "e10e7212a41f16892773ec0b6decced70f91c2bb46302e8b27d19665461b078c"
+    },
+    {
+      "name": "inpGetFilterSwitch",
+      "address": 2150169296,
+      "size": 72,
+      "sha256": "2e6fb5f4de6d2496598a2bb48104110e33e2f841c17ff9296c5d4e8c27989fb3"
+    },
+    {
+      "name": "inpGetFilterParameter",
+      "address": 2150169368,
+      "size": 72,
+      "sha256": "d0875e795d4671a324319681045884e03aa410ff080f88615a67ba1861d1f8d7"
+    },
+    {
+      "name": "__cvt_fp2unsigned",
+      "address": 2149992544,
+      "size": 92,
+      "sha256": "dde2c53177e4d4e0bdd351d054e61ecf739c0e74b1d57e911b4831abb482de86"
+    },
+    {
+      "name": "hwLowPassFrqToCoef",
+      "address": 2150174076,
+      "size": 248,
+      "sha256": "eddfb83bad2414e770b215b7a20eb28dc91bd57538b265542e88cfd0920b5a46"
+    },
+    {
+      "name": "hwSetFilter",
+      "address": 2150174324,
+      "size": 128,
+      "sha256": "a168dafcaa90132a8b3c2b4a8179ef6fd6c2e76b3013053a1cf5c911710a69cb"
+    },
+    {
+      "name": "hwSetPriority",
+      "address": 2150172672,
+      "size": 20,
+      "sha256": "083968ac81cc09e312c8d2f853b3203a418357e941ca34c4fb12cbf1cce69b58"
+    },
+    {
+      "name": "hwGetTimeOffset",
+      "address": 2150172624,
+      "size": 8,
+      "sha256": "d3d0a180f6048fa7b0be8e03a2c9257e20ad474d4343648db3667824605df06f"
+    },
+    {
+      "name": "synthAddJob",
+      "address": 2150073880,
+      "size": 336,
+      "sha256": "f6da5afc2a48347c693b299e0d814251239e4fce8f95b68103d515461057fbf8"
+    },
+    {
+      "name": "ZeroOffsetHandler finish and epilogue",
+      "address": 2150073516,
+      "size": 364,
+      "sha256": "83995cd698506d6ce294363879377d0671d515402aad7e511d803d16c2191f80"
+    },
+    {
+      "name": "Finish constants 0x80429130",
+      "address": 2151846192,
+      "size": 4,
+      "sha256": "de620abd6d3615746360c1d15ce3a56291236d37424124054a49d25e947ffc4d"
+    },
+    {
+      "name": "Finish constants 0x8042913c",
+      "address": 2151846204,
+      "size": 4,
+      "sha256": "4947cdf79bb62b66321dbd5326968f3cb69903b4df237e918557ec889093970a"
+    },
+    {
+      "name": "Finish constants 0x80429148",
+      "address": 2151846216,
+      "size": 8,
+      "sha256": "2b2979f362d94c89fe17a6e01637f14332de063fe7a544bdc5facfc046f4169f"
+    }
+  ],
+  "dol_anchors": {
+    "2150073516": "801e0220",
+    "2150073520": "54000465",
+    "2150073524": "418200ac",
+    "2150073528": "7fc3f378",
+    "2150073532": "48017615",
+    "2150073536": "5460043e",
+    "2150073540": "28001fff",
+    "2150073544": "40810084",
+    "2150073548": "7fc3f378",
+    "2150073552": "48017649",
+    "2150073556": "3c804330",
+    "2150073560": "5460043e",
+    "2150073564": "9001004c",
+    "2150073568": "c8421d08",
+    "2150073572": "90810048",
+    "2150073576": "839e01e0",
+    "2150073580": "c8010048",
+    "2150073584": "801e01e4",
+    "2150073588": "ec001028",
+    "2150073592": "c0221cfc",
+    "2150073596": "7c1c0050",
+    "2150073600": "90810040",
+    "2150073604": "c0621cf0",
+    "2150073608": "90010044",
+    "2150073612": "ec210032",
+    "2150073616": "c8010040",
+    "2150073620": "ec230828",
+    "2150073624": "ec001028",
+    "2150073628": "ec210032",
+    "2150073632": "4bfec341",
+    "2150073636": "7c7c1a14",
+    "2150073640": "3881000a",
+    "2150073644": "38a10008",
+    "2150073648": "4801884d",
+    "2150073652": "a0a1000a",
+    "2150073656": "7fa3eb78",
+    "2150073660": "a0c10008",
+    "2150073664": "38800001",
+    "2150073668": "48018931",
+    "2150073672": "48000018",
+    "2150073676": "7fa3eb78",
+    "2150073680": "38800000",
+    "2150073684": "38a00000",
+    "2150073688": "38c00000",
+    "2150073692": "48018919",
+    "2150073696": "807e0110",
+    "2150073700": "28030000",
+    "2150073704": "41820038",
+    "2150073708": "a01e010e",
+    "2150073712": "7c00f9d6",
+    "2150073716": "7c001851",
+    "2150073720": "901e0110",
+    "2150073724": "4080000c",
+    "2150073728": "38000000",
+    "2150073732": "901e0110",
+    "2150073736": "801e0110",
+    "2150073740": "7fa3eb78",
+    "2150073744": "88be010c",
+    "2150073748": "54048bfe",
+    "2150073752": "50a4c00e",
+    "2150073756": "48018265",
+    "2150073760": "48018231",
+    "2150073764": "5460063e",
+    "2150073768": "7fc3f378",
+    "2150073772": "20000005",
+    "2150073776": "38800001",
+    "2150073780": "5405402e",
+    "2150073784": "48000061",
+    "2150073788": "881e00a8",
+    "2150073792": "28000000",
+    "2150073796": "41820014",
+    "2150073800": "38600000",
+    "2150073804": "38007fff",
+    "2150073808": "987e00a8",
+    "2150073812": "901e0220",
+    "2150073816": "e3e10098",
+    "2150073820": "cbe10090",
+    "2150073824": "e3c10088",
+    "2150073828": "cbc10080",
+    "2150073832": "e3a10078",
+    "2150073836": "cba10070",
+    "2150073840": "e3810068",
+    "2150073844": "cb810060",
+    "2150073848": "83e1005c",
+    "2150073852": "83c10058",
+    "2150073856": "83a10054",
+    "2150073860": "800100a4",
+    "2150073864": "83810050",
+    "2150073868": "7c0803a6",
+    "2150073872": "382100a0",
+    "2150073876": "4e800020",
+    "2150071912": "9421ff60",
+    "2150071916": "7c0802a6",
+    "2150071920": "900100a4",
+    "2150071924": "dbe10090",
+    "2150071928": "f3e10098",
+    "2150071932": "dbc10080",
+    "2150071936": "f3c10088",
+    "2150071940": "dba10070",
+    "2150071944": "f3a10078",
+    "2150071948": "db810060",
+    "2150071952": "f3810068",
+    "2150071956": "93e1005c",
+    "2150071960": "93c10058",
+    "2150071964": "93a10054",
+    "2150071968": "93810050"
+  },
+  "direct_calls": [
+    {
+      "site": 2150073532,
+      "target": 2150169296,
+      "name": "inpGetFilterSwitch"
+    },
+    {
+      "site": 2150073552,
+      "target": 2150169368,
+      "name": "inpGetFilterParameter"
+    },
+    {
+      "site": 2150073632,
+      "target": 2149992544,
+      "name": "__cvt_fp2unsigned"
+    },
+    {
+      "site": 2150073648,
+      "target": 2150174076,
+      "name": "hwLowPassFrqToCoef"
+    },
+    {
+      "site": 2150073668,
+      "target": 2150174324,
+      "name": "hwSetFilter"
+    },
+    {
+      "site": 2150073692,
+      "target": 2150174324,
+      "name": "hwSetFilter"
+    },
+    {
+      "site": 2150073756,
+      "target": 2150172672,
+      "name": "hwSetPriority"
+    },
+    {
+      "site": 2150073760,
+      "target": 2150172624,
+      "name": "hwGetTimeOffset"
+    },
+    {
+      "site": 2150073784,
+      "target": 2150073880,
+      "name": "synthAddJob"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "literal_values": [
+    {
+      "address": 2151846192,
+      "word": "3f800000",
+      "value": 1.0
+    },
+    {
+      "address": 2151846204,
+      "word": "38800200",
+      "value": 6.103888154029846e-05
+    }
+  ],
+  "composed_region_coverage": {
+    "regions": [
+      {
+        "manifest": "musyx_zero_offset_admission_ramp_evidence.json",
+        "name": "ZeroOffsetHandler admission and ramp",
+        "address": 2150071972,
+        "size": 316
+      },
+      {
+        "manifest": "musyx_zero_offset_gain_attenuation_evidence.json",
+        "name": "ZeroOffsetHandler gain and attenuation",
+        "address": 2150072288,
+        "size": 512
+      },
+      {
+        "manifest": "musyx_zero_offset_pan_surround_evidence.json",
+        "name": "ZeroOffsetHandler pan and surround",
+        "address": 2150072800,
+        "size": 328
+      },
+      {
+        "manifest": "musyx_zero_offset_volume_aux_output_evidence.json",
+        "name": "ZeroOffsetHandler volume and aux output",
+        "address": 2150073128,
+        "size": 388
+      },
+      {
+        "manifest": "musyx_zero_offset_finish_composition_evidence.json",
+        "name": "ZeroOffsetHandler semantic finish",
+        "address": 2150073516,
+        "size": 300
+      }
+    ],
+    "semantic_words": 461,
+    "abi_words": 31,
+    "total_words": 492,
+    "body_address": 2150071912,
+    "body_size": 1968,
+    "abi_ranges": [
+      {
+        "address": 2150071912,
+        "size": 60
+      },
+      {
+        "address": 2150073816,
+        "size": 64
+      }
+    ]
+  },
+  "derived_filter_gate_vectors": [
+    {
+      "dirty220": 0,
+      "return_word": 65535,
+      "requests_switch": false,
+      "enabled": false
+    },
+    {
+      "dirty220": 8192,
+      "return_word": 8191,
+      "requests_switch": true,
+      "enabled": false
+    },
+    {
+      "dirty220": 16384,
+      "return_word": 8192,
+      "requests_switch": true,
+      "enabled": true
+    },
+    {
+      "dirty220": 24576,
+      "return_word": 4294901760,
+      "requests_switch": true,
+      "enabled": false
+    },
+    {
+      "dirty220": 32768,
+      "return_word": 8192,
+      "requests_switch": false,
+      "enabled": false
+    },
+    {
+      "dirty220": 24576,
+      "return_word": 65535,
+      "requests_switch": true,
+      "enabled": true
+    }
+  ],
+  "derived_filter_math_vectors": [
+    {
+      "start": 100,
+      "end": 200,
+      "parameter": 0,
+      "wrapped_unsigned_delta": 100,
+      "weight": 1.0,
+      "conversion_argument": 100.0,
+      "finite_conversion_word": 100,
+      "coefficient_input": 200
+    },
+    {
+      "start": 100,
+      "end": 200,
+      "parameter": 16383,
+      "wrapped_unsigned_delta": 100,
+      "weight": 0.0,
+      "conversion_argument": 0.0,
+      "finite_conversion_word": 0,
+      "coefficient_input": 100
+    },
+    {
+      "start": 100,
+      "end": 200,
+      "parameter": 8192,
+      "wrapped_unsigned_delta": 100,
+      "weight": 0.499969482421875,
+      "conversion_argument": 49.9969482421875,
+      "finite_conversion_word": 49,
+      "coefficient_input": 149
+    },
+    {
+      "start": 200,
+      "end": 100,
+      "parameter": 0,
+      "wrapped_unsigned_delta": 4294967196,
+      "weight": 1.0,
+      "conversion_argument": 4294967296.0,
+      "finite_conversion_word": null,
+      "coefficient_input": null
+    },
+    {
+      "start": 200,
+      "end": 100,
+      "parameter": 16383,
+      "wrapped_unsigned_delta": 4294967196,
+      "weight": 0.0,
+      "conversion_argument": 0.0,
+      "finite_conversion_word": 0,
+      "coefficient_input": 200
+    },
+    {
+      "start": 4294967295,
+      "end": 0,
+      "parameter": 0,
+      "wrapped_unsigned_delta": 1,
+      "weight": 1.0,
+      "conversion_argument": 1.0,
+      "finite_conversion_word": 1,
+      "coefficient_input": 0
+    }
+  ],
+  "derived_priority_vectors": [
+    {
+      "old110": 0,
+      "rate_half10e": 65535,
+      "elapsed": 4294967295,
+      "priority_byte10c": 255,
+      "requests_priority": false,
+      "first_store110": null,
+      "final110": 0,
+      "packed_priority": null
+    },
+    {
+      "old110": 1,
+      "rate_half10e": 1,
+      "elapsed": 2,
+      "priority_byte10c": 1,
+      "requests_priority": true,
+      "first_store110": 4294967295,
+      "final110": 0,
+      "packed_priority": 16777216
+    },
+    {
+      "old110": 2147483648,
+      "rate_half10e": 0,
+      "elapsed": 0,
+      "priority_byte10c": 2,
+      "requests_priority": true,
+      "first_store110": 2147483648,
+      "final110": 0,
+      "packed_priority": 33554432
+    },
+    {
+      "old110": 2147483647,
+      "rate_half10e": 65535,
+      "elapsed": 4294967295,
+      "priority_byte10c": 255,
+      "requests_priority": true,
+      "first_store110": 2147549182,
+      "final110": 0,
+      "packed_priority": 4278190080
+    },
+    {
+      "old110": 4294967295,
+      "rate_half10e": 65535,
+      "elapsed": 4294967295,
+      "priority_byte10c": 255,
+      "requests_priority": true,
+      "first_store110": 65534,
+      "final110": 65534,
+      "packed_priority": 4278190081
+    },
+    {
+      "old110": 2147483648,
+      "rate_half10e": 1,
+      "elapsed": 1,
+      "priority_byte10c": 1,
+      "requests_priority": true,
+      "first_store110": 2147483647,
+      "final110": 2147483647,
+      "packed_priority": 16842751
+    }
+  ],
+  "derived_requeue_vectors": [
+    {
+      "return_word": 0,
+      "low8": 0,
+      "delay": 1280,
+      "category": 1
+    },
+    {
+      "return_word": 4,
+      "low8": 4,
+      "delay": 256,
+      "category": 1
+    },
+    {
+      "return_word": 5,
+      "low8": 5,
+      "delay": 0,
+      "category": 1
+    },
+    {
+      "return_word": 6,
+      "low8": 6,
+      "delay": 4294967040,
+      "category": 1
+    },
+    {
+      "return_word": 255,
+      "low8": 255,
+      "delay": 4294903296,
+      "category": 1
+    },
+    {
+      "return_word": 4294967040,
+      "low8": 0,
+      "delay": 1280,
+      "category": 1
+    }
+  ],
+  "derived_dirty_vectors": [
+    {
+      "bytea8": 0,
+      "clears": false,
+      "replaces220": null
+    },
+    {
+      "bytea8": 1,
+      "clears": true,
+      "replaces220": 32767
+    },
+    {
+      "bytea8": 255,
+      "clears": true,
+      "replaces220": 32767
+    }
+  ]
+}

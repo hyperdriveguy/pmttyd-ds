@@ -2,6 +2,32 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero zero-offset finish/composition
+
+Completed ZeroOffsetHandler filter/priority/requeue/dirty/ABI finish and composed
+whole local body; checked EVT-01 portion.
+[Finish/composition](behavior/audio/MUSYX_ZERO_OFFSET_FILTER_REQUEUE_AND_COMPOSITION.md)
+pins wrapped unsigned filter delta/conversion, priority first store/signed clamp,
+raw wrapped requeue delay and post-requeue dirty replacement. Whole local source
+body answered; providers/domains/transitive consumers/original audio remain open.
+
+Validation: new read-only ISO manifest passed13 spans,106 anchors,nine call sites.
+All four prior region manifests reverified. Union audit covers461 semantic+31 ABI
+words,total492/7b0hex,without gaps/overlap. Six filter-gate/six filter-math/six
+priority/six requeue/three dirty vectors checked. Link audit passed870 Markdown
+files/zero broken links; scoped `git diff --check` passed. Mathematical/source
+checks are separate from original execution. Documentation/metadata only; no
+`make test`/`make all` rerun. Fresh full original handler ELF/listing/generator
+remain `/tmp`; no bodies/binary assets committed. Concurrent native edits excluded.
+Previously approved push remains pending invalid GitHub credentials; no repeat
+push attempted this turn.
+
+Next: priority-zero EVT-01 LowPrecisionHandler remainder and actual voice/time/
+gain/controller/filter/priority/dirty/index/source providers and valid value/
+address/extent/alias/lifetime/IRQ/concurrency/ABI/FP/conversion domains, transitive
+hardware/DSP/job consumers and original filter/requeue/voice/audio traces.
+Remaining macro/stream/song/backend, lower-priority inbox and full native/game work.
+
 ## 2026-10-13 — Inbox priority-zero zero-offset volume/aux output
 
 Completed ZeroOffsetHandler volume/aux output region; checked EVT-01 portion.

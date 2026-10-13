@@ -466,6 +466,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   region — [volume/aux output](../behavior/audio/MUSYX_ZERO_OFFSET_VOLUME_AND_AUX_OUTPUT.md).
   Dirty admission/six-call order, base-versus-main aux terms, separate byte
   addition/single rounding/half454/fresh hardware ABI pinned; remainder open.
+- [x] Complete ZeroOffsetHandler filter/priority/requeue/dirty/ABI
+  finish and compose whole local body — [finish/composition](../behavior/audio/MUSYX_ZERO_OFFSET_FILTER_REQUEUE_AND_COMPOSITION.md).
+  Five regions cover461 semantic words plus31 anchored ABI words; providers/
+  domains/transitive consumers/original voice/audio/native binding remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2420,3 +2424,14 @@ finite single-output vectors checked. Exact base-versus-main aux terms, separate
 byte195 addition, post-child field reads, integer snapshot-before-hardware request
 and final ABI pinned. Filter/requeue/providers/domains/original audio/native
 binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Zero-offset finish/whole-body composition delivery
+
+Completed filter/priority/requeue/dirty/ABI finish and composed the whole local
+[ZeroOffsetHandler](../behavior/audio/MUSYX_ZERO_OFFSET_FILTER_REQUEUE_AND_COMPOSITION.md).
+New13 spans/106 anchors/nine calls verified; all four prior region manifests
+reverified. Union covers461 semantic+31 ABI words,total492/7b0hex,without gaps.
+Six filter-gate/six filter-math/six priority/six requeue/three dirty vectors checked.
+Wrapped unsigned filter delta, priority first store, raw requeue delay and dirty
+replacement order pinned. Providers/domains/transitive consumers/original voice/
+audio/native binding remain open; EVT-01 stays OPEN.
