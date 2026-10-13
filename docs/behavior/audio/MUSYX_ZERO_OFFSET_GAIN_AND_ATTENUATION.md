@@ -122,3 +122,9 @@ Remaining: handler pan/surround/aux/volume/hardware/output/requeue/epilogue,
 actual mutable fader/track/voice/controller providers, valid index/extent/value/
 alias/lifetime/IRQ/concurrency/FP domains, original gain/audio traces and native
 binding. EVT-01 remains OPEN.
+
+## 2026-10-13 — Pan/surround follow-up
+
+[Pan/surround](MUSYX_ZERO_OFFSET_PAN_AND_SURROUND.md) closes the next mode/dirty/request/wrapped clamp
+region. Volume/aux/filter/output/requeue and provider/domain/original audio/
+native binding remain open.

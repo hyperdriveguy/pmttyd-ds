@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero zero-offset pan/surround
+
+Completed ZeroOffsetHandler pan/surround region; checked the EVT-01 portion.
+[Pan/surround](behavior/audio/MUSYX_ZERO_OFFSET_PAN_AND_SURROUND.md) pins
+captured/fresh mode, dirty admission, flag-before-request, post-child base reads,
+wrapped signed pan versus unsigned surround clamps and fixed/clean indicator.
+Remaining handler/providers/domains/original audio/native binding remain open.
+
+Validation: read-only ISO manifest passed four spans,82 whole-region instruction
+anchors,two direct calls. Nine pan/eight surround/eight gate vectors and65536
+low16 rotate-mask cases checked. Link audit passed868 Markdown files/zero broken
+links; scoped `git diff --check` passed. Mathematical/source deductions are not
+original execution. Documentation/metadata only; no `make test`/`make all` rerun.
+Fresh full original handler ELF/listing/generator remain `/tmp`; no bodies/binary
+assets committed. Concurrent native edits excluded. Previously approved push
+remains pending invalid GitHub credentials; no repeat push attempted this turn.
+
+Next: priority-zero EVT-01 ZeroOffsetHandler volume/aux/filter/output/hardware/
+requeue/epilogue and LowPrecisionHandler remainder, actual mode/dirty/voice/base/
+controller providers and valid value/extent/alias/lifetime/IRQ/concurrency domains,
+original spatial/audio traces. Remaining macro/stream/song/backend, lower-priority
+inbox and full native/game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero zero-offset gain/attenuation
 
 Completed ZeroOffsetHandler live fader/track/base gain and modulation/tremolo

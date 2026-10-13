@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [Zero-offset pan/surround](audio/MUSYX_ZERO_OFFSET_PAN_AND_SURROUND.md) | Complete mode/dirty/request/wrapped clamp region | Volume/aux/filter/output/requeue, providers/domains and original audio |
 | [Zero-offset gain/attenuation](audio/MUSYX_ZERO_OFFSET_GAIN_AND_ATTENUATION.md) | Complete live fader/track/base gain and modulation/tremolo attenuation region | Pan/aux/output/requeue, providers/domains and original audio |
 | [Zero-offset admission/ramp](audio/MUSYX_ZERO_OFFSET_ADMISSION_AND_RAMP.md) | Complete admission/timestamp/wrapped ramp region | Remaining gain/controller/output/requeue, providers/domains and original audio |
 | [Cache syscall vector/installation](audio/GEKKO_CACHE_SYSCALL_VECTOR_AND_INSTALLATION.md) | Complete vector/installer/IC range/memcpy bodies and direct OSInit call binding | Boot/vector residency/exception/SPR/cache domains and original syscall/DSP/audio |

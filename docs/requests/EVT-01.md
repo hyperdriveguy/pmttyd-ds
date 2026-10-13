@@ -458,6 +458,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   tremolo attenuation region — [gain/attenuation](../behavior/audio/MUSYX_ZERO_OFFSET_GAIN_AND_ATTENUATION.md).
   Fresh flag clear/live row selection, unsigned conversions, signed half, exact
   single constants/step/reload/update order pinned; remainder/runtime open.
+- [x] Complete ZeroOffsetHandler pan/surround mode/dirty admission,
+  requests and wrapped clamps — [pan/surround](../behavior/audio/MUSYX_ZERO_OFFSET_PAN_AND_SURROUND.md).
+  Captured/fresh mode, post-child bases, signed versus unsigned clamps and
+  fixed/clean path carried indicator pinned; remainder/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2392,3 +2396,13 @@ selection/five gain/eight attenuation vectors and65536 signed-half cases checked
 Live master/pause/track reads, modulation-before-tremolo, post-child field reads,
 exact single rounding/step/reload/carried update order pinned. Remaining handler/
 providers/domains/original audio and native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Zero-offset pan/surround delivery
+
+Completed one local region in
+[pan/surround](../behavior/audio/MUSYX_ZERO_OFFSET_PAN_AND_SURROUND.md).
+Four spans/82 whole-region instruction anchors/two calls verified; nine pan/
+eight surround/eight gate vectors and65536 rotate-mask cases checked. Captured
+versus fresh mode, signed pan/unsigned surround clamp, first raw surround store
+and fixed/clean path indicator order pinned. Remaining handler/providers/domains/
+original audio/native binding remain open; EVT-01 stays OPEN.
