@@ -1940,3 +1940,53 @@ summary117/717 omitted that calculator bit. Full successful timings preserve
 are bound. Spike counter, wing-fall, death presentation/rewards/teardown, original
 seed ownership and turn scheduler remain unfinished. This is implementation
 progress against the delivered contracts, not completion of JUMP-01.
+
+
+2026-10-13 rotation/deletion/packedclear/reward-pointer follow-up:
+[Rotation/teardown](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#rotation-deletion-order-packed-clear-and-reward-pointer-correction)
+pinsusedintegerAddRotate/SetRotateOffset, reviseAngle/sentinelpolicy,initialunit
+matrix/pivotorderwithfinaldrawbranchesretained,64unitbroken scan/exactDelete
+wait-phase-hitcleanup/lateunregister, sixstatusinfo recordword8preservation.
+Correctsrewardpointerdomain: FieldInfo+c→NpcInfo, NpcInfo18→group26460(count4),
+NpcInfo0→stage2619c. GetExpfactor1.3usesgroupcount,notstage0. Earlierstageclass
+proseissuperseded; numericalGetExpaccessesareunchanged. No nativeedit/commit.
+
+
+2026-10-13 extraSetRotate/removalcadence source evidence:
+[Additionaldelivery](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#rotation-deletion-order-packed-clear-and-reward-pointer-correction)
+pins rawoperandtoken sentinelSetRotate(oldaxis substitutionthenallaxisnormalize),
+original marioStMain animMain→lowercasebattleMain→uppercaseFIRSTUnitBroken→
+otherbattleproviders→camera/window/map/hit→evtmgrMain. EventpassN KillUnitmark
+thereforeretiresbeforeeventpassN+1,notinsidecallback. Fullfinalpart/billboard/
+projectionconsumerremainsboundedrequest; nativeallocationadapterisnotoriginal.
+
+
+2026-10-13 requested final used Goomba death display branch:
+[Final used path](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#final-used-ordinary-goomba-death-draw-path)
+closes sourceP4fc0 initialization, attr9 normal branch, death08000000 versus
+mirror01000000 gate, sourcefacingangle/camera inclusive90..270 negativeZscale,
+unit/part ordered concatenations, depthTz-5/modelscale2 andfreshphase0offsets.
+Earlier initial-matrix-only boundary is superseded for this fresh used algebra.
+Numericalcamera/pose-flag/retained animation/hardware consumers remain bounded,
+no nativeedit/commit/runtimeclaim.
+
+
+2026-10-13 fresh c_kuribo battle poseflag/inner draw gate:
+[Fresh inner admission](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#fresh-battle-c_kuribo-inner-draw-admission-flag8-clear)
+pins animPoseEntry freshflags1/mask8and100clear/linkedID-1, absence ofbattle
+PeraOn versusfieldNPC producer, usedSetAnim/Main/material/statusproducer scope.
+OriginalfreshinnerusesdirectA right-Yrotation anduniformscale2, notretainedP74
+camera smoothing. FullusedMdraw equationincluded; priorfreshposeflagboundary
+superseded. Camera numericalunitmirrorgateandrenderingdomain remainbounded.
+No nativeedit/commit/executionclaim.
+
+
+2026-10-13 native death/reward follow-through: fresh Goomba Jump now executes
+original48-spin/30-tip/death/reward/KillUnit streams, packed status preservation
+and deferred next-call registry removal. PMTHIT2 retains the original group
+pointer; GetExp uses source group count4/factor1.3 and kindlevel7/pouch1,
+GetCoin retains its draw, and stores retain source owners. Source unit/mirror/
+direct-A draw algebra is implemented for the recovered fresh branch. Mario's
+original80417c38 wait stream now returns to M_S_1. Original particle/audio
+requests are retained; turn/variant/end/pouch/seed/hardware providers remain
+open. This advances the native implementation, not full JUMP-01 closure.

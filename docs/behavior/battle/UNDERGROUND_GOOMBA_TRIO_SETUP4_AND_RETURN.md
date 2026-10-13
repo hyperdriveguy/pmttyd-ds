@@ -721,13 +721,13 @@ constantcoinreward. Thedraw mustremain intheoriginaldeathscriptphase.
 
 BtlUnit_GetExp: pouchGetPtr800d5eb0; playerlevel=S16(pouch8a),
 enemylevel=U8(Ud). Ifplayerlevel>enemy return0. Otherwise work=*(B2738),
-setup=*(work+c), stage=*(setup+18), stageclass=S32(stage0).
-Factor rawfloatconstants804226a8=1.0 forclass0..2;804226b4=1.100000023841858
+setup=*(work+c), group=*(setup+18), groupcount=S32(group0).
+Factor rawfloatconstants804226a8=1.0 forgroupcount0..2;804226b4=1.100000023841858
 for3;804226b8=1.2999999523162842 for4;804226bc=1.5 otherwise.
 Convert signedleveldifference tosingle; singlemultiplyfactor*difference;
 singlemultiply804226c0=.5; truncate towardzero; add U8(kind+f) baseexp.
-Goomba baseexp0/level7 withclass0/playerlevel1 derives3. Do nothardcode this
-without binding theoriginalpouchlevel andstageclass owners. Experience has
+Goomba baseexp0/level7 withgroupcount4/playerlevel1 derives3. Do nothardcode this
+without binding theoriginalpouchlevel andgroupcount owners. Experience has
 no RNGdraw here and doesnotgrantlevelups inthegetter/storecallback.
 
 GetBackItem8010da28/b8 resolvesunit; ifU1c lacks40000000 orU308==0 return2
@@ -795,3 +795,316 @@ Mario's installed idle event remain unfinished. Fresh no-status wait display is
 scoped explicitly; other status pose paths suspend rather than selecting an
 unrelated idle. Spike counter and Paragoomba wing-fall still suspend at
 CheckDamage8010a78c, preserving their HP and event ownership.
+
+
+## Rotation, deletion order, packed clear and reward-pointer correction
+
+2026-10-13 original US follow-up; inspected AddRotate/SetRotateOffset wrappers,
+BtlUnit_AddRotate/BtlUnit_SetRotateOffset, BattleCheckUnitBroken,BtlUnit_Delete,
+and btlUnitPartsDisp. Original function bodies remain ignored `/tmp/trio-*.dis`.
+
+### Used integer event rotations and pivot
+
+btlevtcmd_AddRotate801115f8/128 and SetRotateOffset80110f9c/128 evaluateunit then
+XYZusing integer evtGetValue inX/Y/Zorder. Signedinteger results convert to
+single withtheoriginalxoris/doublebias/fsubssequence; neitheruses evtGetFloat.
+Afterlookup callBtlUnit_AddRotate801287c4/d4 orSetRotateOffset80128604/34;
+bothwrappersreturn2. AddRotate singleadds eachaxis toU6c/70/74, reviseAngle
+80007328 resultstore; theniforderedresult>=single360 replacewithpositivezero.
+reviseAngle usesoriginalfmod(doubleangle,double360),roundstosingle,replacesNaN
+withpositivezero,adds360ifnegative,andzeroesnegative-route sum>=360. Signedzero
+survivesnonnegativepath. See
+[completegeometrycontract](BATTLE_UNIT_REGISTRY_AND_GEOMETRY_INITIALIZATION.md).
+DeathspinY starts345,330,...0 andcontinuesfortwofull48tickturns; Xtip30*3→90.
+SetRotateOffset storesaxis toU78/7c/80 except exactfloat-250000000sentinel;
+no angle normalization,unitpositionupdate or implicitheightpivot.
+
+btlUnitPartsDisp80101774/d7c getsownerU=P4ec,skipnegativeposehandleP1c0.
+Unitmatrixconstruction801017d0..80101938 usesunitpivot p=(U78,7c,80),
+unitangles(baseU60..68 +currentU6c..74), degreefactor80427440-20996,
+scale(U114*U9c*U90,U114*Ua0*U94,Ua4*U98), anddisplaytranslation(U54,58,5c).
+Original concatleft-to-right operations: S; T(-p)*S; Ry*...; Rz*...; Rx*...;
+T(p)*...; T(display)*.... Thus theinitialunitmatrix is
+T(display)*T(p)*Rx*Rz*Ry*T(-p)*S (columnvectorconvention). It alsobuilds
+worldT(U3c,40,44) separately. This closesusedunitrotation/pivotbank ordering,
+not allfinalpart/billboard/camera matrices. Ordinary part path later reconstructs
+unitrotations withP4fc axis-orderselector, mixesfacing/cameraangle andpartrotations/
+pivot/scales,andconcatenatespart/worldmatrices beforeanimPoseDraw. Those complete
+remaining drawbranches areboundedrequests; donotclaimthisinitialmatrixalone is
+theentireoriginalspriteproducer. FreshGoomba pivotis0; sourcepivotreset0duringdeath
+mustnotinventamiddle-heightpivot. Native projection/hardwarebillboard remainsadapter.
+
+### Deferred removal and exact original teardown
+
+BattleCheckUnitBroken800f7b28/5c capturesB,fori0..63 readsBattleGetUnitPtr(B,i);
+nonnull UwithU1c&80000000 invokesBtlUnit_Delete(U); incrementsindex,continues.
+Doesnot testHP/status27 directly orbatch all deletions first.
+
+BtlUnit_Delete80128e08/1d8 capturesglobalB. NullU returns0. Searchregistryindices
+0..63 forfirstpointer==U; absentreturns0. Forregisteredunitperform:
+
+1. IfnonzeroU290 deleteIDthenzero; thenU29c; thenU2b4. ThereisNO U2a8deletion
+   inthisbody. evtDeleteIDrecursivechild/brother/localcopybacksemanticsstillapply.
+2. Scan64wordslotsB120+4*i; anyequalU0 write-1. Thisisdistinctfrompointerregistry.
+3. IfU1c&40000000 andsignedUe>=0, work=*(B2738),setup=*(work+c);
+   setup+5c+4*S8(Ue)=U308. Sourcecodehasnolocalpositiveupperbound.
+4. BattleStatusEffectDelete801966a4(U); BattleStatusIconDelete80253ca4(U).
+5. IfU314nonnull: ifU318callbacknonnull callcallback(U),elseBattleFree(U314).
+6. IfU31cnonnull smartFree8002f878(U31c),thenU31c=0.
+7. WalklinkedpartsU14: ifP4e8!=-1 write-1 (noeffectreleasecallhere);
+   ifP1c0!=-1 callanimPoseSetEffect80040a28(handle,0,0),thenreloadhandleand
+   animPoseRelease8003b2d0. AdvancePnext0.
+8. BattleFree800f8908(U14),thenBattleFree(U).
+9. LAST BattleSetUnitPtr800f88b4(B,capturedregistryindex,0),return1.
+
+Do notunregisterbeforeeventcleanup/freeorclearallfourhitdispatcherIDs here;
+originaldeletioncallerdiffersfromdirecthitreplacement. Transitives extension/
+smart/pose/resource/effect/free lifetimes remainseparatelyowned. Nativecannot
+markentireencountercompletejustbecauseHPzeroorU1cdeletionmarkwaswritten.
+
+### Packed ClearStatus preservation
+
+[Completeclear/pouchcontract](../unit/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md)
+closesBtlUnit_ClearStatus80127b58/54: memsetU118..135inclusive30bytes;
+SetStatus(U,16,1,-99) leavingcharge0; BattleStatusChangeInfoWorkInit80195d34/48.
+SixrecordsUae8+12*i (i0..5): byte0=ff,bytes1/2/3=0,word4=0. Word8PRESERVED.
+Do notexportthisas72zeroedbytes. OtherstatuswordU138,flagsU27c,move/badge/pose
+fieldsremainuntouchedbythisbody. ClearAllStatus wrapperthereforeneedsfullpacked
+status/infoexportwithoutclearingpreservedrecordtailwords.
+
+### Correction: reward Setup+18 points group, not stage
+
+EarlierrewardGetExp prosecalledthe Setup+18pointer astage/class; thisname was
+incorrectand iscorrected. Original numericaccesswasright,butdomainmustbe group.
+BattleInit800f8f04/138 capturesincomingFieldBattleInfo andstoresitB2738 at
+800f8f4c. BattleInfomationSetBattleSetupInfo80114510/8 storesNPCinfo pointer
+atFieldInfo+c. [OriginalNPCsetup](../field/FIELD_BATTLE_ENTRY_AND_RETURN.md)
+closes npcSetupBattleInfo80043e78/280: chosenweightedentry+4 group→NpcInfo18,
+chosenentry+8 stage→NpcInfo0. Nativefullchain:
+
+B2738→FieldBattleInfo; FieldInfo+c→NpcBattleInfo; NpcInfo18→BattleGroupSetup
+REL26460; group0=4count,group4→unitarray263a0; NpcInfo0→stageREL2619c;
+stage0→bti_01string,notanexperienceclassificationinteger.
+
+GetExp readsS32(group0)=4 andselectsfloat1.2999999523162842; playerlevel1 versus
+Goombalevel7 yields trunc(single(single(1.3*6)*.5))=3. Stageclass0wasanunsupported
+example despiteitscoincidentallysameinteger3; do notbindstage2619catNpcInfo18.
+StoreCoin writesFieldInfo14, StoreExpBf00. The two0x14owners arenotthesame
+NpcInfo14flowercount. PackednativeFieldInfo/NpcInfo lifetimes andoriginalpouch
+level ownership remain explicitnativeadapterboundaries.
+
+
+Additional exact SetRotate/cadence delivery: btlevtcmd_SetRotate80111720/174
+reads rawXYZtokens separatelywhileevtGetValue produces signedinteger values.
+GetRotate80128898/1c fetchesoldU6c/70/74. EachRAWtoken==f1194d80
+(-250000000) substitutescorrespondingoldfloat; variableswhosevaluescoincidentally
+equalthisintegerdonotpreserveaxes. Then BtlUnit_SetRotate801288b4/b4 calls
+reviseAngleand>=360zero gate onALLaxes. Wrappersreturn2; sentinel preservation
+occursatwrapper, notthescalarsetter. AddRotate doesnotpreserveanysentineltoken.
+
+Originalremovalcadence: marioStMain8006f904/238 callsanimMain8004281c at8006f93c,
+thenlowercasebattleMain800f904c/48 at8006f940. LowercasecallsuppercaseBattleMain
+800f8e28/dc at800f9068 whenBnonnull; uppercaseFIRSTserviceat800f8e40 is
+BattleCheckUnitBroken800f7b28. Onlythenpad,btlseqMain,ACmanager,stageanddisplay.
+Top-levelnextcalls camMain,windowMain,mapMain,hitMain thenevtmgrMain800368d0
+at8006f954. Therefore KillUnitmarkduringeventpassN cannotretireuntilnext
+battleMainN+1 beforeeventpassN+1. Wholebattle completioncheck/flagpublicationis
+separatelowercase/uppercaseprotocol; do notrunremovalinsideKillUnitcallback or
+atendofthesameVMpass. Sourceorderisbinaryevidence,notruntimeframerateclaim.
+See [completeBattleMain](BATTLE_MAIN_SERVICE_ORDER_AND_FINAL_STATE_CHECK.md).
+
+
+## Final used ordinary Goomba death draw path
+
+2026-10-13 follow-up closes the used final `btlUnitPartsDisp` algebra, replacing
+its earlier initial-unit-matrix boundary. US body80101774/d7c, original
+`BtlUnit_Entry`80128fe0/6b4 and float/gravity control/getter bodies inspected.
+Local disassembly `/tmp/trio-partsdisp.dis`, `trio-entry.dis`,
+`trio-floatdisp.dis`, `trio-gravitydisp.dis`, `trio-floatcontrol.dis`,
+`trio-gravitycontrol.dis`. Matrices below use column vectors, `Concat(A,B)=A*B`;
+original SDK numerical matrix services and camera values retain their contracts.
+
+### Fresh bindings and selected branches
+
+Owner U is `P4ec`; source Goomba part attribute9 atP1ac skips the special
+20000000 branch at80101944. Unit attribute40000 lacks04000000, so the
+camera-relative part-angle correction at80101d0c is skipped and correction0.
+Entry explicitly writes signed-byte P4fc=0 at801294f0, selecting axis order0.
+Both unit and part base/current angle triplets initialize topositive0;
+unit/part current/base scale triplets initialize to1; unit scalarU114=1;
+unit and part rotation pivots initialize0. Unit display offsetU54..5c and
+part display offsetP30..38 remain0 from cleared construction. Part local
+XYZP24..2c copies source Goomba0,0,0. UnitU189 andpartPbd copy the source
+side direction byte; setup4 enemy belong1 suppliesff (signed-1).
+
+The death core setsunitflagU1c08000000. The draw mirror gate tests a different
+flag01000000 at80101e3c. Therefore death does not disable the mirror test.
+Do not use the death flag to freeze facing or skip the entire camera branch.
+
+### Facing, camera and negative unit Z scale
+
+For ordinary branch80101c48, choose d=270 if signedU189<0, else90.
+Incoming animation angle A=reviseAngle((-1*d)-90), at80101e20..1e34.
+Thus negative direction givesnegative0; positive gives180. Do not replace
+this with an arbitrary unitYaw/UV-flip mapping.
+
+WhenU1c01000000 is clear:
+
+- q=reviseAngle(A+U70+P4c+U64+P40), preserving source single-add order.
+- Fetch current camera through camGetCurPtr8000f2e4. theta=angleABf8000703c
+  (camera+c,camera+14,camera+18,camera+20), the X/Z eye andtarget fields.
+- h=reviseAngle(q+theta).
+- If90<=h<=270 inclusive, rebuild unit scale with NEGATIVE Z; otherwise
+  retain positiveZ. Ordered comparisons treatNaN as failing this gate.
+
+The rebuilt unit matrix preserves source P4fc0 order. It startsS, then
+T(-unitPivot), thenRy, Rz, Rx through left concatenation, thenT(+unitPivot),
+thenT(unitDisplay). Only the unit Z scale sign changes. Angles remain
+(baseUnit+currentUnit) separately byaxis. Numerical theta/current camera
+producer is an explicit service boundary; there is no fixed source theta
+constant in this draw consumer.
+
+### Final matrix passed to original animation draw
+
+Define partPivot=(P54,P58,P5c), unitPivot=(U78,U7c,U80).
+UnitM = T(U54,U58,U5c) * T(unitPivot) * Rx(U60+U6c) * Rz(U68+U74)
+* Ry(U64+U70) * T(-unitPivot) * Sunit.
+Sunit=(U114*U9c*U90,U114*Ua0*U94,signZ*Ua4*U98), signZ fromthegate above.
+
+Part angles: x=P3c+P48, y=P40+P4c+cameraCorrection, z=P44+P50.
+Part scale Sp=(P6c*P60,P70*P64,P74*P68). Source concat sequence801020d8..
+801022dc (P4fc0): startUnitM; leftmultiplySp,T(-partPivot),RyPart,RzPart,
+RxPart,T(+partPivot),T(worldPartXYZ),T(P30,P34,P38),T(0,0,-5).
+Consequently the final passed matrix is:
+
+`M = T(0,0,-5) * T(partDisplay) * T(worldPartXYZ) * T(partPivot)
+* RxPart * RzPart * RyPart * T(-partPivot) * Sp * UnitM`.
+
+worldPartX=U3c+P24*directionFactor, where directionFactor is1/-1 fromsignedPbd,
+or the source battle-side direction ifPbd==0. worldPartY=U40+P28+
+gravityDispOffset+floatDispOffset; worldPartZ=U44+P2c. These are live fields,
+not thehome/setupXYZ. Source camera correction is0 inthisusedscope.
+
+Fresh ground Goomba P1a8floatphase0 andP1a6gravityphase0 produce offsets0.
+floatOffsetControl80100f34/c8 requiresunitflags100000 and200000 andnotstatus27
+to advance; otherwise settles existingphase toward0. gravityOffsetControl
+80101060/94 requiresbattleflag40000000 andunitattribute1004 clear toadvance;
+otherwise settles. GetFloatDispOffset80100ed0/64 computes2*sin((4*P1a8+270)%360)+2;
+GetGravityDispOffset80100ffc/64 computes4*sin((3*P1a6+270)%360)+4, using source
+sin-degree service80125cd4 andsinglefmadds. Freshphase0makesboth0, no newlift.
+
+Withfreshzero offsets/pivots/partangles andunit/part scale1, the used matrix
+reduces to `T(Ux,Uy,Uz-5) * Rx(U6c) * Rz(U74) * Ry(U70)
+* diag(1,1,signZ)`. It applies to original48-frameYspin and30-frameXtip; no
+heightcenter translation or post-billboard screen-space rotation is introduced.
+NegativeZ gate can change duringYspin asqchanges; preservecamera/facing algebra.
+
+Calls at80102428..46c pass the SAME finalM andangleA, scale2.0 to
+animPoseDrawMtx(poseID,M,pass1/2/3,A,2). Pose/resource admission still owns which
+passes draw. Original common depthtranslation-5 is source geometry, not a
+native arbitrarydepthbias. Original model resource's scalar2 is separate from
+unit scale1. [Draw wrapper](../display/ANIMATION_DRAW_WRAPPER_AND_ADMISSION.md)
+and [inner facing](../display/ANIMATION_INNER_DRAW_FACING.md) close ensuing
+angle/camera/smoothing/reflection/uniformscale request algebra; do not append
+an independent native facing transform on top without bindingthose owners.
+This closes the used unit/part matrix path, not hardware/FPSCR/camera cadence
+or actual GX/material image equivalence. Remaining numerical current-camera,
+pose flags/retained animation facing fields and originalrender-resource consumers
+stay bounded; no source execution or implemented fidelity is claimed here.
+
+
+## Fresh battle c_kuribo inner draw admission: flag8 clear
+
+2026-10-13 used initializer/producer follow-up. Original animPoseEntry8004176c/4ec,
+animPose_AllocBuffer80041ee0/93c, animPoseSetAnim80041170/17c, animPoseMain
+8003ed2c/1940 and original btlDispEntAnime/Entry/btlDispMain paths inspected.
+Local `/tmp/trio-poseentry.dis`, `trio-allocbuffer.dis`, `trio-posesetanim.dis`,
+`trio-posemain.dis`, `trio-dispmain.dis`. This establishes the fresh original
+ordinary battle Goomba branch, not all reused/dynamically altered pose records.
+
+`btlDispEntAnime`801011fc/90 reads part source model `c_kuribo`, calls
+animPoseEntry(model,mode1) at80101264, stores returned poseID atP1c0.
+Each battle part gets its own runtime pose record even when the model resource
+is shared. Entry scans for a pose whose flags word0 iszero; successful path
+ORs active1 at80041828 and storesit at8004182c. There isno resource-header
+flag import or mask8/mask100 OR in this initializer. It clears secondarywords4/8,
+sets pose mode+c=1, initializes angles+70/+74/+7c to0 and linked poseID+90=-1
+at80041b1c..2c. Sign+78 isnot locallyinitialized; theusedmask8-clear path does
+not readit, so native mustnot invent an initialsign for this scope.
+Allocator assigns buffers/cache fields, not poseflag8/100 or linkedpose ownership.
+
+The ordinary battle entry and `btlDispEntAnime` have NO animPosePeraOn call.
+Field `npcEntry` separately calls that helper and becomesflag9; do not transfer
+field NPC camera smoothing to a battle part solely because both use `c_kuribo`.
+Successful fresh battle pose flags therefore start1, mask8 and100 clear,
+linked+90=-1. Used init/hit/death streams contain no paper/group/peraflag requests.
+
+Later used btlDispMain requests include animPoseSetAnim at80102a2c/40,
+animPoseMain at80102b98 and materialflag setters in the draw path. SetAnim's
+only local poseword0 write conditionally ORs4 when existingmask2 isalreadyset;
+it doesnotset8 or100. Main evaluatesanimation/facing fields anddoesnotlocally
+write poseword0. Materialflag setters change theirmaterialword, notposeword0.
+StatusPoseControl and float/gravity controllers ownpart/status counters; they
+are not animPosePeraOn. The Vivian-specific poseflag20 producer80039824 is
+kind-gated andexcludedforGoomba kind1, andwouldnotset8/100 anyway. There isno
+usedproducer convertingthisfreshpart totheflag8 orsnap100 paths beforedeath.
+
+Therefore original unlinked fresh Goomba `_animPoseDrawMtx` takes mask8 CLEAR:
+skip camera-target/smoothed-retained-angle+74/sign+78 reflection. Rotate Y by
+incoming A iffA!=0 (fcmpu), concatenate ontheRIGHT of incomingM, then uniform
+scale2 ontheRIGHT. Fresh used complete base transform is thus:
+
+`Mdraw = T(Ux,Uy,Uz-5) * Rx(U6c) * Rz(U74) * Ry(U70)
+* diag(1,1,signZ) * Ry(A) * S(2,2,2)`.
+
+A is source battle facing angle0/180 previouslyderived; signZ is original
+unit-camera mirror gate. Separate source animPose local/node transformations
+continue underneath this matrix. Retainedcamera smoothing fromthe mask8 SET
+branch isnotadmittedfor this fresh used record. The wrapper seeslinked+90=-1,
+so it doesnotrunlinkedpaperprepass or manipulatea childpose; ordinaryresource
+pass/materialadmission remains aspreviouslydocumented. Per-invocation uniform
+scale2 occurs inordinaryinner route; do not multiplyit twice forwrapper+inner.
+
+This closes the earlier fresh poseflag/retained-camera uncertainty. Numerical
+source camera values remain needed for unit signZ classification, and original
+model/node/matrix/GX/FPSCR hardware rendering stillhasitsowncontracts. Later
+explicitpaper/peraflag orreusedpose scenarios areoutside this boundedfreshcase.
+
+### 2026-10-13 native death, reward and removal completion
+
+The fresh Goomba death script now executes its original48 AddRotate Y−15
+requests, SetRotate0, reward getters/stores,30 AddRotate X+3 requests,
+ClearAllStatus and KillUnit0. Event operands retain integer/raw-sentinel rules
+and source angle normalization. Native rewards follow FieldInfo+c→NpcInfo and
+NpcInfo18→the original imported group26460 (count4); GetExp uses its1.3 factor,
+kind+e→unit+d enemy level7 and explicit fresh pouch level1, yielding3 exp.
+GetCoin retains the original one irand100 draw against kind chance60; storage
+goes to FieldInfo14/Battlef00, not directly to a fabricated pouch deposit.
+GetBackItem's fresh absent-item route is unchanged. Selected item/seed/pouch
+producers and later reward export remain separate owners.
+
+Native broken-unit scan runs before action/VM services; script KillUnit atpassN
+sets the flag while keeping the registry, thenpassN+1 deletes wait/phase/hit IDs,
+clears matching Battle120 IDs and unregisters last. The source attack event slot
+U2a8 is not gratuitously deleted. Native units/parts use preallocated storage
+and shared animation packs, so retired bytes remain readable for diagnostics;
+there are no original per-unit extension/smart/effect allocations to free in this
+bridge. Future providers must bind their teardown when they create them.
+Packed status clearing resets only30 statusbytes and the first8 bytes of each
+of6 change-info records; each word8 survives. KillUnit reasserts status27.
+
+Renderer consumes source base/current rotations, zero pivot and original
+Rx*Rz*Ry order, source camera-angle table and inclusive mirror gate90..270.
+Death flag08000000 permits mirroring;01000000 suppresses it. The fresh
+c_kuribo direct-inner draw path composes the unit matrix with incomingA0/180
+and original scalar2, plus source depth translation−5. Other part/linked/
+paper/status draw domains and numeric hardware equality are not implied.
+Matrices/trig are prepared per actor; unchanged zero-angle actors skip them.
+
+Mario now installs the unchanged original wait stream80417c38 (symbol
+wait_event/unit_mario.o; words3005b,801064d8,fffffffe,1,2,1), so its completed
+Jump returns to automatic M_S_1. Alive Goomba returns to KUR_S_1; lethal
+Goomba disappears after deferred removal. Original effect/sound requests
+remain in the trace, but smoke/star/death audio presentation providers are not
+executed. Battle turn, Spike counter, Paragoomba wing-fall, victory/reward export
+and original field return remain unfinished; no result1 is fabricated.

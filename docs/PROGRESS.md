@@ -3894,3 +3894,61 @@ requests but full presentation remains unbound. Difficulty/pouch level1, empty
 equipment and seed0 remain scoped fresh-prologue adapters; original seed/math/
 clock parity and other statuses need binding. Continue the original battle-end
 and field return ownership after turns; the prologue demo goal remains active.
+
+## 2026-10-13 — Original Goomba death, rewards and deferred removal
+
+The native NormalJump now runs the original Goomba death core through all48
+Y-spin requests,30 X-tip requests, reward bookkeeping, packed status clearing
+and KillUnit. Rotations preserve integer inputs, raw SetRotate sentinel handling
+and original angle normalization. The recovered fresh c_kuribo draw path now
+uses Rx*Rz*Ry, zero pivot, the camera-dependent inclusive mirror gate, depth−5
+and direct incomingA0/180/model scalar2. Original pose initialization confirms
+flag8/100clear and unlinked−1 for this battle branch. Other paper/linked/status
+rendering domains and hardware numeric/material equality remain separate.
+Per-actor matrix/trig setup is shared across vertices; zero angles skip it.
+
+PMTHIT2 adds the original relocated opponent group pointer. The native source
+chain is Battle2738→FieldInfo, FieldInfo+c→NpcInfo, NpcInfo18→group26460.
+This corrects the earlier stage-pointer interpretation. GetExp uses group count4
+(factor1.3), original kind+e→unit+d level7 and the explicit fresh pouch level1,
+yielding3 exp. GetCoin keeps its one irand100 draw and original chance60.
+Stores retain FieldInfo14/Battlef00 owners, pending later pouch export.
+
+KillUnit marks the unit during eventpassN; the next native battle call scans64
+slots before action/event services, deletes wait/phase/hit IDs, clears matching
+Battle120 IDs and unregisters last. The unit remains visible/registered on its
+marking call. HP0 alone does not hide it. Native units/parts are preallocated,
+with shared immutable animation packs; retired bytes remain diagnostic storage.
+Packed status clearing preserves each change-info record's last word. Mario
+now installs original wait_event80417c38 and returns to automatic M_S_1.
+
+Validation: `make test` passed117/117 CTest checks and100/100 Python tests
+(`/tmp/trio-death-tests-final.log`). Focused Jump tests verify both hit outcomes,
+HP0 preceding status27,48/30 rotation counts, numeric axis/pivot/mirror boundaries,
+reward accounting, retained registration during KillUnit, retirement exactly on
+the next call, original Mario/Goomba idle, and unchanged pending variant targets.
+`make all` passed (`/tmp/trio-death-all-final.log`); `make debug-short` passed
+(`/tmp/trio-death-native-final.log`). Final build logs contain no warnings.
+`git diff --check` passed.
+
+Isolated Azahar: `tools/emulator_smoke.py --binary
+ttyd-2ds-debug-short.3dsx --save-fixture
+artifacts/fixtures/underground-trio-story11.bin --seconds48 --input-script
+tests/azahar_trio_jump_reaction.py --output-dir
+artifacts/azahar-trio-death-removal` completed. The early capture shows original
+Goomba damage pose; the extended final capture shows Mario idle, Goomba absent
+and the other two foes present. It reaches the turn-scheduling development
+boundary rather than the previous pending death callback. Exact HP/reward/event
+words are host-verified, not emulator memory observations. Captures do not prove
+Dolphin image parity or every intermediate spin angle; no hardware FPS claim.
+Original profiles/saves were untouched.
+
+Remaining/next: source turn scheduler and repeated command ownership, Hammer/
+Headbonk, Spike counter/Frankly warning and Paragoomba wing-fall. Death smoke,
+star-point effects and original sound requests remain retained without full
+presentation providers. Original RNG seed/earlier draw owners, equipment/item
+rolls, pouch/field reward export and full resource teardown are not bound.
+Battle result stays0 and story11 stays locked pending original conclusion/end/
+field return; do not synthesize victory from HP. Profile native event-bank setup
+latency separately. The full playable original-fidelity prologue goal remains
+active and incomplete.

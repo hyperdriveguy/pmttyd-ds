@@ -885,3 +885,15 @@ being rewritten to bank D_1. Canonical pose selection is documented in the
 Existing124px textures/gutters, hierarchy and scaling remain. Extracted banks,
 textures, manifests and compiled packs stay ignored outside source history;
 Nintendo/Intelligent Systems ownership and no redistribution rights remain.
+
+2026-10-13 Jump death/reward metadata: ignored `trio-attack-units.bin` is now
+PMTHIT2/52 bytes, retaining the three kind/damage/wait rows plus the relocated
+original opponent group at `rel/tik.rel`0x26460. Reward setup follows original
+FieldBattleInfo+c→NpcBattleInfo, NpcBattleInfo+18→group (count4), rather than
+interpreting the stage record as the reward factor owner. Original DOL data
+already include Mario wait script80417c38; the bridge installs that unchanged
+script. No new art, animation keys or executable PowerPC data are generated.
+The existing original Goomba D1 pose now uses recovered death rotations,
+camera-dependent Z mirror and depth-5 over its original model scalar2. Packs/
+extracted data remain ignored; original asset ownership and no redistribution
+grant are unchanged. Particle and death sound presentation providers remain open.

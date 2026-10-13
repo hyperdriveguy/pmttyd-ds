@@ -1,3 +1,4 @@
+#include "battle_actor_rotation.hpp"
 #include "platform.hpp"
 #include "paper_fence_warp.hpp"
 #include "message_icons.hpp"
@@ -448,12 +449,14 @@ void Renderer::character(int index,Vec2 p,float h,float w,float face,float lift,
     vertex(x0,y0,p.z,left,bottomV,white);vertex(x1,y0,p.z,right,bottomV,white);vertex(x1+tilt,y1,p.z,right,topV,white);
     vertex(x1+tilt,y1,p.z,right,topV,white);vertex(x0+tilt,y1,p.z,left,topV,white);vertex(x0,y0,p.z,left,bottomV,white);
 }
-bool Renderer::characterModel(const char* name,float frame,Vec2 root,float rootY,float yaw,bool reflectZ,bool companion,const ActorAnimationPack* custom,float uvScale) {
+bool Renderer::characterModel(const char* name,float frame,Vec2 root,float rootY,float yaw,bool reflectZ,bool companion,const ActorAnimationPack* custom,float uvScale,const ProfessorSceneActor* battleActor) {
     const auto* pose=(custom?*custom:companion?partnerAnimations:actorAnimations).pose(name);
     if(!pose || !pose->evaluate(frame,actorSample) || actorSample.vertices.size()>size_t(MaxVertices-count))return false;
-    const ActorRootTransform rootTransform({root.x,rootY,root.z},yaw,reflectZ);
+    const ActorRootTransform rootTransform(battleActor?ActorVector{}:ActorVector{root.x,rootY,root.z},yaw,reflectZ);
+    const BattleActorRotation rotation(battleActor?battleActor->battleRotation:ActorVector{},battleActor?battleActor->battlePivot:ActorVector{});
     for(const auto& v:actorSample.vertices) {
-        const auto point=rootTransform.point(v);
+        auto point=rootTransform.point(v);
+        if(battleActor){const auto p=rotation.point(point);point={root.x+p[0],rootY+p[1],root.z+p[2]-.05f};}
         vertex(point[0],point[1],point[2],v.u,1-(1-v.v)*uvScale,0xffffffff);
     }
     return true;
@@ -808,7 +811,9 @@ void Renderer::world(const Game& g) {
             const auto& a=g.storyPresentation().actors[i];if(a.hidden)continue;
             const bool right=a.yaw>0 && a.yaw<180;std::string pose=a.pose;
             if((a.flags&0x200) && g.storyPresentation().message.talking && g.storyPresentation().speaker==i)pose=std::string(i==3?"KUR":i==4?"PTK":"TGK")+"_T_1";
-            characterModel(pose.c_str(),float(g.storyPresentation().now-a.poseAt)*.06f,{a.position[0]*.01f,a.position[2]*.01f},a.position[1]*.01f,right?180:0,right,false,&undergroundAnimations,undergroundUVScale);
+            const float cameraAngle=npcAngles.angle(g.fieldCameraFrame.eye.x,g.fieldCameraFrame.eye.z,g.fieldCameraFrame.at.x,g.fieldCameraFrame.at.z);
+            const bool mirror=g.trioBattleActive?battleMirrorZ(right?180:0,a.battleRotation[1],cameraAngle,a.battleFlags):right;
+            characterModel(pose.c_str(),float(g.storyPresentation().now-a.poseAt)*.06f,{a.position[0]*.01f,a.position[2]*.01f},a.position[1]*.01f,right?180:0,mirror,false,&undergroundAnimations,undergroundUVScale,g.trioBattleActive?&a:nullptr);
         }
     }
     const int undergroundEnd=count;

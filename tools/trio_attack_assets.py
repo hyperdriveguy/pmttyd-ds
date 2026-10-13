@@ -52,10 +52,11 @@ def build(iso=DEFAULT_ISO):
             if off<=site<off+size:struct.pack_into('>I',data,site-off,a)
         segments.append((base,data))
     units=json.loads(Path('romfs/trio-battle.json').read_text())['units'][:3]
-    data=struct.pack('<8sI',b'PMTHIT1',3)
+    data=struct.pack('<8sI',b'PMTHIT2',3)
     for spec,namespace in zip(units,('unit_kuriboo.o','unit_togekuri.o','unit_patakuri.o')):
         events=inventory_events(raw,'artifacts/reference/us_symbols.csv','tik',['damage_event@'+namespace,'wait_event@'+namespace])['events']
         data+=struct.pack('<3I',address(spec['kind']),*[address(e['file_offset']) for e in events])
+    data+=struct.pack('<I',address(0x26460)) # Original setup4 opponent group used by GetExp.
     Path('romfs/trio-attack-units.bin').write_bytes(data)
     segments.sort()
     offset=12+12*len(segments);table=[];payload=[];spans=[]

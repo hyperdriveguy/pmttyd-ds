@@ -13,11 +13,11 @@ struct TrioBattleUnitSpec {uint32_t kind=0;int16_t hp=0,fp=0;std::array<float,3>
 const std::array<TrioBattleUnitSpec,4>& trioBattleUnitSpecs();
 const std::vector<uint32_t>& professorFenceCollisionNodes();
 struct ProfessorSceneActor {
-    std::array<float,3> position{};
+    std::array<float,3> position{},battleRotation{},battlePivot{};
     float yaw=0;std::string pose="S_1";
     bool hidden=false,moving=false;
     bool jumping=false;
-    uint32_t flags=0;
+    uint32_t flags=0,battleFlags=0;
     uint64_t poseAt=0;
 };
 struct ProfessorCameraRequest {
