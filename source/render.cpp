@@ -86,6 +86,7 @@ bool Renderer::init() {
     undergroundTexture.imported=Tex3DS_TextureImportStdio(undergroundAtlas,&undergroundTexture.texture,nullptr,false);std::fclose(undergroundAtlas);
     if(!undergroundTexture.imported)return false;
     C3D_TexSetFilter(&undergroundTexture.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&undergroundTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
+    if(!loadMap("bti_01",trioBackground) || !loadMap("stg_00_1",trioStage))return false;
     if(!fieldActorAssets.load("romfs:/field-actors.pmnpc"))return false;
     if(!shadowGeometry.load("romfs:/shadows.pmshadow"))return false;
     FILE* characterFile=std::fopen("romfs:/characters-mesh.t3x","rb");if(!characterFile)return false;
@@ -201,11 +202,11 @@ void Renderer::fieldActors(const Game& g) {
         for(const auto& sourceActor:fieldActorAssets.actors()) {
             auto actor=sourceActor;
             if(actor.model!=gpu.model)continue;
-            const bool scripted=model.asset=="professor" && (g.progress.room==2 || g.progress.room==5) && g.professorStory.triggered;
+            const bool scripted=model.asset=="professor" && (g.progress.room==2 || g.progress.room==5) && g.storyPresentation().triggered;
             if(scripted) {
-                if(actor.storyLow!=8 || g.professorStory.actors[2].hidden)continue;
-                actor.position=g.professorStory.actors[2].position;actor.yaw=g.professorStory.actors[2].yaw;
-                actor.pose=g.professorStory.actors[2].moving?"W_1":g.professorStory.message.talking && g.professorStory.speaker==2?"T_1":"S_1";
+                if(actor.storyLow!=8 || g.storyPresentation().actors[2].hidden)continue;
+                actor.position=g.storyPresentation().actors[2].position;actor.yaw=g.storyPresentation().actors[2].yaw;
+                actor.pose=g.storyPresentation().message.talking && g.storyPresentation().speaker==2?"T_1":g.trioBattleActive?g.storyPresentation().actors[2].pose:g.storyPresentation().actors[2].moving?"W_1":"S_1";
             } else if(!actor.visible(g.progress.room,g.progress.originalStory,g.fieldDoor.interiorMask,g.fieldSystemFlags))continue;
             ++actorMetrics.visible;
             if(gpu.tick!=g.ticks || gpu.pose!=actor.pose) {
@@ -348,7 +349,7 @@ void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* suppl
     const GPU_TEXTURE_WRAP_PARAM wraps[]={GPU_CLAMP_TO_EDGE,GPU_REPEAT,GPU_MIRRORED_REPEAT};
     for(auto batch:room.batches) {
         if(!battle && game.progress.room==2 && batch.layer>>26==8 && game.professorStory.fenceHidden && !game.professorStory.fenceVisible)continue;
-        if(!battle && ((batch.layer&255)==2)!=translucent)continue;
+        if((!battle || supplied) && ((batch.layer&255)==2)!=translucent)continue;
         if(!battle && !mapEventGroupVisible(batch.layer>>26,game.progress.originalStory.value_or(0),game.fieldDoor.interiorMask))continue;
         uint32_t group=(batch.layer>>8)&65535;
         if(!battle && group && room.occluders[group].hidden)continue;
@@ -426,8 +427,8 @@ void Renderer::harborActors(const Game& g) {
 }
 void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
     const bool fieldTalk=g.fieldActorTalk.message.active();
-    const bool professor=g.professorStory.locked();
-    const auto& message=supplied?*supplied:professor?g.professorStory.message:fieldTalk?g.fieldActorTalk.message:g.harborStory.message;if(!message.active())return;
+    const bool professor=g.storyPresentation().locked();
+    const auto& message=supplied?*supplied:professor?g.storyPresentation().message:fieldTalk?g.fieldActorTalk.message:g.harborStory.message;if(!message.active())return;
     const auto& font=harborMessageFont();
     // Unproject tilted NDC into the same pixel space as the 2D backend.
     // Reuse the actual world matrix: a parallel eye/FOV calculation can drift
@@ -449,15 +450,15 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
     float anchorX=0,anchorY=0,marioX=0,marioY=0;unsigned mode=0;
     const bool newWindow=!supplied && messageWindowSerial!=message.serial;
     if(newWindow && professor) {
-        const auto& a=g.professorStory.actors[g.professorStory.speaker];const auto& root=g.professorStory.speakerRoot;
+        const auto& a=g.storyPresentation().actors[g.storyPresentation().speaker];const auto& root=g.storyPresentation().speakerRoot;
         messageTalkAnchor={root[0]*.01f,root[1]*.01f,root[2]*.01f};
         const ActorAnimationPack* animations=&partnerAnimations;
         const char* name=a.moving?"PKR_W_1":"PKR_S_1";
-        if(g.professorStory.speaker==2) {
+        if(g.storyPresentation().speaker==2) {
             animations=nullptr;name="T_1";
             for(const auto& gpu:plaza.actorModels)if(fieldActorAssets.models()[gpu.model].asset=="professor")animations=&gpu.animations;
         }
-        if(g.professorStory.underground && g.professorStory.speaker>=3) {
+        if(g.storyPresentation().underground && g.storyPresentation().speaker>=3) {
             animations=&undergroundAnimations;name=a.pose.c_str();
         }
         const auto* pose=animations?animations->pose(name):nullptr;
@@ -513,6 +514,7 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
     if(!project(messageTalkAnchor,anchorX,anchorY))mode=0;
     else mode=messagePlacement;
     if(message.windowType==11 || message.windowType==5)mode=0;
+    if(message.placementOverride>=0)mode=unsigned(message.placementOverride);
     auto plan=messageWindowPlan(message.geometry,mode,anchorX,anchorY,message.alpha,message.windowType);
     stretchMessageTail(plan,anchorX,anchorY);
     if(message.windowType!=11)messageBorder(plan,message.alpha,message.windowType==5?0:message.windowType);
@@ -680,17 +682,17 @@ void Renderer::world(const Game& g) {
         character(2,crump,2.1f,2.1f,-1);
     }
     const int legacyCount=count;
-    if(!battle && g.professorStory.locked()) {
-        const auto& a=g.professorStory.actors[0];const bool right=a.yaw>0 && a.yaw<180;
-        characterModel(a.moving?"M_W_1":a.pose.c_str(),float(g.professorStory.now-a.poseAt)*.06f,g.progress.position,g.groundHeight,
+    if(!battle && (g.trioBattleActive || g.storyPresentation().locked())) {
+        const auto& a=g.storyPresentation().actors[0];const bool right=a.yaw>0 && a.yaw<180;
+        characterModel(a.moving?"M_W_1":a.pose.c_str(),float(g.storyPresentation().now-a.poseAt)*.06f,g.trioBattleActive?Vec2{a.position[0]*.01f,a.position[2]*.01f}:g.progress.position,g.trioBattleActive?a.position[1]*.01f:g.groundHeight,
                        right?180:0,right,false,&professorMarioAnimations,professorMarioUVScale);
     } else if(!battle && g.marioPresentation.supported && !(g.marioPresentation.displayFlags&1))
         characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight,
                        g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ());
     const int actorEnd=count;
-    if(!battle && g.professorStory.locked()) {
-        const auto& a=g.professorStory.actors[1];const bool right=a.yaw>0 && a.yaw<180;
-        if(!a.hidden)characterModel(g.professorStory.message.talking && g.professorStory.speaker==1?"PKR_T_1":a.moving?"PKR_W_1":"PKR_S_1",float(g.ticks),g.partner,g.partnerHeight,right?180:0,right,true);
+    if(!battle && (g.trioBattleActive || g.storyPresentation().locked())) {
+        const auto& a=g.storyPresentation().actors[1];const bool right=a.yaw>0 && a.yaw<180;
+        if(!a.hidden)characterModel(g.storyPresentation().message.talking && g.storyPresentation().speaker==1?"PKR_T_1":a.moving?"PKR_W_1":"PKR_S_1",float(g.ticks),g.trioBattleActive?Vec2{a.position[0]*.01f,a.position[2]*.01f}:g.partner,g.trioBattleActive?a.position[1]*.01f:g.partnerHeight,right?180:0,right,true);
     } else if(!battle && !g.harborStory.enabled)characterModel(g.partnerPresentation.name(),g.partnerPresentation.frame(),g.partner,g.partnerHeight,
                              g.partnerPresentation.yaw(),g.partnerPresentation.reflectZ(),true);
     if(!battle && g.harborStory.enabled && g.harborStory.triggered) {
@@ -701,17 +703,17 @@ void Renderer::world(const Game& g) {
     actorMetrics={};
     if(!battle)fieldActors(g);
     const int fieldActorEnd=count;
-    if(!battle && g.professorStory.underground) {
+    if(!battle && g.storyPresentation().underground) {
         for(unsigned i=3;i<6;++i) {
-            const auto& a=g.professorStory.actors[i];if(a.hidden)continue;
+            const auto& a=g.storyPresentation().actors[i];if(a.hidden)continue;
             const bool right=a.yaw>0 && a.yaw<180;std::string pose=a.pose;
-            if((a.flags&0x200) && g.professorStory.message.talking && g.professorStory.speaker==i)pose=std::string(i==3?"KUR":i==4?"PTK":"TGK")+"_T_1";
-            characterModel(pose.c_str(),float(g.professorStory.now-a.poseAt)*.06f,{a.position[0]*.01f,a.position[2]*.01f},a.position[1]*.01f,right?180:0,right,false,&undergroundAnimations,undergroundUVScale);
+            if((a.flags&0x200) && g.storyPresentation().message.talking && g.storyPresentation().speaker==i)pose=std::string(i==3?"KUR":i==4?"PTK":"TGK")+"_T_1";
+            characterModel(pose.c_str(),float(g.storyPresentation().now-a.poseAt)*.06f,{a.position[0]*.01f,a.position[2]*.01f},a.position[1]*.01f,right?180:0,right,false,&undergroundAnimations,undergroundUVScale);
         }
     }
     const int undergroundEnd=count;
-    if(!battle && g.professorStory.locked() && g.professorStory.itemVisible) {
-        const auto& s=g.professorStory;const auto& p=s.itemPosition;
+    if(!battle && !g.trioBattleActive && g.storyPresentation().locked() && g.storyPresentation().itemVisible) {
+        const auto& s=g.storyPresentation();const auto& p=s.itemPosition;
         // Native billboard bridge for the source icon/position/scale requests.
         const ActorRootTransform transform({p[0]*.01f,p[1]*.01f,p[2]*.01f},g.fieldCameraFrame.yaw,false,.01f);
         const float w=professorMapSize[0]*s.itemScale,h=professorMapSize[1]*s.itemScale;
@@ -751,12 +753,12 @@ void Renderer::world(const Game& g) {
     C3D_DepthTest(false,GPU_ALWAYS,battle?GPU_WRITE_COLOR:FieldRGB);
     C3D_TexBind(0,&sky.texture);C3D_DrawArrays(GPU_TRIANGLES,0,6);
     C3D_DepthTest(true,GPU_GREATER,battle?GPU_WRITE_ALL:FieldRGBDepth);
-    drawMap(battle,g);
+    if(g.trioBattleActive){drawMap(true,g,false,&trioBackground);drawMap(true,g,false,&trioStage);}else drawMap(battle,g);
     buffers=C3D_GetBufInfo();
     BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
     C3D_TexBind(0,&atlas);
     C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
-    if(actorEnd>legacyCount){C3D_TexBind(0,g.professorStory.locked()?&professorMarioTexture.texture:&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
+    if(actorEnd>legacyCount){C3D_TexBind(0,g.storyPresentation().locked()?&professorMarioTexture.texture:&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
     if(partnerEnd>actorEnd){C3D_TexBind(0,&partnerTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,actorEnd,partnerEnd-actorEnd);}
     if(!battle)drawFieldActors(false);
     if(undergroundEnd>fieldActorEnd){C3D_TexBind(0,&undergroundTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,fieldActorEnd,undergroundEnd-fieldActorEnd);}
@@ -794,7 +796,7 @@ void Renderer::world(const Game& g) {
         C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
     }
     // Original stage400000 opaques,500000 shadows,600000 translucent.
-    if(!battle){drawFieldActors(true);drawMap(false,g,true);}
+    if(!battle){drawFieldActors(true);if(g.trioBattleActive){drawMap(true,g,true,&trioBackground);drawMap(true,g,true,&trioStage);}else drawMap(false,g,true);}
 }
 void Renderer::text(const char* str,float x,float y,float scale,uint32_t color) {
     C2D_Text t;C2D_TextParse(&t,textBuffer,str);C2D_TextOptimize(&t);
@@ -810,17 +812,18 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
     text(label,x+7,y+8,.48f,disabled?rgb(135,129,116):Ink);
 }
 void Renderer::overlay(const Game& g) {
-    if(g.fieldActorTalk.message.active() || g.harborStory.locked() || g.professorStory.locked()) {
+    if(g.trioBattleActive || g.fieldActorTalk.message.active() || g.harborStory.locked() || g.storyPresentation().locked()) {
         originalMessage(g);
-        const auto& choice=g.professorStory.selection;
+        const auto& choice=g.storyPresentation().selection;
         if(choice.active()) {
             originalMessage(g,&choice.message);
             const auto& box=choice.message.geometry;
             choice.cursorY=std::fma(.30000001192092896f,box.y-float(31*choice.current+58)-choice.cursorY,choice.cursorY);
             messageIconImage(0x1f8,g.ticks,200+(box.x+2)*MessageWindowScale,120-choice.cursorY*.5f,1,uint8_t(choice.opacity));
         }
-        if(g.harborStory.failed || g.professorStory.failed)text("Development notice: source scene unavailable",25,112,.45f,Ink);
-        if(g.professorStory.pendingService)text("Development notice: original battle backend pending",25,112,.45f,Ink);
+        if(g.harborStory.failed || g.storyPresentation().failed)text("Development notice: source scene unavailable",25,112,.45f,Ink);
+        if(g.trioBattleActive && g.trioBattleIntro.finished)text("Development notice: original player commands pending",25,112,.45f,Ink);
+        if(g.storyPresentation().pendingService)text("Development notice: original battle backend pending",25,112,.45f,Ink);
         return;
     }
     if(g.scene==Scene::Dialogue) {
@@ -846,7 +849,7 @@ void Renderer::overlay(const Game& g) {
     }
 }
 void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
-    if(g.harborStory.locked() || g.professorStory.locked() || g.scene==Scene::Dialogue)return;
+    if(g.harborStory.locked() || g.storyPresentation().locked() || g.scene==Scene::Dialogue)return;
     panel(6,5,308,32,Ink);text("ROGUEPORT FIELD NOTES",16,11,.59f,Paper);
     if(g.scene==Scene::Battle) {
         text("Partner: Goombella",12,49,.44f,Ink);
@@ -951,7 +954,7 @@ void Renderer::shutdown() {
     if(c3dReady) C3D_FrameSync();
     if(textBuffer) C2D_TextBufDelete(textBuffer);
     releaseFrontend();
-    for(Room* room : {&plaza,&stage})freeRoom(*room);
+    for(Room* room : {&plaza,&stage,&trioBackground,&trioStage})freeRoom(*room);
     if(sky.imported) {Tex3DS_TextureFree(sky.imported);C3D_TexDelete(&sky.texture);}
     if(characterTextures.imported) {Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);}
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}

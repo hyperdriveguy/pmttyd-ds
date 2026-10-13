@@ -766,3 +766,23 @@ is claimed. Mario M_N_7 comes from actual e_mario/a_mario- (not a_mario), added
 to the existing scaled scene atlas. Original US tik_01/tik_04 message packs
 supply exact payloads and control tokens. Local originals/compiled packs stay
 ignored and retain Nintendo/Intelligent Systems rights; no redistribution grant.
+
+## 2026-10-13 — Original setup4 battle introduction and stage
+
+Read-only rel/tik.rel group0x26460/unitarray0x263a0 supplies four source units;
+kind and part pointers supply HP/FP, placement, flags/counter flags and five
+zero defense/defenseattribute slots. tools/trio_battle_assets.py writes ignored
+trio-battle-units.bin, original Frankly init15/entry7/phase39 commands under
+trio-battle-events.pmevt/program.bin and provenance trio-battle.json. Supported
+relocations preserve original words; no original machine code is compiled.
+Actual m/bti_01/d,t and m/stg_00_1/d,t provide native stage maps, original
+geometry/materials/UVs and textures reduced to max128 power-of-two RGBA8 via
+Lanczos. Ignored local-assets/trio-battle/ retains originals/provenance/PNGs;
+ignored romfs/bti_01*/stg_00_1* retain native products. Source selected A1/isi_1/isi_2/B_mati/C subtrees retain ancestor matrices and
+additional translations; bti escape_wall/if_body/if_wire are hidden. Dynamic
+intro scales/object lifecycle/depth still require original service binding.
+Original message icon PAD_Y_ON=115/0x73 uses descriptor0x9de,TPL115,56x56,
+static source pixels. Used icon atlas expands512x128→512x256 (0.5MiB) without
+resampling. Original music uses existing BGM_ZAKO_BATTLE1/btl_zak1_32k stream.
+No originals/compiled packs enter commits; Nintendo/Intelligent Systems rights
+and lack of redistribution grant remain unchanged.

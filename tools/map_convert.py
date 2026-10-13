@@ -52,7 +52,7 @@ def wall_segments(collision,metadata=None,with_triangles=False):
             segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max()),*tag,*geometry))
     return sorted(segments)
 
-def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=(),event_groups=None,scene_root=None):
+def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=(),event_groups=None,scene_root=None,scene_offsets=None):
     event_groups=event_groups or {}
     raw=Path(path).read_bytes();base=32
     table=32+u(raw,4)+u(raw,8)*4;names=table+u(raw,12)*8
@@ -71,7 +71,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
             uvmatrix=texture_matrix(*v)
         if samplers>1:warnings.append({'material':name,'samplers':samplers,'limitation':'Only texture zero currently rendered'})
         materials[o]={'name':name,'color':color,'color_source':raw[o+8],'layer':raw[o+10],'texture':tid,'uv':uvmatrix,'wrap':wrap}
-    info=chunks['information'];scene_name=scene_root or string(base+u(raw,info+8));collision_name=string(base+u(raw,info+12))
+    info=chunks['information'];scene_name=scene_root or string(base+u(raw,info+8));scene_names={scene_name} if isinstance(scene_name,str) else set(scene_name);scene_offsets=scene_offsets or {};collision_name=string(base+u(raw,info+12))
     if animation is not None and (ambient or mesh_ambient):raise ValueError('Preview and runtime animation export are separate')
     animations=read_animations(path);selected={}
     if animation is not None:
@@ -88,9 +88,10 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
                 continue
             for mat in targets:mat['uv']=sample_material(track,frame)
     vertices=defaultdict(list);nodes=[];collision=[];collision_meta=[];head_geometry=[];collision_nodes={};markers=[];cutaway_nodes={};cull_counts=defaultdict(int);owners=defaultdict(list);node_info={}
-    def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0,suppressed=False,parent_node=None,event_group=0):
+    def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0,suppressed=False,parent_node=None,event_group=0,scene_offset=(0,0,0)):
         if depth>100:raise ValueError('Invalid map graph')
-        name=string(base+u(raw,o));visible=visible or name==scene_name;collidable=collidable or name==collision_name
+        name=string(base+u(raw,o));visible=visible or name in scene_names;collidable=collidable or name==collision_name
+        node_offset=np.array(scene_offsets.get(name,scene_offset),float)
         values=struct.unpack_from('>9f',raw,o+24);local_matrix=trans(values[6:9])@rotate(values[3:6])@np.diag([*values[:3],1]);m=parent@local_matrix
         node_info[o]={'name':name,'parent':parent_node,'local':local_matrix,'world':m.copy()}
         if visible and name in selected:m=m@selected[name]
@@ -108,7 +109,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
             # for hierarchy-only nodes; hitObjGetPos transforms leaf centers.
             bbox=struct.unpack_from('>6f',raw,o+60)
             center=(np.array(bbox[:3])+np.array(bbox[3:]))*.5 if u(raw,o+92) else np.array(values[6:9])
-            world_center=(m@np.array([*center,1]))[:3]*scale
+            world_center=(m@np.array([*center,1]))[:3]*scale+node_offset
             collision_nodes[o-base]={'name':name,'attributes':attributes,
                 'parent':parent_node-base if parent_node is not None and name!=collision_name else None,
                 'center':world_center.tolist(),'parts':u(raw,o+92)}
@@ -136,7 +137,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
                         indices={}
                         for attr in attrs:indices[attr]=struct.unpack_from('>H',raw,dl)[0];dl+=2
                         p=np.array([*struct.unpack_from('>hhh',raw,arrays[0]+indices[0]*6),1.],float)
-                        p[:3]/=2**u(raw,vcd+68);p=m@p;p=p[:3]*scale
+                        p[:3]/=2**u(raw,vcd+68);p=m@p;p=p[:3]*scale+node_offset
                         uv=np.array([0.,0.,1.])
                         if 4 in indices:uv[:2]=np.array(struct.unpack_from('>hh',raw,arrays[4]+indices[4]*4))/2**u(raw,vcd+72)
                         uv=mat['uv']@uv
@@ -161,8 +162,8 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
             points=np.array(marker_points) if marker_points else np.array([(m@np.array([0,0,0,1]))[:3]*scale])
             markers.append({'name':name,'bounds':[points.min(0).tolist(),points.max(0).tolist()]})
         child=u(raw,o+12);sibling=u(raw,o+16)
-        if child:walk(base+child,m,visible,collidable,depth+1,node_exterior,node_group,node_suppressed,o,node_event_group)
-        if sibling:walk(base+sibling,parent,visible if name!=scene_name else False,collidable if name!=collision_name else False,depth+1,exterior,exterior_group,suppressed,parent_node,event_group)
+        if child:walk(base+child,m,visible,collidable,depth+1,node_exterior,node_group,node_suppressed,o,node_event_group,node_offset)
+        if sibling:walk(base+sibling,parent,visible if name not in scene_names else False,collidable if name!=collision_name else False,depth+1,exterior,exterior_group,suppressed,parent_node,event_group,scene_offset)
     walk(base+u(raw,chunks['information']+4),np.eye(4))
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
     ambient_names={t['material'] for a in animations if a['name'] in ambient for t in a['material_tracks'] if t['texgen']==0}
@@ -268,6 +269,8 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
     (output/'map.animations.json').write_text(json.dumps(animations,indent=2)+'\n')
     summary['animations']=[{'name':a['name'],'duration':a['duration'],'mesh_tracks':len(a['tracks']),'material_tracks':len(a['material_tracks']),'material_table_offset':a['material_table_offset']} for a in animations]
     summary['ambient_mesh_clips']=list(mesh_ambient);summary['animated_position_vertices']=len(mesh_used)
+    summary['scene_roots']=sorted(scene_names)
+    summary['scene_offsets']=scene_offsets
     summary['collision_nodes']=[{'source_node':node,**data} for node,data in sorted(collision_nodes.items())]
     summary['ambient_material_clips']=list(ambient);summary['animated_uv_vertices']=len(used)
     summary['sampled_animation']=animation;summary['sampled_frame']=frame if animation else None

@@ -8,6 +8,9 @@
 namespace ttyd {
 bool loadProfessorStoryAssets(const char* root);
 bool loadUndergroundStoryAssets(const char* root);
+bool loadTrioBattleAssets(const char* root);
+struct TrioBattleUnitSpec {uint32_t kind=0;int16_t hp=0,fp=0;std::array<float,3> position{};uint32_t attributes=0;std::array<int8_t,5> defense{};std::array<uint8_t,5> defenseAttributes{};uint32_t partAttributes=0,counterAttributes=0;};
+const std::array<TrioBattleUnitSpec,4>& trioBattleUnitSpecs();
 const std::vector<uint32_t>& professorFenceCollisionNodes();
 struct ProfessorSceneActor {
     std::array<float,3> position{};
@@ -34,6 +37,9 @@ public:
     std::string fencePose="Z_1";
     uint64_t fencePoseAt=0;
     uint32_t pendingService=0;
+    bool battleIntro=false,battleStatusVisible=true;unsigned battleIntroStage=0;
+    uint32_t battlePhaseWord=0x04000001;int32_t battleTurn=1,lectureUnitId=-1;
+    int32_t lectureMaxMoves=-1;std::array<int32_t,16> lectureWork{};
     bool underground=false,undergroundGroupShown=false;
     bool goombellaNpc=false;
     bool professorDeparted=false,professorControlEnabled=true;
@@ -56,6 +62,7 @@ public:
     bool beginLecture(uint64_t milliseconds,std::array<float,3> mario,std::array<float,3> goombella,bool departed=false);
     bool departThroughPipe(uint64_t milliseconds,int32_t initialStory,bool departed);
     bool beginUnderground(uint64_t milliseconds,int32_t initialStory,std::array<float,3> mario,std::array<float,3> goombella,bool departed);
+    bool beginTrioBattleIntro(uint64_t milliseconds);
     void restoreProfessor(bool departed);
     void tick(uint64_t milliseconds,uint32_t keys,bool doorBusy,const MessageSelectionInput& selectionInput={});
     bool running() const{return triggered && !finished;}

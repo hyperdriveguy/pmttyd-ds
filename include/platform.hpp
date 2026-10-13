@@ -71,7 +71,7 @@ private:
         bool fenceCaptured=false;
         uint64_t fenceTick=UINT64_MAX;
     };
-    Room plaza,stage,frontRoom;
+    Room plaza,stage,frontRoom,trioBackground,trioStage;
     std::string frontMapName;
     struct CineActor {std::string name;ActorAnimationPack animations;Texture image;float uvScale=1;};
     std::vector<CineActor> cineActors;

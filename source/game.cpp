@@ -1143,7 +1143,7 @@ FieldBattleServices Game::fieldBattleServices() {
     FieldBattleServices s;s.user=this;
     s.work=[](void* p)->FieldBattleWork& {return static_cast<Game*>(p)->fieldBattleWork;};
     // Single NPC/partner development fixtures, not original registry IDs.
-    s.npc=[](void*,int32_t)->uintptr_t {return 1;};
+    s.npc=[](void* p,int32_t name)->uintptr_t {const auto& g=*static_cast<Game*>(p);return name==3 && g.professorStory.underground?3:1;};
     s.prepareMario=[](void* p) {static_cast<Game*>(p)->fieldPrepareRequested=true;};
     s.marioControl=[](void* p,bool enabled) {static_cast<Game*>(p)->marioFieldControl=enabled;};
     s.partyId=[](void*)->int32_t {return 1;};
@@ -1545,6 +1545,15 @@ void Game::tick(const Input& rawInput) {
         saveRequested=false;if(!fieldActorTalk.message.active())scene=Scene::Explore;
         return;
     }
+    if(trioBattleActive) {
+        trioBattleIntro.tick(ticks*1000/60,(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u),false);
+        while(trioBattleCameraCursor<trioBattleIntro.cameras.size()) {
+            const auto& c=trioBattleIntro.cameras[trioBattleCameraCursor++];
+            if(c.off)setCameraView({0,100,450},{0,50,0},0,11);
+            else setCameraView({c.eye[0],c.eye[1],c.eye[2]},{c.at[0],c.at[1],c.at[2]},c.duration,uint8_t(c.curve));
+        }
+        scene=Scene::Dialogue;saveRequested=false;return;
+    }
     if(professorStory.running()) {
         const bool passive=!professorStory.locked();
         if(passive) {
@@ -1569,6 +1578,13 @@ void Game::tick(const Input& rawInput) {
             const auto& c=professorStory.cameras[professorCameraCursor++];
             if(c.off)releaseCameraView(c.duration,uint8_t(c.curve));
             else setCameraView({c.eye[0],c.eye[1],c.eye[2]},{c.at[0],c.at[1],c.at[2]},c.duration,uint8_t(c.curve));
+        }
+        if(professorStory.underground && professorStory.battleSetup==4 && professorStory.pendingService) {
+            if(trioBattleIntro.beginTrioBattleIntro(ticks*1000/60)) {
+                fieldPrepareRequested=fieldPostRequested=fieldBgmStopRequested=false;fieldSoundFlags=0;
+                startFieldBattle(3,true,fieldBattleServices());
+                trioBattleActive=true;setCameraView({0,100,450},{0,50,0},0,11);scene=Scene::Dialogue;saveRequested=false;return;
+            }
         }
         progress.originalStory=professorStory.story;
         progress.originalFlag1207=professorStory.professorDeparted;

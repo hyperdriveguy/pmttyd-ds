@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
 | [MusyX sound/voice kill recycling](audio/MUSYX_VOICE_SOUND_KILL_AND_ALLOCATOR_RECYCLE.md) | Complete external chain identity/retained-next kill and internal priority/free-list/count recycle plus hardware requests | Map/macro/stream/hardware children, allocator/source/concurrency and original lifetime/audio |
 | [MusyX sequence free-chain init](audio/MUSYX_SEQUENCE_INITIALIZATION_AND_FREE_CHAINS.md) | Complete8-instance/private-ID/MIDI-priority and256-note free-chain reset; exact cross-record writes | Constructors/payload/voice/resources/priority consumers/reset/runtime |
 | [MusyX sequence validity/stop](audio/MUSYX_SEQUENCE_VALIDITY_PRIVATE_ID_AND_STOP.md) | Complete active/paused ID lookup, valid wrapper, tagged-field clear and state/note/instance stop recycling | Private-index/state/list/note writers, voice/resource lifetime and original audio |
@@ -478,3 +479,5 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [Native underground pipe route](story/NATIVE_UNDERGROUND_PIPE_ROUTE.md): original departure flag/event, reciprocal map loading and explicit pipe-motion/story gaps.
 
 - [Native underground trio scene](story/NATIVE_UNDERGROUND_TRIO_SCENE.md): original approach poll, actors/poses, prebattle dialogue and retained setup4 boundary.
+
+- [Native setup4 battle introduction](battle/NATIVE_SETUP4_BATTLE_INTRODUCTION.md): original unit/part data, Frankly init/entry/phase and original selected stage objects.

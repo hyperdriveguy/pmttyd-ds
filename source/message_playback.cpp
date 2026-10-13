@@ -62,6 +62,7 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
                 if(std::sscanf(args.c_str(),"%31s%f%d%d%d %c",id,&q,&offset,&aux,&advance,&extra)!=5 || !std::isfinite(q) || q<=0 || q>8)return false;
                 uint32_t identifier=0;
                 if(!std::strcmp(id,"STICK"))identifier=0x81;
+                else if(!std::strcmp(id,"PAD_Y_ON"))identifier=0x73;
                 else {char* end=nullptr;identifier=std::strtoul(id,&end,10);if(*end || end==id)return false;}
                 const auto* icon=messageIcon(identifier);if(!icon)return false;
                 const auto& frame=icon->frames[0];auto r=record(0xfff8);r.flags=identifier;r.scale=q;r.extra=uint16_t(aux);

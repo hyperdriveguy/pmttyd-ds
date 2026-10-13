@@ -92,3 +92,9 @@ local-assets/professor-fence/
 
 /romfs/save-block-events.pmevt
 /romfs/save-block-program.bin
+
+/romfs/trio-battle*
+/romfs/bti_01*
+/romfs/stg_00_1*
+/local-assets/trio-battle/
+/build-trio-battle/

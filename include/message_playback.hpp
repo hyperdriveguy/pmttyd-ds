@@ -41,6 +41,7 @@ public:
     uint64_t openedAt=0;
     MessageWindowGeometry geometry;
     int windowType=0;
+    int placementOverride=-1; // Source common-print mode override; native projection remains adapter.
     int8_t initialChoice=0,cancelChoice=0,choiceCount=0;
     int16_t choiceWidth=0,choiceY=0;
 private:

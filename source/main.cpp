@@ -40,7 +40,7 @@ int main() {
         gfxExit();
         return 1;
     }
-    if(!loadRoomCollision(0) || !(ttyd::loadWarps("romfs:/rooms.bin") && ttyd::loadFieldPipes("romfs:/field-pipes.bin")) || !ttyd::loadFieldDoors("romfs:/doors.pmdoor") || !ttyd::loadCameraRoadAssets("romfs:") || !ttyd::loadHarborStoryAssets("romfs:") || !ttyd::loadFieldActorCatalog("romfs:") || !ttyd::loadProfessorStoryAssets("romfs:") || !ttyd::loadUndergroundStoryAssets("romfs:")) {
+    if(!loadRoomCollision(0) || !(ttyd::loadWarps("romfs:/rooms.bin") && ttyd::loadFieldPipes("romfs:/field-pipes.bin")) || !ttyd::loadFieldDoors("romfs:/doors.pmdoor") || !ttyd::loadCameraRoadAssets("romfs:") || !ttyd::loadHarborStoryAssets("romfs:") || !ttyd::loadFieldActorCatalog("romfs:") || !ttyd::loadProfessorStoryAssets("romfs:") || !ttyd::loadUndergroundStoryAssets("romfs:") || !ttyd::loadTrioBattleAssets("romfs:")) {
         renderer.shutdown();romfsExit();gfxExit();return 1;
     }
     ttyd::Audio audio;audio.init();
@@ -165,7 +165,7 @@ int main() {
             notice=ok?"Progress loaded":"Save unavailable";noticeTicks=180;
             accumulator=0;pending={};previous=seconds();
         }
-        if(frontend.screen==ttyd::FrontScreen::Playing)audio.update(game.scene,game.progress.sound,game.harborStory.enabled && game.harborStory.triggered,
+        if(frontend.screen==ttyd::FrontScreen::Playing)audio.update(game.trioBattleActive?ttyd::Scene::Battle:game.scene,game.progress.sound,game.harborStory.enabled && game.harborStory.triggered,
                      game.professorStory.locked()?game.professorStory.music:0,game.progress.room);
         else audio.updateFrontend(frontend.screen==ttyd::FrontScreen::Demo?(demo.bookComplete?6:5):frontend.screen==ttyd::FrontScreen::Opening?opening.music():4,game.progress.sound);
         metrics.renderMs=C3D_GetProcessingTime();metrics.gpuMs=C3D_GetDrawingTime();

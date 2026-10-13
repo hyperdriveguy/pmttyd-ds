@@ -12,6 +12,7 @@
 #include <unordered_map>
 namespace ttyd {
 namespace {
+EventScriptAssets battleScripts;std::unordered_map<uint32_t,uint32_t> battleCallbacks;std::array<uint32_t,3> battleEntries{};std::array<TrioBattleUnitSpec,4> battleUnits{};bool battleReady=false;
 MessageAssets undergroundMessages;MessageResource undergroundExtra;EventScriptAssets undergroundScripts;
 std::unordered_map<uint32_t,uint32_t> undergroundCallbacks;uint32_t undergroundEntry=0;std::array<uint32_t,3> trioNames{};bool undergroundReady=false;
 MessageAssets messages;EventScriptAssets scripts;MessageFont font;
@@ -61,10 +62,32 @@ bool loadUndergroundStoryAssets(const char* root) {
     undergroundScripts=std::move(scripts);undergroundMessages=std::move(text);undergroundExtra=std::move(extra);
     undergroundCallbacks=std::move(callbacks);trioNames=names;undergroundEntry=entry;undergroundReady=true;return true;
 }
+const std::array<TrioBattleUnitSpec,4>& trioBattleUnitSpecs(){return battleUnits;}
+bool loadTrioBattleAssets(const char* root) {
+    const std::string base=root;EventScriptAssets scripts;
+    if(!scripts.load((base+"/trio-battle-events.pmevt").c_str()))return false;
+    FILE* f=std::fopen((base+"/trio-battle-program.bin").c_str(),"rb");if(!f)return false;
+    char magic[8];uint32_t count=0;std::array<uint32_t,3> entries{};
+    bool ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMBTRIO1",8) && std::fread(entries.data(),4,3,f)==3 && std::fread(&count,4,1,f)==1 && count<96;
+    std::unordered_map<uint32_t,uint32_t> callbacks;
+    for(uint32_t i=0;ok && i<count;++i){uint32_t a,t;ok=std::fread(&a,4,1,f)==1 && std::fread(&t,4,1,f)==1 && a && t<95 && callbacks.emplace(a,t).second;}
+    ok=ok && std::fgetc(f)==EOF;std::fclose(f);if(!ok)return false;
+    f=std::fopen((base+"/trio-battle-units.bin").c_str(),"rb");if(!f)return false;
+    std::array<TrioBattleUnitSpec,4> units{};
+    ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMBUNIT1",8) && std::fread(&count,4,1,f)==1 && count==4;
+    for(auto& u:units)ok=ok && std::fread(&u.kind,4,1,f)==1 && std::fread(&u.hp,2,1,f)==1 && std::fread(&u.fp,2,1,f)==1 &&
+        std::fread(u.position.data(),4,3,f)==3 && std::fread(&u.attributes,4,1,f)==1 && std::fread(u.defense.data(),1,5,f)==5 &&
+        std::fread(u.defenseAttributes.data(),1,5,f)==5 && std::fread(&u.partAttributes,4,1,f)==1 && std::fread(&u.counterAttributes,4,1,f)==1;
+    ok=ok && std::fgetc(f)==EOF;std::fclose(f);if(!ok || units[0].kind!=1 || units[1].kind!=3 || units[2].kind!=2 || units[3].kind!=0xb4)return false;
+    battleScripts=std::move(scripts);battleCallbacks=std::move(callbacks);battleEntries=entries;battleUnits=units;battleReady=true;return true;
+}
 struct ProfessorRuntime {
     ProfessorStory* scene=nullptr;bool doorBusy=true;uint32_t keys=0,rootId=0;
     struct Move {std::array<float,3> start{},target{};uint64_t begin=0,end=0;bool active=false,jump=false;float apex=0;};
     std::array<Move,6> moves{};
+    struct BattleMove {std::array<float,3> target{},step{};int32_t count=0;unsigned actor=2;};
+    std::unordered_map<uint32_t,BattleMove> battleMoves;
+    std::unordered_map<uint32_t,uint32_t> messagePlacements;
     std::unordered_map<uint32_t,uint64_t> waits;
     EventNativeRuntime vm;
     ProfessorRuntime():vm(0x81000000,platform(this)) {}
@@ -133,10 +156,12 @@ struct ProfessorRuntime {
     int print(EventEntry& e,bool first,bool party) {
         if(first) {
             auto key=string(pointer(e,party?0:1));if(party)key+="_kur";
-            if(party)scene->speaker=1;
+            if(scene->battleIntro)scene->speaker=2;
+            else if(party)scene->speaker=1;
             else {const auto name=string(pointer(e,3));scene->speaker=name=="party"?1:name=="extparty"?2:npc(e,3);}
             scene->speakerRoot=scene->actors[scene->speaker].position;
             if(!scene->message.open(key.c_str(),text(key.c_str()),font,scene->now)){scene->failed=true;return 0;}
+            if(scene->battleIntro){scene->message.placementOverride=(messagePlacements[e.id]&0x1effffff)==1?0:3;messagePlacements[e.id]=0;}
             scene->messageOrder.push_back(key);
         }
         return scene->message.active() && !scene->message.stopped()?0:2;
@@ -160,7 +185,7 @@ struct ProfessorRuntime {
         return scene->message.active() && !scene->message.stopped()?0:2;
     }
     int32_t call(EventEntry& e,uint32_t function,bool first) {
-        const auto& admitted=scene->underground?undergroundCallbacks:callbacks;
+        const auto& admitted=scene->battleIntro?battleCallbacks:scene->underground?undergroundCallbacks:callbacks;
         const auto found=admitted.find(function);if(found==admitted.end()){scene->failed=true;return 0;}
         const unsigned tag=found->second;
         if(first){ProfessorServiceRequest r{function,e.currentCommand,scene->now,{}};
@@ -207,6 +232,39 @@ struct ProfessorRuntime {
         case 24:scene->actors[npc(e,0)].yaw=number(e,1);return 2;
         case 26:return move(e,first,1,1,2,3);
         case 28:if(first)scene->actors[1].yaw=number(e,1);return delay(e,first,uint64_t(std::max<int32_t>(0,value(e,2))));
+        case 71:return 2; // Original local lecture_init is a return2 leaf.
+        case 72:case 73:case 74:case 75:case 76:return 2; // Script registrations retained in request trace.
+        case 77:setEventValue(e,operand(e,1),6,vm.interpreterServices().operands);return 2;
+        case 78:scene->lectureUnitId=value(e,0);return 2;
+        case 79:if(value(e,1)>=0 && value(e,1)<16)scene->lectureWork[value(e,1)]=value(e,2);else scene->failed=true;return 2;
+        case 80:setPosition(2,1);return 2;
+        case 81:scene->actors[2].yaw=value(e,1)==1?90:270;return 2;
+        case 82:scene->lectureMaxMoves=value(e,1);return 2;
+        case 83:case 88:return 2; // Wait-event ownership requests; native pose manager is an adapter.
+        case 84: {
+            const unsigned actor=value(e,0)==-3?0:2;scene->actors[actor].pose=string(pointer(e,2));scene->actors[actor].poseAt=scene->now;return 2;
+        }
+        case 85: {
+            auto& m=battleMoves[e.id];
+            if(first) {
+                m.actor=2;m.count=value(e,4);if(m.count<=0){scene->failed=true;return 0;}
+                for(unsigned axis=0;axis<3;++axis)m.target[axis]=number(e,1+axis);
+                const auto& p=scene->actors[2].position;m.step={(m.target[0]-p[0])/m.count,0,(m.target[2]-p[2])/m.count};scene->actors[2].moving=true;
+            }
+            auto& a=scene->actors[m.actor];a.position[0]+=m.step[0];a.position[2]+=m.step[2];
+            if(--m.count>0)return 0;
+            a.position=m.target;a.moving=false;battleMoves.erase(e.id);return 1; // Source advance+yield.
+        }
+        case 86:setEventValue(e,operand(e,0),scene->battlePhaseWord==uint32_t(operand(e,1)),vm.interpreterServices().operands);return 2;
+        case 87:setEventValue(e,operand(e,0),scene->battleTurn,vm.interpreterServices().operands);return 2;
+        case 89:case 90:return 2; // Source talk/stay names retained; used names are T_1/S_1.
+        case 91:scene->battleStatusVisible=value(e,0)!=0;return 2;
+        case 92:if(value(e,1)==0)scene->cameras.push_back({{},{},0,11,true});return 2;
+        case 93: {
+            ProfessorCameraRequest r;for(unsigned axis=0;axis<3;++axis){r.eye[axis]=number(e,axis+1);r.at[axis]=number(e,axis+4);}
+            r.duration=value(e,7)*1000/60;r.curve=value(e,8);scene->cameras.push_back(r);return 2;
+        }
+        case 94:messagePlacements[e.id]=(messagePlacements[e.id]&0xe1000000u)|uint32_t(value(e,0));return 2;
         case 64:case 65: {
             const unsigned actor=tag==64?0:value(e,0)==1?2:1,target=npc(e,tag==64?0:1);
             const auto& a=scene->actors[actor].position;const auto& b=scene->actors[target].position;
@@ -273,7 +331,7 @@ struct ProfessorRuntime {
         if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(1024*1024)) ||
            !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) ||
            !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) ||
-           !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.importScripts(scene->underground?undergroundScripts:scripts))return false;
+           !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.importScripts(scene->battleIntro?battleScripts:scene->underground?undergroundScripts:scripts))return false;
         auto m=vm.memoryBinding.services();const auto start=eventSdkInitializeAllocator(0x82000000,0x82100000,1,m);
         if(eventSdkCreateHeap(start,0x82100000,m)!=0)return false;
         if(!vm.memory.writeWord(0x8041e844,0) || !vm.memory.writeWord(0x81000004,60))return false;
@@ -316,6 +374,16 @@ bool ProfessorStory::beginUnderground(uint64_t time,int32_t initialStory,std::ar
     runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
     if(!runtime_->initialize(undergroundEntry,initialStory)){failed=true;return false;}tick(time,0,false);return !failed;
 }
+bool ProfessorStory::beginTrioBattleIntro(uint64_t time) {
+    if(!ready || !undergroundReady || !battleReady || triggered)return false;
+    *this=ProfessorStory{};battleIntro=true;underground=true;triggered=true;keysEnabled=false;temporaryProfessor=true;story=11;now=time;
+    actors[0].position={-100,0,-5};actors[0].pose="M_S_1";actors[0].yaw=90;
+    actors[1].position={-140,0,5};actors[1].pose="PKR_S_1";actors[1].yaw=90;
+    actors[2].position=battleUnits[3].position;actors[2].pose="S_1";
+    for(unsigned i=0;i<3;++i){const unsigned actor=i==0?3:i==1?5:4;actors[actor].position=battleUnits[i].position;actors[actor].pose=std::string(actor==3?"KUR":actor==4?"PTK":"TGK")+"_S_1";actors[actor].yaw=270;}
+    runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
+    if(!runtime_->initialize(battleEntries[0],11)){failed=true;return false;}tick(time,0,false);return !failed;
+}
 bool ProfessorStory::departThroughPipe(uint64_t time,int32_t initialStory,bool departed) {
     if(!ready || running())return false;
     *this=ProfessorStory{};triggered=true;now=time;story=initialStory;professorDeparted=departed;
@@ -330,7 +398,8 @@ void ProfessorStory::restoreProfessor(bool departed) {
     actors[2].hidden=departed;actors[2].yaw=270;actors[2].flags=0x40000000;
 }
 void ProfessorStory::tick(uint64_t time,uint32_t keys,bool doorBusy,const MessageSelectionInput& selectionInput) {
-    if(!running() || failed || time<now || !runtime_)return;
+    if(failed || time<now || !runtime_)return;
+    if(!running()){now=time;if(message.active())message.tick(now,keys);return;}
     now=time;
     auto& r=*runtime_;r.scene=this;r.keys=keys;r.doorBusy=doorBusy;r.advance();
     if(message.active())message.tick(now,keys);
@@ -339,5 +408,9 @@ void ProfessorStory::tick(uint64_t time,uint32_t keys,bool doorBusy,const Messag
     story=readSavedSwitch(SavedSwitchFamily::GlobalByte,0,r.vm.interpreterServices().operands);
     professorDeparted=readSavedSwitch(SavedSwitchFamily::GlobalFlag,1207,r.vm.interpreterServices().operands)!=0;
     finished=r.vm.runtime.allocationCount==0;
+    if(finished && battleIntro && battleIntroStage<2) {
+        ++battleIntroStage;auto creation=r.vm.creationServices();
+        r.rootId=createRootEvent(r.vm.schedule,battleEntries[battleIntroStage],10,0,creation).id;finished=false;
+    }
 }
 }

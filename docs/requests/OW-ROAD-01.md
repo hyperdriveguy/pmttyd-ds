@@ -144,3 +144,31 @@ once-onlyspikemistake092_06/07 cannot be omitted. Nativebattlebackend,used
 player/partnercommands,dynamicstage/audience,rewards,pad/impactclocks and
 resultproducerloss/escape routing remain requesteddependencies, not closed
 by these static bindings. No nativeedit/commit/runtimeverification.
+
+2026-10-13 setup4 intro/phase/player-source follow-up:
+[Setup4 intro/phase/stage/player bindings](../behavior/battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md)
+pins kindcount/table/init offsets andfourbodypart records, conditionalfresh
+registry IDs0system/1Mario/2Goombella/3..6sourcegroup, concurrent trackedentry
+barriersbeforeselector0Franklyphase(channel4exact04000001/turn1) beforemenu.
+Actualsource bti_01/stg_00_1 m/d,t resources/hash evidence andidentical8x8
+b/tpl stubs; exactMovePosition45 is callbackcountwithsoundmode-1, notspeed.
+Jump/Hammer andHeadbonkpower/action sourcebindings supplied; Headbonkpouch+0xa
+attacklevel differsfromtechmenu+0xc, its227commandgraph identified.
+NEW boundedproducer requests: executed tik4 startingfirstAttackType/phase/turn
+writers andentry/curtain/runtime barriersequence; sourcecandidategeometry/
+weaponmask/commandconfirmation domains; compositebattle-stageplacement/object
+providers; actualstartingpouchrank/loadout; fullHeadbonk/Hammer/partyinit service
+composition,pad/impactclocks andbattleloss/escape resultproducer routing.
+Keep these pendingwhileimplementing explicitlyscoped best-effortproviders.
+No nativeedit/commit ororiginalexecution claim.
+
+2026-10-13 stage occlusion/source transform follow-up:
+[Setup4 stage follow-up](../behavior/battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md)
+now binds sourceglobalmodelscale10 vsengine-to-native.01, floorY0, actual
+Mario(-100,0,-5)/Goombella(-140,homeY0,5), namedstagehide/reveal hierarchy
+andallfive selectedobjectlayers/XYZ/additionaltranslation semantics. stgS
+all-visible iswrong: A2/Bhiddenparents have selectedstone/B_matidescendants
+revealed; bti escape_wall/if_body/if_wire arehiddenfor thissetup. Sourceactor
+depthtest remainsenabled; source map/bodypart pass/class/queue producer
+composition andoriginal renderedocclusion still requested, notfixedby Ylift.
+No nativeedits/commit/runtimeclaim.

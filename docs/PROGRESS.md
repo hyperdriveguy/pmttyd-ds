@@ -6,6 +6,51 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Original setup4 units, stage and Frankly battle introduction
+
+[Native introduction](behavior/battle/NATIVE_SETUP4_BATTLE_INTRODUCTION.md)
+imports original tik setup4 four-unit kind/part/group data: HP2 normal/spiked/
+airborne Goombas, FranklyHP10, defense arrays and exact unit/part/counter flags.
+Actual Frankly init15/entry7/phase39 commands run in a separate VM while the
+original field scene remains suspended at battle_start. Source fresh lectureID6,
+work0/maxmoves0,900msentry, counted45-step R_1 move, phase04000001/turn1 gate,
+five original092_01..05 messages, status/camera requests and actor facing execute.
+Native field-battle services publish sequence4/result0/controls-off; field
+checkpoint/story stay unchanged. Full original scheduler/unit setup/player turns
+are separate dependencies, not replaced by the Crump harness.
+
+Imported original bti_01/stg_00_1 and source selected five object subtrees.
+Recovered visibility excludes alternate A2/B geometry while revealingselected
+isi1/isi2/B_mati descendants; default escape_wall/if_body/if_wire are hidden.
+Authored ancestor matrices and source additionaltranslations remain; opaque/
+translucent passes now filter separately. This fixes observed floor/beam occlusion
+without invented actorY lifts. Source homes are Mario(-100,0,-5),Goombella
+(-140,0,5); enemy positions retain grouprecords. Imported original PAD_Y_ON115
+56x56icon; used atlas512x256/0.5MiB. Bound battle commonprint mode3 and used
+one-shot toge selector1/mode0. Closing window continues after event completion.
+
+Validation: final make test111 CTest/100Python and make all pass; separate
+DEBUG_SHORT_BOOT artifacts/ttyd-trio-battle build passes. Tests check rawunits/
+flags/stats, init/entry/firstturn/laterturn behavior, exact five messages,
+status/camera/windowclose, retained field owner/control/result and checkpoint
+coordinates. Final isolated Azahar artifacts/azahar-trio-battle-stage-final
+captures original dialogue/cameras and complete intro; inspected cleanstage
+shows allsix characters and explicit pendingplayercommands. Prior native capture
+exposed whole-map visibility/pass occlusion and a generic dialogue fallback;
+both were corrected. Initial092_05 parse failed for missing PAD_Y_ON, then used
+source icon import fixed it. No user emulator profile/save touched.
+
+Limits/next: bind original player target/Jump/Hammer/Headbonk graphs and private
+pad/impact clocks, enemy turns, spike conditional092_06/07, airborne damage/fall,
+result/loss/escape and source wait_battle_end return. Then execute original
+093/094/094_01/story12 field continuation. Current introduction sequences
+Frankly init→entry→phase; complete concurrent firstAct/phase scheduler, wait-event
+and unit registries remain open. Stage spring scales/curtain/dynamic lifecycle,
+full material/depth/lighting/shadows, camera defaults, effects/SFX and original
+runtime traces remain partial. Source fixed-group RNG consumption and full
+starting pouch/party setup are pending. Original setup3 lecture and ruins route
+still required; fullprologue/hardware parity is not achieved. Goal remains active.
+
 ## 2026-10-13 — Priority0 sound-chain kill and voice allocator recycling
 
 Delivered [sound/voice kill](behavior/audio/MUSYX_VOICE_SOUND_KILL_AND_ALLOCATOR_RECYCLE.md).

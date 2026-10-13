@@ -197,6 +197,8 @@ public:
     bool recoveryReturn(ReturnPoint& point) const;
     float cameraZ = 3.5f, cameraHeight = 0;
     float cameraX = 1, jumpHeight = 0, facing = 1, turnScale = 1;
+    bool trioBattleActive=false;ProfessorStory trioBattleIntro;size_t trioBattleCameraCursor=0;
+    const ProfessorStory& storyPresentation() const {return trioBattleActive?trioBattleIntro:professorStory;}
     Scene scene = Scene::Explore;
     Phase phase = Phase::Select;
     Menu menu = Menu::Status;
