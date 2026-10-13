@@ -40,8 +40,10 @@ S_1, story!=341 and system mask0x20 admission. Its presentation uses
 [PMANIM4 surfaces](../display/NATIVE_ACTOR_SURFACE_PACK.md).
 The constructor gates are represented; dynamic system flag producers remain
 partial. PMNPC004 adds original model names for floor/wall filters.
-PMNPC005 adds source dimensions/talk names and model draw masks; versions1..5
-remain readable. The catalog loader stages the original angle table atomically
+PMNPC005 adds source dimensions/talk names and model draw masks. PMNPC006
+adds original npcFlags (200-byte actor rows); versions1..6 remain readable,
+with legacy missing flags retained as unbound0. [Native NPC side collision](NATIVE_NPC_SIDE_COLLISION.md)
+uses source Entry/setup/constructor flags and per-instance previous roots. The catalog loader stages the original angle table atomically
 with the catalog for [ordinary talk selection](NATIVE_NPC_TALK_SELECTION.md).
 
 Loading rejects oversized counts, unsafe names, invalid model indices,
@@ -87,8 +89,10 @@ following NPC invocation. Complete encounter/door/regular-event priority is open
 Talk opens the exact source room/global resource and uses original playback;
 new actions and saves stay locked until closure while neutral field physics
 continues. Talk uses source turn-to-Mario and restores the catalog yaw after
-closure. Collision, complete auto-turn/registry/event ownership and wandering
-remain open.
+closure. [NPC side response](NATIVE_NPC_SIDE_COLLISION.md) now binds source
+dimensions/flags, previous-root rollback, polynomial response and map-wall
+retry. Complete NPC timers/motion/auto-turn/registry/event ownership and
+wandering remain open.
 
 The original save-block S_1 retains outside0..1 UVs, discrete scrolling updates,
 source binding repeat overrides, RGBA and pass2/3. Original bbox head, top support and ordinary Mario side collision are connected. Hit callback, save-choice

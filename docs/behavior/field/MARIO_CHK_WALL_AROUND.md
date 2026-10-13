@@ -34,7 +34,7 @@ decoded.
 | `f3` | scale / length | `f25` |
 | `f4` | height / plane | `f26` |
 | `r3` | in/out: 3-word planar descriptor | `r22` |
-| `r4` | out: corrected descriptor (may be `NULL`) | `r21` |
+| `r4` | integer mode; compared with zero, never dereferenced | `r21` |
 
 Stack frame: 608 bytes. Static work descriptor: `0x80343b78`
 (shared with [`searchFrontWall`](SEARCH_FRONT_WALL.md) and

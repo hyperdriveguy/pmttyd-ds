@@ -19,6 +19,9 @@ struct ProfessorSceneActor {
     bool jumping=false;
     uint32_t flags=0,battleFlags=0;
     uint64_t poseAt=0;
+    uint64_t placementGeneration=0; // Explicit source entry/set_position, not continuous movement.
+    uint32_t flagMask=0; // Bits explicitly owned by source flag_onoff requests.
+    bool npcActive=false; // Creation/lifetime, independent of display hiding.
 };
 struct ProfessorCameraRequest {
     std::array<float,3> eye{},at{};int duration=0,curve=11;bool off=false;

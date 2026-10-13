@@ -47,7 +47,9 @@ source dimensions, facing/width-edge tests, map obstruction and nearest selectio
 the previous NPC candidate suppresses Mario's next A jump before the new scan.
 Full interaction/encounter priority remains partial. Source local matrix/camera-facing, tribe
 dimensions, talk anchors and stay/talk requests now use recovered source rules;
-original shape culling/colors are retained. NPC collision and full display services
+original shape culling/colors are retained. Source NPC side collision now uses
+original dimensions/flags, previous-position rollback, polynomial response and
+map-wall correction. Complete NPC movement/lifetimes and display services
 remain unfinished. Area resources stage
 with room geometry and batch through citro3d; hardware performance is unmeasured.
 See [catalog scope](docs/behavior/field/NATIVE_AREA_ACTOR_CATALOG.md).

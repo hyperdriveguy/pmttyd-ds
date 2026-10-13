@@ -101,10 +101,11 @@ bool correctFieldWallsAround(FieldWallVector& position,FieldWallVector heading,i
         }
         if(!blocked)return pass!=0;
         if(pass==0) {
+            first=push; // Source retains the uncapped first correction.
             const float length=std::hypot(push.x,push.z);
             if(length>cap){push.x*=cap/length;push.z*=cap/length;}
-            first=push;position.x+=push.x;position.z+=push.z;
-        } else if(std::fma(first.x,push.x,first.z*push.z)>0) {
+            position.x+=push.x;position.z+=push.z;
+        } else if(!(std::fma(first.x,push.x,first.z*push.z)>=0)) {
             position.x+=push.x*.5f;position.z+=push.z*.5f;
         }
     }

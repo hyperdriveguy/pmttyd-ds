@@ -11,7 +11,10 @@ This does not claim complete npcMain or original SDK/runtime numeric equality.
 PMNPC005 retains previous model/actor fields, adds original resource+c4 draw
 mask to the model row (100 bytes), and source width/height plus case-sensitive
 talk-pose name to actor rows (196 bytes). Versions1..4 remain readable without
-inventing missing source metadata. NPC dimensions are separate from render scale;
+inventing missing source metadata. PMNPC006 adds original per-actor npcFlags
+(200-byte rows); rendering applies current source flag overlays and snap-mask
+ownership, while [side collision](NATIVE_NPC_SIDE_COLLISION.md) retains
+independent source collision gates/history. NPC dimensions are separate from render scale;
 objects require zero/empty NPC-only fields. Malformed input preserves the prior
 catalog atomically. Static Chu and Frankly source tribe widths/heights are30/30;
 their talk poses are CHU_T_1/T_1. Original root/source keys and unchanged US talk
@@ -90,6 +93,6 @@ Validation uses original-data catalog, matrix, animation and message tests plus
 isolated Azahar original Mouser talk/return captures; exact results in
 [progress](../../PROGRESS.md). These captures prove visible native presentation
 within the tested room, not matched original-runtime pixels or New2DS XL speed.
-Remaining: complete pre-display culling/color/layers/blur/shadows, source field
-NPC collision and interaction priority, wander/tavern fades, all-story/area
+Remaining: complete pre-display culling/color/layers/blur/shadows, full NPC collision/timer/movement lifetimes beyond the bound source side
+response and interaction priority, wander/tavern fades, all-story/area
 lifetimes, original runtime comparisons and hardware profiling.

@@ -23,13 +23,14 @@ struct FieldActorRecord {
     std::string pose,talkPrefix,sourceName; // Empty when the recovered talk event is unbound.
     float npcWidth=0,npcHeight=0; // Source tribe dimensions, independent of draw scalar.
     std::string talkPose;
+    uint32_t npcFlags=0; // Source Entry/setup/constructor flags; legacy rows leave metadata unbound.
     bool visible(uint32_t currentRoom,std::optional<int32_t> story,uint32_t interior,uint32_t system=0) const {
         return room==currentRoom && (interior&interiorRequired)==interiorRequired && !(interior&interiorForbidden) &&
             !(system&systemForbidden) && (!storyGate || (story && (storyGate==2?*story!=storyLow:*story>=storyLow && *story<=storyHigh)));
     }
 };
 std::string fieldActorTalkKey(const FieldActorRecord&,int32_t story);
-// PMNPC001..005 are local containers. They describe recovered static init subsets;
+// PMNPC001..006 are local containers. They describe recovered static init subsets;
 // scripted actor movement/flags and the original NPC driver are separate owners.
 class FieldActorAssets {
 public:

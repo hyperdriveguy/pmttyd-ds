@@ -234,9 +234,9 @@ int main(int argc,char**) {
     {
         Fixture f;f.hits.resize(32);f.hits[0]=hit(1,5);f.hits[16]=hit(2,1);
         FieldWallVector p{};CHECK(correctFieldWallsAround(p,{1,0,0},0,actor,f.services()));
-        CHECK(close(p.x,-7)); // First cap2.5; second uncapped9, multiplied .5.
+        CHECK(close(p.x,-2.5f)); // Same-direction second correction is skipped.
         Fixture reversed;reversed.hits.resize(32);reversed.hits[0]=hit(1,5);reversed.hits[24]=hit(2,1);
-        p={};CHECK(correctFieldWallsAround(p,{1,0,0},0,actor,reversed.services()));CHECK(close(p.x,-2.5f));
+        p={};CHECK(correctFieldWallsAround(p,{1,0,0},0,actor,reversed.services()));CHECK(close(p.x,2.f)); // Opposing second9 is halved, with no second cap.
         Fixture pass;pass.hits={hit(1,0,{},0x800000)};p={};
         CHECK(!correctFieldWallsAround(p,{1,0,0},0,actor,pass.services()) && p.x==0 && pass.calls.size()==16);
     }

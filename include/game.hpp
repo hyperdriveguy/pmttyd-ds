@@ -5,6 +5,8 @@
 #include <vector>
 #include <memory>
 #include <optional>
+#include <unordered_map>
+#include "npc_collision.hpp"
 #include "water_recovery.hpp"
 #include "transition_fade.hpp"
 #include "road_motion.hpp"
@@ -250,6 +252,7 @@ public:
     const char* prompt() const;
     bool near(Vec2 point, float distance = 1.5f) const;
     const FieldActorRecord* nearbyFieldActor() const;
+    uint32_t fieldNpcContact() const{return fieldNpcHit;}
 private:
     NpcTalkPlayer fieldNpcTalkPlayer() const;
     bool fieldNpcTalkCandidateAlive() const;
@@ -258,6 +261,13 @@ private:
     bool npcTalkWaiting=false;
     uint64_t npcTalkGeneration=0;
     void updateFieldNpcTalk(const Input&);
+    struct FieldNpcInstance {NpcSideBody body;uint64_t placement=0,seen=0;bool scripted=false;};
+    std::unordered_map<uint32_t,FieldNpcInstance> fieldNpcs;
+    uint64_t fieldNpcGeneration=0;
+    uint32_t fieldNpcRoom=~0u;
+    uint32_t fieldNpcHit=0;
+    void updateFieldNpcCollision();
+    void checkFieldRoadCases();
     FieldBattleWork fieldBattleWork;
     int32_t fieldSequence=2;
     bool marioFieldControl=true,partnerFieldControl=true;

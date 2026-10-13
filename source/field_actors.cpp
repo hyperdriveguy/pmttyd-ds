@@ -44,7 +44,8 @@ bool FieldActorAssets::read(FILE* f) {
     };
     std::array<char,8> magic{};uint32_t modelCount=0,actorCount=0;
     if(!scalar(magic))return false;
-    const bool version5=!std::memcmp(magic.data(),"PMNPC005",8);
+    const bool version6=!std::memcmp(magic.data(),"PMNPC006",8);
+    const bool version5=version6 || !std::memcmp(magic.data(),"PMNPC005",8);
     const bool version4=version5 || !std::memcmp(magic.data(),"PMNPC004",8);
     const bool version3=version4 || !std::memcmp(magic.data(),"PMNPC003",8);
     const bool version2=version3 || !std::memcmp(magic.data(),"PMNPC002",8);
@@ -79,6 +80,7 @@ bool FieldActorAssets::read(FILE* f) {
                a.npcWidth>10000 || a.npcHeight>10000 || (a.kind==1 && (a.npcWidth || a.npcHeight || !a.talkPose.empty())))return false;
         }
         if(models[a.model].hitMode && a.kind!=1)return false;
+        if(version6 && (!scalar(a.npcFlags) || (a.kind==1 && a.npcFlags)))return false;
         if(a.storyGate==2 && a.storyLow!=a.storyHigh)return false;
         if(!a.talkPrefix.empty() && (a.kind!=0 || a.talkPrefix.size()!=11 || a.talkPrefix.substr(0,4)!="gor_" ||
            a.talkPrefix[6]!='_' || a.talkPrefix.back()!='_'))return false;

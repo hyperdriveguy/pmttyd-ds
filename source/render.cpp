@@ -258,6 +258,10 @@ void Renderer::fieldActors(const Game& g) {
                 actor.position=g.storyPresentation().actors[2].position;actor.yaw=g.storyPresentation().actors[2].yaw;
                 actor.pose=g.storyPresentation().message.talking && g.storyPresentation().speaker==2?"T_1":g.trioBattleActive?g.storyPresentation().actors[2].pose:g.storyPresentation().actors[2].moving?"W_1":"S_1";
             } else if(!actor.visible(g.progress.room,g.progress.originalStory,g.fieldDoor.interiorMask,g.fieldSystemFlags))continue;
+            uint32_t npcFlags=actor.npcFlags;
+            if(scripted)npcFlags=(npcFlags&~g.storyPresentation().actors[2].flagMask)|
+                (g.storyPresentation().actors[2].flags&g.storyPresentation().actors[2].flagMask);
+            if(actor.kind==0 && npcFlags && (npcFlags&3)!=3)continue;
             float frame=float(g.ticks-plaza.actorStart);
             if(actor.kind==0 && g.fieldActorTalk.message.active() && g.fieldActorTalk.actor.key==actor.key)
                 actor.yaw=g.fieldActorTalk.actor.yaw;
@@ -272,11 +276,12 @@ void Renderer::fieldActors(const Game& g) {
                 auto& state=plaza.npcs[actor.key];npc=&state.presentation;
                 const uint64_t now=g.ticks*1000/60;
                 if(now<state.clock.poseAt)state={};
+                if(npcFlags&0x8000)npc->flags|=0x100;else npc->flags&=~0x100u;
                 frame=state.clock.update(actor.pose,talkPose,
                     g.fieldActorTalk.actor.key==actor.key?&g.fieldActorTalk.message:nullptr,now);
                 actor.pose=state.clock.pose;
                 NpcMatrixInput input;input.root=actor.position;input.yaw=actor.yaw;input.drawScale=actor.scale;
-                if(scripted)input.flags=g.storyPresentation().actors[2].flags;
+                input.flags=npcFlags;
                 NpcCameraService camera;camera.user=const_cast<FieldCameraFrame*>(&g.fieldCameraFrame);
                 camera.read=[](void* p) {
                     const auto& frame=*static_cast<FieldCameraFrame*>(p);

@@ -79,12 +79,16 @@ int main(int argc,char**) {
         assert(read(a,b) && a.actors()[0].npcHeight==30 && a.actors()[0].talkPose=="TalkPose");
         bad=b;replace(bad,actors+156+4,0x7fc00000u);assert(!read(a,bad));
         assert(a.actors()[0].npcHeight==30);
+        b[7]='6';
+        for(unsigned i=0;i<2;++i){const size_t at=actors+i*200+196;b.insert(b.begin()+at,4,0);replace(b,at,0x80603u);}
+        assert(read(a,b) && a.actors()[0].npcFlags==0x80603);
     }
     if(argc>1) {
         assert(a.load("romfs/field-actors.pmnpc"));assert(a.actors().size()>=3 && a.models().size()>=2);
         assert(a.models()[0].asset=="field-chu" && a.models()[1].asset=="professor");
         const auto& chu=a.actors()[0];assert(chu.room==2 && chu.pose=="CHU_S_1");
         assert(chu.npcWidth==30 && chu.npcHeight==30 && chu.talkPose=="CHU_T_1" && a.models()[0].drawMask==1);
+        assert(chu.npcFlags==0x80603 && a.actors()[1].npcFlags==0x40080603);
         assert((chu.position==std::array<float,3>{150,0,-400}) && chu.yaw==270);
         assert(chu.visible(2,8,0) && chu.visible(2,55,2) && !chu.visible(2,56,0) && !chu.visible(2,std::nullopt,0));
         const auto& saveBlock=a.actors()[3];assert(saveBlock.kind==1 && saveBlock.scale==10 && saveBlock.pose=="S_1");
@@ -113,6 +117,34 @@ int main(int argc,char**) {
         assert(game.fieldActorTalk.actor.yaw==270 && chu.yaw==270); // Talk facing is source world yaw.
         for(int t=0;t<5000 && game.fieldActorTalk.message.active();++t){game.tick(press);assert(game.progress.originalStory==8 && !game.saveRequested);}
         assert(!game.fieldActorTalk.message.active() && game.scene==Scene::Explore);
+        Game walking;walking.restore(saved);for(int n=0;n<360;++n)walking.tick({});
+        Input toward;toward.x=-1; // Settled original viewYaw180 maps left input to world+X.
+        for(int n=0;n<40;++n)walking.tick(toward);
+        assert(walking.fieldNpcContact()==chu.key && walking.progress.position.x>1.21f && walking.progress.position.x<1.23f);
+        assert(!walking.airborne() && walking.progress.originalStory==8);
+        Game scripted;scripted.restore(saved);for(int n=0;n<360;++n)scripted.tick({});
+        scripted.professorStory.triggered=true;scripted.professorStory.finished=true;
+        auto& professor=scripted.professorStory.actors[2];professor.npcActive=true;
+        professor.position={120,0,-400};professor.placementGeneration=1;
+        professor.flags=professor.flagMask=0x40000020;scripted.tick({});assert(!scripted.fieldNpcContact());
+        professor.flags=0;scripted.tick({});assert(scripted.fieldNpcContact()==a.actors()[1].key);
+        professor.hidden=true;professor.flags=0x80;professor.flagMask|=0x80;
+        scripted.tick({});assert(scripted.fieldNpcContact()==a.actors()[1].key); // Draw hiding leaves source collision eligible.
+        professor.npcActive=false;scripted.tick({});assert(scripted.fieldNpcContact()!=a.actors()[1].key);
+        Game history;auto away=saved;away.position={0,-4};history.restore(away);
+        for(int n=0;n<360;++n)history.tick({});
+        history.professorStory.triggered=true;history.professorStory.finished=true;
+        auto& moving=history.professorStory.actors[2];moving.npcActive=true;
+        moving.position={100,0,-400};moving.placementGeneration=1;history.tick({});
+        moving.position[0]=10;history.tick({}); // Continuous movement keeps the previous root.
+        assert(moving.position[0]==100 && !history.fieldNpcContact());
+        moving.position[0]=10;++moving.placementGeneration;history.tick({}); // Explicit source placement seeds history.
+        assert(moving.position[0]==10 && history.fieldNpcContact()==a.actors()[1].key);
+        history.progress.position={0,-4};moving.position[0]=100;++moving.placementGeneration;
+        moving.flagMask|=3;moving.flags=2;history.tick({});
+        moving.position[0]=200;history.tick({}); // Initial flags gate must not publish the end snapshot.
+        moving.position[0]=10;moving.flags=3;history.tick({});
+        assert(moving.position[0]==100 && !history.fieldNpcContact());
         Game turned;turned.restore(saved);for(int n=0;n<360;++n)turned.tick({});assert(turned.nearbyFieldActor());
         turned.marioPresentation.displayFlags|=1;assert(!turned.nearbyFieldActor());
         turned.marioPresentation.displayFlags&=~1u;

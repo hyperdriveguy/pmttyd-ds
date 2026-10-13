@@ -939,3 +939,25 @@ SHA25677d2f5d30bea8bd4ff16b0d09ac2e942e705f4717e9fb233b1ccfb2166efc37c.
 The native trajectory uses the existing original `npc-angle.bin` table rather
 than a replacement atan implementation. Original ROM, extracted packs and
 compiled assets remain outside source history.
+
+## 2026-10-13 — PMNPC006 original NPC flag metadata
+
+`tools/field_actor_assets.py` now emits ignored `romfs/field-actors.pmnpc`
+with PMNPC006 actor rows200 bytes, retaining each original NPC Entry/setup/
+constructor flag word after PMNPC005 dimensions/talk pose. Original read-only
+`rel/gor.rel` rows0x452d4 (Chu3) and0x44ff4 (Frankly) supply setup0x80600;
+DOL NPCEntry publishes3, Frankly init0x410c8 adds0x40000000. Local manifest
+retains Chu0x80603/Frankly0x40080603 and source provenance. Objects retain0
+NPCflags and their existing separate model/bounds metadata. Loader reads
+versions1..6 atomically; missing legacy flags remain unbound0.
+
+No raster, geometry, texture or animation conversion changed in this format
+increment. Existing original c_tyusan/c_kuri_h art, source scales/dimensions
+and original91-float angle table remain local and ignored.
+[Native NPC side collision](behavior/field/NATIVE_NPC_SIDE_COLLISION.md) binds
+these source masks independently of rendering, with explicit placement history
+and scripted source flag ownership. Original numerical/runtime/backend and
+hardware limits remain stated; static fixtures are not Dolphin measurements.
+Nintendo/Intelligent Systems copyright remains; no distribution license is
+granted or inferred. No original ISO, extracted asset or compiled pack is
+committed.

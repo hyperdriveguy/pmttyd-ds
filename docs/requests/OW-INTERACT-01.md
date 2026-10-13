@@ -396,3 +396,57 @@ return cases. Emulator assertions require a visible original message window;
 return/save alone is insufficient proof. Full NPC registry/auto-turn/regular-
 event locks, transformed/key-depth/control modes, encounters, other events/areas,
 source side response and original backend/runtime/hardware parity remain OPEN.
+
+### 2026-10-13 — Side collision wrap/history/wall ABI and authored actor masks
+
+[Side numeric contract](../behavior/field/FIELD_NPC_MARIO_SIDE_RESPONSE_NUMERICS.md)
+now pins complete compAngle one-adjustment wrap/ties, explicit placement's
+previous-first/current-second publication, npcMain's post-response snapshot,
+and original around-wall retry(mode0,ignoredSpeed0,theta+160,width20,height).
+Source r4 is integer mode, correcting the old structure-sketch output-pointer
+label. Source ray radius10 is independent of separation/NPCwidth.
+
+Exact Chu3/Frankly setup flags0x80600 +NPCEntry3 and Frankly's scripted
+OR/CLEAR40000020 windows retain collision mask20 and movement mask40000000
+separately; fresh reload and same-room continuation have different flag owners.
+Re-extracted init/first-talk/fence streams, position/flag/angle/wall bodies and
+source snapshot instructions read-only. Documentation links/whitespace pass;
+no native edits or commit. Backend second-pass/native numerical differences,
+source frame/flag lifetime and original runtime trajectories remain open.
+
+### 2026-10-13 — Retained Mario travel writer and scripted NPC placement distinction
+
+[Side numeric contract](../behavior/field/FIELD_NPC_MARIO_SIDE_RESPONSE_NUMERICS.md)
+now pins ordinary walk/dash input+198→travel+1a4 publication, absence of
+local stay/jump/wall writes, and marioMoveMain's sole specialflag40 forced
+writer. Combined-displacement/idle fallback heading is local and must not
+replace retained travel each call. Source evt_npc_move_position sets target/
+capturedstart/driver state and components, with no current/previous-root
+writes or explicit-set-position call; ordinary steps do not reseed history.
+Fresh full read-only DOL inspections/write census, links and whitespacepass;
+no native edits/commit. Full event/transform/alternate-direction writer graph
+and movement driver timing remain open.
+
+### 2026-10-13 — Idle adjustment is a separate retained-travel writer
+
+Fresh marioAdjustMoveDir0x800965fc recheck confirms both snapped-display
+branches copy newly computed facing+1a0 into retained travel+1a4. The prior
+local stay-body no-write finding does not exclude called idle/presentation
+helpers. [Side numeric writer table](../behavior/field/FIELD_NPC_MARIO_SIDE_RESPONSE_NUMERICS.md)
+now includes that explicit writer and links the already recovered low-HP idle
+contract: publish travel when the source adjust service is actually invoked,
+while retaining ordinary idle/air history between those service requests.
+Docs-only source recheck; no native edits/commit or runtime claim.
+
+### 2026-10-13 — Native ordinary side-response binding
+
+[Native side collision](../behavior/field/NATIVE_NPC_SIDE_COLLISION.md) now
+binds current catalog flags/dimensions, retained travel, previous-root rollback,
+source finite polynomial response and current-map/object wall retry. PMNPC006
+retains Entry/setup/constructor masks; scripted explicit placement and flag
+OR/CLEAR owners remain distinct from continuous movement and draw hiding.
+Tests include source numerical deductions and live original-asset contact,
+placement-history and flag/lifetime cases. Exact build/emulator validation is
+recorded in [progress](../PROGRESS.md). Full registry/movement/timer/event
+composition, Gekko/SDK/backend numerics and original/hardware traces remain
+OPEN; this does not close the full request.

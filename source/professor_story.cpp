@@ -195,7 +195,7 @@ struct ProfessorRuntime {
         if(first){ProfessorServiceRequest r{function,e.currentCommand,scene->now,{}};
             for(unsigned i=0;i<e.argumentCount;++i)r.rawOperands.push_back(operand(e,i));
             scene->presentationRequests.push_back(std::move(r));}
-        auto setPosition=[&](unsigned actor,unsigned index){for(unsigned i=0;i<3;++i)scene->actors[actor].position[i]=number(e,index+i);scene->actors[actor].hidden=scene->actors[actor].position[1]==-1000 || (scene->actors[actor].flags&0x80);};
+        auto setPosition=[&](unsigned actor,unsigned index){for(unsigned i=0;i<3;++i)scene->actors[actor].position[i]=number(e,index+i);++scene->actors[actor].placementGeneration;scene->actors[actor].hidden=scene->actors[actor].position[1]==-1000 || (scene->actors[actor].flags&0x80);};
         switch(tag) {
         case 0:if(first)scene->cameras.push_back({{},{},value(e,0),value(e,1),true});return 2;
         case 1:if(first){ProfessorCameraRequest r;for(unsigned i=0;i<3;++i){r.eye[i]=number(e,i);r.at[i]=number(e,i+3);}r.duration=value(e,6);r.curve=value(e,7);scene->cameras.push_back(r);}return 2;
@@ -210,12 +210,13 @@ struct ProfessorRuntime {
         case 12:scene->keysEnabled=value(e,0)!=0;return 2;
         case 13:return move(e,first,0,0,1,2);
         case 14:if(first)scene->actors[0].yaw=number(e,0);return delay(e,first,uint64_t(std::max<int32_t>(0,value(e,1))));
-        case 15:scene->temporaryProfessor=true;for(unsigned i=0;i<3;++i)scene->actors[2].position[i]=number(e,2+i);scene->actors[2].hidden=scene->actors[2].position[1]==-1000;return 2;
+        case 15:scene->temporaryProfessor=true;scene->actors[2].npcActive=true;for(unsigned i=0;i<3;++i)scene->actors[2].position[i]=number(e,2+i);++scene->actors[2].placementGeneration;scene->actors[2].hidden=scene->actors[2].position[1]==-1000;return 2;
         case 16:scene->actors[0].pose=string(pointer(e,0));scene->actors[0].poseAt=scene->now;return 2;
         case 17:return print(e,first,false);
         case 18:return print(e,first,true);
         case 19: {
             auto& actor=scene->actors[npc(e,1)];const auto mask=uint32_t(value(e,2));
+            actor.flagMask|=mask;
             if(value(e,0)==1)actor.flags|=mask;else actor.flags&=~mask;
             actor.hidden=actor.position[1]==-1000 || (actor.flags&0x80);return 2;
         }
@@ -349,6 +350,7 @@ bool ProfessorStory::begin(uint64_t time,std::array<float,3> mario,std::array<fl
     if(!ready || triggered)return false;
     *this=ProfessorStory{};triggered=true;now=time;professorDeparted=departed;
     actors[0].position=mario;actors[0].pose="M_S_1";actors[1].position=goombella;actors[1].pose="PKR_S_1";
+    actors[2].position={-135,0,-240};actors[2].npcActive=true;actors[2].placementGeneration=1;
     runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
     if(!runtime_->initialize(script,8)){failed=true;return false;}tick(time,0,true);return !failed;
 }
@@ -366,6 +368,7 @@ bool ProfessorStory::beginLecture(uint64_t time,std::array<float,3> mario,std::a
     *this=ProfessorStory{};triggered=true;fenceStarted=true;fenceHidden=true;fenceCollisionOff=true;story=10;now=time;
     professorDeparted=departed;
     actors[0].position=mario;actors[0].pose="M_S_1";actors[1].position=goombella;actors[2].position={-220,0,305};
+    actors[2].npcActive=true;actors[2].placementGeneration=1;
     runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
     if(!runtime_->initialize(lectureScript,10)){failed=true;return false;}tick(time,0,false);return !failed;
 }
@@ -374,6 +377,7 @@ bool ProfessorStory::beginUnderground(uint64_t time,int32_t initialStory,std::ar
     *this=ProfessorStory{};underground=true;triggered=true;temporaryProfessor=departed;professorDeparted=departed;story=initialStory;now=time;
     actors[0].position=mario;actors[0].pose="M_S_1";actors[1].position=goombella;actors[1].pose="PKR_S_1";
     actors[2].position=mario;actors[2].hidden=!departed;actors[2].yaw=270;
+    actors[2].npcActive=departed;actors[2].placementGeneration=1;
     for(unsigned i=0;i<3;++i){auto& a=actors[i+3];a.position={0,-1000,0};a.hidden=true;a.yaw=270;a.pose=std::string(i==0?"KUR":i==1?"PTK":"TGK")+"_S_1";}
     runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
     if(!runtime_->initialize(undergroundEntry,initialStory)){failed=true;return false;}tick(time,0,false);return !failed;
@@ -384,6 +388,7 @@ bool ProfessorStory::beginTrioBattleIntro(uint64_t time) {
     actors[0].position={-100,0,-5};actors[0].pose="M_S_1";actors[0].yaw=90;
     actors[1].position={-140,0,5};actors[1].pose="PKR_S_1";actors[1].yaw=90;
     actors[2].position=battleUnits[3].position;actors[2].pose="S_1";
+    actors[2].npcActive=true;actors[2].placementGeneration=1;
     for(unsigned i=0;i<3;++i){const unsigned actor=i==0?3:i==1?5:4;actors[actor].position=battleUnits[i].position;actors[actor].pose=std::string(actor==3?"KUR":actor==4?"PTK":"TGK")+"_S_1";actors[actor].yaw=270;}
     runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
     if(!runtime_->initialize(battleEntries[0],11)){failed=true;return false;}tick(time,0,false);return !failed;
@@ -400,6 +405,8 @@ void ProfessorStory::restoreProfessor(bool departed) {
     *this=ProfessorStory{};triggered=true;finished=true;story=11;professorDeparted=departed;
     actors[2].position=departed?std::array<float,3>{0,-1000,0}:std::array<float,3>{-220,0,305};
     actors[2].hidden=departed;actors[2].yaw=270;actors[2].flags=0x40000000;
+    actors[2].placementGeneration=1;
+    actors[2].npcActive=!departed;actors[2].flagMask=0x40000000;
 }
 void ProfessorStory::tick(uint64_t time,uint32_t keys,bool doorBusy,const MessageSelectionInput& selectionInput) {
     if(failed || time<now || !runtime_)return;

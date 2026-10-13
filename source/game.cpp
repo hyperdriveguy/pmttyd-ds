@@ -776,12 +776,14 @@ const FieldActorRecord* Game::nearbyFieldActor() const {
     };
     NpcTalkScan scan;
     for(const auto& actor:fieldActorCatalog().actors()) {
-        if(actor.kind || actor.npcWidth<=0 || actor.npcHeight<=0 ||
+        if(actor.kind || !actor.npcFlags ||
            !actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))continue;
-        // Current static entries retain source Entry flags3; dynamic flag/event
-        // producers and encounter branches require the original registry owner.
-        scan.consider({actor.key,{actor.position[0],actor.position[1],actor.position[2]},
-            actor.npcWidth,actor.npcHeight,3,!actor.talkPrefix.empty()},mario,fieldNpcAngles(),rays);
+        // Share current roots and source flags with the side-response owner.
+        // Additional registry/event producers remain outside this slice.
+        const auto live=fieldNpcs.find(actor.key);
+        const auto root=live!=fieldNpcs.end()?live->second.body.root:FieldWallVector{actor.position[0],actor.position[1],actor.position[2]};
+        const auto flags=live!=fieldNpcs.end()?live->second.body.flags:actor.npcFlags;
+        scan.consider({actor.key,root,actor.npcWidth,actor.npcHeight,flags,!actor.talkPrefix.empty()},mario,fieldNpcAngles(),rays);
     }
     if(scan.candidate)for(const auto& actor:fieldActorCatalog().actors())
         if(actor.key==scan.candidate && actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))return &actor;
@@ -797,8 +799,10 @@ void Game::updateFieldNpcTalk(const Input& input) {
         if(npcTalkGeneration==fieldActorCatalogGeneration() && scene==Scene::Explore && progress.originalStory)
             for(const auto& actor:fieldActorCatalog().actors())if(actor.key==selected &&
                 actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags)) {
-                if(fieldActorTalk.begin(actor,*progress.originalStory,harborMessageFont(),ticks*1000/60)) {
-                    fieldActorTalk.actor.yaw=fieldNpcAngles().angle(actor.position[0],actor.position[2],
+                auto current=actor;const auto live=fieldNpcs.find(actor.key);
+                if(live!=fieldNpcs.end())current.position={live->second.body.root.x,live->second.body.root.y,live->second.body.root.z};
+                if(fieldActorTalk.begin(current,*progress.originalStory,harborMessageFont(),ticks*1000/60)) {
+                    fieldActorTalk.actor.yaw=fieldNpcAngles().angle(current.position[0],current.position[2],
                         progress.position.x*100,progress.position.z*100);
                     scene=Scene::Dialogue;saveRequested=false;npcTalkWaiting=true;return;
                 }
@@ -810,6 +814,59 @@ void Game::updateFieldNpcTalk(const Input& input) {
     npcTalkGeneration=fieldActorCatalogGeneration();
     if(!actor || !input.confirm || !progress.originalStory)return;
     npcTalkPending=actor->key;saveRequested=false; // State1→2; next NPC invocation starts the event.
+}
+void Game::updateFieldNpcCollision() {
+    fieldNpcHit=0;
+    const auto generation=fieldActorCatalogGeneration();
+    if(fieldNpcGeneration!=generation || fieldNpcRoom!=progress.room) {
+        fieldNpcs.clear();fieldNpcGeneration=generation;fieldNpcRoom=progress.room;
+    }
+    if((scene!=Scene::Explore && scene!=Scene::Dialogue) || trioBattleActive || water.active() ||
+       arriving || fade.active() || warpRequest>=0 || pipeRequest>=0)return;
+    NpcSidePlayer mario;mario.root={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
+    // Walk/dash publish retained travel; staying/air drift do not replace it
+    // with the local wall-query or display heading.
+    mario.travelHeading=fieldNpcAngles().angle(0,0,fieldMovement.headingX,fieldMovement.headingZ);
+    NpcSideServices services;services.user=this;
+    services.wall=[](void* p,FieldWallVector& root,const NpcSideWallRequest& request) {
+        auto& game=*static_cast<Game*>(p);FieldWallActor actor;
+        actor.flags=uint32_t(game.fieldIdle.mainFlags);actor.viewFlags=game.fieldViewFlags;
+        actor.motion=game.fieldJump.motion;actor.counter=game.fieldJump.ticks;
+        actor.width=request.width;actor.height=request.height;
+        const float heading=request.heading*.01745329238474369f;
+        FieldWallServices rays;rays.user=p;
+        rays.ray=[](void* p,FieldWallVector origin,FieldWallVector direction,float length) {
+            return fieldWallRay(origin,direction,length,&static_cast<Game*>(p)->fieldObjectTriangles);
+        };
+        correctFieldWallsAround(root,{std::sin(heading),0,-std::cos(heading)},request.mode,actor,rays);
+    };
+    for(const auto& actor:fieldActorCatalog().actors()) {
+        if(actor.kind || !actor.npcFlags)continue;
+        const bool professor=fieldActorCatalog().models()[actor.model].asset=="professor";
+        const bool scripted=professor && (progress.room==2 || progress.room==5) &&
+            professorStory.triggered;
+        if(scripted) {if(actor.storyLow!=8 || !professorStory.actors[2].npcActive)continue;}
+        else if(!actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))continue;
+        auto root=actor.position;uint32_t flags=actor.npcFlags;uint64_t placement=0;
+        if(scripted) {
+            const auto& source=professorStory.actors[2];root=source.position;placement=source.placementGeneration;
+            flags=(actor.npcFlags&~source.flagMask)|(source.flags&source.flagMask);
+        }
+        const FieldWallVector position{root[0],root[1],root[2]};
+        const auto inserted=fieldNpcs.try_emplace(actor.key);auto& instance=inserted.first->second;
+        if(inserted.second || instance.scripted!=scripted || instance.placement!=placement)instance.body.previous=position;
+        auto& body=instance.body;body.token=actor.key;body.root=position;body.width=actor.npcWidth;
+        body.height=actor.npcHeight;body.flags=flags;
+        instance.scripted=scripted;instance.placement=placement;instance.seen=ticks;
+        if(npcSideUpdateAdmitted(body))respondNpcSide(body,mario,fieldNpcAngles(),services);
+        if(scripted)professorStory.actors[2].position={body.root.x,body.root.y,body.root.z};
+        if((body.flags&3)==3)body.previous=body.root; // Rejected initial slots do not reach the source end snapshot.
+    }
+    for(auto it=fieldNpcs.begin();it!=fieldNpcs.end();) {
+        if(it->second.seen!=ticks)it=fieldNpcs.erase(it);else ++it;
+    }
+    fieldNpcHit=uint32_t(mario.hitNpc);
+    if(mario.hitNpc)progress.position={mario.root.x*.01f,mario.root.z*.01f};
 }
 bool Game::recoveryReturn(ReturnPoint& point) const {return groundReturn(returnContact,point);}
 bool Game::beginWater() {
@@ -1202,12 +1259,14 @@ void Game::move(const Input& i,bool launched) {
     updatePartner();
     if(airborne())saveRequested=false;
     if(!water.active())publishFieldCameraTarget();
-    // Field case manager runs after Mario motion, projection and camera publication.
-    if(warpRequest<0 && scene==Scene::Explore && !water.active()) {
+}
+void Game::checkFieldRoadCases() {
+    // Source field root runs caseMain after the NPC owner.
+    if(warpRequest<0 && scene==Scene::Explore && !water.active() && !arriving && !fade.active() && pipeRequest<0) {
         for(size_t n=0;n<roads.size();++n) {
             const auto& road=roads[n];
             if(road.source==progress.room && roadContactMatches(roadPassContact.sourceNode,road.sourceNode,roadCasesEnabled,roadAdmission)) {
-                warpRequest=int(n);resolveRoadCallbacks(road);departureOrigin=p;departureHeight=groundHeight;departureOriginValid=true;saveRequested=false;break;
+                warpRequest=int(n);resolveRoadCallbacks(road);departureOrigin=progress.position;departureHeight=groundHeight;departureOriginValid=true;saveRequested=false;break;
             }
         }
     }
@@ -1482,12 +1541,14 @@ void Game::tick(const Input& rawInput) {
         ~PresentationOnExit(){
             game.updateSaveObjects();
             game.updateTemporaryProfessor();
+            game.updateFieldNpcCollision(); // Source NPC response follows Mario/object movement.
             game.progress.interiorMask=uint8_t(game.fieldDoor.interiorMask);
             if(game.harborEncounter.running() || game.fieldDoor.active() || game.professorStory.running() || game.professorStory.temporaryProfessor)game.saveRequested=false;
             if(!game.professorStory.locked() && !game.harborEncounter.locked())game.updateMarioPresentation();
             Input talkInput=raw;
             if(raw.physicalSnapshot)talkInput.confirm=(game.inputProducer.channels[0].pressed&BattleButtonA)!=0;
             game.updateFieldNpcTalk(talkInput); // NPC owner follows current Mario/object updates.
+            game.checkFieldRoadCases();
             const auto& axes=game.inputProducer.channels[0].analog;
             const int mainX=raw.physicalSnapshot?axes.mainX:std::isfinite(raw.x)?int(std::clamp(raw.x,-1.f,1.f)*70.f):0;
             const int mainY=raw.physicalSnapshot?axes.mainY:std::isfinite(raw.z)?int(std::clamp(raw.z,-1.f,1.f)*70.f):0;

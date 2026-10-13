@@ -132,7 +132,7 @@ def build(iso):
                     position=[185,60,-55],yaw=0,pose='S_1',source='gor.rel:gor_01_init_evt@0x3c514')]
     # Original bbox fields consumed by mobjHitEntry, not rendered pose bounds.
     bounds=struct.unpack_from('>6f',Path('local-assets/map-objects/MOBJ_SaveBlock').read_bytes(),0xd0)
-    data = bytearray(struct.pack('<8sII',b'PMNPC005',len(models),len(records)))
+    data = bytearray(struct.pack('<8sII',b'PMNPC006',len(models),len(records)))
     collision=[]
     for index,(asset,scale) in enumerate(models):
         hit=index==2;box=bounds if hit else [0]*6
@@ -154,6 +154,9 @@ def build(iso):
         r['npc_dimensions']=dims
         data += struct.pack('<2f',dims['width'],dims['height'])
         data += fixed(dims['talk_pose']) if dims['talk_pose'] else bytes(32)
+        # Source Entry3 + setup80600, with Frankly's constructor OR40000000.
+        r['npc_flags']=(0x80603 | (0x40000000 if r['model']==1 else 0)) if r.get('kind',0)==0 else 0
+        data += struct.pack('<I',r['npc_flags'])
     Path('romfs/field-actors.pmnpc').write_bytes(data)
     Path('romfs/field-actors.json').write_text(json.dumps(dict(models=models,actors=records,collision=collision,npc_constants=npc_constants,
         setup=json.loads(setup.with_suffix('.s.provenance.json').read_text()),

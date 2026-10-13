@@ -30,10 +30,10 @@ The native current ordinary domain supplies original initialized Mario20/37,
 current root and motion, bound display/snapshot fields and source-table angleABf
 of camera eye→target. Native Mario display/main flags feed the talkable predicate;
 key-off skips the outer scan. Nested key depth and other unmapped control modes
-remain separate owners. Current static catalog entries retain original Entry
-flags3; catalog visibility maps their known original scene creation/deletion.
-Dynamic flags, transformed dimensions/modes, alternate NPC pools and encounter
-providers are not invented. Legacy rows without source dimensions do not become
+remain separate owners. Current PMNPC006 catalog entries retain original Entry3 plus setup/constructor
+flags; live scripted source masks overlay only their owned bits, catalog visibility maps their known original scene creation/deletion.
+Unbound dynamic flag producers, transformed dimensions/modes, alternate NPC pools and encounter
+providers are not invented. Legacy rows without known source flags do not become
 NPC candidates. Future areas use the same catalog/services and must bind their
 own source registry order, flags, lifetime and talk events.
 
@@ -80,6 +80,8 @@ A native attributes4 wall fixture proves wall rejection versus talk obstruction.
 Isolated emulator captures and exact build/test results live in
 [progress](../../PROGRESS.md); no hardware-performance claim is made.
 
-Next: source side response and wall correction, complete registry/auto-turn/
+[Native NPC side response](NATIVE_NPC_SIDE_COLLISION.md) now precedes this scan
+and supplies current contact/root/flags with source rollback and wall retry.
+Next: full NPC timers/movement and complete registry/auto-turn/
 regular-event lifetime, original encounter and map-object/A composition,
 additional original per-area events/NPCs/objects and hardware profiling.
