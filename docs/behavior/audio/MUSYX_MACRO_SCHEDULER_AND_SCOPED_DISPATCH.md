@@ -160,3 +160,10 @@ source/runtime/hardware equivalence remain OPEN.
 now closes the previously-open prefix through80282b94. Exact pending/default/
 flags/variable/clock/job order is pinned; other opcodes and actual source/caller/
 shared-domain/original execution requirements remain open.
+
+### Wait opcode follow-up
+
+[Complete wait/queue/time conversion and opcode4/7 stubs](MUSYX_MACRO_WAIT_QUEUE_AND_TIME_CONVERSION.md)
+now pins flag gates, randomization, indefinite sentinel, exact clock bases and
+queue order. Other opcode paths, actual time/rate/seed/list domains and original
+macro scheduling/audio evidence remain open.

@@ -257,6 +257,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Admission/pending/note/default/reset/clock/job order pinned; other opcodes/
   pending/ID/flag/clock writers, valid table/reinit domains and original audio
   remain open. Whole active interpreter is not yet closed.
+- [x] Complete mcmdWait/TimeQueueAdd/RNG/tick-conversion/rate getter and
+  opcode4/7 wait stubs —
+  [wait/queue/time conversion](../behavior/audio/MUSYX_MACRO_WAIT_QUEUE_AND_TIME_CONVERSION.md).
+  Flag/return effects, sentinel/random/base/deadline and equal-before queue
+  order pinned; time units/providers/list/domain/original waits/audio open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1552,3 +1557,21 @@ anchors/ten calls passes. Six flag/five pending/four previous-note/six setter,
 listings stay `/tmp`; no native change/original execution/body/binary asset export.
 Other opcodes, pending/ID/note/channel/flag/PC/clock writers/consumers, valid
 bounds/alignment/alias/IRQ/concurrency/reinit and original macro/audio remain OPEN.
+
+### 2026-10-13 — Macro wait, queue insertion and time conversion
+
+[Five complete bodies and two opcode stubs](../behavior/audio/MUSYX_MACRO_WAIT_QUEUE_AND_TIME_CONVERSION.md)
+close staged flag/early-return effects, random remainder/indefinite65535,
+conversion and four clock bases, due-deadline publication, queue-before-inactive
+stop return and strictly-less/equal-before insertion. Opcode7 overwrites shared
+command byte6 before the wait. Tick conversion preserves division-before-
+multiply/overflow; RNG keeps exact multiplicative state. No frame-time/unit
+conversion, generic no-op return, queue repair or zero-rate fallback invented.
+
+Validation: read-only manifest11 spans (five complete/two stubs/three prior
+children/one table),185 anchors/nine calls passes. Six RNG/six conversion/five
+rate/four base/five deadline/five queue/five remainder vectors checked as source
+deductions. Fresh full ELFs/listings stay `/tmp`; no native change/original
+execution/body/binary asset export. Actual commands/flags/seed/rates/timestamps/
+clock/list writers, nonzero-rate/member/sorted/cycle/alias/IRQ/concurrency/
+indefinite domains and original wait/random/event/audio traces remain OPEN.

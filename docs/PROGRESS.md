@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero macro wait/queue/time conversion
+
+Completed five macro wait/queue/random/conversion local bodies and two opcode
+stubs for EVT-01; checked the corresponding inbox portion.
+[Wait/queue/time conversion](behavior/audio/MUSYX_MACRO_WAIT_QUEUE_AND_TIME_CONVERSION.md)
+pins staged flags/early-return effects, random remainder/indefinite sentinel,
+four exact clock bases, due-deadline publication and equal-before queue insertion.
+Tick conversion retains division-before-multiply/wrap. Source clock units are
+not converted into measured original milliseconds or renderer-frame counts.
+
+Validation: read-only ISO manifest passed11 spans (five complete/two stubs/three
+prior children/one table),185 anchors/nine calls. Six RNG/six conversion/five
+rate/four base/five deadline/five queue/five remainder vectors checked as
+deductions. Link audit passed798 Markdown files/zero broken links;
+`git diff --check` passed. Documentation/metadata only; no `make test`/`make all`
+rerun. Full original inspection ELFs/listings stay `/tmp`; no bodies/binary
+assets committed. Concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 remaining macro control-flow/opcode paths and actual
+command/flag/seed/rate/index/clock/timestamp/list writers, nonzero-rate/member/
+sorted/cycle/alias/concurrency/indefinite domains; original wait/random/queue/
+event/audio traces. Full scheduler/native/runtime binding, lower-priority
+inbox/full-game work remain open.
+
 ## 2026-10-13 — Original NPC facing, dimensions, talk clocks and surface culling
 
 Commit `1e959c7` binds [ordinary NPC local presentation](behavior/field/NATIVE_NPC_PRESENTATION_AND_SOURCE_DIMENSIONS.md)
