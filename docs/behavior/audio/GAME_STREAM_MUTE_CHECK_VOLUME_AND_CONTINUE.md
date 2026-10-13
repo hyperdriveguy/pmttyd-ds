@@ -84,3 +84,8 @@ decoder/DVD/DMA callbacks and actual channel/base/flag/float/index/IRQ/providers
 valid extent/value/alias/lifetime/concurrency/FP/conversion domains, transitive
 MusyX/ARAM/AI/DSP and original mute/check/continue/fade/audio traces. Five local
 leaves answered; EVT-01 and full native/full-game binding remain OPEN.
+
+## 2026-10-13 — Fade/stop follow-up
+
+[Fade/stop/close](GAME_STREAM_FADE_STOP_AND_DEFERRED_CLOSE.md) closes fade/time/stop/deferred-DVD-close
+bodies. Consumers/GP/counter/IO/provider/FP domains/original audio/native binding open.

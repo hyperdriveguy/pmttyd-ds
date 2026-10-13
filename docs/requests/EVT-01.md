@@ -557,6 +557,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [game stream leaves](../behavior/audio/GAME_STREAM_MUTE_CHECK_VOLUME_AND_CONTINUE.md).
   Raw channel/flags/zero gates, signed volume conversion and ordered fresh
   continue writes pinned; engine/providers/domains/original audio open.
+- [x] Complete SoundSSFadeoutCh/StopCh/SoundSetFadeTime/DVDMgrClose —
+  [fade/stop/deferred close](../behavior/audio/GAME_STREAM_FADE_STOP_AND_DEFERRED_CLOSE.md).
+  Signed GP/half duration/ordered step, nested counter/flag-before-close/free/
+  fresh decrement/global invalidation pinned; consumers/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2776,3 +2780,13 @@ continue/seven volume/five address vectors checked. Raw flags versus Boolean
 check, mute-off zeroing, signed conversion and clear/copy/fresh-OR continue
 order pinned. Engine/writers/callbacks/provider/FP domains/original audio/native
 binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Game stream fade/stop/deferred-close delivery
+
+Completed four local bodies in
+[fade/stop/deferred close](../behavior/audio/GAME_STREAM_FADE_STOP_AND_DEFERRED_CLOSE.md).
+Nine spans/117 anchors/six calls verified; seven fade/six counter/five stop/three
+time-set/four close vectors checked. Signed GP/duration/minimum step, raw counter
+wrap/fresh decrement, flags-before-deferred-DVD/stream-free and global marker
+order pinned. Consumers/GP/counter/IO/provider/FP domains/original stop/audio/
+native binding remain open; EVT-01 stays OPEN.

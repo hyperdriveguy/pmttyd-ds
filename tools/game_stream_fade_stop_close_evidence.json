@@ -1,0 +1,463 @@
+{
+  "schema": 1,
+  "scope": "Four complete game stream fade/stop/time-set/deferred-DVD-close bodies; owners/IRQ/FP/playback/runtime open",
+  "complete_bodies": [
+    "SoundSSFadeoutCh",
+    "SoundSSStopCh",
+    "SoundSetFadeTime",
+    "DVDMgrClose"
+  ],
+  "linked_only": [
+    "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+    "sndStreamFree",
+    "OSRestoreInterrupts"
+  ],
+  "dol_spans": [
+    {
+      "name": "SoundSSFadeoutCh",
+      "address": 2148392788,
+      "size": 164,
+      "sha256": "93458b146a157baacf6b66520b935de3a401ed49ae842168c02a8497e860afd2"
+    },
+    {
+      "name": "SoundSSStopCh",
+      "address": 2148392952,
+      "size": 268,
+      "sha256": "b6867edb2a9bd240988d91c2971f9b0e9f6003e2ca07a422082498d8b9fc84ee"
+    },
+    {
+      "name": "SoundSetFadeTime",
+      "address": 2148410048,
+      "size": 20,
+      "sha256": "c56592cf2eeabd1373e9cd24e8455ff1cded8e8ef2e4a02fe3869c9e1c38648f"
+    },
+    {
+      "name": "DVDMgrClose",
+      "address": 2148814292,
+      "size": 16,
+      "sha256": "94db90a29f286b23aa565f38431131e6cd4dd9b2b341a852cdff146164fad6b3"
+    },
+    {
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+      "address": 2150210260,
+      "size": 20,
+      "sha256": "91253610f8caa4988f3df8595ccfc6e5eafaf0b6df1b302668555ab7d528b1bc"
+    },
+    {
+      "name": "sndStreamFree",
+      "address": 2150089696,
+      "size": 1748,
+      "sha256": "684f7227d0523aedec966dae5fa29e88c62bfdc32ec030026f9d4cdafafa2c4c"
+    },
+    {
+      "name": "OSRestoreInterrupts",
+      "address": 2150210300,
+      "size": 36,
+      "sha256": "54db610a580003e2db23e460425f4662f4f4e7a4da3ae6f89a632df9e52b427a"
+    },
+    {
+      "name": "Game fade constants 0x802e3cc0",
+      "address": 2150513856,
+      "size": 16,
+      "sha256": "20328d4327fadaaed8ad021724d9249544865299854153192385f2b6f3204ea7"
+    },
+    {
+      "name": "Game fade constants 0x80421910",
+      "address": 2151815440,
+      "size": 8,
+      "sha256": "609e0f8a545be527828c9f59530893aee9e6074deb89cd76c7887419e73c1156"
+    }
+  ],
+  "dol_anchors": {
+    "2148392788": "3c80803e",
+    "2148392796": "38c40138",
+    "2148392804": "80660100",
+    "2148392820": "4182007c",
+    "2148392824": "808d90b0",
+    "2148392828": "3ca04330",
+    "2148392832": "3c60802e",
+    "2148392840": "80040004",
+    "2148392844": "3c80802e",
+    "2148392848": "90a10010",
+    "2148392860": "90010014",
+    "2148392872": "90c1000c",
+    "2148392884": "90a10008",
+    "2148392912": "40800008",
+    "2148392940": "b0070000",
+    "2148392944": "38210020",
+    "2148392960": "3c80803e",
+    "2148392964": "90010014",
+    "2148392972": "93e1000c",
+    "2148392976": "3be40138",
+    "2148392980": "93c10008",
+    "2148392984": "807f0100",
+    "2148393000": "418200c4",
+    "2148393012": "40820014",
+    "2148393016": "481bba9d",
+    "2148393020": "3c80803e",
+    "2148393024": "38840138",
+    "2148393028": "90640210",
+    "2148393036": "38030001",
+    "2148393040": "b01f020c",
+    "2148393052": "41820020",
+    "2148393060": "3c60803e",
+    "2148393064": "38630138",
+    "2148393068": "38800000",
+    "2148393080": "b0830226",
+    "2148393084": "38000000",
+    "2148393088": "b01e0000",
+    "2148393092": "807e0028",
+    "2148393096": "48066d4d",
+    "2148393100": "807e00b0",
+    "2148393104": "48066d45",
+    "2148393108": "807e004c",
+    "2148393112": "4819e349",
+    "2148393124": "4082000c",
+    "2148393128": "807e00d4",
+    "2148393132": "4819e335",
+    "2148393144": "41820024",
+    "2148393148": "3863ffff",
+    "2148393156": "b07f020c",
+    "2148393160": "40820014",
+    "2148393164": "3c60803e",
+    "2148393168": "38630138",
+    "2148393172": "80630210",
+    "2148393176": "481bba25",
+    "2148393180": "3c60803e",
+    "2148393184": "3800ffff",
+    "2148393188": "38630138",
+    "2148393192": "90030104",
+    "2148393196": "80010014",
+    "2148393200": "83e1000c",
+    "2148393204": "83c10008",
+    "2148393212": "38210010",
+    "2148410048": "3ca0803e",
+    "2148410052": "38a50138",
+    "2148410056": "b0650208",
+    "2148410060": "b085020a",
+    "2148814300": "b0030090",
+    "2148392792": "9421ffe0",
+    "2148392800": "1c030138",
+    "2148392808": "7ce30214",
+    "2148392812": "a0070000",
+    "2148392816": "28000000",
+    "2148392836": "a0c6020a",
+    "2148392852": "6c008000",
+    "2148392856": "c8233cc8",
+    "2148392864": "c042a4d0",
+    "2148392868": "c8010010",
+    "2148392876": "ec200828",
+    "2148392880": "c8643cc0",
+    "2148392888": "c002a4d4",
+    "2148392892": "ec220824",
+    "2148392896": "c8410008",
+    "2148392900": "ec421828",
+    "2148392904": "ec220824",
+    "2148392908": "fc010040",
+    "2148392916": "fc200090",
+    "2148392920": "c0070010",
+    "2148392924": "ec000824",
+    "2148392928": "d0070014",
+    "2148392932": "a0070000",
+    "2148392936": "60000020",
+    "2148392948": "4e800020",
+    "2148392952": "9421fff0",
+    "2148392956": "7c0802a6",
+    "2148392968": "1c030138",
+    "2148392988": "7fc30214",
+    "2148392992": "a01e0000",
+    "2148392996": "28000000",
+    "2148393004": "a01f020c",
+    "2148393008": "28000000",
+    "2148393032": "a07f020c",
+    "2148393044": "a01e0000",
+    "2148393048": "5400056b",
+    "2148393056": "a01e0002",
+    "2148393072": "5400083c",
+    "2148393076": "7c630214",
+    "2148393116": "a01e001a",
+    "2148393120": "28000002",
+    "2148393136": "a07f020c",
+    "2148393140": "28030000",
+    "2148393152": "5460043f",
+    "2148393208": "7c0803a6",
+    "2148393216": "4e800020",
+    "2148410064": "4e800020",
+    "2148814292": "a0030090",
+    "2148814296": "60000008",
+    "2148814304": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2148393016,
+      "target": 2150210260,
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi"
+    },
+    {
+      "site": 2148393096,
+      "target": 2148814292,
+      "name": "DVDMgrClose"
+    },
+    {
+      "site": 2148393104,
+      "target": 2148814292,
+      "name": "DVDMgrClose"
+    },
+    {
+      "site": 2148393112,
+      "target": 2150089696,
+      "name": "sndStreamFree"
+    },
+    {
+      "site": 2148393132,
+      "target": 2150089696,
+      "name": "sndStreamFree"
+    },
+    {
+      "site": 2148393176,
+      "target": 2150210300,
+      "name": "OSRestoreInterrupts"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "literals": {
+    "unsigned_bias": "4330000000000000",
+    "signed_bias": "4330000080000000",
+    "numerator_1000": "447a0000",
+    "minimum_1": "3f800000"
+  },
+  "derived_fade_vectors": [
+    {
+      "duration_half20a": 1000,
+      "signed_gp_word4": 60,
+      "float10": 127,
+      "single_interval": 16.66666603088379,
+      "single_divisions": 60.000003814697266,
+      "selected_denominator": 60.000003814697266,
+      "stored_float14": 2.116666555404663,
+      "or_flags": 32
+    },
+    {
+      "duration_half20a": 1000,
+      "signed_gp_word4": 30,
+      "float10": 127,
+      "single_interval": 33.33333206176758,
+      "single_divisions": 30.000001907348633,
+      "selected_denominator": 30.000001907348633,
+      "stored_float14": 4.233333110809326,
+      "or_flags": 32
+    },
+    {
+      "duration_half20a": 0,
+      "signed_gp_word4": 60,
+      "float10": 127,
+      "single_interval": 16.66666603088379,
+      "single_divisions": 0.0,
+      "selected_denominator": 1.0,
+      "stored_float14": 127.0,
+      "or_flags": 32
+    },
+    {
+      "duration_half20a": 1,
+      "signed_gp_word4": 60,
+      "float10": 127,
+      "single_interval": 16.66666603088379,
+      "single_divisions": 0.06000000238418579,
+      "selected_denominator": 1.0,
+      "stored_float14": 127.0,
+      "or_flags": 32
+    },
+    {
+      "duration_half20a": 65535,
+      "signed_gp_word4": 60,
+      "float10": 255,
+      "single_interval": 16.66666603088379,
+      "single_divisions": 3932.10009765625,
+      "selected_denominator": 3932.10009765625,
+      "stored_float14": 0.06485084444284439,
+      "or_flags": 32
+    },
+    {
+      "duration_half20a": 1000,
+      "signed_gp_word4": -60,
+      "float10": 127,
+      "single_interval": -16.66666603088379,
+      "single_divisions": -60.000003814697266,
+      "selected_denominator": 1.0,
+      "stored_float14": 127.0,
+      "or_flags": 32
+    },
+    {
+      "duration_half20a": 1000,
+      "signed_gp_word4": 60,
+      "float10": -1,
+      "single_interval": 16.66666603088379,
+      "single_divisions": 60.000003814697266,
+      "selected_denominator": 60.000003814697266,
+      "stored_float14": -0.01666666567325592,
+      "or_flags": 32
+    }
+  ],
+  "derived_counter_vectors": [
+    {
+      "initial_counter": 0,
+      "entry_fresh_after_disable": 0,
+      "local_disables": true,
+      "incremented": 1,
+      "before_leave": 1,
+      "stored_after_leave": 0,
+      "restores_saved_state": true
+    },
+    {
+      "initial_counter": 1,
+      "entry_fresh_after_disable": 1,
+      "local_disables": false,
+      "incremented": 2,
+      "before_leave": 2,
+      "stored_after_leave": 1,
+      "restores_saved_state": false
+    },
+    {
+      "initial_counter": 65535,
+      "entry_fresh_after_disable": 65535,
+      "local_disables": false,
+      "incremented": 0,
+      "before_leave": 0,
+      "stored_after_leave": null,
+      "restores_saved_state": false
+    },
+    {
+      "initial_counter": 0,
+      "entry_fresh_after_disable": 0,
+      "local_disables": true,
+      "incremented": 1,
+      "before_leave": 0,
+      "stored_after_leave": null,
+      "restores_saved_state": false
+    },
+    {
+      "initial_counter": 1,
+      "entry_fresh_after_disable": 1,
+      "local_disables": false,
+      "incremented": 2,
+      "before_leave": 1,
+      "stored_after_leave": 0,
+      "restores_saved_state": true
+    },
+    {
+      "initial_counter": 0,
+      "entry_fresh_after_disable": 65535,
+      "local_disables": true,
+      "incremented": 0,
+      "before_leave": 0,
+      "stored_after_leave": null,
+      "restores_saved_state": false
+    }
+  ],
+  "derived_stop_vectors": [
+    {
+      "flags": 0,
+      "half2": 0,
+      "type_half1a": 2,
+      "admitted": false,
+      "clears_table": false,
+      "table_half_offset": null,
+      "clears_flags_before_children": false,
+      "dvd_close_requests": 0,
+      "stream_free_requests": 0,
+      "invalidates_word104": false
+    },
+    {
+      "flags": 1,
+      "half2": 0,
+      "type_half1a": 0,
+      "admitted": true,
+      "clears_table": false,
+      "table_half_offset": null,
+      "clears_flags_before_children": true,
+      "dvd_close_requests": 2,
+      "stream_free_requests": 1,
+      "invalidates_word104": true
+    },
+    {
+      "flags": 2,
+      "half2": 65535,
+      "type_half1a": 2,
+      "admitted": true,
+      "clears_table": false,
+      "table_half_offset": null,
+      "clears_flags_before_children": true,
+      "dvd_close_requests": 2,
+      "stream_free_requests": 2,
+      "invalidates_word104": true
+    },
+    {
+      "flags": 1024,
+      "half2": 1,
+      "type_half1a": 2,
+      "admitted": true,
+      "clears_table": true,
+      "table_half_offset": 552,
+      "clears_flags_before_children": true,
+      "dvd_close_requests": 2,
+      "stream_free_requests": 2,
+      "invalidates_word104": true
+    },
+    {
+      "flags": 65535,
+      "half2": 255,
+      "type_half1a": 3,
+      "admitted": true,
+      "clears_table": true,
+      "table_half_offset": 1060,
+      "clears_flags_before_children": true,
+      "dvd_close_requests": 2,
+      "stream_free_requests": 1,
+      "invalidates_word104": true
+    }
+  ],
+  "derived_time_set_vectors": [
+    {
+      "first_word": 0,
+      "second_word": 0,
+      "half208": 0,
+      "half20a": 0
+    },
+    {
+      "first_word": 1000,
+      "second_word": 500,
+      "half208": 1000,
+      "half20a": 500
+    },
+    {
+      "first_word": 4294967295,
+      "second_word": 65536,
+      "half208": 65535,
+      "half20a": 0
+    }
+  ],
+  "derived_close_vectors": [
+    {
+      "half90": 0,
+      "after": 8,
+      "immediate_free": false
+    },
+    {
+      "half90": 1,
+      "after": 9,
+      "immediate_free": false
+    },
+    {
+      "half90": 8,
+      "after": 8,
+      "immediate_free": false
+    },
+    {
+      "half90": 65535,
+      "after": 65535,
+      "immediate_free": false
+    }
+  ]
+}

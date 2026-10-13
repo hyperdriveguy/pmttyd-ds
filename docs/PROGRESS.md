@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero game stream fade/stop
+
+Completed SoundSSFadeoutCh/StopCh/SoundSetFadeTime/DVDMgrClose; checked EVT-01
+portion. [Fade/stop/close](behavior/audio/GAME_STREAM_FADE_STOP_AND_DEFERRED_CLOSE.md)
+pins signed GP/duration/minimum step, nested counter wrap/fresh decrement,
+flags-before-deferred-DVD/stream-free and global invalidation order. Consumers/
+GP/counter/IO/provider/FP domains/original stop/audio/native binding remain open.
+
+Validation: read-only ISO manifest passed nine spans,117 anchors,six calls.
+Seven finite fade/six counter/five stop/three time-set/four deferred-close vectors
+checked. Link audit passed913 Markdown files/zero broken links; scoped `git diff
+--check` passed. Mathematical source deductions are separate from original
+execution. Documentation/metadata only; no `make test`/`make all` rerun. Fresh
+full original ELFs/listings/generator stay `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded. Previously approved push remains
+pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 game stream engines/play/frequency/pan/volume and
+GP/time/counter/marker/base/flags/table/handle/stream-ID/type providers/deferred
+DVD owner and valid value/extent/alias/lifetime/IRQ/concurrency/FP domains,
+original fade/stop/IO/audio traces. Remaining decoder/DVD/DMA/macro/song/backend,
+lower-priority inbox/full native/game work remain open.
+
 ## 2026-10-13 — Original Goomba4 ordinary talk with explicit quest knowledge
 
 Committed91a091e: [native known-state talk](behavior/field/NATIVE_GOOMBA4_ORDINARY_TALK.md)
