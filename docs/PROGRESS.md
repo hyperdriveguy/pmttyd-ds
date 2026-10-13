@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero paired sound cosine/root helpers
+
+Completed sndCos/sndSqrt; checked the EVT-01 portion.
+[Paired cosine/root helpers](behavior/audio/MUSYX_PAIRED_COSINE_AND_SQRT_HELPERS.md)
+pins original constants/paired reduction/signed conversion/Gray bits/fused
+polynomial and estimate-before-zero/three double refinements. GQR/FPSCR/estimate/
+caller-domain/original math/filter/audio execution remain open.
+
+Validation: read-only ISO manifest passed five spans (two bodies/three numeric),
+74 whole-body instruction anchors/zero calls. Nine ordinary phase/eight odd-Gray/
+five synthetic-seed/five zero-gate vectors checked. Paired/scalar lane semantics
+cross-checked against Dolphin's primary interpreter source (links in contract);
+no emulator/original instruction execution claimed. Link audit passed849 Markdown
+files/zero broken links; scoped `git diff --check` passed. Documentation/metadata
+only; no `make test`/`make all` rerun. Full original fresh ELFs/listings stay `/tmp`;
+no bodies/binary assets committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 original GQR0/FPSCR/scalar-paired lane/estimate/
+rounding/trap/NaN/denormal execution, actual angle/frequency/coefficient/caller
+value domains, filter/DSP command consumers and original math/filter/audio traces.
+Remaining DSP/precision work, lower-priority inbox and full native/full-game work
+remain open.
+
 ## 2026-10-13 — Original wandering-NPC driver core and lifecycle evidence
 
 Implemented the [portable wander core](behavior/field/NATIVE_NPC_WANDER_CORE.md)

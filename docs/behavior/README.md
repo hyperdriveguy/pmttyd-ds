@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [MusyX paired cosine/square-root helpers](audio/MUSYX_PAIRED_COSINE_AND_SQRT_HELPERS.md) | Complete paired reduction/fused polynomial and estimate-before-zero/three-double-refinement bodies | GQR/FPSCR/estimate/caller domains and original math/filter/audio |
 | [MusyX filter coefficients/DSP parameters](audio/MUSYX_FILTER_COEFFICIENTS_AND_DSP_PARAMETERS.md) | Complete filter setter/coefficient wrapper and five parameter-copy gates | Math/FP/caller domains, surrounding DSP commands and original filter/audio |
 | [MusyX DSP volume-ramp consumers](audio/MUSYX_DSP_VOLUME_RAMP_CONSUMERS.md) | Complete three-triplet prepare/correct/mask region including studio-mode cross-triplet paths | Surrounding builder/providers/domains, command execution and original DSP/audio |
 | [Original IEEE remainder used by MusyX](audio/IEEE_REMAINDER_USED_BY_MUSYX.md) | Complete exceptional gate, finite normalization/subtract/shift/reconstruction and signed-zero body | FPSCR/NaN/trap/runtime domains and original mixer/audio |

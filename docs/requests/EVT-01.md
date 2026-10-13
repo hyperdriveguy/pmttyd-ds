@@ -402,6 +402,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   polyphase/filter parameter-copy region — [filter/DSP parameters](../behavior/audio/MUSYX_FILTER_COEFFICIENTS_AND_DSP_PARAMETERS.md).
   Mode state/single child order/output halves/fresh copy gates pinned;
   math/domain/whole builder/original filter/DSP/audio remain open.
+- [x] Complete sndCos/sndSqrt local filter math helpers —
+  [paired cosine/root helpers](../behavior/audio/MUSYX_PAIRED_COSINE_AND_SQRT_HELPERS.md).
+  Original constants/paired reduction/fused polynomial/estimate-before-zero/
+  three double refinements pinned; GQR/FPSCR/seed/domain/runtime remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2212,3 +2216,12 @@ and seven numeric literals retained. Exact low-byte1 admission, raw active-byte
 preservation, single math request/conversion/output order and five independent
 DSP copy gates pinned. Math/FPSCR/caller/domain/command/original filter/audio
 remain open. Parent EVT-01 stays OPEN.
+
+## 2026-10-13 — Sound cosine/root helper delivery
+
+Completed sndCos/sndSqrt in [paired cosine/root helpers](../behavior/audio/MUSYX_PAIRED_COSINE_AND_SQRT_HELPERS.md).
+Five spans/74 whole-body instruction anchors/zero calls verified;27 phase/Gray/
+synthetic-seed/zero-gate vectors and original constants recorded. Paired operand/
+lane interpretation cross-checked against Dolphin source; no emulator execution
+claimed. GQR/FPSCR/estimate/caller domains and original math/filter/audio remain
+open. Parent EVT-01 stays OPEN.

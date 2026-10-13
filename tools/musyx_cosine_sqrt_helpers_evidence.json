@@ -1,0 +1,352 @@
+{
+  "schema": 1,
+  "scope": "Complete sound paired cosine and reciprocal-square-root refinement bodies; GQR/FPSCR/seed/domain/runtime open",
+  "complete_bodies": [
+    "sndCos",
+    "sndSqrt"
+  ],
+  "linked_only": [],
+  "dol_spans": [
+    {
+      "name": "sndCos",
+      "address": 2150171772,
+      "size": 212,
+      "sha256": "d0aed78db10fd0a33fed848fd314915b8c9efe3f530da1638a498dcb0b97f8c4"
+    },
+    {
+      "name": "sndSqrt",
+      "address": 2150171688,
+      "size": 84,
+      "sha256": "a64b56636e91c47b60b433fde100be8cdbe70cd72d8b170d32dc342e61f3eb1d"
+    },
+    {
+      "name": "sqrtConsts",
+      "address": 2150645912,
+      "size": 12,
+      "sha256": "d82935ae4c7b249e5bfc24f8ce7f3ccdbf2e345485dbd8cd8e8428406d4e914d"
+    },
+    {
+      "name": "_sinConsts",
+      "address": 2150645924,
+      "size": 32,
+      "sha256": "633fe0d7f909ae71fac58fad25765ab3723d475a9fa6f9e670ba92fbae404eb4"
+    },
+    {
+      "name": "double_to_int_804292a0",
+      "address": 2151846560,
+      "size": 8,
+      "sha256": "07af8387624cf8f36152797d2f561246f21237d1d22b5c13006eacfa6f475e43"
+    }
+  ],
+  "dol_anchors": {
+    "2150171776": "3c608030",
+    "2150171780": "3880000c",
+    "2150171784": "386340a4",
+    "2150171796": "3ce08043",
+    "2150171816": "3cc04330",
+    "2150171836": "90c10008",
+    "2150171848": "80a1000c",
+    "2150171864": "90c1000c",
+    "2150171896": "41820008",
+    "2150171908": "41960008",
+    "2150171968": "40840008",
+    "2150171976": "38210010",
+    "2150171688": "3c608030",
+    "2150171772": "9421fff0",
+    "2150171788": "e0c30010",
+    "2150171792": "e1830018",
+    "2150171800": "10213054",
+    "2150171804": "c86792a0",
+    "2150171808": "116634a0",
+    "2150171812": "fc816040",
+    "2150171820": "e0030000",
+    "2150171824": "e0430008",
+    "2150171828": "fc200a10",
+    "2150171832": "ec2101b2",
+    "2150171840": "fce0081e",
+    "2150171844": "7ce127ae",
+    "2150171852": "54a7f87e",
+    "2150171856": "6ca68000",
+    "2150171860": "7ce72a78",
+    "2150171868": "70e70001",
+    "2150171872": "c8e10008",
+    "2150171876": "4e800000",
+    "2150171880": "ece71828",
+    "2150171884": "ec213828",
+    "2150171888": "70a50001",
+    "2150171892": "1021019a",
+    "2150171900": "ec215828",
+    "2150171904": "ec810072",
+    "2150171912": "10200850",
+    "2150171916": "eca40132",
+    "2150171920": "11000058",
+    "2150171924": "11220058",
+    "2150171928": "1141031a",
+    "2150171932": "11290158",
+    "2150171936": "ed4a0172",
+    "2150171940": "11290118",
+    "2150171944": "ec28093a",
+    "2150171948": "ed4a0172",
+    "2150171952": "10250a1e",
+    "2150171956": "ec21482a",
+    "2150171960": "10240a5e",
+    "2150171964": "ec2a093a",
+    "2150171972": "10200850",
+    "2150171980": "4e800020",
+    "2150171692": "c06340a0",
+    "2150171696": "c0034098",
+    "2150171700": "c043409c",
+    "2150171704": "fc011840",
+    "2150171708": "fc600834",
+    "2150171712": "4d820020",
+    "2150171716": "fc8300f2",
+    "2150171720": "fc6300b2",
+    "2150171724": "fc81013c",
+    "2150171728": "fc630132",
+    "2150171732": "fc8300f2",
+    "2150171736": "fc6300b2",
+    "2150171740": "fc81013c",
+    "2150171744": "fc630132",
+    "2150171748": "fc8300f2",
+    "2150171752": "fc6300b2",
+    "2150171756": "fc81013c",
+    "2150171760": "fc630132",
+    "2150171764": "fc2100f2",
+    "2150171768": "4e800020"
+  },
+  "direct_calls": [],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "numeric_constants": {
+    "sqrtConsts": [
+      3.0,
+      0.5,
+      0.0
+    ],
+    "_sinConsts": [
+      -0.1666666716337204,
+      0.008333331905305386,
+      -0.00019840900495182723,
+      2.7526000394573202e-06,
+      0.6366197466850281,
+      1.5707963705062866,
+      0.0,
+      2.3900000201138027e-08
+    ],
+    "double_to_int_804292a0": 4503601774854144.0
+  },
+  "derived_quadrant_vectors": [
+    {
+      "input": 0.0,
+      "shifted": 1.5707963705062866,
+      "scaled": 1.0,
+      "signed_integer": 1,
+      "odd": 1,
+      "gray_bit": 1,
+      "reduced": 1.5707963705062866,
+      "final_negates": false
+    },
+    {
+      "input": -0.0,
+      "shifted": 1.5707963705062866,
+      "scaled": 1.0,
+      "signed_integer": 1,
+      "odd": 1,
+      "gray_bit": 1,
+      "reduced": 1.5707963705062866,
+      "final_negates": false
+    },
+    {
+      "input": 1.5707963705062866,
+      "shifted": 3.1415927410125732,
+      "scaled": 2.0,
+      "signed_integer": 2,
+      "odd": 0,
+      "gray_bit": 1,
+      "reduced": -0.0,
+      "final_negates": false
+    },
+    {
+      "input": -1.5707963705062866,
+      "shifted": 0.0,
+      "scaled": 0.0,
+      "signed_integer": 0,
+      "odd": 0,
+      "gray_bit": 0,
+      "reduced": 0.0,
+      "final_negates": false
+    },
+    {
+      "input": 3.1415927410125732,
+      "shifted": 4.71238899230957,
+      "scaled": 3.0,
+      "signed_integer": 3,
+      "odd": 1,
+      "gray_bit": 0,
+      "reduced": -1.5707963705062866,
+      "final_negates": false
+    },
+    {
+      "input": -3.1415927410125732,
+      "shifted": -1.5707963705062866,
+      "scaled": 1.0,
+      "signed_integer": 1,
+      "odd": 1,
+      "gray_bit": 1,
+      "reduced": 1.5707963705062866,
+      "final_negates": true
+    },
+    {
+      "input": 6.2831854820251465,
+      "shifted": 7.853981971740723,
+      "scaled": 5.0,
+      "signed_integer": 5,
+      "odd": 1,
+      "gray_bit": 1,
+      "reduced": 1.5707963705062866,
+      "final_negates": false
+    },
+    {
+      "input": 1.0,
+      "shifted": 2.570796489715576,
+      "scaled": 1.6366198062896729,
+      "signed_integer": 1,
+      "odd": 1,
+      "gray_bit": 1,
+      "reduced": 0.5707962512969971,
+      "final_negates": false
+    },
+    {
+      "input": -1.0,
+      "shifted": 0.5707963705062866,
+      "scaled": 0.3633802533149719,
+      "signed_integer": 0,
+      "odd": 0,
+      "gray_bit": 0,
+      "reduced": 0.5707963705062866,
+      "final_negates": false
+    }
+  ],
+  "derived_integer_bits": [
+    {
+      "word": 0,
+      "odd": 0,
+      "gray": 0
+    },
+    {
+      "word": 1,
+      "odd": 1,
+      "gray": 1
+    },
+    {
+      "word": 2,
+      "odd": 0,
+      "gray": 1
+    },
+    {
+      "word": 3,
+      "odd": 1,
+      "gray": 0
+    },
+    {
+      "word": 4,
+      "odd": 0,
+      "gray": 0
+    },
+    {
+      "word": 2147483647,
+      "odd": 1,
+      "gray": 0
+    },
+    {
+      "word": 2147483648,
+      "odd": 0,
+      "gray": 0
+    },
+    {
+      "word": 4294967295,
+      "odd": 1,
+      "gray": 0
+    }
+  ],
+  "derived_sqrt_vectors": [
+    {
+      "x": 1.0,
+      "synthetic_seed": 1.0,
+      "three_refinements": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "final": 1.0
+    },
+    {
+      "x": 4.0,
+      "synthetic_seed": 0.5,
+      "three_refinements": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "final": 2.0
+    },
+    {
+      "x": 9.0,
+      "synthetic_seed": 0.333,
+      "three_refinements": [
+        0.3333328335,
+        0.33333333333220905,
+        0.3333333333333333
+      ],
+      "final": 3.0
+    },
+    {
+      "x": 0.25,
+      "synthetic_seed": 2.01,
+      "three_refinements": [
+        1.999924875,
+        1.999999995767229,
+        2.0
+      ],
+      "final": 0.5
+    },
+    {
+      "x": 100.0,
+      "synthetic_seed": 0.1,
+      "three_refinements": [
+        0.09999999999999999,
+        0.09999999999999999,
+        0.09999999999999999
+      ],
+      "final": 10.0
+    }
+  ],
+  "derived_zero_gate_vectors": [
+    {
+      "raw_double": "0000000000000000",
+      "returns_original": true,
+      "estimate_requested_before_gate": true
+    },
+    {
+      "raw_double": "8000000000000000",
+      "returns_original": true,
+      "estimate_requested_before_gate": true
+    },
+    {
+      "raw_double": "3ff0000000000000",
+      "returns_original": false,
+      "estimate_requested_before_gate": true
+    },
+    {
+      "raw_double": "bff0000000000000",
+      "returns_original": false,
+      "estimate_requested_before_gate": true
+    },
+    {
+      "raw_double": "7ff8000000000000",
+      "returns_original": false,
+      "estimate_requested_before_gate": true
+    }
+  ]
+}

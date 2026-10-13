@@ -103,3 +103,9 @@ frequency/mode/coefficient/flag/record/PB/type/value/alias/lifetime/IRQ/concurre
 domains, surrounding builder setup/cache/command consumers and original filter/
 parameter/DSP/audio traces. Two local bodies/one consumer region answered;
 whole builder/full native binding and EVT-01 remain OPEN.
+
+## 2026-10-13 — Math-helper follow-up
+
+[Paired cosine/root helpers](MUSYX_PAIRED_COSINE_AND_SQRT_HELPERS.md) closes the local sndCos/sndSqrt
+bodies. Original paired/fused/estimate instructions are retained; GQR/FPSCR/
+seed/caller domains and original math/filter/DSP/audio execution remain open.
