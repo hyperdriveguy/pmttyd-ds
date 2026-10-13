@@ -278,3 +278,14 @@ areauthority; parentprimaryrootandSDKheaders remainseparate. Correctfreepair
 usesinnerroot; no12-byteSDKheader, noE-onlyarenaoriginalhistoryclaim or
 staledouble-free/idempotenceassumption. Docs-only/read-only/no nativecode
 build/commit; git diff --check.
+
+### 2026-10-13 delivery/request: preservedtrio postwait callbacks/nativegaps
+
+[Returnaudit](../behavior/story/UNDERGROUND_FIRST_ARRIVAL_AND_GOOMBA_TRIO.md#2026-10-13-preserved-native-return-callback-audit)
+correctstag61fieldwait/62prev-partyrestore(no62triousage); orderedpost093/
+094_kur/094_01extparty/story12sourcegraph;fieldNPCtribePTK persistsbattle
+wingfall anddamageforce1. Concretecurrentnativegaps27/29partyRunStopdefault
+success,54a_recnotapplied,70BGMon_fwithoutactualfadeowner; originalfield
+MarioWord4/currentindices/partyconstructor/controlcounter/pouchjoinand
+separatefieldVMpausedchildren ownershiprequired. Noforcedunlock orstorywrite.
+Read-onlysource/nativeaudit; docs-only/no nativecode/build/commit;diffcheckpass.

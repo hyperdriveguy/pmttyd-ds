@@ -1,6 +1,7 @@
 #include "trio_attack.hpp"
 #include "battle_event_callbacks.hpp"
 #include "event_memory_bootstrap.hpp"
+#include "event_memory_release.hpp"
 #include <cmath>
 #include <cstring>
 #include <cassert>
@@ -308,12 +309,17 @@ struct TrioAttackRuntime {
         // remaining original fields use the explicit recovered initial-stage
         // snapshot, not a claim to deserialize an original saved inventory.
         if(!suppliedEntry)entryPouch->half(0x70,hp);
-        for(auto span:std::array<std::pair<uint32_t,unsigned>,11>{{{0x82000000,0x100000},{0x8041f070,16},{0x8041e428,4},{0x8041e844,4},{0x8041eb90,4},{0x8041eb00,4},{Battle,0x19100},{Units,0x10000},{Parts,0x10000},{Kinds,0x1000},{Work,0x14000}}})
+        for(auto span:std::array<std::pair<uint32_t,unsigned>,13>{{{0x85600000,0x64040},{0x8041e808,16},{0x82000000,0x100000},{0x8041f070,16},{0x8041e428,4},{0x8041e844,4},{0x8041eb90,4},{0x8041eb00,4},{Battle,0x19100},{Units,0x10000},{Parts,0x10000},{Kinds,0x1000},{Work,0x14000}}})
             if(!vm.memory.registerRam(span.first,std::vector<uint8_t>(span.second)))return false;
         std::vector<uint8_t> packedPouch(0x600);std::copy(entryPouch->bytes.begin(),entryPouch->bytes.end(),packedPouch.begin());
         if(!vm.memory.registerRam(0x85000000,std::move(packedPouch)) || !vm.memory.importScripts(scripts))return false;
         auto m=vm.memoryBinding.services();const auto start=eventSdkInitializeAllocator(0x82000000,0x82100000,1,m);
         if(eventSdkCreateHeap(start,0x82100000,m)!=0)return false;
+        // Declared E-only primary reservation: room for the original400KiB
+        // battle subpool and mandatory32-byte map headers. Other native work
+        // remains separately mapped; this does not reproduce prior allocations.
+        word(0x8041e808,0x85600000);word(0x85600000,0);word(0x85600004,0x64020);half(0x85600008,0);
+        allocateEventBattleMapPool(m);
         word(0x8041e844,0);vm.gp.refreshRate=60;vm.gp.timestamp=now*eventClockRate(243000000);vm.initializeContexts();vm.gp.battleContext=1;
         word(Battle+0x2858,Work+0x400);half(Battle+8,2);half(Battle+0x10,1);
         real(Battle+0x16f28,90);real(Battle+0x16f30,-50); // Source fresh BattleStageInit floor fields.
@@ -571,7 +577,7 @@ struct TrioAttackRuntime {
             if(turn<threshold){const float delta=float(threshold-turn);endingRequest(0x8019efa4,{int32_t(bits(delta))});const float product=real(0x8042499c)*(real(0x80424998)*delta);if(!endingAudienceTarget(product*real(a+0x13778),real(0x80424988)))return;}
             word(Battle+0xf24,0x07000005);endingRequest(0x80212844);
             auto& koura=createRootEvent(vm.schedule,0x803b0c50,10,0,vm.creationServices());koura.owner=int32_t(word(mario));
-            const auto end=eventSdkAllocate(0,0x2ac,vm.memoryBinding.services());required(end!=0);word(Battle+0xf28,end);
+            endingRequest(0x800f8934,{0x2ac});const auto end=eventMapAllocate(word(0x8041e80c),0x2ac,vm.memoryBinding.services());required(end!=0);word(Battle+0xf28,end);
             endingRequest(0x802151b4);word(end+0x30,0);word(end,0);word(end+0x29c,0);word(end+0x2a0,random.bounded(120)+60);word(end+0x2a4,0);
             endingDisplay();return;
         }
@@ -661,7 +667,9 @@ struct TrioAttackRuntime {
                 // This copy publishes exact packed writes, including EXP, without healing or rebuilding inventory.
                 const auto pouch=word(0x8041eb00);for(unsigned i=0;i<entryPouch->bytes.size();++i)entryPouch->bytes[i]=byte(pouch+i);
                 endingExported=true;
-            }pending=0x800f8908;return; // Actual teardown/field constructor owner follows resource export.
+                const auto end=word(Battle+0xf28);endingRequest(0x800f8908,{int32_t(end)});if(end)eventMapFree(word(0x8041e80c),end,vm.memoryBinding.services());
+                word(Battle+0xf28,0);word(Battle,4); // Source caller writes, independent of the map free operation.
+            }pending=0x8005e0c0;return; // Actual field Mario owner precedes party constructor/Rule0/context restoration.
         }
         pending=0x80215234;
     }

@@ -7482,3 +7482,44 @@ Validation: readonlycompleteallocator/wrapper/call/bootstrap andvalidheader
 arithmetic;git diff --check. Documentation only; no native edits/tests/builds
 orcommit. Next nativeE migratescorrectsourcealloc/freepair beforefield
 constructor; fulloriginalresource/SDK/cache/history mapping staysopen.
+
+## 2026-10-13 — Preserved underground postbattle callback audit
+
+[Fieldroot audit](behavior/story/UNDERGROUND_FIRST_ARRIVAL_AND_GOOMBA_TRIO.md#2026-10-13-preserved-native-return-callback-audit)
+pinsactual61/62catalog meaning, ownfieldVMchildren/tribes andordered
+postwaitdialogue/story graph. ConcretepartyRunStop/a_rec/musicfade/native
+owner gaps are explicit; noforcedpouchunlock/control/storyrelease.
+Validation: readonlyoriginal/currentnativecatalog/bodies;git diff --check.
+Docs only; no native edits/tests/build/commit. Next bind actualfieldMario/party
+registry/pouchjoin/context-restoration beforeoriginal61/posttailresume.
+
+## 2026-10-13 — Native original ending map allocator/free
+
+Ending work now uses the existing recovered eventMapAllocate/eventMapFree
+implementation and source BattleAlloc/BattleFree requests. A declared E-only
+primary reservation supplies the original400KiB nested battle subpool and
+mandatory32-byte headers. Source bootstrap precedes battle-context selection;
+E2ac rounds to2c0, the full704bytes are cleared/flushed, and free coalesces the
+remaining tail back to63fe0. The1f caller clears Bf28 and writes topbank4.
+Other native battle/unit/part work remains separately mapped; this is not
+original prior allocation history or full primary-map/OS arena parity.
+
+Validation: make test164/164 CTest +107/107 Python
+(`artifacts/trio-mapheap-tests.log`), make all/debug-short
+(`artifacts/trio-mapheap-all.log`, `artifacts/trio-mapheap-debug.log`) pass.
+Integration checks pin mapped pool/header sizes,704-byte clearing, correct
+allocation/free pairing, pointer clear/topbank write and original control/story
+barriers. Existing portable allocator tests cover fragmentation/coalescing.
+Actual attacks in isolated Azahar reach the completed fade/restoration boundary
+without a native exception (`artifacts/azahar-trio-mapheap/`, immutable copied
+binary/ELF `artifacts/trio-mapheap-snapshot/`); reviewed final capture.
+`git diff --check` passes. Original ISO and user profiles/saves untouched;
+original assets and compiled/capture products remain outside source history.
+
+Frontier is actual field Mario getter8005e0c0 before field word4/party
+constructor/Rule0/audience stop and subsequent context/sequence restoration.
+No field result/control/story success is fabricated. Next bind the actual
+field player/party owners and preserved parent wait61, then source postwait
+run/stop/hitobj/music callbacks. Source Goombella unlock belongs its authored
+joining event; full control/resource/save/raster/hardware parity and remaining
+prologue owners remain incomplete. Goal remains active.

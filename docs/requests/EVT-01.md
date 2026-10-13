@@ -3195,3 +3195,14 @@ gate/five precedence/five DMA/seven immediate/five result/four audio vectors and
 sites checked; prefix pins reverified. Exact DMA equality, motor-before-cancel,
 mutable immediate table and command6 reissue/reject/completion pinned. Error
 tail/whole callback/providers/original IO/audio/native binding open; EVT-01 OPEN.
+
+### 2026-10-13 delivery/request: preservedtrio postwait callbacks/nativegaps
+
+[Returnaudit](../behavior/story/UNDERGROUND_FIRST_ARRIVAL_AND_GOOMBA_TRIO.md#2026-10-13-preserved-native-return-callback-audit)
+correctstag61fieldwait/62prev-partyrestore(no62triousage); orderedpost093/
+094_kur/094_01extparty/story12sourcegraph;fieldNPCtribePTK persistsbattle
+wingfall anddamageforce1. Concretecurrentnativegaps27/29partyRunStopdefault
+success,54a_recnotapplied,70BGMon_fwithoutactualfadeowner; originalfield
+MarioWord4/currentindices/partyconstructor/controlcounter/pouchjoinand
+separatefieldVMpausedchildren ownershiprequired. Noforcedunlock orstorywrite.
+Read-onlysource/nativeaudit; docs-only/no nativecode/build/commit;diffcheckpass.

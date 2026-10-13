@@ -268,6 +268,13 @@ int main(){
             assert(charged.trioAttack.readWord(0x84400010,value) && value==1); // Packed original result, not field completion.
             assert(charged.trioAttack.readWord(0x84000f28,value) && value!=0);
             const auto end=value;
+            assert(charged.trioAttack.readWord(0x8041e80c,value) && value==0x85600020);
+            assert(end==0x85600040); // Native E-only mapped arena, not original allocation-history pointer identity.
+            assert(charged.trioAttack.readWord(end-28,value) && value==0x2c0);
+            assert(charged.trioAttack.readWord(end-24,value) && (value>>16)==1);
+            assert(charged.trioAttack.readWord(0x85600304,value) && value==0x63d00);
+            for(unsigned n=0x2ac;n<0x2c0;n+=4)assert(charged.trioAttack.readWord(end+n,value) && value==0); // All704 bytes were cleared.
+
             assert(charged.trioAttack.readWord(end,value) && value==0);
             assert(charged.trioAttack.readWord(end+0x30,value) && value==2);
             assert(charged.trioAttack.readWord(end+0x29c,value) && value==0x85200000);
@@ -320,7 +327,12 @@ int main(){
             for(unsigned n=0;n<59;++n)charged.tick(Input{});assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001a);
             charged.tick(Input{});assert(charged.trioBattleIntro.actors[0].pose=="M_R_1" && charged.trioBattleIntro.actors[1].pose=="PKR_R_1");
             for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
-            assert(charged.trioAttack.pendingFunction()==0x800f8908 && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.pendingFunction()==0x8005e0c0 && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.readWord(0x84000f28,value) && value==0);
+            assert(charged.trioAttack.readWord(0x84000000,value) && value==4);
+            assert(charged.trioAttack.readWord(0x85600020,value) && value==0);
+            assert(charged.trioAttack.readWord(0x85600024,value) && value==0x63fe0);
+            assert(charged.trioAttack.readWord(0x85600028,value) && value==0);
             assert(charged.trioAttack.endingFadeAlpha()==255 && charged.professorStory.actors[3].npcBattleFlags==0x100);
             assert(charged.progress.originalPouch && charged.progress.originalPouch->half(0x96)==10);
             assert(charged.trioAttack.readWord(0x8410110c,value) && charged.progress.originalPouch->half(0x70)==int16_t(value>>16));

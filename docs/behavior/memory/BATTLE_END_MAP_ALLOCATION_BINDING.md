@@ -94,3 +94,12 @@ calls, independent existing allocator/root authorities, worked valid-header
 arithmetic and `git diff --check`. Docs only/no native tests/build/commit.
 Full prior battle allocation history/arena/SDK/numeric hardware execution remain
 distinct provider boundaries; ordinary E allocation/free source is closed.
+
+## 2026-10-13 native E arena binding
+
+The trio supplies aligned virtual primary root85600000 with declared E-only
+reservation64040 (rootfree64020), invokes the actual nested pool bootstrap and
+uses original allocate/free mechanics. Fresh nested root85600020 returns
+E85600040; tail85600300, size63d00. Correct1f free restores rootnext0/free63fe0
+and clears Bf28/topbank4 through caller writes. SDK user/event work remains
+a separate native owner; no original full prior allocation history is claimed.

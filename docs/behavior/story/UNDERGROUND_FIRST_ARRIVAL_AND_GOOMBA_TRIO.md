@@ -377,3 +377,56 @@ camera/effect/message token parity still need their actual providers and runtime
 checks. No original runtime observation was made. Original resources remain
 local ignored assets; this contract stores identifiers/hash evidence, not copied
 story text. No native code was changed or tests required for this documentation.
+
+## 2026-10-13 preserved native return callback audit
+
+Read-onlycurrenttools/underground_event_assets.py andsource/professor_story.cpp
+againstoriginal161-commandtable above. Sharedcatalog tag60 is
+evt_npc_battle_start8004ef54,61 isevt_npc_wait_battle_end8004eed8,
+62 isevt_mario_set_prev_party_pos800e2f00 (**notnpcget_reglid**). Roottrio
+imports60/61;62 isforseparatelecturerestoration, notapostbattletrio dependency.
+Current60..62 retainpending; legitimate61 admission needsactualseq2 and
+originalI10resultnonzero plusfieldcleanup; don'tclearpending/return2 merely
+becauseallthreebattleenemiesretired. See
+[fieldhandshake](../battle/UNDERGROUND_TRIO_FIELD_RETURN_HANDSHAKE.md).
+
+After61, originalrootdeletesfieldbrotherLW10/11/12 initsOWNeventmanager,
+thenexisting23positions/16MarioM_S1/69NPCdamage/1camera/19flagclear/17print093.
+FieldVMandbattleVM IDs aredistinctregistries: neitherBattleUnit_Delete nor
+BattleEndcancelscoincidentallysame-numberfieldIDs. Sourcefieldcontextpause/
+restore/reinit/startall mustretaintheseactualfieldchildrenuntilrootdeletesthem.
+
+NPCdamage wrapper800506c4 resolvesNPCandloadsNPC28tribe→tribe20damagekey;
+firstcallcopieskeytoNPC2c, alwaysanimPoseSetAnim(NPC104,key,force1),returns2.
+Tribesremainoriginalrows33260/33308/332b4 andKUR/PTK/TGK_D1/R1, notbattle
+R2poseindices. FieldParaNPC2stillusesPTK_D1 afterbattlewingfallU8→ground1;
+postfieldposition(-55,20,35) andoriginaltribeownerstayseparatefrombattleunit
+metadata. Currentnative68/69prefixnamesmatchtheoriginalusedtribes; force/
+animationbackendparityandpause/resume areseparateproviders.
+
+Existingescapesuse68run/20XYZ/22move/21jump/34SFX andoriginalinline/brother
+sharedflags. Parentloopuses64/65 aimNPC3;18 prints094_kur;17prints
+094_01explicitextpartyFrankly;0cameraoff;27party_run0/1;SETstory12;
+54hitobj_onoff(a_rec,1,0);12keys-on;70bgmon_f(300hex,BGM_STG0_TIK1,2000ms).
+Tag55isINTERSECT, nothitoff. Originalmessagebytes/tokens/resourcesremain
+authorityabove; nodialogue/order/plotwritechangesauthorizedhere.
+
+Currentconcreteprovider gaps (inspectiontime,notachange):
+- Tag27/29party_run/stop have noexplicitnativecaseandfallthroughsuccess;
+  originalsourceparty motionownershipmustbindthroughslot0/1followproviders.
+- Tag54handlesonlyA_saku_04 anddoesnotapplylivea_rec collisionoff.
+- Tag70 sets music0 only;originalkey/options/fade2000 retainedrequestneeds
+  actualmusicowner. Sprite/animation/messages/camera numericaladaptersremain
+  distinctfromoriginalservice completion.
+- ActualfieldMarioWord4 owner mustbethepreservedMariofrommarioGetPtr;
+  ending1fclear1isnotNPC0flags orscriptactorhiddenbit. Fieldpartyregistry,
+  currentindices245/246, unlockedcanonicalpouchP0e, originalconstructor/
+  appearance/Hello andcontrolcounter38 mustjoinexistingGame/ProfessorStory
+  ownersbefore61canresume. Newgamepouchjoinbelongsoriginalgor_01
+  christine_nakama374b0; don'tforceunlockonbattlefinish.
+
+BoundedrequestsloggedEVT/DMG: fieldMario/party packedowner mapping and
+actualpause/resume/contextregistrybridge; authoredjoin-pouch provider;
+GetAppearPos2/collision services andusedparty_run/stop/a_rec/musicfade.
+Validation: readonlycatalog/currentnative/originalcallback/listingcomparison,
+git diff --check. No native edits/tests/build/commit ororiginalexecutionclaim.
