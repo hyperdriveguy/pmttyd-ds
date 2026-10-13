@@ -786,3 +786,13 @@ static source pixels. Used icon atlas expands512x128→512x256 (0.5MiB) without
 resampling. Original music uses existing BGM_ZAKO_BATTLE1/btl_zak1_32k stream.
 No originals/compiled packs enter commits; Nintendo/Intelligent Systems rights
 and lack of redistribution grant remain unchanged.
+
+2026-10-13 setup4 command/target metadata: `tools/trio_battle_assets.py` now
+extracts default weapon records0x803538a8/0x80353de8/0x80393ea8 from the read-only
+US main.dol. Original admission(+64)/attribute(+68) words, name IDs and source
+record hashes reside in ignored `romfs/trio-battle-commands.bin` and
+`romfs/trio-battle.json`. PMBUNIT2 retains original tik.rel part local/hit/sample
+coordinates, setup forward bias and unit name IDs. No synthetic target geometry
+or rewritten labels. The native menu resolves original `msg/US/global.txt` labels.
+These are locally extracted Nintendo/Intelligent Systems assets with no
+redistribution grant; compiled packs remain outside history.

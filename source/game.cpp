@@ -1552,6 +1552,26 @@ void Game::tick(const Input& rawInput) {
             if(c.off)setCameraView({0,100,450},{0,50,0},0,11);
             else setCameraView({c.eye[0],c.eye[1],c.eye[2]},{c.at[0],c.at[1],c.at[2]},c.duration,uint8_t(c.curve));
         }
+        if(trioBattleIntro.finished && !trioBattleIntro.message.active()) {
+            if(trioCommands.state==TrioBattleCommands::State::Closed)trioCommands.begin(trioBattleIntro);
+            else {
+                trioCommands.syncPositions(trioBattleIntro);
+                uint32_t buttons=(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
+                uint32_t repeats=(i.right?0x80000u:0u)|(i.left?0x40000u:0u);
+                if(i.physicalSnapshot) {
+                    const auto& pad=inputProducer.channels[0];
+                    buttons=pad.pressed;
+                    repeats=(pad.directionRepeat&0xa000?0x80000u:0u)|(pad.directionRepeat&0x5000?0x40000u:0u)|
+                        (pad.repeat&6?0x80000u:0u)|(pad.repeat&9?0x40000u:0u);
+                }
+                if(tap && i.touchY>=100 && i.touchY<158) {
+                    if(trioCommands.state==TrioBattleCommands::State::Command)trioCommands.chooseCommand(unsigned(i.touchX)/160);
+                    else if(trioCommands.state==TrioBattleCommands::State::Target)trioCommands.chooseTarget(unsigned(i.touchX)/106);
+                    buttons|=0x100;
+                }
+                trioCommands.input(buttons,repeats);
+            }
+        }
         scene=Scene::Dialogue;saveRequested=false;return;
     }
     if(professorStory.running()) {

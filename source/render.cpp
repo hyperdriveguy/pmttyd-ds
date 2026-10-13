@@ -822,7 +822,12 @@ void Renderer::overlay(const Game& g) {
             messageIconImage(0x1f8,g.ticks,200+(box.x+2)*MessageWindowScale,120-choice.cursorY*.5f,1,uint8_t(choice.opacity));
         }
         if(g.harborStory.failed || g.storyPresentation().failed)text("Development notice: source scene unavailable",25,112,.45f,Ink);
-        if(g.trioBattleActive && g.trioBattleIntro.finished)text("Development notice: original player commands pending",25,112,.45f,Ink);
+        if(g.trioBattleActive && g.trioCommands.state==TrioBattleCommands::State::Target) {
+            const auto pair=g.trioCommands.selected();
+            panel(16,20,164,30,Paper);text(g.trioCommands.targetName(pair[0]),25,28,.55f,Ink);
+        }
+        if(g.trioBattleActive && g.trioCommands.state==TrioBattleCommands::State::AttackReady)
+            text("Development notice: original attack event pending",25,112,.45f,Ink);
         if(g.storyPresentation().pendingService)text("Development notice: original battle backend pending",25,112,.45f,Ink);
         return;
     }
@@ -849,6 +854,24 @@ void Renderer::overlay(const Game& g) {
     }
 }
 void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
+    if(g.trioBattleActive && g.trioCommands.state!=TrioBattleCommands::State::Closed) {
+        const auto& commands=g.trioCommands;
+        if(commands.state==TrioBattleCommands::State::Command) {
+            text("Choose an attack",12,76,.63f,Ink);
+            for(unsigned n=0;n<(commands.actor==2?1u:2u);++n)
+                button(commands.commandName(n),8+160*n,100,144,58,commands.command==n);
+            text("Left/right: select   A: targets",12,174,.44f,Ink);
+        } else if(commands.state==TrioBattleCommands::State::Target) {
+            text("Choose a target",12,76,.63f,Ink);
+            for(int n=0;n<commands.count();++n)
+                button(commands.targetName(commands.target(n)[0]),4+106*n,100,102,58,commands.candidates.bytes[0xab7]==n);
+            text("Left/right: select   A: confirm   B: back",12,174,.4f,Ink);
+        } else {
+            text("Development notice: original attack event pending",12,76,.42f,Ink);
+            text("B: return to target selection",12,174,.44f,Ink);
+        }
+        return;
+    }
     if(g.harborStory.locked() || g.storyPresentation().locked() || g.scene==Scene::Dialogue)return;
     panel(6,5,308,32,Ink);text("ROGUEPORT FIELD NOTES",16,11,.59f,Paper);
     if(g.scene==Scene::Battle) {

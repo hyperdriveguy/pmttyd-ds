@@ -2,6 +2,46 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original setup4 command and target menu
+
+Bound a native command/target menu after Frankly's original battle introduction
+and window closure. Source default Normal Jump/Normal Hammer/Headbonk weapon
+IDs, admission/attribute masks and unchanged US menu/unit labels are imported
+from the read-only ISO. PMBUNIT2 adds original local/hit/sampling geometry and
+setup forward bias. The existing recovered sampler owns admission/occlusion:
+Jump admits all three enemies, including Spiky Goomba; Hammer initially admits
+only the front Goomba. Target refresh retains unit/part across row changes,
+uses stored status27 rather than HP as death, wraps navigation and gives B
+priority over A. Native D-pad/Circle Pad repeats and touch selection operate.
+Owned views rebind after copies; confirmations retain actor/weapon/unit/part
+without damage, move consumption or field resume. Partner Headbonk targeting
+is host-tested but awaits the native turn scheduler. See
+[native binding](behavior/battle/NATIVE_TRIO_COMMAND_TARGET_BINDING.md) and
+[source follow-up](behavior/battle/UNDERGROUND_TRIO_TARGETS_TURNS_AND_VICTORY.md).
+
+Validation: `make test` passed113 CTest/100 Python tests
+(`/tmp/trio-commands-tests-final.log`). `make all` passed
+(`/tmp/trio-commands-all-final.log`); isolated development build with
+`DEBUG_SHORT_BOOT=1 BUILD=build-trio-battle TARGET=artifacts/ttyd-trio-battle`
+passed (`/tmp/trio-commands-native-final.log`). Native smoke helper passed
+`tests/azahar_trio_battle_targets.py` in
+`artifacts/azahar-trio-battle-targets`; manually inspected Jump's three targets
+with Spiky selected and Hammer's single Goomba. The target label received a
+contrast panel afterward. Source tests additionally cover pair compaction,
+HP-versus-status27, empty lists, cancellation, copied owners, retained weapon
+IDs, physical/touch Game entry and partner targeting. Fixed an ARM int32_t
+callback return mismatch in concurrent save-object work; that work stays
+separate. No original execution/hardware/full combat parity claim.
+
+Limits/next: confirmation ends at the explicit original-attack-pending notice;
+B returns to inspect targets while dispatch remains unconsumed. Execute the
+original Jump/Hammer/Headbonk event streams with motion/AC/hit/counter services
+and source poses, then source move counts/phases, enemy actions, death/wing-fall
+reactions, rewards/result publication and field093/094/094_01/story12. Keep the
+inbox requests open for source death/event barriers and remaining composition.
+Full playable prologue remains unfinished.
+
+
 
 
 

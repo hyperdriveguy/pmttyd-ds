@@ -172,3 +172,15 @@ revealed; bti escape_wall/if_body/if_wire arehiddenfor thissetup. Sourceactor
 depthtest remainsenabled; source map/bodypart pass/class/queue producer
 composition andoriginal renderedocclusion still requested, notfixedby Ylift.
 No nativeedits/commit/runtimeclaim.
+
+2026-10-13 trio target/turn/result follow-up:
+[Trio targets, turns and victory](../behavior/battle/UNDERGROUND_TRIO_TARGETS_TURNS_AND_VICTORY.md)
+usesexistingcompletecandidate/UI/countcontracts withactualdefaultweaponmasks
+andfreshtrio sourcecandidates: Jump/Headbonkall3includingselectablespike;
+HammerfrontGoombaonlyuntilremoved,airborneexcluded. Exactbodygeometry/bias
+importoffsets, precheck1(finalaccuracydraw) vslaterunresistedtopspikecounter
+1damage/return-1, firstturncounts/phaseIDs, victoryresult1producerandflag31
+completionpublication recovered. Boundedremaining requests: actualsource
+HP→status27death/hit-event/barrier producer (CheckStatus27doesnotreadHP),
+usedmenu/turn/orderchange/headbonk/guard/servicecomposition, completeend
+reward/override/loss/escape/fieldreturn andoriginaltrace. No nativeedit/commit.

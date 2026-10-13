@@ -34,6 +34,7 @@
 #include "partner_follow.hpp"
 #include "harbor_story.hpp"
 #include "professor_story.hpp"
+#include "trio_battle_commands.hpp"
 #include "field_actors.hpp"
 #include "field_object_collision.hpp"
 namespace ttyd {
@@ -199,7 +200,7 @@ public:
     bool recoveryReturn(ReturnPoint& point) const;
     float cameraZ = 3.5f, cameraHeight = 0;
     float cameraX = 1, jumpHeight = 0, facing = 1, turnScale = 1;
-    bool trioBattleActive=false;ProfessorStory trioBattleIntro;size_t trioBattleCameraCursor=0;
+    bool trioBattleActive=false;ProfessorStory trioBattleIntro;TrioBattleCommands trioCommands;size_t trioBattleCameraCursor=0;
     const ProfessorStory& storyPresentation() const {return trioBattleActive?trioBattleIntro:professorStory;}
     Scene scene = Scene::Explore;
     Phase phase = Phase::Select;

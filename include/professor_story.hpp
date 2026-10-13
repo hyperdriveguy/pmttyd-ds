@@ -9,7 +9,7 @@ namespace ttyd {
 bool loadProfessorStoryAssets(const char* root);
 bool loadUndergroundStoryAssets(const char* root);
 bool loadTrioBattleAssets(const char* root);
-struct TrioBattleUnitSpec {uint32_t kind=0;int16_t hp=0,fp=0;std::array<float,3> position{};uint32_t attributes=0;std::array<int8_t,5> defense{};std::array<uint8_t,5> defenseAttributes{};uint32_t partAttributes=0,counterAttributes=0;};
+struct TrioBattleUnitSpec {uint32_t kind=0;int16_t hp=0,fp=0;std::array<float,3> position{};uint32_t attributes=0;std::array<int8_t,5> defense{};std::array<uint8_t,5> defenseAttributes{};uint32_t partAttributes=0,counterAttributes=0;std::array<float,3> partPosition{},hitOffset{},samplingOffset{};int16_t forwardBias=0;std::array<char,64> nameKey{};};
 const std::array<TrioBattleUnitSpec,4>& trioBattleUnitSpecs();
 const std::vector<uint32_t>& professorFenceCollisionNodes();
 struct ProfessorSceneActor {

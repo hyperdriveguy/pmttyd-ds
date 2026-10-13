@@ -36,6 +36,16 @@ int main() {
     const auto fieldPosition=game.progress.position;
     for(unsigned i=0;i<3600 && !game.trioBattleIntro.finished;++i)game.tick(advance);
     assert(game.trioBattleIntro.finished && game.progress.position.x==fieldPosition.x && game.progress.position.z==fieldPosition.z);
+    for(unsigned i=0;i<120 && game.trioCommands.state==TrioBattleCommands::State::Closed;++i)game.tick(Input{});
+    assert(game.trioCommands.state==TrioBattleCommands::State::Command);
+    Input physical;physical.physicalSnapshot=true;physical.physicalButtons=0x100;game.tick(physical);
+    assert(game.trioCommands.state==TrioBattleCommands::State::Target && game.trioCommands.count()==3);
+    physical.physicalButtons=0;game.tick(physical);physical.physicalButtons=2;game.tick(physical);
+    assert(game.trioCommands.selected()[0]==4);
+    physical.physicalButtons=0;game.tick(physical);physical.physicalButtons=0x300;game.tick(physical);
+    assert(game.trioCommands.state==TrioBattleCommands::State::Command && !game.trioCommands.attack);
+    Input hammer;hammer.touchX=200;hammer.touchY=120;game.tick(hammer);
+    assert(game.trioCommands.state==TrioBattleCommands::State::Target && game.trioCommands.count()==1);
     assert(game.professorStory.messageOrder.size()==7 && game.trioBattleIntro.messageOrder.size()==5 && !game.saveRequested);
     std::cout<<"Original four-unit metadata, Frankly init/entry, phase gate, five exact messages and status/camera requests passed\n";
 }

@@ -1,4 +1,5 @@
 #include "professor_story.hpp"
+#include "trio_battle_commands.hpp"
 #include "message_assets.hpp"
 #include "event_native_runtime.hpp"
 #include "event_memory_bootstrap.hpp"
@@ -74,11 +75,14 @@ bool loadTrioBattleAssets(const char* root) {
     ok=ok && std::fgetc(f)==EOF;std::fclose(f);if(!ok)return false;
     f=std::fopen((base+"/trio-battle-units.bin").c_str(),"rb");if(!f)return false;
     std::array<TrioBattleUnitSpec,4> units{};
-    ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMBUNIT1",8) && std::fread(&count,4,1,f)==1 && count==4;
+    ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMBUNIT2",8) && std::fread(&count,4,1,f)==1 && count==4;
     for(auto& u:units)ok=ok && std::fread(&u.kind,4,1,f)==1 && std::fread(&u.hp,2,1,f)==1 && std::fread(&u.fp,2,1,f)==1 &&
         std::fread(u.position.data(),4,3,f)==3 && std::fread(&u.attributes,4,1,f)==1 && std::fread(u.defense.data(),1,5,f)==5 &&
-        std::fread(u.defenseAttributes.data(),1,5,f)==5 && std::fread(&u.partAttributes,4,1,f)==1 && std::fread(&u.counterAttributes,4,1,f)==1;
+        std::fread(u.defenseAttributes.data(),1,5,f)==5 && std::fread(&u.partAttributes,4,1,f)==1 && std::fread(&u.counterAttributes,4,1,f)==1 && std::fread(u.partPosition.data(),4,3,f)==3 &&
+        std::fread(u.hitOffset.data(),4,3,f)==3 && std::fread(u.samplingOffset.data(),4,3,f)==3 &&
+        std::fread(&u.forwardBias,2,1,f)==1 && std::fread(u.nameKey.data(),1,64,f)==64 && u.nameKey.back()==0;
     ok=ok && std::fgetc(f)==EOF;std::fclose(f);if(!ok || units[0].kind!=1 || units[1].kind!=3 || units[2].kind!=2 || units[3].kind!=0xb4)return false;
+    if(!loadTrioCommandAssets(root))return false;
     battleScripts=std::move(scripts);battleCallbacks=std::move(callbacks);battleEntries=entries;battleUnits=units;battleReady=true;return true;
 }
 struct ProfessorRuntime {
