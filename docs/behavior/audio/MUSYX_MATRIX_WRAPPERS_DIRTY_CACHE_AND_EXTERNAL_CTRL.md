@@ -147,3 +147,10 @@ incoming-r28/first-mode/count/numeric domains, cache/aux/filter/voice consumers,
 valid pointer/mask/studio/parameter/bounds/alias/IRQ/concurrency policies and
 original cache/recompute/aux/external-controller/audio traces.17 local bodies
 are answered; EVT-01 and full native/source/runtime/hardware equivalence remain OPEN.
+
+### Descriptor/copy writer follow-up
+
+[Complete builder/FX copy/translation](MUSYX_INPUT_DESCRIPTOR_BUILDER_FX_COPY_AND_TRANSLATION.md)
+now pins count reset/admission/publication and raw copy/alias translation. The
+builder allows a nonzero first mode; FX copy does not mark dirty flags. Actual
+caller/first-row/r28/invalidation domains and original build/audio remain open.

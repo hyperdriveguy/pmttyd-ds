@@ -235,6 +235,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Captured pre-evaluation dirty clears, exact cache/descriptor/mask schemas
   and external dispatch versus original-index fallback pinned; descriptor/
   dirty/caller/r28 domains and original recompute/audio remain open.
+- [x] Complete inpAddCtrl/inpFXCopyCtrl/inpTranslateExCtrl local bodies —
+  [builder/FX copy/translation](../behavior/audio/MUSYX_INPUT_DESCRIPTOR_BUILDER_FX_COPY_AND_TRANSLATION.md).
+  Exact reset/count admission/publication, alias translation and ordered raw
+  byte copies pinned; first mode is not universally enforced and FX copy
+  does not mark dirty. Actual callers/invalidation/domain/runtime remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1457,3 +1462,21 @@ source deductions. Fresh full ELFs/listings stay `/tmp`; no native change/
 original execution/body/binary asset export. Actual descriptor/dirty/caller
 writers, r28/first-mode/count/numeric/bounds/alias/IRQ/concurrency domains,
 consumers and original cache/aux/external-controller/audio remain OPEN.
+
+### 2026-10-13 — Descriptor builder, FX controller copy and translation
+
+[Three complete local bodies and jump table](../behavior/audio/MUSYX_INPUT_DESCRIPTOR_BUILDER_FX_COPY_AND_TRANSLATION.md)
+close exact low8-zero count reset, four-row append cap, count publication before
+translation/row stores, variable flag/normal translation, raw high-bit passthrough
+outside aliases and ordered FX pair/single byte copy. Empty descriptors may
+admit nonzero first mode; this builder alone does not close evaluator r28 domain.
+FX copy selects full-ID low8 rows and writes no dirty flag. No universal first-row
+repair, copy snapshot, identity/bounds guard or automatic recomputation invented.
+
+Validation: read-only manifest six spans (three complete/two ABI entries/one
+table),58 anchors/three calls passes. Nine builder/17 translation/256 copy-route/
+five ID-row vectors and exact publication order checked as deductions. Full
+fresh ELFs/listings stay `/tmp`; no native change/original execution/body/binary
+asset export. Actual callers/dirty invalidation/other descriptor writers,
+first-mode/r28/FX bounds/lifetime/alias/IRQ/concurrency and original build/copy/
+recompute/audio traces remain OPEN.

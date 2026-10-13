@@ -1,0 +1,2009 @@
+{
+  "schema": 1,
+  "scope": "Three complete descriptor builder/FX copy/translation bodies and jump table; first-mode/dirty/provider/runtime open",
+  "complete_bodies": [
+    "inpAddCtrl",
+    "inpFXCopyCtrl",
+    "inpTranslateExCtrl"
+  ],
+  "linked_only": [
+    "_savegpr_27",
+    "_restgpr_27"
+  ],
+  "dol_spans": [
+    {
+      "name": "inpAddCtrl",
+      "address": 2150166700,
+      "size": 152,
+      "sha256": "34c497f87e624c50bce853a9e174f7629f6610eb3d60d90f6833aa23e0c05a9d"
+    },
+    {
+      "name": "inpFXCopyCtrl",
+      "address": 2150166852,
+      "size": 276,
+      "sha256": "b510072f45ef23e592283f4fce0c504f4695b0aa41c87f1344143931a853dc19"
+    },
+    {
+      "name": "inpTranslateExCtrl",
+      "address": 2150170508,
+      "size": 112,
+      "sha256": "5cba92d444c6b7846fcf98add9cac0d89be5f4e3becc887771ce52371141beda"
+    },
+    {
+      "name": "_savegpr_27",
+      "address": 2149992840,
+      "size": 4,
+      "sha256": "9b7068092a358c943c21b18b4e28928e880bfbb1b334082dfe973add4b6a6303"
+    },
+    {
+      "name": "_restgpr_27",
+      "address": 2149992916,
+      "size": 4,
+      "sha256": "d92806e26a2751f9ee9be41b269c32d3537032c43680315c96e9f68ac99dc60b"
+    },
+    {
+      "name": "external_translation_jump_table",
+      "address": 2151409312,
+      "size": 36,
+      "sha256": "0c778620c9203284dad2510cd2cf15ffd836dca5bd466212289da8df8d2f6d99"
+    }
+  ],
+  "dol_anchors": {
+    "2150166708": "90010024",
+    "2150166712": "39610020",
+    "2150166716": "4bfd58cd",
+    "2150166740": "4082000c",
+    "2150166744": "38000000",
+    "2150166748": "981b0022",
+    "2150166752": "8bfb0022",
+    "2150166760": "40800044",
+    "2150166764": "381f0001",
+    "2150166772": "981b0022",
+    "2150166776": "40820010",
+    "2150166784": "48000e8d",
+    "2150166796": "4182000c",
+    "2150166820": "9ba30001",
+    "2150166824": "93830004",
+    "2150166828": "39610020",
+    "2150166832": "4bfd58a5",
+    "2150166836": "80010024",
+    "2150166844": "38210020",
+    "2150166856": "808400f4",
+    "2150166860": "800500f4",
+    "2150166876": "40800040",
+    "2150166884": "3c808041",
+    "2150166892": "3884dec8",
+    "2150166908": "39040020",
+    "2150166944": "4182000c",
+    "2150166952": "40820040",
+    "2150166960": "3c808041",
+    "2150166968": "3884dec8",
+    "2150166984": "39040001",
+    "2150167020": "4182000c",
+    "2150167028": "40820040",
+    "2150167036": "3c808041",
+    "2150167044": "3884dec8",
+    "2150167060": "39040001",
+    "2150167096": "3c608041",
+    "2150167100": "38a3dec8",
+    "2150170512": "3804ff80",
+    "2150170524": "3c80803c",
+    "2150170532": "3884e6a0",
+    "2150170548": "38600080",
+    "2150170556": "38600082",
+    "2150170564": "386000a0",
+    "2150170572": "386000a1",
+    "2150170580": "38600083",
+    "2150170588": "38600084",
+    "2150170596": "386000a2",
+    "2150170604": "386000a3",
+    "2150170612": "386000a4",
+    "2150166812": "7c9b01ae",
+    "2150166920": "7c0429ae",
+    "2150166932": "7c6801ae",
+    "2150166992": "7c0329ae",
+    "2150167008": "7c6801ae",
+    "2150167068": "7c0329ae",
+    "2150167084": "7c6801ae",
+    "2150167120": "7c8331ae",
+    "2150170544": "4e800420"
+  },
+  "direct_calls": [
+    {
+      "site": 2150166716,
+      "target": 2149992840,
+      "name": "_savegpr_27"
+    },
+    {
+      "site": 2150166784,
+      "target": 2150170508,
+      "name": "inpTranslateExCtrl"
+    },
+    {
+      "site": 2150166832,
+      "target": 2149992916,
+      "name": "_restgpr_27"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "translation_jump_targets": [
+    2150170548,
+    2150170556,
+    2150170564,
+    2150170572,
+    2150170580,
+    2150170588,
+    2150170596,
+    2150170604,
+    2150170612
+  ],
+  "derived_translation_vectors": [
+    {
+      "raw_index": 0,
+      "raw_result": 0,
+      "stored_byte": 0
+    },
+    {
+      "raw_index": 127,
+      "raw_result": 127,
+      "stored_byte": 127
+    },
+    {
+      "raw_index": 128,
+      "raw_result": 128,
+      "stored_byte": 128
+    },
+    {
+      "raw_index": 129,
+      "raw_result": 130,
+      "stored_byte": 130
+    },
+    {
+      "raw_index": 130,
+      "raw_result": 160,
+      "stored_byte": 160
+    },
+    {
+      "raw_index": 131,
+      "raw_result": 161,
+      "stored_byte": 161
+    },
+    {
+      "raw_index": 132,
+      "raw_result": 131,
+      "stored_byte": 131
+    },
+    {
+      "raw_index": 133,
+      "raw_result": 132,
+      "stored_byte": 132
+    },
+    {
+      "raw_index": 134,
+      "raw_result": 162,
+      "stored_byte": 162
+    },
+    {
+      "raw_index": 135,
+      "raw_result": 163,
+      "stored_byte": 163
+    },
+    {
+      "raw_index": 136,
+      "raw_result": 164,
+      "stored_byte": 164
+    },
+    {
+      "raw_index": 137,
+      "raw_result": 137,
+      "stored_byte": 137
+    },
+    {
+      "raw_index": 255,
+      "raw_result": 255,
+      "stored_byte": 255
+    },
+    {
+      "raw_index": 256,
+      "raw_result": 256,
+      "stored_byte": 0
+    },
+    {
+      "raw_index": 384,
+      "raw_result": 128,
+      "stored_byte": 128
+    },
+    {
+      "raw_index": 385,
+      "raw_result": 130,
+      "stored_byte": 130
+    },
+    {
+      "raw_index": 4294967295,
+      "raw_result": 4294967295,
+      "stored_byte": 255
+    }
+  ],
+  "derived_builder_vectors": [
+    {
+      "before_count": 0,
+      "raw_index": 129,
+      "raw_coefficient": 65536,
+      "raw_mode": 0,
+      "raw_variable_flag": 0,
+      "expected": {
+        "after_count": 1,
+        "writes_descriptor": true,
+        "slot": 0,
+        "stored_index": 130,
+        "stored_flags": 0,
+        "stored_coefficient": 65536
+      }
+    },
+    {
+      "before_count": 0,
+      "raw_index": 130,
+      "raw_coefficient": 65536,
+      "raw_mode": 1,
+      "raw_variable_flag": 0,
+      "expected": {
+        "after_count": 1,
+        "writes_descriptor": true,
+        "slot": 0,
+        "stored_index": 160,
+        "stored_flags": 1,
+        "stored_coefficient": 65536
+      }
+    },
+    {
+      "before_count": 4,
+      "raw_index": 130,
+      "raw_coefficient": 65536,
+      "raw_mode": 0,
+      "raw_variable_flag": 0,
+      "expected": {
+        "after_count": 1,
+        "writes_descriptor": true,
+        "slot": 0,
+        "stored_index": 160,
+        "stored_flags": 0,
+        "stored_coefficient": 65536
+      }
+    },
+    {
+      "before_count": 4,
+      "raw_index": 130,
+      "raw_coefficient": 65536,
+      "raw_mode": 1,
+      "raw_variable_flag": 0,
+      "expected": {
+        "after_count": 4,
+        "writes_descriptor": false
+      }
+    },
+    {
+      "before_count": 255,
+      "raw_index": 130,
+      "raw_coefficient": 4294967295,
+      "raw_mode": 256,
+      "raw_variable_flag": 1,
+      "expected": {
+        "after_count": 1,
+        "writes_descriptor": true,
+        "slot": 0,
+        "stored_index": 130,
+        "stored_flags": 16,
+        "stored_coefficient": 4294967295
+      }
+    },
+    {
+      "before_count": 0,
+      "raw_index": 130,
+      "raw_coefficient": 65536,
+      "raw_mode": 16,
+      "raw_variable_flag": 0,
+      "expected": {
+        "after_count": 1,
+        "writes_descriptor": true,
+        "slot": 0,
+        "stored_index": 160,
+        "stored_flags": 16,
+        "stored_coefficient": 65536
+      }
+    },
+    {
+      "before_count": 0,
+      "raw_index": 130,
+      "raw_coefficient": 65536,
+      "raw_mode": 0,
+      "raw_variable_flag": 1,
+      "expected": {
+        "after_count": 1,
+        "writes_descriptor": true,
+        "slot": 0,
+        "stored_index": 130,
+        "stored_flags": 16,
+        "stored_coefficient": 65536
+      }
+    },
+    {
+      "before_count": 3,
+      "raw_index": 4294967295,
+      "raw_coefficient": 4294967295,
+      "raw_mode": 255,
+      "raw_variable_flag": 0,
+      "expected": {
+        "after_count": 4,
+        "writes_descriptor": true,
+        "slot": 3,
+        "stored_index": 255,
+        "stored_flags": 255,
+        "stored_coefficient": 4294967295
+      }
+    },
+    {
+      "before_count": 0,
+      "raw_index": 384,
+      "raw_coefficient": 1,
+      "raw_mode": 0,
+      "raw_variable_flag": 4294967295,
+      "expected": {
+        "after_count": 1,
+        "writes_descriptor": true,
+        "slot": 0,
+        "stored_index": 128,
+        "stored_flags": 16,
+        "stored_coefficient": 1
+      }
+    }
+  ],
+  "derived_fx_copy_routes": [
+    {
+      "controller": 0,
+      "offsets": [
+        0,
+        32
+      ]
+    },
+    {
+      "controller": 1,
+      "offsets": [
+        1,
+        33
+      ]
+    },
+    {
+      "controller": 2,
+      "offsets": [
+        2,
+        34
+      ]
+    },
+    {
+      "controller": 3,
+      "offsets": [
+        3,
+        35
+      ]
+    },
+    {
+      "controller": 4,
+      "offsets": [
+        4,
+        36
+      ]
+    },
+    {
+      "controller": 5,
+      "offsets": [
+        5,
+        37
+      ]
+    },
+    {
+      "controller": 6,
+      "offsets": [
+        6,
+        38
+      ]
+    },
+    {
+      "controller": 7,
+      "offsets": [
+        7,
+        39
+      ]
+    },
+    {
+      "controller": 8,
+      "offsets": [
+        8,
+        40
+      ]
+    },
+    {
+      "controller": 9,
+      "offsets": [
+        9,
+        41
+      ]
+    },
+    {
+      "controller": 10,
+      "offsets": [
+        10,
+        42
+      ]
+    },
+    {
+      "controller": 11,
+      "offsets": [
+        11,
+        43
+      ]
+    },
+    {
+      "controller": 12,
+      "offsets": [
+        12,
+        44
+      ]
+    },
+    {
+      "controller": 13,
+      "offsets": [
+        13,
+        45
+      ]
+    },
+    {
+      "controller": 14,
+      "offsets": [
+        14,
+        46
+      ]
+    },
+    {
+      "controller": 15,
+      "offsets": [
+        15,
+        47
+      ]
+    },
+    {
+      "controller": 16,
+      "offsets": [
+        16,
+        48
+      ]
+    },
+    {
+      "controller": 17,
+      "offsets": [
+        17,
+        49
+      ]
+    },
+    {
+      "controller": 18,
+      "offsets": [
+        18,
+        50
+      ]
+    },
+    {
+      "controller": 19,
+      "offsets": [
+        19,
+        51
+      ]
+    },
+    {
+      "controller": 20,
+      "offsets": [
+        20,
+        52
+      ]
+    },
+    {
+      "controller": 21,
+      "offsets": [
+        21,
+        53
+      ]
+    },
+    {
+      "controller": 22,
+      "offsets": [
+        22,
+        54
+      ]
+    },
+    {
+      "controller": 23,
+      "offsets": [
+        23,
+        55
+      ]
+    },
+    {
+      "controller": 24,
+      "offsets": [
+        24,
+        56
+      ]
+    },
+    {
+      "controller": 25,
+      "offsets": [
+        25,
+        57
+      ]
+    },
+    {
+      "controller": 26,
+      "offsets": [
+        26,
+        58
+      ]
+    },
+    {
+      "controller": 27,
+      "offsets": [
+        27,
+        59
+      ]
+    },
+    {
+      "controller": 28,
+      "offsets": [
+        28,
+        60
+      ]
+    },
+    {
+      "controller": 29,
+      "offsets": [
+        29,
+        61
+      ]
+    },
+    {
+      "controller": 30,
+      "offsets": [
+        30,
+        62
+      ]
+    },
+    {
+      "controller": 31,
+      "offsets": [
+        31,
+        63
+      ]
+    },
+    {
+      "controller": 32,
+      "offsets": [
+        0,
+        32
+      ]
+    },
+    {
+      "controller": 33,
+      "offsets": [
+        1,
+        33
+      ]
+    },
+    {
+      "controller": 34,
+      "offsets": [
+        2,
+        34
+      ]
+    },
+    {
+      "controller": 35,
+      "offsets": [
+        3,
+        35
+      ]
+    },
+    {
+      "controller": 36,
+      "offsets": [
+        4,
+        36
+      ]
+    },
+    {
+      "controller": 37,
+      "offsets": [
+        5,
+        37
+      ]
+    },
+    {
+      "controller": 38,
+      "offsets": [
+        6,
+        38
+      ]
+    },
+    {
+      "controller": 39,
+      "offsets": [
+        7,
+        39
+      ]
+    },
+    {
+      "controller": 40,
+      "offsets": [
+        8,
+        40
+      ]
+    },
+    {
+      "controller": 41,
+      "offsets": [
+        9,
+        41
+      ]
+    },
+    {
+      "controller": 42,
+      "offsets": [
+        10,
+        42
+      ]
+    },
+    {
+      "controller": 43,
+      "offsets": [
+        11,
+        43
+      ]
+    },
+    {
+      "controller": 44,
+      "offsets": [
+        12,
+        44
+      ]
+    },
+    {
+      "controller": 45,
+      "offsets": [
+        13,
+        45
+      ]
+    },
+    {
+      "controller": 46,
+      "offsets": [
+        14,
+        46
+      ]
+    },
+    {
+      "controller": 47,
+      "offsets": [
+        15,
+        47
+      ]
+    },
+    {
+      "controller": 48,
+      "offsets": [
+        16,
+        48
+      ]
+    },
+    {
+      "controller": 49,
+      "offsets": [
+        17,
+        49
+      ]
+    },
+    {
+      "controller": 50,
+      "offsets": [
+        18,
+        50
+      ]
+    },
+    {
+      "controller": 51,
+      "offsets": [
+        19,
+        51
+      ]
+    },
+    {
+      "controller": 52,
+      "offsets": [
+        20,
+        52
+      ]
+    },
+    {
+      "controller": 53,
+      "offsets": [
+        21,
+        53
+      ]
+    },
+    {
+      "controller": 54,
+      "offsets": [
+        22,
+        54
+      ]
+    },
+    {
+      "controller": 55,
+      "offsets": [
+        23,
+        55
+      ]
+    },
+    {
+      "controller": 56,
+      "offsets": [
+        24,
+        56
+      ]
+    },
+    {
+      "controller": 57,
+      "offsets": [
+        25,
+        57
+      ]
+    },
+    {
+      "controller": 58,
+      "offsets": [
+        26,
+        58
+      ]
+    },
+    {
+      "controller": 59,
+      "offsets": [
+        27,
+        59
+      ]
+    },
+    {
+      "controller": 60,
+      "offsets": [
+        28,
+        60
+      ]
+    },
+    {
+      "controller": 61,
+      "offsets": [
+        29,
+        61
+      ]
+    },
+    {
+      "controller": 62,
+      "offsets": [
+        30,
+        62
+      ]
+    },
+    {
+      "controller": 63,
+      "offsets": [
+        31,
+        63
+      ]
+    },
+    {
+      "controller": 64,
+      "offsets": [
+        64
+      ]
+    },
+    {
+      "controller": 65,
+      "offsets": [
+        65
+      ]
+    },
+    {
+      "controller": 66,
+      "offsets": [
+        66
+      ]
+    },
+    {
+      "controller": 67,
+      "offsets": [
+        67
+      ]
+    },
+    {
+      "controller": 68,
+      "offsets": [
+        68
+      ]
+    },
+    {
+      "controller": 69,
+      "offsets": [
+        69
+      ]
+    },
+    {
+      "controller": 70,
+      "offsets": [
+        70
+      ]
+    },
+    {
+      "controller": 71,
+      "offsets": [
+        71
+      ]
+    },
+    {
+      "controller": 72,
+      "offsets": [
+        72
+      ]
+    },
+    {
+      "controller": 73,
+      "offsets": [
+        73
+      ]
+    },
+    {
+      "controller": 74,
+      "offsets": [
+        74
+      ]
+    },
+    {
+      "controller": 75,
+      "offsets": [
+        75
+      ]
+    },
+    {
+      "controller": 76,
+      "offsets": [
+        76
+      ]
+    },
+    {
+      "controller": 77,
+      "offsets": [
+        77
+      ]
+    },
+    {
+      "controller": 78,
+      "offsets": [
+        78
+      ]
+    },
+    {
+      "controller": 79,
+      "offsets": [
+        79
+      ]
+    },
+    {
+      "controller": 80,
+      "offsets": [
+        80
+      ]
+    },
+    {
+      "controller": 81,
+      "offsets": [
+        81
+      ]
+    },
+    {
+      "controller": 82,
+      "offsets": [
+        82
+      ]
+    },
+    {
+      "controller": 83,
+      "offsets": [
+        83
+      ]
+    },
+    {
+      "controller": 84,
+      "offsets": [
+        84
+      ]
+    },
+    {
+      "controller": 85,
+      "offsets": [
+        85
+      ]
+    },
+    {
+      "controller": 86,
+      "offsets": [
+        86
+      ]
+    },
+    {
+      "controller": 87,
+      "offsets": [
+        87
+      ]
+    },
+    {
+      "controller": 88,
+      "offsets": [
+        88
+      ]
+    },
+    {
+      "controller": 89,
+      "offsets": [
+        89
+      ]
+    },
+    {
+      "controller": 90,
+      "offsets": [
+        90
+      ]
+    },
+    {
+      "controller": 91,
+      "offsets": [
+        91
+      ]
+    },
+    {
+      "controller": 92,
+      "offsets": [
+        92
+      ]
+    },
+    {
+      "controller": 93,
+      "offsets": [
+        93
+      ]
+    },
+    {
+      "controller": 94,
+      "offsets": [
+        94
+      ]
+    },
+    {
+      "controller": 95,
+      "offsets": [
+        95
+      ]
+    },
+    {
+      "controller": 96,
+      "offsets": [
+        96
+      ]
+    },
+    {
+      "controller": 97,
+      "offsets": [
+        97
+      ]
+    },
+    {
+      "controller": 98,
+      "offsets": [
+        98
+      ]
+    },
+    {
+      "controller": 99,
+      "offsets": [
+        99
+      ]
+    },
+    {
+      "controller": 100,
+      "offsets": [
+        100
+      ]
+    },
+    {
+      "controller": 101,
+      "offsets": [
+        101
+      ]
+    },
+    {
+      "controller": 102,
+      "offsets": [
+        102
+      ]
+    },
+    {
+      "controller": 103,
+      "offsets": [
+        103
+      ]
+    },
+    {
+      "controller": 104,
+      "offsets": [
+        104
+      ]
+    },
+    {
+      "controller": 105,
+      "offsets": [
+        105
+      ]
+    },
+    {
+      "controller": 106,
+      "offsets": [
+        106
+      ]
+    },
+    {
+      "controller": 107,
+      "offsets": [
+        107
+      ]
+    },
+    {
+      "controller": 108,
+      "offsets": [
+        108
+      ]
+    },
+    {
+      "controller": 109,
+      "offsets": [
+        109
+      ]
+    },
+    {
+      "controller": 110,
+      "offsets": [
+        110
+      ]
+    },
+    {
+      "controller": 111,
+      "offsets": [
+        111
+      ]
+    },
+    {
+      "controller": 112,
+      "offsets": [
+        112
+      ]
+    },
+    {
+      "controller": 113,
+      "offsets": [
+        113
+      ]
+    },
+    {
+      "controller": 114,
+      "offsets": [
+        114
+      ]
+    },
+    {
+      "controller": 115,
+      "offsets": [
+        115
+      ]
+    },
+    {
+      "controller": 116,
+      "offsets": [
+        116
+      ]
+    },
+    {
+      "controller": 117,
+      "offsets": [
+        117
+      ]
+    },
+    {
+      "controller": 118,
+      "offsets": [
+        118
+      ]
+    },
+    {
+      "controller": 119,
+      "offsets": [
+        119
+      ]
+    },
+    {
+      "controller": 120,
+      "offsets": [
+        120
+      ]
+    },
+    {
+      "controller": 121,
+      "offsets": [
+        121
+      ]
+    },
+    {
+      "controller": 122,
+      "offsets": [
+        122
+      ]
+    },
+    {
+      "controller": 123,
+      "offsets": [
+        123
+      ]
+    },
+    {
+      "controller": 124,
+      "offsets": [
+        124
+      ]
+    },
+    {
+      "controller": 125,
+      "offsets": [
+        125
+      ]
+    },
+    {
+      "controller": 126,
+      "offsets": [
+        126
+      ]
+    },
+    {
+      "controller": 127,
+      "offsets": [
+        127
+      ]
+    },
+    {
+      "controller": 128,
+      "offsets": [
+        128,
+        129
+      ]
+    },
+    {
+      "controller": 129,
+      "offsets": [
+        128,
+        129
+      ]
+    },
+    {
+      "controller": 130,
+      "offsets": [
+        130
+      ]
+    },
+    {
+      "controller": 131,
+      "offsets": [
+        131
+      ]
+    },
+    {
+      "controller": 132,
+      "offsets": [
+        132,
+        133
+      ]
+    },
+    {
+      "controller": 133,
+      "offsets": [
+        132,
+        133
+      ]
+    },
+    {
+      "controller": 134,
+      "offsets": [
+        134
+      ]
+    },
+    {
+      "controller": 135,
+      "offsets": [
+        135
+      ]
+    },
+    {
+      "controller": 136,
+      "offsets": [
+        136
+      ]
+    },
+    {
+      "controller": 137,
+      "offsets": [
+        137
+      ]
+    },
+    {
+      "controller": 138,
+      "offsets": [
+        138
+      ]
+    },
+    {
+      "controller": 139,
+      "offsets": [
+        139
+      ]
+    },
+    {
+      "controller": 140,
+      "offsets": [
+        140
+      ]
+    },
+    {
+      "controller": 141,
+      "offsets": [
+        141
+      ]
+    },
+    {
+      "controller": 142,
+      "offsets": [
+        142
+      ]
+    },
+    {
+      "controller": 143,
+      "offsets": [
+        143
+      ]
+    },
+    {
+      "controller": 144,
+      "offsets": [
+        144
+      ]
+    },
+    {
+      "controller": 145,
+      "offsets": [
+        145
+      ]
+    },
+    {
+      "controller": 146,
+      "offsets": [
+        146
+      ]
+    },
+    {
+      "controller": 147,
+      "offsets": [
+        147
+      ]
+    },
+    {
+      "controller": 148,
+      "offsets": [
+        148
+      ]
+    },
+    {
+      "controller": 149,
+      "offsets": [
+        149
+      ]
+    },
+    {
+      "controller": 150,
+      "offsets": [
+        150
+      ]
+    },
+    {
+      "controller": 151,
+      "offsets": [
+        151
+      ]
+    },
+    {
+      "controller": 152,
+      "offsets": [
+        152
+      ]
+    },
+    {
+      "controller": 153,
+      "offsets": [
+        153
+      ]
+    },
+    {
+      "controller": 154,
+      "offsets": [
+        154
+      ]
+    },
+    {
+      "controller": 155,
+      "offsets": [
+        155
+      ]
+    },
+    {
+      "controller": 156,
+      "offsets": [
+        156
+      ]
+    },
+    {
+      "controller": 157,
+      "offsets": [
+        157
+      ]
+    },
+    {
+      "controller": 158,
+      "offsets": [
+        158
+      ]
+    },
+    {
+      "controller": 159,
+      "offsets": [
+        159
+      ]
+    },
+    {
+      "controller": 160,
+      "offsets": [
+        160
+      ]
+    },
+    {
+      "controller": 161,
+      "offsets": [
+        161
+      ]
+    },
+    {
+      "controller": 162,
+      "offsets": [
+        162
+      ]
+    },
+    {
+      "controller": 163,
+      "offsets": [
+        163
+      ]
+    },
+    {
+      "controller": 164,
+      "offsets": [
+        164
+      ]
+    },
+    {
+      "controller": 165,
+      "offsets": [
+        165
+      ]
+    },
+    {
+      "controller": 166,
+      "offsets": [
+        166
+      ]
+    },
+    {
+      "controller": 167,
+      "offsets": [
+        167
+      ]
+    },
+    {
+      "controller": 168,
+      "offsets": [
+        168
+      ]
+    },
+    {
+      "controller": 169,
+      "offsets": [
+        169
+      ]
+    },
+    {
+      "controller": 170,
+      "offsets": [
+        170
+      ]
+    },
+    {
+      "controller": 171,
+      "offsets": [
+        171
+      ]
+    },
+    {
+      "controller": 172,
+      "offsets": [
+        172
+      ]
+    },
+    {
+      "controller": 173,
+      "offsets": [
+        173
+      ]
+    },
+    {
+      "controller": 174,
+      "offsets": [
+        174
+      ]
+    },
+    {
+      "controller": 175,
+      "offsets": [
+        175
+      ]
+    },
+    {
+      "controller": 176,
+      "offsets": [
+        176
+      ]
+    },
+    {
+      "controller": 177,
+      "offsets": [
+        177
+      ]
+    },
+    {
+      "controller": 178,
+      "offsets": [
+        178
+      ]
+    },
+    {
+      "controller": 179,
+      "offsets": [
+        179
+      ]
+    },
+    {
+      "controller": 180,
+      "offsets": [
+        180
+      ]
+    },
+    {
+      "controller": 181,
+      "offsets": [
+        181
+      ]
+    },
+    {
+      "controller": 182,
+      "offsets": [
+        182
+      ]
+    },
+    {
+      "controller": 183,
+      "offsets": [
+        183
+      ]
+    },
+    {
+      "controller": 184,
+      "offsets": [
+        184
+      ]
+    },
+    {
+      "controller": 185,
+      "offsets": [
+        185
+      ]
+    },
+    {
+      "controller": 186,
+      "offsets": [
+        186
+      ]
+    },
+    {
+      "controller": 187,
+      "offsets": [
+        187
+      ]
+    },
+    {
+      "controller": 188,
+      "offsets": [
+        188
+      ]
+    },
+    {
+      "controller": 189,
+      "offsets": [
+        189
+      ]
+    },
+    {
+      "controller": 190,
+      "offsets": [
+        190
+      ]
+    },
+    {
+      "controller": 191,
+      "offsets": [
+        191
+      ]
+    },
+    {
+      "controller": 192,
+      "offsets": [
+        192
+      ]
+    },
+    {
+      "controller": 193,
+      "offsets": [
+        193
+      ]
+    },
+    {
+      "controller": 194,
+      "offsets": [
+        194
+      ]
+    },
+    {
+      "controller": 195,
+      "offsets": [
+        195
+      ]
+    },
+    {
+      "controller": 196,
+      "offsets": [
+        196
+      ]
+    },
+    {
+      "controller": 197,
+      "offsets": [
+        197
+      ]
+    },
+    {
+      "controller": 198,
+      "offsets": [
+        198
+      ]
+    },
+    {
+      "controller": 199,
+      "offsets": [
+        199
+      ]
+    },
+    {
+      "controller": 200,
+      "offsets": [
+        200
+      ]
+    },
+    {
+      "controller": 201,
+      "offsets": [
+        201
+      ]
+    },
+    {
+      "controller": 202,
+      "offsets": [
+        202
+      ]
+    },
+    {
+      "controller": 203,
+      "offsets": [
+        203
+      ]
+    },
+    {
+      "controller": 204,
+      "offsets": [
+        204
+      ]
+    },
+    {
+      "controller": 205,
+      "offsets": [
+        205
+      ]
+    },
+    {
+      "controller": 206,
+      "offsets": [
+        206
+      ]
+    },
+    {
+      "controller": 207,
+      "offsets": [
+        207
+      ]
+    },
+    {
+      "controller": 208,
+      "offsets": [
+        208
+      ]
+    },
+    {
+      "controller": 209,
+      "offsets": [
+        209
+      ]
+    },
+    {
+      "controller": 210,
+      "offsets": [
+        210
+      ]
+    },
+    {
+      "controller": 211,
+      "offsets": [
+        211
+      ]
+    },
+    {
+      "controller": 212,
+      "offsets": [
+        212
+      ]
+    },
+    {
+      "controller": 213,
+      "offsets": [
+        213
+      ]
+    },
+    {
+      "controller": 214,
+      "offsets": [
+        214
+      ]
+    },
+    {
+      "controller": 215,
+      "offsets": [
+        215
+      ]
+    },
+    {
+      "controller": 216,
+      "offsets": [
+        216
+      ]
+    },
+    {
+      "controller": 217,
+      "offsets": [
+        217
+      ]
+    },
+    {
+      "controller": 218,
+      "offsets": [
+        218
+      ]
+    },
+    {
+      "controller": 219,
+      "offsets": [
+        219
+      ]
+    },
+    {
+      "controller": 220,
+      "offsets": [
+        220
+      ]
+    },
+    {
+      "controller": 221,
+      "offsets": [
+        221
+      ]
+    },
+    {
+      "controller": 222,
+      "offsets": [
+        222
+      ]
+    },
+    {
+      "controller": 223,
+      "offsets": [
+        223
+      ]
+    },
+    {
+      "controller": 224,
+      "offsets": [
+        224
+      ]
+    },
+    {
+      "controller": 225,
+      "offsets": [
+        225
+      ]
+    },
+    {
+      "controller": 226,
+      "offsets": [
+        226
+      ]
+    },
+    {
+      "controller": 227,
+      "offsets": [
+        227
+      ]
+    },
+    {
+      "controller": 228,
+      "offsets": [
+        228
+      ]
+    },
+    {
+      "controller": 229,
+      "offsets": [
+        229
+      ]
+    },
+    {
+      "controller": 230,
+      "offsets": [
+        230
+      ]
+    },
+    {
+      "controller": 231,
+      "offsets": [
+        231
+      ]
+    },
+    {
+      "controller": 232,
+      "offsets": [
+        232
+      ]
+    },
+    {
+      "controller": 233,
+      "offsets": [
+        233
+      ]
+    },
+    {
+      "controller": 234,
+      "offsets": [
+        234
+      ]
+    },
+    {
+      "controller": 235,
+      "offsets": [
+        235
+      ]
+    },
+    {
+      "controller": 236,
+      "offsets": [
+        236
+      ]
+    },
+    {
+      "controller": 237,
+      "offsets": [
+        237
+      ]
+    },
+    {
+      "controller": 238,
+      "offsets": [
+        238
+      ]
+    },
+    {
+      "controller": 239,
+      "offsets": [
+        239
+      ]
+    },
+    {
+      "controller": 240,
+      "offsets": [
+        240
+      ]
+    },
+    {
+      "controller": 241,
+      "offsets": [
+        241
+      ]
+    },
+    {
+      "controller": 242,
+      "offsets": [
+        242
+      ]
+    },
+    {
+      "controller": 243,
+      "offsets": [
+        243
+      ]
+    },
+    {
+      "controller": 244,
+      "offsets": [
+        244
+      ]
+    },
+    {
+      "controller": 245,
+      "offsets": [
+        245
+      ]
+    },
+    {
+      "controller": 246,
+      "offsets": [
+        246
+      ]
+    },
+    {
+      "controller": 247,
+      "offsets": [
+        247
+      ]
+    },
+    {
+      "controller": 248,
+      "offsets": [
+        248
+      ]
+    },
+    {
+      "controller": 249,
+      "offsets": [
+        249
+      ]
+    },
+    {
+      "controller": 250,
+      "offsets": [
+        250
+      ]
+    },
+    {
+      "controller": 251,
+      "offsets": [
+        251
+      ]
+    },
+    {
+      "controller": 252,
+      "offsets": [
+        252
+      ]
+    },
+    {
+      "controller": 253,
+      "offsets": [
+        253
+      ]
+    },
+    {
+      "controller": 254,
+      "offsets": [
+        254
+      ]
+    },
+    {
+      "controller": 255,
+      "offsets": [
+        255
+      ]
+    }
+  ],
+  "derived_fx_id_vectors": [
+    {
+      "destination_full_id": 0,
+      "source_full_id": 1,
+      "destination_row": 2151734984,
+      "source_row": 2151735118
+    },
+    {
+      "destination_full_id": 63,
+      "source_full_id": 0,
+      "destination_row": 2151743426,
+      "source_row": 2151734984
+    },
+    {
+      "destination_full_id": 255,
+      "source_full_id": 64,
+      "destination_row": 2151769154,
+      "source_row": 2151743560
+    },
+    {
+      "destination_full_id": 2147483655,
+      "source_full_id": 305419783,
+      "destination_row": 2151735922,
+      "source_row": 2151735922
+    },
+    {
+      "destination_full_id": 4294967295,
+      "source_full_id": 4294967295,
+      "destination_row": 2151769154,
+      "source_row": 2151769154
+    }
+  ],
+  "builder_store_order": [
+    "optional byte22=0",
+    "capture byte22",
+    "byte22=count+1",
+    "optional translation child",
+    "byte(slot*8)=index",
+    "byte(slot*8+1)=flags",
+    "word(slot*8+4)=coefficient"
+  ]
+}

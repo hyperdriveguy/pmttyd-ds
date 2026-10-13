@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero descriptor builder/FX copy/translation
+
+Completed inpAddCtrl/inpFXCopyCtrl/inpTranslateExCtrl local contracts and one
+jump table for EVT-01; checked the corresponding inbox portion.
+[Builder/copy/translation](behavior/audio/MUSYX_INPUT_DESCRIPTOR_BUILDER_FX_COPY_AND_TRANSLATION.md)
+pins zero-low8-mode reset, four-row append cap, count-before-row publication,
+variable flag/alias translation and ordered FX byte-copy routes. Builder can
+admit nonzero first mode; it does not universally establish evaluator r28.
+FX copy adds no dirty invalidation or full voice-ID guard. Actual callers must
+supply those domains; no automatic recomputation or bounds repair inferred.
+
+Validation: read-only ISO manifest passed six spans (three complete/two ABI
+entries/one table),58 anchors/three calls. Nine builder/17 translation/256 copy-
+route/five ID-row vectors and exact publication order checked as deductions.
+Documentation link audit passed793 Markdown files/zero broken links;
+`git diff --check` passed. Documentation/metadata only; no `make test`/`make all`
+rerun. Full original inspection ELFs/listings stay `/tmp`; no bodies/binary
+assets committed. Concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 actual builder/copy/translator callers and dirty
+invalidation owners, other descriptor/controller writers, first-row/r28 and
+FX bounds/lifetime/alias/concurrency domains; original build/copy/recompute/audio
+traces. Full scheduler/native/runtime binding, lower-priority inbox/full-game
+work remain open.
+
 ## 2026-10-13 — Inbox priority-zero matrix cache/aux/external wrappers
 
 Completed17 matrix cache/aux/external-controller local contracts and three
