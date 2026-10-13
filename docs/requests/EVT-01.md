@@ -278,6 +278,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Allocation/state/pending/ID/active/failure order and public/internal return
   selector/counter/free-node order pinned; allocator/priority/resource/free/
   lifecycle/domain/original activation/audio remain open.
+- [x] Complete voiceAllocate/voiceAllocateFind local bodies —
+  [selection/allocation bookkeeping](../behavior/audio/MUSYX_VOICE_ALLOCATION_SELECTION_AND_BOOKKEEPING.md).
+  Limits/group counts/priority/free/eligibility/min-metric and raw free/counter
+  order pinned; no eviction implied. Aid/priority/free providers/argument/
+  accounting domains and original allocation/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1646,3 +1651,21 @@ flags/four counter/four return-mode vectors and24 field bindings checked as
 deductions. Full fresh ELFs stay `/tmp`; no native change/original execution/body/
 binary asset export. Actual providers/lifecycle/bounds/member/generation/sorted/
 alias/IRQ/concurrency/rollback and original spawn/activation/audio remain OPEN.
+
+### 2026-10-13 — Voice selection and allocation bookkeeping
+
+[Two complete local bodies](../behavior/audio/MUSYX_VOICE_ALLOCATION_SELECTION_AND_BOOKKEEPING.md)
+close idle gate/type limits, protected-inclusive group cap counts, lowest bucket/
+strict metric tie policy, free admission/general replacement and final priority
+check, then free-record unlink or old-type decrement/new-type increment. Counts
+wrap as bytes; no hardware stop/voice kill/macro unlink/VID cleanup occurs here.
+No unlimited cap0, normalized exact-kind filter, general eligibility-only count,
+shared early/final priority check or accounting saturation invented.
+
+Validation: read-only manifest four spans (two complete/two ABI entries),168
+anchors/three calls passes. Six limit/seven counter/seven group eligibility/
+three metric/five cap vectors and table/global addresses checked as deductions.
+Full fresh ELFs/listings stay `/tmp`; no native change/original execution/body/
+binary asset export. Aid/priority/free/recycle/limits/markers/IDs/metric writers,
+valid slot/member/sorted/cycle/alias/IRQ/concurrency/accounting/rollback and
+original quota/free/replacement/audio traces remain OPEN.

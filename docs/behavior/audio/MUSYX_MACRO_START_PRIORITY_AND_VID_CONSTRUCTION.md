@@ -163,3 +163,11 @@ valid slot/member/generation/sorted/cycle/alias/IRQ/reentrancy/concurrency/rollb
 and public/internal-ID domains, remaining interpreter opcodes and original spawn/
 allocation/refusal/activation/audio traces. Three local bodies are answered;
 EVT-01 and full native/source/runtime/hardware equivalence remain OPEN.
+
+### Allocator child follow-up
+
+[Complete voice selection/allocation bookkeeping](MUSYX_VOICE_ALLOCATION_SELECTION_AND_BOOKKEEPING.md)
+now closes voiceAllocate/voiceAllocateFind. Group counts include protected
+matching voices; selection and free/counter updates do not perform eviction/
+hardware/list cleanup. Actual aid/priority/free providers/domains and original
+allocation/audio traces remain open.

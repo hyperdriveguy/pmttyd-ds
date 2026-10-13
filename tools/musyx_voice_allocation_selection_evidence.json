@@ -1,0 +1,489 @@
+{
+  "schema": 1,
+  "scope": "Two complete voice allocation/search bodies; group/priority/free/eligibility/count order, providers/runtime open",
+  "complete_bodies": [
+    "voiceAllocate",
+    "voiceAllocateFind"
+  ],
+  "linked_only": [
+    "_savegpr_23",
+    "_restgpr_23"
+  ],
+  "dol_spans": [
+    {
+      "name": "voiceAllocate",
+      "address": 2150125532,
+      "size": 272,
+      "sha256": "e82095b7ca238e173b5b3dc16a62d4c6bc7b110f5b3a799d1811bbf53d80a8dc"
+    },
+    {
+      "name": "voiceAllocateFind",
+      "address": 2150124628,
+      "size": 904,
+      "sha256": "b273d968a91ccb8e9a61408f24b57232b4409314c6f1df654b2ae519fec99a0a"
+    },
+    {
+      "name": "_savegpr_23",
+      "address": 2149992824,
+      "size": 4,
+      "sha256": "2fa3a96a88923f67cfcdf66e69df44e22087c0ca2fb3146d61afbde23e1bf7a5"
+    },
+    {
+      "name": "_restgpr_23",
+      "address": 2149992900,
+      "size": 4,
+      "sha256": "6e0fe17a1b6a47b8dab72c26ae65fde94753bc8d0a85a3fc28fae1733ed67dc5"
+    }
+  ],
+  "dol_anchors": {
+    "2150125540": "90010014",
+    "2150125544": "93e1000c",
+    "2150125552": "4bfffc65",
+    "2150125560": "418200e0",
+    "2150125564": "3c808040",
+    "2150125572": "38846940",
+    "2150125588": "4082006c",
+    "2150125592": "88060000",
+    "2150125600": "41820018",
+    "2150125608": "88a60001",
+    "2150125616": "98a40001",
+    "2150125620": "4800000c",
+    "2150125624": "88060001",
+    "2150125628": "980d2019",
+    "2150125632": "88060001",
+    "2150125640": "41820018",
+    "2150125644": "3c808040",
+    "2150125648": "88a60000",
+    "2150125656": "38846940",
+    "2150125664": "880d2018",
+    "2150125672": "4082000c",
+    "2150125676": "88060000",
+    "2150125680": "980d2018",
+    "2150125684": "38000000",
+    "2150125688": "b0060002",
+    "2150125692": "48000038",
+    "2150125700": "808d1f70",
+    "2150125708": "8804011d",
+    "2150125716": "41820014",
+    "2150125720": "888d2017",
+    "2150125724": "3804ffff",
+    "2150125728": "980d2017",
+    "2150125732": "48000010",
+    "2150125736": "888d2016",
+    "2150125740": "3804ffff",
+    "2150125744": "980d2016",
+    "2150125752": "41820014",
+    "2150125756": "888d2017",
+    "2150125760": "38040001",
+    "2150125764": "980d2017",
+    "2150125768": "48000010",
+    "2150125772": "888d2016",
+    "2150125776": "38040001",
+    "2150125780": "980d2016",
+    "2150125784": "80010014",
+    "2150125788": "83e1000c",
+    "2150125796": "38210010",
+    "2150124636": "90010034",
+    "2150124640": "39610030",
+    "2150124644": "4bfdfd15",
+    "2150124648": "880d1f78",
+    "2150124652": "3ce08040",
+    "2150124656": "39075b40",
+    "2150124664": "40820348",
+    "2150124672": "41820044",
+    "2150124676": "3ce08040",
+    "2150124680": "880d2017",
+    "2150124684": "38e78540",
+    "2150124688": "39200000",
+    "2150124692": "89470212",
+    "2150124700": "41800014",
+    "2150124704": "88070210",
+    "2150124712": "40810008",
+    "2150124716": "39200001",
+    "2150124732": "408101c4",
+    "2150124736": "48000040",
+    "2150124740": "3ce08040",
+    "2150124744": "880d2016",
+    "2150124748": "38e78540",
+    "2150124752": "39200000",
+    "2150124756": "89470211",
+    "2150124764": "41800014",
+    "2150124768": "88070210",
+    "2150124776": "40810008",
+    "2150124780": "39200001",
+    "2150124796": "40810184",
+    "2150124808": "816d1f70",
+    "2150124812": "3b680800",
+    "2150124816": "38e80900",
+    "2150124820": "3b880a00",
+    "2150124824": "3be00000",
+    "2150124828": "3bc0ffff",
+    "2150124832": "480000bc",
+    "2150124844": "480000a0",
+    "2150124856": "82e90100",
+    "2150124864": "40820080",
+    "2150124868": "8ae9011c",
+    "2150124872": "3bff0001",
+    "2150124880": "40820070",
+    "2150124888": "41820014",
+    "2150124892": "8ae9011d",
+    "2150124904": "40820058",
+    "2150124908": "83290114",
+    "2150124912": "3b000000",
+    "2150124916": "82e90118",
+    "2150124920": "3b400002",
+    "2150124944": "40820030",
+    "2150124952": "41820024",
+    "2150124960": "83290110",
+    "2150124964": "393a0110",
+    "2150124976": "40800010",
+    "2150124984": "48000008",
+    "2150124996": "39290001",
+    "2150125008": "4082ff60",
+    "2150125028": "41820014",
+    "2150125036": "4180000c",
+    "2150125044": "4182ff30",
+    "2150125056": "4180000c",
+    "2150125064": "480001bc",
+    "2150125068": "38e80800",
+    "2150125072": "39480900",
+    "2150125076": "38880a00",
+    "2150125080": "48000044",
+    "2150125092": "48000028",
+    "2150125100": "38090100",
+    "2150125112": "40820008",
+    "2150125116": "3bff0001",
+    "2150125124": "38090001",
+    "2150125136": "4082ffd8",
+    "2150125156": "4182000c",
+    "2150125164": "4180ffb0",
+    "2150125172": "4180000c",
+    "2150125180": "48000148",
+    "2150125184": "880d2019",
+    "2150125192": "41820014",
+    "2150125200": "4082000c",
+    "2150125208": "4800012c",
+    "2150125224": "4080000c",
+    "2150125228": "3860ffff",
+    "2150125232": "48000114",
+    "2150125236": "80ad1f70",
+    "2150125240": "39480800",
+    "2150125244": "38880900",
+    "2150125248": "39280a00",
+    "2150125252": "38e0ffff",
+    "2150125256": "480000ac",
+    "2150125268": "48000090",
+    "2150125280": "8917011c",
+    "2150125288": "40820070",
+    "2150125296": "41820014",
+    "2150125300": "8917011d",
+    "2150125312": "40820058",
+    "2150125316": "81170114",
+    "2150125320": "39800000",
+    "2150125324": "83d70118",
+    "2150125328": "39600002",
+    "2150125352": "40820030",
+    "2150125360": "41820024",
+    "2150125368": "81170110",
+    "2150125372": "396b0110",
+    "2150125384": "40810010",
+    "2150125392": "48000008",
+    "2150125404": "39080001",
+    "2150125416": "4082ff70",
+    "2150125436": "41820014",
+    "2150125444": "4180000c",
+    "2150125452": "4182ff40",
+    "2150125460": "4082000c",
+    "2150125464": "3860ffff",
+    "2150125468": "48000028",
+    "2150125484": "8863010c",
+    "2150125492": "4181000c",
+    "2150125500": "48000008",
+    "2150125504": "3860ffff",
+    "2150125508": "39610030",
+    "2150125512": "4bfdf9fd",
+    "2150125516": "80010034",
+    "2150125524": "38210030"
+  },
+  "direct_calls": [
+    {
+      "site": 2150125552,
+      "target": 2150124628,
+      "name": "voiceAllocateFind"
+    },
+    {
+      "site": 2150124644,
+      "target": 2149992824,
+      "name": "_savegpr_23"
+    },
+    {
+      "site": 2150125512,
+      "target": 2149992900,
+      "name": "_restgpr_23"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_limit_vectors": [
+    {
+      "running": 0,
+      "type_limit": 16,
+      "total": 64,
+      "requested_group_cap": 4,
+      "force_same_type": false,
+      "enters_group_scan": true
+    },
+    {
+      "running": 16,
+      "type_limit": 16,
+      "total": 64,
+      "requested_group_cap": 4,
+      "force_same_type": true,
+      "enters_group_scan": true
+    },
+    {
+      "running": 16,
+      "type_limit": 16,
+      "total": 16,
+      "requested_group_cap": 4,
+      "force_same_type": false,
+      "enters_group_scan": true
+    },
+    {
+      "running": 17,
+      "type_limit": 16,
+      "total": 64,
+      "requested_group_cap": 16,
+      "force_same_type": true,
+      "enters_group_scan": false
+    },
+    {
+      "running": 255,
+      "type_limit": 0,
+      "total": 64,
+      "requested_group_cap": 0,
+      "force_same_type": true,
+      "enters_group_scan": false
+    },
+    {
+      "running": 0,
+      "type_limit": 1,
+      "total": 1,
+      "requested_group_cap": 255,
+      "force_same_type": false,
+      "enters_group_scan": false
+    }
+  ],
+  "derived_counter_vectors": [
+    {
+      "free_entry": true,
+      "old_fx": false,
+      "new_fx": false,
+      "music_before": 0,
+      "fx_before": 0,
+      "music_after": 1,
+      "fx_after": 0
+    },
+    {
+      "free_entry": true,
+      "old_fx": false,
+      "new_fx": true,
+      "music_before": 0,
+      "fx_before": 0,
+      "music_after": 0,
+      "fx_after": 1
+    },
+    {
+      "free_entry": false,
+      "old_fx": false,
+      "new_fx": true,
+      "music_before": 1,
+      "fx_before": 0,
+      "music_after": 0,
+      "fx_after": 1
+    },
+    {
+      "free_entry": false,
+      "old_fx": true,
+      "new_fx": false,
+      "music_before": 0,
+      "fx_before": 1,
+      "music_after": 1,
+      "fx_after": 0
+    },
+    {
+      "free_entry": false,
+      "old_fx": false,
+      "new_fx": false,
+      "music_before": 0,
+      "fx_before": 0,
+      "music_after": 0,
+      "fx_after": 0
+    },
+    {
+      "free_entry": false,
+      "old_fx": true,
+      "new_fx": true,
+      "music_before": 0,
+      "fx_before": 0,
+      "music_after": 0,
+      "fx_after": 0
+    },
+    {
+      "free_entry": true,
+      "old_fx": false,
+      "new_fx": true,
+      "music_before": 0,
+      "fx_before": 255,
+      "music_after": 0,
+      "fx_after": 0
+    }
+  ],
+  "derived_eligibility_vectors": [
+    {
+      "group_matches": true,
+      "suppressed": 0,
+      "force_same_type": false,
+      "kind_byte": 0,
+      "requested_kind": 1,
+      "flags_low": 0,
+      "counts_group": true,
+      "eligible": true
+    },
+    {
+      "group_matches": true,
+      "suppressed": 1,
+      "force_same_type": false,
+      "kind_byte": 0,
+      "requested_kind": 1,
+      "flags_low": 0,
+      "counts_group": true,
+      "eligible": false
+    },
+    {
+      "group_matches": true,
+      "suppressed": 0,
+      "force_same_type": true,
+      "kind_byte": 0,
+      "requested_kind": 1,
+      "flags_low": 0,
+      "counts_group": true,
+      "eligible": false
+    },
+    {
+      "group_matches": true,
+      "suppressed": 0,
+      "force_same_type": true,
+      "kind_byte": 1,
+      "requested_kind": 1,
+      "flags_low": 0,
+      "counts_group": true,
+      "eligible": true
+    },
+    {
+      "group_matches": true,
+      "suppressed": 0,
+      "force_same_type": false,
+      "kind_byte": 0,
+      "requested_kind": 0,
+      "flags_low": 2,
+      "counts_group": true,
+      "eligible": false
+    },
+    {
+      "group_matches": false,
+      "suppressed": 0,
+      "force_same_type": false,
+      "kind_byte": 0,
+      "requested_kind": 0,
+      "flags_low": 0,
+      "counts_group": false,
+      "eligible": false
+    },
+    {
+      "group_matches": true,
+      "suppressed": 0,
+      "force_same_type": true,
+      "kind_byte": 1,
+      "requested_kind": 2,
+      "flags_low": 0,
+      "counts_group": true,
+      "eligible": false
+    }
+  ],
+  "derived_metric_vectors": [
+    {
+      "metrics": [
+        5,
+        2,
+        3
+      ],
+      "selected": 1
+    },
+    {
+      "metrics": [
+        2,
+        2,
+        2
+      ],
+      "selected": 0
+    },
+    {
+      "metrics": [
+        4294967295,
+        0,
+        1
+      ],
+      "selected": 1
+    }
+  ],
+  "allocator_globals": {
+    "music_count": 2151804726,
+    "fx_count": 2151804727,
+    "free_insert": 2151804728,
+    "free_root": 2151804729,
+    "priority_root": 2151804724,
+    "idle_gate": 2151804568
+  },
+  "table_layout": {
+    "free_records": 2151704896,
+    "priority_voice_records": 2151703360,
+    "priority_heads": 2151703616,
+    "priority_sort_records": 2151703872,
+    "voice_stride": 1112,
+    "record_stride": 4
+  },
+  "derived_group_cap_vectors": [
+    {
+      "matching_count": 0,
+      "cap": 0,
+      "candidate": -1,
+      "returns_candidate": true
+    },
+    {
+      "matching_count": 1,
+      "cap": 1,
+      "candidate": 7,
+      "returns_candidate": true
+    },
+    {
+      "matching_count": 2,
+      "cap": 2,
+      "candidate": -1,
+      "returns_candidate": true
+    },
+    {
+      "matching_count": 1,
+      "cap": 2,
+      "candidate": 7,
+      "returns_candidate": false
+    },
+    {
+      "matching_count": 4,
+      "cap": 2,
+      "candidate": 7,
+      "returns_candidate": true
+    }
+  ]
+}

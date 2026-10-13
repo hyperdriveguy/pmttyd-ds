@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero voice selection/allocation bookkeeping
+
+Completed voiceAllocate/voiceAllocateFind for EVT-01; checked the corresponding
+inbox portion. [Selection/allocation](behavior/audio/MUSYX_VOICE_ALLOCATION_SELECTION_AND_BOOKKEEPING.md)
+pins limits/group counts/protection/type/priority/minimum-metric/free choices and
+free-record unlink/wrapping running counters. Matching protected voices count
+against group cap; no eviction/hardware/macro/VID cleanup occurs in these bodies.
+Actual aid/priority/free/accounting providers and valid domains remain open;
+no unlimited cap0, saturation or original replacement/audio policy inferred.
+
+Validation: read-only ISO manifest passed four spans (two complete/two ABI
+entries),168 anchors/three calls. Six limit/seven counter/seven group eligibility/
+three metric/five cap vectors and exact table/global addresses checked as
+source deductions. Link audit passed807 Markdown files/zero broken links;
+`git diff --check` passed. Documentation/metadata only; no `make test`/`make all`
+rerun. Full original inspection ELFs/listings stay `/tmp`; no bodies/binary
+assets committed. Concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 allocation-aid initialization/voiceSetPriority/free/
+recycle writers and actual argument/limit/count/marker/metric/ID providers,
+valid slot/member/sorted/cycle/alias/concurrency/accounting/rollback domains;
+remaining macro opcodes and original allocation/audio traces. Full native/runtime
+binding, lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero macro start/priority/VID construction
 
 Completed macStart/seqGetMIDIPriority/vidMakeNew for EVT-01; checked the
