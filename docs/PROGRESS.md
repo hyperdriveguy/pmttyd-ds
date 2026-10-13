@@ -2,6 +2,79 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original item-table services and live key-item guards
+
+Committedd938dbe: [item-selection core](behavior/message/NATIVE_ITEM_TABLE_SELECTION_CORE.md)
+and [key-item services](behavior/unit/NATIVE_KEY_ITEM_INVENTORY_SERVICES.md)
+provide original packed row initialization/result polling/event protocol,
+three-window list lifecycle/navigation/easing and sequence0/2 transition models.
+Source rows preserve duplicates, low16 identities and separate allocation/clear;
+count includes-1, fill rereads each admitted entry, and row-count publication
+precedes item write. Result uses U16 flags and duplicate index reads; event
+wrapper caches stream pointer, retains handle in E+78, locks keys, polls,
+gets index before delete/unlock and reads destinations afterward. No fake
+cancel row or message Yes/No substitution.
+
+List control preserves independent directions, trigger-only endpoint wrap,
+eight-row scroll, disabled-row/A-before-B priority, active-slot/help-reset gates,
+close-before-ready and original sound/status requests. Sequence uses original
+signed-word refresh*8/60 formula and curve12 requests, fresh timing across
+rotation/scale/comparison, and leaves transition4 until next idle. Source
+recovery corrected an initial documentation mask error: idle preserves visible2.
+Fused easing and separate divide/add rounding are modeled; original GP/input/
+SDK numeric providers and native drawing remain distinct future bindings.
+No fixed8-tick transition is represented as measured original behavior.
+
+Key helpers scan all121 signed key halfwords and compact only the first match
+through every active slot, including gaps/zeros. Generic item event removal
+calls Mario then party revision only for low-level1 and writes0, else-1.
+The live original ProloguePouch adapter supplies count/removal mechanics;
+source Goomba guard now reaches unchanged ordinary US dialogue when a matching
+known quest/trueflag has an actual original key count0. Missing pouch stays
+unknown regardless of native mushroom quantity; positive items keep unsupported
+quest playback blocked. Other actor profiles do not scan this key array.
+No new checkpoint schema, inventory inference, quest flag/story write or
+positive-item quest scene is enabled here.
+
+Delegated source documentation recovered
+[original item-window contract](behavior/message/ITEM_TABLE_SELECTION_WINDOW.md)
+from read-only ISO and appended OW-INTERACT-01. It pins manager templates,
+rows, controls, read/effect order, original US keys/icons307/308 and source
+TPL312/313. Native full UI/font/help/status/audio providers and numbered selector
+producers remain open. No new image/audio conversion; original resources remain
+local. Added /romfs/ ignore rule so all future generated packs/metadata stay out
+of source history. d92bbdf places inventory contract in its owning unit folder.
+
+Validation: final shared `make test` passes164 CTest/107 Python,
+`/tmp/item-window-shared-test-complete.log`; shared `make all` passes without
+warnings/errors, `/tmp/item-window-shared-native-complete.log`. After correcting
+late concurrent Game::tick staging overlap in19e8f65 (working code preserved),
+clean committed-source snapshot
+`artifacts/source-checks/item-window-koxm16ky` passes163 CTest/107 Python,
+`/tmp/item-window-isolated-test.log`, and native `make all` without warnings/
+errors, `/tmp/item-window-isolated-native.log`. Binary
+`artifacts/ttyd-item-window-core.3dsx` copied from that snapshot. Snapshot uses
+ignored project artifacts storage rather than filling16GiB /tmp.
+
+Tests cover two-pass allocation/read/write order, duplicate/cast/prepend rows,
+callback table mutation, ready/cancel/unsigned result, retained E+78 and late
+operand destinations, fresh/repeat wrapping, scroll, A/B/error, transition/key/
+status lifecycle, active-slot gates, independent rational/IEEE easing vector,
+sequence visibility/close/timing re-reads, key gaps/first-removal/order/extent,
+wrapper revision0/-1 ordering, and original-data live empty/positive/missing
+pouch Goomba guards with unchanged US message/return. Independent review found
+no blocker and suggested numeric/mutation vectors; both added. Link audit
+passes942 Markdown/zero broken links; whitespace passes. No emulator rerun or
+new on-screen item menu/hardware/runtime parity is claimed. User profiles/saves
+untouched; concurrent battle/audio/docs working changes preserved.
+
+Next: complete source pouch/switch persistence, original item metadata/US
+name/icon lookup and three-window drawing/help/input/status/audio services;
+register item/inventory callbacks and execute both complete Goomba quest graphs
+with exact messages/speakers/flags/return ownership. Then extend original area
+NPC/event/object lifetimes and compare Dolphin/New2DS rendering/performance.
+The full requested goal remains active; early Rogueport is still a slice.
+
 ## 2026-10-13 — Inbox priority-zero SDK DVD ready/resume
 
 Completed stateReady; checked EVT-01 portion.
