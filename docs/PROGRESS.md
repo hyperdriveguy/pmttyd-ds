@@ -2,6 +2,40 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-12 — Prologue map object visibility from original events
+
+Implemented recovered ordinary-entry visibility for harbor ship subtrees and
+wakes, east interior/gate and west alternate foliage in commit `8c6c5fa`.
+The pirate ship group `S_fune_c` is hidden in prologue states2..6; original
+init reveals it only for172..229 except the earlier separate217 case.
+The later `S_fune_b` group uses>=268 except402/404. Other initialized-hidden
+ship/wake groups remain hidden until their scripted overrides are bound.
+See [visibility contract](behavior/field/ROGUEPORT_STORY_OBJECT_VISIBILITY.md)
+and [asset provenance](ASSETS.md). Source subtrees inherit visibility into
+children without affecting siblings; batches split by event group, retaining
+geometry for subsequent story states. Both drawing passes use the same policy.
+Missing native story uses a conservative story0 rendering envelope without
+changing persistent story storage. Pre-existing concurrent prologue work was
+preserved and excluded from this feature commit.
+
+Validation: `make test` passes **92 CTest / 96 Python tests** (log
+`/tmp/pm-visibility-test.log`); final `make all` builds3DSX without warnings
+(`/tmp/pm-visibility-build.log`). New tests cover source geometry partition,
+prologue subtree omission, unchanged collision packs, metadata fields and
+story boundaries/special cases. `check_doc_links.py` checks689 files with0
+broken links; `git diff --check` passes. Isolated Azahar captures use synthetic
+native story3/6 saves at harbor(0,-2), with18/15-second startup windows;
+`artifacts/azahar-prologue-visibility/boot.png` shows source dialogue and
+`artifacts/azahar-prologue-visibility-6/boot.png` shows unobstructed dock/water.
+The initial5-second capture was too early (black); no visual pass was claimed
+for it. Xvfb needed display-socket escalation. All profiles/saves are isolated.
+
+Limitations/next: this is recovered map initialization, not complete event VM
+activation. Bind story2 arrival, ship motion/departure/wake overrides, remaining
+plaza/NPC/item/door conditions and original collision activation; verify scene
+transitions against Dolphin. No original-runtime observation or hardware
+performance claim. Full prologue/full-game fidelity remains incomplete.
+
 ## 2026-10-12 — Goombella original animations, visibility and facing correction
 
 Field Goombella now renders original `PKR_S_1`/`PKR_W_1`/`PKR_R_1` idle,
