@@ -1,5 +1,26 @@
 # Progress and next-session handoff
 
+## 2026-10-12 — Native JUMP-01 correction: packed Mario jump SFX
+
+Verified the JUMP-01 SFX-provenance answer against the read-only ISO and found
+it analysed the generic `btlevtcmd_JumpPosition` (0x8010d208/0x4c4), not the
+body the native port binds, `btlevtcmd_MarioJumpPosition` (0x801093a8/0x8c0).
+Reproduced the Mario body from the DOL (`tools/inspect_dol_function.py`):
+r30=0x802ee458, so the only 0x802E reads are the dead 24/28/32(r30)=
+0x802EE470/474/478 loads (overwritten by unit floats before the call); one
+`psndSFXOn_3D` (0x801098fc) keyed on `word[unit+0x18c]`, position
+unit+0x154/158/15c; heading/distance from `system_angleABf` 0x8000703c /
+`distABf` 0x8000722c and sine from MSL `sin` 0x80272410. Applied the one
+native fix that survives: removed the three dead `0x802ee470` reads in
+`source/battle_packed_mario_jump.cpp`; kept the single `play` call (the "model
+both records" follow-up came from the generic body and is withdrawn). Filed the
+correction breadcrumb in `docs/requests/JUMP-01_HISTORY.md`.
+
+Validation: `make test` 87 CTest / 90 Python pass; `make all` 3DS build pass;
+`diff --check` clean. Docs are mid-restructure (inbox split into
+`docs/requests/`), so the breadcrumb went to the per-request history file, not
+the index. Full game still incomplete.
+
 ## 2026-10-12 — Medium-size field collision functions (mario_hit.o)
 
 Continued the medium-size sweep requested for a US port. First verified

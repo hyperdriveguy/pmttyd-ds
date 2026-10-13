@@ -1850,3 +1850,38 @@ play-at-setup;return handling and any landing cue remain outside the body.
 Request2/3 are answered as above;request1 answered.The water/void motion,
 pose-domain,marioMain and save/persistence requests remain open.No native/
 test/CMake/asset change in this entry(docs-only).
+
+Native implementation source-audit correction (2026-10-12),JUMP-01:the
+SFX-provenance answer and the follow-up above were derived from the GENERIC
+btlevtcmd_JumpPosition0x8010d208/0x4c4 listing (artifacts/reference/behavior/
+btlevtcmd_JumpPosition.disasm,311 lines).The native owner binds
+btlevtcmd_MarioJumpPosition0x801093a8/0x8c0 (us_symbols.csv;ordinary callback
+at0x80356434/0x803564a0 per tools/verify_mario_jump_motion.py),a distinct
+battle_event_cmd.o body.Reproduced from the read-only ISO DOL with
+tools/inspect_dol_function.py btlevtcmd_MarioJumpPosition:
+- r30=0x802ee458 (lis0x802f at0x801093d4,addi -7080 at0x801093e0).The Mario
+  body's dead neighbor loads are24/28/32(30)=0x802EE470/474/478,exactly the
+  native reads;they feed a scratch block then are overwritten by the unit
+  floats340/344/348 at0x801098c4-f8 before the call,so dead.The zero-scratch
+  conclusion is confirmed for THIS body;the "neighbors0x802EE458/45C/460"
+  wording is the generic body's offsets0/4/8.
+- The Mario body has exactly ONE psndSFXOn_3D0x800d9848,at0x801098fc:
+  key=word[unit+0x18c] (lwz3,396(29) at0x801098a4,nonzero-gated at0x801098ac);
+  position block=bit-copies of unit+340/344/348 (0x801098b0-f8).No second call
+  and no terminal/landing SFX in the body.The "two records0x8010d594/690" and
+  "second call inherits r3" claims are the generic body's;even there r3 is
+  reloaded from word[unit+0x190] at0x8010d630 and gated at0x8010d634,so
+  "inherits the first call's r3-out" is unsupported for either body.
+- (c)confirmed for the Mario body:six psq_l/psq_st spill/restore only,no Gekko
+  PS arithmetic;heading=system_angleABf0x8000703c at0x80109528 (store unit+
+  0x17c),distance=distABf0x8000722c at0x80109540 (store unit+0x180),sine=MSL
+  sin0x80272410 (seven sites),which the native sineDouble provider stands in
+  for.
+Native action applied this session:removed the three dead0x802ee470 reads in
+the battle_packed_mario_jump.cpp setup branch and kept the single play call
+(the Mario body has one),so the earlier "model BOTH records" follow-up is
+withdrawn.make test87 CTest/90 Python pass and make all3DSX pass;diff --check
+clean.Still open for the Mario body:runtime writers of the vec3 scratch,
+psndSFXOn_3D full signature/return handling,the unit+0x18c/0x190 key domain,
+and audio output/cadence.The generic btlevtcmd_JumpPosition0x8010d208 has no
+contract of its own;if one is wanted,file it separately.No lock reserved.
