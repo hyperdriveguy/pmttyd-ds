@@ -24,10 +24,10 @@ romfs/*.uvanim
 romfs/*.meshanim
 romfs/*.returns
 romfs/*.head
-
-romfs/audio-map.json
 romfs/events.pmevt
 romfs/events.pmevt.json
+
+romfs/audio-map.json
 
 romfs/*.camera
 

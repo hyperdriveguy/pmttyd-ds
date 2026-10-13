@@ -314,7 +314,7 @@ void Renderer::world(const Game& g) {
     }
     const int legacyCount=count;
     if(!battle && g.marioPresentation.supported && !(g.marioPresentation.displayFlags&1))
-        characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,g.groundHeight+g.jumpHeight,
+        characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight,
                        g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ());
     const int actorEnd=count;
     bool polygonShadow=false;int airShadowCount=0;

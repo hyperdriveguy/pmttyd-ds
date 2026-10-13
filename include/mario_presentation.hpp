@@ -79,7 +79,7 @@ struct MarioPresentation {
             previousMotion=motion;
         }
         (void)hp;
-        supported=motion<=3 || motion==10 || motion==11;
+        supported=motion<=3 || motion==10 || motion==11 || motion==31 || motion==33;
         const float heading=wrap(facing-offset);const bool rear=heading<=70 || heading>=290;
         const char* next=front;
         if(rear) {

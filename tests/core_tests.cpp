@@ -895,7 +895,7 @@ void waterRecovery() {
     while(w.tick(hp)!=WaterEvent::Landed && elapsed++<400){}
     CHECK(elapsed<400 && w.state==31 && w.counter==49);
     CHECK(std::hypot(w.position[0]-5.5f,w.position[2]+1.9f)<=.081f && std::fabs(w.position[1]-.05f)<.0001f);
-    for(int n=0;n<48;++n)w.tick(hp);CHECK(hp==7);w.tick(hp);CHECK(hp==6 && w.state==32 && w.counter==11);
+    for(int n=0;n<48;++n)w.tick(hp);CHECK(hp==7);CHECK(w.tick(hp)==WaterEvent::GetUp);CHECK(hp==6 && w.state==32 && w.counter==11);
     for(int n=0;n<10;++n)w.tick(hp);CHECK(w.active());CHECK(w.tick(hp)==WaterEvent::Complete && !w.active());
     CHECK(hp==6);w.state=31;w.counter=1;hp=1;CHECK(w.tick(hp)==WaterEvent::Dead && hp==0 && !w.active());
 }

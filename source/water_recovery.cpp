@@ -47,6 +47,7 @@ WaterEvent WaterRecovery::tick(int& hp) {
             if(hp==0){state=33;return WaterEvent::Dead;}
             state=32;counter=12;
             --counter; // Original falls through into state32 on this tick.
+            return WaterEvent::GetUp;
         }
     } else if(state==32 && --counter<=0) {state=-1;return WaterEvent::Complete;}
     return WaterEvent::None;

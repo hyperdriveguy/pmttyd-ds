@@ -705,6 +705,10 @@ bool Game::beginWater() {
     if(!groundAt({target.x,target.z},target.y,floor))return false;
     target.y=floor;
     water.begin({progress.position.x,groundHeight+jumpHeight,progress.position.z},{target.x,target.y,target.z});
+    marioPresentation.displayFlags&=~0x100u;
+    const float heading=marioPresentation.adjustMoveDirection()*.01745329238474369f;
+    fieldMovement.headingX=std::sin(heading);fieldMovement.headingZ=-std::cos(heading);
+    marioPresentation.requestPose("M_F_1",true); // Original water entry effect pose.
     fieldCameraDisplayFlags|=0x10000; // mot_damage entry retains camera-follow publication.
     fieldMovement.speed=0;
     jumpHeight=0;fieldJump={};fieldJump.motion=31;fieldStep={};fieldVerticalVelocity=0;warpRequest=-1;saveRequested=false;return true;
@@ -1336,7 +1340,16 @@ void Game::tick(const Input& rawInput) {
         retainedFieldMainX=fieldKeysOff?0:int8_t(std::clamp(i.x,-1.f,1.f)*70);
         const bool bottomlessTravel=water.kind==RecoveryKind::Void && water.state==15;
         const bool waterFollow=water.kind==RecoveryKind::Water && (water.state==12 || water.state==14);
+        const int previousRecoveryState=water.state;
         const auto event=water.tick(progress.hp);
+        if(water.kind==RecoveryKind::Water) {
+            const bool wasHidden=previousRecoveryState==12 || previousRecoveryState==14;
+            const bool hidden=water.state==12 || water.state==14;
+            if(!wasHidden && hidden)marioPresentation.displayFlags|=1;
+            else if(wasHidden && !hidden)marioPresentation.displayFlags&=~1u;
+        }
+        if(event==WaterEvent::Landed)marioPresentation.requestPose("M_D_2");
+        else if(event==WaterEvent::GetUp)marioPresentation.requestPose("M_U_3");
         progress.position={water.position[0],water.position[2]};
         if(waterFollow)marioCamera.retained.y+=water.followDelta*100;
         if(bottomlessTravel || waterFollow){marioCamera.retained.x=water.position[0]*100;marioCamera.retained.z=water.position[2]*100;}

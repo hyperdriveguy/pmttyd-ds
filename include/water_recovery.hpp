@@ -1,7 +1,7 @@
 #pragma once
 #include <array>
 namespace ttyd {
-enum class WaterEvent { None, Landed, Complete, Dead };
+enum class WaterEvent { None, Landed, GetUp, Complete, Dead };
 enum class RecoveryKind { Water, Void };
 // Shared ordinary-Mario water/void return fall, landing and damage stage math.
 // Authored counters/parameters are source-derived, not Dolphin observations.
