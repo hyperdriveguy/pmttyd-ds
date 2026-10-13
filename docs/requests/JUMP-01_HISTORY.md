@@ -2026,3 +2026,62 @@ samplingchoice/RNG/attack/guard paths, spikecounter andwingfall execution/audio/
 effects/pose recreation. Fullmask8SETphaseaudience/controller andsourceflag
 producersremainrequests; useoriginalcleargateasboundednextstep,notalwaysready.
 Documentation-only; no nativeedits/commit. Existingnativeappendsectionsunchanged.
+
+
+2026-10-13 fresh Move0..7/EnemyAct0..6 source delivery:
+[Exact phase scheduling](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#exact-fresh-phase34-scheduling-and-first-enemy-command-abi)
+pinsphase3emptyactorvsphase4actorlist, selectors/IDmark/keypreservation,
+Move6none→10predicate→8nextoutercall, PerPhaseendtiming, enemyAct0→3→6 root
+owner/waitcancel andnewAudienceActInit flagclearbody. Firstenemy nohelditem
+leaf, GetEnemyBelong, packedSampling/Choice ABI/weaponflags documented.
+Correction: Sampling biasflip W68&10000000 (PPCMSBbit3), never20000000.
+Spiked/Para choice80000000 meanssource deterministicmax, nochoiceRNG;
+actualcandidates/weightsremainoriginal. All admittedunclosedbranches have
+sourceaddresses; no nativeedits/commit ornewexecution/fidelityclaim.
+
+
+2026-10-13 Spiked used callback/posefallback follow-up:
+[Face/scale/defense](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#spiked-original-attack-used-facescaleoffsetdefense-and-pose-fallback)
+closesFaceAdd local-token/signedU189/wraporder, actualAddScale801103dc typed
+quantized4tickdeformation, integerSetDispOffset U54fields, originalJumpContinue
+firstcall/strictfloor/return1 reuse andResultACDefence storedB1cb0/privatepad.
+Immediateblockingmissingtype43 resolvedbyoriginalcategory69fallback TGK_S_1;
+forcepolicy29..39=1 versus43=0documented, noinventedpose. No nativeedits/commit.
+
+
+2026-10-13 blocked relocated Spiked krb helper closed:
+[Verified helper alias](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#verified-relocated-spiked-krb_get_dir-semantic-alias)
+pins textsection1+5b2c/file5bf0/native93105b2c/sourceVA805c0590/rawSHA,
+all8DOLcallrelocations andlocal+0constant, identicalusedfiveoperand/math/output
+semanticsversusDOLChristine80189910. Typedproviderreusevalidatedbyoriginal
+operations,notnameguess. No nativeedit/commit/originalexecutionclaim.
+
+### 2026-10-13 delivery: live unit scale/display matrix placement
+
+Rechecked original btlUnitPartsDisp80101774 used P4fc0 branch and appended
+`Live unit scale and display offset placement during Spiked attack` to
+[the trio contract](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md).
+U54/58/5c translation is left of unit rotations; U90/94/98 scale is right of
+Rx*Rz*Ry, left of incoming animation yaw/model scale2. Source mirror rebuild
+negates live Z scale, preserving current X/Y. Fresh reduction and exact load/
+concat addresses are recorded; full nonzero pivot/part algebra remains above.
+Numerical camera provider remains bounded. Docs-only; no native edits/commit.
+
+### 2026-10-13 delivery: fresh enemy impact and installed player hit roots
+
+Appended `Enemy impact: private defense state and installed player reactions`
+to [trio contract](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md).
+Rechecked full800fa1b8: fresh no-input result2 storedB1cb0; target305/306/307,
+override signedB1d18, windows and common private reset pinned. Actual private
+pad producer/cadence already closed in input subsystem; do not request it as
+undocumented or merge it with general attack history. Remaining override/auto
+writers and hardware/paused timing retain bounded input requests.
+
+Mario80417c08 and Goombella80393e68 installed damage roots plus hashes/order
+recorded; both original defaultDamage, Goombella firstrotationreset. SpikeW20=2,
+ParaW20=1, callback80189d30 literalwordreturn; player elemental defense0 and
+originalattrs yield fresh F100code10117, positive HPsubtract2/1, result18.
+Current pouch HP remainsowner. Original generic type39 M_D_1/PKR_D_1 wait1000ms,
+missingdatakey0a and used helper80113f1c U16+1fe OR1 are pinned. Smallest next
+native boundary listed; lethal/guard/status/physics/sound/effect obligations
+remain explicit. Documentation-only, no native edits/commit; git diff --check.

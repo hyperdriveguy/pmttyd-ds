@@ -486,7 +486,7 @@ bool Renderer::characterModel(const char* name,float frame,Vec2 root,float rootY
     const BattleActorRotation rotation(battleActor?battleActor->battleRotation:ActorVector{},battleActor?battleActor->battlePivot:ActorVector{});
     for(const auto& v:actorSample.vertices) {
         auto point=rootTransform.point(v);
-        if(battleActor){const auto p=rotation.point(point);point={root.x+p[0],rootY+p[1],root.z+p[2]-.05f};}
+        if(battleActor){for(unsigned axis=0;axis<3;++axis)point[axis]*=battleActor->battleScale[axis];const auto p=rotation.point(point);point={root.x+p[0]+battleActor->battleDisplayOffset[0]*.01f,rootY+p[1]+battleActor->battleDisplayOffset[1]*.01f,root.z+p[2]-.05f+battleActor->battleDisplayOffset[2]*.01f};}
         vertex(point[0],point[1],point[2],v.u,1-(1-v.v)*uvScale,0xffffffff);
     }
     return true;
@@ -979,7 +979,7 @@ void Renderer::overlay(const Game& g) {
             const auto pair=g.trioCommands.selected();
             panel(16,20,164,30,Paper);text(g.trioCommands.targetName(pair[0]),25,28,.55f,Ink);
         }
-        if(g.trioBattleActive && g.trioCommands.state==TrioBattleCommands::State::AttackReady) {
+        if(g.trioBattleActive && (g.trioCommands.state==TrioBattleCommands::State::AttackReady || (g.trioCommands.state==TrioBattleCommands::State::Closed && g.trioAttack.active()))) {
             if(g.trioAttack.pendingFunction()){panel(16,20,368,30,Paper);text("Development notice: source damage services pending",25,28,.43f,Ink);}
             else if(g.trioAttack.active()) {panel(16,20,170,30,Paper);text("A: action command",25,28,.5f,Ink);}
             else text(g.trioAttack.finished()?"Development notice: turn scheduling pending":"Development notice: original attack event pending",25,112,.45f,Ink);

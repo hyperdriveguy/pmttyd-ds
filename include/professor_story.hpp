@@ -14,6 +14,7 @@ const std::array<TrioBattleUnitSpec,4>& trioBattleUnitSpecs();
 const std::vector<uint32_t>& professorFenceCollisionNodes();
 struct ProfessorSceneActor {
     std::array<float,3> position{},battleRotation{},battlePivot{};
+    std::array<float,3> battleScale{{1,1,1}},battleDisplayOffset{};
     float yaw=0;std::string pose="S_1";
     bool hidden=false,moving=false;
     bool jumping=false;

@@ -118,7 +118,24 @@ int main(){
     const auto headbonk=std::find_if(game.trioAttack.requests().begin(),game.trioAttack.requests().end(),[](const ProfessorServiceRequest& r){return r.command==0x803941a8;});
     assert(headbonk!=game.trioAttack.requests().end());
     game.tick(Input{});assert(game.trioAttack.commandActor()==-1 && game.trioAttack.readWord(0x84000f1c,value) && value==0x0500000b);
+    std::vector<uint32_t> phaseOrder;uint32_t priorPhase=0;
+    for(unsigned i=0;i<1200 && !game.trioAttack.pendingFunction();++i){
+        game.tick(Input{});assert(game.trioAttack.readWord(0x84000f18,value));
+        if(value!=priorPhase){phaseOrder.push_back(value);priorPhase=value;}
+    }
+    assert(phaseOrder==std::vector<uint32_t>({0x04000002,0x04000003,0x04000004}));
+    assert(game.trioAttack.pendingFunction()==0x80107694 && game.trioAttack.active());
+    assert(game.trioAttack.readWord(0x84000420,value) && value==4); // Original surviving enemy order.
+    assert(game.trioAttack.readWord(0x841042a0,value) && value==0x935238e0); // Installed Spiked root.
+    assert(game.trioAttack.readWord(0x841042ac,value) && value==1);
+    assert(game.trioAttack.readWord(0x841042a8,value) && value!=0);
+    assert(game.trioAttack.readWord(0x84000ee0,value) && value==4); // Source sampler's actor ID, not a menu actor.
+    assert(game.trioAttack.commandActor()==-1 && game.trioCommands.actor==2 && game.trioCommands.state==TrioBattleCommands::State::Closed);
+    const auto phaseChecks=std::count_if(game.trioAttack.requests().begin(),game.trioAttack.requests().end(),[](const ProfessorServiceRequest& r){return r.function==0x80113708;});
+    assert(phaseChecks==2 && !game.trioBattleIntro.message.active()); // Frankly gates phase3 and4 without lecture replay.
+    assert(game.trioBattleIntro.actors[5].pose=="TGK_S_1"); // Original type43 band fallback69.
+    assert(game.trioAttack.readWord(0x8410629c,value) && value==0); // Finished tracked phase hook cleared by barrier.
     assert(game.progress.originalStory==11 && game.fieldBattleState().result==0 && !game.fieldControlEnabled() && !game.saveRequested);
     assert(game.progress.position.x==fieldPosition.x && game.progress.position.z==fieldPosition.z && game.progress.hp==checkpoint.hp);
-    std::cout<<"Original Jump damage, owned reactions, return/idle, source move consumption, Mario-to-Goombella handoff, persistent Headbonk damage and deferred removal passed\n";
+    std::cout<<"Original Jump damage, owned reactions, return/idle, source move consumption, Mario-to-Goombella handoff, persistent Headbonk damage, deferred removal and source enemy phase/target/approach passed\n";
 }

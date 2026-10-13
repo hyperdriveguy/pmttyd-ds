@@ -1515,3 +1515,417 @@ unitflag4→damagepose39, fallSFX,JumpPosition10toY0,homeupdate,walkSFX,
 attack/wait/damage/soundservices. Hidingwingsalone cannot satisfy thistransition.
 Originalresources,resourcepose recreation, exactgenericjump/audio/effects and
 variant eventexecution remainnextimplementation work, notcompletednativeclaims.
+
+
+## Exact fresh phase3/4 scheduling and first enemy command ABI
+
+2026-10-13 documentation-only delivery for the native phase progression step.
+Read-only inspections `/tmp/trio-move.dis`, `trio-phasefirst.dis`,
+`trio-mario-init.json`, `trio-enemyitem.dis`, `trio-enemyitemcore.dis`,
+`trio-enemybelong.dis`, `trio-actinit.dis`, `trio-niceasync.dis`; existing exact
+[move/action](BATTLE_MOVE_CONTROLLER.md), [phase tables](BATTLE_PHASE_TABLES.md),
+[target event ABI](BATTLE_TARGET_EVENT_INTERFACES.md) remain authoritative.
+This section fixes used owner/order/flags; current native execution is separate.
+
+### Packed Move0..7 sequence, per phase
+
+Move5 storage Bf1c starts05000000 when precedingMove12 advancesPhase4=Bf18.
+Forphase3, source Move0 invokesPhaseFirstProcess8011b0d0/11c, whichfirstwrites
+B1c70word0/B1c74byte0; fills64actorIDsB120 with-1. ForEVERYnonnullslot write
+U311=ff, thenstate10 requiresSlow20active beforecontinuing; otherstatesbypass.
+RequireU2c==currentPhase4 andattribute80000clear; appendU0, U140=-1, eachpart
+withP1c0!=-1 getsP4e4=1. Stable actor-sort thenseparatephase-eventtablebuild.
+NoResetMoveStatus orTurnFirstProcesscall occursinside thisphase-first helper.
+
+Phase3 freshactorcount0: sortcount0 scansfirstID-1 andnoactorlookup/sort.
+Phase4 freshactorcountsurvivingopponents only; count0Franklystate10doesnotenter
+withoutSlow, so hecannotact. Unitpriority/remaining counts persistfromturnreset.
+Source sortedactorIDs are actualregistry/home/priority-dependent; normaltrio
+Spiked4(home70),Para5(home110) afterGoomba3deletion.
+
+Move0 incrementsMove5→1 andrequestsIMMEDIATEredispatch; Move1 increments→2
+andredispatches. Move2 requestspouchGetPtr800d5eb0 thenBattleGetMarioPtr800f87a8;
+onlypouchU8+5ba==2 ANDPhase4==04000004 launchMajinaiDefenceUp803634f8 andgo3.
+Withoutthat EXACTgate, incrementMove5TWICE to4 andredispatch; phase3always
+missesphase4gate. Freshfortune-mode adapter mustnot omitpouchquery/assume0
+withoutdocumentedowner. Admittedfortune branch ownsB18ff9=2, helpers
+BattleMajinaiDone/EndCheck andMarioattackU2a8; remainsseparatedependency.
+
+Move4 scansall64registry, nonnull U294selector1script→RunPhaseEvent(U,1).
+It doesnotfilterHP/status/count/phase/belong. ThenMove5→5 andredispatchbarrier;
+readybarrieradvances→6 andredispatches. FreshMario init80372ec4/12c inventory
+SHA25648d367d76dc627d4422d34f1d3d4e3716810a8463f5ec57cb544c53a1f649e9b
+hasNOSetEventPhaseFirst/Phase. Goombella/trio inits likewiseinstallnone.
+Their U294/298remain0fromsourceEntry. Frankly onlyU298=REL3dc40; U294=0.
+Thus freshselector1fanout createsnoevents, butbarrierstillchecksactualownedIDs.
+
+Move6 scans64pairIDsB220+8*i inascendingorderedtable position, ignoring-1,
+missingunit,U298null. FirsteligibleFrankly: RunPhaseEvent(U,0), setthatpairID=-1,
+PRESERVEitskeyword, Move5→7 andRETURN (noimmediatebarrier). Skippedpairsremain
+unchanged; thereisnocompaction. RunPhaseEvent801297bc/90 readsU298, constructor
+(script,priority10,flags20), writesownerE160=U0 andtrackedIDU29c. Itdoesnot
+canceloldU29c first. Franklyphase3/4root CheckPhase04000001 false→RETURN;
+no09201..05 replay. EventVM/scheduler stillownsroot/ID completion.
+
+LaterMove7 barrierready thenCheckConcluded. Continuingbattle resetsMove5=6
+andredispatches; noqualifyinghook now→Move5=0500000a andredispatchMove10.
+ItdoesNOTdirectlyselectMove8. Move10alwaysconclusionfirst; ifcontinuing clears
+allunitdamage264 and27c1000,thenPhaseEndCheck. Phase3emptylist→end1→
+Audience_PerPhase(04000003),Move5→11,RETURN. Noaudiencephase2/4mutationbranch
+inthatphase3PerPhasecall. Move11mask8-clearaudience0 +barrierready→12,RETURN;
+Move12bothmessagepumpsidle→Phase4increments04000004,Move5reset05000000,RETURN.
+
+Newphase4repeatsMove0..7. WhenitsPhaseEndCheck findseligibleSpiked/Para, result0
+setsMove5=8 andRETURN. OnlyNEXTouterinvocation Move8clearsB18ffc12bytes,
+allnonnullunit27c&=80002000, clears264/268/26c/280,half260,bytes270..273;
+selectsoriginalactorlistentry, B420=ID, U27c|=1000, Move5→9,
+Act6=Bf20=06000000. Itnormalizesdeferredstate1actorentries afterward.
+Enemykind!=222 skipstheMario-owned upgrade/badge flagscans. Thenfalls intoAct0.
+
+Audience_PerPhase iscalled inMove10ONLYwhenphaseendpredicate(orBef42000force)
+saysend, beforeMove11. Itisnotcalledwhenstartingphase4orselectingeachenemy.
+Phase2handoffmustretainphase3actualhooks/emptyactorpredicate ratherthanjump
+straighttoenemyphase; itsnoactorpath neverentersunsafeMove8all-skipped region.
+
+### Enemy Act0→3→6 exact fresh root launch
+
+Act0 8011b31c resolvesUfromB420; effNiceAsync80144d44(1); clearsU284,U2d0;
+BattleAudience_ActInit801a82d4. Localinhibitedstarts1 andonlyplayerkind222 or
+224..230 canclearit afterstatus1/2/9/27tests. Enemykind1/2/3retains1, sochoose
+Act3andRETURN beforeCommandInit/attr10/flipped-state routing.
+
+AudienceActInit98bytebodycapturesbaseB2858, zerosbase+137d4, separatelyclears
+baseflags masks10,20,40,80,100,200,400,800,1000 inthatorder (combined1ff0).
+Phase-reactionmask8 isPRESERVED; do notinferitscleargatefromthisinitializer.
+NoRNG/eventcreation. effNiceAsync scans7originalnice-resourcehandles andissues
+asyncanimationresource requests; Act0ignoresitsreadyreturn. Resourceprovider
+stillhasoriginalownership,notaninvented additionalAct0wait.
+
+Act3 8011b56c re-fetchesactor, writesU2ac=1, ORU1c04000000,
+setsAct6=06000006,RETURN. DoesnotoverwriteinstalledattackU2a0.
+Act6 8011b5e0 doesNOTcallStatusWindowSystemOff becauseU2acbit1present.
+Freshnormalbattle Bflags40000000clear, U2aclacks10/2, statuses1/2/9/27/6/5clear:
+sourceevtEntry(U2a0,10,0). Noactor-kind reinterpretation, HPcheck, menuquery or
+RNG occursonthisbranch. Constructorentrynonnull→U2a8=E15c,E160=U0; THEN
+ifU290waitIDnonzero deleteIDandzero. Act6increments→7andRETURNS whetherentry
+createdornot. Act3/6areseparateoutercalls; donotfallthrougharbitrarily.
+
+U2a0sourcebindings: SpikedREL31310; flyingPara2fb0c; fallenPara groundinit3033c
+reinstallsitsgroundattack (inspectnewunitfield,notoldflyingevent). Sourceenemy
+roots owntargetsampling andactualattack; commandplayerSelectionisnotrequired.
+Firstretainedbranch blockers are listedbelow withoriginalcalltargets.
+
+### First used event command providers, exact ABI
+
+EnemyItemUseCheck80104498/70: operands(actor,RAWoutput). Eval/translateactor,
+lookupunit usingcapturedB, BattleEnemyUseItemCheck801f9658/148(U), writeinteger
+returnpointertoRAWoutput,return2. CoreU308==0 returns0immediately at801f9678;
+noitemtable/RNG/event. U308nonzeroadmission includesitemDataTable803108a8+
+40*item,+24weaponpointer andoriginalitem-specificcheckgraph; do notfabricate0
+outsideusedno-helditemgate. Itemsetup/drop/heldowner remains separatelybound.
+
+GetEnemyBelong8010eed4/70: actorresolved/transformed, BtlUnit_GetEnemyBelong
+80127454/2c readsS8(Uc):0→1,1→0,other→same; evtSetValue(rawarg1),return2.
+Freshenemybelong1 producesplayergroup0. NoRNG, HP/status ormenuowner.
+
+SamplingEnemy8010b664/b0 operands(actor,belong,weapon), ALLinteger-resolved;
+belongnarrowsS8. Bcaptured, buffer=B428. Computebias=S8(-U8(B+a+8*belong));
+ifweaponC=W68 hasmask10000000, invertbiasagain. PPCrlwinm8010b6cc bits3..3
+means10000000, NOT20000000; earlieragentmessagewasincorrect andcorrected.
+CoreBattleSamplingEnemy800ff5c0(buffer,W,actorID,S8belong,W64,W68,bias).
+Noactorptrsubstitution, W7cchoiceflagsorcallerHWpad inputhere.
+
+ChoiceSamplingEnemy8010b5e4/80 operands(weapon,RAWunitOut,RAWpartOut).
+Resolveweapon; BattleChoiceSamplingEnemy800febc8(buffer=B428,W7c,&unit,&part);
+writeintegerunitthenparttoRAWoutputs,return2. Noactortranslationforthisweapon.
+SpikedWREL30d68: W64=01101260,W68=20001000,W7c=80002004.
+FlyingParaWREL2f664: W64=01101260,W68=20000000,W7c=80002000.
+GroundParaWREL3027c: sameadmission/choiceasSpiked. NeitherC has10000000,
+sofreshplayer-side+1directionyieldsbias-1. BOTHchoicewords80000000 set,
+thereforeoriginalchooser usesdeterministicmaximum-weight path, notrandomdraw.
+Actualsamplinggeometry/rank/status/power fields stilldeterminechosenunit;
+nohardcodedMario target. Thealreadyclosedchooser/samplercontractsandnative
+packedprovidersareappropriate nextbindings.
+
+Remaining sourceblocked branches: fortune-admission script803634f8/helpergraph;
+Audience_PerPhase801a7c68 transitiveaudiencemutation andmask8SETAudienceCheck
+801a6ce8; sourceenemyU308nonzero core801f9658 branches; installedREL attack
+VMcallbacks aftersampling (motion/counter/guard/audio/camera/itemadmissions).
+Fresh-cleargatescoveredabove do notcloseallbranches ornativefullturnfidelity.
+
+
+## Spiked original attack used face/scale/offset/defense and pose fallback
+
+2026-10-13 documentation-only callback follow-up. Original DOL disassembly
+`/tmp/trio-facediradd.dis`, `trio-addscale.dis`, `trio-unitaddscale.dis`,
+`trio-dispoffset.dis`, `trio-unitdispoffset.dis`, `trio-defenceresult.dis`,
+`trio-setanimtype.dis`; REL162-command attack31310 inventory alreadypinned.
+
+FaceDirectionAdd8010b85c/98 takes(actor,RAWcoordinate-token,amount). Integer
+actorresolution/translation; integeramountresolution; capturedglobalB lookup;
+step=low32(amount*S8(U189)); thenevtGetValue(coordinate-token), write low32
+coordinate+step to SAMErawtoken viaevtSetValue;return2. Itdoesnotwriteactor
+position/heading oruseU188movementdirectionfallback. SourceSub8010b7c4 differs
+onlysubtractstep. AtSpikedREL31488 targetLW3/LW0/80 usesTARGET'sface sign,
+notattacker'sface. Preserveevaluateamount-beforecoordinate-read ordering.
+
+AddScale actualaddress801103dc/c0 (80110380 isnotthisentry). Resolveactor;
+translatedID==-1 returns2beforeXYZreads. Otherwise lookupunit, XYZevtGetFloat
+inorder→BtlUnit_AddScale801284d8/4c. Core singlefadds eachdelta toU90/94/98
+unlessincomingaxisfloat exact-250000000,whichpreservesaxis. No positivity/
+sizeclamp, noU114change. SourceSpiked319ac loops4times withencodedfloatdeltas
+f24a7ad1=.0791015625, f24a7a06=-.119140625,Z0, WAIT_FRAME1 each. Fromscale1
+thisderivesX1.31640625,Y.5234375,Z1 after4adds, then319d0SetScale(1,1,1).
+Thisisquantizedoriginaleventdeformation, notinvented .08/.12renderdelta.
+
+SetDispOffset80112978/128 resolvesactor, XYZINTEGERevtGetValue→signed-single,
+thenBtlUnit_SetDispOffset8012832c/34 storesU54/58/5c withfloatsentinel
+-250000000preservation. Nofloatresolver, originalposepivot/home/positionchange.
+Spikedavoidancecalls at317b8 and31800; first(0,RAWsentinel,0)preservesY,
+second(0,0,0) resets. Don'twriteU3cworldXYZortruncatecamera matrixinstead.
+
+JumpContinue8010d0f0/118 isalreadyclosed in
+[jumpcallback contract](BATTLE_JUMP_EVENT_CALLBACKS.md#jumpcontinue-and-the-strict-landing-boundary).
+AtSpiked31790 itbelongstoprecheckavoidance route, notordinaryfreshhit1.
+Firstcall sets eventbyte+d=1 andcopiesvisibleposition→moveCurrent; retain S/G/V/A.
+Eachcall single-addY+V,V-G,btlMovePos(horizontalS/A),SetPos,sourcefloorquery;
+strictY<floor snapsYandreturns1; equality returns0. No countdecrement/newaudio.
+Itreturns originalhandler1 onlanding (complete/yieldprotocol), notgeneric2;
+subsequentpose/sound commands followoriginalinterpreteroutcome scheduling.
+Nativeoriginalmotionprovidercanbereusedwiththeseactualowner/firstcallfields.
+
+ResultACDefence80107694/74 resolves/translatesTARGETunit andresolvesarg1weapon;
+BattleActionCommandCheckDefence800fa1b8/268(Utarget,W), discardsregisterresult,
+returns2 withoutanyeventdestination. SourceSpiked319e8 suppliesLW3 andW30d68,
+then319f8CheckDamage(-2,LW3,LW4,W30d68,F100,LW5). Originaldefensecore stores
+B1cb0, usesprivateACpadB1d1c history, evaluatesweaponbyte13, badge/status/override
+fields, andresetsprivatepadonallreturnroutes. Fullcore/difficulty/windows/
+anti-mashing areauthoritative in
+[originaldefense](../input/BATTLE_INPUT_AND_DEFENCE.md). Don'tderiveguardfrom
+wrapperreturn2 orreusepre-impactprivatehistoryafterthecore reset.
+
+### Missing exact type43 has original category fallback
+
+AnimeChangePoseType80106b20 firstcallsGetPoseNameFromType8012772c/80, ignores
+thatreturn, thenSetAnimType801276ac/80 whichREPEATSlookup. Requestedtypes<=28
+fallback28;29..39fallback39;40..69fallback69;>=70returnnull aftertablepointerload.
+Scan8-bytepairsINORDER: recordtype>=70terminatesfirst; otherwisefirst exact
+ORcategoryfallback matchreturnsname. Thisisnotexact-match-only norfirstexact
+thenfallbacktwopass. Originalvalidtable/missingcategorydomainsremaincallerinvariants.
+
+SpikedsourceposeTableREL30e28 endswithtype69→RELcad0TGK_S_1. No43record;
+attacktype43 thereforeusesactualTGK_S_1. FlyingPara43usesPTK_S_1; groundPara
+poseTable30158/a0 has69→RELc97cKUR_S_1. No inventedposealiasorrequiredasset43.
+SetAnimType force1ONLYrequested29..39, otherwiseforce0; thenrequested29/30
+ORP204bit10. Type43usesforce0; repeateddamage39usesforce1evenifsamename.
+ItcallsbtlDispChangeAnime withtheactualresolvedfallbackname, notplaceholder.
+See [complete pose lookup](BATTLE_UNIT_POSE_AND_DISPLAY_INITIALIZATION.md).
+
+Fresh callbacks abovearelocallysourceclosed. Originalenemyguardinput/counter/
+reactivehit/effect/camera/audio/resource/numeric providers andexceptionalstatus/
+avoidancebranchesremainseparate; newnativeexecutionvalidation isnotclaimedhere.
+
+
+### Verified relocated Spiked krb_get_dir semantic alias
+
+Original tik `krb_get_dir@unit_togekuri.o` is section1+5b2c, file5bf0,
+source loadedVA805c0590, size118. Native callback93105b2c is source text
+section-relative binding, notfileoffset5bf0. Raw original helperSHA256
+3049ee711a7765218b84e960ffc30e3da89a7f04edccd15e2f546d72353b2dfe.
+`/tmp/trio-rel-krb.dis` andinspection-onlyELF recoveralloriginalPPC operations;
+REL24imports annotatedusingread-onlyrelocationstreams, nooriginalcodeexecuted.
+
+VerifiedABI/math agreeswithChristineDOL80189910: firstfouroperands evtGetFloat,
+fifthoutputtoken evtGetValue capturespriorangle. dx=newX-oldX,dy=newY-oldY,
+singlefsubs. Bothzero (fcmpu) writespriorangleback; otherwiseSYSTEMangleABf
+8000703c(dx,dy,0,0), fctiwz, integerwritefifthoutput. Everypathreturn2.
+SourcecallerLW5,LW6,LW9,LW10,LW8 areoldXY/newXY/outputangle, notactorIDs.
+
+Eightoriginalmodule0REL24sites: file5c2c/3c/4c/5c→evtGetFloat80030840;
+5c6c→evtGetValue80031260;5c9c and5ccc→evtSetValue80030cfc;
+5cb4→systemangleABf8000703c. LocalADDR16_HA/LOsites5c72/7a and5caa/ae
+resolveRELsection4+4d80=filecbe8; bytes00000000float+0. ThismatchesDOL
+Christinezero804243cc. Register spill/constant load sequences differ, so this
+isverifiedsemanticproviderreuse, notbyte-identicalfunctionaliasing. It is
+correcttobindthisexactrelocatedaddress tothesametypedkrbprovider while retaining
+originalsource module/addressidentity. OtherRELsame-namehelpers needtheir own
+bindingchecks; no broadnames-onlyalias proof isclaimed.
+
+
+### Native player-to-enemy phase progression (2026-10-13)
+
+The native original-address runtime now executes fresh Move0..12 ordering
+through phase2→empty phase3→phase4. Phase tables rebuild only at Move0.
+Selector1 hooks fan out; selector0 hooks run serially through the source
+positional pairs, retaining holes/keys. Frankly's original phase script executes
+in phases3/4, checks literal phase1 and returns without replaying lecture text.
+Move11 respects actual audience bit8 and the owned event barrier; Move12 uses
+empty source message work before advancing the phase. Phase2 audience inventory
+remains an explicit empty native presentation adapter. A mask8-set audience or
+phase4 end stops at the missing original provider rather than skipping it.
+
+Enemy selection uses the retained source phase table and original move counts.
+Move8 sets source Act0, then separate Act0→3→6 calls launch the installed
+Spiked script, binding owner/action ID and deleting wait afterward. Actual
+AudienceActInit clears1ff0 and resets137d4 while preserving phase bit8; nice
+resource requests and complete audience presentation remain adapters. Enemies
+cannot enter the player menu. No next-turn count reset or turn increment is
+introduced at this boundary.
+
+EnemyItemUseCheck binds the exact held-item0 early return; nonzero held items
+remain pending. GetEnemyBelong, SamplingEnemy and ChoiceSamplingEnemy use
+original signed direction/weapon masks and the shared packed candidate services.
+The original deterministic weighting selects the target, without an authored
+Mario preference. FaceDirectionAdd updates the source local coordinate token.
+Spiked's relocated krb_get_dir93105b2c uses the verified same XY/angle ABI as
+DOL80189910. Its original jump/rotation event reaches ResultACDefence80107694,
+which remains the next native impact boundary. Camera requests are retained
+against the existing stage-camera adapter; their full movement/shake is unbound.
+
+Typed pose lookup now follows source table order and band fallback28/39/69,
+including force1 for29..39. Spiked type43 therefore selects original TGK_S_1;
+a missing exact43 no longer stalls. Unit scale/display-offset setter leaves publish live source scale and world-axis
+display offset in the recovered matrix order; later Spiked impact remains open.
+Tests assert phase order, two gated Frankly roots/no dialogue replay, tracked
+phase-ID cleanup, Spiked installed root/owner/Act3 flag, packed sampler actor,
+player-menu exclusion and guard boundary. No enemy damage/victory/field return
+is inferred. HP/reward and prior player-turn tests remain authoritative.
+
+### Live unit scale and display offset placement during Spiked attack
+
+Documentation-only source closure, 2026-10-13: rechecked original
+`btlUnitPartsDisp80101774` PPC against the preceding complete matrix contract.
+The live scale fields are **U90/U94/U98**, and the live display-offset fields
+are **U54/U58/U5c**. These remain active during the original Spiked approach,
+squash/stretch and avoidance streams; a rotation-only native adapter omits
+visible original state.
+
+Source loads display XYZ at80101804..1814 into the translation matrix at
+stack+2e0. Scale loads/multiplies at8010188c..18c0 form
+`(U114*(U9c*U90), U114*(Ua0*U94), Ua4*U98)` with the shown single precision
+multiplication association. The camera mirror rebuild at80101eb0..1ee8
+negates the Z product when its previously documented gate admits it; it does
+not replace live X/Y scales. P4fc0 rotation concatenation at80101f50..1f7c
+produces Rx*Rz*Ry; unit display translation is left-concatenated after pivot
+restoration, as in8010191c..1938 and the corresponding rebuilt path.
+
+For fresh ordinary `c_kuribo` family parts with zero part/pivot/base-angle
+state and base scales1, the complete live matrix is:
+
+`Mdraw = T(Ux,Uy,Uz-5) * T(U54,U58,U5c) * Rx(U6c) * Rz(U74) * Ry(U70)
+* diag(U90,U94,signZ*U98) * Ry(A) * S(2,2,2)`.
+
+Thus display offset translates in world axes, before the model rotations act
+on local geometry. Current unit scale lies to the right of unit rotation and
+to the left of incoming animation-facing yaw A and original model scale2.
+Keep signZ from the original live camera/facing gate. For nonzero pivots,
+part state or base angles/scales, use the full formula above rather than this
+fresh reduction. Resource-local animation transforms continue beneath this
+matrix. Numerical camera production remains the previously retained boundary;
+this delivery does not invent a fixed camera value or change native code.
+
+## Enemy impact: private defense state and installed player reactions
+
+2026-10-13 documentation-only source recovery. Rechecked full original
+BattleActionCommandCheckDefence800fa1b8/268, weaponGetPowerDefault80189d30/8,
+Mario init/damage and Goombella damage event inventories, original player kind,
+part, pose and data tables. No original execution/timing observation is claimed.
+
+### Defense result owner and private-pad producer
+
+The complete authority is [input and defense](../input/BATTLE_INPUT_AND_DEFENCE.md),
+with [main-pass cadence](../input/BATTLE_INPUT_CADENCE_AND_SNAPSHOTS.md) and
+[reset preservation](BATTLE_PAD_RESET_AND_RAW_PRESERVATION.md). These providers
+are documented; an absent native implementation is not an undocumented source
+producer. ResultACDefence80107694(target,weapon) evaluates both int operands,
+translates target, calls core(U,W), discards its register output and returns2.
+
+The core clears word B1cb0; difficulty is clamp(3+unsigned U306-unsigned U305,0,6).
+A-window table802ee018 is[10,9,8,8,7,6,5], B-window802ee020[5,4,3,3,2,1,1].
+Eligible superguard requires W13!=0 and signed HP U10c>0. Inside that branch,
+positive signed override B1d18 decrements once/selects5, else U307!=0 selects5,
+else an edge B200 in the B-window selects5 only if the combined A100/B200 count
+in history0..14 is less than2. If5 was not selected, positive B1d18 decrements
+once/selects4. Otherwise count>=2 selects1; a single A in A-window selects4;
+otherwise nonzero count selects1, zero selects2. U307 alone does not force4
+when its superguard admission is false. Every exit calls WorkInit8011a38c on
+B1d1c, then returns the stored B1cb0. The reset preserves bytes/fields documented
+by the reset contract; do not substitute an indiscriminate zero-fill.
+
+Private trigger reader800fa1a0 reads word B1d34+4*index masked by button.
+BattleActionCommandManager800fa5b0 unconditionally calls
+BtlPad_WorkUpdate8011a0ac(B1d1c,channel0), even with no main AC callback.
+General BattlePadManager8011a43c updates four pads before sequence control;
+private update occurs after sequence control, before AC callback, and before
+later evtmgrMain. This closes the direct source update producer and placement.
+Native physical GP publication and preserved/reset lifetime must be bound to
+this ownership, rather than reusing a general attack history. Other B1d18/U307
+writers, tutorial injection, paused-loop and hardware impact timing remain the
+bounded existing requests in input contracts; fresh all-zero state needs none.
+With fresh counter0/U3070 and no A/B history, result2 is source-backed.
+
+### Source player damage-event installation
+
+Mario init80372ec4/12c (20commands, SHA256
+48d367d76dc627d4422d34f1d3d4e3716810a8463f5ec57cb544c53a1f649e9b)
+installs damage_event80417c08 via SetEventDamage at80372ee4. Its five commands
+(28bytes, SHA25686fc788666d75cd17665e7cc28628660cf2b0e82afc15c8d9ce6a83c88e7787a)
+set LW10=-2, LW11=1, RUN_CHILD defaultDamage8034cc60, RETURN, END.
+Goombella init80393d9c installs damage80393e68. That six-command/40byte wrapper
+SHA256a2601eb4b39fb08b19b7dcb05bd82bddbef224708bad7a3c452c39ed06c1a608
+first SetRotate80111720(-2,0,0,0), then the same locals/child/return/end.
+Importing only their waits leaves original U2b0 hit roots uninstalled; install
+these source roots through source init/SetEventDamage ownership before impact.
+Generic hit root lifecycle/cancellation remains the preceding BattleRunHitEvent
+contract: owner ID, full damage code and actual part must survive dispatch.
+
+### Fresh ordinary impact tuple and reaction assets
+
+Spiked attack weapon tik file30d68 has relocated HP callback80189d30,
+power word W20=2. Flying Para weapon2f664 has the same callback and power1.
+That callback consists exactly of lwz r3,20(r4) and blr: no pouch or AC lookup.
+Both records W13=1, elementW6c=0, patternW6d=0, specialwordW74=5087.
+Player bodypart1 records80372a18/80393ba0 contain attributes9/counters0;
+defense pointers Mario80417ba0/80417ba8 and Goombella80418450/80418458 each
+point to five zero bytes. Kind attributes(+ac) are Mario02040000 and
+Goombella02000000. Their imported U104 lacks100, so calculator ORs10000.
+
+For fresh no badges/status/extra defense, stored defense2, F100 and positive
+HP, [calculation](BATTLE_DAMAGE_CALCULATION.md) gives Spike H2 or Para H1,
+Q0, code10117. [orchestration](BATTLE_DAMAGE_ORCHESTRATION.md) returns18;
+ordinary direct tuple is (attackerID,target,part1,H,0,10117,pattern0,sleep1).
+Keep current pouch-derived target HP; kind baseHP10 is not permission to reset
+live HP. Increment D260 after HP/FP calculations, apply through original direct
+HP/FP bookkeeping and hit event, then attackerA280/D273 tail. No HP-only native
+reaction or invented death admission replaces the original scripts. Guard,
+superguard, lethal target, status and nonfresh branches require their full
+existing contracts and should remain explicit boundaries until bound.
+
+Ordinary generic low-code23 branch at8034d454 sets unitflag1, LW14=39,
+LW15=-1, absent-key0a brother and subsetDamage80350550 child. Mario data table
+803729c8/50 and Goombella80393b60/40 have no key0a (decimal10), so that brother
+returns without installing a custom effect script. Mario pose table803728b8
+maps39→M_D_1(80422f28),28→M_S_1(80422ef0), bank b_mario(802f3fa8).
+Goombella table80393a98 maps39→PKR_D_1(802f90f8),28→PKR_S_1(802f90e0),
+bank c_pkr(804243b0). Preserve original type39 force restart semantics.
+
+With pattern0, subsetDamage reaches ordinary branch803510d8: F100 calls
+unk_80113f1c(target) at803510fc; then lowcode23 selects type39 at8035112c,
+WAIT_MSEC1000 at80351140; LW15=-1 excludes secondary pose/wait30; RETURN.
+Helper80113f1c/6c resolves/translates actor, looks up unit; if nonnull reads
+U16+1fe, OR1, stores U16+1fe. Null also returns2. It produces no event output,
+HP change, RNG or additional wait. Higher-damage special pattern checks precede
+this branch but pattern0 does not admit their squash/shot/custom paths.
+DefaultDamage fresh nonlethal F100 skips WaitAttackEnd, resets face and starts
+original wait at the source tail after checking original home position; retain
+that graph rather than clearing reaction state at the instant HP changes.
+
+### Smallest next source-backed native step
+
+Bind actual private-pad producer/reset/result owner (fresh no-input result2),
+install original Mario/Goombella damage roots, execute ordinary CheckDamage
+against imported weapon power/body tables and let original generic hit child
+run its type39 wait/U1fe producer/wait restoration. Existing sound/effect/
+audience requests retain their explicit provider boundaries. This scoped
+closure does not establish full player death/revival, actual guard timing,
+physical hardware cadence or enemy battle victory.

@@ -4645,3 +4645,71 @@ variant callback/part-replacement owners. After both player moves the native
 runtime stays locked at Move11 with result0/story11; victory is not inferred.
 Fresh partnerHP10/level0 and empty equipment remain explicit adapters. The
 original-fidelity prologue demo goal is active and incomplete.
+
+
+## 2026-10-13 — Original player-to-enemy phases and Spiked approach
+
+The native trio controller advances through source phase2→empty3→enemy4.
+Move0 rebuilds the actor/event tables; selector1 hooks fan out and selector0
+hooks run serially, preserving pair holes and keys. Frankly's original phase
+script runs in3/4 and returns at its phase1 gate without replaying dialogue.
+Move10 observes conclusion and actual remaining counts before phase end;
+Move11 uses actual audience mask8/owned-event readiness; Move12 drains empty
+message work before advancing. Original turn counts are not reset/incremented
+at the player-to-enemy boundary. Native phase2 audience inventory remains an
+explicit empty presentation adapter; mask8-set reaction and phase4-end audience
+providers remain pending.
+
+Enemy Move8 uses source selection/bookkeeping and Act0→3→6 launch ordering.
+The installed Spiked attack root retains owner/action ID, then deletes its wait.
+EnemyItemUseCheck binds the source held-item0 early return. Original signed side,
+weapon masks, packed sampling and deterministic candidate weighting choose its
+target. No fixed Mario target is substituted. Its original approach, jump and
+rotation run through the verified relocated tik krb_get_dir93105b2c ABI and
+original angle table. The native action reaches ResultACDefence80107694;
+guard/impact services remain the next unbound boundary. Player menus now close
+when the enemy root owns the action.
+
+Typed pose lookup follows the original first requested-or-band-fallback scan,
+including force1 only for29..39; Spiked43 correctly becomes TGK_S_1. Unit live
+scale precedes outer rotation and display offset translates in world axes
+afterward, following the documented source matrix order. Original scale/display setters are
+bound; source requests/effect/camera playback and later impact remain incomplete.
+PMTHIT3 (68bytes) retains original kind/damage/wait/attack, group and Frankly
+phase pointers. Extracted assets and immutable capture binaries remain ignored.
+
+Validation: `make test` passes126/126 CTest and101/101 Python tests
+(`/tmp/trio-enemy-tests-final.log`). Integration verifies actual phases2/3/4,
+two gated Frankly roots/no dialogue replay, phase-ID cleanup, original Spiked
+root/Act3/owner, packed sampler actor4, player-menu exclusion, original fallback
+pose and preserved field lock/story11/result0 at the guard boundary. Earlier
+Jump/Headbonk HP/reward/deferred-removal checks still pass. `make all` passes
+(`/tmp/trio-enemy-all-final.log`); `make debug-short` passes
+(`/tmp/trio-enemy-native-final.log`); final logs contain no compiler warnings.
+`git diff --check` passes. The previous session's NPC test failure is now fixed
+by its own workstream; the complete current host suite is green.
+
+Isolated Azahar final capture: `artifacts/azahar-trio-enemy-phase-final`,
+immutable debug-short snapshot, underground-story11 fixture,48second boot,
+`tests/azahar_trio_enemy_phase.py`. It shows Mario's missed Jump leaving Goomba,
+Goombella menu/ground target, subsequent Goomba removal and Spiked approaching
+Mario in its original airborne/rotated pose at the pending impact boundary.
+It does not prove enemy damage or completed rounds. The capture precedes the
+last menu-title cleanup; that change is host state/build verified. Original
+profiles/saves are untouched, and no hardware FPS/Dolphin parity is claimed.
+
+The first native capture stopped during Mario setup. A symbolized isolated
+GDB run caught abort from renderer animation-string allocation. Actor layout
+had changed while one native compilation was in flight; its object timestamp
+masked an inconsistent layout. Forcing a fresh trio_attack object build
+resolved the stop in the immutable final capture. Do not change shared data
+layouts during active compilation; finish edits before launching final builds.
+The event-bank setup delay remains unprofiled.
+
+Next: bind private defence WorkUpdate/result/reset ownership, original Mario/
+Goombella damage roots/poses, enemy CheckDamage and recovery; then Para dive,
+Spike counter/warning, wing-fall, phase4 audience/end and next-turn/conclusion/
+field-return owners. Inbox evidence now pins fresh no-input result2, Spike
+power2/Para1, code10117 and original player reaction scripts. Held-item,
+equipment/status/guard/lethal/pouch/effect/audio branches remain incomplete.
+The full original-fidelity playable prologue goal remains active and unachieved.

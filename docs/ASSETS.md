@@ -961,3 +961,15 @@ hardware limits remain stated; static fixtures are not Dolphin measurements.
 Nintendo/Intelligent Systems copyright remains; no distribution license is
 granted or inferred. No original ISO, extracted asset or compiled pack is
 committed.
+
+
+## 2026-10-13 — Original enemy script/phase metadata
+
+`tools/trio_attack_assets.py` now writes the ignored68-byte PMTHIT3 map:
+original kind/damage/wait/attack pointers for all three trio foes, original
+setup4 group and Frankly phase script. Original relocated tik data stays in
+`romfs/trio-attack-events.pmevt`; no executable PPC section is imported or
+executed. The native93105b2c callback maps tik section1+5b2c to its recovered
+XY direction ABI, with original npc-angle.bin data. Provenance remains the
+read-only local US ISO; original Nintendo/Intelligent Systems data has no
+redistribution license. Compiled/original assets remain ignored.
