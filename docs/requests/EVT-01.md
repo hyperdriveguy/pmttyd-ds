@@ -31,6 +31,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   loaded FX lookup/comparator/binary-search request cores —
   [synth resource/control cores](../behavior/audio/MUSYX_SYNTH_EFFECT_RESOURCE_AND_CONTROL_CORES.md).
   Registry/macro/voice/controller producers and actual execution remain separate.
+- [x] Complete dataInsertFX/dataRemoveFX registry producers, reference
+  counts, live FX byte9 mutation and compaction —
+  [registry insert/remove](../behavior/audio/MUSYX_FX_GROUP_REGISTRY_INSERT_AND_REMOVE.md).
+  Project/group residency, unload/voice lifetime and other writers remain open.
 - [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -534,3 +538,18 @@ All new complete body listings were independently regenerated under `/tmp`;
 vid lookup reuses its revalidated whole-body identity and complete prior contract.
 Core synthStartSound/MIDI/keyoff mutations, resource registry producers, valid
 voice/chain/cycle/source domains and original audio/runtime remain OPEN.
+
+### 2026-10-13 — Complete FX registry insert/remove source producers
+
+[Registry contract](../behavior/audio/MUSYX_FX_GROUP_REGISTRY_INSERT_AND_REMOVE.md)
+closes low16 identity search, duplicate refcount (return0), initial128 cap versus
+post-IRQ fresh publication count, retained entry pointers, live byte9=31 patch,
+reference decrement/wrap and raw12-byte compaction. Removal does not clear tail,
+free entry resources, restore byte9 or stop voices. The synthStartSound additional
+operand is read from this live-mutated row, not unchanged original .proj metadata.
+
+Validation: generic read-only verifier5 spans/87 anchors passes; both full
+listings regenerated under `/tmp`. Refcount boundary vectors retain0/1/2/65535
+wrap semantics. No native code, resource conversion or ISO mutation. Complete
+sndPushGroup/sndPopGroup/residency/sorting/unload/voice/IRQ/source/runtime chain
+remains OPEN; source request text remains unchanged.

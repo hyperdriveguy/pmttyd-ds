@@ -129,3 +129,5 @@ MIDI controller and external-keyoff internals; valid pointer/count/generation/
 slot/cycle/IRQ domains, spatial/live engine processing and original execution.
 Eight local bodies are answered, while full EVT-01 audio/runtime closure stays
 OPEN. No generated tone or WAV-only playback is original behavior evidence.
+
+[Complete FX registry insert/remove](MUSYX_FX_GROUP_REGISTRY_INSERT_AND_REMOVE.md) now supplies group/reference/count/pointer producers and the live byte9=31 mutation consumed by the sound-start request. Group-push/project residency, sorting/lifetime and original runtime remain open.

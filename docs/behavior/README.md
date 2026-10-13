@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [MusyX FX registry insert/remove](audio/MUSYX_FX_GROUP_REGISTRY_INSERT_AND_REMOVE.md) | Complete duplicate/new registration,128 cap, references/live entry byte9=31 and ordered compaction | Project/group residency, sorting/pointer/unload/voice/IRQ domains and original runtime |
 | [MusyX synth resource/control cores](audio/MUSYX_SYNTH_EFFECT_RESOURCE_AND_CONTROL_CORES.md) | Complete loaded-FX query/bsearch/comparator/start dispatch and controller/KeyOff voice-chain requests | Registry/voice/macro/MIDI producers and actual hardware/runtime; linked bodies do not imply completion |
 | [MusyX effect API/voice/IRQ](audio/MUSYX_EFFECT_API_WRAPPERS_AND_VOICE_LOOKUP.md) | Eight complete public wrapper/voice-map/IRQ bodies, external-ID returns and separate nesting | Core synth/resource/map/default-table provisioning and OS/hardware/original playback |
 | [SFX pending startup](audio/POSITIONAL_SFX_PENDING_STARTUP_REQUESTS.md) | Complete800da010..398 delay/start/three-backend request/aux/pending-clear and same-pass live entry | Full calc3D/live/fade/stream/song/MusyX/resource/runtime |

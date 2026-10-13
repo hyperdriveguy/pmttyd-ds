@@ -3,6 +3,29 @@
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
 
+## 2026-10-13 — Priority0 FX registry insertion/removal and live resource mutation
+
+Delivered [complete FX registry producers](behavior/audio/MUSYX_FX_GROUP_REGISTRY_INSERT_AND_REMOVE.md).
+First insert references the caller's10-byte entry array and writes every byte9
+to31 before publishing the fresh group count. Duplicate registration retains
+existing pointer/count, increments16-bit refcount and returns0; full refusal
+also returns0. Removal decrements refs, compacts12-byte records when zero and
+leaves unused tail/entry arrays/voices untouched. Linked synth-start extra
+operand therefore comes from live-mutated data, not immutable .proj bytes.
+Marked the local EVT-01 producer portion complete; no full residency claim.
+
+Validation: fresh complete two-body listings under `/tmp`; generic registry
+manifest5 fingerprints/87 anchors passes. Derived reference boundary metadata
+retains0/1/2/65535 wrap. Link audit722 Markdown files/0 broken links; whitespace
+checks pass. Docs/metadata only; no make rerun, native/resource conversion or
+original ISO/code-body export. Unrelated staged/worktree changes excluded.
+
+Next/limits: sndPushGroup/sndPopGroup and actual project residency, sorting,
+resource/voice lifetime on unload, macro/synthStartSound/controller mutations,
+calc3D/live audio and original scheduler/encounter/runtime remain open. Continue
+priority0 source/core/query binding before lower-priority integration. No original
+executed/audio/hardware/full-game equivalence claim.
+
 ## 2026-10-13 — Original save-block surfaces and material passes
 
 Commit `c3e36cb` adds the original plaza `mobj_save` presentation through the
