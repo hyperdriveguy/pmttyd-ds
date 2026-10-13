@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero startup callback/ITD/format prefix
+
+Completed builder startup callback/ITD/type0..6 descriptor/direct/rounded-seek/
+cursor prefix; checked the EVT-01 portion.
+[Startup format prefix](behavior/audio/MUSYX_DSP_STARTUP_CALLBACK_ITD_AND_FORMAT_PREFIX.md)
+pins callback return versus fresh length gate, original copy/request order,
+wrapped seek rounding and unsupported type's stale/incoming-register fallthrough.
+Loop/endpoints/finish/provider/domain/original sample/DSP/audio remain open.
+
+Validation: read-only ISO manifest passed six spans (one region/five linked),256
+instruction anchors/five calls. Nine dispatch/seven rounded-seek/six initial-
+cursor/five callback-length vectors and sixteen descriptor-copy binding rows
+checked. Link audit passed859 Markdown files/zero broken links; scoped `git diff
+--check` passed. Documentation/metadata only; no `make test`/`make all` rerun.
+Full original fresh builder ELF/listing stays `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 word8c/type-specific startup loop/endpoints and common
+finish, actual type/callback/address/count/descriptor/offset/history/ITD/flag/
+record/register-state providers and valid extent/residency/encoding/alias/lifetime/
+IRQ/concurrency domains; cache/DSP consumers and original startup/seek/sample/
+audio traces. Remaining precision work, lower-priority inbox/full native/full-game
+remain open.
+
 ## 2026-10-13 — Inbox priority-zero existing voice endpoints/completion
 
 Completed existing-voice type4/5/6 field/pending-buffer endpoint/completion

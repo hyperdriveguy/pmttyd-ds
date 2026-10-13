@@ -432,6 +432,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   and completion region — [existing endpoints/completion](../behavior/audio/MUSYX_EXISTING_VOICE_BUFFER_ENDPOINTS_AND_COMPLETION.md).
   Captured/fresh dispatch/latch/raw wrapped formulas/message-before-deactivate
   pinned; startup/provider/domain/original DSP/audio remain open.
+- [x] Complete DSP startup callback/ITD/type0..6 descriptor/direct
+  format/cursor prefix — [startup format prefix](../behavior/audio/MUSYX_DSP_STARTUP_CALLBACK_ITD_AND_FORMAT_PREFIX.md).
+  Callback-length gate/seek rounding/copy order/default register fallthrough
+  pinned; loop/endpoints/finish/domain/original sample/DSP/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2307,3 +2311,12 @@ vectors and69638 unsigned quotient/remainder14 cases checked, with all-word
 formula proof. Type capture/fresh reads/raw address/count/zero wrap/latch and
 independent unsigned completion/callback order pinned. Parent EVT-01 OPEN;
 startup/provider/encoding/domain/original endpoint/DSP/audio remain open.
+
+## 2026-10-13 — Startup callback/ITD/format prefix delivery
+
+Completed one region in [startup format prefix](../behavior/audio/MUSYX_DSP_STARTUP_CALLBACK_ITD_AND_FORMAT_PREFIX.md).
+Six spans/256 instruction anchors/five calls verified;27 formula/gate vectors
+and sixteen coefficient-copy bindings checked. Callback return versus fresh
+length gate, ITD request/copy, type-specific descriptor/direct/rounded seek and
+unsupported-register fallthrough pinned. Parent EVT-01 OPEN; loop/endpoints/
+finish/provider/domain/original sample/DSP/audio execution remains open.

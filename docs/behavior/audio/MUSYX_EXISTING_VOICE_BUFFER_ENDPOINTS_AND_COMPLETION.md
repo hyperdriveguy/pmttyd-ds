@@ -109,3 +109,9 @@ count/word78/word8c/progress/length/callback/record writers and valid encoding/
 index/overflow/residency/alias/lifetime/IRQ/concurrency domains; cache/DSP consumers
 and original endpoint/completion/voice/audio traces. One local existing-voice
 region answered; whole builder/full native binding and EVT-01 remain OPEN.
+
+## 2026-10-13 — Startup prefix follow-up
+
+[Startup format prefix](MUSYX_DSP_STARTUP_CALLBACK_ITD_AND_FORMAT_PREFIX.md) closes the preceding startup callback/
+ITD/type0..6 descriptor/direct/seek/cursor region. Loop/endpoints/finish, actual
+type/descriptor/offset/register domains and original sample/DSP/audio remain open.
