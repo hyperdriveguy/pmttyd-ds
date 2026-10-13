@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero sample identity/hardware fields
+
+Completed six sample-start child contracts for EVT-01 and checked the
+corresponding inbox portion. [Identity/hardware fields](behavior/audio/MUSYX_SAMPLE_IDENTITY_AND_HARDWARE_FIELDS.md)
+pins public-ID internal voice chains, active-only sequence/note association
+with eight whole-list retries and exact hardware type/ID/extra/loop fields.
+The sequence counter is not an eight-node cap and has no paused fallback;
+lookup services add no voice identity revalidation. Loop setter reloads base
+between raw stores. No original hardware output or association traces inferred.
+
+Validation: read-only ISO manifest passed seven spans (six complete/one prior),
+50 anchors/no calls. Eight index/eight width/seven stable-sequence/seven stable-
+VID vectors checked as deductions, including ten-node first-pass association.
+Documentation link audit passed783 Markdown files/zero broken links;
+`git diff --check` passed. Documentation/metadata only; no `make test`/`make all`
+rerun. Original full inspection listings/ELFs stay `/tmp`; no bodies/assets
+committed. Concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 actual voice/sequence/note/ID and hardware field
+providers, backend consumers and bounds/generation/cycle/alias/concurrency
+domains; original sample association/playback traces. Full scheduler/native/
+runtime binding, lower-priority inbox and full-game work remain incomplete.
+
 ## 2026-10-13 — Live original save-block events, System graphics and asynchronous SD persistence
 
 Commit `0675712` binds [live save blocks](behavior/field/NATIVE_LIVE_SAVE_BLOCK.md)

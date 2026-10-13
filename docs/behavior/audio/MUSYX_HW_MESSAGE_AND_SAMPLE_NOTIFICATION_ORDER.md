@@ -169,3 +169,11 @@ implementations and mutation contracts, pointer/index/count/alias/generation/
 IRQ/reentrancy/concurrency/loop-termination invariants and original start/end/
 refusal/reuse/message/audio traces. Five local services are answered; EVT-01 and
 full native/source/runtime/hardware equivalence remain OPEN.
+
+### Sample-start children follow-up
+
+[Complete public-ID/sequence-instance and hardware-field services](MUSYX_SAMPLE_IDENTITY_AND_HARDWARE_FIELDS.md)
+now closes those six children. Sequence association searches active nodes only,
+with eight whole-list retries; public-ID lookup follows internal voice chains.
+Actual list/ID/hardware field providers, backend consumers and original
+association/playback/callback traces remain open.

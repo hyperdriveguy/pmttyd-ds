@@ -193,6 +193,12 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Four-message dispatch, reclaim/reserve/map/generation/payload, callback-zero
   acceptance/fresh cleanup and macro wakeup pinned; providers/children/actual
   callbacks/domains and original message/sample/audio evidence remain open.
+- [x] Complete vidGetPublicId/seqGetInstanceForVoice and four hardware
+  sample/loop-buffer field services —
+  [sample identity/hardware fields](../behavior/audio/MUSYX_SAMPLE_IDENTITY_AND_HARDWARE_FIELDS.md).
+  Captured-root/internal-ID chains, active-only eight whole-list retries and
+  exact fresh-base field reads/writes pinned; providers/backend consumers/
+  domains and original association/playback evidence remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1260,3 +1266,21 @@ No native change/original execution/body/asset export. Table/map/count/counter/
 callback/voice/event/flag providers, hardware/VID/sequence-instance children,
 actual callback mutations, bounds/alias/IRQ/reentrancy/concurrency and original
 start/end/refusal/reuse/message/audio traces remain OPEN.
+
+### 2026-10-13 — Sample identity and hardware field services
+
+[Six complete local bodies](../behavior/audio/MUSYX_SAMPLE_IDENTITY_AND_HARDWARE_FIELDS.md)
+close public-ID lookup through internal voice.ec chains, active-only sequence
+note lookup with eight whole-list retries, and four hardware type/ID/extra/loop
+field services. The sequence counter is not an eight-node cap; pausedRoot is
+never read. VID chain sentinels are checked before equality, while sequence
+notes compare full input includingffffffff. Loop setter reloads base between
+raw address/length stores. Prior ARAM registry lookup is linked, not duplicated
+as new work. No invented identity/bounds/paused fallback or hardware action.
+
+Validation: read-only manifest seven spans (six complete/one prior),50 anchors,
+zero calls passes. Eight index/eight width/seven stable-sequence/seven stable-VID
+vectors are deductions, including a ten-node first-pass match. Fresh full ELFs/
+listings stay `/tmp`; no native change/original execution/body/asset export.
+List/ID/sample field producers, backend consumers, pointer/index/generation/
+cycle/member/alias/IRQ/concurrency and original association/playback remain OPEN.

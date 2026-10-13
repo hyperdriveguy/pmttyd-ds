@@ -1,0 +1,559 @@
+{
+  "schema": 1,
+  "scope": "Six complete sample identity/hardware-field services; prior ARAM lookup fingerprint; list/voice/backend/provider/runtime open",
+  "complete_bodies": [
+    "seqGetInstanceForVoice",
+    "vidGetPublicId",
+    "hwSetVirtualSampleLoopBuffer",
+    "hwGetSampleExtraData",
+    "hwGetSampleType",
+    "hwGetSampleID"
+  ],
+  "linked_only": [
+    "aramGetStreamBufferAddress"
+  ],
+  "dol_spans": [
+    {
+      "name": "seqGetInstanceForVoice",
+      "address": 2150080304,
+      "size": 164,
+      "sha256": "f62b816f43b52efa02c81ee6f87bd400a45bb2260398341209f3c3fdd8d1bf4b"
+    },
+    {
+      "name": "vidGetPublicId",
+      "address": 2150123956,
+      "size": 84,
+      "sha256": "b5c4680233914f0a616f768ad518ddebc49ae12d87f2b705d15c2f4901f8dc12"
+    },
+    {
+      "name": "hwSetVirtualSampleLoopBuffer",
+      "address": 2150173636,
+      "size": 32,
+      "sha256": "3874b92e4c3e1bae4faad3a8735e83d8e3ddf7c50db3c6facbe1b43d73e95f6f"
+    },
+    {
+      "name": "hwGetSampleExtraData",
+      "address": 2150173728,
+      "size": 20,
+      "sha256": "9fedab2e2f36b972755452da21da2438e133571a37b4ed8fd17551b639cd5304"
+    },
+    {
+      "name": "hwGetSampleType",
+      "address": 2150173688,
+      "size": 20,
+      "sha256": "c5beccb8be972f0088afbc1249ce4027df0ec519065912fd0abd532b68ffc5f9"
+    },
+    {
+      "name": "hwGetSampleID",
+      "address": 2150173708,
+      "size": 20,
+      "sha256": "f63d7d5b27b79f93ada646dd300b73a8120ccf6a9bfbdd9d73e254871de2b012"
+    },
+    {
+      "name": "aramGetStreamBufferAddress",
+      "address": 2150179472,
+      "size": 56,
+      "sha256": "2f9b1f95b69375f66cba48e6cfb72193786faea258a6e07d4b1e440409d96ccb"
+    }
+  ],
+  "dol_anchors": {
+    "2150080304": "38000008",
+    "2150080308": "808d1f3c",
+    "2150080320": "48000080",
+    "2150080324": "80a60e64",
+    "2150080328": "4800001c",
+    "2150080332": "80050008",
+    "2150080340": "4082000c",
+    "2150080344": "8066000c",
+    "2150080352": "80a50000",
+    "2150080360": "4082ffe4",
+    "2150080364": "80a60e68",
+    "2150080368": "4800001c",
+    "2150080372": "80050008",
+    "2150080380": "4082000c",
+    "2150080384": "8066000c",
+    "2150080392": "80a50000",
+    "2150080400": "4082ffe4",
+    "2150080404": "80a60e6c",
+    "2150080408": "4800001c",
+    "2150080412": "80050008",
+    "2150080420": "4082000c",
+    "2150080424": "8066000c",
+    "2150080432": "80a50000",
+    "2150080440": "4082ffe4",
+    "2150080444": "80c60000",
+    "2150080452": "4082ff80",
+    "2150080456": "4200ff74",
+    "2150080460": "3860ffff",
+    "2150123956": "80cd200c",
+    "2150123960": "80ad1f70",
+    "2150123964": "4800003c",
+    "2150123968": "8086000c",
+    "2150123972": "48000024",
+    "2150123980": "4082000c",
+    "2150123984": "80660008",
+    "2150124000": "380400ec",
+    "2150124008": "3c040001",
+    "2150124016": "4082ffd8",
+    "2150124020": "80c60000",
+    "2150124028": "4082ffc4",
+    "2150124032": "3860ffff",
+    "2150173640": "800d2068",
+    "2150173648": "90830094",
+    "2150173652": "800d2068",
+    "2150173660": "90a30098",
+    "2150173732": "806d2068",
+    "2150173740": "8063007c",
+    "2150173692": "806d2068",
+    "2150173700": "88630090",
+    "2150173712": "806d2068"
+  },
+  "direct_calls": [],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_hardware_index_vectors": [
+    {
+      "raw_index": 0,
+      "displacement": 0,
+      "aram_displacement": 0
+    },
+    {
+      "raw_index": 1,
+      "displacement": 248,
+      "aram_displacement": 16
+    },
+    {
+      "raw_index": 63,
+      "displacement": 15624,
+      "aram_displacement": 1008
+    },
+    {
+      "raw_index": 64,
+      "displacement": 15872,
+      "aram_displacement": 1024
+    },
+    {
+      "raw_index": 255,
+      "displacement": 63240,
+      "aram_displacement": 4080
+    },
+    {
+      "raw_index": 256,
+      "displacement": 63488,
+      "aram_displacement": 0
+    },
+    {
+      "raw_index": 2147483648,
+      "displacement": 0,
+      "aram_displacement": 0
+    },
+    {
+      "raw_index": 4294967295,
+      "displacement": 4294967048,
+      "aram_displacement": 4080
+    }
+  ],
+  "derived_field_width_vectors": [
+    {
+      "raw_word": 0,
+      "u8": 0,
+      "u16": 0,
+      "u32": 0
+    },
+    {
+      "raw_word": 1,
+      "u8": 1,
+      "u16": 1,
+      "u32": 1
+    },
+    {
+      "raw_word": 255,
+      "u8": 255,
+      "u16": 255,
+      "u32": 255
+    },
+    {
+      "raw_word": 256,
+      "u8": 0,
+      "u16": 256,
+      "u32": 256
+    },
+    {
+      "raw_word": 65535,
+      "u8": 255,
+      "u16": 65535,
+      "u32": 65535
+    },
+    {
+      "raw_word": 65536,
+      "u8": 0,
+      "u16": 0,
+      "u32": 65536
+    },
+    {
+      "raw_word": 305419896,
+      "u8": 120,
+      "u16": 22136,
+      "u32": 305419896
+    },
+    {
+      "raw_word": 4294967295,
+      "u8": 255,
+      "u16": 65535,
+      "u32": 4294967295
+    }
+  ],
+  "derived_stable_sequence_vectors": [
+    {
+      "active_sequences": [],
+      "target": 7,
+      "expected": {
+        "result": 4294967295,
+        "passes": 8,
+        "sequence_visits": 0,
+        "note_visits": 0
+      }
+    },
+    {
+      "active_sequences": [
+        [
+          1,
+          [
+            [
+              7
+            ],
+            [],
+            []
+          ]
+        ]
+      ],
+      "target": 7,
+      "expected": {
+        "result": 1,
+        "passes": 1,
+        "sequence_visits": 1,
+        "note_visits": 1
+      }
+    },
+    {
+      "active_sequences": [
+        [
+          1,
+          [
+            [],
+            [
+              7
+            ],
+            []
+          ]
+        ],
+        [
+          2,
+          [
+            [
+              7
+            ],
+            [],
+            []
+          ]
+        ]
+      ],
+      "target": 7,
+      "expected": {
+        "result": 1,
+        "passes": 1,
+        "sequence_visits": 1,
+        "note_visits": 1
+      }
+    },
+    {
+      "active_sequences": [
+        [
+          1,
+          [
+            [],
+            [],
+            [
+              7
+            ]
+          ]
+        ]
+      ],
+      "target": 7,
+      "expected": {
+        "result": 1,
+        "passes": 1,
+        "sequence_visits": 1,
+        "note_visits": 1
+      }
+    },
+    {
+      "active_sequences": [
+        [
+          1,
+          [
+            [
+              8
+            ],
+            [],
+            []
+          ]
+        ]
+      ],
+      "target": 7,
+      "expected": {
+        "result": 4294967295,
+        "passes": 8,
+        "sequence_visits": 8,
+        "note_visits": 8
+      }
+    },
+    {
+      "active_sequences": [
+        [
+          1,
+          [
+            [
+              4294967295
+            ],
+            [],
+            []
+          ]
+        ]
+      ],
+      "target": 4294967295,
+      "expected": {
+        "result": 1,
+        "passes": 1,
+        "sequence_visits": 1,
+        "note_visits": 1
+      }
+    },
+    {
+      "active_sequences": [
+        [
+          0,
+          [
+            [
+              0
+            ],
+            [],
+            []
+          ]
+        ],
+        [
+          1,
+          [
+            [
+              1
+            ],
+            [],
+            []
+          ]
+        ],
+        [
+          2,
+          [
+            [
+              2
+            ],
+            [],
+            []
+          ]
+        ],
+        [
+          3,
+          [
+            [
+              3
+            ],
+            [],
+            []
+          ]
+        ],
+        [
+          4,
+          [
+            [
+              4
+            ],
+            [],
+            []
+          ]
+        ],
+        [
+          5,
+          [
+            [
+              5
+            ],
+            [],
+            []
+          ]
+        ],
+        [
+          6,
+          [
+            [
+              6
+            ],
+            [],
+            []
+          ]
+        ],
+        [
+          7,
+          [
+            [
+              7
+            ],
+            [],
+            []
+          ]
+        ],
+        [
+          8,
+          [
+            [
+              8
+            ],
+            [],
+            []
+          ]
+        ],
+        [
+          9,
+          [
+            [
+              9
+            ],
+            [],
+            []
+          ]
+        ]
+      ],
+      "target": 9,
+      "expected": {
+        "result": 9,
+        "passes": 1,
+        "sequence_visits": 10,
+        "note_visits": 10
+      }
+    }
+  ],
+  "derived_stable_public_id_vectors": [
+    {
+      "records": [],
+      "target": 7,
+      "expected": {
+        "result": 4294967295,
+        "visits": 0
+      }
+    },
+    {
+      "records": [
+        [
+          1,
+          [
+            7
+          ]
+        ]
+      ],
+      "target": 7,
+      "expected": {
+        "result": 1,
+        "visits": 1
+      }
+    },
+    {
+      "records": [
+        [
+          1,
+          [
+            8,
+            7
+          ]
+        ],
+        [
+          2,
+          [
+            7
+          ]
+        ]
+      ],
+      "target": 7,
+      "expected": {
+        "result": 1,
+        "visits": 2
+      }
+    },
+    {
+      "records": [
+        [
+          1,
+          [
+            4294967295,
+            7
+          ]
+        ],
+        [
+          2,
+          [
+            7
+          ]
+        ]
+      ],
+      "target": 7,
+      "expected": {
+        "result": 2,
+        "visits": 1
+      }
+    },
+    {
+      "records": [
+        [
+          1,
+          [
+            4294967295
+          ]
+        ]
+      ],
+      "target": 4294967295,
+      "expected": {
+        "result": 4294967295,
+        "visits": 0
+      }
+    },
+    {
+      "records": [
+        [
+          1,
+          [
+            2147483655
+          ]
+        ]
+      ],
+      "target": 7,
+      "expected": {
+        "result": 4294967295,
+        "visits": 1
+      }
+    },
+    {
+      "records": [
+        [
+          1,
+          [
+            2147483655
+          ]
+        ]
+      ],
+      "target": 2147483655,
+      "expected": {
+        "result": 1,
+        "visits": 1
+      }
+    }
+  ]
+}
