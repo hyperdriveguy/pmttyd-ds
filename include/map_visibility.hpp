@@ -3,7 +3,7 @@
 namespace ttyd {
 // Ordinary room initialization from US gor.rel. Scene-controlled ship motion
 // and wake activation require subsequent event overrides; see behavior contract.
-inline bool mapEventGroupVisible(uint32_t group,int32_t story) {
+inline bool mapEventGroupVisible(uint32_t group,int32_t story,uint32_t interiorMask=0) {
     switch(group) {
     case 0: return true;
     case 1: return false;
@@ -14,6 +14,12 @@ inline bool mapEventGroupVisible(uint32_t group,int32_t story) {
     case 6: return story>=339;
     case 7: return story>=23;
     case 8: return story<10;
+    case 9: return (interiorMask&1)!=0; // Plaza inn/bar.
+    case 10: return (interiorMask&2)!=0; // East professor's house.
+    // Handheld interior cutaway adapter for source outer flag2/0x800 changes;
+    // full original fade/material services remain unbound.
+    case 11: return (interiorMask&1)==0;
+    case 12: return (interiorMask&2)==0;
     default: return false;
     }
 }

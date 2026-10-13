@@ -24,6 +24,7 @@
 #include "field_movement.hpp"
 #include "field_wall.hpp"
 #include "field_road.hpp"
+#include "field_door.hpp"
 #include "field_camera_state.hpp"
 #include "field_camera_shift.hpp"
 #include "camera_road_state.hpp"
@@ -168,6 +169,7 @@ public:
     TransitionFade fade;
     RoadMotion roadMotion;
     RoadCaseAdmission roadAdmission;
+    FieldDoorState fieldDoor;
     bool roadCasesEnabled=true;
     RoadPolicy roadPolicy=RoadPolicy::Generic;
     RoadCallback roadCallback=RoadCallback::None;

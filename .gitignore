@@ -47,3 +47,4 @@ romfs/*.pmshadow
 /romfs/harbor-actors.bin
 /romfs/harbor-actors.json
 /build-harbor-verify/
+/romfs/*.pmdoor

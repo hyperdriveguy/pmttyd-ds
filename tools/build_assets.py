@@ -75,7 +75,7 @@ def main():
     sky=asset('b/gor_01.tpl','sky.tpl');convert_tpl(sky,WORK/'sky.png')
     Image.open(WORK/'sky.png').convert('RGB').resize((256,256),Image.Resampling.LANCZOS).save(WORK/'sky-runtime.png');texture(WORK/'sky-runtime.png',OUTPUT/'sky.t3x','rgb565')
     camera=asset('m/gor_01/c','gor_01.c');shutil.copyfile(camera,OUTPUT/'map.camera')
-    model=asset('m/gor_01/d','gor_01.d');tpl=asset('m/gor_01/t','gor_01.tpl');summary=convert(model,WORK/'map',mesh_ambient=('hae',))
+    model=asset('m/gor_01/d','gor_01.d');tpl=asset('m/gor_01/t','gor_01.tpl');summary=convert(model,WORK/'map',mesh_ambient=('hae',),event_groups=EVENT_GROUPS.get('gor_01',{}))
     for filename in ['map.vertices','map.batches','map.walls','map.ground','map.head','map.uvanim','map.meshanim']:shutil.copyfile(WORK/'map'/filename,OUTPUT/filename)
     for index,name in enumerate(summary['textures']):
         path=WORK/'map'/f'texture-{index}.png';convert_tpl(tpl,path,index)

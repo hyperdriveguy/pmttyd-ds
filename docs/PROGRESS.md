@@ -3,6 +3,57 @@
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
 
+
+## 2026-10-13 — Original same-map inn and professor door access
+
+Bound the plaza inn/bar ground-floor and east professor house as original
+same-map doors, preserving the five existing room IDs. The documentation
+agent delivered [door evidence](behavior/overworld/OVERWORLD_ROGUEPORT_INTERIOR_DOORS.md)
+and appended the [request inbox](requests/OW-ROAD-01.md). Source admission uses
+registered forward hit identity plus A and ordinary motion/common case gates,
+with no invented radial door trigger. Extracted first hit-triangle normals and
+original hit centers produce40-unit-offset, EVT-integer destinations. The native
+fixed-tick bridge uses the original135-unit/sec request and500ms waits; it
+consumes A before the native jump harness and preserves the story word.
+
+Original inner subtrees start hidden and are revealed on entry. The professor
+interior collision subtree enables/disables across wall, floor, overhead and
+shadow queries, with a cached mask change rather than per-frame asset rebuilds.
+Inn's original null collision field stays null. Source geometry is retained;
+outer subtrees use an explicit provisional indoor cutaway until the original
+flag2/0x800 fade consumers are documented. See [conversion/licensing](ASSETS.md).
+The ignored doors.pmdoor pack and doors.json manifest contain only locally
+converted original data; neither the ISO nor extracted assets are committed.
+
+Validation: final `make test` passes **95 CTest / 96 Python tests**
+(`/tmp/interior-final-tests.log`); final `make all` builds the native3DSX
+(`/tmp/interior-final-all.log`). `build-host/field_door_tests original` tests
+actual original contact admission, both buildings' entry/exit, unchanged story,
+and interior-save suppression. Geometry partition tests preserve all vertex
+records and byte-identical collision packs. Document link audit checks693
+Markdown files with0 broken links; working/index diff whitespace checks pass.
+
+An initial default-binary Azahar run displayed a generic load error and is NOT
+counted as a gameplay pass. An isolated build then loaded and revealed an
+exterior-wall occlusion problem; the explicit cutaway fixes it. Reviewed
+`artifacts/azahar-inn-cutaway/inn-inside.png` and `inn-exited.png` under the
+isolated profile: original bar interior, visible Mario/Goombella and restored
+exterior on exit. Professor access is original-data host tested, not yet visually
+compared against Dolphin. Captured cutaway build precedes the final central save
+suppression guard; final `make all` and tests include that guard. User emulator
+profiles/saves remain untouched. Concurrent partner/message refinements remain
+separate working-tree work; this increment stages only its own changes.
+
+Limits/next: original door rotation/light/dark/sound/letterbox services, indoor
+NPCs/items, inn upstairs callbacks, professor story8 first-talk and story9 wall
+removal are not executed yet. Camera and relative partner movement are explicit
+native adapters. Interior saves are suppressed to preserve the existing outside
+save until a versioned door-state extension is implemented. Next bind those
+services and original dialogue, expand door registration to the other source
+records and verify professor captures. Harbor arrival/tutorial/plaza/east story
+transitions and hardware performance remain incomplete; the goal stays active.
+
+
 ## 2026-10-13 — Original-style speaker bubbles and dialogue overlay suppression
 
 The harbor checkpoint now renders the original `f/msgWindow.tpl` ordinary

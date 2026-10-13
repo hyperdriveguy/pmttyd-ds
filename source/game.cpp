@@ -45,6 +45,19 @@ int harnessDamage(DamageUnit& attacker,DamageUnit& defender,DamagePart& part,Dam
 }
 std::vector<RoadWarp> roads;
 std::vector<uint32_t> roadAttributeNodes;
+std::vector<uint32_t> disabledDoorNodes;
+uint32_t doorCollisionRoom=UINT32_MAX,doorCollisionMask=UINT32_MAX;
+bool doorCollisionEnabled(uint32_t node) {
+    return !std::binary_search(disabledDoorNodes.begin(),disabledDoorNodes.end(),node);
+}
+void applyDoorCollision(uint32_t room,uint32_t mask) {
+    if(room==doorCollisionRoom && mask==doorCollisionMask)return;
+    doorCollisionRoom=room;doorCollisionMask=mask;
+    disabledDoorNodes.clear();
+    for(const auto& d:fieldDoors())if(d.room==room && !(mask&d.mask))
+        disabledDoorNodes.insert(disabledDoorNodes.end(),d.interiorNodes.begin(),d.interiorNodes.end());
+    std::sort(disabledDoorNodes.begin(),disabledDoorNodes.end());
+}
 GroundContact runtimeContact(GroundContact contact) {
     if(std::find(roadAttributeNodes.begin(),roadAttributeNodes.end(),contact.sourceNode)!=roadAttributeNodes.end())
         contact.attributes|=0x00800000;
@@ -145,6 +158,7 @@ const char* roomName(uint32_t room) {
 }
 bool wallAtLevel(size_t n,float elevation) {
     if(n<wallContacts.size()) {
+        if(!doorCollisionEnabled(wallContacts[n].sourceNode))return false;
         const auto flags=wallContacts[n].attributes;
         if(!(flags&0x00080080) && !(flags&0x00800000) && (flags&4))return false;
     }
@@ -310,6 +324,7 @@ FieldShadowHit fieldShadowRay(FieldWallVector origin,FieldWallVector direction,f
     const auto nativeOrigin=FieldWallVector{origin.x*.01f,origin.y*.01f,origin.z*.01f};
     FieldShadowHit result;float nearest=maximum*.01f;bool selected=false;
     auto test=[&](const float* v,uint32_t cull,GroundContact contact) {
+        if(!doorCollisionEnabled(contact.sourceNode))return;
         std::array<float,9> triangle;std::copy(v,v+9,triangle.begin());
         FieldWallHit hit;
         if(!intersectFieldRay(triangle,cull,nativeOrigin,direction,nearest,hit) || (selected && hit.distance>=nearest))return;
@@ -331,6 +346,7 @@ FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float
     origin={origin.x*.01f,origin.y*.01f,origin.z*.01f};maximum*=.01f;
     FieldWallHit nearest;nearest.distance=maximum;
     auto test=[&](std::array<float,9> triangle,uint32_t cull,GroundContact contact,uintptr_t token) {
+        if(!doorCollisionEnabled(contact.sourceNode))return;
         contact=runtimeContact(contact);
         if(!ordinaryWallAttributes(contact.attributes))return;
         // Current static room meshes contain no named high-bit NPC owners.
@@ -397,6 +413,7 @@ FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float worldY,float velocity
         const Vec2 ray{p.x+offset.x,p.z+offset.z};float nearest=high;const HeadTriangle* selected=nullptr;
         for(uint32_t n:nearby(headIndex,ray)) {
             const auto& tri=head[n];if(!headAttributesSolid(runtimeContact(tri.contact).attributes))continue;
+            if(!doorCollisionEnabled(tri.contact.sourceNode))continue;
             const float* v=tri.v;
             // Source normal=(v2-v0) cross (v0-v1), equivalent to standard winding.
             const float normalY=(v[5]-v[2])*(v[6]-v[0])-(v[3]-v[0])*(v[8]-v[2]);
@@ -488,6 +505,7 @@ static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact
     if(ground.empty()) {if(low>0 || high<0)return false;height=0;if(contact)*contact={};if(slope)*slope=0;return true;}
     bool found=false;float best=-1e30f;GroundContact bestContact;const float* bestTriangle=nullptr;
     for(uint32_t n:nearby(groundIndex,p)) {
+        if(!doorCollisionEnabled(ground[n].contact.sourceNode))continue;
         // Original normal-Mario chkfilterVec rejects bit4 unless its special
         // inclusion bits apply. Name-dependent bit31 cases are not present
         // in the five currently packaged rooms; transform filters are deferred.
@@ -692,7 +710,7 @@ bool Game::beginVoid() {
     fieldJump={};fieldJump.motion=33;fieldStep={};fieldVerticalVelocity=0;jumpHeight=0;warpRequest=-1;saveRequested=false;
     return true;
 }
-void clearCollision() {roadAttributeNodes.clear();walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();head.clear();headIndex.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
+void clearCollision() {doorCollisionRoom=UINT32_MAX;doorCollisionMask=UINT32_MAX;disabledDoorNodes.clear();roadAttributeNodes.clear();walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();head.clear();headIndex.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
 bool Game::recoveryReturn(ReturnPoint& point) const {return groundReturn(returnContact,point);}
@@ -729,6 +747,7 @@ void Game::restore(const Progress& saved) {
     fieldCameraFrame=retainedFrame;fieldCameraAuthored=retainedAuthored;
     fieldCameraSimulationTicks=cameraClock;fieldCameraShift.previousMilliseconds=shiftTimestamp;
     progress = p;
+    applyDoorCollision(p.room,0);
     harborStory.reset(p.room==1 && p.originalStory && *p.originalStory==3);
     partner = {p.position.x-0.8f,p.position.z};
     groundHeight=p.elevation;partnerHeight=p.elevation;
@@ -878,6 +897,7 @@ void Game::cacheFieldScreen() {
 void Game::move(const Input& i,bool launched) {
     retainedFieldMainX=fieldKeysOff?0:int8_t(std::clamp(i.x,-1.f,1.f)*70);
     roadPassContact={}; // marioMoveMain clears +1f0 before moving OR staying.
+    wallContact={}; // Native forward cache must not retain a departed door.
     // Original marioMoveMain remembers the eligible floor before moving.
     if(groundContact.attributes&0x40000000)returnContact=groundContact;
     float x=i.x, z=i.z, len=std::hypot(x,z);
@@ -1282,9 +1302,11 @@ void Game::updateMarioPresentation() {
     }
 }
 void Game::tick(const Input& rawInput) {
+    applyDoorCollision(progress.room,fieldDoor.interiorMask);
     struct PresentationOnExit {
         Game& game;Vec2 previous;const Input& raw;
         ~PresentationOnExit(){
+            if(game.fieldDoor.active() || game.fieldDoor.interiorMask)game.saveRequested=false;
             game.updateMarioPresentation();
             const auto& axes=game.inputProducer.channels[0].analog;
             const int mainX=raw.physicalSnapshot?axes.mainX:std::isfinite(raw.x)?int(std::clamp(raw.x,-1.f,1.f)*70.f):0;
@@ -1384,6 +1406,30 @@ void Game::tick(const Input& rawInput) {
         publishFieldCameraTarget();
         return; // Motion publication and partner/NPC lifecycle remain separate owners.
     }
+    if(fieldDoor.active()) {
+        const auto& door=fieldDoors()[size_t(fieldDoor.selected)];
+        const auto previous=fieldDoor.position;
+        const bool complete=fieldDoor.tick(door);
+        progress.position={fieldDoor.position[0],fieldDoor.position[1]};
+        const float dx=progress.position.x-previous[0],dz=progress.position.z-previous[1];
+        // Scoped native party bridge: retain relative placement while the
+        // source requests beside/door movement. Full party event is unbound.
+        partner.x+=dx;partner.z+=dz;
+        fieldMovement.speed=std::hypot(dx,dz);
+        if(fieldMovement.speed) {
+            fieldMovement.headingX=dx/fieldMovement.speed;fieldMovement.headingZ=dz/fieldMovement.speed;
+            marioPresentation.facing=PartnerPresentation::wrap(std::atan2(dx,-dz)*57.29577951308232f);
+        }
+        applyDoorCollision(progress.room,fieldDoor.interiorMask);
+        groundAt(progress.position,groundHeight,groundHeight,&groundContact);
+        progress.elevation=groundHeight;partnerHeight=groundHeight;
+        publishFieldCameraTarget();saveRequested=false;
+        if(complete) {
+            releaseCameraTarget(fieldDoor.opening?0:100,11);
+            partnerFollow.reset({partner.x,partnerHeight,partner.z},{progress.position.x,groundHeight,progress.position.z});
+        }
+        return;
+    }
     if(harborStory.locked()) {
         // Source key-off blocks new player actions, not field physics. Keep
         // support/jump/fall owners advancing under neutral native input.
@@ -1453,6 +1499,20 @@ void Game::tick(const Input& rawInput) {
     if(fieldStep.active()) {
         fieldStep.tick();fieldVerticalVelocity=fieldStep.velocity;
         groundHeight=progress.elevation=fieldStep.height;jumpHeight=0;
+    }
+    if(i.confirm && !i.cancel && !airborne()) {
+        for(size_t n=0;n<fieldDoors().size();++n) {
+            const auto& d=fieldDoors()[n];if(d.room!=progress.room)continue;
+            const bool opening=!(fieldDoor.interiorMask&d.mask);
+            if(!fieldDoorAdmitted(wallContact.sourceNode,opening?d.openNode:d.closeNode,0x100,fieldJump.motion,false,false,roadAdmission))continue;
+            // Professor first-talk/wall-removal and inn upstairs callback
+            // ownership remain separate source scenes; no story write occurs.
+            fieldDoor.begin(int(n),d,{progress.position.x,progress.position.z});
+            applyDoorCollision(progress.room,fieldDoor.interiorMask);
+            const auto& target=opening?d.inside:d.outside;
+            setCameraTarget({target[0]*100,(groundHeight*100)+2,target[2]*100},100,150,11);
+            saveRequested=false;return;
+        }
     }
     const bool launched=i.confirm && !i.cancel && !airborne() &&
         !(progress.room==0 && ((!progress.crumpDefeated && near(CrumpPosition)) || near(NpcPosition)));

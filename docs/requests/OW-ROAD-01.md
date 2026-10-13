@@ -5,6 +5,11 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
 
 ## Open todos
 
+- [ ] Follow the used outer map-object flag2/0x800 and inner0x800/0x1000
+  consumers through draw/fade/material requests. Native indoor cutaways
+  provisionally suppress the outer display subtree while entered; replace
+  this adapter with the recovered source fade and restoration behavior.
+
 - [ ] Actual Rogueport road event trigger shapes/directions/conditions, story
   gates, arrival/departure camera and party ownership, and door/pipe/event
   transitions. Native distance<.7 and toward-marker dot gate, cooldown60 and
@@ -23,6 +28,14 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
   reciprocal endpoint extrapolation need shipped caller/input bindings.
 
 ## Answers and delivery notes (append-only history)
+
+2026-10-13 scoped native documentation delivery:
+[Rogueport interior doors](../behavior/overworld/OVERWORLD_ROGUEPORT_INTERIOR_DOORS.md)
+recovers plaza inn/bar and professor-house door records, exact display/collision
+groups, case9 contact+A admission, type3 hit-normal movement points, input/camera
+and visibility switch order, and professor story8/9 callbacks. These interiors
+remain in gor_01/gor_02; they have no separate BERO room/entry. Upper-floor fades,
+full NPC/item visibility and complete story scene binding remain open.
 
 Next native binding: [Rogueport roads](../behavior/overworld/OVERWORLD_ROGUEPORT_ROADS.md),
 delivered2f88fc4. Exact node contacts and source registration attribute overlays

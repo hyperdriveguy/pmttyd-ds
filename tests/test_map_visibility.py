@@ -36,6 +36,11 @@ int main() {
  assert(mapEventGroupVisible(4,163));assert(mapEventGroupVisible(5,164));
  assert(mapEventGroupVisible(5,338));assert(mapEventGroupVisible(6,339));
  assert(!mapEventGroupVisible(63,3));
+ assert(!mapEventGroupVisible(9,3));assert(!mapEventGroupVisible(10,8));
+ assert(mapEventGroupVisible(9,3,1));assert(!mapEventGroupVisible(10,3,1));
+ assert(mapEventGroupVisible(10,8,2));assert(!mapEventGroupVisible(9,8,2));
+ assert(mapEventGroupVisible(11,3));assert(!mapEventGroupVisible(11,3,1));
+ assert(mapEventGroupVisible(12,8));assert(!mapEventGroupVisible(12,8,2));
 }
 '''.replace('#include <cassert>', '#include <cassert>\n#include <initializer_list>'))
             binary = Path(directory) / 'visibility'
@@ -46,8 +51,9 @@ int main() {
         if not Path(DEFAULT_ISO).is_file():
             self.skipTest('Local US ISO required')
         files = {entry['path']: entry for entry in inventory(DEFAULT_ISO)['files']}
-        hidden = {'gor_00': set(EVENT_GROUPS['gor_00']),
-                  'gor_02': {'S_ie_04_naka'},
+        hidden = {'gor_01': {'S_ie_03_naka'},
+                  'gor_00': set(EVENT_GROUPS['gor_00']),
+                  'gor_02': {'S_ie_04_naka','S_ie_02_naka'},
                   'gor_03': {'S_kou_kusas02', 'S_kou_kusas03'}}
         def rows(path):
             raw = path.read_bytes()
@@ -71,7 +77,7 @@ int main() {
                 for start, count, texture, flags, wrap_s, wrap_t in struct.iter_unpack('<IIiIII', raw[8:]):
                     group = flags>>26
                     seen.add(group)
-                    if group in {1,2,3,5,6,7}:continue
+                    if group in {1,2,3,5,6,7,9,10}:continue
                     kept.update(vertices[i*36:(i+1)*36] for i in range(start,start+count))
                 self.assertEqual(kept, rows(prologue/'map.vertices'), room)
                 self.assertTrue(set(groups.values()).issubset(seen), room)

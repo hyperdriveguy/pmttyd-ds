@@ -11,6 +11,18 @@ licensing notes live in the chapters below.
 
 ## Asset chapters
 
+Same-map inn/professor doors: [source contract](behavior/overworld/OVERWORLD_ROGUEPORT_INTERIOR_DOORS.md)
+and [converter](../tools/door_assets.py) use `m/gor_01/d`, `m/gor_02/d` and the
+verified `rel/gor.rel` names/layout from the read-only US ISO. Existing original
+geometry and128-pixel texture conversion is retained. The two interior display
+subtrees are tagged, preserving their geometry for event visibility. No new
+art or dialogue is generated. Ignored `local-assets/doors.json` records hit
+identities, derived EVT destinations and collision IDs; ignored
+`romfs/doors.pmdoor` contains the native bindings. Floating normal/coordinate
+math uses the converter's host arithmetic, followed by EVT integer truncation;
+SDK/FPSCR bit parity is not claimed. Nintendo/Intelligent Systems data has no
+redistribution permission and these packs/assets are excluded from commits.
+
 | Chapter | Contents |
 | --- | --- |
 | [Audio](assets/AUDIO.md) | DSP validation firmware, sound mapping and GameCube fallbacks, Switch audio extraction, complete SFX sample extraction, full loopable audio library |

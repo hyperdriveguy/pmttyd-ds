@@ -403,3 +403,4 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [ID1 map material, texture/light and TEV contract status](display/ID1_MAP_MATERIAL_AND_TEV_STATUS.md) — dated ID1 delivery summaries; append new ones there, not to this index.
 
 - [Rogueport story object visibility](field/ROGUEPORT_STORY_OBJECT_VISIBILITY.md): recovered ordinary-entry ship, wake, east and west group conditions.
+- [Rogueport interior doors](overworld/OVERWORLD_ROGUEPORT_INTERIOR_DOORS.md): original same-map inn/professor records, contact admission, destinations and source event chronology.
