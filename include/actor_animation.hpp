@@ -79,6 +79,9 @@ struct ActorAnimationSample {
     std::vector<uint8_t> visibility;
     std::vector<ActorMeshVertex> vertices;
     float selectedTime=0,fraction=0;size_t last=0,next=0;
+    // Retained hierarchy workspace avoids per-draw allocations on ARM11.
+    std::vector<ActorMatrix> world;
+    std::vector<uint8_t> seen,active;
 };
 inline float actorNodeDelta(const ActorSparseUpdate& record,float q,float duration) {
     if(record.c<=-89 || record.c>=89)return 0;
@@ -134,9 +137,10 @@ struct ActorAnimationPose {
             for(const auto& r:keys[next].nodes)out.nodes[r.index]+=actorNodeDelta(r,q,keys[next].time-keys[last].time);
         }
         out.selectedTime=selected;out.last=last;out.next=next;out.fraction=q;
-        std::vector<ActorMatrix> world(groups.size());std::vector<uint8_t> seen(groups.size()),active(groups.size());
-        std::function<bool(int32_t,const ActorMatrix&,int32_t,bool)> walk;
-        walk=[&](int32_t index,const ActorMatrix& incoming,int32_t parent,bool admitted){
+        auto& world=out.world;world.assign(groups.size(),ActorMatrix{});
+        auto& seen=out.seen;seen.assign(groups.size(),0);
+        auto& active=out.active;active.assign(groups.size(),0);
+        auto walk=[&](auto&& self,int32_t index,const ActorMatrix& incoming,int32_t parent,bool admitted)->bool {
             if(index==-1)return true;
             if(index<0 || size_t(index)>=groups.size() || seen[index])return false;
             seen[index]=1;const auto& g=groups[index];
@@ -149,10 +153,10 @@ struct ActorAnimationPose {
             }
             // Validate the complete graph even when hidden; descendants produce
             // no vertices/matrix work until the ancestor is visible again.
-            if(!walk(g.child,world[index],index,active[index]))return false;
-            return walk(g.sibling,incoming,index,admitted);
+            if(!self(self,g.child,world[index],index,active[index]))return false;
+            return self(self,g.sibling,incoming,index,admitted);
         };
-        if(!walk(int32_t(groups.size()-1),ActorMatrix{},-1,true))return false;
+        if(!walk(walk,int32_t(groups.size()-1),ActorMatrix{},-1,true))return false;
         out.vertices.clear();out.vertices.reserve(bindings.size());
         for(const auto& b:bindings) {
             if(!seen[b.group])return false;

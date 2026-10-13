@@ -50,3 +50,6 @@ romfs/*.pmshadow
 /romfs/*.pmdoor
 /romfs/professor.json
 /romfs/professor.bin
+/romfs/*.pmnpc
+/romfs/field-actors.json
+/romfs/field-chu.json

@@ -713,6 +713,19 @@ bool Game::beginVoid() {
 void clearCollision() {doorCollisionRoom=UINT32_MAX;doorCollisionMask=UINT32_MAX;disabledDoorNodes.clear();roadAttributeNodes.clear();walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();head.clear();headIndex.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
+const FieldActorRecord* Game::nearbyFieldActor() const {
+    // Provisional native talk admission until original NPC search/arbitration
+    // is recovered. Exact source message selection is a separate binding.
+    const FieldActorRecord* found=nullptr;float closest=.65f*.65f;
+    for(const auto& actor:fieldActorCatalog().actors()) {
+        if(actor.talkPrefix.empty() || !actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask) ||
+           std::fabs(actor.position[1]*.01f-groundHeight)>.25f)continue;
+        const float dx=actor.position[0]*.01f-progress.position.x,dz=actor.position[2]*.01f-progress.position.z;
+        const float distance=dx*dx+dz*dz;
+        if(distance<closest){found=&actor;closest=distance;}
+    }
+    return found;
+}
 bool Game::recoveryReturn(ReturnPoint& point) const {return groundReturn(returnContact,point);}
 bool Game::beginWater() {
     ReturnPoint target;
@@ -799,6 +812,7 @@ const char* Game::dialogue() const {
     return dialogueKind == 1 ? encounter[dialoguePage] : notices[dialoguePage];
 }
 const char* Game::prompt() const {
+    if(fieldActorTalk.message.active())return fieldActorTalk.message.waiting()?"A / B / touch: next":"A / B: reveal text";
     if(harborStory.locked())return harborStory.failed?"Development notice: source message unavailable":harborStory.message.waiting()?"A / B / touch: next":"A / B: reveal text";
     if(scene==Scene::FieldDefeat)return "A: load save";
     if(water.active() || fade.active() || arriving || warpRequest>=0)return "";
@@ -814,6 +828,7 @@ const char* Game::prompt() const {
     }
     if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) return "A: confront Lord Crump";
     if (progress.room==0 && near(NpcPosition)) return "A: talk";
+    if(nearbyFieldActor())return "A: talk";
     return "Circle Pad: move   A: jump   X: partner";
 }
 void Game::rebaseFieldCamera() {
@@ -1433,6 +1448,13 @@ void Game::tick(const Input& rawInput) {
         }
         return;
     }
+    if(fieldActorTalk.message.active()) {
+        if(fieldJump.airborne)dispatchFieldAir();
+        move(Input{});
+        fieldActorTalk.message.tick(ticks*1000/60,(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u));
+        saveRequested=false;if(!fieldActorTalk.message.active())scene=Scene::Explore;
+        return;
+    }
     if(harborStory.locked()) {
         // Source key-off blocks new player actions, not field physics. Keep
         // support/jump/fall owners advancing under neutral native input.
@@ -1504,6 +1526,11 @@ void Game::tick(const Input& rawInput) {
         groundHeight=progress.elevation=fieldStep.height;jumpHeight=0;
     }
     if(i.confirm && !i.cancel && !airborne()) {
+        if(const auto* actor=nearbyFieldActor()) {
+            if(progress.originalStory && fieldActorTalk.begin(*actor,*progress.originalStory,harborMessageFont(),ticks*1000/60)) {
+                scene=Scene::Dialogue;saveRequested=false;return;
+            }
+        }
         for(size_t n=0;n<fieldDoors().size();++n) {
             const auto& d=fieldDoors()[n];if(d.room!=progress.room)continue;
             const bool opening=!(fieldDoor.interiorMask&d.mask);

@@ -161,6 +161,8 @@ suffix.
 | [Stick angle/magnitude](overworld/MARIO_STICK_ANGLE_AND_MAGNITUDE.md) | Complete marioGetStick body: forced-movement substitution, BG_MODE/riding-Yoshi Y gates, distABf/angleABf calls, 70.0 magnitude cap, centered-stick view fallback and revise360 wrap | Field meanings, kpa/yoshi callees, cadence and in-game effects |
 | [Jump parameter installation](overworld/MARIO_SET_JUMP_PARAMETERS.md) | Complete marioSetJumpPara 23-entry motion dispatch, three tuple tables, trig/flag scale gate, playerGravity override and Koopa tail with six callers | Tuple slot meanings, flag producers, kpaSetJumpPara internals and cadence |
 | [Peak-Y publisher](overworld/MARIO_PEAK_Y_PUBLISHER.md) | Complete two-instruction marioSetPeakYpos copy of position.y into +0x12C with all ten callers | Consumers of +0x12C, apex enforcement, cadence and on-screen effects |
+| [Rogueport save-block source binding](field/ROGUEPORT_SAVE_BLOCK_SOURCE_BINDING.md) | Original spawn/Koopa exclusion, bank/S_1/scalar10 and hit/system-event request graph | Contact/hit producer, common save event, animation/backend and card persistence |
+| [Ordinary Rogueport NPC bindings](field/ROGUEPORT_ORDINARY_NPC_BINDINGS.md) | Exact tagged placements/tribes, init/regular/talk owners, banks/poses and ordinary source-facing requests | Wander, tavern fade, complete NPC display/arbitration and runtime |
 | [Field battle entry/return](field/FIELD_BATTLE_ENTRY_AND_RETURN.md) | Area/index registration,NPC setup/random draws,first-call start and field-result polling | Service/lifetime/result producers and original transitions |
 | [Lecture player attacks](story/LECTURE_PLAYER_ATTACK_FLOW.md) | Default lecture weapon substitution,Jump/Hammer teaching polls,feedback slots,mode1→2/5→6 writers and13-command end requests | Full menu/end/runtime/field controller and original input/presentation traces |
 | [Lecture field entry/return](story/LECTURE_FIELD_ENTRY_AND_RETURN.md) | Story10 wall/reload entry,crossing operands,exact US choices/setup3 launch and shared story11 exit | Intersection and party services,persistent writers,battle teardown and original traces |
@@ -410,3 +412,5 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [Professor first-talk and fence](story/PROFESSOR_FIRST_TALK_AND_FENCE.md): original door/story gates, 31 message bindings and complete first-talk/fence command requests.
 
 - [Native opening and file selection](story/NATIVE_OPENING_FLOW.md)
+
+- [Native per-area actor catalog](field/NATIVE_AREA_ACTOR_CATALOG.md) — authored static-init coverage, residency, batching and remaining source bindings.

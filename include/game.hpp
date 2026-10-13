@@ -33,6 +33,7 @@
 #include "partner_presentation.hpp"
 #include "partner_follow.hpp"
 #include "harbor_story.hpp"
+#include "field_actors.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -146,6 +147,7 @@ public:
     PartnerPresentation partnerPresentation;
     PartnerFollow partnerFollow;
     HarborStory harborStory;
+    FieldActorTalk fieldActorTalk;
     FieldIdleWork fieldIdle;
     // Native partner ability/status services are still adapters. These explicit
     // inputs allow source eligibility instead of collapsing it to input enabled.
@@ -215,6 +217,7 @@ public:
     const char* dialogue() const;
     const char* prompt() const;
     bool near(Vec2 point, float distance = 1.5f) const;
+    const FieldActorRecord* nearbyFieldActor() const;
 private:
     FieldBattleWork fieldBattleWork;
     int32_t fieldSequence=2;

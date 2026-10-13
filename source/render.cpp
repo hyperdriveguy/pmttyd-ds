@@ -51,13 +51,7 @@ bool Renderer::init() {
     C3D_TexSetFilter(&sky.texture,GPU_LINEAR,GPU_LINEAR);
     if(!actorAnimations.load("romfs:/characters.pmanim"))return false;
     if(!partnerAnimations.load("romfs:/partner.pmanim"))return false;
-    if(!professorAnimations.load("romfs:/professor.pmanim"))return false;
-    FILE* professorMetrics=std::fopen("romfs:/professor.bin","rb");if(!professorMetrics)return false;
-    char professorMagic[8];
-    const bool professorValid=std::fread(professorMagic,8,1,professorMetrics)==1 && !std::memcmp(professorMagic,"PMPNPC1",8) &&
-        std::fread(&professorUVScale,4,1,professorMetrics)==1 && std::fgetc(professorMetrics)==EOF;
-    std::fclose(professorMetrics);
-    if(!professorValid || !(professorUVScale==1 || professorUVScale==2 || professorUVScale==4 || professorUVScale==8))return false;
+    if(!fieldActorAssets.load("romfs:/field-actors.pmnpc"))return false;
     if(!shadowGeometry.load("romfs:/shadows.pmshadow"))return false;
     FILE* characterFile=std::fopen("romfs:/characters-mesh.t3x","rb");if(!characterFile)return false;
     characterTextures.imported=Tex3DS_TextureImportStdio(characterFile,&characterTextures.texture,nullptr,false);std::fclose(characterFile);
@@ -69,7 +63,7 @@ bool Renderer::init() {
     if(!partnerTextures.imported)return false;
     C3D_TexSetFilter(&partnerTextures.texture,GPU_LINEAR,GPU_LINEAR);
     C3D_TexSetWrap(&partnerTextures.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
-    for(auto entry:{std::pair<const char*,Texture*>{"romfs:/font.t3x",&fontTexture},{"romfs:/harbor-actors.t3x",&harborTexture},{"romfs:/message-window.t3x",&messageWindowTexture},{"romfs:/professor.t3x",&professorTexture}}) {
+    for(auto entry:{std::pair<const char*,Texture*>{"romfs:/font.t3x",&fontTexture},{"romfs:/harbor-actors.t3x",&harborTexture},{"romfs:/message-window.t3x",&messageWindowTexture}}) {
         FILE* file=std::fopen(entry.first,"rb");if(!file)return false;
         entry.second->imported=Tex3DS_TextureImportStdio(file,&entry.second->texture,nullptr,false);std::fclose(file);
         if(!entry.second->imported)return false;
@@ -82,7 +76,7 @@ bool Renderer::init() {
     std::fclose(metrics);if(!valid)return false;
     for(const auto& m:harborActorMetrics)for(float v:m)if(!std::isfinite(v) || std::fabs(v)>10)return false;
     for(const auto& m:harborTalkOffsets)for(float v:m)if(!std::isfinite(v) || std::fabs(v)>10)return false;
-    return loadMap("map",plaza) && loadMap("stage",stage);
+    return loadMap("map",plaza) && loadFieldActors(0,plaza) && loadMap("stage",stage);
 }
 bool Renderer::loadMap(const char* name,Room& room) {
     char path[96];std::snprintf(path,sizeof(path),"romfs:/%s.batches",name);
@@ -132,14 +126,59 @@ bool Renderer::loadMap(const char* name,Room& room) {
 }
 void Renderer::freeRoom(Room& room) {
     for(auto& texture:room.textures) if(texture.imported) {Tex3DS_TextureFree(texture.imported);C3D_TexDelete(&texture.texture);}
+    for(auto& model:room.actorModels)if(model.texture.imported){Tex3DS_TextureFree(model.texture.imported);C3D_TexDelete(&model.texture.texture);}
     if(room.vertices)linearFree(room.vertices);
     room=Room{};
 }
 bool Renderer::changeRoom(uint32_t room) {
     const char* name=roomAsset(room);if(!name)return false;
     Room next;
-    if(!loadMap(name,next)) {C3D_FrameSync();freeRoom(next);return false;}
+    if(!loadMap(name,next) || !loadFieldActors(room,next)) {C3D_FrameSync();freeRoom(next);return false;}
     C3D_FrameSync();freeRoom(plaza);plaza=std::move(next);return true;
+}
+bool Renderer::loadFieldActors(uint32_t roomId,Room& room) {
+    for(uint32_t index=0;index<fieldActorAssets.models().size();++index) {
+        bool used=false;
+        for(const auto& actor:fieldActorAssets.actors())if(actor.room==roomId && actor.model==index){used=true;break;}
+        if(!used)continue;
+        room.actorModels.emplace_back();auto& gpu=room.actorModels.back();gpu.model=index;
+        const auto& model=fieldActorAssets.models()[index];
+        const auto base=std::string("romfs:/")+model.asset;
+        if(!gpu.animations.load((base+".pmanim").c_str()))return false;
+        for(const auto& actor:fieldActorAssets.actors())if(actor.room==roomId && actor.model==index && !gpu.animations.pose(actor.pose.c_str()))return false;
+        FILE* f=std::fopen((base+".t3x").c_str(),"rb");if(!f)return false;
+        gpu.texture.imported=Tex3DS_TextureImportStdio(f,&gpu.texture.texture,nullptr,false);std::fclose(f);
+        if(!gpu.texture.imported)return false;
+        C3D_TexSetFilter(&gpu.texture.texture,GPU_LINEAR,GPU_LINEAR);
+        C3D_TexSetWrap(&gpu.texture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
+    }
+    return true;
+}
+void Renderer::fieldActors(const Game& g) {
+    if(plaza.actorStart==UINT64_MAX || g.ticks<plaza.actorStart)plaza.actorStart=g.ticks;
+    for(auto& gpu:plaza.actorModels) {
+        gpu.start=count;
+        const auto& model=fieldActorAssets.models()[gpu.model];
+        for(const auto& actor:fieldActorAssets.actors()) {
+            if(actor.model!=gpu.model || !actor.visible(g.progress.room,g.progress.originalStory,g.fieldDoor.interiorMask))continue;
+            ++actorMetrics.visible;
+            if(gpu.tick!=g.ticks || gpu.pose!=actor.pose) {
+                const auto* pose=gpu.animations.pose(actor.pose.c_str());
+                if(!pose || !pose->evaluate(float(g.ticks-plaza.actorStart),gpu.sample)){++actorMetrics.sampleFailures;continue;}
+                gpu.tick=g.ticks;gpu.pose=actor.pose;
+            }
+            if(gpu.sample.vertices.size()>size_t(MaxVertices-count)){++actorMetrics.overflow;continue;}
+            // Source facing270 points left. Original NPC display-direction and
+            // camera-relative turn smoothing are still an open native adapter.
+            const bool right=actor.kind==0 && actor.yaw>0 && actor.yaw<180;
+            const ActorRootTransform root({actor.position[0]*.01f,actor.position[1]*.01f,actor.position[2]*.01f},actor.kind==1?actor.yaw:right?180:0,right,actor.scale*.01f);
+            for(const auto& v:gpu.sample.vertices) {
+                const auto p=root.point(v);vertex(p[0],p[1],p[2],v.u,1-(1-v.v)*model.uvScale,0xffffffff);
+            }
+            actorMetrics.vertices+=uint32_t(gpu.sample.vertices.size());
+        }
+        gpu.count=count-gpu.start;
+    }
 }
 void Renderer::updateCutaways(Room& room,const Game& g) {
     Point3 eye{g.fieldCameraFrame.eye.x,g.fieldCameraFrame.eye.y,g.fieldCameraFrame.eye.z};
@@ -277,7 +316,8 @@ void Renderer::harborActors(const Game& g) {
     }
 }
 void Renderer::originalMessage(const Game& g) {
-    const auto& message=g.harborStory.message;if(!message.active())return;
+    const bool fieldTalk=g.fieldActorTalk.message.active();
+    const auto& message=fieldTalk?g.fieldActorTalk.message:g.harborStory.message;if(!message.active())return;
     const auto& font=harborMessageFont();
     // Unproject tilted NDC into the same pixel space as the 2D backend.
     // Reuse the actual world matrix: a parallel eye/FOV calculation can drift
@@ -298,7 +338,20 @@ void Renderer::originalMessage(const Game& g) {
     };
     float anchorX=0,anchorY=0,marioX=0,marioY=0;unsigned mode=0;
     const bool newWindow=messageWindowSerial!=message.serial;
-    for(unsigned i=0;newWindow && i<g.harborStory.actors.size();++i) {
+    if(newWindow && fieldTalk) {
+        const auto& actor=g.fieldActorTalk.actor;
+        messageTalkAnchor={actor.position[0]*.01f,actor.position[1]*.01f,actor.position[2]*.01f};
+        for(const auto& gpu:plaza.actorModels)if(gpu.model==actor.model && !gpu.sample.vertices.empty()) {
+            const bool right=actor.yaw>0 && actor.yaw<180;
+            const ActorRootTransform root({messageTalkAnchor.x,messageTalkAnchor.y,messageTalkAnchor.z},right?180:0,right,actor.scale*.01f);
+            CameraPoint low{INFINITY,INFINITY,INFINITY},high{-INFINITY,-INFINITY,-INFINITY};
+            for(const auto& v:gpu.sample.vertices){const auto p=root.point(v);low.x=std::min(low.x,p[0]);low.z=std::min(low.z,p[2]);high.x=std::max(high.x,p[0]);high.y=std::max(high.y,p[1]);high.z=std::max(high.z,p[2]);}
+            messageTalkAnchor={(low.x+high.x)*.5f,high.y,(low.z+high.z)*.5f};
+        }
+        if(project(messageTalkAnchor,anchorX,anchorY) && project({g.progress.position.x,g.groundHeight+g.jumpHeight,g.progress.position.z},marioX,marioY))
+            mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
+    }
+    for(unsigned i=0;newWindow && !fieldTalk && i<g.harborStory.actors.size();++i) {
         const auto& actor=g.harborStory.actors[i];if(actor.key!=g.harborStory.speaker)continue;
         const auto& root=g.harborStory.speakerRoot;
         messageTalkAnchor={root[0]*.01f,root[1]*.01f,root[2]*.01f};
@@ -491,13 +544,9 @@ void Renderer::world(const Game& g) {
         characterModel(a.moving?"PKR_W_1":"PKR_S_1",float(g.ticks),{a.x*.01f,a.z*.01f},a.y*.01f,a.display,a.display==180,true);
     }
     const int partnerEnd=count;
-    if(!battle && g.progress.room==2 && g.progress.originalStory==8 && (g.fieldDoor.interiorMask&2)) {
-        // Source kurihakase_init story8 placement. Full NPC yaw/pose owner and
-        // the first-talk override are separate scene bindings; ordinary yaw is
-        // adapted to the current billboard model-facing convention.
-        characterModel("S_1",float(g.ticks),{-1.35f,-2.40f},0,180,true,false,&professorAnimations,professorUVScale);
-    }
-    const int professorEnd=count;
+    actorMetrics={};
+    if(!battle)fieldActors(g);
+    const int fieldActorEnd=count;
     if(!battle && g.harborStory.enabled && g.harborStory.triggered)harborActors(g);
     const int harborEnd=count;
     bool polygonShadow=false;int airShadowCount=0;
@@ -535,8 +584,8 @@ void Renderer::world(const Game& g) {
     C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
     if(actorEnd>legacyCount){C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
     if(partnerEnd>actorEnd){C3D_TexBind(0,&partnerTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,actorEnd,partnerEnd-actorEnd);}
-    if(professorEnd>partnerEnd){C3D_TexBind(0,&professorTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,partnerEnd,professorEnd-partnerEnd);}
-    if(harborEnd>professorEnd){C3D_TexBind(0,&harborTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,professorEnd,harborEnd-professorEnd);}
+    if(!battle)for(auto& gpu:plaza.actorModels)if(gpu.count){C3D_TexBind(0,&gpu.texture.texture);C3D_DrawArrays(GPU_TRIANGLES,gpu.start,gpu.count);}
+    if(harborEnd>fieldActorEnd){C3D_TexBind(0,&harborTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,fieldActorEnd,harborEnd-fieldActorEnd);}
     if(polygonShadow || airShadowCount) {
         C3D_TexEnvInit(env);
         C3D_TexEnvSrc(env,C3D_Both,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);
@@ -585,7 +634,7 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
     text(label,x+7,y+8,.48f,disabled?rgb(135,129,116):Ink);
 }
 void Renderer::overlay(const Game& g) {
-    if(g.harborStory.locked()){originalMessage(g);if(g.harborStory.failed)text(g.prompt(),25,112,.45f,Ink);return;}
+    if(g.fieldActorTalk.message.active() || g.harborStory.locked()){originalMessage(g);if(g.harborStory.failed)text(g.prompt(),25,112,.45f,Ink);return;}
     if(g.scene==Scene::Dialogue) {
         const auto plan=messageWindowPlan({},0,0,0,255);messageBorder(plan,255);
         text(g.dialogue(),64,28,.5f,Ink);return;
@@ -713,14 +762,10 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
 void Renderer::shutdown() {
     if(c3dReady) C3D_FrameSync();
     if(textBuffer) C2D_TextBufDelete(textBuffer);
-    for(Room* room : {&plaza,&stage}) {
-        for(auto& texture:room->textures) if(texture.imported) {Tex3DS_TextureFree(texture.imported);C3D_TexDelete(&texture.texture);}
-        if(room->vertices) linearFree(room->vertices);
-    }
+    for(Room* room : {&plaza,&stage})freeRoom(*room);
     if(sky.imported) {Tex3DS_TextureFree(sky.imported);C3D_TexDelete(&sky.texture);}
     if(characterTextures.imported) {Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);}
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}
-    if(professorTexture.imported) {Tex3DS_TextureFree(professorTexture.imported);C3D_TexDelete(&professorTexture.texture);}
     for(auto* texture:{&fontTexture,&harborTexture,&messageWindowTexture})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}
     if(imported) Tex3DS_TextureFree(imported);
     if(atlasReady) C3D_TexDelete(&atlas);

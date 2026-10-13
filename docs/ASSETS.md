@@ -1,5 +1,32 @@
 # Original asset pipeline
 
+## 2026-10-13 — Area NPC catalog and original east-side Mouser
+
+`tools/field_actor_assets.py` reads `m/gor_02/s` from the local read-only US ISO
+into ignored `local-assets/field-actors/gor_02.s`. The selected original
+`チューさん３` row retains its tribe, XYZ and direction. Source resources
+`a/c_tyusan` and its header-selected texture companion `a/c_tyusan-` stay under
+the same ignored folder. `romfs/field-chu.pmanim` preserves original `CHU_S_1`
+sparse animation and hierarchy/visibility. Textures use the established124px
+cells with2px edge borders; atlas height trims to the next128px power of two,
+and explicit UV scale preserves atlas addressing. Tex3DS converts RGBA8 for
+citro3d. Original scalar2 and engine*.01 conversion remain separate from art.
+
+Ignored `romfs/field-actors.pmnpc` and `.json` hold model namespaces, source
+placements, narrow native story envelopes and door visibility admission.
+Frankly reuses original `a/c_kuri_h` / `a/c_kuri_h-` resources compiled by the
+existing professor converter. Per-model/source provenance JSON records source
+disc/path/hash and conversion fingerprint. Assets and compiled packs carry
+original Nintendo/Intelligent Systems rights with no redistribution license;
+none are committed. See [native catalog](behavior/field/NATIVE_AREA_ACTOR_CATALOG.md).
+
+Save-block resource `a/MOBJ_SaveBlock` and its texture companion were read into
+the ignored workspace for conversion checks. Its original S_1 uses outside0..1
+UVs and scrolling texture keys; ordinary NPC conversion rejects this domain.
+No incomplete save-block pack is included in the catalog. Its source placement,
+scalar10 and hit/save services are documented in
+[the source contract](behavior/field/ROGUEPORT_SAVE_BLOCK_SOURCE_BINDING.md).
+
 Original US GameCube G8ME01 assets are read from the local ISO at build time;
 extracted files, PCM libraries and compiled packs stay in ignored
 `local-assets/`, `romfs/` and `artifacts/` paths and remain outside source

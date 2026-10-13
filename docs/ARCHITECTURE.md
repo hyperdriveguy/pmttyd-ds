@@ -4,6 +4,15 @@ Native C++17, devkitARM, libctru, citro3d, citro2d. `source/game.cpp` and
 `source/save.cpp` compile on both the host and 3DS. Platform code owns input,
 RomFS, GPU objects, NDSP, and SD access. Start with README and PROGRESS.
 
+Original static NPC setup now uses a portable, validated per-area catalog.
+Records reference model+pose namespaces and explicit story/interior gates.
+Destination-room animation packs and textures stage with geometry and share
+resources among instances; rejection retains the current room. Texture-grouped
+actor spans use the existing linear GPU buffer/citro3d pipeline. Per-model
+sampling caches simulation ticks, retains hierarchy workspace, and hoists root
+trigonometry per instance. Complete source NPC/event drivers remain separate
+owners. See [catalog scope](behavior/field/NATIVE_AREA_ACTOR_CATALOG.md).
+
 The simulation advances at 60 Hz with input edges consumed once. Rendering has
 its own cadence. Catch-up is capped at five ticks; long interruptions reset the
 accumulator. Dropped ticks are counted. Action timing is currently provisional.

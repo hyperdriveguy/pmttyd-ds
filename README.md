@@ -39,6 +39,22 @@ This is not a finished or fidelity-verified remake. Complete character animation
 coverage, original material/shadow rendering, complete sound-effect event playback, measured tutorial mechanics and broader
 story content are still incomplete. Hardware performance has not been tested.
 
+Original static NPC setup now uses a per-area model/pose catalog. In the native
+early story0..55 envelope, east-side Mouser uses his original placement,
+`c_tyusan` animation and US talk event. Grounded A nearby plays unchanged
+original message IDs/control tokens and returns without a story write. Talk
+proximity/priority and static facing remain provisional; original NPC collision
+and complete display/material services are unfinished. Area resources stage
+with room geometry and batch through citro3d; hardware performance is unmeasured.
+See [catalog scope](docs/behavior/field/NATIVE_AREA_ACTOR_CATALOG.md).
+
+To inspect this slice with an isolated native development checkpoint:
+
+```sh
+python3 tools/make_field_actor_fixture.py
+python3 tools/emulator_smoke.py --save-fixture artifacts/fixtures/east-npc-story8.bin --seconds 10 --input-script tests/azahar_field_actor_talk.py --output-dir artifacts/azahar-field-actors
+```
+
 ## Mechanics research
 
 The primary behavior baseline is the supplied **US GameCube G8ME01 revision 0**.

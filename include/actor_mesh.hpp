@@ -12,11 +12,11 @@ struct ActorMeshVertex {float x,y,z,u,v;};
 // Source ordinary scalar2/unit-scale/zero-pivot model matrix adaptation.
 struct ActorRootTransform {
     std::array<float,3> root;
-    float sine,cosine,zScale;
-    ActorRootTransform(std::array<float,3> position,float yaw,bool reflectZ):root(position),
-        sine(std::sin(yaw*.01745329238474369f)),cosine(std::cos(yaw*.01745329238474369f)),zScale(reflectZ?-.02f:.02f) {}
+    float sine,cosine,scale,zScale;
+    ActorRootTransform(std::array<float,3> position,float yaw,bool reflectZ,float modelScale=.02f):root(position),
+        sine(std::sin(yaw*.01745329238474369f)),cosine(std::cos(yaw*.01745329238474369f)),scale(modelScale),zScale(reflectZ?-modelScale:modelScale) {}
     std::array<float,3> point(const ActorMeshVertex& v) const {
-        const float x=v.x*.02f,y=v.y*.02f,z=v.z*zScale;
+        const float x=v.x*scale,y=v.y*scale,z=v.z*zScale;
         return {root[0]+x*cosine+z*sine,root[1]+y,root[2]-x*sine+z*cosine};
     }
 };

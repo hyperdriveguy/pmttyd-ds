@@ -5,6 +5,7 @@
 #include "actor_mesh.hpp"
 #include "actor_animation.hpp"
 #include "field_air_shadow.hpp"
+#include "field_actors.hpp"
 #include <3ds.h>
 #include <citro2d.h>
 #include <citro3d.h>
@@ -18,7 +19,10 @@ public:
     bool init();
     bool changeRoom(uint32_t room);
     void render(const Game&, const Metrics&, const char* notice, bool audioAvailable);
+    void renderFrontend(const Frontend&, const OpeningDemo&, const char* notice);
     void shutdown();
+    struct ActorMetrics {uint32_t visible=0,vertices=0,overflow=0,sampleFailures=0;};
+    ActorMetrics fieldActorMetrics() const {return actorMetrics;}
 private:
     struct Vertex { float x,y,z,u,v,r,g,b,a; };
     Vertex* vertices=nullptr;
@@ -35,6 +39,15 @@ private:
     struct MapBatch { uint32_t start,count; int32_t texture; uint32_t layer,wrapS,wrapT; };
     struct Texture { C3D_Tex texture{}; Tex3DS_Texture imported=nullptr; };
     struct Occluder {Bounds3 bounds{};std::vector<uint32_t> batches;uint64_t hiddenUntil=0;bool hidden=false;};
+    struct FieldActorModelGpu {
+        uint32_t model=0;
+        Texture texture;
+        ActorAnimationPack animations;
+        ActorAnimationSample sample;
+        uint64_t tick=UINT64_MAX;
+        std::string pose;
+        int start=0,count=0;
+    };
     struct Room {
         std::vector<MapBatch> batches;
         std::vector<Occluder> occluders;
@@ -44,10 +57,13 @@ private:
         std::vector<UVTrack> uvTracks;
         std::vector<MeshTrack> meshTracks;
         uint64_t animationStart=UINT64_MAX;
+        std::vector<FieldActorModelGpu> actorModels;
+        uint64_t actorStart=UINT64_MAX;
     };
     Room plaza,stage;
-    Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture,professorTexture;
-    float professorUVScale=1;
+    Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture;
+    FieldActorAssets fieldActorAssets;
+    ActorMetrics actorMetrics;
     std::array<std::array<float,3>,2> harborActorMetrics{};
     std::array<std::array<float,3>,2> harborTalkOffsets{};
     mutable std::vector<float> messageDynamic;
@@ -57,10 +73,12 @@ private:
     unsigned messagePlacement=0;
     CameraPoint messageTalkAnchor;
     uint32_t messageRng=0x6d736777; // Presentation RNG adapter, separate from mechanics.
-    ActorAnimationPack actorAnimations,partnerAnimations,professorAnimations;
+    ActorAnimationPack actorAnimations,partnerAnimations;
     ActorAnimationSample actorSample;
     FieldShadowGeometry shadowGeometry;
     bool loadMap(const char* name,Room& room);
+    bool loadFieldActors(uint32_t roomId,Room& room);
+    void fieldActors(const Game&);
     void freeRoom(Room& room);
     void drawMap(bool battle,const Game& game,bool translucent=false);
     void updateCutaways(Room& room,const Game& game);

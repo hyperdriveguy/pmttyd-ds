@@ -5,6 +5,18 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
 
 ## Open todos
 
+- [ ] Bind original save-block hit flag8 producer, update states/animation and
+  common save-window event0x803bac3c to SAVE-01 persistence; original plaza
+  spawn/model/system-event owners are recovered, proximity+A is not.
+
+- [ ] Bind ordinary NPC pre-display/pose/facing and `mtx_setup` owners through
+  `animPoseDrawMtx`; source dir270 requests facing90, which is an animation
+  parameter rather than world yaw. Recover tribe scale/height/talk-anchor
+  semantics and tavern first-floor RGB fade before adding interior actors.
+- [ ] Recover `gor_villager_urouro` init/main numeric/collision/pose/timing
+  helpers before activating Goomba2 regular motion. Tagged aitypeなし does
+  not suppress a separately registered regular event.
+
 - [ ] Mario A/X/B interaction arbitration and priority against jump/movement,
   actor/door/object proximity, hammer/first-strike, selected message/speaker/
   control-token playback and persistent scene conditions. Native development
@@ -99,3 +111,55 @@ environment; original bubble/history/icons/selection/paper/noise/shake/text SFX
 consumers. Story2 arrival/resume and story4 tutorial continuation are still
 unbound. This source-derived scene sequencer is not complete REL VM integration
 or full prologue/story fidelity, and does not close this request.
+
+### 2026-10-13 — Ordinary Rogueport source NPC catalog
+
+Explicitly delegated documentation worker delivered
+[ordinary NPC bindings](../behavior/field/ROGUEPORT_ORDINARY_NPC_BINDINGS.md):
+four exact tagged-map placements/directions/tribes, REL init/regular/talk owners,
+DOL model/pose pointers, nine ordinary story-first-match dialogue keys per
+actor, tavern fade ownership and later scene exceptions. East Chu3 is the
+strongest initial stationary outdoor slice. Goomba2 requires the original
+wander helpers; Chu2/sailor require tavern visibility/fade. `npcDisp` negates
+and normalizes ry into animation draw facing, independently of `mtx_setup`;
+raw facing cannot be treated as native world yaw.
+
+Validation: fresh read-only ISO room setup/init/talk/exception event extraction,
+tagged-source hashes, direct actor-reference census across annotated gor_01/02
+events, and fresh DOL setup/tribe/entry/display/reviseAngle inspection. Local
+source artifacts remain /tmp. Documentation links and diff whitespace pass;
+docs-only, no native builds or original-runtime claim. Parent request remains
+OPEN. No numeric documentation-owner ID/lock is invented.
+
+### 2026-10-13 — Original plaza save-block follow-on
+
+[Save-block source binding](../behavior/field/ROGUEPORT_SAVE_BLOCK_SOURCE_BINDING.md)
+recovers exact original spawn(185,60,-55), story341 Koopa suppression,
+MOBJ_SaveBlock/S_1 assets, async constructor/update/system-event owners and
+original first-hit save_first_hit key. Native contact/hit and common save/card
+services remain open. Fresh read-only REL/DOL extraction and direct source
+reads validate the scoped requests; inspection outputs stay /tmp.
+
+
+### 2026-10-13 — Native area catalog and save-block conversion dependency
+
+The native implementation compiles stationary east Chu3 original position,
+tribe/model and CHU_S_1 animation into a model-namespaced area catalog, with
+story0..55 as an explicit native coverage envelope. Frankly story8/10 init
+placements share that catalog. Chu3 talk selects original CASE_LESS message
+IDs, preserves raw US payloads/tokens and actor attribution, locks actions/saves
+through closure and leaves story unchanged. Native proximity0.65/height0.25
+and grounded A-before-door/jump admission are provisional pending original
+search/interaction priority. NPC collision/facing/wandering remain separate
+owners; no replacement dialogue is introduced.
+See [native scope](../behavior/field/NATIVE_AREA_ACTOR_CATALOG.md).
+
+Save-block conversion proved original S_1 UVs extend from-2 to2.334 and its
+texture keys scroll binding1; the ordinary-animation converter rejects this
+domain. Original TPL wrapS/T are clamp0/0. Do not discard texture updates or
+clamp only vertex coordinates (that changes interpolation). Need the complete
+original animated texture-matrix mapping and clamp/lighting/material pass
+contract before packaging the object. Constructor/display scalar10 and the
+hit-driven save request graph are delivered separately in
+[save-block source binding](../behavior/field/ROGUEPORT_SAVE_BLOCK_SOURCE_BINDING.md).
+This parent interaction/runtime request remains open.
