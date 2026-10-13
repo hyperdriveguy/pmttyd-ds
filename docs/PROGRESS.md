@@ -5,6 +5,26 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 emitter removal and FX unload lifecycle
+
+Delivered [emitter lifecycle](behavior/audio/MUSYX_EMITTER_REMOVE_ALL_AND_FX_LIFETIME.md).
+Three complete bodies pin active-system admission, exact neighbor/root unlink,
+all-high16 flag clear, retained links/voice and key-off request. Bulk/FX-array
+traversal preserves captured next and first-match break even without mutation.
+Marked local EVT-01 portions complete; full voice/unload/runtime remains OPEN.
+
+Validation: generic read-only verifier6 spans (3 complete/3 linked),117 anchors/
+9 resolved direct calls passes. Whole-DOL aligned caller census9 sites;6 clear/
+12 gate vectors checked as deductions. Fresh full ELFs/listings stay `/tmp`;
+no original code executes. Link audit757 Markdown files/0 broken; whitespace
+checks pass. Docs/metadata only: no make rerun, native change or original body/
+asset export. Isolated index excludes unrelated shared work.
+
+Next/limits: emitter construction/active/list/FX providers, member/cycle/array/
+IRQ/concurrency source domains, full caller unload/silence and macro/voice/key-off
+execution, original lifetime/audio traces. Continue priority0 source/backend then
+priority1 damage graph. No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Priority0 effect spatial controls and emitter query leaves
 
 Delivered [spatial/emitter leaves](behavior/audio/SOUND_EFFECT_SPATIAL_CONTROLS_AND_EMITTER_LOOKUP.md).

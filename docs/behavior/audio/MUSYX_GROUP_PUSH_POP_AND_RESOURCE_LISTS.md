@@ -140,3 +140,5 @@ project hash in the generic verifier's resource-span (`maps`) slot with no map
 nodes; it makes no geometry claim. Decoded counts/hashes are metadata only.
 
 [Complete directory/sample reference lifetime](MUSYX_SAMPLE_DIRECTORY_REGISTRATION_AND_REFERENCES.md) and [hardware storage bridge](MUSYX_SAMPLE_STORAGE_HARDWARE_BRIDGE.md) now answer those exact local child bodies, including mutable refs/addresses and original encoded transfer sizes. Actual ARAM/cache/voice loading/lifetime and original runtime stay open.
+
+[Complete emitter individual/all/FX-array removal](MUSYX_EMITTER_REMOVE_ALL_AND_FX_LIFETIME.md) now answers the exact group-pop child. It unlinks active emitters, clears the high flag half and requests key-off; it does not free nodes or prove immediate voice/sample release. Other stop/source/runtime owners remain open.

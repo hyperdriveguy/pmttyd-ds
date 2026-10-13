@@ -108,6 +108,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [spatial/emitter leaves](../behavior/audio/SOUND_EFFECT_SPATIAL_CONTROLS_AND_EMITTER_LOOKUP.md).
   Early record publication/dual controllers/stored flag-volume reads pinned;
   pool/emitter writers/controller/voice/source/runtime remain open.
+- [x] Complete sndRemoveEmitter/s3dKillAllEmitter/s3dKillEmitterByFXID
+  and scoped nine-site direct caller census —
+  [emitter removal/unload](../behavior/audio/MUSYX_EMITTER_REMOVE_ALL_AND_FX_LIFETIME.md).
+  Retained-next/unlink/high-half clear/key-off order pinned; list/FX/source/
+  caller/member/IRQ/voice/runtime remains open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -888,3 +893,17 @@ providers; actualstartingpouchrank/loadout; fullHeadbonk/Hammer/partyinit servic
 composition,pad/impactclocks andbattleloss/escape resultproducer routing.
 Keep these pendingwhileimplementing explicitlyscoped best-effortproviders.
 No nativeedit/commit ororiginalexecution claim.
+
+### 2026-10-13 — Emitter individual/all/FX-array lifecycle bodies
+
+[Three complete local bodies](../behavior/audio/MUSYX_EMITTER_REMOVE_ALL_AND_FX_LIFETIME.md)
+close active-system admission versus removal return, conditional inlined unlink,
+all-high16 flag clear, retained links/voice and key-off request. Bulk paths retain
+next before mutation and follow it even when inactive; FX-array first-match
+breaks even when mutation is skipped. No node free/instant voice-kill invented.
+
+Validation: read-only manifest6 spans (3 complete/3 linked),117 anchors/9
+resolved direct calls passes. Whole-DOL aligned caller census9 sites;6 flag-clear/
+12 active-gate vectors derived only. Full ELFs/listings stay `/tmp`; no original
+execution/body/asset export. Emitter construction/list/FX/member/cycle/IRQ/source,
+full caller unload/silence and original key-off/audio/lifetime remain OPEN.
