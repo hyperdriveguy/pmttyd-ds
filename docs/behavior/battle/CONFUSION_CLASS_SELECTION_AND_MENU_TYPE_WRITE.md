@@ -3,7 +3,7 @@
 Complete static US G8ME01 revision0 BattleSetConfuseAct8011f62c/0x610.
 Companions:[weapon candidates](CONFUSION_WEAPON_SELECTION_AND_TARGET_POLICY.md),
 [operations/party/event outputs](CONFUSION_OPERATIONS_PARTY_AND_EVENT_OUTPUTS.md).
-Native request:[EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+Native request:[EVT-01](../../requests/EVT-01.md).
 [Verifier](../../../tools/verify_confusion_action.py) pins the complete388
 instructions,eight called service identities,the nine-way operation table,and
 four original charge-event pointer words. No original execution or global query

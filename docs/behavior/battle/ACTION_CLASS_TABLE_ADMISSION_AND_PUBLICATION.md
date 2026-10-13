@@ -2,7 +2,7 @@
 
 This closes the complete local `_btlcmd_MakeActClassTable` body at
 `80124dc8`, size `0x5b8`, for the native menu-domain request in
-[EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+[EVT-01](../../requests/EVT-01.md).
 Evidence is static US G8ME01 disc0 revision0 DOL disassembly, not an original
 execution trace. [The verifier](../../../tools/verify_action_class_table.py)
 pins all 366 instructions, the complete body, three linked service identities,

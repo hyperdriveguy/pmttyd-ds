@@ -4,7 +4,7 @@ Complete static US G8ME01 revision0 `BattleCommandInput`801229d8/0x838.
 This and [target selection](COMMAND_INPUT_TARGET_REMAP_AND_CONFIRMATION.md)
 and [other states/attack dispatch](COMMAND_INPUT_AUXILIARY_STATES_AND_ATTACK_DISPATCH.md)
 cover all30 state entries and the default. Native request:
-[EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+[EVT-01](../../requests/EVT-01.md).
 [Verifier](../../../tools/verify_command_input.py):one complete body/38 called
 service identities,526 instructions,full30-target table,SDA startup,and original
 cursor sound key. Callee bodies, event reachability, and original execution

@@ -1,7 +1,7 @@
 # Audience interruption: complete type11 writer
 
 Complete static US G8ME01 revision0 BattleCommandAttackAudienceCheck
-8011f524/0xcc. Native request:[EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+8011f524/0xcc. Native request:[EVT-01](../../requests/EVT-01.md).
 [Gift handling](GIFT_ITEM_RECOVERY_AND_MENU_TYPE_WRITER.md) and
 [restore/getter ownership](MENU_INTERRUPTION_RESTORE_AND_AUDIENCE_FIELDS.md)
 complete this interruption slice. [Verifier](../../../tools/verify_menu_interruptions.py)

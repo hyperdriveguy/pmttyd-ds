@@ -4,7 +4,7 @@ Complete static US G8ME01 btlseqInit8011ee40/0x198.
 [Registry reset/readiness](BATTLE_UNIT_REGISTRY_RESET_AND_INIT_EVENT_SCAN.md)
 and [sequence leaves](BATTLE_SEQUENCE_FIELDS_AND_INIT_SOURCE_BINDINGS.md)
 complete six local bodies for the native request in
-[EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+[EVT-01](../../requests/EVT-01.md).
 [Verifier](../../../tools/verify_battle_initialization_dispatch.py) pins17 hashes
 (6 complete/11 linked),209 instructions,five source spans,and two exact aligned
 DOL init/setup calls.No original execution or end-to-end battle readiness claim.

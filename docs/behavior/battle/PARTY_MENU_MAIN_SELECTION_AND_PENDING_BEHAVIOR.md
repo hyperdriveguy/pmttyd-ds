@@ -5,7 +5,7 @@ BattleCommandDisplay_ChangePartySelectMenuMain80121098/0x224.
 [Navigation/cancel](PARTY_MENU_NAVIGATION_CANCEL_AND_AUDIENCE.md) completes
 the same body;[party/protect lifecycle](PARTY_PROTECT_MENU_SETUP_END_AND_INPUT_BINDINGS.md)
 closes five other local bodies. Native request:
-[EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+[EVT-01](../../requests/EVT-01.md).
 [Verifier](../../../tools/verify_party_menu_lifecycle.py) pins six complete
 bodies,called service identities,all local instructions,and two original sound
 keys. Static evidence only;UI internals/source/event/query reachability remain

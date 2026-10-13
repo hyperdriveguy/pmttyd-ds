@@ -2,7 +2,7 @@
 
 Static US G8ME01 BattleMain800f8e28/0xdc.
 [Manager/hook](BATTLE_SEQUENCE_MANAGER_BANKS_AND_OUTER_HOOK.md) completes the
-parent dispatch chain.Native request:[EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+parent dispatch chain.Native request:[EVT-01](../../requests/EVT-01.md).
 [Verifier](../../../tools/verify_battle_main_dispatch.py) pins three complete
 bodies,17 linked identities,117 instructions,startup r13,and two exact aligned
 DOL direct callers.No original execution or full battle/field cadence proof.

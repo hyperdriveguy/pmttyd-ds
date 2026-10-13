@@ -2,7 +2,7 @@
 
 Complete static US G8ME01 disc0 revision0 body:
 `BattleCommandDisplay_ActMenuMain` 8012230c/0x488. This answers the native
-menu-writer portion of [EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+menu-writer portion of [EVT-01](../../requests/EVT-01.md).
 [Navigation/tail](ACT_MENU_MAIN_NAVIGATION_AND_SERVICE_ORDER.md) completes the
 same body; [setup/end/position gate](ACT_MENU_SETUP_END_AND_POSITION_GATE.md)
 closes five additional local bodies. The

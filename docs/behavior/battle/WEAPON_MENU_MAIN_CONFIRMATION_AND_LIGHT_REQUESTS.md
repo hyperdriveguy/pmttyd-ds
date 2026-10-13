@@ -3,7 +3,7 @@
 Complete local `BattleCommandDisplay_WeaponSelectMenuMain`80121d0c/0x35c,
 US G8ME01 disc0 revision0. With [navigation/end](WEAPON_MENU_MAIN_NAVIGATION_CANCELLATION_AND_END.md)
 and [eligibility helpers](WEAPON_MENU_TARGET_COUNT_AND_ELIGIBILITY_UPDATE.md),
-this answers the native request in [EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+this answers the native request in [EVT-01](../../requests/EVT-01.md).
 [Verifier](../../../tools/verify_weapon_menu_main.py) pins seven complete local
 bodies,13 linked service identities,344 instructions,and two original sound
 keys. Static evidence only;full builder/source/query reachability and original

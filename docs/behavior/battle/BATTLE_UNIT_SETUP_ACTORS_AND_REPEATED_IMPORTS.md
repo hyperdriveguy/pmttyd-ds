@@ -3,7 +3,7 @@
 Complete static US G8ME01 Btl_UnitSetup800f8aac/0x2f8.
 [Opponent/equipment tail](BATTLE_UNIT_SETUP_OPPONENT_LOOP_AND_EQUIPMENT_MASK.md)
 completes the same body.Native request:
-[EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+[EVT-01](../../requests/EVT-01.md).
 [Verifier](../../../tools/verify_battle_unit_setup.py) pins the full190 instructions,
 seven linked service identities,and five source spans.No original execution,
 complete source setup/end/query-domain or native Game claim.

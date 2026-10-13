@@ -4,7 +4,7 @@ Complete static US G8ME01 revision0 `_btlcmd_MakeOperationTable`
 801238b8/0x448. Companions:[charge/mandatory rows](OPERATION_TABLE_CHARGE_DEFEND_ESCAPE_AND_KEYS.md),
 [party producer](PARTY_SELECTION_TABLE_PRODUCTION_AND_CAPTURE.md),
 [icon/action admission](PARTY_ICON_SOURCE_AND_CAN_ACT_STATUS.md).
-Native request:[EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+Native request:[EVT-01](../../requests/EVT-01.md).
 [Verifier](../../../tools/verify_operation_party_tables.py) pins four complete
 bodies,12 linked services,472 instructions,and32 table/key/weapon-head spans.
 Static only;menu consumers/delegates/source/query reachability remain separate.

@@ -2,6 +2,33 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-12 — Native cross-check fixes: sink guard + default lanes
+
+The native session's independent re-read falsified my water doc's sink
+guard direction ([124]==0.0 initializes −6.0, not !=; fixed and credited)
+and flagged the undocumented r4-sourced default fall lanes — added to the
+bottomless doc ([r13−28176]+16 vs absolute 0x80416208+16 by [46]==5,
+verified by direct reads). Both fixes verified against the listings. This
+is the inbox cross-check loop working as designed: independent re-reads
+catch single-bit errors that self-review missed.
+
+Validation: direct-instruction re-checks, diff --check clean. Docs-only.
+Next: triangle interiors, pose domains. Full-game incomplete.
+
+## 2026-10-12 — HitVec region-graph correction (false asymmetry withdrawn)
+
+Re-verified the traversal doc's region claims against the listing and found
+my own region-1 asymmetry finding was backwards: R1 allocates counter=r30 /
+pointer=r31 (inits `lwz 31,172` / `li 30,0`), regions 2–4 the reverse — same
+loop semantics, no executability consequence. Withdrew the pointer-size
+claim; kept the verified cascade edges (R1-hit→R2/R3-gateway, drains) and
+the airtight R4-unreachable finding (no entry edge, dead fallthrough).
+Two crashed verification scripts produced zero passing asserts this turn —
+all claims above are re-verified by direct reads instead.
+
+Validation: direct-instruction re-checks, link audit, diff --check clean.
+Docs-only, no make rerun. Next: triangle interiors, pose domains. Incomplete.
+
 ## 2026-10-12 — Water/void recovery: apply recovered bottomless drop-back lanes
 
 Reviewed the

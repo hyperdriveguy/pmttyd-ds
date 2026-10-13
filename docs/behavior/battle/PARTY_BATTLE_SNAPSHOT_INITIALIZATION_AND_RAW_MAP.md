@@ -1,7 +1,7 @@
 # Seven-party battle snapshot initialization and preserved bytes
 
 Complete static US G8ME01 revision0 BattlePartyInfoWorkInit800f7c20/0x84.
-Native request:[EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+Native request:[EVT-01](../../requests/EVT-01.md).
 [Lifecycle/import requirements](PARTY_BATTLE_SNAPSHOT_INIT_IMPORT_AND_LIFETIME.md)
 links this initializer to previously recovered consumers.
 [Verifier](../../../tools/verify_party_snapshot_initialization.py) pins the whole

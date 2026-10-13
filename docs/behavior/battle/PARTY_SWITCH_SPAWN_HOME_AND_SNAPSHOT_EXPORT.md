@@ -3,7 +3,7 @@
 Complete static US G8ME01 BattleChangeParty800f8538/0x17c plus home-position
 leaves GetHomePos801289b0/0x1c and SetHomePos801289a0/0x10.
 [Field export/caller census](PARTY_FIELD_EXPORT_AND_SNAPSHOT_CALL_DOMAINS.md)
-completes this slice.Native request:[EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+completes this slice.Native request:[EVT-01](../../requests/EVT-01.md).
 [Verifier](../../../tools/verify_party_switch_snapshot_callers.py) pins four
 complete bodies,ten linked identities,127 instructions,two source spans,and
 all7 aligned direct DOL calls to snapshot import/export.No original execution

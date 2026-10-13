@@ -3,7 +3,7 @@
 Complete static US G8ME01 revision0
 `unit_party_christine.o::__makeTechMenuFunc`80189634/0x2dc and
 `partyGetTechLv`80140e60/0x44. Native request:
-[EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+[EVT-01](../../requests/EVT-01.md).
 [Seven original source bindings](PARTY_WEAPON_CALLBACK_KEY1_SOURCE_BINDINGS.md)
 identify how the caller obtains this address.
 [Verifier](../../../tools/verify_party_weapon_callback.py) pins two complete

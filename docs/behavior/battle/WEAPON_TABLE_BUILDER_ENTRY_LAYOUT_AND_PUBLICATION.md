@@ -4,7 +4,7 @@ Complete static US G8ME01 revision0 `_btlcmd_MakeSelectWeaponTable`
 80123ec0/0xd50. Companions cover [Jump/Hammer and badges](WEAPON_TABLE_JUMP_HAMMER_AND_BADGE_ROWS.md),
 [inventory/Special/party](WEAPON_TABLE_ITEM_SPECIAL_AND_PARTY_ROUTES.md),
 and [source bindings/icon leaves](WEAPON_TABLE_SOURCE_BINDINGS_AND_ICON_LEAVES.md).
-Native request:[EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+Native request:[EVT-01](../../requests/EVT-01.md).
 [Verifier](../../../tools/verify_weapon_table_builder.py) pins the full builder,
 two complete icon leaves,seven linked services,all894 local instructions,and
 scoped original arrays/ItemData/weapon-head/key spans. No original execution

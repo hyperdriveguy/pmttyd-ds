@@ -4,7 +4,7 @@ Complete static US G8ME01 revision0 BattleCommandDisplay_OperationMenuMain
 8012165c/0x2cc. [Navigation/cancel](OPERATION_MENU_NAVIGATION_CANCEL_AND_AUDIENCE.md)
 completes this same body;[setup/end](OPERATION_MENU_SETUP_END_AND_FLAG_OWNERSHIP.md)
 closes its lifecycle wrappers and complete UI Main stub. Native request:
-[EVT-01](../../DOCUMENTATION_REQUESTS.md#evt-01--native-event-scheduler-and-dispatch-closure-open).
+[EVT-01](../../requests/EVT-01.md).
 [Verifier](../../../tools/verify_operation_menu_control.py) pins four complete
 bodies,called service identities,every local instruction,and two original sound
 keys. Static evidence only;source/query reachability and original execution
