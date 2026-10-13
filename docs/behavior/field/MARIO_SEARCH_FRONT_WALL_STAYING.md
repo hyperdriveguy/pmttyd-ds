@@ -264,7 +264,9 @@ would be a behaviour change.
   exact field that enables stage 3 is unknown.
 - Meaning of `mario[+0x2e] == 19`, `mario[+0x24c]` bit 23 and
   `mario[+0x3f]` is not established.
-- `searchFrontWall` (2404 bytes) and `marioChkWallAround` (2460 bytes)
-  are still undocumented; they are the two largest callees here.
+- `searchFrontWall` and `marioChkWallAround` are now documented at
+  structure level — see [SEARCH_FRONT_WALL](SEARCH_FRONT_WALL.md) and
+  [MARIO_CHK_WALL_AROUND](MARIO_CHK_WALL_AROUND.md). Their probe sequences
+  and result reduction remain open.
 - The three redundant `vivianGetStatus` calls may have side effects that
   a decompilation of that function would need to explain.

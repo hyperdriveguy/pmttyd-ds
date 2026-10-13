@@ -172,6 +172,8 @@ the function returns immediately — no further processing.
   has not been fully mapped.
 - Whether `mario[+0x1e4]` is consumed by the roll animation driver or by
   `marioChgPose` dispatch.
-- `searchFrontWall` (2404 bytes) and `marioChgWallAround` (2460 bytes)
-  remain undocumented and are the two largest callees in this path.
+- `searchFrontWall` and `marioChkWallAround` are now documented at
+  structure level — see [SEARCH_FRONT_WALL](SEARCH_FRONT_WALL.md) and
+  [MARIO_CHK_WALL_AROUND](MARIO_CHK_WALL_AROUND.md). `marioChgWallAround`
+  in that older note is a transcription error for `marioChkWallAround`.
 - Callers of `marioCheckWall_roll` are not audited.

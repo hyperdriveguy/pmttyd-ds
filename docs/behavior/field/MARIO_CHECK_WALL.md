@@ -299,7 +299,9 @@ but its descriptor was modified in place and is not re-copied.
 - The 5-character literal at `0x80049504` is not read from the ISO; the
   identity of the matching surface type is unknown.
 - Numeric values of `c494_68` / `c494_6c` are not extracted.
-- `dou10_yoko_yari` (1116 bytes) and `marioChkWallAround` (2460 bytes)
-  are undocumented.
+- `dou10_yoko_yari` (1116 bytes) is undocumented.
+- `marioChkWallAround` is now documented at structure level — see
+  [MARIO_CHK_WALL_AROUND](MARIO_CHK_WALL_AROUND.md); its probe sequence and
+  correction-vector selection remain open.
 - Whether the leaked `r3` from `dou10_yoko_yari` is ever consumed by a
   caller of `marioCheckWall`.
