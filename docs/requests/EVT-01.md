@@ -99,7 +99,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [listener/camera bindings](../behavior/audio/GAME_LISTENER_SETTER_AND_SEQUENCE_CAMERA_BINDINGS.md).
   Exact alias-sensitive stores/repeated camera queries/0,400,600 battle source
   pinned; camera/flag/sequence/shared writers/cadence/original audio remain open.
-- [ ] Remaining SFXMain live/spatial/volume/fade, listener/shared writers, stream/song and
+- [x] Complete remaining psndSFXMain global fade/percentage and live
+  spatial/nonspatial/mute/fade-zero-stop regions; composed whole local body —
+  [live/fade/mute](../behavior/audio/POSITIONAL_SFX_LIVE_SPATIAL_FADE_AND_MUTE.md).
+  Child backends/global-slot flag/fade/denominator/source/runtime remain open.
+- [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
 - [x] Complete battleGetUnitMonosiriPtr8012ef20, initialized231-record
@@ -831,3 +835,19 @@ original literals0/400/200 independently decoded. Alias vector is static deducti
 not original execution. Fresh ELFs/listings remain `/tmp`; no native/body/asset
 export. Camera/heading/battle flag/shared writers, sequence gates, indirect/REL/
 dynamic/source domains and original spatial/audio traces remain OPEN.
+
+### 2026-10-13 — Complete remaining SFXMain live/fade/mute request regions
+
+[Live contract](../behavior/audio/POSITIONAL_SFX_LIVE_SPATIAL_FADE_AND_MUTE.md)
+closes global fade decrement/raw factor and signed percentage producer, spatial
+calc3D versus nonspatial controls, backend-specific scaling, first mute, bit40
+fade and zero-result fresh slot/descriptor stop/clear, then final mute even after
+clear. Composition with previous sweep/startup/loop/tail closes the local entire
+psndSFXMain graph. No reordered suppression or backend success inference.
+
+Validation: read-only manifest18 spans (2 scoped/15 linked/whole fingerprint),
+446 anchors/35 resolved direct calls passes.65536 division127 byte products and
+65536 division100 unsigned×signed byte products checked; six fade wrap/decrement
+vectors are derived source cases, not original execution. Full ELF/listing stays
+`/tmp`. SS/song/effect child services/writers/flags/fade/denominator/source/alias/
+concurrency/lifetime/original audio remain OPEN; source request text unchanged.

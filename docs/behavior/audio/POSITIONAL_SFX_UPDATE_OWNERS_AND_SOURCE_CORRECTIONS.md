@@ -104,3 +104,5 @@ behavior; [five controls](SOUND_EFFECT_RECORD_CONTROL_LEAVES.md) close Check,
 Volume,Pitch,Aux1 and Stop. These supersede this file's earlier “startup/backend
 not documented” scope for those exact local bodies only. calc3D, live main
 spatial/volume/fade, MusyX/resources/hardware/source/runtime remain open.
+
+[Complete global/live/fade/mute regions](POSITIONAL_SFX_LIVE_SPATIAL_FADE_AND_MUTE.md), together with the complete pending-startup delivery, now close the remaining local psndSFXMain body. The old scoped warning remains historical; child services/source domains/original execution stay open.

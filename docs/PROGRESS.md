@@ -5,6 +5,28 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 remaining positional SFX live/fade/mute graph
+
+Delivered [SFX live/fade/mute](behavior/audio/POSITIONAL_SFX_LIVE_SPATIAL_FADE_AND_MUTE.md).
+Two complete regions pin global fade/percentage, spatial/nonspatial controls,
+backend scaling, mute→fade→fresh stop/clear→final mute. Previous sweep/startup/
+loop/tail plus this delivery close the local whole psndSFXMain body. Calls remain
+ordered even when final mute follows key/engine clear. Marked local EVT-01
+portions complete; backend/source/original audio remain OPEN.
+
+Validation: generic read-only verifier18 spans (2 regions/15 linked/whole body
+fingerprint),446 anchors/35 resolved direct calls passes.65536 division127 byte
+products and65536 division100 unsigned×signed byte products checked;6 fade wrap/
+decrement vectors are derived only. Fresh full ELF/listing remains `/tmp`;
+no original code executes. Link audit754 Markdown files/0 broken; whitespace
+checks pass. Docs/source metadata only: no make rerun, native changes or original
+body/asset export. Isolated index excludes unrelated shared work.
+
+Next/limits: SS/song/effect child controls/stop/query semantics, G/slot/descriptor
+writers and flag/fade/denominator/alias/concurrency/lifetime domains, original
+live/fade/audio observations. Continue priority0 source/backend then priority1
+damage graph. No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Priority0 listener setter and sequence camera source bindings
 
 Delivered [listener/camera source](behavior/audio/GAME_LISTENER_SETTER_AND_SEQUENCE_CAMERA_BINDINGS.md).
