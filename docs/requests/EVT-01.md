@@ -118,6 +118,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [vector/volume update and reset](../behavior/audio/MUSYX_EMITTER_VECTOR_VOLUME_UPDATE_AND_3D_RESET.md).
   Ordered aliased vector/volume/root/flag publications pinned; constructors/
   consumers/caller/provider/reset/numeric/runtime remain open.
+- [x] Complete SoundEfxMain listener/vector/update/completion service
+  and SoundMain/SoundMainInt local outer bodies —
+  [effect/listener/completion main](../behavior/audio/GAME_EFFECT_MAIN_LISTENER_EMITTER_AND_COMPLETION.md).
+  Separate pool captures/fresh cleanup/double check/countdown order pinned;
+  listener/providers/sequence/SS/DVD/voice/concurrency/runtime remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -927,3 +932,19 @@ configuration/5 finite clamp vectors are derived only, not PPC execution.
 Full ELFs/listings remain `/tmp`; no native change/body/asset export. Constructors/
 consumers/caller-provider/alias/null/finite/reset/concurrency and original audio
 remain OPEN; local portions marked, parent open.
+
+### 2026-10-13 — Game effect main and outer sound-update services
+
+[Three complete local bodies](../behavior/audio/GAME_EFFECT_MAIN_LISTENER_EMITTER_AND_COMPLETION.md)
+close listener displacement/sin-cos basis arguments, first40 emitter updates,
+second40 captured traversal versus fresh pool voice checks/cleanup, double
+sndFXCheck and countdown continuation after initial cleanup. SoundMain checks
+exact sequence-valid1, flags/stops invalid records then orders effect/DVD/SS;
+interrupt wrapper only requests SSMainInt. No measured velocity/cadence invented.
+
+Validation: read-only manifest21 spans (3 complete/14 linked/4 literals),135
+anchors/25 resolved direct calls passes.40 offsets/four countdown boundaries/
+double-query metadata derived only; full fresh ELFs/listings remain `/tmp`.
+No native changes/original execution/body/bank export. Listener/providers/pool/
+sequence metadata/writers/alias/concurrency/SS/DVD/controller/voice and original
+completion/displacement/audio traces remain OPEN.

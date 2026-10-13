@@ -95,3 +95,5 @@ Remaining: emitter construction/active/link/vector/volume-current consumers,
 SoundEfxMain actual argument/provider/gate graph, listener/studio setup and valid
 alias/null/finite/reset/concurrency domains; original update/reset/audio traces.
 Two complete local bodies are answered; full native/source/runtime remains OPEN.
+
+[Complete game effect-main caller](GAME_EFFECT_MAIN_LISTENER_EMITTER_AND_COMPLETION.md) now closes the local position/displacement/volume arguments, captured pool passes and cleanup continuation. Actual providers/listener/child/runtime domains remain open.

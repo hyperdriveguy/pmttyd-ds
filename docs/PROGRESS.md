@@ -5,6 +5,27 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 game effect main and outer sound updates
+
+Delivered [effect/listener/completion main](behavior/audio/GAME_EFFECT_MAIN_LISTENER_EMITTER_AND_COMPLETION.md).
+Three complete bodies pin listener displacement/basis arguments, separate40-record
+update/completion passes, captured traversal/fresh pool cleanup, double voice
+checks/countdown continuation, exact sequence-valid1 and effect/DVD/SS outer
+order. No measured velocity or physical audio cadence. Marked local EVT-01
+portions complete; provider/child/runtime remains OPEN.
+
+Validation: generic read-only verifier21 spans (3 complete/14 linked/4 original
+literals),135 anchors/25 resolved direct calls passes.40 pool offsets/four countdown
+boundaries/double-query metadata are derived source cases. Full fresh ELFs/listings
+stay `/tmp`; no original execution. Link audit759 Markdown files/0 broken;
+whitespace checks pass. Docs/metadata only: no make rerun, native change or original
+body/bank export. Isolated index excludes unrelated staged/worktree work.
+
+Next/limits: listener update/transform and S position/heading providers, pool/
+record/sequence/countdown writers and alias/concurrency invariants, DVD/SS/sequence/
+controller/voice and original completion/audio traces. Continue priority0 source/
+backend then priority1 damage graph. No hardware/playback/full-game completion.
+
 ## 2026-10-13 — Priority0 emitter vector/volume update and 3D reset
 
 Delivered [update/reset](behavior/audio/MUSYX_EMITTER_VECTOR_VOLUME_UPDATE_AND_3D_RESET.md).
