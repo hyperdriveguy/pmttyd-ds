@@ -6,6 +6,42 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+
+## 2026-10-13 — Stretch bubble tails to the visible speaker
+
+User requested a reaching tail rather than the original fixed window-relative
+length. Native story drawing now extends the tail from its existing bubble
+base to four screen pixels before the projected talk anchor. Original sheared
+rows, base/width, placement and suppression gates remain; too-close anchors
+suppress the tail. White/shadow geometry independently compensates the original
+48x64 masks' transparent margins, so both last opaque texel centers reach the
+same visible endpoint and the shadow does not overshoot the head. Original
+raster assets, IDs/raw dialogue/controls/timing and4:3 proportions are unchanged.
+The four-pixel gap is an authored native adaptation, not measured original
+behavior. See[native contract](behavior/message/NATIVE_MESSAGE_BUBBLES.md)
+and[asset conversion notes](ASSETS.md).
+
+Validation: `make test` passes **96 CTest / 96 Python tests**
+(`/tmp/tail-stretch-test.log`); `make all` passes without warnings
+(`/tmp/tail-stretch-build.log`). Original-data20-payload playback and six-speaker
+harbor integration tests pass. Added left/right/inverted stretch checks for
+retained base, four-pixel gap, white/shadow endpoint equality and close-anchor
+suppression. Document audit checks694 Markdown files with0 broken links;
+`git diff --check` passes.
+
+Isolated `tests/azahar_textboxes.py` capture with the native story3 fixture and
+immutable `artifacts/ttyd-tail-stretched.3dsx` completes and saves story4 under
+`artifacts/azahar-tail-stretched/`. Reviewed Goombella page08 and X-Naut page14:
+the visible tails now extend from the bubble toward their heads. No diagnostic
+marker remains; user emulator profiles/saves and original ISO are untouched.
+
+Limits/next: this tail extension follows the user's presentation preference,
+not original fixed-endpoint parity. Pose/image-derived talk anchors and
+handheld aspect remain adapters. Original NPC heights/projection, full window
+services/indicator and matched Dolphin/hardware verification remain open.
+Broader dialogue/story/full-game fidelity remains incomplete.
+
+
 ## 2026-10-13 — Save and reload playable interiors
 
 Native PM2D version4 adds the completed inn/professor interior mask while
