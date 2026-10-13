@@ -295,6 +295,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   protection/synthetic identity, recycle and output admission —
   [block/unblock/peek](../behavior/audio/MUSYX_VOICE_BLOCK_UNBLOCK_AND_ALLOCATION_PEEK.md).
   Raw ordinal versus low8 identity retained; VID/caller/domain/runtime open.
+- [x] Complete vidInit/vidRemoveVoiceReferences/vidMakeRoot/vidGetPublicId
+  and voiceResetLastStarted initialization, promotion/recycle/lookup/reset —
+  [VID lifecycle](../behavior/audio/MUSYX_VID_LIFECYCLE_AND_LAST_STARTED_RESET.md).
+  Exact112 nodes/FX slot reset retained; chain/caller/domain/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1732,3 +1736,20 @@ global/table addresses checked as deductions. Full fresh ELFs/listings stay
 `/tmp`; no native change/original execution/body/binary asset export. VID removal,
 actual callers/ordinal/identity/count/member/sorted/alias/IRQ/concurrency/
 accounting/stream/resource domains and original reservation/free/audio remain OPEN.
+
+### 2026-10-13 — VID lifecycle and last-started reset
+
+[Five complete local bodies](../behavior/audio/MUSYX_VID_LIFECYCLE_AND_LAST_STARTED_RESET.md)
+close exact112-node initialization, conditional last-started reset, non-root
+detach/root promotion/terminal recycle, root conversion and full-chain public
+lookup. Local/public pointer equality changes whether nodes are retained or
+recycled; repeated reads retained. FX reset indexes slot after channel admission.
+No128-node pool initialization, null-safe removal, neighbor generation check,
+whole voice/chain clear, all-entry reset or atomic graph repair invented.
+
+Validation: read-only manifest five complete spans,252 anchors/one call passes.
+Seven branch/six last-started vectors,112-node links/endpoints and exact global/
+field addresses checked as deductions. Full fresh ELFs/listings stay `/tmp`;
+no native change/original execution/body/binary asset export. Actual chain/node/
+last-started/caller writers, null/equality/member/ID/generation/cycle/alias/
+reinit/IRQ/concurrency/rollback and original promotion/removal/audio remain OPEN.

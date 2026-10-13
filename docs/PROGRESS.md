@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero VID lifecycle and last-started reset
+
+Completed vidInit/vidRemoveVoiceReferences/vidMakeRoot/vidGetPublicId and
+voiceResetLastStarted for EVT-01; checked the corresponding inbox portion.
+[VID lifecycle](behavior/audio/MUSYX_VID_LIFECYCLE_AND_LAST_STARTED_RESET.md)
+pins112-node initialization, conditional table reset, non-root detach/root
+promotion/terminal recycle and root/public-chain lookup. Exact repeated pointer/
+identity reads and FX slot-index reset retained. Actual caller/graph/null/member/
+identity/concurrency/runtime domains remain open; no null repair/atomicity inferred.
+
+Validation: read-only ISO manifest passed five complete spans,252 anchors/one
+call. Seven branch/six last-started vectors,112-node links/endpoints and global/
+field addresses checked as source deductions. Link audit passed811 Markdown
+files/zero broken links; `git diff --check` passed. Documentation/metadata only;
+no `make test`/`make all` rerun. Full original inspection ELFs/listings stay
+`/tmp`; no bodies/binary assets committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 actual chain/node/last-started/identity/caller writers,
+remaining macro opcodes/metric producers and valid null/equality/member/slot/
+generation/sorted/cycle/alias/reinit/IRQ/concurrency/rollback domains; original
+promotion/removal/reservation/audio traces. Full native/runtime binding,
+lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero voice block/unblock and allocation peek
 
 Completed voiceBlock/voiceUnblock/voiceAllocatePeek for EVT-01; checked the
