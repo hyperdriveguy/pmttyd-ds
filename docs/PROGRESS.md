@@ -2,6 +2,32 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero startup finish/composed DSP builder
+
+Completed startup loop/fallback endpoints/filter/volume seeds/start-slot/active
+publication and composed the local whole salBuildCommandList body; checked the
+EVT-01 portion. [Startup finish/composition](behavior/audio/MUSYX_DSP_STARTUP_ENDPOINTS_AND_COMMON_FINISH.md)
+pins raw endpoint/default-register behavior and exact field/mode/publication
+order. Providers/ABI/value/alias/IRQ/concurrency/cache/DSP/original audio/full
+native binding remain open; local source composition is not runtime fidelity.
+
+Validation: new read-only ISO manifest passed two spans (region/whole body),286
+anchors (275 region/11 ABI),zero calls within new region. All ten prior region
+manifests reverified against ISO. Union audit covers all2419 non-ABI instruction
+words, plus11 anchored ABI words,total2430/25f8hex. Eight loop/six fallback/six
+initial-enable vectors,nine seed bindings/all256 start-byte predicates checked.
+Link audit passed861 Markdown files/zero broken links; scoped `git diff --check`
+passed. Documentation/metadata only; no `make test`/`make all` rerun. Full original
+fresh builder ELF/listing/coverage generator stays `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 descriptor/address/count/offset/loop/type/zero-buffer/
+filter/mode/gain/start-slot/register/flag/list/PB/callback providers and valid
+extent/residency/encoding/index/overflow/alias/lifetime/ABI/IRQ/concurrency domains;
+transitive cache/DSP/command consumers and original startup/endpoints/voice/audio
+traces. Remaining precision/macro/stream/song/backend work, lower-priority inbox
+and full native/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero startup callback/ITD/format prefix
 
 Completed builder startup callback/ITD/type0..6 descriptor/direct/rounded-seek/

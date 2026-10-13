@@ -131,3 +131,9 @@ register-state providers and valid extent/residency/encoding/alias/lifetime/IRQ/
 concurrency domains; cache/DSP consumers and original startup/seek/sample/audio
 traces. One local startup prefix answered; whole builder/full native binding
 and EVT-01 remain OPEN.
+
+## 2026-10-13 — Endpoint/common finish follow-up
+
+[Startup finish/composition](MUSYX_DSP_STARTUP_ENDPOINTS_AND_COMMON_FINISH.md) closes loop/fallback endpoints and
+common startup finish, and audits complete local builder region coverage. Local
+body answered; provider/domain/ABI/transitive DSP/original audio/native remain open.

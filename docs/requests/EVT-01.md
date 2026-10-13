@@ -436,6 +436,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   format/cursor prefix — [startup format prefix](../behavior/audio/MUSYX_DSP_STARTUP_CALLBACK_ITD_AND_FORMAT_PREFIX.md).
   Callback-length gate/seek rounding/copy order/default register fallthrough
   pinned; loop/endpoints/finish/domain/original sample/DSP/audio remain open.
+- [x] Complete startup loop/fallback endpoints/common finish and
+  compose the whole local salBuildCommandList body —
+  [startup finish/composed builder](../behavior/audio/MUSYX_DSP_STARTUP_ENDPOINTS_AND_COMMON_FINISH.md).
+  Region union covers2419 non-ABI words plus11 anchored ABI words;
+  provider/domain/transitive DSP/original audio/full native remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2320,3 +2325,13 @@ and sixteen coefficient-copy bindings checked. Callback return versus fresh
 length gate, ITD request/copy, type-specific descriptor/direct/rounded seek and
 unsupported-register fallthrough pinned. Parent EVT-01 OPEN; loop/endpoints/
 finish/provider/domain/original sample/DSP/audio execution remains open.
+
+## 2026-10-13 — Startup endpoints/finish and composed builder delivery
+
+Completed startup loop/fallback/seed/filter/start-slot/active publication in
+[startup finish/composed builder](../behavior/audio/MUSYX_DSP_STARTUP_ENDPOINTS_AND_COMMON_FINISH.md).
+New two-span/286-anchor region verified; all ten prior manifests reverified.
+Region union covers all2419 non-ABI words;11 ABI words separately anchored,
+total2430/25f8hex. Twenty formula vectors/nine seed bindings/all256 start-byte
+predicates checked. Local builder body answered; provider/ABI/value/alias/IRQ/
+concurrency/cache/DSP/original voice/audio/native binding and parent EVT-01 OPEN.
