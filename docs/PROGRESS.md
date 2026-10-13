@@ -3,6 +3,53 @@
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
 
+
+## 2026-10-13 — Original map-object bbox head collision
+
+Commit `12d4b56` connects the original save-block cube to the existing native
+five-probe head query and ceiling response. PMNPC003 adds original model bbox
+metadata and source object names while retaining PMNPC001/002 loading. The
+converter reads original model0xd0..0xe4; source dimensions, forcedY0 midpoint,
+eight vertices/six alternating strips, source cull1 and owner attribute are
+retained. Dynamic owner keys remain separate from static REL node offsets.
+Actual contacts publish the owner; near misses/backfaces do not. Original far
+ray endpoint rejects and equal hits retain the earlier static/object slot.
+Reused per-Game storage bounds the current plaza object to12 triangles.
+See [native binding](behavior/field/NATIVE_MAP_OBJECT_HEAD_COLLISION.md) and
+[asset provenance](ASSETS.md).
+
+Documentation inbox work recovered the
+[original shared hit registry/order](behavior/field/DYNAMIC_OBJECT_HIT_REGISTRY_AND_RAY_ORDER.md):
+source map/slot traversal, dynamic insertion, strict upward ties/endpoint,
+whole-box ground/wall eligibility and borrowed name/delete lifetime. Current
+native packs cover one map record; multiple-record chain reconstruction remains
+explicitly pending. Model draw scalar and S_1/A_1 deformation do not change the
+source collision cube.
+
+Validation: independent source/romfs snapshot
+`/tmp/pm-object-collision-er9tx9p7` passes `make test`104 CTest/100 Python tests
+and `make all` after the final endpoint change. Tests cover source bounds,
+12 faces/bottom winding, head actual/near-miss/backface/far-endpoint queries,
+room/story/system gates, malformed V3 atomicity and a full Game jump that
+publishes the owner, clamps, falls and lands. Initial shared full run failed an
+unrelated concurrently modified professor lecture assertion; it is not reported
+as passing. Snapshot excludes that unfinished lecture/choice work and preserves
+its shared edits. Immutable binary `artifacts/ttyd-saveblock-head.3dsx` boots
+with `--under-block` fixture in isolated Azahar; inspected contact/landed images
+are `artifacts/azahar-saveblock-head/saveblock-head-contact.png` and
+`saveblock-head-landed.png`. The images support presentation/landing, while
+host assertions establish the collision owner/correction. Emulator samples
+are not stable hardware performance evidence. No user profile/saves touched.
+Documentation link check727 Markdown files/0 broken; whitespace checks pass.
+
+Next/limits: bind this same source cube into top support and side-wall queries;
+connect name-contact caching and callback0..4 with independently timed poses,
+previous-published loop ratio, nested key/system/camera ownership, original
+save-choice graph and explicit native card persistence adapter. Hit animation
+and save prompt are not yet triggered by the new collision. Moving object
+transforms, full event/area content, source observations, original lighting/
+translucent ordering and New2DS profiling remain open. Full user goal stays active.
+
 ## 2026-10-13 — Priority0 group lifecycle and game audio loader source bridge
 
 Delivered [complete group push/pop/resource lists](behavior/audio/MUSYX_GROUP_PUSH_POP_AND_RESOURCE_LISTS.md)
