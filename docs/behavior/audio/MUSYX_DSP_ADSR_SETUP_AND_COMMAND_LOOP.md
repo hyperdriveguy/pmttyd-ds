@@ -165,3 +165,10 @@ cache/DSP command consumption, active/studio/list/stack/type/value/alias/lifetim
 IRQ/concurrency domains, physical invocation cadence and original voice/envelope/
 command/audio traces. These four regions/three leaves close the seven local
 ADSR call sites; full builder/native binding and EVT-01 remain OPEN.
+
+## 2026-10-13 — Initialization/activation follow-up
+
+[DSP initialization/activation](MUSYX_DSP_INITIALIZATION_AND_ACTIVATION.md) closes the local hardware record/
+studio initialization and activation/start/key-off producers. Partial allocation
+failures and unchecked buffer use remain exact local behavior; transitive child/
+valid domain/original DSP/audio evidence remains open.

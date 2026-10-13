@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [MusyX DSP initialization/activation](audio/MUSYX_DSP_INITIALIZATION_AND_ACTIVATION.md) | Six complete allocation/record/studio/HRTF/list/start/key-off bodies | Allocator/cache/DSP children, domains and original init/start/audio |
 | [MusyX DSP ADSR setup/command loop](audio/MUSYX_DSP_ADSR_SETUP_AND_COMMAND_LOOP.md) | Four setup/start/update-command regions and complete host-position/message/deactivation leaves | Other DSP builder/producers/consumers/domains and original cadence/audio |
 | [MusyX ADSR low-precision caller/census](audio/MUSYX_ADSR_LOW_PRECISION_CALLERS_AND_DOL_CENSUS.md) | Four admission/clock/envelope/pitch/dirty regions and fourteen direct DOL calls to six ADSR services | Remaining precision/DSP regions, indirect callers/domains and original cadence/audio |
 | [MusyX ADSR advancement/wrapper](audio/MUSYX_ADSR_ADVANCEMENT_AND_LOW_PRECISION.md) | Complete old-level publication, two-domain advancement, count wrap/transition and fifteen-call wrapper | Caller cadence/value/index/alias domains, consumers and original envelope/audio |

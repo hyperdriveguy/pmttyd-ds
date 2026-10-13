@@ -372,6 +372,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   and deactivation leaves — [DSP ADSR command loop](../behavior/audio/MUSYX_DSP_ADSR_SETUP_AND_COMMAND_LOOP.md).
   Command/mask/release/delta/cache order pinned; full builder/producers/
   consumers/domain/cadence/original audio remain open.
+- [x] Complete salInitDspCtrl/salActivateStudio/salInitHRTFBuffer/
+  salActivateVoice/hwStart/hwKeyOff initialization and activation chain —
+  [DSP initialization/activation](../behavior/audio/MUSYX_DSP_INITIALIZATION_AND_ACTIVATION.md).
+  Partial failures/unchecked buffers/fresh bounds/list/publication/indexed
+  key-off pinned; child/valid domain/original DSP/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2114,3 +2119,13 @@ delta command emission, previous-result completion/repeated callback order,
 cache publication, host position and unlink semantics pinned. Raw index/wrap/
 stack/alias domains remain source requirements; no measured cadence inferred.
 Full builder/native/DSP/audio execution and parent EVT-01 remain OPEN.
+
+## 2026-10-13 — DSP initialization/activation delivery
+
+Completed six local bodies in [DSP initialization/activation](../behavior/audio/MUSYX_DSP_INITIALIZATION_AND_ACTIVATION.md).
+Fifteen spans/305 anchors/33 calls verified;16 count/activation/event vectors,
+eight studio slices/seven explicit failure-stage cases checked. Allocation and
+record/cache bindings, unchecked per-voice buffers, fresh count/base reads,
+studio/list publication, start time byte and indexed key-off are pinned.
+No allocator/cache/DSP child execution, safe raw domain, cleanup or original
+init/start/audio trace inferred. Parent EVT-01 remains OPEN.

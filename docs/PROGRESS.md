@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero DSP initialization/activation
+
+Completed salInitDspCtrl/salActivateStudio/salInitHRTFBuffer/salActivateVoice/
+hwStart/hwKeyOff; checked the EVT-01 portion.
+[DSP initialization/activation](behavior/audio/MUSYX_DSP_INITIALIZATION_AND_ACTIVATION.md)
+pins allocation/partial failure/cache/record/studio bindings, unchecked per-voice
+buffers, fresh count/base reads, head insertion/start time byte/indexed key-off.
+Allocator/cache/DSP children and valid domain/original init/start/audio remain
+open; source local requests do not prove successful audible playback.
+
+Validation: read-only ISO manifest passed15 spans (six bodies/nine linked),305
+anchors/33 calls. Six count/size,six activation/root,four indexed-event vectors,
+eight studio slice offsets/seven explicit failure-stage cases checked. Link audit
+passed839 Markdown files/zero broken links; scoped `git diff --check` passed.
+Documentation/metadata only; no `make test`/`make all` rerun. Full original
+inspection ELFs/listings stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 allocator/ARAM/cache transitive behavior, full DSP
+builder/consumer, actual count/base/time/studio/record/link/descriptor providers,
+valid static extent/index/null/value/alias/partial-init/reinit/lifetime/IRQ/
+concurrency domains and original init/allocation/start/key-off/DSP/audio traces.
+Remaining precision-handler sections, lower-priority inbox and full native/
+full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero DSP ADSR setup/command loop
 
 Completed four salBuildCommandList setup/start/envelope-command regions and
