@@ -341,7 +341,7 @@ Current76 CTest/86 Python/3DS build passed;all-system documentation/final full
 requirements remain incomplete.
 
 ID1 texture/light/color/fog completion update (2026-10-12):seven detailed
-contracts linked in [the display index](../README.md#id1-used-texturelightcolorfog-local-contracts-2026-10-12)
+contracts linked in [the display index](../display/ID1_MAP_MATERIAL_AND_TEV_STATUS.md#id1-used-texturelightcolorfog-local-contracts-2026-10-12)
 close fourteen actual render/material helper and source-query local bodies.
 Two-pass texture objects/UV matrices,smart data patch,color/fog,light selection,
 types/transforms/channels now have reproducible binary contracts. Checker1189
@@ -354,7 +354,7 @@ documentation remains incomplete;final system requirements remain premature.
 
 ID1 ordinary TEV scope update (2026-10-12):original Mario24 draw records
 all mode0 supplies an actual used source dependency for
-[three shader contracts](../README.md#id1-ordinary-tev-and-character-shadow-paths-2026-10-12).
+[three shader contracts](../display/ID1_MAP_MATERIAL_AND_TEV_STATUS.md#id1-ordinary-tev-and-character-shadow-paths-2026-10-12).
 Mode0/generic/no-texture/constant/character-shadow/final publication blocks and
 four getter bodies close locally. Evidence303 scoped words/three spans/two
 imports/six direct sites and80 CTest/90 Python/build pass. This explicitly leaves
