@@ -6,24 +6,38 @@ Closes six rows of [UNADDRESSED_BINARY_FUNCTIONS.md](../binary/UNADDRESSED_BINAR
 `btlevtcmd_SetUnitWork`, `btlevtcmd_CheckStatus`,
 `btlevtcmd_CheckDataOfDataTable`.
 
-## Shared resolve pipeline
+## Resolution and capture order
 
-All six open with the pipeline documented in [event
-dispatch](BATTLE_EVENT_DISPATCH.md): `evtGetValue(event,arg0)` →
-`BattleTransID` (0x801253ec, complete in
-[actor translation](BATTLE_ACTOR_SELECTOR_TRANSLATION.md)) →
-`BattleGetUnitPtr(globalBattle,id)` (0x800f88cc) with the word at [r13+7280]
-as the battle word — cited positionally, as before. Callee identities come
-from `evidence.json` annotated branch sites. Every body returns 2 and
-discards its callees' returns. `BattleGetUnitPtr` itself has no prose
-contract; like the dispatch doc's services, these bodies assume its result
-is usable (no null check anywhere below).
+All six resolve actor operand0 through `evtGetValue` then
+`BattleTransID` (0x801253ec; [actor translation](BATTLE_ACTOR_SELECTOR_TRANSLATION.md)).
+Their battle/unit captures occur at different points; there is no shared early
+unit lookup. The battle pointer is word[r13+7280] (`0x8041eb90`). Translation's
+own battle read is distinct from each caller's read. Every body returns event
+result2; the queried values and unit pointers are consumed, rather than discarded.
+[Unit lookup](BATTLE_GET_UNIT_PTR.md) supplies the callee's separate null/index
+policy. These wrappers do not test a returned null pointer on a lookup path.
+
+Read the [HP/work capture refinement](BATTLE_UNIT_HP_WORK_CAPTURE_ORDER.md).
+Reinspection of all six complete bodies on2026-10-13 confirms this ordering:
+
+| Leaf | Ordered captures and service calls |
+| --- | --- |
+| GetHp / GetMaxHp | Retain event/argument pointer; capture battle BEFORE actor resolution/translation. ID-1 returns2 BEFORE unit lookup or output load. Otherwise lookup with retained battle, read signed HP, then load raw output A4 and call SetValue. |
+| GetUnitWork | Resolve/translate actor, resolve index A4, capture raw output A8, THEN capture current battle/lookup unit, load indexed work, SetValue. |
+| SetUnitWork | Resolve/translate actor, resolve index A4, resolve value A8, THEN capture current battle/lookup unit and store indexed work directly. |
+| CheckStatus | Resolve/translate actor, load raw status A4, capture raw output A8, read current battle, sign-extend low status byte, lookup unit, CheckStatus, SetValue with0/1. |
+| CheckDataOfDataTable | Resolve/translate actor, read current battle/lookup unit, capture raw output A4, resolve query A8, CheckData with retained unit, SetValue. |
+
+All retain the event and initial argument pointer. None uses firstCall. Raw
+output words stay unresolved. Get-work captures its output before lookup;
+HP captures it after the signed halfword load. CheckData retains the unit
+across query resolution, which may differ from a fresh global/unit lookup.
 
 ## Per-leaf contracts
 
-| Leaf (entry/size) | Fingerprint sha12 | After unit lookup | Destination / write |
+| Leaf (entry/decimal byte size) | Fingerprint sha12 | Query / gate | Destination / write |
 | --- | --- | --- | --- |
-| GetHp 801101c4/120 | ee4e1ca9732b | If TransID returned -1 (`cmpwi 4,-1`, taken-equal fall-through), return 2 with no write. Else `lha` unit+268 | `evtSetValue(entry, raw [block+4], halfword)` |
+| GetHp 801101c4/120 | ee4e1ca9732b | If TransID returned -1, return2 BEFORE lookup with no write. Else `lha` unit+268 | `evtSetValue(entry, raw [block+4], halfword)` |
 | GetMaxHp 801100cc/120 | ee15406de00c | Identical -1 gate | `evtSetValue(entry, raw [block+4], halfword at unit+264)` |
 | GetUnitWork 8010f828/132 | a28f8e3bc83e | No -1 gate. Index = `evtGetValue([block+4])`; dest = raw [block+8]; value = word at [unit+536+4*index] (`slwi`/`add`, no bounds check) | `evtSetValue(entry, dest, value)` |
 | SetUnitWork 8010f7a4/132 | 2ed0ef8d229c | No -1 gate. Index = `evtGetValue([block+4])`, value = `evtGetValue([block+8])`; **direct** `stw value, [unit+536+4*index]` — no evtSetValue call, and r3 is preset to 2 before the store | Raw store, return 2 |
@@ -32,10 +46,18 @@ is usable (no null check anywhere below).
 
 Details pinned by the listings: GetHp/GetMaxHp differ only in the halfword
 offset (268 vs 264) and entry address — instruction-for-instruction otherwise.
-`BtlUnit_CheckStatus`'s own contract remains open (its caller in [hit
-precheck](BATTLE_HIT_PRECHECK.md) lists it as a dependency). Destinations are
-raw event words in all six; only the queried/index/value operands pass
-through evtGetValue routing (immediates and encoded floats legal there).
+`BtlUnit_CheckStatus` is now [documented](BATTLE_UNIT_CHECK_STATUS.md).
+Destinations in the five output-producing leaves are raw event words; SetUnitWork
+has no output token. Actor/index/value/CheckData query operands use evtGetValue;
+CheckStatus's status selector remains raw. Work addressing is
+unit+0x218+wrap32(index*4), with wrapping word addition and no index bound.
+Negative indices may address preceding fields.
+
+Reinspection anchors: CheckStatus raw status80105f3c/output80105f44/battle80105f48/
+lookup80105f50; CheckData battle80109fbc/lookup80109fc0/output80109fc4/query
+resolution80109fd4. HP/work anchors are in the linked refinement. Reproduce
+all six with `tools/inspect_dol_function.py` and
+`artifacts/reference/us_symbols.csv`; inspection ELFs stay in `/tmp/inbox-*.elf`.
 
 ## Asymmetries (observed, not rationalized)
 

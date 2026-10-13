@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Priority0 documentation inbox delivery
+
+Consolidated [EVT-01's local service contract](behavior/event/EVT_01_SERVICE_CONTRACT_AND_REMAINING_BINDINGS.md)
+and corrected the [six unit-query leaves](behavior/battle/BATTLE_UNIT_QUERY_EVENT_LEAVES.md).
+Independent read-only US ISO inspection confirms HP's retained early battle,
+ID-1-before-lookup/output gate, work's late lookup, and distinct status/data
+capture order. Split EVT-01 todos into checked static portions and open runtime/
+source requirements; preserved request text and registered the delivery.
+
+Validation: nine source verifiers pass: event manager/root/descendants/dispatch
+ tail/run-controls, weapon menu domains, ActMenu, menu interruptions and Jump
+source registry. Registry confirms3 streams,156 direct sites and72 callbacks.
+Six complete leaf listings were regenerated to `/tmp/inbox-*.elf` only.
+`python3 tools/check_doc_links.py`:701 Markdown files,0 broken links.
+`git diff --check` passes. Docs only; no make rerun or native code changes.
+Existing unrelated worktree edits were preserved and excluded from this commit.
+
+Limitations/next: EVT-01 stays OPEN for original pause/multicredit/creation/
+deleting/wait traces, query-specific unsupported cursor slots, global/dynamic/
+transitive sources and backend domains. No original observation or hardware/
+full-game equivalence claim. Continue priority1 DMG-01 allocation/stat/init and
+attack-count ownership, then AC-03 defense integration in inbox order.
+
 ## 2026-10-13 — Current renderer workload and build limitation
 
 After the field actor/frontend source update, the current `romfs/manifest.json`

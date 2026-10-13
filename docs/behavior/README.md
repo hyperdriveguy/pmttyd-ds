@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [EVT-01 service consolidation](event/EVT_01_SERVICE_CONTRACT_AND_REMAINING_BINDINGS.md) | Scheduler/constructor/wait composition, corrected leaf capture, conditional Jump root/registry and local menu writers | Original traces, query-specific cursor domains, dynamic/global/platform/numeric bindings |
 | [Shape entry/defaults](display/ANIMATION_SHAPE_RENDER_ENTRY_AND_DEFAULTS.md) | Complete two-body matrix/pass/cull/default request order | Texture/map/GX/SDK/source/lifetime/runtime |
 | [Texture override scans](display/ANIMATION_RENDER_TEXTURE_OVERRIDE_SELECTION.md) | Complete reversed slot/index fallback/kind priority/null/alpha differences | Override/resource/texture object/coordinate/GX/source |
 | [Last-stage/rebind](display/ANIMATION_RENDER_LAST_STAGE_AND_REBIND.md) | Complete smart return nonuse/state/extra-stage/fresh rebind order | Smart texture/map TEV/GX/matrix/source/lifetime |

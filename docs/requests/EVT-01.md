@@ -5,16 +5,13 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 
 ## Open todos
 
-- [ ] Complete US `evtmgrMain`/`evtmgrCmd` service contract: eligibility
-  masks, 64-bit lifetime increment source/rounding, credit
-  precision/subtraction order, interpreter 0/-1/1 handling, current-table
-  appends and live-ID checks; initial credit/state/type/run-check policy for
-  root/child/brother/inline entries; `WAIT_FRAME`/`WAIT_MSEC`/`USER_FUNC`
-  continuation semantics with exact first-call markers. Keep mathematical
-  event invocations separate from physical pad samples. *(Partial deliveries:
-  manager loop, constructors, dispatch/wait continuations, controls and
-  opcode coverage are registered; original pause/multicredit/creation/
-  deletion traces remain.)*
+- [x] Complete local US `evtmgrMain`/`evtmgrCmd` scheduler service,
+  constructor/append/run-check policy and WAIT_FRAME/WAIT_MSEC/USER_FUNC
+  continuations — consolidated in the [service contract](../behavior/event/EVT_01_SERVICE_CONTRACT_AND_REMAINING_BINDINGS.md).
+- [ ] Original pause/multicredit/creation/deletion/wait execution traces,
+  callback/source/address/numeric domains and global ownership needed to
+  validate the composed scheduler. Mathematical invocations remain separate
+  from physical pad samples.
 - [x] Complete `BtlUnit_snd_se_pos` 80126088/114, `psndSFX_pos` 800d96f8/4c
   and `psndSFXOff` 800d95f8/c8 bodies — **bodies answered** by ID 3 on
   2026-10-12 ([trigger](../behavior/audio/BATTLE_UNIT_POSITIONAL_SFX_TRIGGER.md),
@@ -38,18 +35,24 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   path. *Record field layout beyond the known `+0x04` null test, the table's
   writers and the full call census remain open, so this closes the lookup
   function, not the whole Monosiri/spatial playback area.*
-- [ ] `CommandGetWeaponAddress`/`SelectWeapon` caller and menu-type writers
-  that establish valid cursor modes (9/11..13/>14 leave the original stack
-  cursor unwritten); reachable type/input invariants or evidence of original
-  stack/cursor reuse.
-- [ ] Reconcile `BATTLE_UNIT_QUERY_EVENT_LEAVES` prose with the corrected
-  capture-order instruction sites (`BATTLE_UNIT_HP_WORK_CAPTURE_ORDER`).
-- [ ] Remaining NormalJump entry/root registration and
-  owner/priority/type/context/ID/speed writer paths needed to bind 80355cf0,
-  plus the callback address/caller census for the stream's native service
-  registry. *(Partial: source/root registration and the 156-site registry
-  census were delivered; menu/global writer paths, dynamic data7/transitive
-  sources and original runtime remain open.)*
+- [x] Local menu-type writers, direct caller census and concrete Input
+  state11 same-invocation cursor reuse — answered by the [type/reuse contract](../behavior/battle/WEAPON_MENU_TYPE_DOMAINS_AND_CURSOR_REUSE.md),
+  [ActMenu publication](../behavior/battle/ACT_MENU_MAIN_SELECTION_AND_TYPE_PUBLICATION.md),
+  audience/gift writers and the consolidated service contract.
+- [ ] Query-specific reachable type/input invariants or actual stack residue
+  for CommandGetWeaponAddress/SelectWeapon and other private uninitialized
+  cursor slots. Input's initialized slot is not their fallback; unsupported
+  types9/11..13/>14 still leave the helper output unwritten.
+- [x] Reconcile `BATTLE_UNIT_QUERY_EVENT_LEAVES` prose with corrected
+  capture-order sites — [reconciled summary](../behavior/battle/BATTLE_UNIT_QUERY_EVENT_LEAVES.md),
+  rechecked against all six complete bodies on2026-10-13.
+- [x] Conditional NormalJump source/root registration, actor/priority/type/
+  context/ID/speed binding and156-site direct callback census —
+  [root binding](../behavior/battle/NORMAL_JUMP_ROOT_REGISTRATION.md),
+  [registry](../behavior/battle/NORMAL_JUMP_CALLBACK_REGISTRY.md).
+- [ ] Remaining NormalJump menu/global writer paths, dynamic/transitive source
+  provisioning and original runtime evidence. The direct registry census does
+  not establish callback completion or every reachable entry route.
 - [x] Consolidated 1b0 `EventEntry` field map — answered
   ([packed map](../behavior/event/EVENT_ENTRY_PACKED_LAYOUT.md),
   [alias requirements](../behavior/event/EVENT_ENTRY_ADDRESS_AND_ALIAS_REQUIREMENTS.md)).
@@ -395,3 +398,19 @@ re-derived in Python and cross-checked against named symbols in `us_symbols.csv`
 `make all` were not rerun.
 
 The append-only delivery notes, implementation breadcrumbs and host-gate history for this request live in [EVT-01_HISTORY.md](EVT-01_HISTORY.md). Validated deliveries are also registered in the [delivery log](DELIVERY_LOG.md).
+
+### 2026-10-13 — Priority0 service consolidation and capture-order reconciliation
+
+The [consolidated answer](../behavior/event/EVT_01_SERVICE_CONTRACT_AND_REMAINING_BINDINGS.md)
+connects complete manager/interpreter/constructor/continuation contracts and
+conditional NormalJump registration. Split broad todos into delivered static
+portions and remaining source/runtime portions; request text remains untouched.
+Corrected the unit-query shared-pipeline claim from independent read-only ISO
+inspection of all six leaves, including neighboring CheckStatus/CheckData order.
+Menu writers and Input cursor reuse are delivered; query-specific unsupported
+stack domains remain open, with no invented fallback.
+
+Validation: nine existing source verifiers pass (manager, root, descendants,
+dispatch tail, run/control, menu domains, ActMenu, interruptions, Jump registry).
+Inspection ELFs remain `/tmp/inbox-*.elf`. No native code or original assets
+changed; no original execution trace was collected. Parent request remains OPEN.
