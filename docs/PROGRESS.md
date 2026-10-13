@@ -5,6 +5,27 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 audio frame and aux callback order
+
+Delivered [frame/aux graph](behavior/audio/MUSYX_AUDIO_FRAME_AND_AUX_CALLBACK_ORDER.md).
+Seven complete bodies pin one-time active gate, DSP submission before five
+seq/synth slices, frame-byte/live voice clears, final3D/stream/virtual-sample
+order and direct OS critical wrappers. Aux A/B callback/buffer capture and fresh
+B gates/count reads remain explicit; no measured physical cadence/action ticks
+inferred. Marked local EVT-01 portions complete; parent OPEN.
+
+Validation: generic read-only verifier17 spans (7 complete/10 linked),127 anchors/
+29 resolved direct calls passes. All256 byte arithmetic cases, five-slice order,
+three-channel extent and6 aux-gate vectors checked; no original execution. Full
+fresh ELFs/listings remain `/tmp`. Link audit748 Markdown files/0 broken;
+whitespace checks pass. Docs/source metadata only: no make rerun, native change
+or original body/bank export. Isolated index excludes unrelated shared work.
+
+Next/limits: seq/synth/stream/3D/virtual-sample/command-builder engines, actual
+voice/studio/aux providers and pointer/format/IRQ/reentrancy domains, original
+frame/DMA/aux/audio observations. Continue priority0 source/live SFX/calc3D then
+priority1 damage graph. No playback/hardware/full-game completion claim.
+
 ## 2026-10-13 — Priority0 DSP task callbacks and command-mail source
 
 Delivered [DSP task/callback/mail](behavior/audio/MUSYX_DSP_TASK_CALLBACKS_AND_COMMAND_MAIL.md).

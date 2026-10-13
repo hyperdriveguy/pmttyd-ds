@@ -1,0 +1,530 @@
+{
+  "schema": 1,
+  "scope": "Seven complete audio frame/critical/time-offset/no-op loop/aux bodies; child synth/seq/stream/3D/SDK/runtime open",
+  "complete_bodies": [
+    "snd_handle_irq",
+    "hwIRQEnterCritical",
+    "hwIRQLeaveCritical",
+    "hwSetTimeOffset",
+    "hwGetTimeOffset",
+    "streamCorrectLoops",
+    "salHandleAuxProcessing"
+  ],
+  "linked_only": [
+    "salAiGetDest",
+    "salCtrlDsp",
+    "seqHandle",
+    "synthHandle",
+    "s3dHandle",
+    "streamHandle",
+    "vsSampleUpdates",
+    "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+    "OSEnableInterrupts",
+    "DCFlushRangeNoSync"
+  ],
+  "dol_spans": [
+    {
+      "name": "snd_handle_irq",
+      "address": 2150172080,
+      "size": 340,
+      "sha256": "d4d190baec40488c9462ce3a257582f7880d0c1aa1477199cbfd4f8e11cf95d5"
+    },
+    {
+      "name": "hwIRQEnterCritical",
+      "address": 2150180936,
+      "size": 32,
+      "sha256": "b026baff8e02b08e0760df2b38875282e4e88e6dd68289dfabdcb0572aa0f336"
+    },
+    {
+      "name": "hwIRQLeaveCritical",
+      "address": 2150180968,
+      "size": 32,
+      "sha256": "89a762de8c687bf8cf50e5f863562fd401d270f7c4772fad8ca0c940e4b91fce"
+    },
+    {
+      "name": "hwSetTimeOffset",
+      "address": 2150172616,
+      "size": 8,
+      "sha256": "812aafc2336267b499b8e9c9b8cb45c3f9acd8b25f3d0f0622e5c485594710d5"
+    },
+    {
+      "name": "hwGetTimeOffset",
+      "address": 2150172624,
+      "size": 8,
+      "sha256": "d3d0a180f6048fa7b0be8e03a2c9257e20ad474d4343648db3667824605df06f"
+    },
+    {
+      "name": "streamCorrectLoops",
+      "address": 2150084476,
+      "size": 4,
+      "sha256": "f332ea5b5437103cbb6f1508679da89eec9288ad775c96c439a17fccabe3de8e"
+    },
+    {
+      "name": "salHandleAuxProcessing",
+      "address": 2150151484,
+      "size": 344,
+      "sha256": "fc9f754aa334879a0ec9db2f2a4f195f0d0427792d42dad6838a0c0c37ef2170"
+    },
+    {
+      "name": "salAiGetDest",
+      "address": 2150180328,
+      "size": 48,
+      "sha256": "8070eebf642cf83fd0bb3542a2657a22d65ece8ba98eb9845559e501a8ecfcdc"
+    },
+    {
+      "name": "salCtrlDsp",
+      "address": 2150180588,
+      "size": 116,
+      "sha256": "3fcbb960911069e8c0b18ee856f7bebf52fba7b6c231e907c51256cb352e2f2b"
+    },
+    {
+      "name": "seqHandle",
+      "address": 2150063444,
+      "size": 2588,
+      "sha256": "f811b8e61f75b36f643705810444058ab280092e17d233e9828aa35d75aeb3c1"
+    },
+    {
+      "name": "synthHandle",
+      "address": 2150074424,
+      "size": 1296,
+      "sha256": "d5fc736275603818a854185f4907133613671dc06e22867b4b60d6bfea5e361b"
+    },
+    {
+      "name": "s3dHandle",
+      "address": 2150159212,
+      "size": 1832,
+      "sha256": "45d7c27ed83f76d2cc11e207042a779065641d0cc866a4b0adda24b88a494da6"
+    },
+    {
+      "name": "streamHandle",
+      "address": 2150082200,
+      "size": 2276,
+      "sha256": "f5bc74901c36f1c68441ece7e21cafa90df9d96aa57b2b630e1b3cffba963a27"
+    },
+    {
+      "name": "vsSampleUpdates",
+      "address": 2150134500,
+      "size": 528,
+      "sha256": "742351c33138f07d5ff904a82d2780a65a546b8be2ee049e79c82ebc34ced2e2"
+    },
+    {
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+      "address": 2150210260,
+      "size": 20,
+      "sha256": "91253610f8caa4988f3df8595ccfc6e5eafaf0b6df1b302668555ab7d528b1bc"
+    },
+    {
+      "name": "OSEnableInterrupts",
+      "address": 2150210280,
+      "size": 20,
+      "sha256": "fc3bb9e8a3a33462577b4b59ca6d5e07c3a146205838d416cf9b11972894aed6"
+    },
+    {
+      "name": "DCFlushRangeNoSync",
+      "address": 2150197940,
+      "size": 44,
+      "sha256": "609869ef211e15fd73610a3431bcdf99f1597d86ee3854f6bba65fd3b0b6d226"
+    }
+  ],
+  "dol_anchors": {
+    "2150172088": "90010014",
+    "2150172092": "93e1000c",
+    "2150172096": "880d1f40",
+    "2150172104": "41820128",
+    "2150172108": "4bfea9b1",
+    "2150172112": "48002279",
+    "2150172116": "48002015",
+    "2150172120": "48002115",
+    "2150172124": "4800228d",
+    "2150172128": "48002269",
+    "2150172132": "4bffaf59",
+    "2150172136": "48002281",
+    "2150172140": "4800225d",
+    "2150172144": "888d209b",
+    "2150172148": "3c605555",
+    "2150172152": "38035556",
+    "2150172156": "88ad209c",
+    "2150172160": "38840001",
+    "2150172164": "39200000",
+    "2150172176": "980d209c",
+    "2150172180": "39000000",
+    "2150172200": "980d209b",
+    "2150172204": "4800004c",
+    "2150172212": "806d2068",
+    "2150172220": "39290001",
+    "2150172224": "38e40024",
+    "2150172232": "38a70004",
+    "2150172236": "38870008",
+    "2150172240": "3867000c",
+    "2150172244": "80cd2068",
+    "2150172248": "38070010",
+    "2150172256": "80ad2068",
+    "2150172264": "808d2068",
+    "2150172272": "806d2068",
+    "2150172280": "880d209a",
+    "2150172292": "4180ffac",
+    "2150172296": "480021e1",
+    "2150172300": "3be00000",
+    "2150172304": "48000028",
+    "2150172308": "480021b5",
+    "2150172316": "4800012d",
+    "2150172320": "38600100",
+    "2150172324": "4bfe56b1",
+    "2150172328": "38600100",
+    "2150172332": "4bfe818d",
+    "2150172336": "480021b9",
+    "2150172340": "3bff0001",
+    "2150172352": "4180ffd4",
+    "2150172356": "48002185",
+    "2150172360": "38600000",
+    "2150172364": "480000fd",
+    "2150172368": "4bffcc9d",
+    "2150172372": "48002195",
+    "2150172376": "48002171",
+    "2150172380": "4bfe9fbd",
+    "2150172384": "48002189",
+    "2150172388": "48002165",
+    "2150172392": "4bff6bfd",
+    "2150172396": "4800217d",
+    "2150172400": "80010014",
+    "2150172404": "83e1000c",
+    "2150172412": "38210010",
+    "2150180944": "90010014",
+    "2150180948": "48007281",
+    "2150180952": "80010014",
+    "2150180960": "38210010",
+    "2150180976": "90010014",
+    "2150180980": "48007275",
+    "2150180984": "80010014",
+    "2150180992": "38210010",
+    "2150172616": "986d2098",
+    "2150172624": "886d2098",
+    "2150151492": "3c608040",
+    "2150151496": "90010034",
+    "2150151500": "38037c68",
+    "2150151504": "93e1002c",
+    "2150151508": "3be00000",
+    "2150151512": "93c10028",
+    "2150151520": "93a10024",
+    "2150151524": "48000104",
+    "2150151528": "881e0050",
+    "2150151536": "408200f0",
+    "2150151540": "819e00ac",
+    "2150151548": "41820068",
+    "2150151552": "888d209b",
+    "2150151556": "3c605555",
+    "2150151560": "38035556",
+    "2150151564": "80be00b4",
+    "2150151568": "38e40002",
+    "2150151572": "38810008",
+    "2150151580": "38600000",
+    "2150151604": "38060030",
+    "2150151612": "38dd0280",
+    "2150151616": "381d0500",
+    "2150151620": "93a10008",
+    "2150151624": "90c1000c",
+    "2150151628": "90010010",
+    "2150151644": "38800780",
+    "2150151648": "4800b4d5",
+    "2150151652": "801e0054",
+    "2150151660": "40820074",
+    "2150151664": "819e00b0",
+    "2150151672": "41820068",
+    "2150151676": "888d209b",
+    "2150151680": "3c605555",
+    "2150151684": "38035556",
+    "2150151688": "80be00b8",
+    "2150151692": "38e40002",
+    "2150151696": "38810008",
+    "2150151704": "38600000",
+    "2150151728": "3806003c",
+    "2150151736": "38dd0280",
+    "2150151740": "381d0500",
+    "2150151744": "93a10008",
+    "2150151748": "90c1000c",
+    "2150151752": "90010010",
+    "2150151768": "38800780",
+    "2150151772": "4800b459",
+    "2150151776": "3bff0001",
+    "2150151780": "3bde00bc",
+    "2150151784": "880d2099",
+    "2150151796": "4180fef4",
+    "2150151800": "80010034",
+    "2150151804": "83e1002c",
+    "2150151808": "83c10028",
+    "2150151812": "83a10024",
+    "2150151820": "38210030"
+  },
+  "direct_calls": [
+    {
+      "site": 2150172108,
+      "target": 2150084476,
+      "name": "streamCorrectLoops"
+    },
+    {
+      "site": 2150172112,
+      "target": 2150180936,
+      "name": "hwIRQEnterCritical"
+    },
+    {
+      "site": 2150172116,
+      "target": 2150180328,
+      "name": "salAiGetDest"
+    },
+    {
+      "site": 2150172120,
+      "target": 2150180588,
+      "name": "salCtrlDsp"
+    },
+    {
+      "site": 2150172124,
+      "target": 2150180968,
+      "name": "hwIRQLeaveCritical"
+    },
+    {
+      "site": 2150172128,
+      "target": 2150180936,
+      "name": "hwIRQEnterCritical"
+    },
+    {
+      "site": 2150172132,
+      "target": 2150151484,
+      "name": "salHandleAuxProcessing"
+    },
+    {
+      "site": 2150172136,
+      "target": 2150180968,
+      "name": "hwIRQLeaveCritical"
+    },
+    {
+      "site": 2150172140,
+      "target": 2150180936,
+      "name": "hwIRQEnterCritical"
+    },
+    {
+      "site": 2150172296,
+      "target": 2150180968,
+      "name": "hwIRQLeaveCritical"
+    },
+    {
+      "site": 2150172308,
+      "target": 2150180936,
+      "name": "hwIRQEnterCritical"
+    },
+    {
+      "site": 2150172316,
+      "target": 2150172616,
+      "name": "hwSetTimeOffset"
+    },
+    {
+      "site": 2150172324,
+      "target": 2150063444,
+      "name": "seqHandle"
+    },
+    {
+      "site": 2150172332,
+      "target": 2150074424,
+      "name": "synthHandle"
+    },
+    {
+      "site": 2150172336,
+      "target": 2150180968,
+      "name": "hwIRQLeaveCritical"
+    },
+    {
+      "site": 2150172356,
+      "target": 2150180936,
+      "name": "hwIRQEnterCritical"
+    },
+    {
+      "site": 2150172364,
+      "target": 2150172616,
+      "name": "hwSetTimeOffset"
+    },
+    {
+      "site": 2150172368,
+      "target": 2150159212,
+      "name": "s3dHandle"
+    },
+    {
+      "site": 2150172372,
+      "target": 2150180968,
+      "name": "hwIRQLeaveCritical"
+    },
+    {
+      "site": 2150172376,
+      "target": 2150180936,
+      "name": "hwIRQEnterCritical"
+    },
+    {
+      "site": 2150172380,
+      "target": 2150082200,
+      "name": "streamHandle"
+    },
+    {
+      "site": 2150172384,
+      "target": 2150180968,
+      "name": "hwIRQLeaveCritical"
+    },
+    {
+      "site": 2150172388,
+      "target": 2150180936,
+      "name": "hwIRQEnterCritical"
+    },
+    {
+      "site": 2150172392,
+      "target": 2150134500,
+      "name": "vsSampleUpdates"
+    },
+    {
+      "site": 2150172396,
+      "target": 2150180968,
+      "name": "hwIRQLeaveCritical"
+    },
+    {
+      "site": 2150180948,
+      "target": 2150210260,
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi"
+    },
+    {
+      "site": 2150180980,
+      "target": 2150210280,
+      "name": "OSEnableInterrupts"
+    },
+    {
+      "site": 2150151648,
+      "target": 2150197940,
+      "name": "DCFlushRangeNoSync"
+    },
+    {
+      "site": 2150151772,
+      "target": 2150197940,
+      "name": "DCFlushRangeNoSync"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_frame_byte_vectors": [
+    {
+      "input": 0,
+      "frame_xor": 1,
+      "aux_next": 1,
+      "aux_read_slot": 2
+    },
+    {
+      "input": 1,
+      "frame_xor": 0,
+      "aux_next": 2,
+      "aux_read_slot": 0
+    },
+    {
+      "input": 2,
+      "frame_xor": 3,
+      "aux_next": 0,
+      "aux_read_slot": 1
+    },
+    {
+      "input": 3,
+      "frame_xor": 2,
+      "aux_next": 1,
+      "aux_read_slot": 2
+    },
+    {
+      "input": 254,
+      "frame_xor": 255,
+      "aux_next": 0,
+      "aux_read_slot": 1
+    },
+    {
+      "input": 255,
+      "frame_xor": 254,
+      "aux_next": 1,
+      "aux_read_slot": 2
+    }
+  ],
+  "derived_five_slice_sequence": [
+    {
+      "offset": 0,
+      "seq_argument": 256,
+      "synth_argument": 256
+    },
+    {
+      "offset": 1,
+      "seq_argument": 256,
+      "synth_argument": 256
+    },
+    {
+      "offset": 2,
+      "seq_argument": 256,
+      "synth_argument": 256
+    },
+    {
+      "offset": 3,
+      "seq_argument": 256,
+      "synth_argument": 256
+    },
+    {
+      "offset": 4,
+      "seq_argument": 256,
+      "synth_argument": 256
+    }
+  ],
+  "derived_aux_request_extent": {
+    "channels": 3,
+    "channel_bytes": 640,
+    "flush_bytes": 1920,
+    "studio_stride": 188,
+    "initialized_studios": 8
+  },
+  "derived_aux_gate_vectors": [
+    {
+      "active": 0,
+      "mode": 0,
+      "callback_a": 1,
+      "callback_b": 1,
+      "run_a": false,
+      "run_b": false
+    },
+    {
+      "active": 1,
+      "mode": 0,
+      "callback_a": 1,
+      "callback_b": 1,
+      "run_a": true,
+      "run_b": true
+    },
+    {
+      "active": 1,
+      "mode": 1,
+      "callback_a": 1,
+      "callback_b": 1,
+      "run_a": true,
+      "run_b": false
+    },
+    {
+      "active": 1,
+      "mode": 0,
+      "callback_a": 0,
+      "callback_b": 1,
+      "run_a": false,
+      "run_b": true
+    },
+    {
+      "active": 1,
+      "mode": 0,
+      "callback_a": 1,
+      "callback_b": 0,
+      "run_a": true,
+      "run_b": false
+    },
+    {
+      "active": 2,
+      "mode": 0,
+      "callback_a": 1,
+      "callback_b": 1,
+      "run_a": false,
+      "run_b": false
+    }
+  ]
+}

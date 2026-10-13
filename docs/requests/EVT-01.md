@@ -84,6 +84,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [DSP task/callback/mail](../behavior/audio/MUSYX_DSP_TASK_CALLBACKS_AND_COMMAND_MAIL.md).
   Ready/waiting/task/mail/clock order pinned; DSP program/SDK/command builder/
   source/thread/concurrency/original audio remains open.
+- [x] Complete snd_handle_irq, direct critical wrappers, time-offset
+  set/get, streamCorrectLoops no-op and salHandleAuxProcessing bodies —
+  [frame/aux order](../behavior/audio/MUSYX_AUDIO_FRAME_AND_AUX_CALLBACK_ORDER.md).
+  DSP-before-five-slice update/voice clear/fresh A→B callback reads pinned;
+  child engines/provider/format/reentrancy/IRQ/original cadence remain open.
 - [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -768,3 +773,19 @@ matches program span;9 gate/5 mail/6 clock-domain vectors are derived only.
 Fresh full ELFs/listings remain `/tmp`; no original function executes or DSP/bank/
 code body is exported. SDK/task/mail/builder/state/thread/clock/concurrency and
 original startup/resume/audio remain OPEN.
+
+### 2026-10-13 — Complete audio frame and auxiliary callback request graph
+
+[Seven complete local bodies](../behavior/audio/MUSYX_AUDIO_FRAME_AND_AUX_CALLBACK_ORDER.md)
+close one-time active gate, DSP-before-updates graph, distinct direct OS critical
+pairs, frame byte advance/live per-field voice-pointer reload, five ascending
+seq/synth requests and final3D/stream/virtual-sample order. Aux processing retains
+callbacks/buffers but reads B gate/arguments after A, flushes retained buffers and
+rechecks live studio count. No inferred physical frames/action ticks/input samples.
+
+Validation: read-only manifest17 spans (7 complete/10 linked),127 anchors/29
+resolved direct calls passes. All256 byte arithmetic cases, five-slice order,
+three-channel extent and6 aux gates checked as static deductions. Full listings/
+ELFs remain `/tmp`; no original code executes or body/bank asset is exported.
+Child seq/synth/stream/3D/virtual-sample/builder, shared-state/providers/format/
+IRQ/reentrancy and original frame/aux/audio traces remain OPEN.
