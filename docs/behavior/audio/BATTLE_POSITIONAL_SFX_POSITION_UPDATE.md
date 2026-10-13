@@ -30,9 +30,9 @@ Return: void.
 800d96fc: cmplwi  0, 65535             ; == 0xFFFF ?
 800d9700: bclr    12, 2                ; if LT (handle == -1) -> return
 800d9704: clrlwi  0, 3, 24             ; slot = handle & 0xFF
-800d9708: lis     3, -32706            ; 0x80030000
+800d9708: lis     3, -32706            ; 0x803e0000
 800d970c: mulli   5, 0, 40             ; slot * 40
-800d9710: addi    0, 3, -1656          ; 0x8002f988
+800d9710: addi    0, 3, -1656          ; 0x803df988
 800d9714: add     5, 0, 5              ; r5 = slot record
 800d9718: lwz     3, 0(5)              ; slot.key
 800d971c: addis   0, 3, 1
@@ -88,7 +88,7 @@ the slot record.
 
 | Address | Role |
 |---------|------|
-| `0x8002f988` | slot record array base, **stride 40**, shared with [`psndSFXOff`](BATTLE_POSITIONAL_SFX_OFF.md) |
+| `0x803df988` | slot record array base, **stride 40**, shared with [`psndSFXOff`](BATTLE_POSITIONAL_SFX_OFF.md) — symbol **`pssfx`** (`.bss`, 1600 bytes) |
 
 ## Porting notes
 

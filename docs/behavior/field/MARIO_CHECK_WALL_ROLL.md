@@ -5,6 +5,15 @@
 **Namespace:** `mario_hit.o`
 **Evidence class:** B (inspected US bytes/control flow)
 
+> **Correction (2026-10-12, ID 3).** An earlier version of this document gave
+> absolute addresses for the `r2`-relative `lfs` float constants (written as
+> `0x800494xx`). Those were wrong: `lis` sign-extends its 16-bit immediate, and
+> the arithmetic had been done without that extension. Every such address is now
+> given in its authoritative `N(r2)` form, taken from the instruction bytes. The
+> `lis`-derived data bases were also wrong and are corrected here — they now
+> resolve to real symbols in `.data` (`0x80343b78` and `0x80343d88`).
+> The three `chkfilterVec*` values are **code** addresses, not string literals.
+
 ## Overview
 
 `marioCheckWall_roll` handles wall detection while Mario is in the roll
@@ -28,9 +37,9 @@ Return value: not set on all paths observed — the visible exits are plain
 8008afa8: fmr     29, 1                 ; f1 -> r29
 8008afac: fmr     30, 2                 ; f2 -> r30
 8008afb0: bl      0x8005e0c0            ; marioGetPtr
-8008afb4: lfs     0, 0x8004946c         ; threshold constant A
+8008afb4lfs lfs     0, , -27540(r2)         ; threshold constant A
 8008afb8: mr      31, 3                 ; r31 = Mario
-8008afbc: lfs     1, 0x80049468
+8008afbclfs lfs     1, , -27544(r2)
 8008afc0: fcmpu   0, 29, 0             ; compare f1 against constant A
 8008afc4: stfs    1, 532(3)            ; mario[+0x214] = constant B
 8008afc8: bt      2, 0x8008b01c        ; if f1 < A -> skip
@@ -39,7 +48,7 @@ Return value: not set on all paths observed — the visible exits are plain
 8008afd4: bf      2, 0x8008b01c        ; if == 0 -> skip
 ```
 
-Two gates precede the body: `f1 >= constant@0x8004946c` **and**
+Two gates precede the body: `f1 >= constant@-27540(r2)` **and**
 `mario[+0x50] != 0`. Both must hold; otherwise control falls to
 `0x8008b01c`.
 
@@ -111,7 +120,7 @@ Immediately after the search, the same status-bit family used by
 ## Exit to the staying search
 
 ```asm
-8008b2d4: lfs     0, 0x8004946c
+8008b2d4lfs lfs     0, , -27540(r2)
 8008b2d8: fcmpu   0, 29, 0
 8008b2dc: bf      2, 0x8008b2ec
 8008b2e0: fmr     1, 30
@@ -151,7 +160,7 @@ the function returns immediately — no further processing.
 | `+0x1d4` | word | wall-hold counter, armed to 14 |
 | `+0x1e4` | word | latched `searchFrontWall` result |
 | `+0x1f8` | word | controls the `+0x180` reset |
-| `+0x214` | float | set to constant `0x80049468` on every call |
+| `+0x214` | float | set to constant `-27544(r2)` on every call |
 
 ## Porting notes
 
@@ -166,7 +175,7 @@ the function returns immediately — no further processing.
 
 ## Remaining gaps
 
-- Numeric values of the `lfs` constants at `0x80049468` / `0x8004946c`
+- Numeric values of the `lfs` constants at `-27544(r2)` / `-27540(r2)`
   are not extracted; the second one is the activation threshold.
 - The three `hitCheckVecFilter` descriptors are built from stack data that
   has not been fully mapped.

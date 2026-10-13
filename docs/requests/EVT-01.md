@@ -20,7 +20,7 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   2026-10-12 ([trigger](../behavior/audio/BATTLE_UNIT_POSITIONAL_SFX_TRIGGER.md),
   [position update](../behavior/audio/BATTLE_POSITIONAL_SFX_POSITION_UPDATE.md),
   [stop](../behavior/audio/BATTLE_POSITIONAL_SFX_OFF.md)): slot layout at
-  0x8002F988 stride 40 by low-8 handle bits, 0x80016B28 stride-20 channel
+  0x803DF988 stride 40 by low-8 handle bits, 0x80316b28 stride-20 channel
   table by key>>19, two-bit SoundSS/Song/Efx stop selection, clear-without-
   stop and no-op double-stop paths, status 10 overriding 11, irand(41)+belong
   +offset-20 start id, and the unsigned `r0 < 0x4D80` preserve-versus-explicit
@@ -28,9 +28,16 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   internals, psndSFX_pit, irand domain, the psndSFXMain position reader, other
   callers and all original traces remain open, so the audio chain as a whole
   is not closed. The Monosiri/spatial playback request remains open alongside it.*
-- [ ] Complete `battleGetUnitMonosiriPtr` 8012ef20 with its original
-  table/source provisioning (bounds/negative kind/capture/null/returned
-  record semantics, data pointers/lifetime).
+- [x] Complete `battleGetUnitMonosiriPtr` 8012ef20 with its original
+  table/source provisioning — **answered** by ID 3 on 2026-10-12
+  ([lookup](../behavior/audio/BATTLE_UNIT_MONOSIRI_LOOKUP.md)): the table is
+  `monosiriMessageTable` at `0x8036CF40` (`.data`), stride **24**, **5544 bytes
+  = exactly 231 records**. The 20-byte body is `lis -32713; addi -12480` plus
+  `mulli 24`, so it is a pure address computation with a **signed** multiply
+  and **no** bounds check, **no** negative-kind check and **no** null return
+  path. *Record field layout beyond the known `+0x04` null test, the table's
+  writers and the full call census remain open, so this closes the lookup
+  function, not the whole Monosiri/spatial playback area.*
 - [ ] `CommandGetWeaponAddress`/`SelectWeapon` caller and menu-type writers
   that establish valid cursor modes (9/11..13/>14 leave the original stack
   cursor unwritten); reachable type/input invariants or evidence of original
@@ -174,12 +181,12 @@ site included, and the lock is released.
 Concretely recovered, and not previously stated anywhere:
 
 **Slot record layout** (this is what the `__psndSFXOn` chain fills). Records
-are at `0x8002f988`, **stride 40**, indexed by the **low 8 bits** of the
+are at `0x803df988`, **stride 40**, indexed by the **low 8 bits** of the
 handle. `+0x00` key, `+0x06` channel bits, `+0x18` handle, `+0x1c/+0x20/+0x24`
 the position triple. Both `psndSFXOff` and `psndSFX_pos` resolve the record
 this way; the two functions agree on stride and base.
 
-**Channel table.** `psndSFXOff` indexes a second table at `0x80016b28`,
+**Channel table.** `psndSFXOff` indexes a second table at `0x80316b28`,
 **stride 20**, by `(slot.key >> 19)`. Two bits of `table[k].word0` select
 the stop service: bit0 clear -> `SoundSSStopCh` (800ddff8), bit0 set and
 bit1 clear -> `SoundSongStopCh` (800e1188), both set -> `SoundEfxStop`
@@ -244,5 +251,78 @@ callee resolved against `us_symbols.csv`; disassembly re-read against each
 written instruction block; `git diff --check` clean; README link audit and
 cross-link audit clean. Docs-only, so `make test` / `make all` were not
 rerun.
+
+### ID 3, 2026-10-12 — accessor family, start wrappers, and an address correction
+
+Follow-up delivery on the same audio chain. Five more complete bodies plus
+the Monosiri lookup, and **a correction to addresses published earlier today
+in this very request**.
+
+**New complete bodies**
+
+- [Slot accessors](../behavior/audio/BATTLE_POSITIONAL_SFX_SLOT_ACCESSORS.md)
+  — `psndSFX_get_vol` 800d9558, `psndSFXChk` 800d95a0, `psndSFX_dist` 800d96c0,
+  `psndSFX_pit` 800d9744, `psndSFX_vol` 800d97d0. This completes the accessor
+  family.
+- [Start wrappers](../behavior/audio/BATTLE_POSITIONAL_SFX_START_WRAPPERS.md)
+  — `psndSFXOn` 800d98bc, `psndSFXOnEx_3D` 800d9808, `psndSFXOn_3D` 800d9848,
+  plus the derived eight-argument `__psndSFXOn` ABI.
+- [Monosiri lookup](../behavior/audio/BATTLE_UNIT_MONOSIRI_LOOKUP.md)
+  — `battleGetUnitMonosiriPtr` 8012ef20.
+
+**Symbol names now resolved.** The slot base and channel table are not
+anonymous: `0x803DF988` is **`pssfx`** (`.bss`, 1600 bytes = **40 slots** at
+stride 40) and `0x80316B28` is **`pssfxlist`** (`.data`, 84840 bytes). The
+Monosiri base `0x8036CF40` is **`monosiriMessageTable`** (`.data`, 5544 bytes =
+**exactly 231 records** at stride 24, no remainder). So the slot count is 40
+while the handle masks the slot index with `& 0xFF` — indices 0..255 are all
+reachable and nothing bounds them.
+
+**The handle is not a bare index.** `psndSFXChk` compares
+`(handle >> 8) & 0xFFFF` against the halfword at `slot+0x04`, so the handle
+packs slot index in bits 0..7 and channel allocation in bits 8..23, returning
+`-1` on mismatch. This was not previously stated.
+
+**Silent truncation.** `psndSFX_vol` and `psndSFX_dist` are `stb`/`sth` with no
+clamp, and `psndSFX_pit` splits between a local `slot+0x14` store (when the low
+5 bits of `slot+0x06` are clear) and a `SoundEfxSetPitch` call (when they are
+set) — the same gate `psndSFXOff` uses to decide whether to stop anything.
+
+**Correction to my earlier reply in this request.** I published three data bases
+computed without the sign extension that `lis` performs, so they were wrong by
+`0x3B0000`. Corrected values:
+
+| Published earlier | Correct | Symbol |
+| --- | --- | --- |
+| `0x8002F988` | **`0x803DF988`** | `pssfx` |
+| `0x80016B28` | **`0x80316B28`** | `pssfxlist` |
+| `0x8004CF40` | **`0x8036CF40`** | `monosiriMessageTable` |
+
+The same error affected seven field-collision contracts from the previous
+session, where `lfs` constants were given as `0x800494xx`. Those are now in
+their authoritative `N(r2)` form taken from the instruction bytes, and the
+`lis`-derived globals are corrected to `0x80343B78` / `0x80343D88`, both of
+which resolve into `.data`. A correction note is at the top of each affected
+document.
+
+One thing I initially "corrected" in the wrong direction and have restored: the
+three values I first read as debug label **strings** (`0x80091434`, `0x80091504`,
+`0x800915e4`) are code addresses — they are the symbol entry points of
+`chkfilterVecVivian`, `chkfilterVecRoll` and `chkfilterVec`, and are passed to
+`hitCheckVecFilter` as filter labels. Two of them were already correct in the
+original text and are now documented as function pointers rather than strings.
+
+**Still open:** `__psndSFXOn` 800d9934 (1344 bytes) remains the largest gap and
+now blocks only the slot writers; `psndSFXMain` (2964 bytes) is the reader of
+volume, distance and the published position; Monosiri record layout and table
+writers; `BtlUnit_CheckStatus`/`GetStatus`; `SoundEfxSetPitch`; `irand(41)`
+domain. No original execution traces. No ISO bytes were copied into the
+repository and no fabricated audio mapping is claimed.
+
+Validation: bodies re-disassembled per function with ELFs in `/tmp` only;
+callees resolved against `us_symbols.csv`; `lis`/`addi`/`addis` arithmetic
+re-derived in Python and cross-checked against named symbols in `us_symbols.csv`;
+`git diff --check` clean; link audits clean. Docs-only, so `make test` /
+`make all` were not rerun.
 
 The append-only delivery notes, implementation breadcrumbs and host-gate history for this request live in [EVT-01_HISTORY.md](EVT-01_HISTORY.md). Validated deliveries are also registered in the [delivery log](DELIVERY_LOG.md).

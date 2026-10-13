@@ -31,19 +31,24 @@ Return: void. Stack frame: 16 bytes (only `r31` is spilled).
 800d960c: stw     31, 12(1)
 800d9610: bt      2, 0x800d96ac        ; handle == -1 -> return immediately
 800d9614: clrlwi  0, 3, 24             ; slot = handle & 0xFF
-800d9618: lis     3, -32706            ; 0x80030000
+800d9618: lis     3, -32706            ; 0x803e0000
 800d961c: mulli   4, 0, 40             ; slot * 40
-800d9620: addi    0, 3, -1656          ; 0x80030000 - 0x678 = 0x8002f988
-800d9624: add     31, 0, 4             ; r31 = 0x8002f988 + slot*40
+800d9620: addi    0, 3, -1656          ; 0x803e0000 - 0x678 = 0x803df988
+800d9624: add     31, 0, 4             ; r31 = 0x803df988 + slot*40
 ```
 
 **The `-1` sentinel is rejected before any table access.** The test is
 written as `handle + 0x10000 == 0xFFFF` (unsigned), which is exactly
 `handle == 0xFFFFFFFF`.
 
-Slot records live at `0x8002f988`, **stride 40 bytes**, indexed by the
+Slot records live at `0x803df988`, **stride 40 bytes**, indexed by the
 **low 8 bits** of the handle. The upper bits of the handle are ignored
 here.
+
+The base is the `pssfx` symbol (`.bss`, 1600 bytes), so the table is
+**1600 / 40 = 40 slots**. Nothing in this accessor family bounds the slot
+index, so indices 0..255 are all reachable through the `& 0xFF` mask even
+though only 40 slots exist.
 
 ## Level 2 — slot liveness (`0x800d9628`..`0x800d9650`)
 
@@ -76,12 +81,12 @@ Only the second case with nonzero low-5 bits reaches the stop dispatch.
 ```asm
 800d9654: lwz     3, 24(31)            ; slot.handle
 800d9658: clrlwi  5, 4, 19             ; (key & 0xFFF80000)
-800d965c: lis     4, -32719            ; 0x80010000
+800d965c: lis     4, -32719            ; 0x80310000
 800d9660: addis   0, 3, 1
 800d9664: mulli   5, 5, 20             ; * 20
-800d9668: addi    4, 4, 27432          ; 0x80010000 + 0x6b28 = 0x80016b28
+800d9668: addi    4, 4, 27432          ; 0x80310000 + 0x6b28 = 0x80316b28
 800d966c: cmplwi  0, 65535
-800d9670: add     4, 4, 5              ; r4 = 0x80016b28 + (key>>19)*20
+800d9670: add     4, 4, 5              ; r4 = 0x80316b28 + (key>>19)*20
 800d9674: bt      2, 0x800d96a0        ; handle == -1 -> skip the stop
 800d9678: lwz     4, 4(4)              ; table[k].word0
 800d967c: rlwinm. 0, 4, 0, 0, 0        ; bit 0
@@ -95,7 +100,7 @@ Only the second case with nonzero low-5 bits reaches the stop dispatch.
 800d969c: bl      0x800e0c38           ; SoundEfxStop
 ```
 
-The channel table is at `0x80016b28`, **stride 20 bytes**, indexed by the
+The channel table is at `0x80316b28`, **stride 20 bytes**, indexed by the
 **top 13 bits of `slot.key`** (`key >> 19`, with the low 19 bits masked
 off before the multiply — `clrlwi 5, 4, 19` then `mulli 5, 5, 20` is
 exactly `(key >> 19) * 20`).
@@ -134,8 +139,8 @@ Finally, unconditionally after any stop dispatch:
 
 | Address | Role |
 |---------|------|
-| `0x8002f988` | slot record array base, stride 40 |
-| `0x80016b28` | channel table base, stride 20, indexed by `key >> 19` |
+| `0x803df988` | slot record array base, stride 40 — **this is the symbol `pssfx`** (`.bss`, 1600 bytes) |
+| `0x80316b28` | channel table base, stride 20, indexed by `key >> 19` — **this is the symbol `pssfxlist`** (`.data`, 84840 bytes) |
 
 ## Porting notes
 

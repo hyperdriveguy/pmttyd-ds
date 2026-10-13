@@ -5,6 +5,15 @@
 **Namespace:** `mario_hit.o`
 **Evidence class:** B (inspected US bytes/control flow — complete body)
 
+> **Correction (2026-10-12, ID 3).** An earlier version of this document gave
+> absolute addresses for the `r2`-relative `lfs` float constants (written as
+> `0x800494xx`). Those were wrong: `lis` sign-extends its 16-bit immediate, and
+> the arithmetic had been done without that extension. Every such address is now
+> given in its authoritative `N(r2)` form, taken from the instruction bytes. The
+> `lis`-derived data bases were also wrong and are corrected here — they now
+> resolve to real symbols in `.data` (`0x80343b78` and `0x80343d88`).
+> The three `chkfilterVec*` values are **code** addresses, not string literals.
+
 ## Overview
 
 `marioCheckWall` is the general standing/running wall check. It shares the
@@ -31,8 +40,8 @@ Return: not set — the epilogue has no `li 3, 0`. `r3` leaks from
 
 ```asm
 8008b7c0: bl      0x8005e0c0           ; marioGetPtr
-8008b7c4: lfs     0, 0x8004946c
-8008b7cc: lfs     1, 0x80049468
+8008b7c4lfs lfs     0, , -27540(r2)
+8008b7cclfs lfs     1, , -27544(r2)
 8008b7d0: fcmpu   0, 30, 0            ; f1 vs c494_6c
 8008b7d4: stfs    1, 532(3)           ; mario[+0x214] = c494_68  (unconditional)
 8008b7d8: bt      2, 0x8008b834        ; f1 < c -> early exit
@@ -74,14 +83,14 @@ restores `mario[+0x1d0]`, and afterwards `mario[+0x1a0]` is published from
 The early-exit target `0x8008b834` clears the hold:
 
 ```asm
-8008b834: lfs     0, 0x8004946c
+8008b834lfs lfs     0, , -27540(r2)
 8008b838: stfs    0, 460(31)           ; mario[+0x1cc] = 0
 ```
 
 ## Dispatch on probe length (`0x8008b83c`..`0x8008b858`)
 
 ```asm
-8008b83c: lfs     0, 0x8004946c
+8008b83clfs lfs     0, , -27540(r2)
 8008b840: fcmpu   0, 30, 0
 8008b844: bf      2, 0x8008b85c
 8008b848: fmr     1, 31
@@ -150,7 +159,7 @@ Byte-for-byte the same idiom used by `marioSlitChkWallAround` and
 ### Blocked branch (`0x8008b908`..`0x8008b930`)
 
 ```asm
-8008b908: lfs     0, 0x8004946c
+8008b908lfs lfs     0, , -27540(r2)
 8008b90c: fcmpu   0, 30, 0
 8008b910: bt      2, 0x8008b91c
 8008b914: stw     30, 496(31)          ; mario[+0x1f0] = result

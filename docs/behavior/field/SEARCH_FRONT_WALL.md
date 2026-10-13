@@ -5,6 +5,15 @@
 **Namespace:** `mario_hit.o`
 **Evidence class:** B (inspected US bytes/control flow) — **structure-level, not a complete decompilation**
 
+> **Correction (2026-10-12, ID 3).** An earlier version of this document gave
+> absolute addresses for the `r2`-relative `lfs` float constants (written as
+> `0x800494xx`). Those were wrong: `lis` sign-extends its 16-bit immediate, and
+> the arithmetic had been done without that extension. Every such address is now
+> given in its authoritative `N(r2)` form, taken from the instruction bytes. The
+> `lis`-derived data bases were also wrong and are corrected here — they now
+> resolve to real symbols in `.data` (`0x80343b78` and `0x80343d88`).
+> The three `chkfilterVec*` values are **code** addresses, not string literals.
+
 ## Overview
 
 `searchFrontWall` is the shared front-wall probe used by every Mario wall
@@ -27,7 +36,7 @@ decoded. That work is listed under Remaining gaps.
 | `r3` | in/out: 3-word planar descriptor (`&desc[0..2]`) | `r30` |
 | `r4` | out: distance / normal output | `r20` |
 
-Stack frame: 592 bytes. Static work descriptor: `0x800c3b78`
+Stack frame: 592 bytes. Static work descriptor: `0x80343b78`
 (`lis 5,-32724` + `addi 31,5,15224`), shared with
 [`marioSlitChkWallAround`](MARIO_SLIT_CHK_WALL_AROUND.md).
 
@@ -67,14 +76,14 @@ the first thing every caller pays for.
 8008a390: cmpwi   3, 0
 8008a394: bt      2, 0x8008a404        ; no flag -> main probe path
 8008a398: lwz     3, -28496(13)        ; field record
-8008a39c: addi    4, 31, 536           ; r4 = 0x800c3d88 (string)
+8008a39c: addi    4, 31, 536           ; r4 = 0x80343d88 (string)
 8008a3a0: addi    3, 3, 300            ; field->name
 8008a3a4: bl      0x8026d464           ; strcmp
 8008a3ac: bf      2, 0x8008a404        ; name mismatch -> main probe path
 ```
 
 Status bit 16 must be set **and** the field name must match the literal at
-`0x800c3d88` for the bypass to be considered. This is the **same field
+`0x80343d88` for the bypass to be considered. This is the **same field
 literal** that gates stage 3 of
 [`marioSearchFrontWall_staying`](MARIO_SEARCH_FRONT_WALL_STAYING.md) —
 that function and this one are gated on one specific field.
@@ -83,7 +92,7 @@ that function and this one are gated on one specific field.
 
 ```asm
 8008a3b0: lfs     0, 540(24)           ; mario[+0x21c]
-8008a3b4: lfs     1, 0x8004947c
+8008a3b4lfs lfs     1, , -27524(r2)
 8008a3b8: fabs    0, 0
 8008a3bc: fcmpo   0, 0, 1
 8008a3c0: cror    2, 1, 2              ; branchless select
@@ -186,7 +195,7 @@ in the slit and roll probes.
   are not decoded; this is the bulk of the function.
 - Meaning of `mario[+0x21c]` / `mario[+0x224]` (both compared by absolute
   value against `c494_7c`) and of status bit 16.
-- The literal field name at `0x800c3d88` is not read from the ISO.
+- The literal field name at `0x80343d88` is not read from the ISO.
 - Numeric values of `c494_7c` and the other `lfs` constants.
 - Whether the three probe groups differ in filter mask or only in origin.
 - The `r20` out-parameter is written in the decoded regions but its layout

@@ -5,6 +5,15 @@
 **Namespace:** `mario_hit.o`
 **Evidence class:** B (inspected US bytes/control flow) — **structure-level, not a complete decompilation**
 
+> **Correction (2026-10-12, ID 3).** An earlier version of this document gave
+> absolute addresses for the `r2`-relative `lfs` float constants (written as
+> `0x800494xx`). Those were wrong: `lis` sign-extends its 16-bit immediate, and
+> the arithmetic had been done without that extension. Every such address is now
+> given in its authoritative `N(r2)` form, taken from the instruction bytes. The
+> `lis`-derived data bases were also wrong and are corrected here — they now
+> resolve to real symbols in `.data` (`0x80343b78` and `0x80343d88`).
+> The three `chkfilterVec*` values are **code** addresses, not string literals.
+
 ## Overview
 
 `marioChkWallAround` is the final slip correction applied after the wall
@@ -27,7 +36,7 @@ decoded.
 | `r3` | in/out: 3-word planar descriptor | `r22` |
 | `r4` | out: corrected descriptor (may be `NULL`) | `r21` |
 
-Stack frame: 608 bytes. Static work descriptor: `0x800c3b78`
+Stack frame: 608 bytes. Static work descriptor: `0x80343b78`
 (shared with [`searchFrontWall`](SEARCH_FRONT_WALL.md) and
 [`marioSlitChkWallAround`](MARIO_SLIT_CHK_WALL_AROUND.md)).
 
@@ -59,11 +68,11 @@ collision code.
 8008896c: stw     0, 400(1)             ; stack[0x190] = 0.0 (double lo)
 80088970: lfd     1, 496(31)            ; work[+0x1f0]  (double)
 80088974: lfd     0, 400(1)            ; work[+0x190]  (double)
-80088978: lfs     2, 0x80049488
+80088978lfs lfs     2, , -27512(r2)
 8008897c: fsubs   1, 0, 1              ; work[0x190] - work[0x1f0]
 80088980: lwz     30, 0(22)             ; desc[0]
 80088984: lwz     28, 8(22)             ; desc[2]
-80088988: lfs     0, 0x80049484
+80088988lfs lfs     0, , -27516(r2)
 8008898c: fdivs   27, 2, 1             ; r27 = c494_88 / (d0 - d1)
 ```
 
@@ -143,7 +152,7 @@ of three, each preceded by `marioGetPtr`:
   function.
 - Which of `mario[+0x3c]` (read in `searchFrontWall`) relates to the
   `kpaGetStageViewType` branch here.
-- Meaning of the work doubles at `0x800c3b78+0x190` and `+0x1f0`.
+- Meaning of the work doubles at `0x80343b78+0x190` and `+0x1f0`.
 - Numeric values of `c494_84`, `c494_88`, `c494_8c`.
-- The constant at `0x800c4330` loaded by `lis 0, 17200` is not resolved.
+- The constant at `0x43300000` loaded by `lis 0, 17200` is not resolved.
 - Whether `f2` (angle) or `f4` (plane) is used for the correction sign.

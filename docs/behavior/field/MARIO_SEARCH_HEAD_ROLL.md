@@ -5,6 +5,15 @@
 **Namespace:** `mario_hit.o`
 **Evidence class:** B (inspected US bytes/control flow)
 
+> **Correction (2026-10-12, ID 3).** An earlier version of this document gave
+> absolute addresses for the `r2`-relative `lfs` float constants (written as
+> `0x800494xx`). Those were wrong: `lis` sign-extends its 16-bit immediate, and
+> the arithmetic had been done without that extension. Every such address is now
+> given in its authoritative `N(r2)` form, taken from the instruction bytes. The
+> `lis`-derived data bases were also wrong and are corrected here — they now
+> resolve to real symbols in `.data` (`0x80343b78` and `0x80343d88`).
+> The three `chkfilterVec*` values are **code** addresses, not string literals.
+
 ## Overview
 
 `marioSearchHead_roll` searches for open space in front of Mario while he
@@ -19,7 +28,7 @@ written through an out-pointer.
 |----------|-----|
 | `f1` | roll angle (saved to `r28`, later reused as a temp) |
 | `r3` | in: pointer to a 2-float source position (`src[0]`, `src[1]`) |
-| `r4` | in/out: pointer to the 3-float static work descriptor at `0x800c3c5c`, **and** the out-pointer for the result float |
+| `r4` | in/out: pointer to the 3-float static work descriptor at `0x80343c5c`, **and** the out-pointer for the result float |
 
 Return: **`0` on every path** (`li 3, 0` at `0x8008c170` is the single
 exit). The meaningful output is the float stored at `0(r27)` in the loop
@@ -30,12 +39,12 @@ tail, where `r27` is the saved `r4`.
 ```asm
 8008bcb4: lis     5, -32724            ; 0x800c0000
 8008bcb8: lis     4, -32724
-8008bcc4: addi    30, 5, 15440         ; r30 = 0x800c3c50
-8008bccc: addi    31, 4, 15452         ; r31 = 0x800c3c5c
+8008bcc4: addi    30, 5, 15440         ; r30 = 0x80343c50
+8008bccc: addi    31, 4, 15452         ; r31 = 0x80343c5c
 ```
 
 Two 12-byte globals are used as scratch:
-`0x800c3c50` (3 words, indexed by iteration) and `0x800c3c5c`
+`0x80343c50` (3 words, indexed by iteration) and `0x80343c5c`
 (3 words, also indexed by iteration). They accumulate the per-direction
 probe results.
 
@@ -81,22 +90,22 @@ the out-of-range index 5 fall through to the shared path at `0x8008bec4`.
 ## Displacement case (index 1 shape), `0x8008bd18`
 
 ```asm
-8008bd18: lfs     1, 0x800494e4
+8008bd18lfs lfs     1, , -27420(r2)
 8008bd1c: lfs     0, 420(29)           ; mario[+0x1a4]
-8008bd20: lfs     2, 0x800494a8
+8008bd20lfs lfs     2, , -27480(r2)
 8008bd24: fadds   1, 1, 0
-8008bd28: lfs     0, 0x80049494
+8008bd28lfs lfs     0, , -27500(r2)
 8008bd2c: fmuls   1, 2, 1
 8008bd30: fdivs   28, 1, 0            ; f28 = (c1 + mario[0x1a4]) * c2 / c3
 8008bd34: fmr     1, 28
 8008bd38: bl      0x80272410           ; sin
 8008bd3c: frsp    2, 1
-8008bd40: lfs     0, 0x8004950c
+8008bd40lfs lfs     0, , -27380(r2)
 8008bd48: fmuls   0, 0, 2             ; cos(f28) * c
 8008bd4c: stfs    0, 12(1)
 8008bd50: bl      0x80271ea8           ; cos
 8008bd54: frsp    0, 1
-8008bd5c: lfs     1, 0x800494b8
+8008bd5clfs lfs     1, , -27464(r2)
 8008bd68: fneg    0, 0
 8008bd6c: fmuls   0, 2, 0             ; -sin(f28) * c
 8008bd70: stfs    0, 8(1)
@@ -117,8 +126,8 @@ is required for bit-exact probe vectors.
 ## Descriptor assembly (`0x8008becc`..`0x8008bf44`)
 
 After the loop the two static scratch buffers are folded into a
-stack filter descriptor: three words from `0x800c3c5c` go to
-`stack+0x58..0x60`, three words from `0x800c3c50` to `stack+0x4c..0x54`
+stack filter descriptor: three words from `0x80343c5c` go to
+`stack+0x58..0x60`, three words from `0x80343c50` to `stack+0x4c..0x54`
 and again to `stack+0x10..0x18`, and two floats
 (`stack[8] + stack[12]`) are stored into `stack+0x1c` / `stack+0x20`.
 
@@ -129,7 +138,7 @@ and again to `stack+0x10..0x18`, and two floats
 8008bf4c: lhz     0, 46(3)             ; mario[+0x2e]
 8008bf50: cmplwi  0, 28
 8008bf54: bf      2, 0x8008bf6c
-  ; == 28 -> label string at 0x80091538
+  ; == 28 -> label string at 0x80091434
 8008bf6c: bl      0x8005e0c0
 8008bf70: lwz     0, 0(3)              ; mario[+0]
 8008bf74: rlwinm. 0, 0, 0, 7, 7        ; bit 7
@@ -141,26 +150,35 @@ and again to `stack+0x10..0x18`, and two floats
 8008bfac: b       0x8008c0fc
 ```
 
-Three debug label strings are copied into `stack+0x40` by
-`hitCheckVecFilter`, selected by `mario[+0x2e] == 28` and bit 7 of
-`mario[+0]` — the same two-way partition used by the slit and roll wall
-probes.
+Three **code addresses** are passed to `hitCheckVecFilter` as the filter
+label, selected by `mario[+0x2e] == 28` and bit 7 of `mario[+0]` — the
+same two-way partition used by the slit and roll wall probes. The three
+values are the symbol addresses of the filter-vector routines themselves:
+
+| Selection | Address | Symbol |
+|-----------|---------|--------|
+| `mario[+0x2e] == 28` | `0x80091434` | `chkfilterVecVivian` |
+| bit 7 of `mario[+0]` set | `0x80091504` | `chkfilterVecRoll` |
+| bit 7 clear | `0x800915e4` | `chkfilterVec` |
+
+They are **function pointers, not string literals**; an earlier reading of
+these as debug strings was wrong.
 
 ## Clearance reduction (`0x8008bfb0`..`0x8008c160`)
 
 ```asm
 8008bfc0: lfs     1, 52(1)
-8008bfc4: lfs     0, 0x8004946c
+8008bfc4lfs lfs     0, , -27540(r2)
 8008bfcc: fcmpo   0, 1, 0
 8008bfd4: cror    2, 1, 2              ; branchless select
-8008bfdc: lfs     0, 0x8004948c        ;   value A
-8008bfe4: lfs     0, 0x80049490        ;   value B
-8008bfe8: lfs     3, 0x80049468
+8008bfdclfs lfs     0, , -27508(r2)        ;   value A
+8008bfe4lfs lfs     0, , -27504(r2)        ;   value B
+8008bfe8lfs lfs     3, , -27544(r2)
 8008bfec: lis     0, 17200             ; 0x800C4330
 8008bff0: stw     0, 136(1)
 8008bff8: fmadds  0, 3, 1, 0           ; c68 + hitDistance
 8008bffc: lfs     4, 56(1)
-8008c000: lfd     1, 0x800c3d68        ; 8-byte constant
+8008c000: lfd     1, 0x80343d68        ; 8-byte constant
 8008c004: fctiwz  2, 0                 ; truncate to integer
 8008c00c: fcmpo   0, 4, 0
 8008c018: xoris   0, 0, 32768          ; sign-bit flip
@@ -169,8 +187,8 @@ probes.
 ```
 
 The `cror 2, 1, 2` is a **branchless select** between the constants at
-`0x8004948c` and `0x80049490`, chosen by whether `stack[52]` compares
-equal to `0x8004946c`. The reduction then computes
+`-27508(r2)` and `-27504(r2)`, chosen by whether `stack[52]` compares
+equal to `-27540(r2)`. The reduction then computes
 `(c68 + hitDistance)` truncated with `fctiwz`, and a scaled residual
 `(f0 - c) / c3`. The `xoris 0, 0, 32768` at `0x8008c018` is the standard
 PPC idiom for **negating a float via its integer representation**.
@@ -203,18 +221,19 @@ The result is written **only when the truncated value is nonzero**.
 2. The out-pointer write is conditional on the truncated value being
    nonzero — an unconditional store will differ.
 3. The result is returned in `r3 = 0`; callers must read the out-pointer.
-4. The two static buffers at `0x800c3c50` / `0x800c3c5c` are scratch, not
+4. The two static buffers at `0x80343c50` / `0x80343c5c` are scratch, not
    save state; they are written unconditionally each call.
 
 ## Remaining gaps
 
-- Values of the `lfs` constants at `0x80049494`, `0x800494a8`,
-  `0x800494b8`, `0x800494e4`, `0x8004950c` (probe radius, angle scale,
+- Values of the `lfs` constants at `-27500(r2)`, `-27480(r2)`,
+  `-27464(r2)`, `-27420(r2)`, `-27380(r2)` (probe radius, angle scale,
   sin/cos multipliers) are not extracted.
 - Semantics of dedicated directions 2, 3 and 4 are only known from their
   placement in the dispatch chain, not decoded.
-- The 8-byte double constant at `0x800c3d68` and the word constant at
-  `0x800c4330` are not resolved.
-- The three label strings at `0x80091538` / `0x80091504` / `0x800915e4`
-  are not read from the ISO.
+- The 8-byte double constant at `0x80343d68` and the word constant at
+  `0x43300000` are not resolved.
+- What `hitCheckVecFilter` does with the label code address (debug-name
+  lookup vs dispatch) is not established; the addresses are the `chkfilterVec*`
+  symbol entry points.
 - Callers of `marioSearchHead_roll` are not audited.

@@ -2,26 +2,123 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
-## 2026-10-12 — Water/void recovery: apply recovered bottomless drop-back lanes
+## 2026-10-12 — EVT-01 accessors, start wrappers, Monosiri, and an address correction (ID 3)
 
-Reviewed the
-[water](../behavior/overworld/OVERWORLD_WATER_RECOVERY_NUMERICS.md) and
-[bottomless](../behavior/overworld/OVERWORLD_BOTTOMLESS_RECOVERY_NUMERICS.md)
-numerics deliverables against the `WaterRecovery` prototype. Independently
-re-read the ISO DOL and confirmed the mot_bottomless drop-back lanes
-(`0x80091bd4`: `[124]/[128]/[132]/[136] = 0.34/-0.002/-0.01/0.0`), so replaced
-the prototype's authored `-.001/-.002/+.00024/-.00004` cascade (which matched
-only `-0.002`) and pinned it in `tests/field_camera_tests.cpp`. Did **not**
-apply the `-6.0` sink velocity, the `0.08` travel step or the `state==15`
-handling: the deliverable leaves them unestablished, the `0.08` constant has no
-SDA source, there is no original stage-15 slot, and the prologue guard reads as
-`[Mario+124]==0.0` on the DOL (the contract states `!= 0.0`). The prototype
-still omits the `[Mario+552]`-mismatch condition and the `r4` default lanes.
-Breadcrumb: `requests/FIELD-RECOVERY-01.md`.
+Second EVT-01 pass as documentation agent ID 3, continuing the inbox queue.
 
-Validation: `make test` 87 CTest / 90 Python pass, `make all` 3DSX pass,
-warning-free compile of the changed TU. Docs mid-restructure (inbox split into
-`requests/`); breadcrumbs went to the per-request file. Full-game incomplete.
+**A correction that outranks the new work.** I had published three data
+bases computed **without the sign extension `lis` performs**, so all three
+were wrong by `0x3B0000`:
+
+| Published earlier | Correct | Symbol now confirmed |
+| --- | --- | --- |
+| `0x8002F988` | **`0x803DF988`** | `pssfx` (`.bss`, 1600 B = **40 slots** x 40) |
+| `0x80016B28` | **`0x80316B28`** | `pssfxlist` (`.data`, 84840 B) |
+| `0x8004CF40` | **`0x8036CF40`** | `monosiriMessageTable` (`.data`, 5544 B = **exactly 231 records** x 24) |
+
+The symbol names and sizes are the decisive part: `1600/40` and
+`5544/24` both divide exactly, which independently confirms both strides
+and turns the slot count (40) and table extent (231) into facts rather than
+guesses.
+
+The same error had reached seven field-collision contracts from the previous
+session, where `lfs` float constants were given as `0x800494xx`. Those were
+internally inconsistent with each other, which is what exposed them. All are
+now in the authoritative `N(r2)` form, read from the instruction bytes
+(a contiguous pool from `-27544` to `-27380`), and the `lis`-derived globals
+correct to `0x80343B78` / `0x80343D88`, both resolving into `.data`. A
+correction note heads each affected document.
+
+I also **reverted one of my own "corrections"**: the three values
+`0x80091434` / `0x80091504` / `0x800915e4` are not debug strings but the
+symbol entry points of `chkfilterVecVivian`, `chkfilterVecRoll` and
+`chkfilterVec`, passed to `hitCheckVecFilter` as filter labels. Two were
+already right in the original text; I had briefly "fixed" them wrongly.
+
+**New complete bodies**, all in `docs/behavior/audio/`:
+
+- [Slot accessors](behavior/audio/BATTLE_POSITIONAL_SFX_SLOT_ACCESSORS.md) —
+  `psndSFX_get_vol`, `psndSFXChk`, `psndSFX_dist`, `psndSFX_pit`,
+  `psndSFX_vol`. Completes the accessor family. Key finding: the handle
+  packs **slot index in bits 0..7 and channel allocation in bits 8..23**,
+  validated against `slot+0x04` with a `-1` return. Also `stb`/`sth`
+  truncation with no clamp, and the local `slot+0x14` vs `SoundEfxSetPitch`
+  pitch split gated on the same low-5 bits `psndSFXOff` uses.
+- [Start wrappers](behavior/audio/BATTLE_POSITIONAL_SFX_START_WRAPPERS.md) —
+  `psndSFXOn`, `psndSFXOnEx_3D`, `psndSFXOn_3D`, plus the **derived
+  eight-argument `__psndSFXOn` ABI**. `arg5` and `arg7` are always `0`;
+  `psndSFXOn_3D` silently discards the caller's `r5`.
+- [Monosiri lookup](behavior/audio/BATTLE_UNIT_MONOSIRI_LOOKUP.md) —
+  `battleGetUnitMonosiriPtr` 8012ef20, the item EVT-01 called
+  unclaimed. Pure signed-multiply address computation with no bounds,
+  no negative-kind check and no null return. Noted that the caller's
+  `== null` test is therefore reading a **record field**, not a failure.
+
+Also noteworthy: **40 slots exist but the handle masks with `& 0xFF`**, so
+indices 0..255 are all reachable and nothing bounds them.
+
+Updated [behavior/README](behavior/README.md) (its rows were overwritten
+twice by concurrent commits and were re-added each time), appended the full
+reply to [requests/EVT-01.md](requests/EVT-01.md), marked the Monosiri todo
+answered with the residual work, and registered three validated delivery
+rows.
+
+Validation: bodies re-disassembled per function with ELFs in `/tmp` only;
+every callee resolved against `us_symbols.csv`; `lis`/`addi`/`addis`
+arithmetic re-derived in Python and cross-checked against named symbols;
+repo-wide sweep for the four wrong address patterns returns clean;
+`git diff --check` clean; link audits clean. Docs-only, so `make test` /
+`make all` were not rerun. Full-game incomplete.
+
+**Process lesson worth keeping:** the fabricated addresses survived a
+commit and a README row because they were plausible-looking. The two
+cross-checks that caught them were (a) does the address land in the
+section the symbol table says it should, and (b) do claimed strides divide
+the claimed symbol sizes evenly. Both are cheap and should be applied to
+any future address claim before it is written down.
+
+Next tasks:
+
+1. **`__psndSFXOn` 800d9934 (1344 bytes)** — now the only writer of
+   `pssfx` fields `+0x00`/`+0x04`/`+0x06`/`+0x18` and the place the
+   handle is packed. With `pssfx`/`pssfxlist` named and the layout fixed,
+   this is the last structural gap in the audio chain.
+2. **`psndSFXMain` (2964 bytes)** — reader of volume, distance and the
+   published position; closes the update/stop loop.
+3. Monosiri record layout beyond `+0x04`, and its table writers
+   (`battleAcMain_MonosiriTarget`, the `monosiriExit` call at `8017225c`).
+4. Remaining EVT-01 todos: `evtmgrCmd` opcode bodies, NormalJump
+   registration writers, `CommandGetWeaponAddress`/`SelectWeapon` cursor
+   modes, `BATTLE_UNIT_QUERY_EVENT_LEAVES` prose reconciliation.
+5. `docs/behavior/README.md` is a contended file: three concurrent commits
+   have dropped rows from it. Worth an owner check before it is treated as
+   a reliable index.
+
+## 2026-10-12 — OW-MOVE-01 input remainder: key-data update
+
+Re-extracted marioUpdateKeyData (0x80095cb0, ISO read-only) and contracted
+it in behavior/overworld/OVERWORLD_MARIO_KEY_DATA_UPDATE.md: six GP pad
+bytes with alternating negation into +594..599, [600/601] zeroing, flag
+halfwords, fixed-order per-flag pair zeroing, key-check gate and the
+0x803DA398 rising-edge word. No deadzone/clamp exists in-body (native .15
+is authored). Reference pair placed under ignored artifacts/.
+
+Validation: instruction re-checks, link audit, diff --check clean.
+Docs-only, no make rerun. Next: triangle interiors, pose domains, deadzone
+ownership elsewhere. Full-game incomplete.
+
+## 2026-10-12 — Full-tree gap re-audit plus lightSort alias
+
+Re-ran the name-mention audit over all 664 reference binaries against the
+current docs tree: exactly one unnamed file (`lightSort`), verified as alias
+of contracted `lightdrv _sort` @8001bccc (three-way float compare plus
+`sorter800064fc` caller in behavior/display/MAP_CHARACTER_LIGHT_QUERIES.md)
+and recorded in the register. Re-added the plane-motion README row dropped
+by the recent restructure. Zero unnamed-and-uncontracted binaries remain.
+
+Validation: audit script, listing-vs-doc structural match, diff --check
+clean. Docs-only, no make rerun. Next: triangle interiors, pose domains,
+pipe lifecycle. Full-game incomplete.
 
 ## 2026-10-12 — Inbox request: EVT-01 positional SFX chain (ID 3)
 
@@ -51,10 +148,10 @@ Delivered three **complete bodies** in `docs/behavior/audio/`:
 
 New facts, none previously recorded anywhere in the repo:
 
-- The shared **positional-SFX slot record**: base `0x8002f988`, **stride
+- The shared **positional-SFX slot record**: base `0x803df988`, **stride
   40**, selected by the **low 8 bits** of the handle. Fields `+0x00` key,
   `+0x06` channel bits, `+0x18` handle, `+0x1c/+0x20/+0x24` position.
-- The **channel table** at `0x80016b28`, **stride 20**, indexed by
+- The **channel table** at `0x80316b28`, **stride 20**, indexed by
   `(slot.key >> 19)` — by the key, not the handle. Two bits of `word0`
   select `SoundSSStopCh` / `SoundSongStopCh` / `SoundEfxStop`.
 - **Stop-without-stop**: `psndSFXOff` clears the record without calling any

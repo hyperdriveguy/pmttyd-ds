@@ -5,6 +5,15 @@
 **Namespace:** `mario_hit.o`
 **Evidence class:** B (inspected US bytes/control flow)
 
+> **Correction (2026-10-12, ID 3).** An earlier version of this document gave
+> absolute addresses for the `r2`-relative `lfs` float constants (written as
+> `0x800494xx`). Those were wrong: `lis` sign-extends its 16-bit immediate, and
+> the arithmetic had been done without that extension. Every such address is now
+> given in its authoritative `N(r2)` form, taken from the instruction bytes. The
+> `lis`-derived data bases were also wrong and are corrected here — they now
+> resolve to real symbols in `.data` (`0x80343b78` and `0x80343d88`).
+> The three `chkfilterVec*` values are **code** addresses, not string literals.
+
 ## Overview
 
 `marioSlitChkWallAround` probes the surroundings of the current Mario
@@ -45,8 +54,8 @@ sweep's back-edge is at `0x80088790` (`bt` to `0x80088644`).
 ```
 
 `f31` is the loaded angle increment, so the eight probes are equally
-spaced. The increment is one of the `lfs` constants at `0x8004946c`
-.. `0x80049480`.
+spaced. The increment is one of the `lfs` constants at `-27540(r2)`
+.. `-27520(r2)`.
 
 Per-direction result classification (`0x80088448`..`0x80088494`) — three
 ways to mark a direction as blocked:
@@ -111,9 +120,9 @@ only the scaled offset.
 
 | Address | Role |
 |---------|------|
-| `0x800c3b78` | static work descriptor (`lis 3,-32724` + `addi 31,3,15224`) |
-| `0x8004946c`, `0x80049474`, `0x80049478`, `0x8004947c`, `0x80049480` | `lfs` angle/probe constants |
-| `0x80091538`, `0x80091504`, `0x800915e4` | label strings copied into the stack filter at `+0xe0` |
+| `0x80343b78` | static work descriptor (`lis 3,-32724` + `addi 31,3,15224`) |
+| `-27540(r2)`, `-27532(r2)`, `-27528(r2)`, `-27524(r2)`, `-27520(r2)` | `lfs` angle/probe constants |
+| `0x80091434`, `0x80091504`, `0x800915e4` | filter-label **code addresses** — `chkfilterVecVivian`, `chkfilterVecRoll`, `chkfilterVec` — passed to `hitCheckVecFilter`; **not strings** |
 
 ## Porting notes
 
@@ -130,7 +139,7 @@ only the scaled offset.
 
 ## Remaining gaps
 
-- Exact semantic names for the `lfs` constants at `0x8004946c`..`80`
+- Exact semantic names for the `lfs` constants at `-27540(r2)`..`80`
   (probe length, angle step, and origin offsets are not identified).
 - Layout of the 16-byte result groups and the side arrays written by
   `hitCheckVecFilter`; the mapping from `side[i]` to a direction is not
