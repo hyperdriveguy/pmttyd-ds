@@ -50,6 +50,8 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [MusyX AI buffers/callback/IRQ init](audio/MUSYX_AI_BUFFERS_CALLBACK_AND_IRQ_INITIALIZATION.md) | Complete zeroed four-slot allocation, initial/rotating DMA requests, logic gates, CPU destination, IRQ init and compressor flag | Actual SDK/DSP/frame callback/writers/alias/concurrency/reinit and original audio timing |
+| [Rogueport underground pipe route](overworld/ROGUEPORT_UNDERGROUND_PIPE_ROUTE.md) | Reciprocal records, exact case6/10 gates,60unit/20unit position math, both-party entry and Frankly outcallback | Contact producer, paper/camera/audio/runtime |
+| [First underground arrival and Goomba trio](story/UNDERGROUND_FIRST_ARRIVAL_AND_GOOMBA_TRIO.md) | Full161command encounter/init/arrival, original NPC assets/visibility and ten message bindings including tik_04 resource | Actual setup4 battle backend, other map services and runtime parity |
 | [Game allocator/MusyX bootstrap](audio/GAME_AUDIO_ALLOCATOR_AND_MUSYX_BOOTSTRAP.md) | Four complete provider/sndInit/hwInit bodies; original hook table and scoped SoundInit prefix | Whole game init/child hardware/synth/stream/source/failure/runtime |
 | [MusyX cache/reset/hook producers](audio/MUSYX_DEFAULT_CACHE_RESOURCE_RESET_AND_HOOK_INSTALLATION.md) | Complete default stack/cache publication, six registry counts/macro table reset, allocator hooks and upload forwarding | Actual setup callers/providers, alias/reset/residency domains and original runtime |
 | [MusyX ARAM upload/stream bridge](audio/MUSYX_ARAM_UPLOAD_AND_HARDWARE_STREAM_BRIDGE.md) | Complete raw generic upload, high/low queue and aligned DCStoreRange stream flush/init/exit/address;25 direct DOL callers | Stream caller/providers/extent/lifetime and SDK/cache/DMA/original execution |
@@ -455,3 +457,5 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [Lecture field actors/backend boundary](story/LECTURE_FIELD_ACTOR_VISIBILITY_AND_BACKEND_BOUNDARY.md): NPC visibility and distinct setup3 teaching ownership.
 - [Professor story11 reload](story/PROFESSOR_STORY11_RELOAD_AND_LECTURE_REENTRY.md): exact flag1207 and map initialization.
 - [Field speaker pose ownership](message/FIELD_SPEAKER_TALK_STAY_POSE_OWNERSHIP.md): glyph countdown and actual talk/stay requests.
+
+- [Native underground pipe route](story/NATIVE_UNDERGROUND_PIPE_ROUTE.md): original departure flag/event, reciprocal map loading and explicit pipe-motion/story gaps.

@@ -135,7 +135,7 @@ class Audio {
 public:
     bool init();
     void play(const Game& game);
-    void update(Scene scene, bool enabled,bool harborDanger=false,int professorMusic=0);
+    void update(Scene scene, bool enabled,bool harborDanger=false,int professorMusic=0,uint32_t room=0);
     void updateFrontend(int track,bool enabled);
     void shutdown();
     bool available() const { return ready; }

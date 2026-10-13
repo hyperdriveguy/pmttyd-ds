@@ -8,7 +8,7 @@
 namespace ttyd {
 namespace {
 constexpr size_t MaxBytes=2*1024*1024;
-std::array<CameraRoadAsset,5> assets;
+std::array<CameraRoadAsset,6> assets;
 bool loaded=false;
 uint32_t beWord(const std::vector<uint8_t>& b,size_t o) {
     return uint32_t(b[o])<<24|uint32_t(b[o+1])<<16|uint32_t(b[o+2])<<8|b[o+3];
@@ -111,8 +111,8 @@ std::optional<uint32_t> CameraRoadAsset::vertexIndex(uint32_t index) const {
     const auto o=element(6,index,4,0);return o?word(*o):std::nullopt;
 }
 bool loadCameraRoadAssets(const char* directory) {
-    std::array<CameraRoadAsset,5> next;
-    constexpr const char* names[]={"map","gor_00","gor_02","gor_03","gor_04"};
+    std::array<CameraRoadAsset,6> next;
+    constexpr const char* names[]={"map","gor_00","gor_02","gor_03","gor_04","tik_01"};
     for(size_t n=0;n<next.size();++n) {
         const std::string path=std::string(directory)+"/"+names[n]+".camera";
         if(!next[n].load(path.c_str()))return false;

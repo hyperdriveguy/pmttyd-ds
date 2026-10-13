@@ -138,6 +138,11 @@ int main() {
     assert(!g.professorStory.running() && !g.professorStory.actors[2].hidden);
     assert((g.professorStory.actors[2].position==std::array<float,3>{-220,0,305}) && g.professorStory.actors[2].yaw==270);
     reload.originalFlag1207=true;g.restore(reload);assert(g.professorStory.actors[2].hidden && g.professorStory.professorDeparted);
+    ProfessorStory pipe;assert(pipe.departThroughPipe(0,11,false));
+    assert(pipe.finished && pipe.story==11 && pipe.professorDeparted && !pipe.professorControlEnabled);
+    assert(pipe.temporaryProfessor && pipe.actors[2].hidden && pipe.actors[2].position[1]==-1000);
+    const auto requests=pipe.presentationRequests.size();assert(requests==3);
+    assert(pipe.departThroughPipe(0,11,true) && pipe.presentationRequests.empty() && pipe.story==11);
     ProfessorStory imported;assert(imported.beginLecture(0,{-260,0,200},{-290,0,200},true));
     imported.tick(17,0,false);assert(imported.professorDeparted);
     clearCollision();

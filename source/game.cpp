@@ -152,12 +152,12 @@ bool CollisionTransition::load(const char* prefix) {
 }
 void CollisionTransition::commit() {if(staged)committed=true;}
 const char* roomAsset(uint32_t room) {
-    static const char* names[]={"map","gor_00","gor_02","gor_03","gor_04"};
-    return room<5?names[room]:nullptr;
+    static const char* names[]={"map","gor_00","gor_02","gor_03","gor_04","tik_01"};
+    return room<6?names[room]:nullptr;
 }
 const char* roomName(uint32_t room) {
-    static const char* names[]={"Rogueport plaza","Rogueport harbor","Rogueport east side","Rogueport west side","Rogueport station"};
-    return room<5?names[room]:"Unknown area";
+    static const char* names[]={"Rogueport plaza","Rogueport harbor","Rogueport east side","Rogueport west side","Rogueport station","Rogueport underground"};
+    return room<6?names[room]:"Unknown area";
 }
 bool wallAtLevel(size_t n,float elevation) {
     if(n<wallContacts.size()) {
@@ -1448,6 +1448,7 @@ void Game::tick(const Input& rawInput) {
         return;
     }
     if(fade.active()){fade.tick();return;}
+    if(pipeRequest>=0)return;
     if(warpRequest>=0) {
         if(size_t(warpRequest)>=roads.size()){cancelRoad();return;}
         if(!resolveRoadCallbacks(roads[warpRequest]))return; // Preserve unresolved/custom original scene ownership.
@@ -1687,6 +1688,8 @@ void Game::tick(const Input& rawInput) {
     }
     move(i,launched);
     if(warpRequest>=0 || water.active() || fieldStep.active())return;
+    const int8_t pipeY=i.physicalSnapshot?inputProducer.channels[0].analog.mainY:int8_t(std::clamp(-i.z,-1.f,1.f)*70);
+    if(tryFieldPipe(pipeY))return;
     if((groundContact.attributes&0x200) && !fieldJump.airborne && beginWater())return;
     if(harborStory.enabled && !harborStory.triggered &&
        std::trunc(std::trunc(progress.position.z*100.f*1024.f)/1024.f)<=-100 && harborStory.begin(ticks*1000/60)) {

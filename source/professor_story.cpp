@@ -13,7 +13,7 @@
 namespace ttyd {
 namespace {
 MessageAssets messages;EventScriptAssets scripts;MessageFont font;
-uint32_t script=0,fenceScript=0,lectureScript=0,franklyName=0,goombellaName=0;std::unordered_map<uint32_t,uint32_t> callbacks;bool ready=false;
+uint32_t script=0,fenceScript=0,lectureScript=0,pipeScript=0,franklyName=0,goombellaName=0;std::unordered_map<uint32_t,uint32_t> callbacks;bool ready=false;
 std::vector<uint32_t> fenceNodes;float fenceFrames=0;
 int32_t signedWord(uint32_t v){return v<=0x7fffffff?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
 }
@@ -25,13 +25,13 @@ bool loadProfessorStoryAssets(const char* root) {
     if(!p.load((base+"/professor-events.pmevt").c_str()) || !m.loadRoom((base+"/messages/gor_02.txt").c_str()) ||
        !m.loadGlobal((base+"/messages/global.txt").c_str()) || !f.load((base+"/font.pmfont").c_str()))return false;
     FILE* file=std::fopen((base+"/professor-program.bin").c_str(),"rb");if(!file)return false;
-    char magic[8];uint32_t entry=0,fence=0,lecture=0,frankly=0,goombella=0,count=0;
-    bool ok=std::fread(magic,8,1,file)==1 && !std::memcmp(magic,"PMPROG3",8) &&
+    char magic[8];uint32_t entry=0,fence=0,lecture=0,pipe=0,frankly=0,goombella=0,count=0;
+    bool ok=std::fread(magic,8,1,file)==1 && !std::memcmp(magic,"PMPROG4",8) &&
         std::fread(&entry,4,1,file)==1 && std::fread(&fence,4,1,file)==1 && std::fread(&lecture,4,1,file)==1 &&
-        std::fread(&frankly,4,1,file)==1 && std::fread(&goombella,4,1,file)==1 &&
-        std::fread(&count,4,1,file)==1 && count==63;
+        std::fread(&pipe,4,1,file)==1 && std::fread(&frankly,4,1,file)==1 && std::fread(&goombella,4,1,file)==1 &&
+        std::fread(&count,4,1,file)==1 && count==64;
     std::unordered_map<uint32_t,uint32_t> next;
-    for(uint32_t i=0;ok && i<count;++i){uint32_t a=0,t=0;ok=std::fread(&a,4,1,file)==1 && std::fread(&t,4,1,file)==1 && a && t<63 && next.emplace(a,t).second;}
+    for(uint32_t i=0;ok && i<count;++i){uint32_t a=0,t=0;ok=std::fread(&a,4,1,file)==1 && std::fread(&t,4,1,file)==1 && a && t<64 && next.emplace(a,t).second;}
     uint32_t word=0;ok=ok && std::fgetc(file)==EOF && p.readWord(entry,word) && p.readWord(fence,word) && p.readWord(lecture,word);std::fclose(file);
     if(!ok)return false;
     ActorAnimationPack paper;if(!paper.load((base+"/professor-fence.pmanim").c_str()))return false;
@@ -41,7 +41,7 @@ bool loadProfessorStoryAssets(const char* root) {
     std::vector<uint32_t> nodes(ok?n:0);ok=ok && std::fread(nodes.data(),4,n,file)==n && std::fgetc(file)==EOF;std::fclose(file);
     if(!ok || !std::is_sorted(nodes.begin(),nodes.end()) || !loadMessageIcons((base+"/message-icons.bin").c_str()))return false;
     fenceNodes=std::move(nodes);fenceFrames=anim->end;
-    scripts=std::move(p);messages=std::move(m);font=std::move(f);script=entry;fenceScript=fence;lectureScript=lecture;
+    scripts=std::move(p);messages=std::move(m);font=std::move(f);script=entry;fenceScript=fence;lectureScript=lecture;pipeScript=pipe;
     franklyName=frankly;goombellaName=goombella;callbacks=std::move(next);ready=true;return true;
 }
 struct ProfessorRuntime {
@@ -155,7 +155,7 @@ struct ProfessorRuntime {
         case 12:scene->keysEnabled=value(e,0)!=0;return 2;
         case 13:return move(e,first,0,0,1,2);
         case 14:if(first)scene->actors[0].yaw=number(e,0);return delay(e,first,uint64_t(std::max<int32_t>(0,value(e,1))));
-        case 15:scene->temporaryProfessor=true;for(unsigned i=0;i<3;++i)scene->actors[2].position[i]=number(e,2+i);scene->actors[2].hidden=false;return 2;
+        case 15:scene->temporaryProfessor=true;for(unsigned i=0;i<3;++i)scene->actors[2].position[i]=number(e,2+i);scene->actors[2].hidden=scene->actors[2].position[1]==-1000;return 2;
         case 16:scene->actors[0].pose=string(pointer(e,0));scene->actors[0].poseAt=scene->now;return 2;
         case 17:return print(e,first,false);
         case 18:return print(e,first,true);
@@ -181,6 +181,7 @@ struct ProfessorRuntime {
         case 24:scene->actors[npc(e,0)].yaw=number(e,1);return 2;
         case 26:return move(e,first,1,1,2,3);
         case 28:if(first)scene->actors[1].yaw=number(e,1);return delay(e,first,uint64_t(std::max<int32_t>(0,value(e,2))));
+        case 63:if(value(e,0)==1)scene->professorControlEnabled=value(e,1)!=0;return 2;
         case 30:scene->music=-1;return 2;
         case 31:scene->music=pointer(e,1)?1:0;return 2;
         case 35:positionOut(e,1,value(e,0)==1?2:1);return 2;
@@ -266,6 +267,14 @@ bool ProfessorStory::beginLecture(uint64_t time,std::array<float,3> mario,std::a
     actors[0].position=mario;actors[0].pose="M_S_1";actors[1].position=goombella;actors[2].position={-220,0,305};
     runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
     if(!runtime_->initialize(lectureScript,10)){failed=true;return false;}tick(time,0,false);return !failed;
+}
+bool ProfessorStory::departThroughPipe(uint64_t time,int32_t initialStory,bool departed) {
+    if(!ready || running())return false;
+    *this=ProfessorStory{};triggered=true;now=time;story=initialStory;professorDeparted=departed;
+    runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
+    if(!runtime_->initialize(pipeScript,initialStory)){failed=true;return false;}
+    tick(time,0,false);
+    return finished && !failed && professorDeparted;
 }
 void ProfessorStory::restoreProfessor(bool departed) {
     *this=ProfessorStory{};triggered=true;finished=true;story=11;professorDeparted=departed;

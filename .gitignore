@@ -76,3 +76,10 @@ local-assets/professor-fence/
 /romfs/message-icons.*
 /local-assets/message-icons/
 /build-lecture-verify/
+
+/romfs/tik_01*
+/romfs/underground-assets.json
+/local-assets/underground/
+/romfs/field-pipes.bin
+/build-pipe-verify/
+/romfs/underground-music.wav*

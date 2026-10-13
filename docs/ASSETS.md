@@ -714,3 +714,21 @@ PMPROG3 metadata retains original Frankly/Goombella identifier VAs for actual NP
 routing; original event words/relocations remain unchanged. Assets remain
 Nintendo/Intelligent Systems resources with no redistribution grant; original
 and compiled packs are excluded from commits.
+
+## 2026-10-13 — Original first underground map and music
+
+Read-only US ISO m/tik_01/d,t,c,s supply the first underground room. Ignored
+local-assets/underground/ retains extracted originals/provenance, map products
+and TPL PNGs. tools/underground_assets.py retains geometry/material UVs and
+collision, scales map units through the existing converter, reduces textures
+to max128 power-of-two RGBA8 via Lanczos and writes ignored romfs/tik_01.*
+and tik_01-*.t3x. Prologue zero-flag init hides bom_kabe_2/bom_kabe_4; broader
+wall hit/state owners remain pending. Original camera bytes are copied unchanged.
+The original BGM_STG0_TIK1 mapping provides sound/stream/stg_tik2_32k.stm,
+decoded PCM16 with source rate/channels/loop metadata as ignored
+romfs/underground-music.wav/.loop. Source generic pipe SFX remain unbound.
+Ignored field-pipes.bin/underground-assets.json retain reciprocal original REL
+record/hit identities and conversion/source manifest. Original gor pipe event
+extends PMPROG4 metadata; no original script instruction is rewritten apart
+from supported relocation. Nintendo/Intelligent Systems rights remain;
+original or compiled assets are not committed or distributed.

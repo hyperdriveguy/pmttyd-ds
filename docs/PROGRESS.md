@@ -5,6 +5,48 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Original east pipe and first underground map
+
+[Native underground route](behavior/story/NATIVE_UNDERGROUND_PIPE_ROUTE.md)
+packages original gor_02/dokan↔tik_01/dokan_2 records and hit centers/identities.
+Case6 retains strict signedmainY>30/contact gating; case10 uses frontcontact,
+without A. Original11-command gor pipe departure executes in the existing VM,
+sets actual GSF1207, preserves GSW0 and retains party requests. Already-setflag
+returns without repeat requests. Expanded metadata4 contains329commands and
+64callbacks. Native transactional map staging reaches original tik_01 as room5,
+with original geometry/textures/collision/camera and source underground music.
+Prologue zero-flag wall display hides are extracted; source hit toggles remain
+unbound. Source horizontal endpoint20/start-40 offsets replace provisional0.65.
+
+Inbox deliveries recover exact pipe event/geometry and full161-command Goomba
+trio/init/arrival contracts. Original scene waitsMarioX>=-100, uses three actual
+c_kuribo tribes and original086..094_01 payloads (last Frankly text in tik_04),
+requires battle setup4 and only then advancesstory12. This room import/route
+preservesstory11; binding that event/actors/battle is the next milestone.
+
+Validation: isolated staged implementation snapshot /tmp/pm-east-pipe-1mezum8k
+passes make test107 CTest/100Python after final pipe ground-query change. Shared
+make all and separate DEBUG_SHORT_BOOT artifacts/ttyd-east-pipe build pass.
+Focused original pipe and professor tests pass. Initial new pipe landing query
+failed because ordinary groundAt has a narrow support window; corrected to
+source-start downward-ray bridge. Shared make test initially hit unrelated
+in-progress save-block event assertion, then hung in that test; that own run was
+stopped and is not reported passing. Snapshot excludes that concurrent unfinished
+feature and retains its files. Isolated final Azahar artifacts/azahar-east-pipe-final
+passes contact/stick travel to underground, save(room5/story11/flag1), reverse
+frontcontact return and save(room2/story11/flag1). Both map captures inspected;
+Frankly is correctly hidden on east-room return. Repro fixture tool is
+make_east_pipe_fixture.py. No user emulator profile/save touched.
+
+Limits/next: case6 Mario+1e8 producer is not proved identical to native ground
+contact; source mode/Vivian/nonride/contact lifecycle, pipe paper poses/SFX/camera
+and BOTH-party restoration remain incomplete. Direct emergence/fade and ground
+support are native adapters; temporary Frankly underground rendering is pending.
+Bind original Goomba trio scene/setup4 and later badge/door/ruins route, actual
+lecture setup3, dynamic wall flags/collision and original environment/reverb.
+NDSP streams original underground music; audio/device and New2DS performance
+were not measured here. Full requested prologue/full-game fidelity remains open.
+
 ## 2026-10-13 — Priority0 AI buffers, callback and IRQ initialization
 
 Delivered [AI/IRQ/compressor source](behavior/audio/MUSYX_AI_BUFFERS_CALLBACK_AND_IRQ_INITIALIZATION.md).

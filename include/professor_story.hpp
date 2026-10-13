@@ -34,7 +34,7 @@ public:
     uint64_t fencePoseAt=0;
     uint32_t pendingService=0;
     bool goombellaNpc=false;
-    bool professorDeparted=false;
+    bool professorDeparted=false,professorControlEnabled=true;
     int battleSetup=-1;
     MessageSelection selection;
     std::vector<std::string> selectionOrder;
@@ -52,6 +52,7 @@ public:
     bool begin(uint64_t milliseconds,std::array<float,3> mario,std::array<float,3> goombella,bool departed=false);
     bool beginFence(uint64_t milliseconds,std::array<float,3> mario,std::array<float,3> goombella);
     bool beginLecture(uint64_t milliseconds,std::array<float,3> mario,std::array<float,3> goombella,bool departed=false);
+    bool departThroughPipe(uint64_t milliseconds,int32_t initialStory,bool departed);
     void restoreProfessor(bool departed);
     void tick(uint64_t milliseconds,uint32_t keys,bool doorBusy,const MessageSelectionInput& selectionInput={});
     bool running() const{return triggered && !finished;}

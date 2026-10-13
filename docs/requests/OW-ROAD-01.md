@@ -115,3 +115,19 @@ binds original Generalcountdown/latch andresult0/1 stayrequests to concrete
 NPCforce1 talk/staystrings andpartyselector7/1 helpers. Printcreation/active
 window is not talkpose admission; explicitGoombellaNPC andprintparty remain
 different owners. Original cadence/rendered/runtime comparison remains open.
+
+2026-10-13 underground pipe and first-arrival follow-up:
+[Pipe route](../behavior/overworld/ROGUEPORT_UNDERGROUND_PIPE_ROUTE.md) binds
+exactgor_02/dokan↔tik_01/dokan_2 records/case6stickY>30 versuscase10frontcontact,
+commonadmissiongates, source60unit pipe lengths and20unit horizontaloffset,
+start/end geometry and BOTHparty restoration, Franklyslot1 creation/flag1207.
+[First underground arrival/trio](../behavior/story/UNDERGROUND_FIRST_ARRIVAL_AND_GOOMBA_TRIO.md)
+contains complete161command encounter,62commandinit and11commandarrival,
+original4actor maptag visibility/placements/c_kuribotribe poses, tenorderedUS
+message bindings/hash/controlcensus including094_01 fromtik_04, concurrency
+and actualsetup4battleboundary. Prologuestory<=11 starts crossingpollX>=-100;
+sourcepostbattle advances12 only after correctbackendreturn. Remaining bounded
+requests: casecontactproducer and originalruntime, pipepaperpose/fade/camera/audio,
+setup4unit/group/coordinator/result graph, moving-floor/bomb services and
+message dynamic/shake/STICKicon renderedparity. No nativecode edited, no
+originalruntime/test claim.

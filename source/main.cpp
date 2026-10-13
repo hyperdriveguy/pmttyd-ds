@@ -1,5 +1,6 @@
 #include "camera_road_assets.hpp"
 #include "platform.hpp"
+#include "field_pipe.hpp"
 #include "save.hpp"
 #include <algorithm>
 #include <cstdio>
@@ -39,7 +40,7 @@ int main() {
         gfxExit();
         return 1;
     }
-    if(!loadRoomCollision(0) || !ttyd::loadWarps("romfs:/rooms.bin") || !ttyd::loadFieldDoors("romfs:/doors.pmdoor") || !ttyd::loadCameraRoadAssets("romfs:") || !ttyd::loadHarborStoryAssets("romfs:") || !ttyd::loadFieldActorCatalog("romfs:") || !ttyd::loadProfessorStoryAssets("romfs:")) {
+    if(!loadRoomCollision(0) || !(ttyd::loadWarps("romfs:/rooms.bin") && ttyd::loadFieldPipes("romfs:/field-pipes.bin")) || !ttyd::loadFieldDoors("romfs:/doors.pmdoor") || !ttyd::loadCameraRoadAssets("romfs:") || !ttyd::loadHarborStoryAssets("romfs:") || !ttyd::loadFieldActorCatalog("romfs:") || !ttyd::loadProfessorStoryAssets("romfs:")) {
         renderer.shutdown();romfsExit();gfxExit();return 1;
     }
     ttyd::Audio audio;audio.init();
@@ -129,6 +130,16 @@ int main() {
         }
         if(accumulator>=1./60) {metrics.droppedTicks+=uint64_t(accumulator*60);accumulator=0;}
         metrics.simulationMs=(seconds()-simulationStart)*1000;
+        if(game.pipeRequest>=0 && game.fade.ready()) {
+            ttyd::CollisionTransition transaction;
+            auto ownedCandidate=std::make_unique<ttyd::Game>(game);auto& candidate=*ownedCandidate;
+            const uint32_t target=game.pipeTarget();
+            bool ok=stageRoomCollision(target,transaction) && candidate.finishPipeWarp();
+            if(ok)ok=renderer.changeRoom(target);
+            if(ok){transaction.commit();game=std::move(candidate);game.fade.startIn();notice="";noticeTicks=0;}
+            else {game.cancelPipeWarp();notice="Pipe transition failed";noticeTicks=180;}
+            accumulator=0;pending={};previous=seconds();
+        }
         if(game.warpRequest>=0 && game.fade.ready()) {
             ttyd::CollisionTransition transaction;
             // Target ID comes from the original, validated road table.
@@ -155,7 +166,7 @@ int main() {
             accumulator=0;pending={};previous=seconds();
         }
         if(frontend.screen==ttyd::FrontScreen::Playing)audio.update(game.scene,game.progress.sound,game.harborStory.enabled && game.harborStory.triggered,
-                     game.professorStory.locked()?game.professorStory.music:0);
+                     game.professorStory.locked()?game.professorStory.music:0,game.progress.room);
         else audio.updateFrontend(frontend.screen==ttyd::FrontScreen::Demo?(demo.bookComplete?6:5):frontend.screen==ttyd::FrontScreen::Opening?opening.music():4,game.progress.sound);
         metrics.renderMs=C3D_GetProcessingTime();metrics.gpuMs=C3D_GetDrawingTime();
         if(frontend.screen==ttyd::FrontScreen::Playing)renderer.render(game,metrics,noticeTicks>0?notice:"",audio.available());
@@ -165,6 +176,6 @@ int main() {
         if(now-window>=1) {metrics.fps=frames/(now-window);window=now;frames=0;}
     }
     // A battle is transient; save only the exploration checkpoint.
-    if(frontend.screen==ttyd::FrontScreen::Playing && !game.professorStory.temporaryProfessor && !game.professorStory.running() && game.scene==ttyd::Scene::Explore && !game.airborne() && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0) ttyd::writeSave(savePath,game.progress);
+    if(frontend.screen==ttyd::FrontScreen::Playing && !game.professorStory.temporaryProfessor && !game.professorStory.running() && game.scene==ttyd::Scene::Explore && !game.airborne() && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0 && game.pipeRequest<0) ttyd::writeSave(savePath,game.progress);
     audio.shutdown();renderer.shutdown();romfsExit();gfxExit();return 0;
 }

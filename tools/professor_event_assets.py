@@ -24,13 +24,13 @@ SERVICES = ['evt_cam3d_evt_off','evt_cam3d_evt_set','evt_cam_shake','evt_door_en
  'evt_img_set_shadow','evt_snd_sfxon','evt_img_wait_animend','evt_mapobj_clear_offscreen',
  'evt_img_release','evt_offscreen_delete','evt_hitobj_onoff','evt_sub_check_intersect',
  'evt_msg_select','evt_msg_print_add','evt_mario_kill_party','evt_npc_set_battle_info',
- 'evt_npc_battle_start','evt_npc_wait_battle_end','evt_mario_set_prev_party_pos']
+ 'evt_npc_battle_start','evt_npc_wait_battle_end','evt_mario_set_prev_party_pos','evt_party_cont_onoff']
 
 def build(iso=DEFAULT_ISO):
     work=Path('local-assets/professor');work.mkdir(parents=True,exist_ok=True)
     source=work/'gor.rel';extract(iso,'rel/gor.rel',source);raw=source.read_bytes()
     if hashlib.sha256(raw).hexdigest()!='d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a':raise ValueError('Unexpected US gor REL')
-    events=inventory_events(raw,'artifacts/reference/us_symbols.csv','gor',['kurihakase_first_talk','kurihakase_wall_remove','kurihakase_lecture'])['events'];event=events[0]
+    events=inventory_events(raw,'artifacts/reference/us_symbols.csv','gor',['kurihakase_first_talk','kurihakase_wall_remove','kurihakase_lecture','gor_02_event_01'])['events'];event=events[0]
     if events[1]['sha256']!='404b1eb72ecc96d2ca959766a1f5375ce09f81e7bffeeb2fe135f223aa49550c' or events[2]['sha256']!='003b2e23e35704e67e1beec34309e6237930c437125b86e274d17334db1e1ef3':raise ValueError('Fence/lecture source changed')
     if event['sha256']!='9e27be37f4d93218ea9204cf25d17eef07876c130d25f13c8b5470739f545511':raise ValueError('First-talk source changed')
     local,imports,foreign=read_bindings(raw)
@@ -67,7 +67,7 @@ def build(iso=DEFAULT_ISO):
     for base,data in segments:
         table+=struct.pack('>III',base,len(data),offset);payload+=data;offset+=len(data)
     Path('romfs/professor-events.pmevt').write_bytes(b'PMEVT001'+struct.pack('>I',len(segments))+table+payload)
-    metadata=struct.pack('<8s6I',b'PMPROG3',*[address(e['file_offset']) for e in events],address(0x18a3c),address(0x19fc4),len(called))
+    metadata=struct.pack('<8s7I',b'PMPROG4',*[address(e['file_offset']) for e in events],address(0x18a3c),address(0x19fc4),len(called))
     metadata+=b''.join(struct.pack('<II',a,tag) for a,tag in sorted(called.items()))
     Path('romfs/professor-program.bin').write_bytes(metadata)
     manifest=dict(source='rel/gor.rel',sha256=hashlib.sha256(raw).hexdigest(),event=event,events=events,

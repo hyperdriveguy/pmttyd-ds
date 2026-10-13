@@ -205,6 +205,11 @@ public:
     uint64_t ticks = 0;
     bool actionSuccess = false, guarded = false, saveRequested = false;
     Sound sound = Sound::None;
+    int pipeRequest=-1;
+    uint32_t pipeTarget() const;
+    bool tryFieldPipe(int8_t mainY);
+    bool finishPipeWarp();
+    void cancelPipeWarp();
     int warpRequest = -1;
     bool finishWarp();
     uint32_t warpTarget() const;
