@@ -26,7 +26,7 @@ class HarborTutorial {
 public:
     bool triggered=false,failed=false,initialized=false,phaseActive=false,introComplete=false,attackActive=false;
     bool statusVisible=true;
-    int32_t turn=1,speaker=-1,result=0;uint32_t phaseWord=0x04000001,battleFlags=0,pendingService=0;
+    int32_t turn=1,speaker=-1,result=0,chosenUnit=-1,chosenPart=0;uint32_t phaseWord=0x04000001,battleFlags=0,pendingService=0;
     uint8_t successDeclarations=0,failureDeclarations=0;
     uint64_t now=0;
     std::array<HarborTutorialActor,3> actors{};
@@ -41,6 +41,7 @@ public:
     // Called by an original battle scheduler, never automatically from HP or a
     // development button. Only already installed Crump/NPC attack hooks exist.
     bool dispatchInstalledAttack(int32_t actorId);
+    bool readPackedWord(uint32_t address,uint32_t& value) const;
     bool running() const{return triggered;}
 private:
     std::shared_ptr<HarborTutorialRuntime> runtime_;

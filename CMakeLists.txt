@@ -636,3 +636,5 @@ target_sources(ttyd_core PRIVATE source/battle_conclusion.cpp)
 add_executable(battle_conclusion_tests tests/battle_conclusion_tests.cpp)
 target_link_libraries(battle_conclusion_tests PRIVATE ttyd_core)
 add_test(NAME battle_conclusion COMMAND battle_conclusion_tests)
+
+target_sources(ttyd_core PRIVATE source/harbor_tutorial_packed.cpp)

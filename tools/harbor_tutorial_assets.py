@@ -57,7 +57,8 @@ def build(iso):
    if not a:break
    data=read_dol(a,128).split(b'\0',1)[0]+b'\0';data+=b'\0'*(-len(data)%4);strings[a]=data
   else:raise ValueError('Unterminated Mario pose table')
-  segments.append((mario_table,table_data));segments.extend(strings.items())
+ from harbor_tutorial_dol_assets import segments as dol_segments
+ segments.extend(dol_segments(iso))
  segments.sort(key=lambda s:s[0])
  offset=12+12*len(segments);table=bytearray();payload=bytearray()
  for base,data in segments:table+=struct.pack('>III',base,len(data),offset);payload+=data;offset+=len(data)
