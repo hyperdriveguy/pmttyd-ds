@@ -6,6 +6,7 @@
 #include "battle_packed_hit_precheck.hpp"
 #include "battle_packed_pad.hpp"
 #include "battle_packed_pouch.hpp"
+#include "field_battle_information.hpp"
 namespace ttyd {
 namespace {void required(bool ok){if(!ok)std::abort();}int32_t signByte(uint8_t b){return b<128?int32_t(b):int32_t(b)-256;}}
 uint32_t HarborTutorialPacked::word(uint32_t a)const{uint32_t v=0;required(vm.memory.readWord(a,v));return v;}
@@ -37,6 +38,16 @@ bool HarborTutorialPacked::provisionFreshPouch(const char* name){
  services.allocate=[](void* p,int32_t heap,uint32_t size){auto& v=*static_cast<Provider*>(p);assert(heap==0 && size==0x5d4 && !v.allocated);v.allocated=true;return uint32_t(0x84400000);};
  services.message=[](void* p,const char* key){assert(!std::strcmp(key,"name_party3"));return static_cast<Provider*>(p)->name;};
  freshPouch=initializePackedPouch(services)==0x84400000;return freshPouch;
+}
+bool HarborTutorialPacked::provisionFreshFieldInformation(uint32_t c,uint32_t group,uint32_t stage){
+ if(!freshPouch || !vm.memory.registerRam(0x84500000,std::vector<uint8_t>(0x580)) || !vm.memory.registerRam(0x84501000,std::vector<uint8_t>(0x340)))return false;
+ // Explicit fresh NPC/Fbat allocation adapter; only source-owned information
+ // fields are consumed, not uninitialized field model/control internals.
+ const auto f=uint32_t(0x84500000),npc=uint32_t(0x84501000);word(vm.gpAddresses.currentAddress()+0x168,f);word(f+8,npc);
+ PackedNpcBattleSetupServices setup;setup.memory=nativeBattleActorServices(vm);setup.user=this;setup.random=[](void* self,int32_t bound){return static_cast<HarborTutorialPacked*>(self)->random.bounded(bound);};setup.savedFlag=[](void* self,int32_t index){auto& p=*static_cast<HarborTutorialPacked*>(self);return readSavedSwitch(SavedSwitchFamily::GlobalFlag,index,p.vm.interpreterServices().operands);};
+ setupPackedNpcBattleInformation(npc,c,setup);if(word(npc+0x248)!=group || word(npc+0x230)!=stage)return false;
+ PackedFieldBattleInformationServices services;services.memory=nativeBattleActorServices(vm);services.marioPartyId=[](void*)->int32_t{return 0;};services.party=[](void*,int32_t id){assert(id==0);return uint32_t(0);};services.partyKind=[](void*,int32_t)->int32_t{std::abort();};
+ const auto info=preparePackedFieldBattleInformation(f,npc,word(0x8041eb00),services);word(Battle+0x2738,info);return true;
 }
 void HarborTutorialPacked::samplePhysical(uint64_t time,const BattlePadSample* sample){physicalCurrent=sample!=nullptr;if(!sample || sampledAt==time)return;sampledAt=time;auto pad=readPackedBattlePad(Battle+0x1d1c,nativeBattleActorServices(vm));pad.update(*sample);writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));}
 bool HarborTutorialPacked::registerActor(HarborTutorialActor& a){

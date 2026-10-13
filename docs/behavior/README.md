@@ -602,3 +602,5 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [Native Harbor Mario Init](story/NATIVE_HARBOR_MARIO_INIT.md)
 - [Battle Fresh Packed Pouch](battle/BATTLE_FRESH_PACKED_POUCH.md)
 - [Battle Packed Counter And Hit Event](battle/BATTLE_PACKED_COUNTER_AND_HIT_EVENT.md)
+
+- [Harbor original field battle information](battle/HARBOR_SOURCE_FIELD_INFORMATION.md)

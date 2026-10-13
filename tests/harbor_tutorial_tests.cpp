@@ -57,6 +57,12 @@ int main(){
  assert(fresh.readPackedWord(0x84201204,packed) && packed==1);
  assert(fresh.actors[1].wait==0x80417c38 && fresh.actors[1].attack==0x80417c30 && fresh.actors[1].damage==0x80417c08 && fresh.actors[1].confusion==0x8034f1e8 && fresh.actors[1].entry==0x80372bc0);
  assert(fresh.readPackedWord(0x8041eb00,packed) && packed==0x84400000);
+ assert(fresh.readPackedWord(0x84002738,packed) && packed==0x84500020);
+ assert(fresh.readPackedWord(0x84500028,packed) && packed==0);
+ assert(fresh.readPackedWord(0x8450002c,packed) && packed==0x84501230);
+ assert(fresh.readPackedWord(0x84501230,packed) && packed==0x95540870);
+ assert(fresh.readPackedWord(0x84501248,packed) && packed==0x95540c08);
+ assert(fresh.readPackedWord(0x84501234,packed) && packed==0);
  assert(fresh.readPackedWord(0x84400070,packed) && packed==0x0007000a);
  assert(fresh.readPackedWord(0x841011c4,packed) && packed==0x802f4018);
  assert(fresh.readPackedWord(0x841011c8,packed) && packed==0x802f4030);

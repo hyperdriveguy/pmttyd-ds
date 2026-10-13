@@ -6014,3 +6014,18 @@ original cover geometry/outer projection, fade/light/tree/environment, sound and
 crystal/radiation consumers; profile actual New2DS memory/performance. The goal
 remains incomplete while the real harbor fight/return and these scene services
 are still pending.
+
+## 2026-10-13 — Original harbor field battle construction
+
+Fresh harbor admission now constructs source NPC battle information and original
+FieldInfoInit/battle_init fields. Source setup preserves its seventeen RNG
+requests on an explicit seed0 adapter and validates setup2 group/stage pointers.
+Fresh no-party/no-field-attack state yields firstAttack0; configuration20000010
+is not substituted for a first strike. The packed Fbat/NPC/FieldInfo allocations
+are explicit native carriers; field internals outside those source fields remain
+unbound. FirstAct/resource/fade/command ownership remains the next startup work.
+
+Validation in /tmp/pm-harbor-integrated-fa27933: make test134/134 CTest and
+103/103 Python, make all passed (/tmp/opening-field-info-{test,build}.log).
+Original packed tests check actual group/stage/firstAttack values; the read-only
+verifier retains source addresses. No victory/field return is published.
