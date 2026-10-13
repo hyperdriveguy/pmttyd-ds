@@ -92,3 +92,10 @@ macro/voice scheduling and original queue/time/audio traces. Two complete local
 services are answered; full source/native/runtime/hardware remains OPEN.
 
 [Complete scoped job drain/voice controls/clock tail](MUSYX_SYNTH_JOB_DRAIN_VOICE_CONTROLS_AND_CLOCK.md) now closes the exact category consumer/order and index/time advancement regions. Remaining synthHandle fade/aux middle and child/provider/original scheduling remain open.
+
+### Synthesis initialization follow-up
+
+[Complete synthesis initializer](MUSYX_SYNTH_INITIALIZATION_TYPES_JOBS_AND_CALLBACK.md)
+now pins local voice/fader/aux/job resets, exact initial row types and callback
+installation. Other child services/writers, valid caller/reinit/concurrency
+domains and original initialization/scheduling/audio traces remain open.

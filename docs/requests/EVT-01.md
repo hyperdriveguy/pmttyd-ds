@@ -182,6 +182,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Six selector scans/direct indexing, numeric literals, low16 duration
   conversion and ordered zero/nonzero fader/bitmap writes pinned; other
   writers/provider/bounds/domains and original duration/audio remain open.
+- [x] Complete synthInit/synthSetMusicVolumeType/sndVolume/hwSetMesgCallback —
+  [initialization/type/jobs/callback](../behavior/audio/MUSYX_SYNTH_INITIALIZATION_TYPES_JOBS_AND_CALLBACK.md).
+  Exact local voice/fader/aux/job initial fields,32 row types and callback
+  publication pinned; child services/other writers/provider bounds/reinit
+  domains and original initialization/scheduling/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1212,3 +1217,21 @@ six row-type vectors checked as deductions. Fresh full ELFs/listings stay `/tmp`
 no native change/original execution/body/asset export. Fader initialization/other
 writers, caller/group/ID/numeric/alias/IRQ/concurrency domains, deferred consumers
 and original zero/nonzero-duration/tempo/fade/audio remain OPEN.
+
+### 2026-10-13 — Synthesis initialization, row types, jobs and callback
+
+[Four complete local bodies](../behavior/audio/MUSYX_SYNTH_INITIALIZATION_TYPES_JOBS_AND_CALLBACK.md)
+close raw allocation/count/voice field order, partial fader initialization and
+row21/22 current overrides/row23..30 type0/row31 type1, bitmap clear, aux domains,
+child ordering, global/job resets and callback installation. The initializer
+does not clear whole fader records or activate sndActive. Public volume forwards
+mode0/missing ID; row-type setter gates on sndActive and directly indexes the
+low8 group without a32-row bound. No invented full-reset/reinit repair.
+
+Validation: read-only manifest19 spans (four complete/13 linked/two literals),
+279 anchors/13 calls passes.32 fader rows/96 job words/34 constant+three ordinal
+voice fields/seven count/six setter/six reset-domain vectors are source-derived.
+Fresh full ELFs/listings stay `/tmp`; no native change/original execution/body/
+asset export. Child/controller/allocation/voice/callback services, other writers,
+caller bounds/null/overflow/alias/IRQ/concurrency/reinit and original init/audio
+remain OPEN.

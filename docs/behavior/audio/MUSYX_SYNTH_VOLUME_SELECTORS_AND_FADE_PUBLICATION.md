@@ -120,3 +120,10 @@ writers, actual caller ID/group/mode/time/volume inputs, direct bounds/alias/
 finite-number/IRQ/concurrency invariants, deferred sequence consumers and
 original zero/nonzero-duration/tempo/fade/audio traces. EVT-01 and full native/
 source/runtime/hardware equivalence remain OPEN.
+
+### Synthesis initialization follow-up
+
+[Complete synthesis initializer](MUSYX_SYNTH_INITIALIZATION_TYPES_JOBS_AND_CALLBACK.md)
+now pins local voice/fader/aux/job resets, exact initial row types and callback
+installation. Other child services/writers, valid caller/reinit/concurrency
+domains and original initialization/scheduling/audio traces remain open.

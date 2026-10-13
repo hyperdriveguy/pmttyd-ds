@@ -105,3 +105,10 @@ complete local bodies and scoped game prefix are answered; full native/hardware/
 audio/runtime equivalence remains OPEN.
 
 [Complete AI buffer/callback/IRQ initialization and compressor flag](MUSYX_AI_BUFFERS_CALLBACK_AND_IRQ_INITIALIZATION.md) now closes those local bootstrap children. DSP/control/frame/SDK/provider/concurrency/original runtime remain separate.
+
+### Synthesis initialization follow-up
+
+[Complete synthesis initializer](MUSYX_SYNTH_INITIALIZATION_TYPES_JOBS_AND_CALLBACK.md)
+now pins local voice/fader/aux/job resets, exact initial row types and callback
+installation. Other child services/writers, valid caller/reinit/concurrency
+domains and original initialization/scheduling/audio traces remain open.

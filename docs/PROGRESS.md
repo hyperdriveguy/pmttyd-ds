@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero synthesis initialization
+
+Completed synthInit/synthSetMusicVolumeType/sndVolume/hwSetMesgCallback local
+contracts for EVT-01 and checked the corresponding inbox portion.
+[Initialization/type/jobs/callback](behavior/audio/MUSYX_SYNTH_INITIALIZATION_TYPES_JOBS_AND_CALLBACK.md)
+pins raw voice allocation/count and exact initial fields, partial fader resets,
+row types/current overrides, aux/global/job resets, child request order and
+callback publication. The type setter gates on sndActive but has no direct-row
+bounds check. No universal fader reset, reinitialization repair or original
+audio timing is inferred; linked children remain separate requirements.
+
+Validation: read-only ISO manifest passed19 spans (four complete/13 linked/two
+literals),279 anchors/13 calls.32 fader rows/96 job words/34 constant+three ordinal
+voice fields/seven count/six setter/six reset-domain vectors checked as deductions.
+Documentation link audit passed780 Markdown files/zero broken links;
+`git diff --check` passed. Documentation/metadata only; no `make test`/`make all`
+rerun. Original full inspection listings/ELFs stay `/tmp`; no bodies/assets
+committed. Concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 controller/allocation/voice/callback children, other
+row/bitmap/aux/job writers and actual caller bounds/reinit/concurrency domains;
+original initialization/scheduling/audio traces. Full native/runtime binding,
+lower-priority inbox and full-game work remain incomplete.
+
 ## 2026-10-13 — Inbox priority-zero synthesis volume producer
 
 Completed synthVolume/sndConvertMs source contracts for EVT-01 and checked
