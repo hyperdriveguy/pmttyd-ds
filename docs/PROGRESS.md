@@ -2,6 +2,83 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original item presentation resources and visible frontend colors
+
+Committed7559a76 adds the reusable
+[item presentation catalog](behavior/unit/NATIVE_ITEM_PRESENTATION_CATALOG.md)
+and original selector art. Read-only source itemDataTable803108a8/3520hex,
+verified SHA256cd9e52c1f0946f785301879d0e9560a5b87860abd648e9721973159291d0add9,
+exports all340 physical records in original ID order. Original name+4/description+8 keys, their pointer identities and iconU16+20hex
+survive;
+null record339 stays unavailable, distinct from an empty key. Pack16578bytes.
+The transactional native reader rejects malformed/truncated/trailing data and
+preserves resident pointers on failure. Renderer startup admits metadata once;
+lookup is direct indexing with no per-draw file read/allocation/search. Existing
+room-first/global-second message lookup resolves original keys/tokens; all keys
+for0..338 resolve in original US global bank. No fabricated item prose or
+weapon/game-code table import.
+
+Shared original icon atlas now includes item IDs307/308 (TPL312/313,40x40),
+up/down445/446 (465/466,48x48) and stripe447 (467,24x24), preserving source
+loop/frame/delay metadata and pixels. These fit existing512x512 RGBA8 atlas
+with2px transparent padding and no resampling or GPU dimension increase.
+Metadata covers future areas/items; only admitted icons are resident. General
+animated item icons must retain their complete source frames when later packed.
+Local original packs/assets remain ignored; licensing/conversion recorded in
+ASSETS. No new quest or item window is activated here.
+
+Isolated startup capture exposed original title images rendered solid white.
+87a1c49 corrects frontend C2D tint strength1 to0: preserve original texture RGB
+while retaining source-alpha modulation. This also fixes shared raster map/
+letter/prologue/demo image color routing. It does not change story logic or
+text. b635b5f moves the unchanged136x32 copyright draw fromY215 to208 to retain
+its last7 lines inside the240-line native viewport; this is native screen reflow,
+not a measured original coordinate. Original pixels/aspect remain unchanged.
+
+Delegated source recovery delivered
+[complete physical metadata](behavior/unit/ITEM_PRESENTATION_METADATA.md) and
+[item-selector frame/tab](behavior/display/ITEM_SELECTOR_WINDOW_FRAME.md),
+with OW-INTERACT-01 breadcrumbs; request remains OPEN. Frame recovery pins
+Rz*S, separate rectangle-center translations for base and blue tab, exact
+nine-slice36vertices/180writes, original descriptor0 texture/material and
+low8alpha ownership. Original SDK rounding/GX raster/backend parity remain open.
+Independent native review found no blocker; no foreign work staged.
+
+Validation: final shared `make test` passes166 CTest/110 Python,
+/tmp/item-presentation-reflow-test.log; `make all` passes without warnings/errors,
+/tmp/item-presentation-reflow-native.log. Clean committed-source snapshot
+artifacts/source-checks/item-catalog-0chgvphv passes165 CTest/110 Python at
+87a1c49, /tmp/item-catalog-isolated-final-test.log. All1991 tracked blobs matched
+that commit. Updated snapshot b635b5f passes native `make all`,
+/tmp/item-catalog-isolated-reflow-native.log; final binary
+artifacts/ttyd-item-presentation.3dsx comes from that snapshot. Shared/isolated
+count difference reflects concurrent uncommitted test registration, not a skip.
+Tests cover null/empty-key and key-byte boundaries, extent/truncation/reserved/
+trailing rejection and retained pointers, original US lookup for every populated
+record, exact95/107 keys/icons, original icon dimensions/frame metadata and
+pixel-identical selector atlas regions. Link audit949 Markdown/zero broken,
+whitespace passes. No added trivial tint-value unit test; visual smoke verifies
+that correction instead.
+
+Azahar isolated final startup capture succeeds under
+artifacts/azahar-item-presentation-final with original colored title/full
+copyright and file menu visible, no native exception. Initial short presses
+missed low-rate startup frames; temporary held-input capture script reached both
+states. Earlier before/after evidence stays in azahar-item-presentation-held and
+azahar-item-presentation-colors. These are startup/visual regression captures,
+not matched Dolphin pixels, complete selector UI or hardware benchmarks. User
+emulator profiles/saves untouched; concurrent battle/audio/docs work preserved.
+
+Next: bind the three source selector windows/list/help/font/scissor/status/audio
+and original input/GP services using recovered frame transforms; retain event
+ownership across multi-message/selector quest lifetimes. Complete original
+pouch/switch persistence before enabling full Goomba item95/107 quest mutations,
+then execute exact original graphs/messages/speakers/flags and extend original
+NPC/event/object lifetimes into more areas. Frontend title/scene placement and
+material/camera fidelity beyond these corrections still require source/runtime
+comparisons; full New2DS performance remains unmeasured. Full requested goal
+remains active; early Rogueport is still a slice.
+
 ## 2026-10-13 — Inbox priority-zero whole DVD busy callback
 
 Completed error tail/whole local cbForStateBusy; checked EVT-01 portion and
