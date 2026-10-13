@@ -1,5 +1,18 @@
 # Original asset pipeline
 
+## 2026-10-13 — Original map-object collision metadata
+
+`tools/field_actor_assets.py` reads minXYZ/maxXYZ directly from original
+`local-assets/map-objects/MOBJ_SaveBlock` at0xd0..0xe4, extracted by the existing
+read-only ISO pipeline. Ignored PMNPC003 `romfs/field-actors.pmnpc` and `.json`
+retain those source floats, original object name and explicit hit mode. No
+rendered mesh bounds or fabricated radius are substituted. Runtime cube uses
+original unit vertices/strip order documented in the source contract, keeping
+head collision independent of S_1/A_1. Conversion *.01 and native float matrix
+requests remain adapters. Original Nintendo/Intelligent Systems rights and
+local-only/no-redistribution restrictions remain unchanged. See
+[native head binding](behavior/field/NATIVE_MAP_OBJECT_HEAD_COLLISION.md).
+
 ## 2026-10-13 — Original save-block surface conversion
 
 `tools/map_object_assets.py` extracts original `a/MOBJ_SaveBlock` and its

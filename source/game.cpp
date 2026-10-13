@@ -403,7 +403,7 @@ bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clam
     return result.contact;
 }
 FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float worldY,float velocity,float rayExtension,
-                              FieldSlope* slopes,bool narrowCone) {
+                              FieldSlope* slopes,bool narrowCone,const std::vector<FieldObjectTriangle>* objects) {
     FieldHeadQuery result;
     const float length=std::hypot(direction.x,direction.z);
     if(!std::isfinite(p.x) || !std::isfinite(p.z) || std::fabs(p.x)>4096 || std::fabs(p.z)>4096 ||
@@ -413,24 +413,33 @@ FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float worldY,float velocity
     const Vec2 offsets[]={{0,0},{x,z},{-z,x},{z,-x},{-x,-z}};
     const float low=worldY+HeadBodyHeight*.5f,high=low+HeadBodyHeight+rayExtension;
     for(auto offset:offsets) {
-        const Vec2 ray{p.x+offset.x,p.z+offset.z};float nearest=high;const HeadTriangle* selected=nullptr;
-        for(uint32_t n:nearby(headIndex,ray)) {
-            const auto& tri=head[n];if(!headAttributesSolid(runtimeContact(tri.contact).attributes))continue;
-            if(!doorCollisionEnabled(tri.contact.sourceNode))continue;
-            const float* v=tri.v;
+        const Vec2 ray{p.x+offset.x,p.z+offset.z};float nearest=high;const float* selected=nullptr;
+        GroundContact selectedContact;uint32_t selectedOwner=0;
+        auto test=[&](const float* v,GroundContact contact,uint32_t cull,uint32_t owner) {
+            if(!headAttributesSolid(contact.attributes))return;
             // Source normal=(v2-v0) cross (v0-v1), equivalent to standard winding.
             const float normalY=(v[5]-v[2])*(v[6]-v[0])-(v[3]-v[0])*(v[8]-v[2]);
-            if(tri.cull==1 && normalY>=0)continue;
+            if(cull==1 && normalY>=0)return;
             float den=(v[5]-v[8])*(v[0]-v[6])+(v[6]-v[3])*(v[2]-v[8]);
-            if(std::fabs(den)<1e-8f)continue;
+            if(std::fabs(den)<1e-8f)return;
             float a=((v[5]-v[8])*(ray.x-v[6])+(v[6]-v[3])*(ray.z-v[8]))/den;
             float b=((v[8]-v[2])*(ray.x-v[6])+(v[0]-v[6])*(ray.z-v[8]))/den;
-            if(a<0 || b<0 || a+b>1)continue;
+            if(a<0 || b<0 || a+b>1)return;
             float y=a*v[1]+b*v[4]+(1-a-b)*v[7];
-            if(y>=low && y<=high && (!selected || y<nearest)){nearest=y;selected=&tri;}
+            if(y>=low && y<high && (!selected || y<nearest)){
+                nearest=y;selected=v;selectedContact=contact;selectedOwner=owner;
+            }
+        };
+        // Current packs represent one source map record. Its static slots
+        // precede subsequently registered mode0 MOBJ slots; equal hits retain
+        // the first slot. Multi-record hitMain chain reconstruction is pending.
+        for(uint32_t n:nearby(headIndex,ray)) {
+            const auto& tri=head[n];if(!doorCollisionEnabled(tri.contact.sourceNode))continue;
+            test(tri.v,runtimeContact(tri.contact),tri.cull,0);
         }
+        if(objects)for(const auto& tri:*objects)test(tri.vertices.data(),{tri.attributes,0},tri.cull,tri.owner);
         if(!selected)continue;
-        const auto v=selected->v;
+        const auto v=selected;
         const float ax=v[3]-v[0],ay=v[4]-v[1],az=v[5]-v[2];
         const float bx=v[6]-v[0],by=v[7]-v[1],bz=v[8]-v[2];
         float nx=ay*bz-az*by,ny=az*bx-ax*bz,nz=ax*by-ay*bx;
@@ -444,7 +453,7 @@ FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float worldY,float velocity
         const float contact=headContactHeight(nearest);
         result.contact=headContactReached(worldY,velocity,contact);
         result.clearance=result.contact?0:contact-worldY-HeadBodyHeight;
-        if(result.contact){result.correction=headClampedRoot(contact);result.node=runtimeContact(selected->contact);}
+        if(result.contact){result.correction=headClampedRoot(contact);result.node=selectedContact;result.objectKey=selectedOwner;}
         // First admitted ray returns even for a near miss. Later feet cannot
         // replace it with a closer contact; rejected inclinations can continue.
         return result;
@@ -633,9 +642,11 @@ void Game::dispatchFieldAir() {
     } else fieldJump.dispatch(jumpBase+fieldJump.height);
 }
 FieldHeadQuery Game::queryOverhead(float rootY,float velocity,float extension) {
+    buildFieldObjectCollision(fieldActorCatalog(),progress.room,progress.originalStory,fieldDoor.interiorMask,
+                              fieldSystemFlags,fieldObjectTriangles);
     const auto result=searchFieldHead(progress.position,moveDirection,rootY,velocity,extension,
-                                      &fieldMovement.slope,fieldHeadNarrowCone);
-    headContact=result.node;headClearance=result.clearance;
+                                      &fieldMovement.slope,fieldHeadNarrowCone,&fieldObjectTriangles);
+    headContact=result.node;headObjectKey=result.objectKey;headClearance=result.clearance;
     overheadContact=result.contact || (result.clearance>=0 && result.clearance<=.05f);
     return result;
 }
@@ -1377,7 +1388,7 @@ void Game::tick(const Input& rawInput) {
         }
     } presentation{*this,partner,rawInput};
     Input input=rawInput;const Input& i=input;
-    ++ticks;++fieldCameraSimulationTicks; sound=Sound::None;overheadContact=false;
+    ++ticks;++fieldCameraSimulationTicks; sound=Sound::None;overheadContact=false;headObjectKey=0;
     if(scene==Scene::Explore || scene==Scene::Dialogue)beginFieldCameraTick();
     if(arriving || warpRequest>=0)retainedFieldMainX=0; // Source road choreography keys off before Mario input publication.
     if(i.physicalSnapshot) {

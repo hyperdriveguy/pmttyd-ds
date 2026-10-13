@@ -208,3 +208,14 @@ publication precedes object activation. Source collision template cullbyte1=1
 (one-sided) is added to the prior head contract. Original card backend, source
 flag persistence and native choice/error adapter remain open. Read-only stream/
 message/DOL recovery, with no original execution or native completion claim.
+
+### 2026-10-13 — Shared static/MOBJ hit registry and ray-order dependency
+
+[Dynamic object registry/ray order](../behavior/field/DYNAMIC_OBJECT_HIT_REGISTRY_AND_RAY_ORDER.md)
+recovers one shared active HitObj chain, map-record/slot order, record0 dynamic
+allocation after initial static slots, strict-nearer upward winner/tie retention,
+and source borrowed name/delete publication lifetime. The save cube has no
+per-face gameplay flags: shared cull1/attribute80000000 admits bottom head,
+top ground and side wall geometry through their query owners. Implementing only
+head remains scoped. Fresh read-only DOL/source-table inspection; original
+runtime ordering and complete native ground/wall/registry lifetime remain open.

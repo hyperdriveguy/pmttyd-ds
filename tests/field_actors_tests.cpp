@@ -49,6 +49,19 @@ int main(int argc,char**) {
         assert(!a.actors()[0].visible(12,8,2,0x20) && !a.actors()[0].visible(12,std::nullopt,2,0));
         replace(b,row+36,342u);assert(!read(a,b));assert(a.actors()[0].storyHigh==341);
     }
+    {auto b=good;b[7]='3';
+        // Upgrade the synthetic V1 fixture to V3 without regenerating test logic.
+        for(int i=1;i>=0;--i) {
+            b.insert(b.begin()+row+i*stride+stride,32,0);
+            b.insert(b.begin()+row+i*stride+28,4,0);
+        }
+        b.insert(b.begin()+row,28,0);
+        assert(read(a,b) && a.models()[0].hitMode==0 && a.actors()[0].sourceName.empty());
+        auto bad=b;replace(bad,row,2u);assert(!read(a,bad));
+        bad=b;replace(bad,row+4,0x7fc00000u);assert(!read(a,bad));
+        bad=b;replace(bad,row,1u);assert(!read(a,bad)); // Degenerate bbox.
+        assert(a.models()[0].hitMode==0 && a.actors().size()==2);
+    }
     if(argc>1) {
         assert(a.load("romfs/field-actors.pmnpc"));assert(a.actors().size()>=3 && a.models().size()>=2);
         assert(a.models()[0].asset=="field-chu" && a.models()[1].asset=="professor");

@@ -40,13 +40,20 @@ bool FieldActorAssets::read(FILE* f) {
     };
     std::array<char,8> magic{};uint32_t modelCount=0,actorCount=0;
     if(!scalar(magic))return false;
-    const bool version2=!std::memcmp(magic.data(),"PMNPC002",8);
+    const bool version3=!std::memcmp(magic.data(),"PMNPC003",8);
+    const bool version2=version3 || !std::memcmp(magic.data(),"PMNPC002",8);
     if((!version2 && std::memcmp(magic.data(),"PMNPC001",8)) || !scalar(modelCount) || !scalar(actorCount) ||
        modelCount>64 || actorCount>1024 || (!modelCount && actorCount))return false;
     std::vector<FieldActorModel> models(modelCount);
     for(uint32_t i=0;i<modelCount;++i) {
         auto& m=models[i];if(!string(m.asset) || !scalar(m.uvScale) ||
            !(m.uvScale==1 || m.uvScale==2 || m.uvScale==4 || m.uvScale==8))return false;
+        if(version3) {
+            if(!scalar(m.hitMode) || m.hitMode>1 || !scalar(m.hitBounds))return false;
+            for(float value:m.hitBounds)if(!std::isfinite(value) || std::fabs(value)>10000 || (!m.hitMode && value!=0))return false;
+            if(m.hitMode)for(unsigned axis=0;axis<3;++axis)if(m.hitBounds[axis]>=m.hitBounds[axis+3])return false;
+            if(m.hitMode && m.hitBounds[4]<=0)return false;
+        }
         for(uint32_t j=0;j<i;++j)if(models[j].asset==m.asset)return false;
     }
     std::vector<FieldActorRecord> actors(actorCount);
@@ -57,6 +64,8 @@ bool FieldActorAssets::read(FILE* f) {
            !a.key || a.room>65535 || a.model>=modelCount || (a.interiorRequired&a.interiorForbidden) || a.storyGate>(version2?2u:1u) ||
            (a.storyGate?a.storyLow>a.storyHigh:a.storyLow!=0 || a.storyHigh!=0) || !std::isfinite(a.yaw) || a.kind>1 ||
            !std::isfinite(a.scale) || a.scale<=0 || a.scale>100)return false;
+        if(version3 && !string(a.sourceName,a.kind==0))return false;
+        if(models[a.model].hitMode && a.kind!=1)return false;
         if(a.storyGate==2 && a.storyLow!=a.storyHigh)return false;
         if(!a.talkPrefix.empty() && (a.kind!=0 || a.talkPrefix.size()!=11 || a.talkPrefix.substr(0,4)!="gor_" ||
            a.talkPrefix[6]!='_' || a.talkPrefix.back()!='_'))return false;

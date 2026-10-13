@@ -35,6 +35,7 @@
 #include "harbor_story.hpp"
 #include "professor_story.hpp"
 #include "field_actors.hpp"
+#include "field_object_collision.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -55,6 +56,7 @@ struct FieldHeadQuery {
     bool contact=false;
     float correction=0,clearance=-.01f;
     GroundContact node;
+    uint32_t objectKey=0; // Dynamic owner namespace; never a static REL node offset.
 };
 struct FieldSupport {
     bool found=false;
@@ -127,6 +129,7 @@ public:
     float groundHeight = 0, partnerHeight = 0;
     float groundMetadataHeight=0; // Source +1c4; distinct from actual rootY.
     bool overheadContact=false;
+    uint32_t headObjectKey=0;
     GroundContact headContact;
     float headClearance=-.01f;
     bool fieldHeadNarrowCone=false; // Original separate +4 flag owner remains unbound.
@@ -245,6 +248,7 @@ private:
     void advanceVertical(bool held,bool dispatch=true);
     bool integrateVertical(bool held,float& previousY,bool update=true);
     FieldHeadQuery queryOverhead(float rootY,float velocity,float extension);
+    std::vector<FieldObjectTriangle> fieldObjectTriangles;
     void dispatchFieldAir();
     void registerRoadCases(bool enabled);
     bool resolveRoadCallbacks(const RoadWarp& road);
@@ -310,7 +314,8 @@ bool loadHead(const char* path);
 bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot);
 bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot,float rayExtension);
 FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float rootY,float velocity,float extension,
-                              FieldSlope* slopes=nullptr,bool narrowCone=false);
+                              FieldSlope* slopes=nullptr,bool narrowCone=false,
+                              const std::vector<FieldObjectTriangle>* objects=nullptr);
 bool loadGroundReturns(const char* path);
 bool groundReturn(const GroundContact&,ReturnPoint& point);
 bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr,float* slope=nullptr);
