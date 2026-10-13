@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero MIDI setters and notification
+
+Completed inpSetMidiCtrl/inpSetMidiCtrl14/synthKeyStateUpdate for EVT-01;
+checked the corresponding inbox portion.
+[MIDI setters](behavior/audio/MUSYX_MIDI_CONTROLLER_SETTERS_AND_NOTIFICATION.md)
+pins byte stores/change versus forced marker, RPN/default-before-store propagation,
+matching fresh voice scans/job requests, MIDI aux dirty replacement and unclamped
+14-bit pair order. FX special38 retains set255 MIDI/default formulas. RPN children/
+actual caller/table/count/job domains/runtime remain open; no address repair inferred.
+
+Validation: read-only ISO manifest passed nine spans (three complete/six linked),
+213 anchors/18 calls. Eight store/six parameter/six pair/four address vectors and
+mask/address/matching/order deductions checked. Link audit passed814 Markdown
+files/zero broken links; `git diff --check` passed. Documentation/metadata only;
+no `make test`/`make all` rerun. Full original inspection ELFs/listings stay
+`/tmp`; no bodies/binary assets committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 RPNHi/Dec/Inc and actual controller/selector/default/
+voice/count/dirty/job/caller providers, valid table/voice/matching/alias/IRQ/
+concurrency/reinit domains; other macro opcode paths and original pair/publication/
+pedal/audio traces. Full native/runtime binding, lower-priority inbox/full-game
+work remain open.
+
 ## 2026-10-13 — Inbox priority-zero macro variable commands
 
 Completed mcmdVarCalculation/mcmdIfVarCompare/inpSetExCtrl and opcodes96..101/

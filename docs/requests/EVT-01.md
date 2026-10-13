@@ -307,6 +307,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   opcodes96..101/112..113 arithmetic/compare/assignment/controller requests —
   [variable calculation/compare/set](../behavior/audio/MUSYX_MACRO_VARIABLE_CALCULATION_COMPARE_AND_SET.md).
   S16 versus signed32/incoming register/shared reads retained; MIDI child/runtime open.
+- [x] Complete inpSetMidiCtrl/inpSetMidiCtrl14/synthKeyStateUpdate
+  byte/pair stores, special default propagation and notification —
+  [MIDI setters](../behavior/audio/MUSYX_MIDI_CONTROLLER_SETTERS_AND_NOTIFICATION.md).
+  FX special MIDI-address formulas/raw inputs retained; RPN/domain/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1797,3 +1801,20 @@ address/order deductions checked. Full fresh ELFs/listings stay `/tmp`; no nativ
 change/original execution/body/binary asset export. Downstream MIDI setter,
 commands/incoming register/PC/domain/shared-cell/alias/IRQ/concurrency and original
 calculation/comparison/controller/audio remain OPEN.
+
+### 2026-10-13 — MIDI controller setters and key-state notification
+
+[Three complete bodies](../behavior/audio/MUSYX_MIDI_CONTROLLER_SETTERS_AND_NOTIFICATION.md)
+close unconditional byte stores, ordinary change detection versus forced special
+notification, RPN/default-before-store order, exact matching voice scan/job and
+MIDI aux dirty replacement, then14-bit pair/fallback requests without clamp.
+FX special38 retains set255 MIDI/default address formulas. No generic FX default
+substitution, table guard, atomic pair/coalesced notification or child completion
+inferred. RPNHi/Dec/Inc remain linked separate providers.
+
+Validation: read-only manifest nine spans (three complete/six linked),213 anchors/
+18 calls passes. Eight store/six parameter/six pair/four address vectors and exact
+mask/address/matching/order deductions checked. Full fresh ELFs/listings stay
+`/tmp`; no native change/original execution/body/binary asset export. RPN children,
+raw caller/table/count/membership/alias/IRQ/concurrency/reinit/job domains and
+original controller/pair/pedal/audio remain OPEN.
