@@ -2,6 +2,27 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero SDK DVD read/close/wake
+
+Completed DVDReadPrio/DVDClose/dvdfs cbForReadSync; checked EVT-01 portion.
+[SDK read/close](behavior/file/SDK_DVD_READ_BOUNDS_WAIT_WAKE_AND_CLOSE.md)
+pins wrapped bounds/async submission, saved IRQ token/three terminal states/
+shared sleep-wake queue and unconditional close1 after cancel. Child commands/
+thread/cancel/providers/original IO/audio/native binding remain open.
+
+Validation: read-only ISO manifest passed twelve spans,88 anchors,eight calls.
+Ten bounds/six state/four submission/three close vectors and ABI/field/callback/
+publication sites checked; manager pins reverified. Link audit passed937 Markdown
+files/zero broken links; scoped diff check passed. Mathematical deductions
+separate from original execution. Docs/metadata only; no make test/all rerun.
+Fresh full ELFs/listings/generator stay /tmp; no bodies/assets committed. Concurrent
+native work excluded. Approved push pending valid GitHub credentials.
+
+Next: priority-zero EVT-01 DVDReadAbsAsyncPrio/command engine/DVDCancel/thread/
+IRQ/panic and actual fileInfo/state/completion/queue/provider/value/extent/alias/
+lifetime/concurrency/ABI domains, original submission/status/short-read/error/
+wakeup/cancel/IO/audio traces. Other inbox/native/full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero DVD lifecycle/worker
 
 Completed DVDMgrInit/Delete/dvdmgr.o proc_main; checked EVT-01 portion.

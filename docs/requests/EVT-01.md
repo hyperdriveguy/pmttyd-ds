@@ -613,6 +613,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete DVDMgrInit/Delete/dvdmgr.o proc_main — [lifecycle/worker](../behavior/file/DVD_MANAGER_INITIALIZATION_CANCELLATION_AND_WORKER.md).
   Queue-before-thread/raw failure spin/flag-before-resume/cancel-without-queue
   release/main-yield loop pinned; SDK/providers/original/native binding open.
+- [x] Complete DVDReadPrio/DVDClose/dvdfs cbForReadSync — [SDK read/close](../behavior/file/SDK_DVD_READ_BOUNDS_WAIT_WAKE_AND_CLOSE.md).
+  Bounds/async submission/IRQ/status/sleep-wake/cancel-return pinned; command/
+  cancel/thread/providers/original/native binding remains open.
 - [ ] Deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
@@ -3055,3 +3058,12 @@ worker-prefix vectors and exact thread/publication/backedge sites checked; main
 pins reverified. Queue published before clear/create, zero create self-loops,
 cancel does not release queue/slots, worker ignores thread-on flag. SDK/provider/
 original lifecycle/IO/audio/native binding open; EVT-01 stays OPEN.
+
+## 2026-10-13 — SDK DVD read/close wrapper delivery
+
+Completed [read/close/read-sync callback](../behavior/file/SDK_DVD_READ_BOUNDS_WAIT_WAKE_AND_CLOSE.md).
+Twelve spans/88 anchors/eight calls verified; ten bounds/six state/four submission/
+three close vectors and ABI/field/callback sites checked; manager pins reverified.
+Wrapped signed/unsigned bounds, three terminal states/shared queue and close1
+regardless of cancel result pinned. Child commands/thread/cancel/providers/
+original IO/audio/native binding open; EVT-01 stays OPEN.

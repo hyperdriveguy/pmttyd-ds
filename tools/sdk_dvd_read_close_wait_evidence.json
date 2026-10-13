@@ -1,0 +1,403 @@
+{
+  "schema": 1,
+  "scope": "Complete SDK DVDReadPrio/close/read-sync callback wrappers; bounds/async request/IRQ/status/wait/wake/cancel/raw return, child services/runtime open",
+  "complete_bodies": [
+    "DVDReadPrio",
+    "DVDClose",
+    "cbForReadSync"
+  ],
+  "linked_only": [
+    "OSPanic",
+    "DVDReadAbsAsyncPrio",
+    "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+    "OSSleepThread",
+    "OSRestoreInterrupts",
+    "DVDCancel",
+    "OSWakeupThread"
+  ],
+  "dol_spans": [
+    {
+      "name": "DVDReadPrio",
+      "address": 2150237120,
+      "size": 280,
+      "sha256": "1ae8b4001e51e6aa0a3e244d4e79bcada065e72e8ce2cdee6a2ef32b00883084"
+    },
+    {
+      "name": "DVDClose",
+      "address": 2150236536,
+      "size": 36,
+      "sha256": "dcd1e474e4eca0ae024fc176724a44d42e70c7eae33101d4da49f2049cec8e99"
+    },
+    {
+      "name": "cbForReadSync",
+      "address": 2150237400,
+      "size": 36,
+      "sha256": "00392aec7c7f849380b27e1d616735e7418b85148bfffd026adb19c958715347"
+    },
+    {
+      "name": "OSPanic",
+      "address": 2150201492,
+      "size": 300,
+      "sha256": "603b450ea9e0952a1978ddffd0aaa26e5b008c84fdf1e76e1e5435673e9bc2ce"
+    },
+    {
+      "name": "DVDReadAbsAsyncPrio",
+      "address": 2150244856,
+      "size": 220,
+      "sha256": "228dee3a0fb8726f2cb4350898ba657e333201cc7fd58c262e3cc988aaee1374"
+    },
+    {
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+      "address": 2150210260,
+      "size": 20,
+      "sha256": "91253610f8caa4988f3df8595ccfc6e5eafaf0b6df1b302668555ab7d528b1bc"
+    },
+    {
+      "name": "OSSleepThread",
+      "address": 2150225328,
+      "size": 236,
+      "sha256": "74ea136d2c69fb420301ab42554bbee9662a86ff217782c8f8dca3dc3fdd1349"
+    },
+    {
+      "name": "OSRestoreInterrupts",
+      "address": 2150210300,
+      "size": 36,
+      "sha256": "54db610a580003e2db23e460425f4662f4f4e7a4da3ae6f89a632df9e52b427a"
+    },
+    {
+      "name": "DVDCancel",
+      "address": 2150247140,
+      "size": 172,
+      "sha256": "4d585969125aa02a78261a0872390509620c08e52d01c0f64117dc1ad773e5b5"
+    },
+    {
+      "name": "OSWakeupThread",
+      "address": 2150225564,
+      "size": 260,
+      "sha256": "daad027133f69985c15edf124872b8f97a83881f084e7c73c2c671f31a9b7b32"
+    },
+    {
+      "name": "DVD read diagnostic 0x8041e468",
+      "address": 2151801960,
+      "size": 8,
+      "sha256": "982a9988cf9bc314c46e5eae27c52efa7ed26d874ed5cc5e990395c229137d6c"
+    },
+    {
+      "name": "DVD read diagnostic 0x803c2d38",
+      "address": 2151427384,
+      "size": 47,
+      "sha256": "cddb7f716a55b3baedcd1bd61b9d8d1651ad7128e92ec7447b9ddcc990f06861"
+    }
+  ],
+  "dol_anchors": {
+    "2150237124": "90010004",
+    "2150237140": "3be30000",
+    "2150237144": "3b640000",
+    "2150237148": "3b850000",
+    "2150237152": "3bc70000",
+    "2150237156": "41800010",
+    "2150237160": "801f0034",
+    "2150237168": "4081001c",
+    "2150237172": "3c60803c",
+    "2150237180": "38a32d38",
+    "2150237184": "386d1548",
+    "2150237188": "38800334",
+    "2150237192": "4bff748d",
+    "2150237200": "41800014",
+    "2150237204": "807f0034",
+    "2150237208": "38030020",
+    "2150237216": "4180001c",
+    "2150237220": "3c60803c",
+    "2150237228": "38a32d38",
+    "2150237232": "386d1548",
+    "2150237236": "3880033a",
+    "2150237240": "4bff745d",
+    "2150237244": "801f0030",
+    "2150237248": "3c80802a",
+    "2150237252": "38e404d8",
+    "2150237256": "387f0000",
+    "2150237260": "389b0000",
+    "2150237264": "38bc0000",
+    "2150237268": "391e0000",
+    "2150237276": "48001d9d",
+    "2150237284": "4082000c",
+    "2150237288": "3860ffff",
+    "2150237292": "48000058",
+    "2150237296": "4bff9665",
+    "2150237304": "801f000c",
+    "2150237312": "4082000c",
+    "2150237316": "83ff0020",
+    "2150237320": "48000030",
+    "2150237328": "4082000c",
+    "2150237332": "3be0ffff",
+    "2150237336": "48000020",
+    "2150237344": "4082000c",
+    "2150237348": "3be0fffd",
+    "2150237352": "48000010",
+    "2150237356": "386d2248",
+    "2150237360": "4bffd101",
+    "2150237364": "4bffffc4",
+    "2150237372": "4bff9641",
+    "2150237384": "8001003c",
+    "2150237388": "38210038",
+    "2150236540": "90010004",
+    "2150236548": "48002961",
+    "2150236552": "38600001",
+    "2150236556": "8001000c",
+    "2150236560": "38210008",
+    "2150237404": "386d2248",
+    "2150237408": "90010004",
+    "2150237416": "4bffd1b5",
+    "2150237420": "8001000c",
+    "2150237424": "38210008",
+    "2150237120": "7c0802a6",
+    "2150237128": "9421ffc8",
+    "2150237132": "bf610024",
+    "2150237136": "7cdd3379",
+    "2150237164": "7c1d0040",
+    "2150237176": "4cc63182",
+    "2150237196": "7c9de215",
+    "2150237212": "7c040040",
+    "2150237224": "4cc63182",
+    "2150237272": "7cc0ea14",
+    "2150237280": "2c030000",
+    "2150237300": "7c7e1b78",
+    "2150237308": "2c000000",
+    "2150237324": "2c00ffff",
+    "2150237340": "2c00000a",
+    "2150237368": "7fc3f378",
+    "2150237376": "7fe3fb78",
+    "2150237380": "bb610024",
+    "2150237392": "7c0803a6",
+    "2150237396": "4e800020",
+    "2150236536": "7c0802a6",
+    "2150236544": "9421fff8",
+    "2150236564": "7c0803a6",
+    "2150236568": "4e800020",
+    "2150237400": "7c0802a6",
+    "2150237412": "9421fff8",
+    "2150237428": "7c0803a6",
+    "2150237432": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2150237192,
+      "target": 2150201492,
+      "name": "OSPanic"
+    },
+    {
+      "site": 2150237240,
+      "target": 2150201492,
+      "name": "OSPanic"
+    },
+    {
+      "site": 2150237276,
+      "target": 2150244856,
+      "name": "DVDReadAbsAsyncPrio"
+    },
+    {
+      "site": 2150237296,
+      "target": 2150210260,
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi"
+    },
+    {
+      "site": 2150237360,
+      "target": 2150225328,
+      "name": "OSSleepThread"
+    },
+    {
+      "site": 2150237372,
+      "target": 2150210300,
+      "name": "OSRestoreInterrupts"
+    },
+    {
+      "site": 2150236548,
+      "target": 2150247140,
+      "name": "DVDCancel"
+    },
+    {
+      "site": 2150237416,
+      "target": 2150225564,
+      "name": "OSWakeupThread"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_bounds_vectors": [
+    {
+      "offset": 0,
+      "count": 0,
+      "length": 0,
+      "first_panic": false,
+      "wrapped_end": 0,
+      "wrapped_limit": 32,
+      "second_panic": false
+    },
+    {
+      "offset": 0,
+      "count": 31,
+      "length": 0,
+      "first_panic": false,
+      "wrapped_end": 31,
+      "wrapped_limit": 32,
+      "second_panic": false
+    },
+    {
+      "offset": 0,
+      "count": 32,
+      "length": 0,
+      "first_panic": false,
+      "wrapped_end": 32,
+      "wrapped_limit": 32,
+      "second_panic": true
+    },
+    {
+      "offset": 100,
+      "count": 0,
+      "length": 100,
+      "first_panic": false,
+      "wrapped_end": 100,
+      "wrapped_limit": 132,
+      "second_panic": false
+    },
+    {
+      "offset": 101,
+      "count": 0,
+      "length": 100,
+      "first_panic": true,
+      "wrapped_end": 101,
+      "wrapped_limit": 132,
+      "second_panic": false
+    },
+    {
+      "offset": 0,
+      "count": 4294967295,
+      "length": 100,
+      "first_panic": false,
+      "wrapped_end": 4294967295,
+      "wrapped_limit": 132,
+      "second_panic": true
+    },
+    {
+      "offset": 2147483648,
+      "count": 0,
+      "length": 4294967295,
+      "first_panic": true,
+      "wrapped_end": 2147483648,
+      "wrapped_limit": 31,
+      "second_panic": true
+    },
+    {
+      "offset": 1,
+      "count": 4294967295,
+      "length": 100,
+      "first_panic": false,
+      "wrapped_end": 0,
+      "wrapped_limit": 132,
+      "second_panic": false
+    },
+    {
+      "offset": 0,
+      "count": 0,
+      "length": 4294967295,
+      "first_panic": false,
+      "wrapped_end": 0,
+      "wrapped_limit": 31,
+      "second_panic": false
+    },
+    {
+      "offset": 0,
+      "count": 16,
+      "length": 4294967280,
+      "first_panic": false,
+      "wrapped_end": 16,
+      "wrapped_limit": 16,
+      "second_panic": true
+    }
+  ],
+  "derived_state_vectors": [
+    {
+      "state": 0,
+      "action": "return raw word20"
+    },
+    {
+      "state": 4294967295,
+      "action": "return -1"
+    },
+    {
+      "state": 10,
+      "action": "return -3"
+    },
+    {
+      "state": 1,
+      "action": "sleep and reread"
+    },
+    {
+      "state": 2,
+      "action": "sleep and reread"
+    },
+    {
+      "state": 4294967293,
+      "action": "sleep and reread"
+    }
+  ],
+  "derived_admission_vectors": [
+    {
+      "raw": 0,
+      "returns_minus_one": true,
+      "requests_irq_wait": false
+    },
+    {
+      "raw": 1,
+      "returns_minus_one": false,
+      "requests_irq_wait": true
+    },
+    {
+      "raw": 2,
+      "returns_minus_one": false,
+      "requests_irq_wait": true
+    },
+    {
+      "raw": 4294967295,
+      "returns_minus_one": false,
+      "requests_irq_wait": true
+    }
+  ],
+  "derived_close_vectors": [
+    {
+      "cancel_return": 0,
+      "close_return": 1
+    },
+    {
+      "cancel_return": 1,
+      "close_return": 1
+    },
+    {
+      "cancel_return": 4294967295,
+      "close_return": 1
+    }
+  ],
+  "field_offsets": {
+    "file_start": 48,
+    "file_length": 52,
+    "state": 12,
+    "completion_word": 32
+  },
+  "callback_binding": {
+    "site": 2150237252,
+    "target": 2150237400,
+    "name": "cbForReadSync",
+    "queue": 2151805288
+  },
+  "publication_sites": {
+    "first_panic": 2150237192,
+    "second_panic": 2150237240,
+    "async_request": 2150237276,
+    "disable": 2150237296,
+    "sleep": 2150237360,
+    "restore": 2150237372,
+    "close_cancel": 2150236548,
+    "wake": 2150237416
+  }
+}
