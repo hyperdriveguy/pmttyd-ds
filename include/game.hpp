@@ -279,6 +279,7 @@ public:
     const std::vector<FieldNpcSoundRequest>& fieldNpcSounds() const{return npcSoundRequests;}
 private:
     NpcTalkPlayer fieldNpcTalkPlayer() const;
+    FieldActorTalkInventory fieldNpcTalkInventory(const FieldActorRecord&) const;
     bool fieldNpcTalkCandidateAlive() const;
     uint32_t npcTalkCandidate=0;
     uint32_t npcTalkPending=0;

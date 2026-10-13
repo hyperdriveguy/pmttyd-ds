@@ -125,3 +125,6 @@ romfs/demo-page-back.*
 romfs/battle-startup-resources.*
 romfs/battle-ready-*
 romfs/harbor-curtain.*
+
+# Generated original-asset packs and metadata stay outside source history.
+/romfs/

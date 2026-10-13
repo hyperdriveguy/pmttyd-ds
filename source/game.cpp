@@ -763,6 +763,14 @@ NpcTalkPlayer Game::fieldNpcTalkPlayer() const {
     mario.viewYaw=fieldNpcAngles().angle(fieldCameraFrame.eye.x,fieldCameraFrame.eye.z,fieldCameraFrame.at.x,fieldCameraFrame.at.z);
     return mario;
 }
+FieldActorTalkInventory Game::fieldNpcTalkInventory(const FieldActorRecord& actor) const {
+    FieldActorTalkInventory items;const auto& state=progress.originalNpcTalkState;
+    if(actor.room!=2 || actor.key!=0x2b0a9f83)return items;
+    if(!progress.originalPouch || !state.quest1420)return items;
+    if(*state.quest1420==2 && state.flag5405 && *state.flag5405)items.item95=progress.originalPouch->keyItemCount(95);
+    if(*state.quest1420==13 && state.flag5406 && *state.flag5406)items.item107=progress.originalPouch->keyItemCount(107);
+    return items;
+}
 bool Game::fieldNpcTalkCandidateAlive() const {
     return npcTalkGeneration==fieldActorCatalogGeneration() && npcTalkCandidate &&
         fieldNpcTalkPlayer().talkable() && std::any_of(fieldActorCatalog().actors().begin(),fieldActorCatalog().actors().end(),
@@ -786,7 +794,7 @@ const FieldActorRecord* Game::nearbyFieldActor() const {
         const auto live=fieldNpcs.find(actor.key);
         const auto root=live!=fieldNpcs.end()?live->second.body.root:FieldWallVector{actor.position[0],actor.position[1],actor.position[2]};
         const auto flags=live!=fieldNpcs.end()?live->second.body.flags:actor.npcFlags;
-        const bool talkBound=progress.originalStory && fieldActorTalkAvailable(actor,*progress.originalStory,progress.originalNpcTalkState);
+        const bool talkBound=progress.originalStory && fieldActorTalkAvailable(actor,*progress.originalStory,progress.originalNpcTalkState,fieldNpcTalkInventory(actor));
         scan.consider({actor.key,root,actor.npcWidth,actor.npcHeight,flags,talkBound},mario,fieldNpcAngles(),rays);
     }
     if(scan.candidate)for(const auto& actor:fieldActorCatalog().actors())
@@ -805,7 +813,7 @@ void Game::updateFieldNpcTalk(const Input& input) {
                 actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags)) {
                 auto current=actor;const auto live=fieldNpcs.find(actor.key);
                 if(live!=fieldNpcs.end())current.position={live->second.body.root.x,live->second.body.root.y,live->second.body.root.z};
-                if(fieldActorTalk.begin(current,*progress.originalStory,harborMessageFont(),ticks*1000/60,progress.originalNpcTalkState)) {
+                if(fieldActorTalk.begin(current,*progress.originalStory,harborMessageFont(),ticks*1000/60,progress.originalNpcTalkState,fieldNpcTalkInventory(current))) {
                     if(!(current.npcFlags&0x01000000))fieldActorTalk.actor.yaw=npcReviseAngle(fieldNpcAngles().angle(current.position[0],current.position[2],
                         progress.position.x*100,progress.position.z*100));
                     if(live!=fieldNpcs.end())live->second.movement.yaw=fieldActorTalk.actor.yaw;
@@ -818,7 +826,7 @@ void Game::updateFieldNpcTalk(const Input& input) {
     const FieldActorRecord* actor=nullptr;
     if(fieldNpcEventCandidate) {
         for(const auto& row:fieldActorCatalog().actors())if(row.key==fieldNpcEventCandidate && progress.originalStory &&
-            fieldActorTalkAvailable(row,*progress.originalStory,progress.originalNpcTalkState)){actor=&row;break;}
+            fieldActorTalkAvailable(row,*progress.originalStory,progress.originalNpcTalkState,fieldNpcTalkInventory(row))){actor=&row;break;}
     } else actor=nearbyFieldActor();
     npcTalkCandidate=fieldNpcEventCandidate?fieldNpcEventCandidate:actor?actor->key:0;
     npcTalkGeneration=fieldActorCatalogGeneration();
@@ -1165,7 +1173,7 @@ const char* Game::prompt() const {
     if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) return "A: confront Lord Crump";
     if (progress.room==0 && near(NpcPosition)) return "A: talk";
     if(fieldNpcTalkCandidateAlive()) {
-        for(const auto& actor:fieldActorCatalog().actors())if(actor.key==npcTalkCandidate && progress.originalStory && !fieldActorTalkAvailable(actor,*progress.originalStory,progress.originalNpcTalkState))return "Development notice: NPC event unavailable";
+        for(const auto& actor:fieldActorCatalog().actors())if(actor.key==npcTalkCandidate && progress.originalStory && !fieldActorTalkAvailable(actor,*progress.originalStory,progress.originalNpcTalkState,fieldNpcTalkInventory(actor)))return "Development notice: NPC event unavailable";
         return "A: talk";
     } // Retained simulation result; no render-time map ray.
     return "Circle Pad: move   A: jump   X: partner";
@@ -1843,22 +1851,25 @@ void Game::tick(const Input& rawInput) {
                 const uint32_t triggers=i.physicalSnapshot?inputProducer.channels[0].pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 const auto sample=inputProducer.channels[0].battleSample();
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
+                if(auto exported=trioAttack.exportedPouch()){progress.originalPouch=std::move(exported);progress.hp=progress.originalPouch->half(0x70);}
                 scene=Scene::Dialogue;saveRequested=false;return;
             }
             if(trioAttack.finished()) {
                 const uint32_t triggers=i.physicalSnapshot?inputProducer.channels[0].pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 const auto sample=inputProducer.channels[0].battleSample();
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
+                if(auto exported=trioAttack.exportedPouch()){progress.originalPouch=std::move(exported);progress.hp=progress.originalPouch->half(0x70);}
                 if(trioAttack.active())trioCommands.state=TrioBattleCommands::State::Closed; // Enemy root now owns the action.
                 if(trioAttack.prepareCommands(trioCommands,trioBattleIntro) || trioAttack.commandActor()<0) {
                     scene=Scene::Dialogue;saveRequested=false;return;
                 }
             }
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && progress.originalPouch && !trioAttack.active() && !trioAttack.finished())progress.originalPouch->half(0x70,int16_t(progress.hp)); // Current field HP enters the original resource snapshot once.
-            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch)) {
+            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags)) {
                 const auto sample=inputProducer.channels[0].battleSample();
                 const uint32_t triggers=i.physicalSnapshot?sample.pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
+                if(auto exported=trioAttack.exportedPouch()){progress.originalPouch=std::move(exported);progress.hp=progress.originalPouch->half(0x70);}
                 scene=Scene::Dialogue;saveRequested=false;return;
             }
             if(trioCommands.state==TrioBattleCommands::State::Closed)trioCommands.begin(trioBattleIntro);

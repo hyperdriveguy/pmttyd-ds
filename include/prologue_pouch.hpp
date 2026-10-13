@@ -9,6 +9,8 @@ struct ProloguePouch {
     std::array<uint8_t,0x5d4> bytes{};
     int16_t half(unsigned offset) const;
     void half(unsigned offset,int16_t value);
+    int32_t keyItemCount(int32_t item) const;
+    int32_t removeKeyItem(int32_t item); // Low-level0/1 only; revision/event wrapper is separate.
 };
 // Pouch portion of original stg0_00_init: initialize, grant6/32hex/9 in source
 // order, set100 coins and revise the genuinely fresh unequipped resources.

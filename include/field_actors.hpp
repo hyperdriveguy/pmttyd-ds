@@ -28,6 +28,8 @@ struct FieldActorTalkState {
     std::optional<uint8_t> quest1420;
     std::optional<bool> flag5405,flag5406;
 };
+// Live original inventory observations, not cached/persisted mushroom quantities.
+struct FieldActorTalkInventory {std::optional<int32_t> item95,item107;};
 struct FieldActorRecord {
     uint32_t key=0,room=0,model=0,interiorRequired=0,interiorForbidden=0,storyGate=0,kind=0; // 0 NPC, 1 map object.
     uint32_t systemForbidden=0;
@@ -47,8 +49,8 @@ struct FieldActorRecord {
             !(system&systemForbidden) && (!storyGate || (story && (storyGate==2?*story!=storyLow:*story>=storyLow && *story<=storyHigh)));
     }
 };
-std::string fieldActorTalkKey(const FieldActorRecord&,int32_t story,const FieldActorTalkState& state={});
-bool fieldActorTalkAvailable(const FieldActorRecord&,int32_t story,const FieldActorTalkState& state={});
+std::string fieldActorTalkKey(const FieldActorRecord&,int32_t story,const FieldActorTalkState& state={},const FieldActorTalkInventory& items={});
+bool fieldActorTalkAvailable(const FieldActorRecord&,int32_t story,const FieldActorTalkState& state={},const FieldActorTalkInventory& items={});
 // PMNPC001..008 are local containers. They describe recovered static init subsets;
 // scripted actor movement/flags and the original NPC driver are separate owners.
 class FieldActorAssets {
@@ -72,7 +74,7 @@ class FieldActorTalk {
 public:
     MessagePlayback message;
     FieldActorRecord actor;
-    bool begin(const FieldActorRecord&,int32_t story,const MessageFont&,uint64_t now,const FieldActorTalkState& state={});
+    bool begin(const FieldActorRecord&,int32_t story,const MessageFont&,uint64_t now,const FieldActorTalkState& state={},const FieldActorTalkInventory& items={});
 private:
     MessageAssets messages;
 };

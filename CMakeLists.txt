@@ -774,3 +774,11 @@ add_test(NAME battle_packed_unit_equipment COMMAND battle_packed_unit_equipment_
 add_executable(battle_packed_max_moves_tests tests/battle_packed_max_moves_tests.cpp)
 target_link_libraries(battle_packed_max_moves_tests PRIVATE ttyd_core)
 add_test(NAME battle_packed_max_moves COMMAND battle_packed_max_moves_tests)
+
+target_sources(ttyd_core PRIVATE source/item_selection.cpp source/key_item_inventory.cpp)
+add_executable(item_selection_tests tests/item_selection_tests.cpp)
+target_link_libraries(item_selection_tests PRIVATE ttyd_core)
+add_test(NAME item_selection COMMAND item_selection_tests)
+add_executable(key_item_inventory_tests tests/key_item_inventory_tests.cpp)
+target_link_libraries(key_item_inventory_tests PRIVATE ttyd_core)
+add_test(NAME key_item_inventory COMMAND key_item_inventory_tests)

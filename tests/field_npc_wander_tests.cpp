@@ -32,6 +32,11 @@ int main() {
         assert(fieldActorTalkAvailable(*actor,8,guarded));
         if(quest==2)guarded.flag5405=true;else guarded.flag5406=true;
         assert(!fieldActorTalkAvailable(*actor,8,guarded));
+        FieldActorTalkInventory inventory;
+        if(quest==2)inventory.item95=0;else inventory.item107=0;
+        assert(fieldActorTalkAvailable(*actor,8,guarded,inventory));
+        if(quest==2)inventory.item95=1;else inventory.item107=1;
+        assert(!fieldActorTalkAvailable(*actor,8,guarded,inventory));
     }
     assert(actor->position[0]==-370 && actor->position[2]==130 && actor->wander.radius==70 && actor->wander.runThreshold==20);
     Progress saved;saved.room=2;saved.originalStory=8;saved.position={1.2f,-4};Game game;game.restore(saved);
@@ -78,6 +83,18 @@ int main() {
     assert(known.fieldActorTalk.message.rawText()==texts.find("gor_02_030_00") && known.progress.originalStory==8);
     for(int n=0;n<5000 && known.fieldActorTalk.message.active();++n)known.tick(press);
     assert(!known.fieldActorTalk.message.active() && known.scene==Scene::Explore && known.progress.originalStory==8);
+    // Native count guard reads the original pouch, never native mushroom quantity.
+    assert(loadProloguePouchAssets("romfs"));auto countSave=near;
+    countSave.originalNpcTalkState={uint8_t(2),true,{}};countSave.mushrooms=99;
+    Game missingPouch;missingPouch.restore(countSave);for(int n=0;n<360;++n)missingPouch.tick({});
+    assert(!missingPouch.nearbyFieldActor());
+    countSave.originalPouch=createProloguePouch();assert(countSave.originalPouch && countSave.originalPouch->keyItemCount(95)==0);
+    Game emptyPouch;emptyPouch.restore(countSave);for(int n=0;n<360;++n)emptyPouch.tick({});
+    assert(emptyPouch.nearbyFieldActor() && emptyPouch.nearbyFieldActor()->key==actor->key);
+    emptyPouch.tick(press);emptyPouch.tick({});assert(emptyPouch.fieldActorTalk.message.id()=="gor_02_030_00");
+    countSave.originalPouch->half(0xa0+2*120,95); // Source scan must find copies after gaps.
+    Game positivePouch;positivePouch.restore(countSave);for(int n=0;n<360;++n)positivePouch.tick({});
+    positivePouch.tick(press);positivePouch.tick({});assert(!positivePouch.fieldActorTalk.message.active() && !positivePouch.airborne());
     std::ifstream pack("romfs/field-actors.pmnpc",std::ios::binary);std::vector<uint8_t> bytes((std::istreambuf_iterator<char>(pack)),{});
     auto word=[&](size_t p){uint32_t value;std::memcpy(&value,bytes.data()+p,4);return value;};
     size_t row=16+word(8)*100;

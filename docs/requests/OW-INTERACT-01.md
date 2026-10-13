@@ -588,3 +588,18 @@ ordinary admission are recorded. Generic quest writers, native saved-bank
 ownership, full item-window services/event cadence and measured parity remain
 OPEN. Documentation only; ISO read-only, no original binary/dialogue prose,
 shared index/PROGRESS or implementation edits.
+
+### 2026-10-13 — Original explicit item-table selection window
+
+Explicitly delegated documentation worker recovered
+[item-table window](../behavior/message/ITEM_TABLE_SELECTION_WINDOW.md): exact
+(table,0,1) initializer/template0/three-window ownership, source-order duplicate
+rows, eight-row geometry/scroll, direction repeat versus trigger endpoint rules,
+A-before-B priority, row disable/cancel flags, close-before-ready/delete/key
+ownership, original US item names/descriptions and icon307/308 -> TPL312/313.
+Also recovered manager sequence/main order, partial native transition boundary,
+cursor504, description paging and source draw requests. Read-only ISO DOL and
+icon.bin/icon.tpl header checks; inspection artifacts remain /tmp. No original
+asset/dialogue prose, source code, shared PROGRESS/index or emulator/profile/save
+edit. OW-INTERACT-01 stays OPEN for full rendering/backend/input/cadence and
+native quest/interpreter/inventory binding; this is not matched-runtime parity.

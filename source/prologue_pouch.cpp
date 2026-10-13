@@ -1,6 +1,7 @@
 #include "prologue_pouch.hpp"
 #include "battle_packed_pouch.hpp"
 #include "message_assets.hpp"
+#include "key_item_inventory.hpp"
 #include <cassert>
 #include <cstring>
 #include <cstdlib>
@@ -15,6 +16,17 @@ int16_t ProloguePouch::half(unsigned at) const {
     assert(at+1<bytes.size());const auto value=uint16_t(uint16_t(bytes[at])<<8|bytes[at+1]);return value<0x8000?int16_t(value):int16_t(int32_t(value)-65536);
 }
 void ProloguePouch::half(unsigned at,int16_t value){assert(at+1<bytes.size());const auto bits=uint16_t(value);bytes[at]=bits>>8;bytes[at+1]=bits;}
+int32_t ProloguePouch::keyItemCount(int32_t item) const {
+    EventMemoryServices m;m.user=const_cast<ProloguePouch*>(this);
+    m.half=[](void* p,uint32_t at){return uint16_t(static_cast<const ProloguePouch*>(p)->half(at));};
+    return packedKeyItemCount(0,item,m);
+}
+int32_t ProloguePouch::removeKeyItem(int32_t item) {
+    EventMemoryServices m;m.user=this;
+    m.half=[](void* p,uint32_t at){return uint16_t(static_cast<ProloguePouch*>(p)->half(at));};
+    m.storeHalf=[](void* p,uint32_t at,uint16_t value){static_cast<ProloguePouch*>(p)->half(at,int16_t(value));};
+    return removePackedKeyItem(0,item,m);
+}
 ProloguePouch initializeProloguePouch(const char* name){
     assert(name);Provider provider{{},name};PackedPouchInitializationServices s;s.user=&provider;s.memory.user=&provider;
     s.allocate=[](void* p,int32_t heap,uint32_t size){auto& v=*static_cast<Provider*>(p);assert(!v.allocated && heap==0 && size==v.pouch.bytes.size());v.allocated=true;return Address;};

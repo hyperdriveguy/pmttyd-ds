@@ -10,9 +10,11 @@ gor_02_030_ prefix for the exact gor_02/Goomba4 profile. The shared talk selecto
 first checks partial knowledge of GSW1420 and GSF5405/5406. An entry quest arm
 is excluded if the known quest byte differs from its required2/13, or if its
 corresponding flag is knownfalse. Both arms must be excluded before ordinary
-playback. Quest/flag unknown is distinct fromzero. A possible item-count arm
-remains unavailable because full item/window services are not bound; no item
-absence is inferred from native mushroom quantity or a legacy checkpoint.
+playback. Quest/flag unknown is distinct fromzero. After a known matching quest/true
+flag, a live original pouch count0 can also exclude its arm through the
+[key-item service core](../message/NATIVE_ITEM_TABLE_SELECTION_CORE.md).
+Positive/unknown item counts still require unbound quest/window services; no
+item absence is inferred from native mushroom quantity or a legacy checkpoint.
 The default selector API therefore continues to reject Goomba ordinary talk
 without explicit state, even though the pack now retains its source rules.
 
