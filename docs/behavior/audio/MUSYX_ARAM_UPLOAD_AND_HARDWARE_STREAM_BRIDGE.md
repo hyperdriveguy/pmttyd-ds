@@ -112,3 +112,9 @@ Remaining: streamHandle/AllocEx/Free ownership and source providers, valid
 index/count/priority/callback/offset/lifetime/concurrency domains, SDK OS/cache/
 ARQ/DMA and original stream/sample/voice execution. Five local bodies are answered;
 full audio/native/hardware/runtime equivalence remains OPEN.
+
+## 2026-10-13 — Stream startup caller follow-up
+
+[Startup](MUSYX_STREAM_THROTTLE_DISPATCH_AND_STARTUP.md) closes throttle/dispatch/state1/row tail, including
+the play-buffer and initial flush call bindings. Refill/lifecycle/providers/
+domains/original stream/audio/native binding remain open.

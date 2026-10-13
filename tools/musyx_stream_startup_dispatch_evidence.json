@@ -1,0 +1,514 @@
+{
+  "schema": 1,
+  "scope": "Two complete streamHandle throttle/dispatch/startup/row-count regions; refill/providers/runtime open",
+  "complete_bodies": [],
+  "complete_regions": [
+    {
+      "name": "streamHandle throttle dispatch and startup",
+      "address": 2150082220,
+      "size": 584
+    },
+    {
+      "name": "streamHandle next-row count tail",
+      "address": 2150084432,
+      "size": 20
+    }
+  ],
+  "linked_only": [
+    "streamHandle",
+    "hwGetStreamPlayBuffer",
+    "hwSetStreamLoopPS",
+    "hwInitSamplePlayback",
+    "hwSetFilter",
+    "hwSetPitch",
+    "hwSetVolume",
+    "hwStart",
+    "hwFlushStream"
+  ],
+  "dol_spans": [
+    {
+      "name": "streamHandle throttle dispatch and startup",
+      "address": 2150082220,
+      "size": 584,
+      "sha256": "a554bcf15d80a263959a8677392dc1fbc094ea7625b321008ef48d4c16403fae"
+    },
+    {
+      "name": "streamHandle next-row count tail",
+      "address": 2150084432,
+      "size": 20,
+      "sha256": "0d771a5c9d02cce5fa321a54be21c7e83bdeab5215037e4724c71f2f61275a3f"
+    },
+    {
+      "name": "streamHandle",
+      "address": 2150082200,
+      "size": 2276,
+      "sha256": "f5bc74901c36f1c68441ece7e21cafa90df9d96aa57b2b630e1b3cffba963a27"
+    },
+    {
+      "name": "hwGetStreamPlayBuffer",
+      "address": 2150175668,
+      "size": 36,
+      "sha256": "11c1f0e8101c480f71db461b581d2c5431f0a5cfefc9cd23aa7b7b60c3590a50"
+    },
+    {
+      "name": "hwSetStreamLoopPS",
+      "address": 2150173748,
+      "size": 20,
+      "sha256": "1963cb1ad2f4e86ad62207a7b09de3ea256aaa8839bfaee6155adf26db9c0103"
+    },
+    {
+      "name": "hwInitSamplePlayback",
+      "address": 2150172692,
+      "size": 436,
+      "sha256": "58cf8ab8d8abb054955ae06748cb5de88a7a6a654ba70fdc87ecd0b6aa69e569"
+    },
+    {
+      "name": "hwSetFilter",
+      "address": 2150174324,
+      "size": 128,
+      "sha256": "a168dafcaa90132a8b3c2b4a8179ef6fd6c2e76b3013053a1cf5c911710a69cb"
+    },
+    {
+      "name": "hwSetPitch",
+      "address": 2150173868,
+      "size": 120,
+      "sha256": "6f9378107d2ac6fa91bc577a7ee354e0e096bc955b3541eb23fdb0ab71b6093e"
+    },
+    {
+      "name": "hwSetVolume",
+      "address": 2150174544,
+      "size": 704,
+      "sha256": "7572e8abd4d46b2efbaa2acc084c05712849d45f4cbb8225dd7d905aaaa7657c"
+    },
+    {
+      "name": "hwStart",
+      "address": 2150173768,
+      "size": 60,
+      "sha256": "73ceff2bbd0589fb99fbccf9e1794435950c6974175343fdffa31c1a9151a671"
+    },
+    {
+      "name": "hwFlushStream",
+      "address": 2150175460,
+      "size": 144,
+      "sha256": "634fc956a3bf16f400a5f528427e1462e980320e220f23990d903746c69cc74b"
+    },
+    {
+      "name": "Stream startup constant 0x80429178",
+      "address": 2151846264,
+      "size": 4,
+      "sha256": "7b75b05602b209475f3d646f32fb7d36affded9fdc8084b78b7511f56098e385"
+    },
+    {
+      "name": "Stream startup constant 0x80429180",
+      "address": 2151846272,
+      "size": 8,
+      "sha256": "2b2979f362d94c89fe17a6e01637f14332de063fe7a544bdc5facfc046f4169f"
+    },
+    {
+      "name": "Stream startup constant 0x80429188",
+      "address": 2151846280,
+      "size": 4,
+      "sha256": "3d22917de77936f93f4193051aa61afbeeed3570b06bd56fd721a0223557d468"
+    }
+  ],
+  "dol_anchors": {
+    "2150082220": "886d1f95",
+    "2150082224": "28030000",
+    "2150082228": "41820010",
+    "2150082232": "3803ffff",
+    "2150082236": "980d1f95",
+    "2150082240": "480008a4",
+    "2150082244": "888d1f94",
+    "2150082248": "3c608040",
+    "2150082252": "380398e8",
+    "2150082256": "3c608040",
+    "2150082260": "988d1f95",
+    "2150082264": "7c1c0378",
+    "2150082268": "3be38540",
+    "2150082272": "3ba00000",
+    "2150082276": "48000874",
+    "2150082280": "881c000c",
+    "2150082284": "2c000002",
+    "2150082288": "41820204",
+    "2150082292": "4080085c",
+    "2150082296": "2c000001",
+    "2150082300": "40800008",
+    "2150082304": "48000850",
+    "2150082308": "801c0054",
+    "2150082312": "887c000e",
+    "2150082316": "64004000",
+    "2150082320": "90010008",
+    "2150082324": "48016ca1",
+    "2150082328": "881c000d",
+    "2150082332": "38a00000",
+    "2150082336": "809c0018",
+    "2150082340": "2c000001",
+    "2150082344": "9061000c",
+    "2150082348": "90a10014",
+    "2150082352": "90810018",
+    "2150082356": "90a1001c",
+    "2150082360": "90810020",
+    "2150082364": "41820020",
+    "2150082368": "40800044",
+    "2150082372": "2c000000",
+    "2150082376": "40800008",
+    "2150082380": "48000038",
+    "2150082384": "38000002",
+    "2150082388": "98010024",
+    "2150082392": "4800002c",
+    "2150082396": "387c0024",
+    "2150082400": "38000004",
+    "2150082404": "90610010",
+    "2150082408": "807c004c",
+    "2150082412": "98010024",
+    "2150082416": "889c000f",
+    "2150082420": "480164c1",
+    "2150082424": "881c000f",
+    "2150082428": "981c0026",
+    "2150082432": "981c0027",
+    "2150082436": "807c004c",
+    "2150082440": "3c800001",
+    "2150082444": "810d1f70",
+    "2150082448": "3884ffff",
+    "2150082452": "1ce30458",
+    "2150082456": "38a10008",
+    "2150082460": "38c00001",
+    "2150082464": "39200001",
+    "2150082468": "380700f4",
+    "2150082472": "39400001",
+    "2150082476": "7d08002e",
+    "2150082480": "38e0ffff",
+    "2150082484": "48016061",
+    "2150082488": "881c0061",
+    "2150082492": "28000000",
+    "2150082496": "4082001c",
+    "2150082500": "807c004c",
+    "2150082504": "38800000",
+    "2150082508": "38a00000",
+    "2150082512": "38c00000",
+    "2150082516": "480166a1",
+    "2150082520": "48000018",
+    "2150082524": "807c004c",
+    "2150082528": "38800001",
+    "2150082532": "a0bc0062",
+    "2150082536": "a0dc0064",
+    "2150082540": "48016689",
+    "2150082544": "80bc0054",
+    "2150082548": "3c804330",
+    "2150082552": "3c608040",
+    "2150082556": "90810028",
+    "2150082560": "80038540",
+    "2150082564": "90a1002c",
+    "2150082568": "c8421d40",
+    "2150082572": "c8010028",
+    "2150082576": "90010034",
+    "2150082580": "ec201028",
+    "2150082584": "c0621d48",
+    "2150082588": "90810030",
+    "2150082592": "807c004c",
+    "2150082596": "c8010030",
+    "2150082600": "ec001028",
+    "2150082604": "ec010024",
+    "2150082608": "ec030032",
+    "2150082612": "fc00001e",
+    "2150082616": "d8010038",
+    "2150082620": "8081003c",
+    "2150082624": "4801646d",
+    "2150082628": "88bc0059",
+    "2150082632": "3ce04330",
+    "2150082636": "887c005c",
+    "2150082640": "38800000",
+    "2150082644": "881c005d",
+    "2150082648": "90a10044",
+    "2150082652": "c8621d40",
+    "2150082656": "90e10040",
+    "2150082660": "88bc005a",
+    "2150082664": "c8010040",
+    "2150082668": "9061004c",
+    "2150082672": "54a5801e",
+    "2150082676": "887c005b",
+    "2150082680": "ec201828",
+    "2150082684": "90e10048",
+    "2150082688": "c0821d38",
+    "2150082692": "5466801e",
+    "2150082696": "c8010048",
+    "2150082700": "90010054",
+    "2150082704": "ec240072",
+    "2150082708": "ec401828",
+    "2150082712": "807c004c",
+    "2150082716": "90e10050",
+    "2150082720": "c8010050",
+    "2150082724": "ec4400b2",
+    "2150082728": "ec001828",
+    "2150082732": "ec640032",
+    "2150082736": "480166a1",
+    "2150082740": "807c004c",
+    "2150082744": "889c0060",
+    "2150082748": "4801638d",
+    "2150082752": "38000002",
+    "2150082756": "981c000c",
+    "2150082760": "801c0008",
+    "2150082764": "5400039d",
+    "2150082768": "40820680",
+    "2150082772": "807c0014",
+    "2150082776": "38800000",
+    "2150082780": "80bc001c",
+    "2150082784": "38e00000",
+    "2150082788": "88dc000e",
+    "2150082792": "39000000",
+    "2150082796": "480169f9",
+    "2150082800": "48000660",
+    "2150084432": "3bbd0001",
+    "2150084436": "3b9c0068",
+    "2150084440": "881f0210",
+    "2150084444": "7c1d0040",
+    "2150084448": "4180f788"
+  },
+  "direct_calls": [
+    {
+      "site": 2150082324,
+      "target": 2150175668,
+      "name": "hwGetStreamPlayBuffer"
+    },
+    {
+      "site": 2150082420,
+      "target": 2150173748,
+      "name": "hwSetStreamLoopPS"
+    },
+    {
+      "site": 2150082484,
+      "target": 2150172692,
+      "name": "hwInitSamplePlayback"
+    },
+    {
+      "site": 2150082516,
+      "target": 2150174324,
+      "name": "hwSetFilter"
+    },
+    {
+      "site": 2150082540,
+      "target": 2150174324,
+      "name": "hwSetFilter"
+    },
+    {
+      "site": 2150082624,
+      "target": 2150173868,
+      "name": "hwSetPitch"
+    },
+    {
+      "site": 2150082736,
+      "target": 2150174544,
+      "name": "hwSetVolume"
+    },
+    {
+      "site": 2150082748,
+      "target": 2150173768,
+      "name": "hwStart"
+    },
+    {
+      "site": 2150082796,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "literal_values": [
+    {
+      "address": 2151846264,
+      "bits": "3c010204",
+      "value": 0.007874015718698502
+    },
+    {
+      "address": 2151846280,
+      "bits": "45800000",
+      "value": 4096.0
+    }
+  ],
+  "descriptor_binding": {
+    "stack_base": 8,
+    "fields": [
+      {
+        "offset": 0,
+        "source": "word54 OR40000000"
+      },
+      {
+        "offset": 4,
+        "source": "hwGetStreamPlayBuffer return"
+      },
+      {
+        "offset": 8,
+        "source": "row+24 only format1; otherwise incoming stack"
+      },
+      {
+        "offset": 12,
+        "source": "zero"
+      },
+      {
+        "offset": 16,
+        "source": "word18"
+      },
+      {
+        "offset": 20,
+        "source": "zero"
+      },
+      {
+        "offset": 24,
+        "source": "word18"
+      },
+      {
+        "offset": 28,
+        "source": "first byte format0=>2,format1=>4,otherwise incoming; trailing3 bytes incoming"
+      }
+    ]
+  },
+  "derived_throttle_vectors": [
+    {
+      "counter": 0,
+      "delay": 0,
+      "scans": true,
+      "next_counter": 0,
+      "stable_scan_invocations": 1
+    },
+    {
+      "counter": 0,
+      "delay": 1,
+      "scans": true,
+      "next_counter": 1,
+      "stable_scan_invocations": 2
+    },
+    {
+      "counter": 0,
+      "delay": 255,
+      "scans": true,
+      "next_counter": 255,
+      "stable_scan_invocations": 256
+    },
+    {
+      "counter": 1,
+      "delay": 0,
+      "scans": false,
+      "next_counter": 0,
+      "stable_scan_invocations": 1
+    },
+    {
+      "counter": 255,
+      "delay": 255,
+      "scans": false,
+      "next_counter": 254,
+      "stable_scan_invocations": 256
+    }
+  ],
+  "derived_state_vectors": [
+    {
+      "state": 0,
+      "route": "skip"
+    },
+    {
+      "state": 1,
+      "route": "startup"
+    },
+    {
+      "state": 2,
+      "route": "refill"
+    },
+    {
+      "state": 3,
+      "route": "skip"
+    },
+    {
+      "state": 255,
+      "route": "skip"
+    }
+  ],
+  "derived_format_vectors": [
+    {
+      "format": 0,
+      "type_byte": 2,
+      "initializes_adpcm_pointer": false,
+      "requests_loop_ps": false,
+      "uninitialized_type": false
+    },
+    {
+      "format": 1,
+      "type_byte": 4,
+      "initializes_adpcm_pointer": true,
+      "requests_loop_ps": true,
+      "uninitialized_type": false
+    },
+    {
+      "format": 2,
+      "type_byte": null,
+      "initializes_adpcm_pointer": false,
+      "requests_loop_ps": false,
+      "uninitialized_type": true
+    },
+    {
+      "format": 255,
+      "type_byte": null,
+      "initializes_adpcm_pointer": false,
+      "requests_loop_ps": false,
+      "uninitialized_type": true
+    }
+  ],
+  "derived_pitch_vectors": [
+    {
+      "requested_frequency": 32000,
+      "reference_frequency": 32000,
+      "single_ratio": 1.0,
+      "single_scaled": 4096.0,
+      "converted_word": 4096
+    },
+    {
+      "requested_frequency": 48000,
+      "reference_frequency": 32000,
+      "single_ratio": 1.5,
+      "single_scaled": 6144.0,
+      "converted_word": 6144
+    },
+    {
+      "requested_frequency": 0,
+      "reference_frequency": 32000,
+      "single_ratio": 0.0,
+      "single_scaled": 0.0,
+      "converted_word": 0
+    },
+    {
+      "requested_frequency": 44100,
+      "reference_frequency": 32000,
+      "single_ratio": 1.3781249523162842,
+      "single_scaled": 5644.7998046875,
+      "converted_word": 5644
+    },
+    {
+      "requested_frequency": 32000,
+      "reference_frequency": 48000,
+      "single_ratio": 0.6666666865348816,
+      "single_scaled": 2730.666748046875,
+      "converted_word": 2730
+    }
+  ],
+  "derived_flush_vectors": [
+    {
+      "flags8": 0,
+      "requests_flush": true,
+      "publishes_state2_before_gate": true
+    },
+    {
+      "flags8": 131072,
+      "requests_flush": false,
+      "publishes_state2_before_gate": true
+    },
+    {
+      "flags8": 4294967295,
+      "requests_flush": false,
+      "publishes_state2_before_gate": true
+    },
+    {
+      "flags8": 65536,
+      "requests_flush": true,
+      "publishes_state2_before_gate": true
+    }
+  ]
+}

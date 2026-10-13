@@ -500,6 +500,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   hwDisableHRTF — [output-mode propagation](../behavior/audio/MUSYX_STREAM_OUTPUT_MODE_PROPAGATION.md).
   Game write-before-request/public two stores/HRTF/change gate, voice dirty
   and stream state/fresh count/mode/mix/IRQ order pinned; runtime open.
+- [x] Complete streamHandle throttle/row dispatch/state1 descriptor/
+  hardware/filter/pitch/mix/start/flush and row tail regions —
+  [stream startup](../behavior/audio/MUSYX_STREAM_THROTTLE_DISPATCH_AND_STARTUP.md).
+  Exact partial descriptor/call/state-before-flush/live count order pinned;
+  refill/ABI/providers/domains/original stream/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2553,3 +2558,13 @@ count/six game-gate vectors checked. Game write-before-request, public ordered
 flags/HRTF/fresh comparison, voice dirty-before-stream, requested/effective pan,
 fresh state3 mix skip and live count/IRQ order pinned. UI/providers/domains/
 stream engine/original audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream throttle/dispatch/startup delivery
+
+Completed two local regions in
+[stream startup](../behavior/audio/MUSYX_STREAM_THROTTLE_DISPATCH_AND_STARTUP.md).
+Fourteen spans/151 instruction anchors/nine calls verified; five throttle/five
+state/four format/five finite pitch/four flush vectors and descriptor/ABI bindings
+checked. Partial stack type/pointer/padding, ordered initialization/filter/pitch/
+mix/start, state2-before-optional-flush and fresh count pinned. Refill/providers/
+domains/original stream/audio/native binding remain open; EVT-01 stays OPEN.

@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero stream startup
+
+Completed streamHandle throttle/dispatch/state1 startup/row tail regions; checked
+EVT-01 portion. [Startup](behavior/audio/MUSYX_STREAM_THROTTLE_DISPATCH_AND_STARTUP.md)
+pins partial descriptor fields, ordered filter/pitch/mix/start, state2-before-
+optional-flush and fresh count. Refill/ABI/providers/domains/original audio open.
+
+Validation: read-only ISO manifest passed14 spans,151 region anchors,nine calls.
+Five throttle/five state/four format/five finite pitch/four flush vectors and
+exact descriptor/argument bindings checked. Link audit passed888 Markdown files/
+zero broken links; scoped `git diff --check` passed. Mathematical source deductions
+are separate from original execution. Documentation/metadata only; no `make test`/
+`make all` rerun. Fresh full original handler ELF/listing/generator stay `/tmp`;
+no bodies/binary assets committed. Concurrent native edits excluded. Previously
+approved push remains pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 streamHandle state2 refill/ABI, actual delay/count/state/
+format/descriptor/voice/frequency/filter/start/flags/source providers and valid
+extent/value/alias/lifetime/IRQ/concurrency/FP domains, transitive DSP/ARAM/hardware
+consumers and original startup/refill/stream/audio traces. Remaining stream
+lifecycle/macro/song/backend, lower-priority inbox and full native/game work open.
+
 ## 2026-10-13 — Inbox priority-zero output-mode propagation
 
 Completed SoundSetOutputMode/sndOutputMode/streamOutputModeChanged/hwDisableHRTF;
