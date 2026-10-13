@@ -4,6 +4,55 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+
+## 2026-10-13 — Correct tail direction and preserve original4:3 bubble proportions
+
+Fixed the observed Goombella tail miss in79c15b1. Tail masks now draw through
+source sheared quads (two textured triangles per pass), retaining horizontal
+base/end edges and avoiding rotated transparent-margin expansion. A dedicated
+12-vertex buffer preserves the separate shadow/white submissions. Flush and
+restore citro2d around the tail GPU pass. Bubble/glyph scaling is uniformly0.5,
+fitting original640x480 presentation into centered320x240 with40-pixel margins
+on the400-wide top display. World drawing still fills the wide viewport.
+
+Speaker projection now reuses the actual tilted world transform and converts
+its clip coordinates to the 2D screen plane. Goombella talk position uses her
+evaluated original pose bounds; Crump/X-Naut use opaque bitmap top/center
+instead of padded billboard tops. Original print-entry roots/placement caching,
+speaker/message attribution/order and control playback remain intact. Ignored
+PMHNPC2 actor metadata stores the new offsets; source paths/conversion/rights
+are recorded in[assets](ASSETS.md). See the updated
+[native bubble contract](behavior/message/NATIVE_MESSAGE_BUBBLES.md).
+
+Validation: latest shared `make test` passes **95 CTest / 96 Python tests**
+(`/tmp/tail-fix-test.log`); final production `make all` passes without warnings
+(`/tmp/tail-fix-final-build.log`). Original-data playback20-payload and harbor
+six-speaker integration tests pass. Added steep left/right/inverted tail cases
+verify horizontal edges, width, mask coordinates and base-to-speaker direction.
+Document audit checks693 Markdown files with0 broken links; diff check passes.
+An earlier shared run failed the concurrently changing partner core check.
+A clean archived baseline plus the tail host changes independently reproduced
+partner/core failures (`/tmp/tail-fix-isolated-test.log`); message tests passed.
+The later shared run after partner/test updates is the passing full validation.
+
+Isolated captures in `artifacts/azahar-tail-fix-aspect/` complete story4.
+`artifacts/azahar-tail-anchor-diagnostic/` temporarily marks the talk anchor:
+reviewed Goombella's marker on her visible head and the white mask centerline
+aiming there. Original shadow artwork extends beyond the white mask. The marker
+was removed before the final production build. Final marker-free captures use
+`tests/azahar_textboxes.py`, native fixture and immutable
+`artifacts/ttyd-tail-fixed-final.3dsx` under `artifacts/azahar-tail-fixed-final/`;
+script checks story4 persistence and overlay restoration. User emulator profiles
+and saves are untouched; ISO input stays read-only and packs/images ignored.
+
+Limits/next: pose/image-derived anchors are native adaptations; original NPC
+tribe height+150 and original getScreenPoint services remain unbound. Original
+shared RNG, full window types/indicator/history/selection/icon/pose/paper/audio/
+noise and matched Dolphin/hardware comparison remain open. Check additional
+actors/cameras as more story content is bound. Full dialogue/full-game fidelity
+is not complete.
+
+
 ## 2026-10-13 — Original same-map inn and professor door access
 
 Bound the plaza inn/bar ground-floor and east professor house as original
