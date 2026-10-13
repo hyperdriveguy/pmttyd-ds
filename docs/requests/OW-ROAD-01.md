@@ -76,3 +76,11 @@ binds item0x60 to icon314/icon.tpl image319, M_C_3 to ordinary field e_mario,
 Professor hop225ms/apex30 and exact party/Mario200ms blocking turn ownership.
 Negative party duration-1 differs from0; source interpolation is not generic
 shortest arc. Original icon drawing/NPC pose/numeric/runtime fidelity remain open.
+
+2026-10-13 temporary Professor/fence admission follow-up:
+[Temporary party and fence admission](../behavior/partner/FIELD_PROFESSOR_TEMPORARY_PARTY_AND_FENCE_ADMISSION.md)
+binds story9 house close contact+A callback to fence event, kind11 model/poses
+and constructor mode2, exact set_party_pos ownership, secondary history's
+Goombella-versus-Mario source selection and clear(1)→partyKill2 restoration.
+Fence admission is the door exit, not a newly invented fence proximity trigger.
+Original follow trajectories/paper/collision/native runtime fidelity remain open.

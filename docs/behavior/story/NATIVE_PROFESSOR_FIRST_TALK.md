@@ -36,8 +36,9 @@ NPC/party flag consumers are retained typed presentation requests rather than
 complete backend implementations. The jump's flag preservation, exact NPC
 matrix/facing smoothing, turn counter/interpolation, source NPC/party movement
 and collision stepping, audio fades/environment mix and item icon service
-details remain open. Temporary Frankly party1 is represented at the source saved
-position, with follow/lifecycle still unbound. Saves including exit saves are
+details remain open. Temporary Frankly party1 starts at the source saved position, then uses the
+[secondary-party follow adapter](../partner/NATIVE_TEMPORARY_FRANKLY_FOLLOW.md).
+Complete lifecycle/persistence remains unbound. Saves including exit saves are
 suppressed while that temporary state cannot be serialized. Fence removal,
 story10 lecture dispatch and source lesson/battle branches remain separate
 required work; first-talk completion is not full prologue parity.

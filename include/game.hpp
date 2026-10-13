@@ -149,6 +149,8 @@ public:
     PartnerFollow partnerFollow;
     HarborStory harborStory;
     ProfessorStory professorStory;
+    PartnerFollow professorFollow;
+    void updateTemporaryProfessor();
     size_t professorCameraCursor=0;
     FieldActorTalk fieldActorTalk;
     FieldIdleWork fieldIdle;

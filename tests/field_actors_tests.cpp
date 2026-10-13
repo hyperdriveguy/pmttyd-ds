@@ -43,7 +43,8 @@ int main(int argc,char**) {
     {auto b=good;b.pop_back();assert(!read(a,b));}
     assert(!a.load("/missing-field-actor-catalog") && a.actors().size()==2);
     if(argc>1) {
-        assert(a.load("romfs/field-actors.pmnpc"));assert(a.actors().size()==3 && a.models().size()==2);
+        assert(a.load("romfs/field-actors.pmnpc"));assert(a.actors().size()>=3 && a.models().size()>=2);
+        assert(a.models()[0].asset=="field-chu" && a.models()[1].asset=="professor");
         const auto& chu=a.actors()[0];assert(chu.room==2 && chu.pose=="CHU_S_1");
         assert((chu.position==std::array<float,3>{150,0,-400}) && chu.yaw==270);
         assert(chu.visible(2,8,0) && chu.visible(2,55,2) && !chu.visible(2,56,0) && !chu.visible(2,std::nullopt,0));

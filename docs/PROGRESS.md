@@ -2,6 +2,33 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Temporary Frankly follows the party
+
+Bound [temporary Frankly follow](behavior/partner/NATIVE_TEMPORARY_FRANKLY_FOLLOW.md)
+after the original first-talk. He now advances independently through imported
+terrain and door travel with original W_1/S_1 poses. Source kind11 uses the same
+partyMoveWalk callback; recovered secondary source selection follows Goombella
+when ordinary and within150 original units of Mario, otherwise Mario. Added
+[used lifecycle/fence admission](behavior/partner/FIELD_PROFESSOR_TEMPORARY_PARTY_AND_FENCE_ADMISSION.md)
+and inbox evidence. This does not advance story9 or enable unsupported saves.
+
+Validation: `make test` passes103 CTest and96 Python tests; `make all` builds
+the3DS binary. Original-data test completes29-message first-talk then walks100
+ticks, checks independent Frankly history/movement, story9 and save suppression.
+Selection tests cover the150-unit threshold, missing/special party state and
+unordered floating comparison. Fixed the actor test's closed catalog count to
+allow additional models while asserting required original model identities;
+the initial full test run exposed concurrent save-block catalog expansion.
+No new emulator capture or hardware test for following.
+
+Next/limits: bind the source story9 house close callback to fence removal,
+original OFF_d_saku paper/image/offscreen animation and A_saku_04 collision
+removal, then source story10 lecture/choices/battle. Current portable follower
+uses adapted trail/terrain stepping and explicit ordinary Goombella mode/status;
+complete source ring/flags/pose timing and temporary save lifecycle remain open.
+Earlier harbor story gaps and measured handheld performance still block full
+prologue parity.
+
 ## 2026-10-13 — Original professor first-talk runs natively
 
 [Native scene](behavior/story/NATIVE_PROFESSOR_FIRST_TALK.md) executes the

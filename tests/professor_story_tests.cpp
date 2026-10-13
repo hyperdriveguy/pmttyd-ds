@@ -1,9 +1,17 @@
 #include "professor_story.hpp"
 #include "game.hpp"
+#include "secondary_party_source.hpp"
+#include <limits>
 #include <cassert>
 #include <iostream>
 using namespace ttyd;
 int main() {
+    assert(secondaryPartyUsesOther(true,1,2,0,149.999f));
+    assert(!secondaryPartyUsesOther(true,1,2,0,150.f));
+    assert(!secondaryPartyUsesOther(false,1,2,0,0));
+    assert(!secondaryPartyUsesOther(true,3,3,0,0));
+    assert(!secondaryPartyUsesOther(true,1,2,3,0));
+    assert(secondaryPartyUsesOther(true,1,2,0,std::numeric_limits<float>::quiet_NaN()));
     assert(loadProfessorStoryAssets("romfs"));ProfessorStory s;
     assert(s.begin(0,{-215,0,-95},{-245,0,-95}));
     for(uint64_t t=0;t<1000;t+=17)s.tick(t,0x100,true);
@@ -29,6 +37,12 @@ int main() {
     for(int i=0;i<24000 && (g.fieldDoor.active() || g.professorStory.locked());++i)g.tick(a);
     assert(g.professorStory.finished && !g.professorStory.failed && g.progress.originalStory==9);
     assert(g.scene==Scene::Explore && g.professorStory.messageOrder.size()==29 && !g.saveRequested);
+    const auto professorStart=g.professorStory.actors[2].position;
+    Input leave;leave.z=1;
+    for(unsigned i=0;i<100;++i)g.tick(leave);
+    assert(g.professorFollow.initialized && !g.professorFollow.trail.empty());
+    assert(g.professorStory.actors[2].position!=professorStart);
+    assert(g.professorStory.temporaryProfessor && !g.saveRequested && g.progress.originalStory==9);
     clearCollision();
     std::cout<<"Original REL first-talk: 29 ordered messages, concurrent waits and story9 passed\n";
 }

@@ -8,6 +8,7 @@
 #include "field_ray.hpp"
 #include "battle_unit_resources.hpp"
 #include "battle_action_services.hpp"
+#include "secondary_party_source.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -793,6 +794,36 @@ void Game::updatePartner() {
         float floor=root.y;groundAt(partner,root.y,floor,&partnerContact);
     }
 }
+void Game::updateTemporaryProfessor() {
+    if(!professorStory.temporaryProfessor || professorStory.locked() || progress.room!=2 ||
+       (scene!=Scene::Explore && scene!=Scene::Dialogue) || warpRequest>=0 || fade.active())return;
+    PartnerFollowServices services;
+    services.free=[](CameraPoint p){return walkable({p.x,p.z},p.y);};
+    services.floor=[](CameraPoint p,float low,float high,float& height) {
+        GroundContact contact;FieldSlope slope;
+        return groundWithin({p.x,p.z},low,high,height,&contact,nullptr,&slope,true,false,true) && !(contact.attributes&0x200);
+    };
+    services.project=[this](CameraPoint p){return projectCameraRoot(p,fieldCameraFrame.view,fieldCameraFrame.projection,fieldCameraFrame.viewport);};
+    services.ownerDirection={fieldMovement.headingX,0,fieldMovement.headingZ};
+    const CameraPoint mario{progress.position.x,groundHeight+jumpHeight,progress.position.z};
+    const CameraPoint goombella{partner.x,partnerHeight,partner.z};
+    const float dx=mario.x-goombella.x,dy=mario.y-goombella.y,dz=mario.z-goombella.z;
+    // This slice binds ordinary Goombella kind1, running mode1, status0. The source
+    // selector preserves the special-state branches for future party binding.
+    const bool other=secondaryPartyUsesOther(true,1,1,0,std::sqrt(dx*dx+dy*dy+dz*dz)*100.f);
+    auto& actor=professorStory.actors[2];
+    CameraPoint root{actor.position[0]*.01f,actor.position[1]*.01f,actor.position[2]*.01f};
+    const auto before=root;
+    professorFollow.tick(root,other?goombella:mario,
+        other?partnerFollow.motion==PartnerFollow::Motion::Jump:fieldJump.jumping,fieldMovement.speed,services);
+    actor.position={root.x*100.f,root.y*100.f,root.z*100.f};
+    actor.moving=PartnerFollow::distance(root,before)>.000001f;
+    if(actor.moving) {
+        const float heading=PartnerPresentation::wrap(std::atan2(root.x-before.x,before.z-root.z)*57.29577951308232f);
+        if(heading>=10 && heading<=170)actor.yaw=90;
+        else if(heading>=190 && heading<=350)actor.yaw=270;
+    }
+}
 void Game::openDialogue(int kind) {
     scene = Scene::Dialogue; dialogueKind = kind; dialoguePage = 0;
     sound = Sound::Confirm;
@@ -1323,6 +1354,7 @@ void Game::tick(const Input& rawInput) {
     struct PresentationOnExit {
         Game& game;Vec2 previous;const Input& raw;
         ~PresentationOnExit(){
+            game.updateTemporaryProfessor();
             game.progress.interiorMask=uint8_t(game.fieldDoor.interiorMask);
             if(game.fieldDoor.active() || game.professorStory.locked() || game.professorStory.temporaryProfessor)game.saveRequested=false;
             if(!game.professorStory.locked())game.updateMarioPresentation();
