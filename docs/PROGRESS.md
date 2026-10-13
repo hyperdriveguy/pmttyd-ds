@@ -2,6 +2,79 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original Goomba4 ordinary talk with explicit quest knowledge
+
+Committed91a091e: [native known-state talk](behavior/field/NATIVE_GOOMBA4_ORDINARY_TALK.md)
+retains all11 source-order ordinary kuribo4_talk message rules, including exact
+164/175/176 and multi-suffix boundaries. Original US message text/control tokens
+and source speaker me use the existing actor/anchor/paper presentation; no
+ordinary story/quest write or fabricated fallback is added. Saved state now
+retains optional GSW1420/GSF5405/GSF5406 knowledge. Both source quest arms must
+be excluded by known byte/flag values before ordinary talk becomes available.
+Legacy unknown remains unavailable and retains source candidacy/A suppression;
+possible item-count arms remain unbound rather than treating native mushroom
+quantity as original key-item storage. Guard scope is exact gor_02/Goomba4
+profile2b0a9f83, independent from reusable character art.
+
+Explicit fresh-file opening applies recovered swInit zero to those three fields;
+room rebuilds retain them. Native40-byte checkpointv7 packs value/knowledge bits
+into the existing native quantity word, validates reserved/value-without-known
+bits and quantity range, and preserves knownfalse. Wholly unknown state still
+writesv6; v1..6 loads clear any prior quest knowledge. This is a partial native
+saved-switch adapter, not the complete original switch/inventory/card format.
+Fixture tool --quest/--flag5405/--flag5406 supplies explicit development state,
+with omission remaining unknown. No product quest guesses or implementation UI.
+Original model/message assets are reused; catalog provenance/licensing updated.
+
+Documentation agent recovered [full quest/item-window graph](behavior/field/ROGUEPORT_GOOMBA4_QUEST_AND_ITEM_SELECTION.md)
+and OW-INTERACT-01 breadcrumb from read-only ISO, including original reset
+banks, fixed95 table, dynamic107 table, check/remove wrappers and item-window
+entry/poll/delete/key ownership. Item selection is not message Yes/No selection.
+Both quest arms and their original item services remain next native work.
+Independent review found no blocking binding/save defect and requested source
+boundary/legacy clearing tests; those are included.
+
+Validation: final shared `make test` passes151 CTest/103 Python,
+`/tmp/goomba-talk-shared-test-complete.log`. Isolated snapshot
+`/tmp/pm-goomba-talk-fzkn9v87` passes150 CTest/103 Python,
+`/tmp/goomba-talk-isolated-test.log`. Tests cover all ordinary thresholds,
+unknown/knownfalse/quest2/13 guard combinations, original raw US message and
+return without story write, v7 optional-value roundtrips/reserved corruption,
+quantity overlap rejection and explicit v1..6 clearing of known prior state.
+Shared/isolated `make all` pass without warnings/errors:
+`/tmp/goomba-talk-shared-native-complete.log`,
+`/tmp/goomba-talk-isolated-native.log`. Intermediate shared attempts hit a
+concurrent reward narrowing/type mismatch and full /tmp; final runs supersede
+those failures. Applied one-line std::min<int32_t> ARM portability fix inside
+concurrent uncommitted trio reward work, preserving its feature scope for its
+owner. Removed only obsolete build outputs/duplicated romfs packs from earlier
+owned live-wander/static snapshots to recover /tmp space; their source snapshots
+and final project artifacts remain. Future snapshots should use ignored project
+artifacts storage to avoid the16GiB /tmp limit.
+
+Final isolated binary `artifacts/ttyd-goomba-ordinary-final.3dsx` passes corrected
+field-ready `tests/azahar_static_npc_talk.py` with both explicit quest0 and legacy
+unknown fixtures. Captures/profiles `artifacts/azahar-goomba-ordinary-final` and
+`artifacts/azahar-goomba-unknown-final`; logs
+`/tmp/goomba-ordinary-emulator-final.log` and
+`/tmp/goomba-unknown-emulator-final.log`. Actual original Goomba field/window/
+return inspected. Known ordinary talk opens original window without onset save;
+unknown opens no substitute window; return admits save with room2/story8,
+coordinates, exact knowledge bits and checksum unchanged. Earlier shared native
+binary also passed original talk at `artifacts/azahar-goomba-ordinary`.
+Software captures show60fps field/return and53fps window; not controlled New2DS
+hardware, dense-area benchmark or matched original-runtime fidelity evidence.
+Link audit passes912 Markdown/zero broken links; whitespace and script checks
+pass. 2a5ac1a removes accidentally staged concurrent EXP ledger subsection from
+feature history while preserving its working entry. ISO/assets/packs/captures
+remain local/ignored; user emulator profile/saves untouched.
+
+Next: bind original item-window tables and native item selection, key-item
+count/removal/revise owners, both quest graphs and full switch/pouch persistence;
+then extend original actor/event/object profiles and additional areas, complete
+scheduler/shared RNG/clock and lifetimes, and measure Dolphin/New2DS rendering/
+performance. The full requested goal remains active; early Rogueport is a slice.
+
 ## 2026-10-13 — Inbox priority-zero game stream leaves
 
 Completed SoundSSMuteOn/Off/Check/GetVolCh/ContinueCh; checked EVT-01 portion.
