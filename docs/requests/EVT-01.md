@@ -303,6 +303,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   aux/tremolo/flag/rate regions —
   [metric/priority inline state](../behavior/audio/MUSYX_MACRO_METRIC_PRIORITY_AND_INLINE_STATE.md).
   Signed16 sum/repeated shared reads preserved; assets/providers/runtime open.
+- [x] Complete mcmdVarCalculation/mcmdIfVarCompare/inpSetExCtrl and
+  opcodes96..101/112..113 arithmetic/compare/assignment/controller requests —
+  [variable calculation/compare/set](../behavior/audio/MUSYX_MACRO_VARIABLE_CALCULATION_COMPARE_AND_SET.md).
+  S16 versus signed32/incoming register/shared reads retained; MIDI child/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1775,3 +1779,21 @@ deductions. Full fresh ELF/listing stays `/tmp`; no native change/original
 execution/body/binary asset export. Actual commands/field/table/ID/shared-cell/
 member/alias/IRQ/concurrency/providers/consumers, other opcodes and original
 metric/priority/audio remain OPEN.
+
+### 2026-10-13 — Macro variable calculation/comparison/external set
+
+[Three complete bodies/eight regions](../behavior/audio/MUSYX_MACRO_VARIABLE_CALCULATION_COMPARE_AND_SET.md)
+close S16 source arithmetic/saturation/zero division, full-word signed comparison,
+inversion/branch PC, direct immediate assignment and14-bit-clamped controller
+request order. Unsupported direct modes retain incoming result registers;
+known stubs supply valid modes. Setter remaps only exclude160/161; raw index
+controls pairs/fallback, and post-set-load branch reuses channel CR. No S16
+comparison, set255 rejection, fallback result or whole-interpreter closure invented.
+
+Validation: read-only manifest17 spans (three bodies/eight regions/four linked/
+two tables),224 anchors/24 calls/eight registrations passes. Eleven arithmetic/
+seven comparison/eight clamp/six index vectors and PPC comparator/rotate/mask/
+address/order deductions checked. Full fresh ELFs/listings stay `/tmp`; no native
+change/original execution/body/binary asset export. Downstream MIDI setter,
+commands/incoming register/PC/domain/shared-cell/alias/IRQ/concurrency and original
+calculation/comparison/controller/audio remain OPEN.

@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero macro variable commands
+
+Completed mcmdVarCalculation/mcmdIfVarCompare/inpSetExCtrl and opcodes96..101/
+112..113 for EVT-01; checked the corresponding inbox portion.
+[Variable commands](behavior/audio/MUSYX_MACRO_VARIABLE_CALCULATION_COMPARE_AND_SET.md)
+pins S16 arithmetic/saturation versus signed32 comparison/inversion/PC, immediate
+assignment and14-bit controller setter request order. Incoming result registers
+for unsupported modes, fresh command reads/raw indices/reused channel CR retained.
+Downstream MIDI setter/commands/domain/runtime and other opcode paths remain open.
+
+Validation: read-only ISO manifest passed17 spans (three bodies/eight regions/
+four linked/two tables),224 anchors/24 calls/eight registrations. Eleven arithmetic/
+seven comparison/eight clamp/six index vectors and PPC comparator/rotate/mask/
+address/order deductions checked. Link audit passed813 Markdown files/zero broken
+links; `git diff --check` passed. Documentation/metadata only; no `make test`/
+`make all` rerun. Full original inspection ELFs/listings stay `/tmp`; no bodies/
+binary assets committed. Concurrent native edits excluded from this commit.
+
+Next: priority-zero EVT-01 complete downstream MIDI controller setter, other
+macro opcode paths and actual command/source/variable/controller/base/PC/incoming
+register/reachable mode/domain writers, shared-cell/alias/IRQ/concurrency and
+original calculation/comparison/controller/audio traces. Full native/runtime
+binding, lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Original ordinary NPC talk selection and retained owner order
 
 Commit `0203759` binds [native ordinary talk selection](behavior/field/NATIVE_NPC_TALK_SELECTION.md)
