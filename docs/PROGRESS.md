@@ -5871,3 +5871,52 @@ skip ending presentation to fabricate field return. Successful Jump/Headbonk
 follow-ups, Spike warning/counter, gauge/voice, optional stylish/teaching,
 nonfresh status/crowd/equipment and full story/hardware parity remain open.
 The original-fidelity playable prologue goal remains active and incomplete.
+
+## 2026-10-13 — Native initial original trio victory stages
+
+After original enemy death/deferred removal and conclusion, the native trio
+now executes btlseqEnd's initial result selection through the existing portable
+source-priority helper. Packed battle information I10 becomes1; the field
+sequence/result consumer remains unchanged until real teardown/publication.
+Story11 and field control lock remain. ResetMoveColorLvAll scans all64 slots
+and writes only U311=ff to surviving records, including Frankly.
+
+The source original group, retained after enemy deletion, owns Great/Fast
+victory audience checks. Both real AddTarget requests execute the exact zero
+Sub early return and outer bias/target clamps with original packed constants.
+Nonzero Sub remains pending801a18cc. Original Koura deletion stream803b0c50
+runs as an actual owner-Mario priority10 root; the fresh no-guard leaf resolves
+its actor/output and returns-1. End work uses existing SDK heap0 allocation
+adapter, initializes only the original used fields (including separate E30=0),
+and retains the required irand120+60 request. Display/clap requests are traced;
+full source crowd/audio/end display remains an adapter.
+
+Original state05 uses ordered SetStatus(U,id,0,0), party then Mario for IDs0..24,
+rather than ClearStatus: it preserves Charge16 and IDs25..27 and retains the
+portable move-count/opposite-status semantics. Original owned-event barrier and
+all-unit data3f lookup follow; the existing original zero-terminator query is
+reused. The precise next pending owner is DropMaterial801141bc at bank7 state
+07000006. Full drop RNG/equipment/pouch ownership, rewards/EXP/victory art,
+fade/export/sequence publication and preserved field dialogue return remain
+unfinished. Nonfresh callback, alternate party flag/body and Mario10 paths
+remain explicit pending providers; no false field completion is produced.
+
+Documentation agent recovered and persisted the full original ending state
+map, local audience/status/Koura ABI and bounded fresh FieldInfo callback
+constructor evidence, with remaining work in DMG-02/EVT-01/JUMP-01 inboxes.
+No original assets or binaries were added to source history.
+
+Validation: make test passes137/137 CTest and103/103 Python tests
+(/tmp/trio-ending-tests-final.log). Extended source scenario removes all three
+enemies, verifies packed result1 versus retained field result0, exact pending
+DropMaterial/state06, initialized end fields/RNG range, reset color bytes,
+two audience adjustments, real Koura callback and clap request. Prior attacks,
+wing fall, enemy rounds and guard checks remain green. make all passes
+(/tmp/trio-ending-all-final.log); git diff --check passes. No new emulator
+capture was run for this controller-only increment; visible victory and field
+return are not yet implemented or claimed. No hardware/Dolphin timing parity.
+
+Next: bind source DropMaterial and correct live pouch/resource ownership,
+then EXP/victory poses and presentation, fade/export/field sequence return,
+and original gorotuki continuation. The full playable prologue goal remains
+active and incomplete.

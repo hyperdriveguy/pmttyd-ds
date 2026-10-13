@@ -2517,6 +2517,23 @@ addends/scaling/half212-before-hardware/requeue and helper entry-through-return
 pinned. Providers/domains/transitive consumers/original voice/audio/native
 binding remain open; EVT-01 stays OPEN.
 
+
+### 2026-10-13 delivery/request: original trio ending controller
+
+[Ending contract](../behavior/battle/UNDERGROUND_TRIO_VICTORY_CONTROLLER_AND_FIELD_RETURN.md)
+pins exact32-entry end-bank jump table, distinct F/I/NPC setup owners, fresh
+constructor/preserved F3c path and alternate actual callback/resume branch.
+Closed00/05/06 order, source audience Great/Fast bonus+complete AddTargetNum/
+Sub float ABI/clamps, Koura originalchild/freshU10420clear leaf, resetcolorU311ff,
+ordered per-ID SetStatus0..24 with Charge retained/19,20move recalculation,
+owned-event barriers/remaining all-unit3f keys, DropMaterial owner and source
+EXP/reward/export/fade/publication/field continuation dependencies. Original
+MarioM_V_2/GoombellaPKR_Y_1 victory scripts identified. No result/pouch/story
+completion fabricated from nativeHP0. Next bounded requests: generalF3c producer
+outsidefreshscope, exactDropMaterial RNG/equipment/fielddrop consumers, remaining
+end display/effect/audio/EXP/rank/level services and actual field reconstruction.
+Docs-only/read-onlyISO, no native edits/commit; git diff --check passed.
+
 ## 2026-10-13 — Stream ID lookup/output mode/mix delivery
 
 Completed five local bodies in

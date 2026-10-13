@@ -224,12 +224,24 @@ int main(){
             assert(charged.trioCommands.count()==1 && charged.trioCommands.selected()[0]==5); // Ground replacement admits Hammer.
             charged.tick(advance);charged.tick(Input{});
             for(unsigned n=0;n<1500 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
-            assert(charged.trioAttack.pendingFunction()==0x80215234);
+            assert(charged.trioAttack.pendingFunction()==0x801141bc);
             assert(charged.trioAttack.readWord(0x84000034,value) && value==0 && charged.trioBattleIntro.actors[4].hidden);
             assert(charged.trioAttack.readWord(0x84105278,value) && value==0x10717);
-            assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x07000000);
+            assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x07000006);
+            assert(charged.trioAttack.readWord(0x84400010,value) && value==1); // Packed original result, not field completion.
+            assert(charged.trioAttack.readWord(0x84000f28,value) && value!=0);
+            const auto end=value;
+            assert(charged.trioAttack.readWord(end,value) && value==0);
+            assert(charged.trioAttack.readWord(end+0x30,value) && value==0);
+            assert(charged.trioAttack.readWord(end+0x29c,value) && value==0);
+            assert(charged.trioAttack.readWord(end+0x2a0,value) && value>=60 && value<180);
+            assert(charged.trioAttack.readWord(end+0x2a4,value) && value==0);
+            for(unsigned unit:{1u,2u,6u})assert(charged.trioAttack.readWord(0x84100000+unit*0x1000+0x310,value) && ((value>>16)&255)==255);
+            const auto& endingRequests=charged.trioAttack.requests();
+            assert(std::count_if(endingRequests.begin(),endingRequests.end(),[](const ProfessorServiceRequest& r){return r.function==0x801a1a74;})==2);
+            assert(std::any_of(endingRequests.begin(),endingRequests.end(),[](const ProfessorServiceRequest& r){return r.function==0x80212794 && r.rawOperands.size()==2;}));
+            assert(std::any_of(endingRequests.begin(),endingRequests.end(),[](const ProfessorServiceRequest& r){return r.function==0x801a0cec && r.rawOperands==std::vector<int32_t>({-1,0});}));
             assert(charged.progress.originalStory==11 && charged.fieldBattleState().result==0 && !charged.fieldControlEnabled());
-
 
         }
     }
