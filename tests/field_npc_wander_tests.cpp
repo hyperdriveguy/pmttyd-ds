@@ -14,7 +14,25 @@ int main() {
     assert(loadCollision("romfs/gor_02.walls") && loadGround("romfs/gor_02.ground") && loadHead("romfs/gor_02.head"));
     const FieldActorRecord* actor=nullptr;
     for(const auto& a:fieldActorCatalog().actors())if(a.wander.enabled){actor=&a;break;}
-    assert(actor && actor->sourceTalkPresent && actor->talkRules.empty());
+    assert(actor && actor->sourceTalkPresent && actor->talkRules.size()==11);
+    assert(!fieldActorTalkAvailable(*actor,8)); // Unknown saved quest cannot assume ordinary talk.
+    FieldActorTalkState ordinary;ordinary.quest1420=0;
+    assert(fieldActorTalkKey(*actor,8,ordinary)=="gor_02_030_00");
+    const std::pair<int32_t,const char*> boundaries[]={{55,"00"},{56,"01"},{111,"01"},{112,"02_01"},
+        {163,"02_01"},{164,"03"},{174,"03"},{175,"03_01"},{176,"03_02"},{214,"03_02"},
+        {215,"04"},{260,"04"},{261,"05"},{338,"05"},{339,"06"},{372,"06"},{373,"07"},{400,"07"},{401,"08"}};
+    for(const auto& boundary:boundaries)
+        assert(fieldActorTalkKey(*actor,boundary.first,ordinary)==std::string("gor_02_030_")+boundary.second);
+    FieldActorTalkState flags;flags.flag5405=false;flags.flag5406=false;
+    assert(fieldActorTalkAvailable(*actor,8,flags)); // Both source quest arms excluded even with unknown quest.
+    for(uint8_t quest:{uint8_t(2),uint8_t(13)}) {
+        FieldActorTalkState guarded;guarded.quest1420=quest;
+        assert(!fieldActorTalkAvailable(*actor,8,guarded));
+        if(quest==2)guarded.flag5405=false;else guarded.flag5406=false;
+        assert(fieldActorTalkAvailable(*actor,8,guarded));
+        if(quest==2)guarded.flag5405=true;else guarded.flag5406=true;
+        assert(!fieldActorTalkAvailable(*actor,8,guarded));
+    }
     assert(actor->position[0]==-370 && actor->position[2]==130 && actor->wander.radius==70 && actor->wander.runThreshold==20);
     Progress saved;saved.room=2;saved.originalStory=8;saved.position={1.2f,-4};Game game;game.restore(saved);
     game.tick({});const auto* initial=game.fieldNpcState(actor->key);assert(initial && initial->initialized);
@@ -53,6 +71,13 @@ int main() {
     // Mechanism fixture: unsupported source winner must not redirect A to
     // farther Chu, whose original message provider remains available.
     assert(loadHarborStoryAssets("romfs"));Game nearest;nearest.restore(saved);for(int n=0;n<360;++n)nearest.tick({});
+    Game known;auto knownSave=near;knownSave.originalNpcTalkState=ordinary;known.restore(knownSave);
+    for(int n=0;n<360;++n)known.tick({});known.tick(press);known.tick({});
+    assert(known.fieldActorTalk.message.active() && known.fieldActorTalk.message.id()=="gor_02_030_00");
+    MessageAssets texts;assert(texts.loadRoom("romfs/messages/gor_02.txt"));
+    assert(known.fieldActorTalk.message.rawText()==texts.find("gor_02_030_00") && known.progress.originalStory==8);
+    for(int n=0;n<5000 && known.fieldActorTalk.message.active();++n)known.tick(press);
+    assert(!known.fieldActorTalk.message.active() && known.scene==Scene::Explore && known.progress.originalStory==8);
     std::ifstream pack("romfs/field-actors.pmnpc",std::ios::binary);std::vector<uint8_t> bytes((std::istreambuf_iterator<char>(pack)),{});
     auto word=[&](size_t p){uint32_t value;std::memcpy(&value,bytes.data()+p,4);return value;};
     size_t row=16+word(8)*100;

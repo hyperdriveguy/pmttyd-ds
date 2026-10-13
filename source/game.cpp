@@ -786,7 +786,7 @@ const FieldActorRecord* Game::nearbyFieldActor() const {
         const auto live=fieldNpcs.find(actor.key);
         const auto root=live!=fieldNpcs.end()?live->second.body.root:FieldWallVector{actor.position[0],actor.position[1],actor.position[2]};
         const auto flags=live!=fieldNpcs.end()?live->second.body.flags:actor.npcFlags;
-        const bool talkBound=progress.originalStory && fieldActorTalkAvailable(actor,*progress.originalStory);
+        const bool talkBound=progress.originalStory && fieldActorTalkAvailable(actor,*progress.originalStory,progress.originalNpcTalkState);
         scan.consider({actor.key,root,actor.npcWidth,actor.npcHeight,flags,talkBound},mario,fieldNpcAngles(),rays);
     }
     if(scan.candidate)for(const auto& actor:fieldActorCatalog().actors())
@@ -805,7 +805,7 @@ void Game::updateFieldNpcTalk(const Input& input) {
                 actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags)) {
                 auto current=actor;const auto live=fieldNpcs.find(actor.key);
                 if(live!=fieldNpcs.end())current.position={live->second.body.root.x,live->second.body.root.y,live->second.body.root.z};
-                if(fieldActorTalk.begin(current,*progress.originalStory,harborMessageFont(),ticks*1000/60)) {
+                if(fieldActorTalk.begin(current,*progress.originalStory,harborMessageFont(),ticks*1000/60,progress.originalNpcTalkState)) {
                     if(!(current.npcFlags&0x01000000))fieldActorTalk.actor.yaw=npcReviseAngle(fieldNpcAngles().angle(current.position[0],current.position[2],
                         progress.position.x*100,progress.position.z*100));
                     if(live!=fieldNpcs.end())live->second.movement.yaw=fieldActorTalk.actor.yaw;
@@ -818,7 +818,7 @@ void Game::updateFieldNpcTalk(const Input& input) {
     const FieldActorRecord* actor=nullptr;
     if(fieldNpcEventCandidate) {
         for(const auto& row:fieldActorCatalog().actors())if(row.key==fieldNpcEventCandidate && progress.originalStory &&
-            fieldActorTalkAvailable(row,*progress.originalStory)){actor=&row;break;}
+            fieldActorTalkAvailable(row,*progress.originalStory,progress.originalNpcTalkState)){actor=&row;break;}
     } else actor=nearbyFieldActor();
     npcTalkCandidate=fieldNpcEventCandidate?fieldNpcEventCandidate:actor?actor->key:0;
     npcTalkGeneration=fieldActorCatalogGeneration();
@@ -1165,7 +1165,7 @@ const char* Game::prompt() const {
     if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) return "A: confront Lord Crump";
     if (progress.room==0 && near(NpcPosition)) return "A: talk";
     if(fieldNpcTalkCandidateAlive()) {
-        for(const auto& actor:fieldActorCatalog().actors())if(actor.key==npcTalkCandidate && progress.originalStory && !fieldActorTalkAvailable(actor,*progress.originalStory))return "Development notice: NPC event unavailable";
+        for(const auto& actor:fieldActorCatalog().actors())if(actor.key==npcTalkCandidate && progress.originalStory && !fieldActorTalkAvailable(actor,*progress.originalStory,progress.originalNpcTalkState))return "Development notice: NPC event unavailable";
         return "A: talk";
     } // Retained simulation result; no render-time map ray.
     return "Circle Pad: move   A: jump   X: partner";

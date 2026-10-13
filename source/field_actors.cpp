@@ -11,6 +11,15 @@ const FieldActorTalkRule* talkRule(const FieldActorRecord& actor,int32_t story) 
         (rule.comparison==2 && story>=rule.story))return &rule;
     return nullptr;
 }
+bool ordinaryTalkGuard(const FieldActorRecord& actor,const FieldActorTalkState& state) {
+    // Original gor_02/Goomba4 profile, independent from reusable c_kuribo_n art.
+    if(actor.room!=2 || actor.key!=0x2b0a9f83)return true;
+    const auto excludes=[&](uint8_t quest,const std::optional<bool>& flag) {
+        return (state.quest1420 && *state.quest1420!=quest) || (flag && !*flag);
+    };
+    // Item services are not yet bound: a possible quest arm remains unavailable.
+    return excludes(2,state.flag5405) && excludes(13,state.flag5406);
+}
 }
 bool loadFieldActorCatalog(const char* root) {
     if(!root)return false;
@@ -21,7 +30,8 @@ bool loadFieldActorCatalog(const char* root) {
 const FieldActorAssets& fieldActorCatalog(){return catalog;}
 uint64_t fieldActorCatalogGeneration(){return generation;}
 const NpcAngleTable& fieldNpcAngles(){return npcAngles;}
-std::string fieldActorTalkKey(const FieldActorRecord& actor,int32_t story) {
+std::string fieldActorTalkKey(const FieldActorRecord& actor,int32_t story,const FieldActorTalkState& state) {
+    if(!ordinaryTalkGuard(actor,state))return {};
     if(actor.talkRulesBound) {
         const auto* rule=talkRule(actor,story);return rule?rule->message:std::string{};
     }
@@ -30,12 +40,13 @@ std::string fieldActorTalkKey(const FieldActorRecord& actor,int32_t story) {
     unsigned branch=0;while(branch<8 && story>=limits[branch])++branch;
     return actor.talkPrefix+"0"+char('0'+branch);
 }
-bool fieldActorTalkAvailable(const FieldActorRecord& actor,int32_t story) {
+bool fieldActorTalkAvailable(const FieldActorRecord& actor,int32_t story,const FieldActorTalkState& state) {
+    if(!ordinaryTalkGuard(actor,state))return false;
     return actor.talkRulesBound?talkRule(actor,story)!=nullptr:!actor.talkPrefix.empty();
 }
-bool FieldActorTalk::begin(const FieldActorRecord& source,int32_t story,const MessageFont& font,uint64_t now) {
+bool FieldActorTalk::begin(const FieldActorRecord& source,int32_t story,const MessageFont& font,uint64_t now,const FieldActorTalkState& state) {
     if(message.active() || assetRoot.empty() || source.talkPrefix.size()<6)return false;
-    const auto key=fieldActorTalkKey(source,story);if(key.empty())return false;
+    const auto key=fieldActorTalkKey(source,story,state);if(key.empty())return false;
     MessageAssets next;
     if(!next.loadGlobal((assetRoot+"/messages/global.txt").c_str()) ||
        !next.loadRoom((assetRoot+"/messages/"+source.talkPrefix.substr(0,6)+".txt").c_str()))return false;

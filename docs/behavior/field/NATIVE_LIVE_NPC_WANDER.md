@@ -25,8 +25,9 @@ records), then adds188 bytes:
 
 Numbers remain little endian and source engine units. Original talk pointer
 presence is independent from bound native talk rules: Goomba4 has presence1
-with zero rules and empty prefix. Unsupported quest playback returns no native
-message; source candidacy/auto-turn can still pause the driver. Versions1..7
+with guarded ordinary rules/prefix; earlier packs retained zero rules and an
+empty prefix. [Known-state ordinary playback](NATIVE_GOOMBA4_ORDINARY_TALK.md)
+is now bound. Unsupported quest playback returns no native message; source candidacy/auto-turn can still pause the driver. Versions1..7
 remain readable; legacy source presence is inferred from a nonempty prefix,
 without inventing legacy wander fields. See [catalog](NATIVE_AREA_ACTOR_CATALOG.md)
 and [per-actor rules](NATIVE_DARKLY_AND_PER_ACTOR_TALK_RULES.md).
@@ -54,7 +55,9 @@ and S_1/W_1/R_1 plus original left/right movement sound names come from the
 recovered owners. Root and previous root seed together on instantiation.
 Story0..55 is native coverage, not an original spawn visibility condition.
 Original quest/inventory branches precede ordinary gor_02_030_00: missing quest
-state is not0. Goomba4 playback remains unsupported even in this early slice.
+state is not0. [Ordinary playback](NATIVE_GOOMBA4_ORDINARY_TALK.md) now requires explicit
+known quest/flag state excluding both quest arms; full quest playback remains
+unbound and legacy unknown state remains unavailable.
 
 ## Retained events, clocks, movement and source pose requests
 

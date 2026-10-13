@@ -60,7 +60,11 @@ original shape culling/colors are retained. Source NPC side collision now uses
 original dimensions/flags, previous-position rollback, polynomial response and
 map-wall correction. Original east Goomba4 now wanders from his source init
 position using retained movement/pose state and source candidate pause/resume.
-His quest dialogue remains unbound; movement sounds use original left/right
+His ordinary talk now uses unchanged US messages when explicit saved quest
+state excludes the original quest arms; legacy unknown state stays unavailable.
+Quest item-selection dialogue remains unbound; see
+[known-state talk binding](docs/behavior/field/NATIVE_GOOMBA4_ORDINARY_TALK.md).
+Movement sounds use original left/right
 primary samples through NDSP, with full macro/spatial routing still unbound. Live wandering paper facing advances in simulation, with rendering
 reading the prepared state. Stationary Chu/Darkly now share simulation-owned
 paper facing and retain the original candidacy yaw after Mario leaves; see

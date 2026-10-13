@@ -1192,3 +1192,26 @@ and ignored. Nintendo/Intelligent Systems ownership applies; no redistribution
 rights are claimed. Exporters honor configured ISO paths and open originals only
 read-only. Source native adapters and source hashes may enter history; originals
 and executable PPC bytes never do.
+
+## 2026-10-13 — Guarded original Goomba4 ordinary message rules
+
+The local PMNPC008 catalog now retains the11 source-order kuribo4_talk ordinary
+story rules and gor_02_030_ prefix, directly matching the read-only US gor REL
+event and existing msg/US/gor_02 bank. Original IDs/control tokens/attribution
+remain unchanged. The native partial saved-switch guard excludes both earlier
+quest arms before these rules can play; unknown legacy state does not imply0.
+No additional texture, geometry, audio or text conversion was introduced. Existing
+c_kuribo_n and message resource conversion/provenance/licensing applies; original
+content remains Nintendo/Intelligent Systems copyrighted material, used locally
+from the user's ISO without redistribution. Compiled catalog/messages/captures
+and ISO remain outside source history. See
+[known-state native binding](behavior/field/NATIVE_GOOMBA4_ORDINARY_TALK.md).
+
+### 2026-10-13 EXP type0 window frame source evidence
+
+Read-only ISO `f/msgWindow.tpl`,321984bytes; ignored local evidence
+`artifacts/recovered-temp-evidence/msgWindow.tpl`. Original TPL descriptor0
+is72x72CMPR (format14), source type0 nine-slice texture. See
+[geometry/material and clock](behavior/display/EXP_ICON_CLOCK_AND_TYPE0_WINDOW_FRAME.md).
+No generated substitute art or distribution of original assets; same user-owned
+ISO/local-use licensing limitation applies. Native import/render remains next.

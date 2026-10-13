@@ -124,6 +124,7 @@ const char* roomAsset(uint32_t room);
 const char* roomName(uint32_t room);
 bool loadWarps(const char* path);
 struct Progress {
+    FieldActorTalkState originalNpcTalkState;
     std::shared_ptr<ProloguePouch> originalPouch; // Live original storage; legacy checkpoint serialization remains separate.
     uint32_t room = 0;
     float elevation = 0;

@@ -575,3 +575,16 @@ then clears the unbound request; it does not restore map/saved yaw. Their
 mainflags00400000 remain clear. Full foreign script writes, lifetime, EVT
 cadence and measured presentation stay OPEN. Documentation-only source checks;
 no native build/emulator/hardware claim.
+
+### 2026-10-13 — Goomba4 quest guards and item-window services
+
+[Goomba4 quest contract](../behavior/field/ROGUEPORT_GOOMBA4_QUEST_AND_ITEM_SELECTION.md)
+recovers GSW1420/GSF5405..5407 storage and reset preservation, exact key-item
+count/removal wrapper results, fixed [95,-1] table, quest13 dynamic table
+allocation/update/free, and evt_win_item_select argument/result/key ownership.
+This is item selection, not message Yes/No choices. Exact first/continuing
+quest graph, original IDs/speakers/poses/waits and conservative known-state
+ordinary admission are recorded. Generic quest writers, native saved-bank
+ownership, full item-window services/event cadence and measured parity remain
+OPEN. Documentation only; ISO read-only, no original binary/dialogue prose,
+shared index/PROGRESS or implementation edits.

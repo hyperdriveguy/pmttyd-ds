@@ -159,7 +159,8 @@ def build(iso):
                     talk_rules=[(0,56,'gor_02_034_00')],source='m/gor_02/s:クラガリさん;gor.rel:init@0x446a8/talk@0x44d90'),
                dict(key=identifier('gor_02','クリボー４'),room=2,model=4,required=0,forbidden=0,low=0,high=55,
                     position=[-370,0,130],yaw=270,pose='S_1',npc_flags=0x40080603,source_talk_present=1,
-                    wander=dict(radius=70,speed=30),talk_rules=[],source='gor.rel:kuribo4_init@0x438f0/regular@0x43924')]
+                    wander=dict(radius=70,speed=30),talk_prefix='gor_02_030_',
+                    talk_rules=[(0,limit,'gor_02_030_'+suffix) for limit,suffix in [(56,'00'),(112,'01'),(164,'02_01'),(175,'03'),(176,'03_01'),(215,'03_02'),(261,'04'),(339,'05'),(373,'06'),(401,'07')]]+[(3,0,'gor_02_030_08')],source='gor.rel:kuribo4_init@0x438f0/regular@0x43924')]
     tagged_order={name:i for i,name in enumerate(tagged_npcs(setup.read_bytes().decode('shift_jis')))}
     source_order={identifier('gor_02',name):i for name,i in tagged_order.items()}
     records.sort(key=lambda r:(r['room'],source_order.get(r['key'],0)))

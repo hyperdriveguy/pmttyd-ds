@@ -13,6 +13,26 @@ int main() {
     Progress p;p.room=0;p.interiorMask=1;p.originalStory=8;p.position={1.06f,-1.24f};
     auto bytes=encodeSave(p);Progress out;assert(bytes[4]==6 && bytes[33]==1);
     assert(decodeSave(bytes,out) && out.room==0 && out.interiorMask==1 && out.originalStory==8);
+    for(int quest:{-1,0,2,13,255})for(int a:{-1,0,1})for(int b:{-1,0,1}) {
+        auto state=p;if(quest>=0)state.originalNpcTalkState.quest1420=uint8_t(quest);
+        if(a>=0)state.originalNpcTalkState.flag5405=a!=0;if(b>=0)state.originalNpcTalkState.flag5406=b!=0;
+        const auto encoded=encodeSave(state);assert(decodeSave(encoded,out));
+        assert(out.originalNpcTalkState.quest1420==state.originalNpcTalkState.quest1420 &&
+               out.originalNpcTalkState.flag5405==state.originalNpcTalkState.flag5405 &&
+               out.originalNpcTalkState.flag5406==state.originalNpcTalkState.flag5406 && out.mushrooms==p.mushrooms);
+    }
+    auto fresh=p;fresh.originalNpcTalkState={uint8_t(0),false,false};const auto v7=encodeSave(fresh);assert(v7[4]==7);
+    for(unsigned bit:{8u,19u,20u,21u,31u}) {
+        auto corrupt=bytes;corrupt[4]=7;corrupt[20+bit/8]|=uint8_t(1u<<(bit%8));checksum(corrupt);
+        assert(!decodeSave(corrupt,out));
+    }
+    fresh.mushrooms=65536;assert(!decodeSave(encodeSave(fresh),out));
+    for(unsigned version=1;version<=6;++version) {
+        auto legacyState=bytes;legacyState[4]=uint8_t(version);legacyState[33]=0;
+        checksum(legacyState,version<3?28:36);out.originalNpcTalkState={uint8_t(13),true,true};
+        assert(decodeSave(legacyState,out) && !out.originalNpcTalkState.quest1420 &&
+               !out.originalNpcTalkState.flag5405 && !out.originalNpcTalkState.flag5406);
+    }
     p.originalFlag1207=true;
     const auto departed=encodeSave(p);assert(departed[34]==1 && decodeSave(departed,out) && out.originalFlag1207);
     for(unsigned bits=0;bits<8;++bits)for(unsigned mode:{0u,1u,9u,255u}) {
