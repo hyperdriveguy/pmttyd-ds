@@ -53,13 +53,13 @@ compares r30 per the assignment above). Backward edges, verified:
   callback gate — `cmplwi r27,0`, taken-equal skips a `mtctr`/`bctrl` call
   shaped (query, chunk) with nonzero check on its return — then setup and
   the same loop skeleton.
-- Loop-counter asymmetry, verified by prologue diff: regions 2–4 use
-  counter r31 (0,1,2…) in `cmpw` against the halfword count with triangle
-  pointer r30 advancing 84/iteration from [chunk+172]; region 1 instead
-  compares r30 (from [chunk+172]+1, +1/iteration) against the count while
-  the body reads triangles through r31 (84,168,… absolute). The region-1
-  assignment is reported exactly as written; no chunk layout is inferred
-  to explain it.
+- Loop counters differ only in register allocation, verified by init
+  diff: region 1 uses counter r30 (from 0) with triangle pointer r31 (from
+  [chunk+172], +84/iteration); regions 2–4 use counter r31 with pointer
+  r30. Both compare the counter against the halfword count. An earlier
+  revision misread region 1's init and claimed a pointer-size consequence;
+  the inits (`lwz 31,172` / `li 30,0` at 0x800159b8–bc versus `lwz
+  30,172` / `li 31,0` in the other regions) refute it.
 - Region 4 falls through to the tail (~80016518).
 
 ## Per-triangle order (identical skeleton ×4)
@@ -90,6 +90,52 @@ Hit path (~80016528): copies the staged stack words into
 with r3 unstaged — the hit return value is whatever the last helper left,
 not a constructed code. Callers test it against zero (as `checkLand2`'s
 loop does: null → next probe).
+
+## Region graph correction (verified edge census)
+
+The "four sequential regions" framing above is refined by a machine-extracted
+edge census (all branch targets resolved, fallthroughs included):
+
+- Entry runs R1's scan loop (tops 159c4/15950). Chunk exhaustion drains to
+  the tail (16518) via 15a68–15a74; R1 never falls through onward.
+- R1-triangle-hit forwards out of the loop two ways: the 15a98 gate selects
+  the R3 gateway (15e04) or R2 entry (15df8, via 15a9c). R1 does not resume
+  after a forwarded hit — it scans to first admission, then hands off.
+- R2 (outer 15aa0, triangle 15b14) drains to the tail on chunk exhaustion
+  (15e00). Its triangle body contains no forward edge to R3; an earlier
+  draft's "R2→R3 increment edge" was a misattribution — 15ea4→16150 lies
+  inside R3 (triangle 15e88 → increment), i.e. R3's loop-continue when
+  [tri+76] == 0.0.
+- R3 (outer 15e14, triangle 15e88) is entered only through the
+  15e04 → 15e10 → 16168 gateway chain (15e10 is fallthrough-reached, not
+  branch-targeted). Its exits drain to the tail or its own outer loop.
+- R4 (0x80016178–0x80016508) is statically unreachable: its only
+  predecessors are its own back-edges (16514→16178, 16508→161ec); the
+  would-be fallthrough at 16174 is itself dead behind 16170's unconditional
+  tail branch, and no indirect jump targets the range. Its ~600 bytes
+  duplicate R3's callback-gated scan shape with no live entry.
+- Miss/empty paths at every stage converge on the tail (16518 hit-publish
+  versus 16510/16528 miss returns per the protocol above).
+
+Per-edge gate conditions and inter-region dataflow (what state R1-hit hands
+to R2/R3) remain open; the edges above are control-flow facts, not a
+dataflow contract.
+
+## Region executability notes (verified, corrected)
+
+- R4 (0x80016178–0x80016508) is statically unreachable: its only
+  predecessors are its own back-edges, the fallthrough at 0x80016174 is
+  dead behind 0x80016170's unconditional tail branch, and no indirect jump
+  targets the range. An earlier draft's broader executability caveat is
+  withdrawn below.
+- Correction: regions do NOT differ in loop form. R1 allocates counter=r30
+  (from 0) and triangle pointer=r31 (from [chunk+172]); regions 2–4 use
+  counter=r31 and pointer=r30. Both compare the counter against the
+  halfword count and stride the pointer 84/iteration. An earlier revision
+  of this section misread R1's init (`lwz 31,172` / `li 30,0` at
+  0x800159b8–bc) as the regions-2–4 shape and drew a false pointer-size
+  consequence; re-reading the init blocks refutes it. No executability
+  claim is made either way beyond R4.
 
 ## Not established
 
