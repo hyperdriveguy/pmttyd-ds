@@ -2,6 +2,33 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-12 — Harbor position gates and original Mario position callback
+
+Documentation cross-check recovered original story3's integer Z<=-100 gate,
+and story4's nested Z<=-100 / X>=-25 gate, with original message IDs, speakers
+and control-token inventory. Added `fieldMarioGetPosition` with callback-registry
+binding at US0x800e71f8 and `harborPositionGate`; both compose with the existing
+event operand services, preserving 1/1024 float writes and integer truncation.
+Independently re-disassembled the complete US callback: argument pointer is
+captured before marioGetPtr, Mario pointer before mode resolution, and each
+destination/position write remains ordered. All nonzero modes subtract1 from Y.
+See [harbor bindings](behavior/story/STORY_HARBOR_OPENING_BINDINGS.md) and
+[inbox breadcrumb](requests/OW-INTERACT-01.md).
+
+Validation: `make test` **89 CTest / 92 Python passing**, `make all` builds
+3DSX; `verify_field_lecture_callbacks.py` verifies15 bodies/54 instruction
+anchors/6 constants/10 imports; `verify_behavior_contracts.py` passes;
+`check_doc_links.py` checks687 files with0 broken links. Tests cover fractional
+gate boundaries, mode behavior, quantization, pointer capture, ordered field
+reads and registry dispatch. No emulator run: these portable services are not
+yet invoked by `Game`, so current development notices/trigger remain unchanged.
+
+Next: original message parser/window presentation, REL harbor scene activation,
+NPC poses/choreography and indoor entrances. Goombella's PKR_Z_1 pack probe
+encountered original animated visibility, which PMANIM2 explicitly rejects;
+implement that domain before replacing its baked idle image. The playable
+prologue / original-game parity goal remains incomplete.
+
 ## 2026-10-12 — Native original US message library and resource lookup
 
 Imported all 260 `msg/US` resources / 13,186 key/text pairs byte for byte

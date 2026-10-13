@@ -147,6 +147,9 @@ the evidence still needed for a strongly equivalent reimplementation. Reproduce
 its binary fingerprints with `tools/behavior_evidence.py`.
 
 Original US English dialogue and faithful story reproduction are required.
+`make all` now packages all 260 original `msg/US` resources byte for byte under
+ignored `romfs/messages/`. Portable room/global lookup retains IDs and tokens;
+story-window playback is still unbound.
 The current dialogue interaction displays explicit development notices; original
 message playback and event sequencing are unfinished. No authored replacement
 character dialogue should be used.

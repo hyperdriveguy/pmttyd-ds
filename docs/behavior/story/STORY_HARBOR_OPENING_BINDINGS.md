@@ -160,3 +160,114 @@ above,`--module gor --symbols artifacts/reference/us_symbols.csv --output`
 an ignored reference path. Message resource hashes/offsets are reproducible with
 message_resource_evidence.py. Preserve the ISO read-only and original assets
 outside source history.
+
+## First encounter trigger and message-branch refinement (2026-10-12)
+
+Independent read-only re-extraction of the five scene streams above establishes
+the following scoped predicates. This supplements the initial inventory; it
+does not establish camera/movement/event timing equivalence or the complete
+overworld interaction arbiter.
+
+The story operand `0xf5de0180` is signed `-170000000`, exactly **GSW(0)** in
+the [integer operand namespaces](../event/EVENT_INTEGER_OPERAND_NAMESPACES.md).
+It reads/writes the global saved byte bank via `swByteGet(0)`/`swByteSet(0, value)`.
+Its on-disk save ownership remains a separate requirement.
+
+The `christine_osoware` main stream begins with `IF_EQUAL(LW0, 1)` at
+`0x25e08`. The admitted resume block disables key/control, sets Mario to
+`(0,15,250)` and direction arguments `(90,0,0)`, waits through `evt_seq_wait(2)`,
+then enables control/key; `END_IF` is at `0x25e78`. Both fresh and resumed
+streams then execute the same poll:
+
+| Site | Original command/request |
+| --- | --- |
+| `0x25e7c` | DO literal 0 (endless loop) |
+| `0x25e84` | `evt_mario_get_pos(0, LW0, LW1, LW2)` |
+| `0x25e9c` | IF integer `LW2 <= -100` |
+| `0x25ea8` | BREAK_LOOP |
+| `0x25eac` | END_IF |
+| `0x25eb0` | WAIT_FRAME(1) |
+| `0x25eb8` | NEXT |
+
+After admission the stream writes `0xf840601b = 1` at `0x25ebc`, which is
+**GSF(1179)** (`-129998821 - (-130000000) = 1179`). It configures the
+harbor NPC/sound requests, runs `christine_osoware_setup` as child at
+`0x25f4c`, disables Mario key at `0x25f54`, then prints `mac_0_016` at
+`0x25f60`. There is no A/X/B button or actor-proximity test in this poll.
+After the six message calls through `mac_0_021`, it writes GSW(0)=4,
+enables Mario key and spawns the beforebattle stream as already tabulated.
+
+`gundan1000tai_beforebattle` has an independent LW0==1 resume block ending
+at `0x26540`. It sets Mario to `(-220,15,90)` and restores actor positions:
+Goombella `(55,15,-300)`, Crump `(105,15,-300)`, subordinate A
+`(135,15,-330)`, subordinate B `(160,15,-330)`; facing requests are 90 for
+Goombella and 270 for the other three. Its subsequent poll is:
+
+| Site | Original command/request |
+| --- | --- |
+| `0x26544` | DO literal 0 |
+| `0x2654c` | `evt_mario_get_pos(0, LW0, LW1, LW2)` |
+| `0x26564` | IF integer `LW2 <= -100` |
+| `0x26570` | IF integer `LW0 >= -25` (nested) |
+| `0x2657c` | BREAK_LOOP |
+| `0x26580` / `0x26584` | END_IF / END_IF |
+| `0x26588` | WAIT_FRAME(1) |
+| `0x26590` | NEXT |
+
+Therefore both conditions must admit on the same position read. It then
+requests environment off and disables Mario key at `0x265a0`; the three
+beforebattle message calls and battle index2 start/wait follow. This poll
+also has no A/X/B gate. See [loop opcodes](../event/EVENT_GOTO_AND_LOOP_OPCODES.md)
+and [integer IF predicates](../event/EVENT_IF_INTEGER_MASK_AND_CONTINUATIONS.md).
+
+These are **integer predicates over float-writing locals**, not raw float
+comparisons. The [position callback](../field/FIELD_SEGMENT_INTERSECTION.md)
+writes 1/1024-quantized encoded floats; `evtGetValue` decodes them then uses
+`fctiwz` (truncation toward zero). Thus, in the finite ordinary domain, decoded
+X=-25.5 admits the second poll's X test (integer -25), whereas decoded Z=-99.5
+fails both Z tests (integer -99). Preserve the conversion chain rather than
+changing opcodes28/29 into float IF opcodes22/23. This is static composition,
+not an observed original trace.
+
+The 20 displayed payloads `mac_0_014` through `mac_0_033` contain no `<select>`
+lexeme. The five streams contain no `evt_msg_select`/`evt_msg_continue` calls.
+In particular the six `christine_osoware` messages and the three beforebattle
+messages are unconditional in their main stream after their position polls;
+they have no reply-choice branch. The prior table retains exact speaker
+operands and order. This does not prove general message-system choice behavior
+or make speaker0 an attributed NPC.
+
+All 20 payloads use `<k>`. Original paging `<p>` occurs in 014/015/017/019/
+023/024/025; all other payloads in this range have none. `<dynamic 3>` occurs
+in 016/022/024/026/027/031; 024 also has `</dynamic>`. Scale tokens are 026
+`<scale 2.2>`, 027 `<scale 2>`, 031 `<scale 2.5>`; 026 and 031 also contain
+`<shake>`. Literal `<wait N>` counts/values and every original byte remain
+authoritative in `msg/US/gor_00.txt`; these inventories do not authorize
+discarding tokens, combining messages or rewriting text.
+
+The exact distinct token lexemes across this range are `</dynamic>`,
+`<dynamic 3>`, `<k>`, `<p>`, `<scale 2.2>`, `<scale 2.5>`, `<scale 2>`,
+`<shake>`, `<wait 100>`, `<wait 200>` and `<wait 250>`. The 20 payloads
+contain **zero bytes >=128**. This is a resource census, not a general
+US character-encoding contract.
+
+Story2's `enter_gorotsuki_town` disables key/control at `0x254d8`/`0x254e4`
+and sets Mario to `(0,-1000,0)` at `0x254f0`. It enables control at
+`0x25854`, then sets Mario to `(0,15,225)` at `0x25860` and requests
+direction `(90,0,0)` at `0x25874`, before printing 014/015. There are no
+later Mario position/movement commands in this annotated stream. At its end
+it writes story3 at `0x25dbc`, requests
+`N_evt_bero_set_mario_bottomless_respawn_pos_to_current_mario_pos` at
+`0x25dc8`, enables key at `0x25dd0` and spawns the story3 stream at
+`0x25df8` with LW0=0. `(0,15,225)` is therefore the **last explicit position
+request before key restoration**, not a runtime position trace or proof that
+other services cannot move Mario. The story3 resume position `(0,15,250)`
+belongs only to LW0==1 and must not overwrite this fresh intro position.
+
+Validation: re-extracted five streams with `rel_event_inventory.py` to
+`/tmp/harbor-dialogue-events.json`; direct ISO assertions checked 13 command
+records, two `evt_mario_get_pos` imports/operand lists, all 20 ordered IDs,
+the two resource SHA-256 values and absence of `<select>`; existing
+`tools/verify_behavior_contracts.py` passes. Full key/control service semantics,
+postbattle actor/crowd wait predicates, original execution and runtime fidelity
+remain open. See [OW-INTERACT-01](../../requests/OW-INTERACT-01.md).
