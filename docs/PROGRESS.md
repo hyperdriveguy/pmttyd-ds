@@ -2,6 +2,78 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original NPC facing, dimensions, talk clocks and surface culling
+
+Commit `1e959c7` binds [ordinary NPC local presentation](behavior/field/NATIVE_NPC_PRESENTATION_AND_SOURCE_DIMENSIONS.md)
+and records newly delegated [dimensions/anchor/display owners](behavior/display/NPC_DIMENSIONS_TALK_ANCHOR_AND_DISPLAY_REGISTRATION.md).
+Original event yaw is now separate from the NPC matrix: source angleABf table/
+ordered camera correction, scale/pivot/Z-X-Y/root composition, Main sign then
+Inner front/rear target/unwrap/per-draw fused0.1 smoothing and Z reflection replace
+literal yaw-based mirroring. Fresh angle0/flags9 state is retained per room actor;
+sign is published by Main, not invented as a source Entry+78 initializer. Host/
+ARM SDK/trig/matrix rounding and complete original pass scheduling remain adapters.
+
+PMNPC005 exports original model+c4 masks, tribe30/30 dimensions and CHU_T_1/T_1
+names. Old1..4 remain readable; dimensions do not change geometry scalar2.
+Original Chu/Frankly NPC talk anchors use root+height once, not mesh bbox/scale.
+MessagePlayback now publishes source Talk/Stay generations and timestamps, and
+host-testable NpcPoseClock preserves/restarts pose timing from simulation time,
+including same-name requests and clock reset. Native ordinary Chu uses original
+CHU_T_1 while talking. Explicit anchor overrides, other party/battle NPC anchors,
+full NPC name/flags/pre-display/collision/arbitration and scripted pose owners
+remain partial. No source dialogue/text/story branches are rewritten.
+
+Original Chu/Frankly now retain source PMANIM4 RGBA, shape-cull/pass and UV/sampler
+state via the existing surface compiler. Resource mask1 uses original special
+pass2 admission and existing citro3d depth/alpha-test services. Correct facing
+changes winding: an initial emulator capture exposed that older PMANIM3 fallback
+had dropped original no-cull metadata and made Chu invisible. The final pack keeps
+actual source no-cull indices/material data; the final NPC is visibly rendered.
+Original texture124px conversion/sampler-aware gutters and source table/dimension
+hashes/rights are recorded in [assets](ASSETS.md). Extracted/compiled artifacts
+remain ignored; ISO read-only; no original executable payload is exported.
+
+Validation: final shared `make test` passes116 CTest/100 Python at
+`/tmp/npc-final-clock-shared.log`; final isolated snapshot
+`/tmp/pm-npc-presentation-r_n1cotc` passes115 CTest/100 Python and `make all`, logs
+`/tmp/npc-final-clock-isolated-test.log` and `/tmp/npc-final-clock-native.log`.
+Only the existing private professor fence-reference check is absent in the
+isolated snapshot. No native warnings/errors. Committed owned implementation
+matches that tested source snapshot; shared renderer/platform changes were
+staged as scoped NPC deltas so concurrent battle work remains preserved.
+Original-data tests cover angle cardinal/quadrant/orientation/table migration,
+Main-before-Inner/snap sign/camera call count, matrix scalar/root, source anchors,
+pose persistence/same-name restart/message generation/reset, catalog1..5 atomic
+rejection/original dimensions/talk poses, original shape no-cull/pass/color and
+unchanged US story talk. The catalog upgrade initially broke a hidden-object
+filter test's hardcoded96-byte model stride; schema-aware100-byte access restores
+all three original hidden-name collision cases. An intermediate shared run failed
+an in-progress unrelated trio-attack expected callback; final shared run above
+passes. No unrelated source behavior was reverted to obtain that result.
+
+Isolated Azahar final binary `artifacts/ttyd-npc-source-final.3dsx` and profile
+`artifacts/azahar-npc-source-final` pass original east Mouser talk/return and
+versioned checkpoint/story/checksum assertions with
+`tests/azahar_npc_source_presentation.py`; log `/tmp/npc-final-emulator.log`.
+Idle/talk/return images were inspected and show the source NPC, original message
+and source-height bubble anchor. Earlier invisible capture in
+`artifacts/azahar-npc-source` is rejected evidence; corrected surface and final
+captures are the accepted verification. Warm captured emulator reports60fps,
+simulation4.57ms/CPU5.6ms/GPU0.5ms; transient talk capture53fps is also visible.
+These are emulator diagnostics, not New2DS XL hardware performance or original
+runtime/pixel comparisons. Final link audit796 Markdown files/0 broken;
+owned commit whitespace passes. User emulator profile/saves were not modified.
+
+Next: bind source field NPC collision and A/X/B interaction priority using actual
+inbox owners/dimensions, add remaining source actors/constructor-specific objects
+and areas, recover wander/tavern fades before claiming those NPCs. Complete
+pre-display/layers/color/blur/shadow/pose producers, case-sensitive missing-name
+index0 fallback against original bank order, nonordinary anchor/override services,
+full field/shared VM/pause/lifetime and matched original-runtime/hardware checks.
+Continue source coverage from the documentation inbox; do not treat data packaging
+or this local presentation milestone as complete NPC/full-game fidelity. The
+broader user goal remains active and incomplete.
+
 ## 2026-10-13 — Inbox priority-zero active macro initialization/last-started
 
 Completed the macHandleActive initialization prefix and two last-started voice
