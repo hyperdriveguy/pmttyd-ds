@@ -88,3 +88,8 @@ output-mode ownership, actual ID/state/voice/volume/mode/resource providers and
 valid extent/value/alias/lifetime/IRQ/concurrency domains, transitive DSP/hardware
 consumers and original stream/audio traces. Five complete local dependencies
 are answered; EVT-01 and native/full-game binding remain OPEN.
+
+## 2026-10-13 — Output-mode propagation follow-up
+
+[Mode propagation](MUSYX_STREAM_OUTPUT_MODE_PROPAGATION.md) closes game/public/stream mode and HRTF-disable
+bodies. UI/providers/IRQ/domains/stream engine/original audio/native binding open.

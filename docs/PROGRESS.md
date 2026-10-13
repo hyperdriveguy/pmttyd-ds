@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero output-mode propagation
+
+Completed SoundSetOutputMode/sndOutputMode/streamOutputModeChanged/hwDisableHRTF;
+checked EVT-01 portion. [Mode propagation](behavior/audio/MUSYX_STREAM_OUTPUT_MODE_PROPAGATION.md)
+pins game write-before-request, public flags/HRTF/fresh change gate, voice dirty
+before stream, requested/effective mode/state3 skip and live count/inline mix/IRQ
+order. UI/providers/domains/stream engine/original audio/native binding open.
+
+Validation: read-only ISO manifest passed nine spans,152 whole-body anchors,
+eight calls. Eight public-mode/eight state/four count/six game-gate vectors
+checked. Link audit passed881 Markdown files/zero broken links; scoped `git diff
+--check` passed. Mathematical source deductions are separate from original
+execution. Documentation/metadata only; no `make test`/`make all` rerun. Fresh
+full original ELFs/listings/generator stay `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded. Previously approved push remains
+pending invalid GitHub credentials; no repeat push attempted this turn.
+
+Next: priority-zero EVT-01 streamHandle/AllocEx/Free/Activate/Deactivate/Frq/
+MixParameter and actual game/UI/preference/flags/count/base/HRTF/state/voice/
+resource providers and valid extent/value/alias/lifetime/IRQ/concurrency domains,
+transitive DSP/hardware consumers and original mode/stream/audio traces.
+Remaining macro/song/backend, lower-priority inbox and full native/game work open.
+
 ## 2026-10-13 — Live original Goomba4, source pause ownership and NDSP footsteps
 
 Committed live [Goomba4/wandering binding](behavior/field/NATIVE_LIVE_NPC_WANDER.md)

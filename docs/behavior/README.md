@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [Game/stream output-mode propagation](audio/MUSYX_STREAM_OUTPUT_MODE_PROPAGATION.md) | Complete game/public/stream mode and HRTF-disable bodies | UI/providers/IRQ/domains/transitive DSP and original audio |
 | [Stream lookup/output mode/mix](audio/MUSYX_STREAM_ID_LOOKUP_OUTPUT_MODE_AND_MIX.md) | Five complete public-ID lookup/mode/volume/hardware-mix bodies | Stream engine/lifecycle/providers/domains and original audio |
 | [Low-precision final pitch/composition](audio/MUSYX_LOW_PRECISION_FINAL_PITCH_AND_COMPOSITION.md) | Complete final output/requeue/ABI helpers and composed whole local handler | Providers/domains/transitive consumers and original audio |
 | [Low-precision portamento](audio/MUSYX_LOW_PRECISION_PORTAMENTO_TRANSITIONS_AND_INTERPOLATION.md) | Complete controller/cache/flag transitions and wrapped interpolation | Final pitch/requeue/providers/domains and original audio |

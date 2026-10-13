@@ -496,6 +496,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   SetupVolumeAndPan/SetHWMix — [lookup/mode/mix](../behavior/audio/MUSYX_STREAM_ID_LOOKUP_OUTPUT_MODE_AND_MIX.md).
   64-row first-active-ID scan, requested/effective mode writes, byte scaling
   and fixed studio0 hardware request pinned; engine/providers/runtime open.
+- [x] Complete SoundSetOutputMode/sndOutputMode/streamOutputModeChanged/
+  hwDisableHRTF — [output-mode propagation](../behavior/audio/MUSYX_STREAM_OUTPUT_MODE_PROPAGATION.md).
+  Game write-before-request/public two stores/HRTF/change gate, voice dirty
+  and stream state/fresh count/mode/mix/IRQ order pinned; runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2522,3 +2526,13 @@ mode/four finite mix vectors checked. First nonzero-state matching ID, requested
 versus effective pan, exact byte scaling and studio0 hardware request pinned.
 Stream engine/lifecycle/providers/domains/original audio/native binding remain
 open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Game/public/stream output-mode propagation delivery
+
+Completed four local bodies in
+[output-mode propagation](../behavior/audio/MUSYX_STREAM_OUTPUT_MODE_PROPAGATION.md).
+Nine spans/152 anchors/eight calls verified; eight public-mode/eight state/four
+count/six game-gate vectors checked. Game write-before-request, public ordered
+flags/HRTF/fresh comparison, voice dirty-before-stream, requested/effective pan,
+fresh state3 mix skip and live count/IRQ order pinned. UI/providers/domains/
+stream engine/original audio/native binding remain open; EVT-01 stays OPEN.
