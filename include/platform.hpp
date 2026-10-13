@@ -28,7 +28,7 @@ public:
     void advanceTutorialAnimations(Game&);
     void releaseFrontend();
     void render(const Game&, const Metrics&, const char* notice, bool audioAvailable);
-    void renderFrontend(const Frontend&, const OpeningDemo&, const OpeningSequence&, const char* notice);
+    void renderFrontend(const Frontend&, OpeningDemo&, const OpeningSequence&, const char* notice);
     void shutdown();
     struct ActorMetrics {uint32_t visible=0,vertices=0,overflow=0,sampleFailures=0;};
     ActorMetrics fieldActorMetrics() const {return actorMetrics;}
@@ -90,6 +90,14 @@ private:
     bool tutorialReady=false;
     bool loadTutorialPresentation();
     void worldTutorial(const Game&);
+    ActorAnimationPack demoPaperAnimations;
+    std::array<ActorAnimationSample,4> demoPaperSamples;
+    std::array<float,4> demoPaperFrames{{-1,-1,-1,-1}};
+    struct DemoPaperSurface {uint32_t capture,pass,cull;};
+    std::array<DemoPaperSurface,124> demoPaperSurfaces{};
+    bool demoPaperReady=false,demoPaperAttempted=false;
+    bool loadDemoPaper();
+    bool frontBookPaper(OpeningDemo&,std::array<float,4>&);
     bool frontWorld(const char*,CameraPoint,CameraPoint,const OpeningSequence*,const OpeningDemo&);
     struct FrontTexture {std::string name;Texture image;std::array<uint32_t,4> size{};};
     std::vector<FrontTexture> frontTextures;

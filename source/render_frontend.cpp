@@ -35,7 +35,8 @@ bool Renderer::frontImage(const char* name,float x,float y,float w,float h) {
     }
     const auto& z=found->size;Tex3DS_SubTexture sub{};sub.width=z[0];sub.height=z[1];
     sub.left=0;sub.right=float(z[0])/z[2];sub.top=1;sub.bottom=1-float(z[1])/z[3];
-    C2D_DrawImageAt({&found->image.texture,&sub},x,y,0,nullptr,w/z[0],h/z[1]);return true;
+    if(w>0 && h>0)C2D_DrawImageAt({&found->image.texture,&sub},x,y,0,nullptr,w/z[0],h/z[1]);
+    return true;
 }
 void Renderer::frontMessage(const MessagePlayback& message) {
     if(!message.active())return;
@@ -162,15 +163,15 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     drawMap(false,snapshot,true,&frontRoom,visibleGroups);
     C2D_Prepare();C2D_SceneBegin(top);return ok;
 }
-void Renderer::renderFrontend(const Frontend& f,const OpeningDemo& demo,const OpeningSequence& opening,const char* notice) {
+void Renderer::renderFrontend(const Frontend& f,OpeningDemo& demo,const OpeningSequence& opening,const char* notice) {
     // Keep only the current demonstration image/scene family resident. This
     // also bounds a natural (unskipped) storybook run and letter/map overlays.
-    const uint32_t phase=f.screen==FrontScreen::Demo?(demo.bookComplete?199:100+demo.image()):
+    const uint32_t phase=f.screen==FrontScreen::Demo?(demo.bookComplete?199:100):
         f.screen==FrontScreen::Opening?200+uint32_t(opening.part):0;
     if(phase!=frontPhase){releaseFrontend();frontPhase=phase;}
     C2D_TextBufClear(textBuffer);C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,0,0);C3D_FrameDrawOn(top);C2D_Prepare();C2D_SceneBegin(top);
-    bool ok=true;
+    bool ok=true;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
     if(f.screen==FrontScreen::Demo && demo.bookComplete) {
         const auto& scene=demo.market;
         ok=frontWorld("opening-demo-market",{scene.eye[0],scene.eye[1],scene.eye[2]},{scene.at[0],scene.at[1],scene.at[2]},nullptr,demo);
@@ -187,9 +188,16 @@ void Renderer::renderFrontend(const Frontend& f,const OpeningDemo& demo,const Op
         else if(opening.part==OpeningPart::Prologue){ok=frontImage("prologue",48,95,304,55);}
         else if(map){const std::string prefix=opening.part==OpeningPart::HouseReturn || (opening.part==OpeningPart::House && opening.house.interior)?"opening-aaa_00-interior":opening.part==OpeningPart::Arrival?"gor_00":"opening-"+std::string(map);ok=frontWorld(prefix.c_str(),eye,at,&opening,demo);}
     } else if(f.screen==FrontScreen::Demo) {
+        if(!loadDemoPaper() || !frontImage("demo-page-back",0,0,0,0)){demo.failed=true;ok=false;}
+        else demo.paperServicesBound=true;
+        for(unsigned n=0;n<4;++n)if(demo.book.pages[n].active && demo.book.pages[n].capturePending) {
+            char capture[24];std::snprintf(capture,sizeof(capture),"demo-%u",demo.book.pages[n].image);
+            if(frontImage(capture,0,0,0,0))demo.book.captureComplete(n);else {demo.failed=true;ok=false;}
+        }
         char name[24];std::snprintf(name,sizeof(name),"demo-%u",demo.image());
-        ok=frontImage(name,48,0,304,240);
-        if(demo.narration<5)ok=frontImage("demo-1",124,18,152,186) && ok;
+        ok=frontImage(name,48,0,304,240) && ok;
+        if(demo.narration<5){const float scale=demo.book.scale;ok=frontImage("demo-1",200-76*scale,111-93*scale,152*scale,186*scale) && ok;}
+        if(demoPaperReady)ok=frontBookPaper(demo,paperPresented) && ok;
     } else {
         ok=frontImage("title-background",48,0,304,240);
         ok=frontImage("title-logo",90,24,220,119) && ok;
@@ -222,6 +230,7 @@ void Renderer::renderFrontend(const Frontend& f,const OpeningDemo& demo,const Op
     if(!ok){text("Original front-end texture unavailable",10,216,.4f,Red);if(!frontFailure.empty())text(frontFailure.c_str(),10,203,.35f,Red);}
     if(notice && *notice)text(notice,10,229,.35f,Ink);
     C2D_Flush();C3D_FrameEnd(0);
+    for(unsigned n=0;n<4;++n)if(paperPresented[n]>=180)demo.book.presented(n,paperPresented[n]);
 }
 
 }

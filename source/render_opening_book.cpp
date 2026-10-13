@@ -1,0 +1,62 @@
+#include "platform.hpp"
+#include <algorithm>
+#include <cstdio>
+#include <cstring>
+namespace ttyd {
+bool Renderer::loadDemoPaper() {
+    if(demoPaperAttempted)return demoPaperReady;
+    demoPaperAttempted=true;
+    FILE* f=std::fopen("romfs:/demo-page.bin","rb");if(!f)return false;
+    char magic[8];uint32_t triangles=0;
+    bool ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMDPG001",8) && std::fread(&triangles,4,1,f)==1 && triangles==demoPaperSurfaces.size() && std::fread(demoPaperSurfaces.data(),sizeof(DemoPaperSurface),triangles,f)==triangles && std::fgetc(f)==EOF;
+    std::fclose(f);
+    for(const auto& s:demoPaperSurfaces)ok=ok && s.capture<2 && s.pass==2 && s.cull==1;
+    if(!ok || !demoPaperAnimations.load("romfs:/demo-page.pmanim"))return false;
+    const auto* pose=demoPaperAnimations.pose("A_1");
+    demoPaperReady=pose && pose->bindings.size()==triangles*3 && pose->start==0 && pose->end==180 && !pose->loop;
+    return demoPaperReady;
+}
+bool Renderer::frontBookPaper(OpeningDemo& demo,std::array<float,4>& presented) {
+    bool active=false;for(const auto& page:demo.book.pages)active|=page.active;
+    if(!active)return true;
+    C2D_Flush();C3D_BindProgram(&program);
+    auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
+    // Original capture rectangle and mesh, native orthographic outer projection.
+    // Source camera/FOV/depth/image-base services remain a separate dependency.
+    C3D_Mtx projection;Mtx_OrthoTilt(&projection,0,400,240,0,-100,100,true);
+    C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&projection);
+    C3D_DepthTest(true,GPU_GEQUAL,GPU_WRITE_ALL);C3D_AlphaTest(true,GPU_GEQUAL,128);
+    C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_ONE,GPU_ZERO,GPU_ONE,GPU_ZERO);
+    for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
+    auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
+    count=0;bool ok=true;
+    const auto* pose=demoPaperAnimations.pose("A_1");
+    for(unsigned n=0;n<4;++n) {
+        const auto& page=demo.book.pages[n];if(!page.active || page.capturePending)continue;
+        char capture[24];std::snprintf(capture,sizeof(capture),"demo-%u",page.image);
+        auto texture=[&](const char* name)->FrontTexture*{auto i=std::find_if(frontTextures.begin(),frontTextures.end(),[&](const auto& t){return t.name==name;});return i==frontTextures.end()?nullptr:&*i;};
+        auto* front=texture(capture);auto* back=texture("demo-page-back");
+        const float frame=demo.book.pageFrame(n);
+        auto& sample=demoPaperSamples[n];
+        if(!front || !back || !pose){ok=false;continue;}
+        if(demoPaperFrames[n]!=frame){if(!pose->evaluate(frame,sample)){ok=false;continue;}demoPaperFrames[n]=frame;}
+        if(sample.vertices.size()!=372){ok=false;continue;}
+        const int first=count;
+        for(unsigned v=0;v<372;++v) {
+            const auto& point=sample.vertices[v];const auto& surface=demoPaperSurfaces[v/3];
+            const float cell=surface.capture?1.f:0.f;
+            const float u=(point.u*1024-cell*128-2)/124,vv=((1-point.v)*1024-2)/124;
+            const float texU=surface.capture?(62+u*193)/float(front->size[2]):u*float(back->size[0])/back->size[2];
+            const float texV=surface.capture?1-vv*240/float(front->size[3]):1-vv*float(back->size[1])/back->size[3];
+            vertex(48+(124+(point.x+32)*386/64)*.5f,(24-point.y)*5.f,page.depth-16-point.z*386/128,texU,texV,0xffffffff);
+        }
+        GSPGPU_FlushDataCache(vertices+first,372*sizeof(Vertex));
+        auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
+        // Original cull1, back face. Winding adaptation for the tilted image plane.
+        C3D_CullFace(GPU_CULL_BACK_CCW);
+        for(unsigned t=0;t<124;) {unsigned end=t+1;while(end<124 && demoPaperSurfaces[end].capture==demoPaperSurfaces[t].capture)++end;C3D_TexBind(0,demoPaperSurfaces[t].capture?&front->image.texture:&back->image.texture);C3D_DrawArrays(GPU_TRIANGLES,first+t*3,(end-t)*3);t=end;}
+        presented[n]=frame;
+    }
+    C3D_CullFace(GPU_CULL_NONE);C2D_Prepare();C2D_SceneBegin(top);return ok;
+}
+}
