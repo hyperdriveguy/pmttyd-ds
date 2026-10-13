@@ -33,31 +33,36 @@ Both return a float in f1: base × optional SDA scale × [Mario+552].
   is clear; when set, it reloads the **walk** base [Mario+388] and runs the
   stick test instead.
 - Scale gate A (bit 11 set): if stick x²+y² > 3025, multiply by the SDA
-  constant at r2−27572.
+  constant at r2−27572, resolved to 0.5 (`0x3F000000`) by the register's SDA
+  resolution (r2 = 0x80427440).
 - Scale gate B (bit 11 clear): if `marioBgmodeChk()` (0x8005c164, returns
   (Mario+0>>25)&1 per [party driver census](../partner/FIELD_PARTY_DRIVER_AND_INDEX_OWNERSHIP.md))
-  == 1, multiply by the same SDA constant. The movement doc's "background
-  mode query equal 1 halves the selected base" is consistent with this gate;
-  the constant's value is not re-derived here.
+  == 1, multiply by the same 0.5. Both gates therefore provably halve the
+  base, re-deriving the movement doc's "background mode query equal 1 halves
+  the selected base" from the binary rather than assuming it.
 - Tail (both): multiply by float at [Mario+552], return in f1.
 
-Equality with 3025 takes the unscaled path in gate A — matching "equality
-belongs to walk". Bit 11 (0x00100000) is distinct from the Paper-mode
-0x00200000 bit in the movement doc; no identity is claimed for it.
+Bit 11 (mask 0x00100000, i.e. LSB 20) is `MARIO_FLAG_PAPER_MODE` (1<<20),
+per `mario.h:74` of the pinned decomp snapshot — correcting this doc's
+earlier "distinct from Paper-mode" note, which was wrong. (The 0x00200000
+value in [Mario movement](../overworld/OVERWORLD_MARIO_MOVEMENT.md)
+disagrees with both that header and the binary; left for that doc's owner.)
 
 ## mario_width (800916f0, 50 lines): +448 slew limiter
 
 Adjusts the float at [Mario+448] toward a reference by SDA steps; all
 comparisons are `fcmpo` with LT/GT-bit branches:
 
-- Bit 11 of [Mario+0] set: candidate = [448] + K1 (SDA r2−27516); reference
-  = [Mario+440] if bit 7 is set, else SDA constant K2 (r2−27360);
+- Bit 11 of [Mario+0] set: candidate = [448] + 1.0 (SDA r2−27516, resolved
+  by the register); reference = [Mario+440] if bit 7 is set, else SDA
+  constant 18.0 (r2−27360);
   [448] = min(candidate, reference) — the store-then-conditional-overwrite
   sequence keeps the candidate unless it exceeds the reference.
-- Bit 11 clear: slew [448] toward K3 (SDA r2−27300) by ±K1 per call, clamping
-  exactly at K3 from either side.
+- Bit 11 clear: slew [448] toward 6.0 (SDA r2−27300) by ±1.0 per call, clamping
+  exactly at 6.0 from either side.
 
-K1/K2/K3 values and the meaning of [448]/[440] are not established here.
+The meaning of [448]/[440] is not established here; the three constants are
+resolved above via the register's SDA map.
 
 ## bottomlessOn (80096d34, 16 lines) and bottomlessPos (80096d5c, 40 lines)
 
@@ -130,6 +135,7 @@ update order above.
 
 ## Not established
 
-SDA constant values, table contents, offset meanings not linked above, call
+Unresolved SDA slots (fallSpeed clamp r2−27296, hit const r2−28784, bero
+K_a/K_b r2−28456/−28448), table contents, offset meanings not linked above, call
 cadence, and any in-game effect. The duplicate extractions are reported as
 observed facts; neither name is declared canonical.

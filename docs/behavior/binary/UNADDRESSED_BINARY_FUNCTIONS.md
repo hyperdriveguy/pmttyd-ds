@@ -94,6 +94,17 @@ These 14 also appear as bare names in `harbor-boss-events.json`,
   `behavior/scanf-parser-symbol.csv` carries `parse_format`, `scanf.c`,
   `8026ce44` — the same entry. The SCAN_* prose series never names it.
 
+### Group C alias resolutions (verified, no new contract needed)
+
+All three listings name the file, not the function; each function is
+contracted under its canonical name at the same entry address:
+
+| Listing | Canonical contract |
+| --- | --- |
+| `battle_message_disp` = `_disp` @801abc70 | [Announcement messages](../battle/BATTLE_ANNOUNCEMENT_MESSAGES.md) documents the `dispEntry` callback use and the `_disp` symbol/size0x160 |
+| `printf_parse_format` = printf's `parse_format` @8026bcb4 | [Format directive parser](../format/FORMAT_DIRECTIVE_PARSER.md) opens "This is printf's parse_format at 0x8026bcb4" |
+| `scanf_parse_format` = scanf's `parse_format` @8026ce44 | [Scan directive parser](../format/SCAN_DIRECTIVE_PARSER.md) opens at 0x8026ce44 size 0x548; [consumers](../format/SCAN_FORMAT_CONSUMERS.md) call it per `%` |
+
 ## Group D — duplicate extractions under two names (2 pairs)
 
 - `fallSpeed` and `marioGetFallSpd` (top level): both open `80094098
