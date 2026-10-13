@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero controller ADSR/hardware layouts
+
+Completed mcmdSetADSRFromCtrl/hwSetADSR/adsrConvertTimeCents and opcode22
+for EVT-01; checked the corresponding inbox portion.
+[Controller ADSR/layouts](behavior/audio/MUSYX_CONTROLLER_ADSR_AND_HARDWARE_LAYOUTS.md)
+pins four fresh queries/stack descriptor, three hardware layouts/unsupported
+control-bit publication and signed time-cent/pow/FP conversion wrapper. Original
+129/129/1024-entry tables retained; unchecked input indices can exceed extents.
+Other ADSR/pow/actual caller/index/float/DSP/runtime remain open.
+
+Validation: read-only ISO manifest passed16 spans (three bodies/one region/three
+linked/eight numeric data),122 anchors/11 calls/one registration. Seven index/
+seven mode/four sustain vectors and descriptor/mask/width/table/order deductions
+checked. Link audit passed829 Markdown files/zero broken links; scoped `git diff
+--check` passed. Documentation/metadata only; no `make test`/`make all` rerun.
+Full original inspection ELFs/listings stay `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded from this commit.
+
+Next: priority-zero EVT-01 ordinary/pitch ADSR and remaining opcodes; pow/
+transitive math, actual controller/command/table/descriptor/mode/ordinal/flag/
+caller providers, valid index/float/value/alias/shared-cell/IRQ/concurrency domains,
+hardware/envelope/DSP consumers and original ADSR/controller/audio traces.
+Full native/runtime binding, lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero macro pan/volume/envelopes
 
 Completed pan/surround/scale/envelope/fade/sndConvert2Ms/curve lookup/comparator

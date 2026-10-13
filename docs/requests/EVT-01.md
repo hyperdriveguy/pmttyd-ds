@@ -347,6 +347,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   curve lookup/comparator plus opcodes13..15/20..21 —
   [pan/volume/envelopes](../behavior/audio/MUSYX_MACRO_PAN_VOLUME_AND_ENVELOPE_COMMANDS.md).
   Raw versus converted duration/127 versus128/curve/store order retained; runtime open.
+- [x] Complete mcmdSetADSRFromCtrl/hwSetADSR/adsrConvertTimeCents
+  and opcode22 with original time/DLS/scale tables —
+  [controller ADSR/layouts](../behavior/audio/MUSYX_CONTROLLER_ADSR_AND_HARDWARE_LAYOUTS.md).
+  Fresh queries/unchecked indices/mode-specific fields retained; pow/domain/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2007,3 +2011,20 @@ deductions. Full fresh ELFs/listings stay `/tmp`; no native change/original
 execution/body/binary asset export. Actual command/rate/pan/volume/curve/registry/
 flag/divisor/value/caller/domain/alias/IRQ/concurrency and mix/envelope/DSP/
 original pan/fade/audio remain OPEN.
+
+### 2026-10-13 — Controller ADSR and hardware descriptor layouts
+
+[Three bodies/one region](../behavior/audio/MUSYX_CONTROLLER_ADSR_AND_HARDWARE_LAYOUTS.md)
+close four fresh controller/table queries, cached sustain/single precision/scale
+mapping/stack descriptor, mode2 hardware request and low flag publication;
+three hardware layouts/unsupported-mode control bit and signed time-cent/pow/
+unsigned-conversion request wrapper. No index128 guard, generic layout, release
+conversion in mode1, unsupported-mode no-op or transitive pow/audio closure inferred.
+
+Validation: read-only manifest16 spans (three bodies/one region/three linked/
+eight numeric data),122 anchors/11 calls/one registration passes. Seven index/
+seven mode/four sustain vectors and descriptor/mask/width/table/order checked as
+deductions. Full fresh ELFs/listings stay `/tmp`; no native change/original
+execution/body/binary asset export. Pow/transitive math, other ADSR opcodes,
+actual controller/table/descriptor/float/ordinal/caller/domain/alias/IRQ/
+concurrency and hardware/DSP/original ADSR/audio remain OPEN.
