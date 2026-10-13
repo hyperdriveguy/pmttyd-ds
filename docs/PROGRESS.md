@@ -2,6 +2,32 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Combined dialogue-window support and isolated validation
+
+Concurrent work committed the harbor/font foundation as48d8c73 and extended
+the shared message renderer while this session was preparing its commit.
+ff225fa picked up that extension; bd4abf8 adds its required
+`message_window.hpp` and `message_window_assets.py` support files, so the
+committed dependency set is complete. Original ordinary bubble/tail masks now
+replace the plain native panel. Source-derived anchor/box/tail behavior and
+additional retained style controls improve presentation; specialized window,
+NPC anchor/pose and original shared RNG/material fidelity remain unfinished.
+
+Validation of the combined snapshot: **94 CTest / 96 Python passing**,
+original20-payload and six-speaker harbor integration checks pass. A shared
+native build raced another linker and produced an invalid-ELF packaging error;
+isolated `make BUILD=build-harbor-verify
+TARGET=artifacts/ttyd-harbor-verified all` passes. The immutable output at
+`artifacts/ttyd-harbor-verified.3dsx` completes the original story3 checkpoint
+and saves story4 in `artifacts/azahar-harbor-combined-verified/`; manually
+inspected first-dialogue image shows original font/bubble masks. New
+`emulator_smoke.py --binary` supports such isolated build verification without
+replacing another workstream's artifact or touching user emulator profiles.
+Current concurrent uncommitted refinements are separate from that validated
+snapshot. Next: validate those refinements, then continue arrival/tutorial,
+original NPC/event/window services and indoor access. Full prologue parity
+remains incomplete.
+
 ## 2026-10-12 — Original harbor dialogue checkpoint and US font
 
 Added a source-derived story3 harbor sequencer for original mac_0_016..021,

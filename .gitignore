@@ -46,3 +46,4 @@ romfs/*.pmshadow
 /romfs/message-window.json
 /romfs/harbor-actors.bin
 /romfs/harbor-actors.json
+/build-harbor-verify/

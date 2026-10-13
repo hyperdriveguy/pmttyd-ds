@@ -21,7 +21,9 @@ def main():
     parser.add_argument('--seconds',type=int,default=12)
     parser.add_argument('--input-script',help='Python file with run(env, capture) function; isolated emulator only')
     parser.add_argument('--output-dir',help='Separate capture/profile directory under project artifacts')
+    parser.add_argument('--binary',help='Native 3DSX artifact to inspect; defaults to the project build')
     args=parser.parse_args()
+    if args.reference_dolphin and args.binary:raise ValueError('--binary is for native Azahar captures only')
     global OUT
     if args.reference_dolphin:OUT=ROOT/'artifacts/dolphin'
     if args.output_dir:
@@ -54,7 +56,7 @@ def main():
             with os.fdopen(readfd) as f: display=f.readline().strip()
             if not display: raise RuntimeError('Xvfb failed; inspect artifacts/azahar/xvfb.log')
             env['DISPLAY']=':'+display
-            command=['/usr/bin/azahar',str(ROOT/'ttyd-2ds.3dsx')]
+            command=['/usr/bin/azahar',str(Path(args.binary).resolve() if args.binary else ROOT/'ttyd-2ds.3dsx')]
             if args.reference_dolphin:
                 profile=OUT/'user';config=profile/'Config';config.mkdir(parents=True,exist_ok=True)
                 (config/'GCPadNew.ini').write_text('[GCPad1]\nDevice = XInput2/0/Virtual core pointer\nButtons/A = A\nButtons/B = S\nButtons/Start = Return\nMain Stick/Up = Up\nMain Stick/Down = Down\nMain Stick/Left = Left\nMain Stick/Right = Right\n')

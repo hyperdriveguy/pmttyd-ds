@@ -188,3 +188,16 @@ paths, hashes and conversion metadata. Native NDSP switches to this stream at
 the trigger; original mix/envelope/environment/text SFX macro services remain
 open. All these assets retain Nintendo/Intelligent Systems rights and stay
 local/ignored without a redistribution license.
+
+## 2026-10-13 — Ordinary message window asset support
+
+`tools/message_window_assets.py` reads original `f/msgWindow.tpl` read-only
+and preserves the ordinary border/tail masks in ignored
+`romfs/message-window.t3x`. The local manifest records source offset/hash,
+indices1/2/3/4/9..16, native composition and original rights. Border components
+retain source dimensions; draw coordinates adapt the centered640x480 source
+space to the handheld viewport. `MessageWindowPlan` provides source-derived
+ordinary anchor growth, text admission and tail geometry. This supersedes the
+earlier ordinary-bubble-texture limitation; full specialized windows, original
+projection/NPC anchor height, shared RNG and exact material/raster behavior
+remain incomplete. Assets are local/ignored with no redistribution rights.
