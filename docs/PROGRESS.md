@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero input matrix/variable domain
+
+Completed _GetInputValue/varGet local contracts for EVT-01 and checked the
+corresponding inbox portion. [Matrix evaluator/domain](behavior/audio/MUSYX_INPUT_MATRIX_EVALUATOR_AND_VARIABLE_DOMAIN.md)
+pins live descriptor count/source markers/wrapped coefficient and combine
+arithmetic/cache and variable reads. The evaluator does not initialize incoming
+r28 interpretation state; valid caller/first-row domains remain a requirement.
+Recorded different first-mode2 residue results without assigning a provisional
+flag default, widening integer arithmetic or inferring original audio timing.
+
+Validation: read-only ISO manifest passed six spans (two complete/four linked),
+191 anchors/six calls.256 sources/64 combines/three residue/eight scaling/six
+elapsed/six variable vectors checked as deductions. Documentation link audit
+passed791 Markdown files/zero broken links; `git diff --check` passed.
+Documentation/metadata only; no `make test`/`make all` rerun. Original full
+inspection ELFs/listings stay `/tmp`; no bodies/assets committed. Concurrent
+native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 wrappers/descriptor construction/count/first-mode/
+coefficient/index/flag writers and incoming-r28/reachable numeric domains,
+external-controller child and voice/variable/clock/cache consumers; original
+matrix/audio traces. Full scheduler/native/runtime binding, lower-priority
+inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero controller/default/last-note reads
 
 Completed three controller/default-pointer/last-note local contracts for EVT-01

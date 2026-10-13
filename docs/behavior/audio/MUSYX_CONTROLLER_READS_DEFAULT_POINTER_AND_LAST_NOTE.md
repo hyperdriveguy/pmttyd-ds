@@ -122,3 +122,10 @@ _GetInputValue/matrix/dirty/filter/last-note consumers and mutation owners,
 valid bounds/raw-byte/alias/IRQ/concurrency domains and original cold/warm/
 controller/last-note/audio traces. Three local services are answered; EVT-01
 and full native/source/runtime/hardware equivalence remain OPEN.
+
+### Matrix consumer follow-up
+
+[Complete matrix evaluator/variable reader](MUSYX_INPUT_MATRIX_EVALUATOR_AND_VARIABLE_DOMAIN.md)
+now pins controller source classification, coefficient/combine arithmetic and
+cache stores. Incoming r28 is not initialized by the evaluator; actual first-row/
+caller domains, wrappers/writers and original matrix/audio evidence remain open.

@@ -225,6 +225,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   All256 controller routes/raw-byte OR/threshold/constant-zero semantics,
   distinct channel255 gates and packed getter order pinned; callers/consumers/
   mutation/bounds and original controller/audio remain open.
+- [x] Complete _GetInputValue/varGet local bodies —
+  [matrix evaluator/variable domain](../behavior/audio/MUSYX_INPUT_MATRIX_EVALUATOR_AND_VARIABLE_DOMAIN.md).
+  Source/marker/coefficient/wrapped combine/cache order pinned; incoming r28
+  is not initialized. Caller/first-row/count/flags/numeric domains, wrappers/
+  writers/consumers and original matrix/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1410,3 +1415,22 @@ eight threshold/six single/six destination vectors checked as deductions.
 Fresh full ELFs/listings stay `/tmp`; no native change/original execution/body/
 asset export. Actual callers/inputs, matrix/filter/dirty/last-note consumers,
 mutation/bounds/raw-byte/alias/IRQ/concurrency and original audio remain OPEN.
+
+### 2026-10-13 — Input matrix evaluator and variable domain
+
+[Two complete local bodies](../behavior/audio/MUSYX_INPUT_MATRIX_EVALUATOR_AND_VARIABLE_DOMAIN.md)
+close live descriptor-count traversal, signed/unsigned source routing/markers,
+wrapped coefficient scaling, all16 combine-mode routes, cache publication and
+variable local/global/external selection. Incoming r28 interpretation flag is
+not initialized; mode0 establishes it, while a different first mode can depend
+on caller residue. First signed mode2 example produces different results for
+zero/nonzero incoming flag. No invented flag default, widened multiply, shared
+saturation, count cap or original elapsed/controller/audio measurement.
+
+Validation: read-only manifest six spans (two complete/four linked),191 anchors/
+six calls passes.256 normal sources/64 combine/three residue/eight scaling/six
+elapsed/six variable vectors checked as deductions. Fresh ELFs/listings stay
+`/tmp`; no native change/original execution/body/asset export. Actual wrappers/
+descriptor/count/first-mode/flags/coefficient writers, incoming-r28/reachable
+numeric domains, external child/voice/variable/clock/cache consumers and original
+matrix/audio traces remain OPEN.
