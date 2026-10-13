@@ -1,4 +1,4 @@
-# Native portable item-table selection and key-item service core
+# Native portable item-table selection service core
 
 The source baseline is [the original item selector](ITEM_TABLE_SELECTION_WINDOW.md)
 and [Goomba4's quest/inventory graph](../field/ROGUEPORT_GOOMBA4_QUEST_AND_ITEM_SELECTION.md).
@@ -49,20 +49,10 @@ reads. The existing camera interpolation's finite curve12 may serve a native
 numeric adapter; complete GP/clock/cadence/SDK math and GX presentation remain
 unverified. No assumed fixed eight-tick delay is described as measured behavior.
 
-`packedKeyItemCount` and `removePackedKeyItem` implement only original key IDs
-1..120: all121 signed halfwords, copies after gaps, first-match clear followed
-by every active slot copy/clear, including zeros. The low-level result is0/1.
-`checkItemEvent`/`removeItemEvent` preserve operand/count/result ownership;
-successful removal invokes Mario then party revision and writes0, failure
-writes-1. Other inventory categories and revision implementations are separate
-providers, not substituted with native mushroom quantities.
-
-The live ProloguePouch adapter reuses these helpers. Goomba's ordinary guard
-can now exclude quest2/13 from a known zero original key-item count after its
-known matching quest/flag gate. A missing pouch remains unknown; positive items
-retain unsupported quest playback. The source inventory observation is transient,
-separate from checkpoint switch knowledge; no new checkpoint version or fake
-inventory import is introduced. Other actor profiles do not scan this key array.
+The separate [native key-item services](../unit/NATIVE_KEY_ITEM_INVENTORY_SERVICES.md)
+own original121-slot count/removal, event result/revision protocol and the live
+Goomba count guard. Inventory observations do not become inferred checkpoint
+state. Item-window creation does not remove items or write quest flags itself.
 
 Validation and next work are recorded in [the handoff](../../PROGRESS.md).
 Next provide complete persisted source pouch/switch ownership, original item
