@@ -287,6 +287,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   head and counter/root reset —
   [allocation-aid initialization](../behavior/audio/MUSYX_ALLOCATION_AID_INITIALIZATION.md).
   Zero-count stores/root retained; count validity/other writers/runtime open.
+- [x] Complete voiceSetPriority/voiceFree/hwSetPriority membership/sort/
+  free/accounting and hardware priority storage —
+  [priority/free writers](../behavior/audio/MUSYX_PRIORITY_LIST_AND_VOICE_FREE_WRITERS.md).
+  Kill sort labels corrected; actual caller/metric/list domains/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1689,3 +1693,21 @@ as deductions. Full fresh ELF/listing stays `/tmp`; no native change/original
 execution/body/binary asset export. Actual count/caller/membership/free/sort/
 counter writers, valid slot/member/cycle/alias/reinit/IRQ/concurrency/accounting
 and original initialization/allocation/audio traces remain OPEN.
+
+### 2026-10-13 — Priority-list and voice-free writers; sort-label correction
+
+[Three complete local bodies](../behavior/audio/MUSYX_PRIORITY_LIST_AND_VOICE_FREE_WRITERS.md)
+close same-priority early return, priority unlink/prepend/sort insertion, packed
+hardware priority storage, unconditional inactivity request and free append/
+wrapping accounting/identity clear. Sort next is half0, previous half2; reversed
+labels in the earlier kill contract are corrected with freshly inspected source.
+No sort repair/guard, metric refresh on early return, hardware stop or resource
+release inferred from these writers.
+
+Validation: read-only manifest four spans (three complete/one linked),150
+anchors/two calls passes. Six packed-priority/five admission/six free-counter
+vectors and sort/address bindings checked as deductions; existing kill manifest
+revalidated. Full fresh ELFs/listings stay `/tmp`; no native change/original
+execution/body/binary asset export. Caller/metric/kind/identity/other writers,
+valid slot/member/sorted/cycle/alias/reinit/IRQ/concurrency/accounting/rollback,
+hardware/DSP consumers and original allocation/free/audio remain OPEN.

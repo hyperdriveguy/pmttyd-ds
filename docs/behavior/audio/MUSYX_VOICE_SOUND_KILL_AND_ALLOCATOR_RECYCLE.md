@@ -57,9 +57,9 @@ Read previous; nonff writes next to previousEntry.byte1; previousff writes next
 to voicePrioSortVoicesRoot80406440[V.byte10c]. Then read next fresh; nonff
 writes previous to nextEntry.byte0. If nextff AND fresh previousff, this removed
 voice was the local only-node case: address priority record B=80406540+4*V.byte10c.
-Read B.half2 next priority: nonffff writes B.half0 into nextPriority.half0;
+Read B.half2 previous priority: nonffff writes B.half0 into previousPriority.half0;
 otherwise store B.half0 to voicePrioSortRootListRoot8041ef34. Read B.half0
-previous priority: nonffff writes fresh B.half2 into previousPriority.half2.
+next priority: nonffff writes fresh B.half2 into nextPriority.half2.
 No B clear or other-priority count update. Finally store A.half2=0.
 
 Accesses preserve branch-dependent fresh reads and unsigned sentinelsff/ffff.
@@ -110,3 +110,13 @@ local bodies are answered; full native/source/runtime/hardware remains OPEN.
 [Complete stream kill/init and hardware break/active flags](MUSYX_STREAM_KILL_INITIALIZATION_AND_HW_BREAK.md) now closes those exact tail children. First-match callback and event-bit publication remain distinct from resource/voice/hardware completion; deeper providers/consumers/runtime open.
 
 [Complete macro inactive/active/wait/init](MUSYX_MACRO_ACTIVE_INACTIVE_WAIT_AND_INIT.md) now closes the exact inactive child, preserving equality early return and conditional wait cleanup. Jobs/interpreter/time/list/providers/original execution remain open.
+
+### 2026-10-13 — Priority-sort label correction and free-writer follow-up
+
+Fresh voiceKill inspection and the complete
+[priority/free writers](MUSYX_PRIORITY_LIST_AND_VOICE_FREE_WRITERS.md)
+establish sort next half0/previous half2. The earlier prose labels above were
+reversed; corrected without changing the recorded source offsets/stores.
+voiceFree shares the local recycle sequence but unconditionally requests
+inactivity, omits metric reset and does not issue final hardware/stream requests.
+Actual list/identity/caller domains and original execution remain open.

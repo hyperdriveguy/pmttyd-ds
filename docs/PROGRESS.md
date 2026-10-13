@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero priority-list and voice-free writers
+
+Completed voiceSetPriority/voiceFree/hwSetPriority for EVT-01; checked the
+corresponding inbox portion. [Priority/free writers](behavior/audio/MUSYX_PRIORITY_LIST_AND_VOICE_FREE_WRITERS.md)
+pins early return/unlink/prepend/sort insertion, unconditional inactivity/free
+append/wrapping counters and packed hardware priority memory publication.
+Corrected reversed next/previous priority-sort labels in the earlier kill
+contract using freshly inspected source; exact previous source stores retained.
+Actual caller/metric/identity/member/hardware domains/runtime remain open.
+
+Validation: read-only ISO manifest passed four spans (three complete/one linked),
+150 anchors/two calls; existing kill manifest revalidated. Six packed-priority/
+five admission/six counter vectors and sort/address bindings checked as source
+deductions. Link audit passed809 Markdown files/zero broken links; `git diff
+--check` passed. Documentation/metadata only; no `make test`/`make all` rerun.
+Full original inspection ELFs/listings stay `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded from this commit.
+
+Next: priority-zero EVT-01 actual priority/metric/kind/identity/caller providers,
+other list/count writers and coherent slot/member/sorted/cycle/alias/reinit/IRQ/
+concurrency/accounting/rollback domains; hardware/DSP consumers, remaining macro
+opcodes and original allocation/free/replacement/audio traces. Full native/runtime
+binding, lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero allocation-aid initialization
 
 Completed synthInitAllocationAids for EVT-01; checked the corresponding inbox
