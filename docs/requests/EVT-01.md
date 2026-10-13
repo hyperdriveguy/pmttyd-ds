@@ -607,6 +607,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete ssDecodeDPCM and16-value dtbl — [DPCM decoder](../behavior/audio/GAME_STREAM_DPCM_MARKERS_PREDICTOR_AND_BOUNDARIES.md).
   Marker/nibble/packed-state/saturation/output-count/buffer/loop/source-return
   pinned; providers/original/native binding remains open.
+- [x] Complete DVDMgrMain/dvdmgr.o compare — [sorted DVD service](../behavior/file/DVD_MANAGER_SORTED_SERVICE_RESULTS_AND_CLOSE.md).
+  Occupied index snapshot/low8 sort/full-priority signed cap/result branches/
+  requested-count advancement/fresh callbacks/close/scan order pinned; runtime open.
 - [ ] Deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
@@ -3031,3 +3034,12 @@ checked; producer/PCM pins reverified. Marker consumes bytes without sample,
 signed predictor saturates, packed state survives buffer transitions and loop
 resets predictor. Providers/manager/original decoded audio/native binding open;
 EVT-01 stays OPEN.
+
+## 2026-10-13 — DVD manager sorted service delivery
+
+Completed [main and DVD-specific comparator](../behavior/file/DVD_MANAGER_SORTED_SERVICE_RESULTS_AND_CLOSE.md).
+Six spans/170 anchors/five calls/three indirect sites verified; seven cap/seven
+result/five advancement/six comparator/five completion-flag/seven gate vectors
+and sites checked. Result-3 versus other-negative80 block versus nonnegative
+requested-count advance/scan break pinned. Init/Delete/worker/SDK/providers/
+original IO/audio/native binding remain open; EVT-01 stays OPEN.

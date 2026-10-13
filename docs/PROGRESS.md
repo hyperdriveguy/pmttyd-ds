@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero DVD manager sorted service
+
+Completed DVDMgrMain/DVD-specific comparator; checked EVT-01 portion.
+[Sorted service](behavior/file/DVD_MANAGER_SORTED_SERVICE_RESULTS_AND_CLOSE.md)
+pins occupied snapshot/low8 sorting/full-priority signed cap, result-3/negative80
+block/nonnegative requested-count advancement, fresh callback/close and first
+nonnegative scan break. Init/Delete/worker/SDK/providers/original IO/audio/native
+binding remain open.
+
+Validation: read-only ISO manifest passed six spans,170 anchors,five calls.
+Seven cap/seven result/five advancement/six comparator/five completion-flag/seven
+service-gate vectors, three indirect sites/comparator binding/publications checked.
+Link audit passed934 Markdown files/zero broken links; scoped diff check passed.
+Mathematical deductions separate from original execution. Docs/metadata only;
+no make test/all rerun. Fresh full ELFs/listings/generator stay /tmp; no bodies/
+assets committed. Concurrent native work excluded. Approved push pending valid
+GitHub credentials.
+
+Next: priority-zero EVT-01 DVDMgrInit/Delete/proc_main/SDK/read/error recovery,
+actual queue/thread/request/callback/providers and valid value/extent/alias/
+lifetime/IRQ/concurrency/ABI domains, original sorted service/short-read/error/
+close/callback/IO/audio traces. Other inbox/native/full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero DPCM decoder/table
 
 Completed ssDecodeDPCM/16-value dtbl; checked EVT-01 portion.
