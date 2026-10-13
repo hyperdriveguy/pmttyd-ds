@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero game stream leaves
+
+Completed SoundSSMuteOn/Off/Check/GetVolCh/ContinueCh; checked EVT-01 portion.
+[Game stream leaves](behavior/audio/GAME_STREAM_MUTE_CHECK_VOLUME_AND_CONTINUE.md)
+pins raw channel/flags/zero gates, mute-off zeroing, signed volume conversion
+and clear/copy/fresh-OR continue order. Engine/writers/callbacks/provider/FP
+domains/original audio/native binding remain open.
+
+Validation: read-only ISO manifest passed five spans,59 whole-body anchors,
+zero calls. Seven flag/four fresh-continue/seven volume/five address vectors
+checked; invalid FP/conversion outputs unresolved. Link audit passed911 Markdown
+files/zero broken links; scoped `git diff --check` passed. Mathematical/source
+checks are separate from original execution. Documentation/metadata only; no
+`make test`/`make all` rerun. Fresh full original ELFs/listings/generator stay
+`/tmp`; no bodies/binary assets committed. Concurrent native edits excluded.
+Previously approved push remains pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 SoundSSMain/Int/play/fade/stop/frequency/pan/volume
+writers and producer/decoder/DVD/DMA callbacks, actual channel/base/flags/float/
+index/IRQ/providers and valid extent/value/alias/lifetime/concurrency/FP/
+conversion domains, original mute/check/continue/fade/audio traces. Remaining
+macro/song/backend, lower-priority inbox/full native/game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero stream mix/local inventory
 
 Completed sndStreamMixParameter/ABI helpers and audited all17 tagged stream.c

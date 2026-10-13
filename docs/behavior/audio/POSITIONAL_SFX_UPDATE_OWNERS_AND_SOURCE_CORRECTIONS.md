@@ -106,3 +106,9 @@ not documented” scope for those exact local bodies only. calc3D, live main
 spatial/volume/fade, MusyX/resources/hardware/source/runtime remain open.
 
 [Complete global/live/fade/mute regions](POSITIONAL_SFX_LIVE_SPATIAL_FADE_AND_MUTE.md), together with the complete pending-startup delivery, now close the remaining local psndSFXMain body. The old scoped warning remains historical; child services/source domains/original execution stay open.
+
+## 2026-10-13 — Game stream-check follow-up
+
+[Game stream leaves](GAME_STREAM_MUTE_CHECK_VOLUME_AND_CONTINUE.md) closes SoundSSCheck and mute/volume-query/
+continue leaves. Check returns raw flags, not normalized playback truth. Engine/
+providers/domains/original completion/audio/native binding remain open.

@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [Game stream mute/check/volume/continue](audio/GAME_STREAM_MUTE_CHECK_VOLUME_AND_CONTINUE.md) | Five complete SoundSS flag/query/volume/continue leaves | Engine/writers/callbacks/provider/FP domains and original audio |
 | [Stream mix/local module inventory](audio/MUSYX_STREAM_MIX_AND_LOCAL_MODULE_COVERAGE.md) | Complete mix body and audited17 tagged stream.c local functions | Providers/IRQ/FP/chain/transitive ARAM/DSP and original audio |
 | [Stream frequency/companion chain](audio/MUSYX_STREAM_FREQUENCY_AND_COMPANION_CHAIN.md) | Complete frequency write/state2 pitch/four-stage recursion/IRQ body | Mix/providers/FP/chain/IRQ domains and original audio |
 | [Stream free/reverse state clear](audio/MUSYX_STREAM_FREE_AND_REVERSE_STATE_CLEAR.md) | Complete five-stage deactivate/buffer-exit/companion/recursive/reverse-clear body | Frequency/mix/resource/chain/IRQ domains and original audio |

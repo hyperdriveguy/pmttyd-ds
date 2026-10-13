@@ -553,6 +553,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [mix/local inventory](../behavior/audio/MUSYX_STREAM_MIX_AND_LOCAL_MODULE_COVERAGE.md).
   AuxB0/three publication routes/fresh state2/original argument forwarding/
   IRQ order pinned; provider domains/transitive/original audio remain open.
+- [x] Complete SoundSSMuteOn/Off/Check/GetVolCh/ContinueCh —
+  [game stream leaves](../behavior/audio/GAME_STREAM_MUTE_CHECK_VOLUME_AND_CONTINUE.md).
+  Raw channel/flags/zero gates, signed volume conversion and ordered fresh
+  continue writes pinned; engine/providers/domains/original audio open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2762,3 +2766,13 @@ AuxB0/three mode-read publication routes/fresh state2/three-stage recursion
 pinned. All17 names/addresses/sizes matched complete/composed evidence; inventory
 and composed prerequisites reverified. Providers/IRQ/FP/chain domains/transitive
 ARAM/DSP/original audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Game stream mute/check/volume/continue delivery
+
+Completed five local bodies in
+[game stream leaves](../behavior/audio/GAME_STREAM_MUTE_CHECK_VOLUME_AND_CONTINUE.md).
+Five spans/59 whole-body anchors/zero calls verified; seven flag/four fresh-
+continue/seven volume/five address vectors checked. Raw flags versus Boolean
+check, mute-off zeroing, signed conversion and clear/copy/fresh-OR continue
+order pinned. Engine/writers/callbacks/provider/FP domains/original audio/native
+binding remain open; EVT-01 stays OPEN.
