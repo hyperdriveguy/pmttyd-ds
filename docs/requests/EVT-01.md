@@ -580,6 +580,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete _ssDVDReadAsync_cache_next/cache_aram and DVDMgrGetLength —
   [cache callbacks](../behavior/audio/GAME_STREAM_CACHE_CALLBACK_TRANSFER_AND_INITIAL_READS.md). Fixed32768 transfer, owner low8,
   fresh progress/count, continuation/reset/initial reads pinned; runtime open.
+- [x] Complete SoundSSMain — [ordered fades/stops](../behavior/audio/GAME_STREAM_MAIN_ORDERED_FADES_AND_INLINE_STOPS.md).
+  Initial gates/stop priority, sequential40-20-10, recaptured mix/stop rows and
+  zero-before-subtract/counter/close-free/marker order pinned; runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2862,3 +2865,12 @@ checked. Interrupt/completion pins reverified. Fixed32768 transfer despite short
 logical count, owner low8 without serial validation, fresh progress/length and
 reset-before-initial IO pinned. Providers/SDK/original DMA/cache/startup/audio/
 native binding open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Game stream main fade/stop delivery
+
+Completed [whole SoundSSMain](../behavior/audio/GAME_STREAM_MAIN_ORDERED_FADES_AND_INLINE_STOPS.md).
+Eight spans/398 anchors/21 calls verified; thirteen finite stable-frame/six stop-
+gate/five counter vectors and three mix/two stop groups checked; pan/stop pins
+reverified. Sequential mode bits, zero prechecks, pool recapture and child order
+pinned. Providers/FP/original cadence/fade/stop/audio/native binding remain open;
+EVT-01 stays OPEN.

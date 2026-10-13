@@ -2,6 +2,27 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero game stream main
+
+Completed SoundSSMain; checked EVT-01 portion.
+[Main fades/stops](behavior/audio/GAME_STREAM_MAIN_ORDERED_FADES_AND_INLINE_STOPS.md)
+pins initial stop priority, sequential40/20/10 mode processing, zero-before-
+subtraction, recaptured rows/three mix/two stop blocks and counter/close-free/
+marker order. Providers/FP/original cadence/fade/stop/audio/native binding open.
+
+Validation: read-only ISO manifest passed eight spans,398 anchors,21 calls.
+Thirteen finite stable-frame/six stop-gate/five counter vectors plus three mix/
+two stop groups checked; pan/stop pins reverified. Link audit passed921 Markdown
+files/zero broken links; scoped diff check passed. Mathematical deductions
+separate from original execution. Docs/metadata only; no make test/all rerun.
+Fresh ELF/listing/generator stay /tmp; no bodies/assets committed. Concurrent
+native work excluded. Approved push remains pending valid GitHub credentials.
+
+Next: priority-zero EVT-01 game stream play/deferred DVD manager and actual
+providers/value/extent/alias/lifetime/IRQ/concurrency/ABI/FP domains, transitive
+SDK/ARAM/AI/DSP and original cadence/fade/stop/mix/audio traces. Other inbox/
+native/full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero stream cache callbacks
 
 Completed _ssDVDReadAsync_cache_next/cache_aram/DVDMgrGetLength; EVT-01 checked.

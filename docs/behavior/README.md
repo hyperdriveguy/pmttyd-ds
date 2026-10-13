@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [Game stream main ordered fades/stops](audio/GAME_STREAM_MAIN_ORDERED_FADES_AND_INLINE_STOPS.md) | Complete SoundSSMain; three rows/stop priority/sequential40-20-10/three mix/two stop blocks | Providers/FP domains and original cadence/fade/stop/audio |
 | [Game stream cache callbacks/initial reads](audio/GAME_STREAM_CACHE_CALLBACK_TRANSFER_AND_INITIAL_READS.md) | Complete cache-next/cache-ARAM/length leaf; fixed transfer/owner/progress/next-read/reset/initial IO order | Providers/SDK domains and original cache/DMA/startup/audio |
 | [Game stream completion match/cursor/startup](audio/GAME_STREAM_COMPLETION_MATCH_CURSOR_AND_STARTUP.md) | Complete active-check callback; count/terminal flags/latch/readiness/activation/mix/flag8/counter order | Providers/SDK/FP domains and original callback/IRQ/audio |
 | [Game stream interrupt refill/copy/latch](audio/GAME_STREAM_INTERRUPT_REFILL_COPY_AND_LATCH.md) | Complete SoundSSMainInt/DVDMgrReadAsync/cache_flush; chunk/IO/pending/copy/latch order | Callback/manager/providers/SDK domains and original IRQ/IO/audio |
