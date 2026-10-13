@@ -30,6 +30,7 @@
 #include "field_camera_events.hpp"
 #include "mario_presentation.hpp"
 #include "partner_presentation.hpp"
+#include "partner_follow.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -140,6 +141,7 @@ public:
     FieldCameraEvents fieldCameraEvents;
     MarioPresentation marioPresentation;
     PartnerPresentation partnerPresentation;
+    PartnerFollow partnerFollow;
     FieldIdleWork fieldIdle;
     // Native partner ability/status services are still adapters. These explicit
     // inputs allow source eligibility instead of collapsing it to input enabled.
@@ -217,7 +219,7 @@ private:
     uint32_t fieldSoundFlags=0;
     FieldBattleServices fieldBattleServices();
     bool returnFromBattle(int32_t harnessResult);
-    std::vector<Vec2> followerPath;
+    void updatePartner();
     FieldJump fieldJump;
     FieldMovement fieldMovement;
     FieldStep fieldStep;

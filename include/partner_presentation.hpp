@@ -16,14 +16,14 @@ struct PartnerPresentation {
     float display=0,target=0,offset=0;
     bool turnLatch=false;
     uint64_t startTick=0,nowTick=0;
-    const char* name() const {return poseId==2?"PKR_W_1":poseId==3?"PKR_R_1":"PKR_S_1";}
+    const char* name() const {return poseId==2?"PKR_W_1":poseId==3?"PKR_R_1":poseId==4?"PKR_J_1A":"PKR_S_1";}
     // Native follower adapter: actual displacement supplies provisional P+104;
     // its source homing/history/turn owners remain unbound. Source ordinary
     // Rogueport owner scale1 and raw-stick class feed the recovered pose helper.
-    void update(float dx,float dz,int marioMovementClass,uint64_t tick,float cameraOffset) {
+    void update(float dx,float dz,int marioMovementClass,uint64_t tick,float cameraOffset,bool airborne=false) {
         nowTick=tick;offset=cameraOffset;
         const float speed=std::hypot(dx,dz)*100.f;
-        const unsigned next=speed==0?1:partnerMovingPose(speed,1.f,marioMovementClass);
+        const unsigned next=airborne?4:speed==0?1:partnerMovingPose(speed,1.f,marioMovementClass);
         if(next!=poseId){poseId=next;startTick=tick;}
         // partyMakeDispDir ordinary flags-clear route. Positive X travels at
         // source heading90 and targets display180; the c_pkr base faces left.

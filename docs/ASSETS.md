@@ -451,3 +451,14 @@ alternate foliage use recovered initialization conditions; full event overrides
 remain open. See [visibility contract](behavior/field/ROGUEPORT_STORY_OBJECT_VISIBILITY.md).
 Nintendo original asset licensing/provenance is unchanged: local personal-use
 conversion only, no ISO or extracted/compiled assets committed or distributed.
+
+## Goombella follow jump pose (2026-10-12)
+
+The existing original `a/c_pkr` model and `a/c_pkr-` texture resource now also
+compile `PKR_J_1A` into ignored `romfs/partner.pmanim`, `partner.pmmesh` and
+`partner-mesh.t3x` via `tools/build_assets.py`. Source selector4 is pinned by
+the [Goombella pose contract](behavior/partner/FIELD_GOOMBELLA_ORDINARY_POSE_BINDING.md).
+The existing PMANIM3 visibility/scalar2 conversion is retained; no generated
+art or substituted sound is introduced. Source extraction stays read-only and
+all converted packs remain outside source history. Nintendo/Intelligent Systems
+assets carry no redistribution permission; no original files are committed.

@@ -60,7 +60,7 @@ def main():
         model=asset('a/'+name,name);tpl=asset('a/'+name+'-',name+'.tpl')
         target=WORK/f'{name}-idle.png';poses.append(bake(model,tpl,target,anim))
         atlas.alpha_composite(Image.open(target),(index*128,0))
-    partner_mesh=compile_mesh([(WORK/'c_pkr',WORK/'c_pkr.tpl',['PKR_Z_1','PKR_S_1','PKR_W_1','PKR_R_1'])],
+    partner_mesh=compile_mesh([(WORK/'c_pkr',WORK/'c_pkr.tpl',['PKR_Z_1','PKR_S_1','PKR_W_1','PKR_R_1','PKR_J_1A'])],
                               OUTPUT/'partner.pmmesh',WORK/'partner-mesh.png',OUTPUT/'partner.pmanim')
     texture(WORK/'partner-mesh.png',OUTPUT/'partner-mesh.t3x')
     marioimage=Image.open(WORK/'mario-original.png').convert('RGBA')

@@ -203,7 +203,7 @@ bool Game::finishWarp() {
     fieldSystemFlags=entryCallback==RoadCallback::DebugArrival?systemFlags&~0x40u:systemFlags;
     rebaseFieldCamera();
     arrivalStart=start;arrivalEnd=arrival;
-    registerRoadCases(false);followerPath.clear();saveRequested=true;return true;
+    registerRoadCases(false);partnerFollow={};saveRequested=true;return true;
 }
 void Game::beginRoadArrival() {
     roadMotion.begin({arrivalStart.x,arrivalStart.z},{arrivalEnd.x,arrivalEnd.z});
@@ -734,10 +734,27 @@ void Game::restore(const Progress& saved) {
     groundMetadataHeight=supportMetadataHeight(groundHeight);
     roomRespawn={p.position.x,groundHeight,p.position.z};
     groundAt(partner,groundHeight,partnerHeight,&partnerContact);
-    followerPath.push_back(partner);followerPath.push_back(p.position);
+    partnerFollow.reset({partner.x,partnerHeight,partner.z},{p.position.x,groundHeight,p.position.z});
     cameraX=p.position.x;cameraZ=p.position.z;cameraHeight=groundHeight;
     rebaseFieldCamera();
     registerRoadCases(true);
+}
+void Game::updatePartner() {
+    PartnerFollowServices services;
+    services.free=[](CameraPoint p){return walkable({p.x,p.z},p.y);};
+    services.floor=[](CameraPoint p,float low,float high,float& height) {
+        GroundContact contact;
+        if(!groundWithin({p.x,p.z},low,high,height,&contact))return false;
+        return !(contact.attributes&0x200);
+    };
+    services.project=[this](CameraPoint p){return projectCameraRoot(p,fieldCameraFrame.view,fieldCameraFrame.projection,fieldCameraFrame.viewport);};
+    CameraPoint root{partner.x,partnerHeight,partner.z};
+    partnerFollow.tick(root,{progress.position.x,groundHeight+jumpHeight,progress.position.z},
+                       airborne(),DashSpeed,services);
+    partner={root.x,root.z};partnerHeight=root.y;partnerContact={};
+    if(partnerFollow.motion==PartnerFollow::Motion::Ground) {
+        float floor=root.y;groundAt(partner,root.y,floor,&partnerContact);
+    }
 }
 void Game::openDialogue(int kind) {
     scene = Scene::Dialogue; dialogueKind = kind; dialoguePage = 0;
@@ -978,25 +995,6 @@ void Game::move(const Input& i,bool launched) {
     }
     if (turnTick>0) { --turnTick; turnScale=std::max(.08f,std::fabs(std::cos(turnTick*3.14159265f/10.f))); }
     else turnScale=1;
-    if(followerPath.empty()) {followerPath.push_back(partner);followerPath.push_back(p);}
-    if(length(followerPath.back(),p)>.08f) followerPath.push_back(p);
-    float remaining=length(partner,followerPath.front());
-    for(size_t n=1;n<followerPath.size();++n)remaining+=length(followerPath[n-1],followerPath[n]);
-    if(remaining>PartnerDistance) {
-        float budget=std::min(DashSpeed,remaining-PartnerDistance);
-        while(budget>0 && !followerPath.empty()) {
-            Vec2 target=followerPath.front();float dist=length(partner,target);
-            if(dist<.001f) {followerPath.erase(followerPath.begin());continue;}
-            float step=std::min(budget,dist);
-            Vec2 q{partner.x+(target.x-partner.x)/dist*step,partner.z+(target.z-partner.z)/dist*step};
-            float h=partnerHeight;GroundContact contact;
-            if(!walkable(q,partnerHeight) || !groundAt(q,partnerHeight,h,&contact) || !walkable(q,h))break;
-            partner=q;partnerHeight=h;partnerContact=contact;budget-=step;
-            if(step>=dist)followerPath.erase(followerPath.begin());
-        }
-    }
-    // Bound the trail if the partner cannot traverse an old segment.
-    if(followerPath.size()>512) {partner=p;partnerHeight=groundHeight;followerPath.clear();}
     if(stepping) {
         // Upstairs motion12 also records contact without the jump-only response.
         queryOverhead(groundHeight,fieldStep.velocity,.1f);
@@ -1004,6 +1002,7 @@ void Game::move(const Input& i,bool launched) {
     cacheFieldScreen(); // marioMove wrapper projects root before the falling vertical owner.
     if(wasFalling)advanceVertical(i.jumpHeld,false);
     else if(verticalReady)finishVertical(previousY);
+    updatePartner();
     if(airborne())saveRequested=false;
     if(!water.active())publishFieldCameraTarget();
     // Field case manager runs after Mario motion, projection and camera publication.
@@ -1290,7 +1289,8 @@ void Game::tick(const Input& rawInput) {
             const bool ordinary=(game.scene==Scene::Explore || game.scene==Scene::Dialogue) &&
                 !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0;
             game.partnerPresentation.update(ordinary?game.partner.x-previous.x:0,
-                ordinary?game.partner.z-previous.z:0,movementClass,game.ticks,game.fieldMovement.headingOffsetDegrees);
+                ordinary?game.partner.z-previous.z:0,movementClass,game.ticks,game.fieldMovement.headingOffsetDegrees,
+                game.partnerFollow.motion!=PartnerFollow::Motion::Ground);
         }
     } presentation{*this,partner,rawInput};
     Input input=rawInput;const Input& i=input;
@@ -1317,7 +1317,7 @@ void Game::tick(const Input& rawInput) {
         fade.tick();const bool finished=roadMotion.tick();
         progress.position={roadMotion.position[0],roadMotion.position[1]};partner=progress.position;
         cacheFieldScreen();publishFieldCameraTarget();
-        if(finished){arriving=false;registerRoadCases(true);saveRequested=true;followerPath.clear();followerPath.push_back(partner);}
+        if(finished){arriving=false;registerRoadCases(true);saveRequested=true;partnerFollow.reset({partner.x,partnerHeight,partner.z},{progress.position.x,groundHeight,progress.position.z});}
         return;
     }
     if(fade.active()){fade.tick();return;}
@@ -1374,7 +1374,7 @@ void Game::tick(const Input& rawInput) {
         }
         if(event==WaterEvent::Complete) {
             if(water.kind==RecoveryKind::Void){partner=progress.position;partnerHeight=groundHeight;partnerContact=groundContact;}
-            followerPath.clear();followerPath.push_back(partner);followerPath.push_back(progress.position);
+            partnerFollow.reset({partner.x,partnerHeight,partner.z},{progress.position.x,groundHeight,progress.position.z});
         } else if(event==WaterEvent::Dead)scene=Scene::FieldDefeat;
         if(event==WaterEvent::Complete || event==WaterEvent::Dead)fieldCameraDisplayFlags&=~0x10000u;
         publishFieldCameraTarget();

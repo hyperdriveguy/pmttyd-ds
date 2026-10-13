@@ -415,3 +415,7 @@ add_test(NAME battle_mario_jump_parameter_event COMMAND battle_mario_jump_parame
 add_executable(battle_packed_mario_jump_tests tests/battle_packed_mario_jump_tests.cpp)
 target_link_libraries(battle_packed_mario_jump_tests PRIVATE ttyd_core)
 add_test(NAME battle_packed_mario_jump COMMAND battle_packed_mario_jump_tests)
+
+add_executable(partner_follow_tests tests/partner_follow_tests.cpp)
+target_link_libraries(partner_follow_tests PRIVATE ttyd_core)
+add_test(NAME partner_follow COMMAND partner_follow_tests)
