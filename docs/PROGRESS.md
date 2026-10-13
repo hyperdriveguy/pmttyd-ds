@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero stream forward refill
+
+Completed streamHandle position/forward refill region; checked EVT-01 portion.
+[Forward refill](behavior/audio/MUSYX_STREAM_POSITION_AND_FORWARD_REFILL.md)
+pins /14 position/block mapping, callback return/state gate, fresh modulo versus
+retained pre-callback offset and flush-before-cursor publication. Wrapped refill/
+footer/ABI/providers/domains/original audio/native binding remain open.
+
+Validation: read-only ISO manifest passed four spans,126 region anchors,five
+calls; two indirect callback sites recorded. Nine block/seven route/six callback/
+nine refill vectors and65540 division cases checked. Link audit passed890 Markdown
+files/zero broken links; scoped `git diff --check` passed. Mathematical source
+checks are separate from original execution; invalid divisor output unresolved.
+Documentation/metadata only; no `make test`/`make all` rerun. Fresh full original
+handler ELF/listing/generator stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded. Previously approved push remains pending
+invalid GitHub credentials.
+
+Next: priority-zero EVT-01 streamHandle wrapped-refill/footer/ABI, actual callback/
+position/format/cursor/length/flags/source/selector/voice/count providers and valid
+value/divisor/extent/alignment/encoding/alias/lifetime/IRQ/concurrency domains,
+transitive ARAM/DSP consumers and original refill/stream/audio traces. Remaining
+stream lifecycle/macro/song/backend, lower-priority inbox and full native/game open.
+
 ## 2026-10-13 — Inbox priority-zero stream startup
 
 Completed streamHandle throttle/dispatch/state1 startup/row tail regions; checked

@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [Stream position/forward refill](audio/MUSYX_STREAM_POSITION_AND_FORWARD_REFILL.md) | Complete position normalization/forward callbacks/modulo/flush publication region | Wrapped refill/footer/ABI/providers/domains and original audio |
 | [Stream throttle/dispatch/startup](audio/MUSYX_STREAM_THROTTLE_DISPATCH_AND_STARTUP.md) | Complete throttle/state1 descriptor/hardware/start/flush and row tail regions | Refill/ABI/providers/domains and original stream/audio |
 | [Game/stream output-mode propagation](audio/MUSYX_STREAM_OUTPUT_MODE_PROPAGATION.md) | Complete game/public/stream mode and HRTF-disable bodies | UI/providers/IRQ/domains/transitive DSP and original audio |
 | [Stream lookup/output mode/mix](audio/MUSYX_STREAM_ID_LOOKUP_OUTPUT_MODE_AND_MIX.md) | Five complete public-ID lookup/mode/volume/hardware-mix bodies | Stream engine/lifecycle/providers/domains and original audio |

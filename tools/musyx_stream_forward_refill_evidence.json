@@ -1,0 +1,501 @@
+{
+  "schema": 1,
+  "scope": "Complete streamHandle position/forward refill region; wrapped refill/footer/providers/runtime open",
+  "complete_bodies": [],
+  "complete_regions": [
+    {
+      "name": "streamHandle forward refill",
+      "address": 2150082804,
+      "size": 504
+    }
+  ],
+  "linked_only": [
+    "streamHandle",
+    "hwGetPos",
+    "hwFlushStream"
+  ],
+  "dol_spans": [
+    {
+      "name": "streamHandle forward refill",
+      "address": 2150082804,
+      "size": 504,
+      "sha256": "30e03c5b0663eba01fa10fca3d7c9c5aa9cd0e6e5b05e7380ee7c0f2e0e2e657"
+    },
+    {
+      "name": "streamHandle",
+      "address": 2150082200,
+      "size": 2276,
+      "sha256": "f5bc74901c36f1c68441ece7e21cafa90df9d96aa57b2b630e1b3cffba963a27"
+    },
+    {
+      "name": "hwGetPos",
+      "address": 2150175288,
+      "size": 172,
+      "sha256": "354ee1f7528866cbae24e456cf4ef03ec3edc16f7fb49cdbe7cabf6af1b36c17"
+    },
+    {
+      "name": "hwFlushStream",
+      "address": 2150175460,
+      "size": 144,
+      "sha256": "634fc956a3bf16f400a5f528427e1462e980320e220f23990d903746c69cc74b"
+    }
+  ],
+  "dol_anchors": {
+    "2150082804": "807c004c",
+    "2150082808": "48016941",
+    "2150082812": "88bc000d",
+    "2150082816": "28050001",
+    "2150082820": "40820024",
+    "2150082824": "3c802492",
+    "2150082828": "38044925",
+    "2150082832": "7c801816",
+    "2150082836": "7c041850",
+    "2150082840": "5400f87e",
+    "2150082844": "7c002214",
+    "2150082848": "5400e8fe",
+    "2150082852": "1c60000e",
+    "2150082856": "801c0020",
+    "2150082860": "7c001840",
+    "2150082864": "41820620",
+    "2150082868": "408001b8",
+    "2150082872": "2c050001",
+    "2150082876": "418200c8",
+    "2150082880": "408005d0",
+    "2150082884": "2c050000",
+    "2150082888": "40800008",
+    "2150082892": "480005c4",
+    "2150082896": "80dc0014",
+    "2150082900": "5405083c",
+    "2150082904": "819c0010",
+    "2150082908": "7c801850",
+    "2150082912": "7c662a14",
+    "2150082916": "80fc0050",
+    "2150082920": "38a00000",
+    "2150082924": "38c00000",
+    "2150082928": "7d8903a6",
+    "2150082932": "4e800421",
+    "2150082936": "28030000",
+    "2150082940": "41820594",
+    "2150082944": "881c000c",
+    "2150082948": "28000002",
+    "2150082952": "40820588",
+    "2150082956": "80bc0020",
+    "2150082960": "80dc0018",
+    "2150082964": "7c851a14",
+    "2150082968": "801c0008",
+    "2150082972": "7c643396",
+    "2150082976": "5400039d",
+    "2150082980": "7c0331d6",
+    "2150082984": "7f602050",
+    "2150082988": "40820050",
+    "2150082992": "281b0000",
+    "2150082996": "41820028",
+    "2150083000": "7c05d850",
+    "2150083004": "807c0014",
+    "2150083008": "88dc000e",
+    "2150083012": "54a4083c",
+    "2150083016": "5405083c",
+    "2150083020": "38e00000",
+    "2150083024": "39000000",
+    "2150083028": "48016911",
+    "2150083032": "48000024",
+    "2150083036": "7c053050",
+    "2150083040": "807c0014",
+    "2150083044": "88dc000e",
+    "2150083048": "54a4083c",
+    "2150083052": "5405083c",
+    "2150083056": "38e00000",
+    "2150083060": "39000000",
+    "2150083064": "480168ed",
+    "2150083068": "937c0020",
+    "2150083072": "48000510",
+    "2150083076": "3c802492",
+    "2150083080": "811c0014",
+    "2150083084": "38844925",
+    "2150083088": "819c0010",
+    "2150083092": "7d240016",
+    "2150083096": "80fc0050",
+    "2150083100": "7c801850",
+    "2150083104": "38a00000",
+    "2150083108": "38c00000",
+    "2150083112": "7c090050",
+    "2150083116": "5400f87e",
+    "2150083120": "7c004a14",
+    "2150083124": "541e0038",
+    "2150083128": "7c68f214",
+    "2150083132": "7d8903a6",
+    "2150083136": "4e800421",
+    "2150083140": "28030000",
+    "2150083144": "418204c8",
+    "2150083148": "881c000c",
+    "2150083152": "28000002",
+    "2150083156": "408204bc",
+    "2150083160": "801c0020",
+    "2150083164": "809c0018",
+    "2150083168": "7ca01a14",
+    "2150083172": "801c0008",
+    "2150083176": "7c652396",
+    "2150083180": "5400039d",
+    "2150083184": "7c0321d6",
+    "2150083188": "7f602850",
+    "2150083192": "4082006c",
+    "2150083196": "281b0000",
+    "2150083200": "41820044",
+    "2150083204": "3c602492",
+    "2150083208": "381b000d",
+    "2150083212": "38834925",
+    "2150083216": "807c0014",
+    "2150083220": "7ca40016",
+    "2150083224": "88dc000e",
+    "2150083228": "7fc4f378",
+    "2150083232": "38e00000",
+    "2150083236": "39000000",
+    "2150083240": "7c050050",
+    "2150083244": "5400f87e",
+    "2150083248": "7c002a14",
+    "2150083252": "54000038",
+    "2150083256": "7cbe0050",
+    "2150083260": "48016829",
+    "2150083264": "48000024",
+    "2150083268": "801c001c",
+    "2150083272": "7fc4f378",
+    "2150083276": "807c0014",
+    "2150083280": "38e00000",
+    "2150083284": "88dc000e",
+    "2150083288": "7cbe0050",
+    "2150083292": "39000000",
+    "2150083296": "48016805",
+    "2150083300": "937c0020",
+    "2150083304": "48000428"
+  },
+  "direct_calls": [
+    {
+      "site": 2150082808,
+      "target": 2150175288,
+      "name": "hwGetPos"
+    },
+    {
+      "site": 2150083028,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    },
+    {
+      "site": 2150083064,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    },
+    {
+      "site": 2150083260,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    },
+    {
+      "site": 2150083296,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_block_vectors": [
+    {
+      "input": 0,
+      "div14": 0,
+      "rounded_position": 0,
+      "block_offset": 0,
+      "wrapped_ceil_block": 0
+    },
+    {
+      "input": 1,
+      "div14": 0,
+      "rounded_position": 0,
+      "block_offset": 0,
+      "wrapped_ceil_block": 8
+    },
+    {
+      "input": 13,
+      "div14": 0,
+      "rounded_position": 0,
+      "block_offset": 0,
+      "wrapped_ceil_block": 8
+    },
+    {
+      "input": 14,
+      "div14": 1,
+      "rounded_position": 14,
+      "block_offset": 8,
+      "wrapped_ceil_block": 8
+    },
+    {
+      "input": 15,
+      "div14": 1,
+      "rounded_position": 14,
+      "block_offset": 8,
+      "wrapped_ceil_block": 16
+    },
+    {
+      "input": 27,
+      "div14": 1,
+      "rounded_position": 14,
+      "block_offset": 8,
+      "wrapped_ceil_block": 16
+    },
+    {
+      "input": 28,
+      "div14": 2,
+      "rounded_position": 28,
+      "block_offset": 16,
+      "wrapped_ceil_block": 16
+    },
+    {
+      "input": 4294967283,
+      "div14": 306783377,
+      "rounded_position": 4294967278,
+      "block_offset": 2454267016,
+      "wrapped_ceil_block": 0
+    },
+    {
+      "input": 4294967295,
+      "div14": 306783378,
+      "rounded_position": 4294967292,
+      "block_offset": 2454267024,
+      "wrapped_ceil_block": 0
+    }
+  ],
+  "indirect_call_sites": [
+    {
+      "site": 2150082932,
+      "pointer_field": 16,
+      "arguments": [
+        "source14+wrap32(2*captured_cursor20)",
+        "position-captured_cursor20",
+        0,
+        0,
+        "user50"
+      ]
+    },
+    {
+      "site": 2150083136,
+      "pointer_field": 16,
+      "arguments": [
+        "source14+block(captured_cursor20)",
+        "position-captured_cursor20",
+        0,
+        0,
+        "user50"
+      ]
+    }
+  ],
+  "derived_gate_vectors": [
+    {
+      "old_cursor": 0,
+      "raw_position": 13,
+      "format": 1,
+      "normalized_position": 0,
+      "route": "same_skip_row"
+    },
+    {
+      "old_cursor": 0,
+      "raw_position": 14,
+      "format": 1,
+      "normalized_position": 14,
+      "route": "forward"
+    },
+    {
+      "old_cursor": 14,
+      "raw_position": 27,
+      "format": 1,
+      "normalized_position": 14,
+      "route": "same_skip_row"
+    },
+    {
+      "old_cursor": 14,
+      "raw_position": 28,
+      "format": 1,
+      "normalized_position": 28,
+      "route": "forward"
+    },
+    {
+      "old_cursor": 14,
+      "raw_position": 13,
+      "format": 0,
+      "normalized_position": 13,
+      "route": "wrapped_refill"
+    },
+    {
+      "old_cursor": 0,
+      "raw_position": 1,
+      "format": 0,
+      "normalized_position": 1,
+      "route": "forward"
+    },
+    {
+      "old_cursor": 0,
+      "raw_position": 1,
+      "format": 2,
+      "normalized_position": 1,
+      "route": "forward"
+    }
+  ],
+  "derived_callback_vectors": [
+    {
+      "return_count": 0,
+      "fresh_state": 2,
+      "commits": false
+    },
+    {
+      "return_count": 1,
+      "fresh_state": 2,
+      "commits": true
+    },
+    {
+      "return_count": 4294967295,
+      "fresh_state": 2,
+      "commits": true
+    },
+    {
+      "return_count": 1,
+      "fresh_state": 0,
+      "commits": false
+    },
+    {
+      "return_count": 1,
+      "fresh_state": 1,
+      "commits": false
+    },
+    {
+      "return_count": 1,
+      "fresh_state": 3,
+      "commits": false
+    }
+  ],
+  "derived_refill_vectors": [
+    {
+      "format": 0,
+      "captured_cursor": 4,
+      "post_callback_cursor": 4,
+      "returned_count": 2,
+      "length18": 16,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 6,
+      "flush_offset": 8,
+      "flush_size": 4,
+      "requests_flush": true,
+      "publishes_after_flush": true
+    },
+    {
+      "format": 0,
+      "captured_cursor": 14,
+      "post_callback_cursor": 14,
+      "returned_count": 2,
+      "length18": 16,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 0,
+      "flush_offset": 28,
+      "flush_size": 4,
+      "requests_flush": true,
+      "publishes_after_flush": true
+    },
+    {
+      "format": 0,
+      "captured_cursor": 14,
+      "post_callback_cursor": 14,
+      "returned_count": 4,
+      "length18": 16,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 2,
+      "flush_offset": 28,
+      "flush_size": 4294967272,
+      "requests_flush": true,
+      "publishes_after_flush": true
+    },
+    {
+      "format": 1,
+      "captured_cursor": 14,
+      "post_callback_cursor": 14,
+      "returned_count": 14,
+      "length18": 56,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 28,
+      "flush_offset": 8,
+      "flush_size": 8,
+      "requests_flush": true,
+      "publishes_after_flush": true
+    },
+    {
+      "format": 1,
+      "captured_cursor": 42,
+      "post_callback_cursor": 42,
+      "returned_count": 14,
+      "length18": 56,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 0,
+      "flush_offset": 24,
+      "flush_size": 8,
+      "requests_flush": true,
+      "publishes_after_flush": true
+    },
+    {
+      "format": 1,
+      "captured_cursor": 14,
+      "post_callback_cursor": 14,
+      "returned_count": 1,
+      "length18": 56,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 15,
+      "flush_offset": 8,
+      "flush_size": 8,
+      "requests_flush": true,
+      "publishes_after_flush": true
+    },
+    {
+      "format": 1,
+      "captured_cursor": 14,
+      "post_callback_cursor": 28,
+      "returned_count": 14,
+      "length18": 56,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 42,
+      "flush_offset": 8,
+      "flush_size": 16,
+      "requests_flush": true,
+      "publishes_after_flush": true
+    },
+    {
+      "format": 1,
+      "captured_cursor": 14,
+      "post_callback_cursor": 14,
+      "returned_count": 14,
+      "length18": 56,
+      "byte_length1c": 32,
+      "flags8": 131072,
+      "new_cursor": 28,
+      "flush_offset": 8,
+      "flush_size": 8,
+      "requests_flush": false,
+      "publishes_after_flush": true
+    },
+    {
+      "format": 0,
+      "captured_cursor": 4,
+      "post_callback_cursor": 4,
+      "returned_count": 2,
+      "length18": 0,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": null,
+      "flush_offset": 8,
+      "flush_size": null,
+      "requests_flush": false,
+      "publishes_after_flush": false
+    }
+  ]
+}

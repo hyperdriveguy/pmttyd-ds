@@ -104,3 +104,9 @@ Remaining: state2 refill/ABI, actual delay/count/state/format/descriptor/voice/
 frequency/filter/start/flags/source providers and valid extent/value/alias/
 lifetime/IRQ/concurrency/FP domains, transitive hardware/DSP/ARAM consumers and
 original startup/refill/stream/audio traces. EVT-01 and native binding remain OPEN.
+
+## 2026-10-13 — Forward-refill follow-up
+
+[Forward refill](MUSYX_STREAM_POSITION_AND_FORWARD_REFILL.md) closes state2 position normalization/forward
+callbacks/modulo/flush publication. Wrapped refill/footer/ABI/provider/domain/
+original stream/audio/native binding remain open.

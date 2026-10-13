@@ -505,6 +505,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [stream startup](../behavior/audio/MUSYX_STREAM_THROTTLE_DISPATCH_AND_STARTUP.md).
   Exact partial descriptor/call/state-before-flush/live count order pinned;
   refill/ABI/providers/domains/original stream/audio remain open.
+- [x] Complete streamHandle position normalization/forward refill —
+  [forward refill](../behavior/audio/MUSYX_STREAM_POSITION_AND_FORWARD_REFILL.md).
+  /14/block mapping/callback gates/fresh modulo versus retained offset/
+  flush-before-cursor order pinned; wrap/footer/providers/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2568,3 +2572,13 @@ state/four format/five finite pitch/four flush vectors and descriptor/ABI bindin
 checked. Partial stack type/pointer/padding, ordered initialization/filter/pitch/
 mix/start, state2-before-optional-flush and fresh count pinned. Refill/providers/
 domains/original stream/audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream position/forward refill delivery
+
+Completed one local region in
+[forward refill](../behavior/audio/MUSYX_STREAM_POSITION_AND_FORWARD_REFILL.md).
+Four spans/126 anchors/five calls/two callback sites verified; nine block/seven
+route/six callback/nine refill vectors and65540 division cases checked. Position
+normalization, zero-return/fresh state gate, fresh modulo versus retained block
+offset and flush-before-cursor order pinned. Wrapped refill/footer/providers/
+domains/original audio/native binding remain open; EVT-01 stays OPEN.
