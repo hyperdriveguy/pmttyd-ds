@@ -97,7 +97,7 @@ Phase byte remains1. The caller/interpreter must advance after result1;polling
 this same completed callback again would decrement zero to-1 and is a different
 execution. Final X/Z are interpolated baseline values,not snapped to target.
 
-## Phase2/3: mode1 eligibility and retained baseline
+## Phase2/3: mode1 eligibility and refreshed baseline
 
 Phase2 requests BtlUnit_GetACPossibility(U). That helper's local predicate is
 in [status/move services](BATTLE_MOVE_COUNTS.md);this is **eligibility**,not an
@@ -107,12 +107,12 @@ no local motion setup. If nonzero:
 - Phi=negative(single(lastY-lastY)),G=1.7999999523162842,n=1,theta=90;
   omega=float(signed integer360/n),therefore360 for the stored1.
 - H=single(double(abs(single(lastY-lastY)))/16.5).
-- GetPos(U,&temporaries),set event phase3,return0. The returned position
-  temporaries are **not copied** into stored baseline154/158/15c.
+- GetPos(U,&baselineX,&baselineY,&baselineZ),set event phase3,return0. The returned position
+  outputs are copied directly into stored baseline154/158/15c.
 
 Finite lastY produces signed-zero phase and zero height here;retain the original
-operations rather than inventing a positive jump/height difference. Baseline and
-other setup fields are retained from earlier owners because mode1 skipped setup.
+operations rather than inventing a positive jump/height difference. Baseline is
+refreshed by this phase2 query;other skipped setup fields retain their owners.
 
 Phase3 performs a separate pair of sin calls with the same current angle:
 baselineX=single(double(baselineX)+double(single(H*sin(angleRadians)))/33);
@@ -151,7 +151,7 @@ must be composed before deriving actual original time.
 | MJP-MOTION-02 | Keep target/baseline/visible/deltas and curve fields independent | Input sentinel retains target but raw X/Z still feed distance/heading;speed is not per-step baseline delta |
 | MJP-MOTION-03 | Integrate on first call and preserve exact countdown/landing order | Positive N steps includes first;last n0 returns1;targetY clamp requires pre-decrement n<3 and strict greater;final X/Z unsnapped |
 | MJP-MOTION-04 | Keep M0/M3 rounded numerical routes distinct | N42 uses floating360/N for M0 versus integer360/N for M3;different coefficients reach phase updates |
-| MJP-MOTION-05 | Keep phase2 eligibility and phase3 local state separate | Ineligible mode1 returns2;eligible setup returns0 then phase3 n1 returns1;GetPos does not replace retained baseline |
+| MJP-MOTION-05 | Keep phase2 eligibility and phase3 local state separate | Ineligible mode1 returns2;eligible setup returns0 then phase3 n1 returns1;GetPos copies visible XYZ to baseline154/158/15c |
 | MJP-MOTION-06 | Preserve sound/service/AC boundaries | One init playback request only when record18c nonzero;no direct AC result/count store;timing evaluation remains later script request |
 
 tools/verify_mario_jump_motion.py pins the full body,76 instruction anchors,
@@ -163,3 +163,13 @@ movement initialization and original flight/input/state traces remain open.
 This closes the local motion body,not a complete tutorial/game. Read-only ISO
 inspection outputs remain under /tmp or ignored artifacts;no native gameplay
 implementation,asset conversion or story text rewrite is implied.
+
+
+## Native source correction (2026-10-12)
+
+The phase2 GetPos call at80109b70 receives destination pointers U154/U158/U15c
+set at80109b20/24/28.It refreshes baseline from visible XYZ before phase3;
+it does not merely query ignored private temporaries.Prior retained-baseline
+wording was incorrect.The native/semantic regression now starts baseline12/23/34,
+visible90/80/70 and expects phase3 to start from90/80/70.Other target/curve/sound
+setup is still skipped for mode1 and no original motion trace is claimed.

@@ -5,6 +5,19 @@
 #include "event_memory_release.hpp"
 
 namespace ttyd {
+BattlePackedMarioJumpServices nativeBattleMarioJumpServices(BattleMarioJumpBackend& backend) {
+    assert(backend.runtime);BattlePackedMarioJumpServices s;s.motion=nativeBattleMovePositionServices(*backend.runtime,{});s.user=&backend;
+    s.eligible=[](void* p,uint32_t u)->int32_t {auto& b=*static_cast<BattleMarioJumpBackend*>(p);if(b.eligible)return b.eligible(b.user,u);return packedACPossibility(u,nativeBattleActorServices(*b.runtime));};
+    s.play=[](void* p,uint32_t key,const std::array<float,3>& xyz)->uint32_t {auto& b=*static_cast<BattleMarioJumpBackend*>(p);assert(b.play);return b.play(b.user,key,xyz);};
+    s.divideWord=[](void* p,int32_t a,int32_t b)->int32_t {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.divideWord);return r.platform.divideWord(r.platform.user,a,b);};
+    s.add=[](void* p,double a,double b) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.addDouble);return r.platform.addDouble(r.platform.user,a,b);};
+    s.subtract=[](void* p,double a,double b) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.subtractDouble);return r.platform.subtractDouble(r.platform.user,a,b);};
+    s.multiply=[](void* p,double a,double b) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.multiplyDouble);return r.platform.multiplyDouble(r.platform.user,a,b);};
+    s.divide=[](void* p,double a,double b) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.divideDouble);return r.platform.divideDouble(r.platform.user,a,b);};
+    s.fma=[](void* p,double a,double b,double c) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.fmaDouble);return r.platform.fmaDouble(r.platform.user,a,b,c);};
+    s.fmod=[](void* p,double a,double b) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.fmodDouble);return r.platform.fmodDouble(r.platform.user,a,b);};return s;
+}
+bool bindBattleMarioJumpPositionCallback(EventCallbackRegistry& registry,BattlePackedMarioJumpServices& services) {return registry.bind(0x801093a8,&services,[](void* p,EventEntry& e,int32_t first) {return packedMarioJumpPositionEvent(e,first,*static_cast<BattlePackedMarioJumpServices*>(p));});}
 bool bindBattleMarioJumpParameterCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x80109c68,&runtime,[](void* p,EventEntry& e,int32_t) {return packedMarioJumpParameterEvent(e,nativeBattleMoveFrameServices(*static_cast<EventNativeRuntime*>(p)));});}
 BattlePackedMovePositionServices nativeBattleMovePositionServices(EventNativeRuntime& runtime,const BattleSoundPlaybackServices& playback) {
     BattlePackedMovePositionServices s;s.query=nativeBattleMoveFrameServices(runtime);s.sound=nativeBattleMovementSoundServices(runtime,playback);

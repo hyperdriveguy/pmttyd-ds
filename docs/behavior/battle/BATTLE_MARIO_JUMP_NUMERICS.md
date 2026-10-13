@@ -120,8 +120,8 @@ at the VM level;it is not another blocked call followed by return2.
 
 After eligible phase2 setup,n=1,G=single1.8,Phi=-ssub(lastY,lastY),theta=90,
 omega=F(360/n). H=r32(double(abs(ssub(lastY,lastY)))/double16.5).
-Finite lastY therefore gives H0. Stored baseline is retained;GetPos's temporary
-outputs do not replace it. Phase2 then changes the event state to3 and returns0.
+Finite lastY therefore gives H0. GetPos copies current visible XYZ into
+baseline154/158/15c. Phase2 then changes the event state to3 and returns0.
 
 Phase3 computes rad=sdiv(smul(single2pi,theta),single360) twice through separate
 sin requests. First q1=r32(originalSin(double(rad))),product=smul(H,q1),

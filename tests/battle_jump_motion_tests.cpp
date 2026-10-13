@@ -119,10 +119,10 @@ int main() {
     mode1.unit.lastY=44;mode1.unit.target={8,9,10};MarioJumpEvent e1;
     assert(marioJumpMotion(mode1.unit,e1,args(10,1),true,mode1.services())==0);
     assert(e1.phase==3 && mode1.unit.remaining==1 && mode1.unit.height==0);
-    assert(mode1.unit.baseline.x==12 && mode1.unit.target.x==8 && mode1.playCalls==0);
+    assert(mode1.unit.baseline.x==90 && mode1.unit.target.x==8 && mode1.playCalls==0);
     assert(mode1.getCalls==1 && mode1.sineCalls==0 && mode1.eligibilityCalls==1);
     assert(marioJumpMotion(mode1.unit,e1,args(10,1),false,mode1.services())==1);
-    assert(mode1.unit.visible.x==12 && mode1.unit.visible.y==23 && mode1.unit.visible.z==34);
+    assert(mode1.unit.visible.x==90 && mode1.unit.visible.y==80 && mode1.unit.visible.z==70);
     assert(mode1.sineCalls==2 && mode1.unit.angle==90);
     Fixture denied;denied.eligible=false;denied.unit.remaining=88;MarioJumpEvent deny;
     assert(marioJumpMotion(denied.unit,deny,args(10,1),true,denied.services())==2);

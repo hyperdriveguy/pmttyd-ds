@@ -23,8 +23,17 @@
 #include "battle_packed_movement_sound.hpp"
 #include "battle_packed_move_position.hpp"
 #include "battle_mario_jump_parameter_event.hpp"
+#include "battle_packed_mario_jump.hpp"
 
 namespace ttyd {
+struct BattleMarioJumpBackend {
+    EventNativeRuntime* runtime=nullptr;
+    void* user=nullptr;
+    uint32_t (*play)(void*,uint32_t key,const std::array<float,3>&)=nullptr;
+    int32_t (*eligible)(void*,uint32_t unit)=nullptr; // Null selects original packed AC possibility.
+};
+BattlePackedMarioJumpServices nativeBattleMarioJumpServices(BattleMarioJumpBackend&);
+bool bindBattleMarioJumpPositionCallback(EventCallbackRegistry&,BattlePackedMarioJumpServices&);
 struct BattleDataChildBackend {
     void* user=nullptr;
     int32_t (*translate)(void*,EventEntry&,int32_t)=nullptr;

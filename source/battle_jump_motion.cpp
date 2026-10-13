@@ -140,7 +140,7 @@ int marioJumpMotion(MarioJumpUnit& u,MarioJumpEvent& e,const MarioJumpArguments&
         u.phase=-sub(u.lastY,u.lastY);u.phaseIncrement=1.7999999523162842f;
         u.remaining=1;u.angle=90.f;u.angleStep=static_cast<float>(360/u.remaining);
         u.height=static_cast<float>(static_cast<double>(std::fabs(sub(u.lastY,u.lastY)))/16.5);
-        get(u,s);e.phase=3;return 0;
+        u.baseline=get(u,s);e.phase=3;return 0;
     case 3: {
         const float q1=sine(s,radians(u.angle));
         const float product=mul(u.height,q1);
