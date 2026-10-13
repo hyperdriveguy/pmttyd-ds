@@ -28,8 +28,8 @@ int main(){
  assert(!t.attackActive && !t.pendingService && t.actors[2].maxMoves==0);
  t.actors[0].heldItem=128;assert(t.dispatchInstalledAttack(0));t.tick((++tick)*1000/60,0);assert(t.pendingService==0x80104498);
  t.actors[0].heldItem=0;
- for(unsigned i=0;i<10 && t.chosenUnit!=1;++i)t.tick((++tick)*1000/60,0);
- assert(t.attackActive && t.chosenUnit==1 && t.chosenPart==1 && t.pendingService==0x8012be38 && t.result==0);
+ for(unsigned i=0;i<300 && t.pendingService!=0x80107694;++i)t.tick((++tick)*1000/60,0);
+ assert(t.attackActive && t.chosenUnit==1 && t.chosenPart==1 && t.pendingService==0x80107694 && t.result==0);
  uint32_t packed=0;assert(t.readPackedWord(0x84000020,packed) && packed==0x84100000);assert(t.readPackedWord(0x84100008,packed) && packed==uint32_t(t.actors[0].kind));
  assert(t.readPackedWord(0x84100010,packed) && packed==t.actors[0].sourceKind);assert(t.readPackedWord(0x84100218,packed) && packed==2);
  assert(t.readPackedWord(0x84101010,packed) && packed==0x80372afc);assert(t.readPackedWord(0x8410200c,packed) && packed>>24==2);

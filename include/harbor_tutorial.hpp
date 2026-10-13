@@ -18,6 +18,7 @@ struct HarborTutorialRequest {
     uint32_t function=0,command=0;uint64_t time=0;int32_t owner=-1;
     std::vector<int32_t> rawOperands;
 };
+struct HarborTutorialCameraState {uint32_t flags=0;int32_t priority=0,mode=0,owner=-1,target=-1,ownerPart=-1,targetPart=-1;int16_t speed=0,remaining=0;float zoom=0;std::array<float,3> home{},hit{};};
 struct HarborTutorialRuntime;
 // Source setup2 unit initialization and guarded phase requests. This owner does
 // not infer combat outcomes or advance the field story. Native IDs are an
@@ -30,6 +31,7 @@ public:
     uint8_t successDeclarations=0,failureDeclarations=0;
     uint64_t now=0;
     std::array<HarborTutorialActor,3> actors{};
+    HarborTutorialCameraState camera;
     MessagePlayback message;std::vector<std::string> messageOrder;
     std::vector<HarborTutorialRequest> requests;
     bool begin(uint64_t milliseconds,int32_t marioHp,int32_t marioMaxHp=10);

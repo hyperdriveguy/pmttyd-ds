@@ -3,6 +3,8 @@
 #include "event_native_runtime.hpp"
 #include "battle_event_callbacks.hpp"
 #include "battle_damage_application.hpp"
+#include "battle_camera_requests.hpp"
+#include "battle_packed_generic_jump.hpp"
 namespace ttyd {
 // Native storage/provider policy. All gameplay fields copied below retain source
 // definitions. Packed entry allocation/initialization remains a scoped adapter.
@@ -11,6 +13,8 @@ public:
  static constexpr uint32_t Battle=0x84000000,Units=0x84100000,Parts=0x84200000;
  EventNativeRuntime& vm;EventCallbackRegistry registry;BattleRandom random{0};
  int32_t chosenUnit=-1,chosenPart=0;
+ BattlePackedMovePositionServices movement;BattlePackedGenericJumpServices jump;
+ BattleCameraRequestServices camera;
  explicit HarborTutorialPacked(EventNativeRuntime& r):vm(r){}
  bool provision();
  bool registerActor(HarborTutorialActor&);

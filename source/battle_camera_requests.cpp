@@ -1,0 +1,35 @@
+#include "battle_camera_requests.hpp"
+#include <cassert>
+#include <cstring>
+namespace ttyd {
+namespace {
+uint32_t word(const BattleCameraRequestServices& s,uint32_t a){return s.positions.memory.memory.word(s.positions.memory.memory.user,a);}
+void word(const BattleCameraRequestServices& s,uint32_t a,uint32_t v){s.positions.memory.memory.storeWord(s.positions.memory.memory.user,a,v);}
+int32_t raw(const BattleCameraRequestServices& s,EventEntry& e,unsigned i){return int32_t(word(s,e.arguments+4*i));}
+int32_t value(const BattleCameraRequestServices& s,EventEntry& e,unsigned i){assert(s.values.resolve);return s.values.resolve(s.values.user,e,raw(s,e,i));}
+uint32_t battle(const BattleCameraRequestServices& s){return word(s,0x8041eb90);}
+void real(const BattleCameraRequestServices& s,uint32_t a,float v){uint32_t b;std::memcpy(&b,&v,4);word(s,a,b);}
+void half(const BattleCameraRequestServices& s,uint32_t a,uint16_t v){s.positions.memory.memory.storeHalf(s.positions.memory.memory.user,a,v);}
+bool admitted(const BattleCameraRequestServices& s,uint32_t b,int32_t priority){return priority>=int32_t(word(s,b+0x275c));}
+}
+int32_t battleCameraModeEvent(EventEntry& e,const BattleCameraRequestServices& s){const auto priority=value(s,e,0),mode=value(s,e,1);const auto b=battle(s);if(!admitted(s,b,priority))return 2;
+ word(s,b+0x2760,uint32_t(mode));real(s,b+0x2778,0);half(s,b+0x277c,1);half(s,b+0x277e,1);word(s,b+0x2758,0);
+ // Each source internal axis request has its own priority0 admission gate.
+ if(admitted(s,b,0))for(uint32_t mask:{4u,8u,16u})word(s,b+0x2754,word(s,b+0x2754)&~mask);
+ word(s,b+0x2754,word(s,b+0x2754)&~0x20u);return 2;
+}
+int32_t battleCameraSpeedEvent(EventEntry& e,const BattleCameraRequestServices& s){const auto priority=value(s,e,0),level=value(s,e,1);const auto b=battle(s);if(!admitted(s,b,priority))return 2;
+ half(s,b+0x277c,uint16_t(level>=0 && level<=5?level:1));const auto& m=s.positions.memory.memory;const auto selected=m.half(m.user,b+0x277c);half(s,b+0x277e,selected);return 2;
+}
+int32_t battleCameraZoomEvent(EventEntry& e,const BattleCameraRequestServices& s){const auto priority=value(s,e,0);assert(s.values.resolveFloat && s.positions.unit.truncateFloat);const auto zoom=s.values.resolveFloat(s.values.user,e,raw(s,e,1));const auto integer=s.positions.unit.truncateFloat(s.positions.unit.user,zoom);const auto b=battle(s);
+ if(admitted(s,b,priority))real(s,b+0x2778,float(integer));
+ return 2;
+}
+int32_t battleCameraHomingEvent(EventEntry& e,const BattleCameraRequestServices& s){(void)value(s,e,0);const auto owner=value(s,e,1),target=value(s,e,2);const auto b=battle(s);const auto& u=s.positions.unit;assert(u.translate && u.unit);
+ const auto first=u.translate(u.user,e,owner);word(s,b+0x2764,uint32_t(first));const auto actor=u.unit(u.user,b,first);const auto body=packedBodyPartId(actor,u.memory);word(s,b+0x276c,uint32_t(body));(void)packedUnitPart(actor,body,u.memory);
+ for(unsigned axis=0;axis<3;++axis)word(s,b+0x2810+4*axis,word(s,actor+0x30+4*axis));
+ if(target==-1)return 2;
+ const auto second=u.translate(u.user,e,target);word(s,b+0x2768,uint32_t(second));const auto other=u.unit(u.user,b,second);const auto otherBody=packedBodyPartId(other,u.memory);word(s,b+0x2770,uint32_t(otherBody));const auto part=packedUnitPart(other,otherBody,u.memory);
+ const auto hit=packedHitPosition(other,part,s.positions);for(unsigned axis=0;axis<3;++axis)real(s,b+0x281c+4*axis,hit[axis]);return 2;
+}
+}

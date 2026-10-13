@@ -647,3 +647,8 @@ add_test(NAME opening_book_providers COMMAND opening_book_scene_tests)
 if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/demo-page.pmanim")
     add_test(NAME original_opening_book_page COMMAND opening_book_scene_tests "${CMAKE_SOURCE_DIR}/romfs/demo-page.pmanim" "${CMAKE_SOURCE_DIR}/romfs/demo-page.bin")
 endif()
+
+target_sources(ttyd_core PRIVATE source/battle_camera_requests.cpp source/battle_packed_generic_jump.cpp source/battle_packed_hit_precheck.cpp)
+add_executable(battle_jump_camera_precheck_tests tests/battle_jump_camera_precheck_tests.cpp)
+target_link_libraries(battle_jump_camera_precheck_tests PRIVATE ttyd_core)
+add_test(NAME battle_jump_camera_precheck COMMAND battle_jump_camera_precheck_tests)

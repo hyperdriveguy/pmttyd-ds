@@ -69,7 +69,7 @@ def build(iso):
  (out/'harbor-tutorial-program.bin').write_bytes(meta)
  (work/'manifest.json').write_text(json.dumps(dict(events=events,callbacks=callbacks,source='rel/gor.rel',foreign=foreign,license='Nintendo/Intelligent Systems resources; no redistribution rights'),indent=2)+'\n')
  # Scoped original actor poses required by init and the introductory phase.
- for actor,bank,texture,poses in [('mario','b_mario','a_mario',['M_S_1','M_N_2']),('goombella','c_pkr','c_pkr',['PKR_S_1','PKR_T_1']),('crump','c_kanbu','c_kanbu',['S_1'])]:
+ for actor,bank,texture,poses in [('mario','b_mario','a_mario',['M_S_1','M_N_2']),('goombella','c_pkr','c_pkr',['PKR_S_1','PKR_T_1']),('crump','c_kanbu','c_kanbu',['S_1','R_2','R_1','A_1A','A_1B','A_1C','D_1'])]:
   model=work/bank;tpl=work/(texture+'.tpl');extract(iso,'a/'+bank,model);extract(iso,'a/'+texture+'-',tpl)
   fingerprint=hashlib.sha256(Path(__file__).read_bytes()+model.read_bytes()+tpl.read_bytes()+b''.join(Path('tools',h).read_bytes() for h in ['character_mesh.py','character_animation_pack.py','character_animation_data.py','character_node.py'])).hexdigest()
   prefix=out/('harbor-tutorial-'+actor);manifest=prefix.with_suffix('.json');products=[prefix.with_suffix('.'+e) for e in ['pmmesh','pmanim','t3x','bin']]
