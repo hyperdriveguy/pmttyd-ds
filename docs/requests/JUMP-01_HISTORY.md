@@ -1885,3 +1885,24 @@ clean.Still open for the Mario body:runtime writers of the vec3 scratch,
 psndSFXOn_3D full signature/return handling,the unit+0x18c/0x190 key domain,
 and audio output/cadence.The generic btlevtcmd_JumpPosition0x8010d208 has no
 contract of its own;if one is wanted,file it separately.No lock reserved.
+
+2026-10-13 NormalJump used-callback source follow-up:
+[Used pose/facing/declaration/AC setup](../behavior/battle/NORMAL_JUMP_USED_POSE_FACING_DECLARE_AND_AC_SETUP.md)
+closes exactGetWeaponActionLv3/SetDifficulty andSetupAC(-2,1,raw1,0) reset
+scope versusseparateTimingAmain0initializer; no inventedflag/parameter/history
+reset. Mario42=M_R_1,40=M_W_1; usedfacing1/16/U189/Reset/subtraction; fresh
+AttackDeclare no-protectorroute andWaitGuardMoveflag1; originalemptydatakey7
+child, genericrecoverycounts/quantizedaccels/strictJumpContinuefloorvalues.
+Remaining executedACmanager/event/pad/pose clocks andtransitivehit/motion/
+audio/camera services areboundedrequests; no nativeedit/commit/runtimeclaim.
+
+
+2026-10-13 NormalJump victim hit/death/variant source follow-up:
+[Setup4 hit/death lifecycle](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#original-used-hit-death-and-variant-lifecycle-2026-10-13-follow-up)
+pins allthree installeddamage/waitpointers, original defaultdamage/subsetdamage/
+subsetdead/deadcore childgraph, 1000ms reaction and attackerU2a8 barrier,
+scriptownedstatus27 afterreaction+30frames, KillUnit modebits/deferredU1c deletion.
+Paragoomba originalkey0e part/kind/event replacement and Spikedkey25 Frankly
+09206/07 warning admission included; namedAnimeChangePose force0 andsame-index
+clockretention recovered. Remaining rewards/effects/audio/fulltransitivedisplay/
+customevent/registry teardown services remainbounded; no nativeedit/commit.

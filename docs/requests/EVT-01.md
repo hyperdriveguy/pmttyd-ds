@@ -1234,6 +1234,16 @@ ELFs/listings stay `/tmp`; no native change/original execution/body/asset export
 synthVolume/deferred/track consumers, ID/group/mode/time providers, lookup-success/
 index/bounds/alias/IRQ/concurrency and original tempo/volume/miss/audio remain OPEN.
 
+2026-10-13 NormalJump used-callback source follow-up:
+[Used pose/facing/declaration/AC setup](../behavior/battle/NORMAL_JUMP_USED_POSE_FACING_DECLARE_AND_AC_SETUP.md)
+closes exactGetWeaponActionLv3/SetDifficulty andSetupAC(-2,1,raw1,0) reset
+scope versusseparateTimingAmain0initializer; no inventedflag/parameter/history
+reset. Mario42=M_R_1,40=M_W_1; usedfacing1/16/U189/Reset/subtraction; fresh
+AttackDeclare no-protectorroute andWaitGuardMoveflag1; originalemptydatakey7
+child, genericrecoverycounts/quantizedaccels/strictJumpContinuefloorvalues.
+Remaining executedACmanager/event/pad/pose clocks andtransitivehit/motion/
+audio/camera services areboundedrequests; no nativeedit/commit/runtimeclaim.
+
 ### 2026-10-13 — Synthesis volume selectors and fader publication
 
 [Complete synthVolume and duration converter](../behavior/audio/MUSYX_SYNTH_VOLUME_SELECTORS_AND_FADE_PUBLICATION.md)
@@ -1350,16 +1360,6 @@ original contiguous/wrapped/partial/zero-return refill/audio remain OPEN.
 pins known local configuration writers,28 bounded literal-address candidates
 owned only by the five complete virtual bodies, and seven exact DOL entry
 calls from bootstrap/message/frame/updater. Within those five bodies, count/
-callback are only initialized0; no loop-size writer/nonzero callback installer
-is supplied. This scoped result is not proof that the original game never
-configures virtual sampling; indirect/REL/pointer/alias writers remain open.
-
-Validation: read-only predicate scan and independent direct-call decode; manifest
-10 spans (two whole text segments/five prior bodies/three callers),66 anchors/
-seven calls passes. Generic verifier checks bytes/targets, not independent
-replay of the scan's completeness. Scanner/generator stay `/tmp`; no native
-change/original execution/body/asset export. Actual nonzero configuration/
-callback implementation/transfer/result/providers and original playback remain OPEN.
 
 ### 2026-10-13 — Controller initialization, reset tables and channel defaults
 
@@ -1378,3 +1378,13 @@ deductions. Fresh full ELFs/listings stay `/tmp`; no native change/original
 execution/body/binary asset export. Actual callers/inputs, matrix/dirty/MIDI/
 last-note/filter consumers/other writers, memcpy/bounds/alignment/alias/IRQ/
 concurrency/reinit and original reset/controller/audio traces remain OPEN.
+callback are only initialized0; no loop-size writer/nonzero callback installer
+is supplied. This scoped result is not proof that the original game never
+configures virtual sampling; indirect/REL/pointer/alias writers remain open.
+
+Validation: read-only predicate scan and independent direct-call decode; manifest
+10 spans (two whole text segments/five prior bodies/three callers),66 anchors/
+seven calls passes. Generic verifier checks bytes/targets, not independent
+replay of the scan's completeness. Scanner/generator stay `/tmp`; no native
+change/original execution/body/asset export. Actual nonzero configuration/
+callback implementation/transfer/result/providers and original playback remain OPEN.

@@ -822,3 +822,19 @@ NDSP primary-sample fallback uses source volume100 with existing conservative
 bus gain; MusyX modulation/3D attenuation/spatial pan/group residence are not
 reproduced. WAVs/catalogs/extracted bank data remain outside source history.
 ISO is never written or committed; original audio rights remain unchanged.
+
+2026-10-13 original Jump runtime: `tools/trio_attack_assets.py` reads original
+US DOL data sections7..12, retaining the pinned268-command NormalJump, Majinai,
+Suitoru and empty attack-ready child streams at original addresses. SDK/mutable
+tail and live event-manager/context/global address ranges are excluded to keep
+native owners authoritative. Ignored `romfs/trio-attack-events.pmevt` is1,127,488
+bytes; its JSON records exact source/segment/event hashes. No PowerPC text is
+imported. Native source-address reads use the unchanged data/constant bytes.
+
+Original `a/b_mario` with `a/a_mario-` texture owner supplies M_S_1, M_R_1,
+M_W_1, M_J_1B, M_J_1D, M_D_2 and M_A_5. Ignored `trio-attack-mario.*` retain
+original sparse streams/hierarchy with the existing512-wide resampled atlas.
+M_A_5 has one source key at0 and duration2; no extra endpoint is generated.
+The actual Mario battle atlas is bound for setup4 rendering. All original
+assets/compiled packs stay outside history with Nintendo/Intelligent Systems
+ownership and no redistribution grant.

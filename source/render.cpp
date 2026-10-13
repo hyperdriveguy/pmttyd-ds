@@ -102,6 +102,14 @@ bool Renderer::init() {
     undergroundTexture.imported=Tex3DS_TextureImportStdio(undergroundAtlas,&undergroundTexture.texture,nullptr,false);std::fclose(undergroundAtlas);
     if(!undergroundTexture.imported)return false;
     C3D_TexSetFilter(&undergroundTexture.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&undergroundTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
+    if(!trioMarioAnimations.load("romfs:/trio-attack-mario.pmanim"))return false;
+    FILE* trioUV=std::fopen("romfs:/trio-attack-mario.bin","rb");if(!trioUV)return false;
+    char trioMagic[8];const bool validTrio=std::fread(trioMagic,8,1,trioUV)==1 && !std::memcmp(trioMagic,"PMSUV1",8) && std::fread(&trioMarioUVScale,4,1,trioUV)==1 && std::fgetc(trioUV)==EOF;
+    std::fclose(trioUV);if(!validTrio)return false;
+    FILE* trioAtlas=std::fopen("romfs:/trio-attack-mario.t3x","rb");if(!trioAtlas)return false;
+    trioMarioTexture.imported=Tex3DS_TextureImportStdio(trioAtlas,&trioMarioTexture.texture,nullptr,false);std::fclose(trioAtlas);
+    if(!trioMarioTexture.imported)return false;
+    C3D_TexSetFilter(&trioMarioTexture.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&trioMarioTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     if(!loadMap("bti_01",trioBackground) || !loadMap("stg_00_1",trioStage))return false;
     if(!fieldActorAssets.load("romfs:/field-actors.pmnpc"))return false;
     if(!shadowGeometry.load("romfs:/shadows.pmshadow"))return false;
@@ -755,7 +763,7 @@ void Renderer::world(const Game& g) {
     if(!battle && (g.trioBattleActive || g.storyPresentation().locked())) {
         const auto& a=g.storyPresentation().actors[0];const bool right=a.yaw>0 && a.yaw<180;
         characterModel(a.moving?"M_W_1":a.pose.c_str(),float(g.storyPresentation().now-a.poseAt)*.06f,g.trioBattleActive?Vec2{a.position[0]*.01f,a.position[2]*.01f}:g.progress.position,g.trioBattleActive?a.position[1]*.01f:g.groundHeight,
-                       right?180:0,right,false,&professorMarioAnimations,professorMarioUVScale);
+                       right?180:0,right,false,g.trioBattleActive?&trioMarioAnimations:&professorMarioAnimations,g.trioBattleActive?trioMarioUVScale:professorMarioUVScale);
     } else if(!battle && g.marioPresentation.supported && !(g.marioPresentation.displayFlags&1))
         characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight,
                        g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ());
@@ -828,7 +836,7 @@ void Renderer::world(const Game& g) {
     BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
     C3D_TexBind(0,&atlas);
     C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
-    if(actorEnd>legacyCount){C3D_TexBind(0,g.storyPresentation().locked()?&professorMarioTexture.texture:&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
+    if(actorEnd>legacyCount){C3D_TexBind(0,g.trioBattleActive?&trioMarioTexture.texture:g.storyPresentation().locked()?&professorMarioTexture.texture:&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
     if(partnerEnd>actorEnd){C3D_TexBind(0,&partnerTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,actorEnd,partnerEnd-actorEnd);}
     if(!battle)drawFieldActors(false);
     if(undergroundEnd>fieldActorEnd){C3D_TexBind(0,&undergroundTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,fieldActorEnd,undergroundEnd-fieldActorEnd);}
@@ -906,8 +914,11 @@ void Renderer::overlay(const Game& g) {
             const auto pair=g.trioCommands.selected();
             panel(16,20,164,30,Paper);text(g.trioCommands.targetName(pair[0]),25,28,.55f,Ink);
         }
-        if(g.trioBattleActive && g.trioCommands.state==TrioBattleCommands::State::AttackReady)
-            text("Development notice: original attack event pending",25,112,.45f,Ink);
+        if(g.trioBattleActive && g.trioCommands.state==TrioBattleCommands::State::AttackReady) {
+            if(g.trioAttack.pendingFunction()){panel(16,20,368,30,Paper);text("Development notice: source damage services pending",25,28,.43f,Ink);}
+            else if(g.trioAttack.active()) {panel(16,20,170,30,Paper);text("A: action command",25,28,.5f,Ink);}
+            else text("Development notice: original attack event pending",25,112,.45f,Ink);
+        }
         if(g.storyPresentation().pendingService)text("Development notice: original battle backend pending",25,112,.45f,Ink);
         return;
     }
@@ -947,8 +958,13 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
                 button(commands.targetName(commands.target(n)[0]),4+106*n,100,102,58,commands.candidates.bytes[0xab7]==n);
             text("Left/right: select   A: confirm   B: back",12,174,.4f,Ink);
         } else {
-            text("Development notice: original attack event pending",12,76,.42f,Ink);
-            text("B: return to target selection",12,174,.44f,Ink);
+            if(g.trioAttack.active()) {
+                text(commands.commandName(commands.command),12,76,.63f,Ink);
+                text(g.trioAttack.pendingFunction()?"Development notice: source damage services pending":"A: action command",12,174,.42f,Ink);
+            } else {
+                text("Development notice: original attack event pending",12,76,.42f,Ink);
+                text("B: return to target selection",12,174,.44f,Ink);
+            }
         }
         return;
     }
@@ -1067,6 +1083,7 @@ void Renderer::shutdown() {
     if(sky.imported) {Tex3DS_TextureFree(sky.imported);C3D_TexDelete(&sky.texture);}
     if(characterTextures.imported) {Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);}
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}
+    if(trioMarioTexture.imported){Tex3DS_TextureFree(trioMarioTexture.imported);C3D_TexDelete(&trioMarioTexture.texture);}
     if(professorMarioTexture.imported) {Tex3DS_TextureFree(professorMarioTexture.imported);C3D_TexDelete(&professorMarioTexture.texture);}
     if(professorMapTexture.imported) {Tex3DS_TextureFree(professorMapTexture.imported);C3D_TexDelete(&professorMapTexture.texture);}
     if(undergroundTexture.imported){Tex3DS_TextureFree(undergroundTexture.imported);C3D_TexDelete(&undergroundTexture.texture);}

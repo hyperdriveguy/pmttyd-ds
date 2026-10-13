@@ -273,7 +273,7 @@ public:
                 for(const auto& r:k.visibility)if(r.index>=visibilityCount)return false;
                 p.keys.push_back(std::move(k));
             }
-            if(p.keys.back().time!=p.end)return false;
+            if(p.keys.size()>1 && p.keys.back().time!=p.end)return false;
             ActorAnimationSample sample;
             for(const auto& k:p.keys)if(!p.evaluate(k.time,sample))return false;
             pending.push_back(std::move(p));

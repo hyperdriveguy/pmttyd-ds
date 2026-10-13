@@ -91,6 +91,7 @@ private:
     bool messageSystemProgramReady=false;
     int messageSystemTransform=0;float messageSystemPhase=0;
     Texture professorMarioTexture;
+    Texture trioMarioTexture;ActorAnimationPack trioMarioAnimations;float trioMarioUVScale=1;
     Texture professorMapTexture;
     Texture messageIconTexture;
     void messageIconImage(uint32_t id,uint64_t ticks,float centerX,float bottomY,float scale,uint8_t alpha);

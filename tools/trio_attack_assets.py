@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+"""Keep original Jump scripts and their DOL constant/data dependencies local."""
+import argparse,hashlib,json,struct
+from pathlib import Path
+from iso_assets import DEFAULT_ISO,extract
+from character_mesh import compile_mesh
+from PIL import Image
+import shutil,subprocess
+from pack_event_scripts import build_pack,DEFAULT_EVENTS
+
+def build(iso=DEFAULT_ISO):
+    _,manifest=build_pack(iso,'artifacts/reference/us_symbols.csv',DEFAULT_EVENTS)
+    segments=[]
+    with Path(iso).open('rb') as disc:
+        disc.seek(0x420);base=struct.unpack('>I',disc.read(4))[0];disc.seek(base);header=disc.read(256)
+        # Data/rodata only, never executable PowerPC text. The SDK/global mutable
+        # data tail is excluded and belongs to native providers, not this pack.
+        for i in range(7,13):
+            off,address,size=(struct.unpack_from('>I',header,b+i*4)[0] for b in (0,0x48,0x90))
+            if i==11:size=min(size,0x80418000-address)
+            if not off or size<=0:continue
+            disc.seek(base+off);data=disc.read(size)
+            if len(data)!=size or size%4 or address%4:raise ValueError('Invalid DOL data extent')
+            # Native managers expose these source address ranges through live
+            # typed storage. Do not import original initialized copies over them.
+            spans=[(address,data)]
+            for lo,hi in ((0x803d8530,0x803d8e70),(0x804151e8,0x804151f0),(0x80415fd0,0x80415fd4)):
+                split=[]
+                for start,body in spans:
+                    end=start+len(body)
+                    if start<hi and lo<end:
+                        if start<lo:split.append((start,body[:lo-start]))
+                        if hi<end:split.append((hi,body[hi-start:]))
+                    else:split.append((start,body))
+                spans=split
+            segments.extend(spans)
+    offset=12+12*len(segments);table=[];payload=[];spans=[]
+    for address,data in segments:
+        table.append(struct.pack('>III',address,len(data),offset));payload.append(data)
+        spans.append(dict(address=address,size=len(data),sha256=hashlib.sha256(data).hexdigest()));offset+=len(data)
+    packed=b'PMEVT001'+struct.pack('>I',len(segments))+b''.join(table+payload)
+    Path('romfs/trio-attack-events.pmevt').write_bytes(packed)
+    manifest.update(format='PMEVT001',segments=spans,size=len(packed),sha256=hashlib.sha256(packed).hexdigest(),conversion='Unchanged original DOL data sections7..12; section11 trimmed at80418000; live manager/context/global ranges excluded; no PPC text',limitation='Original source data and dependencies only; native callback coverage and owned runtime fields remain required')
+    Path('romfs/trio-attack.json').write_text(json.dumps(manifest,indent=2)+'\n')
+    work=Path('local-assets/trio-battle');work.mkdir(parents=True,exist_ok=True)
+    model=work/'b_mario';tpl=work/'a_mario.tpl';extract(iso,'a/b_mario',model);extract(iso,'a/a_mario-',tpl)
+    poses=['M_S_1','M_R_1','M_W_1','M_J_1B','M_J_1D','M_D_2','M_A_5']
+    helpers=['character_mesh.py','character_bake.py','character_node.py','character_animation_pack.py','character_animation_data.py']
+    fingerprint=hashlib.sha256(Path(__file__).read_bytes()+model.read_bytes()+tpl.read_bytes()+b''.join(Path('tools',h).read_bytes() for h in helpers)).hexdigest()
+    metrics=Path('romfs/trio-attack-mario.json')
+    products=[Path('romfs/trio-attack-mario.'+ext) for ext in ('pmmesh','pmanim','t3x','bin')]
+    if not(metrics.exists() and all(p.exists() for p in products) and json.loads(metrics.read_text()).get('fingerprint')==fingerprint):
+        meta=compile_mesh([(model,tpl,poses)],products[0],work/'battle-mario-atlas.png',products[1])
+        height=128
+        while height<((meta['textures']+7)//8)*128:height*=2
+        Image.open(work/'battle-mario-atlas.png').crop((0,0,1024,height)).resize((512,height//2),Image.Resampling.LANCZOS).save(work/'battle-mario-runtime.png')
+        products[3].write_bytes(struct.pack('<8sf',b'PMSUV1',1024/height))
+        subprocess.run([shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds','-f','rgba8','-z','auto','-o',str(products[2]),str(work/'battle-mario-runtime.png')],check=True,stdout=subprocess.DEVNULL)
+        meta.update(fingerprint=fingerprint,atlasHeight=height,uvScale=1024/height,source='a/b_mario,a/a_mario-',license='Nintendo/Intelligent Systems original assets; no redistribution rights')
+        metrics.write_text(json.dumps(meta,indent=2)+'\n')
+
+if __name__=='__main__':
+    p=argparse.ArgumentParser();p.add_argument('--iso',default=DEFAULT_ISO);build(p.parse_args().iso)

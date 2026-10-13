@@ -40,7 +40,7 @@ def animation(raw,name):
             frame[kind]=records;stats[kind]+=count
         frames.append(frame)
     times=[k['time'] for k in frames]
-    if not frames or times[0]!=start or times[-1]!=end or any(a>=b for a,b in zip(times,times[1:])):raise ValueError('Outside ordinary strictly increasing endpoint-key domain')
+    if not frames or times[0]!=start or (len(times)>1 and times[-1]!=end) or any(a>=b for a,b in zip(times,times[1:])):raise ValueError('Outside ordinary strictly increasing endpoint-key domain')
     positions=[list(struct.unpack_from('>3f',raw,u(raw,0x154)+i*12)) for i in range(counts['position'])]
     normals=[list(struct.unpack_from('>3f',raw,u(raw,0x15c)+i*12)) for i in range(counts['normal'])]
     nodes=list(struct.unpack_from('>'+str(counts['node'])+'f',raw,u(raw,0x1a4)))

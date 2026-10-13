@@ -1584,6 +1584,15 @@ void Game::tick(const Input& rawInput) {
             else setCameraView({c.eye[0],c.eye[1],c.eye[2]},{c.at[0],c.at[1],c.at[2]},c.duration,uint8_t(c.curve));
         }
         if(trioBattleIntro.finished && !trioBattleIntro.message.active()) {
+            if(trioAttack.active()) {
+                const uint32_t triggers=i.physicalSnapshot?inputProducer.channels[0].pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
+                trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers);
+                scene=Scene::Dialogue;saveRequested=false;return;
+            }
+            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp)) {
+                trioAttack.tick(ticks*1000/60,trioBattleIntro);
+                scene=Scene::Dialogue;saveRequested=false;return;
+            }
             if(trioCommands.state==TrioBattleCommands::State::Closed)trioCommands.begin(trioBattleIntro);
             else {
                 trioCommands.syncPositions(trioBattleIntro);

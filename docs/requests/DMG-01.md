@@ -113,3 +113,17 @@ source verifiers pass. Four AC setup/result/count/result-reader complete listing
 were regenerated in `/tmp/inbox-*.elf` from the read-only ISO. No native code,
 original trace or asset change; parent remains OPEN for listed integration,
 mutation, other counters and runtime evidence.
+
+2026-10-13 native original-Jump handoff: `TrioAttack` executes the unchanged
+NormalJump stream through fresh precheck, approach/MarioJumpPosition and TimingA.
+It now waits at actual CheckDamage8010a78c with failed first-hit flags100 or
+successful first-hit flags20000. AttackerU2a8 retains the live original attack
+root; field story11/result0 and all HP remain intact at this pending boundary.
+The [used lifecycle follow-up](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#original-used-hit-death-and-variant-lifecycle-2026-10-13-follow-up)
+answers source generic reaction/death/variant scripts. Next bind full damage
+orchestration/calculators/direct application and these actual reaction owners,
+including lethal400→script status27/deferred deletion and counter warning
+admission. Keep rewards/effects/audio/barriers/transitive service and original
+execution requests open. Native fresh precheck/RNG/AC/display adapters are
+explicitly bounded in [runtime scope](../behavior/battle/NATIVE_ORIGINAL_JUMP_RUNTIME_BINDING.md);
+do not turn this partial caller binding into complete battle fidelity.

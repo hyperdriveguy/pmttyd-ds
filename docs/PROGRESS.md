@@ -26,6 +26,52 @@ dirty/last-note/filter consumers/other writers, valid bounds/alignment/alias/
 IRQ/reinit/concurrency domains and original controller/audio traces. Full
 scheduler/native/runtime binding, lower-priority inbox/full-game work remain open.
 
+## 2026-10-13 — Execute original NormalJump through first damage request
+
+Mario's confirmed setup4 Normal Jump now executes the unchanged268-command
+DOL stream in a native battle VM. Shared source-address unit/part/menu/candidate
+storage feeds the recovered child, targeting, takeoff, approach, position,
+MarioJumpParam and MarioJumpPosition services. Original empty datakey7 and
+Majinai child events execute. Used facing/pose/declaration/AC setup callbacks
+follow the new source contract; setup reset scope remains separate from TimingA
+initialization. Fresh precheck and physical trigger history reach source timing
+failure(flags100) or first success(flags20000). The live attack root is retained
+at attackerU2a8 for the forthcoming reaction barrier. Source coordinator facing
+is preserved when publishing the native battle registry.
+
+Original b_mario supplies seven used poses and its own correctly bound battle
+atlas. M_A_5 has a single source key over range0..2; import/loader now preserve
+that constant pose without generating a terminal key. Original data/constant
+sections are retained with live native manager/global ranges excluded. See
+[native scope](behavior/battle/NATIVE_ORIGINAL_JUMP_RUNTIME_BINDING.md),
+[used callbacks](behavior/battle/NORMAL_JUMP_USED_POSE_FACING_DECLARE_AND_AC_SETUP.md)
+and [new reaction/death evidence](behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#original-used-hit-death-and-variant-lifecycle-2026-10-13-follow-up).
+
+Validation: `make test` passed115 CTest/100 Python tests
+(`/tmp/trio-attack-tests-final.log`), including actual source approach/airborne
+motion, failed timing, single valid presses for all three enemy selections,
+source per-hit flags/counter/HP/pose flags/attack-handle ownership, constant
+original pose and Game retaining field position/story11/result0/control lock.
+`make all` passed(`/tmp/trio-attack-all-final.log`); isolated debug-short build
+passed(`/tmp/trio-attack-native-final.log`). Azahar helper
+`tests/azahar_trio_jump.py` passed in
+`artifacts/azahar-trio-original-jump-ready` with48second boot wait; manually
+inspected battle scene and original Mario landing pose at the explicit damage
+boundary. Earlier10second run was still black at boot and missed the input;
+its later field-only captures do not verify the attack. Final coordinator-facing
+preservation was host-tested/build-checked after the native capture. No original
+execution, full attack/turn parity or hardware performance claim.
+
+Limits/next: CheckDamage8010a78c remains genuinely waiting; no HP, turn, reaction,
+battle result or story progress is fabricated. Camera/SE/voice requests are
+retained without complete original providers. Unit entry/equipment/seed/private
+pad/helper/prize/display clocks remain bounded adapters. Bind source damage/
+counter/calculator/direct application with actual nonlethal/death/wing-fall and
+Frankly warning event lifetimes, then bounce/tail/second hit, Hammer/Headbonk,
+source move counts/enemy phases, rewards/end/result and field093/094/094_01/
+story12. The prologue deliverable and full-game fidelity remain unfinished.
+
+
 ## 2026-10-13 — Inbox priority-zero virtual table provider/DOL census
 
 Completed a scoped configuration-writer and DOL entry census for EVT-01 and

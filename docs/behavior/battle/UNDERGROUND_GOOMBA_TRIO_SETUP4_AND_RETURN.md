@@ -396,3 +396,175 @@ still need native composition and original runtime checks. These requested
 services remain documentation inbox dependencies; recovering data does not
 close setup4 gameplay fidelity. No nativecode edits, build or runtime tests were
 performed in this documentation task.
+
+
+## Original used hit, death and variant lifecycle (2026-10-13 follow-up)
+
+Evidence: original US DOL inventories `/tmp/trio-default-damage.json` and
+`/tmp/trio-dead-events.json`, original tik ADDR32 inventory
+`/tmp/trio-hit-wait.json`, and inspected wrappers in `/tmp/trio-*.dis`.
+These are local evidence artifacts, not committed assets or executable code.
+
+| Script | Original address/REL file offset | Size | Commands | SHA256 |
+| --- | --- | --- | --- | --- |
+| btldefaultevt_Damage | DOL8034cc60 | 11b4 | 403 | af10cde9557883a3876e84df7cc1d37616d18e80db154a230fc4ccf034767beb |
+| subsetevt_damage | DOL80350550 | f4c | 330 | d14883ed2b076bb278ff5ef7e5f02bab5ceb2a14bb7eb076a00c73646a942b05 |
+| subsetevt_dead | DOL8034f558 | 990 | 176 | f31b840dc35e6fdefb3823536b75995fda93b6f28a1f68c3cdfa76aa261a1ba2 |
+| subsetevt_dead_core | DOL8034fee8 | 304 | 51 | 6a75b8adcf9bb4bcf3ad521f9185b4e57cfba92f507e2c0bd0af8348fb697f35 |
+| subsetevt_dead_core_nospin_norotate | DOL803501ec | 1f4 | 31 | 01d4c4367d38a57a02be712577ff918ae94bd02c6df70f3a032aa25b11f0f023 |
+
+The three installed damage wrappers are tik REL2ab28 Goomba,303e4
+Paragoomba,3117c Spiked Goomba. Each is28 bytes/five commands and identical
+raw SHA256 f59a6bfb7c00767c28083d3812e89e8a081a3c9e96ec8e55de2e2537ee1a04ba:
+SET LW10=-2; SET LW11=1; RUN_CHILD btldefaultevt_Damage; RETURN; END.
+The resolved generic child is DOL8034cc60. Their wait wrappers respectively
+REL2b308,30bc4,31c64 are18 bytes/three commands: AnimeChangePoseFromTable(-2,1),
+RETURN,END; identical raw SHA256
+14bb860655a0fa243d510f0c64ef87508cce5f9fac9524eada619e21c22af21e.
+Ownership/cancellation of these events follows
+[BATTLE_EVENT_DISPATCH.md](BATTLE_EVENT_DISPATCH.md), especially U278 fullcode,
+U2b4 hit event and U290 wait event. Do not replace these children with a
+standalone HP-change animation.
+
+### Fresh ordinary Goomba hit, alive after application
+
+[Damage calculation](BATTLE_DAMAGE_CALCULATION.md) assigns normal element0
+lowcode23 by OR with flags. Direct application starts the installed hit event;
+[direct application](BATTLE_DAMAGE_APPLICATION.md) does not set status27.
+In genericDamage the fresh absent status/reaction-pattern branches pass through.
+Lowcode23 selects the CASE_OR group30,27,26,23 at8034d43c..8034d454:
+OnUnitFlag(LW10,1), SET LW14=39,LW15=-1; only damagepattern1 replacesLW14
+with38. Spawn brother RunDataEventChild(LW10,10), then RUN_CHILD
+subsetevt_damage at8034d4cc. A missing data key must obey the original lookup
+service, rather than interpreting the key as an event address.
+
+subsetevt_damage first checks code200000/customkey13, then400000/customkey14;
+then the explicit special reaction patterns/custom keys. Fresh ground Goomba
+has none. GetDamage >=1 reaches the ordinary fallback at80351084:
+AnimeChangePoseType(LW10,LW11,LW14); WAIT_MSEC1000. If LW15 !=-1, set that pose
+then WAIT_FRAME30; fresh LW15=-1 skips it. Child returns at803510d4.
+Zero damage has a separate lowcode23 branch at80351124 which still selectsLW14
+and waits1000ms. Other zero-damage codes instead shake display offsets; do not
+use zero damage as a general no-reaction shortcut.
+
+GenericDamage label10 then checks lethal400,revival200,backfire4000 and guard1000.
+With those clear, if code100 is clear call WaitAttackEnd at8034db98. Continue
+home movement only if currentXYZ differs from homeXYZ. Fresh ordinary Goomba
+standing at home skips movement to label102, ResetFaceDirection(LW10),
+StartWaitEvent(LW10), RETURN. The damage pose table maps type39 to KUR_D_1
+(REL2a89c record); wait table type1 is KUR_N_1. Spiked equivalents TGK_D_1/
+TGK_N_1; flying Paragoomba PTK_D_1/PTK_N_1. Ordinary home movement type40
+is corresponding *_W_1 and speed is source event float4.
+
+WaitAttackEnd8010a154/74 reads current attacker ID from battle+420, then its
+tracked attack eventID U2a8. Missing attacker or zero ID returns2. If evtCheckID
+80036604 says active return0 (block). Otherwise clear attackerU2a8 and return2.
+This is an attacker-event barrier, not a fixed wait or victim hit-event poll.
+Highcode100 skips this barrier; success20000 alone does not.
+
+### Lethal event-owned status27 and deferred removal
+
+When direct application sets lethalcode400, genericDamage first completes its
+reaction child, then at8034da98 checks400; WAIT_FRAME30 at8034dac0;
+RUN_CHILD subsetevt_dead at8034dac8; RETURN. subsetevt_dead distinguishesMario
+kind222 and partner kinds224..230 from the default enemy branch. Ordinary enemy
+jumps directly to label1 at8034f6b0; the preceding home-return movement is
+player/partner-specific. At8034f6b8 the script calls
+OnOffStatus(LW10,27,1,1,1). This is the original status27 producer. It occurs
+after damage reaction and30-frame wait, not when HP first reaches zero.
+
+The fresh enemy branch at8034fb30 tests emergency-revival800. With it clear,
+check data key49(decimal,hex31); if present ClearAllStatus and child that event,
+otherwise RUN_CHILD subsetevt_dead_core at8034fecc. Generic fallback core:
+
+1. Check optional data key50(hex32), run child if present.
+2. SetLW0=48; OnUnitFlag(LW10,08000000); soundSFX_BTL_ENEMY_DIE1_1.
+3. Repeat48 times: WAIT_FRAME1; AddRotate(LW10,0,-15,0); decrementcounter.
+4. SetRotate(LW10,0,0,0); soundSFX_BTL_ENEMY_DIE1_2. GetPos; Z+=10;
+   evt_eff kemuri_test type4 with original event-float scalar.
+5. GetCoin→StoreCoin; GetExp→StoreExp; GetPos,Z+=10,Y+=30;
+   _add_star_point_disp_offset; evt_eff star_point using returned exp.
+   Source contains its explicit LOOP exp branch; preserve source scheduling.
+6. SetRotateOffset(0,0,0); counter30. Repeat30 times WAIT_FRAME1 then
+   AddRotate(LW10,3,0,0); decrementcounter.
+7. GetBackItem; ClearAllStatus; CheckDamageCode400. Nonzero calls
+   KillUnit(LW10,0), otherwise KillUnit(LW10,2); RETURN.
+
+KillUnit80113304/b8 resolves owner and returns2 if absent. With unit present,
+set halfwordU10c HP=0; ClearStatus80127b58. Raw second operand is a bitmask,
+not an evaluated event variable in this wrapper. If mode&2, ORunitU104 attribute
+20000 and return2. Otherwise BtlUnit_SetStatus80127bac(unit,27,1,1). If
+!(mode&1), ORunitU1c flag80000000. Return2. Hence mode0 reassertsstatus27 and
+marks deferred deletion, mode1 reassertsstatus27 withoutmarking deletion,
+mode2 marks attribute20000 withoutreassertion. BattleCheckUnitBroken800f7b28/5c
+later scans64 registered units and BtlUnit_Delete80128e08 when U1c has80000000.
+Native must preserve status/event/registry ordering; HP==0 alone cannot stand
+in for these producers or conclusion barriers.
+
+OnOffStatus80105e50/bc evaluates unit and duration/strength/on arguments,
+uses signed raw lowbyte status operand; on calls SetStatus with signed-lowbyte
+duration/strength, off calls SetStatus(status,0,0). Status27 getter reads byteU135
+as documented in [status storage](BATTLE_STATUS_STORAGE.md).
+
+### Paragoomba fall and Spiked counter dispatch
+
+The complete tik variant child streams and message speaker keys are already
+listed above. Their admission is now tied to the generic damage script:
+subsetevt_damage at80350588 checks code400000, calls datakey14(decimal,hex0e)
+then RETURN. Flying tableREL2f808 bindskey0e→dmg_fall_eventREL2f914. The
+[orchestrator](BATTLE_DAMAGE_ORCHESTRATION.md) sets partReaction for
+weaponW74&4000 and partP1ac&800; it ORsF400000 only when F100 is present.
+Do not assume every successful Jump immediately enters this child without
+preserving original per-hit flags and the original follow-up graph.
+
+Fall child immediately clears unitattribute4 and partattribute800; selects
+LW14 and waits1000ms; replaces pose table30158,data table301f8,part record30230
+then sets unitflag4. Selectpose39 now KUR_D_1; soundSFX_ENM_FALL1; read current
+position,setY0,fallaccel1,JumpPosition(count10,mode-1); set home tothat destination;
+soundSFX_ENM_KURI_MOVE1; wait500ms; ChangeKind1; RUN_CHILDgroundinit3033c;
+WAIT_FRAME1; selectpose39; return. It is a complete original actor/part/event
+data transition, not just aY teleport or hidden-wing draw override.
+
+Fresh Spiked counter dispatch installs fullcode31(hex1f) on the defender:
+genericDamage at8034cfac RunDataEventChild(LW10,37decimal,hex25), then GOTO
+label10. Spiked data tableREL30ec0 key25→REL30f80 warning child. That child waits
+30frames, emits toge_flush at sourceY offset huge50/tiny30/default40, verifies
+Franklyunit-6 exists and work0==0. get_attacker reads current attacker:
+Mario222→0,Goombella224→1,other→2; other returns withoutwarning. Wait2500ms,
+hide statuswindow, Frankly faces-1, recomputeattacker; original US message
+mac_0_092_06 forMario,mac_0_092_07 forGoombella, evt_msg_print(2,key,0,-6).
+Set Franklywork0=1,face+1,statuswindowon. Original once-per-coordinator flag,
+speaker ownership and timing must be retained. This is not precheckresult4;
+fresh spike precheck returns1 and laterCheckDamage counter branch returns-1,
+as established in [target/counter contract](UNDERGROUND_TRIO_TARGETS_TURNS_AND_VICTORY.md).
+
+### Used explicit named battle pose setter
+
+btlevtcmd_AnimeChangePose80106bb8/88 resolves unit/part/name then calls
+BtlUnit_SetAnim80127688/24. SetAnim explicitly passes force0 to
+btlDispChangeAnime80101168/94. ChangeAnime unconditionally strcpyname→P1c4,
+ORP204 bits1|2; clear80,200,10; force0 clears8. There is no old-name comparison
+or animation-clock reset in the setter. btlDispMain801029fc..80102a40 consumes
+bit1, clearsit and200, invokes animPoseSetAnim(P1c0,name,force=(P204&8)!=0).
+For this used path force0 andsameanimationindex retains selector caches per
+[animation restart](../display/ANIMATION_SELECTOR_AND_RESTART.md). Consumer
+still resets presentationbyteP214 and branches P215; same name is not a
+complete setter no-op. A native forced restart here would be unsupported.
+
+Remaining bounded dependencies: original genericDamage exceptional branches,
+customdata-event callback child/barrier semantics, coin/exp/item producers and
+star-point effects, status-presentation flags08000000 and their full display
+consumer, rotation/camera/audio/effects delivery, registry teardown with live
+child events. This follow-up establishes used source paths; it does not claim
+these services are implemented or faithful emulator/hardware observations.
+
+
+Used child-service addendum: btlevtcmd_RunDataEventChild8010a010/a0 evaluatesunit
+andkey, resolves script with BtlUnit_GetData8012733c. Nullscript returns2.
+Nonnullscript calls evtChildEntry80036eec(parent,script,0), clears parentbyte+a,
+writes childowner+160 with resolvedunitID, returns255 (scheduler yield).
+Fresh Goomba data tableREL2a93c and grounded Paragoomba301f8 each contain only
+key30(hex48)→DOL80416b38 btldefaultevt_Dummy followed byzero terminator.
+Consequently used reactionkey10 and deathoverride49/coreprelude50 are absent
+and the callback returns2; no invented generic customscript. Flying tablekey0e
+and Spikedkey25 are real callbacks and preserve child owner/barrier semantics.
