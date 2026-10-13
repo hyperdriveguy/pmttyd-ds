@@ -97,3 +97,22 @@ Per-call float arguments, triangle/chunk table ownership and lifetimes, the
 r27 callback's identity contract, scene/native registry identity, numeric
 equivalence of the vector math, and any gameplay effect. Those are exactly
 OW-WALL-01's remaining triangle/traversal/registry items.
+
+## Leaf: PSVECDotProduct (newly extracted)
+
+`behavior/PSVECDotProduct.elf` (224 bytes) / `.disasm`, extracted for this
+doc from `PSVECDotProduct@mtx.a` at 0x8029ec84, size 0x20 (the old
+`behavior/PSVECdotProduct.disasm` placeholder is 0 bytes under a
+case-mismatched name). Complete 9-instruction leaf, no calls, no frame:
+
+```
+psq_l f2, 4(r3) / psq_l f3, 4(r4) / ps_mul f2, f2, f3
+psq_l f5, 0(r3) / psq_l f4, 0(r4) / ps_madd f3, f5, f4, f2
+ps_sum0 f1, f3, f2, f2 / blr
+```
+
+Returns x1·x2 + y1·y2 + z1·z2 in f1 for the two vec3 pointers in r3/r4
+(paired-single loads, fused multiply-adds, upper-sum reduction). This is
+the exact operation behind all 13 `PSVECDotProduct` sites above; no
+NaN/denormal special-casing exists in the leaf — exceptional behavior, if
+any, comes from callers' gates.

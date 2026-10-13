@@ -106,6 +106,9 @@ contracted under its canonical name at the same entry address:
 | `scanf_parse_format` = scanf's `parse_format` @8026ce44 | [Scan directive parser](../format/SCAN_DIRECTIVE_PARSER.md) opens at 0x8026ce44 size 0x548; [consumers](../format/SCAN_FORMAT_CONSUMERS.md) call it per `%` |
 | `party_flyMain` = `flyMain@party_move.o` @800c7ff8 | [Flying partner executor](../partner/FIELD_PARTNER_FLY_DISPATCH.md) opens with that address/size0x570, the unsigned P+59 dispatch over 0/1/2/3/6, and the same jump-table/call targets |
 | `hitVec` = `hitCheckVecFilter` @800158a4 | [Support/slopes](../overworld/OVERWORLD_SUPPORT_SLOPES_AND_STEPS.md) contracts its plane-distance orientation, downward-path normalization and cull behavior at exact ranges — but explicitly not all special-mode branches, so triangle-loop phases remain open |
+| `btlevtcmd_AnnounceMessage` @801abdd0 (placeholder `_announceMessage` was a misnomer/empty) | Newly extracted pair; structure matches the contracted [announcement callback](../battle/BATTLE_ANNOUNCEMENT_MESSAGES.md) (5 resolutions, msgSearch/strcpy/sprintf branches, dispEntry, timer) — alias, no new contract |
+| `PSVECDotProduct` @8029ec84 (placeholder `PSVECdotProduct` was case-mismatched/empty) | Newly extracted pair; 9-instruction leaf contracted in the [traversal doc](../battle/BATTLE_HIT_VEC_TRAVERSAL_ORDER.md) |
+| `flyMain@mot_plane.o` @8009c9b8 (no placeholder existed) | Newly extracted pair; contracted in [plane motion](../overworld/OVERWORLD_PLANE_FLIGHT_MOTION.md) |
 
 ## Group D — duplicate extractions under two names (2 pairs)
 
