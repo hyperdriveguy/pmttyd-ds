@@ -251,6 +251,12 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Wait/active/event/captured-next/clock order,32-command normal budget,
   pre-dispatch PC advance and17 opcode registrations pinned; other active
   initialization/opcodes/providers/domain/original scheduling/audio remain open.
+- [x] Complete macHandleActive initialization region and last-started
+  voice setter/table initializer —
+  [active initialization/last-started](../behavior/audio/MUSYX_MACRO_ACTIVE_INITIALIZATION_AND_LAST_STARTED.md).
+  Admission/pending/note/default/reset/clock/job order pinned; other opcodes/
+  pending/ID/flag/clock writers, valid table/reinit domains and original audio
+  remain open. Whole active interpreter is not yet closed.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1529,3 +1535,20 @@ opcode/five budget/five event vectors checked as deductions. Full fresh ELFs/
 listing stay `/tmp`; no native change/original execution/body/binary asset export.
 Remaining opcode/child/command/flag/list/debug/time writers, sorted/member/cycle/
 alias/reentrancy/IRQ/concurrency/first-mode/r28 and original macro/audio remain OPEN.
+
+### 2026-10-13 — Active macro initialization and last-started voices
+
+[Complete initialization region and two local bodies](../behavior/audio/MUSYX_MACRO_ACTIVE_INITIALIZATION_AND_LAST_STARTED.md)
+close low init-bit admission/optional break, pending field copies/per-voice
+input defaults, previous/current-note and last-started publication, packed
+channel-default import/reset suffix, fresh flag reduction/local variables,
+separate macro-clock pairs and job-start request. Last-started FX setter uses
+ID.low8 as index/value, and table init resets MIDI128 then FX64 bytes. No
+whole-voice reset, atomic timestamp, ID/bounds repair or audible start guarantee.
+
+Validation: read-only manifest13 spans (two complete/one region/ten linked),244
+anchors/ten calls passes. Six flag/five pending/four previous-note/six setter,
+128+64 table addresses and22 reset fields checked as deductions. Full fresh ELFs/
+listings stay `/tmp`; no native change/original execution/body/binary asset export.
+Other opcodes, pending/ID/note/channel/flag/PC/clock writers/consumers, valid
+bounds/alignment/alias/IRQ/concurrency/reinit and original macro/audio remain OPEN.

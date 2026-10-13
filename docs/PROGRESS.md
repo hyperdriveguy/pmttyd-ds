@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero active macro initialization/last-started
+
+Completed the macHandleActive initialization prefix and two last-started voice
+local contracts for EVT-01; checked the corresponding inbox portion.
+[Active init/last-started](behavior/audio/MUSYX_MACRO_ACTIVE_INITIALIZATION_AND_LAST_STARTED.md)
+pins admission/break/pending/input/note/default/reset/flags/local-variable/clock/
+job-start order and exact table setter/reset behavior. Initialization clears
+known selector first-use flags before dispatch, but actual lifecycle/reinit
+writers remain open. No whole-record reset, atomic timestamp, valid ID/table
+bounds or original audible-start guarantee is inferred.
+
+Validation: read-only ISO manifest passed13 spans (two complete/one region/ten
+linked),244 anchors/ten calls. Six flag/five pending/four previous-note/six
+setter vectors,128+64 table addresses and22 suffix fields checked as deductions.
+Link audit passed797 Markdown files/zero broken links; `git diff --check` passed.
+Documentation/metadata only; no `make test`/`make all` rerun. Full original
+inspection ELFs/listings stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 remaining macHandleActive opcode paths/children and
+actual pending/ID/note/channel/flag/PC/clock writers, last-started consumers and
+valid bounds/alignment/alias/IRQ/concurrency/reinit/first-mode/r28 domains;
+original initialization/selection/job/audio traces. Full native/runtime binding,
+lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero macro scheduler/scoped dispatch
 
 Completed whole macHandle outer contract and four macHandleActive dispatch

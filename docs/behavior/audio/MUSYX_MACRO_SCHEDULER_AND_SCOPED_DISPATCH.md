@@ -153,3 +153,10 @@ assets, valid pointer/member/cycle/sorted-queue/alias/reentrancy/IRQ/concurrency
 clock/first-mode/r28 domains and original wait/event/budget/selection/audio
 traces. Outer body/scoped dispatch regions are answered; EVT-01 and full native/
 source/runtime/hardware equivalence remain OPEN.
+
+### Active initialization follow-up
+
+[Complete active initialization region/last-started bodies](MUSYX_MACRO_ACTIVE_INITIALIZATION_AND_LAST_STARTED.md)
+now closes the previously-open prefix through80282b94. Exact pending/default/
+flags/variable/clock/job order is pinned; other opcodes and actual source/caller/
+shared-domain/original execution requirements remain open.
