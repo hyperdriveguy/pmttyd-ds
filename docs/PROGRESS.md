@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero low-precision modulation/pan ramps
+
+Completed LowPrecisionHandler oscillator/periodic/pan ramp region; checked
+EVT-01 portion. [Modulation/pan ramps](behavior/audio/MUSYX_LOW_PRECISION_MODULATION_AND_PAN_RAMPS.md)
+pins wrapped unsigned phase requests, changed-half dirty OR, separately flagged
+oscillator, distinct elapsed masks, periodic reset and raw-expiry versus clamped
+continuing pan paths. Sine/handler remainder/providers/domains/runtime remain open.
+
+Validation: read-only ISO manifest passed three spans,146 whole-region anchors,
+two calls. Seven phase/five dirty/six periodic/eight pan-ramp source vectors
+checked, including invalid-divisor outputs left unresolved. Link audit passed871
+Markdown files/zero broken links; scoped `git diff --check` passed. Mathematical
+source deductions are separate from original execution. Documentation/metadata
+only; no `make test`/`make all` rerun. Fresh full original handler ELF/listing/
+generator stay `/tmp`; no bodies/binary assets committed. Concurrent native edits
+excluded. Previously approved push remains pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 sndSin and LowPrecisionHandler pitch/controller/
+portamento/requeue/ABI, actual phase/period/rate/countdown/target/dirty/flag/time/
+voice providers and valid index/extent/value/divisor/alias/lifetime/IRQ/concurrency
+domains, original oscillator/pan/audio traces. Remaining macro/stream/song/backend,
+lower-priority inbox and full native/game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero zero-offset finish/composition
 
 Completed ZeroOffsetHandler filter/priority/requeue/dirty/ABI finish and composed

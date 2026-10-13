@@ -470,6 +470,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   finish and compose whole local body — [finish/composition](../behavior/audio/MUSYX_ZERO_OFFSET_FILTER_REQUEUE_AND_COMPOSITION.md).
   Five regions cover461 semantic words plus31 anchored ABI words; providers/
   domains/transitive consumers/original voice/audio/native binding remain open.
+- [x] Complete LowPrecisionHandler two oscillator rows/flagged oscillator,
+  periodic accumulators and pan/surround ramps —
+  [modulation/pan ramps](../behavior/audio/MUSYX_LOW_PRECISION_MODULATION_AND_PAN_RAMPS.md).
+  Wrapped phase/divisor/masks, dirty comparison, reset/expiry/raw target and
+  clamp/flag order pinned; sine/handler remainder/domains/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2435,3 +2440,13 @@ Six filter-gate/six filter-math/six priority/six requeue/three dirty vectors che
 Wrapped unsigned filter delta, priority first store, raw requeue delay and dirty
 replacement order pinned. Providers/domains/transitive consumers/original voice/
 audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Low-precision modulation/pan ramp delivery
+
+Completed one local region in
+[modulation/pan ramps](../behavior/audio/MUSYX_LOW_PRECISION_MODULATION_AND_PAN_RAMPS.md).
+Three spans/146 whole-region anchors/two calls verified; seven phase/five dirty/
+six periodic/eight pan-ramp vectors checked. Two ordered oscillators/separately
+flagged oscillator, distinct elapsed masks, one-reset periodic accumulators and
+raw-expiry versus continuing-clamp pan paths pinned. Sine/handler remainder/
+providers/domains/original audio/native binding remain open; EVT-01 stays OPEN.

@@ -131,3 +131,9 @@ answered; EVT-01 and full native binding remain OPEN.
 call sites in four complete regions and the host-position/message/deactivation
 leaves. Other builder semantics/providers/consumers/domain/original cadence/audio
 remain open; the whole builder fingerprint is still not full semantic closure.
+
+## 2026-10-13 — Modulation/pan follow-up
+
+[Modulation/pan ramps](MUSYX_LOW_PRECISION_MODULATION_AND_PAN_RAMPS.md) closes the intermediate oscillator/periodic/
+pan region80277788..802779d0. Sine/pitch/controller/portamento/requeue and
+provider/domain/original voice/audio/native binding remain open.
