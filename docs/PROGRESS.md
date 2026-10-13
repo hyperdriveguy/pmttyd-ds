@@ -2,6 +2,27 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero DVD lifecycle/worker
+
+Completed DVDMgrInit/Delete/dvdmgr.o proc_main; checked EVT-01 portion.
+[Lifecycle/worker](behavior/file/DVD_MANAGER_INITIALIZATION_CANCELLATION_AND_WORKER.md)
+pins queue-before-thread, zero-create self-loop, flag-before-resume, cancel-only
+cleanup and infinite main-yield ordering. SDK/providers/original lifecycle/IO/
+audio/native binding remain open.
+
+Validation: read-only ISO manifest passed ten spans,57 anchors,seven calls.
+Five creation/four deletion/four finite worker-prefix vectors/thread args and
+publication/backedge sites checked; main pins reverified. Link audit passed936
+Markdown files/zero broken links; scoped diff check passed. Mathematical source
+deductions separate from original execution. Docs/metadata only; no make test/
+all rerun. Fresh full ELFs/listings/generator stay /tmp; no bodies/assets committed.
+Concurrent native changes excluded. Approved push pending valid GitHub credentials.
+
+Next: priority-zero EVT-01 SDK DVDReadPrio/Close/path/fileInfo/thread/cancel/yield,
+actual lifecycle/queue/callback/request/providers and valid value/extent/alias/
+lifetime/IRQ/concurrency/ABI domains, original failure/cancel/reinit/yield/IO/audio
+traces. Other inbox/native/full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero DVD manager sorted service
 
 Completed DVDMgrMain/DVD-specific comparator; checked EVT-01 portion.

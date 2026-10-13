@@ -610,6 +610,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete DVDMgrMain/dvdmgr.o compare — [sorted DVD service](../behavior/file/DVD_MANAGER_SORTED_SERVICE_RESULTS_AND_CLOSE.md).
   Occupied index snapshot/low8 sort/full-priority signed cap/result branches/
   requested-count advancement/fresh callbacks/close/scan order pinned; runtime open.
+- [x] Complete DVDMgrInit/Delete/dvdmgr.o proc_main — [lifecycle/worker](../behavior/file/DVD_MANAGER_INITIALIZATION_CANCELLATION_AND_WORKER.md).
+  Queue-before-thread/raw failure spin/flag-before-resume/cancel-without-queue
+  release/main-yield loop pinned; SDK/providers/original/native binding open.
 - [ ] Deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
@@ -3043,3 +3046,12 @@ result/five advancement/six comparator/five completion-flag/seven gate vectors
 and sites checked. Result-3 versus other-negative80 block versus nonnegative
 requested-count advance/scan break pinned. Init/Delete/worker/SDK/providers/
 original IO/audio/native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — DVD manager lifecycle/worker delivery
+
+Completed [Init/Delete/worker loop](../behavior/file/DVD_MANAGER_INITIALIZATION_CANCELLATION_AND_WORKER.md).
+Ten spans/57 anchors/seven calls verified; five create/four delete/four finite
+worker-prefix vectors and exact thread/publication/backedge sites checked; main
+pins reverified. Queue published before clear/create, zero create self-loops,
+cancel does not release queue/slots, worker ignores thread-on flag. SDK/provider/
+original lifecycle/IO/audio/native binding open; EVT-01 stays OPEN.

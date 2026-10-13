@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Underground trio ordinary EXP ending tail](battle/UNDERGROUND_TRIO_NO_LEVEL_UP_ENDING_TAIL.md) | Exact0c..1f timers, independent effect softdelete, actual body/voice gates, fade10 completion, Rule0 and ordered pouch/field export | Native effect/GX/fade/audio/field reconstruction cadence; level-up/zeroEXP/special branches |
+| [DVD manager init/cancel/worker](file/DVD_MANAGER_INITIALIZATION_CANCELLATION_AND_WORKER.md) | Complete Init/Delete/proc_main; queue/thread publication/failure spin/cancel/main-yield | SDK/providers/original lifecycle/IO/audio |
 | [DVD manager sorted service/results/close](file/DVD_MANAGER_SORTED_SERVICE_RESULTS_AND_CLOSE.md) | Complete main/DVD comparator; snapshot/cap/result/requested advancement/callback/close/scan | Initialization/SDK/providers/original IO/audio |
 | [Stream DPCM markers/predictor/boundaries](audio/GAME_STREAM_DPCM_MARKERS_PREDICTOR_AND_BOUNDARIES.md) | Complete decoder/16-scale table; marker/nibble/saturation/count/buffer/loop/return | Providers/deferred manager/original decoded audio |
 | [Stream producer PCM/whole composition](audio/GAME_STREAM_PRODUCER_PCM_AND_WHOLE_COMPOSITION.md) | Complete PCM/all521-word callback; per-copy count/boundary-before-position/retry/early stop | Decoder/providers/original refill/audio |

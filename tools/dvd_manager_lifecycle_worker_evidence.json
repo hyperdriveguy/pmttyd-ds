@@ -1,0 +1,315 @@
+{
+  "schema": 1,
+  "scope": "Complete DVD manager initialization/deletion/worker loop; queue-before-thread/publication/failure-spin/cancel/yield order, SDK/providers/runtime open",
+  "complete_bodies": [
+    "DVDMgrInit",
+    "DVDMgrDelete",
+    "DVDMgrWorker"
+  ],
+  "linked_only": [
+    "__memAlloc",
+    "memset",
+    "OSCreateThread",
+    "OSResumeThread",
+    "OSCancelThread",
+    "DVDMgrMain",
+    "OSYieldThread"
+  ],
+  "dol_spans": [
+    {
+      "name": "DVDMgrInit",
+      "address": 2148815624,
+      "size": 144,
+      "sha256": "4e445726c167d2c2eba781dd1ec3e47ba3b324137b6eae119919052bca687015"
+    },
+    {
+      "name": "DVDMgrDelete",
+      "address": 2148815564,
+      "size": 60,
+      "sha256": "28f542dbc981f20e32a3d5590cf2058d8e77e2fb7a2a10cdbdbbf6590e4b53e5"
+    },
+    {
+      "name": "DVDMgrWorker",
+      "address": 2148815768,
+      "size": 24,
+      "sha256": "8e5e235a7956a5cf287352e3368e49bb1800fee4c1b8b2bf6dc39733b17334f6"
+    },
+    {
+      "name": "__memAlloc",
+      "address": 2147680496,
+      "size": 100,
+      "sha256": "51d2010e5ae0c3265971a8dfaee60b24489d8bf8eb2ca386f77c1d0ceb98712b"
+    },
+    {
+      "name": "memset",
+      "address": 2147504308,
+      "size": 48,
+      "sha256": "4176c17fce5f28ccea737946be853ea45a125b52e9acab356ba54454aa352b5c"
+    },
+    {
+      "name": "OSCreateThread",
+      "address": 2150223152,
+      "size": 488,
+      "sha256": "6bef7902bda9b48337f1a3b7349e224773c1c7229fe22cbade6b67baa6b143a5"
+    },
+    {
+      "name": "OSResumeThread",
+      "address": 2150224312,
+      "size": 648,
+      "sha256": "212087db98e1387ef21e614d6af798f34916c65edf1e945319a4149a5775c807"
+    },
+    {
+      "name": "OSCancelThread",
+      "address": 2150223868,
+      "size": 444,
+      "sha256": "5d25a552244500d90d67883767cd12e0252ebff35898bf5905fe9f06d6814fdd"
+    },
+    {
+      "name": "DVDMgrMain",
+      "address": 2148814884,
+      "size": 612,
+      "sha256": "0c36f07bb2d0e9bba569a99e997e5fa02ae0e7e55d9f07e17fca2169984b30e8"
+    },
+    {
+      "name": "OSYieldThread",
+      "address": 2150223092,
+      "size": 60,
+      "sha256": "e143f15719272fc1847dd173f2bdc753a7ac8fc90a642bb3c12120084bdbb9c5"
+    }
+  ],
+  "dol_anchors": {
+    "2148815632": "3c800001",
+    "2148815636": "38600000",
+    "2148815640": "90010014",
+    "2148815644": "38849800",
+    "2148815648": "4beeadd1",
+    "2148815652": "3c800001",
+    "2148815656": "906d1cd8",
+    "2148815660": "38a49800",
+    "2148815664": "38800000",
+    "2148815668": "4bebfd81",
+    "2148815672": "3cc0803e",
+    "2148815676": "3c60803e",
+    "2148815680": "3c808014",
+    "2148815684": "38a00000",
+    "2148815688": "38c61bb8",
+    "2148815692": "38635bb8",
+    "2148815696": "38845398",
+    "2148815700": "38e04000",
+    "2148815704": "38c64000",
+    "2148815708": "39000010",
+    "2148815712": "39200001",
+    "2148815716": "481579cd",
+    "2148815724": "40820008",
+    "2148815728": "48000000",
+    "2148815732": "38000001",
+    "2148815736": "3c60803e",
+    "2148815740": "900d1cd0",
+    "2148815744": "38635bb8",
+    "2148815748": "48157e35",
+    "2148815752": "80010014",
+    "2148815760": "38210010",
+    "2148815572": "90010014",
+    "2148815576": "800d1cd0",
+    "2148815584": "41820018",
+    "2148815588": "3c60803e",
+    "2148815592": "38635bb8",
+    "2148815596": "48157d11",
+    "2148815600": "38000000",
+    "2148815604": "900d1cd0",
+    "2148815608": "80010014",
+    "2148815616": "38210010",
+    "2148815776": "90010014",
+    "2148815780": "4bfffc81",
+    "2148815784": "4815794d",
+    "2148815788": "4bfffff8",
+    "2148815624": "9421fff0",
+    "2148815628": "7c0802a6",
+    "2148815720": "2c030000",
+    "2148815756": "7c0803a6",
+    "2148815764": "4e800020",
+    "2148815564": "9421fff0",
+    "2148815568": "7c0802a6",
+    "2148815580": "2c000000",
+    "2148815612": "7c0803a6",
+    "2148815620": "4e800020",
+    "2148815768": "9421fff0",
+    "2148815772": "7c0802a6"
+  },
+  "direct_calls": [
+    {
+      "site": 2148815648,
+      "target": 2147680496,
+      "name": "__memAlloc"
+    },
+    {
+      "site": 2148815668,
+      "target": 2147504308,
+      "name": "memset"
+    },
+    {
+      "site": 2148815716,
+      "target": 2150223152,
+      "name": "OSCreateThread"
+    },
+    {
+      "site": 2148815748,
+      "target": 2150224312,
+      "name": "OSResumeThread"
+    },
+    {
+      "site": 2148815596,
+      "target": 2150223868,
+      "name": "OSCancelThread"
+    },
+    {
+      "site": 2148815780,
+      "target": 2148814884,
+      "name": "DVDMgrMain"
+    },
+    {
+      "site": 2148815784,
+      "target": 2150223092,
+      "name": "OSYieldThread"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "layout": {
+    "queue_pointer": 2151803896,
+    "thread_on": 2151803888,
+    "global_callback": 2151803892,
+    "thread": 2151570360,
+    "stack_base": 2151553976,
+    "stack_bytes": 16384,
+    "queue_bytes": 38912,
+    "slots": 256,
+    "stride": 152
+  },
+  "thread_request": {
+    "site": 2148815716,
+    "thread": 2151570360,
+    "entry": 2148815768,
+    "argument": 0,
+    "stack_top": 2151570360,
+    "stack_size": 16384,
+    "priority": 16,
+    "attributes": 1
+  },
+  "derived_create_vectors": [
+    {
+      "raw_result": 0,
+      "spins": true,
+      "publishes_one": false,
+      "resume_requested": false,
+      "old_flag_when_zero": 0
+    },
+    {
+      "raw_result": 0,
+      "spins": true,
+      "publishes_one": false,
+      "resume_requested": false,
+      "old_flag_when_zero": 1
+    },
+    {
+      "raw_result": 1,
+      "spins": false,
+      "publishes_one": true,
+      "resume_requested": true,
+      "old_flag_when_zero": 0
+    },
+    {
+      "raw_result": 2,
+      "spins": false,
+      "publishes_one": true,
+      "resume_requested": true,
+      "old_flag_when_zero": 0
+    },
+    {
+      "raw_result": 4294967295,
+      "spins": false,
+      "publishes_one": true,
+      "resume_requested": true,
+      "old_flag_when_zero": 0
+    }
+  ],
+  "derived_delete_vectors": [
+    {
+      "flag": 0,
+      "cancel_requested": false,
+      "flag_after": 0,
+      "queue_freed": false,
+      "slots_closed": false,
+      "callback_cleared": false
+    },
+    {
+      "flag": 1,
+      "cancel_requested": true,
+      "flag_after": 0,
+      "queue_freed": false,
+      "slots_closed": false,
+      "callback_cleared": false
+    },
+    {
+      "flag": 2,
+      "cancel_requested": true,
+      "flag_after": 0,
+      "queue_freed": false,
+      "slots_closed": false,
+      "callback_cleared": false
+    },
+    {
+      "flag": 4294967295,
+      "cancel_requested": true,
+      "flag_after": 0,
+      "queue_freed": false,
+      "slots_closed": false,
+      "callback_cleared": false
+    }
+  ],
+  "derived_worker_vectors": [
+    {
+      "iterations": 0,
+      "sequence": [],
+      "checks_thread_on": false
+    },
+    {
+      "iterations": 1,
+      "sequence": [
+        "DVDMgrMain",
+        "OSYieldThread"
+      ],
+      "checks_thread_on": false
+    },
+    {
+      "iterations": 2,
+      "sequence": [
+        "DVDMgrMain",
+        "OSYieldThread",
+        "DVDMgrMain",
+        "OSYieldThread"
+      ],
+      "checks_thread_on": false
+    },
+    {
+      "iterations": 3,
+      "sequence": [
+        "DVDMgrMain",
+        "OSYieldThread",
+        "DVDMgrMain",
+        "OSYieldThread",
+        "DVDMgrMain",
+        "OSYieldThread"
+      ],
+      "checks_thread_on": false
+    }
+  ],
+  "publication_sites": {
+    "queue": 2148815656,
+    "thread_on": 2148815740,
+    "clear_thread_on": 2148815604,
+    "failure_spin": 2148815728,
+    "worker_backedge": 2148815788
+  }
+}
