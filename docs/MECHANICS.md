@@ -440,3 +440,21 @@ Return prefers a valid original remembered recovery binding, then native room/lo
 entry. Original dynamic fallback selection, reload-enabled/BG branches and exact
 camera/partner choreography remain incomplete; these are adaptations, not claims
 of full source equivalence or Dolphin-observed timing.
+
+## 2026-10-12 — Native partner follow verification (not Dolphin evidence)
+
+Read-only US binary checks verify the ordinary ground-homing jump-history and
+wall-contact counter branches, plus the existing jump/fall/history/screen
+recovery contracts. See [native follow and evidence boundaries](behavior/partner/FIELD_PARTNER_NATIVE_FOLLOW.md).
+No new original-runtime observation was made. Source-derived coefficients are
+static evidence; trail scheduling, terrain/path adaptation and native spacing
+are not measured original trajectories.
+
+Portable scenarios cover stationary and moving-history jumps, retained spacing,
+gap crossing, ledge falls, thin walls, stale-path correction, persistent blockage,
+capacity pressure and screen recovery. The native Game binding is included.
+Isolated Azahar movement/save captures and original Goombella air/landing poses
+are native verification only. Final captures are under ignored
+`artifacts/azahar-partner-follow-spacing/`; profiles and saves are isolated.
+Full partner floor/front-wall/placement and original sound-service composition,
+Dolphin trajectory comparison and hardware behavior remain open.

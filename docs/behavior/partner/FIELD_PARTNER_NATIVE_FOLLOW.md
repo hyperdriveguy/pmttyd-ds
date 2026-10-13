@@ -69,7 +69,9 @@ These composition choices remain native adapters, **not measured behavior**:
   equal-XZ air edges are retained/coalesced so short jumps cannot disappear.
   The0.5 following gap and0.50001 air-edge tolerance are native scheduling.
   Prepared jump targets follow marks rather than every original target branch.
-* Ground budget uses native DashSpeed; jump budget is0.0225. Air path steering,
+* Ground budget uses native DashSpeed; jump budget is capped at0.0225. In-place
+  hops retain the0.5 gap, but a missing floor below permits continued gap travel.
+  Air path steering,
   ground/fall query order, crossing-based landing, epsilon and step/slope
   handling adapt existing room geometry rather than bind all original five-ray
   floor/cache and nine-ray front-wall services. Owner scale1 is an assumption.

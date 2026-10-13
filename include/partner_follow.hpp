@@ -129,7 +129,13 @@ struct PartnerFollow {
                 return;
             }
         }
-        float budget=motion==Motion::Jump?.0225f:std::min(speed,std::max(0.f,remaining-.5f));
+        float budget=std::min(motion==Motion::Jump?.0225f:speed,std::max(0.f,remaining-.5f));
+        if(motion==Motion::Jump && budget==0) {
+            // Preserve following space for an in-place hop, but do not stop
+            // over a gap merely because Mario is close to the landing edge.
+            float floor=root.y;
+            if(!s.floor(root,root.y-3.f,root.y,floor))budget=.0225f;
+        }
         // Fall still travels toward the trail; a missing floor never blocks XZ.
         if(motion==Motion::Fall)budget=speed;
         const auto before=root;

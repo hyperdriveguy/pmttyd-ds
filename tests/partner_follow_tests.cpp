@@ -18,11 +18,20 @@ int main() {
     const int count=f.jumpCount;bool rose=false;
     for(int n=0;n<100;++n){f.tick(root,{.8f,0,0},false,.0225f,s);rose|=root.y>.1f;}
     CHECK(rose && root.y==0 && f.motion==PartnerFollow::Motion::Ground && f.jumpCount==count);
+    CHECK(std::fabs(root.x-.3f)<.001f); // Stationary hops retain follower space.
     // A jump at the end of many short marks must not sit forever beyond the gap.
     root={0,0,0};f.reset(root,{.5f,0,0});
     for(int n=1;n<=50;++n)f.tick(root,{.5f+n*.02f,0,0},false,.0225f,s);
     for(int n=0;n<60;++n)f.tick(root,{1.5f,0,0},false,.0225f,s);
     f.tick(root,{1.5f,0,0},true,.0225f,s);CHECK(f.motion==PartnerFollow::Motion::Jump);
+    // Air travel continues across missing support even inside the spacing gap.
+    auto gap=s;gap.floor=[](CameraPoint p,float lo,float hi,float& h) {
+        if(p.x>=.1f && p.x<=.4f)return false;
+        if(lo<=0 && hi>=0){h=0;return true;}return false;
+    };
+    root={0,0,0};f.reset(root,{.8f,0,0});f.trail={{{0,0,0},true},{{.8f,0,0},false}};
+    for(int n=0;n<100;++n)f.tick(root,{.8f,0,0},false,.0225f,gap);
+    CHECK(root.x>.4f && root.y==0 && f.motion==PartnerFollow::Motion::Ground);
     // A ledge does not freeze horizontal motion or snap instantly to lower ground.
     auto ledge=s;ledge.floor=[](CameraPoint p,float lo,float hi,float& h) {
         float y=p.x<.2f?0.f:-.5f;if(lo<=y && hi>=y){h=y;return true;}return false;
@@ -41,6 +50,8 @@ int main() {
     root={0,0,0};f.reset(root,{2,0,0});
     for(int n=0;n<700;++n)f.tick(root,{2,0,0},false,.0225f,wall);
     CHECK(root.x<.4f && !f.warped);
+    for(int n=0;n<600;++n)f.tick(root,{2+n*.001f,0,0},false,.0225f,wall);
+    CHECK(root.x<.4f && !f.warped && f.trail.size()<=512);
     // Screen recovery uses the recovered margins and commits a candidate.
     auto screen=s;screen.project=[](CameraPoint p){CameraScreenCache q;q.x=int(p.x*100);q.y=200;return q;};
     root={10,0,0};f.reset(root,{0,0,0});f.tick(root,{0,0,0},false,.0225f,screen);

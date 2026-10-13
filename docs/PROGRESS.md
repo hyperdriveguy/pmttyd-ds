@@ -2,6 +2,61 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+
+## 2026-10-12 — Partner 3D following, jumps, falls and wall/path recovery
+
+Recovered selected missing `party_motion_homing_walk` branches directly from
+read-only US G8ME01: grounded history flag1 admits jump preparation, repeated
+wall contacts use a signed byte counter greater than8, and ground homing calls
+screen recovery. Added pinned body identity/26 instruction anchors and
+[native contract with explicit fidelity boundaries](behavior/partner/FIELD_PARTNER_NATIVE_FOLLOW.md)
+in `432293c`. Independent existing source verifiers still pass.
+
+Replaced the ground-only XZ follower in `55d00bb` with portable 3D history,
+independent ground/jump/fall state, source-derived ordinary jump initialization
+and fall coefficients, swept wall/axis sliding, supported stale-path pruning,
+and screen candidate recovery. The partner can traverse air without floor,
+land independently, and recover without the old queue-size teleport. Original
+`PKR_J_1A` now joins the existing original Goombella pack; provenance is in
+[assets](ASSETS.md). Native motion uses actual post-collision Mario output.
+Refinement retains stationary-hop spacing, continues over gaps, handles a jump
+behind dense short trail marks and caps append pressure without teleporting.
+Concurrent harbor/message work was preserved and excluded from partner commits.
+
+Validation: final `make test` passes **93 CTest / 96 Python tests** in
+`/tmp/partner-validation-test.log`; `make all` builds3DSX without warnings in
+`/tmp/partner-validation-build.log`. `build-host/core_tests --original` passes
+all original-room scenarios and **18,315** indexed/full-scan collision probes
+(`/tmp/partner-original-room.log`), including partner stair support. New partner
+scenarios cover stationary/dense-history jumps, retained spacing, gap crossing,
+ledge fall, thin walls, stale path, persistent wall/capacity nonteleport, screen
+recovery and Game binding. Homing/jump/fall/recovery/history static verifiers
+pass;690 document links and `git diff --check` pass.
+
+Initial full runs exposed a concurrent harbor test failure, independently
+reproduced with pre-partner Game sources under `/tmp/partner-preexisting-check`;
+that concurrent work subsequently resolved it. One rebuild hit a transient
+unrelated field_battle_tests link failure; targeted relinking and the final
+full run pass. Neither intermediate run is claimed as a passing validation.
+
+Isolated Azahar movement/jump/save capture passes with15-second startup and
+`tests/azahar_partner_follow.py`. Final files are in ignored
+`artifacts/azahar-partner-follow-spacing/`, log `/tmp/partner-smoke-final.log`.
+Inspected `partner-air-early.png` and `partner-follow-landed.png`: Goombella
+uses her original air pose and returns to the floor with following space.
+Earlier captures exposed an overlapping stationary landing, fixed and covered
+by a regression. Xvfb required display-socket escalation; all profiles and
+saves are project-isolated. No user's profile/save was modified.
+
+Limitations/next: this implements equivalent native behavior categories,
+not full instruction-exact party locomotion. Native vector scheduling, scale1,
+terrain landing/sweeps and path lookahead remain adapters. Complete original
+homing targets/ring indices, five-ray partner floors/front walls, near-Mario
+placement3, fall placement4/+37, dynamic platforms, ability modes and partner
+sound playback remain unbound. Record original Dolphin jump/ledge/wall/warp
+trajectories before claiming measured parity; see [mechanics](MECHANICS.md).
+Hardware behavior and full prologue/full-game fidelity remain incomplete.
+
 ## 2026-10-12 — Prologue map object visibility from original events
 
 Implemented recovered ordinary-entry visibility for harbor ship subtrees and
