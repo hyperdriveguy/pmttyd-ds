@@ -49,6 +49,8 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Switch storage/encoding](memory/SW_SET.md) | Complete12-body access/init/reset, global256/local16-word flags, byte banks and full-word global index0; modulo32 correction | Card record/load/recovery, full story/namespace writers and original persistence traces |
+| [Monosiri flag groups/storage](battle/MONOSIRI_FLAG_GROUPS_AND_SWITCH_STORAGE.md) | Complete group-aware persistent4474+kind/battle bitmap setter, policy/original-kind checker and48 static groups | Other writers/source domains, complete Tattle/log/AC/scene/card lifetime/runtime |
 | [Monosiri table/consumers](battle/MONOSIRI_TABLE_SOURCE_AND_CONSUMERS.md) | Initialized231-row Tattle/message/model table, six field-use regions, complete message-key event leaf,17 DOL calls/2 REL imports | Table mutation/alias/kind domains, dynamic callers and full log/Tattle/AC/persistence/runtime |
 | [Hammer charge cue resources](audio/HAMMER_CHARGE_CUE_RESOURCE_BINDINGS.md) | Two actual original callers and table→FX→group/macro→sample identities, rates/lengths/loop fields | Full command/display/macro/backend execution and original charge/audio traces |
 | [SFX update/corrections](audio/POSITIONAL_SFX_UPDATE_OWNERS_AND_SOURCE_CORRECTIONS.md) | Complete psndMain cooldown owner; scoped SFXMain completion sweep/pending transition/preference tail; corrected source masks/ABI/dispatch | Full SFXMain middle/spatial/start/backend/resource and original execution |

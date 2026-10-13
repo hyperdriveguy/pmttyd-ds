@@ -2,6 +2,32 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Tattle flag owners and switch encoding/storage answer
+
+Delivered [complete Tattle flag graph](behavior/battle/MONOSIRI_FLAG_GROUPS_AND_SWITCH_STORAGE.md)
+and rewrote [swdrv storage](behavior/memory/SW_SET.md). Actual rotlwi5 plus
+preceding shift27/sign correction implements ordinary signed remainder; valid
+nonnegative bit index is modulo32. Init proves global256-word8192-bit and
+local16-word512-bit banks,2048/1024-byte banks, and full32-bit global byte0.
+ReInit clears only local banks. Tattle setter scans48 lists/247 member occurrences,
+writes persistent4474+kind and retained battle bits; checker has policy bypass
+and asymmetric original-kind local check. These are not table-population writes.
+Marked corresponding EVT-01 and SAVE-01 portions complete; preserved request text.
+
+Validation: fresh14 bodies and table/48 list spans total63 fingerprints;
+205 source anchors pass generic verifier with switch_monosiri_flags_evidence.json.
+Independent signed arithmetic8951 cases cover global/local/Tattle indices and
+signed boundaries. Source groups/kinds and first-match order independently
+checked. Link audit712 Markdown files/0 broken links; whitespace checks pass.
+Docs/metadata only; no make rerun, native save/code or original asset export.
+Inspection outputs remain `/tmp`; unrelated staged/worktree edits excluded.
+
+Next/limits: complete cardMain record/checksum/error/backup/load/timing and
+full namespace/writer/scene/save lifetime still open. Continue priority0 SFXMain
+used startup/spatial backend, query-specific weapon menu source domains and
+original scheduler/encounter traces, then priority1 consumer/counter graph.
+No original execution, save round-trip, hardware or complete-game parity claim.
+
 ## 2026-10-13 — Temporary Frankly follows the party
 
 Bound [temporary Frankly follow](behavior/partner/NATIVE_TEMPORARY_FRANKLY_FOLLOW.md)

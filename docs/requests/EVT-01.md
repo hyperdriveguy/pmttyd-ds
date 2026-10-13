@@ -27,6 +27,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [source/consumers](../behavior/battle/MONOSIRI_TABLE_SOURCE_AND_CONSUMERS.md),
   [corrected lookup](../behavior/audio/BATTLE_UNIT_MONOSIRI_LOOKUP.md).
   Earlier spatial-sound/caller/null-domain claims are superseded.
+- [x] Complete Monosiri/Tattle group flag setter/checker and swdrv storage
+  prerequisite — [flag groups/storage](../behavior/battle/MONOSIRI_FLAG_GROUPS_AND_SWITCH_STORAGE.md),
+  including persistent4474+kind, retained battle bitmap and original-kind branch.
 - [ ] Monosiri table mutation/alias/valid-kind invariants, indirect/dynamic
   callers and full Tattle/log/AC/event/presentation/persistence/runtime binding.
 - [x] Local menu-type writers, direct caller census and concrete Input
@@ -449,3 +452,18 @@ records and column nonnull counts230/164/143/229/230/230; actual example IDs
 and wrapped-zero derivation were verified. Inspection-only files remain `/tmp`.
 No native tool/code or original asset/dialogue payload change; full table writer/
 source-domain/Tattle/log/AC/persistence/runtime integration remains OPEN.
+
+### 2026-10-13 — Tattle flag group/write/check and swdrv prerequisites
+
+[Flag owners](../behavior/battle/MONOSIRI_FLAG_GROUPS_AND_SWITCH_STORAGE.md)
+recovers full setter/checker with48 groups/247 source member occurrences,
+persistent4474+kind writes, separate retained-BattleWork bits, policy bypass
+and asymmetric original-kind checks. [swdrv storage](../behavior/memory/SW_SET.md)
+closes12 local access/init/reset bodies and corrects the remainder encoding.
+These flag writes do not populate the six-pointer Monosiri table.
+
+Validation: generic read-only source verifier63 spans/205 anchors passes;
+independent signed arithmetic8951 cases and source list scan pass. All original
+inspection outputs remain `/tmp`. Table mutation/aliases/source domains, other
+flag/policy writers, full Tattle/log/AC/scene/card lifetime and original runtime
+remain OPEN. Request text remains unchanged; no native or original save claim.
