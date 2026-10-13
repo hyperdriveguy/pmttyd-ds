@@ -107,11 +107,14 @@ struct HarborTutorialRuntime {
  auto m=vm.memoryBinding.services();auto start=eventSdkInitializeAllocator(0x82000000,0x82100000,1,m);if(eventSdkCreateHeap(start,0x82100000,m)!=0 || !vm.memory.writeWord(0x8041e844,0) || !vm.memory.writeWord(0x81000004,60))return false;
  vm.gp.timestamp=scene->now*eventClockRate(243000000);vm.initializeContexts();vm.gp.battleContext=1;packed=std::make_unique<HarborTutorialPacked>(vm);if(!packed->provision())return false;initRoot=root(source[0],0).id;return true;}
 };
-bool HarborTutorial::begin(uint64_t time,int32_t hp,int32_t maxHp){if(!ready || triggered)return false;*this=HarborTutorial{};triggered=true;now=time;
+bool HarborTutorial::begin(uint64_t time,int32_t hp,int32_t maxHp){return beginWithContext(time,hp,maxHp,false,0);}
+bool HarborTutorial::beginFresh(uint64_t time,int32_t hp,int32_t maxHp,int32_t story){return beginWithContext(time,hp,maxHp,true,story);}
+bool HarborTutorial::beginWithContext(uint64_t time,int32_t hp,int32_t maxHp,bool freshPouch,int32_t story){if(!ready || triggered)return false;*this=HarborTutorial{};triggered=true;now=time;
  actors[0].id=0;actors[0].sourceKind=source[6];actors[1].id=1;actors[1].kind=222;actors[1].movePhase=0x04000002;actors[1].hp=hp;actors[1].maxHp=maxHp;actors[1].pose="M_S_1";actors[1].position=actors[1].home={-100,0,-5};
  runtime_=std::make_shared<HarborTutorialRuntime>();auto& r=*runtime_;r.scene=this;if(!r.initialize()){failed=true;return false;}actors[0].kind=signedWord(r.word(source[6]));actors[0].belong=int8_t(r.word(source[8]+4)>>24);actors[0].movePhase=r.word(source[8]+8);actors[0].hp=actors[0].maxHp=int16_t(r.word(source[6]+8)>>16);
  for(unsigned i=0;i<3;++i){const auto v=r.word(source[8]+0xc+i*4);std::memcpy(&actors[0].position[i],&v,4);}actors[0].home=actors[0].position;
  if(!r.packed->registerActor(actors[0]) || !r.packed->registerActor(actors[1])){failed=true;return false;}r.packed->recordInit(0,r.initRoot);
+ if(freshPouch){if(!r.packed->provisionFreshPouch(messages.find("name_party3"))){failed=true;return false;}uint32_t pouch=0;if(!r.vm.memory.readWord(0x8041eb00,pouch) || !r.vm.memory.writeHalf(pouch+0x70,uint16_t(hp))){failed=true;return false;}writeSavedSwitch(SavedSwitchFamily::GlobalByte,0,story,r.vm.interpreterServices().operands);r.packed->recordInit(1,r.root(r.word(actors[1].sourceKind+0xbc),1).id);}
  tick(time,0);return !failed;}
 void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* physical){if(!runtime_ || failed || time<now)return;now=time;auto& r=*runtime_;r.scene=this;if(message.active())message.tick(now,keys);
  if(message.poseRequestSerial!=r.messagePoseSerial && speaker>=0 && speaker<3){r.messagePoseSerial=message.poseRequestSerial;auto& a=actors[speaker];const auto& pose=message.poseRequest==MessagePlayback::PoseRequest::Talk?a.talkPose:a.stayPose;if(!pose.empty()){a.pose=pose;a.poseAt=message.poseRequestedAt;}}

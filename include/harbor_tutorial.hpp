@@ -9,7 +9,7 @@ bool loadHarborTutorialAssets(const char* root);
 struct HarborTutorialActor {
     int32_t id=-1,kind=0,hp=0,maxHp=0,maxMoves=1,heldItem=0;
     int8_t belong=0;uint32_t movePhase=0;
-    uint32_t sourceKind=0,wait=0,attack=0,damage=0,confusion=0,phase=0;
+    uint32_t sourceKind=0,wait=0,attack=0,damage=0,confusion=0,phase=0,entry=0;
     std::array<int32_t,16> work{};
     std::array<float,3> position{},home{},rotation{};
     std::string pose,stayPose,talkPose;
@@ -19,6 +19,7 @@ struct HarborTutorialRequest {
     uint32_t function=0,command=0;uint64_t time=0;int32_t owner=-1;
     std::vector<int32_t> rawOperands;
 };
+struct HarborTutorialSoundRequest {enum class Operation {Trigger,Position,Off};Operation operation=Operation::Trigger;uint32_t handle=0,key=0;int32_t owner=-1;uint64_t time=0;std::string name;std::array<float,3> position{};};
 struct HarborTutorialCameraState {uint32_t flags=0;int32_t priority=0,mode=0,owner=-1,target=-1,ownerPart=-1,targetPart=-1;int16_t speed=0,remaining=0;float zoom=0;std::array<float,3> home{},hit{};};
 struct HarborTutorialRuntime;
 // Source setup2 unit initialization and guarded phase requests. This owner does
@@ -35,7 +36,11 @@ public:
     HarborTutorialCameraState camera;
     MessagePlayback message;std::vector<std::string> messageOrder;
     std::vector<HarborTutorialRequest> requests;
+    std::vector<HarborTutorialSoundRequest> soundRequests;
     bool begin(uint64_t milliseconds,int32_t marioHp,int32_t marioMaxHp=10);
+    // Explicit original new-game entry context; creates the verified fresh pouch
+    // and executes Mario kind+bc initialization before admitting intro phase.
+    bool beginFresh(uint64_t milliseconds,int32_t marioHp,int32_t marioMaxHp,int32_t originalStory);
     void tick(uint64_t milliseconds,uint32_t keys,const BattlePadSample* physical=nullptr);
     // Explicit scheduler/service bridge. Refuses an overlapping phase root.
     bool dispatchPhase(int32_t sourceTurn,uint32_t sourcePhase);
@@ -47,6 +52,7 @@ public:
     bool readPackedWord(uint32_t address,uint32_t& value) const;
     bool running() const{return triggered;}
 private:
+    bool beginWithContext(uint64_t,int32_t,int32_t,bool freshPouch,int32_t originalStory);
     std::shared_ptr<HarborTutorialRuntime> runtime_;
 };
 }

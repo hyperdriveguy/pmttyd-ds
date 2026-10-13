@@ -18,6 +18,7 @@ public:
  void samplePhysical(uint64_t milliseconds,const BattlePadSample*);
  explicit HarborTutorialPacked(EventNativeRuntime& r):vm(r){}
  bool provision();
+ bool provisionFreshPouch(const char* originalYoshiName);
  bool registerActor(HarborTutorialActor&);
  void recordInit(int32_t id,uint32_t event);void recordPhase(int32_t id,uint32_t event);void recordAttack(int32_t id,uint32_t event);
  void publish(const HarborTutorial&);void capture(HarborTutorial&);
@@ -25,6 +26,9 @@ public:
  bool readWord(uint32_t address,uint32_t& value) const{return vm.memory.readWord(address,value);}
 private:
  std::array<bool,3> registered{};
+ bool freshPouch=false;uint32_t nextSoundHandle=1;
+ std::vector<HarborTutorialSoundRequest> sounds;
+ uint32_t requestSound(uint32_t unit,uint32_t key,const std::array<float,3>&);
  uint32_t word(uint32_t) const;void word(uint32_t,uint32_t);
  uint8_t byte(uint32_t) const;void byte(uint32_t,uint8_t);
  void half(uint32_t,int32_t);void real(uint32_t,float);float real(uint32_t) const;

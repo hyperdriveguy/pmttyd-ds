@@ -1926,7 +1926,7 @@ void Game::tick(const Input& rawInput) {
         scene=harborEncounter.locked()?Scene::Dialogue:Scene::Explore;
         // The original field event retains its blocking battle-start call.
         // Only source setup2 initialization/phase owns this bounded battle entry.
-        if(harborEncounter.battleRequested && harborEncounter.battleSetup==2 && !harborTutorial.triggered && harborTutorial.begin(ticks*1000/60,progress.hp))scene=Scene::Battle;
+        if(harborEncounter.battleRequested && harborEncounter.battleSetup==2 && !harborTutorial.triggered && harborTutorial.beginFresh(ticks*1000/60,progress.hp,10,progress.originalStory.value_or(0)))scene=Scene::Battle;
         if(harborEncounter.locked())return;
     }
     if(harborStory.locked()) {

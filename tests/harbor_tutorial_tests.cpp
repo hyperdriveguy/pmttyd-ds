@@ -43,6 +43,7 @@ int main(){
  t.tick((++tick)*1000/60,0,&physical);
  assert(t.readPackedWord(0x84001cb0,packed) && packed==4);
  assert(t.pendingService==0x8010a78c && t.actors[1].hp==hpBeforeDefense && t.result==0);
+ bool originalSound=false;for(const auto& r:t.soundRequests)if(r.operation==HarborTutorialSoundRequest::Operation::Trigger && r.owner==0){assert(r.key && !r.name.empty() && r.handle && r.time>0);originalSound=true;}assert(originalSound);
  // ResultACDefence clears the private history; a second pass at this timestamp
  // must not resample the producer trigger and resurrect that cleared history.
  const auto impactTime=t.now;t.tick(impactTime,0,&physical);
@@ -50,6 +51,24 @@ int main(){
  assert(!t.dispatchPhase(2,0x04000003));
  // Exercise guarded feedback roots on a separately initialized VM without
  // bypassing the live introduction in the primary instance.
+ HarborTutorial fresh;assert(fresh.beginFresh(0,7,10,4));
+ for(uint64_t i=1;i<300 && !fresh.message.active();++i)fresh.tick(i*1000/60,0);
+ assert(!fresh.failed && fresh.initialized && fresh.pendingService==0 && fresh.actors[1].pose=="M_S_1");
+ assert(fresh.readPackedWord(0x84201204,packed) && packed==1);
+ assert(fresh.actors[1].wait==0x80417c38 && fresh.actors[1].attack==0x80417c30 && fresh.actors[1].damage==0x80417c08 && fresh.actors[1].confusion==0x8034f1e8 && fresh.actors[1].entry==0x80372bc0);
+ assert(fresh.readPackedWord(0x8041eb00,packed) && packed==0x84400000);
+ assert(fresh.readPackedWord(0x84400070,packed) && packed==0x0007000a);
+ assert(fresh.readPackedWord(0x841011c4,packed) && packed==0x802f4018);
+ assert(fresh.readPackedWord(0x841011c8,packed) && packed==0x802f4030);
+ assert(fresh.readPackedWord(0x841011dc,packed) && packed==0x802f4048);
+ assert(fresh.readPackedWord(0x841011cc,packed) && packed==0x802f4048);
+ assert(fresh.readPackedWord(0x842014d0,packed) && packed==0x80417be0);
+ assert(fresh.readPackedWord(0x842014d8,packed) && packed==0);
+ assert(fresh.readPackedWord(0x84202130,packed) && packed==0);
+ assert(fresh.messageOrder==std::vector<std::string>{"mac_0_b_t1_000"});
+ bool emblem=false,makkuro=false;for(const auto& r:fresh.requests){if(r.owner==1 && r.function==0x80145404)emblem=true;if(r.function==0x80145614)makkuro=true;}
+ assert(emblem && !makkuro && fresh.result==0);
+ HarborTutorial black;assert(black.beginFresh(0,7,10,201));for(unsigned i=1;i<50;++i)black.tick(i*1000/60,0);assert(!black.failed && !black.initialized && black.messageOrder.empty() && black.pendingService==0x80145614);
  HarborTutorial f;assert(f.begin(0,7));
  // Wrong phase is checked before any opening message can run by changing the
  // supplied controller word before its admitted phase root executes.

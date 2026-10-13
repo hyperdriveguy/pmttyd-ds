@@ -5,6 +5,7 @@
 #include "event_lifecycle.hpp"
 #include "battle_packed_hit_precheck.hpp"
 #include "battle_packed_pad.hpp"
+#include "battle_packed_pouch.hpp"
 namespace ttyd {
 namespace {void required(bool ok){if(!ok)std::abort();}int32_t signByte(uint8_t b){return b<128?int32_t(b):int32_t(b)-256;}}
 uint32_t HarborTutorialPacked::word(uint32_t a)const{uint32_t v=0;required(vm.memory.readWord(a,v));return v;}
@@ -23,8 +24,19 @@ bool HarborTutorialPacked::provision(){
  word(0x8041eb90,Battle);half(Battle+8,2);half(Battle+16,1);half(Battle+24,0);byte(Battle+0xa,1);byte(Battle+0x12,255); // Fresh source group-policy adapter.
  for(unsigned i=0;i<64;++i){word(Battle+0x120+4*i,0xffffffff);word(Battle+0x16f5c+8*i,0xffffffff);}
  BattlePadWork pad;pad.init();writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));
- movement=nativeBattleMovePositionServices(vm,{});jump.movement=movement;camera.positions=nativeBattlePartPositionServices(vm);camera.values=camera.positions.unit.values;
+ BattleSoundPlaybackServices playback;playback.user=this;playback.trigger=[](void* self,uint32_t u,uint32_t key,int32_t sentinel,int32_t zero,const std::array<float,3>& pos){assert(sentinel==-250000000 && zero==0);return static_cast<HarborTutorialPacked*>(self)->requestSound(u,key,pos);};
+ playback.position=[](void* self,uint32_t handle,const std::array<float,3>& pos){HarborTutorialSoundRequest r;r.operation=HarborTutorialSoundRequest::Operation::Position;r.handle=handle;r.position=pos;static_cast<HarborTutorialPacked*>(self)->sounds.push_back(r);};
+ playback.off=[](void* self,uint32_t handle){HarborTutorialSoundRequest r;r.operation=HarborTutorialSoundRequest::Operation::Off;r.handle=handle;static_cast<HarborTutorialPacked*>(self)->sounds.push_back(r);};
+ movement=nativeBattleMovePositionServices(vm,playback);jump.movement=movement;jump.user=this;jump.play=[](void* self,uint32_t u,uint32_t key,const std::array<float,3>& pos){static_cast<HarborTutorialPacked*>(self)->requestSound(u,key,pos);};camera.positions=nativeBattlePartPositionServices(vm);camera.values=camera.positions.unit.values;
  return bindBattleSetMoveSpeedCallback(registry,vm) && bindBattleMovePositionCallback(registry,movement) && bindBattleJumpSettingCallback(registry,vm) && bindBattleGetPosCallback(registry,vm) && bindBattleGetHomePosCallback(registry,vm) && bindBattleGetHitPosCallback(registry,vm) && bindBattleGetUnitWorkCallback(registry,vm) && bindBattleSetUnitWorkCallback(registry,vm) && bindBattleGetHpCallback(registry,vm) && bindBattleGetMaxHpCallback(registry,vm) && bindBattleStartWaitCallback(registry,vm) && bindBattleStopWaitCallback(registry,vm);
+}
+uint32_t HarborTutorialPacked::requestSound(uint32_t u,uint32_t key,const std::array<float,3>& pos){HarborTutorialSoundRequest r;r.handle=nextSoundHandle++;r.key=key;r.owner=int32_t(word(u));r.position=pos;for(unsigned i=0;i<128;++i){const auto c=byte(key+i);if(!c)break;r.name+=char(c);}sounds.push_back(r);return r.handle;}
+bool HarborTutorialPacked::provisionFreshPouch(const char* name){
+ if(!name || freshPouch || !vm.memory.registerRam(0x8041eb00,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x84400000,std::vector<uint8_t>(0x5d4)))return false;
+ struct Provider{const char* name;bool allocated=false;} provider{name};PackedPouchInitializationServices services;services.memory=nativeBattleActorServices(vm).memory;services.user=&provider;
+ services.allocate=[](void* p,int32_t heap,uint32_t size){auto& v=*static_cast<Provider*>(p);assert(heap==0 && size==0x5d4 && !v.allocated);v.allocated=true;return uint32_t(0x84400000);};
+ services.message=[](void* p,const char* key){assert(!std::strcmp(key,"name_party3"));return static_cast<Provider*>(p)->name;};
+ freshPouch=initializePackedPouch(services)==0x84400000;return freshPouch;
 }
 void HarborTutorialPacked::samplePhysical(uint64_t time,const BattlePadSample* sample){physicalCurrent=sample!=nullptr;if(!sample || sampledAt==time)return;sampledAt=time;auto pad=readPackedBattlePad(Battle+0x1d1c,nativeBattleActorServices(vm));pad.update(*sample);writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));}
 bool HarborTutorialPacked::registerActor(HarborTutorialActor& a){
@@ -51,7 +63,7 @@ void HarborTutorialPacked::publish(const HarborTutorial& scene){
   half(u+0x108,a.maxHp);half(u+0x10c,a.hp);word(u+0x308,a.heldItem);word(u+0x2c,a.movePhase);byte(u+0x21,a.maxMoves);if(a.maxMoves==0){byte(u+0x22,0);}
   for(unsigned i=0;i<16;++i)word(u+0x218+4*i,a.work[i]);
   for(unsigned axis=0;axis<3;++axis){real(u+0x3c+4*axis,a.position[axis]);real(u+0x30+4*axis,a.home[axis]);}
-  for(auto pair:std::array<std::pair<uint32_t,uint32_t>,5>{{{0x28c,a.wait},{0x298,a.phase},{0x2a0,a.attack},{0x2a4,a.confusion},{0x2b0,a.damage}}})word(u+pair.first,pair.second);
+  for(auto pair:std::array<std::pair<uint32_t,uint32_t>,6>{{{0x28c,a.wait},{0x298,a.phase},{0x2a0,a.attack},{0x2a4,a.confusion},{0x2b0,a.damage},{0x2b8,a.entry}}})word(u+pair.first,pair.second);
  }
 }
 void HarborTutorialPacked::capture(HarborTutorial& scene){
@@ -59,13 +71,21 @@ void HarborTutorialPacked::capture(HarborTutorial& scene){
   uint16_t v=0;required(vm.memory.readHalf(u+0x10c,v));a.hp=int16_t(v);required(vm.memory.readHalf(u+0x108,v));a.maxHp=int16_t(v);
   for(unsigned axis=0;axis<3;++axis){a.position[axis]=real(u+0x3c+4*axis);a.home[axis]=real(u+0x30+4*axis);}
   for(unsigned i=0;i<16;++i)a.work[i]=int32_t(word(u+0x218+4*i));
+  a.wait=word(u+0x28c);a.phase=word(u+0x298);a.attack=word(u+0x2a0);a.confusion=word(u+0x2a4);a.damage=word(u+0x2b0);a.entry=word(u+0x2b8);
  }
  scene.chosenUnit=chosenUnit;scene.chosenPart=chosenPart;
+ for(auto& r:sounds){r.time=scene.now;scene.soundRequests.push_back(std::move(r));}sounds.clear();
  auto& c=scene.camera;c.flags=word(Battle+0x2754);c.priority=int32_t(word(Battle+0x275c));c.mode=int32_t(word(Battle+0x2760));c.owner=int32_t(word(Battle+0x2764));c.target=int32_t(word(Battle+0x2768));c.ownerPart=int32_t(word(Battle+0x276c));c.targetPart=int32_t(word(Battle+0x2770));c.zoom=real(Battle+0x2778);uint16_t halfword=0;required(vm.memory.readHalf(Battle+0x277c,halfword));c.speed=int16_t(halfword);required(vm.memory.readHalf(Battle+0x277e,halfword));c.remaining=int16_t(halfword);for(unsigned i=0;i<3;++i){c.home[i]=real(Battle+0x2810+4*i);c.hit[i]=real(Battle+0x281c+4*i);}
 }
 bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,int32_t& result){
  if(registry.invoke(e,function,first,result))return true;
  switch(function){
+ case 0x8010a500:case 0x8010a388:case 0x8010a55c:case 0x8010a32c:case 0x8010a4a4:{const auto u=actor(e);const uint32_t offset=function==0x8010a500?0x28c:function==0x8010a388?0x2a0:function==0x8010a55c?0x2b0:function==0x8010a32c?0x2a4:0x2b8;word(u+offset,uint32_t(raw(e,1)));if(function==0x8010a388)word(u+0x2ac,0);result=2;return true;}
+ case 0x80104b08:{const auto u=actor(e),launch=uint32_t(value(e,1)),land=uint32_t(value(e,2));word(u+0x1c4,launch);word(u+0x1c8,land);result=2;return true;}
+ case 0x80104ddc:case 0x80104f64:{const auto u=actor(e);std::array<int32_t,5> args{};for(unsigned i=0;i<5;++i)args[i]=value(e,i+1);const auto bank=u+(function==0x80104ddc?0x1dc:0x1cc);word(bank,uint32_t(args[0]));word(bank+4,uint32_t(args[1]));half(bank+8,args[2]);half(bank+10,args[3]);half(bank+12,args[4]);result=2;return true;}
+ case 0x8010f4cc:{const auto selector=value(e,0),id=translateBattleActor(&e,selector,nativeBattleActorServices(vm)),part=value(e,1),index=value(e,2),v=value(e,3);const auto u=word(Battle+0x20+4u*uint32_t(id)),p=packedUnitPart(u,part,nativeBattleActorServices(vm).memory);word(p+0x130+4u*uint32_t(index),uint32_t(v));result=2;return true;}
+ case 0x801063f4:{const auto selector=value(e,0),id=translateBattleActor(&e,selector,nativeBattleActorServices(vm)),part=value(e,1);const auto u=word(Battle+0x20+4u*uint32_t(id)),p=packedUnitPart(u,part,nativeBattleActorServices(vm).memory);word(p+0x4d0,uint32_t(raw(e,2)));word(p+0x4d4,0);word(p+0x4d8,word(0x804226a4));word(p+0x4dc,word(0x804226a4));result=2;return true;}
+ case 0x80145404:{if(!freshPouch)return false;(void)actor(e);const auto pouch=word(0x8041eb00);const auto memory=nativeBattleActorServices(vm).memory;const auto firstBadge=packedPouchEquippedBadgeCount(pouch,327,memory),secondBadge=packedPouchEquippedBadgeCount(pouch,328,memory);if(first && firstBadge==0 && secondBadge==0){result=2;return true;}return false;}
  case 0x80107694:{if(!physicalCurrent)return false;const auto u=actor(e),weapon=uint32_t(value(e,1));word(Battle+0x1cb0,0);DefenseContext context;uint16_t hp=0,override=0;required(vm.memory.readHalf(u+0x10c,hp));context.hp=int16_t(hp);context.simplifiers=byte(u+0x305);context.unsimplifiers=byte(u+0x306);context.automatic=byte(u+0x307);context.weaponGate=byte(weapon+0x13);required(vm.memory.readHalf(Battle+0x1d18,override));DefenseCommand command;command.overrideCounter=int16_t(override);auto pad=readPackedBattlePad(Battle+0x1d1c,nativeBattleActorServices(vm));command.evaluate(pad,context);half(Battle+0x1d18,command.overrideCounter);word(Battle+0x1cb0,command.result);writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));result=2;return true;}
 
  case 0x8012bfd0:result=battleCameraModeEvent(e,camera);return true;
@@ -80,6 +100,7 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  case 0x8010d0f0:if(jump.floor){result=packedGenericJumpContinueEvent(e,first,jump);return true;}break;
  }
 
+ if(function==0x801064d8){const auto u=actor(e),p=packedUnitPart(u,value(e,1),nativeBattleActorServices(vm).memory);word(p+0x204,word(p+0x204)&~uint32_t(2|0x10));word(p+0x204,word(p+0x204)|1);word(p+0x204,word(p+0x204)&~uint32_t(0x80));word(p+0x204,word(p+0x204)&~uint32_t(4));} // Fresh automatic pose projection remains in the presentation adapter.
  if(function==0x8010eed4){const auto u=actor(e);const auto b=signByte(byte(u+0xc));output(e,1,b==0?1:b==1?0:b);result=2;return true;}
  if(function==0x8010b664){const auto id=translateBattleActor(&e,value(e,0),nativeBattleActorServices(vm));const auto b=int8_t(value(e,1));const auto weapon=uint32_t(value(e,2)),attributes=word(weapon+0x68);int32_t bias=signByte(uint8_t(-byte(Battle+8u*uint32_t(int32_t(b))+0xa)));
   if(attributes&0x10000000)bias=signByte(uint8_t(-bias));
