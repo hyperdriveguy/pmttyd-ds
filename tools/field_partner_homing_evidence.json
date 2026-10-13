@@ -1,0 +1,131 @@
+{
+  "schema": 1,
+  "bodies": [
+    {
+      "name": "party_motion_homing_walk",
+      "address": 2148859212,
+      "size": 4704,
+      "sha256": "314b5d221c26437d08442e0a2da31e5551371693edcf642ea28bff1263091bc3",
+      "scope": "complete identity; only jump-history/wall/floor/recovery regions interpreted"
+    }
+  ],
+  "anchors": [
+    {
+      "address": 2148861500,
+      "hex": "7f63db78"
+    },
+    {
+      "address": 2148861516,
+      "hex": "4bf7c255"
+    },
+    {
+      "address": 2148861628,
+      "hex": "7fe3fb78"
+    },
+    {
+      "address": 2148861644,
+      "hex": "d01f011c"
+    },
+    {
+      "address": 2148861720,
+      "hex": "801f0000"
+    },
+    {
+      "address": 2148861732,
+      "hex": "881e0000"
+    },
+    {
+      "address": 2148861740,
+      "hex": "418201c0"
+    },
+    {
+      "address": 2148861824,
+      "hex": "d01f0094"
+    },
+    {
+      "address": 2148861832,
+      "hex": "d01f009c"
+    },
+    {
+      "address": 2148861840,
+      "hex": "d01f0098"
+    },
+    {
+      "address": 2148862172,
+      "hex": "7fe3fb78"
+    },
+    {
+      "address": 2148862176,
+      "hex": "38800002"
+    },
+    {
+      "address": 2148862180,
+      "hex": "4bf7aca1"
+    },
+    {
+      "address": 2148862396,
+      "hex": "90c100a0"
+    },
+    {
+      "address": 2148862820,
+      "hex": "907f012c"
+    },
+    {
+      "address": 2148862960,
+      "hex": "887f004d"
+    },
+    {
+      "address": 2148862968,
+      "hex": "981f004d"
+    },
+    {
+      "address": 2148862980,
+      "hex": "2c000008"
+    },
+    {
+      "address": 2148862984,
+      "hex": "40810198"
+    },
+    {
+      "address": 2148862992,
+      "hex": "7f63db78"
+    },
+    {
+      "address": 2148863024,
+      "hex": "c03f0100"
+    },
+    {
+      "address": 2148863036,
+      "hex": "4bffa9fd"
+    },
+    {
+      "address": 2148863096,
+      "hex": "4bf7a90d"
+    },
+    {
+      "address": 2148863216,
+      "hex": "4bf7a895"
+    },
+    {
+      "address": 2148863496,
+      "hex": "4bf72dc5"
+    },
+    {
+      "address": 2148863824,
+      "hex": "801d00c8"
+    }
+  ],
+  "constants": [],
+  "data": [],
+  "rel_sha256": "d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a",
+  "rel_imports": [
+    {
+      "file_offset": 300492,
+      "address": 2148445880
+    },
+    {
+      "file_offset": 301400,
+      "address": 2148445808
+    }
+  ]
+}
