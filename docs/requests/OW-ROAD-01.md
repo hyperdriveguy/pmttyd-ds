@@ -92,3 +92,26 @@ image clock/loop-ratio completion, previous-frame unsignedpixel capture bounds,
 literal source aspect arithmetic and bounded64×48screen-plane matrix request.
 Existing generic parser evaluates A_1; static Z_1 needs a single-key adapter.
 Full capturetexture/depth/FOV/material/shadow/native runtime owners remain open.
+
+2026-10-13 lecture field visibility/backend follow-up:
+[Lecture actor visibility and backend boundary](../behavior/story/LECTURE_FIELD_ACTOR_VISIBILITY_AND_BACKEND_BOUNDARY.md)
+pinsNPC0x80 draw admission, separate0x8000 pose-facing snap, retained NPC hop
+pose ownership, partykill0/previous-position restoration and actualsetup3
+coordinator/player/defense lesson graph. Accepted battle_start must retain its
+source ownership until the distinct backend exists; decline follows original
+choice/story11 branch. Native lesson/runtime fidelity remains open.
+
+2026-10-13 Professor reload/reentry follow-up:
+[Story11 reload and lecture reentry](../behavior/story/PROFESSOR_STORY11_RELOAD_AND_LECTURE_REENTRY.md)
+recovers unconditional Professorrecord/actor init, exactstory11 flag1207-dependent
+outside position versushidden position, originalpipeout flagwriter and scoped
+unload/contextreset plusfreshstory10 crossingpoll admission. Staticstory8/10-only
+catalog visibility cannot reproduce story11 reload. Saveflag/teardown/runtime
+composition remains open.
+
+2026-10-13 used speaker pose follow-up:
+[Field talk/stay ownership](../behavior/message/FIELD_SPEAKER_TALK_STAY_POSE_OWNERSHIP.md)
+binds original Generalcountdown/latch andresult0/1 stayrequests to concrete
+NPCforce1 talk/staystrings andpartyselector7/1 helpers. Printcreation/active
+window is not talkpose admission; explicitGoombellaNPC andprintparty remain
+different owners. Original cadence/rendered/runtime comparison remains open.

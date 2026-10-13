@@ -67,7 +67,7 @@ def build(iso=DEFAULT_ISO):
     for base,data in segments:
         table+=struct.pack('>III',base,len(data),offset);payload+=data;offset+=len(data)
     Path('romfs/professor-events.pmevt').write_bytes(b'PMEVT001'+struct.pack('>I',len(segments))+table+payload)
-    metadata=struct.pack('<8s4I',b'PMPROG2',*[address(e['file_offset']) for e in events],len(called))
+    metadata=struct.pack('<8s6I',b'PMPROG3',*[address(e['file_offset']) for e in events],address(0x18a3c),address(0x19fc4),len(called))
     metadata+=b''.join(struct.pack('<II',a,tag) for a,tag in sorted(called.items()))
     Path('romfs/professor-program.bin').write_bytes(metadata)
     manifest=dict(source='rel/gor.rel',sha256=hashlib.sha256(raw).hexdigest(),event=event,events=events,

@@ -232,3 +232,11 @@ five-floor-sample and two-wall-height reductions have their own strict ties.
 No authored partner exemption or new radius is established. Read-only source
 inspection/linked verifier checks; native full dynamic partner collision and
 original trajectories remain open.
+
+2026-10-13 Professor/Goombella used message pose delivery:
+[Field speaker talk/stay ownership](../behavior/message/FIELD_SPEAKER_TALK_STAY_POSE_OWNERSHIP.md)
+traces Generalpre-dispatch15-call countdown,latch andresult0/1 stayrestoration
+to NPCforce1 talk/stay andpartyselector7/1 sourcehelpers. _evt_msg_print creates
+andbindswindow butdoesnotactivatetalk directly; retained/closingwindows can
+alreadyrequeststay. ExplicitNPC andparty speakers retain distinct lifecycle
+owners. Native managercadence/actualrenderedcomparison remain open.

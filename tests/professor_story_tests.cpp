@@ -51,9 +51,39 @@ int main() {
     for(unsigned i=0;i<60;++i)s.tick(s.now+17,0,false);
     assert(s.messageOrder.size()==2); // Lecture remains a live crossing poll.
     s.actors[0].position={-260,0,260};
-    for(unsigned i=0;i<10000 && !s.pendingService;++i)s.tick(s.now+17,0x100,false);
-    assert(!s.failed && s.locked() && s.story==10 && s.pendingService);
+    for(unsigned i=0;i<10000 && !s.selection.active();++i)s.tick(s.now+17,0x100,false);
+    assert(!s.failed && s.locked() && s.story==10 && s.selection.active());
     assert(s.messageOrder.size()==4 && s.messageOrder[2]=="mac_0_084_01" && s.messageOrder[3]=="mac_0_084_02");
+    for(unsigned i=0;i<10000 && s.running();++i) {
+        MessageSelectionInput input;
+        if(s.selection.active() && s.selection.state==1) {
+            const int desired=s.selectionOrder.size()==1?0:1;
+            input.buttons=0x100|(s.selection.current==desired?0u:desired==0?8u:4u);
+        }
+        s.tick(s.now+17,0x100,false,input);
+    }
+    assert(!s.failed && s.finished && s.story==11 && s.keysEnabled);
+    assert((s.selectionResults==std::vector<int>{0,1}));
+    assert(s.messageOrder.size()==6 && s.messageOrder[4]=="mac_0_084_03" && s.messageOrder[5]=="mac_0_084_04");
+    assert(s.message.id()=="mac_0_084_02" && s.message.rawText().find("<o>")!=std::string::npos);
+    for(int first:{0,1}) {
+        ProfessorStory lesson;assert(lesson.beginLecture(0,{-260,0,200},{-290,0,200}));
+        lesson.tick(17,0,false);lesson.actors[0].position[2]=260;
+        float goombellaHop=0;
+        for(unsigned i=0;i<12000 && !lesson.pendingService;++i) {
+            MessageSelectionInput input;
+            if(lesson.selection.active() && lesson.selection.state==1) {
+                const int desired=lesson.selectionOrder.size()==1?first:0;
+                input.buttons=0x100|(lesson.selection.current==desired?0u:desired==0?8u:4u);
+            }
+            lesson.tick(lesson.now+17,0x100,false,input);
+            goombellaHop=std::max(goombellaHop,lesson.actors[1].position[1]);
+        }
+        assert(!lesson.failed && lesson.story==10 && lesson.pendingService && lesson.battleSetup==3 && lesson.goombellaNpc);
+        assert(lesson.selectionResults.size()==(first==1?1u:2u));
+        assert(lesson.messageOrder.back()=="mac_0_084_06" && lesson.speaker==1);
+        assert(!lesson.actors[1].hidden && goombellaHop>19 && goombellaHop<=20.001f);
+    }
     ActorAnimationPack paper;assert(paper.load("romfs/professor-fence.pmanim"));
     const auto* paperPose=paper.pose("A_1");assert(paperPose && paperPose->end==140 && paperPose->keys.size()==7);
     ActorAnimationSample paperSample;assert(paperPose->evaluate(0,paperSample));
@@ -96,10 +126,20 @@ int main() {
     assert(g.professorStory.fenceCollisionOff && !g.professorStory.temporaryProfessor && !g.saveRequested);
     assert(walkable({-2.6472f,2.3427f},0));
     for(unsigned i=0;i<20;++i)g.tick(align);
-    for(unsigned i=0;i<600 && !g.professorStory.pendingService;++i) {
+    for(unsigned i=0;i<600 && !g.professorStory.selection.active();++i) {
         Input cross=g.professorStory.locked()?a:leave;g.tick(cross);
     }
-    assert(g.professorStory.pendingService && g.professorStory.messageOrder.size()==4 && g.progress.originalStory==10);
+    assert(g.professorStory.selection.active() && g.professorStory.messageOrder.size()==4 && g.progress.originalStory==10);
+    Progress reload;reload.room=2;reload.originalStory=10;reload.position={-2.6f,2};
+    g.restore(reload);assert(g.professorStory.running() && !g.professorStory.locked());
+    for(unsigned i=0;i<1200 && !g.professorStory.selection.active();++i)g.tick(g.professorStory.locked()?a:leave);
+    assert(g.professorStory.selection.active() && g.progress.originalStory==10);
+    reload.originalStory=11;g.restore(reload);
+    assert(!g.professorStory.running() && !g.professorStory.actors[2].hidden);
+    assert((g.professorStory.actors[2].position==std::array<float,3>{-220,0,305}) && g.professorStory.actors[2].yaw==270);
+    reload.originalFlag1207=true;g.restore(reload);assert(g.professorStory.actors[2].hidden && g.professorStory.professorDeparted);
+    ProfessorStory imported;assert(imported.beginLecture(0,{-260,0,200},{-290,0,200},true));
+    imported.tick(17,0,false);assert(imported.professorDeparted);
     clearCollision();
     std::cout<<"Original REL first-talk: 29 ordered messages, concurrent waits and story9 passed\n";
 }

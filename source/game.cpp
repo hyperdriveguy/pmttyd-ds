@@ -814,6 +814,9 @@ void Game::restore(const Progress& saved) {
     cameraX=p.position.x;cameraZ=p.position.z;cameraHeight=groundHeight;
     rebaseFieldCamera();
     registerRoadCases(true);
+    if(p.room==2 && p.originalStory==10)professorStory.beginLecture(ticks*1000/60,
+        {p.position.x*100,groundHeight*100,p.position.z*100},{partner.x*100,partnerHeight*100,partner.z*100},p.originalFlag1207);
+    if(p.room==2 && p.originalStory==11)professorStory.restoreProfessor(p.originalFlag1207);
 }
 bool Game::checkpointGround(float& height) {
     refreshFieldObjects();
@@ -1546,7 +1549,13 @@ void Game::tick(const Input& rawInput) {
             professorStory.actors[1].position={partner.x*100,partnerHeight*100,partner.z*100};
         }
         const uint32_t keys=(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u);
-        professorStory.tick(ticks*1000/60,keys,false);
+        MessageSelectionInput choice;
+        if(i.physicalSnapshot) {
+            const auto& pad=inputProducer.channels[0];choice={pad.pressed,pad.directionPressed,pad.repeat,pad.directionRepeat};
+        } else {
+            choice.buttons=keys|(i.z<-.5f?8u:0u)|(i.z>.5f?4u:0u);
+        }
+        professorStory.tick(ticks*1000/60,keys,false,choice);
         const auto& m=professorStory.actors[0].position;
         const auto& p=professorStory.actors[1].position;
         if(!passive || professorStory.locked()) {
@@ -1559,6 +1568,7 @@ void Game::tick(const Input& rawInput) {
             else setCameraView({c.eye[0],c.eye[1],c.eye[2]},{c.at[0],c.at[1],c.at[2]},c.duration,uint8_t(c.curve));
         }
         progress.originalStory=professorStory.story;
+        progress.originalFlag1207=professorStory.professorDeparted;
         if(professorStory.finished || !professorStory.locked())scene=Scene::Explore;
         else scene=Scene::Dialogue;
         saveRequested=false;
@@ -1649,7 +1659,7 @@ void Game::tick(const Input& rawInput) {
             fieldDoor.begin(int(n),d,{progress.position.x,progress.position.z});
             if(opening && progress.room==2 && progress.originalStory==8 && !professorStory.triggered) {
                 if(professorStory.begin(ticks*1000/60,{progress.position.x*100,groundHeight*100,progress.position.z*100},
-                                       {partner.x*100,partnerHeight*100,partner.z*100}))scene=Scene::Dialogue;
+                                       {partner.x*100,partnerHeight*100,partner.z*100},progress.originalFlag1207))scene=Scene::Dialogue;
             }
             if(!opening && progress.room==2 && progress.originalStory==9 && professorStory.temporaryProfessor) {
                 professorCameraCursor=0;

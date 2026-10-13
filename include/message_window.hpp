@@ -58,6 +58,7 @@ inline MessageWindowPlan messageWindowPlan(MessageWindowGeometry geometry,unsign
                                            float anchorX,float anchorY,uint8_t alpha,int type=0) {
     MessageWindowPlan out;out.box=geometry;
     out.textX=geometry.x+62;out.textY=geometry.y-36;
+    if(type==5){out.textX=geometry.x+40;out.textY=geometry.y-25;}
     out.textVisible=mode==0 || alpha==255;
     if(type==1 && mode) {
         geometry.x=anchorX-geometry.width*.5f;

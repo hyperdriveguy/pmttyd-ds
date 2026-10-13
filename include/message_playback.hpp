@@ -21,6 +21,7 @@ struct MessageRecord {
 class MessagePlayback {
 public:
     bool open(const char* id,const char* text,const MessageFont&,uint64_t now);
+    bool append(const char* text,const MessageFont&,uint64_t now);
     void tick(uint64_t now,uint32_t triggers);
     bool active() const{return state!=0;}
     bool waiting() const{return state==3;}
@@ -34,10 +35,14 @@ public:
     uint32_t elapsed=0,flags=3;
     uint16_t acceptedKey=0,wait=0,state=0;
     uint8_t alpha=255;
+    uint32_t talkCountdown=0;
+    bool talkLatched=false,talking=false; // General_Main requests, independent of window state.
     uint64_t serial=0; // Native draw-cache lifetime, independent of message ID.
     uint64_t openedAt=0;
     MessageWindowGeometry geometry;
     int windowType=0;
+    int8_t initialChoice=0,cancelChoice=0,choiceCount=0;
+    int16_t choiceWidth=0,choiceY=0;
 private:
     std::string identity,raw;
     uint64_t lastTime=0,animationTime=0;

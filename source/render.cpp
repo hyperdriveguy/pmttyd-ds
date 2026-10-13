@@ -1,5 +1,6 @@
 #include "platform.hpp"
 #include "paper_fence_warp.hpp"
+#include "message_icons.hpp"
 #include "world_shbin.h"
 #include "field_camera.hpp"
 #include "map_visibility.hpp"
@@ -72,6 +73,10 @@ bool Renderer::init() {
     FILE* mapTexture=std::fopen("romfs:/professor-map.t3x","rb");if(!mapTexture)return false;
     professorMapTexture.imported=Tex3DS_TextureImportStdio(mapTexture,&professorMapTexture.texture,nullptr,false);std::fclose(mapTexture);
     if(!professorMapTexture.imported)return false;
+    FILE* iconTexture=std::fopen("romfs:/message-icons.t3x","rb");if(!iconTexture)return false;
+    messageIconTexture.imported=Tex3DS_TextureImportStdio(iconTexture,&messageIconTexture.texture,nullptr,false);std::fclose(iconTexture);
+    if(!messageIconTexture.imported)return false;
+    C3D_TexSetFilter(&messageIconTexture.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&messageIconTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     C3D_TexSetFilter(&professorMapTexture.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&professorMapTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     if(!fieldActorAssets.load("romfs:/field-actors.pmnpc"))return false;
     if(!shadowGeometry.load("romfs:/shadows.pmshadow"))return false;
@@ -192,7 +197,7 @@ void Renderer::fieldActors(const Game& g) {
             if(scripted) {
                 if(actor.storyLow!=8 || g.professorStory.actors[2].hidden)continue;
                 actor.position=g.professorStory.actors[2].position;actor.yaw=g.professorStory.actors[2].yaw;
-                actor.pose=g.professorStory.actors[2].moving?"W_1":g.professorStory.message.active() && g.professorStory.speaker==2?"T_1":"S_1";
+                actor.pose=g.professorStory.actors[2].moving?"W_1":g.professorStory.message.talking && g.professorStory.speaker==2?"T_1":"S_1";
             } else if(!actor.visible(g.progress.room,g.progress.originalStory,g.fieldDoor.interiorMask,g.fieldSystemFlags))continue;
             ++actorMetrics.visible;
             if(gpu.tick!=g.ticks || gpu.pose!=actor.pose) {
@@ -411,10 +416,10 @@ void Renderer::harborActors(const Game& g) {
         vertex(x+m[2],y+m[2],z,right,1,0xffffffff);vertex(x,y+m[2],z,left,1,0xffffffff);vertex(x,y,z,left,0,0xffffffff);
     }
 }
-void Renderer::originalMessage(const Game& g) {
+void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
     const bool fieldTalk=g.fieldActorTalk.message.active();
     const bool professor=g.professorStory.locked();
-    const auto& message=professor?g.professorStory.message:fieldTalk?g.fieldActorTalk.message:g.harborStory.message;if(!message.active())return;
+    const auto& message=supplied?*supplied:professor?g.professorStory.message:fieldTalk?g.fieldActorTalk.message:g.harborStory.message;if(!message.active())return;
     const auto& font=harborMessageFont();
     // Unproject tilted NDC into the same pixel space as the 2D backend.
     // Reuse the actual world matrix: a parallel eye/FOV calculation can drift
@@ -434,7 +439,7 @@ void Renderer::originalMessage(const Game& g) {
         return std::isfinite(x) && std::isfinite(y);
     };
     float anchorX=0,anchorY=0,marioX=0,marioY=0;unsigned mode=0;
-    const bool newWindow=messageWindowSerial!=message.serial;
+    const bool newWindow=!supplied && messageWindowSerial!=message.serial;
     if(newWindow && professor) {
         const auto& a=g.professorStory.actors[g.professorStory.speaker];const auto& root=g.professorStory.speakerRoot;
         messageTalkAnchor={root[0]*.01f,root[1]*.01f,root[2]*.01f};
@@ -496,15 +501,21 @@ void Renderer::originalMessage(const Game& g) {
     if(newWindow){messageWindowSerial=message.serial;messagePlacement=mode;}
     if(!project(messageTalkAnchor,anchorX,anchorY))mode=0;
     else mode=messagePlacement;
-    if(message.windowType==11)mode=0;
+    if(message.windowType==11 || message.windowType==5)mode=0;
     auto plan=messageWindowPlan(message.geometry,mode,anchorX,anchorY,message.alpha,message.windowType);
     stretchMessageTail(plan,anchorX,anchorY);
-    if(message.windowType!=11)messageBorder(plan,message.alpha,message.windowType);
+    if(message.windowType!=11)messageBorder(plan,message.alpha,message.windowType==5?0:message.windowType);
     if(!plan.textVisible)return;
     if(messageSerial!=message.serial){messageSerial=message.serial;messageIdentity=message.id();messageDynamic.clear();for(const auto& r:message.records)messageDynamic.push_back(r.value);}
+    while(messageDynamic.size()<message.records.size())messageDynamic.push_back(message.records[messageDynamic.size()].value);
     uint32_t color=0x000000ff;
     for(size_t i=0;i<std::min(message.cursor,message.records.size());++i) {
-        const auto& r=message.records[i];if(r.code==0xfff7){color=r.flags;continue;}if(r.code>=font.glyphs.size())continue;
+        const auto& r=message.records[i];if(r.code==0xfff7){color=r.flags;continue;}
+        if(r.code==0xfff8) {
+            messageIconImage(r.flags,g.ticks,200+(plan.textX+r.x)*MessageWindowScale,120-(plan.textY+message.scroll+r.y)*.5f,r.scale,message.alpha);
+            continue;
+        }
+        if(r.code>=font.glyphs.size())continue;
         if(float(message.scroll+r.y)>=std::fma(32.f,r.scale,-10.f))continue;
         const auto& glyph=font.glyphs[r.code];
         float x=200+(plan.textX+r.x)*MessageWindowScale,y=120-(plan.textY+float(r.y)+message.scroll-2)*.5f;
@@ -531,6 +542,14 @@ void Renderer::originalMessage(const Game& g) {
         const C2D_DrawParams params={{crop.x,crop.y,crop.width,crop.height},{0,0},.5f,0};
         C2D_DrawImage(image,&params,&tint);
     }
+}
+void Renderer::messageIconImage(uint32_t id,uint64_t ticks,float centerX,float bottomY,float scale,uint8_t alpha) {
+    const auto* icon=messageIcon(id);if(!icon)return;const auto& frame=icon->frame(ticks);
+    Tex3DS_SubTexture sub{};sub.width=frame.width;sub.height=frame.height;
+    sub.left=frame.u0;sub.right=frame.u1;sub.top=frame.v0;sub.bottom=frame.v1;
+    const float width=frame.width*scale*MessageWindowScale,height=frame.height*scale*.5f;
+    C2D_Image image{&messageIconTexture.texture,&sub};C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(255,255,255,alpha),1);
+    C2D_DrawParams params={{centerX-width*.5f,bottomY-height,width,height},{0,0},.6f,0};C2D_DrawImage(image,&params,&tint);
 }
 void Renderer::messageBorder(const MessageWindowPlan& plan,uint8_t alpha,int type) {
     const auto& b=plan.box;
@@ -660,7 +679,7 @@ void Renderer::world(const Game& g) {
     const int actorEnd=count;
     if(!battle && g.professorStory.locked()) {
         const auto& a=g.professorStory.actors[1];const bool right=a.yaw>0 && a.yaw<180;
-        characterModel(a.moving?"PKR_W_1":"PKR_S_1",float(g.ticks),g.partner,g.partnerHeight,right?180:0,right,true);
+        if(!a.hidden)characterModel(g.professorStory.message.talking && g.professorStory.speaker==1?"PKR_T_1":a.moving?"PKR_W_1":"PKR_S_1",float(g.ticks),g.partner,g.partnerHeight,right?180:0,right,true);
     } else if(!battle && !g.harborStory.enabled)characterModel(g.partnerPresentation.name(),g.partnerPresentation.frame(),g.partner,g.partnerHeight,
                              g.partnerPresentation.yaw(),g.partnerPresentation.reflectZ(),true);
     if(!battle && g.harborStory.enabled && g.harborStory.triggered) {
@@ -770,7 +789,19 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
     text(label,x+7,y+8,.48f,disabled?rgb(135,129,116):Ink);
 }
 void Renderer::overlay(const Game& g) {
-    if(g.fieldActorTalk.message.active() || g.harborStory.locked() || g.professorStory.locked()){originalMessage(g);if(g.harborStory.failed || g.professorStory.failed)text("Development notice: source scene unavailable",25,112,.45f,Ink);if(g.professorStory.pendingService)text("Development notice: source choice service pending",25,112,.45f,Ink);return;}
+    if(g.fieldActorTalk.message.active() || g.harborStory.locked() || g.professorStory.locked()) {
+        originalMessage(g);
+        const auto& choice=g.professorStory.selection;
+        if(choice.active()) {
+            originalMessage(g,&choice.message);
+            const auto& box=choice.message.geometry;
+            choice.cursorY=std::fma(.30000001192092896f,box.y-float(31*choice.current+58)-choice.cursorY,choice.cursorY);
+            messageIconImage(0x1f8,g.ticks,200+(box.x+2)*MessageWindowScale,120-choice.cursorY*.5f,1,uint8_t(choice.opacity));
+        }
+        if(g.harborStory.failed || g.professorStory.failed)text("Development notice: source scene unavailable",25,112,.45f,Ink);
+        if(g.professorStory.pendingService)text("Development notice: original lesson backend pending",25,112,.45f,Ink);
+        return;
+    }
     if(g.scene==Scene::Dialogue) {
         const auto plan=messageWindowPlan({},0,0,0,255);messageBorder(plan,255);
         text(g.dialogue(),64,28,.5f,Ink);return;
@@ -905,6 +936,7 @@ void Renderer::shutdown() {
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}
     if(professorMarioTexture.imported) {Tex3DS_TextureFree(professorMarioTexture.imported);C3D_TexDelete(&professorMarioTexture.texture);}
     if(professorMapTexture.imported) {Tex3DS_TextureFree(professorMapTexture.imported);C3D_TexDelete(&professorMapTexture.texture);}
+    if(messageIconTexture.imported) {Tex3DS_TextureFree(messageIconTexture.imported);C3D_TexDelete(&messageIconTexture.texture);}
     for(auto* texture:{&fontTexture,&harborTexture,&messageWindowTexture})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}
     if(imported) Tex3DS_TextureFree(imported);
     if(atlasReady) C3D_TexDelete(&atlas);

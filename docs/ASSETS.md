@@ -698,3 +698,19 @@ animation-completion wait remain in the event. Original fence open/fall SFX
 requests are retained; complete original spatial/MusyX playback is unbound.
 All originals retain Nintendo/Intelligent Systems rights; no redistribution
 license or original assets/compiled packs enter history.
+
+## 2026-10-13 — Original lecture message icons and Goombella talk
+
+Read-only US ISO icon.bin/icon.tpl provide used STICK ID129 (TPL129,80x80,
+static) and choice cursor ID504 (TPL533..542,40x40,source loop1; nine delays2,
+last delay28). tools/message_icon_assets.py retains original pixels and packs
+512x128 RGBA8 with2px transparent padding, no resampling (0.25MiB native texture).
+Ignored local-assets/message-icons/ retains originals/PNGs/provenance; ignored
+romfs/message-icons.bin/.t3x/.json retain descriptors/native atlas/manifest.
+Source icon auxiliary fields are preserved; full original transform/depth remains
+unbound. c_pkr/c_pkr- supplies original PKR_T_1 in ignored partner mesh/animation
+packs through tools/build_assets.py, alongside ordinary partner poses. Expanded
+PMPROG3 metadata retains original Frankly/Goombella identifier VAs for actual NPC
+routing; original event words/relocations remain unchanged. Assets remain
+Nintendo/Intelligent Systems resources with no redistribution grant; original
+and compiled packs are excluded from commits.

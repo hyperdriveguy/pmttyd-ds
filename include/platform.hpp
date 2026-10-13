@@ -83,6 +83,8 @@ private:
     Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture;
     Texture professorMarioTexture;
     Texture professorMapTexture;
+    Texture messageIconTexture;
+    void messageIconImage(uint32_t id,uint64_t ticks,float centerX,float bottomY,float scale,uint8_t alpha);
     std::array<float,2> professorMapSize{};
     ActorAnimationPack professorMarioAnimations;
     ActorAnimationPack professorFenceAnimations;
@@ -120,7 +122,7 @@ private:
     bool characterModel(const char* pose,float frame,Vec2 root,float rootY,float yaw,bool reflectZ,bool companion=false,const ActorAnimationPack* custom=nullptr,float uvScale=1);
     void marioGroundShadow(const FieldShadowRecord&);
     void harborActors(const Game&);
-    void originalMessage(const Game&);
+    void originalMessage(const Game&,const MessagePlayback* supplied=nullptr);
     void messageBorder(const MessageWindowPlan&,uint8_t alpha,int type=0);
     int marioAirShadow(const FieldShadowRecord&);
     void shadow(Vec2 p,float radius,float floor=0);

@@ -34,14 +34,15 @@ service preserves ordered coordinate rejection and single-precision FMA products
 The original LV1-to-LV5 copy remains unchanged. Crossing starts source messages
 084_01/084_02 and movement/cameras. `<o>`/once_stop now emits0xfffc, retains the
 window in state2, clears acceleration and releases the source print callback.
-The unbound original choice callback pauses with its function recorded; no choice
-result, story11 write or substitute battle is manufactured.
+The later [native choice binding](NATIVE_LECTURE_CHOICES_AND_RELOAD.md) implements
+original selection/add callbacks and the declined story11 branch. Accepted
+practice still pauses at its distinct original battle_start service.
 
 Limits: exact GX capture/rectangle clipping/depth/shadow/image ownership and
 source animation-clock/FPSCR equivalence remain open. Reaction/SFX/display and
 NPC/party flag consumers remain partial. Movement/turn/terrain stepping uses
-existing named adapters. Lesson selection/add/battle/return and story10 reload
-lecture admission still need native binding. Saves and exit saves remain
+existing named adapters. Lesson battle/return still need native binding; selection/add and story10
+reload admission are covered by the later choice milestone. Saves and exit saves remain
 suppressed while this live event cannot be serialized.
 
 Original-data tests exercise first-talk, close contact+A, capture blocking,

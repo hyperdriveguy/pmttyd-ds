@@ -5,6 +5,43 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Original lecture choices, talk requests and story11 reload
+
+[Native lecture binding](behavior/story/NATIVE_LECTURE_CHOICES_AND_RELOAD.md)
+executes original selection/add/partykill/setup requests. Declining practice via
+source results0/1 advances GSW0 to11 and retains the original question window
+across084_03/084_04. Both accepted branches preserve Goombella NPC attribution,
+visibility/hop and setup3, then stop at the unbound original battle_start.
+Source choice opening/closing, press/repeat/cancel/result semantics and separate
+window geometry run with original US text. Imported original STICK/cursor pixels
+and frame delays; sound requests remain unbound. Glyph-driven talk countdown
+replaces window-active pose inference; added original Goombella PKR_T_1.
+
+Story10 reload admits a fresh lecture crossing poll; story11 reload restores
+Frankly's source outside position/yaw or flag1207-dependent hidden state.
+Save version5 retains actual GSF1207 in byte34 and reads native versions1..4.
+Documentation inbox deliveries cover speaker talk/stay ownership, exact flag
+and map reentry, NPC visibility and distinct lecture backend ownership.
+
+Validation: make test passes106 CTest/100 Python tests; make all passes. Separate
+DEBUG_SHORT_BOOT build-lecture-verify/artifacts/ttyd-lecture-choices build passes.
+Tests exercise accepted and declined original branches, retained append,
+selection gates/geometry, source icon records, glyph countdown, story10 reentry,
+story11 visible/hidden restore and save-v5/legacy compatibility. Isolated Azahar
+final run artifacts/azahar-lecture-choices-final passes both choices and verifies
+saved originalStory11; captured original windows and returned field inspected.
+Separate story11 reload capture artifacts/azahar-lecture-story11-reload/boot.png
+shows Frankly outside with ordinary field restored. A prior OCR attempt failed missing English data/incompatible older data, then
+was replaced by pixel window detection plus independent native save assertion.
+An earlier native pixel run also passed. No user emulator profile/save touched.
+
+Limits/next: implement actual setup3 teaching battle/coordinator and field return,
+original pipeout/GSF1207 writer/underground maps, complete NPC/party conversion,
+force-restart pose ownership, icon transforms/depth, original selection sounds,
+GX fence capture and source event/animation cadence. Native renderer uses source
+assets through citro2d/citro3d; physical New2DS performance and full prologue
+parity remain unverified. The full-game/prologue goal remains active.
+
 ## 2026-10-13 — Priority0 ARAM initialization and stream-buffer owners
 
 Delivered [initialization/hooks](behavior/audio/MUSYX_ARAM_INITIALIZATION_AND_ALLOCATOR_HOOKS.md)

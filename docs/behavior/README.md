@@ -446,3 +446,8 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [Save-block head/hit lifecycle](field/SAVE_BLOCK_HEAD_CONTACT_AND_HIT_LIFECYCLE.md) — source cube collision and hit state machine.
 - [Save-block common event](field/SAVE_BLOCK_COMMON_SAVE_EVENT_AND_CHOICES.md) — original choices, flags and card request graph.
 - [Native per-area actor catalog](field/NATIVE_AREA_ACTOR_CATALOG.md) — authored static-init coverage, residency, batching and remaining source bindings.
+
+- [Native lecture choices and reload](story/NATIVE_LECTURE_CHOICES_AND_RELOAD.md): original choices, retained dialogue, used icons and source story/flag reload.
+- [Lecture field actors/backend boundary](story/LECTURE_FIELD_ACTOR_VISIBILITY_AND_BACKEND_BOUNDARY.md): NPC visibility and distinct setup3 teaching ownership.
+- [Professor story11 reload](story/PROFESSOR_STORY11_RELOAD_AND_LECTURE_REENTRY.md): exact flag1207 and map initialization.
+- [Field speaker pose ownership](message/FIELD_SPEAKER_TALK_STAY_POSE_OWNERSHIP.md): glyph countdown and actual talk/stay requests.

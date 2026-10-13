@@ -1,4 +1,5 @@
 #include "message_playback.hpp"
+#include "message_icons.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -26,7 +27,7 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
     MessagePlayback next;next.identity=key;next.raw=text;
     if(next.raw.size()>65536)return false;
     uint32_t t=0,speed=25,style=0;int16_t x=0,y=0,k=0,s=0,baseline=0;float scale=1,verticalScale=1,dynamic=1,lineScale=0;
-    bool smallSpacing=false;
+    bool smallSpacing=false;uint32_t choiceMax=0;
     auto record=[&](uint16_t code){MessageRecord r;r.flags=style;r.code=code;r.x=x;r.y=y;r.schedule=t;r.scale=scale;r.value=dynamic;return r;};
     for(size_t at=0;at<next.raw.size();) {
         const uint8_t c=uint8_t(next.raw[at++]);
@@ -47,7 +48,27 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
             else if(name=="wave")style|=4;
             else if(name=="/wave")style&=~4u;
             else if(name=="small"){next.windowType=1;smallSpacing=true;}
+            else if(name=="select") {
+                int a,b,c,d;char extra;
+                if(std::sscanf(args.c_str(),"%d%d%d%d %c",&a,&b,&c,&d,&extra)!=4 || a<-32768 || a>32767 || b<-32768 || b>32767 || c<-32768 || c>32767 || d<-32768 || d>32767)return false;
+                auto byte=[](int v){const uint8_t n=uint8_t(v);return n<128?int8_t(n):int8_t(int(n)-256);};
+                next.initialChoice=byte(a);next.cancelChoice=byte(b);next.choiceCount=1;next.windowType=5;
+                next.choiceWidth=int16_t(c);next.choiceY=int16_t(d);
+                next.flags|=0x20;style|=0x100;speed=0;
+            }
             else if(name=="clear")next.windowType=11;
+            else if(name=="icon") {
+                char id[32],extra;float q;int offset,aux,advance;
+                if(std::sscanf(args.c_str(),"%31s%f%d%d%d %c",id,&q,&offset,&aux,&advance,&extra)!=5 || !std::isfinite(q) || q<=0 || q>8)return false;
+                uint32_t identifier=0;
+                if(!std::strcmp(id,"STICK"))identifier=0x81;
+                else {char* end=nullptr;identifier=std::strtoul(id,&end,10);if(*end || end==id)return false;}
+                const auto* icon=messageIcon(identifier);if(!icon)return false;
+                const auto& frame=icon->frames[0];auto r=record(0xfff8);r.flags=identifier;r.scale=q;r.extra=uint16_t(aux);
+                r.x=half(int32_t(std::fma(.5f*frame.width,q,float(x))+offset));
+                r.y=half(int32_t(std::fma(-float(frame.height),q,float(y))));
+                next.records.push_back(r);x=half(x+advance+40);t+=speed;
+            }
             else if(name=="diary")next.windowType=7;
             else if(name=="wpos") {int a,b,c,d;char extra;if(std::sscanf(args.c_str(),"%d%d%d%d %c",&a,&b,&c,&d,&extra)!=4 || c<=0 || d<=0 || c>32767 || d>32767)return false;next.geometry={float(half(a)),float(half(b)),float(c),float(d)};}
             else if(name=="dynamic") {if(!number(args,dynamic))return false;style|=1;}
@@ -57,6 +78,12 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
             else return false;
             at=end+1;if(at<next.raw.size() && next.raw[at]=='\n')++at;
         } else if(c=='\n') {
+            if(next.flags&0x20){
+                if(next.choiceCount>=127)return false;
+                style=(style&~0xff00u)|(next.choiceCount<24?0x100u<<next.choiceCount:0u);
+                ++next.choiceCount;
+                if(next.choiceWidth==0)choiceMax=std::max(choiceMax,uint32_t(int32_t(x)));
+            }
             next.records.push_back(record(0xfffb));const float delta=(smallSpacing?.7f:1.f)*32*(lineScale==0?1:lineScale);
             y=half(int32_t(float(y)-delta));s=half(int32_t(float(s)-delta));x=0;lineScale=0;t+=speed;
         } else {
@@ -67,10 +94,25 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
         if(next.records.size()>=2560)return false;
     }
     if(next.windowType==1){next.geometry.width=232*.9f;next.geometry.height=64*.9f;}
+    if(next.windowType==5) {
+        if(next.choiceWidth==0)next.choiceWidth=half(int32_t(std::max(choiceMax,uint32_t(int32_t(x)))+80));
+        if(next.choiceWidth<=0)return false;
+        next.geometry={float(-int(next.choiceWidth)/2),float(next.choiceY),float(next.choiceWidth),float(half(36*next.choiceCount+40))};
+    }
     next.records.push_back(record(0xffff));next.state=5;next.alpha=0;next.lastTime=next.animationTime=now;
     next.openedAt=now;
     static uint64_t serial=0;next.serial=++serial;
     *this=std::move(next);return true;
+}
+bool MessagePlayback::append(const char* text,const MessageFont& font,uint64_t now) {
+    if(!text || !active())return false;
+    MessagePlayback parsed;
+    if(!parsed.open(identity.c_str(),(raw+text).c_str(),font,now))return false;
+    // Reparse the accumulated original bytes to reproduce retained parser
+    // T/V/style/coordinates and overwrite the prior terminal slot. Playback
+    // ownership and the existing window identity/anchor remain unchanged.
+    records=std::move(parsed.records);raw=std::move(parsed.raw);
+    state=1;lastTime=now;return true;
 }
 int MessagePlayback::play(uint64_t now,uint32_t input) {
     flags&=~2u;
@@ -95,17 +137,23 @@ int MessagePlayback::play(uint64_t now,uint32_t input) {
             if(r.flags){flags|=0x80;flags&=~4u;elapsed=r.schedule;}
             else flags&=~0x80u;
         }
+        // Generic-record talk publication follows the source bit0x10 priority.
+        if(r.code<0xfff0 && !(r.flags&0x10) && (r.flags&8) && windowType!=3)talkCountdown=15;
         ++cursor;
     }
     return wait?2:3;
 }
 void MessagePlayback::tick(uint64_t now,uint32_t input) {
     if(!state || now<lastTime)return;
+    if(windowType!=5 && talkCountdown) {
+        if(!talkLatched){talking=true;talkLatched=true;}
+        if(--talkCountdown==0){talking=false;talkLatched=false;}
+    }
     if(state==5){animationTime=now;state=6;}
     if(state==6){const uint64_t a=(now-animationTime)*255/200;alpha=uint8_t(std::min<uint64_t>(a,255));if(a>255){state=1;lastTime=now;}return;}
     if(state==7){animationTime=now;state=8;return;}
     if(state==8){if(alpha==0){state=0;return;}const uint64_t a=(now-animationTime)*255/200;alpha=uint8_t(a>=255?0:255-a);return;}
     if(state==3){if(input&0x300){state=1;wait=2;if((input&0x200) && !(flags&0x80))flags|=4;}return;}
-    if(state==1){const int result=play(now,input);if(result==0)state=7;else if(result==1)state=2;else if(result==2)state=3;}
+    if(state==1){const int result=play(now,input);if(result==0){state=7;talking=false;}else if(result==1){state=2;talking=false;}else if(result==2)state=3;}
 }
 }

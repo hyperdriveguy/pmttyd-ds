@@ -11,8 +11,13 @@ static void checksum(SaveBytes& bytes,int length=36) {
 }
 int main() {
     Progress p;p.room=0;p.interiorMask=1;p.originalStory=8;p.position={1.06f,-1.24f};
-    auto bytes=encodeSave(p);Progress out;assert(bytes[4]==4 && bytes[33]==1);
+    auto bytes=encodeSave(p);Progress out;assert(bytes[4]==5 && bytes[33]==1);
     assert(decodeSave(bytes,out) && out.room==0 && out.interiorMask==1 && out.originalStory==8);
+    p.originalFlag1207=true;
+    const auto departed=encodeSave(p);assert(departed[34]==1 && decodeSave(departed,out) && out.originalFlag1207);
+    auto v4=bytes;v4[4]=4;checksum(v4);assert(decodeSave(v4,out) && !out.originalFlag1207 && out.interiorMask==1);
+    v4[34]=1;checksum(v4);assert(!decodeSave(v4,out));
+    p.originalFlag1207=false;
     p.room=2;p.interiorMask=2;p.originalStory.reset();
     assert(decodeSave(encodeSave(p),out) && out.interiorMask==2 && !out.originalStory);
     p.room=1;assert(!decodeSave(encodeSave(p),out));
@@ -43,5 +48,5 @@ int main() {
         assert(decodeSave(old,out) && out.interiorMask==0 && !out.originalStory);
     }
     std::remove(path.c_str());std::remove((path+".bak").c_str());
-    std::puts("Native v4 interior state, legacy saves, validation and recovery passed");
+    std::puts("Native v5 original flag/interior state, legacy saves, validation and recovery passed");
 }

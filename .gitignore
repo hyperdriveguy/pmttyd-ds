@@ -72,3 +72,7 @@ romfs/professor-fence.*
 local-assets/professor-fence/
 
 /romfs/field-saveblock.json
+
+/romfs/message-icons.*
+/local-assets/message-icons/
+/build-lecture-verify/
