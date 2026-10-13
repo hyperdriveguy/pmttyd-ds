@@ -102,3 +102,9 @@ Remaining: companion writers/acyclicity/ID/state/priority/voice/IRQ/providers an
 valid index/extent/value/alias/lifetime/concurrency/stack/ABI domains, stream
 free/deactivate/frequency/mix lifecycle, transitive ARAM/DSP and original chained
 activation/failure/audio traces. EVT-01 and full native/full-game binding OPEN.
+
+## 2026-10-13 — Deactivation follow-up
+
+[Deactivation](MUSYX_STREAM_DEACTIVATION_AND_COMPANION_CHAIN.md) closes five-stage unblock/state3/companion/
+recursive/IRQ body. Free/lifecycle/chain/provider domains/original audio/
+native binding remain open.

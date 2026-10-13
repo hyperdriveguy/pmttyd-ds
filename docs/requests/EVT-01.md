@@ -534,6 +534,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [companions/composition](../behavior/audio/MUSYX_STREAM_ACTIVATION_COMPANIONS_AND_COMPOSITION.md).
   Four stages before recursion/partial writes/exact enables/406 words pinned;
   chain/IRQ/providers/domains/original activation/audio remain open.
+- [x] Complete sndStreamDeactivate five-stage lookup/unblock/state/
+  companion/recursive/IRQ body — [deactivation chain](../behavior/audio/MUSYX_STREAM_DEACTIVATION_AND_COMPANION_CHAIN.md).
+  Fresh state1/2 unblock-before3, retained buffer/ID/voice/cursor, partial
+  progress and exact enables pinned; free/providers/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2703,3 +2707,13 @@ reverified. Region union392+14 external ABI words,total406/658hex,all body ancho
 Fifteen finite acyclic-chain vectors checked. Inline stages/recursive request,
 partial publication/failure and exact stage-specific enables pinned. Chain/IRQ/
 provider domains/original activation/audio/native binding open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream deactivation/companion-chain delivery
+
+Completed whole local
+[deactivation](../behavior/audio/MUSYX_STREAM_DEACTIVATION_AND_COMPANION_CHAIN.md).
+Five spans/453 whole-body anchors/seventeen calls verified; five state/fifteen
+finite acyclic-chain models checked. Five IDs before recursion, fresh1/2 unblock
+before3, retained buffer/ID/voice/cursor, partial missing-link progress and exact
+enables pinned. Free/lifecycle/chain/IRQ/provider domains/original deactivation/
+audio/native binding remain open; EVT-01 stays OPEN.

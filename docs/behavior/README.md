@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [Stream deactivation/companion chain](audio/MUSYX_STREAM_DEACTIVATION_AND_COMPANION_CHAIN.md) | Complete five-stage lookup/unblock/state3/recursion/IRQ body | Free/lifecycle/chain/IRQ/provider domains and original audio |
 | [Stream activation companions/composition](audio/MUSYX_STREAM_ACTIVATION_COMPANIONS_AND_COMPOSITION.md) | Complete companion stages/recursive request/unwinds and composed whole local activation | Chain/IRQ/provider domains and original activation/audio |
 | [Stream activation primary admission](audio/MUSYX_STREAM_ACTIVATION_PRIMARY_ADMISSION.md) | Complete primary lookup/voice/state/terminal-return regions and ABI | Companion continuation/providers/IRQ/domains and original audio |
 | [Stream allocation/length publication](audio/MUSYX_STREAM_ALLOCATION_AND_LENGTH_PUBLICATION.md) | Complete AllocEx/AllocLength/ID/record/buffer/deferred activation/failure bodies | Activation/lifecycle/providers/domains and original audio |
