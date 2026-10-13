@@ -1,3 +1,108 @@
+# Progress and next-session handoff
+
+Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
+
+## 2026-10-12 — Inbox request: EVT-01 positional SFX chain (ID 3)
+
+Worked the [request inbox](DOCUMENTATION_REQUESTS.md) as documentation
+agent **ID 3** (the ID the user assigned; ID 1 and 2 were already taken).
+Picked the priority-0 EVT-01 audio chain, which had **no dedicated contract
+at all** and was explicitly listed as open by three existing documents.
+
+First surveyed the inbox: `docs/requests/` per-request files plus the
+[delivery log](requests/DELIVERY_LOG.md) lock table. Only one lock was
+active (ID 2, audience target accumulator), so EVT-01's SFX subtask was
+free. Confirmed the manager loop and constructor policies making up the rest
+of EVT-01 todo 1 are already complete in `EVENT_MANAGER_COMPLETE_LOOP.md`,
+`EVENT_ROOT_CONSTRUCTORS_AND_APPEND.md`,
+`EVENT_CHILD_BROTHER_AND_INLINE_CONSTRUCTION.md` and
+`EVENT_LABEL_SCAN_AND_ENTRY_RUN_CHECK.md`; the genuinely unclaimed work was
+the audio chain.
+
+Delivered three **complete bodies** in `docs/behavior/audio/`:
+
+- [Unit positional SFX trigger](behavior/audio/BATTLE_UNIT_POSITIONAL_SFX_TRIGGER.md)
+  — `BtlUnit_snd_se_pos` 80126088/114
+- [Positional SFX position update](behavior/audio/BATTLE_POSITIONAL_SFX_POSITION_UPDATE.md)
+  — `psndSFX_pos` 800d96f8/4c
+- [Positional SFX stop](behavior/audio/BATTLE_POSITIONAL_SFX_OFF.md)
+  — `psndSFXOff` 800d95f8/c8
+
+New facts, none previously recorded anywhere in the repo:
+
+- The shared **positional-SFX slot record**: base `0x8002f988`, **stride
+  40**, selected by the **low 8 bits** of the handle. Fields `+0x00` key,
+  `+0x06` channel bits, `+0x18` handle, `+0x1c/+0x20/+0x24` position.
+- The **channel table** at `0x80016b28`, **stride 20**, indexed by
+  `(slot.key >> 19)` — by the key, not the handle. Two bits of `word0`
+  select `SoundSSStopCh` / `SoundSongStopCh` / `SoundEfxStop`.
+- **Stop-without-stop**: `psndSFXOff` clears the record without calling any
+  stop service when `(halfword6 & 0x1F) == 0` or `handle == -1`; and an
+  already-free slot returns *without writing*, so a double stop is a true
+  no-op rather than a re-clear.
+- `psndSFX_pos` writes **exactly three words** and never the key or handle,
+  so it cannot start or stop a sound.
+- `BtlUnit_snd_se_pos` status 10 **overrides** status 11 when both are set
+  (sequential `if`s overwriting one register), and its start id is
+  `(int16)(irand(41) + belong + offset - 20)`.
+- The volume predicate is `r0 < 0x4D80` unsigned, where
+  `r0 = (T & 0xFFFF0000) + 0xE7700000`. For the sentinel the movement-sound
+  callers actually pass, `250000000`, this is the **preserve-current-volume**
+  path. Derived from the compared words, not an observed trace.
+- The wrapper's return is the **handle**, confirming the existing R18 store
+  in `BATTLE_MOVEMENT_SOUND_CONTROL`.
+
+Updated [BATTLE_MOVEMENT_SOUND_CONTROL](behavior/battle/BATTLE_MOVEMENT_SOUND_CONTROL.md)
+and [OVERWORLD_MARIO_IDLE_SOUND_CUES](behavior/overworld/OVERWORLD_MARIO_IDLE_SOUND_CUES.md)
+to link the new bodies instead of listing them open; no contradiction found
+with the existing low-8-handle-bits claim. Registered and then **released**
+the lock in the [delivery log](requests/DELIVERY_LOG.md), marked the EVT-01
+todo answered with an explicit list of what stays open, and appended the full
+reply to [requests/EVT-01.md](requests/EVT-01.md).
+
+Validation: all three bodies disassembled from the read-only ISO with ELFs
+written to `/tmp` only; every callee resolved against `us_symbols.csv`;
+disassembly re-read against each written instruction block; `git diff
+--check` clean; README, cross-link and request-file link audits all clean.
+Docs-only, so `make test` / `make all` were not rerun. Full-game incomplete.
+
+Note: while this session ran, commits ec92b10/990b12e/488983a landed from
+other work and prepended entries above this one. No conflict; this session's
+field-collision entry is intact at its original position.
+
+Next tasks, in the order the inbox implies:
+
+1. **`__psndSFXOn` provisioning** (`0x800d6934`, 1344 bytes) — the slot
+   allocation and macro/voice/resource chain that fills the record layout
+   recovered above. Now the biggest blocker for the audio chain, and the
+   known layout makes it tractable.
+2. **`battleGetUnitMonosiriPtr` 8012ef20** — still explicitly unclaimed,
+   with no dedicated contract. Small and bounded.
+3. **`psndSFXMain`** (2964 bytes) — the reader of the published slot
+   position, which closes the update/stop loop from this session.
+4. Remaining EVT-01 todos: `evtmgrCmd` opcode bodies, `NormalJump`
+   registration writers, `CommandGetWeaponAddress`/`SelectWeapon` cursor
+   modes, and the `BATTLE_UNIT_QUERY_EVENT_LEAVES` prose reconciliation.
+5. The constant block `0x80049468`..`0x8004950c` from the field-collision
+   session is still unextracted.
+
+## 2026-10-12 — Re-extracted placeholders: plane flyMain contract, two aliases
+
+Re-extracted three zero-byte placeholders read-only via
+tools/inspect_dol_function.py into behavior/: mot_plane_flyMain (mot_plane.o
+flyMain @8009c9b8, contracted in behavior/overworld/OVERWORLD_PLANE_FLIGHT_MOTION.md
+with ISO-read SDA set; fixed my own hex/decimal stage confusion pre-commit),
+btlevtcmd_AnnounceMessage (matches contracted announcement doc — alias),
+PSVECDotProduct (9-instruction leaf contracted in the traversal doc).
+Remaining placeholders (_announceMessage/BattleGetFirstAttackTarget/
+partyGetOtherPtr/partyGetTargetNum cases) have no DOL text symbols and cannot
+be extracted by name.
+
+Validation: extraction outputs verified (ELF identity, entry/size match),
+stage immediates re-checked after the hex fix, link audit, diff --check
+clean. Docs-only, no make rerun. Next: triangle interiors, pose domains.
+Full-game incomplete.
+
 ## 2026-10-12 — Fifth gap pass: guard wrapper, act-status publisher, small-data setter and float-to-unsigned
 
 - [Small unit/runtime leaves](behavior/unit/SMALL_UNIT_RUNTIME_AND_MOTION_LEAVES.md):
@@ -30,8 +135,6 @@ and are unchanged by this one (logs `/tmp/pm-gap3-test.log`,
 links. No native/test/asset conversion change, hence no runtime, cadence,
 emulator or original-execution claim. EVT-01/JUMP-01/DMG-02 and the full-game
 requirements remain incomplete.
-
-# Progress and next-session handoff
 
 ## 2026-10-12 — Native JUMP-01 correction: packed Mario jump SFX
 
@@ -219,8 +322,6 @@ Next: remaining unaddressed rows are larger bodies — `BattleCheckPikkyoro`
 (112 lines), `battleMakePhaseEvtTable`/`battleSortPhaseMoveTable`,
 `partyDoWork`, `_getRegistStatus` and `marioLandOn`/`marioSearchHead`.
 EVT-01/JUMP-01/DMG-02 and the full-game requirements remain incomplete.
-
-# Progress and next-session handoff
 
 ## 2026-10-12 — Source audit: documentation requests for packed Jump and recovery
 

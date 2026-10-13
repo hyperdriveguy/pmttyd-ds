@@ -62,7 +62,8 @@ No current cue index is substituted for these opaque handles. There is no
 matching post-owned handle for discarded cue371. No pose counters/phase fields
 are reset in the sound post.
 
-psndSFXOff800d95f8 skips input−1, selects slot from **low8 handle bits**, and
+psndSFXOff800d95f8 (now a [complete body](../audio/BATTLE_POSITIONAL_SFX_OFF.md))
+skips input−1, selects slot from **low8 handle bits**, and
 skips an inactive slot. Pending flag1 clears slot identity/backendhandle to−1
 without backend stop (800d9638–50). A started slot selects stop service by its
 retained cue table flags; flag20000000 uses SoundEfxStop800e0c38, then clears

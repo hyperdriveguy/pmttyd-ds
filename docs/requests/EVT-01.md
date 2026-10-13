@@ -15,12 +15,19 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   manager loop, constructors, dispatch/wait continuations, controls and
   opcode coverage are registered; original pause/multicredit/creation/
   deletion traces remain.)*
-- [ ] Complete `BtlUnit_snd_se_pos` 80126088/114, `psndSFX_pos` 800d96f8/4c
-  and `psndSFXOff` 800d95f8/c8 bodies with their `__psndSFXOn`/macro/voice/
-  resource chain (raw sentinel/key/unit/belong/position capture, returned/
-  invalid handle behavior, updates/stops, source lifetime, original lookup
-  inputs, resource provisioning). The Monosiri/spatial playback request
-  remains open alongside it.
+- [x] Complete `BtlUnit_snd_se_pos` 80126088/114, `psndSFX_pos` 800d96f8/4c
+  and `psndSFXOff` 800d95f8/c8 bodies — **bodies answered** by ID 3 on
+  2026-10-12 ([trigger](../behavior/audio/BATTLE_UNIT_POSITIONAL_SFX_TRIGGER.md),
+  [position update](../behavior/audio/BATTLE_POSITIONAL_SFX_POSITION_UPDATE.md),
+  [stop](../behavior/audio/BATTLE_POSITIONAL_SFX_OFF.md)): slot layout at
+  0x8002F988 stride 40 by low-8 handle bits, 0x80016B28 stride-20 channel
+  table by key>>19, two-bit SoundSS/Song/Efx stop selection, clear-without-
+  stop and no-op double-stop paths, status 10 overriding 11, irand(41)+belong
+  +offset-20 start id, and the unsigned `r0 < 0x4D80` preserve-versus-explicit
+  volume branch. *`__psndSFXOn` macro/voice/resource provisioning, Check/GetStatus
+  internals, psndSFX_pit, irand domain, the psndSFXMain position reader, other
+  callers and all original traces remain open, so the audio chain as a whole
+  is not closed. The Monosiri/spatial playback request remains open alongside it.*
 - [ ] Complete `battleGetUnitMonosiriPtr` 8012ef20 with its original
   table/source provisioning (bounds/negative kind/capture/null/returned
   record semantics, data pointers/lifetime).
@@ -150,5 +157,92 @@ markers. Keep mathematical event invocations separate from physical pad samples.
 Original pause/multicredit/creation/deletion traces remain necessary verification.
 
 ## Answers and delivery notes
+
+### ID 3, 2026-10-12 — `BtlUnit_snd_se_pos` / `psndSFX_pos` / `psndSFXOff` complete bodies
+
+Answering the first and third request-text paragraphs below. All three
+functions are now recovered as **complete bodies**, every branch and call
+site included, and the lock is released.
+
+- [Unit positional SFX trigger](../behavior/audio/BATTLE_UNIT_POSITIONAL_SFX_TRIGGER.md)
+  — 80126088/114 complete.
+- [Positional SFX position update](../behavior/audio/BATTLE_POSITIONAL_SFX_POSITION_UPDATE.md)
+  — 800d96f8/4c complete, leaf body with no stack frame.
+- [Positional SFX stop](../behavior/audio/BATTLE_POSITIONAL_SFX_OFF.md)
+  — 800d95f8/c8 complete.
+
+Concretely recovered, and not previously stated anywhere:
+
+**Slot record layout** (this is what the `__psndSFXOn` chain fills). Records
+are at `0x8002f988`, **stride 40**, indexed by the **low 8 bits** of the
+handle. `+0x00` key, `+0x06` channel bits, `+0x18` handle, `+0x1c/+0x20/+0x24`
+the position triple. Both `psndSFXOff` and `psndSFX_pos` resolve the record
+this way; the two functions agree on stride and base.
+
+**Channel table.** `psndSFXOff` indexes a second table at `0x80016b28`,
+**stride 20**, by `(slot.key >> 19)`. Two bits of `table[k].word0` select
+the stop service: bit0 clear -> `SoundSSStopCh` (800ddff8), bit0 set and
+bit1 clear -> `SoundSongStopCh` (800e1188), both set -> `SoundEfxStop`
+(800e0c38). The index comes from the **key**, not the handle, so two slots
+sharing a key share a table row.
+
+**A stop that does not stop.** `psndSFXOff` clears the record **without
+calling any stop service** when `(slot.halfword6 & 0x1F) == 0`, and also
+when `slot.handle == -1`. Separately, an already-free slot (`slot.key == -1`)
+returns **without writing at all**, so a double stop is a true no-op rather
+than a re-clear. Two distinct `-1` guards precede any caller-pointer load.
+
+**`psndSFX_pos` writes exactly three words** (`+0x1c`, `+0x20`, `+0x24`) and
+never touches the key or handle. It is pure position publication: it cannot
+start or stop a sound. The x and y loads both precede their stores.
+
+**`BtlUnit_snd_se_pos` id derivation.** Status bits 11 and 10 each produce
+`(2*S + 1) * -341` / `(2*S - 1) * -341` from a **signed** status byte, each
+narrowed with `extsh`. The two blocks are sequential `if`s that overwrite the
+same register, so **status 10 wins when both are set** — that precedence was
+not previously recorded. The start id passed to `psndSFXOn_3D` is
+`(int16)(irand(41) + belong + offset - 20)`; the `-20` centres the 0..40 draw
+into -20..+20.
+
+**The volume decision, stated exactly.** With `T = rawSentinel`,
+`r0 = (T & 0xFFFF0000) + 0xE7700000` compared **unsigned** against `0x4D80`:
+if `r0 < 0x4D80` the volume is `T & 0xFF` (explicit), otherwise it is the
+return of `psndSFX_get_vol(handle)` (current, i.e. preserved). This
+confirms and explains the existing note that `psndSFXOff` selects from the
+low 8 handle bits, and settles the direction of the comparison — inverting
+it silently swaps "preserve" for "explicit".
+
+For the sentinel the movement-sound callers actually pass,
+`250000000 = 0x0ee6b280`: `r0 = 0x0ee60000 + 0xe7700000 = 0xf65c0000`, which
+is `>= 0x4d80`, so it takes the **preserve-current-volume** path. This is a
+value derived from the compared words, not an observed game trace.
+
+**Return value.** The wrapper returns the handle from `psndSFXOn_3D`
+(kept in `r30` across the pitch and volume calls), which is consistent with
+`BATTLE_MOVEMENT_SOUND_CONTROL`'s R18 store. It is not a success flag and is
+not classified by that caller.
+
+Updated
+[BATTLE_MOVEMENT_SOUND_CONTROL](../behavior/battle/BATTLE_MOVEMENT_SOUND_CONTROL.md)
+and [OVERWORLD_MARIO_IDLE_SOUND_CUES](../behavior/overworld/OVERWORLD_MARIO_IDLE_SOUND_CUES.md)
+to point at these three instead of listing them open. No contradiction with
+the earlier low-8-handle-bits claim was found.
+
+**Still open, and not answered here:** `__psndSFXOn` macro/voice/resource
+internals and the slot-provisioning write order; `BtlUnit_CheckStatus` /
+`BtlUnit_GetStatus` internals and the meaning of status bits 10/11;
+`psndSFX_pit` semantics; the `irand(41)` distribution and seeding; the
+reader of the published position inside `psndSFXMain`; other callers; and
+all original execution traces. The Monosiri request
+(`battleGetUnitMonosiriPtr` 8012ef20) and the other EVT-01 todos are
+untouched. No generated sample, guessed sound key or fabricated audio
+mapping is claimed; no ISO bytes were copied into the repository.
+
+Validation: all three bodies disassembled from the read-only ISO via
+`tools/inspect_dol_function.py` with ELFs written to `/tmp` only; every
+callee resolved against `us_symbols.csv`; disassembly re-read against each
+written instruction block; `git diff --check` clean; README link audit and
+cross-link audit clean. Docs-only, so `make test` / `make all` were not
+rerun.
 
 The append-only delivery notes, implementation breadcrumbs and host-gate history for this request live in [EVT-01_HISTORY.md](EVT-01_HISTORY.md). Validated deliveries are also registered in the [delivery log](DELIVERY_LOG.md).

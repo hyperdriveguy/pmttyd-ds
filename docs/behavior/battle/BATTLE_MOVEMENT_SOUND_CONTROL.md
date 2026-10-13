@@ -103,7 +103,14 @@ movement core merely because both use the same loader/record fields.
 
 tools/verify_jump_preparation.py pins complete core/wrapper fingerprints and
 counter/voice/request anchors. BtlUnit_snd_se_pos80126088/114,psndSFXOff800d95f8/
-c8,psndSFX_pos800d96f8/4c,__psndSFXOn resource/macro/voice internals,record
-source writers,other callers and original audio traces remain open. No generated
-sample,guessed sound key or event duration substitutes for them. Original ISO
+c8 and psndSFX_pos800d96f8/4c are now **complete bodies** — see the
+[trigger](../audio/BATTLE_UNIT_POSITIONAL_SFX_TRIGGER.md),
+[stop](../audio/BATTLE_POSITIONAL_SFX_OFF.md) and
+[position update](../audio/BATTLE_POSITIONAL_SFX_POSITION_UPDATE.md). The
+trigger returns the **live slot handle**, confirming the R18 store above;
+its sentinel 250000000 selects the preserve-current-volume branch, and its
+derived start id is irand(41)+belong+statusOffset-20 narrowed to int16.
+__psndSFXOn resource/macro/voice internals, record source writers, other
+callers and original audio traces remain open. No generated sample,guessed
+sound key or event duration substitutes for them. Original ISO
 inspection/data artifacts remain under /tmp or ignored paths and are read-only.
