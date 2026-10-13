@@ -94,3 +94,5 @@ writers, full sndFXStartEx/Ctrl/Check/KeyOff/emitter/interrupt semantics,
 resource loading and original execution traces. Parent request remains OPEN.
 
 [Complete check/volume/pitch/aux/stop leaves](SOUND_EFFECT_RECORD_CONTROL_LEAVES.md) now supply the used local ordinal/voice/controller and KeyOff request rules; underlying MusyX/emitter/runtime semantics remain open.
+
+[Complete MusyX API/voice/IRQ wrappers](MUSYX_EFFECT_API_WRAPPERS_AND_VOICE_LOOKUP.md) now establish the used public calls, external-versus-internal voice identity and separate IRQ nesting. Core synth/resource/map lifetime and original playback remain open.

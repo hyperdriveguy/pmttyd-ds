@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [MusyX effect API/voice/IRQ](audio/MUSYX_EFFECT_API_WRAPPERS_AND_VOICE_LOOKUP.md) | Eight complete public wrapper/voice-map/IRQ bodies, external-ID returns and separate nesting | Core synth/resource/map/default-table provisioning and OS/hardware/original playback |
 | [SFX pending startup](audio/POSITIONAL_SFX_PENDING_STARTUP_REQUESTS.md) | Complete800da010..398 delay/start/three-backend request/aux/pending-clear and same-pass live entry | Full calc3D/live/fade/stream/song/MusyX/resource/runtime |
 | [Effect pool PlayEx](audio/SOUND_EFFECT_PLAY_EX_ALLOCATION_AND_START.md) | Complete40-record first-free/priority-steal/start/interrupt/publish/fresh-pool/liveness body | Pool/other writers, core MusyX/emitter/resource/hardware/original execution |
 | [Effect record controls](audio/SOUND_EFFECT_RECORD_CONTROL_LEAVES.md) | Complete Check/Volume/Pitch/Aux1/Stop ordinal→voice rules, controller widths/order and clear policy | Core voice/emitter/controller semantics and source/runtime lifetime |

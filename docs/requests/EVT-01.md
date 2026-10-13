@@ -24,6 +24,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Stop bodies — [startup requests](../behavior/audio/POSITIONAL_SFX_PENDING_STARTUP_REQUESTS.md),
   [PlayEx](../behavior/audio/SOUND_EFFECT_PLAY_EX_ALLOCATION_AND_START.md),
   [record controls](../behavior/audio/SOUND_EFFECT_RECORD_CONTROL_LEAVES.md).
+- [x] Complete public MusyX sndFXStartEx/Ctrl/Ctrl14/Check/KeyOff,
+  vidGetInternalId and hwDisableIrq/hwEnableIrq local wrappers —
+  [API/voice/IRQ contract](../behavior/audio/MUSYX_EFFECT_API_WRAPPERS_AND_VOICE_LOOKUP.md).
 - [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -494,3 +497,19 @@ Fresh listings remain `/tmp/inbox-fx*.elf` and source/current disassembly files.
 Linked backend identities are explicitly separate from complete bodies. Full
 calc3D/live/spatial/fade/MusyX/resources/hardware/source/original runtime still
 OPEN. No native code/tool implementation, original asset export or playback claim.
+
+### 2026-10-13 — Complete MusyX effect API, voice lookup and IRQ wrappers
+
+[Eight local bodies](../behavior/audio/MUSYX_EFFECT_API_WRAPPERS_AND_VOICE_LOOKUP.md)
+close retained raw arguments/core returns, default-table byte selection,
+external-versus-internal voice identity, sorted-list lookup/null/miss behavior
+and separate16-bit MusyX IRQ nesting. sndFXCheck preserves the INPUT external
+ID when mapping exists; repeated source checks still perform fresh lookups
+with an Enable/Disable interval. These bodies do not close synthFXStart,
+controller/KeyOff core, resource loading or actual audible behavior.
+
+Validation: source manifest12 body fingerprints (8 complete/4 linked-only)
+and77 original anchors passes read-only generic DOL verification. Eight full
+listings remain `/tmp/inbox-snd*.elf`, vidinternal and MusyX IRQ ELFs. Derived
+IRQ boundary metadata distinguishes counts0/1/2/65534/65535 and wrap; no
+original code executes. Parent remains OPEN for the core/source/runtime chain.

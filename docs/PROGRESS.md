@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Priority0 MusyX effect API and voice/IRQ closure
+
+Delivered [eight complete API/lookup/IRQ bodies](behavior/audio/MUSYX_EFFECT_API_WRAPPERS_AND_VOICE_LOOKUP.md).
+Public effect wrappers retain raw inputs and core returns; StartEx loads a
+studio-indexed default byte with no bounds guard. Check returns the original
+external ID when internal mapping exists, not the internal index. The original
+repeated backend checks retain fresh lookup/IRQ boundaries. Internal mapping
+is an unsigned-key linked-list scan with early miss; MusyX IRQ count/state is
+separate from SoundEfxPlayEx's nesting pair and retains16-bit wrap semantics.
+Marked the local EVT-01 portion complete while leaving core/runtime work OPEN.
+
+Validation: generic musyx_effect_api_evidence.json verifier12 body hashes
+(8 complete/4 linked identities) and77 anchors passes. Eight fresh complete
+listings remain under `/tmp`; IRQ boundary vectors distinguish0/1/2/65534/
+65535. Link audit717 Markdown files/0 broken links and whitespace checks pass.
+Docs/metadata only; no make rerun, native code or original asset/code-body
+export. Shared unrelated staged/worktree changes excluded from this commit.
+
+Next/limits: core synthFXStart/controller/KeyOff, voice-map/default-table
+producers, resources/macros and hardware/OS/source/runtime need recovery.
+Continue priority0 calc3D/live audio and query-specific weapon/menu source
+bindings, then priority1 damage/counter consumers. No original audible/executed
+trace, hardware or full-game completion claim.
+
 ## 2026-10-13 — Priority0 pending SFX startup and effect backend contracts
 
 Delivered [complete pending region](behavior/audio/POSITIONAL_SFX_PENDING_STARTUP_REQUESTS.md),

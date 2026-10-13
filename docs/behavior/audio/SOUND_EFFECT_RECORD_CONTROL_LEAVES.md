@@ -74,3 +74,5 @@ were generated read-only under `/tmp/inbox-fx*.elf`. Existing generic DOL
 verification checks source identity/instructions, not original audio execution.
 Remaining: full sndFX*/emitter/controller semantics, pool allocation/other
 writers/teardown, source valid ordinals and original mute/liveness/control traces.
+
+[Complete MusyX API/voice/IRQ wrappers](MUSYX_EFFECT_API_WRAPPERS_AND_VOICE_LOOKUP.md) now establish the used public calls, external-versus-internal voice identity and separate IRQ nesting. Core synth/resource/map lifetime and original playback remain open.
