@@ -6,6 +6,26 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 sequence initialization and free chains
+
+Delivered [sequence free-chain init](behavior/audio/MUSYX_SEQUENCE_INITIALIZATION_AND_FREE_CHAINS.md).
+Complete seqInit pins empty active/paused roots,8-instance chain/IDs0..7/state0,
+128 priority halfwordsffff,256 notes and next-ID0. Cross-record +18 writes are
+next.previous within the20-byte note layout; payloads are not zeroed. Marked
+local EVT-01 portion complete; constructors/voice/resource/runtime remain OPEN.
+
+Validation: generic read-only verifierone body span/88 anchors/no calls passes.
+Exact extents/chain metadata and emitted32*8 note-store simulation512 link
+assertions/all writes within1400hex checked as deductions. Full fresh ELF/listing
+stays `/tmp`; no original execution. Link audit763 Markdown files/0 broken;
+whitespace checks pass. Docs/metadata only: no make rerun, native change or
+original body/asset export. Isolated index excludes unrelated shared work.
+
+Next/limits: sequence constructors/ID/state/list/note/payload providers and MIDI
+priority consumers, voice/resources/reset/concurrency and original initialization/
+reuse/audio traces. Continue priority0 source/backend then priority1 damage graph.
+No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Priority0 sequence validity and stop lifecycle
 
 Delivered [sequence validity/stop](behavior/audio/MUSYX_SEQUENCE_VALIDITY_PRIVATE_ID_AND_STOP.md).

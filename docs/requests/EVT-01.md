@@ -133,6 +133,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [sequence validity/stop](../behavior/audio/MUSYX_SEQUENCE_VALIDITY_PRIVATE_ID_AND_STOP.md).
   Lookup tag/state/note/free-list order pinned; ID/index/state/list/note/voice/
   resource/source/runtime remains open.
+- [x] Complete seqInit instance/private-ID/MIDI-priority/note/free-root
+  producer — [sequence free-chain init](../behavior/audio/MUSYX_SEQUENCE_INITIALIZATION_AND_FREE_CHAINS.md).
+  Exact8/256 chains/cross-record stores pinned; constructors/payload/voice/
+  resources/priority consumers/reset/concurrency/runtime remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -987,3 +991,17 @@ resolved direct calls passes. Nine validity/five width/five state vectors and
 original8-instance extent checked as source deductions. Full listings/ELFs stay
 `/tmp`; no original execution/native/body/asset export. ID/state/list/note/efc/
 index/cycle/alias/concurrency/voice/resource and original stop/audio remain OPEN.
+
+### 2026-10-13 — Sequence initialization and free-chain source producer
+
+[Complete seqInit](../behavior/audio/MUSYX_SEQUENCE_INITIALIZATION_AND_FREE_CHAINS.md)
+closes empty active/paused roots, eight-instance chain/private IDs0..7/state0,
+128 MIDI-priority halfwordsffff,256-node note chain and final next-ID0. Note
++18 stores target the next20-byte record's previous link; other payloads survive.
+No voice/resource release or whole-instance zero inferred from root/state reset.
+
+Validation: read-only manifestone whole span/88 anchors/no calls passes. Exact
+8-instance/256-note/128-halfword extents and note block simulation512 link
+assertions/in-bounds writes checked as deductions. Full ELF/listing stays `/tmp`;
+no original code executes/body/asset exports. Constructors/ID/list/note/payload/
+priority consumers/voice/resources/reset/concurrency/original audio remain OPEN.

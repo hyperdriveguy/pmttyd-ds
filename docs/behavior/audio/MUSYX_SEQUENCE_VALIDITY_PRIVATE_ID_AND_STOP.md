@@ -106,3 +106,5 @@ Remaining: instance/key/private-byte/state/list/note/free/efc producers and vali
 index/cycle/member/alias/concurrency domains, voiceKillSound and full sequencer/
 resource lifetime, original validity/tagged-stop/note/audio traces. Four local
 bodies are answered; full native/source/runtime/hardware remains OPEN.
+
+[Complete sequence initialization/free-chain producer](MUSYX_SEQUENCE_INITIALIZATION_AND_FREE_CHAINS.md) now establishes initial IDs0..7/state0/empty active-paused roots and free chains. Constructors/later writers and reset/payload/voice/resource/runtime domains remain open.
