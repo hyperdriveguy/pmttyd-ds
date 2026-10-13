@@ -2,6 +2,51 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+
+## 2026-10-13 — Original save-block surfaces and material passes
+
+Commit `c3e36cb` adds the original plaza `mobj_save` presentation through the
+shared per-area catalog. PMNPC002 retains original `(185,60,-55)`, scalar10,
+S_1, story341 exclusion and constructor system mask0x20. PMANIM4 preserves
+original indexed RGBA, untextured draws, discrete texture shifts, material wrap
+overrides, source pass/cull and nonzero animation start. Portable triangle
+partitioning preserves texture/color interpolation across clamp/repeat/mirror
+boundaries. Citro3d submits original opaque/translucent admission and flushes
+CPU-written linear vertex data. PMANIM1/2/3 and PMNPC001 remain loadable.
+Conversion/resources stay local and ignored; provenance/rights are in
+[assets](ASSETS.md) and [surface format](behavior/display/NATIVE_ACTOR_SURFACE_PACK.md).
+
+Documentation work through OW-INTERACT-01/SAVE-01 recovered
+[material/UV binding](behavior/display/SAVE_BLOCK_ANIMATED_UV_AND_MATERIAL_BINDING.md),
+[head cube and callback lifecycle](behavior/field/SAVE_BLOCK_HEAD_CONTACT_AND_HIT_LIFECYCLE.md)
+and the [complete common save event](behavior/field/SAVE_BLOCK_COMMON_SAVE_EVENT_AND_CHOICES.md).
+These establish original contact, five-state callback, previous-published
+animation ratio, key ownership, exact original choices, flag namespaces,
+cancellation and card error/retry requests. Story text is retained from
+msg/US; no replacement dialogue is introduced.
+
+Validation: shared-worktree `make test` passed103 CTest/100 Python tests and
+`make all` built the native3DS binary before concurrent fence changes. Isolated
+feature snapshot `/tmp/pm-object-verified-j_rg9rov` independently passed103
+CTest/100 Python tests and `make all`; its source/romfs were isolated from later
+concurrent edits. Dense barycentric tests check all nine wrap combinations,
+geometry area and RGBA interpolation; original S_1/A_1 tests check discrete
+scrolling, timing, pose wrap and malformed-pack retention. Idle peak402
+vertices. Its immutable binary `artifacts/ttyd-saveblock-verified.3dsx` passed
+isolated Azahar capture `artifacts/azahar-saveblock-verified2`: original colored
+block and animated glow were inspected in the plaza. An earlier3-second cold
+launch stopped at title; the successful12-second startup reached the field.
+Single emulator HUD sample60fps/sim3.43ms/CPU8.3ms/GPU0.5ms is not a percentile
+trace or hardware-performance result. Documentation links721 files/0 broken;
+whitespace checks pass. User emulator profile/saves remain untouched.
+
+Limits/next: bind the recovered source collision cube and head-name cache,
+then the hit lifecycle with independently timed per-instance poses and original
+common save event/card adapter. Save-block hit/save interaction is not yet
+connected. Original lighting, global translucent sorting, NPC collision/search,
+wandering, area event completeness and New2DS hardware profiling remain open.
+Keep the full user goal active; this is an incremental Rogueport milestone.
+
 ## 2026-10-13 — Title/file menu and fresh-file opening order adapter
 
 Normal boot now plays the original storybook/market demonstration, title and
