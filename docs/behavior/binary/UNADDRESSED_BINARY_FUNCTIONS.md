@@ -105,6 +105,7 @@ contracted under its canonical name at the same entry address:
 | `printf_parse_format` = printf's `parse_format` @8026bcb4 | [Format directive parser](../format/FORMAT_DIRECTIVE_PARSER.md) opens "This is printf's parse_format at 0x8026bcb4" |
 | `scanf_parse_format` = scanf's `parse_format` @8026ce44 | [Scan directive parser](../format/SCAN_DIRECTIVE_PARSER.md) opens at 0x8026ce44 size 0x548; [consumers](../format/SCAN_FORMAT_CONSUMERS.md) call it per `%` |
 | `party_flyMain` = `flyMain@party_move.o` @800c7ff8 | [Flying partner executor](../partner/FIELD_PARTNER_FLY_DISPATCH.md) opens with that address/size0x570, the unsigned P+59 dispatch over 0/1/2/3/6, and the same jump-table/call targets |
+| `hitVec` = `hitCheckVecFilter` @800158a4 | [Support/slopes](../overworld/OVERWORLD_SUPPORT_SLOPES_AND_STEPS.md) contracts its plane-distance orientation, downward-path normalization and cull behavior at exact ranges — but explicitly not all special-mode branches, so triangle-loop phases remain open |
 
 ## Group D — duplicate extractions under two names (2 pairs)
 
