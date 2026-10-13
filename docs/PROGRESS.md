@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero depop/fade/studio prepass
+
+Completed HandleDepopVoice/DoDepopFade and builder studio two-list prepass;
+checked the EVT-01 portion.
+[Depop/fade/prepass](behavior/audio/MUSYX_DEPOP_ACCUMULATION_FADE_AND_STUDIO_PREPASS.md)
+pins nine accumulator gates, wrapped-then-clamped addition/residual fade and
+captured versus post-child successor/callback/sentinel/active/break/root order.
+Fade callers/list providers/domain/original depop/DSP/audio remain open.
+
+Validation: read-only ISO manifest passed six spans (two bodies/one region/three
+linked),291 whole-body/region instruction anchors/four calls. Seven accumulation/
+clamp,thirteen fade-boundary/residual,six admission/sentinel/deactivation vectors
+and nine field bindings checked. Link audit passed850 Markdown files/zero broken
+links; scoped `git diff --check` passed. Documentation/metadata only; no `make test`/
+`make all` rerun. Full original fresh ELFs/listings stay `/tmp`; no bodies/binary
+assets committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 fade callers/studio output/cache/DSP consumers,
+surrounding builder admission/sorting/command/budget paths, actual accumulator/
+PB sample/gate/latch/active/break/sentinel/root/link providers and valid studio/
+list/member/cycle/index/value/alias/lifetime/IRQ/concurrency domains; original
+list/depop/fade/callback/DSP/audio traces. Remaining precision work, lower-priority
+inbox and full native/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero paired sound cosine/root helpers
 
 Completed sndCos/sndSqrt; checked the EVT-01 portion.

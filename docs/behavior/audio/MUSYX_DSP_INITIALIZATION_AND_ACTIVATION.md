@@ -146,3 +146,9 @@ answered; full native/runtime binding and EVT-01 remain OPEN.
 [Pitch/volume/DSP ramps](MUSYX_HARDWARE_PITCH_VOLUME_AND_DSP_RAMPS.md) closes hardware duplicate/dirty/event
 publication and two local DSP ramp helpers. Actual mixer internals/ramp callers/
 consumers/value/FP/alias domains and original audio remain open.
+
+## 2026-10-13 — Studio depop prepass follow-up
+
+[Depop/fade/prepass](MUSYX_DEPOP_ACCUMULATION_FADE_AND_STUDIO_PREPASS.md) closes two local depop helpers and the builder's
+studio two-list prepass. Captured/fresh successor ordering and callback/root
+publication retained; list providers/domains/original DSP/audio remain open.

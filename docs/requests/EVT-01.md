@@ -406,6 +406,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [paired cosine/root helpers](../behavior/audio/MUSYX_PAIRED_COSINE_AND_SQRT_HELPERS.md).
   Original constants/paired reduction/fused polynomial/estimate-before-zero/
   three double refinements pinned; GQR/FPSCR/seed/domain/runtime remain open.
+- [x] Complete HandleDepopVoice/DoDepopFade and studio two-list depop
+  prepass — [depop/fade/prepass](../behavior/audio/MUSYX_DEPOP_ACCUMULATION_FADE_AND_STUDIO_PREPASS.md).
+  Nine accumulator bindings/wrapped clamp/residual fade/successor/callback/
+  active/break/root order pinned; caller/domain/original DSP/audio open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2225,3 +2229,12 @@ synthetic-seed/zero-gate vectors and original constants recorded. Paired operand
 lane interpretation cross-checked against Dolphin source; no emulator execution
 claimed. GQR/FPSCR/estimate/caller domains and original math/filter/audio remain
 open. Parent EVT-01 stays OPEN.
+
+## 2026-10-13 — Depop accumulation/fade/studio prepass delivery
+
+Completed two bodies/one region in [depop/fade/prepass](../behavior/audio/MUSYX_DEPOP_ACCUMULATION_FADE_AND_STUDIO_PREPASS.md).
+Six spans/291 instruction anchors/four calls verified;26 arithmetic/gate vectors
+and nine field bindings checked. Wrapped-then-clamped accumulation, residual
+fade, captured versus post-child successor reads, callback/sentinel/active/break
+checks and after-traversal root clear pinned. Fade callers/list providers/domain/
+original depop/DSP/audio remain open. Parent EVT-01 stays OPEN.
