@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero macro metric/priority inline state
+
+Completed macHandleActive opcodes48..57 for EVT-01; checked the corresponding
+inbox portion. [Metric/priority inline state](behavior/audio/MUSYX_MACRO_METRIC_PRIORITY_AND_INLINE_STATE.md)
+pins metric add/set/scaled-byte/hardware publication, priority signed16-sum clamp,
+rate division/truncation and global/aux/tremolo/flag writes. Captured versus fresh
+shared command reads retained; no generic saturation or measured age/time unit
+inferred. Actual command/provider/domain/consumer/runtime and other opcodes open.
+
+Validation: read-only ISO manifest passed13 spans (ten regions/two linked/table),
+112 anchors/five calls/ten registrations. Seven metric-add/six priority-add/six
+scale/six rate vectors and rotate/mask/address/order bindings checked as source
+deductions. Link audit passed812 Markdown files/zero broken links; `git diff
+--check` passed. Documentation/metadata only; no `make test`/`make all` rerun.
+Full original inspection ELF/listing stays `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded from this commit.
+
+Next: priority-zero EVT-01 other macro opcode paths and actual commands/metric/
+rate/priority/word158/global/aux/tremolo/flag producers/consumers, valid table/ID/
+member/shared-cell/alias/IRQ/concurrency domains; original metric/priority/audio
+traces. Full native/runtime binding, lower-priority inbox/full-game work open.
+
 ## 2026-10-13 — Inbox priority-zero VID lifecycle and last-started reset
 
 Completed vidInit/vidRemoveVoiceReferences/vidMakeRoot/vidGetPublicId and

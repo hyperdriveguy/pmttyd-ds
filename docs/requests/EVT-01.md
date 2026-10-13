@@ -299,6 +299,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   and voiceResetLastStarted initialization, promotion/recycle/lookup/reset —
   [VID lifecycle](../behavior/audio/MUSYX_VID_LIFECYCLE_AND_LAST_STARTED_RESET.md).
   Exact112 nodes/FX slot reset retained; chain/caller/domain/runtime open.
+- [x] Complete macHandleActive opcodes48..57 metric/priority/variable/
+  aux/tremolo/flag/rate regions —
+  [metric/priority inline state](../behavior/audio/MUSYX_MACRO_METRIC_PRIORITY_AND_INLINE_STATE.md).
+  Signed16 sum/repeated shared reads preserved; assets/providers/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1753,3 +1757,21 @@ field addresses checked as deductions. Full fresh ELFs/listings stay `/tmp`;
 no native change/original execution/body/binary asset export. Actual chain/node/
 last-started/caller writers, null/equality/member/ID/generation/cycle/alias/
 reinit/IRQ/concurrency/rollback and original promotion/removal/audio remain OPEN.
+
+### 2026-10-13 — Macro metric/priority and inline state opcodes48..57
+
+[Ten complete regions](../behavior/audio/MUSYX_MACRO_METRIC_PRIORITY_AND_INLINE_STATE.md)
+close metric add/set/scaled-byte arithmetic and hardware publication, priority
+set/signed16-sum clamp, unsigned rate division, full-word global byte and aux/
+tremolo/flag writes. Priority sum sign-extends before clamp; metric handlers
+have different limits, rate truncates and zero divisor skips metric read.
+Captured command word versus fresh shared rereads retained. No generic saturation,
+measured age/time unit, evaluator/dirty job or whole-interpreter closure invented.
+
+Validation: read-only manifest13 spans (ten regions/two linked/table),112 anchors/
+five calls/ten opcode registrations passes. Seven metric-add/six priority-add/
+six scale/six rate vectors and rotate/mask/address/source ordering checked as
+deductions. Full fresh ELF/listing stays `/tmp`; no native change/original
+execution/body/binary asset export. Actual commands/field/table/ID/shared-cell/
+member/alias/IRQ/concurrency/providers/consumers, other opcodes and original
+metric/priority/audio remain OPEN.
