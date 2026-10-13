@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero stream header initial reads
+
+Completed SoundSSPlayChEx_main initial-read region; checked EVT-01 portion.
+[Initial reads](behavior/audio/GAME_STREAM_HEADER_INITIAL_READS_AND_PENDING_PUBLICATION.md)
+pin cache gate, full unsigned chunk/strict32 advance, independent storage-path
+reads/fresh post-primary type and request-before-count/pending. Whole callback
+allocation/zeroing/cache/providers/original IO/audio/native binding open.
+
+Validation: read-only ISO manifest passed six spans,189 anchors,six calls.
+Twelve linked chunk/seven admission/four type/six pending vectors, four callback
+bindings/publication sites checked; prefix/chunk pins reverified. Link audit
+passed926 Markdown files/zero broken links; scoped diff check passed.
+Mathematical deductions separate from original execution. Docs/metadata only;
+no make test/all rerun. Fresh full ELF/listing/scoped generator stay /tmp;
+no bodies/assets committed. Concurrent native work excluded. Approved push
+remains pending valid GitHub credentials.
+
+Next: priority-zero EVT-01 same callback allocation/zeroing/cache continuation,
+deferred DVD manager/provider/value/extent/alias/lifetime/IRQ/concurrency/ABI
+and original initial-read/callback/type-change/audio traces. Other inbox/native/
+full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero stream header matching/format prefix
 
 Completed SoundSSPlayChEx_main matching/fields/format/reset prefix and exit ABI;

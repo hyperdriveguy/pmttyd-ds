@@ -589,7 +589,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] SoundSSPlayChEx_main matching/header/format/reset prefix and exit ABI —
   [header prefix](../behavior/audio/GAME_STREAM_HEADER_MATCH_FIELDS_AND_FORMAT_PREFIX.md). Unmatched third row/index3,
   raw mappings/sentinel/format0..2/copies/reset pinned; whole callback open.
-- [ ] SoundSSPlayChEx_main allocation/initial-read/cache continuation and
+- [x] SoundSSPlayChEx_main initial-read region — [initial reads](../behavior/audio/GAME_STREAM_HEADER_INITIAL_READS_AND_PENDING_PUBLICATION.md).
+  Cache gate/full chunk/independent storage paths/fresh post-primary type and
+  count/pending after IO pinned; whole callback allocation/cache remains open.
+- [ ] SoundSSPlayChEx_main allocation/zeroing/cache continuation and
   original header/resource/provider/validity/execution binding.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
@@ -2947,3 +2950,12 @@ centerX/bottomY. BigY25/.9 spans25..61;smallY0/.45 spans0..18; usedmask10
 bypasses.6/special403/405. Exactcamera*T*Ry(-yaw)*scale andclearflipmasks
 retain sourceadapter boundaries. Docs-only/read-only/no native edit/commit;
 git diff --check.
+
+## 2026-10-13 — Stream header initial-read region delivery
+
+Completed [initial-read region](../behavior/audio/GAME_STREAM_HEADER_INITIAL_READS_AND_PENDING_PUBLICATION.md).
+Six spans/189 anchors/six calls/four callback bindings verified; twelve linked
+chunk/seven admission/four type/six pending vectors and publication sites checked.
+Prefix/chunk pins reverified. Fresh post-primary type, independent storage flags
+and request-before-count/pending pinned. Allocation/zeroing/cache continuation/
+providers/original IO/audio/native binding open; EVT-01 stays OPEN.
