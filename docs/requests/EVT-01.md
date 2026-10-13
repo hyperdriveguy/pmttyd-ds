@@ -315,6 +315,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   captured/fresh live voice propagation —
   [RPN writers](../behavior/audio/MUSYX_RPN_PARAMETER_WRITERS_AND_VOICE_PROPAGATION.md).
   Eight input bits/equality-only word guards retained; caller/domain/runtime open.
+- [x] Complete mcmdSendMessage/mcmdGetVID/mcmdSetKeyGroup and opcodes
+  42..44/89 queue/callback/ID/group request paths —
+  [macro messages/VID/key groups](../behavior/audio/MUSYX_MACRO_MESSAGES_VID_AND_KEY_GROUP.md).
+  Raw indices/repeated mappings/trap order retained; key-off/callback/domain/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1838,3 +1842,21 @@ rotate/scan-order deductions checked. Full fresh ELFs/listings stay `/tmp`; no
 native change/original execution/body/binary asset export. Actual selector/default/
 voice/count/caller writers/consumers, valid table/value/address/matching/alias/
 reinit/IRQ/concurrency and original RPN/controller/audio remain OPEN.
+
+### 2026-10-13 — Macro messages, VID copies and key groups
+
+[Three bodies/four regions](../behavior/audio/MUSYX_MACRO_MESSAGES_VID_AND_KEY_GROUP.md)
+close captured variable payload/target routing, macro scan/public mapping or
+callback, four-entry enqueue/conditional trap activation, empty-zero/raw-index
+receive, public-node versus child-reference ID copy and clear-own-group-before
+key-off/kill scan. Macro matches can deliver repeatedly to the same mapped head;
+indices normalize after raw access. No deduplication, generation/null/ring guard,
+empty wait/stop, whole-interpreter closure or callback execution invented.
+
+Validation: read-only manifest14 spans (three complete/four regions/six linked/
+table),183 anchors/11 calls/four registrations passes. Five enqueue/four receive/
+six group/five index vectors and raw queue/mask/address/source order checked as
+deductions. Full fresh ELFs/listings stay `/tmp`; no native change/original
+execution/body/binary asset export. External key-off/callback providers, actual
+queue/trap/ID/group/command/caller/domain/alias/IRQ/concurrency and original
+message/activation/group/audio remain OPEN.

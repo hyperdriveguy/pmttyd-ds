@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero macro messages/VID/key groups
+
+Completed mcmdSendMessage/mcmdGetVID/mcmdSetKeyGroup and opcodes42..44/89
+for EVT-01; checked the corresponding inbox portion.
+[Macro messages/VID/groups](behavior/audio/MUSYX_MACRO_MESSAGES_VID_AND_KEY_GROUP.md)
+pins variable payload/macro-versus-VID/callback routing, queue/trap/pop/copy and
+clear-own-group-before-key-off/kill order. Repeated mapped delivery/raw index
+access before normalization/empty-zero receive retained. External key-off/callback/
+actual command/queue/ID/group/domain/runtime remain open; no ring repair inferred.
+
+Validation: read-only ISO manifest passed14 spans (three bodies/four regions/
+six linked/table),183 anchors/11 calls/four registrations. Five enqueue/four
+receive/six group/five index vectors and raw queue/mask/address/order deductions
+checked. Link audit passed818 Markdown files/zero broken links; `git diff --check`
+passed. Documentation/metadata only; no `make test`/`make all` rerun. Full original
+inspection ELFs/listings stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded from this commit.
+
+Next: priority-zero EVT-01 external key-off/callback provider, queue/trap/base/ID/
+group/command/caller/count/pool writers and valid ring/slot/member/generation/
+null/duplicate delivery/alias/IRQ/reentrancy/concurrency domains; other macro
+opcodes and original message/activation/group/audio traces. Full native/runtime
+binding, lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Original harbor before-battle event execution
 
 The ordered opening now continues from the original six harbor messages into
