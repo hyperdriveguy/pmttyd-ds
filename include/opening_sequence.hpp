@@ -1,6 +1,7 @@
 #pragma once
 #include "message_assets.hpp"
 #include "message_playback.hpp"
+#include "opening_house_scene.hpp"
 namespace ttyd {
 enum class OpeningPart { House, Letter, HouseReturn, MapDisplay, Voyage, Prologue, Wake, Arrival, Complete };
 // Sequencing adapter: retains original IDs/tokens and explicit source speakers.
@@ -9,6 +10,7 @@ class OpeningSequence {
 public:
     OpeningPart part=OpeningPart::House;
     MessagePlayback message;
+    OpeningHouseScene house;
     unsigned index=0;
     int32_t story=0;
     uint32_t speaker=0;

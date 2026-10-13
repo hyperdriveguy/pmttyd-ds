@@ -478,7 +478,14 @@ add_test(NAME frontend COMMAND frontend_tests)
 
 target_sources(ttyd_core PRIVATE source/opening_demo.cpp)
 
-target_sources(ttyd_core PRIVATE source/opening_sequence.cpp)
+target_sources(ttyd_core PRIVATE source/opening_sequence.cpp source/opening_house_scene.cpp)
+add_executable(opening_house_scene_tests tests/opening_house_scene_tests.cpp)
+target_link_libraries(opening_house_scene_tests PRIVATE ttyd_core)
+add_test(NAME opening_house_scene COMMAND opening_house_scene_tests)
+if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/c_luigi.pmanim")
+    add_test(NAME opening_house_scene_original COMMAND opening_house_scene_tests original)
+    set_tests_properties(opening_house_scene_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+endif()
 
 if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/messages/dmo_00.txt" AND EXISTS "${CMAKE_SOURCE_DIR}/romfs/font.pmfont")
     add_executable(opening_sequence_tests tests/opening_sequence_tests.cpp)

@@ -8,6 +8,18 @@ from audio_convert import stm
 from map_convert import convert
 from character_mesh import compile_mesh
 
+def cached_maps_complete(out):
+    """A vertices file alone cannot admit an original map pack cache hit."""
+    for variant in ['aaa_00','aaa_00-interior','muj_20','gor_10']:
+        prefix='opening-'+variant
+        if not all((out/(prefix+'.'+ext)).is_file() for ext in ['vertices','batches','uvanim','meshanim']):return False
+        descriptor=(out/(prefix+'.batches')).read_bytes()
+        if len(descriptor)<8:return False
+        batches,textures=struct.unpack_from('<II',descriptor)
+        if len(descriptor)!=8+batches*24 or textures>1024:return False
+        if not all((out/f'{prefix}-{i}.t3x').is_file() for i in range(textures)):return False
+    return True
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--iso',default=DEFAULT_ISO);p.add_argument('--output',default='romfs');a=p.parse_args()
     out=Path(a.output);work=Path('local-assets/opening');work.mkdir(parents=True,exist_ok=True);out.mkdir(parents=True,exist_ok=True)
@@ -18,7 +30,7 @@ def main():
     tracks=[('title','sys_tit1_32k'),('demo-book','sys_demo1_32k'),('demo-market','sys_demo2_32k'),('opening-house','evt_mri1_32k'),('opening-voyage','sys_opn1_32k'),('opening-sailing','evt_kou1_32k')]
     required=[f'opening-{r}.vertices' for r in ['aaa_00','aaa_00-interior','muj_20','gor_10']]+[n+ext for n,_,_ in images for ext in ['.t3x','.size']]+[n+'.wav' for n,_ in tracks]+['prologue.t3x','prologue.size']
     required += [n+ext for n in ['c_luigi','c_paretta','c_peach','c_nazo'] for ext in ['.pmanim','.t3x','.uvscale']]
-    if manifest.exists() and json.loads(manifest.read_text()).get('fingerprint')==fingerprint and all((out/n).exists() for n in required):return
+    if manifest.exists() and json.loads(manifest.read_text()).get('fingerprint')==fingerprint and all((out/n).exists() for n in required) and cached_maps_complete(out):return
     records=[]
     for path in ['mariost.tpl','demo.tpl']:
         extract(a.iso,path,work/path);records.append(json.loads((work/(path+'.provenance.json')).read_text()))
@@ -50,7 +62,7 @@ def main():
     for bank,pose in [('c_luigi','L_5'),('c_paretta','S_1'),('c_peach','P_S_1'),('c_nazo','S_1')]:
         extract(a.iso,'a/'+bank,work/bank);extract(a.iso,'a/'+bank+'-',work/(bank+'.tpl'))
         records.extend(json.loads(p.read_text()) for p in [work/(bank+'.provenance.json'),work/(bank+'.tpl.provenance.json')])
-        png=work/(bank+'.png');mesh=compile_mesh([(work/bank,work/(bank+'.tpl'),['L_5','L_7','L_8','L_9'] if bank=='c_luigi' else [pose])],out/(bank+'.pmmesh'),png,out/(bank+'.pmanim'))
+        png=work/(bank+'.png');mesh=compile_mesh([(work/bank,work/(bank+'.tpl'),['L_5','L_6','L_7','L_8','L_9','L_11'] if bank=='c_luigi' else [pose])],out/(bank+'.pmmesh'),png,out/(bank+'.pmanim'))
         height=128
         while height<((mesh['textures']+7)//8)*128:height*=2
         Image.open(png).crop((0,0,1024,height)).save(png)
