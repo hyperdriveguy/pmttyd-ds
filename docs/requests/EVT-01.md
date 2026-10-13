@@ -167,6 +167,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [pause/mute/deferred fields](../behavior/audio/MUSYX_SEQUENCE_PAUSE_MUTE_AND_DEFERRED_FIELDS.md).
   Lookup/state/list/note/raw-field/IRQ order pinned; deferred consumers/resume/
   provider/domain/original pause/mute/audio evidence remains open.
+- [x] Complete seqContinue/sndSeqContinue local bodies —
+  [resume and missing-ID domain](../behavior/audio/MUSYX_SEQUENCE_CONTINUE_AND_MISSING_ID_DOMAIN.md).
+  Paused→active order/tagged flag clear and unguarded missing-ID wrapped byte
+  address pinned; caller lookup-success/private-ID invariants and original
+  resume/missing-ID/audio evidence remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1146,3 +1151,20 @@ resolved calls passes.10 pause/6 mute/5 flag vectors/three note-head order are
 source deductions; full fresh ELFs/listings stay `/tmp`. No native change/original
 execution/body/asset export. Private/state/list/note/deferred consumers/resume/
 voice/source/index/alias/IRQ/concurrency/original audio remain OPEN.
+
+### 2026-10-13 — Sequence continue and missing-ID domain
+
+[Two complete local bodies](../behavior/audio/MUSYX_SEQUENCE_CONTINUE_AND_MISSING_ID_DOMAIN.md)
+close state2 paused→active publication, tagged bit8 clearing without a state
+gate and raw public IRQ forwarding. Continue lacks the lookup-miss guard found
+in pause/mute/stop: miss ffffffff takes the tagged route and derives byte
+803eb432 before seqInstance. This is static address evidence, not an observed
+corruption or an invented graceful no-op. Caller lookup success remains a
+required source/domain contract.
+
+Validation: read-only manifest four spans (two complete/two linked), 53 anchors
+and three resolved calls passes. Seven ID/tag/address, five flag-clear and five
+state-route vectors are deductions; fresh full ELFs/listings stay `/tmp`.
+No native change/original execution/body/asset export. Caller private-ID/state/
+list/track/note/deferred/alias/IRQ/concurrency and original resume/missing-ID/
+audio traces remain OPEN.

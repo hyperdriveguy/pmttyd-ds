@@ -90,3 +90,11 @@ Remaining: private-ID/state/list/note providers and valid index/member/cycle/
 alias/IRQ/concurrency domains, deferred byte/word and mute-field consumers,
 resume/sequence/controller/voice scheduling and original pause/mute/audio traces.
 Three complete local services are answered; full native/source/runtime OPEN.
+
+### Continue follow-up
+
+[Complete sequence continue](MUSYX_SEQUENCE_CONTINUE_AND_MISSING_ID_DOMAIN.md)
+now pins paused→active publication and tagged pause-bit clearing. Unlike pause
+and mute, continue has no lookup-miss guard; its derived missing-ID write
+requires a separate caller lookup-success/private-ID contract. Track/note/
+deferred consumers and original pause/resume/audio execution remain open.

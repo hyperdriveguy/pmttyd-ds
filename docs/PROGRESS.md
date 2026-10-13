@@ -2,6 +2,27 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero sequence continue
+
+Completed the local seqContinue/sndSeqContinue source contracts for EVT-01 and
+checked their inbox portion. [Continue and missing-ID domain](behavior/audio/MUSYX_SEQUENCE_CONTINUE_AND_MISSING_ID_DOMAIN.md)
+pins paused→active publication, tagged pause-bit clearing and the raw public
+IRQ wrapper. Continue has no lookup-miss guard: source arithmetic derives a
+byte write at803eb432 before seqInstance. Runtime contents/execution are not
+claimed; caller lookup-success/private-ID requirements remain open.
+
+Validation: read-only ISO manifest passed four spans (two complete/two linked),
+53 instruction anchors and three resolved calls; seven ID/tag/address, five
+flag-clear and five state-route vectors checked. Documentation link audit
+passed776 Markdown files/zero broken links; `git diff --check` passed.
+Documentation/metadata only; no `make test`/`make all` rerun. Original full code
+listings/ELFs stay `/tmp`; no original bodies/assets committed.
+
+Next: continue priority-zero EVT-01 caller/private-ID, track/note/deferred-field
+and audio provider contracts; original resume/missing-ID/audio traces and full
+scheduler/native/runtime binding remain open. Lower-priority inbox work and
+the full remake remain incomplete.
+
 ## 2026-10-13 — Original setup4 command and target menu
 
 Bound a native command/target menu after Frankly's original battle introduction

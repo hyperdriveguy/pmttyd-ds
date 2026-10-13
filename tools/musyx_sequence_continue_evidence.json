@@ -1,0 +1,208 @@
+{
+  "schema": 1,
+  "scope": "Two complete sequence continue/public continue bodies; missing-ID wrapped write and source/list/deferred/runtime open",
+  "complete_bodies": [
+    "seqContinue",
+    "sndSeqContinue"
+  ],
+  "linked_only": [
+    "hwDisableIrq",
+    "hwEnableIrq"
+  ],
+  "dol_spans": [
+    {
+      "name": "seqContinue",
+      "address": 2150054788,
+      "size": 264,
+      "sha256": "8d540455fba895fd444a1a3e47c1e2faafe4a22bae1ed77079a026ce83bdf533"
+    },
+    {
+      "name": "sndSeqContinue",
+      "address": 2150080028,
+      "size": 56,
+      "sha256": "75599554907adc7498f112f18451231b5cbd63a8bf07ae563c1be7b290206bd5"
+    },
+    {
+      "name": "hwDisableIrq",
+      "address": 2150180880,
+      "size": 56,
+      "sha256": "edb5198c972d01b93658216671fd046d6f96210b534bbfa30b6844c8db6138d2"
+    },
+    {
+      "name": "hwEnableIrq",
+      "address": 2150180824,
+      "size": 56,
+      "sha256": "3bcc66eb43ecfd8c2739c9765c710b462e66bc98fe31d107c000e0d3e3b6fc81"
+    }
+  ],
+  "dol_anchors": {
+    "2150054788": "808d1f3c",
+    "2150054796": "48000020",
+    "2150054800": "8004000c",
+    "2150054808": "40820010",
+    "2150054812": "88840009",
+    "2150054820": "48000040",
+    "2150054824": "80840000",
+    "2150054832": "4082ffe0",
+    "2150054836": "808d1f38",
+    "2150054840": "48000020",
+    "2150054844": "8004000c",
+    "2150054852": "40820010",
+    "2150054856": "88840009",
+    "2150054864": "48000014",
+    "2150054868": "80840000",
+    "2150054876": "4082ffe0",
+    "2150054880": "3880ffff",
+    "2150054888": "40820080",
+    "2150054896": "3c60803f",
+    "2150054900": "3803bdc0",
+    "2150054908": "88040008",
+    "2150054920": "80640004",
+    "2150054928": "41820010",
+    "2150054932": "80040000",
+    "2150054936": "90030000",
+    "2150054940": "4800000c",
+    "2150054944": "80040000",
+    "2150054948": "900d1f38",
+    "2150054952": "80640000",
+    "2150054960": "4182000c",
+    "2150054964": "80040004",
+    "2150054968": "90030004",
+    "2150054972": "806d1f3c",
+    "2150054980": "90640000",
+    "2150054984": "41820008",
+    "2150054988": "90830004",
+    "2150054992": "38600000",
+    "2150054996": "38000001",
+    "2150055000": "90640004",
+    "2150055004": "908d1f3c",
+    "2150055008": "98040008",
+    "2150055020": "3c60803f",
+    "2150055028": "3863bdc0",
+    "2150055036": "88030efa",
+    "2150055044": "98030efa",
+    "2150080036": "90010014",
+    "2150080040": "93e1000c",
+    "2150080048": "480189e1",
+    "2150080056": "4bff9d4d",
+    "2150080060": "4801899d",
+    "2150080064": "80010014",
+    "2150080068": "83e1000c",
+    "2150080076": "38210010"
+  },
+  "direct_calls": [
+    {
+      "site": 2150080048,
+      "target": 2150180880,
+      "name": "hwDisableIrq"
+    },
+    {
+      "site": 2150080056,
+      "target": 2150054788,
+      "name": "seqContinue"
+    },
+    {
+      "site": 2150080060,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_continue_routes": [
+    {
+      "lookup_result": 0,
+      "tagged": false,
+      "index": 0,
+      "instance_address": 2151595456,
+      "flag_address": 2151599290
+    },
+    {
+      "lookup_result": 7,
+      "tagged": false,
+      "index": 7,
+      "instance_address": 2151639416,
+      "flag_address": 2151643250
+    },
+    {
+      "lookup_result": 8,
+      "tagged": false,
+      "index": 8,
+      "instance_address": 2151645696,
+      "flag_address": 2151649530
+    },
+    {
+      "lookup_result": 255,
+      "tagged": false,
+      "index": 255,
+      "instance_address": 2153196856,
+      "flag_address": 2153200690
+    },
+    {
+      "lookup_result": 2147483648,
+      "tagged": true,
+      "index": 0,
+      "instance_address": 2151595456,
+      "flag_address": 2151599290
+    },
+    {
+      "lookup_result": 2147483655,
+      "tagged": true,
+      "index": 7,
+      "instance_address": 2151639416,
+      "flag_address": 2151643250
+    },
+    {
+      "lookup_result": 4294967295,
+      "tagged": true,
+      "index": 2147483647,
+      "instance_address": 2151589176,
+      "flag_address": 2151593010
+    }
+  ],
+  "derived_deferred_clear_vectors": [
+    {
+      "flags": 0,
+      "after": 0
+    },
+    {
+      "flags": 1,
+      "after": 1
+    },
+    {
+      "flags": 8,
+      "after": 0
+    },
+    {
+      "flags": 16,
+      "after": 16
+    },
+    {
+      "flags": 255,
+      "after": 247
+    }
+  ],
+  "derived_untagged_state_vectors": [
+    {
+      "state": 0,
+      "moves_paused_to_active": false
+    },
+    {
+      "state": 1,
+      "moves_paused_to_active": false
+    },
+    {
+      "state": 2,
+      "moves_paused_to_active": true
+    },
+    {
+      "state": 3,
+      "moves_paused_to_active": false
+    },
+    {
+      "state": 255,
+      "moves_paused_to_active": false
+    }
+  ]
+}
