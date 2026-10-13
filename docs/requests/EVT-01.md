@@ -351,6 +351,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   and opcode22 with original time/DLS/scale tables —
   [controller ADSR/layouts](../behavior/audio/MUSYX_CONTROLLER_ADSR_AND_HARDWARE_LAYOUTS.md).
   Fresh queries/unchecked indices/mode-specific fields retained; pow/domain/runtime open.
+- [x] Complete mcmdSetADSR/mcmdSetPitchADSR/adsrSetup and opcode12/32
+  LE resource/layout/coefficient/adjustment/envelope request paths —
+  [resource/pitch ADSR](../behavior/audio/MUSYX_RESOURCE_AND_PITCH_ADSR_COMMANDS.md).
+  Sentinel/single precision/half wrap/post-child flags retained; state engine/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2028,3 +2032,20 @@ deductions. Full fresh ELFs/listings stay `/tmp`; no native change/original
 execution/body/binary asset export. Pow/transitive math, other ADSR opcodes,
 actual controller/table/descriptor/float/ordinal/caller/domain/alias/IRQ/
 concurrency and hardware/DSP/original ADSR/audio remain OPEN.
+
+### 2026-10-13 — Resource ADSR and pitch ADSR commands
+
+[Three bodies/two regions](../behavior/audio/MUSYX_RESOURCE_AND_PITCH_ADSR_COMMANDS.md)
+close halfword versus extended LE descriptors, DLS/sentinel coefficient/single-FP
+adjustment, signed command pitch half/fraction, two time conversions/sustain/release/
+setup and post-child flags. adsrSetup clears byte1 then requests state engine.
+No DLS index clamp, generic layout/FP formula, pitch release conversion or complete
+engine/audio behavior inferred from linked hashes.
+
+Validation: read-only manifest19 spans (three bodies/two regions/six linked/seven data/
+dispatch table),164 anchors/12 calls/two registrations passes. Seven pitch/five LE/
+four index/four sentinel vectors, all256 signed fractional divisions and byte/
+mask/FP/field/store-order bindings checked as deductions. Full fresh ELFs/listings
+stay `/tmp`; no native change/original execution/body/binary asset export. State
+engine/pow, actual resource/index/FP/descriptor/command/caller/domain/alias/IRQ/
+concurrency and original ADSR/pitch/audio remain OPEN.

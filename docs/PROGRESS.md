@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero resource/pitch ADSR commands
+
+Completed mcmdSetADSR/mcmdSetPitchADSR/adsrSetup and opcodes12/32 for
+EVT-01; checked the corresponding inbox portion.
+[Resource/pitch ADSR](behavior/audio/MUSYX_RESOURCE_AND_PITCH_ADSR_COMMANDS.md)
+pins LE layouts/sentinel coefficients/single-FP operation order, signed command
+pitch adjustment, sustain/time/release/setup and post-child flags. Setup wrapper
+is closed; state engine/pow/actual resource/index/FP/caller/runtime remain open.
+
+Validation: read-only ISO manifest passed19 spans (three bodies/two regions/six
+linked/seven data/dispatch table),164 anchors/12 calls/two registrations. Seven pitch/
+five LE/four index/four sentinel vectors, all256 signed fractional divisions and
+byte/mask/FP/field/order deductions checked. Link audit passed832 Markdown files/
+zero broken links; scoped `git diff --check` passed. Documentation/metadata only;
+no `make test`/`make all` rerun. Full original inspection ELFs/listings stay `/tmp`;
+no bodies/binary assets committed. Concurrent native edits excluded from this commit.
+
+Next: priority-zero EVT-01 salChangeADSRState/pow/transitive math, other opcodes,
+actual resource/command/volume/base-note/coefficient/descriptor/envelope/flag/
+caller writers, valid length/type/index/FP/value/alias/shared-cell/IRQ/concurrency
+domains and original ADSR/pitch/audio traces. Full native/runtime binding,
+lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero controller ADSR/hardware layouts
 
 Completed mcmdSetADSRFromCtrl/hwSetADSR/adsrConvertTimeCents and opcode22
