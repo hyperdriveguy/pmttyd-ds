@@ -1,0 +1,24 @@
+.fvec transform[4]
+.constf constants(0.0, 1.0, 0.0, 0.0)
+.out outpos position
+.out outtc0 texcoord0
+.out outtc1 texcoord1
+.out outtc2 texcoord2
+.out outcolor color
+.alias position v0
+.alias pattern v1
+.alias mask v2
+.alias color v3
+.proc main
+    mov r0.xyz, position
+    mov r0.w, constants.y
+    dp4 outpos.x, transform[0], r0
+    dp4 outpos.y, transform[1], r0
+    dp4 outpos.z, transform[2], r0
+    dp4 outpos.w, transform[3], r0
+    mov outtc0, pattern
+    mov outtc1, mask
+    mov outtc2, mask
+    mov outcolor, color
+    end
+.end

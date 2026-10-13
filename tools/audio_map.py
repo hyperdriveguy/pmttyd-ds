@@ -194,7 +194,7 @@ def build(iso, output, romfs=None, switch=None):
             row['objects'] = [{**fx, 'direct_macro': macros.get(fx['object_id'])} for fx in effects.get(row['fx_id'], [])]
     bindings = json.loads((ROOT / 'config/audio_bindings.json').read_text())
     byname = {r['name']: r for r in rows}
-    if [r['clip'] for r in bindings['effects']] != ['confirm', 'jump', 'hit', 'success', 'guard']:
+    if [r['clip'] for r in bindings['effects']] != ['confirm', 'jump', 'hit', 'success', 'guard', 'save-block']:
         raise ValueError('Cue filenames/order must match native AudioCue')
     selected = []
     for binding in bindings['effects']:

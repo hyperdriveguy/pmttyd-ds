@@ -2,6 +2,7 @@
 #include "paper_fence_warp.hpp"
 #include "message_icons.hpp"
 #include "world_shbin.h"
+#include "message_system_shbin.h"
 #include "field_camera.hpp"
 #include "map_visibility.hpp"
 #include <algorithm>
@@ -36,10 +37,25 @@ bool Renderer::init() {
     shaderProgramInit(&program);programReady=true;
     shaderProgramSetVsh(&program,&shader->DVLE[0]);
     transformLoc=shaderInstanceGetUniformLocation(program.vertexShader,"transform");
+    messageSystemShader=DVLB_ParseFile((uint32_t*)message_system_shbin,message_system_shbin_size);
+    if(!messageSystemShader)return false;
+    shaderProgramInit(&messageSystemProgram);messageSystemProgramReady=true;
+    shaderProgramSetVsh(&messageSystemProgram,&messageSystemShader->DVLE[0]);
+    messageSystemTransform=shaderInstanceGetUniformLocation(messageSystemProgram.vertexShader,"transform");
+    messageSystemVertices=(SystemVertex*)linearAlloc(sizeof(SystemVertex)*24);
     vertices=(Vertex*)linearAlloc(sizeof(Vertex)*MaxVertices);
     messageTailVertices=(Vertex*)linearAlloc(sizeof(Vertex)*12);
     textBuffer=C2D_TextBufNew(8192);
-    if(!vertices || !messageTailVertices || !textBuffer) return false;
+    if(!vertices || !messageTailVertices || !messageSystemVertices || !textBuffer) return false;
+    for(unsigned i=0;i<10;++i) {
+        std::string name=i==0?"panel":i==1?"system-pattern":std::to_string(40+i);
+        auto& texture=i==0?messagePanel:i==1?messageSystemPattern:messageSystemMasks[i-2];
+        FILE* file=std::fopen(("romfs:/message-window-"+name+".t3x").c_str(),"rb");if(!file)return false;
+        texture.imported=Tex3DS_TextureImportStdio(file,&texture.texture,nullptr,false);std::fclose(file);
+        if(!texture.imported)return false;
+        C3D_TexSetFilter(&texture.texture,GPU_LINEAR,GPU_LINEAR);
+        C3D_TexSetWrap(&texture.texture,i==1?GPU_REPEAT:GPU_CLAMP_TO_EDGE,i==1?GPU_REPEAT:GPU_CLAMP_TO_EDGE);
+    }
     FILE* f=std::fopen("romfs:/characters.t3x","rb");
     if(!f) return false;
     imported=Tex3DS_TextureImportStdio(f,&atlas,nullptr,false);std::fclose(f);
@@ -208,11 +224,13 @@ void Renderer::fieldActors(const Game& g) {
                 actor.position=g.storyPresentation().actors[2].position;actor.yaw=g.storyPresentation().actors[2].yaw;
                 actor.pose=g.storyPresentation().message.talking && g.storyPresentation().speaker==2?"T_1":g.trioBattleActive?g.storyPresentation().actors[2].pose:g.storyPresentation().actors[2].moving?"W_1":"S_1";
             } else if(!actor.visible(g.progress.room,g.progress.originalStory,g.fieldDoor.interiorMask,g.fieldSystemFlags))continue;
+            float frame=float(g.ticks-plaza.actorStart);
+            if(g.saveObjects)if(const auto* object=g.saveObjects->find(actor.key)){actor.pose=object->pose;frame=object->frame;}
             ++actorMetrics.visible;
-            if(gpu.tick!=g.ticks || gpu.pose!=actor.pose) {
+            if(gpu.tick!=g.ticks || gpu.pose!=actor.pose || gpu.frame!=frame) {
                 const auto* pose=gpu.animations.pose(actor.pose.c_str());
-                if(!pose || !pose->evaluate(float(g.ticks-plaza.actorStart),gpu.sample)){++actorMetrics.sampleFailures;continue;}
-                gpu.tick=g.ticks;gpu.pose=actor.pose;
+                if(!pose || !pose->evaluate(frame,gpu.sample)){++actorMetrics.sampleFailures;continue;}
+                gpu.tick=g.ticks;gpu.pose=actor.pose;gpu.frame=frame;
             }
             if(gpu.sample.vertices.size()>size_t(MaxVertices-count)){++actorMetrics.overflow;continue;}
             // Source facing270 points left. Original NPC display-direction and
@@ -513,13 +531,14 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
     if(newWindow){messageWindowSerial=message.serial;messagePlacement=mode;}
     if(!project(messageTalkAnchor,anchorX,anchorY))mode=0;
     else mode=messagePlacement;
-    if(message.windowType==11 || message.windowType==5)mode=0;
+    if(message.windowType==11 || message.windowType==5 || message.windowType==3)mode=0;
     if(message.placementOverride>=0)mode=unsigned(message.placementOverride);
     auto plan=messageWindowPlan(message.geometry,mode,anchorX,anchorY,message.alpha,message.windowType);
     stretchMessageTail(plan,anchorX,anchorY);
-    if(message.windowType!=11)messageBorder(plan,message.alpha,message.windowType==5?0:message.windowType);
+    if(message.windowType!=11)messageBorder(plan,message.alpha,message.windowType);
     if(!plan.textVisible)return;
-    if(messageSerial!=message.serial){messageSerial=message.serial;messageIdentity=message.id();messageDynamic.clear();for(const auto& r:message.records)messageDynamic.push_back(r.value);}
+    auto& messageDynamic=messageDynamicWindows[message.serial];
+    if(messageDynamic.empty())for(const auto& r:message.records)messageDynamic.push_back(r.value);
     while(messageDynamic.size()<message.records.size())messageDynamic.push_back(message.records[messageDynamic.size()].value);
     uint32_t color=0x000000ff;
     for(size_t i=0;i<std::min(message.cursor,message.records.size());++i) {
@@ -543,7 +562,9 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
         }
         x+=float(glyph.width>>1)*(1-dynamic)*r.scale*MessageWindowScale;
         y+=12*(1-dynamic)*r.scale*.5f;
-        const float clipTop=120-plan.textY*.5f,clipBottom=clipTop+(message.windowType==1?126:100)*.5f;
+        const bool system=message.windowType==3 || message.windowType==11;
+        const float clipTop=message.windowType==5?0:120-plan.textY*.5f-(system?4:0);
+        const float clipBottom=message.windowType==5?240:clipTop+(system?message.geometry.height-50:message.windowType==1?126:100)*.5f;
         // Relax admitted dynamic records even when the window clips the image.
         if(r.flags&1)messageDynamic[i]=std::fma(.5f,dynamic-1,1.f);
         const auto crop=messageGlyphCrop(x,y,glyph.width*scaleX,glyph.height*scaleY,clipTop,clipBottom);
@@ -566,6 +587,55 @@ void Renderer::messageIconImage(uint32_t id,uint64_t ticks,float centerX,float b
 }
 void Renderer::messageBorder(const MessageWindowPlan& plan,uint8_t alpha,int type) {
     const auto& b=plan.box;
+    if(type==5) {
+        const auto* original=Tex3DS_GetSubTexture(messagePanel.imported,0);
+        C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(255,255,255,alpha),0);
+        const float x[]={0,30,b.width-30,b.width},y[]={0,30,b.height-30,b.height};
+        for(int row=0;row<3;++row)for(int col=0;col<3;++col) {
+            auto sub=*original;sub.width=24;sub.height=24;
+            const float du=(original->right-original->left)/3,dv=(original->bottom-original->top)/3;
+            sub.left=original->left+col*du;sub.right=sub.left+du;sub.top=original->top+row*dv;sub.bottom=sub.top+dv;
+            C2D_Image image{&messagePanel.texture,&sub};
+            C2D_DrawImageAt(image,200+(b.x+x[col])*MessageWindowScale,120-(b.y-y[row])*.5f,.4f,&tint,
+                (x[col+1]-x[col])*MessageWindowScale/24,(y[row+1]-y[row])*.5f/24);
+        }
+        return;
+    }
+    if(type==3) {
+        messageSystemPhase+=.005f;if(messageSystemPhase>10)messageSystemPhase-=10;
+        const float w=std::max(b.width,32.f),h=std::max(b.height,32.f);
+        const float quads[4][4]={{0,0,w-32,h-32},{0,h-32,w-32,32},{w-32,0,32,h-32},{w-32,h-32,32,32}};
+        constexpr unsigned corners[6][2]={{0,0},{1,0},{1,1},{0,0},{1,1},{0,1}};
+        for(unsigned q=0;q<4;++q)for(unsigned n=0;n<6;++n) {
+            const float dx=quads[q][2]*corners[n][0],dy=quads[q][3]*corners[n][1];
+            const float x=quads[q][0]+dx,y=quads[q][1]+dy;
+            messageSystemVertices[q*6+n]={200+(b.x+x)*MessageWindowScale,120-(b.y-y)*.5f,0,
+                messageSystemPhase+x/128,1+messageSystemPhase-y/64,dx/32,1-dy/32,1,1,1,alpha/255.f};
+        }
+        C2D_Flush();C3D_BindProgram(&messageSystemProgram);
+        auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);
+        AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);
+        AttrInfo_AddLoader(attrs,2,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,3,GPU_FLOAT,4);
+        auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,messageSystemVertices,sizeof(SystemVertex),4,0x3210);
+        GSPGPU_FlushDataCache(messageSystemVertices,sizeof(SystemVertex)*24);
+        C3D_Mtx projection;Mtx_OrthoTilt(&projection,0,400,240,0,-1,1,true);
+        C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,messageSystemTransform,&projection);
+        C3D_CullFace(GPU_CULL_NONE);C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);C3D_AlphaTest(true,GPU_GREATER,0);
+        C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
+        for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
+        auto* env=C3D_GetTexEnv(0);
+        C3D_TexEnvSrc(env,C3D_RGB,GPU_TEXTURE2,GPU_TEXTURE0,GPU_TEXTURE2);
+        C3D_TexEnvOpRgb(env,GPU_TEVOP_RGB_SRC_COLOR,GPU_TEVOP_RGB_SRC_COLOR,GPU_TEVOP_RGB_SRC_ALPHA);
+        C3D_TexEnvFunc(env,C3D_RGB,GPU_INTERPOLATE);
+        C3D_TexEnvSrc(env,C3D_Alpha,GPU_TEXTURE0,GPU_TEXTURE1);C3D_TexEnvFunc(env,C3D_Alpha,GPU_MODULATE);
+        env=C3D_GetTexEnv(1);C3D_TexEnvSrc(env,C3D_Alpha,GPU_PREVIOUS,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Alpha,GPU_MODULATE);
+        C3D_TexBind(0,&messageSystemPattern.texture);
+        for(unsigned q=0;q<4;++q) {
+            C3D_TexBind(1,&messageSystemMasks[q].texture);C3D_TexBind(2,&messageSystemMasks[q+4].texture);
+            C3D_DrawArrays(GPU_TRIANGLES,q*6,6);
+        }
+        C3D_TexBind(1,nullptr);C3D_TexBind(2,nullptr);C2D_Prepare();C2D_SceneBegin(top);return;
+    }
     auto image=[&](unsigned x,unsigned y,unsigned w,unsigned h) {
         Tex3DS_SubTexture sub{};sub.width=w;sub.height=h;sub.left=x/1024.f;sub.right=(x+w)/1024.f;sub.top=1-y/512.f;sub.bottom=1-(y+h)/512.f;return sub;
     };
@@ -812,6 +882,16 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
     text(label,x+7,y+8,.48f,disabled?rgb(135,129,116):Ink);
 }
 void Renderer::overlay(const Game& g) {
+    if(g.saveObjects && (g.saveLocked() || g.saveObjects->presentation.message.active())) {
+        const auto& p=g.saveObjects->presentation;originalMessage(g,&p.message);
+        const auto& choice=p.selection;
+        if(choice.active()) {
+            originalMessage(g,&choice.message);const auto& box=choice.message.geometry;
+            choice.cursorY=std::fma(.30000001192092896f,box.y-float(31*choice.current+58)-choice.cursorY,choice.cursorY);
+            messageIconImage(0x1f8,g.ticks,200+(box.x+2)*MessageWindowScale,120-choice.cursorY*.5f,1,uint8_t(choice.opacity));
+        }
+        return;
+    }
     if(g.trioBattleActive || g.fieldActorTalk.message.active() || g.harborStory.locked() || g.storyPresentation().locked()) {
         originalMessage(g);
         const auto& choice=g.storyPresentation().selection;
@@ -960,6 +1040,12 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
     }
 }
 void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
+    for(auto i=messageDynamicWindows.begin();i!=messageDynamicWindows.end();) {
+        const auto id=i->first;const auto& story=g.storyPresentation();
+        const bool keep=id==story.message.serial || id==story.selection.message.serial || id==g.harborStory.message.serial ||
+            id==g.fieldActorTalk.message.serial || (g.saveObjects && (id==g.saveObjects->presentation.message.serial || id==g.saveObjects->presentation.selection.message.serial));
+        if(!keep)i=messageDynamicWindows.erase(i);else ++i;
+    }
     C2D_TextBufClear(textBuffer);
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     const bool battle=g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
@@ -990,6 +1076,11 @@ void Renderer::shutdown() {
     if(atlasReady) C3D_TexDelete(&atlas);
     if(vertices) linearFree(vertices);
     if(messageTailVertices) linearFree(messageTailVertices);
+    if(messageSystemVertices)linearFree(messageSystemVertices);
+    for(auto* texture:{&messagePanel,&messageSystemPattern})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}
+    for(auto& texture:messageSystemMasks)if(texture.imported){Tex3DS_TextureFree(texture.imported);C3D_TexDelete(&texture.texture);}
+    if(messageSystemProgramReady)shaderProgramFree(&messageSystemProgram);
+    if(messageSystemShader)DVLB_Free(messageSystemShader);
     if(programReady) shaderProgramFree(&program);
     if(shader) DVLB_Free(shader);
     if(top) C3D_RenderTargetDelete(top);

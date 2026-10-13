@@ -37,6 +37,7 @@
 #include "trio_battle_commands.hpp"
 #include "field_actors.hpp"
 #include "field_object_collision.hpp"
+#include "field_save_objects.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
@@ -161,6 +162,9 @@ public:
     void updateTemporaryProfessor();
     size_t professorCameraCursor=0;
     FieldActorTalk fieldActorTalk;
+    std::shared_ptr<FieldSaveObjects> saveObjects; // Stable key-service lifetime; replaced on room transactions.
+    bool saveLocked() const{return saveObjects && saveObjects->locked();}
+    void updateSaveObjects();
     FieldIdleWork fieldIdle;
     // Native partner ability/status services are still adapters. These explicit
     // inputs allow source eligibility instead of collapsing it to input enabled.

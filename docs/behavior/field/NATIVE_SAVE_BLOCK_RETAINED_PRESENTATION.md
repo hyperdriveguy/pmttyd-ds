@@ -1,7 +1,8 @@
 # Native save-block retained presentation and queued writes
 
 2026-10-13; portable adapter for the original US save-event graph. This is a
-service implementation, not yet bound to Game's live object callback/rendering.
+service implementation, now connected through the bounded
+[live binding](NATIVE_LIVE_SAVE_BLOCK.md).
 See [event core](NATIVE_SAVE_BLOCK_LIFECYCLE_AND_EVENT_CORE.md),
 [retained-window source contract](../message/SAVE_EVENT_RETAINED_WINDOW_CONTINUE_AND_APPEND.md),
 [window states](../message/MESSAGE_WINDOW_STATES.md) and
@@ -63,7 +64,7 @@ Native save v6 keeps the existing40-byte envelope and checksum: byte34 bits0/1/2
 carry GSF1207/233/236; byte35 carries the full GSW4 byte. Versions1..5 retain
 their prior reserved-byte rules and migrate missing save switches to0. Decode
 rejects unknown flags/version or corruption without changing caller progress.
-This schema is implemented; live propagation from presentation remains next.
+This schema and live switch propagation are implemented by the linked binding.
 
 Next: live object instance clocks/S_1/A_1, owner/name hit publication, source task
 ordering, camera8's [letterbox decision lock](../camera/SAVE_BLOCK_CAMERA8_LETTERBOX_DECISION_LOCK.md),

@@ -50,10 +50,13 @@ See [catalog scope](docs/behavior/field/NATIVE_AREA_ACTOR_CATALOG.md).
 
 The original plaza save block retains its animated textures/materials and source
 bbox collision for head hits, top support and Mario's side-wall response.
-Object-supported checkpoints load through the same floor service. Hit animation
-and the original save-choice/card flow remain unbound. The shared area catalog
-and collision cache provide the path for future objects; hardware profiling and
-full original event/area coverage remain open.
+Object-supported checkpoints load through the same floor service. Actual head
+hits now run original A_1/S_1 animation, first-hit text and Yes/No save events.
+Original System/selection assets draw through citro3d, and accepted SD writes
+run outside simulation on a libctru worker. No performs no write. The shared
+area catalog/instance clocks/collision cache provide the path for future rooms;
+original card hardware/audio/camera services and hardware profiling remain open.
+See [live save binding](docs/behavior/field/NATIVE_LIVE_SAVE_BLOCK.md).
 
 To inspect this slice with an isolated native development checkpoint:
 

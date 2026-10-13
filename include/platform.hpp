@@ -14,6 +14,7 @@
 #include <citro3d.h>
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include <cstdio>
 namespace ttyd {
 struct Metrics { float simulationMs=0, renderMs=0, gpuMs=0, fps=0; int steps=0; uint64_t droppedTicks=0; };
@@ -50,6 +51,7 @@ private:
         ActorAnimationPack animations;
         ActorAnimationSample sample;
         uint64_t tick=UINT64_MAX;
+        float frame=-1;
         std::string pose;
         int start=0,count=0;
         std::vector<ActorSurfaceBatch> batches;
@@ -81,6 +83,13 @@ private:
     bool frontImage(const char*,float,float,float,float);
     void frontMessage(const MessagePlayback&);
     Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture;
+    Texture messagePanel,messageSystemPattern;
+    std::array<Texture,8> messageSystemMasks;
+    struct SystemVertex {float x,y,z,u,v,s,t,r,g,b,a;};
+    SystemVertex* messageSystemVertices=nullptr;
+    DVLB_s* messageSystemShader=nullptr;shaderProgram_s messageSystemProgram{};
+    bool messageSystemProgramReady=false;
+    int messageSystemTransform=0;float messageSystemPhase=0;
     Texture professorMarioTexture;
     Texture professorMapTexture;
     Texture messageIconTexture;
@@ -96,6 +105,7 @@ private:
     std::array<std::array<float,3>,2> harborActorMetrics{};
     std::array<std::array<float,3>,2> harborTalkOffsets{};
     mutable std::vector<float> messageDynamic;
+    mutable std::unordered_map<uint64_t,std::vector<float>> messageDynamicWindows;
     mutable std::string messageIdentity;
     mutable uint64_t messageSerial=0;
     uint64_t messageWindowSerial=0;
@@ -143,7 +153,7 @@ public:
 private:
     bool ready=false;
     struct Clip { int16_t* data=nullptr; uint32_t samples=0; ndspWaveBuf wave{}; };
-    Clip clips[5];
+    Clip clips[6];
     FILE* music=nullptr;
     int musicTrack=-1;
     bool musicLoop=false,musicEnded=false;

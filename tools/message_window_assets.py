@@ -28,7 +28,8 @@ def main():
         raise ValueError('Original window palette changed')
     fingerprint = hashlib.sha256(raw + Path(__file__).read_bytes() + Path('tools/iso_assets.py').read_bytes()).hexdigest()
     manifest = out / 'message-window.json'
-    if manifest.exists() and (out / 'message-window.t3x').exists() and json.loads(manifest.read_text()).get('fingerprint') == fingerprint:
+    extra = {0: 'panel', 5: 'system-pattern', **{i: str(i) for i in range(42,50)}}
+    if manifest.exists() and all((out / name).exists() for name in ['message-window.t3x', *[f'message-window-{name}.t3x' for name in extra.values()]]) and json.loads(manifest.read_text()).get('fingerprint') == fingerprint:
         return
     work = Path('local-assets/fonts'); work.mkdir(parents=True, exist_ok=True)
     tpl = work / 'msgWindow.tpl'; tpl.write_bytes(raw)
@@ -59,7 +60,12 @@ def main():
     out.mkdir(parents=True,exist_ok=True)
     tex3ds = shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds'
     subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o',str(out/'message-window.t3x'),str(png)],check=True,stdout=subprocess.DEVNULL)
-    manifest.write_text(json.dumps(dict(fingerprint=fingerprint,source_path=entry['path'],source_offset=entry['offset'],sha256=hashlib.sha256(raw).hexdigest(),indices=[1,2,3,4,9,10,11,12,13,14,15,16],conversion='GX masks to RGBA8, lossless border composition at original560x176; no source resize; native draw adapts to400x240',license='Original Nintendo/Intelligent Systems local asset; no redistribution rights'),indent=2)+'\n')
+    for i,name in extra.items():
+        target=work/f'window-{i}.png';convert_tpl(tpl,target,i)
+        expected=(72,72) if i==0 else (128,64) if i==5 else (32,32)
+        if Image.open(target).size!=expected:raise ValueError('Original System/selection dimensions changed')
+        subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o',str(out/f'message-window-{name}.t3x'),str(target)],check=True,stdout=subprocess.DEVNULL)
+    manifest.write_text(json.dumps(dict(fingerprint=fingerprint,source_path=entry['path'],source_offset=entry['offset'],sha256=hashlib.sha256(raw).hexdigest(),indices=[0,1,2,3,4,5,9,10,11,12,13,14,15,16,*range(42,50)],conversion='GX masks to RGBA8, lossless ordinary border composition; System pattern/corner/ring and selection panel packed separately unchanged; no source resize; native draw adapts to400x240',license='Original Nintendo/Intelligent Systems local asset; no redistribution rights'),indent=2)+'\n')
 
 
 if __name__ == '__main__':

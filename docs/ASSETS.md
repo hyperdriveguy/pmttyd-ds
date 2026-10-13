@@ -796,3 +796,29 @@ coordinates, setup forward bias and unit name IDs. No synthetic target geometry
 or rewritten labels. The native menu resolves original `msg/US/global.txt` labels.
 These are locally extracted Nintendo/Intelligent Systems assets with no
 redistribution grant; compiled packs remain outside history.
+
+## 2026-10-13 — Native save System frame, selection panel and cue431
+
+Read-only US ISO `f/msgWindow.tpl` (51 entries) now supplies separately packed
+`romfs/message-window-panel.t3x` (index0,72x72),
+`romfs/message-window-system-pattern.t3x` (index5,128x64) and
+`romfs/message-window-42.t3x` through `-49.t3x` (32x32 source shape/ring masks).
+`tools/message_window_assets.py` decodes original GX images to lossless RGBA8,
+retains dimensions and records ISO offset/full source SHA/fingerprint in ignored
+`romfs/message-window.json`. Pattern repeats; corner masks clamp; native PICA
+stages adapt original System TEV algebra and four-quad geometry. Selection uses
+source index0 nine-slice UV/destination caps. No generated panel art is used.
+Converted PNG/TPL copies remain ignored under `local-assets/fonts/`; compiled
+T3X/manifest remain ignored. Original Nintendo/Intelligent Systems rights remain;
+local conversion does not grant redistribution rights. Native narrow opening
+geometry/GX-PICA rounding parity remain adapters; see live save contract.
+
+`config/audio_bindings.json` selects original SFX_MOBJ_BLOCK_SAVE1/cue431 for
+`romfs/save-block.wav`: source pssfx row431 ->FX618/group5/macro745/sample550,
+`local-assets/audio/pcm/samples/pmario-0226.wav`,22050Hz/24422 PCM16 frames/no loop.
+`tools/audio_map.py` retains source row/parameters/macro/sample/conversion metadata
+in ignored catalogs. No synthetic tone or replacement melody is generated. The
+NDSP primary-sample fallback uses source volume100 with existing conservative
+bus gain; MusyX modulation/3D attenuation/spatial pan/group residence are not
+reproduced. WAVs/catalogs/extracted bank data remain outside source history.
+ISO is never written or committed; original audio rights remain unchanged.

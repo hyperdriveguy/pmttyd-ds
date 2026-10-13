@@ -3,6 +3,7 @@
 #include "field_pipe.hpp"
 #include "save.hpp"
 #include <algorithm>
+#include <atomic>
 #include <cstdio>
 #include <sys/stat.h>
 namespace {
@@ -25,6 +26,27 @@ void merge(ttyd::Input& pending,const ttyd::Input& i) {
     pending.physicalSnapshot=i.physicalSnapshot;pending.physicalButtons=i.physicalButtons;
     if(i.touchX>=0) {pending.touchX=i.touchX;pending.touchY=i.touchY;}
 }
+struct SaveWorker {
+    Thread thread=nullptr;
+    std::string path;ttyd::Progress checkpoint;
+    std::atomic<bool> done{false};bool success=false;uint64_t ticket=0;
+    bool start(const std::string& destination,const ttyd::Progress& progress,uint64_t id) {
+        if(thread)return false;
+        path=destination;checkpoint=progress;ticket=id;done.store(false,std::memory_order_relaxed);
+        thread=threadCreate([](void* p) {
+            auto& self=*static_cast<SaveWorker*>(p);self.success=ttyd::writeSave(self.path,self.checkpoint);
+            self.done.store(true,std::memory_order_release);
+        },this,16384,0x31,-2,false);
+        return thread!=nullptr;
+    }
+    bool poll(uint64_t& id,bool& result) {
+        if(!thread || !done.load(std::memory_order_acquire))return false;
+        threadJoin(thread,UINT64_MAX);threadFree(thread);thread=nullptr;
+        id=ticket;result=success;return true;
+    }
+    void finish(){if(thread){threadJoin(thread,UINT64_MAX);threadFree(thread);thread=nullptr;}}
+    ~SaveWorker(){finish();}
+};
 }
 int main() {
     gfxInitDefault();gfxSet3D(false);
@@ -40,7 +62,7 @@ int main() {
         gfxExit();
         return 1;
     }
-    if(!loadRoomCollision(0) || !(ttyd::loadWarps("romfs:/rooms.bin") && ttyd::loadFieldPipes("romfs:/field-pipes.bin")) || !ttyd::loadFieldDoors("romfs:/doors.pmdoor") || !ttyd::loadCameraRoadAssets("romfs:") || !ttyd::loadHarborStoryAssets("romfs:") || !ttyd::loadFieldActorCatalog("romfs:") || !ttyd::loadProfessorStoryAssets("romfs:") || !ttyd::loadUndergroundStoryAssets("romfs:") || !ttyd::loadTrioBattleAssets("romfs:")) {
+    if(!loadRoomCollision(0) || !(ttyd::loadWarps("romfs:/rooms.bin") && ttyd::loadFieldPipes("romfs:/field-pipes.bin")) || !ttyd::loadFieldDoors("romfs:/doors.pmdoor") || !ttyd::loadCameraRoadAssets("romfs:") || !ttyd::loadHarborStoryAssets("romfs:") || !ttyd::loadFieldActorCatalog("romfs:") || !ttyd::loadFieldSaveObjectAssets("romfs:") || !ttyd::loadProfessorStoryAssets("romfs:") || !ttyd::loadUndergroundStoryAssets("romfs:") || !ttyd::loadTrioBattleAssets("romfs:")) {
         renderer.shutdown();romfsExit();gfxExit();return 1;
     }
     ttyd::Audio audio;audio.init();
@@ -73,7 +95,11 @@ int main() {
     ttyd::Metrics metrics;
     double previous=seconds(),accumulator=0,window=previous;int frames=0;
     ttyd::Input pending;bool pendingStart=false;
+    SaveWorker saveWorker;
     while(aptMainLoop()) {
+        uint64_t completedTicket;bool saveSuccess;
+        if(saveWorker.poll(completedTicket,saveSuccess) && game.saveObjects)
+            game.saveObjects->presentation.completeWrite(completedTicket,saveSuccess);
         double now=seconds();double delta=std::max(0.,now-previous);previous=now;
         // Resume/menu interruptions must not cause seconds of battle advancement.
         if(delta>.25) {accumulator=0;pending={};delta=1./60;}
@@ -152,7 +178,16 @@ int main() {
             else {game.cancelRoad();notice="Room transition failed";noticeTicks=180;}
             accumulator=0;pending={};previous=seconds();
         }
-        if(game.saveRequested) {
+        if(game.saveObjects) {
+            uint64_t ticket;ttyd::SaveBlockSwitches switches;
+            if(game.saveObjects->presentation.takeWriteRequest(ticket,switches)) {
+                auto checkpoint=game.progress;
+                checkpoint.originalStory=switches.story;checkpoint.originalFlag233=switches.firstHit;
+                checkpoint.originalFlag236=switches.postStoryHit;checkpoint.originalSaveMode=switches.mode;
+                if(!saveWorker.start(savePath,checkpoint,ticket))game.saveObjects->presentation.completeWrite(ticket,false);
+            }
+        }
+        if(game.saveRequested && !game.saveLocked() && !saveWorker.thread) {
             notice=ttyd::writeSave(savePath,game.progress)?"Progress saved":"Save failed; progress kept in memory";
             noticeTicks=180;game.saveRequested=false;
         }
@@ -175,7 +210,8 @@ int main() {
         ++frames;
         if(now-window>=1) {metrics.fps=frames/(now-window);window=now;frames=0;}
     }
+    saveWorker.finish(); // Complete an already accepted write before closing services.
     // A battle is transient; save only the exploration checkpoint.
-    if(frontend.screen==ttyd::FrontScreen::Playing && !game.professorStory.temporaryProfessor && !game.professorStory.running() && game.scene==ttyd::Scene::Explore && !game.airborne() && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0 && game.pipeRequest<0) ttyd::writeSave(savePath,game.progress);
+    if(frontend.screen==ttyd::FrontScreen::Playing && !game.progress.originalStory && !game.saveLocked() && !game.professorStory.temporaryProfessor && !game.professorStory.running() && game.scene==ttyd::Scene::Explore && !game.airborne() && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0 && game.pipeRequest<0) ttyd::writeSave(savePath,game.progress);
     audio.shutdown();renderer.shutdown();romfsExit();gfxExit();return 0;
 }

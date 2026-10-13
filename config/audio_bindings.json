@@ -5,7 +5,8 @@
     {"clip": "jump", "gamecube_name": "SFX_MARIO_JUMP1", "trigger": "accepted field jump takeoff; primary sample fallback uses audible gain despite original muted entry"},
     {"clip": "hit", "gamecube_name": "SFX_MARIO_DAMAGE1", "trigger": "current harness generic impact; enemy-specific hits remain ambiguous"},
     {"clip": "success", "gamecube_name": "SFX_AC_OK1", "trigger": "player action-command success; primary voice only"},
-    {"clip": "guard", "gamecube_name": "SFX_MARIO_GUARD1", "trigger": "guarded enemy impact; separate from action-command success"}
+    {"clip": "guard", "gamecube_name": "SFX_MARIO_GUARD1", "trigger": "guarded enemy impact; separate from action-command success"},
+    {"clip": "save-block", "gamecube_name": "SFX_MOBJ_BLOCK_SAVE1", "source_request": 431, "trigger": "source save-block stage0; original primary sample550; macro/3D routing remain adapters"}
   ],
   "music": [
     {"clip": "rogueport", "source": "sound/stream/stg_gor2_32k.stm", "trigger": "current five outdoor Rogueport rooms; retain through dialogue; story overrides remain unbound"},

@@ -283,3 +283,15 @@ Original No/Yes/B/error paths and source nested keys pass native host tests.
 Save v6 preserves GSF233/236/GSW4 alongside GSF1207, with legacy migration.
 This does not close live object/event/camera/audio/I/O binding, original card
 error classification, native capture parity or full field ordering.
+
+### 2026-10-13 — Live source save block, native System rendering and SD worker
+
+[Live binding](../behavior/field/NATIVE_LIVE_SAVE_BLOCK.md) connects actual source
+head collision/name publication, independent S_1/A_1 simulation clocks, original
+stages/event graph, nested keys and original print/selection windows to Game.
+Original System pattern/masks/TEV algebra and selection panel/cursor draw on PICA;
+accepted writes use a libctru worker and source switch snapshot. Original431 now
+plays its source primary sample; macro/3D/group behavior remains an adapter.
+Host and isolated native/first-hit/No/Yes captures pass within this bounded domain.
+The broad todo stays OPEN for original manager sequence/pause/shared VM/card state,
+SAVE-01 full pouch persistence, camera8 UI, spatial/macro audio and runtime parity.

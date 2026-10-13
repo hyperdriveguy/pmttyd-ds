@@ -685,7 +685,7 @@ bool Game::integrateVertical(bool held,float& previousY,bool update) {
         queryOverhead(previousY,fieldJump.velocity,.1f);
         // This caller has already moved. Base mutation affects the next move,
         // and the updated base selects this call's landing probe orientation.
-        fieldMovement.dampFallBase(fieldScreen.inScreen(),!marioFieldControl && fieldKeysOff,fieldAirDampingBypass);
+        fieldMovement.dampFallBase(fieldScreen.inScreen(),!marioFieldControl && (fieldKeysOff || saveLocked()),fieldAirDampingBypass);
         if(!fieldScreen.inScreen() && !fieldAirDampingBypass)fieldJump.suppressDrift=true;
         fieldJump.integrate(held);jumpHeight=jumpBase+fieldJump.height-groundHeight;
         return true;
@@ -819,6 +819,18 @@ void Game::restore(const Progress& saved) {
     if(p.room==5 && p.originalStory && *p.originalStory<=11)professorStory.beginUnderground(ticks*1000/60,*p.originalStory,
         {p.position.x*100,groundHeight*100,p.position.z*100},{partner.x*100,partnerHeight*100,partner.z*100},p.originalFlag1207);
     if(p.room==2 && p.originalStory==11)professorStory.restoreProfessor(p.originalFlag1207);
+    saveObjects=std::make_shared<FieldSaveObjects>();
+    saveObjects->configure(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags,ticks*1000/60);
+}
+void Game::updateSaveObjects() {
+    if(!saveObjects || (scene!=Scene::Explore && scene!=Scene::Dialogue) || trioBattleActive ||
+       water.active() || fade.active() || arriving || warpRequest>=0 || pipeRequest>=0)return;
+    saveObjects->configure(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags,ticks*1000/60);
+    saveObjects->switches={progress.originalStory.value_or(0),progress.originalFlag233,progress.originalFlag236,progress.originalSaveMode};
+    const bool wasLocked=saveLocked();
+    saveObjects->tickObjects(ticks*1000/60,headObjectKey,headContact.sourceNode,fieldJump.motion);
+    if(saveLocked()){scene=Scene::Dialogue;saveRequested=false;}
+    else if(wasLocked)scene=Scene::Explore;
 }
 bool Game::checkpointGround(float& height) {
     refreshFieldObjects();
@@ -892,6 +904,8 @@ const char* Game::dialogue() const {
     return dialogueKind == 1 ? encounter[dialoguePage] : notices[dialoguePage];
 }
 const char* Game::prompt() const {
+    if(saveObjects && saveObjects->failed)return "Development notice: save service unavailable";
+    if(saveLocked())return saveObjects->presentation.selection.active()?"A: select     B: cancel":"A / B: next";
     if(fieldActorTalk.message.active())return fieldActorTalk.message.waiting()?"A / B / touch: next":"A / B: reveal text";
     if(harborStory.locked())return harborStory.failed?"Development notice: source message unavailable":harborStory.message.waiting()?"A / B / touch: next":"A / B: reveal text";
     if(scene==Scene::FieldDefeat)return "A: load save";
@@ -1407,6 +1421,7 @@ void Game::tick(const Input& rawInput) {
     struct PresentationOnExit {
         Game& game;Vec2 previous;const Input& raw;
         ~PresentationOnExit(){
+            game.updateSaveObjects();
             game.updateTemporaryProfessor();
             game.progress.interiorMask=uint8_t(game.fieldDoor.interiorMask);
             if(game.fieldDoor.active() || game.professorStory.running() || game.professorStory.temporaryProfessor)game.saveRequested=false;
@@ -1423,7 +1438,7 @@ void Game::tick(const Input& rawInput) {
         }
     } presentation{*this,partner,rawInput};
     Input input=rawInput;const Input& i=input;
-    ++ticks;++fieldCameraSimulationTicks; sound=Sound::None;overheadContact=false;headObjectKey=0;
+    ++ticks;++fieldCameraSimulationTicks; sound=Sound::None;overheadContact=false;headObjectKey=0;headContact={};
     if(scene==Scene::Explore || scene==Scene::Dialogue)beginFieldCameraTick();
     if(arriving || warpRequest>=0)retainedFieldMainX=0; // Source road choreography keys off before Mario input publication.
     if(i.physicalSnapshot) {
@@ -1442,6 +1457,22 @@ void Game::tick(const Input& rawInput) {
         }
     }
     const bool tap=i.touchX>=0;
+    if(!saveObjects)saveObjects=std::make_shared<FieldSaveObjects>();
+    saveObjects->configure(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags,ticks*1000/60);
+    saveObjects->switches={progress.originalStory.value_or(0),progress.originalFlag233,progress.originalFlag236,progress.originalSaveMode};
+    MessageSelectionInput saveInput;
+    if(i.physicalSnapshot) {
+        const auto& p=inputProducer.channels[0];
+        saveInput={p.pressed,p.directionPressed,p.repeat,p.directionRepeat};
+    } else saveInput.buttons=(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u)|(i.z<-.5f?8u:i.z>.5f?4u:0u);
+    if(tap)saveInput.buttons|=0x100;
+    saveObjects->tickEvents(ticks*1000/60,saveInput);
+    progress.originalFlag233=saveObjects->switches.firstHit;progress.originalFlag236=saveObjects->switches.postStoryHit;
+    progress.originalSaveMode=saveObjects->switches.mode;
+    if(saveLocked()) {
+        if(fieldJump.airborne)dispatchFieldAir();
+        move(Input{});saveRequested=false;return;
+    }
     if(arriving) {
         fade.tick();const bool finished=roadMotion.tick();
         progress.position={roadMotion.position[0],roadMotion.position[1]};partner=progress.position;
