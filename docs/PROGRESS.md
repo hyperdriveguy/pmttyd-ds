@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero macro sample start/resource lookup
+
+Completed mcmdStartSample/dataGetSample/smpcmp and opcode16 for EVT-01;
+checked the corresponding inbox portion.
+[Sample start/lookup](behavior/audio/MUSYX_MACRO_SAMPLE_START_AND_RESOURCE_LOOKUP.md)
+pins referenced-row search/shared scratch/ordered descriptor output, wrapping
+mode offset/extent clamp, eight hardware arguments and fresh post-child voice/
+pitch/flag/job publication. Length0 retainsffffffff offset. Actual residency/
+descriptor/domain/hardware/pitch/runtime remain open; no fallback or guard inferred.
+
+Validation: read-only ISO manifest passed11 spans (three bodies/one region/six
+linked/table),138 anchors/eight calls/one registration. Eight output bindings,
+seven offset/six extent/five flag vectors and comparator/unsigned division/address/
+order deductions checked. Link audit passed821 Markdown files/zero broken links;
+scoped `git diff --check` passed. Documentation/metadata only; no `make test`/
+`make all` rerun. Full original inspection ELFs/listings stay `/tmp`; no bodies/
+binary assets committed. Concurrent native edits excluded from this commit.
+
+Next: priority-zero EVT-01 hwInitSamplePlayback/DoSetPitch and actual resident
+registry/descriptor/ID/ref/output/command/word158/length/flags/metric/pitch/caller
+providers, valid sorted/duplicate/member/zero-length/shared-cell/alias/IRQ/
+concurrency domains and original start/pitch/sample/audio traces; other opcodes.
+Full native/runtime binding, lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero macro subroutines/note commands
 
 Completed mcmdGosub/mcmdAddKey/voiceIsLastStarted and opcodes24..26/36..37

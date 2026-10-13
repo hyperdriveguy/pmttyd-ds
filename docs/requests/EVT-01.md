@@ -327,6 +327,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   24..26/36..37 ring/note/publication/wait paths —
   [subroutines/note commands](../behavior/audio/MUSYX_MACRO_SUBROUTINES_AND_NOTE_COMMANDS.md).
   Low-byte count/S16 note wrap/route-specific gates retained; domains/runtime open.
+- [x] Complete mcmdStartSample/dataGetSample/smpcmp and opcode16
+  referenced lookup/descriptor/offset/hardware request paths —
+  [sample start/resource lookup](../behavior/audio/MUSYX_MACRO_SAMPLE_START_AND_RESOURCE_LOOKUP.md).
+  Multiply wrap/zero-length/source rereads retained; hardware/pitch/domain/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1902,3 +1906,20 @@ note/six predicate vectors and mask/address/order checked as deductions. Full
 fresh ELFs/listings stay `/tmp`; no native change/original execution/body/binary
 asset export. Actual ring/note/table/command/caller/alias/IRQ/concurrency and
 original subroutine/note/wait/audio remain OPEN.
+
+### 2026-10-13 — Macro sample start and referenced resource lookup
+
+[Three bodies/one region](../behavior/audio/MUSYX_MACRO_SAMPLE_START_AND_RESOURCE_LOOKUP.md)
+close live directory search/reference admission, shared scratch and ordered output,
+mode-specific wrapping offset scaling/extent clamp, eight hardware arguments and
+fresh descriptor/voice/pitch/flag/key-job publication. Missing lookup leaves output
+unwritten; length0 storesffffffff offset. No automatic reference acquisition,
+silence fallback, source guard, snapshot/rollback or audible playback inferred.
+
+Validation: read-only manifest11 spans (three bodies/one region/six linked/table),
+138 anchors/eight calls/one registration passes. Eight output bindings, seven
+offset/six extent/five flag vectors and comparator/unsigned division/address/
+ordering checked as deductions. Full fresh ELFs/listings stay `/tmp`; no native
+change/original execution/body/binary asset export. Hardware/pitch children,
+actual residency/descriptor/ID/ref/command/provider/domain/alias/IRQ/concurrency
+and original start/refusal/sample/audio remain OPEN.
