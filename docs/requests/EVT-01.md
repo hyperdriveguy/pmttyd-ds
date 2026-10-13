@@ -2995,3 +2995,14 @@ boundary/four total/four return vectors checked; prefix pins reverified. Current
 buffer rollback skips total check; first-span stop does not gate second span;
 requested sum still publishes. PCM/decoder/whole callback/providers/original
 audio/native binding remain open; EVT-01 stays OPEN.
+
+### 2026-10-13 delivery: independent EXP count/pad/icon-end audit
+
+[Count follow-up](../behavior/battle/UNDERGROUND_TRIO_EXP_PRESENTATION_AND_COUNTING.md#2026-10-13-independent0a0b0c-audit)
+pins0a noE4reset/nofallthrough; sourceheldB1034&300; onceonly1000fastlatch;
+onepointpercall, originalSFX_STAR_POINT_GET1 onlytransferscounterlow3zero;
+thresholdcheckevenno-transfer, actualP96reset/E0c/P8a+1>=99. Lasttransfer
+remains0b;nextcallsets0c delay. Freshnormal10delay100/fiveSFX;firstheld
+delay10/oneSFX. ExpIconEnd clearsE30mask2, iconDelete onlyactive1bit, retains
+all19E pointers/recordbytes; nofree/wholememset. Docs-only/read-only/no native
+edits/build/commit; git diff --check.

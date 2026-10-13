@@ -7013,3 +7013,53 @@ stack is32KB and frontWorld reserved roughly16KB for its Game scratch snapshot.
 That renderer-only snapshot now has scene-owned heap storage. Smoke captures
 now detect native exception dialogs even while Azahar remains running. Two
 focused harness checks pass; complete native rerun is pending.
+
+## 2026-10-13 — Independent source EXP count/end audit
+
+[EXP count follow-up](behavior/battle/UNDERGROUND_TRIO_EXP_PRESENTATION_AND_COUNTING.md#2026-10-13-independent0a0b0c-audit)
+rechecks sourceheldpad/fastcounter latch, exactone-point/sound/levelguard
+ordering, next-invocation0c transition, and icon-end retained bytes/pointers.
+Validation: read-only complete used bodies; git diff --check. Docs only, no
+native edits/tests/build/commit. Next native provider uses source count ticks
+and soundrequests; actualaudio/raster/update/pouch-save lifecycle remains open.
+
+## 2026-10-13 — Native original PointGet and Star Point counting
+
+Bound actual source0a→0b→0c→0d→0e: used PointGet creation, original US
+phrase/digit/shadow strips, signed packed EXP counting, held-pad fast latch,
+source count-cue requests, exact wait/deletion/softdelete and five-call pointer
+release. Separate host-testable effect retains entry/depth capture, source45
+enter/hold/60leave ticks and original width-cap/cursor/UV/shadow geometry.
+Native cosine is an explicit numeric adapter. Effect update follows battle/
+event/icon work once per simulation timestamp, including creation pass.
+Victory music ownership stays active through icon deletion independently of
+icon visibility. GPU submission reuses the existing original UI atlas.
+
+Validation: final integrated make test164/164 CTest +107/107 Python
+(`artifacts/trio-pointget-tests-integrated.log`), make all and make debug-short
+(`artifacts/trio-pointget-all.log`, `artifacts/trio-pointget-debug.log`) pass.
+Earlier integrated runs caught concurrent opening-effects registration and
+item-selection build-state failures; current full suite passes without changes
+to those unrelated implementations/assertions. Original local asset generation
+passes. Host checks cover original image dimensions, phrase/digit/shadow layout,
+phase/softdelete timing, actual normal40-call and one-press/released fast10-call
+payout, count-cue totals, delays and pointer release before effect disappearance.
+Python capture syntax and scoped git diff --check pass. Tests/builds cover the
+integrated workspace; commits exclude concurrent workstream edits.
+
+Native evidence uses immutable binary/ELF `artifacts/trio-pointget-snapshot/`
+and isolated capture `artifacts/azahar-trio-pointget/`: reviewed frame32 shows
+original You got10 Star Points! art, source-scaled digits/shadow and victory
+poses; final original-pointget-counted-return-boundary capture shows the effect/
+icons gone and the development return notice. Actual original attacks/removal
+reach this boundary; no shortcut result was injected. User emulator profile/
+saves and read-only ISO remain untouched; extracted/compiled assets are ignored.
+Original camera/dispatcher/GX raster and hardware performance are not verified.
+
+Frontier is bank0700000e, before full victory export and field restoration.
+Ten Star Points reach the battle's actual packed pouch; fieldresult0/story11/
+control lock remain intact, and persistent pouch/save export is still pending.
+Next implement ordinary0e→10→19..1f body/fade/export and actual sequence/field
+wait publication, then resume unchanged scene dialogue. Source shared RNG,
+equipment, camera/crowd/voice/count sound playback and alternative rewards/
+level-up/fortune branches remain incomplete. Full prologue goal remains active.

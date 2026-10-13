@@ -8,6 +8,22 @@
 #include <algorithm>
 using namespace ttyd;
 int main(){
+    PointGetEffect effect;effect.enter(10,0,90,0,0);assert(effect.active && effect.x==-2000 && effect.y==60);
+    effect.tick();assert(effect.depthPosition[0]==-2000 && effect.timer==1 && effect.phase==0 && effect.x>-1000 && effect.x<0);
+    for(unsigned n=1;n<45;++n)effect.tick();assert(effect.phase==1 && effect.timer==0 && std::fabs(effect.x)<.001f);
+    const auto quads=pointGetQuads(effect);assert(quads.size()==8);
+    const float layoutScale=200.f/322.f;
+    assert(quads[0].shadow && quads[0].texture==125 && std::fabs(quads[0].width-200*layoutScale)<.001f);
+    assert(!quads[4].shadow && quads[4].texture==124 && std::fabs(quads[4].centerX+222*layoutScale)<.001f);
+    assert(quads[5].texture==126 && std::fabs(quads[5].u0-.1f)<.00001f && std::fabs(quads[5].u1-.2f)<.00001f);
+    assert(std::fabs(quads[5].width-48*layoutScale*1.4285714626312256f)<.001f);
+    assert(quads[6].u0==0 && quads[7].texture==130 && std::fabs(quads[7].centerX-158*layoutScale)<.001f);
+    assert(std::fabs(quads[0].bottomY-(60-4*layoutScale))<.001f && quads[4].bottomY==60);
+    effect.tick();assert(effect.phase==1 && effect.timer==1);effect.softDelete=true;effect.tick();assert(effect.phase==2 && effect.timer==0 && !effect.softDelete);
+    for(unsigned n=0;n<59;++n)effect.tick();assert(effect.active && effect.timer==59);effect.tick();assert(!effect.active && pointGetQuads(effect).empty());
+    effect.enter(1,0,90,0,0);effect.softDelete=true;for(unsigned n=0;n<45;++n)effect.tick();assert(effect.phase==1 && effect.softDelete);effect.tick();assert(effect.phase==2);
+    assert(pointGetQuads(effect).back().texture==128);
+
     assert(battleDiveInterpolate(0,2,8,0,64)==16 && battleDiveInterpolate(1,2,8,0,64)==4 && battleDiveInterpolate(4,2,8,0,64)==28);
     assert(battleMirrorZ(0,90,0,0) && battleMirrorZ(0,270,0,0));
     assert(!battleMirrorZ(0,89,0,0) && !battleMirrorZ(0,271,0,0));
@@ -181,7 +197,8 @@ int main(){
     assert(game.trioAttack.readWord(0x84001cb8,value) && value==0);
     assert(game.trioBattleIntro.actors[0].pose=="M_S_1" && game.trioBattleIntro.actors[5].pose=="TGK_S_1");
     for(unsigned o:{0x1ca0u,0x1ca4u,0x1ca8u,0x1cacu})assert(game.trioAttack.readWord(0x84000000+o,value) && value==0);
-    for(bool successful:{false,true}) {
+    for(unsigned scenario=0;scenario<3;++scenario) {
+        const bool successful=scenario!=0,fastReward=scenario==2;
         Game charged;charged.restore(checkpoint);
         for(unsigned n=0;n<3600 && !charged.trioBattleActive;++n)charged.tick(advance);
         for(unsigned n=0;n<3600 && !charged.trioBattleIntro.finished;++n)charged.tick(advance);
@@ -237,17 +254,17 @@ int main(){
             charged.trioCommands.chooseCommand(1);charged.tick(advance);
             assert(charged.trioCommands.count()==1 && charged.trioCommands.selected()[0]==5); // Ground replacement admits Hammer.
             charged.tick(advance);charged.tick(Input{});
-            for(unsigned n=0;n<1500 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
-            assert(charged.trioAttack.pendingFunction()==0x8021b70c);
+            for(unsigned n=0;n<1500 && !charged.trioAttack.pendingFunction() && !charged.trioAttack.rewardEffect();++n)charged.tick(Input{});
+            assert(charged.trioAttack.pendingFunction()==0 && charged.trioAttack.rewardEffect());
             assert(charged.trioAttack.readWord(0x84000034,value) && value==0 && charged.trioBattleIntro.actors[4].hidden);
             assert(charged.trioAttack.readWord(0x84105278,value) && value==0x10717);
-            assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700000a);
+            assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700000b);
             assert(charged.trioAttack.readWord(0x84400010,value) && value==1); // Packed original result, not field completion.
             assert(charged.trioAttack.readWord(0x84000f28,value) && value!=0);
             const auto end=value;
             assert(charged.trioAttack.readWord(end,value) && value==0);
             assert(charged.trioAttack.readWord(end+0x30,value) && value==2);
-            assert(charged.trioAttack.readWord(end+0x29c,value) && value==0);
+            assert(charged.trioAttack.readWord(end+0x29c,value) && value==0x85200000);
             assert(charged.trioAttack.readWord(end+0x2a0,value) && value>=60 && value<180);
             assert(charged.trioAttack.readWord(end+0x2a4,value) && value==0);
             assert(charged.trioAttack.rewardIcons());const auto& icons=*charged.trioAttack.rewardIcons();
@@ -272,6 +289,29 @@ int main(){
             assert(std::any_of(endingRequests.begin(),endingRequests.end(),[](const ProfessorServiceRequest& r){return r.function==0x801a0cec && r.rawOperands==std::vector<int32_t>({-1,0});}));
             assert(std::count_if(endingRequests.begin(),endingRequests.end(),[](const ProfessorServiceRequest& r){return r.function==0x800d3300 && r.rawOperands==std::vector<int32_t>({314});})==2);
             const auto dropDraws=std::count_if(endingRequests.begin(),endingRequests.end(),[](const ProfessorServiceRequest& r){return r.function==0x80005da0;});assert(dropDraws==3 || dropDraws==5 || dropDraws==7);
+            assert(charged.progress.originalStory==11 && charged.fieldBattleState().result==0 && !charged.fieldControlEnabled());
+            assert(charged.trioAttack.rewardEffect()->timer==1 && charged.trioAttack.rewardEffect()->depthPosition[0]==-2000);
+            const unsigned countTicks=fastReward?10:40;
+            for(unsigned n=0;n<countTicks;++n){Input countInput;countInput.physicalSnapshot=true;countInput.physicalButtons=fastReward && n==0?0x100:0;charged.tick(countInput);
+                const unsigned granted=fastReward?n+1:(n+1)/4;
+                assert(charged.trioAttack.readWord(0x85000094,value) && (value&0xffff)==granted);
+                assert(charged.trioAttack.readWord(end+8,value) && (value&0xffff)==10-granted);
+                assert(!charged.trioAttack.pendingFunction());
+            }
+            assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700000b);
+            assert(charged.trioAttack.readWord(end+4,value) && value==(fastReward?1010u:40u));
+            charged.tick(Input{});assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700000c);
+            assert(charged.trioAttack.readWord(end+4,value) && value==(fastReward?10u:100u));
+            for(unsigned n=0;n<(fastReward?10u:100u);++n)charged.tick(Input{});
+            assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700000d && !charged.trioAttack.rewardIcons());
+            assert(charged.trioAttack.rewardPresentationActive() && charged.trioAttack.rewardEffect());
+            for(unsigned n=0;n<5;++n)charged.tick(Input{});
+            assert(charged.trioAttack.readWord(end+0x29c,value) && value==0 && charged.trioAttack.rewardEffect());
+            assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700000e);
+            charged.tick(Input{});assert(charged.trioAttack.pendingFunction()==0x80215234);
+            for(unsigned n=0;n<110;++n)charged.tick(Input{});assert(!charged.trioAttack.rewardEffect());
+            const auto& finalRequests=charged.trioAttack.requests();
+            assert(std::count_if(finalRequests.begin(),finalRequests.end(),[](const ProfessorServiceRequest& r){return r.function==0x800d98bc && r.rawOperands==std::vector<int32_t>{int32_t(0x802feaa8)};})==(fastReward?1:5));
             assert(charged.progress.originalStory==11 && charged.fieldBattleState().result==0 && !charged.fieldControlEnabled());
 
         }

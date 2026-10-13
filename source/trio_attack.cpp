@@ -61,6 +61,7 @@ struct TrioAttackRuntime {
     std::array<PartnerBattleSnapshot,7> partySnapshots{};
     std::array<TrioRewardIcon,19> rewardIcons{};
     uint64_t rewardIconClockAt=UINT64_MAX;
+    PointGetEffect pointGet;uint64_t pointGetClockAt=UINT64_MAX;
     TrioAttackRuntime():vm(0x81000000,platform(this)) {}
     static EventNativePlatform platform(TrioAttackRuntime* self) {
         EventNativePlatform p;p.user=self;p.clock=[](void*)->uint32_t{return 243000000;};
@@ -606,9 +607,30 @@ struct TrioAttackRuntime {
         if(state==0x07000009){const auto end=word(Battle+0xf28);word(end+4,word(end+4)-1);if(int32_t(word(end+4))<=0)word(Battle+0xf24,0x0700000a);endingDisplay();return;}
         if(state==0x0700000a){const auto end=word(Battle+0xf28);if(half(end+8)<=0){pending=0x80215938;return;}
             for(const auto u:{mario,party}){if(!u)continue;const auto script=battleUnitData(u,0x40,nativeBattleActorServices(vm).memory);if(!script){pending=0x8012733c;return;}auto& e=createRootEvent(vm.schedule,script,10,0,vm.creationServices());e.owner=int32_t(word(u));word(u+0x2a8,e.id);}
-            pending=0x8021b70c; // Actual PointGet entry precedes state0b and reward counting.
-            return;
+            endingRequest(0x8021b70c,{0,int32_t(half(end+8)),0,90,0,0});
+            pointGet.enter(half(end+8),0,90,0,0);pointGetClockAt=UINT64_MAX;
+            word(end+0x29c,0x85200000); // Opaque native effect owner, not an invented original effEntry ABI.
+            word(Battle+0xf24,0x0700000b);endingDisplay();return;
         }
+        if(state==0x0700000b){const auto end=word(Battle+0xf28),pouch=word(0x8041eb00);
+            if(int16_t(half(end+0xa))>0){word(end+4,word(end+4)+1);endingRequest(0x80119fc8,{0x300});
+                if((word(Battle+0x1034)&0x300) && int32_t(word(end+4))<1000)word(end+4,word(end+4)+1000);
+                const auto counter=word(end+4);
+                if(!(counter&3) || int32_t(counter)>=1000){half(end+0xa,half(end+0xa)-1);half(pouch+0x96,half(pouch+0x96)+1);
+                    if(!(counter&7)){endingRequest(0x800d98bc,{int32_t(0x802feaa8)});soundRequests.emplace_back("SFX_STAR_POINT_GET1");}
+                }
+                if(int16_t(half(pouch+0x96))>=100){half(pouch+0x96,0);word(end+0xc,1);if(int16_t(half(pouch+0x8a))+1>=99)half(end+0xa,0);}
+            }else{const auto counter=int32_t(word(end+4));word(end+4,counter>=1000?10:counter<120?140-counter:20);word(Battle+0xf24,0x0700000c);}
+            endingDisplay();return;
+        }
+        if(state==0x0700000c){const auto end=word(Battle+0xf28);word(end+4,word(end+4)-1);
+            if(int32_t(word(end+4))<=0){word(end+4,60);endingRequest(0x802146c0,{int32_t(end)});
+                word(end+0x30,word(end+0x30)&~2u); // Source deletion preserves icon records and their pointers.
+                word(Battle+0xf24,0x0700000d);endingRequest(0x8005e9c0,{int32_t(word(end+0x29c))});if(pointGet.active)pointGet.softDelete=true;
+                if(word(end+0xc)==0)word(end+4,5);
+            }endingDisplay();return;
+        }
+        if(state==0x0700000d){const auto end=word(Battle+0xf28);word(end+4,word(end+4)-1);if(int32_t(word(end+4))<=0){word(end+0x29c,0);word(Battle+0xf24,0x0700000e);}endingDisplay();return;}
         pending=0x80215234;
     }
     void postAction() {
@@ -782,7 +804,7 @@ struct TrioAttackRuntime {
             HammerSoundSink sounds;sounds.user=this;sounds.play=[](void* p,const char* key)->int32_t{static_cast<TrioAttackRuntime*>(p)->soundRequests.emplace_back(key);return 0;};const auto result=c.tick(context,random,sounds);if(result<0){if(!pending)pending=0x8012a17c;return;}storeHammer(c);if(result==0)word(Battle+0x1ca0,0);
         }
     }
-    void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){scene=&s;now=time;if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();}vm.runManager();if(hasBrokenUnit())done=false;}iconClock(time);publish(s);}
+    void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){scene=&s;now=time;if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();}vm.runManager();if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}publish(s);}
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
 bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>();if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
@@ -797,5 +819,7 @@ bool TrioAttack::readWord(uint32_t a,uint32_t& v)const{return runtime_ && runtim
 }
 
 namespace ttyd {
+const PointGetEffect* TrioAttack::rewardEffect() const {return runtime_ && runtime_->pointGet.active?&runtime_->pointGet:nullptr;}
+bool TrioAttack::rewardPresentationActive() const {return runtime_ && runtime_->word(Battle+4)==3 && runtime_->word(Battle+0xf24)>=0x07000008;}
 const std::array<TrioRewardIcon,19>* TrioAttack::rewardIcons() const {if(!runtime_)return nullptr;const auto end=runtime_->word(Battle+0xf28);return end && (runtime_->word(end+0x30)&2)?&runtime_->rewardIcons:nullptr;}
 }

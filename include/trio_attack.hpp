@@ -3,6 +3,7 @@
 #include <memory>
 #include "battle_defense.hpp"
 #include "prologue_pouch.hpp"
+#include "point_get.hpp"
 namespace ttyd {
 bool loadTrioAttackAssets(const char* root);
 struct TrioAttackRuntime;
@@ -20,6 +21,8 @@ public:
     const std::vector<ProfessorServiceRequest>& requests() const;
     bool readWord(uint32_t address,uint32_t& value) const;
     const std::array<TrioRewardIcon,19>* rewardIcons() const;
+    const PointGetEffect* rewardEffect() const;
+    bool rewardPresentationActive() const;
 private:
     std::shared_ptr<TrioAttackRuntime> runtime_;
 };

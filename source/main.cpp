@@ -212,7 +212,7 @@ int main() {
             accumulator=0;pending={};previous=seconds();
         }
         if(frontend.screen==ttyd::FrontScreen::Playing && game.harborTutorial.running())audio.updateFrontend(12,game.progress.sound);
-        else if(frontend.screen==ttyd::FrontScreen::Playing)audio.update(game.trioBattleActive?(game.trioAttack.rewardIcons()?ttyd::Scene::Victory:ttyd::Scene::Battle):game.scene,game.progress.sound,game.harborStory.enabled && game.harborStory.triggered,
+        else if(frontend.screen==ttyd::FrontScreen::Playing)audio.update(game.trioBattleActive?(game.trioAttack.rewardPresentationActive()?ttyd::Scene::Victory:ttyd::Scene::Battle):game.scene,game.progress.sound,game.harborStory.enabled && game.harborStory.triggered,
                      game.professorStory.locked() && !game.trioBattleActive?game.professorStory.music:0,game.progress.room);
         else if(frontend.screen==ttyd::FrontScreen::Demo)audio.updateFrontend(demo,game.progress.sound);
         else audio.updateFrontend(frontend.screen==ttyd::FrontScreen::Opening?opening.music():4,game.progress.sound);

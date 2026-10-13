@@ -28,6 +28,8 @@ int main() {
     const auto* star=messageIcon(404);assert(star && star->loop==1 && star->frames.size()==4);
     for(const auto& frame:star->frames)assert(frame.delay==6 && frame.width==40 && frame.height==40);
     assert(&star->frame(6)==&star->frames[1] && &star->frame(24)==&star->frames[0]);
+    const uint32_t widths[]={200,100,480,320,296,148,328,164},heights[]={48,24,48,32,48,24,48,24};
+    for(unsigned n=0;n<8;++n){const auto* art=messageIcon(0x10000+124+n);assert(art && art->frames.size()==1 && art->loop==0 && art->frames[0].width==widths[n] && art->frames[0].height==heights[n]);}
     const auto* stick=messageIcon(129);assert(stick && stick->frames[0].width==80 && stick->frames[0].height==80);
     MessagePlayback p;assert(p.open("icon","<icon STICK 0.6 -30 45 -10>A",font,0));
     assert(p.records[0].code==0xfff8 && p.records[0].flags==129 && p.records[0].x==-6 && p.records[0].y==-48 && p.records[0].extra==45);

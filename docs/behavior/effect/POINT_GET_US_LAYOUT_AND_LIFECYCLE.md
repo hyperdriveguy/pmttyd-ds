@@ -120,3 +120,21 @@ Use imported original phrase/digit/shadow art plus these layout requests.
 Validation: complete original local listings/record/constants, both quad FIFO
 paths and matrix calls inspected, fresh10 width/centers resolved. Scoped
 `git diff --check`; documentation-only/no native edits, tests, builds or commit.
+
+## 2026-10-13 native used binding
+
+`PointGetEffect` separates source payload timing/layout from3DS services. The
+trio source0a creates its typed native owner and retains an opaque E29c handle;
+effectMain runs once per simulation timestamp after battle/event/icon work,
+including the creation pass. Source entry XYZ/amount, depth snapshot,45-call
+enter, duration0 hold, softdelete consumption and60-call leave are preserved.
+Native cosine is an explicit numeric adapter with source PI and float rounding
+order; original MSL/camera/dispatcher/raster parity remains unverified.
+
+Citro2D uses locally imported original124..131 textures, source width/cap,
+foreground-derived shadow geometry, ordered passes and decimal UV cells.
+Battle0b transfers actual packed P96 according to original held-pad/count
+branches;0c deletes source icons and softdeletes the effect;0d clears E29c
+after5calls while the independent effect keeps leaving. Native stopping point
+is bank0e before remaining ending/field owners. No field result/story write or
+persistent-pouch export is inferred from EXP counting.

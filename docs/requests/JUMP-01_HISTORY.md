@@ -2375,3 +2375,14 @@ centerX/bottomY. BigY25/.9 spans25..61;smallY0/.45 spans0..18; usedmask10
 bypasses.6/special403/405. Exactcamera*T*Ry(-yaw)*scale andclearflipmasks
 retain sourceadapter boundaries. Docs-only/read-only/no native edit/commit;
 git diff --check.
+
+### 2026-10-13 delivery: independent EXP count/pad/icon-end audit
+
+[Count follow-up](../behavior/battle/UNDERGROUND_TRIO_EXP_PRESENTATION_AND_COUNTING.md#2026-10-13-independent0a0b0c-audit)
+pins0a noE4reset/nofallthrough; sourceheldB1034&300; onceonly1000fastlatch;
+onepointpercall, originalSFX_STAR_POINT_GET1 onlytransferscounterlow3zero;
+thresholdcheckevenno-transfer, actualP96reset/E0c/P8a+1>=99. Lasttransfer
+remains0b;nextcallsets0c delay. Freshnormal10delay100/fiveSFX;firstheld
+delay10/oneSFX. ExpIconEnd clearsE30mask2, iconDelete onlyactive1bit, retains
+all19E pointers/recordbytes; nofree/wholememset. Docs-only/read-only/no native
+edits/build/commit; git diff --check.

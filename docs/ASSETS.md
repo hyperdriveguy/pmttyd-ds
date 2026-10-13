@@ -1278,3 +1278,22 @@ native streams consume source6000ms fade and750ms retiring-tail clocks; no
 new music is generated. Native scaling/projection/readback/audio scheduling
 remain documented adapters. All extracted/compiled resources and provenance
 remain ignored local products, for local use without redistribution rights.
+
+## 2026-10-13 — Native original US PointGet textures
+
+`tools/message_icon_assets.py` reads `e/us/effect_us.tpl` from the original
+US ISO and imports global effectIDs124..131 (TPL6..13): You got, decimal
+digits, singular/plural Star Point(s), and their original shadows. The shared
+UI atlas grows to512x512RGBA8; all source pixels/dimensions/alpha are retained,
+with2px transparent padding and no resampling. Adapter resource keys10000hex+
+sourceID distinguish effect resources from actual `icon.bin` IDs; the manifest
+retains original IDs/TPL indices. The existing native UI texture serves both
+icons and the effect without a separate per-effect GPU texture allocation.
+
+Native source quads retain foreground sizes even for lower-resolution shadows,
+original decimal UV selection, digit scale1.42857146 and width cap200/L.
+Shadow black/alpha128 draws before foreground; source position/width/height
+are adapted by the existing half-size viewport. Full source camera/dispatcher/
+filtering/raster parity remains open. Original packs and captures are ignored,
+the ISO is read-only, and Nintendo/Intelligent Systems ownership/no
+redistribution rights remain unchanged. No generated wording or substitute art.

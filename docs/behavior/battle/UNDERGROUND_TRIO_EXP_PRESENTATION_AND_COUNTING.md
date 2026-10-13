@@ -227,3 +227,64 @@ victory PCM selects through the existing native audio adapter. Full source
 camera/crowd/voice/GX state, WIN2 and hardware raster/performance parity remain
 open. Exact PointGet art/lifecycle, counting and ordinary tail are documented
 in their subsystem contracts and are the next native providers.
+
+## 2026-10-13 independent0a→0b→0c audit
+
+Whole controller rechecked against read-only80215938..80215ba4 plus complete
+BattlePadCheckNow80119fe0/28, MultiCheckNow80119fc8/18, ExpIcon_End
+802146c0/5c and iconDelete8001ae08/a8. Listings retained ignored under
+`artifacts/recovered-temp-evidence/end-*`. No native edits/commit.
+
+* 0a launches Mario data40 then nonnull party data40, each priority10/flags0;
+  only nonnull event stores owner160/IDU2a8. E29c nonnull skips effect entry.
+  New PointGet uses E8, not remaining Ea. Set0b/commonexit: no same-call count
+  and **no E4 reset**. Fresh09 timer reaches0 before0a.
+* 0b checks signed Ea>0 before increment/pad. IncrementE4, then held
+  BattlePadCheckNow(300hex) delegates MultiCheckNow(index0,mask): actual
+  globalB word1034 &300. It returns the rawmask, notedge/eventconsume.
+  Ifnonzero&&incrementedE4<1000, add1000 once. Counter>=1000 remainsfast
+  afterbuttonrelease; holdingdoesnotrepeatedlyadd1000. Sourcebattlepad provider
+  remains distinctfromaction-command/general ordefenceprivatepad.
+* Transfer when(counter&3)==0 ORsignedcounter>=1000: decrement signedEa and
+  increment signedP96, each stored16-bit. Exactlyonepointperinvocation.
+  Onlyafteractualtransfer, counter&7==0 requests psndSFXOn800d98bc with
+  original802feaa8 `SFX_STAR_POINT_GET1`. No soundon skippedcountinvocations.
+* ALLpositiveEa invocations (includingno-transferones) thencheck signedP96>=100.
+  ResetP96=0, E0c=1; signedP8a+1>=99 clearsEa. It doesnotincrementP8a here
+  orsubtract100fromsurplus. Level99original08 admission is separate.
+* LasttransferdoesNOTtransition0c. The next0b invocation withEa<=0 doesnot
+  incrementE4/querypad. It derivesE4delay fromretainedcounter: >=1000→10;
+  <120→140-counter; otherwise20. Set0c/commonexit; nodecrementthatcall.
+* Fresh10EXP/noheld: transfers atE4=4,8,..40, sounds8/16/24/32/40;
+  following0b setsdelay100. Heldfromfirstcount: transfers1001..1010,
+  sound1008; following0b setsdelay10. These are source-derived callcounts,
+  notmeasuredwalltime orpermissionto drivecountfromrenderframes.
+
+ExpIcon_End clears E30mask2 only, then fori0..18loads EACHretainedE34+4*i
+recordpointer, passes its name+18 toiconDelete. No nullguard/noendpointerclear.
+iconDelete chooses currentGP14pool, scans active1 records in order bystrcmp,
+thenclears ONLYflagsbit1mask1 onfirstmatchingrecord; retainedrecordbytes,
+frame/delay/name/model fields and E pointers remain. Noheapfree/wholememset,
+newclock/reward reset orimplicitPointGet deletion. Originalresource/lifetime
+and duplicate-name domains must remain explicit. Separate0c softdelete and
+0d five-call effect-pointer release are in the endingtail contract.
+
+Validation: complete used listings/constants and independentcall-order audit;
+scopedgit diff --check. No native tests/builds/commit; sourceaudio/playback and
+actualnumeric/render/outerupdate ownership remain separate providers.
+
+## 2026-10-13 native PointGet/count continuation
+
+The trio now creates original used PointGet at0a and exits to0b without an
+extra wait/counter reset. Actual packed P96 increases on source transfer calls;
+normal10 points transfer at counters4..40, held A/B latches accelerated counting
+at1001 and stays accelerated after release. Exact signed remaining/pouch/level
+gates, five normal/one accelerated count-cue requests, next-invocation0c delay
+and0c/0d deletion ordering follow the independent audit above.
+
+`PointGetEffect` owns the independent45/hold/60 effect lifecycle and source
+layout requests; Citro2D draws original US art. Native0e remains the ending
+frontier before later body/fade/export/field owners. Packed EXP is not yet
+exported to persistent field/save storage, and count sound keys are retained
+requests rather than complete original MusyX playback. Fieldresult0/story11/
+control lock are preserved until the actual return path is implemented.

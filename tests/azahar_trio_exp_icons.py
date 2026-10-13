@@ -1,6 +1,6 @@
 """Reach original EXP icons and victory poses through actual trio attacks.
 
-This capture stops at the unbound PointGet effect; it does not claim field return.
+This capture includes original PointGet art/counting and stops before field return.
 """
 import runpy
 import subprocess
@@ -31,4 +31,4 @@ def run(env, capture):
         time.sleep(.2)
         capture('original-exp-and-victory-%02d' % index)
     time.sleep(3)
-    capture('original-exp-icons-pointget-boundary')
+    capture('original-pointget-counted-return-boundary')

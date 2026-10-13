@@ -1000,12 +1000,13 @@ void Renderer::overlay(const Game& g) {
             const auto pair=g.trioCommands.selected();
             panel(16,20,164,30,Paper);text(g.trioCommands.targetName(pair[0]),25,28,.55f,Ink);
         }
-        if(g.trioBattleActive && g.trioAttack.rewardIcons()) {
+        if(g.trioBattleActive && g.trioAttack.rewardPresentationActive()) {
             // Source camera8 submits the reward UI after the world. Keep the
             // native two-dimensional layer independent of the stage depth.
             C2D_Flush();C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);
             // Original windowDispGX_Waku_col type0: nine texture0 quads with
             // ten-unit borders and FFFFFF80 modulation, adapted to400x240.
+            if(g.trioAttack.rewardIcons()){
             const auto* original=Tex3DS_GetSubTexture(messagePanel.imported,0);
             const float x=-76.8999939f,y=21,w=165.7999878f,h=24.1999989f,border=10;
             const float gridX[]={x,x+border,x+w-border,x+w},gridY[]={y,y-border,y-h+border,y-h};
@@ -1018,7 +1019,17 @@ void Renderer::overlay(const Game& g) {
             }
             for(const auto& icon:*g.trioAttack.rewardIcons())if(!icon.hidden)
                 messageIconImage(404,icon.animationTick,200+icon.position[0]*MessageWindowScale,120-icon.position[1]*.5f,icon.scale,icon.alpha);
-            if(g.trioAttack.pendingFunction())text("Development notice: original reward effect pending",25,28,.43f,Ink);
+            }
+            if(const auto* effect=g.trioAttack.rewardEffect())for(const auto& q:pointGetQuads(*effect)){
+                const auto* asset=messageIcon(0x10000+q.texture);if(!asset)continue;const auto& frame=asset->frames[0];
+                Tex3DS_SubTexture sub{};sub.width=frame.width;sub.height=frame.height;
+                sub.left=frame.u0+(frame.u1-frame.u0)*q.u0;sub.right=frame.u0+(frame.u1-frame.u0)*q.u1;sub.top=frame.v0;sub.bottom=frame.v1;
+                C2D_Image image{&messageIconTexture.texture,&sub};C2D_ImageTint tint;
+                C2D_PlainImageTint(&tint,q.shadow?rgb(0,0,0,128):rgb(255,255,255,255),q.shadow?1:0);
+                C2D_DrawParams params={{200+(q.centerX-q.width*.5f)*MessageWindowScale,120-(q.bottomY+q.height)*.5f,q.width*MessageWindowScale,q.height*.5f},{0,0},.7f,0};
+                C2D_DrawImage(image,&params,&tint);
+            }
+            if(g.trioAttack.pendingFunction())text("Development notice: original battle return pending",25,28,.43f,Ink);
             C2D_Flush();C2D_Prepare();C2D_SceneBegin(top);
         } else if(g.trioBattleActive && (g.trioCommands.state==TrioBattleCommands::State::AttackReady || (g.trioCommands.state==TrioBattleCommands::State::Closed && g.trioAttack.active()))) {
             if(g.trioAttack.pendingFunction()){panel(16,20,368,30,Paper);text("Development notice: source damage services pending",25,28,.43f,Ink);}
@@ -1052,8 +1063,8 @@ void Renderer::overlay(const Game& g) {
 }
 void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
     if(g.harborTutorial.running())return;
-    if(g.trioBattleActive && g.trioAttack.rewardIcons()) {
-        if(g.trioAttack.pendingFunction())text("Development notice: original reward effect pending",12,76,.42f,Ink);
+    if(g.trioBattleActive && g.trioAttack.rewardPresentationActive()) {
+        if(g.trioAttack.pendingFunction())text("Development notice: original battle return pending",12,76,.42f,Ink);
         return;
     }
     if(g.trioBattleActive && g.trioCommands.state!=TrioBattleCommands::State::Closed) {
