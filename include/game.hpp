@@ -209,6 +209,7 @@ public:
     uint32_t warpTarget() const;
     void tick(const Input& input);
     void restore(const Progress& saved);
+    bool checkpointGround(float& height);
     void startBattle();
     const HammerCommand& hammerAction() const { return hammerCommand; }
     const TimingACommand& jumpAction() const {return jumpCommand;}

@@ -54,7 +54,7 @@ int main() {
         ttyd::CollisionTransition transaction;float height=checkpoint.elevation;
         if(!stageRoomCollision(checkpoint.room,transaction))return false;
         auto ownedCandidate=std::make_unique<ttyd::Game>();auto& candidate=*ownedCandidate;candidate.restore(checkpoint);
-        if(!ttyd::groundAt(checkpoint.position,height,height) || !ttyd::walkable(checkpoint.position,height) || !renderer.changeRoom(checkpoint.room))return false;
+        if(!candidate.checkpointGround(height) || !ttyd::walkable(checkpoint.position,height) || !renderer.changeRoom(checkpoint.room))return false;
         game=std::move(candidate);transaction.commit();return true;
     };
     game.restore(game.progress);
@@ -149,11 +149,7 @@ int main() {
             game.reloadRequested=false;ttyd::Progress checkpoint;
             const auto result=ttyd::loadSave(savePath,checkpoint);bool ok=false;
             if((result==ttyd::LoadResult::Loaded || result==ttyd::LoadResult::Recovered) && checkpoint.hp>0) {
-                ttyd::CollisionTransition transaction;float h=checkpoint.elevation;
-                if(stageRoomCollision(checkpoint.room,transaction) && ttyd::groundAt(checkpoint.position,h,h) &&
-                   ttyd::walkable(checkpoint.position,h) && renderer.changeRoom(checkpoint.room)) {
-                    game.restore(checkpoint);transaction.commit();ok=true;
-                }
+                ok=restoreProgress(checkpoint);
             }
             notice=ok?"Progress loaded":"Save unavailable";noticeTicks=180;
             accumulator=0;pending={};previous=seconds();

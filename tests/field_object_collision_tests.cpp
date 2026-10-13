@@ -91,7 +91,8 @@ int main() {
         wall=fieldWallRay({150,70,-55},{1,0,0},50,&hiddenCube);assert(!wall.objectKey);
     }
     // Restore, standing, complete jump/landing and walking off the real top.
-    saved.elevation=.85f;game.restore(saved);
+    saved.elevation=.9f;game.restore(saved);
+    float checkpointHeight=saved.elevation;assert(game.checkpointGround(checkpointHeight) && near(checkpointHeight,.85f));
     assert(near(game.groundHeight,.85f) && game.groundObjectKey==actor.key);
     game.tick(Input{});assert(near(game.groundHeight,.85f) && game.groundObjectKey==actor.key);
     game.tick(jump);

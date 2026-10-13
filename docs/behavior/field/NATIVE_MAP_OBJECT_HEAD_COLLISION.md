@@ -66,6 +66,13 @@ owner identity; Game avoids static-array indexing when the owner is dynamic.
 Source body corrections, side probes, two-height rays and pass-through policy
 remain the existing shared services. No new cube radius or per-face flag is used.
 
+Checkpoint restore and reload use the same object-aware ground service. Native
+save elevation is quantized to tenths, so the on-block fixture stores.9 and
+resolves to the source top.85 through existing floor admission. Area collision
+and resident rendering still stage transactionally; a rejected checkpoint does
+not replace the active Game/area. The file menu's previous static-only floor
+validation was exposed by the original object-top fixture and corrected.
+
 ## Validation and limits
 
 Original-data tests check source bounds/dimensions,12 faces, bottom winding,

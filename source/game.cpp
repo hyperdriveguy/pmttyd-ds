@@ -815,6 +815,10 @@ void Game::restore(const Progress& saved) {
     rebaseFieldCamera();
     registerRoadCases(true);
 }
+bool Game::checkpointGround(float& height) {
+    refreshFieldObjects();
+    return groundAt(progress.position,progress.elevation,height,nullptr,nullptr,&fieldObjectTriangles);
+}
 void Game::updatePartner() {
     refreshFieldObjects();
     PartnerFollowServices services;
