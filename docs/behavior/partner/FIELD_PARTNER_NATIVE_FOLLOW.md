@@ -58,30 +58,34 @@ actual displacement. A takeoff call changes state without moving Y.
 
 The finite ordinary main-jump formula with owner scale1 is implemented at
 native scale0.01, including fused initialization denominator/count arithmetic.
-Fall acceleration and velocity clamp use the recovered values. Landing queries
-check crossed heights and reject water-attribute0x200 support. No missing floor
-blocks horizontal movement. No queue-size or wall-duration teleport remains.
+Fall now uses the source five-probe support and query-before-integration order,
+source homing/stay accelerations, retained horizontal damping and velocity clamp.
+Jump keeps its distinct integrate-before-query order. Water-attribute0x200 support
+is excluded. A valid floor is admitted independently of wall occupancy. No queue-
+size or wall-duration teleport remains. The fixed0.5 trail gap has been replaced
+by source-derived history reach, speed thresholds/bonus and overlap correction;
+see [ground distances and harbor correction](FIELD_PARTNER_GROUND_FOLLOW_DISTANCES.md).
 
 These composition choices remain native adapters, **not measured behavior**:
 
 * Vector history with512-mark append capacity replaces the source80-record
-  ring and its exact read/write/flag quirks. Consecutive air marks are suppressed;
-  equal-XZ air edges are retained/coalesced so short jumps cannot disappear.
-  The0.5 following gap and0.50001 air-edge tolerance are native scheduling.
-  Prepared jump targets follow marks rather than every original target branch.
-* Ground budget uses native DashSpeed; jump budget is capped at0.0225. In-place
-  hops retain the0.5 gap, but a missing floor below permits continued gap travel.
-  Air path steering,
-  ground/fall query order, crossing-based landing, epsilon and step/slope
-  handling adapt existing room geometry rather than bind all original five-ray
-  floor/cache and nine-ray front-wall services. Owner scale1 is an assumption.
+  ring and its exact read/write/flag quirks. Consecutive jump-flag marks are
+  suppressed; equal-XZ jump edges are retained/coalesced. Only Mario's jump flag
+  marks a jump, not every airborne/falling state. Prepared targets and bounded
+  consumption still adapt rather than reproduce every original target/index branch.
+* Ordinary source speed selection, far bonus,13+speed history reach and
+  axis-specific overlap dimensions replace the former fixed dash/gap scheduling.
+  Native call multiplicity/trig/source-field ownership remains an adaptation;
+  owner scale1 is assumed. Terrain uses five source-radius samples over converted
+  static room triangles and ordinary partner attribute priorities. Full original
+  ray traversal/cache/flag/dynamic ownership and special floor modes are unbound.
 * Sweeps sample at most0.025 units apart and slide X then Z. After nine blocked
   ticks, lookahead discards an obsolete prefix only if a supported swept route
   exists, stops at jump markers and refuses paths over8 units. These are native
   collision/path corrections; original contact flag and query branches differ.
 * Screen recovery uses the original ordinary initial/candidate X margins,
   five downward offsets, optional raised retry and101-move bound with the
-  current native field camera. Native width0.2 supplies the candidate step.
+  current native field camera. Source Goombella width0.26 supplies the candidate step.
   Near-Mario placement3, full placement4 and original camera4/backend ownership
   are still unbound. Below-20 native Y currently reseeds from Mario for both
   air types; that is equivalent to main jump's root-copy recovery category,
@@ -93,8 +97,8 @@ These composition choices remain native adapters, **not measured behavior**:
 
 ## Validation and next fidelity work
 
-`tests/partner_follow_tests.cpp` exercises native spacing, delayed stationary
-jump, initialization without integration, independent landing, lower ledge
+`tests/partner_follow_tests.cpp` exercises history/overlap distances, dense jump
+marks, initialization without integration, independent landing, lower ledge
 fall, thin-wall sweep, stale blocked history, persistent wall nonteleport,
 screen recovery and the Game binding. Original jump/fall/recovery/history
 verifiers independently check read-only source bytes. Run `make test` and
