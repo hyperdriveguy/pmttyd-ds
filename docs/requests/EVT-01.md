@@ -513,6 +513,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [zero-position refill](../behavior/audio/MUSYX_STREAM_ZERO_POSITION_WRAPPED_REFILL.md).
   Callback gates/fresh modulo/byte-versus-logical length/retained block offset/
   flush-before-cursor order pinned; nonzero wrap/footer/runtime open.
+- [x] Complete streamHandle nonzero-position wrapped refill —
+  [nonzero wrapped refill](../behavior/audio/MUSYX_STREAM_NONZERO_POSITION_WRAPPED_REFILL.md).
+  Two-span callback/strict returned-count split/down-versus-up block sizes/
+  ordered uploads before cursor pinned; footer/providers/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2596,3 +2600,13 @@ callback/nine refill vectors checked. Fresh modulo, stored byte-length versus
 forward logical-length branch, retained pre-callback block offset and flush-before-
 cursor publication pinned. Nonzero wrap/footer/providers/domains/original audio/
 native binding remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream nonzero-position wrapped refill delivery
+
+Completed one local region in
+[nonzero wrapped refill](../behavior/audio/MUSYX_STREAM_NONZERO_POSITION_WRAPPED_REFILL.md).
+Three spans/152 anchors/eight calls/two callback sites verified; six gate/fourteen
+ordered-refill vectors checked. Two-span callback, post-child capacity strict
+split, zero-length second post, down-versus-up block sizes, fresh source reads
+and cursor publication pinned. Footer/ABI/providers/domains/original stream/
+audio/native binding remain open; EVT-01 stays OPEN.

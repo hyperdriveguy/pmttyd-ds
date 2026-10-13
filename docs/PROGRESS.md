@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero stream nonzero-position refill
+
+Completed streamHandle nonzero-position wrapped refill; checked EVT-01 portion.
+[Nonzero wrap](behavior/audio/MUSYX_STREAM_NONZERO_POSITION_WRAPPED_REFILL.md)
+pins two-span callback, strict returned-count split, down-versus-up block sizes,
+zero-length second post, fresh source reads and uploads-before-cursor publication.
+Footer/ABI/providers/domains/original refill/audio/native binding remain open.
+
+Validation: read-only ISO manifest passed three spans,152 region anchors,eight
+calls; two indirect callback sites recorded. Six gate/fourteen ordered-refill
+vectors checked, including equality/mutation/split/zero-size/bypass/invalid length
+unresolved. Link audit passed894 Markdown files/zero broken links; scoped `git diff
+--check` passed. Mathematical source deductions are separate from original
+execution. Documentation/metadata only; no `make test`/`make all` rerun. Fresh full
+original handler ELF/listing/generator stay `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded. Previously approved push remains
+pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 streamHandle common footer/ABI and whole-body
+composition, actual callback/position/format/cursor/length/flags/source/selector/
+voice/count providers and valid divisor/value/extent/alignment/encoding/alias/
+lifetime/IRQ/concurrency domains, original wrapped-refill/stream/audio traces.
+Remaining stream lifecycle/macro/song/backend, lower-priority inbox/full game open.
+
 ## 2026-10-13 — Inbox priority-zero stream zero-position refill
 
 Completed streamHandle zero-position wrapped refill; checked EVT-01 portion.

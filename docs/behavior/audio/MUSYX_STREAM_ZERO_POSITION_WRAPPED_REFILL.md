@@ -83,3 +83,9 @@ cursor/logical-versus-byte-length/flags/source/selector/voice/count providers an
 valid divisor/value/extent/alignment/encoding/alias/lifetime/IRQ/concurrency
 domains, transitive ARAM/DSP consumers and original refill/audio/native binding.
 EVT-01 remains OPEN.
+
+## 2026-10-13 — Nonzero-position wrapped-refill follow-up
+
+[Nonzero wrap](MUSYX_STREAM_NONZERO_POSITION_WRAPPED_REFILL.md) closes the other wrapped-refill branch, including
+two-span callback and ordered split uploads. Footer/ABI/provider/domain/original
+refill/audio/native binding remain open.

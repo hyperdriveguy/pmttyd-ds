@@ -1,0 +1,589 @@
+{
+  "schema": 1,
+  "scope": "Complete streamHandle nonzero-position wrapped refill region; footer/ABI/providers/runtime open",
+  "complete_bodies": [],
+  "complete_regions": [
+    {
+      "name": "streamHandle nonzero-position wrapped refill",
+      "address": 2150083760,
+      "size": 608
+    }
+  ],
+  "linked_only": [
+    "streamHandle",
+    "hwFlushStream"
+  ],
+  "dol_spans": [
+    {
+      "name": "streamHandle nonzero-position wrapped refill",
+      "address": 2150083760,
+      "size": 608,
+      "sha256": "0eb6dd8ed8e2d0c1bacd06787cbb4b12c6798f75f7cd844cbdb6e9643044d4a0"
+    },
+    {
+      "name": "streamHandle",
+      "address": 2150082200,
+      "size": 2276,
+      "sha256": "f5bc74901c36f1c68441ece7e21cafa90df9d96aa57b2b630e1b3cffba963a27"
+    },
+    {
+      "name": "hwFlushStream",
+      "address": 2150175460,
+      "size": 144,
+      "sha256": "634fc956a3bf16f400a5f528427e1462e980320e220f23990d903746c69cc74b"
+    }
+  ],
+  "dol_anchors": {
+    "2150083760": "2c050001",
+    "2150083764": "41820114",
+    "2150083768": "40800258",
+    "2150083772": "2c050000",
+    "2150083776": "40800008",
+    "2150083780": "4800024c",
+    "2150083784": "809c0018",
+    "2150083788": "5407083c",
+    "2150083792": "80bc0014",
+    "2150083796": "7c661b78",
+    "2150083800": "819c0010",
+    "2150083804": "7c802050",
+    "2150083808": "7c653a14",
+    "2150083812": "80fc0050",
+    "2150083816": "7d8903a6",
+    "2150083820": "4e800421",
+    "2150083824": "28030000",
+    "2150083828": "4182021c",
+    "2150083832": "881c000c",
+    "2150083836": "28000002",
+    "2150083840": "40820210",
+    "2150083844": "80fc0020",
+    "2150083848": "80dc0018",
+    "2150083852": "7ca71a14",
+    "2150083856": "801c0008",
+    "2150083860": "7c853396",
+    "2150083864": "5400039d",
+    "2150083868": "7c0431d6",
+    "2150083872": "7f602850",
+    "2150083876": "4082009c",
+    "2150083880": "7c073050",
+    "2150083884": "7c030040",
+    "2150083888": "40810044",
+    "2150083892": "801c001c",
+    "2150083896": "54e4083c",
+    "2150083900": "807c0014",
+    "2150083904": "38e00000",
+    "2150083908": "88dc000e",
+    "2150083912": "7ca40050",
+    "2150083916": "39000000",
+    "2150083920": "48016595",
+    "2150083924": "807c0014",
+    "2150083928": "5765083c",
+    "2150083932": "88dc000e",
+    "2150083936": "38800000",
+    "2150083940": "38e00000",
+    "2150083944": "39000000",
+    "2150083948": "48016579",
+    "2150083952": "48000050",
+    "2150083956": "281b0000",
+    "2150083960": "40820028",
+    "2150083964": "801c001c",
+    "2150083968": "54e4083c",
+    "2150083972": "807c0014",
+    "2150083976": "38e00000",
+    "2150083980": "88dc000e",
+    "2150083984": "7ca40050",
+    "2150083988": "39000000",
+    "2150083992": "4801654d",
+    "2150083996": "48000024",
+    "2150084000": "7c07d850",
+    "2150084004": "807c0014",
+    "2150084008": "88dc000e",
+    "2150084012": "54e4083c",
+    "2150084016": "5405083c",
+    "2150084020": "38e00000",
+    "2150084024": "39000000",
+    "2150084028": "48016529",
+    "2150084032": "937c0020",
+    "2150084036": "4800014c",
+    "2150084040": "3c802492",
+    "2150084044": "80bc0014",
+    "2150084048": "38c44925",
+    "2150084052": "809c0018",
+    "2150084056": "7d060016",
+    "2150084060": "819c0010",
+    "2150084064": "7c802050",
+    "2150084068": "80fc0050",
+    "2150084072": "7c661b78",
+    "2150084076": "7c080050",
+    "2150084080": "5400f87e",
+    "2150084084": "7c004214",
+    "2150084088": "541b0038",
+    "2150084092": "7c65da14",
+    "2150084096": "7d8903a6",
+    "2150084100": "4e800421",
+    "2150084104": "28030000",
+    "2150084108": "41820104",
+    "2150084112": "881c000c",
+    "2150084116": "28000002",
+    "2150084120": "408200f8",
+    "2150084124": "80dc0020",
+    "2150084128": "80fc0018",
+    "2150084132": "7ca61a14",
+    "2150084136": "801c0008",
+    "2150084140": "7c853b96",
+    "2150084144": "5400039d",
+    "2150084148": "7c0439d6",
+    "2150084152": "7fc02850",
+    "2150084156": "408200d0",
+    "2150084160": "7c063850",
+    "2150084164": "7c030040",
+    "2150084168": "4081005c",
+    "2150084172": "801c001c",
+    "2150084176": "7f64db78",
+    "2150084180": "807c0014",
+    "2150084184": "38e00000",
+    "2150084188": "88dc000e",
+    "2150084192": "7cbb0050",
+    "2150084196": "39000000",
+    "2150084200": "4801647d",
+    "2150084204": "3c802492",
+    "2150084208": "807c0014",
+    "2150084212": "38044925",
+    "2150084216": "88dc000e",
+    "2150084220": "7ca0f016",
+    "2150084224": "38800000",
+    "2150084228": "38e00000",
+    "2150084232": "39000000",
+    "2150084236": "7c05f050",
+    "2150084240": "5400f87e",
+    "2150084244": "7c002a14",
+    "2150084248": "54050038",
+    "2150084252": "48016449",
+    "2150084256": "4800006c",
+    "2150084260": "281e0000",
+    "2150084264": "40820028",
+    "2150084268": "801c001c",
+    "2150084272": "7f64db78",
+    "2150084276": "807c0014",
+    "2150084280": "38e00000",
+    "2150084284": "88dc000e",
+    "2150084288": "7cbb0050",
+    "2150084292": "39000000",
+    "2150084296": "4801641d",
+    "2150084300": "48000040",
+    "2150084304": "3c602492",
+    "2150084308": "381e000d",
+    "2150084312": "38834925",
+    "2150084316": "807c0014",
+    "2150084320": "7ca40016",
+    "2150084324": "88dc000e",
+    "2150084328": "7f64db78",
+    "2150084332": "38e00000",
+    "2150084336": "39000000",
+    "2150084340": "7c050050",
+    "2150084344": "5400f87e",
+    "2150084348": "7c002a14",
+    "2150084352": "54000038",
+    "2150084356": "7cbb0050",
+    "2150084360": "480163dd",
+    "2150084364": "93dc0020"
+  },
+  "direct_calls": [
+    {
+      "site": 2150083920,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    },
+    {
+      "site": 2150083948,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    },
+    {
+      "site": 2150083992,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    },
+    {
+      "site": 2150084028,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    },
+    {
+      "site": 2150084200,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    },
+    {
+      "site": 2150084252,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    },
+    {
+      "site": 2150084296,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    },
+    {
+      "site": 2150084360,
+      "target": 2150175460,
+      "name": "hwFlushStream"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "indirect_call_sites": [
+    {
+      "site": 2150083820,
+      "pointer_field": 16,
+      "arguments": [
+        "source14+wrap32(2*captured_cursor20)",
+        "captured_length18-captured_cursor20",
+        "source14",
+        "captured_normalized_position",
+        "user50"
+      ]
+    },
+    {
+      "site": 2150084100,
+      "pointer_field": 16,
+      "arguments": [
+        "source14+block(captured_cursor20)",
+        "captured_length18-captured_cursor20",
+        "source14",
+        "captured_normalized_position",
+        "user50"
+      ]
+    }
+  ],
+  "derived_gate_vectors": [
+    {
+      "format": 0,
+      "return_count": 0,
+      "fresh_state": 2,
+      "producer_called": true,
+      "commits": false
+    },
+    {
+      "format": 0,
+      "return_count": 1,
+      "fresh_state": 2,
+      "producer_called": true,
+      "commits": true
+    },
+    {
+      "format": 1,
+      "return_count": 1,
+      "fresh_state": 2,
+      "producer_called": true,
+      "commits": true
+    },
+    {
+      "format": 1,
+      "return_count": 1,
+      "fresh_state": 3,
+      "producer_called": true,
+      "commits": false
+    },
+    {
+      "format": 2,
+      "return_count": 1,
+      "fresh_state": 2,
+      "producer_called": false,
+      "commits": false
+    },
+    {
+      "format": 255,
+      "return_count": 1,
+      "fresh_state": 2,
+      "producer_called": false,
+      "commits": false
+    }
+  ],
+  "derived_refill_vectors": [
+    {
+      "format": 0,
+      "captured_cursor": 14,
+      "post_callback_cursor": 14,
+      "return_count": 1,
+      "fresh_length18": 16,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 15,
+      "wrapped_tail_capacity": 2,
+      "strict_split": false,
+      "ordered_posts": [
+        {
+          "offset": 28,
+          "size": 2
+        }
+      ],
+      "invalid_divisor": false
+    },
+    {
+      "format": 0,
+      "captured_cursor": 14,
+      "post_callback_cursor": 14,
+      "return_count": 2,
+      "fresh_length18": 16,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 0,
+      "wrapped_tail_capacity": 2,
+      "strict_split": false,
+      "ordered_posts": [
+        {
+          "offset": 28,
+          "size": 4
+        }
+      ],
+      "invalid_divisor": false
+    },
+    {
+      "format": 0,
+      "captured_cursor": 14,
+      "post_callback_cursor": 14,
+      "return_count": 3,
+      "fresh_length18": 16,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 1,
+      "wrapped_tail_capacity": 2,
+      "strict_split": true,
+      "ordered_posts": [
+        {
+          "offset": 28,
+          "size": 4
+        },
+        {
+          "offset": 0,
+          "size": 2
+        }
+      ],
+      "invalid_divisor": false
+    },
+    {
+      "format": 0,
+      "captured_cursor": 14,
+      "post_callback_cursor": 14,
+      "return_count": 18,
+      "fresh_length18": 16,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 0,
+      "wrapped_tail_capacity": 2,
+      "strict_split": true,
+      "ordered_posts": [
+        {
+          "offset": 28,
+          "size": 4
+        },
+        {
+          "offset": 0,
+          "size": 0
+        }
+      ],
+      "invalid_divisor": false
+    },
+    {
+      "format": 0,
+      "captured_cursor": 14,
+      "post_callback_cursor": 4,
+      "return_count": 3,
+      "fresh_length18": 16,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 7,
+      "wrapped_tail_capacity": 12,
+      "strict_split": false,
+      "ordered_posts": [
+        {
+          "offset": 8,
+          "size": 6
+        }
+      ],
+      "invalid_divisor": false
+    },
+    {
+      "format": 0,
+      "captured_cursor": 14,
+      "post_callback_cursor": 14,
+      "return_count": 3,
+      "fresh_length18": 16,
+      "byte_length1c": 99,
+      "flags8": 0,
+      "new_cursor": 1,
+      "wrapped_tail_capacity": 2,
+      "strict_split": true,
+      "ordered_posts": [
+        {
+          "offset": 28,
+          "size": 71
+        },
+        {
+          "offset": 0,
+          "size": 2
+        }
+      ],
+      "invalid_divisor": false
+    },
+    {
+      "format": 1,
+      "captured_cursor": 42,
+      "post_callback_cursor": 42,
+      "return_count": 13,
+      "fresh_length18": 56,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 55,
+      "wrapped_tail_capacity": 14,
+      "strict_split": false,
+      "ordered_posts": [
+        {
+          "offset": 24,
+          "size": 8
+        }
+      ],
+      "invalid_divisor": false
+    },
+    {
+      "format": 1,
+      "captured_cursor": 42,
+      "post_callback_cursor": 42,
+      "return_count": 14,
+      "fresh_length18": 56,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 0,
+      "wrapped_tail_capacity": 14,
+      "strict_split": false,
+      "ordered_posts": [
+        {
+          "offset": 24,
+          "size": 8
+        }
+      ],
+      "invalid_divisor": false
+    },
+    {
+      "format": 1,
+      "captured_cursor": 42,
+      "post_callback_cursor": 42,
+      "return_count": 15,
+      "fresh_length18": 56,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 1,
+      "wrapped_tail_capacity": 14,
+      "strict_split": true,
+      "ordered_posts": [
+        {
+          "offset": 24,
+          "size": 8
+        },
+        {
+          "offset": 0,
+          "size": 0
+        }
+      ],
+      "invalid_divisor": false
+    },
+    {
+      "format": 1,
+      "captured_cursor": 42,
+      "post_callback_cursor": 42,
+      "return_count": 28,
+      "fresh_length18": 56,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 14,
+      "wrapped_tail_capacity": 14,
+      "strict_split": true,
+      "ordered_posts": [
+        {
+          "offset": 24,
+          "size": 8
+        },
+        {
+          "offset": 0,
+          "size": 8
+        }
+      ],
+      "invalid_divisor": false
+    },
+    {
+      "format": 1,
+      "captured_cursor": 42,
+      "post_callback_cursor": 42,
+      "return_count": 70,
+      "fresh_length18": 56,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 0,
+      "wrapped_tail_capacity": 14,
+      "strict_split": true,
+      "ordered_posts": [
+        {
+          "offset": 24,
+          "size": 8
+        },
+        {
+          "offset": 0,
+          "size": 0
+        }
+      ],
+      "invalid_divisor": false
+    },
+    {
+      "format": 1,
+      "captured_cursor": 42,
+      "post_callback_cursor": 14,
+      "return_count": 43,
+      "fresh_length18": 56,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": 1,
+      "wrapped_tail_capacity": 42,
+      "strict_split": true,
+      "ordered_posts": [
+        {
+          "offset": 24,
+          "size": 8
+        },
+        {
+          "offset": 0,
+          "size": 0
+        }
+      ],
+      "invalid_divisor": false
+    },
+    {
+      "format": 1,
+      "captured_cursor": 42,
+      "post_callback_cursor": 42,
+      "return_count": 15,
+      "fresh_length18": 56,
+      "byte_length1c": 32,
+      "flags8": 131072,
+      "new_cursor": 1,
+      "wrapped_tail_capacity": 14,
+      "strict_split": true,
+      "ordered_posts": [],
+      "invalid_divisor": false
+    },
+    {
+      "format": 0,
+      "captured_cursor": 14,
+      "post_callback_cursor": 14,
+      "return_count": 3,
+      "fresh_length18": 0,
+      "byte_length1c": 32,
+      "flags8": 0,
+      "new_cursor": null,
+      "wrapped_tail_capacity": 4294967282,
+      "strict_split": false,
+      "ordered_posts": [],
+      "invalid_divisor": true
+    }
+  ]
+}
