@@ -6,7 +6,7 @@ main80000000/display2 pose locks clear. This documents requests and presentation
 not an independent reimplementation of the recovery movement controller.
 Existing [ordinary selection](OVERWORLD_MARIO_ORDINARY_POSE_SELECTION.md),
 [clock](OVERWORLD_MARIO_ANIMATION_CLOCK_AND_LOOPS.md),
-[sparse updates](OVERWORLD_MARIO_ANIMATION_UPDATES_AND_INTERPOLATION.md) and
+[sparse updates](OVERWORLD_MARIO_ANIMATION_SPARSE_UPDATES.md) and
 [bottomless screen probe](OVERWORLD_BOTTOMLESS_SCREEN_START_PROBE.md) remain the
 shared owners. Pipe entry is a bounded resource contract; its complete movement,
 linked paper rendering and exit lifecycle remain open.
