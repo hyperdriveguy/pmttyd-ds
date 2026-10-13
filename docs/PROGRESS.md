@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero matrix cache/aux/external wrappers
+
+Completed17 matrix cache/aux/external-controller local contracts and three
+tables for EVT-01; checked the corresponding inbox portion.
+[Wrappers/dirty/cache/external](behavior/audio/MUSYX_MATRIX_WRAPPERS_DIRTY_CACHE_AND_EXTERNAL_CTRL.md)
+pins14 voice wrapper schemas, aux A/B shared masks, pre-evaluation dirty clears
+and external remap dispatch versus original-index fallback. Wrappers do not
+initialize r28 or restore dirty flags after the evaluator. No boolean result
+conversion, matrix-special fallback substitution or bounds repair inferred.
+
+Validation: read-only ISO manifest passed22 spans (17 complete/two prior children/
+three tables),224 anchors/17 calls.14 schemas/eight masks/nine jump targets/nine
+dispatch/16 dirty/five aux-address/five signed-half vectors checked as deductions.
+Documentation link audit passed792 Markdown files/zero broken links;
+`git diff --check` passed. Documentation/metadata only; no `make test`/`make all`
+rerun. Original full inspection ELFs/listings stay `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 descriptor construction/dirty/index/channel/set writers
+and actual wrapper callers, incoming-r28/first-mode/count/numeric/bounds domains,
+cache/voice/filter/aux consumers and original recompute/audio traces. Recover
+inpAddCtrl/FX-copy/translation mutations next. Full scheduler/native/runtime
+binding, lower-priority inbox/full-game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero input matrix/variable domain
 
 Completed _GetInputValue/varGet local contracts for EVT-01 and checked the

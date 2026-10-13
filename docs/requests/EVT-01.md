@@ -230,6 +230,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Source/marker/coefficient/wrapped combine/cache order pinned; incoming r28
   is not initialized. Caller/first-row/count/flags/numeric domains, wrappers/
   writers/consumers and original matrix/audio remain open.
+- [x] Complete14 voice/two aux matrix cache wrappers and inpGetExCtrl —
+  [wrappers/dirty/cache/external](../behavior/audio/MUSYX_MATRIX_WRAPPERS_DIRTY_CACHE_AND_EXTERNAL_CTRL.md).
+  Captured pre-evaluation dirty clears, exact cache/descriptor/mask schemas
+  and external dispatch versus original-index fallback pinned; descriptor/
+  dirty/caller/r28 domains and original recompute/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1434,3 +1439,21 @@ elapsed/six variable vectors checked as deductions. Fresh ELFs/listings stay
 descriptor/count/first-mode/flags/coefficient writers, incoming-r28/reachable
 numeric domains, external child/voice/variable/clock/cache consumers and original
 matrix/audio traces remain OPEN.
+
+### 2026-10-13 — Matrix wrappers, dirty caches and external dispatch
+
+[17 complete local bodies and three tables](../behavior/audio/MUSYX_MATRIX_WRAPPERS_DIRTY_CACHE_AND_EXTERNAL_CTRL.md)
+close14 voice captured-flag/cache wrappers, aux A/B shared dirty-mask/cache
+flows and external-controller remap dispatch versus original-index fallback.
+Dirty clears precede evaluation, no post-child clear/rollback is added, and
+wrappers do not initialize incoming r28. External aliases130/131 select LFO
+reads; other remaps do not replace original fallback index or add matrix voice
+sources/marker writes. No shared boolean/cache policy or bounds repair invented.
+
+Validation: read-only manifest22 spans (17 complete/two prior children/three
+tables),224 anchors/17 calls passes.14 schemas/eight masks/nine jump targets/
+nine dispatch/16 dirty/five aux-address/five signed-half vectors checked as
+source deductions. Fresh full ELFs/listings stay `/tmp`; no native change/
+original execution/body/binary asset export. Actual descriptor/dirty/caller
+writers, r28/first-mode/count/numeric/bounds/alias/IRQ/concurrency domains,
+consumers and original cache/aux/external-controller/audio remain OPEN.

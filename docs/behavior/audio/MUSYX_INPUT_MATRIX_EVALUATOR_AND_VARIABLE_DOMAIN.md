@@ -153,3 +153,10 @@ external-controller child, voice/variable/clock/marker/cache consumers and valid
 pointer/count/alias/IRQ/concurrency domains, original matrix/controller/audio
 traces. Two local bodies are answered; EVT-01 and full native/source/runtime/
 hardware equivalence remain OPEN.
+
+### Wrapper/external child follow-up
+
+[Complete17 cache/aux/external-controller wrappers](MUSYX_MATRIX_WRAPPERS_DIRTY_CACHE_AND_EXTERNAL_CTRL.md)
+now closes those local callers and varGet external child. Dirty clears precede
+evaluation; wrappers do not initialize r28. Actual descriptor/dirty/caller
+writers, first-mode/bounds domains and original matrix/audio traces remain open.

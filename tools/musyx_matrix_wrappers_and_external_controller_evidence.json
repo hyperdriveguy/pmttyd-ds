@@ -1,0 +1,844 @@
+{
+  "schema": 1,
+  "scope": "Seventeen complete matrix cache/dirty/aux/external-controller wrappers and three tables; descriptor/writer/r28/runtime open",
+  "complete_bodies": [
+    "inpGetVolume",
+    "inpGetPanning",
+    "inpGetSurPanning",
+    "inpGetPitchBend",
+    "inpGetDoppler",
+    "inpGetModulation",
+    "inpGetPedal",
+    "inpGetPreAuxA",
+    "inpGetReverb",
+    "inpGetPreAuxB",
+    "inpGetPostAuxB",
+    "inpGetTremolo",
+    "inpGetFilterSwitch",
+    "inpGetFilterParameter",
+    "inpGetAuxA",
+    "inpGetAuxB",
+    "inpGetExCtrl"
+  ],
+  "linked_only": [
+    "_GetInputValue",
+    "inpGetMidiCtrl"
+  ],
+  "dol_spans": [
+    {
+      "name": "inpGetVolume",
+      "address": 2150168432,
+      "size": 72,
+      "sha256": "72138e19d2f6d742d8359c2047fb23e9010f0540d37192702384c552f5ee0862"
+    },
+    {
+      "name": "inpGetPanning",
+      "address": 2150168504,
+      "size": 72,
+      "sha256": "b5b28bd23afff1ecad021b82f0eb14226c03984d2559d9a0b9905e7f7604bf35"
+    },
+    {
+      "name": "inpGetSurPanning",
+      "address": 2150168576,
+      "size": 72,
+      "sha256": "accc5ce5eab63e484859f59276edfb1248d260c29b5f2e736cd1b683f5cc1033"
+    },
+    {
+      "name": "inpGetPitchBend",
+      "address": 2150168648,
+      "size": 72,
+      "sha256": "138610020f207fc5ac21a40b1e823e4a59f2e751c63f2d00731a5d7bad18c33a"
+    },
+    {
+      "name": "inpGetDoppler",
+      "address": 2150168720,
+      "size": 72,
+      "sha256": "a14c6594f0fa0224da7c47b2e240c67b23cfff98fca984ada0259ef92c8182d9"
+    },
+    {
+      "name": "inpGetModulation",
+      "address": 2150168792,
+      "size": 72,
+      "sha256": "391553eaac1f9185cfe68a69488101fdf6ae5e7c5ff168c3b8ebafd8df7bd33d"
+    },
+    {
+      "name": "inpGetPedal",
+      "address": 2150168864,
+      "size": 72,
+      "sha256": "031489d3336d058bfd14cd054232bdab4cc4c9cf3c0f70cb4a3f9adb1e78856e"
+    },
+    {
+      "name": "inpGetPreAuxA",
+      "address": 2150168936,
+      "size": 72,
+      "sha256": "ec5f53a1427b6007443bba1d9f8580e414d8e10d34f2a50aef442ca2410a1f14"
+    },
+    {
+      "name": "inpGetReverb",
+      "address": 2150169008,
+      "size": 72,
+      "sha256": "e26ba0e6dd4fa37c65be980aa4647f7c1b2ac7f8dc496e2a7243a0c610fd7ceb"
+    },
+    {
+      "name": "inpGetPreAuxB",
+      "address": 2150169080,
+      "size": 72,
+      "sha256": "e8257aa716aff144bbcde47a91b3797910e948793a11919145142362d3d8eb80"
+    },
+    {
+      "name": "inpGetPostAuxB",
+      "address": 2150169152,
+      "size": 72,
+      "sha256": "48a63e28592656971648421842d08d1c9afddf51a3d05ccd8555383e7338109d"
+    },
+    {
+      "name": "inpGetTremolo",
+      "address": 2150169224,
+      "size": 72,
+      "sha256": "d7177118a5bc4721181bbfb4e827a4f1a743cbf5116c5409efbb3f3bb226a401"
+    },
+    {
+      "name": "inpGetFilterSwitch",
+      "address": 2150169296,
+      "size": 72,
+      "sha256": "2e6fb5f4de6d2496598a2bb48104110e33e2f841c17ff9296c5d4e8c27989fb3"
+    },
+    {
+      "name": "inpGetFilterParameter",
+      "address": 2150169368,
+      "size": 72,
+      "sha256": "d0875e795d4671a324319681045884e03aa410ff080f88615a67ba1861d1f8d7"
+    },
+    {
+      "name": "inpGetAuxA",
+      "address": 2150169440,
+      "size": 180,
+      "sha256": "d63a5ab87329d97dbbe10aa4bd677173b4b5dc34d5cf03f0a54176bd8725df41"
+    },
+    {
+      "name": "inpGetAuxB",
+      "address": 2150169620,
+      "size": 180,
+      "sha256": "18eec3c4dbe098e969e1359db71772044f86bdce2430b7b9c874aa7507938a38"
+    },
+    {
+      "name": "inpGetExCtrl",
+      "address": 2150170620,
+      "size": 252,
+      "sha256": "6e591b90031f0b7645a69cb436984e80a1a322d809df412b0445bef22cc57c51"
+    },
+    {
+      "name": "_GetInputValue",
+      "address": 2150167248,
+      "size": 1184,
+      "sha256": "2db03d7b393f26e737fcdabe82878f0e3dbbb48972558196db7213f514446f45"
+    },
+    {
+      "name": "inpGetMidiCtrl",
+      "address": 2150165832,
+      "size": 708,
+      "sha256": "b353635f39d6d8d4c1a707de32fa3a24b16d881f4343e5b1be26605140c8a29e"
+    },
+    {
+      "name": "auxA_dirty_masks",
+      "address": 2151409280,
+      "size": 16,
+      "sha256": "bdfc0c1ee85e7d41adf249525f16a0474ab3886543b9b327a9dc07a9045eacf0"
+    },
+    {
+      "name": "auxB_dirty_masks",
+      "address": 2151409296,
+      "size": 16,
+      "sha256": "5cba432a27742a5410ef37e4ce5a7898521475cbec505660073d11a75fb96895"
+    },
+    {
+      "name": "external_controller_dispatch",
+      "address": 2151409348,
+      "size": 36,
+      "sha256": "402fe5b8fb5efa04404dd9128fb9d7b078e809a0eec74d45b1f7280fec696889"
+    }
+  ],
+  "dol_anchors": {
+    "2150168440": "90010014",
+    "2150168444": "80830220",
+    "2150168452": "4082000c",
+    "2150168460": "4800001c",
+    "2150168468": "38830224",
+    "2150168472": "90030220",
+    "2150168476": "88a30121",
+    "2150168480": "88c30122",
+    "2150168484": "4bfffb2d",
+    "2150168488": "80010014",
+    "2150168496": "38210010",
+    "2150168512": "90010014",
+    "2150168516": "80830220",
+    "2150168524": "4082000c",
+    "2150168532": "4800001c",
+    "2150168540": "38830248",
+    "2150168544": "90030220",
+    "2150168548": "88a30121",
+    "2150168552": "88c30122",
+    "2150168556": "4bfffae5",
+    "2150168560": "80010014",
+    "2150168568": "38210010",
+    "2150168584": "90010014",
+    "2150168588": "80830220",
+    "2150168596": "4082000c",
+    "2150168604": "4800001c",
+    "2150168612": "3883026c",
+    "2150168616": "90030220",
+    "2150168620": "88a30121",
+    "2150168624": "88c30122",
+    "2150168628": "4bfffa9d",
+    "2150168632": "80010014",
+    "2150168640": "38210010",
+    "2150168656": "90010014",
+    "2150168660": "80830220",
+    "2150168668": "4082000c",
+    "2150168676": "4800001c",
+    "2150168684": "38830290",
+    "2150168688": "90030220",
+    "2150168692": "88a30121",
+    "2150168696": "88c30122",
+    "2150168700": "4bfffa55",
+    "2150168704": "80010014",
+    "2150168712": "38210010",
+    "2150168728": "90010014",
+    "2150168732": "80830220",
+    "2150168740": "4082000c",
+    "2150168748": "4800001c",
+    "2150168756": "388302b4",
+    "2150168760": "90030220",
+    "2150168764": "88a30121",
+    "2150168768": "88c30122",
+    "2150168772": "4bfffa0d",
+    "2150168776": "80010014",
+    "2150168784": "38210010",
+    "2150168800": "90010014",
+    "2150168804": "80830220",
+    "2150168812": "4082000c",
+    "2150168820": "4800001c",
+    "2150168828": "388302d8",
+    "2150168832": "90030220",
+    "2150168836": "88a30121",
+    "2150168840": "88c30122",
+    "2150168844": "4bfff9c5",
+    "2150168848": "80010014",
+    "2150168856": "38210010",
+    "2150168872": "90010014",
+    "2150168876": "80830220",
+    "2150168884": "4082000c",
+    "2150168892": "4800001c",
+    "2150168900": "388302fc",
+    "2150168904": "90030220",
+    "2150168908": "88a30121",
+    "2150168912": "88c30122",
+    "2150168916": "4bfff97d",
+    "2150168920": "80010014",
+    "2150168928": "38210010",
+    "2150168944": "90010014",
+    "2150168948": "80830220",
+    "2150168956": "4082000c",
+    "2150168964": "4800001c",
+    "2150168972": "38830344",
+    "2150168976": "90030220",
+    "2150168980": "88a30121",
+    "2150168984": "88c30122",
+    "2150168988": "4bfff935",
+    "2150168992": "80010014",
+    "2150169000": "38210010",
+    "2150169016": "90010014",
+    "2150169020": "80830220",
+    "2150169028": "4082000c",
+    "2150169036": "4800001c",
+    "2150169044": "38830368",
+    "2150169048": "90030220",
+    "2150169052": "88a30121",
+    "2150169056": "88c30122",
+    "2150169060": "4bfff8ed",
+    "2150169064": "80010014",
+    "2150169072": "38210010",
+    "2150169088": "90010014",
+    "2150169092": "80830220",
+    "2150169100": "4082000c",
+    "2150169108": "4800001c",
+    "2150169116": "3883038c",
+    "2150169120": "90030220",
+    "2150169124": "88a30121",
+    "2150169128": "88c30122",
+    "2150169132": "4bfff8a5",
+    "2150169136": "80010014",
+    "2150169144": "38210010",
+    "2150169160": "90010014",
+    "2150169164": "80830220",
+    "2150169172": "4082000c",
+    "2150169180": "4800001c",
+    "2150169188": "388303b0",
+    "2150169192": "90030220",
+    "2150169196": "88a30121",
+    "2150169200": "88c30122",
+    "2150169204": "4bfff85d",
+    "2150169208": "80010014",
+    "2150169216": "38210010",
+    "2150169232": "90010014",
+    "2150169236": "80830220",
+    "2150169244": "4082000c",
+    "2150169252": "4800001c",
+    "2150169260": "388303d4",
+    "2150169264": "90030220",
+    "2150169268": "88a30121",
+    "2150169272": "88c30122",
+    "2150169276": "4bfff815",
+    "2150169280": "80010014",
+    "2150169288": "38210010",
+    "2150169304": "90010014",
+    "2150169308": "80830220",
+    "2150169316": "4082000c",
+    "2150169324": "4800001c",
+    "2150169332": "388303f8",
+    "2150169336": "90030220",
+    "2150169340": "88a30121",
+    "2150169344": "88c30122",
+    "2150169348": "4bfff7cd",
+    "2150169352": "80010014",
+    "2150169360": "38210010",
+    "2150169376": "90010014",
+    "2150169380": "80830220",
+    "2150169388": "4082000c",
+    "2150169396": "4800001c",
+    "2150169404": "3883041c",
+    "2150169408": "90030220",
+    "2150169412": "88a30121",
+    "2150169416": "88c30122",
+    "2150169420": "4bfff785",
+    "2150169424": "80010014",
+    "2150169432": "38210010",
+    "2150169448": "3ce08041",
+    "2150169452": "3d20803c",
+    "2150169456": "90010014",
+    "2150169460": "38079548",
+    "2150169468": "38e9e680",
+    "2150169512": "4182000c",
+    "2150169528": "4182002c",
+    "2150169536": "3c608040",
+    "2150169544": "38839464",
+    "2150169548": "38600000",
+    "2150169564": "4bfff6f5",
+    "2150169568": "48000024",
+    "2150169576": "3c808040",
+    "2150169584": "38849464",
+    "2150169604": "80010014",
+    "2150169612": "38210010",
+    "2150169628": "3ce08041",
+    "2150169632": "3d20803c",
+    "2150169636": "90010014",
+    "2150169640": "38079548",
+    "2150169648": "38e9e690",
+    "2150169692": "4182000c",
+    "2150169708": "4182002c",
+    "2150169716": "3c608040",
+    "2150169724": "38838fe4",
+    "2150169728": "38600000",
+    "2150169744": "4bfff641",
+    "2150169748": "48000024",
+    "2150169756": "3c808040",
+    "2150169764": "38848fe4",
+    "2150169784": "80010014",
+    "2150169792": "38210010",
+    "2150170636": "90010014",
+    "2150170640": "3805ff80",
+    "2150170648": "41810060",
+    "2150170652": "3ca0803c",
+    "2150170660": "38a5e6c4",
+    "2150170676": "38c00080",
+    "2150170680": "48000040",
+    "2150170684": "38c00082",
+    "2150170688": "48000038",
+    "2150170692": "38c000a0",
+    "2150170696": "48000030",
+    "2150170700": "38c000a1",
+    "2150170704": "48000028",
+    "2150170708": "38c00083",
+    "2150170712": "48000020",
+    "2150170716": "38c00084",
+    "2150170720": "48000018",
+    "2150170724": "38c000a2",
+    "2150170728": "48000010",
+    "2150170732": "38c000a3",
+    "2150170736": "48000008",
+    "2150170740": "38c000a4",
+    "2150170752": "41820028",
+    "2150170756": "40800038",
+    "2150170764": "40800008",
+    "2150170768": "4800002c",
+    "2150170780": "38032000",
+    "2150170788": "48000044",
+    "2150170800": "38032000",
+    "2150170808": "48000030",
+    "2150170812": "88030121",
+    "2150170820": "4182001c",
+    "2150170824": "88a30122",
+    "2150170836": "4bffec75",
+    "2150170844": "48000008",
+    "2150170848": "38000000",
+    "2150170856": "80010014",
+    "2150170864": "38210010"
+  },
+  "direct_calls": [
+    {
+      "site": 2150168484,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150168556,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150168628,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150168700,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150168772,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150168844,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150168916,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150168988,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150169060,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150169132,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150169204,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150169276,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150169348,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150169420,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150169564,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150169744,
+      "target": 2150167248,
+      "name": "_GetInputValue"
+    },
+    {
+      "site": 2150170836,
+      "target": 2150165832,
+      "name": "inpGetMidiCtrl"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "voice_wrappers": [
+    {
+      "name": "inpGetVolume",
+      "address": 2150168432,
+      "dirty_mask": 1,
+      "descriptor_offset": 548,
+      "cache_offset": 580
+    },
+    {
+      "name": "inpGetPanning",
+      "address": 2150168504,
+      "dirty_mask": 2,
+      "descriptor_offset": 584,
+      "cache_offset": 616
+    },
+    {
+      "name": "inpGetSurPanning",
+      "address": 2150168576,
+      "dirty_mask": 4,
+      "descriptor_offset": 620,
+      "cache_offset": 652
+    },
+    {
+      "name": "inpGetPitchBend",
+      "address": 2150168648,
+      "dirty_mask": 8,
+      "descriptor_offset": 656,
+      "cache_offset": 688
+    },
+    {
+      "name": "inpGetDoppler",
+      "address": 2150168720,
+      "dirty_mask": 16,
+      "descriptor_offset": 692,
+      "cache_offset": 724
+    },
+    {
+      "name": "inpGetModulation",
+      "address": 2150168792,
+      "dirty_mask": 32,
+      "descriptor_offset": 728,
+      "cache_offset": 760
+    },
+    {
+      "name": "inpGetPedal",
+      "address": 2150168864,
+      "dirty_mask": 64,
+      "descriptor_offset": 764,
+      "cache_offset": 796
+    },
+    {
+      "name": "inpGetPreAuxA",
+      "address": 2150168936,
+      "dirty_mask": 256,
+      "descriptor_offset": 836,
+      "cache_offset": 868
+    },
+    {
+      "name": "inpGetReverb",
+      "address": 2150169008,
+      "dirty_mask": 512,
+      "descriptor_offset": 872,
+      "cache_offset": 904
+    },
+    {
+      "name": "inpGetPreAuxB",
+      "address": 2150169080,
+      "dirty_mask": 1024,
+      "descriptor_offset": 908,
+      "cache_offset": 940
+    },
+    {
+      "name": "inpGetPostAuxB",
+      "address": 2150169152,
+      "dirty_mask": 2048,
+      "descriptor_offset": 944,
+      "cache_offset": 976
+    },
+    {
+      "name": "inpGetTremolo",
+      "address": 2150169224,
+      "dirty_mask": 4096,
+      "descriptor_offset": 980,
+      "cache_offset": 1012
+    },
+    {
+      "name": "inpGetFilterSwitch",
+      "address": 2150169296,
+      "dirty_mask": 8192,
+      "descriptor_offset": 1016,
+      "cache_offset": 1048
+    },
+    {
+      "name": "inpGetFilterParameter",
+      "address": 2150169368,
+      "dirty_mask": 16384,
+      "descriptor_offset": 1052,
+      "cache_offset": 1084
+    }
+  ],
+  "aux_masks": {
+    "A": [
+      2147483649,
+      2147483650,
+      2147483652,
+      2147483656
+    ],
+    "B": [
+      2147483664,
+      2147483680,
+      2147483712,
+      2147483776
+    ],
+    "bases": {
+      "A": 2151650404,
+      "B": 2151649252
+    }
+  },
+  "external_jump_targets": [
+    2150170676,
+    2150170684,
+    2150170692,
+    2150170700,
+    2150170708,
+    2150170716,
+    2150170724,
+    2150170732,
+    2150170740
+  ],
+  "external_dispatch_vectors": [
+    {
+      "raw_index": 128,
+      "low8": 128,
+      "dispatch_index": 128,
+      "fallback_forwarded_index": 128
+    },
+    {
+      "raw_index": 129,
+      "low8": 129,
+      "dispatch_index": 130,
+      "fallback_forwarded_index": 129
+    },
+    {
+      "raw_index": 130,
+      "low8": 130,
+      "dispatch_index": 160,
+      "fallback_forwarded_index": 130
+    },
+    {
+      "raw_index": 131,
+      "low8": 131,
+      "dispatch_index": 161,
+      "fallback_forwarded_index": 131
+    },
+    {
+      "raw_index": 132,
+      "low8": 132,
+      "dispatch_index": 131,
+      "fallback_forwarded_index": 132
+    },
+    {
+      "raw_index": 133,
+      "low8": 133,
+      "dispatch_index": 132,
+      "fallback_forwarded_index": 133
+    },
+    {
+      "raw_index": 134,
+      "low8": 134,
+      "dispatch_index": 162,
+      "fallback_forwarded_index": 134
+    },
+    {
+      "raw_index": 135,
+      "low8": 135,
+      "dispatch_index": 163,
+      "fallback_forwarded_index": 135
+    },
+    {
+      "raw_index": 136,
+      "low8": 136,
+      "dispatch_index": 164,
+      "fallback_forwarded_index": 136
+    }
+  ],
+  "derived_dirty_vectors": [
+    {
+      "before": 0,
+      "mask": 1,
+      "recomputes": false,
+      "after": 0
+    },
+    {
+      "before": 1,
+      "mask": 1,
+      "recomputes": true,
+      "after": 0
+    },
+    {
+      "before": 32767,
+      "mask": 1,
+      "recomputes": true,
+      "after": 32766
+    },
+    {
+      "before": 4294967295,
+      "mask": 1,
+      "recomputes": true,
+      "after": 4294967294
+    },
+    {
+      "before": 0,
+      "mask": 64,
+      "recomputes": false,
+      "after": 0
+    },
+    {
+      "before": 64,
+      "mask": 64,
+      "recomputes": true,
+      "after": 0
+    },
+    {
+      "before": 32767,
+      "mask": 64,
+      "recomputes": true,
+      "after": 32703
+    },
+    {
+      "before": 4294967295,
+      "mask": 64,
+      "recomputes": true,
+      "after": 4294967231
+    },
+    {
+      "before": 0,
+      "mask": 256,
+      "recomputes": false,
+      "after": 0
+    },
+    {
+      "before": 256,
+      "mask": 256,
+      "recomputes": true,
+      "after": 0
+    },
+    {
+      "before": 32767,
+      "mask": 256,
+      "recomputes": true,
+      "after": 32511
+    },
+    {
+      "before": 4294967295,
+      "mask": 256,
+      "recomputes": true,
+      "after": 4294967039
+    },
+    {
+      "before": 0,
+      "mask": 16384,
+      "recomputes": false,
+      "after": 0
+    },
+    {
+      "before": 16384,
+      "mask": 16384,
+      "recomputes": true,
+      "after": 0
+    },
+    {
+      "before": 32767,
+      "mask": 16384,
+      "recomputes": true,
+      "after": 16383
+    },
+    {
+      "before": 4294967295,
+      "mask": 16384,
+      "recomputes": true,
+      "after": 4294950911
+    }
+  ],
+  "derived_aux_address_vectors": [
+    {
+      "raw_studio": 0,
+      "raw_parameter": 0,
+      "raw_channel": 0,
+      "raw_set": 0,
+      "mask_address_A": 2151409280,
+      "mask_address_B": 2151409296,
+      "dirty_address": 2151716168,
+      "descriptor_A": 2151650404,
+      "descriptor_B": 2151649252
+    },
+    {
+      "raw_studio": 7,
+      "raw_parameter": 3,
+      "raw_channel": 15,
+      "raw_set": 7,
+      "mask_address_A": 2151409292,
+      "mask_address_B": 2151409308,
+      "dirty_address": 2151716676,
+      "descriptor_A": 2151651520,
+      "descriptor_B": 2151650368
+    },
+    {
+      "raw_studio": 8,
+      "raw_parameter": 4,
+      "raw_channel": 16,
+      "raw_set": 8,
+      "mask_address_A": 2151409296,
+      "mask_address_B": 2151409312,
+      "dirty_address": 2151716744,
+      "descriptor_A": 2151651700,
+      "descriptor_B": 2151650548
+    },
+    {
+      "raw_studio": 256,
+      "raw_parameter": 256,
+      "raw_channel": 256,
+      "raw_set": 256,
+      "mask_address_A": 2151409280,
+      "mask_address_B": 2151409296,
+      "dirty_address": 2151716168,
+      "descriptor_A": 2151650404,
+      "descriptor_B": 2151649252
+    },
+    {
+      "raw_studio": 255,
+      "raw_parameter": 255,
+      "raw_channel": 255,
+      "raw_set": 255,
+      "mask_address_A": 2151410300,
+      "mask_address_B": 2151410316,
+      "dirty_address": 2151733508,
+      "descriptor_A": 2151696304,
+      "descriptor_B": 2151695152
+    }
+  ],
+  "derived_external_lfo_vectors": [
+    {
+      "raw_half": 0,
+      "signed_half": 0,
+      "result": 8192
+    },
+    {
+      "raw_half": 1,
+      "signed_half": 1,
+      "result": 8194
+    },
+    {
+      "raw_half": 32767,
+      "signed_half": 32767,
+      "result": 8190
+    },
+    {
+      "raw_half": 32768,
+      "signed_half": -32768,
+      "result": 8192
+    },
+    {
+      "raw_half": 65535,
+      "signed_half": -1,
+      "result": 8190
+    }
+  ]
+}
