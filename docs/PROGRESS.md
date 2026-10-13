@@ -2,6 +2,27 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero game stream pan/surround
+
+Completed SoundSSSetPanCh/SoundSSSetSrndPanCh; checked EVT-01 portion.
+[Pan/surround](behavior/audio/GAME_STREAM_PAN_SURROUND_CACHE_AND_REQUESTS.md)
+pins low8 halfword caches, raw mono pan, divisor63 split, every non-one type's
+ordered dual requests and old/new pool rows in surround setter. Providers/FP/
+original pan/surround/audio/native binding remain open.
+
+Validation: read-only ISO manifest passed five spans,185 anchors,six calls.
+Seven finite split/four type/five cache vectors and pool bindings checked.
+Link audit passed916 Markdown files/zero broken links; scoped diff check
+passed. Mathematical deductions separate from original execution. Docs/metadata
+only; no make test/all rerun. Fresh ELFs/listings/generator stay /tmp; no bodies/
+binary assets committed. Concurrent native edits excluded. Explicitly approved
+push of all commits attempted again; GitHub rejected username/token. Local
+commits retained; push requires valid credentials.
+
+Next: priority-zero EVT-01 game stream volume/engine/play/callbacks and actual
+provider/value/extent/alias/lifetime/IRQ/concurrency/FP domains, transitive ARAM/
+AI/DSP and original mono/dual/pan/surround/audio traces. Other inbox/native/full-game work remains open.
+
 ## 2026-10-13 — Inbox priority-zero game stream frequency
 
 Completed SoundSSSetPlayFreqCh; checked EVT-01 portion.

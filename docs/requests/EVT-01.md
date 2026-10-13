@@ -564,6 +564,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete SoundSSSetPlayFreqCh — [game frequency](../behavior/audio/GAME_STREAM_FREQUENCY_CACHE_AND_REQUESTS.md).
   Halfword-before-fresh-flag8, shared counter, post-primary type/frequency
   rereads and conditional dual request/restore pinned; providers/runtime open.
+- [x] Complete SoundSSSetPanCh/SoundSSSetSrndPanCh — [pan/surround](../behavior/audio/GAME_STREAM_PAN_SURROUND_CACHE_AND_REQUESTS.md).
+  Low8 cache/raw mono pan, divisor63, all non-one dual types, fresh ID/surround
+  requests and surround pool recapture pinned; providers/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2803,3 +2806,11 @@ request/six counter vectors checked. Cached low16 before immediate gate, fresh
 primary/conditional secondary frequency/type and counter wrap/restore order
 pinned. Engine/providers/IRQ domains/original frequency/audio/native binding
 remain open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Game stream pan/surround delivery
+
+Completed [two local setters](../behavior/audio/GAME_STREAM_PAN_SURROUND_CACHE_AND_REQUESTS.md).
+Five spans/185 anchors/six calls verified; seven split/four type/five cache
+vectors and pool bindings checked. Source divisor63, raw mono pan argument,
+non-one dual routing and old/new surround pool rows pinned. Providers/FP/
+original pan/surround/audio/native binding remain open; EVT-01 stays OPEN.

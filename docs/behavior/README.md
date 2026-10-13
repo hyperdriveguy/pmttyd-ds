@@ -50,6 +50,7 @@ suffix.
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
 | [Setup4 introduction, phase, stage and player commands](battle/UNDERGROUND_SETUP4_INTRO_PHASE_STAGE_AND_PLAYER_COMMANDS.md) | Definition/part offsets, source fresh IDs, concurrent entry and selector0 phase gate, stage resources/hashes and Jump/Hammer/Headbonk source power/action bindings | Used phase/target/stage producer execution, complete player callback clocks and runtime parity |
+| [Game stream pan/surround cache/requests](audio/GAME_STREAM_PAN_SURROUND_CACHE_AND_REQUESTS.md) | Complete two setters; low8 cache/raw mono pan/63 divisor/dual requests/pool recapture | Providers/FP domains and original pan/surround/audio |
 | [Game stream frequency cache/requests](audio/GAME_STREAM_FREQUENCY_CACHE_AND_REQUESTS.md) | Complete halfword cache/fresh flag8/shared-counter/dual-ID request wrapper | Engine/providers/IRQ domains and original frequency/audio |
 | [Game stream fade/stop/deferred close](audio/GAME_STREAM_FADE_STOP_AND_DEFERRED_CLOSE.md) | Four complete fade/time/stop/DVD-close request bodies | Consumers/GP/counter/IO/provider/FP domains and original audio |
 | [Game stream mute/check/volume/continue](audio/GAME_STREAM_MUTE_CHECK_VOLUME_AND_CONTINUE.md) | Five complete SoundSS flag/query/volume/continue leaves | Engine/writers/callbacks/provider/FP domains and original audio |
