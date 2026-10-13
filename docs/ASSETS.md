@@ -1138,3 +1138,31 @@ code adaptations, not redistributed originals.
 Original Nintendo/Intelligent Systems ownership/no-redistribution terms remain.
 Source files, converted images/audio/geometry/event packs and compiled local
 3DSX artifacts are never staged. No generated tones or replacement story art.
+
+### Native prologue pouch name / original drop and EXP data (2026-10-13)
+
+Prologue pouch initialization reads the unchanged packaged msg/US/global.txt
+key name_party3 for the localized initial partner name; no replacement name or
+story text is authored. The full message bank is indexed temporarily and only
+that original name remains resident. Initial resource/item scalar mutations
+and original drop/stockEXP semantics are native recovered logic. Heart/flower
+profiles803702a0/80370f20 and Item Hog table802eea40 remain in the existing
+original data-only trio pack, extracted read-only from G8ME01.iso. No new
+original art or redistributed resources are committed. Nintendo/Intelligent
+Systems ownership/no redistribution rights remain unchanged. EXP404/PointGet
+art is documented next work, not claimed to be imported/rendered by this chunk.
+
+## 2026-10-13 — Read-only trio EXP asset evidence
+
+Original `icon.bin` ID404 uses `icon.tpl` frames418..421 (40x40,loop,delay6
+perframe). Original `e/us/effect_us.tpl` indices6..13 are point-get "You got",
+digits0..9 andsingular/plural Star Point(s) foreground/shadow art. Inspected
+andconverted onlytoignored `/tmp/trio-exp-*`; this documentation does not
+claim theyarealreadyimportedintothe nativepack. Proposednativeatlas preserves
+originalpixels/frameIDs/delays/alpha with explicit3DS viewport adapter; exact
+GXquad/window/iconclockparity remainsopen. Sourcevictorymodelbanks `a/b_mario`
+M_V_1/M_V_2 and`a/c_pkr` PKR_Y_1/PKR_S_1 arelocallyavailable; originalsource
+category69 handlesGoombella type43. Allare Nintendo/Intelligent Systems local
+original-game resources; noreplacementlicenseorredistributionrights implied.
+See [sourceEXP contract](behavior/battle/UNDERGROUND_TRIO_EXP_PRESENTATION_AND_COUNTING.md)
+for exact dimensions, hashes, source coordinates and remainingrender dependencies.

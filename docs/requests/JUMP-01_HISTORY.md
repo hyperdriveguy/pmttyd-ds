@@ -2294,3 +2294,37 @@ completion fabricated from nativeHP0. Next bounded requests: generalF3c producer
 outsidefreshscope, exactDropMaterial RNG/equipment/fielddrop consumers, remaining
 end display/effect/audio/EXP/rank/level services and actual field reconstruction.
 Docs-only/read-onlyISO, no native edits/commit; git diff --check passed.
+
+
+### 2026-10-13 delivery/request: complete trio DropMaterial and pouch prerequisites
+
+[Drop/entry-pouch contract](../behavior/battle/UNDERGROUND_TRIO_DROP_MATERIAL_AND_ENTRY_POUCH.md)
+closes full801141bc HP→FP→item pass, source current unit ratios/upper-only cap,
+actual five used rows, exact draw order and314 badge queries/fallback25 words.
+SourceI14 coin versusS14 flower owner corrected in ending contract. Original
+setup item producers drawSpike/Para229, selected/retained/back-item slots,
+fieldgetter masks/311,312 badge RNG/countcoin hierarchy and generic death
+consumer/actualtrio separate admission pinned. Sourcestg0_00 callback grants
+6/0x32/9, source keyinsert/tier writes and freshRevise/import/partnerFP facts
+closed. Actualordinarytitle/newgame/boots6 lifecycle remains bounded request:
+onlyseq_e3Main directstage-table query callers were found, not production
+newgame proof. Native providedentrypouch is explicit persistent-owner adapter,
+not authorization to reset liveHPFP or invent save ownership. Sourcehashes,
+listings/fieldinventories recorded; no native edits/commit; git diff --check.
+
+
+### 2026-10-13 delivery/request: trio EXP source presentation/counting
+
+[EXP contract](../behavior/battle/UNDERGROUND_TRIO_EXP_PRESENTATION_AND_COUNTING.md)
+pins08FogForceStop/StockExp1..100/fortune/level gates, samecall09timer119,
+0a actualvictorychildren/PointGet,0b originalheldbattlepad300 counting/RNGfree
+pouch96 progression. CompleteDispMain has noE0=Bf24 write; sourceWhistle E0
+mustnotberepaired. All19staricon fields/init/Main/end and original404 four
+40pxframes418..421 delay6, sourceframewindowrequest pinned. PointGet phase11
+cos easing/hold/softdelete and originalUSphrase+digit texture124..131/US6..13
+sourceart inspected. MarioM_V_1/2 b_mario andGoombellaPKR_Y_1 c_pkr verified;
+type43actualcategory69→PKR_S_1 clarified, notfirstrow/directoryfallback.
+Remaining exact innericon clock/window/GXquad matrices/GPU viewport/parity,
+MSLcos numeric provider, completeeffectaudio and laterEXP/level/export/field
+providers remain boundedrequests. Docs-only/no native edits/commit;
+git diff --check validation.

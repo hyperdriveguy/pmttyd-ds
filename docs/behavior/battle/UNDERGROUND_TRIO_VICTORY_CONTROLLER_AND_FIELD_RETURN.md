@@ -198,17 +198,21 @@ Goombella80396fa0: AnimeChangePose(-2,1,PKR_Y_1),WAIT_FRAME64,
 AnimeChangePoseType(-2,1,43),RETURN/END; SHA256
 `325b2423c70ee02303e1fcd20da9dc785fd3c6153d20d9eb3fbbda270d021bea`.
 Inventory `/tmp/trio-end-win-events.json`. Import actual original pose art,
-honor tracked U2a8 and source same-index force policy. Source type43 missing
-table fallback remains the original first pose entry, not invented art.
+honor tracked U2a8 and source same-index force policy. Source type43 has no exact row in Goombella's ordered table; category69
+selects original PKR_S_1 at80393b58 with force0. This is a pose-category
+fallback, distinct from a missing animation name's directory0 fallback.
 
 DropMaterial801141bc reads S through I+c and ORIGINALgroup throughS18;
 it writes field drop counts S10(heart)/S14(flower), itemS0c through source
 HP/FP ratios, RNG tables, badge314 and selected held/back item domains.
 Story<=19 forces group selection weights0/0/100 for the ordinary item route,
 but does not skip preceding heart/flower table RNG or badge queries. Death
-stock coins remain their original setup-work fields, not an immediate pouch
+stock coins remain I14 (field information), distinct from S14 flower count,
+not an immediate pouch
 coin grant synthesized by this controller. Full drop/equipment/RNG closure
 is an explicit next request; preserving fields is required for field drops.
+The next used closure is now documented in
+[drop material/entry pouch](UNDERGROUND_TRIO_DROP_MATERIAL_AND_ENTRY_POUCH.md).
 
 ## Teardown, exact field continuation and boundaries
 

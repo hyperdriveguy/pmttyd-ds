@@ -5,6 +5,13 @@ Rogueport geometry/textures, original ordinary Mario and Goombella animations, o
 converted locally from your US GameCube ISO. It includes five connected Rogueport outdoor rooms, exploration, dialogue,
 a small Crump battle harness, touch menus and versioned saves.
 
+The underground trio executes original attacks, enemy turns, wing fall and
+death/removal. Its ending now calculates original drops and prepares10EXP,
+then waits for the original reward-icon presentation. Full victory and field
+return remain unfinished. Native new-file flow retains a source-based initial
+pouch across room changes; battle import preserves supplied HP/FP. Legacy
+checkpoint files do not yet serialize that original storage.
+
 The Jump harness now uses the recovered US TimingA history checks and difficulty
 tables. Native physical input and battle pad ownership/update order follow the
 recovered local contracts;original polling,pause and event scheduling remain open.

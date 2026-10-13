@@ -152,6 +152,7 @@ int main() {
                     opening.tick(frontTicks*1000/60,(pending.confirm?0x100u:0u)|(pending.cancel?0x200u:0u)|(fi.start?0x1000u:0u));
                     if(opening.complete()) {
                         ttyd::Progress fresh;fresh.room=1;fresh.position={0,2.25f};fresh.elevation=.15f;fresh.originalStory=opening.story;
+                        fresh.originalPouch=ttyd::createProloguePouch(); // Explicit native new-file handoff using the recovered initial-stage pouch snapshot.
                         if(restoreProgress(fresh)){frontend.openingComplete();game.saveRequested=true;notice="";noticeTicks=0;}
                         else {notice="Original harbor could not load";noticeTicks=240;}
                     }

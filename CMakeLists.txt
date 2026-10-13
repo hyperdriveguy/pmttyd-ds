@@ -681,3 +681,13 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/harbor-tutorial-events.pmevt")
  add_test(NAME field_battle_information_original COMMAND field_battle_information_tests original)
  set_tests_properties(field_battle_information_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif()
+
+target_sources(ttyd_core PRIVATE source/battle_drop_material.cpp)
+add_executable(battle_drop_material_tests tests/battle_drop_material_tests.cpp)
+target_link_libraries(battle_drop_material_tests PRIVATE ttyd_core)
+add_test(NAME battle_drop_material COMMAND battle_drop_material_tests)
+
+target_sources(ttyd_core PRIVATE source/prologue_pouch.cpp)
+add_executable(prologue_pouch_tests tests/prologue_pouch_tests.cpp)
+target_link_libraries(prologue_pouch_tests PRIVATE ttyd_core)
+add_test(NAME prologue_pouch COMMAND prologue_pouch_tests)

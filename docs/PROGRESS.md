@@ -6268,3 +6268,68 @@ Validation in /tmp/pm-harbor-integrated-fa27933: make test134/134 CTest and
 103/103 Python, make all passed (/tmp/opening-field-info-{test,build}.log).
 Original packed tests check actual group/stage/firstAttack values; the read-only
 verifier retains source addresses. No victory/field return is published.
+
+## 2026-10-13 — Native original trio drops and supplied prologue pouch
+
+BattleInformationSetDropMaterial801141bc now runs its complete valid source
+HP→FP→item algorithm with typed services: signed current-unit ratios, upper
+cap only, original threshold/outer/inner draws, story<=19 weights, both actual
+badge314 queries, original weighted first-unit/back-selected item routes and
+25-word Item Hog fallback (including zero outcomes). It writes only setup
+S10/S14/S0c; original death coin I14 and selected/back/returned slots remain
+distinct. It does not deposit drops or coins into the pouch. The original
+source data addresses/tables come from the existing unchanged local pack.
+Original encounter-selected item setup and shared field RNG ownership remain
+separate unbound inputs; the used native fresh no-item admission is preserved.
+
+Added an explicit source-prologue initial pouch snapshot from recovered pouch
+Init and initial-stage grants6/32hex/9, tier writes1/1, source insertion order
+[9,32,6], coins100 and fresh zero-equipment resource revision. The original
+localized default partner name is copied from msg/US/global.txt; only the name
+stays resident, not a second complete global bank. This implements the pouch
+part of the authored initial-stage snapshot, not proof of ordinary original
+title/new-game callback reachability or the full original stage initialization.
+
+Native fresh-file handoff now owns this block in Progress via shared storage,
+retaining it through Game/room rebuilds. Mario's actual field HP bridges into
+entry once. TrioAttack accepts the supplied live block, initializes actual
+Mario/Goombella kind HP/FP copies, clears status then imports source resources
+and initialized seven-party snapshots. Supplied current HP7/FP2/partyHP6 stay
+7/2/6; neither import nor a later turn heals them. Mario maxFP/currentFP no
+longer start incorrectly at0. Fresh snapshots restore Goombella scale1 and
+preserve kind FP5 through the HP-only partner import.
+
+Legacy40-byte checkpoint files still omit this block; their development entry
+uses the explicit initial-stage snapshot plus saved Mario HP. This is not
+original inventory/equipment/save reconstruction. Original later item/equipment,
+full field/player/harbor shared pouch services and serialization remain open.
+The same source-owner block is preserved during live new-file room traversal;
+normal loading of a legacy checkpoint is a separate limited adapter.
+
+Ending06 now computes actual drops and advances08. Fresh FogForceStop's exact
+no-fog early return is bound. Original signed stockEXP clamp/fortune-byte/
+level99/upper-cap/halfword copies prepare E8/Ea, while sourceflagsE0c/Bef8
+writes retain original roles. The all-three scenario yields10 stock/remaining
+EXP and reaches real _GetExpIcon_Init802149ec; pouchEXP stays0, sourceIresult1
+is distinct from fieldresult0, story11/control lock remain. No icon/effect,
+reward counting, victory/fade/export or field completion is manufactured.
+
+Validation: make test passes141/141 CTest and103/103 Python tests
+(/tmp/trio-drop-tests-final.log). Focused DropMaterial tests cover signed ratios,
+upper-only cap, draw order/count, early-story mandatory item roll, weighted
+back/selected slots, badge multiplication and fallback. Prologue pouch tests
+verify source fields/grant order/resources and retained import. Native trio
+integration verifies supplied HP/FP/partnerHP, shared pointer survival through
+Game restore, original all-enemy death/removal, actual drop fields/two badge
+queries/3-or5-or7 draws, original10EXP preparation and exact icon boundary.
+Prior attack/wing-fall/guard/round tests stay green. make all passes
+(/tmp/trio-drop-all-final.log) without compiler warnings; git diff --check passes.
+No new emulator capture or hardware/Dolphin timing claim for this state/owner
+increment. Original assets/packs/binaries stay outside source history.
+
+Documentation agent also recovered the next actual19icon404 frames and
+positions/alpha policies, original US PointGet texture strips and source08→0b
+fallthrough/counting. Next: import/render those original reward assets, bind
+source count/victory children/fade/export/sequence and preserved gorotuki field
+continuation, then finish shared field pouch/save/encounter input ownership.
+Full original-fidelity playable prologue goal remains active and incomplete.

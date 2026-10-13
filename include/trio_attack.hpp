@@ -2,13 +2,14 @@
 #include "trio_battle_commands.hpp"
 #include <memory>
 #include "battle_defense.hpp"
+#include "prologue_pouch.hpp"
 namespace ttyd {
 bool loadTrioAttackAssets(const char* root);
 struct TrioAttackRuntime;
 // Executes original event data; unsupported callbacks keep their event waiting.
 class TrioAttack {
 public:
-    bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp);
+    bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={});
     void tick(uint64_t milliseconds,ProfessorStory&,uint32_t triggers=0,const BattlePadSample* physical=nullptr);
     bool active() const;
     bool finished() const;

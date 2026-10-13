@@ -15,6 +15,8 @@
 #include "battle_unit_resources.hpp"
 #include "battle_phase.hpp"
 #include "battle_conclusion.hpp"
+#include "battle_drop_material.hpp"
+#include "battle_packed_pouch.hpp"
 #include "battle_dive.hpp"
 #include "battle_hammer.hpp"
 #include "field_camera_events.hpp"
@@ -29,7 +31,7 @@ void required(bool ok){if(!ok)std::abort();}
 uint32_t bits(float v){uint32_t b;std::memcpy(&b,&v,4);return b;}
 }
 bool loadTrioAttackAssets(const char* root) {
-    if(!root)return false;
+    if(!root || !loadProloguePouchAssets(root))return false;
     EventScriptAssets next;if(!next.load((std::string(root)+"/trio-attack-events.pmevt").c_str()))return false;
     uint32_t command=0;if(!next.readWord(0x80355cf0,command) || command!=0x5005b)return false;
     FILE* f=std::fopen((std::string(root)+"/trio-attack-units.bin").c_str(),"rb");if(!f)return false;
@@ -55,6 +57,8 @@ struct TrioAttackRuntime {
     uint64_t now=0,sampledAt=UINT64_MAX;uint32_t root=0,pending=0;
     bool done=false;int32_t readyActor=-1;
     std::vector<ProfessorServiceRequest> trace;
+    std::shared_ptr<ProloguePouch> entryPouch;
+    std::array<PartnerBattleSnapshot,7> partySnapshots{};
     TrioAttackRuntime():vm(0x81000000,platform(this)) {}
     static EventNativePlatform platform(TrioAttackRuntime* self) {
         EventNativePlatform p;p.user=self;p.clock=[](void*)->uint32_t{return 243000000;};
@@ -288,11 +292,19 @@ struct TrioAttackRuntime {
         BattleStatusUnit status;clearUnitStatus(status);for(unsigned i=0;i<30;++i)byte(u+0x118+i,status.statusBytes[i]);
         for(unsigned i=0;i<6;++i){const auto at=u+0xae8+12*i;byte(at,0xff);for(unsigned j=1;j<4;++j)byte(at+j,0);word(at+4,0);} // Retain each word8.
     }
-    bool initialize(const TrioBattleCommands& menu,ProfessorStory& s,int16_t hp) {
+    bool initialize(const TrioBattleCommands& menu,ProfessorStory& s,int16_t hp,std::shared_ptr<ProloguePouch> supplied) {
         scene=&s;now=s.now;
+        const bool suppliedEntry=bool(supplied);
+        entryPouch=supplied?std::move(supplied):createProloguePouch();
+        if(!entryPouch)return false;
+        // Legacy development checkpoints supply only current Mario HP. Their
+        // remaining original fields use the explicit recovered initial-stage
+        // snapshot, not a claim to deserialize an original saved inventory.
+        if(!suppliedEntry)entryPouch->half(0x70,hp);
         for(auto span:std::array<std::pair<uint32_t,unsigned>,11>{{{0x82000000,0x100000},{0x8041f070,16},{0x8041e428,4},{0x8041e844,4},{0x8041eb90,4},{0x8041eb00,4},{Battle,0x19100},{Units,0x10000},{Parts,0x10000},{Kinds,0x1000},{Work,0x14000}}})
             if(!vm.memory.registerRam(span.first,std::vector<uint8_t>(span.second)))return false;
-        if(!vm.memory.registerRam(0x85000000,std::vector<uint8_t>(0x600)) || !vm.memory.importScripts(scripts))return false;
+        std::vector<uint8_t> packedPouch(0x600);std::copy(entryPouch->bytes.begin(),entryPouch->bytes.end(),packedPouch.begin());
+        if(!vm.memory.registerRam(0x85000000,std::move(packedPouch)) || !vm.memory.importScripts(scripts))return false;
         auto m=vm.memoryBinding.services();const auto start=eventSdkInitializeAllocator(0x82000000,0x82100000,1,m);
         if(eventSdkCreateHeap(start,0x82100000,m)!=0)return false;
         word(0x8041e844,0);vm.gp.refreshRate=60;vm.gp.timestamp=now*eventClockRate(243000000);vm.initializeContexts();vm.gp.battleContext=1;
@@ -301,9 +313,10 @@ struct TrioAttackRuntime {
         for(unsigned i=0;i<64;++i)word(Battle+0x16f5c+8*i,0xffffffff);
         for(unsigned i=0;i<28;++i)byte(Battle+0x18da0+12*i,0xff);
         half(Battle,0);word(Battle+0xf14,0x0300004c);word(Battle+0xf18,0x04000002);word(Battle+0xf1c,0x05000009);word(Battle+0xf20,0x06000007);
-        word(Battle+0x2738,Work);word(Work+0xc,Work+0x100);word(Work+0x118,reactionGroup);half(0x85000000+0x8a,1);byte(0x85000000+0x98,1);byte(0x85000000+0x99,1);
+        word(Battle+0x2738,Work);word(Work+0xc,Work+0x100);word(Work+0x118,reactionGroup);
         word(0x8041eb90,Battle);word(0x8041eb00,0x85000000);byte(Battle+0xa,1);byte(Battle+0x12,255);
         word(Battle+0x420,menu.actor);word(Battle+0x424,6);word(Battle+0x1c5c,0);word(Battle+0x171c+0x4b0,0);word(Battle+0x171c+0x80,menu.attack->weapon);
+        for(unsigned i=0;i<7;++i){const auto snapshot=Battle+0x162a0+44*i;partySnapshots[i].value=real(0x80422174);real(snapshot,partySnapshots[i].value);word(snapshot+0x24,0);for(unsigned j=0;j<30;++j)byte(snapshot+4+j,0);half(snapshot+0x28,0);half(snapshot+0x2a,0);}
         for(unsigned i=0;i<menu.candidates.bytes.size();++i)byte(Battle+0x428+i,menu.candidates.bytes[i]);
         for(unsigned id=1;id<7;++id) {
             const uint32_t u=Units+id*0x1000,p=Parts+id*0x1000,k=Kinds+id*0x200;
@@ -331,12 +344,17 @@ struct TrioAttackRuntime {
                         for(unsigned axis=0;axis<3;++axis){real(part+0x24+axis*4,real(record+0xc+axis*4));real(part+0x170+axis*4,real(record+0x18+axis*4));real(part+0x188+axis*4,real(record+0x24+axis*4));}
                         for(unsigned offset:{0x40u,0x44u,0x38u,0x3cu,0x48u})word(part+(offset==0x40?0x1ac:offset==0x44?0x1b0:offset==0x38?0x1b4:offset==0x3c?0x1b8:0x1bc),word(record+offset));
                     }
-                    half(u+0x10c,id==1?hp:10);half(u+0x108,10);if(id==2){half(u+0x10e,5);half(u+0x112,5);}
+                    for(unsigned offset:{0x108u,0x10au,0x10cu})half(u+offset,half(kind+8));
+                    for(unsigned offset:{0x10eu,0x110u,0x112u})half(u+offset,half(kind+0xa));
                 }
             }
         }
         word(Units+6*0x1000+0x298,franklyPhase);
         for(unsigned id=1;id<7;++id)clearStatus(Units+id*0x1000);
+        UnitResourceServices resources;resources.user=entryPouch.get();resources.pouch=[](void* p){return static_cast<ProloguePouch*>(p)->bytes.data();};resources.snapshots=&partySnapshots;
+        for(unsigned id=1;id<=2;++id){const auto u=Units+id*0x1000;readDamage(id);auto& d=damageUnits[id];d.baseHp=half(u+0x10a);d.baseFp=half(u+0x110);d.hpPlusCount=byte(u+0x2f1);d.fpPlusCount=byte(u+0x2f2);importUnitResources(d,resources);
+            half(u+0x10a,d.baseHp);half(u+0x108,d.maxHp);half(u+0x10c,d.hp);half(u+0x110,d.baseFp);half(u+0x10e,d.maxFp);half(u+0x112,d.fp);
+            if(id==2){real(u+0x114,d.snapshotValue);word(u+0x138,d.flags);half(u+0x13c,d.snapshot13c);half(u+0x13e,d.snapshot13e);for(unsigned j=0;j<30;++j)byte(u+0x118+j,d.statusBytes[j]);}}
         BattleTurnFirstBackend firstTurn;firstTurn.runtime=&vm;battleTurnFirstProcess(Battle,nativeBattleTurnFirstServices(firstTurn));
         buildBattlePhaseTables(Battle,phaseServices());
         child=nativeBattleDataChildServices(vm);takeoffBackend.runtime=&vm;takeoff=nativeBattleTakeoffServices(vm,nativeBattleTakeoffCoreServices(takeoffBackend));BattleSoundPlaybackServices playback;playback.user=this;playback.trigger=[](void* p,uint32_t,uint32_t key,int32_t,int32_t,const std::array<float,3>&){auto& r=*static_cast<TrioAttackRuntime*>(p);r.soundRequests.push_back(r.text(key));return uint32_t(0);};playback.position=[](void*,uint32_t,const std::array<float,3>&){};playback.off=[](void*,uint32_t){};movement=nativeBattleMovePositionServices(vm,playback);
@@ -494,7 +512,7 @@ struct TrioAttackRuntime {
     void ending() {
         const auto info=word(Battle+0x2738),mario=battleMarioUnit(Battle,nativeBattleActorServices(vm)),party=battlePartyUnit(Battle,nativeBattleActorServices(vm));
         auto state=word(Battle+0xf24);endingRequest(0x80212890);
-        // E0 remains zero before the unbound DropMaterial owner. Whistle's
+        // E0 remains zero before the unbound reward presentation owner. Whistle's
         // source range07..1b is not admitted by this bounded implementation.
         if(state==0x07000000){
             endingRequest(0x80125398);for(unsigned i=0;i<64;++i){const auto u=word(Battle+0x20+4*i);if(u)byte(u+0x311,0xff);}
@@ -529,8 +547,26 @@ struct TrioAttackRuntime {
             endingRequest(0x801a0cec,{-1,0}); // Original clap request; native crowd/audio presentation remains an adapter.
             endingRequest(0x802151c4);
             for(unsigned i=0;i<64;++i){const auto u=word(Battle+0x20+4*i);if(!u)continue;const auto script=battleUnitData(u,0x3f,nativeBattleActorServices(vm).memory);if(script){auto& e=createRootEvent(vm.schedule,script,10,0,vm.creationServices());e.owner=int32_t(word(u));}}
-            pending=0x801141bc; // Actual original field-drop owner, before fortune, EXP, fade and export.
+            BattleDropMaterialServices drops;drops.actors=nativeBattleActorServices(vm);drops.user=this;
+            drops.random=[](void* p,int32_t bound){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80005da0,{bound});return int32_t(r.random.bounded(bound));};
+            drops.story=[](void* p){return static_cast<TrioAttackRuntime*>(p)->scene->story;};
+            drops.equippedBadgeCount=[](void* p,int32_t badge){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x800d3300,{badge});return packedPouchEquippedBadgeCount(r.word(0x8041eb00),badge,nativeBattleActorServices(r.vm).memory);};
+            endingRequest(0x801141bc,{int32_t(info)});battleInformationSetDropMaterial(info,drops);
+            if(byte(word(0x8041eb00)+0x5ba)==3){pending=0x80215718;return;}
+            word(Battle+0xf24,0x07000008);
+            endingRequest(0x80215088,{8,int32_t(Battle)});
             return;
+        }
+        if(state==0x07000008){
+            endingRequest(0x80147bd0);if(word(Battle+0x182b8)!=0){pending=0x80147bd0;return;} // Exact fresh no-fog early return; active effect lifetime remains required.
+            const auto end=word(Battle+0xf28);word(end+0xc,0);endingRequest(0x800f7bd4,{int32_t(Battle)});
+            const int32_t stock=int32_t(word(Battle+0xf00));half(end+8,stock<=0?1:stock>=100?100:stock);
+            if(byte(Battle+0x18ff9)==3)half(end+8,2*half(end+8));
+            if(half(word(0x8041eb00)+0x8a)>=99)half(end+8,0);
+            if(half(end+8)>100)half(end+8,100);
+            half(end+0xa,half(end+8));word(Battle+0xef8,word(Battle+0xef8)&~1u);
+            if(half(end+8)>0){pending=0x802149ec;return;} // Original 19-icon EXP presentation owner.
+            word(end+4,120);pending=0x8012b958;return; // Original camera request on the zero-EXP branch.
         }
         pending=0x80215234;
     }
@@ -708,7 +744,7 @@ struct TrioAttackRuntime {
     void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){scene=&s;now=time;if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();}vm.runManager();if(hasBrokenUnit())done=false;}publish(s);}
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
-bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>();if(!r->initialize(menu,scene,hp))return false;runtime_=std::move(r);return true;}
+bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>();if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
 bool TrioAttack::active()const{return runtime_ && !runtime_->done;}
 bool TrioAttack::finished()const{return runtime_ && runtime_->done;}
