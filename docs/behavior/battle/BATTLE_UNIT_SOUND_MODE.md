@@ -105,3 +105,63 @@ samples or identify a source key merely by inspecting a symbol annotation.
 tools/verify_mario_jump_motion.py pins this whole body,selected record-write
 instructions and the actual Mario caller body/operands. Original ISO/resource
 reads are read-only;inspection artifacts remain under /tmp or ignored paths.
+
+## Source event producer: SetMoveSoundDataWork
+
+2026-10-13 follow-up, original US binary inspection only. Complete wrapper
+btlevtcmd_SetMoveSoundDataWork80105020/ec and leaf BtlUnit_SetSeMode80126558/30
+inspected from read-only ISO; /tmp/trio-soundwork.dis and trio-soundset.dis are
+inspection artifacts, not native executable services.
+
+The wrapper takes **eight event operands**:
+`(actor,key0,key1,initialDelay,period,arg5,param8,paramA)`.
+These names refer to downstream record fields, not measured audio durations.
+**Every operand uses evtGetValue**, including both key operands; neither key is
+copied raw from the script stream. Actor is translated with BattleTransID and
+BattleGetUnitPtr. Then operands1..7 evaluate in order; operands3..7 narrow to
+signed16 before the leaf call. No null-unit validation, first-call branch,
+blocking wait, output operand, allocation or playback request occurs.
+Return2 after SetSeMode(destination=U18c,...).
+
+Original leaf writes, in instruction order:
+
+| Field relative to U18c | Write / source |
+| --- | --- |
+| word00 | evaluated key0 (operand1) |
+| word04 | evaluated key1 (operand2) |
+| half0c | low16 operand3, initial countdown parameter |
+| half0e | low16 operand4, first selected period |
+| half10 | **low16 operand4 again**, second selected period |
+| half14 | 0, alternation counter |
+| half08 | low16 operand6 |
+| half0a | low16 operand7 |
+| word18 | ffffffff, retained voice marker |
+
+**Operand5 is evaluated and narrowed, passed in r8, but the original leaf
+never reads r8.** Do not store its value into half10 or invent a second period.
+Half12 (remaining countdown) is **preserved**, as are bytes16/17 and all fields
+outside the listed writes. This is a producer distinct from LoadSeMode; it
+does not call LoadSeMode, reset remaining countdown, stop a previous handle,
+request a sound or inspect source U1c4. The word18 reset alone is not Off.
+
+Subsequent movement callbacks LoadSeMode(type,sound−2,U1c4,U18c) always first
+write half14=0 and word18=ffffffff, then read half0c and copy tohalf12.
+They retain keys, half08/0a and both period halfwords. This later loader owns
+countdown initialization; preserve its ordering rather than eagerly setting
+half12 in the event producer. [Movement sound consumer](BATTLE_MOVEMENT_SOUND_CONTROL.md)
+closes decrement/reload/parity/retained-voice request semantics; see the existing
+[packed services](BATTLE_PACKED_MOVEMENT_SOUND_ORDER.md) for typed native binding.
+
+Concrete Spiked recovery tik file31bb4 evaluates relocated pointers to
+SFX_ENM_KURI_MOVE1 (filecbc0) and SFX_ENM_KURI_MOVE2 (filecbd4), then parameters
+`(0,3,3,0,0)` after actor/key operands. Thus initialDelay0, both period halves3,
+param8/A0; remaining12 still old until home MovePosition(sound−2)31c18 loads it.
+Para recovery30070 supplies the same relocated fly key twice (filec8f0),
+parameters`(0,15,15,0,0)`, then recovery DivePosition(sound−2)300d4.
+Key equality does not erase alternating-counter source semantics; consumer
+still reads/writes the record according to its original branch.
+
+This closes the source producer missing at native enemy recovery. Exact audio
+key lookup/bank/sample, positional voice trigger/stop and audible verification
+remain bounded by sound contracts. A success-only stub would omit packed state
+that subsequent original motion callbacks consume.

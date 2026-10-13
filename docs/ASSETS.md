@@ -1023,3 +1023,16 @@ text or executable body; native C++ implements recovered phase/clock/RNG/sound
 requests. Shared clock/seed, event lifetimes and original audio providers remain
 unbound. Nintendo/Intelligent Systems rights remain with no redistribution
 license; ISO/raw assets/compiled packs/original dialogue stay outside history.
+
+## 2026-10-13 — Trio enemy impacts and private defence poses
+
+`tools/trio_attack_assets.py` additionally imports original `a/b_mario` poses
+`M_B_1`, `M_D_1` and original `a/c_pkr` poses `PKR_D_1`, `PKR_G_1`, with their
+original texture resources `a/a_mario-` and `a/c_pkr-`. They support the source
+player damage/guard scripts. Existing mesh baking, atlas halving with Lanczos,
+RGBA8 tex3ds packing and UV-scale metadata are retained. Original DOL/tik
+scripts run unchanged through native callbacks; no new story text is authored.
+The ISO is read-only. Extracted models, texture atlases, packed animations and
+compiled binaries stay ignored. Nintendo/Intelligent Systems ownership and
+absence of redistribution rights remain unchanged. Imported poses do not imply
+complete original effects/audio, guard choreography or hardware parity.

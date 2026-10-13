@@ -2085,3 +2085,95 @@ Current pouch HP remainsowner. Original generic type39 M_D_1/PKR_D_1 wait1000ms,
 missingdatakey0a and used helper80113f1c U16+1fe OR1 are pinned. Smallest next
 native boundary listed; lethal/guard/status/physics/sound/effect obligations
 remain explicit. Documentation-only, no native edits/commit; git diff --check.
+
+### 2026-10-13 delivery: enemy source recovery and Para used DivePosition
+
+Appended `Enemy recovery: source Spiked bounce and Para DivePosition` to
+[trio contract](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md).
+Original Spiked impact→brotherrotationreset→28/12/6bounce→homewalk graph pinned.
+JumpContinue reuses complete jumpauthority (strictfloor,return1,noNdecrement).
+Para nineoperand intXYZ ABI, overwriteN0 autoduration from3Ddistance/speed,
+retained origin/current/target/distance/elapsed fields, usedmode0 sineYoffset,
+endpoint substitution and finalelapsed>N return2 pinned; originalintpl_sub
+used0/1/4 PPC signedinteger products/order documented. Numeric PPCsqrt provider
+is explicitly bounded, mode!=0 and groundclampedcurves excluded from usedscope.
+Player original fresh hit child callbacks and existing U1fe helper listed.
+Spiked/Para statuspayloadzero/power2/1 and usedguard/superguard originaldirect
+counter tuples/return/cancellation responsibilities pinned. No native edits,
+commit or original execution claim; git diff --check validation only.
+
+### 2026-10-13 delivery: SetMoveSoundDataWork source producer
+
+Closed native pending80105020 in
+[unit sound mode](../behavior/battle/BATTLE_UNIT_SOUND_MODE.md#source-event-producer-setmovesounddatawork)
+and linked from trio contract. Complete wrapper/ec + SetSeMode80126558/30:
+eightoperands allGetValue (keys included), shortnarrowparameters; exactU18c
+writeorder and preservation pinned. Important originalr8/operand5 ignored;
+operand4 reused for bothperiodhalfwords, half12 preserved until laterLoad−2.
+Noaudio/Load/Offinsideproducer; retainedvoicewordreset doesnotstopvoice.
+ConcreteSpiked/Para authoredkeys/3and15periodoperands pinned. Native integration
+and originalaudio playback remain nextboundaries. Docs-only/no nativeedit/commit;
+git diff --check passed.
+
+### 2026-10-13 delivery: phase4 audience empty drain and superguard termination
+
+Appended `Phase4 audience drain and superguard callback cancellation` to
+[trio contract](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md).
+PerPhase4 mandatoryirand100/throwmax/reset fields thenflag8/state0 pinned.
+Original21-entry table8039ceac mapped; zero-record/queue path follows threepolls
+0→5→7→13(1),13→12→15(1),15→BreakSlotDec/clear8/count0(0). Spectator
+GetExist/SysCtrl masks/stride and retainedqueue/statefields pinned. Empty native
+inventory isexplicitadapter, notoriginalpopulation; nonemptygraph/creation/
+resources/SP/items/bingo remainboundedrequests. Originalbreakturnsubtraction
+wrap/signedclamp and state20cleanup distinction recorded.
+
+SuperguardW13=1 A280/D273 BEFOREdefenderDirect thenattackerDirect and−1return
+confirmed; nosecondcommontailincrement. NegativeCheckDamage wrapperreturns255
+NOoutputwriteandNOevtCheckID; nonnegativewritesoutputbeforeIDcheck. Original
+ownattackcancellation remainsVM/lifecycleowner. Docs-only/no nativeedits/commit;
+git diff --check passed.
+
+### 2026-10-13 follow-up: phase6 turn boundary and player level byte
+
+Appended exactTurnbank3Bf14/Phase4Bf18/countS16B0, phase6→Turn4d, ordinary
+BattleAudience_Case_TurnEnd8019f298(void) identity/graph and nextTurnFirstProcess
+providerorder totrio contract. OriginalplayerU+d producer recoveredEntry801290f0:
+pouchS16+8a→lowbyteU+d forMario/partners (kindbase+0efallbackpreceded).
+Currentnativefreshpouchlevel1adaptercanpopulateit; zeroU+dwouldinvalidate
+TurnEnddivision. TurnEndoriginalgroupmath,mandatoryRNG andtargetcount/category
+leafprovidersbounded; emptyadapterdoesnotmakethosecallsabsent. No native edits/
+commit; git diff --check passed.
+
+### 2026-10-13 delivery: used WaitEventEnd original polling ABI
+
+Closed source btlevtcmd_WaitEventEnd8011389c/3c (SHA256291f1a6b795d1e9b69a1413fb71db88f1d3d7946c07eda59a2ac59aac6f3d95e)
+in [trio contract](../behavior/battle/UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md).
+OneGetValueintID→originalevtCheckID currentcontext activebit1/ID15c scan;
+live→0,missing→2. No unittranslation/firstcall/output/reset/delete/return1.
+Zero followsnormalchecker, no specialbranch. UsedsubsetDamage80350cd8 polls
+precedingbrotherLW0; its originalmotion/interpolation dependenciesremainowners.
+Docs-only/no nativeedits/commit; git diff --check passed.
+
+### 2026-10-13 delivery: confirmed superguard interpolation8034f4e8
+
+Closedusedinit80056120(5,0,1800,40) andactualgetter80055f90 in
+[defaultactionevents](../behavior/battle/BATTLE_DEFAULT_ACTION_EVENTS.md#used-superguard-counter-avoid-spin-and-shared-interpolation-state),
+linkedfromtriocontract. Originalavoidcounter8034f4cc/88SHA6a79e8caf897eaa527b0840f0954471e69800775942383c4c5703112752cc0ab
+source12cmdstream/40brotheriterations/parentpollpinned. SourceLW11..15shared;
+paramgetterRAWoutputs floatLW1 thenintLW2,step++unconditional,2. Usedmode5
+originalfloatcubic path80006eb4,table8030434c,exactoperationorderdocumented;
+notintegerintpl_sub. Lastsamplet39trunc1799→yaw359,no fabricatedfinal0.
+Prior EVENT_INTERPOLATION... c8/cc labels explicitlysuperseded; mode5 scoped
+cameraInterpolation adapterpossible, compiler/FPSCRvalidationremaining.
+No nativeedits/commit;git diff --check passed.
+
+### 2026-10-13 delivery: counter recovery floor8010510c and pose49
+
+Closed sourceTransStageFloorPosition8010510c/c0 evaluatedintX/Z, RAWYoutput,
+intfloortrunc/return2 in
+[jumpcallbacks](../behavior/battle/BATTLE_JUMP_EVENT_CALLBACKS.md#used-counter-recovery-stage-floor-wrapper-and-original-initialization).
+GlobalembeddedstageB163fc; sourceInit B16f28=90,B16f30=−50 pins/constants;
+usedZ<=90floor0provablewithoutinventedheight. Fullstagewriters/transitive
+init remainbounded. Triocontractlinksclosure/pendingnativeboundary and
+originalpose49MarioM_J_1B/GoombellaPKR_A_1 banks/force0; nofallbackidleinvented.
+No nativeedits/commit; git diff --check passed.

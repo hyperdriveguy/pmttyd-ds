@@ -1929,3 +1929,376 @@ run its type39 wait/U1fe producer/wait restoration. Existing sound/effect/
 audience requests retain their explicit provider boundaries. This scoped
 closure does not establish full player death/revival, actual guard timing,
 physical hardware cadence or enemy battle victory.
+
+## Enemy recovery: source Spiked bounce and Para DivePosition
+
+Documentation-only source closure, 2026-10-13. Original tik Spiked162-command
+attack SHA2567ffecd92c5b3f826c170e9b2bc461f0dc98172fd30ddc8973544b285c7a92657
+and Para99-command attack SHA256bb16a121b9a2a3d05075edb9ba65473d718ed15072974f6cf4b552220ee29f1a
+inventoried again; btlevtcmd_DivePosition8010bf8c/934 and intpl_sub801254f4/67c
+PPC inspected completely for the used mode0/curve0,1,4 paths. No native edits or
+original execution/timing claim.
+
+### Spiked impact continuation and smallest player reaction
+
+After ResultACDefence(file319e8), CheckDamage319f8, Spiked sets pose43 at31a18
+(source missing-type fallback69→TGK_S_1, previously closed). A brother at31a2c
+reads int Z rotation, divides by10, multiplies−1, performs ten AddRotateZ steps
+with WAIT_FRAME1, then sets XYZrotation0. Parent fetches current XYZ, sets Y0,
+FaceDirectionSubX40 then JumpPosition(count28,sound−1) at31b0c; SubX20 and
+JumpPosition(count12,−1) at31b40; SubX10 and JumpPosition(count6,−1) at31b74.
+Then camera mode0, source walk sounds, pose41, speed4, fetchhome,
+MovePosition(N0,sound−2,arg6zero)31c18, ResetFaceDirection, StartWait, RETURN.
+Preserve source event invocation/child ownership, not a fixed native sleep.
+
+JumpContinue8010d0f0 remains the complete
+[jump callback authority](BATTLE_JUMP_EVENT_CALLBACKS.md), used in Spiked avoid
+file31790: first invocation sets event+d1, copies visible→move-current, retains
+V/G/S/heading; every invocation addsV tocurrentY, subtractsG fromV, integrates
+horizontal S/heading, publishesvisible then groundqueries. Only strict Y<floor
+clampsandreturns1; equalityreturns0. No countdecrement, trajectoryreset or snap
+against storedtarget. Next script command follows a yielded boundary.
+
+Ordinary fresh player reaction remains the preceding installed U2b0 wrapper,
+generic defaultDamage→subsetDamage, type39 wait1000ms and U16+1fe OR1 helper.
+Its source checks/leaf providers are CheckDamageCode8010f2e8,
+CheckDamagePattern8010f0e8, GetDamageCode8010f374, GetDamage8010f458,
+OnUnitFlag80105b40, RunDataEventChild8010a010 (missingkey0a),
+AnimeChangePoseType80106b20, unk80113f1c, ResetFaceDirection8010e4bc and
+StartWaitEvent8010a26c, plus already bound movement/home checks. Import source
+wrappers and preserve VM cancellation/owner before adding synthesized feedback.
+No live-player death/revival completion is claimed by this bounded next step.
+
+### Para used DivePosition ABI and retained fields
+
+DivePosition has **nine** operands `(actor, X, Y, Z, N, amplitude, curve, mode,
+soundMode)`. Resolve every operand with evtGetValue, actor through BattleTransID;
+XYZ integer→single conversion. It does not use evtGetFloat for destination XYZ.
+Curve>=100 strips100 and enables ground clamp; used Para curves allbelow100.
+All five Para calls use mode0, so orientation-offset mode1/other branches are
+outside this used closure. Source destinations pass through the existing
+float-sentinel-aware SetMoveTargetPos; no raw-XYZ shortcut should bypass that.
+
+On first invocation only, set event+d1, **overwrite** U16c=N even when N0,
+GetPos, SetMoveCurrentPos(U154/158/15c), SetMoveStartPos(U148/14c/150),
+SetMoveTargetPos(U160/164/168). Compute full3D start→destination distance,
+not horizontal distance: squaredY then fusedX² and fusedZ²; source sqrt via
+frsqrte+three refinements, round-single, storeU180. N0 becomes
+trunc(single(distance/U170speed)); nonzeroN instead sets speed=distance/N.
+If finalN0, return2 immediately. Otherwise elapsedU184=0, U17c=0;
+move-directionU188 becomes±1 only when destinationX differs, else retainsold.
+BtlUnit_LoadSeMode80126588(type3,soundMode,U1c4,U18c) initializes source sound
+owner. Platform square-root arithmetic can remain an explicit approximation
+boundary; do not describe ordinary std::sqrt as exact PPC equivalence.
+
+On **every** invocation, including initialization:
+
+1. `t=trunc(U184)`; for each axis, call
+   `intpl_sub(curve,t,U16c,startAxis,targetAxis)` and store move-current.
+2. Optional curve>=100 ground query: strictcurrentY<floor writes elapsed=N,
+   updates targetY tofloor (and currentX/Z target); usedPara doesnotadmit it.
+3. Increment elapsedU184 bysingle1. Ifelapsed>N, SetPos(targetXYZ),
+   _UnitMoveSoundControlEnd8010482c, return2. Equality remains inordinary path.
+4. For mode0, recompute remaining **3D** distance target−interpolatedcurrent.
+   If remaining0 use1 for its ratio; if totaldistanceU180==0 write1 there.
+   Calculate `s=sinDegrees(180*(1-remaining/totaldistance))`. Amplitude0
+   makesoffset0; negative amplitude negates s then multiplies positive−amplitude;
+   positive amplitude multiplies s byamplitude. Publish visibleXYZ with
+   currentY+offset, leaving storedcurrentY interpolation-only. Call
+   _UnitMoveSoundControl80104a24, return0.
+
+The duplicate endpoint interpolation with remaining0 substituted1 is original;
+don't force sine0 or terminate atelapsed==N. Final next-call snap isreturn2,
+not JumpPosition's landingreturn1. N remainsconstant; elapsedincrements.
+
+Original used interpolation jump table80364148 selects:
+
+- curve0→80125544: `start + ((float(t)*(end-start))/float(N))`, separate
+  single subtract/multiply/divide/add.
+- curve1→8012558c: `start + ((end-start)*float(low32(t*t)))/float(low32(N*N))`.
+- curve4→80125834: `q=low32(N-t)`, `delta=end-start`, then
+  `(start+delta) - ((delta*float(low32(q*q)))/float(low32(N*N)))`.
+
+Products use PPC mullw/signedword conversion, not floating-square arithmetic.
+No elapsed clamp exists in this used intpl_sub branch. Preserve operation order.
+Sin-degree service80125cd4 and numeric angle table/provider remain the existing
+math ownership rather than adding a new fabricated curve.
+
+### Para source calls and home recovery
+
+Para attack DivePosition file2fcd0 is `(N0,amplitude−16,curve0,mode0,sound−1)`;
+2fda8 `(0,+5,4,0,0)`; avoidance2ff0c `(0,−20,1,0,0)`;2ffb8
+`(0,−16,1,0,0)`; allactor−2 andXYZLW0..2. After impact30020/30030,
+label98 camera0, original flysounds, pose42, speed6, GetHomePos at300bc,
+**recovery300d4 `(−2,LW0,LW1,LW2,0,−10,0,0,−2)`**; ResetFaceDirection,
+StartWait, RETURN. Animation/VM/sound requests remain sourceordered.
+
+### Fresh weapon/status resistance and guard boundaries
+
+Spiked30d68 and flyingPara2f664 both have W80..af entirelyzero (status
+application payload), FP callback0, HPcallback80189d30 returningliteralW20
+(2/1). Their normal element0, pattern0, W13=1 and special5087 are recorded
+above. Target body elemental defense/attributesfivezero, freshstatuses/badges0
+admit ordinary positive damage tuple already closed. No resistance or proc
+probability is fabricated; nonzerofuturestatuses require sharedstatuscontract.
+
+[Damage orchestration](BATTLE_DAMAGE_ORCHESTRATION.md) also closes the used
+W13=1 superguardcounter dispatch: W74 lacks20000 and targetACpossibility must
+be nonzero; result5 firstOR80000intoF, thenOR100, defenderDirect(Aid,D,P,0,0,
+F|42,pattern0,sleep0), attackerDirect(−5,A,null,1,0,311decimal,0,sleep1),
+core return−1/wrapper255. AttackerDirect starts original damage root and can
+cancel its currently tracked attack event; do not keep executing that root
+as if superguard were just targetHP0damage. With F100, defendercode8012a and
+attacker literal137hex are retained separately. Effects/audience remain requests.
+Ordinary result4 OR40000intoF, reducing HPdamage1: fresh SpikeH1/code50117;
+ParaH0 uses calculator defaultcode4011e, still original directreaction.
+DefaultDamage's earlier40000 gate selects type31 guardpose andWAIT_FRAME30
+before its source tail. Arbitrary counter/status/effect/downstream ownership
+is not newly closed by this data binding.
+
+### Used SetMoveSoundDataWork producer closure
+
+Original pending callback80105020 is now closed in
+[unit sound-mode producer](BATTLE_UNIT_SOUND_MODE.md#source-event-producer-setmovesounddatawork).
+Eight evaluated operands; both keys evtGetValue; signed16 numericparameters.
+SetSeMode80126558 writes U18c record fields in original order, notably evaluates
+but **ignores operand5**, repeats operand4 into both period halves, preserves
+remaininghalf12 until later sound−2 LoadSeMode, and resets voiceword18 without
+stopping it. Spiked31bb4 `(keys KURI_MOVE1/2;0,3,3,0,0)` and Para30070
+`(sameflykey twice;0,15,15,0,0)` source operands/relocatedkey locations pinned.
+No native edits or fabricated audio playback completion.
+
+## Phase4 audience drain and superguard callback cancellation
+
+2026-10-13 documentation-only source recovery. Complete local
+BattleAudience_PerPhase801a7c68/10c,
+BattleAudience_CheckReactionPerPhase801a6ce8/f80,
+BattleAudienceSetThrowItemMax801a5a0c/a0, GetSysCtrl801a2960/60,
+GetExist801a29c0/64, audience pointer801a8664/3c,
+BattleBreakSlot_DecBreakTurn80203330/40 and CheckDamage event wrapper8010a78c/fc
+rechecked in original US DOL. Full nonempty audience action/event execution is
+not asserted solely from inspection of this controller. Ignored evidence lives
+in /tmp/trio-audience-*.dis, /tmp/trio-enemy-check-wrapper.dis.
+
+### PerPhase4 writes and mandatory RNG ownership
+
+Audience base A is original B2858 pointer. PerPhase(04000004) firstcalls
+SetThrowItemMax at801a7d44, **before** setting flag8/state0. That leaf captures
+A, requests irand(100) at801a5a28, and assigns wordA137f4 as follows: signed
+result<80→0; <90→1; <95→2; <100→3. For >=100 it preserves oldword (original
+boundedRNG makes this unreachable); negative signedresult selects0. Then
+writes A137f0=0 and A137f8=0. Return toPerPhase: reloadAflags, OR8, storeflags,
+storewordA137dc=0. Do not skip the RNG draw because native audience isempty;
+this source leaf contains no spectator-count gate. Retain the existing explicit
+native RNG seed adapter rather than describing its seed as original evidence.
+
+PerPhase(04000002) cleanup and otherphase handling remain aspreviouslyrecorded.
+Forphase4 no item/actorallocation, statuschange, queuecountclear, eventlaunch or
+pouchmutation occurs in this initializer beyond the above transitive writes.
+
+### Audience record admission and empty adapter scope
+
+GetPtr801a8664(index) returns A+1bc+134*index; normal controller scans0..199.
+GetExist tests recordword0: bit1hex mustbeset, mask100 mustbeclear, mask2
+mustbeclear. GetSysCtrl firstGetExist; false→0, else returns1 precisely when
+recordword0 mask10 isclear. Thus zero-initialized records produceSysCtrl0;
+GetSysCtrl is not just a count word or unconditional nativeabsence.
+CheckReaction capturesA and calls pouchGetPtr800d5eb0 **even on flag8-clear
+immediate readiness**, then readsAflags. Flag8clear returns0 without statework.
+
+An explicit native empty audience can execute the following original consumers
+against zero/absent records and queuecountA13904=0. This is a bounded adapter,
+**not evidence original setup4 authored/created no audience**. Original audience
+population/renderer/throwitems/SP still require source initialization and
+resources. Never claim parity from skipping those systems. Admission requires
+livepacked flags, recordexist/control gates, queuecounts and breakslotowner.
+
+### Exact empty phase4 three-call drain
+
+StatewordA137dc original jump table is8039ceac (21entries, not803aceac):
+0→801a6d40;1..4→busyreturn;5→801a6d60;6/7→801a6df8;
+8→801a6e70;9→801a6e94;10→801a6ec0;11→801a6f04;
+12→801a7344;13→801a6f30;14→busyreturn;15→801a7b5c;
+16..19→busyreturn;20→801a7c30. Out-of-range also returns1; unsupportedstate
+cannot silently become readiness. These entries identify the graph; only the
+following zero-record/emptyqueue usedpath is now closed for native binding.
+
+1. Withflags8set,flags40000clear,state0: setstate5 then scan200records;
+   onlySysCtrl1,kindbyte1b==9,statusbyte19==18 records decrementword12c;
+   <=0→ChangeStatus19 and recordcount++. Emptycountsetsstate7. Fallthrough
+   immediatelyscans200 forSysCtrl1/kind9/status19; none→state13; return1.
+2. State13: copy queueA138cc.. using countA13904 toprivatestack, capturecount,
+   setlivecount0. Emptyoldcount skips every category/append branch and RNG
+   choice, leavescount0, setsstate12/substateA137e0=0, fallsintostate12.
+   Because queuecount!=1, state15 iswritten at801a7b50 and returns1.
+3. State15: scan200 records. SysCtrl1/status13 decrementswordf4; <=0 calls
+   ChangeStatus3 and setswordf4=0. Scan200 again; SysCtrl1/kind8/status17
+   decrementsword12c; <=0 setsrecordword4=4. Emptyrecords take neitherwriter.
+   Call BattleBreakSlot_DecBreakTurn80203330; then common801a7c30 clears
+   flag8, zerosqueuecountA13904 and returns0.
+
+If sourceflags40000isset, state0 writes5then15 and returns1; subsequent15
+uses samefinalpath. Other existingflags are preserved byfinalmaskclear8.
+DecBreakTurn obtains work at B1616c through pointergetter8020524c, writes
+wordwork10=low32(old−1), reloads signedresult and ifnegative writes0. This is
+not a 64-bit saturating mathematicalsubtraction; wrap occurs before signedtest.
+State15 calls it once; explicitstate20 entry commoncleanupdoesnotcallit.
+Original state0/5/7 and15 scannedrecord branches use ChangeStatus801a2a24;
+when recordadmission is nonempty or queuecountnonzero, source status/event/
+category graph remains requested, rather than hardcodedempty completion.
+
+### Original superguard1 order and wrapper termination
+
+For admitted superguard5 againstSpiked/Para W13=1, existing
+[damage orchestration](BATTLE_DAMAGE_ORCHESTRATION.md) providesexactordered:
+checkW74lack20000, targetACpossibilitynonzero, storedresult5; niceeffect with
+hitoffset/scale.75; F|=80000; soundgreat; audienceGuardGood; **A280increments
+once and D273 receivesitslowbyte BEFORE both directcalls**. ThenW13=1falls
+othercase→F|=100; defenderDirect(attackerID,D,P,0,0,F|42,pattern0,sleep0);
+attackerDirect(−5,A,null,1,0,311decimal,pattern0,sleep1); corereturn−1.
+It bypasses normal counterselection/calculators/status/commontail increment.
+DefenderfullcodeF100becomes8012a; attacker literal311 is137hex. No attacker
+code10117 is synthesized for this already-direct call. Original hit-event
+replacement on attacker can cancel its trackedattackU2a8 through source
+BattleRunHitEventDirect ordering; source VM handles this lifecycle.
+
+EventCheckDamage8010a78c resolves actor,target,part,weapon withGetValue;
+flags/outputtoken raw. At8010a844..850 **negative** coreresult returns255
+immediately: noevtSetValue, **noevtCheckID**, no outputoverwrite. This applies
+regardless of whether ownroot wascancelled. Only nonnegativepath writes raw
+outputtoken first, then calls evtCheckID(entry15c); active→2, absent→255.
+Don't fabricate result18/output18 forsuperguard or requireCheckID before
+preserving a negativebranch's unchangedlocal. Capturedunit/part pointers and
+callingentry can remainreferenced through dispatchsideeffects; don't resume
+a cancelledattack just because CheckDamagewrapper returned255.
+
+### Smallest next native step and retained requests
+
+BindPerPhase4 original RNG/reset/mask8 initialization, then explicit zero-record
+GetExist/GetSysCtrl/emptyqueue sourcepollpath and BreakSlotword10 mutation.
+This legitimately advances phaseend for the existing empty-audience adapter;
+it doesnotimplement original crowd resources, interaction, nonempty21-state
+reactions, SP/bingo/throwitem mechanics or victory. Retain those producers in
+inbox as boundeddependencies. Guard/superguard native tests must assert
+bookkeeping and rootownership/outputpreservation, separately from audiovisual
+services and original gameplay timing observations.
+
+### Phase6 turn boundary, TurnEnd identity and original player level producer
+
+Rechecked original btlseqPhase8011c2b4/9c, btlseqTurn8011c510/1ed8,
+BattleAudience_Case_TurnEnd8019f298/168, btlseqTurnFirstProcess8011b1ec/f0,
+and used BtlUnit_Entry80128fe0/6b4 player-level branch.
+
+Packed owners: **Turnbank3 wordBf14**, **Phasebank4 wordBf18**, Movebank5Bf1c,
+Actbank6Bf20; **turn count signedhalfB0**, notBf14 orBf18. Phase6
+04000006 at8011c320 callsGetSeqStep(B,3) (incrementsTurnbank3) and
+SetSeq(B,4,04000000), returns. Thus Turn0300004c becomes0300004d; no count
+increment occurs there. Next outer btlseqTurn dispatch4d at8011e3b0 calls
+**BattleAudience_Case_TurnEnd8019f298(void)**. It is an ordinary no-argument
+DOL service, not evtcallback (no event args or2return protocol). Only after it
+returns do8011e3b4..3d0 setTurn3=03000001 and clearBef4 mask2000, thenreturn.
+Retain pendingatthatservice until providers exist, rather than resetting turn
+count/moves early or treating phase6 as battlecompletion.
+
+TurnEnd captures globalB, source MarioPtr800f87a8, audienceA and pouchptr.
+Loads B2738→FieldInfo+c→NpcInfo+18→originalgroup, with group+0unitcount and
++4unitsetpointer; each original unitset stride30 has word0kindpointer. It does
+not enumerate only surviving native units. Audienceflags40000 set skips its
+entire mutation suffix **after these pointer loads**; artificialsetting that
+flag to bypass services would changeoriginalscope.
+
+Otherwise: A13908 word+=3 and signedclampupper100; sumunsignedkind+0e across
+originalgroupsets. Threshold=max(5,signeddiv((2*sum)low32,unsignedMarioU+d)).
+ForbattleturnS16B0>=threshold, getAagain and call
+BattleAudienceAddTargetNum801a1a74(sourceconstants*A13778,sourceconstantarg2).
+Ifturn==threshold, AddPhaseEvtList801a1520(6). Mandatoryirand100 follows;
+ifdraw<A13908: ifturn>=threshold AddPhaseEvtList(1), then enqueuecategories
+4,9,10,11,12,13 inthatorder; A13908=0. Always afterthischancebranch call
+BattleAudienceNumToTarget801a1c60. These leaf audiences/targetcount/category
+writers remain boundedproviders to recover/bind; emptycrowd doesnotlocally
+skip groupmath/RNG/categoryqueue/NumToTarget. Futureturn implementation must
+preservethegraph rather than a voidsuccessstub.
+
+Original playerlevel byteU+d producer is explicit: Entry801290c8..d0 copies
+kind+0e toU+d; forkind222or224..230, branch801290f0 calls pouchGetPtr800d5eb0,
+reads signedhalf pouch+8a, writes lowbyteU+d at801290f8. This level producer is
+separate fromHP importing through SetParamFromPouch80127134. Native existing
+fresh pouchlevel1 adapter can seed Mario/Goombella U+d via this source branch;
+leaving playerU+d0 isunfaithful and would maketheTurnEnd divisioninvalid.
+Do notcallkindbaseHP10 alevel or silently inferhigherlevelsfrombattleturns.
+
+Turnstate1 next calls TurnFirstProcess at8011c568..578 beforeincrementing
+Turnbank3again/recursingTurncontroller. Original FirstProcess order:
+BtlActRec_JudgeTurnRuleKeep8018f77c(); incrementS16B0 (narrowthenreload);
+ifnewturn>=2 BattleMajinaiCheck800f7774(); B18ff4=0 thenB18ff0=0;
+BtlActRec_AddCount8018f990(B16f57); scanall64units: nonnullU24byte++,
+BtlUnit_ResetMoveStatus801266d4(U), then irand(S8kind89), setU28 to
+S8kind88+draw-trunc(S8kind89/2); CheckStatusFlag(U,01000000) then iftrue
+ClearStatusFlag801277d8(U,01000000). FinallyBattleFogEndCheck80147c2c().
+OriginalResetMoveStatusfreshnostatus writesU20=0,U22=U21,U23=U22; itsSlow/Fast/
+zero-move branchesremain sharedstatusauthority. Allnonnullunits participate,
+includingFranklycount0; don'tdrop its source RNGrequest becauseitcan'tattack.
+Rulekeep/Majinai/Fog/targetcount/audiencewriters are explicit nextfunction
+boundaries, notauthorizations to manufacturefreshturnstate or victory.
+
+### Used WaitEventEnd8011389c poll closure
+
+2026-10-13 documentation-only original US DOL inspection. Complete
+btlevtcmd_WaitEventEnd8011389c/3c SHA256
+291f1a6b795d1e9b69a1413fb71db88f1d3d7946c07eda59a2ac59aac6f3d95e;
+transitive evtCheckID80036604/60 also rechecked. Inspection artifacts
+/tmp/trio-wait-event-end.dis/.elf and trio-wait-event-check.dis/.elf remain
+outside source history; no native code edits or original timing observation.
+
+ABI: **one int event-ID operand**, evaluated through evtGetValue(event,arg0)
+at801138b0. Pass resultingID unchanged toevtCheckID80036604 at801138b4.
+Return **0 if ID is live/nonzero checkerresult**, **2 if checkerresult0**.
+The subfic/subfe/andc sequence implements this boolean mapping; no return1.
+It does nottranslate aunit, inspectfirstCall, setevent+d, assignoutput, clear
+trackedID/local, deleteevent, adoptchild, settimeout or launchnewwork. Everypoll
+reevaluatesoperand and checkscurrenteventcontext. A success-onlystub bypasses
+source brother ownership/barrier; a yielded1 would introduce a false boundary.
+
+Original evtCheckID readsGP+14:0 selectsfieldcontext803d8d30, nonzero selects
+battlecontext803d8dd0. Readcontextword0count andword90entrybase. For each slot
+stride1b0, onlyentrybyte8mask1active andentryword15c matchingID returns1;
+otherwise0afterentirescan. Paused/typeblocked butactiveentry stillcounts live.
+It doesnotsearchbothcontexts, useanativepointerasID, orrequireparent/owner/unit
+matching. An absent/staleID completes2; zero follows thesamechecker rather than
+an additionalzero-ID shortcut. Currentnative event allocator normallyhasno
+activezeroID, but this wrapper itselfcontainsnospecialID0branch.
+
+Used generic reaction site subsetDamage80350cd8 is WaitEventEnd(LW0) for the
+preceding original brother ID. Preserve that ID and let the ownedbrother finish
+through originalscheduled callbacks; this polling helper supplies no mechanism
+to shortcut its scale/motion/interpolation dependencies.
+
+### Superguard8034f4e8 used integer interpolation producer
+
+Confirmed pending8034f4e8 is init(5,0,1800,40) inoriginal
+btldefaultevt_avoid_counter_event8034f4cc, notaudio/effect.
+[Default action events follow-up](BATTLE_DEFAULT_ACTION_EVENTS.md#used-superguard-counter-avoid-spin-and-shared-interpolation-state)
+nowpins actualsource12cmdstream/sharedLW11..15overwrite, getter80055f90 twoRAW
+outputs FLOATsampleLW1/INTcontinuationLW2, sourceintplGetValue floatmode5cubic
+operationorder (distinctfromintpl_sub integers),40samples0..39 andlackoffinal
+rotationzero. ScopedcameraInterpolation mayserveexistingnativefloatadapter;
+originalcompiler/FPSCRnumericsremainvalidationboundary. No nativeedits/commit.
+
+### Confirmed source superguard floor and pose49 provider boundary
+
+Sourcepending8010510c is TransStageFloorPosition(intX,RAWYout,intZ), notsound/
+effect. [Jumpfloor follow-up](BATTLE_JUMP_EVENT_CALLBACKS.md#used-counter-recovery-stage-floor-wrapper-and-original-initialization)
+pins evaluatedX/Z, unevaluatedYoutput, globalstageB163fc, exactinitialized
+B16f28=90/B16f30=−50 andsourceZ<=90 floor0, wrapperintoutput/2return and
+actualcounter803516b8 continuation. Fullstagewriters/inittransitives remain
+bounded; no codeedit or arbitraryunconditionalfloorconstantadmitted.
+
+Pose49 inoriginalMario table803728b8 at803729b0 hasnamepointer802f3f80
+**M_J_1B**, originalbank b_mario802f3fa8. Type49 matchesbeforefallback69;
+GetPoseNameFromType shouldnotselectidleM_S_1 merelybecausemode49 isunbound
+natively. OriginalSetAnimTypeforce0forrequested49 (outside29..39). Goombella
+pose49 tableentry80393b48, name802f9138 **PKR_A_1**, bank c_pkr804243b0. Preserve source
+case andusedposebank; visualimportavailabilityisaseparate nativeprovider.
+Confirmedavoidcounter8034f4cc requests49thenoriginal40stepmode5Yspin, with
+no final0rotationfabrication. Nativecurrentfloorpending shouldremainexplicit
+until typedstageproviderisbound; originalroundoutcomes/victoryarenotclaimed.

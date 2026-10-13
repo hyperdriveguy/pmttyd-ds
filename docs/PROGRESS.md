@@ -5069,3 +5069,69 @@ field-return owners. Inbox evidence now pins fresh no-input result2, Spike
 power2/Para1, code10117 and original player reaction scripts. Held-item,
 equipment/status/guard/lethal/pouch/effect/audio branches remain incomplete.
 The full original-fidelity playable prologue goal remains active and unachieved.
+
+## 2026-10-13 — Original trio enemy impacts, private defence and recovery
+
+Spiked Goomba and Paragoomba now execute their original impact/recovery scripts
+through the native event VM. Enemy CheckDamage admits the fresh ordinary source
+weapons and uses original power2/1, damage calculation, direct application,
+player-owned reaction roots and source guard codes. Mario/Goombella take source
+selected targets, not a fixed Mario target: the no-input host fixture ends this
+round at Mario8HP/Goombella9HP. Source default waits restart after damage; both
+enemy attacks and tracked reaction barriers drain. Original damage/guard poses
+are packaged from the read-only ISO.
+
+Private battle pad WorkUpdate now receives full physical samples, independently
+of general action triggers and without requiring an installed main AC callback.
+Packed snapshots/history/reset and ResultACDefence use the recovered portable
+logic in source sequence→private-pad→AC→event order. A guard fixture yields4,
+reduces Spike damage to1 and completes the round. B superguard yields5, leaves
+Mario10HP, reduces Spike to1HP, increments A280 once, retains codes8012a/137
+and cancels the original enemy attack. WaitEventEnd and the original 40-sample
+mode5 spin/float-output interpolation are bound. Superguard subsequently stops
+at original TransStageFloorPosition8010510c; its exact three-operand ABI and
+embedded-stage90/-50 producer are now documented for the next step.
+
+Paragoomba DivePosition supports the used mode0/curves0,1,4, constant count,
+source elapsed/intermediate/visible positions, signed amplitude and source
+endpoint/sound ordering. Portable interpolation preserves low-word signed
+integer squares for intpl_sub. Native 3D sqrt and sine are math adapters, not
+bit-identical Gekko estimates/library results. Movement sound keys/counters are
+retained and requests collected; playback handles/position/off remain adapters.
+
+Phase4 end retains its mandatory RNG draw/reset/mask8 initialization. The
+existing explicitly empty native audience follows source polls0→13→15, clears
+mask8 and decrements/clamps BreakSlot turn before advancing phases5/6. Turn
+bank4c→4d and phase reset preserve turn count1. Native player level now reads
+low byte of the existing fresh pouch level1. Original next-turn audience owner
+8019f298 remains pending; no new turn, victory, dialogue or field return is
+fabricated. Nonempty audience/setup4 crowd/SP/bingo/throw mechanics remain open.
+
+Validation: `make test` passes130/130 CTest and103/103 Python tests
+(`/tmp/trio-impact-tests-final.log`). Integration covers earlier Jump/Headbonk,
+phase order2/3/4/5/6/0, source audience polling, target HP, reset/guard/counter
+codes, attack cancellation and unchanged story11/result0/field lock. `make all`
+and `make debug-short` pass (`/tmp/trio-impact-all-final.log`,
+`/tmp/trio-impact-native-final.log`); final native logs have no compiler warnings.
+`git diff --check` passes. Numeric bit fidelity, complete successful player
+follow-ups, lethal player damage, statuses/equipment/items, full presentation,
+next-turn/conclusion/field-return owners and hardware performance remain open.
+The full original-fidelity playable prologue goal remains active and unachieved.
+
+Isolated Azahar capture: `artifacts/azahar-trio-enemy-impacts`, immutable
+`artifacts/trio-impact-snapshot` debug-short binary/ELF, underground-story11
+fixture, 48second boot and `tests/azahar_trio_enemy_impacts.py`. Manual review
+shows Goombella's menu/Headbonk, ordinary Goomba removal, Spiked airborne
+recovery with Mario's original damage pose (sample04), then both remaining
+enemies and player waits restored (sample15/final). One-second captures do not
+prove every Para/Goombella reaction frame or guard timing; host assertions cover
+HP and ownership. The sequence reaches the explicit next-turn boundary and
+keeps story11/field lock. Profiles/saves outside the isolated folder are untouched;
+no hardware FPS or Dolphin parity is claimed.
+
+Next: provision the source embedded-stage threshold90/lowfloor−50, bind the
+three-operand TransStageFloorPosition and finish superguard recovery; bind
+original next-turn audience/turn-first owners with their RNG/order before
+opening another player turn. Then successful player follow-ups, Spike warning,
+wing-fall, conclusion and original field/story return. Do not bypass these
+owners with fabricated completion or reset turn bookkeeping at phase boundaries.

@@ -164,3 +164,87 @@ callback semantics remain open.
 AnnounceMessage timer/input/shared-text behavior is now specified in
 [announcement messages](BATTLE_ANNOUNCEMENT_MESSAGES.md), with original text
 lookup/control and rendering dependencies still open.
+
+## Used superguard counter-avoid spin and shared interpolation state
+
+2026-10-13 source follow-up. Original btldefaultevt_avoid_counter_event
+8034f4cc/88,12commands, SHA256
+6a79e8caf897eaa527b0840f0954471e69800775942383c4c5703112752cc0ab;
+full evt_sub_intpl_init80056120/98, evt_sub_intpl_get_value_para80055f90/d4,
+and intplGetValue80006c8c/3b0 usedmode5 inspected read-only. Artifacts
+/tmp/trio-superguard-counter-avoid.json,/tmp/trio-intpl-para.dis,
+/tmp/trio-intplvalue.dis are inspection-only. No native code or original timing
+observation is claimed. This correctly scoped spin is the source pending
+command8034f4e8 during native superguard reaction.
+
+Source stream: AnimeChangePoseType(LW10,LW11,49); RUN_BROTHER_ID(LW0).
+Brother: **init(5,0,1800,40)** at8034f4e8; DO40; get_value_para(LW1,LW2)
+at8034f508; SetRotate(LW10,rawsentinel−250000000,LW1,rawsentinel−250000000);
+WAIT_FRAME1; ENDDO; ENDBROTHER. Parent WaitEventEnd(LW0), RETURN, END.
+This is a defender reaction presentation, not generated sound/effect or an
+invented attack. Installed source datakey47 selects this script for ordinary
+Mario/Goombella records; retain source caller admission rather than globally
+running it on every block.
+
+### Shared locals and typed parameterized getter
+
+Initializer evaluates allfourintoperands in order, then writes exactly
+LW11(mode)=5,LW12(start)=0,LW13(end)=1800,LW14(step)=0,LW15(limit)=40;
+returns2. These are **shared event locals**, not a private interpolationstruct.
+Brother localcopy/parentcopyback and other scripts usingtheseindices remain
+source VM behavior. In particular LW11 no longer retains partID1 inside this
+brother; SetRotate uses onlyactorLW10 and XYZ, so this localoverwrite isreal.
+The earlier event leaf document's labels calling entry+c8 'start' and+cc 'end'
+are incorrect; the layout above and this battle contract supersede those labels.
+
+Parameterized getter80055f90 has **twoRAWoutputtokens** and nofirstCall gate:
+convert signedLW12/start andLW13/end tobinary32, call
+intplGetValue(LW11mode,LW14step,LW15limit,start,end).
+Call **evtSetFloat800304bc(event,RAWarg0,floatResult)** first; then compare
+signedLW14<LW15 and evtSetValue(RAWarg1,1iftrueelse0). FinallyreloadLW14,
+add1wordwrap,storeLW14;return2. It neither evaluates theoutputtokens nor always
+writesLW0/1. Here rawdestinationsareLW1(sample) andLW2(continuation). Float
+work encoding belongs to original operand services; later SetRotate's
+GetValue decodes/truncates the sample integer before degree normalization.
+Fixed-output getter80056064 instead writes integertruncatedsampleLW0 and
+continuationLW1. Do not interchange these two original callbacks.
+
+### Exact used mode5 scalar operation path
+
+intplGetValue firstif signedcount==0 returnsend before modedispatch. Otherwise
+convert signedstep andcount tobinary32; table8030434c selectsmode5 at80006eb4.
+There is no clamp ofstep,count,normalizedratio oroutput and no trig dependency
+in mode5. Sourceordered singleprecision operations:
+
+```text
+q = R(n - t)
+delta = R(end - start)
+den = R(n * n)
+q2 = R(q * q)
+base = R(start + delta)
+den = R(n * den)
+q3 = R(q * q2)
+num = R(q3 * delta)
+result = R(base - R(num / den))
+```
+
+R means instructionbinary32rounding. This is cubic ease-out with noextra
+coefficient; it is **not** the separatebattle intpl_sub helper using PPC
+mullw signedinteger squares/cubes. General intplGetValue modes0,1,4 also use
+floatarithmetic:0 source80006d24 start+(t*delta)/n;1 source80006d38
+start+((t*t)*delta)/(n*n);4 source80006e90
+(start+delta)-((q*q)*delta)/(n*n), withseparateinstructionrounding.
+Mode5 nativecameraInterpolation uses matching productgrouping
+q*(q*q),n*(n*n) and canserve as scopedfloatnumericaladapter; compiler/FPSCR
+bit-equivalence still requires verification rather than beingasserted byformula.
+No stdcos substitution isneeded inthisusedmode. Othermodes remain separate
+existingcontracts/providerboundaries.
+
+DO40 invokes samplefort=0..39, not0..40; continuationalways1inthatloop and
+isnotused toterminateit. Eachsample isfollowed byWAIT1. The lastidealfloat
+sample1799.971875 truncates1799, SetRotate degreeconsumer normalizes359.
+No final SetRotate0/1800 command exists here. Parent waitsforbrotherID via
+WaitEventEnd (live→0,missing→2); sourcecontextpoll/owner/lifecycle is specified
+in [trio contract](UNDERGROUND_GOOMBA_TRIO_SETUP4_AND_RETURN.md#used-waiteventend8011389c-poll-closure).
+Do not appenda fabricatedfinalzerorotation or claim40renderframes from40
+scheduledwaitcommands. Original drawfacing/camera/scale owners continue toapply.

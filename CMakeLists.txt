@@ -603,6 +603,7 @@ endif()
 
 # Recovered packed phase tables and post-action move consumption.
 target_sources(ttyd_core PRIVATE source/battle_phase.cpp)
+target_sources(ttyd_core PRIVATE source/battle_dive.cpp)
 add_executable(battle_phase_tests tests/battle_phase_tests.cpp)
 target_link_libraries(battle_phase_tests PRIVATE ttyd_core)
 add_test(NAME battle_phase_original COMMAND battle_phase_tests)

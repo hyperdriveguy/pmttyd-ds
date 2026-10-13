@@ -1714,19 +1714,23 @@ void Game::tick(const Input& rawInput) {
         if(trioBattleIntro.finished && !trioBattleIntro.message.active()) {
             if(trioAttack.active()) {
                 const uint32_t triggers=i.physicalSnapshot?inputProducer.channels[0].pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
-                trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers);
+                const auto sample=inputProducer.channels[0].battleSample();
+                trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
                 scene=Scene::Dialogue;saveRequested=false;return;
             }
             if(trioAttack.finished()) {
                 const uint32_t triggers=i.physicalSnapshot?inputProducer.channels[0].pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
-                trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers);
+                const auto sample=inputProducer.channels[0].battleSample();
+                trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
                 if(trioAttack.active())trioCommands.state=TrioBattleCommands::State::Closed; // Enemy root now owns the action.
                 if(trioAttack.prepareCommands(trioCommands,trioBattleIntro) || trioAttack.commandActor()<0) {
                     scene=Scene::Dialogue;saveRequested=false;return;
                 }
             }
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp)) {
-                trioAttack.tick(ticks*1000/60,trioBattleIntro);
+                const auto sample=inputProducer.channels[0].battleSample();
+                const uint32_t triggers=i.physicalSnapshot?sample.pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
+                trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
                 scene=Scene::Dialogue;saveRequested=false;return;
             }
             if(trioCommands.state==TrioBattleCommands::State::Closed)trioCommands.begin(trioBattleIntro);

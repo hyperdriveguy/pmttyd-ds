@@ -278,3 +278,46 @@ ownership, sound lifetime or the number of physical ticks before an impact.
 An original comparison must additionally log first-call flags, all movement
 fields, visible/target positions, callback status, event invocation identity,
 precheck/defense calls and sampled pad history for the same input sequence.
+
+## Used counter-recovery stage-floor wrapper and original initialization
+
+2026-10-13 original US follow-up; complete TransStageFloorPosition8010510c/c0,
+BattleGetFloorHeight800f7b84/50, BattleStageGetPtr80139864/10 and
+BattleStageInit80139780/e4 inspected read-only. Ignored evidence remains
+/tmp/trio-floorposition.dis,/tmp/trio-floor-core.dis,/tmp/trio-stagefloor-*.dis.
+No original execution or complete mutable stage lifecycle is claimed.
+
+TransStageFloorPosition is an event callback with **threeoperands**:
+`(intX,RAW_Y_OUTPUT,intZ)`. It evaluates arg0 through evtGetValue, converts
+signedX→binary32; saves RAWarg1 asoutputtoken withoutreading/evaluatinginputY;
+evaluatesarg2→signedZ→binary32. Loads global BattleWork, calls
+BattleGetFloorHeight(globalB,X,0.0f,Z), fctiwz truncatesresult and writesintto
+RAWarg1 through evtSetValue. Returns2. It doesnottranslate aunit, lookupparts,
+modifyX/Z outputlocals, performfirstcallsetup, playaudio/effect, yield orwait.
+
+The floor consumer capturesinputZ, then BattleStageGetPtrreloadsglobalBattle
+and returns **globalB+163fc**, theembeddedstagework. It is not an indirect
+stagepointerword or an importedMap model transform. Comparison Z<=floatstage+b2c
+returns original+0.0constant80422170; otherwise returnsfloatstage+b34, including
+unorderedNaN comparisons. X/Y and passedBattle pointer are unusedbythisbody;
+providers mustpreserveglobalstageownership rather than assumingdifferentB.
+Absolutepackedfloorfields are **B16f28**(threshold) and **B16f30**(lowfloor).
+
+OriginalBattleStageInit buildsstagebase=B163fc, clearsb3c bytes, then writes
+threshold90.0 at80139834 fromconstant80422b44 bytes42b40000 andlowfloor−50.0
+at80139840 from80422b48 bytesc2480000. These exactinitial values are source
+constants, notmeasuredprovisionalvalues. Later stagegeometry/object/state
+callbacks canmutatework; fullstage-inittransitives and allwriters arenotclosed
+by this floorconsumer. A scoped freshprovider can provisiontheseactualpacked
+fields and retain them until an admittedwriter exists, withthatboundaryexplicit.
+Do not replace theentirefunction byunconditional0 for arbitraryZ orfuturemaps.
+
+Usedsuperguardattacker reaction subsetCounterDamage8035149c calls
+TransStageFloorPosition(LW2,LW3,LW4) at803516b8, afterWaitMsec500/SetFallAccel/
+GetPos. Thus LW3 is overwritten with truncatedsourcefloor, LW2/LW4 retainX/Z.
+For originaltrio counterrootZ<=90 (packedSpikedZ0,ParaZ10), admittedfloor0 is
+source-derived through these initializedfields. SubsequentFaceDirectionSubX30,
+JumpPositioncount20,SubX15/JumpPositioncount10,WaitFrame30, cameramode0 remain
+source recovery commands; this wrapper doesnotperformthebounces itself.
+Native currently retainedpending8010510c can be closed afterbindingstagefields
+and thetypedwrapper, withoutclaimingfullbattle-stagepaper/collisionmutation.

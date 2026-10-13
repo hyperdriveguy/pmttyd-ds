@@ -1,6 +1,7 @@
 #pragma once
 #include "trio_battle_commands.hpp"
 #include <memory>
+#include "battle_defense.hpp"
 namespace ttyd {
 bool loadTrioAttackAssets(const char* root);
 struct TrioAttackRuntime;
@@ -8,7 +9,7 @@ struct TrioAttackRuntime;
 class TrioAttack {
 public:
     bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp);
-    void tick(uint64_t milliseconds,ProfessorStory&,uint32_t triggers=0);
+    void tick(uint64_t milliseconds,ProfessorStory&,uint32_t triggers=0,const BattlePadSample* physical=nullptr);
     bool active() const;
     bool finished() const;
     int32_t commandActor() const;
