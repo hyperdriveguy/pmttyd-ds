@@ -6,6 +6,66 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Retained original save windows and ticketed persistence services
+
+Commit `bd61acc` adds [portable save presentation](behavior/field/NATIVE_SAVE_BLOCK_RETAINED_PRESENTATION.md).
+The original221-command graph now runs with real original global US message
+payloads, retained main windows, separate source selection windows and nested
+key ownership. Continue preserves cursor/schedule/key wait/identity rather than
+force-closing; Add respects raw versus keyed operands. Window poll flags are
+separate from playback data flags and survive ordinary waits/closing until
+source deletion. Original system parser type/color and state7-to8 fallthrough
+are implemented. No save dialogue is authored or rewritten.
+
+Write requests carry one-use tickets and four source switches captured after
+same-invocation VM writes. Simulation performs no filesystem I/O; an external
+provider supplies delayed success0 or provisional generic error-1. Stale,
+duplicate, untaken, finished and moved-from acknowledgements reject. Header's
+one-update yield adapts combined native SD serialization; original card hardware,
+classification, format/create/IPL and real worker binding remain absent. Missing
+resources/unsupported operations fault and yield for owner recovery. Save v6
+retains40 bytes/checksum, stores GSF1207/233/236 in byte34 and GSW4 in byte35,
+and preserves legacy1..5 decode/reserved-byte checks. Live propagation is next.
+
+Inbox documentation independently recovered camera8's
+[letterbox decision lock](behavior/camera/SAVE_BLOCK_CAMERA8_LETTERBOX_DECISION_LOCK.md)
+and [original cue431](behavior/audio/SAVE_BLOCK_431_SOURCE_CUE_AND_RESIDENCY.md).
+Bit200 must not freeze native field camera4 following; it preserves camera8's
+automatic letterbox choice while fades/draw continue. Original cue431 maps
+FX618/group5/macro745/sample550; the ignored source WAV exists but is absent
+from the current five-cue native fallback pack. Source runtime residence is
+unproven; no generated sound replaces it.
+
+Validation: final shared `make test` passes112 CTest/100 Python. Isolated source/
+romfs snapshot `/tmp/pm-save-presentation-v2zjcjj3` passes111 CTest/100 Python and
+`make all`; only the existing professor_fence_animation_original check is absent
+because its private `artifacts/professor-fence-reference.bin` was not copied.
+Logs: `/tmp/save-presentation-final-shared.log`,
+`/tmp/save-presentation-final-isolated-test.log`,
+`/tmp/save-presentation-final-isolated-native.log`. Real original-data tests cover
+first-hit pages, raw scroll/stop, Yes/No/B cancellation, delayed success/failure,
+retained main/choice ownership, nested keys, same-tick save-mode snapshot,
+stale/duplicate/moved acknowledgements and window lifetime. Save tests cover all
+three flag combinations, full mode bytes, v5 migration, older versions and
+atomic file/backup recovery. An initial original first-hit test failed because
+system parser control was unsupported; the documented type/color implementation
+resolved it. Final Markdown link audit771 files/0 broken; owned whitespace checks
+pass. No emulator/hardware capture is claimed: presentation remains unbound in
+Game, so this milestone does not activate the block's live interaction. ISO
+remains read-only and generated/extracted assets remain outside history.
+
+Next: bind SaveBlockPresentation to live source catalog owner/name hit publication,
+MapObjectState callback and independently timed S_1/A_1. Publish animation results
+after object callback, use original clip starts, and key renderer cache by pose
+plus per-instance time. Bind event processing before Mario, nested key/system
+ownership while preserving falling physics, separate camera8 letterbox lock,
+retained windows/choice drawing and an asynchronous libctru SD worker. Propagate
+GSF233/236/GSW4 into progress/write snapshots; suppress automatic harness writes
+while original save flow owns persistence and ensure No never writes. Then run
+isolated Azahar head-hit/No/Yes/save-file checks and measured hardware profiling.
+Other objects/NPCs/areas and complete source field/category/pause/resource/audio
+ownership remain open. The full user goal remains active.
+
 ## 2026-10-13 — Priority0 synthesis job insertion and start timestamps
 
 Delivered [jobs/start time](behavior/audio/MUSYX_SYNTH_JOB_INSERTION_AND_START_TIMESTAMPS.md).
