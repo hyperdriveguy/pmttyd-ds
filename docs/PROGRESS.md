@@ -5,6 +5,28 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 DSP task callbacks and command-mail source
+
+Delivered [DSP task/callback/mail](behavior/audio/MUSYX_DSP_TASK_CALLBACKS_AND_COMMAND_MAIL.md).
+Six complete bodies pin task publication/init wait, distinct ready/init/resume/
+thread-wake callbacks, pending-wait consumption before active gate, command
+pointer/size captures, two-mail polls and raw wrapping clock arithmetic. Original
+DSP program identity is pinned without decoding/export. Marked local EVT-01
+portions complete; parent and actual audio execution remain OPEN.
+
+Validation: generic read-only verifier21 spans (6 complete/13 linked/2 original
+program and length),98 anchors/16 resolved direct calls passes. Length1ec0 equals
+program span;9 resume-gate/5 mail/6 clock-domain vectors are derived source checks,
+not original execution. Fresh full ELFs/listings remain `/tmp`. Link audit747
+Markdown files/0 broken; whitespace checks pass. Docs/source metadata only: no
+make rerun, native change or original DSP/bank/code-body export. Isolated index
+excludes unrelated staged/worktree work.
+
+Next/limits: SDK/DSP task/mail execution, command builder/control/voice/frame
+engine and state/thread/clock/pointer/concurrency domains, original startup/resume/
+audio traces. Continue priority0 source/live SFX/calc3D then priority1 damage
+counter graph. No hardware/playback/full-game completion claim.
+
 ## 2026-10-13 — Original east pipe and first underground map
 
 [Native underground route](behavior/story/NATIVE_UNDERGROUND_PIPE_ROUTE.md)

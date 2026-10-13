@@ -79,6 +79,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [AI/IRQ/compressor source](../behavior/audio/MUSYX_AI_BUFFERS_CALLBACK_AND_IRQ_INITIALIZATION.md).
   Allocation/state/rotating DMA/logic/OS ordering pinned; SDK/DSP/frame/writers/
   alias/concurrency/reinit/original timing remain open.
+- [x] Complete salInitDsp, dspInit/Resume/DoneCallback, salCtrlDsp
+  and salGetStartDelay bodies plus original DSP program/length identities —
+  [DSP task/callback/mail](../behavior/audio/MUSYX_DSP_TASK_CALLBACKS_AND_COMMAND_MAIL.md).
+  Ready/waiting/task/mail/clock order pinned; DSP program/SDK/command builder/
+  source/thread/concurrency/original audio remains open.
 - [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -746,3 +751,20 @@ resolved direct calls passes. All256 byte-index arithmetic cases, exact4*280=a00
 extent and9 logic-gate vectors checked; source functions not executed. Fresh
 ELFs/listings remain `/tmp`. SDK/DMA/DSP/frame providers, shared-state writers,
 null/alias/reinit/concurrency and original callback/audio traces remain OPEN.
+
+### 2026-10-13 — DSP task, ready callbacks and command-mail source
+
+[Six complete bodies](../behavior/audio/MUSYX_DSP_TASK_CALLBACKS_AND_COMMAND_MAIL.md)
+close task fields/request order, init-flag clear AFTER task addition and nesting
+wait; Init writes ready/init flags, Resume consumes waiting before active gate,
+Done only wakes a thread queue. Control retains command pointer before ready-clear/
+sync, captures first size afterward, then sends header/pointer with separate mail
+polls. Raw delay retains word-wrap/high-product/divisor-zero domain distinctions.
+No DSP decoding/command execution/actual rate or audio timing is inferred.
+
+Validation: read-only manifest21 spans (6 complete/13 linked/2 original program
+and length),98 anchors/16 resolved direct calls passes. Original length1ec0
+matches program span;9 gate/5 mail/6 clock-domain vectors are derived only.
+Fresh full ELFs/listings remain `/tmp`; no original function executes or DSP/bank/
+code body is exported. SDK/task/mail/builder/state/thread/clock/concurrency and
+original startup/resume/audio remain OPEN.

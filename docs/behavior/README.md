@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [MusyX DSP task/callback/mail](audio/MUSYX_DSP_TASK_CALLBACKS_AND_COMMAND_MAIL.md) | Complete task publication/init wait, three callbacks, command mail and raw clock arithmetic | DSP program/SDK/builder/state/thread/source/concurrency and original audio |
 | [MusyX AI buffers/callback/IRQ init](audio/MUSYX_AI_BUFFERS_CALLBACK_AND_IRQ_INITIALIZATION.md) | Complete zeroed four-slot allocation, initial/rotating DMA requests, logic gates, CPU destination, IRQ init and compressor flag | Actual SDK/DSP/frame callback/writers/alias/concurrency/reinit and original audio timing |
 | [Rogueport underground pipe route](overworld/ROGUEPORT_UNDERGROUND_PIPE_ROUTE.md) | Reciprocal records, exact case6/10 gates,60unit/20unit position math, both-party entry and Frankly outcallback | Contact producer, paper/camera/audio/runtime |
 | [First underground arrival and Goomba trio](story/UNDERGROUND_FIRST_ARRIVAL_AND_GOOMBA_TRIO.md) | Full161command encounter/init/arrival, original NPC assets/visibility and ten message bindings including tik_04 resource | Actual setup4 battle backend, other map services and runtime parity |

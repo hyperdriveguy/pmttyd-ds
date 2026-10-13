@@ -101,3 +101,5 @@ Remaining: actual DMA/AI SDK, physical allocation/coherence, user callback/frame
 engine, DSP-done/waiting/active/base/index writers and alias/concurrency/reinit
 invariants; original interrupts/buffer/frame/audio timing. Six complete local
 bodies are answered; full source/native/hardware/runtime remains OPEN.
+
+[Complete DSP task/callback/control source](MUSYX_DSP_TASK_CALLBACKS_AND_COMMAND_MAIL.md) now supplies initialization/resume-ready writes, waiting consumption and command ready-clear. Done callback only wakes a thread queue. Actual SDK/DSP/builder/frame/global source/runtime remains open.

@@ -1,0 +1,473 @@
+{
+  "schema": 1,
+  "scope": "Six complete DSP task initialization/callback/control/delay bodies; command builder/SDK/source/concurrency/runtime open",
+  "complete_bodies": [
+    "salInitDsp",
+    "dspInitCallback",
+    "dspResumeCallback",
+    "dspDoneCallback",
+    "salCtrlDsp",
+    "salGetStartDelay"
+  ],
+  "linked_only": [
+    "OSInitThreadQueue",
+    "DSPInit",
+    "DSPAddTask",
+    "hwEnableIrq",
+    "hwDisableIrq",
+    "OSEnableInterrupts",
+    "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+    "OSWakeupThread",
+    "salBuildCommandList",
+    "PPCSync",
+    "DSPSendMailToDSP",
+    "DSPCheckMailToDSP",
+    "OSGetTick"
+  ],
+  "dol_spans": [
+    {
+      "name": "salInitDsp",
+      "address": 2150180376,
+      "size": 212,
+      "sha256": "cce1f6f880b29632412eededcd182b620432c865b69e474b17e7cd52d40840cf"
+    },
+    {
+      "name": "dspInitCallback",
+      "address": 2150179944,
+      "size": 16,
+      "sha256": "b99746e6fb2410b7e3860b5346936af7717cace07c087382017f7b2dfdc2bd87"
+    },
+    {
+      "name": "dspResumeCallback",
+      "address": 2150179960,
+      "size": 100,
+      "sha256": "70c7384c54bfa6442e309da6a35f00208fcbae2f89cf62ae152937e1b484a451"
+    },
+    {
+      "name": "dspDoneCallback",
+      "address": 2150180060,
+      "size": 36,
+      "sha256": "f1d0f68707b0e0351ead3fbd44b6911a78461e2cc271e5c85f59387f0de3a7b6"
+    },
+    {
+      "name": "salCtrlDsp",
+      "address": 2150180588,
+      "size": 116,
+      "sha256": "3fcbb960911069e8c0b18ee856f7bebf52fba7b6c231e907c51256cb352e2f2b"
+    },
+    {
+      "name": "salGetStartDelay",
+      "address": 2150180704,
+      "size": 76,
+      "sha256": "6c3e3fc799fc4c64d7ff386a66eea441437a064b3449674983d8355e9022c118"
+    },
+    {
+      "name": "OSInitThreadQueue",
+      "address": 2150221724,
+      "size": 16,
+      "sha256": "795c186d6dea2619cf5a24ccbafeda1ebe4adefcd6c7d0042d22bc7e51f4736f"
+    },
+    {
+      "name": "DSPInit",
+      "address": 2150279836,
+      "size": 196,
+      "sha256": "46443b9efb5801be4a3315ba908e43baa67873e214ce7f610e6ed73131b703be"
+    },
+    {
+      "name": "DSPAddTask",
+      "address": 2150280032,
+      "size": 112,
+      "sha256": "c6324f9e24505ff9561ac9041f4dc3152113a1be29d83bfb357e0d4883ad128d"
+    },
+    {
+      "name": "hwEnableIrq",
+      "address": 2150180824,
+      "size": 56,
+      "sha256": "3bcc66eb43ecfd8c2739c9765c710b462e66bc98fe31d107c000e0d3e3b6fc81"
+    },
+    {
+      "name": "hwDisableIrq",
+      "address": 2150180880,
+      "size": 56,
+      "sha256": "edb5198c972d01b93658216671fd046d6f96210b534bbfa30b6844c8db6138d2"
+    },
+    {
+      "name": "OSEnableInterrupts",
+      "address": 2150210280,
+      "size": 20,
+      "sha256": "fc3bb9e8a3a33462577b4b59ca6d5e07c3a146205838d416cf9b11972894aed6"
+    },
+    {
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi",
+      "address": 2150210260,
+      "size": 20,
+      "sha256": "91253610f8caa4988f3df8595ccfc6e5eafaf0b6df1b302668555ab7d528b1bc"
+    },
+    {
+      "name": "OSWakeupThread",
+      "address": 2150225564,
+      "size": 260,
+      "sha256": "daad027133f69985c15edf124872b8f97a83881f084e7c73c2c671f31a9b7b32"
+    },
+    {
+      "name": "salBuildCommandList",
+      "address": 2150141440,
+      "size": 9720,
+      "sha256": "14f94e450a1f0069db5607b861a7dbe8e8e3c98d59ecba707574284c12ee920b"
+    },
+    {
+      "name": "PPCSync",
+      "address": 2150191108,
+      "size": 8,
+      "sha256": "1560a9543d41d35b61c288453bb0972cfd1359499e5fcc7ef1e2c52391fa12cb"
+    },
+    {
+      "name": "DSPSendMailToDSP",
+      "address": 2150279816,
+      "size": 20,
+      "sha256": "a2dec6876012061b2e98d37c9fec3da99f7ea1ca34ca9197be7486488e8c3f42"
+    },
+    {
+      "name": "DSPCheckMailToDSP",
+      "address": 2150279760,
+      "size": 16,
+      "sha256": "ae4fc63c6f48b4aa4780f7d72d0d4be5669f495137d0f85cb80aae48a2beee0c"
+    },
+    {
+      "name": "OSGetTick",
+      "address": 2150226020,
+      "size": 8,
+      "sha256": "7836ce7cf2facfcda9d887183c84a835cd71b6de5b52dede3efb27d086a23294"
+    },
+    {
+      "name": "dspSlaveLength",
+      "address": 2151801864,
+      "size": 2,
+      "sha256": "2c68a0f1d169a524880819b6f95e9b8f7700a3c05aaa4105e62675e2b74439b7"
+    },
+    {
+      "name": "dspSlave_original_program",
+      "address": 2151411488,
+      "size": 7872,
+      "sha256": "48ad399ff7e827b2bfd7d08f08c23564447ac94381ab9304e7830fe062c795d8"
+    }
+  ],
+  "dol_anchors": {
+    "2150180384": "3ce08041",
+    "2150180388": "3cc08041",
+    "2150180392": "90010014",
+    "2150180396": "3ca08029",
+    "2150180400": "3c808029",
+    "2150180404": "3c608029",
+    "2150180408": "93e1000c",
+    "2150180412": "3d00803c",
+    "2150180416": "39870c60",
+    "2150180420": "39400000",
+    "2150180428": "3be8ef20",
+    "2150180432": "39260cc0",
+    "2150180436": "380324dc",
+    "2150180440": "38a52468",
+    "2150180444": "38842478",
+    "2150180448": "39002000",
+    "2150180452": "38e00010",
+    "2150180456": "38c00030",
+    "2150180460": "93ec000c",
+    "2150180464": "386d20c8",
+    "2150180468": "916c0010",
+    "2150180472": "914c0014",
+    "2150180476": "912c0018",
+    "2150180480": "910c001c",
+    "2150180484": "914c0020",
+    "2150180488": "b0ec0024",
+    "2150180492": "b0cc0026",
+    "2150180496": "90ac0028",
+    "2150180500": "908c002c",
+    "2150180504": "900c0030",
+    "2150180508": "914c0034",
+    "2150180512": "914c0004",
+    "2150180516": "4800a0f9",
+    "2150180520": "480183f5",
+    "2150180524": "3c608041",
+    "2150180528": "38630c60",
+    "2150180532": "480184ad",
+    "2150180536": "38000000",
+    "2150180540": "900d20d0",
+    "2150180544": "48000119",
+    "2150180548": "800d20d0",
+    "2150180556": "4182fff8",
+    "2150180560": "48000141",
+    "2150180564": "80010014",
+    "2150180568": "38600001",
+    "2150180572": "83e1000c",
+    "2150180580": "38210010",
+    "2150179944": "38000001",
+    "2150179948": "900d20e0",
+    "2150179952": "900d20d0",
+    "2150179968": "38600001",
+    "2150179972": "90010014",
+    "2150179976": "906d20e0",
+    "2150179980": "800d20dc",
+    "2150179988": "41820038",
+    "2150179992": "38000000",
+    "2150179996": "900d20dc",
+    "2150180000": "800d20d8",
+    "2150180008": "40820024",
+    "2150180012": "906d20d8",
+    "2150180016": "48007639",
+    "2150180020": "818d20ec",
+    "2150180032": "48007615",
+    "2150180036": "38000000",
+    "2150180040": "900d20d8",
+    "2150180044": "80010014",
+    "2150180052": "38210010",
+    "2150180068": "386d20c8",
+    "2150180072": "90010014",
+    "2150180076": "4800b1b1",
+    "2150180080": "80010014",
+    "2150180088": "38210010",
+    "2150180596": "90010014",
+    "2150180600": "93e1000c",
+    "2150180608": "48000061",
+    "2150180620": "4bff66f5",
+    "2150180624": "38000000",
+    "2150180628": "83ed2050",
+    "2150180632": "900d20e0",
+    "2150180636": "480028e9",
+    "2150180648": "48018361",
+    "2150180652": "48018325",
+    "2150180660": "4082fff8",
+    "2150180668": "4801834d",
+    "2150180672": "48018311",
+    "2150180680": "4082fff8",
+    "2150180684": "80010014",
+    "2150180688": "83e1000c",
+    "2150180696": "38210010",
+    "2150180712": "90010014",
+    "2150180716": "4800b0f9",
+    "2150180720": "3ca08000",
+    "2150180724": "3c80431c",
+    "2150180728": "800500f8",
+    "2150180732": "3884de83",
+    "2150180736": "80ad20d4",
+    "2150180764": "80010014",
+    "2150180772": "38210010"
+  },
+  "direct_calls": [
+    {
+      "site": 2150180516,
+      "target": 2150221724,
+      "name": "OSInitThreadQueue"
+    },
+    {
+      "site": 2150180520,
+      "target": 2150279836,
+      "name": "DSPInit"
+    },
+    {
+      "site": 2150180532,
+      "target": 2150280032,
+      "name": "DSPAddTask"
+    },
+    {
+      "site": 2150180544,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    },
+    {
+      "site": 2150180560,
+      "target": 2150180880,
+      "name": "hwDisableIrq"
+    },
+    {
+      "site": 2150180016,
+      "target": 2150210280,
+      "name": "OSEnableInterrupts"
+    },
+    {
+      "site": 2150180032,
+      "target": 2150210260,
+      "name": "OSDisableInterrupts::__RAS_OSDisableInterrupts_begi"
+    },
+    {
+      "site": 2150180076,
+      "target": 2150225564,
+      "name": "OSWakeupThread"
+    },
+    {
+      "site": 2150180608,
+      "target": 2150180704,
+      "name": "salGetStartDelay"
+    },
+    {
+      "site": 2150180620,
+      "target": 2150141440,
+      "name": "salBuildCommandList"
+    },
+    {
+      "site": 2150180636,
+      "target": 2150191108,
+      "name": "PPCSync"
+    },
+    {
+      "site": 2150180648,
+      "target": 2150279816,
+      "name": "DSPSendMailToDSP"
+    },
+    {
+      "site": 2150180652,
+      "target": 2150279760,
+      "name": "DSPCheckMailToDSP"
+    },
+    {
+      "site": 2150180668,
+      "target": 2150279816,
+      "name": "DSPSendMailToDSP"
+    },
+    {
+      "site": 2150180672,
+      "target": 2150279760,
+      "name": "DSPCheckMailToDSP"
+    },
+    {
+      "site": 2150180716,
+      "target": 2150226020,
+      "name": "OSGetTick"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "original_dsp_program": {
+    "address": 2151411488,
+    "length": 7872,
+    "length_address": 2151801864
+  },
+  "derived_resume_gate_vectors": [
+    {
+      "waiting": 0,
+      "active": 0,
+      "clear_waiting": false,
+      "dispatch": false
+    },
+    {
+      "waiting": 0,
+      "active": 1,
+      "clear_waiting": false,
+      "dispatch": false
+    },
+    {
+      "waiting": 0,
+      "active": 4294967295,
+      "clear_waiting": false,
+      "dispatch": false
+    },
+    {
+      "waiting": 1,
+      "active": 0,
+      "clear_waiting": true,
+      "dispatch": true
+    },
+    {
+      "waiting": 1,
+      "active": 1,
+      "clear_waiting": true,
+      "dispatch": false
+    },
+    {
+      "waiting": 1,
+      "active": 4294967295,
+      "clear_waiting": true,
+      "dispatch": false
+    },
+    {
+      "waiting": 4294967295,
+      "active": 0,
+      "clear_waiting": true,
+      "dispatch": true
+    },
+    {
+      "waiting": 4294967295,
+      "active": 1,
+      "clear_waiting": true,
+      "dispatch": false
+    },
+    {
+      "waiting": 4294967295,
+      "active": 4294967295,
+      "clear_waiting": true,
+      "dispatch": false
+    }
+  ],
+  "derived_mail_vectors": [
+    {
+      "first_size": 0,
+      "mail": 3133014016
+    },
+    {
+      "first_size": 1,
+      "mail": 3133014017
+    },
+    {
+      "first_size": 65535,
+      "mail": 3133079551
+    },
+    {
+      "first_size": 65536,
+      "mail": 3133014016
+    },
+    {
+      "first_size": 4294967295,
+      "mail": 3133079551
+    }
+  ],
+  "derived_delay_vectors": [
+    {
+      "bus_word": 162000000,
+      "now": 1000,
+      "last": 0,
+      "numerator": 8000,
+      "divisor": 324,
+      "result": 24
+    },
+    {
+      "bus_word": 162000000,
+      "now": 0,
+      "last": 4294967295,
+      "numerator": 8,
+      "divisor": 324,
+      "result": 0
+    },
+    {
+      "bus_word": 162000000,
+      "now": 536870912,
+      "last": 0,
+      "numerator": 0,
+      "divisor": 324,
+      "result": 0
+    },
+    {
+      "bus_word": 0,
+      "now": 1,
+      "last": 0,
+      "numerator": 8,
+      "divisor": 0,
+      "result": null
+    },
+    {
+      "bus_word": 4,
+      "now": 1,
+      "last": 0,
+      "numerator": 8,
+      "divisor": 0,
+      "result": null
+    },
+    {
+      "bus_word": 4294967295,
+      "now": 4294967295,
+      "last": 0,
+      "numerator": 4294967288,
+      "divisor": 8589,
+      "result": 500054
+    }
+  ]
+}
