@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero macro spawn/links/FX clone
+
+Completed mcmdPlayMacro/synthFXCloneMidiSetup and opcode8 stub for EVT-01;
+checked the corresponding inbox portion.
+[Spawn/links/FX clone](behavior/audio/MUSYX_MACRO_SPAWN_LINKS_AND_FX_CONTROLLER_CLONE.md)
+pins signed key clamp/raw16-argument request, temporary suppression/fixed clear,
+public-node and predecessor/successor publication, fresh clone admission and
+five limited controller requests. macStart itself remains linked/open. No
+identity/lifetime/bounds/chain repair, prior-byte restoration, full clone or
+implicit dirty invalidation is inferred.
+
+Validation: read-only ISO manifest passed six spans (two complete/one stub/two
+linked/one table),86 anchors/eight calls. Seven key/seven ID/three argument
+vectors, clone controller/byte and suppression/chain order checked as deductions.
+Link audit passed803 Markdown files/zero broken links; `git diff --check` passed.
+Documentation/metadata only; no `make test`/`make all` rerun. Full original
+inspection ELFs/listings stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded from the documentation commit.
+
+Next: priority-zero EVT-01 complete macStart/allocation/resource/VID constructors,
+actual pending/ID/link/clone/suppression writers and identity/lifetime/alias/
+cycle/concurrency/invalidation domains; remaining macro opcodes and original
+spawn/clone/audio traces. Full native/runtime binding, lower-priority inbox and
+full-game work remain open.
+
 ## 2026-10-13 — Original NPC descriptor0 fallback and collision/talk research
 
 Commit `b5b1242` retains original animation descriptor0 in NPC subsets and

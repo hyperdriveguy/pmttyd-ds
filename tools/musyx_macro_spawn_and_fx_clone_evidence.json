@@ -1,0 +1,351 @@
+{
+  "schema": 1,
+  "scope": "Two complete macro spawn/FX clone bodies and opcode stub; macStart/identity/chain/provider/runtime open",
+  "complete_bodies": [
+    "mcmdPlayMacro",
+    "synthFXCloneMidiSetup"
+  ],
+  "linked_only": [
+    "macStart",
+    "inpFXCopyCtrl"
+  ],
+  "dol_spans": [
+    {
+      "name": "mcmdPlayMacro",
+      "address": 2150103584,
+      "size": 396,
+      "sha256": "d55afaa6e7a454a0a95aa064e49b5a327a3b931f321233ff3b4f3a2fff90d7af"
+    },
+    {
+      "name": "synthFXCloneMidiSetup",
+      "address": 2150076528,
+      "size": 132,
+      "sha256": "8de4af0f6be16f87ad43df79fce8ae0b4d944a84857d6c9f80ddb410a57a700c"
+    },
+    {
+      "name": "macStart",
+      "address": 2150121300,
+      "size": 1080,
+      "sha256": "0be04ec8eba8450dfb24ddce6481987f8e17b1621b890665f75f11045b8705ab"
+    },
+    {
+      "name": "inpFXCopyCtrl",
+      "address": 2150166852,
+      "size": 276,
+      "sha256": "b510072f45ef23e592283f4fce0c504f4695b0aa41c87f1344143931a853dc19"
+    },
+    {
+      "name": "macro_spawn_stub",
+      "address": 2150116660,
+      "size": 16,
+      "sha256": "4a4011eb83e72cfd0f468a226c7f7347975808498eebcea3a697be86b9f821da"
+    },
+    {
+      "name": "macro_opcode_jump_table",
+      "address": 2151398552,
+      "size": 456,
+      "sha256": "345713d3d8e89aaa83f2d07674a81487a12ccc098b28598b23ca5b091dafd4a2"
+    }
+  ],
+  "dol_anchors": {
+    "2150103592": "90010034",
+    "2150103596": "93e1002c",
+    "2150103604": "80040000",
+    "2150103608": "88630131",
+    "2150103624": "4080000c",
+    "2150103628": "38a00000",
+    "2150103632": "48000014",
+    "2150103640": "38a0007f",
+    "2150103644": "41810008",
+    "2150103652": "881f011d",
+    "2150103660": "41820008",
+    "2150103668": "38600001",
+    "2150103672": "38000000",
+    "2150103676": "987f011c",
+    "2150103684": "81040004",
+    "2150103688": "88df0122",
+    "2150103700": "90c10008",
+    "2150103704": "88df0123",
+    "2150103708": "90c1000c",
+    "2150103712": "90610010",
+    "2150103716": "887f0120",
+    "2150103720": "90610014",
+    "2150103724": "90010018",
+    "2150103728": "881f011e",
+    "2150103732": "9001001c",
+    "2150103736": "881f011f",
+    "2150103740": "90010020",
+    "2150103744": "881f0197",
+    "2150103756": "90010024",
+    "2150103760": "80640000",
+    "2150103768": "811f0158",
+    "2150103772": "801f0174",
+    "2150103780": "80df0100",
+    "2150103788": "895f0121",
+    "2150103796": "48004461",
+    "2150103800": "3c030001",
+    "2150103804": "38800000",
+    "2150103812": "989f011c",
+    "2150103816": "41820088",
+    "2150103824": "808d1f70",
+    "2150103836": "808400f8",
+    "2150103840": "80040008",
+    "2150103844": "901f0108",
+    "2150103848": "800d1f70",
+    "2150103852": "80bf00f4",
+    "2150103860": "90a400f0",
+    "2150103864": "80bf00ec",
+    "2150103868": "3c050001",
+    "2150103876": "41820028",
+    "2150103880": "800d1f70",
+    "2150103888": "90a400ec",
+    "2150103892": "801f00ec",
+    "2150103896": "808d1f70",
+    "2150103912": "906400f0",
+    "2150103916": "907f00ec",
+    "2150103920": "881f011d",
+    "2150103928": "41820020",
+    "2150103932": "800d1f70",
+    "2150103944": "4bff94e9",
+    "2150103948": "4800000c",
+    "2150103952": "3800ffff",
+    "2150103956": "901f0108",
+    "2150103960": "80010034",
+    "2150103964": "83e1002c",
+    "2150103972": "38210030",
+    "2150076536": "90010014",
+    "2150076540": "93e1000c",
+    "2150076552": "93c10008",
+    "2150076564": "38600007",
+    "2150076568": "480160ad",
+    "2150076580": "3860000a",
+    "2150076584": "4801609d",
+    "2150076596": "3860005b",
+    "2150076600": "4801608d",
+    "2150076612": "38600080",
+    "2150076616": "4801607d",
+    "2150076628": "38600084",
+    "2150076632": "4801606d",
+    "2150076636": "80010014",
+    "2150076640": "83e1000c",
+    "2150076644": "83c10008",
+    "2150076652": "38210010",
+    "2150116660": "7fe3fb78",
+    "2150116664": "388d1fe8",
+    "2150116668": "4bffcce5",
+    "2150116672": "48000b54"
+  },
+  "direct_calls": [
+    {
+      "site": 2150103796,
+      "target": 2150121300,
+      "name": "macStart"
+    },
+    {
+      "site": 2150103944,
+      "target": 2150076528,
+      "name": "synthFXCloneMidiSetup"
+    },
+    {
+      "site": 2150076568,
+      "target": 2150166852,
+      "name": "inpFXCopyCtrl"
+    },
+    {
+      "site": 2150076584,
+      "target": 2150166852,
+      "name": "inpFXCopyCtrl"
+    },
+    {
+      "site": 2150076600,
+      "target": 2150166852,
+      "name": "inpFXCopyCtrl"
+    },
+    {
+      "site": 2150076616,
+      "target": 2150166852,
+      "name": "inpFXCopyCtrl"
+    },
+    {
+      "site": 2150076632,
+      "target": 2150166852,
+      "name": "inpFXCopyCtrl"
+    },
+    {
+      "site": 2150116668,
+      "target": 2150103584,
+      "name": "mcmdPlayMacro"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "complete_regions": [
+    "macro_spawn_stub"
+  ],
+  "spawn_opcode": [
+    8
+  ],
+  "clone_controller_order": [
+    7,
+    10,
+    91,
+    128,
+    132
+  ],
+  "clone_byte_order": [
+    7,
+    39,
+    10,
+    42,
+    91,
+    128,
+    129,
+    132,
+    133
+  ],
+  "derived_key_vectors": [
+    {
+      "current_note": 0,
+      "offset_byte": 255,
+      "signed_offset": -1,
+      "clone_flag": 0,
+      "key": 0
+    },
+    {
+      "current_note": 127,
+      "offset_byte": 1,
+      "signed_offset": 1,
+      "clone_flag": 0,
+      "key": 127
+    },
+    {
+      "current_note": 64,
+      "offset_byte": 255,
+      "signed_offset": -1,
+      "clone_flag": 0,
+      "key": 63
+    },
+    {
+      "current_note": 255,
+      "offset_byte": 0,
+      "signed_offset": 0,
+      "clone_flag": 0,
+      "key": 127
+    },
+    {
+      "current_note": 0,
+      "offset_byte": 128,
+      "signed_offset": -128,
+      "clone_flag": 1,
+      "key": 128
+    },
+    {
+      "current_note": 64,
+      "offset_byte": 127,
+      "signed_offset": 127,
+      "clone_flag": 255,
+      "key": 255
+    },
+    {
+      "current_note": 64,
+      "offset_byte": 0,
+      "signed_offset": 0,
+      "clone_flag": 1,
+      "key": 192
+    }
+  ],
+  "derived_child_routes": [
+    {
+      "return_id": 0,
+      "success": true,
+      "slot": 0,
+      "displacement": 0
+    },
+    {
+      "return_id": 7,
+      "success": true,
+      "slot": 7,
+      "displacement": 7784
+    },
+    {
+      "return_id": 63,
+      "success": true,
+      "slot": 63,
+      "displacement": 70056
+    },
+    {
+      "return_id": 64,
+      "success": true,
+      "slot": 64,
+      "displacement": 71168
+    },
+    {
+      "return_id": 255,
+      "success": true,
+      "slot": 255,
+      "displacement": 283560
+    },
+    {
+      "return_id": 2147483655,
+      "success": true,
+      "slot": 7,
+      "displacement": 7784
+    },
+    {
+      "return_id": 4294967295,
+      "success": false,
+      "slot": 255,
+      "displacement": 283560
+    }
+  ],
+  "derived_argument_vectors": [
+    {
+      "word0": 305463048,
+      "word1": 1450744508,
+      "macro_id": 4660,
+      "key_offset_byte": 255,
+      "r4": 120,
+      "r5": 86,
+      "stack_arg11": 39612
+    },
+    {
+      "word0": 0,
+      "word1": 0,
+      "macro_id": 0,
+      "key_offset_byte": 0,
+      "r4": 0,
+      "r5": 0,
+      "stack_arg11": 0
+    },
+    {
+      "word0": 4294967295,
+      "word1": 4294967295,
+      "macro_id": 65535,
+      "key_offset_byte": 255,
+      "r4": 255,
+      "r5": 255,
+      "stack_arg11": 65535
+    }
+  ],
+  "suppress_store_order": [
+    {
+      "offset": 284,
+      "value": 1,
+      "phase": "before_macStart"
+    },
+    {
+      "offset": 284,
+      "value": 0,
+      "phase": "after_macStart_before_success_test"
+    }
+  ],
+  "chain_order": [
+    "parent108=child_f8_pointer.word8",
+    "child_f0=parent_f4",
+    "if_old_parent_ec!=ffffffff: child_ec=old_parent_ec",
+    "if_old_parent_ec!=ffffffff: fresh_parent_ec.low8_selected_voice_f0=return_id",
+    "parent_ec=return_id",
+    "if_fresh_parent11d_nonzero: clone(child,parent)"
+  ]
+}

@@ -268,6 +268,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Shared countdown/gates, registry scratch/search, conditional/direct miss
   and termination requests pinned; resource/free providers/command/bounds/
   divisor/sorted domains and original control-flow/audio remain open.
+- [x] Complete mcmdPlayMacro/synthFXCloneMidiSetup and opcode8 stub —
+  [spawn/links/FX clone](../behavior/audio/MUSYX_MACRO_SPAWN_LINKS_AND_FX_CONTROLLER_CLONE.md).
+  Raw key/16-argument request/suppression/public-node/chain order and five
+  controller clone requests pinned; macStart/providers/lifetime/identity/
+  invalidation and original spawn/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1600,3 +1605,21 @@ binding pinned. Full fresh ELFs/listings stay `/tmp`; no native change/original
 execution/body/binary asset export. Registry/resource/free providers, actual
 command/counter/PC/ID inputs and divisor/sorted/member/alias/IRQ/reentrancy/
 concurrency/original loop/branch/audio traces remain OPEN.
+
+### 2026-10-13 — Macro spawn, voice links and FX clone
+
+[Two complete local bodies/opcode8 stub](../behavior/audio/MUSYX_MACRO_SPAWN_LINKS_AND_FX_CONTROLLER_CLONE.md)
+close signed key clamp/clone bit, temporary suppression/raw16-argument macStart
+request, fixed suppression0 before result branch, public-node word publication,
+predecessor/successor chain splice and five limited controller clone requests.
+Old successor test and successor selection use distinct reads; clone admission
+rereads the flag after macStart. No full-ID/bounds/old-byte restoration, atomic
+chain repair, full controller clone or implicit cache invalidation invented.
+
+Validation: read-only manifest six spans (two complete/one stub/two linked/one
+table),86 anchors/eight calls passes. Seven key/seven ID/three argument vectors,
+clone controller/byte and suppression/chain order checked as deductions. Fresh
+full ELFs/listings stay `/tmp`; no native change/original execution/body/binary
+asset export. macStart/allocation/VID/pending/ID/link/flag/lifetime providers,
+member/generation/alias/cycle/IRQ/reentrancy/concurrency/invalidation and original
+spawn/refusal/clone/audio traces remain OPEN.

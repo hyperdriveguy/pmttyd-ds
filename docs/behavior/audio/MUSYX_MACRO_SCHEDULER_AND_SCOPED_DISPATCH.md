@@ -174,3 +174,10 @@ macro scheduling/audio evidence remain open.
 now pins counter/gates, macro lookup scratch/binary comparator, conditional
 versus direct miss behavior and termination requests. Remaining opcodes,
 registry/resources/free children, domains and original execution remain open.
+
+### Spawn opcode follow-up
+
+[Complete spawn/voice links/FX clone and opcode8 stub](MUSYX_MACRO_SPAWN_LINKS_AND_FX_CONTROLLER_CLONE.md)
+now pins raw16-argument macStart request, fixed suppression clear, success/failure
+chain publication and limited clone. macStart/resource/VID/lifetime/invalidation
+providers and original spawn/audio traces remain open.
