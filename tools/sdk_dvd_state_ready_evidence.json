@@ -1,0 +1,654 @@
+{
+  "schema": 1,
+  "scope": "Complete SDK DVD stateReady; check/pause/pop/fatal/resume/motor/queue-clear/callback/recursion/reset/alarm order, child engine/providers/runtime open",
+  "complete_bodies": [
+    "stateReady"
+  ],
+  "linked_only": [
+    "__DVDCheckWaitingQueue",
+    "__DVDPopWaitingQueue",
+    "DVDLowWaitCoverClose",
+    "__DVDClearWaitingQueue",
+    "DVDReset",
+    "OSCreateAlarm",
+    "OSSetAlarm",
+    "__DVDStoreErrorCode",
+    "DVDLowStopMotor",
+    "stateBusy",
+    "cbForStateMotorStopped",
+    "cbForStateError",
+    "AlarmHandler"
+  ],
+  "dol_spans": [
+    {
+      "name": "stateReady",
+      "address": 2150241468,
+      "size": 744,
+      "sha256": "45306e28e50e177a5f90234de14dd8b6719ef8e1d84d0e0672e816bc5456ce0b"
+    },
+    {
+      "name": "__DVDCheckWaitingQueue",
+      "address": 2150248264,
+      "size": 88,
+      "sha256": "a9b190bfcb0f7f034a4ce5dd9dda556211df06477a6f18229bc777023fa03208"
+    },
+    {
+      "name": "__DVDPopWaitingQueue",
+      "address": 2150248104,
+      "size": 160,
+      "sha256": "c44281726d6b1c597fd86347d5afb70ab359c5baa9c3fd62f3e5de7591549c02"
+    },
+    {
+      "name": "DVDLowWaitCoverClose",
+      "address": 2150234072,
+      "size": 44,
+      "sha256": "789c5095ef3abda20bd674a7f82124d1e2322e7575f674b1f9c7bd125c2c0c5c"
+    },
+    {
+      "name": "__DVDClearWaitingQueue",
+      "address": 2150247944,
+      "size": 56,
+      "sha256": "dbb6f23d6e97a00d3f8fa53eec0ab37f0e250d548e968ae0ea781690340bc9fc"
+    },
+    {
+      "name": "DVDReset",
+      "address": 2150246092,
+      "size": 68,
+      "sha256": "e5a24224db38d703a607b287d72007bee6621ad11ac96f02f0049afdd43602ad"
+    },
+    {
+      "name": "OSCreateAlarm",
+      "address": 2150194428,
+      "size": 16,
+      "sha256": "765d467aef28897a16c69e550974242c7e115dedbd156d3e0451e5ebd9b2e0b8"
+    },
+    {
+      "name": "OSSetAlarm",
+      "address": 2150195036,
+      "size": 104,
+      "sha256": "34c7a3fccc8dfa8f8c695579981fc809c2a4505da664f8441ac8a03dbbb0f5a9"
+    },
+    {
+      "name": "__DVDStoreErrorCode",
+      "address": 2150248732,
+      "size": 124,
+      "sha256": "04e17db1044ff8cc3c0a98d05e6d6e3a20a0765566b87799d4433426ad410ba9"
+    },
+    {
+      "name": "DVDLowStopMotor",
+      "address": 2150234280,
+      "size": 140,
+      "sha256": "48fdcaef174ad7b5cbd21170d35fc94600344d397d54632f32ee5e430664c0e0"
+    },
+    {
+      "name": "stateBusy",
+      "address": 2150242212,
+      "size": 832,
+      "sha256": "99b2996bb00b40b1f16de336709851870c65d6de65bbd202b5e0dbe1fbf2b63b"
+    },
+    {
+      "name": "cbForStateMotorStopped",
+      "address": 2150241232,
+      "size": 236,
+      "sha256": "5b2a8ceea32a89423d850d4870e8e878815fae96c233ec8fb835a6807474aa86"
+    },
+    {
+      "name": "cbForStateError",
+      "address": 2150237932,
+      "size": 172,
+      "sha256": "a9db624d1cc5f92c181a51afbd65495564d0eda3fc85146628a0b338ab0edcee"
+    },
+    {
+      "name": "AlarmHandler",
+      "address": 2150360856,
+      "size": 140,
+      "sha256": "308ce9516599491ea3e6b2b77536a5a1883766b60c8f93ace71f70a4185a98da"
+    }
+  ],
+  "dol_anchors": {
+    "2150241472": "3c608041",
+    "2150241476": "90010004",
+    "2150241484": "93e1000c",
+    "2150241488": "3be338a0",
+    "2150241492": "48001a75",
+    "2150241500": "40820010",
+    "2150241504": "38000000",
+    "2150241508": "900d2250",
+    "2150241512": "480002a8",
+    "2150241516": "800d225c",
+    "2150241524": "41820018",
+    "2150241528": "38600001",
+    "2150241532": "38000000",
+    "2150241536": "906d2260",
+    "2150241540": "900d2250",
+    "2150241544": "48000288",
+    "2150241548": "4800199d",
+    "2150241552": "800d2268",
+    "2150241556": "906d2250",
+    "2150241564": "4182003c",
+    "2150241568": "806d2250",
+    "2150241572": "3880ffff",
+    "2150241576": "381f0040",
+    "2150241580": "9083000c",
+    "2150241584": "808d2250",
+    "2150241588": "900d2250",
+    "2150241592": "81840028",
+    "2150241600": "41820010",
+    "2150241608": "3860ffff",
+    "2150241616": "4bffff6d",
+    "2150241620": "4800023c",
+    "2150241624": "808d2250",
+    "2150241628": "80040008",
+    "2150241632": "900d226c",
+    "2150241636": "800d2278",
+    "2150241644": "4182015c",
+    "2150241648": "800d2278",
+    "2150241656": "41820064",
+    "2150241660": "4080001c",
+    "2150241668": "41820028",
+    "2150241672": "4080003c",
+    "2150241680": "40800064",
+    "2150241684": "48000128",
+    "2150241692": "40800120",
+    "2150241700": "40800050",
+    "2150241704": "48000100",
+    "2150241708": "3800000b",
+    "2150241712": "3c60802a",
+    "2150241716": "9004000c",
+    "2150241720": "386313d0",
+    "2150241724": "4bffe21d",
+    "2150241728": "480000fc",
+    "2150241732": "38000004",
+    "2150241736": "3c60802a",
+    "2150241740": "9004000c",
+    "2150241744": "386313d0",
+    "2150241748": "4bffe205",
+    "2150241752": "480000e4",
+    "2150241756": "38000005",
+    "2150241760": "3c60802a",
+    "2150241764": "9004000c",
+    "2150241768": "386313d0",
+    "2150241772": "4bffe1ed",
+    "2150241776": "480000cc",
+    "2150241780": "38000003",
+    "2150241784": "9004000c",
+    "2150241788": "800d226c",
+    "2150241796": "41820028",
+    "2150241800": "40800018",
+    "2150241808": "4080004c",
+    "2150241816": "40800014",
+    "2150241820": "48000040",
+    "2150241828": "41820008",
+    "2150241832": "48000034",
+    "2150241836": "480017dd",
+    "2150241840": "808d2250",
+    "2150241844": "381f0040",
+    "2150241848": "900d2250",
+    "2150241852": "81840028",
+    "2150241860": "41820010",
+    "2150241868": "3860fffc",
+    "2150241876": "4bfffe69",
+    "2150241880": "48000064",
+    "2150241884": "38000000",
+    "2150241888": "900d2290",
+    "2150241892": "48001069",
+    "2150241896": "387f0070",
+    "2150241900": "4bff4691",
+    "2150241904": "3c608000",
+    "2150241908": "800300f8",
+    "2150241912": "3c801062",
+    "2150241916": "3c60802a",
+    "2150241924": "38844dd3",
+    "2150241940": "38e311fc",
+    "2150241944": "387f0070",
+    "2150241948": "38a00000",
+    "2150241952": "4bff48bd",
+    "2150241956": "48000018",
+    "2150241960": "806d227c",
+    "2150241964": "48001a71",
+    "2150241968": "3c60802a",
+    "2150241972": "386306ec",
+    "2150241976": "4bffe1f1",
+    "2150241980": "38000000",
+    "2150241984": "900d2278",
+    "2150241988": "480000cc",
+    "2150241992": "800d2290",
+    "2150242000": "40820018",
+    "2150242004": "38000001",
+    "2150242008": "9004000c",
+    "2150242012": "806d2250",
+    "2150242016": "480000c5",
+    "2150242020": "480000ac",
+    "2150242024": "800d226c",
+    "2150242032": "41820028",
+    "2150242036": "40800018",
+    "2150242044": "4080004c",
+    "2150242052": "40800014",
+    "2150242056": "48000040",
+    "2150242064": "41820008",
+    "2150242068": "48000034",
+    "2150242072": "480016f1",
+    "2150242076": "808d2250",
+    "2150242080": "381f0040",
+    "2150242084": "900d2250",
+    "2150242088": "81840028",
+    "2150242096": "41820010",
+    "2150242104": "3860fffc",
+    "2150242112": "4bfffd7d",
+    "2150242116": "4800004c",
+    "2150242120": "38000000",
+    "2150242124": "900d2290",
+    "2150242128": "48000f7d",
+    "2150242132": "387f0070",
+    "2150242136": "4bff45a5",
+    "2150242140": "3c608000",
+    "2150242144": "800300f8",
+    "2150242148": "3c801062",
+    "2150242152": "3c60802a",
+    "2150242160": "38844dd3",
+    "2150242176": "38e311fc",
+    "2150242180": "387f0070",
+    "2150242184": "38a00000",
+    "2150242188": "4bff47d1",
+    "2150242192": "80010014",
+    "2150242196": "83e1000c",
+    "2150242200": "38210010",
+    "2150241468": "7c0802a6",
+    "2150241480": "9421fff0",
+    "2150241496": "2c030000",
+    "2150241520": "2c000000",
+    "2150241560": "2c000000",
+    "2150241596": "280c0000",
+    "2150241604": "7d8803a6",
+    "2150241612": "4e800021",
+    "2150241640": "28000000",
+    "2150241652": "2c000004",
+    "2150241664": "2c000002",
+    "2150241676": "2c000001",
+    "2150241688": "2c000008",
+    "2150241696": "2c000006",
+    "2150241792": "2c00000d",
+    "2150241804": "2c000006",
+    "2150241812": "2c000004",
+    "2150241824": "2c00000f",
+    "2150241856": "280c0000",
+    "2150241864": "7d8803a6",
+    "2150241872": "4e800021",
+    "2150241920": "5400f0be",
+    "2150241928": "7c040016",
+    "2150241932": "5400d1be",
+    "2150241936": "1cc0047e",
+    "2150241996": "28000000",
+    "2150242028": "2c00000d",
+    "2150242040": "2c000006",
+    "2150242048": "2c000004",
+    "2150242060": "2c00000f",
+    "2150242092": "280c0000",
+    "2150242100": "7d8803a6",
+    "2150242108": "4e800021",
+    "2150242156": "5400f0be",
+    "2150242164": "7c040016",
+    "2150242168": "5400d1be",
+    "2150242172": "1cc0047e",
+    "2150242204": "7c0803a6",
+    "2150242208": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2150241492,
+      "target": 2150248264,
+      "name": "__DVDCheckWaitingQueue"
+    },
+    {
+      "site": 2150241548,
+      "target": 2150248104,
+      "name": "__DVDPopWaitingQueue"
+    },
+    {
+      "site": 2150241616,
+      "target": 2150241468,
+      "name": "stateReady"
+    },
+    {
+      "site": 2150241724,
+      "target": 2150234072,
+      "name": "DVDLowWaitCoverClose"
+    },
+    {
+      "site": 2150241748,
+      "target": 2150234072,
+      "name": "DVDLowWaitCoverClose"
+    },
+    {
+      "site": 2150241772,
+      "target": 2150234072,
+      "name": "DVDLowWaitCoverClose"
+    },
+    {
+      "site": 2150241836,
+      "target": 2150247944,
+      "name": "__DVDClearWaitingQueue"
+    },
+    {
+      "site": 2150241876,
+      "target": 2150241468,
+      "name": "stateReady"
+    },
+    {
+      "site": 2150241892,
+      "target": 2150246092,
+      "name": "DVDReset"
+    },
+    {
+      "site": 2150241900,
+      "target": 2150194428,
+      "name": "OSCreateAlarm"
+    },
+    {
+      "site": 2150241952,
+      "target": 2150195036,
+      "name": "OSSetAlarm"
+    },
+    {
+      "site": 2150241964,
+      "target": 2150248732,
+      "name": "__DVDStoreErrorCode"
+    },
+    {
+      "site": 2150241976,
+      "target": 2150234280,
+      "name": "DVDLowStopMotor"
+    },
+    {
+      "site": 2150242016,
+      "target": 2150242212,
+      "name": "stateBusy"
+    },
+    {
+      "site": 2150242072,
+      "target": 2150247944,
+      "name": "__DVDClearWaitingQueue"
+    },
+    {
+      "site": 2150242112,
+      "target": 2150241468,
+      "name": "stateReady"
+    },
+    {
+      "site": 2150242128,
+      "target": 2150246092,
+      "name": "DVDReset"
+    },
+    {
+      "site": 2150242136,
+      "target": 2150194428,
+      "name": "OSCreateAlarm"
+    },
+    {
+      "site": 2150242188,
+      "target": 2150195036,
+      "name": "OSSetAlarm"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_admission_vectors": [
+    {
+      "check": 0,
+      "pause": 0,
+      "pops": false,
+      "clears_executing": true,
+      "sets_pausing": false
+    },
+    {
+      "check": 0,
+      "pause": 1,
+      "pops": false,
+      "clears_executing": true,
+      "sets_pausing": false
+    },
+    {
+      "check": 1,
+      "pause": 0,
+      "pops": true,
+      "clears_executing": false,
+      "sets_pausing": false
+    },
+    {
+      "check": 1,
+      "pause": 1,
+      "pops": false,
+      "clears_executing": true,
+      "sets_pausing": true
+    },
+    {
+      "check": 4294967295,
+      "pause": 0,
+      "pops": true,
+      "clears_executing": false,
+      "sets_pausing": false
+    },
+    {
+      "check": 1,
+      "pause": 4294967295,
+      "pops": false,
+      "clears_executing": true,
+      "sets_pausing": true
+    }
+  ],
+  "derived_resume_vectors": [
+    {
+      "resume": 0,
+      "route": "clear resume only"
+    },
+    {
+      "resume": 1,
+      "route": "state3 command split"
+    },
+    {
+      "resume": 2,
+      "route": "wait cover state11"
+    },
+    {
+      "resume": 3,
+      "route": "wait cover state4"
+    },
+    {
+      "resume": 4,
+      "route": "wait cover state5"
+    },
+    {
+      "resume": 5,
+      "route": "store error/stop motor"
+    },
+    {
+      "resume": 6,
+      "route": "state3 command split"
+    },
+    {
+      "resume": 7,
+      "route": "state3 command split"
+    },
+    {
+      "resume": 8,
+      "route": "clear resume only"
+    },
+    {
+      "resume": 4294967295,
+      "route": "clear resume only"
+    }
+  ],
+  "derived_command_vectors": [
+    {
+      "command": 0,
+      "special": false,
+      "route": "motor0/reset/alarm"
+    },
+    {
+      "command": 1,
+      "special": false,
+      "route": "motor0/reset/alarm"
+    },
+    {
+      "command": 4,
+      "special": true,
+      "route": "clear queue/dummy/callback -4/recurse"
+    },
+    {
+      "command": 5,
+      "special": true,
+      "route": "clear queue/dummy/callback -4/recurse"
+    },
+    {
+      "command": 6,
+      "special": false,
+      "route": "motor0/reset/alarm"
+    },
+    {
+      "command": 13,
+      "special": true,
+      "route": "clear queue/dummy/callback -4/recurse"
+    },
+    {
+      "command": 14,
+      "special": false,
+      "route": "motor0/reset/alarm"
+    },
+    {
+      "command": 15,
+      "special": true,
+      "route": "clear queue/dummy/callback -4/recurse"
+    },
+    {
+      "command": 4294967295,
+      "special": false,
+      "route": "motor0/reset/alarm"
+    }
+  ],
+  "derived_read_pair_vectors": [
+    {
+      "first": 0,
+      "second": 0,
+      "path": "normal motor gate",
+      "clears_resume_after_branch": false
+    },
+    {
+      "first": 0,
+      "second": 1,
+      "path": "normal motor gate",
+      "clears_resume_after_branch": false
+    },
+    {
+      "first": 1,
+      "second": 0,
+      "path": "resume switch on second",
+      "clears_resume_after_branch": true
+    },
+    {
+      "first": 1,
+      "second": 6,
+      "path": "resume switch on second",
+      "clears_resume_after_branch": true
+    },
+    {
+      "first": 4294967295,
+      "second": 2,
+      "path": "resume switch on second",
+      "clears_resume_after_branch": true
+    }
+  ],
+  "derived_alarm_vectors": [
+    {
+      "bus_word": 0,
+      "quarter": 0,
+      "quotient_high": 0,
+      "low_ticks": 0,
+      "high_ticks": 0
+    },
+    {
+      "bus_word": 4,
+      "quarter": 1,
+      "quotient_high": 0,
+      "low_ticks": 0,
+      "high_ticks": 0
+    },
+    {
+      "bus_word": 4000,
+      "quarter": 1000,
+      "quotient_high": 64,
+      "low_ticks": 1150,
+      "high_ticks": 0
+    },
+    {
+      "bus_word": 162000000,
+      "quarter": 40500000,
+      "quotient_high": 2592000,
+      "low_ticks": 46575000,
+      "high_ticks": 0
+    },
+    {
+      "bus_word": 4294967295,
+      "quarter": 1073741823,
+      "quotient_high": 68719476,
+      "low_ticks": 1234802150,
+      "high_ticks": 0
+    }
+  ],
+  "indirect_call_sites": [
+    {
+      "site": 2150241612,
+      "result": -1,
+      "command_arg": "fresh executing captured before dummy publication"
+    },
+    {
+      "site": 2150241872,
+      "result": -4,
+      "command_arg": "fresh executing captured before dummy publication"
+    },
+    {
+      "site": 2150242108,
+      "result": -4,
+      "command_arg": "fresh executing captured before dummy publication"
+    }
+  ],
+  "callback_bindings": [
+    {
+      "site": 2150241720,
+      "target": 2150241232
+    },
+    {
+      "site": 2150241744,
+      "target": 2150241232
+    },
+    {
+      "site": 2150241768,
+      "target": 2150241232
+    },
+    {
+      "site": 2150241972,
+      "target": 2150237932
+    },
+    {
+      "site": 2150241940,
+      "target": 2150240764
+    },
+    {
+      "site": 2150242176,
+      "target": 2150240764
+    }
+  ],
+  "globals": {
+    "executing": 2151805296,
+    "pause": 2151805308,
+    "pausing": 2151805312,
+    "fatal": 2151805320,
+    "current_command": 2151805324,
+    "resume": 2151805336,
+    "last_error": 2151805340,
+    "motor": 2151805360,
+    "dummy": 2151758048,
+    "alarm": 2151758096,
+    "bus_word": 2147483896
+  }
+}

@@ -622,6 +622,9 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete __DVDPopWaitingQueue/Check/Dequeue and all5 dvdqueue.c functions —
   [queue consumers/coverage](../behavior/file/SDK_DVD_QUEUE_POP_CHECK_DEQUEUE_AND_LOCAL_COVERAGE.md). Four heads/split IRQ/
   fresh pop/post-restore clears/retained dequeue pinned; engine/runtime open.
+- [x] Complete SDK DVD stateReady — [ready/resume/alarm](../behavior/file/SDK_DVD_STATE_READY_DISPATCH_RESUME_AND_ALARM.md).
+  Check/pause/pop/fatal/two-read resume/motor, dummy/callback/recursion and raw
+  recovery-alarm order pinned; busy/children/providers/runtime remain open.
 - [ ] Deferred DVD manager and original header/resource/provider/
   validity/execution/native binding; whole local callback alone does not close this.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
@@ -3145,3 +3148,12 @@ areauthority; parentprimaryrootandSDKheaders remainseparate. Correctfreepair
 usesinnerroot; no12-byteSDKheader, noE-onlyarenaoriginalhistoryclaim or
 staledouble-free/idempotenceassumption. Docs-only/read-only/no nativecode
 build/commit; git diff --check.
+
+## 2026-10-13 — SDK DVD ready/resume/alarm delivery
+
+Completed [whole stateReady](../behavior/file/SDK_DVD_STATE_READY_DISPATCH_RESUME_AND_ALARM.md).
+Fourteen spans/186 anchors/nineteen calls/three indirect sites/six bindings
+verified; six admission/ten resume/nine command/five read-pair/five alarm vectors
+and sites checked; queue pins reverified. Dummy publication precedes callbacks,
+resume clear can follow recursion, raw clock arithmetic remains unmeasured.
+Busy/low-level/callback/providers/original IO/audio/native binding open; EVT-01 OPEN.

@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero SDK DVD ready/resume
+
+Completed stateReady; checked EVT-01 portion.
+[Ready/resume/alarm](behavior/file/SDK_DVD_STATE_READY_DISPATCH_RESUME_AND_ALARM.md)
+pins check/pause/pop/fatal/two-read resume/motor, dummy-before-callback, recursion-
+before-resume-clear and reset/raw alarm order. Busy/low-level/callback/providers/
+original IO/audio/native binding remain open.
+
+Validation: read-only ISO manifest passed fourteen spans,186 anchors,nineteen
+calls. Six admission/ten resume/nine command/five read-pair/five alarm vectors,
+three indirect sites/six bindings/global/state/recursion sites checked; queue
+pins reverified. Link audit passed943 Markdown files/zero broken links; scoped
+diff check passed. Mathematical deductions separate from original execution;
+alarm vectors do not establish measured time. Docs/metadata only; no make test/
+all rerun. Fresh full ELF/listing/generator stay /tmp; no bodies/assets committed.
+Concurrent native work excluded. Approved push pending valid GitHub credentials.
+
+Next: priority-zero EVT-01 stateBusy/low-level/reset/ready callbacks and actual
+queue/command/pause/fatal/resume/motor/clock/alarm/provider/value/extent/alias/
+lifetime/IRQ/concurrency/ABI/numeric-time domains, original command/recovery/
+recursive-callback/IO/audio traces. Other inbox/native/full-game work open.
+
 ## 2026-10-13 — Inbox priority-zero SDK DVD queue consumers
 
 Completed pop/check/dequeue and all5 local dvdqueue.c functions; EVT-01 checked.
