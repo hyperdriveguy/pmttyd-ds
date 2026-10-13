@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Current renderer workload and build limitation
+
+After the field actor/frontend source update, the current `romfs/manifest.json`
+records plaza at40,714 triangles/150 batches, harbor22,922/87, east33,444/145,
+west34,885/127 and station41,084/54. Plaza has26 cutaway groups with1,425
+triangles total (maximum186 in one group). The renderer performs bounds checks
+before triangle intersection tests, so cutaway testing is a bounded workload;
+full map geometry and batch submission are more plausible GPU/driver costs.
+This is a static workload assessment, not a measured bottleneck. Existing
+128-pixel map texture caps and atlas reductions remain in effect. No behavior or
+asset changes are justified without profiling evidence.
+
+Ran `make all` against the current shared worktree; it fails in
+`source/render.cpp:794` because the new `Renderer::renderFrontend` definition has
+no declaration in `include/platform.hpp`. This frontend integration is in-flight
+work outside the performance review; no source files were changed to work around
+it. Because the build failed, the prior Azahar captures exercise an earlier
+executable and cannot verify this updated renderer. Next: once the interface
+integration is complete, rebuild and repeat moving-scene measurements with the
+timing overlay visible, then profile on the target 2DS XL before selecting any
+substantial optimization. Do not mark performance complete yet.
+
 ## 2026-10-13 — Emulator performance review
 
 Reviewed the renderer's per-frame costs: map animation vertex updates/cache flushes,
