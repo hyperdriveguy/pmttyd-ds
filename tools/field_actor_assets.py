@@ -94,12 +94,14 @@ def build(iso):
                     position=[185,60,-55],yaw=0,pose='S_1',source='gor.rel:gor_01_init_evt@0x3c514')]
     # Original bbox fields consumed by mobjHitEntry, not rendered pose bounds.
     bounds=struct.unpack_from('>6f',Path('local-assets/map-objects/MOBJ_SaveBlock').read_bytes(),0xd0)
-    data = bytearray(struct.pack('<8sII',b'PMNPC003',len(models),len(records)))
+    data = bytearray(struct.pack('<8sII',b'PMNPC004',len(models),len(records)))
     collision=[]
     for index,(asset,scale) in enumerate(models):
         hit=index==2;box=bounds if hit else [0]*6
         data += struct.pack('<32sfI6f',fixed(asset),scale,int(hit),*box)
-        collision.append(dict(asset=asset,hit_mode=int(hit),bounds=box))
+        original_name=['c_tyusan','c_kuri_h','MOBJ_SaveBlock'][index]
+        data += fixed(original_name)
+        collision.append(dict(asset=asset,original_name=original_name,hit_mode=int(hit),bounds=box))
     for r in records:
         prefix='gor_02_031_' if r['model']==0 else ''
         r['talk_prefix']=prefix

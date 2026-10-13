@@ -23,7 +23,7 @@ these static records do not execute or replace their events.
 
 ## Local format and ownership
 
-PMNPC001/002/003 contain8-byte magic, uint32 model/actor counts, then model rows with
+PMNPC001/002/003/004 contain8-byte magic, uint32 model/actor counts, then model rows with
 32-byte asset stem and float UV scale. Actor rows are120 bytes: seven uint32
 words(key,room,model,interior required,interior forbidden,story gate,kind), two
 signed story bounds, five floats(originalXYZ,yaw,model scalar), and32-byte pose
@@ -39,7 +39,8 @@ The original plaza `mobj_save` uses scalar10, position `(185,60,-55)`,
 S_1, story!=341 and system mask0x20 admission. Its presentation uses
 [PMANIM4 surfaces](../display/NATIVE_ACTOR_SURFACE_PACK.md).
 The constructor gates are represented; dynamic system flag producers remain
-partial. Loading continues to accept PMNPC001/002.
+partial. PMNPC004 adds original model names for floor/wall filters.
+Loading continues to accept PMNPC001/002/003.
 
 Loading rejects oversized counts, unsafe names, invalid model indices,
 nonfinite positions/yaw/scale, unsupported UV scale, contradictory gates,
@@ -81,7 +82,7 @@ new actions and saves stay locked until closure while neutral field physics
 continues. Collision, NPC search, facing-to-Mario and wandering remain open.
 
 The original save-block S_1 retains outside0..1 UVs, discrete scrolling updates,
-source binding repeat overrides, RGBA and pass2/3. Original bbox head collision is connected. Hit callback, save-choice
+source binding repeat overrides, RGBA and pass2/3. Original bbox head, top support and ordinary Mario side collision are connected. Hit callback, save-choice
 dispatch and card persistence remain unbound. Their recovered contracts are
 [head lifecycle](SAVE_BLOCK_HEAD_CONTACT_AND_HIT_LIFECYCLE.md) and
 [common save graph](SAVE_BLOCK_COMMON_SAVE_EVENT_AND_CHOICES.md).

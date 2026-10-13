@@ -219,3 +219,16 @@ per-face gameplay flags: shared cull1/attribute80000000 admits bottom head,
 top ground and side wall geometry through their query owners. Implementing only
 head remains scoped. Fresh read-only DOL/source-table inspection; original
 runtime ordering and complete native ground/wall/registry lifetime remain open.
+
+### 2026-10-13 — Ordinary Goombella save-box floor/wall binding
+
+[Partner save-block collision](../behavior/partner/FIELD_PARTNER_SAVE_BLOCK_COLLISION_BINDING.md)
+confirms generic partner high-bit handling accepts original MOBJ_SaveBlock,
+rejecting only the three exact hidden-block model names after ordered masks.
+Floor/front use partner per-ray callback selection; surrounding body correction
+uses global-Mario callbacks and retains save sides as blockers. Shared downward
+backend excludes far endpoints and retains earlier static/object ties, while
+five-floor-sample and two-wall-height reductions have their own strict ties.
+No authored partner exemption or new radius is established. Read-only source
+inspection/linked verifier checks; native full dynamic partner collision and
+original trajectories remain open.

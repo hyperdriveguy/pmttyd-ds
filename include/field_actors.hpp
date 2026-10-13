@@ -9,7 +9,7 @@
 #include "message_playback.hpp"
 namespace ttyd {
 struct FieldActorModel {
-    std::string asset;float uvScale=1;
+    std::string asset,originalName;float uvScale=1;
     uint32_t hitMode=0; // 0 unbound, 1 original mobjHitEntry mode0/default object scale.
     std::array<float,6> hitBounds{}; // Original model minXYZ,maxXYZ.
 };
@@ -26,7 +26,7 @@ struct FieldActorRecord {
     }
 };
 std::string fieldActorTalkKey(const FieldActorRecord&,int32_t story);
-// PMNPC001/002/003 are local containers. They describe recovered static init subsets;
+// PMNPC001/002/003/004 are local containers. They describe recovered static init subsets;
 // scripted actor movement/flags and the original NPC driver are separate owners.
 class FieldActorAssets {
 public:
@@ -40,6 +40,7 @@ private:
 };
 bool loadFieldActorCatalog(const char* root);
 const FieldActorAssets& fieldActorCatalog();
+uint64_t fieldActorCatalogGeneration();
 // Source simple CASE_LESS talk family only. Native admission/proximity and
 // rendering are adapters; complex event graphs need their own service owners.
 class FieldActorTalk {

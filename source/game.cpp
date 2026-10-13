@@ -344,21 +344,21 @@ FieldShadowHit fieldShadowRay(FieldWallVector origin,FieldWallVector direction,f
         test(ground[n].v,ground[n].cull,ground[n].contact);
     return result;
 }
-FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float maximum) {
+FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float maximum,const std::vector<FieldObjectTriangle>* objects) {
     // Geometry cache is in native scale. Policy inputs/outputs are engine units.
     origin={origin.x*.01f,origin.y*.01f,origin.z*.01f};maximum*=.01f;
     FieldWallHit nearest;nearest.distance=maximum;
-    auto test=[&](std::array<float,9> triangle,uint32_t cull,GroundContact contact,uintptr_t token) {
-        if(!doorCollisionEnabled(contact.sourceNode))return;
-        contact=runtimeContact(contact);
+    auto test=[&](std::array<float,9> triangle,uint32_t cull,GroundContact contact,uintptr_t token,uint32_t owner=0) {
+        if(!owner && !doorCollisionEnabled(contact.sourceNode))return;
+        if(!owner)contact=runtimeContact(contact);
         if(!ordinaryWallAttributes(contact.attributes))return;
         // Current static room meshes contain no named high-bit NPC owners.
         // Such an admitted record needs the original owner-name filter service.
-        assert(!(contact.attributes&0x80000000) || (contact.attributes&0x00080080));
+        assert(owner || !(contact.attributes&0x80000000) || (contact.attributes&0x00080080));
         FieldWallHit hit;
         if(intersectFieldRay(triangle,cull,origin,direction,maximum,hit) &&
            (!nearest.token || hit.distance<nearest.distance)) {
-            hit.token=token;hit.attributes=contact.attributes;nearest=hit;
+            hit.token=token;hit.attributes=contact.attributes;hit.objectKey=owner;nearest=hit;
         }
     };
     if(!head.empty()) {
@@ -390,6 +390,10 @@ FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float
             test({w.x0,h.x,w.z0,w.x1,h.x,w.z1,w.x0,h.z,w.z0},3,contact,n+1);
             test({w.x1,h.x,w.z1,w.x1,h.z,w.z1,w.x0,h.z,w.z0},3,contact,n+1);
         }
+    }
+    if(objects)for(size_t i=0;i<objects->size();++i) {
+        const auto& tri=(*objects)[i];if(!tri.ordinarySolid)continue;
+        test(tri.vertices,tri.cull,{tri.attributes,0},std::max(head.size(),walls.size())+i+1,tri.owner);
     }
     nearest.distance*=100.f;
     return nearest;
@@ -511,33 +515,41 @@ bool groundReturn(const GroundContact& contact,ReturnPoint& point) {
     point=found->second;return true;
 }
 static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact* contact,float* slope=nullptr,
-                         FieldSlope* record=nullptr,bool rejectSteep=true,bool actorFilter=true,bool partnerFilter=false) {
+                         FieldSlope* record=nullptr,bool rejectSteep=true,bool actorFilter=true,bool partnerFilter=false,
+                         const std::vector<FieldObjectTriangle>* objects=nullptr,uint32_t* objectKey=nullptr) {
     if(!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(low) || !std::isfinite(high) || low>high ||
        std::fabs(p.x)>4096 || std::fabs(p.z)>4096)return false;
-    if(ground.empty()) {if(low>0 || high<0)return false;height=0;if(contact)*contact={};if(slope)*slope=0;return true;}
-    bool found=false;float best=-1e30f;GroundContact bestContact;const float* bestTriangle=nullptr;
-    for(uint32_t n:nearby(groundIndex,p)) {
-        if(!doorCollisionEnabled(ground[n].contact.sourceNode))continue;
+    if(objectKey)*objectKey=0;
+    bool found=ground.empty() && low<0 && high>=0;
+    float best=found?0:-1e30f;GroundContact bestContact;const float* bestTriangle=nullptr;uint32_t bestOwner=0;
+    auto test=[&](const float* v,uint32_t cull,GroundContact candidate,uint32_t owner) {
         // Original normal-Mario chkfilterVec rejects bit4 unless its special
-        // inclusion bits apply. Name-dependent bit31 cases are not present
-        // in the five currently packaged rooms; transform filters are deferred.
-        const uint32_t flags=runtimeContact(ground[n].contact).attributes;
-        if(actorFilter && !(flags&0x00080080) && !(flags&0x00800000) && (flags&4))continue;
+        // inclusion bits apply. Dynamic name admission is resolved before this callback;
+        // transformed filters remain separate owners.
+        const uint32_t flags=candidate.attributes;
+        if(actorFilter && !(flags&0x00080080) && !(flags&0x00800000) && (flags&4))return;
         // Ordinary partner chkfilter's early static-attribute branches.
-        if(partnerFilter && !(flags&0x00080080) && (flags&0x00800004))continue;
-        const float* v=ground[n].v;
+        if(partnerFilter && !(flags&0x00080080) && (flags&0x00800004))return;
         const float normalY=(v[5]-v[2])*(v[6]-v[0])-(v[3]-v[0])*(v[8]-v[2]);
-        if(ground[n].cull==1 && normalY<=0)continue; // Downward ray backface.
+        if(cull==1 && normalY<=0)return; // Downward ray backface.
         if(p.x<std::min({v[0],v[3],v[6]}) || p.x>std::max({v[0],v[3],v[6]}) ||
-           p.z<std::min({v[2],v[5],v[8]}) || p.z>std::max({v[2],v[5],v[8]}))continue;
+           p.z<std::min({v[2],v[5],v[8]}) || p.z>std::max({v[2],v[5],v[8]}))return;
         float den=(v[5]-v[8])*(v[0]-v[6])+(v[6]-v[3])*(v[2]-v[8]);
-        if(std::fabs(den)<1e-8f)continue;
+        if(std::fabs(den)<1e-8f)return;
         float a=((v[5]-v[8])*(p.x-v[6])+(v[6]-v[3])*(p.z-v[8]))/den;
         float b=((v[8]-v[2])*(p.x-v[6])+(v[0]-v[6])*(p.z-v[8]))/den;
-        if(a<-.0001f || b<-.0001f || a+b>1.0001f)continue;
+        if(a<-.0001f || b<-.0001f || a+b>1.0001f)return;
         float y=a*v[1]+b*v[4]+(1-a-b)*v[7];
-        if(y<=high && y>=low && y>best) {best=y;bestContact=runtimeContact(ground[n].contact);bestTriangle=v;found=true;}
+        if(y<=high && y>low && y>best) {best=y;bestContact=candidate;bestTriangle=v;bestOwner=owner;found=true;}
+    };
+    for(uint32_t n:nearby(groundIndex,p)) {
+        if(doorCollisionEnabled(ground[n].contact.sourceNode))test(ground[n].v,ground[n].cull,runtimeContact(ground[n].contact),0);
     }
+    if(objects)for(const auto& tri:*objects) {
+        if(!tri.ordinarySolid)continue;
+        test(tri.vertices.data(),tri.cull,{tri.attributes,0},tri.owner);
+    }
+    if(found && !bestTriangle){height=0;if(contact)*contact={};if(slope)*slope=0;return true;}
     if(found) {
         // Original ray selects the nearest solid hit before rejecting its slope.
         const auto v=bestTriangle;
@@ -564,14 +576,15 @@ static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact
         }
         if(slope)*slope=angle;
         if(groundReturns.count(bestContact.sourceNode))bestContact.attributes|=0x40000000;
-        height=best;if(contact)*contact=bestContact;
+        height=best;if(contact)*contact=bestContact;if(objectKey)*objectKey=bestOwner;
     }
     return found;
 }
-bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact,float* slope) {
+bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact,float* slope,
+              const std::vector<FieldObjectTriangle>* objects,uint32_t* objectKey) {
     // Preserve development/no-pack flat-ground behavior for legacy callers.
-    if(ground.empty() && std::isfinite(reference))return groundWithin(p,-.5f,StepHeight,height,contact,slope);
-    return groundWithin(p,reference-.5f,reference+StepHeight,height,contact,slope);
+    if(ground.empty() && std::isfinite(reference))return groundWithin(p,-.5f,StepHeight,height,contact,slope,nullptr,true,true,false,objects,objectKey);
+    return groundWithin(p,reference-.5f,reference+StepHeight,height,contact,slope,nullptr,true,true,false,objects,objectKey);
 }
 bool roadStartGround(Vec2 p,float sourceY,float& height) {
     if(!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(sourceY))return false;
@@ -588,7 +601,7 @@ bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContac
        !floorCandidateReachable(worldY,velocity,floor))return false;
     height=floor;if(contact)*contact=selected;return true;
 }
-static bool queryFrontStep(Vec2 p,Vec2 direction,float rootY,float& height,float& slope,FieldSlope* record) {
+static bool queryFrontStep(Vec2 p,Vec2 direction,float rootY,float& height,float& slope,FieldSlope* record,const std::vector<FieldObjectTriangle>* objects=nullptr) {
     if(record)*record={};
     const float length=std::hypot(direction.x,direction.z);
     if(!std::isfinite(length) || length<1e-6f)return false;
@@ -598,7 +611,7 @@ static bool queryFrontStep(Vec2 p,Vec2 direction,float rootY,float& height,float
     heading=std::trunc(heading+.5f)*3.14159265358979323846f/180.f;
     const Vec2 forward{p.x+std::sin(heading)*FrontStepDistance,p.z-std::cos(heading)*FrontStepDistance};
     // marioChkFrontStep: origin root+18.5, downward length18.5+11+.1 engine units.
-    return groundWithin(forward,rootY-.111f,rootY+.185f,height,nullptr,&slope,record,false);
+    return groundWithin(forward,rootY-.111f,rootY+.185f,height,nullptr,&slope,record,false,true,false,objects);
 }
 bool frontStepGround(Vec2 p,Vec2 direction,float rootY,float& height,float& slope) {
     FieldSlope record;return queryFrontStep(p,direction,rootY,height,slope,&record);
@@ -607,7 +620,7 @@ bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& h
     FieldSlope slope;const auto result=searchFieldSupport(p,direction,worldY,velocity,slope,velocity);
     if(result.found){height=result.height;if(contact)*contact=result.contact;}return result.found;
 }
-FieldSupport searchFieldSupport(Vec2 p,Vec2 direction,float rootY,float velocity,FieldSlope& slope,float depth) {
+FieldSupport searchFieldSupport(Vec2 p,Vec2 direction,float rootY,float velocity,FieldSlope& slope,float depth,const std::vector<FieldObjectTriangle>* objects) {
     slope={};FieldSupport result;result.height=rootY;
     const float length=std::hypot(direction.x,direction.z);
     if(!std::isfinite(length) || length<1e-6f || !std::isfinite(velocity) || !std::isfinite(depth))return result;
@@ -615,13 +628,13 @@ FieldSupport searchFieldSupport(Vec2 p,Vec2 direction,float rootY,float velocity
     const Vec2 offsets[]={{0,0},{x,z},{-z,x},{z,-x},{-x,-z}};
     float best=-100.f; // Original -10000-unit sentinel.
     for(auto offset:offsets) {
-        float floor=0;GroundContact candidate;
+        float floor=0;GroundContact candidate;uint32_t owner=0;
         if(!groundWithin({p.x+offset.x,p.z+offset.z},rootY-std::fabs(depth)-.001f,rootY+.05f+std::fabs(velocity),
-                         floor,&candidate,nullptr,&slope))continue;
+                         floor,&candidate,nullptr,&slope,true,true,false,objects,&owner))continue;
         const float below=rootY-floor;
         if(below>=GroundedNearDrop && below>std::fabs(velocity)) {result.delta=below;continue;}
         if(!floorCandidateReachable(rootY,velocity,floor) || floor<=best)continue;
-        best=floor;result.found=true;result.height=floor;result.delta=0;result.contact=candidate;
+        best=floor;result.found=true;result.height=floor;result.delta=0;result.contact=candidate;result.objectKey=owner;
         const auto q=[](float native){const float engine=native*100.f;return std::trunc(std::fma(engine,1000.f,engine<0?-.5f:.5f))*.00001f;};
         result.point={q(p.x+offset.x),floor,q(p.z+offset.z)};
     }
@@ -641,9 +654,17 @@ void Game::dispatchFieldAir() {
         fieldJump.height=0;jumpBase=groundHeight=progress.elevation=root;jumpHeight=0;
     } else fieldJump.dispatch(jumpBase+fieldJump.height);
 }
-FieldHeadQuery Game::queryOverhead(float rootY,float velocity,float extension) {
+void Game::refreshFieldObjects() {
+    const uint64_t generation=fieldActorCatalogGeneration();
+    if(fieldObjectGeneration==generation && fieldObjectRoom==progress.room && fieldObjectStory==progress.originalStory &&
+       fieldObjectInterior==fieldDoor.interiorMask && fieldObjectSystem==fieldSystemFlags)return;
+    fieldObjectGeneration=generation;fieldObjectRoom=progress.room;fieldObjectStory=progress.originalStory;
+    fieldObjectInterior=fieldDoor.interiorMask;fieldObjectSystem=fieldSystemFlags;
     buildFieldObjectCollision(fieldActorCatalog(),progress.room,progress.originalStory,fieldDoor.interiorMask,
                               fieldSystemFlags,fieldObjectTriangles);
+}
+FieldHeadQuery Game::queryOverhead(float rootY,float velocity,float extension) {
+    refreshFieldObjects();
     const auto result=searchFieldHead(progress.position,moveDirection,rootY,velocity,extension,
                                       &fieldMovement.slope,fieldHeadNarrowCone,&fieldObjectTriangles);
     headContact=result.node;headObjectKey=result.objectKey;headClearance=result.clearance;
@@ -689,9 +710,9 @@ void Game::finishVertical(float worldY) {
         const float offset=fieldMovement.speed!=0?fieldMovement.headingOffsetDegrees*3.14159265358979323846f/180.f:0;
         const Vec2 foot{direction.x*std::cos(offset)+direction.z*std::sin(offset),
                        direction.z*std::cos(offset)-direction.x*std::sin(offset)};
-        const auto support=searchFieldSupport(progress.position,foot,worldY,fieldJump.velocity,fieldMovement.slope,fieldJump.velocity);
+        const auto support=searchFieldSupport(progress.position,foot,worldY,fieldJump.velocity,fieldMovement.slope,fieldJump.velocity,&fieldObjectTriangles);
         publishFieldCameraCollision(support);
-        groundContact=support.found?support.contact:GroundContact{};
+        groundContact=support.found?support.contact:GroundContact{};groundObjectKey=support.objectKey;
         if(support.found) {
             previousGroundContact={};
             const bool retain=(support.contact.attributes&0x200)!=0;
@@ -784,7 +805,8 @@ void Game::restore(const Progress& saved) {
     partner = {p.position.x-0.3f,p.position.z};
     groundHeight=p.elevation;partnerHeight=p.elevation;
     if (!walkable(partner,p.elevation)) partner = p.position;
-    groundAt(p.position,p.elevation,groundHeight,&groundContact);
+    refreshFieldObjects();
+    groundAt(p.position,p.elevation,groundHeight,&groundContact,nullptr,&fieldObjectTriangles,&groundObjectKey);
     groundMetadataHeight=supportMetadataHeight(groundHeight);
     roomRespawn={p.position.x,groundHeight,p.position.z};
     groundAt(partner,groundHeight,partnerHeight,&partnerContact);
@@ -794,11 +816,12 @@ void Game::restore(const Progress& saved) {
     registerRoadCases(true);
 }
 void Game::updatePartner() {
+    refreshFieldObjects();
     PartnerFollowServices services;
     services.free=[](CameraPoint p){return walkable({p.x,p.z},p.y);};
-    services.floor=[](CameraPoint p,float low,float high,float& height) {
+    services.floor=[this](CameraPoint p,float low,float high,float& height) {
         GroundContact contact;FieldSlope slope;
-        if(!groundWithin({p.x,p.z},low,high,height,&contact,nullptr,&slope,true,false,true))return false;
+        if(!groundWithin({p.x,p.z},low,high,height,&contact,nullptr,&slope,true,false,true,&fieldObjectTriangles))return false;
         return !(contact.attributes&0x200);
     };
     services.project=[this](CameraPoint p){return projectCameraRoot(p,fieldCameraFrame.view,fieldCameraFrame.projection,fieldCameraFrame.viewport);};
@@ -808,7 +831,7 @@ void Game::updatePartner() {
                        fieldJump.jumping,fieldMovement.speed,services);
     partner={root.x,root.z};partnerHeight=root.y;partnerContact={};
     if(partnerFollow.motion==PartnerFollow::Motion::Ground) {
-        float floor=root.y;groundAt(partner,root.y,floor,&partnerContact);
+        float floor=root.y;groundAt(partner,root.y,floor,&partnerContact,nullptr,&fieldObjectTriangles);
     }
 }
 void Game::updateTemporaryProfessor() {
@@ -960,6 +983,7 @@ void Game::cacheFieldScreen() {
                                  fieldCameraFrame.view,fieldCameraFrame.projection,fieldCameraFrame.viewport);
 }
 void Game::move(const Input& i,bool launched) {
+    refreshFieldObjects();wallObjectKey=0;
     retainedFieldMainX=fieldKeysOff?0:int8_t(std::clamp(i.x,-1.f,1.f)*70);
     roadPassContact={}; // marioMoveMain clears +1f0 before moving OR staying.
     wallContact={}; // Native forward cache must not retain a departed door.
@@ -1007,8 +1031,8 @@ void Game::move(const Input& i,bool launched) {
         actor.motion=fieldJump.airborne?fieldJump.motion:stepping?12:
             fieldMovement.speed==0?0:fieldMovement.speed==DashSpeed?2:1;
         actor.counter=fieldJump.ticks;
-        FieldWallServices services;services.ray=[](void*,FieldWallVector from,FieldWallVector direction,float distance) {
-            return fieldWallRay(from,direction,distance);
+        FieldWallServices services;services.user=this;services.ray=[](void* context,FieldWallVector from,FieldWallVector direction,float distance) {
+            return fieldWallRay(from,direction,distance,&static_cast<Game*>(context)->fieldObjectTriangles);
         };
         FieldWallVector actual{p.x*100,(groundHeight+jumpHeight)*100,p.z*100};
         const FieldWallVector displacement{travel.x*100,0,travel.z*100};
@@ -1036,8 +1060,10 @@ void Game::move(const Input& i,bool launched) {
             candidate=p;
         }
         if(front.forward.token) {
+            wallObjectKey=front.forward.objectKey;
             const size_t n=front.forward.token-1;
-            wallContact=runtimeContact(!head.empty()?head[n].contact:n<wallContacts.size()?wallContacts[n]:GroundContact{});
+            wallContact=wallObjectKey?GroundContact{front.forward.attributes,0}:
+                runtimeContact(!head.empty()?head[n].contact:n<wallContacts.size()?wallContacts[n]:GroundContact{});
             if(fieldWallPassThrough(front.forward.attributes,actor))roadPassContact=wallContact;
         }
     }
@@ -1064,12 +1090,12 @@ void Game::move(const Input& i,bool launched) {
                                 moveDirection.z*std::cos(offset)-moveDirection.x*std::sin(offset)};
         // Support and forward queries are ordered owners. The front query uses
         // the still-unsnapped root and resets the slope record even on a miss.
-        const auto support=searchFieldSupport(p,footDirection,groundHeight,fieldVerticalVelocity,fieldMovement.slope);
+        const auto support=searchFieldSupport(p,footDirection,groundHeight,fieldVerticalVelocity,fieldMovement.slope,.11f,&fieldObjectTriangles);
         publishFieldCameraCollision(support);
-        groundContact=support.found?support.contact:GroundContact{};
+        groundContact=support.found?support.contact:GroundContact{};groundObjectKey=support.objectKey;
         if(support.found)groundMetadataHeight=supportMetadataHeight(support.height);
         float height=groundHeight,slope=0;
-        const bool front=fieldJump.ticks==0 && queryFrontStep(p,moveDirection,groundHeight,height,slope,&fieldMovement.slope);
+        const bool front=fieldJump.ticks==0 && queryFrontStep(p,moveDirection,groundHeight,height,slope,&fieldMovement.slope,&fieldObjectTriangles);
         if(front && stairRiseAllowed(groundHeight,height,slope) && fieldMovement.speed!=0) {
             fieldStep.begin(groundHeight,height);saveRequested=false;
         } else {

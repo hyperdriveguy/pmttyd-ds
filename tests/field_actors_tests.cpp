@@ -61,6 +61,12 @@ int main(int argc,char**) {
         bad=b;replace(bad,row+4,0x7fc00000u);assert(!read(a,bad));
         bad=b;replace(bad,row,1u);assert(!read(a,bad)); // Degenerate bbox.
         assert(a.models()[0].hitMode==0 && a.actors().size()==2);
+        b[7]='4';b.insert(b.begin()+row+28,32,0);
+        std::memcpy(b.data()+row+28,"FixtureModel",12);
+        assert(read(a,b) && a.models()[0].originalName=="FixtureModel");
+        bad=b;bad[row+28]='/';assert(!read(a,bad));
+        bad=b;bad[row+28]=0;assert(!read(a,bad));
+        assert(a.models()[0].originalName=="FixtureModel");
     }
     if(argc>1) {
         assert(a.load("romfs/field-actors.pmnpc"));assert(a.actors().size()>=3 && a.models().size()>=2);

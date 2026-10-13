@@ -432,7 +432,8 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 
 - [Native opening and file selection](story/NATIVE_OPENING_FLOW.md)
 
-- [Native map-object head collision](field/NATIVE_MAP_OBJECT_HEAD_COLLISION.md) — original bbox cube and shared native head response.
+- [Partner save-block source collision](partner/FIELD_PARTNER_SAVE_BLOCK_COLLISION_BINDING.md) — original floor/front/around name filters and distinct source callbacks.
+- [Native map-object collision](field/NATIVE_MAP_OBJECT_HEAD_COLLISION.md) — original bbox cube and shared head/floor/wall responses.
 - [Dynamic object hit registry](field/DYNAMIC_OBJECT_HIT_REGISTRY_AND_RAY_ORDER.md) — source insertion, traversal, query ties and lifetime.
 - [Native actor surface pack](display/NATIVE_ACTOR_SURFACE_PACK.md) — original scrolling textures, RGBA and source pass/cull rendering.
 - [Save-block UV/material binding](display/SAVE_BLOCK_ANIMATED_UV_AND_MATERIAL_BINDING.md) — original texture overrides, matrix and draw passes.

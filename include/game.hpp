@@ -62,6 +62,7 @@ struct FieldSupport {
     bool found=false;
     float height=0,delta=-.01f;
     GroundContact contact;
+    uint32_t objectKey=0;
     CameraPoint point; // Accepted Q1000 ray XYZ in native units, not root XYZ.
 };
 struct ReturnPoint {float x=0,y=0,z=0;};
@@ -129,7 +130,7 @@ public:
     float groundHeight = 0, partnerHeight = 0;
     float groundMetadataHeight=0; // Source +1c4; distinct from actual rootY.
     bool overheadContact=false;
-    uint32_t headObjectKey=0;
+    uint32_t headObjectKey=0,groundObjectKey=0,wallObjectKey=0;
     GroundContact headContact;
     float headClearance=-.01f;
     bool fieldHeadNarrowCone=false; // Original separate +4 flag owner remains unbound.
@@ -249,6 +250,10 @@ private:
     bool integrateVertical(bool held,float& previousY,bool update=true);
     FieldHeadQuery queryOverhead(float rootY,float velocity,float extension);
     std::vector<FieldObjectTriangle> fieldObjectTriangles;
+    void refreshFieldObjects();
+    uint64_t fieldObjectGeneration=UINT64_MAX;
+    uint32_t fieldObjectRoom=UINT32_MAX,fieldObjectInterior=0,fieldObjectSystem=0;
+    std::optional<int32_t> fieldObjectStory;
     void dispatchFieldAir();
     void registerRoadCases(bool enabled);
     bool resolveRoadCallbacks(const RoadWarp& road);
@@ -318,10 +323,12 @@ FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float rootY,float velocity,
                               const std::vector<FieldObjectTriangle>* objects=nullptr);
 bool loadGroundReturns(const char* path);
 bool groundReturn(const GroundContact&,ReturnPoint& point);
-bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr,float* slope=nullptr);
+bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr,float* slope=nullptr,
+              const std::vector<FieldObjectTriangle>* objects=nullptr,uint32_t* objectKey=nullptr);
 bool frontStepGround(Vec2 p,Vec2 direction,float rootY,float& height,float& slope);
 bool groundedFootprint(Vec2 p,Vec2 direction,float rootY,float& height,GroundContact* contact=nullptr);
-FieldSupport searchFieldSupport(Vec2 p,Vec2 direction,float rootY,float velocity,FieldSlope& slope,float depth=.11f);
+FieldSupport searchFieldSupport(Vec2 p,Vec2 direction,float rootY,float velocity,FieldSlope& slope,float depth=.11f,
+                                const std::vector<FieldObjectTriangle>* objects=nullptr);
 // Center adapter; native marioChkLandon uses the shared five-foot support service.
 bool landingGround(Vec2 p,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
 bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& height,GroundContact* contact=nullptr);
@@ -332,6 +339,7 @@ Rect collisionBounds();
 bool wallAtLevel(size_t index,float elevation);
 // Uses complete source-winding .head mesh; legacy fixture wall segments are a
 // separate geometry adaptation when a complete mesh is unavailable.
-FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float length);
+FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float length,
+                          const std::vector<FieldObjectTriangle>* objects=nullptr);
 FieldShadowHit fieldShadowRay(FieldWallVector origin,FieldWallVector direction,float length);
 }

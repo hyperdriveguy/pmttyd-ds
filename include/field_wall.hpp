@@ -10,6 +10,7 @@ struct FieldWallHit {
     float distance=0;
     FieldWallVector normal;
     uint32_t attributes=0;
+    uint32_t objectKey=0; // Dynamic namespace, separate from the geometry token.
 };
 struct FieldWallActor {
     uint32_t flags=0,viewFlags=0;

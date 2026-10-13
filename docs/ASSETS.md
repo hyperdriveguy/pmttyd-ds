@@ -1,5 +1,18 @@
 # Original asset pipeline
 
+## 2026-10-13 — Original object model-name filters and full cube queries
+
+PMNPC004 records original model names `c_tyusan`, `c_kuri_h` and
+`MOBJ_SaveBlock` alongside the existing ignored bbox catalog. Those names
+come from the same original asset paths already extracted read-only. The source
+name-dependent floor/wall filter is preserved rather than treating every
+high-bit owner as unresolved or exempt. Original SaveBlock top/side surfaces
+use the unchanged original12-triangle primitive; no new geometry conversion,
+textures or rights are introduced. Cached static collision invalidates on
+catalog replacement and admission changes. Original Nintendo/Intelligent
+Systems rights/local-only restrictions remain. See
+[native collision binding](behavior/field/NATIVE_MAP_OBJECT_HEAD_COLLISION.md).
+
 ## 2026-10-13 — Original map-object collision metadata
 
 `tools/field_actor_assets.py` reads minXYZ/maxXYZ directly from original

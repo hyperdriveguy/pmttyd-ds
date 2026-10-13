@@ -2,13 +2,14 @@
 #include <cmath>
 #include <cstring>
 namespace ttyd {
-namespace {FieldActorAssets catalog;std::string assetRoot;}
+namespace {FieldActorAssets catalog;std::string assetRoot;uint64_t generation=0;}
 bool loadFieldActorCatalog(const char* root) {
     if(!root)return false;
     FieldActorAssets next;if(!next.load((std::string(root)+"/field-actors.pmnpc").c_str()))return false;
-    catalog=std::move(next);assetRoot=root;return true;
+    catalog=std::move(next);assetRoot=root;++generation;return true;
 }
 const FieldActorAssets& fieldActorCatalog(){return catalog;}
+uint64_t fieldActorCatalogGeneration(){return generation;}
 std::string fieldActorTalkKey(const FieldActorRecord& actor,int32_t story) {
     if(actor.talkPrefix.empty())return {};
     constexpr int32_t limits[]={56,112,164,215,261,339,373,401};
@@ -40,7 +41,8 @@ bool FieldActorAssets::read(FILE* f) {
     };
     std::array<char,8> magic{};uint32_t modelCount=0,actorCount=0;
     if(!scalar(magic))return false;
-    const bool version3=!std::memcmp(magic.data(),"PMNPC003",8);
+    const bool version4=!std::memcmp(magic.data(),"PMNPC004",8);
+    const bool version3=version4 || !std::memcmp(magic.data(),"PMNPC003",8);
     const bool version2=version3 || !std::memcmp(magic.data(),"PMNPC002",8);
     if((!version2 && std::memcmp(magic.data(),"PMNPC001",8)) || !scalar(modelCount) || !scalar(actorCount) ||
        modelCount>64 || actorCount>1024 || (!modelCount && actorCount))return false;
@@ -54,6 +56,7 @@ bool FieldActorAssets::read(FILE* f) {
             if(m.hitMode)for(unsigned axis=0;axis<3;++axis)if(m.hitBounds[axis]>=m.hitBounds[axis+3])return false;
             if(m.hitMode && m.hitBounds[4]<=0)return false;
         }
+        if(version4 && !string(m.originalName))return false;
         for(uint32_t j=0;j<i;++j)if(models[j].asset==m.asset)return false;
     }
     std::vector<FieldActorRecord> actors(actorCount);

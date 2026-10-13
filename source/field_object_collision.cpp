@@ -23,6 +23,9 @@ void buildFieldObjectCollision(const FieldActorAssets& assets,uint32_t room,std:
         }
         for(const auto& strip:strips)for(unsigned j=0;j<2;++j) {
             FieldObjectTriangle triangle;triangle.owner=actor.key;
+            const auto& name=model.originalName;
+            triangle.ordinarySolid=!name.empty() && name!="MOBJ_HiddenHatenaBlock" &&
+                name!="MOBJ_HiddenBadgeBlock" && name!="MOBJ_Hidden10CountBlock";
             const unsigned indices[3]={strip[j],strip[j+(j%2?1:2)],strip[j+(j%2?2:1)]};
             for(unsigned k=0;k<3;++k)for(unsigned axis=0;axis<3;++axis)triangle.vertices[k*3+axis]=vertices[indices[k]][axis];
             output.push_back(triangle);
