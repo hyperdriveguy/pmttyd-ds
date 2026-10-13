@@ -2,6 +2,40 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original professor first-talk runs natively
+
+[Native scene](behavior/story/NATIVE_PROFESSOR_FIRST_TALK.md) executes the
+original180-command gor REL event in EventNativeRuntime, preserving brothers,
+shared waits, actual GSW0 writes, all29 original message IDs/control bytes and
+119 callback starts. The original story8 house door starts the event before
+its door-end wait; completion reaches story9 and restores field controls.
+Bound source cameras, seven Mario event poses, original Frankly/Goombella
+animation assets, source map icon314/TPL319 and Frankuri1 stream. Corrected
+the source hop to225ms/height30 and scripted travel facing. Save/exit-save
+guards suppress unsupported temporary-party checkpoints. Asset provenance and
+handheld atlas resampling are recorded in [assets](ASSETS.md).
+
+Validation: full shared-worktree `make test` passes101 CTest/96 Python tests;
+`make all` builds the3DS binary. Independent staged-source host/native compile
+passes; after regenerating staged-format field actor assets in a separate
+`/tmp/professor-stage-verify` tree, all100 staged CTest tests pass. The first
+staged test run exposed the concurrent PMANIM-format cache mismatch, rather
+than a scene failure; the isolated rebuild does not modify workspace assets.
+Original-data tests check29 ordered messages,119 callbacks,17 cameras, source
+item/hop/music, door admission, story9 and save suppression. Independent Mario
+animation comparison passes102 samples, maximum error8.58307e-06. Azahar
+isolated replay/captures at `artifacts/azahar-professor-scene-memory/` shows
+original attributed dialogue and restored field HUD. Initial4MiB scene atlas
+run failed to restore the east checkpoint; retry with1MiB succeeds. Final
+scripted-facing/save-guard changes were rebuilt and host-tested after capture.
+
+Limits/next: temporary Frankly currently remains at his saved source position;
+follow/lifecycle/persistence and original story9 door-close fence event are
+next. Paper fence animation, reaction/SFX/display-flag consumers, exact turn
+interpolation and source movement/collision stepping remain unfinished. Story10
+lecture/choice/battle continuation, earlier harbor gaps and hardware performance
+remain required. This increment is not complete prologue or original parity.
+
 ## 2026-10-13 — Priority0 Monosiri table, consumer and census answer
 
 Delivered [Tattle table/consumers](behavior/battle/MONOSIRI_TABLE_SOURCE_AND_CONSUMERS.md)
@@ -196,6 +230,23 @@ deleting/wait traces, query-specific unsupported cursor slots, global/dynamic/
 transitive sources and backend domains. No original observation or hardware/
 full-game equivalence claim. Continue priority1 DMG-01 allocation/stat/init and
 attack-count ownership, then AC-03 defense integration in inbox order.
+
+## 2026-10-13 — Rebuilt movement timing sample
+
+Added the renderer declaration required by in-flight front-end code so the
+current tree builds; no performance behavior changed. `make all` succeeds. The
+rebuilt 3DSX capture under `artifacts/azahar-perf-current-plaza/` holds60 FPS
+after a camera move and reports0.79ms simulation,5.1ms CPU and0.5ms GPU. The
+ordinary plaza scene includes Mario, Goombella and nearby NPCs. This is a single
+software-emulator sample, not a percentile trace or hardware measurement.
+
+An east-room fixture attempt under `artifacts/azahar-perf-current-east-valid/`
+was rejected by native restore validation and displayed “Saved room unavailable;
+started in plaza”; it is not an east-actor timing sample. No substantial
+optimization is indicated by the valid capture. Next: construct a verified
+current-format east-room fixture, then gather repeated timing samples across
+animated harbor/east scenes and cutaway-active movement. Hardware profiling is
+still required; performance review remains open.
 
 ## 2026-10-13 — Current renderer workload and build limitation
 

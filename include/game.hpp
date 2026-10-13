@@ -33,6 +33,7 @@
 #include "partner_presentation.hpp"
 #include "partner_follow.hpp"
 #include "harbor_story.hpp"
+#include "professor_story.hpp"
 #include "field_actors.hpp"
 namespace ttyd {
 constexpr int TickRate = 60;
@@ -147,6 +148,8 @@ public:
     PartnerPresentation partnerPresentation;
     PartnerFollow partnerFollow;
     HarborStory harborStory;
+    ProfessorStory professorStory;
+    size_t professorCameraCursor=0;
     FieldActorTalk fieldActorTalk;
     FieldIdleWork fieldIdle;
     // Native partner ability/status services are still adapters. These explicit

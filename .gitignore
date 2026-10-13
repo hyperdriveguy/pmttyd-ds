@@ -53,3 +53,9 @@ romfs/*.pmshadow
 /romfs/*.pmnpc
 /romfs/field-actors.json
 /romfs/field-chu.json
+
+/romfs/professor-events.pmevt
+/romfs/professor-program.bin
+/romfs/professor-mario.bin
+/romfs/professor-scene.json
+/romfs/professor-map.bin

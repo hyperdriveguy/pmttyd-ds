@@ -13,6 +13,7 @@
 #include <vector>
 #include <cstdio>
 namespace ttyd {
+class Frontend; class OpeningDemo;
 struct Metrics { float simulationMs=0, renderMs=0, gpuMs=0, fps=0; int steps=0; uint64_t droppedTicks=0; };
 class Renderer {
 public:
@@ -62,6 +63,11 @@ private:
     };
     Room plaza,stage;
     Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture;
+    Texture professorMarioTexture;
+    Texture professorMapTexture;
+    std::array<float,2> professorMapSize{};
+    ActorAnimationPack professorMarioAnimations;
+    float professorMarioUVScale=1;
     FieldActorAssets fieldActorAssets;
     ActorMetrics actorMetrics;
     std::array<std::array<float,3>,2> harborActorMetrics{};
@@ -106,7 +112,7 @@ class Audio {
 public:
     bool init();
     void play(const Game& game);
-    void update(Scene scene, bool enabled,bool harborDanger=false);
+    void update(Scene scene, bool enabled,bool harborDanger=false,int professorMusic=0);
     void shutdown();
     bool available() const { return ready; }
 private:

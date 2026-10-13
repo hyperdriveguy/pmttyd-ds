@@ -55,8 +55,8 @@ void Audio::switchTrack(int track) {
     ndspChnWaveBufClear(1);
     if(music) {std::fclose(music);music=nullptr;}
     musicTrack=track;musicPosition=0;musicEnded=false;musicLoop=false;
-    if(track<0 || track>=4)return;
-    const char* names[]={"rogueport","battle","victory","harbor-danger"};
+    const char* names[]={"rogueport","battle","victory","harbor-danger","professor-music"};
+    if(track<0 || track>=int(sizeof(names)/sizeof(names[0])))return;
     char path[96];std::snprintf(path,sizeof(path),"romfs:/%s.wav",names[track]);music=std::fopen(path,"rb");
     if(!music)return;
     PcmHeader pcm;
@@ -93,9 +93,10 @@ void Audio::fill(ndspWaveBuf& buffer) {
     buffer.nsamples=filled;buffer.looping=false;
     DSP_FlushDataCache(buffer.data_pcm16,filled*musicChannels*2);ndspChnWaveBufAdd(1,&buffer);
 }
-void Audio::update(Scene scene,bool enabled,bool harborDanger) {
+void Audio::update(Scene scene,bool enabled,bool harborDanger,int professorMusic) {
     if(!ready)return;
     int wanted=enabled && harborDanger && (scene==Scene::Explore || scene==Scene::Dialogue)?3:audioTrack(scene,enabled);
+    if(enabled && professorMusic)wanted=professorMusic<0?-1:4;
     if(wanted!=musicTrack)switchTrack(wanted);
     if(!enabled)for(int n=0;n<5;++n)ndspChnWaveBufClear(n+2);
     for(auto& b:stream) if(b.status==NDSP_WBUF_DONE)fill(b);

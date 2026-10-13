@@ -1324,8 +1324,8 @@ void Game::tick(const Input& rawInput) {
         Game& game;Vec2 previous;const Input& raw;
         ~PresentationOnExit(){
             game.progress.interiorMask=uint8_t(game.fieldDoor.interiorMask);
-            if(game.fieldDoor.active())game.saveRequested=false;
-            game.updateMarioPresentation();
+            if(game.fieldDoor.active() || game.professorStory.locked() || game.professorStory.temporaryProfessor)game.saveRequested=false;
+            if(!game.professorStory.locked())game.updateMarioPresentation();
             const auto& axes=game.inputProducer.channels[0].analog;
             const int mainX=raw.physicalSnapshot?axes.mainX:std::isfinite(raw.x)?int(std::clamp(raw.x,-1.f,1.f)*70.f):0;
             const int mainY=raw.physicalSnapshot?axes.mainY:std::isfinite(raw.z)?int(std::clamp(raw.z,-1.f,1.f)*70.f):0;
@@ -1441,6 +1441,10 @@ void Game::tick(const Input& rawInput) {
         applyDoorCollision(progress.room,fieldDoor.interiorMask);
         groundAt(progress.position,groundHeight,groundHeight,&groundContact);
         progress.elevation=groundHeight;partnerHeight=groundHeight;
+        if(professorStory.locked()) {
+            professorStory.actors[0].position={progress.position.x*100,groundHeight*100,progress.position.z*100};
+            professorStory.actors[1].position={partner.x*100,partnerHeight*100,partner.z*100};
+        }
         publishFieldCameraTarget();saveRequested=false;
         if(complete) {
             releaseCameraTarget(fieldDoor.opening?0:100,11);
@@ -1454,6 +1458,21 @@ void Game::tick(const Input& rawInput) {
         fieldActorTalk.message.tick(ticks*1000/60,(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u));
         saveRequested=false;if(!fieldActorTalk.message.active())scene=Scene::Explore;
         return;
+    }
+    if(professorStory.locked()) {
+        const uint32_t keys=(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u);
+        professorStory.tick(ticks*1000/60,keys,false);
+        const auto& m=professorStory.actors[0].position;
+        const auto& p=professorStory.actors[1].position;
+        progress.position={m[0]*.01f,m[2]*.01f};groundHeight=progress.elevation=m[1]*.01f;
+        partner={p[0]*.01f,p[2]*.01f};partnerHeight=p[1]*.01f;
+        while(professorCameraCursor<professorStory.cameras.size()) {
+            const auto& c=professorStory.cameras[professorCameraCursor++];
+            if(c.off)releaseCameraView(c.duration,uint8_t(c.curve));
+            else setCameraView({c.eye[0],c.eye[1],c.eye[2]},{c.at[0],c.at[1],c.at[2]},c.duration,uint8_t(c.curve));
+        }
+        if(professorStory.finished){progress.originalStory=professorStory.story;scene=Scene::Explore;}
+        saveRequested=false;return;
     }
     if(harborStory.locked()) {
         // Source key-off blocks new player actions, not field physics. Keep
@@ -1538,6 +1557,10 @@ void Game::tick(const Input& rawInput) {
             // Professor first-talk/wall-removal and inn upstairs callback
             // ownership remain separate source scenes; no story write occurs.
             fieldDoor.begin(int(n),d,{progress.position.x,progress.position.z});
+            if(opening && progress.room==2 && progress.originalStory==8 && !professorStory.triggered) {
+                if(professorStory.begin(ticks*1000/60,{progress.position.x*100,groundHeight*100,progress.position.z*100},
+                                       {partner.x*100,partnerHeight*100,partner.z*100}))scene=Scene::Dialogue;
+            }
             applyDoorCollision(progress.room,fieldDoor.interiorMask);
             const auto& target=opening?d.inside:d.outside;
             setCameraTarget({target[0]*100,(groundHeight*100)+2,target[2]*100},100,150,11);

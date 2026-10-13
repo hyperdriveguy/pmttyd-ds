@@ -61,3 +61,18 @@ controls, Professor model c_kuri_h, Mario poses, temporary party1 conversion,
 source fence paper/display/collision removal and story10 lecture handoff.
 The existing lecture contract retains its numeric choices and story11 return.
 No original gameplay execution or complete prologue fidelity claim is made.
+
+2026-10-13 ordinary Professor display follow-up:
+[NPC yaw/matrix and pose fallback](../behavior/display/NPC_ORDINARY_YAW_MATRIX_AND_POSE_FALLBACK.md)
+binds evt_npc_set_ry to NPC+144, ordinary draw's negative revised yaw and
+scale2, NPC matrix inputs/order, animPosePeraOn camera-facing producer,
+tribe30/30 collision dimensions and exact missing lowercase d_1→bank0 Z_1
+fallback. Actual bank case discrepancy is retained. Native camera/pose/material
+presentation and original runtime comparisons remain open.
+
+2026-10-13 first-talk visual/timing follow-up:
+[Professor item/pose/hop/turn services](../behavior/story/PROFESSOR_ITEM_POSE_JUMP_AND_TURNS.md)
+binds item0x60 to icon314/icon.tpl image319, M_C_3 to ordinary field e_mario,
+Professor hop225ms/apex30 and exact party/Mario200ms blocking turn ownership.
+Negative party duration-1 differs from0; source interpolation is not generic
+shortest arc. Original icon drawing/NPC pose/numeric/runtime fidelity remain open.

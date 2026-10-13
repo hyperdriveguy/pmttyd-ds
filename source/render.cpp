@@ -51,6 +51,26 @@ bool Renderer::init() {
     C3D_TexSetFilter(&sky.texture,GPU_LINEAR,GPU_LINEAR);
     if(!actorAnimations.load("romfs:/characters.pmanim"))return false;
     if(!partnerAnimations.load("romfs:/partner.pmanim"))return false;
+    if(!professorMarioAnimations.load("romfs:/professor-mario.pmanim"))return false;
+    FILE* storyUV=std::fopen("romfs:/professor-mario.bin","rb");if(!storyUV)return false;
+    char storyMagic[8];
+    const bool storyValid=std::fread(storyMagic,8,1,storyUV)==1 && !std::memcmp(storyMagic,"PMSUV1",8) &&
+        std::fread(&professorMarioUVScale,4,1,storyUV)==1 && std::fgetc(storyUV)==EOF;
+    std::fclose(storyUV);
+    if(!storyValid || !(professorMarioUVScale==1 || professorMarioUVScale==2 || professorMarioUVScale==4 || professorMarioUVScale==8))return false;
+    FILE* storyTexture=std::fopen("romfs:/professor-mario.t3x","rb");if(!storyTexture)return false;
+    professorMarioTexture.imported=Tex3DS_TextureImportStdio(storyTexture,&professorMarioTexture.texture,nullptr,false);std::fclose(storyTexture);
+    if(!professorMarioTexture.imported)return false;
+    C3D_TexSetFilter(&professorMarioTexture.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&professorMarioTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
+    FILE* mapMetrics=std::fopen("romfs:/professor-map.bin","rb");if(!mapMetrics)return false;
+    char mapMagic[8];const bool mapValid=std::fread(mapMagic,8,1,mapMetrics)==1 && !std::memcmp(mapMagic,"PMSICON1",8) &&
+        std::fread(professorMapSize.data(),8,1,mapMetrics)==1 && std::fgetc(mapMetrics)==EOF;
+    std::fclose(mapMetrics);
+    if(!mapValid || !(professorMapSize[0]>0 && professorMapSize[0]<=1024 && professorMapSize[1]>0 && professorMapSize[1]<=1024))return false;
+    FILE* mapTexture=std::fopen("romfs:/professor-map.t3x","rb");if(!mapTexture)return false;
+    professorMapTexture.imported=Tex3DS_TextureImportStdio(mapTexture,&professorMapTexture.texture,nullptr,false);std::fclose(mapTexture);
+    if(!professorMapTexture.imported)return false;
+    C3D_TexSetFilter(&professorMapTexture.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&professorMapTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     if(!fieldActorAssets.load("romfs:/field-actors.pmnpc"))return false;
     if(!shadowGeometry.load("romfs:/shadows.pmshadow"))return false;
     FILE* characterFile=std::fopen("romfs:/characters-mesh.t3x","rb");if(!characterFile)return false;
@@ -159,8 +179,15 @@ void Renderer::fieldActors(const Game& g) {
     for(auto& gpu:plaza.actorModels) {
         gpu.start=count;
         const auto& model=fieldActorAssets.models()[gpu.model];
-        for(const auto& actor:fieldActorAssets.actors()) {
-            if(actor.model!=gpu.model || !actor.visible(g.progress.room,g.progress.originalStory,g.fieldDoor.interiorMask))continue;
+        for(const auto& sourceActor:fieldActorAssets.actors()) {
+            auto actor=sourceActor;
+            if(actor.model!=gpu.model)continue;
+            const bool scripted=model.asset=="professor" && g.progress.room==2 && g.professorStory.triggered;
+            if(scripted) {
+                if(actor.storyLow!=8 || g.professorStory.actors[2].hidden)continue;
+                actor.position=g.professorStory.actors[2].position;actor.yaw=g.professorStory.actors[2].yaw;
+                actor.pose=g.professorStory.actors[2].moving?"W_1":g.professorStory.message.active() && g.professorStory.speaker==2?"T_1":"S_1";
+            } else if(!actor.visible(g.progress.room,g.progress.originalStory,g.fieldDoor.interiorMask))continue;
             ++actorMetrics.visible;
             if(gpu.tick!=g.ticks || gpu.pose!=actor.pose) {
                 const auto* pose=gpu.animations.pose(actor.pose.c_str());
@@ -317,7 +344,8 @@ void Renderer::harborActors(const Game& g) {
 }
 void Renderer::originalMessage(const Game& g) {
     const bool fieldTalk=g.fieldActorTalk.message.active();
-    const auto& message=fieldTalk?g.fieldActorTalk.message:g.harborStory.message;if(!message.active())return;
+    const bool professor=g.professorStory.locked();
+    const auto& message=professor?g.professorStory.message:fieldTalk?g.fieldActorTalk.message:g.harborStory.message;if(!message.active())return;
     const auto& font=harborMessageFont();
     // Unproject tilted NDC into the same pixel space as the 2D backend.
     // Reuse the actual world matrix: a parallel eye/FOV calculation can drift
@@ -338,7 +366,27 @@ void Renderer::originalMessage(const Game& g) {
     };
     float anchorX=0,anchorY=0,marioX=0,marioY=0;unsigned mode=0;
     const bool newWindow=messageWindowSerial!=message.serial;
-    if(newWindow && fieldTalk) {
+    if(newWindow && professor) {
+        const auto& a=g.professorStory.actors[g.professorStory.speaker];const auto& root=g.professorStory.speakerRoot;
+        messageTalkAnchor={root[0]*.01f,root[1]*.01f,root[2]*.01f};
+        const ActorAnimationPack* animations=&partnerAnimations;
+        const char* name=a.moving?"PKR_W_1":"PKR_S_1";
+        if(g.professorStory.speaker==2) {
+            animations=nullptr;name="T_1";
+            for(const auto& gpu:plaza.actorModels)if(fieldActorAssets.models()[gpu.model].asset=="professor")animations=&gpu.animations;
+        }
+        const auto* pose=animations?animations->pose(name):nullptr;
+        if(pose && pose->evaluate(float(g.ticks),actorSample) && !actorSample.vertices.empty()) {
+            const bool right=a.yaw>0 && a.yaw<180;
+            const ActorRootTransform transform({messageTalkAnchor.x,messageTalkAnchor.y,messageTalkAnchor.z},right?180:0,right);
+            CameraPoint low{INFINITY,INFINITY,INFINITY},high{-INFINITY,-INFINITY,-INFINITY};
+            for(const auto& v:actorSample.vertices){const auto p=transform.point(v);low.x=std::min(low.x,p[0]);low.z=std::min(low.z,p[2]);high.x=std::max(high.x,p[0]);high.y=std::max(high.y,p[1]);high.z=std::max(high.z,p[2]);}
+            messageTalkAnchor={(low.x+high.x)*.5f,high.y,(low.z+high.z)*.5f};
+        }
+        if(project(messageTalkAnchor,anchorX,anchorY) && project({g.progress.position.x,g.groundHeight,g.progress.position.z},marioX,marioY))
+            mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
+    }
+    if(newWindow && fieldTalk && !professor) {
         const auto& actor=g.fieldActorTalk.actor;
         messageTalkAnchor={actor.position[0]*.01f,actor.position[1]*.01f,actor.position[2]*.01f};
         for(const auto& gpu:plaza.actorModels)if(gpu.model==actor.model && !gpu.sample.vertices.empty()) {
@@ -351,7 +399,7 @@ void Renderer::originalMessage(const Game& g) {
         if(project(messageTalkAnchor,anchorX,anchorY) && project({g.progress.position.x,g.groundHeight+g.jumpHeight,g.progress.position.z},marioX,marioY))
             mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
     }
-    for(unsigned i=0;newWindow && !fieldTalk && i<g.harborStory.actors.size();++i) {
+    for(unsigned i=0;newWindow && !fieldTalk && !professor && i<g.harborStory.actors.size();++i) {
         const auto& actor=g.harborStory.actors[i];if(actor.key!=g.harborStory.speaker)continue;
         const auto& root=g.harborStory.speakerRoot;
         messageTalkAnchor={root[0]*.01f,root[1]*.01f,root[2]*.01f};
@@ -533,11 +581,18 @@ void Renderer::world(const Game& g) {
         character(2,crump,2.1f,2.1f,-1);
     }
     const int legacyCount=count;
-    if(!battle && g.marioPresentation.supported && !(g.marioPresentation.displayFlags&1))
+    if(!battle && g.professorStory.locked()) {
+        const auto& a=g.professorStory.actors[0];const bool right=a.yaw>0 && a.yaw<180;
+        characterModel(a.moving?"M_W_1":a.pose.c_str(),float(g.professorStory.now-a.poseAt)*.06f,g.progress.position,g.groundHeight,
+                       right?180:0,right,false,&professorMarioAnimations,professorMarioUVScale);
+    } else if(!battle && g.marioPresentation.supported && !(g.marioPresentation.displayFlags&1))
         characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight,
                        g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ());
     const int actorEnd=count;
-    if(!battle && !g.harborStory.enabled)characterModel(g.partnerPresentation.name(),g.partnerPresentation.frame(),g.partner,g.partnerHeight,
+    if(!battle && g.professorStory.locked()) {
+        const auto& a=g.professorStory.actors[1];const bool right=a.yaw>0 && a.yaw<180;
+        characterModel(a.moving?"PKR_W_1":"PKR_S_1",float(g.ticks),g.partner,g.partnerHeight,right?180:0,right,true);
+    } else if(!battle && !g.harborStory.enabled)characterModel(g.partnerPresentation.name(),g.partnerPresentation.frame(),g.partner,g.partnerHeight,
                              g.partnerPresentation.yaw(),g.partnerPresentation.reflectZ(),true);
     if(!battle && g.harborStory.enabled && g.harborStory.triggered) {
         const auto& a=g.harborStory.actors[0];
@@ -547,6 +602,16 @@ void Renderer::world(const Game& g) {
     actorMetrics={};
     if(!battle)fieldActors(g);
     const int fieldActorEnd=count;
+    if(!battle && g.professorStory.locked() && g.professorStory.itemVisible) {
+        const auto& s=g.professorStory;const auto& p=s.itemPosition;
+        // Native billboard bridge for the source icon/position/scale requests.
+        const ActorRootTransform transform({p[0]*.01f,p[1]*.01f,p[2]*.01f},g.fieldCameraFrame.yaw,false,.01f);
+        const float w=professorMapSize[0]*s.itemScale,h=professorMapSize[1]*s.itemScale;
+        constexpr unsigned indices[]={0,1,2,2,1,3};
+        const float points[4][4]={{-w*.5f,0,0,0},{w*.5f,0,1,0},{-w*.5f,h,0,1},{w*.5f,h,1,1}};
+        for(unsigned index:indices){const auto& v=points[index];const auto q=transform.point({v[0],v[1],0,v[2],v[3]});vertex(q[0],q[1],q[2],v[2],v[3],0xffffffff);}
+    }
+    const int professorItemEnd=count;
     if(!battle && g.harborStory.enabled && g.harborStory.triggered)harborActors(g);
     const int harborEnd=count;
     bool polygonShadow=false;int airShadowCount=0;
@@ -582,10 +647,11 @@ void Renderer::world(const Game& g) {
     BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
     C3D_TexBind(0,&atlas);
     C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
-    if(actorEnd>legacyCount){C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
+    if(actorEnd>legacyCount){C3D_TexBind(0,g.professorStory.locked()?&professorMarioTexture.texture:&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
     if(partnerEnd>actorEnd){C3D_TexBind(0,&partnerTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,actorEnd,partnerEnd-actorEnd);}
     if(!battle)for(auto& gpu:plaza.actorModels)if(gpu.count){C3D_TexBind(0,&gpu.texture.texture);C3D_DrawArrays(GPU_TRIANGLES,gpu.start,gpu.count);}
-    if(harborEnd>fieldActorEnd){C3D_TexBind(0,&harborTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,fieldActorEnd,harborEnd-fieldActorEnd);}
+    if(professorItemEnd>fieldActorEnd){C3D_TexBind(0,&professorMapTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,fieldActorEnd,professorItemEnd-fieldActorEnd);}
+    if(harborEnd>professorItemEnd){C3D_TexBind(0,&harborTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,professorItemEnd,harborEnd-professorItemEnd);}
     if(polygonShadow || airShadowCount) {
         C3D_TexEnvInit(env);
         C3D_TexEnvSrc(env,C3D_Both,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);
@@ -634,7 +700,7 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
     text(label,x+7,y+8,.48f,disabled?rgb(135,129,116):Ink);
 }
 void Renderer::overlay(const Game& g) {
-    if(g.fieldActorTalk.message.active() || g.harborStory.locked()){originalMessage(g);if(g.harborStory.failed)text(g.prompt(),25,112,.45f,Ink);return;}
+    if(g.fieldActorTalk.message.active() || g.harborStory.locked() || g.professorStory.locked()){originalMessage(g);if(g.harborStory.failed || g.professorStory.failed)text("Development notice: source scene unavailable",25,112,.45f,Ink);return;}
     if(g.scene==Scene::Dialogue) {
         const auto plan=messageWindowPlan({},0,0,0,255);messageBorder(plan,255);
         text(g.dialogue(),64,28,.5f,Ink);return;
@@ -658,7 +724,7 @@ void Renderer::overlay(const Game& g) {
     }
 }
 void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
-    if(g.harborStory.locked() || g.scene==Scene::Dialogue)return;
+    if(g.harborStory.locked() || g.professorStory.locked() || g.scene==Scene::Dialogue)return;
     panel(6,5,308,32,Ink);text("ROGUEPORT FIELD NOTES",16,11,.59f,Paper);
     if(g.scene==Scene::Battle) {
         text("Partner: Goombella",12,49,.44f,Ink);
@@ -766,6 +832,8 @@ void Renderer::shutdown() {
     if(sky.imported) {Tex3DS_TextureFree(sky.imported);C3D_TexDelete(&sky.texture);}
     if(characterTextures.imported) {Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);}
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}
+    if(professorMarioTexture.imported) {Tex3DS_TextureFree(professorMarioTexture.imported);C3D_TexDelete(&professorMarioTexture.texture);}
+    if(professorMapTexture.imported) {Tex3DS_TextureFree(professorMapTexture.imported);C3D_TexDelete(&professorMapTexture.texture);}
     for(auto* texture:{&fontTexture,&harborTexture,&messageWindowTexture})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}
     if(imported) Tex3DS_TextureFree(imported);
     if(atlasReady) C3D_TexDelete(&atlas);

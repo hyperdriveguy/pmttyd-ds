@@ -557,3 +557,31 @@ The2026-10-13 tail-stretch refinement reuses the same original48x64 tail masks
 geometry compensates each mask's transparent margins so their last opaque
 texel centers terminate together near the speaker. The four-screen-pixel gap
 is a user-requested presentation adaptation, not measured original behavior.
+
+
+## 2026-10-13 — Original professor first-talk resources
+
+`tools/professor_event_assets.py` reads `rel/gor.rel` from the original US ISO
+read-only, pins the REL/first-talk hashes and preserves the original180 commands.
+Ignored `local-assets/professor/` records source section offsets, relocations and
+callback bindings; ignored `romfs/professor-events.pmevt` and
+`romfs/professor-program.bin` use authored native section addresses and actual
+local/module0 ADDR32 relocations. Original executable bytes are data for the
+existing portable event interpreter; GameCube machine code is not executed.
+
+`tools/professor_scene_assets.py` imports seven actual Mario clips from
+`a/a_mario` and `a/e_mario`, with `a/a_mario-` textures. Field M_C_3 uses the
+original effect bank. Ignored `local-assets/professor-scene/` retains intermediates
+and ignored `romfs/professor-mario.{pmmesh,pmanim,t3x,bin}` supplies the native
+scene. The original normalized UV domain is retained; the cropped atlas is
+resampled to512x512 RGBA8,62px cells with1px padding, to bound texture allocation
+to1MiB. This pixel resampling is a handheld adaptation.
+
+Item0x60 is the source treasure-map backside: icon314 resolves to `icon.tpl`
+image319, imported into ignored `romfs/professor-map.{t3x,bin}`. The original
+`sound/stream/evt_fkh1_32k.stm` supplies BGM_EVT_FRANKURI1, decoded with original
+loop metadata into ignored `romfs/professor-music.wav` and sidecar. Message IDs
+and control bytes come unchanged from the existing `msg/US/gor_02.txt` import.
+The source manifest is ignored `romfs/professor-scene.json`. All originals remain
+Nintendo/Intelligent Systems property; conversion grants no redistribution
+license. No original assets or compiled packs are committed.

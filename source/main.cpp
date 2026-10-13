@@ -39,7 +39,7 @@ int main() {
         gfxExit();
         return 1;
     }
-    if(!loadRoomCollision(0) || !ttyd::loadWarps("romfs:/rooms.bin") || !ttyd::loadFieldDoors("romfs:/doors.pmdoor") || !ttyd::loadCameraRoadAssets("romfs:") || !ttyd::loadHarborStoryAssets("romfs:") || !ttyd::loadFieldActorCatalog("romfs:")) {
+    if(!loadRoomCollision(0) || !ttyd::loadWarps("romfs:/rooms.bin") || !ttyd::loadFieldDoors("romfs:/doors.pmdoor") || !ttyd::loadCameraRoadAssets("romfs:") || !ttyd::loadHarborStoryAssets("romfs:") || !ttyd::loadFieldActorCatalog("romfs:") || !ttyd::loadProfessorStoryAssets("romfs:")) {
         renderer.shutdown();romfsExit();gfxExit();return 1;
     }
     ttyd::Audio audio;audio.init();
@@ -126,7 +126,7 @@ int main() {
             notice=ok?"Progress loaded":"Save unavailable";noticeTicks=180;
             accumulator=0;pending={};previous=seconds();
         }
-        audio.update(game.scene,game.progress.sound,game.harborStory.enabled && game.harborStory.triggered);
+        audio.update(game.scene,game.progress.sound,game.harborStory.enabled && game.harborStory.triggered,game.professorStory.locked()?game.professorStory.music:0);
         metrics.renderMs=C3D_GetProcessingTime();metrics.gpuMs=C3D_GetDrawingTime();
         renderer.render(game,metrics,noticeTicks>0?notice:"",audio.available());
         game.fade.presented();
@@ -134,6 +134,6 @@ int main() {
         if(now-window>=1) {metrics.fps=frames/(now-window);window=now;frames=0;}
     }
     // A battle is transient; save only the exploration checkpoint.
-    if(game.scene==ttyd::Scene::Explore && !game.airborne() && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0) ttyd::writeSave(savePath,game.progress);
+    if(!game.professorStory.temporaryProfessor && !game.professorStory.locked() && game.scene==ttyd::Scene::Explore && !game.airborne() && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0) ttyd::writeSave(savePath,game.progress);
     audio.shutdown();renderer.shutdown();romfsExit();gfxExit();return 0;
 }
