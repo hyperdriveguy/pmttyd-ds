@@ -3,12 +3,20 @@
 #include <cmath>
 #include <cstdint>
 namespace ttyd {
+// Fit original 640x480 artwork into a centered320x240 area without stretching.
+constexpr float MessageWindowScale=.5f;
 struct MessageWindowGeometry {float x=-280,y=225,width=560,height=176;};
 struct MessageWindowPlan {
     MessageWindowGeometry box;
     float textX=0,textY=0,tailX=0,tailY=0,tipX=0,tipY=0,tailWidth=0;
     bool tail=false,textVisible=false;
 };
+struct MessageTailPoint {float x=0,y=0;};
+// Preserve horizontal quad edges; shear toward the speaker instead of rotating.
+inline MessageTailPoint messageTailPoint(const MessageWindowPlan& plan,float u,float v) {
+    return {plan.tailX+(plan.tipX-plan.tailX)*v+(u-.5f)*plan.tailWidth,
+            plan.tailY+(plan.tipY-plan.tailY)*v};
+}
 struct MessageGlyphCrop {
     float x=0,y=0,width=0,height=0,u0=0,v0=0,u1=1,v1=1;
     bool visible=false;

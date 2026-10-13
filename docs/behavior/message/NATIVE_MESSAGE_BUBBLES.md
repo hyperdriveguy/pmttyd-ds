@@ -17,7 +17,9 @@ each new message. Missing/unprojectable speakers take the direct-window adapter.
 anchor-to-center alpha interpolation,10x10 opening size, full-opacity text gate,
 ordinary text origin(x+62,y-36),100-high anchored text scissor and small-window
 anchor offsets/origins. Coordinates are centered640x480,Y up. Native400x240
-mapping is X=200+0.625*x,Y=120-0.5*y; this is an aspect adaptation.
+mapping is X=200+0.5*x,Y=120-0.5*y. Original640x480 art fits a
+centered320x240 area, with40-pixel side margins on the400-wide display;
+bubbles and glyphs keep their original aspect rather than stretching in X.
 
 Additional read-only inspection: windowDispGX_Message US8007bad8,size2d0
 calls _windowDispGX_Message US8007bda8,size1bec twice, r6=1 then0, for ordinary
@@ -38,8 +40,11 @@ for boundary>=speakerY. Compute endpointX along the base-to-speaker line
 and clamp against speakerX in its travel direction. Quad halfwidth=0.05*width.
 These constants are binary32 at8042057c..80420594; tail indices1/2 selected
 at8007d844..8007d868. The native plan reproduces these endpoint requests;
-citro2d adapts their sheared quad to a rotated/scaled original raster mask.
-This last transform is an approximation, not an instruction-exact GX quad.
+the native renderer submits two textured triangles for the sheared quad.
+Texture rows and both end edges stay horizontal; no rotated-sprite approximation
+or transparent-margin length correction is used. A dedicated12-vertex buffer
+keeps shadow/normal submissions distinct until the GPU consumes them. The
+renderer flushes citro2d before each tail and restores its state afterward.
 
 ## Controls and effects
 
@@ -76,9 +81,12 @@ are suppressed. The bottom screen remains clear; existing A/B/touch admission
 continues. Overlays return when the scene ends. Development harness notices
 also use the original ordinary border without inventing NPC attribution.
 
-Projection follows the native world eye/aim/FOV/aspect. Imported NPC tribe
-height+150 is not yet available: Goombella uses a0.55 native-unit height adapter,
-Crump/X-Naut use the extracted billboard top. Original getScreenPoint projection,
+Projection reuses the actual world transform, including the handheld tilt and
+aspect, then maps clip coordinates into the 2D screen space. Imported NPC tribe
+height+150 is not yet available: Goombella uses the evaluated original pose
+bounds; Crump/X-Naut use the opaque bitmap top/center. These native presentation
+anchors are captured for each window relative to the original print-entry root.
+Original getScreenPoint projection,
 layer ownership and explicit placement-producing events need complete binding.
 No matched Dolphin images or hardware measurements were obtained.
 
@@ -87,3 +95,15 @@ small geometry, left/right/equality/offscreen/direct routing, opening interpolat
 tail suppression/clamping, glyph partial clipping and source speaker snapshots.
 The isolated [capture script](../../../tests/azahar_textboxes.py) traverses the
 original six-message scene and checks story4 persistence; images require review.
+
+## 2026-10-13 — Tail-direction correction and aspect preservation
+
+The prior rotated approximation visibly missed Goombella in
+`artifacts/azahar-textboxes-final/bubble-page-08.png`. The current sheared
+quad follows the original base/endpoint requests, while evaluated/art-derived
+anchors replace the provisional height. Temporary isolated marker captures
+verified the projected anchor on Goombella's visible head and the tail axis
+toward that point. No marker remains in the production build. The original
+shadow mask extends farther than the white mask; its tip is not the white
+triangle's endpoint. Source tail support, alpha, event IDs/order and controls
+are retained. Hardware and matched original-runtime raster parity remain open.

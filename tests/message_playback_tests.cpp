@@ -68,5 +68,23 @@ int main(int argc,char**) {
     crop=messageGlyphCrop(395,65,20,22,25,75);
     assert(crop.visible && crop.width==5 && crop.height==10 && crop.u1==.25f && crop.v1<1);
     assert(!messageGlyphCrop(50,100,20,22,25,75).visible);
+    // Steep left/right and inverted tails preserve horizontal edges. Their
+    // texture centerline must point along the base-to-speaker ray, rather
+    // than the perpendicular axis produced by rotating a sprite rectangle.
+    for(const auto& sample:std::array<std::array<float,3>,3>{{{7,-200,-180},{3,200,-180},{15,-100,400}}}) {
+        const float ax=sample[1],ay=sample[2];
+        const auto plan=messageWindowPlan({},unsigned(sample[0]),ax,ay,255);
+        assert(plan.tail);
+        const auto baseLeft=messageTailPoint(plan,0,0),baseRight=messageTailPoint(plan,1,0);
+        const auto tipLeft=messageTailPoint(plan,0,1),tipRight=messageTailPoint(plan,1,1);
+        assert(baseLeft.y==baseRight.y && tipLeft.y==tipRight.y);
+        assert(std::fabs((baseRight.x-baseLeft.x)-plan.tailWidth)<.001f);
+        const auto base=messageTailPoint(plan,.5f,0),tip=messageTailPoint(plan,.5f,1);
+        const float cross=(tip.x-base.x)*(ay-base.y)-(tip.y-base.y)*(ax-base.x);
+        const float dot=(tip.x-base.x)*(ax-base.x)+(tip.y-base.y)*(ay-base.y);
+        assert(std::fabs(cross)<.01f && dot>0);
+        const auto maskTip=messageTailPoint(plan,.5f,.75f);
+        assert(std::fabs(maskTip.x-(base.x+(tip.x-base.x)*.75f))<.001f);
+    }
     std::cout<<"source schedules, key waits, LF suppression, scrolling, fade and rollback passed\n";
 }

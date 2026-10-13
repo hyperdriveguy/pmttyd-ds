@@ -22,8 +22,10 @@ public:
 private:
     struct Vertex { float x,y,z,u,v,r,g,b,a; };
     Vertex* vertices=nullptr;
+    Vertex* messageTailVertices=nullptr;
     int count=0, transformLoc=0, marioPose=0;
     shaderProgram_s program{};
+    C3D_Mtx worldTransform{};
     DVLB_s* shader=nullptr;
     C3D_RenderTarget* top=nullptr;
     C3D_RenderTarget* bottom=nullptr;
@@ -46,11 +48,13 @@ private:
     Room plaza,stage;
     Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture;
     std::array<std::array<float,3>,2> harborActorMetrics{};
+    std::array<std::array<float,3>,2> harborTalkOffsets{};
     mutable std::vector<float> messageDynamic;
     mutable std::string messageIdentity;
     mutable uint64_t messageSerial=0;
     uint64_t messageWindowSerial=0;
     unsigned messagePlacement=0;
+    CameraPoint messageTalkAnchor;
     uint32_t messageRng=0x6d736777; // Presentation RNG adapter, separate from mechanics.
     ActorAnimationPack actorAnimations,partnerAnimations;
     ActorAnimationSample actorSample;

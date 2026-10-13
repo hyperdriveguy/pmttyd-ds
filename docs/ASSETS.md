@@ -493,3 +493,20 @@ the original tail to a rotated mask; see the
 Nintendo/Intelligent Systems assets carry no redistribution permission. These
 local assets/compiled packs and the ISO remain outside source history and are
 not distributed.
+
+## Speaker anchor metadata refinement (2026-10-13)
+
+The same read-only original `a/c_kanbu_ibt`, `a/c_kanbu-`, `a/c_zako_n` and
+`a/c_zako_n-` inputs now produce ignored `romfs/harbor-actors.bin` in PMHNPC2
+format: existing billboard metrics followed by two three-float native talk
+offsets. `tools/harbor_actor_assets.py` derives these offsets from the opaque
+(alpha>8) bitmap top and horizontal center, excluding transparent128x128
+margins. Ignored `romfs/harbor-actors.json` records the offsets and updated
+converter fingerprint. Goombella's anchor uses the already imported original
+`PKR_S_1`/`PKR_W_1` evaluated geometry; no new character art is created.
+The bubble atlas is unchanged. Native border/glyph drawing now scales both
+axes by0.5 to preserve original4:3 artwork on the wide display, and tail masks
+use the source sheared quad rather than a rotated sprite. These are native
+anchor/aspect adaptations, not recovered NPC tribe heights. Original rights
+and local-only asset/cache exclusions remain unchanged. See the
+[native bubble contract](behavior/message/NATIVE_MESSAGE_BUBBLES.md).

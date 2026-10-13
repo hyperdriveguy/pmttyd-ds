@@ -31,16 +31,20 @@ def main():
     fingerprint=hashlib.sha256(Path(__file__).read_bytes()+helpers+music.read_bytes()+b''.join(a.read_bytes()+b.read_bytes() for a,b in models)).hexdigest()
     manifest=Path('romfs/harbor-actors.json')
     if manifest.exists() and json.loads(manifest.read_text()).get('fingerprint')==fingerprint and Path('romfs/harbor-actors.t3x').exists() and Path('romfs/harbor-actors.bin').exists() and Path('romfs/harbor-danger.wav').exists():return
-    atlas=Image.new('RGBA',(256,128));metrics=[]
+    atlas=Image.new('RGBA',(256,128));metrics=[];talk_offsets=[]
     for i,(model,tpl) in enumerate(models):
-        target=work/(model.name+'.png');meta=bake(model,tpl,target,'Z_1');atlas.alpha_composite(Image.open(target),(i*128,0))
+        target=work/(model.name+'.png');meta=bake(model,tpl,target,'Z_1');image=Image.open(target).convert('RGBA');atlas.alpha_composite(image,(i*128,0))
         low,high=meta['bounds'];factor=118/max(high[0]-low[0],high[1]-low[1]);center=[(a+b)/2 for a,b in zip(low,high)]
         metrics.append((-(64-center[0]*factor)/factor*.02,(64+center[1]*factor-128)/factor*.02,128/factor*.02))
-    atlas.save(work/'atlas.png');Path('romfs/harbor-actors.bin').write_bytes(struct.pack('<8sI6f',b'PMHNPC1\0',2,*(v for row in metrics for v in row)))
+        bounds=image.getchannel('A').point(lambda a:255 if a>8 else 0).getbbox()
+        if bounds is None:raise ValueError('Empty original actor mask')
+        x,y,size=metrics[-1]
+        talk_offsets.append((x+(bounds[0]+bounds[2])*.5/128*size,y+(128-bounds[1])/128*size,0))
+    atlas.save(work/'atlas.png');Path('romfs/harbor-actors.bin').write_bytes(struct.pack('<8sI12f',b'PMHNPC2\0',2,*(v for row in metrics+talk_offsets for v in row)))
     tex3ds=shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds'
     subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o','romfs/harbor-actors.t3x',str(work/'atlas.png')],check=True,stdout=subprocess.DEVNULL)
     converted_music=stm(music,Path('romfs/harbor-danger.wav'))
-    manifest.write_text(json.dumps(dict(fingerprint=fingerprint,assets=records,poses=['Z_1','Z_1'],metrics=metrics,music=converted_music,conversion='Original geometry/textures baked at setup pose; root offset and source scalar2 retained; BGM_EVT_DANGER4 source stream decoded to PCM16 with source loops',license='Local original Nintendo/Intelligent Systems assets; no redistribution rights'),indent=2)+'\n')
+    manifest.write_text(json.dumps(dict(fingerprint=fingerprint,assets=records,poses=['Z_1','Z_1'],metrics=metrics,talk_offsets=talk_offsets,music=converted_music,conversion='Original geometry/textures baked at setup pose; root offset and source scalar2 retained; native talk anchor uses opaque image top/center; BGM_EVT_DANGER4 source stream decoded to PCM16 with source loops',license='Local original Nintendo/Intelligent Systems assets; no redistribution rights'),indent=2)+'\n')
 
 
 if __name__=='__main__':main()

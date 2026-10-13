@@ -35,8 +35,9 @@ bool Renderer::init() {
     shaderProgramSetVsh(&program,&shader->DVLE[0]);
     transformLoc=shaderInstanceGetUniformLocation(program.vertexShader,"transform");
     vertices=(Vertex*)linearAlloc(sizeof(Vertex)*MaxVertices);
+    messageTailVertices=(Vertex*)linearAlloc(sizeof(Vertex)*12);
     textBuffer=C2D_TextBufNew(8192);
-    if(!vertices || !textBuffer) return false;
+    if(!vertices || !messageTailVertices || !textBuffer) return false;
     FILE* f=std::fopen("romfs:/characters.t3x","rb");
     if(!f) return false;
     imported=Tex3DS_TextureImportStdio(f,&atlas,nullptr,false);std::fclose(f);
@@ -70,9 +71,10 @@ bool Renderer::init() {
     }
     FILE* metrics=std::fopen("romfs:/harbor-actors.bin","rb");if(!metrics)return false;
     char magic[8];uint32_t n=0;
-    const bool valid=std::fread(magic,8,1,metrics)==1 && !std::memcmp(magic,"PMHNPC1",8) && std::fread(&n,4,1,metrics)==1 && n==2 && std::fread(harborActorMetrics.data(),sizeof(harborActorMetrics),1,metrics)==1 && std::fgetc(metrics)==EOF;
+    const bool valid=std::fread(magic,8,1,metrics)==1 && !std::memcmp(magic,"PMHNPC2",8) && std::fread(&n,4,1,metrics)==1 && n==2 && std::fread(harborActorMetrics.data(),sizeof(harborActorMetrics),1,metrics)==1 && std::fread(harborTalkOffsets.data(),sizeof(harborTalkOffsets),1,metrics)==1 && std::fgetc(metrics)==EOF;
     std::fclose(metrics);if(!valid)return false;
     for(const auto& m:harborActorMetrics)for(float v:m)if(!std::isfinite(v) || std::fabs(v)>10)return false;
+    for(const auto& m:harborTalkOffsets)for(float v:m)if(!std::isfinite(v) || std::fabs(v)>10)return false;
     return loadMap("map",plaza) && loadMap("stage",stage);
 }
 bool Renderer::loadMap(const char* name,Room& room) {
@@ -269,34 +271,52 @@ void Renderer::harborActors(const Game& g) {
 void Renderer::originalMessage(const Game& g) {
     const auto& message=g.harborStory.message;if(!message.active())return;
     const auto& font=harborMessageFont();
-    // Project through the same eye/aim/FOV/aspect as the native world backend.
-    const auto& frame=g.fieldCameraFrame;
+    // Unproject tilted NDC into the same pixel space as the 2D backend.
+    // Reuse the actual world matrix: a parallel eye/FOV calculation can drift
+    // from the handheld projection's rotation/aspect conventions.
+    C3D_Mtx screenProjection;Mtx_OrthoTilt(&screenProjection,0,400,240,0,-1,1,true);
+    const auto origin=Mtx_MultiplyFVecH(&screenProjection,FVec3_New(0,0,0));
+    const auto screenX=Mtx_MultiplyFVecH(&screenProjection,FVec3_New(1,0,0));
+    const auto screenY=Mtx_MultiplyFVecH(&screenProjection,FVec3_New(0,1,0));
+    const float ax=screenX.x-origin.x,ay=screenX.y-origin.y;
+    const float bx=screenY.x-origin.x,by=screenY.y-origin.y,det=ax*by-ay*bx;
     auto project=[&](CameraPoint p,float& x,float& y) {
-        const float dx=frame.at.x-frame.eye.x,dy=frame.at.y-frame.eye.y,dz=frame.at.z-frame.eye.z;
-        const float length=std::sqrt(dx*dx+dy*dy+dz*dz),side=std::hypot(dx,dz);
-        if(length<=0 || side<=0)return false;
-        const float fx=dx/length,fy=dy/length,fz=dz/length,rx=-dz/side,rz=dx/side;
-        const float px=p.x-frame.eye.x,py=p.y-frame.eye.y,pz=p.z-frame.eye.z;
-        const float depth=px*fx+py*fy+pz*fz;
-        if(depth<=frame.nearPlane)return false;
-        const float focal=1/std::tan(frame.fov*3.14159265358979323846f/360.f);
-        x=(px*rx+pz*rz)*focal/depth*192; // 120/.625 maps to source X.
-        y=(px*(-rz*fy)+py*(rz*fx-rx*fz)+pz*(rx*fy))*focal/depth*240;
+        const auto clip=Mtx_MultiplyFVecH(&worldTransform,FVec3_New(p.x,p.y,p.z));
+        if(clip.w<=0 || det==0)return false;
+        const float nx=clip.x/clip.w-origin.x,ny=clip.y/clip.w-origin.y;
+        const float pixelX=(nx*by-ny*bx)/det,pixelY=(ax*ny-ay*nx)/det;
+        x=(pixelX-200)/MessageWindowScale;y=(120-pixelY)/MessageWindowScale;
         return std::isfinite(x) && std::isfinite(y);
     };
     float anchorX=0,anchorY=0,marioX=0,marioY=0;unsigned mode=0;
-    for(unsigned i=0;i<g.harborStory.actors.size();++i) {
+    const bool newWindow=messageWindowSerial!=message.serial;
+    for(unsigned i=0;newWindow && i<g.harborStory.actors.size();++i) {
         const auto& actor=g.harborStory.actors[i];if(actor.key!=g.harborStory.speaker)continue;
-        // Native actor height adapter until NPC tribe+150 is imported.
-        const float height=i==0?.55f:harborActorMetrics[i==1?0:1][1]+harborActorMetrics[i==1?0:1][2];
         const auto& root=g.harborStory.speakerRoot;
-        if(project({root[0]*.01f,root[1]*.01f+height,root[2]*.01f},anchorX,anchorY) &&
+        messageTalkAnchor={root[0]*.01f,root[1]*.01f,root[2]*.01f};
+        if(i==0) {
+            // Import the rendered pose bounds rather than an authored height.
+            const auto* pose=partnerAnimations.pose(actor.moving?"PKR_W_1":"PKR_S_1");
+            if(pose && pose->evaluate(float(g.ticks),actorSample) && !actorSample.vertices.empty()) {
+                CameraPoint low{INFINITY,INFINITY,INFINITY},high{-INFINITY,-INFINITY,-INFINITY};
+                for(const auto& v:actorSample.vertices) {
+                    const auto p=actorMeshPoint(v,{messageTalkAnchor.x,messageTalkAnchor.y,messageTalkAnchor.z},actor.display,actor.display==180);
+                    low.x=std::min(low.x,p[0]);low.z=std::min(low.z,p[2]);high.x=std::max(high.x,p[0]);high.y=std::max(high.y,p[1]);high.z=std::max(high.z,p[2]);
+                }
+                messageTalkAnchor={(low.x+high.x)*.5f,high.y,(low.z+high.z)*.5f};
+            }
+        } else {
+            const auto& offset=harborTalkOffsets[i==1?0:1];
+            messageTalkAnchor.x+=offset[0];messageTalkAnchor.y+=offset[1];messageTalkAnchor.z+=offset[2];
+        }
+        if(project(messageTalkAnchor,anchorX,anchorY) &&
            project({g.progress.position.x,g.groundHeight+g.jumpHeight,g.progress.position.z},marioX,marioY))
             mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
         break;
     }
-    if(messageWindowSerial!=message.serial){messageWindowSerial=message.serial;messagePlacement=mode;}
-    mode=messagePlacement;
+    if(newWindow){messageWindowSerial=message.serial;messagePlacement=mode;}
+    if(!project(messageTalkAnchor,anchorX,anchorY))mode=0;
+    else mode=messagePlacement;
     if(message.windowType==11)mode=0;
     const auto plan=messageWindowPlan(message.geometry,mode,anchorX,anchorY,message.alpha,message.windowType);
     if(message.windowType!=11)messageBorder(plan,message.alpha,message.windowType);
@@ -307,17 +327,17 @@ void Renderer::originalMessage(const Game& g) {
         const auto& r=message.records[i];if(r.code==0xfff7){color=r.flags;continue;}if(r.code>=font.glyphs.size())continue;
         if(float(message.scroll+r.y)>=std::fma(32.f,r.scale,-10.f))continue;
         const auto& glyph=font.glyphs[r.code];
-        float x=200+(plan.textX+r.x)*.625f,y=120-(plan.textY+float(r.y)+message.scroll-2)*.5f;
+        float x=200+(plan.textX+r.x)*MessageWindowScale,y=120-(plan.textY+float(r.y)+message.scroll-2)*.5f;
         const float dynamic=(r.flags&1)?messageDynamic[i]:1;
-        const float scaleX=.625f*r.scale*dynamic,scaleY=.5f*((r.flags&0x10000) && !(r.flags&1)?1:r.scale)*dynamic;
+        const float scaleX=MessageWindowScale*r.scale*dynamic,scaleY=.5f*((r.flags&0x10000) && !(r.flags&1)?1:r.scale)*dynamic;
         if(r.flags&2) {
             auto jitter=[&](){messageRng^=messageRng<<13;messageRng^=messageRng>>17;messageRng^=messageRng<<5;return (messageRng%10000)%3;};
-            x+=jitter()*.625f;y-=jitter()*.5f;
+            x+=jitter()*MessageWindowScale;y-=jitter()*.5f;
         } else if((r.flags&4) && !(r.flags&1)) {
             const float phase=.01f*float(g.ticks*1000/60-message.openedAt)-.02f*(plan.textX+r.x);
-            x+=3.2f*std::cos(phase)*.625f;y+=3.2f*std::sin(phase)*.5f;
+            x+=3.2f*std::cos(phase)*MessageWindowScale;y+=3.2f*std::sin(phase)*.5f;
         }
-        x+=float(glyph.width>>1)*(1-dynamic)*r.scale*.625f;
+        x+=float(glyph.width>>1)*(1-dynamic)*r.scale*MessageWindowScale;
         y+=12*(1-dynamic)*r.scale*.5f;
         const float clipTop=120-plan.textY*.5f,clipBottom=clipTop+(message.windowType==1?126:100)*.5f;
         // Relax admitted dynamic records even when the window clips the image.
@@ -341,16 +361,34 @@ void Renderer::messageBorder(const MessageWindowPlan& plan,uint8_t alpha,int typ
     // Shadow before fill; original ordinary indices13..16 and9..12.
     for(unsigned pass=0;pass<2;++pass) {
         if(plan.tail) {
-            const float bx=200+plan.tailX*.625f,by=120-plan.tailY*.5f;
-            const float ex=200+plan.tipX*.625f,ey=120-plan.tipY*.5f;
-            const float length=std::hypot(ex-bx,ey-by),angle=std::atan2(-(ex-bx),ey-by);
-            auto sub=image(600,pass?0:64,48,64);C2D_Image tail{&messageWindowTexture.texture,&sub};
-            const float sy=length/39,centerDistance=23*sy;
-            if(length>0)C2D_DrawImageAtRotated(tail,bx+(ex-bx)*centerDistance/length,by+(ey-by)*centerDistance/length,.4f,angle,&tint,plan.tailWidth*.625f/48,sy);
+            // Source sheared GX quad, retaining horizontal texture rows. A
+            // rotated sprite changes the triangle's pointing axis at steep
+            // angles and incorrectly magnifies its transparent margins.
+            C2D_Flush();
+            auto sub=image(600,pass?0:64,48,64);
+            constexpr float uv[6][2]={{0,0},{1,0},{1,1},{0,0},{1,1},{0,1}};
+            for(unsigned n=0;n<6;++n) {
+                const float u=uv[n][0],v=uv[n][1];const auto p=messageTailPoint(plan,u,v);
+                messageTailVertices[pass*6+n]={200+p.x*MessageWindowScale,120-p.y*.5f,0,
+                    sub.left+(sub.right-sub.left)*u,sub.top+(sub.bottom-sub.top)*v,1,1,1,alpha/255.f};
+            }
+            C3D_BindProgram(&program);
+            auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);
+            AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
+            auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,messageTailVertices,sizeof(Vertex),3,0x210);
+            C3D_Mtx projection;Mtx_OrthoTilt(&projection,0,400,240,0,-1,1,true);
+            C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&projection);
+            C3D_CullFace(GPU_CULL_NONE);C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);
+            C3D_AlphaTest(true,GPU_GREATER,8);
+            C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
+            for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
+            auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
+            C3D_TexBind(0,&messageWindowTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,pass*6,6);
+            C2D_Prepare();C2D_SceneBegin(top);
         }
         auto sub=type==1?image(600,pass?128:192,232,64):image(0,pass?0:176,560,176);
         C2D_Image bubble{&messageWindowTexture.texture,&sub};
-        C2D_DrawImageAt(bubble,200+b.x*.625f,120-b.y*.5f,.4f,&tint,b.width*.625f/sub.width,b.height*.5f/sub.height);
+        C2D_DrawImageAt(bubble,200+b.x*MessageWindowScale,120-b.y*.5f,.4f,&tint,b.width*MessageWindowScale/sub.width,b.height*.5f/sub.height);
     }
 }
 void Renderer::marioGroundShadow(const FieldShadowRecord& record) {
@@ -387,6 +425,7 @@ void Renderer::world(const Game& g) {
     Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(battle?FieldFov:frame.fov),C3D_AspectRatioTop,battle?.1f:frame.nearPlane,battle?80:frame.farPlane,false);
     Mtx_LookAt(&view,FVec3_New(battle?cam:frame.eye.x,battle?2.8f:frame.eye.y,battle?5.5f:frame.eye.z),FVec3_New(battle?cam:frame.at.x,battle?1.f:frame.at.y,battle?-.4f:frame.at.z),FVec3_New(0,1,0),false);
     Mtx_Multiply(&transform,&projection,&view);
+    worldTransform=transform;
     // Original room backdrop, drawn without depth writes before the room.
     const float x0=cam-30,x1=cam+30,y0=-12,y1=24,z=-25;
     vertex(x0,y0,z,0,0,0xffffffff);vertex(x1,y0,z,1,0,0xffffffff);vertex(x1,y1,z,1,1,0xffffffff);
@@ -667,6 +706,7 @@ void Renderer::shutdown() {
     if(imported) Tex3DS_TextureFree(imported);
     if(atlasReady) C3D_TexDelete(&atlas);
     if(vertices) linearFree(vertices);
+    if(messageTailVertices) linearFree(messageTailVertices);
     if(programReady) shaderProgramFree(&program);
     if(shader) DVLB_Free(shader);
     if(top) C3D_RenderTargetDelete(top);
