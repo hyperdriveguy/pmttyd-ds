@@ -10,10 +10,18 @@
 namespace ttyd {
 struct ActorMeshVertex {float x,y,z,u,v;};
 // Source ordinary scalar2/unit-scale/zero-pivot model matrix adaptation.
+struct ActorRootTransform {
+    std::array<float,3> root;
+    float sine,cosine,zScale;
+    ActorRootTransform(std::array<float,3> position,float yaw,bool reflectZ):root(position),
+        sine(std::sin(yaw*.01745329238474369f)),cosine(std::cos(yaw*.01745329238474369f)),zScale(reflectZ?-.02f:.02f) {}
+    std::array<float,3> point(const ActorMeshVertex& v) const {
+        const float x=v.x*.02f,y=v.y*.02f,z=v.z*zScale;
+        return {root[0]+x*cosine+z*sine,root[1]+y,root[2]-x*sine+z*cosine};
+    }
+};
 inline std::array<float,3> actorMeshPoint(const ActorMeshVertex& v,std::array<float,3> root,float yaw,bool reflectZ) {
-    const float angle=yaw*.01745329238474369f,sine=std::sin(angle),cosine=std::cos(angle);
-    const float x=v.x*.02f,y=v.y*.02f,z=v.z*(reflectZ?-.02f:.02f);
-    return {root[0]+x*cosine+z*sine,root[1]+y,root[2]-x*sine+z*cosine};
+    return ActorRootTransform(root,yaw,reflectZ).point(v);
 }
 struct ActorMeshPose {std::string name;std::vector<ActorMeshVertex> vertices;};
 class ActorMeshPack {
