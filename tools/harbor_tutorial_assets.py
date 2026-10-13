@@ -48,6 +48,7 @@ def build(iso):
      return data
    raise ValueError('Unmapped Mario data')
   du=lambda a:struct.unpack('>I',read_dol(a,4))[0]
+  if imports.get(0x60c8c)!=0x80417920 or read_dol(0x80417920,8)!=b'\0'*8:raise ValueError('Unexpected setup2 held-item table')
   mario_kind=du(0x80416a50);mario_parts=du(mario_kind+0xb8);mario_table=du(mario_parts+0x48)
   if du(mario_kind)!=222:raise ValueError('Unexpected Mario kind')
   strings={};table_data=bytearray()
@@ -78,6 +79,8 @@ def build(iso):
   products[3].write_bytes(struct.pack('<8sf',b'PMHTUV01',1024/height))
   subprocess.run([shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds','-f','rgba8','-z','auto','-o',str(products[2]),str(work/(actor+'-runtime.png'))],check=True,stdout=subprocess.DEVNULL)
   meta.update(fingerprint=fingerprint,uvScale=1024/height,source=['a/'+bank,'a/'+texture+'-'],license='Original Nintendo/Intelligent Systems assets; no redistribution rights');manifest.write_text(json.dumps(meta,indent=2)+'\n')
+ from harbor_tutorial_combat_assets import build as build_combat
+ build_combat(iso)
  from harbor_tutorial_stage_assets import build as build_stage
  build_stage(iso)
  print('Original tutorial init/phase/wait commands:' ,[len(e['commands']) for e in events])

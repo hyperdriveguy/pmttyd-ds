@@ -627,3 +627,8 @@ add_test(NAME opening_house_object_transforms COMMAND opening_house_objects_test
 if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/opening-aaa_00.houseobj")
     add_test(NAME original_opening_house_objects COMMAND opening_house_objects_tests "${CMAKE_SOURCE_DIR}/romfs/opening-aaa_00.houseobj")
 endif()
+
+target_sources(ttyd_core PRIVATE source/battle_conclusion.cpp)
+add_executable(battle_conclusion_tests tests/battle_conclusion_tests.cpp)
+target_link_libraries(battle_conclusion_tests PRIVATE ttyd_core)
+add_test(NAME battle_conclusion COMMAND battle_conclusion_tests)

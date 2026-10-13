@@ -31,7 +31,7 @@ bool loadHarborTutorialAssets(const char* root){
 }
 struct HarborTutorialRuntime {
  HarborTutorial* scene=nullptr;EventNativeRuntime vm;
- uint32_t initRoot=0,phaseRoot=0;uint64_t messagePoseSerial=0;bool openingDispatched=false;
+ uint32_t initRoot=0,phaseRoot=0,attackRoot=0;uint64_t messagePoseSerial=0;bool openingDispatched=false;
  std::array<uint64_t,3> completeEpoch{};std::array<bool,3> complete{};
  struct Interpolation{int32_t mode=0,start=0,end=0,limit=0,step=0;};
  std::unordered_map<uint32_t,Interpolation> interpolations;
@@ -53,14 +53,16 @@ struct HarborTutorialRuntime {
  for(unsigned i=0;i<80;++i){const auto name=word(table+i*8+4);if(!name)break;if(word(table+i*8)==uint32_t(type)){a.pose=text(name);a.poseAt=scene->now;complete[a.id]=false;return true;}}return false;}
  int pending(uint32_t function){if(!scene->pendingService)scene->pendingService=function;return 0;}
  int call(EventEntry& e,uint32_t function,bool first){
- auto found=callbacks.find(function);if(found==callbacks.end())return pending(function);
  if(first){HarborTutorialRequest r{function,e.currentCommand,scene->now,e.owner,{}};for(unsigned i=0;i<e.argumentCount;++i)r.rawOperands.push_back(raw(e,i));scene->requests.push_back(std::move(r));}
+ if(function==0x80104498){const auto& a=scene->actors[actor(e)];if(a.heldItem!=0)return pending(function);if(scene->pendingService==function)scene->pendingService=0;output(e,1,0);return 2;}
+ if(function==0x8011384c){output(e,0,(scene->battleFlags&uint32_t(raw(e,1)))!=0?1:0);return 2;}
+ auto found=callbacks.find(function);if(found==callbacks.end())return pending(function);
  switch(found->second){
  case 0:case 1:case 2:case 3:case 4:{auto& a=scene->actors[actor(e)];const auto script=uint32_t(value(e,1));switch(found->second){case 0:a.wait=script;break;case 1:a.attack=script;break;case 2:a.damage=script;break;case 3:a.confusion=script;break;case 4:a.phase=script;break;}return 2;}
  case 5:if(value(e,0)==1)scene->battleFlags|=uint32_t(raw(e,1));else scene->battleFlags&=~uint32_t(raw(e,1));return 2;
  case 6:{if(value(e,1)!=int32_t(source[5]) || value(e,2)!=0 || scene->actors[2].id!=-1)return pending(function);
  auto& a=scene->actors[2];a.id=2;a.sourceKind=word(source[5]);if(a.sourceKind!=source[7]){scene->failed=true;return 0;}
- a.kind=signedWord(word(a.sourceKind));a.hp=a.maxHp=int16_t(word(a.sourceKind+8)>>16);a.pose="PKR_S_1";
+ a.kind=signedWord(word(a.sourceKind));a.belong=int8_t(word(source[5]+4)>>24);a.movePhase=word(source[5]+8);a.hp=a.maxHp=int16_t(word(a.sourceKind+8)>>16);a.pose="PKR_S_1";
  output(e,0,a.id);root(source[3],a.id);return 2;}
  case 7:{auto& a=scene->actors[actor(e)];const auto i=value(e,1);if(i<0 || i>=16){scene->failed=true;return 0;}a.work[i]=value(e,2);return 2;}
  case 8:case 9:{auto& a=scene->actors[actor(e)];auto& p=found->second==8?a.position:a.home;for(unsigned i=0;i<3;++i)p[i]=real(e,i+1);return 2;}
@@ -99,16 +101,18 @@ struct HarborTutorialRuntime {
  vm.gp.timestamp=scene->now*eventClockRate(243000000);vm.initializeContexts();vm.gp.battleContext=1;initRoot=root(source[0],0).id;return true;}
 };
 bool HarborTutorial::begin(uint64_t time,int32_t hp,int32_t maxHp){if(!ready || triggered)return false;*this=HarborTutorial{};triggered=true;now=time;
- actors[0].id=0;actors[0].sourceKind=source[6];actors[1].id=1;actors[1].kind=222;actors[1].hp=hp;actors[1].maxHp=maxHp;actors[1].pose="M_S_1";actors[1].position=actors[1].home={-100,0,-5};
- runtime_=std::make_shared<HarborTutorialRuntime>();auto& r=*runtime_;r.scene=this;if(!r.initialize()){failed=true;return false;}actors[0].kind=signedWord(r.word(source[6]));actors[0].hp=actors[0].maxHp=int16_t(r.word(source[6]+8)>>16);
+ actors[0].id=0;actors[0].sourceKind=source[6];actors[1].id=1;actors[1].kind=222;actors[1].movePhase=0x04000002;actors[1].hp=hp;actors[1].maxHp=maxHp;actors[1].pose="M_S_1";actors[1].position=actors[1].home={-100,0,-5};
+ runtime_=std::make_shared<HarborTutorialRuntime>();auto& r=*runtime_;r.scene=this;if(!r.initialize()){failed=true;return false;}actors[0].kind=signedWord(r.word(source[6]));actors[0].belong=int8_t(r.word(source[8]+4)>>24);actors[0].movePhase=r.word(source[8]+8);actors[0].hp=actors[0].maxHp=int16_t(r.word(source[6]+8)>>16);
  for(unsigned i=0;i<3;++i){const auto v=r.word(source[8]+0xc+i*4);std::memcpy(&actors[0].position[i],&v,4);}actors[0].home=actors[0].position;
  tick(time,0);return !failed;}
 void HarborTutorial::tick(uint64_t time,uint32_t keys){if(!runtime_ || failed || time<now)return;now=time;auto& r=*runtime_;r.scene=this;if(message.active())message.tick(now,keys);
  if(message.poseRequestSerial!=r.messagePoseSerial && speaker>=0 && speaker<3){r.messagePoseSerial=message.poseRequestSerial;auto& a=actors[speaker];const auto& pose=message.poseRequest==MessagePlayback::PoseRequest::Talk?a.talkPose:a.stayPose;if(!pose.empty()){a.pose=pose;a.poseAt=message.poseRequestedAt;}}
  r.vm.gp.timestamp=now*eventClockRate(243000000);r.vm.runManager();
  if(!initialized && !r.exists(r.initRoot) && r.vm.runtime.allocationCount==0){initialized=true;dispatchPhase(1,0x04000001);r.openingDispatched=true;}
+ if(attackActive && !r.exists(r.attackRoot))attackActive=false;
  if(phaseActive && !r.exists(r.phaseRoot)){phaseActive=false;if(r.openingDispatched && phaseWord==0x04000001)introComplete=true;}
 }
-bool HarborTutorial::dispatchPhase(int32_t sourceTurn,uint32_t sourcePhase){if(!runtime_ || failed || !initialized || phaseActive || !actors[0].phase)return false;turn=sourceTurn;phaseWord=sourcePhase;runtime_->phaseRoot=runtime_->root(actors[0].phase,0).id;phaseActive=true;return true;}
+bool HarborTutorial::dispatchPhase(int32_t sourceTurn,uint32_t sourcePhase){if(!runtime_ || failed || !initialized || phaseActive || attackActive || !actors[0].phase)return false;turn=sourceTurn;phaseWord=sourcePhase;runtime_->phaseRoot=runtime_->root(actors[0].phase,0).id;phaseActive=true;return true;}
+bool HarborTutorial::dispatchInstalledAttack(int32_t id){if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || (id!=0 && id!=2) || !actors[id].attack)return false;pendingService=0;runtime_->attackRoot=runtime_->root(actors[id].attack,id).id;attackActive=true;return true;}
 void HarborTutorial::animationComplete(int32_t id){if(!runtime_ || id<0 || id>2)return;runtime_->complete[id]=true;runtime_->completeEpoch[id]=actors[id].poseAt;}
 }

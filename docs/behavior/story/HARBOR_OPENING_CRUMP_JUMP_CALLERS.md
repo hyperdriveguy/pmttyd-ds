@@ -29,8 +29,8 @@ The beforebattle event at REL `0x2639c` (size `0x830`, 132 commands) requests
 The NPC setup index 2 selects the area record at REL `0x60eb8` (stride `0x44`).
 That record's weighted off-list at `0x60dd0` has one entry (weight 50) pointing
 to group `0x60c90`, which has unit count 1 with setup `unit_boss_kanbu1`
-(REL `0x645c8`). The unit's kind data table at REL `0x646b4` has an immediate
-zero terminator. Its init event at REL `0x64808` installs hooks for Wait,
+(REL `0x645c8`). The unit's kind data table at REL `0x646b4` contains key48→DOL default
+Dummy, key49→REL dead_event `0x64e58`, then a zero terminator. Its init event at REL `0x64808` installs hooks for Wait,
 Phase, Attack, Damage, and default Confusion on owner -2.
 
 ### 1.2 Crump's NPC Helper vs. Lecture Goombella
@@ -62,13 +62,16 @@ SetupAC call sites at `0x80355ebc` and `0x80356038` pass callback operands
 Hammer core stream `marioAttackEvent_NormalHammer_Core` at `0x8035d6d4` uses
 ID 3 (StickKeepLeft).
 
-The Crump tutorial battle uses the **first-attack branch** of the Jump stream:
+The Jump stream has an original **first-attack branch**:
 at `0x80355d08`, battle mask 2 (bit 1) is tested. If nonzero, it calls
 `GetFirstAttackTarget` and uses the ordinary weapon pointer `0x803538a8`
 (Jump). If zero, it calls `GetSelectEnemy`, `CommandGetWeaponAddress`,
 `AttackDeclare`, `WaitGuardMove`, `PayWeaponCost`, and runs the Majinai
-power-check child. The harbor tutorial configuration selects the first-attack
-path (mask 2 nonzero). The ordinary Jump stream's delayed SetupAC for the
+power-check child. The actual harbor mask2 producer remains unbound. Crump init sets battle
+flag0x1000; that separate bit does not establish mask2. The configuration
+word+18 is not installed by the recovered npcSetupBattleInfo body, whose
+load is overwritten. Do not force the first-attack path from configuration
+or tutorial identity alone. The ordinary Jump stream's delayed SetupAC for the
 first-attack path is created in an attached brother at `0x8035600c`; the parent
 requests `MovePosition` at `0x80356054`. There is **one** `StartAC(1)` site at
 `0x80356204`, outside the hit loop.

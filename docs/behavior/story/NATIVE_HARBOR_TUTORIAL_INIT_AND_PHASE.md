@@ -63,3 +63,32 @@ Focused original-data checks cover kind/HP/helper identity, installed hooks,
 maxMoves0, t1_000 speaker/status, actual animation acknowledgement and rotate-back,
 exact phase rejection, HP-latch priority, independent feedback and latch reuse.
 They are source-data execution tests, not Dolphin observations.
+
+## Installed attack-hook admission foundation
+
+`dispatchInstalledAttack(id)` now admits only source-installed Crump0 or NPC2
+hooks after the intro ends and while no phase/attack root owns execution. This
+is an explicit battle-scheduler bridge, not a gameplay development button.
+The NPC's three-command attack only restarts its wait; maxMoves remains0 and no
+lecture damage is enabled. Crump's11-command wrapper preserves EnemyItemUseCheck80104498. The
+source wrapper resolves the owner and calls BattleEnemyUseItemCheck801f9658,
+whose first branch reads unit+308 and immediately returns0 for no held item.
+The converter now verifies original selected table80417920 is eight zero bytes;
+fresh setup2 leaves the cleared selected item0 and consumes no item draw.
+Nonzero held items remain pending. On0, the wrapper supplies original weapon
+64718 to its95-command normal-attack child. Original check_battleflag reads
+raw mask2 and flags1000, selects the normal target branch, then waits at
+GetEnemyBelong8010eed4 pending packed group services. Crump membership1/phase04000004 and helper membership2/phase04000001 are
+imported from the original entry/setup words; the helper is neutral, not a player
+partner or enemy. Unknown callback requests retain owner, command, time and raw
+operands before publishing the pending function address. No arbitrary callback
+success is returned to reach movement/damage.
+
+`harbor_tutorial_combat_assets.py` verifies unchanged wrapper11/normal95/damage5/
+death75/NPCattack3 command spans and hashes, source data key49→death and weapon64718.
+The existing relocated gor data pack already contains those streams; the small
+ignored PMHTC001 mapping retains source entry/weapon addresses and53 callback
+identities without another script/text copy. Generic DOL damage-child services,
+packed registry migration, original Mario first-attack branch and all battle
+scheduler/death/end/field services remain unbound. In particular HP0 does not
+run death004/005 or publish battle result1.
