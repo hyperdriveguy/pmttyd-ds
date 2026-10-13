@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero DSP budget/rejection/voice chain
+
+Completed three initial/cost/rejection/PB-chain/command02/03 gate regions;
+checked the EVT-01 portion.
+[Budget/rejection/chain](behavior/audio/MUSYX_DSP_BUDGET_REJECTION_AND_VOICE_CHAIN.md)
+pins original cost tables/wrapped formulas/unsigned limit and current/tail/future-
+studio depop/deactivation/callback ordering, fresh pointer/captured successor
+choices and admitted PB-chain publication. Startup/sample/provider/domain/
+original performance/DSP/audio remain open; system-word fixtures unmeasured.
+
+Validation: read-only ISO manifest passed ten spans (three regions/five linked/
+two numeric tables),197 instruction anchors/ten calls plus initial comparison.
+Seven initial-budget/eight mixer-index/six SRC-index/six rejection/three chain
+vectors checked. Link audit passed856 Markdown files/zero broken links; scoped
+`git diff --check` passed. Documentation/metadata only; no `make test`/`make all`
+rerun. Full original fresh builder ELF/listing stays `/tmp`; no bodies/binary
+assets committed. Concurrent native edits excluded.
+
+Next: priority-zero EVT-01 startup/sample/voice-format regions, actual D/system
+word/flags/mode/type/count/new-setup/result/table/array/list/PB/callback writers
+and valid index/overflow/member/cycle/alias/lifetime/IRQ/concurrency domains;
+cache/DSP consumers and original cost/rejection/chain/voice/audio traces.
+Remaining precision work, lower-priority inbox/full native/full-game remain open.
+
 ## 2026-10-13 — Inbox priority-zero DSP studio payloads/fade bindings
 
 Completed ten studio/input/aux/mode/surround/compressor/voice-chain-tail/fade/

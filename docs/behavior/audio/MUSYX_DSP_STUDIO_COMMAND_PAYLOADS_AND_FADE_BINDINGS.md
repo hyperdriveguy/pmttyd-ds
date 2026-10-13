@@ -153,3 +153,9 @@ studio/input/count/reference/frame/aux/mode/buffer/coefficient/block/alias/
 lifetime/IRQ/concurrency domains, cache/DSP/table consumers and original studio/
 input/aux/surround/compressor/fade/command/audio traces. Ten local regions
 answered; whole builder/full native binding and EVT-01 remain OPEN.
+
+## 2026-10-13 — Budget/admission follow-up
+
+[Budget/rejection/chain](MUSYX_DSP_BUDGET_REJECTION_AND_VOICE_CHAIN.md) closes initial/cost/rejection/PB-chain
+regions and command03 admission. Remaining startup/sample/provider/value/index/
+alias domains and original cost/DSP/audio execution remain open.

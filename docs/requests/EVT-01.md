@@ -423,6 +423,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   chain-tail/fade/loop payload regions — [studio payloads/fade bindings](../behavior/audio/MUSYX_DSP_STUDIO_COMMAND_PAYLOADS_AND_FADE_BINDINGS.md).
   Exact command fields/fresh frame pairing/gates/modulo/nine fades pinned;
   voice/budget/admission/domain/original DSP/audio remain open.
+- [x] Complete DSP budget initialization/cost/rejection cascade and
+  admitted PB-chain/command02/03 gate regions —
+  [budget/rejection/voice chain](../behavior/audio/MUSYX_DSP_BUDGET_REJECTION_AND_VOICE_CHAIN.md).
+  Original tables/wrapped cost/fresh pointer/successor/request order pinned;
+  startup/sample/domain/original performance/DSP/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2279,3 +2284,13 @@ nine fade bindings and all256 auxiliary-byte modulo cases checked. Exact fields/
 raw index/fresh frame/mode/admission/chain/cache/outer-loop order pinned.
 Compressor table fingerprint is source identity only; child/domain/remaining
 voice/budget/DSP/audio remain open. Parent EVT-01 stays OPEN.
+
+## 2026-10-13 — DSP budget/rejection/voice chain delivery
+
+Completed three regions in [budget/rejection/voice chain](../behavior/audio/MUSYX_DSP_BUDGET_REJECTION_AND_VOICE_CHAIN.md).
+Ten spans/197 instruction anchors/ten calls verified;30 formula vectors/two
+original numeric tables retained. Wrapped initial/cost/unsigned limit, unchecked
+indices, current/tail/future-studio deactivation/callback ordering and admitted
+PB chain/command03 gate pinned. Synthetic system-word fixtures are not measured
+clock/performance. Startup/sample/provider/domain/original DSP/audio remain open;
+parent EVT-01 stays OPEN.
