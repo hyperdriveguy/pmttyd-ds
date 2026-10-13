@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Priority0 synth FX resource and chained control cores
+
+Delivered [complete synth request cores](behavior/audio/MUSYX_SYNTH_EFFECT_RESOURCE_AND_CONTROL_CORES.md):
+loaded-group/shared-scratch lookup, comparator/binary search, default255 and
+all16 sound-start operands, voice-generation checks and fresh chain reloads.
+Controller cores stop at stale identity; active-gated KeyOff skips stale nodes
+and continues. Returns report requests rather than confirmed hardware changes.
+Marked the local EVT-01 portion complete; registry/macro/voice/MIDI/resource/
+source/runtime dependencies remain explicit and open.
+
+Validation: generic musyx_synth_effect_core_evidence.json verifier12 spans
+(8 complete/4 linked identities),192 anchors and independently resolved15 direct
+call sites pass. Fresh new full body inspections remain `/tmp`; existing complete
+voice lookup identity is revalidated. Link audit719 Markdown files/0 broken
+links; whitespace checks pass. Docs/metadata only: no make rerun, native or
+original asset/code-body export. Unrelated staged/worktree edits excluded.
+
+Next/limits: FX registry insertion/removal and project residency, actual
+synthStartSound/MIDI/external-keyoff/voice-chain producers, calc3D/live audio and
+original scheduler/encounter/audio observations remain open. Continue priority0
+producer/source/query binding, then priority1 consumer/counter graph. No original
+executed/hardware/full-game fidelity claim.
+
 ## 2026-10-13 — Priority0 MusyX effect API and voice/IRQ closure
 
 Delivered [eight complete API/lookup/IRQ bodies](behavior/audio/MUSYX_EFFECT_API_WRAPPERS_AND_VOICE_LOOKUP.md).

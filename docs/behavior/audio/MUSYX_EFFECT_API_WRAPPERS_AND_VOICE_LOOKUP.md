@@ -102,3 +102,5 @@ KeyOff mutations, voice-map producers/lifetime, default-table provisioning,
 OS/thread/hardware services, full spatial/live main processing and original
 source/execution/audio traces. This closes the local public API/lookup/IRQ
 portion; parent EVT-01 and full-game audio remain OPEN.
+
+[Complete synth effect start/control/KeyOff and FX lookup](MUSYX_SYNTH_EFFECT_RESOURCE_AND_CONTROL_CORES.md) now closes those exact core request bodies and binary search. Resource registry producers, actual sound/macro/voice/controller mutations and original runtime remain open.

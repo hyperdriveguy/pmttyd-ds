@@ -27,6 +27,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 - [x] Complete public MusyX sndFXStartEx/Ctrl/Ctrl14/Check/KeyOff,
   vidGetInternalId and hwDisableIrq/hwEnableIrq local wrappers —
   [API/voice/IRQ contract](../behavior/audio/MUSYX_EFFECT_API_WRAPPERS_AND_VOICE_LOOKUP.md).
+- [x] Complete synthFXStart, synthFXSetCtrl/14, synthSendKeyOff and
+  loaded FX lookup/comparator/binary-search request cores —
+  [synth resource/control cores](../behavior/audio/MUSYX_SYNTH_EFFECT_RESOURCE_AND_CONTROL_CORES.md).
+  Registry/macro/voice/controller producers and actual execution remain separate.
 - [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -513,3 +517,20 @@ and77 original anchors passes read-only generic DOL verification. Eight full
 listings remain `/tmp/inbox-snd*.elf`, vidinternal and MusyX IRQ ELFs. Derived
 IRQ boundary metadata distinguishes counts0/1/2/65534/65535 and wrap; no
 original code executes. Parent remains OPEN for the core/source/runtime chain.
+
+### 2026-10-13 — Synth FX resource/start and chained controller/KeyOff cores
+
+[Complete local core request graph](../behavior/audio/MUSYX_SYNTH_EFFECT_RESOURCE_AND_CONTROL_CORES.md)
+closes loaded-group FX lookup/shared scratch write, binary search/comparator,
+low-byte255 defaults and all16 synthStartSound operands. It records both
+controller cores' stale-generation early exit versus KeyOff's skip-and-continue,
+raw MIDI argument widths, fresh synthVoice reload after requests and processed
+return versus actual controller acceptance. No guessed macro/sample launch,
+loaded-resource guarantee or hardware result is supplied.
+
+Validation: read-only source manifest12 spans (8 complete/4 linked-only),192
+original anchors and15 resolved aligned direct calls passes generic DOL verifier.
+All new complete body listings were independently regenerated under `/tmp`;
+vid lookup reuses its revalidated whole-body identity and complete prior contract.
+Core synthStartSound/MIDI/keyoff mutations, resource registry producers, valid
+voice/chain/cycle/source domains and original audio/runtime remain OPEN.
