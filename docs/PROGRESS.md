@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero sequence speed/volume
+
+Completed four local sequence speed/volume/public-wrapper contracts for EVT-01
+and checked their inbox portion. [Speed/volume/group forwarding](behavior/audio/MUSYX_SEQUENCE_SPEED_VOLUME_AND_GROUP_FORWARDING.md)
+pins16 speed halfword stores, tagged flag/payload writes, immediate primary
+volume request then64 fresh group comparisons without deduplication, four tagged
+volume modes and raw public IRQ forwarding. Speed has no lookup-miss guard and
+derives writes before seqInstance; volume returns on miss. No original audible
+tempo/fade behavior is inferred from local field/request semantics.
+
+Validation: read-only ISO manifest passed nine spans (four complete/five linked),
+137 anchors/ten calls. Eight halfword/seven address/16 mode/15 flag vectors,
+16 speed offsets and three64-byte group-order examples checked as deductions.
+Documentation link audit passed777 Markdown files/zero broken links;
+`git diff --check` passed. Documentation/metadata only; no `make test`/`make all`
+rerun. Fresh original full listings/ELFs stay `/tmp`; no bodies/assets committed.
+
+Next: priority-zero EVT-01 complete synthVolume and deferred/track consumers,
+caller lookup-success/private-ID/group domains and original tempo/volume/miss/
+audio traces. Full scheduling/native/runtime binding, lower-priority inbox work
+and the full remake remain incomplete.
+
 ## 2026-10-13 — Inbox priority-zero sequence continue
 
 Completed the local seqContinue/sndSeqContinue source contracts for EVT-01 and

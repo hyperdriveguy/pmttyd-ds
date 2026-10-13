@@ -172,6 +172,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   Paused→active order/tagged flag clear and unguarded missing-ID wrapped byte
   address pinned; caller lookup-success/private-ID invariants and original
   resume/missing-ID/audio evidence remain open.
+- [x] Complete seqSpeed/seqVolume/sndSeqSpeed/sndSeqVolume local bodies —
+  [speed/volume/group forwarding](../behavior/audio/MUSYX_SEQUENCE_SPEED_VOLUME_AND_GROUP_FORWARDING.md).
+  Sixteen halfword stores/deferred writes, speed missing-ID domain, tagged
+  volume modes/64-entry group scan and raw IRQ order pinned; synthVolume/
+  consumers/provider domains and original tempo/volume/audio remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1168,3 +1173,20 @@ state-route vectors are deductions; fresh full ELFs/listings stay `/tmp`.
 No native change/original execution/body/asset export. Caller private-ID/state/
 list/track/note/deferred/alias/IRQ/concurrency and original resume/missing-ID/
 audio traces remain OPEN.
+
+### 2026-10-13 — Sequence speed/volume and group forwarding
+
+[Four complete local bodies](../behavior/audio/MUSYX_SEQUENCE_SPEED_VOLUME_AND_GROUP_FORWARDING.md)
+close16 track speed halfword stores, tagged speed flag/payload order, immediate
+volume primary request then64 fresh group-byte comparisons/requests, four tagged
+volume modes and public raw IRQ forwarding. Speed shares continue's unguarded
+lookup miss: OR20 at byte803eb432 then halfword803eb430 store. Volume instead
+returns on miss. Repeated secondary groups are not deduplicated; primary group
+is freshly read per comparison. No audible tempo/fade timing is inferred.
+
+Validation: read-only manifest nine spans (four complete/five linked),137
+anchors/ten calls passes. Eight halfword/seven address/16 mode/15 flag vectors,
+16 speed offsets and three64-byte group-order examples are deductions. Fresh
+ELFs/listings stay `/tmp`; no native change/original execution/body/asset export.
+synthVolume/deferred/track consumers, ID/group/mode/time providers, lookup-success/
+index/bounds/alias/IRQ/concurrency and original tempo/volume/miss/audio remain OPEN.
