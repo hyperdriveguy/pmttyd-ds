@@ -462,3 +462,22 @@ The existing PMANIM3 visibility/scalar2 conversion is retained; no generated
 art or substituted sound is introduced. Source extraction stays read-only and
 all converted packs remain outside source history. Nintendo/Intelligent Systems
 assets carry no redistribution permission; no original files are committed.
+
+## Original dialogue bubble masks (2026-10-13)
+
+`tools/message_window_assets.py` reads `f/msgWindow.tpl` from the US ISO opened
+read-only (file offset947396944,size321984,SHA-256
+`2ef0cdc818d2402de5bfb95394f67d78017e74bc1b41c38b79780cb0b870dc67`).
+Original ordinary cap/edge indices9..16, tail indices1/2 and small masks3/4
+are decoded from GX to RGBA8. The cap/edge masks are composed at their original
+560x176 positions, filling only the flat interior with their matching source
+color. Ignored `local-assets/fonts/msgWindow.tpl`, `window-*.png` and
+`message-window.png` retain extraction/conversion inputs; ignored
+`romfs/message-window.t3x` is a1024x512 native atlas and
+`romfs/message-window.json` records source hash/offset/converter fingerprint.
+There is no generated bubble art. Native drawing scales to400x240 and adapts
+the original tail to a rotated mask; see the
+[native dialogue contract](behavior/message/NATIVE_MESSAGE_BUBBLES.md).
+Nintendo/Intelligent Systems assets carry no redistribution permission. These
+local assets/compiled packs and the ISO remain outside source history and are
+not distributed.

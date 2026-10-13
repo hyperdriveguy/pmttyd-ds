@@ -16,7 +16,7 @@ struct MessageRecord {
     uint32_t flags=0;uint16_t code=0;int16_t x=0,y=0;uint16_t extra=0;
     uint32_t schedule=0;float scale=1,value=1;
 };
-// Source opening-message domain; original bytes/identity remain owned intact.
+// Opening-message and ordinary placement/style domain; original bytes retained.
 // Unsupported controls reject atomically until their native consumers exist.
 class MessagePlayback {
 public:
@@ -34,6 +34,7 @@ public:
     uint16_t acceptedKey=0,wait=0,state=0;
     uint8_t alpha=255;
     uint64_t serial=0; // Native draw-cache lifetime, independent of message ID.
+    uint64_t openedAt=0;
     MessageWindowGeometry geometry;
     int windowType=0;
 private:

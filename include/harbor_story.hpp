@@ -14,6 +14,7 @@ class HarborStory {
 public:
     bool enabled=false,triggered=false,finished=false,failed=false;
     unsigned stage=0;uint32_t speaker=0;uint64_t now=0,deadline=0;
+    std::array<float,3> speakerRoot{}; // Print-entry anchor, not a live actor reference.
     std::array<HarborActor,4> actors{};
     MessagePlayback message;
     void reset(bool available);

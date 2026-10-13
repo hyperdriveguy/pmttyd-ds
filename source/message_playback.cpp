@@ -26,6 +26,7 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
     MessagePlayback next;next.identity=key;next.raw=text;
     if(next.raw.size()>65536)return false;
     uint32_t t=0,speed=25,style=0;int16_t x=0,y=0,k=0,s=0,baseline=0;float scale=1,verticalScale=1,dynamic=1,lineScale=0;
+    bool smallSpacing=false;
     auto record=[&](uint16_t code){MessageRecord r;r.flags=style;r.code=code;r.x=x;r.y=y;r.schedule=t;r.scale=scale;r.value=dynamic;return r;};
     for(size_t at=0;at<next.raw.size();) {
         const uint8_t c=uint8_t(next.raw[at++]);
@@ -43,7 +44,7 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
             else if(name=="col" || name=="/col") {unsigned color=255;char extra=0;if(name=="col" && std::sscanf(args.c_str(),"%x %c",&color,&extra)!=1)return false;auto r=record(0xfff7);r.flags=color;next.records.push_back(r);}
             else if(name=="wave")style|=4;
             else if(name=="/wave")style&=~4u;
-            else if(name=="small"){next.windowType=1;next.geometry.width=232*.9f;next.geometry.height=64*.9f;}
+            else if(name=="small"){next.windowType=1;smallSpacing=true;}
             else if(name=="clear")next.windowType=11;
             else if(name=="wpos") {int a,b,c,d;char extra;if(std::sscanf(args.c_str(),"%d%d%d%d %c",&a,&b,&c,&d,&extra)!=4 || c<=0 || d<=0 || c>32767 || d>32767)return false;next.geometry={float(half(a)),float(half(b)),float(c),float(d)};}
             else if(name=="dynamic") {if(!number(args,dynamic))return false;style|=1;}
@@ -53,7 +54,7 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
             else return false;
             at=end+1;if(at<next.raw.size() && next.raw[at]=='\n')++at;
         } else if(c=='\n') {
-            next.records.push_back(record(0xfffb));const float delta=(next.windowType==1?.7f:1.f)*32*(lineScale==0?1:lineScale);
+            next.records.push_back(record(0xfffb));const float delta=(smallSpacing?.7f:1.f)*32*(lineScale==0?1:lineScale);
             y=half(int32_t(float(y)-delta));s=half(int32_t(float(s)-delta));x=0;lineScale=0;t+=speed;
         } else {
             const uint16_t glyph=font.mapping[c];if(glyph>=font.glyphs.size())return false;
@@ -62,7 +63,9 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
         }
         if(next.records.size()>=2560)return false;
     }
+    if(next.windowType==1){next.geometry.width=232*.9f;next.geometry.height=64*.9f;}
     next.records.push_back(record(0xffff));next.state=5;next.alpha=0;next.lastTime=next.animationTime=now;
+    next.openedAt=now;
     static uint64_t serial=0;next.serial=++serial;
     *this=std::move(next);return true;
 }

@@ -49,6 +49,8 @@ private:
     mutable std::vector<float> messageDynamic;
     mutable std::string messageIdentity;
     mutable uint64_t messageSerial=0;
+    uint64_t messageWindowSerial=0;
+    unsigned messagePlacement=0;
     uint32_t messageRng=0x6d736777; // Presentation RNG adapter, separate from mechanics.
     ActorAnimationPack actorAnimations,partnerAnimations;
     ActorAnimationSample actorSample;

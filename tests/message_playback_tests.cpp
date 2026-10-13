@@ -53,7 +53,7 @@ int main(int argc,char**) {
     assert(direct.textVisible && !direct.tail && direct.box.x==-280 && direct.box.y==225);
     const auto left=messageWindowPlan({},3,-100,-60,255),right=messageWindowPlan({},7,100,-60,255);
     assert(left.textVisible && left.tail && right.tail && left.tailX<right.tailX);
-    assert(left.tipX>=-100 && right.tipX<=100 && left.tipY<left.tailY);
+    assert(left.tipX>=-100 && left.tipX<=left.tailX && right.tipX>=100 && right.tipX<=right.tailX && left.tipY<left.tailY);
     const auto above=messageWindowPlan({},3,-100,100,255);
     assert(!above.tail); // Speaker above the source tail boundary suppresses it.
     const auto invisible=messageWindowPlan({},3,-100,-60,0);
@@ -62,5 +62,11 @@ int main(int argc,char**) {
     assert(!halfway.textVisible && halfway.box.width>10 && halfway.box.width<560);
     const auto small=messageWindowPlan({0,0,208.8f,57.6f},7,100,20,255,1);
     assert(std::fabs(small.box.x+4.4f)<.001f && small.box.y==80 && small.textY==74);
+    // Enlarged effects crossing the scissor retain their visible mask fraction.
+    auto crop=messageGlyphCrop(50,15,30,33,25,75);
+    assert(crop.visible && crop.y==25 && crop.height==23 && crop.v0>0 && crop.v1==1);
+    crop=messageGlyphCrop(395,65,20,22,25,75);
+    assert(crop.visible && crop.width==5 && crop.height==10 && crop.u1==.25f && crop.v1<1);
+    assert(!messageGlyphCrop(50,100,20,22,25,75).visible);
     std::cout<<"source schedules, key waits, LF suppression, scrolling, fade and rollback passed\n";
 }

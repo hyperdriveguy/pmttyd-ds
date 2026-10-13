@@ -23,10 +23,15 @@ int main(int argc,char**) {
     clearCollision();Game game;Progress p;p.room=1;p.originalStory=3;p.position={0,-.999f};game.restore(p);
     game.tick({});assert(!game.harborStory.triggered);game.progress.position.z=-1;game.tick({});
     assert(game.harborStory.triggered && game.scene==Scene::Dialogue && game.harborStory.speaker==0x14b28);
+    assert((game.harborStory.speakerRoot==std::array<float,3>{175,15,-300}));
     std::vector<std::string> ids;std::vector<uint32_t> speakers;
     for(int t=0;t<10000 && !game.harborStory.finished;++t) {
         const auto& message=game.harborStory.message;
-        if(message.active() && (ids.empty() || ids.back()!=message.id())){ids.push_back(message.id());speakers.push_back(game.harborStory.speaker);}
+        if(message.active() && (ids.empty() || ids.back()!=message.id())){
+            ids.push_back(message.id());speakers.push_back(game.harborStory.speaker);
+            for(const auto& a:game.harborStory.actors)if(a.key==game.harborStory.speaker)
+                assert((game.harborStory.speakerRoot==std::array<float,3>{a.x,a.y,a.z}));
+        }
         Input input;input.confirm=true;game.tick(input);
         if(game.harborStory.locked())assert(!game.saveRequested && game.progress.originalStory==3);
     }

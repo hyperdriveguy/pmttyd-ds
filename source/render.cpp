@@ -289,11 +289,15 @@ void Renderer::originalMessage(const Game& g) {
         const auto& actor=g.harborStory.actors[i];if(actor.key!=g.harborStory.speaker)continue;
         // Native actor height adapter until NPC tribe+150 is imported.
         const float height=i==0?.55f:harborActorMetrics[i==1?0:1][1]+harborActorMetrics[i==1?0:1][2];
-        if(project({actor.x*.01f,actor.y*.01f+height,actor.z*.01f},anchorX,anchorY) &&
+        const auto& root=g.harborStory.speakerRoot;
+        if(project({root[0]*.01f,root[1]*.01f+height,root[2]*.01f},anchorX,anchorY) &&
            project({g.progress.position.x,g.groundHeight+g.jumpHeight,g.progress.position.z},marioX,marioY))
             mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
         break;
     }
+    if(messageWindowSerial!=message.serial){messageWindowSerial=message.serial;messagePlacement=mode;}
+    mode=messagePlacement;
+    if(message.windowType==11)mode=0;
     const auto plan=messageWindowPlan(message.geometry,mode,anchorX,anchorY,message.alpha,message.windowType);
     if(message.windowType!=11)messageBorder(plan,message.alpha,message.windowType);
     if(!plan.textVisible)return;
@@ -301,6 +305,7 @@ void Renderer::originalMessage(const Game& g) {
     uint32_t color=0x000000ff;
     for(size_t i=0;i<std::min(message.cursor,message.records.size());++i) {
         const auto& r=message.records[i];if(r.code==0xfff7){color=r.flags;continue;}if(r.code>=font.glyphs.size())continue;
+        if(float(message.scroll+r.y)>=std::fma(32.f,r.scale,-10.f))continue;
         const auto& glyph=font.glyphs[r.code];
         float x=200+(plan.textX+r.x)*.625f,y=120-(plan.textY+float(r.y)+message.scroll-2)*.5f;
         const float dynamic=(r.flags&1)?messageDynamic[i]:1;
@@ -309,20 +314,22 @@ void Renderer::originalMessage(const Game& g) {
             auto jitter=[&](){messageRng^=messageRng<<13;messageRng^=messageRng>>17;messageRng^=messageRng<<5;return (messageRng%10000)%3;};
             x+=jitter()*.625f;y-=jitter()*.5f;
         } else if((r.flags&4) && !(r.flags&1)) {
-            const float phase=.01f*message.elapsed-.02f*(plan.textX+r.x);
+            const float phase=.01f*float(g.ticks*1000/60-message.openedAt)-.02f*(plan.textX+r.x);
             x+=3.2f*std::cos(phase)*.625f;y+=3.2f*std::sin(phase)*.5f;
         }
         x+=float(glyph.width>>1)*(1-dynamic)*r.scale*.625f;
         y+=12*(1-dynamic)*r.scale*.5f;
         const float clipTop=120-plan.textY*.5f,clipBottom=clipTop+(message.windowType==1?126:100)*.5f;
-        // Native crop adapter: reject partially clipped masks rather than
-        // corrupting GPU scissor state used by the next screen.
-        if(y<clipTop || y+glyph.height*scaleY>clipBottom)continue;
-        Tex3DS_SubTexture sub{};sub.width=glyph.width;sub.height=glyph.height;
-        sub.left=glyph.x/512.f;sub.right=(glyph.x+glyph.width)/512.f;sub.top=1-glyph.y/256.f;sub.bottom=1-(glyph.y+glyph.height)/256.f;
-        C2D_Image image{&fontTexture.texture,&sub};C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(color>>24,(color>>16)&255,(color>>8)&255,(color&255)*message.alpha/255),1.f);
-        C2D_DrawImageAt(image,x,y,.5f,&tint,scaleX,scaleY);
+        // Relax admitted dynamic records even when the window clips the image.
         if(r.flags&1)messageDynamic[i]=std::fma(.5f,dynamic-1,1.f);
+        const auto crop=messageGlyphCrop(x,y,glyph.width*scaleX,glyph.height*scaleY,clipTop,clipBottom);
+        if(!crop.visible)continue;
+        Tex3DS_SubTexture sub{};sub.width=glyph.width;sub.height=glyph.height;
+        sub.left=(glyph.x+glyph.width*crop.u0)/512.f;sub.right=(glyph.x+glyph.width*crop.u1)/512.f;
+        sub.top=1-(glyph.y+glyph.height*crop.v0)/256.f;sub.bottom=1-(glyph.y+glyph.height*crop.v1)/256.f;
+        C2D_Image image{&fontTexture.texture,&sub};C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(color>>24,(color>>16)&255,(color>>8)&255,(color&255)*message.alpha/255),1.f);
+        const C2D_DrawParams params={{crop.x,crop.y,crop.width,crop.height},{0,0},.5f,0};
+        C2D_DrawImage(image,&params,&tint);
     }
 }
 void Renderer::messageBorder(const MessageWindowPlan& plan,uint8_t alpha,int type) {
@@ -529,13 +536,7 @@ void Renderer::overlay(const Game& g) {
     panel(8,7,174,28,Paper);
     char line[128];std::snprintf(line,sizeof(line),"Mario  HP %d/10",g.progress.hp);text(line,16,12,.54f,Ink);
     text((g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat)?"BATTLE STAGE":roomName(g.progress.room),205,12,.46f,rgb(255,246,222));
-    if(g.harborStory.locked())originalMessage(g);
-    else if(g.scene==Scene::Dialogue) {
-        panel(14,163,372,65,Paper);text(g.dialogue(),26,172,.55f,Ink);
-        text("A / touch >",308,208,.4f,Ink);
-    } else {
-        panel(8,207,384,27,Paper);text(g.prompt(),15,212,.43f,Ink);
-    }
+    panel(8,207,384,27,Paper);text(g.prompt(),15,212,.43f,Ink);
     if(g.scene==Scene::Battle) {
         std::snprintf(line,sizeof(line),"Lord Crump  HP %d/5",g.enemyHP);
         panel(216,40,176,27,Paper);text(line,223,45,.45f,Ink);
@@ -594,12 +595,6 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
     } else if(g.water.active()) {
         char line[64];std::snprintf(line,sizeof(line),"Mario  %d/10 HP",g.progress.hp);
         text(line,16,64,.72f,Ink);text("Partner: Goombella",16,105,.57f,Ink);
-    } else if(g.scene==Scene::Dialogue) {
-        const bool story=g.harborStory.locked();
-        const char* speaker=g.harborStory.speaker==0x14b28?"Goombella":g.harborStory.speaker==0x14b40?"Lord Crump":"X-Naut";
-        text(story?speaker:"Conversation",16,64,.76f,Ink);
-        button(story?(g.harborStory.message.waiting()?"Next / A or B":"Reveal / A or B"):"Next / A",16,105,288,49,true);
-        if(!story)button("Close / B",16,168,288,43,false);
     } else if(g.scene==Scene::Victory || g.scene==Scene::Defeat) {
         text(g.scene==Scene::Victory?"Battle complete":"Mario needs another try",16,64,.7f,Ink);
         button(g.scene==Scene::Victory?"Return to plaza / A":"Retry / A",16,107,288,48,true);

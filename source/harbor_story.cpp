@@ -20,6 +20,7 @@ void HarborStory::reset(bool available) {
 }
 bool HarborStory::print(int id,unsigned actor) {
     char key[20];std::snprintf(key,sizeof(key),"mac_0_%03d",id);speaker=actors[actor].key;
+    speakerRoot={actors[actor].x,actors[actor].y,actors[actor].z};
     if(!message.open(key,messages.find(key),font,now)){failed=true;return false;}return true;
 }
 bool HarborStory::begin(uint64_t time) {

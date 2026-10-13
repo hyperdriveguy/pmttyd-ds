@@ -2,6 +2,65 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+
+## 2026-10-13 — Original-style speaker bubbles and dialogue overlay suppression
+
+The harbor checkpoint now renders the original `f/msgWindow.tpl` ordinary
+border/shadow/tail masks, with source default(-280,225,560,176) geometry adapted
+to the400x240 top display. Print-entry speaker roots and cached left/right/
+offscreen placement use the recovered contracts; source tail endpoints aim
+at the attributed speaker through the current native camera. Bubble opening/
+closing interpolates from the speaker and ordinary anchored glyphs draw at
+full opacity. See [native contract](behavior/message/NATIVE_MESSAGE_BUBBLES.md)
+and [local asset conversion/licensing](ASSETS.md).
+
+Expanded parser controls with pos, scaleX, wave, col and closing controls,
+small, clear and wpos. Existing key/page/wait/speed/scale/dynamic/shake tokens
+and original ID/raw-byte preservation remain intact. Shake is now rendered;
+wave uses unaccelerated simulation-clock time and dynamic follows original
+draw-time relaxation. Partial glyph UV cropping keeps enlarged effects visible
+at the window boundary without leaking GPU scissor state. Ordinary source
+vertical admission precedes effects; clipped dynamic records still relax.
+Unsupported service controls reject atomically instead of dropping tokens.
+
+Top HP/location/interaction prompts and bottom menu/captions/buttons/notices/
+FPS disappear for ordinary dialogue and the entire locked harbor scene.
+A/B/touch still advance the original scene, and overlays restore on completion.
+Development notices use the original ordinary border without fabricated NPC
+attribution. No original dialogue was authored or rewritten.
+
+Validation: final `make test` passes **94 CTest / 96 Python tests**
+(`/tmp/textbox-test.log`); final `make all` builds3DSX without warnings
+(`/tmp/textbox-build.log`). Original-data `message_playback_tests original`
+parses/plays all20 opening payloads; `harbor_story_tests original` passes six
+source speakers/order/positions and story4 completion. Source contract verifier
+passes (`/tmp/textbox-source-contracts.log`); document audit checks691 Markdown
+files with0 broken links; `git diff --check` passes. Tests include control layout,
+rollback, source geometry/selector/equality/offscreen/tail gates, partial clipping
+and speaker snapshots. An initial new test incorrectly assumed right-side
+placement implied an endpoint on the right of its base; corrected it to check
+the recovered base-to-speaker interval. The initial assertion failure is not
+counted as a passing validation.
+
+Final isolated Azahar capture runs `tests/azahar_textboxes.py` using the native
+story3 fixture under `artifacts/azahar-textboxes-final/`. Reviewed opening,
+Crump page/Goombella responses, and final story4 overlay restoration; the script
+checks saved story4. The earlier rapid walkthrough also passes under
+`artifacts/azahar-textboxes/`. Sandbox Xvfb first failed display-socket access;
+the approved isolated run succeeds. User emulator profiles/saves are untouched.
+Original ISO/extracted raster assets/packs remain read-only-source/local/ignored.
+
+Limits/next: native eye/aim/FOV projection, Goombella0.55 height, extracted
+Crump/X-Naut billboard tops and separate shake RNG are explicit adapters,
+not measured source behavior. The tail uses a rotated original mask rather
+than the exact sheared GX quad. Complete NPC tribe heights/getScreenPoint,
+original shared RNG, full window types/history/selection/icon/pose/paper/audio/
+noise, original star indicator and matched Dolphin image comparison remain
+open. Arrival/tutorial/full-game story services and hardware performance remain
+unfinished. Next bind those consumers and compare original captures; do not
+claim complete dialogue or game equivalence from this slice.
+
+
 ## 2026-10-13 — Combined dialogue-window support and isolated validation
 
 Concurrent work committed the harbor/font foundation as48d8c73 and extended
