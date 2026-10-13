@@ -543,6 +543,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [free/reverse clear](../behavior/audio/MUSYX_STREAM_FREE_AND_REVERSE_STATE_CLEAR.md).
   Fresh selector/link, exits before descendants, deepest-first state0/enables
   and retained-slot writes pinned; resource/chain/providers/runtime open.
+- [x] Complete sndStreamFrq four-stage frequency/state2 pitch/
+  companion/recursive/IRQ body and ABI helpers —
+  [frequency chain](../behavior/audio/MUSYX_STREAM_FREQUENCY_AND_COMPANION_CHAIN.md).
+  Raw store/fresh gates/reference/multiply-before-divide/conversion/enables
+  pinned; mix/FP/chain/providers/runtime remain open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -2732,3 +2737,13 @@ Five IDs before recursion, deactivate-before-fresh-buffer-exit/link, parent exit
 before descendants and deepest-first retained-slot state0/enables pinned. Other
 record fields retained; missing links unwind earlier progress. Resource/chain/IRQ/
 provider domains/original free/audio/native binding open; EVT-01 stays OPEN.
+
+## 2026-10-13 — Stream frequency/companion-chain delivery
+
+Completed whole local
+[stream frequency](../behavior/audio/MUSYX_STREAM_FREQUENCY_AND_COMPANION_CHAIN.md).
+Eleven spans/422 anchors/16 calls verified; eight finite/exception-domain pitch
+vectors/fifteen stable chain models checked. Raw frequency-before-fresh-state2,
+reference/voice reads, single multiply-before-divide/signed conversion, retained
+frequency forwarding and four-stage enables pinned. Mix/FP/chain/IRQ/provider
+domains/original frequency/audio/native binding open; EVT-01 stays OPEN.

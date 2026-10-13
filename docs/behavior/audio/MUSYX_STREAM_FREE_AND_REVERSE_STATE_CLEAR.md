@@ -94,3 +94,8 @@ Remaining: stream frequency/mix, actual ID/state/voice/buffer/companion/IRQ/
 resource providers and valid value/index/extent/alias/lifetime/concurrency/stack/
 ABI/termination domains, transitive ARAM/DSP consumers and original chained
 free/deactivation/failure/audio traces. EVT-01 and native/full-game binding OPEN.
+
+## 2026-10-13 — Frequency follow-up
+
+[Frequency](MUSYX_STREAM_FREQUENCY_AND_COMPANION_CHAIN.md) closes the full frequency/state2 pitch/companion/
+recursive/IRQ body. Mix/FP/chain/provider domains/original audio/native binding open.

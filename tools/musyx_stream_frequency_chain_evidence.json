@@ -1,0 +1,2232 @@
+{
+  "schema": 1,
+  "scope": "Complete stream frequency four-stage write/state2 pitch/companion/recursive/IRQ body and ABI helpers; providers/runtime open",
+  "complete_bodies": [
+    "sndStreamFrq"
+  ],
+  "linked_only": [
+    "_savegpr_27",
+    "hwDisableIrq",
+    "hwSetPitch",
+    "GetPrivateIndex",
+    "hwEnableIrq",
+    "_restgpr_27"
+  ],
+  "dol_spans": [
+    {
+      "name": "sndStreamFrq",
+      "address": 2150088056,
+      "size": 1640,
+      "sha256": "318d5e82cb8b366f2740fd9730f36faa5f7d444a539072df91e296eac48c7201"
+    },
+    {
+      "name": "_savegpr_27",
+      "address": 2149992840,
+      "size": 4,
+      "sha256": "9b7068092a358c943c21b18b4e28928e880bfbb1b334082dfe973add4b6a6303"
+    },
+    {
+      "name": "hwDisableIrq",
+      "address": 2150180880,
+      "size": 56,
+      "sha256": "edb5198c972d01b93658216671fd046d6f96210b534bbfa30b6844c8db6138d2"
+    },
+    {
+      "name": "hwSetPitch",
+      "address": 2150173868,
+      "size": 120,
+      "sha256": "6f9378107d2ac6fa91bc577a7ee354e0e096bc955b3541eb23fdb0ab71b6093e"
+    },
+    {
+      "name": "GetPrivateIndex",
+      "address": 2150084632,
+      "size": 352,
+      "sha256": "4adccdc6efc6fa9693468f9b7eed6a5aff6bcb5b981def0f4251255c1ca71f6c"
+    },
+    {
+      "name": "hwEnableIrq",
+      "address": 2150180824,
+      "size": 56,
+      "sha256": "3bcc66eb43ecfd8c2739c9765c710b462e66bc98fe31d107c000e0d3e3b6fc81"
+    },
+    {
+      "name": "_restgpr_27",
+      "address": 2149992916,
+      "size": 4,
+      "sha256": "d92806e26a2751f9ee9be41b269c32d3537032c43680315c96e9f68ac99dc60b"
+    },
+    {
+      "name": "GPR27..31 fallthrough 0x80264988",
+      "address": 2149992840,
+      "size": 24,
+      "sha256": "b4814c06940feda1d69a09c2872ae96a0892aabf82650fa07c61274781041c99"
+    },
+    {
+      "name": "GPR27..31 fallthrough 0x802649d4",
+      "address": 2149992916,
+      "size": 24,
+      "sha256": "75acbd95e1851a499b7b350731fff4dbed648c791108274cf10ce6c7ccac1ed4"
+    },
+    {
+      "name": "Frequency constant 0x80429180",
+      "address": 2151846272,
+      "size": 8,
+      "sha256": "2b2979f362d94c89fe17a6e01637f14332de063fe7a544bdc5facfc046f4169f"
+    },
+    {
+      "name": "Frequency constant 0x80429188",
+      "address": 2151846280,
+      "size": 4,
+      "sha256": "3d22917de77936f93f4193051aa61afbeeed3570b06bd56fd721a0223557d468"
+    }
+  ],
+  "dol_anchors": {
+    "2150088064": "90010044",
+    "2150088068": "39610040",
+    "2150088072": "4bfe8c01",
+    "2150088084": "48016a7d",
+    "2150088088": "3c608040",
+    "2150088092": "38000008",
+    "2150088096": "3be398e8",
+    "2150088100": "38800000",
+    "2150088112": "8803000c",
+    "2150088120": "41820014",
+    "2150088124": "80030004",
+    "2150088132": "40820008",
+    "2150088136": "48000110",
+    "2150088140": "88030074",
+    "2150088144": "38840001",
+    "2150088148": "38630068",
+    "2150088156": "41820014",
+    "2150088160": "80030004",
+    "2150088168": "40820008",
+    "2150088172": "480000ec",
+    "2150088176": "88030074",
+    "2150088180": "38840001",
+    "2150088184": "38630068",
+    "2150088192": "41820014",
+    "2150088196": "80030004",
+    "2150088204": "40820008",
+    "2150088208": "480000c8",
+    "2150088212": "88030074",
+    "2150088216": "38840001",
+    "2150088220": "38630068",
+    "2150088228": "41820014",
+    "2150088232": "80030004",
+    "2150088240": "40820008",
+    "2150088244": "480000a4",
+    "2150088248": "88030074",
+    "2150088252": "38840001",
+    "2150088256": "38630068",
+    "2150088264": "41820014",
+    "2150088268": "80030004",
+    "2150088276": "40820008",
+    "2150088280": "48000080",
+    "2150088284": "88030074",
+    "2150088288": "38840001",
+    "2150088292": "38630068",
+    "2150088300": "41820014",
+    "2150088304": "80030004",
+    "2150088312": "40820008",
+    "2150088316": "4800005c",
+    "2150088320": "88030074",
+    "2150088324": "38840001",
+    "2150088328": "38630068",
+    "2150088336": "41820014",
+    "2150088340": "80030004",
+    "2150088348": "40820008",
+    "2150088352": "48000038",
+    "2150088356": "88030074",
+    "2150088360": "38840001",
+    "2150088364": "38630068",
+    "2150088372": "41820014",
+    "2150088376": "80030004",
+    "2150088384": "40820008",
+    "2150088388": "48000014",
+    "2150088392": "38630068",
+    "2150088396": "38840001",
+    "2150088400": "4200fee0",
+    "2150088404": "3880ffff",
+    "2150088408": "3c040001",
+    "2150088416": "418204e4",
+    "2150088420": "3c608040",
+    "2150088424": "38a398e8",
+    "2150088432": "3bc50054",
+    "2150088436": "3ba5000c",
+    "2150088452": "40820058",
+    "2150088456": "3c804330",
+    "2150088460": "3c608040",
+    "2150088464": "9381000c",
+    "2150088468": "80038540",
+    "2150088476": "90810008",
+    "2150088488": "90010014",
+    "2150088500": "90810010",
+    "2150088504": "8063004c",
+    "2150088528": "d8010018",
+    "2150088532": "8081001c",
+    "2150088536": "48014d55",
+    "2150088540": "3c608040",
+    "2150088544": "386398e8",
+    "2150088552": "3c1b0001",
+    "2150088560": "41820454",
+    "2150088564": "4801689d",
+    "2150088568": "38000008",
+    "2150088576": "38600000",
+    "2150088584": "8804000c",
+    "2150088592": "41820014",
+    "2150088596": "80040004",
+    "2150088604": "40820008",
+    "2150088608": "48000110",
+    "2150088612": "88040074",
+    "2150088616": "38630001",
+    "2150088620": "38840068",
+    "2150088628": "41820014",
+    "2150088632": "80040004",
+    "2150088640": "40820008",
+    "2150088644": "480000ec",
+    "2150088648": "88040074",
+    "2150088652": "38630001",
+    "2150088656": "38840068",
+    "2150088664": "41820014",
+    "2150088668": "80040004",
+    "2150088676": "40820008",
+    "2150088680": "480000c8",
+    "2150088684": "88040074",
+    "2150088688": "38630001",
+    "2150088692": "38840068",
+    "2150088700": "41820014",
+    "2150088704": "80040004",
+    "2150088712": "40820008",
+    "2150088716": "480000a4",
+    "2150088720": "88040074",
+    "2150088724": "38630001",
+    "2150088728": "38840068",
+    "2150088736": "41820014",
+    "2150088740": "80040004",
+    "2150088748": "40820008",
+    "2150088752": "48000080",
+    "2150088756": "88040074",
+    "2150088760": "38630001",
+    "2150088764": "38840068",
+    "2150088772": "41820014",
+    "2150088776": "80040004",
+    "2150088784": "40820008",
+    "2150088788": "4800005c",
+    "2150088792": "88040074",
+    "2150088796": "38630001",
+    "2150088800": "38840068",
+    "2150088808": "41820014",
+    "2150088812": "80040004",
+    "2150088820": "40820008",
+    "2150088824": "48000038",
+    "2150088828": "88040074",
+    "2150088832": "38630001",
+    "2150088836": "38840068",
+    "2150088844": "41820014",
+    "2150088848": "80040004",
+    "2150088856": "40820008",
+    "2150088860": "48000014",
+    "2150088864": "38840068",
+    "2150088868": "38630001",
+    "2150088872": "4200fee0",
+    "2150088876": "3860ffff",
+    "2150088880": "3c030001",
+    "2150088888": "41820308",
+    "2150088908": "40820060",
+    "2150088912": "3c804330",
+    "2150088916": "3c608040",
+    "2150088920": "9381001c",
+    "2150088924": "80038540",
+    "2150088928": "3c608040",
+    "2150088932": "90810018",
+    "2150088936": "386398e8",
+    "2150088952": "90010014",
+    "2150088964": "90810010",
+    "2150088968": "8063004c",
+    "2150088992": "d8010008",
+    "2150088996": "8081000c",
+    "2150089000": "48014b85",
+    "2150089004": "3c608040",
+    "2150089008": "386398e8",
+    "2150089016": "3c1b0001",
+    "2150089024": "41820280",
+    "2150089028": "480166cd",
+    "2150089032": "38000008",
+    "2150089036": "38600000",
+    "2150089044": "881f000c",
+    "2150089052": "41820014",
+    "2150089056": "801f0004",
+    "2150089064": "40820008",
+    "2150089068": "48000110",
+    "2150089072": "881f0074",
+    "2150089076": "38630001",
+    "2150089080": "3bff0068",
+    "2150089088": "41820014",
+    "2150089092": "801f0004",
+    "2150089100": "40820008",
+    "2150089104": "480000ec",
+    "2150089108": "881f0074",
+    "2150089112": "38630001",
+    "2150089116": "3bff0068",
+    "2150089124": "41820014",
+    "2150089128": "801f0004",
+    "2150089136": "40820008",
+    "2150089140": "480000c8",
+    "2150089144": "881f0074",
+    "2150089148": "38630001",
+    "2150089152": "3bff0068",
+    "2150089160": "41820014",
+    "2150089164": "801f0004",
+    "2150089172": "40820008",
+    "2150089176": "480000a4",
+    "2150089180": "881f0074",
+    "2150089184": "38630001",
+    "2150089188": "3bff0068",
+    "2150089196": "41820014",
+    "2150089200": "801f0004",
+    "2150089208": "40820008",
+    "2150089212": "48000080",
+    "2150089216": "881f0074",
+    "2150089220": "38630001",
+    "2150089224": "3bff0068",
+    "2150089232": "41820014",
+    "2150089236": "801f0004",
+    "2150089244": "40820008",
+    "2150089248": "4800005c",
+    "2150089252": "881f0074",
+    "2150089256": "38630001",
+    "2150089260": "3bff0068",
+    "2150089268": "41820014",
+    "2150089272": "801f0004",
+    "2150089280": "40820008",
+    "2150089284": "48000038",
+    "2150089288": "881f0074",
+    "2150089292": "38630001",
+    "2150089296": "3bff0068",
+    "2150089304": "41820014",
+    "2150089308": "801f0004",
+    "2150089316": "40820008",
+    "2150089320": "48000014",
+    "2150089324": "3bff0068",
+    "2150089328": "38630001",
+    "2150089332": "4200fee0",
+    "2150089336": "3860ffff",
+    "2150089340": "3c030001",
+    "2150089348": "41820138",
+    "2150089368": "40820060",
+    "2150089372": "3c804330",
+    "2150089376": "3c608040",
+    "2150089380": "9381001c",
+    "2150089384": "80038540",
+    "2150089388": "3c608040",
+    "2150089392": "90810018",
+    "2150089396": "386398e8",
+    "2150089412": "90010014",
+    "2150089424": "90810010",
+    "2150089428": "8063004c",
+    "2150089452": "d8010008",
+    "2150089456": "8081000c",
+    "2150089460": "480149b9",
+    "2150089464": "3c608040",
+    "2150089468": "386398e8",
+    "2150089476": "3c1b0001",
+    "2150089484": "418200b0",
+    "2150089488": "48016501",
+    "2150089496": "4bffed01",
+    "2150089500": "3c030001",
+    "2150089508": "41820094",
+    "2150089528": "40820060",
+    "2150089532": "3c804330",
+    "2150089536": "3c608040",
+    "2150089540": "9381001c",
+    "2150089544": "80038540",
+    "2150089548": "3c608040",
+    "2150089552": "90810018",
+    "2150089556": "386398e8",
+    "2150089572": "90010014",
+    "2150089584": "90810010",
+    "2150089588": "8063004c",
+    "2150089612": "d8010008",
+    "2150089616": "8081000c",
+    "2150089620": "48014919",
+    "2150089624": "3c608040",
+    "2150089628": "386398e8",
+    "2150089636": "3c030001",
+    "2150089644": "4182000c",
+    "2150089652": "4bfff9c5",
+    "2150089656": "48016421",
+    "2150089660": "4801641d",
+    "2150089664": "48016419",
+    "2150089668": "48016415",
+    "2150089672": "39610040",
+    "2150089676": "4bfe8609",
+    "2150089680": "80010044",
+    "2150089688": "38210040",
+    "2150088056": "9421ffc0",
+    "2150088060": "7c0802a6",
+    "2150088076": "7c7b1b78",
+    "2150088080": "7c9c2378",
+    "2150088104": "7fe3fb78",
+    "2150088108": "7c0903a6",
+    "2150088116": "28000000",
+    "2150088128": "7c1b0040",
+    "2150088152": "28000000",
+    "2150088164": "7c1b0040",
+    "2150088188": "28000000",
+    "2150088200": "7c1b0040",
+    "2150088224": "28000000",
+    "2150088236": "7c1b0040",
+    "2150088260": "28000000",
+    "2150088272": "7c1b0040",
+    "2150088296": "28000000",
+    "2150088308": "7c1b0040",
+    "2150088332": "28000000",
+    "2150088344": "7c1b0040",
+    "2150088368": "28000000",
+    "2150088380": "7c1b0040",
+    "2150088412": "2800ffff",
+    "2150088428": "1f640068",
+    "2150088440": "7f9ed92e",
+    "2150088444": "7c1dd8ae",
+    "2150088448": "28000002",
+    "2150088472": "7c65da14",
+    "2150088480": "c8421d40",
+    "2150088484": "c8010008",
+    "2150088492": "ec201028",
+    "2150088496": "c0621d48",
+    "2150088508": "c8010010",
+    "2150088512": "ec230072",
+    "2150088516": "ec001028",
+    "2150088520": "ec010024",
+    "2150088524": "fc00001e",
+    "2150088548": "7f63d82e",
+    "2150088556": "2800ffff",
+    "2150088572": "7fe4fb78",
+    "2150088580": "7c0903a6",
+    "2150088588": "28000000",
+    "2150088600": "7c1b0040",
+    "2150088624": "28000000",
+    "2150088636": "7c1b0040",
+    "2150088660": "28000000",
+    "2150088672": "7c1b0040",
+    "2150088696": "28000000",
+    "2150088708": "7c1b0040",
+    "2150088732": "28000000",
+    "2150088744": "7c1b0040",
+    "2150088768": "28000000",
+    "2150088780": "7c1b0040",
+    "2150088804": "28000000",
+    "2150088816": "7c1b0040",
+    "2150088840": "28000000",
+    "2150088852": "7c1b0040",
+    "2150088884": "2800ffff",
+    "2150088892": "1f630068",
+    "2150088896": "7f9ed92e",
+    "2150088900": "7c1dd8ae",
+    "2150088904": "28000002",
+    "2150088940": "c8421d40",
+    "2150088944": "7c63da14",
+    "2150088948": "c8010018",
+    "2150088956": "ec201028",
+    "2150088960": "c0621d48",
+    "2150088972": "c8010010",
+    "2150088976": "ec230072",
+    "2150088980": "ec001028",
+    "2150088984": "ec010024",
+    "2150088988": "fc00001e",
+    "2150089012": "7f63d82e",
+    "2150089020": "2800ffff",
+    "2150089040": "7c0903a6",
+    "2150089048": "28000000",
+    "2150089060": "7c1b0040",
+    "2150089084": "28000000",
+    "2150089096": "7c1b0040",
+    "2150089120": "28000000",
+    "2150089132": "7c1b0040",
+    "2150089156": "28000000",
+    "2150089168": "7c1b0040",
+    "2150089192": "28000000",
+    "2150089204": "7c1b0040",
+    "2150089228": "28000000",
+    "2150089240": "7c1b0040",
+    "2150089264": "28000000",
+    "2150089276": "7c1b0040",
+    "2150089300": "28000000",
+    "2150089312": "7c1b0040",
+    "2150089344": "2800ffff",
+    "2150089352": "1f630068",
+    "2150089356": "7f9ed92e",
+    "2150089360": "7c1dd8ae",
+    "2150089364": "28000002",
+    "2150089400": "c8421d40",
+    "2150089404": "7c63da14",
+    "2150089408": "c8010018",
+    "2150089416": "ec201028",
+    "2150089420": "c0621d48",
+    "2150089432": "c8010010",
+    "2150089436": "ec230072",
+    "2150089440": "ec001028",
+    "2150089444": "ec010024",
+    "2150089448": "fc00001e",
+    "2150089472": "7f63d82e",
+    "2150089480": "2800ffff",
+    "2150089492": "7f63db78",
+    "2150089504": "2800ffff",
+    "2150089512": "1f630068",
+    "2150089516": "7f9ed92e",
+    "2150089520": "7c1dd8ae",
+    "2150089524": "28000002",
+    "2150089560": "c8421d40",
+    "2150089564": "7c63da14",
+    "2150089568": "c8010018",
+    "2150089576": "ec201028",
+    "2150089580": "c0621d48",
+    "2150089592": "c8010010",
+    "2150089596": "ec230072",
+    "2150089600": "ec001028",
+    "2150089604": "ec010024",
+    "2150089608": "fc00001e",
+    "2150089632": "7c63d82e",
+    "2150089640": "2800ffff",
+    "2150089648": "7f84e378",
+    "2150089684": "7c0803a6",
+    "2150089692": "4e800020",
+    "2149992840": "936bffec",
+    "2149992844": "938bfff0",
+    "2149992848": "93abfff4",
+    "2149992852": "93cbfff8",
+    "2149992856": "93ebfffc",
+    "2149992860": "4e800020",
+    "2149992916": "836bffec",
+    "2149992920": "838bfff0",
+    "2149992924": "83abfff4",
+    "2149992928": "83cbfff8",
+    "2149992932": "83ebfffc",
+    "2149992936": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2150088072,
+      "target": 2149992840,
+      "name": "_savegpr_27"
+    },
+    {
+      "site": 2150088084,
+      "target": 2150180880,
+      "name": "hwDisableIrq"
+    },
+    {
+      "site": 2150088536,
+      "target": 2150173868,
+      "name": "hwSetPitch"
+    },
+    {
+      "site": 2150088564,
+      "target": 2150180880,
+      "name": "hwDisableIrq"
+    },
+    {
+      "site": 2150089000,
+      "target": 2150173868,
+      "name": "hwSetPitch"
+    },
+    {
+      "site": 2150089028,
+      "target": 2150180880,
+      "name": "hwDisableIrq"
+    },
+    {
+      "site": 2150089460,
+      "target": 2150173868,
+      "name": "hwSetPitch"
+    },
+    {
+      "site": 2150089488,
+      "target": 2150180880,
+      "name": "hwDisableIrq"
+    },
+    {
+      "site": 2150089496,
+      "target": 2150084632,
+      "name": "GetPrivateIndex"
+    },
+    {
+      "site": 2150089620,
+      "target": 2150173868,
+      "name": "hwSetPitch"
+    },
+    {
+      "site": 2150089652,
+      "target": 2150088056,
+      "name": "sndStreamFrq"
+    },
+    {
+      "site": 2150089656,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    },
+    {
+      "site": 2150089660,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    },
+    {
+      "site": 2150089664,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    },
+    {
+      "site": 2150089668,
+      "target": 2150180824,
+      "name": "hwEnableIrq"
+    },
+    {
+      "site": 2150089676,
+      "target": 2149992916,
+      "name": "_restgpr_27"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "literals": {
+    "unsigned_bias_bits": "4330000000000000",
+    "scale_bits": "45800000"
+  },
+  "derived_pitch_vectors": [
+    {
+      "requested_word": 32000,
+      "reference_word": 32000,
+      "single_multiplied": 131072000.0,
+      "single_quotient": 4096.0,
+      "finite_signed32_conversion": true,
+      "converted_word": 4096
+    },
+    {
+      "requested_word": 48000,
+      "reference_word": 32000,
+      "single_multiplied": 196608000.0,
+      "single_quotient": 6144.0,
+      "finite_signed32_conversion": true,
+      "converted_word": 6144
+    },
+    {
+      "requested_word": 44100,
+      "reference_word": 32000,
+      "single_multiplied": 180633600.0,
+      "single_quotient": 5644.7998046875,
+      "finite_signed32_conversion": true,
+      "converted_word": 5644
+    },
+    {
+      "requested_word": 0,
+      "reference_word": 32000,
+      "single_multiplied": 0.0,
+      "single_quotient": 0.0,
+      "finite_signed32_conversion": true,
+      "converted_word": 0
+    },
+    {
+      "requested_word": 4294967295,
+      "reference_word": 32000,
+      "single_multiplied": 17592186044416.0,
+      "single_quotient": 549755840.0,
+      "finite_signed32_conversion": true,
+      "converted_word": 549755840
+    },
+    {
+      "requested_word": 1,
+      "reference_word": 4294967295,
+      "single_multiplied": 4096.0,
+      "single_quotient": 9.5367431640625e-07,
+      "finite_signed32_conversion": true,
+      "converted_word": 0
+    },
+    {
+      "requested_word": 4294967295,
+      "reference_word": 1,
+      "single_multiplied": 17592186044416.0,
+      "single_quotient": 17592186044416.0,
+      "finite_signed32_conversion": false,
+      "converted_word": null
+    },
+    {
+      "requested_word": 1,
+      "reference_word": 0,
+      "single_multiplied": 4096.0,
+      "single_quotient": null,
+      "finite_signed32_conversion": false,
+      "converted_word": null
+    }
+  ],
+  "stage_bindings": [
+    {
+      "stage": 0,
+      "disable_site": 2150088084,
+      "frequency_store_site": 2150088440,
+      "pitch_site": 2150088536,
+      "enable_site": 2150089668
+    },
+    {
+      "stage": 1,
+      "disable_site": 2150088564,
+      "frequency_store_site": 2150088896,
+      "pitch_site": 2150089000,
+      "enable_site": 2150089664
+    },
+    {
+      "stage": 2,
+      "disable_site": 2150089028,
+      "frequency_store_site": 2150089356,
+      "pitch_site": 2150089460,
+      "enable_site": 2150089660
+    },
+    {
+      "stage": 3,
+      "disable_site": 2150089488,
+      "frequency_store_site": 2150089516,
+      "pitch_site": 2150089620,
+      "enable_site": 2150089656
+    }
+  ],
+  "derived_chain_vectors": [
+    {
+      "length": 1,
+      "missing_last": false,
+      "initial_states": [
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 0,
+          "voice": 10
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 1,
+      "enable_count": 1
+    },
+    {
+      "length": 2,
+      "missing_last": false,
+      "initial_states": [
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 11,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 0,
+          "voice": 10
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "frequency_store",
+          "id": 1
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 1,
+          "voice": 11
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 2,
+      "enable_count": 2
+    },
+    {
+      "length": 3,
+      "missing_last": false,
+      "initial_states": [
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 11,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 12,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 0,
+          "voice": 10
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "frequency_store",
+          "id": 1
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 1,
+          "voice": 11
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "frequency_store",
+          "id": 2
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 2,
+          "voice": 12
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 3,
+      "enable_count": 3
+    },
+    {
+      "length": 4,
+      "missing_last": false,
+      "initial_states": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 11,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 12,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 13,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 0,
+          "voice": 10
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "frequency_store",
+          "id": 1
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 1,
+          "voice": 11
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "frequency_store",
+          "id": 2
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 2,
+          "voice": 12
+        },
+        {
+          "request": "disable",
+          "stage": 3
+        },
+        {
+          "request": "frequency_store",
+          "id": 3
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 3,
+          "voice": 13
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 4,
+      "enable_count": 4
+    },
+    {
+      "length": 5,
+      "missing_last": false,
+      "initial_states": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 11,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 12,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 13,
+          "companion": 4
+        },
+        {
+          "id": 4,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 14,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 0,
+          "voice": 10
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "frequency_store",
+          "id": 1
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 1,
+          "voice": 11
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "frequency_store",
+          "id": 2
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 2,
+          "voice": 12
+        },
+        {
+          "request": "disable",
+          "stage": 3
+        },
+        {
+          "request": "frequency_store",
+          "id": 3
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 3,
+          "voice": 13
+        },
+        {
+          "request": "recursive",
+          "id": 4
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 4
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 4,
+          "voice": 14
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 5,
+      "enable_count": 5
+    },
+    {
+      "length": 6,
+      "missing_last": false,
+      "initial_states": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 11,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 12,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 13,
+          "companion": 4
+        },
+        {
+          "id": 4,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 14,
+          "companion": 5
+        },
+        {
+          "id": 5,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 15,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 0,
+          "voice": 10
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "frequency_store",
+          "id": 1
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 1,
+          "voice": 11
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "frequency_store",
+          "id": 2
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 2,
+          "voice": 12
+        },
+        {
+          "request": "disable",
+          "stage": 3
+        },
+        {
+          "request": "frequency_store",
+          "id": 3
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 3,
+          "voice": 13
+        },
+        {
+          "request": "recursive",
+          "id": 4
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 4
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 4,
+          "voice": 14
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "frequency_store",
+          "id": 5
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 5,
+          "voice": 15
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 6,
+      "enable_count": 6
+    },
+    {
+      "length": 7,
+      "missing_last": false,
+      "initial_states": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 11,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 12,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 13,
+          "companion": 4
+        },
+        {
+          "id": 4,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 14,
+          "companion": 5
+        },
+        {
+          "id": 5,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 15,
+          "companion": 6
+        },
+        {
+          "id": 6,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 16,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 0,
+          "voice": 10
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "frequency_store",
+          "id": 1
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 1,
+          "voice": 11
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "frequency_store",
+          "id": 2
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 2,
+          "voice": 12
+        },
+        {
+          "request": "disable",
+          "stage": 3
+        },
+        {
+          "request": "frequency_store",
+          "id": 3
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 3,
+          "voice": 13
+        },
+        {
+          "request": "recursive",
+          "id": 4
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 4
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 4,
+          "voice": 14
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "frequency_store",
+          "id": 5
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 5,
+          "voice": 15
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "frequency_store",
+          "id": 6
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 6,
+          "voice": 16
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 7,
+      "enable_count": 7
+    },
+    {
+      "length": 1,
+      "missing_last": true,
+      "initial_states": [
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 1
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 0,
+          "voice": 10
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 2,
+      "enable_count": 2
+    },
+    {
+      "length": 2,
+      "missing_last": true,
+      "initial_states": [
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 11,
+          "companion": 2
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 0,
+          "voice": 10
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "frequency_store",
+          "id": 1
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 1,
+          "voice": 11
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 3,
+      "enable_count": 3
+    },
+    {
+      "length": 3,
+      "missing_last": true,
+      "initial_states": [
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 11,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 12,
+          "companion": 3
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 0,
+          "voice": 10
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "frequency_store",
+          "id": 1
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 1,
+          "voice": 11
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "frequency_store",
+          "id": 2
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 2,
+          "voice": 12
+        },
+        {
+          "request": "disable",
+          "stage": 3
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 4,
+      "enable_count": 4
+    },
+    {
+      "length": 4,
+      "missing_last": true,
+      "initial_states": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 11,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 12,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 13,
+          "companion": 4
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 0,
+          "voice": 10
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "frequency_store",
+          "id": 1
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 1,
+          "voice": 11
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "frequency_store",
+          "id": 2
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 2,
+          "voice": 12
+        },
+        {
+          "request": "disable",
+          "stage": 3
+        },
+        {
+          "request": "frequency_store",
+          "id": 3
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 3,
+          "voice": 13
+        },
+        {
+          "request": "recursive",
+          "id": 4
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 5,
+      "enable_count": 5
+    },
+    {
+      "length": 5,
+      "missing_last": true,
+      "initial_states": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 11,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 12,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 13,
+          "companion": 4
+        },
+        {
+          "id": 4,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 14,
+          "companion": 5
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 0,
+          "voice": 10
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "frequency_store",
+          "id": 1
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 1,
+          "voice": 11
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "frequency_store",
+          "id": 2
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 2,
+          "voice": 12
+        },
+        {
+          "request": "disable",
+          "stage": 3
+        },
+        {
+          "request": "frequency_store",
+          "id": 3
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 3,
+          "voice": 13
+        },
+        {
+          "request": "recursive",
+          "id": 4
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 4
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 4,
+          "voice": 14
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 6,
+      "enable_count": 6
+    },
+    {
+      "length": 5,
+      "missing_last": false,
+      "initial_states": [
+        1,
+        2,
+        3,
+        255,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 1,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 11,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 3,
+          "frequency": 44100,
+          "voice": 12,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 255,
+          "frequency": 44100,
+          "voice": 13,
+          "companion": 4
+        },
+        {
+          "id": 4,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 14,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "frequency_store",
+          "id": 1
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 1,
+          "voice": 11
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "frequency_store",
+          "id": 2
+        },
+        {
+          "request": "disable",
+          "stage": 3
+        },
+        {
+          "request": "frequency_store",
+          "id": 3
+        },
+        {
+          "request": "recursive",
+          "id": 4
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 4
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 4,
+          "voice": 14
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 5,
+      "enable_count": 5
+    },
+    {
+      "length": 5,
+      "missing_last": false,
+      "initial_states": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 3,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 3,
+          "frequency": 44100,
+          "voice": 11,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 3,
+          "frequency": 44100,
+          "voice": 12,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 3,
+          "frequency": 44100,
+          "voice": 13,
+          "companion": 4
+        },
+        {
+          "id": 4,
+          "state": 3,
+          "frequency": 44100,
+          "voice": 14,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "frequency_store",
+          "id": 1
+        },
+        {
+          "request": "disable",
+          "stage": 2
+        },
+        {
+          "request": "frequency_store",
+          "id": 2
+        },
+        {
+          "request": "disable",
+          "stage": 3
+        },
+        {
+          "request": "frequency_store",
+          "id": 3
+        },
+        {
+          "request": "recursive",
+          "id": 4
+        },
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 4
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 5,
+      "enable_count": 5
+    },
+    {
+      "length": 5,
+      "missing_last": false,
+      "initial_states": [
+        2,
+        0,
+        2,
+        1,
+        2
+      ],
+      "rows": [
+        {
+          "id": 0,
+          "state": 2,
+          "frequency": 44100,
+          "voice": 10,
+          "companion": 1
+        },
+        {
+          "id": 1,
+          "state": 0,
+          "frequency": 123,
+          "voice": 11,
+          "companion": 2
+        },
+        {
+          "id": 2,
+          "state": 2,
+          "frequency": 123,
+          "voice": 12,
+          "companion": 3
+        },
+        {
+          "id": 3,
+          "state": 1,
+          "frequency": 123,
+          "voice": 13,
+          "companion": 4
+        },
+        {
+          "id": 4,
+          "state": 2,
+          "frequency": 123,
+          "voice": 14,
+          "companion": 4294967295
+        }
+      ],
+      "ordered_requests": [
+        {
+          "request": "disable",
+          "stage": 0
+        },
+        {
+          "request": "frequency_store",
+          "id": 0
+        },
+        {
+          "request": "hwSetPitch",
+          "id": 0,
+          "voice": 10
+        },
+        {
+          "request": "disable",
+          "stage": 1
+        },
+        {
+          "request": "enable"
+        },
+        {
+          "request": "enable"
+        }
+      ],
+      "disable_count": 2,
+      "enable_count": 2
+    }
+  ]
+}

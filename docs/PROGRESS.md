@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero stream frequency chain
+
+Completed sndStreamFrq/ABI helpers; checked EVT-01 portion.
+[Frequency](behavior/audio/MUSYX_STREAM_FREQUENCY_AND_COMPANION_CHAIN.md)
+pins raw frequency-before-fresh-state2, reference/voice reads, exact single
+multiply-before-divide/signed conversion, retained-frequency companions/recursion
+and four-stage enables. Mix/FP/chain/IRQ/providers/original audio remain open.
+
+Validation: read-only ISO manifest passed11 spans,422 anchors,16 calls. Eight
+finite/exception-domain pitch vectors/fifteen stable chain models checked for
+writes/state2 requests/partial progress/recursion/IRQ counts. Link audit passed904
+Markdown files/zero broken links; scoped `git diff --check` passed. Mathematical
+source deductions are separate from original execution; invalid FP/conversion
+outputs unresolved. Documentation/metadata only; no `make test`/`make all` rerun.
+Fresh full original ELF/listing/generator stay `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded. Previously approved push remains
+pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 stream mix and actual frequency/reference/ID/state/
+voice/companion/IRQ/providers and valid value/index/extent/alias/lifetime/
+concurrency/stack/ABI/termination/FP/conversion domains, transitive ARAM/DSP
+consumers and original frequency/chained partial-update/audio traces. Remaining
+macro/song/backend, lower-priority inbox and full native/game work remain open.
+
 ## 2026-10-13 — Inbox priority-zero stream free/reverse clear
 
 Completed sndStreamFree/ABI helpers; checked EVT-01 portion.
