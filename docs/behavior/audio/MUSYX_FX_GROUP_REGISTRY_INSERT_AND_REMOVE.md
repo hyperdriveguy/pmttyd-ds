@@ -105,3 +105,5 @@ Remaining: sndPushGroup/sndPopGroup/project residency and count reset writers;
 entry sorting/pointer ownership, voice references on unload, IRQ/concurrency/
 capacity/refcount domains and original group/start/unload traces. Registration,
 reference and mutation contracts are answered; complete audio chain stays OPEN.
+
+[Complete group push/pop and resource-list request order](MUSYX_GROUP_PUSH_POP_AND_RESOURCE_LISTS.md) plus [game warm-up/loader](GAME_SOUND_GROUP_WARMUP_AND_LOADER_REQUESTS.md) now closes those exact local producers and static project-list bindings. Actual file/memory/voice residency and child resource/stop internals remain open.

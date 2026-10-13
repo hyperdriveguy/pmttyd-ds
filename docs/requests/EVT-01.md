@@ -35,6 +35,12 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   counts, live FX byte9 mutation and compaction —
   [registry insert/remove](../behavior/audio/MUSYX_FX_GROUP_REGISTRY_INSERT_AND_REMOVE.md).
   Project/group residency, unload/voice lifetime and other writers remain open.
+- [x] Complete sndPushGroup/sndPopGroup/InsertData resource-list and
+  stack request order, psndPushGroup/game loaded-bank push/free wrappers,
+  and original12-group project-list source bindings —
+  [group lifecycle](../behavior/audio/MUSYX_GROUP_PUSH_POP_AND_RESOURCE_LISTS.md),
+  [game loader](../behavior/audio/GAME_SOUND_GROUP_WARMUP_AND_LOADER_REQUESTS.md).
+  Child registries/stop/memory/loading/source/runtime residency remain open.
 - [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -553,3 +559,23 @@ listings regenerated under `/tmp`. Refcount boundary vectors retain0/1/2/65535
 wrap semantics. No native code, resource conversion or ISO mutation. Complete
 sndPushGroup/sndPopGroup/residency/sorting/unload/voice/IRQ/source/runtime chain
 remains OPEN; source request text remains unchanged.
+
+### 2026-10-13 — Group lifecycle, pool lists and game loader bridge
+
+[Complete group lifecycle](../behavior/audio/MUSYX_GROUP_PUSH_POP_AND_RESOURCE_LISTS.md)
+closes early stack publication, five typed resource lists/ranges, conditional
+sample registration, FX insertion and reverse-sample pop/removal order. Pop
+requests emitter/sequence/macro/sample voice stops before resource removal;
+child results/residency are not inferred. InsertData preserves exact pool offsets,
+key tags, missing-record delegate calls and raw widths. [Game loader](../behavior/audio/GAME_SOUND_GROUP_WARMUP_AND_LOADER_REQUESTS.md)
+closes busy/index/ready warm-up, bank captures, explicit-list versus sequential
+count behavior, raw sample-address0 and temporary-buffer-only free.
+
+Validation:29 body spans (6 complete/23 linked),476 anchors and56 direct call
+sites pass generic verifier; original project resource hash also passes in its
+resource-span slot (0 map nodes). Independent original pmario.proj parse finds
+12 groups0..11,2998 list occurrences and matching forward/reverse samples in
+all12. Group6 includes775/776 samples and994/995 macros. Fresh full listings/
+derived reports stay `/tmp`; no original asset export or native change. Child
+SDir/pool/sample/stop, actual residency/sorting/voice/source/hardware/original
+execution remains OPEN. Source request text is unchanged.

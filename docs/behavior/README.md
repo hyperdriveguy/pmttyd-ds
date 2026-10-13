@@ -49,6 +49,8 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [MusyX group lifecycle/resource lists](audio/MUSYX_GROUP_PUSH_POP_AND_RESOURCE_LISTS.md) | Complete push/pop/InsertData stack and ordered typed/ranged requests;12 original groups/2998 IDs and Hammer dependencies | Child sample/pool/stop/memory/voice/source/runtime residency |
+| [Game sound group loader](audio/GAME_SOUND_GROUP_WARMUP_AND_LOADER_REQUESTS.md) | Complete busy/index/ready warm-up, two bank-push/count modes and temporary-buffer free | Actual file/resource/init/bank/source/runtime residency and original traces |
 | [MusyX FX registry insert/remove](audio/MUSYX_FX_GROUP_REGISTRY_INSERT_AND_REMOVE.md) | Complete duplicate/new registration,128 cap, references/live entry byte9=31 and ordered compaction | Project/group residency, sorting/pointer/unload/voice/IRQ domains and original runtime |
 | [MusyX synth resource/control cores](audio/MUSYX_SYNTH_EFFECT_RESOURCE_AND_CONTROL_CORES.md) | Complete loaded-FX query/bsearch/comparator/start dispatch and controller/KeyOff voice-chain requests | Registry/voice/macro/MIDI producers and actual hardware/runtime; linked bodies do not imply completion |
 | [MusyX effect API/voice/IRQ](audio/MUSYX_EFFECT_API_WRAPPERS_AND_VOICE_LOOKUP.md) | Eight complete public wrapper/voice-map/IRQ bodies, external-ID returns and separate nesting | Core synth/resource/map/default-table provisioning and OS/hardware/original playback |

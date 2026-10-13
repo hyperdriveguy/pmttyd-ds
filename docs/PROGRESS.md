@@ -3,6 +3,32 @@
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
 
+## 2026-10-13 — Priority0 group lifecycle and game audio loader source bridge
+
+Delivered [complete group push/pop/resource lists](behavior/audio/MUSYX_GROUP_PUSH_POP_AND_RESOURCE_LISTS.md)
+and [game warm-up/loaded-bank/free](behavior/audio/GAME_SOUND_GROUP_WARMUP_AND_LOADER_REQUESTS.md).
+Group push publishes stack pointers before resources, preserves typed pool/list
+ranges and FX insertion; pop decrements first, requests voice stops, removes
+samples backward and remaining lists forward. Game explicit-list push counts
+attempts while sequential mode counts exact successes; warm-up ignores push
+returns. Ready and return values are not proof of actual residency. Marked those
+local EVT-01 portions complete, leaving child/source/runtime ownership open.
+
+Validation: generic lifecycle manifest29 spans (6 complete/23 linked),476
+anchors,56 resolved direct calls and1 original project resource hash passes
+(no map nodes). Independent project parse12 groups0..11/2998 IDs; reverse
+samples match forward reversal in all12; group6 contains Hammer775/776 samples
+and994/995 macros. Fresh complete ELFs/listings and derived report remain `/tmp`.
+Link audit726 Markdown files/0 broken links; whitespace checks pass. Docs and
+metadata only: no make rerun, native code or original asset/code-body export.
+Unrelated staged/worktree edits remain excluded from this commit.
+
+Next/limits: sample-directory/reference/per-kind pool registry producers,
+actual file/sample/project/bank initialization and residency, voice-stop/MIDI/
+macro/OS/hardware/source/runtime still open. Continue priority0 these source
+owners and calc3D/live audio/query bindings, then priority1 damage/counter graph.
+No original executed/audio/hardware/full-game completion claim.
+
 ## 2026-10-13 — Priority0 FX registry insertion/removal and live resource mutation
 
 Delivered [complete FX registry producers](behavior/audio/MUSYX_FX_GROUP_REGISTRY_INSERT_AND_REMOVE.md).
