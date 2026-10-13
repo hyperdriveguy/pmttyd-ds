@@ -132,6 +132,7 @@ suffix.
 | [Unit status check](battle/BATTLE_UNIT_CHECK_STATUS.md) | Complete null-gated GetStatus/6-compare/+759 test with exact {0,1} domain | GetStatus internals, code table, ownership and effects |
 | [Hit check filter](battle/BATTLE_HIT_CHECK_FILTER.md) | Complete 8+6 arg marshal, hitVec call, six output floats and residue return | Owner/table/lane meanings, cadence and effects |
 | [Message search](message/MESSAGE_MSG_SEARCH.md) | Complete two-table binary search with gp fallback and no miss-null | Table ownership, key/value contracts, cadence and effects |
+| [Hit-vector traversal order](battle/BATTLE_HIT_VEC_TRAVERSAL_ORDER.md) | Complete 4-region/call-census/return skeleton with region-1 counter asymmetry and NaN-safe gate patterns | Triangle math, chunk ownership, callback identity and effects |
 | [Action-class table builder](battle/BATTLE_MAKE_ACT_CLASS_TABLE.md) | Complete kind-gated record regions with tags/ids, flag-pair overwrites, count publication and index clamp | Class/flag/id meanings, table lifetime, msgSearch semantics and effects |
 | [Bero normal placement](overworld/OVERWORLD_BERO_NORMAL_PLACEMENT.md) | Complete six-lane int→float setup, degree/radian trig pair, GP publication and bottomless chain with ISO-read SDA values | Lane/table meanings, hitCheckFilter semantics, cadence and placement |
 | [Bero length leaf](overworld/OVERWORLD_BERO_LENGTH_LEAF.md) | Complete table/float and low-12 threshold paths into evtSetFloat with ISO-read 30.0/60.0 | Table semantics, provenance, cadence and effects |
