@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [MusyX ARAM upload/stream bridge](audio/MUSYX_ARAM_UPLOAD_AND_HARDWARE_STREAM_BRIDGE.md) | Complete raw generic upload, high/low queue and aligned DCStoreRange stream flush/init/exit/address;25 direct DOL callers | Stream caller/providers/extent/lifetime and SDK/cache/DMA/original execution |
 | [MusyX ARAM initialization/hooks](audio/MUSYX_ARAM_INITIALIZATION_AND_ALLOCATOR_HOOKS.md) | Complete zero-buffer allocation/fill/post/wait/free, limits/reset ordering and indirect hooks | Hook/provider/SDK/queue reinit/concurrency and original DMA/runtime |
 | [MusyX ARAM stream lists](audio/MUSYX_ARAM_STREAM_BUFFER_LISTS_AND_LIFETIME.md) | Complete64-descriptor init, cached/downward allocation, getter/default pointer and free traversal | List/predecessor/order/membership domains, cache producers and actual stream/voice lifetime |
 | [MusyX ARAM sample store](audio/MUSYX_ARAM_SAMPLE_STORE_AND_CURSOR_REWIND.md) | Complete direct/chunk upload, capacity/32-byte alignment, cursor-only removal, callback configuration and address leaves | Initialization/cache/stream/source/caller order and SDK/DMA/original playback |

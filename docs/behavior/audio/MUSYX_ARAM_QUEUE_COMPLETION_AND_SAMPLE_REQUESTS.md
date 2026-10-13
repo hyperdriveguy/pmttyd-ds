@@ -81,3 +81,5 @@ Remaining: queue initialization and other producers, valid priority/request/
 callback/index/count/concurrency invariants, SDK ARQ/interrupt/DMA and actual
 original transfer/lifetime traces. Two complete local bodies and the sample
 store's low-queue request order are answered; full backend/runtime remains OPEN.
+
+[Complete generic upload and hardware stream bridge](MUSYX_ARAM_UPLOAD_AND_HARDWARE_STREAM_BRIDGE.md) now supplies the high/low producer, retained user callback/argument and full-word priority normalization. [Initialization](MUSYX_ARAM_INITIALIZATION_AND_ALLOCATOR_HOOKS.md) supplies queue reset and zero upload. Caller/source/SDK/concurrency/runtime invariants remain open.

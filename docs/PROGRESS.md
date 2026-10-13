@@ -5,6 +5,29 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 generic ARAM upload and hardware stream bridge
+
+Delivered [upload/stream bridge](behavior/audio/MUSYX_ARAM_UPLOAD_AND_HARDWARE_STREAM_BRIDGE.md).
+Five complete bodies pin raw upload/full-word priority normalization/user callback,
+high/low queue post-before-count/index and hardware stream offset/length alignment,
+DCStoreRange and exact init/exit/address delegation. The flush ignores returned
+active size; play-buffer wrapper reads an address, not hardware playback position.
+Marked local EVT-01 portions complete; full stream/source/runtime remains OPEN.
+
+Validation: generic read-only verifier16 spans (5 complete/11 linked),114 anchors,
+14 resolved direct calls passes. Independent whole-DOL aligned caller scan25
+sites (17 Flush/1 Get in streamHandle,1 Init in sndStreamAllocEx,5 Exit in
+sndStreamFree,1 upload in Flush), each instruction anchored. Eight priority and
+42 offset/count vectors remain arithmetic deductions, not original execution.
+Full inspection ELFs/listings stay `/tmp`. Link audit739 Markdown files/0 broken;
+whitespace checks pass. Docs/source metadata only: no make rerun, native change,
+original body/bank export. Isolated index excludes unrelated staged/worktree work.
+
+Next/limits: actual streamHandle/AllocEx/Free caller ownership, source/providers,
+valid callback/index/count/offset/extent/lifetime/concurrency domains, OS/cache/
+ARQ/DMA and original audio traces. Continue priority0 source/live SFX/calc3D
+owners, then priority1 damage graph. No playback/hardware/full-game completion.
+
 ## 2026-10-13 — Original lecture choices, talk requests and story11 reload
 
 [Native lecture binding](behavior/story/NATIVE_LECTURE_CHOICES_AND_RELOAD.md)

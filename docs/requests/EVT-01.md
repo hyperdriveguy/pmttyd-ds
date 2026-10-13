@@ -59,6 +59,11 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [stream lists](../behavior/audio/MUSYX_ARAM_STREAM_BUFFER_LISTS_AND_LIFETIME.md).
   Exact predecessor/global-head writes retained; source list/order/membership,
   default-cache producers/SDK/DMA/voice/original execution remain open.
+- [x] Complete aramUploadData and hwFlushStream/InitStream/ExitStream/
+  GetStreamPlayBuffer local bodies plus scoped25-site direct DOL caller census —
+  [upload/stream bridge](../behavior/audio/MUSYX_ARAM_UPLOAD_AND_HARDWARE_STREAM_BRIDGE.md).
+  Raw upload/full-word priority, alignment/cache request/callback order pinned;
+  caller stream engine/providers/extent/lifetime/SDK/DMA/runtime remain open.
 - [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -658,3 +663,21 @@ vectors checked; a larger-candidate predecessor example is static arithmetic,
 not original execution. Complete ELFs/listings remain `/tmp`; no native change
 or original code-body/bank export. Default-cache/hook providers, source/list/
 cycle/order/membership domains, stream upload/SDK/DMA/voice/original traces OPEN.
+
+### 2026-10-13 — Generic ARAM upload and hardware stream request bridge
+
+[Five complete local bodies](../behavior/audio/MUSYX_ARAM_UPLOAD_AND_HARDWARE_STREAM_BRIDGE.md)
+close raw upload words, full-word nonzero→high/priority1, user callback/argument,
+post-before-count/index and no completion wait. hwFlushStream requests the ordinal
+address first, ignores the returned descriptor size, aligns offset/length with
+word wrap, requests DCStoreRange and posts high. Init/exit/play-address wrappers
+preserve exact child arguments/returns without extra lifetime or status policy.
+The play-buffer wrapper does not query hardware play position.
+
+Validation: read-only manifest16 spans (5 complete/11 linked),114 anchors and14
+resolved direct calls passes. Whole-DOL aligned direct census25 sites:17 Flush/1
+Get in streamHandle,1 Init in sndStreamAllocEx,5 Exit in sndStreamFree,1 upload in
+Flush. Eight priority and42 offset/count boundary vectors are derived evidence;
+no original function executes. Fresh full ELFs/listings stay `/tmp`; no native
+change/code-body/bank export. Caller/indirect/REL/dynamic/source/extent/lifetime/
+SDK/cache/ARQ/DMA/original audio traces remain OPEN.
