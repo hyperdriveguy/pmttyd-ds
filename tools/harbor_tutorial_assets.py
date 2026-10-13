@@ -78,6 +78,8 @@ def build(iso):
   products[3].write_bytes(struct.pack('<8sf',b'PMHTUV01',1024/height))
   subprocess.run([shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds','-f','rgba8','-z','auto','-o',str(products[2]),str(work/(actor+'-runtime.png'))],check=True,stdout=subprocess.DEVNULL)
   meta.update(fingerprint=fingerprint,uvScale=1024/height,source=['a/'+bank,'a/'+texture+'-'],license='Original Nintendo/Intelligent Systems assets; no redistribution rights');manifest.write_text(json.dumps(meta,indent=2)+'\n')
+ from harbor_tutorial_stage_assets import build as build_stage
+ build_stage(iso)
  print('Original tutorial init/phase/wait commands:' ,[len(e['commands']) for e in events])
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--iso',default=DEFAULT_ISO);build(p.parse_args().iso)
