@@ -127,3 +127,10 @@ Remaining: macSetExternalKeyoff body, callback owner/provider, queue/trap/base/I
 count/pool writers, valid ring/slot/member/generation/null/duplicate delivery/
 alias/IRQ/reentrancy/concurrency domains, other opcode paths and original
 message/callback/activation/group/audio traces. EVT-01 remains OPEN.
+
+### 2026-10-13 — External key-off child follow-up
+
+[Complete key-off/pedal/event traps](MUSYX_MACRO_KEYOFF_PEDAL_AND_EVENT_TRAPS.md)
+now closes key-group's external key-off child, including unconditional low flag
+publication, pedal defer, event restoration and conditional activation. Queue/
+callback/group/caller/domain/original audio remain open.

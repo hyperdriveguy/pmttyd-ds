@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox priority-zero key-off/pedal/event traps
+
+Completed macSetExternalKeyoff/macSetPedalState and opcode40/41 for EVT-01;
+checked the corresponding inbox portion.
+[Key-off/pedal/traps](behavior/audio/MUSYX_MACRO_KEYOFF_PEDAL_AND_EVENT_TRAPS.md)
+pins low publication/high defer, event versus wake, full-word pedal and post-child
+release clears, fresh shared trap install and selected clear/three-base enable
+scan. Existing sample-end contract revalidated; no duplicate completion. Actual
+flag/event/index/caller/shared-cell/runtime domains remain open.
+
+Validation: read-only ISO new manifest passed seven spans (two bodies/two regions/
+two linked/table),127 anchors/five calls/two registrations; existing notification
+manifest16 spans/201 anchors revalidated. Six key-off/seven pedal/five address/
+five displacement vectors and masks/order checked as deductions. Link audit
+passed819 Markdown files/zero broken links; scoped `git diff --check` passed.
+Documentation/metadata only; no `make test`/`make all` rerun. Full original
+inspection ELFs/listings stay `/tmp`; no bodies/binary assets committed.
+Concurrent native edits excluded. User requested periodic upstream pushes;
+commit/push result is verified separately after this delivery is committed.
+
+Next: priority-zero EVT-01 actual flag/event/enable/command/code/caller/pedal/job
+writers/consumers, valid event index/state/member/null/alias/shared-cell/reinit/
+IRQ/concurrency domains; other opcodes and original key-off/pedal/sample/message/
+audio traces. Full native/runtime binding, lower-priority inbox/full-game work open.
+
 ## 2026-10-13 — Inbox priority-zero macro messages/VID/key groups
 
 Completed mcmdSendMessage/mcmdGetVID/mcmdSetKeyGroup and opcodes42..44/89

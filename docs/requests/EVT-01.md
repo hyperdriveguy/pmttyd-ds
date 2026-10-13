@@ -319,6 +319,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   42..44/89 queue/callback/ID/group request paths —
   [macro messages/VID/key groups](../behavior/audio/MUSYX_MACRO_MESSAGES_VID_AND_KEY_GROUP.md).
   Raw indices/repeated mappings/trap order retained; key-off/callback/domain/runtime open.
+- [x] Complete macSetExternalKeyoff/macSetPedalState and opcode40/41
+  event install/clear/defer/wakeup —
+  [key-off/pedal/traps](../behavior/audio/MUSYX_MACRO_KEYOFF_PEDAL_AND_EVENT_TRAPS.md).
+  Sample-end existing contract revalidated; flag/index/caller/domain/runtime open.
 - [ ] Remaining listener/shared/slot writers, stream/song child services and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -1860,3 +1864,21 @@ deductions. Full fresh ELFs/listings stay `/tmp`; no native change/original
 execution/body/binary asset export. External key-off/callback providers, actual
 queue/trap/ID/group/command/caller/domain/alias/IRQ/concurrency and original
 message/activation/group/audio remain OPEN.
+
+### 2026-10-13 — External key-off, pedal and event traps
+
+[Two bodies/two regions](../behavior/audio/MUSYX_MACRO_KEYOFF_PEDAL_AND_EVENT_TRAPS.md)
+close unconditional external low8 publication, held/deferred high flags,
+key-off event restore versus low4 wake, full-word pedal admission and release
+clears AFTER child activation. Trap install/clear retain fresh shared index/
+step and unchecked byte indices; enable clear scans only three base slots.
+Existing sample-end contract revalidated, without duplicate completion. No
+pedal-byte narrowing, index repair, generic event/flag clear or audible release inferred.
+
+Validation: read-only new manifest seven spans (two bodies/two regions/two linked/
+table),127 anchors/five calls/two registrations passes; existing notification
+manifest16 spans/201 anchors revalidated. Six key-off/seven pedal/five address/
+five displacement vectors and masks/ordering checked as deductions. Full fresh
+ELFs/listings stay `/tmp`; no native change/original execution/body/binary asset
+export. Actual flag/event/index/command/caller/domain/alias/IRQ/concurrency and
+original key-off/pedal/event/audio remain OPEN.
