@@ -1851,22 +1851,25 @@ void Game::tick(const Input& rawInput) {
                 const uint32_t triggers=i.physicalSnapshot?inputProducer.channels[0].pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 const auto sample=inputProducer.channels[0].battleSample();
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
+                if(auto exported=trioAttack.exportedPouch()){progress.originalPouch=std::move(exported);progress.hp=progress.originalPouch->half(0x70);}
                 scene=Scene::Dialogue;saveRequested=false;return;
             }
             if(trioAttack.finished()) {
                 const uint32_t triggers=i.physicalSnapshot?inputProducer.channels[0].pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 const auto sample=inputProducer.channels[0].battleSample();
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
+                if(auto exported=trioAttack.exportedPouch()){progress.originalPouch=std::move(exported);progress.hp=progress.originalPouch->half(0x70);}
                 if(trioAttack.active())trioCommands.state=TrioBattleCommands::State::Closed; // Enemy root now owns the action.
                 if(trioAttack.prepareCommands(trioCommands,trioBattleIntro) || trioAttack.commandActor()<0) {
                     scene=Scene::Dialogue;saveRequested=false;return;
                 }
             }
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && progress.originalPouch && !trioAttack.active() && !trioAttack.finished())progress.originalPouch->half(0x70,int16_t(progress.hp)); // Current field HP enters the original resource snapshot once.
-            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch)) {
+            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags)) {
                 const auto sample=inputProducer.channels[0].battleSample();
                 const uint32_t triggers=i.physicalSnapshot?sample.pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
+                if(auto exported=trioAttack.exportedPouch()){progress.originalPouch=std::move(exported);progress.hp=progress.originalPouch->half(0x70);}
                 scene=Scene::Dialogue;saveRequested=false;return;
             }
             if(trioCommands.state==TrioBattleCommands::State::Closed)trioCommands.begin(trioBattleIntro);

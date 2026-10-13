@@ -21,6 +21,9 @@
 #include "battle_hammer.hpp"
 #include "field_camera_events.hpp"
 #include "npc_presentation.hpp"
+#include "battle_ending_fade.hpp"
+#include "battle_packed_pose_lookup.hpp"
+#include "battle_packed_unit_resources.hpp"
 namespace ttyd {
 namespace {
 EventScriptAssets scripts;NpcAngleTable sourceAngles;bool assetsReady=false;
@@ -62,6 +65,7 @@ struct TrioAttackRuntime {
     std::array<TrioRewardIcon,19> rewardIcons{};
     uint64_t rewardIconClockAt=UINT64_MAX;
     PointGetEffect pointGet;uint64_t pointGetClockAt=UINT64_MAX;
+    BattleEndingFade endingFade;uint64_t endingFadeClockAt=UINT64_MAX;bool endingExported=false;uint32_t* fieldNpcBattleFlags=nullptr;
     TrioAttackRuntime():vm(0x81000000,platform(this)) {}
     static EventNativePlatform platform(TrioAttackRuntime* self) {
         EventNativePlatform p;p.user=self;p.clock=[](void*)->uint32_t{return 243000000;};
@@ -542,6 +546,11 @@ struct TrioAttackRuntime {
         const auto end=word(Battle+0xf28);if(!end || !(word(end+0x30)&2) || rewardIconClockAt==time)return;
         rewardIconClockAt=time;for(auto& icon:rewardIcons)++icon.animationTick; // Hidden flag2 does not suppress source animated1000 clock.
     }
+    void endingBodyType(uint32_t u,int32_t type){
+        endingRequest(0x80127640,{int32_t(u),type});const auto memory=nativeBattleActorServices(vm).memory;
+        const auto p=packedUnitPart(u,packedBodyPartId(u,memory),memory),name=packedBattlePoseName(p,type,memory);
+        if(!name){pending=0x8012772c;return;}changePose(u,p,text(name),type>=29 && type<=39);
+    }
     void ending() {
         const auto info=word(Battle+0x2738),mario=battleMarioUnit(Battle,nativeBattleActorServices(vm)),party=battlePartyUnit(Battle,nativeBattleActorServices(vm));
         auto state=word(Battle+0xf24);endingRequest(0x80212890);
@@ -631,6 +640,29 @@ struct TrioAttackRuntime {
             }endingDisplay();return;
         }
         if(state==0x0700000d){const auto end=word(Battle+0xf28);word(end+4,word(end+4)-1);if(int32_t(word(end+4))<=0){word(end+0x29c,0);word(Battle+0xf24,0x0700000e);}endingDisplay();return;}
+        if(state==0x0700000e){if(word(Battle+0xef4)&0x400000){pending=0x8041b8c0;return;}word(Battle+0xf24,0x07000010);endingDisplay();return;}
+        if(state==0x07000010){const auto end=word(Battle+0xf28);word(end+0x30,word(end+0x30)&~2u);if(word(end+0xc)){pending=0x80215cc0;return;}word(Battle+0xf24,0x07000019);endingDisplay();return;}
+        if(state==0x07000019){const auto end=word(Battle+0xf28),flags=word(mario+0x138),setup=word(info+0xc);
+            if(!(flags&0x30000000) && (!party || (flags==0 && !byte(party+0x135)))){const uint32_t key=(word(setup+4)&0x20000000)?0x802feafc:0x802feb14;endingRequest(0x8012619c,{int32_t(mario),int32_t(key),int32_t(0xf1194d80),0});soundRequests.push_back(text(key));}
+            endingRequest(0x801275f4,{int32_t(mario),int32_t(0x80427298)});const auto memory=nativeBattleActorServices(vm).memory;changePose(mario,packedUnitPart(mario,packedBodyPartId(mario,memory),memory),text(0x80427298),false);
+            word(end+4,60);word(Battle+0xf24,0x0700001a);endingDisplay();return;
+        }
+        if(state==0x0700001a){const auto end=word(Battle+0xf28);word(end+4,word(end+4)-1);if(int32_t(word(end+4))<=0){endingBodyType(mario,42);if(party && !(word(party+8)==225 && int8_t(byte(party+0x12b))>=1))endingBodyType(party,42);if(!pending)word(Battle+0xf24,0x0700001b);}endingDisplay();return;}
+        if(state==0x0700001b){word(Battle+0xf24,0x0700001c);endingDisplay();return;}
+        if(state==0x0700001c){word(Battle+0xf24,0x0700001d);endingRequest(0x8019fddc,{0,30});endingRequest(0x8004829c);if(fieldNpcBattleFlags)*fieldNpcBattleFlags|=0x100; // Source F8 NPC140 view supplied by the field owner.
+            endingDisplay();return;}
+        if(state==0x0700001d){endingRequest(0x80013368,{10,200,255});endingFade.enter(200);endingFadeClockAt=UINT64_MAX;word(Battle+0xf24,0x0700001e);endingRequest(0x800daefc,{0x201});endingDisplay();return;}
+        if(state==0x0700001e){endingRequest(0x80010d94);if(endingFade.finished)word(Battle+0xf24,0x0700001f);endingDisplay();return;}
+        if(state==0x0700001f){if(!endingExported){const auto setup=word(info+0xc);endingRequest(0x800f8444,{party?int32_t(word(party+8)):0});
+                if((word(setup+4)&0x40) && int16_t(half(mario+0x10c))<=0)half(mario+0x10c,1);
+                endingRequest(0x800f8a68,{int32_t(Battle)});PackedUnitResourceServices resources;resources.memory=nativeBattleActorServices(vm);resources.user=this;resources.pouch=[](void* p){return static_cast<TrioAttackRuntime*>(p)->word(0x8041eb00);};resources.partyIndex=[](void*,int32_t kind){return battlePartyIndex(kind);};
+                exportPackedUnitResources(Battle,mario,resources);if(party)exportPackedUnitResources(Battle,party,resources);
+                // Native field/battle views share the retained canonical pouch.
+                // This copy publishes exact packed writes, including EXP, without healing or rebuilding inventory.
+                const auto pouch=word(0x8041eb00);for(unsigned i=0;i<entryPouch->bytes.size();++i)entryPouch->bytes[i]=byte(pouch+i);
+                endingExported=true;
+            }pending=0x800f8908;return; // Actual teardown/field constructor owner follows resource export.
+        }
         pending=0x80215234;
     }
     void postAction() {
@@ -804,10 +836,10 @@ struct TrioAttackRuntime {
             HammerSoundSink sounds;sounds.user=this;sounds.play=[](void* p,const char* key)->int32_t{static_cast<TrioAttackRuntime*>(p)->soundRequests.emplace_back(key);return 0;};const auto result=c.tick(context,random,sounds);if(result<0){if(!pending)pending=0x8012a17c;return;}storeHammer(c);if(result==0)word(Battle+0x1ca0,0);
         }
     }
-    void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){scene=&s;now=time;if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();}vm.runManager();if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}publish(s);}
+    void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){scene=&s;now=time;if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();}vm.runManager();if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}if(endingFadeClockAt!=time){endingFadeClockAt=time;endingFade.tick(60);}publish(s);}
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
-bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>();if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
+bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
 bool TrioAttack::active()const{return runtime_ && !runtime_->done;}
 bool TrioAttack::finished()const{return runtime_ && runtime_->done;}
@@ -820,6 +852,8 @@ bool TrioAttack::readWord(uint32_t a,uint32_t& v)const{return runtime_ && runtim
 
 namespace ttyd {
 const PointGetEffect* TrioAttack::rewardEffect() const {return runtime_ && runtime_->pointGet.active?&runtime_->pointGet:nullptr;}
+std::shared_ptr<ProloguePouch> TrioAttack::exportedPouch() const {return runtime_ && runtime_->endingExported?runtime_->entryPouch:nullptr;}
+uint8_t TrioAttack::endingFadeAlpha() const {return runtime_?runtime_->endingFade.alpha():0;}
 bool TrioAttack::rewardPresentationActive() const {return runtime_ && runtime_->word(Battle+4)==3 && runtime_->word(Battle+0xf24)>=0x07000008;}
 const std::array<TrioRewardIcon,19>* TrioAttack::rewardIcons() const {if(!runtime_)return nullptr;const auto end=runtime_->word(Battle+0xf28);return end && (runtime_->word(end+0x30)&2)?&runtime_->rewardIcons:nullptr;}
 }

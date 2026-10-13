@@ -11,7 +11,7 @@ struct TrioRewardIcon {std::array<float,3> position{};float scale=1;uint8_t alph
 // Executes original event data; unsupported callbacks keep their event waiting.
 class TrioAttack {
 public:
-    bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={});
+    bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={},uint32_t* fieldNpcBattleFlags=nullptr);
     void tick(uint64_t milliseconds,ProfessorStory&,uint32_t triggers=0,const BattlePadSample* physical=nullptr);
     bool active() const;
     bool finished() const;
@@ -23,6 +23,8 @@ public:
     const std::array<TrioRewardIcon,19>* rewardIcons() const;
     const PointGetEffect* rewardEffect() const;
     bool rewardPresentationActive() const;
+    uint8_t endingFadeAlpha() const;
+    std::shared_ptr<ProloguePouch> exportedPouch() const;
 private:
     std::shared_ptr<TrioAttackRuntime> runtime_;
 };

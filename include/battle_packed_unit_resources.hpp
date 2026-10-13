@@ -10,4 +10,5 @@ struct PackedUnitResourceServices {
 // Pouch and battle snapshots retain actual packed ownership and source offsets.
 void revisePackedUnitResources(uint32_t unit,const PackedUnitResourceServices&);
 void importPackedUnitResources(uint32_t battle,uint32_t unit,const PackedUnitResourceServices&);
+void exportPackedUnitResources(uint32_t battle,uint32_t unit,const PackedUnitResourceServices&);
 }

@@ -18,7 +18,7 @@ struct ProfessorSceneActor {
     float yaw=0;std::string pose="S_1";
     bool hidden=false,moving=false;
     bool jumping=false;
-    uint32_t flags=0,battleFlags=0;
+    uint32_t flags=0,battleFlags=0,npcBattleFlags=0; // Field NPC140 is distinct from ordinary NPC flags.
     uint64_t poseAt=0;
     uint64_t placementGeneration=0; // Explicit source entry/set_position, not continuous movement.
     uint32_t flagMask=0; // Bits explicitly owned by source flag_onoff requests.

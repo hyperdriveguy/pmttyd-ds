@@ -3,11 +3,17 @@
 #include "battle_actor_rotation.hpp"
 #include "game.hpp"
 #include "battle_dive.hpp"
+#include "battle_ending_fade.hpp"
 #include <cassert>
 #include <iostream>
 #include <algorithm>
 using namespace ttyd;
 int main(){
+    BattleEndingFade sourceFade;sourceFade.enter(200);for(unsigned n=0;n<10;++n)sourceFade.tick(50);
+    assert(sourceFade.ratio==1 && !sourceFade.finished && sourceFade.textureOffset==-100);
+    sourceFade.tick(50);assert(sourceFade.finished && sourceFade.ratio==1 && sourceFade.alpha()==255);
+    sourceFade.enter(0);sourceFade.tick(60);assert(sourceFade.finished && sourceFade.alpha()==255);
+
     PointGetEffect effect;effect.enter(10,0,90,0,0);assert(effect.active && effect.x==-2000 && effect.y==60);
     effect.tick();assert(effect.depthPosition[0]==-2000 && effect.timer==1 && effect.phase==0 && effect.x>-1000 && effect.x<0);
     for(unsigned n=1;n<45;++n)effect.tick();assert(effect.phase==1 && effect.timer==0 && std::fabs(effect.x)<.001f);
@@ -308,7 +314,18 @@ int main(){
             for(unsigned n=0;n<5;++n)charged.tick(Input{});
             assert(charged.trioAttack.readWord(end+0x29c,value) && value==0 && charged.trioAttack.rewardEffect());
             assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700000e);
-            charged.tick(Input{});assert(charged.trioAttack.pendingFunction()==0x80215234);
+            charged.tick(Input{});assert(!charged.trioAttack.pendingFunction() && charged.trioAttack.readWord(0x84000f24,value) && value==0x07000010);
+            charged.tick(Input{});assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x07000019);
+            charged.tick(Input{});assert(charged.trioBattleIntro.actors[0].pose=="M_V_1" && charged.trioAttack.readWord(end+4,value) && value==60);
+            for(unsigned n=0;n<59;++n)charged.tick(Input{});assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001a);
+            charged.tick(Input{});assert(charged.trioBattleIntro.actors[0].pose=="M_R_1" && charged.trioBattleIntro.actors[1].pose=="PKR_R_1");
+            for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
+            assert(charged.trioAttack.pendingFunction()==0x800f8908 && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.endingFadeAlpha()==255 && charged.professorStory.actors[3].npcBattleFlags==0x100);
+            assert(charged.progress.originalPouch && charged.progress.originalPouch->half(0x96)==10);
+            assert(charged.trioAttack.readWord(0x8410110c,value) && charged.progress.originalPouch->half(0x70)==int16_t(value>>16));
+            assert(charged.trioAttack.readWord(0x84101110,value) && charged.progress.originalPouch->half(0x74)==int16_t(value&0xffff));
+            assert(charged.trioAttack.readWord(0x8410210c,value) && charged.progress.originalPouch->half(20)==int16_t(value>>16));
             for(unsigned n=0;n<110;++n)charged.tick(Input{});assert(!charged.trioAttack.rewardEffect());
             const auto& finalRequests=charged.trioAttack.requests();
             assert(std::count_if(finalRequests.begin(),finalRequests.end(),[](const ProfessorServiceRequest& r){return r.function==0x800d98bc && r.rawOperands==std::vector<int32_t>{int32_t(0x802feaa8)};})==(fastReward?1:5));

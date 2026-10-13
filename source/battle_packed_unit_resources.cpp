@@ -17,4 +17,15 @@ void importPackedUnitResources(uint32_t b,uint32_t u,const PackedUnitResourceSer
   if(int16_t(m.half(m.user,u+0x10c))<=0)m.storeByte(m.user,u+0x135,1); // Original SetStatus27 duration1, strength1 branch.
  }
 }
+void exportPackedUnitResources(uint32_t b,uint32_t u,const PackedUnitResourceServices& s){
+ const auto& m=s.memory.memory;assert(m.word && m.half && m.storeWord && m.storeHalf && m.storeByte && s.pouch);const auto p=s.pouch(s.user);const auto kind=signedWord(m.word(m.user,u+8));
+ if(kind==222){m.storeHalf(m.user,p+0x70,m.half(m.user,u+0x10c));m.storeHalf(m.user,p+0x74,m.half(m.user,u+0x112));}
+ else if(kind>=224 && kind<231){assert(s.partyIndex);const auto index=s.partyIndex(s.user,kind);m.storeHalf(m.user,p+uint32_t(index)*14+6,m.half(m.user,u+0x10c));
+  const auto saved=b+0x162a0+uint32_t(signedWord(m.word(m.user,u+8))-224)*0x2c;
+  m.storeWord(m.user,saved,m.word(m.user,u+0x114));m.storeWord(m.user,saved+0x24,m.word(m.user,u+0x138));
+  for(unsigned i=0;i<7;++i)m.storeWord(m.user,saved+4+4*i,m.word(m.user,u+0x118+4*i));
+  m.storeHalf(m.user,saved+0x20,m.half(m.user,u+0x134));m.storeHalf(m.user,saved+0x28,m.half(m.user,u+0x13c));m.storeHalf(m.user,saved+0x2a,m.half(m.user,u+0x13e));
+ }
+}
+
 }
