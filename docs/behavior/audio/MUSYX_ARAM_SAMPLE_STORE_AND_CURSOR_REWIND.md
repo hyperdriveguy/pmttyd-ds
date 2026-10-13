@@ -93,3 +93,5 @@ Generic read-only verifier checks identities/anchors, not actual DMA completion.
 Remaining: aramInit/stream/cache producers, caller removal order, callback/source
 providers, OS/SDK flush/ARQ/DMA services, valid concurrency/residency and original
 sample/voice/playback traces. Six local bodies are answered; full audio remains OPEN.
+
+[Complete initialization/allocator hooks](MUSYX_ARAM_INITIALIZATION_AND_ALLOCATOR_HOOKS.md) and [stream-buffer boundary/list producers](MUSYX_ARAM_STREAM_BUFFER_LISTS_AND_LIFETIME.md) now answer those exact local dependencies. Default-cache contents, source/list validity, SDK/DMA/voice and original runtime remain open.

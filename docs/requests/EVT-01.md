@@ -53,6 +53,12 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   [queue completion](../behavior/audio/MUSYX_ARAM_QUEUE_COMPLETION_AND_SAMPLE_REQUESTS.md).
   Direct/chunk upload and low-queue order pinned; init/other producers/SDK/DMA/
   source/caller removal order/concurrency/original execution remain open.
+- [x] Complete aramInit/salMallocPhysical/salFree, InitStreamBuffers,
+  allocate/get/free stream-buffer bodies and default-cache pointer leaf —
+  [initialization/hooks](../behavior/audio/MUSYX_ARAM_INITIALIZATION_AND_ALLOCATOR_HOOKS.md),
+  [stream lists](../behavior/audio/MUSYX_ARAM_STREAM_BUFFER_LISTS_AND_LIFETIME.md).
+  Exact predecessor/global-head writes retained; source list/order/membership,
+  default-cache producers/SDK/DMA/voice/original execution remain open.
 - [ ] Remaining SFXMain live/spatial/volume/fade, calc3D, stream/song and
   MusyX macro/resource/emitter/interrupt/backend/source chain and original
   audio traces. Linked service hashes alone do not close their semantics.
@@ -632,3 +638,23 @@ updates,5 completion-count boundaries. These arithmetic cases are not original
 execution. Fresh full ELFs/listings remain `/tmp/inbox-aram*`; no native change or
 original bank/code-body export. Init/stream/other queue producers/cache providers,
 SDK flush/interrupt/ARQ/DMA and original voice/audio traces remain OPEN.
+
+### 2026-10-13 — ARAM initialization, hook and stream-buffer source owners
+
+[Initialization and hooks](../behavior/audio/MUSYX_ARAM_INITIALIZATION_AND_ALLOCATOR_HOOKS.md)
+close zero allocation/fill/flush, queue reset/post/count order, low-only completion
+wait before free, two-read size clamp and stream initialization request. Hook leaves
+invoke live salHooks with no guard or added allocation semantics.
+[Stream-list contract](../behavior/audio/MUSYX_ARAM_STREAM_BUFFER_LISTS_AND_LIFETIME.md)
+closes64-node idle initialization, cached-capacity search, downward allocation,
+low-byte getter/default pointer and free traversal. Larger-candidate predecessor
+is NOT retained alongside the candidate; tail cleanup resets the global cached
+head per qualifying node. Exact writes remain distinct from assumed valid list
+invariants or a corrected allocator. Miss/double-free does not stop mutation.
+
+Validation: read-only manifest16 spans (8 complete/8 linked),251 anchors and14
+resolved direct calls passes. Derived64-link chain,8 alignment/7 index/7 search
+vectors checked; a larger-candidate predecessor example is static arithmetic,
+not original execution. Complete ELFs/listings remain `/tmp`; no native change
+or original code-body/bank export. Default-cache/hook providers, source/list/
+cycle/order/membership domains, stream upload/SDK/DMA/voice/original traces OPEN.

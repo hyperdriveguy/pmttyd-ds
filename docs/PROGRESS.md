@@ -5,6 +5,29 @@ Newest entries first under this single heading. Keep entries dated, write link p
 
 
 
+## 2026-10-13 — Priority0 ARAM initialization and stream-buffer owners
+
+Delivered [initialization/hooks](behavior/audio/MUSYX_ARAM_INITIALIZATION_AND_ALLOCATOR_HOOKS.md)
+and [stream-buffer lifecycle](behavior/audio/MUSYX_ARAM_STREAM_BUFFER_LISTS_AND_LIFETIME.md).
+Eight complete bodies pin zero allocation/fill/post/wait/free, limits/queue resets,
+hook requests,64-descriptor idle chain, cached/downward allocation, low-byte
+getter/default pointer and exact free traversal. Larger-candidate predecessor
+and global-head cleanup writes are preserved; source list/order/membership
+invariants remain required. Marked local EVT-01 portions complete; parent OPEN.
+
+Validation: generic read-only verifier16 spans (8 complete/8 linked SDK/helpers),
+251 anchors and14 independently resolved direct calls passes. Derived64-node
+chain,8 alignment,7 index and7 cached-search vectors accompany full listings;
+no original functions execute. Fresh complete ELFs/listings remain `/tmp`.
+Link audit738 Markdown files/0 broken; whitespace checks pass. Docs/metadata only:
+no make rerun, native changes or original bank/code-body export. Isolated index
+keeps unrelated staged/worktree changes out of this commit.
+
+Next/limits: actual default-cache and allocator-hook producers, valid stream-list/
+cycle/predecessor/order/membership domains, upload/SDK/OS/ARQ/DMA and original
+sample/voice/runtime traces. Continue priority0 source/backend and live SFX/calc3D
+owners, then priority1 damage graph. No original playback/hardware/full-game claim.
+
 ## 2026-10-13 — Original object top/side collision and supported checkpoint restore
 
 Commits `4e12f64` and `1d853a6` bind the unchanged original12-face save-block

@@ -49,6 +49,8 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [MusyX ARAM initialization/hooks](audio/MUSYX_ARAM_INITIALIZATION_AND_ALLOCATOR_HOOKS.md) | Complete zero-buffer allocation/fill/post/wait/free, limits/reset ordering and indirect hooks | Hook/provider/SDK/queue reinit/concurrency and original DMA/runtime |
+| [MusyX ARAM stream lists](audio/MUSYX_ARAM_STREAM_BUFFER_LISTS_AND_LIFETIME.md) | Complete64-descriptor init, cached/downward allocation, getter/default pointer and free traversal | List/predecessor/order/membership domains, cache producers and actual stream/voice lifetime |
 | [MusyX ARAM sample store](audio/MUSYX_ARAM_SAMPLE_STORE_AND_CURSOR_REWIND.md) | Complete direct/chunk upload, capacity/32-byte alignment, cursor-only removal, callback configuration and address leaves | Initialization/cache/stream/source/caller order and SDK/DMA/original playback |
 | [MusyX ARAM queue completion](audio/MUSYX_ARAM_QUEUE_COMPLETION_AND_SAMPLE_REQUESTS.md) | Complete callback and low-queue sync; sample producer post/count/index ordering | Other producers/index/count/concurrency invariants and SDK/hardware/runtime |
 | [MusyX sample-directory lifetime](audio/MUSYX_SAMPLE_DIRECTORY_REGISTRATION_AND_REFERENCES.md) | Four complete registration/acquire/release/removal bodies; mutable refs/addresses and preferred-directory precondition | Actual directory/sample-bank/cache/voice providers, valid domains and original runtime |
