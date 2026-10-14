@@ -292,3 +292,17 @@ All64 menu title/client/content IDs exist and fit source21/31-byte cache slots;
 per-ID original byte offsets/hashes remain in temporary inspection JSON. This
 is source resource inspection, not a new text conversion or authored replacement.
 No original message payload enters source history. [Display/US bindings](behavior/display/TROUBLE_CENTER_ORIGINAL_WINDOW_DISPLAY_AND_US_CACHE.md).
+
+## 2026-10-14 — Original class-menu icons334..343
+
+Read-only US icon.bin descriptors334..343 select original icon.tpl images339..
+348, each one non-looping48x48 frame with delay0. tools/battle_class_icon_assets.py
+packs their exact RGBA pixels into a256x256 sheet with2px transparent borders
+and no resampling/geometry/lighting changes. Existing message/HUD sheet remains
+512-square; the separate class sheet costs262144 bytes of RGBA8 texture storage.
+Private outputs: local-assets/battle-class-icons/{334..343}.png and atlas.png;
+romfs/battle-class-icons.{bin,t3x,json}. The metadata uses the existing PMICON1
+frame format so future UI consumers retain IDs and frames. No generated icons,
+rewritten labels or ISO/source-payload commit. Native class texture binding is
+not yet implemented. Nintendo/Intelligent Systems resources have no granted
+redistribution rights; all extracted/compiled payloads stay ignored.

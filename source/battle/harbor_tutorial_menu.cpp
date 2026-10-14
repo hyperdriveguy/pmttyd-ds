@@ -1,5 +1,6 @@
 #include "harbor_tutorial_packed.hpp"
 #include "battle_weapon_table.hpp"
+#include "battle_action_class_table.hpp"
 #include "battle_weapon_menu_decision.hpp"
 #include "battle_packed_pouch.hpp"
 #include "battle_weapon_icons.hpp"
@@ -43,6 +44,24 @@ void HarborTutorialPacked::captureWeaponRows(uint32_t type,HarborTutorial& scene
  scene.weaponMenuType=type;scene.weaponRows.clear();
  for(int32_t n=0;n<visibleCount;++n){const auto row=Battle+0x171c+0x80+28*uint32_t(n);HarborTutorialWeaponRow r;r.weapon=word(row);r.enabled=word(row+4)!=0;r.nameAddress=word(row+8);uint16_t icon=0;if(!vm.memory.readHalf(row+12,icon))std::abort();r.icon=icon;r.ordinal=int32_t(word(row+16));r.item=int32_t(word(row+20));r.reason=int32_t(word(row+24));if(r.nameAddress)for(unsigned j=0;j<MenuRam+0x4000-r.nameAddress;++j){const auto c=byte(r.nameAddress+j);if(!c)break;r.label+=char(c);}scene.weaponRows.push_back(std::move(r));}
  scene.weaponRowIndex=int32_t(word(activeCursor));
+}
+bool HarborTutorialPacked::buildClassMenu(HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t)){
+ if(!freshPouch)return false;
+ // Explicit native acting-Mario bridge. Source builder itself never writes420.
+ word(Battle+0x420,1);
+ struct Context{HarborTutorialPacked* p;void* messageUser;uint32_t(*message)(void*,uint32_t);};Context c{this,messageUser,message};
+ BattleActionClassServices s;s.memory=nativeBattleActorServices(vm);s.user=&c;
+ s.unit=[](void* self,uint32_t b,int32_t id)->std::optional<uint32_t>{return battleRegistryUnit(b,id,nativeBattleActorServices(static_cast<Context*>(self)->p->vm));};
+ s.pouch=[](void* self)->std::optional<uint32_t>{return static_cast<Context*>(self)->p->word(0x8041eb00);};
+ s.message=[](void* self,uint32_t key)->std::optional<uint32_t>{auto& c=*static_cast<Context*>(self);return c.message(c.messageUser,key);};
+ const auto built=makePackedBattleActionClassTable(Battle,s);if(!built)return false;
+ const auto menu=Battle+0x171c,cursor=menu+0x498;scene.classRows.clear();scene.classRowIndex=int32_t(word(cursor));
+ const auto count=word(cursor+8);assert(count<=7);
+ for(uint32_t i=0;i<count;++i){const auto row=menu+20*i;HarborTutorialClassRow v;v.type=word(row+8);v.enabled=word(row+0xc)!=0;v.nameAddress=word(row+0x10);v.reason=word(row+0x18);uint16_t icon=0;if(!vm.memory.readHalf(row+0x14,icon))std::abort();v.icon=icon;
+  if(v.nameAddress)for(uint32_t at=v.nameAddress;;++at){const auto b=byte(at);if(!b)break;v.label.push_back(char(b));}
+  scene.classRows.push_back(std::move(v));
+ }
+ return true;
 }
 bool HarborTutorialPacked::buildWeaponMenu(uint32_t type,HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t)){
  weaponDecided=false;commandFinalized=false;commandUnbound=0;scene.commandInputPending=0;

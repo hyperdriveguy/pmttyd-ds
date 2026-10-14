@@ -31,6 +31,7 @@ public:
  bool provisionFreshFieldInformation(uint32_t configuration,uint32_t expectedGroup,uint32_t expectedStage);
  bool registerActor(HarborTutorialActor&);
  bool unitInitReady();
+ bool buildClassMenu(HarborTutorial&,void*,uint32_t(*)(void*,uint32_t));
  bool buildWeaponMenu(uint32_t type,HarborTutorial&,void* messageUser,uint32_t(*message)(void*,uint32_t));
  bool updateWeaponEligibility(uint32_t type);
  std::optional<int32_t> countWeaponTargets(uint32_t battle,uint32_t unit,uint32_t weapon);

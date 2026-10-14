@@ -1271,3 +1271,10 @@ target_sources(ttyd_core PRIVATE source/battle/battle_display_footer.cpp)
 add_executable(battle_display_footer_tests tests/battle_display_footer_tests.cpp)
 target_link_libraries(battle_display_footer_tests PRIVATE ttyd_core)
 add_test(NAME battle_display_footer COMMAND battle_display_footer_tests)
+
+# Complete original action-class row producer and explicit native table view.
+target_sources(ttyd_core PRIVATE source/battle/battle_action_class_table.cpp)
+add_executable(battle_action_class_table_tests tests/battle_action_class_table_tests.cpp)
+target_link_libraries(battle_action_class_table_tests PRIVATE ttyd_core)
+add_test(NAME battle_action_class_table COMMAND battle_action_class_table_tests)
+set_tests_properties(battle_action_class_table PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

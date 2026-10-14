@@ -105,3 +105,38 @@ copied to `M+0x540`, or whether a weapon query can reach an unsupported type.
 [type/cursor reuse](WEAPON_MENU_TYPE_DOMAINS_AND_CURSOR_REUSE.md) remain the
 linked consumers. Complete ActMenuMain, confusion, Input, class setup,
 message/asset services, event reachability, and original execution remain open.
+
+## Shared producer and native table view (2026-10-14)
+
+[Portable producer](../../../source/battle/battle_action_class_table.cpp) now
+implements this complete local body with optional provider readiness, actual
+packed words/bytes/halfwords and raw ABI return. Original unit/pouch/definition/
+cursor owners stay retained. Fresh kind/flag/level checks and message-triggered
+mutations remain ordered; denied rows, reason precedence, zero name addresses,
+padding, unused rows and cursor second word are preserved. No English label,
+count clamp, alternate weapon or event completion2 is supplied.
+
+[Fixtures](../../../tests/battle_action_class_table_tests.cpp) check Mario/party/
+other kinds, disabled Jump versus omitted Hammer, signed levels/counters,
+original icons, retained class cursor while kinds change, fresh icon levels,
+independent final flag tests producing both/neither final rows, current count
+publication and signed index correction. Native buildClassMenu provides an
+explicit acting-Mario table view using the original field pouch/definition and
+US label/cache providers; it does not open the UI or run the turn scheduler.
+The native fixture builds real descriptors before the existing physical menu/
+attack/cancellation path. No story/control tokens or branch conditions change.
+
+Original class IDs334..343 are imported separately in battle-class-icons.bin/
+t3x/json, a256-square RGBA8 sheet with2px padding and no resampling. Their frames
+are original icon.tpl339..348, one static48x48 frame each. This adds256KiB of
+texture storage for the future class UI. The existing512-square message/HUD
+sheet does not have capacity for these additional cells; its resources remain
+unchanged. The normal asset producer prepares the separate sheet. Portable
+asset-loader and pixel/UV tests validate it, but the dedicated native texture
+binding and original class-menu rendering are still pending.
+
+Original ActMenu/constructor providers, class-key/resource lifecycle, automatic
+Input/first-act/turn activation in Game, visual/audio observation and full battle
+completion remain open. Imported image data is private, copyright-restricted
+and excluded from source history; provenance is in ASSETS. Verifier source
+fingerprints are static evidence, not measured original gameplay.

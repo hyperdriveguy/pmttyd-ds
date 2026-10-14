@@ -157,7 +157,11 @@ void nativeCommandFlow(){
  a.snapshot.buttons=a.pressed=BattleButtonA;b.snapshot.buttons=b.pressed=0x300;
  assert(scene.beginFromPouch(0,pouch,4));
  for(unsigned n=0;n<1500 && !scene.introComplete;++n){if(scene.pendingService==0x80106980)scene.animationComplete(1);scene.tick((n+1)*1000/60,n%4==0?0x100:0,&quiet);}
- assert(scene.introComplete && scene.openWeaponMenu(0));scene.weaponMenuPresented();
+ assert(scene.introComplete && scene.buildClassMenu());
+ assert(!scene.classRows.empty() && scene.classRows[0].type==0 && scene.classRows[0].nameAddress && !scene.classRows[0].label.empty());
+ assert(scene.classRows.back().type==5 && !scene.classRows.back().label.empty() && scene.classRows.back().icon==342);
+ for(const auto& row:scene.classRows)assert(row.nameAddress && !row.label.empty() && (row.reason==0 || row.reason==3));
+ assert(scene.openWeaponMenu(0));scene.weaponMenuPresented();
  uint32_t value=0;auto word=[&](uint32_t at){assert(scene.readPackedWord(at,value));return value;};
  assert(word(0x8400171c)==7);
  scene.tick(scene.now+17,0,&a);assert(scene.inputCommand(a)==0 && !scene.commandInputPending);

@@ -28,6 +28,10 @@ struct HarborTutorialWeaponRow {
  uint32_t weapon=0,nameAddress=0;bool enabled=false;int32_t reason=0,ordinal=0,item=0;uint16_t icon=0;
  std::string label;
 };
+struct HarborTutorialClassRow {
+ uint32_t type=0,nameAddress=0,reason=0;uint16_t icon=0;bool enabled=false;
+ std::string label;
+};
 struct ProloguePouch;
 struct HarborTutorialRuntime;
 class DisplayQueue;
@@ -81,6 +85,9 @@ public:
     // Source damage producer bridge: original reaction roots, no HP/result synthesis.
     uint32_t dispatchHitEvent(int32_t actorId,uint32_t code);
     uint32_t dispatchDirectHitEvent(int32_t actorId,uint32_t code,uint32_t script);
+    bool buildClassMenu();
+    std::vector<HarborTutorialClassRow> classRows;
+    int32_t classRowIndex=0;
     bool buildWeaponMenu(uint32_t type);
     bool openWeaponMenu(uint32_t type);
     void weaponMenuPresented();
