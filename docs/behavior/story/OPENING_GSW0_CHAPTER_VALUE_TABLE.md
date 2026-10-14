@@ -127,6 +127,156 @@ established by the span scan. **No execution trace.**
    402 is never produced by the scanned event code. If the port picks a
    different sentinel it must change all 10 `402` tests with it.
 
+## Opcode-34 SWITCH ladders on `GSW[0]`
+
+All eight `SWITCH` sites on `GSW[0]` use opcode **34** (resolved operand), not
+35 (raw). Ladder boundaries below come from applying the documented
+next-case scanner (`EVENT_SWITCH_STACK_AND_CASE_SCANS.md`): start past the
+SWITCH at depth 1, collect opcodes 36..47 at depth 1, stop at the `END_SWITCH`
+49 that returns depth to 0. All eight sites terminated cleanly within the
+annotated span, so each table below is the **complete** ladder.
+
+### `gor/gor_02_init_evt` cmd 0 — the grouped form
+
+| Cmd | Case | Value(s) |
+|-----|------|----------|
+| 1-7 | `43` `CASE_OR` ×7 | 18, 64, 120, 174, 221, 271, 347 |
+| 8-9 | *body* | two `op91` calls |
+| 10 | `46` `CASE_END` | — |
+| 11 | `42` `DEFAULT` | body 12-15 tests `GSW[0] != 402` |
+| 16 | `49` `END_SWITCH` | — |
+
+This is exactly the documented OR/`CASE_END` shape: seven single-operand OR
+cases, a two-command body, then `CASE_END`. A mismatch on OR *n* scans to OR
+*n+1*; a match latches `-1` and the remaining OR mismatches preserve it, so
+the body runs once if **any** of the seven matched.
+
+`gor_02_init_evt` cmd 112 is the same seven chapters in the plain form:
+`op36 CASE_EQUAL` on **18, 64, 120, 174, 221, 271, 347**, each with a one-command
+`op92` body, `END_SWITCH` at 127, **no DEFAULT**. The two sites are an
+independent cross-check that the chapter set is `{18, 64, 120, 174, 221, 271,
+347}` — one ladder written as an OR group, the other as an equality chain,
+with identical membership.
+
+### `gor/gor_03_init_evt` cmd 17 — a complete partition
+
+| Cmd | Case | Value |
+|-----|------|-------|
+| 18 | `47` `BETWEEN` | 278..280 |
+| 19-20 | *body* | |
+| 21 | `41` `>=` | 281 |
+| 22-25 | *body* | includes cmd 23 `GSF[5393] == 1` |
+| 26 | `49` `END_SWITCH` | no DEFAULT |
+
+`278..280` then `>= 281` tiles `[278, +inf)` with no gap and no overlap, so
+`GSW[0] < 278` falls out of the switch doing nothing at all. There is no
+`DEFAULT` and no `op33` reset on that path.
+
+### `gor/gor_03_init_evt` cmd 60 — an ascending `<` ladder
+
+| Cmd | Case | Value | | Cmd | Case | Value |
+|-----|------|-------|---|-----|------|-------|
+| 61 | `38` `<` | 56  | | 71 | `38` `<` | 339 |
+| 63 | `38` `<` | 112 | | 73 | `38` `<` | 373 |
+| 65 | `38` `<` | 164 | | 75 | `38` `<` | 401 |
+| 67 | `38` `<` | 215 | | 77 | `42` `DEFAULT` | — |
+| 69 | `38` `<` | 261 | | 79 | `49` `END_SWITCH` | |
+
+Strictly ascending, each body a single `op91`. Because an accepted case writes
+state 0 and later cases then take the `state<=0` path, the ladder is
+**first-match-wins**, not a set of independent tests. A port that evaluates
+all eight and takes the last hit admits the wrong chapters.
+
+### `gor/gor_03_init_evt` cmd 158 — `<` ladder with state writes
+
+| Cmd | Case | Value | Body |
+|-----|------|-------|------|
+| 159 | `38` `<` | 268 | one `op91` |
+| 161 | `38` `<` | 279 | cmd 162 `LW[15] <- 1`; cmd 163 `op91 … GW[12]`; cmd 164 `LW[15] <- 0`; cmd 165 `op91 … GW[13]` |
+| 166 | `38` `<` | 282 | empty |
+| 167 | `42` `DEFAULT` | — | one `op91` |
+| 169 | `49` `END_SWITCH` | | |
+
+Note the 279 body **resets `LW[15]` to 0** after using it, and there is an
+empty 282 body — a non-match at 282 does not by itself change state.
+
+### `gor/gor_00_init_evt` cmd 12 — a ladder that is *not* ascending
+
+| Cmd | Case | Value | Body note |
+|-----|------|-------|-----------|
+| 13 | `47` `BETWEEN` | 0..3 | cmd 14 re-tests `GSW[0] != 2` |
+| 21 | `47` `BETWEEN` | 4..6 | two `op91` |
+| 24 | `36` `==` | 217 | |
+| 28 | `36` `==` | 402 | cmd 30 `op12` on `LW[0]` |
+| 38 | `36` `==` | 268 | **after** the 402 case |
+| 42 | `42` `DEFAULT` | — | cmd 43 tests `GSF[1178] != 1` |
+| 48 | `49` `END_SWITCH` | | |
+
+The equality cases are ordered 217, 402, 268 — **not** ascending, and 402
+sits between two lower chapters. A port that sorts or binary-searches this
+ladder has changed the source. Here the outcome happens to be order
+independent (the three constants are distinct and the cases are disjoint),
+but that is a property of these three values, not of the mechanism.
+
+The `0..3` body re-testing `GSW[0] != 2` means the band is split again
+inside itself: chapters 0, 1 and 3 take the body and 2 does not.
+
+### `gor/gor_00_init_evt` cmd 98 — the largest ladder
+
+`op36 ==` on 2, 3, 4, 5, 217; `op47 BETWEEN` 172..229; `op36 ==` on 402, 268,
+404; `END_SWITCH` at 146. **No `DEFAULT`.** Ordering is again non-monotonic
+(217, then 172..229, then 402, then 268, then 404). Chapters matching none of
+the nine cases — including 0, 1 and 6 through 171 — leave the switch with no
+effect. Three of the bodies (the `== 3`, `== 4` and `== 5` cases) set
+`LW[0] <- 1` via `op50`; the `== 2` body does not.
+
+### `muj/muj_00_init_evt` cmd 82 — equality chain plus a threshold
+
+`op36 ==` on 231, 256, 257, 259, 260, 267, then `op41 >=` 268 at cmd 135;
+`END_SWITCH` at 151. **No `DEFAULT`.** Because the last case is `>= 268`, this
+ladder covers `[268, +inf)` wholesale while 231-267 is handled by exact
+identity only: chapters 232-255, 258 and 261-266 get no case and no effect.
+The `>= 268` body is the largest in the opening — 8 `op91` calls plus writes
+to `GSF[3125]` and `GSF[39]`.
+
+### Cross-cutting findings
+
+1. **Three dispatch forms for the same test.** The opening uses grouped `OR`
+   43, plain equality 36, `BETWEEN` 47, `<` 38 and `>=` 41 on `GSW[0]`
+   directly, and SWITCH 34 on top of all of them. A port that implements
+   only `==` will mis-admit every ladder.
+2. **First-match-wins is real.** `gor_03` cmd 60 is the clean case: an
+   ascending `<` ladder where evaluating all eight and taking the last
+   accepted branch gives a different chapter set.
+3. **`GSF[5393]` is a genuine flag read.** It appears as operand0 of
+   `op24` (`== 1`) at `gor_03` cmd 23, i.e. in a *destination/first* operand
+   position, which the namespace contract routes to
+   `index = wrap32(-129994607 + 130000000) = 5393` in `GSF`. So at least this
+   member of the 5300-5600 band **is** a flag access. This does **not**
+   generalise: in opcode-91 operand positions the same numeric band is a
+   callee argument, and the two roles must be distinguished per opcode.
+   `GSF` band base is `-130000000`, half-width `10000000`, matching
+   `EVENT_INTEGER_OPERAND_NAMESPACES.md`.
+4. **Other non-chapter operands inside the switch bodies:** `GSF[1178]`
+   (`gor_00` cmd 43), `GSF[3125]` and `GSF[39]` (`muj_00` cmds 146-147),
+   `LW[0]` and `LW[15]`, `GW[12]` and `GW[13]`. `GSF[39]` appearing again
+   confirms it as the cross-area marker already found in `gor_00` and
+   `muj_00` inits.
+
+### Porting notes for the ladders
+
+1. Reproduce the ladder as an **ordered** list with first-match-wins, not as
+   a set of independent predicates.
+2. Reproduce the exact case opcode. `OR`/`AND` groups latch `-1`/`-2` and are
+   terminated by `CASE_END` 46; a plain chain of `CASE_EQUAL` 36 has no
+   terminator. These are not interchangeable even when the membership sets
+   match — which is why the `gor_02` cmd 0 / cmd 112 pair is a useful test
+   pair rather than a redundant one.
+3. `BETWEEN` 47 resolves **both** endpoints and accepts `L<=V<=H`; endpoints
+   are inclusive and are not swapped.
+4. Do not add a `DEFAULT` where the source has none, and do not add an
+   `END_SWITCH` body where the ladder falls out with no state change.
+
 ## Per-event tables
 
 ### `aaa/aaa_00_init_evt` (prologue module init, 35 cmds)
@@ -274,11 +424,12 @@ test would change which chapters are admitted.
 - **Whether `kurihakase_first_talk`'s `9` is forward progress.** The value
   is recovered; the direction is not, because the entry path into that
   event is not established.
-- **Opcode-34 (SWITCH) case bodies** on `GSW[0]` were not expanded. The
-  complete reference list is: `gor_00_init_evt` cmds 12 and 98;
-  `gor_02_init_evt` cmds 0 and 112; `gor_03_init_evt` cmds 17, 60 and 158;
-  `muj_00_init_evt` cmd 82. (Earlier revisions of this file listed only
-  three of these eight.)
+- **Opcode-34 (SWITCH) case bodies are now expanded** — all eight sites
+  (`gor_00` cmds 12, 98; `gor_02` cmds 0, 112; `gor_03` cmds 17, 60, 158;
+  `muj_00` cmd 82), see the ladder section. What is *not* recovered is the
+  runtime effect of each body: the `op91`/`op92`/`op94` service operand
+  meanings are decoded elsewhere but were not cross-referenced per body
+  here.
 - `GSW[1420]`, seen in `gor_01` cmd 126 and `gor_02` cmd 63, has no
   extracted comparison literal.
 - No execution trace.

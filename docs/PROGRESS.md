@@ -1,3 +1,39 @@
+## 2026-10-13 — ID 3 — opcode-34 SWITCH ladders on GSW[0]
+
+Expanded all eight opcode-34 sites on `GSW[0]` in the opening modules,
+closing the second-to-last gap on the chapter table. Ladder boundaries were
+recovered by applying the already-documented next-case scanner
+(`EVENT_SWITCH_STACK_AND_CASE_SCANS.md`: depth 1, opcodes 36..47, stop at
+`END_SWITCH` 49) over the ISO-read REL spans. All eight sites terminated
+cleanly, so each ladder is complete rather than truncated.
+
+Headline results:
+
+- `gor_02` cmd 0 is a 7-way `CASE_OR` 43 group on chapters
+  18/64/120/174/221/271/347 with a `CASE_END` 46; `gor_02` cmd 112 is the
+  *same seven chapters* as seven `CASE_EQUAL` 36 cases. Same membership,
+  different dispatch form — the two sites are a cross-check pair, not a
+  duplicate.
+- `gor_03` cmd 17 tiles `[278, inf)` exactly with `BETWEEN` 278..280 plus
+  `>= 281` and no `DEFAULT`; `gor_03` cmd 60 is an ascending `<` ladder where
+  first-match-wins is load bearing (an accepted case writes state 0, so later
+  cases short-circuit).
+- Two ladders are **not ascending** (`gor_00` cmd 12 puts `== 268` after
+  `== 402`; cmd 98 puts `BETWEEN 172..229` after `== 217`). They must not be
+  sorted or binary-searched.
+- Three of the eight ladders have **no `DEFAULT`**, so large chapter bands
+  fall out with no effect at all.
+
+Also resolves one open question: `GSF[5393]` at `gor_03` cmd 23 is a genuine
+flag read (operand0 of `op24`, `wrap32(-129994607 + 130000000) = 5393`), so at
+least that member of the 5300-5600 numeric band is a flag access rather than
+a callee argument. Not generalised: in opcode-91 operand positions the same
+band is a callee argument, so the role is per-opcode.
+
+Validation: REL event spans re-extracted from the read-only ISO; scanner and
+case semantics reused from existing class-B contracts rather than re-derived.
+Docs-only change; `make test` / `make all` not rerun. No execution trace.
+
 ## 2026-10-13 — Original reaction control and no-damage completion
 
 Feature `e8e6097` binds complete CheckAttribute, ResetFaceDirection and On/

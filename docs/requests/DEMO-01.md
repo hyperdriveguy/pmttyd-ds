@@ -330,3 +330,54 @@ is **eight** — `gor_00` cmds 12, 98; `gor_02` cmds 0, **112**; `gor_03` cmds
 Still open: chapter names, the origin of 402/404, whether the professor's
 `9` is forward progress (the entry path into that event is not established),
 the eight SWITCH case bodies, and `GSW[1420]`. No execution trace.
+
+## 2026-10-13 — ID 3: opcode-34 SWITCH ladders on `GSW[0]`
+
+[Chapter value table, ladder section](../behavior/story/OPENING_GSW0_CHAPTER_VALUE_TABLE.md).
+Expands all eight opcode-34 sites on `GSW[0]`, closing the second-to-last
+chapter-table gap. Boundaries recovered by applying the documented next-case
+scanner from `EVENT_SWITCH_STACK_AND_CASE_SCANS.md` (depth 1, opcodes 36..47,
+stop at `END_SWITCH` 49). All eight terminated cleanly, so each ladder is
+complete.
+
+- **`gor_02` cmd 0** is a grouped `CASE_OR` 43 chain over **18, 64, 120, 174,
+  221, 271, 347**, two-command body, `CASE_END` 46, then `DEFAULT` at 11.
+- **`gor_02` cmd 112** is the *same seven chapters* as seven `CASE_EQUAL` 36
+  cases. Same membership, two different dispatch forms — a useful
+  cross-check and a concrete test pair, since OR/`CASE_END` and a plain
+  equality chain are not interchangeable implementations.
+- **`gor_03` cmd 17** is `BETWEEN` 278..280 plus `>= 281`, tiling
+  `[278, +inf)` exactly. No `DEFAULT`, so `GSW[0] < 278` does nothing.
+- **`gor_03` cmd 60** is an ascending `<` ladder (56, 112, 164, 215, 261, 339,
+  373, 401) plus `DEFAULT`. Because an accepted case writes state 0, this is
+  **first-match-wins**; a port that evaluates all eight and takes the last hit
+  admits the wrong chapters.
+- **`gor_03` cmd 158** is `<` 268 / `<` 279 / `<` 282 plus `DEFAULT`; the 279
+  body writes `LW[15] <- 1`, does work through `GW[12]`, then resets
+  `LW[15] <- 0` and writes `GW[13]`. The 282 body is empty.
+- **`gor_00` cmd 12** mixes `BETWEEN` 0..3, `BETWEEN` 4..6, `==` 217, `==`
+  402, `==` **268**, `DEFAULT`. The ladder is **not ascending** (402 sits
+  between two lower chapters), so it must not be sorted or binary-searched.
+  Its 0..3 body re-tests `GSW[0] != 2`, splitting the band again.
+- **`gor_00` cmd 98** is `==` on 2/3/4/5/217, `BETWEEN` 172..229, `==` on
+  402/268/404. **No `DEFAULT`** — unmatched chapters have no effect. Three
+  bodies set `LW[0] <- 1`; the `== 2` body does not.
+- **`muj_00` cmd 82** is `==` on 231/256/257/259/260/267 then `>= 268`.
+  **No `DEFAULT`**, so 232-255, 258 and 261-266 get no case at all.
+
+Also answers one open question from the previous gap list: **`GSF[5393]` is
+a genuine flag read.** It appears as operand0 of `op24` at `gor_03` cmd 23 —
+a first-operand position the namespace contract routes to
+`wrap32(-129994607 + 130000000) = 5393`. So *this* member of the 5300-5600
+band is a flag access, not a callee argument. That does **not** generalise:
+in opcode-91 operand positions the same band is a callee argument, so the
+role has to be decided per opcode, not per number.
+
+New non-chapter operands inside the switch bodies, all band-resolved:
+`GSF[1178]` (`gor_00` cmd 43), `GSF[3125]` and `GSF[39]` (`muj_00` cmds
+146-147), `LW[0]`, `LW[15]`, `GW[12]`, `GW[13]`. `GSF[39]` showing up a third
+time reinforces it as the cross-area marker.
+
+Still open: chapter names, origin of 402/404, the direction of the professor's
+`9`, `GSW[1420]`, and the runtime meaning of each `op91`/`op92`/`op94` body
+call. No execution trace.
