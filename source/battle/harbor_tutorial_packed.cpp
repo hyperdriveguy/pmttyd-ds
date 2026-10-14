@@ -11,6 +11,8 @@
 #include "battle_stage_floor.hpp"
 #include "battle_packed_hit_event.hpp"
 #include "battle_hit_code_events.hpp"
+#include "prologue_pouch.hpp"
+#include "battle_unit_resources.hpp"
 namespace ttyd {
 namespace {void required(bool ok){if(!ok)std::abort();}int32_t signByte(uint8_t b){return b<128?int32_t(b):int32_t(b)-256;}}
 uint32_t HarborTutorialPacked::word(uint32_t a)const{uint32_t v=0;required(vm.memory.readWord(a,v));return v;}
@@ -25,7 +27,7 @@ int32_t HarborTutorialPacked::value(EventEntry& e,unsigned i){return getEventVal
 void HarborTutorialPacked::output(EventEntry& e,unsigned i,int32_t v){setEventValue(e,raw(e,i),v,vm.interpreterServices().operands);}
 uint32_t HarborTutorialPacked::actor(EventEntry& e){const auto id=translateBattleActor(&e,value(e,0),nativeBattleActorServices(vm));return word(Battle+0x20+4u*uint32_t(id));}
 bool HarborTutorialPacked::provision(){
- for(auto span:std::array<std::pair<uint32_t,unsigned>,4>{{{0x8041eb90,4},{Battle,0x19400},{Units,0x4000},{Parts,0x4000}}})if(!vm.memory.registerRam(span.first,std::vector<uint8_t>(span.second)))return false;
+ for(auto span:std::array<std::pair<uint32_t,unsigned>,5>{{{0x8041eb90,4},{Battle,0x19400},{Units,0x4000},{Parts,0x4000},{MenuRam,0x4000}}})if(!vm.memory.registerRam(span.first,std::vector<uint8_t>(span.second)))return false;
  word(0x8041eb90,Battle);initializePackedBattleStageFloorFields(Battle,nativeBattleActorServices(vm).memory);half(Battle+8,2);half(Battle+16,1);half(Battle+24,0);byte(Battle+0xa,1);byte(Battle+0x12,255); // Fresh source group-policy adapter.
  for(unsigned i=0;i<64;++i){word(Battle+0x120+4*i,0xffffffff);word(Battle+0x16f5c+8*i,0xffffffff);}
  BattlePadWork pad;pad.init();writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));
@@ -39,12 +41,19 @@ bool HarborTutorialPacked::provision(){
  registry.bind(0x8010f374,&vm,[](void* p,EventEntry& e,int32_t){return battleGetHitCodeEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && bindBattleCheckDataCallback(registry,vm) && bindBattleGetBodyIdCallback(registry,vm) && bindBattleSetMoveSpeedCallback(registry,vm) && bindBattleMovePositionCallback(registry,movement) && bindBattleJumpSettingCallback(registry,vm) && bindBattleGetPosCallback(registry,vm) && bindBattleGetHomePosCallback(registry,vm) && bindBattleGetHitPosCallback(registry,vm) && bindBattleGetUnitWorkCallback(registry,vm) && bindBattleSetUnitWorkCallback(registry,vm) && bindBattleGetHpCallback(registry,vm) && bindBattleGetMaxHpCallback(registry,vm) && bindBattleStartWaitCallback(registry,vm) && bindBattleStopWaitCallback(registry,vm);
 }
 uint32_t HarborTutorialPacked::requestSound(uint32_t u,uint32_t key,const std::array<float,3>& pos){HarborTutorialSoundRequest r;r.handle=nextSoundHandle++;r.key=key;r.owner=int32_t(word(u));r.position=pos;for(unsigned i=0;i<128;++i){const auto c=byte(key+i);if(!c)break;r.name+=char(c);}sounds.push_back(r);return r.handle;}
-bool HarborTutorialPacked::provisionFreshPouch(const char* name){
+bool HarborTutorialPacked::provisionFreshPouch(const char* name,const ProloguePouch* entry){
  if(!name || freshPouch || !vm.memory.registerRam(0x8041eb00,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x84400000,std::vector<uint8_t>(0x5d4)))return false;
+ if(entry){for(unsigned i=0;i<entry->bytes.size();++i)byte(0x84400000+i,entry->bytes[i]);word(0x8041eb00,0x84400000);freshPouch=true;return true;}
  struct Provider{const char* name;bool allocated=false;} provider{name};PackedPouchInitializationServices services;services.memory=nativeBattleActorServices(vm).memory;services.user=&provider;
  services.allocate=[](void* p,int32_t heap,uint32_t size){auto& v=*static_cast<Provider*>(p);assert(heap==0 && size==0x5d4 && !v.allocated);v.allocated=true;return uint32_t(0x84400000);};
  services.message=[](void* p,const char* key){assert(!std::strcmp(key,"name_party3"));return static_cast<Provider*>(p)->name;};
  freshPouch=initializePackedPouch(services)==0x84400000;return freshPouch;
+}
+void HarborTutorialPacked::importMarioPouch(){
+ ProloguePouch copy;const auto p=word(0x8041eb00);for(unsigned i=0;i<copy.bytes.size();++i)copy.bytes[i]=byte(p+i);
+ readDamage(1);auto& d=damageUnits[1];d.hpPlusCount=byte(Units+0x1000+0x2f1);d.fpPlusCount=byte(Units+0x1000+0x2f2);
+ UnitResourceServices services;services.user=&copy;services.pouch=[](void* self){return static_cast<ProloguePouch*>(self)->bytes.data();};importUnitResources(d,services);
+ const auto u=Units+0x1000;half(u+0x10a,d.baseHp);half(u+0x108,d.maxHp);half(u+0x10c,d.hp);half(u+0x110,d.baseFp);half(u+0x10e,d.maxFp);half(u+0x112,d.fp);
 }
 bool HarborTutorialPacked::provisionFreshFieldInformation(uint32_t c,uint32_t group,uint32_t stage){
  if(!freshPouch || !vm.memory.registerRam(0x84500000,std::vector<uint8_t>(0x580)) || !vm.memory.registerRam(0x84501000,std::vector<uint8_t>(0x340)))return false;

@@ -5,6 +5,7 @@
 #include "battle_damage_application.hpp"
 #include "battle_camera_requests.hpp"
 #include "battle_packed_generic_jump.hpp"
+#include <unordered_map>
 namespace ttyd {
 // Native storage/provider policy. All gameplay fields copied below retain source
 // definitions. Packed entry allocation/initialization remains a scoped adapter.
@@ -18,10 +19,13 @@ public:
  void samplePhysical(uint64_t milliseconds,const BattlePadSample*);
  explicit HarborTutorialPacked(EventNativeRuntime& r):vm(r){}
  bool provision();
- bool provisionFreshPouch(const char* originalYoshiName);
+ bool provisionFreshPouch(const char* originalYoshiName,const ProloguePouch* entry=nullptr);
+ void importMarioPouch();
  bool provisionFreshFieldInformation(uint32_t configuration,uint32_t expectedGroup,uint32_t expectedStage);
  bool registerActor(HarborTutorialActor&);
  bool unitInitReady();
+ bool buildWeaponMenu(uint32_t type,HarborTutorial&,void* messageUser,uint32_t(*message)(void*,uint32_t));
+ uint32_t cacheMenuLabel(uint32_t key,const char* originalText);
  uint32_t runHitEvent(int32_t id,uint32_t code);
  uint32_t runHitEventDirect(int32_t id,uint32_t code,uint32_t script);
  bool hitEventsActive();
@@ -31,6 +35,9 @@ public:
  bool readWord(uint32_t address,uint32_t& value) const{return vm.memory.readWord(address,value);}
 private:
  std::array<bool,4> registered{};
+ static constexpr uint32_t MenuRam=0x84600000;
+ uint32_t menuTextAt=MenuRam+0x1000;std::unordered_map<uint32_t,uint32_t> menuText;
+
  bool checkDamageCore(uint32_t attacker,uint32_t defender,uint32_t part,uint32_t weapon,uint32_t flags,int32_t& result);
  void readDamage(unsigned id);void writeDamage(unsigned id);
  DamageApplicationServices damageApplication();

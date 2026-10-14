@@ -12,7 +12,7 @@ void HarborTutorialPacked::readDamage(unsigned id){
  auto half=[&](uint32_t at){uint16_t v=0;if(!vm.memory.readHalf(at,v))std::abort();return int16_t(v<32768?int(v):int(v)-65536);};
  d.kind=int32_t(word(u+8));d.belong=int8_t(byte(u+0xc));d.hp=half(u+0x10c);d.maxHp=half(u+0x108);d.fp=half(u+0x112);d.maxFp=half(u+0x10e);
  d.flags=word(u+0x27c);d.statusFlags=word(u+0x138);d.attributes=word(u+0x104);d.extraDefense=int32_t(word(u+0x21c));d.damageSequence=half(u+0x260);d.attackSequence=int32_t(word(u+0x280));
- d.danger=byte(k+0xc);d.peril=byte(k+0xd);d.zapTap=byte(u+0x2f0);
+ d.fpCostReduction=byte(u+0x2f5);d.danger=byte(k+0xc);d.peril=byte(k+0xd);d.zapTap=byte(u+0x2f0);
  for(unsigned i=0;i<30;++i)d.statusBytes[i]=byte(u+0x118+i);
  auto& b=d.badges;b.powerPlus=byte(u+0x2e4);b.pUpDDown=byte(u+0x2e5);b.allOrNothing=byte(u+0x2e6);b.megaRush=byte(u+0x2e7);b.powerRush=byte(u+0x2e8);b.pDownDUp=byte(u+0x2e9);b.doublePain=byte(u+0x2ea);b.lastStand=byte(u+0x2eb);b.defendPlus=byte(u+0x2ec);b.damageDodge=byte(u+0x2ed);b.pityFlower=byte(u+0x2f8);b.hpDrain=byte(u+0x2f9);b.fpDrain=byte(u+0x2fa);b.icePower=byte(u+0x301);
  d.hpBefore=int32_t(word(u+0x208));d.hpAfter=int32_t(word(u+0x20c));d.lastHp=byte(u+0x270);d.lastFp=byte(u+0x271);d.lastConsumedFp=byte(u+0x272);d.pattern=int32_t(word(u+0x274));

@@ -1,5 +1,6 @@
 #include "harbor_tutorial.hpp"
 #include "actor_animation.hpp"
+#include "prologue_pouch.hpp"
 #include <cassert>
 #include <iostream>
 using namespace ttyd;
@@ -45,8 +46,27 @@ void retainedLethalImpact(){
  for(unsigned n=0;n<10;++n)scene.tick((++tick)*1000/60,0,&noInput);
  assert(scene.actors[1].hp==1 && scene.damageEffects.empty() && scene.damageNotices.empty() && scene.damageAudienceRequests.empty() && !scene.damageActive && scene.result==0);
 }
+void nativeWeaponRows(){
+ auto pouch=initializeProloguePouch("Yoshi");pouch.half(0x70,7);pouch.half(0x74,2);
+ HarborTutorial scene;assert(scene.beginFromPouch(0,pouch,4));assert(!scene.buildWeaponMenu(0));
+ for(unsigned n=0;n<1500 && !scene.introComplete;++n){if(scene.pendingService==0x80106980)scene.animationComplete(1);scene.tick((n+1)*1000/60,n%4==0?0x100:0);}
+ assert(scene.introComplete && scene.buildWeaponMenu(0) && scene.weaponRows.size()==1);
+ const auto jump=scene.weaponRows[0];
+ assert(jump.weapon==0x803538a8 && jump.enabled && jump.reason==0 && jump.nameAddress && jump.label=="Normal Jump" && jump.icon==167);
+ assert(scene.buildWeaponMenu(1) && scene.weaponRows.size()==1 && scene.weaponRows[0].weapon==0x80353de8 && scene.weaponRows[0].enabled);
+ assert(scene.actors[1].hp==7 && scene.actors[0].hp==5 && !scene.attackActive && !scene.damageActive && scene.result==0);
+ assert(!scene.buildWeaponMenu(6));
+ uint32_t data=0;assert(scene.readPackedWord(0x84101110,data) && uint16_t(data)==2);
+ assert(scene.readPackedWord(0x84400098,data) && (data>>24)==1 && ((data>>16)&255)==1);
+ assert(scene.readPackedWord(0x84400070,data) && (data>>16)==7);
+ assert(scene.buildWeaponMenu(2) && scene.weaponRows.size()==1 && scene.weaponRows[0].weapon==0x80363e60 && !scene.weaponRows[0].enabled && scene.weaponRows[0].reason==3);
+ assert(scene.buildWeaponMenu(4) && scene.weaponRows.empty());
+ pouch.bytes[0x98]=3;pouch.half(0x74,4);assert(scene.buildWeaponMenu(0) && scene.weaponRows.size()==1 && scene.weaponRows[0].icon==167); // Battle entry owns a complete immutable-entry copy.
+ assert(scene.readPackedWord(0x84101110,data) && uint16_t(data)==2);
+
+}
 int main(){
- assert(loadHarborTutorialAssets("romfs"));ordinaryCrumpImpact();retainedLethalImpact();HarborTutorial t;assert(t.begin(0,7));
+ assert(loadHarborTutorialAssets("romfs"));ordinaryCrumpImpact();retainedLethalImpact();nativeWeaponRows();HarborTutorial t;assert(t.begin(0,7));
  for(uint64_t tick=1;tick<300 && !t.message.active();++tick)t.tick(tick*1000/60,0);
  uint32_t packedSystem=0;
  assert(!t.failed);assert(t.initialized);assert(t.actors[0].hp==5 && t.actors[0].maxHp==5);

@@ -22,6 +22,11 @@ struct HarborTutorialRequest {
 };
 struct HarborTutorialSoundRequest {enum class Operation {Trigger,Position,Off};Operation operation=Operation::Trigger;uint32_t handle=0,key=0;int32_t owner=-1;uint64_t time=0;std::string name;std::array<float,3> position{};};
 struct HarborTutorialCameraState {uint32_t flags=0;int32_t priority=0,mode=0,owner=-1,target=-1,ownerPart=-1,targetPart=-1;int16_t speed=0,remaining=0;float zoom=0;std::array<float,3> home{},hit{};};
+struct HarborTutorialWeaponRow {
+ uint32_t weapon=0,nameAddress=0;bool enabled=false;int32_t reason=0,ordinal=0,item=0;uint16_t icon=0;
+ std::string label;
+};
+struct ProloguePouch;
 struct HarborTutorialRuntime;
 // Source setup2 unit initialization and guarded phase requests. This owner does
 // not infer combat outcomes or advance the field story. Native IDs follow the
@@ -52,6 +57,7 @@ public:
     // Explicit original new-game entry context; creates the verified fresh pouch
     // and executes Mario kind+bc initialization before admitting intro phase.
     bool beginFresh(uint64_t milliseconds,int32_t marioHp,int32_t marioMaxHp,int32_t originalStory);
+    bool beginFromPouch(uint64_t milliseconds,const ProloguePouch&,int32_t originalStory);
     // Attach after beginFresh; clear before provider teardown. These bindings
     // await the complete source scheduler owner and do not advance intro alone.
     void setStartupResources(void* user,bool(*paperReady)(void*,uint32_t,int32_t),bool(*niceReady)(void*,int32_t));
@@ -67,11 +73,13 @@ public:
     // Source damage producer bridge: original reaction roots, no HP/result synthesis.
     uint32_t dispatchHitEvent(int32_t actorId,uint32_t code);
     uint32_t dispatchDirectHitEvent(int32_t actorId,uint32_t code,uint32_t script);
+    bool buildWeaponMenu(uint32_t type);
+    uint32_t weaponMenuType=0;std::vector<HarborTutorialWeaponRow> weaponRows;
     bool readPackedWord(uint32_t address,uint32_t& value) const;
     bool running() const{return triggered;}
 private:
     uint32_t dispatchHit(int32_t,uint32_t,uint32_t,bool direct);
-    bool beginWithContext(uint64_t,int32_t,int32_t,bool freshPouch,int32_t originalStory);
+    bool beginWithContext(uint64_t,int32_t,int32_t,bool freshPouch,int32_t originalStory,const ProloguePouch* entry=nullptr);
     std::shared_ptr<HarborTutorialRuntime> runtime_;
 };
 }
