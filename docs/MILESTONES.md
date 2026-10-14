@@ -80,6 +80,8 @@ contradict the recovered contracts.
 | FIELD-ENEMY-01 | G1 | Roaming field enemies, contact battle entry and post-battle respawn (the demo's encounter is scripted). |
 | STAR-01 | G1 | Crystal Stars, star power and special moves (the prologue grants no star; every chapter 1+ battle uses it). |
 | SERVICE-01 | G1 | Shops, inns and NPC item/coin services (no shop appears in the demo). |
+| AUDIO-01 | D1 + G1 | Original BGM sequence/event binding and SFX cue selection; D1 step 4's selected tutorial music and the acceptance criterion's original music/SFX. |
+| RNG-01 | D1 + G1 | Original seed lifecycle and random-consumer census; the tutorial battle's draws and every later random consumer. |
 | AC-01, AC-02, AC-03 | D1 | Jump/Hammer/defense ownership and impact cadence. |
 | DMG-01, DMG-02 | D1 | Weapon power, part defense, damage dispatch/application. |
 | STATUS-01 | D1 | Status lifetime and turn ownership. |
