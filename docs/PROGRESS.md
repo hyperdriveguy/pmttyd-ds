@@ -8720,3 +8720,41 @@ prologue heading display. Findings: Peach4MiB atlas repeatedly exceeds free
 linear memory; renderer lacks original b/<map>.tpl backgrounds; source ship/wake/
 heading timing differs from current simple adapters. Finish and integrate these
 consumers, then verify the complete corrected sequence before completion.
+
+## 2026-10-13 — Field party camera/actor initialization before pose entry
+
+The joined ending branch now advances from camera query through source
+EntryMain actor writes: camera164, negative pose/event IDs, flags, slot,
+encoded native owner identity, kind, conditional primary saved kind, global
+definition and Mario80000000→party8000 propagation. Ordinary kind1 resolves
+the original c_pkr resource804213e0 or d_mario override802cb340, then issues
+animPoseEntry(resource,2) and waits there. It creates no pose handle or
+constructor result while the animation service is unbound. Native owner
+identity85700000 is an explicit encoded port handle for bound typed Mario
+views, not an original heap address or invented full Mario record.
+
+Source audit confirmed Mario camera initialization writes4 AFTER zeroing.
+The persistent owner uses that initialization; raw setter values survive
+native restore/re-entry, matching the recovered camera-ID preservation.
+This does not claim a full MarioInit/ReInit or rendered viewport binding.
+Tests cover supplied camera7, rawffffffff retention, both registry slots,
+owner/kind/negative IDs, unchanged current indices, saved-kind zero versus
+nonzero, auxiliary-kind preservation and dot-flag propagation. Resource
+selection/order is checked against the recovered source contract.
+Joined native ending fixtures remain paused with original story11/result0,
+control hold and canonical pouch; unjoined behavior is unchanged.
+
+Documentation delivery closes exact mode2/archive0 selection, PeraOff mask8,
+new material defaults and two live Mario animation selectors; original
+resource/shape/time/matrix/render owners remain explicit dependencies.
+
+Validation: make test173/173 CTest +116/116 Python passed
+(artifacts/trio-field-pose-entry-tests-final.log). Native make all passed
+(artifacts/trio-field-pose-entry-all-final.log); scoped diff check passed. No new emulator/hardware camera/pose claim; prior
+isolated registry battle capture still covers the unchanged unjoined path.
+
+Next: actual positive animation resource/pose admission using the original
+bank, PeraOff, Mario pose/material readers and setters, original HP/pose/init,
+appearance2 and Hello. Also bind authored joining history and persistent
+party/map lifetimes, RuleKeep/audience and exit/context/sequence/result
+publication. Native return/full prologue parity remain unfinished.

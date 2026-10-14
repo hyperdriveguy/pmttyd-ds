@@ -5,6 +5,9 @@
 #include <memory>
 
 namespace ttyd {
+// Encoded native field-owner identity, distinct from an original heap address.
+// Only the bound typed Mario views are available through native services.
+constexpr uint32_t FieldMarioOwnerAddress=0x85700000;
 // Source-sized, big-endian field actor storage. Allocation/zeroing is only the
 // EntryMain prelude; it does not initialize animation, mode or placement.
 struct FieldPartyActor {
@@ -20,12 +23,13 @@ struct FieldPartyActor {
 };
 struct FieldPartyRegistry {
     std::array<std::unique_ptr<FieldPartyActor>,2> actors;
+    uint32_t currentDefinition=0; // Original global kind-record pointer view.
     FieldPartyRegistry()=default;
-    FieldPartyRegistry(const FieldPartyRegistry& other) {
+    FieldPartyRegistry(const FieldPartyRegistry& other):currentDefinition(other.currentDefinition) {
         for(unsigned i=0;i<actors.size();++i)if(other.actors[i])actors[i]=std::make_unique<FieldPartyActor>(*other.actors[i]);
     }
     FieldPartyRegistry& operator=(const FieldPartyRegistry& other) {
-        if(this!=&other){FieldPartyRegistry copy(other);actors=std::move(copy.actors);}return *this;
+        if(this!=&other){FieldPartyRegistry copy(other);actors=std::move(copy.actors);currentDefinition=copy.currentDefinition;}return *this;
     }
     FieldPartyRegistry(FieldPartyRegistry&&)=default;
     FieldPartyRegistry& operator=(FieldPartyRegistry&&)=default;
@@ -56,6 +60,17 @@ struct FieldPartyRegistry {
             return int32_t(i);
         }
         return -1;
+    }
+    void initializeBeforePose(int32_t index,uint8_t kind,FieldMarioBattleState& mario) {
+        auto* actor=pointer(index);assert(actor);
+        actor->word(0x164,mario.cameraId);
+        actor->word(0x0c,0xffffffff);actor->word(0x10,0xffffffff);actor->word(0x14,0xffffffff);
+        actor->word(0,1);actor->bytes[0x2f]=uint8_t(index);
+        actor->word(0x160,FieldMarioOwnerAddress);actor->bytes[0x31]=kind;
+        if(mario.savedPartyKinds[0]==0)mario.savedPartyKinds[0]=kind;
+        if(index==1)actor->word(0,actor->word(0)|4);
+        currentDefinition=0x803143e8+uint32_t(kind)*0x28;
+        if(mario.flags&0x80000000)actor->word(4,actor->word(4)|0x8000);
     }
 };
 }

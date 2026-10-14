@@ -36,9 +36,15 @@ pouch/slots, then queries the live current field party and clears its word4
 bit1 if nonnull. This path stops at RuleKeep8018ef8c.
 
 Set unlock with no existing primary actor admits Entry/EntryMain. The
-source-sized actor is allocated/registered/zeroed, then execution stops
-at marioGetCamId801a94f0 before any camera, owner, kind, pose, material,
-init callback, appearance, current-index publication or Hello is fabricated.
+source-sized actor is allocated/registered/zeroed. It reads the persistent
+Mario camera ID and writes camera, negative pose/event IDs, primary flags,
+slot, encoded native owner identity and kind in source order. It updates
+saved primary kind only when zero, publishes the full used kind record and
+propagates the Mario80000000 flag into party8000. Ordinary kind1 resolves
+c_pkr or the original d_mario override, then stops at animPoseEntry8004176c
+with mode2. No pose handle, material, init callback, appearance, current-index
+publication or Hello is fabricated. See
+[constructor animation admission](FIELD_PARTY_ENTRY_ANIMATION_ADMISSION.md).
 Existing primary destruction remains partyKill800be69c; other kind/auxiliary
 constructor domains remain separate providers. If no free slot exists, the
 original outer Entry's null-dereference domain is not repaired with an actor
@@ -49,7 +55,7 @@ fallback, negative/null, independence from word8, global controls, slot
 reuse and independent simulation copies. Actual native Game ending is tested
 with unjoined storage and an explicitly joined checkpoint fixture. The latter
 represents supplied authored history, not an implemented joining event.
-It allocates one zeroed actor but keeps Mario indicesff/ff until constructor
+It allocates and initializes one actor through the pose request but keeps Mario indicesff/ff until constructor
 completion. Both retain story11, result0 and the control hold.
 
 Remaining: authored Goombella joining graph/pouch mutation, complete ordinary

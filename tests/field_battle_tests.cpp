@@ -59,6 +59,19 @@ int main() {
     CHECK(registry.pointer(0)->word(0)==1 && fork.current(partyOwner)==-1);
     partyOwner.partyIndices={{255,0}};CHECK(registry.current(partyOwner)==0);
     registry.actors[0].reset();CHECK(registry.current(partyOwner)==-1 && registry.allocateFirst()==0);
+    partyOwner.cameraId=7;partyOwner.flags=0x80000002;partyOwner.savedPartyKinds={{0,8}};
+    registry.initializeBeforePose(0,1,partyOwner);
+    auto* constructed=registry.pointer(0);
+    CHECK(constructed->word(0x164)==7 && constructed->word(0x160)==FieldMarioOwnerAddress);
+    CHECK(constructed->word(0x0c)==0xffffffff && constructed->word(0x10)==0xffffffff && constructed->word(0x14)==0xffffffff);
+    CHECK(constructed->word(0)==1 && constructed->word(4)==0x8000 && constructed->bytes[0x31]==1 && constructed->bytes[0x2f]==0);
+    CHECK(registry.currentDefinition==0x80314410 && partyOwner.savedPartyKinds[0]==1 && partyOwner.savedPartyKinds[1]==8);
+    CHECK(partyOwner.partyIndices[0]==255 && partyOwner.partyIndices[1]==0); // Entry wrapper publishes only after completion.
+    partyOwner.savedPartyKinds[0]=3;registry.initializeBeforePose(1,1,partyOwner);
+    CHECK(registry.pointer(1)->word(0)==5 && registry.pointer(1)->bytes[0x2f]==1 && partyOwner.savedPartyKinds[0]==3);
+    Game cameraOwner;CHECK(cameraOwner.fieldMarioBattleState().cameraId==4);
+    cameraOwner.setFieldMarioCameraId(0xffffffff);cameraOwner.restore(Progress{});
+    CHECK(cameraOwner.fieldMarioBattleState().cameraId==0xffffffff); // Raw ID survives native re-entry, without a range clamp.
     for(bool partner:{false,true}) {
         Fixture f;if(!partner)f.partner=0;auto s=f.services();
         CHECK(startFieldBattle(-3,true,s)==0);

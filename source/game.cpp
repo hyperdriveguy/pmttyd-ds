@@ -1022,6 +1022,7 @@ bool Game::beginWater() {
     jumpHeight=0;fieldJump={};fieldJump.motion=31;fieldStep={};fieldVerticalVelocity=0;warpRequest=-1;saveRequested=false;return true;
 }
 void Game::restore(const Progress& saved) {
+    const uint32_t retainedFieldMarioCameraId=fieldMarioBattle.cameraId;
     partnerPresentation={};partnerPresentation.startTick=partnerPresentation.nowTick=ticks;
     const Progress p=saved; // Caller may pass this game's own progress.
     const uint64_t cameraClock=fieldCameraSimulationTicks,shiftTimestamp=fieldCameraShift.previousMilliseconds;
@@ -1033,6 +1034,7 @@ void Game::restore(const Progress& saved) {
     // validation. Keep the reset work on the heap, then move its owned state.
     auto reset=std::make_unique<Game>();
     *this = std::move(*reset);
+    fieldMarioBattle.cameraId=retainedFieldMarioCameraId; // Source reinit preserves the camera ID across record reset.
     marioPresentation.facing=retainedPresentation.facing;marioPresentation.display=retainedPresentation.display;marioPresentation.target=retainedPresentation.target;
     fieldCameraEvents=cameraEvents;fieldCameraFlags=retainedCameraFlags;
     fieldCameraFrame=retainedFrame;fieldCameraAuthored=retainedAuthored;

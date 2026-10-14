@@ -682,8 +682,12 @@ struct TrioAttackRuntime {
                 if(entryPouch->half(unsigned(14*kind))&1) {
                     if(fieldMario->partyIndices[0]<128){pending=0x800be69c;return;}
                     endingRequest(0x800bea68,{kind});endingRequest(0x800be144,{kind});
-                    if(fieldParties->allocateFirst()<0){pending=0x800bea68;return;} // Entry wrapper requires a free slot.
-                    pending=0x801a94f0;return; // Source camera query precedes actor fields/animation/placement initialization.
+                    const auto slot=fieldParties->allocateFirst();
+                    if(slot<0){pending=0x800bea68;return;} // Entry wrapper requires a free slot.
+                    endingRequest(0x801a94f0);fieldParties->initializeBeforePose(slot,uint8_t(kind),*fieldMario);
+                    if(kind!=1){pending=0x800be144;return;} // Other definition/resource records retain their provider.
+                    const uint32_t resource=(fieldParties->pointer(slot)->word(4)&0x8000)?0x802cb340:0x804213e0;
+                    endingRequest(0x8004176c,{int32_t(resource),2});pending=0x8004176c;return; // Pose admission precedes material flags, init callback and placement.
                 } // Real source -1 return: no unlock, kill or constructor side effects.
             }else {
                 endingRequest(0x80141198);

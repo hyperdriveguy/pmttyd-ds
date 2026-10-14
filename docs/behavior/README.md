@@ -702,3 +702,5 @@ an explicit asset/presentation adaptation, outside recovered US behavior.
 - [Original partner appearance position2](partner/FIELD_PARTNER_APPEAR_POSITION2.md): distinct single/dual ray order, raw down-hit admission, retained/live headings and constructor initialization evidence.
 
 Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENING_HOUSE_SOUNDS.md).
+
+- [Field party entry camera/resource/animation admission](partner/FIELD_PARTY_ENTRY_ANIMATION_ADMISSION.md): stored camera ownership, constructor field order, original resource selection, mode2/archive and pose/material admission domains.

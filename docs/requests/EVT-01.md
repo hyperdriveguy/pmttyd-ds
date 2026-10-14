@@ -3328,3 +3328,16 @@ do not grant unlock during battle ending or infer actor ownership from a
 billboard. Next providers: camera/animation/material/kuribo_init, appearance2/
 Hello, source party destruction/lifetimes, RuleKeep/audience, original resource
 exit/context/sequence/result publication. Parent request remains open.
+
+### 2026-10-13 — Native EntryMain camera/resource frontier
+
+Joined ending now reads the field owner's camera ID and initializes actor
+fields/saved-kind/definition/flag propagation before original mode2 pose
+entry, which remains the actual pending provider8004176c. Read-only
+[animation admission contract](../behavior/partner/FIELD_PARTY_ENTRY_ANIMATION_ADMISSION.md)
+pins camera0→4 initialization and retained re-entry, c_pkr versus d_mario,
+resource/exhaustion/negative-handle domain, archive selection, PeraOff and
+two separate material-reader captures. No guessed pose handle or material
+consumer acknowledgement was added. Parent request remains open for actual
+resource/shape/time/pose admission, material owner binding, placement/Hello,
+joining history and original complete ending/exit/sequence/runtime behavior.
