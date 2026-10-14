@@ -1,3 +1,63 @@
+## 2026-10-14 — Complete source command Input and native target confirmation
+
+Committed `a7557ea2`. Shared BattleCommandInput now implements all30 states and
+the unsigned default with original request identities/arguments, captured B/U/M,
+unit lookup before wrapped-M-zero, one private cursor output, exact setup flags,
+reason-entry ID publication/current-ID waits, fallthroughs and local progress.
+The pending-byte re-entry path preserves P; normal re-entry clears it. No loop
+limit/one-state-per-frame yield or VM completion2 is substituted. State11 uses
+the existing complete target core; state29 selects the source attack, freshly
+clears live menu/battle flags, requests OffLight(0,0) and returns1 without a root,
+turn consumption or battle/story result synthesis.
+
+Native inputCommand(sample) composes the owner over existing menu providers.
+Explicit confirmed-class openWeaponMenu admits state7. Weapon A progresses to
+actual help key/mode1/state11 in the same call; a later target A stores29/help2;
+the following invocation finalizes the original script. The root-registration
+bridge consumes that selection once without selecting it again. Physical A/B/
+repeat words come from the actual general pad. Target cancellation is rejected
+before effects at its missing CommandAnimPose provider. In-body missing providers
+freeze the native command context, and legacy root launch refuses that context,
+so a later call cannot advance from a partial state write or replay lost SP08/P.
+A new explicit menu build establishes a new context. The real weapon-menu B path
+closes/stores1, then freezes at the unbound class Setup provider; it is not falsely
+reported as a completed cancellation/menu return.
+
+Complete native _commandRestoreRec is bound; present-item admission uses actual
+source getters/retained unit lookup and only complete early exits (item>=339,
+invalid target, or actual None item0). Gift/effect paths, operation payment and
+populated audience entity producers remain unbound. Source light blr leaves and
+whole help/cursor/sampling/attack-selector providers are reused. UI constructors/
+animations remain native presentation adapters. This is an explicit native
+provider bridge, not yet automatic source class/turn/menu activation in Game.
+
+Validation: isolated artifacts/tutorial-command-8lfuey83, based on5f82f7e4 plus
+scoped changes, passed final `make test`:250/250 C++ and142/142 Python (no skips).
+Portable tests exercise every state, shared cursor reuse, changed type/actor
+values, paired setup/fallthrough policy, reason IDs, retained owners, priority,
+fresh final flags and P-preserving pending re-entry. Native fixture drives the
+weapon/target/finalization sequence through one root and then actual failed Jump
+completion: Crump HP4/Mario7, dealt1/failure1, one payment and result0. It checks
+pre-admission target B retains UI and in-body class cancellation freezes across
+calls/root-launch attempts. Final native `make all -o assets-ready
+BUILD=build-command-review TARGET=ttyd-command-review` passed using prepared
+private assets; artifact: that snapshot's ttyd-command-review.3dsx (451598064
+bytes). Logs: artifacts/tutorial-command-final-test.log and
+tutorial-command-final-native.log (same artifacts directory). Read-only Input
+verifier passed39 bodies/3 spans/526 instruction anchors. Final scoped source/
+fixtures matched isolated review; diff check passed. Initial fixture compile
+scope error was fixed before all final checks. No new art/music conversion,
+ISO writes, Azahar/Dolphin or measured/runtime visual-playability claim.
+Independent audio/coin/Frankly/pose/field work was preserved by scoped commits.
+
+Next: complete CommandAnimPose/body/status/animation providers so target B can
+return to the weapon menu; original ActMenuSetup/Main/class table/UI construction
+and BattleCommandInit/first-act/turn/post-action/phase owners; wire that scheduler
+into Game and render/smoke the original physical menus; successful voice/pitch/
+volume/follow-up hits and stage hazards; second-screen scene/audience expansion,
+optional hostile-item taps and physical equivalent. Tutorial/real battle and
+full remake requirements remain incomplete.
+
 ## 2026-10-14 — Native original coin fanfare219
 
 Committed c3b72f6d. Coin row219 now uses original ff_get4 stereo32000/65352-frame
