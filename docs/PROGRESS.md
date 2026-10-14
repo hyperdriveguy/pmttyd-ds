@@ -26,6 +26,9 @@ item-pointer read after ordinal/ID stores, captured eligibility count and raw
 side addressing into a private target buffer. No Azahar/Dolphin run; no new
 game payload or conversion. Scoped commits preserve concurrent gauge/audio/
 rendering work. A fixture callback return type was corrected before final checks.
+A concurrent subsystem folder migration began after validation (battle files
+now under source/battle and include/battle); its combined build is not rechecked
+by this step. Preserve that reorganization and use current paths next session.
 
 Next: real source table/party/cost/sampling/message providers in native runtime;
 original tutorial class/submenu/input/selection, player action and turn ownership;
