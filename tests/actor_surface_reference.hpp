@@ -1,0 +1,80 @@
+#pragma once
+// Independent pre-fast-path clipping oracle; deliberately retain original arithmetic.
+#include "actor_surface.hpp"
+namespace ttyd::actor_surface_reference {
+namespace actor_surface_detail {
+struct Bin {float low,high;int32_t tile=0;};
+struct Polygon {std::array<ActorSurfaceVertex,16> vertices{};unsigned count=0;};
+inline ActorSurfaceVertex interpolate(const ActorSurfaceVertex& a,const ActorSurfaceVertex& b,float q) {
+    ActorSurfaceVertex out{};
+    auto lerp=[&](float x,float y){return std::fma(y-x,q,x);};
+    out.vertex={lerp(a.vertex.x,b.vertex.x),lerp(a.vertex.y,b.vertex.y),lerp(a.vertex.z,b.vertex.z),lerp(a.vertex.u,b.vertex.u),lerp(a.vertex.v,b.vertex.v)};
+    for(unsigned i=0;i<4;++i)out.color[i]=std::fma(b.color[i]-a.color[i],q,a.color[i]);
+    return out;
+}
+inline bool clip(Polygon& polygon,unsigned axis,float plane,bool lower) {
+    if(!polygon.count)return true;
+    Polygon next;
+    auto coordinate=[&](const ActorSurfaceVertex& p){return axis?p.vertex.v:p.vertex.u;};
+    auto append=[&](const ActorSurfaceVertex& p){if(next.count==next.vertices.size())return false;next.vertices[next.count++]=p;return true;};
+    auto previous=polygon.vertices[polygon.count-1];float last=coordinate(previous);
+    bool lastInside=lower?last>=plane:last<=plane;
+    for(unsigned i=0;i<polygon.count;++i) {
+        const auto current=polygon.vertices[i];const float value=coordinate(current);const bool inside=lower?value>=plane:value<=plane;
+        if(inside!=lastInside) {
+            auto intersection=interpolate(previous,current,(plane-last)/(value-last));
+            if(axis)intersection.vertex.v=plane;else intersection.vertex.u=plane;
+            if(!append(intersection))return false;
+        }
+        if(inside && !append(current))return false;
+        previous=current;last=value;lastInside=inside;
+    }
+    polygon=next;return true;
+}
+inline unsigned bins(float low,float high,uint32_t wrap,std::array<Bin,34>& out) {
+    if(!std::isfinite(low) || !std::isfinite(high) || std::fabs(low)>1048576 || std::fabs(high)>1048576 || wrap>2)return 0;
+    if(!wrap) {
+        unsigned n=0;
+        if(low<0)out[n++]={low,0,0};
+        if(high>=0 && low<=1)out[n++]={0,1,0};
+        if(high>1)out[n++]={1,high,0};
+        return n;
+    }
+    const int32_t first=int32_t(std::floor(low)),last=std::max(first,int32_t(std::ceil(high))-1);
+    if(last-first>=int32_t(out.size()))return 0;
+    for(int32_t i=first;i<=last;++i)out[unsigned(i-first)]={float(i),float(i+1),i};
+    return unsigned(last-first+1);
+}
+inline float normalized(float value,const Bin& bin,uint32_t wrap) {
+    if(!wrap)return std::clamp(value,0.f,1.f);
+    const float fraction=std::clamp(value-float(bin.tile),0.f,1.f);
+    return wrap==2 && bin.tile%2!=0?1-fraction:fraction;
+}
+}
+// Partition source UV planes before atlas remapping. Clamping/wrapping ONLY
+// vertices changes interpolation inside a triangle; this retains that surface.
+// Per-axis34-bin/output limits bound native work; unsupported packs reject.
+inline bool appendActorSurface(const std::array<ActorSurfaceVertex,3>& triangle,const ActorSurfaceState& state,uint16_t cell,
+                               std::vector<ActorMeshVertex>& vertices,std::vector<ActorColor>& colors) {
+    using namespace actor_surface_detail;
+    if(cell>=64)return false;
+    std::array<Bin,34> s{},t{};
+    float lowS=INFINITY,lowT=INFINITY,highS=-INFINITY,highT=-INFINITY;
+    for(const auto& p:triangle){lowS=std::min(lowS,p.vertex.u);highS=std::max(highS,p.vertex.u);lowT=std::min(lowT,p.vertex.v);highT=std::max(highT,p.vertex.v);}
+    const unsigned ns=bins(lowS,highS,state.wrapS,s),nt=bins(lowT,highT,state.wrapT,t);if(!ns || !nt)return false;
+    for(unsigned i=0;i<ns;++i)for(unsigned j=0;j<nt;++j) {
+        Polygon p;p.count=3;std::copy(triangle.begin(),triangle.end(),p.vertices.begin());
+        if(!clip(p,0,s[i].low,true) || !clip(p,0,s[i].high,false) || !clip(p,1,t[j].low,true) || !clip(p,1,t[j].high,false))return false;
+        for(unsigned n=1;n+1<p.count;++n) {
+            if(vertices.size()>65536-3)return false;
+            for(unsigned k:{0u,n,n+1}) {
+                auto v=p.vertices[k].vertex;
+                const float u=normalized(v.u,s[i],state.wrapS),tv=normalized(v.v,t[j],state.wrapT);
+                v.u=(float(cell%8)*128+2+u*124)/1024;v.v=1-(float(cell/8)*128+2+tv*124)/1024;
+                vertices.push_back(v);colors.push_back(p.vertices[k].color);
+            }
+        }
+    }
+    return true;
+}
+}

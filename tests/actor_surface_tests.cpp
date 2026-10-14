@@ -1,12 +1,69 @@
 #include "actor_animation.hpp"
+#include "actor_surface_reference.hpp"
 #include <cassert>
 #include <cmath>
 #include <iostream>
 #include <fstream>
 #include <iterator>
 #include <cstring>
+#include <filesystem>
+#include <limits>
 using namespace ttyd;
 namespace {
+void compareSurface(const std::array<ActorSurfaceVertex,3>& triangle,const ActorSurfaceState& state,
+                    uint16_t cell,size_t prefix=0) {
+    const ActorMeshVertex sentinel{1,2,3,4,5};const ActorColor color{{.1f,.2f,.3f,.4f}};
+    std::vector<ActorMeshVertex> actual(prefix,sentinel),expected=actual;
+    std::vector<ActorColor> actualColors(prefix,color),expectedColors=actualColors;
+    const bool oldResult=actor_surface_reference::appendActorSurface(triangle,state,cell,expected,expectedColors);
+    const bool newResult=appendActorSurface(triangle,state,cell,actual,actualColors);
+    assert(oldResult==newResult && expected.size()==actual.size() && expectedColors.size()==actualColors.size());
+    if(!expected.empty())assert(std::memcmp(expected.data(),actual.data(),expected.size()*sizeof(ActorMeshVertex))==0);
+    if(!expectedColors.empty())assert(std::memcmp(expectedColors.data(),actualColors.data(),expectedColors.size()*sizeof(ActorColor))==0);
+}
+void clippingDifferentialCases() {
+    std::array<ActorSurfaceVertex,3> triangle{{{{1,2,3,.1f,.2f},{1,0,0,.25f}},
+        {{4,5,6,.7f,.2f},{0,1,0,.5f}},{{7,8,9,.1f,.8f},{0,0,1,.75f}}}};
+    for(uint32_t ws=0;ws<4;++ws)for(uint32_t wt=0;wt<4;++wt) {
+        ActorSurfaceState state;state.wrapS=ws;state.wrapT=wt;
+        for(float shift:{-3.f,-1.f,-0.f,0.f,1.f,2.f}) {
+            auto shifted=triangle;for(auto& p:shifted){p.vertex.u+=shift;p.vertex.v+=shift;}
+            for(uint16_t cell:{0,10,63,64})compareSurface(shifted,state,cell);
+        }
+        // Include edges, signed zeros, nonfinite UVs, and bin/output rejection.
+        const float nan=std::numeric_limits<float>::quiet_NaN();
+        for(float value:{-INFINITY,-1048577.f,-35.f,-1.f,-0.f,0.f,1.f,35.f,1048577.f,INFINITY,nan}) {
+            for(unsigned vertex=0;vertex<3;++vertex)for(unsigned axis=0;axis<2;++axis) {
+                auto changed=triangle;if(axis)changed[vertex].vertex.v=value;else changed[vertex].vertex.u=value;
+                compareSurface(changed,state,10);
+            }
+            auto point=triangle;for(auto& p:point){p.vertex.u=value;p.vertex.v=value;}
+            compareSurface(point,state,10);
+        }
+        for(size_t prefix:{size_t(1),size_t(65532),size_t(65533),size_t(65534),size_t(65536)}) {
+            compareSurface(triangle,state,10,prefix);
+            auto crossing=triangle;crossing[0].vertex.u=-1.2f;crossing[1].vertex.u=2.4f;
+            compareSurface(crossing,state,10,prefix); // Retain fallback's partial output on overflow.
+        }
+        auto boundary=triangle;boundary[0].vertex.u=-0.f;boundary[0].vertex.v=0;
+        boundary[1].vertex.u=1;boundary[2].vertex.v=1;
+        compareSurface(boundary,state,10);
+        for(float value:{nan,INFINITY,-INFINITY}) {
+            auto nonfinite=triangle;nonfinite[0].vertex.x=value;nonfinite[1].color[2]=value;
+            compareSurface(nonfinite,state,10); // Positions/colors are copied, not eligibility inputs.
+        }
+    }
+    // Deterministic mixed interior, outside-clamp, mirrored and crossing bins.
+    uint32_t seed=0x19371;
+    auto random=[&](){seed=seed*1664525u+1013904223u;return float(int(seed%4097)-2048)/1024.f;};
+    for(unsigned n=0;n<12000;++n) {
+        auto changed=triangle;
+        const float ox=random()*4,oy=random()*4,span=n%2?.2f:2.f;
+        for(auto& p:changed){p.vertex.u=ox+random()*span;p.vertex.v=oy+random()*span;}
+        ActorSurfaceState state;state.wrapS=n%3;state.wrapT=(n/3)%3;
+        compareSurface(changed,state,uint16_t(n%64));
+    }
+}
 // Retain the pre-hoist arithmetic as an independent exact numerical oracle.
 std::array<float,2> referenceTexturePoint(const std::array<float,5>& t,float u,float v) {
     float x=u*t[2],y=v*t[3];
@@ -55,6 +112,36 @@ void preparedTextureCases() {
         assert(sample.batches.size()==1 && sample.batches[0].count==expected.size());
     }
 }
+void originalPackDifferentialCases() {
+    size_t packs=0,frames=0;
+    for(const auto& file:std::filesystem::directory_iterator("romfs")) {
+        if(file.path().extension()!=".pmanim")continue;
+        ActorAnimationPack pack;assert(pack.load(file.path().c_str()));++packs;
+        const auto* pose=pack.firstPose();assert(pose);
+        for(float frame:{0.f,17.f,45.f}) {
+            ActorAnimationSample sample;assert(pose->evaluate(frame,sample));
+            if(pose->surfaces.empty())continue;
+            std::vector<ActorMeshVertex> vertices;std::vector<ActorColor> colors;
+            for(size_t index=0;index<pose->bindings.size();index+=3) {
+                const auto& first=pose->bindings[index];if(!sample.active[first.group])continue;
+                const auto cell=pose->textures[first.texture].cells[sample.textures[first.texture]];
+                std::array<ActorSurfaceVertex,3> triangle;
+                for(unsigned i=0;i<3;++i) {
+                    const auto& b=pose->bindings[index+i];const auto p=sample.world[b.group].point(sample.positions[b.position]);
+                    const auto uv=referenceTexturePoint(sample.surfaces[b.texture].transform,b.u,b.v);
+                    triangle[i]={{p[0],p[1],p[2],uv[0],uv[1]},pose->colors[index+i]};
+                }
+                assert(actor_surface_reference::appendActorSurface(triangle,sample.surfaces[first.texture],cell,vertices,colors));
+            }
+            assert(vertices.size()==sample.vertices.size() && colors.size()==sample.colors.size());
+            if(!vertices.empty())assert(std::memcmp(vertices.data(),sample.vertices.data(),vertices.size()*sizeof(ActorMeshVertex))==0);
+            if(!colors.empty())assert(std::memcmp(colors.data(),sample.colors.data(),colors.size()*sizeof(ActorColor))==0);
+            ++frames;
+        }
+    }
+    assert(packs>0 && frames>0);
+    std::cout<<"Original pack clipping differential: "<<packs<<" packs, "<<frames<<" surface frames\n";
+}
 float area(const ActorMeshVertex& a,const ActorMeshVertex& b,const ActorMeshVertex& c){return std::fabs((b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x))*.5f;}
 float wrap(float v,uint32_t mode) {
     if(!mode)return std::clamp(v,0.f,1.f);
@@ -97,6 +184,7 @@ void surfaceCases(uint32_t ws,uint32_t wt) {
 }
 }
 int main(int argc,char**) {
+    clippingDifferentialCases();
     preparedTextureCases();
     for(uint32_t s=0;s<3;++s)for(uint32_t t=0;t<3;++t)surfaceCases(s,t);
     const auto translated=actorTexturePoint({.25f,.5f,2,3,0},.2f,.4f);
@@ -104,6 +192,7 @@ int main(int argc,char**) {
     const auto zeroScale=actorTexturePoint({0,0,1,0,0},.2f,.4f);assert(zeroScale[0]==.2f && zeroScale[1]==0);
     const auto rotated=actorTexturePoint({0,0,1,1,90},.5f,.6f);assert(std::fabs(rotated[0]-.6f)<.000001f && std::fabs(rotated[1]-.5f)<.000001f);
     if(argc>1) {
+        originalPackDifferentialCases();
         ActorAnimationPack pack;assert(pack.load("romfs/field-saveblock.pmanim"));
         const auto* idle=pack.pose("S_1");const auto* hit=pack.pose("A_1");assert(idle && hit);
         assert(idle->start==1 && idle->end==119 && idle->loop==1 && hit->start==0 && hit->end==15 && hit->loop==0);

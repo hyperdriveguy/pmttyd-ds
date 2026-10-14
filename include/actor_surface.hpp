@@ -97,6 +97,22 @@ inline bool appendActorSurface(const std::array<ActorSurfaceVertex,3>& triangle,
     float lowS=INFINITY,lowT=INFINITY,highS=-INFINITY,highT=-INFINITY;
     for(const auto& p:triangle){lowS=std::min(lowS,p.vertex.u);highS=std::max(highS,p.vertex.u);lowT=std::min(lowT,p.vertex.v);highT=std::max(highT,p.vertex.v);}
     const unsigned ns=bins(lowS,highS,state.wrapS,s),nt=bins(lowT,highT,state.wrapT,t);if(!ns || !nt)return false;
+    // If every original vertex survives the sole bin's four planes, clipping
+    // only copies the same three vertices. Explicit ordered comparisons leave
+    // NaN coordinates on the original clipping path.
+    if(ns==1 && nt==1 && std::all_of(triangle.begin(),triangle.end(),[&](const auto& p) {
+        return p.vertex.u>=s[0].low && p.vertex.u<=s[0].high &&
+               p.vertex.v>=t[0].low && p.vertex.v<=t[0].high;
+    })) {
+        if(vertices.size()>65536-3)return false;
+        for(const auto& p:triangle) {
+            auto v=p.vertex;
+            const float u=normalized(v.u,s[0],state.wrapS),tv=normalized(v.v,t[0],state.wrapT);
+            v.u=(float(cell%8)*128+2+u*124)/1024;v.v=1-(float(cell/8)*128+2+tv*124)/1024;
+            vertices.push_back(v);colors.push_back(p.color);
+        }
+        return true;
+    }
     for(unsigned i=0;i<ns;++i)for(unsigned j=0;j<nt;++j) {
         Polygon p;p.count=3;std::copy(triangle.begin(),triangle.end(),p.vertices.begin());
         if(!clip(p,0,s[i].low,true) || !clip(p,0,s[i].high,false) || !clip(p,1,t[j].low,true) || !clip(p,1,t[j].high,false))return false;
