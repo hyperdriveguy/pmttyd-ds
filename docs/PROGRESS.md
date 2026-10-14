@@ -2,6 +2,65 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Native original Goomba4 quest2 hand-in
+
+Featureb724535 binds the original gor_02 Goomba4 quest2 arm to existing NPC
+arbitration, original US message playback, original item-selector rendering and
+live original pouch storage. Admission preserves known quest1420=2,
+GSF5405=1/count95>=1 and nearest-candidate priority. Source `irai_02_03` precedes
+the retained `[95,-1]` selector; cancel returns unchanged. Every non-1 result
+prints `irai_02_04`, removes95 through the original revision wrapper, then
+writes5406=1 even on original removal failure. Story/quest/5405 stay unchanged.
+Talk/selector depths1/2/1/0 retain the outer control lock across windows. Native
+unsupported resources/pouch domains stay pending rather than fabricating a
+source completion. [Native scope](behavior/field/NATIVE_GOOMBA4_QUEST2_HAND_IN.md)
+and [source control/poses](behavior/field/GOOMBA4_QUEST_TALK_CONTROL_AND_POSE_ADMISSION.md).
+
+Original Mario and party pouch recalculation now scans all200 equipment slots,
+preserves signed halfword writes/clamps and signed BP costs, and revises all
+seven partner records without healing. The416-byte local pack copies the pinned
+340 source BP bytes and32 partner HP halfwords from the read-only US DOL; only
+halfword byte order changes. It loads once at renderer initialization; revision
+has no allocation. [Source contract](behavior/unit/POUCH_PARAMETER_REVISION.md).
+No ISO/extracted payload is committed or redistributed.
+
+Validation: isolated source tree76b77737c2c35b6f0867ca97bfaae4197358310f,
+`make test` passed189/189 CTest and124/124 Python
+(artifacts/goomba-hand-in-isolated-test.log); subsequent `make all` passed
+(artifacts/goomba-hand-in-isolated-native.log). Focused original-data tests
+passed for admission knowledge, message order/tokens/Goomba attribution,
+ready-only selector deletion, cancel/accept/ignored removal failure, damaged
+HP/FP preservation, final equipment slot, duplicate badges, all partner/rank3
+records, halfword/BP wrap and unknown-domain refusal. Native Game checkpoint
+placement uses the live wandering NPC root and actual proximity/arbitration/
+event entry; cancel releases control with item95 and story untouched. Fixture
+placement and tick counts are harness inputs, not original observations.
+
+Isolated Azahar boot of that binary passed after35 seconds; inspected
+artifacts/azahar-goomba-hand-in-boot/boot.png shows the original opening book
+scene and live message at emulator60 FPS. The first8-second capture was still
+black during initialization; it was not accepted as a successful visual boot.
+Binary SHA256c15113d02cea0ae29b16e62e7db83702c96bc254114a8c6d7c0b15c2972ad216.
+This is startup evidence, not a native quest scene or hardware performance
+measurement. User emulator profiles/saves were untouched.
+
+The shared preliminary `make test` ran against concurrent unfinished edits and
+failed opening_sequence_original, harbor_encounter_original and
+harbor_tutorial_original; the scoped isolated run above is the passing evidence.
+The shared native build also failed its link rule without a linker diagnostic;
+the isolated native build passed. Unrelated working/staged changes were
+preserved. No hardware performance or Dolphin parity is claimed.
+
+Remaining: bind quest13 only with explicit known/value GSF5407 persistence and
+legacy-unknown migration, add original e_mario M_N_5B/M_N_C poses, then execute
+its retained duplicate107 table/update/free graph and original500ms waits.
+Persist the complete original pouch/switch banks before claiming faithful
+hand-in save round-trips. Task acceptance, other quest stages, general event
+ownership, status/SFX/global-manager/RNG and matched original/3DS rendering
+remain open. Continue source NPC/object/event expansion through the existing
+area catalog and per-subsystem service owners. The full-game goal stays active.
+
+
 ## 2026-10-13 — Original damage-controller composition and physical harbor route
 
 Featuref39c355 implements the complete local BattleCheckDamage800fb01c and

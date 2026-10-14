@@ -1649,3 +1649,14 @@ or new image substitutes for those dynamic materials. The exporter is
 licensing/local-only restrictions above apply.
 
 Original fade50 primary sample: `sound/proj/pmario.{proj,pool,sdir,samp}`, SFX_OFF3_MAP_CHANGE1 index869/fx1342/object1503/sample1235. `opening_map_transition_assets.py` exports `romfs/opening-map-turn.wav` and private source manifest; original rate PCM16, source volume100/pan64, dedicated NDSP19. Complete MusyX macro playback remains unbound. Nintendo/Intelligent Systems original resources, local use only; no redistribution rights.
+
+## Original pouch revision tables
+
+`tools/pouch_revision_assets.py` reads US revision0 `main.dol` from the read-only
+ISO. It pins the complete itemDataTable803108a8, copies all340 signed BP-cost
+bytes at item record+1c unchanged, and pins/copies the32 signed partner HP
+halfwords at80315380 with big-to-little endian conversion only. The ignored
+`romfs/pouch-revision.bin` (416 bytes, PMPRV001) and provenance JSON are local
+packs. No ISO or extracted source payload is committed. Nintendo/Intelligent
+Systems original data remains local-only with no redistribution rights.
+[Revision contract](behavior/unit/POUCH_PARAMETER_REVISION.md).

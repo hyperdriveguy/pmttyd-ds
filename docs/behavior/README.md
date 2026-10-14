@@ -750,3 +750,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native general rule and audience storage](battle/NATIVE_GENERAL_RULE_AND_AUDIENCE_STORAGE.md): all68 selectors, retained unit/helper ownership and corrected inline audience bank.
 
 - [Opening arrival field departure ownership](story/OPENING_FIELD_DEPARTURE_OWNER.md)
+
+- [Native Goomba4 quest2 hand-in](field/NATIVE_GOOMBA4_QUEST2_HAND_IN.md) and [source talk control/pose admission](field/GOOMBA4_QUEST_TALK_CONTROL_AND_POSE_ADMISSION.md).

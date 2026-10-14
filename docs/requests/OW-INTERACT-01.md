@@ -669,3 +669,15 @@ keys/pouch/global-switch persistence, status/SFX macros, full manager/GP/RNG/
 camera/font lifetimes and matched raster/hardware performance remain OPEN.
 Source help masks100/200 are C-stickY; native production of those axes remains
 unbound, while the actual95/107 descriptions use only two lines.
+
+2026-10-13 native increment: Goomba4 quest2 now binds original guarded NPC event
+entry, `irai_02_03`/`irai_02_04`, retained `[95,-1]` selector, nested talk/selector
+keys, remove95 + original Mario/party parameter revision, and unconditional
+GSF5406 write after original removal0/-1. Original BP/partner tables are pinned
+read-only ISO exports. [Native scope](../behavior/field/NATIVE_GOOMBA4_QUEST2_HAND_IN.md)
+and [talk control/pose evidence](../behavior/field/GOOMBA4_QUEST_TALK_CONTROL_AND_POSE_ADMISSION.md).
+Parent request stays open: quest13 needs known5407 persistence/migration and
+original Mario poses; full pouch/switch-bank checkpoint round-trip, task
+acceptance, status/SFX/global ownership and matched raster/hardware performance
+remain unbound. This is a native implementation delivery, not an original
+execution trace.
