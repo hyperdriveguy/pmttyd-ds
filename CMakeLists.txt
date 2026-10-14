@@ -1713,3 +1713,9 @@ target_sources(ttyd_core PRIVATE source/display/native_icon_program.cpp)
 add_executable(native_icon_program_tests tests/native_icon_program_tests.cpp)
 target_link_libraries(native_icon_program_tests PRIVATE ttyd_core)
 add_test(NAME native_icon_program COMMAND native_icon_program_tests)
+
+# Original queued letterbox draw and retained signed16 vertex stream.
+target_sources(ttyd_core PRIVATE source/display/camera_letterbox_draw.cpp)
+add_executable(camera_letterbox_draw_tests tests/camera_letterbox_draw_tests.cpp)
+target_link_libraries(camera_letterbox_draw_tests PRIVATE ttyd_core)
+add_test(NAME camera_letterbox_draw COMMAND camera_letterbox_draw_tests)

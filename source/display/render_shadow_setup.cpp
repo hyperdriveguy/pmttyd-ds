@@ -113,7 +113,7 @@ ShadowDisplayServices Renderer::finishingShadowServices(){
         case ShadowPassKind::Viewport:return renderer.finishingCameraDraw.viewport(r.viewport,submit,true);
         case ShadowPassKind::Scissor:return renderer.finishingCameraDraw.scissor(r.scissor,submit,true);
         case ShadowPassKind::Projection:
-            return r.projectionKind<=1 && renderer.finishingCameraDraw.projection(r.projection,submit);
+            return r.projectionKind<=1 && renderer.finishingCameraDraw.projection(r.projection,submit,r.projectionKind);
         }
         return false;
     };

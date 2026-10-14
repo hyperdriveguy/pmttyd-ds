@@ -4640,3 +4640,30 @@ EVT-01 and live area integration remain open.
 Numeric NPC battle setup update: reusable source-order area registry lookup/registration, GP prefix and numeric row selection, inner setup and four associated information copies are now implemented. Three inner transcription errors corrected; original setup2 carries C+18=20000010. See [native contract](../behavior/field/NATIVE_NUMERIC_NPC_BATTLE_SETUP_AND_AREA_REGISTRY.md). Actual Game NPC registration/poses, gor setup0 admission, mutable original area-module lifecycle and shared RNG ordering remain open.
 
 Gor setup0 data update: the shared90 area pack now includes original row0/list/group/unit/kind-field/string/item views with exact source/relocation provenance. Host and ARM fixtures consume255 draws for fifteen original npcEnt requests. [Export scope](../behavior/field/BOUNDED_ORIGINAL_GOR_SETUP_ZERO_DATA.md). Read-only documentation recovered [actual NPC constructor/map/pose owners](../behavior/field/ORIGINAL_MAP_NPC_REGISTRATION_AND_POSE_OWNERS.md), with seven complete-body fingerprints independently rechecked against the ISO. Native original mutable registry/module registration, genuine actor/pose allocation and shared production RNG ordering remain open.
+
+
+### Native letterbox callback and next enemy HP boundary (2026-10-14)
+
+Implemented queued callback8000e564 using original GP capture/gates, camera8,
+live material/alpha and separately read signed16 bar vertices. Native submits two
+four-vertex Citro3D fans and restores saved viewport/GX projection-vector/scissor.
+Original GX projection now retains kind and six coefficients; unsupported kinds
+remain held. See [native continuation](../behavior/camera/NATIVE_LETTERBOX_DRAW_CONTINUATION.md).
+
+Ordinary isolated original-ending probe completes callback with actual GPflags0,
+alpha0/top0/bottom0, and advances to8011fde0. This is a real source early return;
+it does not establish visible-bar rendering or field restoration.
+
+Read-only source recovery identifies8011fde0 as BattleDrawEnemyHP, rather than a
+generic command menu. Evidence: artifacts/command-main-display-evidence/report.md
+and full-body listings/hashes. Request actual ordered camera8 lookup,64 live
+registry slots, status27 and independently owned global battle/Tattle/switch
+checks; no fabricated empty callback. Registry rereads and retained first-unit
+pointer differ. Bar alpha carries between slots; active branch needs camera4
+screen projection, original numeric icons and textures17/18 with live gauge
+fields210/214. CurrentHP ratio is not the original gauge provider. This is the
+next implementation frontier; EVT-01/full prologue goal remain active.
+
+Separate private visible-bar fixture confirms actual2quads/8vertices and full
+save/restore completion with alpha255/top49/bottom44; original zero-alpha probe
+remains separate. Temporary settings and telemetry are excluded from production.

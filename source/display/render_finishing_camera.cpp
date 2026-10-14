@@ -82,6 +82,14 @@ void Renderer::resumeFinishingCamera(const Game& game){
     services.display.callback=[](void* user,uint32_t camera,uint32_t identity,uint32_t borrowed){
         const auto& b=*static_cast<DisplayBridge*>(user);
         auto& renderer=*static_cast<Renderer*>(b.pipeline->user);
+        if(identity==0x8000e564){
+            CameraLetterboxDrawServices letterbox;letterbox.user=&renderer;
+            letterbox.pass=[](void* u,LetterboxPassRequest& r){return static_cast<Renderer*>(u)->finishingLetterboxPass(r);};
+            letterbox.gx=[](void* u,const ShadowGXRequest& r){return static_cast<Renderer*>(u)->finishingShadowRequest(r);};
+            letterbox.begin=[](void* u){return static_cast<Renderer*>(u)->finishingLetterboxBegin();};
+            letterbox.vertex=[](void* u,uint32_t i,const std::array<int16_t,3>& r){return static_cast<Renderer*>(u)->finishingLetterboxVertex(i,r);};
+            return b.game->trioAttack.resumeLetterboxDraw(camera,borrowed,letterbox);
+        }
         if(identity==0x80138da8 || identity==0x801389a0){
             BattleStageDisplayServices stage;stage.user=&renderer;
             stage.gx=[](void* u,const ShadowGXRequest& r){return static_cast<Renderer*>(u)->finishingShadowRequest(r);};

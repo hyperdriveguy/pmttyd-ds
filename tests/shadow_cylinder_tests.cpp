@@ -102,6 +102,6 @@ int main(){
     NativeCameraDraw camera;std::vector<NativeCameraPacket> packets;
     NativeCameraSubmit submit{&packets,[](void* user,const NativeCameraPacket& p){static_cast<std::vector<NativeCameraPacket>*>(user)->push_back(p);return true;}};
     CameraProjectionMatrix projection{};for(unsigned i=0;i<4;++i)projection[i][i]=1;
-    assert(!camera.position(matrix.matrix,submit));assert(camera.projection(projection,submit));assert(camera.position(matrix.matrix,submit));
+    assert(!camera.position(matrix.matrix,submit));assert(camera.projection(projection,submit,1));assert(camera.position(matrix.matrix,submit));
     assert(camera.restore(submit) && packets.back().transform==nativeCameraTransform(projection,matrix.matrix));
 }

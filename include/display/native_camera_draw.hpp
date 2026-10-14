@@ -13,13 +13,17 @@ struct NativeCameraSubmit {void* user=nullptr;bool (*submit)(void*,const NativeC
 std::optional<NativeCameraRect> nativeCameraRect(float x,float y,float w,float h);
 // Declared raster adapter for shadow setup: nearest physical endpoints.
 std::optional<NativeCameraRect> nativeCameraRoundedRect(float x,float y,float w,float h);
+std::array<float,7> cameraGxProjectionVector(const CameraProjectionMatrix&,uint32_t kind);
+CameraProjectionMatrix cameraGxProjectionMatrix(const std::array<float,7>&);
 CameraProjectionMatrix nativeCameraTransform(const CameraProjectionMatrix&,const CameraViewMatrix&);
 class NativeCameraDraw {
 public:
     bool request(const CameraDrawRequest&,const NativeCameraSubmit&);
     bool viewport(std::array<float,6>,const NativeCameraSubmit&,bool rounded=false);
     bool scissor(std::array<uint32_t,4>,const NativeCameraSubmit&,bool rounded=false);
-    bool projection(const CameraProjectionMatrix&,const NativeCameraSubmit&);
+    bool projection(const CameraProjectionMatrix&,const NativeCameraSubmit&,uint32_t kind=0);
+    bool projectionVector(const std::array<float,7>&,const NativeCameraSubmit&);
+    std::optional<std::array<float,7>> projectionVector()const;
     bool position(const CameraViewMatrix&,const NativeCameraSubmit&);
     const std::optional<std::array<float,6>>& viewport()const{return logicalViewport_;}
     const std::optional<std::array<uint32_t,4>>& scissor()const{return logicalScissor_;}
@@ -30,6 +34,7 @@ private:
     std::optional<std::array<float,6>> logicalViewport_;
     std::optional<std::array<uint32_t,4>> logicalScissor_;
     std::optional<CameraProjectionMatrix> projection_;
+    uint32_t projectionKind_=0;
     CameraViewMatrix view_{{{1,0,0,0},{0,1,0,0},{0,0,1,0}}};
     bool dummyState_=false;
 };

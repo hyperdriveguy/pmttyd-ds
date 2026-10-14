@@ -137,6 +137,10 @@ private:
     AnimationFanStream finishingAnimationFans;
     bool finishingAnimationGeometry(const AnimationShapeCall&);
     bool finishingStagePrimitive(const BattleStagePrimitive&);
+    bool finishingLetterboxPass(LetterboxPassRequest&);
+    bool finishingLetterboxBegin();
+    bool finishingLetterboxVertex(uint32_t,const std::array<int16_t,3>&);
+    CameraLetterboxVertexStream finishingLetterboxVertices;
     std::optional<BattleActMatrix> finishingShapeNormal; // Actual source normal-matrix owner; consumed by future lit-shape backend.
     NativeDisplayState finishingDisplayState;
     NativeShadowProgram finishingShadowProgram;

@@ -1140,3 +1140,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Bounded original gor setup0 field data](field/BOUNDED_ORIGINAL_GOR_SETUP_ZERO_DATA.md): source-owned shared90 views, preserved relocations and exact255-draw verification.
 - [Original map NPC registration and pose owners](field/ORIGINAL_MAP_NPC_REGISTRATION_AND_POSE_OWNERS.md): constructor/map registration, duplicate lookup, initial fields and real pose/lifetime requirements.
+
+- [Letterbox projection-vector/FIFO recovery](camera/LETTERBOX_DRAW_PROJECTION_VECTOR_AND_FIFO.md) — original GP gates, live signed16 vertices and GX kind/six-coefficient owner.
+- [Native queued letterbox draw](camera/NATIVE_LETTERBOX_DRAW_CONTINUATION.md) — retained save/restore, live material/bars and actual two-quad submission.

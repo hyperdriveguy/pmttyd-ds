@@ -41,6 +41,8 @@ struct CameraDrawServices {
 // Retained source bank; callback and GPU availability are explicit providers.
 class CameraManager {
 public:
+    uint32_t letterboxColor=0; // Original startup-cleared camdrv sbss2 word80429510, live across room/battle ownership.
+
     // NTSC dimensions are explicit caller inputs. Native double trig substitutes
     // source SDK/libm numerics; boot must run once, independently of battle entry.
     void initializeBoot(uint16_t renderWidth,uint16_t renderHeight);

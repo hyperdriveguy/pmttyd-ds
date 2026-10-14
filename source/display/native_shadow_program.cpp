@@ -29,7 +29,7 @@ std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRe
         const auto channel=r.values[0];if(channel!=0 && channel!=2 && channel!=4)return {};
         auto expected=r.values;expected[0]=4;
         if(expected!=std::array<int32_t,7>{4,0,0,0,0,2,2} && expected!=std::array<int32_t,7>{4,0,0,1,0,2,2} &&
-           expected!=std::array<int32_t,7>{4,0,1,0,0,2,2} && expected!=std::array<int32_t,7>{4,0,1,1,0,2,2})return {};
+           expected!=std::array<int32_t,7>{4,0,1,0,0,2,2} && expected!=std::array<int32_t,7>{4,0,1,1,0,2,2} && expected!=std::array<int32_t,7>{4,0,0,0,0,0,2})return {};
         if(channel==0 || channel==4){next.materialVertex=r.values[3]==1;next.channelControl[0]=r.values;}
         if(channel==2 || channel==4){next.alphaMaterialVertex=r.values[3]==1;next.channelControl[1]=r.values;}
         break;}
@@ -44,8 +44,11 @@ std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRe
         break;
     case ShadowGX::NumIndStages:if(!args({0}))return {};next.indirectStages=0;break;
     case ShadowGX::TevOp:
-        if(!args({0,0}) || !next.texture)return {};
-        next.audienceColor=false;next.textureRGB=true;next.rasterRGB=true;next.alpha=TextureRaster;break;
+        if(args({0,4}) && (next.material || next.materialVertex)){
+            next.audienceColor=false;next.textureRGB=false;next.rasterRGB=true;next.alpha=Raster;
+        }else if(args({0,0}) && next.texture){
+            next.audienceColor=false;next.textureRGB=true;next.rasterRGB=true;next.alpha=TextureRaster;
+        }else return {};break;
     case ShadowGX::TevSwapMode:if(!args({0,0,0}))return {};break;
     case ShadowGX::TevOrder:if(!args({0,255,255,4}) && !args({0,0,0,4}))return {};break;
     case ShadowGX::TevColorOp:case ShadowGX::TevAlphaOp:if(!args({0,0,0,0,1,0}))return {};break;
@@ -86,8 +89,10 @@ std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRe
         next.descriptors[index]=r.values[1];break;
     }
     case ShadowGX::Format:{
-        int index=slot(r.values[1]);if(index<0 || !args({0,r.values[1],1,index==1?5:4,0}))return {};
-        next.formats[index]=index==1?5:4;break;
+        int index=slot(r.values[1]);if(index<0)return {};
+        const int32_t format=index==0 && r.values[3]==3?3:index==1?5:4;
+        if(!args({0,r.values[1],1,format,0}))return {};
+        next.formats[index]=format;break;
     }
     default:return {};
     }

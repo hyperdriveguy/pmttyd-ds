@@ -26,11 +26,14 @@ int main(){
     assert(!backend.request({CameraDrawRequestKind::DummyDraw,0,&c},sink.services()));
     for(auto kind:{CameraDrawRequestKind::Viewport,CameraDrawRequestKind::Scissor,CameraDrawRequestKind::Projection,CameraDrawRequestKind::DummyDraw})assert(backend.request({kind,0,&c},sink.services()));
     assert(sink.packets.size()==4 && sink.packets[0].depthScale==.1f-1 && sink.packets[0].depthOffset==0);
-    assert(sink.packets.back().transform==tilted);
+    // GXSetProjection uploads only its source kind and six coefficients;
+    // arbitrary other Mat4 entries never reach original hardware.
+    const auto acknowledged=nativeCameraTransform(cameraGxProjectionMatrix(cameraGxProjectionVector(p,0)),v);
+    assert(sink.packets.back().transform==acknowledged);
     c.matrices={}; // Acknowledged backend snapshots do not reread the live bank.
     assert(backend.restore(sink.services()) && sink.packets.size()==8);
-    assert(sink.packets[6].kind==NativeCameraCommand::Projection && sink.packets[6].transform==tilted);
-    assert(sink.packets[7].kind==NativeCameraCommand::DummyStateRestore && sink.packets[7].transform==tilted);
+    assert(sink.packets[6].kind==NativeCameraCommand::Projection && sink.packets[6].transform==acknowledged);
+    assert(sink.packets[7].kind==NativeCameraCommand::DummyStateRestore && sink.packets[7].transform==acknowledged);
     unsigned draws=0;for(const auto& packet:sink.packets)draws+=packet.kind==NativeCameraCommand::DummyDraw;
     assert(draws==1);
     // Real submit owns cache publication; rounded endpoints preserve logical
@@ -49,4 +52,15 @@ int main(){
     assert(!nativeCameraRoundedRect(0,0,.001f,.001f));
     const auto restores=sink.packets.size();assert(backend.restore(sink.services()));
     assert(sink.packets[restores].rect.y==137 && sink.packets[restores+1].kind==NativeCameraCommand::Scissor);
+    NativeCameraDraw projected;Sink projectionSink;assert(projected.projection(p,projectionSink.services(),0));
+    const auto savedVector=projected.projectionVector();assert(savedVector && (*savedVector)[0]==0);
+    assert(((*savedVector)==std::array<float,7>{0,2,3,5,0,8,9}));
+    projectionSink.ready=false;auto ortho=*savedVector;ortho[0]=1;
+    assert(!projected.projectionVector(ortho,projectionSink.services()) && projected.projectionVector()==savedVector);
+    projectionSink.ready=true;assert(!projected.projection(p,projectionSink.services(),2));
+    assert(projected.projectionVector(ortho,projectionSink.services()));assert(projected.projectionVector()==ortho);
+    auto signedZero=*savedVector;signedZero[0]=-0.f;assert(projected.projectionVector(signedZero,projectionSink.services()) && (*projected.projectionVector())[0]==0);
+    auto unordered=ortho;unordered[0]=std::numeric_limits<float>::quiet_NaN();
+    assert(projected.projectionVector(unordered,projectionSink.services()) && (*projected.projectionVector())[0]==1);
+    assert(projected.projectionVector(*savedVector,projectionSink.services()));
 }

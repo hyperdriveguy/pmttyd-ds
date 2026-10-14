@@ -6702,3 +6702,68 @@ Documentation parallel check recovered actual setupDataBase→npcEntry registrat
 No render,art,audio or dialogue edits; no new visual-parity,New2DSXL timing or performance claim. The data packs remain ignored; original ISO unchanged. Next import original mutable zeroed area registry (exact three source spans), register gor using actual prolog setup/number addresses, gate unsupported consumers, then bind real tagged-map NPC construction/poses and one session RNG. Independent Mario entry/world services, full original events/story/areas and hardware verification remain unfinished. EVT-01/RNG-01 and the full goal remain active.
 
 Documentation link check:1335 Markdown files,zero broken links.
+
+
+## Original queued letterbox GPU callback (2026-10-14)
+
+Implemented original8000e564 capture/gates, live camera8 material/alpha/bar reads,
+signed16 vertex wrapping and ordered viewport/projection/scissor save/restore.
+Native draws two actual four-vertex Citro3D fans using raster material color.
+Original GX projection is represented by kind and six coefficients; projection
+restore retains the current view. Unsupported providers remain held. No authored
+art, dialogue, music or ISO content changed; ignored existing packs reused.
+
+Frozen base adf074fa1818f5ccdb6c29dacd5f46ab32781437, source tree
+artifacts/letterbox-render-source; journal/manifest isolate this change from
+concurrent work. Initial full validation passed325/325 C++ in34.58s and185/185
+Python in26.308s. Earlier runs exposed an old identity-as-perspective shadow test
+and an inline comment accidentally swallowing its position assertion; both are
+corrected. Final formatting-only cleanup separates three misleading statements.
+Exact final validation and native results follow below.
+
+Normal isolated15s Azahar capture boots original Rogueport with Mario/Goombella.
+Ordinary150s ending probe exits0 and records actual GP81000000 flags0,
+alpha0/top0/bottom0, completed1 phase19 pending0; the queue advances to8011fde0.
+This source early return is distinct from visible-bar GPU admission. The end
+screen still reports field restoration pending; full prologue playability is
+unfinished. User emulator profiles/saves remain untouched. Temporary private
+fixture source was removed and normal3DSX reproduced its original SHA256 before
+the formatting cleanup:65646c7892fd7beddb9ed341d8812b6e7017e6f26e0a69fa691651dcb775e825.
+
+Read-only original recovery now identifies8011fde0 as BattleDrawEnemyHP. Its
+64-slot status27/Tattle/flags gates must run on actual owners; it has no blanket
+ending skip. Retained first-unit versus registry rereads, global battle versus
+passed battle, inter-unit bar-alpha carry, original camera4 projection, numeric
+icons, textures17/18 and live gauge fields remain the next implementation work.
+Evidence artifacts/command-main-display-evidence/report.md; request EVT-01
+updated. Physical framebuffer parity, float24/viewport details, New2DSXL timing,
+complete field restoration, story/events/interiors and full prologue goal remain
+unfinished. Do not infer source-pixel or full-game parity from this callback.
+
+Private nonzero-alpha fixture separately records actual native submission:
+quads2 vertices8 material000000ff, topYs191/191,bottomYs-196/-196,
+projectionKind0, alpha255/top49/bottom44, completed1 phase19 pending0.
+It sets test-only bar values once, restores actual camera scalars after completion,
+and does not modify GP flags or the ordinary-ending evidence. Two real GPU fans
+are therefore exercised; a final screenshot cannot establish transient bar pixels
+or original framebuffer parity. Private build/log/profile:
+artifacts/letterbox-render-visible-build.log,
+artifacts/letterbox-render-smoke-visible.log,
+artifacts/azahar-letterbox-render-visible. Instrumentation is excluded from source
+and the committed production binary. Final normal3DSX hash remains
+65646c7892fd7beddb9ed341d8812b6e7017e6f26e0a69fa691651dcb775e825,
+including the warning-format cleanup; byte-identical reproduction confirmed.
+
+Final required CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready exited0:
+325/325 C++ in36.36s and185/185 Python in35.969s. Required native make all -j4
+-o assets-ready DEBUG_SHORT_BOOT=1 BUILD=build-letterbox-render
+TARGET=ttyd-letterbox-render exited0 after restoring all private sources and
+formatting cleanup. Logs artifacts/letterbox-render-final-validation.log and
+artifacts/letterbox-render-final-build.log. Existing baseline compiler warnings
+remain; new letterbox helper warnings were cleaned up. Separate visible fixture
+Azahar150s exited0; final screenshot remains black at the unfinished field-restoration
+boundary; transient bar pixels/source framebuffer parity are not established. tools/check_doc_links.py
+checked1332 Markdown files,zero broken links. Final source audit3441files plus
+2029RomFS files,zero mismatches; full hashes in
+artifacts/letterbox-render-validation-manifest.json. Concurrent merged worktree
+changes are preserved and are not claimed validated as one production build.

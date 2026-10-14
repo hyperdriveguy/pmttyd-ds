@@ -19,6 +19,21 @@ std::optional<NativeCameraRect> nativeCameraRoundedRect(float x,float y,float w,
     const uint32_t y0=uint32_t(std::round((608.-x-w)*400./608.)),y1=uint32_t(std::round((608.-x)*400./608.));
     if(x1<=x0 || y1<=y0)return {};return NativeCameraRect{x0,y0,x1-x0,y1-y0};
 }
+std::array<float,7> cameraGxProjectionVector(const CameraProjectionMatrix& p,uint32_t kind){
+    const bool ortho=kind==1;
+    return {kind?1.f:0.f,p[0][0],p[0][ortho?3:2],p[1][1],p[1][ortho?3:2],p[2][2],p[2][3]};
+}
+CameraProjectionMatrix cameraGxProjectionMatrix(const std::array<float,7>& v){
+    CameraProjectionMatrix p{};const bool ortho=v[0]!=0;
+    p[0][0]=v[1];p[0][ortho?3:2]=v[2];p[1][1]=v[3];p[1][ortho?3:2]=v[4];p[2][2]=v[5];p[2][3]=v[6];
+    if(ortho)p[3][3]=1;else p[3][2]=-1;return p;
+}
+std::optional<std::array<float,7>> NativeCameraDraw::projectionVector()const{
+    return projection_?std::optional<std::array<float,7>>(cameraGxProjectionVector(*projection_,projectionKind_)):std::nullopt;
+}
+bool NativeCameraDraw::projectionVector(const std::array<float,7>& v,const NativeCameraSubmit& s){
+    return projection(cameraGxProjectionMatrix(v),s,v[0]!=0);
+}
 CameraProjectionMatrix nativeCameraTransform(const CameraProjectionMatrix& p,const CameraViewMatrix& v){
     CameraProjectionMatrix combined{},tilted{};
     for(unsigned i=0;i<4;++i)for(unsigned j=0;j<4;++j){
@@ -44,11 +59,14 @@ bool NativeCameraDraw::scissor(std::array<uint32_t,4> v,const NativeCameraSubmit
     NativeCameraPacket packet{};packet.kind=NativeCameraCommand::Scissor;packet.rect=*rect;
     if(!s.submit(s.user,packet))return false;scissor_=packet;logicalScissor_=v;return true;
 }
-bool NativeCameraDraw::projection(const CameraProjectionMatrix& p,const NativeCameraSubmit& s){
+bool NativeCameraDraw::projection(const CameraProjectionMatrix& input,const NativeCameraSubmit& s,uint32_t kind){
+    if(kind>1)return false; // Explicit native source projection-kind domain.
+    const auto p=cameraGxProjectionMatrix(cameraGxProjectionVector(input,kind));
     if(!s.submit)return false;
     for(const auto& row:p)for(float v:row)if(!std::isfinite(v))return false;
     NativeCameraPacket packet{};packet.kind=NativeCameraCommand::Projection;packet.transform=nativeCameraTransform(p,view_);
-    if(!s.submit(s.user,packet))return false;projection_=p;return true;
+    if(!s.submit(s.user,packet))return false;
+    projection_=p;projectionKind_=kind!=0;return true;
 }
 bool NativeCameraDraw::position(const CameraViewMatrix& view,const NativeCameraSubmit& s){
     if(!s.submit || !projection_)return false;
@@ -62,7 +80,7 @@ bool NativeCameraDraw::request(const CameraDrawRequest& r,const NativeCameraSubm
     switch(r.kind){
     case CameraDrawRequestKind::Viewport:return viewport(c.viewport,s);
     case CameraDrawRequestKind::Scissor:return scissor({c.scissor[0],c.scissor[1],c.scissor[2],c.scissor[3]},s);
-    case CameraDrawRequestKind::Projection:return projection(c.matrices.projection,s);
+    case CameraDrawRequestKind::Projection:return projection(c.matrices.projection,s,c.projectionKind);
     case CameraDrawRequestKind::DummyDraw:
         if(!projection_ || !viewport_ || !scissor_)return false;
         for(const auto& row:c.matrices.view)for(float v:row)if(!std::isfinite(v))return false;

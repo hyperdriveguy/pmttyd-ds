@@ -13,6 +13,7 @@
 #include "camera_depth.hpp"
 #include "camera_manager.hpp"
 #include "camera_letterbox.hpp"
+#include "camera_letterbox_draw.hpp"
 #include "field_bero_exec.hpp"
 #include "original_sequence.hpp"
 #include "source_sound_flags.hpp"
@@ -83,6 +84,7 @@ public:
     bool prepareAudienceDrawing(const BattleAudienceDrawServices&) const;
     bool resumeAudienceCallback(uint32_t camera,uint32_t userdata,const BattleAudienceCallbackServices&) const;
     bool resumeStageDisplay(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleStageDisplayServices&) const;
+    bool resumeLetterboxDraw(uint32_t camera,uint32_t userdata,const CameraLetterboxDrawServices&) const;
     bool resumeAudienceAux(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleAudienceAuxServices&) const;
     bool resumePartDisplay(uint32_t camera,uint32_t part,const BattlePartDisplayServices&) const;
     const BattlePose* battlePose(uint32_t part) const;

@@ -165,6 +165,7 @@ struct TrioAttackRuntime {
     CameraMainCursor cameraMainCursor;
     CameraDrawCursor cameraDrawCursor;
     CameraLetterboxCursor letterboxCursor;
+    CameraLetterboxDrawCursor letterboxDrawCursor;
     std::optional<CameraLetterboxServices> letterboxServices;
     bool cameraDrawWaiting=false;
     BattleCameraTremorCursor cameraTremorCursor;
@@ -1843,6 +1844,7 @@ struct TrioAttackRuntime {
                 if(cameraDrawCursor.display.invoking){
                     next=cameraDrawCursor.display.callback;
                     if(next==0x8002d3d8 && shadowDisplayCursor.active)next=shadowDisplayCursor.pending;
+                    if(next==0x8000e564 && letterboxDrawCursor.active)next=letterboxDrawCursor.pending;
                     if(next==0x801a38f8 && audienceCallbackCursor.active)next=audienceCallbackCursor.pending;
                     if(next==0x80138da8 && stageDisplayCursors[0].active)next=stageDisplayCursors[0].pending;
                     if(next==0x801389a0 && stageDisplayCursors[1].active)next=stageDisplayCursors[1].pending;
@@ -1911,6 +1913,24 @@ void TrioAttack::setOriginalSequence(std::shared_ptr<OriginalSequence> sequence)
 void TrioAttack::setSoundFlags(std::shared_ptr<SourceSoundFlags> flags){if(runtime_)runtime_->soundFlags=std::move(flags);}
 bool TrioAttack::finishingDrawPending() const{return runtime_ && (runtime_->cameraDrawWaiting || runtime_->pending==0x8000f454);}
 void TrioAttack::resumeFinishingDraw(const CameraDrawServices& services) const{if(finishingDrawPending())runtime_->continueFinishingDraw(&services);}
+bool TrioAttack::resumeLetterboxDraw(uint32_t camera,uint32_t userdata,const CameraLetterboxDrawServices& source) const{
+    if(!runtime_ || !runtime_->cameras)return false;const auto& call=runtime_->cameraDrawCursor.display;
+    if(!call.invoking || call.callback!=0x8000e564 || call.camera!=camera || call.userdata!=userdata)return false;
+    struct Bridge {TrioAttackRuntime* runtime;const CameraLetterboxDrawServices* source;} bridge{runtime_.get(),&source};
+    CameraLetterboxDrawServices s;s.user=&bridge;
+    s.gp=[](void* u)->std::optional<uint32_t>{return static_cast<Bridge*>(u)->runtime->vm.gpAddresses.currentAddress();};
+    s.camera=[](void* u,uint32_t i)->const CameraState*{return static_cast<Bridge*>(u)->runtime->cameras->camera(i);};
+    s.word=[](void* u,uint32_t address)->std::optional<uint32_t>{auto& r=*static_cast<Bridge*>(u)->runtime;
+        if(address==0x80429510)return r.cameras->letterboxColor; // Actual shared startup-cleared owner, not a per-battle constant.
+        if(address==0x8041f6b0)return 0xffffffffu; // Original readonly DOL fog-color word.
+        uint32_t value;if(r.vm.gpAddresses.readWord(address,value) || r.vm.memory.readWord(address,value))return value;return std::nullopt;};
+    s.half=[](void*,const CameraState& c,uint32_t offset)->std::optional<int16_t>{if(offset==0x1e0)return c.letterboxAlpha;if(offset==0x1e2)return c.letterboxTop;if(offset==0x1e4)return c.letterboxBottom;return std::nullopt;};
+    s.pass=[](void* u,LetterboxPassRequest& r){const auto& s=*static_cast<Bridge*>(u)->source;return s.pass && s.pass(s.user,r);};
+    s.gx=[](void* u,const ShadowGXRequest& r){const auto& s=*static_cast<Bridge*>(u)->source;return s.gx && s.gx(s.user,r);};
+    s.begin=[](void* u){const auto& s=*static_cast<Bridge*>(u)->source;return s.begin && s.begin(s.user);};
+    s.vertex=[](void* u,uint32_t i,const std::array<int16_t,3>& r){const auto& s=*static_cast<Bridge*>(u)->source;return s.vertex && s.vertex(s.user,i,r);};
+    return drawCameraLetterbox(s,runtime_->letterboxDrawCursor);
+}
 bool TrioAttack::resumeStageDisplay(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleStageDisplayServices& source) const{
     if(!runtime_ || !runtime_->cameras || (callback!=0x80138da8 && callback!=0x801389a0))return false;
     const auto& call=runtime_->cameraDrawCursor.display;
