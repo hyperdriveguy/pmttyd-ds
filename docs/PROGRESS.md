@@ -1,3 +1,83 @@
+## 2026-10-14 — Correct audience-item ownership and hold/throw/damage/escape controllers
+
+Previous goal turn made progress with cheering/jumps/booing and stage-fade
+bindings. Tracing item controllers exposed a mistake in the earlier idle damage
+port:801a8624 is BattleAudienceItemGetPtr, not a battle-unit getter. Commit
+`2ce7c7f2` fixes its item0 read at fresh A+f25c and removes the bogus unit0
+availability guard. The old tests had mirrored that mistaken owner; new tests
+put opposing kinds in audience-item and battle-unit tables and leave unit0
+absent. They prove the actual item owner and original236..239 exclusion. The
+idle contract now states the correct owner and records the correction.
+
+Commit `0c86e165` implements whole local actor states7/8/10/12: holding80191a48,
+throwing80191980, damage8019173c and escape80191290. Added whole ItemGetPtr,
+GetSysCtrl/GetEscapeChangeOK helpers and SoundItemThrow801a044c. All new bodies
+are read-only US DOL reconstructions with source hashes in the
+[item controller contract](behavior/battle/AUDIENCE_ITEM_HOLD_THROW_DAMAGE_AND_ESCAPE.md).
+The existing native member provider binds them without inserting new outer
+Main calls. Existing animation, ChangeStatus/Delete and audience target helpers
+remain their actual owners; no animation-end timer is invented.
+
+Holding preserves animation/front rule, interrupt precedence, held-item clear,
+actor damage transition, captured B/A flags and signed item countdown. Throw
+animation completion can reset0 before a same-call interruption sets10. All
+interruption penalties deliberately classify **item0**, independently of held
+item index. Damage preserves launch/wobble and animation-ended escape selection.
+Escape retains distinct type11 sinking versus ordinary raw-RNG retreat, original
+single arithmetic/no phase fallthrough, later landing observation and deletion
+boundaries. Missing linked services preserve earlier stores and stop the bridge.
+
+Throw sound captures slot10/11 before stop, then gets a fresh actor position for
+Sound2. It retains -1 rejection versus unavailable, actual public handle/volume,
+lifetime and record-write order. Native start setup is shared with the existing
+clap/noise adapter, preserving its real row/key lookup and public registry.
+Existing clap/noise/public-slot tests still pass. Pending public requests are
+not claims of audible source macros or working NDSP voice playback.
+
+Correction validation used the prior isolated `artifacts/battle-lens-qwwrj2n7`
+with its already validated dd16f28e-based reactions/stage work plus the owned
+idle correction. Focused test passed; `MAKEFLAGS=-j4 make test` exited0:
+303/303 C++ and174/174 Python (`artifacts/audience-item-owner-test.log`). Native
+`MAKEFLAGS=-j4 TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready
+BUILD=build-battle-lens TARGET=ttyd-battle-lens` exited0
+(`artifacts/audience-item-owner-native.log`). That correction was committed
+before adding the new feature.
+
+New-feature validation refreshed only changed tracked bytes in the isolated
+snapshot from frozen baseline `3089a4e49f56f50bc4698e3108c751d9a32d3c03` plus
+owned source/CMake/tests. Concurrent live changes were excluded. Used matching
+committed extractors to refresh private original door (14304 bytes/183 objects),
+Bero (5 tables/15 entries/2496 bytes), Trouble (205 objects/5464 bytes) and
+material-light (64 bytes) packs (`artifacts/audience-items-assets-refresh.log`).
+No original ISO, executable source bytes, extracted art or compiled packs were
+committed. All ISO access was read-only; existing private-use provenance remains.
+
+Focused tests passed, then expanded and passed with sound partial-store and
+unordered-position cases. Coverage includes held/first-item distinction,
+countdown/gates/wrap, completion+interrupt order, all256 escape-state bytes,
+flags, damage/wobble/end, ordinary and type11 retreat, actual member-motion
+integration to deletion, sound lane capture/fresh position, rejection and missing
+volume. Existing Python tests pin new float constants. Final `MAKEFLAGS=-j4
+make test` exited0:307/307 C++ and177/177 Python
+(`artifacts/audience-items-test.log`). Same native command exited0
+(`artifacts/audience-items-native.log`), with assets-ready bypass reusing the
+private validated packs. Both processes were observed terminal before commit.
+Scoped temporary-index commits and owned diff checks preserve other threads'
+work. No new emulator/visual acceptance or hardware-performance claim.
+
+Updated three older audience contracts' remaining-state statements. Original
+menu/HUD art, physical controls, dialogue/story, action-command timing, unit/model
+scale and lower-screen scene replay were unchanged. These controller tests do
+not prove playable thrown-item flight or working audience taps.
+
+Next: whole item creation/selection801a5aac and live item Main/flight/collision/
+display, then wire recovered interruption selection to physical X and optional
+lower-screen audience taps using real telegraphs. Actor Enter11, special
+states13..20, idle low-ratio caller-register provenance, stage active entries,
+normal Main/camMain/camDraw, original menu/turn choreography, tutorial followup
+hits, field return and real voice playback remain open. The full tutorial and
+real battle goal remains active and incomplete.
+
 ## 2026-10-14 — Original crowd cheering/jumps/booing and native stage-fade providers
 
 Previous goal turn made progress by implementing original idle decisions.
