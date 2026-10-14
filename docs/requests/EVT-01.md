@@ -3517,3 +3517,16 @@ Following audience slot1 ownership/clap source audit is delivered in
 actual crowd/backend provider is still unbound. Fresh initialization alone
 cannot prove silence at ending, because EXP/victory request applause twice.
 Parent remains open.
+
+### 2026-10-13 — General Rule bound and inline audience owner corrected
+
+Native ending now calls the complete original general rule service, including
+unconditional explicit-B Mario/party queries and Rule0 descriptor status6.
+All native audience consumers now use original inlineB+2858 instead of a
+synthetic Work+400 pointer; real registered Battle RAM covers the bank/slot1.
+Native frontier is AudienceSoundStop8019fd68; no inferred silent record or
+sequence/result publication. Crowd provisioning before two original Clap
+requests and actual positional SFX backend are the next source documentation/
+implementation request; source population audit delegated while work continues.
+See [binding](../behavior/battle/NATIVE_GENERAL_RULE_AND_AUDIENCE_STORAGE.md).
+Parent remains open; local rule source documentation and native binding closed.

@@ -47,7 +47,7 @@ real registry handle and runs PeraOff; missing/unsupported resources retain
 the animPoseEntry barrier. Both live Mario selectors/material reads, original
 HP-dependent pose request and kuribo_init now execute. The ordinary wrapper
 and fresh Hello complete both original appearance2 queries and delayed index
-publication before holding at RuleKeep8018ef8c.
+publication before original general Rule judgment and a hold at AudienceSoundStop8019fd68.
 No animation playback or GPU draw is acknowledged by this admission. See
 [constructor animation admission](FIELD_PARTY_ENTRY_ANIMATION_ADMISSION.md).
 Existing primary destruction remains partyKill800be69c; other kind/auxiliary

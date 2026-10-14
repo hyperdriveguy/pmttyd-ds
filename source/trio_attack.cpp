@@ -16,6 +16,7 @@
 #include "battle_unit_resources.hpp"
 #include "battle_phase.hpp"
 #include "battle_conclusion.hpp"
+#include "battle_general_rule.hpp"
 #include "battle_drop_material.hpp"
 #include "battle_packed_pouch.hpp"
 #include "battle_dive.hpp"
@@ -342,7 +343,7 @@ struct TrioAttackRuntime {
         word(0x8041e808,0x85600000);word(0x85600000,0);word(0x85600004,0x64020);half(0x85600008,0);
         allocateEventBattleMapPool(m);
         word(0x8041e844,0);vm.gp.refreshRate=60;vm.gp.timestamp=now*eventClockRate(243000000);vm.initializeContexts();vm.gp.battleContext=1;
-        word(Battle+0x2858,Work+0x400);half(Battle+8,2);half(Battle+0x10,1);
+        half(Battle+8,2);half(Battle+0x10,1);
         real(Battle+0x16f28,90);real(Battle+0x16f30,-50); // Source fresh BattleStageInit floor fields.
         for(unsigned i=0;i<64;++i)word(Battle+0x16f5c+8*i,0xffffffff);
         for(unsigned i=0;i<28;++i)byte(Battle+0x18da0+12*i,0xff);
@@ -516,14 +517,14 @@ struct TrioAttackRuntime {
             if(end){word(Battle+0xc+8*g,1);++count;}}
         return count>=2 || (word(Battle+0xef4)&0x30);
     }
-    bool audienceIdle(){const auto base=word(Battle+0x2858),entry=word(base+4);if(entry && eventLive(word(entry+0x15c)))return false;word(base+4,0);return true;}
+    bool audienceIdle(){const auto base=(Battle+0x2858),entry=word(base+4);if(entry && eventLive(word(entry+0x15c)))return false;word(base+4,0);return true;}
     bool breakSlotIdle(){const auto work=Battle+0x1616c;const int32_t state=int32_t(word(work+4));if(int32_t(word(work+0xc))>=3){if(!pending)pending=0x8020342c;return false;}if(state>=1 && state<=8)return false;const auto entry=word(work+0x130);if(entry && eventLive(word(entry+0x15c)))return false;word(work+0x130,0);return true;}
     void reserveItems(){for(unsigned i=0;i<4;++i){if(word(Battle+0x19060+4*i)){if(!pending)pending=0x800f74b4;return;}word(Battle+0x19060+4*i,0);}}
     void endingRequest(uint32_t function,std::initializer_list<int32_t> operands={}) {
         trace.push_back({function,0,now,std::vector<int32_t>(operands)});
     }
     bool endingAudienceTarget(float delta,float bias) {
-        const auto a=word(Battle+0x2858);endingRequest(0x801a1a74,{int32_t(bits(delta)),int32_t(bits(bias))});
+        const auto a=(Battle+0x2858);endingRequest(0x801a1a74,{int32_t(bits(delta)),int32_t(bits(bias))});
         const float zero=real(0x80424988);float offset=real(a+0x13780)+bias;real(a+0x13780,offset);
         if(offset>zero && delta<zero){offset+=delta;real(a+0x13780,offset);if(offset<zero){delta=offset;real(a+0x13780,zero);}else delta=zero;}
         else if(offset<zero && delta>zero){offset+=delta;real(a+0x13780,offset);if(offset>zero){delta=offset;real(a+0x13780,zero);}else delta=zero;}
@@ -590,7 +591,7 @@ struct TrioAttackRuntime {
             const auto result=battleInitialEndResult(Battle,services);if(result){word(info+0x10,uint32_t(*result));endingRequest(0x80114508,{int32_t(info),*result});}
             if(word(info+0x10)!=1){pending=0x80215234;return;}
             if(word(info+0x1c)){word(Battle+0xf24,0x07000003);pending=0x80215430;return;}
-            endingRequest(0x8021290c);const auto group=word(word(info+0xc)+0x18),sets=word(group+4),pouch=word(0x8041eb00),a=word(Battle+0x2858);
+            endingRequest(0x8021290c);const auto group=word(word(info+0xc)+0x18),sets=word(group+4),pouch=word(0x8041eb00),a=(Battle+0x2858);
             const int32_t level=half(pouch+0x8a)+1;
             if(int32_t(byte(word(sets)+0xe))>level){endingRequest(0x8019effc);if(!endingAudienceTarget(real(0x804249a0)*real(a+0x13778),real(0x80424988)))return;}
             uint32_t sum=0;for(uint32_t i=0;i<word(group);++i)sum+=byte(word(sets+0x30*i)+0xe);
@@ -759,7 +760,8 @@ struct TrioAttackRuntime {
             }
             endingRequest(0x80141050);const auto index=fieldParties->current(*fieldMario);
             endingRequest(0x800bf1b4,{index});if(auto* actor=fieldParties->pointer(index))actor->word(4,actor->word(4)&~1u);
-            pending=0x8018ef8c;return; // Rule/accounting and audience/exit/sequence owners follow actual field restoration.
+            endingRequest(0x8018ef8c);judgeBattleGeneralRule(nativeBattleActorServices(vm));
+            pending=0x8019fd68;return; // Audience producer/backend history and exit owners follow actual rule judgment.
         }
         pending=0x80215234;
     }
@@ -782,7 +784,7 @@ struct TrioAttackRuntime {
         e.owner=int32_t(word(u));word(u+0x29c,e.id);
     }
     bool phaseAudienceIdle() {
-        (void)word(0x8041eb00);const auto a=word(Battle+0x2858),flags=word(a);if(!(flags&8))return true;
+        (void)word(0x8041eb00);const auto a=(Battle+0x2858),flags=word(a);if(!(flags&8))return true;
         for(unsigned i=0;i<200;++i){const auto f=word(a+0x1bc+0x134*i);if((f&1) && !(f&(0x100|2|0x10))){if(!pending)pending=0x801a6ce8;return false;}}
         for(uint32_t i=0;i<word(a+0x13904);++i){const auto category=word(a+0x138cc+4*i);if(category!=4 && category!=9 && category!=10 && category!=11 && category!=12 && category!=13){if(!pending)pending=0x801a6ce8;return false;}}
         const auto state=word(a+0x137dc);
@@ -794,12 +796,12 @@ struct TrioAttackRuntime {
         return false;
     }
     void addAudiencePhase(int32_t category) {
-        const auto a=word(Battle+0x2858);const int32_t count=int32_t(word(a+0x13904));
+        const auto a=(Battle+0x2858);const int32_t count=int32_t(word(a+0x13904));
         for(int32_t i=0;i<count;++i)if(word(a+0x138cc+4*uint32_t(i))==uint32_t(category))return;
         word(a+0x138cc+4*uint32_t(count),uint32_t(category));word(a+0x13904,word(a+0x13904)+1);
     }
     bool audienceTurnEnd() {
-        const auto b=word(0x8041eb90),mario=battleMarioUnit(b,nativeBattleActorServices(vm)),a=word(b+0x2858),pouch=word(0x8041eb00);
+        const auto b=word(0x8041eb90),mario=battleMarioUnit(b,nativeBattleActorServices(vm)),a=(b+0x2858),pouch=word(0x8041eb00);
         const auto setup=word(word(b+0x2738)+0xc),group=word(setup+0x18);
         if(word(a)&0x40000)return true;
         const auto chance=word(a+0x13908)+3;word(a+0x13908,int32_t(chance)>100?100:chance);
@@ -859,7 +861,7 @@ struct TrioAttackRuntime {
                 if(battlePhaseEnded(Battle,phaseServices()) || (word(Battle+0xef4)&0x2000)){if(byte(Battle+0x18ff9)==2)byte(Battle+0x18ff9,0);
                     // Native audience inventory/presentation is empty. The source
                     // phase4 producer needs its original slots/effects before binding.
-                    if(word(Battle+0xf18)==0x04000004){const auto a=word(Battle+0x2858);const auto draw=random.bounded(100);word(a+0x137f4,draw<80?0:draw<90?1:draw<95?2:3);word(a+0x137f0,0);word(a+0x137f8,0);word(a,word(a)|8);word(a+0x137dc,0);}
+                    if(word(Battle+0xf18)==0x04000004){const auto a=(Battle+0x2858);const auto draw=random.bounded(100);word(a+0x137f4,draw<80?0:draw<90?1:draw<95?2:3);word(a+0x137f0,0);word(a+0x137f8,0);word(a,word(a)|8);word(a+0x137dc,0);}
                     word(Battle+0xf1c,state+1);return;}word(Battle+0xf1c,0x05000008);return;}
             if(state==0x0500000b){if(!phaseAudienceIdle())return;if(barrier())word(Battle+0xf1c,state+1);return;}
             if(state==0x0500000c){if(messagesIdle()){word(Battle+0xf18,word(Battle+0xf18)+1);word(Battle+0xf1c,0x05000000);}return;}
@@ -869,7 +871,7 @@ struct TrioAttackRuntime {
     void enemyAction() {
         const auto u=word(Battle+0x20+4*word(Battle+0x420));required(u!=0);
         const auto state=word(Battle+0xf20);
-        if(state==0x06000000){word(u+0x284,0);word(u+0x2d0,0);const auto audience=word(Battle+0x2858);word(audience+0x137d4,0);word(audience,word(audience)&~0x1ff0u);word(Battle+0xf20,0x06000003);return;}
+        if(state==0x06000000){word(u+0x284,0);word(u+0x2d0,0);const auto audience=(Battle+0x2858);word(audience+0x137d4,0);word(audience,word(audience)&~0x1ff0u);word(Battle+0xf20,0x06000003);return;}
         if(state==0x06000003){word(u+0x2ac,1);word(u+0x1c,word(u+0x1c)|0x04000000);word(Battle+0xf20,0x06000006);return;}
         if(state!=0x06000006)return;
         if(word(Battle+0xef4)&0x40000000){if(!pending)pending=0x8011b5e0;return;}

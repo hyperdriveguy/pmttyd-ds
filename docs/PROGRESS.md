@@ -10067,3 +10067,41 @@ and retain the source sailing track after late acceptance rather than inventing
 an opening-track On. The isolated older Voyage producer is deliberately not
 substituted for the parent boat implementation. New GPU display ownership lives
 in display/OPENING_MAP_TURN_CAPTURE.md, with links from the story contract.
+
+## 2026-10-13 — General Rule judgment and source audience storage
+
+Implemented portable full68-case original general Rule judge, retaining
+explicit-B Mario/party query prefix, signed HP/null handling, ordered byte
+sums, fresh helper thresholds, captured versus helper status write ownership,
+unsigned direct turn rules/no255 bypass and source duplicate/last-byte cases.
+Byte-identical end/turn zero helper algorithm is reused without merging cadence.
+Native ending now writes real fresh Rule0 descriptor byte19=6 after field
+restoration, then holds at AudienceSoundStop8019fd68. No story/result/sequence/
+control change or teardown acknowledgment is inferred from that status.
+
+Corrected all native audience idle/phase/turn-end/ending owners to original
+inline BattleWork+2858. Removed synthetic Work+400 pointer; existing19100 RAM
+covers source19098 and sound bank including slot1 B+15c78. This is real backed
+layout/initial bytes, not full Audience_Init/crowd/applause playback history.
+Two Clap requests remain retained; source docs reject inferring ending silence
+from zero creation state. Next crowd population source audit requested.
+
+Validation: make test187/187 CTest +122/122 Python and make all passed
+(artifacts/trio-general-rule-tests-final.log and trio-general-rule-all.log).
+Earlier run correctly failed old audience counter assertions after relocation;
+updated source-relative flags/state/chance/counter checks, then full rerun green.
+The previous harbor approach failure is now resolved by its separate work.
+Original rule verifier passed8 bodies/390 anchors/2 spans/60 direct sites
+(trio-general-rule-source.log); audit confirmed57 scalar/HP modes and ordered
+fields match verified source contract (trio-general-rule-selector-audit.log).
+Behavior checks cover prefix/query order, helper recapture and distinct outputs,
+wide sums, negative HP, null Mario, ignored rules, threshold/255 and duplicate
+field cases. Native trio checks actual Rule0 status and unchanged audience
+phase/RNG counter behavior at original offsets. Scoped diff/link checks pass.
+No new emulator/original-runtime or hardware capture; full fidelity unverified.
+
+Next real crowd/count/clap/record/SFX backend, then sound stop, BattleEnd64-unit
+resource release, map/smart/context/NPC/event restoration and exact ending
+flag/counter/sequence/result publication. Authored join, live field actor draw/
+lifetimes, general FbattlePost placement and full prologue parity remain open.
+Goal remains active; this is not a complete playable field return.

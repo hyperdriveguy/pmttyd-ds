@@ -885,3 +885,8 @@ add_test(NAME battle_damage_orchestration COMMAND battle_damage_orchestration_te
 add_executable(opening_map_display_tests tests/opening_map_display_tests.cpp)
 target_link_libraries(opening_map_display_tests PRIVATE ttyd_core)
 add_test(NAME opening_map_display COMMAND opening_map_display_tests)
+
+target_sources(ttyd_core PRIVATE source/battle_general_rule.cpp)
+add_executable(battle_general_rule_tests tests/battle_general_rule_tests.cpp)
+target_link_libraries(battle_general_rule_tests PRIVATE ttyd_core)
+add_test(NAME battle_general_rule COMMAND battle_general_rule_tests)

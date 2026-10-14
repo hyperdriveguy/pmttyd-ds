@@ -47,7 +47,7 @@ P38=10, so HelloMain calls appearance2 and reads HP again, copies positions and
 sets mode1. The two placement calls remain distinct; no16-count entry jump.
 
 Joined native ending now reaches current-party lookup and clears word4 bit1
-through the real registered actor, then holds at RuleKeep8018ef8c. Unjoined
+through the real registered actor, then executes general rule judgment and holds at AudienceSoundStop8019fd68. Unjoined
 source failure has no actor/index/unlock side effect and reaches the same
 ending boundary. This constructor does not publish sequence2/result, restore
 controls, advance story or acknowledge animation/GPU drawing. Actual actor

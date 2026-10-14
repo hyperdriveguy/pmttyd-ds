@@ -160,20 +160,20 @@ int main(){
     for(unsigned i=0;i<1200 && !game.trioAttack.pendingFunction() && game.trioAttack.commandActor()!=1;++i){
         game.tick(Input{});assert(game.trioAttack.readWord(0x84000f18,value));
         if(value!=priorPhase){phaseOrder.push_back(value);priorPhase=value;}
-        assert(game.trioAttack.readWord(0x84400400,value));
-        if(value&8){assert(game.trioAttack.readWord(0x84413bdc,value));if(audienceOrder.empty() || audienceOrder.back()!=value)audienceOrder.push_back(value);}
+        assert(game.trioAttack.readWord(0x84002858,value));
+        if(value&8){assert(game.trioAttack.readWord(0x84016034,value));if(audienceOrder.empty() || audienceOrder.back()!=value)audienceOrder.push_back(value);}
     }
     assert(phaseOrder==std::vector<uint32_t>({0x04000002,0x04000003,0x04000004,0x04000005,0x04000006,0x04000000,0x04000001,0x04000002}));
     assert(audienceOrder==std::vector<uint32_t>({0,13,15}));
-    assert(game.trioAttack.readWord(0x84400400,value) && !(value&8));
+    assert(game.trioAttack.readWord(0x84002858,value) && !(value&8));
     assert(game.trioAttack.readWord(0x84000f14,value) && value==0x0300004c);
     assert(game.trioAttack.readWord(0x84000000,value) && value>>16==2); // Only source TurnFirst increments the turn.
     assert(game.trioAttack.pendingFunction()==0 && game.trioAttack.finished());
     assert(game.trioAttack.readWord(0x84106010,value) && value==0x9352ff60); // Frankly participates through his original kind.
     assert(game.trioAttack.readWord(0x84106024,value) && value>>24==2); // Nonacting Frankly still receives both turn preparations.
     assert(game.trioAttack.readWord(0x84016f54,value) && (value&255)==2); // Source turn action-record byte16f57.
-    assert(game.trioAttack.readWord(0x84413d08,value) && value==3); // First TurnEnd chance increment survived the source RNG test.
-    assert(game.trioAttack.readWord(0x84413d04,value) && value==0);
+    assert(game.trioAttack.readWord(0x84016160,value) && value==3); // First TurnEnd chance increment survived the source RNG test.
+    assert(game.trioAttack.readWord(0x8401615c,value) && value==0);
     assert(game.trioAttack.readWord(0x84000420,value) && value==1); // Source phase selection returned to Mario.
     assert(game.trioAttack.readWord(0x841042a0,value) && value==0x935238e0); // Installed Spiked root.
     assert(game.trioAttack.readWord(0x841052ac,value) && value==1);
@@ -338,7 +338,7 @@ int main(){
             for(unsigned n=0;n<59;++n)charged.tick(Input{});assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001a);
             charged.tick(Input{});assert(charged.trioBattleIntro.actors[0].pose=="M_R_1" && charged.trioBattleIntro.actors[1].pose=="PKR_R_1");
             for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
-            assert(charged.trioAttack.pendingFunction()==0x8018ef8cu && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.pendingFunction()==0x8019fd68u && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
             assert(charged.fieldMarioBattleState().partyIndices[0]==(fastReward?0:255) && charged.fieldMarioBattleState().partyIndices[1]==255);
             if(fastReward) {
                 assert(charged.fieldPartyState().pointer(0) && !charged.fieldPartyState().pointer(1));
@@ -362,6 +362,7 @@ int main(){
                 assert(!(charged.progress.originalPouch->half(14)&1));
             }
             assert(charged.fieldMarioBattleState().secondaryFlags==0 && charged.fieldMarioBattleState().controlDepth==1 && (charged.fieldMarioBattleState().flags&2));
+            assert(charged.trioAttack.readWord(0x84400018,value) && value==0x00060000); // Actual captured Rule0 descriptor status6.
             assert(charged.trioAttack.readWord(0x84000f28,value) && value==0);
             assert(charged.trioAttack.readWord(0x84000000,value) && value==4);
             assert(charged.trioAttack.readWord(0x85600020,value) && value==0);
