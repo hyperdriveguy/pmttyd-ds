@@ -57,7 +57,7 @@ bool Renderer::frontHeading(OpeningSequence& opening,bool& entryPresented,bool& 
     if(heading.startRequested && display.state==1)display.start();
     count=0;C2D_Flush();C3D_BindProgram(&program);
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
-    C3D_Mtx projection,view,matrix;Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(25),C3D_AspectRatioTop,1,10000,false);
+    C3D_Mtx projection,view,matrix;Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(25),C3D_AspectRatioTop,1,32768,false);
     Mtx_LookAt(&view,FVec3_New(0,0,500),FVec3_New(0,0,0),FVec3_New(0,1,0),false);Mtx_Multiply(&matrix,&projection,&view);C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&matrix);
     C3D_SetScissor(GPU_SCISSOR_NORMAL,0,48,240,352);C3D_CullFace(GPU_CULL_NONE);C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);C3D_AlphaTest(true,GPU_GREATER,0);
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);

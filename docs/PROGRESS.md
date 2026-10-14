@@ -9416,3 +9416,33 @@ unbound; the source particle request is retained without a Crystal substitute.
 Original-runtime/Dolphin and hardware raster parity remain unverified. See
 behavior/display/NATIVE_OPENING_HEADING.md. Parent integrates the provider with
 the current Voyage/Wake producers and verifies the natural transition.
+
+## 2026-10-13 — Actual heading and combined arrival-scoped playtest
+
+Primary now renders original sys heading background/individual glyphs,
+source-staggered spins, original32/Z_1 and35/A_1 center curtains and rotating
+subtitle ring using unchanged msg_stg_seq_prolouge. Actual resource admission
+and completed GPU frames publish source entry/start/exit acknowledgments.
+A/B/START exit after the original minimum hold; no elapsed-only display
+readiness. Native subtitle cache uses VRAM; normal assets-ready now runs the
+heading exporter before packing, preserving source glyph/curtain provenance.
+
+Combined native `make all` passed (`artifacts/opening-heading-primary-all.log`);
+scoped opening/frontend/message25/25 and Python118/118 pass. Full make test
+183/184 CTest passes; harbor_encounter_original remains the separately changing
+field/battle fixture failure recorded above. The previous item-selector
+assertion is resolved by its owner. No full-green claim is made.
+
+Immutable `artifacts/opening-heading-snapshot/ttyd-2ds.3dsx` completes the fresh
+title→files→house→Voyage→actual heading→Wake→ship arrival/departure→field route
+in isolated `artifacts/azahar-opening-heading-integrated/`. Original house sky
+and camera display at60FPS; step350 shows the actual ship at60FPS/11.36ms,
+then the final field capture60FPS/8.13ms. Isolated40-byte PM2D checkpoint has
+opening marker1, known flag1 and story3; no native exception/resource-failure
+notice was observed. This is actual scene admission plus checkpoint evidence,
+not checkpoint alone, and not physical hardware/original-runtime/raster parity.
+
+Still active: replace the map reveal's incomplete timing/scene adapter, bind
+original heading Stardust, finish original Voyage lighting appearance, and
+rerun the combined final flow/debug-short build. Projective glyph rainbow TEV,
+full SDK subtitle metrics and general original rendering/sound remain limited.
