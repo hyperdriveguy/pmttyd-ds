@@ -1,5 +1,6 @@
 #include "field_battle_information.hpp"
 #include "battle_event_callbacks.hpp"
+#include "battle_timing_a.hpp"
 #include <cassert>
 #include <cstring>
 #include <iostream>
@@ -42,5 +43,15 @@ int main(int argc,char** argv){
  Fixture info;info.w(0x3010,0x800000);info.b(0x12f4,60);info.b(0x12f5,61);info.b(0x12f6,62);assert(preparePackedFieldBattleInformation(0x3000,0x1000,0x4000,info.information())==0x3020);assert(info.w(0x3020)==0 && info.w(0x3024)==0 && info.w(0x3028)==7 && info.w(0x302c)==0x1230 && info.w(0x3030)==0 && info.b(0x3038)==60 && info.b(0x3039)==0 && info.b(0x303a)==61 && info.b(0x303b)==62);assert((info.partyCalls==std::vector<int32_t>{1,2}));
  info.partyCalls.clear();info.partyPointer=0x6000;info.b(0x6031,2);info.w(0x3010,0x10000000);info.w(0x3014,8);preparePackedFieldBattleInformation(0x3000,0x1000,0x4000,info.information());assert(info.w(0x3024)==225 && info.w(0x3028)==8 && (info.partyCalls==std::vector<int32_t>{1,2,3}));info.h(0x401c,2);info.w(0x301c,1);preparePackedFieldBattleInformation(0x3000,0x1000,0x4000,info.information());assert(info.w(0x3024)==0 && info.w(0x3028)==0);
  if(argc>1 && !std::strcmp(argv[1],"original")){Fixture original;EventScriptAssets assets;assert(assets.load("romfs/harbor-tutorial-events.pmevt") && original.vm.memory.importScripts(assets));const auto configuration=0x95540e30;assert(original.w(configuration+0x18)==0x20000010);setupPackedNpcBattleInformation(0x1000,configuration,original.setup());assert(original.draws.size()==17 && original.draws.back()==50 && original.w(0x1230)==0x95540870 && original.w(0x1248)==0x95540c08 && original.w(0x1234)==0x20000010 && original.w(0x124c)==0 && original.b(0x1316)==0);preparePackedFieldBattleInformation(0x3000,0x1000,0x4000,original.information());assert(original.w(0x3020)==0 && original.w(0x3024)==0 && original.w(0x3028)==0 && original.w(0x302c)==0x1230 && original.w(0x3038)==0);std::cout<<"Original setup2 requests17 draws, actual stage/group, no item draw, firstAttack0 and source information pointers passed\n";}
+ if(argc>1 && !std::strcmp(argv[1],"original")){
+  Fixture gor;EventScriptAssets assets;assert(assets.load("romfs/door-data.pmevt") && gor.vm.memory.importScripts(assets));
+  BattleRandom rng{1};auto services=gor.setup();struct Owner {Fixture* fixture;BattleRandom* rng;};Owner owner{&gor,&rng};services.user=&owner;
+  services.random=[](void* p,int32_t bound)->int32_t{auto& o=*static_cast<Owner*>(p);o.fixture->draws.push_back(bound);return o.rng->bounded(bound);};services.savedFlag=nullptr;
+  // All actual gor02 setup rows request populated index0. Each call advances
+  // the same explicitly owned RNG, even for audience pairs1/1 and one group.
+  for(unsigned n=0;n<15;++n){assert(gor.w(0x90524f10+0x5c*n)!=0 && gor.w(0x90524f10+0x5c*n+0x58)==0);setupPackedNpcBattleInformation(0x1000,0x90540da8,services);assert(gor.w(0x1230)==0x90540870 && gor.w(0x1248)==0x90540cf8 && gor.w(0x1234)==0 && gor.w(0x12f0)==0x9040a0d8 && gor.w(0x124c)==0 && gor.b(0x1316)==0 && gor.w(0x1000)==0x10000000);for(unsigned i=0;i<16;++i)assert(gor.b(0x12e0+i)==1 && gor.draws[n*17+i]==1);assert(gor.draws[n*17+16]==50);}
+  assert(gor.draws.size()==255);BattleRandom expected{1};for(unsigned n=0;n<15;++n){for(unsigned i=0;i<16;++i)(void)expected.bounded(1);(void)expected.bounded(50);}assert(rng.state==expected.state);
+  std::cout<<"Original gor02 populated setup0:15 source rows,255 shared-owner draws, original stage/group/music and zero item/kind passed\n";
+ }
  std::cout<<"Packed NPC setup, signed audience/item lotteries and original field information constructor passed\n";
 }

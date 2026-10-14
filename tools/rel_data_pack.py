@@ -68,3 +68,37 @@ def package(raw,symbols,module,roots):
     return b'PMEVT001'+struct.pack('>I',len(segments))+table+payload,dict(objects=objects,
         sections=[dict(file_offset=s,size=n,address=a,executable=x) for s,n,a,x in sections],
         segments=[dict(address=a,size=len(d),file_offset=f,sha256=hashlib.sha256(d).hexdigest()) for a,d,f in segments])
+
+def bounded_segments(raw,spans):
+    """Relocate explicit aligned data views without following their pointers.
+
+    Consumers, not this exporter, own pointer-target admission. Unlike package(),
+    this can publish a finite field view of a larger object when only that field
+    is read. Never treat the returned views as a complete dependency closure.
+    """
+    local,imports,foreign=read_bindings(raw)
+    sections=[]
+    for i in range(struct.unpack_from('>I',raw,12)[0]):
+        offset,size=struct.unpack_from('>II',raw,struct.unpack_from('>I',raw,16)[0]+8*i)
+        sections.append((offset&~3,size,0x90000000+i*0x100000,bool(offset&1)))
+    segments=[];metadata=[]
+    for begin,size in spans:
+        end=begin+size
+        if begin%4 or size<=0 or size%4:raise ValueError('Bounded data view must contain aligned whole words')
+        owners=[s for s in sections if s[0] and s[0]<=begin<end<=s[0]+s[1]]
+        if len(owners)!=1 or owners[0][3]:raise ValueError('Bounded data view must have one nonexecuting section owner')
+        data=bytearray(raw[begin:end]);bindings=[]
+        for sites,kind in [(local,'local'),(imports,'dol'),(foreign,'foreign')]:
+            for site,value in sorted(sites.items()):
+                if site>=end or site+4<=begin:continue
+                if site<begin or site+4>end:raise ValueError('Partial ADDR32 relocation in bounded data view')
+                if kind=='foreign':raise ValueError('Unbound foreign REL data dependency')
+                target=sections[value['section']][2]+value['addend'] if kind=='local' else value
+                struct.pack_into('>I',data,site-begin,target)
+                bindings.append(dict(file_offset=site,kind=kind,address=target))
+        address=owners[0][2]+begin-owners[0][0]
+        segments.append((address,bytes(data)))
+        metadata.append(dict(file_offset=begin,size=size,address=address,
+            source_sha256=hashlib.sha256(raw[begin:end]).hexdigest(),
+            sha256=hashlib.sha256(data).hexdigest(),bindings=bindings))
+    return segments,metadata
