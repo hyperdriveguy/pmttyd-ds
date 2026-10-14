@@ -117,7 +117,8 @@ azahar ./ttyd-2ds.3dsx
 ```
 
 Normal builds start with the original storybook/demo, title and four-file menu.
-A or START skips the demo to the title; another press opens file selection.
+The completed chest scene fades automatically to Title. A or START skips the
+demo earlier; another press opens file selection.
 Choose an empty file to play Mario's house, Peach's letter, the map reveal/page
 turn, voyage, prologue heading, wake-up scene and Rogueport arrival in order.
 Character dialogue waits for A/B; the voyage prompt accepts A/B/START after

@@ -26,6 +26,10 @@ public:
         // publish2000 before mapChange unconditionally selects2000.
         configuredMilliseconds=finalMainWaiting?2000:500;lastAdvance=now;return true;
     }
+    bool requestAutomatic(){
+        if(!entryFinished || requested)return false;
+        requested=true;parentExitRequest=true;configuredMilliseconds=2000;lastAdvance=now;return true;
+    }
     void advance(uint64_t tick){
         if(tick<now)return;
         now=tick;

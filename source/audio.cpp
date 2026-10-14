@@ -5,7 +5,8 @@
 #include <cstring>
 namespace ttyd {
 namespace {
-constexpr uint32_t StreamFrames=2048;
+constexpr uint32_t StreamFrames=4096;
+struct MusicLock {LightLock& lock;explicit MusicLock(LightLock& value):lock(value){LightLock_Lock(&lock);}~MusicLock(){LightLock_Unlock(&lock);}};
 constexpr unsigned MusicChannels[3]={1,0,18};
 constexpr const char* CueNames[]={"confirm","jump","hit","success","guard","save-block","goomba-step-left","goomba-step-right"};
 constexpr const char* OriginalCueNames[]={"SFX_CURSOR_OK1","SFX_MARIO_JUMP1","SFX_MARIO_DAMAGE1","SFX_AC_OK1","SFX_MARIO_GUARD1","SFX_MOBJ_BLOCK_SAVE1","SFX_FLD_NPC_KURI_MOVE1L","SFX_FLD_NPC_KURI_MOVE1R"};
@@ -30,6 +31,7 @@ bool Audio::frontendTrackReady(int track) {
     std::fclose(file);return titleResourceReady;
 }
 bool Audio::init() {
+    LightLock_Init(&musicMutex);LightEvent_Init(&musicWake,RESET_ONESHOT);
     FILE* selection=std::fopen("romfs:/soundtrack-switch.bin","rb");
     if(selection){char magic[4]{};switchSoundtrack=std::fread(magic,1,4,selection)==4 && !std::memcmp(magic,"SWM1",4);std::fclose(selection);}
     if(R_FAILED(ndspInit())) return false;
@@ -60,6 +62,18 @@ bool Audio::init() {
         constexpr float gains[]={80.f/127,0.65f,100.f/127,110.f/127,100.f/127,100.f/127,45.f/127,45.f/127};
         float mix[12]{};mix[0]=mix[1]=gains[n]*.65f;ndspChnSetMix(n+2,mix);
     }
+    musicWorkerRun.store(true,std::memory_order_release);
+    musicThread=threadCreate([](void* owner){
+        auto* audio=static_cast<Audio*>(owner);
+        while(audio->musicWorkerRun.load(std::memory_order_acquire)){
+            LightEvent_Wait(&audio->musicWake);
+            if(audio->musicWorkerRun.load(std::memory_order_acquire))audio->serviceMusic();
+        }
+    },this,16*1024,0x28,-2,false);
+    if(!musicThread){shutdown();return false;}
+    // NDSP's sound thread must never block on file IO or a main-thread lock.
+    // Its callback only wakes the separate, bounded PCM refill worker.
+    ndspSetCallback([](void* owner){LightEvent_Signal(&static_cast<Audio*>(owner)->musicWake);},this);
     return true;
 }
 void Audio::play(const Game& game) {
@@ -90,6 +104,7 @@ void Audio::musicMix(unsigned slot,uint8_t volume) {
     ndspChnSetMix(MusicChannels[slot],mix);
 }
 void Audio::switchTrack(int track,bool preservePrevious) {
+    MusicLock guard(musicMutex);
     if(preservePrevious){
         unsigned candidate=0;while(candidate<3 && music[candidate].file)++candidate;
         if(candidate==3)return;
@@ -97,7 +112,7 @@ void Audio::switchTrack(int track,bool preservePrevious) {
     } else for(unsigned n=0;n<3;++n)stopMusic(n);
     startMusic(musicSlot,track);musicTrack=track;
 }
-void Audio::startMusic(unsigned slot,int track){
+void Audio::startMusic(unsigned slot,int track,uint8_t volume){
     auto& stream=music[slot];
     stream.track=track;stream.position=0;stream.ended=false;stream.loop=false;
     const char* asset=musicAssetPath(track,switchSoundtrack);
@@ -118,7 +133,7 @@ void Audio::startMusic(unsigned slot,int track){
     const unsigned channel=MusicChannels[slot];
     ndspChnSetInterp(channel,NDSP_INTERP_LINEAR);ndspChnSetRate(channel,stream.rate);
     ndspChnSetFormat(channel,stream.channels==2?NDSP_FORMAT_STEREO_PCM16:NDSP_FORMAT_MONO_PCM16);
-    musicMix(slot,127);
+    musicMix(slot,volume);
     for(auto& buffer:stream.buffers){buffer.status=NDSP_WBUF_FREE;fill(stream,slot,buffer);}
 }
 void Audio::fill(MusicStream& stream,unsigned slot,ndspWaveBuf& buffer) {
@@ -139,32 +154,34 @@ void Audio::fill(MusicStream& stream,unsigned slot,ndspWaveBuf& buffer) {
     buffer.nsamples=filled;buffer.looping=false;
     DSP_FlushDataCache(buffer.data_pcm16,filled*stream.channels*2);ndspChnWaveBufAdd(MusicChannels[slot],&buffer);
 }
-void Audio::serviceMusic(){for(unsigned slot=0;slot<3;++slot)for(auto& buffer:music[slot].buffers)if(buffer.status==NDSP_WBUF_DONE)fill(music[slot],slot,buffer);}
+void Audio::serviceMusic(){MusicLock guard(musicMutex);if(!ready || !streamData)return;for(unsigned slot=0;slot<3;++slot)for(auto& buffer:music[slot].buffers)if(buffer.status==NDSP_WBUF_DONE)fill(music[slot],slot,buffer);}
 void Audio::update(Scene scene,bool enabled,bool harborDanger,int professorMusic,uint32_t room,bool thinking) {
     if(!ready)return;
     int wanted=soundtrackTrack(scene,enabled,harborDanger,professorMusic,room,thinking,switchSoundtrack);
     if(wanted!=musicTrack)switchTrack(wanted);
     if(!enabled)for(int n=0;n<8;++n)ndspChnWaveBufClear(n+2);
-    serviceMusic();
+    if(!musicThread)serviceMusic();
 }
 void Audio::updateFrontend(int track,bool enabled) {
     if(!ready)return;
     if(!enabled)track=-1;
     if(track!=musicTrack)switchTrack(track);
     if(!enabled)for(int n=0;n<8;++n)ndspChnWaveBufClear(n+2);
-    serviceMusic();
+    if(!musicThread)serviceMusic();
 }
 void Audio::frontendMusic(const std::array<int,3>& tracks,const std::array<uint8_t,3>& volumes){
     // Keep each admitted PCM owner at its fixed address until its own source
     // publication retires it. No queued ndspWaveBuf is copied or reassigned.
+    {MusicLock guard(musicMutex);
     for(unsigned n=0;n<3;++n)if(music[n].file && std::find(tracks.begin(),tracks.end(),music[n].track)==tracks.end())stopMusic(n);
     for(unsigned wanted=0;wanted<3;++wanted){
         if(tracks[wanted]<0)continue;
         unsigned slot=0;while(slot<3 && !(music[slot].file && music[slot].track==tracks[wanted]))++slot;
-        if(slot==3){slot=0;while(slot<3 && music[slot].file)++slot;if(slot==3)continue;startMusic(slot,tracks[wanted]);}
+        if(slot==3){slot=0;while(slot<3 && music[slot].file)++slot;if(slot==3)continue;startMusic(slot,tracks[wanted],volumes[wanted]);}
         musicMix(slot,volumes[wanted]);if(wanted==0){musicSlot=slot;musicTrack=tracks[0];}
     }
-    serviceMusic();
+    }
+    if(!musicThread)serviceMusic();
 }
 void Audio::updateFrontend(const OpeningDemo& demo,bool enabled){
     if(!ready)return;
@@ -178,6 +195,9 @@ void Audio::updateFrontend(const OpeningTitle& title,bool enabled){
     const auto snapshot=title.bgm.snapshot();frontendMusic(snapshot.tracks,snapshot.volumes);
 }
 void Audio::shutdown() {
+    if(ready)ndspSetCallback(nullptr,nullptr);
+    musicWorkerRun.store(false,std::memory_order_release);
+    if(musicThread){LightEvent_Signal(&musicWake);threadJoin(musicThread,U64_MAX);threadFree(musicThread);musicThread=nullptr;}
     openingHousePcm.shutdown();
     if(ready)ndspChnWaveBufClear(19);
     if(openingMapSound.data)linearFree(openingMapSound.data);
@@ -185,7 +205,9 @@ void Audio::shutdown() {
     if(ready) {
         for(int n=0;n<=9;++n)ndspChnWaveBufClear(n);
         ndspChnWaveBufClear(18);
-        ndspExit();ready=false;
+        ndspSetCallback(nullptr,nullptr);
+        {MusicLock guard(musicMutex);for(unsigned slot=0;slot<3;++slot)stopMusic(slot);ready=false;}
+        ndspExit();
     }
     for(auto& stream:music)if(stream.file){std::fclose(stream.file);stream.file=nullptr;}
     if(streamData) {linearFree(streamData);streamData=nullptr;}

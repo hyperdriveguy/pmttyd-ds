@@ -154,7 +154,7 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     drawMap(false,snapshot,false,&frontRoom,visibleGroups);
     count=0; // Each queued actor retains its own range until frame submission.
     if(cineActors.empty())cineActors.reserve(4);
-    auto actor=[&](const char* bank,const char* pose,CameraPoint root,float yaw,float frame=-1) {
+    auto actor=[&](const char* bank,const char* pose,CameraPoint root,float yaw,float frame=-1,const NpcPresentation* facing=nullptr) {
         auto found=std::find_if(cineActors.begin(),cineActors.end(),[&](const auto& a){return a.name==bank;});
         if(found==cineActors.end()) {
             CineActor pending;pending.name=bank;const std::string base=std::string("romfs:/")+bank;
@@ -179,7 +179,7 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         if(sample.vertices.size()>size_t(MaxVertices-count))return false;
         const ActorRootTransform transform({root.x*.01f,root.y*.01f,root.z*.01f},yaw,false);
         for(size_t n=0;n<sample.vertices.size();++n) {
-            const auto& v=sample.vertices[n];const auto point=transform.point(v);
+            const auto& v=sample.vertices[n];const auto point=facing?facing->point(v):transform.point(v);
             vertex(point[0],point[1],point[2],v.u,1-(1-v.v)*found->uvScale,0xffffffff,sample.colors.empty()?nullptr:&sample.colors[n]);
         }
         auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
@@ -205,8 +205,7 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         constexpr uint32_t speakers[]={0x2040,0x2048,0};
         for(unsigned n=0;n<3;++n)if(scene.actors[n].visible) {
             const auto& a=scene.actors[n];const bool talking=demo.message.active() && !demo.message.waiting() && demo.speaker==speakers[n];
-            const bool right=a.yaw>0 && a.yaw<180;
-            ok=actor(banks[n],scene.actorPose(n,talking),{a.position[0],a.position[1],a.position[2]},n==2?a.yaw:right?180:0,float(demo.now*60/1000-a.poseTick)) && ok;
+            ok=actor(banks[n],scene.actorPose(n,talking),{a.position[0],a.position[1],a.position[2]},a.yaw,float(demo.now*60/1000-a.poseTick),n<2?&scene.facing[n]:nullptr) && ok;
         }
     } else if(opening && (opening->part==OpeningPart::House || opening->part==OpeningPart::HouseReturn || opening->part==OpeningPart::MapDisplay)) {
         const auto& scene=opening->house;
@@ -273,6 +272,10 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
             texture=frontTextures.erase(texture);
         }
     }
+    // Stage the marketplace and its effect textures while the preceding book
+    // frame is still displayed. Chest opening must never perform first-use IO.
+    const bool marketReady=f.screen!=FrontScreen::Demo || !demo.bookComplete ||
+        (prepareFrontWorld("opening-demo-market",nullptr,demo) && prepareDemoEffects());
     C2D_TextBufClear(textBuffer);C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     windowFrameCount=0;
     windowFontCount=0;
@@ -289,11 +292,11 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     uint8_t voyageWhitePresented=0;
     int mapPresented=-1;
     float mapTurnPresented=-1;unsigned mapTurnType=0;
-    bool ok=wakeReady && mapCaptureReady && mapWorldReady;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
+    bool ok=wakeReady && mapCaptureReady && mapWorldReady && marketReady;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
     std::array<bool,4> captureRequested{};
     if(f.screen==FrontScreen::Demo && demo.bookComplete) {
         const auto& scene=demo.market;
-        ok=frontWorld("opening-demo-market",{scene.eye[0],scene.eye[1],scene.eye[2]},{scene.at[0],scene.at[1],scene.at[2]},nullptr,demo);
+        ok=marketReady && frontWorld("opening-demo-market",{scene.eye[0],scene.eye[1],scene.eye[2]},{scene.at[0],scene.at[1],scene.at[2]},nullptr,demo);
         if(demo.book.adjusting){
             ok=frontImage("demo-0",48,0,304,240,uint8_t(int(255.f*(1-demo.book.fade)))) && ok;
             ok=frontBookCover(demo) && ok;
@@ -406,7 +409,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     C2D_Flush();C2D_TargetClear(bottom,Paper);C2D_Prepare();C2D_SceneBegin(bottom);
     if(f.screen==FrontScreen::Demo) {
         if(demo.message.active() && demo.speaker)text(demo.speaker==0x2040?"Peach":"Merchant",16,22,.5f,Ink);
-        frontMessage(demo.message,demo.now*60/1000);text(demo.waitingForTitle?"Demo ended: A / START":"A / START: title",16,211,.46f,Ink);
+        frontMessage(demo.message,demo.now*60/1000);text(demo.waitingForTitle?"":"A / START: title",16,211,.46f,Ink);
         if(demo.failed)text("Opening resource unavailable",16,188,.46f,Red);
     } else if(f.screen==FrontScreen::Title)text("A / START: select a file",47,108,.6f,Ink);
     else if(f.screen==FrontScreen::Files) {

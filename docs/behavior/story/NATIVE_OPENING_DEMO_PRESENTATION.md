@@ -19,12 +19,13 @@ requests a500ms fade/type17 plus title sequence3. The root later deletes that
 child and requests its own2000ms fade/type17/title sequence3. Exact competing
 fade/sequence scheduling still requires full original event ownership.
 
-Native OpeningDemo now exposes waitingForTitle after the final scene requests,
-and keeps finished false until A/START. B cannot set finished. The Frontend's
-existing immediate A/START skip remains a native transition adapter; source
-fade-end,500/2000ms fade scheduling and sequence service parity are unbound.
-An unskipped no-input playback must reach the final input guard, not fabricate
-a timed title transition. Original timed message/control bytes remain intact.
+The native port completes every authored message, chest/effect/reaction request
+and final wait, then automatically requests its two-second white exit. This is
+the user's presentation preference; the original input guard above is retained
+as source evidence. A/START still skips earlier; B does not request an exit.
+Both automatic and manual exits require the entry fade to finish and an actual
+completed opaque GPU frame before Title admission. Original timed message and
+control bytes remain intact.
 
 ## Portable source-request scene
 
@@ -76,7 +77,11 @@ original geometry, intensity-alpha masks and independent effect clocks. See
 [effect ownership](../effect/NATIVE_DEMO_CHEST_EFFECTS.md).
 
 Movement is a native constant-speed/heading bridge using source speed operands;
-original NPC driver/trig/facing/flag/status/tribe scheduling remains unfinished.
+Peach and the merchant now use the recovered NPC camera-relative facing matrix,
+original angle lookup, retained rotation and side-dependent Z reflection, updated
+once per simulation tick. This preserves the authored paper side when turning
+away; the old binary yaw transform reversed it. Complete original NPC driver,
+flag/status/tribe scheduling remains unfinished.
 The lift's one-second interpolation and horizontal decrement are represented
 by60 native updates, not proven original WAIT_MSEC callback cadence. Millisecond
 waits round upward to whole60Hz simulation ticks. Sparse updates replay each
@@ -112,7 +117,7 @@ background/materials, complete map visibility, paper/fade/audio/effects and
 hardware/original-image timing remain unfinished. tools/verify_opening_demo_scene.py
 checks all three original event hashes/counts plus30 camera/placement/input/
 wait/float/tribe anchors read-only. Host checks cover the full unchanged37-message
-unskipped flow, final guard, authored gates/endpoints, independent transfer,
+unskipped flow, automatic exit acknowledgement, authored gates/endpoints, independent transfer,
 source fallback, same-tick/sparse cadence and locally packed original clips.
 
 The dedicated [demo map visibility pack](NATIVE_OPENING_DEMO_MAP_VISIBILITY.md)

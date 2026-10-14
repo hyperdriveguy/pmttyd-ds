@@ -1,4 +1,5 @@
 #pragma once
+#include <atomic>
 #include "item_get_windows.hpp"
 #include "game.hpp"
 #include "frontend.hpp"
@@ -201,6 +202,7 @@ private:
     void freeWakeEffects();
     std::array<Texture,2> demoEffectTextures;
     bool demoEffectsReady=false;
+    bool prepareDemoEffects();
     bool frontDemoEffects(const DemoChestEffects&,CameraPoint,CameraPoint);
     void freeDemoEffects();
     bool loadDemoPaper();
@@ -321,10 +323,12 @@ private:
     int16_t* streamData=nullptr;
     void stopMusic(unsigned slot);
     void switchTrack(int track,bool preservePrevious=false);
-    void startMusic(unsigned slot,int track);
+    void startMusic(unsigned slot,int track,uint8_t volume=127);
     void frontendMusic(const std::array<int,3>& tracks,const std::array<uint8_t,3>& volumes);
     void fill(MusicStream&,unsigned slot,ndspWaveBuf&);
     void musicMix(unsigned slot,uint8_t volume);
+    LightLock musicMutex;LightEvent musicWake;Thread musicThread=nullptr;
+    std::atomic<bool> musicWorkerRun{false};
     void serviceMusic();
 };
 }

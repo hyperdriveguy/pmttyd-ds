@@ -1,6 +1,7 @@
 #pragma once
 #include "opening_house_scene.hpp"
 #include "demo_chest_effects.hpp"
+#include "npc_presentation.hpp"
 namespace ttyd {
 // Source-request presentation bridge for dmo's original marketplace event.
 // Linear movement/camera and source paper capture/effect services are separate.
@@ -14,6 +15,9 @@ public:
     bool crystalRequested=false,radiationRequested=false;
     float revealProgress=0;
     unsigned nextMessage=0;
+    bool loadFacing(const char* path){facingReady=angles.load(path);return facingReady;}
+    void reset();
+    std::array<NpcPresentation,2> facing;
     void begin(uint64_t simulationTick);
     void advance(uint64_t simulationTick);
     bool messageReady(unsigned index) const;
@@ -37,6 +41,7 @@ private:
     bool updated=false;
     uint64_t updateTick=0;
     float chestOffset=0;
+    NpcAngleTable angles;bool facingReady=false;
     void program();void step();void update();
     void move(unsigned,std::array<float,3>,float speed);
     void pose(unsigned,const char*,const char* talk=nullptr);

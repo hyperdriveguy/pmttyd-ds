@@ -37,6 +37,13 @@ int main(int argc,char**){
     for(uint64_t i=51;i<=900;++i)dense.advance(i);
     assert(sparse.actors[0].position==dense.actors[0].position && sparse.eye==dense.eye && sparse.messageReady(0));
     if(argc>1){
+    OpeningDemoScene facing;assert(facing.loadFacing("romfs/npc-angle.bin"));facing.begin(0);facing.advance(240);
+    // Source NPC right-facing matrix reflects localZ after rotation; the old
+    // flat180-degree shortcut selected the opposite face of the paper model.
+    const ActorMeshVertex probe{10,0,5,0,0};const auto merchant=facing.facing[1].point(probe);
+    assert(facing.facing[1].sign==-1 && merchant[2]>4.5f);
+    facing.reset();facing.begin(0);facing.advance(240);assert(facing.facing[1].point(probe)==merchant);
+
         for(const auto* bank:{"c_peach","c_nazo","demo-chest"}){
             ActorAnimationPack pack;assert(pack.load((std::string("romfs/")+bank+".pmanim").c_str()));
             if(!std::strcmp(bank,"c_peach"))for(const auto* name:{"P_Z_1","P_S_1","P_T_1","P_W_1","P_S_7","P_T_13","P_W_7","P_S_4","P_T_4","P_W_4","P_S_8","P_T_14","P_W_8","P_B_1","P_B_2","P_T_7","P_H_1","P_B_3","P_B_4"}){

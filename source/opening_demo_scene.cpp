@@ -39,8 +39,9 @@ void OpeningDemoScene::tribe(unsigned n) {
     static const char* walks[]={"P_W_1","P_W_7","P_W_8","P_W_4"};
     idle[0]=idles[n];walk[0]=walks[n];pose(0,idles[n],talks[n]);
 }
+void OpeningDemoScene::reset(){const auto saved=angles;const bool ready=facingReady;*this=OpeningDemoScene{};angles=saved;facingReady=ready;}
 void OpeningDemoScene::begin(uint64_t simulationTick) {
-    *this=OpeningDemoScene{};tick=beginTick=simulationTick;active=true;
+    reset();tick=beginTick=simulationTick;active=true;
     actors[0].position={-2,0,550};actors[0].yaw=90;actors[0].visible=true;tribe(1);
     actors[1].position={-145,0,450};actors[1].yaw=90;actors[1].visible=true;pose(1,"S_1","T_1");
     actors[2].position={-125,0,450};actors[2].visible=true;pose(2,"S_1");program();step();
@@ -69,6 +70,13 @@ void OpeningDemoScene::update() {
         } else if(handoffStage>=3){
             actors[2].position[0]=actors[0].position[0]+chestOffset;
             if(handoffStage==3 && tick>=handoffTick+18){move(0,{-80,0,450},40);handoffStage=4;}
+        }
+    }
+    if(facingReady){
+        NpcCamera camera{{eye[0],eye[1],eye[2]},{at[0],at[1],at[2]}};
+        NpcCameraService service{&camera,[](void* p){return *static_cast<NpcCamera*>(p);}};
+        for(unsigned i=0;i<2;++i){NpcMatrixInput input;input.root=actors[i].position;input.yaw=actors[i].yaw;
+            if(!facing[i].prepare(input,angles,service)){effects.failed=true;return;}
         }
     }
     if(opened){

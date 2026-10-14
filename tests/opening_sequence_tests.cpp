@@ -12,7 +12,7 @@ int main(){
     assert(demo.waitingForTitle && !demo.finished && ids.size()==37 && bookOpening && demo.bookRotation==180);
     demo.tick(now+10000,0x200);assert(!demo.finished);
     demo.exit.entryPresented(0);assert(demo.exit.entryFinished);
-    demo.tick(now+10017,0x1000);assert(!demo.finished && demo.exit.requested);
+    demo.tick(now+10017);assert(!demo.finished && demo.exit.requested);
     demo.tick(now+13017);assert(!demo.finished && demo.exit.driverFinished);
     demo.exit.presented(255);demo.tick(now+13034);assert(demo.finished);
     for(unsigned i=0;i<37;++i){char key[24];if(i<24)std::snprintf(key,sizeof(key),"op_book_%02u",i+1);else std::snprintf(key,sizeof(key),"op_%02u",i-24);assert(ids[i]==key);}

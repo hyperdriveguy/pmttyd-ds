@@ -6,9 +6,7 @@ void Renderer::freeDemoEffects() {
     C3D_FrameSync();for(auto& texture:demoEffectTextures)if(texture.imported){Tex3DS_TextureFree(texture.imported);C3D_TexDelete(&texture.texture);texture.imported=nullptr;}
     demoEffectsReady=false;
 }
-bool Renderer::frontDemoEffects(const DemoChestEffects& effects,CameraPoint eye,CameraPoint at) {
-    if(effects.failed)return false;
-    if(!effects.started)return true;
+bool Renderer::prepareDemoEffects(){
     if(!demoEffectsReady){for(unsigned i=0;i<2;++i){char path[96];std::snprintf(path,sizeof(path),"romfs:/demo-crystal-%u.t3x",109+i);
             FILE* f=std::fopen(path,"rb");if(!f){freeDemoEffects();return false;}auto& texture=demoEffectTextures[i];
             texture.imported=Tex3DS_TextureImportStdio(f,&texture.texture,nullptr,false);std::fclose(f);if(!texture.imported){freeDemoEffects();return false;}
@@ -16,6 +14,12 @@ bool Renderer::frontDemoEffects(const DemoChestEffects& effects,CameraPoint eye,
             C3D_TexSetWrap(&texture.texture,i?GPU_MIRRORED_REPEAT:GPU_CLAMP_TO_EDGE,GPU_MIRRORED_REPEAT);
         }demoEffectsReady=true;
     }
+    return true;
+}
+bool Renderer::frontDemoEffects(const DemoChestEffects& effects,CameraPoint eye,CameraPoint at) {
+    if(effects.failed)return false;
+    if(!effects.started)return true;
+    if(!prepareDemoEffects())return false;
     // Source Camera4 yaw billboard and Camera5 display requests share this
     // scoped native scene view. Original separate camera/manager/GX numeric
     // ownership remains an explicitly documented adapter.
