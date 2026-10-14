@@ -18,7 +18,7 @@ struct TrioAudienceAudioRequest {std::optional<uint32_t> key;int32_t right=0,lef
 // Executes original event data; unsupported callbacks keep their event waiting.
 class TrioAttack {
 public:
-    bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={},uint32_t* fieldNpcBattleFlags=nullptr,FieldMarioBattleState* fieldMario=nullptr,FieldPartyRegistry* fieldParties=nullptr,const FieldPartyAppearanceServices* appearance=nullptr,std::shared_ptr<BattleSpotlightState> spotlight={});
+    bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={},uint32_t* fieldNpcBattleFlags=nullptr,FieldMarioBattleState* fieldMario=nullptr,FieldPartyRegistry* fieldParties=nullptr,const FieldPartyAppearanceServices* appearance=nullptr,std::shared_ptr<BattleSpotlightState> spotlight={},std::shared_ptr<BattleRandom> random={});
     void tick(uint64_t milliseconds,ProfessorStory&,uint32_t triggers=0,const BattlePadSample* physical=nullptr);
     bool active() const;
     bool finished() const;

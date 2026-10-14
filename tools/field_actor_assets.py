@@ -11,6 +11,8 @@ import re
 import shutil
 import struct
 import subprocess
+import tempfile
+import os
 from pathlib import Path
 from PIL import Image
 from iso_assets import DEFAULT_ISO, extract
@@ -84,7 +86,14 @@ def npc_source_data(iso):
                 run_threshold=struct.unpack_from('>f',raw,0x3c)[0],step_period=struct.unpack_from('>H',raw,0x48)[0],
                 sound_left=source_string(struct.unpack_from('>I',raw,0x40)[0]),sound_right=source_string(struct.unpack_from('>I',raw,0x44)[0]))
         angles=read(0x803041e0,91*4)
-        Path('romfs/npc-angle.bin').write_bytes(b'PMNANG01'+struct.pack('<91f',*struct.unpack('>91f',angles)))
+        angle_path=Path('romfs/npc-angle.bin')
+        angle_bytes=b'PMNANG01'+struct.pack('<91f',*struct.unpack('>91f',angles))
+        # Readers can run while another build refreshes this shared source bank.
+        # Publish the complete unchanged table without a transient empty file.
+        with tempfile.NamedTemporaryFile(dir=angle_path.parent,prefix='npc-angle-',suffix='.tmp',delete=False) as temp:
+            temp.write(angle_bytes);angle_temp=Path(temp.name)
+        try:os.replace(angle_temp,angle_path)
+        finally:angle_temp.unlink(missing_ok=True)
         result['angle_table']=dict(address=0x803041e0,count=91,sha256=hashlib.sha256(angles).hexdigest())
         return result
 

@@ -11820,3 +11820,59 @@ at B+0xef4 with fresh B=*(r13+0x1c70)=0x8041eb90; lone InterruptStop(0) USER_FUN
 at 0x8034f1d4) commit efa1783. New commits this follow-up: 669924e, efa1783,
 13397dc. Docs-only; no make rerun; artifacts in /tmp. All own commits are
 ancestors of HEAD; docs-agent worktree edits not swept.
+
+## 2026-10-13 — Actual audience startup, original TPL owners and target math
+
+Implemented original setup4 parameter/range requests and complete used mode0,
+zero-capacity population. Corrected prior type10 inference: admission counts
+only nonzero weights, so type10 always enters and the divisor stays positive.
+Preserves source tables, desired perturbation,107 draws,300 irand0 requests
+without advancement, fixed-weight/index-only swaps and12 published weights.
+Proven zero allocations/no Entry retain original cleared actor bytes; positive
+capacity/overrides/other modes remain real population providers.
+
+Native follows StageInit→AudienceInit and retains actual inline work, normal/
+Luigi TPL resources, guest metadata, throw-max draw, live counts/window amount,
+noise attempt/volume ramp and source NumToTarget gate. All205 normal+19 Luigi
+CMPR64x64 images imported unchanged into validated typed payload owners; active
+GPU crowd conversion/drawing and original file/cache ABI remain open. Native
+noise preserves explicit unassigned-key failed request(-1), before ending claps.
+Shared trio LCG/irand boot1 state survives restore/runtime recreation; original
+field/opening/development RNG interleaving and save ownership remain partial.
+
+True baseline8 exposed AddTargetNumSub801a18cc. Implemented full finite signed
+chunks/ratio/rounding, cancellation and source clamps, preserving nonzero work
+before capacity0 clamp. Exceptional conversions remain numeric boundaries.
+Actual ending reaches AudienceMain801a836c; no field result/control/end flag or
+story progression forced. Full Main/window/slot/audio/display and teardown are
+still unfinished. Received next live sound/window/throw/display contract.
+
+Validation: make test211/211 CTest+134/134 Python passed
+(artifacts/audience-init-tests-final4.log). Covers actual tables, eighty RNG
+seeds, exact requests/draws, actor bytes, golden original resource hashes,
+noise/volume/window history, positive-domain rejection, persistent RNG,
+weighted/unweighted target math and native ending/guard/superguard. Recovered
+startup RNG changed enemy victims: checks now follow actual target/damage and
+observe guard codes across both player units. Nonzero ending hold was resolved
+with the original helper. A concurrent angle-table refresh caused an earlier
+read failure; publication is now atomic with original bytes unchanged.
+
+make all passed (audience-init-all-final.log). Later shared debug builds hit
+in-progress foreign helper linkage, then duplicate Renderer declarations and
+GPU_DEPTHFUNC in platform.hpp. These hunks are excluded from this change.
+Coherent private source baseline971156684f plus audience work rebuilt all native
+sources with prebuilt original packs (audience-init-isolated-native.log).
+Immutable artifacts/audience-init-native-snapshot completed isolated legacy
+story11 attacks→EXP10/victory→black fade/held notice, terminal0; reviewed target,
+victory30 and final captures (artifacts/azahar-audience-init,
+audience-init-smoke.log), no exception. Samples20FPS/3.11ms target,30FPS/4.10ms
+EXP,60FPS/6.22ms black are Azahar samples, not hardware/controlled performance
+parity. Joined path verified by host tests. Shared renderer integration requires
+its own completion; the validated snapshot excludes uncommitted foreign changes.
+Documentation links/scoped diff pass (audience-init-doc-links-final.log).
+Asset paths/conversion/licensing in ASSETS; no original payloads/ISO committed.
+User emulator profile/saves and ISO remain unchanged.
+
+Next bind actual retained public40slot SFX ownership, full ordered AudienceMain
+and remaining engine services, then StageEnd/BattleEnd/map/context/NPC/event
+teardown and delayed native field return. Full playable prologue goal is active.

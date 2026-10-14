@@ -3,6 +3,9 @@
 2026-10-13 US G8ME01 disc0 revision0 read-only DOL/REL evidence. This resolves
 the requested initial-crowd producer behind [ending clap ownership](../audio/BATTLE_AUDIENCE_SOUND_BANK_AND_ENDING_CLAP.md).
 It does not establish an invented nonempty crowd or full crowd simulation.
+The [exact setup4 operation audit](AUDIENCE_SETUP4_ZERO_COUNT_EXACT_OPERATION_ORDER.md)
+corrects category admission: only nonzero weights advance the admission count;
+type10 is always admitted and zero-divisor arithmetic is unreachable here.
 
 ## Population invocation and input owners
 
@@ -69,8 +72,8 @@ requires a real preceding pouch8c producer and live supplied value.
 
 The request to establish a nonempty fresh crowd therefore has no such proof
 in the recovered path. Explicit snapshot8c0 proves desired initial count0;
-the zero-total-weight arithmetic domain below remains separate before every
-final record can be claimed unchanged. Ending Clap zero-count unassigned-key boundary remains real; it is
+the corrected exact operation audit proves type10 always admitted and
+all final actor records unchanged in this supplied zero-count domain. Ending Clap zero-count unassigned-key boundary remains real; it is
 not solved by substituting rank capacity for actual crowd.
 
 ## Type/placement producers and scoped binding boundaries
@@ -121,13 +124,14 @@ B19088 selected-type override0, the used default setup RNG order remains:
    802f9fb0/2c weights20,40,20,5,3,2,1,1,1,1,1. Strict draw<cumulative wins;
    residual draws select12.
 3. Twenty-four permutation swaps, two irand(12) each (48 requests).
-4. If sole allowed type10 occurs among admitted selected categories,
-   one irand(10) supplies its weight5*(draw+1); its type-row flag1 is clear.
+4. The successful-nonzero admission counter advances only after a nonzero
+   setup weight. Sole allowed type10 is therefore always admitted; one
+   irand(10) supplies weight5*(draw+1), and its type-row flag1 is clear.
    All other twelve weight entries are0. Types13..15 setup bytes exist but
    are outside this12-category allocation.
 5. Pairwise original category sorting compares all66 pairs; equal weight
-   issues irand(2). Allzero gives66 such requests. Sole positive type10
-   gives55 equal pairs; its11 comparisons do not request tie RNG. It sorts
+   issues irand(2). Actual setup4 sole positive type10 gives55 equal pairs;
+   its11 comparisons do not request tie RNG. It sorts
    an index list without rewriting the compared weight array.
 6. Special guest random20 path is gated by retained default-mode r29=1 and
    actual allocated-seatcount!=0, hence skipped when that count is proven0.
@@ -143,21 +147,17 @@ recounts halves and updates its cached totals/window amount, starts slot2
 noise requests and invokes NumToTarget; those transitive lifecycle services
 remain their existing contracts, not implied by population-prefix closure.
 
-If type10 was admitted, summedweight>0. N0 division numerators0 yield all
+Type10 is always admitted in actual setup4, so summedweight>0. N0 division
+numerators0 yield all
 allocationcounts0; residual allocation and guest branch skip, L0, no Entry.
 In this bounded domain all200 records A+1bc+i*134 retain every byte0 from
 memset, including WORD0 flags0 and BYTE19 state0. GetExist then returns0
 before stateclassification, and live R/L soundcounts are0.
 
-If type10 was NOT selected, all12 weights and summedweight are0. Source
-801a6758 unconditionally executes divw(0,0) per category before listlength
-construction; it does not skip arithmetic just because desiredcount0.
-Exact original Gekko zero-divisor quotient is not established by the local
-PPC listing. Therefore capacity0 alone does not close universally unchanged
-records through the whole original function. A native zero-quotient/empty
-population numerical policy must be explicitly labeled an adapter until
-original processor/result evidence is supplied. Do not invent a positive
-population to avoid this source arithmetic boundary.
+Generic allzero configurations remain a separate division-by-zero processor
+question. They are not reachable through these setup4 inputs. The linked exact
+audit supersedes the earlier inference that cardinality could exclude type10;
+source r27 counts successful nonzero admissions, not permutation iterations.
 
 ## Unassigned clap key versus a verified invalid-name failure
 

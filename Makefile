@@ -227,6 +227,7 @@ assets-ready:
 	@python3 tools/professor_fence_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/trio_battle_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/trio_attack_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
+	@python3 tools/audience_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/underground_event_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/underground_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/message_icon_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"

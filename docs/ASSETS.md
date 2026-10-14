@@ -1892,3 +1892,25 @@ The existing private tutorial script pack and original Crump D_1 pose are
 reused; no new texture, dialogue, pose conversion, or distributable game asset
 was added. Inspection ELF files stay in ignored artifacts. Original game
 content retains its existing Nintendo/Intelligent Systems licensing status.
+
+## 2026-10-13 — Original audience TPL payloads and setup4 configuration
+
+Read-only ISO battle/audience/audience_normal.tpl and audience_luigi.tpl imported
+byte for byte by tools/audience_assets.py. Ignored local-assets/audience raw files
+and romfs/audience-normal.tpl(428896bytes/205images), audience-luigi.tpl
+(39776bytes/19images) retain all original indices, headers and CMPR64x64 payloads;
+no resizing, tint, palette replacement or generated crowd artwork. Normal SHA256
+16f8cdda26bb3727aeb9c2d7b494d66c1822d2ac94705dbad07b09d319e5e4f2; Luigi SHA256
+3f556a8d9bd7cbfbba33ce3ab1a31531f174273451fe620f54182523533c48ef. Local
+romfs/audience-resources.json records paths/hashes/licensing. Typed native file
+owners retain validated raw payloads; active GX/Citro3D texture conversion/draw
+is not claimed. Both resources execute even for the supplied zero-count domain.
+
+Existing trio converter exports ignored12-byte PMAUCFG1 sidecar
+romfs/trio-audience-setup.bin with original relocated setup4 address9351aa20
+(tikREL fileoffset28450), not synthetic ranges. Original config44 bytes SHA256
+a347603436ca794d0e72fb2575f0c61088e6b3f8a2525acd25f69235a34e3d64 remains
+read-only original data in existing relocated pack. Sidecar little-endian native
+metadata only; actual source parameters and random requests are read at runtime.
+Original Nintendo/Intelligent Systems assets for local use; no redistribution
+rights. No original files/packs/ISO committed.

@@ -84,7 +84,12 @@ int main(){
     assert(jump.readWord(0x84201204,value) && (value&0xb)==3); // Source pose request force0.
     assert(jump.active() && jump.pendingFunction()==0x8010a78c && approached && airborne && scene.actors[0].pose=="M_J_1D");
     assert(jump.readWord(0x84001cb8,value) && value==0); // No input: failed timing, source per-hit flags100.
-    const auto& requests=jump.requests();assert(requests.front().function==0x800f8934 && requests[1].function==0x8010d6cc && requests.back().function==0x8010a78c);
+    const auto& requests=jump.requests();
+    for(unsigned i=0;i<16;++i)assert(requests[i].function==0x80005da0 && requests[i].rawOperands==std::vector<int32_t>{1});
+    assert(requests[16].function==0x800f8934 && requests[17].function==0x801a83f8 && requests.back().function==0x8010a78c);
+    assert(jump.readWord(0x84015fcc,value) && value==0); // Window actual count.
+    assert(jump.readWord(0x84002864,value) && value==1); // Owned normal TPL handle.
+    assert(jump.readWord(0x84002868,value) && value==2); // Owned Luigi TPL handle.
     assert(requests.back().rawOperands[4]==0x100);
     auto count=requests.size();for(unsigned t=6017;t<7000;t+=17)jump.tick(t,scene);
     assert(jump.active() && !jump.finished() && jump.requests().size()==count);
@@ -200,9 +205,10 @@ int main(){
     assert(phaseChecks==5 && !game.trioBattleIntro.message.active()); // Frankly gates phase3/4/5 without lecture replay.
     assert(game.trioBattleIntro.actors[5].pose=="TGK_S_1"); // Original type43 band fallback69.
     assert(game.trioAttack.readWord(0x8410629c,value) && value==0); // Finished tracked phase hook cleared by barrier.
-    assert(game.trioAttack.readWord(0x8410110c,value) && value>>16==8);
-    assert(game.trioAttack.readWord(0x8410210c,value) && value>>16==9);
-    assert(game.trioAttack.readWord(0x84101278,value) && value==0x10117);
+    assert(game.trioAttack.readWord(0x8410110c,value) && value>>16==10);
+    assert(game.trioAttack.readWord(0x8410210c,value) && value>>16==7); // Original startup RNG now selects Goombella for both enemy hits.
+    assert(game.trioAttack.readWord(0x84101278,value) && value==0);
+    assert(game.trioAttack.readWord(0x84102278,value) && value==0x10117);
     assert(game.trioAttack.readWord(0x84001cb0,value) && value==2);
     assert(game.trioAttack.readWord(0x84001d34,value) && value==0); // Private reset independent of general pad.
     assert(game.trioBattleIntro.actors[0].pose=="M_S_1" && game.trioBattleIntro.actors[4].pose=="PTK_S_1");
@@ -328,7 +334,7 @@ int main(){
             assert(std::any_of(endingRequests.begin(),endingRequests.end(),[](const ProfessorServiceRequest& r){return r.function==0x80212794 && r.rawOperands.size()==2;}));
             assert(std::any_of(endingRequests.begin(),endingRequests.end(),[](const ProfessorServiceRequest& r){return r.function==0x801a0cec && r.rawOperands==std::vector<int32_t>({-1,0});}));
             assert(std::count_if(endingRequests.begin(),endingRequests.end(),[](const ProfessorServiceRequest& r){return r.function==0x800d3300 && r.rawOperands==std::vector<int32_t>({314});})==2);
-            const auto dropDraws=std::count_if(endingRequests.begin(),endingRequests.end(),[](const ProfessorServiceRequest& r){return r.function==0x80005da0;});assert(dropDraws==3 || dropDraws==5 || dropDraws==7);
+            const auto dropDraws=std::count_if(endingRequests.begin(),endingRequests.end(),[](const ProfessorServiceRequest& r){return r.function==0x80005da0;})-424;assert(dropDraws==3 || dropDraws==5 || dropDraws==7);
             assert(charged.progress.originalStory==11 && charged.fieldBattleState().result==0 && !charged.fieldControlEnabled());
             assert(charged.trioAttack.rewardEffect()->timer==1 && charged.trioAttack.rewardEffect()->depthPosition[0]==-2000);
             const unsigned countTicks=fastReward?10:40;
@@ -394,7 +400,7 @@ int main(){
                 assert(!(charged.progress.originalPouch->half(14)&1));
             }
             assert(charged.fieldMarioBattleState().secondaryFlags==0 && charged.fieldMarioBattleState().controlDepth==1 && (charged.fieldMarioBattleState().flags&2));
-            const auto& audio=charged.trioAttack.audienceAudioRequests();assert(audio.size()==2);
+            const auto& audio=charged.trioAttack.audienceAudioRequests();assert(audio.size()==3); // Actual initial noise attempt, then two ending claps.
             for(const auto& request:audio)assert(!request.key && request.right==0 && request.left==0 && request.handle && *request.handle==-1);
             assert(charged.trioAttack.readWord(0x84015c78,value) && value==0);
             assert(charged.trioAttack.readWord(0x84015c7c,value) && value==0xffffffff); // Actual failed native request, not a fabricated silent voice0.
@@ -425,7 +431,7 @@ int main(){
         Game defended;defended.restore(checkpoint);
         for(unsigned n=0;n<3600 && !defended.trioBattleActive;++n)defended.tick(advance);
         for(unsigned n=0;n<3600 && !defended.trioBattleIntro.finished;++n)defended.tick(advance);
-        bool pressed=false;uint32_t defence=0;
+        bool pressed=false,sawGuard=false,sawSuperguard=false;uint32_t defence=0;
         for(unsigned n=0;n<3000 && !defended.trioAttack.pendingFunction();++n){
             if(defended.trioAttack.readWord(0x84000000,value) && value>>16==2 && defended.trioAttack.commandActor()==1)break;
             Input next;next.physicalSnapshot=true;
@@ -433,17 +439,21 @@ int main(){
             if(!defended.trioAttack.active() && (menuState==TrioBattleCommands::State::Command || menuState==TrioBattleCommands::State::Target))next=advance;
             if(!pressed && defended.trioBattleIntro.actors[5].battleScale[0]>1.3f){next.physicalSnapshot=true;next.physicalButtons=button;next.confirm=false;pressed=true;}
             defended.tick(next);
+            for(unsigned player:{1u,2u})if(defended.trioAttack.readWord(0x84100278+0x1000*player,value)) {
+                sawGuard|=value==0x50117;sawSuperguard|=value==0x8012a;
+            }
             if(defended.trioAttack.readWord(0x84001cb0,value) && value && !defence){
                 defence=value;
-                if(defence==5){assert(defended.trioAttack.readWord(0x84104280,value) && value==1);assert(defended.trioAttack.readWord(0x84101270,value) && (value&255)==1);}
+                if(defence==5)assert(defended.trioAttack.readWord(0x84104280,value) && value==1);
             }
         }
         assert(pressed && defence==(button==0x100?4u:5u));
-        assert(defended.trioAttack.readWord(0x8410110c,value) && value>>16==(button==0x100?9u:10u));
-        if(button==0x100){assert(defended.trioAttack.pendingFunction()==0);assert(defended.trioAttack.readWord(0x84101278,value) && value==0x50117);}
+        uint32_t mario=0,partner=0;assert(defended.trioAttack.readWord(0x8410110c,mario) && defended.trioAttack.readWord(0x8410210c,partner));
+        assert((mario>>16)+(partner>>16)==(button==0x100?18u:19u));
+        if(button==0x100){assert(defended.trioAttack.pendingFunction()==0 && sawGuard);}
         else {
             assert(defended.trioAttack.readWord(0x8410410c,value) && value>>16==1);
-            assert(defended.trioAttack.readWord(0x84101278,value) && value==0x8012a);
+            assert(sawSuperguard);
             assert(defended.trioAttack.readWord(0x84104278,value) && value==0x137);
             assert(defended.trioAttack.readWord(0x841042a8,value) && value==0);
             assert(defended.trioAttack.pendingFunction()==0);

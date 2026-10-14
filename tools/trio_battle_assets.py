@@ -47,6 +47,7 @@ def build(iso):
     Path('romfs/trio-battle-units.bin').write_bytes(data)
     stage_descriptors=[address(0x25c08+i*0x18) for i in range(5)]+[0x80417ca0,0x80417cb8]
     Path('romfs/trio-stage-objects.bin').write_bytes(struct.pack('<8s8I',b'PMSTOBJ1',address(0x2619c),*stage_descriptors))
+    Path('romfs/trio-audience-setup.bin').write_bytes(struct.pack('<8sI',b'PMAUCFG1',address(0x28450)))
     # Retain the actual default weapon targeting words and name IDs from main.dol.
     commands=[]
     with Path(iso).open('rb') as disc:

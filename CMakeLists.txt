@@ -962,6 +962,13 @@ target_link_libraries(battle_spotlight_tests PRIVATE ttyd_core)
 add_test(NAME battle_spotlight COMMAND battle_spotlight_tests)
 set_tests_properties(battle_spotlight PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 
+# Original audience startup, zero-count setup4 and owned texture resources.
+target_sources(ttyd_core PRIVATE source/battle_audience_init.cpp source/battle_audience_resources.cpp source/battle_audience_target.cpp)
+add_executable(battle_audience_init_tests tests/battle_audience_init_tests.cpp)
+target_link_libraries(battle_audience_init_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_init COMMAND battle_audience_init_tests)
+set_tests_properties(battle_audience_init PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
 # Original global stage-floor consumer and event wrapper.
 target_sources(ttyd_core PRIVATE source/battle_stage_floor.cpp)
 add_executable(battle_stage_floor_tests tests/battle_stage_floor_tests.cpp)
