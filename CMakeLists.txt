@@ -1730,3 +1730,9 @@ target_sources(ttyd_core PRIVATE source/battle/battle_enemy_hp_draw.cpp)
 add_executable(battle_enemy_hp_draw_tests tests/battle_enemy_hp_draw_tests.cpp)
 target_link_libraries(battle_enemy_hp_draw_tests PRIVATE ttyd_core)
 add_test(NAME battle_enemy_hp_draw COMMAND battle_enemy_hp_draw_tests)
+
+# Original packed NPC registry allocation, constructor and named lookup.
+target_sources(ttyd_core PRIVATE source/field/field_npc_registry.cpp)
+add_executable(field_npc_registry_tests tests/field_npc_registry_tests.cpp)
+target_link_libraries(field_npc_registry_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_registry COMMAND field_npc_registry_tests)
