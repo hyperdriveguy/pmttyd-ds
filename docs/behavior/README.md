@@ -1009,3 +1009,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native retained NPC flags and draw suppression](field/NATIVE_RETAINED_NPC_FLAGS_AND_DRAW_SUPPRESSION.md) — active-name lookup, persistent static/wander flags and diagnostic native verification.
 
 - [Native retained audience empty admission](display/NATIVE_RETAINED_AUDIENCE_EMPTY_ADMISSION.md) — actual guarded callback,16 native setup requests and200 fresh current-entry admissions; nonempty body remains held.
+
+- [Trio lower scene prepared draw replay](display/TRIO_LOWER_SCENE_PREPARED_DRAW_REPLAY.md)

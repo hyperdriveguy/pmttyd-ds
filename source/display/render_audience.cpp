@@ -28,7 +28,7 @@ void Renderer::drawAudienceScene(const Game& game,bool lower){
         struct Context {Renderer* renderer;const Game* game;uint8_t mode=1;std::array<float,6> vectors;} context{this,&game};
         context.vectors={0,280,550,0,100,-40};
         if(game.trioBattleActive && game.scene!=Scene::Battle && game.scene!=Scene::Victory && game.scene!=Scene::Defeat){
-            auto camera=game.fieldCameraFrame;
+            auto camera=game.fieldCameraFrame;camera.eye={0,2.8f,5.5f};camera.at={0,1.f,-.4f};
             if(game.trioAttack.cameraDepthSnapshot())if(const auto* live=game.trioAttack.cameraFrameState()){
                 camera.eye={live->eye[0]*.01f,live->eye[1]*.01f,live->eye[2]*.01f};camera.at={live->at[0]*.01f,live->at[1]*.01f,live->at[2]*.01f};
             }

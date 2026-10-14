@@ -631,8 +631,13 @@ void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* suppl
         }
         if(changes.cull)C3D_CullFace(cull);
         if(changes.depth)C3D_DepthTest(true,GPU_GREATER,mask);
-        if(stageObjects)stageObjects->visibleRanges(batch.start,batch.count,[](uint32_t first,uint32_t size){C3D_DrawArrays(GPU_TRIANGLES,first,size);});
-        else C3D_DrawArrays(GPU_TRIANGLES,batch.start,batch.count);
+        const auto submit=[&](uint32_t first,uint32_t size){
+            if(game.trioBattleActive && (supplied==&trioBackground || supplied==&trioStage))
+                trioSceneMaps[translucent?1:0].push_back({room.vertices,*texture,first,size,uint32_t(mask),cull,true});
+            C3D_DrawArrays(GPU_TRIANGLES,first,size);
+        };
+        if(stageObjects)stageObjects->visibleRanges(batch.start,batch.count,submit);
+        else submit(batch.start,batch.count);
     }
     C3D_CullFace(GPU_CULL_NONE);
     C3D_DepthTest(true,GPU_GREATER,battle?GPU_WRITE_ALL:FieldRGBDepth);
@@ -1057,12 +1062,16 @@ int Renderer::marioAirShadow(const FieldShadowRecord& record) {
 // jump/retreat arcs are native harness framing,not original battle-camera parity.
 void Renderer::world(const Game& g) {
     count=0;
+    trioScenePrepared=false;trioSceneMaps[0].clear();trioSceneMaps[1].clear();trioSceneActors.clear();
     bool battle=g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
     marioPose=g.jumpHeight>.01f?1:0;
     if(battle && g.phase==Phase::Windup)marioPose=g.selection==0?1:2;
     float cam=battle?0:g.cameraX;
     C3D_Mtx projection,view,transform;
     auto frame=g.fieldCameraFrame;
+    // Native battle framing until original camera4's producer publishes a view.
+    // A suspended field camera must not frame the source-owned battle stage.
+    if(g.trioBattleActive){frame.eye={0,2.8f,5.5f};frame.at={0,1.f,-.4f};frame.fov=42;frame.nearPlane=.1f;frame.farPlane=80;}
     CameraDepthPoint up{0,1,0};
     if(g.trioBattleActive && g.trioAttack.cameraDepthSnapshot()) {
         if(const auto* live=g.trioAttack.cameraFrameState()) {
@@ -1083,7 +1092,7 @@ void Renderer::world(const Game& g) {
     const float x0=cam-30,x1=cam+30,y0=-12,y1=24,z=-25;
     vertex(x0,y0,z,0,0,0xffffffff);vertex(x1,y0,z,1,0,0xffffffff);vertex(x1,y1,z,1,1,0xffffffff);
     vertex(x1,y1,z,1,1,0xffffffff);vertex(x0,y1,z,0,1,0xffffffff);vertex(x0,y0,z,0,0,0xffffffff);
-    if(!battle) {
+    if(!battle && !g.trioBattleActive) {
         if(!g.harborStory.enabled)shadow(g.partner,.43f,g.partnerHeight);
         if(g.progress.room==0)shadow(NpcPosition,.48f);
         if(g.progress.room==0 && !g.progress.crumpDefeated) shadow(CrumpPosition,.65f);
@@ -1103,7 +1112,7 @@ void Renderer::world(const Game& g) {
             if(a.index==0 && (g.marioPresentation.supported || (g.marioPresentation.displayFlags&1)))continue;
             character(a.index,a.p,a.h,a.w,a.face,a.lift,a.tilt);
         }
-    } else {
+    } else if(battle) {
         Vec2 mario{-1.7f,0},crump{1.7f,0};float lift=0,tilt=0;
         if(g.phase==Phase::Windup && g.selection==0) {
             float t=std::min(1.f,g.phaseTick/float(BattleRules::JumpImpact));
@@ -1127,7 +1136,7 @@ void Renderer::world(const Game& g) {
     const int legacyCount=count;
     const bool questPose=!std::strcmp(g.marioPresentation.selected,"M_N_5B") || !std::strcmp(g.marioPresentation.selected,"M_N_C");
     const bool itemGetPose=!battle && !std::strcmp(g.marioPresentation.selected,"M_I_U");
-    if(!battle && g.harborEncounter.locked()) {
+    if(!battle && !g.trioBattleActive && g.harborEncounter.locked()) {
         const auto& a=g.harborEncounter.actors[0];const bool right=a.yaw>0 && a.yaw<180;
         characterModel(a.pose.c_str(),float(g.harborEncounter.now-a.poseAt)*.06f,g.progress.position,g.groundHeight+g.jumpHeight,right?180:0,right,false,&harborMarioAnimations,harborMarioUVScale);
     } else if(!battle && (g.trioBattleActive || g.storyPresentation().locked())) {
@@ -1146,7 +1155,7 @@ void Renderer::world(const Game& g) {
         } else if(!a.hidden)characterModel(g.storyPresentation().message.talking && g.storyPresentation().speaker==1?"PKR_T_1":a.moving?"PKR_W_1":"PKR_S_1",float(g.ticks),g.partner,g.partnerHeight,right?180:0,right,true);
     } else if(!battle && !g.harborStory.enabled)characterModel(g.partnerPresentation.name(),g.partnerPresentation.frame(),g.partner,g.partnerHeight,
                              g.partnerPresentation.yaw(),g.partnerPresentation.reflectZ(),true);
-    if(!battle && g.harborStory.enabled && g.harborStory.triggered) {
+    if(!battle && !g.trioBattleActive && g.harborStory.enabled && g.harborStory.triggered) {
         const auto& a=g.harborStory.actors[0];
         const auto* pose=partnerAnimations.pose(a.poseClock.pose.c_str());
         if(a.presentationReady && pose && pose->evaluate(float(g.ticks*1000/TickRate-a.poseClock.poseAt)*.06f,actorSample) && actorSample.vertices.size()<=size_t(MaxVertices-count))
@@ -1154,7 +1163,7 @@ void Renderer::world(const Game& g) {
     }
     const int partnerEnd=count;
     actorMetrics={};
-    if(!battle)fieldActors(g);
+    if(!battle && !g.trioBattleActive)fieldActors(g);
     const int fieldActorEnd=count;
     if(!battle && g.storyPresentation().underground) {
         for(unsigned i=3;i<6;++i) {
@@ -1178,10 +1187,10 @@ void Renderer::world(const Game& g) {
     }
     const int professorItemEnd=count;
     harborCrumpEnd=count;
-    if(!battle && g.harborStory.enabled && g.harborStory.triggered)harborActors(g);
+    if(!battle && !g.trioBattleActive && g.harborStory.enabled && g.harborStory.triggered)harborActors(g);
     const int harborEnd=count;
     bool polygonShadow=false;int airShadowCount=0;
-    if(!battle) {
+    if(!battle && !g.trioBattleActive) {
         const float rootY=g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight;
         auto request=marioShadowRequest({g.progress.position.x*100,rootY*100,g.progress.position.z*100},
                                        g.groundMetadataHeight*100,g.groundContact.sourceNode!=0,
@@ -1213,14 +1222,14 @@ void Renderer::world(const Game& g) {
     C3D_TexBind(0,&sky.texture);C3D_DrawArrays(GPU_TRIANGLES,0,6);
     C3D_DepthTest(true,GPU_GREATER,battle?GPU_WRITE_ALL:FieldRGBDepth);
     if(g.trioBattleActive){drawMap(true,g,false,&trioBackground);drawMap(true,g,false,&trioStage);}else drawMap(battle,g);
-    if(!battle)drawOpeningDeparture(g,false);
+    if(!battle && !g.trioBattleActive)drawOpeningDeparture(g,false);
     buffers=C3D_GetBufInfo();
     BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
     C3D_TexBind(0,&atlas);
     C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
     if(actorEnd>legacyCount){C3D_TexBind(0,g.trioBattleActive?&trioMarioTexture.texture:g.harborEncounter.locked()?&harborMarioTexture.texture:g.storyPresentation().locked()?&professorMarioTexture.texture:questPose?&goombaQuestTexture.texture:itemGetPose?&fieldItemGetTexture.texture:&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
     if(partnerEnd>actorEnd){C3D_TexBind(0,g.trioBattleActive?&trioPartnerTexture.texture:&partnerTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,actorEnd,partnerEnd-actorEnd);}
-    if(!battle)drawFieldActors(false);
+    if(!battle && !g.trioBattleActive)drawFieldActors(false);
     if(undergroundEnd>fieldActorEnd){C3D_TexBind(0,&undergroundTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,fieldActorEnd,undergroundEnd-fieldActorEnd);}
     if(professorItemEnd>undergroundEnd){C3D_TexBind(0,&professorMapTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,undergroundEnd,professorItemEnd-undergroundEnd);}
     if(harborCrumpEnd>professorItemEnd){C3D_TexBind(0,&harborNpcAnimations[0].image.texture);C3D_DrawArrays(GPU_TRIANGLES,professorItemEnd,harborCrumpEnd-professorItemEnd);}
@@ -1260,8 +1269,18 @@ void Renderer::world(const Game& g) {
         C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
     }
     // Original stage400000 opaques,500000 shadows,600000 translucent.
-    if(!battle){drawFieldActors(true);if(g.trioBattleActive){drawMap(true,g,true,&trioBackground);drawMap(true,g,true,&trioStage);}else drawMap(false,g,true);drawOpeningDeparture(g,true);}
-    if(g.trioBattleActive)drawAudienceScene(g);
+    if(!battle){if(!g.trioBattleActive)drawFieldActors(true);if(g.trioBattleActive){drawMap(true,g,true,&trioBackground);drawMap(true,g,true,&trioStage);}else drawMap(false,g,true);if(!g.trioBattleActive)drawOpeningDeparture(g,true);}
+    if(g.trioBattleActive){
+        captureTrioActor(g,sky.texture,0,6,false);
+        captureTrioActor(g,atlas,6,legacyCount-6);
+        captureTrioActor(g,trioMarioTexture.texture,legacyCount,actorEnd-legacyCount);
+        captureTrioActor(g,trioPartnerTexture.texture,actorEnd,partnerEnd-actorEnd);
+        captureTrioActor(g,undergroundTexture.texture,fieldActorEnd,undergroundEnd-fieldActorEnd);
+        captureTrioActor(g,professorMapTexture.texture,undergroundEnd,professorItemEnd-undergroundEnd);
+        captureTrioActor(g,harborNpcAnimations[0].image.texture,professorItemEnd,harborCrumpEnd-professorItemEnd);
+        captureTrioActor(g,harborNpcAnimations[1].image.texture,harborCrumpEnd,harborEnd-harborCrumpEnd);
+        trioScenePrepared=true;drawAudienceScene(g);
+    }
 }
 // Native diagnostic/menu reflow. Coordinates,scale and C2D layers below
 // are pixel-layout choices; source dialogue uses originalMessage instead.
@@ -1412,6 +1431,8 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
         if(commands.state==TrioBattleCommands::State::Command || commands.state==TrioBattleCommands::State::Target) {
             battleMenuRows(g);
         } else {
+            sourceWindowFrame(type0WindowFrame(-284,104,568,60,10,{255,255,255,230}),true);
+            sourceWindowFrame(type0WindowFrame(-284,-92,568,48,10,{255,255,255,230}),true);
             if(g.trioAttack.active()) {
                 text(commands.commandName(commands.command),12,76,.63f,Ink);
                 text(g.trioAttack.pendingFunction()?"Development notice: source damage services pending":g.trioCommands.state==TrioBattleCommands::State::AttackReady && g.trioCommands.attack && g.trioCommands.attack->weapon==0x80353de8?"Hold Circle Pad left, then release":"A: action command",12,174,.42f,Ink);
@@ -1533,6 +1554,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     // GPU buffers below persist as allocations,not independent frame copies.
     if(g.harborTutorial.running() || g.trioBattleActive)prepareAudienceDrawing();
     if(!C3D_FrameBegin(C3D_FRAME_SYNCDRAW))return;
+    trioScenePrepared=false;
     item95IconCount=0;
     windowFrameCount=0;
     windowFontCount=0;
@@ -1546,7 +1568,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);C3D_AlphaTest(false,GPU_ALWAYS,0);
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
     if(g.harborTutorial.running())worldTutorial(g);else if(battleMapsReady)world(g);
-    drawFieldItemGet(g);
+    if(!g.trioBattleActive)drawFieldItemGet(g);
     classVertexCount=0;C2D_Prepare();C2D_SceneBegin(top);overlay(g);
     if(!battleMapsReady)text(actorTexturesReady?"Development notice: battle map unavailable":"Development notice: scene actor texture unavailable",16,220,.42f,Ink);
     // Native fade layer.99 covers top400x240 and bottom320x240. Opaque255
@@ -1562,6 +1584,14 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
         if(C3D_FrameDrawOn(bottom)){
             C3D_SetViewport(0,0,240,320);C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,240,320);
             C3D_DepthMap(true,-1,0);worldTutorial(g,true);
+        }
+        worldTransform=topWorld;
+    }else if(g.trioBattleActive && trioScenePrepared){
+        const auto topWorld=worldTransform;
+        C3D_RenderTargetClear(bottom,C3D_CLEAR_ALL,0x000000ff,0);
+        if(C3D_FrameDrawOn(bottom)){
+            C3D_SetViewport(0,0,240,320);C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,240,320);
+            C3D_DepthMap(true,-1,0);lowerTrioScene(g);
         }
         worldTransform=topWorld;
     }else C2D_TargetClear(bottom,Paper);

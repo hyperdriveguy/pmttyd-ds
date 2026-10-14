@@ -376,6 +376,13 @@ private:
     void drawMap(bool battle,const Game& game,bool translucent=false,Room* supplied=nullptr,uint32_t sceneVisibleGroups=UINT32_MAX,bool alphaCapture=false);
     void updateCutaways(Room& room,const Game& game);
     bool c3dReady=false,c2dReady=false,programReady=false,atlasReady=false;
+    // Frame-owned borrowed geometry/texture descriptors, prepared by top world.
+    struct TrioSceneDraw {Vertex* stream=nullptr;C3D_Tex texture{};uint32_t first=0,count=0,depthMask=0;GPU_CULLMODE cull=GPU_CULL_NONE;bool depth=true;};
+    std::array<std::vector<TrioSceneDraw>,2> trioSceneMaps;
+    std::vector<TrioSceneDraw> trioSceneActors;
+    bool trioScenePrepared=false;
+    void captureTrioActor(const Game&,C3D_Tex&,uint32_t first,uint32_t size,bool depth=true);
+    void lowerTrioScene(const Game&);
     void world(const Game&);
     void overlay(const Game&);
     void menu(const Game&,const Metrics&,const char*,bool);
