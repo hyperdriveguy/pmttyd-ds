@@ -13,7 +13,7 @@ int main() {
     assert(loadFieldActorCatalog("romfs") && loadCameraRoadAssets("romfs"));
     assert(loadCollision("romfs/gor_02.walls") && loadGround("romfs/gor_02.ground") && loadHead("romfs/gor_02.head"));
     const FieldActorRecord* actor=nullptr;
-    for(const auto& a:fieldActorCatalog().actors())if(a.wander.enabled){actor=&a;break;}
+    for(const auto& a:fieldActorCatalog().actors())if(a.room==2 && a.key==0x2b0a9f83 && a.wander.enabled){actor=&a;break;}
     assert(actor && actor->sourceTalkPresent && actor->talkRules.size()==11);
     assert(!fieldActorTalkAvailable(*actor,8)); // Unknown saved quest cannot assume ordinary talk.
     FieldActorTalkState ordinary;ordinary.quest1420=0;

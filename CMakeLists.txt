@@ -954,3 +954,8 @@ target_sources(ttyd_core PRIVATE source/battle_stage_floor.cpp)
 add_executable(battle_stage_floor_tests tests/battle_stage_floor_tests.cpp)
 target_link_libraries(battle_stage_floor_tests PRIVATE ttyd_core)
 add_test(NAME battle_stage_floor COMMAND battle_stage_floor_tests)
+
+target_sources(ttyd_core PRIVATE source/npc_map_move.cpp)
+add_executable(npc_map_move_tests tests/npc_map_move_tests.cpp)
+target_link_libraries(npc_map_move_tests PRIVATE ttyd_core)
+add_test(NAME npc_map_move COMMAND npc_map_move_tests)

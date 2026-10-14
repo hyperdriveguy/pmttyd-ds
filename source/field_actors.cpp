@@ -144,7 +144,9 @@ bool FieldActorAssets::read(FILE* f) {
                !string(w.idle,!w.enabled) || !string(w.walk,!w.enabled) || !string(w.run,!w.enabled) ||
                !string(w.soundLeft,true) || !string(w.soundRight,true))return false;
             if(!std::isfinite(w.radius) || !std::isfinite(w.speed) || !std::isfinite(w.runThreshold) ||
-               (w.enabled && (a.kind!=0 || !(a.npcFlags&0x40000000) || (a.npcFlags&(0x100000|0x20000|0x08000000)) || w.radius<=0 || w.radius>10000 || w.speed<=0 || w.speed>10000 || w.runThreshold<=0 || w.runThreshold>10000 || w.stepPeriod>65535)) ||
+               (w.enabled && (a.kind!=0 || (a.npcFlags&(0x100000|0x20000|0x08000000|0x10)) ||
+                (!(a.npcFlags&0x40000000) && (a.npcFlags&(0x2000|0x10000))) ||
+                w.radius<=0 || w.radius>10000 || w.speed<=0 || w.speed>10000 || w.runThreshold<=0 || w.runThreshold>10000 || w.stepPeriod>65535)) ||
                (!w.enabled && (w.flags || w.radius || w.speed || w.runThreshold || w.stepPeriod || !w.idle.empty() || !w.walk.empty() || !w.run.empty() || !w.soundLeft.empty() || !w.soundRight.empty())) ||
                (a.kind && a.sourceTalkPresent) || (!a.sourceTalkPresent && !a.talkRules.empty()))return false;
         } else a.sourceTalkPresent=!a.talkPrefix.empty();

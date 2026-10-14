@@ -8,6 +8,7 @@
 #include "floor_contact.hpp"
 #include "field_ray.hpp"
 #include "npc_interaction.hpp"
+#include "npc_map_move.hpp"
 #include "battle_unit_resources.hpp"
 #include "battle_action_services.hpp"
 #include "secondary_party_source.hpp"
@@ -963,6 +964,20 @@ void Game::updateFieldNpcCollision() {
     // with the local wall-query or display heading.
     mario.travelHeading=fieldNpcAngles().angle(0,0,fieldMovement.headingX,fieldMovement.headingZ);
     NpcSideServices services;services.user=this;
+    struct MapMoveContext {Game* game;NpcWanderActor* actor=nullptr;} mapContext{this};
+    NpcMapMoveServices mapMove;mapMove.user=&mapContext;
+    mapMove.direction=[](void*,float x,float z) {
+        const float degrees=fieldNpcAngles().angle(0,0,x,z);
+        const float radians=(degrees*3.1415927410125732421875f)/180.f;
+        return FieldWallVector{float(std::sin(double(radians))),0,-float(std::cos(double(radians)))};
+    };
+    mapMove.length=[](void*,float x,float z){return std::sqrt(std::fma(x,x,z*z));};
+    mapMove.normalLength=[](void*,float x,float z){return std::sqrt(x*x+z*z);};
+    mapMove.angle=[](void*,float x,float z){return fieldNpcAngles().angle(0,0,x,z);};
+    mapMove.ray=[](void* p,FieldWallVector origin,FieldWallVector direction,float length) {
+        return fieldMapRay(origin,direction,length,&static_cast<MapMoveContext*>(p)->game->fieldObjectTriangles,false);
+    };
+    mapMove.publishContact=[](void* p,const FieldWallHit& hit){static_cast<MapMoveContext*>(p)->actor->wall=hit.token;};
     services.wall=[](void* p,FieldWallVector& root,const NpcSideWallRequest& request) {
         auto& game=*static_cast<Game*>(p);FieldWallActor actor;
         actor.flags=uint32_t(game.fieldIdle.mainFlags);actor.viewFlags=game.fieldViewFlags;
@@ -1004,9 +1019,18 @@ void Game::updateFieldNpcCollision() {
             const auto now=ticks*1000/TickRate;const auto elapsed=now-instance.clock;instance.clock=now;
             instance.movement.dt=float(elapsed>500?16:elapsed)/1000.f;
             if(instance.movement.dt>0) {
-                assert(body.flags&0x40000000); // Current authored profile uses source direct-horizontal branch.
-                body.root.x+=instance.movement.components.x;body.root.z+=instance.movement.components.z;
-                instance.movement.components.x=instance.movement.components.z=0;
+                if(body.flags&0x40000000) {
+                    body.root.x+=instance.movement.components.x;body.root.z+=instance.movement.components.z;
+                } else {
+                    mapContext.actor=&instance.movement;
+                    const auto moved=advanceNpcMapSide(body.root,body.width,body.height,
+                        instance.movement.components.x,instance.movement.components.z,body.flags,mapMove);
+                    assert(moved);body.root=moved->root;
+                }
+                // Admitted original profiles have no vertical/gravity writer:
+                // npcMoveG captures/clears zero and exits before Y/contact writes.
+                assert(instance.movement.components.y==0 && !(body.flags&(0x20000|0x10)));
+                instance.movement.components={};
             }
         }
         if(admitted)respondNpcSide(body,mario,fieldNpcAngles(),services);

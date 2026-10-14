@@ -152,8 +152,9 @@ def build(iso):
     # Interior admission is the current same-map door visibility adapter.
     records = [dict(key=identifier('gor_01','クリボー３'),room=0,model=4,required=0,forbidden=0,low=0,high=55,
                     position=goomba3['position'],yaw=goomba3['yaw'],pose='S_1',npc_flags=0x00080603,
+                    wander=dict(radius=100,speed=30),
                     talk_prefix='gor_01_028_',source_talk_present=1,
-                    source='m/gor_01/s:クリボー３;gor.rel:kuribo3_init@0x32f64/talk@0x32f7c;regular wander/side-gravity pending'),
+                    source='m/gor_01/s:クリボー３;gor.rel:kuribo3_init@0x32f64/regular@0x32f6c/talk@0x32f7c'),
                dict(key=identifier('gor_02','チューさん３'),room=2,model=0,required=0,forbidden=0,low=0,high=55,
                     position=chu['position'],yaw=chu['yaw'],pose='CHU_S_1',talk_prefix='gor_02_031_',source='m/gor_02/s:チューさん３'),
                dict(key=identifier('gor_02','クリハカセ'),room=2,model=1,required=2,forbidden=0,low=8,high=8,
@@ -213,6 +214,7 @@ def build(iso):
     Path('romfs/field-actors.pmnpc').write_bytes(data)
     Path('romfs/field-actors.json').write_text(json.dumps(dict(models=models,actors=records,collision=collision,npc_constants=npc_constants,
         setup=json.loads(setup.with_suffix('.s.provenance.json').read_text()),
+        plaza_setup=json.loads(plaza_setup.with_suffix('.s.provenance.json').read_text()),
         coverage='Static original init subset; Chu/Darkly story0..55 is a native coverage envelope; Darkly binds only the original story<56 print arm, not later quest branches. Actor keys are native FNV IDs; positions/yaw/pose retain source units. Original display-direction driver, talk arbitration and scripted motion remain separate.',
         license='Local original Nintendo/Intelligent Systems resources; no redistribution rights'),ensure_ascii=False,indent=2)+'\n')
 
