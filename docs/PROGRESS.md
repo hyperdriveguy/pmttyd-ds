@@ -19,7 +19,7 @@ Also cross-checked the delivered ITEM-01 pouch contract against the native
 code: `source/prologue_pouch.cpp` initializes key items at offset `0xa0` with
 121 slots, coins at `0x78` to100, and the equipped-badge region at `0x38a` with
 200 slots, matching the recovered
-[pouch remove](../behavior/battle/POUCH_REMOVE_ITEM.md) layout (key `+0xA0`/121,
+[pouch remove](behavior/battle/POUCH_REMOVE_ITEM.md) layout (key `+0xA0`/121,
 equipped `+0x38A`/200). No discrepancy found; the held region (`+0x192`,
 10/20) is not exercised by the prologue init, consistent with the contract.
 
