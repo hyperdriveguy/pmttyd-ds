@@ -11943,3 +11943,54 @@ User emulator profile/saves and ISO remain unchanged.
 Next bind actual retained public40slot SFX ownership, full ordered AudienceMain
 and remaining engine services, then StageEnd/BattleEnd/map/context/NPC/event
 teardown and delayed native field return. Full playable prologue goal is active.
+
+## 2026-10-14 — Behavior-preserving rendering optimization repair
+
+Replaced the attempted working-tree GPU cache with a pass-local map cache:
+first-draw state establishment, texture-specific wrap handling and bind after
+wrap mutation. Preserved original batch order/depth/cull/alpha and restored
+all world TEV initialization across Citro2D/System/capture transitions. Removed
+unused/incomplete renderer-wide cache helpers and per-vertex dirty tracking;
+world geometry already flushes only the regenerated vertex prefix. Simulation
+cadence, action-command ticks, story/dialogue and resource sync remain intact.
+
+Added fixed-workspace upload-run accumulation for house/ship geometry, merging
+actual callback-written ranges with a safe encompassing fallback. Original
+pack tests compare complete resulting vertex-buffer bytes against full uploads
+across moved/restored poses: house 248,832/1,139,616 bytes in 5 ranges,
+harbor 423,576/2,475,576 in 3, voyage 423,576/808,704 in 2 (about 78/83/48% reductions).
+Actor texture rotation trig now computes once per evaluated surface after
+shifts, retaining point arithmetic order. Bitwise UV/complete clipped geometry
+and color tests cover forward/repeated/backward animated shifts. Mixed map
+state replay checks 10,000 draws against unconditional setup. Static all-visible
+plaza 150 batches retain draw count but state calls become texture 129/cull 26/
+depth 2; these are CPU call counts, not measured hardware performance.
+
+Exact validation: TMPDIR="$PWD/artifacts/optimization-repair/tmp" make test
+passed 214/214 CTest + 134/134 Python (test-validated.log); make all passed
+(all-final.log); focused rendering tests 4/4 passed (scoped-tests.log).
+Original-upload byte counts are in upload-work.log. Logs live under
+artifacts/optimization-repair/. A full rerun initially caught a concurrently
+edited battle test missing <vector>; its owner corrected it before the passing
+rerun. No unrelated battle implementation was changed by this repair.
+
+Immutable snapshot SHA256 d0a1d8e8475ccb3a36b14ad773d956de88c1b93f99edd7b252846e8bfc8bc9e7
+completed isolated fresh opening→arrival using tools/emulator_smoke.py and
+tests/azahar_opening_flow.py (smoke.log), expected 1536-byte room 1/storyKnown 1/
+story 3 checkpoint. Reviewed actual house/interior and final harbor captures in
+artifacts/azahar-optimization-repair; early screenshot filenames are fixture
+timing labels, not guaranteed scene identities. No native exception detected.
+Initial Xvfb sandbox socket failure required an isolated display-access rerun;
+user emulator profile/saves and ISO were untouched. No asset extraction or
+conversion, private asset commit, original execution, hardware timing or
+pixel-perfect GX parity claim. Existing asset provenance remains in ASSETS.md.
+
+Scoped commits 2510625 and 32f3a9b. A concurrent staged documentation edit was
+removed from the first commit by amendment; subsequent commits used separate
+indices. Foreign working-tree/staged changes remain with their owners.
+Full analysis and follow-up paths: [rendering repair](optimization/BEHAVIOR_PRESERVING_REPAIR.md).
+Next measure whole-loop percentile frame times on New 2DS XL, then ordinary
+save-worker integration, preload first-use house PCM, transactional music
+admission outside the refill mutex, conservative dynamic-aware batch cutaway
+bounds and complete-input actor sample caches. Do not add a second VBlank wait
+or reorder translucent draws. Full remake remains unfinished.
