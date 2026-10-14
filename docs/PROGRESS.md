@@ -1,3 +1,37 @@
+## 2026-10-14 — Original target confirmation and command finalization
+
+Committed `92e366e0`. Shared Input state11 preserves the pre-refresh unit/part
+pair, signed permutation/count handling, first-match remap, independent forward
+and reverse Repeat gates, B-before-A cancellation, post-pose type reread,
+retained type for literal multi-item cost pointers, and the audience query after
+confirmation. Shared state29 uses the retained actor for attack selection before
+fresh flag clears and original result1. Its integration test calls the actual
+shared selector and publishes original Jump event80355cf0/category0/usage count
+without fabricating an attack root, damage or tutorial completion.
+
+Validation: `make test` passed231/231 C++ and141/141 Python tests; focused final
+target-selection rerun passed1/1. `make all BUILD=build-tutorial-menu-layout
+TARGET=ttyd-2ds-menu-layout` passed full asset preparation and native compilation.
+Both used the project-local ignored TMPDIR. Read-only ISO command-input verifier
+passed39 bodies/3 data spans/526 instruction anchors. Logs: ignored
+artifacts/target-full-test.log, target-focused-test.log, target-native-build.log,
+and target-source-verifier.log. Scoped diff check passed. No Azahar or Dolphin
+run; no visual/playable-menu or full-battle fidelity claim. No new asset payload
+or conversion; original/private packs remain outside history.
+
+Boundary: handlers require complete invoked services. An unbound provider is an
+explicit frontier after preceding effects, not a retry-safe continuation. The
+native tutorial does not yet call these handlers, and storing state29 alone
+does not set outer progress1 or automatically start an event. Game still needs
+original class/target menu presentation, command-pose/UI/help ownership,
+common pending/progress re-entry and selected-player attack registration.
+
+Next: bind those complete native providers, connect actual selected Jump roots
+and action-command services, then render the original extracted HUD/menu with
+physical controls. Finish second-screen scene/audience presentation and optional
+hostile-item taps with a physical-button equivalent; verify in isolated Azahar.
+Tutorial/full-game work remains incomplete and the goal stays active.
+
 ## 2026-10-14 — Game Goomba3 acquisition ownership
 
 Committed `4bd12c2f`. Game now retains the original quest2 acquisition and
