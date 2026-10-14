@@ -11,7 +11,7 @@ def build(iso):
     work=Path('local-assets/message-icons');work.mkdir(parents=True,exist_ok=True)
     directory=work/'icon.bin';tpl=work/'icon.tpl';extract(iso,'icon.bin',directory);extract(iso,'icon.tpl',tpl)
     raw=directory.read_bytes();hud=source_art(iso);weapons=weapon_art(iso);icons=[];bitmaps=[]
-    identifiers=list(dict.fromkeys([129,504,115,404,403,307,308,445,446,447,314]+
+    identifiers=list(dict.fromkeys([108,109,129,504,115,404,403,307,308,445,446,447,314]+
         [row['icon'] for row in hud['rows']]+hud['large_digits']+hud['small_digits']+weapons['icons']))
     for identifier in identifiers:
         offset=struct.unpack_from('>H',raw,2*(identifier+1))[0];loop,_,_,count=struct.unpack_from('>4H',raw,offset)

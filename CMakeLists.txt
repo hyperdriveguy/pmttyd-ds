@@ -1232,3 +1232,9 @@ target_sources(ttyd_core PRIVATE source/display/shadow_work.cpp)
 add_executable(shadow_work_tests tests/shadow_work_tests.cpp)
 target_link_libraries(shadow_work_tests PRIVATE ttyd_core)
 add_test(NAME shadow_work COMMAND shadow_work_tests)
+
+# Complete original TimingA display callback and native icon request adapter.
+target_sources(ttyd_core PRIVATE source/battle/battle_timing_display.cpp)
+add_executable(battle_timing_display_tests tests/battle_timing_display_tests.cpp)
+target_link_libraries(battle_timing_display_tests PRIVATE ttyd_core)
+add_test(NAME battle_timing_display COMMAND battle_timing_display_tests)

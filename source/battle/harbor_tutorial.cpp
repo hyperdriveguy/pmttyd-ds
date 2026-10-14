@@ -173,6 +173,7 @@ void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* phy
  // queue registration. Full source sequence/stage/audience Main remains open.
  if(!r.packed->actionManager(time) && !pendingService)pendingService=0x800fa5b0;
  r.vm.gp.timestamp=now*eventClockRate(243000000);r.vm.runManager();r.packed->publish(*this);r.packed->capture(*this);
+ actionDisplayPending=!r.packed->actionDisplay(time,*this);
  damageActive=r.packed->hitEventsActive();
  if(!initialized && r.packed->unitInitReady())initialized=true;
  if(initialized && !r.openingDispatched && dispatchPhase(1,0x04000001))r.openingDispatched=true;

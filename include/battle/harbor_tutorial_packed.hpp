@@ -22,6 +22,7 @@ public:
  BattleCameraRequestServices camera;bool physicalCurrent=false;uint64_t sampledAt=UINT64_MAX;
  void samplePhysical(uint64_t milliseconds,const BattlePadSample*);
  bool actionManager(uint64_t milliseconds);
+ bool actionDisplay(uint64_t milliseconds,HarborTutorial&);
  DisplayQueue actionDisplays;
  explicit HarborTutorialPacked(EventNativeRuntime& r):vm(r){}
  bool provision();
@@ -50,7 +51,7 @@ public:
  bool readWord(uint32_t address,uint32_t& value) const{return vm.memory.readWord(address,value);}
 private:
  BattlePadSample sampledPhysical{};
- uint64_t actionManagedAt=UINT64_MAX;
+ uint64_t actionManagedAt=UINT64_MAX,actionDisplayedAt=UINT64_MAX;
  std::array<bool,4> registered{};
  static constexpr uint32_t MenuRam=0x84600000;
  uint32_t menuTextAt=MenuRam+0x1000;std::unordered_map<uint32_t,uint32_t> menuText;

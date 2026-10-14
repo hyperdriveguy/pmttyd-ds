@@ -184,3 +184,20 @@ added to the runtime atlas by this increment. [Source icon evidence](behavior/di
 records ignored private binaries/profiles/captures; no extracted payload is
 committed. Existing Nintendo/Intelligent Systems local-use/no-redistribution
 restrictions and ignored local-assets/,romfs/,artifacts/ remain in effect.
+
+## 2026-10-14 — Original TimingA A-button HUD art
+
+Read-only US G8ME01 icon.bin descriptors108/109 at offsets2442/2454 select unchanged
+icon.tpl images108/109, each one non-looping48x48 frame with delay0. Added these
+IDs to tools/message_icon_assets.py. Existing conversion packs the original
+RGBA pixels into the512x512 atlas with2px transparent padding and no resampling;
+private outputs remain local-assets/message-icons/{108,109}.png and atlas.png,
+romfs/message-icons.{bin,t3x,json}. No payload is added to source history.
+
+Native camera8 icon requests retain original IDs, scale1, flags16 and source
+position arithmetic. Presentation adapts centered UI coordinates at half scale
+to the top400x240 screen. Physical A remains the action-command input; no touch
+requirement or rewritten story/control-token payload was introduced. Original
+Nintendo/Intelligent Systems resources remain copyright-protected with no
+redistribution rights. The prepared isolated review atlas/build is recorded in
+PROGRESS; original ISO is never modified or committed.

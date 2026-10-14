@@ -1109,7 +1109,17 @@ void Renderer::overlay(const Game& g) {
         if(!itemSelector(*g.itemSelection))text("Development notice: item selector presentation unavailable",16,220,.42f,Ink);
         return;
     }
-    if(g.harborTutorial.running()){battleHud(g);originalMessage(g);if(!tutorialReady || g.harborTutorial.failed || g.harborTutorial.introComplete)text(!tutorialReady?"Development notice: tutorial presentation unavailable":g.prompt(),25,112,.43f,Ink);return;}
+    if(g.harborTutorial.running()){battleHud(g);
+        // Original TimingA icon requests use camera8's centered UI plane.
+        // Native reflow/crop matches the existing half-size message/HUD atlas.
+        for(const auto& cue:g.harborTutorial.actionCommandIcons) {
+            if(cue.camera!=8 || cue.flags!=16)continue;
+            const auto* art=messageIcon(cue.icon);if(!art)continue;
+            const auto& frame=art->frame(g.ticks);
+            messageIconImage(cue.icon,g.ticks,200+cue.position[0]*.5f,
+                120-cue.position[1]*.5f+frame.height*cue.scale*.25f,cue.scale,255);
+        }
+        originalMessage(g);if(!tutorialReady || g.harborTutorial.failed || g.harborTutorial.introComplete)text(!tutorialReady?"Development notice: tutorial presentation unavailable":g.prompt(),25,112,.43f,Ink);return;}
     if(g.harborEncounter.locked()){originalMessage(g);if(g.harborEncounter.failed || g.harborEncounter.pendingService)text(g.prompt(),25,112,.43f,Ink);return;}
     if(g.saveObjects && (g.saveLocked() || g.saveObjects->presentation.message.active())) {
         const auto& p=g.saveObjects->presentation;originalMessage(g,&p.message);

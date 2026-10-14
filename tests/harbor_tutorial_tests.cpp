@@ -2,6 +2,7 @@
 #include "actor_animation.hpp"
 #include "prologue_pouch.hpp"
 #include "display_queue.hpp"
+#include "message_icons.hpp"
 #include <cassert>
 #include <iostream>
 using namespace ttyd;
@@ -114,23 +115,26 @@ void sampledPlayerResult(bool success){
  // the menu confirmation must not become an action-command press fixture.
  for(unsigned n=0;n<30;++n)scene.tick(scene.now+17,0,&quiet);
  assert(scene.dispatchSelectedAttack());bool pressed=false;uint32_t v=0;auto word=[&](uint32_t at){assert(scene.readPackedWord(at,v));return v;};
- bool finishStarted=false,finishCleared=false;
+ bool finishStarted=false,finishCleared=false,sawCue=false,sawActiveCue=false;
  for(unsigned n=0;n<200;++n){
   const auto previousState=word(0x84001c9c),previousMain=word(0x84001ca0),previousCountdown=word(0x84001f54);
   const bool nowPress=success && !pressed && (word(0x84001f50)&1);
   scene.tick(scene.now+17,0,nowPress?&a:&quiet);pressed=pressed || nowPress;
   const auto* queue=scene.actionDisplayQueue();assert(queue);
+  assert(!scene.actionDisplayPending);
+  for(const auto& cue:scene.actionCommandIcons){assert(cue.camera==8 && cue.flags==16 && (cue.icon==108 || cue.icon==109) && cue.scale==1 && cue.position[1]==50 && cue.position[2]==0);sawCue=true;sawActiveCue=sawActiveCue || cue.icon==109;}
   if(previousMain==0x8012aae0){
    if(previousState==1002){assert(queue->count()==0);finishCleared=true;for(auto offset:{0x1ca0u,0x1ca4u,0x1ca8u,0x1cacu})assert(word(0x84000000+offset)==0);}
    else {assert(queue->count()==1);const auto* display=queue->record(0);assert(display && display->camera==8 && display->drawClass==1 && display->callback==0x8012a7cc && display->userdata==0x84000000 && display->key==399985.f);}
    if(previousState==1000){finishStarted=true;assert(word(0x84001c9c)==1001 && word(0x84001f54)==59);
-    const auto pad=word(0x84001d34);scene.tick(scene.now,0,&quiet);assert(word(0x84001f54)==59 && word(0x84001d34)==pad && queue->count()==1);
-    scene.tick(scene.now+17,0);assert(word(0x84001f54)==59 && word(0x84001d34)==pad && queue->count()==0);
+    const auto pad=word(0x84001d34),draws=word(0x84001f20);scene.tick(scene.now,0,&quiet);assert(word(0x84001f54)==59 && word(0x84001d34)==pad && word(0x84001f20)==draws && queue->count()==1 && scene.actionCommandIcons.size()==1);
+    scene.tick(scene.now+17,0);assert(word(0x84001f54)==59 && word(0x84001d34)==pad && word(0x84001f20)==draws && queue->count()==0 && scene.actionCommandIcons.empty());
    }else if(previousState==1001){assert(word(0x84001f54)==previousCountdown-1 && word(0x84001c9c)==(previousCountdown==1?1002u:1001u));}
   }
   if(scene.pendingService && scene.pendingService!=0x80107708)break;
  }
  std::cout<<"Sampled Jump "<<(success?"success":"failure")<<" frontier: "<<std::hex<<scene.pendingService<<std::dec<<"\n";
+ assert(sawCue && sawActiveCue);
  assert(!scene.failed && scene.result==0 && (success?(scene.attackActive && scene.pendingService==0x80104508):(!scene.attackActive && !scene.pendingService)));
  assert(word(0x84001cb8)==(success?2u:0u) && word(0x84001cb4)==(success?1u:0u));
  assert(word(0x84001ce8)==(success?3u:2u) && word(0x8401900c)==0);
@@ -149,6 +153,7 @@ void sampledPlayerResult(bool success){
  }
 }
 int main(){
+ assert(loadMessageIcons("romfs/message-icons.bin") && messageIcon(108) && messageIcon(109));
  assert(loadHarborTutorialAssets("romfs"));ordinaryCrumpImpact();retainedLethalImpact();nativeWeaponRows();nativePlayerAttack();sampledPlayerResult(false);sampledPlayerResult(true);HarborTutorial t;assert(t.begin(0,7));
  for(uint64_t tick=1;tick<300 && !t.message.active();++tick)t.tick(tick*1000/60,0);
  uint32_t packedSystem=0;

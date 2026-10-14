@@ -32,9 +32,14 @@ class BattleHudAssetsTests(unittest.TestCase):
         meta=json.loads(Path('romfs/message-icons.json').read_text())
         atlas=Image.open('local-assets/message-icons/atlas.png').convert('RGBA')
         art=meta['battle_hud']
-        wanted={r['icon'] for r in art['rows']}|set(art['large_digits'])|set(art['small_digits'])|set(meta['battle_weapons']['icons'])
+        wanted={108,109}|{r['icon'] for r in art['rows']}|set(art['large_digits'])|set(art['small_digits'])|set(meta['battle_weapons']['icons'])
         icons={i['id']:i for i in meta['icons']}
         self.assertTrue(wanted<=icons.keys())
+        for identifier,offset in [(108,2442),(109,2454)]:
+            cue=icons[identifier]
+            self.assertEqual((cue['loop'],cue['descriptor'],len(cue['frames'])),(0,offset,1))
+            frame=cue['frames'][0]
+            self.assertEqual((frame['tpl'],frame['delay'],frame['width'],frame['height']),(identifier,0,48,48))
         rectangles=[]
         for icon in meta['icons']:
             for frame in icon['frames']:

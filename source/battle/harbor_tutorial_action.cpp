@@ -1,7 +1,9 @@
 #include "battle_action_events.hpp"
 #include "battle_action_manager.hpp"
 #include "battle_packed_pad.hpp"
+#include "field_camera_events.hpp"
 #include "harbor_tutorial_packed.hpp"
+#include "message_icons.hpp"
 namespace ttyd {
 bool HarborTutorialPacked::actionManager(uint64_t time) {
   if (actionManagedAt == time)
@@ -59,6 +61,39 @@ bool HarborTutorialPacked::actionManager(uint64_t time) {
                                   priority) == DisplayAdmission::Registered;
   };
   return packedBattleActionCommandManager(Battle, s);
+}
+
+bool HarborTutorialPacked::actionDisplay(uint64_t time, HarborTutorial &scene) {
+  if (actionDisplayedAt == time)
+    return true;
+  scene.actionCommandIcons.clear();
+  if (actionManagedAt != time)
+    return true;
+  // Admission precedes callback effects. Borrowed queue records are consumed
+  // once per native simulation sample, never by a repeated screen draw.
+  for (uint32_t i = 0; i < actionDisplays.count(); ++i) {
+    const auto *r = actionDisplays.ordered(i);
+    if (!r || r->camera != 8 || r->callback != 0x8012a7cc ||
+        r->userdata != Battle || !messageIcon(108) || !messageIcon(109))
+      return false;
+  }
+  actionDisplayedAt = time;
+  BattleTimingDisplayServices s;
+  s.memory = nativeBattleActorServices(vm);
+  s.user = &scene;
+  s.interpolate = [](void *, int32_t mode, int32_t step, int32_t duration,
+                     float from, float to) {
+    return cameraInterpolation(mode, step, duration, from, to);
+  };
+  s.camera = [](void *, uint32_t camera) { return camera == 8; };
+  s.icon = [](void *self, const BattleTimingIconRequest &request) {
+    static_cast<HarborTutorial *>(self)->actionCommandIcons.push_back(request);
+    return true;
+  };
+  for (uint32_t i = 0; i < actionDisplays.count(); ++i)
+    if (!packedBattleTimingADisplay(actionDisplays.ordered(i)->userdata, s))
+      return false;
+  return true;
 }
 
 bool HarborTutorialPacked::actionEvent(EventEntry &e, uint32_t function,

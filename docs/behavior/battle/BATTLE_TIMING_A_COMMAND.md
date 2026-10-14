@@ -145,3 +145,53 @@ subject to the earlier option/token/automatic branches. This closes one actual
 shipped writer/caller path;it must not be applied to Crump's separate flag1000
 or to all gameplay. Mask1 timing on/off writes1f50 raw and differs from the
 count-window mask2. Current actual fields and original traces remain open.
+
+## Original display callback and native A-button cue (2026-10-14)
+
+Complete local battleAcDisp_TimingA8012a7cc/f8 and draw helper8012a6b0/110
+are implemented by [battle_timing_display.cpp](../../../source/battle/battle_timing_display.cpp).
+The [read-only verifier](../../../tools/verify_battle_timing_display.py) pins both
+bodies, iconDispGx8001a918/24, original startup r2=80427440,
+five float constants, two copied vectors and icon.bin descriptors108/109.
+No measured original display cadence is claimed.
+
+Display retains its caller B and uses scratch A=B1f20. Only states99,100,1000,
+1001 draw; state1002 and all others return without a request. State99 requests
+intplGetValue(4,20-A20,20,-300,30), stores returned X atA14, then falls through
+and unconditionally overwrites X with30. State100 also stores30. Both call the
+draw helper using fresh A14/A18 and then freshly read signed A20; positive
+values decrement by1, zero/negative values remain. Do not replace the state99
+fallthrough with a smooth entry animation merely because it looks plausible.
+
+States1000/1001 read signed A20. At>=40 request mode4, step=A20-40, duration20,
+from30 to-300; below40 store30. Draw then freshly reread A20; values<60 increment
+by1, including negatives; >=60 remain. This display counter is distinct from
+Main's finish countdown atB1f54 and the result countB1cb4.
+
+The draw helper independently captures current global B before camGetPtr(8).
+It freshly reads retained B1f50 bit0 after that provider. Set selects icon109
+and copied vector802f01c8; clear selects108/vector802f01d4. Copy all three words,
+replace X with single(-200+inputX) and Y with single(50+inputY), retain copied Z,
+and request iconDispGx(position,flags16,icon,scale1). After that provider returns,
+freshly read/increment the retained B1f20 word with32-bit wrap. A camera/provider
+global change does not retarget this retained helper owner. The display callback
+still modifies its separate caller's A20. Neither helper evaluates success,
+reads touch input, changes dialogue or decrements the Main countdown.
+
+Native Harbor admits known camera8/TimingA/borrowed-B records only when original
+icons108/109 are loaded. It executes the callback after its event pass once per
+physical simulation sample and retains concrete icon requests for the renderer.
+Repeated timestamps do not advance display work; absent samples clear the new
+native request list without touching callback work. Unknown identity/borrowed
+owner or missing icon resources reports actionDisplayPending before effects.
+This is a native60Hz display admission policy, separate from source callback
+invocation semantics and a full original queue/GX dispatcher.
+
+The native renderer consumes retained requests on the top screen through the
+existing original-pixel atlas path: centered camera8 UI coordinates and .5
+scale/crop to400x240. It reuses the source A art and flags16 route; it does not
+redesign the control into a touch-only action. Native C2D quads adapt original
+camera/GX rendering; source iconGX matrix/material and original-runtime visual
+alignment are not claimed complete. Simulation timing remains independent of
+render retries. Main lifecycle, menu/turn activation, voice and audience
+presentation still require their own source owners.

@@ -2,6 +2,7 @@
 #include "message_playback.hpp"
 #include "battle_defense.hpp"
 #include "battle_damage_orchestration.hpp"
+#include "battle_timing_display.hpp"
 #include <array>
 #include <memory>
 #include <vector>
@@ -38,6 +39,8 @@ class HarborTutorial {
 public:
     bool triggered=false,failed=false,initialized=false,phaseActive=false,introComplete=false,attackActive=false,damageActive=false;
     bool statusVisible=true;
+    bool actionDisplayPending=false;
+    std::vector<BattleTimingIconRequest> actionCommandIcons;
     int32_t turn=1,speaker=-1,result=0,chosenUnit=-1,chosenPart=0;uint32_t phaseWord=0x04000001,battleFlags=0,pendingService=0;
     uint8_t successDeclarations=0,failureDeclarations=0;
     uint64_t now=0;
