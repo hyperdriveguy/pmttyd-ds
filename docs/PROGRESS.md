@@ -1,3 +1,51 @@
+## 2026-10-14 — Failed original Jump script completion and real feedback
+
+Committed `e2740e06`. Complete shared WeaponAftereffect preserves weighted byte
+load/subtraction/reread order, force/inhibition, conditional B restoration,
+ordered stage requests, three mandatory chance draws, fresh force short-circuits
+and object gate/optional draw. Native admission previews with a copy of retained
+RNG and only complete non-mutating source leaf exits; unsupported hazard event
+producers stay pending before live draws. It never rerolls for another outcome,
+skips a selected hazard or rewinds live RNG. Actual dispatch runs once after
+admission. Active destruction/nozzle/fall event backends remain incomplete.
+
+Native HP/FP Drain amount wrappers now translate the RAW actor, retain work/
+output and use actual badge byte/dealt HP signed min, including null/negative
+semantics. Fresh zero badge counts naturally skip recovery; they are not a
+universal hardcoded0. The original failed Jump now executes aftereffect,
+bounce/return and its recovery child through actual root DELETE. Mario returns
+to home/M_S_1 with restored wait handle; attack/damage roots are no longer live,
+Crump HP stays4, Mario dealt1/failure1 and battle/story result0 remain. Deferred
+TimingA state1000/main callback are still retained for their separate manager.
+No turn consumption, source victory or tutorial completion is fabricated.
+
+A controlled original phase dispatch using the produced count then prints
+original US mac_0_b_t1_002 after mac_0_b_t1_000 and sets the actual failure
+once-latch, without manually setting success/failure counters. This verifies
+the failed-attack/feedback script path under explicit scheduler admission;
+Game does not yet automatically schedule the menu/turn/phase loop. The successful
+Jump still waits at original voice80104508; backend/UI/visual timing remain open.
+
+Validation: isolated snapshot /home/carson/Documents/blender_tests/pm-port/artifacts/tutorial-aftereffect-gdofmq63, based on56e612ac plus scoped code/tests,
+passed `make test`:245/245 C++ and142/142 Python tests. Native
+`make all -o assets-ready BUILD=build-aftereffect-review
+TARGET=ttyd-aftereffect-review` passed with prepared private assets. Artifact:
+that review folder's ttyd-aftereffect-review.3dsx. Logs: ignored
+artifacts/tutorial-aftereffect-full-test.log and tutorial-aftereffect-native.log.
+Read-only aftereffect verifier passed13 bodies/7 data spans/56 anchors; badge
+tail verifier18 bodies/32 commands/13 spans/71 anchors. Final isolated code/tests
+matched scoped files; diff check passed. No new payload/conversion, Azahar/
+Dolphin, measured original timing or complete playable/visual/audio claim.
+Concurrent field/camera/display work preserved in scoped commits.
+
+Next: bind original voice/pitch/volume and successful follow-up hits, active
+stage hazards, native private-pad/TimingA main/display and post-action scheduling.
+Connect original class/target Input/re-entry and restored HUD window to Game,
+consume original poses, render original HUD/menu with physical controls and
+second-screen scene/audience, plus optional hostile-item taps with a physical
+alternative. Verify actual play in isolated Azahar. Goal remains active;
+full tutorial/battle systems and full game remain incomplete.
+
 ## 2026-10-14 — Original Goomba3 reward caller and finite coin service
 
 Committed `9172923a` and `b41495e1`. Portable reward retains original
