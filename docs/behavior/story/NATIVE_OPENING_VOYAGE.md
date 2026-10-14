@@ -12,7 +12,7 @@ Source init34674/80/8c seeds GW0/GW1/GW2=(-2000,0,-3000), then spawns the
 five ship animation subevents and prologue. The first animation requests a
 translation with no extra Y rotation; `anm_yure` waits1500ms before its first
 curve11 sway request and original Y rotation180. The native
-[scene owner](../../../include/opening_voyage_scene.hpp) retains this prefix.
+[scene owner](../../../include/story/opening_voyage_scene.hpp) retains this prefix.
 Its source finite schedule is:
 
 | Source request | Relative source time |

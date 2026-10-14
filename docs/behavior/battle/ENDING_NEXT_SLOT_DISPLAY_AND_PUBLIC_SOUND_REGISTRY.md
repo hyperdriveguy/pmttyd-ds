@@ -166,8 +166,8 @@ changes P4 or global generation. Chk800d95a0 alone compares encoded generation
 with U16P4 before key liveness. Handle0 is invalid only with an actual mismatch
 or free key; it cannot be rejected solely because numeric0.
 
-Read-only native inspection of source/audio.cpp and classAudio in
-include/platform.hpp confirms current NDSP services own8 fixed cue clips on
+Read-only native inspection of source/runtime/audio.cpp and classAudio in
+include/runtime/platform.hpp confirms current NDSP services own8 fixed cue clips on
 channels2..9; music uses1,0,18. Audio::play cues and fieldNPC requests do not
 return encoded original handles and contain no40-record generation/key owner.
 Native waveform/channel availability therefore cannot answer sourceChk by

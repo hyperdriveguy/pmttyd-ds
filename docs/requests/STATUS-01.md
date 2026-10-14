@@ -28,7 +28,7 @@ original evidence.
 ## Request text (verbatim)
 
 Local [storage/recovery](../behavior/battle/BATTLE_STATUS_STORAGE.md),[move-count helpers](../behavior/battle/BATTLE_MOVE_COUNTS.md)
-and guard/action predicates are implemented in `source/battle_status.cpp`,with
+and guard/action predicates are implemented in `source/battle/battle_status.cpp`,with
 tests in `tests/battle_status_tests.cpp`. Damage integration uses the actual
 Check/Get storage contract rather than an always-absent reader. These services
 preserve byte narrowing,sign pairs,cancellation,Charge wrap,Fast/Slow reset and
@@ -48,7 +48,7 @@ Do not use portable test fixtures or prototype turn timing as original evidence.
 ## Answers and delivery notes (append-only history)
 
 Native implementation breadcrumb (2026-10-12): commit7e43c5a implements
-UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md in `source/battle_unit_resources.cpp`,
+UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md in `source/battle/battle_unit_resources.cpp`,
 with derived cases in `tests/battle_unit_resources_tests.cpp`. Native battle
 start now invokes the recovered status/info clear. Pouch resource callbacks and
 seven partner snapshots have explicit semantic service boundaries; they are not

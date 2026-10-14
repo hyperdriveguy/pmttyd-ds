@@ -38,9 +38,9 @@ initial current value or normalize any existing animated current byte.
 
 ## Read-only current native gap
 
-Shared source/battle_unit_entry.cpp already reproduces both255 stores in its
+Shared source/battle/battle_unit_entry.cpp already reproduces both255 stores in its
 full portable source entry service, at the same relative pose/resource order.
-TrioAttackRuntime's custom unit construction in source/trio_attack.cpp creates
+TrioAttackRuntime's custom unit construction in source/battle/trio_attack.cpp creates
 zeroed mapped Units storage and initializes identity, parts, geometry, resources
 and statuses, but it does not invoke the shared complete Entry constructor and
 currently does not write U311/U312 during this custom loop. Its ending reset
@@ -72,7 +72,7 @@ its status11 negative-strength or status10 positive-strength factor. A raw
 duration128 is nonzero for CheckStatus but negative for this caller's >0 gate;
 do not use a generic presence boolean in place of returned byte semantics.
 
-source/battle_status.cpp already implements this used mapping in getStatus:
+source/battle/battle_status.cpp already implements this used mapping in getStatus:
 durationOffsets[10/11]=123hex, strengthOffset=124hex; even ID strength<=0
 returns empty, odd ID strength>=0 returns empty, otherwise returns StatusValue
 {rawduration,rawstrength}. BattleStatusUnit owns original118..135 byte storage

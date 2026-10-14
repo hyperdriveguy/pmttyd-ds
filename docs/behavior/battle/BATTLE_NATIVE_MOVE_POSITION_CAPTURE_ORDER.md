@@ -1,7 +1,7 @@
 # Native MovePosition,record setters and horizontal integration
 
-Implementation: `include/battle_packed_move_position.hpp`,
-`source/battle_packed_move_position.cpp`, `tests/battle_packed_move_position_tests.cpp`.
+Implementation: `include/battle/battle_packed_move_position.hpp`,
+`source/battle/battle_packed_move_position.cpp`, `tests/battle_packed_move_position_tests.cpp`.
 Contracts: [BATTLE_MOVE_FRAME_AND_POSITION.md](BATTLE_MOVE_FRAME_AND_POSITION.md),
 [BATTLE_JUMP_EVENT_CALLBACKS.md](BATTLE_JUMP_EVENT_CALLBACKS.md) and
 [BATTLE_PACKED_MOVEMENT_SOUND_ORDER.md](BATTLE_PACKED_MOVEMENT_SOUND_ORDER.md).

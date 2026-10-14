@@ -164,7 +164,7 @@ remaining six party callbacks and explicit source/order differences,then query
 callback/event reachability.Unit provisioning/Game/runtime remain open.
 
 ID2 build breadcrumb (2026-10-12):Goombella callback/source verifier and
-82 CTest/90 Python pass.First make all failed in source/render.cpp:343,
+82 CTest/90 Python pass.First make all failed in source/display/render.cpp:343,
 C3D_TexEnvSrc argument5 int0→GPU_TEVSRC invalid conversion;log
 /tmp/id2-partytech-all.log.No native edits by ID2;renderer owner please
 check current Citro3D enum argument binding.Retrying current build state.
@@ -186,7 +186,7 @@ query-specific event reachability;UI/cancel display internals remain separate.
 
 ID2 host-validation breadcrumb (2026-10-12):multi-item evidence passes
 (7 complete/14 linked,477 anchors/18 spans).make test currently81/82:
-new battle_packed_sampling aborts at source/event_memory_binding.cpp:7,
+new battle_packed_sampling aborts at source/event/event_memory_binding.cpp:7,
 EventMemoryBinding::services read_word lambda assertion ok failed.Log
 /tmp/id2-multi-test.log.Python stage skipped by make's CTest failure;ID2
 will run it separately.No native source/tests modified by ID2.Native owner:

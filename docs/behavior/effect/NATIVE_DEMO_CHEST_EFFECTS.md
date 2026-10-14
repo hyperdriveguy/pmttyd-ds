@@ -66,9 +66,9 @@ the original vertex alpha255-to0 triangle gradient remains.
 
 ## Native consumer and evidence boundary
 
-[Portable consumer](../../../source/demo_chest_effects.cpp) exposes requests,
+[Portable consumer](../../../source/story/demo_chest_effects.cpp) exposes requests,
 lifetimes and transformed original draw vertices.
-[Native helper](../../../source/render_demo_effects.cpp) imports two masks
+[Native helper](../../../source/display/render_demo_effects.cpp) imports two masks
 lazily, binds source wrap/TEV color-versus-alpha behavior, and draws original
 quads/rays. Frontend release synchronizes and frees both textures.
 Absent source data fails the opening controller instead of substituting art

@@ -17,7 +17,7 @@ class SwitchSoundtrackTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         config = json.loads((root / 'config/switch_soundtrack.json').read_text())
         paths = re.findall(r'"romfs:/soundtrack-switch/([^"\n]+)\.wav"',
-                           (root / 'include/audio_policy.hpp').read_text())
+                           (root / 'include/audio/audio_policy.hpp').read_text())
         self.assertEqual(paths, [alias for alias, _ in config['tracks']])
 
     def setUp(self):

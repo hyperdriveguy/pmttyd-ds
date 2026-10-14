@@ -15,7 +15,7 @@ pointers. Preserve original addresses as words in entry/script/buffer storage.
 Translate only at the service boundary needing an entry,data view,code callback
 or resource. Never store a host pointer into an original word or cast an
 original address directly to a native C++ object. The semantic EventEntry in
-include/event_manager.hpp has different field order,size,pointers and padding;
+include/event/event_manager.hpp has different field order,size,pointers and padding;
 `sizeof`,`offsetof` and reinterpret_cast cannot supply the original ABI.
 
 A host adapter needs bidirectional entry address mapping: E=context.array+

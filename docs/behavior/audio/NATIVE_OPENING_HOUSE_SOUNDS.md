@@ -89,9 +89,9 @@ are approximately75KB. The sound metadata/resource loader admits all four
 PCM headers/sizes before the opening sequence starts. Cache validation checks
 all products/hashes. No original payload or compiled pack enters source history.
 
-[OpeningHouseSounds](../../../source/opening_house_sounds.cpp) retains source
+[OpeningHouseSounds](../../../source/story/opening_house_sounds.cpp) retains source
 requests/control values and schedules the independent inline.
-[OpeningHousePcmPlayer](../../../source/opening_house_pcm.cpp) consumes only
+[OpeningHousePcmPlayer](../../../source/story/opening_house_pcm.cpp) consumes only
 SFX PCM presentation: lazy source sample load, original rate, source table
 volume/pan, independent overlapping wave buffers and actual native queue calls.
 NDSP channels10..17 avoid both BGMstreams0..1 and the primary eight clips2..9.

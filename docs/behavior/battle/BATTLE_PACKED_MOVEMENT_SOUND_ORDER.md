@@ -1,7 +1,7 @@
 # Native sound-mode loader and movement-sound record services
 
-Implementation: `include/battle_packed_movement_sound.hpp`,
-`source/battle_packed_movement_sound.cpp`,
+Implementation: `include/battle/battle_packed_movement_sound.hpp`,
+`source/battle/battle_packed_movement_sound.cpp`,
 `tests/battle_packed_movement_sound_tests.cpp`. Contracts:
 [BATTLE_UNIT_SOUND_MODE.md](BATTLE_UNIT_SOUND_MODE.md) and
 [BATTLE_MOVEMENT_SOUND_CONTROL.md](BATTLE_MOVEMENT_SOUND_CONTROL.md).

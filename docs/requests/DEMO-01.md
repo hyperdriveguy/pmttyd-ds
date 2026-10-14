@@ -57,7 +57,7 @@ original branch/re-entry trace" for the opening harbor→Crump→Rogueport graph
 The native port wires the harbor/professor/underground/lecture scenes as separate
 native owners (`HarborStory`, `HarborEncounter`, `ProfessorStory`) whose runtime
 story values and flags are provisional (`Game::originalStory`, `originalFlag1207`,
-`originalFlag233`, `originalFlag236` in `include/game.hpp`), and `source/game.cpp`
+`originalFlag233`, `originalFlag236` in `include/runtime/game.hpp`), and `source/runtime/game.cpp`
 still reports development notices for unbound dialogue and NPC events. Please
 recover, as one contract, the opening sequence's exact entry conditions, per-scene
 persistent writes, branch/join conditions and re-entry behavior, so the demo can

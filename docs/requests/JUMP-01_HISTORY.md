@@ -75,7 +75,7 @@ The resulting integer coordinates compose with the approach query in host tests,
 but native script scheduling and actual original scene/unit positions remain
 unbound. EVT-01 scheduler/dispatcher closure is the next integration dependency.
 
-Native position breadcrumb (2026-10-12): `source/battle_position.cpp` and
+Native position breadcrumb (2026-10-12): `source/battle/battle_position.cpp` and
 `tests/battle_position_tests.cpp` now implement home/visible/part world/hit leaves,
 linked part lookup and integer GetHitPos event outputs. Semantic views preserve
 owner-supplied storage and scale/output aliasing;native coordinates remain
@@ -115,7 +115,7 @@ TAKEOFF/MOVE/POS/MOVE-SE requirements give acceptance cases. These complete
 local callbacks do not close candidate/math/audio/source/domain/scheduling
 dependencies,selected target/cost/stylish/aftereffect/badge tail or original traces.
 
-Native implementation breadcrumb (2026-10-12): `source/battle_jump_motion.cpp`
+Native implementation breadcrumb (2026-10-12): `source/battle/battle_jump_motion.cpp`
 and `tests/battle_jump_motion_tests.cpp` implement the delivered local motion,
 numerics and sound-loader operations with explicit service callbacks. Event
 operands resolve on every invocation,phase1 advances/yields at countdown0,and
@@ -195,7 +195,7 @@ the request graph with the native fixed48/42 schedule or copied generic jump
 physics. The parent request remains open for that runtime composition.
 
 The implementation now uses the [recovered power callbacks](../behavior/battle/BATTLE_WEAPON_POWER_CALLBACKS.md)
-in `source/battle_weapon_power.cpp`. The native harness executes one documented
+in `source/battle/battle_weapon_power.cpp`. The native harness executes one documented
 Jump hit with level1 supplied as an explicit fixture;successful timing records
 success but no longer fabricates a two-power hit. This is incomplete attack
 sequencing,not a faithful finished Jump or a claim of original starting loadout.
@@ -219,7 +219,7 @@ require implementation/closure work; this request file is not a full-game spec.
 ID1 build-validation note (2026-10-12,lecture-helper delivery):initial make test
 fails in tests/battle_action_services_tests.cpp:91 because raw0xfe363c86 narrows
 from unsigned to int in an aggregate;use an explicit signed-word conversion for
-that fixture. make all fails in source/battle_action_services.cpp:61 because
+that fixture. make all fails in source/battle/battle_action_services.cpp:61 because
 std::clamp(signedWord(result),0,6) deduces long int versus int on devkitARM;
 explicit int32_t template/bounds preserve the intended signed domain. These are
 concurrent native compile errors;lecture/helper binary checks pass. Re-run both
@@ -579,7 +579,7 @@ SKIP second correction;negative/unordered applies half second push (if FP
 exceptions permit continuation). PSVECDotProduct8029ec84 confirms an ordinary
 positive dot,not a negated dot. First vector copied to stack54 at80088db4–bc
 BEFORE cap at80088dd8;dot uses this UNCLAMPED copy. Existing wall doc corrected.
-Native source/field_wall.cpp currently tests >0 to apply,and field_wall_tests
+Native source/field/field_wall.cpp currently tests >0 to apply,and field_wall_tests
 expect same-direction second push to move -2.5→-7 and reverse push to stay-2.5;
 these two outcomes must reverse for original parity. Native owner should update
 policy/fixtures;ID1 does not edit concurrent native files. Detailed partner binding
@@ -627,7 +627,7 @@ concurrent native tests/event_data_opcodes_tests.cpp fixture arrived. Rerun
 make test now passes34 CTest suites and63 Python tests;make all succeeded.
 Historical missing-file log:/tmp/id1-around-test.log;passing rerun:
 /tmp/id1-around-test-rerun.log. Passing tests do not resolve the reversed
-native dot predicate:source/field_wall.cpp still applies when dot>0 and saves
+native dot predicate:source/field/field_wall.cpp still applies when dot>0 and saves
 a capped first push at this check. Exact original acceptance cases are in the
 new contract;native owner review remains required for parity.
 
@@ -822,7 +822,7 @@ before-floor/final gate;main scratch flag01000000 does not publish rootXZ.
 Main landing0/00800000 vs jump2 distance<5→0 else1/no marker are explicit.
 Six complete identities,136 anchors,17 constants,two spans/two lecture imports
 and four dispatch sites pass;make test44 CTest/72 Python pass. Initial make all
-failed source/audio.cpp:18 Audio::play(Sound) vs platform.hpp:66 play(const Game&)
+failed source/runtime/audio.cpp:18 Audio::play(Sound) vs platform.hpp:66 play(const Game&)
 during concurrent native edits;exact log /tmp/id1-jump-build.log. Native owner
 subsequently updated that signature;rerun passed/rebuilt3DSX (log /tmp/id1-jump-build-rerun.log). Build invoked existing
 3218-identity/five-fallback audio map packing;provenance recorded in ASSETS.
@@ -952,7 +952,7 @@ original runtime remain open. Own scoped lock released;parents remain open.
 
 ID2 urgent native source correction in the same delivery:evtEntryRunCheck80037744
 loads REQUESTED8041e940 directly (r13+1a20),not GP18/marioStGetSystemLevel result.
-Current include/event_creation.hpp says systemLevel is whole GP18 mask;that comment/
+Current include/event/event_creation.hpp says systemLevel is whole GP18 mask;that comment/
 binding must be corrected by native owner. Request3 versus GP low nibble7 is a
 concrete differing case:constructor dispatches StopAll10 from3,while7 matches no
 case. Source enum and getter mask remain separate;root verifier/full listing pin
@@ -1006,7 +1006,7 @@ Reproduction command/provenance in linked contract. No additional USER_FUNC
 address is needed for this child;actual data table and VM source binding are.
 Registry/alias/heap/time/original execution remain required;do not stub lookup
 as immediate2. Prior requested-enum run-check correction also remains pending:
-include/event_creation.hpp still describes whole GP18 at this check.
+include/event/event_creation.hpp still describes whole GP18 at this check.
 Verifier passes ten complete/linked hashes,109 anchors,five spans including
 trailing bytes;repeat reports equal;constructor/lifetime/general1980 evidence
 passes. make test50 CTest/78 Python and make all pass;2038 local links resolve.
@@ -1525,7 +1525,7 @@ platform/scene/original runtime/full-game requirements remain open.
 ID1 draw validation failure notification (2026-10-12):make test in
 /tmp/id1-draw-test.log reached72 CTest suites;70 passed,core and field_movement
 failed. core_tests.cpp:131 expects lowWalk X step0.0113125;field_movement_tests.cpp:39
-expects movementRate()==1. Concurrent include/field_movement.hpp now separates
+expects movementRate()==1. Concurrent include/field/field_movement.hpp now separates
 facingDegrees from travel heading and changes movementRate ownership. ID1 did
 not change native code or these assertions. Native owner should reconcile the
 original-facing contract/tests;ID1 binary draw/address/resource checks pass.
@@ -1709,7 +1709,7 @@ claimed merely from executable dispatch presence.
 
 ID1 time-TEV validation breadcrumb (2026-10-12):binary pulse/scroll/constant/startup
 checks and make test82 CTest/90 Python pass. make all fails current concurrent
-source/render.cpp:342/343 invalid int→GPU_TEVSRC parameters. Log:
+source/display/render.cpp:342/343 invalid int→GPU_TEVSRC parameters. Log:
 /tmp/id1-tev-time-build.log;renderer source SHA256 at failure inspection
 39547ecf474f1fc22c5264c063377577936e5e94fcf97109761011082e000a62.
 Native renderer owner should finish its enum-typed arguments,then host/build
@@ -1759,7 +1759,7 @@ and all projected/static checks pass. ID1 changes no native/CMake/tests.
 
 ID1 terminal-TEV validation breadcrumb (2026-10-12):255-word/constant/span/
 texture/byte arithmetic/static checks and84 CTest/90 Python pass. make all fails
-concurrent source/render.cpp:341:GPU_WRITE_RGB is not declared by installed SDK.
+concurrent source/display/render.cpp:341:GPU_WRITE_RGB is not declared by installed SDK.
 Log:/tmp/id1-tev-terminal-build.log. Native renderer owner should use its SDK's
 RGB write-mask combination/finish source validation;ID1 changes no native render
 code and reruns only after actual source change.

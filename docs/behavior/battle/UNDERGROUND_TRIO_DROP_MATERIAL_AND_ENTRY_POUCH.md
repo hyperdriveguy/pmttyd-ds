@@ -230,7 +230,7 @@ No native code edits, original execution, build rerun or commit.
 
 ## Native supplied-pouch and drop implementation
 
-source/battle_drop_material.cpp now implements the complete valid source
+source/battle/battle_drop_material.cpp now implements the complete valid source
 algorithm above. Native TrioAttack executes the actual callback at end06,
 using current Mario HP/FP and the unchanged packed group/table records. The
 fresh native source scenario reaches08 with actual heart/flower/item outputs

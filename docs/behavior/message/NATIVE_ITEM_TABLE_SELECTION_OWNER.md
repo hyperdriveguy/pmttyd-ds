@@ -1,7 +1,7 @@
 # Native retained explicit-table selector owner
 
-The portable owner in `include/item_selection_runtime.hpp` and
-`source/item_selection_runtime.cpp` binds the recovered
+The portable owner in `include/inventory/item_selection_runtime.hpp` and
+`source/inventory/item_selection_runtime.cpp` binds the recovered
 [three-window lifecycle](ITEM_TABLE_SELECTION_WINDOW.md) and
 [draw requests](ITEM_TABLE_SELECTION_DRAW_REQUESTS.md). It is independent of
 area/NPC identity and 3DS services. Native renderer/event/inventory integration

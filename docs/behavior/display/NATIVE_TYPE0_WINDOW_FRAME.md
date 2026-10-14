@@ -3,8 +3,8 @@
 Shared geometry and citro3d binding for the original
 [untransformed EXP frame](EXP_ICON_CLOCK_AND_TYPE0_WINDOW_FRAME.md) and
 [transformed selector frame/tab](ITEM_SELECTOR_WINDOW_FRAME.md).
-`source/window_frame.cpp` is host-testable geometry; 3DS GPU services live in
-`source/render_window_frame.cpp`. Original complete selector contents/lifetime
+`source/message/window_frame.cpp` is host-testable geometry; 3DS GPU services live in
+`source/display/render_window_frame.cpp`. Original complete selector contents/lifetime
 and matched hardware raster/performance remain unbound.
 
 ## Geometry and source requests

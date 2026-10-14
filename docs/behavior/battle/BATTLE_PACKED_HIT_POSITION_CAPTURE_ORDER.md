@@ -1,6 +1,6 @@
 # Native hit-position composition and capture order
 
-Implementation: `include/battle_packed_hit.hpp`, `source/battle_packed_hit.cpp`,
+Implementation: `include/battle/battle_packed_hit.hpp`, `source/battle/battle_packed_hit.cpp`,
 `tests/battle_packed_hit_tests.cpp`. Contract:
 [BATTLE_UNIT_PART_POSITION_QUERIES.md](BATTLE_UNIT_PART_POSITION_QUERIES.md).
 This binds a query to native records; it does not establish original field

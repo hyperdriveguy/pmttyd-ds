@@ -112,7 +112,7 @@ manager exclusions, so these addresses are already available to native reads.
 
 ## Current nonnegative audio mocks versus an explicit failed request
 
-Read-only source/trio_attack.cpp audit identifies:
+Read-only source/battle/trio_attack.cpp audit identifies:
 
 - Movement playback trigger enqueues the original key, returns uint32(0);
   its position/off adapters are empty.

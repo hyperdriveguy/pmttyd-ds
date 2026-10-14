@@ -111,7 +111,7 @@ clamp to saved takeoffY (+0x120); the separate peak setter800968f0 writes+0x12c.
 On bump source clears jump derivatives, selects falling motion, installs normal
 fall parameters. Sound342 is requested; native SFX mapping remains incomplete.
 
-include/head_collision.hpp isolates verified attributes/contact math. It is
+include/runtime/head_collision.hpp isolates verified attributes/contact math. It is
 not wired to gameplay until geometry selection is faithful. Existing ground
 pack preserves attrs/source node and vertices but omits collision cull mode,
 and selects only |normalY|>=.65. Original hitCheckVecFilter800158a4 reads node

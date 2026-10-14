@@ -1,7 +1,7 @@
 # Native MarioJumpParam count preparation and write-back
 
-Implementation: `include/battle_mario_jump_parameter_event.hpp`,
-`source/battle_mario_jump_parameter_event.cpp`,
+Implementation: `include/battle/battle_mario_jump_parameter_event.hpp`,
+`source/battle/battle_mario_jump_parameter_event.cpp`,
 `tests/battle_mario_jump_parameter_event_tests.cpp`. Contract:
 [BATTLE_MARIO_JUMP_PARAMETER.md](BATTLE_MARIO_JUMP_PARAMETER.md).
 Original80109c68/19c inspected read-only at /tmp/pm-native-mario-jump-param.*;

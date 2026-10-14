@@ -1,7 +1,7 @@
 # Native GetMoveFrame callback and operand capture order
 
-Implementation: `include/battle_move_frame_event.hpp`,
-`source/battle_move_frame_event.cpp`, `tests/battle_move_frame_event_tests.cpp`.
+Implementation: `include/battle/battle_move_frame_event.hpp`,
+`source/battle/battle_move_frame_event.cpp`, `tests/battle_move_frame_event_tests.cpp`.
 Contract: [BATTLE_MOVE_FRAME_AND_POSITION.md](BATTLE_MOVE_FRAME_AND_POSITION.md).
 Read-only original8010c8c0/1b4 inspection stays /tmp/pm-native-move-frame.*;
 no original binary/assets enter history. Verification:

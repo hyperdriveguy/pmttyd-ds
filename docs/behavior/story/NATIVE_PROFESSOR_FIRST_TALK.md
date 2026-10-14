@@ -8,7 +8,7 @@ actual ADDR32 local/module0 relocations. Section bases0x90000000+i*0x100000 are
 authored native addresses, not recovered Dolphin load addresses. Original180
 event commands and original strings are preserved in ignored local packs.
 
-[ProfessorStory](../../../source/professor_story.cpp) executes those words in
+[ProfessorStory](../../../source/story/professor_story.cpp) executes those words in
 EventNativeRuntime. The existing interpreter owns brothers, shared flag waits,
 integer/float operands, event credit, milliseconds/frames and GSW0 writes.
 First-talk calls35 callbacks within the expanded63-function scoped catalog. The119 callback starts and17

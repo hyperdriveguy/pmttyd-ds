@@ -2380,10 +2380,10 @@ admission, orgenerateRNGchoicewhennewcount0.
 
 ### Reusable native TurnFirst services and exact remaining controller boundary
 
-Existing portable `battleTurnFirstProcess` in source/battle_turn_first.cpp is
+Existing portable `battleTurnFirstProcess` in source/battle/battle_turn_first.cpp is
 complete per[BATTLE_TURN_FIRST_PROCESS_COMPLETE](BATTLE_TURN_FIRST_PROCESS_COMPLETE.md).
 `nativeBattleTurnFirstServices(BattleTurnFirstBackend&)` in
-source/battle_event_callbacks.cpp supplies sharedmemory/byte/rulejudge/fortune/
+source/battle/battle_event_callbacks.cpp supplies sharedmemory/byte/rulejudge/fortune/
 resetmove/irand/softdelete. Defaultbackendjudge usesjudgeBattleTurnRule;
 fortune usesnativeBattleMajinaiQueryServices; defaultreset uses
 resetPackedBattleMoveStatus; defaultsoftdelete uses recovered effectprovider.

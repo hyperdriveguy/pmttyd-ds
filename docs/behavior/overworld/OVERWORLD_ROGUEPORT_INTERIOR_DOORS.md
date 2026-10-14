@@ -12,8 +12,8 @@ ground-floor source hit names, preserves the first triangle normal, applies
 the40-unit offset and truncates engine XYZ before scaling for the handheld.
 The ignored `doors.pmdoor` pack retains source node IDs and the complete
 professor interior collision subtree. Inn's null collision field stays null.
-[Portable door state](../../../include/field_door.hpp) and
-[native loading](../../../source/field_door.cpp) implement exact contact+A
+[Portable door state](../../../include/field/field_door.hpp) and
+[native loading](../../../source/field/field_door.cpp) implement exact contact+A
 admission and a fixed-tick movement/wait bridge at135 units/sec. Registration
 currently covers the inn ground floor and professor house. Rendering groups9/10
 hide their interiors until opened; collision enable/disable applies to all

@@ -1,7 +1,7 @@
 # Native takeoff callback and private-output composition
 
-Implementation: `include/battle_packed_takeoff.hpp`,
-`source/battle_packed_takeoff.cpp`, `tests/battle_packed_takeoff_tests.cpp`.
+Implementation: `include/battle/battle_packed_takeoff.hpp`,
+`source/battle/battle_packed_takeoff.cpp`, `tests/battle_packed_takeoff_tests.cpp`.
 Contract: [BATTLE_JUMP_TAKEOFF_POSITION.md](BATTLE_JUMP_TAKEOFF_POSITION.md).
 Original btlevtcmd_GetTakeoffPosition80109054/354 was inspected read-only;
 ELF/disassembly stay `/tmp/pm-native-takeoff.*`, outside source history.

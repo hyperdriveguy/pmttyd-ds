@@ -80,7 +80,7 @@ to P1c4 and publish request flags in their real order: OR2,OR1,clear80,
 clear200,clear10, then set/clear8 from force. No immediate animPoseMain occurs
 in that producer. Exact name changes reach the display consumer above.
 
-Read-only current source/trio_attack.cpp changePose copies exact name bytes
+Read-only current source/battle/trio_attack.cpp changePose copies exact name bytes
 and approximates these final flag values, updating native scene pose/poseAt
 immediately. That scene projection is separate from original registered pose
 record/time history. Its custom part constructor currently starts mapped bytes0

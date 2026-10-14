@@ -13,7 +13,7 @@ Open todos:
 Native implementation source audit / documentation request (2026-10-12),
 P0c main-loop/field-dispatch:marioMain8005a7e0 has no inbox request and
 MARIO_MAIN.md remains an Evidence-B sketch whose own remaining-gaps list is
-exactly what the native field loop needs. source/main.cpp runs a host fixed
+exactly what the native field loop needs. source/runtime/main.cpp runs a host fixed
 60Hz accumulator(1./60,max5 steps,waiting for VBlank)and Game::tick/move/
 startBattle substitute a simplified motion dispatch,there is no original
 motion-ID→subsystem chain,no battle-transition parameter construction and no

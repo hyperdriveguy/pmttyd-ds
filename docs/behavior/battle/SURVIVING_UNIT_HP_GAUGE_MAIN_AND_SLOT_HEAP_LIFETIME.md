@@ -116,7 +116,7 @@ when appliedHP0 (but only within the admitted HP application block). This does
 not establish every other gauge-visibility flag producer or recovery path;
 it closes the ordinary direct-damage timer/latch writes used by trio impacts.
 
-Read-only native source/trio_attack.cpp current writeDamage exports HP,
+Read-only native source/battle/trio_attack.cpp current writeDamage exports HP,
 WORD U208/U20c accounting, but its local producer does not export these gauge
 timer/latch writes. Existing actual shared BtlUnit_Entry provider requests
 HpGaugeInit, whereas native trio's scoped registry construction must preserve

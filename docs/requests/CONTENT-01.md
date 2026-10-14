@@ -10,7 +10,7 @@ The documentation slice is explicitly requested; no independent research-agent
 ownership or completion claim is made.
 
 The native port has no chapter, interlude, minigame or optional-content model.
-`struct Progress` in `include/game.hpp` tracks only the prologue slice (`room`,
+`struct Progress` in `include/runtime/game.hpp` tracks only the prologue slice (`room`,
 `hp`, `mushrooms`, `crumpDefeated`, `originalStory`=GSW0, `originalFlag1207`,
 `originalFlag233`/`236`, `originalSaveMode`=GSW4, `interiorMask`). It stores the
 chapter gate but has no content per chapter value, and the register's
@@ -40,7 +40,7 @@ chapter gate but has no content per chapter value, and the register's
 
 Native implementation source audit / documentation request (2026-10-13),
 full-game path: the native port implements only the Rogueport opening slice and
-has no model for anything after it. `struct Progress` in `include/game.hpp`
+has no model for anything after it. `struct Progress` in `include/runtime/game.hpp`
 stores `originalStory` (GSW0, the chapter gate) and a few prologue flags, but
 nothing consumes a chapter value to load chapter content; there is no minigame,
 interlude, Trouble Center or optional-content code (the only "stage" code is the

@@ -23,7 +23,7 @@ private sampling.
 ## Request text (verbatim)
 
 Implemented the physical producer and12-byte battle snapshots in
-`source/physical_input.cpp`/`source/battle_defense.cpp`. Native battle now follows
+`source/runtime/physical_input.cpp`/`source/battle/battle_defense.cpp`. Native battle now follows
 general pads→sequence adapter→private pad/AC main→later event adapter. Four
 general buffers and the independent private buffer retain ownership;physical
 state persists across scene/battle initialization. Abstract host callers may

@@ -1,7 +1,7 @@
 # Native candidate sampling and complete default takeoff composition
 
-Implementation: `include/battle_packed_sampling.hpp`,
-`source/battle_packed_sampling.cpp`, `tests/battle_packed_sampling_tests.cpp`.
+Implementation: `include/battle/battle_packed_sampling.hpp`,
+`source/battle/battle_packed_sampling.cpp`, `tests/battle_packed_sampling_tests.cpp`.
 Contract: [BATTLE_ENEMY_CANDIDATE_SAMPLING.md](BATTLE_ENEMY_CANDIDATE_SAMPLING.md).
 Original complete core800ff684/bd4,entry800ff5c0/c4 and forward801254a0/54
 were inspected read-only;ELF/disassembly stay /tmp/pm-native-sampling.*,

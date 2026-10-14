@@ -4,20 +4,20 @@
 
 Open todos:
 
-- [ ] Original `mot_damage` water-motion31 numeric stages (sink/rise/arc/travel/return counters, velocities, accelerations, jerk rates, reach heights, HP-penalty tick, phase transitions) and `mot_bottomless` motion33/34 placement/fall parameters, so the source-derived constants in `include/water_recovery.hpp` can be replaced before any recovery-fidelity claim.
+- [ ] Original `mot_damage` water-motion31 numeric stages (sink/rise/arc/travel/return counters, velocities, accelerations, jerk rates, reach heights, HP-penalty tick, phase transitions) and `mot_bottomless` motion33/34 placement/fall parameters, so the source-derived constants in `include/field/water_recovery.hpp` can be replaced before any recovery-fidelity claim.
 - [ ] Original `marioChgPose`/`marioChgEvtPose` table slice for pose domains 4..9, 14, 15, 16..17, 18..20, 21..28, 30, 32, 34, 35, 36 and 37..40 (names, entry conditions, ordering), plus the original pipe paper (`p_dokan_x`) asset decoding/link deformation, exit/unlink, transform and movement lifecycle.
 
 ## Request text (verbatim)
 
 Native implementation source audit / documentation request (2026-10-12),
-field/AC-03:source/water_recovery.cpp implements ordinary-Mario water/void
+field/AC-03:source/field/water_recovery.cpp implements ordinary-Mario water/void
 return-fall (mot_damage water motion31 and mot_bottomless motion33) as portable
 fixed-tick motion with stages0/1/10/11/15/20/33 and authored parameters:sink
 velocity-0.06 to root-1.6,40-tick rise hold with+0.003,two-tick sway then lift
 arc+0.2 decaying by-0.01 to minimum0.1 until root+5,travel step distance/0.08
 at stage15,drop-back fallVelocity-0.001/fallAcceleration-0.002/fallJerk+0.00024/
 fallJerkRate-0.00004,and followDelta=(returnY-admittedRootY)/travelTicks;the HP
-penalty is applied on landing. include/water_recovery.hpp marks these counters
+penalty is applied on landing. include/field/water_recovery.hpp marks these counters
 as source-derived,not Dolphin observations. Pose ownership/timings are recovered
 in OVERWORLD_MARIO_RECOVERY_POSES and bottomless detection/return in
 MECHANICS.md(lines536-545:threshold-2000,+37 Y,300-unit probe,return index);the
@@ -50,13 +50,13 @@ Native note (2026-10-12): reviewed
 [water numerics](../behavior/overworld/OVERWORLD_WATER_RECOVERY_NUMERICS.md)
 and
 [bottomless numerics](../behavior/overworld/OVERWORLD_BOTTOMLESS_RECOVERY_NUMERICS.md)
-against the native prototype `WaterRecovery` (`source/water_recovery.cpp`).
+against the native prototype `WaterRecovery` (`source/field/water_recovery.cpp`).
 Independently re-read the ISO DOL and confirmed the bottomless drop-back lanes
 at 0x80091bd4-0x80091bf0: `[124]/[128]/[132]/[136] = 0.34 / -0.002 / -0.01 /
 0.0`. Applied only that replacement (the prototype's
 `-.001/-.002/+.00024/-.00004` cascade matched just the `-0.002` lane), pinned it
 in `tests/field_camera_tests.cpp`, and marked the lanes recovered in
-`include/water_recovery.hpp`.
+`include/field/water_recovery.hpp`.
 
 Not applied, because the deliverable leaves them unestablished or the prototype
 has no matching structure: the `-6.0` sink velocity and the stage-0/1 sink/hold

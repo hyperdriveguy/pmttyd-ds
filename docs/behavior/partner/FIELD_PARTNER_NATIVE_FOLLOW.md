@@ -48,7 +48,7 @@ their macro playback is not bound by this patch.
 
 ## Native binding and deliberate adapters
 
-`include/partner_follow.hpp` owns host-testable 3D marks, ground/jump/fall
+`include/runtime/partner_follow.hpp` owns host-testable 3D marks, ground/jump/fall
 state, wall sweeps, supported path lookahead and screen candidate recovery.
 `Game::updatePartner` runs after Mario's actual collision and vertical result,
 using the same simulation tick and the room's imported geometry. Motion and

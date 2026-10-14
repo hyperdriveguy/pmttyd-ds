@@ -2,7 +2,7 @@
 
 This is the port's format, not the original GameCube card format. Original
 save and switch persistence remains requested in [SAVE-01](../../requests/SAVE-01.md).
-[Implementation](../../../source/save.cpp) writes little-endian40-byte PM2D
+[Implementation](../../../source/runtime/save.cpp) writes little-endian40-byte PM2D
 version4 records, using the existing temporary-file/backup replacement path.
 
 | Offset | Value |

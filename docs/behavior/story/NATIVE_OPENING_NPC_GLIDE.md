@@ -56,7 +56,7 @@ next event update after the final movement is consumed.
 
 ## Portable owner and native bridge
 
-[OpeningNpcGlide](../../../source/opening_npc_glide.cpp) ports this used domain
+[OpeningNpcGlide](../../../source/story/opening_npc_glide.cpp) ports this used domain
 and exposes captured source command, start/target/current/pending XYZ,
 elapsed/delta/duration, callback result and active state. It accepts elapsed
 and delta seconds rather than rendering calls. The house controller invokes

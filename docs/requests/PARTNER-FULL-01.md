@@ -23,9 +23,9 @@ independent research-agent ownership or completion claim is made.
 Native implementation source audit / documentation request (2026-10-13),
 full-game end goal: [OW-PARTNER-01](OW-PARTNER-01.md) covers only "ordinary
 Goombella follow and field lifecycle". The native field carries a single partner
-fixture (`include/game.hpp` party state and `fieldParties`, with
+fixture (`include/runtime/game.hpp` party state and `fieldParties`, with
 `professorStory.actors` = Mario+Goombella). Battle-side partner routing exists
-(`source/battle_unit_resources.cpp` kinds 224..230; `source/battle_packed_pouch.cpp`
+(`source/battle/battle_unit_resources.cpp` kinds 224..230; `source/battle/battle_packed_pouch.cpp`
 seven 14-byte partner records), but the field lifecycle and field abilities of the
 other six partners are unrecovered, so no later chapter can be played. Please
 recover the field lifecycle and field abilities of the six non-Goombella partners

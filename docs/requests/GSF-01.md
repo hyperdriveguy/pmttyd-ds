@@ -32,10 +32,10 @@ research-agent ownership or completion claim is made.
 
 Native implementation source audit / documentation request (2026-10-13), first
 demo milestone: the native story gating uses provisional flag values.
-`include/game.hpp` carries `std::optional<int32_t> originalStory`,
+`include/runtime/game.hpp` carries `std::optional<int32_t> originalStory`,
 `bool originalFlag1207` ("Original GSF: Frankly has departed through the east
 pipe"), `bool originalFlag233`, `bool originalFlag236` ("Save-block first/
-post-story notices") and a separate `secondaryFlags` word; `source/game.cpp`
+post-story notices") and a separate `secondaryFlags` word; `source/runtime/game.cpp`
 still prints "Development notice: NPC event unavailable" when an NPC event is
 unbound, and the harbor/professor scene owners advance on native stage counters.
 The opening scenes' gates need the original flag identities, not native booleans.

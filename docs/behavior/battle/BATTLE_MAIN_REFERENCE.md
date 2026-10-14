@@ -40,9 +40,9 @@ The function at `0x800f904c` appears to be the main battle entry point, setting 
 ### Native Implementation Reference
 
 This disassembly corresponds to the native implementation in:
-- `include/battle_timing_a.hpp` (related timing)
-- `source/battle_timing_a.cpp` (related timing)
-- The battle main entry likely interfaces with `Game::battle` in `source/game.cpp`
+- `include/battle/battle_timing_a.hpp` (related timing)
+- `source/battle/battle_timing_a.cpp` (related timing)
+- The battle main entry likely interfaces with `Game::battle` in `source/runtime/game.cpp`
 
 ### Battle Initialization Sequence
 

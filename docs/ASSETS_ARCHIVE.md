@@ -1,0 +1,2082 @@
+# Original asset pipeline
+
+## Quick reference
+
+This file is the provenance ledger; the dated entries below retain per-change
+conversion details. For discovery, start with:
+
+- [Audio inventory](assets/AUDIO.md), [camera inventory](assets/CAMERA.md),
+  [field meshes](assets/FIELD_MESHES.md), [Mario and poses](assets/MARIO_AND_POSES.md),
+  and [scripts, messages, and effects](assets/SCRIPTS_MESSAGES_EFFECTS.md).
+- [Audio mapping](AUDIO_MAPPING.md) for source IDs, sample ownership, and
+  native cue coverage.
+- [Switch research](switch/README.md) for the separate Switch 1.0.0 comparison
+  assets and their local-only decoder outputs.
+
+The US GameCube ISO is read-only and is not distributed. Extracted assets,
+converted packs, and compiled RomFS outputs stay in ignored local build paths;
+the project has no redistribution license for Nintendo/Intelligent Systems
+assets. Each dated record identifies the source path and conversion involved.
+
+## 2026-10-13 — Original save event arrays and string operands
+
+`tools/save_block_event_assets.py`, called by the field actor asset build, opens
+US G8ME01 disc0 revision0 read-only. It reads selected DOL data spans at
+8030b4ec/164 bytes,803bac3c/52 bytes and803ba444/2040 bytes, plus the actual
+source label-scanner lookahead words and direct message operand strings.
+Ignored `romfs/save-block-events.pmevt` retains original addresses/221 commands;
+`romfs/save-block-program.bin` records14 source callback identities/89 sites.
+Ignored `local-assets/save-block/event-program.json` records exact disc offsets,
+original event/compiled segment hashes, conversion fingerprint and string paths.
+The exporter excludes DOL text sections and never exports executable bodies.
+Original message IDs resolve unchanged `msg/US/global.txt`; no dialogue rewrite
+or replacement event array is introduced. Native source interpreter and typed
+window/card request providers are platform adaptations. Original Nintendo/
+Intelligent Systems rights apply; no redistribution license. See
+[native core](behavior/field/NATIVE_SAVE_BLOCK_LIFECYCLE_AND_EVENT_CORE.md).
+
+## 2026-10-13 — Original object model-name filters and full cube queries
+
+PMNPC004 records original model names `c_tyusan`, `c_kuri_h` and
+`MOBJ_SaveBlock` alongside the existing ignored bbox catalog. Those names
+come from the same original asset paths already extracted read-only. The source
+name-dependent floor/wall filter is preserved rather than treating every
+high-bit owner as unresolved or exempt. Original SaveBlock top/side surfaces
+use the unchanged original12-triangle primitive; no new geometry conversion,
+textures or rights are introduced. Cached static collision invalidates on
+catalog replacement and admission changes. Original Nintendo/Intelligent
+Systems rights/local-only restrictions remain. See
+[native collision binding](behavior/field/NATIVE_MAP_OBJECT_HEAD_COLLISION.md).
+
+## 2026-10-13 — Original map-object collision metadata
+
+`tools/field_actor_assets.py` reads minXYZ/maxXYZ directly from original
+`local-assets/map-objects/MOBJ_SaveBlock` at0xd0..0xe4, extracted by the existing
+read-only ISO pipeline. Ignored PMNPC003 `romfs/field-actors.pmnpc` and `.json`
+retain those source floats, original object name and explicit hit mode. No
+rendered mesh bounds or fabricated radius are substituted. Runtime cube uses
+original unit vertices/strip order documented in the source contract, keeping
+head collision independent of S_1/A_1. Conversion *.01 and native float matrix
+requests remain adapters. Original Nintendo/Intelligent Systems rights and
+local-only/no-redistribution restrictions remain unchanged. See
+[native head binding](behavior/field/NATIVE_MAP_OBJECT_HEAD_COLLISION.md).
+
+## 2026-10-13 — Original save-block surface conversion
+
+`tools/map_object_assets.py` extracts original `a/MOBJ_SaveBlock` and its
+header-selected `a/MOBJ_SaveBlock-` companion from the read-only US ISO into
+ignored `local-assets/map-objects/MOBJ_SaveBlock` and `MOBJ_SaveBlock.tpl`.
+Ignored `romfs/field-saveblock.pmanim`, `.t3x` and `.json` preserve original
+S_1/A_1, hierarchy, geometry, RGBA, pass/cull and texture transforms. The
+manifest records disc/path hashes and converter fingerprint. Source material
+binding override3 sets repeat on both axes despite clamp in the TPL header.
+Triangle subdivision preserves interpolation across wrap boundaries;124px
+texture cells use2px opposite-edge repeat gutters and RGBA8 Tex3DS conversion.
+A neutral white cell multiplies original untextured vertex colors; no generated
+replacement artwork is used. PMNPC002 records the original plaza placement,
+scalar10, story341 exclusion and constructor mask0x20. See
+[native surface format](behavior/display/NATIVE_ACTOR_SURFACE_PACK.md).
+
+Nintendo/Intelligent Systems original resources have no redistribution license.
+Extracted banks, atlases, compiled assets, fixtures and captures remain outside
+source history. Geometry/texture downscaling, native floating-point matrix
+arithmetic, lighting and global translucent ordering remain adaptations.
+This supersedes the earlier entry's deferred save-block conversion status.
+
+## 2026-10-13 — Area NPC catalog and original east-side Mouser
+
+`tools/field_actor_assets.py` reads `m/gor_02/s` from the local read-only US ISO
+into ignored `local-assets/field-actors/gor_02.s`. The selected original
+`チューさん３` row retains its tribe, XYZ and direction. Source resources
+`a/c_tyusan` and its header-selected texture companion `a/c_tyusan-` stay under
+the same ignored folder. `romfs/field-chu.pmanim` preserves original `CHU_S_1`
+sparse animation and hierarchy/visibility. Textures use the established124px
+cells with2px edge borders; atlas height trims to the next128px power of two,
+and explicit UV scale preserves atlas addressing. Tex3DS converts RGBA8 for
+citro3d. Original scalar2 and engine*.01 conversion remain separate from art.
+
+Ignored `romfs/field-actors.pmnpc` and `.json` hold model namespaces, source
+placements, narrow native story envelopes and door visibility admission.
+Frankly reuses original `a/c_kuri_h` / `a/c_kuri_h-` resources compiled by the
+existing professor converter. Per-model/source provenance JSON records source
+disc/path/hash and conversion fingerprint. Assets and compiled packs carry
+original Nintendo/Intelligent Systems rights with no redistribution license;
+none are committed. See [native catalog](behavior/field/NATIVE_AREA_ACTOR_CATALOG.md).
+
+Save-block resource `a/MOBJ_SaveBlock` and its texture companion were read into
+the ignored workspace for conversion checks. Its original S_1 uses outside0..1
+UVs and scrolling texture keys; ordinary NPC conversion rejects this domain.
+No incomplete save-block pack is included in the catalog. Its source placement,
+scalar10 and hit/save services are documented in
+[the source contract](behavior/field/ROGUEPORT_SAVE_BLOCK_SOURCE_BINDING.md).
+
+Original US GameCube G8ME01 assets are read from the local ISO at build time;
+extracted files, PCM libraries and compiled packs stay in ignored
+`local-assets/`, `romfs/` and `artifacts/` paths and remain outside source
+history. Nintendo/Intelligent Systems game data carries no redistribution
+rights: no ISO, raw banks, PCM, dialogue, keys or compiled packs are
+committed. Behavior-research provenance and the conversion pipeline reference
+stay in this file; dated per-topic provenance, conversion choices and
+licensing notes live in the chapters below.
+
+## Asset chapters
+
+Professor Frankly: [converter](../tools/professor_assets.py) reads `a/c_kuri_h`
+and its `a/c_kuri_h-` texture bank from the read-only US ISO. It exports source
+Z_1,S_1,T_1,W_1,R_1,D_1 as PMANIM3, retaining source geometry/hierarchy/visibility/
+animation streams. Textures follow the established124-pixel cells with2-pixel
+edge padding. The12 used texture cells occupy1024x256, so unused rows are
+cropped without resizing or color quantization. Native V adaptation uses the
+pack's4x scale, reducing RGBA8 texture allocation from4MiB to1MiB. Source
+animations/UVs stay in their standard full-atlas domain for independent tests.
+Ignored `romfs/professor.pmanim`, `.pmmesh`, `.t3x`, `.bin`, `.json` and
+`local-assets/professor/` retain generated data/provenance, with no redistribution
+rights for Nintendo/Intelligent Systems assets. The DOL tribe's literal `d_1`
+differs from bank `D_1`; no invented case alias is introduced. Full NPC pose
+selection/yaw/scalar/backend binding remains requested in the inbox.
+
+Same-map inn/professor doors: [source contract](behavior/overworld/OVERWORLD_ROGUEPORT_INTERIOR_DOORS.md)
+and [converter](../tools/door_assets.py) use `m/gor_01/d`, `m/gor_02/d` and the
+verified `rel/gor.rel` names/layout from the read-only US ISO. Existing original
+geometry and128-pixel texture conversion is retained. The two interior display
+subtrees are tagged, preserving their geometry for event visibility. No new
+art or dialogue is generated. Ignored `local-assets/doors.json` records hit
+identities, derived EVT destinations and collision IDs; ignored
+`romfs/doors.pmdoor` contains the native bindings. Floating normal/coordinate
+math uses the converter's host arithmetic, followed by EVT integer truncation;
+SDK/FPSCR bit parity is not claimed. Nintendo/Intelligent Systems data has no
+redistribution permission and these packs/assets are excluded from commits.
+
+| Chapter | Contents |
+| --- | --- |
+| [Audio](assets/AUDIO.md) | DSP validation firmware, sound mapping and GameCube fallbacks, Switch audio extraction, complete SFX sample extraction, full loopable audio library |
+| [Scripts, messages and effects](assets/SCRIPTS_MESSAGES_EFFECTS.md) | Original event script assets, US-default disc-thread system-message resources, shared effect texture source |
+| [Field meshes and roads](assets/FIELD_MESHES.md) | Static head collision mesh, floor slope runtime selection, source-facing floor pack, collision mesh reused for wall movement, ROAD metadata conversion |
+| [Camera](assets/CAMERA.md) | Camera lifecycle evidence, original camera container pack, dated camera native-binding entries |
+| [Mario models, animation and poses](assets/MARIO_AND_POSES.md) | Mario data-child pack, ordinary head/airborne/support bindings, model mesh pack, sparse animation pack, low-HP/idle pose sources, grounded shadow geometry |
+| [Switch static research](switch/STATIC_RESEARCH.md) | Switch 1.0.0 extraction, licensing and static-analysis research record |
+
+## Behavior research provenance (2026-10-12)
+
+`tools/behavior_evidence.py` inventories the read-only ISO and hashes its DOL
+span, `rel/gor.rel`, and all 260 `msg/US/` files without exporting their contents.
+Output is ignored `artifacts/reference/behavior/evidence.json`; function ELFs
+and disassembly also stay in that directory. There is no conversion or native
+linking of original executable code in this research step. Binary identity,
+source URLs and inference boundaries are in [ORIGINAL_BEHAVIOR.md](ORIGINAL_BEHAVIOR.md).
+
+Public doldecomp/ttyd reference source and its MIT LICENSE were downloaded at
+revision `62131fc31866f85a12e4817a8dc37f0c25eb5f8c` into that ignored directory.
+Its declared baseline is Japanese G8MJ01 revision 0; selected findings were
+checked against US original bytes before documenting US behavior. No upstream
+implementation was copied into the native game. The existing external US symbol
+CSV remains research metadata from GPL-3.0 ttyd-utils. Extracted original assets
+remain subject to their original rights; neither reference license grants rights
+to distribute the ISO, messages, executable or converted asset packs.
+
+## Existing conversion pipeline
+
+Additional 2026-10-12 behavior research: the pinned public source snapshot now
+includes src/include/config and rels under ignored
+`artifacts/reference/decomp-62131fc31866f85a12e4817a8dc37f0c25eb5f8c/`.
+`decomp_coverage.py` parses its configuration without executing it; report is
+ignored `artifacts/reference/behavior/decomp-coverage.json`. The binary report
+now fingerprints 359 selected US functions and includes two seven-byte defense
+window tables. Independent verifier checks 1916 instruction anchors plus those
+tables, the binary32 accuracy multiplier and all twelve counter jump-table
+targets directly in the read-only ISO. Direct-damage research additionally
+verifies nine presentation float constants and seven sound-key bindings.
+Status storage research checks all81 getter/setter/recovery jump-table targets.
+Infliction/presentation research fingerprints ten additional inspected case
+tables,254 entries total, and checks five status effect position constants.
+The application tail documents sound-key bindings, payload writes and completion
+semantics; effect and announcement service implementations remain open.
+Orchestration research adds five float and three sound bindings plus the
+Pikkyoro zero candidate initializer; its guard/selection helpers are fingerprinted.
+Turn recovery research checks the78-entry sequence-table hash,23 recovery
+calls, two sound keys and Freeze scale. The report inventories direct branches
+to the recovery helper across DOL text; indirect/REL/script callers are excluded.
+Periodic damage research fingerprints Burn effect scheduling and shadow guard,
+with four binary32 effect constants checked directly against the ISO.
+Regeneration research adds HP recovery helper identity and the small original
+regeneration wait-event encoding check; no event-script extracts are committed.
+Recovery-event research fingerprints three complete script spans and13 additional
+US callbacks/helpers. Script semantics are documented as prose; original bytecode
+remains ignored. Local-work operands and owner fields are preserved separately.
+Battle barrier/queue/conclusion research adds eight helper fingerprints and
+local contracts, including reservation consumption order and group-result writes.
+Inventory removal/reservation research adds three routine fingerprints and two
+refund constants, preserving parallel-array compaction and deferred consumption.
+Move-count research adds six function fingerprints and a direct DOL reset-call
+inventory, excluding indirect/REL/script callers. Signed-byte narrowing and
+status predicate boundaries are documented explicitly.
+Phase actor/event table research adds eight function fingerprints, the15-entry
+move dispatch-table hash and two position-sort constants. The complete local move-controller state map is now specified; action-controller
+local state map is now specified as well, with its callee/script dependencies open.
+Action-controller research additionally checks the15-entry dispatch-table hash
+and camera-speed threshold. Retained Electric RNG draws and the two announcement
+drain phases are documented without a dynamic-equivalence claim.
+Default action event research adds two script fingerprints, seven helper
+identities, mode8 interpolation target/constants and original zero-gravity
+message-ID binding. No original dialogue or bytecode extract is committed.
+Camera request research adds ten callback/setter fingerprints and the mode-reset
+zoom constant, preserving independent priority gates and homing vector sources.
+Announcement research adds five service/draw fingerprints, four floats and
+window color. Duplicate local symbols use an explicit namespace qualifier in
+the metadata tool; original dialogue/text buffers remain uncommitted.
+Message lookup/loading/tokenizer research adds five fingerprints. Read-only
+message_resource_evidence.py inventories260 US files and13,186 pairs, with
+byte offsets/text hashes and two duplicate keys; metadata output stays ignored.
+No dialogue extracts or encoding normalization are committed.
+Parser research adds msgAnalize/msgInit fingerprints, two command/format block
+hashes, layout constants and original key-wait pose bindings. Prose records local
+display record construction; original parser code and message text stay ignored.
+Embedded-object research adds msgIconStr2ID, all18 US name/ID bindings and
+geometry constants. Census schema2 adds selected control argument shapes without
+exporting dialogue or annotation text; code-generated/non-US input remains open.
+Playback adds msgMain/keyGetButtonTrg fingerprints, all14 dispatch targets,
+original scroll binary32 coefficient and seven paper pose/group bindings.
+Timing contracts are derived from clock arithmetic, not measured gameplay.
+Window lifecycle adds12 service/event fingerprints and default/small geometry
+constants; original pool/heap failure behavior and caller identity remain open.
+Selection adds seven input/window/event fingerprints, display-order constant
+and original direct-input identity. Input repeat cadence remains unmeasured.
+General/clear window states add two fingerprints, all12 dispatch targets,
+24 sound table values and the original history-scroll coefficient. Fade and
+countdown arithmetic are static contracts, not observed durations.
+Common print research adds three fingerprints, projection threshold and ten
+original special NPC names. Speaker/identity contracts do not prove story order.
+Print variants add eight fingerprints, all18 original partner suffix bindings
+and the field speaker literal. Shared key buffers remain original-runtime lifetime
+dependencies; no generated dialogue or extracted resource text is committed.
+Insert formatting adds two fingerprints. Census schema3 records per-pair and
+aggregate printf-like lexemes (93 pairs/119 matches), explicitly not execution
+or a format-call census. Original format/dialogue bytes remain ignored assets.
+Format output/ABI research adds five runtime fingerprints and the original narrow
+null-string sentinel. No original library implementation is copied into source.
+Directive parser adds one namespace-qualified printf fingerprint (distinct from
+scanf), both dispatch-table hashes and byte-classification hash/mask checks.
+Integer conversion adds two fingerprints and both33-entry dispatch-table hashes;
+the documented prefix/capacity stages are static evidence, not executed outputs.
+Decimal rounding/preparation adds two fingerprints, the original special-value
+string-block hash, sign-comparison zero and case-classification checks.
+Binary-to-decimal generation is covered by the subsequent entry/helper research.
+Finite layout research extends the existing float2str fingerprint's prose and
+anchors to local scientific/fixed/general paths. Actual call ranges and executed
+layout/capacity behavior still need recovery/comparison.
+Binary decimal entry adds two fingerprints and its separate input-zero constant;
+numeric/ASCII phases and generator request boundaries are documented. Runtime
+floating environment and actual caller ranges remain explicit dependencies.
+Numeric decimal multiplication adds one fingerprint and local convolution,
+scratch, 36-digit retention and rounding contracts. Actual caller domains and
+executed numeric behavior remain unverified; no original helper body is
+incorporated into the native runtime.
+Decimal power research adds one fingerprint, the73-entry dispatch identity and
+184-byte seed-only block identity; the21 seed bindings are independently checked.
+Original numeric strings/instructions remain in the ignored read-only research
+outputs. Contracts record the original ASCII comparison and recursive rounding;
+no original numeric service is compiled into the prototype.
+Binary numeric services add five fingerprints and six binary64 constants.
+Contracts retain raw special-value/signed-zero branches, scaling arithmetic and
+word-conversion saturation; derived finite generator power bounds are not
+executed-original observations. No upstream numeric implementation is copied.
+Unsigned64 quotient/remainder add two fingerprints and local restoring-loop
+contracts. An authored recurrence check and zero-divisor derivations remain
+ignored metadata, explicitly separate from original instruction execution.
+Hexadecimal float research adds one fingerprint; special strings reuse the
+already verified original block. Documentation preserves raw exponent/fraction,
+truncation and extended-precision stack-address calculations. No original
+formatter body is compiled into the prototype or distributed as source.
+Window manager/selection drawing add seven fingerprints, source path bindings
+font/msgWindow.tpl and %s/f/msgWindow.tpl, and selection color/geometry/smoothing
+constants. Public Japanese windowdrv.c supplies structural corroboration; US
+static instructions establish the contracts. No palette/GX objects are extracted
+or converted in this step, and no original renderer is compiled into the prototype.
+Display queue/dispatch adds eight fingerprints (namespace-qualified comparator),
+all eleven offset floats despite the symbol's undersized annotation, eleven GX
+dispatch targets and five depth/common-state constants. Japanese source provides
+structural corroboration; original US instructions/tables establish the contracts.
+Sorting internals are covered below; outer rendering cadence remains open.
+Sort implementation adds two fingerprints. Pinned Japanese system.c provides a
+complete structural guide checked against original US partition/cycle branches;
+no upstream implementation is compiled into the prototype. Authored model reports
+for3549 sorting cases,5914 cycle permutations and8072 bit-loop counts remain
+ignored and are not original execution evidence.
+General window drawing adds three fingerprints, twelve type targets, fifteen
+geometry/indicator floats, mode0 interpolation target and unsigned32 conversion
+constants. Cursor pose pointer binding is recorded; original renderer/animation
+services and visual assets are not copied into the native runtime in this step.
+Draw record admission adds three fingerprints and reserved-control dispatch,
+pose orientation/icon/glyph constants and emphasis color/vector bindings.
+Only the admitted/control/embedded paths of msgDisp are locally documented in
+that step; its normal glyph effect tail is covered below. Original
+glyphs/pose/icon data remain reused assets outside source history.
+Glyph effects extend the existing msgDisp fingerprint's recovered local coverage
+with priority/RNG/clock/matrix/font requests and draw-time record relaxation.
+Effect literals and all five scale-vector templates are independently verified;
+numeric/trig/font helper implementations and executed images remain open.
+Font state adds fourteen fingerprints, original three-color palette/default-scale
+and noise texture-matrix constants. Original window palette object50 is a request
+binding; no descriptor/image conversion or replacement noise asset is generated.
+Byte-alpha arithmetic checks are authored derivations, not original execution.
+Font glyph/setup requests add three fingerprints and original texture-matrix
+mode constants. Static font texture object0x8041e97c is a request binding;
+its glyph/page/image ownership is still unrecovered. No font assets or original
+raster implementation are added to native code/source history in this step.
+Inner glyph quads add two fingerprints and original HSV/bias/two-unit constants.
+Font block/page assets remain unextracted in this step; local FIFO/quad requests
+and mandatory two-draw RNG behavior are documented independently of measured
+GPU images. No original raster implementation is compiled into the prototype.
+Hit-precheck and damage-calculator research adds prose contracts and metadata;
+no executable conversion or third-party implementation is incorporated.
+No full original routines, source extracts,
+dialogue or assets were added to history. The detailed behavior documents explain
+the scope and do not claim the original binary has been executed or recompiled.
+
+The user's latest preference supersedes the initial hybrid-placeholder plan:
+use assets very similar to the original game, preferably original geometry and
+textures; scale textures/reduce vertices/adjust lighting for performance.
+Preserve original sounds and music. Do not reintroduce the earlier vector redraws
+or synthesized sound effects.
+
+`tools/iso_assets.py` reads the FST from the legally acquired `G8ME01` ISO. It
+validates bounds and filenames, inventories all files and extracts exact selected
+paths. Extracted files receive SHA-256 provenance sidecars. The source ISO is
+opened read-only. Original/converted content belongs under ignored local-assets,
+romfs or artifacts directories, never source history.
+
+`make` invokes `tools/build_assets.py`. Set TTYD_ISO to change the input path.
+Selected original asset sources:
+
+- `a/a_mario-`: complete Mario pose texture 0.
+- `a/c_pkr` and `a/c_pkr-`: Goombella, animation PKR_Z_1 at frame 0.
+- `a/c_kanbu` and `a/c_kanbu-`: Crump, animation Z_1 at frame 0.
+- `a/c_kinopio` and `a/c_kinopio-`: Toad, animation KNP_Z_1 at frame 0.
+- `m/gor_01/d` and `m/gor_01/t`: original plaza mesh, scene graph and textures.
+- `b/gor_01.tpl`: room backdrop.
+- `m/stg_01/d` and `m/stg_01/t`: original common battle stage.
+- `sound/stream/stg_gor1_32k.stm`, `btl_zak1_32k.stm`, `btl_win1_32k.stm`:
+  original Rogueport, normal-battle and victory music. Confirm encounter-specific
+  track choice in Dolphin; do not assume normal battle music is the tutorial's.
+- `sound/proj/pmario.{sdir,samp,pool,proj,etbl,slib}`: preserved original sound bank.
+
+GX decoding covers I4/I8/IA4/IA8/RGB565/RGB5A3/RGBA8, indexed palettes and CMPR.
+Only the base mip level is used. Map texture dimensions are capped at 128 pixels
+and normalized to powers of two for native repeat sampling. Original character
+poses are rasterized from source geometry to 128-pixel billboards. This is an
+intermediate optimization; proper original animations and direction variants
+must replace the idle-only display. No animation timing is inferred from the
+atlas.
+
+The map converter flattens original S subtree transforms and triangle topology
+at scale 0.1, preserves texture coordinates, material colors, wrap modes and
+alpha-layer grouping. The current plaza has 40,714 triangles and 79 batches; the stage has 10,801
+triangles and 14 batches before static visibility overrides. The mask, closed
+upper curtain and inactive switch props are suppressed for this playable view;
+verify these inferred visibility rules against the original battle scene. Exact
+current counts are in romfs/manifest.json. Near-ground original collision triangles are reduced
+to 711 planar wall segments. The walkable subset still needs original floor,
+slope, trigger and visibility semantics.
+Geometry decimation, dynamic visibility and original map animations are pending.
+Materials with multiple samplers are explicitly reported rather than assumed
+correct. The selected room currently has none.
+
+STM conversion preserves rate/channels and original loop points, clamped to
+valid source sample bounds. Runtime streams PCM; it does not load the entire
+music track into RAM. MusyX directory indexing exposes 1,247 original samples;
+macro-to-game-event resolution is still needed before faithful effects play.
+Unresolved effects remain silent, not replaced with generated tones.
+
+Format research used noclip.website (MIT) and vgmstream (ISC); corresponding
+license notices are in third_party. Nisto/musyx-extract was read for format facts;
+its unlicensed source is not incorporated. No Paper Mario decompilation code is
+currently incorporated. Record licenses before adding any external code.
+
+Ground surfaces are exported from the original collision subtree into
+map.ground (little-endian uint32 count, then nine float32 coordinates per
+triangle). Slopes with absolute normalized Y normal >= .65 are retained. This
+is a provisional traversal filter, not an observed original engine threshold.
+Original rel/gor.rel is extracted read-only with provenance for exit/event
+analysis; no original executable code is run by the remake.
+
+Original overworld packs now include m/gor_00, m/gor_02 and m/gor_03.
+rooms.bin contains a uint32 link count followed by records (source room uint32,
+target room uint32, exit X/Z, spawn X/Z/Y float32), 28 bytes each. Road IDs
+0/1/2/3 map to gor_01/gor_00/gor_02/gor_03. The manifest records original REL
+offsets, marker-derived coordinates and target/arrival identifiers. Wall record
+count high bit now indicates min/max Y following each XZ segment (six floats).
+Unknown story-dependent exits are not activated by this road-only parser.
+
+Wall deduplication includes the original height interval in addition to X/Z,
+so stacked surfaces do not overwrite one another. Floor triangles also supply
+per-room footprint bounds for touch-map scaling; runtime uses a spatial index
+without modifying original geometry.
+
+Map batches now reserve bits 8–23 of their layer word for an exterior-wall
+cutaway group ID (0 means ordinary geometry). Original layer remains in the
+low byte. Group owners are listed as cutaway_nodes in the manifest; S_gai_kabe
+subtrees provide the classification, and drawable descendants inherit an
+already selected owner. Geometry positions, UVs, colors and textures remain
+original. Group-based batching increases draw calls without duplicating triangles.
+This classification is a rendering adaptation, not recovered original visibility
+event rules. The upstream viewer's runtime flag handling was inspected at
+https://github.com/magcius/noclip.website/blob/master/src/PaperMarioTTYD/render.ts
+for further visibility/event work; no code from that file was copied here.
+
+Rogueport station (`m/gor_04/d`, `m/gor_04/t`) now converts through the same
+original-map pipeline: 41,398 triangles, 50 batches, textures capped at 128.
+No exterior-wall classification matches this room (zero cutaway groups).
+Original `rel/gor.rel` records at 0x4de80 (west n_bero) and 0x5d53c
+(station s_bero) establish the reciprocal road. Station's other geometric
+n_bero marker is not an additional inferred road; train/event travel is unfinished.
+Arrival elevation uses the marker base, not its volume midpoint.
+
+Original per-node culling is read from the draw-mode pointer at node+0x58,
+byte+1. Converter retains GX indices 0–3, rejects invalid drawable-node values,
+and records cull_triangles counts. Hierarchy-only nodes can have a null pointer.
+Format reference: noclip.website src/PaperMarioTTYD/world.ts (MIT), already
+used by this converter. No visual guesswork is used to classify mesh sidedness.
+Batches now split by sidedness as well as material/cutaway owner. Geometry
+counts are unchanged; plaza/harbor/east/west/station batches 116/79/111/127/54.
+This does not recover event-controlled visibility, train animation or multilayer
+materials. Those remain necessary for original presentation.
+
+Map mesh animation tracks are now preserved in ignored local conversion sidecars
+`local-assets/<room>/map.animations.json` (plaza uses `map`, battle `stage`).
+The original .d source remains authoritative, including the 12 unknown components
+per mesh keyframe not interpreted here. Map summary/manifest lists names, duration,
+mesh-track counts and material-table offsets. Mesh sampling uses original
+translation/rotation offsets, scale divisors, step flags and Hermite tangents.
+Format reference: existing MIT noclip.website/world.ts. Event activation and
+loop modes are not inferred. Material animation tracks are not decoded yet.
+Station has shadanki, n_1_door_open/close mesh tracks; train-body mesh animation
+is absent from that table. Its visual defects still require material/scene/event
+inspection. Harbor contains duplicate fune_b animation names; explicit name
+selection rejects ambiguity rather than choosing an arbitrary duplicate.
+
+Material animation tracks are now decoded into local map.animations.json: five
+channels (S/T translation, S/T scale, rotation), centers, texgen index, key times,
+Hermite tangents and step flags. Offline preview binds texgen0 by original
+material names (including _v/_x-normalized aliases). Higher texgens are reported
+as unsupported, not silently accepted. Shared texture_matrix supplies both bind
+and animated texture transforms; no runtime animation is enabled automatically.
+
+Downloaded read-only public US symbol metadata for event inspection from
+https://github.com/jdaster64/ttyd-utils/blob/master/resources/us_symbols.csv
+to ignored artifacts/reference/us_symbols.csv. Upstream repository is GPL-3.0;
+no upstream code or table is copied into native runtime or source history.
+Independently written map_event_inventory.py resolves original REL local/DOL
+relocations, uses externally supplied symbol names/ranges, and inventories the
+original init command stream to ignored local-assets/map-init-events.json.
+It does not execute scripts or evaluate story conditions.
+
+Station road-entry conversion now recursively suppresses gondora_2 and hako_1.
+Original gor_04_init_evt has IF_STR_EQUAL(entry, hikousen_return) at0x604d0,
+ELSE at0x604e4 and END_IF at0x60518; ELSE sets group hidden bit1 at0x604e8
+and0x60500. The currently supported station entry is s_bero, so ELSE applies.
+Both groups are hierarchy-only owners; their314 child triangles are omitted,
+leaving41,084 triangles/54 batches. Original collision is unchanged.
+
+inspect_dol_function.py creates inspection-only ELF files from named functions
+in the read-only US ISO, using external US symbol ranges and llvm-objdump.
+No original executable code is run or linked into the native game. Original
+function bytes/disassemblies stay ignored in artifacts/reference. Primary
+reference evt_cmd.h was read from jdaster64/ttyd-tot for string conditional
+opcodes; doldecomp/ttyd mapdrv sources inspected but do not implement these
+flag functions. Semantics below derive from the user's original DOL bytes.
+
+East gor_02 now packages mizu/noname/ie_01_light texture-zero ambient tracks
+identified at original init offsets0x4d694/0x4d6a8/0x4d6bc, outside enclosing
+conditional blocks. The source starts each with mode1/clock0. Actual US DOL
+mapPlayAnimationLv0x80029de4 sets loop flag0x4 for mode1 and speed1; mapMain
+0x80026bb8 wraps against the full authored duration (not duration-1). It
+calculates frames from elapsed milliseconds times gp->framerate/1000. US
+marioStInit 0x8006fb3c (symbol range; see local disassembly) writes60 to offset4
+for VIGetTvFormat()==0 and50 otherwise; NTSC US input selects60. Primary
+field reference: doldecomp/ttyd/include/mario/mariost.h (framerate at0x4).
+No original executable implementation is copied into the port.
+
+UVAN tables bake original Hermite/step curves at integer60Hz frames. Binding UVs
+come from inverse original bind texture matrices, preserving existing vertex
+layout and material batching. gor_02.uvanim is41,856 bytes, updates369 vertices
+(135/144/90) in tracks with durations999/159/400. All other room/stage files
+contain valid zero-track headers. Manifest records clip IDs and bound counts.
+East water texgen1 is still missing; do not claim complete water reproduction.
+
+Original ambient mesh packs now include plaza m/gor_01/d hae (duration399,
+2 owner tracks,12 vertices,38,524 bytes) and harbor m/gor_00/d nami
+(duration979,3 owner tracks,4,581 vertices,214,308 bytes). Harbor UVAN enables
+nami/nami_02/hiki_nami (4 bound tracks,5,451 vertices,143,144 bytes). Original
+init playanim calls hae0x3c798 and harbor0x2f31c/0x2f330/0x2f344 are outside
+conditional blocks; loop/clock/NTSC60 semantics follow the prior DOL inspection.
+All rooms and stage package mandatory MSAN headers; unused rooms have zero
+tracks. Original files remain read-only and generated packs remain ignored.
+
+Harbor nami references fune_b_lambert83, absent from this map material table;
+that channel has no visible geometry binding and is recorded in limitations.
+Original two-sampler harbor materials still render texture zero only. Neither
+missing channels nor conditional boat animations are claimed faithful.
+Mesh verifier compares five native baked poses against explicit offline original
+clip samples for both rooms, including ancestor transforms, with unchanged
+collision/batch files. It does not prove original event or camera behavior.
+
+Floor packs now preserve original drawmode+8 attributes and map-local source-node
+IDs. Independent verify_ground_attributes.py checks all3,576 floor records in
+the five original room files directly against raw extracted node bytes. Counts
+are plaza1010/harbor463/east878/west1037/station188. Harbor A_mizu contributes
+16 floors carrying0x200. Source-node names/attributes are indexed in room
+summaries and runtime manifest; unknown bits are retained unchanged. Geometry
+and normal filtering remain unchanged; tagged records add8 bytes per triangle.
+
+Original US DOL _hitEnt0x8001896c:80018aa8 loads joint+0x58,80018ab4 loads
+drawmode+8,80018ab8 stores hit-entry+4 (null drawmode stores0). hitGetAttr
+0x80014310 reads that word or returns0 for null. These original read-only byte
+inspections substantiate raw static attribute mapping; implementation is native
+and does not link/copy original executable functions. Inspection artifacts stay
+ignored. Effective event mutations remain separate unfinished work.
+
+room_convert.damage_returns now reads original US evt_hit_damage_return_set
+imports (8007458c), validates two-argument USER_FUNC event headers, follows
+self-REL relocations and reads bounded16-byte name-pointer/XYZ tables. It rejects
+missing relocations, nonfinite values and malformed termination. Source call and
+table/entry offsets, ordering, names, coordinates and Y=-1000 auto-position
+markers are preserved. No external symbol CSV is required to build these tables.
+
+Build produces ignored local-assets/damage-return-tables.json and records both
+tables in ignored RomFS manifest provenance. These are metadata for recovery
+implementation; runtime does not yet consume them. Verify with
+`python3 tools/verify_damage_returns.py`. Original function-address/layout evidence
+is retained in mechanics notes; no original executable implementation imported.
+
+Resolved original init return packs: gor_00 has5 node bindings (92 bytes),
+gor_02 has16 inherited bindings (268 bytes); other room files are12-byte empty
+RPOS headers. Original tables still retain raw positions/sentinels and call
+offsets; manifest additionally records resolved positions and descendant IDs.
+Harbor automatic A_yuka center is approximately(.85,.15,2.2). Literal positions
+now correctly use engine-to-native0.01, substantiated by original _mapLoad's10x
+model matrix. All original collision owners/parents/centers are inventoried,
+not just mesh owners. Source floor geometry/raw attributes remain unchanged.
+
+Original wall collision attributes are now preserved alongside geometry in
+32-byte records (six floats,two uint32 words); tagged count uses0xc0000000.
+Source-owner IDs and flags come from original node/drawmode records, with no
+attribute edits. `python3 tools/verify_wall_attributes.py` independently compares
+all5,264 records against source bytes across gor_01/00/02/03/04. No bit31
+special-case owners occur in these packs. Collision mesh extraction remains
+approximate planar wall segmentation; original flags now control solidity.
+
+Wall packs now additionally retain all9 triangle coordinates, unrounded, after
+the geometry/attribute prefix:68 bytes per record, count tag0xe0000000.
+Distinct triangles belonging to the same owner are no longer collapsed merely
+because their projected segment and min/max heights match. Five rooms export
+7,830 retained triangles;92 records are non-solid under normal-Mario flags.
+`verify_wall_attributes.py` validates the new layout and original owner flags.
+The existing wall selection threshold(abs(normalY)/length<=0.2) is unchanged;
+coverage of other angled surfaces and dynamic hit meshes remains unfinished.
+
+## 2026-10-12 — Story-controlled outdoor geometry groups
+
+Original `m/gor_00/d`, `m/gor_02/d`, `m/gor_03/d` geometry now retains
+source subtree identities for ordinary-entry visibility recovered from
+`rel/gor.rel`. The read-only ISO remains the source; local extraction and
+compiled packs remain ignored. Conversion splits material batches by event
+group and records it in bits26..31, preserving original vertex values, texture
+scaling, collision and animation bindings. Geometry stays available for later
+story conditions. The harbor ship groups/wakes, east interior/gate and west
+alternate foliage use recovered initialization conditions; full event overrides
+remain open. See [visibility contract](behavior/field/ROGUEPORT_STORY_OBJECT_VISIBILITY.md).
+Nintendo original asset licensing/provenance is unchanged: local personal-use
+conversion only, no ISO or extracted/compiled assets committed or distributed.
+
+## Goombella follow jump pose (2026-10-12)
+
+The existing original `a/c_pkr` model and `a/c_pkr-` texture resource now also
+compile `PKR_J_1A` into ignored `romfs/partner.pmanim`, `partner.pmmesh` and
+`partner-mesh.t3x` via `tools/build_assets.py`. Source selector4 is pinned by
+the [Goombella pose contract](behavior/partner/FIELD_GOOMBELLA_ORDINARY_POSE_BINDING.md).
+The existing PMANIM3 visibility/scalar2 conversion is retained; no generated
+art or substituted sound is introduced. Source extraction stays read-only and
+all converted packs remain outside source history. Nintendo/Intelligent Systems
+assets carry no redistribution permission; no original files are committed.
+
+## Original textbox advance star (2026-10-13)
+
+`tools/message_indicator_assets.py` extracts original `a/hoshi_2` (offset904983748,
+size5908,SHA-25685b382b8a76cce944c20f8387c5b3d10b8d65a41b77f35e7dda60ca58eb9bfb1)
+and `a/hoshi_2-` from the read-only US ISO. It preserves `HOS_C_1` in ignored
+`romfs/message-indicator.pmanim`; original geometry and texture/node animation
+supply the advance star. The existing character converter resamples source
+textures into124px atlas cells with2px edge padding. Unused rows are removed
+from the ignored1024x128 `message-indicator.t3x`; native UV height scale is8.
+Ignored `local-assets/message-indicator/` contains extraction/atlas intermediates;
+`romfs/message-indicator.json` records both original resource paths/hashes,
+converter fingerprint and conversion. Original Nintendo/Intelligent Systems
+assets carry no redistribution permission and remain outside source history.
+Position/yaw/scale follow the original window indicator requests; animation phase
+uses native simulation ticks. See[native indicator](behavior/message/NATIVE_MESSAGE_ADVANCE_INDICATOR.md).
+
+## Original dialogue bubble masks (2026-10-13)
+
+`tools/message_window_assets.py` reads `f/msgWindow.tpl` from the US ISO opened
+read-only (file offset947396944,size321984,SHA-256
+`2ef0cdc818d2402de5bfb95394f67d78017e74bc1b41c38b79780cb0b870dc67`).
+Original ordinary cap/edge indices9..16, tail indices1/2 and small masks3/4
+are decoded from GX to RGBA8. The cap/edge masks are composed at their original
+560x176 positions, filling only the flat interior with their matching source
+color. Ignored `local-assets/fonts/msgWindow.tpl`, `window-*.png` and
+`message-window.png` retain extraction/conversion inputs; ignored
+`romfs/message-window.t3x` is a1024x512 native atlas and
+`romfs/message-window.json` records source hash/offset/converter fingerprint.
+There is no generated bubble art. Native drawing scales to400x240 and adapts
+the original tail to a rotated mask; see the
+[native dialogue contract](behavior/message/NATIVE_MESSAGE_BUBBLES.md).
+Nintendo/Intelligent Systems assets carry no redistribution permission. These
+local assets/compiled packs and the ISO remain outside source history and are
+not distributed.
+
+## Speaker anchor metadata refinement (2026-10-13)
+
+The same read-only original `a/c_kanbu_ibt`, `a/c_kanbu-`, `a/c_zako_n` and
+`a/c_zako_n-` inputs now produce ignored `romfs/harbor-actors.bin` in PMHNPC2
+format: existing billboard metrics followed by two three-float native talk
+offsets. `tools/harbor_actor_assets.py` derives these offsets from the opaque
+(alpha>8) bitmap top and horizontal center, excluding transparent128x128
+margins. Ignored `romfs/harbor-actors.json` records the offsets and updated
+converter fingerprint. Goombella's anchor uses the already imported original
+`PKR_S_1`/`PKR_W_1` evaluated geometry; no new character art is created.
+The bubble atlas is unchanged. Native border/glyph drawing now scales both
+axes by0.5 to preserve original4:3 artwork on the wide display, and tail masks
+use the source sheared quad rather than a rotated sprite. These are native
+anchor/aspect adaptations, not recovered NPC tribe heights. Original rights
+and local-only asset/cache exclusions remain unchanged. See the
+[native bubble contract](behavior/message/NATIVE_MESSAGE_BUBBLES.md).
+
+The2026-10-13 tail-stretch refinement reuses the same original48x64 tail masks
+(indices1/2), without editing their pixels or rebuilding the atlas. Native
+geometry compensates each mask's transparent margins so their last opaque
+texel centers terminate together near the speaker. The four-screen-pixel gap
+is a user-requested presentation adaptation, not measured original behavior.
+
+## 2026-10-13 — Native opening assets
+
+`tools/opening_assets.py` reads the US ISO with the existing read-only extractor.
+Raw/conversion intermediates stay in ignored `local-assets/opening/`; runtime
+resources and the provenance manifest stay in ignored `romfs/`. No asset, ISO,
+original dialogue, executable or compiled pack is included in source commits.
+All original assets retain Nintendo/Intelligent Systems rights; these conversions
+grant no redistribution license. Existing tool-reference licenses still apply.
+
+Title uses `mariost.tpl` indices5(background),21(US logo),16(English START mask),
+9(US copyright). The letter uses palette4, requested by the original gor_10
+`draw`/winTexSet call after `tegami` loads `%s/mariost.tpl`. Storybook uses `demo.tpl` desk0, cover1 and pictures8..12.
+Large608x480 images become304x240 with Lanczos, smaller masks retain their pixels,
+and transparent power-of-two padding is excluded by checked `.size` metadata.
+The US `sys.rel` prologue heading table at0x2648 supplies19,20,21,22,21,23,24,25
+and terminator255; the corresponding `e/us/effect_sys.tpl` letters are composed
+without redrawing or replacing their text. Native heading layout is an adaptation.
+
+Original `m/aaa_00/{d,t}`, `m/gor_10/{d,t}` and `m/muj_20/{d,t}` supply opening
+room meshes/materials. Geometry remains source-derived; texture axes are capped
+at128px using the established map converter. Original `a/c_luigi`, `a/c_paretta`,
+`a/c_peach`, `a/c_nazo` and their `-` texture banks supply original L_5/S_1/P_S_1/S_1
+clips; Luigi additionally retains L_7/L_8/L_9 for the original talk/read poses.
+Mesh/animation hierarchy and model coordinates remain intact. Unused
+1024x1024 atlas rows are cropped to the smallest128-based power-of-two height;
+`.uvscale` compensates V coordinates while retaining all occupied cells.
+Map presentation uses `mariost.tpl` palette3 requested by aaa `draw`/winTexSet.
+The outside/interior house variants retain the corresponding original visibility
+requests. Current scene snapshots do not reproduce the full source animation choreography.
+
+The six original streams are `sound/stream/sys_tit1_32k.stm` (BGM_TITLE1),
+`sys_demo1_32k.stm` (BGM_DEMO1), `sys_demo2_32k.stm` (BGM_DEMO2),
+`evt_mri1_32k.stm` (BGM_EVT_MARIO_HOUSE1), `sys_opn1_32k.stm` (BGM_OPENING1),
+`evt_kou1_32k.stm` (BGM_EVT_SAILING1). Decoding preserves original rates/channels
+and loop intervals in PCM16 WAV/loop sidecars. Native environment sounds and
+scene-specific effects remain unbound; no synthetic replacements were added.
+Original `msg/US/{dmo_00,aaa_00,gor_10,gor_00}.txt` remain byte-for-byte message
+resources with IDs/control tokens retained. See [opening flow contract](behavior/story/NATIVE_OPENING_FLOW.md).
+
+
+## 2026-10-13 — Original professor first-talk resources
+
+`tools/professor_event_assets.py` reads `rel/gor.rel` from the original US ISO
+read-only, pins the REL/first-talk hashes and preserves the original180 commands.
+Ignored `local-assets/professor/` records source section offsets, relocations and
+callback bindings; ignored `romfs/professor-events.pmevt` and
+`romfs/professor-program.bin` use authored native section addresses and actual
+local/module0 ADDR32 relocations. Original executable bytes are data for the
+existing portable event interpreter; GameCube machine code is not executed.
+
+`tools/professor_scene_assets.py` imports seven actual Mario clips from
+`a/a_mario` and `a/e_mario`, with `a/a_mario-` textures. Field M_C_3 uses the
+original effect bank. Ignored `local-assets/professor-scene/` retains intermediates
+and ignored `romfs/professor-mario.{pmmesh,pmanim,t3x,bin}` supplies the native
+scene. The original normalized UV domain is retained; the cropped atlas is
+resampled to512x512 RGBA8,62px cells with1px padding, to bound texture allocation
+to1MiB. This pixel resampling is a handheld adaptation.
+
+Item0x60 is the source treasure-map backside: icon314 resolves to `icon.tpl`
+image319, imported into ignored `romfs/professor-map.{t3x,bin}`. The original
+`sound/stream/evt_fkh1_32k.stm` supplies BGM_EVT_FRANKURI1, decoded with original
+loop metadata into ignored `romfs/professor-music.wav` and sidecar. Message IDs
+and control bytes come unchanged from the existing `msg/US/gor_02.txt` import.
+The source manifest is ignored `romfs/professor-scene.json`. All originals remain
+Nintendo/Intelligent Systems property; conversion grants no redistribution
+license. No original assets or compiled packs are committed.
+
+
+## 2026-10-13 — Original fence removal resources
+
+`tools/professor_event_assets.py` now relocates the original first-talk,
+kurihakase_wall_remove and kurihakase_lecture data:318 original commands with
+pinned source hashes,63 scoped callbacks and three native entry addresses.
+Ignored `romfs/professor-program.bin` uses PMPROG2; the original events, strings
+and local/module0 relocation policy are preserved in local manifests.
+
+`tools/professor_fence_assets.py` reads `a/OFF_d_saku` and `a/OFF_d_saku-` from
+the read-only ISO. Ignored `romfs/professor-fence.{pmmesh,pmanim,json,bin}` retains
+the actual A_1 nonloop deformation, seven keys and140 source animation frames,
+plus source A_saku_04 collision subtree IDs from the imported gor_02 map. Raw
+resources/intermediates remain ignored `local-assets/professor-fence/`. The
+placeholder paper TPL is not used as a replacement for the fence appearance.
+
+Native presentation retains the78 original S_saku04 map vertices and material
+textures, then deforms that geometry using the actual paper quad in a frozen
+camera plane. This handheld capture adapter avoids a second scene render; it
+is not exact original GX offscreen capture, rectangle clipping, depth-plane or
+shadow reproduction. Source capture-bound writes/aspect arithmetic and original
+animation-completion wait remain in the event. Original fence open/fall SFX
+requests are retained; complete original spatial/MusyX playback is unbound.
+All originals retain Nintendo/Intelligent Systems rights; no redistribution
+license or original assets/compiled packs enter history.
+
+## 2026-10-13 — Original lecture message icons and Goombella talk
+
+Read-only US ISO icon.bin/icon.tpl provide used STICK ID129 (TPL129,80x80,
+static) and choice cursor ID504 (TPL533..542,40x40,source loop1; nine delays2,
+last delay28). tools/message_icon_assets.py retains original pixels and packs
+512x128 RGBA8 with2px transparent padding, no resampling (0.25MiB native texture).
+Ignored local-assets/message-icons/ retains originals/PNGs/provenance; ignored
+romfs/message-icons.bin/.t3x/.json retain descriptors/native atlas/manifest.
+Source icon auxiliary fields are preserved; full original transform/depth remains
+unbound. c_pkr/c_pkr- supplies original PKR_T_1 in ignored partner mesh/animation
+packs through tools/build_assets.py, alongside ordinary partner poses. Expanded
+PMPROG3 metadata retains original Frankly/Goombella identifier VAs for actual NPC
+routing; original event words/relocations remain unchanged. Assets remain
+Nintendo/Intelligent Systems resources with no redistribution grant; original
+and compiled packs are excluded from commits.
+
+## 2026-10-13 — Original first underground map and music
+
+Read-only US ISO m/tik_01/d,t,c,s supply the first underground room. Ignored
+local-assets/underground/ retains extracted originals/provenance, map products
+and TPL PNGs. tools/underground_assets.py retains geometry/material UVs and
+collision, scales map units through the existing converter, reduces textures
+to max128 power-of-two RGBA8 via Lanczos and writes ignored romfs/tik_01.*
+and tik_01-*.t3x. Prologue zero-flag init hides bom_kabe_2/bom_kabe_4; broader
+wall hit/state owners remain pending. Original camera bytes are copied unchanged.
+The original BGM_STG0_TIK1 mapping provides sound/stream/stg_tik2_32k.stm,
+decoded PCM16 with source rate/channels/loop metadata as ignored
+romfs/underground-music.wav/.loop. Source generic pipe SFX remain unbound.
+Ignored field-pipes.bin/underground-assets.json retain reciprocal original REL
+record/hit identities and conversion/source manifest. Original gor pipe event
+extends PMPROG4 metadata; no original script instruction is rewritten apart
+from supported relocation. Nintendo/Intelligent Systems rights remain;
+original or compiled assets are not committed or distributed.
+
+## 2026-10-13 — Original underground trio animations and event pack
+
+Read-only rel/tik.rel provides gorotuki_sanninngumi161commands and
+ashioto10commands. tools/underground_event_assets.py writes ignored
+romfs/underground-events.pmevt/.program.bin and underground-trio.json metadata
+using original words and supported relocations; no source code is compiled.
+Actual original NPC keys remain pointer-resolved. a/c_kuribo and a/c_kuribo-
+provide fifteen KUR/PTK/TGK S_1/T_1/W_1/R_1/D_1 poses in ignored
+romfs/underground-goombas.pmmesh/.pmanim/.t3x/.bin/.json. Existing bounded model
+converter retains original texture cells/pixels with atlas padding/cropping,
+geometry and sparse keys. Idle Z_2 has non-endpoint key topology outside that
+importer's domain and is unused by this scoped scene; no substituted idle pose
+is claimed. Mario M_N_7 comes from actual e_mario/a_mario- (not a_mario), added
+to the existing scaled scene atlas. Original US tik_01/tik_04 message packs
+supply exact payloads and control tokens. Local originals/compiled packs stay
+ignored and retain Nintendo/Intelligent Systems rights; no redistribution grant.
+
+## 2026-10-13 — Original setup4 battle introduction and stage
+
+Read-only rel/tik.rel group0x26460/unitarray0x263a0 supplies four source units;
+kind and part pointers supply HP/FP, placement, flags/counter flags and five
+zero defense/defenseattribute slots. tools/trio_battle_assets.py writes ignored
+trio-battle-units.bin, original Frankly init15/entry7/phase39 commands under
+trio-battle-events.pmevt/program.bin and provenance trio-battle.json. Supported
+relocations preserve original words; no original machine code is compiled.
+Actual m/bti_01/d,t and m/stg_00_1/d,t provide native stage maps, original
+geometry/materials/UVs and textures reduced to max128 power-of-two RGBA8 via
+Lanczos. Ignored local-assets/trio-battle/ retains originals/provenance/PNGs;
+ignored romfs/bti_01*/stg_00_1* retain native products. Source selected A1/isi_1/isi_2/B_mati/C subtrees retain ancestor matrices and
+additional translations; bti escape_wall/if_body/if_wire are hidden. Dynamic
+intro scales/object lifecycle/depth still require original service binding.
+Original message icon PAD_Y_ON=115/0x73 uses descriptor0x9de,TPL115,56x56,
+static source pixels. Used icon atlas expands512x128→512x256 (0.5MiB) without
+resampling. Original music uses existing BGM_ZAKO_BATTLE1/btl_zak1_32k stream.
+No originals/compiled packs enter commits; Nintendo/Intelligent Systems rights
+and lack of redistribution grant remain unchanged.
+
+2026-10-13 setup4 command/target metadata: `tools/trio_battle_assets.py` now
+extracts default weapon records0x803538a8/0x80353de8/0x80393ea8 from the read-only
+US main.dol. Original admission(+64)/attribute(+68) words, name IDs and source
+record hashes reside in ignored `romfs/trio-battle-commands.bin` and
+`romfs/trio-battle.json`. PMBUNIT2 retains original tik.rel part local/hit/sample
+coordinates, setup forward bias and unit name IDs. No synthetic target geometry
+or rewritten labels. The native menu resolves original `msg/US/global.txt` labels.
+These are locally extracted Nintendo/Intelligent Systems assets with no
+redistribution grant; compiled packs remain outside history.
+
+## 2026-10-13 — Native save System frame, selection panel and cue431
+
+Read-only US ISO `f/msgWindow.tpl` (51 entries) now supplies separately packed
+`romfs/message-window-panel.t3x` (index0,72x72),
+`romfs/message-window-system-pattern.t3x` (index5,128x64) and
+`romfs/message-window-42.t3x` through `-49.t3x` (32x32 source shape/ring masks).
+`tools/message_window_assets.py` decodes original GX images to lossless RGBA8,
+retains dimensions and records ISO offset/full source SHA/fingerprint in ignored
+`romfs/message-window.json`. Pattern repeats; corner masks clamp; native PICA
+stages adapt original System TEV algebra and four-quad geometry. Selection uses
+source index0 nine-slice UV/destination caps. No generated panel art is used.
+Converted PNG/TPL copies remain ignored under `local-assets/fonts/`; compiled
+T3X/manifest remain ignored. Original Nintendo/Intelligent Systems rights remain;
+local conversion does not grant redistribution rights. Native narrow opening
+geometry/GX-PICA rounding parity remain adapters; see live save contract.
+
+`config/audio_bindings.json` selects original SFX_MOBJ_BLOCK_SAVE1/cue431 for
+`romfs/save-block.wav`: source pssfx row431 ->FX618/group5/macro745/sample550,
+`local-assets/audio/pcm/samples/pmario-0226.wav`,22050Hz/24422 PCM16 frames/no loop.
+`tools/audio_map.py` retains source row/parameters/macro/sample/conversion metadata
+in ignored catalogs. No synthetic tone or replacement melody is generated. The
+NDSP primary-sample fallback uses source volume100 with existing conservative
+bus gain; MusyX modulation/3D attenuation/spatial pan/group residence are not
+reproduced. WAVs/catalogs/extracted bank data remain outside source history.
+ISO is never written or committed; original audio rights remain unchanged.
+
+2026-10-13 original Jump runtime: `tools/trio_attack_assets.py` reads original
+US DOL data sections7..12, retaining the pinned268-command NormalJump, Majinai,
+Suitoru and empty attack-ready child streams at original addresses. SDK/mutable
+tail and live event-manager/context/global address ranges are excluded to keep
+native owners authoritative. Ignored `romfs/trio-attack-events.pmevt` is1,127,488
+bytes; its JSON records exact source/segment/event hashes. No PowerPC text is
+imported. Native source-address reads use the unchanged data/constant bytes.
+
+Original `a/b_mario` with `a/a_mario-` texture owner supplies M_S_1, M_R_1,
+M_W_1, M_J_1B, M_J_1D, M_D_2 and M_A_5. Ignored `trio-attack-mario.*` retain
+original sparse streams/hierarchy with the existing512-wide resampled atlas.
+M_A_5 has one source key at0 and duration2; no extra endpoint is generated.
+The actual Mario battle atlas is bound for setup4 rendering. All original
+assets/compiled packs stay outside history with Nintendo/Intelligent Systems
+ownership and no redistribution grant.
+
+## 2026-10-13 — Original NPC dimensions, facing constants and source surfaces
+
+`tools/field_actor_assets.py` reads the read-only US DOL tribe rows80333554
+(c_tyusan) and80333014(c_kuri_h), recording original30/30 dimension fields,
+CHU_T_1/T_1 pose pointers and row hashes in ignored `romfs/field-actors.json`.
+PMNPC005 adds source resource+c4 draw masks and per-actor dimensions/talk pose.
+Source angleABf's91 float entries at803041e0 are endian-converted unchanged
+into ignored `romfs/npc-angle.bin` (PMNANG01+364 bytes), SHA256
+58c60c710ded98d199e5505805a56f956721d54cf4674bac65012bb431717432
+for the original big-endian source table. No executable code is exported.
+
+Original Chu now includes CHU_T_1 alongside CHU_S_1. Chu/Frankly PMANIM4
+packs use `character_surface_mesh.py` to preserve original vertex RGBA, shape
+passes/no-cull indices and sampler state. Original textures remain resized124px
+with2px sampler-aware gutters in128px cells; dynamic UVs and source colors are
+retained. All extracted/converted model/TPL/PNG files stay in ignored local-assets,
+and packs/manifests/T3X stay in ignored RomFS. Nintendo/Intelligent Systems rights
+remain; local conversion grants no redistribution rights. No generated NPC art
+or rewritten dialogue is introduced. Numeric SDK/render and full NPC services
+remain adapters as described by the native presentation contract.
+
+2026-10-13 Jump hit/reaction dependencies: the local Jump event pack now also
+imports relocated non-executable `rel/tik.rel` data sections at the existing
+`0x93000000 + section*0x100000` banks. Original Goomba/Spike/Paragoomba kind
+and part definitions, damage/wait wrappers and strings retain local relocations;
+DOL imports retain original addresses. `romfs/trio-attack-units.bin` (PMTHIT1,
+three rows) maps each source kind to its installed damage/wait scripts. No
+PowerPC text is included. The converter reads the ISO only; extracted REL,
+packs and source manifests stay ignored. Nintendo/Intelligent Systems ownership
+and no redistribution grant remain unchanged. Native damage currently supports
+fresh ordinary Goomba Jump only; packaging the other definitions does not imply
+those callback paths are implemented.
+
+## 2026-10-13 — Original NPC descriptor0 animation fallback
+
+The local original NPC converters now retain the source animation bank's first
+64-byte descriptor before other selected poses (directory offset at header+1ac).
+Read-only `a/c_tyusan` supplies CHU_Z_1; `a/c_kuri_h` supplies Z_1.
+Ignored per-model manifests record `original_index0`; compiled PMANIM4 retains
+original sparse animation streams and existing RGBA/pass/cull/UV/sampler data.
+The case-sensitive source tribe d_1 therefore falls back to Z_1 rather than
+being rewritten to bank D_1. Canonical pose selection is documented in the
+[native NPC contract](behavior/field/NATIVE_NPC_PRESENTATION_AND_SOURCE_DIMENSIONS.md).
+Existing124px textures/gutters, hierarchy and scaling remain. Extracted banks,
+textures, manifests and compiled packs stay ignored outside source history;
+Nintendo/Intelligent Systems ownership and no redistribution rights remain.
+
+2026-10-13 Jump death/reward metadata: ignored `trio-attack-units.bin` is now
+PMTHIT2/52 bytes, retaining the three kind/damage/wait rows plus the relocated
+original opponent group at `rel/tik.rel`0x26460. Reward setup follows original
+FieldBattleInfo+c→NpcBattleInfo, NpcBattleInfo+18→group (count4), rather than
+interpreting the stage record as the reward factor owner. Original DOL data
+already include Mario wait script80417c38; the bridge installs that unchanged
+script. No new art, animation keys or executable PowerPC data are generated.
+The existing original Goomba D1 pose now uses recovered death rotations,
+camera-dependent Z mirror and depth-5 over its original model scalar2. Packs/
+extracted data remain ignored; original asset ownership and no redistribution
+grant are unchanged. Particle and death sound presentation providers remain open.
+
+## 2026-10-13 — Original harbor before-battle event and Mario poses
+
+`tools/harbor_event_assets.py` extracts `rel/gor.rel` read-only and packages the
+original before-battle event through source ADDR32 relocations in ignored
+`romfs/harbor-events.pmevt` and `harbor-program.bin`. Raw data, provenance and
+call/section manifests stay in ignored `local-assets/harbor-event/`. Native
+section addresses are port policy; the original commands/branches/waits and
+message/speaker pointers remain unchanged. Text comes from the existing original
+`msg/US/gor_00.txt` resource. No extracted script or narrative text is committed.
+
+Original `a/a_mario`, `a/e_mario`, `a/a_mario-` provide real M_S_1/M_W_1/M_J_1B/
+M_J_1C/M_I_N/M_N_H clips. M_I_N and M_N_H are actual e_mario clips, not aliases.
+The shared geometry/animation converter preserves model/hierarchy/key streams;
+empty atlas rows are cropped, the runtime atlas is512px wide with62px cells and
+1px borders, and V scaling compensates the crop. This bounds linear memory.
+Existing original Goombella/Crump/X-Naut assets remain in use. Original game
+rights remain Nintendo/Intelligent Systems; no redistribution license is granted.
+Original environment/effect/SFX requests are retained but their native consumers
+remain unbound; no generated replacement audio was added.
+
+
+## 2026-10-13 — Original Goombella Headbonk battle assets
+
+`tools/trio_attack_assets.py` reads the supplied US ISO read-only and imports
+original `a/c_pkr` and `a/c_pkr-` into ignored
+`romfs/trio-attack-goombella.pmanim`, `.t3x` and `.bin` (PMSUV1 UV scale).
+The pack retains PKR_S_1/R_1/W_1/J_1A/A_2B/T_1 hierarchy and sparse animation
+streams. Atlas width512, proportional height and texture resampling follow the
+existing local battle conversion; original asset/model files and conversion
+metrics stay under ignored `local-assets/trio-battle/goombella/`. Native rendering
+batches the pack with citro3d and applies original battle pose clocks/rotation.
+This is original Nintendo/Intelligent Systems copyrighted game data for local
+port development; no redistribution license is granted or inferred.
+
+The original read-only Goombella data span80418450..8041849b includes defense,
+status, default attack and wait plus the scanner's original lookahead word.
+The local event manifest inventories/pins Headbonk root803941a8, size0xce0,
+SHA25677d2f5d30bea8bd4ff16b0d09ac2e942e705f4717e9fb233b1ccfb2166efc37c.
+The native trajectory uses the existing original `npc-angle.bin` table rather
+than a replacement atan implementation. Original ROM, extracted packs and
+compiled assets remain outside source history.
+
+## 2026-10-13 — PMNPC006 original NPC flag metadata
+
+`tools/field_actor_assets.py` now emits ignored `romfs/field-actors.pmnpc`
+with PMNPC006 actor rows200 bytes, retaining each original NPC Entry/setup/
+constructor flag word after PMNPC005 dimensions/talk pose. Original read-only
+`rel/gor.rel` rows0x452d4 (Chu3) and0x44ff4 (Frankly) supply setup0x80600;
+DOL NPCEntry publishes3, Frankly init0x410c8 adds0x40000000. Local manifest
+retains Chu0x80603/Frankly0x40080603 and source provenance. Objects retain0
+NPCflags and their existing separate model/bounds metadata. Loader reads
+versions1..6 atomically; missing legacy flags remain unbound0.
+
+No raster, geometry, texture or animation conversion changed in this format
+increment. Existing original c_tyusan/c_kuri_h art, source scales/dimensions
+and original91-float angle table remain local and ignored.
+[Native NPC side collision](behavior/field/NATIVE_NPC_SIDE_COLLISION.md) binds
+these source masks independently of rendering, with explicit placement history
+and scripted source flag ownership. Original numerical/runtime/backend and
+hardware limits remain stated; static fixtures are not Dolphin measurements.
+Nintendo/Intelligent Systems copyright remains; no distribution license is
+granted or inferred. No original ISO, extracted asset or compiled pack is
+committed.
+
+
+## 2026-10-13 — Original enemy script/phase metadata
+
+`tools/trio_attack_assets.py` now writes the ignored68-byte PMTHIT3 map:
+original kind/damage/wait/attack pointers for all three trio foes, original
+setup4 group and Frankly phase script. Original relocated tik data stays in
+`romfs/trio-attack-events.pmevt`; no executable PPC section is imported or
+executed. The native93105b2c callback maps tik section1+5b2c to its recovered
+XY direction ABI, with original npc-angle.bin data. Provenance remains the
+read-only local US ISO; original Nintendo/Intelligent Systems data has no
+redistribution license. Compiled/original assets remain ignored.
+
+## 2026-10-13 — Original Darkly and PMNPC007 talk-rule catalog
+
+`tools/field_actor_assets.py` imports original read-only `a/c_f_mura` and
+`a/c_f_mura-` for source Darklyクラガリさん from `m/gor_02/s`. Extracted
+model/texture resources and provenance remain ignored under
+`local-assets/field-actors/c_f_mura` and `c_f_mura.tpl`; converted/reference
+images and `field-darkly-runtime.png` remain there too. Ignored
+`romfs/field-darkly.pmanim`, `.pmmesh`, `.t3x` and `.json` retain original
+descriptor0Z_1,idleS_1,talkT_1,hierarchy/sparse states,RGBA/pass/cull metadata.
+Source hashes/offsets are in [Darkly source bindings](behavior/field/ROGUEPORT_DARKLY_STATIC_AND_TALK_BINDINGS.md).
+
+Current manifest records13 texture cells,1024×256 runtime atlas,UV scale4,
+124px decoded texture scaling with128px cells and original wrap-aware gutters.
+tex3ds emitsRGBA8 with automatic compression. Source NPC draw scalar2 and
+engine units*.01 are unchanged; no generated replacement art/music/text is
+introduced. Width/height30/30,placement(-335,0,-335),direction270 and flags
+0x40080603 come from the source tagged/tribe/Entry/setup/init owners.
+
+Ignored `romfs/field-actors.pmnpc` is nowPMNPC007:200-byte fixed actor prefix,
+then per-actor count and40-byte comparison/story/full-message-ID rules. Current
+Chu retains original nine ordinary requests; Darkly retains onlyLESS56→
+gor_02_034_00 and early0..55 coverage. Empty/unmatched lists do not invent
+legacy fallback for unbound later175/name branches. Original US payloads stay
+in existing ignored message packs byte-for-byte. See [native binding and limits](behavior/field/NATIVE_DARKLY_AND_PER_ACTOR_TALK_RULES.md).
+
+Original Nintendo/Intelligent Systems copyright remains; no distribution
+license is granted or inferred. ISO, extracted assets, compiled packs and
+original dialogue remain outside source history. Static/native checks are not
+Dolphin observations or New2DS hardware performance measurements.
+
+## 2026-10-13 — Original wandering-Goomba resource preparation
+
+The existing read-only `tools/field_actor_assets.py` model compiler prepared
+`a/c_kuribo_n` and its header-selected `a/c_kuribo_n-` bank from the local US
+ISO. Raw resources/provenance stay under ignored `local-assets/field-actors/`;
+ignored `romfs/field-goomba.pmanim`, `.pmmesh`, `.t3x` and `.json` retain original
+Z_1/S_1/T_1/W_1/R_1, hierarchy, sparse animation, material/cull/RGBA and source
+hashes/offsets. The manifest records14 texture cells,1024x256RGBA8 atlas,UV4;
+124px texture scaling and wrap-aware128px cells follow the existing converter.
+No replacement artwork or tones are generated. This prepares the original bank
+for native regular-event binding; it is not yet registered as a live field NPC.
+
+[Original wandering driver](behavior/field/FIELD_NPC_WANDER_DRIVER_AND_GOOMBA4.md)
+retains source placement/tribe/dimensions/pose/sound metadata and quest guards.
+[Portable core](behavior/field/NATIVE_NPC_WANDER_CORE.md) uses no exported DOL
+text or executable body; native C++ implements recovered phase/clock/RNG/sound
+requests. Shared clock/seed, event lifetimes and original audio providers remain
+unbound. Nintendo/Intelligent Systems rights remain with no redistribution
+license; ISO/raw assets/compiled packs/original dialogue stay outside history.
+
+## 2026-10-13 — Trio enemy impacts and private defence poses
+
+`tools/trio_attack_assets.py` additionally imports original `a/b_mario` poses
+`M_B_1`, `M_D_1` and original `a/c_pkr` poses `PKR_D_1`, `PKR_G_1`, with their
+original texture resources `a/a_mario-` and `a/c_pkr-`. They support the source
+player damage/guard scripts. Existing mesh baking, atlas halving with Lanczos,
+RGBA8 tex3ds packing and UV-scale metadata are retained. Original DOL/tik
+scripts run unchanged through native callbacks; no new story text is authored.
+The ISO is read-only. Extracted models, texture atlases, packed animations and
+compiled binaries stay ignored. Nintendo/Intelligent Systems ownership and
+absence of redistribution rights remain unchanged. Imported poses do not imply
+complete original effects/audio, guard choreography or hardware parity.
+
+
+## 2026-10-13 — Live original Goomba4 and PMNPC008
+
+The prepared original a/c_kuribo_n bank is now registered as live Goomba4 in
+ignored romfs/field-actors.pmnpc PMNPC008. Original model source ISO offset
+886803444,size18920,SHA256
+2f62e39215aa2c355ea0c9edb4a3e40e2964d602186b6fd4016eac326fbbadb3;
+texture a/c_kuribo_n- offset886822364,size24416,SHA256
+2a9eed35878cb232d7ee8770e3cc76cbbfddba00d48cb7c95612b65ca9225cd1.
+Raw model/header-selected texture bank and provenance stay ignored under
+local-assets/field-actors/c_kuribo_n and c_kuribo_n.tpl. Ignored
+romfs/field-goomba.pmanim/.pmmesh/.t3x/.json retain original Z_1/S_1/T_1/W_1/R_1,
+hierarchy/sparse states,RGBA/pass/cull/sampler metadata. Manifest records14
+texture cells,1024x256 runtime atlas,UV4;124px decoded textures and128px
+wrap-aware gutter cells remain converter choices. Uncompressed RGBA8 payload
+is1MiB(1024*256*4); this is not a hardware residency measurement. tex3ds usesRGBA8/auto
+compression; source drawscalar2 and source engine units*.01 remain unchanged.
+
+PMNPC008 retains100-byte model/200-byte actor prefix plus PMNPC007 rules and
+adds188-byte original event-presence/wander/pose/sound metadata. Actor ordering
+follows original tagged registry; Goomba4 retains source init(-370,0,130),
+direction270,radius70/speed30,tribe dimensions30/30 and original movement sound
+names. [Live binding](behavior/field/NATIVE_LIVE_NPC_WANDER.md) uses the existing
+original-art citro3d renderer with simulation-owned live paper presentation.
+Queued original SFX_FLD_NPC_KURI_MOVE1L/R requests now play original primary
+samples993/994 through config/audio_bindings.json,tools/audio_map.py and ignored
+romfs/audio-map.json. Original sound/pmario MusyX DSP ADPCM samples decode
+to monoPCM16 at16000Hz: sample993 is540 samples at bank offset10014976;
+sample994 is672 samples at10015296. Ignored romfs/goomba-step-left.wav and
+goomba-step-right.wav are bounded one-shots with source rate/ID retained.
+Native clips6/7 use libctru NDSP channels8/9 and source volume45/127 times the
+existing master gain0.65. Source name/mask/root remain in the request queue;
+macro modulation/child voices, material-mask effects and spatial attenuation
+remain native adapters, not original audio parity. Quest playback
+stays unbound; no fabricated state/dialogue or replacement art/tones added.
+
+Original Nintendo/Intelligent Systems rights remain; no redistribution license
+is granted or inferred. ISO/raw assets/compiled packs/original dialogue remain
+outside source history. Source/native code/manifest evidence is not matched
+Dolphin execution or a New2DSXL hardware performance measurement.
+
+## 2026-10-13 — Original ordinary Hammer animations
+
+`tools/trio_attack_assets.py` adds original `M_H_1A`, `M_H_1B`, `M_H_1C` from
+ISO `a/b_mario`, using original `a/a_mario-` textures. Unchanged wrapper/core
+80416c40/8035d6d4 and weapon80353de8 were already in the data-only DOL pack.
+Existing mesh baking, atlas halving with Lanczos, RGBA8 tex3ds conversion and
+UV-scale metadata are retained; no replacement artwork or dialogue is authored.
+The converter reads the ISO read-only, keeps extracted models/atlases/animations
+and compiled packs outside source history, and fingerprints tool/source inputs.
+Nintendo/Intelligent Systems ownership and no redistribution grant are unchanged.
+Original charge cue keys are retained service requests; importing these poses
+does not imply complete original gauge or MusyX voice/macro playback.
+
+## 2026-10-13 — Original grounded Goomba pose and bank fallback
+
+`tools/underground_event_assets.py` retains original descriptor0 `KUR_Z_2`
+first and additionally imports grounded run `KUR_R_2` from read-only ISO
+`a/c_kuribo`, using original `a/c_kuribo-` textures. Original flying/grounded
+parts share this same resource bank. Authored `PTK_R_2` is absent from the bank;
+the shared battle animation selector falls back to actual descriptor0 rather
+than inventing or substituting a different run animation. `KUR_Z_2` has visible
+static source geometry; existing original S/T/W/R/D poses remain imported.
+The mesh/atlas/animation conversion pipeline and texture scaling are unchanged.
+Original fall and grounded init/attack/wait/part/pose/data definitions were
+already in the data-only tik pack; they retain original relocation addresses.
+Extracted originals, compiled packs and binaries stay ignored. Nintendo/
+Intelligent Systems ownership and no redistribution grant remain unchanged.
+
+## Integrated native opening scene products
+
+All resources below originate from read-only G8ME01.iso and remain ignored/local.
+Original message catalogs retain msg/US IDs/payload bytes/control tokens. Native
+house packs preserve m/aaa_00/{d,t}, original S_ie_door/S_posuto hierarchy/world
+matrices and geometry bindings (PMHOBJ01). Original a/c_luigi/c_paretta poses
+supply movement/carry/talking; native geometry/clock/trig adapters are documented.
+
+Original a/c_peach/c_nazo and a/MOBJ_GoldenTreasureBox plus their trailing-minus
+texture banks supply demo actors. Chest PMANIM4 preserves original wrapped UV
+surfaces, untextured color and source opaque pass1. demo-chest.uvscale records
+cropped atlas scaling; static selected samples are cached without changing art.
+opening-demo-market.* preserves original m/gor_01 S hierarchy, excluding five
+source interiors and tagging both source wall subtrees for demo-owned visibility.
+Original texture dimensions are capped128px in map conversion.
+
+Original a/OFF_d_meku_right and texture bank supply demo-page.pmanim A_1 and
+PMDPG001 triangle capture-kind/pass/cull companion. demo-page-back.t3x uses
+original rune TPL0, half-size240x304 with256x512 transparent padding. Original
+old demo8..11 raster crops provide capture fronts; the native outer image-plane
+projection is explicitly an adapter. No invented fold or generated texture.
+
+Harbor setup2 uses original m/bti_01 and m/stg_00_0 selection/transforms and
+sound/stream/btl_cbs1_32k.stm (source BGM126, original32k stereo PCM/loop).
+Harbor tutorial actor packs retain original b_mario/c_kanbu/c_pkr clips/atlases;
+Crump attack clips are added from that original bank. Ignored tutorial event
+packs retain source scripts/selected DOL data/rodata, excluding executable PPC
+text and live VM context storage. Packed source pad/state/services are native
+code adaptations, not redistributed originals.
+
+Original Nintendo/Intelligent Systems ownership/no-redistribution terms remain.
+Source files, converted images/audio/geometry/event packs and compiled local
+3DSX artifacts are never staged. No generated tones or replacement story art.
+
+### Native prologue pouch name / original drop and EXP data (2026-10-13)
+
+Prologue pouch initialization reads the unchanged packaged msg/US/global.txt
+key name_party3 for the localized initial partner name; no replacement name or
+story text is authored. The full message bank is indexed temporarily and only
+that original name remains resident. Initial resource/item scalar mutations
+and original drop/stockEXP semantics are native recovered logic. Heart/flower
+profiles803702a0/80370f20 and Item Hog table802eea40 remain in the existing
+original data-only trio pack, extracted read-only from G8ME01.iso. No new
+original art or redistributed resources are committed. Nintendo/Intelligent
+Systems ownership/no redistribution rights remain unchanged. EXP404/PointGet
+art is documented next work, not claimed to be imported/rendered by this chunk.
+
+
+## 2026-10-13 — Read-only trio EXP asset evidence
+
+Original `icon.bin` ID404 uses `icon.tpl` frames418..421 (40x40,loop,delay6
+perframe). Original `e/us/effect_us.tpl` indices6..13 are point-get "You got",
+digits0..9 andsingular/plural Star Point(s) foreground/shadow art. Inspected
+andconverted onlytoignored `/tmp/trio-exp-*`; this documentation does not
+claim theyarealreadyimportedintothe nativepack. Proposednativeatlas preserves
+originalpixels/frameIDs/delays/alpha with explicit3DS viewport adapter; exact
+GXquad/window/iconclockparity remainsopen. Sourcevictorymodelbanks `a/b_mario`
+M_V_1/M_V_2 and`a/c_pkr` PKR_Y_1/PKR_S_1 arelocallyavailable; originalsource
+category69 handlesGoombella type43. Allare Nintendo/Intelligent Systems local
+original-game resources; noreplacementlicenseorredistributionrights implied.
+See [sourceEXP contract](behavior/battle/UNDERGROUND_TRIO_EXP_PRESENTATION_AND_COUNTING.md)
+for exact dimensions, hashes, source coordinates and remainingrender dependencies.
+
+## Original battle startup and harbor curtain resources
+
+Read-only G8ME01.iso supplies a/p_b_st, a/p_jyabara (actual TPL owner a/p_slit-),
+a/p_kaiten_h and original a/EFF_nice_us, EFF_good_us, EFF_great_us,
+EFF_wonderful_us, EFF_excellent_us, EFF_lucky_us with their trailing-minus banks.
+Ignored battle-startup-resources.bin keeps full original banks/25 descriptors;
+23 supported original poses retain PMANIM4 wrapped UV/pass/cull/RGBA. Two dormant
+accordion poses retain opaque original descriptors; no playback/capture is faked.
+Original US language1/context1 keys and NULL grade-row slot remain source-owned.
+Converted GPU atlases are capped512wide with original source gutter/wrap rules.
+Explicit captured-texture export admission retains sourcekind1 in descriptors;
+its fallback TPL does not substitute for an actual field capture.
+
+Original a/OFF_d_maku_left_right and a/OFF_d_maku_left_right- supply ignored
+harbor-curtain.pmanim/t3x/bin/json for source fade23/context2/A_2. Original sparse
+geometry is216 triangles,14 keys,span0..45. One source atlas becomes512x64 with
+UVscale8. Sourcepass0 normalization and native image-plane projection are recorded
+in display/NATIVE_HARBOR_CURTAIN_FADE.md. Completion uses the admitted/evaluated
+original pose, not the stored duration200. No generated image/audio/geometry.
+
+All original banks, images, converted packs and compiled binaries remain local
+and ignored. Nintendo/Intelligent Systems ownership applies; no redistribution
+rights are claimed. Exporters honor configured ISO paths and open originals only
+read-only. Source native adapters and source hashes may enter history; originals
+and executable PPC bytes never do.
+
+## 2026-10-13 — Guarded original Goomba4 ordinary message rules
+
+The local PMNPC008 catalog now retains the11 source-order kuribo4_talk ordinary
+story rules and gor_02_030_ prefix, directly matching the read-only US gor REL
+event and existing msg/US/gor_02 bank. Original IDs/control tokens/attribution
+remain unchanged. The native partial saved-switch guard excludes both earlier
+quest arms before these rules can play; unknown legacy state does not imply0.
+No additional texture, geometry, audio or text conversion was introduced. Existing
+c_kuribo_n and message resource conversion/provenance/licensing applies; original
+content remains Nintendo/Intelligent Systems copyrighted material, used locally
+from the user's ISO without redistribution. Compiled catalog/messages/captures
+and ISO remain outside source history. See
+[known-state native binding](behavior/field/NATIVE_GOOMBA4_ORDINARY_TALK.md).
+
+### 2026-10-13 EXP type0 window frame source evidence
+
+Read-only ISO `f/msgWindow.tpl`,321984bytes; ignored local evidence
+`artifacts/recovered-temp-evidence/msgWindow.tpl`. Original TPL descriptor0
+is72x72CMPR (format14), source type0 nine-slice texture. See
+[geometry/material and clock](behavior/display/EXP_ICON_CLOCK_AND_TYPE0_WINDOW_FRAME.md).
+No generated substitute art or distribution of original assets; same user-owned
+ISO/local-use licensing limitation applies. Native import/render remains next.
+
+## 2026-10-13 — Native original EXP stars and victory poses
+
+The read-only US ISO supplies `icon.bin` ID404 / `icon.tpl` frames418..421,
+40x40 pixels, loop1 and six simulation updates per frame. The existing original
+message-icon atlas now imports all four frames unchanged. Original `a/b_mario`
+M_V_1/M_V_2 and `a/c_pkr` PKR_Y_1 are included in the trio animation packs.
+Original `f/msgWindow.tpl` descriptor0 supplies the nine-slice EXP frame.
+The declared400x240 viewport adapter halves source coordinates/dimensions,
+preserves bottom anchoring, uses source icon scales.9/.45 and frame alpha128;
+texture tint preserves RGB. Existing locally converted original victory PCM
+is selected while this positive-EXP prefix owns the battle. Complete WIN2,
+voice/crowd/camera and original raster routing remain open.
+
+Extracted assets, local caches, RomFS packs and emulator captures remain ignored.
+Nintendo/Intelligent Systems ownership remains unchanged; no redistribution
+rights are granted. PointGet US texture strips remain next implementation work.
+
+## Original demo chest crystal/radiation resources
+
+Read-only tools/demo_effect_assets.py exports original DOL N64 quad/triangle
+arrays, deterministic radiation rows, float/color constants to ignored
+romfs/demo-effects.bin (PMDEFX01,700 bytes). Original e/us/effect_n64.tpl
+textures109/110 become romfs/demo-crystal-109.t3x and demo-crystal-110.t3x;
+64×32 I8 and64×64 I4 dimensions are unchanged. Shared GX intensity decoding
+now retains original alpha by replicating intensity into all RGBA channels.
+Exporter fingerprints include this decoder and regenerate affected packs.
+Local source copies/PNGs/provenance remain local-assets/demo-effects; ignored
+romfs/demo-effects.json records source addresses/hashes and conversion scope.
+Only original-used subtypes2/6/3 are consumed, without invented geometry or RNG.
+See [effect contract](behavior/effect/NATIVE_DEMO_CHEST_EFFECTS.md) for source
+ownership and native camera/GX numeric adapters. Rights remain Nintendo/
+Intelligent Systems; local use only, no redistribution rights. Original data,
+compiled packs and source disassembly are never committed.
+
+## Original opening foreground tree bindings
+
+The aaa_00 exterior pack now retains original sai_ki2/sai_ki1 subtrees formerly
+omitted by the opening exporter. Original187-command evt_prologue drives finite
+4000ms opposite-X camera parallax; no ambient animation or generated art is
+invented. The original map root/local transforms (including tree scale1.2),
+geometry, texture indices/materials and atlas conversion remain intact.
+Ignored romfs/opening-aaa_00.houseobj now uses PMHOBJ02 with four roots,6912
+bindings/193776 bytes; exterior mesh31656 vertices includes6030 restored tree
+vertices. Existing textures need no additional source resource. Converter
+fingerprints force regeneration and native pack validation rejects obsolete
+bindings. Rights remain Nintendo/Intelligent Systems, local use only with no
+redistribution rights. Original payloads/compiled packs stay outside history.
+
+## Original book composite capture and audio transition
+
+Original demo.tpl cover1/2 remains288x352. A bounded read-only exporter keeps
+page-base indices3..7 at240x304 in256x512 textures; original illustration8..12
+and desktop0 retain their existing conversion. Native captured page fronts are
+actual top-screen RGBA8 framebuffer copies, cropped193x240 and tiled256x256;
+they contain no newly generated art. Original OFF_d_meku_right A_1 remains the
+page deformation and the original rune texture remains its back.
+
+Original BGM_DEMO1/DEMO2 PCM packs retain original decoding/loops. Two fixed
+native streams consume source6000ms fade and750ms retiring-tail clocks; no
+new music is generated. Native scaling/projection/readback/audio scheduling
+remain documented adapters. All extracted/compiled resources and provenance
+remain ignored local products, for local use without redistribution rights.
+
+## 2026-10-13 — Native original US PointGet textures
+
+`tools/message_icon_assets.py` reads `e/us/effect_us.tpl` from the original
+US ISO and imports global effectIDs124..131 (TPL6..13): You got, decimal
+digits, singular/plural Star Point(s), and their original shadows. The shared
+UI atlas grows to512x512RGBA8; all source pixels/dimensions/alpha are retained,
+with2px transparent padding and no resampling. Adapter resource keys10000hex+
+sourceID distinguish effect resources from actual `icon.bin` IDs; the manifest
+retains original IDs/TPL indices. The existing native UI texture serves both
+icons and the effect without a separate per-effect GPU texture allocation.
+
+Native source quads retain foreground sizes even for lower-resolution shadows,
+original decimal UV selection, digit scale1.42857146 and width cap200/L.
+Shadow black/alpha128 draws before foreground; source position/width/height
+are adapted by the existing half-size viewport. Full source camera/dispatcher/
+filtering/raster parity remains open. Original packs and captures are ignored,
+the ISO is read-only, and Nintendo/Intelligent Systems ownership/no
+redistribution rights remain unchanged. No generated wording or substitute art.
+
+## 2026-10-13 — Original finishing poses and fade10
+
+The existing original `a/b_mario` M_V_1/M_R_1 and `a/c_pkr` PKR_R_1 packs
+serve the used ending19/1a requests. No additional character art is substituted.
+Used fade10 draws an embedded white1x1I4 texel (original DOL80415020, byteFF),
+modulated by original black color and low-byte truncated255*ratio alpha.
+It requires no external TPL/palette. Citro2D solid-rectangle submission is the
+declared full-native-viewport projection adapter for this source texture result;
+original camera8/GX restoration and raster parity remain unverified. All local
+original models/packs/ELFs/captures remain ignored; original ownership/local-use
+licensing limits and read-only ISO handling are unchanged.
+
+## Original item presentation catalog and selector art (2026-10-13)
+
+Read-only US G8ME01 revision0 DOL itemDataTable803108a8,3520hex bytes,
+SHA256cd9e52c1f0946f785301879d0e9560a5b87860abd648e9721973159291d0add9,
+feeds `tools/item_presentation_assets.py`. Ignored
+`romfs/item-presentations.bin`/`.json` retain340 original indexed name/description
+keys, source pointer identities and icon IDs; no rewritten prose or imported
+weapon/game code. Keys resolve in original `msg/US/global.txt`; existing room
+lookup precedence remains. Record339 is null metadata, not a fallback item.
+See [native catalog](behavior/unit/NATIVE_ITEM_PRESENTATION_CATALOG.md) and
+[original metadata](behavior/unit/ITEM_PRESENTATION_METADATA.md).
+
+`tools/message_icon_assets.py` additionally decodes icon.bin IDs307/308 and
+445/446/447 using their original descriptors and icon.tpl images312/313 and
+465/466/467. Quest icons remain40x40, arrows48x48, stripe24x24 with all original
+pixels/frame timing,2px transparent atlas padding and no resampling. They fit
+existing512x512 RGBA8 `romfs/message-icons.t3x`; no GPU atlas dimension increase.
+Raw/decoded resources remain ignored `local-assets/message-icons/`; metadata
+and compiled packs remain ignored `romfs/`. Original icon source hashes are in
+[the window contract](behavior/message/ITEM_TABLE_SELECTION_WINDOW.md).
+Nintendo/Intelligent Systems resources have no redistribution grant; local
+extraction/conversion only. Nothing here authorizes distributing original art,
+messages, assets or ISO. Complete selector drawing/runtime fidelity remains open.
+
+
+Original fresh-demo fade ownership uses existing local demo.tpl textures and
+procedural flat source fade quads, with no additional texture extraction.
+The native entry gate admits only after actual original front-end images load
+successfully. Source type9 uses000000ff/500ms; dmo title exit17 normalizes to
+10/f0f0f0ff/2000ms. Original source viewport608x480 is adapted to304x240 atx48;
+alpha is original truncation of255 times the repeated f32 simulation ratio.
+Rendered final frame completion is a separate gate from clock completion.
+[Behavior and evidence](behavior/display/NATIVE_OPENING_DEMO_FADES.md).
+The harbor-curtain exporter fingerprint now includes iso_assets.py so corrected
+original intensity-alpha decoding invalidates older converted curtain atlases.
+
+Original US title source consumers additionally retain local
+`a/OFF_d_maku_center` + `a/OFF_d_maku_center-` Z_2 and
+`a/OFF_d_maku_left_right` + `a/OFF_d_maku_left_right-` A_1/Z_1 via
+`tools/opening_title_assets.py`. Ignored `romfs/title-curtain-center.*` and
+`romfs/title-curtain-sides.*` contain PMANIM sparse original geometry/materials,
+PMTIT001 UV/pose/texture descriptors and original-art GPU atlases. Source center
+has4 texture cells; sides1. Shared original sampler gutters/124px textures,
+half-size Lanczos atlas and explicit native image-plane projection adapt the
+source asset. Fingerprints include original ISO model/TPL and decoder/converter
+helpers. All remain original Nintendo/Intelligent Systems assets for local use;
+no distribution rights or original bytes enter history.
+[Title behavior](behavior/display/NATIVE_OPENING_TITLE.md).
+
+Title idle return extends the ignored center pack with original A_2 span0..160,
+161 keys alongside Z_2. The title exporter retains actual `mariost.tpl` index6
+64x4/RGBA8/repeatS/T as ignored `romfs/title-prompt-pattern.*`; native64x8
+minimum storage repeats the original four rows with inverseV sampling. Original
+US mask16 and two source TEV stages combine mask RGB/A, scrolling pattern RGB
+and source pulse alpha. Cached fingerprints include originalTPL and decoder;
+no procedural replacement art is generated. Original BGM_TITLE1 volume88,
+existing original demo PCM streams and loop intervals feed three fixed NDSP
+owners on1/0/18; original copyrighted resources remain excluded from history.
+
+
+## Original opening house SFX PCM and position metadata
+
+Read-only tools/opening_house_sound_assets.py resolves original US sound keys
+SFX_EVT_OPN_PARETTA_MOVE1/SFX_EVT_POST_SHAKE1/SFX_DOOR_OPEN1/SFX_DOOR_SHUT1,
+retaining distinct table/FX/macro/sample IDs and table parameters. Original
+pmario DSP ADPCM samples1176/479/840/851 become ignored
+romfs/opening-house-{flight,postbox,door-open,door-shut}.wav, mono PCM16 at
+16000Hz without resampling or loops (~75KB). Ignored opening-house-sounds.bin
+(PMHSND01,404 bytes) retains four source cue records and original door/postbox
+leaf-average position metadata; opening-house-sounds.json records source paths,
+hashes, macros/parameters, position leaves and ENV_OPN_AAA1's five original
+bird/leaf rows. All raw banks/copies remain private local-assets/opening-sounds;
+no hardlinks to parent mutable packs are used.
+
+Native presentation consumes original samples and source table volume/pan;
+full MusyX macro delay/pitch/RNG/envelope/child voices, positional calc3D and
+ENV scheduler remain unbound. No substitute bird loop, generated art or tone
+is added. See [sound contract](behavior/audio/NATIVE_OPENING_HOUSE_SOUNDS.md).
+Original resources retain Nintendo/Intelligent Systems copyright; local use
+only without redistribution rights. Extracted/compiled assets stay outside history.
+
+## Native Switch soundtrack pack (2026-10-13)
+
+Default `make all` uses the existing verified Switch1.0.0 decoded library at
+`local-assets/switch/audio/manifest.json` and `pcm/stream/`. The18 exact sound
+names/aliases live in [bindings](../config/switch_soundtrack.json); generated
+`romfs/soundtrack-switch/manifest.json` retains source paths/hashes, sound IDs,
+PCM hashes/rates/channels/frame counts and BFSAR loop intervals per track.
+The packager verifies all selected PCM hashes and loop sidecars before copying
+unchanged canonical PCM16 WAVs. There is no resampling, normalization, added
+fade or generated replacement. Runtime streams original48k stereo through NDSP;
+district/Think selection is a [native adapter](behavior/audio/NATIVE_SWITCH_SOUNDTRACK.md),
+not recovered Switch event routing. GameCube primary/house SFX stay active.
+`SOUNDTRACK=gamecube` removes only the Switch pack and updates the selection
+marker to GCM1, forcing an embedded RomFS rebuild.
+
+Original streams are Nintendo/Intelligent Systems copyright. Local extraction
+and conversion grant no redistribution license. The source library, generated
+pack/manifest and compiled3DSX stay outside history; no ISO/NSP is committed or
+modified. Decoder provenance/license remains in [Switch audio assets](switch/AUDIO_ASSETS.md).
+
+## 2026-10-13 — Shared native original window-frame geometry
+
+The native type0 frame reuses the existing original `f/msgWindow.tpl`
+descriptor0,72x72CMPR texture and Tex3DS subtexture bounds. No new extraction,
+resampling, generated art or pack format is introduced. Source nine-quad
+positions/UVs, selector decoration1 blue tint and separate rectangle centers
+feed a shared citro3d triangle renderer; half-size screen reflow remains a
+native presentation adaptation. See
+[native binding](behavior/display/NATIVE_TYPE0_WINDOW_FRAME.md). Existing
+Nintendo/Intelligent Systems ownership and local-use licensing limitations
+apply. The ISO, extracted images, compiled packs and captures remain outside
+source history. Original raster and New2DS XL hardware performance remain open.
+
+### Opening Peach atlas overlap budget (2026-10-13)
+
+Original read-only `G8ME01.iso:a/c_peach` and `a/c_peach-` continue to supply
+all19 opening demo poses and their original cells. `tools/opening_assets.py`
+now halves only the packed Peach atlas with Lanczos to512×512 RGBA8; normalized
+UV, cell order, pose/geometry data and original animation timing are retained.
+Ignored `romfs/c_peach.t3x` uses1MiB of native texture storage instead of4MiB.
+This permits the final storybook zoom/fade to coexist with the original market
+map and actors. The atlas, extracted sources and compiled RomFS remain private
+local products; original Nintendo/Intelligent Systems ownership is unchanged,
+and no redistribution rights are granted or original payloads committed.
+
+## 2026-10-13 — Used original awakening camera and capture
+
+Original `m/gor_10/c` from the read-only US revision0 ISO is retained unchanged
+as ignored `romfs/opening-gor_10.camera`; extraction/provenance lives in ignored
+`local-assets/opening/gor_10.c[.provenance.json]`. The gor10 native mesh omits
+original `marukongou`, `densha`, `pukupuku` subtrees as its source awakening
+initializer hides them. Original geometry/material textures remain from the
+same ISO; this modifies visibility, without replacement art. Awakening eyelids
+are source procedural quads; depth uses a current native-world GPU capture
+with recovered eight original sampling offsets/weights. Capture storage is
+private runtime data, not an extracted or distributed original asset. Native
+RGBA8 capture adapts the original RGB565 copy/TEV pipeline. Original Nintendo
+assets remain proprietary, retained for local development; no ISO or original
+payload is committed or distributed.
+
+## Original opening backdrops (2026-10-13)
+
+`tools/opening_background_assets.py` reads original `b/aaa_00.tpl`,
+`b/gor_10.tpl`, `b/gor_00.tpl` and `b/dmo_00.tpl` from the read-only US ISO.
+Palette0 retains every512x480 source pixel as RGBA; transparent512x512 padding
+is excluded by source-size metadata. Private products are
+`romfs/opening-bg-<room>.t3x/.size`, and source hashes/paths stay in
+`romfs/opening-backgrounds.json` and `local-assets/opening-backgrounds/`.
+The dmo background keeps the requested dmo_00 name despite its gor_01 geometry
+alias. The ISO has no `b/muj_20.tpl`; voyage uses its original scene geometry.
+Native viewport adaptation is separate from original background scroll/camera
+services. Original Nintendo/Intelligent Systems artwork: local use only; no
+redistribution rights granted. No original asset payload belongs in Git.
+
+## Original opening harbor ship and captured paper (2026-10-13)
+
+`tools/opening_ship_assets.py` reads `m/gor_00/d`, `m/gor_00/t`,
+`a/OFF_d_kaiten` and `a/OFF_d_kaiten-` directly from the read-only US ISO.
+Private `local-assets/opening-ship/` retains original geometry, coordinate
+bindings and source provenance. `romfs/opening-gor_00.*` and texture packs
+are independent of ordinary field harbor products; original textures are
+bounded to128px, with existing map conversion lighting/material limitations.
+`opening-gor_00.shipobj` stores original seven subtree binding sets including
+child/root overlap for actual original hierarchy composition.
+`opening-ship-paper.pmanim/.bin` retain original Z_1/A_1 and distinct captured
+kind2/kind1 faces; A_1 has61 keys, frames0..60 and120 source triangles.
+The paper source SHA256 is
+`4f23c001b8de518ef437325dc9b09e620525b5a49eb74ad88a82b8eb256558a0`.
+Native paper uses actual ship-only framebuffer pixels, with an explicit native
+viewport adapter; no substitute image is generated. Paths, source hashes,
+conversion choices and local-only Nintendo/Intelligent Systems licensing
+are in `romfs/opening-ship-assets.json`. No distribution rights are granted.
+
+The same original ship exporter reads `m/muj_20/d` and `m/muj_20/t` for the
+used voyage. `opening-muj_20.*` retains original source-hidden other boats and
+ghost background subtrees, original ship/local coordinate bindings and selected
+original wave/cloud data. Source map-play mode2 requests the completed original
+`yoru_hiru` pose250; the sun's original engineY=-260 is a local node translation
+(-26 authored map units) through its rotated parent. No sky raster substitutes
+for the original room's sky geometry. The manifest records both source map
+paths/hashes, the initial pose and local translation choice.
+
+## 2026-10-13 — Field partner pose admission reuses original c_pkr
+
+Native field animation admission now loads existing ignored
+romfs/partner.pmanim derived from read-only ISO a/c_pkr and a/c_pkr-.
+The existing converter retains PKR_Z_1/S_1/W_1/R_1/J_1A/T_1 and produces
+partner.pmmesh plus partner-mesh.t3x. No new extraction, texture scaling,
+geometry or licensing conversion choice is introduced here. The six-pose
+subset is not every animation in the source model; later HP/pose branches
+need their exact original additional clips before being treated as supported.
+
+Original c_pkr static resource key804213e0/mode2 routes to this actual loaded
+bank. Admission requires decoded PKR_S_1 geometry and allocates independent
+CPU shape workspaces; immutable bank data is reused. The original d_mario
+override802cb340 remains unsupported and cannot substitute c_pkr or mint an
+arbitrary pose handle. GPU texture admission/drawing, original file/archive/
+GP-time/shape ABI and full pose lifecycle remain distinct consumers. These
+local assets remain copyrighted Nintendo/Intelligent Systems data from the
+user-provided ISO, kept private/ignored and not committed or distributed.
+
+Original sys prologue heading exports `e/us/effect_sys.tpl` images0..3 and
+19..25 at their original160x160/64x64 resolution with transparent power-of-two
+padding. The center curtain uses `a/OFF_d_maku_center` and its original companion
+TPL, Z_1/A_1 hierarchy/materials/colors/poses intact; only its1024x128 atlas is
+scaled to512x64 with Lanczos. `msg/US/global` supplies the exact
+`msg_stg_seq_prolouge` subtitle, rendered with the existing original font.
+Ignored heading-resources.json records source hashes, conversions and licensing;
+extracted/compiled resources stay outside source history and confer no
+redistribution rights. [Provider boundaries](behavior/display/NATIVE_OPENING_HEADING.md).
+
+## 2026-10-13 — Shared field Mario pose owners
+
+Reused ignored romfs/characters.pmanim, converted from the read-only US ISO
+paths a/a_mario, a/a_mario_r and a/e_mario with their original a/a_mario- and
+a/a_mario_r- textures. Existing converter clips and atlas unchanged. Real
+M_S_1, M_S_1R and M_I_5 geometry-backed shapes admit the respective bank
+owners; those names validate resource/shape availability, not an authored
+pose request or completed animation draw. Source resource identities remain
+802c18a0/18a8/18b4 and mode2/archive0 in separate mutable records sharing
+the existing immutable converted container. No new extraction/conversion.
+Original copyrighted assets and compiled packs remain ignored/private; no
+source payload or ISO distributed. CPU ownership is now common with c_pkr,
+while the renderer's separate cache, full animation coverage and GPU/time/
+original file-pool fidelity remain unfinished.
+
+## 2026-10-13 — Original battle HUD and numeral import
+
+Read-only US G8ME01 revision0 DOL status table8036edd0 and numeral arrays80415084
+are verified by tools/battle_hud_assets.py. Original icon.bin/icon.tpl supply
+all13 status rows and both10-digit sets: Mario badge427, flower441, stars442/443,
+coin444, resource bars472..475, multiply478, slash480 and digits481..500.
+The shared converter now uses rectangle packing to retain those images plus
+existing message/selector/EXP assets inside the existing512x512 RGBA8 atlas;
+all original frame pixels/dimensions/delays remain unchanged, with2px transparent
+padding. No new GPU texture allocation or image resampling is introduced.
+Originals/PNGs remain ignored local-assets/message-icons/; detailed verified
+source-table metadata and compiled packs remain ignored romfs/message-icons.*.
+Nintendo/Intelligent Systems rights remain with their owners; no redistribution
+license is granted. No ISO, original payload or compiled pack is committed.
+See [native HUD/menu scope](behavior/display/NATIVE_BATTLE_HUD_AND_SUBMENU.md).
+
+Heading Stardust mode4 uses original `e/us/effect_n64.tpl` index32,176x22
+unchanged raster with transparent256x32 storage padding. The exporter pins
+original entry/main/display/rand bodies and the eight signed-short quad arrays,
+source palette/scale bytes and constants from the read-only DOL. Their hashes
+and paths remain in the ignored heading resource manifest. No Crystal mask or
+replacement particle geometry is used; original copyrighted bytes remain
+private and outside source history.
+
+## 2026-10-13 — Original Goombella low-HP idle animation
+
+Expanded tools/build_assets.py's original partner pack with PKR_D_2 from
+read-only ISO a/c_pkr and a/c_pkr-. Existing six clips retained. Rebuilt
+ignored romfs/partner.pmanim, partner.pmmesh and partner-mesh.t3x through
+the existing original sparse animation/geometry/atlas pipeline; the low-HP
+frame0 has126 original triangles. No generated art or replacement motion.
+Original clip metadata is loop1, range0..92 per the recovered ordinary pose
+contract. This supplies original CPU animation data and atlas resources;
+request admission still does not imply GPU animation playback.
+
+Original model SHA256 d712df83d7b70b64a90d45551b39ecf7adf277b9572f6931daae7792b52d69e7;
+texture SHA256162b5151601b129fc667f51b90ac6124de863ab2dff79b997cd143ed4d5c4b88.
+Private converted PMANIM196722bytes SHA256
+ea235288e62746f61ded08437ec7cb9e0385daa93a562b8d7c7f1dd741c6ff8a.
+Asset manifest retains source provenance/fingerprint; source assets/packs are
+original copyrighted data, remain ignored/private and are not distributed.
+
+## 2026-10-13 — Native original item-selector font and icon services
+
+Native selector rendering reuses original `f/papermarioset_US.bfn` via existing
+font.pmfont/font.t3x, original `f/msgWindow.tpl` descriptor0, original `icon.bin`/
+`icon.tpl` ID307/308,504,445/446 and exact `msg/US/global.txt` text/keys. No new
+art, resampling or texture conversion is introduced. Original US startup
+config1 supplies spacing2; patched WID1 widths/offset UV crops, quad height22,
+outline offsets2 and LFpitch28 feed native GPU drawing. Row icon anchoring and
+opaque threshold now follow winIconSet; cursorflags20 mirrorsX. See
+[native services](behavior/message/NATIVE_ITEM_SELECTOR_RENDERING.md).
+Half-size screen reflow and libcitro3d/PICA/raster numerics remain adaptations.
+Nintendo/Intelligent Systems ownership and local-use licensing limitations
+apply. ISO, extracted images, caches, RomFS packs and captures remain outside
+source history. The isolated icon cache regenerates bin/t3x/json byte-identically;
+it is separate from concurrent HUD atlas packing.
+
+Opening map callback admission now binds the original `mariost.tpl` palette3
+raster and alpha producer. The original held map item96 resolves to icon314,
+`icon.bin` descriptor0x1346/image319 (64x64, one static frame). Its original
+`icon.tpl` pixels join the existing message icon atlas without resampling.
+`a/c_luigi` supplies `I_1` and `S_1`; `a/e_mario` supplies `M_L_3` using its
+original `a_mario` texture binding. These packs stay in ignored RomFS/local
+assets; source hashes and requests live in the
+[map display contract](behavior/story/OPENING_MAP_DISPLAY.md). Original Nintendo/
+Intelligent Systems assets remain local-only with no redistribution rights.
+
+
+Voyage S_hai01 now explicitly bakes its original selected named pointLight9,
+original raw RGB20/30/87, intensity1.5, constant-distance attenuation and original
+S8/64 normals through a normalized inverse-transpose transform. This is a native
+lighting adaptation for this one used static sky node, not a global replacement
+palette or a complete GX lighting backend. The original source map provides all
+color/normal/light data; no sky texture was generated. Other map conversion
+outputs remain unchanged unless they explicitly request named_lighting.
+
+
+The completed Voyage Day pose also consumes original yoru_hiru light-color
+tracks (record+28,104-byte keys), not just mesh/material tracks. Its used
+pointLight9 final RGB components publish54/104/202 after original binary32
+multiply255/truncate-to-byte; intensity1.5. These source-derived completed
+parameters were independently observed in isolated original MEM1; no exposure
+or substitute palette is applied. Light-color parsing remains explicit opt-in
+for the used static opening sky.
+
+Original map transition resources `a/OFF_d_meku` and its `-` descriptor bank
+supply Z_1 (span0/key1) and A_1 (span80/key45). Ignored
+`romfs/opening-map-turn.pmanim/.bin/.json` preserve source sparse geometry and
+88-triangle material order. Dynamic kinds1/2 retain their source identities;
+actual captured map pixels come from a native GPU target. No fallback TPL raster
+or new image substitutes for those dynamic materials. The exporter is
+`tools/opening_map_transition_assets.py`, invoked by assets-ready; original
+licensing/local-only restrictions above apply.
+
+Original fade50 primary sample: `sound/proj/pmario.{proj,pool,sdir,samp}`, SFX_OFF3_MAP_CHANGE1 index869/fx1342/object1503/sample1235. `opening_map_transition_assets.py` exports `romfs/opening-map-turn.wav` and private source manifest; original rate PCM16, source volume100/pan64, dedicated NDSP19. Complete MusyX macro playback remains unbound. Nintendo/Intelligent Systems original resources, local use only; no redistribution rights.
+
+## 2026-10-13 — Original system-owner hook admission
+
+Read-only US DOL definition80416a80/kind803ade74/part803ade28/init803adf38 and
+three system hook streams80419ef8..80419f0c are pinned by
+ tools/verify_harbor_tutorial_registry.py. The bounded tutorial DOL importer now
+admits28 actual bytes at80419ef8: three8-byte scripts plus real final lookahead
+word100 at80419f10, required by the unchanged source label scanner. No dummy
+sentinel, broad mutable-global import, model replacement or texture change was
+made. System part bank/table are null; source kind220 retains HP999/FP0 and
+maxMoves0 initialization in its invisible native record. The private compiled
+harbor-tutorial-events.pmevt is regenerated under ignored romfs/. Original raw
+bodies, ISO and compiled packs remain outside source history. Nintendo/
+Intelligent Systems rights remain unchanged; no redistribution rights granted.
+[Registry scope](behavior/battle/HARBOR_NATIVE_REGISTRY_AND_VISUAL_PROJECTION.md).
+
+## Original pouch revision tables
+
+`tools/pouch_revision_assets.py` reads US revision0 `main.dol` from the read-only
+ISO. It pins the complete itemDataTable803108a8, copies all340 signed BP-cost
+bytes at item record+1c unchanged, and pins/copies the32 signed partner HP
+halfwords at80315380 with big-to-little endian conversion only. The ignored
+`romfs/pouch-revision.bin` (416 bytes, PMPRV001) and provenance JSON are local
+packs. No ISO or extracted source payload is committed. Nintendo/Intelligent
+Systems original data remains local-only with no redistribution rights.
+[Revision contract](behavior/unit/POUCH_PARAMETER_REVISION.md).
+
+The main Mario atlas opts into byte-identical native RGBA raster sharing in character_mesh.py. Every original texture descriptor/state retains its explicit source→cell mapping; original positions/UV domains/pose keys remain. Identical124×124 converted texels and duplicated borders share one cell. Other banks retain their prior allocation by default. This keeps the64-cell native format without dropping the opening M_L_3 pose or other supplied animations. A private read-only original inventory with the concurrently supplied M_N_5B/M_N_C poses had65 logical entries/57 distinct native rasters (eight front/rear aliases). Nintendo/Intelligent Systems source art, local use only; no redistribution rights.
+
+## 2026-10-13 — Original trio named stage-object bindings
+
+Read-only ISO sources remain m/stg_00_1/d,t and m/bti_01/d,t; unchanged original
+selected geometry/texture scaling in tools/trio_battle_assets.py. Added converter
+object_bindings and copied ignored PMHOBJ02 metadata to romfs/stg_00_1.houseobj
+(95300bytes,SHA256 f1b47dd275306406e0d9fff4ee2bdec54d51dabfa25003a0e7fb15097646afad)
+and romfs/bti_01.houseobj (128bytes,SHA256
+0491ba0f69e80f58711c6fade4ac12d6a68571e6d652d53b895cf3ef511793d6).
+Stage tags isi_1/isi_2/A1/B_mati/C retain3393 original vertices with local/world
+matrices and source placement bake; builtin escape_wall/spotlight tags retain
+zero draw vertices after original hidden admission. Added spotlight to hidden
+groups because source StageObjectInit marks it hidden. Existing .1 model
+conversion and .01 source additional placements remain; no duplicate offset.
+Actual native dynamic provider still requires matrix/frame/upload binding.
+Assets rebuilt with python3 tools/trio_battle_assets.py. Nintendo/Intelligent
+Systems resources; no redistribution rights granted. No private payload committed.
+
+## 2026-10-13 — Native original combat-atlas residency
+
+No new image payload was extracted or resampled. The existing private original
+quest13 Mario and trio Mario/Goombella `.t3x` banks retain their ISO provenance,
+pixels, UV scales and filtering. Their RGBA8 headers describe1024×512,512×512
+and512×256 respectively:3.5MiB of texture pixels excluding metadata. This is
+a size calculation, not a measured free-memory value. GPU import now occurs at
+the active scene consumer; room changes and inactive consumers release those
+GPU banks after frame synchronization. CPU animation and UV metadata stay loaded.
+The valid original harbor checkpoint previously rejected gor_00 texture32;
+deferred combat GPU admission permits the harbor and original tutorial entry.
+See [native lifetime contract](behavior/display/NATIVE_SCENE_ACTOR_GPU_TEXTURE_LIFETIME.md).
+Nintendo/Intelligent Systems original resources; no redistribution rights granted.
+ISO remains read-only; compiled packs and captures remain private/ignored.
+
+## 2026-10-13 — Original complete stage map-node and descriptor packs
+
+Read-only original m/stg_00_1/d and m/bti_01/d converted with optional map_objects
+export in tools/map_convert.py. Ignored PMMAP001 metadata now retains124/108
+complete authored node hierarchies and rendered vertex-local coordinates,
+removing baked scene offsets before runtime source translation exactly once.
+romfs/stg_00_1.mapobj69184bytes SHA256
+d8ae5e7b9e317516a6203a180f7c1eb75cd2cd0e079cffbb6d7e54232241b484;
+romfs/bti_01.mapobj200512bytes SHA256
+7b4dab2f72c019237bcafecd579b53c966c44166ebc0a653e4b9282f4d384c9b.
+romfs/trio-stage-objects.bin40bytes SHA256
+e84dfce285302f6164b4bc85f5e86a2de92f97ca65669bc104d79ba546af4a3a
+stores original relocated tik stage/5descriptors and2DOL builtin addresses;
+actual descriptor/name/position data stays in existing original readonly pack.
+Existing .1 model/.01 engine native coordinate bridge and texture scaling
+remain. Native CPU matrices and3DS revision-driven vertex cache uploads now
+consume these original bindings. Nintendo/Intelligent Systems assets; no
+redistribution rights granted; no private payload committed.
+
+## 2026-10-13 — Goomba quest13 original Mario effect poses
+
+`tools/goomba_quest_assets.py` reads the original ISO read-only: `a/e_mario`
+with its `a/a_mario` texture binding and original stay pose. Ignored outputs
+`romfs/goomba-quest-mario.{pmanim,t3x,bin,json}` and
+`local-assets/goomba-quest/`
+retain M_N_5B/M_N_C and source pose geometry. The separate21-cell atlas uses
+124px cells and2px duplicated borders; unused lowerhalf crop gives1024x512
+RGBA8 and UVscale2 (2MiB GPU texture). No ISO or extracted payload committed.
+These remain original copyrighted game assets for the user's local remake;
+conversion does not grant redistribution rights. Native checkpoint v8 is a
+1536-byte local adapter containing the unchanged0x5d4 packed pouch, explicit
+5407 knowledge and checksum; it is not the original memory-card format.
+
+## 2026-10-13 — Original plaza Goomba3 catalog extension
+
+`tools/field_actor_assets.py` extracts `m/gor_01/s` read-only into ignored
+`local-assets/field-actors/gor_01.s`. Tagged クリボー３ supplies position/yaw
+and registry order; original gor.rel setup/init/talk supplies flags80603 and
+message branches. Ignored `romfs/field-actors.pmnpc`/JSON gain one room0 actor.
+Existing c_kuribo_n/S_1/T_1 texture and animation packs are reused: no new
+model conversion, generated art or renderer path. The story0..55 coverage
+envelope and retained initial pose are native limits; the source wander owner
+requires still-unbound side/gravity motion. Original copyrighted assets remain
+local; conversion grants no redistribution rights. No extracted payload/ISO
+committed. Original US messages remain in the existing local message packs.
+
+Exact plaza extraction provenance: `local-assets/field-actors/gor_01.s.provenance.json`,
+ISO offset991157056,size13044,SHA256
+75f6c76940df2609dcfbfcdf42bd6f108a653fd7a8d25154c6f906c24d641eb5.
+The current combined catalog JSON retains its earlier east-setup provenance
+field; this separate record identifies the additional plaza source.
+
+## 2026-10-13 — Original native stage-floor services
+
+The shared floor consumer uses existing private DOL segments; no source payload,
+texture or dialogue changes are introduced. The read-only verifier pins
+TransStageFloorPosition8010510c/c0, BattleGetFloorHeight800f7b84/50,
+BattleStageGetPtr80139864/10, BattleStageInit80139780/e4 and constants
+80422b44/8 (90.0/-50.0),80422170/4 (positive zero). Only the two source
+floor-field initialization writes are installed, not all StageInit transitive
+services. The full floor helper and event wrapper retain global stage ownership
+and mutable packed fields for tutorial and ordinary combat.
+See [native scope](behavior/battle/NATIVE_STAGE_FLOOR_AND_JUMP_RECOVERY.md).
+Nintendo/Intelligent Systems original resources; no redistribution rights.
+ISO remains read-only; private packs remain ignored.
+
+## 2026-10-13 — Original Goomba3 wander metadata and map collision binding
+
+The ignored field actor catalog enables the original shared regular event for
+plaza Goomba3, radius100/speed30, source flags80603 then00480603. Existing
+c_kuribo_n idle/walk/run/talk geometry, texture and source footstep names remain
+shared; no generated or additional art pack. Its original m/gor_01/s provenance
+now appears as plaza_setup in ignored romfs/field-actors.json as well as the
+separate extraction record already documented above. Source npcHitCheckSide
+and npcMoveG recovery uses read-only ISO DOL spans; hashes and helper identities
+are in the behavior contract. No extracted payload/ISO is committed, and no
+new redistribution rights are granted. Native ray/SDK adapters do not establish
+original renderer/Gekko parity or physical New2DS performance.
+
+## 2026-10-13 — Original native weapon-menu sprites
+
+Imported original icon.bin/icon.tpl cells164..169 (Hammer/boots equipment
+variants) and344 (Headbonk). Original cell dimensions, pixels, descriptor loops
+and frame delays are retained; they fit the existing512×512 RGBA8 atlas1MiB
+without resampling or a new GPU texture bank. Native screen scaling changes
+presentation only. Source metadata records these IDs in message-icons.json.
+The read-only battle_weapon_icon_assets.py pins complete _getHammerIconId
+80124c10/54 and _getJumpIconId80124c64/54 plus complete default weapon records
+803538a8/c0,80353de8/c0,80393ea8/c0. Partner unsigned weapon+4 gives344;
+Jump/Hammer use actual equipment-level helpers rather than class icons334..343.
+Private command metadata PMTCMD2 adds the source icon field; old packs rebuild.
+See [native scope](behavior/display/NATIVE_WEAPON_MENU_ICONS.md). ISO stays
+read-only; extracted images, atlas, compiled packs and captures remain ignored.
+Nintendo/Intelligent Systems original resources; no redistribution rights.
+
+## 2026-10-13 — Original item95 receive presentation identities
+
+Read-only US DOL/ISO recovery identifies a/a_mario M_I_U(index39,static0..0),
+item95 icon descriptor307 -> icon.tpl image312 and original base effect bank
+`e/us/effect.tpl` (266784bytes,SHA256
+3b62850fe75afb95eebb9fc240e20204d5ed320fba0fc956729f28405c2c789b).
+Effect6 uses images42/44 plus source dispatcher image43, not effect_us.tpl or
+an invented sparkle. Window definitions80313dc8/df0 and original global
+msg_window_item_get/in_irai_butsu/msg_irai_butsu remain source content;
+US template expansion is not assumed to be sprintf. No new art conversion or
+pack emitted by this portable sequence implementation. Inspection reports
+remain ignored under artifacts/reference/goomba3-services. Original copyrighted
+assets stay local; no extracted payload/ISO committed or redistribution rights
+created. Full native effect/window rendering remains provider work.
+
+## 2026-10-13 — Original item-get native resource pack
+
+`tools/field_item_get_assets.py` reads `a/a_mario`, `a/a_mario-` and
+`e/us/effect.tpl` from the unchanged original ISO. Local extracted inputs and
+PNG conversions live under `local-assets/field-item-get/`; compiled packs and
+manifest under `romfs/field-item-get*` stay ignored. Original M_I_U uses18
+124px cells with2px borders, cropped1024x512 atlas, UV scale2 and2MiB decoded
+RGBA8 native texture. Original mesh/sparse animation is retained, using the
+existing actor compiler's texture scaling rather than generated artwork.
+
+Effect images42(128x128),43(16x128),44(16x16) retain original dimensions and
+I4 grayscale intensity in equal RGBA components. No resampling/tint bake.
+Decoded-pixel SHA256 respectively:
+4ee98887533b7f25110cf1d0ca4b77cea18cbb52a8ec65b7c729d82acda17040,
+7001f7a71bbf9ce3b6567c638afbe05c1d3f0eaa727b1359c3db9ae85190adaf,
+c94116e7a4d6e5e8c6add7aa0f921ea9933adef7ca634c5a199f3e37420e9641.
+Bank SHA2563b62850fe75afb95eebb9fc240e20204d5ed320fba0fc956729f28405c2c789b.
+Generated manifest retains ISO source paths/hashes and conversion limitations.
+See [native resource scope](behavior/display/NATIVE_ITEM_GET_VISUAL_RESOURCES.md).
+Original Nintendo/Intelligent Systems resources; local use does not confer
+redistribution rights. No ISO/extracted payload/packs committed.
+
+## 2026-10-13 — Native original hit/reaction services
+
+No original asset payload expansion, dialogue, texture or pose conversion changes.
+The native bridge dispatches actual installed source damage hooks and their
+existing imported DOL common child through the real event VM. Existing source
+HitEvent/Direct bodies8012984c/84 and801298d0/c4 remain pinned by
+verify_harbor_counter_services.py. New read-only fingerprints cover complete
+CheckDamageCode8010f2e8/8c, GetDamageCode8010f374/70 and
+CheckDamagePattern8010f0e8/8c. Original inspection ELFs remain private under
+artifacts/tutorial-*.elf; compiled event packs remain ignored. Source main-body
+ID is copied from the actual flagged part definition.
+See [native scope](behavior/battle/NATIVE_HARBOR_HIT_REACTION_OWNERSHIP.md).
+Nintendo/Intelligent Systems resources; no redistribution rights granted. ISO
+is read-only; live-source/hardware equivalence is not established by static pins.
+
+## 2026-10-13 — Original reaction control callbacks
+
+No original payload, dialogue, texture or pose changes. Existing DOL/REL scripts
+run through the source VM with shared attribute/facing/flag services and the
+existing complete data-child/presence providers. Added complete read-only pins
+for CheckAttribute8010e430/8c, ResetFaceDirection8010e4bc/70,
+OnUnitFlag80105b40/60 and OffUnitFlag80105ae0/60, alongside the three previous
+hit-metadata bodies. Inspection-only artifacts/tutorial-*.elf/.dis remain
+private. Actual code100|18 reaction now completes its original no-damage path;
+normal-element code300|23 retains the real GetDamage8010f458 boundary.
+[Native scope](behavior/battle/NATIVE_REACTION_ATTRIBUTES_FACING_AND_FLAGS.md).
+Nintendo/Intelligent Systems original resources; no redistribution rights. ISO
+remains read-only, compiled packs ignored; no original-runtime/hardware claim.
+
+## 2026-10-13 — Original audience TPL payloads and setup4 configuration
+
+Read-only ISO battle/audience/audience_normal.tpl and audience_luigi.tpl imported
+byte for byte by tools/audience_assets.py. Ignored local-assets/audience raw files
+and romfs/audience-normal.tpl(428896bytes/205images), audience-luigi.tpl
+(39776bytes/19images) retain all original indices, headers and CMPR64x64 payloads;
+no resizing, tint, palette replacement or generated crowd artwork. Normal SHA256
+16f8cdda26bb3727aeb9c2d7b494d66c1822d2ac94705dbad07b09d319e5e4f2; Luigi SHA256
+3f556a8d9bd7cbfbba33ce3ab1a31531f174273451fe620f54182523533c48ef. Local
+romfs/audience-resources.json records paths/hashes/licensing. Typed native file
+owners retain validated raw payloads; active GX/Citro3D texture conversion/draw
+is not claimed. Both resources execute even for the supplied zero-count domain.
+
+Existing trio converter exports ignored12-byte PMAUCFG1 sidecar
+romfs/trio-audience-setup.bin with original relocated setup4 address9351aa20
+(tikREL fileoffset28450), not synthetic ranges. Original config44 bytes SHA256
+a347603436ca794d0e72fb2575f0c61088e6b3f8a2525acd25f69235a34e3d64 remains
+read-only original data in existing relocated pack. Sidecar little-endian native
+metadata only; actual source parameters and random requests are read at runtime.
+Original Nintendo/Intelligent Systems assets for local use; no redistribution
+rights. No original files/packs/ISO committed.
+
+## 2026-10-13 — Original item-get texture sampling in native effect
+
+Existing local `romfs/field-item-get-effect-44.t3x` and `-42.t3x` consume
+unchanged original `e/us/effect.tpl` images44/42. Source TPL descriptor review
+pins image44 repeat and image42/43 mirror in both axes, linear min/mag, zero
+LOD range/bias and no mipmaps. Native shader projects source POS for44 and
+retains quad UV for42; it applies source orange/gray in the combiner, leaving
+exported grayscale pixels unchanged. No additional extraction/resampling/tint
+bake or distributable asset pack introduced. Image43 stays exported but count1
+has no particle vertices requiring native residency. Original copyrighted
+resources remain local/ignored with existing source and decoded-pixel hashes;
+no redistribution rights created. [Native scope](behavior/display/NATIVE_ITEM_GET_EFFECT6.md).
+
+## Tutorial reaction service evidence (2026-10-13)
+
+Read-only US ISO DOL bodies 8010f458/74, 80127448/c and 80113f1c/6c
+now have complete SHA256 pins in tools/verify_battle_hit_code_events.py.
+The existing private tutorial script pack and original Crump D_1 pose are
+reused; no new texture, dialogue, pose conversion, or distributable game asset
+was added. Inspection ELF files stay in ignored artifacts. Original game
+content retains its existing Nintendo/Intelligent Systems licensing status.
+
+## CheckDamage wrapper source evidence (2026-10-14)
+
+Read-only original US ISO DOL 8010a78c/100, including blr8010a888, is pinned
+in tools/verify_battle_hit_code_events.py. Earlier /fc annotations excluded
+that final instruction. Inspection-only ELF remains in ignored artifacts; no
+new game art, audio, dialogue, or distributable asset was extracted. Source
+content retains its existing Nintendo/Intelligent Systems licensing status.
+
+## 2026-10-14 — Opening feedback resource ownership
+
+Reused existing original `romfs:/npc-angle.bin`, Peach/merchant/chest animation
+packs, `demo-crystal-109.t3x`/`demo-crystal-110.t3x`, Title images and the two
+Title curtain packs. No raster, geometry, pose or dialogue conversions changed.
+Retained Title textures now reside in GPU VRAM; chest masks load at market
+admission. Both are memory/lifetime changes to existing original assets.
+
+Opening book BGM selects the existing original ISO
+`sound/stream/sys_demo1_32k.stm` conversion, `romfs:/demo-book.wav` and
+`romfs:/demo-book.wav.loop` (32000Hz stereo PCM16; original loop0..3683330),
+including with the optional Switch soundtrack. The shorter nonlooped Switch
+book cue is not assigned invented loop points. Original Nintendo/Intelligent
+Systems music/art remain private local assets; no redistribution rights are
+conferred and no extracted payload is committed. Final emulator DSP firmware
+copies reside only in ignored isolated profiles, read from the user's existing
+firmware file; firmware is not a game asset or committed/distributed here.
+
+## Tutorial ordinary Crump impact (2026-10-14)
+
+The existing private harbor tutorial REL/DOL pack supplies the original Crump
+weapon power, Mario kind damage-sound pointer, part defense tables and reaction
+scripts. No additional game payload was extracted or converted; M_D_1 and
+original HUD art use existing private packs. The new binding retains original
+SFX_MARIO_DAMAGE1 requests but does not claim native sample/effect/crowd
+playback. Existing Nintendo/Intelligent Systems licensing restrictions remain.
+
+## Original item95 registry/icon provider (2026-10-14)
+
+The parcel draw reuses original message icon descriptor307 and its existing
+TPL31240x40 CMPR-derived atlas frame. No new ISO extraction, generated art,
+texture scaling or baked tint was introduced. The source .6 reduction is geometry
+only (24x24 bottom-anchored quad); source color/alpha modulates the original atlas
+at draw time. Native vertices use a lazy6912-byte32-icon arena, with the shared
+texture retained by the existing atlas owner. These original assets retain the
+existing Nintendo rights/provenance restrictions; no original assets are committed.
+See [native consumer](behavior/display/NATIVE_ITEM95_REGISTRY_AND_ICON.md) and
+[source entry/icon contract](behavior/field/ITEM95_ENTRY_NAME_REGISTRY_AND_ICON_DRAW.md).
+The read-only audio review identifies `sound/stream/ff_get2_32k.stm` for the
+key-item fanfare; no audio conversion or playable native routing is claimed here.
+Its source header loops, so original request/retirement semantics remain required:
+[audio contract](behavior/audio/FIELD_ITEM95_FANFARE_BGM_ROUTING_AND_QUERIES.md).
+
+## Original tutorial Mario damage pose (2026-10-14)
+
+Added M_D_1 to the dedicated tutorial pose selection in
+tools/harbor_tutorial_assets.py. Read-only ISO paths a/b_mario and a/a_mario-
+remain the source; extracted local-assets/harbor-tutorial/b_mario and
+a_mario.tpl and compiled romfs/harbor-tutorial-mario.{pmmesh,pmanim,t3x,bin,json}
+remain outside source history. Existing conversion retains original animation
+keys, node transforms, colors and UVs; atlas slots use128 pixels, then the
+power-of-two atlas is resized by Lanczos to512x256 and encoded RGBA8 with
+tex3ds automatic compression. The resulting three-pose pack uses24 textures
+and102 triangles per pose; this step adds no geometry reduction or lighting
+change. Native GPU admission/playback of M_D_1 has not been observed. Original
+Nintendo/Intelligent Systems resources retain no redistribution rights.
+
+## Original horizontal camera shake evidence (2026-10-14)
+
+Read-only US DOL evt_btl_camera_shake_h8012b3d0/f0 and helper8012b4c0/60
+are fully pinned by tools/verify_battle_camera_shake.py. Inspection ELF remains
+in ignored artifacts. No game asset payload, texture scaling, geometry or
+lighting conversion changed. Original source content retains Nintendo/
+Intelligent Systems licensing restrictions; no ISO or extracted asset committed.
+
+## Original STM container loop correction (2026-10-14)
+
+The GameCube PCM converter now uses original STM COMMON+0c restart policy:
+ffffffff exports a one-shot with no `.wav.loop`; other admitted offsets must be
+DSP-frame aligned and export restartByte/8*14 through the actual DSP sample count.
+It validates COMMON encoded extent against ceil(sampleCount/14)*8 and the
+source codec/container restart/end relationships before conversion. Original
+sample rate/channels, DSP coefficients/history and final-frame sample extent are
+preserved. Existing decoder fingerprints invalidate converted-library caches.
+No resampling, generated audio or source edit is introduced. Read-only review of
+all146 original streams established111 container loops/35 one-shots despite all
+DSP loopflags1. See [original backend evidence](behavior/audio/FIELD_KEY_ITEM_FANFARE_CONTAINER_LOOP_AND_RETIREMENT.md).
+
+Original `sound/stream/ff_get2_32k.stm` SHA256
+`847b529744401aa5590b821ff7502a65b1ac59045306dc8792d6d44b4e05f7dc`
+was locally decoded to ignored `artifacts/item95-audio/ff_get2_32k.wav`: stereo
+32000Hz/83888 frames, no loop sidecar. Conversion metadata is beside that file.
+Rights remain Nintendo/Intelligent Systems, local use only; original files and
+PCM are not committed or distributed. Complete ignored-library conversion uses
+`make audio-assets`; native package rebuild converts its selected source tracks.
+This correction does not itself add native item-get playback or measure original
+stream prefetch/IRQ/device timing; backend vacancy must come from stream ownership.
+
+## Native attack selection source evidence (2026-10-14)
+
+The new shared attack selector/classifier/data lookup uses the original DOL
+tables and source scripts already present in private packs. Existing read-only
+ISO verifier tools/verify_battle_attack_selection.py pins the full selector/
+classifier and called leaves. No additional game payload or conversion changed;
+Nintendo/Intelligent Systems licensing restrictions and ignored private asset
+paths remain unchanged. Source inspection ELF stays in ignored artifacts.
+
+## Original key-item fanfare pack and native provider (2026-10-14)
+
+`tools/field_item_get_assets.py` now extracts `sound/stream/ff_get2_32k.stm`
+read-only into ignored `local-assets/field-item-get/ff_get2_32k.stm`, verifies
+source SHA256847b529744401aa5590b821ff7502a65b1ac59045306dc8792d6d44b4e05f7dc
+and packages ignored `romfs/field-item-get-key-fanfare.wav`. Original32000Hz,
+stereo,83888frames/PCM16, coefficients/history and final-frame sample extent
+are retained without resampling. Source COMMON one-shot policy excludes loop
+sidecars. Converter fingerprints and required-file/no-sidecar admission prevent
+reuse of the prior incompatible pack. Original row217/BGM_FF_GET_KEYITEM1,
+volume80/pan64, extraction provenance and PCM hash are in field-item-get.json.
+The original PCM SHA256 is d8d7ca2222a3d30edb062bf91ff5999fe6e5b810c271097b2042e93077a6b596.
+
+The native track18 path always selects this GameCube asset in both soundtrack
+modes. Fresh playback shares the existing three147456-byte ring-buffer stream
+slots; no extra full-PCM allocation. Source stereo gain uses80*single3c010204
+on both authored channels before first buffer submission. Native original BGM
+fade/tail/group0 attenuation and exact source device scheduling remain separate
+owners. See [provider scope](behavior/audio/NATIVE_KEY_ITEM_FANFARE_PROVIDER.md).
+Original Nintendo/Intelligent Systems rights/local-use restrictions still apply;
+no original extracted/converted assets are committed or distributed.
+
+## Status-window arbitration and action registration evidence (2026-10-14)
+
+Read-only US DOL checker800f7514/b8, event80103e34/7c, and System/Event
+On/Off2c-byte setters are fully pinned by tools/verify_battle_status_window.py.
+Existing Jump/root verifiers pin state6 registration and root construction.
+No new game payload or texture/geometry/lighting conversion changed; original
+HUD resources remain in existing ignored packs. Window slide animation is
+unimplemented. Inspection ELF remains ignored; original source content retains
+Nintendo/Intelligent Systems licensing restrictions.
+
+## Original weapon-table production (2026-10-14)
+
+Shared table/eligibility helpers use original weapon/ItemData pointers, keys,
+icons and source badge/Special arrays already present in private packs. Existing
+read-only ISO verifiers pin the complete builder and target/updater bodies.
+No new game payload, text rewrite, texture, geometry or lighting conversion was
+added. Extracted assets remain ignored; Nintendo/Intelligent Systems licensing
+restrictions remain. Inspection ELF stays under ignored artifacts.

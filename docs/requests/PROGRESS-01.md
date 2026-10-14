@@ -27,7 +27,7 @@ independent research-agent ownership or completion claim is made.
 ## Request text (verbatim)
 
 Native implementation source audit / documentation request (2026-10-13),
-full-game path: the native port has no character progression. `include/game.hpp`
+full-game path: the native port has no character progression. `include/runtime/game.hpp`
 declares `struct Progress` with only `int hp = 10, mushrooms = 1;` and no level,
 star points, badge points or equipped badges, and it carries
 `uint8_t jumpLevelFixture=1,hammerLevelFixture=1; // Pouch/loadout initialization

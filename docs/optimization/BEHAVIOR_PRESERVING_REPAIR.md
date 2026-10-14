@@ -65,7 +65,7 @@ private asset payload enters the commits.
    `C3D_GetProcessingTime`/`C3D_GetDrawingTime` metrics omit synchronous work
    before `FrameBegin`, including save/audio/resource admission. Compare fixed
    routes on New 2DS XL before claiming reduced stutter or a target frame rate.
-2. Route ordinary checkpoint saves (`source/main.cpp`) through the existing
+2. Route ordinary checkpoint saves (`source/runtime/main.cpp`) through the existing
    save worker. Preserve accepted snapshot/slot ownership, completion notices,
    failure handling and orderly shutdown; save-block writes already use it.
 3. Preload house PCM before its animation clock starts, retaining the original

@@ -83,7 +83,7 @@ omitted both roots, losing their original geometry and the scene consumer.
 OpeningHouseScene.treeX now follows original selector11 over240 simulation
 ticks, retaining both evtSetFloat Q1024 truncations (interpolation publication
 and division). The endpoint150 remains after the inline ends. The existing
-original [interpolation adapter](../../../include/field_camera_events.hpp)
+original [interpolation adapter](../../../include/field/field_camera_events.hpp)
 preserves recovered constants/order but native trig/clock parity remains open.
 Sparse simulation calls replay the same curve; rendering does not advance it.
 

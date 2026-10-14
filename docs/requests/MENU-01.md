@@ -29,8 +29,8 @@ claim is made.
 
 Native implementation source audit / documentation request (2026-10-13),
 full-game path: the native field menu is a provisional three-action fixture, not
-the original pause menu. `include/game.hpp` declares `Menu menu = Menu::Status;`
-over a `Menu` enum of Status/Settings/Items only, and `source/game.cpp` handles
+the original pause menu. `include/runtime/game.hpp` declares `Menu menu = Menu::Status;`
+over a `Menu` enum of Status/Settings/Items only, and `source/runtime/game.cpp` handles
 only those three (`Menu::Settings` toggles sound, `Menu::Items` consumes a
 mushroom when `hp<10`, `Menu::Status` sets `saveRequested`). `README.md` describes
 the native mapping as "Y | Selected field menu action: save, item, sound" and the

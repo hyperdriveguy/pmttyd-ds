@@ -50,8 +50,8 @@ The function processes the left stick keep input, which is part of the battle in
 ### Native Implementation Reference
 
 This disassembly corresponds to the native implementation in:
-- `include/battle_timing_a.hpp` (related timing/stick processing)
-- `source/battle_timing_a.cpp` (related timing/stick processing)
+- `include/battle/battle_timing_a.hpp` (related timing/stick processing)
+- `source/battle/battle_timing_a.cpp` (related timing/stick processing)
 
 The native implementation handles:
 - Battle pad input with stick keep-left detection

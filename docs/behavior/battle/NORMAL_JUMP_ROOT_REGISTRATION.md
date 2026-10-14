@@ -105,7 +105,7 @@ The [label/run-check contract](../event/EVENT_LABEL_SCAN_AND_ENTRY_RUN_CHECK.md)
 states this correctly. marioStGetSystemLevel separately returns whole GP18;
 that is a different service in [system-level ownership](../event/EVENT_SYSTEM_LEVEL_AND_SPEED.md).
 
-Current include/event_creation.hpp's comment says EventCreationRuntime.systemLevel
+Current include/event/event_creation.hpp's comment says EventCreationRuntime.systemLevel
 is the whole GP18 mask. That source assertion conflicts with80037744. Native
 owner should bind REQUESTED8041e940 to constructor run-check,and keep GP18 for
 the actual getter/clock gate. Example:request3 commonly leaves GP18 low nibble7;

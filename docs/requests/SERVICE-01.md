@@ -31,9 +31,9 @@ claim is made.
 Native implementation source audit / documentation request (2026-10-13),
 full-game path: the native port has no shop, inn or service system. Coins exist
 only as a raw pouch field (new-file sets `pouch.half(0x78,100)` in
-`source/prologue_pouch.cpp`), and the only "item" interaction is the field
+`source/inventory/prologue_pouch.cpp`), and the only "item" interaction is the field
 `Menu::Items` action that directly consumes a mushroom when `hp<10`
-(`source/game.cpp`), with no price, stock, buy/sell or NPC service. No behavior
+(`source/runtime/game.cpp`), with no price, stock, buy/sell or NPC service. No behavior
 contract covers shops, inns or NPC services (the incidental "shop" mentions are
 in unrelated storage/card/map documents). The original towns and hubs are built
 around these services, so the port cannot be played past a shop without a native

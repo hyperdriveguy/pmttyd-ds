@@ -33,10 +33,10 @@ requested; no independent research-agent ownership or completion claim is made.
 Native implementation source audit / documentation request (2026-10-13),
 full-game path: the native port has no roaming field enemies. The field actor
 record carries only `uint32_t key,room,model,interiorRequired,interiorForbidden,
-storyGate,kind; // 0 NPC, 1 map object` (`include/field_actors.hpp`) with a
-wander domain (`source/npc_wander.cpp`) for ordinary NPCs, and the only field
+storyGate,kind; // 0 NPC, 1 map object` (`include/field/field_actors.hpp`) with a
+wander domain (`source/field/npc_wander.cpp`) for ordinary NPCs, and the only field
 battle the port drives is the scripted harbor Crump encounter
-(`source/harbor_encounter.cpp`). The original game's overworld is populated by
+(`source/story/harbor_encounter.cpp`). The original game's overworld is populated by
 roaming enemies that notice, approach and chase Mario and start a battle on
 contact (with an advantage when Mario strikes first), which the port does not
 model. The existing

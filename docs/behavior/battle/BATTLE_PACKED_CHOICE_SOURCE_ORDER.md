@@ -1,7 +1,7 @@
 # Native candidate choice over live records
 
-Implementation: `include/battle_packed_choice.hpp`,
-`source/battle_packed_choice.cpp`, `tests/battle_packed_choice_tests.cpp`.
+Implementation: `include/battle/battle_packed_choice.hpp`,
+`source/battle/battle_packed_choice.cpp`, `tests/battle_packed_choice_tests.cpp`.
 Contract: [BATTLE_ENEMY_CANDIDATE_CHOICE.md](BATTLE_ENEMY_CANDIDATE_CHOICE.md).
 Complete original800febc8/9d8 inspected read-only at /tmp/pm-native-choice.*;
 GetMaxFp80126b14/44 inspection stays /tmp/pm-native-max-fp.*. Original binaries

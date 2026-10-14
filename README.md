@@ -1,9 +1,38 @@
 # Paper Mario: TTYD — New 2DS XL prototype
 
+## Repository map
+
+- `source/`, `include/` — portable mechanics and native 3DS runtime. Files use
+  subsystem prefixes such as `battle_`, `field_`, `event_`, `message_`, and
+  `opening_`; see the [source](source/README.md) and
+  [header](include/README.md) maps and [architecture](docs/ARCHITECTURE.md).
+- `tests/` — host tests, subsystem fixtures, and isolated Azahar input scripts;
+  see the [test map](tests/README.md); reusable platform stubs are in
+  `tests/stubs/`.
+- `tools/` — read-only ISO inspection, asset conversion, verification, and
+  emulator fixture utilities. Generated packs/build output live outside source
+  history as described in [asset provenance](docs/ASSETS.md); see the
+  [tool map](tools/README.md).
+- `config/` — checked-in asset-selection and audio-binding configuration.
+- `docs/behavior/<subsystem>/` — recovered behavior contracts, indexed by
+  [the behavior guide](docs/behavior/README.md).
+- `docs/assets/`, `docs/mechanics/`, `docs/switch/` — asset inventories,
+  measured/reference mechanics, and separate Switch comparison research.
+- `docs/requests/` — active implementation research requests and delivery
+  history, indexed by [the request inbox](docs/DOCUMENTATION_REQUESTS.md).
+- `docs/optimization/` — completed optimization evidence and the current audit;
+  see [optimization status](docs/OPTIMIZATION_REQUESTS.md).
+
+Source and public headers are grouped into subsystem directories while keeping
+their established module basenames. Build systems add each subsystem directory
+to source/header discovery; the maps above explain the grouping and corresponding
+behavior-contract locations.
+
 A native homebrew remake in development. The current slice uses original
 Rogueport geometry/textures, original ordinary Mario and Goombella animations, other character idle poses, and locally converted Switch soundtrack arrangements.
-Geometry, dialogue and sound-effect samples continue to use your US GameCube ISO.
-It includes five connected Rogueport outdoor rooms, exploration, dialogue,
+Geometry, dialogue and sound-effect samples continue to use the supplied
+read-only US GameCube ISO. It includes five connected Rogueport outdoor rooms,
+exploration, dialogue,
 a small Crump battle harness, touch menus and versioned saves.
 
 The underground trio executes original attacks, enemy turns, wing fall and
@@ -16,7 +45,8 @@ checkpoint files do not yet serialize that original storage.
 
 The Jump harness now uses the recovered US TimingA history checks and difficulty
 tables. Native physical input and battle pad ownership/update order follow the
-recovered local contracts;original polling,pause and event scheduling remain open.
+recovered local contracts; original polling, pause and event scheduling remain
+open.
 Hammer uses the recovered held-left command with the ordinary default
 weapon's charge period and difficulty. Guard uses the recovered private-pad
 history checks and difficulty windows. Portable status storage/recovery and
@@ -214,52 +244,16 @@ python3 tools/emulator_smoke.py --fresh-save --seconds 4 --input-script tests/az
 python3 tools/emulator_smoke.py --reference-dolphin --seconds 12
 ```
 
-The capture tool creates an isolated emulator profile and virtual display. It
-never uses your existing emulator configuration or saves. It requires Xvfb,
-xdotool and ImageMagick. Restricted environments may require display-socket
-approval. Captures/logs are under `artifacts/azahar` or `artifacts/dolphin`.
-The walkthrough is a capture sequence for manual review, not an automated claim
-that every gameplay requirement passed. It assumes a fresh save and default
-window layout.
+The capture tool uses an isolated emulator profile and does not touch user
+settings or saves. Captures/logs are written under `artifacts/`; walkthrough
+scripts provide evidence for manual review, not automated proof of full-game
+behavior. See the [test map](tests/README.md) for test families and limitations.
 
-Read [progress](docs/PROGRESS.md), [architecture](docs/ARCHITECTURE.md),
-[asset provenance](docs/ASSETS.md), and [mechanics evidence](docs/MECHANICS.md)
-before continuing. User preference is to preserve original art, music and sound;
-the early redrawn assets and generated tones were rejected and retired.
-
-The [original behavior reference](docs/ORIGINAL_BEHAVIOR.md) indexes recovered
-US binary behavior, documents event execution and subsystem ordering, and tracks
-the evidence still needed for a strongly equivalent reimplementation. Reproduce
-its binary fingerprints with `tools/behavior_evidence.py`.
-
-Original US English dialogue and faithful story reproduction are required.
-`make all` now packages all 260 original `msg/US` resources byte for byte under
-ignored `romfs/messages/`. Portable room/global lookup retains IDs and tokens;
-story-window playback is still unbound.
-The ordinary exploration harness still displays development notices. A native
-story3 harbor checkpoint now plays the first six original Goombella/Crump/X-Naut
-messages with source speaker/order/position bindings, original US font and danger
-music. Arrival, tutorial continuation and full event/window services remain
-unfinished. No authored replacement character dialogue should be used.
-
-To inspect that development checkpoint in an isolated emulator profile:
-
-```sh
-python3 tools/make_harbor_checkpoint.py
-python3 tools/emulator_smoke.py --save-fixture artifacts/fixtures/harbor-story3.bin --seconds 10 --input-script tests/azahar_harbor_story.py --output-dir artifacts/azahar-harbor-story3
-```
-
-This native test checkpoint bypasses the unfinished arrival intro; it is not an
-original GameCube save or the complete prologue demo. A/B advance or accelerate
-the original message window; its closed page waits preserve the source controls.
-
-Outdoor road exits link the plaza with harbor, east and west rooms. Walk toward
-the original road openings to change rooms; arrival progress is saved. The west-side road also connects to the station. Interior
-doors, pipes and story-dependent exits are unfinished. See docs/PROGRESS.md for
-current rendering limitations and isolated reciprocal-road verification.
-
-Goomba4 quest2 and quest13 hand-ins now bind the original US dialogue and item selector for explicit known quest state. Quest13 retains original Mario effect poses and5407 progression. [Native checkpoint v8](docs/behavior/format/NATIVE_POUCH_CHECKPOINT_V8.md) preserves the packed pouch and known5407. Task acceptance/acquisition and full source save services remain pending; see [quest13 scope](docs/behavior/field/NATIVE_GOOMBA4_QUEST13_HAND_IN.md).
-
-Original plaza Goomba3 now uses shared Goomba art and source placement, with ordinary and quest2 waiting dialogue for explicit known state. Its regular movement and full acquisition/reward remain pending; [binding scope](docs/behavior/field/NATIVE_GOOMBA3_TALK_AND_TROUBLE_SERVICES.md) records the source side/gravity and get-item dependencies.
-
-Goomba3 regular wandering now binds its original100/30 setup and ordered map-side response, with no added gravity or floor snap. [Native motion scope](docs/behavior/field/NATIVE_NPC_MAP_SIDE_AND_GOOMBA3_WANDER.md) replaces the earlier initial-pose movement limitation; source acquisition/reward and full SDK/geometry parity remain pending.
+For the active state and exact latest validation, read [progress](docs/PROGRESS.md).
+The [architecture](docs/ARCHITECTURE.md), [asset ledger](docs/ASSETS.md),
+[mechanics evidence](docs/MECHANICS.md), and
+[original behavior reference](docs/ORIGINAL_BEHAVIOR.md) provide subsystem
+details. Contracts stay under `docs/behavior/<subsystem>/`; the
+[behavior index](docs/behavior/README.md) is the entry point. Original US
+English dialogue, attribution, order, branches and conditions are mandatory;
+do not author replacement story dialogue.

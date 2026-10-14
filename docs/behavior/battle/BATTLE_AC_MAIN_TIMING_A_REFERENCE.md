@@ -81,8 +81,8 @@ flow, where different GP mask values route to different command handlers.
 ### Native Implementation Reference
 
 This disassembly corresponds to the native implementation in:
-- `include/battle_timing_a.hpp`
-- `source/battle_timing_a.cpp`
+- `include/battle/battle_timing_a.hpp`
+- `source/battle/battle_timing_a.cpp`
 
 The native implementation uses gate=0, no badges/automatic/override, and provisional
 enemy impact values that must not become original tutorial evidence.

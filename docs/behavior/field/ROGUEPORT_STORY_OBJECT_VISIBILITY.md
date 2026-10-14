@@ -33,7 +33,7 @@ unrelated dock geometry sharing its material. Bits26..31 of batch metadata
 carry the event group separately from layer, cutaway and GX culling fields.
 An absent native story word uses the conservative story0 visibility envelope
 without writing or inferring a persistent story value.
-[Portable visibility](../../../include/map_visibility.hpp) selects the group
+[Portable visibility](../../../include/display/map_visibility.hpp) selects the group
 from persistent story state on every draw, including translucent draws. No
 story-state change requires geometry extraction or deletion. Collision and
 animation bindings retain their independent source data.

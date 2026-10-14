@@ -43,8 +43,8 @@ consumer below; no CrystalN64 substitute is used. Original-runtime/Dolphin raste
 comparison and physical hardware remain unverified. The isolated heading
 fixture proves only this provider, not completion of the full opening.
 
-Implementation: [display clock](../../../include/opening_heading_display.hpp),
-[native provider](../../../source/render_opening_heading.cpp),
+Implementation: [display clock](../../../include/story/opening_heading_display.hpp),
+[native provider](../../../source/display/render_opening_heading.cpp),
 [asset exporter](../../../tools/opening_heading_assets.py).
 
 ## Recovered secondary Stardust mode4 evidence

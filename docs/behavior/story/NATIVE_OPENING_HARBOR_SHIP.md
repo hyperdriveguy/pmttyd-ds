@@ -9,7 +9,7 @@ eight whole event hashes and23 request/scalar/jump-body anchors. It does not exe
 Dolphin or establish complete original runtime equivalence.
 
 The source resets GW0..3=0, GW4=-600, GW7=180 and starts ship_a_animation.
-The native [scene owner](../../../include/opening_harbor_scene.hpp) advances
+The native [scene owner](../../../include/story/opening_harbor_scene.hpp) advances
 simulation ticks independently of render calls; render only consumes its
 prepared snapshot. Source milliseconds use the explicit native60Hz bridge.
 The original waits/interpolation requests remain source facts, not measured

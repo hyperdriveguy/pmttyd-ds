@@ -67,7 +67,7 @@ Hammer orautochange aselectedJump. No rewritten/invented storyline isprovided.
 ## ID3 main/input/result/cleanup ownership
 
 Original ID3registration pointers are main8012a17c,result8012a174,
-display80129fcc,delete80129fc0. Reuse source/battle_hammer.cpp `HammerCommand`,
+display80129fcc,delete80129fc0. Reuse source/battle/battle_hammer.cpp `HammerCommand`,
 `HammerContext`, `HammerSoundSink`, backedbyoriginalpacked fields in
 [BATTLE_HAMMER_STICK_KEEP_LEFT](BATTLE_HAMMER_STICK_KEEP_LEFT.md).
 
@@ -132,7 +132,7 @@ atN4*T25+7 afterattacklaunch orbasedonlyonrendererposeframe.
 ## Damage/reaction and reusable original mechanics
 
 Use `ordinaryHammerWeapon()`/`hammerWeaponPower()` and WeaponPowerServices from
-source/battle_weapon_power.cpp; HPcallbacksource80189c38 usescapturedACB1cb8
+source/battle/battle_weapon_power.cpp; HPcallbacksource80189c38 usescapturedACB1cb8
 bit1, S8pouch99level, unsignedMarioU300bonus and**HammerW80353de8** sixwords
 1/2,2/4,3/6. Current Jump-onlypowerWordreader mustnotbe reusedunchanged;
 ordinaryHammer defaults andsourceW74=30887/W78=7fb/element0/pattern0 mustbe

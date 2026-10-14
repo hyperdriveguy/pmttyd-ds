@@ -46,12 +46,12 @@ with its event selection. The native port currently invents all of this.
 
 Native implementation source audit / documentation request (2026-10-13),
 demo path with full-game intent: the native port has no recovered game-level
-audio binding. `include/audio_policy.hpp` is explicitly "a native presentation
+audio binding. `include/audio/audio_policy.hpp` is explicitly "a native presentation
 adapter, not recovered Switch event routing": its `audioTrack`/`soundtrackTrack`
 map the native `Scene`/room enum onto **invented** track indices (`0..17`) and
 its `musicAssetPath` names **invented** `.wav` assets (`rogueport.wav`,
 `battle.wav`, `victory.wav`, `harbor-danger.wav`, `title.wav`, … plus a
-`soundtrack-switch` variant). `source/audio.cpp` then looks up a sidecar
+`soundtrack-switch` variant). `source/runtime/audio.cpp` then looks up a sidecar
 `<asset>.loop` file for loop points, applies a fixed conservative mix
 (`constexpr float gains[]`, `0.65f`), and its own comment notes that "Jump's
 muted original table entry is deliberately overridden for this primary-sample

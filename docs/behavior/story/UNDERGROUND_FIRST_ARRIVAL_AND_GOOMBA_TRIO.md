@@ -380,7 +380,7 @@ story text. No native code was changed or tests required for this documentation.
 
 ## 2026-10-13 preserved native return callback audit
 
-Read-onlycurrenttools/underground_event_assets.py andsource/professor_story.cpp
+Read-onlycurrenttools/underground_event_assets.py andsource/story/professor_story.cpp
 againstoriginal161-commandtable above. Sharedcatalog tag60 is
 evt_npc_battle_start8004ef54,61 isevt_npc_wait_battle_end8004eed8,
 62 isevt_mario_set_prev_party_pos800e2f00 (**notnpcget_reglid**). Roottrio

@@ -29,12 +29,12 @@ Request text below is preserved verbatim from the inbox; answers and implementat
 ## Request text (verbatim)
 
 The [HP/FP calculators and revival marker](../behavior/battle/BATTLE_DAMAGE_CALCULATION.md)
-are implemented in `source/battle_damage.cpp`,tested by
+are implemented in `source/battle/battle_damage.cpp`,tested by
 `tests/battle_damage_tests.cpp`. Native attacks now call the HP calculator and
 retain the original-form result code. Their callback/stat fixture still supplies
 development powers1/2,zero defense/no statuses and provisional actor resources.
 The local calculator is separate from resource application/death/revival events.
-Resource application is now implemented in `source/battle_damage_application.cpp`
+Resource application is now implemented in `source/battle/battle_damage_application.cpp`
 and used by native attacks. Its service interface preserves ordered effect/sound/
 audience/hit-event requests;the harness records the latest hit's requests without
 executing original presentation or hit scripts. This trace is not an active VM

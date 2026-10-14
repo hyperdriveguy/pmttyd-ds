@@ -1,7 +1,7 @@
 # Architecture
 
-Native C++17, devkitARM, libctru, citro3d, citro2d. `source/game.cpp` and
-`source/save.cpp` compile on both the host and 3DS. Platform code owns input,
+Native C++17, devkitARM, libctru, citro3d, citro2d. `source/runtime/game.cpp` and
+`source/runtime/save.cpp` compile on both the host and 3DS. Platform code owns input,
 RomFS, GPU objects, NDSP, and SD access. Start with README and PROGRESS.
 
 Original static NPC setup now uses a portable, validated per-area catalog.

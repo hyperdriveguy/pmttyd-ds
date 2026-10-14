@@ -22,14 +22,14 @@ research-agent ownership or completion claim is made.
 
 Native implementation source audit / documentation request (2026-10-13), first
 demo milestone + full-game end goal: the native field item menu is a fixture.
-`include/game.hpp` carries `int hp = 10, mushrooms = 1;` and
-`enum class Menu { Status, Map, Items, Settings }`; `source/game.cpp` heals from a
+`include/runtime/game.hpp` carries `int hp = 10, mushrooms = 1;` and
+`enum class Menu { Status, Map, Items, Settings }`; `source/runtime/game.cpp` heals from a
 counter (`else if (menu==Menu::Items && progress.mushrooms>0 && progress.hp<10) {
 --progress.mushrooms; progress.hp=std::min(10,progress.hp+5); ... }`) and refuses
 at full HP, matching the README's "a mushroom cannot be used at full HP" note.
-The battle pouch is separately recovered (`source/battle_packed_pouch.cpp`:
+The battle pouch is separately recovered (`source/battle/battle_packed_pouch.cpp`:
 0x5d4-byte pouch with 121/20/32/200/200 counts, seven 14-byte partner records;
-`source/battle_damage.cpp` item151 revival check), and
+`source/battle/battle_damage.cpp` item151 revival check), and
 `progress.originalPouch->keyItemCount(95/107)` is read by field NPC gates, but the
 original field inventory — item definitions, slot/count layout, field-use effects
 and guards, the menu flow and save storage — is unrecovered, so the demo's items

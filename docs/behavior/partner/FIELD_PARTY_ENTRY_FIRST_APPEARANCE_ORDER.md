@@ -53,7 +53,7 @@ No Hello request or Mario current-index publication occurs inside partyEntry.
 
 The [retained display direction authority](../overworld/OVERWORLD_MARIO_DISPLAY_DIRECTION.md)
 separates M1a0 facing, M1ac current display turn and M1b0 target. In
-include/mario_presentation.hpp these correspond to MarioPresentation.facing,
+include/display/mario_presentation.hpp these correspond to MarioPresentation.facing,
 .display and .target respectively. Therefore the two caller M1ac loads bind
 **raw .display**. Do not bind .facing, .target, moveHeading(), reflectZ(), or
 wrap(display-offset) from drawYaw(); source caller applies no angle conversion.
@@ -63,7 +63,7 @@ source turning; replacing it with a canonical left/right value loses state.
 
 M8c/90/94 are the unoffset root, distinct from render-root offset composition
 [documented here](../overworld/OVERWORLD_ACTOR_RENDER_SCALE_AND_IDLE_BOUNDS.md).
-Existing Game field service adapters at source/game.cpp (NPC talk, wander,
+Existing Game field service adapters at source/runtime/game.cpp (NPC talk, wander,
 side-collision and camera bindings) provide engine units as
 {progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100}.
 This is the existing native coordinate adaptation, not an original source

@@ -29,7 +29,7 @@ demo milestone: the completion assessment
 "no matched original-game gameplay trace establishes attack timing or end-to-end
 equivalence", and its P0a row asks for an "original branch/re-entry trace" for
 the opening graph. The native demo cannot be validated against static contracts
-alone: `source/game.cpp` still uses a development impact tick48 and samples input
+alone: `source/runtime/game.cpp` still uses a development impact tick48 and samples input
 before impact evaluation, and [AC-01](AC-01.md) records that "an isolated original
 input/state trace is still needed", as do [INPUT-01](INPUT-01.md) and the OW-*
 requests for input and collision traces. Please capture a matched original

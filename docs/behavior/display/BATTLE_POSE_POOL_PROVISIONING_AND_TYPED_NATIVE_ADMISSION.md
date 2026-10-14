@@ -94,10 +94,10 @@ actor happens to be first. Failure remains an explicit pending factory service.
 
 ## Existing ActorAnimationPack can supply real geometry, with bounded mapping
 
-include/actor_animation.hpp owns actual converted original poses, positions,
+include/display/actor_animation.hpp owns actual converted original poses, positions,
 normals, nodes, texture/visibility/surface updates and ActorAnimationSample
 workspace; each ActorAnimationPose::evaluate validates/evaluates supported
-ordinary animation data. The typed field owner include/field_party.hpp already
+ordinary animation data. The typed field owner include/field/field_party.hpp already
 holds shared original packs, allocated CPU shape vectors and a registry.
 Its current enterPose supports mode2 only, fixed field resource keys, and5
 projected slots. It is a reuse pattern, not source mode1/256-slot battle Entry.

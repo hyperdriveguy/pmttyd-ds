@@ -38,9 +38,9 @@ include $(DEVKITARM)/3ds_rules
 #---------------------------------------------------------------------------------
 TARGET		?=	ttyd-2ds
 BUILD		?=	build
-SOURCES		:=	source
+SOURCES		:=	$(patsubst $(TOPDIR)/%,%,$(shell find $(TOPDIR)/source -type d -print | sort))
 DATA		:=	data
-INCLUDES	:=	include
+INCLUDES	:=	$(patsubst $(TOPDIR)/%,%,$(shell find $(TOPDIR)/include -type d -print | sort))
 GRAPHICS	:=	gfx
 GFXBUILD	:=	$(BUILD)
 SOUNDTRACK ?= switch

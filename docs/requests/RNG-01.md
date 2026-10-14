@@ -51,10 +51,10 @@ but explicitly leaves open seeding/reseeding (its item 1), `randf`/other helpers
 persistence (item 4).
 
 The native battle code already routes many consumers through `platform.irand` /
-`BattleRandom` (`source/battle_timing_a.cpp`, `source/battle_candidate_choice.cpp`,
-`source/battle_packed_choice.cpp`, `source/battle_turn_first.cpp`,
-`source/battle_damage_application.cpp`, `source/battle_attack_registration.cpp`,
-`source/battle_majinai_query.cpp`, `source/trio_attack.cpp`), and the message
+`BattleRandom` (`source/battle/battle_timing_a.cpp`, `source/battle/battle_candidate_choice.cpp`,
+`source/battle/battle_packed_choice.cpp`, `source/battle/battle_turn_first.cpp`,
+`source/battle/battle_damage_application.cpp`, `source/battle/battle_attack_registration.cpp`,
+`source/battle/battle_majinai_query.cpp`, `source/battle/trio_attack.cpp`), and the message
 renderer consumes two `irand(10000)` draws per admitted dynamic/shake glyph and
 two `irand64` draws per inner font quad. None of these sites has a recovered
 seed-before/draw-order contract, so the port cannot reproduce the original draw

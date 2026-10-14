@@ -43,14 +43,14 @@ requested; no independent research-agent ownership or completion claim is made.
 
 Native implementation source audit / documentation request (2026-10-13), first
 demo milestone: the native battle result is a development token.
-`Game::returnFromBattle` in `source/game.cpp` writes
+`Game::returnFromBattle` in `source/runtime/game.cpp` writes
 `fieldBattleWork.result = harnessResult` with the comment "Development outcome
 tokens only; original outcome producers are unrecovered"; victory is synthesized
 from the harness HP check (`if (enemyHP==0) scene=Scene::Victory`); and
 [the opening playtest chain](../behavior/story/NATIVE_OPENING_PLAYTEST_CHAIN.md)
 records that "result0 is not victory, story5 is not synthesized and saving remains
 blocked during this unfinished battle". An older deliverable already bound the
-field-side wait condition (`include/field_battle.hpp`: "evt_npc_wait_battle_end
+field-side wait condition (`include/field/field_battle.hpp`: "evt_npc_wait_battle_end
 (8004eed8): sequence2 AND any nonzero result"), but the producing side — what
 writes that result, how victory is decided, what story advance it publishes and
 when saving is unblocked — is unrecovered. Please recover the original

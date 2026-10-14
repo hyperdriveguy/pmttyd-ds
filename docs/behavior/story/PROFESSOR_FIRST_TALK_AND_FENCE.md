@@ -410,7 +410,7 @@ selector semantics remain open and no case alias is manufactured. Native story8
 interior rendering uses source init(-135,0,-240), S_1, with an explicit provisional
 billboard yaw/clock/scalar adapter. First-talk's position override/concurrent
 scene services are not implemented by that idle rendering. No story write or
-dialogue replacement occurs. [Playback](../../../source/message_playback.cpp)
+dialogue replacement occurs. [Playback](../../../source/message/message_playback.cpp)
 now emits/consumes source dkey records; original-data tests parse/play all29
 first-talk payloads with original font and bytes. This is prerequisite validation,
 not execution of the complete conversation/fence event.
