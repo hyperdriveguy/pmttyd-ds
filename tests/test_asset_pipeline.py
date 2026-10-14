@@ -21,7 +21,7 @@ class AssetPipelineTests(unittest.TestCase):
             root = Path(directory); (root / 'a.bin').write_bytes(b'x')
             path = root / 'manifest.json'
             entry = dict(id='one', kind='pack', source='a.bin', output='a.bin', license='test')
-            for rows in ([dict(entry, source='../a.bin')], [dict(entry, output='../outside')],
+            for rows in ([dict(entry, source='../a.bin')], [dict(entry, output='x//a.bin')], [dict(entry, output='../outside')],
                          [entry, dict(entry, id='two')], [dict(entry, license='')]):
                 path.write_text(json.dumps(dict(schema=1, assets=rows)))
                 with self.assertRaises(ValueError): pipeline.read_manifest(path, root)
@@ -106,6 +106,44 @@ class AssetPipelineTests(unittest.TestCase):
             manifest=root/'manifest.json';manifest.write_text(json.dumps(dict(schema=1,assets=entries)))
             with self.assertRaises(ValueError):pipeline.build(manifest,root,output,root/'work','unused')
             self.assertEqual((output/'a').read_bytes(),b'base');self.assertFalse((root/'work/installed.json').exists())
+
+    def test_source_edit_invalidates_cache_and_removing_loop_clears_sidecar(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); output=root/'romfs'; work=root/'work'; source=root/'sound.wav'
+            with wave.open(str(source),'wb') as out:
+                out.setparams((1,2,22050,8,'NONE','not compressed'));out.writeframes(bytes(16))
+            entry=dict(id='sound',kind='sfx',source='sound.wav',output='sound.wav',license='test',loop=[0,8])
+            manifest=root/'manifest.json'; manifest.write_text(json.dumps(dict(schema=1,assets=[entry])))
+            pipeline.build(manifest,root,output,work,'unused'); pipeline.prepare(output,work)
+            entry.pop('loop'); manifest.write_text(json.dumps(dict(schema=1,assets=[entry])))
+            pipeline.build(manifest,root,output,work,'unused')
+            self.assertFalse((output/'sound.wav.loop').exists())
+            self.assertFalse(json.loads((work/'build.json').read_text())['assets'][0]['cached'])
+            pipeline.prepare(output,work)
+            with wave.open(str(source),'wb') as out:
+                out.setparams((1,2,22050,8,'NONE','not compressed'));out.writeframes(b'\1\0'*8)
+            pipeline.build(manifest,root,output,work,'unused')
+            self.assertFalse(json.loads((work/'build.json').read_text())['assets'][0]['cached'])
+            with wave.open(str(output/'sound.wav'),'rb') as pcm:self.assertEqual(pcm.readframes(8),b'\1\0'*8)
+
+    def test_import_refuses_to_overwrite_authored_sources(self):
+        from import_editable_assets import import_assets
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); destination=root/'original'; destination.mkdir()
+            (destination/'authored.png').write_bytes(b'edited')
+            with self.assertRaises(ValueError):import_assets(root,{},destination)
+            self.assertEqual((destination/'authored.png').read_bytes(),b'edited')
+
+    def test_corrupt_baseline_is_preserved_and_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); output=root/'romfs';output.mkdir();work=root/'work'
+            (output/'a.bin').write_bytes(b'original');(root/'source.bin').write_bytes(b'edited')
+            manifest=root/'manifest.json';manifest.write_text(json.dumps(dict(schema=1,assets=[
+                dict(id='a',kind='pack',source='source.bin',output='a.bin',license='test')])))
+            pipeline.build(manifest,root,output,work,'unused')
+            (work/'baseline/a.bin').write_bytes(b'corrupted')
+            with self.assertRaises(ValueError):pipeline.prepare(output,work)
+            self.assertEqual((output/'a.bin').read_bytes(),b'edited')
 
     def test_animation_lossless_sparse_keys_and_rejected_binding(self):
         clip=dict(name='idle',loop=1,start=0,end=10,positions=[[0,0,0]],normals=[],nodes=[0],visibility=[],

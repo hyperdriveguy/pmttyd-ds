@@ -36,7 +36,9 @@ does not add a new actor or sound trigger: bind that resource in its native
 subsystem separately. Story message text/IDs/tokens remain ISO-backed and are
 not editable story replacements.
 
-The original import ledger records initial source hashes. Later edits are
+The original import ledger records initial source hashes;
+`original/conversion-provenance.json` retains upstream converter metadata,
+including original ISO paths, conversion settings and sound/sample identities. Later edits are
 expected to change them; build hashes record the current inputs and outputs in
 ignored `local-assets/pipeline/build.json`. IDs are stable manifest identities,
 not replacements for original game numeric IDs.

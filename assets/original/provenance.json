@@ -4153,8 +4153,8 @@
       "sha256_at_import": "9fb226b8d49f4a8ce80301a75f96eba44728e782de0454f660e6aabd71c96bf3",
       "origin": {
         "iso_paths": [
-          "a/c_kurio",
-          "a/c_kurio-"
+          "a/c_kuri_h",
+          "a/c_kuri_h-"
         ],
         "converter": "tools/professor_assets.py",
         "conversion": "existing padded native runtime atlas"
@@ -9338,5 +9338,6 @@
       "gor_04",
       "stage"
     ]
-  }
+  },
+  "upstream_converter_manifests": "assets/original/conversion-provenance.json"
 }

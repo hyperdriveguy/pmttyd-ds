@@ -16,6 +16,9 @@ LICENSE = 'Nintendo/Intelligent Systems original game asset; no redistribution l
 
 
 def import_assets(root, selection, destination):
+    root = root.resolve(); destination = destination.resolve()
+    if not destination.is_relative_to(root):
+        raise ValueError('Editable import destination must be inside the source root')
     if destination.exists() and any(destination.iterdir()):
         raise ValueError('Import destination must be empty; preserve existing authored edits')
     entries = []; provenance = []
@@ -55,7 +58,17 @@ def import_assets(root, selection, destination):
         register('music' if music else 'sfx', target, source.name,
                  {'native_export': 'romfs/' + source.name,
                   'conversion': 'original PCM16 rate/channels retained; loop intervals are sample frames'}, **extra)
+    upstream = {}
+    for name in ['manifest.json', 'audio-map.json', 'opening-assets.json', 'audience-resources.json',
+                 'professor.json', 'professor-mario.json', 'professor-fence.json', 'field-actors.json',
+                 'harbor-crump.json', 'harbor-xnaut.json', 'trio-attack.json', 'trio-battle.json',
+                 'harbor-tutorial-assets.json', 'battle-startup-resources.json']:
+        path = root / 'romfs' / name
+        if path.exists():
+            upstream['romfs/' + name] = json.loads(path.read_text())
+    write_json(destination / 'conversion-provenance.json', {'schema': 1, 'upstream_converter_manifests': upstream})
     write_json(destination / 'provenance.json', {'schema': 1, 'assets': provenance,
+               'upstream_converter_manifests': (destination / 'conversion-provenance.json').relative_to(root).as_posix(),
                'reference_ledger': 'docs/ASSETS_ARCHIVE.md', 'selection': selection})
     write_json(destination / 'recipes.json', {'schema': 1, 'assets': entries})
     print(f'Imported {len(entries)} editable original assets into {destination}')
@@ -64,11 +77,14 @@ def import_assets(root, selection, destination):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, default=ROOT)
-    parser.add_argument('--selection', type=Path, default=ROOT / 'assets/import.json')
-    parser.add_argument('--destination', type=Path, default=ROOT / 'assets/original')
+    parser.add_argument('--selection', type=Path, default=Path('assets/import.json'))
+    parser.add_argument('--destination', type=Path, default=Path('assets/original'))
     args = parser.parse_args()
     try:
-        import_assets(args.root.resolve(), json.loads(args.selection.read_text()), args.destination)
+        root = args.root.resolve()
+        selection = args.selection if args.selection.is_absolute() else root / args.selection
+        destination = args.destination if args.destination.is_absolute() else root / args.destination
+        import_assets(root, json.loads(selection.read_text()), destination)
     except (ValueError, OSError, KeyError, struct.error) as error:
         parser.exit(1, f'asset-import: {error}\n')
 

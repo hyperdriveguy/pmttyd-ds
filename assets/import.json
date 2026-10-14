@@ -4153,8 +4153,8 @@
       "output": "professor.t3x",
       "origin": {
         "iso_paths": [
-          "a/c_kurio",
-          "a/c_kurio-"
+          "a/c_kuri_h",
+          "a/c_kuri_h-"
         ],
         "converter": "tools/professor_assets.py",
         "conversion": "existing padded native runtime atlas"
