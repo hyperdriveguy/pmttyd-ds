@@ -366,3 +366,13 @@ strict. Original reward tests write the field only after coin return2 and retain
 5376-independent admission. [Format contract](../behavior/format/NATIVE_REWARD5376_CHECKPOINT_V9.md).
 Original acceptance/cancellation excludes5376. Native reward/window/audio/clock
 service wiring and complete quest validation remain open; parent stays open.
+
+### 2026-10-14 — Native coin callback services
+
+Renderer now binds original coin403/window/type7/camera5/Mario/pouch/row219 to
+Game-owned stable callback/window. Resource readiness requires free icon and
+early camera5 snapshot; shared parcel resources reuse existing GPU assets.
+Actual window deletion retires borrowed params after the manager visit.
+[Provider scope](../behavior/field/NATIVE_COIN_GET_PRESENTATION_SERVICES.md).
+Native original reward admission/outer key hold/quest acceptance remain pending;
+rawsvc clock is best effort pending original GP38 freeze integration. Parent stays open.

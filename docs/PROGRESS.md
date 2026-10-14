@@ -1,3 +1,36 @@
+## 2026-10-14 — Native retained coin presentation services
+
+Committed50f5ceb1. Renderer now binds original coin window/403/type7/camera5,
+M_I_U/Get/Stay, row219 shared NDSP and original pouchAddCoins to a Game-owned
+stable FieldCoinGet. Per-frame service rebinding cannot overwrite an active
+borrowed parameter. Window manager observes actual deletion then retires storage
+independently of EVT return2. Overlay uses the original coin window; existing
+field pass consumes original icon/effect. Readiness requires free icon, early
+camera5 and exclusive shared resources, without parcel key-slot/row217 checks.
+Texture/effect shader/vertex pool/atlas are reused; assets unchanged.
+
+Camera placement uses original quantized angle table over current cam4 eye/at,
+not renderer atan2 yaw. Native raw svcGetSystemTick uses source divisor units;
+original GP38 admitted-delta pause/freeze publication remains unbound and this
+clock is explicitly best effort. Prior audio detached-tail check remains open.
+
+Final isolated tree037a54a0b71d081f75639085b1b96bd7a924097f passes make test
+-o assets-ready (250/250 C++,144/144 Python) and normal make all -o assets-ready;
+sequential assets-ready already passed, converters unchanged. Logs artifacts/
+coin-provider-{assets,final-test,final-build}.log. Reviewed normal artifact
+artifacts/ttyd-coin-provider-reviewed.3dsx SHA256
+e5d86d111bc4e85d716c2596bcfd4619bd04a485ffb04e1fa4551ae1363a8d47.
+Read-only final review passes finite resource/service scope. Source audit matches;
+concurrent Game/battle edits preserved. No new emulator/hardware validation or
+render/performance fidelity claim. [Exact provider scope](behavior/field/NATIVE_COIN_GET_PRESENTATION_SERVICES.md).
+
+Next: bind original Goomba3 reward talk admission/EVT and outer NPC key hold to
+these services and persistent5376, verify actual native reward presentation/save.
+Implement original Trouble Center acceptance and test acquisition→Goomfrey→
+McGoomba full chain. Add original GP38 admitted-delta owner and matched pause/
+NDSP clock traces. Continue future-area events/NPCs/objects and hardware profiling.
+Full-game goal remains active/incomplete.
+
 ## 2026-10-14 — Original reward5376 persistence
 
 Committed b9310091. Appended optional completion5376 and native checkpoint v9
