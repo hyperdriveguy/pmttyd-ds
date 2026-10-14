@@ -2,6 +2,26 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — First-demo inbox: notice/pipe flags and save mapping
+
+Prioritized new DEMO-01/GSF-01 opening-demo requests. [Flag contract](behavior/story/OPENING_GSF_NOTICE_PIPE_AND_SAVE_STORAGE.md)
+closes bounded233/236 notice writers,1207 pipe/Professor story11 predicate and
+GSW0/4 live bank/record mappings; GSF-01 portions checked/DEMO-01 linked.
+233 precedes first message;236 independently testsstory>=7; refusal retains live
+flags; GSW4 writes only on accepted mode path. No exhaustive census/trace claim.
+
+Validation:3 DOL spans/112 words/2 REL spans/5 imports; exact command nesting/
+SET/refusal/pipe/Professor operands/eight vectors/masks/record mappings checked.
+Switch manifest63 spans/205 anchors and writer/restore pins re-passed. Link audit
+passed993 Markdown files/zero broken links; scoped diff passed. Docs only; no
+make test/all rerun or raw asset distribution. Concurrent native edits excluded.
+Approved push pending valid GitHub credentials.
+
+Next: exhaustive opening flag read/write/actor-admission census and DEMO-01
+cross-scene joins/reentry; RESULT-01 producer/story advance/save-unblock and
+original traces. New demo requests and full-game objective remain OPEN; source
+bank copy services alone do not establish native/original runtime round-trip.
+
 ## 2026-10-13 — Three more demo/end-goal requests: TRACE-01, ITEM-01, PARTNER-FULL-01
 
 Continued the milestone-scoped request loop.

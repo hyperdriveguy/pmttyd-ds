@@ -12,6 +12,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Opening notice/pipe/save flag mapping | GSF-01 / DEMO-01 | VALIDATED bounded flag ownership/storage delivery, 2026-10-13; parents OPEN | Codex inbox fulfillment (no lock claimed) | [GSF contract](../behavior/story/OPENING_GSF_NOTICE_PIPE_AND_SAVE_STORAGE.md):3 DOL spans/112 words/2 REL spans/5 imports; full census/admission/runtime open |
 | Save continuation party/destination caller | SAVE-01 | VALIDATED complete local continueGame/table/keys, 2026-10-13; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Continuation](../behavior/memory/SAVE_CONTINUE_GAME_PARTY_AND_DESTINATION_DISPATCH.md):37 spans/388 anchors/39 calls;25 cases/reset; admission/children/original load open |
 | Live namespace restore and GP preservation | SAVE-01 | VALIDATED two complete leaves/scoped caller, 2026-10-13; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Restore](../behavior/memory/CARD_LIVE_NAMESPACE_RESTORE_AND_PRESERVED_GP.md):9 spans/117 anchors/10 calls/1 direct caller; admission/schema/lifetime/original round-trip open |
 | Single-slot reader validation and copy selection | SAVE-01 | VALIDATED complete local read_main/table, 2026-10-13; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Reader](../behavior/memory/CARD_SINGLE_SLOT_READ_VALIDATION_AND_SELECTION.md):13 spans/565 anchors/17 calls; live restore/read-all/repair/SDK/original round-trip open |

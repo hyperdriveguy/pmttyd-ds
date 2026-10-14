@@ -48,3 +48,11 @@ lock reserved; battle-result publication is filed separately as
 ## Answers and delivery notes (append-only history)
 
 No delivery yet.
+
+## 2026-10-13 — Bounded persistent flag prerequisite
+
+[GSF notice/pipe/storage delivery](../behavior/story/OPENING_GSF_NOTICE_PIPE_AND_SAVE_STORAGE.md)
+now pins233/236 save-notice order,1207 departure/story11 reload predicate and
+live/save-copy mapping. Source hashes/operands verified; original execution
+not claimed. This supplies part of persistent writes/reentry but does not close
+all scenes, joins or the complete playable-demo contract. DEMO-01 stays OPEN.

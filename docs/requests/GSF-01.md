@@ -10,6 +10,14 @@ research-agent ownership or completion claim is made.
 
 ## Open todos
 
+- [x] Original GSF233/236 save-block writer/order and GSF1207 pipe/Professor
+  story11 predicate — [notice/pipe/storage contract](../behavior/story/OPENING_GSF_NOTICE_PIPE_AND_SAVE_STORAGE.md).
+  Independently gated236 write, pre-choice flags, GSW4 acceptance write pinned.
+- [x] Local GSF bank/GSW0+4 ownership and original record+8 write/restore mapping;
+  same contract. Namespace lifetime/IO/native round-trip remains separate.
+- [ ] Other notice-flag consumers, exhaustive opening flags/actor admission and
+  original cross-scene/reentry/save-load execution.
+
 - [ ] The global story-flag (GSF) IDs and bit semantics that the opening sequence
   reads and writes, with the scene that triggers each write.
 - [ ] The save-block first/post-story notice flags (native provisional
@@ -42,3 +50,18 @@ battle-result publication is [RESULT-01](RESULT-01.md).
 ## Answers and delivery notes (append-only history)
 
 No delivery yet.
+
+## 2026-10-13 — Notice flags, pipe departure and record mapping
+
+[Bounded GSF contract](../behavior/story/OPENING_GSF_NOTICE_PIPE_AND_SAVE_STORAGE.md)
+answers original233/236 notice writer/order,1207 pipe/Professor reload predicate,
+GSW0/4 storage and save-copy mapping.233 is set before first message;236 tests
+story>=7 independently. Refusal retains live flags but not GSW4 acceptance write.
+1207 is independent of story11; switch23 continuation resets banks separately.
+No exhaustive flag census or original round-trip claim.
+
+Validation: three DOL spans/112 words/two REL spans/five imports; exact command
+nesting/refusal/SET/pipe/Professor operands/eight vectors/masks/record offsets
+checked. Switch manifest63 spans/205 anchors and writer/restore pins re-passed.
+Links/scoped diff passed. Docs only; no make rerun; source assets outside history.
+GSF-01 remains OPEN: other consumers/flags/admission/lifetime/original traces.
