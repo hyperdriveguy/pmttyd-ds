@@ -15,16 +15,16 @@ trace.** Scope is REL event code; it is **not** a claim about the whole binary.
 | Source | `/home/carson/games/roms/G8ME01.iso`, read-only |
 
 Parsed with `tools/dol_event_inventory.py:parse_commands`, the same reader
-[rel_event_inventory.py](EVENT_ENTRY_PACKED_LAYOUT.md) already uses, so the
+[rel_event_inventory.py](../event/EVENT_ENTRY_PACKED_LAYOUT.md) already uses, so the
 byte walk and the command-word decoding are identical to the existing
 contracts. `GSW` membership uses the documented band
 `-180000000 < operand <= -160000000`, base `-170000000`,
 `index = wrap32(operand - base)` from
-[operand namespaces](EVENT_INTEGER_OPERAND_NAMESPACES.md).
+[operand namespaces](../event/EVENT_INTEGER_OPERAND_NAMESPACES.md).
 
 **Writer classification is explicit, not inferred.** An opcode is a writer when
 operand0 is a destination. Taken from
-[opcode coverage](EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md):
+[opcode coverage](../event/EVENT_OPCODE_IMPLEMENTATION_COVERAGE.md):
 
 - Writers: `50` `SET resolved`, `51` `SET raw`, `52` `SET float`, `53` `ADD`,
   `54` `SUB`, `55` `MUL`, `56` `DIV`, `57` `MOD`, `58`-`61` float arithmetic,
@@ -241,7 +241,7 @@ gor_irai_tenshu_main  cmd54  LW[10] <- GSW[1420]
 
 and `gor_irai_main` cmd 38 `GSW[1420] <- LW[11]`, whose `LW[11]` producer is
 inside an `INLINE` block and is not resolved by this sweep (see
-[child-entry nesting](EVENT_CHILD_ENTRY_NESTING_AND_FLAT_PARSE.md)).
+[child-entry nesting](../event/EVENT_CHILD_ENTRY_NESTING_AND_FLAT_PARSE.md)).
 
 So the ceiling **30** is independently corroborated by the one event that does
 arithmetic on the word. That is the strongest statement the evidence supports.

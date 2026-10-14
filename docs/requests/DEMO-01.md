@@ -425,7 +425,7 @@ body's `op91`/`op92`/`op94` calls. No execution trace.
 ## 2026-10-13 — ID 3: game-wide GSW census; 402/404 origins closed
 
 [Game-wide saved-word census](../behavior/story/SAVED_STORY_WORD_CENSUS_GSW.md)
-and [child-entry nesting](../event/EVENT_CHILD_ENTRY_NESTING_AND_FLAT_PARSE.md).
+and [child-entry nesting](../behavior/event/EVENT_CHILD_ENTRY_NESTING_AND_FLAT_PARSE.md).
 Widened the sweep from six modules to **all 29 shipped `rel/*.rel`** —
 **7290 events, 234878 commands**. This closes three gaps and corrects two
 earlier claims of mine.
