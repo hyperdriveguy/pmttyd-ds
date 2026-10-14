@@ -30,6 +30,7 @@ float cameraQueueDepth(const CameraDepthSnapshot&,CameraDepthPoint);
 // Source projection arithmetic; native double tan is an explicit numeric adapter.
 CameraProjectionMatrix cameraPerspective(float fov,float aspect,float nearPlane,float farPlane);
 CameraProjectionMatrix cameraOrthographic(float top,float bottom,float left,float right,float nearPlane,float farPlane);
+CameraProjectionMatrix cameraFrustum(float top,float bottom,float left,float right,float nearPlane,float farPlane);
 // Finite-domain native normalization adapter, separate from projection/roll.
 std::optional<CameraViewMatrix> cameraLookAtAdapter(CameraDepthPoint eye,CameraDepthPoint at,CameraDepthPoint up);
 // SDK LookAt/perspective numeric adapter on an actual source-produced snapshot.

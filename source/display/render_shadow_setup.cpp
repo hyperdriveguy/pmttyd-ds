@@ -49,6 +49,7 @@ bool Renderer::finishingShadowRequest(const ShadowGXRequest& request){
     case ShadowGX::Depth:state.kind=DisplayGXState::ZMode;break;
     case ShadowGX::DepthLocation:state.kind=DisplayGXState::ZCompareLocation;break;
     case ShadowGX::Alpha:state.kind=DisplayGXState::AlphaCompare;break;
+    case ShadowGX::ColorUpdate:state.kind=DisplayGXState::ColorUpdate;break;
     default:display=false;break;
     }
     if(display){for(unsigned i=0;i<5;++i)state.values[i]=request.values[i];return finishingDisplayState.request(state,pipeline);}
@@ -59,6 +60,27 @@ bool Renderer::finishingShadowRequest(const ShadowGXRequest& request){
 bool Renderer::finishingShadowCallback(const Game& game,uint32_t camera,uint32_t identity,uint32_t userdata){
     if(identity!=0x8002d3d8)return false;
     ShadowDisplayServices services;services.user=this;
+    services.pass=[](void* user,ShadowPassRequest& r){
+        auto& renderer=*static_cast<Renderer*>(user);
+        NativeCameraSubmit submit{user,[](void* user,const NativeCameraPacket& p){return static_cast<Renderer*>(user)->finishingCameraPacket(p);}};
+        switch(r.kind){
+        case ShadowPassKind::InvalidateTextures:
+            // Installed Citro3D uses the same isolated cache-clear byte. This
+            // queues actual PICA work; CPU texture flush is a separate service.
+            GPUCMD_AddMaskedWrite(GPUREG_TEXUNIT_CONFIG,0x4,BIT(16));return true;
+        case ShadowPassKind::ReadViewport:
+            if(!renderer.finishingCameraDraw.viewport())return false;
+            r.viewport=*renderer.finishingCameraDraw.viewport();return true;
+        case ShadowPassKind::ReadScissor:
+            if(!renderer.finishingCameraDraw.scissor())return false;
+            r.scissor=*renderer.finishingCameraDraw.scissor();return true;
+        case ShadowPassKind::Viewport:return renderer.finishingCameraDraw.viewport(r.viewport,submit,true);
+        case ShadowPassKind::Scissor:return renderer.finishingCameraDraw.scissor(r.scissor,submit,true);
+        case ShadowPassKind::Projection:
+            return r.projectionKind<=1 && renderer.finishingCameraDraw.projection(r.projection,submit);
+        }
+        return false;
+    };
     services.gx=[](void* user,const ShadowGXRequest& request){return static_cast<Renderer*>(user)->finishingShadowRequest(request);};
     services.texture44=[](void* user,ShadowTexture& texture){
         // Explicit native eager resource adapter: publish loaded only AFTER

@@ -83,7 +83,7 @@ bool scan(ShadowWork& work,ShadowDisplayCursor& c,unsigned helper,const ShadowDi
     return true;
 }
 }
-bool shadowDisplay(ShadowWork& work,uint32_t camera,uint32_t userdata,ShadowDisplayCursor& c,const ShadowDisplayGlobals& globals,const ShadowDisplayServices& s){
+bool shadowDisplay(ShadowWork& work,uint32_t camera,uint32_t userdata,ShadowDisplayCursor& c,ShadowDisplayGlobals& globals,const ShadowDisplayServices& s){
     if(!c.active){c={};c.active=true;c.camera=camera;c.userdata=userdata;c.owner=&work;}
     if(c.camera!=camera || c.userdata!=userdata || c.owner!=&work)return false;
     for(;;){
@@ -93,7 +93,15 @@ bool shadowDisplay(ShadowWork& work,uint32_t camera,uint32_t userdata,ShadowDisp
             c.drawClass=current->drawClass;c.phase=1;
         }
         if(camera==2){
-            if(c.drawClass!=5){c.pending=c.drawClass==0?0x8002d868:c.drawClass==2?0x8002d9e0:0x8002db6c;return false;}
+            if(c.drawClass!=5){
+                if(c.drawClass!=0 && c.drawClass!=2 && c.drawClass!=7){c.active=false;c.pending=0;return true;}
+                if(c.phase==1){
+                    c.auxiliary=&work.auxiliary[c.drawClass==7?1:0];
+                    c.auxiliarySetupStarted=c.drawClass==0;
+                    c.phase=c.drawClass==0?3:18;
+                }
+                return shadowProjectionPass(work,c,globals,s);
+            }
             if(c.phase==1){
                 c.pending=0x8002d16c;
                 if(!shadowPrepareCollision(work,c.collision,s.collision)){
@@ -126,9 +134,7 @@ bool shadowDisplay(ShadowWork& work,uint32_t camera,uint32_t userdata,ShadowDisp
                 }
                 c.phase=3;
             }
-            // First actual GPU service after the profile update. Image/state
-            // setup is still unavailable; no callback success or pool reset.
-            c.pending=0x802b7b54;return false;
+            return shadowProjectionPass(work,c,globals,s);
         }
         if(camera!=1 && camera!=4 && camera!=5 && camera!=7){c.pending=0x8002d3d8;return false;}
         // phase1/6/8 capture helper pool/view; phase4 unused outer camera query.

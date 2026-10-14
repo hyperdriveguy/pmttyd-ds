@@ -1448,3 +1448,8 @@ add_executable(trouble_board_native_tests tests/trouble_board_native_tests.cpp)
 target_link_libraries(trouble_board_native_tests PRIVATE ttyd_core)
 add_test(NAME trouble_board_native COMMAND trouble_board_native_tests)
 set_tests_properties(trouble_board_native PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/display/shadow_projection_pass.cpp)
+add_executable(shadow_projection_pass_tests tests/shadow_projection_pass_tests.cpp)
+target_link_libraries(shadow_projection_pass_tests PRIVATE ttyd_core)
+add_test(NAME shadow_projection_pass COMMAND shadow_projection_pass_tests)

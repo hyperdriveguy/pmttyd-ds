@@ -564,6 +564,37 @@ int main(){
             const auto savedMatrix=prepared->record(0)->matrix;charged.trioAttack.invalidateBattleHitRegistry();
             charged.trioAttack.resumeFinishingDraw(frameServices);
             assert(!charged.trioAttack.battleHitRegistry()->known() && prepared->record(0)->matrix==savedMatrix); // Completed preparation is not replayed by the subsequent profile/image hold.
+            // Bind full counter0 class5 against the retained runtime camera/GP
+            // owners; the counter0 auxiliary callbacks then reach the first camera4 audience callback.
+            struct ShadowPassBinding {const TrioAttack* attack;DisplayDispatchServices original;NativeCameraDraw* backend;NativeCameraSubmit* submit;unsigned requests=0,passes=0;uint32_t finalMaterial=0;} projectionBinding{&charged.trioAttack,frameServices.display,&frame.backend,&submit};
+            frameServices.display.user=&projectionBinding;
+            frameServices.display.state=[](void* user,const DisplayStateRequest& r){auto& b=*static_cast<ShadowPassBinding*>(user);return b.original.state(b.original.user,r);};
+            frameServices.display.callback=[](void* user,uint32_t camera,uint32_t identity,uint32_t borrowed){
+                auto& b=*static_cast<ShadowPassBinding*>(user);if(identity!=0x8002d3d8)return false;
+                ShadowDisplayServices source;source.user=&b;
+                source.gx=[](void* user,const ShadowGXRequest& r){auto& b=*static_cast<ShadowPassBinding*>(user);++b.requests;if(r.kind==ShadowGX::ChanMaterial)b.finalMaterial=r.color;return true;};
+                source.pass=[](void* user,ShadowPassRequest& r){
+                    auto& b=*static_cast<ShadowPassBinding*>(user);++b.passes;
+                    switch(r.kind){
+                    case ShadowPassKind::InvalidateTextures:return true; // Host trace; native provider queues the actual cache clear.
+                    case ShadowPassKind::ReadViewport:r.viewport=*b.backend->viewport();return true;
+                    case ShadowPassKind::ReadScissor:r.scissor=*b.backend->scissor();return true;
+                    case ShadowPassKind::Viewport:return b.backend->viewport(r.viewport,*b.submit,true);
+                    case ShadowPassKind::Scissor:return b.backend->scissor(r.scissor,*b.submit,true);
+                    case ShadowPassKind::Projection:return b.backend->projection(r.projection,*b.submit);
+                    }
+                    return false;
+                };
+                return b.attack->resumeShadowDisplay(camera,borrowed,source);
+            };
+            const auto originalCamera2View=charged.cameraManager->camera(2)->matrices.view;
+            const auto originalViewport=frame.backend.viewport();const auto originalScissor=frame.backend.scissor();
+            charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(charged.trioAttack.pendingFunction()==0x801a38f8 && charged.cameraManager->currentIndex()==4 && queue->count()==21);
+            assert(projectionBinding.requests==26 && projectionBinding.passes==24 && projectionBinding.finalMaterial==0xffffffff);
+            assert(charged.cameraManager->camera(2)->matrices.view==originalCamera2View && frame.backend.viewport()==originalViewport && frame.backend.scissor()==originalScissor);
+            charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(projectionBinding.requests==26 && projectionBinding.passes==24 && prepared->record(0)->matrix==savedMatrix);
 
 
 

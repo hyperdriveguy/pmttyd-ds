@@ -3,7 +3,15 @@ namespace ttyd {
 bool Renderer::finishingCameraPacket(const NativeCameraPacket& p){
     const auto& r=p.rect;
     if(p.kind==NativeCameraCommand::Viewport){
-        C3D_SetViewport(r.x,r.y,r.width,r.height);C3D_DepthMap(true,p.depthScale,p.depthOffset);return true;
+        C3D_SetViewport(r.x,r.y,r.width,r.height);C3D_DepthMap(true,p.depthScale,p.depthOffset);
+        // Citro3D viewport disables scissor; GX viewport preserves it. Keep the
+        // acknowledged scissor active even when the subsequent source call holds.
+        if(const auto& logical=finishingCameraDraw.scissor()){
+            const auto scissor=nativeCameraRoundedRect((*logical)[0],(*logical)[1],(*logical)[2],(*logical)[3]);
+            if(!scissor)return false;
+            C3D_SetScissor(GPU_SCISSOR_NORMAL,scissor->x,scissor->y,scissor->x+scissor->width,scissor->y+scissor->height);
+        }
+        return true;
     }
     if(p.kind==NativeCameraCommand::Scissor){
         C3D_SetScissor(GPU_SCISSOR_NORMAL,r.x,r.y,r.x+r.width,r.y+r.height);return true;

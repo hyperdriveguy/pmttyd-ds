@@ -1,5 +1,6 @@
 #pragma once
 #include "display_queue.hpp"
+#include "camera_depth.hpp"
 #include <cstddef>
 namespace ttyd {
 // Source0x5c-byte record; alpha at0x28,3x4 matrix at0x2c. Position/radius
@@ -23,7 +24,10 @@ struct ShadowProfile {
 };
 static_assert(sizeof(ShadowProfile)==72);
 static_assert(offsetof(ShadowProfile,projectionKind)==0x38);
-struct ShadowAuxiliaryState {uint32_t flags=0,counter=0;};
+struct ShadowAuxiliaryState {
+    uint32_t flags=2,counter=0,profileIndex=0,color=0x00000040;
+    CameraViewMatrix view{};CameraProjectionMatrix projection{};
+};
 struct ShadowMainCursor {uint8_t step=0;bool active=false;};
 // Native owner for the source primary pool and retained request settings.
 // GPU image allocation, collision preparation and deferred rendering are separate.
@@ -39,6 +43,8 @@ public:
     }};
     std::array<uint16_t,4> profileSizes{{400,256,128,64}};
     ShadowProfile* selectedProfile(){return profileIndex<profiles.size()?&profiles[profileIndex]:nullptr;}
+    CameraViewMatrix view{};
+    CameraProjectionMatrix projection{};
     uint32_t preparationGate=1,type=2,collisionEnabled=1;
     float height=20;
     std::array<ShadowAuxiliaryState,2> auxiliary{};

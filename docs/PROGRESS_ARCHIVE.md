@@ -13973,3 +13973,68 @@ cache/readback/view/matrix/GX suffix, real400-square native viewport adaptation;
 projection/depth passes, geometry/images, all remaining callbacks, original
 Bero/get_info and sequence lifetime/Init/Main/Exit, ordered field return.
 Full original-fidelity prologue deliverable remains incomplete.
+
+## 2026-10-14 — Native camera2 shadow passes and shared restoration
+
+Frozen artifacts/shadow-pass-source base97a81d1218abdb345b5d1ce720d7d51796d22c54
+plus owned code/header/test hunks and source/display/shadow_projection_pass.cpp,
+tests/shadow_projection_pass_tests.cpp. Concurrent live audience/field/native
+changes are excluded. Scope source/current inputs retained across waits; all
+camera2 counter0 callbacks now execute full genuine services. Class2 uses
+shared view/scissor/viewport backup buffers after class0, then overwrites them
+for depth; class7 restores view, RGB writes, viewport/scissor before counter.
+Native camera viewport setters immediately reapply acknowledged scissor because
+Citro3D disables it. Source logical readback stays separate from rounded PICA
+endpoints and uniform/depth quantization. Nonzero primary compositing/auxiliary
+End images remain unbound; no shadow image completion flag is fabricated.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits0,282/282 C++,167/167 Python,
+artifacts/shadow-pass-test-asset-matched.log. env TMPDIR=<repo>/artifacts/native-stage-map-tmp
+make all -o assets-ready -j4 DEBUG_SHORT_BOOT=1 SOUNDTRACK=gamecube
+BUILD=build-shadow-pass TARGET=ttyd-shadow-pass-complete exits0,
+artifacts/shadow-pass-build-complete.log. Explicit test-only main Bero bit1
+resolved clear and read-only renderer frontier probe compile with the same
+flags and BUILD, TARGET=ttyd-shadow-pass-harness-final, exits0,
+artifacts/shadow-pass-harness-build-validated.log. Test-only hunks restored
+from production snapshot after the run; no ray/matrix/counter/GPU completion
+injection. Binary/source/pack hashes and exact owned/harness hunks in
+artifacts/shadow-pass-validated/. Shared audience pack was regenerated with
+its current source and its2 original-resource tests pass, in
+shadow-pass-shared-audience-restore-check.log.
+
+Isolated command: python3 tools/emulator_smoke.py --binary
+artifacts/shadow-pass-source/ttyd-shadow-pass-harness-final.3dsx --save-fixture
+artifacts/fixtures/underground-trio-story11.bin --seconds 15 --input-script
+tests/azahar_trio_exp_icons.py --output-dir artifacts/azahar-shadow-pass-final
+exits0. Personal emulator profile/saves untouched. Actual SD frontier:
+pending801a38f8,camera4,queue21,primarycounter0/flags0,materialffffffff;
+viewport(0,0,608,480,0,1),scissor(0,0,608,480),nativecolor1;
+auxiliaryflags2/2,counters0/0. Camera2 restored view is identity with Ztranslation
+-1000. Primary shadow view rows(1,-0,0,119.999947),(0,0,-1,-6.54795093e-14),
+(0,1,0,-1050); orthographic diagonal(.00416666688,.00416666688,-.00010080645,1),
+Ztranslation-1.00806451. Records0..2 flags3,type2,camera4. Screenshot ending
+notice visible; no detected exception. No physical hardware/original execution
+or actual shadow geometry/image parity claim. Earlier pre-aux smoke reaches
+class0 and is superseded by this final evidence.
+
+Initial projection test expected35.6 for width40/near356; corrected expected
+2*356/40=17.8, with no formula change. Auxiliary host extension initially guessed
+cylinder as next callback; targeted trace proved audience801a38f8 precedes it.
+Corrected expectations without bypassing that callback. Later all282 C++ passed
+but one Python resource test found shared audience guards had advanced from
+frozen transparent padding to live original-CLAMP extrusion. Created private
+RomFS/local-assets overlays and ran frozen read-only converter, preserving all
+original64x64 pixels. A wrong-directory conversion briefly wrote the shared
+pack; restored current recipe output and2/2 original-resource tests pass.
+Final full asset-matched validation above is authoritative; intermediate failed
+logs are retained and do not count as passing. No tracked converter/tests/asset
+recipe rollback. Private overlay variant/path/license recorded in ASSETS.
+
+Next actual callback: camera4 DispAudience801a38f8; full source prefix and200
+fresh current-work queries, alpha/class/flags admissions and palette/matrix/
+quad sequence are now documented. Missing population cannot prove empty.
+Cylinder's three-pass geometry, original arrays/lists, variants and camera1
+bounds are recovered but await the preceding callback. Then all other queue
+callbacks, nonzero shadow images, source global/table/pointer writers, N64
+lifecycle, production Bero/get_info, Init/Main/Exit and ordered field return.
+Full original-fidelity prologue deliverable remains unachieved.

@@ -982,3 +982,10 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native Trouble Center contact/presentation](field/NATIVE_TROUBLE_CENTER_CONTACT_AND_PRESENTATION.md): exact-node case admission, retained manager reentry, real pouch and native drawing/audio.
 - [Trouble Center direction source correction](event/TROUBLE_CENTER_DIRECTION_CALLBACK_SOURCE_CORRECTION.md): fresh270-degree constants, handler1 endpoint, raw party selector and boot global evidence.
+
+- [Native camera2 shadow projection and shared restoration](display/NATIVE_SHADOW_CAMERA2_PROJECTION_AND_RESTORATION.md) — retained readback/setup, full prefix, source GP color and counter0 End restoration.
+- [Citro3D texture cache and viewport command adapter](display/CITRO3D_TEXTURE_CACHE_AND_VIEWPORT_COMMAND_ADAPTER.md) — installed GPU cache clear, deferred texture bindings and viewport/depth conversion.
+- [Shadow frustum arithmetic and auxiliary profile owners](display/SHADOW_FRUSTUM_ARITHMETIC_AND_AUXILIARY_PROFILE_OWNERS.md) — original float formulas, auxiliary boot state and shared mutable profiles.
+- [Shadow auxiliary setup and shared restore cursors](display/SHADOW_AUXILIARY_SETUP_AND_SHARED_RESTORE_CURSORS.md) — complete class0/2/7 source order, color masks and shared buffers.
+- [Cylinder shadow per-record geometry and bounds cadence](display/CYLINDER_SHADOW_PER_RECORD_GEOMETRY_AND_BOUNDS_CADENCE.md) — three passes, original indexed arrays and camera1-only bounds.
+- [Audience camera4 class1/class2 callback and empty bank](display/AUDIENCE_CAMERA4_CLASS1_CLASS2_CALLBACK_AND_EMPTY_BANK.md) — actual 17-call GX prefix, 200 fresh record admissions, palette/matrix/quad order.

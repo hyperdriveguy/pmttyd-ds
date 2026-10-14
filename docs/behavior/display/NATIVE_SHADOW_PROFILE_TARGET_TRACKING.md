@@ -24,9 +24,10 @@ After completion, repeated GPU waits preserve this update and prepared records.
 
 ProfileIndex outside the owned two-row domain remains unavailable, with no
 clamp or invented source fallback. Other original profile/table writers and
-primary pointer replacement remain unbound. The next provider is actual
-GXInvalidateTexAll; no texture-cache invalidation, viewport readback,400-square
-setup, matrix/image publication or callback completion is claimed here.
+primary pointer replacement remain unbound. The subsequent cache invalidation,
+viewport readback, square setup, matrices and counter0 restoration now bind in
+[the camera2 pass](NATIVE_SHADOW_CAMERA2_PROJECTION_AND_RESTORATION.md).
+Nonzero image publication and full shadows remain unfinished.
 Empty/type2-only pools still require the unconditional source GPU operations,
 as recovered in [projection and counter admission](SHADOW_PROJECTION_PREFIX_AND_ZERO_COUNTER_ADMISSION.md).
 

@@ -4041,3 +4041,28 @@ and13 callbacks at60Hz, and pins raw party selection/BSS current0. Reentry share
 the retained original manager and outstanding children; finite slot admission
 prevents allocator exhaustion. Full global GP/64-case ownership, actual world
 children/current-index writers and runtime source comparisons remain OPEN.
+
+### 2026-10-14 — Native camera2 projection and restoration
+
+[Native class5 pass](../behavior/display/NATIVE_SHADOW_CAMERA2_PROJECTION_AND_RESTORATION.md)
+binds actual PICA cache clearing, retained logical viewport/scissor readback,
+rounded physical square setup, LookAt/Frustum/Ortho/projection, independent
+current-camera copies and full unconditional Projection prefix. GP color uses
+fresh selected GP14 and previously captured alpha. Counter0 restores view,
+viewport and scissor before callback completion; type3/nonzero image suffix
+remains unavailable. Original auxiliary flags2/profile0/color40 owners now bind all counter0
+class0/2/7 setup/restoration and color-write toggles. Camera2 completes and
+the ordinary native pool reaches camera4 DispAudience801a38f8.
+[SDK evidence](../behavior/display/CITRO3D_TEXTURE_CACHE_AND_VIEWPORT_COMMAND_ADAPTER.md)
+and [frustum/auxiliary initialization](../behavior/display/SHADOW_FRUSTUM_ARITHMETIC_AND_AUXILIARY_PROFILE_OWNERS.md)
+close these local research gaps. Next bind actual audience draw, cylinder geometry/images, remaining
+callbacks/exit/return. No preceding callback may be bypassed to reach geometry.
+Full EVT-01 remains open.
+
+Delivered [actual camera4 audience callback](../behavior/display/AUDIENCE_CAMERA4_CLASS1_CLASS2_CALLBACK_AND_EMPTY_BANK.md):
+17 unconditional GX calls, 200 fresh current-record queries before class/alpha/
+flag gates, then actual palette/matrix/quad services. Register raster color,
+RGB TEXC+RASC and alpha TEXA*RASA require an audience program, not shadowA0.
+A source-proven setup4 empty bank can finish after actual prefix/scan, but
+unavailable population must not imply empty. Bind the retained native producer
+history before selecting this domain.

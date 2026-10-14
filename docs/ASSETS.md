@@ -625,3 +625,19 @@ Native NDSP20..23 use linearAlloc/cache flush and a conservative primary-sample
 mix; full MusyX macro/envelope/voice/mix parity is not claimed. Original Nintendo/
 Intelligent Systems assets are local-only; no redistribution rights are granted.
 No extracted PCM, bank, ISO, pack or 3DSX enters these source commits.
+
+## 2026-10-14 — Source-matched audience pack for shadow-pass validation
+
+The isolated artifacts/shadow-pass-source validation uses its frozen converter
+from tools/audience_assets.py to regenerate read-only US ISO
+battle/audience/audience_normal.tpl and audience_luigi.tpl in
+artifacts/shadow-pass-source/local-assets/audience/. Private RomFS overlays
+contain audience-normal.tpl,audience-luigi.tpl,audience-frames.bin/.t3x and
+audience-resources.json. Original64x64 CMPR pixels remain unchanged; this
+frozen recipe has2px transparent guards and a1024-square RGBA8 atlas.
+The live shared converter/pack retains its newer original-CLAMP edge extrusion;
+its two original-resource tests pass after regeneration. No tracked recipe or
+shared source asset was rolled back. Snapshot-only files and compiled packs
+remain ignored. Existing bank hashes/license are retained in the manifests:
+Nintendo/Intelligent Systems original assets, local use only, no redistribution
+rights. This validation variant supplies no claim of audience draw fidelity.

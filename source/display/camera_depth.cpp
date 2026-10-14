@@ -88,6 +88,19 @@ CameraProjectionMatrix cameraOrthographic(float top,float bottom,float left,floa
     p[2][2]=round32(-1.f*zInverse);p[2][3]=round32(-farPlane*zInverse);p[3][3]=1;
     return p;
 }
+// Recovered C_MTXFrustum: single operations, GX near/span depth (not OpenGL).
+CameraProjectionMatrix cameraFrustum(float top,float bottom,float left,float right,float nearPlane,float farPlane){
+    CameraProjectionMatrix p{};
+    const float xInverse=round32(1.f/round32(right-left));
+    const float twiceNear=round32(2.f*nearPlane);
+    const float yInverse=round32(1.f/round32(top-bottom));
+    p[0][0]=round32(twiceNear*xInverse);p[0][2]=round32(xInverse*round32(right+left));
+    p[1][1]=round32(twiceNear*yInverse);p[1][2]=round32(yInverse*round32(top+bottom));
+    const float zInverse=round32(1.f/round32(farPlane-nearPlane));
+    p[2][2]=round32(-nearPlane*zInverse);
+    p[2][3]=round32(zInverse*-round32(farPlane*nearPlane));p[3][2]=-1.f;
+    return p;
+}
 std::optional<CameraViewMatrix> cameraLookAtAdapter(CameraDepthPoint eye,CameraDepthPoint at,CameraDepthPoint up){
     for(float v:{eye[0],eye[1],eye[2],at[0],at[1],at[2],up[0],up[1],up[2]})if(!std::isfinite(v))return {};
     CameraDepthPoint back{eye[0]-at[0],eye[1]-at[1],eye[2]-at[2]};if(!normalize(back))return {};

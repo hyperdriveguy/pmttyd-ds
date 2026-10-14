@@ -3304,3 +3304,36 @@ MusyX and original runtime/raster comparisons remain open. Next bind actual
 source actor/door/item-world providers and shared field lifecycle, then extend
 additional areas with original event/resource packs. Broad remake goal stays active.
 See [contract](behavior/field/NATIVE_TROUBLE_CENTER_CONTACT_AND_PRESENTATION.md).
+
+## 2026-10-14 — Native camera2 shadow passes and shared restoration
+
+Bound real PICA texture-cache invalidation, retained logical viewport/scissor
+readback, square setup, original Frustum/Ortho terms, independent current-view
+copies, full unconditional Projection GX prefix and live GP14 material choice.
+Source400-square viewport uses declared nearest physical endpoints on the
+native target. Scissor remains active across viewport setters and holds.
+Original auxiliary flags2/profile0/color40 owners now execute all class0/2/7
+counter0 setup/restoration, shared saved buffers and color-write disable/enable.
+[Contract](behavior/display/NATIVE_SHADOW_CAMERA2_PROJECTION_AND_RESTORATION.md).
+
+Source-matched frozen make test passes282/282 C++ and167/167 Python; normal
+make all DEBUG_SHORT_BOOT=1 SOUNDTRACK=gamecube passes. Isolated Azahar actual
+ending flow completes camera2 and reaches camera4 DispAudience801a38f8 with21
+records retained. Camera2 view/viewport/scissor restored; RGB writes enabled;
+auxiliary flags2/counters0 and all3 prepared type2/camera4 records retained.
+No detected native exception; ending notice still shows field return pending.
+[Exact validation](PROGRESS_ARCHIVE.md#2026-10-14--native-camera2-shadow-passes-and-shared-restoration).
+
+Validation corrected an arithmetic expectation (17.8 versus35.6) and a guessed
+next callback (actual audience precedes cylinder). Shared audience atlas had
+advanced to CLAMP guards; isolated old-source recipe now has its matching
+private pack. Wrong working directory briefly rebuilt the shared pack; restored
+its current converter output and verified both original-resource tests.
+
+Next: bind actual camera4 audience prefix/200-record admissions and genuine
+palette/matrix/quad services, then cylinder geometry and other callbacks.
+Source audience/cylinder contracts delivered; do not assume unknown population
+is empty. Nonzero shadow image paths, unknown profile/global writers, numeric/
+raster hardware parity, production Bero/sequence lifetime and full ordered
+battle-to-field return remain open. Original dialogue unchanged; prologue goal
+remains active and incomplete.
