@@ -1,3 +1,37 @@
+## 2026-10-14 — Original weapon decision and live tutorial targets
+
+Committed `16baaf3d`: complete shared original setup80122068/6c and decision
+80123210/150 wrappers, with typed port service readiness. Decision captures the
+actor before rebuild, uses current actor for sampling, preserves signed owner/
+direction semantics, writes the live target buffer, resets selection after
+sampling, and implements current-count/flags/permutation preference scanning.
+Setup preserves table/cursor/UI ordering and final flags OR. Neither body
+publishes menu type, creates an attack, consumes resources or advances story.
+
+The tutorial selectWeapon API now rebuilds its real original rows, invokes the
+actual packed sampler and exposes target unit/part pairs. Normal Jump selects
+Crump2/body1, with HP and roots unchanged. Unavailable rows/overlapping roots
+are refused by the admission bridge. Class/submenu/target physical input, type
+publication, action registration/timing/impact and turn ownership remain needed;
+this target-state binding is not a complete native tutorial or displayed menu.
+
+Validation: shared make test passed226/226 C++ and141/141 Python tests. Final
+focused decision fixture passed after adding live count/flag mutation checks.
+Native TMPDIR=artifacts/tutorial-admission-tmp make all
+BUILD=build-tutorial-menu-layout TARGET=ttyd-2ds-menu-layout passed/rebuilt 3DSX.
+Read-only US verifier passed15 bodies,234 anchors,2 spans and16 scoped calls.
+Tests cover actor recapture, signed direction, selection reset, first-different/
+last-same, live flags/count, permutation position, unresolved services and UI
+flag mutation, plus real tutorial Crump target sampling. No Azahar/Dolphin or
+menu-render/playability claim; no new game payload/conversion. Scoped commits
+preserve concurrent field/render work.
+
+Next: original class/submenu/target input and menu-type publication; source
+selected event/root ownership; player command timing, impact and full turns;
+original camera/window/effect/audio/audience presentation. Preserve original
+art/menu style and physical controls, with optional lower-screen audience taps.
+The full tutorial/battle goal remains active.
+
 ## 2026-10-14 — Tutorial native weapon providers and field-pouch entry
 
 Implementation is committed in `452a29cd`; contract/asset record in `aff81380`.
