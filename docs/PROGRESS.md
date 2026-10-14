@@ -1,3 +1,28 @@
+## 2026-10-14 — Native Mario retained sound posts
+
+Committed `eb9155a9`. Native main now binds actual Audio idle/fall exit services
+before each Playing simulation visit, including after restore. Game retains
+source initial27c/280/284=-1; ordinary item-get/stay posts cancel27c then280 or
+fall284 through source slot Off before clearing handles. NDSP field voices
+reserve20..23; existing cue/house/map/music channels are excluded. Pending,
+inactive and empty handles do no DSP work; unavailable ownership stays explicit.
+
+Validation: isolated review tree6e163055 passed `make test`231/231 C++ and141/141
+Python and native `make all BUILD=build-goomba-acquisition-review
+TARGET=ttyd-goomba-acquisition-review`. Native adapter stub tests verify actual
+channel clears/order, retained handles, no generation check, pending/repeated
+cases and reserved-channel refusals. Review identified and corrected the broad
+channel-adoption collision. [Exact artifact/logs/scope](behavior/audio/NATIVE_MARIO_MOTION_SFX_POSTS.md).
+No new assets/substitute samples, emulator capture, audible-equivalence or
+physical performance claim. Idle/fall On/Main/macros/emitter/lifetime are open.
+
+Next: register native acquisition windows/effect/icon and existing fanfare/BGM
+consumers, key/system/camera and inline horizontal motion clear after Game
+restore. Preserve source sound/window/effect order and borrowed close storage.
+Capture actual Goomba3 acquisition with isolated Azahar and measure rendering;
+finish full-storage UI and remaining event/area/audio paths. Default acquisition
+still has no complete presentation provider; the broad goal remains active.
+
 ## 2026-10-14 — Original selected Mario attack in Harbor runtime
 
 Committed `f36818c0`. Harbor's explicit confirmed-command scheduler bridge

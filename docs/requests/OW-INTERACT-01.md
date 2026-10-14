@@ -871,3 +871,20 @@ is additiveX/Z, base horizontal speed and combined norm; additiveY178 stays.
 Actual native idle/fall sound cancellation and other main/renderer/audio
 providers still need registration. Full discard/special forms and native
 render/performance validation remain open; parent requests stay open.
+
+### 2026-10-14 — Native Mario retained sound-post binding
+
+Committed `eb9155a9`: Game retains original27c/280/284 initial-1 handles;
+native main binds the Audio post provider before each Playing visit/after
+restore. Idle/fall posts cancel source slots in order before clearing handles.
+The actual NDSP stop adapter accepts owned field-effect channels20..23,
+excluding existing cue/house/map/music owners. Pending/inactive/-1 slots skip
+DSP; source Off uses low8 without generation validation. Readiness/frontier
+and shutdown behavior are explicit. Isolated231 C++/141 Python tests and native
+build passed, including actual adapter compilation with NDSP stop assertions.
+[Native scope](../behavior/audio/NATIVE_MARIO_MOTION_SFX_POSTS.md),
+[fresh original handle evidence](../behavior/audio/MARIO_INITIAL_SOUND_HANDLES_AND_ITEMGET_POST_STOP.md).
+Idle/fall On/Main/macros/audible/position/lifetime services are still unbound;
+no sample substitutes or audible equivalence are claimed. Native acquisition
+window/effect/icon/camera/key/system/audio registration and captures remain
+next. Parent requests remain open.
