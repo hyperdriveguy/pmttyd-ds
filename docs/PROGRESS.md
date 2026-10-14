@@ -1,3 +1,30 @@
+## 2026-10-14 — CheckDamage calling-event ownership
+
+Implemented `924b300`: the shared original CheckDamage event wrapper now owns
+captured-battle/operand/output ordering and the live calling-ID termination
+query. Native trio attacks use it around the existing supported core. Negative
+core results preserve output and skip the ID query; nonnegative results write
+output before checking live event existence. Tests deliberately disagree with
+cached entry flags and mutate the global pointer, output token, and entry ID
+at source service boundaries. Null defender/part is forwarded to the core.
+
+Validation: shared `make test` passed 214/214 C++ and 134/134 Python tests;
+the extended null-target/cached-flags fixture also passed after its final edit.
+`TMPDIR=artifacts/tutorial-admission-tmp make all` passed. Static read-only US
+ISO verification now pins 11 complete bodies; CheckDamage is 100 hex bytes,
+including its final blr8010a888 (older fc annotations omitted that instruction).
+No Azahar or Dolphin run for this event-lifecycle change. No new asset payload;
+private inspection files remain ignored. Full shared changes are concurrent;
+this commit includes only the wrapper, adapter, tests and source contract.
+
+Next: install the tutorial's CheckDamage core with real calculator/application,
+source hit-root dispatch, and effect/audience service ownership. The tutorial
+still retains that core boundary. Keep physical defense samples separate from
+dialogue input, and finish original command/action/turn ownership. The original
+menu/HUD and optional lower-screen audience interactions remain mandatory;
+this change adds no touch-only control. The full tutorial/battle goal stays
+in progress.
+
 ## 2026-10-13 — Native verification round: event nesting, game-wide GSW census, result escape
 
 Independent ISO-read verification of three documentation deliveries with
