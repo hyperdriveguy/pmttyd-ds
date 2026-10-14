@@ -5615,3 +5615,11 @@ remain active.
 
 Implementation commit3a1b2f80. tools/check_doc_links.py checked1311 Markdown
 files with zero broken links.
+
+Additional read-only source recovery is recorded in
+MARIO_BACKGROUND_PREPARATION_CONSTRUCTORS_AND_LIVE_CONSUMERS.md. Original Init
+clears form0 and writes20/37 width/height plus1/2.25 walk/dash bases; ReInit retains
+form then recomputes state and performs later character-mode calls. Next work
+must connect actual movement/static speed reads, collision/talk dimensions and
+split camera/display consumers. This is constructor/provider evidence, not a
+claim that native background behavior is integrated.

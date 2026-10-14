@@ -4449,3 +4449,12 @@ Native form/dimension/movement/camera follow storage and consumers remain incomp
 refusal holds before effects. Previous-party needs actual allocation/art/setup,
 then shared attached initial_pos length/geometry/actor binding. No automatic
 cancellation unlock or successful whole-area-init claim is added. Request open.
+
+### Source background constructors and live-consumer closure
+
+[Constructor/consumer contract](../behavior/field/MARIO_BACKGROUND_PREPARATION_CONSTRUCTORS_AND_LIVE_CONSUMERS.md)
+now identifies source-proven form0 initialization, retained form/recomputed state
+on ReInit, and actual movement/collision/talk/camera consumers. +184/+188 are base
+walk/dash speeds; native integration must replace relevant static speed/dimension
+reads and connect actual camera/display flags. Do not admit background using
+unused shadow fields. Native Game integration remains open.

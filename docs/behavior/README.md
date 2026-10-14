@@ -1092,3 +1092,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Original Bero key leaves and next ROAD actor frontier](field/BERO_KEY_LEAVES_FRESH_ACTOR_OWNERS_AND_NEXT_ROAD_FRONTIER.md).
 - [Native shared Mario keys and background preparation](field/NATIVE_MARIO_KEY_AND_BACKGROUND_PREPARATION.md).
+
+- [Mario background constructors and actual native consumers](field/MARIO_BACKGROUND_PREPARATION_CONSTRUCTORS_AND_LIVE_CONSUMERS.md).
