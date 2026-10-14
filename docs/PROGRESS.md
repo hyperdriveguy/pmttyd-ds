@@ -2,6 +2,55 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+
+## 2026-10-13 — Original animated textbox advance star
+
+Implemented in b20c9e8. Ready textboxes now show the original `hoshi_2` /
+`HOS_C_1` animated star at the lower right. Native regular windows retain source
+(x+width-52,y-height+31), yaw180 and scale5, with uniform0.5 handheld scaling.
+The asset converter retains original geometry, node/texture updates and80-frame
+loop; no generated replacement star is used. Advance eligibility requires
+state3/key wait1/full opacity and excludes selection windows. Typing, opening,
+closing, once_stop and closed windows have no star. Input consumption hides it
+immediately; the next waiting page shows it again. The separate opening/demo
+bottom-text renderer and development notice boxes also use this indicator.
+GPU storage is separate per frame/submission, and citro2d restores the matching
+screen target after each indicator draw.
+
+Source paths, hashes, local conversions and rights are recorded in
+[assets](ASSETS.md); original/extracted/compiled assets stay ignored and the ISO
+is read-only. See[native indicator contract](behavior/message/NATIVE_MESSAGE_ADVANCE_INDICATOR.md).
+
+Validation: final `make test` passes **173 CTest / 115 Python tests**
+(`/tmp/star-test-final.log`); `make all` builds3DSX without warnings
+(`/tmp/star-build-final.log`). Original-data `message_playback_tests original`
+passes20 harbor/29 professor payloads plus original indicator import and distinct
+animation-phase checks. Host gates cover opening/ready/consumed/closed/selection/
+opacity. An initial animation comparison used two equivalent phases0/40 and
+failed; changing the comparison to0/10 proves actual animation change. A first
+full test run had two Not Run executables while concurrent builds were changing
+shared output; the final complete rerun passes. Link audit checks970 Markdown
+files/zero broken links; diff check passes. Additional isolated supported
+DEBUG_SHORT_BOOT build succeeds (`/tmp/star-short-build.log`).
+
+Isolated normal-build captures use immutable `artifacts/ttyd-message-star.3dsx`.
+`artifacts/azahar-message-star-verified/` confirms original harbor text with the
+star at lower right, differing ready-animation images, disappearance after
+advance and return on the next page. `artifacts/azahar-message-star-front/`
+confirms Parakarry's original opening message with the star on the bottom
+text area. The first fixed-delay script remained in the title/demo flow; the
+revised `tests/azahar_message_indicator.py` verifies a real window before
+capturing. Bottom capture used a temporary /tmp script that detects the original
+star color in its expected rectangle. User emulator profiles/saves are untouched.
+
+Limits/next: original shared pose-active bit, callback/material lifetime and
+render-dependent animation cadence remain unbound. The retained original
+animation runs against native60Hz simulation ticks. Frontend text-area placement
+and small-window cue policy remain documented native presentation adapters.
+Hardware and matched Dolphin indicator images remain unverified; complete
+message services/story/full-game equivalence is still unfinished.
+
+
 ## 2026-10-13 — Inbox camera-road manager and timebase composition
 
 Completed full local camRoadMain/getV60FPS; OW-CAMERA-01 portion checked.
