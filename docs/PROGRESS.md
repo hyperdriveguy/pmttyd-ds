@@ -489,3 +489,29 @@ this documented adapter; cold market admission stall and separate trio test
 failure. Full remake/prologue battle progression remains separate unfinished
 work. This correction does not revalidate New Game beyond the previous arrival
 route or alter its story endpoint.
+
+## 2026-10-14 — Real player battle pose ownership
+
+Committed `3a8194ec`: real mode1 handles and CPU workspaces for all three Mario
+parts and Goombella, complete source descriptor selection/restart/rate history,
+separate model/texture references and immutable bank sharing with the renderer.
+Native forced display now consumes source names/mode gates and ordinary
+counter/zero-effect services before best-effort CPU output. The complete source
+Main8003ed2c boundary remains pending. Hidden defaults retain real buffer
+ownership; clock branch names follow GP40/44 versus GP38/3c.
+[Implementation scope](behavior/display/NATIVE_BATTLE_POSE_RESOURCE_OWNER.md).
+
+Combined make test passed229/229 C++ and141/141 Python checks; native make all
+passed. The final isolated source snapshot, including hidden-default refinement,
+passed226/226 C++ and141/141 Python tests and native compilation. Azahar on the
+first committed owner build reached the original10 Star Point reward/victory
+and existing field-restoration hold with no detected exception. The final
+hidden-default/clock-name refinement was host/native verified, not rerun in
+Azahar. Exact artifacts, earlier failures and limits are in the
+[archive](PROGRESS_ARCHIVE.md#2026-10-14--real-player-battle-pose-ownership).
+
+Next: full animation Main/facing/GX publication, automatic/status-pattern part
+consumers and enemy/Frankly factories, remaining queued display and real ordered
+teardown/field/result/save ownership. Original global field/battle allocation
+history, full cadence and physical hardware parity remain unproven; the full
+playable original-fidelity prologue goal stays active.

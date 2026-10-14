@@ -11,7 +11,7 @@ struct BattlePoseResource {
     std::shared_ptr<const ActorAnimationPack> bank;
 };
 std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* directory,const char* pack);
-struct BattlePoseClock {uint64_t field=0,battle=0;}; // Millisecond quotients, not rendering frames.
+struct BattlePoseClock {uint64_t modeZero=0,modeNonzero=0;}; // GP40/44 and GP38/3c millisecond quotients, not rendering frames.
 struct BattlePose {
     // Offset view of the admitted source scalar state, not mapped SDK pointers.
     std::array<uint8_t,0x170> state{};

@@ -13,7 +13,7 @@ bool readName(FILE* file,std::string& out){
     for(size_t i=length;i<bytes.size();++i)if(bytes[i])return false;
     out.assign(bytes.data(),length);return true;
 }
-uint64_t clockFor(const BattlePose& pose,BattlePoseClock clock){return pose.word(0xc)?clock.battle:clock.field;}
+uint64_t clockFor(const BattlePose& pose,BattlePoseClock clock){return pose.word(0xc)?clock.modeNonzero:clock.modeZero;}
 float rounded(float value){volatile float single=value;return single;}
 }
 std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* directory,const char* pack){
@@ -33,7 +33,7 @@ std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* dir
     ok=ok && std::fgetc(file)==EOF;std::fclose(file);if(!ok)return {};
     auto bank=std::make_shared<ActorAnimationPack>();if(!bank->load(pack))return {};
     const auto* initial=bank->pose(resource->names.front().c_str());ActorAnimationSample shape;
-    if(!initial || !initial->evaluate(0,shape) || shape.vertices.empty())return {};
+    if(!initial || !initial->evaluate(0,shape) || shape.positions.empty() || shape.nodes.empty() || shape.world.empty())return {};
     resource->bank=std::move(bank);cache[key]=resource;return resource;
 }
 uint32_t BattlePose::word(unsigned offset) const {assert(offset+4<=state.size());return uint32_t(state[offset])<<24|uint32_t(state[offset+1])<<16|uint32_t(state[offset+2])<<8|state[offset+3];}
@@ -63,7 +63,7 @@ std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseRes
         if(!reusedTexture){texture=0;while(texture<textures_.size() && textures_[texture].flags)++texture;if(texture==textures_.size())return {};}
     }
     const auto* initial=resource->bank->pose(resource->names.front().c_str());ActorAnimationSample shape;
-    if(!initial || !initial->evaluate(0,shape) || shape.vertices.empty())return {}; // No active pose without real output storage.
+    if(!initial || !initial->evaluate(0,shape) || shape.positions.empty() || shape.nodes.empty() || shape.world.empty())return {}; // Visibility does not determine buffer ownership.
     if(!poses_[handle])poses_[handle]=std::make_unique<BattlePose>();
     auto& pose=*poses_[handle];
     if(!reused){

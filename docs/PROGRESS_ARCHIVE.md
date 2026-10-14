@@ -12764,3 +12764,76 @@ selection/restarts, local rates, effects and release counts. Preserve additional
 Mario parts and their authored pose names. Bind the remaining original display
 consumers and ordered teardown/field/result/save owners afterward. Full playable
 original-fidelity prologue remains an active goal.
+
+## 2026-10-14 — Real player battle pose ownership
+
+Feature commit `3a8194ec` introduces the real retained pose/resource owner,
+complete original descriptor identity, native player binding and shared
+immutable renderer/battle banks. Source-backed fields include mode/archive,
+source index0 defaults, timestamps/cache resets, colors/matrix/local rate and
+linked sentinel. Mario's three source parts own distinct handles with modelref3
+and textureref1; Goombella has its own modelref1/textureref1. Source copied names
+are distinct from applied animation requests. Unknown KRN_H_1 selects actual
+M_Z_1 when requested; known unconverted M_S_3 stays unavailable.
+
+Native forced display executes source rate product, whole-word force choice,
+pending flags and mode/status/color/attribute gates, unsigned phase counters,
+unlinked zero-effect/material-light8 services and existing world-position query.
+Best-effort CPU evaluation uses actual original geometry and retained workspace
+at the full animPoseMain8003ed2c boundary. Main/facing/GX publication remains
+held; scene rendering keeps its existing separate clock. Unregistered enemy/
+Frankly factories remain explicit before a constructor -1 can bypass admission.
+No source global SDK/GPU/file pointer/lifetime or original global handle-history
+equivalence is claimed. The native model/texture cache counts own actual CPU
+resources; renderer Tex3DS/citro3d lifetimes stay separate.
+
+The final refinement admits fully hidden defaults based on real position/node/
+hierarchy buffers, rather than visible vertex count. A meaningful hidden→walk
+fixture verifies later genuine visibility. Clock inputs are named modeZero and
+modeNonzero for source GP40/44 and GP38/3c; source field mode2 also uses the
+nonzero branch. No new game payload was acquired or committed. Existing private
+ISO-derived Z1 poses, full names and texture/animation banks were reused.
+
+Validation:
+
+- Combined make test:229/229 CTest,141/141 Python passed;
+  `artifacts/battle-pose-pool-combined-tests.log`. Full native
+  `make all BUILD=build-pose-owner TARGET=ttyd-pose-owner -j4` passed;
+  `artifacts/battle-pose-pool-combined-native.log`. These precede the final
+  hidden-default/clock-name refinement and include concurrent menu/field work.
+- Final coherent baseline4f71901326959551a781708459530300a5236e60 plus only
+  owned source overlay passed226/226 CTest and141/141 Python checks;
+  `artifacts/battle-pose-pool-tests-validated.log`. The complete source native
+  DEBUG_SHORT_BOOT build passed, then rebuilt after the final refinement with
+  assets-ready already satisfied:
+  `make -C artifacts/battle-pose-pool-source -o assets-ready all BUILD=build-pose-pool TARGET=ttyd-pose-pool DEBUG_SHORT_BOOT=1 -j4`;
+  `artifacts/battle-pose-pool-native-validated.log`. Immutable final binary/ELF
+  and source SHA256 manifest are in `artifacts/battle-pose-pool-validated-snapshot`.
+- Pool tests cover genuine workspace ownership, descriptor/subset differences,
+  unknown/unconverted names, equal-index force0/1, rate timing and phase jumps,
+  repeated evaluation, uint64 wrap, nonfinite rates, separate cache references,
+  borrowed and double releases, smart/linked boundaries, capacities/first-free
+  reuse and hidden→visible selection. Real bank tests use full85/32 directories.
+  Native trio tests prove all4 distinct bindings and source finishing M_R_1 at
+  index4, pending-bit consumption and new Main endpoint.
+- Early trio test incorrectly expected victory M_V_2 at this later display
+  checkpoint. The existing source ending already switched to finishing M_R_1;
+  assertion was corrected to that actual name/index without changing source
+  behavior. A concurrent missing menu-test file briefly prevented rebuild and
+  left an old test binary; coherent and combined final runs resolved it.
+- Isolated Azahar on `artifacts/battle-pose-pool-snapshot` (first owner build
+  before the hidden-default/clock-name refinement) used the story11 fixture and
+  original EXP input script, exited0 with no detected exception. Output
+  `artifacts/azahar-battle-pose-pool`, log `artifacts/battle-pose-pool-smoke.log`.
+  Reviewed reward30 and final boundary: original10 Star Points/victory, then
+  black development field-restoration hold. User profile/saves untouched.
+  Observed20FPS/3.06ms reward and60FPS/3.49ms hold are emulator samples, not
+  hardware measurements or proof of speedup. The final isolated refinement
+  binary has host/native validation but no additional Azahar run.
+
+Next: complete original animation Main/facing/GX publication and actual
+registered-pose draw consumption; automatic/status-pattern branches; remaining
+enemy/Frankly source factories; global field/battle allocation/cadence; queued
+display and ordered teardown/field/result/save owners. Additional Mario parts
+must retain their real source attributes and ownership. Prologue fidelity and
+physical performance remain an active unfinished goal.

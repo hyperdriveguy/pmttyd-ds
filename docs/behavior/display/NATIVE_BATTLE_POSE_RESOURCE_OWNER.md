@@ -15,6 +15,9 @@ normals, nodes, texture/visibility state, vertices and retained hierarchy
 workspace. Admission fails explicitly when a default descriptor is unavailable
 or capacity is exhausted; it does not invent an active handle or translate
 original unchecked exhaustion into a successful sentinel.
+Admission checks real position/node/hierarchy buffers, not current visible
+vertex count: a fully hidden default still owns its pose and can later become
+visible through a genuine animation selection.
 
 Model reuse compares the original header name. Model references count live
 poses; texture references count distinct loaded model cache entries. Texture
@@ -53,8 +56,10 @@ an equal name. Selection does not change local rate or evaluate geometry.
 The rate setter writes the incoming binary32 unchanged, including negative,
 zero and nonfinite values, without rebasing clocks or advancing a frame.
 
-Clock inputs are native millisecond quotients: mode0 uses field time, other
-admitted modes use battle time. The ordinary CPU evaluator subtracts modulo
+Clock inputs are native millisecond quotients: mode0 uses GP40/44, other
+admitted modes use GP38/3c. Field mode2 also uses the nonzero branch; these
+branches are not separate field-versus-battle handle namespaces.
+The ordinary CPU evaluator subtracts modulo
 64bits, converts to binary32, multiplies60, divides1000 and then multiplies
 the local rate with explicit intermediate rounding. Repeated calls at one
 clock produce the same elapsed time. Converted sampling retains real CPU

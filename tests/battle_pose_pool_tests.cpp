@@ -5,7 +5,7 @@
 #include <limits>
 using namespace ttyd;
 namespace {
-std::shared_ptr<const ActorAnimationPack> fixture(){
+std::shared_ptr<const ActorAnimationPack> fixture(bool hiddenDefault=false){
     FILE* f=std::tmpfile();assert(f);
     auto put=[&](const auto& value){assert(std::fwrite(&value,sizeof(value),1,f)==1);};
     const std::array<char,8> magic{{'P','M','A','N','I','M','1',0}};put(magic);put(uint32_t(2));
@@ -14,7 +14,7 @@ std::shared_ptr<const ActorAnimationPack> fixture(){
         put(std::array<uint32_t,6>{{3,24,1,3,1,2}});
         put(std::array<ActorVector,3>{{{{0,0,0}},{{1,0,0}},{{0,1,0}}}});
         std::array<float,24> nodes{};nodes[3]=nodes[4]=nodes[5]=1;put(nodes);
-        put(ActorGroup{-1,-1,0,0,1});
+        put(ActorGroup{-1,-1,0,0,hiddenDefault && index==0?0u:1u});
         put(std::array<ActorVertexBinding,3>{{{0,0,0,0,0},{0,1,0,1,0},{0,2,0,0,1}}});
         ActorTextureBinding texture{};texture.cells.fill(0xffff);texture.cells[0]=0;put(texture);
         put(0.f);put(std::array<uint32_t,3>{{0,0,0}});
@@ -74,6 +74,9 @@ void lifetimeAndCapacity(){
     assert(models.release(9));auto hole2=models.enter(resource(bank,"extra","extra"),1,{});assert(hole2 && *hole2==9 && models.models()[9].references==1);
     auto bad=std::make_shared<BattlePoseResource>(*a);bad->names[0]="unconverted";BattlePosePool rejected;
     assert(!rejected.enter(bad,1,{}) && !rejected.slot(0) && rejected.models()[0].flags==0 && rejected.textures()[0].references==0);
+    BattlePosePool hidden;auto hiddenId=hidden.enter(resource(fixture(true)),1,{});
+    assert(hiddenId && hidden.pose(*hiddenId)->shape.vertices.empty() && !hidden.pose(*hiddenId)->shape.positions.empty());
+    assert(hidden.selectName(*hiddenId,"walk",true,{0,100}) && hidden.evaluate(*hiddenId,{0,100}) && !hidden.pose(*hiddenId)->shape.vertices.empty());
 }
 void original(){
     auto mario=loadBattlePoseResource("romfs/trio-attack-mario.pose-directory.bin","romfs/trio-attack-mario.pmanim");
