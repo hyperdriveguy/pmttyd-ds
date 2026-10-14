@@ -21,7 +21,22 @@ int main(int argc,char**) {
         assert(loadHarborStoryAssets(directory));
     }
     NpcAngleTable angles;
-    if(argc>1)assert(angles.load("romfs/npc-angle.bin"));
+    if(argc>1) {
+        assert(angles.load("romfs/npc-angle.bin"));
+        for(const char* path:{"romfs/harbor-crump.pmanim","romfs/harbor-xnaut.pmanim"}) {
+            ActorAnimationPack bank;assert(bank.load(path));
+            for(const char* name:{"Z_1","S_1","T_1","W_1","R_1"})assert(bank.pose(name));
+            ActorAnimationSample first,later;const auto* walk=bank.pose("W_1");
+            assert(walk->evaluate(0,first) && walk->evaluate(8,later));
+            assert(!first.vertices.empty() && first.vertices.size()==later.vertices.size());
+            bool changed=false;
+            for(unsigned i=0;i<first.vertices.size();++i) {
+                const auto& a=first.vertices[i];const auto& b=later.vertices[i];
+                changed|=a.x!=b.x || a.y!=b.y || a.z!=b.z || a.u!=b.u || a.v!=b.v;
+            }
+            assert(changed); // Live original clip, rather than another frame0 bake.
+        }
+    }
     HarborStory poses;poses.reset(true);
     NpcCamera camera{{0,120,500},{0,40,-300}};
     NpcCameraService cameraService{&camera,[](void* p){return *static_cast<NpcCamera*>(p);}};
@@ -52,6 +67,7 @@ int main(int argc,char**) {
                 assert((game.harborStory.speakerRoot==std::array<float,3>{a.x,a.y,a.z}));
         }
         Input input;input.confirm=true;game.tick(input);
+        assert(game.harborStory.actors[0].yaw==90 && game.harborStory.actors[1].yaw==270);
         if(game.harborStory.locked())assert(!game.saveRequested && game.progress.originalStory==3);
     }
     assert(game.harborStory.finished && game.progress.originalStory==4 && game.scene==Scene::Explore && game.saveRequested);

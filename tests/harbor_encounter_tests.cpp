@@ -19,9 +19,11 @@ int main(int argc,char**){
     HarborEncounter e;assert(e.begin(0,{-25.5f,15,-100},2,false));
     bool sawRun=false,sawJump=false,sawLockedJumpPose=false;
     for(unsigned t=1;t<3000 && !e.battleRequested;++t){e.tick(t*17,t%4==0?0x100:0,15);assert(!e.failed);
+        if(e.actors[1].moving)assert(e.actors[1].yaw==270);
+        for(unsigned n=2;n<5;++n)assert(e.actors[n].yaw==270);
         sawRun|=e.actors[0].moving && e.actors[0].pose=="M_R_1";
         sawJump|=e.scriptedJump && e.actors[0].position[1]>15;
-        sawLockedJumpPose|=e.scriptedJump && (e.actors[0].flags&2) && e.actors[0].pose=="M_I_N";
+        sawLockedJumpPose|=e.scriptedJump && e.actors[0].poseOverride && (e.actors[0].flags&2) && e.actors[0].pose=="M_I_N";
     }
     assert(sawRun && sawJump && sawLockedJumpPose);
     assert(e.battleRequested && e.battleSetup==2 && e.hp==5 && e.story==4 && e.pendingService && e.locked());
@@ -48,9 +50,9 @@ int main(int argc,char**){
     // Key-off during an ordinary jump keeps the vertical owner alive while
     // source mov_pos2 owns horizontal reposition. No aerial root becomes floor.
     Game air;Progress aerial;aerial.room=1;aerial.originalStory=4;aerial.elevation=.15f;
-    aerial.position={0,-.99f};air.restore(aerial);assert(air.beginHarborEncounter(false));
+    aerial.position={-.30f,-3};air.restore(aerial);assert(air.beginHarborEncounter(false));
     Input launch;launch.confirm=true;launch.jumpHeld=true;air.tick(launch);
-    assert(air.fieldAirMotion().airborne);air.progress.position.z=-1.01f;
+    assert(air.fieldAirMotion().airborne);air.progress.position.x=-.25f;
     const float initialY=air.groundHeight+air.jumpHeight;
     bool movedVertically=false;
     for(unsigned n=0;n<90 && air.fieldAirMotion().airborne;++n) {

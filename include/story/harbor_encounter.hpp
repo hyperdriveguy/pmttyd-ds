@@ -8,7 +8,7 @@ namespace ttyd {
 bool loadHarborEncounterAssets(const char* root);
 struct HarborEncounterActor {
     std::array<float,3> position{};float yaw=90;uint32_t flags=0;
-    bool moving=false;float speed=0;std::string pose="M_S_1";uint64_t poseAt=0;
+    bool moving=false,poseOverride=false;float speed=0;std::string pose="M_S_1";uint64_t poseAt=0;
 };
 struct HarborEncounterCamera {std::array<float,3> eye{},at{};int duration=0,curve=11;};
 struct HarborEncounterRequest {uint32_t function=0,command=0;uint64_t time=0;std::vector<int32_t> operands;};

@@ -31,7 +31,13 @@ camera-relative Main/Inner matrix adapter; Goombella uses the same path. Actors
 turn independently and no longer ignore their rotations or jump immediately
 between two baked sprite orientations. Flags and source scalar2 enter the matrix
 service; simulation prepares matrices and drawing reads them without advancing
-facing. This uses the existing host/ARM numerical adapter, not Gekko bit parity.
+facing. Original NPC Entry clears secondary state+1d4. Move-position sets
+state10 (and optionally1000), while `0x800526dc..730` calls npcTuningRy only
+under secondary bit2. The supplied opening has no writer enabling that bit.
+Movement therefore retains event yaw: Goombella retreats facing90, Crump and
+X-Nauts remain270; beforebattle explicitly turns Goombella270 for her approach
+and90 afterward. Native movement must not derive NPC yaw from displacement.
+This uses the existing host/ARM numerical adapter, not Gekko bit parity.
 
 Beforebattle's Mario mov_pos2 uses its resolved speed to select ordinary walk
 or run (ordinary walk speed1 at60Hz is60 engine units/second). Its original
@@ -44,7 +50,8 @@ a later source pose request overrides it. M_R_1 joins the harbor Mario bank.
 Key-off during an ordinary jump continues neutral-input field jump/fall/support
 physics. Ground height remains floor height instead of absorbing the airborne
 root. Airborne pose selection remains jump/fall even during scripted XZ travel;
-landing allows walk/run again. The explicit stationary source jump has its own
+landing allows walk/run again. Explicit source set-pose overrides survive ordinary
+airborne updates. The explicit stationary source jump has its own
 owner and published active flag. Source displayflag2 suppresses automatic pose
 changes, retaining M_I_N through the authored surprised hop; otherwise the jump
 selects M_J_1B, M_J_1C and idle. The renderer samples root plus jump height.

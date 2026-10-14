@@ -706,6 +706,7 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 - [Native setup4 battle introduction](battle/NATIVE_SETUP4_BATTLE_INTRODUCTION.md): original unit/part data, Frankly init/entry/phase and original selected stage objects.
 
 - [Native harbor before-battle](story/NATIVE_HARBOR_BEFORE_BATTLE.md)
+- [Native Crump opening actor motion/facing](story/NATIVE_HARBOR_ACTOR_MOTION_AND_FACING.md)
 - [Stationary scripted jump](field/FIELD_SCRIPTED_STATIONARY_JUMP.md)
 
 ## Native opening integration

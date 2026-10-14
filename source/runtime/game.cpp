@@ -2159,7 +2159,7 @@ void Game::tick(const Input& rawInput) {
             dispatchFieldAir();move(Input{});updateMarioPresentation();
             mario.position[1]=(groundHeight+jumpHeight)*100;
             if(!mario.moving){mario.position[0]=progress.position.x*100;mario.position[2]=progress.position.z*100;}
-            if(!mario.moving && !(mario.flags&2)) {
+            if(!mario.moving && !mario.poseOverride && !(mario.flags&2)) {
                 if(mario.pose!=marioPresentation.front){mario.pose=marioPresentation.front;mario.poseAt=ticks*1000/60;}
             }
         }
@@ -2178,7 +2178,7 @@ void Game::tick(const Input& rawInput) {
                 groundHeight=progress.elevation=m[1]*.01f;jumpHeight=0;
             }
         }
-        if(harborEncounter.locked() && !harborEncounter.scriptedJump && !(mario.flags&2)) {
+        if(harborEncounter.locked() && !harborEncounter.scriptedJump && !mario.poseOverride && !(mario.flags&2)) {
             const char* motionPose=fieldJump.airborne?marioPresentation.front:
                 mario.moving?(mario.speed>60?"M_R_1":"M_W_1"):nullptr;
             if(motionPose && mario.pose!=motionPose){mario.pose=motionPose;mario.poseAt=ticks*1000/60;}

@@ -60,8 +60,8 @@ struct HarborEncounterRuntime {
             // resolved operands, blocking continuation and independent inlines.
             const float distance=std::hypot(m.target[0]-m.start[0],m.target[2]-m.start[2]);
             m.begin=scene->now;m.end=m.begin+std::max<uint64_t>(1,uint64_t((distance+1)/rate*1000));m.active=true;a.moving=true;a.speed=rate;
-            if(actor==0){a.pose=rate>60?"M_R_1":"M_W_1";a.poseAt=scene->now;}
-            if(distance>0)a.yaw=npcReviseAngle(std::atan2(m.target[0]-m.start[0],m.start[2]-m.target[2])*57.29577951308232f);
+            if(actor==0){a.poseOverride=false;a.pose=rate>60?"M_R_1":"M_W_1";a.poseAt=scene->now;}
+            if(actor==0 && distance>0)a.yaw=npcReviseAngle(std::atan2(m.target[0]-m.start[0],m.start[2]-m.target[2])*57.29577951308232f);
         }
         return m.active?0:2;
     }
@@ -85,7 +85,7 @@ struct HarborEncounterRuntime {
         case 7:outPosition(e,1,0);return 2;
         case 8:case 10:case 16:return 2; // Retained nonblocking environment/effect/sound requests; backend open.
         case 9:return move(e,first,0,0,1,2);
-        case 11:scene->actors[0].pose=string(uint32_t(value(e,0)));scene->actors[0].poseAt=scene->now;return 2;
+        case 11:scene->actors[0].poseOverride=true;scene->actors[0].pose=string(uint32_t(value(e,0)));scene->actors[0].poseAt=scene->now;return 2;
         case 12:return move(e,first,npc(e,0),1,2,4);
         case 13:if(first){const auto key=string(uint32_t(value(e,1)));const unsigned who=npc(e,3);
             constexpr uint32_t offsets[]={0x14b28,0x14b40,0x14b5c,0x14b6c};scene->speaker=offsets[who-1];scene->speakerRoot=scene->actors[who].position;

@@ -36,7 +36,8 @@ void HarborStory::advanceActors(uint64_t delta) {
         if(a.pending && now>=a.moveAt) {
             // Original get_position float encoding then integer ADD(LW0,-N).
             a.targetX=std::trunc(std::trunc(a.x*1024.f)/1024.f)-a.displacement;
-            a.display=a.targetX<a.x?0:180;a.yaw=a.targetX<a.x?270:90;
+            // Source NPC movement heading is distinct from retained ry.
+            // These opening actors have no secondary auto-turn bit2.
             a.pending=false;a.moving=true;
             travel=std::min(delta,now-a.moveAt);
         }
