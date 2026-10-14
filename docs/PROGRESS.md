@@ -1,3 +1,46 @@
+## 2026-10-14 — Complete AP report build and invitation cleanup
+
+Committed `a94b41e6`. Shared ApRecoveryBuild preserves12-byte allocation/reuse/
+copy, retained Mario/party lookups, all13 audience-kind queries, original source
+weights/sqrt/single rounding and ordered factors/slot bonus. It captures the old
+accumulator at the branch-specific source site and wraps the truncated addition.
+Even empty reports consume the100-bound RNG draw; fresh chance byte controls the
+separate point-increment provider. Complete caller clears its retained12-byte
+record only after build readiness. Kind count uses actual presence/state/kind
+gates, distinct from Waiting. No empty-audience shortcut, invented report or
+immediate pouch SP grant is introduced.
+
+Native Harbor uses its SDK heap0 as explicit allocation policy, actual source
+fields/table/math/getters and a zero-chance admission preflight while bingo
+PointInc remains unbound. The failed original Jump now allocates/retains its
+report buffer, clears the source input record and advances to WeaponAftereffect
+801054e8, retaining Crump HP4, Mario dealt1 and failure1. Success still waits at
+voice80104508; deferred StopAC/main/display scheduling and story outcome remain
+separate. Native report lifetime ends with its battle runtime; no resource
+ownership beyond this adapter is inferred from the source allocator call.
+
+Validation: isolated snapshot /home/carson/Documents/blender_tests/pm-port/artifacts/tutorial-ap-vho_ojsu, based on270abd2b plus scoped files,
+passed `make test`:241/241 C++ and142/142 Python tests. Native
+`make all -o assets-ready BUILD=build-ap-review TARGET=ttyd-ap-review` passed
+with prepared private assets. Artifact: that review folder's ttyd-ap-review.3dsx.
+Logs: ignored artifacts/tutorial-ap-full-test.log and tutorial-ap-native.log.
+Expanded read-only ISO verifier passed46 whole motion/action/audience/report/
+getter spans. Final isolated code/test/verifier matched scoped files; diff check
+passed. Tests cover allocation/reuse/copy/clear, missing allocation, weighted
+factors/slot bonuses, RNG/point provider and presence gates, plus original script
+buffer/pending state. Initial live build hit an unfinished concurrent camera
+edit; isolated committed sources validated the battle changes. No Azahar/Dolphin,
+new payload/conversion, measured timing, native visuals/audio or full playable
+attack/tutorial/battle claim. Concurrent edits preserved through scoped commits.
+
+Next: bind original WeaponAftereffect and attack finish, voice/pitch/volume and
+bingo point producer; compose native private-pad/TimingA main/display queue and
+post-action control. Connect original class/target Input/re-entry to registration,
+consume original poses and render original HUD/menu with physical controls.
+Complete second-screen scene/audience and optional hostile-item taps with a
+physical equivalent, then verify actual play in isolated Azahar. Goal stays
+active; tutorial/battle systems and full game remain incomplete.
+
 ## 2026-10-14 — Native original Goomba3 parcel acquisition
 
 Committed `3abf5525` and `d8efdb46`. Actual Game owners now bind original US
