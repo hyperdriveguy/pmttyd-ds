@@ -12564,3 +12564,52 @@ no make/test/native rebuild because product code is unchanged. Next implement
 and validate idle-audio cleanup, actor-copy filtering and single-bin surface
 fast paths as separate scopes; profile whole-loop percentiles and allocation/
 NDSP call counts on hardware. Full remake remains unfinished.
+
+## 2026-10-14 — Additional behavior-preserving CPU/audio optimizations
+
+Implemented the next three audited paths plus fixed book workspace. Field
+rendering now references immutable catalog metadata and copies only local
+position/yaw/pose after admission, retaining source story/NPC/professor/save
+object override order. Removes east-room static loop counts of 28 record
+copies/16 nonempty talk-rule vector copies/120 rule elements per render call
+(plaza 14/8/60); these are catalog counts, not measured allocator/frame rates.
+Book cover uses a fixed five-quad array in unchanged composition order.
+
+Surface UVs wholly contained in the sole S/T bins bypass four clipping passes,
+using identical normalization/atlas arithmetic and output ceilings. Ordered
+comparisons keep NaNs on the old path. Frozen original clipping oracle verifies
+complete vertex/color bytes and return/partial-output behavior for 12,000
+random cases, boundaries/signed zero, invalid/nonfinite inputs and limits.
+Original-pack probe covers 221,707 triangle appends in 40 packs, no mismatches.
+Retained-vector host O2 eligible-kernel microbenchmark: median 184.620→48.7615ms
+(3.79x); not whole-game or physical New 2DS XL performance. House player now
+tracks queued channels, including DONE voices, clears them once on retirement
+and retains PCM; repeated idle/muted updates issue no clears. Actual player
+host NDSP stub verifies playback/mix, failure/overflow, mute/re-entry, restart,
+cursor rewind and shutdown. Strict compile + ASan/UBSan pass (LSan disabled
+under ptrace). No assembly/fast-math or simulation/draw-order changes needed.
+
+Validation: make test 224/224 CTest + 138/138 Python passed
+(artifacts/optimization-pass2/test-final.log); make all passed (all.log).
+Earlier attempts hit an absent concurrently authored battle test and its
+int→uint32_t callback mismatch; added the explicit return type in that owner's
+working test and reran successfully. Foreign work was not swept into commits.
+Scoped implementation commits 532203b, bd5b111, fbd726a; separate indices used.
+
+Immutable snapshot SHA256 f46e8b552ee45854c0a53a30cd61124d6d1d4b682d902c7806f0ebb8c7216f6a
+under artifacts/optimization-pass2/snapshot completed isolated fresh opening
+through arrival (1536-byte room1/storyKnown1/story3), and separate normal-menu
+legacy east/story8 load→original Mouser talk→field/save/checksum route. Logs
+opening-smoke.log/field-smoke.log; captures azahar-optimization-pass2-opening
+and azahar-optimization-pass2-field. Reviewed house/map/harbor and talk/return
+images; no native exception observed. Local firmware copied only into isolated
+SD test roots; no audible/source/hardware parity assertion. User emulator
+profiles/saves and ISO unchanged; no new assets/formats/conversion choices or
+private payload committed. Shared builds included concurrent feature edits;
+retained snapshot identifies the exact emulator subject. Diff/link checks pass.
+
+[Implementation details](optimization/IMPLEMENTATION_PASS2.md) record evidence
+and boundaries. Next profile hardware whole-loop percentiles, allocation and
+audio mutex waits; then separately address ordinary save worker ownership,
+cold PCM staging, exact actor-time caching and collision scratch reuse. These
+selected optimizations are complete; full remake remains unfinished.
