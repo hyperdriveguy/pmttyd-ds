@@ -1,3 +1,52 @@
+## 2026-10-14 — Original disabled-icon material and ring position providers
+
+Commita8c781a7 binds original iconGX flag32 appearance for class icon flags48:
+three source R/G/B stages with555555ff coefficient average the texture channels;
+record RGB is ignored, texture/record alpha is preserved. The native GPU uses
+replicated channel operands and original accumulation order. Packet admission
+now accepts flags16/48. Original assets are reused without gray variants.
+Renderer refuses atlas work before graphics initialization and requires its
+admitted catalog for the batch. See
+[disabled material](behavior/display/CLASS_ICON_DISABLED_MATERIAL.md).
+
+Commit786a77b2 implements whole original GetRingCenter80119cf0/0x84 and
+GetRingOffset80119c7c/0x74 local bodies with explicit projection/cosine/sine
+providers: actual current-global active-unit position address, source22.5/105
+shifts, Z0, left clamp-180, and original80/35 ellipse around retained3pi/2-angle.
+An unavailable sine preserves the preceding X write; no coordinates or trig
+result are invented. Native shader stages are reset per quad and explicitly
+cleared/restored before the Citro2D boundary. See
+[ring position](behavior/battle/ACT_RING_CENTER_AND_OFFSET_PROVIDERS.md).
+
+Validation: isolated artifacts/class-icon-material-4zzi9e98, base
+0ac453e0c7ac53e39d7fabc3e81ecf1c44d7a5e6 plus scoped material/helper increments.
+Material make test passes265/265 C++ and159/159 Python
+(artifacts/class-icon-material-test.log); native make all -o assets-ready with
+existing converted packs passes (artifacts/class-icon-material-native.log).
+Final combined make test, including helper and explicit post-batch shader reset,
+passes266/266 C++ and159/159 Python
+(artifacts/act-ring-position-test-final.log). Final native make all -o assets-ready
+BUILD=build-class-material-review TARGET=ttyd-class-material-review passes
+(artifacts/act-ring-position-native-final.log), producing452454300-byte3DSX.
+Material verifier pins containing iconGX body and coefficient span
+(artifacts/class-icon-material-source.log); position verifier passes3 body hashes,
+4 scalar spans and r2 pin (artifacts/act-ring-position-source.log). Tests check
+source program channel/alpha ownership, RGB-tint independence, actual unit lookup,
+projection mutating the global owner, clamp/shift and partial trig output.
+No new original asset extraction, emulator capture or raster parity claim.
+The rational-color test reference does not prove GX/PICA fixed-point rounding.
+
+Next: connect actual native actor/camera projection and SDK/libm/RNG services,
+packed source ownership and once-per-simulation-tick ring publication to the
+available GPU backend. Bind party/pinch footer requests and ordinary source UI
+providers rather than returning fake successful calls; remove manual readiness
+only when the native owner is complete. Normal Game tutorial command/turn
+scheduling, successful Jump voice and broader battle events remain unbound.
+Preserve source pouch/story eligibility rather than enabling moves globally.
+Upper original menus/HUD and lower audience continuation from user references
+remain required; actual audience events and optional physical-equivalent
+stop-throw controls are unfinished. The goal remains active and incomplete.
+
 ## 2026-10-14 — Native class-menu atlas and transformed quad backend
 
 Commit284390c2 adds strict, atomic loading of original surface/class-icon
