@@ -174,6 +174,15 @@ bool HarborTutorial::selectWeapon(unsigned row){
  auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
  const bool selected=r.packed->selectWeapon(row,*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});r.packed->capture(*this);return selected;
 }
+bool HarborTutorial::openWeaponMenu(uint32_t type){
+ if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive)return false;auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
+ return r.packed->openWeaponMenu(type,*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
+}
+void HarborTutorial::weaponMenuPresented(){if(runtime_ && weaponMenuOpen)runtime_->packed->weaponMenuPresented();}
+std::optional<int32_t> HarborTutorial::inputWeaponMenu(const BattlePadSample& sample){
+ if(!runtime_ || failed || !weaponMenuOpen || phaseActive || attackActive || damageActive)return std::nullopt;auto& r=*runtime_;r.scene=this;r.packed->samplePhysical(now,&sample);r.packed->publish(*this);
+ return r.packed->inputWeaponMenu(*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
+}
 bool HarborTutorial::readPackedWord(uint32_t address,uint32_t& value)const{return runtime_ && runtime_->packed && runtime_->packed->readWord(address,value);}
 void HarborTutorial::animationComplete(int32_t id){const auto slot=visualSlot(id);if(!runtime_ || slot<0)return;runtime_->complete[size_t(slot)]=true;runtime_->completeEpoch[size_t(slot)]=actors[size_t(slot)].poseAt;}
 }

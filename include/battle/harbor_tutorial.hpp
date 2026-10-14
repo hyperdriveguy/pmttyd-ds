@@ -5,6 +5,7 @@
 #include <array>
 #include <memory>
 #include <vector>
+#include <optional>
 namespace ttyd {
 bool loadHarborTutorialAssets(const char* root);
 struct HarborTutorialActor {
@@ -74,6 +75,11 @@ public:
     uint32_t dispatchHitEvent(int32_t actorId,uint32_t code);
     uint32_t dispatchDirectHitEvent(int32_t actorId,uint32_t code,uint32_t script);
     bool buildWeaponMenu(uint32_t type);
+    bool openWeaponMenu(uint32_t type);
+    void weaponMenuPresented();
+    std::optional<int32_t> inputWeaponMenu(const BattlePadSample&);
+    bool weaponMenuOpen=false,weaponTargetMenuOpen=false;int32_t weaponRowIndex=0;
+    std::vector<uint32_t> weaponMenuSounds;
     bool selectWeapon(unsigned row);
     std::vector<std::array<int32_t,2>> weaponTargets;
     uint32_t weaponMenuType=0;std::vector<HarborTutorialWeaponRow> weaponRows;

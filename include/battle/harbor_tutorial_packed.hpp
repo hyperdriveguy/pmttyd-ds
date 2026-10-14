@@ -6,6 +6,7 @@
 #include "battle_camera_requests.hpp"
 #include "battle_packed_generic_jump.hpp"
 #include <unordered_map>
+#include <optional>
 namespace ttyd {
 // Native storage/provider policy. All gameplay fields copied below retain source
 // definitions. Packed entry allocation/initialization remains a scoped adapter.
@@ -25,6 +26,12 @@ public:
  bool registerActor(HarborTutorialActor&);
  bool unitInitReady();
  bool buildWeaponMenu(uint32_t type,HarborTutorial&,void* messageUser,uint32_t(*message)(void*,uint32_t));
+ bool updateWeaponEligibility(uint32_t type);
+ std::optional<int32_t> countWeaponTargets(uint32_t battle,uint32_t unit,uint32_t weapon);
+ void captureWeaponRows(uint32_t type,HarborTutorial&);
+ bool openWeaponMenu(uint32_t type,HarborTutorial&,void*,uint32_t(*)(void*,uint32_t));
+ std::optional<int32_t> inputWeaponMenu(HarborTutorial&,void*,uint32_t(*)(void*,uint32_t));
+ void weaponMenuPresented();
  bool selectWeapon(unsigned row,HarborTutorial&,void* messageUser,uint32_t(*message)(void*,uint32_t));
  uint32_t cacheMenuLabel(uint32_t key,const char* originalText);
  uint32_t runHitEvent(int32_t id,uint32_t code);

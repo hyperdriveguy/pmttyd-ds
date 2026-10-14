@@ -30,7 +30,7 @@ bool HarborTutorialPacked::provision(){
  for(auto span:std::array<std::pair<uint32_t,unsigned>,5>{{{0x8041eb90,4},{Battle,0x19400},{Units,0x4000},{Parts,0x4000},{MenuRam,0x4000}}})if(!vm.memory.registerRam(span.first,std::vector<uint8_t>(span.second)))return false;
  word(0x8041eb90,Battle);initializePackedBattleStageFloorFields(Battle,nativeBattleActorServices(vm).memory);half(Battle+8,2);half(Battle+16,1);half(Battle+24,0);byte(Battle+0xa,1);byte(Battle+0x12,255); // Fresh source group-policy adapter.
  for(unsigned i=0;i<64;++i){word(Battle+0x120+4*i,0xffffffff);word(Battle+0x16f5c+8*i,0xffffffff);}
- BattlePadWork pad;pad.init();writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));
+ BattlePadWork pad;pad.init();writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));writePackedBattlePad(Battle+0xf2c,pad,nativeBattleActorServices(vm));
  BattleSoundPlaybackServices playback;playback.user=this;playback.trigger=[](void* self,uint32_t u,uint32_t key,int32_t sentinel,int32_t zero,const std::array<float,3>& pos){assert(sentinel==-250000000 && zero==0);return static_cast<HarborTutorialPacked*>(self)->requestSound(u,key,pos);};
  playback.position=[](void* self,uint32_t handle,const std::array<float,3>& pos){HarborTutorialSoundRequest r;r.operation=HarborTutorialSoundRequest::Operation::Position;r.handle=handle;r.position=pos;static_cast<HarborTutorialPacked*>(self)->sounds.push_back(r);};
  playback.off=[](void* self,uint32_t handle){HarborTutorialSoundRequest r;r.operation=HarborTutorialSoundRequest::Operation::Off;r.handle=handle;static_cast<HarborTutorialPacked*>(self)->sounds.push_back(r);};
@@ -65,7 +65,7 @@ bool HarborTutorialPacked::provisionFreshFieldInformation(uint32_t c,uint32_t gr
  PackedFieldBattleInformationServices services;services.memory=nativeBattleActorServices(vm);services.marioPartyId=[](void*)->int32_t{return 0;};services.party=[](void*,int32_t id){assert(id==0);return uint32_t(0);};services.partyKind=[](void*,int32_t)->int32_t{std::abort();};
  const auto info=preparePackedFieldBattleInformation(f,npc,word(0x8041eb00),services);word(Battle+0x2738,info);return true;
 }
-void HarborTutorialPacked::samplePhysical(uint64_t time,const BattlePadSample* sample){physicalCurrent=sample!=nullptr;if(!sample || sampledAt==time)return;sampledAt=time;auto pad=readPackedBattlePad(Battle+0x1d1c,nativeBattleActorServices(vm));pad.update(*sample);writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));}
+void HarborTutorialPacked::samplePhysical(uint64_t time,const BattlePadSample* sample){physicalCurrent=sample!=nullptr;if(!sample || sampledAt==time)return;sampledAt=time;auto general=readPackedBattlePad(Battle+0xf2c,nativeBattleActorServices(vm));general.update(*sample);writePackedBattlePad(Battle+0xf2c,general,nativeBattleActorServices(vm));auto pad=readPackedBattlePad(Battle+0x1d1c,nativeBattleActorServices(vm));pad.update(*sample);writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));}
 bool HarborTutorialPacked::registerActor(HarborTutorialActor& a){
  if(a.id<0 || a.id>3 || registered[a.id])return false;
  const uint32_t id=uint32_t(a.id),u=Units+id*0x1000,p=Parts+id*0x1000,k=a.id==1?word(0x80416a50):a.sourceKind;

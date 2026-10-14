@@ -1,0 +1,34 @@
+#include "battle_weapon_menu_main.hpp"
+#include <cassert>
+#include <map>
+#include <vector>
+#include <functional>
+using namespace ttyd;
+struct Fixture {
+ static constexpr uint32_t B=0x10000,M=B+0x171c,U=0x40000,C=0x50000,W=0x60000,Slot=0x70000;
+ std::map<uint32_t,uint32_t> words{{0x8041eb90,B},{B+0x420,1},{C,0},{C+8,3},{M+0x80,W},{M+0x84,1},{M+4,0x01000010}};
+ std::map<uint32_t,uint8_t> bytes;std::vector<uint32_t> triggerMasks,repeatMasks,sounds;unsigned display=0,ended=0,decisions=0,targets=0,friends=0,enemies=0;bool allowed=true,audience=false,ready=true;uint32_t trigger=0,repeat=0;std::function<void(uint32_t)> onTrigger,onRepeat;std::function<void()> onEnd;
+ BattleActorServices memory(){BattleActorServices m;m.user=this;m.memory.user=this;m.memory.word=[](void* p,uint32_t at){return static_cast<Fixture*>(p)->words[at];};m.memory.storeWord=[](void* p,uint32_t at,uint32_t v){static_cast<Fixture*>(p)->words[at]=v;};m.byte=[](void* p,uint32_t at){return static_cast<Fixture*>(p)->bytes[at];};m.memory.storeByte=[](void* p,uint32_t at,uint8_t v){static_cast<Fixture*>(p)->bytes[at]=v;};return m;}
+ BattleWeaponMenuMainServices services(){BattleWeaponMenuMainServices s;s.memory=memory();s.user=this;s.privateCursor=Slot;
+ s.unit=[](void*,uint32_t b,int32_t id){assert(b==B && id==1);return U;};s.keyAllowed=[](void* p,uint32_t){return static_cast<Fixture*>(p)->allowed;};s.cursor=[](void* p,uint32_t m,uint32_t,uint32_t out){assert(m==M);static_cast<Fixture*>(p)->words[out]=C;};s.update=[](void* p,uint32_t,uint32_t){return static_cast<Fixture*>(p)->ready;};
+ s.trigger=[](void* p,uint32_t mask){auto& f=*static_cast<Fixture*>(p);f.triggerMasks.push_back(mask);if(f.onTrigger)f.onTrigger(mask);return f.trigger&mask;};s.repeat=[](void* p,uint32_t mask){auto& f=*static_cast<Fixture*>(p);f.repeatMasks.push_back(mask);if(f.onRepeat)f.onRepeat(mask);return f.repeat&mask;};s.sound=[](void* p,uint32_t sound){static_cast<Fixture*>(p)->sounds.push_back(sound);};s.endUI=[](void* p,uint32_t){auto& f=*static_cast<Fixture*>(p);++f.ended;if(f.onEnd)f.onEnd();return true;};
+ s.decide=[](void* p,uint32_t,uint32_t type,uint32_t){assert(type==0 || type==2);++static_cast<Fixture*>(p)->decisions;return true;};s.targetSetup=[](void* p,uint32_t){++static_cast<Fixture*>(p)->targets;return true;};s.lightFriend=[](void* p){++static_cast<Fixture*>(p)->friends;};s.lightEnemy=[](void* p){++static_cast<Fixture*>(p)->enemies;};s.attackAudience=[](void* p)->std::optional<bool>{return static_cast<Fixture*>(p)->audience;};s.display=[](void* p,uint32_t){++static_cast<Fixture*>(p)->display;};return s;}
+ auto run(uint32_t type=0){return mainPackedBattleWeaponMenu(B,type,services());}
+};
+int main(){
+ Fixture closed;closed.allowed=false;assert(closed.run()==0 && closed.display==1 && closed.triggerMasks.empty());
+ Fixture confirm;confirm.trigger=0x300;confirm.onEnd=[&]{confirm.words[Fixture::M+4]=0x44;};assert(confirm.run()==1 && confirm.words[Fixture::M]==10 && confirm.words[Fixture::M+4]==0x44 && confirm.decisions==1 && confirm.targets==1 && confirm.friends==1 && confirm.enemies==1 && confirm.display==1 && confirm.triggerMasks.size()==1);
+ Fixture disabled;disabled.words[Fixture::M+0x84]=0;disabled.words[Fixture::M+0x98]=1;disabled.trigger=0x100;disabled.onEnd=[&]{disabled.words[Fixture::M+0x98]=5;};assert(disabled.run()==1 && disabled.words[Fixture::M]==8 && disabled.words[Fixture::M+0x564]==5 && disabled.decisions==0 && disabled.sounds==std::vector<uint32_t>{0x802efe88});
+ Fixture silent;silent.words[Fixture::M+0x84]=0;silent.onTrigger=[&](uint32_t mask){if(mask==0x100)silent.bytes[Fixture::B+0x1c74]=1;};assert(silent.run()==0 && silent.sounds.empty() && !silent.bytes[Fixture::B+0x1c74]);
+ Fixture forward;forward.repeat=0x30000;forward.trigger=0x200;assert(forward.run()==0 && forward.words[Fixture::C]==1 && forward.repeatMasks==std::vector<uint32_t>{0x20000} && !forward.ended);
+ Fixture reread;reread.repeat=0x20000;reread.onRepeat=[&](uint32_t mask){assert(mask==0x20000);reread.words[Fixture::C]=5;};assert(reread.run()==0 && reread.words[Fixture::C]==6);
+ Fixture wrap;wrap.words[Fixture::C]=2;wrap.repeat=0x20000;assert(wrap.run()==0 && wrap.words[Fixture::C]==2);wrap.trigger=0x20000;assert(wrap.run()==0 && wrap.words[Fixture::C]==0);
+ Fixture reverse;reverse.trigger=0x10000;assert(reverse.run()==0 && reverse.words[Fixture::C]==2);reverse.trigger=0;reverse.repeat=0x10000;assert(reverse.run()==0 && reverse.words[Fixture::C]==1);
+ Fixture cancel;cancel.trigger=0x200;assert(cancel.run()==1 && cancel.words[Fixture::M]==1 && cancel.sounds==std::vector<uint32_t>{2521});
+ for(uint8_t mode:{uint8_t(0),uint8_t(255)}){Fixture special;special.trigger=0x200;special.bytes[Fixture::U+0x2f4]=1;special.bytes[Fixture::U+0x20]=mode;assert(special.run(2)==1 && special.words[Fixture::M]==(mode?12u:15u) && special.sounds.size()==(mode?0u:1u));}
+ Fixture audience;audience.audience=true;assert(audience.run()==0 && audience.bytes[Fixture::B+0x1c74]==1 && audience.ended==1 && audience.display==1);
+ Fixture pending;pending.bytes[Fixture::B+0x1c74]=1;pending.words[Fixture::B+0x1c70]=77;assert(pending.run()==0 && pending.words[Fixture::B+0x1c70]==0 && !pending.bytes[Fixture::B+0x1c74]);
+ Fixture key;key.words[Fixture::B+0x1c78]=0x90000;assert(!packedBattleMenuKeyAllowed(Fixture::B,key.memory()));key.bytes[0x90014]=1;assert(packedBattleMenuKeyAllowed(Fixture::B,key.memory()));key.bytes[Fixture::B+0x1c74]=1;key.words[Fixture::B+0x1c78]=0;assert(packedBattleMenuKeyAllowed(Fixture::B,key.memory()));
+ Fixture interrupt;BattleMenuAudienceServices a;a.memory=interrupt.memory();a.user=&interrupt;a.privateItem=0x80000;a.trigger=[](void* p,uint32_t mask){assert(mask==0x400);return static_cast<Fixture*>(p)->trigger&mask;};a.mario=[](void*,uint32_t b){assert(b==Fixture::B);return Fixture::U;};a.itemOn=[](void* p,uint32_t output,int32_t a,int32_t b,int32_t c,int32_t d){assert(!a && !b && !c && !d);static_cast<Fixture*>(p)->words[output]=uint32_t(-1);return true;};assert(packedBattleMenuAudienceCheck(a)==false);interrupt.trigger=0x400;assert(packedBattleMenuAudienceCheck(a)==false);a.itemOn=[](void*,uint32_t,int32_t,int32_t,int32_t,int32_t){return false;};assert(!packedBattleMenuAudienceCheck(a).has_value());a.itemOn=[](void* p,uint32_t output,int32_t,int32_t,int32_t,int32_t){static_cast<Fixture*>(p)->words[output]=7;return true;};a.setTarget=[](void*,int32_t index){assert(index==7);};a.endActMenu=[](void* p,uint32_t b){auto& f=*static_cast<Fixture*>(p);assert(b==Fixture::B);f.words[b+0x1c5c]=6;};a.lightOff=[](void* p,int32_t zero,int32_t one){assert(zero==0 && one==1);static_cast<Fixture*>(p)->words[Fixture::B+0xef4]=0x80;};assert(packedBattleMenuAudienceCheck(a)==true && interrupt.words[Fixture::B+0x1c60]==6 && interrupt.words[Fixture::B+0x1c5c]==11 && interrupt.words[Fixture::M]==29 && interrupt.words[Fixture::B+0xef4]==0x84);
+
+}

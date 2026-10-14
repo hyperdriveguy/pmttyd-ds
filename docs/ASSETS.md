@@ -96,3 +96,12 @@ The tutorial decision writes actual target state without new game payload,
 rewritten labels, texture/geometry/lighting conversion or generated dialogue.
 Private asset paths and Nintendo/Intelligent Systems licensing restrictions
 remain unchanged.
+
+## Original weapon-submenu control and sound requests (2026-10-14)
+
+Shared Main/End and audience interruption use source bodies pinned by existing
+read-only US verifiers. Raw source sound IDs/keys are retained for playback; no
+generated tone, rewritten label or new game payload was added. Original menu/
+HUD resources remain in existing ignored packs; rendering/animation integration
+is still required. Texture, geometry and lighting conversion are unchanged;
+Nintendo/Intelligent Systems licensing restrictions remain.

@@ -868,3 +868,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Shared original weapon-menu setup and decision](battle/NATIVE_WEAPON_MENU_SETUP_AND_DECISION.md)
 
 - [Goomba3 portable parcel acquisition owner](field/GOOMBA3_PORTABLE_ACQUISITION_OWNER.md) — real pouch/registry ownership, delayed quest write and native binding frontier.
+
+- [Original weapon-submenu input and audience gate](battle/NATIVE_WEAPON_SUBMENU_INPUT_AND_AUDIENCE_GATE.md)

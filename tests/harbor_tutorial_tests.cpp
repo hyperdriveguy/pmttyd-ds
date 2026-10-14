@@ -66,6 +66,12 @@ void nativeWeaponRows(){
  assert(scene.buildWeaponMenu(4) && scene.weaponRows.empty());
  pouch.bytes[0x98]=3;pouch.half(0x74,4);assert(scene.buildWeaponMenu(0) && scene.weaponRows.size()==1 && scene.weaponRows[0].icon==167); // Battle entry owns a complete immutable-entry copy.
  assert(scene.readPackedWord(0x84101110,data) && uint16_t(data)==2);
+ assert(scene.openWeaponMenu(0) && scene.weaponMenuOpen);BattlePadSample press;press.snapshot.buttons=BattleButtonA;press.pressed=BattleButtonA;
+ scene.tick(scene.now+17,0,&press);assert(scene.inputWeaponMenu(press)==0 && scene.weaponMenuOpen); // UI readiness is an explicit presented signal.
+ scene.weaponMenuPresented();scene.tick(scene.now+17,0,&press);assert(scene.inputWeaponMenu(press)==1 && !scene.weaponMenuOpen && scene.weaponTargetMenuOpen);
+ assert((scene.weaponTargets==std::vector<std::array<int32_t,2>>({{2,1}})) && !scene.attackActive && scene.result==0);
+ assert(scene.openWeaponMenu(0));scene.weaponMenuPresented();BattlePadSample cancel;cancel.snapshot.buttons=BattleButtonB;cancel.pressed=BattleButtonB;scene.tick(scene.now+17,0,&cancel);assert(scene.inputWeaponMenu(cancel)==1 && !scene.weaponMenuOpen && !scene.weaponTargetMenuOpen);
+
 
 }
 int main(){

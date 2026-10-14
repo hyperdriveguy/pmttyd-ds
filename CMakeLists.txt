@@ -1114,3 +1114,10 @@ add_executable(goomba_acquisition_tests tests/goomba_acquisition_tests.cpp)
 target_link_libraries(goomba_acquisition_tests PRIVATE ttyd_core)
 add_test(NAME goomba_acquisition_original COMMAND goomba_acquisition_tests)
 set_tests_properties(goomba_acquisition_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/battle/battle_weapon_menu_main.cpp)
+add_executable(battle_weapon_menu_main_tests tests/battle_weapon_menu_main_tests.cpp)
+target_link_libraries(battle_weapon_menu_main_tests PRIVATE ttyd_core)
+add_test(NAME battle_weapon_menu_main COMMAND battle_weapon_menu_main_tests)
+
+target_sources(ttyd_core PRIVATE source/battle/harbor_tutorial_menu_input.cpp)
