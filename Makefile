@@ -43,6 +43,7 @@ DATA		:=	data
 INCLUDES	:=	$(patsubst $(TOPDIR)/%,%,$(shell find $(TOPDIR)/include -type d -print | sort))
 GRAPHICS	:=	gfx
 GFXBUILD	:=	$(BUILD)
+ASSET_MANIFEST ?= assets/manifest.json
 SOUNDTRACK ?= switch
 SWITCH_AUDIO_LIBRARY ?= local-assets/switch/audio
 ROMFS		:=	romfs
@@ -201,7 +202,19 @@ inventory:
 all: assets-ready $(BUILD) $(GFXBUILD) $(DEPSDIR) $(ROMFS_T3XFILES) $(T3XHFILES)
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
-assets-ready:
+assets-ready: assets-base
+	@python3 tools/asset_pipeline.py build --manifest "$(ASSET_MANIFEST)"
+
+.PHONY: assets-base assets-check assets-import
+assets-check:
+	@python3 tools/asset_pipeline.py check --manifest "$(ASSET_MANIFEST)"
+
+# Explicit import only; never overwrite checked-in edits during a normal build.
+assets-import: assets-base
+	@python3 tools/import_editable_assets.py
+
+assets-base:
+	@python3 tools/asset_pipeline.py prepare
 	@python3 tools/battle_class_surface_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/opening_map_transition_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/opening_book_page_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"

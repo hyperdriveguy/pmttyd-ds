@@ -1,0 +1,4238 @@
+{
+  "schema": 1,
+  "textures": [
+    {
+      "source": "local-assets/characters.png",
+      "output": "characters.t3x",
+      "origin": {
+        "iso_paths": [
+          "a/a_mario",
+          "a/a_mario-",
+          "a/a_mario_r",
+          "a/a_mario_r-",
+          "a/e_mario",
+          "a/c_pkr",
+          "a/c_pkr-",
+          "a/c_kanbu",
+          "a/c_kanbu-",
+          "a/c_kinopio",
+          "a/c_kinopio-"
+        ],
+        "converter": "tools/build_assets.py",
+        "conversion": "original baked atlas; existing dimensions and borders retained"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/characters-mesh.png",
+      "output": "characters-mesh.t3x",
+      "origin": {
+        "iso_paths": [
+          "a/a_mario",
+          "a/a_mario-",
+          "a/a_mario_r",
+          "a/a_mario_r-",
+          "a/e_mario",
+          "a/c_pkr",
+          "a/c_pkr-",
+          "a/c_kanbu",
+          "a/c_kanbu-",
+          "a/c_kinopio",
+          "a/c_kinopio-"
+        ],
+        "converter": "tools/build_assets.py",
+        "conversion": "original baked atlas; existing dimensions and borders retained"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/partner-mesh.png",
+      "output": "partner-mesh.t3x",
+      "origin": {
+        "iso_paths": [
+          "a/a_mario",
+          "a/a_mario-",
+          "a/a_mario_r",
+          "a/a_mario_r-",
+          "a/e_mario",
+          "a/c_pkr",
+          "a/c_pkr-",
+          "a/c_kanbu",
+          "a/c_kanbu-",
+          "a/c_kinopio",
+          "a/c_kinopio-"
+        ],
+        "converter": "tools/build_assets.py",
+        "conversion": "original baked atlas; existing dimensions and borders retained"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/sky-runtime.png",
+      "output": "sky.t3x",
+      "origin": {
+        "iso_paths": [
+          "b/gor_01.tpl"
+        ],
+        "converter": "tools/build_assets.py",
+        "conversion": "256x256 RGB565"
+      },
+      "format": "rgb565"
+    },
+    {
+      "source": "local-assets/map/texture-0.png",
+      "output": "map-0.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 0,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-1.png",
+      "output": "map-1.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 1,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-2.png",
+      "output": "map-2.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 2,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-3.png",
+      "output": "map-3.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 3,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-4.png",
+      "output": "map-4.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 4,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-5.png",
+      "output": "map-5.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 5,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-6.png",
+      "output": "map-6.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 6,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-7.png",
+      "output": "map-7.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 7,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-8.png",
+      "output": "map-8.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 8,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-9.png",
+      "output": "map-9.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 9,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-10.png",
+      "output": "map-10.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 10,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-11.png",
+      "output": "map-11.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 11,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-12.png",
+      "output": "map-12.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 12,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-13.png",
+      "output": "map-13.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 13,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-14.png",
+      "output": "map-14.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 14,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-15.png",
+      "output": "map-15.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 15,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-16.png",
+      "output": "map-16.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 16,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-17.png",
+      "output": "map-17.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 17,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-18.png",
+      "output": "map-18.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 18,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-19.png",
+      "output": "map-19.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 19,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-20.png",
+      "output": "map-20.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 20,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-21.png",
+      "output": "map-21.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 21,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-22.png",
+      "output": "map-22.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 22,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-23.png",
+      "output": "map-23.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 23,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-24.png",
+      "output": "map-24.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 24,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-25.png",
+      "output": "map-25.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 25,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-26.png",
+      "output": "map-26.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 26,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-27.png",
+      "output": "map-27.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 27,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-28.png",
+      "output": "map-28.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 28,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-29.png",
+      "output": "map-29.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 29,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-30.png",
+      "output": "map-30.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 30,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-31.png",
+      "output": "map-31.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 31,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-32.png",
+      "output": "map-32.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 32,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-33.png",
+      "output": "map-33.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 33,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-34.png",
+      "output": "map-34.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 34,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-35.png",
+      "output": "map-35.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 35,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-36.png",
+      "output": "map-36.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 36,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-37.png",
+      "output": "map-37.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 37,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-38.png",
+      "output": "map-38.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 38,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-39.png",
+      "output": "map-39.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 39,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-40.png",
+      "output": "map-40.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 40,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-41.png",
+      "output": "map-41.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 41,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-42.png",
+      "output": "map-42.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 42,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-43.png",
+      "output": "map-43.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 43,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-44.png",
+      "output": "map-44.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 44,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-45.png",
+      "output": "map-45.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 45,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-46.png",
+      "output": "map-46.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 46,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-47.png",
+      "output": "map-47.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 47,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-48.png",
+      "output": "map-48.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 48,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-49.png",
+      "output": "map-49.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 49,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-50.png",
+      "output": "map-50.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 50,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-51.png",
+      "output": "map-51.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 51,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-52.png",
+      "output": "map-52.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 52,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-53.png",
+      "output": "map-53.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 53,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-54.png",
+      "output": "map-54.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 54,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-55.png",
+      "output": "map-55.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 55,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-56.png",
+      "output": "map-56.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 56,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-57.png",
+      "output": "map-57.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 57,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-58.png",
+      "output": "map-58.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 58,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/map/texture-59.png",
+      "output": "map-59.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_01/t"
+        ],
+        "tpl_index": 59,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-0.png",
+      "output": "gor_00-0.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 0,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-1.png",
+      "output": "gor_00-1.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 1,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-2.png",
+      "output": "gor_00-2.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 2,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-3.png",
+      "output": "gor_00-3.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 3,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-4.png",
+      "output": "gor_00-4.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 4,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-5.png",
+      "output": "gor_00-5.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 5,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-6.png",
+      "output": "gor_00-6.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 6,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-7.png",
+      "output": "gor_00-7.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 7,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-8.png",
+      "output": "gor_00-8.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 8,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-9.png",
+      "output": "gor_00-9.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 9,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-10.png",
+      "output": "gor_00-10.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 10,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-11.png",
+      "output": "gor_00-11.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 11,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-12.png",
+      "output": "gor_00-12.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 12,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-13.png",
+      "output": "gor_00-13.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 13,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-14.png",
+      "output": "gor_00-14.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 14,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-15.png",
+      "output": "gor_00-15.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 15,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-16.png",
+      "output": "gor_00-16.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 16,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-17.png",
+      "output": "gor_00-17.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 17,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-18.png",
+      "output": "gor_00-18.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 18,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-19.png",
+      "output": "gor_00-19.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 19,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-20.png",
+      "output": "gor_00-20.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 20,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-21.png",
+      "output": "gor_00-21.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 21,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-22.png",
+      "output": "gor_00-22.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 22,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-23.png",
+      "output": "gor_00-23.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 23,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-24.png",
+      "output": "gor_00-24.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 24,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-25.png",
+      "output": "gor_00-25.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 25,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-26.png",
+      "output": "gor_00-26.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 26,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-27.png",
+      "output": "gor_00-27.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 27,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-28.png",
+      "output": "gor_00-28.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 28,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-29.png",
+      "output": "gor_00-29.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 29,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-30.png",
+      "output": "gor_00-30.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 30,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-31.png",
+      "output": "gor_00-31.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 31,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-32.png",
+      "output": "gor_00-32.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 32,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-33.png",
+      "output": "gor_00-33.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 33,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-34.png",
+      "output": "gor_00-34.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 34,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-35.png",
+      "output": "gor_00-35.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 35,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-36.png",
+      "output": "gor_00-36.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 36,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-37.png",
+      "output": "gor_00-37.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 37,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-38.png",
+      "output": "gor_00-38.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 38,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-39.png",
+      "output": "gor_00-39.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 39,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-40.png",
+      "output": "gor_00-40.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 40,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-41.png",
+      "output": "gor_00-41.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 41,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-42.png",
+      "output": "gor_00-42.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 42,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-43.png",
+      "output": "gor_00-43.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 43,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-44.png",
+      "output": "gor_00-44.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 44,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-45.png",
+      "output": "gor_00-45.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 45,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-46.png",
+      "output": "gor_00-46.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 46,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-47.png",
+      "output": "gor_00-47.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 47,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-48.png",
+      "output": "gor_00-48.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 48,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-49.png",
+      "output": "gor_00-49.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 49,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-50.png",
+      "output": "gor_00-50.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 50,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-51.png",
+      "output": "gor_00-51.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 51,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-52.png",
+      "output": "gor_00-52.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 52,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-53.png",
+      "output": "gor_00-53.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 53,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-54.png",
+      "output": "gor_00-54.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 54,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-55.png",
+      "output": "gor_00-55.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 55,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-56.png",
+      "output": "gor_00-56.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 56,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-57.png",
+      "output": "gor_00-57.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 57,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_00/texture-58.png",
+      "output": "gor_00-58.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_00/t"
+        ],
+        "tpl_index": 58,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-0.png",
+      "output": "gor_02-0.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 0,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-1.png",
+      "output": "gor_02-1.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 1,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-2.png",
+      "output": "gor_02-2.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 2,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-3.png",
+      "output": "gor_02-3.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 3,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-4.png",
+      "output": "gor_02-4.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 4,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-5.png",
+      "output": "gor_02-5.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 5,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-6.png",
+      "output": "gor_02-6.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 6,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-7.png",
+      "output": "gor_02-7.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 7,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-8.png",
+      "output": "gor_02-8.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 8,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-9.png",
+      "output": "gor_02-9.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 9,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-10.png",
+      "output": "gor_02-10.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 10,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-11.png",
+      "output": "gor_02-11.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 11,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-12.png",
+      "output": "gor_02-12.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 12,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-13.png",
+      "output": "gor_02-13.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 13,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-14.png",
+      "output": "gor_02-14.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 14,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-15.png",
+      "output": "gor_02-15.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 15,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-16.png",
+      "output": "gor_02-16.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 16,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-17.png",
+      "output": "gor_02-17.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 17,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-18.png",
+      "output": "gor_02-18.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 18,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-19.png",
+      "output": "gor_02-19.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 19,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-20.png",
+      "output": "gor_02-20.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 20,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-21.png",
+      "output": "gor_02-21.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 21,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-22.png",
+      "output": "gor_02-22.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 22,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-23.png",
+      "output": "gor_02-23.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 23,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-24.png",
+      "output": "gor_02-24.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 24,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-25.png",
+      "output": "gor_02-25.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 25,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-26.png",
+      "output": "gor_02-26.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 26,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-27.png",
+      "output": "gor_02-27.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 27,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-28.png",
+      "output": "gor_02-28.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 28,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-29.png",
+      "output": "gor_02-29.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 29,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-30.png",
+      "output": "gor_02-30.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 30,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-31.png",
+      "output": "gor_02-31.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 31,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-32.png",
+      "output": "gor_02-32.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 32,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-33.png",
+      "output": "gor_02-33.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 33,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-34.png",
+      "output": "gor_02-34.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 34,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-35.png",
+      "output": "gor_02-35.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 35,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-36.png",
+      "output": "gor_02-36.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 36,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-37.png",
+      "output": "gor_02-37.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 37,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-38.png",
+      "output": "gor_02-38.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 38,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-39.png",
+      "output": "gor_02-39.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 39,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-40.png",
+      "output": "gor_02-40.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 40,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-41.png",
+      "output": "gor_02-41.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 41,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-42.png",
+      "output": "gor_02-42.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 42,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-43.png",
+      "output": "gor_02-43.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 43,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-44.png",
+      "output": "gor_02-44.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 44,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-45.png",
+      "output": "gor_02-45.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 45,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-46.png",
+      "output": "gor_02-46.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 46,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-47.png",
+      "output": "gor_02-47.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 47,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-48.png",
+      "output": "gor_02-48.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 48,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-49.png",
+      "output": "gor_02-49.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 49,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-50.png",
+      "output": "gor_02-50.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 50,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-51.png",
+      "output": "gor_02-51.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 51,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-52.png",
+      "output": "gor_02-52.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 52,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-53.png",
+      "output": "gor_02-53.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 53,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-54.png",
+      "output": "gor_02-54.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 54,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-55.png",
+      "output": "gor_02-55.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 55,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-56.png",
+      "output": "gor_02-56.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 56,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-57.png",
+      "output": "gor_02-57.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 57,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_02/texture-58.png",
+      "output": "gor_02-58.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_02/t"
+        ],
+        "tpl_index": 58,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-0.png",
+      "output": "gor_03-0.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 0,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-1.png",
+      "output": "gor_03-1.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 1,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-2.png",
+      "output": "gor_03-2.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 2,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-3.png",
+      "output": "gor_03-3.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 3,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-4.png",
+      "output": "gor_03-4.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 4,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-5.png",
+      "output": "gor_03-5.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 5,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-6.png",
+      "output": "gor_03-6.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 6,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-7.png",
+      "output": "gor_03-7.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 7,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-8.png",
+      "output": "gor_03-8.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 8,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-9.png",
+      "output": "gor_03-9.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 9,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-10.png",
+      "output": "gor_03-10.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 10,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-11.png",
+      "output": "gor_03-11.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 11,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-12.png",
+      "output": "gor_03-12.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 12,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-13.png",
+      "output": "gor_03-13.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 13,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-14.png",
+      "output": "gor_03-14.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 14,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-15.png",
+      "output": "gor_03-15.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 15,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-16.png",
+      "output": "gor_03-16.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 16,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-17.png",
+      "output": "gor_03-17.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 17,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-18.png",
+      "output": "gor_03-18.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 18,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-19.png",
+      "output": "gor_03-19.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 19,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-20.png",
+      "output": "gor_03-20.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 20,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-21.png",
+      "output": "gor_03-21.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 21,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-22.png",
+      "output": "gor_03-22.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 22,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-23.png",
+      "output": "gor_03-23.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 23,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-24.png",
+      "output": "gor_03-24.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 24,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-25.png",
+      "output": "gor_03-25.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 25,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-26.png",
+      "output": "gor_03-26.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 26,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-27.png",
+      "output": "gor_03-27.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 27,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-28.png",
+      "output": "gor_03-28.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 28,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-29.png",
+      "output": "gor_03-29.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 29,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-30.png",
+      "output": "gor_03-30.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 30,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-31.png",
+      "output": "gor_03-31.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 31,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-32.png",
+      "output": "gor_03-32.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 32,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-33.png",
+      "output": "gor_03-33.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 33,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-34.png",
+      "output": "gor_03-34.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 34,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-35.png",
+      "output": "gor_03-35.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 35,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-36.png",
+      "output": "gor_03-36.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 36,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-37.png",
+      "output": "gor_03-37.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 37,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-38.png",
+      "output": "gor_03-38.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 38,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-39.png",
+      "output": "gor_03-39.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 39,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-40.png",
+      "output": "gor_03-40.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 40,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-41.png",
+      "output": "gor_03-41.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 41,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-42.png",
+      "output": "gor_03-42.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 42,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-43.png",
+      "output": "gor_03-43.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 43,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-44.png",
+      "output": "gor_03-44.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 44,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-45.png",
+      "output": "gor_03-45.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 45,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-46.png",
+      "output": "gor_03-46.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 46,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-47.png",
+      "output": "gor_03-47.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 47,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-48.png",
+      "output": "gor_03-48.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 48,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-49.png",
+      "output": "gor_03-49.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 49,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-50.png",
+      "output": "gor_03-50.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 50,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-51.png",
+      "output": "gor_03-51.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 51,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-52.png",
+      "output": "gor_03-52.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 52,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-53.png",
+      "output": "gor_03-53.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 53,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-54.png",
+      "output": "gor_03-54.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 54,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-55.png",
+      "output": "gor_03-55.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 55,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-56.png",
+      "output": "gor_03-56.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 56,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-57.png",
+      "output": "gor_03-57.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 57,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-58.png",
+      "output": "gor_03-58.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 58,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-59.png",
+      "output": "gor_03-59.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 59,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-60.png",
+      "output": "gor_03-60.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 60,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-61.png",
+      "output": "gor_03-61.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 61,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-62.png",
+      "output": "gor_03-62.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 62,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-63.png",
+      "output": "gor_03-63.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 63,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-64.png",
+      "output": "gor_03-64.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 64,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-65.png",
+      "output": "gor_03-65.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 65,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-66.png",
+      "output": "gor_03-66.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 66,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-67.png",
+      "output": "gor_03-67.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 67,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-68.png",
+      "output": "gor_03-68.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 68,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-69.png",
+      "output": "gor_03-69.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 69,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-70.png",
+      "output": "gor_03-70.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 70,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-71.png",
+      "output": "gor_03-71.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 71,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-72.png",
+      "output": "gor_03-72.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 72,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-73.png",
+      "output": "gor_03-73.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 73,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-74.png",
+      "output": "gor_03-74.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 74,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-75.png",
+      "output": "gor_03-75.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 75,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-76.png",
+      "output": "gor_03-76.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 76,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-77.png",
+      "output": "gor_03-77.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 77,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-78.png",
+      "output": "gor_03-78.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 78,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-79.png",
+      "output": "gor_03-79.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 79,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-80.png",
+      "output": "gor_03-80.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 80,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_03/texture-81.png",
+      "output": "gor_03-81.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_03/t"
+        ],
+        "tpl_index": 81,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-0.png",
+      "output": "gor_04-0.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 0,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-1.png",
+      "output": "gor_04-1.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 1,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-2.png",
+      "output": "gor_04-2.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 2,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-3.png",
+      "output": "gor_04-3.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 3,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-4.png",
+      "output": "gor_04-4.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 4,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-5.png",
+      "output": "gor_04-5.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 5,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-6.png",
+      "output": "gor_04-6.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 6,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-7.png",
+      "output": "gor_04-7.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 7,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-8.png",
+      "output": "gor_04-8.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 8,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-9.png",
+      "output": "gor_04-9.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 9,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-10.png",
+      "output": "gor_04-10.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 10,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-11.png",
+      "output": "gor_04-11.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 11,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-12.png",
+      "output": "gor_04-12.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 12,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-13.png",
+      "output": "gor_04-13.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 13,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-14.png",
+      "output": "gor_04-14.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 14,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-15.png",
+      "output": "gor_04-15.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 15,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-16.png",
+      "output": "gor_04-16.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 16,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-17.png",
+      "output": "gor_04-17.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 17,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-18.png",
+      "output": "gor_04-18.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 18,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-19.png",
+      "output": "gor_04-19.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 19,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-20.png",
+      "output": "gor_04-20.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 20,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-21.png",
+      "output": "gor_04-21.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 21,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-22.png",
+      "output": "gor_04-22.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 22,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-23.png",
+      "output": "gor_04-23.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 23,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-24.png",
+      "output": "gor_04-24.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 24,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-25.png",
+      "output": "gor_04-25.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 25,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-26.png",
+      "output": "gor_04-26.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 26,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-27.png",
+      "output": "gor_04-27.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 27,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-28.png",
+      "output": "gor_04-28.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 28,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-29.png",
+      "output": "gor_04-29.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 29,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-30.png",
+      "output": "gor_04-30.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 30,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-31.png",
+      "output": "gor_04-31.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 31,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-32.png",
+      "output": "gor_04-32.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 32,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-33.png",
+      "output": "gor_04-33.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 33,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-34.png",
+      "output": "gor_04-34.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 34,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-35.png",
+      "output": "gor_04-35.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 35,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-36.png",
+      "output": "gor_04-36.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 36,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-37.png",
+      "output": "gor_04-37.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 37,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-38.png",
+      "output": "gor_04-38.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 38,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-39.png",
+      "output": "gor_04-39.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 39,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-40.png",
+      "output": "gor_04-40.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 40,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-41.png",
+      "output": "gor_04-41.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 41,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/gor_04/texture-42.png",
+      "output": "gor_04-42.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/gor_04/t"
+        ],
+        "tpl_index": 42,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/stage/texture-0.png",
+      "output": "stage-0.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/stg_01/t"
+        ],
+        "tpl_index": 0,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/stage/texture-1.png",
+      "output": "stage-1.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/stg_01/t"
+        ],
+        "tpl_index": 1,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/stage/texture-2.png",
+      "output": "stage-2.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/stg_01/t"
+        ],
+        "tpl_index": 2,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/stage/texture-3.png",
+      "output": "stage-3.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/stg_01/t"
+        ],
+        "tpl_index": 3,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/stage/texture-4.png",
+      "output": "stage-4.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/stg_01/t"
+        ],
+        "tpl_index": 4,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/stage/texture-5.png",
+      "output": "stage-5.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/stg_01/t"
+        ],
+        "tpl_index": 5,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/stage/texture-6.png",
+      "output": "stage-6.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/stg_01/t"
+        ],
+        "tpl_index": 6,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/stage/texture-7.png",
+      "output": "stage-7.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/stg_01/t"
+        ],
+        "tpl_index": 7,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/stage/texture-8.png",
+      "output": "stage-8.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/stg_01/t"
+        ],
+        "tpl_index": 8,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/stage/texture-9.png",
+      "output": "stage-9.t3x",
+      "origin": {
+        "iso_paths": [
+          "m/stg_01/t"
+        ],
+        "tpl_index": 9,
+        "converter": "tools/build_assets.py",
+        "conversion": "existing power-of-two texture capped at128px"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/professor/runtime.png",
+      "output": "professor.t3x",
+      "origin": {
+        "iso_paths": [
+          "a/c_kurio",
+          "a/c_kurio-"
+        ],
+        "converter": "tools/professor_assets.py",
+        "conversion": "existing padded native runtime atlas"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/field-actors/field-chu-runtime.png",
+      "output": "field-chu.t3x",
+      "origin": {
+        "iso_paths": [
+          "a/c_tyusan",
+          "a/c_tyusan-"
+        ],
+        "converter": "tools/field_actor_assets.py",
+        "conversion": "existing padded native runtime atlas"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/field-actors/field-darkly-runtime.png",
+      "output": "field-darkly.t3x",
+      "origin": {
+        "iso_paths": [
+          "a/c_f_mura",
+          "a/c_f_mura-"
+        ],
+        "converter": "tools/field_actor_assets.py",
+        "conversion": "existing padded native runtime atlas"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/field-actors/field-goomba-runtime.png",
+      "output": "field-goomba.t3x",
+      "origin": {
+        "iso_paths": [
+          "a/c_kuribo",
+          "a/c_kuribo-"
+        ],
+        "converter": "tools/field_actor_assets.py",
+        "conversion": "existing padded native runtime atlas"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/harbor-actors/harbor-crump-runtime.png",
+      "output": "harbor-crump.t3x",
+      "origin": {
+        "iso_paths": [
+          "a/c_kanbu",
+          "a/c_kanbu-"
+        ],
+        "converter": "tools/harbor_actor_assets.py",
+        "conversion": "existing padded native runtime atlas"
+      },
+      "format": "rgba8"
+    },
+    {
+      "source": "local-assets/harbor-actors/harbor-xnaut-runtime.png",
+      "output": "harbor-xnaut.t3x",
+      "origin": {
+        "iso_paths": [
+          "a/c_zako",
+          "a/c_zako-"
+        ],
+        "converter": "tools/harbor_actor_assets.py",
+        "conversion": "existing padded native runtime atlas"
+      },
+      "format": "rgba8"
+    }
+  ],
+  "models": [
+    "map",
+    "gor_00",
+    "gor_02",
+    "gor_03",
+    "gor_04",
+    "stage"
+  ]
+}

@@ -8,6 +8,7 @@ ignored `local-assets/`, `romfs/`, or `artifacts/` paths described in
 | Prefix or name | Purpose |
 | --- | --- |
 | `verify_*.py` | Contract/source/asset verifiers. Run a focused verifier named by the relevant behavior document. |
+| `asset_pipeline.py`, `asset_animation.py`, `import_editable_assets.py` | Compile tracked sources, export lossless native model/animation JSON, explicitly import original sources; see [asset workflow](../assets/README.md). |
 | `*_assets.py`, `build_assets.py` | ISO-backed converters and native pack builders. They read the ISO without modifying it. |
 | `audio_*`, `musyx_*`, `sfx_*`, `switch_audio.py` | Audio extraction, inventory, conversion and mapping. |
 | `battle_*`, `event_*`, `field_*`, `opening_*`, `message_*`, `camera_*` | Subsystem assets, evidence and fixture preparation. |

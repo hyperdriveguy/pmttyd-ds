@@ -5,15 +5,20 @@
 | Source or output | Location | Contents and handling |
 | --- | --- | --- |
 | US GameCube source | `/home/carson/games/roms/G8ME01.iso` | Open read-only. Do not copy the ISO into the repository or distribute it. `TTYD_ISO=/path/to/G8ME01.iso` selects another local image. |
-| Extracted GameCube data | ignored `local-assets/` | Private source files and converter manifests, grouped by room or subsystem. |
+| Editable original sources | tracked `assets/original/` | PNG textures/atlases, lossless model/animation JSON and PCM16 WAVs for the imported slice, with initial hashes and provenance. |
+| Custom sources | tracked `assets/custom/` | Authored textures, atlas layouts, models, animations and audio; per-entry author/license. |
+| Temporary GameCube extraction | ignored `local-assets/` | Extraction/compiler caches and converter manifests, grouped by room or subsystem. |
 | Extracted Switch comparison data | ignored `local-assets/switch/` | Separate Switch 1.0.0 assets/audio; not evidence of GameCube behavior. |
 | Converted build products | ignored `romfs/` | Runtime packs, textures, messages, audio and metadata consumed by native builds. Generated outputs are not source history. |
 | Research captures and inventories | ignored `artifacts/` | Hashes, inventories, verifier output, emulator captures and temporary probes. |
 
-The project has no redistribution license for Nintendo/Intelligent Systems
-assets. Original dialogue and audio stay byte/source faithful where packaged;
-no authored replacement dialogue or generated sound is introduced as a
-substitute. Conversion is limited to native format, texture sizing, geometry
+The user explicitly changed the asset-history rule on 2026-10-14: editable
+original and custom sources are now tracked. The ISO and compiled packs remain
+excluded. The project has no redistribution license for Nintendo/Intelligent Systems
+assets. Original dialogue remains source faithful. The default imported audio stays
+byte faithful; explicitly authored audio can be selected through the asset
+manifest with its own attribution. Story dialogue/IDs/control tokens are not
+rewritten through this pipeline. Conversion is limited to native format, texture sizing, geometry
 reduction, and presentation adjustments documented per asset family.
 
 ## Local asset groups
@@ -396,3 +401,46 @@ textures. No generated art or rewritten labels were added. Nintendo/Intelligent
 Systems assets have no granted redistribution rights; do not commit or distribute
 original ISO, extracted images or compiled packs. GPU texture binding remains a
 native renderer task; imported assets alone do not prove visible menu parity.
+
+## 2026-10-14 — Tracked editable assets and native source pipeline
+
+[Asset editing/build guide](../assets/README.md),
+[active recipes](../assets/manifest.json),
+[import selection](../assets/import.json) and
+[original provenance](../assets/original/provenance.json) are source history.
+The first import includes **420** assets:323 original PNG textures/atlases,
+six static model JSONs,21 actor pose JSONs,42 animation JSONs and28 PCM16
+music/effect WAVs. No ISO or compiled runtime pack is included.
+
+Texture sources include `a/a_mario[-]`, `a/a_mario_r[-]`, `a/e_mario`,
+`a/c_pkr[-]`, `a/c_kanbu[-]`, `a/c_kinopio[-]`, `b/gor_01.tpl` and
+`m/{gor_00,gor_01,gor_02,gor_03,gor_04,stg_01}/t`. Existing converter PNGs
+retain their resizing and cell/border layout; the new compiler performs no
+additional scaling. Static geometry comes from those rooms' `d` resources
+through the existing map converter. Named PMCHAR1 poses and PMANIM3/4 clip
+arrays retain the existing original model/animation conversion, exported into
+lossless JSON. Native export paths and initial source SHA256s are recorded in
+the tracked ledger; detailed ISO paths/conversion choices remain in the
+[earlier ledger](ASSETS_ARCHIVE.md) and subsystem asset documents.
+
+Audio imports copy the slice's current original GameCube PCM16 WAVs and
+retain loop frame intervals in recipes. Sources include original
+`sound/stream/*.stm` and primary samples from `sound/proj/pmario.samp` plus
+its `sdir/pool/proj` mappings. Original rate, channels, samples and selected
+source loops are unchanged. This does not import the separate Switch music
+library or all1247 GameCube samples; existing extraction targets remain available
+for adding them. Every original entry retains Nintendo/Intelligent Systems
+rights with no redistribution license. Custom entries carry their own license.
+
+Normal builds restore their prior base files, run remaining ISO converters,
+then compile `assets/manifest.json`. Staged compilation, content/tool/dependency
+cache hashes and a reversible install ledger prevent stale replacements after
+an entry is removed. `assets-import` is explicit and refuses to overwrite
+authored sources. The remaining base converters still require the local
+read-only ISO; this is not yet a complete ISO-independent checkout. New asset
+names require native resource/trigger bindings, and changed render geometry
+requires separately updating collision/animation companions.
+
+Initial import verification found **454/454 generated outputs byte-identical**
+to the native base pack, including texture compression, geometry, pose/animation
+bytes and audio/loop data (`artifacts/asset-pipeline-roundtrip.json`).

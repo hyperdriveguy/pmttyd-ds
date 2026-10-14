@@ -13,6 +13,8 @@
   emulator fixture utilities. Generated packs/build output live outside source
   history as described in [asset provenance](docs/ASSETS.md); see the
   [tool map](tools/README.md).
+- `assets/` — tracked editable original and custom textures, atlases, models,
+  animations and audio, with [build/edit instructions](assets/README.md).
 - `config/` — checked-in asset-selection and audio-binding configuration.
 - `docs/behavior/<subsystem>/` — recovered behavior contracts, indexed by
   [the behavior guide](docs/behavior/README.md).
@@ -178,8 +180,11 @@ An alternative ISO location can be supplied as `TTYD_ISO=/path/to/G8ME01.iso mak
 The default is `/home/carson/games/roms/G8ME01.iso`.
 
 The asset pack is cached using converter/source fingerprints. `make clean`
-cleans the 3DS build, retaining expensive local conversions. Original assets and
-built binaries are ignored by source history. Implementation and handoff notes are recorded in incremental Git commits.
+cleans the 3DS build, retaining expensive local conversions. Editable original/custom sources are tracked under `assets/`; temporary
+extractions, compiled packs and built binaries are ignored by source history.
+Normal builds compile `assets/manifest.json` after the original base pack.
+`make assets-check` validates recipes. See the [asset workflow](assets/README.md)
+for source editing, adding resources, licenses, loops and explicit import. Implementation and handoff notes are recorded in incremental Git commits.
 
 `make audio-assets` extracts all original music streams and the MusyX bank,
 then converts the streams and all 1,247 bank samples into the ignored

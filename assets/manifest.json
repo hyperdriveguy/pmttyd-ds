@@ -1,0 +1,3277 @@
+{
+  "schema": 1,
+  "assets": [
+    {
+      "id": "original/characters.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/characters.png",
+      "output": "characters.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/characters-mesh.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/characters-mesh.png",
+      "output": "characters-mesh.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/partner-mesh.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/partner-mesh.png",
+      "output": "partner-mesh.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/sky.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/sky.png",
+      "output": "sky.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgb565"
+    },
+    {
+      "id": "original/map-0.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-0.png",
+      "output": "map-0.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-1.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-1.png",
+      "output": "map-1.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-2.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-2.png",
+      "output": "map-2.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-3.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-3.png",
+      "output": "map-3.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-4.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-4.png",
+      "output": "map-4.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-5.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-5.png",
+      "output": "map-5.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-6.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-6.png",
+      "output": "map-6.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-7.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-7.png",
+      "output": "map-7.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-8.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-8.png",
+      "output": "map-8.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-9.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-9.png",
+      "output": "map-9.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-10.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-10.png",
+      "output": "map-10.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-11.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-11.png",
+      "output": "map-11.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-12.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-12.png",
+      "output": "map-12.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-13.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-13.png",
+      "output": "map-13.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-14.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-14.png",
+      "output": "map-14.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-15.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-15.png",
+      "output": "map-15.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-16.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-16.png",
+      "output": "map-16.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-17.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-17.png",
+      "output": "map-17.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-18.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-18.png",
+      "output": "map-18.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-19.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-19.png",
+      "output": "map-19.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-20.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-20.png",
+      "output": "map-20.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-21.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-21.png",
+      "output": "map-21.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-22.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-22.png",
+      "output": "map-22.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-23.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-23.png",
+      "output": "map-23.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-24.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-24.png",
+      "output": "map-24.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-25.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-25.png",
+      "output": "map-25.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-26.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-26.png",
+      "output": "map-26.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-27.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-27.png",
+      "output": "map-27.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-28.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-28.png",
+      "output": "map-28.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-29.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-29.png",
+      "output": "map-29.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-30.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-30.png",
+      "output": "map-30.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-31.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-31.png",
+      "output": "map-31.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-32.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-32.png",
+      "output": "map-32.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-33.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-33.png",
+      "output": "map-33.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-34.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-34.png",
+      "output": "map-34.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-35.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-35.png",
+      "output": "map-35.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-36.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-36.png",
+      "output": "map-36.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-37.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-37.png",
+      "output": "map-37.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-38.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-38.png",
+      "output": "map-38.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-39.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-39.png",
+      "output": "map-39.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-40.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-40.png",
+      "output": "map-40.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-41.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-41.png",
+      "output": "map-41.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-42.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-42.png",
+      "output": "map-42.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-43.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-43.png",
+      "output": "map-43.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-44.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-44.png",
+      "output": "map-44.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-45.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-45.png",
+      "output": "map-45.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-46.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-46.png",
+      "output": "map-46.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-47.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-47.png",
+      "output": "map-47.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-48.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-48.png",
+      "output": "map-48.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-49.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-49.png",
+      "output": "map-49.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-50.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-50.png",
+      "output": "map-50.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-51.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-51.png",
+      "output": "map-51.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-52.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-52.png",
+      "output": "map-52.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-53.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-53.png",
+      "output": "map-53.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-54.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-54.png",
+      "output": "map-54.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-55.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-55.png",
+      "output": "map-55.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-56.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-56.png",
+      "output": "map-56.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-57.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-57.png",
+      "output": "map-57.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-58.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-58.png",
+      "output": "map-58.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map-59.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/map-59.png",
+      "output": "map-59.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-0.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-0.png",
+      "output": "gor_00-0.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-1.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-1.png",
+      "output": "gor_00-1.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-2.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-2.png",
+      "output": "gor_00-2.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-3.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-3.png",
+      "output": "gor_00-3.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-4.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-4.png",
+      "output": "gor_00-4.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-5.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-5.png",
+      "output": "gor_00-5.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-6.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-6.png",
+      "output": "gor_00-6.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-7.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-7.png",
+      "output": "gor_00-7.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-8.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-8.png",
+      "output": "gor_00-8.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-9.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-9.png",
+      "output": "gor_00-9.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-10.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-10.png",
+      "output": "gor_00-10.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-11.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-11.png",
+      "output": "gor_00-11.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-12.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-12.png",
+      "output": "gor_00-12.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-13.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-13.png",
+      "output": "gor_00-13.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-14.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-14.png",
+      "output": "gor_00-14.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-15.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-15.png",
+      "output": "gor_00-15.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-16.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-16.png",
+      "output": "gor_00-16.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-17.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-17.png",
+      "output": "gor_00-17.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-18.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-18.png",
+      "output": "gor_00-18.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-19.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-19.png",
+      "output": "gor_00-19.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-20.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-20.png",
+      "output": "gor_00-20.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-21.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-21.png",
+      "output": "gor_00-21.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-22.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-22.png",
+      "output": "gor_00-22.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-23.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-23.png",
+      "output": "gor_00-23.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-24.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-24.png",
+      "output": "gor_00-24.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-25.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-25.png",
+      "output": "gor_00-25.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-26.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-26.png",
+      "output": "gor_00-26.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-27.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-27.png",
+      "output": "gor_00-27.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-28.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-28.png",
+      "output": "gor_00-28.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-29.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-29.png",
+      "output": "gor_00-29.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-30.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-30.png",
+      "output": "gor_00-30.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-31.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-31.png",
+      "output": "gor_00-31.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-32.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-32.png",
+      "output": "gor_00-32.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-33.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-33.png",
+      "output": "gor_00-33.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-34.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-34.png",
+      "output": "gor_00-34.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-35.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-35.png",
+      "output": "gor_00-35.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-36.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-36.png",
+      "output": "gor_00-36.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-37.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-37.png",
+      "output": "gor_00-37.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-38.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-38.png",
+      "output": "gor_00-38.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-39.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-39.png",
+      "output": "gor_00-39.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-40.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-40.png",
+      "output": "gor_00-40.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-41.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-41.png",
+      "output": "gor_00-41.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-42.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-42.png",
+      "output": "gor_00-42.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-43.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-43.png",
+      "output": "gor_00-43.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-44.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-44.png",
+      "output": "gor_00-44.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-45.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-45.png",
+      "output": "gor_00-45.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-46.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-46.png",
+      "output": "gor_00-46.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-47.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-47.png",
+      "output": "gor_00-47.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-48.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-48.png",
+      "output": "gor_00-48.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-49.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-49.png",
+      "output": "gor_00-49.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-50.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-50.png",
+      "output": "gor_00-50.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-51.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-51.png",
+      "output": "gor_00-51.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-52.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-52.png",
+      "output": "gor_00-52.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-53.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-53.png",
+      "output": "gor_00-53.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-54.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-54.png",
+      "output": "gor_00-54.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-55.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-55.png",
+      "output": "gor_00-55.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-56.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-56.png",
+      "output": "gor_00-56.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-57.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-57.png",
+      "output": "gor_00-57.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_00-58.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_00-58.png",
+      "output": "gor_00-58.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-0.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-0.png",
+      "output": "gor_02-0.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-1.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-1.png",
+      "output": "gor_02-1.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-2.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-2.png",
+      "output": "gor_02-2.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-3.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-3.png",
+      "output": "gor_02-3.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-4.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-4.png",
+      "output": "gor_02-4.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-5.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-5.png",
+      "output": "gor_02-5.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-6.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-6.png",
+      "output": "gor_02-6.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-7.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-7.png",
+      "output": "gor_02-7.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-8.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-8.png",
+      "output": "gor_02-8.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-9.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-9.png",
+      "output": "gor_02-9.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-10.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-10.png",
+      "output": "gor_02-10.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-11.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-11.png",
+      "output": "gor_02-11.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-12.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-12.png",
+      "output": "gor_02-12.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-13.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-13.png",
+      "output": "gor_02-13.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-14.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-14.png",
+      "output": "gor_02-14.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-15.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-15.png",
+      "output": "gor_02-15.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-16.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-16.png",
+      "output": "gor_02-16.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-17.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-17.png",
+      "output": "gor_02-17.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-18.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-18.png",
+      "output": "gor_02-18.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-19.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-19.png",
+      "output": "gor_02-19.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-20.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-20.png",
+      "output": "gor_02-20.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-21.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-21.png",
+      "output": "gor_02-21.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-22.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-22.png",
+      "output": "gor_02-22.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-23.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-23.png",
+      "output": "gor_02-23.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-24.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-24.png",
+      "output": "gor_02-24.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-25.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-25.png",
+      "output": "gor_02-25.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-26.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-26.png",
+      "output": "gor_02-26.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-27.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-27.png",
+      "output": "gor_02-27.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-28.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-28.png",
+      "output": "gor_02-28.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-29.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-29.png",
+      "output": "gor_02-29.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-30.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-30.png",
+      "output": "gor_02-30.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-31.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-31.png",
+      "output": "gor_02-31.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-32.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-32.png",
+      "output": "gor_02-32.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-33.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-33.png",
+      "output": "gor_02-33.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-34.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-34.png",
+      "output": "gor_02-34.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-35.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-35.png",
+      "output": "gor_02-35.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-36.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-36.png",
+      "output": "gor_02-36.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-37.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-37.png",
+      "output": "gor_02-37.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-38.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-38.png",
+      "output": "gor_02-38.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-39.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-39.png",
+      "output": "gor_02-39.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-40.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-40.png",
+      "output": "gor_02-40.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-41.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-41.png",
+      "output": "gor_02-41.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-42.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-42.png",
+      "output": "gor_02-42.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-43.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-43.png",
+      "output": "gor_02-43.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-44.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-44.png",
+      "output": "gor_02-44.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-45.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-45.png",
+      "output": "gor_02-45.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-46.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-46.png",
+      "output": "gor_02-46.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-47.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-47.png",
+      "output": "gor_02-47.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-48.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-48.png",
+      "output": "gor_02-48.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-49.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-49.png",
+      "output": "gor_02-49.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-50.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-50.png",
+      "output": "gor_02-50.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-51.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-51.png",
+      "output": "gor_02-51.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-52.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-52.png",
+      "output": "gor_02-52.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-53.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-53.png",
+      "output": "gor_02-53.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-54.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-54.png",
+      "output": "gor_02-54.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-55.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-55.png",
+      "output": "gor_02-55.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-56.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-56.png",
+      "output": "gor_02-56.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-57.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-57.png",
+      "output": "gor_02-57.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_02-58.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_02-58.png",
+      "output": "gor_02-58.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-0.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-0.png",
+      "output": "gor_03-0.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-1.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-1.png",
+      "output": "gor_03-1.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-2.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-2.png",
+      "output": "gor_03-2.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-3.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-3.png",
+      "output": "gor_03-3.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-4.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-4.png",
+      "output": "gor_03-4.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-5.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-5.png",
+      "output": "gor_03-5.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-6.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-6.png",
+      "output": "gor_03-6.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-7.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-7.png",
+      "output": "gor_03-7.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-8.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-8.png",
+      "output": "gor_03-8.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-9.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-9.png",
+      "output": "gor_03-9.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-10.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-10.png",
+      "output": "gor_03-10.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-11.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-11.png",
+      "output": "gor_03-11.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-12.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-12.png",
+      "output": "gor_03-12.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-13.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-13.png",
+      "output": "gor_03-13.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-14.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-14.png",
+      "output": "gor_03-14.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-15.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-15.png",
+      "output": "gor_03-15.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-16.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-16.png",
+      "output": "gor_03-16.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-17.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-17.png",
+      "output": "gor_03-17.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-18.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-18.png",
+      "output": "gor_03-18.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-19.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-19.png",
+      "output": "gor_03-19.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-20.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-20.png",
+      "output": "gor_03-20.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-21.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-21.png",
+      "output": "gor_03-21.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-22.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-22.png",
+      "output": "gor_03-22.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-23.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-23.png",
+      "output": "gor_03-23.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-24.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-24.png",
+      "output": "gor_03-24.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-25.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-25.png",
+      "output": "gor_03-25.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-26.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-26.png",
+      "output": "gor_03-26.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-27.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-27.png",
+      "output": "gor_03-27.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-28.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-28.png",
+      "output": "gor_03-28.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-29.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-29.png",
+      "output": "gor_03-29.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-30.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-30.png",
+      "output": "gor_03-30.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-31.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-31.png",
+      "output": "gor_03-31.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-32.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-32.png",
+      "output": "gor_03-32.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-33.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-33.png",
+      "output": "gor_03-33.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-34.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-34.png",
+      "output": "gor_03-34.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-35.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-35.png",
+      "output": "gor_03-35.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-36.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-36.png",
+      "output": "gor_03-36.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-37.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-37.png",
+      "output": "gor_03-37.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-38.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-38.png",
+      "output": "gor_03-38.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-39.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-39.png",
+      "output": "gor_03-39.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-40.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-40.png",
+      "output": "gor_03-40.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-41.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-41.png",
+      "output": "gor_03-41.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-42.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-42.png",
+      "output": "gor_03-42.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-43.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-43.png",
+      "output": "gor_03-43.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-44.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-44.png",
+      "output": "gor_03-44.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-45.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-45.png",
+      "output": "gor_03-45.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-46.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-46.png",
+      "output": "gor_03-46.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-47.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-47.png",
+      "output": "gor_03-47.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-48.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-48.png",
+      "output": "gor_03-48.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-49.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-49.png",
+      "output": "gor_03-49.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-50.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-50.png",
+      "output": "gor_03-50.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-51.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-51.png",
+      "output": "gor_03-51.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-52.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-52.png",
+      "output": "gor_03-52.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-53.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-53.png",
+      "output": "gor_03-53.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-54.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-54.png",
+      "output": "gor_03-54.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-55.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-55.png",
+      "output": "gor_03-55.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-56.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-56.png",
+      "output": "gor_03-56.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-57.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-57.png",
+      "output": "gor_03-57.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-58.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-58.png",
+      "output": "gor_03-58.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-59.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-59.png",
+      "output": "gor_03-59.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-60.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-60.png",
+      "output": "gor_03-60.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-61.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-61.png",
+      "output": "gor_03-61.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-62.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-62.png",
+      "output": "gor_03-62.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-63.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-63.png",
+      "output": "gor_03-63.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-64.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-64.png",
+      "output": "gor_03-64.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-65.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-65.png",
+      "output": "gor_03-65.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-66.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-66.png",
+      "output": "gor_03-66.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-67.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-67.png",
+      "output": "gor_03-67.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-68.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-68.png",
+      "output": "gor_03-68.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-69.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-69.png",
+      "output": "gor_03-69.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-70.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-70.png",
+      "output": "gor_03-70.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-71.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-71.png",
+      "output": "gor_03-71.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-72.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-72.png",
+      "output": "gor_03-72.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-73.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-73.png",
+      "output": "gor_03-73.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-74.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-74.png",
+      "output": "gor_03-74.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-75.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-75.png",
+      "output": "gor_03-75.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-76.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-76.png",
+      "output": "gor_03-76.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-77.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-77.png",
+      "output": "gor_03-77.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-78.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-78.png",
+      "output": "gor_03-78.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-79.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-79.png",
+      "output": "gor_03-79.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-80.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-80.png",
+      "output": "gor_03-80.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_03-81.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_03-81.png",
+      "output": "gor_03-81.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-0.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-0.png",
+      "output": "gor_04-0.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-1.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-1.png",
+      "output": "gor_04-1.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-2.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-2.png",
+      "output": "gor_04-2.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-3.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-3.png",
+      "output": "gor_04-3.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-4.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-4.png",
+      "output": "gor_04-4.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-5.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-5.png",
+      "output": "gor_04-5.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-6.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-6.png",
+      "output": "gor_04-6.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-7.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-7.png",
+      "output": "gor_04-7.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-8.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-8.png",
+      "output": "gor_04-8.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-9.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-9.png",
+      "output": "gor_04-9.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-10.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-10.png",
+      "output": "gor_04-10.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-11.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-11.png",
+      "output": "gor_04-11.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-12.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-12.png",
+      "output": "gor_04-12.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-13.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-13.png",
+      "output": "gor_04-13.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-14.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-14.png",
+      "output": "gor_04-14.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-15.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-15.png",
+      "output": "gor_04-15.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-16.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-16.png",
+      "output": "gor_04-16.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-17.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-17.png",
+      "output": "gor_04-17.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-18.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-18.png",
+      "output": "gor_04-18.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-19.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-19.png",
+      "output": "gor_04-19.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-20.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-20.png",
+      "output": "gor_04-20.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-21.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-21.png",
+      "output": "gor_04-21.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-22.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-22.png",
+      "output": "gor_04-22.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-23.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-23.png",
+      "output": "gor_04-23.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-24.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-24.png",
+      "output": "gor_04-24.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-25.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-25.png",
+      "output": "gor_04-25.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-26.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-26.png",
+      "output": "gor_04-26.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-27.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-27.png",
+      "output": "gor_04-27.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-28.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-28.png",
+      "output": "gor_04-28.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-29.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-29.png",
+      "output": "gor_04-29.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-30.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-30.png",
+      "output": "gor_04-30.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-31.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-31.png",
+      "output": "gor_04-31.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-32.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-32.png",
+      "output": "gor_04-32.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-33.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-33.png",
+      "output": "gor_04-33.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-34.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-34.png",
+      "output": "gor_04-34.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-35.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-35.png",
+      "output": "gor_04-35.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-36.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-36.png",
+      "output": "gor_04-36.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-37.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-37.png",
+      "output": "gor_04-37.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-38.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-38.png",
+      "output": "gor_04-38.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-39.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-39.png",
+      "output": "gor_04-39.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-40.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-40.png",
+      "output": "gor_04-40.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-41.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-41.png",
+      "output": "gor_04-41.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/gor_04-42.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/gor_04-42.png",
+      "output": "gor_04-42.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/stage-0.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/stage-0.png",
+      "output": "stage-0.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/stage-1.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/stage-1.png",
+      "output": "stage-1.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/stage-2.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/stage-2.png",
+      "output": "stage-2.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/stage-3.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/stage-3.png",
+      "output": "stage-3.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/stage-4.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/stage-4.png",
+      "output": "stage-4.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/stage-5.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/stage-5.png",
+      "output": "stage-5.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/stage-6.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/stage-6.png",
+      "output": "stage-6.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/stage-7.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/stage-7.png",
+      "output": "stage-7.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/stage-8.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/stage-8.png",
+      "output": "stage-8.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/stage-9.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/stage-9.png",
+      "output": "stage-9.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/professor.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/professor.png",
+      "output": "professor.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/field-chu.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/field-chu.png",
+      "output": "field-chu.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/field-darkly.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/field-darkly.png",
+      "output": "field-darkly.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/field-goomba.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/field-goomba.png",
+      "output": "field-goomba.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/harbor-crump.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/harbor-crump.png",
+      "output": "harbor-crump.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/harbor-xnaut.t3x",
+      "kind": "texture",
+      "source": "assets/original/textures/harbor-xnaut.png",
+      "output": "harbor-xnaut.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
+    {
+      "id": "original/map",
+      "kind": "model",
+      "source": "assets/original/models/map.json",
+      "output": "map",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/gor_00",
+      "kind": "model",
+      "source": "assets/original/models/gor_00.json",
+      "output": "gor_00",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/gor_02",
+      "kind": "model",
+      "source": "assets/original/models/gor_02.json",
+      "output": "gor_02",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/gor_03",
+      "kind": "model",
+      "source": "assets/original/models/gor_03.json",
+      "output": "gor_03",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/gor_04",
+      "kind": "model",
+      "source": "assets/original/models/gor_04.json",
+      "output": "gor_04",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/stage",
+      "kind": "model",
+      "source": "assets/original/models/stage.json",
+      "output": "stage",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/c_luigi.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/c_luigi.json",
+      "output": "c_luigi.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/c_nazo.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/c_nazo.json",
+      "output": "c_nazo.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/c_paretta.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/c_paretta.json",
+      "output": "c_paretta.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/c_peach.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/c_peach.json",
+      "output": "c_peach.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/characters.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/characters.json",
+      "output": "characters.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/field-chu.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/field-chu.json",
+      "output": "field-chu.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/field-darkly.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/field-darkly.json",
+      "output": "field-darkly.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/field-goomba.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/field-goomba.json",
+      "output": "field-goomba.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-crump.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/harbor-crump.json",
+      "output": "harbor-crump.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-mario.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/harbor-mario.json",
+      "output": "harbor-mario.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-tutorial-crump.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/harbor-tutorial-crump.json",
+      "output": "harbor-tutorial-crump.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-tutorial-goombella.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/harbor-tutorial-goombella.json",
+      "output": "harbor-tutorial-goombella.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-tutorial-mario.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/harbor-tutorial-mario.json",
+      "output": "harbor-tutorial-mario.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-xnaut.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/harbor-xnaut.json",
+      "output": "harbor-xnaut.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/partner.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/partner.json",
+      "output": "partner.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/professor-fence.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/professor-fence.json",
+      "output": "professor-fence.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/professor-mario.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/professor-mario.json",
+      "output": "professor-mario.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/professor.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/professor.json",
+      "output": "professor.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/trio-attack-goombella.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/trio-attack-goombella.json",
+      "output": "trio-attack-goombella.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/trio-attack-mario.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/trio-attack-mario.json",
+      "output": "trio-attack-mario.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/underground-goombas.pmmesh",
+      "kind": "actor",
+      "source": "assets/original/actors/underground-goombas.json",
+      "output": "underground-goombas.pmmesh",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/battle-ready-EFF_excellent_us.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/battle-ready-EFF_excellent_us.json",
+      "output": "battle-ready-EFF_excellent_us.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/battle-ready-EFF_good_us.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/battle-ready-EFF_good_us.json",
+      "output": "battle-ready-EFF_good_us.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/battle-ready-EFF_great_us.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/battle-ready-EFF_great_us.json",
+      "output": "battle-ready-EFF_great_us.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/battle-ready-EFF_lucky_us.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/battle-ready-EFF_lucky_us.json",
+      "output": "battle-ready-EFF_lucky_us.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/battle-ready-EFF_nice_us.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/battle-ready-EFF_nice_us.json",
+      "output": "battle-ready-EFF_nice_us.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/battle-ready-EFF_wonderful_us.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/battle-ready-EFF_wonderful_us.json",
+      "output": "battle-ready-EFF_wonderful_us.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/battle-ready-p_b_st.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/battle-ready-p_b_st.json",
+      "output": "battle-ready-p_b_st.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/battle-ready-p_jyabara.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/battle-ready-p_jyabara.json",
+      "output": "battle-ready-p_jyabara.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/battle-ready-p_kaiten_h.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/battle-ready-p_kaiten_h.json",
+      "output": "battle-ready-p_kaiten_h.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/c_luigi.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/c_luigi.json",
+      "output": "c_luigi.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/c_nazo.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/c_nazo.json",
+      "output": "c_nazo.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/c_paretta.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/c_paretta.json",
+      "output": "c_paretta.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/c_peach.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/c_peach.json",
+      "output": "c_peach.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/characters.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/characters.json",
+      "output": "characters.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/demo-chest.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/demo-chest.json",
+      "output": "demo-chest.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/demo-page.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/demo-page.json",
+      "output": "demo-page.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/field-chu.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/field-chu.json",
+      "output": "field-chu.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/field-darkly.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/field-darkly.json",
+      "output": "field-darkly.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/field-goomba.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/field-goomba.json",
+      "output": "field-goomba.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/field-item-get-mario.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/field-item-get-mario.json",
+      "output": "field-item-get-mario.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/field-saveblock.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/field-saveblock.json",
+      "output": "field-saveblock.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/goomba-quest-mario.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/goomba-quest-mario.json",
+      "output": "goomba-quest-mario.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-crump.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/harbor-crump.json",
+      "output": "harbor-crump.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-curtain.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/harbor-curtain.json",
+      "output": "harbor-curtain.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-mario.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/harbor-mario.json",
+      "output": "harbor-mario.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-tutorial-crump.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/harbor-tutorial-crump.json",
+      "output": "harbor-tutorial-crump.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-tutorial-goombella.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/harbor-tutorial-goombella.json",
+      "output": "harbor-tutorial-goombella.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-tutorial-mario.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/harbor-tutorial-mario.json",
+      "output": "harbor-tutorial-mario.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-xnaut.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/harbor-xnaut.json",
+      "output": "harbor-xnaut.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/heading-curtain.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/heading-curtain.json",
+      "output": "heading-curtain.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/message-indicator.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/message-indicator.json",
+      "output": "message-indicator.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/opening-map-turn.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/opening-map-turn.json",
+      "output": "opening-map-turn.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/opening-ship-paper.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/opening-ship-paper.json",
+      "output": "opening-ship-paper.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/partner.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/partner.json",
+      "output": "partner.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/professor-fence.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/professor-fence.json",
+      "output": "professor-fence.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/professor-mario.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/professor-mario.json",
+      "output": "professor-mario.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/professor.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/professor.json",
+      "output": "professor.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/title-curtain-center.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/title-curtain-center.json",
+      "output": "title-curtain-center.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/title-curtain-sides.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/title-curtain-sides.json",
+      "output": "title-curtain-sides.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/trio-attack-goombella.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/trio-attack-goombella.json",
+      "output": "trio-attack-goombella.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/trio-attack-mario.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/trio-attack-mario.json",
+      "output": "trio-attack-mario.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/underground-goombas.pmanim",
+      "kind": "animation",
+      "source": "assets/original/animations/underground-goombas.json",
+      "output": "underground-goombas.pmanim",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/battle.wav",
+      "kind": "music",
+      "source": "assets/original/audio/battle.wav",
+      "output": "battle.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "loop": [55944, 1169000]
+    },
+    {
+      "id": "original/confirm.wav",
+      "kind": "sfx",
+      "source": "assets/original/audio/confirm.wav",
+      "output": "confirm.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/demo-book.wav",
+      "kind": "music",
+      "source": "assets/original/audio/demo-book.wav",
+      "output": "demo-book.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/demo-market.wav",
+      "kind": "music",
+      "source": "assets/original/audio/demo-market.wav",
+      "output": "demo-market.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/field-item-get-coin-fanfare.wav",
+      "kind": "music",
+      "source": "assets/original/audio/field-item-get-coin-fanfare.wav",
+      "output": "field-item-get-coin-fanfare.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/field-item-get-key-fanfare.wav",
+      "kind": "music",
+      "source": "assets/original/audio/field-item-get-key-fanfare.wav",
+      "output": "field-item-get-key-fanfare.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/goomba-step-left.wav",
+      "kind": "sfx",
+      "source": "assets/original/audio/goomba-step-left.wav",
+      "output": "goomba-step-left.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/goomba-step-right.wav",
+      "kind": "sfx",
+      "source": "assets/original/audio/goomba-step-right.wav",
+      "output": "goomba-step-right.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/guard.wav",
+      "kind": "sfx",
+      "source": "assets/original/audio/guard.wav",
+      "output": "guard.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-danger.wav",
+      "kind": "music",
+      "source": "assets/original/audio/harbor-danger.wav",
+      "output": "harbor-danger.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "loop": [51128, 1615544]
+    },
+    {
+      "id": "original/harbor-tutorial-music.wav",
+      "kind": "music",
+      "source": "assets/original/audio/harbor-tutorial-music.wav",
+      "output": "harbor-tutorial-music.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "loop": [117824, 1048768]
+    },
+    {
+      "id": "original/hit.wav",
+      "kind": "sfx",
+      "source": "assets/original/audio/hit.wav",
+      "output": "hit.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/jump.wav",
+      "kind": "sfx",
+      "source": "assets/original/audio/jump.wav",
+      "output": "jump.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/opening-house-door-open.wav",
+      "kind": "sfx",
+      "source": "assets/original/audio/opening-house-door-open.wav",
+      "output": "opening-house-door-open.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/opening-house-door-shut.wav",
+      "kind": "sfx",
+      "source": "assets/original/audio/opening-house-door-shut.wav",
+      "output": "opening-house-door-shut.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/opening-house-flight.wav",
+      "kind": "sfx",
+      "source": "assets/original/audio/opening-house-flight.wav",
+      "output": "opening-house-flight.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/opening-house-postbox.wav",
+      "kind": "sfx",
+      "source": "assets/original/audio/opening-house-postbox.wav",
+      "output": "opening-house-postbox.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/opening-house.wav",
+      "kind": "music",
+      "source": "assets/original/audio/opening-house.wav",
+      "output": "opening-house.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "loop": [138824, 1814680]
+    },
+    {
+      "id": "original/opening-map-turn.wav",
+      "kind": "sfx",
+      "source": "assets/original/audio/opening-map-turn.wav",
+      "output": "opening-map-turn.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/opening-sailing.wav",
+      "kind": "music",
+      "source": "assets/original/audio/opening-sailing.wav",
+      "output": "opening-sailing.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "loop": [384664, 2342984]
+    },
+    {
+      "id": "original/opening-voyage.wav",
+      "kind": "music",
+      "source": "assets/original/audio/opening-voyage.wav",
+      "output": "opening-voyage.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/professor-music.wav",
+      "kind": "music",
+      "source": "assets/original/audio/professor-music.wav",
+      "output": "professor-music.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "loop": [0, 1843184]
+    },
+    {
+      "id": "original/rogueport.wav",
+      "kind": "music",
+      "source": "assets/original/audio/rogueport.wav",
+      "output": "rogueport.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "loop": [106848, 3284008]
+    },
+    {
+      "id": "original/save-block.wav",
+      "kind": "sfx",
+      "source": "assets/original/audio/save-block.wav",
+      "output": "save-block.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/success.wav",
+      "kind": "sfx",
+      "source": "assets/original/audio/success.wav",
+      "output": "success.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/title.wav",
+      "kind": "music",
+      "source": "assets/original/audio/title.wav",
+      "output": "title.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "loop": [980504, 3684128]
+    },
+    {
+      "id": "original/underground-music.wav",
+      "kind": "music",
+      "source": "assets/original/audio/underground-music.wav",
+      "output": "underground-music.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "loop": [56, 1777762]
+    },
+    {
+      "id": "original/victory.wav",
+      "kind": "music",
+      "source": "assets/original/audio/victory.wav",
+      "output": "victory.wav",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    }
+  ]
+}
