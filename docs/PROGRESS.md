@@ -11869,7 +11869,7 @@ audience-init-smoke.log), no exception. Samples20FPS/3.11ms target,30FPS/4.10ms
 EXP,60FPS/6.22ms black are Azahar samples, not hardware/controlled performance
 parity. Joined path verified by host tests. Shared renderer integration requires
 its own completion; the validated snapshot excludes uncommitted foreign changes.
-Documentation links/scoped diff pass (audience-init-doc-links-final.log).
+Documentation links/scoped diff pass (audience-init-doc-links-repaired.log).
 Asset paths/conversion/licensing in ASSETS; no original payloads/ISO committed.
 User emulator profile/saves and ISO remain unchanged.
 
