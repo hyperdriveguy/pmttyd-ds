@@ -1,3 +1,67 @@
+## 2026-10-14 — Published native field view survives shared camera4 battle entry
+
+Previous turn made progress by removing an artificial mode2 lens-hook gate.
+Commit `7b818a14` now bridges the current native field frame into retained
+camera4 and inherits its published matrices at actual battle construction.
+Availability is explicit native metadata: boot has no view; real CameraManager
+view publication or an accepted field candidate marks it available. The field
+bridge converts eye/at/view translation and projection translation to source
+units, preserves flags/roll/extra/up/aspect/viewport, rejects invalid candidates
+atomically, and refuses battle mode2. Full original history remains unproven.
+[publication contract](behavior/camera/NATIVE_FIELD_CAMERA4_PUBLICATION_AND_BATTLE_INHERITANCE.md).
+
+Normal Game field ticks stop updating the field camera while retained mode2 owns
+it. Removed all three per-battle-tick diagnostic field-lens setter calls; they
+had repeatedly overwritten the battle-owned lens. Fresh runtime adoption uses an
+already published snapshot and marks history incomplete, rather than inventing
+an identity/boot view. The world/audience prefer the retained published eye/at/up
+instead of an unpublished controller frame, and can use the actual shared Game
+bank before attack runtime creation. Lower replay remains a single preparation.
+Updated the older camera contract's unconditional missing-view statement.
+
+Tests cover same normalized projected point across native/source units,
+retained field preservation, invalid/degenerate-frame rejection, mode2 refusal,
+real constructor/shared bank identity/depth inheritance, and actual Game tick
+publication/ownership. First focused test build caught a mistaken fixture API
+name (`Game::step` corrected to `tick`); the next run caught a projection oracle
+that had omitted the view transform. Corrected the oracle to the actual
+view-then-project order; no implementation arithmetic changed for that mistake.
+Focused test then exited0. Full `make test` exited0:292/292 C++ and171/171 Python
+(`artifacts/field-camera-publication-test.log`), retaining intentional missing-
+depth/resume and real ending camera/queue tests.
+
+Exact validation used prior isolated `artifacts/battle-lens-qwwrj2n7` with its
+validated source-lens/mode2 work plus owned hunks, excluding unrelated concurrent
+Game/trio changes. Native `TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready
+BUILD=build-battle-lens TARGET=ttyd-battle-lens` exited0 after normal main was
+restored (`artifacts/field-camera-publication-native-final.log`).
+`-o assets-ready` reuses validated private original packs. Owned diff checks
+passed. Temporary-index commit preserves unrelated edits and appends only the
+owned CMake/index fragment. No asset/ISO/compiled pack was committed.
+
+Isolated50-second Azahar run exited0 without a native exception detected. Its
+ignored fixture takes a real Game field tick, then passes that same bank into
+actual source eight-member battle initialization with no manual lens/depth hook.
+`artifacts/azahar-field-camera-handoff/data/azahar-emu/sdmc/field-camera-handoff.txt`
+records active1/shared1/published1/mode2/depth1, FOV25/near1/far32768. Inspected
+`artifacts/azahar-field-camera-handoff/audience-source-69.png.png` shows the stage
+and existing two-screen floor replay, but still at the inherited field framing.
+The normal battle outer camera cadence remains blocked by unbound providers, so
+this capture is handoff proof, **not accepted battle framing**. The8-member
+capture reports about59 FPS; it is not comparable to the200-member benchmark.
+The forced story/pouch/main and trace code were removed before final build.
+Profiles are generated/isolated and never touch user saves/settings; approved
+sandbox escalation provides local display access.
+
+Next: bind the original normal battle Main/outer camMain/camDraw cadence at its
+actual provider boundaries so the inherited view advances into battle framing.
+Complete audience type controls/reactions before harmful-item telegraphs,
+physical X and optional audience taps. Source pose-root/part drawing, original
+class/turn/menu choreography, tutorial followups/field return, full-crowd
+performance and actual voice playback remain open. No controls, dialogue, story
+grant or unit/model scale was changed by this increment. The full tutorial/real
+battle goal remains active and incomplete.
+
 ## 2026-10-14 — Actual mode2 camera publication no longer needs a manual lens hook
 
 Previous turn made progress by consuming the retained camera4 lens in the native
