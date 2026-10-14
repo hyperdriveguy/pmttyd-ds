@@ -1,3 +1,67 @@
+## 2026-10-14 — Trio stage and audience continue onto the lower screen
+
+Committed `58d95166`: the independent native trio world now captures the exact
+submitted stage-map ranges (after source visibility filtering), texture
+sampler descriptors, cull/depth masks and prepared actor ranges. The lower
+screen replays sky, opaque stage, actors, translucent stage and original audience
+with the existing centered320x240 clip continuation. It does not call original
+animation/event/control/draw producers again or rewrite geometry. Readiness
+resets at synchronized frame admission, so failed top preparation cannot replay
+stale GPU data. Field proxy actors/NPCs, field shadows, departure drawing and
+field item-get effects are suspended while the trio owns the stage. Existing
+command/target rows retain their original assets and layout; harness action
+notices have original type0 frames for readability over the scene. Physical
+input and action timing were not changed.
+
+Until the original camera4 producer publishes a view, the native world and
+Audience GetFront now share the existing tutorial camera adapter: eye(0,2.8,5.5),
+at(0,1,-.4), FOV42, near.1/far80. The suspended field camera no longer frames the
+battle. Original published eye/at/up still take precedence; these fallback values
+are provisional presentation constants, not measured original behavior. See
+[replay and framing contract](behavior/display/TRIO_LOWER_SCENE_PREPARED_DRAW_REPLAY.md).
+
+Validation used isolated snapshot `artifacts/trio-scene-cgzs5cy_`, frozen at
+`0ba9e2c4c61ea081f96aebfec73fcb68156c222c` plus owned changes. Concurrent NPC and
+shadow changes were excluded from the feature snapshot/commit and retained in
+the live worktree. Initial native compilation caught a concurrent NPC call
+copied without its pending declaration; that unrelated call was removed from
+the snapshot. Initial host run passed283/285 C++ checks but failed missing Garf
+and Borodo catalogue assertions: copied private packs were stale relative to
+frozen source. Regenerated only the isolated private catalogue with
+`python3 tools/field_actor_assets.py --iso /home/carson/games/roms/G8ME01.iso`
+(read-only ISO; no root/user assets changed). Final `make test` exited0:
+285/285 C++ and168/168 Python (`artifacts/trio-scene-test-fixed.log`). The later
+camera fallback changes are native-only; portable test inputs were unchanged.
+`TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready BUILD=build-trio-scene
+TARGET=ttyd-trio-scene` exited0 after normal main was restored
+(`artifacts/trio-scene-native-final.log`). `-o assets-ready` uses validated private
+original packs in the snapshot. Owned `git diff --check` passed.
+
+Two isolated50-second Azahar runs exited0 without a native exception detected.
+The first (`artifacts/azahar-trio-scene`) established floor continuation but
+exposed the field camera compressing the audience into the upper view. After
+correcting the fallback, inspected
+`artifacts/azahar-trio-scene-camera/audience-source-39.png.png` shows original
+crowd rows crossing the screen seam into the lower view and the floor continuing
+behind original window frames. Additional captures are in the same directory.
+The ignored fixture explicitly supplies a200-member source pouch, runs actual
+original population initialization and shares that pouch with its HUD owner.
+It grants nothing in normal story flow; all forced-main code was removed. No
+original pixels or compiled packs were committed, and generated emulator
+profiles never touch user settings/saves. Display socket access used approved
+sandbox escalation. The full-crowd capture reports about15 FPS: performance
+needs work and is not accepted as a smooth real battle. Source actor framing,
+normal-story admission and original camera/GX raster parity remain unproven.
+
+Next: verify native battle actor geometry/scale and bind original camera4
+framing/producer cadence; reduce full-crowd cost without dropping original
+members or simulation visits. Bind original audience type controls/reactions
+before harmful-item telegraphs, physical X interruption and optional audience
+taps. Finish original class-ring/menu choreography, turn cadence, tutorial
+followups/field return and actual sound voice playback. This establishes the
+requested lower scene direction but does not finish tutorial/real battles;
+the full goal remains active.
+
 ## 2026-10-14 — Native trio startup reaches visible original audience
 
 The previous turn made progress through audience rendering, tests and a stack
