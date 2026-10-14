@@ -67,18 +67,26 @@ void Renderer::advanceFieldItemPresentation() {
  }
  game.acquisitionEffect.tick();
 }
+void Renderer::advanceFieldIcons() {
+ if(!itemGetGame || itemGetGame->progress.room!=0 || itemGetGame->scene==Scene::Battle)return;
+ const auto* coin=messageIcon(403);
+ itemGetGame->fieldItems().advanceIcons(messageIconTexture.imported && coin && coin->frames.size()==4);
+}
 void Renderer::drawFieldItemGet(const Game& game) {
  if(game.progress.room!=0 || game.scene==Scene::Battle)return;
  const auto matrix=[](const FieldCameraFrame& frame){C3D_Mtx projection,view,out;
   Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(frame.fov),C3D_AspectRatioTop,frame.nearPlane,frame.farPlane,false);
   Mtx_LookAt(&view,FVec3_New(frame.eye.x,frame.eye.y,frame.eye.z),FVec3_New(frame.at.x,frame.at.y,frame.at.z),FVec3_New(0,1,0),false);
   Mtx_Multiply(&out,&projection,&view);return out;};
- const auto frame=itemGetCamera5Frame(game.fieldCameraFrame.eye,{0,1,0},game.fieldCameraFrame.at);
+ const auto& frame=game.fieldItemCamera5Frame;
  if(game.acquisitionEffect.active()) {
   const auto* camera=game.acquisitionEffect.camera()==5 && frame?&*frame:
       game.acquisitionEffect.camera()==4?&game.fieldCameraFrame:nullptr;
   if(camera)itemGetEffect(game.acquisitionEffect,game.acquisitionEffect.camera(),matrix(*camera),camera->viewport,camera->yaw,0x000000ff);
  }
- if(frame)for(const auto& icon:game.fieldItems().icons())if(icon.flags&1)item95Icon(icon,5,matrix(*frame),frame->viewport,frame->yaw,uint32_t(game.ticks));
+ if(frame)for(const auto& icon:game.fieldItems().icons())if(icon.flags&1) {
+  if(icon.id==403)coin403Icon(icon,5,matrix(*frame),frame->viewport,frame->yaw);
+  else item95Icon(icon,5,matrix(*frame),frame->viewport,frame->yaw,uint32_t(game.ticks));
+ }
 }
 }

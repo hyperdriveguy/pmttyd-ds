@@ -184,6 +184,7 @@ public:
     MarioCameraTarget marioCamera;
     FieldCameraTarget fieldCamera;
     FieldCameraFrame fieldCameraFrame;
+    std::optional<FieldCameraFrame> fieldItemCamera5Frame; // camMain publication before EVT/Mario, consumed by draw.
     CameraPoint marioCameraCollision,fieldCameraCollisionTarget; // Source retained f8/fc/100 and camera ac/b0/b4 (engine units).
     FieldCameraShift fieldCameraShift;
     bool fieldCameraCandidateActive=false;

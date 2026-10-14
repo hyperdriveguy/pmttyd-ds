@@ -1222,3 +1222,8 @@ add_executable(coin_get_window_tests tests/coin_get_window_tests.cpp)
 target_link_libraries(coin_get_window_tests PRIVATE ttyd_core)
 add_test(NAME coin_get_window_original COMMAND coin_get_window_tests)
 set_tests_properties(coin_get_window_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+add_executable(coin_icon_tests tests/coin_icon_tests.cpp)
+target_link_libraries(coin_icon_tests PRIVATE ttyd_core)
+add_test(NAME coin_icon_original COMMAND coin_icon_tests)
+set_tests_properties(coin_icon_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

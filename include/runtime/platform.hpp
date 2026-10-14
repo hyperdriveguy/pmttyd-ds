@@ -43,6 +43,7 @@ public:
     void beginFrontend();
     void advanceTutorialAnimations(Game&);
     void bindFieldItemGet(Game&,Audio&);
+    void advanceFieldIcons();
     void advanceFieldItemPresentation();
     void releaseFrontend(bool preserveMapTurn=false,bool preserveTitle=false);
     bool prepareOpeningDeparture(const OpeningHarborScene&,uint64_t fieldTick);
@@ -86,6 +87,8 @@ private:
     bool prepareItemGetEffect();
     void releaseItemGetEffect();
     bool item95Icon(const FieldItemIcon&,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,const CameraViewport&,float cameraYaw,uint32_t sourceFrameCounter);
+    bool coin403Icon(const FieldItemIcon&,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,const CameraViewport&,float cameraYaw);
+    bool fieldIcon(const FieldItemIcon&,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,const CameraViewport&,float cameraYaw,uint32_t sourceFrameCounter);
     void releaseItem95Icons();
     Vertex* item95IconVertices=nullptr;unsigned item95IconCount=0;
 

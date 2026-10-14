@@ -1824,11 +1824,14 @@ void Game::tick(const Input& rawInput) {
     } presentation{*this,partner,rawInput};
     Input input=rawInput;const Input& i=input;
     ++ticks;++fieldCameraSimulationTicks;openingDeparture.advance(ticks,progress.room); sound=Sound::None;overheadContact=false;headObjectKey=0;headContact={};
+    if(scene==Scene::Explore || scene==Scene::Dialogue) {
+        beginFieldCameraTick();
+        fieldItemCamera5Frame=itemGetCamera5Frame(fieldCameraFrame.eye,{0,1,0},fieldCameraFrame.at);
+    }
     if(goombaAcquisition.active()) {
         goombaAcquisition.eventMain(); // Event manager precedes this visit's Mario/NPC/item owners.
         if(goombaAcquisition.complete()){applyFieldItemStateRequest(ItemGetRequest::KeyOn);scene=Scene::Explore;}
     }
-    if(scene==Scene::Explore || scene==Scene::Dialogue)beginFieldCameraTick();
     if(arriving || warpRequest>=0)retainedFieldMainX=0; // Source road choreography keys off before Mario input publication.
     if(i.physicalSnapshot) {
         std::array<RawPad,4> raw{};raw[0].buttons=i.physicalButtons;

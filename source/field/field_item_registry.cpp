@@ -3,7 +3,11 @@
 #include <cstring>
 namespace ttyd {
 bool item95IconDraw(const FieldItemIcon& icon,float yaw,uint32_t width,uint32_t height,FieldItemIconDraw& out) {
- if(icon.id!=307 || !icon.visible(true) || (icon.flags&~uint16_t(1|0x80|0x100)) || width!=40 || height!=40)return false;
+ return icon.id==307 && fieldItemIconDraw(icon,yaw,width,height,out);
+}
+bool fieldItemIconDraw(const FieldItemIcon& icon,float yaw,uint32_t width,uint32_t height,FieldItemIconDraw& out) {
+ const uint16_t allowed=icon.id==307?uint16_t(1|0x80|0x100):icon.id==403?uint16_t(1|0x100|0x1000):0;
+ if(!allowed || !icon.visible(true) || (icon.flags&~allowed) || width!=40 || height!=40)return false;
  FieldItemIconDraw draw;const float radians=-(yaw*.01745329238474369f),s=std::sin(radians),c=std::cos(radians);
  ActorMatrix rotation;rotation.v[0]=rotation.v[10]=c;rotation.v[2]=s;rotation.v[8]=-s;
  const float xyz[]={icon.position.x,icon.position.y,icon.position.z},scale[]={icon.scale,icon.scale,icon.scale};
@@ -14,6 +18,29 @@ bool item95IconDraw(const FieldItemIcon& icon,float yaw,uint32_t width,uint32_t 
  draw.color=icon.color;draw.depthWrite=(icon.color&255)==255;draw.blend=!draw.depthWrite;
  out=draw;return true;
 }
+FieldItemIcon* FieldItemRegistry::enterCoin403(const char* name,ItemGetPoint position,bool ready,bool mapBlend) {
+ if(!name || !*name || std::strlen(name)>15)return nullptr;
+ FieldItemIcon* icon=nullptr;for(auto& i:icons_)if(!(i.flags&1)){icon=&i;break;}
+ if(!icon)return nullptr;
+ *icon=FieldItemIcon{};icon->name=name;icon->id=403;icon->flags=ready?0x1001:0x2001;
+ if(mapBlend)icon->flags|=0x40;
+ if(ready){icon->frameCount=4;icon->texture=414;icon->delay=6;}
+ // Constructor allocates despite duplicates; the later named position setter
+ // updates the first active match, which may differ from the new record.
+ findIcon(name)->position=position;return icon;
+}
+void FieldItemRegistry::advanceIcons(bool ready) {
+ if(!ready)return;
+ for(auto& icon:icons_)if((icon.flags&1) && icon.id==403) {
+  if(icon.flags&0x2000){icon.flags&=~uint16_t(0x2000);icon.flags|=0x1000;icon.frameCount=4;icon.frameIndex=0;icon.texture=414;icon.delay=6;}
+  if(!(icon.flags&0x1000))continue;
+  if(icon.delay)--icon.delay;
+  if(!icon.delay){icon.frameIndex=uint16_t(icon.frameIndex+1);if(icon.frameIndex>=icon.frameCount)icon.frameIndex=0;
+   icon.texture=uint16_t(414+icon.frameIndex);icon.delay=6;}
+ }
+}
+void FieldItemRegistry::iconFlags(const char* name,uint16_t on,uint16_t off) {if(auto* icon=findIcon(name))icon->flags=uint16_t((icon->flags|on)&~off);}
+void FieldItemRegistry::deleteIcon(const char* name) {if(auto* icon=findIcon(name))icon->flags&=~uint16_t(1);}
 FieldItemEntry* FieldItemRegistry::find(const char* name) {
  if(!name)return nullptr;
  for(auto& e:items_)if(e.name==name)return &e;

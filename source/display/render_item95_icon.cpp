@@ -6,11 +6,22 @@ void Renderer::releaseItem95Icons() {
 }
 bool Renderer::item95Icon(const FieldItemIcon& icon,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,
                          const CameraViewport& viewport,float yaw,uint32_t counter) {
+ if(icon.id!=307)return false;
+ return fieldIcon(icon,cameraID,nativeWorldToClip,viewport,yaw,counter);
+}
+bool Renderer::coin403Icon(const FieldItemIcon& icon,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,
+                          const CameraViewport& viewport,float yaw) {
+ if(icon.id!=403)return false;
+ return fieldIcon(icon,cameraID,nativeWorldToClip,viewport,yaw,0);
+}
+bool Renderer::fieldIcon(const FieldItemIcon& icon,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,
+                        const CameraViewport& viewport,float yaw,uint32_t counter) {
  if(!icon.visible(messageIconTexture.imported!=nullptr))return true;
  if(cameraID!=5 || cameraID!=icon.camera() || item95IconCount>=FieldItemRegistry::Capacity)return false;
  const auto* original=messageIcon(icon.id);if(!original || original->frames.empty())return false;
- const auto& frame=original->frame(counter);FieldItemIconDraw draw;
- if(!item95IconDraw(icon,yaw,frame.width,frame.height,draw))return false;
+ if(icon.id==403 && (original->frames.size()!=4 || icon.frameIndex>=4 || icon.texture!=414+icon.frameIndex))return false;
+ const auto& frame=icon.id==403?original->frames[icon.frameIndex]:original->frame(counter);FieldItemIconDraw draw;
+ if(!fieldItemIconDraw(icon,yaw,frame.width,frame.height,draw))return false;
  if(!item95IconVertices)item95IconVertices=(Vertex*)linearAlloc(sizeof(Vertex)*6*FieldItemRegistry::Capacity);
  if(!item95IconVertices)return false;
  const unsigned start=item95IconCount++*6;constexpr unsigned order[]={0,1,2,0,2,3};

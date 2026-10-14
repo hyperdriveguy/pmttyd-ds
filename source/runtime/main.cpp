@@ -148,7 +148,7 @@ int main() {
         const double simulationStart=seconds();metrics.steps=0;
         while(accumulator>=1./60 && metrics.steps<5) {
             if(frontend.screen==ttyd::FrontScreen::Playing){audio.bindFieldMarioMotion(game);renderer.bindFieldItemGet(game,audio);renderer.advanceTutorialAnimations(game);game.tick(pending);
-                audio.tickKeyItemAudio(ttyd::TickRate);renderer.advanceFieldItemPresentation();}
+                renderer.advanceFieldIcons();audio.tickKeyItemAudio(ttyd::TickRate);renderer.advanceFieldItemPresentation();}
             else {
                 ++frontTicks;
                 // PAD publication is global across scene ownership. Preserve
