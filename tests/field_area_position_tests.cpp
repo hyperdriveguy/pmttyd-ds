@@ -6,6 +6,8 @@
 #include <cassert>
 #include <cmath>
 #include <cstring>
+#include <map>
+#include <set>
 using namespace ttyd;
 namespace {
 float scalar(uint32_t v){float f;std::memcpy(&f,&v,4);return f;}
@@ -35,8 +37,40 @@ struct Harness {
  }
  ~Harness(){deleteEventId(root,creation);}
 };
+// Deliberate host-only world fixture. It proves real setup scheduling/metadata;
+// it supplies no native Game registration, battle RNG, pose or resource service.
+void sharedNpcSetup() {
+ clearCollision();Harness h;{CollisionTransition room;assert(room.load("romfs/gor_02",2));h.bind();h.finish();}
+ struct World {bool ready=false;unsigned getters=0,modes=0,battles=0;std::map<uint32_t,uint32_t> data,names;} world;
+ for(unsigned n=0;n<15;++n){const auto row=0x90524f10+0x5c*n,name=h.word(row),actor=0x85000000+0x400*n;assert(name);
+  world.names[name]=actor;world.data[actor]=3;world.data[actor+0x28]=0x85010000;
+ }
+ assert(h.word(0x90524f10+15*0x5c)==0);
+ FieldNpcSetupWorld w;w.user=&world;
+ w.fieldPointer=[](void* p){++static_cast<World*>(p)->getters;return 0x85020000u;};
+ w.admit=[](void* p,const EventEntry&,uint32_t table,bool first,const FieldNpcSetupOperands&){assert(table==0x90524f10 && first);return static_cast<World*>(p)->ready;};
+ w.npc=[](void* p,uint32_t name,bool asserting,const FieldNpcSetupOperands&){assert(!asserting);return static_cast<World*>(p)->names.at(name);};
+ w.word=[](void* p,uint32_t address){return static_cast<World*>(p)->data[address];};
+ w.store=[](void* p,uint32_t address,uint32_t value){static_cast<World*>(p)->data[address]=value;};
+ w.battle=[](void* p,uint32_t,uint32_t setup){assert(setup==0);++static_cast<World*>(p)->battles;};
+ w.copyString=[](void*,uint32_t,uint32_t){assert(false);};w.setAnimation=[](void*,uint32_t,uint32_t,int32_t){assert(false);};
+ w.mode=[](void* p,int32_t mode){assert(mode==1);++static_cast<World*>(p)->modes;};h.s.npcSetup=w;
+ h.tick();assert(world.getters==1 && world.modes==0 && world.battles==0 && h.area.eventAlive(h.root));
+ world.ready=true;h.tick();assert(world.getters==1 && world.modes==1 && world.battles==15 && h.area.eventAlive(h.root));
+ auto* gp=h.creation.manager.globals(h.creation.manager.user);auto* context=h.creation.manager.context(h.creation.manager.user,gp->battleContext!=0);
+ std::set<uint32_t> ids;
+ for(unsigned n=0;n<15;++n){const auto actor=0x85000000+0x400*n,id=world.data.at(actor+0x118);assert(id && ids.insert(id).second);
+  assert(world.data.at(actor)==0x80603 && world.data.at(actor+0x124)==h.word(0x90524f10+0x5c*n+0x10));
+  EventEntry* created=nullptr;for(int slot=0;slot<context->capacity;++slot)if((context->entries[slot].flags&1) && context->entries[slot].id==id)created=&context->entries[slot];
+  assert(created && created->restartScript==h.word(0x90524f10+0x5c*n+0xc) && created->field170==actor && created->rawBytes[0]==0 && created->type==0xef && !(created->flags&0x20) && !created->waitingParent && !created->brotherOwner);
+ }
+ const auto beforeCancel=h.area.liveEventCount();deleteEventId(h.root,h.creation);assert(!h.area.eventAlive(h.root) && h.area.liveEventCount()==beforeCancel-1);
+ for(auto id:ids)assert(h.area.eventAlive(id)); // Independent init roots survive caller retirement.
+}
+
 }
 int main(){assert(loadFieldAreaEventAssets("romfs") && loadFieldMapFlagAssets("romfs") && loadFieldBeroInfoAssets("romfs") && loadWarps("romfs/rooms.bin"));
+ sharedNpcSetup();
  clearCollision();Harness h;h.bind();h.tick();assert(h.area.pendingFunction==0x80079b74 && !h.game.fieldRecoveryWords[0]);
  {CollisionTransition wrong;assert(wrong.load("romfs/map",0));Game other(false);other.fieldMapFlags.synchronize(0);h.s.geometry=other.fieldBeroGeometry();h.tick();assert(h.area.pendingFunction==0x80079b74 && !h.game.fieldRecoveryWords[0]);}h.s.geometry=h.game.fieldBeroGeometry();
  {CollisionTransition room;assert(room.load("romfs/gor_02",2));

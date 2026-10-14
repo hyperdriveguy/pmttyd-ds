@@ -1701,3 +1701,9 @@ target_sources(ttyd_core PRIVATE source/display/battle_stage_display.cpp)
 add_executable(battle_stage_display_tests tests/battle_stage_display_tests.cpp)
 target_link_libraries(battle_stage_display_tests PRIVATE ttyd_core)
 add_test(NAME battle_stage_display COMMAND battle_stage_display_tests)
+
+# Original retained NPC setup installation and independent init/regular events.
+target_sources(ttyd_core PRIVATE source/field/field_npc_setup.cpp)
+add_executable(field_npc_setup_tests tests/field_npc_setup_tests.cpp)
+target_link_libraries(field_npc_setup_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_setup COMMAND field_npc_setup_tests)

@@ -55,6 +55,7 @@ struct FieldAreaEventRuntime {
  struct Root {uint32_t id,entryIndex;std::optional<std::array<int32_t,16>> bank;bool returned=false;};
  std::vector<Root> roots;
  std::map<uint32_t,FieldPreviousPartyCursor> previousParty; // Real event IDs; lifetime is source elapsed time, not a generation.
+ std::map<uint32_t,FieldNpcSetupCursor> npcSetup;
  explicit FieldAreaEventRuntime(FieldAreaEvent* p):owner(p),vm(0x81000000,platform(this)){}
  static EventNativePlatform platform(FieldAreaEventRuntime* r) {
   EventNativePlatform p;p.user=r;p.clock=[](void*)->uint32_t{return 243000000;};
@@ -62,7 +63,7 @@ struct FieldAreaEventRuntime {
   p.divideWord=[](void*,int32_t a,int32_t b){assert(b);return a/b;};
   p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){};
   p.format=[](void* p,const EventDiagnosticCall&){static_cast<FieldAreaEventRuntime*>(p)->owner->failed=true;};
-  p.retiring=[](void* p,const EventEntry& e){auto& r=*static_cast<FieldAreaEventRuntime*>(p);r.previousParty.erase(e.id);for(auto& root:r.roots)if(root.id==e.id){root.bank=e.locals;root.returned=e.opcode==2;}};
+  p.retiring=[](void* p,const EventEntry& e){auto& r=*static_cast<FieldAreaEventRuntime*>(p);r.previousParty.erase(e.id);r.npcSetup.erase(e.id);for(auto& root:r.roots)if(root.id==e.id){root.bank=e.locals;root.returned=e.opcode==2;}};
   p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first){auto& r=*static_cast<FieldAreaEventRuntime*>(p);const auto result=r.call(e,fn,first!=0);if(result==0){r.owner->pendingFunction=fn;r.owner->pendingEventId=e.id;}return result;};return p;
  }
  uint32_t word(uint32_t a){uint32_t v=0;if(!vm.memory.readWord(a,v))owner->failed=true;return v;}
@@ -112,6 +113,27 @@ struct FieldAreaEventRuntime {
    if(services.previousParty.mario) {
     const auto result=fieldPreviousPartyEvent(e,first,cursor,this,[](void* p,uint32_t a){return static_cast<FieldAreaEventRuntime*>(p)->word(a);},services.previousParty);
     if(result==2)previousParty.erase(e.id);
+    return result;
+   }
+  }
+  if(fn==0x8005323c) {
+   if(first)npcSetup.erase(e.id);
+   auto& cursor=npcSetup[e.id];cursor.firstVisit(first);
+   if(services.npcSetup.fieldPointer) {
+    FieldNpcSetupOperands o;o.user=this;
+    o.word=[](void* p,uint32_t a){return static_cast<FieldAreaEventRuntime*>(p)->word(a);};
+    o.value=[](void* p,EventEntry& e,int32_t raw){auto& r=*static_cast<FieldAreaEventRuntime*>(p);return getEventValue(e,raw,r.vm.interpreterServices().operands);};
+    FieldNpcSetupEvents events;events.user=this;
+    events.erase=[](void* p,uint32_t id){deleteEventId(id,static_cast<FieldAreaEventRuntime*>(p)->vm.creationServices());};
+    events.alive=[](void* p,uint32_t id){return checkEventId(id,static_cast<FieldAreaEventRuntime*>(p)->vm.creationServices())!=0;};
+    events.create=[](void* p,uint32_t script,uint8_t priority,uint8_t flags)->EventEntry* {
+     auto& r=*static_cast<FieldAreaEventRuntime*>(p);const auto creation=r.vm.creationServices();
+     auto* gp=creation.manager.globals(creation.manager.user);auto* context=creation.manager.context(creation.manager.user,gp->battleContext!=0);
+     for(int n=0;n<context->capacity;++n)if(!(context->entries[n].flags&1))return &createRootEvent(r.vm.schedule,script,priority,flags,creation);
+     return nullptr;
+    };
+    const auto result=fieldNpcSetupEvent(e,first,cursor,o,services.npcSetup,events);
+    if(result==2)npcSetup.erase(e.id);
     return result;
    }
   }
@@ -207,6 +229,7 @@ struct FieldAreaEventRuntime {
   FieldAreaNativeCall request{e,fn,first,operands,vm.memory,vm.schedule,vm.creationServices()};const auto result=services.call(services.user,request);
   if(result!=0 && result!=1 && result!=2){owner->failed=true;return 0;}
   if(fn==0x800e3058 && result!=0)previousParty.erase(e.id);
+  if(fn==0x8005323c && result!=0)npcSetup.erase(e.id);
   return result;
  }
  bool initialize(uint64_t milliseconds) {
