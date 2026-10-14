@@ -50,3 +50,16 @@ full original-execution trace, hardware benchmark or complete tutorial battle.
 Next: bind full source UnitEntry/UnitSetup and actual startup resources/status/
 audience/entry services, then original command/turn/attack/result/field owners.
 Keep the unchanged source dialogue and button-accessible control paths.
+
+## Original init-handle readiness binding
+
+The intro adapter now invokes the recovered BattleCheckEndUnitInitEvent through
+HarborTutorialPacked::unitInitReady using the real VM's live-ID/flag lookup.
+It scans all64 registry slots, clears each completed unit288 handle, continues
+cleanup after finding a live initializer and returns unready while any tracked
+init root lives. It no longer waits for every unrelated VM allocation to reach0.
+This closes that local native gate; it does not invoke the complete original
+startup manager or admit paper/Nice/status/entry/audience services by itself.
+A blocked original Mario recolor initializer retains its288 handle while the
+completed system initializer's handle is cleared. All four finished init handles
+clear before ordinary intro admission in the corresponding fixture.

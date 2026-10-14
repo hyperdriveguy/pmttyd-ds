@@ -7,6 +7,7 @@
 #include "battle_packed_pad.hpp"
 #include "battle_packed_pouch.hpp"
 #include "field_battle_information.hpp"
+#include "battle_sequence_startup.hpp"
 namespace ttyd {
 namespace {void required(bool ok){if(!ok)std::abort();}int32_t signByte(uint8_t b){return b<128?int32_t(b):int32_t(b)-256;}}
 uint32_t HarborTutorialPacked::word(uint32_t a)const{uint32_t v=0;required(vm.memory.readWord(a,v));return v;}
@@ -64,6 +65,13 @@ bool HarborTutorialPacked::registerActor(HarborTutorialActor& a){
   for(auto pair:std::array<std::pair<uint32_t,uint32_t>,5>{{{0x1ac,0x40},{0x1b0,0x44},{0x1b4,0x38},{0x1b8,0x3c},{0x1bc,0x48}}})word(part+pair.first,word(definition+pair.second));
  }
  return true;
+}
+bool HarborTutorialPacked::unitInitReady(){
+ BattleStartupServices services;services.memory=nativeBattleActorServices(vm);services.user=this;
+ services.eventExists=[](void* self,uint32_t id){auto& runtime=static_cast<HarborTutorialPacked*>(self)->vm;
+  for(int32_t slot=0;slot<runtime.battle.capacity;++slot)if((runtime.battle.entries[slot].flags&1) && runtime.battle.entries[slot].id==id)return true;
+  return false;};
+ return packedBattleUnitInitReady(Battle,services);
 }
 void HarborTutorialPacked::recordInit(int32_t id,uint32_t event){word(Units+uint32_t(id)*0x1000+0x288,event);}
 void HarborTutorialPacked::recordPhase(int32_t id,uint32_t event){word(Units+uint32_t(id)*0x1000+0x29c,event);}

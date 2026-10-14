@@ -16,6 +16,7 @@ int main(){
  assert(t.readPackedWord(0x841002a0,packedSystem) && packedSystem==0x80419f00);
  assert(t.readPackedWord(0x841002b0,packedSystem) && packedSystem==0x80419ef8);
  assert(t.readPackedWord(0x84100020,packedSystem) && (packedSystem&0x00ffff00)==0);
+ for(uint32_t id=0;id<4;++id)assert(t.readPackedWord(0x84100288+id*0x1000,packedSystem) && packedSystem==0);
  assert(t.visualSlot(0)==-1 && t.visualSlot(1)==1 && t.visualSlot(2)==0 && t.visualSlot(3)==2);
  assert(t.actorById(0)==&t.systemActor && t.actorById(3)==&t.actors[2] && !t.actorById(4));
  assert(t.actors[0].belong==1 && t.actors[0].movePhase==0x04000004 && t.actors[2].belong==2 && t.actors[2].movePhase==0x04000001);
@@ -96,6 +97,8 @@ int main(){
  bool emblem=false,makkuro=false;for(const auto& r:fresh.requests){if(r.owner==1 && r.function==0x80145404)emblem=true;if(r.function==0x80145614)makkuro=true;}
  assert(emblem && !makkuro && fresh.result==0);
  HarborTutorial black;assert(black.beginFresh(0,7,10,201));for(unsigned i=1;i<50;++i)black.tick(i*1000/60,0);assert(!black.failed && !black.initialized && black.messageOrder.empty() && black.pendingService==0x80145614);
+ assert(black.readPackedWord(0x84100288,packed) && packed==0); // Finished system cleans despite live Mario init.
+ assert(black.readPackedWord(0x84101288,packed) && packed!=0); // Original blocked Mario root remains owned.
  HarborTutorial f;assert(f.begin(0,7));
  // Wrong phase is checked before any opening message can run by changing the
  // supplied controller word before its admitted phase root executes.

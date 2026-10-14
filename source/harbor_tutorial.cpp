@@ -139,7 +139,7 @@ void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* phy
  const auto speakerSlot=visualSlot(speaker);
  if(message.poseRequestSerial!=r.messagePoseSerial && speakerSlot>=0){r.messagePoseSerial=message.poseRequestSerial;auto& a=actors[size_t(speakerSlot)];const auto& pose=message.poseRequest==MessagePlayback::PoseRequest::Talk?a.talkPose:a.stayPose;if(!pose.empty()){a.pose=pose;a.poseAt=message.poseRequestedAt;}}
  r.packed->samplePhysical(time,physical);r.packed->publish(*this);r.vm.gp.timestamp=now*eventClockRate(243000000);r.vm.runManager();r.packed->publish(*this);r.packed->capture(*this);
- if(!initialized && !r.exists(r.initRoot) && r.vm.runtime.allocationCount==0){initialized=true;dispatchPhase(1,0x04000001);r.openingDispatched=true;}
+ if(!initialized && r.packed->unitInitReady()){initialized=true;dispatchPhase(1,0x04000001);r.openingDispatched=true;}
  if(attackActive && !r.exists(r.attackRoot))attackActive=false;
  if(phaseActive && !r.exists(r.phaseRoot)){phaseActive=false;if(r.openingDispatched && phaseWord==0x04000001)introComplete=true;}
 }

@@ -2,6 +2,65 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Native original tutorial registry and init readiness
+
+Featuref85edaf replaces the projection-only Crump0/Mario1/helper2 ownership with
+original system0/Mario1/Crump2/helper3 while preserving three visible original
+actors. The actual invisible system definition/kind/part/init are imported:
+type220, HP999/FP0, null bank/table and original seven-command init. Its real
+wait/attack/damage hooks, max/current move0 and wait root execute in the same VM.
+System/Mario/Crump init creation order, helper3 in Crump work0, actual request/
+phase/attack/speaker IDs and rendering/animation lookup are covered. No fake
+system model, pose handle or source dialogue is introduced.
+[Registry/visual contract](behavior/battle/HARBOR_NATIVE_REGISTRY_AND_VISUAL_PROJECTION.md).
+
+The bounded importer adds exactly28 original DOL bytes for three8-byte system
+hooks and the actual final label-scanner lookahead100. Five source spans and
+identity/resource/part/init/hook bindings are pinned read-only; raw scripts and
+compiled packs remain private/ignored. See [asset record](ASSETS.md).
+The original init-readiness helper now binds actual VM event existence, clears
+finished unit288 handles across all64 slots and retains live roots. A blocked
+Mario init stays blocked while completed system cleanup continues. The old
+VM allocationCount==0 bridge condition is retired; full original startup/
+UnitEntry/UnitSetup/resource/status/audience/turn integration remains open.
+
+Validation: normal final `make all` passed (artifacts/tutorial-init-gate-all.log).
+The same make-test recipe in an isolated host build directory passed195/195
+CTest and127/127 Python (artifacts/tutorial-init-gate-tests.log), invoked with
+`make -f /tmp/tutorial-registry-validation.mk test`; that temporary Makefile
+changes only the three host build-directory paths. Earlier shared `make test`
+runs reached191/192 checks but had transient permission-denied/not-run executables
+while shared targets were being relinked; the initial three failed launches
+passed their focused retry. First isolated build caught a concurrently changed
+Goomba begin signature/Quest13 linkage; reconfigure/rebuild then passed193/193
+CTest+127 Python before the final init-gate change. Final195/127 passing result
+is distinguished from those failed attempts. Focused wrong-ID animation ACK
+checks prove system0/Crump2/helper3 cannot release Mario1's live wait.
+Read-only verifier output: artifacts/tutorial-registry-source-pins.json.
+Doc links checked1027 Markdown files/zero broken at the registry stage; final
+link/diff/py_compile checks pass. No original-runtime/hardware parity claim.
+
+Native debug build and coherent private-pack rebuild passed. Immutable snapshots
+in artifacts/tutorial-registry-native-snapshot/ were tested in isolated Azahar
+profiles only. All three current attempts end in the plaza rather than admitting
+the requested harbor checkpoint; screenshot names mentioning tutorial are not
+proof of entering it. The coherent snapshot SHA256 is
+91c28b0ab0c896f4506fa21b4d9d3a156c743f80270932953d12fc04f9a8b11f.
+The documented(-1.5,-1.1) checkpoint independently loads as room1/story3 and
+passes host ground/walkability validation (private /tmp/check_harbor_fixture).
+The native load/transaction/resource admission boundary still needs diagnosis;
+no tutorial GPU/speaker/animation-completion observation is claimed from these
+plaza captures. Latest captures: artifacts/azahar-tutorial-registry-coherent/.
+User emulator profiles/saves and the original ISO remain untouched.
+
+Next: diagnose actual native checkpoint admission with a narrowly scoped isolated
+probe, then obtain actual setup2 original actor/bubble/ACK captures. Bind complete
+source UnitEntry/UnitSetup and startup services, original player commands/turns,
+damage/status/effect/audience/hit-event providers and result/field continuation.
+Complete original rotating menus/HUD cadence and lower-scene/audience rendering
+with optional bad-item taps plus physical alternatives. Tutorial combat and the
+full battle objective remain unfinished and active; no full-game claim is made.
+
 ## 2026-10-13 — Native original Goomba4 quest2 hand-in
 
 Featureb724535 binds the original gor_02 Goomba4 quest2 arm to existing NPC
