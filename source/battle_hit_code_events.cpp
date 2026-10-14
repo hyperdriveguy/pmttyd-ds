@@ -9,6 +9,21 @@ int32_t actor(EventEntry& e,uint32_t args,const BattleUnitEventServices& s){
     return s.translate(s.user,e,selector);
 }
 }
+int32_t battleCheckDamageEvent(EventEntry& e,const BattleCheckDamageEventServices& s){
+    const auto& u=s.units;assert(u.memory.word && u.values.resolve && u.translate && u.unit && s.part && s.checkDamage);
+    const auto args=e.arguments,battle=u.memory.word(u.memory.user,0x8041eb90);
+    auto resolve=[&](unsigned i){return u.values.resolve(u.values.user,e,signedWord(u.memory.word(u.memory.user,args+4*i)));};
+    const auto attacker=u.unit(u.user,battle,u.translate(u.user,e,resolve(0)));
+    const auto defender=u.unit(u.user,battle,u.translate(u.user,e,resolve(1)));
+    const auto part=s.part(s.user,defender,resolve(2));
+    const auto weapon=uint32_t(resolve(3));
+    const auto flags=u.memory.word(u.memory.user,args+16);
+    const auto output=signedWord(u.memory.word(u.memory.user,args+20));
+    int32_t result=0;if(!s.checkDamage(s.user,attacker,defender,part,weapon,flags,result))return 0;
+    if(result<0)return 255;
+    assert(u.values.store && s.eventExists);u.values.store(u.values.user,e,output,result);
+    return s.eventExists(s.user,e.id)?2:255;
+}
 int32_t battleMarkUnit1feEvent(EventEntry& e,const BattleUnitEventServices& s){
     const auto args=e.arguments,battle=s.memory.word(s.memory.user,0x8041eb90);
     const auto id=actor(e,args,s);assert(s.unit);const auto unit=s.unit(s.user,battle,id);

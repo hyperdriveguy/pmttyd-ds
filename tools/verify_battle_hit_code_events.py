@@ -5,6 +5,7 @@ from pathlib import Path
 import struct
 from iso_assets import DEFAULT_ISO
 SPANS={
+ 0x8010a78c:(0x100,'0893c30a90d378db8a65c39412d130189b0066d92aeabe64a371c90018107771'),
  0x80113f1c:(0x6c,'cd885b76bd0b0df99e85844ad80d56d9e58b208b5acda14f2893328dc265b166'),
  0x80127448:(0xc,'53b99844f287dad9fddee382b514bc7e95bd591ac8506d9883a5b5ccc6a3effa'),
  0x8010f458:(0x74,'eea8dd9db7404becdde2e48176ab62976f54f956e2bad69c947a7734c6f77d33'),

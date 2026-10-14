@@ -1914,3 +1914,11 @@ read-only original data in existing relocated pack. Sidecar little-endian native
 metadata only; actual source parameters and random requests are read at runtime.
 Original Nintendo/Intelligent Systems assets for local use; no redistribution
 rights. No original files/packs/ISO committed.
+
+## CheckDamage wrapper source evidence (2026-10-14)
+
+Read-only original US ISO DOL 8010a78c/100, including blr8010a888, is pinned
+in tools/verify_battle_hit_code_events.py. Earlier /fc annotations excluded
+that final instruction. Inspection-only ELF remains in ignored artifacts; no
+new game art, audio, dialogue, or distributable asset was extracted. Source
+content retains its existing Nintendo/Intelligent Systems licensing status.

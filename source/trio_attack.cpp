@@ -317,17 +317,11 @@ struct TrioAttackRuntime {
         case 0x93105b2c:case 0x93105a14:case 0x80189910:{std::array<float,4> p{};for(unsigned i=0;i<4;++i)p[i]=getEventFloat(e,raw(e,i),vm.interpreterServices().operands);const int32_t previous=value(e,4);const float dx=p[2]-p[0],dy=p[3]-p[1];output(e,4,dx==0 && dy==0?previous:int32_t(sourceAngles.angle(dx,dy,0,0)));return 2;}
         case 0x801072e4:return 2; // Retained original stylish-audience request; producer adapter remains open.
         case 0x8010a78c: {
-            const auto a=unit(e),d=unit(e,1),p=packedUnitPart(d,value(e,2),nativeBattleActorServices(vm).memory),w=uint32_t(value(e,3));const uint32_t flags=uint32_t(raw(e,4));
-            const bool playerHit=(word(d+8)==1 && !word(p+0x1b0) && w==0x803538a8) || (word(a+8)==222 && (word(d+8)==1 || word(d+8)==3) && word(p+0x1b0)<=1 && w==0x80353de8);
-            const bool enemyHit=(word(a+8)>=1 && word(a+8)<=3) && (word(d+8)==222 || word(d+8)==224) && !word(p+0x1b0) && word(w+0x1c)==0x80189d30 && !word(w+0x40);
-            if(!playerHit && !enemyHit){if(!pending)pending=fn;return 0;}
-            word(d+0x258,p);
-            if(enemyHit && !(word(w+0x74)&0x20000) && packedACPossibility(d,nativeBattleActorServices(vm)) && int32_t(word(Battle+0x1cb0))==5){
-                const auto ai=word(a),di=word(d);readDamage(ai);readDamage(di);word(a+0x280,word(a+0x280)+1);byte(d+0x273,word(a+0x280));
-                applyDirectDamage(ai,damageUnits[di],&damageParts[di],0,0,flags|0x80000|0x100|42,byte(w+0x6d),0,random,application());
-                applyDirectDamage(-5,damageUnits[ai],nullptr,1,0,311,0,1,random,application());return 255; // Negative core result: no output and no calling-ID query.
-            }
-            const int32_t result=checkGroundDamage(a,d,p,w,flags);if(result<0)return 255;output(e,5,result);return e.flags&1?2:255;
+            BattleCheckDamageEventServices services;services.units=nativeBattleUnitEventServices(vm);services.user=this;
+            services.part=[](void* self,uint32_t u,int32_t id){auto& r=*static_cast<TrioAttackRuntime*>(self);return packedUnitPart(u,id,nativeBattleActorServices(r.vm).memory);};
+            services.checkDamage=[](void* self,uint32_t a,uint32_t d,uint32_t p,uint32_t w,uint32_t f,int32_t& result){return static_cast<TrioAttackRuntime*>(self)->checkDamageCore(a,d,p,w,f,result);};
+            services.eventExists=[](void* self,uint32_t id){auto& runtime=static_cast<TrioAttackRuntime*>(self)->vm;for(int32_t i=0;i<runtime.battle.capacity;++i)if(runtime.battle.entries[i].id==id && (runtime.battle.entries[i].flags&1))return true;return false;};
+            return battleCheckDamageEvent(e,services);
         }
         case 0x801064d8:{const auto u=unit(e),p=packedUnitPart(u,value(e,1),nativeBattleActorServices(vm).memory);for(unsigned o=0x118;o<=0x135;++o)if(byte(u+o)){if(!pending)pending=fn;return 0;}if(word(u+0x104)&0x20000){if(!pending)pending=fn;return 0;}const auto table=word(p+0x1bc);uint32_t name=0;for(unsigned i=0;i<28 && word(table+8*i+4);++i)if(word(table+8*i)==28){name=word(table+8*i+4);break;}if(!name){if(!pending)pending=fn;return 0;}changePose(u,p,text(name),false);word(p+0x204,(word(p+0x204)&~uint32_t(2|0x10|0x80|4))|1);return 2;}
         case 0x801141a4:word(Battle+0x1c70,0);byte(Battle+0x1c74,0);return 2;
@@ -538,6 +532,18 @@ struct TrioAttackRuntime {
         const auto script=word(u+0x2b0);if(!script)return;
         for(unsigned offset:{0x2b4u,0x290u,0x29cu,0x2a8u}){const auto id=word(u+offset);if(id)deleteEventId(id,vm.creationServices());word(u+offset,0);}
         auto& e=createRootEvent(vm.schedule,script,10,0x20,vm.creationServices());e.owner=int32_t(word(u));word(u+0x278,code);word(u+0x2b4,e.id);
+    }
+    bool checkDamageCore(uint32_t a,uint32_t d,uint32_t p,uint32_t w,uint32_t flags,int32_t& result) {
+        const bool playerHit=(word(d+8)==1 && !word(p+0x1b0) && w==0x803538a8) || (word(a+8)==222 && (word(d+8)==1 || word(d+8)==3) && word(p+0x1b0)<=1 && w==0x80353de8);
+        const bool enemyHit=(word(a+8)>=1 && word(a+8)<=3) && (word(d+8)==222 || word(d+8)==224) && !word(p+0x1b0) && word(w+0x1c)==0x80189d30 && !word(w+0x40);
+        if(!playerHit && !enemyHit){if(!pending)pending=0x8010a78c;return false;}
+        word(d+0x258,p);
+        if(enemyHit && !(word(w+0x74)&0x20000) && packedACPossibility(d,nativeBattleActorServices(vm)) && int32_t(word(Battle+0x1cb0))==5){
+            const auto ai=word(a),di=word(d);readDamage(ai);readDamage(di);word(a+0x280,word(a+0x280)+1);byte(d+0x273,word(a+0x280));
+            applyDirectDamage(ai,damageUnits[di],&damageParts[di],0,0,flags|0x80000|0x100|42,byte(w+0x6d),0,random,application());
+            applyDirectDamage(-5,damageUnits[ai],nullptr,1,0,311,0,1,random,application());result=-1;return true; // Original wrapper handles the negative result.
+        }
+        result=checkGroundDamage(a,d,p,w,flags);return true;
     }
     int32_t checkGroundDamage(uint32_t a,uint32_t d,uint32_t p,uint32_t w,uint32_t flags) {
         if((word(w+0x74)&0x4000) && (word(p+0x1ac)&0x800) && (flags&0x100))flags|=0x400000;
