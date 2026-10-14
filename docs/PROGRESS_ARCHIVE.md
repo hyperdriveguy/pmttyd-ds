@@ -14160,3 +14160,57 @@ This verifies normal startup, not full fresh-file prologue or hardware parity. N
 32e14011a820bce622af72a8a462c940f799e8803d79b8fbc30e64e2b2964117.
 Runnable artifact: artifacts/audience-aux-source/ttyd-audience-aux-normal.3dsx.
 Source implementation commit0d0eda1c; broad goal stays active and incomplete.
+
+
+### 2026-10-14 — Ordinary battle part matrix/material/history continuation
+
+Implemented retained btlUnitPartsDisp80101774 local body in
+`battle_part_display`: original SDK request graph, six rotation orders, current
+camera correction and negative-Z rebuild, live float/gravity phase providers,
+source material/color gates, fresh pre/post hooks, three DrawMtx passes and
+embedded ten-record history publication. Held inputs stay pinned; later source
+reads stay fresh. Draw matrices have no minus5 history-only bias. Negative pose
+handles return before SDK work; special20000000 remains an explicit hold.
+Source evidence corrected native phase halves to unsigned and GetSin arithmetic
+to rounded float multiply/divide before double sine and float return. Native
+SDK/trig numerical identity remains unproved.
+
+Actual camera4 borrowed part invocation now binds VM memory, source angle table,
+status predicates, pose colorF0/flagsE8 and ordinary unlinked model-pass admission.
+It progresses to inner8003bc68 without acknowledging geometry or publishing
+history. Runtime integration checks real queue retention/material stores and
+unchanged history across that hold. Host tests exercise successful full local
+bodies with explicit providers, held SDK/material/pass/history calls, source
+poison arithmetic, six rotation orders, mirror, hooks, negative handles,
+signed-zero rotation and high-bit unsigned phases.
+
+Validation source is isolated at `artifacts/part-display-source/`, frozen from
+63dd401f plus only this change; foreign shared edits are excluded. Initial full
+suite failed missing Trouble/field-map/Bero pack dependencies; refreshed only
+that snapshot's private original-derived packs (see ASSETS). Final commands:
+`CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/part-display-source test` and
+`TMPDIR="$PWD/artifacts/native-stage-map-tmp" make -C artifacts/part-display-source all -o assets-ready BUILD=build-part-display-normal TARGET=ttyd-part-display-normal -j4`.
+Both commands exited0:292/292 C++ and171/171 Python tests; normal native build
+completed. Release logs `artifacts/part-display-test-release.log` and
+`artifacts/part-display-build-release.log`; validation manifest records code and
+private pack hashes. Normal 3DSX SHA256
+`6f21cabc60ab9d1242b1a4f87ea428351a529c6b93b7d73c1d85f51255798369`.
+
+Isolated180s Azahar ending harness used deterministic physical/menu inputs with
+an explicit fixture Bero bit1 clear, no combat writes or fake renderer results.
+`artifacts/azahar-part-display/.../draw-frontier.txt` reports pending8003bc68,
+camera4,21 entries, callback80101774,class1; preceding Item801a37f0 completed.
+Capture predates the final unsigned-phase/GetSin correction, which is covered by
+release host tests and native rebuild. The screenshot remains the black ending
+fade with development field-restoration notice, not geometry/parity evidence.
+Harness changes are restored and excluded from source history. Final release
+normal45s fresh-save smoke exited0 with original storybook/US message visible
+and60AppFPS in `artifacts/azahar-part-display-normal/boot.png`; this verifies
+boot only. Emulator profiles/saves are isolated under project artifacts.
+
+Next: bind existing inner-draw contracts starting with mapTestXLU8001ca2c/current
+map owners, exact material/facing/cache context, retained current-camera group
+traversal and actual indexed source geometry. Keep history and queue completion
+behind those real submissions. Linked/pool/special poses, SDK/trig equivalence,
+nonzero hooks, AP active icons and field return remain open. Prologue acceptance
+and original-game parity are unfinished; goal and EVT-01 remain active/open.

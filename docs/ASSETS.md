@@ -785,3 +785,18 @@ Native section addresses/GP string alias are storage adaptations. Original
 Nintendo/Intelligent Systems copyrights apply; conversion grants no distribution
 rights. ISO/extracted/generated resources remain outside source history.
 [Native scope](behavior/field/NATIVE_BERO_TABLES_AND_INCOMING_QUERY.md).
+
+
+### 2026-10-14 — Ordinary battle part callback validation packs
+
+No new art/audio is imported for this change. Source logic/constants remain the
+read-only US DOL evidence in `artifacts/battle-display-queue-evidence/`; native
+characters use the existing original pose resource packs. Private validation
+source is `artifacts/part-display-source/`, with copied RomFS from the prior
+audience-aux snapshot. To match its committed baseline, original Bero queries,
+mutable door data and Trouble Center events were regenerated there only from
+`rel/gor.rel`; field-map flag catalogs were regenerated with the baseline map
+converter from existing read-only original `gor_00`..`gor_04` map data. No root
+asset cache or user emulator profile was changed. Source/converted copyright
+remains Nintendo/Intelligent Systems; local use only, no redistribution rights.
+No original payload or compiled pack belongs in source history.

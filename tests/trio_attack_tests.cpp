@@ -627,6 +627,25 @@ int main(){
                 assert(charged.trioAttack.readWord(0x84002858+0x10e7c+0x60*i,value) && !(value&1));
             }
             assert(!charged.trioAttack.resumeAudienceAux(4,0x801a37f0,0,{})); // Different live borrowed callback cannot be consumed.
+            // Run the actual borrowed camera4 part through matrix/material work.
+            // No inner geometry service is bound: the queue must retain its owner.
+            struct PartBinding {const TrioAttack* attack;DisplayDispatchServices original;} partBinding{&charged.trioAttack,frameServices.display};
+            frameServices.display.user=&partBinding;
+            frameServices.display.state=[](void* user,const DisplayStateRequest& r){auto& b=*static_cast<PartBinding*>(user);return b.original.state(b.original.user,r);};
+            frameServices.display.callback=[](void* user,uint32_t camera,uint32_t identity,uint32_t borrowed){auto& b=*static_cast<PartBinding*>(user);
+                if(identity==0x80101774)return b.attack->resumePartDisplay(camera,borrowed,{});
+                return b.original.callback(b.original.user,camera,identity,borrowed);};
+            const auto* actualPose=charged.trioAttack.battlePose(0x84201000);assert(actualPose);
+            uint32_t oldHistory=0;assert(charged.trioAttack.readWord(0x84201228,oldHistory));
+            assert(!charged.trioAttack.resumePartDisplay(3,0x84201000,{}));
+            charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(charged.trioAttack.pendingFunction()==0x8003bc68 && queue->count()==21);
+            assert(charged.trioAttack.readWord(0x84201218,value) && actualPose->word(0xf0)==value);
+            assert(actualPose->word(0xe8)&0x40);
+            assert(charged.trioAttack.readWord(0x84201228,value) && value==oldHistory);
+            const auto material=actualPose->word(0xf0),flags=actualPose->word(0xe8);
+            charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(charged.trioAttack.pendingFunction()==0x8003bc68 && actualPose->word(0xf0)==material && actualPose->word(0xe8)==flags);
 
 
 

@@ -109,7 +109,15 @@ void bindAudienceAuxMathAdapter(BattleAudienceAuxServices& s){
         switch(r.function){
         case 0x8029e230:out={1,0,0,r.xyz[0],0,1,0,r.xyz[1],0,0,1,r.xyz[2]};break;
         case 0x8029e2b0:out={r.xyz[0],0,0,0,0,r.xyz[1],0,0,0,0,r.xyz[2],0};break;
-        case 0x8029dff0:{const float sn=std::sin(r.radians),cs=std::cos(r.radians);out={cs,-sn,0,0,sn,cs,0,0,0,0,1,0};break;}
+        case 0x8029dd04:out={1,0,0,0,0,1,0,0,0,0,1,0};break;
+        case 0x8029dd30:out=r.left;break; // Source caller uses disjoint or exact in-place matrices.
+        case 0x8029dff0:{const float sn=std::sin(r.radians),cs=std::cos(r.radians);
+            if(r.axis==120)out={1,0,0,0,0,cs,-sn,0,0,sn,cs,0};
+            else if(r.axis==121)out={cs,0,sn,0,0,1,0,0,-sn,0,cs,0};
+            else if(r.axis==122)out={cs,-sn,0,0,sn,cs,0,0,0,0,1,0};
+            else return false;
+            break;}
+
         case 0x8029e264:for(unsigned row=0;row<3;++row)out[4*row+3]=r.left[4*row+3]+r.xyz[row];break;
         case 0x8029e2d8:for(unsigned row=0;row<3;++row)for(unsigned col=0;col<4;++col)out[4*row+col]=r.left[4*row+col]*r.xyz[row];break;
         case 0x8029dd64:

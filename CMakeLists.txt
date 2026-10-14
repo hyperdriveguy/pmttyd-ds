@@ -1502,3 +1502,8 @@ add_executable(field_bero_info_tests tests/field_bero_info_tests.cpp)
 target_link_libraries(field_bero_info_tests PRIVATE ttyd_core)
 add_test(NAME field_bero_info COMMAND field_bero_info_tests)
 set_tests_properties(field_bero_info PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/battle/battle_part_display.cpp)
+add_executable(battle_part_display_tests tests/battle_part_display_tests.cpp)
+target_link_libraries(battle_part_display_tests PRIVATE ttyd_core)
+add_test(NAME battle_part_display COMMAND battle_part_display_tests)

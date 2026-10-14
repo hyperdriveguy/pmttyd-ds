@@ -4193,3 +4193,17 @@ get_info_num/current-number/party/position callbacks and real case allocation
 state, followed by exact house05 saved16-local banks and generic door events.
 Full raw callback memory alias ordering/global EVT ownership/original trace
 remain open; parent EVT-01 stays OPEN.
+
+
+### 2026-10-14 — Ordinary borrowed part matrix/material continuation
+
+[Native ordinary part callback](../behavior/display/NATIVE_ORDINARY_BATTLE_PART_DISPLAY.md)
+now binds actual80101774 queue invocation, source SDK graph, current-camera
+correction, six rotation orders, mirror rebuild, material leaves, hooks,
+three pass requests and embedded ten-record history tail. Runtime source pose
+colorF0/flagsE8 update, then admitted unlinked pose geometry holds at8003bc68.
+No queue completion or early history publication is inferred. Remaining request:
+bind inner8003bc68 using the existing source state/buffer and traversal
+contracts, starting with actual mapTestXLU8001ca2c and current-map owners; retain linked/pool and special20000000 paths
+as explicit providers. Exact SDK/sine numeric agreement and field return remain
+open. Parent EVT-01 stays OPEN.

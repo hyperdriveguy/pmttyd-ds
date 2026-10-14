@@ -1028,3 +1028,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Bero selected entry and incoming local bank](event/BERO_SELECTED_ENTRY_AND_INCOMING_LOCAL_BANK.md) — complete into_info values and later ordinary/save-load producer boundaries.
 
 - [Mario trio published transform consumption](display/MARIO_TRIO_PUBLISHED_TRANSFORM_CONSUMPTION.md)
+
+- [Retained native ordinary battle part display](display/NATIVE_ORDINARY_BATTLE_PART_DISPLAY.md) — actual borrowed callback matrix/material/pass/history continuation; native inner geometry hold.

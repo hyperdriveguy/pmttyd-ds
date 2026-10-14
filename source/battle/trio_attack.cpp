@@ -165,6 +165,7 @@ struct TrioAttackRuntime {
     ShadowDisplayCursor shadowDisplayCursor;
     BattleAudienceCallbackCursor audienceCallbackCursor;
     std::array<BattleAudienceAuxCursor,2> audienceAuxCursors;
+    BattlePartDisplayCursor partDisplayCursor;
     ShadowDisplayGlobals shadowDisplayGlobals;
     std::shared_ptr<BattleCommandPalette> palette;
     BattleFooterCursor commandDisplayCursor,audienceDisplayCursor,slotDisplayCursor;
@@ -1710,6 +1711,7 @@ struct TrioAttackRuntime {
                     if(next==0x801a38f8 && audienceCallbackCursor.active)next=audienceCallbackCursor.pending;
                     if(next==0x801a37f0 && audienceAuxCursors[0].active)next=audienceAuxCursors[0].pending;
                     if(next==0x801a36c8 && audienceAuxCursors[1].active)next=audienceAuxCursors[1].pending;
+                    if(next==0x80101774 && partDisplayCursor.active)next=partDisplayCursor.pending;
                 }
                 else if(cameraDrawCursor.display.stage==0)next=0x802b9380;
             }
@@ -1792,6 +1794,47 @@ bool TrioAttack::resumeAudienceAux(uint32_t camera,uint32_t callback,uint32_t us
     services.common.camera=[](void* user,uint32_t index)->const CameraState*{return static_cast<Bridge*>(user)->runtime->cameras->camera(index);};
     services.common.request=[](void* user,const BattleAudienceGXRequest& r){const auto& s=static_cast<Bridge*>(user)->source->common;return s.request && s.request(s.user,r);};
     return resumePackedBattleAudienceAux(callback,services,runtime_->audienceAuxCursors[callback==0x801a36c8]);
+}
+bool TrioAttack::resumePartDisplay(uint32_t camera,uint32_t part,const BattlePartDisplayServices& source) const{
+    if(!runtime_ || !runtime_->cameras)return false;
+    const auto& call=runtime_->cameraDrawCursor.display;
+    if(!call.invoking || call.callback!=0x80101774 || call.camera!=camera || call.userdata!=part)return false;
+    struct Bridge {TrioAttackRuntime* runtime;const BattlePartDisplayServices* source;} bridge{runtime_.get(),&source};
+    BattlePartDisplayServices services;services.actors=nativeBattleActorServices(runtime_->vm);services.user=&bridge;
+    services.currentCamera=[](void* user){return static_cast<Bridge*>(user)->runtime->cameras->current();};
+    services.matrix=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
+    services.scalar=[](void* user,const BattlePartScalarRequest& request)->std::optional<float>{
+        auto& r=*static_cast<Bridge*>(user)->runtime;
+        if(request.function==0x80007328){if(!std::isfinite(request.value))return {};return r.angle(request.value);}
+        if(request.function==0x8000703c){const auto& p=request.coordinates;for(auto v:p)if(!std::isfinite(v))return {};return sourceAngles.angle(p[0],p[1],p[2],p[3]);}
+        if(request.function==0x80100ed0 || request.function==0x80100ffc){
+            const bool floating=request.function==0x80100ed0;
+            return nativeBattlePartPhaseOffset(uint16_t(r.half(request.part+(floating?0x1a8:0x1a6))),floating);
+        }
+        return {};
+    };
+    services.status=[](void* user,uint32_t unit,int32_t id)->std::optional<bool>{
+        auto& r=*static_cast<Bridge*>(user)->runtime;BattleStatusUnit state;
+        for(unsigned i=0;i<30;++i)state.statusBytes[i]=r.byte(unit+0x118+i);
+        return checkStatus(&state,id);
+    };
+    services.material=[](void* user,const BattlePartMaterialRequest& request){
+        auto* pose=static_cast<Bridge*>(user)->runtime->poses.pose(request.handle);if(!pose)return false;
+        if(request.function==0x800406b4)pose->word(0xf0,request.value);
+        else if(request.function==0x80040730)pose->word(0xe8,pose->word(0xe8)|request.value);
+        else if(request.function==0x80040710)pose->word(0xe8,pose->word(0xe8)&~request.value);
+        else return false;
+        return true;
+    };
+    services.callback=[](void* user,uint32_t identity,uint32_t part,uint32_t mode){const auto* s=static_cast<Bridge*>(user)->source;return s->callback && s->callback(s->user,identity,part,mode);};
+    services.draw=[](void* user,const BattlePartDrawRequest& request,uint32_t& pending){
+        auto& b=*static_cast<Bridge*>(user);const auto* pose=b.runtime->poses.pose(request.handle);
+        if(!pose || pose->word(0x90)!=0xffffffff || !pose->resource || !pose->resource->modelFlags){pending=0x8003b4d8;return false;}
+        const auto flags=*pose->resource->modelFlags;
+        if(!(request.pass==2 && (flags&1)) && !(flags&(1u<<request.pass)))return true;
+        pending=0x8003bc68;return b.source->draw && b.source->draw(b.source->user,request,pending);
+    };
+    return resumePackedBattlePartDisplay(part,services,runtime_->partDisplayCursor);
 }
 bool TrioAttack::resumeShadowDisplay(uint32_t camera,uint32_t userdata,const ShadowDisplayServices& source) const{
     if(!runtime_ || !runtime_->shadows || !runtime_->cameras)return false;

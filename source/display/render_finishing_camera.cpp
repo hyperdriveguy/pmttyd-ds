@@ -95,6 +95,7 @@ void Renderer::resumeFinishingCamera(const Game& game){
             // icon request until metadata/current-camera/geometry are bound.
             return b.game->trioAttack.resumeAudienceAux(camera,identity,borrowed,auxiliary);
         }
+        if(identity==0x80101774)return b.game->trioAttack.resumePartDisplay(camera,borrowed,{});
         return renderer.finishingShadowCallback(*b.game,camera,identity,borrowed);
     };
     // Actual shadow setup; admitted geometry, independent rays and other callbacks retain provider waits.
