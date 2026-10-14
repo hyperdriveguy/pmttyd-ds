@@ -32,8 +32,8 @@ The actual bound texture is pinned for state restoration. Initial implementation
 used eight slots; reviewing complete source banks led to101 slots, covering100
 item records plus AP icon442's single source frame. This is native cache policy,
 not measured original residency/latency. It supports the complete draw bank's
-working set rather than imposing an eight-image visibility requirement. Native
-metadata/texture state is retired correctly on leaving trio and at shutdown.
+working set. Native texture state is retired on leaving trio; metadata remains
+owned by the renderer until teardown.
 
 Validation froze baseline1d7cfe7fa59daf60961144ff1415db0147a9ab53 plus owned
 source, headers, CMake/Makefile and tests in artifacts/battle-lens-qwwrj2n7.
