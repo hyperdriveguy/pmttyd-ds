@@ -4667,3 +4667,5 @@ next implementation frontier; EVT-01/full prologue goal remain active.
 Separate private visible-bar fixture confirms actual2quads/8vertices and full
 save/restore completion with alpha255/top49/bottom44; original zero-alpha probe
 remains separate. Temporary settings and telemetry are excluded from production.
+
+Original registry update: raw DOL33-record registry and original gor number table now enter shared VM-owned writable RAM; the native initialization adapter applies the actual gor registration arguments. Candidate profile/number-table admission, fresh GP numeric availability, independent VM copies and failed-candidate retention are tested. [Scope](../behavior/field/NATIVE_VM_BATTLE_MODULE_REGISTRATION.md). Real Game NPC construction/poses, session RNG and complete module/area lifetime remain open; this does not complete original map registration or NPC init effects.

@@ -56,3 +56,5 @@ map registration also has its own preceding battle request; do not collapse it
 into the later npcEnt setup0 request or infer initialized NPCs from a rendered
 catalog model. Rendering, full story/encounters and New2DSXL performance remain
 separate unfinished work.
+
+The original zeroed registry and number table now have a [VM-owned registration adapter](NATIVE_VM_BATTLE_MODULE_REGISTRATION.md). Source pack bytes stay zero; the runtime calls the actual registration helper. Setup0 admission remains separate from the six original name-to-number mappings and from real actor/pose/RNG ownership.

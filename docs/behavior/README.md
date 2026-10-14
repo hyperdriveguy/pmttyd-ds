@@ -1145,3 +1145,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native queued letterbox draw](camera/NATIVE_LETTERBOX_DRAW_CONTINUATION.md) — retained save/restore, live material/bars and actual two-quad submission.
 
 - [Retained icon geometry and two-screen replay](display/RETAINED_ICON_SCENE_REPLAY.md) — completed source-pass publication, texture pinning and camera-coherent audience continuation.
+
+- [VM-owned original battle registry and module registration](field/NATIVE_VM_BATTLE_MODULE_REGISTRATION.md): raw zeroed registry, source gor binding, original number lookup and bounded runtime availability.
