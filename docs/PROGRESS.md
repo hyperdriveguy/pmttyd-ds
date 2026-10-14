@@ -4779,3 +4779,62 @@ streams. Keep admitted-part history and queue completion behind real submissions
 Global pose/resource rebinding, special matched groups/Vivian, native callback
 and output-slot providers, active icons, hardware numeric equivalence and field
 return remain unfinished. Full prologue goal remains active; EVT-01 stays OPEN.
+
+### 2026-10-14 — Genuine retained ROAD initial-position event
+
+Implementation commit5d1d7ce3 packages and executes unchanged original US
+DOL8030f060 initial-position EVT632-byte/45-command root. The real adjacent
+word at8030f2d8 supplies only source label-scanner prefetch context. Mutable
+BeroS/E globals are separate RAM; callbacks now publish them, READF actual start
+locals and perform real Mario/party/camera services. Recovery stores use fresh
+Mario, followed by the captured-owner U16 motion read and motion25 fresh-owner
+reload flag. Native optional words preserve unknown versus actually written
+recovery/reload state. Entry locals are captured at the last pinned callback
+and completion requires actual VM retirement. Pending services hold arrival
+movement without replaying completed callbacks.
+
+Entry state owns its admitted catalog/incoming snapshot; deleted copy/move and
+shared-pending-handle admission guard fix a source-review lifetime issue.
+Snapshot/standalone priority1 native scheduling remains explicitly bounded:
+external mid-event GP mutation, original attached-parent/area ordering and pipe
+branches are not acknowledged. Original normal helper still uses verified static
+ROAD leaf centers/raw floor queries; exact PowerPC/SDK numerical equivalence is
+unverified. Actual recovery/reload stores are retained, but original void/map
+reload consumers and preceding full door children remain unbound.
+
+Validation uses frozen tree08a11ab1a9666661181f390b712452ea59c94fa2 under
+artifacts/source-checks/trouble-world,3313 tracked files and zero source hash
+mismatches. `make assets-ready SOUNDTRACK=gamecube` exited0; original Bero
+products148/2496 bytes. `CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready`
+exited0:300/300 C++ and174/174 Python tests; final log
+artifacts/bero-initial-test-final.log. Coverage includes actual source command
+execution, exact globals/locals/store order, changing owner providers, motion25
+and non25, missing floor/camera holds, resumption without replay, caller-info
+invalidation, shared-handle admission and unsupported pipe rejection.
+`make all -j4 -o assets-ready SOUNDTRACK=gamecube` exited0;
+artifacts/bero-initial-build.log. Binary artifacts/bero-initial-normal.3dsx SHA256
+f838682ced3b1c4d1ce26cd5d86953cf959758d3cc8e18fd43605a8ac28f16b8.
+Source/product hashes: artifacts/bero-initial-validation-manifest.json.
+
+Isolated Azahar fixture runs artifacts/azahar-bero-initial-steady and
+artifacts/azahar-bero-initial-idle exited0, with both save-room assertions
+(plaza→east→plaza) and visible original field rendering/arrival placement.
+These are finite native regression checks, not full original raster/trace parity.
+Initial emulator captures reported43FPS/23.14ms east and14FPS/69.10ms plaza;
+repeat east42FPS/23.86ms, plaza after35s idle51FPS/19.18ms, with native overlay
+CPU7.0ms/GPU0.5ms. Host load varied roughly13..23 on16 CPUs. The previous validated binary SHA256
+f6c2c0fa2fbf6e28a2048eae00a61e21dcb3b0e0f863c7cb815c9f9619c1c0e1
+also passed the same long-idle fixture run in artifacts/azahar-bero-initial-baseline:
+east60FPS/10.72ms, plaza after35s52FPS/19.34ms, native CPU7.9ms/GPU0.5ms.
+These changing-host-load observations do not establish a controlled benchmark.
+A final lighter-load new-binary run artifacts/azahar-bero-initial-quiet exited0
+with both transition assertions and60FPS in both captures: east10.94ms,
+plaza12.04ms (native CPU7.6/7.1ms, GPU0.5ms).
+User emulator profiles/saves were untouched. No new display callback or
+per-render-frame geometry work is added; retained VM allocation occurs per road
+entry. Hardware performance and a controlled performance comparison remain open.
+
+Next share actual field EVT/case/area lifetime, execute preceding original door
+children and feed the genuine returned bank through original house05/case init.
+Continue generic doors/material1800/key49 and original NPC/object/additional-area
+bindings. Inbox EVT-01 stays OPEN. Full game/goal remain incomplete.

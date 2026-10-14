@@ -1059,3 +1059,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Audience member control and idle reactions](battle/AUDIENCE_MEMBER_CONTROL_AND_IDLE_REACTIONS.md): original21-state dispatcher, motion tail and whole idle turn/tilt/jump; explicit remaining state providers.
 
 - [Audience idle breathing and decisions](battle/AUDIENCE_IDLE_BREATHING_AND_DECISIONS.md): whole Wait, distinct FPR0/FPR29 provenance, source reaction RNG and preceding-row helper.
+
+- [Native retained Bero initial-position event](field/NATIVE_RETAINED_BERO_INITIAL_POSITION.md) — unchanged original root, mutable globals, recovery/motion25 stores and held entry ownership.

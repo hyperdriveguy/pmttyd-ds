@@ -4296,3 +4296,16 @@ and queue completion behind those submissions. The newly recovered
 closes local InvXpose/MultVec graphs; exact fres/FPSCR remains a numeric provider.
 Shared context rebinding, native callbacks/special groups and full geometry/parity
 remain open. Parent EVT-01 stays OPEN.
+
+### 2026-10-14 — Genuine retained initial-position root
+
+[Native retained entry](../behavior/field/NATIVE_RETAINED_BERO_INITIAL_POSITION.md)
+now executes original8030f060 words, including into_info/length, mutable S/E
+publication and READF, real recovery stores/motion25 gate, actor callbacks and
+camera reset. Completion requires actual VM retirement and retains the real
+returned locals. Pending providers hold arrival movement. Snapshot/unique-active
+admission and standalone priority1 scheduling are explicit adaptations; full
+original parent/GP mutation scheduling is not certified. Next feed the real
+returned bank into shared field case/house05 initialization after preceding
+actual door children; bind recovery/reload consumers and additional original
+areas. SDK numeric equivalence, original traces and parent EVT-01 remain OPEN.

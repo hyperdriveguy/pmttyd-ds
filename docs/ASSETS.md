@@ -908,3 +908,17 @@ Private validation also regenerated existing standard pose-directory/model
 companions with the committed extractor for the current source baseline; these
 unchanged original model bytes retain the existing private-use licensing and
 stay outside source history.
+
+### 2026-10-14 — Original initial-position EVT words
+
+Read-only `/home/carson/games/roms/G8ME01.iso` US DOL8030f060 supplies the
+unchanged632-byte evt_bero_initial_pos plus its actual adjacent4-byte scanner
+prefetch context at8030f2d8. Converter `tools/bero_info_assets.py` pins script
+SHA256214cdff31534df948655149d8ba53441124be40ce6b980d353dee0b48952c519.
+`bero-info.bin` remains148 bytes; `bero-info.pmevt` becomes2496 bytes. Mutable
+Bero globals are separate guest RAM, not immutable asset data. Conversion and
+validation outputs stay under ignored `artifacts/source-checks/trouble-world/`.
+No texture, geometry, audio or dialogue substitution is introduced. Original
+Nintendo/Intelligent Systems rights apply; no redistribution rights are granted.
+ISO, original extracted resources and compiled packs/binaries are not committed.
+[Native execution scope](behavior/field/NATIVE_RETAINED_BERO_INITIAL_POSITION.md).
