@@ -23,7 +23,7 @@ bool Renderer::frontBookCover(const OpeningDemo& demo,bool capture){
     Mtx_LookAt(&view,FVec3_New(0,0,openingBookCameraDistance()),FVec3_New(0,0,0),FVec3_New(0,1,0),false);Mtx_Multiply(&matrix,&projection,&view);
     // Pan in screen space while opening; both tilted and capture projections
     // retain the same perspective and vertical framing.
-    const float pan=2*openingBookPan(demo.book.scale,demo.book.rotation)/OpeningBookView::width;
+    const float pan=2*openingBookPan(demo.book.scale,demo.book.rotation,demo.book.fade)/OpeningBookView::width;
     if(capture)for(unsigned i=0;i<4;++i)matrix.r[0].c[i]+=pan*matrix.r[3].c[i];
     else for(unsigned i=0;i<4;++i)matrix.r[1].c[i]-=pan*matrix.r[3].c[i];
     if(capture){

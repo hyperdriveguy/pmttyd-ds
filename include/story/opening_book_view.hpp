@@ -13,15 +13,15 @@ struct OpeningBookView {
     static constexpr float sourceScale=.5f;
     static constexpr std::array<float,4> desktop{{0,-720.f/19.f,400,6000.f/19.f}};
 };
-inline float openingBookPan(float scale,float angle){
-    return (288.f/2-8)*scale*.5f*std::clamp(angle/180.f,0.f,1.f);
+inline float openingBookPan(float scale,float angle,float fade=0){
+    return (288.f/2-8)*scale*.5f*std::clamp(angle/180.f,0.f,1.f)*(1-std::clamp(fade,0.f,1.f));
 }
 // Source capture-rectangle placement, then ImageBaseMatrix T(offset)*S(scale).
 // Offsets live in the virtual64x48 image plane, outside the crop's local scale.
-inline std::array<float,3> openingBookPaperPoint(float x,float y,float z,float depth,float scale=1,float offsetX=0,float offsetY=0){
+inline std::array<float,3> openingBookPaperPoint(float x,float y,float z,float depth,float scale=1,float offsetX=0,float offsetY=0,float panWeight=1){
     const float vx=-32.f+64.f*124.f/608.f+(x+32.f)*386.f/608.f;
     const float vy=24.f+(y-24.f);
-    return {{200.f+(offsetX+scale*vx)*304.f/64.f+OpeningBookView::openPan*scale,120.f-(offsetY+scale*vy)*240.f/48.f,
+    return {{200.f+(offsetX+scale*vx)*304.f/64.f+OpeningBookView::openPan*scale*panWeight,120.f-(offsetY+scale*vy)*240.f/48.f,
              depth-16.f-z*scale*193.f/64.f}};
 }
 }
