@@ -1,3 +1,84 @@
+## 2026-10-14 — Whole original iconGX draw sequence
+
+Previous goal turn made progress by implementing the original matrix-icon
+wrappers and connecting their service path to the audience callback. Commit `3b344a79`
+implements whole iconGX800197f8/9a4, verified read-only source SHA256
+bb9430d4030d22982f813be3bc530403e5a1fd8c24c1ddd9298ff94b1e205848.
+[Source contract and native limitations](behavior/display/ORIGINAL_ICON_GX_DRAW_SERVICE.md).
+Matrix wrappers accept a nested GX provider/cursor; their existing explicit
+direct draw provider retains ownership instead of being bypassed when it waits.
+Initialized source stack icon fields moved to a shared record header, keeping
+the nested dependencies acyclic. Pending linked functions propagate through
+wrapper and audience cursors. Removed misleading indentation in that path.
+
+The body preserves X/Y mirrors, separate camera8/current queries and extra
+flags16 Y flip, original input translation for map light, texture-object lookup
+and explicit1x1 fallback, LOD/load order, unlit channels, both original TEV
+branches, conditional map work/blend, fog, alpha/depth/cull declarations,
+descriptor/object dimensions and actual four-vertex XYZ/ST requests. Ordinary
+.6 and coin403/405 extra .8/.9 reductions remain successive float operations;
+right/bottom use original additions. Grayscale uses original register/swap/
+stage requests, not converted artwork. Its post-quad swap reset retains a
+separate continuation and never redraws an already accepted primitive.
+
+Resource calls use explicit retained opaque object tokens; no source address
+is cast to a host pointer. Matrix and linked request arguments remain captured
+across provider waits. Actual source zero-buffer states take their real fallback;
+unavailable mapped data does not invent a texture or finish the draw. The four
+direct FIFO XYZ/ST vertices use an explicit atomic emitter after acknowledged
+GXBegin; false must not consume partial geometry. SDK outputs/mapGetBlend's
+copied RGBA are represented semantically. No native GX/map provider is silently
+acknowledged, no source clock is advanced and no inventory/damage is applied.
+
+Tests pin independent ordinary call order/tuples, mirrors in both camera domains,
+source sizes, grayscale/color/swap cleanup, map-blend flags, alpha paths, cull
+precedence, real zero buffers versus missing words, object dimension U16
+narrowing, and retained width while height waits. All linked calls and SDK math
+are individually held/resumed in five material domains, including reset after
+geometry. A real matrix wrapper consumes fixture packed metadata and view,
+then runs this GX body to a held primitive. Releasing it does not reselect the
+frame, repeat setup or emit twice. Explicit direct provider precedence is tested.
+Fixtures are service adapters, not native raster, original elapsed SDK timing
+or Gekko paired-single/FPSCR equivalence.
+
+Validation froze c6ba7c86af6ff005a293e1b7a98d8e2c113837ae plus owned source,
+headers, CMake and tests in artifacts/battle-lens-qwwrj2n7. Reused the prior
+validated private packs and fixture identities recorded in
+artifacts/source-icon-matrix-fixtures.json; no pack refresh was needed here.
+Concurrent dirty map/TEV/Mario work was excluded. Initial focused build and both
+focused binaries exited0; after wrapper integration, focused final build and
+both binaries exited0. Removed owned misleading-indentation warnings before
+final validation. Existing warnings elsewhere remain outside this increment.
+Added object-dimension continuation coverage before freezing the final tests.
+
+Final MAKEFLAGS=-j4 make test exited0:315/315 C++ (37.09s),180/180 Python
+(28.534s), artifacts/source-icon-gx-test.log. Final MAKEFLAGS=-j4
+TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready BUILD=build-battle-lens
+TARGET=ttyd-battle-lens exited0, artifacts/source-icon-gx-native.log; reused the
+private original packs through the assets-ready bypass. Both process handles
+were observed terminal; source/build inputs were not edited during either run.
+tools/check_doc_links.py exited0:1317 Markdown files,zero broken links,
+artifacts/source-icon-gx-doc-links.log. Owned diff checks passed. Scoped
+commit3b344a79 used a temporary index and preserved unrelated working edits.
+
+No new extraction/conversion/resampling or art was needed. Original source
+inspection was read-only; no PPC text, original resource, compiled pack or ISO
+was committed. Menu/HUD style, physical/touch controls, original dialogue/story,
+action timing, unit/model scale and lower-screen replay were unchanged. Native
+resource/GP/GX/map consumers and actual geometry submission remain unbound;
+portable draw completion is not proof of visible held/thrown items. No emulator,
+hardware or performance claim. Progress remains source reconstruction plus a
+real linked portable service chain, not a complete native item display.
+
+Next bind original icon directory/texture residency and true GP publication,
+then the source GX/map requests to actual native state/geometry. Verify held
+items/flight through the inherited scene and its lower-screen continuation;
+complete original present-item execution and physical X plus optional audience
+tap input. Normal Main/camera cadence, actor Enter/special states, AP and active
+stage providers, tutorial follow-up hits, teardown/field return and actual
+sample playback still need work. The full tutorial and real battle goal stays
+active and incomplete.
+
 ## 2026-10-14 — Original audience matrix-icon services
 
 The previous goal turn made progress with item creation and the whole100-record
