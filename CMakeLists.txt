@@ -1719,3 +1719,8 @@ target_sources(ttyd_core PRIVATE source/display/camera_letterbox_draw.cpp)
 add_executable(camera_letterbox_draw_tests tests/camera_letterbox_draw_tests.cpp)
 target_link_libraries(camera_letterbox_draw_tests PRIVATE ttyd_core)
 add_test(NAME camera_letterbox_draw COMMAND camera_letterbox_draw_tests)
+
+target_sources(ttyd_core PRIVATE source/display/retained_icon_frame.cpp)
+add_executable(retained_icon_frame_tests tests/retained_icon_frame_tests.cpp)
+target_link_libraries(retained_icon_frame_tests PRIVATE ttyd_core)
+add_test(NAME retained_icon_frame COMMAND retained_icon_frame_tests)

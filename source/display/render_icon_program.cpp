@@ -15,6 +15,10 @@ bool Renderer::applySourceIconProgram(const NativeIconPlan &p) {
   auto *texture = sourceIconTexture();
   if (!texture || finishingShadowProgram.texture != ShadowTexture::SourceIcon)
     return false;
+  return publishSourceIconProgram(p,*texture);
+}
+bool Renderer::publishSourceIconProgram(const NativeIconPlan &p,C3D_Tex &image) {
+  auto *texture=&image;
   C3D_BindProgram(&program);
   auto *attrs = C3D_GetAttrInfo();
   AttrInfo_Init(attrs);
@@ -22,8 +26,10 @@ bool Renderer::applySourceIconProgram(const NativeIconPlan &p) {
   AttrInfo_AddLoader(attrs, 1, GPU_FLOAT, 2);
   AttrInfo_AddLoader(attrs, 2, GPU_FLOAT, 4);
   C3D_TexBind(0, texture);
-  C3D_TexBind(1, nullptr);
-  C3D_TexBind(2, nullptr);
+  // Citro3D1.7.1 dereferences tex in C3D_TexBind; null does not disable a unit.
+  // These stages read only TEX0. Keep unused samplers on the same live image.
+  C3D_TexBind(1, texture);
+  C3D_TexBind(2, texture);
   for (unsigned i = 0; i < 6; ++i)
     C3D_TexEnvInit(C3D_GetTexEnv(i));
   const auto color = [](uint32_t rgba) {

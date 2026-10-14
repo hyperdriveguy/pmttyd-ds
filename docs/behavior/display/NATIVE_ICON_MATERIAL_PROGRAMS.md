@@ -1,9 +1,10 @@
 # Native original icon material programs
 
 The native audience icon path now binds its actual map-light/map-work/blend/fog
-services and compiles the original flat icon TEV programs for PICA. It still
-holds at the primitive provider. No scene-frame completion, audience throw,
-tutorial or normal two-screen raster acceptance follows from these bindings.
+services and compiles the original flat icon TEV programs for PICA. The later
+[retained geometry adapter](RETAINED_ICON_SCENE_REPLAY.md) binds the primitive
+provider and publishes only completed source draw passes. No audience throw,
+tutorial or normal two-screen raster acceptance follows from material bindings.
 
 ## Source and state ownership
 

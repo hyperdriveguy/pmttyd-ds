@@ -164,6 +164,8 @@ struct TrioAttackRuntime {
     std::shared_ptr<SourceSoundFlags> soundFlags;SoundFlagCursor letterboxSoundCursor;
     CameraMainCursor cameraMainCursor;
     CameraDrawCursor cameraDrawCursor;
+    const std::shared_ptr<const uint8_t> iconPassOwner=std::make_shared<const uint8_t>(0);
+    uint64_t iconPassSequence=0;bool iconPassComplete=false;
     CameraLetterboxCursor letterboxCursor;
     CameraLetterboxDrawCursor letterboxDrawCursor;
     std::optional<CameraLetterboxServices> letterboxServices;
@@ -1799,6 +1801,7 @@ struct TrioAttackRuntime {
     }
     void continueFinishingDraw(const CameraDrawServices* backend=nullptr){
         struct Bridge {TrioAttackRuntime* runtime;const CameraDrawServices* backend;} bridge{this,backend};
+        if(!cameraDrawCursor.active){++iconPassSequence;iconPassComplete=false;}
         cameraDrawWaiting=true;CameraDrawServices services;services.user=&bridge;
         services.request=[](void* user,const CameraDrawRequest& request){
             const auto* b=static_cast<Bridge*>(user)->backend;
@@ -1835,7 +1838,7 @@ struct TrioAttackRuntime {
             return updateCameraLetterbox(*r.cameras->camera(8),queue,provider,r.letterboxCursor);
         };
         if(cameras->draw(displayQueue,services,cameraDrawCursor)){
-            cameraDrawWaiting=false;
+            cameraDrawWaiting=false;iconPassComplete=true;
             word(0x8041e810,0);pending=0x8006f904;endingRequest(pending); // Actual next outer Main; no teardown shortcut.
         }else {
             uint32_t next=cameraDrawCursor.stage==0?letterboxCursor.pending:cameraDrawCursor.stage==3?0x802ba56c:0x8000f454;
@@ -1953,6 +1956,9 @@ bool TrioAttack::resumeAudienceCallback(uint32_t camera,uint32_t userdata,const 
     services.currentRecord=[](void* user){return static_cast<Bridge*>(user)->runtime->displayQueue.current();};
     services.request=[](void* user,const BattleAudienceGXRequest& r){const auto* s=static_cast<Bridge*>(user)->source;return s->request && s->request(s->user,r);};
     return resumePackedBattleAudienceCallback(services,runtime_->audienceCallbackCursor);
+}
+SourceIconPass TrioAttack::sourceIconPass() const{
+    return runtime_?SourceIconPass{runtime_->iconPassOwner,runtime_->iconPassSequence,runtime_->iconPassComplete}:SourceIconPass{};
 }
 std::optional<uint32_t> TrioAttack::sourceIconCamera(std::optional<uint32_t> index) const{
     return runtime_?sourceIconCameraIdentity(runtime_->cameras.get(),index):std::nullopt;

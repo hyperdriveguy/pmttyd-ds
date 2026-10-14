@@ -35,6 +35,7 @@
 #include "animation_texture.hpp"
 #include "source_icon_resources.hpp"
 #include "native_icon_program.hpp"
+#include "retained_icon_frame.hpp"
 #include <memory>
 #include <3ds.h>
 #include <citro2d.h>
@@ -169,8 +170,13 @@ private:
     NativeIconProgram sourceIconProgram;std::optional<NativeIconPlan> sourceIconPlan;
     bool sourceIconState(const ShadowGXRequest&);
     bool applySourceIconProgram(const NativeIconPlan&);
+    bool publishSourceIconProgram(const NativeIconPlan&,C3D_Tex&);
+    RetainedIconFrames retainedIcons;
+    std::optional<NativeCameraPacket> iconViewport,iconScissor,iconTransform;
+    bool captureSourceIcon(const Game&,const SourceIconGXQuad&);
+    void drawSourceIcons(uint32_t camera,bool lower=false);
     struct SourceIconCell {Texture gpu;uint32_t index=UINT32_MAX;uint64_t stamp=0;};
-    std::array<SourceIconCell,101> sourceIconCells{}; // Full100-item bank plus single-frame AP icon442.
+    std::array<SourceIconCell,202> sourceIconCells{}; // Published + building: each100 items plus AP icon442.
     std::optional<uint32_t> pendingSourceIcon,boundSourceIcon;uint64_t sourceIconStamp=0;
     void prepareSourceIcons(const Game&);
     void releaseSourceIcons();

@@ -28,12 +28,14 @@ void Renderer::releaseSourceIcons() {
   pendingSourceIcon.reset();
   boundSourceIcon.reset();
   sourceIconPlan.reset();
+  retainedIcons.reset();iconViewport.reset();iconScissor.reset();iconTransform.reset();
 }
 void Renderer::prepareSourceIcons(const Game &game) {
   if (!game.trioBattleActive) {
     releaseSourceIcons();
     return;
   }
+  retainedIcons.observe(game.trioAttack.sourceIconPass());
   if (!sourceIcons.ready() && !sourceIcons.load("romfs:/source-icons")) {
     frontFailure = "Original icon resources unavailable";
     return;
@@ -51,7 +53,7 @@ void Renderer::prepareSourceIcons(const Game &game) {
     }
   SourceIconCell *next = nullptr;
   for (auto &cell : sourceIconCells) {
-    if (boundSourceIcon && cell.index == *boundSourceIcon)
+    if ((boundSourceIcon && cell.index == *boundSourceIcon) || retainedIcons.retains(cell.index))
       continue;
     if (!next || !cell.gpu.imported || cell.stamp < next->stamp)
       next = &cell;

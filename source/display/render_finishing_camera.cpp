@@ -15,15 +15,15 @@ bool Renderer::finishingCameraPacket(const NativeCameraPacket& p){
             if(!scissor)return false;
             C3D_SetScissor(GPU_SCISSOR_NORMAL,scissor->x,scissor->y,scissor->x+scissor->width,scissor->y+scissor->height);
         }
-        return true;
+        iconViewport=p;return true;
     }
     if(p.kind==NativeCameraCommand::Scissor){
-        C3D_SetScissor(GPU_SCISSOR_NORMAL,r.x,r.y,r.x+r.width,r.y+r.height);return true;
+        C3D_SetScissor(GPU_SCISSOR_NORMAL,r.x,r.y,r.x+r.width,r.y+r.height);iconScissor=p;return true;
     }
     C3D_BindProgram(&program);C3D_Mtx transform{};
     for(unsigned i=0;i<4;++i){auto& v=transform.r[i];v.x=p.transform[i][0];v.y=p.transform[i][1];v.z=p.transform[i][2];v.w=p.transform[i][3];}
     C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&transform);
-    if(p.kind==NativeCameraCommand::Projection)return true;
+    if(p.kind==NativeCameraCommand::Projection){iconTransform=p;return true;}
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);
     AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
     // One constant TEV stage; later PICA stages pass through. GX channels0,
@@ -68,10 +68,18 @@ void Renderer::resumeFinishingCamera(const Game& game){
     NativeDisplaySubmit pipeline{this,[](void* user,const NativeDisplayPipeline& p){return static_cast<Renderer*>(user)->finishingDisplayPipeline(p);}};
     if(!finishingDisplayState.restore(pipeline))return;
     if(finishingShadowProgram.seeded && !finishingShadowGpu(finishingShadowProgram))return;
-    CameraDrawServices services;services.user=&submit;
+    struct CameraBridge {NativeCameraSubmit* submit;const Game* game;} cameraBridge{&submit,&game};
+    CameraDrawServices services;services.user=&cameraBridge;
     services.request=[](void* user,const CameraDrawRequest& r){
-        const auto& submit=*static_cast<NativeCameraSubmit*>(user);
-        return static_cast<Renderer*>(submit.user)->finishingCameraDraw.request(r,submit);
+        const auto& b=*static_cast<CameraBridge*>(user);auto& renderer=*static_cast<Renderer*>(b.submit->user);
+        if(!renderer.finishingCameraDraw.request(r,*b.submit))return false;
+        if(r.kind==CameraDrawRequestKind::Projection && r.index==4 && r.camera && r.camera->viewPublished){
+            const auto& projection=renderer.finishingCameraDraw.projectionMatrix();
+            if(!projection || !renderer.iconViewport)return false;
+            const auto pass=b.game->trioAttack.sourceIconPass();renderer.retainedIcons.observe(pass);
+            if(!renderer.retainedIcons.camera(pass,{*projection,r.camera->matrices.view,renderer.iconViewport->rect,r.camera->aspect}))return false;
+        }
+        return true;
     };
     struct DisplayBridge {NativeDisplaySubmit* pipeline;const Game* game;} displayBridge{&pipeline,&game};
     services.display.user=&displayBridge;
@@ -121,6 +129,7 @@ void Renderer::resumeFinishingCamera(const Game& game){
             icon.matrix=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
             SourceIconGXServices gx;gx.user=&iconBridge;gx.word=icon.word;gx.half=icon.half;gx.matrix=icon.matrix;
             gx.call=[](void* u,const SourceIconGXCall& r){auto& b=*static_cast<IconBridge*>(u);return b.renderer->sourceIconCall(*b.game,r);};
+            gx.quad=[](void* u,const SourceIconGXQuad& q){auto& b=*static_cast<IconBridge*>(u);return b.renderer->captureSourceIcon(*b.game,q);};
             icon.gx=&gx;auxiliary.sourceIcon=&icon;
             return b.game->trioAttack.resumeAudienceAux(camera,identity,borrowed,auxiliary);
         }
@@ -195,5 +204,6 @@ void Renderer::resumeFinishingCamera(const Game& game){
     };
     // Actual shadow setup; admitted geometry, independent rays and other callbacks retain provider waits.
     game.trioAttack.resumeFinishingDraw(services);
+    retainedIcons.observe(game.trioAttack.sourceIconPass());
 }
 }

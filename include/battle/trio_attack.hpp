@@ -11,6 +11,7 @@
 #include "battle_spotlight.hpp"
 #include "positional_sfx_registry.hpp"
 #include "camera_depth.hpp"
+#include "retained_icon_frame.hpp"
 #include "camera_manager.hpp"
 #include "camera_letterbox.hpp"
 #include "camera_letterbox_draw.hpp"
@@ -79,6 +80,7 @@ public:
     const std::vector<ProfessorServiceRequest>& requests() const;
     const std::vector<TrioAudienceAudioRequest>& audienceAudioRequests() const;
     bool readWord(uint32_t address,uint32_t& value) const;
+    SourceIconPass sourceIconPass() const;
     std::optional<uint32_t> sourceIconWord(uint32_t) const;
     std::optional<uint32_t> sourceIconCamera(std::optional<uint32_t> index={}) const;
     bool prepareAudienceDrawing(const BattleAudienceDrawServices&) const;

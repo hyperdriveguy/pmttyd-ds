@@ -1143,3 +1143,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Letterbox projection-vector/FIFO recovery](camera/LETTERBOX_DRAW_PROJECTION_VECTOR_AND_FIFO.md) — original GP gates, live signed16 vertices and GX kind/six-coefficient owner.
 - [Native queued letterbox draw](camera/NATIVE_LETTERBOX_DRAW_CONTINUATION.md) — retained save/restore, live material/bars and actual two-quad submission.
+
+- [Retained icon geometry and two-screen replay](display/RETAINED_ICON_SCENE_REPLAY.md) — completed source-pass publication, texture pinning and camera-coherent audience continuation.

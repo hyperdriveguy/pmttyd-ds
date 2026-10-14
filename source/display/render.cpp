@@ -1083,7 +1083,7 @@ void Renderer::world(const Game& g) {
     auto frame=g.fieldCameraFrame;
     // Native battle framing until original camera4's producer publishes a view.
     // A suspended field camera must not frame the source-owned battle stage.
-    if(g.trioBattleActive){
+    if(g.trioBattleActive && !retainedIcons.sceneCamera()){
         const auto* owner=g.trioAttack.cameras()?g.trioAttack.cameras():g.cameraManager.get();
         const auto lens=battleSceneLens(owner);if(!lens)return;
         frame.eye={0,2.8f,5.5f};frame.at={0,1.f,-.4f};
@@ -1107,6 +1107,10 @@ void Renderer::world(const Game& g) {
     Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(battle?FieldFov:frame.fov),C3D_AspectRatioTop,battle?.1f:frame.nearPlane,battle?80:frame.farPlane,false);
     Mtx_LookAt(&view,FVec3_New(battle?cam:frame.eye.x,battle?2.8f:frame.eye.y,battle?5.5f:frame.eye.z),FVec3_New(battle?cam:frame.at.x,battle?1.f:frame.at.y,battle?-.4f:frame.at.z),FVec3_New(up[0],up[1],up[2]),false);
     Mtx_Multiply(&transform,&projection,&view);
+    if(g.trioBattleActive && retainedIcons.sceneCamera()){
+        const auto actual=iconSceneWorldTransform(*retainedIcons.sceneCamera());
+        for(unsigned i=0;i<4;++i){auto& v=transform.r[i];v.x=actual[i][0];v.y=actual[i][1];v.z=actual[i][2];v.w=actual[i][3];}
+    }
     worldTransform=transform;
     // Original room backdrop, drawn without depth writes before the room.
     // Native sky backdrop spans60x36 world units atZ-25;writes RGB before
@@ -1593,9 +1597,11 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);C3D_AlphaTest(false,GPU_ALWAYS,0);
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
     if(g.harborTutorial.running())worldTutorial(g);else if(battleMapsReady)world(g);
+    if(g.trioBattleActive && trioScenePrepared)drawSourceIcons(4);
     if(!g.trioBattleActive)drawFieldItemGet(g);
     classVertexCount=0;C2D_Prepare();C2D_SceneBegin(top);overlay(g);
     if(!battleMapsReady)text(actorTexturesReady?"Development notice: battle map unavailable":"Development notice: scene actor texture unavailable",16,220,.42f,Ink);
+    if(g.trioBattleActive){C2D_Flush();drawSourceIcons(8);C2D_Prepare();C2D_SceneBegin(top);}
     // Native fade layer.99 covers top400x240 and bottom320x240. Opaque255
     // may still show an explicit development hold notice;it is not field teardown.
     if(g.trioBattleActive && g.trioAttack.endingFadeAlpha())C2D_DrawRectSolid(0,0,.99f,400,240,C2D_Color32(0,0,0,g.trioAttack.endingFadeAlpha()));
@@ -1616,7 +1622,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
         C3D_RenderTargetClear(bottom,C3D_CLEAR_ALL,0x000000ff,0);
         if(C3D_FrameDrawOn(bottom)){
             C3D_SetViewport(0,0,240,320);C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,240,320);
-            C3D_DepthMap(true,-1,0);lowerTrioScene(g);
+            C3D_DepthMap(true,-1,0);lowerTrioScene(g);drawSourceIcons(4,true);
         }
         worldTransform=topWorld;
     }else C2D_TargetClear(bottom,Paper);
