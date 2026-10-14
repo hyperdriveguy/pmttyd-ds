@@ -14145,3 +14145,18 @@ persistent target pixels across render holds remain open. Broad prologue goal
 stays active and incomplete.
 [Native item/AP scope](behavior/display/RETAINED_AUDIENCE_ITEM_AP_CALLBACKS.md);
 [part source contract](behavior/display/ORDINARY_BATTLE_PART_CALLBACK_MATRIX_MATERIAL_AND_HISTORY.md).
+
+
+### Normal boot validation for retained item/AP change
+
+Normal make all SOUNDTRACK=gamecube also passed with separate
+build-audience-aux-normal directory (no DEBUG_SHORT_BOOT define):
+artifacts/audience-aux-build-normal.log. Fresh isolated12-second Azahar capture was black with0 App FPS; the longer
+45-second run reached the original storybook and unchanged US text at60 App FPS.
+Evidence: artifacts/azahar-audience-aux-normal-long/boot.png and
+ audience-aux-normal-smoke-long.log; earlier12-second capture is retained.
+Temporary startup trace also compiled and was removed from the frozen sources.
+This verifies normal startup, not full fresh-file prologue or hardware parity. Normal3DSX SHA256:
+32e14011a820bce622af72a8a462c940f799e8803d79b8fbc30e64e2b2964117.
+Runnable artifact: artifacts/audience-aux-source/ttyd-audience-aux-normal.3dsx.
+Source implementation commit0d0eda1c; broad goal stays active and incomplete.
