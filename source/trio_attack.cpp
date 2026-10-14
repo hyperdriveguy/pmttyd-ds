@@ -724,7 +724,12 @@ struct TrioAttackRuntime {
                     if(!lightOwner){pending=0x80040684;return;}
                     endingRequest(0x800406f0,{pose,int32_t(lightOwner->materialLightFlags)});
                     fieldParties->pose(pose)->materialLightFlags|=lightOwner->materialLightFlags;
-                    pending=0x80140ea4;return; // Original HP-dependent pose selection/init and placement follow live inheritance.
+                    endingRequest(0x80140ea4,{kind});
+                    const int16_t hp=entryPouch->half(unsigned(14*kind+6));
+                    if(!fieldParties->requestFreshGoombellaPose(slot,hp)){pending=0x800be144;return;}
+                    if(fieldParties->currentDefinition!=0x80314410){pending=0x800be144;return;}
+                    endingRequest(0x800c4fa0,{slot});fieldParties->kuriboInit(slot);
+                    pending=0x800bea68;return; // Main is initialized; wrapper scales/owner angles precede appearance2 and Hello.
                 } // Real source -1 return: no unlock, kill or constructor side effects.
             }else {
                 endingRequest(0x80141198);

@@ -9541,3 +9541,42 @@ join/map material producers, alternate Mario resources, RuleKeep/audience,
 exit/context/sequence/result publication and original runtime/hardware parity
 remain open. Full playable prologue and original-fidelity return are unfinished;
 goal remains active.
+
+## 2026-10-13 — Original Goombella HP pose request and Main initialization
+
+Joined ending now reads signed canonical party HP at14*K+6, chooses original
+PKR_S_1 or PKR_D_2 at HP<=5 and publishes the borrowed source name pointer.
+The used fresh constructor clears only halfwordP20, sets P8 pending2000 and
+clears P1c; its repeated same-name comparison leaves the request unchanged.
+Current kind1 record invokes kuribo_init, setting P33=1/P32=0, original
+binary32 dimensions24/26 and clearing owned global8041eae0. No HP healing,
+unlock or current-slot publication. Nonfresh/inhibited/dot domains stay
+separate providers. Main is initialized; native ending now holds in partyEntry
+wrapper800bea68 before scales/P38/two owner-display reads and appearance2.
+
+Imported PKR_D_2 from actual read-only ISO a/c_pkr and a/c_pkr- into the
+existing private partner PMANIM/mesh/atlas pipeline, retaining prior six clips.
+Original low-HP geometry evaluates into a real nonempty shape. Resource/pose
+request is not a completed animation display or native field return. Source
+asset hashes and converted pack choices recorded in ASSETS; no raw assets
+or packs committed. Documentation agent verified exact next wrapper ordering
+and existing .display/engine-root mappings, four full-body source hashes and
+original scale vector. Added scoped partner contract and inbox breadcrumb.
+
+Validation: make assets-ready and make all passed (artifacts/trio-goombella-
+init-assets.log and trio-goombella-init-all.log). make test built and passed
+183/184 CTest, including portable field protocol, original animation bank and
+full trio_attack_original (trio-goombella-init-tests.log). Only the concurrent
+harbor approach test failed; later harbor changes do not retroactively make
+this run green. Separate Python suite121/121 passed (trio-goombella-init-
+python.log). Checks cover signed HP6/5/0/-1, exact pointers, halfword isolation,
+marker preservation, dimensions/global clear, no index publication, real
+PKR_D_2 geometry and actual joined ending. Scoped diff/link checks passed.
+No new native capture, original-runtime playback or hardware measurement.
+
+Next bind raw retained Mario display and engine root, exact wrapper scalar
+prefix, appearance2 ray services, position copies, repeat HP selection and
+mode, then delayed Mario245 publication and fresh Hello's second placement.
+Field draw/lifetimes, authored join/map materials, RuleKeep/audience and
+ending exit/sequence/result publication still need binding. Full playable
+prologue/original parity remain unfinished; goal remains active.

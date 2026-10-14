@@ -37,13 +37,14 @@ struct FieldPartyRegistry {
     std::array<std::unique_ptr<FieldPartyActor>,2> actors;
     std::array<std::unique_ptr<FieldPartyPose>,5> poses; // Used native domain: three Mario owners and two partner owners.
     uint32_t currentDefinition=0; // Original global kind-record pointer view.
+    uint32_t goombellaInitWork=0; // Owned view of8041eae0, cleared by the used kuribo_init callback.
     FieldPartyRegistry()=default;
-    FieldPartyRegistry(const FieldPartyRegistry& other):currentDefinition(other.currentDefinition) {
+    FieldPartyRegistry(const FieldPartyRegistry& other):currentDefinition(other.currentDefinition),goombellaInitWork(other.goombellaInitWork) {
         for(unsigned i=0;i<actors.size();++i)if(other.actors[i])actors[i]=std::make_unique<FieldPartyActor>(*other.actors[i]);
         for(unsigned i=0;i<poses.size();++i)if(other.poses[i])poses[i]=std::make_unique<FieldPartyPose>(*other.poses[i]);
     }
     FieldPartyRegistry& operator=(const FieldPartyRegistry& other) {
-        if(this!=&other){FieldPartyRegistry copy(other);actors=std::move(copy.actors);poses=std::move(copy.poses);currentDefinition=copy.currentDefinition;}return *this;
+        if(this!=&other){FieldPartyRegistry copy(other);actors=std::move(copy.actors);poses=std::move(copy.poses);currentDefinition=copy.currentDefinition;goombellaInitWork=copy.goombellaInitWork;}return *this;
     }
     FieldPartyRegistry(FieldPartyRegistry&&)=default;
     FieldPartyRegistry& operator=(FieldPartyRegistry&&)=default;
@@ -121,6 +122,22 @@ struct FieldPartyRegistry {
     void reinitializeMario(const FieldMarioBattleState& mario) {
         for(auto handle:mario.poseHandles)if(auto* owner=pose(handle))owner->materialFlags=0;
         for(auto handle:mario.poseHandles)if(auto* owner=pose(handle))owner->materialLightFlags|=2;
+    }
+    bool requestFreshGoombellaPose(int32_t index,int16_t hp) {
+        auto* actor=pointer(index);
+        if(!actor || actor->bytes[0x31]!=1 || (actor->word(4)&0x8002) || actor->word(0x18))return false;
+        // Fresh Main has a null name. Its following repeat comparison sees
+        // the same original string and leaves the admitted request untouched.
+        actor->word(0x18,hp<=5?0x802cb52c:0x802cb4dc);
+        actor->bytes[0x20]=actor->bytes[0x21]=0;
+        actor->word(8,actor->word(8)|0x2000);actor->word(0x1c,0);
+        return true; // Borrowed source string/pending request, not animation playback.
+    }
+    void kuriboInit(int32_t index) {
+        auto* actor=pointer(index);assert(actor);
+        actor->bytes[0x33]=1;actor->bytes[0x32]=0;
+        actor->word(0xf0,0x41c00000);actor->word(0xf4,0x41d00000); // Original binary32 dimensions24/26.
+        goombellaInitWork=0;
     }
 };
 }

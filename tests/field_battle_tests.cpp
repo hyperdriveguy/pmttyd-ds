@@ -77,11 +77,23 @@ int main(int argc,char**) {
     CHECK(partyOwner.partyIndices[0]==255 && partyOwner.partyIndices[1]==0); // Entry wrapper publishes only after completion.
     partyOwner.savedPartyKinds[0]=3;registry.initializeBeforePose(1,1,partyOwner);
     CHECK(registry.pointer(1)->word(0)==5 && registry.pointer(1)->bytes[0x2f]==1 && partyOwner.savedPartyKinds[0]==3);
+    for(int16_t hp:{int16_t(6),int16_t(5),int16_t(0),int16_t(-1)}) {
+        FieldPartyRegistry fresh;FieldMarioBattleState owner;CHECK(fresh.allocateFirst()==0);
+        fresh.initializeBeforePose(0,1,owner);auto* actor=fresh.pointer(0);
+        actor->bytes[0x20]=9;actor->bytes[0x21]=8;actor->bytes[0x22]=7;actor->word(8,0x40);actor->word(0x1c,123);
+        fresh.goombellaInitWork=99;CHECK(fresh.requestFreshGoombellaPose(0,hp));fresh.kuriboInit(0);
+        CHECK(actor->word(0x18)==(hp<=5?0x802cb52cu:0x802cb4dcu) && actor->word(8)==0x2040 && actor->word(0x1c)==0);
+        CHECK(actor->bytes[0x20]==0 && actor->bytes[0x21]==0 && actor->bytes[0x22]==7);
+        CHECK(actor->bytes[0x32]==0 && actor->bytes[0x33]==1 && actor->word(0xf0)==0x41c00000 && actor->word(0xf4)==0x41d00000 && fresh.goombellaInitWork==0);
+        CHECK(owner.partyIndices[0]==255 && !fresh.requestFreshGoombellaPose(0,hp)); // Used fresh constructor only; no invented re-entry request.
+    }
     Game cameraOwner;CHECK(cameraOwner.fieldMarioBattleState().cameraId==4);
     cameraOwner.setFieldMarioCameraId(0xffffffff);cameraOwner.restore(Progress{});
     CHECK(cameraOwner.fieldMarioBattleState().cameraId==0xffffffff); // Raw ID survives native re-entry, without a range clamp.
     if(argc>1) {
     auto bank=std::make_shared<ActorAnimationPack>();CHECK(bank->load("romfs/partner.pmanim"));
+    const auto* lowHp=bank->pose("PKR_D_2");ActorAnimationSample lowHpSample;
+    CHECK(lowHp && lowHp->evaluate(lowHp->start,lowHpSample) && !lowHpSample.vertices.empty());
     FieldPartyRegistry animation;
     CHECK(animation.enterPose(0x802cb340,2,bank,17)==-1 && !animation.poses[0]); // No substitute for the original d_mario override.
     CHECK(animation.enterPose(0x804213e0,0,bank,17)==-1 && animation.enterPose(0x804213e0,2,nullptr,17)==-1);

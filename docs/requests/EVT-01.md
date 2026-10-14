@@ -3488,3 +3488,16 @@ kuribo_init, appearance2/Hello, renderer/lifetime and subsequent ending/exit
 owners remain open. Local contracts delivered; parent request is not complete.
 See [native registry](../behavior/partner/NATIVE_FIELD_PARTY_REGISTRY.md) and
 [Mario provenance](../behavior/partner/FIELD_MARIO_POSE_HANDLES_AND_MATERIAL_PROVENANCE.md).
+
+### 2026-10-13 — Fresh Goombella Main pose/init binding
+
+Native EntryMain now reads canonical signed party HP without healing, admits
+original selector1 PKR_S_1 or selector12 PKR_D_2 at HP<=5, updates borrowed
+P18/frame/pending fields and runs current kind1 record's kuribo_init. Imported
+original PKR_D_2 to the private existing animation/mesh/atlas pipeline.
+Main's native frontier now returns to partyEntry800bea68 before wrapper
+scale/P38/two retained-owner facing reads and GetAppearPos2/Hello. The latter
+ordering is being checked by the documentation agent; no pose draw/current-slot
+publication, authored join or complete ending is claimed. Parent stays open.
+See [constructor](../behavior/partner/FIELD_PARTY_POSITION_CONSTRUCTORS.md) and
+[native registry](../behavior/partner/NATIVE_FIELD_PARTY_REGISTRY.md).

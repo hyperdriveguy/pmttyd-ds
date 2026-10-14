@@ -338,7 +338,7 @@ int main(){
             for(unsigned n=0;n<59;++n)charged.tick(Input{});assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001a);
             charged.tick(Input{});assert(charged.trioBattleIntro.actors[0].pose=="M_R_1" && charged.trioBattleIntro.actors[1].pose=="PKR_R_1");
             for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
-            assert(charged.trioAttack.pendingFunction()==(fastReward?0x80140ea4u:0x8018ef8cu) && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.pendingFunction()==(fastReward?0x800bea68u:0x8018ef8cu) && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
             assert(charged.fieldMarioBattleState().partyIndices[0]==255 && charged.fieldMarioBattleState().partyIndices[1]==255);
             if(fastReward) {
                 assert(charged.fieldPartyState().pointer(0) && !charged.fieldPartyState().pointer(1));
@@ -349,7 +349,8 @@ int main(){
                 assert(pose->shape.vertices.empty()); // Entry has not selected a pose or submitted a draw.
                 assert(actor->word(0x160)==FieldMarioOwnerAddress && actor->word(0x164)==charged.fieldMarioBattleState().cameraId);
                 assert(charged.fieldMarioBattleState().cameraId==4);
-                assert(actor->bytes[0x31]==1 && actor->bytes[0x2f]==0 && actor->word(0x18)==0 && actor->word(8)==0);
+                assert(actor->bytes[0x31]==1 && actor->bytes[0x2f]==0 && actor->word(0x18)==(charged.progress.originalPouch->half(20)<=5?0x802cb52cu:0x802cb4dcu) && actor->word(8)==0x2000);
+                assert(actor->bytes[0x32]==0 && actor->bytes[0x33]==1 && actor->word(0xf0)==0x41c00000 && actor->word(0xf4)==0x41d00000);
                 assert(charged.fieldMarioBattleState().savedPartyKinds[0]==1 && charged.fieldPartyState().currentDefinition==0x80314410);
                 assert(charged.progress.originalPouch->half(14)==1);
             }else {

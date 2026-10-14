@@ -733,3 +733,4 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native original battle HUD and button-accessible submenu](display/NATIVE_BATTLE_HUD_AND_SUBMENU.md)
 - [Harbor stationary jump and encoded event-position admission](story/NATIVE_HARBOR_ENCOUNTER_EVENT_FLOAT_ADMISSION.md)
+- [Ordinary party entry first appearance order](partner/FIELD_PARTY_ENTRY_FIRST_APPEARANCE_ORDER.md): exact wrapper scale/display captures, placement-before-index publication and fresh Hello's second placement.

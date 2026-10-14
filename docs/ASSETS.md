@@ -1568,3 +1568,21 @@ source-table metadata and compiled packs remain ignored romfs/message-icons.*.
 Nintendo/Intelligent Systems rights remain with their owners; no redistribution
 license is granted. No ISO, original payload or compiled pack is committed.
 See [native HUD/menu scope](behavior/display/NATIVE_BATTLE_HUD_AND_SUBMENU.md).
+
+## 2026-10-13 — Original Goombella low-HP idle animation
+
+Expanded tools/build_assets.py's original partner pack with PKR_D_2 from
+read-only ISO a/c_pkr and a/c_pkr-. Existing six clips retained. Rebuilt
+ignored romfs/partner.pmanim, partner.pmmesh and partner-mesh.t3x through
+the existing original sparse animation/geometry/atlas pipeline; the low-HP
+frame0 has126 original triangles. No generated art or replacement motion.
+Original clip metadata is loop1, range0..92 per the recovered ordinary pose
+contract. This supplies original CPU animation data and atlas resources;
+request admission still does not imply GPU animation playback.
+
+Original model SHA256 d712df83d7b70b64a90d45551b39ecf7adf277b9572f6931daae7792b52d69e7;
+texture SHA256162b5151601b129fc667f51b90ac6124de863ab2dff79b997cd143ed4d5c4b88.
+Private converted PMANIM196722bytes SHA256
+ea235288e62746f61ded08437ec7cb9e0385daa93a562b8d7c7f1dd741c6ff8a.
+Asset manifest retains source provenance/fingerprint; source assets/packs are
+original copyrighted data, remain ignored/private and are not distributed.

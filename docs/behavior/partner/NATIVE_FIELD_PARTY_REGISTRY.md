@@ -45,8 +45,8 @@ c_pkr or the original d_mario override. Normal c_pkr now admits an owned
 native CPU pose/resource/shape workspace with mode2/archive0, publishes its
 real registry handle and runs PeraOff; missing/unsupported resources retain
 the animPoseEntry barrier. It executes both MarioAnimeId800593fc selections and stops at
-partyGetHp80140ea4 after live material/light inheritance, before HP-dependent
-pose selection, init callback, appearance, current-index publication or Hello.
+partyEntry800bea68 after HP-dependent pose request and kuribo_init, before
+wrapper scale/facing, appearance, current-index publication or Hello.
 No animation is selected or GPU draw acknowledged by this admission. See
 [constructor animation admission](FIELD_PARTY_ENTRY_ANIMATION_ADMISSION.md).
 Existing primary destruction remains partyKill800be69c; other kind/auxiliary
@@ -90,7 +90,16 @@ with fallback banks: native admission failure holds its provider.
 Joined EntryMain now independently reads WORD4 for material and light,
 resolves each retained Mario handle in the same registry, reads its live mask
 and ORs it onto the actual new partner pose in original order. No current
-material value is inferred from boot defaults. HP-dependent pose selection
-is the next source boundary. Native entry milliseconds remain simulation-clock
+material value is inferred from boot defaults. The fresh kind1 constructor reads signed HP at canonical pouch+14*K+6,
+selects borrowed original PKR_S_1 or PKR_D_2 at the inclusive HP<=5 boundary,
+clears only halfwordP20, marks word8 pending2000 and clears P1c. The following
+comparison sees the same requested name in the used fresh/null-name domain,
+so it makes no additional state change. Nonfresh/inhibited/dot resource domains
+retain their own constructor provider. No animation is drawn by this request.
+
+The current kind1 record binds kuribo_init: P33=1, P32=0, dimensions P f0=24
+and f4=26, and owned global8041eae0=0. No HP/FP/unlock mutation or current-slot
+publication occurs. Main completes before the partyEntry wrapper, which still
+needs scales/P38 and two owner-facing reads before requesting appearance2. Native entry milliseconds remain simulation-clock
 metadata; the renderer still owns separate imported bank/texture projections.
 Connecting these owners to actual drawing and all lifecycles remains required.
