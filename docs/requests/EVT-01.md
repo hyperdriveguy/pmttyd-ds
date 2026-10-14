@@ -4207,3 +4207,15 @@ bind inner8003bc68 using the existing source state/buffer and traversal
 contracts, starting with actual mapTestXLU8001ca2c and current-map owners; retain linked/pool and special20000000 paths
 as explicit providers. Exact SDK/sine numeric agreement and field return remain
 open. Parent EVT-01 stays OPEN.
+
+### 2026-10-14 — Bero registration/indexed/length/current-number follow-through
+
+[Source contract](../behavior/overworld/BERO_INDEXED_INFO_LENGTH_AND_REGISTRATION_STATE.md)
+answers get_info_num/get_info_length/set/get_now local bodies, HitObj flag lookup,
+used-SW reset, separate BeroID and fixed-radius placement. [Native binding](../behavior/field/NATIVE_BERO_REGISTRATION_AND_COLLISION_ROLLBACK.md)
+now admits actual valid names and binds functional outputs during real road
+arrival. Missing-name mapErrorEntry ring and complete raw EVT alias ordering
+remain open. Next recover/bind actual case allocation/BeroID and switch callers,
+Mario/party position callbacks and encoded initial_pos high locals, then exact
+house05 local snapshots and generic door open/close/material1800/key49 events.
+Full source/runtime/original trace requirements and parent EVT-01 stay OPEN.

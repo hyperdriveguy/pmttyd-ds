@@ -800,3 +800,13 @@ converter from existing read-only original `gor_00`..`gor_04` map data. No root
 asset cache or user emulator profile was changed. Source/converted copyright
 remains Nintendo/Intelligent Systems; local use only, no redistribution rights.
 No original payload or compiled pack belongs in source history.
+
+### 2026-10-14 — Original default Bero exit event
+
+The read-only US DOL conversion now retains default_outevt80416074/20 alongside
+original default_entevt80416060/20. PMBRIO02 adds the original exit pointer to
+the descriptor: bero-info.bin148 bytes; bero-info.pmevt1848 bytes. Existing15
+REL entries, provenance and relocation remain unchanged. No new art/audio or
+executable PPC is imported. Original Nintendo/Intelligent Systems rights apply;
+conversion grants no distribution rights. ISO/extracted/compiled resources stay
+ignored and outside history. [Native scope](behavior/field/NATIVE_BERO_REGISTRATION_AND_COLLISION_ROLLBACK.md).

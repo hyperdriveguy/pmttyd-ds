@@ -1030,3 +1030,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Mario trio published transform consumption](display/MARIO_TRIO_PUBLISHED_TRANSFORM_CONSUMPTION.md)
 
 - [Retained native ordinary battle part display](display/NATIVE_ORDINARY_BATTLE_PART_DISPLAY.md) — actual borrowed callback matrix/material/pass/history continuation; native inner geometry hold.
+
+- [Native Bero registration and collision rollback](field/NATIVE_BERO_REGISTRATION_AND_COLLISION_ROLLBACK.md) — valid-name registration, indexed/length/current-number values and transaction-owned filters.
+- [Bero indexed query, length and registration state](overworld/BERO_INDEXED_INFO_LENGTH_AND_REGISTRATION_STATE.md) — source writer order, SW versus ID, hit flags and fixed-radius placement algebra.

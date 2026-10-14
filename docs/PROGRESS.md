@@ -4132,3 +4132,57 @@ traversal and actual indexed source geometry. Keep history and queue completion
 behind those real submissions. Linked/pool/special poses, SDK/trig equivalence,
 nonzero hooks, AP active icons and field return remain open. Prologue acceptance
 and original-game parity are unfinished; goal and EVT-01 remain active/open.
+
+### 2026-10-14 — Original Bero registration and transaction-owned collision filters
+
+Commits f0d7504b and5993c58d fix geometry rollback ownership and bind the next
+original area services. Collision staging now clears/swaps all door/event/fence
+filters and their caches with geometry; rollback immediately restores old masks,
+including reused source-node IDs. Regression tests use the original house05
+surface and candidate Game initialization, not synthetic collision geometry.
+
+FieldMapFlags retains source-proven zero-initialized HitObj halfword flags:
+name lookup excludes80 but ignores1; ray eligibility excludes0x81. Actual native
+road arrival validates all original Bero names/IDs, publishes table registration,
+resets only used BeroSW slots and the real BeroEXEC state once. Indexed functional
+queries preserve other caller storage and reproduce LW3..14/default exit EVT;
+length defaults/authored values feed the cardinal final offset while start radius
+stays original30. Current-number BSS0 and literal signed writes survive get_info;
+external checkpoint restore leaves history unknown. Shared per-room catalogs and
+owners apply across all five existing outdoor areas and future imported tables.
+No new per-frame geometry upload or artwork was introduced.
+
+Missing-name diagnostic-ring semantics, unchecked invalid indexing and complete
+raw EVT alias/float-store ordering remain explicit native boundaries. Case pool/
+BeroID/switch callers, original Mario/party position callbacks and encoded high
+locals remain unbound. Corrected earlier docs: used switches only are reset,
+switch_on/off do not allocate/delete cases, and signed conversion bias is
+2^52+2^31. See [native contract](behavior/field/NATIVE_BERO_REGISTRATION_AND_COLLISION_ROLLBACK.md).
+
+Validation used frozen tree a0d367a9cf19c1a48cbb73295b3db2299b6c3ae7:
+3263 tracked files, zero checkout mismatches. make assets-ready SOUNDTRACK=gamecube,
+make test (291 C++/171 Python) and normal make all passed. Initial host compilation
+caught a test referencing private fields; corrected to public arrival APIs before
+the passing run. Logs: artifacts/bero-register-assets.log,
+bero-register-test-final.log,bero-register-build.log,bero-register-build-final.log;
+audit: artifacts/bero-register-source-audit.json. All nine committed code paths
+match this tested tree; concurrent merged HEAD is not claimed fully validated.
+Normal binary artifacts/bero-register-normal.3dsx SHA256
+8f367abd1bf12bf8549cf135eac0496cf25592e71df05f75305475b1478712e5.
+
+Isolated native round trips passed both saved-room assertions per run; profiles
+and fixture copies only, no user saves/profile or production bypass. Inspected
+captures retain original art and Mario/Goombella in view. Initial current run
+artifacts/azahar-bero-register-steady reported31/23 App FPS and32.44/43.03ms;
+sequential previous-binary comparison artifacts/azahar-bero-register-baseline
+also slowed to45/41 FPS and22.13/24.12ms. Host load was elevated. Current-binary
+repeat artifacts/azahar-bero-register-repeat exited0 and reached60 App FPS at
+100% speed in both settled captures,10.13/10.84ms. The comparison demonstrates
+variable host conditions; it is not a controlled hardware regression benchmark.
+Original pixel/entry timing and actual New2DSXL performance remain unverified.
+
+Next bind real shared case-pool allocation/BeroID/priority/caller state and
+original position/party services before reconstructing complete house05 local
+banks. Continue generic door open/close/material1800/key49, original NPC events
+and additional area packs. Rendering/hardware fidelity and the full remake
+remain active and incomplete.

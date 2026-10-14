@@ -19,7 +19,7 @@ Destination throughout is the raw second event word (no routing on it).
 
 - If word at [entry+24] != −1: flip its high bit (`xoris` 0x8000), convert
   to float with the 0x43300000-bias double pair against 0x802C3058 — which
-  reads 2^52 exactly from the ISO, the standard int→float bias — and
+  reads 2^52 + 2^31 (0x4330000080000000) from the ISO, the signed int→float bias — and
   `evtSetFloat(entry, dest, float)`.
 - Else: take low 12 bits (`lhz` + `clrlwi`) of [entry+4]; select SDA
   constant 30.0 (r2−28456, read from the ISO) when the value is 0, 3, or

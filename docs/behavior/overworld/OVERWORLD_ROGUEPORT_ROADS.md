@@ -53,8 +53,10 @@ then RUN_CHILD_EVENT evt_bero_info_run unconditionally at the following sites:
 | gor_04 | 0x603f0 / 0x603fc / 0x60404 |
 
 Unconditional registration does not remove callbacks/story or geometry-object
-state. evt_bero_get_info requires each hit-object name to resolve before it
-loads the array, resets 16 Bero switch entries to-1 and resets BeroEXEC0.
+state. evt_bero_get_info clears16 INFOARR pointers, validates hit-object names,
+then publishes table pointers/count, resets only used BeroSW entries to-1 and
+resets BeroEXEC0. Missing names append a bounded mapErrorEntry diagnostic and
+continue; they do not abort registration. See [complete registration state](BERO_INDEXED_INFO_LENGTH_AND_REGISTRATION_STATE.md).
 
 ## Runtime collision mutation precedes case registration
 
@@ -73,9 +75,9 @@ Preserve source node identity through the full wall-ray provider and feed the
 wrapper's actual contact token. Per-object attribute changes are runtime state.
 bero_case_entry saves the case ID then enables BeroSW for the registration.
 Arrival choreography registers these cases at its finish, not an arbitrary
-60-tick cooldown after placement. Switch_on/off events recreate/delete saved
-case registrations through the Bero switch owner; those are distinct from
-BeroEXEC busy permission bits.
+60-tick cooldown after placement. Switch_on/off write BeroSW and caller LW0/1;
+they do not recreate/delete cases. BeroID stores case handles separately;
+BeroEXEC busy permission bits are a third owner.
 
 ## Actual ordinary trigger: named front contact, not geometric proximity
 
