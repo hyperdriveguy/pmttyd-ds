@@ -680,3 +680,22 @@ Extracted inputs remain under ignored `local-assets/field-actors/`; generated
 `romfs/field-borodo.*`, `field-actors.pmnpc` and metadata remain outside source
 history. Original Nintendo/Intelligent Systems assets; local conversion does
 not grant redistribution rights. See the [native contract](behavior/field/NATIVE_BORODO_POSITION_AND_ALL_TASK_CANCELLATION.md).
+
+
+## Original Garf/c_monban actor (2026-10-14)
+
+Read-only G8ME01 `a/c_monban` at ISO890977624,40764 bytes, SHA256
+`595e3b0b8e905675490d2d0e1c808f18cf67114ecab16b024e6ca07d8a3e323b`;
+`a/c_monban-` at891018388,47904 bytes, SHA256
+`8a2433ec795c1ef5b140dcf4f4bc4879e8936c4fc3f82208580cd1e79611a68c`.
+Source gor_02 盗賊団２ uses tribe row80333404, original idle/talk/walk/run
+S_1/T_1/W_1/R_1 and30x30 dimensions; Z_1 remains animation index0.
+
+The existing sparse original mesh/animation/material converter retains26 used
+texture cells and original RGBA. Its wrap-aware1024x512 atlas is reduced to
+512x256/512KiB for the resident room, preserving normalized UV ratios.
+`local-assets/field-actors/c_monban*` and generated `romfs/field-garf.*`/catalogs
+remain ignored, outside source history. Existing Citro3D model batches share
+this one texture bank across actors. Original Nintendo/Intelligent Systems
+resources; local conversion grants no redistribution rights. No new music or
+replacement art was introduced. [Native scope](behavior/field/NATIVE_GARF_INIT_AND_ORDINARY_TALK.md).

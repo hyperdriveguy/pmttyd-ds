@@ -3512,3 +3512,48 @@ and object/event owners using these data-driven catalog/service boundaries.
 The broad remake goal remains active and incomplete.
 [Native scope](behavior/field/NATIVE_BORODO_POSITION_AND_ALL_TASK_CANCELLATION.md);
 [source alley diagnosis](behavior/field/ROGUEPORT_EAST_BORODO_ALLEY_CAMERA_AND_OCCLUSION.md).
+
+
+## 2026-10-14 — Original Garf actor, init and ordinary talk
+
+Added source gor_02 盗賊団２/c_monban with original art/animations/tribe
+dimensions and flags. PMNPC009 profile2 validates the exact raw Shift-JIS name
+and resource, waits for known1420 and initializes445/0/120 for quest1 or
+10/0/-460 otherwise. Init is retained, not replayed after state changes.
+The actual Q1 start/end children now reposition that same collision/render
+body, then still wait on the missing house05 door owner.
+
+Ordinary1420!=1 talk uses all eight original US message IDs/story branches,
+including the unsuffixed gor_02_011 and absence of a112 threshold. Unknown
+quest/active quest1 do not fall through to ordinary dialogue. Original key49
+selection/advice/unlock scene remains unbound. Code commit91d057c4.
+
+Validation: frozen tree3f37e000de37c812b314e8b8a46abe36147725f4,3221 tracked
+files,0 mismatches (artifacts/garf-source-audit.json). Sequential
+make assets-ready SOUNDTRACK=gamecube passed; make test passed285 C++/168 Python.
+Normal make all and DEBUG_SHORT_BOOT=1 build passed; normal boot restored and
+its3DSX hash reproduced. Logs: artifacts/garf-assets.log, garf-test.log,
+garf-build.log, garf-short-build.log and garf-build-restored.log. Checks cover
+source ordinary IDs/boundaries, unknown init state, exact model/name, no replay
+and real Q1 acceptance/cancellation child positions. Source review found no
+blocker within this bounded scope.
+
+Isolated Azahar artifacts/azahar-garf-clear shows original Garf at quest1
+445/0/120 from player520/0/200,60 App FPS/about10.2ms frame. New original
+atlas uses512x256 RGBA8/512KiB; rendering uses the existing room-shared
+Citro3D path. The copied checkpoint remains unchanged. Initial400/120 fixture
+was map-wall blocked;350/50 had no ground;445/200 loaded but overlapped Mario
+in projection. Only the final clear view counts as appearance evidence.
+These are emulator readings, not hardware or original runtime/raster parity;
+ordinary talk raster and natural house05 access remain unverified.
+
+Normal3DSX SHA256:14c7cc80ecef78bfab444604ee8a19b2d73323ee29f4758305ca48700640c869.
+Capture3DSX SHA256:445c9f6cf921b19ec45764645fa60939ffe75e97c6170734f6381c365d450f3e.
+
+Next bind actual house05 mutable72-byte copy, GW11 and its map lifetime/NPC-list
+consumers. Separate registered/name-addressable actors from render suppression;
+retain mutable800/main flags independently of per-tick static catalog refresh.
+Then bind key49 selection/unlock children and Borodo talk. Full shared case/GP/
+field lifetime, original runtime comparison and additional area/object/event
+packs remain open. Broad remake goal remains active and incomplete.
+[Native scope](behavior/field/NATIVE_GARF_INIT_AND_ORDINARY_TALK.md).

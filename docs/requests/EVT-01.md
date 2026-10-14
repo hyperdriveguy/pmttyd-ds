@@ -4085,3 +4085,17 @@ inside house01 camera index4. [Original alley source](../behavior/field/ROGUEPOR
 identifies actual road1; valid alley checkpoints show the original Borodo model
 with the existing side camera. No speculative wall-hide rule was added.
 Original-runtime raster comparison remains OPEN.
+
+
+## 2026-10-14 — Garf actor and original ordinary talk
+
+Delivered [complete Garf talk and registered/hidden admission source](../behavior/field/GARF_ORIGINAL_TALK_AND_REGISTERED_HIDDEN_ACTOR_ADMISSION.md).
+Native now binds c_monban/盗賊団２, original quest-dependent init and all eight
+ordinary message branches. Original Q1 start/end children move the actual
+retained actor, then remain pending at house05 DoorParameter.
+[Native scope](../behavior/field/NATIVE_GARF_INIT_AND_ORDINARY_TALK.md).
+Next bind actual72-byte door copy/GW11/map lifetime/NPC-list consumers and
+retain mutable main flags before source800 hide/show (static publication
+currently reloads catalog flags). Name lookup/registration must not be gated
+by800. Key49 selection, original unlock scene and runtime/raster comparisons
+remain OPEN; no fabricated door acknowledgment or quest dialogue fallback.

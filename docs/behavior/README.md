@@ -998,3 +998,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Rogueport east Borodo alley camera/occlusion](field/ROGUEPORT_EAST_BORODO_ALLEY_CAMERA_AND_OCCLUSION.md) — source house-versus-alley zone selection and finite cutaway logic.
 
 - [Native RAM admission interval prefilter](event/NATIVE_RAM_ADMISSION_INTERVAL_PREFILTER.md)
+
+- [Garf original talk and registered/hidden actor admission](field/GARF_ORIGINAL_TALK_AND_REGISTERED_HIDDEN_ACTOR_ADMISSION.md) — all source quest/ordinary branches and flag800 admission boundaries.
+- [Native Garf init and ordinary talk](field/NATIVE_GARF_INIT_AND_ORDINARY_TALK.md) — original c_monban actor/profile, exact story messages and pending house05 services.
