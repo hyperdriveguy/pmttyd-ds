@@ -57,3 +57,20 @@ Delivered [star-power gauge storage](../behavior/battle/STAR_POWER_GAUGE_STORAGE
 rows and an explicit storage-vs-policy boundary. Fill callers (2 link
 sites), thresholds/levels, max-SP writers, consume/reset, and save mapping
 stay open. No native/test/CMake/asset change by this answer.
+
+## 2026-10-13 — Native session verification: gauge storage against US ISO
+
+Independently re-disassembled the two cited leaves read-only
+(`tools/inspect_dol_function.py --address`, artifacts in `/tmp`). Confirmed
+instruction-for-instruction: `pouchSetAP` `0x800d3bc4` is `sth 3,122(4)` (raw
+`[122] = value`) then the floor-0 (`cmpwi`/`li 0`/`sth`) and cap
+(`cmpw` vs `[124]`/`bclr` in-range return/`sth` store-on-breach) sequence, and
+`pouchAddAP` `0x800d3c00` is `lha 0,122`/`add 0,0,3`/`sth` then the identical
+clamp. The pouch pointer is loaded with `lwz ?,7136(13)` (small-data-area
+`r13+0x1BE0`) and reloaded per phase; the fields are `pouch+122`(`0x7A`) and
+`pouch+124`(`0x7C`). This matches the delivery exactly.
+
+Observation (not a claim): native `initializeProloguePouch` writes coins at
+`pouch+0x78` but nothing at `+0x7A`/`+0x7C`; whether the original new-file init
+writes `maximumSP` there is left open by the delivery (max-SP writers stay
+open), so no native change is made from this.
