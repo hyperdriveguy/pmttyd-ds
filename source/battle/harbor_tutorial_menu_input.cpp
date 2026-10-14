@@ -32,7 +32,7 @@ std::optional<int32_t> HarborTutorialPacked::inputWeaponMenu(HarborTutorial& sce
  s.attackAudience=[](void* self)->std::optional<bool>{auto& c=*static_cast<Context*>(self);BattleMenuAudienceServices a;a.memory=nativeBattleActorServices(c.p->vm);a.user=c.p;a.privateItem=MenuRam+0x14;
   a.trigger=[](void* self,uint32_t mask){return static_cast<HarborTutorialPacked*>(self)->word(Battle+0xf44)&mask;};
   a.mario=[](void* self,uint32_t b){return battleMarioUnit(b,nativeBattleActorServices(static_cast<HarborTutorialPacked*>(self)->vm));};
-  a.itemOn=[](void*,uint32_t,int32_t,int32_t,int32_t,int32_t){return false;}; // Explicitly unbound audience entity producer; no item value is fabricated.
+  a.itemOn=[](void* self,uint32_t output,int32_t,int32_t,int32_t,int32_t){return static_cast<HarborTutorialPacked*>(self)->menuAudienceItemOn(output);}; // Whole source producer; actual interruption consumers retain their frontier.
   return packedBattleMenuAudienceCheck(a);
  };
  const auto result=mainPackedBattleWeaponMenu(Battle,scene.weaponMenuType,s);if(result)captureWeaponRows(scene.weaponMenuType,scene);return result;

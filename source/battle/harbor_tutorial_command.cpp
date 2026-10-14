@@ -189,10 +189,7 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
         return battleMarioUnit(
             b, nativeBattleActorServices(static_cast<Context *>(self)->p->vm));
       };
-      a.itemOn = [](void *self, uint32_t, int32_t, int32_t, int32_t, int32_t) {
-        static_cast<Context *>(self)->scene->commandInputPending = 0x801a1520;
-        return false;
-      };
+      a.itemOn=[](void* self,uint32_t output,int32_t,int32_t,int32_t,int32_t){auto& c=*static_cast<Context*>(self);const bool ready=c.p->menuAudienceItemOn(output);if(!ready)c.scene->commandInputPending=0x801a2bec;return ready;};
       return packedBattleMenuAudienceCheck(a);
     };
     return processPackedBattleTargetSelection(b, u, t);

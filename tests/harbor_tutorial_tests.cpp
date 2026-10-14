@@ -192,6 +192,9 @@ void nativeCommandFlow(){
  const auto classWork=word(0x84001c78);assert(classWork && classWork!=0x84600c00 && word(classWork+0xc)==10 && ((word(classWork+0x14)>>24)&255)==0);
  scene.tick(scene.now+17,0,&quiet);assert(scene.inputCommand(quiet)==0 && scene.classMenuOpen);
  scene.classMenuPresented();assert((word(classWork+0x14)>>24)==1);
+ BattlePadSample audienceX;audienceX.snapshot.buttons=audienceX.pressed=0x400;scene.tick(scene.now+17,0,&audienceX);assert(scene.inputCommand(audienceX)==0);
+ assert(scene.commandInputPending==0 && scene.classMenuOpen && word(0x8400171c)==2); // Real no-item query keeps physical X harmless.
+
  scene.tick(scene.now+17,0,&a);assert(scene.inputCommand(a)==0 && !scene.classMenuOpen && scene.weaponMenuOpen && word(0x8400171c)==7);
  assert(word(0x84001c78)==0x84600c00); // Original End released the actual class allocation before the weapon adapter.
 

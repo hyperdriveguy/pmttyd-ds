@@ -1,5 +1,6 @@
 #include "battle_act_menu.hpp"
 #include "battle_act_ui.hpp"
+#include "battle_audience_item_on.hpp"
 #include "battle_packed_status.hpp"
 #include "battle_weapon_menu_main.hpp"
 #include "event_heap_allocation.hpp"
@@ -14,6 +15,12 @@ bool HarborTutorialPacked::classUiRelease(uint32_t address) {
     return false;
   eventSdkFree(0, address, vm.memoryBinding.services());
   return true;
+}
+bool HarborTutorialPacked::menuAudienceItemOn(uint32_t output){
+ packedBattleAudienceItemOn({output,0,0,0,0},nativeBattleActorServices(vm));
+ // The complete producer is bound. A real item still requires the original
+ // target/end/light interruption providers; retain the produced value/effects.
+ return word(output)==uint32_t(-1);
 }
 std::optional<int32_t>
 HarborTutorialPacked::actMenu(HarborTutorial &scene, void *messageUser,
@@ -152,9 +159,7 @@ HarborTutorialPacked::actMenu(HarborTutorial &scene, void *messageUser,
         return battleMarioUnit(
             b, nativeBattleActorServices(static_cast<Context *>(self)->p->vm));
       };
-      q.itemOn = [](void *, uint32_t, int32_t, int32_t, int32_t, int32_t) {
-        return false;
-      };
+      q.itemOn = [](void* self,uint32_t output,int32_t,int32_t,int32_t,int32_t){return static_cast<Context*>(self)->p->menuAudienceItemOn(output);};
       const auto result = packedBattleMenuAudienceCheck(q);
       return result ? std::optional<uint32_t>(*result ? 1 : 0) : missing();
     }

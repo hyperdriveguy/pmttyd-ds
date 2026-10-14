@@ -85,3 +85,8 @@ Native GX/SDK/icon/font providers and renderer activation remain open.
 Whole original center/offset local helpers now have
 [their own provider contract](ACT_RING_CENTER_AND_OFFSET_PROVIDERS.md).
 Actual native projection and libm/raster parity remain separate bindings.
+
+The complete local party/button/pinch footer bodies and actual audience item
+producer now have [their own contract](CLASS_MENU_FOOTERS_AND_AUDIENCE_ITEM_QUERY.md).
+Their native texture/projection/sound bindings and normal Game ownership remain
+separate; no successful footer stub or invented audience item is admitted.

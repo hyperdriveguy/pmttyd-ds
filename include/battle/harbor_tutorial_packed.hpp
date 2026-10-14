@@ -34,6 +34,7 @@ public:
  bool unitInitReady();
  std::optional<int32_t> actMenu(HarborTutorial&,void*,uint32_t(*)(void*,uint32_t),bool setup,uint32_t flag=0);
  bool classUiRelease(uint32_t);
+ bool menuAudienceItemOn(uint32_t output);
  void captureClassRows(HarborTutorial&);
  bool buildClassMenu(HarborTutorial&,void*,uint32_t(*)(void*,uint32_t));
  bool buildWeaponMenu(uint32_t type,HarborTutorial&,void* messageUser,uint32_t(*message)(void*,uint32_t));

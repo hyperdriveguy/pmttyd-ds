@@ -1372,3 +1372,9 @@ target_sources(ttyd_core PRIVATE source/display/native_camera_draw.cpp)
 add_executable(native_camera_draw_tests tests/native_camera_draw_tests.cpp)
 target_link_libraries(native_camera_draw_tests PRIVATE ttyd_core)
 add_test(NAME native_camera_draw COMMAND native_camera_draw_tests)
+
+# Complete original class footer bodies and actual audience item query.
+target_sources(ttyd_core PRIVATE source/battle/battle_class_footer.cpp source/battle/battle_audience_item_on.cpp)
+add_executable(battle_class_footer_tests tests/battle_class_footer_tests.cpp)
+target_link_libraries(battle_class_footer_tests PRIVATE ttyd_core)
+add_test(NAME battle_class_footer COMMAND battle_class_footer_tests)

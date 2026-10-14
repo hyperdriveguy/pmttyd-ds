@@ -110,7 +110,11 @@ BattleClassBackend::request(const BattleClassRasterRequest &r) {
   const auto &f = r.reals;
   switch (r.function) {
   case F::Init2D:
-    return pendingPoints_ ? std::nullopt : std::optional<uint32_t>(0);
+    if (pendingPoints_)
+      return {};
+    material_ = 0xffffffff; // Source Init2D restores texture times raster,
+                            // bypassing the prior material register.
+    return 0;
   case F::MaterialColor:
     if (n.size() != 2 || n[0] != 1)
       return {};

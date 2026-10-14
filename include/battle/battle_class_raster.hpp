@@ -22,7 +22,8 @@ enum class BattleClassRasterService : uint32_t {
   FontWidth = 0x80075528,
   FontStart = 0x80077b4c,
   FontColor = 0x800777e0,
-  FontString = 0x80076a10
+  FontString = 0x80076a10,
+  TexturePlane2 = 0x8010323c
 };
 struct BattleClassRasterRequest {
   BattleClassRasterService function;

@@ -39,6 +39,9 @@ int main() {
     assert(call(F::Point, {0, 0, 0, 128}, {float(i), 0, 0, 0}));
   assert(b.complete() && b.quads.size() == 2 &&
          b.quads[1].vertices[0].rgba == 128);
+  assert(call(F::Init2D));
+  assert(call(F::Quad,{255,233,64,255},{0,0,1,1}));
+  assert(b.quads.back().vertices[0].rgba==0xffe940ff);
   assert(call(F::Icon, {16, 334}, {}, matrix));
   assert(b.quads.back().texture == BattleClassTexture::ClassIcons);
   assert(b.quads.back().vertices[0].x == -4 &&
