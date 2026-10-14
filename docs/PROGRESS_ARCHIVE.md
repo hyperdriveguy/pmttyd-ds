@@ -13581,3 +13581,86 @@ then ordered source Init/Main/Exit/field return and remaining global/history
 providers. AUDIO-01/EVT-01 and the playable original-fidelity prologue goal
 remain open. Existing native gameplay still runs through its scoped adapter
 while actual source battle Init holds.
+
+## 2026-10-14 — Frame-scoped finishing camera GPU and real dummy
+
+`NativeCameraDraw` maps finite integral-edge608x480 rectangles to tilted physical
+240x400 and maps source depth range to native reversed depth. Full P*retained
+position3x4 is rotated by rows(y,-x,z,w), preserving every projection-extra
+component. The source dummy loads its actual view before emitting original
+XYZ(0,0,0),(20,0,0),(20,20,0), each UV0. Native constant RGBA0x81000000,
+zero/one ADD blend, alphaGEQUAL128, disabled depth/early depth and zero write
+mask implement the declared no-write state. Inherited cull/fog are preserved.
+Fractional transformed bounds/unmapped numeric domains remain real holds.
+
+Trio's explicit shared-runtime renderer continuation routes GPU services only
+inside successful FrameBegin/FrameDrawOn. Existing scalar letterbox owns its
+original providers/cursor. Camera0 completes its empty queue and real dummy;
+camera1 publishes viewport/scissor/projection, then suspends before its first
+shadow record at ColorUpdate802b9380.21 records remain. No class state/callback,
+queue reset, outer Main, field return or full raster completion is fabricated.
+Native backend cache restores viewport->scissor->projection->dummy state across
+frames without duplicate dummy vertices/source requests. The independent world
+pipeline explicitly resets viewport/scissor/depth range/write/test/blend state.
+
+Frozen baseline b55842ea1c78bd55f585fdd651dda85ab91f9ad3 plus exact owned changes
+and the corrected sound reset is in artifacts/gpu-source/OWNED_BASE.txt.
+Other pending changes were excluded. Source/immutable native binary hashes:
+artifacts/gpu-validated/manifest.json. Existing private romfs/gfx/local-assets
+packs are shared symlinks and not independently frozen original-content proof.
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 make test`: exit0,269/269 C++ and159/159 Python;
+  artifacts/gpu-test-final.log. Tests cover rect domains, full matrices,
+  captured cache snapshots, unavailable submits, restoration without vertices,
+  real finishing scalar/frame handoff, camera1 wait and no simulation GPU work.
+- `make all -o assets-ready -j4 DEBUG_SHORT_BOOT=1 BUILD=build-gpu
+  TARGET=ttyd-gpu`: exit0; artifacts/gpu-build-verified.log. Final independent
+  renderer pipeline restoration changes only native render.cpp, excluded from
+  the host core; host executable tokens remain those tested above.
+- Independent read-only review passes installed-library tilt/depth/scissor
+  mapping, constant/blend/alpha/write state, attributes, frame-only submission
+  and restoration. Source argument/state details are in the adapter contract.
+- Initial isolated build exposed commit35db41b's omitted obsolete sound reset.
+  The validated sound snapshot had removed it; commit assembly matched an
+  after-prefix within the old line. Fixed committed source in c632bfec and
+  strengthened full-line/obsolete-hunk assertions. Initial logs gpu-test.log
+  and gpu-build.log record that failure, not passing results.
+
+Native GPU harness is a separate ignored source/build, not production code:
+artifacts/gpu-harness-source; exact test substitutions and source/binary hashes
+in gpu-validated/harness-patches.json and manifest.json. It supplies only an
+explicit original resolved Bero bit1 clear after the staged checkpoint, then
+logs actual native GPU packets/frontier inside the isolated test SD profile.
+It does not supply missing source Init, class states or callbacks. The normal
+binary contains neither that fixture override nor diagnostic file writes.
+
+Initial harness run with weapon-icons-trio-v8 fixture reached an opaque ending
+without exception, but the debug marker was not present at Info log level;
+gpu-emulator.log and azahar-gpu-finishing-harness record it. Diagnostic file run
+with underground-trio-story11 fixture, seconds15 and the actual attack/EXP
+script tests/azahar_trio_exp_icons.py completed exit0 without a detected native
+exception; files show one DummyDraw and77 DummyStateRestore submissions plus
+camera1 ColorUpdate/queue21. Its opaque capture lacked the existing notice.
+That exposed the need to reestablish the independent pipeline explicitly after
+the dummy; C2D_Prepare does not establish alpha blending. Added independent
+write/test/blend reset, then rebuilt both normal and harness binaries.
+
+Final isolated run artifacts/azahar-gpu-finishing-verified uses the same original
+underground fixture and script: exit0, no detected native exception; log
+artifacts/gpu-emulator-verified.log. Actual gpu-frontier.txt records
+`pending802b9380 camera1 queue21` and the one-shot frontier marker. Packet file
+counts: viewport79,scissor79,projection78, **DummyDraw1**, **DummyStateRestore76**.
+Assertions on exact frontier and one dummy pass. Viewed final ending capture;
+it remains opaque black and the development notice is still absent. Earlier
+original attack/EXP captures and packet diagnostics establish this scoped
+native execution, not exact pixels, all original GPU state, original timing,
+field return, complete no-write framebuffer measurement or hardware performance.
+User emulator profiles/saves remained untouched. ISO stayed read-only and no
+extracted assets, compiled packs, test overrides or diagnostic payloads are
+committed. Contract links/owned live-vs-snapshot hunks and diff-check pass.
+
+Next: common/class GPU dispatch state, real shadow/part/material/stage/audience/
+menu/EXP/letterbox callbacks and remaining camera/near-far owners; production
+Bero/get_info history, real source Init/Main/Exit and ordered field return.
+Investigate the independent ending-notice presentation separately from story
+raster fidelity. Full EVT-01 and the original-fidelity prologue goal stay open.

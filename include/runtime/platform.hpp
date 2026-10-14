@@ -26,6 +26,7 @@
 #include "window_frame.hpp"
 #include "window_font.hpp"
 #include "battle_class_backend.hpp"
+#include "native_camera_draw.hpp"
 #include <memory>
 #include <3ds.h>
 #include <citro2d.h>
@@ -119,6 +120,9 @@ private:
     bool selectorIcon(uint32_t,uint64_t,float,float,float,uint32_t,bool centered=false);
     int count=0, transformLoc=0, marioPose=0;
     shaderProgram_s program{};
+    NativeCameraDraw finishingCameraDraw;
+    bool finishingCameraPacket(const NativeCameraPacket&);
+    void resumeFinishingCamera(const Game&);
     C3D_Mtx worldTransform{};
     DVLB_s* shader=nullptr;
     C3D_RenderTarget* top=nullptr;

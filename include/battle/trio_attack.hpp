@@ -44,6 +44,8 @@ public:
     void setCameraLetterboxServices(const CameraLetterboxServices&);
     void setOriginalSequence(std::shared_ptr<OriginalSequence>);
     void setSoundFlags(std::shared_ptr<SourceSoundFlags>);
+    bool finishingDrawPending() const;
+    void resumeFinishingDraw(const CameraDrawServices&) const;
     std::optional<TrioShadowDrawRequest> shadowDrawRequest() const;
     const ShadowWork* shadowWork() const;
     const BattleCommandPalette* commandPalette() const;

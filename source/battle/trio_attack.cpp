@@ -1617,10 +1617,20 @@ struct TrioAttackRuntime {
             if(pending!=next)endingRequest(next);pending=next;
         }
     }
-    void continueFinishingDraw(){
-        cameraDrawWaiting=true;CameraDrawServices services;services.user=this;
+    void continueFinishingDraw(const CameraDrawServices* backend=nullptr){
+        struct Bridge {TrioAttackRuntime* runtime;const CameraDrawServices* backend;} bridge{this,backend};
+        cameraDrawWaiting=true;CameraDrawServices services;services.user=&bridge;
+        services.request=[](void* user,const CameraDrawRequest& request){
+            const auto* b=static_cast<Bridge*>(user)->backend;
+            return b && b->request && b->request(b->user,request);
+        };
+        services.nearFar=[](void* user,CameraState& camera){
+            const auto* b=static_cast<Bridge*>(user)->backend;
+            return b && b->nearFar && b->nearFar(b->user,camera);
+        };
+        if(backend)services.display=backend->display;
         services.letterbox=[](void* user,DisplayQueue& queue){
-            auto& r=*static_cast<TrioAttackRuntime*>(user);CameraLetterboxServices provider;
+            auto& r=*static_cast<Bridge*>(user)->runtime;CameraLetterboxServices provider;
             if(r.letterboxServices)provider=*r.letterboxServices;
             else {
                 provider.user=&r;
@@ -1649,6 +1659,11 @@ struct TrioAttackRuntime {
             word(0x8041e810,0);pending=0x8006f904;endingRequest(pending); // Actual next outer Main; no teardown shortcut.
         }else {
             uint32_t next=cameraDrawCursor.stage==0?letterboxCursor.pending:cameraDrawCursor.stage==3?0x802ba56c:0x8000f454;
+            if(cameraDrawCursor.stage==9)next=0x80005ad8;
+            if(cameraDrawCursor.stage==8 && cameraDrawCursor.display.active){
+                if(cameraDrawCursor.display.invoking)next=cameraDrawCursor.display.callback;
+                else if(cameraDrawCursor.display.stage==0)next=0x802b9380;
+            }
             if(pending!=next)endingRequest(next);pending=next;
         }
     }
@@ -1705,6 +1720,8 @@ const CameraDepthSnapshot* TrioAttack::cameraDepthSnapshot()const{if(runtime_ &&
 void TrioAttack::setCameraLetterboxServices(const CameraLetterboxServices& services){if(runtime_)runtime_->letterboxServices=services;}
 void TrioAttack::setOriginalSequence(std::shared_ptr<OriginalSequence> sequence){if(runtime_)runtime_->sequence=std::move(sequence);}
 void TrioAttack::setSoundFlags(std::shared_ptr<SourceSoundFlags> flags){if(runtime_)runtime_->soundFlags=std::move(flags);}
+bool TrioAttack::finishingDrawPending() const{return runtime_ && (runtime_->cameraDrawWaiting || runtime_->pending==0x8000f454);}
+void TrioAttack::resumeFinishingDraw(const CameraDrawServices& services) const{if(finishingDrawPending())runtime_->continueFinishingDraw(&services);}
 const CameraManager* TrioAttack::cameras()const{return runtime_?runtime_->cameras.get():nullptr;}
 const DisplayQueue* TrioAttack::displayQueue()const{return runtime_?&runtime_->displayQueue:nullptr;}
 std::optional<TrioShadowDrawRequest> TrioAttack::shadowDrawRequest()const{return runtime_?runtime_->shadowDraw:std::nullopt;}

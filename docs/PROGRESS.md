@@ -2682,3 +2682,32 @@ case9, then original lecture/help/confirmation/acceptance EVT, physical input/
 iconMain ordering and original menu PCM. Full original GP/card save, original
 execution/raster and New2DSXL hardware performance remain unverified. These
 state/providers do not constitute native board gameplay; goal remains active.
+
+## 2026-10-14 — Frame-scoped finishing camera GPU and real dummy
+
+Added actual native viewport/scissor/depth range/full projection adaptation and
+original no-write dummy triangle inside admitted renderer frames. The source
+Draw/dispatch cursors and borrowed queue survive renderer handoff. Cached
+backend restoration reapplies state across frames without repeating the dummy
+vertices; simulation emits no GPU work. Finishing reaches camera1's real
+ColorUpdate802b9380 wait with21 records. [Frame frontier](behavior/camera/NATIVE_FINISHING_DRAW_FRAME_BINDING_FRONTIER.md)
+and [adapter scope](behavior/camera/NATIVE_FINISHING_CAMERA_GPU_ADAPTER.md).
+
+Frozen make test passes269/269 C++ and159/159 Python; native make all
+DEBUG_SHORT_BOOT=1 passes. Isolated instrumented Azahar verifies one real dummy
+submission,76 state restorations and current camera1/queue21 with no detected
+native exception. The test-only harness supplies an explicit resolved Bero
+bit1 clear; production room history is not supplied by this fixture. Exact
+[validation and limits](PROGRESS_ARCHIVE.md#2026-10-14--frame-scoped-finishing-camera-gpu-and-real-dummy).
+
+Corrected the prior committed sound-reset omission in c632bfec; strengthened
+complete-line and obsolete-hunk commit checks. Native capture also motivated
+explicit independent renderer blend/write/test restoration after the queued
+pass; the final opaque ending capture still lacks the development notice.
+No original story dialogue was changed.
+
+Next: original common/class GPU dispatch state, actual shadow/part/material/
+stage/audience/menu/EXP/letterbox callbacks, near/far and remaining cameras;
+production Bero/get_info, full source Init/Main/Exit and ordered field return.
+Original numeric/history, event timing, pixel/audio parity and physical
+performance remain unverified. Full original-fidelity prologue goal stays active.

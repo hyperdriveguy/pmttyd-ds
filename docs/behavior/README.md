@@ -947,3 +947,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native shared sound flag owner](audio/NATIVE_SHARED_SOUND_FLAG_OWNER.md): retained field/battle/letterbox state and real missing-fade/GPU continuation limits.
 
 - [Native Trouble Center state/checkpoint v10](format/NATIVE_TROUBLE_CENTER_STATE_CHECKPOINT_V10.md) — lecture, all30 completion flags, working flags/bytes with legacy unknown migration; [original door/case9 admission](field/TROUBLE_CENTER_DOOR_CASE9_GEOMETRY_AND_LIFETIME.md) — story23 lock, authored collision names and priority/type lifetime.
+
+- [Native finishing draw frame frontier](camera/NATIVE_FINISHING_DRAW_FRAME_BINDING_FRONTIER.md): active-frame binding, GPU library boundaries and original callback inventory.
+- [Native finishing camera GPU adapter](camera/NATIVE_FINISHING_CAMERA_GPU_ADAPTER.md): full matrix/rotated rectangle mapping, actual dummy triangle and retained backend restoration.

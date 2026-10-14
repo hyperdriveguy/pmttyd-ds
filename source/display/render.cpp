@@ -1509,14 +1509,20 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C2D_TextBufClear(textBuffer);
     // Frame-local cursors reset to0 AFTER the synchronization boundary;borrowed
     // GPU buffers below persist as allocations,not independent frame copies.
-    C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+    if(!C3D_FrameBegin(C3D_FRAME_SYNCDRAW))return;
     item95IconCount=0;
     windowFrameCount=0;
     windowFontCount=0;
     messageIndicatorCount=0;
     const bool battle=g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,battle?0xA6CBD8FF:0,0);
-    C3D_FrameDrawOn(top);if(g.harborTutorial.running())worldTutorial(g);else if(battleMapsReady)world(g);
+    if(C3D_FrameDrawOn(top))resumeFinishingCamera(g);
+    // The independent world adapter establishes its own state; the queued
+    // source pass restores its retained backend state at next frame admission.
+    C3D_SetViewport(0,0,240,400);C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,240,400);C3D_DepthMap(true,-1,0);
+    C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);C3D_AlphaTest(false,GPU_ALWAYS,0);
+    C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
+    if(g.harborTutorial.running())worldTutorial(g);else if(battleMapsReady)world(g);
     drawFieldItemGet(g);
     classVertexCount=0;C2D_Prepare();C2D_SceneBegin(top);overlay(g);
     if(!battleMapsReady)text(actorTexturesReady?"Development notice: battle map unavailable":"Development notice: scene actor texture unavailable",16,220,.42f,Ink);

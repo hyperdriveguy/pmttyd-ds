@@ -2,6 +2,7 @@
 #include "actor_animation.hpp"
 #include "battle_actor_rotation.hpp"
 #include "game.hpp"
+#include "native_camera_draw.hpp"
 #include "battle_dive.hpp"
 #include "battle_ending_fade.hpp"
 #include "battle_pose_pool.hpp"
@@ -498,6 +499,23 @@ int main(){
             assert(charged.soundFlags->value()==uint16_t(retainedSound&~0x20u));
             charged.trioAttack.tick((charged.ticks+6)*1000/60,charged.trioBattleIntro);
             assert(queue->count()==21 && charged.soundFlags->value()==uint16_t(retainedSound&~0x20u)); // Native clear and registration do not replay at missing viewport.
+            struct FrameFixture {NativeCameraDraw backend;std::vector<NativeCameraPacket> packets;} frame;
+            NativeCameraSubmit submit{&frame,[](void* user,const NativeCameraPacket& packet){static_cast<FrameFixture*>(user)->packets.push_back(packet);return true;}};
+            CameraDrawServices frameServices;frameServices.user=&submit;
+            frameServices.request=[](void* user,const CameraDrawRequest& request){
+                const auto& submit=*static_cast<NativeCameraSubmit*>(user);
+                return static_cast<FrameFixture*>(submit.user)->backend.request(request,submit);
+            };
+            assert(charged.trioAttack.finishingDrawPending());
+            charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(charged.trioAttack.pendingFunction()==0x802b9380 && charged.cameraManager->currentIndex()==1 && queue->count()==21);
+            assert(std::count_if(frame.packets.begin(),frame.packets.end(),[](const auto& p){return p.kind==NativeCameraCommand::DummyDraw;})==1);
+            assert(frame.backend.restore(submit));const auto restored=frame.packets.size();
+            charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(frame.packets.size()==restored && queue->count()==21 && charged.trioAttack.pendingFunction()==0x802b9380);
+            charged.trioAttack.tick((charged.ticks+7)*1000/60,charged.trioBattleIntro);
+            assert(frame.packets.size()==restored && queue->count()==21); // Simulation never emits frame-scoped GPU work.
+
 
             assert(charged.trioAttack.readWord(0x84201204,value) && (value&3)==2); // Source name request consumed; forced path stays active.
             assert(charged.trioAttack.readWord(0x84000ef4,value) && (value&0x80000000));
