@@ -71,14 +71,26 @@ bool EventAddressSpace::importScripts(const EventScriptAssets& scripts) {
     for(auto& r:imported)ram_.push_back(std::move(r));
     return true;
 }
+// Direct lanes apply only to one complete RAM region outside every live
+// semantic extent. Unaligned and cross-provider accesses keep the old facade.
+const uint8_t* EventAddressSpace::rawRamSpan(uint32_t a,unsigned size) const {
+    if(uint64_t(a)+size>0x100000000ULL || entries_.mayMapRange(a,size) || contexts_.mayMapRange(a,size) || runtime_.mayMapRange(a,size) || gp_.mayMapRange(a,size))return nullptr;
+    for(const auto& r:ram_)if(a>=r.base && uint64_t(a)-r.base+size<=r.bytes.size())return r.bytes.data()+(a-r.base);
+    return nullptr;
+}
+uint8_t* EventAddressSpace::rawRamSpan(uint32_t a,unsigned size) {
+    return const_cast<uint8_t*>(static_cast<const EventAddressSpace&>(*this).rawRamSpan(a,size));
+}
 bool EventAddressSpace::readSpan(uint32_t a,unsigned size,uint32_t& value) const {
     if(uint64_t(a)+size>0x100000000ULL)return false;
     uint32_t result=0;
+    if(const auto* bytes=rawRamSpan(a,size)){for(unsigned i=0;i<size;++i)result=result<<8|bytes[i];value=result;return true;}
     for(unsigned i=0;i<size;++i) {uint8_t b;if(!readByte(a+i,b))return false;result=result<<8|b;}
     value=result;return true;
 }
 bool EventAddressSpace::writeSpan(uint32_t a,unsigned size,uint32_t value) {
     if(uint64_t(a)+size>0x100000000ULL)return false;
+    if(auto* bytes=rawRamSpan(a,size)){for(unsigned i=0;i<size;++i)bytes[i]=uint8_t(value>>(8*(size-1-i)));return true;}
     // Native unsupported-range policy:reject before changing any mapped byte.
     for(unsigned i=0;i<size;++i) {uint8_t b;if(!readByte(a+i,b))return false;}
     for(unsigned i=0;i<size;++i)if(!writeByte(a+i,uint8_t(value>>(8*(size-1-i)))))return false;
@@ -86,11 +98,13 @@ bool EventAddressSpace::writeSpan(uint32_t a,unsigned size,uint32_t value) {
 }
 bool EventAddressSpace::readHalf(uint32_t a,uint16_t& value) const {uint32_t v;if(!readSpan(a,2,v))return false;value=uint16_t(v);return true;}
 bool EventAddressSpace::readWord(uint32_t a,uint32_t& value) const {
+    if(const auto* bytes=rawRamSpan(a,4)){value=uint32_t(bytes[0])<<24|uint32_t(bytes[1])<<16|uint32_t(bytes[2])<<8|bytes[3];return true;}
     if(entries_.readWord(a,value) || contexts_.readWord(a,value) || runtime_.readWord(a,value) || gp_.readWord(a,value))return true;
     return readSpan(a,4,value);
 }
 bool EventAddressSpace::writeHalf(uint32_t a,uint16_t value) {return writeSpan(a,2,value);}
 bool EventAddressSpace::writeWord(uint32_t a,uint32_t value) {
+    if(auto* bytes=rawRamSpan(a,4)){for(unsigned i=0;i<4;++i)bytes[i]=uint8_t(value>>(24-8*i));return true;}
     // Preserve the single-word store of aligned live fields where possible.
     if(entries_.writeWord(a,value) || contexts_.writeWord(a,value) || runtime_.writeWord(a,value) || gp_.writeWord(a,value))return true;
     return writeSpan(a,4,value);

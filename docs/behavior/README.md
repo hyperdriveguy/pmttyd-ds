@@ -1013,3 +1013,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Trio lower scene prepared draw replay](display/TRIO_LOWER_SCENE_PREPARED_DRAW_REPLAY.md)
 
 - [Native area door data and GW11](field/NATIVE_AREA_DOOR_DATA_AND_GW11.md) — original72-byte map-owned copy, once-only init and real Q1 parameter writes; cases/material consumers remain separate.
+
+- [Native plain-RAM word access](event/NATIVE_PLAIN_RAM_WORD_FAST_PATH.md)

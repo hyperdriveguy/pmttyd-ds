@@ -28,6 +28,8 @@ public:
 private:
     struct Region {uint32_t base;std::vector<uint8_t> bytes;};
     bool available(uint32_t,uint64_t) const;
+    const uint8_t* rawRamSpan(uint32_t,unsigned) const;
+    uint8_t* rawRamSpan(uint32_t,unsigned);
     bool readSpan(uint32_t,unsigned,uint32_t&) const;
     bool writeSpan(uint32_t,unsigned,uint32_t);
     EventEntryAddresses& entries_;

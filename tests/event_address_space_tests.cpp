@@ -45,6 +45,24 @@ int main(int argc,char** argv) {
     assert(probe->memory.registerRam(0x803d8dc0,{1,2,3,4}));
     assert(!probe->memory.registerRam(0x803d8dbf,{1,2}));
     assert(probe->memory.unregisterRam(0x803d8dc0));probe->field.entries=probe->fieldEntries.data();
+    assert(probe->memory.registerRam(0x83200000,{1,2,3,4,5,6,7,8}));
+    assert(probe->memory.registerRam(0x83200008,{9,10,11,12,13,14,15,16}));
+    assert(probe->memory.registerRam(0xfffffffc,{1,2,3,4}));
+    // Exercise direct RAM, adjacent-region fallback, holes and overflow against
+    // byte-visible state. Failed stores must leave every existing byte intact.
+    for(const auto base:{0x83200000u,0x83200008u,0xfffffffcu,0x810013d8u,0x803d8dc0u})
+        for(unsigned offset=0;offset<13;++offset)for(unsigned size:{2u,4u}) {
+            const uint32_t at=base+offset;bool readable=uint64_t(at)+size<=0x100000000ULL;uint32_t expected=0;
+            std::array<uint8_t,4> prior{};std::array<bool,4> present{};
+            for(unsigned i=0;i<size;++i){present[i]=uint64_t(at)+i<=0xffffffffULL && probe->memory.readByte(at+i,prior[i]);readable=readable && present[i];expected=expected<<8|prior[i];}
+            uint32_t actual=0xfeedbeef;uint16_t half=0xbeef;
+            const bool loaded=size==4?probe->memory.readWord(at,actual):probe->memory.readHalf(at,half);
+            assert(loaded==readable);if(loaded)assert((size==4?actual:half)==expected);
+            const uint32_t value=0x89abcdef;
+            const bool stored=size==4?probe->memory.writeWord(at,value):probe->memory.writeHalf(at,uint16_t(value));
+            assert(stored==readable);
+            for(unsigned i=0;i<size;++i)if(present[i]){uint8_t byte;assert(probe->memory.readByte(at+i,byte));assert(byte==(stored?uint8_t(value>>(8*(size-1-i))):prior[i]));}
+        }
     probe.reset();
     Fixture f;f.initialize();uint32_t w=0;uint16_t half=0;
     assert(f.memory.readWord(0x803d8dc0,w) && w==0x82000000 && f.memory.readWord(0x803d8e60,w) && w==0x82020000);
