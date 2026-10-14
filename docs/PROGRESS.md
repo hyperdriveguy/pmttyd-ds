@@ -1,3 +1,72 @@
+## 2026-10-14 — Original audience matrix-icon services
+
+The previous goal turn made progress with item creation and the whole100-record
+item lifecycle. Commit `d8d188f4` implements whole original iconDispGx2 8001a6e0
+and iconDispGxCol8001a4bc, the linked icon services used by DispItem/DispApSrc.
+The audience callback accepts an explicit sourceIcon provider and retains its
+nested cursor, exposing the actual linked pending function. Existing explicit
+icon providers retain ownership; an unavailable one is not bypassed.
+[Source contract, hashes and limitations](behavior/display/ORIGINAL_MATRIX_ICON_SERVICES.md).
+
+The recovered wrappers capture current camera before buffer checks, distinguish
+actual absent resources from unavailable memory, narrow flags/ID to low16,
+retain source white/supplied RGBA, resolve both original GP.16c aliases and read
+the original directory/descriptor fields. Multi-frame selection uses signed
+GP.1c remainder and strict delay intervals regardless of descriptor loop word;
+it does not substitute MessageIcon::frame's clamp policy. Initial delay remains
+unchanged when another texture is selected. Camera view is read after selection;
+concat arguments/output and the selected frame survive SDK/iconGX waits.
+Only initialized source stack fields are represented. Invalid duration totals
+remain unavailable instead of guessing Gekko exception behavior. Matrix numeric
+parity, complete original runtime memory and actual raster remain separate.
+
+Tests cover source buffer returns/missing providers, both functions, low16
+IDs/flags, both aliases, zero/single-frame records, exact interval boundaries,
+signed negative clocks, ten-frame/zero-delay sums, camera/concat capture and
+retained iconGX waits. The actual containing audience callback is coupled to
+the wrapper with fixture packed memory and a held explicit iconGX provider;
+there is no rendered-throw claim. Shared matrix/icon request declarations moved
+to their own header to keep the nested source service dependency acyclic.
+
+Validation froze baseline f4463dd311a2eb263dbee308400c1b9134044b8c in
+artifacts/battle-lens-qwwrj2n7 plus owned source/CMake/tests. Later concurrent
+Mario/background changes and unrelated dirty work were excluded. Focused build
+and both focused executables exited0. Initial full make test exposed four stale
+private fixtures: field parent/init, texture metadata and pipe prefetch. After
+refreshing those,312/312 C++ passed but one Python check still found an old
+matching door metadata JSON. Refreshed it as well. Exact21 copied private files,
+source paths, sizes and SHA256 are in artifacts/source-icon-matrix-fixtures.json;
+source bytes were checked stable during copying. No source implementation was
+changed to silence these fixture failures, and no build input changed while a
+validation process was active.
+
+Final MAKEFLAGS=-j4 make test exited0:312/312 C++ (33.97s) and180/180 Python
+(26.395s), artifacts/source-icon-matrix-test-complete.log. Final MAKEFLAGS=-j4
+TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready BUILD=build-battle-lens
+TARGET=ttyd-battle-lens exited0, artifacts/source-icon-matrix-native-complete.log;
+the assets-ready bypass reused the private original packs. Native build also
+passed before fixture refresh and after the binary fixture refresh; final build
+re-embedded the matching metadata JSON. All process handles were observed
+terminal. tools/check_doc_links.py exited0:1312 Markdown files,zero broken
+links (artifacts/source-icon-matrix-doc-links.log). Owned diff checks passed.
+The scoped temporary-index commit preserved unrelated concurrent work.
+
+All ISO inspection was read-only. No original PPC text, extracted resources,
+compiled packs or ISO were committed. No asset conversion/resampling or new art
+was needed. Native menu/HUD style, controls, dialogue/story, action timing,
+unit/model scale and lower-screen replay were unchanged. Native renderer still
+needs genuine icon directory/texture loaded owners, GP publication and actual
+iconGX geometry/material execution; the new service connection is portable,
+not a completed native binding. No emulator/hardware or performance claim.
+
+Next implement original iconGX and bind actual native icon resources/current
+camera/GP clocks, then visible held/thrown items and original present-item
+execution. Route physical X plus optional audience taps through recovered
+selection/input. Normal Main/camera cadence, actor Enter/special states, AP and
+active stage providers, tutorial follow-up hits, battle teardown/field return
+and sample playback remain open. The full tutorial and real battle goal stays
+active and incomplete.
+
 ## 2026-10-14 — Original item creation and whole100-record lifecycle
 
 Previous goal turn made progress with audience item ownership and actor states
