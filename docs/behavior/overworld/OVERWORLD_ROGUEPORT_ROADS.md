@@ -75,9 +75,11 @@ Preserve source node identity through the full wall-ray provider and feed the
 wrapper's actual contact token. Per-object attribute changes are runtime state.
 bero_case_entry saves the case ID then enables BeroSW for the registration.
 Arrival choreography registers these cases at its finish, not an arbitrary
-60-tick cooldown after placement. Switch_on/off write BeroSW and caller LW0/1;
-they do not recreate/delete cases. BeroID stores case handles separately;
-BeroEXEC busy permission bits are a third owner.
+60-tick cooldown after placement. Raw evt_bero_switch_on/off callbacks write
+BeroSW and caller LW0/1; they do not recreate/delete cases. Higher-level
+bero_case_switch_on/off event wrappers conditionally allocate/delete actual
+cases after those callbacks. BeroID stores case handles separately; BeroEXEC
+busy permission bits are a third owner.
 
 ## Actual ordinary trigger: named front contact, not geometric proximity
 
