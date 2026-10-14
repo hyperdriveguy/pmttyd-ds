@@ -891,3 +891,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Mario initial sound handles and item-get post stop](audio/MARIO_INITIAL_SOUND_HANDLES_AND_ITEMGET_POST_STOP.md).
 - [Native Mario motion sound posts](audio/NATIVE_MARIO_MOTION_SFX_POSTS.md) — source retained handles, field-only NDSP channels, pending/inactive cancellation and native binding.
+
+- [Original item95 camera/key/system fields](field/ITEM95_CAMERA_KEY_AND_SYSTEM_LEVEL_PROVIDERS.md) and [native Goomba3 parcel acquisition](field/NATIVE_GOOMBA3_PARCEL_ACQUISITION.md) — original windows/effect/icon/audio binding, independent simulation owners and isolated native grant validation; remaining providers explicit.

@@ -18,6 +18,14 @@ research-agent ownership or completion claim is made.
 - [ ] Item acquisition at the opening stage (pickup/chest/shop) and the key-item
   (key-item count) semantics the NPC gates already read.
 
+- [ ] Complete native item95 full-storage/discard providers: recover shared
+  failure-window definition/callback and discard selection, capacity/return,
+  cancellation and cleanup conditions with source IDs/control tokens. The fresh
+  native acquisition currently refuses full key storage before admission.
+- [ ] Original item pickup/get callers in additional areas: catalog source
+  setup/entry conditions, model/icon/resources and group0 BGM selection so the
+  retained provider can be extended without guessed area behavior.
+
 ## Request text (verbatim)
 
 Native implementation source audit / documentation request (2026-10-13), first
@@ -257,3 +265,19 @@ Idle/fall On/Main/macros/audible/position/lifetime services are still unbound;
 no sample substitutes or audible equivalence are claimed. Native acquisition
 window/effect/icon/camera/key/system/audio registration and captures remain
 next. Parent requests remain open.
+
+### 2026-10-14 — Native original parcel acquisition
+
+Committed `3abf5525`: native original US dialogue/get windows, M_I_U, Box icon,
+effect6, original fanfare/retained field BGM and source key/camera/system fields
+are bound to the actual Game owners. Follow-up `d8efdb46` retains the separate
+NPC talk/item key nesting and passes the same full checks. Readiness refuses missing DSP/assets/free audio slot/full key pouch
+before story print. Isolated232 C++/141 Python tests and make all passed.
+Clean isolated Azahar fixture shows original presentation and saves one95,
+5405true/5406false, HP10/FP5 unchanged. This supplies known quest2 state; original
+Trouble Center acceptance, Goomfrey delivery/reward, full discard UI, global
+managers, letterbox consumers, audio parity and hardware performance remain
+open. Original ISO music is the runtime default. No payload is committed.
+[Binding, exact validation and limits](../behavior/field/NATIVE_GOOMBA3_PARCEL_ACQUISITION.md),
+[source field owners](../behavior/field/ITEM95_CAMERA_KEY_AND_SYSTEM_LEVEL_PROVIDERS.md).
+Parent requests remain open.

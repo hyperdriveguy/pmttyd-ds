@@ -142,3 +142,16 @@ Converter: tools/battle_pose_directory.py, invoked by trio_attack_assets.py;
 Nintendo/Intelligent Systems original assets; no redistribution rights. ISO,
 raw models and generated sidecars remain outside source history. No geometry,
 texture, lighting or dialogue conversion change in this step.
+
+## Native parcel presentation (2026-10-14)
+
+Native acquisition reuses private original US msg/US, Mario M_I_U, item95 icon,
+window/font, effect.tpl images42/44 and original ff_get2_32k/stg_gor2 audio packs.
+Exact ISO paths/conversion hashes remain in [the asset ledger](ASSETS_ARCHIVE.md)
+and existing linked item-get contracts. Runtime defaults now select original
+ISO music. No new texture scaling, geometry reduction, lighting conversion or
+asset payload is introduced. Extracted local-assets/, compiled romfs/ and
+capture/build artifacts/ remain ignored; Nintendo/Intelligent Systems assets
+have no redistribution license. Isolated audio validation uses existing private
+artifacts/roms/dspfirm.cdc copied only to that test profile, never committed.
+[Native acquisition validation](behavior/field/NATIVE_GOOMBA3_PARCEL_ACQUISITION.md).

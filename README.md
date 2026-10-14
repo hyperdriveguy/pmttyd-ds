@@ -29,7 +29,7 @@ to source/header discovery; the maps above explain the grouping and correspondin
 behavior-contract locations.
 
 A native homebrew remake in development. The current slice uses original
-Rogueport geometry/textures, original ordinary Mario and Goombella animations, other character idle poses, and locally converted Switch soundtrack arrangements.
+Rogueport geometry/textures, original ordinary Mario and Goombella animations, other character idle poses, and original ISO soundtrack playback.
 Geometry, dialogue and sound-effect samples continue to use the supplied
 read-only US GameCube ISO. It includes five connected Rogueport outdoor rooms,
 exploration, dialogue,

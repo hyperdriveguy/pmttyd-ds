@@ -1,3 +1,43 @@
+## 2026-10-14 — Native original Goomba3 parcel acquisition
+
+Committed `3abf5525` and `d8efdb46`. Actual Game owners now bind original US
+irai_02_00, item95 receive/registry deletion, original name/help windows, M_I_U,
+Box icon, effect6 and original fanfare/retained field BGM. Camera8 bit200 stays
+separate from camera4; source level2 mask3 stops the type6 talk root while item
+Main continues. NPC talk/item KeyOff depths1→2→1→0 preserve separate holds.
+Windows, effect and audio advance in simulation order, independently of draw.
+Readiness refuses missing assets/DSP/free audio slot/full key storage before
+print. Original ISO music is now the runtime default. M_I_U textures stay
+prewarmed instead of being reimported per frame. Portable service injection
+remains available for later area/item providers. No asset payload is committed.
+
+Final isolated review tree d32b5f5c67c83fe34e41f2c1e5e67379bb3e8199 passed
+make test:232/232 C++ and141/141 Python; make all passed. Logs are ignored
+artifacts/item-native-key-test.log and item-native-key-build.log. Final native
+artifact artifacts/ttyd-item-native-key-reviewed.3dsx has SHA256
+4d2d9c4d8459836a9fc24d9d0e8a9fb437ea27f5c3ca466335bc7a9cf4b7f638.
+DEBUG_SHORT_BOOT isolated Azahar run passed: original dialogue/item presentation,
+return and save prove one95,5405true/5406false,quest2 and HP10/FP5 unchanged.
+Evidence: artifacts/item-native-key-final-smoke.log and
+artifacts/azahar-item-native-key-final/. Fixture supplies room0/story8/known
+quest2, bypassing Trouble Center acceptance; private existing DSP firmware was
+copied only into the isolated profile. No user profile/saves were touched.
+
+Limits: source letterbox consumers/global event manager, complete audio macros,
+full-storage/discard UI, quest acceptance and Goomfrey delivery/reward remain
+unbound. Inline additiveX/Z/combined norm have no retained native producers.
+Effect mask appearance is consistent with original42/44, but original pixel/
+audio parity and New2DSXL hardware performance remain unverified. Emulator
+performance varies; no stable60 claim. Native source tracing was private and
+restored. Other sessions' source/index changes were preserved in scoped commits.
+
+Next: consume ITEM-01's full-storage/shared-window and additional-area pickup
+requests, complete original quest acceptance/delivery, compare unoccluded
+original/native effects and profile render/asset allocations on real hardware.
+[Binding and exact validation](behavior/field/NATIVE_GOOMBA3_PARCEL_ACQUISITION.md).
+Goal stays active; broader original events/NPCs/objects and full-game work remain
+incomplete.
+
 ## 2026-10-14 — Original tutorial feedback declaration and audience gates
 
 Committed `76a0ed97`. Shared action declaration preserves exactly-1 bad grading,
