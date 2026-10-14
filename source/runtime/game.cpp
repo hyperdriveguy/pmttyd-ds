@@ -150,7 +150,7 @@ int menuButton(const Input& i) {
 }
 }
 // Swap-based rollback owns the imported geometry and query indexes together. It also
-// carries road attribute overlays; door masks are recalculated separately.
+// carries every room-scoped query filter and its cache publication as well.
 // A failed destination must not leave indexes referring to another room's data.
 struct CollisionSnapshot {
     std::vector<Rect> savedWalls;
@@ -159,7 +159,9 @@ struct CollisionSnapshot {
     std::vector<WallTriangle> savedWallTriangles;
     std::vector<GroundTriangle> savedGround;
     std::vector<HeadTriangle> savedHead;
-    std::vector<uint32_t> savedRoadAttributes;
+    std::vector<uint32_t> savedRoadAttributes,savedDoorNodes,savedEventNodes;
+    uint32_t savedDoorRoom=UINT32_MAX,savedDoorMask=UINT32_MAX;
+    bool savedFenceDisabled=false;
     std::unordered_map<uint32_t,ReturnPoint> savedReturns;
     SpatialIndex savedWallIndex,savedGroundIndex,savedHeadIndex;
     Rect savedBounds{-9,-4.5f,9,4};
@@ -170,6 +172,9 @@ struct CollisionSnapshot {
         savedWallTriangles.swap(wallTriangles);
         savedHead.swap(head);savedHeadIndex.swap(headIndex);
         savedRoadAttributes.swap(roadAttributeNodes);
+        savedDoorNodes.swap(disabledDoorNodes);savedEventNodes.swap(disabledEventNodes);
+        std::swap(savedDoorRoom,doorCollisionRoom);std::swap(savedDoorMask,doorCollisionMask);
+        std::swap(savedFenceDisabled,fenceCollisionDisabled);
         savedReturns.swap(groundReturns);
         savedWallIndex.swap(wallIndex);savedGroundIndex.swap(groundIndex);
         std::swap(savedBounds,roomBounds);std::swap(ready,collisionReady);
@@ -862,7 +867,7 @@ bool Game::beginVoid() {
     fieldJump={};fieldJump.motion=33;fieldStep={};fieldVerticalVelocity=0;jumpHeight=0;warpRequest=-1;saveRequested=false;
     return true;
 }
-void clearCollision() {doorCollisionRoom=UINT32_MAX;doorCollisionMask=UINT32_MAX;disabledDoorNodes.clear();roadAttributeNodes.clear();walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();head.clear();headIndex.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
+void clearCollision() {doorCollisionRoom=UINT32_MAX;doorCollisionMask=UINT32_MAX;disabledDoorNodes.clear();disabledEventNodes.clear();fenceCollisionDisabled=false;roadAttributeNodes.clear();walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();head.clear();headIndex.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
 NpcTalkPlayer Game::fieldNpcTalkPlayer() const {

@@ -34,6 +34,19 @@ int main(){
  assert(groundAt(floor,.35f,height,&contact) && contact.sourceNode==originalFloor);
  assert(game.fieldMapFlags.hitEnabled("A_ie_05C",false));game.tick({});
  assert(!groundAt(floor,.35f,height,&contact) || contact.sourceNode!=originalFloor);
+ // Geometry staging starts with fresh filters, even when source node offsets
+ // are reused. Rollback restores filters without requiring a later Game tick.
+ {CollisionTransition transition;assert(transition.load("romfs/gor_02"));
+  assert(groundAt(floor,.35f,height,&contact) && contact.sourceNode==originalFloor);
+ }
+ assert(!groundAt(floor,.35f,height,&contact) || contact.sourceNode!=originalFloor);
+ assert(game.fieldMapFlags.hitEnabled("A_ie_05C",true));game.tick({});
+ {CollisionTransition transition;assert(transition.load("romfs/gor_02"));
+  Game candidate(false);candidate.progress=game.progress;initializeTroubleQuestState(candidate.progress.originalNpcTalkState);candidate.tick({});
+  assert(!groundAt(floor,.35f,height,&contact) || contact.sourceNode!=originalFloor);
+ }
+ assert(groundAt(floor,.35f,height,&contact) && contact.sourceNode==originalFloor);
+ assert(game.fieldMapFlags.hitEnabled("A_ie_05C",false));game.tick({});
  game.scene=Scene::Victory;game.progress.room=0;game.tick({});assert(game.fieldMapFlags.disabledHits().empty());
  game.progress.room=2;game.tick({});assert(game.fieldMapFlags.disabledHits().empty());
  game.scene=Scene::Explore;game.tick({});assert(game.fieldMapFlags.disabledHits()==disabled);
