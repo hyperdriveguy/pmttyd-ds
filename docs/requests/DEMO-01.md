@@ -30,7 +30,15 @@ research-agent ownership or completion claim is made.
   recovered — opcode 50 stores `evtGetValue(operand1)`, so the value is not an
   operand.*
 - [ ] The branch/join graph across harbor → professor → underground → lecture and
-  back to the field, including each branch's requirement and where scenes join.
+  back to the field, including each branch's requirement and where scenes join —
+  **graph structure answered** for the scanned modules by
+  [the state contract](../behavior/story/OPENING_SCENE_STATE_AND_PERSISTENCE.md):
+  nine-step `sys/evt_start` route and four `aaa` exits, all with decoded map
+  and entrance identifiers, plus `GSW[0]` written before each transition.
+  *Whether the nine are a linear route, and each branch's **requirement**
+  (its gate), remain open — the gates are not in the scanned modules or not
+  identified, and the professor/lecture/underground legs are `gor`/`muj`/
+  `tik`, which were not scanned.*
 - [ ] Re-entry behavior: what the field shows after a completed scene, after a
   reload at each checkpoint, and on re-approaching a finished trigger.
 
@@ -97,11 +105,8 @@ issues 10 `evt_mapobj_flag_onoff`, 8 `evt_npc_flag_onoff`, 1
 `evt_mobj_flag_onoff`; `evt_fade_set_mapchange_type` appears in every
 opening event.
 
-**Branch/join graph is still open.** `sys/evt_start` carries **9**
-`evt_bero_mapchange` requests — that is the demo's fan-out — but their target
-arguments are raw immediates in the inventory and were not decoded.
-Decoding them into harbor → professor → underground → lecture is the next
-step and is most of what DEMO-01 still needs.
+**Branch/join graph is still open** — but the reason given there was
+wrong, and is corrected below.
 
 Also recorded as gaps: opcode direction for **93, 95 and 108**, which carry
 the four `GW` operands (claimed as neither reads nor writes); the `gor`,
@@ -112,7 +117,45 @@ literal operand.
 Static only — no execution trace. Event SHA-256s for all ten scanned
 spans are tabulated in the contract.
 
-## 2026-10-13 — Bounded persistent flag prerequisite
+## 2026-10-13 — ID 3 correction: the branch graph WAS decoded
+
+The reply above says the `evt_bero_mapchange` targets were "raw immediates
+in the inventory and were not decoded". **That was wrong.** The inventory
+*does* resolve relocated string operands and emit them as `identifier`; I
+had read only the `raw` field. The graph is decoded:
+
+`sys/evt_start`, nine map changes in ascending command order:
+
+```
+gor_10 -> hei_00(dokan_2) -> win_06(dokan1) -> tou_20 -> usu_00(dokan_1)
+       -> muj_20 -> rsh_02_a -> bom_00(dokan) -> las_00(w_bero)
+```
+
+Plus one exit each in `aaa/evt_prologue` (`gor_10`),
+`aaa/evt_prologue2` (`muj_20` / entrance `prologue`),
+`aaa/epilogue_evt` (`gor_02`) and `aaa/epilogue_evt2` (`end_00`).
+
+**And the ordering ask is answered.** `GSW[0]` is written **immediately
+before** the fade in `evt_prologue2` (write cmd 49, fade cmd 48 — adjacent;
+map change cmd 50) and two commands before in `epilogue_evt2` (write cmd 117,
+fade 118, map change 119). In both, the story value is committed **before**
+the fade and the transition, matching the save-notice ordering GSF-01 pins.
+So the opening's persistent state is written once, ahead of the scene
+change, not after it.
+
+What is **not** claimed: whether the nine `sys/evt_start` map changes are a
+linear player route. They are sequential commands, but this scan does not
+show whether each waits on a trigger. The identifiers are reported as
+original resource strings and are not translated into area names.
+
+Also newly recorded: the full `evt_fade_set_mapchange_type` parameter sets.
+`sys/evt_start` cmds 22/23 and `sys_01_init_evt` cmds 42/43 each pair two
+fades differing **only** in the mode flag (`0` then `1`) with identical
+kinds and durations. `-1` appears in the demo fades as what looks like an
+"unchanged" sentinel, but that semantics was **not verified** and is not
+claimed.
+
+## 2026-10-13 — Bounded persistent flag prerequisite## 2026-10-13 — Bounded persistent flag prerequisite
 
 [GSF notice/pipe/storage delivery](../behavior/story/OPENING_GSF_NOTICE_PIPE_AND_SAVE_STORAGE.md)
 now pins233/236 save-notice order,1207 departure/story11 reload predicate and

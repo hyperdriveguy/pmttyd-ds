@@ -130,22 +130,89 @@ of the persistent branch graph. `evt_bero_mapchange` and
 appears in every opening event, and `sys/evt_start` carries **9**
 `evt_bero_mapchange` requests.
 
-## Scene exit requests
+## Branch/join graph — decoded map and entrance identifiers
 
-| Event | `evt_fade_set_mapchange_type` | `evt_bero_mapchange` |
-|-------|--------------------------------|----------------------|
-| `sys/evt_start` | 2 | **9** |
-| `sys/sys_01_init_evt` | 2 | — |
-| `dmo/demo_evt` | 1 | — |
-| `dmo/dmo_00_init_evt` | 1 | — |
-| `aaa/evt_prologue` | 1 | — |
-| `aaa/evt_prologue2` | 1 | — |
-| `aaa/epilogue_evt` | 1 | — |
-| `aaa/epilogue_evt2` | 1 | — |
+`evt_bero_mapchange` operands are relocated string pointers, so the
+inventory resolves them to resource identifiers. An earlier version of this
+document claimed they were undecoded raw immediates; that was wrong.
 
-`sys/evt_start`'s nine map-change requests are the branch fan-out the
-demo needs. Their target arguments are raw immediates in this inventory,
-so **the branch graph itself is not recovered here** — see gaps.
+Every such request in the scanned modules:
+
+| Event | Cmd | Fade immediately before | Map | Entrance |
+|-------|-----|--------------------------|-----|----------|
+| `sys/evt_start` | 54 | — | `gor_10` | — (operand `0`) |
+| `sys/evt_start` | 56 | — | `hei_00` | `dokan_2` |
+| `sys/evt_start` | 58 | — | `win_06` | `dokan1` |
+| `sys/evt_start` | 60 | — | `tou_20` | — |
+| `sys/evt_start` | 62 | — | `usu_00` | `dokan_1` |
+| `sys/evt_start` | 64 | — | `muj_20` | — |
+| `sys/evt_start` | 66 | — | `rsh_02_a` | — |
+| `sys/evt_start` | 68 | — | `bom_00` | `dokan` |
+| `sys/evt_start` | 70 | — | `las_00` | `w_bero` |
+| `aaa/evt_prologue` | 184 | cmd 183 `(1, 17, 800, 16, 800)` | `gor_10` | — |
+| `aaa/evt_prologue2` | 50 | cmd 48 `(1, 49, 0, 50, 0)` | `muj_20` | `prologue` |
+| `aaa/epilogue_evt` | 75 | cmd 74 `(1, 10, 900, 9, 900)` | `gor_02` | — |
+| `aaa/epilogue_evt2` | 119 | cmd 118 `(1, 10, 1, 9, 300)` | `end_00` | — |
+
+An entrance operand of `0` is a null pointer in the inventory, i.e. "no
+entrance", not "entrance zero".
+
+### The `sys/evt_start` route
+
+Nine map changes in ascending command order with no conditional opcode
+between them:
+
+```
+gor_10 -> hei_00(dokan_2) -> win_06(dokan1) -> tou_20 -> usu_00(dokan_1)
+       -> muj_20 -> rsh_02_a -> bom_00(dokan) -> las_00(w_bero)
+```
+
+Four of the nine specify an entrance identifier, and three of those four
+are `dokan`-family entrances. The identifiers are **resource strings from
+the US build**; they are not translated here into area names, and no claim
+is made that the order is a linear player route — the commands are
+sequential, but whether each waits on a trigger is not established by this
+scan.
+
+## Persistent-write ordering relative to scene exit
+
+This is the ordering DEMO-01 asks for, and it is sharp:
+
+| Event | `GSW[0]` write | Fade | Map change |
+|-------|----------------|------|------------|
+| `aaa/evt_prologue2` | cmd **49** | cmd 48 | cmd 50 |
+| `aaa/epilogue_evt2` | cmd **117** | cmd 118 | cmd 119 |
+
+In `evt_prologue2` the `GSW[0]` write is the **immediately preceding
+command** to the fade. In `epilogue_evt2` it is two commands before. In
+both, the story value is committed **before** the fade and the map change,
+so a reload or interrupt during the fade still sees the new value.
+
+That is the same ordering [GSF-01](../../requests/GSF-01.md) pins for the
+save-notice flags, so the opening's persistent state is written once,
+before the transition, rather than after it.
+
+## Fade parameters
+
+`evt_fade_set_mapchange_type` first argument is a mode flag; the pairs are
+`(mode, inKind, inMs, outKind, outMs)` as printed. Notable values:
+
+| Event | Cmd | Parameters |
+|-------|-----|------------|
+| `sys/evt_start` | 22 | `(0, 19, 500, 18, 500)` |
+| `sys/evt_start` | 23 | `(1, 19, 500, 18, 500)` |
+| `sys/sys_01_init_evt` | 42, 43 | `(0, 17, 1800, 16, 1800)` then `(1, 17, 1800, 16, 1800)` |
+| `aaa/evt_prologue` | 183 | `(1, 17, 800, 16, 800)` |
+| `aaa/evt_prologue2` | 48 | `(1, 49, 0, 50, 0)` |
+| `aaa/epilogue_evt` | 74 | `(1, 10, 900, 9, 900)` |
+| `aaa/epilogue_evt2` | 118 | `(1, 10, 1, 9, 300)` |
+| `dmo/demo_evt` | 388 | `(1, 17, 2000, -1, -1)` |
+| `dmo/dmo_00_init_evt` | 60 | `(1, -1, -1, -1, 900)` |
+
+`sys/evt_start` cmds 22 and 23 differ **only** in the mode flag (`0` then
+`1`) with identical fade kinds and durations; `sys_01_init_evt` cmds 42/43
+pair the same way. `-1` appears as "unchanged" in the demo events, but the
+`-1` **sentinel semantics were not verified here** and are not claimed.
 
 ## Event fingerprints (all read-only from the US ISO)
 
@@ -171,7 +238,7 @@ REL digests: `dmo.rel` 26328 bytes
 |---|---|
 | Persistent writes per scene | **Partly answered.** `GSW[0]` is the only saved story word in these modules, written by `evt_prologue2` and `epilogue_evt2`, read by `aaa_00_init_evt`. `GF`/`GW`/`LW` are context or entry local and do not persist. Save-block 233/236 remain with GSF-01. |
 | Entry conditions per scene | **Partly answered.** `aaa_00_init_evt` gates on `GSW[0]`. Other scenes' gates are not in these modules or not identified. |
-| Branch/join graph | **Not answered.** Nine `evt_bero_mapchange` requests in `sys/evt_start` are the fan-out, but their target arguments are raw immediates and were not decoded. |
+| Branch/join graph | **Answered for the scanned modules.** Nine `evt_bero_mapchange` requests in `sys/evt_start` and one each in `evt_prologue`, `evt_prologue2`, `epilogue_evt` and `epilogue_evt2`. Targets decode to map and entrance identifiers — see the graph section below. An earlier version of this document wrongly said they were undecoded raw immediates. |
 | Re-entry behaviour | **Not answered.** Requires the save-block map (GSF-01) and an execution trace. |
 
 ## Porting notes
@@ -186,19 +253,22 @@ REL digests: `dmo.rel` 26328 bytes
 
 ## Remaining gaps
 
-- **Branch/join graph.** `evt_bero_mapchange` target arguments are raw
-  immediates in the inventory; decoding them into the harbor → professor →
-  underground → lecture graph is the next step and is what most of
-  DEMO-01 still needs.
+- **Whether the `sys/evt_start` sequence is a linear route.** The nine
+  map changes are sequential commands, but nothing in this scan shows
+  whether each waits on a trigger, and no claim is made that it is.
 - **Opcode direction for 93, 95 and 108**, which carry the four `GW`
   operands. Not determined; those four are claimed as neither reads nor
   writes.
+- **`-1` fade sentinel semantics.** Observed in the demo events but not
+  verified.
 - Whether `GSF` is genuinely unused in the opening, or reached through a
   user-function callee rather than a direct operand. The inventory sees
   direct operands and relocated annotations only, so a callee inside a
   `USER_FUNC` operand is not covered by this scan.
 - `gor`, `muj`, `tik` and the remaining opening modules were not scanned
-  in this pass; only `dmo`, `aaa` and `sys`.
+  in this pass; only `dmo`, `aaa` and `sys`. Note that `muj_20` and
+  `gor_10` appear here only as *destination identifiers*, not as scanned
+  modules.
 - Exact per-command operand values for the reads and writes above are not
   tabulated — only the destination operand index and band. Opcode 50 writes
   `evtGetValue(operand1)` into `operand0`, so the written *value* is not in

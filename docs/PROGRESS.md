@@ -2,6 +2,18 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — SERVICE-01 coin half: add/set/gate leaves
+
+Delivered behavior/battle/POUCH_COIN_TRANSACTION.md: +120 coin field with
+complete add/set 0/999 clamps and returns, plus newly extracted coin_chk
+(affordability gate with global price-table read, 1/0 destination write).
+One of my own check assertions was wrong (store form); doc unaffected and
+re-verified. Purchase/deduction path has no reference body — scoped open.
+
+Validation: store/clamp/gate re-checks, link audit, diff --check clean.
+Docs-only, no make rerun. Next: shop flows, inn services. Full-game
+incomplete.
+
 ## 2026-10-13 — STAR-01 storage half: gauge add/set leaves
 
 Delivered behavior/battle/STAR_POWER_GAUGE_STORAGE.md for requests/STAR-01.md
@@ -7644,10 +7656,29 @@ assignment and IF contracts. Ten event spans scanned, SHA-256s tabulated.
   the one most likely to be mistaken for a persistent flag.
 - `LW` (292 uses) is entry-local and needs no persistence.
 
-**Branch/join graph is still open** and is the biggest remaining piece of
-DEMO-01: `sys/evt_start` carries **9** `evt_bero_mapchange` requests — the
-demo's fan-out — but their target arguments are raw immediates the
-inventory does not decode.
+**Branch/join graph — and a correction.** My first pass reported the
+`evt_bero_mapchange` targets as "raw immediates the inventory does not
+decode". **That was wrong**: the inventory resolves relocated string
+operands and emits them as `identifier`; I had read only `raw`. The route
+decodes to a nine-step chain in `sys/evt_start`
+
+```
+gor_10 -> hei_00(dokan_2) -> win_06(dokan1) -> tou_20 -> usu_00(dokan_1)
+       -> muj_20 -> rsh_02_a -> bom_00(dokan) -> las_00(w_bero)
+```
+
+plus four `aaa` exits (`gor_10`, `muj_20/prologue`, `gor_02`, `end_00`).
+
+And the **ordering** ask falls out: `GSW[0]` is written *immediately
+before* the fade in `evt_prologue2` (write cmd 49, fade 48, map change 50)
+and two commands before in `epilogue_evt2` (117 / 118 / 119). The opening's
+persistent state is committed **before** the transition, matching the
+save-notice ordering GSF-01 pins.
+
+Not claimed: whether the nine are a *linear* route — they are sequential
+commands, but nothing here shows each waits on a trigger. `-1` appears in
+the demo fades as a likely "unchanged" sentinel; that semantics was not
+verified.
 
 Also flagged rather than guessed: opcode direction for **93, 95 and 108**,
 which carry the four `GW` operands (claimed as neither reads nor writes);
@@ -7659,10 +7690,11 @@ Docs-only; `make test` / `make all` not rerun.
 
 Next tasks:
 
-1. Decode the nine `evt_bero_mapchange` targets in `sys/evt_start` and
-   the `evt_bero_mapchange` in the other opening events — this is the
-   harbor → professor → underground → lecture join graph DEMO-01 needs.
-2. Scan `gor` / `muj` / `tik` opening events for the same census.
+1. Scan `gor` / `muj` / `tik` — the professor, underground and lecture
+   legs — for the same state census, which is what remains of the
+   harbor → professor → underground → lecture graph.
+2. Find each branch's **requirement** (gate), which the scanned modules do
+   not contain.
 3. Opcode direction for 93/95/108.
 4. Remaining inbox: RESULT-01, GSF-01, TRACE-01, then the EVT-01 residue
    (Monosiri mutation, NormalJump menu/global writers).
