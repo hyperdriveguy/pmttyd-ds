@@ -1,3 +1,65 @@
+## 2026-10-14 — Original audience population, placement and animation owners
+
+Commit9ec56730 implements whole local SettingAudience, weighted front/back and
+uniform seat allocation, cached-count front/back routing, Entry/Sub, SetAnim,
+ChangeStatus, Delete and GetAnimEnd bodies. Original setup modes, override types,
+RNG request ordering, allocation/sorting/residual/guest rules, paired reservation,
+retained/current pointer queries, stage Y, source placement FMA and animation
+pointers are preserved. The native trio Setting provider now invokes this general
+producer with inherited RNG and finite conversion. Fresh pouch8c=0 retains the
+verified empty setup4 result; no story grant or invented crowd is introduced.
+[Ownership/domain contract](behavior/battle/AUDIENCE_POPULATION_SEATS_ENTRY_AND_ANIMATION_OWNERS.md).
+
+Positive testing exposed an actual missing original sdata dependency. Both harbor
+and trio asset producers now import only the hash-pinned immutable audience
+scripts/item-table extent8041c638/14e8 (182 source symbols), preserving original
+addresses, frames, delays and loops. Native mutable globals remain excluded.
+Both original producers ran successfully in the private snapshot
+(artifacts/audience-population-trio-assets.log and
+artifacts/audience-population-harbor-assets.log). Validated PMEVT products and
+trio metadata were published atomically to ignored RomFS for later sessions;
+no original payload is committed. See [asset provenance](ASSETS.md#2026-10-14--original-audience-animation-and-item-table-data).
+
+Validation: frozen source artifacts/audience-population-3ae2fdxi, base
+a6b5e3bbc1c756568855c5b64bf98ed3f2e36fee plus only this increment. Final
+make test passes277/277 C++ and166/166 Python checks
+(artifacts/audience-population-test-final.log). New checks compare20 empty seeds
+to the prior verified graph/RNG; exercise all seven finite setup modes and12
+valid overrides; actual8-member construction;30 original interpreter advances
+and resulting original atlas-frame lookup; paired neighbors/status/deletion;
+occupied/reserved rejections; animation force/retention; allocator endpoints;
+missing providers; and original retained record versus fresh Sub after RNG
+changes current battle. Both PMEVT spans match their exact source hash and omit
+native mutable globals. Source verifier passes17 bodies,9 data spans and r2 pin
+(artifacts/audience-population-source.log).
+
+Required native make all -o assets-ready BUILD=build-audience-population-review
+TARGET=ttyd-audience-population-review passes using privately prepared original
+packs (artifacts/audience-population-native-final.log), producing170335596-byte
+3DSX. Actual byte searches find both whole PMEVT packs and verify each new
+5352-byte audience span (artifacts/audience-population-native-embedding.json).
+No emulator/visible audience or original GPU/hardware parity run was performed.
+
+The explicit positive native-pouch probe still fails at existing Sound1/8019fcec,
+after actual total8, desired8 and capacity50 publication. An ignored diagnostic
+confirmed this boundary; diagnostic source was restored and touched to force
+actual recompilation before final full checks. The final tests preserve the
+known-key unavailable-audio boundary, rather than supplying a fake voice or-1
+known-key result. The whole Init test independently verifies member/count/window/
+texture publication and the actual assigned noise key/right+left count before
+that request. Early fixture corrections fixed nonexistent test helper names
+and selected the real PMEVT file rather than its PMHTUT metadata; no behavior
+assertion or original data was relaxed to force gameplay completion.
+
+Next: bind original Sound1/positional stream creation to real original crowd
+noise so nonempty initialization can finish. Then bind original active audience
+state control, positive target adjustments and DispAudience801a38f8 with its
+actual camera/material/UV rules to both scene views. Real throw telegraphs and
+target interruption must precede optional audience taps with physical X. Source
+story pouch8c admission remains to prove. Normal tutorial admission, live class
+ring/readiness and command/turn scheduling, successful Jump voice and full
+battle teardown/field return remain incomplete. The full goal stays active.
+
 ## 2026-10-14 — Original audience atlas and native frame lookup
 
 Commit728660e0 prepares all224 original audience frames:205 normal and19 Luigi.
