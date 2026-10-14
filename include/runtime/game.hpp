@@ -259,6 +259,7 @@ public:
     RoadMotion roadMotion;
     RoadCaseAdmission roadAdmission;
     FieldDoorState fieldDoor;
+    bool troubleDoorNotice=false; // Original locked front-door KeyOff/print/KeyOn owner.
     bool roadCasesEnabled=true;
     RoadPolicy roadPolicy=RoadPolicy::Generic;
     RoadCallback roadCallback=RoadCallback::None;

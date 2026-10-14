@@ -31,7 +31,9 @@ int main() {
   assert(mapEventGroupVisible(3,s)==(s>=172 && s<=229 && s!=217));
   assert(unsigned(mapEventGroupVisible(4,s))+mapEventGroupVisible(5,s)+mapEventGroupVisible(6,s)==1);
  }
- assert(mapEventGroupVisible(7,23));assert(!mapEventGroupVisible(7,22));
+ assert(!mapEventGroupVisible(7,23));assert(!mapEventGroupVisible(7,22,4));
+ assert(mapEventGroupVisible(7,23,4));assert(!mapEventGroupVisible(7,23,2));
+ assert(mapEventGroupVisible(13,23));assert(!mapEventGroupVisible(13,23,4));
  assert(mapEventGroupVisible(8,9));assert(!mapEventGroupVisible(8,10));
  assert(mapEventGroupVisible(4,163));assert(mapEventGroupVisible(5,164));
  assert(mapEventGroupVisible(5,338));assert(mapEventGroupVisible(6,339));

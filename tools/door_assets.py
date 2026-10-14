@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build scoped original type3 inn/professor hit destinations and collision IDs.
+"""Build scoped original type3 inn/professor/Trouble Center hit destinations and collision IDs.
 
 Requires build_assets.py first. All source and generated geometry stays local.
 Coordinates retain the EVT integer conversion after hit center+40*normal.
@@ -39,9 +39,10 @@ def subtree(nodes, name):
 
 def build(root=ROOT):
     result = []
-    for room, prefix, mask, stem, collision in (
-            (0, 'map', 1, 'A_ie_03_f1_doa', None),
-            (2, 'gor_02', 2, 'A_ie_02_doa', 'A_ie_02C')):
+    for room, prefix, mask, stem, collision, story_min in (
+            (0, 'map', 1, 'A_ie_03_f1_doa', None, -2147483648),
+            (2, 'gor_02', 2, 'A_ie_02_doa', 'A_ie_02C', -2147483648),
+            (2, 'gor_02', 4, 'A_ie_04_doa', 'A_ie_04C', 23)):
         directory = root/'local-assets'/prefix
         summary = json.loads((directory/'map-summary.json').read_text())
         raw = (directory/'map.head').read_bytes()
@@ -51,16 +52,19 @@ def build(root=ROOT):
         opened, outside = hit_point(summary['collision_nodes'], triangles, stem+'01')
         closed, inside = hit_point(summary['collision_nodes'], triangles, stem+'02')
         disabled = subtree(summary['collision_nodes'], collision) if collision else []
-        result.append(dict(room=room, mask=mask, open_node=opened, close_node=closed,
+        outer = sorted({node for name in ('A_kabe','A_saku','A_kmn','A_gomi','A_l_ura_gomi','polySurface1317') for node in subtree(summary['collision_nodes'], name)}) if mask==4 else []
+        result.append(dict(story_min=story_min, outside_nodes=outer, room=room, mask=mask, open_node=opened, close_node=closed,
                            outside=outside, inside=inside, interior_nodes=disabled))
-    out = bytearray(struct.pack('<8sI', b'PMDOOR1', len(result)))
+    out = bytearray(struct.pack('<8sI', b'PMDOOR2', len(result)))
     for r in result:
         out += struct.pack('<4I6fI', r['room'], r['mask'], r['open_node'], r['close_node'],
                            *r['outside'], *r['inside'], len(r['interior_nodes']))
         out += struct.pack('<'+'I'*len(r['interior_nodes']), *r['interior_nodes'])
+        out += struct.pack('<iI',r['story_min'],len(r['outside_nodes']))
+        out += struct.pack('<'+'I'*len(r['outside_nodes']),*r['outside_nodes'])
     (root/'romfs/doors.pmdoor').write_bytes(out)
     (root/'local-assets/doors.json').write_text(json.dumps(result, indent=2)+'\n')
-    print('Original inn/professor door points and collision bindings:', len(result))
+    print('Original inn/professor/Trouble Center door points and collision bindings:', len(result))
     return result
 
 if __name__ == '__main__':build()

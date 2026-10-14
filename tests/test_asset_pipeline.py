@@ -22,7 +22,8 @@ class AssetPipelineTests(unittest.TestCase):
             path = root / 'manifest.json'
             entry = dict(id='one', kind='pack', source='a.bin', output='a.bin', license='test')
             for rows in ([dict(entry, source='../a.bin')], [dict(entry, output='x//a.bin')], [dict(entry, output='../outside')],
-                         [entry, dict(entry, id='two')], [dict(entry, license='')]):
+                         [entry, dict(entry, id='two')], [dict(entry, license='')],
+                         [dict(entry, inherit_original_visibility=True)]):
                 path.write_text(json.dumps(dict(schema=1, assets=rows)))
                 with self.assertRaises(ValueError): pipeline.read_manifest(path, root)
 
@@ -36,6 +37,31 @@ class AssetPipelineTests(unittest.TestCase):
             self.assertEqual(json.loads((root / 'model.json').read_text()), doc)
             for batches in ([[0,6,0,0,0,0]], [[0,3,1,0,0,0]], [[0,3,0,0,4,0]], [[1,2,0,0,0,0]]):
                 with self.assertRaises(ValueError): pipeline.compile_model(dict(doc,batches=batches),prefix)
+
+    def test_original_visibility_survives_reordered_edited_model(self):
+        with tempfile.TemporaryDirectory() as directory:
+            prefix = Path(directory) / 'gor_02'
+            a = [[0,0,0,0,0,1,1,1,1], [1,0,0,0,0,1,1,1,1], [0,1,0,0,0,1,1,1,1]]
+            b = [[v[0]+2,*v[1:]] for v in a]
+            original = dict(schema=1, texture_count=1, vertices=a+b,
+                            batches=[[0,3,0,13<<26,0,0], [3,3,0,7<<26,0,0]])
+            pipeline.compile_model(original, prefix)
+            edited = dict(original, vertices=b+a, batches=[[0,6,0,1<<24,1,2]])
+            edited['vertices'][0] = [*b[0][:3], .5,.75,.2,.3,.4,1]
+            result = pipeline.inherit_model_visibility(edited, prefix)
+            self.assertEqual(result['vertices'], edited['vertices'])
+            self.assertEqual(result['batches'], [[0,3,0,(7<<26)|(1<<24),1,2],
+                                                [3,3,0,(13<<26)|(1<<24),1,2]])
+            pipeline.compile_model(result, prefix)
+            moved = dict(edited, vertices=[[v[0]+10,*v[1:]] for v in edited['vertices']])
+            self.assertEqual(pipeline.inherit_model_visibility(moved, prefix)['batches'], edited['batches'])
+            for invalid in ([0,1,0,0,0,0], [0,3,0,-1,0,0], [0,3,0,1<<32,0,0]):
+                with self.assertRaises(ValueError):
+                    pipeline.inherit_model_visibility(dict(edited,batches=[invalid]), prefix)
+            ambiguous = dict(original, vertices=a+a)
+            pipeline.compile_model(ambiguous, prefix)
+            with self.assertRaisesRegex(ValueError, 'Ambiguous'):
+                pipeline.inherit_model_visibility(edited, prefix)
 
     def test_obj_negative_indices_uv_and_materials(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -1396,3 +1396,7 @@ target_sources(ttyd_core PRIVATE source/display/battle_scene_views.cpp)
 add_executable(battle_scene_views_tests tests/battle_scene_views_tests.cpp)
 target_link_libraries(battle_scene_views_tests PRIVATE ttyd_core)
 add_test(NAME battle_scene_views COMMAND battle_scene_views_tests)
+
+# Original door pack and actual native field/save admission.
+add_test(NAME field_door_assets COMMAND field_door_tests original)
+set_tests_properties(field_door_assets PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

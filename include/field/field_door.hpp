@@ -9,7 +9,9 @@ namespace ttyd {
 struct FieldDoorRecord {
     uint32_t room=0,mask=0,openNode=0,closeNode=0;
     std::array<float,3> outside{},inside{}; // EVT integer XYZ, native scale.
-    std::vector<uint32_t> interiorNodes;
+    std::vector<uint32_t> interiorNodes,outsideNodes;
+    int32_t storyMinimum=INT32_MIN;
+    bool unlocked(std::optional<int32_t> story) const{return storyMinimum==INT32_MIN || (story && *story>=storyMinimum);}
 };
 bool loadFieldDoors(const char* path);
 const std::vector<FieldDoorRecord>& fieldDoors();

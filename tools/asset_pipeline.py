@@ -71,6 +71,8 @@ def read_manifest(path, root):
         ids.add(aid)
         if entry.get('kind') not in KINDS or not entry.get('license'):
             raise ValueError(f'{aid}: kind and license are required')
+        if 'inherit_original_visibility' in entry and (entry['kind'] != 'model' or type(entry['inherit_original_visibility']) is not bool):
+            raise ValueError(f'{aid}: visibility inheritance requires a model boolean')
         source = contained(root, entry['source'])
         if not source.is_file():
             raise ValueError(f'{aid}: source missing: {source}')
@@ -193,7 +195,44 @@ def model_from_obj(source, entry):
     return {'schema': 1, 'texture_count': entry['texture_count'], 'vertices': vertices, 'batches': batches}
 
 
-def compile_model(doc, prefix):
+def inherit_model_visibility(doc, original_prefix):
+    """Retain source event ownership across editable triangle/batch ordering.
+
+    Match float32 positions, leaving UV, color, texture and geometry edits intact.
+    New geometry keeps its authored flags; ambiguous source ownership fails closed.
+    """
+    _model_payload(doc, original_prefix) # Validate authored domains before rewriting.
+    original = Path(str(original_prefix) + '.vertices').read_bytes()
+    packed = Path(str(original_prefix) + '.batches').read_bytes()
+    count, _ = struct.unpack_from('<II', packed)
+    def key(rows):
+        return tuple(sorted(struct.pack('<3f', *row[:3]) for row in rows))
+    ownership = {}
+    for i in range(count):
+        start, size, _, flags, _, _ = struct.unpack_from('<IIiIII', packed, 8 + i * 24)
+        group = flags >> 26
+        if not group:
+            continue
+        for n in range(start, start + size, 3):
+            identity = key([struct.unpack_from('<3f', original, (n + j) * 36) for j in range(3)])
+            previous = ownership.setdefault(identity, group)
+            if previous != group:
+                raise ValueError('Ambiguous original event ownership for editable triangle')
+    batches = []
+    vertices = doc['vertices']
+    for start, size, tid, flags, ws, wt in doc['batches']:
+        for n in range(start, start + size, 3):
+            group = ownership.get(key(vertices[n:n + 3]))
+            inherited = flags if group is None else (flags & 0x03ffffff) | (group << 26)
+            row = [n, 3, tid, inherited, ws, wt]
+            if batches and batches[-1][0] + batches[-1][1] == n and batches[-1][2:] == row[2:]:
+                batches[-1][1] += 3
+            else:
+                batches.append(row)
+    return dict(doc, batches=batches)
+
+
+def _model_payload(doc, prefix):
     if doc.get('schema') != 1:
         raise ValueError('Model requires schema:1')
     vertices = doc['vertices']; batches = doc['batches']
@@ -202,7 +241,7 @@ def compile_model(doc, prefix):
         raise ValueError('Model exceeds native triangle/size/batch limits')
     payload = b''.join(struct.pack('<9f', *floats(row, 9)) for row in vertices)
     records = []
-    max_event_group = 14 if prefix.name == 'opening-gor_00' else 13 if prefix.name == 'opening-muj_20' else 12
+    max_event_group = 14 if prefix.name == 'opening-gor_00' else 13 if prefix.name == 'opening-muj_20' else 13 if prefix.name == 'gor_02' else 12
     for b in batches:
         if len(b) != 6:
             raise ValueError('Batch requires start,count,texture,flags,wrapS,wrapT')
@@ -213,8 +252,13 @@ def compile_model(doc, prefix):
         if start % 3 or size % 3 or (flags >> 8 & 65535) > 1024 or flags >> 26 > max_event_group:
             raise ValueError('Batch violates native triangle/visibility domain')
         records.append(struct.pack('<IIiIII', *b))
+    return payload, struct.pack('<II', len(batches), count) + b''.join(records)
+
+
+def compile_model(doc, prefix):
+    payload, batches = _model_payload(doc, prefix)
     Path(str(prefix) + '.vertices').write_bytes(payload)
-    Path(str(prefix) + '.batches').write_bytes(struct.pack('<II', len(batches), count) + b''.join(records))
+    Path(str(prefix) + '.batches').write_bytes(batches)
 
 
 def compile_actor(doc, target):
@@ -296,6 +340,13 @@ def build(manifest, root, output, work, tex3ds):
             source = contained(root, entry['source']); names = output_names(entry)
             target = contained(stage, entry['output']); target.parent.mkdir(parents=True, exist_ok=True)
             kind = entry['kind']; inputs = {entry['source']: digest(source)}
+            original_prefix = None
+            if entry.get('inherit_original_visibility', False):
+                if kind != 'model':
+                    raise ValueError('Original visibility inheritance requires a model')
+                original_prefix = contained(output, entry['output'])
+                for suffix in ('.vertices', '.batches'):
+                    inputs['original-visibility' + suffix] = digest(Path(str(original_prefix) + suffix))
             if kind == 'atlas':
                 for frame in json.loads(source.read_text())['frames']:
                     inputs[frame['source']] = digest(contained(root, frame['source']))
@@ -321,6 +372,8 @@ def build(manifest, root, output, work, tex3ds):
                     write_json(Path(str(target) + '.atlas.json'), metadata)
                 elif kind == 'model':
                     model = model_from_obj(source, entry) if source.suffix.lower() == '.obj' else json.loads(source.read_text())
+                    if original_prefix is not None:
+                        model = inherit_model_visibility(model, original_prefix)
                     compile_model(model, target)
                 elif kind == 'actor':
                     compile_actor(json.loads(source.read_text()), target)

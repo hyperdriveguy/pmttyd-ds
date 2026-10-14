@@ -67,8 +67,10 @@ void applyDoorCollision(uint32_t room,uint32_t mask) {
     if(room==doorCollisionRoom && mask==doorCollisionMask)return;
     doorCollisionRoom=room;doorCollisionMask=mask;
     disabledDoorNodes.clear();
-    for(const auto& d:fieldDoors())if(d.room==room && !(mask&d.mask))
-        disabledDoorNodes.insert(disabledDoorNodes.end(),d.interiorNodes.begin(),d.interiorNodes.end());
+    for(const auto& d:fieldDoors())if(d.room==room) {
+        const auto& disabled=(mask&d.mask)?d.outsideNodes:d.interiorNodes;
+        disabledDoorNodes.insert(disabledDoorNodes.end(),disabled.begin(),disabled.end());
+    }
     std::sort(disabledDoorNodes.begin(),disabledDoorNodes.end());
 }
 // Road registration overlays original pass-through/inclusion mask0x00800000
@@ -1245,6 +1247,7 @@ void Game::restore(const Progress& saved) {
     fieldCameraSimulationTicks=cameraClock;fieldCameraShift.previousMilliseconds=shiftTimestamp;
     progress = p;
     fenceCollisionDisabled=p.room==2 && p.originalStory.value_or(0)>=10;
+    troubleDoorNotice=false;
     fieldDoor.interiorMask=p.interiorMask;
     applyDoorCollision(p.room,fieldDoor.interiorMask);
     harborStory.reset(p.room==1 && p.originalStory && *p.originalStory==3);
@@ -2195,6 +2198,9 @@ void Game::tick(const Input& rawInput) {
             fieldKeysOff=goombaHandIn.keyDepth()!=0;
             if(!goombaHandIn.active())progress.hp=progress.originalPouch->half(0x70);
         }
+        if(troubleDoorNotice && !fieldActorTalk.message.active()) {
+            applyFieldItemStateRequest(ItemGetRequest::KeyOn);troubleDoorNotice=false;
+        }
         saveRequested=false;if(!fieldActorTalk.message.active() && !goombaHandIn.active() && !goombaAcquisition.active() && !goombaReward.active())scene=Scene::Explore;
         return;
     }
@@ -2454,15 +2460,29 @@ void Game::tick(const Input& rawInput) {
         for(size_t n=0;n<fieldDoors().size();++n) {
             const auto& d=fieldDoors()[n];if(d.room!=progress.room)continue;
             const bool opening=!(fieldDoor.interiorMask&d.mask);
-            if(!fieldDoorAdmitted(wallContact.sourceNode,opening?d.openNode:d.closeNode,0x100,fieldJump.motion,false,false,roadAdmission))continue;
+            if(!fieldDoorAdmitted(wallContact.sourceNode,opening?d.openNode:d.closeNode,0x100,fieldJump.motion,false,fieldNpcTalkCandidateAlive(),roadAdmission))continue;
+            if(!d.unlocked(progress.originalStory)) {
+                if(d.mask==4 && progress.originalStory && *progress.originalStory<23) {
+                    FieldActorRecord speaker;speaker.room=2;speaker.kind=1;speaker.talkPrefix="gor_02";
+                    // Original print operand0 is an unattributed speaker.
+                    if(fieldActorTalk.canPrint(speaker,"gor_02_035",harborMessageFont(),ticks*1000/60)) {
+                        applyFieldItemStateRequest(ItemGetRequest::KeyOff);
+                        if(fieldActorTalk.print(speaker,"gor_02_035",harborMessageFont(),ticks*1000/60)) {
+                            fieldActorTalk.message.placementOverride=0; // toge selector1 -> common mode0, no anchor copy.
+                            troubleDoorNotice=true;scene=Scene::Dialogue;saveRequested=false;
+                        } else applyFieldItemStateRequest(ItemGetRequest::KeyOn); // Native resource admission rollback.
+                    }
+                }
+                return; // Unknown state/resources do not authorize entry or replay A as jump.
+            }
             // Professor first-talk/wall-removal and inn upstairs callback
             // ownership remain separate source scenes; no story write occurs.
             fieldDoor.begin(int(n),d,{progress.position.x,progress.position.z});
-            if(opening && progress.room==2 && progress.originalStory==8 && !professorStory.triggered) {
+            if(opening && progress.room==2 && d.mask==2 && progress.originalStory==8 && !professorStory.triggered) {
                 if(professorStory.begin(ticks*1000/60,{progress.position.x*100,groundHeight*100,progress.position.z*100},
                                        {partner.x*100,partnerHeight*100,partner.z*100},progress.originalFlag1207))scene=Scene::Dialogue;
             }
-            if(!opening && progress.room==2 && progress.originalStory==9 && professorStory.temporaryProfessor) {
+            if(!opening && progress.room==2 && d.mask==2 && progress.originalStory==9 && professorStory.temporaryProfessor) {
                 professorCameraCursor=0;
                 if(professorStory.beginFence(ticks*1000/60,{progress.position.x*100,groundHeight*100,progress.position.z*100},
                     {partner.x*100,partnerHeight*100,partner.z*100}))scene=Scene::Dialogue;

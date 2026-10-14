@@ -2604,6 +2604,7 @@
       "kind": "model",
       "source": "assets/original/models/gor_02.json",
       "output": "gor_02",
+      "inherit_original_visibility": true,
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
     },
     {

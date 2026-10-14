@@ -28,14 +28,14 @@ bool read(const std::string& path, Progress& p) {
 }
 SaveBytes encodeSave(const Progress& p) {
     SaveBytes b{}; if(p.mushrooms<0 || p.mushrooms>99 || p.hp<0 || p.hp>(p.originalPouch?32767:10) || !roomAsset(p.room) || !std::isfinite(p.elevation) || std::fabs(p.elevation)>12.7f ||
-        (p.interiorMask && !((p.room==0 && p.interiorMask==1) || (p.room==2 && p.interiorMask==2))))return b;
+        (p.interiorMask && !((p.room==0 && p.interiorMask==1) || (p.room==2 && (p.interiorMask==2 || (p.interiorMask==4 && p.originalStory && *p.originalStory>=23))))))return b;
     const auto& talk=p.originalNpcTalkState;
     // Optional saved switches preserve UNKNOWN separately from known false/zero.
     // Do not infer original quest state from a legacy checkpoint's empty bytes.
     const bool known=talk.quest1420 || talk.flag5405 || talk.flag5406;
     const bool completed=talk.flag5376.has_value();
     if(!talk.trouble.valid())return b;
-    const bool trouble=talk.trouble.present();
+    const bool trouble=talk.trouble.present() || p.interiorMask==4;
     const bool extended=p.originalPouch || talk.flag5407.has_value() || completed || trouble;
     // Pick the minimum emitted version retaining the supplied optional state:
     // 6=save-block flags, 7=quest guards, 8=pouch/5407, 9=5376 completion guard.
@@ -137,10 +137,10 @@ bool decodeSave(const SaveBytes& b, Progress& p) {
     if(get(b,16)>(out.originalPouch?32767u:10u) || mushrooms>99 || b[24]>1 || b[25]>1 || (get(b,4)==1 && b[26]) || !roomAsset(b[26]) || (get(b,4)==1 && b[27]) || !std::isfinite(out.position.x) || !std::isfinite(out.position.z) || std::fabs(out.position.x)>100 || std::fabs(out.position.z)>100) return false;
     if(version>=3 && b[32]){const uint32_t word=get(b,28);out.originalStory=word<=0x7fffffff?int32_t(word):int32_t(int64_t(word)-0x100000000LL);}
     // Only existing interior variants are legal: plaza(room0)/mask1 and
-    // east(room2)/mask2. These are native packaged-room IDs, not REL addresses.
+    // east(room2)/mask2, and v10 Trouble Center/mask4 after story23. These are native packaged-room IDs, not REL addresses.
     if(version>=4) {
         out.interiorMask=b[33];
-        if(out.interiorMask && !((b[26]==0 && out.interiorMask==1) || (b[26]==2 && out.interiorMask==2)))return false;
+        if(out.interiorMask && !((b[26]==0 && out.interiorMask==1) || (b[26]==2 && (out.interiorMask==2 || (version==10 && out.interiorMask==4 && out.originalStory && *out.originalStory>=23)))))return false;
     }
     if(version>=5)out.originalFlag1207=(b[34]&1)!=0;
     if(version>=6) {

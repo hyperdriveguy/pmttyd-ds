@@ -56,6 +56,11 @@ int main() {
  {auto bad=v10;bad[1548]&=~1u;bad[1549]=1;sum(bad,1564);assert(!decodeSave(bad,out));}
  {auto bad=v10;bad[1555]=1;sum(bad,1564);assert(!decodeSave(bad,out));}
  auto invalid=p;invalid.originalNpcTalkState.trouble.known|=uint64_t(1)<<48;assert(!decodeSave(encodeSave(invalid),out));
+ auto indoor=p;indoor.room=2;indoor.interiorMask=4;indoor.originalStory=23;
+ assert(decodeSave(encodeSave(indoor),out) && out.interiorMask==4);
+ indoor.originalNpcTalkState.trouble={};assert(encodeSave(indoor)[4]==10 && decodeSave(encodeSave(indoor),out));
+ indoor.originalStory=22;assert(!decodeSave(encodeSave(indoor),out));
+ indoor.originalStory.reset();assert(!decodeSave(encodeSave(indoor),out));
  const char* path="native-trouble-state.bin";
  assert(writeSave(path,p) && loadSave(path,out)==LoadResult::Loaded);
  {std::ifstream file(path,std::ios::binary|std::ios::ate);assert(file.tellg()==1568);}

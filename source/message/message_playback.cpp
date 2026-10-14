@@ -47,6 +47,7 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
             else if(name=="col" || name=="/col") {unsigned color=255;char extra=0;if(name=="col" && std::sscanf(args.c_str(),"%x %c",&color,&extra)!=1)return false;auto r=record(0xfff7);r.flags=color;next.records.push_back(r);}
             else if(name=="wave")style|=4;
             else if(name=="/wave")style&=~4u;
+            else if(name=="kanban"){next.windowType=4;speed=0;}
             else if(name=="small"){next.windowType=1;smallSpacing=true;}
             else if(name=="system") {next.windowType=3;auto r=record(0xfff7);r.flags=0xdcc8dcff;next.records.push_back(r);}
             else if(name=="select") {

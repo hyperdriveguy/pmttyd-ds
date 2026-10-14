@@ -6,7 +6,7 @@ namespace ttyd {
 // Group IDs are converter-assigned event-visibility groups, not room IDs
 // or display classes. Story comparisons below retain exact original GSW0
 // values/exclusions; do not approximate them with chapter names or ranges.
-// Groups0/1 are unconditional visible/hidden; masks1/2 identify native interiors.
+// Groups0/1 are unconditional visible/hidden; masks1/2/4 identify native interiors.
 inline bool mapEventGroupVisible(uint32_t group,int32_t story,uint32_t interiorMask=0) {
     switch(group) {
     case 0: return true;
@@ -16,7 +16,7 @@ inline bool mapEventGroupVisible(uint32_t group,int32_t story,uint32_t interiorM
     case 4: return story<164;
     case 5: return story>=164 && story<339;
     case 6: return story>=339;
-    case 7: return story>=23;
+    case 7: return story>=23 && (interiorMask&4)!=0; // Trouble Center interior.
     case 8: return story<10;
     case 9: return (interiorMask&1)!=0; // Plaza inn/bar.
     case 10: return (interiorMask&2)!=0; // East professor's house.
@@ -24,6 +24,7 @@ inline bool mapEventGroupVisible(uint32_t group,int32_t story,uint32_t interiorM
     // full original fade/material services remain unbound.
     case 11: return (interiorMask&1)==0;
     case 12: return (interiorMask&2)==0;
+    case 13: return (interiorMask&4)==0; // Trouble Center exterior.
     default: return false;
     }
 }

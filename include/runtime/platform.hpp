@@ -296,6 +296,9 @@ private:
     bool frontImage(const char*,float,float,float,float,uint8_t alpha=255);
     void frontMessage(const MessagePlayback&,uint64_t ticks);
     Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture;
+    Texture messageKanban;
+    bool prepareKanban();
+    void kanbanBorder(const MessageWindowPlan&,uint8_t);
     Texture messagePanel,messageSystemPattern;
     // System pattern uses four alpha masks and four RGB mix masks.
     //44-byte SystemVertex has XYZ3,patternUV2,maskUV2,RGBA4;0x3210
