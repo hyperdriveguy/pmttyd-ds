@@ -1572,3 +1572,9 @@ add_executable(animation_shape_render_tests tests/animation_shape_render_tests.c
 target_link_libraries(animation_shape_render_tests PRIVATE ttyd_core)
 add_test(NAME animation_shape_render COMMAND animation_shape_render_tests)
 set_tests_properties(animation_shape_render PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+# Original audience cheering, celebratory jumps and booing.
+add_executable(battle_audience_reaction_tests tests/battle_audience_reaction_tests.cpp)
+target_link_libraries(battle_audience_reaction_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_reaction COMMAND battle_audience_reaction_tests)
+set_tests_properties(battle_audience_reaction PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

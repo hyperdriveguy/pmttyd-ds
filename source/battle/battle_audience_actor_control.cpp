@@ -13,6 +13,7 @@ void real(uint32_t address,float f,const BattleActorServices& a){uint32_t n;std:
 float add(float a,float b){volatile float v=a+b;return v;}
 float sub(float a,float b){volatile float v=a-b;return v;}
 float mul(float a,float b){volatile float v=a*b;return v;}
+float divide(float a,float b){volatile float v=a/b;return v;}
 }
 bool controlPackedBattleAudienceIdleReaction(uint32_t fn,int32_t slot,int32_t front,const BattleActorServices& a){
     if(fn!=0x80192164 && fn!=0x80192054 && fn!=0x80191f20)return false;
@@ -50,6 +51,55 @@ bool controlPackedBattleAudienceIdleReaction(uint32_t fn,int32_t slot,int32_t fr
         if(timer>=50 && timer<=60)real(r+0x6c,add(scalar(r+0x6c,a),step),a);
         if(timer>60)packedBattleAudienceChangeStatus(slot,0,a);
         else m.storeWord(m.user,r+0x30,uint32_t(timer)+1);
+    }
+    return true;
+}
+bool controlPackedBattleAudienceReaction(uint32_t fn,int32_t slot,int32_t front,const BattleAudienceReactionServices& s){
+    if(fn!=0x80191e18 && fn!=0x80191cec && fn!=0x80191bb0 && fn!=0x80191884)return false;
+    const auto& a=s.actors;const auto& m=a.memory;const auto r=record(slot,a);
+    if(fn==0x80191e18 || fn==0x80191884){
+        if(fn==0x80191884 || uint8_t(front)==0)packedBattleAudienceSetAnimation(slot,4,0,a);
+        const auto phase=integer(m.word(m.user,r+4));
+        if(phase!=0 && phase!=1)return true;
+        if(phase==0){
+            if(!s.random)return false;
+            const auto random=s.random(s.user,2);if(!random)return false;
+            m.storeWord(m.user,r+0xe8,m.word(m.user,*random==0?0x804244e0:0x804244e4));
+            m.storeWord(m.user,r+4,m.word(m.user,r+4)+1);
+        }
+        const auto start=scalar(0x804244e8,a),end=scalar(0x80424524,a);
+        const auto step=integer(m.word(m.user,r+8));
+        if(!s.interpolate)return false;
+        const auto value=s.interpolate(s.user,4,step,15,start,end);if(!value)return false;
+        real(r+0x70,*value,a);m.storeWord(m.user,r+8,m.word(m.user,r+8)+1);
+        if(integer(m.word(m.user,r+8))>30){
+            real(r+0xc,sub(scalar(r+0xc,a),scalar(0x804244f8,a)),a);
+            if(scalar(r+0xc,a)<=scalar(0x804244e8,a))packedBattleAudienceChangeStatus(slot,0,a);
+            else m.storeWord(m.user,r+8,0);
+        }
+        return true;
+    }
+    packedBattleAudienceSetAnimation(slot,uint8_t(front)==1?2:3,0,a);
+    const auto phase=integer(m.word(m.user,r+4));
+    if(phase<0 || phase>2)return true;
+    if(phase==0){
+        m.storeWord(m.user,r+8,fn==0x80191cec?1:2);
+        m.storeWord(m.user,r+4,m.word(m.user,r+4)+1);
+    }
+    if(phase<=1){
+        if(!s.randomRaw)return false;
+        const auto random=s.randomRaw(s.user);if(!random)return false;
+        const auto fraction=divide(float(*random),scalar(0x80424554,a));
+        const auto start=scalar(fn==0x80191cec?0x8042457c:0x80424574,a);
+        const auto acceleration=m.word(m.user,0x80424578);
+        real(r+0xdc,add(start,fraction),a);m.storeWord(m.user,r+0xe4,acceleration);
+        m.storeWord(m.user,r+4,m.word(m.user,r+4)+1);
+    }
+    if(fn==0x80191bb0)real(r+0xa0,add(scalar(r+0xa0,a),scalar(0x8042453c,a)),a);
+    if(scalar(r+0xe4,a)==scalar(0x804244e8,a)){
+        m.storeWord(m.user,r+8,m.word(m.user,r+8)-1);
+        if(integer(m.word(m.user,r+8))<=0)packedBattleAudienceChangeStatus(slot,0,a);
+        else m.storeWord(m.user,r+4,1);
     }
     return true;
 }

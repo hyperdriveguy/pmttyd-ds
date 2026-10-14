@@ -51,12 +51,12 @@ phase values only select animation and return.
 The native Control provider now uses this dispatcher with actual retained
 camera4 eye/at for existing GetFront, existing packed animation/status helpers,
 and native double libm sine as the declared SDK adapter. It records the actual
-unavailable state address. Main Wait80192260, reactions4..20, item throwing,
-voice playback and full normal battle/camera scheduling remain unavailable.
-In particular, Wait has an apparent path retaining caller FPR29 rather than
-assigning it; its provenance must be resolved or explicitly represented before
-that path can be ported. No fabricated zero is supplied. These functions do not
-establish a complete positive-audience battle loop or accepted visual framing.
+unavailable state address. Subsequent increments implement
+[Wait with explicit caller FPR29 availability](AUDIENCE_IDLE_BREATHING_AND_DECISIONS.md)
+and [cheering, celebratory jumps and booing](AUDIENCE_CHEERING_JUMPS_AND_BOOING.md).
+States7/8/10..20, actual voice playback and full normal battle/camera scheduling
+remain unavailable. No fabricated caller register is supplied. These functions
+do not establish a complete positive-audience battle loop or accepted framing.
 
 Tests cover inclusive motion phases, jump fallthrough/repeats, all21 dispatch
 addresses, unavailable-provider store ordering, negative-height/type11 clearing,

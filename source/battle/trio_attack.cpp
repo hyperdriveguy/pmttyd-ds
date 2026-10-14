@@ -408,6 +408,15 @@ struct TrioAttackRuntime {
                             if(!r.pending)r.pending=fn;
                             return false;
                         }
+                        if(fn==0x80191e18 || fn==0x80191cec || fn==0x80191bb0 || fn==0x80191884){
+                            BattleAudienceReactionServices joy;joy.actors=nativeBattleActorServices(r.vm);joy.user=p;
+                            joy.random=[](void* p,int32_t bound)->std::optional<int32_t>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80005da0,{bound});return r.random.bounded(bound);};
+                            joy.randomRaw=[](void* p)->std::optional<int32_t>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x8026c324);return r.random.next();};
+                            joy.interpolate=[](void* p,int32_t mode,int32_t step,int32_t duration,float start,float end)->std::optional<float>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80006c8c,{mode,step,duration});auto value=cameraInterpolation(mode,step,duration,start,end);if(!value)r.pending=0x80006c8c;return value;};
+                            if(controlPackedBattleAudienceReaction(fn,slot,front,joy))return true;
+                            if(!r.pending)r.pending=fn;
+                            return false;
+                        }
                         if(controlPackedBattleAudienceIdleReaction(fn,slot,front,nativeBattleActorServices(r.vm)))return true;
                         r.pending=fn;return false;
                     };

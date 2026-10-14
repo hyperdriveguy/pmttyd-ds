@@ -98,7 +98,9 @@ A coupled positive fixture runs original population8 -> Control -> member
 controller -> Wait for20 ticks with the same original RNG. Its camera-facing
 provider is explicitly a test value1. This proves the portable control chain;
 it does not prove native normal outer Main/camera cadence or visual framing.
-Native state4 and other remaining reaction/entry/item providers still stop at
-their actual source addresses. Main idle is now implemented within those limits.
+Native state4 now runs through the original
+[cheering/reaction provider](AUDIENCE_CHEERING_JUMPS_AND_BOOING.md). Remaining
+states7/8/10..20 still stop at their actual source addresses. Main idle remains
+implemented within its declared caller-register and numeric limits.
 Original menu/HUD art, dialogue, action-command timing and physical controls are
 unchanged; audience throw telegraphs and optional taps remain future work.

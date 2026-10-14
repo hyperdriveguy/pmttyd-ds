@@ -1064,3 +1064,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native shape render continuation](display/NATIVE_SHAPE_RENDER_CONTINUATION.md) — retained defaults, actual indexed fans and bounded native camera/math binding.
 - [Battle map light banks, presets and fog lifecycle](display/BATTLE_MAP_LIGHT_BANK_AND_PRESET_LIFECYCLE.md) — real32-record bank initialization/reset, selected battle-map fog/ambient, preset camera updates and live pose lighting admission.
+
+- [Audience cheering, celebratory jumps and booing](battle/AUDIENCE_CHEERING_JUMPS_AND_BOOING.md): whole states4/5/6/9 with source RNG, interpolation, repeat and landing order.

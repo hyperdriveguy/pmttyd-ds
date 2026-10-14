@@ -938,3 +938,17 @@ The retry owns a separate cache and copies reference inputs read-only.
 The copied pack also contained door-data, whose paired private REL extraction
 was absent; the baseline door converter supplied it in the isolated tree. All
 pack hashes stayed unchanged. Both private extractors retain original ISO bytes.
+
+## Audience cheering/jump/booing source inspection (2026-10-14)
+
+Read-only US ISO DOL JoyRaiseArm80191e18/108, JoyJump80191cec/12c,
+JoyJump2 at80191bb0/13c and Booing80191884/fc were inspected using
+`tools/inspect_dol_function.py`. Inspection ELF/text remains ignored in
+`artifacts/`. Portable code consumes unchanged existing PMEVT constants,
+including32767 at80424554 and20 at8042453c. Existing interpolation helper/source
+pins are reused; no original executable code is linked or committed. No new
+asset format, HUD art, texture/geometry conversion, scale or licensing choice.
+[Control contract](behavior/battle/AUDIENCE_CHEERING_JUMPS_AND_BOOING.md).
+Private validation refreshes the original Bero pack with its committed baseline
+extractor; all extracted/compiled material retains its private-use licensing and
+stays outside source history. ISO access remains read-only.
