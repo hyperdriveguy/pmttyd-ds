@@ -15,6 +15,8 @@ public:
     bool unregisterEntries(uint32_t originalBase,std::vector<uint8_t>* bytes=nullptr);
     bool addressOf(const EventEntry*,uint32_t& address) const;
     EventEntry* entryAt(uint32_t originalAddress) const;
+    // Conservative interval probe; readable-byte checks retain sparse alias semantics.
+    bool mayMapRange(uint32_t base,uint64_t size) const;
     bool readByte(uint32_t address,uint8_t&) const;
     bool readWord(uint32_t address,uint32_t&) const;
     bool writeByte(uint32_t address,uint8_t);

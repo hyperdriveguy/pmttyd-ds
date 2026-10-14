@@ -5,6 +5,12 @@
 // Root pointer0x80415fd0..d3 is separately mapped big-endian state and may
 // change via byte writes. GP retirement keeps that original word unresolved.
 namespace ttyd {
+bool EventGpAddresses::mayMapRange(uint32_t base,uint64_t size) const {
+    if(!size)return false;
+    if(uint64_t(base)<0x80415fd4ULL && 0x80415fd0ULL<uint64_t(base)+size)return true;
+    for(const auto& r:regions_)if(uint64_t(base)<uint64_t(r.base)+EventGpAddresses::size && uint64_t(r.base)<uint64_t(base)+size)return true;
+    return false;
+}
 namespace {
 int32_t sw(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
 }

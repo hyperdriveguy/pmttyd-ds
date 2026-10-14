@@ -6,6 +6,11 @@
 // round-trip44 raw bytes. No C++ object layout is exposed as original memory.
 // Links at0x6c/70/74 are parent/child/brother; unresolved bits0/1/2 retain tokens.
 namespace ttyd {
+bool EventEntryAddresses::mayMapRange(uint32_t base,uint64_t size) const {
+    if(!size)return false;
+    for(const auto& r:regions_)if(uint64_t(base)<uint64_t(r.base)+uint64_t(r.count)*stride && uint64_t(r.base)<uint64_t(base)+size)return true;
+    return false;
+}
 namespace {
 int32_t sw(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
 uint32_t floatWord(const float& f) {uint32_t v;std::memcpy(&v,&f,4);return v;}

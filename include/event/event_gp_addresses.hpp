@@ -10,6 +10,8 @@ public:
     bool unregisterGp(uint32_t originalBase,std::vector<uint8_t>* bytes=nullptr);
     EventGlobals* currentGlobals() const;
     uint32_t currentAddress() const {return current_;}
+    // Conservative interval probe; readable-byte checks retain sparse alias semantics.
+    bool mayMapRange(uint32_t base,uint64_t size) const;
     bool readByte(uint32_t,uint8_t&) const;
     bool readWord(uint32_t,uint32_t&) const;
     bool writeByte(uint32_t,uint8_t);

@@ -3,6 +3,7 @@
 #include <cassert>
 #include <cstdio>
 #include <iostream>
+#include <memory>
 #include <unistd.h>
 using namespace ttyd;
 struct Fixture {
@@ -26,6 +27,25 @@ struct Fixture {
 };
 void word(std::vector<uint8_t>& b,unsigned at,uint32_t value) {for(unsigned i=0;i<4;++i)b[at+i]=uint8_t(value>>(24-8*i));}
 int main(int argc,char** argv) {
+    // Compare registration against the original readable-byte admission rule,
+    // including unaligned edges, runtime holes, RAM and the32-bit ceiling.
+    auto probe=std::make_unique<Fixture>();probe->initialize();
+    assert(probe->memory.registerRam(0x83000000,std::vector<uint8_t>(1024*1024)));
+    for(const auto center:{0x803d8530u,0x803d8d30u,0x804151e8u,0x80415fd0u,0x8041e858u,0x8041e940u,0x81000000u,0x810013d8u,0x82000000u,0x8201b000u,0x83000000u,0x83100000u,0xfffffff8u})
+        for(int offset=-5;offset<=5;++offset)for(unsigned count:{1u,2u,4u,9u}) {
+            const uint32_t base=center+offset;bool expected=uint64_t(base)+count<=0x100000000ULL;
+            for(unsigned i=0;expected && i<count;++i){uint8_t value;if(probe->memory.readByte(base+i,value))expected=false;}
+            const bool admitted=probe->memory.registerRam(base,std::vector<uint8_t>(count));assert(admitted==expected);
+            if(admitted)assert(probe->memory.unregisterRam(base));
+        }
+    // A live context can contain an unreadable unresolved host pointer. Its
+    // conservative interval probe must not turn the old sparse rule into a ban.
+    EventEntry unmapped;probe->field.entries=&unmapped;
+    uint8_t missing=0;assert(!probe->memory.readByte(0x803d8dc0,missing));
+    assert(probe->memory.registerRam(0x803d8dc0,{1,2,3,4}));
+    assert(!probe->memory.registerRam(0x803d8dbf,{1,2}));
+    assert(probe->memory.unregisterRam(0x803d8dc0));probe->field.entries=probe->fieldEntries.data();
+    probe.reset();
     Fixture f;f.initialize();uint32_t w=0;uint16_t half=0;
     assert(f.memory.readWord(0x803d8dc0,w) && w==0x82000000 && f.memory.readWord(0x803d8e60,w) && w==0x82020000);
     assert(f.memory.writeWord(0x8200009c,0x11223344) && f.fieldEntries[0].locals[0]==0x11223344);

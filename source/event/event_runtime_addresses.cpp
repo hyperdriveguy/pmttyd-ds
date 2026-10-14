@@ -6,6 +6,13 @@
 // 0x8041e940=requested system level. Arrays have4-byte stride.
 // Big-endian byte lanes alias words; speed transfers binary32 bits via memcpy.
 namespace ttyd {
+bool EventRuntimeAddresses::mayMapRange(uint32_t base,uint64_t size) const {
+    if(!size)return false;
+    const auto overlaps=[&](uint32_t at,uint32_t count){return uint64_t(base)<uint64_t(at)+count && uint64_t(at)<uint64_t(base)+size;};
+    if(overlaps(0x803d8530,0x800))return true;
+    for(const auto at:{0x8041e858u,0x8041e85cu,0x8041e860u,0x804151e8u,0x804151ecu,0x8041e940u})if(overlaps(at,4))return true;
+    return false;
+}
 namespace {
 int32_t sw(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
 }

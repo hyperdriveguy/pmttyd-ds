@@ -6,6 +6,8 @@ class EventContextAddresses {
 public:
     explicit EventContextAddresses(EventEntryAddresses& entries):entries_(entries) {}
     bool registerContext(uint32_t originalBase,EventContext&);
+    // Conservative interval probe; readable-byte checks retain sparse alias semantics.
+    bool mayMapRange(uint32_t base,uint64_t size) const;
     bool readByte(uint32_t,uint8_t&) const;
     bool readWord(uint32_t,uint32_t&) const;
     bool writeByte(uint32_t,uint8_t);

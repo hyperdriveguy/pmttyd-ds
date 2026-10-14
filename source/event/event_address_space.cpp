@@ -16,7 +16,12 @@ bool EventAddressSpace::writeByte(uint32_t a,uint8_t v) {
 }
 bool EventAddressSpace::available(uint32_t base,uint64_t size) const {
     if(!size || uint64_t(base)+size>0x100000000ULL)return false;
-    for(uint64_t i=0;i<size;++i) {uint8_t v;if(readByte(base+uint32_t(i),v))return false;}
+    // RAM covers every byte; interval rejection avoids millions of semantic
+    // provider probes during native battle startup. Sparse live views still
+    // use the existing readable-byte rule whenever their extents intersect.
+    for(const auto& r:ram_)if(uint64_t(base)<uint64_t(r.base)+r.bytes.size() && uint64_t(r.base)<uint64_t(base)+size)return false;
+    if(entries_.mayMapRange(base,size) || contexts_.mayMapRange(base,size) || runtime_.mayMapRange(base,size) || gp_.mayMapRange(base,size))
+        for(uint64_t i=0;i<size;++i) {uint8_t v;if(readByte(base+uint32_t(i),v))return false;}
     return true;
 }
 bool EventAddressSpace::registerRam(uint32_t base,std::vector<uint8_t> bytes) {

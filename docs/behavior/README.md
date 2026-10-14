@@ -996,3 +996,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native Borodo position and all-task cancellation](field/NATIVE_BORODO_POSITION_AND_ALL_TASK_CANCELLATION.md) — PMNPC009 names, retained collision/render position and original30 item lists.
 
 - [Rogueport east Borodo alley camera/occlusion](field/ROGUEPORT_EAST_BORODO_ALLEY_CAMERA_AND_OCCLUSION.md) — source house-versus-alley zone selection and finite cutaway logic.
+
+- [Native RAM admission interval prefilter](event/NATIVE_RAM_ADMISSION_INTERVAL_PREFILTER.md)

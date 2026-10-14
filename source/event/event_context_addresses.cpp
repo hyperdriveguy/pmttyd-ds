@@ -5,6 +5,11 @@
 // Big-endian lane shifts24-8*(offset&3) keep byte aliases live.2^32 bounds
 // reject address wrap; unregistering entry arrays preserves unresolved tokens.
 namespace ttyd {
+bool EventContextAddresses::mayMapRange(uint32_t base,uint64_t size) const {
+    if(!size)return false;
+    for(const auto& r:regions_)if(uint64_t(base)<uint64_t(r.base)+0xa0 && uint64_t(r.base)<uint64_t(base)+size)return true;
+    return false;
+}
 namespace {
 int32_t sw(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
 }
