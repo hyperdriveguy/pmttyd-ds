@@ -5,6 +5,11 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
 
 ## Open todos
 
+- [x] Complete local marioCamMain/marioUpdateCam and camFollowYOff/On,
+  marioNoUpdateCamPos/marioUpdateCamPos — [shift/target/control contract](../behavior/camera/FIELD_MARIO_CAMERA_SHIFT_TARGETS_AND_CONTROLS.md).
+  Three biased shift channels, target/height gates, owner snapshots, expiration
+  arithmetic and heading flag/cache pinned; room framing remains open.
+
 - [ ] Ordinary room camera tracking/limits, authored events and height changes;
   native fixed framing/.07 smoothing remains provisional.
 - [ ] Camera tracking/yaw/screen projection recovery to replace fixed framing/
@@ -23,3 +28,22 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
 The camera recovery follow-up arrived inside the Rogueport roads delivery note;
 it is preserved verbatim there ([OW-ROAD-01](OW-ROAD-01.md)). No camera contract
 has been delivered yet.
+
+## 2026-10-13 — Complete local Mario camera shifts and update controls
+
+Delivered [six complete local functions](../behavior/camera/FIELD_MARIO_CAMERA_SHIFT_TARGETS_AND_CONTROLS.md)
+for the native field camera dependency. Three separately produced rates and
+biased single-precision shift operations precede the target-update gate.
+FollowYOff selects extra horizontal shift while preserving existing target Y;
+NoUpdateCamPos still evolves shift channels. Main preserves entry/timer/heading
+owners across requests and conditionally skips position update for motion29.
+Expiration and cached-heading flags retain exact arithmetic/request order.
+This is original static source evidence, not measured native framing equivalence.
+
+Validation: read-only ISO manifest15 spans/294 anchors/17 calls; independent
+all290 words/27 literal mathematical vectors, every65536 signed-halfword timer/
+duration input, decoded masks/channel/call identities/source pins passed;
+Markdown links/scoped diff check passed. Raw temporary bodies stay /tmp.
+Docs only; no make test/all rerun. Rates/default producers, room limits,
+camMain/zoom/event/trig consumers, pause/cadence/original visual execution and
+full native camera binding remain OPEN; no .07 smoothing claim was closed.

@@ -46,3 +46,12 @@ room names/four floats/pins; Markdown links and scoped diff checks passed.
 Docs/evidence only; no make test/all rerun. Temporary raw listings stay /tmp.
 Child/provider/sequence/pause/cadence/original traces/full native binding remain
 open; MAINLOOP-01 stays OPEN. Other sessions' native changes excluded.
+
+## 2026-10-13 — Mario camera child request closure
+
+[Camera shift/target/control contract](../behavior/camera/FIELD_MARIO_CAMERA_SHIFT_TARGETS_AND_CONTROLS.md)
+now closes local marioCamMain/marioUpdateCam/four update-control bodies used by
+the recovered field-loop graph.15 spans/294 anchors/17 calls and independent
+290-word/27-vector/full s16 domain checks passed. Room camera consumers,
+shift-rate/default producers, zoom/event/trig and original pause/cadence/native
+binding remain open; MAINLOOP-01 stays OPEN. See OW-CAMERA-01 delivery.

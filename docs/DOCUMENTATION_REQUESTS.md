@@ -32,7 +32,7 @@ Updated 2026-10-12 (America/Boise). The user requested using files in `docs/` to
 | OW-PARTNER-01 — Ordinary Goombella follow and field lifecycle | Open | Follow/history/speed/ground/obstacle rules, homing owners, launch/landing/room/battle lifecycle, ability activation and control locks | [requests/OW-PARTNER-01.md](requests/OW-PARTNER-01.md) |
 | OW-ROAD-01 — Rogueport road triggers and transitions | Open (roads contract delivered) | Exact node contacts/registration overlays, story callbacks, station north train door, NPC/block classification, numeric services | [requests/OW-ROAD-01.md](requests/OW-ROAD-01.md) |
 | OW-INTERACT-01 — Mario A/X/B interaction arbitration and playback | Open | Priority against jump/movement, proximity, hammer/first-strike, message/speaker/control-token playback, scene conditions | [requests/OW-INTERACT-01.md](requests/OW-INTERACT-01.md) |
-| OW-CAMERA-01 — Ordinary room camera tracking and limits | Open | Room tracking/limits, authored events, height changes, tracking/yaw/screen-projection owners | [requests/OW-CAMERA-01.md](requests/OW-CAMERA-01.md) |
+| OW-CAMERA-01 — Ordinary room camera tracking and limits | Open (local Mario shifts/update controls answered) | Room tracking/limits, rate/default producers, authored events, camera consumers/yaw/projection and original visual binding | [requests/OW-CAMERA-01.md](requests/OW-CAMERA-01.md) |
 
 The overworld requests formerly kept in `OVERWORLD_DOCUMENTATION_REQUESTS.md`
 (OW-* rows above) were merged into this inbox on 2026-10-12; that separate inbox

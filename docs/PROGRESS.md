@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox native camera dependency: shifts and update controls
+
+Completed local marioCamMain/marioUpdateCam and four camera-control leaves;
+OW-CAMERA-01 portion checked, MAINLOOP-01 child delivery linked.
+[Camera contract](behavior/camera/FIELD_MARIO_CAMERA_SHIFT_TARGETS_AND_CONTROLS.md)
+records three biased shift channels and separately produced rates, post-shift
+position-update gate, FollowY target construction, motion25 height adjustment,
+entry/timer/heading owner captures and expiration/cached-heading request order.
+This gives the 2DS XL port concrete source rules without treating native .07
+smoothing as original framing or claiming room-camera closure.
+
+Validation: read-only ISO manifest15 spans/294 anchors/17 calls. Independent
+all290 words/27 literal vectors/every65536 signed-halfword timer/duration input,
+decoded masks/channel/call identities/source pins passed. Link audit passed959
+Markdown files/zero broken links; scoped diff check passed. Docs/evidence only,
+no make test/all rerun. Raw ELF/listings/generator stay /tmp; no binary assets/
+bodies committed. Concurrent native edits excluded. Approved push still pending
+valid GitHub credentials after authentication rejection.
+
+Next: camera rate/default writers, room/camMain/zoom/event/trig consumers and
+original height/lock/pause/cadence/visual binding; choose further inbox contracts
+from current native field/story/encounter needs. OW-CAMERA-01/MAINLOOP-01 and
+other parent/full-game requests remain OPEN.
+
 ## 2026-10-13 — Inbox native field-loop dependency: complete marioMain
 
 Completed the local MAINLOOP-01 marioMain graph and checked that portion;
