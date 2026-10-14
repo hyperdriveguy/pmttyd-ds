@@ -2,6 +2,59 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original equipment and partner weapon-menu art
+
+Feature `2d25ab0` adds original boot/Hammer/Headbonk sprites to the existing
+native weapon rows. Jump/Hammer use complete source equipment icon leaves with
+independent pouch queries and exact level2/3/default rules; partner Headbonk
+retains unsigned weapon+4 icon344. Unknown legacy pouch data does not invent
+an upgrade. Original US names, type0 frame, font and animated hand remain.
+Whole-row touch regions and physical input/timing are unchanged. Private command
+metadata PMTCMD2 adds the original icon field; old packs require conversion.
+[Native scope](behavior/display/NATIVE_WEAPON_MENU_ICONS.md);
+[asset record](ASSETS.md). Full rotating class-menu choreography remains open.
+
+The read-only importer pins both complete icon-helper bodies and three complete
+default weapon records. Original icon.bin/icon.tpl cells164..169/344 retain
+pixels/dimensions/loops/delays, packed without resampling into the existing
+512×512 RGBA8 atlas1MiB. No extra GPU texture bank, generated sprite or dialogue
+change is introduced. Source/default versus upgraded icon selection is distinct
+from implementing additional upgrade moves or the complete weapon-table builder.
+
+Final shared `make test` passed203/203 CTest and131/131 Python
+(`artifacts/weapon-icons-final-tests.log`), with
+`TMPDIR="$PWD/artifacts/tutorial-admission-tmp" make test`. Tests cover original
+source fingerprints, independent fresh pouch queries, signed-byte/default
+boundaries, actual command/partner icons, absent-pouch admission, original pixels
+and nonoverlapping atlas rectangles. Initial test compilation found a reused
+fixture variable name; it was corrected before this passing run. Normal full
+`make all` passed (`artifacts/weapon-icons-all.log`); final native layout rebuild
+with `-o assets-ready` passed (`artifacts/weapon-icons-all-final.log`). Debug
+build/final layout rebuild passed (`artifacts/weapon-icons-debug.log` and
+`artifacts/weapon-icons-debug-final.log`). Final doc links/diff checks pass.
+
+Immutable private image:
+`artifacts/weapon-icons-native-snapshot/ttyd-weapon-icons-final.3dsx`.
+Isolated Azahar physical-input captures in `artifacts/azahar-weapon-icons-final/`
+show normal boot/Hammer rows at after-A-54 and ordinary target entry at after-A-55.
+Explicit development v8 pouch fixtures also exercise level3 boots/level2 Hammer;
+they are not original card saves or claimed story/item progression. Fixed-count
+upgrade capture names did not reliably identify menu states, so a follow-up in
+`artifacts/azahar-weapon-icons-navigation/` detects actual visible menu admission.
+Physical Right/A/B selects Hammer, opens its front-Goomba target and restores
+Hammer selection with original upgraded art visible. One intermediate capture
+has blank row text/art while its hand is visible; final return capture is stable,
+so no continuous-frame/render/hardware-parity claim is made. Earlier44-press
+capture stayed in original intro and is not menu evidence. Repeated later attack
+presses reach existing pending-service notices; this is not a completed battle.
+
+Next: install complete original startup/UnitEntry resources and tutorial
+command/action ownership; connect source damage/effect/audience/turn services.
+Complete rotating action-class menus and full weapon builder/eligibility, then
+lower-screen scene/audience with optional hostile-item taps and physical controls.
+Keep original dialogue IDs/tokens and simulation-tick timing; do not turn a
+pending service into a fabricated success. Full goal completion remains open.
+
 ## 2026-10-13 — Original NPC map-side movement and plaza Goomba3 wander
 
 Bound portable source npcHitCheckSide finite null-filter/no-reflection body:
