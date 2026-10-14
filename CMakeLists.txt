@@ -1029,3 +1029,10 @@ set_tests_properties(item_get_windows_original PROPERTIES WORKING_DIRECTORY "${C
 add_executable(map_draw_cache_tests tests/map_draw_cache_tests.cpp)
 target_include_directories(map_draw_cache_tests PRIVATE include)
 add_test(NAME map_draw_cache COMMAND map_draw_cache_tests)
+
+add_executable(vertex_upload_original_tests tests/vertex_upload_original_tests.cpp source/opening_house_objects.cpp source/opening_ship_objects.cpp)
+target_include_directories(vertex_upload_original_tests PRIVATE include)
+if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/opening-aaa_00.houseobj" AND EXISTS "${CMAKE_SOURCE_DIR}/romfs/opening-gor_00.shipobj" AND EXISTS "${CMAKE_SOURCE_DIR}/romfs/opening-muj_20.shipobj")
+    add_test(NAME vertex_upload_original COMMAND vertex_upload_original_tests)
+    set_tests_properties(vertex_upload_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+endif()

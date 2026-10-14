@@ -1,3 +1,4 @@
+#include "vertex_upload_range.hpp"
 #include "platform.hpp"
 #include "message_icons.hpp"
 #include <algorithm>
@@ -114,18 +115,23 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     if(background && !frontImage((std::string("opening-bg-")+background).c_str(),48,0,304,240)) {
         frontFailure=std::string("Original scene background unavailable: ")+background;return false;
     }
+    VertexUploadRanges upload;
+    auto writeObjectVertex=[&](uint32_t i,const std::array<float,3>& p) {
+        auto& vertex=frontRoom.vertices[i];
+        vertex.x=p[0];vertex.y=p[1];vertex.z=p[2];upload.include(i);
+    };
     if(opening && frontHouseObjects.size()) {
-        frontHouseObjects.apply(opening->house.doorAngle,opening->house.postboxX,opening->house.treeX,[&](uint32_t i,const OpeningHouseObjects::Point& p){frontRoom.vertices[i].x=p[0];frontRoom.vertices[i].y=p[1];frontRoom.vertices[i].z=p[2];});
-        GSPGPU_FlushDataCache(frontRoom.vertices,size_t(frontRoom.vertexCount)*sizeof(Vertex));
+        frontHouseObjects.apply(opening->house.doorAngle,opening->house.postboxX,opening->house.treeX,writeObjectVertex);
     }
     if(opening && opening->part==OpeningPart::Arrival){const auto& ship=opening->harbor;
-        frontShipObjects.apply(ship.x,ship.y,ship.wakeX,ship.yaw,ship.rock,ship.parts,[&](uint32_t i,const OpeningShipObjects::Point& p){frontRoom.vertices[i].x=p[0];frontRoom.vertices[i].y=p[1];frontRoom.vertices[i].z=p[2];});
-        GSPGPU_FlushDataCache(frontRoom.vertices,size_t(frontRoom.vertexCount)*sizeof(Vertex));
+        frontShipObjects.apply(ship.x,ship.y,ship.wakeX,ship.yaw,ship.rock,ship.parts,writeObjectVertex);
     }
     if(opening && opening->part==OpeningPart::Voyage){const auto& ship=opening->voyage;
-        frontShipObjects.applyVoyage(ship.position,ship.yaw,ship.rotationZ,ship.parts,[&](uint32_t i,const OpeningShipObjects::Point& p){frontRoom.vertices[i].x=p[0];frontRoom.vertices[i].y=p[1];frontRoom.vertices[i].z=p[2];});
-        GSPGPU_FlushDataCache(frontRoom.vertices,size_t(frontRoom.vertexCount)*sizeof(Vertex));
+        frontShipObjects.applyVoyage(ship.position,ship.yaw,ship.rotationZ,ship.parts,writeObjectVertex);
     }
+    upload.flush([&](uint32_t first,uint32_t count){
+        GSPGPU_FlushDataCache(frontRoom.vertices+first,size_t(count)*sizeof(Vertex));
+    });
     // Original actor hierarchy evaluation needs the native stack; keep the
     // large, renderer-only map snapshot in scene-owned heap storage.
     if(!frontDrawSnapshot)frontDrawSnapshot=std::make_unique<Game>();

@@ -16,14 +16,26 @@ struct ActorSurfaceTriangle {uint32_t pass=2,cull=3;};
 struct ActorSurfaceVertex {ActorMeshVertex vertex;ActorColor color;};
 // Source R*M*S, positive/negative half pivots and literal translation gate.
 // Host/ARM trig/rounding is an adapter to the recovered SDK matrix requests.
-inline std::array<float,2> actorTexturePoint(const std::array<float,5>& t,float u,float v) {
-    float x=u*t[2],y=v*t[3];
-    if(t[0]!=0 || t[1]!=0 || t[3]!=0){x+=t[0];y+=(1-t[1])-t[3];}
-    if(t[4]!=0) {
-        const float angle=-t[4]*.01745329611003399f,s=std::sin(angle),c=std::cos(angle);
-        x-=.5f;y-=.5f;const float rx=x*c-y*s,ry=x*s+y*c;x=rx+.5f;y=ry+.5f;
+struct ActorTextureTransform {
+    std::array<float,5> t;
+    float sine=0,cosine=1;
+    explicit ActorTextureTransform(const std::array<float,5>& transform):t(transform) {
+        if(t[4]!=0) {
+            const float angle=-t[4]*.01745329611003399f;
+            sine=std::sin(angle);cosine=std::cos(angle);
+        }
     }
-    return {x,y};
+    std::array<float,2> point(float u,float v) const {
+        float x=u*t[2],y=v*t[3];
+        if(t[0]!=0 || t[1]!=0 || t[3]!=0){x+=t[0];y+=(1-t[1])-t[3];}
+        if(t[4]!=0) {
+            x-=.5f;y-=.5f;const float rx=x*cosine-y*sine,ry=x*sine+y*cosine;x=rx+.5f;y=ry+.5f;
+        }
+        return {x,y};
+    }
+};
+inline std::array<float,2> actorTexturePoint(const std::array<float,5>& t,float u,float v) {
+    return ActorTextureTransform(t).point(u,v);
 }
 namespace actor_surface_detail {
 struct Bin {float low,high;int32_t tile=0;};

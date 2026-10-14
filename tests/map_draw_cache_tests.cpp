@@ -1,9 +1,29 @@
 #include "map_draw_cache.hpp"
+#include "vertex_upload_range.hpp"
 #include <array>
 #include <cassert>
 #include <cstdint>
+#include <vector>
 
 int main() {
+    ttyd::VertexUploadRange upload;
+    assert(upload.count()==0);
+    upload.include(80);upload.include(4);upload.include(80);upload.include(12);
+    assert(upload.first==4 && upload.count()==77);
+    upload.include(0);
+    assert(upload.first==0 && upload.count()==81);
+    ttyd::VertexUploadRanges ranges;
+    std::vector<std::array<uint32_t,2>> flushed;
+    auto flush=[&](uint32_t first,uint32_t count){flushed.push_back({first,count});};
+    ranges.flush(flush);assert(flushed.empty());
+    for(auto index:{10u,11u,12u,4u,5u,11u,6u,7u,8u,9u,80u})ranges.include(index);
+    ranges.flush(flush);
+    assert((flushed==std::vector<std::array<uint32_t,2>>{{4,9},{80,1}}));
+    flushed.clear();
+    ttyd::VertexUploadRanges fragmented;
+    for(unsigned i=0;i<100;++i)fragmented.include(i*3);
+    fragmented.flush(flush);
+    assert((flushed==std::vector<std::array<uint32_t,2>>{{0,298}}));
     int textures[3]{};
     ttyd::MapDrawCache cache;
     auto first=cache.apply(textures,0,0,0,0);

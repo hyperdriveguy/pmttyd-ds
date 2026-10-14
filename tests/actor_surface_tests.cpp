@@ -7,6 +7,54 @@
 #include <cstring>
 using namespace ttyd;
 namespace {
+// Retain the pre-hoist arithmetic as an independent exact numerical oracle.
+std::array<float,2> referenceTexturePoint(const std::array<float,5>& t,float u,float v) {
+    float x=u*t[2],y=v*t[3];
+    if(t[0]!=0 || t[1]!=0 || t[3]!=0){x+=t[0];y+=(1-t[1])-t[3];}
+    if(t[4]!=0) {
+        const float angle=-t[4]*.01745329611003399f,s=std::sin(angle),c=std::cos(angle);
+        x-=.5f;y-=.5f;const float rx=x*c-y*s,ry=x*s+y*c;x=rx+.5f;y=ry+.5f;
+    }
+    return {x,y};
+}
+void preparedTextureCases() {
+    for(float rotation:{0.f,-0.f,1.f,-37.25f,90.f,180.f,359.99f,720.f})
+        for(float scale:{0.f,-0.f,1.f,-2.f,.125f}) {
+            const std::array<float,5> t{{.125f,-.375f,scale,scale,rotation}};
+            const ActorTextureTransform prepared(t);
+            for(float u:{-3.f,-0.f,0.f,.125f,.5f,1.f,4.25f})
+                for(float v:{-2.f,-0.f,0.f,.25f,1.f,3.75f}) {
+                    const auto expected=referenceTexturePoint(t,u,v),actual=prepared.point(u,v);
+                    assert(std::memcmp(expected.data(),actual.data(),sizeof(expected))==0);
+                }
+        }
+    ActorAnimationPose pose;pose.end=2;
+    pose.positions={{{0,0,0}},{{1,0,0}},{{0,1,0}}};
+    pose.nodes.resize(24);pose.nodes[3]=pose.nodes[4]=pose.nodes[5]=1;
+    pose.groups.push_back({-1,-1,0,0,1});
+    pose.bindings={{0,0,0,-.2f,.1f},{0,1,0,1.2f,.1f},{0,2,0,.3f,1.1f}};
+    pose.textures.resize(1);pose.surfaces.push_back({{{.1f,.2f,1,1,37.25f}},1,2});
+    pose.colors={{{1,0,0,1}},{{0,1,0,.5f}},{{0,0,1,1}}};pose.triangles.push_back({2,3});
+    pose.keys.resize(2);pose.keys[1].time=1;
+    pose.keys[1].textures.push_back({0,0,{0,0,0}});pose.keys[1].shifts.push_back({.25f,-.125f});
+    ActorAnimationSample sample;
+    // Reuse the sample across forward, repeated and backward discrete shifts.
+    for(float frame:{0.f,1.f,1.f,0.f,2.f}) {
+        assert(pose.evaluate(frame,sample));
+        assert(sample.surfaces[0].transform[0]==(frame>=1?.35f:.1f));
+        std::array<ActorSurfaceVertex,3> triangle;
+        for(unsigned i=0;i<3;++i) {
+            const auto& b=pose.bindings[i];const auto& p=pose.positions[b.position];
+            const auto uv=referenceTexturePoint(sample.surfaces[0].transform,b.u,b.v);
+            triangle[i]={{p[0],p[1],p[2],uv[0],uv[1]},pose.colors[i]};
+        }
+        std::vector<ActorMeshVertex> expected;std::vector<ActorColor> colors;
+        assert(appendActorSurface(triangle,sample.surfaces[0],0,expected,colors));
+        assert(expected.size()==sample.vertices.size() && colors==sample.colors);
+        assert(std::memcmp(expected.data(),sample.vertices.data(),expected.size()*sizeof(ActorMeshVertex))==0);
+        assert(sample.batches.size()==1 && sample.batches[0].count==expected.size());
+    }
+}
 float area(const ActorMeshVertex& a,const ActorMeshVertex& b,const ActorMeshVertex& c){return std::fabs((b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x))*.5f;}
 float wrap(float v,uint32_t mode) {
     if(!mode)return std::clamp(v,0.f,1.f);
@@ -49,6 +97,7 @@ void surfaceCases(uint32_t ws,uint32_t wt) {
 }
 }
 int main(int argc,char**) {
+    preparedTextureCases();
     for(uint32_t s=0;s<3;++s)for(uint32_t t=0;t<3;++t)surfaceCases(s,t);
     const auto translated=actorTexturePoint({.25f,.5f,2,3,0},.2f,.4f);
     assert(std::fabs(translated[0]-.65f)<.000001f && std::fabs(translated[1]+1.3f)<.000001f);

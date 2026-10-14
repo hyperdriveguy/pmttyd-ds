@@ -88,6 +88,8 @@ struct ActorAnimationSample {
     // Retained hierarchy workspace avoids per-draw allocations on ARM11.
     std::vector<ActorMatrix> world;
     std::vector<uint8_t> seen,active;
+    // Rebuilt after discrete surface shifts; trig is shared by all bindings.
+    std::vector<ActorTextureTransform> textureTransforms;
 };
 inline float actorNodeDelta(const ActorSparseUpdate& record,float q,float duration) {
     if(record.c<=-89 || record.c>=89)return 0;
@@ -174,13 +176,15 @@ struct ActorAnimationPose {
         out.vertices.clear();out.vertices.reserve(bindings.size());out.colors.clear();out.batches.clear();
         if(!surfaces.empty()) {
             if(colors.size()!=bindings.size() || triangles.size()*3!=bindings.size())return false;
+            out.textureTransforms.clear();out.textureTransforms.reserve(out.surfaces.size());
+            for(const auto& surface:out.surfaces)out.textureTransforms.emplace_back(surface.transform);
             for(size_t index=0;index<bindings.size();index+=3) {
                 const auto& first=bindings[index];if(!seen[first.group])return false;if(!active[first.group])continue;
                 const uint16_t cell=textures[first.texture].cells[out.textures[first.texture]];if(cell>=64)return false;
                 std::array<ActorSurfaceVertex,3> triangle;
                 for(unsigned i=0;i<3;++i) {
                     const auto& b=bindings[index+i];const auto p=world[b.group].point(out.positions[b.position]);
-                    const auto uv=actorTexturePoint(out.surfaces[b.texture].transform,b.u,b.v);
+                    const auto uv=out.textureTransforms[b.texture].point(b.u,b.v);
                     triangle[i]={{p[0],p[1],p[2],uv[0],uv[1]},colors[index+i]};
                 }
                 const uint32_t start=uint32_t(out.vertices.size());
