@@ -2078,3 +2078,15 @@ licensing and ignored-pack restrictions remain unchanged. Isolated field-audio
 validation uses SOUNDTRACK=gamecube; normal configured soundtrack selection is
 preserved. See [source plaza binding](behavior/audio/ROGUEPORT_PLAZA_INIT_BGM_AND_ITEMGET_RESUME_OWNER.md)
 and [portable/native control scope](behavior/audio/PORTABLE_FIELD_BGM_ENVELOPES_AND_NATIVE_ITEM_AUDIO.md).
+
+## Item-get audio control
+
+Original fanfare and plaza stream provenance/rights remain recorded in the
+[asset ledger](ASSETS_ARCHIVE.md). Final GameCube plaza PCM is original
+`stg_gor2_32k`,32000Hz/stereo/3284008frames, hash
+`d83abec5e38338a1740e5644523bcbddf34fc879d0af4a6906a6aeba7897fc6d`.
+The final audio_map/config step selects that stream. New control envelopes
+add no asset conversion and retain field PCM cursor/buffers through resume.
+Original Nintendo/Intelligent Systems local-use/no-redistribution restrictions
+and ignored extraction/runtime packs remain in effect.
+[Exact control/asset validation](behavior/audio/NATIVE_ITEM_GET_AUDIO_VALIDATION_2026_10_14.md).

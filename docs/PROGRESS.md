@@ -12785,3 +12785,17 @@ Remaining: real mode1/archive2 pose registration/default resources/local-rate/
 SetAnim/Main, full per-unit/queued display and ordered teardown/field return.
 Main's elapsed-clock*rate dependency must not become per-call phase accumulation.
 Full playable original-fidelity prologue remains incomplete; goal active.
+
+## 2026-10-14 — Item-get audio providers
+
+Committed original primary/secondary BGM envelopes, detached fanfare tail and
+retained field-music resume (`1a4a5ee`, `ec3ee1f`). Both steps passed isolated
+211 CTests/135 Python tests and native builds. Original-mode Azahar confirmed
+logical vacancy before tail release and cursor90112→90112 across NULLresume.
+The final capture observed Azahar57FPS/native36FPS in its interval; physical
+performance and steady integration throughput remain unverified. Native pickup
+print/entry/item-main/control/windows/pouch/5405 integration is next.
+[Exact validation, artifacts, limitations and next work](behavior/audio/NATIVE_ITEM_GET_AUDIO_VALIDATION_2026_10_14.md)
+retain the detailed record while this handoff/archive reorganization proceeds.
+Concurrent subsystem migration began after the isolated review builds; its
+combined new directory layout was not validated by these audio checks.
